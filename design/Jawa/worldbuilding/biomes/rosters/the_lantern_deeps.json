@@ -17,13 +17,7 @@
     "RUT_BlueDesert",
     "RUT_Umbra"
   ],
-  "evictions": [
-    {
-      "def": "RSW_CrystalCrab",
-      "disposition": "cut:lantern deeps hard ban 3",
-      "reason": "Evicted by its own sheet. RUT_LanternDeeps.xml's header records the Deeps sheet's hard ban 3 evicting the six crystal-studded residents BY NAME, crystal crab among them. The roster row was the stale thing, not the wiring. Moved out of fauna 2026-09-23 per ROSTER_DEAD_BMT_NAMES_SWEEP_1 step 1 - bookkeeping, not a new decision. Scope: this cut is THIS sheet's only (owner ruling 2026-09-21), so it says nothing about other biomes - cf. BMT_CrystalFairyMole, also named in ban 3, which legitimately stays in the Scarlands. Carried commonality was 0.5."
-    }
-  ],
+  "evictions": [],
   "fauna": [
     {
       "action": "import",

@@ -186,13 +186,6 @@
     },
     {
       "action": "import",
-      "band": "crown-grazer",
-      "commonality": 0.2,
-      "def": "RSW_JewelBeetle",
-      "law": "§4 harmony guild; slow non-predator bs 2.45 spd 3.1 (MEASURED); bark-working beetle body; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_JewelBeetle to the already-ported, already-wired RSW_ name (RUT_FeverWood at 0.2)"
-    },
-    {
-      "action": "import",
       "band": "crown-flier",
       "commonality": 0.3,
       "def": "Whisperbird",
@@ -204,13 +197,6 @@
       "commonality": 0.3,
       "def": "Convor",
       "law": "§4 crown watcher; SW icon; R17"
-    },
-    {
-      "action": "keep",
-      "band": "ground-slow",
-      "commonality": 0.05,
-      "def": "RSW_AcidSlug",
-      "law": "§4 the ground is for the brave; spd 1.5 (MEASURED) — waits; trace, the floor stays mostly empty; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_AcidSlug to the already-ported, already-wired RSW_ name (RUT_FeverWood at 0.05)"
     },
     {
       "action": "import",

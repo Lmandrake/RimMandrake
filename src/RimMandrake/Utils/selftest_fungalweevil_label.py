@@ -8,8 +8,9 @@ infrastructure/state/delegated/2026-11-02/FUNGALWEEVIL_LABEL_JUDGE_PROPOSES_NEW.
 This test holds the source to that verdict:
 
   1. the verdict holds 3-5 candidates, a pick among them, and the pick's verdict is KEEP;
-  2. both twins (RSW_FungalWeevil in SWBestiary, RM_Grellik in TheRot), ThingDef and
-     PawnKindDef, carry the pick as <label> (parsed as XML elements);
+  2. RM_Grellik in TheRot, ThingDef and PawnKindDef, carries the pick as <label>
+     (parsed as XML elements; its SWBestiary twin RSW_FungalWeevil was deleted by
+     BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS);
   3. no <label> anywhere under src/ (nested and abstract included) still says "grellik";
   4. no other def under src/ uses the pick as its label or shares its four-letter
      stem in a label (the eggs, "<pick> egg (...)", are the twins' own);
@@ -35,7 +36,6 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 VERDICT = os.path.join(REPO, "infrastructure", "state", "delegated", "2026-11-02",
                        "FUNGALWEEVIL_LABEL_JUDGE_PROPOSES_NEW.json")
 TWINS = {
-    "RSW_FungalWeevil": "src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml",
     "RM_Grellik": "src/RimMandrake/TheRot/Defs/Fauna/RM_TheRot_Fauna_ThingDefs_Races.xml",
 }
 OLD = "grellik"

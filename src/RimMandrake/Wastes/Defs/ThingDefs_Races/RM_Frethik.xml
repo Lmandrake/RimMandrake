@@ -10,8 +10,8 @@
        Textures/Things/Pawn/Animal/RM_Frethik/, so nothing depends on mandrake.rsw.swbestiary.
        Name follows the Wasteland's ruled accent (kroffa / grutt / grithe: dry fricatives,
        clipped). Life stages: the SW-tier RSW_EusocialInsectNymph* stages become vanilla
-       AnimalBaby/AnimalJuvenile. RSW_FleeceSpider stays in SWBestiary only because the frozen
-       RUT_Wastes twin still names it; RM_Wastes casts RM_Frethik. -->
+       AnimalBaby/AnimalJuvenile. RSW_FleeceSpider was deleted from SWBestiary
+       (BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS); RM_Wastes casts RM_Frethik. -->
   <ThingDef ParentName="BaseInsect">
     <defName>RM_Frethik</defName>
     <label>frethik</label>

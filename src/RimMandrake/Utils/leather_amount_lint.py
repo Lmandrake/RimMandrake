@@ -106,9 +106,9 @@ CLASS_BODIES = {
     'crab': {'Crab'},
     'turtle': {'TurtleLike'},
     'softbody': {'RM_JellyfishBody', 'RM_TentacledSlug', 'RM_ClawedSlug', 'RM_Butterfly', 'RM_Slug'},
-    # fish, eels and the other slithering swimmers of ours ride vanilla's Snake body; the RSW tumorfish
-    # (Spawn/Fry/Adult, RM_Fishskin) ride RSW_FishBody -- without it a Fry regression (1a03259941) passed
-    'fish': {'Snake', 'RSW_FishBody'},
+    # fish, eels and the other slithering swimmers of ours ride vanilla's Snake body (the RSW tumorfish and
+    # their own fish body were deleted by BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS)
+    'fish': {'Snake'},
 }
 # every body some named class above lists; 'other' is the rest (and a race with no resolvable body)
 NAMED_BODIES = frozenset().union(*CLASS_BODIES.values())

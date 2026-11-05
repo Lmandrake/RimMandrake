@@ -32,12 +32,11 @@
   here, additively, same as before.
 
   ⚠️ None of this touches the FROZEN src/RimUtinni/UtinniPatches/Defs/
-  BiomeDefs/RUT_Webwork.xml, which still carries all 4 donor rows unedited on
+  BiomeDefs/RUT_Webwork.xml, which still carries the other 3 donor rows on
   the live world until the terminal paint — the cut is scoped to RM_Webwork's
   own future roster, not the save the player is on today
-  (BIOME_PAINT_ONCE_AT_THE_END_1). RSW_JewelBeetle itself is untouched and
-  remains wired at RUT_FeverWood 0.2 (MIASMA_FEVERWOOD_GREENTIDE_BMT_1) — a
-  cut here is not a leak there (owner ruling 2026-09-21).
+  (BIOME_PAINT_ONCE_AT_THE_END_1). RSW_JewelBeetle itself was later deleted with its
+  Biomes! port (BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS, owner card 2026-11-04).
   ============================================================================
 -->
 <Patch>

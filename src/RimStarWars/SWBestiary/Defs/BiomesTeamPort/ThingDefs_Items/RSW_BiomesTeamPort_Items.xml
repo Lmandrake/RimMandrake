@@ -22,25 +22,6 @@ copied verbatim from the donor mods' own Textures trees.
 
 -->
 <Defs>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggBasiliskFertilized</defName>
-    <label>basilisk egg (fert.)</label>
-    <description>A fertilized basilisk egg. If all goes well, it should hatch into a baby basilisk. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>Things/Item/Resource/AnimalProductRaw/EggRound</texPath>
-      <color>(230,212,193)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>40</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>3.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Basilisk</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggAaroxisDendoriaUnfertilized</defName>
     <label>aaroxis dendoria egg (unfert.)</label>
@@ -163,28 +144,6 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <!-- RSW_Fishskin deleted 2026-10-26 (FISHSKIN_MERGE_TWIN_DEFS): an identical twin of RM_Fishskin
        (mandrake.rm.biomes, TerminalBiomes), which this mod's fish now name. -->
-  <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
-    <defName>RSW_BiomesCore_CrabShell</defName>
-    <label>crabshell</label>
-    <description>A strong chitinous shell taken from a crustacean.</description>
-    <graphicData>
-      <color>(80,118,120)</color>
-    </graphicData>
-    <statBases>
-      <MarketValue>3.5</MarketValue>
-      <StuffPower_Armor_Sharp>1.45</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>1.1</StuffPower_Armor_Blunt>
-      <StuffPower_Insulation_Cold>20</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>20</StuffPower_Insulation_Heat>
-      <RSW_BC_StuffPower_FlammabilityOffset>-0.3</RSW_BC_StuffPower_FlammabilityOffset>
-    </statBases>
-    <stuffProps>
-      <color>(80,118,120)</color>
-      <statFactors>
-        <Beauty>1.4</Beauty>
-      </statFactors>
-    </stuffProps>
-  </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggScreecherFertilized</defName>
     <label>screecher egg (fert.)</label>
@@ -202,45 +161,6 @@ copied verbatim from the donor mods' own Textures trees.
         <hatcherPawn>RSW_Screecher</hatcherPawn>
       </li>
     </comps>
-  </ThingDef>
-  <ThingDef ParentName="ResourceBase">
-    <defName>RSW_FishMeatCore</defName>
-    <label>fish meat</label>
-    <description>Meat from fish-like creatures.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BiomesCore_Things/Items/Meat/MeatFish</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-    </graphicData>
-    <socialPropernessMatters>true</socialPropernessMatters>
-    <statBases>
-      <MaxHitPoints>100</MaxHitPoints>
-      <Flammability>1.0</Flammability>
-      <DeteriorationRate>5</DeteriorationRate>
-      <Mass>0.03</Mass>
-      <MarketValue>2</MarketValue>
-      <Nutrition>0.05</Nutrition>
-    </statBases>
-    <ingestible>
-      <foodType>Meat</foodType>
-      <preferability>RawTasty</preferability>
-      <tasteThought>RSW_AteRawFish</tasteThought>
-      <ingestEffect>EatMeat</ingestEffect>
-      <ingestSound>RawMeat_Eat</ingestSound>
-    </ingestible>
-    <thingCategories>
-      <li>MeatRaw</li>
-    </thingCategories>
-    <ingredient>
-      <mergeCompatibilityTags>
-        <li MayRequire="Ludeon.RimWorld.Ideology">MeatEating</li>
-      </mergeCompatibilityTags>
-    </ingredient>
-    <comps>
-      <li Class="CompProperties_Rottable">
-        <daysToRotStart>5</daysToRotStart>
-      </li>
-    </comps>
-    <tickerType>Rare</tickerType>
   </ThingDef>
   <ThingDef ParentName="ResourceVerbBase">
     <defName>RSW_FungalMantisClaw</defName>
@@ -325,19 +245,6 @@ copied verbatim from the donor mods' own Textures trees.
     </tradeTags>
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggBasiliskUnfertilized</defName>
-    <label>basilisk egg (unfert.)</label>
-    <description>An unfertilized basilisk egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>Things/Item/Resource/AnimalProductRaw/EggRound</texPath>
-      <color>(220,202,183)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggFoundryBeetleUnfertilized</defName>
     <label>foundry beetle egg (unfert.)</label>
     <description>An unfertilized foundry beetle egg. It can be eaten raw, but it's much, much better cooked.</description>
@@ -348,19 +255,6 @@ copied verbatim from the donor mods' own Textures trees.
     </graphicData>
     <statBases>
       <MarketValue>20.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggRoyalRhinoUnfertilized</defName>
-    <label>royal rhino beetle egg (unfert.)</label>
-    <description>An unfertilized royal rhino beetle egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
-      <color>(160, 99, 149)</color>
-      <drawSize>2</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>30.0</MarketValue>
     </statBases>
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
@@ -375,68 +269,6 @@ copied verbatim from the donor mods' own Textures trees.
     <statBases>
       <MarketValue>12</MarketValue>
     </statBases>
-  </ThingDef>
-  <ThingDef ParentName="ResourceVerbBase">
-    <defName>RSW_PustuleHornetStinger</defName>
-    <label>pustule hornet stinger</label>
-    <description>The stinger pulled from the body of a pustule hornet. It's usually not worth much, but it does make a decent unique weapon.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_PollutedLands/Things/Item/HornetStinger</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-    </graphicData>
-    <techLevel>Neolithic</techLevel>
-    <equippedAngleOffset>-40</equippedAngleOffset>
-    <soundInteract>Standard_Pickup</soundInteract>
-    <soundDrop>Standard_Pickup</soundDrop>
-    <statBases>
-      <MarketValue>100</MarketValue>
-      <MaxHitPoints>150</MaxHitPoints>
-      <Mass>3</Mass>
-      <Flammability>0.4</Flammability>
-      <DeteriorationRate>0.5</DeteriorationRate>
-    </statBases>
-    <useHitPoints>true</useHitPoints>
-    <stackLimit>5</stackLimit>
-    <resourceReadoutPriority>Middle</resourceReadoutPriority>
-    <weaponClasses>
-      <li>Melee</li>
-      <li>MeleePiercer</li>
-    </weaponClasses>
-    <tools>
-      <li>
-        <label>tip</label>
-        <capacities>
-          <li>Stab</li>
-        </capacities>
-        <power>2</power>
-        <cooldownTime>2.6</cooldownTime>
-        <extraMeleeDamages>
-          <li>
-            <def>RSW_Neurotoxin</def>
-            <amount>5</amount>
-            <chance>1.0</chance>
-          </li>
-        </extraMeleeDamages>
-      </li>
-      <li>
-        <label>base</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>8</power>
-        <cooldownTime>1.5</cooldownTime>
-        <chanceFactor>0.25</chanceFactor>
-      </li>
-    </tools>
-    <thingCategories>
-      <li>ItemsMisc</li>
-    </thingCategories>
-    <tradeTags>
-      <li>ExoticMisc</li>
-    </tradeTags>
-    <thingSetMakerTags>
-      <li>AnimalPart</li>
-    </thingSetMakerTags>
   </ThingDef>
   <ThingDef ParentName="ResourceBase">
     <defName>RSW_CrimsonSilk</defName>
@@ -496,129 +328,6 @@ copied verbatim from the donor mods' own Textures trees.
       <canFilthAttach>true</canFilthAttach>
       <cleaningSound>Interact_CleanFilth_Fluid</cleaningSound>
     </filth>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggFungalMantisFertilized</defName>
-    <label>fungal mimic mantis egg (fert.)</label>
-    <description>A fertilized fungal mantis egg. If all goes well, it should hatch into a mantis larvae. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(209,134,70)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>40</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>5.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_FungalMantis</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_SmogMothEggUnfertilized</defName>
-    <label>smog moth egg (unfert.)</label>
-    <description>An unfertilized smog moth egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(225,239,152)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="ResourceVerbBase">
-    <defName>RSW_RoyalRhinoHorn</defName>
-    <label>royal rhino beetle horn</label>
-    <description>A royal rhino beetle's horn. It's priceless in most markets. This is a true trophy and needed for special items.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/RoyalRhinoHorn/RoyalRhinoHorn</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <techLevel>Neolithic</techLevel>
-    <equippedAngleOffset>-40</equippedAngleOffset>
-    <soundInteract>Standard_Pickup</soundInteract>
-    <soundDrop>Standard_Pickup</soundDrop>
-    <statBases>
-      <MarketValue>200</MarketValue>
-      <MaxHitPoints>150</MaxHitPoints>
-      <Mass>3</Mass>
-      <Flammability>0.4</Flammability>
-      <DeteriorationRate>0.5</DeteriorationRate>
-    </statBases>
-    <useHitPoints>true</useHitPoints>
-    <stackLimit>10</stackLimit>
-    <resourceReadoutPriority>Middle</resourceReadoutPriority>
-    <weaponClasses>
-      <li>Melee</li>
-      <li>MeleePiercer</li>
-    </weaponClasses>
-    <tools>
-      <li>
-        <label>point</label>
-        <capacities>
-          <li>Scratch</li>
-          <li>Stab</li>
-        </capacities>
-        <power>15</power>
-        <cooldownTime>2</cooldownTime>
-      </li>
-      <li>
-        <label>base</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>8</power>
-        <cooldownTime>1.5</cooldownTime>
-        <chanceFactor>0.5</chanceFactor>
-      </li>
-    </tools>
-    <thingCategories>
-      <li>ItemsMisc</li>
-    </thingCategories>
-    <tradeTags>
-      <li>ExoticMisc</li>
-    </tradeTags>
-    <thingSetMakerTags>
-      <li>AnimalPart</li>
-    </thingSetMakerTags>
-    <comps>
-      <li Class="CompProperties_Styleable" />
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggMegakrillFertilized</defName>
-    <label>megakrill egg (fert.)</label>
-    <description>A fertilized megakrill egg. If all goes well, it should hatch into a baby megakrill. It can be eaten raw, but it's much better cooked. This egg needs to be kept in water to survive.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(167,198,153)</color>
-      <drawSize>0.7</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>3.0</MarketValue>
-      <DeteriorationRate>0</DeteriorationRate>
-    </statBases>
-    <comps Inherit="False">
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>2</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Megakrill</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggMutatingTumorfishUnfertilized</defName>
-    <label>mutating tumorfish egg (unfert.)</label>
-    <description>An unfertilized mutating tumorfish egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <color>(96,70,70)</color>
-      <drawSize>1.2</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>25</MarketValue>
-    </statBases>
   </ThingDef>
   <ThingDef ParentName="ResourceBase">
     <defName>RSW_GlowGoo</defName>
@@ -711,72 +420,6 @@ copied verbatim from the donor mods' own Textures trees.
       <li Class="CompProperties_Styleable" />
     </comps>
   </ThingDef>
-  <ThingDef ParentName="DrugBase">
-    <defName>RSW_BufoBile</defName>
-    <label>bufo bile</label>
-    <description>A potent drug procured from the skin of dead gastro toads. It is highly toxic but it gives an incredible high.</description>
-    <descriptionHyperlinks>
-      <HediffDef>RSW_BileHigh</HediffDef>
-      <HediffDef>PsychiteTolerance</HediffDef>
-      <HediffDef>PsychiteAddiction</HediffDef>
-      <HediffDef>ChemicalDamageSevere</HediffDef>
-    </descriptionHyperlinks>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_PollutedLands/Things/Item/BufoBile</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <drawSize>0.75</drawSize>
-    </graphicData>
-    <rotatable>false</rotatable>
-    <statBases>
-      <MarketValue>30</MarketValue>
-      <Mass>0.05</Mass>
-    </statBases>
-    <techLevel>Neolithic</techLevel>
-    <minRewardCount>10</minRewardCount>
-    <ingestible>
-      <foodType>Processed</foodType>
-      <joyKind>Chemical</joyKind>
-      <joy>0.90</joy>
-      <drugCategory>Hard</drugCategory>
-      <baseIngestTicks>150</baseIngestTicks>
-      <ingestSound>Ingest_Snort</ingestSound>
-      <ingestHoldOffsetStanding>
-        <northDefault>
-          <offset>(0.21,0,0.05)</offset>
-        </northDefault>
-      </ingestHoldOffsetStanding>
-      <ingestHoldUsesTable>false</ingestHoldUsesTable>
-      <ingestCommandString>Slurp {0}</ingestCommandString>
-      <ingestReportString>Slurping {0}.</ingestReportString>
-      <useEatingSpeedStat>true</useEatingSpeedStat>
-      <outcomeDoers>
-        <li Class="IngestionOutcomeDoer_GiveHediff">
-          <hediffDef>RSW_BileHigh</hediffDef>
-          <severity>0.75</severity>
-          <toleranceChemical>Psychite</toleranceChemical>
-        </li>
-        <li Class="IngestionOutcomeDoer_GiveHediff">
-          <hediffDef>PsychiteTolerance</hediffDef>
-          <severity>0.05</severity>
-          <divideByBodySize>true</divideByBodySize>
-          <multiplyByGeneToleranceFactors>true</multiplyByGeneToleranceFactors>
-        </li>
-      </outcomeDoers>
-    </ingestible>
-    <comps>
-      <li Class="CompProperties_Drug">
-        <chemical>Psychite</chemical>
-        <addictiveness>0.1</addictiveness>
-        <existingAddictionSeverityOffset>0.10</existingAddictionSeverityOffset>
-        <needLevelOffset>0.9</needLevelOffset>
-        <isCombatEnhancingDrug>true</isCombatEnhancingDrug>
-        <listOrder>100</listOrder>
-        <overdoseSeverityOffset>0.10~0.25</overdoseSeverityOffset>
-        <largeOverdoseChance>0.005</largeOverdoseChance>
-      </li>
-    </comps>
-    <allowedArchonexusCount>200</allowedArchonexusCount>
-  </ThingDef>
   <ThingDef Abstract="True" Name="RSW_BiomesCore_ChitinBase" ParentName="LeatherBase">
     <label>chitin</label>
     <description>A strong chitinous shell.</description>
@@ -810,31 +453,6 @@ copied verbatim from the donor mods' own Textures trees.
       </statFactors>
     </stuffProps>
   </ThingDef>
-  <ThingDef ParentName="LeatherBase">
-    <defName>RSW_Leather_Gastropoda</defName>
-    <label>gastropodskin</label>
-    <description>The tanned skin of a gastropod, like a slug or snail. Gastropodskin feels crumbly and mushy at the same time.</description>
-    <statBases>
-      <MarketValue>1.9</MarketValue>
-      <Flammability>0.2</Flammability>
-      <StuffPower_Armor_Sharp>0.64</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.81</StuffPower_Armor_Blunt>
-      <StuffPower_Armor_Heat>2</StuffPower_Armor_Heat>
-      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
-      <RSW_BC_StuffPower_FlammabilityOffset>-0.05</RSW_BC_StuffPower_FlammabilityOffset>
-    </statBases>
-    <graphicData>
-      <color>(153,150,117)</color>
-    </graphicData>
-    <stuffProps>
-      <color>(153,150,117)</color>
-      <commonality>0.025</commonality>
-      <statFactors>
-        <MaxHitPoints>0.8</MaxHitPoints>
-      </statFactors>
-    </stuffProps>
-  </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggBloodletterPetrelUnfertilized</defName>
     <label>bloodletter petrel egg (unfert.)</label>
@@ -846,41 +464,6 @@ copied verbatim from the donor mods' own Textures trees.
     <statBases>
       <MarketValue>3.0</MarketValue>
     </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggAcidSlugUnfertilized</defName>
-    <label>acid slug egg (unfert.)</label>
-    <description>An unfertilized acid slug egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
-      <color>(245,178,180)</color>
-      <drawSize>1</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>10.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
-    <defName>RSW_BiomesCore_GreenChitin</defName>
-    <label>green shell</label>
-    <description>A strong, green, chitinous shell.</description>
-    <graphicData>
-      <color>(134,190,105)</color>
-    </graphicData>
-    <statBases>
-      <MarketValue>4</MarketValue>
-      <StuffPower_Armor_Sharp>0.6</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.7</StuffPower_Armor_Blunt>
-      <StuffPower_Insulation_Cold>15</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>15</StuffPower_Insulation_Heat>
-      <RSW_BC_StuffPower_FlammabilityOffset>-0.3</RSW_BC_StuffPower_FlammabilityOffset>
-    </statBases>
-    <stuffProps>
-      <color>(134,190,105)</color>
-      <statFactors>
-        <Beauty>1.4</Beauty>
-      </statFactors>
-    </stuffProps>
   </ThingDef>
   <ThingDef ParentName="BaseInsect" Name="RSW_PollutedLands_BaseInsect" Abstract="True">
     <statBases>
@@ -941,108 +524,7 @@ copied verbatim from the donor mods' own Textures trees.
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>6</hatcherDaystoHatch>
-        <hatcherPawn>RSW_AaroxisDendoriaLarvae</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggGastroToadUnfertilized</defName>
-    <label>gastro toad egg (unfert.)</label>
-    <description>An unfertilized gastro toad egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_PollutedLands/Things/Item/Eggs/GastroToadEggs</texPath>
-      <drawSize>0.75</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>25.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggMutatingTumorfishFertilized</defName>
-    <label>mutating tumorfish egg (fert.)</label>
-    <description>A fertilized tumorfish egg. If all goes well, it should hatch into a baby tumorfish. It can be eaten raw, but it's much better cooked. This egg needs to be kept in water to survive.</description>
-    <graphicData>
-      <color>(96,70,70)</color>
-      <drawSize>1.2</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>50</MarketValue>
-      <DeteriorationRate>0</DeteriorationRate>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>6</hatcherDaystoHatch>
-        <hatcherPawn>RSW_MutatingTumorfishSpawn</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggAcidSlugFertilized</defName>
-    <label>acid slug egg (fert.)</label>
-    <description>A fertilized acid slug egg. If all goes well, it should hatch into a baby acid slug. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
-      <color>(255,188,190)</color>
-      <drawSize>1</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20.0</MarketValue>
-      <DeteriorationRate>0</DeteriorationRate>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>2</hatcherDaystoHatch>
-        <hatcherPawn>RSW_AcidSlug</hatcherPawn>
-      </li>
-      <li Class="CompProperties_TemperatureRuinable">
-        <minSafeTemperature>30</minSafeTemperature>
-        <maxSafeTemperature>400</maxSafeTemperature>
-        <progressPerDegreePerTick>0.00003</progressPerDegreePerTick>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggFleeceSpiderUnfertilized</defName>
-    <label>fleece spider egg (unfert.)</label>
-    <description>An unfertilized fleece spider egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/SpiderEggs</texPath>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>5.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggMegakrillUnfertilized</defName>
-    <label>megakrill egg (unfert.)</label>
-    <description>An unfertilized megaroach egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(157,188,143)</color>
-      <drawSize>0.7</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>2.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggFungalWeevilFertilized</defName>
-    <label>fungal weevil egg (fert.)</label>
-    <description>A fertilized fungal weevil egg. If all goes well, it should hatch into a baby weevil. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
-      <color>(102,84,49)</color>
-      <drawSize>1</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20.0</MarketValue>
-      <DeteriorationRate>0</DeteriorationRate>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>4</hatcherDaystoHatch>
-        <hatcherPawn>RSW_FungalWeevil</hatcherPawn>
+        <hatcherPawn>RSW_AaroxisDendoria</hatcherPawn>  <!-- BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS: the larva this hatched was deleted (metamorphosis was never ported); it hatches its layer's own kind. -->
       </li>
     </comps>
   </ThingDef>
@@ -1080,47 +562,6 @@ copied verbatim from the donor mods' own Textures trees.
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3.5</hatcherDaystoHatch>
         <hatcherPawn>RSW_BloodletterPetrel</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggRoyalRhinoFertilized</defName>
-    <label>royal rhino beetle egg (fert.)</label>
-    <description>A royal rhino beetle egg. If all goes well, it should hatch into a royal rhino grub. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
-      <color>(170, 109, 159)</color>
-      <drawSize>2</drawSize>
-    </graphicData>
-    <statBases>
-      <Mass>0.50</Mass>
-      <MarketValue>70.0</MarketValue>
-      <MaxHitPoints>60</MaxHitPoints>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_RoyalRhinoLarvae</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggMaxolotlFertilized</defName>
-    <label>maxolotl egg (fert.)</label>
-    <description>A fertilized maxolotl egg. If all goes well, it should hatch into a maxolotl. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BiomesCore_Things/Items/Eggs/SalamanderEggs</texPath>
-      <drawSize>1</drawSize>
-    </graphicData>
-    <statBases>
-      <Mass>0.50</Mass>
-      <MarketValue>24.0</MarketValue>
-      <MaxHitPoints>60</MaxHitPoints>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>4</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Maxolotl</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
@@ -1218,44 +659,6 @@ copied verbatim from the donor mods' own Textures trees.
       </li>
     </comps>
   </ThingDef>
-  <ThingDef ParentName="LeatherBase">
-    <defName>RSW_Leather_Amphibian</defName>
-    <label>amphibianskin</label>
-    <description>The tanned skin of an amphibian, like a frog or salamander. Amphibianskin feels moist and soft at the same time.</description>
-    <statBases>
-      <MarketValue>4</MarketValue>
-      <Flammability>0.25</Flammability>
-      <StuffPower_Armor_Sharp>0.75</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.15</StuffPower_Armor_Blunt>
-      <StuffPower_Armor_Heat>2</StuffPower_Armor_Heat>
-      <StuffPower_Insulation_Cold>12</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>12</StuffPower_Insulation_Heat>
-      <RSW_BC_StuffPower_FlammabilityOffset>-0.2</RSW_BC_StuffPower_FlammabilityOffset>
-    </statBases>
-    <graphicData>
-      <color>(255,237,237)</color>
-    </graphicData>
-    <stuffProps>
-      <color>(255,237,237)</color>
-      <commonality>0.030</commonality>
-      <statFactors>
-        <MaxHitPoints>0.9</MaxHitPoints>
-      </statFactors>
-    </stuffProps>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggGlowtailUnfertilized</defName>
-    <label>glowtail egg (unfert.)</label>
-    <description>An unfertilized glowtail egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>Things/Item/Resource/AnimalProductRaw/EggRound</texPath>
-      <color>(220,202,183)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20</MarketValue>
-    </statBases>
-  </ThingDef>
   <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
     <defName>RSW_RoyalChitin</defName>
     <label>royal chitin</label>
@@ -1279,19 +682,6 @@ copied verbatim from the donor mods' own Textures trees.
       </statFactors>
     </stuffProps>
   </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggJewelBeetleUnfertilized</defName>
-    <label>jewel beetle egg (unfert.)</label>
-    <description>An unfertilized jewel beetle egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
-      <color>(17,136,95)</color>
-      <drawSize>1.2</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>10.0</MarketValue>
-    </statBases>
-  </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggSandpillarFertilized</defName>
     <label>luttaq egg (fert.)</label>
@@ -1307,64 +697,7 @@ copied verbatim from the donor mods' own Textures trees.
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>6.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_BovineBeetleLarvae</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggGastroToadFertilized</defName>
-    <label>gastro toad egg (fert.)</label>
-    <description>A fertilized gastro toad egg. If all goes well, it should hatch into a polluwog. It can be eaten raw, but it's much better cooked. This egg needs to be kept in water to survive.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_PollutedLands/Things/Item/Eggs/GastroToadEggs</texPath>
-      <drawSize>0.75</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>7.0</MarketValue>
-      <DeteriorationRate>0</DeteriorationRate>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>3.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Polluwog</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_SmogMothEggFertilized</defName>
-    <label>smog moth egg (fert.)</label>
-    <description>A fertilized smog moth egg. If all goes well, it should hatch into a smog larvae. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(225,239,152)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>40</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>5.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_SmogMothLarvae</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggGlowtailFertilized</defName>
-    <label>glowtail egg (fert.)</label>
-    <description>A fertilized glowtail egg. If all goes well, it should hatch into a baby glowtail. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>Things/Item/Resource/AnimalProductRaw/EggRound</texPath>
-      <color>(230,212,193)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>30</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>6</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Glowtail</hatcherPawn>
+        <hatcherPawn>RSW_SandPillar</hatcherPawn>  <!-- BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS: the larva this hatched was deleted (metamorphosis was never ported); it hatches its layer's own kind. -->
       </li>
     </comps>
   </ThingDef>
@@ -1379,44 +712,6 @@ copied verbatim from the donor mods' own Textures trees.
     <statBases>
       <MarketValue>12.0</MarketValue>
     </statBases>
-  </ThingDef>
-  <ThingDef ParentName="BaseGrenadeProjectile">
-    <defName>RSW_Proj_ThrumbungusShroom</defName>
-    <label>thrumbungus mushroom</label>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/ShroomThrown</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
-    </graphicData>
-    <projectile>
-      <damageDef>ScratchToxic</damageDef>
-      <damageAmountBase>8</damageAmountBase>
-      <explosionDelay>100</explosionDelay>
-      <explosionRadius>1</explosionRadius>
-      <soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
-      <soundExplode>Explosion_Smoke</soundExplode>
-      <explosionRadiusDisplayPadding>2</explosionRadiusDisplayPadding>
-      <postExplosionGasType>RotStink</postExplosionGasType>
-      <screenShakeFactor>0.5</screenShakeFactor>
-    </projectile>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggJewelBeetleFertilized</defName>
-    <label>jewel beetle egg (fert.)</label>
-    <description>A fertilized jewel beetle egg. If all goes well, it should hatch into a jewel beetle larvae. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
-      <color>(27,146,105)</color>
-      <drawSize>1.2</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>6.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_JewelBeetleLarvae</hatcherPawn>
-      </li>
-    </comps>
   </ThingDef>
   <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
     <defName>RSW_DeepChitin</defName>
@@ -1443,133 +738,6 @@ copied verbatim from the donor mods' own Textures trees.
         <Beauty>1.5</Beauty>
       </statFactors>
     </stuffProps>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggFungalWeevilUnfertilized</defName>
-    <label>fungal weevil egg (unfert.)</label>
-    <description>An unfertilized fungal weevil egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
-      <color>(92,74,39)</color>
-      <drawSize>1</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>10.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggFleeceSpiderFertilized</defName>
-    <label>fleece spider egg (fert.)</label>
-    <description>A fleece spider egg. If all goes well, it should hatch into a baby spider. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/SpiderEggs</texPath>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>10.0</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>6</hatcherDaystoHatch>
-        <hatcherPawn>RSW_FleeceSpider</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="ResourceBase">
-    <defName>RSW_ThrumbungusShroom</defName>
-    <label>Thrumbungus mushroom</label>
-    <description>The spore filled mushroom of a thrumbungus. Pieces of it can be lobbed as weapons, spreading toxic spores.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/ThrumbungusShroom/ThrumbungusShroom</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <tickerType>Normal</tickerType>
-    <soundInteract>Grain_Drop</soundInteract>
-    <soundDrop>Grain_Drop</soundDrop>
-    <techLevel>Neolithic</techLevel>
-    <equipmentType>Primary</equipmentType>
-    <alwaysHaulable>true</alwaysHaulable>
-    <drawGUIOverlay>true</drawGUIOverlay>
-    <statBases>
-      <MaxHitPoints>150</MaxHitPoints>
-      <MarketValue>200</MarketValue>
-      <Mass>3</Mass>
-      <Flammability>2.0</Flammability>
-      <DeteriorationRate>1</DeteriorationRate>
-      <RangedWeapon_Cooldown>2.66</RangedWeapon_Cooldown>
-      <SellPriceFactor>0.10</SellPriceFactor>
-    </statBases>
-    <stackLimit>10</stackLimit>
-    <weaponClasses>
-      <li>Ranged</li>
-    </weaponClasses>
-    <weaponTags>
-      <li>GrenadeTox</li>
-    </weaponTags>
-    <thingCategories>
-      <li>ItemsMisc</li>
-      <li>Grenades</li>
-    </thingCategories>
-    <tradeTags>
-      <li>ExoticMisc</li>
-      <li>WeaponRanged</li>
-    </tradeTags>
-    <thingSetMakerTags>
-      <li>AnimalPart</li>
-    </thingSetMakerTags>
-    <techHediffsTags>
-      <li>Poor</li>
-    </techHediffsTags>
-    <verbs>
-      <li>
-        <label>throw shroom</label>
-        <verbClass>Verb_LaunchProjectile</verbClass>
-        <hasStandardCommand>true</hasStandardCommand>
-        <range>13</range>
-        <forcedMissRadius>1</forcedMissRadius>
-        <warmupTime>1</warmupTime>
-        <noiseRadius>4</noiseRadius>
-        <ai_IsBuildingDestroyer>false</ai_IsBuildingDestroyer>
-        <soundCast>ThrowGrenade</soundCast>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
-        <defaultProjectile>RSW_Proj_ThrumbungusShroom</defaultProjectile>
-        <rangedFireRulepack>Combat_RangedFire_Thrown</rangedFireRulepack>
-      </li>
-    </verbs>
-    <comps>
-      <li MayRequire="Ludeon.RimWorld.Biotech" Class="CompProperties_Explosive">
-        <explosiveRadius>1.1</explosiveRadius>
-        <explosiveDamageType>ToxGas</explosiveDamageType>
-        <requiredDamageTypeToExplode>Flame</requiredDamageTypeToExplode>
-        <postExplosionGasType>ToxGas</postExplosionGasType>
-        <explosiveExpandPerStackcount>0.025</explosiveExpandPerStackcount>
-        <startWickOnDamageTaken>
-          <li>Flame</li>
-        </startWickOnDamageTaken>
-        <startWickHitPointsPercent>0.333</startWickHitPointsPercent>
-        <wickTicks>70~150</wickTicks>
-      </li>
-      <li>
-        <compClass>CompEquippable</compClass>
-      </li>
-      <li Class="CompProperties_Forbiddable" />
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggMaxolotlUnfertilized</defName>
-    <label>maxolotl egg (unfert.)</label>
-    <description>An unfertilized maxolotl egg. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BiomesCore_Things/Items/Eggs/SalamanderEggs</texPath>
-      <drawSize>1</drawSize>
-    </graphicData>
-    <statBases>
-      <Mass>0.50</Mass>
-      <MarketValue>24.0</MarketValue>
-      <MaxHitPoints>60</MaxHitPoints>
-    </statBases>
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggNorpheaUnfertilized</defName>
@@ -1599,7 +767,7 @@ copied verbatim from the donor mods' own Textures trees.
     <comps>
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>3</hatcherDaystoHatch>
-        <hatcherPawn>RSW_FoundryBeetleLarvae</hatcherPawn>
+        <hatcherPawn>RSW_FoundryBeetle</hatcherPawn>  <!-- BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS: the larva this hatched was deleted (metamorphosis was never ported); it hatches its layer's own kind. -->
       </li>
     </comps>
   </ThingDef>
@@ -1623,52 +791,7 @@ copied verbatim from the donor mods' own Textures trees.
       </li>
     </comps>
   </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggFungalMantisUnfertilized</defName>
-    <label>fungal mimic mantis egg (unfert.)</label>
-    <description>An unfertilized fungal mimic mantis egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(199,124,60)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20.0</MarketValue>
-    </statBases>
-  </ThingDef>
   <!-- Eggs of RSW_FacetMoth / RSW_MossBeetle hatch the RM_ larvae (LANTERNDEEPS_RSW_ORIGINALS_RETIRE_1, owner card 2026-10-05): the larvae moved to the RM tier. -->
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggFacetMothFertilized</defName>
-    <label>facet moth egg (fert.)</label>
-    <description>A fertilized facet moth egg. If all goes well, it should hatch into a facet larvae. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(230,212,193)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>40</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>5.5</hatcherDaystoHatch>
-        <hatcherPawn>RM_FacetMothLarvae</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggFacetMothUnfertilized</defName>
-    <label>facet moth egg (unfert.)</label>
-    <description>An unfertilized facet moth egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(220,202,183)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20.0</MarketValue>
-    </statBases>
-  </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggMossBeetleFertilized</defName>
     <label>moss beetle egg (fert.)</label>

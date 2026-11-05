@@ -10683,49 +10683,6 @@
     </match>
   </Operation>
 
-  <!-- acid slug (RSW_AcidSlug) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  23.9..352.2 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]</xpath>
-    <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>23.9</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases</xpath>
-            <value><ComfyTemperatureMin>23.9</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>352.2</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases</xpath>
-            <value><ComfyTemperatureMax>352.2</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>23.9</ComfyTemperatureMin>
-          <ComfyTemperatureMax>352.2</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-    </match>
-  </Operation>
-
   <!-- acklay (RSW_Acklay) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -20..60 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Acklay"]</xpath>
@@ -11071,135 +11028,6 @@
     </match>
   </Operation>
 
-  <!-- puffmite (RSW_FleeceSpider) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -29.1..44.1 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_FleeceSpider"]</xpath>
-    <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_FleeceSpider"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_FleeceSpider"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_FleeceSpider"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-29.1</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_FleeceSpider"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-29.1</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_FleeceSpider"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_FleeceSpider"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>44.1</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_FleeceSpider"]/statBases</xpath>
-            <value><ComfyTemperatureMax>44.1</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_FleeceSpider"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-29.1</ComfyTemperatureMin>
-          <ComfyTemperatureMax>44.1</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-    </match>
-  </Operation>
-
-  <!-- skerrith (RSW_FungalMantis) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -54.1..60 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]</xpath>
-    <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-54.1</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-54.1</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>60</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases</xpath>
-            <value><ComfyTemperatureMax>60</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-54.1</ComfyTemperatureMin>
-          <ComfyTemperatureMax>60</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-    </match>
-  </Operation>
-
-  <!-- plobbum (RSW_FungalWeevil) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -54.1..60 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]</xpath>
-    <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-54.1</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-54.1</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>60</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases</xpath>
-            <value><ComfyTemperatureMax>60</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-54.1</ComfyTemperatureMin>
-          <ComfyTemperatureMax>60</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-    </match>
-  </Operation>
-
   <!-- jellypot (RSW_Jellypot) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -25..51.1 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Jellypot"]</xpath>
@@ -11237,49 +11065,6 @@
         <statBases>
           <ComfyTemperatureMin>-25</ComfyTemperatureMin>
           <ComfyTemperatureMax>51.1</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-    </match>
-  </Operation>
-
-  <!-- jewel beetle (RSW_JewelBeetle) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -10..75 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]</xpath>
-    <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-10</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-10</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>75</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases</xpath>
-            <value><ComfyTemperatureMax>75</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-10</ComfyTemperatureMin>
-          <ComfyTemperatureMax>75</ComfyTemperatureMax>
         </statBases>
       </value>
     </nomatch>
@@ -12361,49 +12146,6 @@
     </match>
   </Operation>
 
-  <!-- smog moth (RSW_SmogMoth) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -54.1..57 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_SmogMoth"]</xpath>
-    <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_SmogMoth"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_SmogMoth"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_SmogMoth"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-54.1</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_SmogMoth"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-54.1</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_SmogMoth"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_SmogMoth"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>57</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_SmogMoth"]/statBases</xpath>
-            <value><ComfyTemperatureMax>57</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_SmogMoth"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-54.1</ComfyTemperatureMin>
-          <ComfyTemperatureMax>57</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-    </match>
-  </Operation>
-
   <!-- strill (RSW_Strill) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -45..55  [duplicate block merged, widest band kept: -58..62.8]  -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Strill"]</xpath>
@@ -12877,49 +12619,6 @@
     </match>
   </Operation>
 
-
-  <!-- yooka (RSW_Yooka) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -54.1..60 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Yooka"]</xpath>
-    <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases/ComfyTemperatureMin</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-54.1</ComfyTemperatureMin></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-54.1</ComfyTemperatureMin></value>
-          </nomatch>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases/ComfyTemperatureMax</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>60</ComfyTemperatureMax></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases</xpath>
-            <value><ComfyTemperatureMax>60</ComfyTemperatureMax></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_Yooka"]</xpath>
-      <value>
-        <statBases>
-          <ComfyTemperatureMin>-54.1</ComfyTemperatureMin>
-          <ComfyTemperatureMax>60</ComfyTemperatureMax>
-        </statBases>
-      </value>
-    </nomatch>
-    </match>
-  </Operation>
 
   <!-- zakkeg (RSW_Zakkeg) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -17..70  [duplicate block merged, widest band kept: -17..74.4]  -->
   <Operation Class="PatchOperationConditional">

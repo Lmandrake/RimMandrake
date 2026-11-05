@@ -278,8 +278,6 @@
       <RSW_Convor MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Convor>  <!-- convor - crown-flier, import -->
       <RSW_LongtailGorg MayRequire="mandrake.rsw.swbestiary">0.3</RSW_LongtailGorg>  <!-- longtail gorg - wait-ambush, keep -->
       <RSW_Whisperbird MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Whisperbird>  <!-- whisperbird - crown-flier, import -->
-      <RSW_JewelBeetle MayRequire="mandrake.rsw.swbestiary">0.2</RSW_JewelBeetle>  <!-- jewel beetle - crown-grazer, import -->
-      <RSW_AcidSlug MayRequire="mandrake.rsw.swbestiary">0.05</RSW_AcidSlug>  <!-- acid slug - ground-slow, keep -->
       <RSW_Fambaa MayRequire="mandrake.rsw.swbestiary">0.02</RSW_Fambaa>  <!-- fambaa - the-terribly-lost, import -->
     </wildAnimals>
     <coastalWildAnimals />

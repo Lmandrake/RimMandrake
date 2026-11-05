@@ -53,7 +53,7 @@ DEF_SETS = {"RSW_Sketto": ["Sketto"], "RSW_PekoPeko": ["PekoPeko_f", "PekoPeko_m
 PLANS = ("bird", "bat", "insect", "ray", "floater", "swarm", "large")
 TIERS = {
     1: "RSW_Hawkbat RSW_PekoPeko RSW_Beldon RSW_Convor RSW_Bogwing RSW_ScrapNestBird RM_Murrelith RM_Pirrik RM_Grimewing "
-       "RM_BloodropMoth RSW_FacetMoth RSW_CanCell RSW_Dactillion RSW_Neebray".split(),
+       "RM_BloodropMoth RSW_CanCell RSW_Dactillion RSW_Neebray".split(),
     2: "RSW_Shyrack RSW_Uvak RSW_Whisperbird RSW_Sketto RM_Soorrak RM_Sivvern RM_Sparkleech RM_Dustflutter RM_Vrisk "
        "RSW_Strill RM_FireHawk RM_Zellik RSW_Urusai".split(),
     3: "RM_Skellick RM_Skiralim RM_Dwommo RM_FeverSwarm RM_Skinflap RSW_Porg".split(),

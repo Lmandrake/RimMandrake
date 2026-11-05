@@ -317,7 +317,6 @@ for race, info in donor_flyers.items():
 # ---------------------------------------------------------------- adjudication (read every desc/canon-only hit by hand)
 ADJ = {  # defName -> (flies verdict, why). Only rows WITHOUT MaxFlightTime need one; reviewed 2026-10-08.
     "RM_BloodropMoth": ("should-fly", "owner card 2026-10-08: gets flight + stable frames"),
-    "RSW_FacetMoth": ("should-fly", "owner card 2026-10-08: gets flight + stable frames"),
     "RSW_Baseopsis": ("no", "owner card 2026-10-08: the winged giant earwig stays grounded"),
     "RSW_Leaftail": ("should-fly", "desc 'winged rodent', canon 'flying omnivores'; no MaxFlightTime (found 2026-11-01)"),
     "RSW_Gorg": ("no", "canon mentions a bio-engineered winged 'chubafly' variant, not the gorg"),
@@ -326,7 +325,7 @@ NO = {"RM_Gharrek": "fluttering gill-fans, a crawler", "RM_Ysvaltha": "blades fo
       "RM_SparkleechGrub": "grub, 'grow into something that flies'", "RM_TheUnfinished": "'a wing that never had anywhere to go'",
       "RM_Barkwarden": "'It cannot fly'", "RM_Liliana": "'It cannot fly'", "RM_Siidda": "carried aloft passively as dust",
       "RM_DancingSkresh": "'aloft' in water: a swimmer", "RSW_Gelagrub": "canon: eyes spot aerial attacks",
-      "RSW_Glowtail": "lures flying insects", "RSW_Grank": "senses airborne vibrations", "RSW_Jimvu": "'in flight' = fleeing; canon: no wings",
+      "RSW_Grank": "senses airborne vibrations", "RSW_Jimvu": "'in flight' = fleeing; canon: no wings",
       "RSW_KraytDragon": "one legendary winged individual", "RSW_Laa": "wing-like fins (fish)", "RSW_Lothcat": "episode title",
       "RSW_MegaphoridLarva": "larva of a fly", "RSW_Nuna": "canon: could not fly", "RSW_Ronto": "wing-like ear flaps",
       "RSW_Segnosaurus": "claws 'glide through paper'", "RM_Segnosaurus": "claws 'glide through paper'",

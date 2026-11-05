@@ -1186,10 +1186,6 @@ RM_Zisska,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
 RSW_AaroxisDendoria,3,tools/li[1]/power,6,15,below band -> K=15,bodySize 1 band 12..15
 RSW_AaroxisDendoria,3,tools/li[2]/power,5.2,13,below band -> K=15,bodySize 1 band 12..15
 RSW_AaroxisDendoria,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
-RSW_AcidSlug,3,tools/li[1]/power,28,60,below band -> K=15,bodySize 4 band 48..60
-RSW_AcidSlug,3,tools/li[1]/cooldownTime,2,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
-RSW_AcidSlug,6,MeatAmount,140,560,"meat base 140 x bodySize (megafauna rule, bs>1)",
-RSW_AcidSlug,6,LeatherAmount,16,40,leather base 40,
 RSW_Anooba,5,ComfyTemperatureMax,74.4,78.9,widen to envelope +/-15C,"env -7.4..63.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_Miasma<-RUT_Miasma,RM_Pyrelands<-ZBiome_Grasslands,RUT_AridShrubland,RUT_Miasma) +/-15"
 RSW_Anooba,5,ComfyTemperatureMin,-18.9,-22.5,widen to envelope +/-15C,"env -7.4..63.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_Miasma<-RUT_Miasma,RM_Pyrelands<-ZBiome_Grasslands,RUT_AridShrubland,RUT_Miasma) +/-15"
 RSW_Anooba,3,tools/li[1]/power,10.9,9.7,above band -> K=15,bodySize 0.95 band 11.4..14.25
@@ -1225,12 +1221,6 @@ RSW_ChrysalideRancor,3,tools/li[3]/cooldownTime,4.24,6.23,cooldown lengthened: D
 RSW_ChrysalideRancor,3,tools/li[4]/power,18,26.4,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 8 band 96..120
 RSW_ChrysalideRancor,3,tools/li[5]/power,18,26.4,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 8 band 96..120
 RSW_ChrysalideRancor,3,tools/li[6]/power,20,29.3,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 8 band 96..120
-RSW_ColonyPustuleHornet,3,tools/li[1]/power,3.4,4.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
-RSW_ColonyPustuleHornet,3,tools/li[2]/power,1.5,2.1,below band -> K=15,bodySize 0.32 band 3.84..4.8
-RSW_ColonyPustuleHornet,3,tools/li[3]/power,2,2.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
-RSW_ColonyPustuleHornetQueen,3,tools/li[1]/power,4.4,15,below band -> K=15,bodySize 1 band 12..15
-RSW_ColonyPustuleHornetQueen,3,tools/li[2]/power,3.5,11.9,below band -> K=15,bodySize 1 band 12..15
-RSW_ColonyPustuleHornetQueen,3,tools/li[3]/power,2,6.8,below band -> K=15,bodySize 1 band 12..15
 RSW_Convor,5,ComfyTemperatureMax,71.8,74.9,widen to envelope +/-15C,"env -7.4..59.8 (RM_FeverWood<-RUT_FeverWood,RM_FloodedCanyon<-RUT_CrackedLands,RM_Greentide<-RUT_Greentide,RM_LeaningScrub<-RUT_AridShrubland,RUT_AridShrubland,RUT_CrackedLands,RUT_FeverWood,RUT_Greentide) +/-15"
 RSW_Convor,5,ComfyTemperatureMin,-20,-22.5,widen to envelope +/-15C,"env -7.4..59.8 (RM_FeverWood<-RUT_FeverWood,RM_FloodedCanyon<-RUT_CrackedLands,RM_Greentide<-RUT_Greentide,RM_LeaningScrub<-RUT_AridShrubland,RUT_AridShrubland,RUT_CrackedLands,RUT_FeverWood,RUT_Greentide) +/-15"
 RSW_Creature_Mantrap,3,tools/li[1]/power,5,11.6,below band -> K=15,bodySize 0.77 band 9.24..11.55
@@ -1266,20 +1256,11 @@ RSW_Faa,5,ComfyTemperatureMax,60,67.1,widen to envelope +/-15C,"env -9.5..52 (RM
 RSW_Faa,5,ComfyTemperatureMin,10,-24.6,widen to envelope +/-15C,"env -9.5..52 (RM_TwilightSea<-RUT_TwilightSea,RUT_TheScald) +/-15"
 RSW_Faa,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
 RSW_FaaJuv,6x,LeatherAmount,0,0,exempt: hideless creature (0 kept),
-RSW_FleeceSpider,3,tools/li[1]/power,6,4.8,above band -> K=15,bodySize 0.32 band 3.84..4.8
-RSW_FleeceSpider,3,tools/li[2]/power,3,2.4,above band -> K=15,bodySize 0.32 band 3.84..4.8
 RSW_FoundryBeetle,3,tools/li[1]/power,26,36,below band -> K=15,bodySize 2.4 band 28.8..36
 RSW_FoundryBeetle,3,tools/li[1]/cooldownTime,1.6,2.33,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
 RSW_FoundryBeetle,3,tools/li[2]/power,12,16.6,below band -> K=15,bodySize 2.4 band 28.8..36
 RSW_FoundryBeetle,6,MeatAmount,140,336,"meat base 140 x bodySize (megafauna rule, bs>1)",
 RSW_FrilledGorg,5,ComfyTemperatureMin,-8.8,-22.5,widen to envelope +/-15C,"env -7.4..46.8 (RM_LeaningScrub<-RUT_AridShrubland,RM_LongShade<-RUT_Desert,RUT_AridShrubland,RUT_Desert) +/-15"
-RSW_FungalMantis,3,tools/li[1]/power,9,30,below band -> K=15,bodySize 2 band 24..30
-RSW_FungalMantis,3,tools/li[1]/cooldownTime,2,2.13,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
-RSW_FungalMantis,3,tools/li[2]/power,7,23.3,below band -> K=15,bodySize 2 band 24..30
-RSW_FungalMantis,3,tools/li[3]/power,7,23.3,below band -> K=15,bodySize 2 band 24..30
-RSW_FungalMantis,3,tools/li[4]/power,5,16.7,below band -> K=15,bodySize 2 band 24..30
-RSW_FungalMantis,6,MeatAmount,140,280,"meat base 140 x bodySize (megafauna rule, bs>1)",
-RSW_FungalWeevil,6,LeatherAmount,25,40,leather base 40,
 RSW_Gizka,5,ComfyTemperatureMin,-3.6,-22.5,widen to envelope +/-15C,"env -7.4..63.8 (RM_Greentide<-RUT_Greentide,RM_LeaningScrub<-RUT_AridShrubland,RM_Pyrelands<-ZBiome_Grasslands,RM_Stillsand<-RUT_ExtremeDesert,RUT_AridShrubland,RUT_Desert,RUT_ExtremeDesert,RUT_Greentide) +/-15"
 RSW_Gizka,3,tools/li[1]/power,2,1.4,above band -> K=15,bodySize 0.18 band 2.16..2.7
 RSW_Gizka,3,tools/li[2]/power,2,1.4,above band -> K=15,bodySize 0.18 band 2.16..2.7
@@ -1319,11 +1300,6 @@ RSW_Iriaz,3,tools/li[1]/power,6,7.9,below band -> K=15,bodySize 0.7 band 8.4..10
 RSW_Iriaz,3,tools/li[2]/power,6,7.9,below band -> K=15,bodySize 0.7 band 8.4..10.5
 RSW_Iriaz,3,tools/li[3]/power,6,7.9,below band -> K=15,bodySize 0.7 band 8.4..10.5
 RSW_Iriaz,3,tools/li[4]/power,8,10.5,below band -> K=15,bodySize 0.7 band 8.4..10.5
-RSW_JewelBeetle,3,tools/li[1]/power,6,36.8,below band -> K=15,bodySize 2.45 band 29.4..36.75
-RSW_JewelBeetle,3,tools/li[1]/cooldownTime,2,2.36,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
-RSW_JewelBeetle,3,tools/li[2]/power,5.2,31.9,below band -> K=15,bodySize 2.45 band 29.4..36.75
-RSW_JewelBeetle,3,tools/li[2]/cooldownTime,2,2.04,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
-RSW_JewelBeetle,6,MeatAmount,140,343,"meat base 140 x bodySize (megafauna rule, bs>1)",
 RSW_Kreetle,5,ComfyTemperatureMin,-15,-22.5,widen to envelope +/-15C,"env -7.4..61.6 (RM_LeaningScrub<-RUT_AridShrubland,RM_Stillsand<-RUT_ExtremeDesert,RUT_AridShrubland,RUT_Desert,RUT_ExtremeDesert,RUT_Miasma,RUT_Webwork) +/-15"
 RSW_Kreetle,3,tools/li[1]/power,5,3,above band -> K=15,bodySize 0.2 band 2.4..3
 RSW_Kreetle,3,tools/li[2]/power,3,1.8,above band -> K=15,bodySize 0.2 band 2.4..3
@@ -1390,17 +1366,6 @@ RSW_Porg,3,tools/li[2]/power,3,2.7,above band -> K=15,bodySize 0.18 band 2.16..2
 RSW_Porg,3,tools/li[3]/power,1,0.9,above band -> K=15,bodySize 0.18 band 2.16..2.7
 RSW_Pufferpig,3,tools/li[1]/power,6,4.5,above band -> K=15,bodySize 0.5 band 6..7.5
 RSW_Pufferpig,3,tools/li[2]/power,10,7.5,above band -> K=15,bodySize 0.5 band 6..7.5
-RSW_PustuleHornet,3,tools/li[1]/power,3.4,4.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
-RSW_PustuleHornet,3,tools/li[2]/power,1.5,2.1,below band -> K=15,bodySize 0.32 band 3.84..4.8
-RSW_PustuleHornet,3,tools/li[3]/power,2,2.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
-RSW_PustuleHornet,6,MeatAmount,5,140,meat base 140,
-RSW_PustuleHornet,6,LeatherAmount,5,40,leather base 40,
-RSW_PustuleHornetQueen,3,tools/li[1]/power,4.4,15,below band -> K=15,bodySize 1 band 12..15
-RSW_PustuleHornetQueen,3,tools/li[2]/power,3.5,11.9,below band -> K=15,bodySize 1 band 12..15
-RSW_PustuleHornetQueen,3,tools/li[3]/power,2,6.8,below band -> K=15,bodySize 1 band 12..15
-RSW_PustuleHornetSpawned,3,tools/li[1]/power,3.4,4.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
-RSW_PustuleHornetSpawned,3,tools/li[2]/power,1.5,2.1,below band -> K=15,bodySize 0.32 band 3.84..4.8
-RSW_PustuleHornetSpawned,3,tools/li[3]/power,2,2.8,below band -> K=15,bodySize 0.32 band 3.84..4.8
 RSW_Rancor,3,tools/li[1]/power,20,29.3,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
 RSW_Rancor,3,tools/li[2]/power,20,29.3,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
 RSW_Rancor,3,tools/li[3]/power,90,132,divergence terror K=22 (fauna_lore_divergence_manifest.csv),bodySize 6 band 72..90
@@ -1500,13 +1465,6 @@ RSW_Taozin,3,tools/li[4]/power,12,16,below band -> K=15,bodySize 8 band 96..120
 RSW_Taozin,3,tools/li[5]/power,16,21.3,below band -> K=15,bodySize 8 band 96..120
 RSW_Taozin,6,MeatAmount,840,1120,"meat base 140 x bodySize (megafauna rule, bs>1)",
 RSW_Tauntaun,5,ComfyTemperatureMin,-50,-62.5,widen to envelope +/-15C,env -47.4..-20.6 (RM_SleepingIce<-RUT_NightsideIce) +/-15
-RSW_Thrumbungus,3,tools/li[1]/power,23,49.3,below band -> K=15,bodySize 4 band 48..60
-RSW_Thrumbungus,3,tools/li[2]/power,28,60,below band -> K=15,bodySize 4 band 48..60
-RSW_Thrumbungus,3,tools/li[2]/cooldownTime,2.6,3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
-RSW_Thrumbungus,3,tools/li[3]/power,19,40.7,below band -> K=15,bodySize 4 band 48..60
-RSW_Thrumbungus,3,tools/li[4]/power,19,40.7,below band -> K=15,bodySize 4 band 48..60
-RSW_Thrumbungus,3,tools/li[5]/power,17,36.4,below band -> K=15,bodySize 4 band 48..60
-RSW_Thrumbungus,6x,MeatAmount,0,0,exempt: meatless creature (0 kept),
 RSW_TunnelSnake,5,ComfyTemperatureMax,60,61.9,widen to envelope +/-15C,env -7.4..46.8 (RUT_AridShrubland) +/-15
 RSW_TunnelSnake,5,ComfyTemperatureMin,0,-22.5,widen to envelope +/-15C,env -7.4..46.8 (RUT_AridShrubland) +/-15
 RSW_TunnelSnake,6,MeatAmount,140,168,"meat base 140 x bodySize (megafauna rule, bs>1)",
@@ -1557,11 +1515,6 @@ RSW_Yobshrimp,3,tools/li[1]/power,4,3,above band -> K=15,bodySize 0.2 band 2.4..
 RSW_Yobshrimp,3,tools/li[2]/power,2,1.5,above band -> K=15,bodySize 0.2 band 2.4..3
 RSW_YobshrimpJuv,3,tools/li[1]/power,4,3,above band -> K=15,bodySize 0.2 band 2.4..3
 RSW_YobshrimpJuv,3,tools/li[2]/power,2,1.5,above band -> K=15,bodySize 0.2 band 2.4..3
-RSW_Yooka,3,tools/li[1]/power,8,18,below band -> K=15,bodySize 2.1 band 25.2..31.5
-RSW_Yooka,3,tools/li[2]/power,8,18,below band -> K=15,bodySize 2.1 band 25.2..31.5
-RSW_Yooka,3,tools/li[3]/power,10,22.5,below band -> K=15,bodySize 2.1 band 25.2..31.5
-RSW_Yooka,3,tools/li[4]/power,14,31.5,below band -> K=15,bodySize 2.1 band 25.2..31.5
-RSW_Yooka,6,MeatAmount,140,294,"meat base 140 x bodySize (megafauna rule, bs>1)",
 RSW_Zakkeg,3,tools/li[1]/power,18,69.2,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75
 RSW_Zakkeg,3,tools/li[1]/cooldownTime,1.5,3.1,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
 RSW_Zakkeg,3,tools/li[2]/power,18,69.2,divergence terror K=20 (fauna_lore_divergence_manifest.csv),bodySize 5 band 60..75

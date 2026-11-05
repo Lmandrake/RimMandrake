@@ -397,20 +397,6 @@
     },
     {
       "action": "import",
-      "band": "ingest-strange",
-      "commonality": 0.4,
-      "def": "RSW_FungalWeevil",
-      "law": "§7b keep the strange — fungal weevil (evicted from the Fever Wood's ban 5 into its true home); ROT_ROSTER_DEAD_DONOR_NAMES_1: renamed from BMT_FungalWeevil to the already-ported, already-wired RSW_ name"
-    },
-    {
-      "action": "import",
-      "band": "guardian",
-      "commonality": 0.15,
-      "def": "RSW_FungalMantis",
-      "law": "§7b fungal mantis; §4 guardianship law — an armed defender near the prizes; dormant-ambush special (MEASURED); ROT_ROSTER_DEAD_DONOR_NAMES_1: renamed from BMT_FungalMantis to the already-ported, already-wired RSW_ name"
-    },
-    {
-      "action": "import",
       "band": "floor-ambush",
       "commonality": 0.5,
       "def": "RSW_ShiroTrap",
@@ -418,60 +404,9 @@
     },
     {
       "action": "import",
-      "band": "wretched-small",
-      "commonality": 0.2,
-      "def": "RSW_ColonyPustuleHornetQueen",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_ColonyPustuleHornetQueen to the ported RSW_ name, moved in from RUT_Wastes.xml, now wired"
-    },
-    {
-      "action": "import",
-      "band": "wretched-small",
-      "commonality": 0.3,
-      "def": "RSW_PustuleHornetQueen",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_PustuleHornetQueen to the ported RSW_ name, moved in from RUT_Wastes.xml, now wired"
-    },
-    {
-      "action": "import",
-      "band": "wretched-small",
-      "commonality": 0.2,
-      "def": "RSW_PustuleHornetSpawned",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_PustuleHornetSpawned to the ported RSW_ name, moved in from RUT_Wastes.xml, now wired"
-    },
-    {
-      "action": "import",
       "commonality": 0.5,
       "def": "AA_AngelMoth",
       "law": "owner review 2026-09 (round2 move mapping): Rot"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "RSW_ColonyPustuleHornet",
-      "law": "owner review 2026-09 (round2 move mapping): the Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_ColonyPustuleHornet to the ported RSW_ name, now wired"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "RSW_PustuleHornet",
-      "law": "owner review 2026-09 (round2 move mapping): the Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_PustuleHornet to the ported RSW_ name, now wired"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "RSW_SmogMoth",
-      "law": "owner review 2026-09 (round2 move mapping): Neat flier in the Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_SmogMoth to the ported RSW_ name, now wired"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "RSW_Thrumbungus",
-      "law": "owner review 2026-09 (round2 move mapping): Make multi-hued and with a surface that's partially digesting itself, move it into the Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_Thrumbungus to the ported RSW_ name, now wired"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "RSW_Yooka",
-      "law": "owner review 2026-09 (round2 move mapping): The Rot; ROT_ROSTER_DEAD_DONOR_NAMES_1 renamed from BMT_Yooka to the ported RSW_ name, now wired"
     },
     {
       "action": "import",

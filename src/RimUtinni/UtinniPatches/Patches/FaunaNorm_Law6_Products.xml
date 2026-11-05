@@ -2561,50 +2561,6 @@
     </nomatch>
   </Operation>
 
-  <!-- RSW_AcidSlug: bodySize 4 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases/LeatherAmount</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases/LeatherAmount</xpath>
-      <value><LeatherAmount>40</LeatherAmount></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases</xpath>
-        <value><LeatherAmount>40</LeatherAmount></value>
-      </match>
-      <nomatch Class="PatchOperationConditional">
-        <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]</xpath>
-        <match Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]</xpath>
-          <value><statBases><LeatherAmount>40</LeatherAmount></statBases></value>
-        </match>
-      </nomatch>
-    </nomatch>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases/MeatAmount</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases/MeatAmount</xpath>
-      <value><MeatAmount>560</MeatAmount></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]/statBases</xpath>
-        <value><MeatAmount>560</MeatAmount></value>
-      </match>
-      <nomatch Class="PatchOperationConditional">
-        <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]</xpath>
-        <match Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="RSW_AcidSlug"]</xpath>
-          <value><statBases><MeatAmount>560</MeatAmount></statBases></value>
-        </match>
-      </nomatch>
-    </nomatch>
-  </Operation>
-
   <!-- RSW_Diggerpede: bodySize 1.5 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_Diggerpede"]/statBases/MeatAmount</xpath>
@@ -2674,75 +2630,6 @@
     </nomatch>
   </Operation>
 
-  <!-- RSW_FungalMantis: bodySize 2 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases/MeatAmount</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases/MeatAmount</xpath>
-      <value><MeatAmount>280</MeatAmount></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]/statBases</xpath>
-        <value><MeatAmount>280</MeatAmount></value>
-      </match>
-      <nomatch Class="PatchOperationConditional">
-        <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]</xpath>
-        <match Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="RSW_FungalMantis"]</xpath>
-          <value><statBases><MeatAmount>280</MeatAmount></statBases></value>
-        </match>
-      </nomatch>
-    </nomatch>
-  </Operation>
-
-  <!-- RSW_FungalWeevil: bodySize 0.5 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases/LeatherAmount</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases/LeatherAmount</xpath>
-      <value><LeatherAmount>40</LeatherAmount></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]/statBases</xpath>
-        <value><LeatherAmount>40</LeatherAmount></value>
-      </match>
-      <nomatch Class="PatchOperationConditional">
-        <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]</xpath>
-        <match Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="RSW_FungalWeevil"]</xpath>
-          <value><statBases><LeatherAmount>40</LeatherAmount></statBases></value>
-        </match>
-      </nomatch>
-    </nomatch>
-  </Operation>
-
-  <!-- RSW_JewelBeetle: bodySize 2.45 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases/MeatAmount</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases/MeatAmount</xpath>
-      <value><MeatAmount>343</MeatAmount></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]/statBases</xpath>
-        <value><MeatAmount>343</MeatAmount></value>
-      </match>
-      <nomatch Class="PatchOperationConditional">
-        <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]</xpath>
-        <match Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="RSW_JewelBeetle"]</xpath>
-          <value><statBases><MeatAmount>343</MeatAmount></statBases></value>
-        </match>
-      </nomatch>
-    </nomatch>
-  </Operation>
-
   <!-- RSW_MegaphoridLarva: bodySize 0.32 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_MegaphoridLarva"]/statBases/LeatherAmount</xpath>
@@ -2807,50 +2694,6 @@
         <match Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RSW_PodWorm"]</xpath>
           <value><statBases><MeatAmount>560</MeatAmount></statBases></value>
-        </match>
-      </nomatch>
-    </nomatch>
-  </Operation>
-
-  <!-- RSW_PustuleHornet: bodySize 0.32 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]/statBases/LeatherAmount</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]/statBases/LeatherAmount</xpath>
-      <value><LeatherAmount>40</LeatherAmount></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]/statBases</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]/statBases</xpath>
-        <value><LeatherAmount>40</LeatherAmount></value>
-      </match>
-      <nomatch Class="PatchOperationConditional">
-        <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]</xpath>
-        <match Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]</xpath>
-          <value><statBases><LeatherAmount>40</LeatherAmount></statBases></value>
-        </match>
-      </nomatch>
-    </nomatch>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]/statBases/MeatAmount</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]/statBases/MeatAmount</xpath>
-      <value><MeatAmount>140</MeatAmount></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]/statBases</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]/statBases</xpath>
-        <value><MeatAmount>140</MeatAmount></value>
-      </match>
-      <nomatch Class="PatchOperationConditional">
-        <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]</xpath>
-        <match Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="RSW_PustuleHornet"]</xpath>
-          <value><statBases><MeatAmount>140</MeatAmount></statBases></value>
         </match>
       </nomatch>
     </nomatch>
@@ -3104,29 +2947,6 @@
         <match Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RSW_WraidAlpha"]</xpath>
           <value><statBases><MeatAmount>476</MeatAmount></statBases></value>
-        </match>
-      </nomatch>
-    </nomatch>
-  </Operation>
-
-  <!-- RSW_Yooka: bodySize 2.1 -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases/MeatAmount</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases/MeatAmount</xpath>
-      <value><MeatAmount>294</MeatAmount></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="RSW_Yooka"]/statBases</xpath>
-        <value><MeatAmount>294</MeatAmount></value>
-      </match>
-      <nomatch Class="PatchOperationConditional">
-        <xpath>/Defs/ThingDef[defName="RSW_Yooka"]</xpath>
-        <match Class="PatchOperationAdd">
-          <xpath>/Defs/ThingDef[defName="RSW_Yooka"]</xpath>
-          <value><statBases><MeatAmount>294</MeatAmount></statBases></value>
         </match>
       </nomatch>
     </nomatch>

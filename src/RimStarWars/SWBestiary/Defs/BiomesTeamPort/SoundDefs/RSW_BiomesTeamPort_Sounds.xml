@@ -23,56 +23,6 @@ copied verbatim from the donor mods' own Textures trees.
 -->
 <Defs>
   <SoundDef>
-    <defName>RSW_Biomes_GiantSnail_Angry</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>Animal/GiantSnail/Angry</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9541176~1.137647</pitchRange>
-        <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_Yooka_Call</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/Yooka/Call</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>20~28</volumeRange>
-        <pitchRange>0.9770588~1.137647</pitchRange>
-        <distRange>0~50.40025</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Pawn_Mantis_Call</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>Animal/Mantis/Biomes_MantisCall</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>14~14</volumeRange>
-        <pitchRange>0.9082353~1.114706</pitchRange>
-        <distRange>0~50</distRange>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
     <defName>RSW_Biomes_SonarRabbit_Call</defName>
     <context>MapOnly</context>
     <subSounds>
@@ -85,58 +35,6 @@ copied verbatim from the donor mods' own Textures trees.
         <volumeRange>20~28</volumeRange>
         <pitchRange>0.9770588~1.137647</pitchRange>
         <distRange>0~50.40025</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_BovineBeetle_Angry</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/BovineBeetle/Angry</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9541176~1.137647</pitchRange>
-        <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_RoyalRhino_Wounded</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/RoyalRhino/Wounded</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311765~1.091765</pitchRange>
-        <distRange>0~70</distRange>
-        <repeatMode>NeverTwice</repeatMode>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_RoyalRhino_Angry</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/RoyalRhino/Angry</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9541176~1.137647</pitchRange>
-        <distRange>0~70</distRange>
         <sustainLoop>False</sustainLoop>
       </li>
     </subSounds>
@@ -155,23 +53,6 @@ copied verbatim from the donor mods' own Textures trees.
         <pitchRange>0.9311765~1.091765</pitchRange>
         <distRange>0~70</distRange>
         <repeatMode>NeverTwice</repeatMode>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_RoyalRhino_Death</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/RoyalRhino/Death</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311764~1.068824</pitchRange>
-        <distRange>0~70</distRange>
         <sustainLoop>False</sustainLoop>
       </li>
     </subSounds>
@@ -228,23 +109,6 @@ copied verbatim from the donor mods' own Textures trees.
     </subSounds>
   </SoundDef>
   <SoundDef>
-    <defName>RSW_Biomes_RoyalRhino_Call</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/RoyalRhino/Call</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>20~28</volumeRange>
-        <pitchRange>0.9770588~1.137647</pitchRange>
-        <distRange>0~50.40025</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
     <defName>RSW_Biomes_TruffleMole_Call</defName>
     <context>MapOnly</context>
     <subSounds>
@@ -257,40 +121,6 @@ copied verbatim from the donor mods' own Textures trees.
         <volumeRange>20~28</volumeRange>
         <pitchRange>0.9770588~1.137647</pitchRange>
         <distRange>0~50.40025</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_Yooka_Death</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/Yooka/Death</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311764~1.068824</pitchRange>
-        <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_BovineBeetle_Death</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/BovineBeetle/Death</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311764~1.068824</pitchRange>
-        <distRange>0~70</distRange>
         <sustainLoop>False</sustainLoop>
       </li>
     </subSounds>
@@ -399,23 +229,6 @@ copied verbatim from the donor mods' own Textures trees.
     </subSounds>
   </SoundDef>
   <SoundDef>
-    <defName>RSW_Biomes_Yooka_Angry</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/Yooka/Angry</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9541176~1.137647</pitchRange>
-        <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
     <defName>RSW_Biomes_Jellypot_Angry</defName>
     <context>MapOnly</context>
     <subSounds>
@@ -428,40 +241,6 @@ copied verbatim from the donor mods' own Textures trees.
         <volumeRange>25~35</volumeRange>
         <pitchRange>0.9541176~1.137647</pitchRange>
         <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_GiantSnail_Death</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>Animal/GiantSnail/Death</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311764~1.068824</pitchRange>
-        <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_BovineBeetle_Call</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/BovineBeetle/Call</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>20~28</volumeRange>
-        <pitchRange>0.9770588~1.137647</pitchRange>
-        <distRange>0~50.40025</distRange>
         <sustainLoop>False</sustainLoop>
       </li>
     </subSounds>
@@ -572,24 +351,6 @@ copied verbatim from the donor mods' own Textures trees.
     </subSounds>
   </SoundDef>
   <SoundDef>
-    <defName>RSW_Biomes_BovineBeetle_Wounded</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/BovineBeetle/Wounded</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311765~1.091765</pitchRange>
-        <distRange>0~70</distRange>
-        <repeatMode>NeverTwice</repeatMode>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
     <defName>RSW_Biomes_TruffleMole_Angry</defName>
     <context>MapOnly</context>
     <subSounds>
@@ -602,59 +363,6 @@ copied verbatim from the donor mods' own Textures trees.
         <volumeRange>25~35</volumeRange>
         <pitchRange>0.9541176~1.137647</pitchRange>
         <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_GiantSnail_Wounded</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>Animal/GiantSnail/Wounded</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311765~1.091765</pitchRange>
-        <distRange>0~70</distRange>
-        <repeatMode>NeverTwice</repeatMode>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_GiantSnail_Call</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>Animal/GiantSnail/Call</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>20~28</volumeRange>
-        <pitchRange>0.9770588~1.137647</pitchRange>
-        <distRange>0~50.40025</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_Yooka_Wounded</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/Yooka/Wounded</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311765~1.091765</pitchRange>
-        <distRange>0~70</distRange>
-        <repeatMode>NeverTwice</repeatMode>
         <sustainLoop>False</sustainLoop>
       </li>
     </subSounds>

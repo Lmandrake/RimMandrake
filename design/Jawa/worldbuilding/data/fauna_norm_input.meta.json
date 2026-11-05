@@ -13,6 +13,7 @@
  "load_set_fingerprint": "2189e1bbca261eb4",
  "note": "mod XML, inheritance-resolved, PRE-patch; defs from the deployed game Mods folder, roster patch adds from repo src",
  "patch_roster_adds": 189,
+ "pruned_after_snapshot": "2026-11-05 BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS: 13 rows of deleted Biomes! port creatures removed (defs gone from src); counts above are the snapshot's own",
  "rostered_names": 490,
  "rostered_with_def": 489,
  "rostered_without_def": [

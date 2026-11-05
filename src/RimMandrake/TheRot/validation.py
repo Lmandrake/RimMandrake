@@ -47,8 +47,8 @@ STATIC (also): mat_root_checks -- ROT_WARM_MAT_BUILD_WORKS_FOR_FOOD (owner by ca
                      keeps the mat-square art (no new texPath), and the log's last site entry reveals RM_NavigatorLastCamp,
                      whose stash node adds RM_LivingMatRoot; --planted turns it red on six planted defects.
 STATIC (also): health_toggle_checks -- ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED: Health sharing off strips every race whose
-                     RM_WoundLinkExtension tag starts "Rot" (by tag, never a defName list, so the frozen twin's weevil is
-                     covered), and the tooltip names who mends; --planted turns it red on six planted defects.
+                     RM_WoundLinkExtension tag starts "Rot" (by tag, never a defName list, so a race another tier wires is
+                     covered), and the tooltip names who mends; --planted turns it red on four planted defects.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
 MOCK:   `python3 validation.py --mock` -> runs wound_link, dustveil and living_mat_root against a fake game, clean and
@@ -129,10 +129,10 @@ RULED_KIN_ROWS = {
 }
 NATIVE_KIN_ROWS = ("RM_Agaripod", "RM_Agaripawn", "RM_Chittik", "RM_MycoidColossus", "RM_Grellik", "RM_Skerrith")
 NATIVE_KIN_FILES = ("RM_Chittik.xml", "RM_AgariPorts.xml", "RM_TheRot_Fauna_ThingDefs_Races.xml")   # in Defs/Fauna
-# ROTKIN_FIX_RULED_ON_RETIRED_TWIN: the frozen campaign biome RUT_TheRot still casts the Star Wars Bestiary bodies the
-# plobbum (RM_Grellik) and skerrith were ported from; UtinniPatches (RotFauna_KinWiring.xml) gives each its RM_ row's wiring, since an
-# RM_-tier mod may not name an RSW_ def. Twin -> the RM_ row it copies.
-TWIN_KIN_ROWS = {"RSW_FungalWeevil": "RM_Grellik", "RSW_FungalMantis": "RM_Skerrith"}
+# Twin RSW_ body -> the RM_ row it copies. Empty since BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS (owner card 2026-11-04)
+# deleted the two Star Wars Bestiary bodies the plobbum (RM_Grellik) and skerrith were ported from, and with them
+# UtinniPatches' RotFauna_KinWiring.xml (ROTKIN_FIX_RULED_ON_RETIRED_TWIN).
+TWIN_KIN_ROWS = {}
 
 
 def ruled_kin_row(name):
@@ -164,15 +164,10 @@ def donor_name_checks(texts=None):
     return bad
 
 
-KIN_WIRING_PATCH = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "RotFauna_KinWiring.xml")
-
-
-def health_toggle_checks(src, weevil_patch=None):
+def health_toggle_checks(src):
     """ROT_HEALTHTOGGLE_FIX_WEEVIL_UNSTRIPPED: 'Health sharing' off must strip EVERY Rot-clique race, including the
-    frozen twin RUT_TheRot's RSW_FungalWeevil (wired by UtinniPatches, which an RM_ mod may not name). The strip finds
-    races by a "Rot"-prefixed RM_WoundLinkExtension tag, never by a defName list; every ruled kin tag must carry that
-    prefix, and the twins' patch must give each twin its RM_ row's tag. src: RM_TheRotMod.cs text; weevil_patch: patch
-    text (planting)."""
+    races another tier wires. The strip finds races by a "Rot"-prefixed RM_WoundLinkExtension tag, never by a defName
+    list; every ruled kin tag must carry that prefix. src: RM_TheRotMod.cs text."""
     bad = []
     body = src.split("static int StripRotKinWiring", 1)[1].split("GuardianGroveRows", 1)[0] \
         if "static int StripRotKinWiring" in src else ""
@@ -192,15 +187,6 @@ def health_toggle_checks(src, weevil_patch=None):
     for row, (tag, _l, _m, _a) in sorted(RULED_KIN_ROWS.items()):
         if tag and not tag.startswith("Rot"):
             bad.append("%s's kin tag %s does not start with 'Rot': the health toggle would not strip it" % (row, tag))
-    wp = weevil_patch if weevil_patch is not None else open(KIN_WIRING_PATCH, encoding="utf-8").read()
-    for twin in sorted(TWIN_KIN_ROWS):
-        tag, _l, _m, alarm = ruled_kin_row(twin)
-        ops = [m.group(1) for m in re.finditer(r'<xpath>Defs/ThingDef\[defName="%s"\]</xpath>(.*?)</Operation>' % twin,
-                                               wp, re.S)]
-        if tag and not any(re.search(r'RM_WoundLinkExtension">\s*<tag>%s</tag>' % tag, o) for o in ops):
-            bad.append("RotFauna_KinWiring.xml does not tag %s %s (its row %s)" % (twin, tag, TWIN_KIN_ROWS[twin]))
-        if alarm and not any(re.search(r'RM_AlarmResponderExtension">\s*<tag>%s</tag>' % ALARM_TAG, o) for o in ops):
-            bad.append("RotFauna_KinWiring.xml does not make %s answer %s (its row %s)" % (twin, ALARM_TAG, TWIN_KIN_ROWS[twin]))
     tip = re.search(r'"Health sharing \(restart to apply\)", ref healthSharing,(.*?)\);', src, re.S)
     tip = re.sub(r'"\s*\+\s*"', "", tip.group(1)) if tip else ""
     for word in ("gromma", "rennok", "mullgoth", "durrok", "plobbum"):
@@ -679,16 +665,12 @@ def planted_mat_root():
 def planted_health_toggle():
     """[(name, red?)]: each planted defect must turn health_toggle_checks red; 'hs clean' must be green."""
     src = open(os.path.join(HERE, "Source", "RM_TheRotMod.cs"), encoding="utf-8").read()
-    wp = open(KIN_WIRING_PATCH, encoding="utf-8").read()
-    out = [("hs clean", not health_toggle_checks(src, wp))]
+    out = [("hs clean", not health_toggle_checks(src))]
     out.append(("hs by defName", bool(health_toggle_checks(src.replace(
-        "if (def.modExtensions == null", 'if (def.defName != "RM_Chittik" || def.modExtensions == null', 1), wp))))
-    out.append(("hs tag kept", bool(health_toggle_checks(src.replace("def.modExtensions.RemoveAll(IsRotKinTag);", "", 1), wp))))
-    out.append(("hs never called", bool(health_toggle_checks(src.replace("StripRotKinWiring();", "", 1), wp))))
-    out.append(("hs weevil retag", bool(health_toggle_checks(src, wp.replace("<tag>RotBroodmates</tag>", "<tag>Broodmates</tag>", 1)))))
-    out.append(("hs mantis unalarmed", bool(health_toggle_checks(src, wp.replace(
-        '<tag>RotGrove</tag>', '<tag>Grove</tag>', 1)))))
-    out.append(("hs tip stale", bool(health_toggle_checks(src.replace("and plobbum heal", "heal", 1), wp))))
+        "if (def.modExtensions == null", 'if (def.defName != "RM_Chittik" || def.modExtensions == null', 1)))))
+    out.append(("hs tag kept", bool(health_toggle_checks(src.replace("def.modExtensions.RemoveAll(IsRotKinTag);", "", 1)))))
+    out.append(("hs never called", bool(health_toggle_checks(src.replace("StripRotKinWiring();", "", 1)))))
+    out.append(("hs tip stale", bool(health_toggle_checks(src.replace("and plobbum heal", "heal", 1)))))
     return out
 
 
@@ -1433,7 +1415,7 @@ suite = _build_suite() if Suite is not None else None
 class _MockRotSession(object):
     """--mock: answers like a game where wound_link, dustveil and living_mat_root work. `broken` plants ONE defect:
     nocomp (chittik lost the comp), noshare (ON arm mirrors nothing), offleaks (OFF arm still mirrors), blindctrl
-    (get_defs control reads present), nobestiary (the RSW_ frozen-twin bodies absent), retagged (a gromma still reads
+    (get_defs control reads present), retagged (a gromma still reads
     RotNetwork), durroklink (a durrok carries the wound link it was ruled out of), hsoff (Health sharing off), rotoff (the Rot
     master switch off), grounded (moth canEverFly false),
     ctrlflies (the non-flier control reads true), ticking (the clock runs while the moth is spawned), nospread
@@ -1465,7 +1447,7 @@ class _MockRotSession(object):
             if kw.get("fields") == "statBases":
                 return {"success": True, "foundCount": 1, "notFound": [],
                         "defs": [{"defName": "RM_Dustveil", "fields": {"statBases": [{"stat": "MaxFlightTime", "value": 6}]}}]}
-            known = {"RM_Chittik", "RM_MothSilk", "RM_Dustveil"} | (set() if b == "nobestiary" else {"RM_Durrok", "RM_Mullgoth"})
+            known = {"RM_Chittik", "RM_MothSilk", "RM_Dustveil", "RM_Durrok", "RM_Mullgoth"}
             if b == "blindctrl":
                 known.add("ZZ_NoSuchDef_Probe")
             rows, nf = [], []
@@ -1540,11 +1522,11 @@ class _MockRotSession(object):
         return {"success": True}
 
     def _kin_defs(self, names, deep):
-        """The ruled rows as a game that loaded the wiring answers them; `retagged`, `durroklink` and `nobestiary`
+        """The ruled rows as a game that loaded the wiring answers them; `retagged` and `durroklink`
         plant one defect each."""
         b, rows, nf = self.broken, [], []
         for n in names:
-            if (n not in RULED_KIN_ROWS and n not in TWIN_KIN_ROWS) or (b == "nobestiary" and n.startswith("RSW_")):
+            if n not in RULED_KIN_ROWS and n not in TWIN_KIN_ROWS:
                 nf.append("ThingDef/" + n)
                 continue
             tag, link, mend, alarm = ruled_kin_row(n)
@@ -1577,7 +1559,6 @@ MOCK_EXPECT = {
     "noshare": {"wound_link/chittik_carries_wound_link": "PASS", "wound_link/wound_shared_with_kin_when_on": "FAIL"},
     "offleaks": {"wound_link/wound_shared_with_kin_when_on": "PASS", "wound_link/no_share_when_off": "FAIL"},
     "blindctrl": {"wound_link/chittik_carries_wound_link": "UNMEASURED"},
-    "nobestiary": {"wound_link/no_share_when_off": "PASS", "wound_link/ruled_kin_rows_live": "UNMEASURED"},
     "retagged": {"wound_link/chittik_carries_wound_link": "PASS", "wound_link/ruled_kin_rows_live": "FAIL"},
     "durroklink": {"wound_link/ruled_kin_rows_live": "FAIL"},
     # Stripped at startup, the chittik has no comp, so the arms after the first row cannot be judged either.

@@ -7157,25 +7157,6 @@ RSW_AaroxisDendoria,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs
         <chanceFactor>0.1</chanceFactor>
       </li>
     </tools>"
-RSW_AcidSlug,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,4,RUT_FeverWood,37.7778,352.222,37.7778,352.222,,,16,16,RSW_Leather_Gastropoda,1,"[{""i"":1,""label"":""head"",""power"":28.0,""cooldown"":2.0}]","<tools>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>ToxicBite</li>
-        </capacities>
-        <power>28</power>
-        <cooldownTime>2.0</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <extraMeleeDamages>
-          <li>
-            <def>AcidBurn</def>
-            <amount>20</amount>
-            <chance>0.5</chance>
-          </li>
-        </extraMeleeDamages>
-      </li>
-    </tools>"
 RSW_Anooba,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Anooba.xml,0.95,RM_LeaningScrub;RM_Miasma;RM_Pyrelands;RUT_AridShrubland;RUT_Miasma,-15,60,-15,60,,,40,,RSW_Leather_ReptoFur,4,"[{""i"":1,""label"":""left paw"",""power"":10.9,""cooldown"":2.0},{""i"":2,""label"":""right paw"",""power"":10.9,""cooldown"":2.0},{""i"":3,""label"":"""",""power"":16.0,""cooldown"":2.0},{""i"":4,""label"":""head"",""power"":6.0,""cooldown"":2.0}]","<tools>
       <li>
         <label>left paw</label>
@@ -7819,78 +7800,6 @@ RSW_Clodhopper,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Clodhoppe
         <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
         <chanceFactor>0.2</chanceFactor>
-      </li>
-    </tools>"
-RSW_ColonyPustuleHornet,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,0.32,RUT_TheRot,-60,70,-60,70,,,40,,RM_FragileChitin,3,"[{""i"":1,""label"":"""",""power"":3.4,""cooldown"":3.0},{""i"":2,""label"":""head"",""power"":1.5,""cooldown"":3.5},{""i"":3,""label"":""stinger"",""power"":2.0,""cooldown"":2.0}]","<tools>
-      <li>
-        <capacities>
-          <li>Bite</li>
-        </capacities>
-        <power>3.4</power>
-        <cooldownTime>3</cooldownTime>
-        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>1.5</power>
-        <cooldownTime>3.5</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.2</chanceFactor>
-      </li>
-      <li>
-        <label>stinger</label>
-        <capacities>
-          <li>Scratch</li>
-        </capacities>
-        <power>2</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>RSW_StingerGroup</linkedBodyPartsGroup>
-        <extraMeleeDamages>
-          <li>
-            <def>RSW_Neurotoxin</def>
-            <amount>5</amount>
-          </li>
-        </extraMeleeDamages>
-      </li>
-    </tools>"
-RSW_ColonyPustuleHornetQueen,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,1,RUT_TheRot,-60,70,-60,70,,,40,,RM_FragileChitin,3,"[{""i"":1,""label"":"""",""power"":4.4,""cooldown"":2.0},{""i"":2,""label"":""head"",""power"":3.5,""cooldown"":2.0},{""i"":3,""label"":""stinger"",""power"":2.0,""cooldown"":2.0}]","<tools>
-      <li>
-        <capacities>
-          <li>Bite</li>
-        </capacities>
-        <power>4.4</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>3.5</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.2</chanceFactor>
-      </li>
-      <li>
-        <label>stinger</label>
-        <capacities>
-          <li>Scratch</li>
-        </capacities>
-        <power>2</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>RSW_StingerGroup</linkedBodyPartsGroup>
-        <extraMeleeDamages>
-          <li>
-            <def>RSW_Neurotoxin</def>
-            <amount>15</amount>
-          </li>
-        </extraMeleeDamages>
       </li>
     </tools>"
 RSW_Convor,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Convor.xml,0.4,RM_FeverWood;RM_FloodedCanyon;RM_Greentide;RM_LeaningScrub;RUT_AridShrubland;RUT_CrackedLands;RUT_FeverWood;RUT_Greentide,-20,40,-20,40,,,40,,RSW_Leather_Mammavian,3,"[{""i"":1,""label"":""claws"",""power"":4.0,""cooldown"":1.5},{""i"":2,""label"":""beak"",""power"":4.0,""cooldown"":2.0},{""i"":3,""label"":""head"",""power"":6.0,""cooldown"":2.0}]","<tools>
@@ -8707,28 +8616,6 @@ RSW_FeralNerf,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_FeralNerf.
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
       </li>
     </tools>"
-RSW_FleeceSpider,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,0.32,RUT_Wastes,-25,20,-25,20,,,40,,Leather_Light,2,"[{""i"":1,""label"":""mandibles"",""power"":6.0,""cooldown"":2.6},{""i"":2,""label"":""head"",""power"":3.0,""cooldown"":2.0}]","<tools>
-      <li>
-        <label>mandibles</label>
-        <capacities>
-          <li>Cut</li>
-        </capacities>
-        <power>6</power>
-        <cooldownTime>2.6</cooldownTime>
-        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>3</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.2</chanceFactor>
-      </li>
-    </tools>"
 RSW_FoundryBeetle,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,2.4,RM_Warscar;RUT_Scarlands,37.7778,352.222,37.7778,352.222,,,40,,RSW_DeepChitin,2,"[{""i"":1,""label"":""head claw"",""power"":26.0,""cooldown"":1.6},{""i"":2,""label"":""head"",""power"":12.0,""cooldown"":2.0}]","<tools>
       <li>
         <label>head claw</label>
@@ -8789,89 +8676,6 @@ RSW_FrilledGorg,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_FrilledG
         <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
         <chanceFactor>0.2</chanceFactor>
-      </li>
-    </tools>"
-RSW_FungalMantis,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,2.0,RUT_TheRot,0,60,0,60,,,40,,RM_MediumChitin,4,"[{""i"":1,""label"":""mandibles"",""power"":9.0,""cooldown"":2.0},{""i"":2,""label"":""left scythe"",""power"":7.0,""cooldown"":2.0},{""i"":3,""label"":""right scythe"",""power"":7.0,""cooldown"":2.0},{""i"":4,""label"":""head"",""power"":5.0,""cooldown"":3.0}]","<tools>
-      <li>
-        <label>mandibles</label>
-        <capacities>
-          <li>Bite</li>
-        </capacities>
-        <power>9</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
-        <chanceFactor>0.6</chanceFactor>
-        <surpriseAttack>
-          <extraMeleeDamages>
-            <li>
-              <def>Stun</def>
-              <amount>25</amount>
-            </li>
-          </extraMeleeDamages>
-        </surpriseAttack>
-      </li>
-      <li>
-        <label>left scythe</label>
-        <capacities>
-          <li>Scratch</li>
-        </capacities>
-        <power>7</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>RSW_FrontLeftScythe</linkedBodyPartsGroup>
-        <extraMeleeDamages>
-          <li>
-            <def>RSW_ToxicSpores</def>
-            <amount>5</amount>
-          </li>
-        </extraMeleeDamages>
-      </li>
-      <li>
-        <label>right scythe</label>
-        <capacities>
-          <li>Scratch</li>
-        </capacities>
-        <power>7</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>RSW_FrontRightScythe</linkedBodyPartsGroup>
-        <extraMeleeDamages>
-          <li>
-            <def>RSW_StunningSpores</def>
-            <amount>5</amount>
-          </li>
-        </extraMeleeDamages>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>5</power>
-        <cooldownTime>3</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.1</chanceFactor>
-      </li>
-    </tools>"
-RSW_FungalWeevil,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,0.5,RUT_TheRot,0,60,0,60,,,25,25,RM_WeakChitin,2,"[{""i"":1,""label"":""mandibles"",""power"":7.0,""cooldown"":2.0},{""i"":2,""label"":""head"",""power"":6.0,""cooldown"":2.0}]","<tools>
-      <li>
-        <label>mandibles</label>
-        <capacities>
-          <li>Bite</li>
-        </capacities>
-        <power>7</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>6</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.1</chanceFactor>
       </li>
     </tools>"
 RSW_Gelagrub,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Gelagrub.xml,2.4,RM_FeverWood;RM_Greentide;RUT_FeverWood;RUT_Greentide,-5,60,-5,60,,,40,,RSW_Leather_Insectile,2,"[{""i"":1,""label"":""mandibles"",""power"":12.0,""cooldown"":2.0},{""i"":2,""label"":""head"",""power"":14.0,""cooldown"":2.0}]","<tools>
@@ -9747,28 +9551,6 @@ RSW_Jamel,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Jamel.xml,1.9,
         <cooldownTime>2</cooldownTime>
         <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
         <chanceFactor>0.5</chanceFactor>
-      </li>
-    </tools>"
-RSW_JewelBeetle,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,2.45,RUT_FeverWood;RUT_Webwork,-10,60,-10,60,,,40,,RSW_BiomesCore_GreenChitin,2,"[{""i"":1,""label"":""mandibles"",""power"":6.0,""cooldown"":2.0},{""i"":2,""label"":""head"",""power"":5.2,""cooldown"":2.0}]","<tools>
-      <li>
-        <label>mandibles</label>
-        <capacities>
-          <li>Bite</li>
-        </capacities>
-        <power>6</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>5.2</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.1</chanceFactor>
       </li>
     </tools>"
 RSW_Jimvu,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Jimvu.xml,2.0,RM_LongShade;RUT_Desert,-10,60,-10,60,,,40,,Leather_Plain,4,"[{""i"":1,""label"":""head"",""power"":8.0,""cooldown"":2.9},{""i"":2,""label"":""left hoof"",""power"":6.0,""cooldown"":2.0},{""i"":3,""label"":""right hoof"",""power"":6.0,""cooldown"":2.0},{""i"":4,""label"":"""",""power"":4.0,""cooldown"":2.0}]","<tools>
@@ -11308,114 +11090,6 @@ RSW_Pufferpig,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Pufferpig.
         <chanceFactor>0.2</chanceFactor>
       </li>
     </tools>"
-RSW_PustuleHornet,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,0.32,RUT_TheRot,-60,70,-60,70,5,5,5,5,RM_FragileChitin,3,"[{""i"":1,""label"":"""",""power"":3.4,""cooldown"":3.0},{""i"":2,""label"":""head"",""power"":1.5,""cooldown"":3.5},{""i"":3,""label"":""stinger"",""power"":2.0,""cooldown"":2.0}]","<tools>
-      <li>
-        <capacities>
-          <li>Bite</li>
-        </capacities>
-        <power>3.4</power>
-        <cooldownTime>3</cooldownTime>
-        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>1.5</power>
-        <cooldownTime>3.5</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.2</chanceFactor>
-      </li>
-      <li>
-        <label>stinger</label>
-        <capacities>
-          <li>Scratch</li>
-        </capacities>
-        <power>2</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>RSW_StingerGroup</linkedBodyPartsGroup>
-        <extraMeleeDamages>
-          <li>
-            <def>RSW_Neurotoxin</def>
-            <amount>5</amount>
-          </li>
-        </extraMeleeDamages>
-      </li>
-    </tools>"
-RSW_PustuleHornetQueen,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,1,RUT_TheRot,-60,70,-60,70,,,40,,RM_FragileChitin,3,"[{""i"":1,""label"":"""",""power"":4.4,""cooldown"":2.0},{""i"":2,""label"":""head"",""power"":3.5,""cooldown"":2.0},{""i"":3,""label"":""stinger"",""power"":2.0,""cooldown"":2.0}]","<tools>
-      <li>
-        <capacities>
-          <li>Bite</li>
-        </capacities>
-        <power>4.4</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>3.5</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.2</chanceFactor>
-      </li>
-      <li>
-        <label>stinger</label>
-        <capacities>
-          <li>Scratch</li>
-        </capacities>
-        <power>2</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>RSW_StingerGroup</linkedBodyPartsGroup>
-        <extraMeleeDamages>
-          <li>
-            <def>RSW_Neurotoxin</def>
-            <amount>15</amount>
-          </li>
-        </extraMeleeDamages>
-      </li>
-    </tools>"
-RSW_PustuleHornetSpawned,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,0.32,RUT_TheRot,-60,70,-60,70,,,40,,RM_FragileChitin,3,"[{""i"":1,""label"":"""",""power"":3.4,""cooldown"":3.0},{""i"":2,""label"":""head"",""power"":1.5,""cooldown"":3.5},{""i"":3,""label"":""stinger"",""power"":2.0,""cooldown"":2.0}]","<tools>
-      <li>
-        <capacities>
-          <li>Bite</li>
-        </capacities>
-        <power>3.4</power>
-        <cooldownTime>3</cooldownTime>
-        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>1.5</power>
-        <cooldownTime>3.5</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.2</chanceFactor>
-      </li>
-      <li>
-        <label>stinger</label>
-        <capacities>
-          <li>Scratch</li>
-        </capacities>
-        <power>2</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>RSW_StingerGroup</linkedBodyPartsGroup>
-        <extraMeleeDamages>
-          <li>
-            <def>RSW_Neurotoxin</def>
-            <amount>5</amount>
-          </li>
-        </extraMeleeDamages>
-      </li>
-    </tools>"
 RSW_Qormot,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Qormot.xml,1.0,RM_LeaningScrub;RUT_AridShrubland,-13,,-13,,,,40,,RSW_Leather_Reptomammal,5,"[{""i"":1,""label"":""left claw"",""power"":8.0,""cooldown"":2.0},{""i"":2,""label"":""right claw"",""power"":8.0,""cooldown"":2.0},{""i"":3,""label"":""quills"",""power"":9.0,""cooldown"":2.0},{""i"":4,""label"":"""",""power"":10.0,""cooldown"":2.0},{""i"":5,""label"":""head"",""power"":6.0,""cooldown"":2.0}]","<tools>
       <li>
         <label>left claw</label>
@@ -12375,30 +12049,6 @@ RSW_Sketto,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Sketto.xml,0.
         <chanceFactor>0.2</chanceFactor>
       </li>
     </tools>"
-RSW_SmogMoth,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,0.77,RUT_TheRot,-10,57,-10,57,,,40,,RM_ToxiChitin,3,"[{""i"":1,""label"":""proboscis"",""power"":10.0,""cooldown"":2.0},{""i"":2,""label"":""wing"",""power"":8.0,""cooldown"":2.0},{""i"":3,""label"":""head"",""power"":8.0,""cooldown"":3.0}]","<tools>
-      <li>
-        <label>proboscis</label>
-        <power>10</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>wing</label>
-        <power>8</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>8</power>
-        <cooldownTime>3</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-      </li>
-    </tools>"
 RSW_Snoruuk,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Snoruuk.xml,0.5,RM_TheRot;RUT_TheRot,-54.1,32.4,-54.1,32.4,,,0,0,,1,"[{""i"":1,""label"":""head"",""power"":2.0,""cooldown"":2.0}]","<tools>
       <li>
         <label>head</label>
@@ -12653,55 +12303,6 @@ RSW_TeeMuss,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_TeeMuss.xml,
         <cooldownTime>2</cooldownTime>
         <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
         <chanceFactor>0.5</chanceFactor>
-      </li>
-    </tools>"
-RSW_Thrumbungus,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,4,RUT_TheRot,-65,352.222,-65,352.222,0,0,40,,Leather_Thrumbo,5,"[{""i"":1,""label"":""mushrooms"",""power"":23.0,""cooldown"":2.6},{""i"":2,""label"":"""",""power"":28.0,""cooldown"":2.6},{""i"":3,""label"":""left paw"",""power"":19.0,""cooldown"":6.0},{""i"":4,""label"":""right foot"",""power"":19.0,""cooldown"":6.0},{""i"":5,""label"":""head"",""power"":17.0,""cooldown"":6.0}]","<tools>
-      <li>
-        <label>mushrooms</label>
-        <capacities>
-          <li>ToxicBite</li>
-        </capacities>
-        <power>23</power>
-        <cooldownTime>2.6</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <capacities>
-          <li>ToxicBite</li>
-        </capacities>
-        <power>28</power>
-        <cooldownTime>2.6</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
-        <chanceFactor>0.7</chanceFactor>
-      </li>
-      <li>
-        <label>left paw</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>19</power>
-        <cooldownTime>6</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>right foot</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>19</power>
-        <cooldownTime>6</cooldownTime>
-        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>17</power>
-        <cooldownTime>6</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.2</chanceFactor>
       </li>
     </tools>"
 RSW_Tibidee,1,RimMandrake: SW — Bestiary,Defs/ThingDefs_Races/RSW_Tibidee.xml,12.0,RM_TheForge,-270,100,-270,100,,,40,,Leather_Light,5,"[{""i"":1,""label"":""left claws"",""power"":20.0,""cooldown"":2.0},{""i"":2,""label"":""right claws"",""power"":20.0,""cooldown"":2.0},{""i"":3,""label"":"""",""power"":16.0,""cooldown"":2.0},{""i"":4,""label"":""head"",""power"":28.0,""cooldown"":2.0},{""i"":5,""label"":""tail"",""power"":180.0,""cooldown"":5.2}]","<tools>
@@ -13646,48 +13247,6 @@ RSW_YobshrimpJuv,1,RimMandrake: SW — Bestiary,Defs/SeaBeasts/ThingDefs_Races/S
         </capacities>
         <power>2</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
-        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
-        <chanceFactor>0.2</chanceFactor>
-      </li>
-    </tools>"
-RSW_Yooka,1,RimMandrake: SW — Bestiary,Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml,2.1,RUT_TheRot,-25,60,-25,60,,,40,,Leather_Camel,4,"[{""i"":1,""label"":""left hoof"",""power"":8.0,""cooldown"":2.0},{""i"":2,""label"":""right hoof"",""power"":8.0,""cooldown"":2.0},{""i"":3,""label"":"""",""power"":10.0,""cooldown"":5.0},{""i"":4,""label"":""head"",""power"":14.0,""cooldown"":5.0}]","<tools>
-      <li>
-        <label>left hoof</label>
-        <capacities>
-          <li>Blunt</li>
-          <li>Poke</li>
-        </capacities>
-        <power>8</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <label>right hoof</label>
-        <capacities>
-          <li>Blunt</li>
-          <li>Poke</li>
-        </capacities>
-        <power>8</power>
-        <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
-      </li>
-      <li>
-        <capacities>
-          <li>Bite</li>
-        </capacities>
-        <power>10</power>
-        <cooldownTime>5</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
-        <chanceFactor>0.7</chanceFactor>
-      </li>
-      <li>
-        <label>head</label>
-        <capacities>
-          <li>Blunt</li>
-        </capacities>
-        <power>14</power>
-        <cooldownTime>5</cooldownTime>
         <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
         <chanceFactor>0.2</chanceFactor>

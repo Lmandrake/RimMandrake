@@ -332,13 +332,6 @@
       "law": "§4 THE species (SW mod ships it: insectoid, bs 3.0, spd 4.5 MEASURED; dormant-until-triggered special MEASURED — the concealed-burst read); Wyyyschokk to the galaxy, Feralisk on this world (header ruling)"
     },
     {
-      "action": "import",
-      "band": "anchor-beetle",
-      "commonality": 0.3,
-      "def": "RSW_JewelBeetle",
-      "law": "§4b the anchor-beetles — neutral, unbothered, slow (non-predator, spd 3.1 MEASURED); interim body, chew-behaviour C# rides WEBWORK_MECHANICS_1; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_JewelBeetle to the already-ported, already-wired RSW_ name (RUT_Webwork)"
-    },
-    {
       "action": "adjust-keep",
       "band": "trace-prey",
       "commonality": 0.2,

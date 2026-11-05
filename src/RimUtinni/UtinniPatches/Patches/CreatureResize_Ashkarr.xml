@@ -59,41 +59,6 @@
             <value><baseBodySize>8.2</baseBodySize></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-            <value><drawSize>5.12</drawSize></value>
-          </match>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-            <value><drawSize>8.20</drawSize></value>
-          </match>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-            <value><drawSize>9.84</drawSize></value>
-          </match>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="RSW_Thrumbungus"]/race</xpath>
-          <match Class="PatchOperationConditional">
-            <xpath>Defs/ThingDef[defName="RSW_Thrumbungus"]/race/baseBodySize</xpath>
-            <match Class="PatchOperationReplace">
-              <xpath>Defs/ThingDef[defName="RSW_Thrumbungus"]/race/baseBodySize</xpath>
-              <value><baseBodySize>8.2</baseBodySize></value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>Defs/ThingDef[defName="RSW_Thrumbungus"]/race</xpath>
-              <value><baseBodySize>8.2</baseBodySize></value>
-            </nomatch>
-          </match>
-        </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="RSW_KwazelMaw"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>1.34</drawSize></value>

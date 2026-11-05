@@ -134,8 +134,6 @@
       <li MayRequire="mandrake.rm.biomes">RM_SheenExposureLock</li>
     </biomeMapConditions>
     <wildAnimals>
-      <RSW_FungalWeevil MayRequire="mandrake.rsw.swbestiary">0.4</RSW_FungalWeevil>  <!-- fungal weevil - ingest-strange, import -->
-      <RSW_FungalMantis MayRequire="mandrake.rsw.swbestiary">0.15</RSW_FungalMantis>  <!-- fungal mimic mantis - guardian, import -->
       <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
            35.9% small. Both additions are already OWNER-RULED members of this exact
            biome's fauna list (design/Jawa/worldbuilding/biomes/rosters/the_rot.json
@@ -143,25 +141,9 @@
            (bodySize 0.75) and Snoruuk (bodySize 0.5, canonically a mobile mushroom —
            fits a fungal rot swamp directly) are both small. -->
       <RSW_Snoruuk MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Snoruuk>  <!-- snoruuk - mobile mushroom, small, ruled -->
-      <!-- ROT_ROSTER_DEAD_DONOR_NAMES_1 (this pass): the roster's remaining `BMT_`
-           names were never a coverage gap — they are the owner's own 2026-09-10
-           sitting ruling ("move" to the Rot, decisions_propagated.json) for species
-           already ported into our own tier by BMT_FAUNA_ABSORPTION_1
-           (RSW_BiomesTeamPort_Races.xml); AA_AnimaColossus was dropped from the Rot cast
-           (owner card 2026-10-22: retired donor, no port). Wiring under the
-           OWNED name, not the dead `BMT_`/donor name. RSW_PustuleHornetQueen/
-           RSW_ColonyPustuleHornetQueen/RSW_PustuleHornetSpawned are moved IN from
-           RUT_Wastes.xml (removed there in this same pass) per that same ruling —
-           wastes.json no longer admits them, so leaving them wired in both biomes
-           would have doubled a species the owner moved. -->
-      <RSW_PustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.3</RSW_PustuleHornetQueen>  <!-- pustule queen - wretched-small, moved in from Wasteland -->
-      <RSW_ColonyPustuleHornetQueen MayRequire="mandrake.rsw.swbestiary">0.2</RSW_ColonyPustuleHornetQueen>  <!-- colony pustule queen - wretched-small, moved in from Wasteland -->
-      <RSW_PustuleHornetSpawned MayRequire="mandrake.rsw.swbestiary">0.2</RSW_PustuleHornetSpawned>  <!-- pustule hornet - wretched-small, moved in from Wasteland -->
-      <RSW_ColonyPustuleHornet MayRequire="mandrake.rsw.swbestiary">0.5</RSW_ColonyPustuleHornet>  <!-- colony pustule hornet - import -->
-      <RSW_PustuleHornet MayRequire="mandrake.rsw.swbestiary">0.5</RSW_PustuleHornet>  <!-- pustule hornet - import -->
-      <RSW_SmogMoth MayRequire="mandrake.rsw.swbestiary">0.5</RSW_SmogMoth>  <!-- smog moth - flier, import -->
-      <RSW_Thrumbungus MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Thrumbungus>  <!-- thrumbungus - titan, import -->
-      <RSW_Yooka MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Yooka>  <!-- yooka - import -->
+      <!-- BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS (owner card 2026-11-04, "Drop 42, cancel Thrumbungus"): the Biomes! port rows
+           fungal weevil, fungal mantis, the pustule hornets and queens, smog moth, thrumbungus and yooka were
+           deleted with their defs. RM_TheRot carries their RM_ re-ports (RM_Grellik, RM_Skerrith, RM_Brullith ...). -->
       <RSW_ShiroTrap MayRequire="mandrake.rsw.swbestiary">0.5</RSW_ShiroTrap>  <!-- shiro trap - floor-ambush, moved in from the Greentide's roster ruling -->
     </wildAnimals>
     <coastalWildAnimals />
