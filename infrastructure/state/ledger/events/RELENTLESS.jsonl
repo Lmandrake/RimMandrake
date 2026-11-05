@@ -765,3 +765,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WARSCAR_HOSPICE_DESERTERS_1 A4 (L2), read-only proof","ts":"2026-11-05T19:26:58Z","tsn":1793906818347883135}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:27:34Z","tsn":1793906854557481474}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR: deploy and restart for its live proofs","ts":"2026-11-05T19:29:04Z","tsn":1793906944837087549}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T19:50:19Z","tsn":1793908219456449708}
