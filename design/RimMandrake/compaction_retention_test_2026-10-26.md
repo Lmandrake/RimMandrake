@@ -86,3 +86,6 @@ See the Part A failure examples (the rail-ladder ruling was lost; the pile NEXT 
 
 ## Filed
 `COMPACTION_RESTORE_OPEN_ITEMS_FROM_LEDGER`, `OWNER_RULINGS_HARDEN_DATES_ON_DISK`, `HELPER_IDS_RESTORE_AFTER_COMPACTION` (all --for BENCH, needs offline).
+
+## Re-probe 2026-11-05 — dates from disk (`OWNER_RULINGS_HARDEN_DATES_ON_DISK`)
+Recommendation 3 is built: `src/RimMandrake/rimflow/owner_rulings.py` prints every `--owner-said` / `--by-card` ledger event with its recorded date, and the project CLAUDE.md Compact Instructions item 3 sends a resumed seat there for dates. Re-probe (scratch `D:\ClaudeWork\scratch\compaction_probe\partC\`): the Part B transcript compacted WITHOUT Compact Instructions (the worst arm, 0/5 dates on 2026-10-26), the probe CLAUDE.md naming the tool over a dated ledger shard; the quiz could run only that command. Result: **5/5 ruling dates and 5/5 quotes verbatim**, while the summary itself dated 0/5. Record: `design/RimMandrake/compaction_retention_reprobe_2026-11-05.json`; bar checked by `src/RimMandrake/rimflow/selftest_owner_rulings.py`.

@@ -386,6 +386,9 @@ quoted:
 1. Every open `NEXT:` pointer, with its item ID (`` `ID` — state; NEXT: <action> ``).
 2. Lessons learned this session that are not yet filed with `lessons.py add`.
 3. Every owner ruling quoted verbatim this session, with its date — his exact words, not ours.
+   A summary keeps his words but rarely their date: after a compaction take every ruling's date
+   from disk (`python3 src/RimMandrake/rimflow/owner_rulings.py --grep <words>`, the ledger's
+   `--owner-said`/`--by-card` events), never from the summary or today's date.
 4. Bridge holds (who holds `infrastructure/state/BRIDGE`, and for what) and the game state.
 5. Running subagents: name/ID, task, and what they write where.
 6. Uncommitted or unpushed paths.
