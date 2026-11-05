@@ -1442,6 +1442,51 @@ def test_tamed_filer_waits_and_retries():
         not __import__("model").mint_problems(n, set()) for n in names), names)
 
 
+def test_disjoint_reopen_is_new_incident():
+    """RELAPSE_OPS_WATCH_FIX_DIED_TWICE: ops_watch-20261104035601 was tamed as a fix that died twice, but its three
+    episodes were three different alarms under the catch-all cause ops_watch (a GAME_HEALTH filing refused by namecheck,
+    dead token-talk flags, a SCRATCH_DIRTY_END filing on a retired item), each fixed and holding. A closed incident
+    reopens only when a metric it held comes back; a disjoint one under the same cause is a new incident."""
+    table = IN.load_table()
+    pol = table["policy"]
+    q = pol["event_quiet_min"] * M
+    rows, cur = [], [0]
+
+    def tick(now, *metrics):
+        rows.extend({"metric": m, "class": "distressed", "at": IN.iso(now), "t": now} for m in metrics)
+        res = IN.step(table, rows, {"t": now, "points": {}, "alarms": {}}, now, cur[0])
+        rows.extend(res["rows"])
+        cur[0] = len(rows)
+        return res
+
+    def episode(t, metric):         # bad, sane at once, closed after event_quiet_min: the instance's three episodes
+        tick(t, metric)
+        tick(t + M)
+        tick(t + M + q + M)
+        return t + M + q + M
+
+    a, b, c = ("ops:file_failed:GAME_HEALTH:tps.health_breaches", "ops:flag:process.share_7d",
+               "ops:file_failed:SCRATCH_DIRTY_END:disk.scratch_dirty_end")
+    t = T0
+    for m in (a, b, c):
+        t = episode(t, m) + H       # each next alarm comes an hour after the last closed, inside relapse_h
+    incs, _ = IN.fold(rows)
+    evs = [r["ev"] for r in rows if "ev" in r]
+    check("disjoint: three different ops_watch alarms, each back inside relapse_h, are three incidents",
+          len(incs) == 3 and sorted(next(iter(x["metrics"])) for x in incs.values()) == sorted((a, b, c)), incs)
+    check("disjoint: no reopened, tamed or structural row: no fix died", not {"reopened", "tamed"} & set(evs)
+          and not any(x.get("tamed") for x in incs.values()), evs)
+    t = episode(t, a)               # control: the FIRST alarm itself comes back, long past relapse_h of its close
+    incs, _ = IN.fold(rows)
+    check("disjoint control: a metric back past relapse_h of its incident's close opens a new incident",
+          len(incs) == 4 and not any(x.get("reopens") for x in incs.values()), incs)
+    tick(t + H, a)                  # and once more, an hour after that incident closed
+    incs, _ = IN.fold(rows)
+    back = [x for x in incs.values() if x.get("reopens")]
+    check("disjoint control: the same metric back inside relapse_h reopens its own incident (the check can fail)",
+          len(incs) == 4 and len(back) == 1 and a in back[0]["metrics"] and back[0]["state"] == "open", incs)
+
+
 def test_replay_recorded():
     n = runs_through_step(RECORDED_REVISITS)
     check("replay: the 27 recorded revisits are 12 runs through step()", n == 12, n)
@@ -1469,7 +1514,8 @@ for t in (test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_a
           test_batched_run_held_and_covers_slot, test_denied_goes_to_conductor_first, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes, test_spend_alarms_do_not_buy_runs,
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
           test_escalation_clear_through_step, test_chains_through_step, test_each_field_of_a_reading, test_signal_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
-          test_incidents_verb_says_the_news, test_replay_recorded, test_relapse_tamed, test_tamed_filer_waits_and_retries):
+          test_incidents_verb_says_the_news, test_replay_recorded, test_relapse_tamed, test_tamed_filer_waits_and_retries,
+          test_disjoint_reopen_is_new_incident):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)

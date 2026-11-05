@@ -7,7 +7,8 @@ Rows are deltas so an ack written from any clone between a tick's read and its w
 
 The Dispatcher tick runs step() in decide (pure) and execute() in its execute pass (the only writer of rings):
   * a distressed or emergency reading, an OPEN ops alarm, or a signal joins the open incident of its cause, else
-    reopens a same-cause incident closed inside relapse_h, else opens one. One cause, one ring, one run.
+    reopens the same-cause incident closed inside relapse_h that held one of its metrics (relapse_of), else opens one.
+    One cause, one ring, one run.
   * an ACK is `rimflow ack <id> --plan` or the reader's action on the named item. It gives ownership and sets recover_by.
     A ring, a read or a consumed doorbell writes no ack row and cannot make one.
   * past the rung's ack time, or past recover_by acked or not, the incident moves up the chain: the route's reader,
@@ -280,6 +281,16 @@ def revisit_news(inc, reads, fresh, rows, out, now, pol, events=None, status_t=N
     return news
 
 
+def relapse_of(incs, cause, metrics, now, relapse_h):
+    """The closed incident of this cause that `metrics` reopen: the newest one closed inside relapse_h that held one of
+    them. A cause is a routing family (every ops:* alarm is ops_watch), so a different metric under it is a new problem,
+    not that incident's fix dying (RELAPSE_OPS_WATCH_FIX_DIED_TWICE: three unrelated, each-fixed ops_watch alarms were
+    joined into one incident and tamed as two relapses)."""
+    hits = [x for x in incs.values() if x.get("cause") == cause and x.get("state") == "closed"
+            and now - (x.get("closed_t") or 0) <= relapse_h * 3600 and set(x.get("metrics") or ()) & set(metrics)]
+    return max(hits, key=lambda x: x.get("closed_t") or 0) if hits else None
+
+
 def relapse_rows(rows, ids, now, window_h):
     """The relapses of these incident ids inside the window: `reopened` rows, nothing else (joins, dips, acks are not)."""
     return [r for r in rows if r.get("ev") == "reopened" and r.get("id") in ids and r.get("t", 0) > now - window_h * 3600]
@@ -404,8 +415,10 @@ def step(table, rows, status, now, cursor=0, events=None):
                       plan=None, sane_since=None, closed_t=None, items=sorted(set(g["items"])), **{"class": g["class"]})
         if g["reader"] == "owner":
             fields.update(rung=OWNER_RUNG)
-        if inc and now - (inc.get("closed_t") or 0) <= pol["relapse_h"] * 3600:
-            ids = {x["id"] for x in incs.values() if x.get("cause") == cause}
+        inc = relapse_of(incs, cause, g["metrics"], now, pol["relapse_h"])
+        if inc:
+            ids = {x["id"] for x in incs.values() if x.get("cause") == cause      # the same problem: one of its metrics
+                   and set(x.get("metrics") or ()) & set(g["metrics"])}
             win = pol.get("tame_window_h", 24)
             n = len(relapse_rows(rows, ids, now, win)) + 1          # + this one
             tame = n >= pol.get("tame_relapses", 2)
