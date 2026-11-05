@@ -942,6 +942,8 @@ def _env(store, fx, r, item, rows, since, now, acts):
     for v in rows.values():
         if row_at(v) < since:   # read before this staging: the staged game has not answered yet (Codex r5 game1 #2)
             continue
+        if v.get("outcome") == "UNMEASURED" and v.get("harness"):
+            continue    # relentless_live's harness row (INFRA streak or box fault) is _harness's restage, never a route
         e = relentless_envcause.classify(v, item, needs)
         if e:
             e["at"], e["decided"] = row_at(v), (relentless_live_round.decides(v)
