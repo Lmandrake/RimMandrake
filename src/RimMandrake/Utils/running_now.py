@@ -39,6 +39,7 @@ import socket
 import statistics
 import subprocess
 import sys
+import textwrap
 import time
 from html import escape as hesc
 from xml.sax.saxutils import escape
@@ -116,6 +117,8 @@ LAST_CLOSE = (3 * 3600, "<3h")
 NAMES_IN_CARD = 9
 NEXT_SHOWN, LATEST_SHOWN = 4, 3     # queued and done are too long to list whole: the next few, the latest few, a count of the rest
 QUEUE_NEXT_MAX_AGE = 1800           # the tick runs every 2 min and is allowed 20: older than this and the order is old news
+SET_ASIDE_BOXES = ("held", "blocked")   # named on the page, not only counted: the owner asked where his expensive items went
+SET_ASIDE_SHOWN, REASON_CHARS = 9, 56   # rows a box lists before "+ K more"; characters of reason per line (two lines)
 NAME_LINE, NAME_GAP = 13, 3         # a name's lines sit close, with a gap before the next name
 CARD_CHARS, BAND_CHARS, BAND_COLS, MONO_CHAR = 21, 51, 3, 6.3     # MONO_CHAR: px per character of the mono face at 10.5
 # A rough normal for a number with no measured baseline yet, read off the records on 2026-11-03. A measured range replaces it as the record grows.
@@ -267,6 +270,24 @@ class Env:
                     if d.get("event") == "file" and d.get("id") in wanted and isinstance(d.get("title"), str):
                         got[d["id"]] = d["title"]
         return got
+
+    def ledger_blocks(self, wanted):
+        """Item -> (on, reason) of its newest `block` event in the ledger: what a blocked item waits on."""
+        got = {}
+        for p in glob.glob(LEDGER_EVENTS + "/*.jsonl"):
+            with open(p, errors="replace") as f:
+                for line in f:
+                    if '"block"' not in line:
+                        continue
+                    try:
+                        d = json.loads(line)
+                    except ValueError:
+                        continue
+                    if d.get("event") == "block" and d.get("id") in wanted:
+                        t = int(d.get("tsn") or 0)
+                        if t >= got.get(d["id"], (0,))[0]:
+                            got[d["id"]] = (t, d.get("on"), d.get("reason"))
+        return {i: v[1:] for i, v in got.items()}
 
     def steve_probe(self):
         r = subprocess.run(["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=6", STEVE_SSH, "bash -s"], input=STEVE_SCRIPT,
@@ -1233,11 +1254,48 @@ def age_head(t, now):
     return ago(now - t).replace(" ", "") + " " if t else ""
 
 
+def set_aside_rows(it, stage):
+    """The held or blocked items' states, most expensive first (weighted tokens spent), then longest in the state."""
+    return sorted(it["by_status"][stage], key=lambda v: (-(v.get("spent") or 0), stage_since(v) or float("inf"), v.get("item") or ""))
+
+
+def set_aside_reason(st, stage, blocks):
+    """A short plain reason: the hold's kind and why, or what the item is blocked on. Never blank: an unread reason says so."""
+    if stage == "held":
+        h = st.get("hold") or {}
+        return "%s: %s" % (h.get("kind") or "held", re.sub(r"\s+", " ", str(h.get("why") or "no reason recorded")))
+    on_reason = (blocks or {}).get(st.get("item"))
+    w = st.get("wait") or {}
+    bp = st.get("block_pending") or {}
+    bits = []
+    if on_reason and on_reason[0]:
+        bits.append("waits on %s" % on_reason[0])
+    elif bp.get("on"):
+        bits.append("waits on %s" % ", ".join(bp["on"]))
+    why = (on_reason[1] if on_reason else None) or w.get("detail") or bp.get("detail") or (w.get("class") and "wait " + str(w["class"]))
+    if why:
+        bits.append(re.sub(r"^relentless snag \S+?: ", "", re.sub(r"\s+", " ", str(why))))
+    return ": ".join(bits) if bits else "reason UNMEASURED (no block event, wait or pending block on the item)"
+
+
+def reason_lines(reason):
+    """At most two lines of the reason, cut with an ellipsis; the whole of it is on the row's hover."""
+    ls = textwrap.wrap(re.sub(r"\s+", " ", reason), REASON_CHARS)
+    if len(ls) > 2:
+        ls = [ls[0], (ls[1] + " ")[:REASON_CHARS - 1].rstrip() + "…"]
+    return ls or [""]
+
+
 def stage_lists(p):
     """What each belt card lists: {stage: [("note", words) | ("name", age, item), ...]}. A name is never shortened here or later."""
     now, it, thr = p["now"], p["items"], p["throughput"]
-    out = {k: [] for k in BELT}
+    out = {k: [] for k in BELT + SET_ASIDE_BOXES}
     if it:
+        for k in SET_ASIDE_BOXES:
+            rows = set_aside_rows(it, k)
+            out[k] = [("name", age_head(stage_since(r), now), r.get("item") or "", set_aside_reason(r, k, p.get("blocks"))) for r in rows[:SET_ASIDE_SHOWN]]
+            if len(rows) > SET_ASIDE_SHOWN:
+                out[k].append(("note", "+ %d more" % (len(rows) - SET_ASIDE_SHOWN)))
         for k in ("running", "candidate", "checking", "closing"):
             rows = sorted(it["by_status"][k], key=lambda v: (stage_since(v) or now, v.get("item") or ""))
             out[k] = [("name", age_head(stage_since(r), now), r.get("item") or "") for r in rows]
@@ -1271,7 +1329,9 @@ def stage_lists(p):
 
 def row_lines(e, width):
     """Lines one entry takes: a note its words; a name its words plus the passes-and-tokens line under it."""
-    return len(wrap_name(e[1], width, 2)) if e[0] == "note" else len(wrap_name(e[1] + e[2], width, 2)) + 1
+    if e[0] == "note":
+        return len(wrap_name(e[1], width, 2))
+    return len(wrap_name(e[1] + e[2], width, 2)) + 1 + (len(reason_lines(e[3])) if len(e) > 3 else 0)
 
 
 def item_row(s, x, yy, e, width, title, marks):
@@ -1282,12 +1342,13 @@ def item_row(s, x, yy, e, width, title, marks):
     n = len(wrap_name(e[1] + e[2], width, 2))
     col = BAND_COLOUR[m["band"]] if m else FAINT
     more = (m["why"] + m["flash"] + m.get("unread", [])) if m else []
-    hover = title(e[2]) + ("; " + ", ".join(more) if more else "")
+    hover = title(e[2]) + ("; " + ", ".join(more) if more else "") + ("; " + e[3] if len(e) > 3 else "")
+    rl = reason_lines(e[3]) if len(e) > 3 else []
     s.parts.append('<g data-item="%s"><title>%s</title>' % (escape(e[2]), escape(str(hover))))   # a name row, not an instrument note
     flash = bool(m and m["flash"])
     if flash:
         s.parts.append("<g>" + FLASH_SMIL)
-    s.rect(x - 7, yy - 10, 3, NAME_LINE * (n + 1) - 2, col, None, 1)
+    s.rect(x - 7, yy - 10, 3, NAME_LINE * (n + 1 + len(rl)) - 2, col, None, 1)
     if flash:
         s.reading_close()
     for j, ln in enumerate(wrap_name(e[1] + e[2], width, 2)):
@@ -1298,6 +1359,9 @@ def item_row(s, x, yy, e, width, title, marks):
     s.text(x + 2 * MONO_CHAR, yy - 1, clip(mark_words(m, bool(e[1].strip())), int(width * 1.3)), 9, col, "700" if flash else None)
     if flash:
         s.reading_close()
+    for ln in rl:       # held or blocked: why, in plain words, under the numbers
+        yy += NAME_LINE
+        s.text(x + 2 * MONO_CHAR, yy - 1, ln, 9, DIM)
     s.reading_close()
     return yy + NAME_LINE
 
@@ -1355,7 +1419,13 @@ def pipeline_svg(p):
     lists = stage_lists(p)
     # the cards grow to the longest list, and every band adds its own height: all the layout below hangs off these two
     ch = max([170] + [112 + entries_height(card_entries(lists, k)) + 6 for k in BELT])
-    bands = [(k, *band_columns(lists[k])) for k in banded(lists)]
+    bands = [(k, *band_columns(lists[k]), "%s: ALL %d, LONGEST THERE FIRST" % (k.upper(), len(lists[k]))) for k in banded(lists)]
+    for k in SET_ASIDE_BOXES:       # held and blocked always have a box: empty says so
+        n_all = it["counts"][k] if it else None
+        rows = lists[k] or [("note", "none" if n_all == 0 else "UNMEASURED")]
+        head = "%s: %s, MOST EXPENSIVE FIRST (tokens), with the reason" % (k.upper(), "UNMEASURED" if n_all is None else n_all)
+        bands.append((k, *band_columns(rows), head))
+        lists = dict(lists, **{k: rows})
     W, H = 1040, 610 + (ch - 170) + sum(b[2] + 8 for b in bands)
     s = Svg(W, H, "Relentless Pipeline: stage counts, places, tick, breaker, trends, last 24 hours")
     # ---- header gauges
@@ -1502,14 +1572,20 @@ def pipeline_svg(p):
         s.reading_close()
     # ---- a stage too long for its card names everything here, whole, on a single line where it fits
     by = sy + sh + 12
-    for name, cols, band_h in bands:
+    for name, cols, band_h, head in bands:
         s.rect(x0, by, W - 2 * x0, band_h, CARD, EDGE, 6)
         s.reading_open("NAMES " + name.upper())
-        s.text(x0 + 10, by + 15, "%s: ALL %d, LONGEST THERE FIRST" % (name.upper(), len(lists[name])), 10.5, DIM, "700")
+        s.text(x0 + 10, by + 15, head, 10.5, DIM, "700")
         for c, col in enumerate(cols):
             cx_, yy = x0 + 10 + c * (W - 2 * x0 - 20) / BAND_COLS, by + 30
             for e in col:
-                yy = item_row(s, cx_, yy, e, BAND_CHARS, title, marks)
+                if e[0] == "note":
+                    for ln in wrap_name(e[1], BAND_CHARS, 2):
+                        s.text(cx_, yy, ln, 10.5, DIM, font=MONO)
+                        yy += NAME_LINE
+                    yy += NAME_GAP
+                else:
+                    yy = item_row(s, cx_, yy, e, BAND_CHARS, title, marks)
         s.reading_close()
         by += band_h + 8
     # ---- throughput: common zero baseline, direct labels
@@ -1599,6 +1675,16 @@ def pipeline_text(p):
                 out += fence_wrap("%s: %s" % (("FLASH " + m["band"]) if m and m["flash"] else (m["band"] if m else "band UNMEASURED"), mark_words(m, bool(e[1].strip()))), "  │       ", "  │         ")
         if i < len(BELT) - 1:
             out.append("  │" + ("  a Judge's FAIL returns to queued: %s in 24 h" % thr["blind_fail"] if name == "checking" and thr else ""))
+    for k in SET_ASIDE_BOXES:   # held and blocked by name, most expensive first, each with its reason
+        out.append("%s %d, most expensive first:" % (k.upper(), c[k]))
+        for e in lists[k]:
+            if e[0] == "note":
+                out += fence_wrap(e[1], "  │   ", "  │     ")
+                continue
+            m = (p.get("marks") or {}).get(e[2])
+            out += fence_wrap(e[1] + e[2], "  │   ", "  │     ")
+            out += fence_wrap("%s: %s" % (m["band"] if m else "band UNMEASURED", mark_words(m, bool(e[1].strip()))), "  │       ", "  │         ")
+            out += fence_wrap(" ".join(reason_lines(e[3])), "  │       ", "  │         ")
     gi = p.get("game_idle")
     out.append(game_idle_text(gi) if gi else "GAME idle UNMEASURED (%s)" % p.get("game_idle_why"))
     if thr:
@@ -1688,8 +1774,9 @@ def mark_words(m, age_shown=True):
 def row_items(p):
     """Every item the page names in a row: the belt lists (cards and bands) and the phone list share it."""
     out = []
-    for k in BELT:
-        out += [e[2] for e in stage_lists(p)[k] if e[0] == "name" and e[2] not in out]
+    lists = stage_lists(p)
+    for k in BELT + SET_ASIDE_BOXES:
+        out += [e[2] for e in lists.get(k, []) if e[0] == "name" and e[2] not in out]
     return out
 
 
@@ -2493,13 +2580,13 @@ def phone_rows(p):
         return ["", "ITEMS: passes, tokens and bands UNMEASURED (%s)" % p.get("marks_why")]
     out = ["", "ITEMS (%s smooth, %s a bounce or long or large, %s worse, %s cycler or stuck)" % (BAND_EMOJI["cool"], BAND_EMOJI["warm"], BAND_EMOJI["hot"], FLASH_EMOJI)]
     lists = stage_lists(p)
-    for k in BELT:
-        for e in lists[k]:
+    for k in BELT + SET_ASIDE_BOXES:
+        for e in lists.get(k, []):
             if e[0] != "name":
                 continue
             m = marks.get(e[2])
             em = FLASH_EMOJI if m and m["flash"] else (BAND_EMOJI[m["band"]] if m else "?")
-            out.append("- %s %s %s%s: %s" % (em, k, e[1], e[2], mark_words(m, bool(e[1].strip()))))
+            out.append("- %s %s %s%s: %s%s" % (em, k, e[1], e[2], mark_words(m, bool(e[1].strip())), "; " + clip(e[3], 90) if len(e) > 3 else ""))
     return out + [""]      # a blank line ends the list: the next line would join the last item
 
 
@@ -2800,6 +2887,12 @@ def gather(env, state, hist=(), write=True):
     if p["game_idle_why"]:
         p["unmeasured"].append("game idle share (%s)" % p["game_idle_why"])
 
+    p["blocks"] = None      # what each shown blocked item waits on, from the ledger's block events
+    if p["items"]:
+        shown = [s.get("item") for s in set_aside_rows(p["items"], "blocked")[:SET_ASIDE_SHOWN]]
+        p["blocks"], bw = guarded(env.ledger_blocks, set(shown))
+        if bw:
+            p["unmeasured"].append("what blocked items wait on (%s)" % bw)
     p["marks"], p["marks_why"] = guarded(collect_marks, env, p)
     if p["marks_why"]:
         p["unmeasured"].append("row passes, tokens and bands (%s)" % p["marks_why"])
@@ -2810,6 +2903,9 @@ def gather(env, state, hist=(), write=True):
     if it:
         for k in ("running", "checking", "candidate", "closing"):
             want.update(s.get("item") for s in it["by_status"][k])
+    if it:
+        for k in SET_ASIDE_BOXES:
+            want.update(s.get("item") for s in set_aside_rows(it, k)[:SET_ASIDE_SHOWN])
     if p["queue_next"]:
         want.update(p["queue_next"]["free"][:NEXT_SHOWN] + p["queue_next"]["waiting"][:NEXT_SHOWN])
     if p["throughput"]:
@@ -2851,7 +2947,7 @@ def build(env, state, hist, write=True):
                      "AHEAD: burning faster than what is left can last, so it runs out early. EQUAL: about right, within 15% or within what whole-percent readings can tell apart. BEHIND: burning slower, so some goes unused. "
                      "A reading older than 45 minutes, or one that cannot be read, says UNMEASURED."), "",
          panel("Relentless Pipeline", pipeline_svg),
-         how_to_read("Items move left to right; a card names its items whole, longest there first (hover a name for its plain words), and a stage too long for its card names them in a band below; queued shows the next few in the tick's order, done the latest few, each with a count of the rest. each worker is a Relentless-style Builder or Judge (MandrakeWorkflows), so workers can be swapped while the pipeline stays. "
+         how_to_read("Items move left to right; a card names its items whole, longest there first (hover a name for its plain words), and a stage too long for its card names them in a band below; HELD and BLOCKED each have a box under the set-aside row: every row shows time in that state, passes, tokens (coloured like any row, so a costly one reads hot) and a plain reason (the hold's kind and why, or what it waits on); most expensive first (tokens spent), then longest waiting; the top 9 with a count of the rest; queued shows the next few in the tick's order, done the latest few, each with a count of the rest. each worker is a Relentless-style Builder or Judge (MandrakeWorkflows), so workers can be swapped while the pipeline stays. "
                      "Under each name: passes through the pipeline (1 + times sent back) and weighted tokens spent so far; a number shown is measured, an unread one says UNMEASURED. "
                      "The stripe and that line are coloured by the worst of time in place, passes and tokens: blue is smooth; amber is one bounce, a somewhat long time or a large spend; red is two or more bounces, a very large spend or a very long time "
                      "(numbers in ops_watch_rules.json item_bands, initial guesses). A row that FLASHES, its reason in capitals, is an identified cycler (CIRCLING, CHURN) or a stuck process (NO PROCESS, SILENT). "

@@ -135,6 +135,9 @@ class Fake(R.Env):
     def ledger_titles(self, wanted):
         return {}
 
+    def ledger_blocks(self, wanted):
+        return getattr(self, "blocks", {})
+
     def steve_probe(self):
         self.calls.append(("ssh", os.path.exists(R.OUT) and "updated_epoch=%d" % int(self.clock) in open(R.OUT).read()))
         if "ssh" in self.fail:
@@ -628,7 +631,7 @@ EXPECTED = {
     "SteveDesktop": {"STATE", "ROUTES", "UPTIME", "LOAD", "WSL RAM USED", "CPU", "DISK FREE", "GPU", "GAME", "RUNNING", "QUEUED", "DONE 24 H", "FAILED 24 H", "LAST JOB", "ROWS/HOUR 24 H",
                      "STEWARD WROTE", "MACHINE READING"} | LIVE_TILES,
 }
-NAME_BANDS = {"NAMES " + x.upper() for x in ("running", "candidate", "checking", "closing")}
+NAME_BANDS = {"NAMES " + x.upper() for x in ("running", "candidate", "checking", "closing", "held", "blocked")}
 NOT_A_NUMBER = {"FALSIFIED EXPECTATIONS"} | NAME_BANDS      # nothing records the first, and a band holds names: nothing to judge in either
 # a digit outside any reading is a naked number, unless it only names a window or a stage of the axis
 FRAME = re.compile(r"^(48 h ago|LIVE TESTING, LAST 24 H|LAST 24 H, EVENTS \(SEVERAL PER ITEM\)|TRENDS, 48 H, TWO-HOUR POINTS)$")
@@ -930,8 +933,49 @@ def names_problems():
     return bad
 
 
+def set_aside_problems():
+    """The owner's ask 2026-11-04: held and blocked items named in boxes of their own, most expensive first, each with its reason."""
+    bad = []
+    env, hist = names_env()
+    items = [x for x in env.items if x["status"] not in ("held", "blocked")]
+    for i in range(12):     # held: spend rises with i; the dearest is the one he could not find
+        items.append({"item": "HELD_%02d_%s" % (i, LONG), "status": "held", "spent": 1_000_000 * (i + 1), "returns": 0,
+                      "hold": {"at": NOW - 3600 * (i + 1), "kind": "owner_call", "why": "REASON_%02d wants his yes" % i}})
+    items.append({"item": "BLOCKED_ON_PRED", "status": "blocked", "spent": 500, "blocked_at": NOW - 7200})
+    items.append({"item": "BLOCKED_NO_WHY", "status": "blocked", "spent": 100, "blocked_at": NOW - 60})
+    env.items = items
+    env.blocks = {"BLOCKED_ON_PRED": ("THE_PREDECESSOR_ITEM", "relentless snag gate_unmet: the remake is not done")}
+    page = R.build(env, {}, hist)[0]
+    rs = readings_of(panels_of(page)["Relentless"])
+    body = lambda label: joined(rs[label][1]) if label in rs else ""  # noqa: E731
+    h, b = body("NAMES HELD"), body("NAMES BLOCKED")
+    if not h or not b:
+        return ["held or blocked has no box of its own: %s" % sorted(rs)]
+    at = [h.find("HELD_%02d_%s" % (i, LONG)) for i in (11, 10, 3)]
+    if -1 in at or at != sorted(at):
+        bad.append("held is not listed most expensive first: %s" % at)
+    if "HELD_02_" in h or "+3more" not in h or "HELD:12" not in h:
+        bad.append("held does not stop at nine with a count of the rest")
+    if "owner_call:REASON_11" not in h or "12h" not in h.replace("12.0h", "12h"):
+        bad.append("a held row lacks its reason or its time in state: %s" % h[:200])
+    if not {"HELD_11_" + LONG, "BLOCKED_ON_PRED"} <= set(R.row_items(R.gather(env, {}, hist, False))):
+        bad.append("held and blocked names do not get a mark (pass count and tokens)")
+    if "waitsonTHE_PREDECESSOR_ITEM" not in b or "theremakeisnotdone" not in b:
+        bad.append("a blocked row does not say what it waits on and why: %s" % b[:200])
+    if "reasonUNMEASURED" not in b or b.find("BLOCKED_ON_PRED") > b.find("BLOCKED_NO_WHY"):
+        bad.append("a blocked row with no reason is not marked UNMEASURED, or the blocked order is not by cost")
+    envn, histn = fixture_env()
+    envn.items = [x for x in envn.items if x["status"] not in ("held", "blocked")]
+    rsn = readings_of(panels_of(R.build(envn, {}, histn)[0])["Relentless"])
+    if "none" not in joined(rsn["NAMES HELD"][1]) or "HELD:0" not in joined(rsn["NAMES HELD"][1]):
+        bad.append("an empty held box does not say none")
+    if "HELD and BLOCKED" not in page or "most expensive first" not in page:
+        bad.append("How to read does not explain the held and blocked boxes")
+    return bad
+
+
 def page_problems():
-    bad = names_problems()
+    bad = names_problems() + set_aside_problems()
     for extreme in (False, True):
         env, hist = fixture_env(extreme)
         bad += ["%s: %s" % ("extreme" if extreme else "normal", x) for x in panel_problems(R.build(env, {}, hist)[0])]
