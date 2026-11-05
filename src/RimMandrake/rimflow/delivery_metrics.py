@@ -10,10 +10,13 @@ is reported up). The unit is the ITEM: the store keeps no per-obligation record,
 
 False closes are audited in two populations, never pooled: `random` (a seeded draw over every close, for an overall
 estimate) and `narrow_weak` (targeted: every close whose deciding verdict was a WEAK the live narrow rule read as PASS,
-relentless_wall.acted_weak, live since 2026-11-04T07:02Z, ede0dff499). Both are stratified by closure age at audit.
+relentless_wall.acted_weak, live since 2026-11-04T07:02Z, ede0dff499; and, before that rule existed, every ledger close
+the Marker granted as a conditional pass because only a GAP:OTHER proof gap remained, e.g. the 14 of 2026-11-03: those
+items are `retired` in the store, so only the ledger shows them as closes). Both are stratified by closure age at audit.
 
     python3 src/RimMandrake/rimflow/delivery_metrics.py [report] [--json]
     python3 src/RimMandrake/rimflow/delivery_metrics.py sample --random 8 --seed 20261104
+    python3 src/RimMandrake/rimflow/delivery_metrics.py sample --into S20261104     # targeted closes the sample missed
     python3 src/RimMandrake/rimflow/delivery_metrics.py audit <SAMPLE> <ITEM> HOLDS|VIOLATED|UNMEASURED --by WHO \
         --how "what the auditor ran or read" --evidence "what it showed"
 """
@@ -36,6 +39,7 @@ from rimflow import relentless_trust, relentless_wall          # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 AUDITS = os.path.join(REPO, "infrastructure", "state", "close_audits.jsonl")
+LEDGER = os.path.join(REPO, "infrastructure", "state", "ledger", "events")
 STORE = os.path.join(os.environ.get("RELENTLESS_ROOT") or "/home/mandrake/rm/relentless", "store")
 UNMEASURED = "UNMEASURED"
 
@@ -85,10 +89,32 @@ def _jsonl(path, bad=None):
 
 # ---------------------------------------------------------------- the snapshot (the only reader of the store)
 
-def load(store=STORE):
+# A Marker conditional pass (owner card 2026-10-25, "weak issues after multiple fix rounds produce a conditional pass"):
+# the close's why says the Marker found every clause done and only a GAP:OTHER proof gap remained.
+_CONDITIONAL = re.compile(r"(?is)only a GAP:OTHER proof gap remains.*conditional pass")
+
+
+def ledger_conditional(ledger=LEDGER):
+    """-> {item: {"closed_at", "sha", "why"}} for the latest ledger close of each item that is a Marker conditional pass
+    on a GAP:OTHER gap; None when the ledger directory is missing (not zero closes)."""
+    if not os.path.isdir(ledger):
+        return None
+    last = {}
+    for p in sorted(glob.glob(os.path.join(ledger, "*.jsonl"))):
+        for e in _jsonl(p):
+            if e.get("event") in ("close", "reopen") and e.get("id"):
+                if e.get("ts", "") >= last.get(e["id"], {}).get("ts", ""):
+                    last[e["id"]] = e
+    return {i: {"closed_at": ep(e["ts"]), "sha": e.get("sha"), "why": "%s | %s" % (e.get("reason") or "", e.get("why") or "")}
+            for i, e in last.items()
+            if e["event"] == "close" and _CONDITIONAL.search("%s %s" % (e.get("why") or "", e.get("reason") or ""))}
+
+
+def load(store=STORE, ledger=LEDGER):
     """-> the snapshot compute() reads. Missing parts are None, so compute can say UNMEASURED and why."""
     snap = {"store": store, "enrols": None, "states": None, "attempts": None, "spend": None, "basis": None,
-            "shadow": None, "acts": None, "unreadable": [], "no_attempts": [], "malformed": {}}
+            "shadow": None, "acts": None, "unreadable": [], "no_attempts": [], "malformed": {},
+            "ledger": ledger_conditional(ledger)}
     if not os.path.isdir(store):
         return snap
     jp = os.path.join(store, "journal.jsonl")
@@ -175,10 +201,23 @@ def closes(states):
     return out
 
 
-def narrow_weak(states):
-    """Closes whose deciding verdict was a WEAK the live rule read as PASS (relentless_wall.acted_weak)."""
-    return sorted(i for i, (_, w, why) in closes(states).items()
-                  if w == "WEAK" and relentless_wall.acted_weak(w, why) == "PASS")
+def narrow_weak(states, ledger=None):
+    """Closes whose deciding verdict was a WEAK the live rule read as PASS (relentless_wall.acted_weak), plus every ledger
+    close that was a Marker conditional pass on a GAP:OTHER gap (ledger_conditional): the store marks those `retired`."""
+    store = {i for i, (_, w, why) in closes(states).items() if w == "WEAK" and relentless_wall.acted_weak(w, why) == "PASS"}
+    return sorted(store | set(ledger or {}))
+
+
+def targeted_row(snap, cl, i):
+    """-> (closed_at epoch, sha, verdict, reasons) for a targeted close: from the store when the store accepted it,
+    else from its ledger conditional-pass close (verdict and reasons still from the store's last check when it has one)."""
+    st = (snap["states"] or {}).get(i) or {}
+    ch = st.get("check") or {}
+    if i in cl:
+        return cl[i][0], st.get("last_sha"), cl[i][1], cl[i][2]
+    lg = snap["ledger"][i]
+    return (lg["closed_at"], st.get("last_sha") or lg["sha"], ch.get("verdict") or "WEAK",
+            (ch.get("reasons") or "") + " || ledger close: " + lg["why"])
 
 
 def _units(spend, item):
@@ -460,29 +499,45 @@ def compute(snap, audits, sens=None, now=None):
 
 # ---------------------------------------------------------------- the audit record (sample, audit)
 
-def draw(snap, audits, n_random, seed, now, name=None):
+def draw(snap, audits, n_random, seed, now, name=None, into=None):
     """-> rows for a new sample: every narrow-WEAK close no earlier sample targeted, and a seeded draw of n_random over every close
-    (random; a narrow-WEAK close may land in both, it is counted in each population on its own)."""
+    (random; a narrow-WEAK close may land in both, it is counted in each population on its own). With `into`, only the targeted
+    rows an existing sample missed are added to it (no random draw), and only those closed before the sample was first drawn: how a
+    targeted close found late joins the sample it belongs in."""
     if snap["states"] is None:
         raise SystemExit("UNMEASURED: no item states in %s" % snap["store"])
-    name = name or "S" + iso(now)[:10].replace("-", "")
-    if any(r["sample"] == name for r in audits):
-        raise SystemExit("sample %s exists; name another (--name)" % name)
+    if snap.get("ledger") is None:
+        raise SystemExit("UNMEASURED: no ledger at %s; the targeted population would miss its conditional passes" % LEDGER)
+    cutoff = None
+    if into:
+        if not any(r["kind"] == "draw" and r["sample"] == into for r in audits):
+            raise SystemExit("sample %s does not exist" % into)
+        name, n_random = into, 0
+        seed = next(r.get("seed") for r in audits if r["kind"] == "draw" and r["sample"] == into)
+        cutoff = ep(min(r["at"] for r in audits if r["kind"] == "draw" and r["sample"] == into))
+    else:
+        name = name or "S" + iso(now)[:10].replace("-", "")
+        if any(r["sample"] == name for r in audits):
+            raise SystemExit("sample %s exists; name another (--name), or --into it" % name)
     cl = closes(snap["states"])
-    pool = sorted(cl)
+    pool = sorted(set(cl) | set(snap["ledger"]))          # every close: a store acceptance or a ledger conditional pass
     picks = random.Random(seed).sample(pool, min(n_random, len(pool)))
     pool_sha = hashlib.sha1("\n".join(pool).encode()).hexdigest()     # the draw is reproducible from seed + this pool
     rows = []
     done_before = {r["item"] for r in audits if r["kind"] == "draw" and r["stratum"] == "narrow_weak"}
-    targeted = [i for i in narrow_weak(snap["states"]) if i not in done_before]     # a targeted close is audited once
+    targeted = [i for i in narrow_weak(snap["states"], snap["ledger"]) if i not in done_before]     # audited once
+    if cutoff is not None:      # --into: only closes the sample's draw already postdated; later ones wait for a later sample
+        targeted = [i for i in targeted if (targeted_row(snap, cl, i)[0] or cutoff + 1) <= cutoff]
     for stratum, items in (("narrow_weak", targeted), ("random", sorted(picks))):
         for i in items:
-            st = snap["states"][i]
+            st = snap["states"].get(i) or {}
             c = st.get("contract") or {}
+            at, sha, verdict, reasons = targeted_row(snap, cl, i)
             rows.append({"kind": "draw", "sample": name, "stratum": stratum, "item": i, "at": iso(now), "seed": seed,
-                         "population": len(pool), "population_sha1": pool_sha, "closed_at": iso(cl[i][0]) if cl[i][0] else None,
-                         "sha": st.get("last_sha"), "verdict": cl[i][1], "proof": (c.get("proof") or "")[:600],
-                         "reasons": cl[i][2][:300] if stratum == "narrow_weak" else None})
+                         "population": len(pool), "population_sha1": pool_sha, "closed_at": iso(at) if at else None,
+                         "sha": sha, "verdict": verdict, "proof": (c.get("proof") or "")[:600],
+                         "source": "store" if i in cl else "ledger",
+                         "reasons": reasons[:600] if stratum == "narrow_weak" else None})
     return rows
 
 
@@ -574,8 +629,9 @@ def main(argv=None):
     r.add_argument("--json", action="store_true")
     s = sub.add_parser("sample")
     s.add_argument("--random", type=int, default=8)
-    s.add_argument("--seed", type=int, required=True)
+    s.add_argument("--seed", type=int)
     s.add_argument("--name")
+    s.add_argument("--into", help="add the targeted closes this existing sample missed (no random draw)")
     a = sub.add_parser("audit")
     a.add_argument("sample")
     a.add_argument("item")
@@ -597,7 +653,9 @@ def main(argv=None):
         if args.cmd in ("sample", "audit"):
             return 2
     if args.cmd == "sample":
-        rows = draw(load(args.store), audits, args.random, args.seed, now, args.name)
+        if args.seed is None and not args.into:
+            raise SystemExit("--seed is required for a new sample")
+        rows = draw(load(args.store), audits, args.random, args.seed, now, args.name, args.into)
         append(rows, args.audits)
         for x in rows:
             print(x["sample"], x["stratum"], x["item"])

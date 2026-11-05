@@ -4,7 +4,8 @@
 Item CLOSE_AUDIT_MEASURE_FALSE_CLOSES_HONESTLY. Part 1 plants a store whose every metric has a known answer and checks
 each one; an empty store must print UNMEASURED for every store-fed metric, never 0. Part 2 reads the committed
 infrastructure/state/close_audits.jsonl: its first sample holds a targeted narrow_weak stratum beside a random one, and
-every drawn row is audited by a named auditor with a method and evidence.
+every drawn row is audited by a named auditor with a method and evidence; its targeted stratum holds every 2026-11-03
+narrow-WEAK close the ledger records (a Marker conditional pass on a GAP:OTHER gap).
 
     python3 src/RimMandrake/rimflow/selftest_delivery_metrics.py
 """
@@ -43,7 +44,7 @@ def plant(root):
               "contract": {"proof": "python3 a.py"}},
         "B": {"status": "done", "done_at": done, "check": {"verdict": "WEAK", "reasons": "GAP:OTHER. mutant elsewhere"},
               "last_sha": "b" * 40, "contract": {"proof": "python3 b.py"}},
-        "C": {"status": "closing", "done_at": done, "check": {"verdict": "WEAK", "reasons": "GAP:DIFF. own hunk"}},
+        "C": {"status": "closing", "done_at": done, "check": {"verdict": "WEAK", "reasons": "GAP:DIFF. own hunk STRONG: rerun on the own hunk LETS THROUGH: the gain never fires"}},
         "D": {"status": "closing", "done_at": done, "check": {"verdict": "WEAK", "reasons": "no tag"}},
         "E": {"status": "blocked"}, "F": {"status": "retired"}, "G": {"status": "queued"}, "H": {"status": "held"},
     }
@@ -80,6 +81,19 @@ def plant(root):
     with open(os.path.join(s, "shadow.jsonl"), "w") as f:
         for w in ("PASS", "WEAK", "FAIL", "UNMEASURED"):
             f.write(json.dumps({"word": w, "shadow": w, "item": "A", "at": done}) + "\n")
+    # the ledger: F was a Marker conditional pass (retired in the store, closed in the ledger); G was one, then reopened;
+    # A closed plainly; H's why names GAP:OTHER without the conditional pass
+    led = os.path.join(root, "ledger")
+    os.makedirs(led)
+    cond = "the Marker's own runs found every clause done, only a GAP:OTHER proof gap remains. Conditional pass under the card"
+    ev = [{"event": "close", "id": "F", "ts": "2026-11-03T19:31:52Z", "sha": "f" * 12, "reason": "conditional pass", "why": cond},
+          {"event": "close", "id": "G", "ts": "2026-11-03T19:32:00Z", "sha": "9" * 12, "why": cond},
+          {"event": "close", "id": "A", "ts": "2026-11-03T05:00:00Z", "sha": "a" * 12, "why": "proof green"},
+          {"event": "close", "id": "H", "ts": "2026-11-03T05:00:00Z", "why": "GAP:OTHER noted; held"}]
+    with open(os.path.join(led, "BENCH.jsonl"), "w") as f:
+        f.write("".join(json.dumps(e) + "\n" for e in ev))
+    with open(os.path.join(led, "OWNER.jsonl"), "w") as f:
+        f.write(json.dumps({"event": "reopen", "id": "G", "ts": "2026-11-03T20:00:00Z"}) + "\n")
     return s
 
 
@@ -87,7 +101,7 @@ def part1():
     root = tempfile.mkdtemp(prefix="dm_selftest_")
     try:
         s = plant(root)
-        snap = dm.load(s)
+        snap = dm.load(s, os.path.join(root, "ledger"))
         now = dm.ep("2026-11-04T05:00:00Z")
         m = dm.compute(snap, [], None, now)
         y = m["accepted_delivery_yield"]["cohorts"]
@@ -160,21 +174,45 @@ def part1():
               "a blocker list or a single blocker")
 
         # the audit record
-        check(dm.narrow_weak(snap["states"]) == ["B"], "targeted: WEAK GAP:OTHER only; GAP:DIFF and untagged are not")
-        rows = dm.draw(snap, [], 2, 7, now, "S1")
-        again = dm.draw(snap, [], 2, 7, now, "S1")
+        check(dm.narrow_weak(snap["states"]) == ["B", "D"],
+              "targeted: a WEAK the live rule read as PASS (GAP:OTHER, untagged); one naming STRONG/LETS THROUGH held")
+        check(sorted(snap["ledger"]) == ["F"], "ledger conditional passes: F only (G reopened, A plain, H not a pass) %s"
+              % sorted(snap["ledger"] or {}))
+        check(dm.narrow_weak(snap["states"], snap["ledger"]) == ["B", "D", "F"],
+              "targeted: the store's WEAK-read-as-PASS closes and the ledger's conditional passes")
+        check(dm.ledger_conditional(os.path.join(root, "no-ledger")) is None, "an absent ledger is None, not zero closes")
+        try:
+            dm.draw(dict(snap, ledger=None), [], 2, 7, now, "SX")
+            check(False, "a draw with no ledger is refused (it would miss the conditional passes)")
+        except SystemExit:
+            check(True, "a draw with no ledger is refused (it would miss the conditional passes)")
+        rows = dm.draw(snap, [], 2, 23, now, "S1")     # seed 23: the random pair is A, C, apart from the targeted B, D, F
+        again = dm.draw(snap, [], 2, 23, now, "S1")
         check(rows == again, "the random draw is reproducible from its seed")
         nw = [x for x in rows if x["stratum"] == "narrow_weak"]
         rnd = [x for x in rows if x["stratum"] == "random"]
-        check([x["item"] for x in nw] == ["B"] and len(rnd) == 2 and all(x["population"] == 4 for x in rows)
-              and all(x["population_sha1"] == dm.hashlib.sha1("\n".join("ABCD").encode()).hexdigest() for x in rows),
-              "a sample: every narrow-WEAK close targeted, a seeded random draw over all 4 closes")
+        check([x["item"] for x in nw] == ["B", "D", "F"] and len(rnd) == 2 and all(x["population"] == 5 for x in rows)
+              and all(x["population_sha1"] == dm.hashlib.sha1("\n".join("ABCDF").encode()).hexdigest() for x in rows),
+              "a sample: every narrow-WEAK close targeted, a seeded random draw over all 5 closes (ledger ones included)")
+        check(nw[2]["source"] == "ledger" and nw[2]["sha"] == "f" * 12 and nw[2]["closed_at"] == "2026-11-03T19:31:52Z"
+              and "Conditional pass" in nw[2]["reasons"], "a ledger-sourced targeted row carries the ledger close's sha, time and why")
+        late = dm.draw(snap, [r for r in rows if r["item"] != "F"], 0, None, now, into="S1")
+        check([(r["sample"], r["stratum"], r["item"], r["seed"]) for r in late] == [("S1", "narrow_weak", "F", 23)],
+              "--into adds only the targeted close the sample missed, under its own name and seed")
+        early = [dict(r, at="2026-11-03T19:00:00Z") for r in rows if r["item"] != "F"]
+        check(dm.draw(snap, early, 0, None, now, into="S1") == [],
+              "--into skips a targeted close made after the sample was drawn (F closed 19:31Z, S1 drawn 19:00Z)")
+        try:
+            dm.draw(snap, rows, 0, None, now, into="S9")
+            check(False, "--into a sample that does not exist is refused")
+        except SystemExit:
+            check(True, "--into a sample that does not exist is refused")
         check(nw[0]["sha"] == "b" * 40 and nw[0]["proof"] == "python3 b.py" and nw[0]["reasons"].startswith("GAP:OTHER"),
               "a draw carries sha, proof and the deciding reasons, so an audit needs no store")
-        nxt = dm.draw(snap, rows, 0, 7, now, "S2")
+        nxt = dm.draw(snap, rows, 0, 23, now, "S2")
         check(nxt == [], "a narrow-WEAK close an earlier sample targeted is not drawn again")
         try:
-            dm.draw(snap, rows, 2, 7, now, "S1")
+            dm.draw(snap, rows, 2, 23, now, "S1")
             check(False, "a second draw under one name is refused")
         except SystemExit:
             check(True, "a second draw under one name is refused")
@@ -256,6 +294,15 @@ def part2():
     check(strata == {"narrow_weak", "random"}, "first sample: a targeted narrow_weak stratum and a random one")
     check(all(r["verdict"] == "WEAK" and (r["reasons"] or "").startswith("GAP:OTHER") for r in mine
               if r["stratum"] == "narrow_weak"), "every targeted row closed on a WEAK read as PASS (GAP:OTHER)")
+    # membership, not shape: the item's own words, "Include the narrow-WEAK closes from 2026-11-03 in the first audit
+    # sample". Those are the ledger's Marker conditional passes of that day (the store retired them, so it cannot see them).
+    led = dm.ledger_conditional()
+    check(led is not None, "the ledger is readable at %s" % dm.LEDGER)
+    nov3 = sorted(i for i, v in (led or {}).items() if dm.iso(v["closed_at"]).startswith("2026-11-03"))
+    check(len(nov3) >= 1, "sanity: the ledger shows the 2026-11-03 conditional-pass closes (%d)" % len(nov3))
+    targeted = {r["item"] for r in mine if r["stratum"] == "narrow_weak"}
+    check(not set(nov3) - targeted, "the first sample targets every 2026-11-03 narrow-WEAK close (%d of %d; missing: %s)"
+          % (len(set(nov3) & targeted), len(nov3), sorted(set(nov3) - targeted)))
     audited = {(r["sample"], r["item"]): r for r in rows if r.get("kind") == "audit"}
     missing = [r["item"] for r in mine if (s1, r["item"]) not in audited]
     check(not missing, "every row of the first sample is audited (missing: %s)" % missing)

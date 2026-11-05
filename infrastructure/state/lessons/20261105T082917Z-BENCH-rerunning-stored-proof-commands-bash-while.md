@@ -1,0 +1,1 @@
+Rerunning stored proof commands in a bash 'while read i c' loop mangles them: read without -r turns a \n in the command (e.g. tr '\n' ' ') into n, so a green proof reads red. Use 'while IFS=$'\t' read -r' or run each from Python with subprocess. Measured 2026-11-05 CLOSE_AUDIT gen 3: ROT_REGEN proof exit 1 in the loop, 0 when run directly.
