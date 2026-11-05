@@ -580,11 +580,8 @@ def undelivered(path, peers=None):
                 continue
             if raw.get("operation") == "enqueue":
                 queued.append(raw)
-            elif queued:                 # dequeue or remove
-                ids = [q.get("commandUuid") for q in queued]
-                cid = raw.get("commandUuid")
-                if cid in ids or cid is None:
-                    del queued[ids.index(cid) if cid in ids else 0]
+            elif queued:                 # dequeue or remove: by id, else by content, else the oldest (FIFO)
+                del queued[_queue_match(queued, raw)]
     except (Malformed, OSError):
         pass
     # an enqueue carries no origin (MEASURED 2026-11-01: keys content/operation/sessionId/timestamp/type, 117 of 1887
@@ -596,6 +593,27 @@ def undelivered(path, peers=None):
     if peers is None:
         peers = peer_names()
     return [r for r in recs if _is_human_input(r, peers)]
+
+
+def _queue_match(queued, raw):
+    """-> the index of the enqueue a dequeue/remove ends. Claude Code writes an enqueue with commandUuid None and a
+    remove WITH one (MEASURED 2026-11-05, a5d80dfe: 27 enqueues uuid None, 16 dequeues uuid None, 11 removes with uuid
+    and content), so pairing by id alone left every removed (delivered) prompt open and the wake replayed messages the
+    old window had answered (SEAT_WAKE_FIX_ANSWERED_MESSAGES_REPLAYED)."""
+    cid = raw.get("commandUuid")
+    if cid is not None:
+        for i, q in enumerate(queued):
+            if q.get("commandUuid") == cid:
+                return i
+    body = raw.get("content")
+    if body is not None:
+        for i, q in enumerate(queued):
+            if q.get("commandUuid") is None and q.get("content") == body:
+                return i
+    for i, q in enumerate(queued):       # an enqueue that carries an id waits for its own id
+        if q.get("commandUuid") is None:
+            return i
+    return 0
 
 
 def queue_depth(path):

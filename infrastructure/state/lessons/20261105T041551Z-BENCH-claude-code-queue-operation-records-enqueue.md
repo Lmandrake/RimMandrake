@@ -1,0 +1,1 @@
+Claude Code queue-operation records: enqueue has commandUuid None, dequeue has none, remove carries commandUuid AND content (MEASURED a5d80dfe 2026-11-05). Pairing queue ops by commandUuid alone leaves every removed (delivered) prompt looking undelivered; pair by id, then content, then FIFO (seat_restart._queue_match).
