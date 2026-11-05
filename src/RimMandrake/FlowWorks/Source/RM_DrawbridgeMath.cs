@@ -930,4 +930,91 @@ namespace RimMandrake.FlowWorks
 			return rotAsInt >= 2;
 		}
 	}
+
+	/// <summary>DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED (owner's build spec 2026-11-04, ledger note on that item): a raised leaf is a
+	/// RIGID leaf turned about its hinge and seen through the map camera, never an upright picture stretched to full length (a
+	/// north-running leaf drew its whole length over the gap and read lowered). The camera is oblique: a point lifted h cells
+	/// draws K*h cells up the screen (+z), K = 0.5, the model the owner's v3 sheet was judged on (mockups v3 geometry.md).
+	/// A point s cells along a leaf at angle a draws at s*cos(a) along the span plus K*s*sin(a) up the screen. Holds, ruled:
+	/// hinge on the north bank (leaf runs south) 55 deg, hinge on the south bank (leaf runs north) 85, east and west 75. The
+	/// angle is hold x rise, so angle 0 draws exactly the flat deck's footprint (no pop on the first tick). The leaf keeps
+	/// its true length: it is drawn one cell slice at a time from the 1 x 4 Face picture, root slice at the hinge, tip slice
+	/// at the tip, middle slices repeating, so no picture is ever stretched. Pure: offline-tested (DrawbridgeChecks,
+	/// selftest_flowworks_drawbridge_pose.py) and drawn by RM_DrawbridgeArt.DrawLeafUp.</summary>
+	public static class DrawbridgeLeafPose
+	{
+		public const double K = 0.5;
+		/// <summary>Hinge on the north bank, leaf running south (span dz = -1): just enough to read as a drawbridge (owner,
+		/// 2026-11-03, "I would prefer 55 deg"); it shows its top and goes edge-on only at atan(1/K) = 63.43.</summary>
+		public const double HoldRunningSouth = 55.0;
+		/// <summary>Hinge on the south bank, leaf running north (span dz = +1): owner by card 2026-11-03, "Row 3 hold angle -> 85".</summary>
+		public const double HoldRunningNorth = 85.0;
+		/// <summary>East and west (span dx = +-1): v2's 75, which he said look great.</summary>
+		public const double HoldEastWest = 75.0;
+		/// <summary>Picture slices in the 1 x 4 Face art, root (hinge) first.</summary>
+		public const int Slices = 4;
+
+		/// <summary>The hold angle for a leaf whose span runs (dx, dz) from its hinge.</summary>
+		public static double HoldDegrees(int dx, int dz)
+		{
+			return dz < 0 ? HoldRunningSouth : dz > 0 ? HoldRunningNorth : HoldEastWest;
+		}
+
+		/// <summary>The angle now: rise 0..1 of the way to the hold (clamped); 0 lies flat.</summary>
+		public static double AngleDegrees(int dx, int dz, double rise)
+		{
+			double r = rise < 0 ? 0 : rise > 1 ? 1 : rise;
+			return HoldDegrees(dx, dz) * r;
+		}
+
+		/// <summary>The screen vector (x, z) one cell of leaf draws along, hinge to tip, at angle deg.</summary>
+		public static void CellVector(int dx, int dz, double deg, out double x, out double z)
+		{
+			double a = deg * System.Math.PI / 180.0, c = System.Math.Cos(a), s = System.Math.Sin(a);
+			x = dx * c;
+			z = dz * c + K * s;
+		}
+
+		/// <summary>The screen vector (x, z) a whole leaf of length cells draws along, hinge to tip.</summary>
+		public static void TipVector(int dx, int dz, int length, double deg, out double x, out double z)
+		{
+			CellVector(dx, dz, deg, out double cx, out double cz);
+			x = cx * length;
+			z = cz * length;
+		}
+
+		/// <summary>True when the camera sees the leaf's top (its painted face): the drawn leaf still points away from the
+		/// hinge along the span. False past edge-on (only a leaf running south, beyond 63.43 deg).</summary>
+		public static bool TopShows(int dx, int dz, double deg)
+		{
+			CellVector(dx, dz, deg, out double x, out double z);
+			return dx * x + dz * z > 1e-9;
+		}
+
+		/// <summary>The share of the gap (the leaf's flat footprint along the span) that the drawn leaf no longer covers.</summary>
+		public static double GapOpen(int dx, int dz, int length, double deg)
+		{
+			TipVector(dx, dz, length, deg, out double x, out double z);
+			double along = dx * x + dz * z;   // how far into the gap the drawn tip reaches
+			if (along <= 0)
+			{
+				return 1.0;
+			}
+			return System.Math.Max(0.0, 1.0 - along / length);
+		}
+
+		/// <summary>Which picture slice (0 root .. Slices-1 tip) draws cell i (0 at the hinge) of a leaf of length cells.</summary>
+		public static int SliceFor(int i, int length)
+		{
+			if (i <= 0)
+			{
+				return 0;
+			}
+			if (i >= length - 1)
+			{
+				return Slices - 1;
+			}
+			return 1 + (i - 1) % (Slices - 2);
+		}
+	}
 }

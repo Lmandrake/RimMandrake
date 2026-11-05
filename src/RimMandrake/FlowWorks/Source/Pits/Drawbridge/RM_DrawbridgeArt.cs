@@ -61,13 +61,6 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
-		/// <summary>The raised view of a leaf whose span runs this way from its hinge (contract: north shows the face, south the
-		/// underside, east/west the edge).</summary>
-		public static LeafView ViewFor(Rot4 spanFromHinge)
-		{
-			return spanFromHinge == Rot4.North ? LeafView.Face : spanFromHinge == Rot4.South ? LeafView.Underside : LeafView.Edge;
-		}
-
 		/// <summary>A cutout material for the first path that exists, or null.</summary>
 		public static Material MatOrNull(params string[] paths)
 		{
@@ -215,9 +208,12 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
-		/// <summary>Draw a raised leaf upright at its hinge: one copy per lane, standing on the hinge edge of the anchor square,
-		/// its height the leaf length scaled by how far it has risen (the art is 1 lane × 4 cells; a longer steel leaf stretches).
-		/// The edge view is drawn for a span running east and mirrored for west (contract).</summary>
+		/// <summary>DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED: draw a raised leaf as a rigid leaf turned about its hinge
+		/// (RM_DrawbridgeMath.DrawbridgeLeafPose): one strip per lane, each cell of the leaf one slice of the Face picture
+		/// laid on the cell's projected parallelogram, so the leaf keeps its true length (no stretch), shortens on screen as it
+		/// rises, and stops at the ruled hold (north-bank hinge 55, south-bank hinge 85, east/west 75). Before this, an upright
+		/// picture was stretched to the full leaf length up the screen, so a north-running raised leaf covered its whole gap and
+		/// read lowered. At angle 0 the strip covers exactly the flat deck footprint, so the first tick does not pop.</summary>
 		public static void DrawLeafUp(Map map, SuspensionBridgeRecord r, DrawbridgeLeaf l)
 		{
 			int full = RM_Drawbridges.FullTicks(r, l);
@@ -226,60 +222,56 @@ namespace RimMandrake.FlowWorks.Pits
 				return;
 			}
 			IntVec3 step = l.hingeAtFirst ? r.dir.FacingCell : r.dir.Opposite.FacingCell;   // hinge toward the leaf
-			Rot4 spanFromHinge = Rot4.FromIntVec3(step);
-			Material mat = LeafUp(r.tier, LookOf(r), ViewFor(spanFromHinge), out string path);
+			Material mat = LeafUp(r.tier, LookOf(r), LeafView.Face, out string path);
 			if (mat == null)
 			{
 				return;
 			}
-			Mesh mesh = LeafMesh(path, spanFromHinge == Rot4.West);
-			float rise = Mathf.Clamp01((float)l.progress / full);
-			float h = l.Span.Length * rise;
+			int length = l.Span.Length;
+			double deg = DrawbridgeLeafPose.AngleDegrees(step.x, step.z, (double)l.progress / full);
+			DrawbridgeLeafPose.CellVector(step.x, step.z, deg, out double vx, out double vz);
+			Vector4 across = new Vector4(step.z, 0f, -step.x, 0f);   // a lane's width; keeps the picture's handedness (no back face)
+			Vector4 along = new Vector4((float)vx, 0f, (float)vz, 0f);   // one cell of leaf on screen, hinge to tip
+			float y = AltitudeLayer.BuildingOnTop.AltitudeFor();
 			int hinge = RM_Drawbridges.HingeIndex(l);
 			for (int lane = 0; lane < r.width; lane++)
 			{
 				Vector3 at = r.Cell(lane, hinge).ToVector3Shifted() + step.ToVector3() * 0.5f;   // the hinge edge
-				at.z += h * 0.5f;
-				at.y = AltitudeLayer.BuildingOnTop.AltitudeFor();
-				Matrix4x4 m = Matrix4x4.TRS(at, Quaternion.identity, new Vector3(1f, 1f, h));
-				Graphics.DrawMesh(mesh, m, mat, 0);
+				for (int i = 0; i < length; i++)
+				{
+					float c = i + 0.5f;
+					Matrix4x4 m = Matrix4x4.identity;
+					m.SetColumn(0, across);
+					m.SetColumn(1, new Vector4(0f, 1f, 0f, 0f));
+					m.SetColumn(2, along);
+					m.SetColumn(3, new Vector4(at.x + along.x * c, y, at.z + along.z * c, 1f));
+					Graphics.DrawMesh(LeafSlice(DrawbridgeLeafPose.SliceFor(i, length)), m, mat, 0);
+				}
 			}
 		}
 
-		private static readonly Dictionary<long, Mesh> leafMeshes = new Dictionary<long, Mesh>();
+		private static readonly Mesh[] leafSlices = new Mesh[DrawbridgeLeafPose.Slices];
 
-		/// <summary>DRAWBRIDGE_CABLES_FIX_STOP_SHORT (owner 2026-10-23: "a stiff rope sticking straight up from the drawbridge
-		/// ... Ropes should now be slack and disconnected"): an edge picture draws only its leaf body's columns below the top of
-		/// its hook's eye, so the rope stub painted off the hook is not drawn; every other picture draws whole.</summary>
-		public static Mesh LeafMesh(string path, bool flip)
+		/// <summary>A unit plane (x, z in -0.5..0.5, as MeshPool.plane10) showing one quarter of the 1 x 4 leaf picture, slice
+		/// 0 the root (the hinge, the picture's bottom) to slice 3 the tip.</summary>
+		public static Mesh LeafSlice(int slice)
 		{
-			string name = path == null ? null : path.Substring(path.LastIndexOf('/') + 1);
-			const string pre = "RM_DrawbridgeLeafUp_";
-			if (name == null || !name.StartsWith(pre) || !RM_DrawbridgeCableMath.LeafEdgeBody.TryGetValue(name.Substring(pre.Length), out double[] body))
-			{
-				return flip ? MeshPool.plane10Flip : MeshPool.plane10;
-			}
-			float u0 = Mathf.Max(0f, (float)body[0] - 0.008f), u1 = Mathf.Min(1f, (float)body[1] + 0.008f);
-			float vTop = 1f - Mathf.Clamp01((float)body[2] - 0.002f);   // the eye's top: the stub above it is not drawn
-			long key = ((long)Mathf.RoundToInt(u0 * 10000f) << 40) ^ ((long)Mathf.RoundToInt(u1 * 10000f) << 21)
-				^ ((long)Mathf.RoundToInt(vTop * 10000f) << 1) ^ (flip ? 1L : 0L);
-			if (leafMeshes.TryGetValue(key, out Mesh m))
+			Mesh m = leafSlices[slice];
+			if (m != null)
 			{
 				return m;
 			}
-			// x ascending, as MeshMakerPlanes lays a plane: unflipped x = u - 0.5, flipped x = 0.5 - u
-			float x0 = flip ? 0.5f - u1 : u0 - 0.5f, x1 = flip ? 0.5f - u0 : u1 - 0.5f;
-			float ua = flip ? u1 : u0, ub = flip ? u0 : u1;
+			float v0 = (float)slice / DrawbridgeLeafPose.Slices, v1 = (float)(slice + 1) / DrawbridgeLeafPose.Slices;
 			m = new Mesh
 			{
-				name = "RM_LeafUpCrop",
-				vertices = new[] { new Vector3(x0, 0f, -0.5f), new Vector3(x0, 0f, vTop - 0.5f), new Vector3(x1, 0f, vTop - 0.5f), new Vector3(x1, 0f, -0.5f) },
-				uv = new[] { new Vector2(ua, 0f), new Vector2(ua, vTop), new Vector2(ub, vTop), new Vector2(ub, 0f) },
+				name = "RM_LeafSlice" + slice,
+				vertices = new[] { new Vector3(-0.5f, 0f, -0.5f), new Vector3(-0.5f, 0f, 0.5f), new Vector3(0.5f, 0f, 0.5f), new Vector3(0.5f, 0f, -0.5f) },
+				uv = new[] { new Vector2(0f, v0), new Vector2(0f, v1), new Vector2(1f, v1), new Vector2(1f, v0) },
 				triangles = new[] { 0, 1, 2, 0, 2, 3 },
 			};
 			m.RecalculateNormals();
 			m.RecalculateBounds();
-			leafMeshes[key] = m;
+			leafSlices[slice] = m;
 			return m;
 		}
 

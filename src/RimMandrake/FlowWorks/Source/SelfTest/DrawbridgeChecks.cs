@@ -436,11 +436,53 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "the design doc's contract paths");
                 Assert(a.Contains("ContentFinder<Texture2D>.Get(p, false)") && !a.Contains("Get(p, true)"), "can-fail: looked up silently (no red error before install)");
                 Assert(a.Contains("\"Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_\" + Material(t)"), "a stand-in that exists on disk");
-                Assert(Body(a, "public static LeafView ViewFor(Rot4 spanFromHinge)").Contains("spanFromHinge == Rot4.North ? LeafView.Face : spanFromHinge == Rot4.South ? LeafView.Underside : LeafView.Edge"),
-                    "north face, south underside, east/west edge (contract)");
+                // DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED: every direction draws the leaf's top (Face), turned by DrawbridgeLeafPose
+                Assert(!a.Contains("ViewFor(") && Body(a, "public static void DrawLeafUp(").Contains("LeafView.Face"),
+                    "can-fail: the raised leaf shows its painted top in every direction (owner's build spec 2026-11-04)");
                 string xml = File.ReadAllText(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_SpanMath.cs")), "..", "Defs", "Pits", "ThingDefs", "RM_Drawbridge.xml"));
                 // every Drawbridge/ texPath a def names is installed: selftest_flowworks_drawbridge_art.py (this staging has no Textures/)
                 Assert(!xml.Contains("MinifiedThing") && !xml.Contains("<defName>RM_DrawbridgePlanks"), "the art planks are never an item (answer 1)");
+            });
+
+            Case("Drawbridge_Pose_raised_leaf_no_longer_reads_lowered", () =>
+            {
+                // DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED (owner 2026-11-03: "The north-south bridge looks as though it's down, yet
+                // it says it's up"): the old draw stood a picture of full leaf length up the screen, so a north-running leaf
+                // covered 100% of its gap. Holds per the owner's 2026-11-04 build spec.
+                Assert(DrawbridgeLeafPose.HoldDegrees(0, -1) == 55 && DrawbridgeLeafPose.HoldDegrees(0, 1) == 85
+                    && DrawbridgeLeafPose.HoldDegrees(1, 0) == 75 && DrawbridgeLeafPose.HoldDegrees(-1, 0) == 75, "can-fail: the ruled holds");
+                int[][] dirs = { new[] { 0, 1 }, new[] { 0, -1 }, new[] { 1, 0 }, new[] { -1, 0 } };
+                foreach (int[] d in dirs)
+                {
+                    for (int len = 1; len <= 14; len++)
+                    {
+                        double hold = DrawbridgeLeafPose.AngleDegrees(d[0], d[1], 1.0);
+                        Assert(DrawbridgeLeafPose.GapOpen(d[0], d[1], len, hold) >= 0.40, "can-fail: a raised leaf (" + d[0] + "," + d[1] + ") L" + len
+                            + " still covers the gap: open " + DrawbridgeLeafPose.GapOpen(d[0], d[1], len, hold));
+                        Assert(DrawbridgeLeafPose.TopShows(d[0], d[1], hold), "the hold shows the painted top, never edge-on or the underside");
+                        DrawbridgeLeafPose.TipVector(d[0], d[1], len, 0, out double fx, out double fz);
+                        Assert(Math.Abs(fx - d[0] * len) < 1e-9 && Math.Abs(fz - d[1] * len) < 1e-9, "can-fail: angle 0 draws the flat deck footprint (no pop)");
+                        Assert(DrawbridgeLeafPose.GapOpen(d[0], d[1], len, 0) == 0, "lowered covers the whole gap");
+                        double prev = -1;
+                        for (int t = 0; t <= 100; t++)
+                        {
+                            double open = DrawbridgeLeafPose.GapOpen(d[0], d[1], len, DrawbridgeLeafPose.AngleDegrees(d[0], d[1], t / 100.0));
+                            Assert(open >= prev - 1e-9, "the gap only opens as the leaf rises (a north-running tip overreaches first: clamped, true geometry)");
+                            prev = open;
+                        }
+                        // true length constant: every cell is one picture slice, root at the hinge, tip at the tip
+                        Assert(DrawbridgeLeafPose.SliceFor(0, len) == 0 && (len == 1 || DrawbridgeLeafPose.SliceFor(len - 1, len) == DrawbridgeLeafPose.Slices - 1),
+                            "root slice at the hinge, tip slice at the tip");
+                        for (int i = 0; i < len; i++)
+                        {
+                            int sl = DrawbridgeLeafPose.SliceFor(i, len);
+                            Assert(sl >= 0 && sl < DrawbridgeLeafPose.Slices && (i == 0 || i == len - 1 || (sl != 0 && sl != DrawbridgeLeafPose.Slices - 1)),
+                                "a middle cell repeats a middle slice");
+                        }
+                    }
+                }
+                Assert(DrawbridgeLeafPose.AngleDegrees(0, 1, 2.0) == 85 && DrawbridgeLeafPose.AngleDegrees(0, 1, -1.0) == 0, "rise clamps");
+                Assert(!DrawbridgeLeafPose.TopShows(0, -1, 70), "can-fail: south-running past edge-on (63.43) would show the underside");
             });
 
             Case("Drawbridge_Looks_paths_look_first_then_material", () =>
@@ -485,7 +527,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Drawbridge_Looks_wired_at_the_draw_sites", () =>
             {
                 string a = Src("Pits", "Drawbridge", "RM_DrawbridgeArt.cs");
-                Assert(Body(a, "public static void DrawLeafUp(").Contains("LeafUp(r.tier, LookOf(r), ViewFor(spanFromHinge), out string path)"), "can-fail: the raised leaf reads its bridge's look");
+                Assert(Body(a, "public static void DrawLeafUp(").Contains("LeafUp(r.tier, LookOf(r), LeafView.Face, out string path)"), "can-fail: the raised leaf reads its bridge's look");
                 Assert(Body(a, "public static void DrawPlanks(").Contains("Planks(r.tier, LookOf(r))"), "the planks read the look");
                 Assert(Body(a, "public static string LookOf(").Contains("r.look"), "the look is the bridge's own");
                 string c = Src("Pits", "Drawbridge", "RM_DrawbridgeControl.cs");
@@ -1098,7 +1140,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string art = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Drawbridge", "RM_DrawbridgeArt.cs"));
                 Assert(deck.Contains("RM_DrawbridgeArt.AnchorPrintFor(this)") && deck.Contains("RM_DrawbridgeArt.PrintBollards(layer, p)")
                     && deck.Contains("RM_DrawbridgeArt.PrintRopes(layer, p)"), "the anchor prints its ropes through the cable math");
-                Assert(art.Contains("Mesh mesh = LeafMesh(path, spanFromHinge == Rot4.West);"), "the raised leaf draws through the stub crop");
+                string up = DrawbridgeChecks.Body(art, "public static void DrawLeafUp(");
+                Assert(up.Contains("Graphics.DrawMesh(LeafSlice(DrawbridgeLeafPose.SliceFor(i, length)), m, mat, 0);") && !art.Contains("LeafMesh("),
+                    "the raised leaf draws Face slices through the pose (the edge picture and its rope-stub crop are no longer drawn)");
                 Assert(art.Contains("slack = deck.leafRaised"), "raised = the deck square the ropes face is a raised leaf");
             });
 
