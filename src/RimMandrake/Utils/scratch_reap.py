@@ -1269,8 +1269,9 @@ def mention_blocks(f: str, line: str, now: float) -> bool:
             # a note on the cleaner's own items that lists what it refused is a report of the refusal, not a use of the
             # directory: letting it pin made every refusal write the note that renewed the next week's refusal
             if str(ev.get("id") or "").startswith(SELF_ITEMS) or (
-                    ev.get("seat") == "DISPATCHER" and "scratch cleaner" in str(ev.get("text") or "")):
-                return False        # the Dispatcher's relay of the cleaner's own alarm is the same report
+                    ev.get("seat") == "DISPATCHER" and any(
+                        w in str(ev.get("text") or "") for w in ("scratch cleaner", "restart_verified"))):
+                return False        # the Dispatcher's relay of the cleaner's alarm, or of a window it restarted, is a report
             ts = ev["ts"]
             return now - dt.datetime.fromisoformat(str(ts).replace("Z", "+00:00")).timestamp() < limit
         except (ValueError, KeyError, TypeError, AttributeError):
