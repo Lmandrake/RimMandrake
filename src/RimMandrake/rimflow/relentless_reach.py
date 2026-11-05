@@ -72,8 +72,8 @@ def hidden_roots(prof):
 def hidden(path, prof, carved=()):
     """True when the box cannot read `path` (a host path). `carved`: real paths the wall leaves readable (the skill targets)."""
     p = _norm(path)
-    if any(_under(p, c) for c in carved):
-        return False
+    if any(_under(p, c) for c in carved) or relentless_wall.through_reachable(p, prof):
+        return False            # a named path under a read_through root is bound read only (CHECKER_REACH_FIX_NAMED_SCRATCH_READ_ONLY)
     whole, kids = hidden_roots(prof)
     return any(_under(p, r) for r in whole) or any(p.startswith(r.rstrip("/") + "/") for r in kids)
 

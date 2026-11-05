@@ -2830,8 +2830,9 @@ def worker_prompt(st, text, learned, r, history=None, causes=None):
             "`rimflow close`, `implemented`, `release` or `claim` on this item: the supervisor owns its ledger state.",
             "A hook, systemd unit, dispatcher_schedule.json or ops_watch_rules.json change, or an OPS_ alarm item, needs --live with one of: "
             "`unit=rm-foo.timer reading=<path> max_age=6h`, `hook=block_foo.py`, `once: why`.",
-            "The checker runs walled: no ssh or other machine, D:\\ClaudeWork and /mnt/d/ClaudeWork/rimmandrake read empty, no "
-            "Windows program. When the proof's truth lives there, add --offbox NAME naming a supervisor adapter from "
+            "The checker runs walled: no ssh or other machine, no git history, D:\\ClaudeWork and /mnt/d/ClaudeWork/rimmandrake read empty "
+            "except the paths under them your contract, finish evidence or item text names (bound read only; a progress or "
+            "handoff file never is), no Windows program. When the proof's truth lives there, add --offbox NAME naming a supervisor adapter from "
             "relentless_rules.json offbox_adapters (%s): the supervisor runs it outside the wall at check time and hands the "
             "checker its raw output. You cannot pass a command; a reading no adapter makes is a snag. A checker that still "
             "cannot reach the evidence says UNMEASURED, which sends nothing back to you. `contract` refuses a proof that "
@@ -3446,7 +3447,7 @@ def enrol(store, fx, r, now):
     first = getattr(fx, "first", None) or {}    # Operations' system items: order puts them first (pool_order)
     # a system item waits for neither the share nor content in the line, only for the per-tick and line caps
     sys_room = min(r["enrol_per_tick"], r["max_queued"] - sum(1 for s in in_turn if s["item"] in first))
-    paused = content_paused(fx, states, order, ours)
+    paused = content_paused(fx, states, order, ours, refused=refusal_memo(fx), now=now)   # lease's own exemptions
     for i in order:
         if i in first and i not in plan and room <= 0:
             if sys_room <= 0 or i in ours:
@@ -3498,7 +3499,7 @@ def write_queue_next(store, fx, r, now, shown=8):
     pause, a degraded verdict or their own not_before (the same tests lease applies). A reading: nothing acts on it."""
     states = store.states()
     plan, first = getattr(fx, "plan", None) or {}, getattr(fx, "first", None) or {}
-    paused = content_paused(fx, states)
+    paused = content_paused(fx, states, refused=refusal_memo(fx), now=now)
     free, waiting = [], []
     for st in queue_order(states, plan, first):
         i = st["item"]
@@ -3508,15 +3509,20 @@ def write_queue_next(store, fx, r, now, shown=8):
     store._write(store.p("queue_next.json"), json.dumps({"t": now, "free": free[:shown], "waiting": waiting[:shown]}, indent=1))
 
 
-def content_paused(fx, states, order=None, ours=None, refused=None):
+def content_paused(fx, states, order=None, ours=None, refused=None, now=None):
     """True while Operations' verdict reads degraded and a system item still waits for a place: in the line, or in the
     pool not yet enrolled. When every system item is already being worked, content may start (owner card 2026-11-03).
     `refused(item)` -> a reason marks a system item the concept gate keeps from any worker: it waits on a Designer pass,
-    not a place, so it holds no content back (21:06Z 2026-11-04: twenty refused items paused content with nothing live)."""
+    not a place, so it holds no content back (21:06Z 2026-11-04: twenty refused items paused content with nothing live).
+    A queued system item whose not_before is still ahead waits on the clock, not a place: lease skips it, so it holds no
+    content back either (RELENTLESS_PAUSE_FIX_CLOCK_WAIT_STALLS_ALL, 2026-11-05: one item's 342 min wait-hours snag paused
+    every content item with 2 places live of 8). It keeps its first pick: the tick its wait ends, it is placed before content."""
     first = getattr(fx, "first", None) or {}
     if not getattr(fx, "degraded", False) or not first:
         return False
-    waits = [s["item"] for s in states if s["status"] == "queued" and s["item"] in first]
+    now = time.time() if now is None else now
+    waits = [s["item"] for s in states if s["status"] == "queued" and s["item"] in first
+             and not (s.get("not_before") or 0) > now]
     waits += [i for i in (order or ()) if i in first and i not in (ours or ())]
     return any(not (refused and refused(i)) for i in waits)
 
@@ -3933,6 +3939,8 @@ def step(store, fx, r, item, now, acts):
         if relentless_wall.enforced(r):
             box = relentless_wall.make_box(relentless_wall.profile(r), clean, c["sha"], nonce)
         gen0 = st["gen"]
+        thru = relentless_wall.through(relentless_wall.profile(r), [json.dumps(st.get("contract") or {}),
+                                       c.get("evidence") or "", fx.item_text(item) or ""]) if box else []
         with store.lock():              # the whole identity is on disk before the unit exists, and before any offbox run:
             st = store.load(item)       # a supervisor killed mid-reading leaves a check that dies as a lost checker
             if not st or st["status"] != "candidate" or st["gen"] != gen0 or (st.get("candidate") or {}).get("sha") != c["sha"]:
@@ -3946,6 +3954,7 @@ def step(store, fx, r, item, now, acts):
                 st["check"] = {"nonce": nonce, "unit": unit, "at": now, "clone": clean, "run": desc}
                 if box:
                     st["check"]["box"] = box
+                    st["check"]["through"] = thru       # the resume binds the same paths
                 store.save(st)
         if race:
             fx.remove_clone({"clone": clean})
@@ -3961,11 +3970,12 @@ def step(store, fx, r, item, now, acts):
                                                                            getattr(fx, "live_check", None), now))
         if box:
             why = fx.launch(st, desc, "\n".join([relentless_wall.marker_prompt(st, fx.item_text(item), box)]
+                                                + relentless_wall.through_lines(thru)
                                                 + relentless_reach.live_lines(st["contract"], box)
                                                 + relentless_game.checker_lines(st["contract"])), r["checker_agent"],
                             os.path.join(box, "tree"), r["check_max_s"],
                             relentless_wall.unit_env(relentless_wall.profile(r), box),
-                            relentless_wall.props(relentless_wall.profile(r), box, [store.root]))
+                            relentless_wall.props(relentless_wall.profile(r), box, [store.root], thru))
         else:
             why = fx.launch(st, desc, checker_prompt(st, fx.item_text(item), nonce, readings), r["checker_agent"], clean,
                             r["check_max_s"], {"RELENTLESS_ROOT": store.root})
@@ -4236,7 +4246,7 @@ def check_resume(store, fx, r, item, now, acts):
         if box:
             why = fx.launch(st, desc, resume_prompt(st, "check"), r["checker_agent"], cwd, r["check_max_s"],
                             relentless_wall.unit_env(relentless_wall.profile(r), box),
-                            relentless_wall.props(relentless_wall.profile(r), box, [store.root]))
+                            relentless_wall.props(relentless_wall.profile(r), box, [store.root], chk.get("through") or ()))
         else:
             why = fx.launch(st, desc, resume_prompt(st, "check"), r["checker_agent"], cwd, r["check_max_s"],
                             {"RELENTLESS_ROOT": store.root})
@@ -4661,7 +4671,7 @@ def lease(store, fx, r, now, acts):
             return
     first = getattr(fx, "first", None) or {}
     refused = refusal_memo(fx)
-    paused = content_paused(fx, store.states(), refused=refused)
+    paused = content_paused(fx, store.states(), refused=refused, now=now)
     no_room = None      # make_room's hold, once it said there is no room for a new clone this tick
     incidents = relentless_breakers.load(store)
     for st in queue_order(store.states(), getattr(fx, "plan", None), first):

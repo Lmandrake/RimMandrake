@@ -176,6 +176,37 @@ ok(not any(str(a.get("why", "")).startswith("health degraded") for a in acts),
 ok(asked.count("S_NO") == 1, "lease: the pause asks the concept gate once, shared with the loop (unpublished here)", asked)
 shutil.rmtree(d, ignore_errors=True)
 
+# 02:35Z 2026-11-05 (RELENTLESS_PAUSE_FIX_CLOCK_WAIT_STALLS_ALL): one queued system item on a 342 min wait-hours snag
+# paused every content item, 2 places live of 8. A clock wait is not a wait for a place; the item keeps its first pick.
+fx = Fx([], {"S1": 0}, degraded=True)
+ok(not R.content_paused(fx, [q("S1", not_before=500.0)], now=100.0),
+   "paused: a system item whose not_before is ahead waits on the clock, holds no content")
+ok(R.content_paused(fx, [q("S1", not_before=50.0)], now=100.0), "paused: a system item whose wait has run out pauses again")
+ok(R.content_paused(Fx([], {"S1": 0, "S2": 1}, degraded=True), [q("S1", not_before=500.0), q("S2")], now=100.0),
+   "paused: a clock-waiting system item beside a startable one keeps the pause")
+d, s = store()
+s.save(q("S_LATER", not_before=500.0))
+s.save(dict(R.new_state("C_Q", 1.0, ""), enrolled_at=0.5))
+acts = []
+R.lease(s, Fx([], {"S_LATER": 0}, degraded=True), dict(RULES, share=1.0), 100.0, acts)
+ok(not any(str(a.get("why", "")).startswith("health degraded") for a in acts),
+   "lease: degraded, the only system item in line waits on its clock -> content is not paused", acts)
+acts = []
+R.lease(s, Fx([], {"S_LATER": 0}, degraded=True), dict(RULES, share=1.0), 600.0, acts)
+ok(any(str(a.get("why", "")).startswith("health degraded") for a in acts),
+   "lease: its clock ran out -> content waits behind it again", acts)
+shutil.rmtree(d, ignore_errors=True)
+d, s = store()
+s.save(q("S_NO"))
+fx = Fx(["C_C"], {"S_NO": 0}, degraded=True)
+fx.concept_refusal = lambda i: "no Designer pass on record" if i == "S_NO" else None
+took = R.enrol(s, fx, dict(RULES, share=1.0), 100.0)
+ok(took == ["C_C"], "enrol: degraded, the only system item in line is concept-refused -> content enrols (the lease's rule)", took)
+s.save(q("S_LATER", not_before=500.0))
+took = R.enrol(s, Fx(["C_D"], {"S_NO": 0, "S_LATER": 1}, degraded=True), dict(RULES, share=1.0), 100.0)
+ok(took == [], "enrol: without the gate's answer a queued system item still pauses content", took)
+shutil.rmtree(d, ignore_errors=True)
+
 # --- the real Effects: reads the file, reorders the real pool
 vd = tempfile.mkdtemp(prefix="rlhealth-v-")
 os.environ["RM_OPS_WATCH_DIR"] = vd

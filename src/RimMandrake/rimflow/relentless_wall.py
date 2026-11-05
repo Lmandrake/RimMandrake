@@ -32,7 +32,7 @@ RULE = (   # both Marker prompts: the unwalled and the walled one must never dif
     "Your run shows it is not done, or you can reach all it needs and still cannot show it either way: that is FAIL.",
     "Being unable to measure is not a FAIL. If the work may be done but what would show it is out of your box's reach - "
     "another machine (ssh, Tailscale), a path this box hides (D:\\ClaudeWork, /mnt/d/ClaudeWork/rimmandrake come up empty "
-    "here), the live game, a Windows program that cannot start here - say UNMEASURED and begin the reasons with "
+    "here but for the paths the prompt lists as bound read only), the live game, a Windows program that cannot start here - say UNMEASURED and begin the reasons with "
     "'CANNOT REACH:', naming each thing and the command that showed you cannot reach it, then what you did check. It sends "
     "no work back: the box goes up for repair. A proof that runs and is red is FAIL; a clause you can reach is never UNMEASURED.",
     "Keep the two apart when you record the verdict: each wrong thing your own run showed goes in its own --defect (a wrong "
@@ -145,9 +145,10 @@ def unit_path(p):
     return '"%s"' % p.replace("\\", "\\\\").replace('"', '\\"')
 
 
-def props(prof, box, extra=()):
+def props(prof, box, extra=(), through_paths=()):
     """systemd properties. Shared scratch comes up empty. A missing denied path fails the launch: a typo must not unwall.
-    The transcript folder is the box's: other runs' memory stays out, this run's stays in."""
+    The transcript folder is the box's: other runs' memory stays out, this run's stays in. `through_paths` (through()) are
+    bound read only over the empty scratch; '-': one gone since it was named is skipped, never a failed launch."""
     out = []
     for p in denied(prof, extra):
         out += ["-p", "InaccessiblePaths=" + unit_path(p)]
@@ -155,7 +156,93 @@ def props(prof, box, extra=()):
         out += ["-p", "TemporaryFileSystem=" + unit_path(p)]
     for p in readonly(prof):
         out += ["-p", "ReadOnlyPaths=" + unit_path(p)]
+    for p in through_paths:
+        out += ["-p", "BindReadOnlyPaths=-" + p]
     return out + ["-p", "BindPaths=%s:%s/.claude/projects" % (Path(box, "projects"), HOME)]
+
+
+# CHECKER_REACH_FIX_NAMED_SCRATCH_READ_ONLY (2026-11-05): 24 items held `unmeasured`, 17 of them on evidence under
+# /mnt/d/ClaudeWork/rimmandrake (an ops_watch status.json, a testq tick.log, a backups folder) that the tmpfs over shared
+# scratch hides. The wall's table (design section 8) withholds store, memory, attempts, git history, conversations and
+# ledger notes - not the program-written state an item's proof reads. So a path the contract, the evidence or the item
+# names under a `read_through` root is bound READ ONLY into the box; the rest of scratch stays empty and writable, and
+# `never_through` (the worker run folders) is never bound.
+THROUGH_MAX = 24
+_THROUGH_WORD = re.compile(r"(?<![\w.~$@+/\\-])(?:[A-Za-z]:[\\/]|/)[\w.~@+-]*(?:[/\\][\w.~@+-]*)*")
+_SAFE = re.compile(r"^/[\w./@+~-]+$")
+
+
+def _host(word):
+    """-> a path word as a host path: a Windows drive path as /mnt/<drive>/..., no trailing punctuation or slash."""
+    w = word.rstrip(".,;:)'\"")
+    m = re.match(r"^([A-Za-z]):[\\/](.*)$", w)
+    if m:
+        w = "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
+    return w.rstrip("/") or "/"
+
+
+def _inside(p, root):
+    return p.startswith(root.rstrip("/") + "/")
+
+
+def through_reachable(path, prof):
+    """True when a named `path` would be bound by through(): strictly under a read_through root, outside never_through.
+    Prefixes only (no filesystem read): relentless_reach.hidden asks this of a contract's proof."""
+    p = os.path.normpath(_host(path))      # "..": resolved before the prefixes are read
+    rx = prof.get("never_through_rx")
+    return (any(_inside(p, r) for r in prof.get("read_through") or ())
+            and not any(p == n.rstrip("/") or _inside(p, n) for n in prof.get("never_through") or ())
+            and not (rx and re.search(rx, p)))
+
+
+def _clean_dir(d, prof, cap=4000):
+    """True when a folder may be bound whole: nothing in it is a path through_reachable() refuses (a worker's progress
+    file inside a readings folder), and it is small enough to have looked at all of it."""
+    n = 0
+    for top, dirs, files in os.walk(d):
+        for f in dirs + files:
+            n += 1
+            if n > cap or not through_reachable(os.path.join(top, f), prof):
+                return False
+    return True
+
+
+def through(prof, texts, cap=THROUGH_MAX):
+    """-> the host paths to bind read only into the box: each path word of `texts` that through_reachable() takes, walked
+    up to the nearest one that exists while still strictly under its root (a reading not written yet shows its folder),
+    whose real path stays inside the root and outside never_through, once each, a path under another one dropped."""
+    roots = [os.path.realpath(r) for r in prof.get("read_through") or ()]
+    never = [os.path.realpath(n) for n in prof.get("never_through") or ()]
+    env = prof.get("env") or {}
+    got = []
+    for t in texts:
+        t = re.sub(r"\$\{?(\w+)\}?", lambda v: env.get(v.group(1), v.group(0)), t or "")   # "$RM_DATA_ROOT/x", as needs() reads it
+        for m in _THROUGH_WORD.finditer(t):
+            p = os.path.normpath(_host(m.group(0)))
+            if not through_reachable(p, prof):
+                continue
+            while not os.path.lexists(p) and any(_inside(os.path.dirname(p), r) for r in prof["read_through"]):
+                p = os.path.dirname(p)
+            if not os.path.lexists(p):
+                continue
+            rp = os.path.realpath(p)
+            if (not through_reachable(rp, dict(prof, read_through=roots, never_through=never))   # a link stays inside
+                    or not _SAFE.match(rp) or rp in got):
+                continue
+            if os.path.isdir(rp) and not _clean_dir(rp, prof):
+                continue
+            got.append(rp)
+    got = sorted(got)
+    out = [p for p in got if not any(_inside(p, q) for q in got if q != p)]
+    return out[:cap]
+
+
+def through_lines(paths):
+    """The Marker's words about what was bound."""
+    if not paths:
+        return []
+    return ["", "Bound read only from the host into your box (the rest of shared scratch is still empty here): %s. Read "
+            "them as the evidence they are; a path in this list is never --unreached." % ", ".join(paths)]
 
 
 def tmp_env(box):

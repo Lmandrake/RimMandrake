@@ -39,8 +39,9 @@ def ok(cond, name):
 
 # proofs of the kinds the store's 60 CANNOT REACH named, and proofs a box runs fine
 BLIND = {
-    "ClaudeWork reading": "test -s /mnt/d/ClaudeWork/rimmandrake/ops_watch/health.json",
-    "Windows ClaudeWork": r"python3 x.py --out D:\ClaudeWork\rimmandrake\artpipe\done",
+    "a worker folder": "cat /mnt/d/ClaudeWork/rimmandrake/relentless_agent/PROGRESS.md",
+    "a worker's progress file": r"type D:\ClaudeWork\rimmandrake\relentless\X_progress.md",
+    "the scratch root itself": "ls /mnt/d/ClaudeWork/rimmandrake",
     "another clone": "git -C /home/mandrake/rm/foundry status --short | wc -l",
     "the store": "ls /home/mandrake/rm/relentless/store/items",
     "a ~/dev repo": "python3 ~/dev/Lodestar/bin/conversations.py",
@@ -49,7 +50,7 @@ BLIND = {
     "winbuild": "python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/Stillsand/Source/RM_Stillsand.csproj",
     "an exe": "powershell.exe -Command Get-Date",
     "seat tmp": "ls /home/mandrake/.seat-tmp/runs",
-    "the box's RM_DATA_ROOT": 'test -s "$RM_DATA_ROOT/ops_watch/health.json" && cat ${RM_DATA_ROOT}/x',
+    "the box's RM_DATA_ROOT": 'test -s "$RM_DATA_ROOT/arena/health.json" && cat ${RM_DATA_ROOT}/arena/x',
     "a subshell": "(cd /home/mandrake/rm/bench && git log -1)",
     "git with options": "git --no-pager log -1 && env X=1 git -c core.x=1 show HEAD",
     "bash -c": "bash -c 'ssh stevedesktop df'",
@@ -62,6 +63,10 @@ SEEN = {
     "a skill": "test -s /home/mandrake/.claude/skills/rimflow-operations/SKILL.md",
     "an RM_DATA_ROOT the proof sets": "RM_DATA_ROOT=/tmp/rmdr python3 x.py && test -s $RM_DATA_ROOT/out.json",
     "a comment": "python3 x.py --only a.py  # (1) refuses /mnt/d/ClaudeWork paths, git history verbs, ssh",
+    # CHECKER_REACH_FIX_NAMED_SCRATCH_READ_ONLY: a named reading under read_through is bound read only into the box
+    "ClaudeWork reading": "test -s /mnt/d/ClaudeWork/rimmandrake/ops_watch/health.json",
+    "Windows ClaudeWork": r"python3 x.py --out D:\ClaudeWork\rimmandrake\artpipe\done",
+    "a reading under the box's RM_DATA_ROOT": 'test -s "$RM_DATA_ROOT/ops_watch/health.json" && cat ${RM_DATA_ROOT}/x',
 }
 
 
@@ -70,7 +75,7 @@ def t_needs():
         ok(RR.needs(proof, PROF), "the live walls profile hides %s: %s" % (k, RR.needs(proof, PROF)[:1]))
     for k, proof in SEEN.items():
         ok(not RR.needs(proof, PROF), "a box runs %s: %s" % (k, RR.needs(proof, PROF)))
-    ok(RR.needs("grep -c x#y /mnt/d/ClaudeWork/rimmandrake/z", PROF), "a # inside a word is no comment")
+    ok(RR.needs("grep -c x#y /mnt/d/ClaudeWork/rimmandrake/arena/z", PROF), "a # inside a word is no comment")
     ok(not RR.needs(OWN, PROF), "this item's own contract proof (a comment names /mnt/d/ClaudeWork) is not held by its gate")
     ok(RR.hidden("/home/mandrake/rm/a-clone-made-tomorrow/x", PROF), "deny_children walls a clone made tomorrow")
     ok(not RR.hidden("/home/mandrake/rm", PROF), "the deny_children root itself is no child")
@@ -89,7 +94,7 @@ def t_contract_refuses():
     x = T.Rig(n=1, share=1.0)
     x.run_one("I0")
     g = x.st("I0")["gen"]
-    for k in ("ClaudeWork reading", "git history", "winbuild"):
+    for k in ("a worker folder", "git history", "winbuild"):
         try:
             R.contract(x.s, "I0", g, BLIND[k], r=REAL)
             ok(False, "(1) contract refuses a proof needing %s" % k)
@@ -137,7 +142,7 @@ def to_candidate(x, i, proof, sha="sha1", live="once: test"):
 
 def t_prelaunch_hold():
     x = T.Rig(n=1, share=1.0, walls=REAL["walls"])
-    to_candidate(x, "I0", BLIND["ClaudeWork reading"])
+    to_candidate(x, "I0", BLIND["a worker folder"])
     launches = len(x.w.launches)
     for _ in range(6):
         x.tick()
@@ -219,6 +224,47 @@ def t_live_into_box():
     ok(RR.live_lines({"proof": "p"}, "/b") == [], "(3) no live line, no words about it")
 
 
+def t_through_into_box():
+    """CHECKER_REACH_FIX_NAMED_SCRATCH_READ_ONLY through the tick: the proof's named reading under read_through is bound
+    read only into the walled launch, kept on the check for its resume, and named to the Marker."""
+    root = tempfile.mkdtemp(prefix="rl-through-")
+    cw = os.path.join(root, "cw")
+    os.makedirs(os.path.join(cw, "ops"))
+    with open(os.path.join(cw, "ops", "health.json"), "w") as f:
+        f.write("{}")
+    prof = {"enforce": True, "box_root": root, "deny": [], "deny_children": [], "tmpfs": [cw], "tree_exclude": [],
+            "read_through": [cw], "never_through": []}
+    real_make, props = W.make_box, []
+
+    def make_box(p, source, sha, nonce):
+        b = os.path.join(root, nonce)
+        os.makedirs(os.path.join(b, "tree"))
+        return b
+    W.make_box = make_box
+    try:
+        x = T.Rig(n=1, share=1.0, walls={"marker": prof})
+        plain = x.w.launch
+        x.w.launch = lambda st, run, prompt, agent, clone, max_s, env, p=None: props.append(p) or plain(
+            st, run, prompt, agent, clone, max_s, env)
+        to_candidate(x, "I0", "test -s %s/ops/health.json" % cw)
+        for _ in range(6):
+            x.tick()
+            if x.st("I0")["status"] == "checking":
+                break
+        st = x.st("I0")
+        want = "BindReadOnlyPaths=-%s/ops/health.json" % os.path.realpath(cw)
+        ok(st["status"] == "checking" and props and want in (props[-1] or []),
+           "(5) the walled check binds the named reading read only: %s" % [q for q in (props[-1] if props else []) or []
+                                                                           if "Bind" in q])
+        ok(st["check"].get("through") == [os.path.realpath(cw) + "/ops/health.json"], "(5) kept on the check for its resume")
+        prompt = next((l[2] for l in x.w.launches if l[1] == st["check"]["unit"]), "")
+        ok("Bound read only" in prompt and "ops/health.json" in prompt, "(5) the Marker is told what was bound")
+        x.done()
+    finally:
+        W.make_box = real_make
+        shutil.rmtree(root, ignore_errors=True)
+
+
 def blind_once(x, i):
     st = x.st(i)
     R.verdict(x.s, i, st["check"]["nonce"], "UNMEASURED", "CANNOT REACH: git history",
@@ -284,7 +330,7 @@ def t_no_repaid_recheck():
 
 
 def main():
-    for t in (t_needs, t_contract_refuses, t_prelaunch_hold, t_live_into_box, t_no_repaid_recheck):
+    for t in (t_needs, t_contract_refuses, t_prelaunch_hold, t_live_into_box, t_through_into_box, t_no_repaid_recheck):
         t()
     print("RESULT %s (%d failed)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0

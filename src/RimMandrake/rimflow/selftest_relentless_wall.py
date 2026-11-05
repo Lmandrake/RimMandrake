@@ -294,6 +294,50 @@ def test_unit_env():
     check("a profile with no env names only the temp", set(W.unit_env({}, "/b")) == {"TMPDIR", "TMP", "TEMP"})
 
 
+def test_through():
+    """CHECKER_REACH_FIX_NAMED_SCRATCH_READ_ONLY: a named path under read_through is bound read only; nothing else is."""
+    import relentless_reach as RR
+    t = os.path.realpath(tempfile.mkdtemp())
+    root = os.path.join(t, "cw")
+    for f in ("ops/s.json", "ops/log.jsonl", "q/tick.log", "agent/x.txt", "mix/r.txt", "mix/w_progress.md", "solo.txt"):
+        os.makedirs(os.path.dirname(os.path.join(root, f)), exist_ok=True)
+        Path(root, f).write_text("x")
+    Path(t, "outside.txt").write_text("x")
+    os.symlink(t, os.path.join(root, "out"))         # a link that leaves the root
+    p = {"read_through": [root], "never_through": [os.path.join(root, "agent")], "never_through_rx": "(?i)progress"}
+    got = W.through(p, ["reading=%s/ops/s.json max_age=6h; %s/q/tick.log." % (root, root),
+                        "%s/agent/x.txt %s %s/mix %s/mix/w_progress.md %s/out/outside.txt %s/ops/../agent/x.txt"
+                        % ((root,) * 6),
+                        "%s/q/later/not_yet.json" % root])
+    check("a named reading is bound, punctuation stripped", os.path.join(root, "ops/s.json") in got, got)
+    check("a named file not written yet binds its nearest folder under the root", os.path.join(root, "q") in got, got)
+    check("a path inside a bound folder is not bound twice", os.path.join(root, "q/tick.log") not in got, got)
+    check("never the root itself, never_through, a folder holding an account, an account, a link out, a ..",
+          not any(g == root or "/agent" in g or "/mix" in g or g.startswith(os.path.join(root, "out")) for g in got), got)
+    check("only the named things", sorted(got) == sorted([os.path.join(root, "ops/s.json"), os.path.join(root, "q")]), got)
+    o = W.props(dict(p, deny=[]), "/b", [], got)
+    check("props binds each read only, a gone one skipped", ("BindReadOnlyPaths=-" + got[0]) in o and o.count("-p") ==
+          len(got) + 1, o)
+    check("no paths, no bind", not any("BindReadOnlyPaths" in x for x in W.props(dict(p, deny=[]), "/b")))
+    check("the Marker is told what was bound", got[0] in "\n".join(W.through_lines(got)) and W.through_lines([]) == [])
+    ev = W.through(dict(p, env={"RM_DATA_ROOT": root}), ['test -s "$RM_DATA_ROOT/ops/s.json" && cat ${RM_DATA_ROOT}/q/tick.log'])
+    check("the box's RM_DATA_ROOT is read as the root it names", ev == [os.path.join(root, "ops/s.json"),
+                                                                    os.path.join(root, "q/tick.log")], ev)
+    win = W.through({"read_through": ["/mnt/q/CW"]}, ["Q:\\CW\\a\\b.txt"])
+    check("a Windows path is read as its mount (gone: nothing bound)", win == [], win)
+    check("through_reachable reads a Windows path", W.through_reachable("Q:\\CW\\a\\b.txt", {"read_through": ["/mnt/q/CW"]}))
+    hp = dict(p, tmpfs=[root])
+    check("reach: a named path under read_through is not hidden", not RR.hidden(os.path.join(root, "ops/s.json"), hp))
+    check("reach: never_through and an account stay hidden", RR.hidden(os.path.join(root, "agent/x.txt"), hp)
+          and RR.hidden(os.path.join(root, "mix/w_progress.md"), hp))
+    check("reach: the root itself stays hidden", RR.hidden(root, hp))
+    real = W.profile(__import__("relentless").rules(os.path.join(str(HERE), "relentless_rules.json")))
+    check("the real profile reads through scratch but never the worker folders",
+          real["read_through"] == ["/mnt/d/ClaudeWork/rimmandrake"]
+          and "/mnt/d/ClaudeWork/rimmandrake/relentless_agent" in real["never_through"]
+          and not W.through_reachable("/mnt/d/ClaudeWork/rimmandrake/relentless/X_progress.md", real), real.get("never_through"))
+
+
 def main():
     test_profile_and_props()
     test_tmpdir_inside_the_wall()
@@ -303,6 +347,7 @@ def main():
     test_would_deny()
     test_review_two()
     test_unit_env()
+    test_through()
     if FAILS:
         print(json.dumps(FAILS, default=str)[:1500])
     print("selftest_relentless_wall:", "FAIL" if FAILS else "OK")
