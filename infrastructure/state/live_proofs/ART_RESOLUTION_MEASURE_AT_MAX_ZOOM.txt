@@ -1,0 +1,3 @@
+# mod list: any list with brrainz.cameraplus at its defaults (no Camera+ settings file) and WITHOUT ray1203.simplecamerasetting (the two conflict: zoom_guard.py); all five DLC; any loaded map
+live-mods: brrainz.cameraplus
+live-proof A1: python3 src/RimMandrake/Utils/art_maxzoom_probe.py live < /dev/null
