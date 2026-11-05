@@ -1356,7 +1356,8 @@ DRAWBRIDGE_CASES = [
     "Drawbridge_OneDrag_hinge_bank_is_where_the_drag_started", "Drawbridge_OneDrag_every_planned_winch_is_beside_its_own_hinge",
     "Drawbridge_OneDrag_designator_plans_and_places_the_whole_package", "Drawbridge_Leaf_toggle_repaints_things_layer",
     "Drawbridge_WinchRelink_rebuilt_leaf_takes_the_winch", "Drawbridge_WinchRelink_planned_before_beside_and_live_winch_kept",
-    "Drawbridge_WinchRelink_shadowed_record_dropped_jetty_kept", "Drawbridge_WinchRelink_call_sites"]
+    "Drawbridge_WinchRelink_shadowed_record_dropped_jetty_kept", "Drawbridge_WinchRelink_call_sites",
+    "Drawbridge_Pose_raised_leaf_no_longer_reads_lowered"]
 DRAWBRIDGE_LIVE = [
     ("RAISE_PATH", None, "a colonist holding a path over a lowered steel leaf; raised: the production path no longer crosses "
      "it, ToggleCount and RepathCount rise within 10 ticks"),
