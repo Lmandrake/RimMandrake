@@ -55,7 +55,8 @@ X. [S] (human pass) walk a fresh Pyrelands map at play zoom: the ground cover
 
 ## north star
 state: VALIDATED
-validated-hash: 2865b4cfed726679c011ea6dbce31ca339417f335fc50c79e4e71d5d8d41ffc1
+validated-hash: 1a7028c5ef0a0588255ef19a9b09ad305c64faad821c8e7371ce9466d3820673
+validated-by: BY CARD: Re-validate the Pyrelands north star with pyre_fresh_burn_feeds_the_field reworded to 'ground that has just burned grows noticeably faster for a few days, and black rain compounds that advantage rather than washing it away.'? -> Yes, re-validate
 
 Owner, 2026-09-17 (verbatim): *"Any wrong animals present? Btw these are two
 validation script bars you should add for pyrelands. Correct animal and plant
@@ -82,8 +83,8 @@ freshly generated Pyrelands map in ordinary play.
 - [ ] `pyre_ash_fertile_when_watered` — a crop on deep ash beside a watered
       channel grows clearly faster than the same crop on dry ash.
 - [ ] `pyre_fresh_burn_feeds_the_field` — ground that has just burned grows
-      noticeably faster for a few days, and a black rain washes that advantage
-      away early.
+      noticeably faster for a few days, and black rain compounds that advantage
+      rather than washing it away.
 - [ ] `pyre_grass_chokes_ground` — open ground is carpeted densely in grass;
       there are no bare-dirt expanses where grass should carry the ground.
 - [ ] `pyre_embergrass_regrows` — a burned patch of grass is visibly
