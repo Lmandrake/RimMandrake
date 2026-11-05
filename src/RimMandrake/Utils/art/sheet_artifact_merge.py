@@ -185,6 +185,7 @@ def merge_row(rec_in: dict | None, body: dict, it: dict) -> dict:
         if prim_moved:
             rec["decidedAt"] = at
             rec["at"] = at
+            rec.pop("seen_build", None)    # the stamp was the build an earlier click saw: never pair it with this one
     if (body.get("note") or "") != (rec.get("note") or ""):
         rec["note"] = body.get("note") or ""
     if bool(body.get("done")) != bool(rec.get("remoteDone")):

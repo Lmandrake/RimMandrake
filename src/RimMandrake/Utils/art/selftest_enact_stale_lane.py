@@ -38,6 +38,9 @@ resolves the lane through it (a proved rename) or refuses by name. The decisions
     used to follow the key's rename: a young set at the adult path);
   12 the donor proof also needs the letter to have been a set of the donor lane: a juvenile set slotted or keyed under
     the donor and re-filed under the adult today is refused, as the same `decision` is;
+  22 a record stamped with the build its page was loaded from (seen_build): resolved against THAT build, not the newest
+    built before the click (a tab left open across a rebuild), slot and schema-1 alike; a stamp no copy holds is refused
+    by name; unstamped records keep the time inference (SHEET_DECISION_WIRE_BUILD_STAMP);
   10 snapshot revisions committed out of build order: the newest build at or before the click is used;
   5 schema 1 with today's snapshot built BEFORE his click: routed by today's snapshot as before (no lookup, no change);
   14 a pick with ONE facing refused (its live file owner-kept by another row) installs NO facing (never a creature mixed
@@ -609,6 +612,46 @@ def main():
             else:
                 kr["res"] = saved_res
             sp.write_text(json.dumps(snap))
+
+        # 22 the record stamps the build its page was LOADED from (seen_build, SHEET_DECISION_WIRE_BUILD_STAMP): build A
+        # 09:00 (page loaded), rebuild B 09:30, his click 10:00 on the page from A. Enact resolves against A; without
+        # the stamp it infers B (the newest built before the click), wrong for a tab left open across the rebuild.
+        def build_at(gof: dict, built: str) -> dict:
+            s_ = older(gof)
+            s_["built"] = built
+            return s_
+        BA, BB = "2026-10-10T02:00:00-0700", "2026-10-10T02:30:00-0700"
+        history[:] = [build_at({"A": AD, "B": AD, "C": AD, "Y": KY}, BB), build_at({"A": AD, "B": AD, "C": AD, "Y": AD}, BA)]
+        r, inst = plan({"schema": None, "decision": "Y"})
+        def routed_young(r_):        # the fixture's mods have no young slot: a routed Y lands in todo, not in conflicts
+            return any(t.startswith("RSW_Kite: pick Y swanimals/Kite/Kite_young_east.png") for t in r_["plan"]["todo"]) \
+                and not any("pick Y" in c for c in r_["conflicts"])
+        check(routed_young(r), f"22a unstamped (old record): inferred build B, where Y is already the young lane: "
+                               f"routed to the young lane ({r['plan']['todo']} / {r['conflicts']})")
+        r, inst = plan({"schema": None, "decision": "Y", "seen_build": BA})
+        check(not any(i["letter"] == "Y" for i in inst) and any(
+            c.startswith("RSW_Kite: pick Y ") and "refused" in c for c in r["conflicts"]),
+              f"22a stamped with A: resolved against A, where Y was the adult's: refused by name ({inst} / {r['conflicts']})")
+        r, inst = plan({"schema": None, "decision": "Y", "seen_build": snap["built"]})
+        check(routed_young(r), f"22d stamped with today's build: today's sheet is the one he saw, routed as today "
+                               f"({r['plan']['todo']} / {r['conflicts']})")
+        history[:] = [build_at({"A": AD, "B": AD, "C": AD, "Y": KY}, BB), build_at({"A": OLD, "B": OLD, "C": OLD, "Y": KY}, BA)]
+        r, inst = plan({"decision": "B", "slots": {OLD: dict(slot("B"), seen_build=BA)}})
+        check(any(i["letter"] == "B" and i["rel"] == "swanimals/Kite/Kite_east.png" for i in inst)
+              and any(x.startswith(f"RSW_Kite: slot {OLD} pick B -> {AD}") for x in r["plan"].get("lane_resolved", [])),
+              f"22b a slot stamped with A: the rename A shows is proved, installs at today's lane ({inst})")
+        r, inst = plan({"decision": "B", "slots": {OLD: slot("B")}})
+        check(not any(i["letter"] == "B" for i in inst) and any(
+            c.startswith(f"RSW_Kite: slot {OLD} pick B") for c in r["conflicts"]),
+              f"22b ...the same slot unstamped infers B, which has no {OLD}: refused ({r['conflicts']})")
+        r, inst = plan({"schema": None, "decision": "Y", "seen_build": "2026-10-10T01:00:00-0700"})
+        check(not any(i["letter"] == "Y" for i in inst) and any(
+            c.startswith("RSW_Kite: pick Y ") and "not on disk or in git" in c for c in r["conflicts"]),
+              f"22c a stamp naming a build no copy holds: refused by name, never the time inference ({r['conflicts']})")
+        history[:] = [{"_unreadable": "git show deadbeef: not valid UTF-8"}]
+        r, inst = plan({"schema": None, "decision": "Y", "seen_build": BA})
+        check(not any(i["letter"] == "Y" for i in inst) and any("deadbeef" in c for c in r["conflicts"]),
+              f"22c ...and with an unreadable copy in the window, that is named ({r['conflicts']})")
     finally:
         os.environ.pop("ART_BIOME_SHEETS_DIR", None)
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAILED")

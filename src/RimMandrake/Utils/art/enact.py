@@ -932,8 +932,12 @@ def snapshot_revisions(snap_path: Path):
         yield memo["docs"][h]
 
 
-def ruled_snapshot(snap_path: Path, cur: dict, at) -> tuple[dict | None, str]:
-    """(snapshot he saw when he clicked at `at`, why-not): `cur` when it was built no later than that, else the revision
+def ruled_snapshot(snap_path: Path, cur: dict, at, seen=None) -> tuple[dict | None, str]:
+    """(snapshot he saw when he clicked at `at`, why-not). `seen` is the record's `seen_build`, the `built` stamp of the
+    snapshot the page was LOADED from (SHEET_DECISION_WIRE_BUILD_STAMP): when present it decides — the copy (today's or
+    a revision) whose `built` is exactly that, or (None, why) when none can be found, never the time inference below, which
+    picks a newer build for a tab left open across a rebuild. Without it (records saved before the stamp): `cur` when it
+    was built no later than the click, else the revision
     with the NEWEST build stamp at or before the click, over the whole bounded window (SNAP_REV_MAX) — git order is not
     build order (two clones can push builds out of order), so the first match git log reaches may be an older build.
     The record's `rev` is not consulted: a superset rebuild keeps the snapshotId, and real schema-1 records carry
@@ -941,6 +945,18 @@ def ruled_snapshot(snap_path: Path, cur: dict, at) -> tuple[dict | None, str]:
     click is B), so preferring it walked past the sheet he saw. (None, why) when it cannot be proved: no click time, no
     copy built that early, or an UNREADABLE revision anywhere in the window (its build stamp is unknown, so it may be
     the one he saw)."""
+    if seen:
+        if cur.get("built") == seen:
+            return cur, ""
+        bad = ""
+        for s in snapshot_revisions(snap_path):
+            if s.get("_unreadable"):
+                bad = bad or s["_unreadable"]
+            elif s.get("built") == seen:
+                return s, ""
+        if bad:
+            return None, f"the sheet you clicked on (built {seen}) may be a copy that is unreadable ({bad})"
+        return None, f"the sheet you clicked on (built {seen}) is not on disk or in git"
     t = _when(at)
     if t is None:
         return None, "the record has no click time"
@@ -1209,7 +1225,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                                           f"for it; rebuild the sheet, then pick again")
                     continue
                 ruled, rwhy = ruled_snapshot(snap_path, snap,
-                                             st.get("at") or v.get("decidedAt") or v.get("at"))
+                                             st.get("at") or v.get("decidedAt") or v.get("at"),
+                                             st.get("seen_build") if st.get("at") else
+                                             v.get("seen_build") if v.get("decidedAt") else None)
                 rrow = ((ruled or {}).get("rows") or {}).get(row) or {}
                 if not rrow:
                     new, why = None, rwhy or "the sheet you clicked on has no such row"
@@ -1287,7 +1305,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                                           f"it; rebuild the sheet, then pick again")
                     continue
                 if ruled1 is None:
-                    ruled1, rwhy1 = ruled_snapshot(snap_path, snap, v.get("decidedAt") or v.get("at"))
+                    ruled1, rwhy1 = ruled_snapshot(snap_path, snap, v.get("decidedAt") or v.get("at"),
+                                                   v.get("seen_build") if v.get("decidedAt") else None)
                     ruled1 = ruled1 or {}
                 rrow = (ruled1.get("rows") or {}).get(row) or {}
                 same = letter in (rrow.get("columns") or {}) and rrow["columns"][letter] == cols.get(letter)
@@ -1501,7 +1520,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 if not gv or picks.get(gv) == vl:
                     continue
                 if ruled1 is None:
-                    ruled1, rwhy1 = ruled_snapshot(snap_path, snap, v.get("decidedAt") or v.get("at"))
+                    ruled1, rwhy1 = ruled_snapshot(snap_path, snap, v.get("decidedAt") or v.get("at"),
+                                                   v.get("seen_build") if v.get("decidedAt") else None)
                     ruled1 = ruled1 or {}
                 rrow = (ruled1.get("rows") or {}).get(row) or {}
                 if not rrow or vl not in (rrow.get("columns") or {}):

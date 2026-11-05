@@ -259,6 +259,7 @@ def accept_looks(path: Path, said: str, prefer: dict | None = None, apply: bool 
             slots[g] = {"state": "pick", "pick": letter, "set_id": SL.set_id(cols[letter]), "slot_id": f"{row}/look:{g}",
                         "at": at}
         prim = srow.get("res")
+        v.pop("seen_build", None)    # an earlier click's page build: never paired with this decidedAt (enact.ruled_snapshot)
         v.update({"schema": 2, "rev": snapshot.get("snapshotId"), "slots": slots, "at": at, "decidedAt": at,
                   "decision": choice.get(prim) or choice[sorted(choice)[0]],
                   "acceptedLooks": {"at": at, "said": said, "by": "owner", "via": "decisions_v2 --accept-looks"}})

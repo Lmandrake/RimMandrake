@@ -749,11 +749,12 @@ addEventListener('DOMContentLoaded', () => {
     orig(id, key, opts);
     if (DEC[id]) {
       DEC[id].decidedAt = new Date().toISOString();
+      if (window.SLX) window.SLX.stampBuild(it_, DEC[id]);
       /* the right-hand letter / redo buttons ARE the primary slot's choice: keep the slot record in step */
       if (g) {
         const k = DEC[id].decision, S = window.SLX; S.v2(DEC[id]);
-        if (k && k.length === 1) DEC[id].slots[g.key] = { state: 'pick', pick: k, slot_id: (g.slot || {}).id || null, at: DEC[id].decidedAt };
-        else if (k === 'redo') DEC[id].slots[g.key] = { state: 'redraw', slot_id: (g.slot || {}).id || null, at: DEC[id].decidedAt };
+        if (k && k.length === 1) DEC[id].slots[g.key] = S.stampBuild(it_, { state: 'pick', pick: k, slot_id: (g.slot || {}).id || null, at: DEC[id].decidedAt });
+        else if (k === 'redo') DEC[id].slots[g.key] = S.stampBuild(it_, { state: 'redraw', slot_id: (g.slot || {}).id || null, at: DEC[id].decidedAt });
         else delete DEC[id].slots[g.key];
       }
       queue(id);
@@ -1775,15 +1776,24 @@ SLX.state = (it, rec, g) => {
 SLX.inGame = g => g.cols.filter(c => c.winner && !c.purgedLive);
 SLX.list = (rec, key, gk) => new Set((((rec || {})[key] || {})[gk]) || []);
 SLX.putList = (rec, key, gk, set) => { rec[key] = rec[key] || {}; const a = [...set].sort(); if (a.length) rec[key][gk] = a; else delete rec[key][gk]; };
+/* which build of the sheet this tab was loaded from (the snapshot's `built`, carried on every row as it.build), stamped
+   as `seen_build` beside every click time it writes (a slot record's `at`, the row's `decidedAt`): enact resolves the
+   click against THAT build, not "the newest built before the click", which is wrong for a tab left open across a rebuild
+   (SHEET_DECISION_WIRE_BUILD_STAMP). A page with no stamp removes it, so a stale one never pairs with a new click time. */
+SLX.stampBuild = (it, obj) => { if (it && it.build) obj.seen_build = it.build; else delete obj.seen_build; return obj; };
 SLX.setSlot = (it, rec, g, st) => {
   SLX.v2(rec);
   const now = new Date().toISOString();
   if (!st || !st.state) delete rec.slots[g.key];
-  else rec.slots[g.key] = Object.assign({ slot_id: (g.slot || {}).id || null, at: now }, st);
+  else {
+    const r = Object.assign({ slot_id: (g.slot || {}).id || null, at: now }, st);
+    rec.slots[g.key] = r.at === now ? SLX.stampBuild(it, r) : r;      // a carried-over `at` keeps its own stamp
+  }
   if (g.primary) {
     rec.decision = !st || !st.state ? '' : st.state === 'pick' ? st.pick : st.state === 'redraw' ? 'redo'
       : st.state === 'accept' ? ((SLX.inGame(g)[0] || {}).letter || '') : '';
     rec.decidedAt = now;
+    SLX.stampBuild(it, rec);
   } else if (rec.picks && rec.picks[g.key] !== undefined) {
     if (st && st.state === 'pick') rec.picks[g.key] = st.pick; else delete rec.picks[g.key];
   }
@@ -3589,6 +3599,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         else new_id
     for it in ordered:
         it["rev"] = snap["snapshotId"]     # the inventory revision a schema-2 record is saved against
+        it["build"] = snap["built"]        # the page stamps it on each click as seen_build (enact.ruled_snapshot)
 
     Q = b.get("question") or None
     if Q:
