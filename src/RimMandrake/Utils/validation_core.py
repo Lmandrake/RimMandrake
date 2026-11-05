@@ -1151,6 +1151,15 @@ def _prepare_site_swept(B, rect, rows, rid):
             SITE_NOTES.append({"id": "%s_site_sweep" % rid, "detail": swept})
     except Exception as ex:  # noqa: BLE001 - the sweep is a courtesy; the read-back below still gates the site
         SITE_NOTES.append({"id": "%s_site_sweep_failed" % rid, "detail": repr(ex)})
+    # PROOF_SITE_HARDEN_HUGE_TRUNKS_SURVIVE_CLEAR (run6 2026-10-25, 3905 RM_HugeTrunkBlocker on a quicktest map): Huge Things
+    # re-plans a trunk blocker while its giant stands, so _prepare_site's destroy alone left "TrunkBlocker still standing" and
+    # the Soil paint did not read back. The giants go first, for every caller; the read-back below still gates the site.
+    try:
+        huge = clear_huge_plants(B)
+        if huge.get("blockers"):
+            SITE_NOTES.append({"id": "%s_huge_plants" % rid, "detail": huge})
+    except Exception as ex:  # noqa: BLE001 - a courtesy like the sweep; a blocker left in the rect still fails the read-back
+        SITE_NOTES.append({"id": "%s_huge_plants_failed" % rid, "detail": repr(ex)})
     return _prepare_site(B, rect, rows, rid)
 
 

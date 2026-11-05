@@ -198,6 +198,54 @@ except Exception as ex:      # a fake too thin for reveal() is a selftest defect
 ok(_okc is True and len(C.sweeps) >= 2 and C.sweeps[-1] == "All",
    "prepare_site: CollapsedRocks dropped after the first sweep are cleared by the re-sweep (sweeps=%s rows=%s)" % (C.sweeps, _rows))
 
+# ---- PROOF_SITE_HARDEN_HUGE_TRUNKS_SURVIVE_CLEAR (run6 2026-10-25): a giant standing OUTSIDE the rect re-plans its trunk
+# blocker INSIDE it after every destroy, so the site read "TrunkBlocker still standing" until clear_huge_plants ran first.
+# prepare_site must clear the giant itself, for every caller.
+class _Giant(object):
+    GIANT = (20, 3)                            # outside the site (5,5,20,10); inside the blocker tile's margin
+
+    def __init__(self):
+        self.giant, self.blocker, self.order = True, True, []
+
+    def ticks(self, n):
+        if self.giant:
+            self.blocker = True                # Huge Things re-plans a vanished blocker while its plant stands
+
+    def probe(self, cmd):
+        return {"pawns": []}
+
+    def call(self, tool, **kw):
+        if tool == "jawa/list_pawns":
+            return {"success": True, "pawns": [], "truncated": 0}
+        if tool == "jawa/destroy_batch":
+            x, z, w, h = [int(v) for v in kw["rects"].split(",")]
+            self.order.append(kw.get("categories"))
+            if kw.get("categories") in ("Plant", "All") and x <= self.GIANT[0] < x + w and z <= self.GIANT[1] < z + h:
+                self.giant = False
+            if kw.get("categories") == "All":
+                self.blocker = False
+            self.ticks(1)
+            return {"success": True}
+        if tool == "jawa/list_things":
+            bl = [{"defName": "RM_HugeTrunkBlocker", "x": 10, "z": 10}] if self.blocker else []
+            return {"things": bl}
+        if tool == "jawa/get_roof_batch":
+            return {"roofs": []}
+        return {"success": True}
+
+
+fresh()
+G = _Giant()
+_rows = []
+try:
+    _okg = V.prepare_site(G, (5, 5, 20, 10), _rows, "giant_site")
+except Exception as ex:
+    _okg, _rows = None, [{"error": repr(ex)[:200]}]
+ok(_okg is True and not G.giant and G.order and G.order[0] == "Plant" and not _rows,
+   "prepare_site: huge plants are cleared before the site prep, so no re-planned TrunkBlocker survives (order=%s rows=%s)"
+   % (G.order, _rows))
+ok(any(n["id"] == "giant_site_huge_plants" for n in V.SITE_NOTES), "prepare_site: the huge-plant clear is noted as SITE")
+
 # ---- Watchdog (LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT): a dead probe channel or a spent budget aborts, a live reply resets
 class _Probe(object):
     def __init__(self, replies):
