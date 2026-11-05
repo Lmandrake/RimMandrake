@@ -2183,6 +2183,9 @@ window.artAct = (el, ev) => {
   if (!it) return;
   const act = el.dataset.act, g = el.dataset.g, L = el.dataset.l, v = el.dataset.v, k = el.dataset.k;
   if (k && k.startsWith('_more.')) { (window.__moreDraft[id] = window.__moreDraft[id] || {})[k.slice(6)] = el.value; return; }
+  /* the record as it stood BEFORE this act (null = no record), for the template's undo stack: without it `u` after a
+     hotkey then a column click restored the pre-hotkey record and lost the click too (SHEET_COLUMN_CLICK_WIRE_UNDO) */
+  const before = DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null;
   const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
   let r = { ok: true };
   if (act === 'pick') r = SLX.pick(it, rec, g, L);
@@ -2211,6 +2214,9 @@ window.artAct = (el, ev) => {
   else return;
   if (!r.ok) { if (typeof showErr === 'function') showErr(r.msg); return; }
   if (r.msg && typeof banner === 'function') { try { banner('info', esc(r.msg)); } catch (e) {} }
+  if (JSON.stringify(before) !== JSON.stringify(rec) && typeof undoStack !== 'undefined') {
+    undoStack.push({ entries: [{ id, before }] }); redoStack.length = 0;
+  }
   rec.at = new Date().toISOString();
   queue(id); patchRow(id); paintCounts();
 };
