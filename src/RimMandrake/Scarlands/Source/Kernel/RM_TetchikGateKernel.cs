@@ -6,7 +6,7 @@
 //     is the gate, so a starting herd sits where glower grows.
 //   - ongoing arrivals (WildAnimalSpawnerTick): an edge cell from RCellFinder.TryFindRandomPawnEntryCell. Glower
 //     almost never grows within 6 cells of that cell, so the old local-only gate meant tetchik practically never
-//     arrived after map generation. An entry cell asks instead whether the map has a glower stand worth coming to
+//     arrived after map generation. An entry cell asks instead whether the map grows glower at all
 //     (MinMapGlower plants anywhere on it).
 // RCellFinder.RandomAnimalSpawnCell_MapGen can itself return a cell in the edge band, so "entry cell" also needs
 // "not generating": a map-gen herd on the edge with no glower near is refused like any other map-gen herd.
@@ -17,8 +17,11 @@ namespace RimMandrake.Scarlands
         public const int GlowerRadius = 6;
         // Entry cells sit on the outermost row (CellFinder edge cells); a band of 2 also covers road-edge picks.
         public const int EdgeBand = 2;
-        // A stand, not a stray: one seeded glower should not make a map a tetchik map. PROVISIONAL number.
-        public const int MinMapGlower = 10;
+        // Any glower on the map (TETCHIK_GLOWER_THRESHOLD_MEASURE_SPARSE). The wild spawner grows glower as sparse
+        // strays, not stands: from the defs a Warscar map expects only ~12 (200x200) to ~19 (250x250) glower in all,
+        // so the old bar of 10 sat at the expected count and mountains, harvesting or a small map stopped arrivals.
+        // A bar of 1 keeps the one rule that matters: no glower on the map, no tetchik coming to it.
+        public const int MinMapGlower = 1;
 
         public static bool IsEntryCell(int x, int z, int sizeX, int sizeZ)
         {

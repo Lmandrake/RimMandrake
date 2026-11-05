@@ -27,7 +27,7 @@ namespace RimMandrake.Scarlands
     // WARSCAR_FREE_TIER_BODY_1 / TETCHIK_GLOWERGATE_WIDEN_EDGE_ENTRY: tetchik come where glower grows.
     // WildAnimalSpawner weights kinds by CommonalityOfAnimalNow(kind, loc). At map generation loc is the interior
     // cell the herd is placed on, and glower near it is the gate. For ongoing arrivals loc is the map-edge entry
-    // cell, where glower almost never grows, so there the gate asks whether the map holds a glower stand
+    // cell, where glower almost never grows, so there the gate asks whether the map grows any glower
     // (RM_TetchikGateKernel.MinMapGlower plants anywhere). The rule itself is RM_TetchikGateKernel.Allow.
     [HarmonyPatch(typeof(WildAnimalSpawner), "CommonalityOfAnimalNow")]
     public static class RM_WarscarPatches_TetchikGlowerGate

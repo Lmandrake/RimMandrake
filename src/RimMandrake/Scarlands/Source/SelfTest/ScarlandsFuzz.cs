@@ -508,7 +508,7 @@ namespace RimMandrake.Scarlands.SelfTest
         {
             if (near) return true;                      // glower right there: always (map gen places herds by it)
             if (!entry) return false;                   // interior loc with no glower near: never, whatever the map holds
-            return mapGlower >= 10;                     // arrival at the edge: the map must hold a stand of 10+
+            return mapGlower >= 1;                      // arrival at the edge: the map must grow some glower (sparse strays)
         }
 
         public static List<string> Tetchik(int n, int baseSeed)
@@ -516,7 +516,8 @@ namespace RimMandrake.Scarlands.SelfTest
             var fails = new List<string>();
             void T(bool ok, string m) { Cases++; Steps++; if (!ok && fails.Count < 10) fails.Add("tetchik " + m); }
             T(RM_TetchikGateKernel.GlowerRadius == 6, "GlowerRadius changed from 6");
-            T(RM_TetchikGateKernel.MinMapGlower == 10, "MinMapGlower is not the spec's 10");
+            T(RM_TetchikGateKernel.MinMapGlower == 1, "MinMapGlower is not the spec's 1 (TETCHIK_GLOWER_THRESHOLD_MEASURE_SPARSE)");
+            T(RM_TetchikGateKernel.Allow(true, false, 1), "edge arrival on a map with a single stray glower refused");
             // decision table, exhaustive over the flags and across the count threshold
             foreach (bool entry in new[] { false, true }) foreach (bool near in new[] { false, true })
                 for (int g = 0; g <= 40; g++)
