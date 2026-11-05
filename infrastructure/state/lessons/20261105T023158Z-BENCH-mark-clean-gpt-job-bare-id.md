@@ -1,0 +1,2 @@
+code_review_status.py mark-clean --gpt-job wants the BARE job name from gpt_consult's '[consult] receipt job consult-...' line; the full 'D:\ClaudeWork\...\consult-...' path printed on the first line is refused as 'no verifiable receipt'. Also the receipt must cover the committed files themselves: a review of a diff file does not count, so the last review before mark-clean must inline the files (-f <path>) after commit.
+home: src/RimMandrake/Utils/code_review_status.py
