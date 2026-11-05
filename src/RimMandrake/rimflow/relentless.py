@@ -45,6 +45,7 @@ import relentless_reach  # noqa: E402
 import relentless_reachfix  # noqa: E402
 import relentless_game  # noqa: E402
 import relentless_expedite  # noqa: E402
+import relentless_binding  # noqa: E402
 import relentless_block  # noqa: E402
 import relentless_breakers  # noqa: E402
 import relentless_incident  # noqa: E402
@@ -764,7 +765,8 @@ def reach_hold(store, r, item, now):
     return why
 
 
-def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, offbox=None, reach_ok=None, r=None):
+def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, offbox=None, reach_ok=None, r=None,
+             obligation=None, scenario=None, fixtures=None, freshness=None):
     """Set by the first worker before it edits; only a redesign may change it, and says why. One exception: any worker
     may add a live line the contract lacks with the proof unchanged, since that only asks more of the work. Three
     workers of CLOSE_GATE_ENFORCE_DONE_IS_EARNED died on the lock before a redesign could add it. `offbox`: adapter names
@@ -772,7 +774,9 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
     unchanged also widens, since the Marker still judges whether each one measures its clause. Outside a redesign the offbox
     adapters and game clauses already set are kept: a change names more, never fewer. `reach_ok`: the worker's why for a
     proof that names what the walled Marker's box hides (relentless_reach.needs); without it or an adapter such a proof is
-    refused here, before a Marker is paid to say CANNOT REACH (CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE). `r`: the rules."""
+    refused here, before a Marker is paid to say CANNOT REACH (CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE). `r`: the rules.
+    `obligation`: what must be true, in the item's words (relentless_binding); only a redesign changes it, version + 1.
+    `scenario`, `fixtures`, `freshness`: the rest of the binding. A binding repair outside a redesign is `rebind`."""
     r = rules() if r is None else r
     offbox = relentless_wall.check_offbox_names(offbox, r)    # names of supervisor adapters only: no worker shell
     import live_line
@@ -805,21 +809,174 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
             if len(offbox) > relentless_wall.OFFBOX_MAX:
                 raise ValueError("at most %d offbox adapters (the contract already names %s)"
                                  % (relentless_wall.OFFBOX_MAX, ", ".join(had)))
+        old_ob = relentless_binding.obligation_of(st["contract"], item) if st["contract"] else None
+        if (st["contract"] and st["approach"] != "redesign" and obligation is not None
+                and obligation.strip() != old_ob["text"].strip()):
+            raise ValueError("the obligation (what must be true) moves only in a redesign; a broken way of measuring it "
+                             "is a binding repair: `rebind` (relentless_binding)")
+        if st["contract"] and st["approach"] != "redesign":     # a proof-only change: no typed number for a reading
+            typed = relentless_binding.typed_numbers(proof)
+            if typed and typed != relentless_binding.typed_numbers(st["contract"].get("proof")):
+                raise ValueError("the new proof %s (relentless_binding)" % "; ".join(typed))
         reach_ok = (reach_ok or "").strip() or (None if st["approach"] == "redesign" else   # a redesign's new proof
                                                   (st["contract"] or {}).get("reach_ok"))   # earns its own why
         found = relentless_reach.uncovered({"proof": proof, "offbox": offbox, "reach_ok": reach_ok}, r)
         if found:
             raise ValueError(relentless_reach.refusal(found, relentless_wall.adapters(r)))
+        prev = st["contract"]
         st["contract"] = {"proof": proof, "live": live, "by_gen": gen, "why": why}
+        ob = obligation.strip() if obligation and obligation.strip() else None
+        if prev and (ob is None or (old_ob and ob == old_ob["text"].strip())):
+            if prev.get("obligation"):
+                st["contract"]["obligation"] = prev["obligation"]
+        elif ob:
+            st["contract"]["obligation"] = {"text": ob[:relentless_binding.TEXT_MAX],
+                                            "version": (old_ob["version"] + 1) if prev else 1}
+        keep = prev and st["approach"] != "redesign"       # outside a redesign the binding only gains: a fixture
+        if keep and freshness and prev.get("freshness") and freshness != prev["freshness"]:   # set is merged, and a
+            raise ValueError("the freshness rule is set (%r): changing it is a binding repair, `rebind`"   # freshness
+                             % prev["freshness"])                                                 # moves only by rebind
+        if keep:
+            fixtures = list(prev.get("fixtures") or []) + [x for x in (fixtures or []) if x not in (prev.get("fixtures") or [])]
+        for k, v in (("scenario", scenario), ("fixtures", fixtures), ("freshness", freshness)):
+            v = v if v else ((prev or {}).get(k) if keep else None)
+            if v:
+                st["contract"][k] = v
         if reach_ok:
             st["contract"]["reach_ok"] = reach_ok[:400]
         if game:
             st["contract"]["game"] = game
         if offbox:
             st["contract"]["offbox"] = offbox
+        if prev:    # counted on the whole binding, once every field is written back
+            st["contract"]["binding_version"] = int(prev.get("binding_version") or 1) + (
+                relentless_binding.binding_hash(prev) != relentless_binding.binding_hash(st["contract"]))
         st["last_beat"] = now
         store.attempt(item, {"at": iso(now), "gen": gen, "contract": st["contract"]})
         store.save(st)
+
+
+def rebind(store, item, gen, binding, comparison, obligation=None, now=None, r=None):
+    """Any worker's proposal to repair HOW its obligation is measured (relentless_binding): `binding` holds the new
+    binding keys (proof, live, game, offbox, reach_ok, scenario, fixtures, freshness; one left out is kept), `comparison`
+    {before, after, behaviour, defect}. The contract does not move: the proposal waits for an independent Setter/Judge
+    (`bind-judge`). A weakening on its face is refused here. -> the judge's packet."""
+    r = rules() if r is None else r
+    now = time.time() if now is None else now
+    if binding.get("offbox"):
+        binding["offbox"] = relentless_wall.check_offbox_names(binding["offbox"], r)
+    if binding.get("live"):
+        import live_line
+        live_line.parse(binding["live"])
+    with store.lock():
+        st = store.load(item)
+        _fence(st, item, gen)
+        if not st.get("contract"):
+            raise ValueError("no contract is set: set one with `contract`; a repair needs a binding to repair")
+        p = st.get("binding_proposal")
+        if p:
+            raise ValueError("a binding repair already waits for its judge (%s, by %s%s): one at a time, so a refusal or "
+                             "an AMBIGUOUS is never written over by a fresh proposal"
+                             % (p["at"], p["by"], ", ruled AMBIGUOUS" if p.get("ambiguous") else ""))
+        old = relentless_binding.binding_of(st["contract"])
+        new = {k: v for k, v in old.items() if k != "version"}
+        new.update({k: v for k, v in binding.items() if v not in (None, "", [])})
+        if binding.get("fixtures"):     # merged: dropping one is the screen's to refuse, never a silent replace
+            new["fixtures"] = list(binding["fixtures"])
+        if new.get("game") and old.get("game") and binding.get("game"):     # clauses merged, never replaced
+            g = dict(old["game"], **new["game"])
+            g["clauses"] = sorted(set(old["game"].get("clauses") or []) | set(new["game"].get("clauses") or []))
+            new["game"] = g
+        why = relentless_binding.screen(st["contract"], new, comparison, item, obligation)
+        if relentless_binding.binding_hash(new) in (st.get("bindings_rejected") or []):
+            why.append("this exact binding was REJECTED by a judge before: propose a different one or snag")
+        found = relentless_reach.uncovered(new, r)
+        if found:
+            why.append(relentless_reach.refusal(found, relentless_wall.adapters(r)))
+        if why:
+            store.attempt(item, {"at": iso(now), "gen": gen, "end": "rebind_refused", "detail": "; ".join(why)[:1200]})
+            raise ValueError("binding repair refused: " + "; ".join(why))
+        st["binding_proposal"] = {
+            "by": "gen %d of %s" % (gen, item), "gen": gen, "at": iso(now), "binding": new,
+            "comparison": {k: (comparison.get(k) or "")[:relentless_binding.TEXT_MAX] for k in ("before", "after",
+                                                                                              "behaviour", "defect")},
+            "obligation_hash": relentless_binding.obligation_hash(st["contract"], item),
+            "from_binding_hash": relentless_binding.binding_hash(st["contract"])}
+        st["last_beat"] = now
+        store.attempt(item, {"at": iso(now), "gen": gen, "end": "rebind_proposed", "proposal": st["binding_proposal"]})
+        store.learn(item, "- %s gen %d proposed a binding repair (waits for bind-judge): %s"
+                    % (iso(now), gen, (comparison.get("defect") or "")[:300]))
+        store.save(st)
+    store.journal({"at": iso(now), "do": "rebind_proposed", "item": item, "gen": gen})
+    return relentless_binding.packet(st)
+
+
+def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd=None):
+    """The independent Setter/Judge's ruling on a pending binding repair. Never a worker session (RELENTLESS_GEN set) and
+    never the proposer. approve: the binding moves (binding_version + 1), the obligation does not; reject: the proposal
+    is dropped; ambiguous: it stays pending and unapplied, because ambiguity blocks. -> one line for the caller."""
+    r = rules() if r is None else r
+    env = os.environ if env is None else env
+    now = time.time() if now is None else now
+    judge, why = (judge or "").strip(), (why or "").strip()
+    if verdict not in relentless_binding.VERDICTS:
+        raise ValueError("--verdict must be one of %s" % "|".join(relentless_binding.VERDICTS))
+    if not judge or not why:
+        raise ValueError("a ruling names its judge (--as) and says why (--why): the semantic comparison it read")
+    if env.get("RELENTLESS_GEN") or env.get("RELENTLESS_HELP_NONCE"):
+        raise ValueError("a worker or consult session may not judge a binding repair: the judge is independent of the "
+                         "work (a Setter/Judge outside the item's lease)")
+    if re.search(r"(?i)\bgen\s*\d+\b|\b(?:worker|builder)\w*", judge) or item.lower() in judge.lower():
+        raise ValueError("--as %r names a worker of the work: the judge is a Setter/Judge, the Conductor or Operations, "
+                         "never a generation of the item" % judge)
+    with store.lock():
+        st = store.load(item)
+        if not st:
+            raise ValueError("%s is not enrolled" % item)
+        p = st.get("binding_proposal")
+        if not p:
+            raise ValueError("%s has no binding repair waiting" % item)
+        if judge.lower() == p["by"].lower():
+            raise ValueError("the proposer may not judge its own binding repair")
+        here = os.path.realpath(cwd or os.getcwd())
+        for c in [st.get("clone")] + [x.get("clone") for x in (st.get("quarantined") or []) if isinstance(x, dict)]:
+            if c and (here + os.sep).startswith(os.path.realpath(c) + os.sep):
+                raise ValueError("a binding repair is not judged from the item's own clone (%s): the judge stands outside "
+                                 "the work" % c)
+        rec = {"at": iso(now), "end": "rebind_" + verdict, "judge": judge, "why": why[:1200],
+               "proposal": p, "before": relentless_binding.split(st["contract"], item)}
+        if verdict == "approve":
+            stale = []
+            if relentless_binding.obligation_hash(st["contract"], item) != p["obligation_hash"]:
+                stale.append("the obligation changed since the proposal")
+            if relentless_binding.binding_hash(st["contract"]) != p["from_binding_hash"]:
+                stale.append("the binding changed since the proposal")
+            again = relentless_binding.screen(st["contract"], p["binding"], p["comparison"], item)
+            again += ["needs: %s" % x for x in relentless_reach.uncovered(p["binding"], r)]
+            if stale or again:
+                raise ValueError("cannot approve: %s" % "; ".join(stale + again))
+            c = {k: v for k, v in st["contract"].items() if k not in relentless_binding.BINDING_KEYS}
+            c.update(p["binding"])
+            c["binding_version"] = relentless_binding.binding_of(st["contract"])["version"] + 1
+            c["why"] = ("binding repair approved by %s: %s" % (judge, why))[:600]
+            st["contract"] = c
+            rec["after"] = relentless_binding.split(c, item)
+            if st.get("proof_only"):    # the held sha is judged again under the repaired binding, never the old rows
+                st["proof_only"]["binding"] = True
+            st.pop("binding_proposal", None)
+        elif verdict == "reject":
+            st["bindings_rejected"] = (st.get("bindings_rejected") or []) + [relentless_binding.binding_hash(p["binding"])]
+            st.pop("binding_proposal", None)
+        else:
+            p["ambiguous"] = {"judge": judge, "why": why[:600], "at": iso(now)}
+        store.attempt(item, rec)
+        store.learn(item, "- %s binding repair %s by %s: %s" % (iso(now), verdict.upper(), judge, why[:300]))
+        store.save(st)
+    store.journal({"at": iso(now), "do": "rebind_" + verdict, "item": item, "judge": judge})
+    tail = ""
+    if verdict == "approve" and st["status"] == "blocked":
+        tail = "; the item waits on a ledger block: `rimflow unblock %s` lets it back in line" % item
+    return "%s: binding repair %s%s" % (item, verdict.upper(), tail)
 
 
 def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=0, on=None, blocker=None):
@@ -834,6 +991,8 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
     with store.lock():
         st = store.load(item)
         _fence(st, item, gen, stage_ok=True)
+        if (klass or "").lower() == "binding_repair" and not st.get("binding_proposal"):
+            raise ValueError("no binding repair is waiting: propose it first with `rebind` (relentless_binding)")
         if relentless_game.staging(st, gen):    # the supervisor releases the bridge first, then returns the item
             st["game"]["snag"] = {"class": klass, "detail": (detail or "")[:2000], "at": now}
             store.save(st)
@@ -3470,6 +3629,10 @@ def worker_prompt(st, text, learned, r, history=None, causes=None):
             "names what the box hides (a masked path, git history, ssh, a Windows program) unless --offbox routes it or "
             "--reach-ok says why the box can still show it; the live line is read for the checker outside the wall." % (", ".join(sorted(relentless_wall.adapters(rules()))) or "none yet"),
             "A contract with no live line may gain one from any worker: the same --proof plus --live and --why.",
+            "Work done but the contract's proof broken (unrunnable, misnamed, measured where the box cannot reach)? Repair HOW, "
+            "never WHAT: `%s rebind --item %s --gen %d --proof \"...\" --before \"what it measured\" --after \"what the new one "
+            "measures\" --behaviour same --defect \"evidence it is broken\"`, then `snag --class binding_repair --blocker judge`: "
+            "an independent judge applies or refuses it. A typed number, a dropped clause or a changed obligation is refused." % (rc, i, g),
             "An item whose fix died before (`rimflow show` says OWES A GUARD) closes only with a class guard test shown failing on "
             "the instance: `rimflow guard <ID> --test <selftest*.py>` before the fix lands, then commit the test and the ledger shard.",
             "Hit a wall? `snag` and exit: the item goes back to the top with your finding. Do not ask anyone. If "
@@ -6251,12 +6414,29 @@ def main(argv=None):
     sub.add_parser("fence-hook")
     p = sub.add_parser("show")
     p.add_argument("item")
-    for name in ("beat", "learn", "contract", "snag", "finish"):
+    for name in ("beat", "learn", "contract", "rebind", "snag", "finish"):
         p = sub.add_parser(name)
         p.add_argument("--item", required=True)
         p.add_argument("--gen", required=True, type=int)
         if name in ("learn", "snag"):
             p.add_argument("text")
+        if name in ("contract", "rebind"):
+            p.add_argument("--obligation", help="what must be true, in the item's words; only a redesign changes it")
+            p.add_argument("--scenario", help="the binding's scenario: where and on what the proof is run")
+            p.add_argument("--fixture", dest="fixtures", action="append", help="a fixture the proof reads (repeatable)")
+            p.add_argument("--freshness", help="how fresh its evidence must be, e.g. 'same sha' or 'max_age=6h'")
+        if name == "rebind":
+            p.add_argument("--proof", help="the new proof; left out, the old one is kept")
+            p.add_argument("--before", required=True, help="what the old binding measured")
+            p.add_argument("--after", required=True, help="what the new binding measures")
+            p.add_argument("--behaviour", required=True, help="'same' when no acceptable behaviour changes; else refused")
+            p.add_argument("--defect", required=True, help="the evidence that the old binding is broken")
+            p.add_argument("--live")
+            p.add_argument("--game")
+            p.add_argument("--game-why")
+            p.add_argument("--no-offline")
+            p.add_argument("--offbox", action="append")
+            p.add_argument("--reach-ok", dest="reach_ok")
         if name == "contract":
             p.add_argument("--proof", required=True)
             p.add_argument("--live")
@@ -6279,6 +6459,13 @@ def main(argv=None):
         if name == "finish":
             p.add_argument("--sha", required=True)
             p.add_argument("--evidence", required=True)
+    p = sub.add_parser("bind-judge", help="the independent Setter/Judge's ruling on a pending binding repair "
+                       "(relentless_binding); --packet prints what to compare")
+    p.add_argument("--item", required=True)
+    p.add_argument("--as", dest="judge")
+    p.add_argument("--verdict", choices=relentless_binding.VERDICTS)
+    p.add_argument("--why")
+    p.add_argument("--packet", action="store_true")
     p = sub.add_parser("explain", help="the written explanation of the last ending (relentless_explain): expected, observed, "
                                        "mechanism, evidence per step, theories ruled out, and the open follow-up item")
     p.add_argument("--item", required=True)
@@ -6422,7 +6609,25 @@ def main(argv=None):
             learn(store, a.item, a.gen, a.text)
         elif a.cmd == "contract":
             contract(store, a.item, a.gen, a.proof, a.live, a.why,
-                     game=relentless_game.parse_game(a.game, a.game_why, a.no_offline), offbox=a.offbox, reach_ok=a.reach_ok)
+                     game=relentless_game.parse_game(a.game, a.game_why, a.no_offline), offbox=a.offbox, reach_ok=a.reach_ok,
+                     obligation=a.obligation, scenario=a.scenario, fixtures=a.fixtures, freshness=a.freshness)
+        elif a.cmd == "rebind":
+            game = relentless_game.parse_game(a.game, a.game_why, a.no_offline) if a.game else None
+            print(rebind(store, a.item, a.gen, {"proof": a.proof, "live": a.live, "game": game, "offbox": a.offbox,
+                                                "reach_ok": a.reach_ok, "scenario": a.scenario, "fixtures": a.fixtures,
+                                                "freshness": a.freshness},
+                         {"before": a.before, "after": a.after, "behaviour": a.behaviour, "defect": a.defect},
+                         obligation=a.obligation))
+        elif a.cmd == "bind-judge":
+            if a.packet:
+                st = store.load(a.item)
+                if not st or not st.get("binding_proposal"):
+                    raise ValueError("%s has no binding repair waiting" % a.item)
+                print(relentless_binding.packet(st))
+            else:
+                if not a.verdict:
+                    raise ValueError("--verdict approve|reject|ambiguous (or --packet)")
+                print(bind_judge(store, a.item, a.judge, a.verdict, a.why))
         elif a.cmd == "game-ready":
             relentless_game.ready(store, a.item, a.gen, a.text)
         elif a.cmd == "reload-needed":
