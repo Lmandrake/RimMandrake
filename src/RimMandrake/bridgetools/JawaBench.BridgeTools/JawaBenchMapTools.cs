@@ -899,7 +899,7 @@ namespace JawaBench.BridgeTools
                 "⚠️ WALLS CREATE NO ROOF; roof separately with jawa/set_roof_batch. " +
                 "🔴 READ `survived`, NOT `placed`. placed counts spawns that succeeded; a LATER " +
                 "op whose multi-cell footprint covers an earlier one destroys it, and both " +
-                "report success. Everything destroyed is named in displaced[]. Pass " +
+                "report success. Everything destroyed is named in displaced[] (a same-def thing at the same cell is destroyed and replaced, never left beside the new one; a row is written only once the thing is really gone). Pass " +
                 "refuseIfDisplaces to make that an error instead. " +
                 "Call jawa/map_commit after a batch.",
             ResultDescription =
@@ -915,7 +915,7 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Who owns the buildings. A FactionDef defName, OR the aliases 'player' / 'hostile' / 'none' that jawa/spawn_pawn takes. Empty = no faction.")] string faction = null,
             [ToolParameter(Description = "Awful|Poor|Normal|Good|Excellent|Masterwork|Legendary.")] string quality = null,
             [ToolParameter(Description = "Hit points. -1 leaves the PostMake roll.")] int hitPoints = -1,
-            [ToolParameter(Description = "Default true: a spawn destroys whatever it lands on, because RimWorld has no non-wiping spawn. Set false to REFUSE such an op instead - same effect as refuseIfDisplaces.")] bool wipeExisting = true,
+            [ToolParameter(Description = "Default true: a spawn destroys whatever it lands on, because RimWorld has no non-wiping spawn. Set false to REFUSE such an op instead - same effect as refuseIfDisplaces, and it also refuses replacing a same-def thing at the same cell.")] bool wipeExisting = true,
             [ToolParameter(Description = "Read back at most this many things. Default 8.")] int readBack = 8,
             [ToolParameter(Description = "REFUSE any op that would destroy something already standing, instead of wiping it. Off by default, because a door legitimately replaces the wall in its cell. Turn it on when a generator's output must not eat itself.")] bool refuseIfDisplaces = false)
         {
@@ -1050,6 +1050,21 @@ namespace JawaBench.BridgeTools
                         // and clearing the flag changed nothing at all. The only honest
                         // reading of "do not wipe" is "do not place it, then" - the same
                         // refusal refuseIfDisplaces already gives.
+                        // BUILDBATCH_FIX_REPLACE_LEAVES_OLD_THING: wipeExisting=false over a same-def
+                        // thing used to place a SECOND one beside it (a non-edifice is not wiped by
+                        // Spawn), so "do not wipe" refuses here too. refuseIfDisplaces alone still
+                        // lets an identical re-stamp through (idempotent, the comment above).
+                        if (replacedInPlace.Count > 0 && !wipeExisting)
+                        {
+                            failures.Add(new
+                            {
+                                op,
+                                why = "wipeExisting=false: a " + td.defName + " already stands at " + c.x + "," + c.z
+                                      + " and replacing it means destroying it: "
+                                      + string.Join(", ", replacedInPlace.Select(d => d.ThingID).ToArray())
+                            });
+                            continue;
+                        }
                         if (doomed.Count > 0 && (refuseIfDisplaces || !wipeExisting))
                         {
                             failures.Add(new
@@ -1062,28 +1077,20 @@ namespace JawaBench.BridgeTools
                             });
                             continue;
                         }
-                        foreach (var d in doomed)
-                            displaced.Add(new
-                            {
-                                op,
-                                destroyed = d.def.defName,
-                                x = d.Position.x,
-                                z = d.Position.z,
-                                // The case that made this item: the thing destroyed was placed
-                                // by an EARLIER op of this same run, so `placed` counted it.
-                                placedByThisBatch = spawnedThings.Contains(d),
-                                sameDefReplacedInPlace = false
-                            });
+                        // Recorded BEFORE anything dies (spawnedThings.Contains still answers), written
+                        // AFTER the spawn, and only for what really is Destroyed then.
+                        var victims = new List<KeyValuePair<Thing, bool>>();
+                        foreach (var d in doomed) victims.Add(new KeyValuePair<Thing, bool>(d, false));
+                        foreach (var d in replacedInPlace) victims.Add(new KeyValuePair<Thing, bool>(d, true));
+                        var victimsPlacedHere = victims.Select(v => spawnedThings.Contains(v.Key)).ToList();
+
+                        // 🔴 BUILDBATCH_FIX_REPLACE_LEAVES_OLD_THING. GenSpawn.Spawn wipes only what
+                        // SpawningWipes says it wipes, and for two NON-EDIFICE buildings of one def
+                        // (RM_Ladder: isEdifice=false) it says no - so the old unowned ladder stayed
+                        // spawned beside the new player one while displaced[] reported it destroyed.
+                        // Destroy a same-def-in-place thing ourselves; that is what "replace" means.
                         foreach (var d in replacedInPlace)
-                            displaced.Add(new
-                            {
-                                op,
-                                destroyed = d.def.defName,
-                                x = d.Position.x,
-                                z = d.Position.z,
-                                placedByThisBatch = spawnedThings.Contains(d),
-                                sameDefReplacedInPlace = true
-                            });
+                            if (!d.Destroyed) d.Destroy(DestroyMode.Vanish);
 
                         // GenSpawn.Spawn below does WipeExistingThings(..., Vanish) itself.
                         var t = ThingMaker.MakeThing(td, useStuff);
@@ -1105,6 +1112,32 @@ namespace JawaBench.BridgeTools
                             foreach (var pw in td.PlaceWorkers)
                                 try { pw.PostPlace(map, td, c, rot); }
                                 catch (Exception e) { placeWorkerWarnings.Add(new { op, placeWorker = pw.GetType().Name, why = e.GetType().Name + ": " + e.Message }); }
+
+                        // A displaced[] row is a claim that the thing is gone: write it only when it
+                        // is, and name the survivor otherwise (the lie this item caught).
+                        for (int vi = 0; vi < victims.Count; vi++)
+                        {
+                            var d = victims[vi].Key;
+                            if (d.Destroyed)
+                                displaced.Add(new
+                                {
+                                    op,
+                                    destroyed = d.def.defName,
+                                    x = d.Position.x,
+                                    z = d.Position.z,
+                                    // The case that made BUILD_BATCH_OVERWRITES_SILENTLY_1: the thing
+                                    // destroyed was placed by an EARLIER op of this same run.
+                                    placedByThisBatch = victimsPlacedHere[vi],
+                                    sameDefReplacedInPlace = victims[vi].Value
+                                });
+                            else
+                                failures.Add(new
+                                {
+                                    op,
+                                    why = "expected to destroy " + d.ThingID + " (" + d.def.defName + "@" + d.Position.x + "," + d.Position.z
+                                          + ") but it is still spawned beside the new thing"
+                                });
+                        }
 
                         if (spawned != null) { placed++; spawnedThings.Add(spawned); }
                         else failures.Add(new { op, why = "GenSpawn.Spawn returned null" });

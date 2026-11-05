@@ -1,0 +1,4 @@
+# A quicktest map on a list holding FlowWorks (mandrake.rm.flowworks: RM_Ladder) with the companion built at or after this item; all five DLC.
+# The companion (RimWorld\BridgeTools\JawaBench) must be built at or after this item: python3 src/RimMandrake/bridgetools/build.py --gm --apply with the game closed. Without it the proof fails A1 (the old ladder survives), never a false pass.
+live-mods: FlowWorks
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_build_batch_replace.py < /dev/null

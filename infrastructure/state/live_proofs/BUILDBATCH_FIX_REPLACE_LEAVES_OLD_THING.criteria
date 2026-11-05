@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map, jawa/build_batch RM_Ladder (faction player, wipeExisting=true) over an unowned RM_Ladder at the same cell reports it in displaced[] with sameDefReplacedInPlace and leaves exactly ONE RM_Ladder there (list_things), the new player-owned one; wipeExisting=false over it is refused and still leaves one
