@@ -64,6 +64,51 @@ def all_mods():
     return out
 
 
+def deploy_attempt(worker):
+    """Drive worker.Attempt.deploy for a TerminalBiomes job without a game, a deploy or a copy: sh() is recorded and
+    answers rc 0, companion() answers True. Returns nothing; each route's recorded command must name LuminousPigment."""
+    import io
+    import shlex
+
+    def attempt():
+        a = worker.Attempt.__new__(worker.Attempt)          # __init__ reads an attempt dir; none is needed here
+        a.job = {"id": "selftest", "mod": "TerminalBiomes", "deploy": []}
+        a.d = tempfile.mkdtemp(prefix="deploy_attempt_")
+        a.log = io.StringIO()
+        a.res = {"outcome": None, "cause": None, "note": ""}
+        a.cmds = []
+        a.sh = lambda cmd, log_name=None, timeout=None: (a.cmds.append(cmd) or (0, ""))
+        a.companion = lambda: True
+        return a
+
+    saved_clone, saved_env = worker.CLONE, os.environ.get("TESTQ_CMD_DEPLOY")
+    worker.CLONE = REPO                                     # deploy_closure reads the job tree from CLONE
+    try:
+        os.environ["TESTQ_CMD_DEPLOY"] = "record-deploy"
+        a = attempt()
+        ok(a.deploy() is True, "Attempt.deploy (override route) succeeds on a recorded sh", a.res)
+        words = shlex.split(a.cmds[0]) if a.cmds else []
+        ok(words[:1] == ["record-deploy"] and "TerminalBiomes" in words and "LuminousPigment" in words,
+           "Attempt.deploy (override route) deploys LuminousPigment with TerminalBiomes", a.cmds)
+        shutil.rmtree(a.d, ignore_errors=True)
+
+        del os.environ["TESTQ_CMD_DEPLOY"]
+        a = attempt()
+        ok(a.deploy() is True, "Attempt.deploy (plan route) succeeds when the plan finds no drift", a.res)
+        plan = [c for c in a.cmds if "deploy_custom_mods.py" in c]
+        words = shlex.split(plan[0]) if plan else []
+        flags = list(zip(words, words[1:]))
+        ok(("--with", "LuminousPigment") in flags and ("--compose", "biomes") in flags,
+           "Attempt.deploy (plan route) plans --compose biomes --with LuminousPigment", a.cmds)
+        shutil.rmtree(a.d, ignore_errors=True)
+    finally:
+        worker.CLONE = saved_clone
+        if saved_env is None:
+            os.environ.pop("TESTQ_CMD_DEPLOY", None)
+        else:
+            os.environ["TESTQ_CMD_DEPLOY"] = saved_env
+
+
 def main():
     have = runner.src_mods_by_id()
     ok(have.get("mandrake.rm.luminouspigment") == "LuminousPigment", "src map names LuminousPigment by its folder",
@@ -135,6 +180,11 @@ def main():
             ok(True, "worker: a modcheck runner that will not import raises")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+
+    # 5. Attempt.deploy itself hands the closure to the deploy command (a blind check found section 4 stays green
+    # with the `mods += extra` line in deploy() taken out): both routes, the TESTQ_CMD_DEPLOY override and the
+    # deploy_custom_mods.py plan, are driven with sh() recorded instead of run
+    deploy_attempt(worker)
 
     print("ALL PASS" if not FAILS else "%d FAILED" % len(FAILS))
     return 1 if FAILS else 0
