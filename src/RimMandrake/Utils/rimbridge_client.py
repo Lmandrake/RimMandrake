@@ -91,6 +91,7 @@ import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
+import calendar
 import hashlib
 import json
 import os
@@ -162,7 +163,9 @@ def _log_session(started, calls, client):
 # marker that is removed only when the bridge ANSWERS. If the reply is lost (timeout, closed socket, crash) the marker
 # stays as INDETERMINATE and every later mutating call - the retry included - raises IndeterminateError until
 # `python rimbridge_client.py --reconcile` records what actually happened (read the game with read-only calls
-# first). If the intent row cannot be written, the mutation is refused; a read only warns.
+# first). Before refusing, call() runs reconcile_auto(), which settles as "moot" only what cannot matter (the game
+# process is gone; a dead writer's repeat-safe tool). If the intent row cannot be written, the mutation is refused; a
+# read only warns.
 # Default on Windows only: the bridge is reachable only from python.exe (WSL2 is NAT-mode, so a WSL call dies at
 # connect, before any tools/call), and a WSL selftest faking a lost reply must never leave a REAL marker behind.
 EVIDENCE_LOG = (os.environ["RIMBRIDGE_EVIDENCE_LOG"] if "RIMBRIDGE_EVIDENCE_LOG" in os.environ   # lazy: SESSION_LOG
@@ -419,6 +422,117 @@ def reconcile_resolve(cid, verdict, note):
               required=True)
     _inflight_clear(cid)
     _UNRESOLVED.pop(cid, None)
+
+
+# BRIDGE_PENDINGCALL_RECONCILE_INDETERMINATE: nothing ran the reconcile, so one lost reply (b7164851922b4797
+# jawa/safe_advance from prove_sandswim.py, 2026-11-04T02:14Z) refused every later live proof (PIT_LIP A1-A3, 02:22)
+# until a human resolved it an hour later. reconcile_auto() settles, as "moot", only the markers whose answer cannot
+# matter, reading nothing but the OS process table and the marker itself (no bridge call, no game write):
+#   1 the game process the call went to is gone: no RimWorld runs, or the one running started after the call;
+#   2 its writer process is gone AND the tool is REPEAT_SAFE: applying it again changes nothing a caller relied on.
+# Everything else (a live writer, an unreadable marker, a non-repeat-safe tool in the same game, a marker this
+# process failed to write) still refuses, and --reconcile lists it for a human-read verdict.
+REPEAT_SAFE_TOOLS = {
+    "rimworld/pause_game": "sets the pause flag to a value: a second set is the same state",
+    "rimworld/set_time_speed": "sets the speed to a value: a second set is the same state",
+    "jawa/weather_set": "sets the weather to a value: a second set is the same state",
+    "jawa/safe_advance": "advances the clock: a later caller reads the clock it finds, it never relied on this one",
+}
+GAME_PROCESS = "RimWorldWin64.exe"
+_FILETIME_EPOCH = 116444736000000000           # 1601-01-01 to 1970-01-01, in 100 ns ticks
+GAME_START_SLACK_S = 2.0                       # marker `t` is whole seconds; the game's start is exact
+
+
+def _iso_epoch(t):
+    try:
+        return calendar.timegm(time.strptime(t, "%Y-%m-%dT%H:%M:%SZ"))
+    except (TypeError, ValueError):
+        return None
+
+
+def game_starts():
+    """Start times (epoch s) of every running RimWorld, [] when none runs, None when this OS cannot say. Windows only:
+    the markers and the game both live there; from WSL the answer is None (never [] - that would read as 'gone')."""
+    if os.name != "nt":
+        return None
+    try:
+        import ctypes
+        from ctypes import wintypes
+
+        class PE(ctypes.Structure):
+            _fields_ = [("dwSize", wintypes.DWORD), ("cntUsage", wintypes.DWORD),
+                        ("th32ProcessID", wintypes.DWORD), ("th32DefaultHeapID", ctypes.c_size_t),
+                        ("th32ModuleID", wintypes.DWORD), ("cntThreads", wintypes.DWORD),
+                        ("th32ParentProcessID", wintypes.DWORD), ("pcPriClassBase", ctypes.c_long),
+                        ("dwFlags", wintypes.DWORD), ("szExeFile", ctypes.c_wchar * 260)]
+        k = ctypes.windll.kernel32
+        k.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+        snap = k.CreateToolhelp32Snapshot(0x2, 0)                      # TH32CS_SNAPPROCESS
+        if not snap or snap == wintypes.HANDLE(-1).value:
+            return None
+        out = []
+        try:
+            e = PE()
+            e.dwSize = ctypes.sizeof(PE)
+            ok = k.Process32FirstW(snap, ctypes.byref(e))
+            while ok:
+                if e.szExeFile.lower() == GAME_PROCESS.lower():
+                    ft = _proc_start(e.th32ProcessID)
+                    if ft is None:
+                        return None                                    # a game we cannot date: say nothing
+                    out.append((ft - _FILETIME_EPOCH) / 1e7)
+                ok = k.Process32NextW(snap, ctypes.byref(e))
+        finally:
+            k.CloseHandle(snap)
+        return out
+    except (OSError, AttributeError, ValueError):
+        return None
+
+
+def _moot_why(rec, starts):
+    """Why this marker's outcome cannot matter any more, or None when it still might."""
+    cid = rec.get("cid")
+    if cid in _ACTIVE or cid in _UNRESOLVED or rec.get("status") == "UNREADABLE marker":
+        return None
+    t = _iso_epoch(rec.get("t"))
+    if starts is not None and t is not None:
+        if not starts:
+            return "the game process it went to is gone: no %s runs" % GAME_PROCESS
+        if all(s > t + GAME_START_SLACK_S for s in starts):
+            return ("the game process it went to is gone: the running %s started %s, after the call"
+                    % (GAME_PROCESS, time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(max(starts)))))
+    tool = rec.get("tool")
+    if tool in REPEAT_SAFE_TOOLS and rec.get("os") in (None, os.name) \
+            and not _pid_alive(rec.get("pid") or 0, rec.get("pid_start")):
+        return "its writer (pid %s, %s) is gone and %s is repeat-safe: %s" % (
+            rec.get("pid"), rec.get("script"), tool, REPEAT_SAFE_TOOLS[tool])
+    return None
+
+
+def reconcile_auto(starts=None):
+    """Settle every outstanding marker whose outcome cannot matter (see REPEAT_SAFE_TOOLS); return (settled, left).
+    Read-only towards the game. `starts` overrides game_starts() (tests)."""
+    pend = outstanding_indeterminate()
+    if not pend:
+        return [], []
+    if starts is None:
+        starts = game_starts()
+    settled, left = [], []
+    for rec in pend:
+        why = _moot_why(rec, starts)
+        if why is None:
+            left.append(rec)
+            continue
+        try:
+            reconcile_resolve(rec["cid"], "moot", "auto-reconcile (%s %s): %s" % (rec.get("tool"), rec.get("t"), why))
+        except OSError as ex:
+            print("[rimbridge_client] auto-reconcile of %s NOT recorded (%s)" % (rec.get("cid"), ex), file=sys.stderr)
+            left.append(rec)
+            continue
+        print("[rimbridge_client] auto-reconciled %s %s as moot: %s" % (rec.get("cid"), rec.get("tool"), why),
+              file=sys.stderr)
+        settled.append(dict(rec, moot=why))
+    return settled, left
 
 
 def _args_sha(params):
@@ -1001,6 +1115,8 @@ class RimBridge:
                 clamp = room
             pending = outstanding_indeterminate()
             if pending:
+                pending = reconcile_auto()[1]
+            if pending:
                 raise IndeterminateError(
                     "refusing %s: %d earlier mutating call(s) have an UNKNOWN outcome (%s). A retry could apply it "
                     "twice. Read the game with read-only calls, then record the answer:\n  python "
@@ -1157,8 +1273,11 @@ def _main(argv=None):
                     help="declare a jawa/static_call a read; accepted only for READ_ONLY_STATIC_CALLS")
     ap.add_argument("--reconcile", action="store_true",
                     help="list mutating calls with an UNKNOWN outcome (touches no game); with --resolve, record one")
+    ap.add_argument("--auto", action="store_true",
+                    help="with --reconcile: first settle as moot what cannot matter (game gone; dead writer of a "
+                         "repeat-safe tool), reading only the process table")
     ap.add_argument("--resolve", metavar="CID")
-    ap.add_argument("--as", dest="verdict", choices=("applied", "not-applied", "partial"))
+    ap.add_argument("--as", dest="verdict", choices=("applied", "not-applied", "partial", "moot"))
     ap.add_argument("--note", default="")
     args = ap.parse_args(argv)
 
@@ -1170,6 +1289,9 @@ def _main(argv=None):
             reconcile_resolve(args.resolve, args.verdict, args.note)
             print("reconciled %s as %s" % (args.resolve, args.verdict))
             return 0
+        if args.auto:
+            for p in reconcile_auto()[0]:
+                print("  settled %s  %s  moot: %s" % (p.get("cid"), p.get("tool"), p.get("moot")))
         pend = outstanding_indeterminate()
         print("evidence log %s; %d mutating call(s) with UNKNOWN outcome" % (EVIDENCE_LOG, len(pend)))
         for p in pend:
