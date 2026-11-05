@@ -1467,6 +1467,8 @@ def judge_fixture(p: Path, ctx: Ctx) -> dict:
 def judge_all(ctx: Ctx) -> list[dict]:
     rows = []
     for kind, p in candidates():
+        if not os.path.lexists(p):      # a selftest removed it between the listing and the walk: gone is not refused
+            continue
         if kind == "fixture":
             rows.append(judge_fixture(p, ctx))
         elif kind == "clone":
