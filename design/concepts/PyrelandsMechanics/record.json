@@ -40,7 +40,48 @@
    "source": "design/Jawa/worldbuilding/biomes/_freeze_rulings_2026-09-07.md:313"
   }
  ],
- "decisions": [],
+ "decisions": [
+  {
+   "id": "d_root",
+   "kind": "root",
+   "speaker": "owner",
+   "source": "OWNER:1793895903357725756",
+   "words": "If you try to pick the scorchfruit during one of their events, they issue warnings, then attack to drive you away (not a full blown raid, just defense of the fruit). Actually just remove the count thing... that's a mechanic we don't even need. They can't see you all the time. And never do they react to an animal doing something to blame the player. Attacking them overtly makes them raid you back of course, and they may continue to do so later.",
+   "what": "Root approved as corrected (no arson count; no animal blame; fruit defence, not a raid; overt attack brings raids back)"
+  },
+  {
+   "id": "d_no_arson_count",
+   "kind": "scope",
+   "speaker": "owner",
+   "source": "OWNER:1793895903357725756",
+   "words": "Actually just remove the count thing... that's a mechanic we don't even need. They can't see you all the time.",
+   "what": "Arson debt / arson-justice raid is out: scope opened_by_owner, to be removed (inv_arson_justice_raid, and the arson tally in mandrake.rm.pyrelands)"
+  },
+  {
+   "id": "d_no_animal_blame",
+   "kind": "scope",
+   "speaker": "owner",
+   "source": "OWNER:1793895903357725756",
+   "words": "And never do they react to an animal doing something to blame the player.",
+   "what": "Does not: a fire-hawk's twig, a furnace-beast's bed or any animal act never counts against the player"
+  },
+  {
+   "id": "d_fruit_defence",
+   "kind": "scope",
+   "speaker": "owner",
+   "source": "OWNER:1793895903357725756",
+   "words": "If you try to pick the scorchfruit during one of their events, they issue warnings, then attack to drive you away (not a full blown raid, just defense of the fruit).",
+   "what": "Does: picking scorch-fruit during a Tribes event draws a warning, then a bounded attack that drives the picker off; not a raid"
+  },
+  {
+   "id": "d_raid_back",
+   "kind": "scope",
+   "speaker": "owner",
+   "source": "OWNER:1793895903357725756",
+   "words": "Attacking them overtly makes them raid you back of course, and they may continue to do so later.",
+   "what": "Does: an overt attack on the Tribes makes them hostile and they raid back, possibly repeatedly later (likely vanilla faction hostility; stage 2 confirms nothing extra is wanted)"
+  }
+ ],
  "asks": [
   {
    "id": "a_flagship",
@@ -75,7 +116,7 @@
   },
   {
    "id": "a_debt_visible",
-   "status": "draft",
+   "status": "struck",
    "speaker": "agent",
    "source": [
     "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs"
@@ -83,7 +124,8 @@
    "about": [
     "inv_arson_justice_raid"
    ],
-   "text": "Arson debt builds silently from every fire your colony owns, your tamed fire-hawk and furnace-beast included, until a raid lands. Before that raid, should you have been able to see the debt growing (a goodwill warning, a letter, a number somewhere), or is the surprise the point?"
+   "text": "Arson debt builds silently from every fire your colony owns, your tamed fire-hawk and furnace-beast included, until a raid lands. Before that raid, should you have been able to see the debt growing (a goodwill warning, a letter, a number somewhere), or is the surprise the point?",
+   "struck_why": "answered by OWNER:1793895903357725756: the arson count is removed, so there is no debt to show"
   },
   {
    "id": "ask_root",
@@ -96,10 +138,12 @@
     "inv_flame_harvest_visit",
     "inv_arson_justice_raid"
    ],
-   "owner_cites": [],
+   "owner_cites": [
+    "OWNER:1793895903357725756"
+   ],
    "offers_removal": false,
    "author": "rm-role-designer-1793866044",
-   "status": "sent",
+   "status": "answered",
    "source": [
     "design/concepts/PyrelandsMechanics/turn_01.md",
     "design/Jawa/worldbuilding/biomes/_freeze_rulings_2026-09-07.md:313"
@@ -108,7 +152,29 @@
     "by": "rm-judge a4076b10482d95ea4 (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "Settles the root, answerable in a phrase, offers no removal. Fixed on review: the line catches at the lead harvester (no lighting job); a raid comes only if the goodwill hit makes them hostile, debt decays; raid 0.6x with a 250-point floor so 'usually smaller'; after the raid only the debt clears and the Tribes stay at war (no rites while hostile); a shot-at party defends itself; any colony-attributed fire counts; the check is Pyrelands biome, not home map; R14 harvester wording attributed to the ruling, not quoted as his."
-   }
+   },
+   "answer": "OWNER:1793895903357725756"
+  },
+  {
+   "id": "a_fruit_defence_reach",
+   "status": "draft",
+   "speaker": "agent",
+   "author": "rm-role-designer-1793896435",
+   "offers_removal": false,
+   "owner_cites": [
+    "OWNER:1793895903357725756"
+   ],
+   "about": [
+    "inv_fruit_defence",
+    "inv_fire_rite_party",
+    "inv_flame_harvest_visit"
+   ],
+   "decision": "Which picking counts as trespass on their fruit, and what 'drive you away' ends with",
+   "text": "When the Tribes are on your map for their rite, which scorch-fruit is theirs: only the fruit in the scar their own party lit, or any scorch-fruit anywhere on the map while they are there? And once they have driven your picker off, is that the end of it (goodwill unchanged), or does it cost you goodwill?",
+   "source": [
+    "OWNER:1793895903357725756",
+    "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_HarvestScorchFruit.cs"
+   ]
   }
  ],
  "inventory": [
@@ -127,10 +193,12 @@
     "src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/PyrelandsFuzz.cs"
    ],
    "proof_note": "live: only a fire_incident dry run; the debt-past-threshold row is UNMEASURED in validation.py. Offline: the gate (RaidCanFire, ArsonStep) is fuzzed in PyrelandsFuzz.cs.",
-   "scope": "not_opened",
+   "scope": "opened_by_owner",
    "source": [
     "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs"
-   ]
+   ],
+   "scope_source": "OWNER:1793895903357725756",
+   "scope_note": "owner 2026-11-05: remove the count; out"
   },
   {
    "id": "inv_flame_harvest_visit",
@@ -275,6 +343,18 @@
    "source": [
     "design/Jawa/worldbuilding/biomes/the_pyrelands.md:180"
    ]
+  },
+  {
+   "id": "inv_fruit_defence",
+   "what": "Fruit defence: during a Tribes rite or visit, a colonist picking scorch-fruit draws a warning, then the party attacks to drive the picker away (not a raid)",
+   "impl": "absent",
+   "search_scope": "grep -liE 'scorch.?fruit' then 'warn|trespass|defen' over src/RimUtinni/PyrelandsMechanics/Source and src/RimMandrake/Pyrelands/Source *.cs (4 files: rite lord defend toil only, no picker-warning logic), 2026-11-05",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1793895903357725756",
+   "source": [
+    "OWNER:1793895903357725756"
+   ]
   }
  ],
  "built_reviewed": [
@@ -317,6 +397,31 @@
    ],
    "text": "Two built mechanisms put Tribes at a burn: the flame-harvest visit (walks to the fire, leaves, picks nothing) and the rite (lights it, picks scorch-fruit, carries it off). The sheet's 'burn-line walked for scorch-fruit' is only met by the rite. What the visit should look like at the fire is for him (ask a_harvest_visit_at_the_fire); neither is put up for removal.",
    "status": "open"
+  },
+  {
+   "id": "c_arson_count_built",
+   "core": true,
+   "resolved": false,
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793895903357725756",
+    "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs"
+   ],
+   "status": "open",
+   "text": "Built: arson debt tallied from colony fires (including fire-hawk twigs and furnace-beast beds, in mandrake.rm.pyrelands' burn kernel) and RUT_FireRaid with its settings. His word removes the count and forbids animal blame. Removal is a Relentless build (both tiers: the tally lives in the franchise-free mod); nothing to ask him."
+  },
+  {
+   "id": "c_rite_never_attacks_vs_fruit_defence",
+   "core": true,
+   "resolved": false,
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793895903357725756",
+    "src/RimUtinni/PyrelandsMechanics/Source/LordJob_RUT_FireRite.cs"
+   ],
+   "status": "open",
+   "text": "Built rite lord: a party turned hostile simply leaves, never fights. His fruit defence needs a warn-then-drive-off step inside the rite (and visit) that is an attack yet not a war. Its reach is a_fruit_defence_reach."
   }
  ],
  "script_audit": [
@@ -369,5 +474,12 @@
  "root_draft": {
   "text_file": "design/concepts/PyrelandsMechanics/turn_01.md",
   "status": "sent as ask_root"
+ },
+ "root": {
+  "text": "The Deep Desert Tribes are the Pyrelands' fire harvesters. They come into the Pyrelands now and then for their fire rite and to reap what the fire leaves, then go home to the deep desert; the Pyre burns with or without them. On a Pyrelands map, some of the fire's scheduled burns arrive with people: a small Tribes party walks in off the sand and the line catches where they stand; they work the black behind the front picking scorch-fruit without stepping into the flames, and leave carrying what they took. When a lot of fire is already standing, a peaceful Tribes group may also walk in to the burn. If your colonists pick scorch-fruit during one of their events, the Tribes warn them, then attack to drive them away: a defence of the fruit, not a full-blown raid. The Tribes keep no count of your colony's fires (they cannot see you all the time), and they never blame you for anything an animal does. Attack them openly and they raid you back, and they may go on raiding you later. Judged first: a rite party seen in ordinary play, lighting the grass, picking scorch-fruit in the scar behind the front, and walking off the map with it.",
+  "source": "OWNER:1793895903357725756",
+  "speaker": "owner",
+  "quote": "If you try to pick the scorchfruit during one of their events, they issue warnings, then attack to drive you away (not a full blown raid, just defense of the fruit). Actually just remove the count thing... that's a mechanic we don't even need. They can't see you all the time. And never do they react to an animal doing something to blame the player. Attacking them overtly makes them raid you back of course, and they may continue to do so later.",
+  "note": "turn_01 root corrected by his card answer 2026-11-05 to ask_root (\"Correct any word, or say yes\"), card: rewrite the root as he says, then continue. Applied: arson count and the animal-blame clause removed; fruit defence (warn, then drive off) added; the raid-back on an overt attack added; the old 'a rite never turns into an attack' sentence dropped because his fruit defence is an attack. Rest unchanged. Shown back in turn_02.md for undo."
  }
 }
