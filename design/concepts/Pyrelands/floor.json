@@ -1,0 +1,77 @@
+{
+ "lines": {
+  "tick_cost": {
+   "status": "applicable"
+  },
+  "long_stall": {
+   "status": "applicable"
+  },
+  "latency": {
+   "status": "applicable"
+  },
+  "memory": {
+   "status": "applicable",
+   "evidence_mode": "compressed",
+   "establishes": "heap and texture MB measured before and after the walk's two weeks; flatness over a 30-day soak stays inferred"
+  },
+  "load_time": {
+   "status": "applicable"
+  },
+  "save_size": {
+   "status": "applicable",
+   "evidence_mode": "compressed",
+   "establishes": "save size on the walk's mid-way save and at its end; growth over a longer soak stays inferred"
+  },
+  "save_compat": {
+   "status": "applicable"
+  },
+  "load_order": {
+   "status": "applicable"
+  },
+  "log": {
+   "status": "applicable"
+  },
+  "mod_settings": {
+   "status": "applicable"
+  },
+  "multiplayer": {
+   "status": "applicable"
+  },
+  "art": {
+   "status": "applicable"
+  },
+  "reads_as": {
+   "status": "applicable"
+  },
+  "clickable": {
+   "status": "applicable"
+  },
+  "order_taken": {
+   "status": "applicable"
+  },
+  "motion": {
+   "status": "applicable"
+  },
+  "text": {
+   "status": "applicable"
+  },
+  "dlc": {
+   "status": "applicable"
+  },
+  "worldgen": {
+   "status": "applicable"
+  },
+  "biome_scope": {
+   "status": "applicable"
+  },
+  "flight": {
+   "status": "applicable"
+  },
+  "naming": {
+   "status": "applicable"
+  },
+  "test_isolation": {
+   "status": "applicable"
+  }
+ }
+}

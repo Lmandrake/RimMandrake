@@ -40,3 +40,14 @@ His card answers, recorded on BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS:
   Evaluation (d_firebreak_cut, delegated, he can undo): cut. Front, smoulder relight and hawk drop all go through vanilla
   ChanceToStartFireIn, so any non-flammable plant-free floor stops them as the firebreak does; scorch-fruit already
   refuses non-Pyrelands ground. The sprayer was split out (inv_firefoam_sprayer) and is untouched, scope not opened.
+
+## Sitting 6, 2026-11-05 (run rm-role-designer-1793899497). Stage 3 Write, returned to stage 2
+
+Wrote tree.json (17 leaves: 15 experience, 1 instrument `ash_fertility_probe`, 1 walk; lint PASS), sheet.md, plan.md,
+scenes.json (16 acceptance + 3 exploration scenes; showcases burn_line 6 new, fire_cast 4, sky_and_shelter 3, overlap 0;
+coverage_rest: firebreak (out), firefoam sprayer, sand shovel, rite hook, settings, art) and floor.json (all lines
+applicable; memory and save_size compressed). Filed PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL and
+PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES. The only refusal left: showcase 1 must be bound to his flagship pick, and the
+"Judged first" sentence was agent text he approved inside the root (a root approval is not a pick; a_flagship was struck
+at stage 1 before the showcase rule of 2026-11-05). Returned to stage 2 to ask it. Also owed his word: north star bar
+pyre_fresh_burn_feeds_the_field still says black rain washes the bonus away, false since his 2026-11-05 card.
