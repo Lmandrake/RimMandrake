@@ -210,6 +210,13 @@ TileMutatorDef by defName (`Verse.ShortHashGiver`). Two routes exist. Only the f
      today). Run it on a **copy** of R3 to prove the rename: entry counts kept, each port carries exactly its
      donor's tile set, every other byte identical, and a shortHash simulation over a capture that includes the
      ports. This proves the rename; it does not swap the save (owner 2026-08-18/19: no save writes).
+     **Built 2026-11-05:** the map is written by `src/RimMandrake/Utils/vee_world_stamp.py build-map`; the proof is
+     `vee_world_stamp.py prove-rename` (in memory, writes nothing); the CLI form is `save_donor_rewrite.py
+     --mutators-only --map design/RimMandrake/vee_port_map.json --old-capture raw --new-capture <id>`. R3's own
+     capture (`2026-10-21T11-18-41Z`) no longer exists, so old hashes are raw ShortHashes, refused when any other
+     name the captures know could have taken or bumped them; they reproduce all 141 VEE hashes of the newest
+     capture. No capture holds the ports yet, so the simulation's base is the newest capture plus the ports;
+     re-run it on the capture of the stamp's mod set (risk below). `RM_QuicksandPits` already sits on 1 R3 tile.
    - **The one stamp, live, at the end:** the planet is painted once (`BIOME_PAINT_ONCE_AT_THE_END_1`, carried by
      `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL`). The ported mutators are written by bridge in
      the same sitting as the biome stamp. `jawa/world_mutators_set` takes one def list and one tile list per call,

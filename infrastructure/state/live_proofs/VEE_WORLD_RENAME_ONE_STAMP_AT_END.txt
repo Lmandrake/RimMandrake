@@ -1,0 +1,5 @@
+# VEE world rename: the one live stamp runs INSIDE the big repaint sitting (BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL,
+# design/Jawa/worldbuilding/big_repaint_plan_2026-10-21.md Phase C step 6a: `python.exe src/RimMandrake/Utils/vee_world_stamp.py stamp --apply`).
+# This read-only line proves it afterwards on the live world: 0 VEE_ mutators and landmarks, every RM_ port on
+# R3's donor tiles (solar labels on their geometry tiles), every re-pointed landmark keeps its stored name.
+live-proof A1: python.exe src/RimMandrake/Utils/vee_world_stamp.py verify-live

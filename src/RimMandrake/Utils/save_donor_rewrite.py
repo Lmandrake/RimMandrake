@@ -282,17 +282,28 @@ def assign_short_hashes(names):
 
 
 def capture_hashes(capture, def_type):
+    """{defName: shortHash int}. The 2026-11 captures write shortHash as a STRING ('55987'): int() it, or every
+    comparison with a simulated hash disagrees."""
     with open(os.path.join(CAPTURES, capture, "defs", def_type + ".json")) as fh:
-        return {r["defName"]: r["shortHash"] for r in json.load(fh)["defs"]}
+        return {r["defName"]: int(r["shortHash"]) for r in json.load(fh)["defs"]}
 
 
 DROPPED = "(removed from the save)"
+# old_capture=RAW_OLD: the save's own capture is gone, so a mapped def's old hash is its raw ShortHash, refused
+# when another name in `universe` (every TileMutatorDef the captures on disk know) could have taken or bumped it.
+RAW_OLD = "raw"
 
 
-def mutator_hash_map(mapping, old_capture=OLD_CAPTURE, new_capture=NEW_CAPTURE):
+def mutator_hash_map(mapping, old_capture=OLD_CAPTURE, new_capture=NEW_CAPTURE, universe=None):
     """old shortHash -> (old name, new name, new shortHash) for every mapped TileMutatorDef row with a port."""
     import zlib  # noqa: F401  (kept local: only this mode needs it)
-    old = capture_hashes(old_capture, "TileMutatorDef")
+    if old_capture == RAW_OLD:
+        import vee_world_stamp  # the raw-hash inference and its contest check live there
+        if not universe:
+            sys.exit("old_capture=raw needs the universe of known TileMutatorDef names (the contest check)")
+        old = vee_world_stamp.raw_old_hashes(sorted(mapping["TileMutatorDef"]), universe)
+    else:
+        old = capture_hashes(old_capture, "TileMutatorDef")
     new_live = capture_hashes(new_capture, "TileMutatorDef")
     ports = {r["new"] for r in mapping["TileMutatorDef"].values() if r["new"]}
     predicted = assign_short_hashes(set(new_live) | ports)
@@ -378,7 +389,11 @@ def rewrite_world_mutators(raw, mapping, hmap):
 def main_mutators_only(a):
     raw = open(a.inp, "rb").read()
     mapping = json.load(open(a.mutator_map))
-    hmap = mutator_hash_map(mapping)
+    if a.old_capture == RAW_OLD:
+        import vee_world_stamp
+        hmap = mutator_hash_map(mapping, RAW_OLD, a.new_capture, vee_world_stamp.capture_names())
+    else:
+        hmap = mutator_hash_map(mapping, a.old_capture, a.new_capture)
     edits, report = rewrite_world_mutators(raw, mapping, hmap)
     edits.sort()
     out, last = bytearray(), 0
@@ -389,7 +404,7 @@ def main_mutators_only(a):
     rows = ["| old | new | where | entries |", "|---|---|---|---:|"]
     for (o, n, w), k in report.items():
         rows.append("| `%s` | %s | %s | %d |" % (o, n if n.startswith("NOT") or n == DROPPED else "`%s`" % n, w, k))
-    hl = ["| old | new | old shortHash | new shortHash (predicted against %s) |" % NEW_CAPTURE, "|---|---|---:|---:|"]
+    hl = ["| old | new | old shortHash | new shortHash (predicted against %s) |" % a.new_capture, "|---|---|---:|---:|"]
     hl += ["| `%s` | `%s` | %d | %s |" % (o, n, h, nh) for h, (o, n, nh) in sorted(hmap.items(), key=lambda kv: kv[1][0])]
     open(a.table, "w").write("## World-tile mutator / landmark renames (%d splices)\n\n%s\n\n## shortHashes\n\n%s\n"
                              % (len(edits), "\n".join(rows), "\n".join(hl)))
@@ -408,7 +423,11 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--mutators-only", action="store_true",
                     help="only rename retired world-tile mutators and landmarks per --mutator-map (grid + <landmarks>)")
-    ap.add_argument("--mutator-map", default=MAP_JSON)
+    ap.add_argument("--mutator-map", "--map", dest="mutator_map", default=MAP_JSON,
+                    help="the port map (default the 10-19 retired map; VEE: design/RimMandrake/vee_port_map.json)")
+    ap.add_argument("--old-capture", default=OLD_CAPTURE,
+                    help="capture the save was made under, or 'raw' (raw ShortHash, contest-checked)")
+    ap.add_argument("--new-capture", default=NEW_CAPTURE, help="capture the ports load into (hash simulation base)")
     a = ap.parse_args()
     if os.path.abspath(a.inp) == os.path.abspath(a.out):
         sys.exit("refusing to write in place")

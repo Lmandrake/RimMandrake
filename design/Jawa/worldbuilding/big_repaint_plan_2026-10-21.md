@@ -174,6 +174,14 @@ From the dump's `BiomeDef` packageIds, 2026-10-21T11:18Z:
      (`tile,temp_c`, 312 rows: the ruled arc curve at −350 m, 43.8..60.7 °C; the tiles hold the perched-1,411 m
      values, 7.8 °C low), `expectTiles:21872`, dry run then `apply:true`; `world_tile_validate` on it (0 mismatches).
      Then `jawa/world_commit`.
+6a. **The VEE world rename, in the same sitting, before `jawa/world_commit`** (`VEE_WORLD_RENAME_ONE_STAMP_AT_END`,
+   `design/RimMandrake/vee_port_plan_2026-10-22.md` §3). Needs VEE still loaded **and** the ports deployed
+   (TileFeatures, SolarMirrors, DeepDrill, EnvironmentalHazards). Run
+   `python.exe src/RimMandrake/Utils/vee_world_stamp.py stamp` (dry: prints add/remove per row), then `stamp --apply`:
+   it adds every `RM_` port first, reads back, only then removes the `VEE_` defs, re-points the 805 landmarks
+   (stripping what AddLandmark rolls, restoring each stored name) and calls `jawa/world_commit` once. Bar:
+   `vee_world_stamp.py verify-live` reads `RESULT PASS`. Offline proof of the same rename on a copy of R3:
+   `vee_world_stamp.py prove-rename`.
 7. **Read back what the stamp must not have disturbed:**
    - `jawa/world_mutators_audit` must show 0 offenders. This is the equivalent of w9 stage 3; the renames keep
      water and land where they were, so the bar is 0 with nothing to fix.

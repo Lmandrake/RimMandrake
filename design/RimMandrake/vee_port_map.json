@@ -1,0 +1,702 @@
+{
+ "_what": "VEE (vanillaexpanded.vexploratione) world-tile mutators and landmarks on the frozen planet -> our own defs. Read by save_donor_rewrite.py --mutators-only --map (offline rename proof) and by vee_world_stamp.py stamp (the one live stamp inside the big repaint). Rows: every VEE def R3 carries; the 83 mutators and 35 landmarks on no tile are not ported (no worldgen).",
+ "_authority": "Owner card 2026-10-22 on VEE_WORLD_MUTATORS_DECIDE_FOURTEEN_THOUSAND: \"Port all to our own mod\". Plan: design/RimMandrake/vee_port_plan_2026-10-22.md s3.",
+ "_made_by": "python3 src/RimMandrake/Utils/vee_world_stamp.py build-map --capture 2026-11-04T13-15-53Z (R3 counts; categories from that capture)",
+ "_stamp": "stamp=geometry: the tile set is f(sun elevation), not the donor's tiles (plan s4); drop=true: the entries are removed, not renamed.",
+ "TileMutatorDef": {
+  "VEE_MoreSolarPower": {
+   "new": "RM_StrongInsolation",
+   "status": "ported",
+   "mod": "SolarMirrors",
+   "categories": [
+    "VEE_Solar"
+   ],
+   "priority": 0,
+   "r3_entries": 4362,
+   "stamp": "geometry",
+   "how": "derived label painted from sun elevation at the stamp (plan s4, remake/solar_insolation.py)"
+  },
+  "VEE_LessSolarPower": {
+   "new": "RM_Sunless",
+   "status": "ported",
+   "mod": "SolarMirrors",
+   "categories": [
+    "VEE_Solar"
+   ],
+   "priority": 0,
+   "r3_entries": 3900,
+   "stamp": "geometry",
+   "how": "derived label painted from sun elevation at the stamp (plan s4, remake/solar_insolation.py)"
+  },
+  "VEE_DeepOreDevoid": {
+   "new": "RM_DeepOreDevoid",
+   "status": "ported",
+   "mod": "DeepDrill",
+   "categories": [
+    "VEE_DeepOres"
+   ],
+   "priority": 0,
+   "r3_entries": 1534
+  },
+  "VEE_MineralDevoid": {
+   "new": "RM_MineralDevoid",
+   "status": "ported",
+   "mod": "DeepDrill",
+   "categories": [
+    "VEE_Minerals"
+   ],
+   "priority": 0,
+   "r3_entries": 1533
+  },
+  "VEE_Cenotes": {
+   "new": "RM_Cenotes",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 413
+  },
+  "VEE_SaltPlains": {
+   "new": "RM_SaltPlains",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Lake"
+   ],
+   "priority": 2,
+   "r3_entries": 370
+  },
+  "VEE_Cactus_OrganPipe": {
+   "new": "RM_Cactus_OrganPipe",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 214
+  },
+  "VEE_Cactus_Beavertail": {
+   "new": "RM_Cactus_Beavertail",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 211
+  },
+  "VEE_DryRiver": {
+   "new": "RM_DryRiver",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "River"
+   ],
+   "priority": 2,
+   "r3_entries": 175
+  },
+  "VEE_DeepOreRich": {
+   "new": "RM_DeepOreRich",
+   "status": "ported",
+   "mod": "DeepDrill",
+   "categories": [
+    "VEE_DeepOres"
+   ],
+   "priority": 0,
+   "r3_entries": 163
+  },
+  "VEE_FloodPlains": {
+   "new": "RM_FloodPlains",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "River"
+   ],
+   "priority": 2,
+   "r3_entries": 158
+  },
+  "VEE_SulfuricLake": {
+   "new": "RM_SulfuricLake",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Lake"
+   ],
+   "priority": 2,
+   "r3_entries": 110
+  },
+  "VEE_StagnantRivulet": {
+   "new": "RM_StagnantRivulet",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "River"
+   ],
+   "priority": 2,
+   "r3_entries": 100
+  },
+  "VEE_MechanoidShipChunks": {
+   "new": "RM_MechanoidShipChunks",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 99
+  },
+  "VEE_ToxicVents": {
+   "new": "RM_ToxicVents",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 91
+  },
+  "VEE_RisingWaters": {
+   "new": "RM_RisingWaters",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Coast"
+   ],
+   "priority": 5,
+   "r3_entries": 90
+  },
+  "VEE_PlantLife_Overgrown": {
+   "new": "RM_PlantLife_Overgrown",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "PlantLife"
+   ],
+   "priority": 0,
+   "r3_entries": 89
+  },
+  "VEE_Sinkholes": {
+   "new": "RM_Sinkholes",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 76
+  },
+  "VEE_Mycelium": {
+   "new": "RM_Mycelium",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 70
+  },
+  "VEE_SerpentineCanyons": {
+   "new": "RM_SerpentineCanyons",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Mountain"
+   ],
+   "priority": 5,
+   "r3_entries": 68
+  },
+  "VEE_PoisonousFlora": {
+   "new": "RM_PoisonousFlora",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 61
+  },
+  "VEE_DustBowl": {
+   "new": "RM_DustBowl",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Lake"
+   ],
+   "priority": 2,
+   "r3_entries": 42
+  },
+  "VEE_JaggedRocks": {
+   "new": "RM_JaggedRocks",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Mountain"
+   ],
+   "priority": 5,
+   "r3_entries": 34
+  },
+  "VEE_RottenStench": {
+   "new": "RM_RottenStench",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 34
+  },
+  "VEE_GravelBeach": {
+   "new": "RM_GravelBeach",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Coast"
+   ],
+   "priority": 5,
+   "r3_entries": 32
+  },
+  "VEE_IncreasedInfestations": {
+   "new": "RM_IncreasedInfestations",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 31
+  },
+  "VEE_MeteorCrater": {
+   "new": "RM_MeteorCrater",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Mountain"
+   ],
+   "priority": 5,
+   "r3_entries": 31
+  },
+  "VEE_RockRidge": {
+   "new": "RM_RockRidge",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Mountain"
+   ],
+   "priority": 5,
+   "r3_entries": 24
+  },
+  "VEE_QuicksandPits": {
+   "new": "RM_QuicksandPits",
+   "status": "ported",
+   "mod": "EnvironmentalHazards",
+   "categories": [
+    "Lake"
+   ],
+   "priority": 0,
+   "r3_entries": 22
+  },
+  "VEE_MineableComponentSpacer": {
+   "new": "RM_MineableComponentSpacer",
+   "status": "ported",
+   "mod": "DeepDrill",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 21
+  },
+  "VEE_PebbleDunes": {
+   "new": "RM_PebbleDunes",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 19
+  },
+  "VEE_Fertility_Reduced": {
+   "new": "RM_Fertility_Reduced",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "VEE_Fertility"
+   ],
+   "priority": 0,
+   "r3_entries": 18
+  },
+  "VEE_PlantLife_Decimated": {
+   "new": "RM_PlantLife_Decimated",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "PlantLife"
+   ],
+   "priority": 0,
+   "r3_entries": 17
+  },
+  "VEE_DustStorms": {
+   "new": "RM_DustStorms",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Weather"
+   ],
+   "priority": 0,
+   "r3_entries": 16
+  },
+  "VEE_IncreasedDiseases": {
+   "new": "RM_IncreasedDiseases",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "VEE_Diseases"
+   ],
+   "priority": 0,
+   "r3_entries": 16
+  },
+  "VEE_RotstinkVents": {
+   "new": "RM_RotstinkVents",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 16
+  },
+  "VEE_MarineSanctuary": {
+   "new": "RM_MarineSanctuary",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "VEE_AnimalDensities"
+   ],
+   "priority": 0,
+   "r3_entries": 15
+  },
+  "VEE_QuicksandDunes": {
+   "new": "RM_QuicksandDunes",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 14
+  },
+  "VEE_DeepSnow": {
+   "new": "RM_DeepSnow",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 12
+  },
+  "VEE_Sandstorms": {
+   "new": "RM_Sandstorms",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Weather"
+   ],
+   "priority": 0,
+   "r3_entries": 12
+  },
+  "VEE_DeadlifeVents": {
+   "new": null,
+   "drop": true,
+   "status": "dropped",
+   "mod": "-",
+   "how": "DROPPED by owner card 2026-10-22 (VEE_DEADLIFE_VENTS_ASK_ZOMBIES_AGAIN): no zombies; its 10 tiles are stripped, not renamed",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 10
+  },
+  "VEE_FleshPits": {
+   "new": "RM_FleshPits",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 9
+  },
+  "VEE_NoTrees": {
+   "new": "RM_NoTrees",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "VEE_AuburnTree_BirchesAndNoTrees",
+    "VEE_AuburnTree_MaplesAndNoTrees",
+    "VEE_AuburnTree_OaksAndNoTrees",
+    "VEE_AuburnTree_PoplarsAndNoTrees",
+    "VEE_FruitTreesAndNoTrees",
+    "VEE_GroveAndNoTrees",
+    "VEE_MangroveAndNoTrees"
+   ],
+   "priority": 0,
+   "r3_entries": 8
+  },
+  "VEE_RedDesert": {
+   "new": "RM_RedDesert",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 8
+  },
+  "VEE_RedDesertPlants": {
+   "new": "RM_RedDesertPlants",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 8
+  },
+  "VEE_RelictDelta": {
+   "new": "RM_RelictDelta",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "River"
+   ],
+   "priority": 2,
+   "r3_entries": 8
+  },
+  "VEE_AlluvialFan": {
+   "new": "RM_AlluvialFan",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "River"
+   ],
+   "priority": 2,
+   "r3_entries": 7
+  },
+  "VEE_Cactus_Barrel": {
+   "new": "RM_Cactus_Barrel",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 7
+  },
+  "VEE_Cactus_Hedgehog": {
+   "new": "RM_Cactus_Hedgehog",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 7
+  },
+  "VEE_ContaminatedRiver": {
+   "new": "RM_ContaminatedRiver",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "River"
+   ],
+   "priority": 2,
+   "r3_entries": 7
+  },
+  "VEE_SmokeVents": {
+   "new": "RM_SmokeVents",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [],
+   "priority": 0,
+   "r3_entries": 5
+  },
+  "VEE_ContaminatedReservoir": {
+   "new": "RM_ContaminatedReservoir",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Lake"
+   ],
+   "priority": 2,
+   "r3_entries": 4
+  },
+  "VEE_StoneForest": {
+   "new": "RM_StoneForest",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Mountain"
+   ],
+   "priority": 5,
+   "r3_entries": 4
+  },
+  "VEE_LoneIsland": {
+   "new": "RM_LoneIsland",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Coast"
+   ],
+   "priority": 5,
+   "r3_entries": 3
+  },
+  "VEE_SulfuricRiver": {
+   "new": "RM_SulfuricRiver",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "River"
+   ],
+   "priority": 2,
+   "r3_entries": 2
+  },
+  "VEE_ResurgentCaldera": {
+   "new": "RM_ResurgentCaldera",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Mountain"
+   ],
+   "priority": 5,
+   "r3_entries": 1
+  },
+  "VEE_ToxicCrater": {
+   "new": "RM_ToxicCrater",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Mountain"
+   ],
+   "priority": 5,
+   "r3_entries": 1
+  },
+  "VEE_Volcano": {
+   "new": "RM_Volcano",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "categories": [
+    "Mountain"
+   ],
+   "priority": 5,
+   "r3_entries": 1
+  }
+ },
+ "LandmarkDef": {
+  "VEE_Cenotes": {
+   "new": "RM_Cenotes",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 339
+  },
+  "VEE_DryRiver": {
+   "new": "RM_DryRiver",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 120
+  },
+  "VEE_JaggedRocks": {
+   "new": "RM_JaggedRocks",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 111
+  },
+  "VEE_GravelBeach": {
+   "new": "RM_GravelBeach",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 31
+  },
+  "VEE_SerpentineCanyons": {
+   "new": "RM_SerpentineCanyons",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 29
+  },
+  "VEE_MeteorCrater": {
+   "new": "RM_MeteorCrater",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 25
+  },
+  "VEE_SaltPlains": {
+   "new": "RM_SaltPlains",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 22
+  },
+  "VEE_PebbleDunes": {
+   "new": "RM_PebbleDunes",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 19
+  },
+  "VEE_DustBowl": {
+   "new": "RM_DustBowl",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 18
+  },
+  "VEE_StagnantRivulet": {
+   "new": "RM_StagnantRivulet",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 18
+  },
+  "VEE_QuicksandDunes": {
+   "new": "RM_QuicksandDunes",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 14
+  },
+  "VEE_RockRidge": {
+   "new": "RM_RockRidge",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 12
+  },
+  "VEE_SulfuricLake": {
+   "new": "RM_SulfuricLake",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 10
+  },
+  "VEE_FleshPits": {
+   "new": "RM_FleshPits",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 9
+  },
+  "VEE_AlluvialFan": {
+   "new": "RM_AlluvialFan",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 5
+  },
+  "VEE_CactusFields": {
+   "new": "RM_CactusFields",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 5
+  },
+  "VEE_QuicksandPits": {
+   "new": "RM_QuicksandPits",
+   "status": "ported",
+   "mod": "EnvironmentalHazards",
+   "r3_entries": 4
+  },
+  "VEE_StoneForest": {
+   "new": "RM_StoneForest",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 4
+  },
+  "VEE_RelictDelta": {
+   "new": "RM_RelictDelta",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 3
+  },
+  "VEE_ContaminatedReservoir": {
+   "new": "RM_ContaminatedReservoir",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 2
+  },
+  "VEE_RedDesert": {
+   "new": "RM_RedDesert",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 2
+  },
+  "VEE_CraterLake": {
+   "new": "RM_CraterLake",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 1
+  },
+  "VEE_ResurgentCaldera": {
+   "new": "RM_ResurgentCaldera",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 1
+  },
+  "VEE_ToxicCrater": {
+   "new": "RM_ToxicCrater",
+   "status": "ported",
+   "mod": "TileFeatures",
+   "r3_entries": 1
+  }
+ }
+}
