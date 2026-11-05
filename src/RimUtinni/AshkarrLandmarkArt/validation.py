@@ -12,10 +12,10 @@ tooling, not shipped mod content, not exercised here).
 
 ⚠️ ENVIRONMENT: this suite needs the **FULL** mod list, not minimal, per
 the walk doc's own environment line. This mod repaints 48 `LandmarkDef`s
-sourced from FOUR different providers (vanilla Odyssey DLC + Vanilla
-Expanded Exploration + Alpha Biomes + Star Wars Animal Collection) -- none
-of the three non-Odyssey providers are on the minimal list, so a
-minimal-list run only proves the patch's own conditional guards are a safe
+sourced from FOUR different providers (vanilla Odyssey DLC + our
+TileFeatures, EnvironmentalHazards and SWBestiary, which carry the ports off
+Vanilla Exploration Expanded, Alpha Biomes and Star Wars Animal Collection).
+On a list without those three, a run only proves the patch's own conditional guards are a safe
 no-op, never that a single icon actually applies to a real def.
 
 THE MECHANISM (About.xml's own description): vanilla Landmarks Expanded
@@ -55,8 +55,9 @@ Facts confirmed by direct repo check this pass, matching the walk doc:
     silhouettes so the engine can tint them the ocean's own colour.
   - Exactly 48 unique `defName="..."` values in the patch file (grepped and
     counted, not eyeballed), spanning unprefixed (25 vanilla-Odyssey-style
-    names), `AB_*` (3), `VEE_*` (18), and `sw_*` (2) by prefix convention --
-    25 + 3 + 18 + 2 = 48.
+    names), `RM_*` (21: 3 ported off Alpha Biomes 2026-10-19, 18 ported off
+    Vanilla Exploration Expanded by VEE_LANDMARKS_MIGRATE_KEEP_THE_ICONS) and
+    `RSW_*` (2) by prefix convention -- 25 + 21 + 2 = 48.
 
 Still not proven / real gaps:
   1. `jawa/world_landmarks_get` (the walk doc's own step 8, confirming the
@@ -73,10 +74,6 @@ Still not proven / real gaps:
      defers this to a human pass (MOD_HUMAN_EXPLORATION_PASS_1), and this
      suite agrees: `iconTexturePath` resolving to the right file proves
      WIRING, never the art itself.
-  3. Which specific mod owns the `AB_*` vs `VEE_*` prefix (Alpha Biomes vs.
-     Vanilla Expanded Exploration) is not independently confirmed here
-     either -- same gap the walk doc names, carried forward rather than
-     invented an answer for.
 """
 import os
 
@@ -106,7 +103,7 @@ SAMPLE_DEFS = {
     "Cliffs": "World/Landmarks/Ashkarr/Cliffs",                 # Replace branch, vanilla Odyssey
     "AncientGarrison": "World/Landmarks/Ashkarr/AncientGarrison",  # Add branch (inherited field)
     "RSW_Sarlacc": "World/Landmarks/Ashkarr/RSW_Sarlacc",         # SWBestiary (ported off StarWarsAnimalCollection)
-    "VEE_AlluvialFan": "World/Landmarks/Ashkarr/VEE_AlluvialFan", # VEE_-prefixed provider
+    "RM_AlluvialFan": "World/Landmarks/Ashkarr/VEE_AlluvialFan",  # TileFeatures (ported off VEE; texture kept its file name)
 }
 
 
@@ -177,7 +174,7 @@ def repo_checks(t):
 @suite.chain("sample_defs_readback")
 def sample_defs_readback(t):
     """One representative LandmarkDef per provider/branch shape (SAMPLE_DEFS): Cliffs (Replace branch, vanilla
-    Odyssey), AncientGarrison (Add branch), RSW_Sarlacc (SWBestiary), VEE_AlluvialFan (VEE_ provider). REQUIRES THE
+    Odyssey), AncientGarrison (Add branch), RSW_Sarlacc (SWBestiary), RM_AlluvialFan (TileFeatures). REQUIRES THE
     FULL MOD LIST: a sample whose provider def is not found reads NOTHING, so it is UNMEASURED (HARNESS/SITE), never
     PASS -- and, as with any UNMEASURED component, it ends the chain, so the samples after it are UNMEASURED too
     (chain ids are kept stable for the required-check manifest). `iconTexturePath` is read through jawa/get_defs

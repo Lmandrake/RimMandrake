@@ -25,7 +25,7 @@ the ocean's own colour, and repainting them would break that tint.
 Patch-only. Load it LAST.</description>
   <loadAfter>
     <li>Ludeon.RimWorld.Odyssey</li>
-    <li>VanillaExpanded.VExplorationE</li>
+    <li>mandrake.rm.tilefeatures</li>  <!-- RM_ landmarks ported off VEE (VEE_LANDMARKS_MIGRATE_KEEP_THE_ICONS) -->
     <li>mandrake.rsw.swbestiary</li>  <!-- RSW_Sarlacc / RSW_DeadSarlacc, ported off Star Wars Animal Collection 2026-10-15 -->
   </loadAfter>
 </ModMetaData>

@@ -370,270 +370,270 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_AlluvialFan"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_AlluvialFan"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_AlluvialFan"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_AlluvialFan"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_AlluvialFan"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_AlluvialFan"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_AlluvialFan</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_AlluvialFan"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_AlluvialFan"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_AlluvialFan</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_Cenotes"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_Cenotes"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_Cenotes"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_Cenotes"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_Cenotes"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_Cenotes"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_Cenotes</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_Cenotes"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_Cenotes"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_Cenotes</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_DryRiver"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_DryRiver"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_DryRiver"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_DryRiver"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_DryRiver"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_DryRiver"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_DryRiver</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_DryRiver"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_DryRiver"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_DryRiver</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_DustBowl"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_DustBowl"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_DustBowl"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_DustBowl"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_DustBowl"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_DustBowl"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_DustBowl</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_DustBowl"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_DustBowl"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_DustBowl</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_FleshPits"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_FleshPits"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_FleshPits"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_FleshPits"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_FleshPits"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_FleshPits"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_FleshPits</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_FleshPits"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_FleshPits"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_FleshPits</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_GravelBeach"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_GravelBeach"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_GravelBeach"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_GravelBeach"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_GravelBeach"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_GravelBeach"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_GravelBeach</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_GravelBeach"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_GravelBeach"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_GravelBeach</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_JaggedRocks"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_JaggedRocks"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_JaggedRocks"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_JaggedRocks"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_JaggedRocks"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_JaggedRocks"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_JaggedRocks</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_JaggedRocks"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_JaggedRocks"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_JaggedRocks</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_MeteorCrater"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_MeteorCrater"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_MeteorCrater"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_MeteorCrater"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_MeteorCrater"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_MeteorCrater"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_MeteorCrater</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_MeteorCrater"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_MeteorCrater"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_MeteorCrater</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_PebbleDunes"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_PebbleDunes"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_PebbleDunes"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_PebbleDunes"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_PebbleDunes"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_PebbleDunes"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_PebbleDunes</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_PebbleDunes"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_PebbleDunes"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_PebbleDunes</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_QuicksandDunes"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_QuicksandDunes"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_QuicksandDunes"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_QuicksandDunes"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_QuicksandDunes"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_QuicksandDunes"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_QuicksandDunes</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_QuicksandDunes"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_QuicksandDunes"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_QuicksandDunes</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_RedDesert"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_RedDesert"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_RedDesert"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_RedDesert"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_RedDesert"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_RedDesert"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_RedDesert</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_RedDesert"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_RedDesert"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_RedDesert</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_RockRidge"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_RockRidge"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_RockRidge"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_RockRidge"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_RockRidge"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_RockRidge"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_RockRidge</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_RockRidge"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_RockRidge"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_RockRidge</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_SaltPlains"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_SaltPlains"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_SaltPlains"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_SaltPlains"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_SaltPlains"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_SaltPlains"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_SaltPlains</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_SaltPlains"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_SaltPlains"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_SaltPlains</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_SerpentineCanyons"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_SerpentineCanyons"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_SerpentineCanyons"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_SerpentineCanyons"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_SerpentineCanyons"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_SerpentineCanyons"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_SerpentineCanyons</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_SerpentineCanyons"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_SerpentineCanyons"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_SerpentineCanyons</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_StagnantRivulet"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_StagnantRivulet"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_StagnantRivulet"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_StagnantRivulet"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_StagnantRivulet"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_StagnantRivulet"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_StagnantRivulet</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_StagnantRivulet"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_StagnantRivulet"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_StagnantRivulet</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_StoneForest"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_StoneForest"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_StoneForest"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_StoneForest"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_StoneForest"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_StoneForest"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_StoneForest</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_StoneForest"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_StoneForest"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_StoneForest</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_SulfuricLake"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_SulfuricLake"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_SulfuricLake"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_SulfuricLake"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_SulfuricLake"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_SulfuricLake"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_SulfuricLake</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_SulfuricLake"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_SulfuricLake"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_SulfuricLake</iconTexturePath></value>
       </nomatch>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/LandmarkDef[defName="VEE_ToxicCrater"]</xpath>
+    <xpath>/Defs/LandmarkDef[defName="RM_ToxicCrater"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/LandmarkDef[defName="VEE_ToxicCrater"]/iconTexturePath</xpath>
+      <xpath>/Defs/LandmarkDef[defName="RM_ToxicCrater"]/iconTexturePath</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>/Defs/LandmarkDef[defName="VEE_ToxicCrater"]/iconTexturePath</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_ToxicCrater"]/iconTexturePath</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_ToxicCrater</iconTexturePath></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/LandmarkDef[defName="VEE_ToxicCrater"]</xpath>
+        <xpath>/Defs/LandmarkDef[defName="RM_ToxicCrater"]</xpath>
         <value><iconTexturePath>World/Landmarks/Ashkarr/VEE_ToxicCrater</iconTexturePath></value>
       </nomatch>
     </match>

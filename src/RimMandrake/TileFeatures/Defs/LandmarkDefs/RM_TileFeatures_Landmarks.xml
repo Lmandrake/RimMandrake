@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_LANDMARKS_MIGRATE_KEEP_THE_ICONS (design/RimMandrake/vee_port_plan_2026-10-22.md §1b, §2): the landmarks
+     the planet carries, rebuilt as our own LandmarkDefs from the fields of Vanilla Exploration Expanded's defs.
+     Each requires its ported RM_ mutator. Icon and namer fall back to vanilla Odyssey ones (VEE's textures and
+     namer RulePacks leave with VEE; every landmark already stores its name and there is no worldgen); the Ash'karr
+     icons come from AshkarrLandmarkArt's LandmarkIcons.xml. VEE_QuicksandPits maps to the existing RM_QuicksandPits
+     (EnvironmentalHazards). chanceOnNonLandmarkTile stays 0 on every required mutator, so none of these is ever
+     placed by worldgen. VEE optional chances whose mutator was not ported are dropped. RM_CraterLake requires vanilla
+     Lake instead: the VEE_CraterLake mutator is on no planet tile (plan §1a lists the 58 used; its landmark is on
+     one), so the mutator was not ported. -->
+<Defs>
+
+  <LandmarkDef>
+    <defName>RM_Cenotes</defName>
+    <label>cenotes</label>
+    <drawScale>0.8</drawScale>
+    <iconTexturePath>World/Landmarks/Pond</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.25</commonality>
+    <nameMaker>NamerLandmark_Pond</nameMaker>
+    <mutatorChances>
+      <RM_Cenotes Required="True" />
+      <RM_PlantLife_Overgrown>0.25</RM_PlantLife_Overgrown>
+      <Stockpile>0.05</Stockpile>
+      <MineralRich>0.03</MineralRich>
+      <Sandy>0.05</Sandy>
+      <Muddy>0.05</Muddy>
+      <FoggyMutator>0.05</FoggyMutator>
+      <SunnyMutator>0.05</SunnyMutator>
+      <WetClimate>0.05</WetClimate>
+      <WindyMutator>0.05</WindyMutator>
+      <InsectMegahive>0.05</InsectMegahive>
+      <MixedBiome>0.5</MixedBiome>
+      <AncientUplink>0.02</AncientUplink>
+      <AnimalLife_Increased>0.25</AnimalLife_Increased>
+      <AnimalHabitat>0.15</AnimalHabitat>
+      <PlantGrove>0.25</PlantGrove>
+      <ArcheanTrees>0.05</ArcheanTrees>
+      <Fertile>0.25</Fertile>
+      <WildPlants>0.25</WildPlants>
+      <WildTropicalPlants>0.5</WildTropicalPlants>
+    </mutatorChances>
+    <comboLandmarkMutators>
+      <Valley>0.1</Valley>
+      <Cavern>0.1</Cavern>
+      <Chasm>0.1</Chasm>
+      <TerraformingScar>0.1</TerraformingScar>
+      <Wetland>0.02</Wetland>
+    </comboLandmarkMutators>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_DryRiver</defName>
+    <label>dry river</label>
+    <drawScale>0.7</drawScale>
+    <iconTexturePath>World/Landmarks/DryLake</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.2</commonality>
+    <nameMaker>NamerLandmark_DryLake</nameMaker>
+    <mutatorChances>
+      <RM_DryRiver Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <SunnyMutator>0.25</SunnyMutator>
+      <WetClimate>0</WetClimate>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <Junkyard MayRequire="Ludeon.RimWorld.Ideology">0.25</Junkyard>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_JaggedRocks</defName>
+    <label>jagged rocks</label>
+    <iconTexturePath>World/Landmarks/Cliffs</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>1</commonality>
+    <nameMaker>NamerLandmark_Cliffs</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <RM_JaggedRocks Required="True" />
+      <CaveLakes>0.15</CaveLakes>
+      <LavaCaves>0.15</LavaCaves>
+      <Stockpile>0.05</Stockpile>
+      <PlantLife_Increased>0.1</PlantLife_Increased>
+      <AnimalHabitat>0.15</AnimalHabitat>
+      <PlantGrove>0.1</PlantGrove>
+      <FoggyMutator>0.05</FoggyMutator>
+      <SunnyMutator>0.05</SunnyMutator>
+      <WetClimate>0.05</WetClimate>
+      <MineralRich>0.03</MineralRich>
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Fertile>0.05</Fertile>
+      <Muddy>0.05</Muddy>
+      <InsectMegahive>0.02</InsectMegahive>
+      <MixedBiome>0.5</MixedBiome>
+      <WildPlants>0.1</WildPlants>
+      <WildTropicalPlants>0.03</WildTropicalPlants>
+      <ArcheanTrees>0.01</ArcheanTrees>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <AnimalLife_Increased>0.05</AnimalLife_Increased>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_GravelBeach</defName>
+    <label>gravel beach</label>
+    <drawScale>0.7</drawScale>
+    <iconTexturePath>World/Landmarks/Bay</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.2</commonality>
+    <nameMaker>NamerLandmark_Bay</nameMaker>
+    <category>coastal</category>
+    <mutatorChances>
+      <RM_GravelBeach Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <PlantLife_Decreased>0.1</PlantLife_Decreased>
+      <SunnyMutator>0.25</SunnyMutator>
+      <WetClimate>0</WetClimate>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <Junkyard MayRequire="Ludeon.RimWorld.Ideology">0.1</Junkyard>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_SerpentineCanyons</defName>
+    <label>serpentine canyons</label>
+    <iconTexturePath>World/Landmarks/Chasm</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.25</commonality>
+    <nameMaker>NamerLandmark_Chasm</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <RM_SerpentineCanyons Required="True" />
+      <CaveLakes>0.15</CaveLakes>
+      <Stockpile>0.05</Stockpile>
+      <AnimalHabitat>0.05</AnimalHabitat>
+      <MineralRich>0.03</MineralRich>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <FoggyMutator>0.05</FoggyMutator>
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Fertile>0.05</Fertile>
+      <Muddy>0.05</Muddy>
+      <InsectMegahive>0.02</InsectMegahive>
+      <MixedBiome>0.5</MixedBiome>
+      <WildPlants>0.1</WildPlants>
+      <WildTropicalPlants>0.03</WildTropicalPlants>
+      <ArcheanTrees>0.01</ArcheanTrees>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <SteamGeysers_Increased>0.03</SteamGeysers_Increased>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_MeteorCrater</defName>
+    <label>meteor crater</label>
+    <iconTexturePath>World/Landmarks/Basin</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>1</commonality>
+    <nameMaker>NamerLandmark_Basin</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <RM_MeteorCrater Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <FoggyMutator>0.05</FoggyMutator>
+      <MineralRich>0.5</MineralRich>
+      <AnimalHabitat>0.05</AnimalHabitat>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Fertile>0.05</Fertile>
+      <Muddy>0.05</Muddy>
+      <InsectMegahive>0.02</InsectMegahive>
+      <MixedBiome>0.5</MixedBiome>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <SteamGeysers_Increased>0.03</SteamGeysers_Increased>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_SaltPlains</defName>
+    <label>salt plains</label>
+    <drawScale>0.7</drawScale>
+    <iconTexturePath>World/Landmarks/DryLake</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.2</commonality>
+    <nameMaker>NamerLandmark_DryLake</nameMaker>
+    <mutatorChances>
+      <RM_SaltPlains Required="True" />
+      <PlantLife_Decreased>0.5</PlantLife_Decreased>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <SunnyMutator>0.25</SunnyMutator>
+      <WindyMutator>0.25</WindyMutator>
+      <Fish_Decreased>0.5</Fish_Decreased>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <Junkyard MayRequire="Ludeon.RimWorld.Ideology">0.25</Junkyard>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_PebbleDunes</defName>
+    <label>pebble dunes</label>
+    <iconTexturePath>World/Landmarks/Dunes</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.2</commonality>
+    <nameMaker>NamerLandmark_Dunes</nameMaker>
+    <mutatorChances>
+      <RM_PebbleDunes Required="True" />
+      <Stockpile>0.15</Stockpile>
+      <AncientUplink>0.15</AncientUplink>
+      <SunnyMutator>0.05</SunnyMutator>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <WindyMutator>0.05</WindyMutator>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_DustBowl</defName>
+    <label>dust bowl</label>
+    <drawScale>0.7</drawScale>
+    <iconTexturePath>World/Landmarks/DryLake</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.2</commonality>
+    <nameMaker>NamerLandmark_DryLake</nameMaker>
+    <mutatorChances>
+      <RM_DustBowl Required="True" />
+      <RM_PlantLife_Decimated Required="True" />
+      <RM_Fertility_Reduced Required="True" />
+      <RM_DustStorms Required="True" />
+      <Stockpile>0.01</Stockpile>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <Junkyard MayRequire="Ludeon.RimWorld.Ideology">0.25</Junkyard>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_StagnantRivulet</defName>
+    <label>stagnant rivulet</label>
+    <drawScale>1</drawScale>
+    <iconTexturePath>World/Landmarks/Wetland</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.3</commonality>
+    <nameMaker>NamerLandmark_Wetland</nameMaker>
+    <mutatorChances>
+      <RM_StagnantRivulet Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <FoggyMutator>0.3</FoggyMutator>
+      <AnimalLife_Increased>0.05</AnimalLife_Increased>
+      <AnimalHabitat>0.15</AnimalHabitat>
+      <Sandy>0.05</Sandy>
+      <Fertile>0.05</Fertile>
+      <Muddy>0.05</Muddy>
+      <WildPlants>0.1</WildPlants>
+      <WildTropicalPlants>0.03</WildTropicalPlants>
+      <ArcheanTrees>0.01</ArcheanTrees>
+      <AncientUplink>0.02</AncientUplink>
+      <PlantLife_Increased>0.05</PlantLife_Increased>
+      <PlantGrove>0.05</PlantGrove>
+      <Fish_Increased>0.05</Fish_Increased>
+      <Fish_Decreased>0.01</Fish_Decreased>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_QuicksandDunes</defName>
+    <label>quicksand dunes</label>
+    <iconTexturePath>World/Landmarks/Dunes</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.2</commonality>
+    <nameMaker>NamerLandmark_Dunes</nameMaker>
+    <mutatorChances>
+      <RM_QuicksandDunes Required="True" />
+      <Stockpile>0.15</Stockpile>
+      <AncientUplink>0.15</AncientUplink>
+      <SunnyMutator>0.05</SunnyMutator>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <WindyMutator>0.05</WindyMutator>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_RockRidge</defName>
+    <label>rock ridge</label>
+    <iconTexturePath>World/Landmarks/Cliffs</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>1</commonality>
+    <nameMaker>NamerLandmark_Cliffs</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <RM_RockRidge Required="True" />
+      <CaveLakes>0.15</CaveLakes>
+      <LavaCaves>0.15</LavaCaves>
+      <Stockpile>0.05</Stockpile>
+      <PlantLife_Increased>0.1</PlantLife_Increased>
+      <AnimalHabitat>0.15</AnimalHabitat>
+      <PlantGrove>0.1</PlantGrove>
+      <FoggyMutator>0.05</FoggyMutator>
+      <SunnyMutator>0.05</SunnyMutator>
+      <WetClimate>0.05</WetClimate>
+      <MineralRich>0.03</MineralRich>
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Fertile>0.05</Fertile>
+      <Muddy>0.05</Muddy>
+      <InsectMegahive>0.02</InsectMegahive>
+      <MixedBiome>0.5</MixedBiome>
+      <WildPlants>0.1</WildPlants>
+      <WildTropicalPlants>0.03</WildTropicalPlants>
+      <ArcheanTrees>0.01</ArcheanTrees>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <AnimalLife_Increased>0.05</AnimalLife_Increased>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_SulfuricLake</defName>
+    <label>sulfuric lake</label>
+    <drawScale>0.7</drawScale>
+    <iconTexturePath>World/Landmarks/ToxicLake</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.15</commonality>
+    <nameMaker>NamerLandmark_ToxicLake</nameMaker>
+    <mutatorChances>
+      <RM_SulfuricLake Required="True" />
+      <PlantLife_Increased Required="True" />
+      <RM_RottenStench Required="True" />
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.25</Pollution_Increased>
+      <Junkyard MayRequire="Ludeon.RimWorld.Ideology">0.15</Junkyard>
+      <Stockpile>0.05</Stockpile>
+      <AnimalLife_Decreased>0.05</AnimalLife_Decreased>
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Muddy>0.05</Muddy>
+      <FoggyMutator>0.05</FoggyMutator>
+      <SunnyMutator>0.05</SunnyMutator>
+      <WetClimate>0.05</WetClimate>
+      <WindyMutator>0.05</WindyMutator>
+      <InsectMegahive>0.01</InsectMegahive>
+      <AncientUplink>0.02</AncientUplink>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_FleshPits</defName>
+    <label>flesh pits</label>
+    <iconTexturePath>World/Landmarks/Crevasse</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.5</commonality>
+    <nameMaker>NamerLandmark_Crevasse</nameMaker>
+    <mutatorChances>
+      <RM_FleshPits MayRequire="Ludeon.RimWorld.Anomaly" Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <WetClimate>0.2</WetClimate>
+      <AnimalLife_Increased>0.05</AnimalLife_Increased>
+      <AnimalHabitat>0.15</AnimalHabitat>
+      <Fertile>0.05</Fertile>
+      <WildPlants>0.1</WildPlants>
+      <WildTropicalPlants>0.03</WildTropicalPlants>
+      <ArcheanTrees>0.01</ArcheanTrees>
+      <AncientUplink>0.02</AncientUplink>
+      <PlantLife_Increased>0.05</PlantLife_Increased>
+      <PlantGrove>0.05</PlantGrove>
+      <Fish_Increased>0.05</Fish_Increased>
+      <Fish_Decreased>0.01</Fish_Decreased>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_AlluvialFan</defName>
+    <label>alluvial fan</label>
+    <drawScale>1</drawScale>
+    <iconTexturePath>World/Landmarks/Valley</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.6</commonality>
+    <nameMaker>NamerLandmark_Valley</nameMaker>
+    <category>coastal</category>
+    <mutatorChances>
+      <RM_AlluvialFan Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <AnimalLife_Increased>0.15</AnimalLife_Increased>
+      <RM_PlantLife_Overgrown>0.2</RM_PlantLife_Overgrown>
+      <FoggyMutator>0.05</FoggyMutator>
+      <SunnyMutator>0.05</SunnyMutator>
+      <WetClimate>0.1</WetClimate>
+      <WindyMutator>0.05</WindyMutator>
+      <AnimalHabitat>0.05</AnimalHabitat>
+      <Marshy>0.05</Marshy>
+      <Fertile>0.05</Fertile>
+      <Muddy>0.05</Muddy>
+      <MixedBiome>0.5</MixedBiome>
+      <WildPlants>0.05</WildPlants>
+      <WildTropicalPlants>0.03</WildTropicalPlants>
+      <ArcheanTrees>0.01</ArcheanTrees>
+      <Fish_Increased>0.05</Fish_Increased>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_CactusFields</defName>
+    <label>cactus fields</label>
+    <iconTexturePath>World/Landmarks/Dunes</iconTexturePath>
+    <atlasSize>(1, 1)</atlasSize>
+    <commonality>0.5</commonality>
+    <nameMaker>NamerLandmark_Dunes</nameMaker>
+    <mutatorChances>
+      <RM_Cactus_Barrel Required="True" />
+      <RM_Cactus_Beavertail Required="True" />
+      <RM_Cactus_Hedgehog Required="True" />
+      <RM_Cactus_OrganPipe Required="True" />
+      <RM_PlantLife_Overgrown Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <AnimalLife_Increased>0.75</AnimalLife_Increased>
+      <AnimalHabitat>0.25</AnimalHabitat>
+      <SunnyMutator>0.05</SunnyMutator>
+      <AncientUplink>0.02</AncientUplink>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_StoneForest</defName>
+    <label>stone forest</label>
+    <iconTexturePath>World/Landmarks/Cliffs</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>1</commonality>
+    <nameMaker>NamerLandmark_Cliffs</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <RM_StoneForest Required="True" />
+      <CaveLakes>0.15</CaveLakes>
+      <LavaCaves>0.15</LavaCaves>
+      <Stockpile>0.05</Stockpile>
+      <PlantLife_Increased>0.1</PlantLife_Increased>
+      <AnimalHabitat>0.15</AnimalHabitat>
+      <PlantGrove>0.1</PlantGrove>
+      <FoggyMutator>0.05</FoggyMutator>
+      <SunnyMutator>0.05</SunnyMutator>
+      <WetClimate>0.05</WetClimate>
+      <MineralRich>0.03</MineralRich>
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Fertile>0.05</Fertile>
+      <Muddy>0.05</Muddy>
+      <InsectMegahive>0.02</InsectMegahive>
+      <MixedBiome>0.5</MixedBiome>
+      <WildPlants>0.1</WildPlants>
+      <WildTropicalPlants>0.03</WildTropicalPlants>
+      <ArcheanTrees>0.01</ArcheanTrees>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <AnimalLife_Increased>0.05</AnimalLife_Increased>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_RelictDelta</defName>
+    <label>relict delta</label>
+    <drawScale>1</drawScale>
+    <iconTexturePath>World/Landmarks/Wetland</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.6</commonality>
+    <nameMaker>NamerLandmark_Wetland</nameMaker>
+    <mutatorChances>
+      <RM_RelictDelta Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <SunnyMutator>0.25</SunnyMutator>
+      <WetClimate>0</WetClimate>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <Junkyard MayRequire="Ludeon.RimWorld.Ideology">0.1</Junkyard>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_ContaminatedReservoir</defName>
+    <label>contaminated reservoir</label>
+    <drawScale>1</drawScale>
+    <iconTexturePath>World/Landmarks/ToxicLake</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.3</commonality>
+    <nameMaker>NamerLandmark_ToxicLake</nameMaker>
+    <mutatorChances>
+      <RM_ContaminatedReservoir Required="True" />
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">1</Pollution_Increased>
+      <Junkyard MayRequire="Ludeon.RimWorld.Ideology">0.25</Junkyard>
+      <Stockpile>0.05</Stockpile>
+      <AnimalLife_Decreased />
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Muddy>0.05</Muddy>
+      <FoggyMutator>0.05</FoggyMutator>
+      <SunnyMutator>0.05</SunnyMutator>
+      <WetClimate>0.05</WetClimate>
+      <WindyMutator>0.05</WindyMutator>
+      <InsectMegahive>0.01</InsectMegahive>
+      <AncientUplink>0.02</AncientUplink>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_RedDesert</defName>
+    <label>red sand desert</label>
+    <iconTexturePath>World/Landmarks/Dunes</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.2</commonality>
+    <nameMaker>NamerLandmark_Dunes</nameMaker>
+    <mutatorChances>
+      <RM_RedDesert Required="True" />
+      <RM_RedDesertPlants Required="True" />
+      <RM_Sandstorms Required="True" />
+      <RM_Cactus_Barrel Required="True" />
+      <RM_Cactus_Hedgehog Required="True" />
+      <Stockpile>0.15</Stockpile>
+      <AncientUplink>0.15</AncientUplink>
+      <SunnyMutator>0.05</SunnyMutator>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <WindyMutator>0.05</WindyMutator>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_CraterLake</defName>
+    <label>crater lake</label>
+    <iconTexturePath>World/Landmarks/Lake</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>1</commonality>
+    <nameMaker>NamerLandmark_Lake</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <!-- LandmarkDef.ConfigErrors demands one entry with chance >= 1. the VEE_CraterLake mutator was never ported (on no tile),
+           so vanilla Lake stands in; with no worldgen it never acts on a tile. -->
+      <Lake Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <FoggyMutator>0.05</FoggyMutator>
+      <MineralRich>0.5</MineralRich>
+      <AnimalHabitat>0.05</AnimalHabitat>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Fertile>0.05</Fertile>
+      <Muddy>0.05</Muddy>
+      <InsectMegahive>0.02</InsectMegahive>
+      <MixedBiome>0.5</MixedBiome>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <SteamGeysers_Increased>0.03</SteamGeysers_Increased>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_ResurgentCaldera</defName>
+    <label>resurgent caldera</label>
+    <iconTexturePath>World/Landmarks/Basin</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>1</commonality>
+    <nameMaker>NamerLandmark_Basin</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <RM_ResurgentCaldera Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <FoggyMutator>0.05</FoggyMutator>
+      <MineralRich>0.5</MineralRich>
+      <AnimalHabitat>0.05</AnimalHabitat>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Fertile>0.05</Fertile>
+      <Muddy>0.05</Muddy>
+      <InsectMegahive>0.02</InsectMegahive>
+      <MixedBiome>0.5</MixedBiome>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <SteamGeysers_Increased>0.03</SteamGeysers_Increased>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef>
+    <defName>RM_ToxicCrater</defName>
+    <label>toxic crater lake</label>
+    <iconTexturePath>World/Landmarks/ToxicLake</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>1</commonality>
+    <nameMaker>NamerLandmark_ToxicLake</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <RM_ToxicCrater Required="True" />
+      <Stockpile>0.05</Stockpile>
+      <FoggyMutator>0.05</FoggyMutator>
+      <MineralRich>0.5</MineralRich>
+      <AnimalHabitat>0.05</AnimalHabitat>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <Marshy>0.05</Marshy>
+      <Sandy>0.05</Sandy>
+      <Fertile>0.05</Fertile>
+      <Muddy>0.05</Muddy>
+      <InsectMegahive>0.02</InsectMegahive>
+      <MixedBiome>0.5</MixedBiome>
+      <Pollution_Increased MayRequire="Ludeon.RimWorld.Biotech">0.02</Pollution_Increased>
+      <AncientUplink>0.02</AncientUplink>
+      <SteamGeysers_Increased>0.03</SteamGeysers_Increased>
+    </mutatorChances>
+  </LandmarkDef>
+
+</Defs>
