@@ -11,6 +11,8 @@ ops_watch.run_alarms, with the ledger's close times (ctx["closes"], {item: [epoc
 - a reading with no night: unchanged (reopens), and no close times known: unchanged (reopens).
 Second instance (NIGHTLY_COP_FIX_RED_BCBOSB_PWDD): NIGHTLY_RED:testing.red_bcbosb's item closed 2026-11-04T22:18:40Z on
 a green rerun; at 2026-11-05T05:22Z the same 11-04T11:00Z night reopened it (alarms_log "reopen_closed_still_crossed").
+Third instance (NIGHTLY_COP_FIX_RED_BGMSKV_VSAQ): NIGHTLY_RED:testing.red_bgmskv's item closed 2026-11-04T22:18:44Z on a
+green rerun (its red, selftest_bridge_hooks RootFinalizer, cured at cbfcc52bc7); reopened 05:23:45Z on the same night.
 
   python3 selftest_alarm_stale_night_reopen.py --blob REV:PATH   replay ops_watch.py as it stood at REV (git), e.g.
       --blob 618deb68f3^:src/RimMandrake/Utils/ops_watch.py, the code that reopened both instances: it must FAIL.
@@ -117,23 +119,35 @@ def test_stale_night_holds():
     ok(st is not None and reopened(b, item), "the next night, still red after the close: reopened")
 
 
-def test_bcbosb_instance():
-    """NIGHTLY_COP_FIX_RED_BCBOSB_PWDD: closed 22:18:40Z on a green rerun, read again at 05:22Z on the 11:00Z night."""
+def closed_instance(aid, closed, read_at, what):
+    """One live instance: its item filed on the 11-04T11:00Z night, closed at `closed`, read again at `read_at` with
+    only that night to read. It must not reopen."""
     global AID, KEY
     saved = AID, KEY
-    AID = "NIGHTLY_RED:testing.red_bcbosb"
+    AID = aid
     KEY = AID.split(":", 1)[1]
     try:
         reset()
-        close = OW.epoch("2026-11-04T22:18:40Z")
         b = Bench(OW.epoch("2026-11-04T11:52:00Z") - 900)
         item = filed_item(b, NIGHT1)
-        b.t = OW.epoch("2026-11-05T05:22:00Z") - 900
-        st = b.read(point(NIGHT1), set(), closed_at={item: [close]})
-        ok(st is not None and not reopened(b, item),
-           "red_bcbosb closed 22:18:40Z, read at 05:22Z on the 11:00Z night: no reopen (the second instance)")
+        b.t = OW.epoch(read_at) - 900
+        st = b.read(point(NIGHT1), set(), closed_at={item: [OW.epoch(closed)]})
+        ok(st is not None and not reopened(b, item), what)
     finally:
         AID, KEY = saved
+
+
+def test_bcbosb_instance():
+    """NIGHTLY_COP_FIX_RED_BCBOSB_PWDD: closed 22:18:40Z on a green rerun, read again at 05:22Z on the 11:00Z night."""
+    closed_instance("NIGHTLY_RED:testing.red_bcbosb", "2026-11-04T22:18:40Z", "2026-11-05T05:22:00Z",
+                    "red_bcbosb closed 22:18:40Z, read at 05:22Z on the 11:00Z night: no reopen (the second instance)")
+
+
+def test_bgmskv_instance():
+    """NIGHTLY_COP_FIX_RED_BGMSKV_VSAQ: closed 22:18:44Z on a green rerun (its RootFinalizer red cured at cbfcc52bc7),
+    reopened 05:23:45Z ("live broken") on the 11:00Z night, which ran before that fix."""
+    closed_instance("NIGHTLY_RED:testing.red_bgmskv", "2026-11-04T22:18:44Z", "2026-11-05T05:23:45Z",
+                    "red_bgmskv closed 22:18:44Z, read at 05:23:45Z on the 11:00Z night: no reopen (the third instance)")
 
 
 def test_unchanged_without_a_night_or_close_times():
@@ -150,7 +164,7 @@ def test_unchanged_without_a_night_or_close_times():
 
 
 if __name__ == "__main__":
-    for fn in (test_stale_night_holds, test_bcbosb_instance, test_unchanged_without_a_night_or_close_times):
+    for fn in (test_stale_night_holds, test_bcbosb_instance, test_bgmskv_instance, test_unchanged_without_a_night_or_close_times):
         fn()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     sys.exit(1 if FAILS else 0)
