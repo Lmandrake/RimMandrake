@@ -179,6 +179,26 @@ check("queues: every wired queue has exactly one fixed-id alarm target and a ran
 check("queues: the stragglers are wired (arena runner claims, replay watcher)",
       {"arena_ralph_c", "replay_watch"} <= set(_qnames)
       and all(q.get("reader", "dirs") in OW.QUEUE_READERS for q in _rlq["queues"]), _qnames)
+# census (QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS): the claim/lease queues are exactly these; a new one joins the census here
+_CENSUS = {"artpipe", "testq", "arena_ralph_c", "replay_watch"}
+check("queues: the wired set is exactly the claim/lease census (none dropped, none unaccounted)",
+      set(_qnames) == _CENSUS and len(_qnames) == len(_CENSUS), sorted(set(_qnames) ^ _CENSUS))
+check("queues: the stragglers read through their own readers, not the dir reader",
+      {q["name"]: q.get("reader", "dirs") for q in _rlq["queues"] if q["name"] in ("arena_ralph_c", "replay_watch")}
+      == {"arena_ralph_c": "ralph_c", "replay_watch": "replay_arms"}, _rlq["queues"])
+check("queues: each straggler's alarm target carries its fixed id",
+      _ids.get("queues.arena_ralph_c.stalled_min") == "OPS_ARENA_CLAIMS_UNSTICK_NOBODY_HOME"
+      and _ids.get("queues.replay_watch.stalled_min") == "OPS_REPLAY_UNSTICK_WATCHMAN_NAPPING", _ids)
+# Fleet Watch is not a queue: the owner retired it 2026-11-04, so no queue or alarm target may name it
+_own = HERE.parents[2] / "infrastructure" / "state" / "ledger" / "events" / "OWNER.jsonl"
+_ret = [json.loads(_l) for _l in _own.read_text(encoding="utf-8").splitlines()
+        if "FLEETWATCH_CODE_RETIRE_NOBODY_WAS_WATCHING" in _l] if _own.exists() else []
+check("queues/fleet: the owner's retirement of Fleet Watch is on the ledger",
+      any(e.get("id") == "FLEETWATCH_CODE_RETIRE_NOBODY_WAS_WATCHING" and e.get("seat") == "OWNER"
+          and "Retire FleetWatch" in (e.get("ownerSaid") or "") for e in _ret), (str(_own), len(_ret)))
+check("queues/fleet: no queue entry or queues.* target names the retired Fleet Watch",
+      not any("fleet" in json.dumps(q).lower() for q in _rlq["queues"])
+      and not any("fleet" in t["key"].lower() for t in _rlq["targets"] if t["key"].startswith("queues.")), _qnames)
 for _d in (_TMP, _qd, _cd, _ar, _rp):
     shutil.rmtree(_d, ignore_errors=True)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
