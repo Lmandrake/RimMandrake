@@ -752,3 +752,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T18:37:34Z","tsn":1793903854381424094}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing SILT_TRAP_STYLES_REDRAW_HALF_RES_FLAT: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T18:48:34Z","tsn":1793904514528667687}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:06:29Z","tsn":1793905589355637312}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T19:10:39Z","tsn":1793905839188611988}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:10:48Z","tsn":1793905848972652676}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HORRORS_RAIDING_FACTION_1 A2 (L2), read-only proof","ts":"2026-11-05T19:12:01Z","tsn":1793905921713932684}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:12:16Z","tsn":1793905936474482863}
