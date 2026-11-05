@@ -292,6 +292,82 @@ def t_clones_seed():
        "(6) no conversation name and no file content crosses: %r" % out[:400])
 
 
+def t_store_seed():
+    """CHECKER_REACH_FIX_STORE_STILL_DARK: OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV's Judge read 'ls /home/mandrake/rm/
+    relentless/store -> Permission denied'. Every store path is in reach_never (learned.md, receipts and run output live
+    there) and the store class seeded no adapter, so the repair proposed nothing and its probe could never pass. Now the
+    shipped rules seed the supervisor adapter relentless_store_attempts: numbers and ids from the store, never prose; and
+    a closed store ticket re-probes with it (reseed)."""
+    import json
+    import subprocess
+    import tempfile
+    import time
+    import hashlib
+    import relentless_wall as W
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    what = ("Relentless store spend-*.json / items/*/attempts behind the diagnosis: ls /home/mandrake/rm/relentless/store "
+            "-> Permission denied; item learn log in the Relentless store: same path, Permission denied")
+    cls = RF.classify(r, [what])
+    store_root = "/home/mandrake/rm/relentless/store"
+    prop = RF.propose(r, cls, [], [], what, store_root)
+    ok(cls["class"] == "store" and prop["adapters"] == ["relentless_store_attempts"] and prop["paths"] == []
+       and store_root in prop["refused"],
+       "(8) the store gap seeds relentless_store_attempts and still refuses the store root: %s" % prop)
+    judge = RF.propose(r, cls, ["relentless_store_attempts", store_root + "/items/X/learned.md"], [], what, store_root)
+    ok(judge["adapters"] == ["relentless_store_attempts"] and judge["paths"] == [] and judge["refused"],
+       "(8) a Judge naming the adapter gets it, and a store path it names stays refused: %s" % judge)
+    old = {"adapters": [], "paths": [], "by": "seed"}
+    ok(RF.reseed(r, "store", old)["adapters"] == ["relentless_store_attempts"],
+       "(8) the stale empty store proposal gains the adapter when its ticket closes (reseed)")
+    ad = W.adapters(r).get("relentless_store_attempts") or {}
+    argv, why = W.fill_argv(ad.get("argv") or ["x"], {})
+    ok(argv is not None and argv[:3] == ["python3", "-I", "-c"], "(8) the adapter is a slot-free no-shell script: %s" % why)
+    now = time.time()
+    at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now - 3600))
+    with tempfile.TemporaryDirectory() as home:
+        s = os.path.join(home, "rm", "relentless", "store")
+        for n, st, rows in (
+                ("ITEM_A", {"status": "queued", "gen": 2, "returns": 1, "spent": 900},
+                 [{"at": at, "gen": 1, "start": True}, {"at": at, "gen": 1, "end": "proof_weak",
+                                                         "detail": "SECRET_DETAIL"},
+                  {"at": at, "gen": 2, "start": True}, {"at": at, "gen": 2, "end": "finish", "sha": "ab" * 20}]),
+                ("ITEM_B", {"status": "done", "gen": 1, "returns": 0, "spent": 100},
+                 [{"at": at, "gen": 0, "end": "SECRET words here"}, {"at": at, "gen": 1, "start": True},
+                  {"at": at, "gen": 1, "end": "finish"}]),
+                ("SECRET dir name", {"status": "SECRET status words"}, [])):
+            d = os.path.join(s, "items", n)
+            os.makedirs(os.path.join(d, "receipts"))
+            with open(os.path.join(d, "state.json"), "w") as f:
+                json.dump(dict(st, why="SECRET_WHY"), f)
+            with open(os.path.join(d, "attempts.jsonl"), "w") as f:
+                f.write("".join(json.dumps(x) + "\n" for x in rows))
+            with open(os.path.join(d, "learned.md"), "w") as f:
+                f.write("SECRET_LEARNED")
+            with open(os.path.join(d, "receipts", "gen1.json"), "w") as f:
+                f.write('{"x": "SECRET_RECEIPT"}')
+        h = lambda n: hashlib.sha1(n.encode()).hexdigest()[:10]
+        with open(os.path.join(s, "spend-%s.json" % time.strftime("%Y%m%d", time.gmtime(now))), "w") as f:
+            json.dump({"spent": 1000, "runs": {"rm-relentless-work-%s-g1" % h("ITEM_A"): 600,
+                                               "rm-relentless-work-%s-g2" % h("ITEM_A"): 300,
+                                               "rm-relentless-check-%s-g1" % h("ITEM_B"): 100}}, f)
+        env = dict(os.environ, HOME=home)
+        out = subprocess.run(argv or ["false"], env=env, cwd=home, capture_output=True, text=True, timeout=120).stdout
+        blank = subprocess.run(argv or ["false"], env=dict(os.environ, HOME=os.path.join(home, "none")), cwd=home,
+                               capture_output=True, text=True, timeout=120).stdout
+    ok("items 2 by_status done=1 queued=1" in out and "spend " in out and "spent=1000 runs=3" in out,
+       "(8) the reading counts the store's items and spend days: %r" % out[:400])
+    ok("returned window_h=24 total=1000 returned=600 pct=60.0 unmapped=0" in out
+       and "by_end proof_weak/work tokens=600 pct=60.0" in out,
+       "(8) returned spend is placed by the gen's start row and named by its failed ending, as rl_churn does: %r"
+       % out[:600])
+    ok(("item ITEM_A h=%s status=queued gen=2 returns=1 spent=900 ends=finish:1,proof_weak:1" % h("ITEM_A")) in out
+       and out.index("item ITEM_A") < out.index("item ITEM_B"),
+       "(8) one line per item, largest spent first: %r" % out[-400:])
+    ok("SECRET" not in out and "ends=finish:1,other:1" in out,
+       "(8) no learned.md, receipt, state prose, attempt detail, odd item id or free-text ending crosses: %r" % out)
+    ok(blank.startswith("store ") and "NO_STORE" in blank, "(8) no store reads NO_STORE, not a clean empty: %r" % blank)
+
+
 def t_closed_ticket_reseeds():
     """CHECKER_REACH_FIX_CLONES_STILL_DARK: the owner's seed was empty (clone root refused), so its probe failed and the
     clones ticket was filed. The ticket's fix is a rules change (a seed adapter); on its close the re-probe and the one
@@ -355,7 +431,7 @@ def t_seat_tmp_reach():
 
 def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
-              t_windows_build_nothing_to_probe, t_every_waiter_released, t_legacy_off, t_clones_seed,
+              t_windows_build_nothing_to_probe, t_every_waiter_released, t_legacy_off, t_clones_seed, t_store_seed,
               t_closed_ticket_reseeds, t_seat_tmp_reach):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
