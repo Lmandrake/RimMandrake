@@ -733,3 +733,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A6 (L2), read-only proof","ts":"2026-11-05T17:46:09Z","tsn":1793900769420642216}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:46:42Z","tsn":1793900802422411445}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging FW_PROOF_TOOLS_HARDEN_READ_GAPS: deploy and restart for its live proofs","ts":"2026-11-05T17:47:58Z","tsn":1793900878661497022}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:57:11Z","tsn":1793901431945192862}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T17:57:50Z","tsn":1793901470624594319}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:58:00Z","tsn":1793901480712717865}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW A1 (L2), read-only proof","ts":"2026-11-05T17:58:08Z","tsn":1793901488863424575}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:58:15Z","tsn":1793901495836205855}
