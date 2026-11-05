@@ -220,7 +220,12 @@ def main() -> int:
         age(pool / "p4", 7300)
         rd = sc.pool_reading()
         check(rd["stranded"] == ["p2"] and rd["breach"] == 1, f"a transcript alone strands nothing: {rd['stranded']}")
+        # POOL_REUSE_FIX_CONSULT_GAG_STICKS: a help-* consult clone carries pushurl=read-only-consult; reuse must clear it
+        sh("git", "-C", str(pool / "p4"), "remote", "set-url", "--push", "origin", "read-only-consult")
         check(sc.pool_reuse(pool / "p6") == pool / "p6" and not (pool / "p4").exists(), "and blocks no reuse")
+        pu = subprocess.run(["git", "-C", str(pool / "p6"), "config", "--get-all", "remote.origin.pushurl"],
+                            capture_output=True, text=True).stdout.strip()
+        check(pu == "", f"a reused clone pushes to origin, not a consult's gag: pushurl={pu!r}")
         # POOL_STATE_COMMITS_PIN_CLONE_FOREVER: a trailing lesson commit is not stranded work; a clone a live item owns is not stranded
         (pool / "p6" / "infrastructure/state/lessons").mkdir(parents=True, exist_ok=True)
         (pool / "p6" / "infrastructure/state/lessons/l.md").write_text("a lesson\n")

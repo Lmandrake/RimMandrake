@@ -753,6 +753,9 @@ def pool_reuse(dest: Path, fetch: bool = False) -> Path | None:
             continue
         try:
             os.rename(c, dest)
+            # a help-* consult clone was gagged (pushurl=read-only-consult, relentless.help_checkout); a worker must push
+            # to origin, or its ./publish dies "read-only-consult does not appear to be a git repository"
+            git("config", "--unset-all", "remote.origin.pushurl", cwd=dest, check=False)
             try:
                 refresh()
             except Exception:
