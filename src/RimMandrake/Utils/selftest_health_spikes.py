@@ -14,6 +14,7 @@ Pure logic only: no game, no dump is written, no process is opened. Written fail
 import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
 _st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_health_spikes_")
 _st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
+import json
 import os
 import sys
 import tempfile
@@ -113,6 +114,15 @@ def minidump():
     check("retention_cap_bytes", D.to_prune(files, keep=10, cap_bytes=250) == ["a.dmp", "b.dmp"], D.to_prune(files, keep=10, cap_bytes=250))
     check("dump_type_is_small", D.DUMP_FLAGS & D.MiniDumpWithFullMemory == 0 and D.DUMP_FLAGS & D.MiniDumpWithThreadInfo)
     check("never_automatic", D.AUTOMATIC is False)
+    # FLOWWORKS_DIAGNOSE_FREEZE_AFTER_DRAWBRIDGE: the one automatic use is right before a kill, one JSON line out
+    import contextlib, io
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = D.main(["--before-kill", "--incident", "selftest", "--pid", "1", "--dir", tempfile.mkdtemp()])
+    lines = buf.getvalue().strip().splitlines()
+    rec = json.loads(lines[-1]) if lines and lines[-1].startswith("{") else {}
+    check("before_kill_only_automatic", D.AUTOMATIC is False and D.BEFORE_KILL_AUTOMATIC is True and len(lines) == 1
+          and rec.get("status") in ("unavailable", "refused", "failed", "ok") and rc in (0, 1), buf.getvalue()[:200])
     capture_guards(D)
 
 

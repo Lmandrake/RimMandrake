@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 """spike.minidump (design/RimMandrake/game_health_record.md): what was RimWorld doing during a hang?
 
-MANUAL ONLY, one SMALL dump per incident, disk headroom checked first, retention capped. Never automatic
-(AUTOMATIC = False): GPT review 1.9 requires a utility spike first - a dump that identifies a deliberately
-blocked main thread, stacks that survive offline analysis, measured duration and size, proof the dumper cannot
-strand the process suspended, and failures/partial dumps reported. None of that is measured yet.
+MANUAL ONLY on a live game, one SMALL dump per incident, disk headroom checked first, retention capped. Never
+automatic on a game that is to keep running (AUTOMATIC = False): GPT review 1.9 requires a utility spike first - a
+dump that identifies a deliberately blocked main thread, stacks that survive offline analysis, measured duration and
+size, proof the dumper cannot strand the process suspended, and failures/partial dumps reported. None of that is
+measured yet.
 
-    python.exe src\\RimMandrake\\Utils\\health_minidump.py --incident <key> [--pid N] [--dir D]
+The ONE automatic use is `--before-kill` (BEFORE_KILL_AUTOMATIC): a caller whose very next act kills the game
+(FLOWWORKS_DIAGNOSE_FREEZE_AFTER_DRAWBRIDGE: the SteveDesktop worker's wedged-kept-game and hung-run restarts, where a
+frozen game's evidence was lost to the kill). There the live-game hazard is moot (a game left suspended is killed
+anyway), the cost is seconds and headroom-checked disk, and each dump's .json is a real-incident measurement of
+duration and size for the spike. Its output is one JSON line.
+
+    python.exe src\\RimMandrake\\Utils\\health_minidump.py --incident <key> [--pid N] [--dir D] [--before-kill]
 
   * Windows python only (ctypes: kernel32 OpenProcess, psapi working set, dbghelp MiniDumpWriteDump).
   * Dump type: thread info + handle data + unloaded modules + process/thread data; NEVER full memory.
@@ -36,6 +43,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 AUTOMATIC = False
+BEFORE_KILL_AUTOMATIC = True     # the sole automatic caller: a stop path that kills the game next
 # MINIDUMP_TYPE (minidumpapiset.h)
 MiniDumpNormal = 0x0
 MiniDumpWithFullMemory = 0x2
@@ -248,7 +256,10 @@ def main(argv=None):
     ap.add_argument("--incident", required=True, help="incident key (e.g. the TPS stall id); one dump per key")
     ap.add_argument("--pid", type=int, default=None)
     ap.add_argument("--dir", default=None)
+    ap.add_argument("--before-kill", action="store_true",
+                    help="the caller kills the game next (the only automatic use): one JSON line out")
     a = ap.parse_args(argv)
+    out = (lambda r: json.dumps(r)) if a.before_kill else (lambda r: json.dumps(r, indent=1))
     directory = a.dir
     if directory is None:
         from game_paths import LOCALLOW
@@ -257,11 +268,13 @@ def main(argv=None):
     if pid is None:
         pids = find_game_pids() if os.name == "nt" else []
         if len(pids) != 1:
-            print(json.dumps({"status": "refused", "reason": "found %d %s processes; pass --pid" % (len(pids), GAME_EXE)}))
+            print(out({"status": "refused", "reason": "found %d %s processes; pass --pid" % (len(pids), GAME_EXE)}))
             return 2
         pid = pids[0]
     rec = capture(pid, a.incident, directory)
-    print(json.dumps(rec, indent=1))
+    if a.before_kill:
+        rec["beforeKill"] = True
+    print(out(rec))
     return 0 if rec.get("status") == "ok" else 1
 
 
