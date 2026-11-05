@@ -850,7 +850,8 @@ def wall_scaling_gear(t):
 
 SUSPENSION_CASES = ["Suspension_spans_supports_and_swing_order", "Suspension_deck_built_over_the_hole_floor",
                     "Underpass_band_step_clearance_and_sunken_height", "Underpass_wiring_masks_sites_not_tunnels",
-                    "SpanBase_cover_is_the_trap_tier_of_the_base", "SpanBase_cover_read_is_decked_surface_no_underpass"]
+                    "SpanBase_cover_is_the_trap_tier_of_the_base", "SpanBase_cover_read_is_decked_surface_no_underpass",
+                    "Suspension_SteelHeavyAnchors_no_rope_table"]
 
 
 @suite.chain("suspension_bridges_and_covers")
@@ -1350,7 +1351,7 @@ DRAWBRIDGE_CASES = [
     "Drawbridge_Cables_lowered_reach_deck_raised_slack_vs_art", "Drawbridge_Cables_canfail_old_stop_short_and_moved_attach",
     "Drawbridge_Cables_raised_leaf_edge_crops_the_stiff_rope", "Drawbridge_Cables_call_sites",
     "Drawbridge_Cables_ropes_for_unmeasured_print_is_null_not_throw", "Drawbridge_Cables_slack_coil_lies_flat_canfail_old_hook",
-    "Drawbridge_BaseAnchors_upright_multi_per_facing", "Drawbridge_StyledHeavyAnchors_upright_per_facing",
+    "Drawbridge_BaseAnchors_upright_multi_per_facing",
     "Drawbridge_hose_cut_by_a_raised_leaf_carries_no_liquid",
     "Drawbridge_raid_plank_between_sunken_banks_lies_at_their_depth",
     "Drawbridge_OneDrag_hinge_bank_is_where_the_drag_started", "Drawbridge_OneDrag_every_planned_winch_is_beside_its_own_hinge",
