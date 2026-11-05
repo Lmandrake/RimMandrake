@@ -3964,8 +3964,75 @@ def steve_release():
              "detail": "the brake release pass failed: " + why}] if why else []
 
 
+OLD_TIMER = "rm-ops-watch.timer"     # the clock the metronome's sense phase replaces (metronome_phases.json owns)
+SENSE_PHASE = "sense"
+EXIT_FENCED = 3
+COMPOSE_MAX_AGE_S = 1800.0   # a carried family reading older than this reads UNMEASURED (rules: compose_max_age_s)
+COMPOSE_ALARM_FAMILY = "flow"  # a compose pass files alarms only when it measures this family (its ctx: the ledger ids)
+
+
+class Fenced(RuntimeError):
+    """The metronome generation this pass acts for is no longer the live one: it publishes nothing more."""
+
+
+def carry_family(fam, recs, now, max_age):
+    """The points of family `fam`'s last series record, for a compose pass that did not measure it this beat: each
+    carries observed_at (its record's time). None recorded, or older than max_age, reads UNMEASURED, never as now."""
+    recs = [r for r in recs if isinstance(r, dict) and is_num(r.get("t")) and r["t"] <= now + 300
+            and isinstance(r.get("points"), dict)]
+    last = recs[-1] if recs else None
+    if last and now - last["t"] <= max_age:
+        out = {}
+        for k, p in last["points"].items():
+            if isinstance(p, dict):
+                p = dict(p)
+                p["x"] = dict(p.get("x") or {}, observed_at=last.get("at") or iso(last["t"]))
+            out[k] = p
+        return out
+    why = ("last measured %s, %.0f min ago: older than the round robin allows (%d min)" % (
+        last.get("at") or iso(last["t"]), (now - last["t"]) / 60, max_age / 60) if last else
+        "not measured yet: the round robin has not reached it")
+    out = {k: U(why, p.get("unit") if isinstance(p, dict) else None) for k, p in (last or {}).get("points", {}).items()
+           if not k.endswith("._collector")}
+    out["%s._collector" % fam] = U(why)
+    return out
+
+
+
+def held_health(now, max_age):
+    """The health.* points of the last status a compose alarm pass wrote (each with observed_at), for a compose pass
+    without the ledger; None when there is none within max_age, so that pass computes its own verdict."""
+    st = _obj(read_json(ops_dir() / "status.json"))
+    pts, t = st.get("points"), st.get("t")
+    if not isinstance(pts, dict) or not is_num(t) or not 0 <= now - t <= max_age:
+        return None
+    hs = pts.get("health.state")
+    obs = ((hs.get("x") or {}).get("observed_at") if isinstance(hs, dict) else None) or st.get("at") or iso(t)
+    try:
+        seen = epoch(obs)       # a verdict carried pass after pass ages from the pass that made it
+    except (TypeError, ValueError, OverflowError):
+        return None
+    if not is_num(seen) or not 0 <= now - seen <= max_age:
+        return None
+    out = {}
+    for k, p in pts.items():
+        if k.startswith("health.") and isinstance(p, dict):
+            out[k] = dict(p, x=dict(p.get("x") or {}, observed_at=obs))
+    return out if out.get("health.state", {}).get("m") == "MEASURED" else None
+
+
 @_locked
-def run(now=None, rules=None, filer=None, families=None):
+def run(now=None, rules=None, filer=None, families=None, compose=False, still_owner=None):
+    """One pass. `families` limits it to those collectors. With `compose` (the metronome's sense phase, a family or two
+    a beat, round robin) every other family's last series record is carried in (carry_family), so the status, health
+    verdict, digest and flags are a whole pass's; the alarms run, over that composite, only on the pass that measures
+    COMPOSE_ALARM_FAMILY, about once a round. `still_owner(what)` (the metronome's ownership fence) is asked before the
+    series are written, before the alarms and before the status: False raises Fenced."""
+    def fence(what):
+        if still_owner is not None and not still_owner(what):
+            raise Fenced("fenced before %s" % what)
+    compose = bool(compose and families)
+    whole = not families or compose
     now = now or time.time()
     rules = rules or load_rules()
     t0 = time.time()
@@ -3994,21 +4061,37 @@ def run(now=None, rules=None, filer=None, families=None):
             rec["src_t"] = ctx["production_src_t"]
         dup = fam == "production" and old and old[-1].get("src_t") and old[-1].get("src_t") == rec.get("src_t")
         if not dup:
+            fence("writing the %s series" % fam)
             try:
                 append(fam, rec)
             except Exception as e:  # noqa: BLE001  the pass and the alarms outlive a series that cannot be written
                 sick.append({"rule": "series_write", "key": "%s._series" % fam, "value": None, "window": "now",
                              "detail": "this pass's %s points were not kept: %s: %s" % (fam, type(e).__name__, str(e)[:160])})
         points.update(pts)
+    try:
+        max_age = float(rules.get("compose_max_age_s", COMPOSE_MAX_AGE_S))
+    except (TypeError, ValueError):
+        max_age = COMPOSE_MAX_AGE_S
+    if compose:
+        carried = {}
+        for fam in ORDER:
+            if fam in families:
+                continue
+            prev[fam] = read_series(fam, since)
+            carried.update(carry_family(fam, prev[fam], now, max_age))
+        points = dict(carried, **points)        # this pass's own readings win
     if filer is real_filer and (not families or "steve" in families):      # acts only where alarms are really filed
         sick += steve_release()
     for fam, key in (("relentless", "relentless.blind"), ("seats", "seats.blind"), ("plan", "plan.blind"),
                      ("disk", "disk.scratch_outside_blind")):
-        if (not families or fam in families) and not counts_as_measured(points.get(key)):
+        if (whole or fam in families) and not counts_as_measured(points.get(key)):
             points[key] = st_suppressed(points, fam)
             stamp_ranges(points, rules)
     health_flag = None
-    if not families:      # a limited pass has not measured every SLI: it never overwrites the verdict
+    held = held_health(now, max_age) if compose and COMPOSE_ALARM_FAMILY not in families else None
+    if held:        # the verdict needs the ledger, which only the alarm pass reads: carry that pass's
+        points.update(held)
+    elif whole:      # a limited pass has not measured every SLI: it never overwrites the verdict
         points.update(publish_health(points, prev, ctx, rules, now))
         if points["health.state"].get("m") != "MEASURED":
             health_flag = {"rule": "health", "key": "health.state", "value": None, "window": "now",
@@ -4042,7 +4125,7 @@ def run(now=None, rules=None, filer=None, families=None):
               and p.get("m") == "UNMEASURED"]
     flags += [{"rule": "bad_rule", "key": "rules.range." + k, "value": points[k].get("v"), "window": "now",
                "detail": "%s reads %s, which fits no class of the ranges block" % (k, fmt(points[k].get("v")))} for k in unfit]
-    if not families:    # a key no collector reports would keep its alarm silent for good; a limited pass cannot tell
+    if whole:    # a key no collector reports would keep its alarm silent for good; a limited pass cannot tell
         for k in sorted(ranges_of(rules)):
             if k.split(".")[0] + "._collector" not in points and k not in points:
                 flags.append({"rule": "bad_rule", "key": "rules.range." + k, "value": None, "window": "now",
@@ -4058,7 +4141,13 @@ def run(now=None, rules=None, filer=None, families=None):
         flags.append({"rule": "bad_rule", "key": "last_measured", "value": None, "window": "now",
                       "detail": "last_measured.json not written: %s" % str(e)[:160]})
     try:
-        alarms = run_alarms(points, rules, now, ctx.get("known_ids") or set(), filer, ctx.get("open_ids"))
+        if compose and COMPOSE_ALARM_FAMILY not in families:
+            alarms = _obj(read_json(ops_dir() / "alarms.json"))       # held: this beat's pass is not the alarm pass
+        else:
+            fence("the alarms")
+            alarms = run_alarms(points, rules, now, ctx.get("known_ids") or set(), filer, ctx.get("open_ids"))
+    except Fenced:
+        raise
     except Exception as e:  # noqa: BLE001  the digest still goes out, and says the alarms did not run
         alarms = _obj(read_json(ops_dir() / "alarms.json"))
         flags.append({"rule": "bad_rule", "key": "alarms", "value": None, "window": "now",
@@ -4075,6 +4164,7 @@ def run(now=None, rules=None, filer=None, families=None):
     for f in flags:
         f["since"] = (old_flags.get(flag_id(f)) or {}).get("since") or iso(now)
     run_s = round(time.time() - t0, 1)
+    fence("the status")
     atomic_json(ops_dir() / "flags.json", {"at": iso(now), "flags": flags})
     atomic_json(ops_dir() / "status.json", {"schema": SCHEMA, "at": iso(now), "t": now, "run_s": run_s,
                                              "points": points, "flags": flags, "alarms": alarms})
@@ -4183,7 +4273,10 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run")
     r.add_argument("--file-alarms", action="store_true", help="file NEW alarm crossings as rimflow items")
-    r.add_argument("--family", action="append", help="only these families (testing)")
+    r.add_argument("--family", action="append", help="only these families (testing, and the metronome's sense phase)")
+    r.add_argument("--compose", action="store_true",
+                   help="with --family: carry every other family's last reading in, so the status is a whole pass's")
+    r.add_argument("--metronome-gen", type=int, help="the metronome's ownership generation (its sense phase)")
     d = sub.add_parser("digest")
     d.add_argument("--blind", action="store_true", help="print digest_blind.md (the token-blind roles' digest)")
     sub.add_parser("backfill", help="seed an empty production series from rm-streams-collect' history")
@@ -4195,11 +4288,33 @@ def main(argv=None):
                    help="the one Operations deploy (systemd/ops_clocks.json)")
     a = ap.parse_args(argv)
     if a.cmd == "run":
+        import metronome
+        if a.metronome_gen is None and a.file_alarms:
+            owner = metronome.owner_of(OLD_TIMER)
+            if owner:
+                print("ops_watch: the metronome's %s phase owns %s; a run without --metronome-gen files nothing: "
+                      "run it without --file-alarms" % (owner, OLD_TIMER))
+                return 0
+        still_owner = None
+        if a.metronome_gen is not None:
+            mdir = metronome.state_dir(os.environ.get("METRONOME_DIR"))
+
+            def still_owner(what):
+                ok, why = metronome.may_act(mdir, SENSE_PHASE, a.metronome_gen)
+                if not ok:
+                    print("ops_watch: fenced before %s: %s" % (what, why))
+                return ok
+            if not still_owner("the pass"):
+                return EXIT_FENCED
         try:
-            dg = run(filer=real_filer if a.file_alarms else None, families=a.family)
+            dg = run(filer=real_filer if a.file_alarms else None, families=a.family, compose=a.compose,
+                     still_owner=still_owner)
         except Busy as e:
             print("skipped: %s" % e)
             return 0
+        except Fenced as e:
+            print("ops_watch: %s" % e)
+            return EXIT_FENCED
         print(dg["headline"])
         return 0
     if a.cmd == "lint":
