@@ -357,6 +357,26 @@ def _prove_rows_exit(result, rows):
                                p] + list(rows), capture_output=True, timeout=60).returncode
 
 
+def _a2_line():
+    try:
+        with open(LIVE_PROOFS, encoding="utf-8") as fh:
+            lines = [ln for ln in fh if ln.startswith("live-proof A2:")]
+    except OSError:
+        return None
+    return lines[0] if len(lines) == 1 else None
+
+
+def _prove_job_net_exit(doc):
+    """Run the real prove_job_net.py on a results doc (None = a file that is not JSON)."""
+    import subprocess
+    with tempfile.TemporaryDirectory() as d:
+        p = os.path.join(d, "a2.json")
+        with open(p, "w", encoding="utf-8") as fh:
+            fh.write("not json{" if doc is None else json.dumps(doc))
+        return subprocess.run([sys.executable, os.path.join(HERE, "prove_job_net.py"), p],
+                              capture_output=True, timeout=60).returncode
+
+
 def main():
     # -- the instrument itself ------------------------------------------------------------------
     check("source parse is clean", not V._ERRORS, V._ERRORS)
@@ -454,6 +474,25 @@ def main():
                                      ("FAIL", "wild skarrin despawned alive")}), 1)):
         got = _prove_rows_exit(res, a1 or [])
         check("live proof A1's prove_rows on the %s results exits %d" % (label, want), got == want, got)
+    # live proof A2 reads the job_net rows through prove_job_net.py: a refused/unmeasured run exits 2, never 1
+    a2 = _a2_line()
+    check("live proof A2 hands its results to prove_job_net.py", a2 is not None and "prove_job_net.py " in a2, a2)
+    jn = lambda res: [{"id": k, "status": v[0], "evidence": v[1]} for k, v in res.items() if k.startswith("job_net.")]
+    for label, doc, want in (
+            ("healthy", {"bars": jn(healthy)}, 0),
+            ("handler_vanishes", {"bars": jn(run(("handler_vanishes",)))}, 1),
+            ("net_noop", {"bars": jn(run(("net_noop",)))}, 0),   # a FAIL is a reading, the clause is the handler
+            # 2026-11-04T02:38 live: an UNKNOWN-outcome bridge call refused every preflight; bars=[]
+            # the clause itself: a net row that names the handler gone fails A2 whatever its status
+            ("net FAIL naming the handler gone", {"bars": [
+                {"id": "job_net.site_ready_net", "status": "PASS"},
+                {"id": "job_net.net_turns_wild_pawn_into_breeding_stock", "status": "FAIL",
+                 "evidence": "handler Colonist is not alive on the map after the wait"}]}, 1),
+            ("refused", {"refused": "site:dlc_status FAIL; site:weather FAIL", "bars": []}, 2),
+            ("no job_net rows", {"bars": [{"id": "log_clean.x", "status": "PASS"}]}, 2),
+            ("unreadable", None, 2)):
+        got = _prove_job_net_exit(doc)
+        check("live proof A2's prove_job_net on the %s results exits %d" % (label, want), got == want, got)
     hv = run(("handler_vanishes",)).get("handler_fate.control_no_job_nobody_vanishes", ("", ""))
     check("break handler_vanishes: the no-job control FAILs (the exit is not the job's)", hv[0] == "FAIL", hv)
 
