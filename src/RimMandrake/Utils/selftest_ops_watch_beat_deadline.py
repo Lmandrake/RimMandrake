@@ -75,16 +75,29 @@ ok(str(res.get("_publish", "")).startswith("published"), "the publish still ran 
 os.environ["METRONOME_DEADLINE"] = "%.3f" % (time.time() - 1)
 res = OW.real_filer([dict(a) for a in todo], conf)
 ok(all(res.get(a["name"]) == OW.FILING_DEFERRED for a in todo), "deadline past: all deferred")
-ok(res.get("_publish") == "nothing to publish", "deadline past: nothing published")
+ok(res.get("_publish") in (None, "nothing to publish"), "deadline past: nothing published")
 os.environ["METRONOME_DEADLINE"] = "not a number"
 ok(OW.beat_deadline() is None, "an unreadable METRONOME_DEADLINE is no deadline")
 os.environ.pop("METRONOME_DEADLINE", None)
 
 # 4. run_alarms (source read): a deferred filing stays PENDING with no try counted and no file_failed logged
 src = Path(OW.__file__).read_text()
-ok('cur["tries"] = _tries(cur) + (1 if filer and err != FILING_DEFERRED else 0)' in src
-   and "if filer and err != FILING_DEFERRED:" in src,
-   "run_alarms skips the try count and file_failed for FILING_DEFERRED")
+ok("if filer and err == FILING_DEFERRED:" in src and 'cur["deferred_n"]' in src and '"file_deferred"' in src,
+   "run_alarms counts no try for FILING_DEFERRED, keeps last_try and the last error, logs file_deferred")
+
+# 5. a busy ingest.lock inside a beat is a deferral, not a failed try
+import fcntl  # noqa: E402
+lk = open(TMP / "ingest.lock", "w")
+fcntl.flock(lk, fcntl.LOCK_EX)
+os.environ["METRONOME_DEADLINE"] = "%.3f" % (time.time() + 1.6)
+res = OW.real_filer([dict(a) for a in todo], conf)
+ok(all(res.get(a["name"]) == OW.FILING_DEFERRED for a in todo), "lock busy inside a beat: all deferred (%s)" % set(res.values()))
+lk.close()
+
+# 6. the brake release is skipped (no flag) when it cannot fit before the kill, and runs outside a beat
+os.environ["METRONOME_DEADLINE"] = "%.3f" % (time.time() + 2)
+ok(OW.steve_release() == [], "brake release: no room in the beat -> skipped, no flag")
+os.environ.pop("METRONOME_DEADLINE", None)
 
 print("FAIL (%d)" % len(FAILS) if FAILS else "PASS")
 sys.exit(1 if FAILS else 0)

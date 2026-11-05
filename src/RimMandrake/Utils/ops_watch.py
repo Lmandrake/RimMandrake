@@ -69,6 +69,7 @@ import math
 import os
 import re
 import shutil
+import signal
 import statistics
 import subprocess
 import sys
@@ -3612,6 +3613,7 @@ def refusal_text(out, cap=300):
 FILING_DEFERRED = "deferred: this beat's filing time is spent; the next pass files it"
 FILING_PUBLISH_RESERVE_S = 4.0     # left for the publish and the rest of the pass when a metronome beat bounds it
 FILING_FIRST_GUESS_S = 3.0         # one spawn + raise before any is measured
+BRAKE_RELEASE_MIN_S = 4.0          # testq/brake_release.py took 2.4-2.5 s (2026-11-05)
 
 
 def beat_deadline():
@@ -3641,6 +3643,8 @@ def real_filer(todo, conf):
     deadline = beat_deadline()
     lock_wait = conf["lock_wait_s"] if deadline is None else max(
         0.0, min(conf["lock_wait_s"], deadline - time.time() - FILING_PUBLISH_RESERVE_S - FILING_FIRST_GUESS_S))
+    if deadline is not None and time.time() + FILING_FIRST_GUESS_S + FILING_PUBLISH_RESERVE_S > deadline:
+        return {a["name"]: FILING_DEFERRED for a in todo}
     with open(qhome() / "ingest.lock", "w") as lk:
         t0 = time.time()
         while True:
@@ -3649,6 +3653,8 @@ def real_filer(todo, conf):
                 break
             except BlockingIOError:
                 if time.time() - t0 > lock_wait:
+                    if deadline is not None:    # a busy lock inside a beat is time spent, not a failed try
+                        return {a["name"]: FILING_DEFERRED for a in todo}
                     return {a["name"]: "ingest.lock busy for %d s" % lock_wait for a in todo}
                 time.sleep(min(2, max(0.2, lock_wait / 4)))
         n = 0
@@ -3702,6 +3708,10 @@ def real_filer(todo, conf):
             res[a["name"]] = None if rc == 0 else refusal_text(out)
             n += rc == 0
             per = max(per, time.time() - began)
+        if n and deadline is not None and time.time() + FILING_PUBLISH_RESERVE_S / 2 > deadline:
+            # no room left to push before the kill: testq's ingest keeps the lines and its next publish carries them
+            res["_publish"] = "deferred: no time left in this beat; the next testq publish carries it"
+            return res
         res["_publish"] = ing.publish(n, message="ledger: ops_watch alarm(s) %s" % ", ".join(
             a["name"] for a in todo if res.get(a["name"]) is None and a["name"] not in res.get("_already", []))) if n else "nothing to publish"
     return res
@@ -4042,6 +4052,9 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
             cur = cur if isinstance(cur, dict) else state.setdefault(aid, {"state": "PENDING", "since": iso(now), "tries": 0})
             cur["error"] = why
             log.append({"ts": iso(now), "event": "step_failed", "aid": aid, "error": why})
+    if todo and filer and beat_deadline() is not None:
+        # a beat files what fits and defers the rest: the longest-untried go first, so no alarm starves behind a slow one
+        todo.sort(key=lambda a: str((state.get(a.get("aid")) or {}).get("last_try") or ""))
     if todo and filer:
         atomic_json(p, state)   # the name is on disk before the spawn: a pass that dies mid-filing retries it, not a new one
     if todo:
@@ -4067,7 +4080,11 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
             try:
                 cur = state[a["aid"]]
                 err = res.get(a["name"])
-                cur["tries"] = _tries(cur) + (1 if filer and err != FILING_DEFERRED else 0)
+                if filer and err == FILING_DEFERRED:     # not a try: last_try and the last real error stand
+                    cur["deferred_n"] = int(cur.get("deferred_n") or 0) + 1
+                    log.append({"ts": iso(now), "event": "file_deferred", "aid": a["aid"], "n": cur["deferred_n"]})
+                    continue
+                cur["tries"] = _tries(cur) + (1 if filer else 0)
                 cur["last_try"] = iso(now)
                 if err is None:
                     cur.update(state="OPEN", item=a["name"], name=a["name"], error=None, filed=iso(now))   # name: a successor stays the alarm's item
@@ -4083,7 +4100,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                         tell_conductor(a["conductor_log"], "- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]), a["aid"], now, log, cur)
                 else:
                     cur["error"] = err
-                    if filer and err != FILING_DEFERRED:
+                    if filer:
                         log.append({"ts": iso(now), "event": "file_failed", "aid": a["aid"], "error": err})
             except Exception as e:  # noqa: BLE001  a corrupt counter costs this alarm's bookkeeping; found_filed recovers it
                 log.append({"ts": iso(now), "event": "step_failed", "aid": a["aid"], "error": str(e)[:200]})
@@ -4458,12 +4475,26 @@ def steve_release():
     """Operations' deterministic hand on the Steve lane: testq/brake_release.py, its own process so its import of testq
     reads TESTQ_QUEUE as this pass does. -> flags: it costs a flag when it fails, never the pass."""
     why = None
+    dl = beat_deadline()
+    # inside a beat the release (~2.5 s) must end before the kill and leave the filer its room; when it cannot fit it
+    # waits for the next steve beat (no flag: nothing failed), and a timeout kills its whole process group
+    budget = 240.0 if dl is None else min(240.0, dl - time.time() - FILING_FIRST_GUESS_S - FILING_PUBLISH_RESERVE_S - 2)
+    if budget < BRAKE_RELEASE_MIN_S:
+        return []
     try:
-        dl = beat_deadline()    # inside a beat the release must end before the kill, leaving the pass its room
-        r = subprocess.run([sys.executable, str(HERE / "testq" / "brake_release.py")], capture_output=True, text=True,
-                           timeout=240 if dl is None else max(1.0, min(240.0, dl - time.time() - 6)))
-        if r.returncode != 0:
-            why = "exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:])
+        proc = subprocess.Popen([sys.executable, str(HERE / "testq" / "brake_release.py")], stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, text=True, start_new_session=True)
+        try:
+            out, err = proc.communicate(timeout=budget)
+        except subprocess.TimeoutExpired:
+            try:
+                os.killpg(proc.pid, signal.SIGKILL)
+            except OSError:
+                pass
+            proc.communicate()
+            raise
+        if proc.returncode != 0:
+            why = "exit %d: %s" % (proc.returncode, (err or out).strip()[-200:])
     except (OSError, subprocess.SubprocessError) as e:
         why = "%s: %s" % (type(e).__name__, str(e)[:200])
     return [{"rule": "brake_release", "key": "steve.brake_release", "value": None, "window": "now",
