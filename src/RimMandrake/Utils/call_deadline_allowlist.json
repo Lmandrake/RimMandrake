@@ -26,7 +26,6 @@
   "src/RimMandrake/Utils/art/biome_worldfaces.py::storage_root::run": 1,
   "src/RimMandrake/Utils/art/chat_review.py::_src_size::run": 1,
   "src/RimMandrake/Utils/art/def_history.py::scan::run": 1,
-  "src/RimMandrake/Utils/art/dessicated_render_check.py::is_ancestor::run": 1,
   "src/RimMandrake/Utils/art/donor_regen_jobs.py::build::run": 1,
   "src/RimMandrake/Utils/art/donor_regen_jobs.py::submit_one::run": 1,
   "src/RimMandrake/Utils/art/enact.py::deploy::run": 2,
