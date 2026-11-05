@@ -1,0 +1,1 @@
+Before handing the owner a joint live test, put the game on the item's tier first (modset_builder --tier <mod>_solo, e.g. weepingstones_solo for RM_Skarrin) and have a map up. Naming a creature on whatever list happens to be loaded wastes his sitting (owner 2026-11-05: 'you didn't prep me in the right game').
