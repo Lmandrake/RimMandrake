@@ -204,13 +204,21 @@ namespace RimMandrake.DivingInteraction
                     layer.AddConnection(surface, 0f);
                 }
 
-                // Only set a zoom route that is currently empty, so a scenario's or another
-                // mod's route through this layer survives us.
-                if (surface.zoomInToLayer == null)
+                // SEABED_LAYER_DIAGNOSE_STEALS_THE_ZOOM (2026-11-04): the surface must NOT zoom
+                // in to the floor. WorldCameraDriver.HandleZoom (vanilla 1.6) selects
+                // PlanetLayer.Selected.zoomInToLayer the moment altitude drops below MinAltitude,
+                // and only returns via zoomOutToLayer above 1100 (the clamp maximum) — so a
+                // surface->floor zoom route dropped the owner onto the grey/tan floor on an
+                // ordinary zoom-in and kept him there until the farthest zoom-out. The floor is
+                // ship-only; it is VIEWED only through its gizmo. Saves written before this fix
+                // carry the route (PlanetLayer scribes it), so it is cleared here, not just
+                // no longer set. A route to any other layer is left alone.
+                if (surface.zoomInToLayer == layer)
                 {
-                    surface.zoomInToLayer = layer;
+                    surface.zoomInToLayer = null;
                 }
 
+                // Floor -> surface on zoom-out is kept: it is the way back from viewing the floor.
                 if (layer.zoomOutToLayer == null)
                 {
                     layer.zoomOutToLayer = surface;

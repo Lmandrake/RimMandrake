@@ -403,6 +403,28 @@ def _gated_source(here, fname, field):
     return sites
 
 
+@suite.chain("seabed_zoom_route")
+def seabed_zoom_route(t):
+    """SEABED_LAYER_DIAGNOSE_STEALS_THE_ZOOM: zooming in on the surface never selects the floor layer.
+    Vanilla WorldCameraDriver selects PlanetLayer.Selected.zoomInToLayer below MinAltitude and returns via
+    zoomOutToLayer only above 1100, so a surface->floor route swaps the planet for the grey/tan floor on an
+    ordinary zoom-in. The floor is ship-only and viewed by its gizmo."""
+    import os, re
+    here = os.path.dirname(os.path.abspath(__file__))
+    with t.component("surface_never_zooms_in_to_floor", beyond_toggle=True):
+        src = open(os.path.join(here, "Source", "RM_SeabedLayer.cs"), encoding="utf-8").read()
+        code = "\n".join(l for l in src.splitlines() if not l.strip().startswith("//"))
+        if re.search(r"surface\.zoomInToLayer\s*=\s*layer\b", code):
+            raise ExpectationFailed("RM_SeabedLayer.cs sets surface.zoomInToLayer to the floor layer again")
+        if not re.search(r"surface\.zoomInToLayer\s*==\s*layer", code):
+            raise ExpectationFailed("RM_SeabedLayer.cs no longer clears a saved surface->floor zoom route")
+        if _live(t):
+            r = t.bridge_call("jawa/seabed_layer_probe") or {}
+            if r.get("found") and r.get("zoomInDefName") == "RM_SeabedLayer":
+                raise ExpectationFailed("live: surface.zoomInToLayer is RM_SeabedLayer (%r)" % r)
+        t.screenshot()
+
+
 @suite.chain("toggle_gates")
 def toggle_gates(t):
     """One component per Mod Settings toggle: the setting really gates its behaviour (source guard with an
