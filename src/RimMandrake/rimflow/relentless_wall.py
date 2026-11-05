@@ -636,14 +636,15 @@ def defect_said(reasons):
 
 def read_as(word, reasons, defects=None, unreached=None):
     """-> (word the supervisor acts on, the blind words or None). Structured (defects / unreached lists, the verdict script's
-    own fields): any observed defect is FAIL whatever the word; otherwise any unreached evidence is UNMEASURED - under PASS
-    too (GPT round 2: a PASS that names evidence it could not reach is not a close). A WEAK is read by acted_weak: only GAP:DIFF holds.
+    own fields): any observed defect is FAIL whatever the word; otherwise any unreached evidence is UNMEASURED under EVERY
+    word, PASS and WEAK too (GPT round 2: a PASS that names evidence it could not reach is not a close). Only then is a WEAK
+    read by acted_weak: only GAP:DIFF holds.
     Old format (both None): the prose, biased to FAIL - a defect named anywhere keeps or makes it FAIL, even under UNMEASURED."""
     if defects is not None or unreached is not None:
         defects, unreached = clean_list(defects) or [], clean_list(unreached) or []
         if defects:
             return "FAIL", None
-        if word in ("PASS", "FAIL", UNMEASURED) and unreached:
+        if unreached:       # every word, WEAK included: a GAP:OTHER WEAK narrows to PASS (CHECKER_WEAK_FIX_UNREACHED_READ_AS_PASS)
             return UNMEASURED, "; ".join(unreached)[:600]
         if word == UNMEASURED:      # the script refuses this; a hand-written file is read as prose
             return read_as(word, reasons)

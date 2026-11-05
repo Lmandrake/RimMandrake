@@ -498,10 +498,34 @@ def t_blind_prompt_withholds_reasoning():
     ok(W.evidence_paths("nothing here, done.") == [], "evidence with no path names none")
 
 
+def t_unreached_every_word():
+    """CHECKER_WEAK_FIX_UNREACHED_READ_AS_PASS: unreached evidence is UNMEASURED under every word; none may give PASS."""
+    table = [("PASS", "ran it"), ("FAIL", "a clause is not done"), ("WEAK", "GAP:DIFF. reverting the guard stays green"),
+             ("WEAK", "GAP:OTHER. my own mutant of the parser stays green"), ("WEAK", "the proof is thin"),
+             ("UNMEASURED", "CANNOT REACH: ssh stevedesktop exit 255")]
+    for word, why in table:
+        got = W.read_as(word, why, [], ["ssh stevedesktop exit 255"])
+        ok(got[0] == W.UNMEASURED and got[1], "%s %r + unreached is UNMEASURED: %s" % (word, why[:20], got))
+        ok(W.read_as(word, why, ["8 != 7"], ["ssh"])[0] == "FAIL", "%s %r + a defect stays FAIL" % (word, why[:20]))
+    ok(W.read_as("WEAK", "GAP:OTHER", [], [" "]) == ("PASS", None), "blank unreached under WEAK is no entry: narrowing stands")
+    x = T.Rig(n=1, reach_repair=False, share=1.0, same_failure_limit=2, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    was = to_check(x, "I0")
+    st = x.st("I0")
+    R.verdict(x.s, "I0", st["check"]["nonce"], "WEAK", "GAP:OTHER. my own mutant stays green", defects=[],
+              unreached=["ssh stevedesktop exits 255"])
+    x.w.up[st["check"]["run"]["unit"]] = False
+    x.tick()
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "candidate" and st["gen"] == was["gen"] and st["blind"]["n"] == 1,
+       "through the tick: a GAP:OTHER WEAK with unreached evidence does not close: %s" % st["status"])
+    x.done()
+
+
 def main():
     for t in (t_classifier, t_verdict_script, t_steve_replay, t_real_fail_after_blind, t_structured_replay, t_contract_offbox,
               t_old_contract_text_never_runs, t_offbox_box_and_run, t_round2_script_and_cli, t_round2_box_never_wedges,
-              t_round2_race, t_blind_prompt_withholds_reasoning):
+              t_round2_race, t_blind_prompt_withholds_reasoning, t_unreached_every_word):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
