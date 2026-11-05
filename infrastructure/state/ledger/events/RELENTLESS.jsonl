@@ -662,3 +662,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:18:24Z","tsn":1793888304851383402}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL A1 (L2), read-only proof","ts":"2026-11-05T14:19:12Z","tsn":1793888352687607092}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:19:19Z","tsn":1793888359868032801}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1 A1 (L2), read-only proof","ts":"2026-11-05T14:23:16Z","tsn":1793888596050826218}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:25:51Z","tsn":1793888751981734654}
