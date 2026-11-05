@@ -78,8 +78,16 @@ def hidden(path, prof, carved=()):
     return any(_under(p, r) for r in whole) or any(p.startswith(r.rstrip("/") + "/") for r in kids)
 
 
-def needs(text, prof, carved=()):
-    """-> ["kind: what", ...] the box cannot reach that `text` (a proof) names, once each, in order. Pure."""
+def host_only_rows(rules):
+    """-> [(test path, why)] from relentless_rules.json reach_host_only: selftests whose truth is the host's own layout."""
+    rows = (rules or {}).get("reach_host_only") or []
+    return [(str(x["path"]), str(x.get("why") or "")) for x in rows if isinstance(x, dict) and x.get("path")]
+
+
+def needs(text, prof, carved=(), host_only=()):
+    """-> ["kind: what", ...] the box cannot reach that `text` (a proof) names, once each, in order. Pure.
+    `host_only`: (path, why) rows; a proof naming one (NIGHTLY_COP_REACH_FIX_ARENA_STAYS_DARK: the arena sandbox pair read
+    bwrap, retired-trees git refs and the host's own DENY layout, which no read-only bind makes honest) is a need too."""
     out = []
 
     def add(x):
@@ -103,6 +111,9 @@ def needs(text, prof, carved=()):
         add("another machine: `%s` (the box has no ssh keys)" % m.group(1))
     for m in _WINDOWS.finditer(t):
         add("a Windows program: `%s` (no Windows interop in the box)" % m.group(1))
+    for path, why in host_only:
+        if re.search(r"(?<![\w./-])(?:\S*/)?%s(?![\w.-])" % re.escape(os.path.basename(path)), t):
+            add("a host-only test: %s (%s)" % (path, why or "reads the host itself"))
     return out
 
 
@@ -121,7 +132,7 @@ def uncovered(contract, rules):
     c = contract or {}
     if not prof or not relentless_wall.enforced(rules) or c.get("offbox") or c.get("reach_ok"):
         return []
-    return needs(c.get("proof"), prof, carved_of(prof))
+    return needs(c.get("proof"), prof, carved_of(prof), host_only_rows(rules))
 
 
 def refusal(found, adapter_names):
