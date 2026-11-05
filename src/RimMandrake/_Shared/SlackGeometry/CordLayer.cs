@@ -536,7 +536,9 @@ namespace RimMandrake.Shared.Slack
                 {
                     List<V2> c = cand.Key ? Heap(Q[j], t, nrm, r, side, rr) : fig8 ? Figure8(Q[j], t, nrm, r, side) : Loop(Q[j], t, nrm, r, side);
                     bool over = OverBudget(s[s.Length - 1], c, target);
-                    if (AllClear(w, c, LayParams.RC + 0.02) && !over && !Lassoes(w, c, own)) { shape = c; break; }
+                    // GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS (design 8: "no loops or heaps in the doorway"): a door cell is walkable, so
+                    // AllClear passes it; a loop rooted beside a doorway must not spread into it, as the end-heap branch already refuses
+                    if (AllClear(w, c, LayParams.RC + 0.02) && !over && !c.Any(q => w.IsDoor(q.Floor)) && !Lassoes(w, c, own)) { shape = c; break; }
                     r *= 0.7;
                     if (r < 0.18) break;
                 }
