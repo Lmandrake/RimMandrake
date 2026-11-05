@@ -6,6 +6,7 @@
 - 2026-11-05, on the root paragraph: "Substitute "A (genetically engineered) grass savanna..." "never fully goes out (for long)." Correction: black rain should not wash away that benefit but compound it. Reword "Behind it the fire (offers some solace):" (rather than pays)"
 - 2026-11-05, by card: "How should black rain compound on a fresh burn scar? → Just stop the wipe (wet plus burn 190%, bonus fades on its 6-day clock)"
 - 2026-11-05: "Please evaluate whether we need a firebreak. It should not need chemfuel. It's just a zone where they destroy any plants that grow. Or they could just build hard packed earth or any other surface type that isn't fertile. I don't think this is a needed feature for this mod."
+- 2026-11-05, on the flagship: "The first. But the scorchfruit are rapid after the fire not in two days."
 
 ## does
 - [leaf:burn_line_walks] A line of grass fire walks the map with a scorched trail behind it, and is never out for long: a smoulder relights in open grass far from buildings. OWNER:1793895899845199295
@@ -13,7 +14,7 @@
 - [leaf:ash_fertile_when_watered] Deep ash is quite fertile where water reaches it. OWNER:1791815330395605033
 - [leaf:fresh_burn_compounds_with_black_rain] A fresh burn grows crops faster for a few days, and black rain adds to it instead of washing it away: a wet fresh scar reads 190%. OWNER:1793898829233582581, owed
 - [leaf:grass_carpets_and_regreens] Ember grass carpets the ground, burns black and is largely green again within about a week
-- [leaf:scorchfruit_born_of_fire] Scorch-fruit stands only in fresh scars, feeds a colonist, and rots fast
+- [leaf:scorchfruit_born_of_fire] Scorch-fruit comes up rapidly in the fresh scar right behind the front, never on unburned ground, feeds a colonist, and rots fast
 - [leaf:populations_are_the_biomes_own] Only the biome's own plants and fire cast live there, small grazers outnumber big predators, and the map generates clean
 - [leaf:ruins_stand_blackened] Ruins stand blackened and fire-scarred
 - [leaf:firehawk_lights_ahead] A fire-hawk carries a burning twig ahead of the blaze and starts a new fire where it drops it
@@ -36,8 +37,6 @@
 ## waived
 
 ## open
-- Which showcase is the biome's face when you first land is not yet your pick; the burn-line walk is drafted as showcase 1 and waits on it
-- The walk bar pyre_fresh_burn_feeds_the_field still says black rain washes the bonus away; it must be reworded to your 2026-11-05 ruling and re-validated on your word
 - The walk has no bar for ullai drifting to old burns, the sand shovel, the firefoam sprayer or the fire-rite hook; ullai roots at the cast bar until an agent adds one
 
 ## delegated

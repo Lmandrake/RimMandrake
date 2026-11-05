@@ -124,8 +124,8 @@
     "map-wide scorch-fruit count 0 (asserted)",
     "a freshly burned pad and an unburned pad of the same ground and age"
    ],
-   "action": "wait for growth; ripen one; a colonist harvests it and a hungry colonist eats; leave a ripe plant and a stack in the open",
-   "expect": "fruit only on the burned pad; harvest feeds; the plant withers within a day and the stack rots within four",
+   "action": "burn the pad and read scorch-fruit on it during and just after the burn; ripen one; a colonist harvests it and a hungry colonist eats; leave a ripe plant and a stack in the open",
+   "expect": "fruit only on the burned pad, standing in the scar within the burn itself rather than days later; harvest feeds; the plant withers within a day and the stack rots within four",
    "control": {
     "case": "the unburned pad",
     "expect": "shows 0 scorch-fruit",
@@ -422,7 +422,11 @@
     "inv_ash_field",
     "inv_plant_roster",
     "inv_biome_self_contained"
-   ]
+   ],
+   "source": [
+    "OWNER:1793908883805179759"
+   ],
+   "decision": "d_flagship_burn_line"
   },
   {
    "id": "fire_cast",

@@ -5,7 +5,7 @@
  "authored_by": "concept",
  "root_ref": "design/validation_walks/RimMandrake/Pyrelands.md#north-star",
  "root_state": "VALIDATED",
- "root_hash": "2865b4cfed726679c011ea6dbce31ca339417f335fc50c79e4e71d5d8d41ffc1",
+ "root_hash": "1a7028c5ef0a0588255ef19a9b09ad305c64faad821c8e7371ce9466d3820673",
  "coverage": null,
  "floor": {
   "ref": "concept_floor.json",
@@ -149,7 +149,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "count on the burned pad above zero and on the unburned pad zero from a map-wide zero start; harvest yields fruit and the eater's food need rises; the unpicked plant is gone within about a day and the stack rots within about four days",
+   "oracle_proposed": "count on the burned pad above zero within the burn itself (pods roll on the burning cell's fire tick) and on the unburned pad zero from a map-wide zero start; harvest yields fruit and the eater's food need rises; the unpicked plant is gone within about a day and the stack rots within about four days",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -162,13 +162,13 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player sees scorch-fruit stand only in fresh scars, never on unburned ground, ripen to fruit a colonist can pick and eat to feed, and rot fast: a ripe plant withers within about a day and picked fruit rots within about four days unrefrigerated. It must not read as an ordinary wild bush, or as a crop that keeps.",
+   "experience": "The player watching the burn line pass sees scorch-fruit come up rapidly in the fresh scar right behind the front, while the ground is still smoking, and never on unburned ground; it ripens to fruit a colonist can pick and eat to feed, and rots fast: a ripe plant withers within about a day and picked fruit rots within about four days unrefrigerated. It must not read as an ordinary wild bush, as fruit that appears days after the fire, or as a crop that keeps.",
    "scenario": "A burned pad and an unburned pad of the same ground and age; count scorch-fruit on each; let one ripen, have a colonist harvest it and a hungry colonist eat it; leave a ripe plant unpicked and a harvested stack in the open.",
    "false_pass": [
     "scorch-fruit spawned by the test onto the burned pad",
     "the unburned control is on non-Pyrelands ground, which refuses it for another reason"
    ],
-   "red": "scorch-fruit grows on unburned ash as wild growth, or picked fruit keeps for weeks",
+   "red": "scorch-fruit grows on unburned ash as wild growth, or picked fruit keeps for weeks; or scorch-fruit appears only days after the front has passed",
    "tier_proposed": "quicktest",
    "owner_part": "no"
   },

@@ -18,8 +18,8 @@ built; this plan is the proof work and two owed changes, nothing new.
 
 ## Walk text owed (needs his word)
 
-- North star bar `pyre_fresh_burn_feeds_the_field` still reads "a black rain washes that advantage away early". It is
-  false since 2026-11-05 and must be reworded to the compound ruling and re-validated on his word the same sitting.
+- North star bar `pyre_fresh_burn_feeds_the_field` reworded to the compound ruling and re-validated by his card
+  (d_bar_reworded, commit 9232933404).
 - No bar exists for ullai drifting to old burns, the sand shovel, the firefoam sprayer or the fire-rite hook
   (c_bars_vs_capabilities). Agents may add bars; until one lands, `ullai_graze_old_burns` roots at the cast bar.
 
@@ -52,7 +52,7 @@ so the snapshot restore for terrain and things is part of step 3.
 
 ## Showcases
 
-1. `burn_line` (his judged-first line in the root; waits on his pick): the front walks, the scar greens, scorch-fruit
-   stands in it. 2. `fire_cast`: hawk, ashwallow, ullai. 3. `sky_and_shelter`: three skies, the furnace-beast, a
+1. `burn_line` (his flagship pick, d_flagship_burn_line): the front walks, scorch-fruit comes up rapidly in the
+   scar right behind it, and the scar greens over the following days. 2. `fire_cast`: hawk, ashwallow, ullai. 3. `sky_and_shelter`: three skies, the furnace-beast, a
    blackened ruin. The rest (sand shovel, firefoam sprayer, rite hook, settings, art, the excised firebreak) is in
    `coverage_rest`.
