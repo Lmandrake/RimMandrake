@@ -1,0 +1,1 @@
+Before acking an ops incident, read its metric field in told.jsonl: plan-20261105134046 was plan.blind (carry bound 1000 s under the metronome round robin, 60 s after each beat ENDS plus fam_retry beats), but the ack explained plan.days_since_advance, so the fix died twice. The carry bound is now derived (ops_watch.compose_round_bound_s, RELAPSE_PLAN_FIX_DIED_TWICE).
