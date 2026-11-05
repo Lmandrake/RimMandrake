@@ -1,0 +1,69 @@
+[
+ {
+  "id": "arteval_RSW_Blixus_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Blixus",
+  "prompt": "A creature sprite for RimWorld: the blixus, a rare half-shelled crustapod from the planet Sljee, a semi-aquatic swamp and lagoon predator. Body plan: a low, compact animal with a grey chitin half-shell covering only part of the body, sweeping back over the rear, and soft flesh showing on the front and underneath. It has six tapered spike legs and exactly five long ringed pink feeler tentacles, each continuous from its root at the front of the body to its tip and each ending in one rounded sucker pad, so five tentacles and five sucker pads in total. The same animal appears in every view, with the same shell plates, palette, legs and tentacles. South view (front, eyes toward the viewer): three spike legs on the left of the body and three on the right, six in total, with the five tentacles reaching toward the viewer. North view (rear, seen from behind): the shell, back and haunches, eyes hidden, three spike legs on each side, six in total, and the five tentacles trailing out to the sides. East view (true side profile): the whole animal seen from its side, head and eyes at the front end. The half-shell sweeps back past the body. Three near-side spike legs are fully visible, angled down and forward. Three far-side spike legs show partly behind them, six legs in total. Five long ringed pink tentacles trail forward from the front of the body, with the near-side tentacles overlapping the far-side ones so that five sucker-pad tips can be counted. Rendering: realistic painterly vanilla RimWorld sprite style, identical in all three views, with soft painted shading, natural colour variation, and a thin soft edge line in a deeper shade of the local flesh or chitin colour at the same weight in every view. Tentacle and leg edges are clean anti-aliased alpha cut-outs one or two pixels wide, and the edge pixels take the colour of the adjacent flesh or chitin. The space around the creature, between the tentacles and above the shell, is fully transparent, flat and empty. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, STYLE_OFF, CANON_MISS, DESC_MISS, STYLE_CARTOON, X_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_h1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 6.0,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Blixus/Blixus"
+ },
+ {
+  "id": "arteval_RSW_Fambaa__Fambaa_j_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Fambaa__Fambaa_j",
+  "prompt": "A creature sprite for RimWorld: the fambaa. Fambaas were large herbivorous amphibians most often found in swamps, with the scaly hide of reptiles, and were used as beasts of burden. Body plan: a huge, low-slung swamp amphibian with reptile-scaled hide and a broad, heavy back built for hauling loads. A short, thick neck is carried forward and only slightly raised, so the broad heavy head projects forward at about shoulder height, like a big lizard grazing. The eye is a clearly visible yellow-amber iris with a dark pupil, set under the heavy bony brow, large enough to read at sprite size on the front and side views. The lower jaw carries a short pale tusk on each side near the front of the mouth, jutting upward past the upper lip, clearly visible from the front and in side profile. Legs: thick, pillar-like limbs ending in feet that are broad, round, elephant-like pads bearing the weight of the body, each with short blunt dark claws set close to the front rim of the pad; the toes are fused into the pad, and the forefeet seen from the front are two wide, rounded, flat-bottomed pads with the claws along their lower front edge. The same rounded pad appears on every foot on every facing. A long, thick-based, tapering scaly tail extends from the rump: in side view it trails straight out behind the hips, in rear view, seen from behind, it hangs down visibly between the haunches, and it turns consistently with the body on every facing. Colouring: the whole back, upper flanks, neck and head are olive-khaki to greenish-tan, with darker olive mottling across the scales; the throat, belly, undersides and inner legs are paler grey-cream. The olive-khaki back and flanks are the dominant colour on every facing: front view, side view and rear view alike. A frilled crest along the head and neck in a deeper olive shade of the same hide colour. Keep the body shape, scaled hide, colouring, broad back, tusks, tail and frilled crest as in the previous render; only the feet and the eye change. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible including the full tail, nothing cut off. Fully transparent background with only the creature drawn.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: CANON_MISS, CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_h1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Gullipud__Gullipud_Swimming_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gullipud__Gullipud_Swimming_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same body bulk and the same anatomical scale, seen from the rear view this job asks for. A creature sprite for RimWorld: the gullipud, a bulky, loose-skinned, self-inflating amphibian of the Naboo swamps, with a spine it can extend to be harder to swallow. This is the rear view, seen from behind: the back, the broad inflated haunches and the rump face the viewer, and the eyes are hidden. The animal is drawn at full size and full breadth, as wide and as heavy as in the front and side views: a wide, round, inflated rump and torso with loose skin bulging out on both sides. The pair of broad inflated haunches is the widest part of the silhouette, spanning about 94% of the canvas width (about 480 px of 512), centred on the canvas where the front view sits, with the whole body visible inside the canvas. The feet, rump and flanks have the same thickness and scale as on the accepted east animal, so the rear animal looks just as large and heavy as the other facings. The red dorsal stripe runs as one bare, uninterrupted band down the middle of the back. Along both sides of the stripe stand large, curved, red-brown hooked spines in rows, the same size, colour and curl as on the front and side views, seen from behind down both flanks and standing clearly out from the body. The lower body sits in the same painted rippling swamp-water surface as the front and side views, with ripples around the haunches and feet. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred. Everything outside the animal and its painted water ripples is fully transparent: no ground, no scenery, no cast shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_h1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "swimmer"
+ }
+]

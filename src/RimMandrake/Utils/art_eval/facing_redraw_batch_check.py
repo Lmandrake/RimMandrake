@@ -90,7 +90,7 @@ def find_tex(repo, texpath, facing, mod):
 def check_row(repo, v, west_live, chains, mod=None):
     """Return (status, detail)."""
     done = v.get('done')
-    if done == 'ESCALATE':
+    if done in ('ESCALATE', 'ESCALATED'):   # drv.py regen writes ESCALATED at the cap
         return ('ESCALATE', v.get('escalated_to', '')) if v.get('escalated_to') else ('BROKEN', 'ESCALATE without escalated_to')
     if done != 'ACCEPT':
         return 'OPEN', f"r{v.get('round')} {v['row']['id']}"
