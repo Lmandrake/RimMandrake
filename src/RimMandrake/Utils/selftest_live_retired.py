@@ -37,6 +37,8 @@ class It:
 
 INSTANCE = "unit=rm-pulse-health.timer max_age=10m"
 DIGEST = "unit=rm-pulse-digest.timer max_age=35h"
+UPDATE_ITEM = ("unit=rm-pulse-update.timer reading=/mnt/d/ClaudeWork/rimmandrake/pulse-deploy/.git/pulse_update_last_good "
+               "max_age=2h")
 
 
 def sweep_entry(retired_path=None):
@@ -107,6 +109,11 @@ def main(retired_path=None):
           "a baseline promise for the retired rm-pulse-update.timer is not swept (LIVE_RESTORE_RM_PULSE_UPDATE)")
     check("unit=rm-deploy-update.timer" in {DM.subject(l) for l in baseline},
           "its successor rm-deploy-update.timer is promised in the baseline (LIVE_RESTORE_RM_PULSE_UPDATE)")
+    # PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT: closed on the old updater's name; the sweep reopened it 2026-11-03 ('not-found')
+    fix = DM.promises({"PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT": It(live=UPDATE_ITEM, live_broken="is-enabled says 'not-found'")},
+                      [], retired)
+    check(not fix, "a settled item's promise on the retired rm-pulse-update.timer is not swept "
+                   "(PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT)")
     # LIVE_RESTORE_IM_BACK_HOOK: the "I'm back" hook was deleted with RimPulse; its hook promise must not be swept
     back = DM.promises({}, baseline + ["hook=im_back_hook.py"], retired)
     check(not [r for r in back if "im_back_hook" in r["line"]],
