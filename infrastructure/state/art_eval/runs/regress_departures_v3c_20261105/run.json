@@ -1,0 +1,19 @@
+{
+ "run_id": "regress_departures_v3c_20261105",
+ "test": true,
+ "started": "2026-11-05T06:31:14-08:00",
+ "subjects": [
+  "RM_Shadefern",
+  "RM_Huldu",
+  "RM_Ssurr",
+  "RM_Vellak",
+  "RM_Murrin",
+  "RM_Dewblade",
+  "RM_DecayDrake",
+  "RM_Durrok",
+  "RM_Gawpsack",
+  "RM_Peeper",
+  "RM_Danglemaw"
+ ],
+ "versions_key": "departures_brief@v3#4e4c26+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v3#2337d2+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
+}

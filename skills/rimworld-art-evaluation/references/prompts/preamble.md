@@ -1,4 +1,4 @@
-<!-- version: preamble@v2 -->
+<!-- version: preamble@v3 -->
 # Art review for a RimWorld 1.6 mod (RimMandrake) — shared preamble
 
 You are reviewing ONE subject's candidate sprite art. You did not make it. Your answer decides, through a fixed
@@ -40,6 +40,10 @@ missing, a cartoonish or toy face, donor art, a baked backdrop, a lump instead o
   or more only when the problem is visible at a glance and you can say exactly where (image, part of the body).
 - A wish ("could be more alien", "could be more realistic") while the card's departures are present is not a
   blocking code: put it in `proposals`.
+- For an invented CREATURE (never a plant), the departures are only what the description states, so they are a
+  floor, not the whole alien test. When the card says `earth_body_named: no`, a creature a stranger names as its
+  nearest Earth animal at first glance with the departures bolted on ("a camel with a sail on its back") is still
+  `STYLE_EARTHLY`.
 
 ## How to answer
 

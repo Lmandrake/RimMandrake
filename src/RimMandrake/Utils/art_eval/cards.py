@@ -245,6 +245,8 @@ def card_md(card: dict) -> str:
     if card.get("departures") and card.get("template") == "creature":   # plants use only earth_body_named
         L += ["", "## Required departures from the nearest Earth animal (each must be visible)", ""]
         L += [f"{n}. {d}" for n, d in enumerate(card["departures"], 1)]
+    if card.get("invented") and card.get("template") == "creature" and "earth_body_named" in card:
+        L += ["", f"- earth_body_named: {'yes — the description itself names its Earth body' if card['earth_body_named'] else 'no — it must not read as its nearest Earth animal'}"]
     if card.get("canon"):
         L += ["", "## Canon — Must show (yes/no each)", ""] + [f"- {x}" for x in card["canon"].get("must_show", [])]
         if card["canon"].get("engine_limits"):
