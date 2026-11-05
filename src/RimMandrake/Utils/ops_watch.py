@@ -60,6 +60,7 @@ rimflow/dispatcher_schedule.json "measure"):
     python3 src/RimMandrake/Utils/ops_watch.py install [--apply]      the systemd user timer (plan unless --apply)
 """
 import argparse
+import calendar
 import fnmatch
 import glob
 import importlib.util
@@ -2756,13 +2757,109 @@ def oldest_mtime(d, pattern="*.json"):
     return min(ts) if ts else None
 
 
+def _q_dirs(q, now, pcache, cpath):
+    """The directory form (artpipe, testq): pending/*.json waits, active/*.json is claimed (its mtime the heartbeat),
+    each progress dir gains a file on a finish."""
+    pend, act = Path(q["pending"]), Path(q["active"])
+    if not pend.is_dir() or not act.is_dir():
+        raise OSError('queue dir missing: %s' % (pend if not pend.is_dir() else act))
+    plist = _mtimes(pend, "*.json")  # a job claimed between the glob and the stat is movement, not blindness
+    alist = _mtimes(act, "*.json", skip_worker_msg=True)
+    marks = [newest_mtime(act)] + [newest_progress_mtime(Path(x), pcache, now, checkpoint=lambda: _save_json(cpath, pcache))
+                                   for x in q.get("progress", [])]
+    return plist, alist, marks
+
+
+def _iso_epoch(s):
+    try:
+        return calendar.timegm(time.strptime(str(s)[:19], "%Y-%m-%dT%H:%M:%S"))
+    except (TypeError, ValueError):
+        return None
+
+
+def _q_ralph_c(q, now, pcache, cpath):
+    """The arena's live-test runner queue (ralph_c_runner): a candidate in candidates.jsonl with no counted result is
+    pending since its publication `ts`; a runner claims it as claims/<cand> (O_EXCL, taken over after CLAIM_TTL_S);
+    a run's log is written under logs/ when it ends, beside results/<run>.json. A claim is written once and a run may
+    take hours (its proof alone 1800 s), so the run's heartbeat is the lane's event log (events/*.jsonl: every
+    live act of a lane appends one). The runner's own pending() decides what waits, so this reads the queue the
+    runners read. A ralph_c dir that is missing or a module that cannot run is blind."""
+    ad = str(HERE / "arena")
+    if ad not in sys.path:
+        sys.path.insert(0, ad)
+    import ralph_c_runner as R
+    p = R.rpaths(Path(q["root"]))
+    if not p["rc"].is_dir():
+        raise OSError("ralph_c dir missing: %s" % p["rc"])
+    pub = os.stat(p["candidates"]).st_mtime if p["candidates"].exists() else now
+    plist = [_iso_epoch(c.get("ts")) or pub for c in R.pending(p)]
+    alist = _mtimes(p["claims"], "*")
+    marks = [max(alist) if alist else None, newest_mtime(p["results"]), newest_mtime(p["logs"], "*.log"),
+             newest_mtime(p["events"], "*.jsonl")]
+    return plist, alist, marks
+
+
+REPLAY_INFLIGHT = ("RUNNING", "HOLD_CAPACITY", "RESTARTED", "STALLED")
+
+
+def _last_jsonl(path, tail=1 << 16):
+    with open(path, "rb") as f:
+        f.seek(0, 2)
+        f.seek(max(0, f.tell() - tail))
+        lines = [x for x in f.read().splitlines() if x.strip()]
+    return json.loads(lines[-1]) if lines else {}
+
+
+def _q_replay(q, now, pcache, cpath):
+    """The arena replay arms and their watcher (replay_watch.py): the replay's work is each arm's task list, and what
+    notices a dead or hung arm is the watcher's tick. An arm is in flight when the last tick saw it RUNNING,
+    HOLD_CAPACITY, RESTARTED or STALLED, or when its logs/<arm>.log moved after that tick and does not end on the
+    runner's `runner ends` line (a relaunch no tick has seen; an arm that finished after the last tick is not in
+    flight). It is pending since that tick, and the only movement is the next tick: an arm running with nobody
+    watching is the orphan this class is about. Past the replay's stop line nothing is in flight (the watcher stands
+    down there too), whatever is left on disk. A replay dir that is missing, a tick line that does not parse, or an
+    arm in flight with no ticks.jsonl at all (no watcher ever ticked: no start to measure from) is blind."""
+    import replay_watch as RW
+    if now >= float(q.get("stop_line", RW.STOP_LINE)):
+        return [], [], []
+    replay = Path(q.get("replay") or RW.DEFAULTS["replay"])
+    ticks = Path(q.get("ticks") or Path(RW.DEFAULTS["arena"]) / "replay_watch" / "ticks.jsonl")
+    if not replay.is_dir():
+        raise OSError("replay dir missing: %s" % replay)
+    tick_t, states = None, {}
+    if ticks.exists():
+        tick_t = os.stat(ticks).st_mtime
+        states = {r["arm"]: r.get("state") for r in _last_jsonl(ticks).get("rows", [])}
+    plist = []
+    for arm in q.get("arms") or RW.ARMS:
+        lf = replay / "logs" / ("%s.log" % arm)
+        try:
+            lm = os.stat(lf).st_mtime
+        except FileNotFoundError:
+            lm = None
+        moved = lm is not None and (tick_t is None or lm > tick_t)
+        if moved:
+            last = RW.parse_log(RW.read_text(lf, 1 << 14))
+            moved = not (last and RW.ENDS.match(last[-1][1]))
+        if states.get(arm) in REPLAY_INFLIGHT or moved:
+            if tick_t is None:
+                raise OSError("replay arm %s in flight and no replay_watch tick ever: %s" % (arm, ticks))
+            plist.append(tick_t)
+    return plist, [], [tick_t]
+
+
+QUEUE_READERS = {"dirs": _q_dirs, "ralph_c": _q_ralph_c, "replay_arms": _q_replay}
+
+
 def c_queues(now, rules, ctx):
     """queues.<name>.stalled_min (QUEUE_ORPHAN_WEDGE_1): the class 'a claimed or leased job is orphaned and the queue
-    sits calmly idle'. For each work queue in rules["queues"] (pending dir, active dir, progress dirs): pending > 0 and no
-    movement (a newer active/done/failed file) since the oldest pending job began waiting. stalled_min = minutes since
-    max(newest active/progress mtime, oldest pending mtime); 0 when nothing is pending. An active job counts as in
-    flight only through its mtime, so an orphan nobody heartbeats stops counting after its lease. A queue paused on
-    purpose (paused_file present) reads 0. A queue whose dirs cannot be listed reads UNMEASURED, never 0."""
+    sits calmly idle'. For each work queue in rules["queues"], its reader (QUEUE_READERS; `reader`, default "dirs")
+    gives the pending jobs' wait-start times, the claimed (active) files, and the movement marks (a newer
+    claim, finish, heartbeat or watcher tick). stalled_min = minutes since max(newest mark, oldest pending start); 0
+    when nothing is pending. An active job counts as in flight only through its mtime, so an orphan nobody
+    heartbeats stops counting after its lease. A queue paused on purpose (paused_file present) or not switched on
+    (armed_file absent) reads 0. A queue its reader cannot see reads UNMEASURED and counts in queues.blind, never 0.
+    A new claim/lease queue is wired by a rules entry (and, if its shape is new, one reader), never a new family."""
     out = {}
     qs = rules.get("queues")
     if not isinstance(qs, list) or not qs:
@@ -2774,14 +2871,18 @@ def c_queues(now, rules, ctx):
         n = q.get("name", "?")
         k = "queues.%s." % n
         try:
-            pend, act = Path(q["pending"]), Path(q["active"])
-            if not pend.is_dir() or not act.is_dir():
-                raise OSError('queue dir missing: %s' % (pend if not pend.is_dir() else act))
-            plist = _mtimes(pend, "*.json")  # a job claimed between the glob and the stat is movement, not blindness
-            alist = _mtimes(act, "*.json", skip_worker_msg=True)
-            marks = [newest_mtime(act)] + [newest_progress_mtime(Path(x), pcache, now, checkpoint=lambda: _save_json(cpath, pcache)) for x in q.get("progress", [])]
+            reader = QUEUE_READERS[q.get("reader", "dirs")]
+            off = bool((q.get("paused_file") and Path(q["paused_file"]).exists())
+                       or (q.get("armed_file") and not Path(q["armed_file"]).exists()))
+            try:
+                plist, alist, marks = reader(q, now, pcache, cpath)
+            except Exception:  # noqa: BLE001 - a queue switched off is not watched, so it cannot be blind
+                if not off:
+                    raise
+                out[k + "stalled_min"] = M(0.0, "min pending > 0 with no claim, finish or heartbeat", why="switched off")
+                continue
             marks = [m for m in marks if m is not None]
-            if q.get("paused_file") and Path(q["paused_file"]).exists():
+            if off:
                 stalled = 0.0
             elif not plist:
                 stalled = 0.0
@@ -2791,7 +2892,7 @@ def c_queues(now, rules, ctx):
             out[k + "pending"] = M(len(plist), "jobs waiting")
             out[k + "active"] = M(len(alist), "files in active")
             out[k + "stalled_min"] = M(round(stalled, 1), "min pending > 0 with no claim, finish or heartbeat")
-        except (OSError, KeyError, ValueError) as e:
+        except Exception as e:  # noqa: BLE001 - a reader that cannot see is blind, never a calm 0
             blind.append(n)
             out[k + "stalled_min"] = U("%s: %s" % (type(e).__name__, str(e)[:150]), "min")
     wanted = {str(Path(x)) for q in qs if isinstance(q, dict) for x in (q.get("progress") or [])}

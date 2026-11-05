@@ -18,6 +18,18 @@
     "/mnt/d/ClaudeWork/rimmandrake/testq/done"
    ],
    "paused_file": "/mnt/d/ClaudeWork/rimmandrake/testq/paused.json"
+  },
+  {
+   "name": "arena_ralph_c",
+   "_doc": "the arena live-test runners' claim queue (ralph_c_runner: candidates.jsonl, claims/, logs/, results/); 0 while the arena switch (arm.toml) is not installed",
+   "reader": "ralph_c",
+   "root": "/mnt/d/ClaudeWork/rimmandrake/arena",
+   "armed_file": "/mnt/d/ClaudeWork/rimmandrake/arena/arm.toml"
+  },
+  {
+   "name": "replay_watch",
+   "_doc": "replay arms in flight with no replay_watch tick since; paths, arms and stop line from replay_watch.py",
+   "reader": "replay_arms"
   }
  ],
  "series_days": 8,
@@ -352,6 +364,34 @@
     }
    }
   },
+  "queues.arena_ralph_c.stalled_min": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS: an armed arena with a pending live-test candidate and no claim, run log or result for 60 min: the runners are gone or wedged on an orphan claim (a claim is taken over only after 6 h).",
+   "classes": {
+    "sane": {
+     "at_least": 0
+    },
+    "distressed": {
+     "at_least": 60
+    }
+   }
+  },
+  "queues.replay_watch.stalled_min": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS: a replay arm in flight and no replay_watch tick for 30 min: nobody is watching for its death or hang (the watcher's timer was uninstalled 2026-11-04; a relaunch needs a watcher).",
+   "classes": {
+    "sane": {
+     "at_least": 0
+    },
+    "distressed": {
+     "at_least": 30
+    }
+   }
+  },
   "queues.blind": {
    "owner": "Operations",
    "ack_within_min": 30,
@@ -529,6 +569,30 @@
     "MEASURED"
    ],
    "why": "QUEUE_ORPHAN_WEDGE_1: testq has pending work and nothing claimed, finished or heartbeating for over 20 min while its console reads calm idle"
+  },
+  {
+   "key": "queues.arena_ralph_c.stalled_min",
+   "op": ">",
+   "value": 60,
+   "alarm": true,
+   "tag": "QUEUE_STALLED",
+   "name": "OPS_ARENA_CLAIMS_UNSTICK_NOBODY_HOME",
+   "marks": [
+    "MEASURED"
+   ],
+   "why": "QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS: the arena is armed, a live-test candidate waits, and no runner has claimed, logged or finished anything for over 60 min"
+  },
+  {
+   "key": "queues.replay_watch.stalled_min",
+   "op": ">",
+   "value": 30,
+   "alarm": true,
+   "tag": "QUEUE_STALLED",
+   "name": "OPS_REPLAY_UNSTICK_WATCHMAN_NAPPING",
+   "marks": [
+    "MEASURED"
+   ],
+   "why": "QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS: a replay arm is in flight and replay_watch has not ticked for over 30 min, so a dead or hung arm would wait on a person noticing"
   },
   {
    "key": "queues.blind",
