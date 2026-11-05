@@ -51,10 +51,17 @@
     "ref": "run rm-role-designer-1793899225",
     "stage": 2,
     "tokens": 224818
+   },
+   {
+    "at": "2026-11-05T17:48:46Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793900422",
+    "stage": 3,
+    "tokens": 731212
    }
   ],
   "reserve": 60000,
-  "spent": 1795689
+  "spent": 2526901
  },
  "history": [
   {
@@ -134,10 +141,23 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1793899225: stage 2 done"
+  },
+  {
+   "at": "2026-11-05T17:40:31Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1793900422, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-05T17:48:46Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793900422: stage 3 return"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
  "mod": "RimMandrake/PyrelandsMechanics",
+ "pending_decision": "his flagship pick: which showcase is this mod's face (showcase 1 must be bound to an owner decision with flagship; the root's 'Judged first' line was agent text inside the root he approved, and a root approval is not a pick)",
  "recovery": [],
  "results": [
   {
@@ -245,11 +265,36 @@
    "run": "rm-role-designer-1793899225",
    "stage": 2,
    "summary": "Both stage-2 card answers applied: the rite defends only the scar it lit and driving a picker off costs no goodwill; the visit group picks and carries off like the rite. Delegated: the visit defends the burn it harvests; warning = message + harvester approach, then a bounded drive-off of the picker only. Core contradictions resolved; thornvine tier and the two unclosed fix items carried to stage 3 as Relentless fixes. No ask sent."
+  },
+  {
+   "at": "2026-11-05T17:48:46Z",
+   "decision": "his flagship pick: which showcase is this mod's face (showcase 1 must be bound to an owner decision with flagship; the root's 'Judged first' line was agent text inside the root he approved, and a root approval is not a pick)",
+   "inputs": {
+    "exam": null,
+    "floor": "60ba07bafe2c726553880839556f4d7d94d37be6b414ad4e5c88d279fe8d83b7",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "f8e9e5988a2d1daf5805c000f884646cc598553bbd08aea9202ee82d7f0fb338",
+    "scenes": "d04b035536f8a26df0dd9b4f713b7ee2cdda696d26de9a2e4888bd3f9c430b9b",
+    "sheet": "94fab6e39e72a0259432138a571bed4eb087d4da1b568773131296dda35bc3ff",
+    "tree": "8d85249f7028c05470902cc08c2f4a3c7e7daf856bbd461b86c28da750d11f3b"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "return",
+   "owner_uncited": [],
+   "question": "When you first meet the Deep Desert Tribes in the Pyrelands, which moment should be the mod's face, the one you judge it by? (1) The rite party: a small file of Tribes walks in off the sand, the grass catches where they stand, they pick scorch-fruit in the black behind the front and walk off carrying it. (2) The same rite, plus one of your colonists picking in their scar: a warning naming the Tribes, then they drive the picker out, with no goodwill lost and no raid. (3) The visit: a big fire already burning, and a peaceful Tribes group walks in to pick in the black around it. The drafted showcase is (2).",
+   "run": "rm-role-designer-1793900422",
+   "stage": 3,
+   "summary": "Stage 3 written: new DRAFT north star design/validation_walks/RimUtinni/PyrelandsMechanics.md (8 must-show, 2 cannot-show), tree.json (11 leaves, lint PASS), sheet.md, plan.md (owed: arson count removed both tiers, visit picks, fruit defence, thornvine moves tier), scenes.json (9 acceptance, 2 exploration; one showcase rite_party, 6 new; visit, arson removal, settings, thornvine in coverage_rest), floor.json; filed TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE. Only refusal: showcase 1 has no flagship pick of his, so return to stage 2 to ask. Also owed his word: validating the new north star before the stage 5 gate.",
+   "to": 2
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 2,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
