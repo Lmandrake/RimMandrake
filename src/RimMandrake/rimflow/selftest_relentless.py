@@ -43,6 +43,7 @@ class FakeWorld:
         self.notes = []
         self.needs = []
         self.seat_holds = []
+        self.answers = []       # ledger events a test plants for relentless_answer
         self.tok = 0
         self.lfail = None
         self.close_fail = None
@@ -121,6 +122,9 @@ class FakeWorld:
     def ledger_note(self, item, text): self.notes.append(text)
     def ledger_needs_owner(self, item, why): self.needs.append(item)
     def ledger_hold_to_seat(self, item, hold): self.seat_holds.append(item)
+    def ledger_answer(self, qid):
+        import relentless_answer
+        return relentless_answer.find(self.answers, qid)
     needs_fail = None
     needs_back = "offline"
     def ledger_needs(self, item, to, why):

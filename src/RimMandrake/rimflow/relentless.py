@@ -46,6 +46,7 @@ import relentless_block  # noqa: E402
 import relentless_breakers  # noqa: E402
 import relentless_incident  # noqa: E402
 import relentless_strikes  # noqa: E402
+import relentless_answer  # noqa: E402
 import relentless_attrib  # noqa: E402
 import relentless_explain  # noqa: E402
 import relentless_live  # noqa: E402
@@ -773,8 +774,10 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
             st["gen"] += 1
             st["status"] = "stopping"
             st["stopping_since"] = now
-            st["hold"] = {"why": "delegation_policy section 2: %s: %s" % (section, (detail or "")[:600]),
-                          "kind": "owner_call", "delivered": False, "at": now}
+            qid = relentless_answer.question_id(item, gen, now)     # the answer cites it; a tick releases on it
+            st["hold"] = {"why": "delegation_policy section 2: %s: %s %s" % (section, (detail or "")[:600],
+                                                                            relentless_answer.ask_line(qid)),
+                          "kind": "owner_call", "delivered": False, "at": now, "question_id": qid}
             store.attempt(item, {"at": iso(now), "gen": gen, "end": "owner_call", "detail": st["hold"]["why"]})
             store.save(st)
             return
@@ -2154,6 +2157,10 @@ class Effects(relentless_game.GameFx):
 
     def ledger_needs_owner(self, item, why):
         return self.ledger_needs(item, "owner", why)
+
+    def ledger_answer(self, qid):
+        """The ledger event in his authority that cites `qid` (relentless_answer), or None: this tick's one replay."""
+        return relentless_answer.find(self.ledger_items()[0], qid)
 
     def ledger_hold_to_seat(self, item, hold):
         """A tooling hold goes to the seat, never to him. -> None, or why it did not land (the next tick retries).
@@ -4019,6 +4026,8 @@ def step(store, fx, r, item, now, acts):
 
     if s == "held":
         h = st["hold"]
+        if relentless_answer.reconcile(store, fx, item, st, now, acts, iso):    # his answer cites its question_id
+            return
         if hold_is_his(h):
             if not h.get("delivered") and not fx.ledger_needs_owner(item, h["why"]):
                 _hold_routed(store, item, None)
