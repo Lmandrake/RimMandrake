@@ -294,8 +294,37 @@ def t_cli():
         shutil.rmtree(base, ignore_errors=True)
 
 
+def t_checker_gaps():
+    """The blind check's two gaps (2026-11-05, gen 1 WEAK): a proof-only worker moving the obligation, and a binding
+    repair dropping the freshness rule. Each row goes red when its guard is removed."""
+    base, s = rig()
+    try:
+        R.contract(s, "I0", 1, "python3 a/selftest_x.py", obligation="the gourd selects", freshness="same sha", r=RULES)
+        st = s.load("I0")
+        st["proof_only"] = {"sha": "x", "at": 1}    # the one non-redesign worker that may call contract again
+        with s.lock():
+            s.save(st)
+        e = refused(R.contract, s, "I0", 1, "python3 a/selftest_x.py", obligation="anything at all", why="w", r=RULES)
+        c = s.load("I0")["contract"]
+        ok(e is not None and "moves only in a redesign" in e,
+           "G(a): a proof-only worker may not move the obligation (%s)" % (e or "NOT REFUSED")[:80])
+        ok(c["obligation"] == {"text": "the gourd selects", "version": 1},
+           "G(a): the refused change leaves obligation text and version as set: %r" % (c.get("obligation"),))
+        new = {k: v for k, v in B.binding_of(c).items() if k not in ("version", "freshness")}
+        new["proof"] = "python3 a/selftest_y.py"
+        why = B.screen(c, new, GOOD)
+        ok(any("freshness" in w for w in why), "G(b): a binding repair without the freshness rule is refused: %s" % why[:2])
+        ok(not any("freshness" in w for w in B.screen(c, dict(new, freshness="same sha"), GOOD)),
+           "G(b): the same repair keeping freshness is not refused for freshness")
+        pk = R.rebind(s, "I0", 1, {"proof": "python3 a/selftest_y.py", "freshness": None}, dict(GOOD), r=RULES)
+        ok(s.load("I0")["binding_proposal"]["binding"].get("freshness") == "same sha",
+           "G(b): rebind leaving freshness out keeps it in the proposal (a left-out key is kept, never dropped)")
+    finally:
+        shutil.rmtree(base, ignore_errors=True)
+
+
 if __name__ == "__main__":
-    for t in (t_split, t_contract_fields, t_rebind_and_judge, t_stale_approval, t_weakening, t_legit_repairs, t_review_findings, t_cli):
+    for t in (t_split, t_contract_fields, t_rebind_and_judge, t_stale_approval, t_weakening, t_legit_repairs, t_review_findings, t_checker_gaps, t_cli):
         t()
     print("\n%d FAIL" % len(FAILS) if FAILS else "\nALL OK")
     sys.exit(1 if FAILS else 0)
