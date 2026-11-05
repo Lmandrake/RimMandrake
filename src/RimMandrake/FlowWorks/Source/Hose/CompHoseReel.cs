@@ -53,6 +53,12 @@ namespace RimMandrake.FlowWorks.Hose
         private int volumeModel = RM_Volume.CurrentModel;
         /// <summary>The debug/test flow provider's input (gizmo in dev mode, HoseProbe "flow:").</summary>
         public bool debugFlowing;
+        /// <summary>Runtime only (HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK): the debug provider's lease. The map stamps the tick on
+        /// which a debug-flagged reel upstream feeds this one (RM_MapComponent_Hoses.DebugLeased), with the topology version
+        /// it was stamped under; Signal compares the tick instead of walking the relay chain. Cleared by EndLease.</summary>
+        public int debugFedTick = int.MinValue;
+        /// <summary>Runtime only: the map that registered this reel (Signal's debug provider reads it, no GetComponent).</summary>
+        internal RM_MapComponent_Hoses hoseComp;
         public HoseStateMachine sm = new HoseStateMachine();
         /// <summary>Runtime only: the laid geometry and its cache keys, and the state history for the flicker check.</summary>
         public HoseLay lay;
@@ -117,6 +123,8 @@ namespace RimMandrake.FlowWorks.Hose
         public void EndLease()
         {
             flowUntil = RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.NoLease;
+            debugFedTick = int.MinValue;
+            RM_MapComponent_Hoses.LeaseVersion++;   // HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK: a cut ends every lease it fed this tick
             tickCredits.Clear();
         }
         public readonly List<KeyValuePair<int, HoseVis>> history = new List<KeyValuePair<int, HoseVis>>();
@@ -377,6 +385,7 @@ namespace RimMandrake.FlowWorks.Hose
         private void HoseChanged()
         {
             lay = null;
+            RM_MapComponent_Hoses.LeaseVersion++;   // a reel with no lay passes no debug flag on (the lease restamps)
             layKey = null;
             layEpoch++;
         }

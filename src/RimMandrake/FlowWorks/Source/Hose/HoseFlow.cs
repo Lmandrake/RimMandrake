@@ -35,10 +35,10 @@ namespace RimMandrake.FlowWorks.Hose
         public bool? Flowing(CompHoseReel hose, int now)
         {
             if (hose.debugFlowing) return true;
-            // review S1: the chain read goes through the shared relay index, and answers at once (no walk) when no reel on the
-            // map carries the flag -- the normal idle state, every tick, for every player
-            RM_MapComponent_Hoses comp = hose.parent.Map?.GetComponent<RM_MapComponent_Hoses>();
-            if (comp != null && comp.FedByDebug(hose)) return true;
+            // HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK: the chain is not walked here; the map stamps a per-tick lease (debugFedTick)
+            // and this compares it. With no flag on the map nothing is walked and the relay index is not touched.
+            RM_MapComponent_Hoses comp = hose.hoseComp;
+            if (comp != null && comp.DebugLeased(hose, now)) return true;
             return null;
         }
     }

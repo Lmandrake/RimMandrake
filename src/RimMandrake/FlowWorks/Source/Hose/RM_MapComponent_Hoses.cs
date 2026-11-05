@@ -172,11 +172,13 @@ namespace RimMandrake.FlowWorks.Hose
 
         public IReadOnlyList<CompHoseReel> Reels => reels;
 
-        public void Register(CompHoseReel r) { if (!reels.Contains(r)) reels.Add(r); RelayVersion++; }
+        public void Register(CompHoseReel r) { if (!reels.Contains(r)) reels.Add(r); r.hoseComp = this; RelayVersion++; }
 
         public void Deregister(CompHoseReel r)
         {
             reels.Remove(r);
+            if (r.hoseComp == this) r.hoseComp = null;
+            r.debugFedTick = int.MinValue;
             RelayVersion++;
             DropMeshes(r);
             DropFeed(r);
@@ -765,6 +767,49 @@ namespace RimMandrake.FlowWorks.Hose
             return idx.FedByDebug(PosOf(r), i => relayOrder[i].laid && relayOrder[i].lay != null);
         }
 
+        // ------------------------------------------------------------------ the debug lease (HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK)
+        // Advisory 2026-10-28 §4 #6 (SETUP: one Signal phase took 17.2 ms): Signal used to walk the relay chain per hose per
+        // tick through RelayIndex(), whose signature check or rebuild landed inside the Signal phase. Now each reel holds an
+        // expiry tick (net: flowUntil, renewed by every transfer; debug: debugFedTick, stamped here) and Signal only compares.
+        // The stamp is taken at most once per tick and again the SAME tick when the topology or a lay moves (RelayVersion,
+        // LeaseVersion), so a cut, retract or despawn clears what it fed at once. With no debug flag on the map the stamp is one
+        // flat O(reels) flag read and never touches the relay index.
+        /// <summary>Bumped by every lease end (EndLease) and lay change (ApplyLay, HoseChanged): the debug stamp is stale.</summary>
+        public static int LeaseVersion;
+        private int debugStampTick = int.MinValue, debugStampRelay = -1, debugStampLease = -1;
+        private bool debugStampAny;
+        private bool[] debugReach = new bool[0];
+        /// <summary>State read: debug lease stamps taken this session (one per tick at most, unless the topology moves).</summary>
+        public static int DebugStamps;
+
+        /// <summary>Signal's debug provider: is r fed this tick by a debug-flagged reel up its relay chain? O(1) per call.</summary>
+        internal bool DebugLeased(CompHoseReel r, int now)
+        {
+            if (debugStampTick != now || debugStampRelay != RelayVersion || debugStampLease != LeaseVersion) StampDebugLeases(now);
+            return debugStampAny && r.debugFedTick == now;
+        }
+
+        private void StampDebugLeases(int now)
+        {
+            debugStampTick = now;
+            debugStampRelay = RelayVersion;
+            debugStampLease = LeaseVersion;
+            DebugStamps++;
+            bool any = false;
+            for (int i = 0; i < reels.Count; i++)
+            {
+                reels[i].debugFedTick = int.MinValue;
+                if (reels[i].debugFlowing) any = true;
+            }
+            debugStampAny = any;
+            if (!any) return;
+            HoseRelayIndex idx = RelayIndex();
+            debugStampRelay = RelayVersion;   // RelayIndex never writes the version; read again so a stamp is never stale at birth
+            if (debugReach.Length < idx.Count) debugReach = new bool[Math.Max(idx.Count, debugReach.Length * 2)];
+            idx.DebugReach(i => relayOrder[i].laid && relayOrder[i].lay != null, debugReach);
+            for (int i = 0; i < idx.Count; i++) if (debugReach[i]) relayOrder[i].debugFedTick = now;
+        }
+
         /// <summary>Would a hose from <paramref name="from"/> into <paramref name="to"/> close a loop?</summary>
         public bool Loops(CompHoseReel from, CompHoseReel to, bool withPending = false)
         {
@@ -1011,6 +1056,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (lay == null || !lay.Ok || r.layEnd != endCell) r.EndLease();
             r.layEnd = endCell;
             r.lay = lay != null && lay.Ok ? lay : null;
+            LeaseVersion++;   // HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK: whether r passes a debug flag on may have changed
             r.lastLayReason = lay != null && lay.Ok ? null : (lay?.Reason ?? "could not be laid");
             r.layKey = key;
             r.corridorHash = r.lay != null ? CorridorHash(w, lay) : 0;

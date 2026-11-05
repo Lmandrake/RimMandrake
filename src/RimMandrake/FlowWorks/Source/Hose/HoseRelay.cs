@@ -301,6 +301,29 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>HoseRelay.WouldLoop over the laid ends.</summary>
         public bool WouldLoop(int from, int to) => HoseRelay.WouldLoop(from, to, Next);
 
+        /// <summary>HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK: FedByDebug for every reel at once, walked FORWARD from each flagged reel
+        /// down next() (O(reels) total, each reel marked once): reach[r] == FedByDebug(r, walkable) for r &lt; Count. A walk stops
+        /// on a loop edge, a free end, a reel already marked, or a reel that is not walkable (it is marked, but passes nothing on).</summary>
+        public void DebugReach(Func<int, bool> walkable, bool[] reach)
+        {
+            Array.Clear(reach, 0, Math.Min(reach.Length, Count));
+            if (!AnyDebug) return;
+            for (int d = 0; d < Count; d++)
+            {
+                if (!debug[d] || !walkable(d)) continue;
+                for (int x = d; !onCycle[x];)
+                {
+                    int y = next[x];
+                    if (y < 0) break;
+                    DebugWalkSteps++;
+                    if (reach[y]) break;
+                    reach[y] = true;
+                    if (!walkable(y)) break;
+                    x = y;
+                }
+            }
+        }
+
         /// <summary>The debug provider's chain read: does any reel feeding r down a relay chain carry the debug flag?
         /// <paramref name="walkable"/> = the feeder has a laid hose with a lay (only those pass the flag on).</summary>
         public bool FedByDebug(int r, Func<int, bool> walkable)

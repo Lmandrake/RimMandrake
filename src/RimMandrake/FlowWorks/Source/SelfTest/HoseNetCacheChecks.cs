@@ -334,6 +334,45 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "debug provider: a flag at the head of a 4-reel chain reaches the last reel, never upstream");
                 Check(!flagged.FedByDebug(3, i => i != 1), "can-fail: a feeder with no laid hose stops the debug flag");
             }
+
+            // HOSE_SIGNAL_TAME_WITH_EXPIRY_TICK: the per-tick debug lease (DebugReach, forward from each flag) marks exactly the
+            // reels the old per-hose upstream walk (FedByDebug) answers true for, on layouts with chains, loops, varied flags and
+            // unwalkable feeders, and walks each reel at most once (the old shape walked a chain per hose)
+            {
+                bool reachSame = true, sawFed = false, sawUnwalked = false;
+                long reachSteps = 0, walkSteps = 0;
+                foreach (int n in new[] { 20, 60 })
+                    for (int seed = 1; seed <= 6; seed++)
+                    {
+                        Layout(n, seed, out List<HoseReelRect> rects, out List<Cell?> far);
+                        var flags = new bool[n];
+                        for (int i = 0; i < n; i++) flags[i] = (i * 5 + seed) % 7 == 0;
+                        var idx = new HoseRelayIndex(rects, far, flags);
+                        Func<int, bool> walk = i => (i * 3 + seed) % 11 != 0;
+                        var reach = new bool[n + 3];
+                        HoseRelayIndex.DebugWalkSteps = 0;
+                        idx.DebugReach(walk, reach);
+                        reachSteps += HoseRelayIndex.DebugWalkSteps;
+                        HoseRelayIndex.DebugWalkSteps = 0;
+                        for (int r = 0; r < n; r++)
+                        {
+                            bool old = idx.FedByDebug(r, walk);
+                            if (reach[r] != old) reachSame = false;
+                            if (old) sawFed = true;
+                            if (old && !walk(r)) sawUnwalked = true;
+                        }
+                        walkSteps += HoseRelayIndex.DebugWalkSteps;
+                    }
+                Console.WriteLine("  debug lease: DebugReach " + reachSteps + " steps vs per-hose FedByDebug " + walkSteps + " steps (12 layouts)");
+                Check(reachSame && sawFed && sawUnwalked, "debug lease: DebugReach == FedByDebug on every reel of 12 layouts (n 20/60, loops, unwalkable feeders)");
+                Check(reachSteps < walkSteps, "debug lease: one forward stamp walks fewer steps than the per-hose walk (" + reachSteps + " < " + walkSteps + ")");
+                Layout(60, 5, out List<HoseReelRect> ir, out List<Cell?> ifar);
+                var idleIdx = new HoseRelayIndex(ir, ifar, null);
+                var idleReach = new bool[60];
+                HoseRelayIndex.DebugWalkSteps = 0;
+                idleIdx.DebugReach(i => true, idleReach);
+                Check(HoseRelayIndex.DebugWalkSteps == 0 && !idleReach.Any(b => b), "debug lease, idle map: the stamp walks 0 steps and leases nothing");
+            }
         }
 
         private static void G2(HoseNetChecks.G g, string a, string b)
