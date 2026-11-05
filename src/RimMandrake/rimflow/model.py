@@ -1675,7 +1675,7 @@ class Item(object):
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "built_by", "makers", "criteria", "outstanding",
                  "passed", "level_reached", "lease", "raised", "raised_tsn",
-                 "arbiter_fail", "arbiter_pass", "held", "done_index")
+                 "held", "done_index")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1712,10 +1712,8 @@ class Item(object):
         self.passed = []                # [{"criterion","level","run","ts"}] since built
         self.level_reached = None       # highest level passed since built (L0 at built)
         self.built_by = None            # the seat of the last `implemented`
-        self.makers = []                # every seat that took it up or built it, past owners too: see `is_verdict`
-        self.arbiter_fail = None        # the standing Arbiter FAIL, {sha, run, ts}: see `_earned_run`
-        self.arbiter_pass = None        # the last sha the Arbiter passed, so a late FAIL on an older build cannot undo it
-        self.held = False               # nothing is owed, and only that FAIL keeps it from done
+        self.makers = []                # every seat that took it up or built it, past owners too
+        self.held = False               # nothing is owed, and only a refused run or an owed guard keeps it from done
         # step 3 — the current lease, or None: {token, seat, taken, expires, renewed,
         # released}. Liveness is a function of the clock: see `lease_status`.
         self.lease = None
@@ -2245,8 +2243,6 @@ EARNED_FROM = "2026-11-01T17:30:00Z"
 DONE_GATE_FROM = "2026-11-01T18:35:00Z"     # the same, for `implemented`: from here on it reaches done only as `close` does
 GUARD_GATE_FROM = "2026-11-04T03:30:00Z"    # from here a fix that died reaches done only with a guard (`guard_owed`); earlier closes replay as written
 CLOSE_FOLD_FROM = "2026-11-01T19:15:00Z"    # from here the fold judges a `close` too: a clone's old cli cannot write a done
-ARBITER_CONFIG = "arbiter:"     # a verdict the launcher wrote: --config arbiter:<disposition>, role_launch.verdict_run
-ARBITER_SEAT = "RUNNER"         # the seat that writes it (dispatcher.ledger_verdict); no other seat's run is a verdict
 
 
 def same_sha(a, b):
@@ -2280,56 +2276,32 @@ def _finish(item, sha):
     item.blocked_also = ()
 
 
-def is_verdict(item, run):
-    """Can this run clear an Arbiter FAIL? Only one the launcher's seat wrote on work that seat had no hand in. `built_by`
-    alone is not the maker: a hand item never goes through `implemented`, so it would call every seat a non-maker."""
-    return str(run.config or "").startswith(ARBITER_CONFIG) and run.seat == ARBITER_SEAT \
-        and run.seat not in item.makers + [item.owner, item.built_by]
-
-
 def _earned_run(item, cid, level, run, ev):
     """A run recorded at or after EARNED_FROM.
 
     A run on any sha but the current one counts for nothing but the record: the artifact it tested is gone. The one
     exception is `afterClose`, set by the CLI from git: the sha descends from the closed one, so a fail there is the
     closed work failing later. A fail on the current work: an open item drops to `built` and owes the criterion again;
-    a done item REOPENS, the same id, because the regression is that item's. An Arbiter FAIL also stands until a
-    non-maker Arbiter pass (`is_verdict`) on a different sha, or the owner's word on the close; `implemented` and the
-    last criterion pass stop short of done while it stands (`held`), and the clearing pass finishes the item. Clearing
-    asks who wrote it; a run signed FAIL stands from any seat, since a false block costs a look and a false clear a bad close."""
+    a done item REOPENS, the same id, because the regression is that item's. A `held` item (nothing owed, a refused run
+    or an owed guard kept it from done) is finished by the pass that clears the refusal."""
     current = current_sha(item)
     stale = bool(current) and not same_sha(run.sha, current) and not ev.get("afterClose")
-    verdict = is_verdict(item, run)
-    signed = str(run.config or "").startswith(ARBITER_CONFIG)
-    if run.result == "fail" and signed and item.open and not same_sha(item.arbiter_pass, current):
-        # a late FAIL on an older build still stands: the current one has not passed either
-        item.arbiter_fail = {"sha": run.sha, "run": run.name, "ts": ev["ts"]}
     if stale:
         return
-    if verdict and run.result in ("pass", "partial"):
-        item.arbiter_pass = run.sha
     if run.result == "fail":
-        if signed and not item.arbiter_fail:            # closed work: the FAIL stands on the item it reopens
-            item.arbiter_fail = {"sha": run.sha, "run": run.name, "ts": ev["ts"]}
         was_done = item.state == "done"
-        _reowe(item, cid, None if signed else level)    # the Arbiter judged the build, not one level of it
+        _reowe(item, cid, level)
         if was_done:
             item.state, item.closed_sha = "ready", None       # past _transition, as `live` is: the close stands in the log
         elif item.state == "validated":
             item.state = "built"
         item.held = False
         return
-    if verdict and item.arbiter_fail and run.result in ("pass", "partial") \
-            and not same_sha(run.sha, item.arbiter_fail["sha"]):
-        item.arbiter_fail = None
     if run.result == "pass" and cid:
         _criterion_passed(item, cid, level, run, ev)
-    if item.held and not item.arbiter_fail and not item.outstanding:
-        if run.result == "pass":
-            if (str(ev["ts"]) < DONE_GATE_FROM or not run_refusals(item, run.sha or item.built_sha)) and not _guard_holds(ev, item):
-                _finish(item, run.sha or item.built_sha)
-        elif verdict:
-            item.held = False       # a conditional pass lifts the FAIL; its conditions are met by hand, on a close
+    if item.held and not item.outstanding and run.result == "pass":
+        if (str(ev["ts"]) < DONE_GATE_FROM or not run_refusals(item, run.sha or item.built_sha)) and not _guard_holds(ev, item):
+            _finish(item, run.sha or item.built_sha)
 
 
 def run_refusals(item, sha, no_code=False):
@@ -2351,10 +2323,8 @@ def close_refusals(item, sha, no_code=False, owner=False):
     owed      a criterion is still owed, or passed on another sha
     unchecked no level-tagged pass on that sha (the AU4 test); `--no-code` says there was nothing to check
     fail      the newest deciding run is a fail
-    verdict   an Arbiter FAIL stands: on this sha, or on an earlier one with no non-maker Arbiter pass since.
-              No verdict at all blocks nothing (ruling D1(b), not option c).
     guard     this fix already died once and no class guard test is shown failing on the instance (`guard_owed`), --no-code too
-    `owner`: his word on the close lifts fail, verdict and guard, which are judgements. Owed and unchecked are facts."""
+    `owner`: his word on the close lifts fail and guard, which are judgements. Owed and unchecked are facts."""
     owed = [c for c in item.criteria if c["id"] in item.outstanding]
     out = []
     if owed:
@@ -2363,11 +2333,6 @@ def close_refusals(item, sha, no_code=False, owner=False):
         out.append(("owed", "its criteria passed on %s, not on %s" % (str(item.built_sha)[:12], str(sha)[:12])))
     out += [(k, why) for k, why in run_refusals(item, sha, no_code) if not (k == "fail" and owner)
             and not (k == "unchecked" and owed)]
-    if not owner and item.arbiter_fail:
-        f = item.arbiter_fail
-        out.append(("verdict", "the Arbiter FAILED %s (%s)%s" % (
-            str(f["sha"])[:12], f["run"], "" if same_sha(f["sha"], sha) else
-            " and no non-maker Arbiter pass is recorded on a newer build")))
     if not owner and guard_owed(item):
         out.append(("guard", guard_why(item)))
     return out
@@ -2392,7 +2357,7 @@ def _apply_implemented(ev, item):
     """`implemented` -> built (live levels owed) or done (nothing owed, and the sha has earned it).
 
     From DONE_GATE_FROM a build owing nothing is done only as a close would be: a level-tagged pass on this sha, no newer
-    fail, no standing Arbiter FAIL. Otherwise it stops at `built`, `held`, and that pass finishes it. An L0 manifest
+    fail. Otherwise it stops at `built`, `held`, and that pass finishes it. An L0 manifest
     attests the criteria; it is no check, and `--none-owed` is no way round a refused close.
 
     A re-implementation (after corrective work, or straight from built/validated)
@@ -2400,8 +2365,7 @@ def _apply_implemented(ev, item):
     The runs themselves stay, immutable, in `item.runs`."""
     crit = [dict(c) for c in ev.get("criteria") or []]
     owed = [c["id"] for c in crit if c["level"] != "L0"]
-    held = not owed and (bool(item.arbiter_fail)         # a new build still has to pass the Arbiter
-                         or (str(ev["ts"]) >= DONE_GATE_FROM and bool(run_refusals(item, ev["sha"])))
+    held = not owed and ((str(ev["ts"]) >= DONE_GATE_FROM and bool(run_refusals(item, ev["sha"])))
                          or _guard_holds(ev, item))
     target = "built" if owed or held else "done"
     _transition(item, target)
@@ -2458,10 +2422,10 @@ def _criterion_passed(item, cid, level, run, ev):
     if level_rank(level) > level_rank(item.level_reached or "L0"):
         item.level_reached = level
     if not item.outstanding:
-        if not item.arbiter_fail and not _guard_holds(ev, item):
+        if not _guard_holds(ev, item):
             _finish(item, ev.get("sha") or item.built_sha)
             return
-        item.held = True                # the verify-to-done gate: an Arbiter FAIL stands, or a guard is owed
+        item.held = True                # the verify-to-done gate: a guard is owed
     if level != "L0" and item.state == "built":
         _transition(item, "validated")
     # needs follows the cheapest level still owed, at every acceptance step

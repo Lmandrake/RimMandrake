@@ -2288,8 +2288,8 @@ def _close_gate(args, it, sha, no_code):
         die("close: %s has not earned its close at %s:\n%s\n\nA criterion passes with `rimflow verify %s --criterion <C> "
             "--result pass --config <cfg> --evidence <path>`; a hand close first records a level-tagged pass on that sha "
             "(`rimflow verify %s --sha %s --level L0 --result pass --config <what ran> --evidence <path>`); a fail needs a "
-            "pass after it; after an Arbiter FAIL record the new build with `rimflow implemented`, and its next slot judges "
-            "it. Only the owner's word on this close (--owner-said, --by-card, --per-ruling) lifts a fail or a verdict. "
+            "pass after it. Only the owner's word on this close (--owner-said, --by-card, --per-ruling) lifts a fail or a "
+            "guard. "
             "Nothing changed: the item is as it was."
             % (args.id, sha, "\n".join("  %-9s %s" % f for f in found), args.id, args.id, sha))
 
@@ -2628,8 +2628,8 @@ def cmd_verify(args, seat):
     if r.result == "pass" and r.criterion and getattr(it, "built_sha", None) and not model.same_sha(r.sha, it.built_sha):
         print("⚠️  %s is not the built sha %s: this pass does NOT count. It tested another artifact." % (r.sha, it.built_sha))
     if getattr(it, "held", False):
-        print("%s holds short of done: %s." % (args.id, "the Arbiter FAILED %s and no newer build has passed it"
-              % it.arbiter_fail["sha"] if it.arbiter_fail else "; ".join(w for _, w in model.run_refusals(it, it.built_sha))))
+        print("%s holds short of done: %s." % (args.id, "; ".join(w for _, w in model.run_refusals(it, it.built_sha))
+                                                or "a guard is owed"))
     if r.level and not r.criterion:
         print("ℹ️  --level without --criterion is recorded on the run and drops nothing; "
               "name the criterion to advance the item.")

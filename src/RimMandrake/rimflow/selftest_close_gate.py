@@ -162,50 +162,6 @@ def s1(a, b, led):
     ok("verify", i, "--sha", a, "--level", "L0", "--result", "fail", "--config", "fixture", "--evidence", "broke")
     refused("a fail newer than the pass", "fail ", "close", i, "--sha", a)
 
-    i = new("NON_MAKER")
-    ok("verify", i, "--sha", a, "--result", "fail", "--level", "L0", "--config", "arbiter:FAIL-module",
-       "--evidence", "e", seat="RUNNER")
-    passed(i, b)
-    refused("a new sha with no non-maker verdict, behind an Arbiter FAIL", "verdict", "close", i, "--sha", b)
-    i = built("MAKER_PASS", a, ("C1", "L1"))
-    ok("verify", i, "--sha", a, "--result", "fail", "--config", "arbiter:FAIL-module", "--evidence", "e", seat="RUNNER")
-    ok("implemented", i, "--sha", b, "--none-owed")
-    ok("verify", i, "--sha", b, "--result", "pass", "--config", "arbiter:PASS", "--evidence", "e")
-    check(item(i).arbiter_fail is not None and item(i).state == "built",
-          "a MAKER's run signed arbiter: clears nothing (the seat that built it is no verdict)")
-
-    def stands(name, what, signer, **kw):
-        """A hand item: never `implemented`, built_by None. A FAIL on a, then `signer` signs a PASS on b; no Arbiter ran."""
-        i = new(name)
-        kw.get("before", lambda i: None)(i)
-        passed(i, a)
-        ok("verify", i, "--sha", a, "--level", "L0", "--result", "fail", "--config", "arbiter:FAIL-module",
-           "--evidence", "e", seat="RUNNER")
-        check(item(i).built_by is None and item(i).arbiter_fail is not None, what + ": the planted FAIL stands first")
-        ok("verify", i, "--sha", b, "--level", "L0", "--result", "pass", "--config", "arbiter:PASS", "--evidence", "e",
-           seat=signer)
-        check(item(i).arbiter_fail is not None, what + ": the signed pass clears nothing")
-        refused(what, "verdict", "close", i, "--sha", b)
-
-    stands("HAND_MAKER", "the owner of a hand item signing its own arbiter:PASS", "BENCH")
-    stands("HAND_OTHER", "a seat that is not the Arbiter's signing arbiter:PASS", "OWNER")
-    stands("HAND_PAST_OWNER", "a past owner signing after the item was reassigned away from it", "RUNNER",
-           before=lambda i: (ok("reassign", i, "--to", "RUNNER", "--reason", "fixture"),
-                             ok("reassign", i, "--to", "BENCH", "--reason", "fixture")))
-    i = new("HAND_REAL")
-    passed(i, a)
-    ok("verify", i, "--sha", a, "--level", "L0", "--result", "fail", "--config", "arbiter:FAIL-module", "--evidence", "e",
-       seat="RUNNER")
-    ok("verify", i, "--sha", b, "--level", "L0", "--result", "pass", "--config", "arbiter:PASS", "--evidence", "e",
-       seat="RUNNER")
-    check(item(i).arbiter_fail is None, "the real Arbiter's pass on a new sha still clears a hand item's FAIL")
-    ok("close", i, "--sha", b)
-    i = new("MAKER_FAIL")
-    passed(i, a)
-    ok("verify", i, "--sha", a, "--level", "L0", "--result", "fail", "--config", "arbiter:FAIL-module", "--evidence", "e")
-    passed(i, a)
-    refused("a maker's own signed FAIL", "verdict", "close", i, "--sha", a)
-
     i = new("CLEAN", prose="Cites `%s` and nothing else.\n" % paths_of(a)[0])
     passed(i, a)
     ok("close", i, "--sha", a)
@@ -269,87 +225,27 @@ def s3(a, b):
 def s4(a, b):
     print("-- S4 the D1(b) rules")
     fail = lambda i, s: ok("verify", i, "--sha", s, "--level", "L0", "--result", "fail",     # noqa: E731
-                           "--config", "arbiter:FAIL-module", "--evidence", "e", seat="RUNNER")
-    good = lambda i, s: ok("verify", i, "--sha", s, "--level", "L0", "--result", "pass",     # noqa: E731
-                           "--config", "arbiter:PASS", "--evidence", "e", seat="RUNNER")
+                           "--config", "fixture", "--evidence", "e")
     i = new("NO_VERDICT")
     ruling = N[0]
     passed(i, a)
     ok("close", i, "--sha", a)
     check(item(i).state == "done", "no verdict at all blocks nothing (not option c)")
 
-    i = new("FAIL_BLOCKS")
-    passed(i, a)
-    fail(i, a)
-    passed(i, a)
-    refused("an Arbiter FAIL on the item's sha, with a pass after it", "verdict", "close", i, "--sha", a)
-    good(i, a)
-    refused("the Arbiter passing the SAME sha is no new build", "verdict", "close", i, "--sha", a)
-    good(i, b)
-    check(item(i).arbiter_fail is None, "a new sha passing the Arbiter clears the FAIL")
-    ok("close", i, "--sha", b)
-    check(item(i).state == "done", "and the close goes through")
-
     for flag in (("--owner-said", "Close it."), ("--by-card", "close -> yes"),
                  ("--per-ruling", "NO_VERDICT_%d_PROBE_FIXTURE" % ruling)):
         i = new("OVERRIDE")
         passed(i, a)
         fail(i, a)
-        passed(i, a)
-        refused("--why is not his word", "verdict", "close", i, "--sha", a, "--why", "I am sure")
+        refused("--why is not his word", "fail ", "close", i, "--sha", a, "--why", "I am sure")
         ok("close", i, "--sha", a, *flag)
         check(item(i).state == "done", "the owner overrides with %s" % flag[0])
-
-    i = built("VERIFY_TO_DONE", a, ("C1", "L1"))
-    fail(i, a)
-    ok("verify", i, "--criterion", "C1", "--sha", a, "--result", "pass", "--config", "fixture", "--evidence", "e")
-    it = item(i)
-    check(it.state == "validated" and it.held, "the verify-to-done gate: the last pass stops short of done (%s)" % it.state)
-    ok("implemented", i, "--sha", b, "--none-owed")
-    check(item(i).state == "built" and item(i).held, "`implemented` stops short of done behind the same FAIL")
-    good(i, b)
-    check(item(i).state == "done" and model.same_sha(item(i).closed_sha, b), "the Arbiter passing the new build finishes it, no close")
-
-    i = new("CLOSED_THEN_FAILED")
-    passed(i, a)
-    ok("close", i, "--sha", a)
-    fail(i, a)
-    check(item(i).state == "ready" and item(i).arbiter_fail, "an Arbiter FAIL on a closed sha reopens it, and it stands")
-
-    i = built("COND", a, ("C1", "L0"))
-    fail(i, a)
-    ok("implemented", i, "--sha", b, "--none-owed")
-    ok("verify", i, "--sha", b, "--level", "L0", "--result", "partial", "--config", "arbiter:CONDITIONAL-PASS",
-       "--evidence", "e", seat="RUNNER")
-    check(item(i).arbiter_fail is None and item(i).state == "built", "a CONDITIONAL-PASS lifts the FAIL, but finishes nothing")
-
-    i = built("LATE_FAIL", a, ("C1", "L1"))
-    ok("implemented", i, "--sha", b, "--criteria-file", manifest(i, ("C1", "L1")))
-    fail(i, a)
-    check(item(i).arbiter_fail is not None, "a late Arbiter FAIL on the older build still stands")
-    ok("verify", i, "--criterion", "C1", "--sha", b, "--result", "pass", "--config", "fixture", "--evidence", "e")
-    check(item(i).state == "validated" and item(i).held, "and the newer build stops short of done")
-
-    i = built("LATE_AFTER_PASS", a, ("C1", "L1"))
-    ok("implemented", i, "--sha", b, "--criteria-file", manifest(i, ("C1", "L1")))
-    good(i, b)
-    fail(i, a)
-    check(item(i).arbiter_fail is None, "a late FAIL on an older build cannot undo a pass on the current one")
 
     i = new("WHY", prose="Cites `design/RimMandrake/standing_rulings.md` only.\n")
     passed(i, a)
     refused("a sha touching none of the cited paths", "none of the", "close", i, "--sha", a)
     ok("close", i, "--sha", a, "--why", "the fix landed elsewhere, the item cites the ruling")
     check(item(i).state == "done", "--why lets that one through")
-
-    import role_launch as RL
-    i = new("LAUNCHER")
-    for disp, want in (("FAIL-module", "fail"), ("BAR-defect", "fail"), ("PASS", "pass"), ("CONDITIONAL-PASS", "partial")):
-        run = RL.verdict_run({"item": i, "sha": a, "disposition": disp, "evidence": ["D:\\x"]})
-        check(run[run.index("--result") + 1] == want and "--config" in run, "the launcher writes %s as %s" % (disp, want))
-    check(RL.verdict_run({"item": i, "sha": a, "disposition": "UNRESOLVED"}) is None, "UNRESOLVED writes nothing")
-    ok(*RL.verdict_run({"item": i, "sha": a, "disposition": "FAIL-module", "evidence": ["D:\\x"]}), seat="RUNNER")
-    check(item(i).arbiter_fail is not None, "and what it writes is what blocks: the launcher's own argv, as RUNNER")
 
 
 def s4_relentless(a):
@@ -376,12 +272,6 @@ def s4_relentless(a):
     check(fx.ledger_close(i, a, "relentless: blind PASS") is None and item(i).state == "done",
           "a blind PASS closes: the Marker's run is on the sha")
     check([r.config for r in item(i).runs] == ["marker:blind-check"], "and the run says who judged it")
-    i = new("MARKER_FAILED")
-    ok("verify", i, "--sha", a, "--result", "fail", "--level", "L0", "--config", "arbiter:FAIL-module",
-       "--evidence", "e", seat="RUNNER")
-    why = fx.ledger_close(i, a, "relentless: blind PASS")
-    check(why and "has not earned its close" in why and item(i).state != "done",
-          "an Arbiter FAIL stops the blind path too: a Marker PASS clears no FAIL")
 
 
 def s5_replay():
@@ -426,7 +316,7 @@ def s6_every_way_to_done(a, b, led):
     passed(i, b)
     ok("verify", i, "--sha", b, "--level", "L0", "--result", "fail", "--config", "fixture", "--evidence", "broke")
     ok("implemented", i, "--sha", b, "--none-owed")
-    check(held(i), "a fail newer than the pass, not the Arbiter's, holds `implemented` too")
+    check(held(i), "a fail newer than the pass holds `implemented` too")
 
     i = new("REFUSED_CLOSE_SIDESTEP")
     refused("the setup: an unchecked close", "unchecked", "close", i, "--sha", b)
