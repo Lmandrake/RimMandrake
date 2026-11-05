@@ -35,7 +35,6 @@
     "rm-agent-improve": "a role's job, not an Operations clock",
     "rm-findings-judge": "a role's job, not an Operations clock",
     "rm-codebase-health": "codebase health publish, not an Operations clock",
-    "rm-fleetwatch": "fleet refresh, not an Operations clock",
     "rm-mirror": "the D: mirror export, not an Operations clock",
     "rm-harness": "slice",
     "rm-restart-now-*": "transient restart runs",

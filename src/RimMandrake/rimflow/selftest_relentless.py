@@ -4569,7 +4569,7 @@ def t_hold_routing():
     fx.fail = "ledger down"
     ok(fx.ledger_hold_to_seat("I", hold) == "ledger down", "a failure says so and the tick retries")
 
-    # The two readers of a hold cannot disagree: Fleet Watch's owner_queue and this supervisor's routing. Both sides of the
+    # The two readers of a hold cannot disagree: RUNNING_NOW's owner_queue and this supervisor's routing. Both sides of the
     # word trap are pinned on real wrapped text (blind check: a bare "flyer" in a why made a hold that was nobody's).
     sys.path.insert(0, os.path.join(os.path.dirname(R.HERE), "Utils"))
     import owner_queue as Q

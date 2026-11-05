@@ -77,8 +77,6 @@
   "src/RimMandrake/Utils/dll_source_stamp.py::diff_paths::run": 1,
   "src/RimMandrake/Utils/dll_source_stamp.py::ls_tree::run": 1,
   "src/RimMandrake/Utils/experiment_manifest.py::capture.client::run": 2,
-  "src/RimMandrake/Utils/fleet_refresh.py::storage_root::run": 1,
-  "src/RimMandrake/Utils/fleet_watch.py::sh::run": 1,
   "src/RimMandrake/Utils/gen_creature_register.py::_native::run": 1,
   "src/RimMandrake/Utils/gen_furniture_register.py::_native::run": 1,
   "src/RimMandrake/Utils/gen_plant_register.py::_native::run": 1,

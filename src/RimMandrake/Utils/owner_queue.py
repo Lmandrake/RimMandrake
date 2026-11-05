@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""owner_queue.py — the ONE answer to "what truly waits on the owner?", for Fleet Watch's "Needs you" and its mods.
+"""owner_queue.py — the ONE answer to "what truly waits on the owner?", for RUNNING_NOW's "Needs you" and its mods.
 
 FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT: the board's header read "Nothing." while ten mods said "waits on you",
 because the header came from a field nobody wrote and the mods from `needs == owner`. Both now come from is_his(), so

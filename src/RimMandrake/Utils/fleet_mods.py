@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""fleet_mods.py — the slow half of the owner's Fleet Watch board: receipts, mods worked on lately, the factory line.
+"""fleet_mods.py — the slow half of RUNNING_NOW (running_now.py): receipts, mods worked on lately, the factory line.
 
 FLEETWATCH_PAGE_SHRINK_LESS_BASH_MORE_MODS (owner, by card 2026-11-02): "there should be a lower section that has a
 list of all Mods worked on in the past week or so and where they stand. What was done? Each task that contributed to
-that mod (one line)." Everything here is computed in Python so the page stays dumb; fleet_refresh.py writes it.
+that mod (one line)." Everything here is computed in Python so the page stays dumb; running_now.py renders it.
+(The Fleet Watch board that first carried it was retired by the owner, 2026-11-04: FLEETWATCH_CODE_RETIRE_NOBODY_WAS_WATCHING.)
 
   receipts(...)  one row per item finished today (local day): ✓/✗, the blind check's verdict, one plain sentence of
                  what changed (its main commit's subject), real commit count (ledger-only commits excluded), tokens.
@@ -12,6 +13,7 @@ that mod (one line)." Everything here is computed in Python so the page stays du
                  closed/open/parked counts, proof state (modcheck record and the last blind check), what is next and
                  what waits on the owner or the game, one line per contributing task.
   factory(...)   the header line: factory ok or not, N/target workers, tokens today.
+  detached_done(hours)  finished detached dispatcher helpers (dispatcher/detached/*.json), the receipts' second source.
 
 Inputs (read-only): `git log origin/main --since=7.days --name-only` (one call), the rimflow ledger (model.read),
 the Relentless store (~/rm/relentless/store), infrastructure/state/modcheck_status.json, src/*/*/About/About.xml.
@@ -24,15 +26,137 @@ import glob
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import fleet_watch  # noqa: E402
 import owner_queue  # noqa: E402
 
-REPO = fleet_watch.REPO
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+DETACHED = "/mnt/d/ClaudeWork/rimmandrake/dispatcher/detached"
+SH_TIMEOUT = 120
+
+
+def sh(*a, cwd=REPO):
+    try:
+        return subprocess.run(a, cwd=cwd, capture_output=True, text=True, timeout=SH_TIMEOUT).stdout.strip()
+    except subprocess.TimeoutExpired:
+        return ""
+
+
+def short(s, n=160):
+    s = " ".join(str(s).split())
+    return s if len(s) <= n else s[: n - 1] + "…"
+
+
+UPPER_ID = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
+PATHLIKE = re.compile(r"(?:[\w.~-]*/)+([\w.-]+)")
+
+
+def de_id(text):
+    """UPPER_SNAKE ids -> 'Upper snake' words; paths -> their basename."""
+    text = PATHLIKE.sub(lambda m: m.group(1), text)
+    return UPPER_ID.sub(lambda m: re.sub(r"_\d+$", "", m.group(0)).replace("_", " ").capitalize(), text)
+
+
+GENERIC_HEADS = {"experiment", "question", "investigate", "investigation", "research", "follow-up", "followup",
+                 "proposal", "decision", "cleanup", "regression", "feature", "finding", "harness"}
+
+
+def title_short(title, n=28, min_words=1):
+    """A rimflow title -> at most n readable chars: the head before the first ':', ' — ', '(' or ';' when that head is
+    a phrase of its own (at least `min_words` words; 'Full list' says nothing, so the page asks for 3), ids made words,
+    cut at a word with '…'."""
+    t = " ".join(str(title or "").split())
+    t = re.sub(r"^(?:\[[A-Za-z -]{2,12}\]\s*)+", "", t)
+    t = re.sub(r"^(?:Ops alarm|alarm|FINDING|finding|BUG|bug|MOD|SITE|HARNESS)(?:\s*:\s*|\s+)", "", t)
+    if re.fullmatch(r"[a-z][a-z0-9]*(?:_[a-z0-9]+)+", t):  # a bare snake_case name: make it words
+        t = t.replace("_", " ").capitalize()
+    parts = re.split(r"\s*(?::\s|\s[—–-]{1,2}\s|\(|;)\s*", t, maxsplit=1)
+    if len(parts) == 2 and parts[0].lower() in GENERIC_HEADS:  # "Experiment: can we ..." -> "Can we ..."
+        t = parts[1][:1].upper() + parts[1][1:]
+        parts = re.split(r"\s*(?::\s|\s[—–-]{1,2}\s|\(|;)\s*", t, maxsplit=1)
+    head = parts[0]
+    if len(head) >= 8 and (" " in head or len(parts) == 1) and (len(parts) == 1 or len(head.split()) >= min_words):  # a lone path/token head says nothing: keep the rest
+        t = head
+    t = de_id(t).strip(" .,:;-")
+    if len(t) <= n:
+        return t
+    cut = t[: n - 1]
+    if t[n - 1] != " " and " " in cut[n // 2:]:
+        cut = cut[: cut.rindex(" ")]
+    return cut.rstrip(" ,.:;-") + "…"
+
+
+LEDGER_ONLY = re.compile(r"^(?:infrastructure/state/ledger/|conversations/|infrastructure/state/code_review/)")
+
+
+def real_count(log_text):
+    """`git log --format=@@%h --name-only` text -> commits that changed something besides the ledger and its echoes."""
+    n, files = 0, None
+    for line in log_text.splitlines() + ["@@end"]:
+        if line.startswith("@@"):
+            if files is not None and any(not LEDGER_ONLY.match(f) for f in files):
+                n += 1
+            files = []
+        elif line.strip() and files is not None:
+            files.append(line.strip())
+    return n
+
+
+def detached_tokens(out_path):
+    """A finished detached helper's `claude -p --output-format json` result -> total tokens, or None (UNMEASURED)."""
+    try:
+        with open(out_path) as f:
+            u = (json.load(f) or {}).get("usage") or {}
+    except (OSError, ValueError, TypeError, AttributeError):
+        return None
+    n = sum(int(u.get(k) or 0) for k in ("input_tokens", "output_tokens", "cache_creation_input_tokens",
+                                          "cache_read_input_tokens"))
+    return n or None
+
+
+def detached_done(hours, now=None, root=DETACHED, unit_state=None, item_state=None, commits=None):
+    """Detached dispatcher helpers started within `hours` whose unit is no longer running -> receipt rows
+    {item, status Done|Ended|Stopped, started, finished_at, commit_count, tokens}. The three readers are injectable
+    so the selftest runs offline."""
+    now = time.time() if now is None else now
+    unit_state = unit_state or (lambda u: sh("systemctl", "--user", "is-active", u) or "unknown")
+    item_state = item_state or _item_state
+    commits = commits or (lambda item, since: real_count(sh("git", "log", "origin/main", "--since=@%d" % int(since),
+                                                            "--format=@@%h", "--name-only", "-F", "--grep=" + item)))
+    out = []
+    for p in sorted(glob.glob(os.path.join(root, "*.json"))):
+        if p.endswith(".out.json"):
+            continue
+        try:
+            with open(p) as f:
+                r = json.load(f)
+        except (OSError, ValueError):
+            continue
+        if not isinstance(r, dict) or not r.get("item") or now - r.get("at", 0) > hours * 3600:
+            continue
+        if unit_state(r.get("unit", "")) in ("active", "activating"):
+            continue  # still building: not a receipt yet
+        cs = commits(r["item"], r["at"])
+        st = item_state(r["item"])
+        status = "Done" if st in ("closed", "done", "implemented", "validated") else ("Ended" if cs else "Stopped")
+        try:
+            fin = int(os.path.getmtime(r["out"]))
+        except (OSError, KeyError, TypeError):
+            fin = int(r["at"])
+        out.append({"item": r["item"], "status": status, "started": int(r["at"]), "finished_at": fin,
+                    "commit_count": cs, "tokens": detached_tokens(r.get("out"))})
+    return out
+
+
+def _item_state(item):
+    out = sh("python3", "src/RimMandrake/rimflow/cli.py", "show", item)
+    first = out.splitlines()[0] if out else ""
+    m = re.match(r"\S+\s+(\S+)", first)
+    return m.group(1) if m else "unknown"
 STORE = os.path.expanduser("~/rm/relentless/store")
 MODCHECK = os.path.join(REPO, "infrastructure", "state", "modcheck_status.json")
 DAYS = 7
@@ -62,7 +186,7 @@ def parse_log(text):
 
 
 def real_files(files):
-    return [f for f in files if not fleet_watch.LEDGER_ONLY.match(f)]
+    return [f for f in files if not LEDGER_ONLY.match(f)]
 
 
 def mod_of_path(path, mods):
@@ -95,11 +219,11 @@ def plain_subject(subject):
     s = re.sub(r"^(?:[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+[,:]?\s*)+", "", subject).strip()
     s = re.sub(r"\b[0-9a-f]{7,40}\b", "", s)
     s = s.lstrip("+-*· ").strip()
-    s = fleet_watch.de_id(" ".join(s.split())).strip(" ;,")
+    s = de_id(" ".join(s.split())).strip(" ;,")
     if not s:
         return ""
     s = s[0].upper() + s[1:]
-    s = fleet_watch.short(s, 120)
+    s = short(s, 120)
     return s if s.endswith(("…", ".", "!", "?", ")")) else s + "."
 
 
@@ -158,8 +282,7 @@ def mod_folders():
 
 
 def git_log(days):
-    return fleet_watch.sh("git", "log", "origin/main", "--since=%d.days" % days, "--format=@@%H%x09%ct%x09%s",
-                          "--name-only")
+    return sh("git", "log", "origin/main", "--since=%d.days" % days, "--format=@@%H%x09%ct%x09%s", "--name-only")
 
 
 def ledger():
@@ -261,7 +384,7 @@ def receipts(now, commits_by_item, rel, world, evs, detached_done=()):
                                  "tokens": s.get("spent") or None}}
     for r in detached_done:
         if (r.get("finished_at") or 0) < since or (r["item"] in out and out[r["item"]]["started"] >= r.get("started", 0)):
-            continue  # the newest run (by start, as fleet_refresh.dedup judges it) speaks
+            continue  # the newest run (by start, the newest start wins) speaks
         it = world.items.get(r["item"])
         v = ledger_verdict(it)
         ok = r["status"] == "Done" and v != "FAIL"
@@ -433,7 +556,7 @@ def proof_line(mod, mc, blind, now, days):
 def display_title(title):
     """The page's title: no fixed cut (CSS ellipsizes by width; TITLE_MAX is a sanity bound); a head shorter than three
     words ('Full list', 'Hose tick') keeps the rest of the title."""
-    return fleet_watch.title_short(title, TITLE_MAX, min_words=3)
+    return title_short(title, TITLE_MAX, min_words=3)
 
 
 def n_words(n, one, many=None):

@@ -63,7 +63,7 @@ DISPATCH = [
     {"at": "2026-11-03T04:22:10Z", "do": "unit_repair", "unit": "rm-scratch-reap.service", "how": "start", "why": "rm-scratch-reap.service failed: restart (1/2 today)"},
     {"at": "2026-11-03T04:53:20Z", "do": "unit_repair", "unit": "rm-scratch-reap.service", "how": "start", "why": "rm-scratch-reap.service failed: restart (2/2 today)"},
     {"at": "2026-11-03T05:24:07Z", "do": "alarm", "kind": "timer:rm-scratch-reap.service", "why": "rm-scratch-reap.service first failed 2026-11-03T04:22:10Z; 2 automatic repairs today did not hold"},
-    {"at": "2026-11-03T05:30:00Z", "do": "alarm", "kind": "timer:rm-fleetwatch.service", "why": "rm-fleetwatch.service first failed 2026-11-03T05:29:00Z; no safe automatic repair for it"},
+    {"at": "2026-11-03T05:30:00Z", "do": "alarm", "kind": "timer:rm-example.service", "why": "rm-example.service first failed 2026-11-03T05:29:00Z; no safe automatic repair for it"},
     {"at": "2026-11-03T05:40:00Z", "do": "unit_repair", "unit": "rm-harness-77-2.scope", "how": "clear", "why": "rm-harness-77-2.scope failed: clear (1/2 today)"},
     # a restart: the killed window's receipt is planned, and a failed relaunch is a death with that cause
     {"at": "2026-11-03T03:00:00Z", "do": "restart_kill", "seat": "BENCH", "result": "killed pid 2 (SIGTERM)"},
@@ -310,11 +310,11 @@ def main():
     # timers
     s = deaths_of(reg, "unit:rm-scratch-reap.service")
     ok(len(s) == 2 and all(d["ending"] == "unit_failed" for d in s), "timer_alarm_not_double_counted_with_repair", s)
-    ok(len(deaths_of(reg, "unit:rm-fleetwatch.service")) == 1, "timer_alarm_alone_is_a_death")
+    ok(len(deaths_of(reg, "unit:rm-example.service")) == 1, "timer_alarm_alone_is_a_death")
     ok(len(deaths_of(reg, "unit:rm-twice.service")) == 2, "distinct_alarmed_failures_stay_distinct",
        deaths_of(reg, "unit:rm-twice.service"))
     ok(len(deaths_of(reg, "window:BENCH:gggg7777")) == 1, "one_restart_plans_one_window_replacement_crash_counts")
-    ok(thing(reg, "unit:rm-fleetwatch.service")["wanted"] == "running", "timer_wanted_running")
+    ok(thing(reg, "unit:rm-example.service")["wanted"] == "running", "timer_wanted_running")
     ok(thing(reg, "unit:rm-harness-77-2.scope")["kind"] == "scope", "cleared_scope_is_a_scope_life")
 
     # relentless
