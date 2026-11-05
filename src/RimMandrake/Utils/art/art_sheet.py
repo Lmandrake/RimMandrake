@@ -1575,6 +1575,26 @@ def _assign_letters(cols: list[dict], prev: dict, reserved=(), lanes=None, prev_
             c["letter"] = next(free)
 
 
+def keeps_snapshot_id(prev_rows: dict, snap_rows: dict) -> bool:
+    """A rebuild keeps the previous snapshotId only when every letter of the previous build still means the same thing:
+    the same pictures (columns) AND the same lane (graphic_of). Added columns are fine; a lane renamed or a letter moved
+    to another lane is a new revision, so a record saved against the old id resolves through the old snapshot (git
+    history) and never through today's lanes (SHEET_SNAPSHOTID_FIX_LANE_RENAME; the stale slot keys of
+    ENACT_STALE_SLOT_KEY_MIGRATE_PATH). A previous row with no graphic_of recorded (an old build) is judged on pictures."""
+    if not prev_rows:
+        return False
+    for rk, pr in prev_rows.items():
+        nr = snap_rows.get(rk) or {}
+        ncols, ngof = nr.get("columns") or {}, nr.get("graphic_of") or {}
+        for l, f in (pr.get("columns") or {}).items():
+            if ncols.get(l) != f:
+                return False
+        for l, g in (pr.get("graphic_of") or {}).items():
+            if ngof.get(l) != g:
+                return False
+    return True
+
+
 def _merge_memory(ruled_rows: dict, prev_rows: dict) -> dict:
     """Letter memory per row: the ruled snapshot's letters win; a later snapshot adds only letters (and sets)
     the ruled one did not have. Every letter either ever carried stays reserved."""
@@ -3565,10 +3585,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             # every canon row's non-canon alternative as shown (a coverage check reads this; not part of snapshotId)
             "noncanonOptions": dict(sorted(noncanon_opts.items()))}
     new_id = hashlib.sha1(json.dumps(snap_rows, sort_keys=True).encode()).hexdigest()[:16]
-    superset = bool(prev_rows) and all(
-        snap_rows.get(rk, {}).get("columns", {}).get(l) == f
-        for rk, pr in prev_rows.items() for l, f in (pr.get("columns") or {}).items())
-    snap["snapshotId"] = prev.get("snapshotId") if superset and prev.get("snapshotId") else new_id
+    snap["snapshotId"] = prev.get("snapshotId") if keeps_snapshot_id(prev_rows, snap_rows) and prev.get("snapshotId") \
+        else new_id
     for it in ordered:
         it["rev"] = snap["snapshotId"]     # the inventory revision a schema-2 record is saved against
 
