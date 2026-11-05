@@ -1,0 +1,6 @@
+{
+ "run": "rm-role-designer-1793918145",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam passed: 17 frozen scenarios (12 Examiner, 5 Challenger; 13 reject cases), both Readers 17/17, accept_where_reject_core 0, no Challenger miss. Control on a copy without scorchfruit_born_of_fire missed e4/c1 once its his-words quote was also removed (first control still caught them from that quote). exam.json frozen against the current tree and sheet hashes. Helpers charged 240k."
+}
