@@ -152,5 +152,12 @@ chk(LW.first_crossing(_S, 128, (115, 135)) == ("PASS", _S[2]), "over wall: the F
 chk(LW.first_crossing(_S[:2], 128, (115, 135))[0] == "FAIL", "over wall: can-fail, still on the ladder side")
 chk(LW.first_crossing([(30, 140, 140, "Goto")], 128, (115, 135))[0] == "FAIL", "over wall: east but outside the wall's z span (walked round) is not a crossing")
 chk(LW.first_crossing(_S[:1], 128, (115, 135))[0] == "UNMEASURED", "over wall: no position read UNMEASURED")
+_S5 = "ORDERED taken=True from=(127, 0, 125) landing=(129, 0, 125) byLadder=True"   # bridge_run_1f ladder_wall_s5.json
+chk(LW.one_way_verdict(_S5, 128)[0] == "PASS", "one way: the s5 walk-round (foot on the ladder side) is PASS")
+chk(LW.one_way_verdict("NO_CROSSING roofed=False mightClimb=True", 128)[0] == "PASS", "one way: NO_CROSSING PASS")
+chk(LW.one_way_verdict("ORDERED taken=True from=(129, 0, 125) landing=(127, 0, 125) byLadder=False", 128)[0] == "FAIL",
+    "one way: can-fail, a crossing that starts east of the wall")
+chk(LW.one_way_verdict("ERROR X: y", 128)[0] == "UNMEASURED", "one way: an error reply UNMEASURED")
+chk(LW.one_way_verdict("ORDERED taken=True", 128)[0] == "UNMEASURED", "one way: ORDERED with no from UNMEASURED")
 print("selftest_raid_trench: %s" % ("FAIL" if bad else "ok"))
 sys.exit(1 if bad else 0)

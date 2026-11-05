@@ -17,7 +17,9 @@ Rows:
                                                  wall's z span is the verdict (a later walk-off cannot hide it). Never
                                                  crossing while drafted is FAIL with the job trace: refile as MOD on
                                                  RM_ClimbOverWall. No sample read is UNMEASURED.
-  LADDER_PARITY_ONE_WAY              PASS/FAIL  from the far side (no ladder there, no gear) "climb:" finds NO_CROSSING.
+  LADDER_PARITY_ONE_WAY              PASS/FAIL  from the far side (no ladder there, no gear) "climb:" finds NO_CROSSING, or
+                                                 a crossing whose foot is on the LADDER side (walked round the wall's
+                                                 ends; one_way_verdict). FAIL only on a foot east of the wall.
   LADDER_PARITY_DOUBLE_WALL_REFUSED  PASS/FAIL  a second wall line at x = c+4 makes the crossing two squares thick: NO_CROSSING.
   LADDER_PARITY_CLIMBER_CENSUS       PASS/FAIL  (A7) a colony dog (Husky), a wild Cobra, a wild Muffalo and a spawned colonist
                                                  on the ladder's square: "may:" reads mayClimb = CENSUS (dog no, cobra yes:
@@ -66,6 +68,29 @@ def first_crossing(samples, wx, z_span):
         if x > wx and z_span[0] <= z <= z_span[1]:
             return "PASS", s_
     return ("FAIL" if seen else "UNMEASURED"), None
+
+
+def one_way_verdict(back, wx):
+    """The far-side "climb:" reply -> (status, why). Pure. NO_CROSSING is PASS. An ORDERED crossing is FAIL only when
+    it STARTS east of the wall (from.x > wx: climbing back from the far side, no ladder, no gear); one whose foot is
+    on the ladder side (from.x < wx) is the pawn walking round the wall's ends to the ladder, correct one-way
+    behaviour, PASS (LADDER_ONEWAY_FIX_WALK_ROUND_COUNTED: RM_WallClimb accepts any reachable foot). Anything else,
+    or an unreadable from, is UNMEASURED."""
+    import re
+    txt = str(back or "")
+    if txt.startswith("NO_CROSSING"):
+        return "PASS", "no crossing from the far side"
+    if not txt.startswith("ORDERED"):
+        return "UNMEASURED", "unreadable reply"
+    m = re.search(r"from=\((-?\d+),\s*-?\d+,\s*(-?\d+)\)", txt)
+    if not m:
+        return "UNMEASURED", "ORDERED with no readable from="
+    fx = int(m.group(1))
+    if fx > wx:
+        return "FAIL", "crossing from the far side at x=%d (wall x=%d)" % (fx, wx)
+    if fx < wx:
+        return "PASS", "walk-round: the crossing starts on the ladder side at x=%d" % fx
+    return "UNMEASURED", "from= on the wall line itself"
 
 
 def census_verdict(reads):
@@ -204,8 +229,11 @@ def main(argv=None):
         "ifFail": "drafted and walled the full site: never crossing is MOD on RM_ClimbOverWall"})
     if over:
         back = parity(B, "climb:%d,%d,%d" % (pid, wx, p1[1]))
-        row("LADDER_PARITY_ONE_WAY", "PASS" if back.startswith("NO_CROSSING") else "FAIL",
-            {"back": back, "bar": "no ladder on the far side and no gear: no crossing back"})
+        ow, why = one_way_verdict(back, wx)
+        row("LADDER_PARITY_ONE_WAY", ow, {"back": back, "why": why,
+            "bar": "no ladder on the far side and no gear: no crossing STARTS east of the wall (a walk-round to the ladder is fine)"})
+        if back.startswith("ORDERED"):
+            B.probe_of(HPROBE, "pawn:%d=stop" % pid)   # the reply took a job: end the walk-round before the next row
     else:
         row("LADDER_PARITY_ONE_WAY", "UNMEASURED", {"why": "never got over"})
     # a double wall: a second line east of the first; teleport back to the ladder and ask again
