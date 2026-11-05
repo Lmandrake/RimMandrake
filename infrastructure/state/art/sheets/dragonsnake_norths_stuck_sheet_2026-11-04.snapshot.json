@@ -1,10 +1,10 @@
 {
  "biome": "SUBJECTS_dragonsnake_norths_stuck",
- "built": "2026-11-04T19:43:59-0800",
+ "built": "2026-11-04T21:11:35-0800",
  "census": "Transient/biome_ffar/dragonsnake_norths_stuck.subjects.json",
  "census_git_head": null,
  "droppedAllRuled": [],
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 36 mods \u2014 a test list): 316 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 37 mods \u2014 a test list): 316 active",
  "noncanonOptions": {
   "RSW_Dragonsnake": {
    "brief": "a long finned mud-water serpent that drags prey under from the shallows",
