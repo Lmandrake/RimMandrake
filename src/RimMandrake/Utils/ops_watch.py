@@ -3653,7 +3653,11 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                 cur.update(told=worse[1], worse_n=worse_count(cur) + 1)
                 log.append({"ts": iso(now), "event": "worse", "aid": aid})
                 return
-            if not fresh and not worse:
+            # OPS_ALARM_FIX_CLOSED_TICKET_SILENCES_FAULT: its item closed while the reading still stands crossed. Closing
+            # the ticket is not fixing the fault: with nothing new to say this returned and the alarm stayed silent for
+            # good, so it reopens here even with no news. open_ids None means the ledger was not read: nothing judged
+            closed = bool(crossed and open_ids is not None and cur.get("item") and cur["item"] not in open_ids)
+            if not fresh and not worse and not closed:
                 return
             if open_ids is None or cur.get("item") in open_ids:
                 shown, used = [], 0     # whole names up to 600 chars; one that does not fit stays unnoted, said next pass
@@ -3680,7 +3684,8 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             if worse:
                 cur["worse_n"] = worse_count(cur) + 1
             cur.update(state="PENDING", item=None, name=cur.get("item"), reopen=True, tries=0)
-            log.append({"ts": iso(now), "event": "reopen_for_news" if fresh else "reopen_for_worse", "aid": aid, "item": cur["name"]})
+            log.append({"ts": iso(now), "event": "reopen_for_news" if fresh else "reopen_for_worse" if worse
+                        else "reopen_closed_still_crossed", "aid": aid, "item": cur["name"]})
         if not crossed:
             if cur and cur.get("name") and cur.get("title"):
                 # PENDING, not crossed now (UNMEASURED, or clear but not for clear_passes yet): the crossing was

@@ -158,12 +158,20 @@ def test_closed_item_reopens():
     item = cur["item"]
     b.open = set()      # closed, the condition standing: a note on a closed item reaches nobody
     b.sent = []
-    cur = b.read(M(50))
-    ok(not b.sent, "not yet worse: a closed item is left closed, as before")
     cur = b.read(M(80))
     ok(len(b.sent) == 1 and b.sent[0].get("reopen") and b.sent[0]["name"] == item and not b.sent[0].get("note_only"),
        "worse on a closed item reopens that same item")
     ok(cur["state"] == "OPEN" and cur["told"]["v"] == 80 and cur["worse_n"] == 1, "reopened, told is the new reading")
+    # not worse but still crossed on a closed item: reopened too (OPS_ALARM_FIX_CLOSED_TICKET_SILENCES_FAULT; this
+    # test used to pin the old silence, "a closed item is left closed")
+    b2 = Bench("STEVE_STALL:steve.unowned_stall_min")
+    b2.t = b.t + 7 * 24 * 3600
+    OW.atomic_json(OW.ops_dir() / "alarms.json", {})
+    item2 = b2.read(M(40))["item"]
+    b2.open, b2.sent = set(), []
+    b2.read(M(50))
+    ok(len(b2.sent) == 1 and b2.sent[0].get("reopen") and b2.sent[0]["name"] == item2,
+       "not worse, still crossed, item closed: reopened, never silent")
 
 
 def test_deploy_re_raises_nothing():

@@ -134,6 +134,12 @@ def readings(table, status, now):
             bad[k] = {"class": p["class"], "item": None, "ack": p.get("ack_within_min")}
         seen[k] = p.get("m") == "MEASURED" and p["class"] in ("sane", "idle")
     alarms = status.get("alarms")
+    if isinstance(alarms, dict) and "_alarm_state" in alarms:
+        # alarms.json unreadable: ops_watch held every filing and every alarm below goes unread. One fixed incident
+        # says so (OPS_ALARM_FIX_CLOSED_TICKET_SILENCES_FAULT, plan B4), instead of the alarms vanishing in silence
+        bad["ops_watch.alarm_state"] = {"class": None, "item": None, "ack": None}
+    else:
+        seen["ops_watch.alarm_state"] = True
     alarms = alarms if isinstance(alarms, dict) and "_alarm_state" not in alarms else None
     for aid, a in (alarms or {}).items():
         if isinstance(a, dict) and ":" in aid and a.get("state") in ("OPEN", "PENDING"):
