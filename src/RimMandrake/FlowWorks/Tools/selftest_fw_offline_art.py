@@ -630,6 +630,17 @@ def covers():
     want(not cov.deck_matches_ground(cov.render(pit, cs, "planks", P=PX))[0], "deck_matches_ground FAILS the drawn lattice (B)")
     blank = cov.render(pit, set(), "planks", P=PX)
     want(not cov.cover_reads_as_material(blank, (2, 2))[0], "cover_reads_as_material can-fail: a cell with no cover")
+    # WOVEN_SCRAP_COVER_REDRAW_FILLS_ITS_CELL: the woven lid was a round mat ~80% of its cell (debris in the hole, not a lid)
+    from PIL import Image
+    src = HERE.parent / "art_source" / "WovenScrapCover"
+    r = cov.cover_fills_cell(cov.cover_texture(cov.TIERS[1]))
+    want(r[0], "cover_fills_cell PASSES installed %s: span %.3f, worst corner %.2f, opaque %.2f" % ((cov.TIERS[1],) + r[1:]))
+    r = cov.cover_fills_cell(Image.open(src / "before_round_mat.png"))
+    want(not r[0], "cover_fills_cell can-fail: the pre-redraw round woven mat: span %.3f, worst corner %.2f, opaque %.2f" % r[1:])
+    sys.path.insert(0, str(src))
+    import conform as woven  # noqa: E402
+    want(woven.build().tobytes() == cov.cover_texture(cov.TIERS[1]).convert("RGBA").tobytes(),
+         "installed RM_PitCover_WovenScrap == art_source/WovenScrapCover/conform.build()")
 
 
 def soda_pail():

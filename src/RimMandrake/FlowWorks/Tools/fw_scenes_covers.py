@@ -96,6 +96,29 @@ def cover_texture(tier, full=False):
     return t
 
 
+FILL_SPAN, FILL_CORNER, FILL_FRAC = 0.92, 0.5, 0.75
+
+
+def cover_fills_cell(img):
+    """(ok, span, worst_corner, frac) for a cover texture (WOVEN_SCRAP_COVER_REDRAW_FILLS_ITS_CELL): a lid fills its square
+    cell, so a deck of lids reads as one hatch and an exposed lid reads as a lid, not debris dropped in the hole. Its
+    opaque box (alpha > 40) spans >= FILL_SPAN of the cell on both axes; every corner block (1/8 of the cell, taken at the
+    opaque box's corners) is >= FILL_CORNER opaque; and >= FILL_FRAC of the box is opaque (alpha > 200)."""
+    a = np.asarray(img.convert("RGBA"), np.float32)[..., 3]
+    S = a.shape[0]
+    ys, xs = np.nonzero(a > 40)
+    if len(xs) == 0:
+        return False, 0.0, 0.0, 0.0
+    x0, x1, y0, y1 = xs.min(), xs.max() + 1, ys.min(), ys.max() + 1
+    span = min(x1 - x0, y1 - y0) / float(S)
+    k = max(1, S // 8)
+    solid = a > 200
+    corners = [solid[y0:y0 + k, x0:x0 + k], solid[y0:y0 + k, x1 - k:x1], solid[y1 - k:y1, x0:x0 + k], solid[y1 - k:y1, x1 - k:x1]]
+    worst = float(min(c.mean() for c in corners))
+    frac = float(solid[y0:y1, x0:x1].mean())
+    return (span >= FILL_SPAN and worst >= FILL_CORNER and frac >= FILL_FRAC), float(span), worst, frac
+
+
 def _lum(rgb):
     return rgb[..., 0] * 0.299 + rgb[..., 1] * 0.587 + rgb[..., 2] * 0.114
 
