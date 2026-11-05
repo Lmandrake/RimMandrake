@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map, SB_islands_restore_reach reads PASS with outcome reached_and_grounded: a bank colonist can touch the middle square of a 4 m deep dug channel (canReach True) and ordered fill jobs bring it from depth 8 to 0, the restore then letting go of it; its outcome field records the answer either way

@@ -1,0 +1,5 @@
+# MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED: a colonist on the bank of a dug channel (7x3, all 4 m deep) is ordered to Restore ground the middle square; the row
+# SB_islands_restore_reach records outcome reached_and_grounded / reached_not_grounded / needs_bridge_first and PASSes only
+# on reached_and_grounded (Designator_RestoreGround promises islands in a hole with no bridge first).
+live-mods: FlowWorks
+live-proof A1: mkdir -p /mnt/d/ClaudeWork/rimmandrake/scratch/midchannel_reach && rm -f /mnt/d/ClaudeWork/rimmandrake/scratch/midchannel_reach/reach.json && python.exe src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py --only reach D:/ClaudeWork/rimmandrake/scratch/midchannel_reach/reach.json < /dev/null > /mnt/d/ClaudeWork/rimmandrake/scratch/midchannel_reach/run.txt 2>&1; python3 -c "import json,sys; r=[x for x in json.load(open('/mnt/d/ClaudeWork/rimmandrake/scratch/midchannel_reach/reach.json'))['rows'] if x['id']=='SB_islands_restore_reach']; d=r[0]['detail'] if r else {}; print(r and r[0]['status'], d.get('outcome'), d.get('why')); sys.exit(0 if r and r[0]['status']=='PASS' and d.get('outcome')=='reached_and_grounded' else 1)"
