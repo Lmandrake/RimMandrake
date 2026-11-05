@@ -162,6 +162,8 @@ def props(prof, box, extra=(), through_paths=()):
         out += ["-p", "ReadOnlyPaths=" + unit_path(p)]
     for p in through_paths:
         out += ["-p", "BindReadOnlyPaths=-" + p]
+    for p in prof.get("write_through", ()):     # MARKER_WALL_FIX_HIDES_ONLY_THE_DIARY: the Windows build stage, bound
+        out += ["-p", "BindPaths=-" + unit_path(p)]     # as the host's drvfs so dotnet.exe is handed D:\, not a UNC path
     return out + ["-p", "BindPaths=%s:%s/.claude/projects" % (Path(box, "projects"), HOME)]
 
 

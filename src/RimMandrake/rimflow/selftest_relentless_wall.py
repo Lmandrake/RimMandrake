@@ -150,8 +150,17 @@ def test_skills_and_snapshot():
     live = json.loads(Path(HERE, "relentless_rules.json").read_text(encoding="utf-8"))["walls"]["marker"]
     check("the live wall lets the skills be read", live.get("allow_read_skills") == W.HOME + "/.claude/skills")
     check("the live wall still denies the builder's transcripts and scratch", "conversations" in live["tree_exclude"]
-          and "/home/mandrake/.seat-tmp" in live["deny"] and "/home/mandrake/rm/scratch" in live["tmpfs"]
+          and "/home/mandrake/.seat-tmp" in live["tmpfs"] and "/home/mandrake/rm/scratch" in live["tmpfs"]
           and "/home/mandrake/.claude/history.jsonl" in live["deny"])
+    # MARKER_WALL_FIX_HIDES_ONLY_THE_DIARY: seat-tmp and the seat clones are dark but for named paths, never their transcripts
+    check("seat-tmp and the seat clones read through, not denied", all(r in live["read_through"] and r in live["tmpfs"]
+          and r not in live["deny"] for r in ("/home/mandrake/.seat-tmp", "/home/mandrake/rm/bench", "/home/mandrake/rm/foundry")))
+    check("a subagent transcript and a conversation never bind", not W.through_reachable(
+          "/home/mandrake/.seat-tmp/BENCH/claude-1000/x/tasks/a1.output", live) and not W.through_reachable(
+          "/home/mandrake/rm/bench/conversations/2026-11-04-x.md", live) and W.through_reachable(
+          "/home/mandrake/rm/bench/src/RimMandrake/rimflow/cli.py", live))
+    check("the build stage is bound read-write", "BindPaths=-/mnt/d/ClaudeWork/rimmandrake/build" in W.props(live, "/b"))
+    check("the relentless store stays denied", "/home/mandrake/rm/relentless" in W.denied(live))
     check("the live ledger comes as a snapshot, not as tree_exclude", "infrastructure/state/ledger" not in live["tree_exclude"]
           and "infrastructure/state/ledger" in live["tree_from_parent"] and "infrastructure/state/code_review" in live["tree_from_parent"])
     check("a transcript path in a tool call is still reported", W.would_deny([{"command": "cat conversations/x.md"}], live) == ["conversations"])
@@ -248,8 +257,8 @@ def test_tmpdir_inside_the_wall():
     import role_launch
     import run_tmp
     live = json.loads(Path(HERE, "relentless_rules.json").read_text(encoding="utf-8"))
-    deny = W.profile(live)["deny"]
-    check("the live wall denies run_tmp's default root: why a walled run brings its own",
+    deny = W.profile(live)["deny"] + W.profile(live)["tmpfs"]      # seat-tmp is a tmpfs since MARKER_WALL_FIX_HIDES_ONLY_THE_DIARY
+    check("the live wall hides run_tmp's default root: why a walled run brings its own",
           any(os.path.expanduser("~/.seat-tmp/runs").startswith(d + "/") for d in deny), deny)
     root = tempfile.mkdtemp(prefix="wallbox")
     src, sha = repo()
@@ -333,7 +342,7 @@ def test_through():
     check("reach: the root itself stays hidden", RR.hidden(root, hp))
     real = W.profile(__import__("relentless").rules(os.path.join(str(HERE), "relentless_rules.json")))
     check("the real profile reads through scratch but never the worker folders",
-          real["read_through"] == ["/mnt/d/ClaudeWork/rimmandrake"]
+          real["read_through"][0] == "/mnt/d/ClaudeWork/rimmandrake"
           and "/mnt/d/ClaudeWork/rimmandrake/relentless_agent" in real["never_through"]
           and not W.through_reachable("/mnt/d/ClaudeWork/rimmandrake/relentless/X_progress.md", real), real.get("never_through"))
 
