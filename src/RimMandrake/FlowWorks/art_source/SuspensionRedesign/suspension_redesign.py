@@ -54,6 +54,7 @@ SS = 4           # supersampling while drawing
 BAND = 44        # the deck atlas's side band (build_deck_atlas.build(.., BAND)): side structure lives in x < 44 and x >= 212;
                  # 28 (the old JOBS band) left the truss and cables ~9 px wide at play zoom, unreadable (judge 2026-11-05)
 K = BAND / 28    # the band drawings below are laid out on a 28 px band and stretched across to BAND
+CABLE_X = 6 * K  # the deck band's main-cable centre (x 1.5..10.5 on the 28 px layout): the anchors' cables end here
 
 # ---- palette: no red (hue within RED_DEG of 0 at sat > RED_SAT) anywhere ----------------------------------------------
 STEEL = (132, 138, 144)
@@ -92,17 +93,28 @@ class Pic:
     def _s(v):
         return [round(c * SS) for c in v]
 
+    def _ink(self, shape, xy, col, a, **kw):
+        """Draw a shape: opaque straight onto the picture; translucent (a < 255) on its own layer composited over it, so a
+        faint stroke BLENDS (ImageDraw would write its alpha into the picture, punching a translucent line through)."""
+        if a >= 255:
+            getattr(self.d, shape)(xy, fill=tuple(col) + (255,), **kw)
+            return
+        layer = Image.new("RGBA", self.im.size, (0, 0, 0, 0))
+        getattr(ImageDraw.Draw(layer), shape)(xy, fill=tuple(col) + (a,), **kw)
+        self.im = Image.alpha_composite(self.im, layer)
+        self.d = ImageDraw.Draw(self.im)
+
     def rect(self, x0, y0, x1, y1, col, steel=False, a=255):
-        self.d.rectangle(self._s((x0, y0, x1 - 1 / SS, y1 - 1 / SS)), fill=tuple(col) + (a,))
+        self._ink("rectangle", self._s((x0, y0, x1 - 1 / SS, y1 - 1 / SS)), col, a)
         self.m.rectangle(self._s((x0, y0, x1 - 1 / SS, y1 - 1 / SS)), fill=255 if steel else 0)
 
     def poly(self, pts, col, steel=False, a=255):
         p = [tuple(self._s(q)) for q in pts]
-        self.d.polygon(p, fill=tuple(col) + (a,))
+        self._ink("polygon", p, col, a)
         self.m.polygon(p, fill=255 if steel else 0)
 
     def line(self, x0, y0, x1, y1, w, col, steel=False, a=255):
-        self.d.line(self._s((x0, y0, x1, y1)), fill=tuple(col) + (a,), width=max(1, round(w * SS)))
+        self._ink("line", self._s((x0, y0, x1, y1)), col, a, width=max(1, round(w * SS)))
         self.m.line(self._s((x0, y0, x1, y1)), fill=255 if steel else 0, width=max(1, round(w * SS)))
 
     def dot(self, x, y, r, col, steel=False):
@@ -235,7 +247,7 @@ def _truss_band(p: Pic, X0):
     r(26, 0, 28, N, CEMENT_EDGE, False)      # the paving's kerb under the bottom chord
     r(0, 0, 28, N, CEMENT_FACE, False)       # the deep inner face behind the web (in shadow)
     p.shade(min(X(0), X(28)), 0, max(X(0), X(28)), N, 90)
-    for y in range(0, N + 1, 64):            # diagonals: Pratt, sloping down toward mid-span, two per panel bay
+    for y in range(0, N + 1, 64):            # diagonals: Pratt, one per panel bay, sloping the same way all along the run
         for (ya, yb) in ((y, y + 64),):
             p.line(X(8), ya, X(21), yb, 7, HVY_EDGE, True)
             p.line(X(8), ya, X(21), yb, 4.2, HVY, True)
@@ -382,7 +394,7 @@ def steel_anchor(facing):
         _tower_face(p, y_top, y_mid, y_base)
         for x, gx in ((14, 40), (N - 14, N - 40)):
             _cable(p, x, y_top - 2, gx + (4 if x < 128 else -4), 18)   # backstay
-            dx = 5.5 if x < 128 else N - 5.5
+            dx = CABLE_X if x < 128 else N - CABLE_X
             _cable(p, x, y_top - 2, dx, N)                             # main cable onto the deck band
     elif facing == "north":         # deck above: the tower at the north end, backstays run south to the blocks
         _slab(p, 10, 4, N - 10, 196, 18, 32)
@@ -394,7 +406,7 @@ def steel_anchor(facing):
         _tower_face(p, y_top, y_mid, y_base)
         for x, gx in ((14, 40), (N - 14, N - 40)):
             _cable(p, x, y_top - 2, gx, 230)
-            dx = 5.5 if x < 128 else N - 5.5
+            dx = CABLE_X if x < 128 else N - CABLE_X
             _cable(p, x, y_top - 2, dx, 0)
     elif facing == "east":          # deck to the right: posts from above at the east end, the tie overhead across the deck
         _slab(p, 4, 8, N, 236, 16, 33)
@@ -413,7 +425,7 @@ def steel_anchor(facing):
             p.rect(193, y - 6, 209, y - 5, STEEL_HI, True)
         for y, gy in ((14, 40), (N - 14, N - 40)):
             _cable(p, 196, y, 28, gy)                                  # backstays
-            dy = 5.5 if y < 128 else N - 5.5
+            dy = CABLE_X if y < 128 else N - CABLE_X
             _cable(p, 206, y, N, dy)                                   # main cable onto the deck band
     else:
         raise ValueError(facing)

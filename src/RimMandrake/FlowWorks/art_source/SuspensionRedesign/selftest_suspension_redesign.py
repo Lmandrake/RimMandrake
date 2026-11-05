@@ -12,8 +12,10 @@ case, so a pass is the instrument seeing, not a blind zero.
 """
 from __future__ import annotations
 
+import inspect
 import re
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -124,6 +126,18 @@ def towers(im, mk):
     return min(_post_runs(im, mk, 4, 24), _post_runs(im, mk, S.N - 24, S.N - 4)) >= 120
 
 
+def main_cable(im, mk):
+    """A steel main cable running the whole outer edge of a Steel deck picture (opaque, masked, in every row)."""
+    w = int(10 * S.K)
+    a, m = np.asarray(im)[:, :w, 3] > 200, np.asarray(mk)[:, :w, 0] > 128
+    return bool((a & m).any(axis=1).mean() > 0.98)
+
+
+def unpainted(im, mk):
+    """Opaque pixels left out of the paint mask (the cement and wood that must keep their own colour)."""
+    return int(((np.asarray(im)[..., 3] > 200) & (np.asarray(mk)[..., 0] < 64)).sum())
+
+
 def test_steel_shape():
     old = Image.open(REJECTED / "Scrapper_RM_SuspensionAnchor_Steel_south.png").convert("RGBA")
     check(not towers(old, Image.new("RGBA", old.size, (255, 0, 0, 255))),
@@ -133,9 +147,16 @@ def test_steel_shape():
             r = rel(look, f"RM_SuspensionAnchor_Steel_{f}")
             check(towers(load(r), load_mask(r)), f"{r}: raised steel towers at both sides")
         r = rel(look, "RM_SuspensionDeck_Steel")
-        im, mk = np.asarray(load(r)), np.asarray(load_mask(r))
-        edge = (im[:, :int(10 * S.K), 3] > 200) & (mk[:, :int(10 * S.K), 0] > 128)
-        check(edge.any(axis=1).mean() > 0.98, f"{r}: a steel main cable runs the whole edge")
+        check(main_cable(load(r), load_mask(r)), f"{r}: a steel main cable runs the whole edge")
+    full = Image.new("RGBA", (S.N, S.N), (255, 0, 0, 255))
+    check(not main_cable(Image.new("RGBA", (S.N, S.N)), full), "main_cable() finds no cable on an empty picture")
+    hv = rel("base", "RM_SuspensionDeck_Heavy")
+    check(not main_cable(load(hv), Image.new("RGBA", (S.N, S.N))), "main_cable() finds no cable where nothing is steel")
+    # the owner: Heavy has "no cables". Every Heavy drawing is built without the cable stroke the Steel ones use, and the
+    # installed pictures are exactly those drawings (test_generator_match)
+    heavy_src = "".join(inspect.getsource(f) for f in (S.heavy_deck, S._truss_band, S.heavy_anchor, S._portal_face))
+    check("_cable(" in inspect.getsource(S.steel_anchor), "the cable stroke is visible to this check (Steel uses it)")
+    check("_cable(" not in heavy_src and "CABLE" not in heavy_src, "no Heavy drawing strokes a cable")
 
 
 def _rope_keys(src):
@@ -175,11 +196,30 @@ def test_paint():
         for n in ["RM_SuspensionDeck_Steel", "RM_SuspensionDeck_Heavy"] + \
                  [f"RM_SuspensionAnchor_{t}_{f}" for t in ("Steel", "Heavy") for f in S.FACINGS]:
             r = rel(look, n)
-            a = np.asarray(load(r))[..., 3] > 200
-            k = int((a & (np.asarray(load_mask(r))[..., 0] < 64)).sum())
+            k = unpainted(load(r), load_mask(r))
             check(k > 0.2 * 256 * 256, f"{r}: cement/wood stays unpainted ({k} px outside the mask)")
+    r = rel("base", "RM_SuspensionDeck_Steel")
+    check(unpainted(load(r), Image.new("RGBA", (S.N, S.N), (255, 0, 0, 255))) == 0,
+          "unpainted() sees a mask that paints everything (cement and wood would take the paint)")
     check(not S.mask_ok(Image.new("RGBA", (256, 256)), Image.new("RGBA", (256, 256), (255, 0, 0, 255))),
           "mask_ok rejects a mask painting thin air")
+
+
+def test_generator_match():
+    """The installed pictures and masks ARE the generator's (so the checks on the drawings hold for the shipped files)."""
+    with tempfile.TemporaryDirectory(prefix="susp_redesign_") as tmp:
+        want = S.install_set(tmp)
+    diff = []
+    for r, (im, mk) in want.items():
+        for got, exp in ((TEX / (r + ".png"), im), (TEX / (r + "_m.png"), mk)):
+            if not got.is_file() or not np.array_equal(np.asarray(Image.open(got).convert("RGBA")), np.asarray(exp.convert("RGBA"))):
+                diff.append(got.name)
+    check(len(want) == 14 * len(SETS), f"the generator makes {len(want)} pictures (14 per set x {len(SETS)} sets)")
+    check(not diff, f"every installed picture and mask matches the generator ({len(diff)} differ: {diff[:3]})")
+    im, mk = want[rel("base", "RM_SuspensionDeck_Heavy")]
+    bad = np.asarray(im).copy()
+    bad[100, 100, 0] ^= 1
+    check(not np.array_equal(np.asarray(im), bad), "a one-pixel edit is a mismatch to this check")
 
 
 def main():
@@ -188,6 +228,7 @@ def main():
     test_steel_shape()
     test_no_ropes()
     test_paint()
+    test_generator_match()
     print(f"{'FAILED ' + str(len(FAILS)) if FAILS else 'all ok'}")
     return 1 if FAILS else 0
 

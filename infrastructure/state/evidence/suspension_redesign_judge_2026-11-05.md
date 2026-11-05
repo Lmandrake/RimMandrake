@@ -4,7 +4,7 @@ Judge: a fresh Opus that did not make the art (rm-judge), shown the owner's two 
 
 History: round 1 (0e40ad009a, 2026-10-24) Steel WEAK / Heavy WEAK; round 3 Steel WEAK / Heavy OK; round 4 below.
 
-After round 4, changes not re-judged: antialias dust (alpha 1-3) cleared; the four looks are the same drawings in other finishes (looks_contact.png: rows base, Scrapper, Industrial, Modern, Futuristic).
+After round 4, changes not re-judged (a code review's findings): translucent strokes now blend instead of punching alpha into the picture, the anchors' cables end on the deck band's cable line (no 4 px jog), antialias dust (alpha 1-3) cleared; scenes_over_pits_installed_crop.png is the same view rendered from the installed Textures; the four looks are the same drawings in other finishes (looks_contact.png: rows base, Scrapper, Industrial, Modern, Futuristic).
 
 ## Verdict (round 4, verbatim)
 
