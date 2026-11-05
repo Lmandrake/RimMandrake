@@ -1,0 +1,1 @@
+art.py install --file says status already-live and writes NO ledger event when the Textures file already holds those bytes (e.g. you copied it in first); the pre-push art guard then refuses the push as unledgered. Never copy into Textures/ by hand: leave the old bytes and let art.py install write them. (SILT_TRAP_STYLES_REDRAW_HALF_RES_FLAT, 2026-11-05)
