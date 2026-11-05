@@ -1072,27 +1072,37 @@ def _rf(B):
 
 
 # ============================================================================ offline gate
+# HARNESS_REPAIR_CAUSE_C1B99C19: the C# step runs the HOSE suites only (the Hose* cases and the HoseSuite()s, StyleStage3Checks
+# among them), the scope this gate always claimed. The whole 1,200-case SelfTest took ~830 s of the 1,500 s driver budget on
+# SteveDesktop (J20261105T175949Z-3af23b: gate ~990 s, then the live blocks hit RIMBRIDGE_CALL_DEADLINE and the result was
+# not certifiable), and a red non-hose case (PipePole, 6bf701) refused the hose proof outright. The rest of the SelfTest is
+# still run by its own modcheck chains and the nightly sweep. The steps are independent, so they run side by side.
+CS_HOSE_ONLY = "Hose*,StyleStage3Checks"
+
+
 def offline_gate():
     """The offline tier (WSL python3): the hose's offline rows, the C# SelfTest (hose suites), the hose port gates, the
-    validation_style_hose R0 row and this driver's own selftest. Any red refuses to go live."""
+    validation_style_hose R0 row and this driver's own selftest, in parallel. Any red refuses to go live."""
     import subprocess
-    steps, red = {}, []
-    for name, cmd in (("hose_offline", [sys.executable, os.path.join(MOD, "validation_hose_offline.py")]),
-                      ("style_hose_R0", [sys.executable, os.path.join(MOD, "validation_style_hose.py"), "--offline"]),
-                      ("hose_port_gates", [sys.executable, os.path.join(MOD, "selftest_hose_port.py")]),
-                      ("selftest_proof_hose", [sys.executable, os.path.join(OUT_DIR, "selftest_proof_hose.py")]),
-                      ("csharp_selftest", [sys.executable, os.path.join(UTILS, "selftest_flowworks_stock.py")])):
+    from concurrent.futures import ThreadPoolExecutor
+
+    def run(cmd):
+        t = time.time()
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=1500)
-        steps[name] = {"exit": r.returncode, "tail": r.stdout.strip().splitlines()[-2:]}
-        if r.returncode:
-            red.append(name)
+        return {"exit": r.returncode, "tail": r.stdout.strip().splitlines()[-2:], "wall_s": round(time.time() - t, 1)}
+
+    jobs = [("hose_offline", [sys.executable, os.path.join(MOD, "validation_hose_offline.py")]),
+            ("style_hose_R0", [sys.executable, os.path.join(MOD, "validation_style_hose.py"), "--offline"]),
+            ("hose_port_gates", [sys.executable, os.path.join(MOD, "selftest_hose_port.py")]),
+            ("selftest_proof_hose", [sys.executable, os.path.join(OUT_DIR, "selftest_proof_hose.py")]),
+            ("csharp_selftest", [sys.executable, os.path.join(UTILS, "selftest_flowworks_stock.py"), "--only", CS_HOSE_ONLY])]
     if os.path.isdir(GSS_MATRIX):     # the hose matrix catalog for the live (python.exe) side, see SPEC_WIN
         os.makedirs(os.path.dirname(SPEC_POSIX), exist_ok=True)
-        r = subprocess.run([sys.executable, os.path.join(GSS_MATRIX, "design_spec.py"), "--out", SPEC_POSIX],
-                           capture_output=True, text=True, timeout=1500)
-        steps["design_spec"] = {"exit": r.returncode, "tail": r.stdout.strip().splitlines()[-1:]}
-        if r.returncode:
-            red.append("design_spec")
+        jobs.append(("design_spec", [sys.executable, os.path.join(GSS_MATRIX, "design_spec.py"), "--out", SPEC_POSIX]))
+    with ThreadPoolExecutor(max_workers=len(jobs)) as ex:
+        futs = [(name, ex.submit(run, cmd)) for name, cmd in jobs]
+        steps = {name: f.result() for name, f in futs}
+    red = [name for name, _ in jobs if steps[name]["exit"]]
     return {"red": red, "steps": steps}
 
 
