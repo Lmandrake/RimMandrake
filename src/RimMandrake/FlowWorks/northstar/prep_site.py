@@ -87,7 +87,7 @@ def paint_halo(s, plot, size, authored):
     bad = sorted(c for c, t in terr.items() if c not in authored and any(w in str(t) for w in S.WET_OR_ROUGH))
     if bad:
         ops = ";".join("%s:%d,%d,1,1" % (S.SOIL, x, z) for x, z in bad)
-        _ok(s.call("jawa/set_terrain_batch", ops=ops), "3", "set_terrain_batch(halo)")
+        _ok(s.call("jawa/set_terrain_batch", ops=ops, clearOverlays=True), "3", "set_terrain_batch(halo)")
     return len(bad)
 
 
@@ -97,7 +97,9 @@ def build_plot(s, plot, size, authored):
     n_halo = paint_halo(s, plot, size, authored)
     _ok(s.call("jawa/destroy_batch", rects=rs, categories="All"), "3", "destroy_batch")
     ops = ["%s:%s" % (S.SOIL, rs)] + ["%s:%s" % (b["terrain"], S.rect_str(b["rect"])) for b in plot["bodies"]]
-    _ok(s.call("jawa/set_terrain_batch", ops=";".join(ops)), "3", "set_terrain_batch")
+    # clearOverlays: a flood/ice (tempGrid) or Substructure cell otherwise keeps reading as the overlay
+    # (HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK); the authored reservoirs paint after Soil in the same call
+    _ok(s.call("jawa/set_terrain_batch", ops=";".join(ops), clearOverlays=True), "3", "set_terrain_batch")
     _ok(s.call("jawa/set_roof_batch", ops=rs, roofDef="None"), "3", "set_roof_batch(clear)")
     for x, z in plot["roofed"]:
         _ok(s.call("jawa/set_roof_batch", ops="%d,%d,1,1" % (x, z), roofDef=S.TWIN_ROOF), "3",

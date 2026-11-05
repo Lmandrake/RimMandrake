@@ -192,8 +192,10 @@ class FakeFlowWorksGame(MockGame):
                 name, rect = op.split(":")
                 for c in S.cells(self._rect(rect)):
                     self.terrain[c] = name
-                    self.temp.pop(c, None)
-            return {"success": True, "cellsFailedVerify": 0}
+                    if p.get("clearOverlays"):      # the engine keeps tempGrid over a top-grid write without it
+                        self.temp.pop(c, None)
+            bad = sum(1 for op in str(p["ops"]).split(";") for c in S.cells(self._rect(op.split(":")[1])) if c in self.temp)
+            return {"success": bad == 0, "cellsFailedVerify": bad}
         if tool == "jawa/get_roof_batch":
             ops = ";".join(self._rle(lambda cx, cz: self.roof.get((cx, cz)), self._rect(r), skip=None)
                            for r in str(p["rects"]).split(";") if r.strip())

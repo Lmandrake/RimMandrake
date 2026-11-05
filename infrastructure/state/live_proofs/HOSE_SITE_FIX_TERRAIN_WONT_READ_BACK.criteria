@@ -1,0 +1,2 @@
+A1 L1: on a loaded map, cells under floodwater, thin ice and a Substructure foundation read back Soil after jawa/set_terrain_batch with clearOverlays; without it the tool names all three overlays as unread
+A2 L2: proof_hose --only style_hose,realflow on a fresh quicktest map: R_site_ready and RF_site0_ready are not UNMEASURED SITE, and each block scores at least one PASS/FAIL row

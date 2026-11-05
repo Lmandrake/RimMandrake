@@ -233,7 +233,15 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description =
                 "Refresh the map mesh once, after every op has been applied.",
                 DefaultValue = true)]
-            bool refresh = true)
+            bool refresh = true,
+            [ToolParameter(Description =
+                "layer 'top' only: also strip what TerrainAt reads BEFORE the top grid -- the temporary " +
+                "grid (floodwater, thin ice, shallow lava; removed with no leavings and no " +
+                "terrainOnRemoved) and the 1.6 foundation grid (Substructure), so the painted terrain " +
+                "is what the cell reads. Without it a flooded, iced or substructured cell keeps " +
+                "showing the overlay and is counted in cellsFailedVerify. Test-site prep passes true.",
+                DefaultValue = false)]
+            bool clearOverlays = false)
         {
             if (string.IsNullOrWhiteSpace(ops))
                 return Fail("ops is required, e.g. 'Sand:10,20,3,4;Gravel:14,20,2,2'.");
@@ -320,7 +328,19 @@ namespace JawaBench.BridgeTools
                             }
                             else
                             {
+                                // HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK: TerrainAt reads tempGrid, then the
+                                // foundation (when underGrid is null), then topGrid. SetTerrain(Soil) writes
+                                // topGrid and nulls underGrid, so a flooded/iced cell, or a substructured one,
+                                // still reads the overlay. The overlays go AFTER SetTerrain: RemoveFoundation
+                                // dereferences topGrid, which is null on a never-painted cell.
                                 WriteLayer(grid, cell, def, layer);
+                                if (clearOverlays && IsLayer(layer, "top") && !def.temporary && !def.isFoundation)
+                                {
+                                    if (grid.FoundationAt(cell) != null)
+                                        grid.RemoveFoundation(cell, false);
+                                    if (grid.TempTerrainAt(cell) != null)
+                                        grid.RemoveTempTerrain(cell, false, true);
+                                }
                                 changed++;
                                 if (dirty != null) dirty.Add(cell);
                             }
@@ -329,8 +349,17 @@ namespace JawaBench.BridgeTools
                             if (after != def)
                             {
                                 verifyFailed++;
+                                // what the cell reads instead, and which grid holds it: the untraced half of
+                                // the 2026-10-25 run4 site aborts (4 and 231 cells, no names)
                                 if (errors.Count < 10)
-                                    errors.Add(new { op = i, x = cx, z = cz, error = "did not read back" });
+                                    errors.Add(new
+                                    {
+                                        op = i, x = cx, z = cz, error = "did not read back",
+                                        want = def.defName, got = after?.defName,
+                                        temp = grid.TempTerrainAt(cell)?.defName,
+                                        foundation = grid.FoundationAt(cell)?.defName,
+                                        top = grid.TopTerrainAt(cell)?.defName
+                                    });
                             }
 
                             if (samples.Count < 8)

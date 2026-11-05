@@ -1162,7 +1162,10 @@ def _prepare_site(B, rect, rows, rid):
     r = "%d,%d,%d,%d" % tuple(rect)
     why = []
     for tool, kw in (("jawa/destroy_batch", {"rects": r, "categories": "All"}),
-                     ("jawa/set_terrain_batch", {"ops": "Soil:" + r}),
+                     # clearOverlays: floodwater/thin ice (tempGrid) and Substructure (foundation) read before the top
+                     # grid, so a bare Soil paint left them showing (HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK, run4 2026-10-25:
+                     # R_site_ready 4 and RF_site0_ready 231 cells "did not read back")
+                     ("jawa/set_terrain_batch", {"ops": "Soil:" + r, "clearOverlays": True}),
                      ("jawa/set_fog", {"action": "unfog", "rect": r}),
                      ("jawa/set_roof_batch", {"ops": "None:" + r})):
         res = B.call(tool, **kw)
