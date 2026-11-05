@@ -22,7 +22,6 @@ import argparse
 import hashlib
 import json
 import re
-import subprocess
 import sys
 import tempfile
 import warnings
@@ -37,14 +36,15 @@ import placeholder_detect as P  # noqa: E402
 
 COMMISSION = REPO / "design" / "RimMandrake" / "dessicated_corpses_commission_2026-10-16.json"
 TAOZIN = "src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal"
-# job id -> (why, commit that must be an ancestor of HEAD or None, repo files that must exist and read REAL)
+# job id -> (why, defName that must be absent from every src/ def or None, repo files that must exist and read REAL)
+# (tree-only on purpose: the blind checker has no git history, so no commit ancestry here)
 EXEMPT = {
-    "dessic_rycrit_dessicated_v1": ("RSW_Rycrit cut by the owner per facings sheet", "0a0d2fcc62", []),
-    "dessic_taozin_dessicated_v1": ("RSW_Taozin split; corpse redrawn as Dessicated_RSW_Taozin_* (taozin_split jobs)",
-                                    "d2b1afb643", [f"{TAOZIN}/RSW_Taozin/Dessicated_RSW_Taozin_{f}.png"
+    "dessic_rycrit_dessicated_v1": ("RSW_Rycrit cut by the owner per facings sheet (commit 0a0d2fcc62)", "RSW_Rycrit", []),
+    "dessic_taozin_dessicated_v1": ("RSW_Taozin split; corpse redrawn as Dessicated_RSW_Taozin_* (taozin_split jobs, d2b1afb643)",
+                                    None, [f"{TAOZIN}/RSW_Taozin/Dessicated_RSW_Taozin_{f}.png"
                                                    for f in ("north", "east", "south")]),
-    "dessic_taozin_j_dessicated_v1": ("juvenile split out as RSW_TaozinGrub; corpse redrawn as Dessicated_RSW_TaozinGrub_*",
-                                      "d2b1afb643", [f"{TAOZIN}/RSW_TaozinGrub/Dessicated_RSW_TaozinGrub_{f}.png"
+    "dessic_taozin_j_dessicated_v1": ("juvenile split out as RSW_TaozinGrub; corpse redrawn as Dessicated_RSW_TaozinGrub_* (d2b1afb643)",
+                                      None, [f"{TAOZIN}/RSW_TaozinGrub/Dessicated_RSW_TaozinGrub_{f}.png"
                                                      for f in ("north", "east", "south")]),
 }
 
@@ -76,9 +76,11 @@ def sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def is_ancestor(commit: str) -> bool:
-    return subprocess.run(["git", "-C", str(REPO), "merge-base", "--is-ancestor", commit, "HEAD"],
-                          capture_output=True).returncode == 0
+def def_present(def_name: str) -> list[str]:
+    """Every src/ XML file that still declares <defName>def_name</defName> (empty = the def is gone)."""
+    tag = f"<defName>{def_name}</defName>"
+    return [str(x.relative_to(REPO)) for x in (REPO / "src").rglob("*.xml")
+            if tag in x.read_text(errors="replace")]
 
 
 def main() -> int:
@@ -112,10 +114,11 @@ def main() -> int:
         jid, fam = j["id"], family(j["id"])
         verdict = why = None
         if jid in EXEMPT:
-            reason, commit, files = EXEMPT[jid]
+            reason, gone, files = EXEMPT[jid]
             miss = [f for f in files if not (REPO / f).exists() or P.placeholder_reason(REPO / f)]
-            if commit and not is_ancestor(commit):
-                why = f"exemption commit {commit} not in HEAD"
+            still = def_present(gone) if gone else []
+            if still:
+                why = f"exempt as cut, but {gone} is still defined in {still[:3]}"
             elif miss:
                 why = f"exemption files missing or placeholder: {miss}"
             else:
