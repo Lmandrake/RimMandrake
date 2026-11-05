@@ -8,6 +8,11 @@ the vapour-column field has cells) and reads one bar, sky_pastures.sky_live_floc
 fleet fliers and bulloos set down 18-30 cells from a column, outside every leash, stands >=70% in a column or its
 leash after 5000 stepped ticks, and the pasture wander gave jobs. Never a flight: the flock is walkers' wander only.
 A2 is read-only: the running game's defs carry the stage-5 wiring and Player.log names none of its classes in an error.
+jawa/get_defs cannot see WHICH JobGiver a ThinkTreeDef holds: its scalar mode skips the object-valued thinkRoot and its
+deep mode emits a node's fields, never its type (JawaBenchTerrainTools.cs Scalars/DeepSerializeValue). LIVE 2026-11-04
+the token check read FAIL on a correct tree, so A2 asks get_defs only that the tree RESOLVES from the running mod, and
+reads the JobGiver from the deployed tree the game loaded it from (the one file in that mod's folder defining it), with
+Player.log clean of the class name (a missing type logs "Could not find type named ...").
 The Windows-side driver runs under python.exe; this wrapper keeps each live-proof line a literal command.
 """
 import json
@@ -24,6 +29,9 @@ PLAN = os.path.join(HERE, "northstar_plan.py")
 SCRATCH = "/mnt/d/ClaudeWork/rimmandrake/scratch"
 BAR = "sky_pastures.sky_live_flock_reaches_columns"
 TIMEOUT = 520
+TREE = "RM_ThinkTree_ForgeSkyPasture"
+TREE_PACKAGE = "mandrake.rm.biomes"
+JOBGIVER = "RimMandrake.TheForge.RM_JobGiver_SkyPastureWander"
 
 
 def win(path):
@@ -48,15 +56,77 @@ def bar_status(out_path, bar_id):
     return None
 
 
+def mod_folder(mods_root, package_id):
+    """-> the folder under mods_root whose About/About.xml names package_id (case-insensitive), or None."""
+    import xml.etree.ElementTree as ET
+    for name in sorted(os.listdir(mods_root)):
+        about = os.path.join(mods_root, name, "About", "About.xml")
+        if not os.path.isfile(about):
+            continue
+        try:
+            pid = (ET.parse(about).getroot().findtext("packageId") or "").strip().lower()
+        except ET.ParseError:
+            continue
+        if pid == package_id.lower():
+            return os.path.join(mods_root, name)
+    return None
+
+
+def deployed_tree_problems(folder, tree=TREE, jobgiver=JOBGIVER):
+    """-> [] when exactly one ThinkTreeDef named `tree` is defined under `folder`, it inserts at Animal_PreWander, and its
+    thinkRoot holds a node of Class `jobgiver`; else what is wrong. Parsed as XML, never a substring hunt."""
+    import xml.etree.ElementTree as ET
+    if not folder or not os.path.isdir(folder):
+        return ["no deployed mod folder %r" % folder]
+    found = []
+    for dirpath, _, files in os.walk(folder):
+        for fn in files:
+            if not fn.lower().endswith(".xml"):
+                continue
+            path = os.path.join(dirpath, fn)
+            with open(path, "rb") as f:
+                if tree.encode() not in f.read():
+                    continue
+            try:
+                root = ET.parse(path).getroot()
+            except ET.ParseError as e:
+                return ["%s does not parse: %s" % (path, e)]
+            for d in root.iter("ThinkTreeDef"):
+                if (d.findtext("defName") or "").strip() == tree:
+                    found.append((path, d))
+    if len(found) != 1:
+        return ["%d deployed definitions of ThinkTreeDef %s under %s (want exactly 1): %s"
+                % (len(found), tree, folder, [p for p, _ in found])]
+    path, d = found[0]
+    out = []
+    if (d.findtext("insertTag") or "").strip() != "Animal_PreWander":
+        out.append("%s does not insert at Animal_PreWander" % path)
+    root = d.find("thinkRoot")
+    classes = [] if root is None else [n.get("Class") for n in root.iter() if n.get("Class")]
+    if jobgiver not in classes:
+        out.append("%s thinkRoot holds no %s (classes: %s)" % (path, jobgiver, classes))
+    return out
+
+
 def main(argv):
     if len(argv) != 2 or argv[1] not in ("A1", "A2"):
         print(__doc__)
         return 2
     if argv[1] == "A2":
         rc = run([sys.executable, os.path.join(UTILS, "live_def_check.py"),
-                  "--has", "ThinkTreeDef/RM_ThinkTree_ForgeSkyPasture=RM_JobGiver_SkyPastureWander",
+                  "--has", "ThinkTreeDef/" + TREE,
                   "--has", "ThingDef/RM_Bulloo=CompProperties_VaporDrifter",
                   "--has", "ThingDef/RM_Dhokkur=RM_DhokkurColumnsExtension"])
+        if rc == 0:
+            sys.path.insert(0, UTILS)
+            import game_paths
+            folder = mod_folder(game_paths.LOCAL_MODS, TREE_PACKAGE)
+            bad = deployed_tree_problems(folder)
+            for b in bad:
+                print("FAIL " + b)
+            if not bad:
+                print("PASS the deployed %s (%s) inserts %s at Animal_PreWander" % (TREE, folder, JOBGIVER))
+            rc = 1 if bad else 0
         if rc == 0:
             rc = run([sys.executable, os.path.join(UTILS, "live_log_check.py"), "--absent", "RM_JobGiver_SkyPastureWander",
                       "--absent", "RM_DhokkurColumnsExtension", "--absent", "RM_ThinkTree_ForgeSkyPasture"])

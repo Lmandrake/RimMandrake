@@ -1068,13 +1068,57 @@ def main():
     check("a log that hit RimWorld's message cap reads UNMEASURED, not PASS",
           capped["log_clean.player_log_names_no_forge_error"][0] == "UNMEASURED", capped["log_clean.player_log_names_no_forge_error"])
 
+    # live_proof.py A2 reads the JobGiver from the DEPLOYED tree (get_defs cannot see a ThinkTreeDef's node types; LIVE
+    # 2026-11-04 its token check read FAIL on a correct tree). The real repo tree passes; each mutant goes red.
+    import importlib.util
+    import tempfile
+    spec = importlib.util.spec_from_file_location("forge_live_proof", os.path.join(os.path.dirname(os.path.abspath(__file__)), "live_proof.py"))
+    lp = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lp)
+    real = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Defs", "ThinkTreeDefs", "RM_ThinkTree_ForgeSkyPasture.xml")).read()
+    about = '<?xml version="1.0"?><ModMetaData><packageId>Mandrake.RM.Biomes</packageId></ModMetaData>'
+
+    def tree_case(files, pid=about):
+        with tempfile.TemporaryDirectory() as mods:
+            for mod, rel, text in files:
+                os.makedirs(os.path.join(mods, mod, "About"), exist_ok=True)
+                with open(os.path.join(mods, mod, "About", "About.xml"), "w") as f:
+                    f.write(pid if mod == "RimMandrake.Biomes" else '<ModMetaData><packageId>other.mod</packageId></ModMetaData>')
+                if rel:
+                    path = os.path.join(mods, mod, rel)
+                    os.makedirs(os.path.dirname(path), exist_ok=True)
+                    with open(path, "w") as f:
+                        f.write(text)
+            return lp.deployed_tree_problems(lp.mod_folder(mods, lp.TREE_PACKAGE))
+    at = "Biomes/TheForge/Defs/ThinkTreeDefs/RM_ThinkTree_ForgeSkyPasture.xml"
+    check("live_proof A2: the repo's own tree, deployed, passes", tree_case([("RimMandrake.Biomes", at, real)]) == [],
+          tree_case([("RimMandrake.Biomes", at, real)]))
+    tree_mutants = [
+        ("the JobGiver dropped from the tree", real.replace('<li Class="RimMandrake.TheForge.RM_JobGiver_SkyPastureWander" />', '<li Class="JobGiver_WanderAnywhere" />')),
+        ("the JobGiver only in a comment", real.replace('<li Class="RimMandrake.TheForge.RM_JobGiver_SkyPastureWander" />', '<!-- RimMandrake.TheForge.RM_JobGiver_SkyPastureWander -->')),
+        ("the JobGiver's namespace wrong", real.replace("RimMandrake.TheForge.RM_JobGiver", "RimMandrake.EnvironmentalHazards.RM_JobGiver")),
+        ("the insert tag moved", real.replace("<insertTag>Animal_PreWander</insertTag>", "<insertTag>Humanlike_PostMentalState</insertTag>")),
+        ("the defName renamed", real.replace("<defName>RM_ThinkTree_ForgeSkyPasture</defName>", "<defName>RM_ThinkTree_ForgeSkyPastureX</defName>")),
+    ]
+    for label, text in tree_mutants:
+        got = tree_case([("RimMandrake.Biomes", at, text)])
+        check("live_proof A2 mutant goes red: %s" % label, bool(got), got)
+    dup = tree_case([("RimMandrake.Biomes", at, real), ("RimMandrake.Biomes", at.replace(".xml", "_copy.xml"), real)])
+    check("live_proof A2 mutant goes red: the tree defined twice", bool(dup), dup)
+    gone = tree_case([("RimMandrake.Biomes", None, None)])
+    check("live_proof A2 mutant goes red: the tree not deployed", bool(gone), gone)
+    elsewhere = tree_case([("RimMandrake.Biomes", None, None), ("OtherMod", at, real)])
+    check("live_proof A2 mutant goes red: the tree only in another mod's folder", bool(elsewhere), elsewhere)
+    nomod = tree_case([("RimMandrake.Biomes", at, real)], pid='<ModMetaData><packageId>mandrake.rm.other</packageId></ModMetaData>')
+    check("live_proof A2 mutant goes red: no folder carries mandrake.rm.biomes", bool(nomod), nomod)
+
     print()
     if FAILS:
         print("FAILED: %d" % len(FAILS))
         for f in FAILS:
             print("  - " + f)
         return 1
-    print("all TheForge suite selftests passed (%d breaks)" % (len(cases) + 7 + len(hl_mutants)))
+    print("all TheForge suite selftests passed (%d breaks)" % (len(cases) + 7 + len(hl_mutants) + len(tree_mutants) + 4))
     return 0
 
 
