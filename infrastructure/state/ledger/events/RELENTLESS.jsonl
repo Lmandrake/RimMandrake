@@ -805,3 +805,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:41:51Z","tsn":1793922111795141457}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SCARLANDS_CHATRAK_LIVE_RERUN_1 A1 (L2), read-only proof","ts":"2026-11-05T23:41:58Z","tsn":1793922118680195918}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:44:42Z","tsn":1793922282820842643}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ART_OVERRIDE_FAMILY_SCRIPT_1 A1 (L2), read-only proof","ts":"2026-11-05T23:47:14Z","tsn":1793922434347280501}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:48:58Z","tsn":1793922538412785677}
