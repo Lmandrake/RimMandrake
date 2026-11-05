@@ -156,6 +156,22 @@ def race_to_kinds():
     return None, None
 
 
+def is_rostered(race, biome, roster, kinds):
+    """True when the roster for `biome` admits `race`, one of its kinds, or - for a
+    `Corpse_<race>` def - the race the corpse belongs to.
+
+    🔑 WHY THE CORPSE CASE. A capture lists `Corpse_X` beside `X`; with no kinds of its own
+    it fell through to "not rostered" and was emitted even where X is cast
+    (EVICTIONS_RAZORJACK_FIX_STALE_ROW: Corpse_AA_Razorjack rows beside a rostered
+    AA_Razorjack). A corpse is never evicted where its race is rostered.
+    """
+    mine = roster.get(biome, set())
+    for r in (race, race[len("Corpse_"):] if race.startswith("Corpse_") else None):
+        if r and (r in mine or any(k in mine for k in kinds.get(r, ()))):
+            return True
+    return False
+
+
 def live_races():
     """{ThingDef defName} the RUNNING game has, from the newest capture.
 
@@ -305,8 +321,7 @@ def main(argv=None):
     rows, kept, dup, dead = [], 0, 0, 0
     for b in sorted(painted):
         for race in sorted(aside.get(b, ())):
-            mine = roster.get(b, set())
-            if any(k in mine for k in kinds.get(race, [race])) or race in mine:
+            if is_rostered(race, b, roster, kinds):
                 kept += 1                       # rostered: the de-dup file's business
                 continue
             if (race, b) in shipped:
