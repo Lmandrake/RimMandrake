@@ -2545,6 +2545,7 @@ def t_close_idempotent():
     calls = []
     fx.marked = set()
     fx.rimflow = lambda *a, **k: calls.append(a) or subprocess.CompletedProcess(a, 0, "", "")
+    fx.work_sha = lambda item, sha: sha      # the candidate did the work (selftest_relentless_nocode_close.py: when not)
     fx.closed = lambda item: True
     ok(fx.ledger_close("I0", "abc", "blind PASS") is None and not calls, "an item already done: no verify, no close")
     fx.closed = lambda item: False

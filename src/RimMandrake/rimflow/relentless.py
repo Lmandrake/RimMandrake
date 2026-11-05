@@ -1299,6 +1299,13 @@ def offbox_readings(fx, contract, r):
     return out
 
 
+# What `rimflow close --sha` calls no work (cli._LEDGER_ONLY, kept equal by selftest_relentless_nocode_close.py), and what a
+# work-sha lookup also skips: a review mark is bookkeeping too, never the commit that did the work.
+LEDGER_ONLY = ("infrastructure/state/ledger/", "infrastructure/state/items/", "infrastructure/state/queue/")
+BOOKKEEPING = LEDGER_ONLY + ("infrastructure/state/code_review/",)
+WORK_SHA_DEPTH = 60       # commits naming the item, newest first, read under the candidate
+
+
 class Effects(relentless_game.GameFx):
     """The real one. Every method here blocks, so none is called under the store lock."""
 
@@ -1911,14 +1918,26 @@ class Effects(relentless_game.GameFx):
         # git's merge=union writes twice on a rebase, and the reader collapses them (model.canonical_order).
         if self.closed(item):
             return None
+        # A blind PASS on a ledger-only candidate (a guard re-recorded, a filing) names no work: `close --sha` refuses it
+        # for ever (RELENTLESS_CLOSE_FIX_EMPTY_DIFF_SAYS_NOTHING). Close at the commit that did the work, or say there is none.
+        work = self.work_sha(item, sha)
+        if work is None:
+            close_at = ("--no-code", "nothing but bookkeeping: no commit naming %s touches more than the ledger; "
+                                     "blind PASS at %s" % (item, sha[:12]))
+            mark = sha
+        else:
+            close_at = ("--sha", work)
+            mark = work
+            if work != sha:
+                reason = "%s (work at %s)" % (reason, work[:12])
         # the blind PASS on that sha is the check `close` asks for; RUNNER may record it on any seat's item
-        if (item, sha) not in self.marked:
-            r = self.rimflow("verify", item, "--sha", sha, "--result", "pass", "--level", "L0",
+        if (item, mark) not in self.marked:
+            r = self.rimflow("verify", item, "--sha", mark, "--result", "pass", "--level", "L0",
                              "--config", "marker:blind-check", "--evidence", reason[:300], seat="RUNNER")
             if r.returncode != 0:
                 return (r.stderr or r.stdout)[-400:]
-            self.marked.add((item, sha))
-        r = self.rimflow("close", item, "--sha", sha, "--reason", reason, "--why", "relentless: blind check passed",
+            self.marked.add((item, mark))
+        r = self.rimflow("close", item, *close_at, "--reason", reason, "--why", "relentless: blind check passed",
                          *(("--live", live) if live else ()),      # the sweep keeps checking what the contract promised
                          timeout=300)       # a recurring item's guard test reruns inside the close (repeat_guard.TIMEOUT_S)
         if r.returncode == 0:
@@ -1927,6 +1946,29 @@ class Effects(relentless_game.GameFx):
             return None
         out = r.stderr or r.stdout
         return close_why(out)
+
+    def touched(self, sha):
+        """-> the paths `sha` changes, in books; None when git cannot read it."""
+        r = self.git(self.books, "diff-tree", "--no-commit-id", "--name-only", "-r", "--root", sha)
+        return r.stdout.split() if r.returncode == 0 else None
+
+    def work_sha(self, item, sha):
+        """-> the sha to close `item` at: `sha` when it changes more than bookkeeping (or git cannot say: the close's own
+        gate decides then), else the newest commit at or under it whose subject names the item and changes more than
+        bookkeeping, else None (a --no-code close). Every worker commit subject names its item (the brief's rule)."""
+        paths = self.touched(sha)
+        if paths is None or not all(p.startswith(BOOKKEEPING) for p in paths):
+            return sha
+        r = self.git(self.books, "log", "--format=%H\t%s", "-F", "--grep=" + item, "-n", str(WORK_SHA_DEPTH), sha)
+        name = re.compile(r"(?<![A-Z0-9_])%s(?![A-Z0-9_])" % re.escape(item))
+        for line in (r.stdout.splitlines() if r.returncode == 0 else ()):
+            h, _, subject = line.partition("\t")
+            if not name.search(subject):
+                continue
+            got = self.touched(h)
+            if got and not all(p.startswith(BOOKKEEPING) for p in got):
+                return h
+        return sha if not all(p.startswith(LEDGER_ONLY) for p in paths) else None   # a clean mark is work to the gate
 
     def closed(self, item):
         self.sync()

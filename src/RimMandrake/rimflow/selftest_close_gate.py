@@ -359,6 +359,7 @@ def s4_relentless(a):
     class Books(RE.Effects):
         def __init__(self):
             self.marked = set()
+            self.books = REPO
 
         def rimflow(self, *args, timeout=60, seat=None):
             rc, out = cli(*args, seat=seat or "BENCH")
