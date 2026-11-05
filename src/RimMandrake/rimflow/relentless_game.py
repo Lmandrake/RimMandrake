@@ -702,6 +702,14 @@ class GameFx(object):
         except ValueError:
             return None
 
+    def game_carry_blockers(self, item, sha):
+        """relentless_live.carry_blockers on the books: [(path, commit)] that stopped a carry from `sha`."""
+        import relentless_live
+        try:
+            return relentless_live.carry_blockers(relentless_live.Fx(books=self.books, seat=self.r["seat"]), sha, item)
+        except ValueError:
+            return []
+
     def refusal_print(self, item, criterion, why, proof):
         """A runs.jsonl refusal -> relentless_live.fingerprint over the criterion's whole text as the ledger reads now."""
         import relentless_live
@@ -1099,6 +1107,24 @@ def _rerecord(store, fx, item, sha, acts):
 CARRY_MAX = 8      # carries per game entry: a build carried this often is waiting on something else, and goes back
 
 
+def _carry_origin(store, item, sha):
+    """The item's OWN build a carry is computed from: the carried green's origin, else `sha`."""
+    return ((store.load(item).get("game") or {}).get("offline_green") or {}).get("carried_from") or sha
+
+
+def _not_carried(store, fx, item, sha):
+    """-> "; not carried: <path (commit)>, ..." naming the non-assembly changes since the item's own build that stopped
+    the carry, or "" (OPS_CHURN_DIAGNOSE_PIT_XGUR_QNTR: a stale return naming only the rebuilt DLL told the worker
+    nothing it could act on)."""
+    if not hasattr(fx, "game_carry_blockers"):
+        return ""
+    origin = _carry_origin(store, item, sha)
+    got = fx.game_carry_blockers(item, origin) or []
+    if not got:
+        return ""
+    return "; not carried: since %s %s" % (origin[:12], ", ".join("%s (%s)" % pc for pc in got[:5]))
+
+
 def _carry(store, fx, item, sha, now, acts):
     """A stale build whose only later change is another commit's rebuild of a shared assembly (relentless_live.carry):
     the game phase moves to that commit, the Judge's offline green carried with its origin named, the ledger re-recorded
@@ -1110,7 +1136,7 @@ def _carry(store, fx, item, sha, now, acts):
     # carry again from the item's OWN build, never from a carried sha: that is another commit, judged on its own sources
     # (SUMP_TAR_FIRE_NETWORK_1: carried 64cfba -> 890c85, GSS_END_HEAPS; CordLayer.cs changed after 890c85, so a carry
     # computed from 890c85 refused and the item went back to a worker who could change nothing)
-    origin = (g.get("offline_green") or {}).get("carried_from") or sha
+    origin = _carry_origin(store, item, sha)
     got = fx.game_carry(item, origin)
     if not got:
         return None
@@ -1150,7 +1176,7 @@ def _preflight(store, fx, sup, r, item, lines, now, acts, sha):
     stale = [b for b in bad if b["kind"] == "stale"]
     first = stale[0] if stale else bad[0]
     klass = "game_stale_build" if stale else "game_contract"
-    why = first["why"] if stale else "; ".join("%s %s" % (b["cid"], b["why"]) for b in bad)
+    why = first["why"] + _not_carried(store, fx, item, sha) if stale else "; ".join("%s %s" % (b["cid"], b["why"]) for b in bad)
     fp = first["fp"] if stale else "+".join(sorted(b["fp"] for b in bad))
     _refuse(store, fx, sup, r, item, klass, "live preflight: %s" % why, fp, now, acts)
     return True

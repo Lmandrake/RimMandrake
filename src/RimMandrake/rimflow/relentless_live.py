@@ -487,6 +487,18 @@ def carry(fx, sha, item_id=None):
         sha[:12], ", ".join("%s (%s)" % pc for pc in later[:4]), new[:12])
 
 
+def carry_blockers(fx, sha, item_id=None):
+    """-> [(path, commit)]: the later changes on the build's paths that are NOT a compiled output, i.e. why carry()
+    refused (empty when it would carry, or cannot say). Named in the game_stale_build detail so the worker learns what
+    to re-verify. OPS_CHURN_DIAGNOSE_PIT_XGUR_QNTR: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES went back on 2026-11-05 naming
+    only the rebuilt RimMandrakeFlowWorks.dll (judged against the carried sha); the real cause, PLANK_COVER_REDRAW's edit
+    of its own RM_PitLipOcclusion.cs (0bc4a2aac5), was nowhere in the return."""
+    shas = build_shas(fx, sha, item_id)
+    touched = [p for p in dict.fromkeys(p for s in shas for p in fx.touched(s)) if SRC_MOD.match(p) or p.startswith(PROOFS)]
+    later = fx.changed_since(sha, touched) if touched else []
+    return [(p, c) for p, c in later if not ASSEMBLY_OUT.search(p)]
+
+
 def preflight(fx, lr, item_id, lines, sites=None):
     """What a live run of each line would refuse whatever the game does, asked before any game slot is spent
     (LIVE_CUT_CRITERION_ENFORCE_AT_IMPLEMENT, LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT). lines: {criterion: proof line}.

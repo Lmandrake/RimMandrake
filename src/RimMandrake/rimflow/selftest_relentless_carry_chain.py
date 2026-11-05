@@ -98,6 +98,9 @@ class RealGW(SG.GW):
         except ValueError:
             return None
 
+    def game_carry_blockers(self, item, sha):
+        return L.carry_blockers(LFx(self.repo.d, self), sha, item)
+
 
 def enter(repo, built):
     """A rig whose one item I0 sits in the game phase on `built`, implemented, no game running."""
@@ -147,9 +150,14 @@ def t_the_instance():
         st, klass = step(x, "c4")
         ok(klass is None and st["game"]["sha"] == c4, "a bare rebuild carries: %s" % klass)
         ok(st["game"]["offline_green"].get("carried_from") == built, "the green still names the origin build")
-        repo.commit("I0-OTHER: touches the tar fire", [OWN, DLL])
+        own = repo.commit("I0-OTHER: touches the tar fire", [OWN, DLL])
         st, klass = step(x, "own")
         ok(klass == "game_stale_build", "the item's own source changing sends it back stale: %s" % klass)
+        detail = (st.get("last_fail") or {}).get("detail", "")
+        ok("not carried: since %s" % built[:12] in detail and "%s (%s" % (OWN, own[:7]) in detail and DLL + " (" not in
+           detail.split("not carried:")[1],
+           "OPS_CHURN_DIAGNOSE_PIT_XGUR_QNTR: the return names the own-source change that stopped the carry, not the DLL: %s"
+           % detail[:300])
         x.done()
     finally:
         shutil.rmtree(repo.d, ignore_errors=True)
