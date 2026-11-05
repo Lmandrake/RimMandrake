@@ -11,7 +11,9 @@ Unlike selftest_relentless_game's carry rows (fake carry answers), this runs the
 relentless_live.carry on a REAL git repo, through the game phase of the supervisor's tick: the chain of commits is the
 instance's own shape, then a seeded sweep of other orders. No arguments: every row. Exit 1 on any FAIL.
 `--pre-fix` replays the instance as it ran before 6cfce056d6: each carry is computed from the item's CURRENT game sha (the
-carried commit), not its origin build. Red there is the guard shown failing on the instance (`rimflow guard --instance`)."""
+carried commit), not its origin build. Red there is the guard shown failing on the instance (`rimflow guard --instance`).
+`--pre-scope` replays the 5th bounce (18:16Z) as it ran before carry_scope: every src/ path the build touched had to
+stand, so the item-citing supervisor fix's rimflow/ file and a SelfTest-only source (no .srchash lists it) refused it."""
 import os
 import random
 import shutil
@@ -32,6 +34,12 @@ MOD = "src/RimMandrake/FlowWorks/"
 DLL = MOD + "Assemblies/RimMandrakeFlowWorks.dll"
 OWN = MOD + "Source/TarFire.cs"             # the item's own source
 OTHERS = [MOD + "Source/CordLayer.cs", MOD + "Source/HoseNet.cs"]     # other items' sources in the same assembly
+ABOUT = MOD + "About/About.xml"             # a mod the game loads
+SRCHASH = DLL + ".srchash"                  # what the DLL is compiled from
+TESTSRC = MOD + "Source/SelfTest/Program.cs"     # a separate test project: no .srchash lists it
+TOOL = "src/RimMandrake/rimflow/relentless_game.py"     # the supervisor's own code: no About.xml, never deployed
+SRCHASH_TEXT = "# project: RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj\n# dll: 00\n" + "".join(
+    "%02d %s\n" % (i, p[len(MOD + "Source/"):]) for i, p in enumerate([OWN] + OTHERS))
 
 
 def git(repo, *args):
@@ -48,7 +56,7 @@ class Repo(object):
         git(self.d, "init", "-q", "-b", "main")
         git(self.d, "config", "user.email", "t@t")
         git(self.d, "config", "user.name", "t")
-        self.commit("base", [OWN, DLL] + OTHERS)
+        self.commit("base", [OWN, DLL, ABOUT, SRCHASH, TESTSRC, TOOL] + OTHERS)
 
     def commit(self, subject, paths):
         for p in paths:
@@ -56,7 +64,7 @@ class Repo(object):
             full = os.path.join(self.d, p)
             os.makedirs(os.path.dirname(full), exist_ok=True)
             with open(full, "w") as f:
-                f.write("%s %d\n" % (p, self.n))
+                f.write(SRCHASH_TEXT + "# n %d\n" % self.n if p == SRCHASH else "%s %d\n" % (p, self.n))
         git(self.d, "add", "--", *paths)
         git(self.d, "commit", "-q", "-m", subject)
         return git(self.d, "rev-parse", "HEAD")
@@ -74,8 +82,7 @@ class LFx(L.Fx):
         return {"id": item_id, "state": led["state"], "built_sha": led["built_sha"], "title": led["title"],
                 "criteria": [{"id": "A2", "level": "L1", "text": "a clause"}], "outstanding": []}
 
-    def shippable(self, rel):
-        return True
+    # shippable: the real deploy_custom_mods rule (a .py or a Source/ file never ships), as the supervisor reads it
 
 
 class RealGW(SG.GW):
@@ -163,6 +170,30 @@ def t_the_instance():
         shutil.rmtree(repo.d, ignore_errors=True)
 
 
+def t_the_fifth_bounce():
+    """SUMP 5th bounce: the build's cited commits include a supervisor fix (rimflow/, its subject cites the item) and a
+    SelfTest source; later commits by other items edit both, and rebuild the DLL. Neither reaches the game: carried.
+    A DLL source the .srchash lists (another item's) is still carried; the item's own one is not."""
+    repo = Repo()
+    try:
+        repo.commit("I0: tar fire network", [OWN, DLL, SRCHASH, TESTSRC])
+        built = repo.commit("I0: a second carry starts from the item's origin build", [TOOL])
+        x = enter(repo, built)
+        repo.commit("PLANK: its own selftest registers", [TESTSRC])
+        repo.commit("PIT: a refused carry names its blockers", [TOOL])
+        c = repo.commit("OTHER: rebuild from committed source", [OTHERS[1], DLL, SRCHASH])
+        st, klass = step(x, "fifth")
+        ok(klass is None and st["game"]["sha"] == c,
+           "THE 5TH BOUNCE: a later edit to supervisor code or a SelfTest-only source does not send the item back: %s %s"
+           % (klass, (st.get("last_fail") or {}).get("detail", "")[:240]))
+        repo.commit("I0-OTHER: touches the tar fire", [OWN, DLL, SRCHASH])
+        st, klass = step(x, "own")
+        ok(klass == "game_stale_build", "the item's own compiled source changing still sends it back stale: %s" % klass)
+        x.done()
+    finally:
+        shutil.rmtree(repo.d, ignore_errors=True)
+
+
 def t_sweep(seeds=6, length=5):
     """Seeded orders of other items' commits (another source + rebuild, a bare rebuild, another mod's file): no order
     sends the build back while its own source stands."""
@@ -199,7 +230,9 @@ PRE_FIX = False
 def main():
     global PRE_FIX
     PRE_FIX = "--pre-fix" in sys.argv[1:]
+    L.SCOPE_ALL = "--pre-scope" in sys.argv[1:]
     t_the_instance()
+    t_the_fifth_bounce()
     t_sweep()
     if S.FAILS:
         print("%d FAIL" % len(S.FAILS))

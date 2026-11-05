@@ -455,6 +455,41 @@ PROOFS = "infrastructure/state/live_proofs/"     # the build's proof lines; the 
 ASSEMBLY_OUT = re.compile(r"/Assemblies/[^/]+\.(?:dll|pdb)(?:\.srchash)?$")     # a compiled output, never a source
 
 
+SOURCE_IN_MOD = re.compile(r"^Source/")
+SCOPE_ALL = False       # selftest_relentless_carry_chain --pre-scope: the scope as before (every src/ path the build touched)
+
+
+def carry_scope(fx, sha, paths):
+    """The build's paths a carry must find unchanged -> [path]: its proofs (live_proofs/), and under src/<tier>/<Mod>/
+    only what can reach the game: a mod folder that deploys (About/About.xml, fx.deployable), and inside it, a Source/
+    file only when an assembly of the mod compiles it (listed in one of its .srchash files at `sha` or HEAD, or the
+    project's own .csproj, fx.compiled). A mod with no .srchash keeps every Source/ path. A fake without those methods
+    keeps every src/ path, as before.
+    OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT, 5th bounce (2026-11-05 18:16Z): SUMP_TAR_FIRE_NETWORK_1's build shas include the
+    supervisor fix 6cfce056d6 (its subject cites the item), so src/RimMandrake/rimflow/relentless_game.py read as a mod
+    path and another item's later edit to it refused the carry; so did PLANK's edit to FlowWorks/Source/SelfTest/
+    Program.cs, a separate net8 test project absent from the DLL's Compile list. Neither can reach the game."""
+    out = []
+    for p in dict.fromkeys(paths):
+        if p.startswith(PROOFS):
+            out.append(p)
+            continue
+        m = SRC_MOD.match(p)
+        if not m:
+            continue
+        if SCOPE_ALL or not hasattr(fx, "deployable"):
+            out.append(p)
+            continue
+        if not fx.deployable(m.group(1), m.group(2)):
+            continue
+        if SOURCE_IN_MOD.match(m.group(3)) and not ASSEMBLY_OUT.search(p):
+            compiled = fx.compiled(m.group(1), m.group(2), sha)
+            if compiled is not None and p not in compiled:
+                continue
+        out.append(p)
+    return out
+
+
 def carry(fx, sha, item_id=None):
     """-> (newer sha, why) when `sha` is stale only because another commit REBUILT a shared assembly the build ships, or
     None. Every later change to the build's paths is a compiled output (ASSEMBLY_OUT), and every other path the build
@@ -470,7 +505,7 @@ def carry(fx, sha, item_id=None):
     shas = build_shas(fx, sha, item_id)
     if any(fx.deleted(s) for s in shas):
         return None
-    touched = [p for p in dict.fromkeys(p for s in shas for p in fx.touched(s)) if SRC_MOD.match(p) or p.startswith(PROOFS)]
+    touched = carry_scope(fx, sha, (p for s in shas for p in fx.touched(s)))
     later = fx.changed_since(sha, touched) if touched else []
     if not later or any(not ASSEMBLY_OUT.search(p) for p, _ in later):
         return None
@@ -494,7 +529,7 @@ def carry_blockers(fx, sha, item_id=None):
     only the rebuilt RimMandrakeFlowWorks.dll (judged against the carried sha); the real cause, PLANK_COVER_REDRAW's edit
     of its own RM_PitLipOcclusion.cs (0bc4a2aac5), was nowhere in the return."""
     shas = build_shas(fx, sha, item_id)
-    touched = [p for p in dict.fromkeys(p for s in shas for p in fx.touched(s)) if SRC_MOD.match(p) or p.startswith(PROOFS)]
+    touched = carry_scope(fx, sha, (p for s in shas for p in fx.touched(s)))
     later = fx.changed_since(sha, touched) if touched else []
     return [(p, c) for p, c in later if not ASSEMBLY_OUT.search(p)]
 
@@ -900,6 +935,35 @@ class Fx(object):
         if r.returncode:
             raise ValueError("git diff-tree %s: %s" % (sha, r.stderr[-200:]))
         return [p for p in r.stdout.split("\0") if p.strip()]
+
+    def deployable(self, tier, mod):
+        """True when src/<tier>/<mod> is a mod the game loads: it has About/About.xml at HEAD."""
+        r = subprocess.run(["git", "cat-file", "-e", "HEAD:src/%s/%s/About/About.xml" % (tier, mod)], cwd=self.books,
+                           capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+        return r.returncode == 0
+
+    def compiled(self, tier, mod, sha):
+        """-> {repo path} of every source an assembly of the mod is built from: each Assemblies/*.srchash at `sha` and at
+        HEAD lists `<hash> <path under its project dir>` after a `# project: <tier>/<mod>/.../X.csproj` line; the project
+        file itself counts. None when the mod has no .srchash (nothing measured: keep every source)."""
+        out, seen = set(), False
+        for rev in (sha, "HEAD"):
+            r = subprocess.run(["git", "ls-tree", "-r", "-z", "--name-only", rev, "--", "src/%s/%s/Assemblies/" % (tier, mod)],
+                               cwd=self.books, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+            for f in (x for x in r.stdout.split("\0") if x.endswith(".srchash")):
+                t = subprocess.run(["git", "show", "%s:%s" % (rev, f)], cwd=self.books, capture_output=True, text=True,
+                                   timeout=60, stdin=subprocess.DEVNULL)
+                if t.returncode:
+                    continue
+                seen, base = True, None
+                for ln in t.stdout.splitlines():
+                    if ln.startswith("# project:"):
+                        proj = "src/" + ln.split(":", 1)[1].strip()
+                        out.add(proj)
+                        base = proj.rsplit("/", 1)[0] + "/"
+                    elif base and not ln.startswith("#") and " " in ln.strip():
+                        out.add(base + ln.strip().split(" ", 1)[1].strip())
+        return out if seen else None
 
     def changed_since(self, sha, paths):
         """-> [(path, newest commit touching it after sha)] for each path whose bytes differ from sha's."""
