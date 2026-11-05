@@ -702,6 +702,33 @@ def t_proof_weak():
     ok(bad and "WEAK" in bad, "a fourth word is refused")
 
 
+def t_narrowed_weak_frees_proof_only():
+    """UNPROVEN_LIVE_LEGS_TRIAGE_1 / CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES: a GAP:OTHER WEAK set proof_only before
+    "Narrow it now" made it a PASS. The old gate kept proof_only, so an unhold at the same sha ended proof_unchanged."""
+    x = Rig(n=1, share=1.0)
+    full_pass(x, "I0", "WEAK")
+    with R.Store.lock(x.s):
+        st = x.st("I0")
+        ok(st["proof_only"]["sha"] == "sha1" and st["proof_only"].get("weak") == "ran it", "the WEAK's reasons ride on proof_only")
+        st["proof_only"] = {"sha": "sha1", "at": x.now}         # a state written before `weak` was kept
+        st["status"], st["hold"] = "held", {"kind": "churn", "why": "triage", "at": x.now}
+        st["last_fail"] = {"class": "proof_unchanged", "detail": "sha1 is the sha the proof was found weak at", "at": x.now}
+        x.s.save(st)
+    x.s.attempt("I0", {"at": R.iso(x.now), "end": "proof_weak", "sha": "sha1", "detail": "GAP:OTHER. a mutant elsewhere"})
+    ok(R.weak_reads_pass(x.st("I0"), x.s), "a legacy GAP:OTHER WEAK is read from its attempt")
+    R.unhold(x.s, "I0", "mend")
+    st = x.st("I0")
+    ok(st["status"] == "candidate" and st["proof_only"] is None, "unhold rechecks the same sha, proof_only void: %s %s"
+       % (st["status"], st["proof_only"]))
+    ok(R.proof_gate(x.w, x.r, st, {"sha": "sha1"}) == (None, None), "the gate lets the same sha reach the Marker")
+    for weak, want in (("GAP:OTHER. elsewhere", None), ("GAP:DIFF. own hunk", "proof_unchanged"), ("untagged", "proof_unchanged")):
+        g = dict(st, proof_only={"sha": "sha1", "at": 0, "weak": weak})
+        ok(R.proof_gate(x.w, x.r, g, {"sha": "sha1"})[0] == want, "gate on a %r WEAK -> %s" % (weak[:9], want))
+    g = dict(st, proof_only={"sha": "sha1", "at": 0, "binding": True, "weak": "GAP:OTHER"})
+    ok(not R.weak_reads_pass(g), "a CONTRACT binding hold is no WEAK")
+    x.done()
+
+
 def t_shadow_narrow_weak():
     W = R.relentless_wall
     ok(W.narrow_word("WEAK", " gap:other a mutant I wrote") == "PASS", "an invented mutant is no gap under the narrow rule")
@@ -4653,7 +4680,7 @@ def main():
     # the real launcher's TMPDIR, kept off the real root: a dir left there made the next run's t_breaker_di2 read "still in use"
     os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
     atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
-    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_gate_refused_items_hold_no_line_place, t_incident_line_fills_every_place, t_staffed_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_prepare_clears_consult_pushurl, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_reopened_done_reenrols, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb, t_foreign_retired,
+    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_gate_refused_items_hold_no_line_place, t_incident_line_fills_every_place, t_staffed_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_narrowed_weak_frees_proof_only, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_prepare_clears_consult_pushurl, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_reopened_done_reenrols, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb, t_foreign_retired,
               t_foreign_eligible, t_parked_list, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_level_books_shard_under_lock, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

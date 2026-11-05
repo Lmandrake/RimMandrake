@@ -374,6 +374,8 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
     limit = r["same_failure_limit"]
     if klass in ("proof_weak", relentless_attrib.PROOF_OWED):
         st["proof_only"] = {"sha": st["candidate"]["sha"], "at": now}
+        if klass == "proof_weak":
+            st["proof_only"]["weak"] = (detail or "")[:600]     # the verdict that set it, re-read under today's WEAK rule
         if "CONTRACT" in ((attributed or {}).get("targets") or []):
             st["proof_only"]["binding"] = True      # the binding may live off the sha (the contract, a ledger criterion)
             # every live row on this sha was read under the binding just found wrong: the repaired binding is judged
@@ -1079,12 +1081,28 @@ def shadow_tally(store, rule=None):
             "differing": [(r["item"], r["word"], r["shadow"]) for r in differ]}
 
 
+def weak_reads_pass(st, store=None):
+    """-> True when the WEAK that set proof_only reads PASS under the live rule (acted_weak; owner by card 2026-11-03,
+    "Narrow it now": GAP:OTHER is a PASS). Such a proof_only stands on a verdict that no longer holds. An older state has
+    no `weak` on it: the proof_weak attempt at the held sha is read instead. A CONTRACT binding hold is never a WEAK."""
+    held = st.get("proof_only") or {}
+    if not held or held.get("binding"):
+        return False
+    d = held.get("weak")
+    if d is None and store is not None:
+        for a in reversed(store.attempts(st["item"])):
+            if a.get("end") == "proof_weak" and a.get("sha") == held.get("sha"):
+                d = a.get("detail")
+                break
+    return d is not None and relentless_wall.acted_weak("WEAK", d) == "PASS"
+
+
 def proof_gate(fx, r, st, c):
     """-> (class, why) when a proof-only worker's candidate may not spend a Marker, else (None, None). A candidate
     that moved no proof changed nothing the check could read; one that moved code is the rework a WEAK forbids."""
     held = st.get("proof_only")
-    if not held:
-        return None, None
+    if not held or weak_reads_pass(st):
+        return None, None       # no WEAK, or one the live rule reads PASS: the Marker reads the sha afresh
     if c["sha"] == held["sha"] and held.get("binding"):
         return None, None       # a CONTRACT repair: the same code is validated again against the repaired binding
     if c["sha"] == held["sha"]:
@@ -1260,6 +1278,9 @@ def unhold(store, item, said, now=None, offbox=None):
         blind_back = st["hold"].get("kind") == "unmeasured" or (      # a WEAK the live rule now reads as PASS: recheck it
             st["hold"].get("kind") == "proof_weak" and (st.get("last_fail") or {}).get("class") == "proof_weak"
             and relentless_wall.acted_weak("WEAK", (st.get("last_fail") or {}).get("detail")) == "PASS")
+        if weak_reads_pass(st, store):      # whatever the hold kind (proof_unchanged since, a churn hold): the WEAK is void
+            st["proof_only"] = None
+            blind_back = blind_back or (st.get("candidate") or {}).get("sha") is not None
         was_his = hold_is_his(st["hold"])
         if st["hold"].get("reach") and st.get("contract") and not relentless_wall.offbox_cmds(st["contract"]):
             st["contract"]["reach_ok"] = ("unhold: %s" % said)[:400]    # the lift is the why; else it holds again next tick
