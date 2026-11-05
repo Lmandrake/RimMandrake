@@ -1,0 +1,1 @@
+Before treating a reopened NIGHTLY_RED alarm as 'the fix died', compare the reading's x.night with the item's close time: ops_watch re-read the 11-04T11:00Z night at 11-05T05:22Z and reopened an item closed at 13:31Z on a fix that night never ran. run_alarms now holds such reopens (stale_for_close, NIGHTLY_COP_FIX_RED_ENVEHB_GOEW).
