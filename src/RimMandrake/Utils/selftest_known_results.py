@@ -489,6 +489,23 @@ def build(root: Path):
                     "--allow-empty", "-m", "x"], check=True)
 
 
+def moved_all(state: Path) -> list:
+    """The paths that refused every cacheable test of a run as changed during it, else [] (any test recorded or refused
+    for another reason). Those paths are what the runner says moved; a run that recorded something is no blind run."""
+    kr = state / "known_results"
+    if (kr / "records").is_dir() and any((kr / "records").iterdir()):
+        return []
+    rf = kr / "refusals.jsonl"
+    rows = [json.loads(ln) for ln in rf.read_text().splitlines() if ln.strip()] if rf.is_file() else []
+    why = {}
+    for r in rows:
+        why.setdefault(r["test"], []).extend(r["why"])
+    wanted = [f"src/selftest_{n}.py" for n in CACHEABLE]
+    if not all(why.get(t) and all(w.startswith("changed during the run") for w in why[t]) for t in wanted):
+        return []
+    return [w for t in wanted for w in why[t]]
+
+
 SETTLE_MARGIN_S = 1.5       # beyond known_results.TIME_SLOP_S: a loaded box or a WSL clock step must not eat it
 _SLOP = []
 
@@ -556,6 +573,16 @@ def fixture(root: Path):
     state = root.parent / f"{root.name}.state"
     settle(root)
     p, s = run(root)
+    if moved_all(state):
+        # Run 1 lasts about a second, so one write to an input every test shares (anywhere in the run, after any
+        # settle) refuses all twenty as "changed during the run": the ledger working, not failing. Seen 1 run in 3 to 6
+        # on the checker, never in 53 runs on the bench (2026-11-05). Name it, start the ledger again once, and let a
+        # second blind run fail below as it always did.
+        print("     run 1: every cacheable test refused as changed during the run; once more on a fresh ledger:\n"
+              + "\n".join(sorted(set(moved_all(state)))[:6]))
+        shutil.rmtree(state, ignore_errors=True)
+        settle(root)
+        p, s = run(root)
     eq(p.returncode, 1, "run 1: the one real red reddens the run")
     for n in CACHEABLE + list(NEVER):
         eq(st(s, n), "PASS", f"run 1: {n} ran and passed under tracing")
@@ -564,7 +591,10 @@ def fixture(root: Path):
         if (state / "known_results/records").is_dir() else {}
     if not recs:        # the ledger went blind (no shim, no records): say why, or 23 'measured' lines hide the cause
         why = [ln for ln in p.stdout.splitlines() if ln.startswith(("known results", "  not recordable", "  ran ("))]
-        print("     run 1 recorded nothing; runner says:\n" + "\n".join(why[:12]) + f"\n     stderr tail:\n{p.stderr[-1500:]}")
+        rf = state / "known_results/refusals.jsonl"
+        whys = [ln[:400] for ln in rf.read_text().splitlines()[:6]] if rf.is_file() else ["(no refusals.jsonl)"]
+        print("     run 1 recorded nothing; runner says:\n" + "\n".join(why[:12]) + "\n     refusals:\n" + "\n".join(whys)
+              + f"\n     stderr tail:\n{p.stderr[-1500:]}")
 
     def rec(name):
         return recs.get(f"src__selftest_{name}.py.json", [{}])[0]
@@ -784,6 +814,27 @@ def counterexamples(root: Path):
         Path(switch).unlink(missing_ok=True)
 
 
+def blind_run_reader(state: Path):
+    """moved_all retries only a run that refused EVERY cacheable test as changed during it; anything else stands."""
+    kr = state / "known_results"
+    kr.mkdir(parents=True)
+    rows = [{"test": f"src/selftest_{n}.py", "why": ["changed during the run: moved while it was being hashed: /x"]}
+            for n in CACHEABLE]
+    (kr / "refusals.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    eq(moved_all(state)[:1], ["changed during the run: moved while it was being hashed: /x"],
+       "blind run 1: every cacheable test moved is named and retried")
+    (kr / "refusals.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows[1:]))
+    eq(moved_all(state), [], "blind run 1: one cacheable test not refused is no blind run")
+    rows[0]["why"] = ["unobserved: the shim wrote nothing"]
+    (kr / "refusals.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    eq(moved_all(state), [], "blind run 1: a tracer gone blind is not retried")
+    rows[0]["why"] = ["changed during the run: /x"]
+    (kr / "refusals.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    (kr / "records").mkdir()
+    (kr / "records" / "a.json").write_text("[]")
+    eq(moved_all(state), [], "blind run 1: a run that recorded something is not retried")
+
+
 def main():
     K = load()
     work = SCRATCH / f"known_results_fixture_{os.getpid()}"
@@ -792,6 +843,7 @@ def main():
         wrong = decide(K, work / "unit")
         eq(wrong, [], "every ledger decision on hand-built traces and real files")
         mutants(work)
+        blind_run_reader(work / "blind")
         fixture(work / "repo")
         counterexamples(work / "second")
         sys.path.insert(0, str(HERE.parent / "rimflow"))

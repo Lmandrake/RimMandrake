@@ -569,9 +569,13 @@ class Ledger:
             m["files"].append(str(test))           # the test's own text, even if some path above lost it
         rec = dict(self.manifest_inputs(rel, m), test=rel, state=state, secs=round(secs, 2),
                    date=time.strftime("%Y-%m-%d %H:%M"), sha=_head(Path(self.repo)))
-        if any(v is None for v in rec["files"].values()) or moved(m["files"] + m["lists"], started):
+        gone = next((k for k, v in rec["files"].items() if v is None), "")
+        late = "" if gone else moved(m["files"] + m["lists"], started)
+        if gone or late:            # name the path: a bucket of 20 refusals with no path cannot be debugged (2026-11-05)
             self.forget(rel)
-            return False, "changed during the run: an input moved while it was being hashed"
+            why = f"unreadable when hashed: {gone}" if gone else f"moved while it was being hashed: {late}"
+            self._append("refusals.jsonl", {"test": rel, "why": [why], "clock_by": []})
+            return False, f"changed during the run: {why}"
         recs = [r for r in self._load(rel) if self._inputs(r) != self._inputs(rec)]
         self._save(rel, ([rec] + recs)[:RECORDS_PER_TEST])
         return True, ""
