@@ -1602,6 +1602,35 @@ def t_modlist_batch_enables_union():
     x.done()
 
 
+def t_modlist_rider_refusal_stages_alone():
+    """OPS_CHURN_DIAGNOSE_PLAYER_YGLE_IHKT: PLAYER_START_SITE_1 was held because riders named Utils, bridgetools and
+    BiomesShell ("no About.xml with a packageId"). A refused batch enable retries the item's own mods; when they enable,
+    the item stages alone and is never held on a rider's names."""
+    x = rig(2, share=1.0, max_workers=2)
+    two_in_prove(x)
+    x.w.gap = {"I0": GAPS["running"], "I1": {"mods": ["Utils"]}}
+    with x.s.lock():
+        st = x.s.load("I1")
+        st["game"].update(phase="stage")
+        x.s.save(st)
+    x.w.running = False
+    plain = x.w.modlist_enable
+
+    def enable(mods):
+        plain(mods)
+        return "REFUSING: Utils (no About.xml with a packageId in the game folder or the repo)" if "Utils" in mods else None
+    x.w.modlist_enable = enable
+    acts = []
+    G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+    G.step(x.s, x.w, x.r, "I0", x.now + 1, acts, R)
+    st = x.s.load("I0")
+    ok(x.w.enabled[-2:] == [["Graffiti", "Utils"], ["Graffiti"]], "the batch, then the item alone: %s" % x.w.enabled)
+    ok(st["status"] != "held" and "take" in x.w.events and any(a["do"] == "game_modlist_riders_dropped" for a in acts),
+       "not held; it stages alone: %s %s %s" % (st["status"], x.w.events, acts))
+    ok((st["game"].get("batch") or []) == [], "no rider rides it: %s" % st["game"].get("batch"))
+    x.done()
+
+
 def t_stage_plans_once_for_the_batch():
     """A staging of three plans once, over the union: 17 sequential plans outlived the tick's 20-minute kill."""
     import relentless_live_round as LR
@@ -1699,7 +1728,7 @@ def main():
               t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_clock_restarts_at_lease,
               t_live_hold_lapses_when_its_game_is_gone,
               t_dead_prove_pid_frees_the_game, t_modlist_gate_before_slot, t_modlist_gate_reads_once_per_game,
-              t_modlist_enable_refused_holds, t_modlist_batch_enables_union, t_mod_gap_pure,
+              t_modlist_enable_refused_holds, t_modlist_batch_enables_union, t_modlist_rider_refusal_stages_alone, t_mod_gap_pure,
               t_stage_plans_once_for_the_batch, t_bridge_refused_costs_no_plan):
         if picked and t.__name__ not in picked:
             continue

@@ -1442,6 +1442,18 @@ def step(store, fx, r, item, now, acts, sup):
         want = sorted(set(enable_set(gaps)) | set(remedy.get("mods") or []))
         if want and not g.get("full"):      # the full list's own staging restores FULL.LATEST, then enables on top
             why = fx.modlist_enable(want)
+            if why and others:
+                # a rider's names are the rider's defect, never this item's hold (OPS_CHURN_DIAGNOSE_PLAYER_YGLE_IHKT:
+                # PLAYER_START_SITE_1 was held on riders' Utils/bridgetools/BiomesShell, TITANIC on a rider's
+                # RimMandrake.FlowWorks): the item's own mods are tried alone, and it stages alone if they enable
+                gaps = [fx.game_batch_gap([(item, built)])]
+                remedy = merged_remedy([g.get("remedy")]) or {}
+                alone = sorted(set(enable_set(gaps)) | set(remedy.get("mods") or []))
+                acts.append({"do": "game_modlist_riders_dropped", "item": item, "riders": [o["item"] for o in others],
+                             "why": why[:200]})
+                others = []
+                want = alone
+                why = fx.modlist_enable(want) if want else None
             if why:     # no restart path holds these mods: held with the reason, never a load that cannot serve it
                 store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm",
                                "kind": "game_modlist", "item": item, "why": why[:300]})

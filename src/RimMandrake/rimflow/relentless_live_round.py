@@ -130,6 +130,15 @@ def is_package(name):
     return L.is_package(name)
 
 
+def loadable(dirs, mods, shells):
+    """The src/<tier>/<dir> names a commit touched -> the mod folders a load must hold. A repo mod or folded source keeps
+    its name; a compose shell (BiomesShell) stands for its composed mod (RimMandrake.Biomes); any other dir (Utils,
+    bridgetools, rimflow: tooling, no About.xml) is no mod. OPS_CHURN_DIAGNOSE_PLAYER_YGLE_IHKT: 20 game-phase items
+    named Utils, bridgetools or BiomesShell, and modlist_swap --enable refused every batch load one of them rode
+    ("no About.xml with a packageId"), so PLAYER_START_SITE_1 was held on its riders' names. Pure."""
+    return sorted({shells.get(d, d) for d in dirs if d in mods or d in shells})
+
+
 def folders(mods):
     """The repo mod folders of a mod list: what a deploy plan may name (a packageId is no tree of ours)."""
     return [m for m in mods if not is_package(m)]
@@ -379,8 +388,19 @@ class RoundFx(L.Fx):
         import deploy_custom_mods
         return mod in deploy_custom_mods.folded() or mod in deploy_custom_mods.mod_dirs()
 
+    def mod_names(self):
+        """-> ({repo mod folder or folded source}, {compose shell source: composed target}), read once per RoundFx."""
+        if getattr(self, "_mod_names", None) is None:
+            sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+            import biomes_compose
+            import deploy_custom_mods as D
+            m = biomes_compose.load_manifest(D.SRC_ROOT) or {}
+            shells = {m["shell"]["source"]: m["target"]} if (m.get("shell") or {}).get("source") else {}
+            self._mod_names = (set(D.mod_dirs()) | set(D.folded()), shells)
+        return self._mod_names
+
     def mods_of(self, sha):
-        return sorted({m for m, _ in L.game_files(self.touched(sha), self.shippable)})
+        return loadable({m for m, _ in L.game_files(self.touched(sha), self.shippable)}, *self.mod_names())
 
 
 def read_rows(path):
