@@ -1215,7 +1215,17 @@ def unhold(store, item, said, now=None, offbox=None):
         store.save(st)
 
 
-def rediagnose(store, item, said, now=None):
+def no_room_hold(st):
+    """An attribution hold whose diagnostic consult never started for lack of room: no diagnosis was tried, so nothing
+    a seat must decide. The tick re-asks the diagnostician (RELENTLESS_ATTRIB_FIX_CONSULT_NO_ROOM_HOLDS)."""
+    h = (st or {}).get("help") or {}
+    return (st or {}).get("status") == "held" and ((st.get("hold") or {}).get("kind") == relentless_attrib.WAIT_ATTRIB
+            and h.get("mode") == relentless_attrib.DIAGNOSE and (h.get("end") or "").startswith("no room in ")
+            and ((st.get("wait") or {}).get("kind") == relentless_attrib.WAIT_ATTRIB) and (st.get("wait") or {}).get("sha")
+            and not help_pending(st))
+
+
+def rediagnose(store, item, said, now=None, r=None):
     """An `attribution` hold whose diagnostic consult failed (no room, the account, no answer): run the consult again.
     `unhold` re-validates the same sha, which can only say again what it said; this asks the diagnostician once more.
     The candidate and its wait stay exactly as they were (RELENTLESS_RESUME_BUILD_ACCOUNT_LOST_RUNS)."""
@@ -1227,7 +1237,7 @@ def rediagnose(store, item, said, now=None):
         w = st.get("wait") or {}
         if w.get("kind") != relentless_attrib.WAIT_ATTRIB or not w.get("sha"):
             raise ValueError("%s has no attribution wait to diagnose: unhold it instead" % item)
-        if not rules().get("circling"):
+        if not (r or rules()).get("circling"):
             raise ValueError("no consult machinery (rules.circling unset)")
         if help_pending(st):
             raise ValueError("%s already has a consult out" % item)
@@ -4319,6 +4329,17 @@ def help_start(store, fx, r, item, now, acts):
             store.journal({"at": iso(now), "do": "help_account_wait", "item": item, "why": (br.get("why") or "")[:200]})
             acts.append({"do": "help_waits", "item": item, "why": "account: " + (br.get("why") or "")[:160]})
             return
+        if h.get("mode") == relentless_attrib.DIAGNOSE:
+            # RELENTLESS_ATTRIB_FIX_CONSULT_NO_ROOM_HOLDS: a diagnosis owed holds no worker back (the item waits blocked
+            # either way), so a wait for room is no failed consult: it starts over and retries on a later tick
+            with store.lock():
+                cur = store.load(item)
+                cur["help"]["at"] = now
+                cur["help"]["room_waits"] = (cur["help"].get("room_waits") or 0) + 1
+                store.save(cur)
+            store.journal({"at": iso(now), "do": "help_room_wait", "item": item, "waited_s": int(now - h["at"])})
+            acts.append({"do": "help_waits", "item": item, "why": "no room in %d s: the diagnosis waits on" % (now - h["at"])})
+            return
         h_end = "no room in %d s" % (now - h["at"])
         with store.lock():
             cur = store.load(item)
@@ -4448,6 +4469,10 @@ def help_step(store, fx, r, item, now, acts):
     gone = st["status"] in ENDED or st["status"] == "retiring"
     if not help_pending(st):
         if gone:
+            return
+        if no_room_hold(st):    # held before a wait for room started over (RELENTLESS_ATTRIB_FIX_CONSULT_NO_ROOM_HOLDS)
+            rediagnose(store, item, "auto: the diagnostic consult had only lacked room", now, r)
+            acts.append({"do": "rediagnose", "item": item, "why": "no room hold"})
             return
         with store.lock():
             cur = store.load(item)

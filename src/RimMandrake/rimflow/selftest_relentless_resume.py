@@ -323,9 +323,58 @@ def t_no_room_under_account_breaker():
             ok(st["help"]["status"] == "wanted" and st["help"]["at"] == x.now and st["status"] != "held",
                "no room while the breaker is open on the account: the wait starts over, not a failed consult")
         else:
-            ok(st["status"] == "held" and "no room" in (st["help"].get("end") or ""),
-               "no room on any other cause is still a failed consult: %s" % st["status"])
+            # RELENTLESS_ATTRIB_FIX_CONSULT_NO_ROOM_HOLDS: a diagnosis that lacked room is no failed consult either
+            ok(st["help"]["status"] == "wanted" and st["help"]["at"] == x.now and st["status"] == "blocked"
+               and not st.get("hold") and st["help"].get("room_waits") == 1 and not st["help"].get("end"),
+               "no room for a diagnostic consult on any other cause: the wait starts over, the item blocked not held: %s"
+               % st["status"])
         x.done()
+
+
+def t_no_room_plain_consult_still_fails():
+    """A circling (non-diagnose) consult that never found room still ends failed: the worker carries on without it."""
+    x = TA.rig([TA.STEVE], circling=T.HELP)
+    TA.checked(x, TA.STEVE, "FAIL", "could not read D:")
+    with x.s.lock():
+        st = x.s.load(TA.STEVE)
+        st["help"]["at"] = x.now - x.r["circling"]["help_wait_s"] - 1
+        st["help"].update(status="wanted", run=None, nonce=None, clone=None, mode=None)
+        x.s.save(st)
+    R.help_start(x.s, x.w, x.r, TA.STEVE, x.now, [])
+    st = x.st(TA.STEVE)
+    ok(st["help"]["status"] == "failed" and (st["help"].get("end") or "").startswith("no room in "),
+       "a plain consult with no room still fails: %s" % st["help"]["status"])
+    x.done()
+
+
+def t_no_room_hold_recovers():
+    """An attribution hold left by the old 'no room in N s' failure is re-asked on the next tick, no builder, no strike."""
+    import relentless_attrib
+    x = TA.rig([TA.STEVE], circling=T.HELP)
+    TA.checked(x, TA.STEVE, "FAIL", "could not read D:")
+    n = len(TA.launches(x, TA.STEVE, "help"))
+    with x.s.lock():
+        st = x.s.load(TA.STEVE)
+        st["help"].update(status="failed", end="no room in 2401 s", run=None, nonce=None, clone=None)
+        relentless_attrib.no_diagnosis(st, "the diagnostic consult failed: no room in 2401 s", x.now, R)
+        x.s.save(st)
+    st = x.st(TA.STEVE)
+    ok(st["status"] == "held" and st["hold"]["kind"] == "attribution" and R.no_room_hold(st), "the old hold, planted")
+    x.tick()
+    st = x.st(TA.STEVE)
+    ok(st["status"] == "blocked" and not st.get("hold") and st["wait"]["sha"] == TA.SHA,
+       "the tick lifts a no-room hold into a fresh diagnosis, the candidate's wait untouched: %s" % st["status"])
+    x.tick()
+    con = TA.launches(x, TA.STEVE, "help")[n:]
+    ok(len(con) == 1 and "DIAGNOSTICIAN" in con[0][2], "and the diagnostician runs: %d" % len(con))
+    ok(TA.kept(x, TA.STEVE) and not TA.launches(x, TA.STEVE, "work")[1:], "no builder, no strike")
+    with x.s.lock():
+        st = x.s.load(TA.STEVE)
+        st["help"].update(status="failed", end="no answer", run=None, nonce=None, clone=None)
+        relentless_attrib.no_diagnosis(st, "the diagnostic consult failed: no answer", x.now, R)
+        x.s.save(st)
+    ok(not R.no_room_hold(x.st(TA.STEVE)), "a consult that ran and gave no answer stays the seat's hold")
+    x.done()
 
 
 def t_rediagnose():
