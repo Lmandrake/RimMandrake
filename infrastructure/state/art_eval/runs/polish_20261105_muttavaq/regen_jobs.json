@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_Muttavaq__polish1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Muttavaq",
+  "prompt": "A creature sprite for RimWorld: the muttavaq, a huge alien canyon-floor animal that sleeps for years as a patch of dried clay pan. Its body is one enormous, flat, straight-sided slab of cracked clay, about four times as long as it is tall, with a level tabletop top and squared edges, like a raised block of canyon floor. The slab's thick edge hangs over four short, thick, column-like supports of the same pale ochre clay, set well inward under the slab. Only a low strip of broad, blunt, toeless foot with a flat sole shows at the ground, so the animal sits low and reads as terrain on hidden supports. There is no neck, head or tail. The front edge of the slab is one continuous clay lip, and under it opens a long, perfectly straight, horizontal, shadowed mouth slit, expressionless. The slit is recessed and filled with a dense comb of thin, flat, pale vertical filter plates, evenly spaced like baleen, a sieve for straining mud. Two tiny dark pinpoint eyes are sunk into the clay of the front lip above the slit, almost hidden, without lids or highlights. The whole flat top is a field of hard, regular polygon plates of dried cracked clay, separated by dark cracks that radiate outward from one central point on the top, more regular than natural mud. The skin, supports and plates all share one fixed pebbly grain at one scale, in the pale ochre and dusty tan of dried canyon clay. Facings: the front view shows the front lip, the eyes and the mouth slit toward the viewer, with the front feet seen head-on. The side view shows the long profile, with the mouth slit at the front end and the cracked top above. The rear view, seen from behind, shows a plain, closed, cracked clay wall with no mouth and no eyes, and beneath it the heels and the backs of the hind feet toward the viewer, with the toes pointing away toward the front of the animal. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, STYLE_EARTHLY, F_INCONSISTENT, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "polish_20261105_muttavaq",
+  "drawsize": 4.6,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq"
+ }
+]
