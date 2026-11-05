@@ -32,7 +32,6 @@
     {"match": "integrity_damage", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless_integrity found damage in a clone or item at its gate; the gate journals it every tick and notes it once per distinct damage"},
     {"match": "game_modlist", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless_game could not enable the mods a game slot needs; the item is held with the reason (LIVE_MODLIST_ENFORCE_BEFORE_SLOT)"},
     {"match": "lapse_holds_raised", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless lapse_holds raised; the tick journals it and the steps still run"},
-    {"match": "restore_incomplete", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless restored a put-down item's clone from its bundle and some carried commits did not come back; the bundle path is in the alarm"},
     {"match": "help_raised", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless asked for help on an item and the ask itself failed"},
     {"match": "health.incident_slis", "route": "role", "reader": "Operations", "cause": "churn", "_why": "OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: churn or a blind instrument is its own cause; under work_belt (open since 2026-11-01) its Conductor line was swallowed the pass it first filed"},
     {"match": "health.*", "route": "role", "reader": "Operations", "cause": "work_belt"},

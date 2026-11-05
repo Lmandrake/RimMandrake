@@ -656,6 +656,9 @@ def test_routes():
                  "relentless_attention_day_spend_limit", "queues.x.stalled_min", "queues.x.pending", "process.x"):
         t2 = dict(TABLE, routes=[x for x in TABLE["routes"] if not fnmatch.fnmatchcase(kind, x["match"])])
         check("%s dropped from the table is seen missing" % kind, kind in [k for k in sorted(kinds) if IN.route_of(t2, k) is None])
+    seen = [x["match"] for x in TABLE["routes"]]
+    twice = sorted({m for m in seen if seen.count(m) > 1})
+    check("no route match appears twice (the second row is dead)", not twice, twice)
     bad = [x for x in TABLE["routes"] if x["route"] == "role" and x["reader"] not in TABLE["readers"]]
     check("every role route names a reader the table wakes", not bad, bad)
     live_sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
