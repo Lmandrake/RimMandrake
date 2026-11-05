@@ -4133,11 +4133,12 @@ def publish_health(points, prev, ctx, rules, now):
         if ctx.get("events") is not None:
             import pulse_core as pc
             world = pc._model().replay(ctx["events"])
-        v = ops_health.publish(points, prev, world, rules, str(data_clone()), now)
+        v = ops_health.publish(points, prev, world, rules, str(data_clone()), now,
+                               stamp={"ledger": ops_health.ledger_mark(ctx.get("events"))})
     except Exception as e:  # noqa: BLE001  the pass outlives its verdict, and says so
         why = "health verdict not written: %s: %s" % (type(e).__name__, str(e)[:160])
         return {"health.state": U(why), "health.spent_slis": U(why), "health.drifted_slis": U(why),
-                "health.incident_slis": U(why)}
+                "health.incident_slis": U(why), "health.unmeasured": U(why)}
     x = {"spent": v["spent"], "system_items": len(v["system_items"] or []), "why": v["why"][:300]}
     guardless = v.get("recurring_unguarded")
     inc = v.get("incident") or {}
@@ -4149,7 +4150,10 @@ def publish_health(points, prev, ctx, rules, now):
     return {"health.recurring_unguarded": U("no ledger or alarm log this pass") if guardless is None else M(
                 len(guardless), "alarm kinds that came back with no class guard test", said=", ".join(r["kind"] for r in guardless[:5])),
             "health.incident_slis": inc_pt,
-            "health.state": M(v["state"], None, **x), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x),
+            "health.state": M(v["state"], None, **x),
+            # the health rules are unusable: no budget was read (OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY); alarm REPAIR_ALARM
+            "health.unmeasured": M(int(v["state"] == "unmeasured"), "health verdicts with unusable rules",
+                                   said=v["why"][:300] if v["state"] == "unmeasured" else ""), "health.spent_slis": M(len(v["spent"]), "SLIs with a spent budget", **x),
             "health.drifted_slis": M(len(v["drifted"]), "SLIs whose point changed unit under them", said=", ".join(v["drifted"]))}
 
 

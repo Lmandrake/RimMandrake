@@ -300,8 +300,8 @@ def _no_verdict(*a, **k):
 H.publish = _no_verdict
 hf = OW.publish_health(emitted, {}, {}, ow_rules, NOW)
 H.publish = real_publish
-ok("publish_health: a failed verdict reads all four UNMEASURED, said",
-   sorted(hf) == ["health.drifted_slis", "health.incident_slis", "health.spent_slis", "health.state"]
+ok("publish_health: a failed verdict reads all five UNMEASURED, said",
+   sorted(hf) == ["health.drifted_slis", "health.incident_slis", "health.spent_slis", "health.state", "health.unmeasured"]
    and all(p["m"] == "UNMEASURED" and "health verdict not written" in p["why"] and "disk full" in p["why"] for p in hf.values()), hf)
 # and the point reaches the alarm with its one fixed name
 drift_tg = [t for t in shipped["targets"] if t.get("key") == "health.drifted_slis"]

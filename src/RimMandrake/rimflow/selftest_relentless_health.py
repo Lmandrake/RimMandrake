@@ -261,5 +261,18 @@ ok(len(got) == 1 and got[0]["fresh"] is True and got[0]["degraded"] is True and 
    "tick: a fresh degraded verdict is reported as obeyed", got)
 ok(tick_health(None) == [], "tick: no health read -> no health act invented")
 
+# --- an unmeasured verdict (unusable health rules) is a broken assessment, never healthy (OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY)
+h = R.health_order({"state": "unmeasured", "system_items": ["S1", "OPS_HEALTH_RULES_DIAGNOSE_X", "S2"],
+                    "repair": ["OPS_HEALTH_RULES_DIAGNOSE_X"], "why": "UNMEASURED: rules"}, "fresh: unmeasured", lambda: ["X"])
+ok(h["first"] == {"OPS_HEALTH_RULES_DIAGNOSE_X": 0, "S1": 1, "S2": 2} and h["unmeasured"] and not h["fresh"]
+   and not h["degraded"] and "ASSESSMENT BROKEN" in h["why"],
+   "health: unmeasured puts the measurement repair first, is not fresh/healthy, pauses no content", h)
+h = R.health_order({"state": "unmeasured", "system_items": None, "repair": [], "why": "UNMEASURED"}, "fresh: unmeasured",
+                   lambda: ["S9"])
+ok(h["first"] == {"S9": 0} and h["unmeasured"] and "none filed yet" in h["why"],
+   "health: unmeasured with no ledger and no repair filed yet still puts every system item first", h)
+got = tick_health(R.health_order({"state": "unmeasured", "system_items": [], "repair": [], "why": "u"}, "fresh: unmeasured", lambda: []))
+ok(len(got) == 1 and got[0]["unmeasured"] is True and got[0]["fresh"] is False, "tick: an unmeasured verdict is reported as such", got)
+
 print("selftest_relentless_health: " + ("PASS" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS))))
 sys.exit(1 if FAILS else 0)

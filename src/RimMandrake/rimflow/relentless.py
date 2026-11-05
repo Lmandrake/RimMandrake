@@ -297,7 +297,8 @@ def queue_order(states, plan=None, first=None):
 def health_order(verdict, why, fallback):
     """Operations' health verdict (Utils/ops_health.py, health.json) as Relentless obeys it; it judges nothing itself.
     The owner, 2026-11-03: "I want it to ask "the system" for its health assessment, and that belongs to the operations
-    component." -> {first: {item: place}, degraded, fresh, why}. With no fresh verdict every open system item is first
+    component." -> {first: {item: place}, degraded, fresh, unmeasured, why}. An `unmeasured` verdict (unusable health
+    rules) is an assessment broken, never healthy: fresh False, its `repair` items placed before every other system item. With no fresh verdict every open system item is first
     at once, by Operations' own classifier (`fallback`), and content is never paused (owner card 2026-11-03: "System
     work immediately but existing non system work continues")."""
     ids = verdict.get("system_items") if verdict else None
@@ -307,8 +308,13 @@ def health_order(verdict, why, fallback):
             ids, said = list(fallback() or []), "%s; every open system item first, at once" % said
         except Exception as e:  # noqa: BLE001  no classifier: ordinary order, said aloud
             ids, said = [], "%s; system items unknown (%s: %s): ordinary order" % (said, type(e).__name__, str(e)[:120])
+    unmeasured = bool(verdict) and verdict.get("state") == "unmeasured"
+    if unmeasured:      # the assessment is broken, not healthy: its measurement repair goes first, content is not paused
+        rep = [i for i in verdict.get("repair") or () if isinstance(i, str)]
+        ids = rep + [i for i in ids if i not in rep]
+        said = "ASSESSMENT BROKEN (state unmeasured): %s; repair first: %s" % (said, ", ".join(rep) or "none filed yet")
     return {"first": {i: n for n, i in enumerate(ids)}, "degraded": bool(verdict) and verdict.get("state") == "degraded",
-            "fresh": bool(verdict), "why": said}
+            "fresh": bool(verdict) and not unmeasured, "unmeasured": unmeasured, "why": said}
 
 
 def pilot_count(store, st, klass, detail, r, now):
@@ -5588,6 +5594,7 @@ def tick(store=None, fx=None, r=None, now=None):
         h = getattr(fx, "_health", None)
         if h:       # what Relentless obeyed this tick; a missing or stale verdict is said here (Operations raises it)
             acts.append({"do": "health", "fresh": h["fresh"], "degraded": h["degraded"], "first": len(h["first"]),
+                         "unmeasured": bool(h.get("unmeasured")),
                          "why": h["why"][:300]})
         try:        # after enrol, which reads the verdict the choice of victim needs
             active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)

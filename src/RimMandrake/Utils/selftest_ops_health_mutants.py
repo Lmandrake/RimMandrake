@@ -40,7 +40,7 @@ MUTANTS = [
     (OW, PH, PH.replace('", ".join(v["drifted"])', '""'), "publish_health: names nobody"),
     (OW, PH, "M(0)", "publish_health: whole point zero"),
     (OW, '"health.drifted_slis": U(why),\n', "\n", "publish_health: failure branch loses the point"),
-    (OW, '\n                "health.incident_slis": U(why)}', "}", "publish_health: failure branch loses the incident point"),
+    (OW, '\n                "health.incident_slis": U(why), "health.unmeasured": U(why)}', ' "health.unmeasured": U(why)}', "publish_health: failure branch loses the incident point"),
     (OW, '"health.spent_slis": U(why), ', "", "publish_health: failure branch loses the spent point"),
     # was: the record of what the old collector wrote
     (RU, '"unit": "%s"' % OLD_UNIT, '"unit": "a was nobody wrote"', "rules: was unit"),
@@ -50,7 +50,7 @@ MUTANTS = [
     (RU, '"tag": "SLI_DRIFT", "name": "OPS_SLI_DRIFT_DIAGNOSE"', '"tag": "SLI_DRIFT", "name": "OPS_SOMETHING_ELSE"', "rules: drift alarm name"),
     (RU, '{"key": "health.drifted_slis", "op": ">", "value": 0,', '{"key": "health.drifted_slis", "op": ">", "value": 9,', "rules: drift alarm line"),
     # the production path: run() hands publish_health's points to run_alarms (blind check at 5b5ea883 named this one)
-    (OW, "        alarms = run_alarms(points, rules, now,", "        alarms = run_alarms({k: v for k, v in points.items() if k != \"health.drifted_slis\"}, rules, now,", "run(): drifted point filtered before run_alarms"),
+    (OW, "            alarms = run_alarms(apts, rules, now,", "            alarms = run_alarms({k: v for k, v in apts.items() if k != \"health.drifted_slis\"}, rules, now,", "run(): drifted point filtered before run_alarms"),
     (OW, "        points.update(publish_health(points, prev, ctx, rules, now))", "        pass", "run(): full pass skips publish_health"),
     # ops_health.py: the drift and was reading, and the budget
     (HE, 'if p.get("m") != "MEASURED" or p.get("unit") == sli["unit"]:', "if True:", "ops_health: a changed unit reads the number"),

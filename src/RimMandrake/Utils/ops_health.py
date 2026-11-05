@@ -9,7 +9,7 @@ are already being worked non system work can be selected." Ruling text: design/R
 "Relentless fixes the system first"; design: build_system_practices_2026-11-03.md idea 5.
 
 ops_watch.run() calls publish() every pass; it writes $RM_OPS_WATCH_DIR/health.json:
-  {schema, as_of, t, state: healthy|degraded, budget: {<sli>: {...}}, spent: [<sli>], drifted: [<sli>], system_items: [ids, best first],
+  {schema, as_of, t, state: healthy|degraded|unmeasured, inputs, repair, budget: {<sli>: {...}}, spent: [<sli>], drifted: [<sli>], system_items: [ids, best first],
    content_paused: bool, why}
   SLI      a point ops_watch already measured, bad when it crosses its line (rules "health" block, `slis`). UNMEASURED is
            not bad and not good: it is said, and spends nothing.
@@ -19,6 +19,12 @@ ops_watch.run() calls publish() every pass; it writes $RM_OPS_WATCH_DIR/health.j
   BUDGET   per SLI, the hours it read bad in the last window_h, a gap between passes counted at most max_gap_h. Spent at
            allowed_bad_h ("When any SLI is over budget for 24 h, Relentless staffs only pipeline items until it recovers").
   STATE    degraded while any SLI's budget is spent, else healthy. Degraded pauses NEW content; running work continues.
+           UNMEASURED when the health rules are unusable: no budget was read, so the verdict says nothing about health and
+           never reads as healthy (OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY; it once gave b={} -> healthy). It pauses no
+           content; Relentless puts `repair` (open REPAIR_ALARM items, ops_watch's health.unmeasured alarm) first.
+  INPUTS   every verdict names what it was made from: rules_sha256 (canonical JSON of the rules ops_watch passed), the
+           collector's git sha (the clone this file runs from), the ledger watermark (events, last ts/tsn; None = no
+           ledger this pass). Same inputs -> byte-identical verdict, so a strange verdict is explained by re-running it.
   INCIDENT an SLI with `incident: true` (infra_share, churn_items, returned_tokens_pct) is listed in `incident.bad` the pass it
            reads bad, budget or no budget: ops_watch turns that into ONE fixed alarm item (health.incident_slis,
            OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: 47 items churned a night while infra_share sat bad 7.75 h of its 24).
@@ -37,9 +43,11 @@ Operations' classifier) for the open system items and puts them first at once, a
 
     python3 src/RimMandrake/Utils/ops_health.py show          the published verdict, and whether it is fresh
 """
+import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -48,6 +56,8 @@ RIMFLOW = str(Path(__file__).resolve().parent.parent / "rimflow")
 SCHEMA = "rm.ops_health/1"
 HOUR = 3600.0
 FILE = "health.json"
+STATES = ("healthy", "degraded", "unmeasured")
+REPAIR_ALARM = "OPS_HEALTH_RULES_DIAGNOSE"     # ops_watch_rules.json: the alarm on health.unmeasured; its minted ids start so
 DEFAULTS = {
     "max_age_min": 45, "window_h": 48, "allowed_bad_h": 24, "max_gap_h": 1.0,
     "slis": [],
@@ -265,13 +275,44 @@ def incident(b, c):
             "cause": "; ".join("%s %s (line %s)" % (n, b[n].get("v"), b[n].get("line")) for n in bad) or "none"}
 
 
-def verdict(points, history, world, rules, root, now):
+def rules_sha256(rules):
+    """sha256 of the rules as canonical JSON: the same object read from any clone hashes the same."""
+    return hashlib.sha256(json.dumps(rules, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
+def collector_sha():
+    """The git HEAD of the clone this file runs from (the collector's code), or None when git cannot say."""
+    try:
+        r = subprocess.run(["git", "-C", str(Path(__file__).resolve().parent), "rev-parse", "HEAD"],
+                           capture_output=True, text=True, timeout=20)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    sha = r.stdout.strip()
+    return sha if r.returncode == 0 and re.fullmatch(r"[0-9a-f]{40}", sha) else None
+
+
+def ledger_mark(events):
+    """The ledger watermark of an event list: {events, last_ts, last_tsn}; None when there was no ledger."""
+    if events is None:
+        return None
+    ts = [str(e.get("ts") or "") for e in events if isinstance(e, dict)]
+    tsn = [e["tsn"] for e in events if isinstance(e, dict) and isinstance(e.get("tsn"), int) and not isinstance(e.get("tsn"), bool)]
+    return {"events": len(events), "last_ts": max(ts) if ts else None, "last_tsn": max(tsn) if tsn else None}
+
+
+def verdict(points, history, world, rules, root, now, stamp=None):
+    """stamp: {collector_sha, ledger} as the caller measured them (ops_watch passes the ledger mark); a missing key is
+    measured here (collector_sha) or None (ledger)."""
     c = conf(rules)
     probs = sli_problems(c)
     b = budget(points, history, c, now) if not probs else {}
     spent = sorted(k for k, v in b.items() if v.get("spent"))
     drifted = sorted(k for k, v in b.items() if v.get("drifted"))
-    state = "degraded" if spent else "healthy"
+    state = "unmeasured" if probs else "degraded" if spent else "healthy"
+    stamp = dict(stamp or {})
+    inputs = {"rules_sha256": rules_sha256(rules),
+              "collector_sha": stamp["collector_sha"] if "collector_sha" in stamp else collector_sha(),
+              "ledger": stamp.get("ledger")}
     items = system_items(world, rules, root) if world is not None else None
     ids = [it.id for it in items] if items is not None else None
     # design idea 5: a twice-seen alarm closes only with a class fix, a guard test that fails on the whole class
@@ -282,15 +323,16 @@ def verdict(points, history, world, rules, root, now):
     if drifted:
         why += "; meaning changed under: " + ", ".join(drifted)
     if probs:
-        why = "health rules unusable, no budget read: " + "; ".join(probs)
+        why = "UNMEASURED: health rules unusable, no budget read, this is no health reading: " + "; ".join(probs)
     if ids is None:
         why += "; no ledger this pass: system_items unknown"
-    return {"schema": SCHEMA, "as_of": iso(now), "t": now, "state": state, "budget": b, "spent": spent, "drifted": drifted,
+    repair = [i for i in ids or () if i.startswith(REPAIR_ALARM)] if probs else []
+    return {"schema": SCHEMA, "as_of": iso(now), "t": now, "state": state, "inputs": inputs, "repair": repair, "budget": b, "spent": spent, "drifted": drifted,
             "system_items": ids, "recurring": recurring, "incident": incident(b, c), "recurring_unguarded": unguarded(world, c) if world is not None else None, "content_paused": state == "degraded", "max_age_min": c["max_age_min"], "why": why}
 
 
-def publish(points, history, world, rules, root, now, path=None):
-    v = verdict(points, history, world, rules, root, now)
+def publish(points, history, world, rules, root, now, path=None, stamp=None):
+    v = verdict(points, history, world, rules, root, now, stamp)
     p = Path(path) if path else ops_dir() / FILE
     p.parent.mkdir(parents=True, exist_ok=True)
     tmp = p.with_suffix(".tmp")
@@ -310,7 +352,7 @@ def read_verdict(now=None, path=None, max_age_min=None):
     except (OSError, ValueError) as e:
         return None, "health verdict unreadable: %s: %s" % (type(e).__name__, str(e)[:120])
     if not isinstance(v, dict) or v.get("schema") != SCHEMA or not is_num(v.get("t")) \
-            or v.get("state") not in ("healthy", "degraded") or not isinstance(v.get("system_items"), (list, type(None))):
+            or v.get("state") not in STATES or not isinstance(v.get("system_items"), (list, type(None))):
         return None, "health verdict malformed at %s" % p
     age = max_age_min if max_age_min is not None else v.get("max_age_min") if is_num(v.get("max_age_min")) else DEFAULTS["max_age_min"]
     if now - v["t"] > age * 60:
@@ -327,6 +369,15 @@ def main(argv=None):
     print(why)
     if v:
         print("state %s; spent %s; drifted %s; %d system items first" % (v["state"], v["spent"] or "none", v.get("drifted") or "none", len(v["system_items"] or ())))
+        inp = v.get("inputs") or {}
+        try:
+            with open(Path(__file__).resolve().parent / "ops_watch_rules.json", encoding="utf-8") as f:
+                here = rules_sha256(json.load(f))
+        except (OSError, ValueError) as e:
+            here = "UNMEASURED (%s)" % type(e).__name__
+        print("inputs: rules %s (%s this clone's rules), collector %s, ledger %s" % (
+            str(inp.get("rules_sha256"))[:12], "SAME AS" if inp.get("rules_sha256") == here else "DIFFERS FROM",
+            inp.get("collector_sha"), inp.get("ledger")))
     return 0 if v else 1
 
 
