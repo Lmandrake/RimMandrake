@@ -243,7 +243,12 @@ def main():
         [{"gen": 6, "at": iso(t1), "start": marker("LANDED_ITEM", 6)}, {"gen": 6, "at": iso(t1 + 5), "end": "harness"},
          {"gen": 6, "at": iso(t1 + 6), "end": "harness"}])
     runs = {marker("SPEND_ITEM", 1): 400000, marker("BOUNCE_ITEM", 4): 1000, marker("LANDED_ITEM", 6): 5000,
-            marker("OLDGEN_ITEM", 1): 9000, marker("PARKED_ITEM", 13): 365432}
+            marker("OLDGEN_ITEM", 1): 9000, marker("PARKED_ITEM", 13): 365432, marker("PUT_DOWN_ITEM", 1): 9869198}
+    # OPS_CHURN_DIAGNOSE_PIPELINE_NIZE_JOZV: PIPELINE_RENAME_WORKERS_NOW_SWAPPABLE, its gen started in the window and
+    # blocked on reach since, spent nothing after: a put-down item is sent no run, so its window spend is not rising
+    st8("PUT_DOWN_ITEM", {"status": "blocked", "returns": 0, "gen": 1, "spent": 10.45e6, "wait": {"kind": "reach"}},
+        [{"gen": 1, "at": iso(t1), "start": marker("PUT_DOWN_ITEM", 1)},
+         {"gen": 1, "at": iso(t1 + 50), "end": "reach_adopted"}])
     # OPS_CHURN_DIAGNOSE_BRIDGE_GRXX_AYXK: BRIDGE_STALL_DIAGNOSTIC_1, blocked a day, its gen started AND ended before the
     # window, but its run sits in a day file the window reaches: no spend in the window, so not 'spend rising'
     st8("PARKED_ITEM", {"status": "blocked", "returns": 0, "gen": 13, "spent": 7.3e6},
@@ -266,6 +271,7 @@ def main():
        "8: a held item no longer churning reads 0 (clears); high lifetime spend alone is not rising", ci.get("CALM_ITEM"))
     ok("PARKED_ITEM" not in ci, "8: a gen that started and ended before the window is no spend in it (a parked item)",
        ci.get("PARKED_ITEM"))
+    ok("PUT_DOWN_ITEM" not in ci, "8: a blocked item's window spend is flat, not 'spend rising'", ci.get("PUT_DOWN_ITEM"))
     ok(ci.get("OLDGEN_ITEM", {}).get("v") == 1, "8: a gen started before the window that still burns is rising spend", ci.get("OLDGEN_ITEM"))
     p8b = OW.rl_churn(s8, NOW, dict(cfg8, churn_item_new_per_pass=1))
     ok(sorted(k for k in p8b if k.startswith(OW.CHURN_ITEM_PREFIX)) == [OW.CHURN_ITEM_PREFIX + "CALM_ITEM", OW.CHURN_ITEM_PREFIX + "OLDGEN_ITEM"],

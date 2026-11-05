@@ -2128,7 +2128,8 @@ def churn_item_points(per, now, cfg, spend_known, held="read"):
     item per churning item, routed to Operations by its OPS_ name). per: {item: (state, fails, spend placed in the
     tokens window)}. Reasons, numbers from relentless.item_bands (shared with RUNNING_NOW's row colours):
       bouncing: churn_why (returns, or a class repeated that failed it inside the window);
-      spend rising: not done or retired, state.json spent at the hot `spent` band, and spend placed in the window;
+      spend rising: not done, retired, closing or put down (held, blocked), state.json spent at the hot `spent` band, and
+        spend placed in the window;
       stuck: in a churn_item_stuck_stages stage (game, checking) for the hot age_s band of that stage.
     A held item no longer churning reads 0 (clears); with the spend files unread it holds (UNMEASURED) unless another
     reason still names it. New items come at most churn_item_new_per_pass a pass, and never past churn_item_max_open held
@@ -2154,7 +2155,10 @@ def churn_item_points(per, now, cfg, spend_known, held="read"):
             continue
         why = ["bouncing: " + "; ".join(r)] if (r := churn_why(st, fails, now, cfg)) else []
         spent = st.get("spent") if is_num(st.get("spent")) else 0
-        if is_num(hot_spent) and spent >= hot_spent and recent > 0 and status != "closing":     # closing is landing
+        # closing is landing; a put-down item (held, blocked) is sent no run, so its spend is flat, not rising
+        # (OPS_CHURN_DIAGNOSE_PIPELINE_NIZE_JOZV: PIPELINE_RENAME_WORKERS_NOW_SWAPPABLE, blocked on reach since 04:02Z with
+        # nothing spent after, read 10453k 'spend rising' from the day before's ten UNMEASURED checks)
+        if is_num(hot_spent) and spent >= hot_spent and recent > 0 and status not in ("closing", "held", "blocked"):
             why.append("spend rising: %.1fM weighted, %dk in the last %gh, nothing landed" % (
                 spent / 1e6, round(recent / 1e3), float(cfg.get("tokens_window_h", 24))))
         t, band = stage_since(st), ages.get(status)
