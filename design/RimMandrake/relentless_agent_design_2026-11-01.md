@@ -246,6 +246,18 @@ Leniency is the known failure. Logged Marker/human disagreements feed the Arbite
 **A second model** marks when the contract is `owner_part: yes`, when the diff touches an instrument or a gate, and on the
 walk leaf. It also reviews the Setter's binding on core leaves before the lease, against the experience line: criterion text can stay byte-identical while an easy instrument changes what it means. An ambiguous leaf goes back to the tree's author. A disagreement is a FAIL-to-review, not an average.
 
+### 8.1 Showings: his look is pre-built (owner, 2026-11-05)
+
+Owner, 2026-11-05 ~04:25Z: "Sloppy. For all the items waiting for human review, please have them pre-build anything needed for the live showing." Then: "That's a general policy for Relentless Pipeline." (Item OWNER_REVIEW_BUILD_SHOWS_READY_BEFORE_ASKED; code `src/RimMandrake/rimflow/relentless_showing.py`, rules `showings` in `relentless_rules.json`.)
+
+- **Trigger.** An open item whose only remaining criterion is his look (needs=owner as NEEDS YOU reads it, an L4 "he looks" clause, or a cosmetic gate) gets a showing stage before NEEDS YOU. Designer first-touch passes are sign-offs, not showings, and are left out.
+- **Gate first.** A showing is built only when every open successor or child item, and every OWNER note of the past 14 days naming the subject, is built into the deployed sha. Otherwise the item reads BLOCKED on that item, never READY TO SHOW. (2026-11-05: the drawbridge was shown on its 10-22 ask while his 11-03 spec on DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED was unbuilt.) A ledger block or an open superseding item blocks too.
+- **Outputs**, in `D:\ClaudeWork\rimmandrake\showings\<ITEM>\`: a review savegame (one map, stations numbered, labelled and packed close, hostiles killed unless they are a station); a zoomed capture of every station; `showing.json`, the station list (number, what it shows, what he judges), the save name and the minutes it takes. Art items take the review-sheet route with its prereview instead.
+- **Blind judge.** A unit that did not build it judges every capture against the list and writes `judge.json`. Only a pass at the same sha reads READY TO SHOW.
+- **Stale.** A showing goes stale when the item's sha or the deployed mod folder changes, and is rebuilt.
+- **Hold.** A showing build takes the bridge as RELENTLESS like any staging. Under a Conductor or OWNER bridge hold it never deploys or restarts the game; the take is refused and it waits (selftest_relentless_showing). While a showing build holds the bridge, the game lane stages nothing (`relentless_game.busy`).
+- **Display.** RUNNING NOW's NEEDS YOU names a ready showing's save and minutes, or the state and why it is not ready.
+
 ## 9. Escapes, seeds, TRUST
 
 **Escape:** anything found wrong after a PASS, by him, live, Auditor, a later Marker, or a regression. `relentless escape` writes
