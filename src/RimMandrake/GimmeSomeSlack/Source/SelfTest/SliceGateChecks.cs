@@ -24,6 +24,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Slices();
             AsyncSlices();
             GraphWorker();
+            SustainedChange();
             Coalesce();
             Window();
             Gate();
@@ -329,13 +330,84 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 Program.Check(b.LastPending == 0 && last != null && GssFuzz.Digest(last) == want, $"graph worker: after a job fault the Builds did not end equal to one unbudgeted Build ({builds} Builds)");
             }
             // (3) the instrument: the slowest frame Build while a lattice spawns must not grow with the lattices already there
-            //     (before the fix: 17 ms beside none, 188 ms beside eight, offline .NET 8)
+            //     (before the fix: 17 ms beside none, 188 ms beside eight, offline .NET 8). GSS_GRAPH_JOB_PROVE_SUSTAINED_CHANGE:
+            //     wall-clock ms is a loaded-machine instrument, so it is split. The cause of the regression (whole-map work on
+            //     the caller: a graph reduced or an edge laid in a frame Build) is counted and pinned on every attempt; the ms
+            //     bounds must hold on one of up to three attempts (a load spike is transient, a regression repeats).
             {
-                CordScaleBench.Row r0 = CordScaleBench.Measure(0), r8 = CordScaleBench.Measure(8);
-                Program.Check(r8.WorstNoGcMs <= SliceBoundMs && r8.P95Ms <= BudgetMs,
-                              $"graph worker: beside 8 lattices (E={r8.Edges}) the worst frame Build held {r8.WorstNoGcMs:0.0} ms GC-excluded (bound {SliceBoundMs}), p95 {r8.P95Ms:0.0} ms (bound {BudgetMs})");
-                Console.WriteLine($"graph worker: spawn frame Build worst (GC-excluded) / p95: beside 0 lattices {r0.WorstNoGcMs:0.00} / {r0.P95Ms:0.00} ms, beside 8 (E={r8.Edges}) {r8.WorstNoGcMs:0.00} / {r8.P95Ms:0.00} ms");
+                CordScaleBench.Row r0 = CordScaleBench.Measure(0), best = null;
+                int attempts = 0, callerWork = 0;
+                bool held = false;
+                while (attempts < 3 && !held)
+                {
+                    CordScaleBench.Row r = CordScaleBench.Measure(8);
+                    attempts++;
+                    callerWork += r.CallerReduce + r.OnCaller;
+                    held = r.WorstNoGcMs <= SliceBoundMs && r.P95Ms <= BudgetMs;
+                    if (best == null || held || r.WorstNoGcMs < best.WorstNoGcMs) best = r;
+                }
+                Program.Check(callerWork == 0, $"graph worker: beside 8 lattices the frame Builds did whole-map work on the caller ({callerWork} reduces + edges over {attempts} attempts)");
+                Program.Check(held, $"graph worker: beside 8 lattices (E={best.Edges}) no attempt of {attempts} held the frame: best worst {best.WorstNoGcMs:0.0} ms GC-excluded (bound {SliceBoundMs}), p95 {best.P95Ms:0.0} ms (bound {BudgetMs})");
+                Console.WriteLine($"graph worker gate: {attempts} attempt(s), caller work {callerWork}; spawn frame Build worst (GC-excluded) / p95: beside 0 lattices {r0.WorstNoGcMs:0.00} / {r0.P95Ms:0.00} ms, beside 8 (E={best.Edges}) {best.WorstNoGcMs:0.00} / {best.P95Ms:0.00} ms");
             }
+        }
+
+        /// <summary>GSS_GRAPH_JOB_PROVE_SUSTAINED_CHANGE (review of 0f395589f2): a landed graph is adopted only when its inputs
+        /// equal the Build's, so a map that changes on every frame starves adoption and the cords stay stale. This pins the
+        /// tradeoff as a bound counted in Builds and graph jobs, never in ms: (a) through N changing frames, even with the
+        /// worker finishing every job before the next frame (its best case), no graph is adopted, nothing is reduced or laid on
+        /// the caller, and every frame shows the previous pieces whole (stale, never torn); (b) once the map is quiet the cords
+        /// are fresh within QuietBuilds Builds, adopting the job the last change started (no new job), bit-identical to one
+        /// unbudgeted Build. So the staleness is the change span plus that one graph job and its lays (QuietBuilds frames when
+        /// the worker keeps up); it is not bounded while the change lasts.</summary>
+        private static void SustainedChange()
+        {
+            Func<Cell, bool> live = c => ((c.X * 7 + c.Z * 3) & 1) == 0;
+            const int k = 2, QuietBuilds = 2;
+            var (cells, lamps) = CordScaleBench.Lattice(k);
+            int n = Math.Min(120, cells.Count / 2), nc0 = cells.Count - n;
+            var b = new CordBuilder();
+            var sw = Stopwatch.StartNew();
+            void Idle() { while (b.LayRunning && sw.Elapsed.TotalSeconds < 120) System.Threading.Thread.Sleep(1); }
+            // the start: the lattice short of its last n conduits, settled
+            ulong want0 = GssFuzz.Digest(new CordBuilder().Build(CordScaleBench.World(k, nc0, lamps.Count), new BuildOptions(), live));
+            List<LaidPiece> outp = null;
+            for (int i = 0; i < 60; i++)
+            {
+                outp = b.Build(CordScaleBench.World(k, nc0, lamps.Count), new BuildOptions { AsyncLay = true }, live);
+                if (b.LastPending == 0 && !b.LayRunning) break;
+                Idle();
+            }
+            ulong pre = GssFuzz.Digest(outp);
+            int preCords = outp.Count(p => p.EndA != null);
+            Program.Check(b.LastPending == 0 && pre == want0 && preCords > 0, $"sustained change: the start did not settle equal to one unbudgeted Build ({preCords} cords, pending {b.LastPending})");
+            // (a) one more conduit every frame; the worker idles before each frame, so every job lands and is then dropped
+            int jobs0 = b.GraphJobs, landed0 = b.GraphLanded, stale = 0, torn = 0, notWaiting = 0, onCaller = 0;
+            for (int f = 1; f <= n; f++)
+            {
+                outp = b.Build(CordScaleBench.World(k, nc0 + f, lamps.Count), new BuildOptions { AsyncLay = true }, live);
+                if (!b.LastGraphPending) notWaiting++;
+                onCaller += b.LastLaidOnCaller;
+                if (GssFuzz.Digest(outp) == pre) stale++; else torn++;
+                Idle();
+            }
+            int jobsDuring = b.GraphJobs - jobs0, landedDuring = b.GraphLanded - landed0;
+            Program.Check(jobsDuring == n && landedDuring == 0, $"sustained change: over {n} changing frames {jobsDuring} graph jobs ran (want one a frame: instrument blind otherwise) and {landedDuring} were adopted (want 0: adoption needs equal inputs)");
+            Program.Check(notWaiting == 0 && onCaller == 0, $"sustained change: {notWaiting} changing frames did not wait on the worker, {onCaller} edges laid on the caller");
+            Program.Check(stale == n && torn == 0, $"sustained change: {torn} of {n} changing frames did not show the previous pieces whole");
+            // (b) the map goes quiet (the last changing frame already showed it): the job that frame started is adopted
+            ulong want = GssFuzz.Digest(new CordBuilder().Build(CordScaleBench.World(k, cells.Count, lamps.Count), new BuildOptions(), live));
+            int jobs1 = b.GraphJobs, landed1 = b.GraphLanded, quiet = 0;
+            do
+            {
+                outp = b.Build(CordScaleBench.World(k, cells.Count, lamps.Count), new BuildOptions { AsyncLay = true }, live);
+                quiet++;
+                Idle();
+            } while ((b.LastPending > 0 || b.LayRunning) && quiet < 60);
+            int jobsQuiet = b.GraphJobs - jobs1, landedQuiet = b.GraphLanded - landed1;
+            Program.Check(jobsQuiet == 0 && landedQuiet == 1, $"sustained change: once quiet {jobsQuiet} new graph jobs ran and {landedQuiet} were adopted (want 0, 1: the last change's own job)");
+            Program.Check(quiet <= QuietBuilds && b.LastPending == 0 && GssFuzz.Digest(outp) == want, $"sustained change: once quiet the cords took {quiet} Builds (bound {QuietBuilds}) and ended equal to one unbudgeted Build {GssFuzz.Digest(outp) == want}");
+            Console.WriteLine($"sustained change: {n} changing frames, {jobsDuring} jobs, {landedDuring} adopted, {stale} stale frames ({preCords} cords shown whole); quiet: {jobsQuiet} new job, {landedQuiet} adopted, fresh after {quiet} Builds");
         }
 
         private static (int slices, double worst, List<LaidPiece> last, int minEdgePieces) Converge(CordBuilder b, CordWorld w, BuildOptions opt, Func<Cell, bool> live)

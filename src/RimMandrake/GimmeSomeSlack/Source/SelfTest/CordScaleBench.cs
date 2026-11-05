@@ -58,6 +58,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             public int K, Edges, Frames;
             public double AllReusedMs, WorstMs, Inputs, Reduce, EdgesMs, Keys, Corr, Nodes, Reach;
             public int OnCaller, GcFrames;
+            /// <summary>Frame Builds that reduced a changed graph on the caller (neither waited on nor adopted from the worker).</summary>
+            public int CallerReduce;
             public double WorstNoGcMs, P95Ms;
             /// <summary>Round 10: bytes the caller allocated per frame for the snapshot copy (pooled, as the component does) and the Build.</summary>
             public long SnapAllocMax, SnapAllocSum, BuildAllocMax, BuildAllocSum;
@@ -99,9 +101,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 prev = w;
                 long a1 = GC.GetAllocatedBytesForCurrentThread();
                 int gc0 = GC.CollectionCount(0);
+                int adopted = b.GraphLanded;
                 sw.Restart();
                 b.Build(w, new BuildOptions { AsyncLay = true }, live);
                 double t = sw.Elapsed.TotalMilliseconds;
+                if (!b.LastGraphPending && !b.LastGraphReused && b.GraphLanded == adopted) row.CallerReduce++;
                 long a2 = GC.GetAllocatedBytesForCurrentThread();
                 row.SnapAllocMax = Math.Max(row.SnapAllocMax, a1 - a0);
                 row.SnapAllocSum += a1 - a0;
