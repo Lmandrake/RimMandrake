@@ -15571,3 +15571,4 @@
 {"seat":"CONDUCTOR","event":"close","id":"JUDGE_WEAK_RETHINK_NAME_THE_STRONG_PROOF","sha":"c46b338bb9","why":"Conductor built it in-window on owner order","ts":"2026-11-05T06:25:58Z","tsn":1793859958430890431}
 {"seat":"CONDUCTOR","event":"verify","id":"UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES","result":"pass","config":"run_selftests --only envcause game cause live","evidence":"/mnt/d/ClaudeWork/rimmandrake/UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES/selftests_0131e9ab96.log","sha":"0131e9ab96","level":"L0","ts":"2026-11-05T06:26:45Z","tsn":1793860005679649370}
 {"seat":"CONDUCTOR","event":"close","id":"UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES","sha":"0131e9ab96","why":"Conductor: builder landed it; selftests GREEN on bench","ts":"2026-11-05T06:26:49Z","tsn":1793860009408482752}
+{"seat":"CONDUCTOR","event":"seat","state":"ready","ts":"2026-11-05T06:29:32Z","tsn":1793860172307118415}
