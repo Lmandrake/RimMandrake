@@ -700,3 +700,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL A1 (L2), read-only proof","ts":"2026-11-05T15:57:42Z","tsn":1793894262209988041}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T15:57:48Z","tsn":1793894268935698601}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: review savegame for the owner's look","ts":"2026-11-05T15:58:27Z","tsn":1793894307589888858}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T16:19:33Z","tsn":1793895573500194224}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T16:19:43Z","tsn":1793895583666310276}
