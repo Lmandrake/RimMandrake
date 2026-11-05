@@ -100,6 +100,57 @@ def main():
         ok(alarm in one_pass(real, e("2026-11-03T22:30:00Z")), "and still at 22:30Z")
         ok(alarm not in one_pass(real, e("2026-11-03T19:30:00Z")), "and not at 19:30Z, before the incident")
 
+        # the existing pass reads it: the UNPATCHED relentless collector (c_relentless) on a store holding the real
+        # journal yields the key, and a real pass with it raises the alarm
+        saved_root = os.environ.get("RELENTLESS_ROOT")
+        os.environ["RELENTLESS_ROOT"] = str(tmp)     # c_relentless reads <root>/store
+        try:
+            journal(real)
+            pts = coll(e("2026-11-03T22:30:00Z"), ow.load_rules(), {})
+            q = pts.get(KEY) or {}
+            ok(q.get("m") == "MEASURED" and q.get("v") == 17 and q["x"]["deaths"] == 30,
+               "the unpatched c_relentless yields %s: 17 items, 30 deaths at 22:30Z" % KEY, q)
+            ow.COLLECTORS["relentless"] = coll
+            passes.append(1)
+            os.environ["RM_OPS_WATCH_DIR"] = str(tmp / ("ops%d" % len(passes)))
+            rr = ow.load_rules()
+            for t in rr["targets"]:
+                if t.get("conductor_log"):
+                    t["conductor_log"] = str(tmp / "conductor_log.md")
+            got = ow.run(now=e("2026-11-03T22:30:00Z"), rules=rr, filer=lambda todo, conf: {a["name"]: None for a in todo},
+                         families=["relentless"])["alarms"]
+            ok(alarm in got, "a real pass with the real collector alarms on the real journal", got)
+        finally:
+            if saved_root is None:
+                os.environ.pop("RELENTLESS_ROOT", None)
+            else:
+                os.environ["RELENTLESS_ROOT"] = saved_root
+
+        # the verdict acts relentless.step really writes break the run: drive the real step (selftest_relentless's
+        # FakeWorld rig) through a checker PASS that closes (check_passed) and one whose live line is broken
+        # (live_broken, after_check), and splice its journal rows between deaths
+        sys.path.insert(0, str(HERE.parent / "rimflow"))
+        import selftest_relentless as SR
+        now = e("2026-11-05T12:00:00Z")
+        run = [tick(now - 3000 + 200 * n, death("ITEM_%d" % n)) for n in range(8)]
+        for lb, want in ((None, "check_passed"), ("unit down", "live_broken")):
+            x = SR.Rig(n=1, share=1.0)
+            try:
+                x.w.live_broken = lb
+                SR.full_pass(x, "I0")
+                x.tick()
+                rig = SR.journal(x)
+            finally:
+                x.done()
+            acts = [a for r in rig for a in ((r.get("acts") if r.get("do") in ("tick", "game_next") else [r]) or [])
+                    if isinstance(a, dict)]
+            ok(any(a.get("do") == want for a in acts), "the real step journals %s after a checker PASS" % want,
+               [a.get("do") for a in acts])
+            spliced = [dict(r, at=ow.iso(now - 3000 + 200 * 6 - 50)) for r in rig]
+            q = point(rows(*(run[:6] + spliced + run[6:])), now)
+            ok(q["v"] == 2 and want in q["x"]["broken_by"],
+               "the real step's %s rows break the run: 2 left" % want, q)
+
         # a verdict breaks the run
         now = e("2026-11-05T12:00:00Z")
         run = [tick(now - 3000 + 200 * n, death("ITEM_%d" % n)) for n in range(8)]
