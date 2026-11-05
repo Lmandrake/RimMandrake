@@ -349,6 +349,39 @@ def main():
         else:
             ok(end in ends and not hit and p9["relentless.churn_items"].get("v") == 0,
                "9: a '%s' ending is a put-down, not a failure: no churn" % end, (end in ends, sorted(p9)))
+    # 9w OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA: OPS_METRONOME_MIGRATE_CLOCKS_FENCED cuts one clock a day by design and read
+    # 'bouncing: 5 returns; waiting_for_sample failed it 5 times' off five `snag --wait-hours` endings (wait=true rows).
+    # A wait is time, not work: no failed attempt, no bounce, and its gen's spend is no returned work. The same rows
+    # without wait=true still read churn (the instrument can see).
+    for waited in (True, False):
+        sw = TMP / ("s9w_%s" % waited)
+        nm = "W9_ITEM"
+        d = sw / "items" / nm
+        d.mkdir(parents=True)
+        (d / "state.json").write_text(json.dumps({"status": "queued", "returns": 5, "gen": 6, "spent": 1}))
+        rows = []
+        for g in range(1, 6):
+            t = NOW - (6 - g) * HOUR
+            rows += [{"gen": g, "at": iso(t), "start": marker(nm, g)},
+                     dict({"gen": g, "at": iso(t + 60), "end": "waiting_for_sample", "approach_next": "build"},
+                          **({"wait": True} if waited else {}))]
+        (d / "attempts.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+        day = time.strftime("%Y%m%d", time.gmtime(NOW))
+        (sw / ("spend-%s.json" % day)).write_text(json.dumps({"spent": 500, "runs": {marker(nm, 5): 500}}))
+        (TMP / "ops" / "alarms.json").write_text("{}")
+        pw = OW.rl_churn(sw, NOW, cfg9)
+        hit = OW.CHURN_ITEM_PREFIX + nm in pw
+        ret = pw["relentless.returned_tokens_day"].get("v")
+        if waited:
+            ok(not hit and pw["relentless.churn_items"].get("v") == 0 and ret == 0,
+               "9w: five wait=true endings are no churn and no returned tokens", (sorted(pw), ret))
+            ok(not OW.attempt_failed(rows[1], ends) and OW.attempt_waited(rows[1]), "9w: a wait row is waited, not failed")
+            ok(not OW.in_churn({"returns": 5}, [(NOW - 60, "harness")], NOW, cfg9, waits=4),
+               "9w: one real failure plus four waits is 1 return, not a bounce")
+        else:
+            said = (pw.get(OW.CHURN_ITEM_PREFIX + nm) or {}).get("x", {}).get("said", "")
+            ok(hit and "5 returns" in said and ret == 500, "9w: the same rows without wait=true still read churn",
+               (said, ret))
     shutil.rmtree(TMP, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0

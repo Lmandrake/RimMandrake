@@ -2045,19 +2045,28 @@ def attempt_failed(r, ok_ends):
     """One attempts.jsonl row -> (epoch or None, ending class) when it is a FAILED ATTEMPT (rl_churn's doc), else None."""
     if not isinstance(r, dict) or not isinstance(r.get("gen"), int) or r.get("start"):
         return None
-    if r.get("end") and r["end"] not in ok_ends and "kind" not in r:
+    if r.get("end") and r["end"] not in ok_ends and "kind" not in r and not attempt_waited(r):
         return epoch(r.get("at")), str(r["end"])
     return None
 
 
-def in_churn(st, fails, now, cfg):
+def attempt_waited(r):
+    """One attempts.jsonl row is a WAIT: a `snag --wait-hours` ending (relentless.fail writes wait=true), time not work.
+    relentless.fail already keeps it out of the approach ladder; it is no failed attempt, its return is no bounce and its
+    gen's spend is no returned work (OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA: OPS_METRONOME_MIGRATE_CLOCKS_FENCED, cutting one
+    clock a day by design, read 'bouncing: 5 returns; waiting_for_sample failed it 5 times' off five planned waits)."""
+    return isinstance(r, dict) and isinstance(r.get("gen"), int) and bool(r.get("end")) and r.get("wait") is True
+
+
+def in_churn(st, fails, now, cfg, waits=0):
     """rl_churn's per-item rule, the one churn definition (RUNNING_NOW's row colours read it too): fails is
     [(epoch, class)] of the item's failed attempts; in churn when one is inside churn_window_h and state.json returns >=
-    churn_returns or one class failed it churn_same_class times."""
-    return bool(churn_why(st, fails, now, cfg))
+    churn_returns or one class failed it churn_same_class times. waits: the item's wait rows (attempt_waited), whose
+    returns state.json counts too and churn does not."""
+    return bool(churn_why(st, fails, now, cfg, waits))
 
 
-def churn_why(st, fails, now, cfg):
+def churn_why(st, fails, now, cfg, waits=0):
     """in_churn's reasons, [] when not in churn. The same-class count is windowed to the event (B7, 2026-11-05): a class
     counts only when it failed the item inside churn_window_h, so an old A,A and a new B is not a same-class repeat; an
     old A and a new A is one (the new failure repeats a known one, however slowly the item bounces)."""
@@ -2069,6 +2078,7 @@ def churn_why(st, fails, now, cfg):
     for _, c in fails:
         same[c] = same.get(c, 0) + 1
     rets = st.get("returns") if is_num(st.get("returns")) else 0
+    rets = max(0, rets - (waits if is_num(waits) else 0))     # a planned wait is a return, never a bounce
     out = ["%d returns" % rets] if rets >= int(cfg.get("churn_returns", 3)) else []
     rep = sorted(c for c in recent if same[c] >= int(cfg.get("churn_same_class", 2)))
     return out + ["%s failed it %d times" % (c, same[c]) for c in rep]
@@ -2147,7 +2157,7 @@ def churn_item_points(per, now, cfg, spend_known, held="read"):
     cap = max(0, min(int(cfg.get("churn_item_new_per_pass", 5)), int(cfg.get("churn_item_max_open", 12)) - len(held)))
     flagged = []
     torn = set()
-    for n, (st, fails, recent) in per.items():
+    for n, (st, fails, recent, *more) in per.items():
         if not isinstance(st, dict):
             torn.add(n)
             continue
@@ -2158,7 +2168,7 @@ def churn_item_points(per, now, cfg, spend_known, held="read"):
             # blocked on CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS, read 'unmeasured failed it 4 times; spend rising');
             # a held alarm on it reads 0 and clears, and it is read afresh once it is picked up again
             continue
-        why = ["bouncing: " + "; ".join(r)] if (r := churn_why(st, fails, now, cfg)) else []
+        why = ["bouncing: " + "; ".join(r)] if (r := churn_why(st, fails, now, cfg, more[0] if more else 0)) else []
         spent = st.get("spent") if is_num(st.get("spent")) else 0
         # closing is landing; a put-down item (held, blocked) is sent no run, so its spend is flat, not rising
         # (OPS_CHURN_DIAGNOSE_PIPELINE_NIZE_JOZV: PIPELINE_RENAME_WORKERS_NOW_SWAPPABLE, blocked on reach since 04:02Z with
@@ -2218,10 +2228,11 @@ def rl_churn(store, now, cfg):
     import hashlib
     by_hash, gen_end, started, churn, classes, torn, per = {}, {}, {}, [], {}, 0, {}
     ended_at = {}       # (item, gen) -> epoch of its latest ending row: a gen ended before the window spent nothing in it
+    waited = set()      # (item, gen) whose last ending is a wait (attempt_waited): time, not work, so no returned spend
     for n in names:
         by_hash[hashlib.sha1(n.encode()).hexdigest()[:10]] = n
         st = read_json(store / "items" / n / "state.json")
-        fails, cur = [], None
+        fails, cur, waits = [], None, 0
         try:
             with open(store / "items" / n / "attempts.jsonl", encoding="utf-8") as f:
                 for ln in f:
@@ -2244,6 +2255,8 @@ def rl_churn(store, now, cfg):
                         continue
                     if r.get("end") and "kind" not in r:
                         gen_end[(n, r["gen"])] = str(r["end"])
+                        (waited.add if attempt_waited(r) else waited.discard)((n, r["gen"]))
+                        waits += attempt_waited(r)
                     if r.get("end"):
                         k_ = (n, r["gen"])
                         ended_at[k_] = max(ended_at.get(k_) or 0, epoch(r.get("at")) or 0)
@@ -2254,16 +2267,16 @@ def rl_churn(store, now, cfg):
             pass        # an item never started has no attempts file
         if not isinstance(st, dict):
             torn += 1
-            per[n] = [None, fails, 0]      # torn: a held alarm on it holds, never clears on a state it cannot read
+            per[n] = [None, fails, 0, waits]      # torn: a held alarm on it holds, never clears on a state it cannot read
             continue
-        per[n] = [st, fails, 0]
-        if in_churn(st, fails, now, cfg):
+        per[n] = [st, fails, 0, waits]
+        if in_churn(st, fails, now, cfg, waits):
             churn.append((-(st.get("spent") or 0) if is_num(st.get("spent")) else 0, n))
             last = fails[-1][1]
             classes[last] = classes.get(last, 0) + 1
     # a gen is RETURNED when its last ending is a failure: a gen that failed a check and then ended done (or resumed:
     # unhold) sent nothing back to a worker, so its spend is not returned work
-    failed = {k: e for k, e in gen_end.items() if e not in ok_ends}
+    failed = {k: e for k, e in gen_end.items() if e not in ok_ends and k not in waited}
     churn.sort()
     cause = ", ".join("%d %s" % (v, k) for k, v in sorted(classes.items(), key=lambda kv: -kv[1])[:4]) or "none"
     pts = {"relentless.churn_items": M(len(churn), CHURN_UNITS[0], first=[n for _, n in churn[:5]], window_h=win_h,
