@@ -6298,32 +6298,39 @@ def game_next(store=None, fx=None, r=None, now=None):
                 if time.time() >= give_up:
                     return [{"do": "skip", "why": "tick.lock busy for %d s: the next tick serves it" % GAME_NEXT_WAIT_S}]
                 time.sleep(2)
-        if not wake_taken(store):
-            return [{"do": "skip", "why": "no wake"}]
-        if fx is None:
-            os.environ["PATH"] = windows_path(os.environ.get("PATH", ""))
-            fx = Effects(r, store)
-            store.on_alarm = fx.alarm_signal
-        now = time.time() if now is None else now
-        why = relentless_integrity.due(store, fx, r, now)
-        if why:     # only the tick may run the gate
-            return [{"do": "skip", "why": "integrity gate due: %s" % why}]
-        wall = getattr(fx, "wall", time.monotonic)
-        whole, acts = wall(), []
+        # the mark stands for the whole hold, flush included: a tick that meets the lock busy with no mark skips at once,
+        # and two passes taking it down before their flush cost two ticks and 1009 s (OPS_RELENTLESS_READING_RESTORE_IUUR)
         with open(store.p(GAME_NEXT_ON), "w"):
             pass
         try:
-            game_pass(store, fx, r, now, acts)
+            return _game_next_held(store, fx, r, now)
         finally:
             try:
                 os.remove(store.p(GAME_NEXT_ON))
             except OSError:
                 pass
-        why = fx.flush()        # what the steps wrote to the ledger; the next tick retries a failure
-        if why:
-            acts.append({"do": "flush_retry", "why": why})
-        store.journal({"at": iso(now), "do": "game_next", "wall_s": int(wall() - whole), "acts": acts})
-        return acts
+
+
+def _game_next_held(store, fx, r, now):
+    """game_next's body, under tick.lock and its mark."""
+    if not wake_taken(store):
+        return [{"do": "skip", "why": "no wake"}]
+    if fx is None:
+        os.environ["PATH"] = windows_path(os.environ.get("PATH", ""))
+        fx = Effects(r, store)
+        store.on_alarm = fx.alarm_signal
+    now = time.time() if now is None else now
+    why = relentless_integrity.due(store, fx, r, now)
+    if why:     # only the tick may run the gate
+        return [{"do": "skip", "why": "integrity gate due: %s" % why}]
+    wall = getattr(fx, "wall", time.monotonic)
+    whole, acts = wall(), []
+    game_pass(store, fx, r, now, acts)
+    why = fx.flush()        # what the steps wrote to the ledger; the next tick retries a failure
+    if why:
+        acts.append({"do": "flush_retry", "why": why})
+    store.journal({"at": iso(now), "do": "game_next", "wall_s": int(wall() - whole), "acts": acts})
+    return acts
 
 
 def tick(store=None, fx=None, r=None, now=None):
