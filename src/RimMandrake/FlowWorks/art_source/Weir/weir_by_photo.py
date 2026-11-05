@@ -504,23 +504,39 @@ def _col_extents(body):
 
 
 def crest_spill(body, seed):
-    """The crest sheet for the spill-face art (east; the N-S art turned): water pouring over THIS body's crest -- it
-    starts ~40 % down the wall in every column (so it follows a lumpy, stepped or zig-zag crest instead of drawing one
-    straight bar across the river) and thins to the toe; its lip is a soft 1 px sheen, not a white line."""
+    """The crest sheet for the spill-face art (east; the N-S art turned): water pouring over THIS body's crest
+    (FW_ART_POLISH_REDRAW_FOUR_SMALL_MISSES: the old sheet read as faint horizontal grey bands). In every column it
+    starts ~35 % down the wall (so it follows a lumpy, stepped or zig-zag crest instead of drawing one straight bar
+    across the river) with a glassy lip, falls as vertical ribbons (bright and dark streaks fixed per column, a slow
+    downward ripple inside each) that grow more opaque toward the foot, and ends in a broken white foam toe just past the
+    wall. Every term is periodic along x with period CELL, so joined sections tile."""
     top, bot = _col_extents(body)
     top = np.round(np.convolve(np.r_[top[-2:], top, top[:2]], np.ones(5) / 5, "valid")).astype(int)
     a = np.zeros((CELL, CELL, 4), np.float32)
-    streak = build.periodic_noise(1, CELL, seed, cycles=(3, 5, 7, 11, 16, 23))[0]
+    streak = build.periodic_noise(1, CELL, seed, cycles=(7, 11, 16, 23, 31))[0]        # fine ribbons
+    broad = build.periodic_noise(1, CELL, seed + 7, cycles=(2, 3, 5))[0]               # slow sheet thickness
+    phase = build.periodic_noise(1, CELL, seed + 13, cycles=(5, 9, 13))[0] * 2 * np.pi  # ripple offset per column
+    foam = build.periodic_noise(1, CELL, seed + 19, cycles=(9, 14, 21, 29))[0]
     for x in range(CELL):
-        y0 = int(top[x] + 0.38 * (bot[x] - top[x]))
-        y1 = int(bot[x]) + 3
-        for y in range(y0, min(CELL, y1)):
-            f = (y - y0) / max(1, y1 - y0)
-            a[y, x, :3] = (200 + 40 * streak[x], 228 + 20 * streak[x], 240)
-            a[y, x, 3] = 255 * (0.10 + 0.22 * streak[x] ** 2) * (1 - 0.5 * f)
-        a[y0, x, :3] = 236
-        a[y0, x, 3] = 70
-    return Image.fromarray(a.astype(np.uint8))
+        y0 = int(top[x] + 0.35 * (bot[x] - top[x]))
+        y1 = int(bot[x])
+        rib = streak[x] ** 1.5
+        for y in range(y0, min(CELL, y1 + 1)):
+            f = (y - y0) / max(1, y1 - y0)                       # 0 at the lip, 1 at the foot
+            ripple = 0.5 + 0.5 * np.sin(0.55 * (y - y0) + phase[x])
+            v = 0.55 * rib + 0.25 * broad[x] + 0.20 * ripple * (0.4 + 0.6 * f)
+            a[y, x, :3] = (95 + 155 * v, 150 + 102 * v, 175 + 78 * v)    # teal troughs, white crests
+            a[y, x, 3] = 255 * min(1.0, (0.45 + 0.45 * v) * (0.85 + 0.2 * f))
+        for y in range(y0, min(CELL, y0 + 2)):                    # the glassy lip over the crest
+            a[y, x, :3] = (240, 250, 255)
+            a[y, x, 3] = 200 if y == y0 else 120
+        reach = 3 + int(7 * foam[x])                              # foam toe: white, broken, past the wall foot
+        for y in range(max(y0, y1 - 3), min(CELL, y1 + reach)):
+            g = (y - (y1 - 3)) / max(1, reach + 3)
+            w = (1 - g) * (0.55 + 0.45 * foam[x])
+            a[y, x, :3] = (245, 250, 252)
+            a[y, x, 3] = max(a[y, x, 3], 255 * min(1.0, 0.25 + 0.85 * w))
+    return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
 
 
 def crest_spill_up(body, seed):

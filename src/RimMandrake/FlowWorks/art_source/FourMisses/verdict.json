@@ -1,0 +1,30 @@
+{
+ "item": "FW_ART_POLISH_REDRAW_FOUR_SMALL_MISSES",
+ "sheet": "sheet.png",
+ "maker": "relentless builder FW_ART_POLISH_REDRAW_FOUR_SMALL_MISSES gen1",
+ "judge": "rm-judge opus (independent, did not make the art)",
+ "date": "2026-11-05",
+ "before_bottle": {
+  "verdict": "REGEN",
+  "why": "Weak, not really bad: shape, cap, label and real partial alpha are fine, but it is a photoreal render (specular glints, fine ribbing, no keyline) and reads as a photo cut-out beside the outlined painterly containers. Under the pipeline weak goes to a second look, and GPT already rejected it, so it is regen, not keep."
+ },
+ "items": {
+  "scorch": {
+   "verdict": "ACCEPT",
+   "why": "Re-judged all 12 Char pieces, before vs out, plus sheet row 1. The adaptive thinning leaves every piece, including the changed Char0, 2, 4 and 7, with a consistent thin dark rim and no heavy black halo. Shapes, ash highlights and wood grain are unchanged, and the edges are not jagged or chewed. Char5's detached stray speck is gone and the piece itself is intact. Char9's small separate pebbles remain; they are deliberate fragments, not specks. At 32 px every piece still reads as charred debris with a restrained keyline."
+  },
+  "sign": {
+   "verdict": "ACCEPT",
+   "why": "Baked oval ground shadow removed: the post now ends cleanly at its foot on real alpha (opaque pixel count unchanged at 5671; only the semi-transparent shadow pixels went to zero). Board, keyline and post are unchanged, with no leftover smudge at true scale or at 32 px."
+  },
+  "bottle": {
+   "verdict": "ACCEPT",
+   "why": "Same shape and footprint, partial alpha kept (the body still reads as clear plastic). The photo glints are collapsed into a few value groups and a restrained dark 1 px keyline is added, so it now sits with the outlined containers. Minor: the posterised body is a bit speckly and the label edges are soft at 256 px, but this does not show at drawSize 0.75 (96 px true scale, 24 px normal play). Not worth another pass."
+  },
+  "weir_spill": {
+   "verdict": "ACCEPT",
+   "why": "Before was a flat grey horizontally banded strip with no crest and no foot. All four after looks have a bright crest line, vertical falling-water streaks and a distinct white foam lip at the downstream edge, so the strip reads as water going over a weir in scene and still reads at 32 px. Crest shape follows each look's structure: straight for Industrial and Modern, rubble-broken for Scrapper, crenellated for Futuristic's piano-key weir. North facings are consistent rotations. Minor nit, not blocking: the Modern spill is pale and close in value to its concrete sill, so the crest edge separates weakly in scene. A slightly darker water body under the crest line would help."
+  }
+ },
+ "rejudged_scorch": "2026-11-05 after speck cut + adaptive band"
+}
