@@ -3,6 +3,7 @@ a ladder job queued at the nearest wall (portable if spare/shallow, else fixed),
 BENCH belt 2026-10-22).
 
   python.exe src/RimMandrake/FlowWorks/northstar/pit_rescue_live.py [out.json] [--origin X,Z] [--fresh-map] [--ticks N]
+      [--scene rescue|escape] [--raised-ticks N]
 
 Scene (plot from --origin, default 30,30; 16 x 12 cleared + read back): a sheer pit x = 6..8, z = 4..6 dug D 4 (2 m: nobody
 without gear climbs it, climb_proof); a colonist DOWNED on its floor (7, 5) (pawn_force_incapacitate, no bleeding); every
@@ -22,10 +23,25 @@ Rows:
   RESCUE_COLONIST_OUT    EXPECT within --ticks the downed colonist is off the pit floor (carried out; in the bed or on
                          the way). LIES: a colonist who died is not rescued (dead is read); the plain stepper is used
                          (the governed clock stops on a downed colonist by design).
+
+--scene escape (PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN; LADDER_PARITY_BUILD_NO_KEYS_REQUIRED A6, owner Q4 2026-10-23: "A prison
+ladder left down is equivalent to a prison door left open... same game rules apply."): the same plot and sheer pit, an RM_Ladder
+on its west wall (6, 5), a hostile Villager on the floor (8, 5) made the colony's prisoner (pawn_set_guest_status, read back).
+Phase 1 RAISED (RM_PromotionProofs.ProofLadder raise, read back) for --raised-ticks; phase 2 LOWERED for up to --ticks or
+until he is off the pit floor. Each phase reads RM_LadderParity.ProofLadderParity "may:" (mayClimb, letsOut) and counts the
+new "escap" lines in rimworld/list_messages (vanilla JobGiver_PrisonerEscape sends MessagePrisonerIsEscaping as it starts the
+escape: a Goto with exitMapOnArrival); in the LOWERED phase a sampled Goto counts as the escape started too (a live message can expire between
+samples). Verdict: escape_verdict (pure; selftest_pit_escape_live.py).
+  LADDER_RAISED_PRISONER_STAYS     EXPECT no escape message and the prisoner on the pit floor at every sample.
+  LADDER_LOWERED_PRISONER_ESCAPES  EXPECT an escape message and the prisoner off the pit floor (or gone off the map).
+  LIES: a ladder not read back in the wanted state, a pawn not a prisoner, a dead prisoner -> UNMEASURED SITE; a prisoner
+  already out when the lowered phase starts -> UNMEASURED SITE; asleep (LayDown) through a quiet lowered phase -> UNMEASURED
+  SITE (vanilla does not escape in his sleep), never MOD.
 """
 import argparse
 import json
 import os
+import re
 import sys
 import time
 
@@ -33,6 +49,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
+PROMO = "RimMandrake.FlowWorks.RM_PromotionProofs"
+LADP = "RimMandrake.FlowWorks.RM_LadderParity"
 ITEM = "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS"
 LADDERS = ("RM_LadderPortable", "RM_Ladder")
 
@@ -60,21 +78,188 @@ def lying_cells(last):
     return cells
 
 
+ESCAPE_ITEM = "PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN"
+ESCAPE_IDS = ("LADDER_RAISED_PRISONER_STAYS", "LADDER_LOWERED_PRISONER_ESCAPES")
+
+
+def kv(txt):
+    """'a=1 b=x' -> {'a': '1', 'b': 'x'} (the ProofLadder / ProofLadderParity reply shape)."""
+    out = {}
+    for tok in str(txt or "").split():
+        if "=" in tok:
+            k, v = tok.split("=", 1)
+            out[k] = v
+    return out
+
+
+def escape_lines(reply):
+    """Every string anywhere in a rimworld/list_messages reply that speaks of an escape (lowercase 'escap')."""
+    found = []
+
+    def walk(x):
+        if isinstance(x, str):
+            if "escap" in x.lower():
+                found.append(x)
+        elif isinstance(x, dict):
+            for v in x.values():
+                walk(v)
+        elif isinstance(x, (list, tuple)):
+            for v in x:
+                walk(v)
+    walk((reply or {}).get("messages") if isinstance(reply, dict) else reply)
+    return found
+
+
+def new_lines(before, after):
+    """Lines in <after> beyond their count in <before> (a ring of messages: the same text may repeat)."""
+    left = list(before or [])
+    out = []
+    for line in after or []:
+        if line in left:
+            left.remove(line)
+        else:
+            out.append(line)
+    return out
+
+
+def escape_verdict(raised, lowered):
+    """Pure verdict of the escape scene. Each phase: {"ladder": ProofLadder kv, "prisoner": bool read back, "startInPit": bool,
+    "trail": [{"t", "inPit", "gone", "dead", "job"}], "escapeMsgs": int, "escapeJob": bool (a Goto sampled), "may":
+    ProofLadderParity may: kv}. A phase the driver
+    never reached is None. Returns [(row id, status, class, detail)] for ESCAPE_IDS, in order."""
+    rows = []
+    for rid, ph, want_raised in ((ESCAPE_IDS[0], raised, True), (ESCAPE_IDS[1], lowered, False)):
+        if not ph:
+            rows.append((rid, "UNMEASURED", "HARNESS", {"why": "phase not run"}))
+            continue
+        det = {k: ph.get(k) for k in ("ladder", "may", "escapeMsgs", "escapeJob", "startInPit")}
+        trail = ph.get("trail") or []
+        det["samples"] = len(trail)
+        det["last"] = trail[-1] if trail else None
+        lad = ph.get("ladder") or {}
+        why = None
+        if lad.get("present") != "True" or lad.get("raised") != str(want_raised):
+            why = "ladder not read back %s" % ("raised" if want_raised else "lowered")
+        elif not ph.get("prisoner"):
+            why = "the pawn is not the colony's prisoner (read back)"
+        elif not trail:
+            why = "no samples"
+        elif any(s.get("dead") for s in trail):
+            why = "the prisoner died"
+        elif not ph.get("startInPit"):
+            why = "the prisoner was not on the pit floor when the phase began"
+        if why:
+            det["why"] = why
+            rows.append((rid, "UNMEASURED", "SITE", det))
+            continue
+        # escape started: MessagePrisonerIsEscaping; when LOWERED also the Goto it gives (rimworld/list_messages may read the
+        # live, expiring messages, so a message can fall between samples). Not when RAISED: vanilla gives other plain Gotos
+        # too (JobGiver_MoveToStandable, FleePotentialExplosion, SeekAllowedArea), so a Goto alone never fails that row.
+        msgs = int(ph.get("escapeMsgs") or 0) + (1 if ph.get("escapeJob") and not want_raised else 0)
+        out = any((not s.get("inPit")) or s.get("gone") for s in trail)
+        if want_raised:
+            rows.append((rid, "PASS" if msgs == 0 and not out else "FAIL", "MOD", det))
+            continue
+        if msgs > 0 and out:
+            rows.append((rid, "PASS", "MOD", det))
+            continue
+        tail = [str(s.get("job") or "") for s in trail[-3:]]
+        if msgs == 0 and not out and len(tail) == 3 and all(j.startswith("LayDown") for j in tail):
+            det["why"] = "asleep through the lowered phase (no escape is started in sleep)"
+            rows.append((rid, "UNMEASURED", "SITE", det))
+            continue
+        rows.append((rid, "FAIL", "MOD", det))
+    return rows
+
+
+def run_escape(a, B, V, res, row, all_rows, step, P):
+    """The escape scene (module docstring, --scene escape); the plot is already reset and prepared."""
+    pit = {P(x, z) for x in range(6, 9) for z in range(4, 7)}
+    for c in sorted(pit):
+        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=4, setFill=-1)
+    foot, start = P(6, 5), P(8, 5)
+    lad = B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % foot) or {}
+    step(60)
+    sp = B.call("jawa/spawn_pawn", kindDef="Villager", x=start[0], z=start[1], faction="hostile", count=1) or {}
+    pid = ((sp.get("pawns") or [{}])[0]).get("id")
+    gs = (B.call("jawa/pawn_set_guest_status", pawn=pid, guestStatus="Prisoner", hostFaction="PlayerColony") or {}) if pid else {}
+    res["scene"] = {"ladder": {k: lad.get(k) for k in ("success", "thingsPlaced")}, "prisoner": pid, "guest": str(gs)[:200]}
+
+    def sc(typ, method, arg):
+        r = B.call("jawa/static_call", type=typ, method=method, args=arg) or {}
+        return str(r.get("result") if r.get("result") is not None else "")
+
+    def state():
+        ps = {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=400, includeCorpses=True) or {}).get("pawns") or []}
+        p = ps.get(pid)
+        if p is None:  # list_pawns lists spawned pawns and corpses: absent = off the map (an escape ends at the edge)
+            return {"gone": True, "inPit": False, "dead": False}
+        pos = (p.get("x"), p.get("z"))
+        return {"pos": pos, "inPit": pos in pit, "gone": p.get("spawned") is False, "dead": bool(p.get("dead"))}
+    # list_pawns carries no prisoner flag; the guest tool reads GuestStatus and HostFaction back after the engine call
+    is_prisoner = gs.get("guestStatusAfter") == "Prisoner" and bool(gs.get("hostFactionAfter"))
+    # ProofLadderParity takes the thingIDNumber (int.TryParse); spawn_pawn gives the ThingID ("Human123")
+    m = re.search(r"(\d+)$", str(pid or ""))
+    num = int(m.group(1)) if m else None
+
+    def phase(op, ticks, stop_out):
+        ladder = kv(sc(PROMO, "ProofLadder", "%d,%d,%s" % (foot[0], foot[1], op)))
+        step(2)
+        s0 = state()
+        ph = {"ladder": ladder, "prisoner": is_prisoner, "startInPit": bool(s0.get("inPit") and not s0.get("gone")),
+              "may": kv(sc(LADP, "ProofLadderParity", "may:%d,%d,%d" % (num, foot[0], foot[1]))) if num else {}}
+        before = escape_lines(B.call("rimworld/list_messages", limit=200))
+        trail, t, msgs = [], 0, []
+        while t < ticks:
+            step(250)
+            t += 250
+            s = state()
+            pr = B.call("jawa/attack_target_probe", pawn=pid, maxDist=60, _answer=True) or {}
+            s.update({"t": t, "job": pr.get("curJob")})
+            trail.append(s)
+            msgs = new_lines(before, escape_lines(B.call("rimworld/list_messages", limit=200)))
+            if s.get("dead") or (stop_out and (msgs or s["job"] == "Goto") and (s["gone"] or not s["inPit"])):
+                break
+        ph.update({"trail": trail, "escapeMsgs": len(msgs), "escapeText": msgs[:3],
+                   "escapeJob": any(s_.get("job") == "Goto" for s_ in trail)})
+        return ph
+    if not pid or not (lad.get("success") and lad.get("thingsPlaced")):
+        for rid in ESCAPE_IDS:
+            row(rid, "UNMEASURED", "SITE", {"why": "scene not staged", "scene": res["scene"]})
+        if pid:
+            B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish", _answer=True)
+        return 2
+    raised = phase("raise", a.raised_ticks, False)
+    lowered = phase("lower", a.ticks, True) if raised["trail"] and not raised["trail"][-1].get("dead") else None
+    res["phases"] = {"raised": raised, "lowered": lowered}
+    for rid, st, cls, det in escape_verdict(raised, lowered):
+        row(rid, st, cls, det)
+    if pid:
+        B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish", _answer=True)
+    res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+    return 0 if all(r["status"] == "PASS" for r in res["rows"]) else 1
+
+
 def main(argv=None, bridge=None, validation=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("out", nargs="?", default=None)
     ap.add_argument("--origin", default="30,30")
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--ticks", type=int, default=8000)
+    ap.add_argument("--scene", choices=("rescue", "escape"), default="rescue")
+    ap.add_argument("--raised-ticks", type=int, default=2500)
     a = ap.parse_args(argv)
     if bridge is None or validation is None:
         import proof_hose as PH  # noqa: E402
     V = validation or PH.V
     B = bridge or PH.PB()
     out = a.out or os.path.join(HERE, "pit_rescue_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
+    if os.path.dirname(out):
+        os.makedirs(os.path.dirname(out), exist_ok=True)
     rows = []
     res = {"script": "pit_rescue_live.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a)}
-    IDS = ("RESCUE_LADDER_QUEUED", "RESCUE_LADDER_BUILT", "RESCUE_COLONIST_OUT")
+    IDS = ESCAPE_IDS if a.scene == "escape" else ("RESCUE_LADDER_QUEUED", "RESCUE_LADDER_BUILT", "RESCUE_COLONIST_OUT")
+    item = ESCAPE_ITEM if a.scene == "escape" else ITEM
 
     def save():
         with open(out + ".tmp", "w", encoding="utf-8") as f:
@@ -82,7 +267,7 @@ def main(argv=None, bridge=None, validation=None):
         os.replace(out + ".tmp", out)
 
     def row(rid, st, cls, det):
-        rows.append({"id": rid, "status": st, "class": cls, "item": ITEM, "detail": det})
+        rows.append({"id": rid, "status": st, "class": cls, "item": item, "detail": det})
         print("%-24s %-10s %-6s %s" % (rid, st, cls, json.dumps(det, default=str)[:400]), flush=True)
         save()
 
@@ -112,6 +297,10 @@ def main(argv=None, bridge=None, validation=None):
     if [r for r in site_rows if r.get("status") not in (None, "PASS")]:
         all_rows("UNMEASURED", "SITE", {"why": "site not prepared", "site": site_rows[:2]})
         return 2
+    if a.scene == "escape":
+        rc = run_escape(a, B, V, res, row, all_rows, step, P)
+        save()
+        return rc
     pit = {P(x, z) for x in range(6, 9) for z in range(4, 7)}
     for c in sorted(pit):
         B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=4, setFill=-1)

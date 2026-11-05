@@ -1,0 +1,1 @@
+A6 L2: on a quicktest map, a colony prisoner on a sheer pit floor with the RM_Ladder RAISED gets no escape message and stays on the floor (LADDER_RAISED_PRISONER_STAYS PASS); LOWERED, vanilla's escape starts (MessagePrisonerIsEscaping or its Goto) and he climbs off the floor (LADDER_LOWERED_PRISONER_ESCAPES PASS).

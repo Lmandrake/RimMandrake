@@ -1,0 +1,5 @@
+# PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN: one sitting, a Playing quicktest map (minimal list + FlowWorks, all five DLC).
+# pit_rescue_live.py --scene escape digs a sheer D4 3x3 pit, stands an RM_Ladder on its west wall, makes a hostile Villager on
+# the floor the colony's prisoner, holds the ladder RAISED 2500 ticks then LOWERED up to 8000; exit 0 only when both rows PASS.
+# Verdict: Transient/fw_scenes/live/pit_escape/escape.json (rows LADDER_RAISED_PRISONER_STAYS, LADDER_LOWERED_PRISONER_ESCAPES).
+live-proof A6: python.exe src/RimMandrake/FlowWorks/northstar/pit_rescue_live.py Transient/fw_scenes/live/pit_escape/escape.json --scene escape < /dev/null
