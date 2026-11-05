@@ -39,6 +39,7 @@
     "rm-mirror": "the D: mirror export, not an Operations clock",
     "rm-harness": "slice",
     "rm-restart-now-*": "transient restart runs",
-    "rm-role-*": "transient role runs (rm-role-<role>-<ts>: Conductor, Operations, ...), launched by systemd-run; ops_watch reads their result files"
+    "rm-role-*": "transient role runs (rm-role-<role>-<ts>: Conductor, Operations, ...), launched by systemd-run; ops_watch reads their result files",
+    "rm-sheet-*": "review-sheet servers an agent starts with systemd-run (src/RimMandrake/Utils/art/serve_gated.py): a page for the owner, not a clock"
   }
 }
