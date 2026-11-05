@@ -1,0 +1,1 @@
+./publish can exit 120 with no output yet have pushed: prove publication with git merge-base --is-ancestor <sha> origin/main, never the exit code (seen 2026-11-05, CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE 4eabac097b)
