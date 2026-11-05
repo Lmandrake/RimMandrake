@@ -553,3 +553,10 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T04:03:10Z","tsn":1793851390642373926}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WATER_DEPTH_RESKIN_HE_LOOKS_FIRST: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T04:19:10Z","tsn":1793852350830164668}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T04:24:29Z","tsn":1793852669709719441}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-05T06:29:11Z","tsn":1793860152003504913}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T06:29:22Z","tsn":1793860162708811525}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES A1 (L2), read-only proof","ts":"2026-11-05T06:29:30Z","tsn":1793860170327121474}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T06:31:28Z","tsn":1793860288492714464}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HEAVY_TEXTURES_MEASURE_REAL_VRAM A1 (L1), read-only proof","ts":"2026-11-05T06:32:06Z","tsn":1793860327000088855}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T06:32:48Z","tsn":1793860368608007572}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HEAVY_TEXTURES_MEASURE_REAL_VRAM A2 (L1), read-only proof","ts":"2026-11-05T06:32:57Z","tsn":1793860377717160416}
