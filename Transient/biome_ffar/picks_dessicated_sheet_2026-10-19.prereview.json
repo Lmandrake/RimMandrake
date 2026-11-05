@@ -1,0 +1,255 @@
+{
+ "sheet": "picks_dessicated_sheet_2026-10-19.html",
+ "looked_by": "judge:claude-opus",
+ "when": "2026-11-05T10:47:15-0800",
+ "caught": "rebuilt fresh (was all STALE); Rycrit dropped (cut by him, no def); 19 rows flagged: crate stand-in facings (Tach, Thranta, Veermok), blank FLYING lanes (Brezak, Thranta, Tibidee), wrong creature Tibidee C, mixed young/female sets (Boarwolf, HarvesterBeetle, Mastmot, Silooth, Torton), purple JungleRancor A he said eliminate, Narglatch still split male/female, kept redos maybe not installed (Akk, Brezak, Grazer)",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "RSW_Akk": {
+   "fp": "821dab9052b7320f",
+   "verdict": "FLAG",
+   "note": "prefill F (in-game) though his recorded decision is redo; in-game F north looks like the old small back view, not the 10-25 kept picks1redo north G - check the kept redo is installed. Corpse lane separate; donor original J is crude line-art."
+  },
+  "RSW_Boarwolf": {
+   "fp": "7fe5fc7898d14c19",
+   "verdict": "FLAG",
+   "note": "adult A/B/H render cleanly, prefill A matches him; but young lanes I (in game) and E show a striped orange piglet icon S/N with an adult boar-wolf East - mixed objects within one candidate."
+  },
+  "RSW_Bordok": {
+   "fp": "c0e90e91ab194c5c",
+   "verdict": "FLAG",
+   "note": "prefill C (in-game) though recorded decision is redo; C/A are horned bovines (no two-pony art left), S/E/N clean; no picks1redo render shown for the 10-25 keep to compare. Corpse lane separate."
+  },
+  "RSW_Brezak": {
+   "fp": "2847d7b6a5a8ff40",
+   "verdict": "FLAG",
+   "note": "I FLYING (in game, Brezak_Flying_) renders blank - missing picture; in-game D north still matches old E north, not the kept picks1redo north F. Prefill D vs recorded redo."
+  },
+  "RSW_CorellianHound": {
+   "fp": "cafd513cbaa45905",
+   "verdict": "OK",
+   "note": "adult D/A/B S/E/N render cleanly and match; corpse lane separate; not decided by him (A recorded, prefill D)."
+  },
+  "RSW_Devourers": {
+   "fp": "48266fe4e32342d2",
+   "verdict": "OK",
+   "note": "adult D/B/A render cleanly; prefill A = his pick (A is 'was in game', nearly identical to in-game D); corpse lanes separate."
+  },
+  "RSW_EnergySpider": {
+   "fp": "7b975221b78e50a5",
+   "verdict": "OK",
+   "note": "adult D/B/A render cleanly as striped spider; corpse lane separate; donor original F is crude line-art."
+  },
+  "RSW_FrogDog": {
+   "fp": "c964d49c4e7bfd17",
+   "verdict": "OK",
+   "note": "adult and hatchling lanes render cleanly as frog dog, prefill C = his pick; single-facing candidates are partial sets; corpse lane separate."
+  },
+  "RSW_Grazer": {
+   "fp": "67b9aaecac044912",
+   "verdict": "FLAG",
+   "note": "male lanes clean, prefill A = his pick; but in-game female J (and E) is an old flat cartoon-style blob unlike the kept picks1set/picks1redo female K/L - check female install."
+  },
+  "RSW_Gualaar": {
+   "fp": "42fddb941a507f55",
+   "verdict": "OK",
+   "note": "in-game C shows the big head bone crest his redo asked for; A/B offbiome llamas lack it; in-game corpse D has no crest (minor)."
+  },
+  "RSW_Gundark": {
+   "fp": "4ac5cd3dcded97ac",
+   "verdict": "OK",
+   "note": "adult A renders cleanly, prefill A = his pick; corpse lane separate; unassigned C/D are leather item renders, not the creature."
+  },
+  "RSW_HarvesterBeetle": {
+   "fp": "dc64e1a5659dee2a",
+   "verdict": "FLAG",
+   "note": "adult A clean, prefill A = his pick; young J (in game) and F show flat lime-green placeholder icons for S/N with a full beetle East; donor dessicated N is a stray stroke."
+  },
+  "RSW_Insectomorph": {
+   "fp": "a821ea56c2592576",
+   "verdict": "OK",
+   "note": "in-game D has the S/N his 'Generate North and South' asked for (matches picks1redo E); prefill D vs his recorded B; old A is the previous grey creature; corpse lane separate."
+  },
+  "RSW_JungleRancor": {
+   "fp": "2cf3519b56bf1a4c",
+   "verdict": "FLAG",
+   "note": "prefill G (picks1redo brown) fits his ruling, but purple A (donorport_junglerancor_m_v1) is still offered though his 2026-10-15 ruling said eliminate the purple images; BullRancor in-game corpse I reads flattened/garbled."
+  },
+  "RSW_Kaadu": {
+   "fp": "523b293d4b82bdf5",
+   "verdict": "FLAG",
+   "note": "G 'SWIMMING male' shows a standing walking kaadu, not a swimming pose - wrong object in the swimming slot (D in-game is correct swimmer); adult C follows his 'use female for male'."
+  },
+  "RSW_Katarn": {
+   "fp": "4d50acc87f53d1b4",
+   "verdict": "OK",
+   "note": "adult A/B S/E/N render cleanly, prefill A = his pick; corpse lane separate."
+  },
+  "RSW_KellDragon": {
+   "fp": "65c7fbc101d5029c",
+   "verdict": "OK",
+   "note": "in-game E matches picks1set F (B-style with facings equalised, as his redo asked); prefill F vs recorded redo; corpse lane separate."
+  },
+  "RSW_KwazelMaw": {
+   "fp": "4f4d39c4bdf97c19",
+   "verdict": "OK",
+   "note": "adult A and swimming C render cleanly, prefill A = his pick; corpse lane separate; donor original H is a stray stroke."
+  },
+  "RSW_Leaftail": {
+   "fp": "52926498830cff3f",
+   "verdict": "OK",
+   "note": "adult C/A render cleanly, prefill A = his pick; corpse lane separate."
+  },
+  "RSW_LothWolf": {
+   "fp": "5e0a577892555ade",
+   "verdict": "OK",
+   "note": "male C and female J/G render cleanly as white wolves, prefill C = his pick; K standtall female is a tiny black wolf south only (odd but unpicked); donor I is a line icon."
+  },
+  "RSW_Maalraas": {
+   "fp": "48b106e9b2dc798c",
+   "verdict": "OK",
+   "note": "adult C/A render cleanly, prefill A = his pick; corpse lane separate."
+  },
+  "RSW_Manka": {
+   "fp": "63fb4cf9d824551f",
+   "verdict": "OK",
+   "note": "adult D/B render cleanly, prefill B = his pick; corpse lane separate."
+  },
+  "RSW_MastiffPhalone": {
+   "fp": "c303e977e41fab05",
+   "verdict": "OK",
+   "note": "in-game C matches the kept picks1redo D (vulture-lion as he asked); E standtall is a tiny dark front only; corpse lane separate."
+  },
+  "RSW_Mastmot": {
+   "fp": "988768abf7d10c36",
+   "verdict": "FLAG",
+   "note": "male J/B clean (prefill J vs his recorded B); but in-game female K (and D) pair a flat white cartoon-blob donor South with painted East/North - mixed objects in one candidate."
+  },
+  "RSW_Mawvorr": {
+   "fp": "ec973f89d67bee31",
+   "verdict": "OK",
+   "note": "adult D/B/C S/E/N render; prefill B matches; dessicated lanes separate (F donor is flat grey placeholder-style)"
+  },
+  "RSW_Narglatch": {
+   "fp": "1b1370992120412b",
+   "verdict": "FLAG",
+   "note": "renders fine, but sheet still splits ADULT-MALE/ADULT-FEMALE lanes after his 2026-10-17 ruling \"Don't need male and female for this creature\"; C unassigned render"
+  },
+  "RSW_Nexu": {
+   "fp": "4982fc0062c2925b",
+   "verdict": "FLAG",
+   "note": "G/A/H/D full S/E/N sets, but B, C (adult) and I, J (baby) show a single facing only - incomplete candidates"
+  },
+  "RSW_Rikknit": {
+   "fp": "8f06abbba64f53ef",
+   "verdict": "OK",
+   "note": "adult C/A S/E/N render cleanly; dessicated lane separate (E donor is a tiny grey placeholder-like sketch)"
+  },
+  "RSW_Roggwart": {
+   "fp": "3cf75d4cb562d659",
+   "verdict": "OK",
+   "note": "adult C/A S/E/N render cleanly; dessicated lane separate"
+  },
+  "RSW_Rancor": {
+   "fp": "27b954f71a406031",
+   "verdict": "OK",
+   "note": "adult and alternate pool render S/E/N (E single-facing); dessicated and meat_rancor a/b/c in their own lanes"
+  },
+  "RSW_Warbird": {
+   "fp": "da55bb5ccc92eecb",
+   "verdict": "OK",
+   "note": "adult A/B S/E/N render; dessicated lane separate"
+  },
+  "RSW_Silooth": {
+   "fp": "aeb24f2f42fdf620",
+   "verdict": "FLAG",
+   "note": "strip header says prefill=L but his decision on this sheet is F; YOUNG lane mixes spider juveniles (M/N/O) with blue grub donor art (K/J) - different objects in one slot; several adult candidates single-facing"
+  },
+  "RSW_Snoruuk": {
+   "fp": "d8d20868fe0a2032",
+   "verdict": "FLAG",
+   "note": "header prefill=A but his decision on this sheet is F (no F candidate shown); adult lane mixes single mushrooms with clusters (B, E); L unassigned"
+  },
+  "RSW_Squall": {
+   "fp": "c82e27f7d4bed53b",
+   "verdict": "OK",
+   "note": "adult C/A S/E/N render cleanly; dessicated lane separate"
+  },
+  "RSW_Tach": {
+   "fp": "599eb48e6e306e20",
+   "verdict": "FLAG",
+   "note": "header prefill=B but his decision is A; B (the prefilled pick) north facing is a wooden crate, not a Tach; C single-facing"
+  },
+  "RSW_Taozin": {
+   "fp": "3c3e8fb684111af6",
+   "verdict": "FLAG",
+   "note": "header prefill=J but his decision is A (J/A look near-identical, verify mapping); grub note followed - grubs now in own lanes; H unassigned grub render"
+  },
+  "RSW_Tauntaun": {
+   "fp": "0dc7b8fc665bce6e",
+   "verdict": "OK",
+   "note": "adult A S/E/N clean; dessicated adult/_j lanes separate; G young render unassigned"
+  },
+  "RSW_TetnissCrab": {
+   "fp": "5c53834983dd814e",
+   "verdict": "OK",
+   "note": "adult + 4 alternates S/E/N render cleanly; _j dessicated lane separate"
+  },
+  "RSW_Thranta": {
+   "fp": "3fb6d87743d71689",
+   "verdict": "FLAG",
+   "note": "B (donorart_thranta_v1) south facing is a wooden crate; G FLYING lane renders blank; C single-facing"
+  },
+  "RSW_Tibidee": {
+   "fp": "07f9c96591214199",
+   "verdict": "FLAG",
+   "note": "C (gapall_Tibidee_v1) is a rock/armadillo beast, wrong creature; I FLYING lane blank; F missing a facing; record says redo here but kept 2026-10-25 on picks1_redo - verify prefill E is that keep"
+  },
+  "RSW_Tooke": {
+   "fp": "28d9b564168c46a4",
+   "verdict": "OK",
+   "note": "adult A/B S/E/N render cleanly (C single-facing); dessicated lane separate"
+  },
+  "RSW_Torton": {
+   "fp": "86439cff21b6abe5",
+   "verdict": "FLAG",
+   "note": "E (adult female) set mixes a flat donor south with painted east/north - not one object; C single-facing with crate-like shell"
+  },
+  "RSW_Tukata": {
+   "fp": "1ccbe6a329d8be32",
+   "verdict": "OK",
+   "note": "adult + alternates S/E/N render; donor flats D/F/I are recognisable; dessicated lane separate"
+  },
+  "RSW_TuskCat": {
+   "fp": "fc632d8c60557091",
+   "verdict": "OK",
+   "note": "adult A/B/D S/E/N render (A small, C single-facing); dessicated lane separate"
+  },
+  "RSW_Vapaad": {
+   "fp": "1781b063b5ee72b4",
+   "verdict": "OK",
+   "note": "adult C/A S/E/N match; B is a different (jellyfish) design but renders cleanly; dessicated lane separate"
+  },
+  "RSW_Veermok": {
+   "fp": "cf515774caaa86f0",
+   "verdict": "FLAG",
+   "note": "prefilled B (donorart_veermok_v1) south facing is a wooden crate; his \"combine B and C\" note means the composite is still owed - C is single-facing"
+  },
+  "RSW_Stintaril": {
+   "fp": "ccebd4e11e214d72",
+   "verdict": "OK",
+   "note": "adult A/B S/E/N render, dessicated separate; grouped \"Already ruled on another sheet\" (kept 10-15/10-17) though input says ruled_elsewhere=false"
+  }
+ },
+ "dropped": [
+  {
+   "row": "RSW_Rycrit",
+   "why": "he ruled 2026-10-17 \"CUT THIS. We don't need it.\" and RSW_Rycrit has no def now; the 10-19 census still carried it (dropped from the census, sheet rebuilt)"
+  }
+ ]
+}
