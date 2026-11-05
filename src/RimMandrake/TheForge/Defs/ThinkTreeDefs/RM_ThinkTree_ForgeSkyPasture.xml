@@ -2,7 +2,9 @@
 <!-- FORGE_SKY_PASTURES_1 stage 5. The sky pasture wander, inserted at vanilla's Animal_PreWander tag (the
      RM_ThinkTree_UmmiskLavaEdge shape). Returns no job for any pawn it does not govern (not wild, no vapour-drifter
      comp and no RM_DhokkurColumnsExtension, a sealed dhokkur, its toggle off, or no column in reach), so every other
-     animal falls through to vanilla wander unchanged. Source: Source/RM_ForgeSkyPastures.cs. -->
+     animal falls through to vanilla wander unchanged. Stage 5b: the homing, at Animal_PreMain (ahead of the need nodes, which
+     outrank Animal_PreWander and kept a fresh flock sleeping and grazing where it landed): a governed pawn away from its
+     column walks home first unless an urgent need wins. Source: Source/RM_ForgeSkyPastures.cs. -->
 <Defs>
   <ThinkTreeDef>
     <defName>RM_ThinkTree_ForgeSkyPasture</defName>
@@ -10,6 +12,15 @@
     <thinkRoot Class="ThinkNode_Priority">
       <subNodes>
         <li Class="RimMandrake.TheForge.RM_JobGiver_SkyPastureWander" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_ForgeSkyPastureHoming</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.TheForge.RM_JobGiver_SkyPastureHoming" />
       </subNodes>
     </thinkRoot>
   </ThinkTreeDef>

@@ -857,6 +857,13 @@ namespace RimMandrake.TheForge.SelfTest
                     bool spec = wild && (drift ? skyOn : (ext && dhOn && !seal));
                     Check(RM_SkyKernel.PastureGoverns(wild, drift, skyOn, ext, dhOn, seal) == spec, $"PastureGoverns bits {bits}"); Steps++;
                 }
+                // stage 5b homing: whole truth table (home away, only for a governed pawn with a column in reach and no urgent need)
+                for (int bits = 0; bits < 32; bits++)
+                {
+                    bool gov = (bits & 1) != 0, home = (bits & 2) != 0, reach = (bits & 4) != 0, hungry = (bits & 8) != 0, tired = (bits & 16) != 0;
+                    bool spec = bits == (1 | 4);
+                    Check(RM_SkyKernel.HomingWanted(gov, home, reach, hungry, tired) == spec, $"HomingWanted bits {bits}"); Steps++;
+                }
                 // one column cell at the origin: a destination (x,z) is good iff it is that cell, or the leash reaches it
                 for (int dx = -15; dx <= 15; dx++)
                     for (int dz = -15; dz <= 15; dz++)

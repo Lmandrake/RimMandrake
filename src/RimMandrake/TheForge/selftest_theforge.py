@@ -762,7 +762,8 @@ class FGame(MockGame):
                 comps.append({"Class": "RimMandrake.TheForge.CompProperties_ForgeCycleDormancy", "awakeDuringRain": True})
             f = {"comps": comps}
         elif name in V.FLYERS:
-            sb = [{"stat": "MaxFlightTime", "value": 0.0 if "flyer_no_stat" in self.brk else 15.0}]
+            sb = [{"stat": "MaxFlightTime", "value": 0.0 if "flyer_no_stat" in self.brk else 15.0},
+                  {"stat": "MoveSpeed", "value": 4.0}]   # a positive neighbour stat must not carry a zero flight stat (GPT review)
             f = {"statBases": sb}
         elif name == "RM_Floatstone":
             f = {"generateCommonality": 1.0 if "floatstone_generated" in self.brk else 0.0, "tradeability": "All"}
@@ -1030,6 +1031,11 @@ def main():
             "sel.TryGetComp<RM_CompVaporDrifter>();", "sel.TryGetComp<RM_CompVaporDrifter>();\n            if (d == null && highlightFor != null) d = highlightFor.TryGetComp<RM_CompVaporDrifter>();", 1)),
         ("switching drifters keeps the old outline (GPT review)", lambda c: c.replace(
             "sel != highlightFor || Time.frameCount", "sel != highlightFor && Time.frameCount", 1)),
+        ("the toggle/off-map branch falls through to the draw (GPT review)", lambda c: c.replace(
+            "                || Find.Selector == null)\n            {\n                return;", "                || Find.Selector == null)\n            {\n                ;", 1)),
+        ("the highlight toggle polarity flipped (GPT review)", lambda c: c.replace(
+            "if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnHighlightEnabled)",
+            "if (RM_TheForgeSettings.Active(RM_TheForgeSettings.skyColumnHighlightEnabled)", 1)),
         ("outline drawn before the selection check", lambda c: c.replace("            Pawn sel = Find.Selector.SingleSelectedThing as Pawn;",
             "            " + draw_call + "\n            Pawn sel = Find.Selector.SingleSelectedThing as Pawn;", 1)),
     ]
@@ -1045,6 +1051,51 @@ def main():
             V._read_cs = real
         check("highlight mutant (%s) reddens only the selection-only component" % label,
               set(bad) == {"sky_pastures.sky_source_highlight_is_selection_only"}, bad)
+
+    # stage 5b homing (LIVE 2026-11-04: the PreWander insert alone lost to vanilla's sleep/eat nodes): losing the PreMain
+    # homing, or deciding it outside the fuzzed kernel, reddens only the wiring component
+    rt = V._read_text
+    tree_rel = os.path.join("Defs", "ThinkTreeDefs", "RM_ThinkTree_ForgeSkyPasture.xml")
+    try:
+        V._read_text = lambda r: rt(r).replace("<insertTag>Animal_PreMain</insertTag>", "<insertTag>Animal_PreWander</insertTag>") \
+            if r == tree_rel else rt(r)
+        bad = reds(run())
+    finally:
+        V._read_text = rt
+    check("homing moved behind the need nodes reddens only the pasture wiring component",
+          set(bad) == {"sky_pastures.sky_source_pasture_wander_is_wired"}, bad)
+    real_tree = rt(tree_rel)
+    tree_muts = [
+        ("homing and wander insert tags swapped (GPT review)", real_tree.replace("Animal_PreMain", "@@").replace(
+            "<insertTag>Animal_PreWander</insertTag>", "<insertTag>Animal_PreMain</insertTag>").replace("@@", "Animal_PreWander")),
+        ("homing node commented out (GPT review)", real_tree.replace(
+            '<li Class="RimMandrake.TheForge.RM_JobGiver_SkyPastureHoming" />', '<!-- <li Class="RimMandrake.TheForge.RM_JobGiver_SkyPastureHoming" /> -->')),
+    ]
+    for label, mt in tree_muts:
+        check("homing tree mutant applies (%s)" % label, mt != real_tree)
+        try:
+            V._read_text = lambda r, m=mt: m if r == tree_rel else rt(r)
+            bad = reds(run())
+        finally:
+            V._read_text = rt
+        check("homing tree mutant (%s) reddens only the pasture wiring component" % label,
+              set(bad) == {"sky_pastures.sky_source_pasture_wander_is_wired"}, bad)
+    guard = "if (!RM_SkyKernel.HomingWanted(true, atHome, root.IsValid, hungry, tired))"
+    src_muts = [
+        ("homing decided outside the kernel", sky_src.replace(guard, "if (atHome)", 1)),
+        ("homing guard polarity flipped (GPT review)", sky_src.replace(guard, guard.replace("(!", "(", 1), 1)),
+    ]
+    for label, homing_mut in src_muts:
+        check("homing source mutant applies (%s)" % label, homing_mut != sky_src)
+        try:
+            V._read_cs = lambda n, m=homing_mut: m if n == "RM_ForgeSkyPastures.cs" else real(n)
+            bad = reds(run())
+        finally:
+            V._read_cs = real
+        check("homing source mutant (%s) reddens only the pasture wiring component" % label,
+              set(bad) == {"sky_pastures.sky_source_pasture_wander_is_wired"}, bad)
+    check("the flock job census survives the token parse",
+          V._tokens("skyFlockHome=3 skyFlockJobs=GotoWander:4,LayDown:2 x=1").get("skyFlockJobs") == "GotoWander:4,LayDown:2")
 
     # breaks whose effect is a broken instrument or a harness limit read UNMEASURED, never a pass and never a red
     dropped = run(("dhoggur_instigator_dropped",))
@@ -1118,7 +1169,7 @@ def main():
         for f in FAILS:
             print("  - " + f)
         return 1
-    print("all TheForge suite selftests passed (%d breaks)" % (len(cases) + 7 + len(hl_mutants) + len(tree_mutants) + 4))
+    print("all TheForge suite selftests passed (%d breaks)" % (len(cases) + 13 + len(hl_mutants) + len(tree_mutants) + 4))
     return 0
 
 

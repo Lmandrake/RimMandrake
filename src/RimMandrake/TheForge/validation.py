@@ -609,6 +609,24 @@ def _tokens(line):
                     out[k] = float(v)
                 except ValueError:
                     out[k] = v
+    # census values are lists (job:count,job:count): kept whole, to the next whitespace
+    for k, v in re.findall(r"(skyFlockJobs)=(\S+)", line):
+        out[k] = v
+    return out
+
+
+def _tree_givers(xml_text):
+    """{insertTag: [JobGiver Class, ...]} for every ThinkTreeDef in a defs file, comments ignored (parsed, not grepped);
+    None when the text does not parse."""
+    try:
+        root = ET.fromstring(xml_text)
+    except ET.ParseError:
+        return None
+    out = {}
+    for d in root.iter("ThinkTreeDef"):
+        tag = (d.findtext("insertTag") or "").strip()
+        tr = d.find("thinkRoot")
+        out.setdefault(tag, []).extend(li.get("Class") for li in (tr.iter("li") if tr is not None else []) if li.get("Class"))
     return out
 
 
@@ -957,13 +975,17 @@ def def_wiring(t):
                 sb = f.get("statBases")
                 if not isinstance(sb, (dict, list)):
                     _unmeasured(t, "get_defs cannot serialise statBases (got %r)" % (sb,))
-                vals = [_num(x) for x in _find_key(sb, "value")]
                 blob = list(_flat(sb))
                 if "MaxFlightTime" not in blob:
                     _fail("%s has no MaxFlightTime stat: it cannot fly" % kind)
+                # only the value PAIRED with MaxFlightTime counts (a positive MoveSpeed must not carry a zero flight stat)
+                if isinstance(sb, dict):
+                    vals = [_num(sb["MaxFlightTime"])] if "MaxFlightTime" in sb else []
+                else:
+                    vals = [_num(x) for e in sb if "MaxFlightTime" in set(_flat(e)) for x in _find_key(e, "value")]
                 nums = [v for v in vals if v is not None]
                 if not nums:
-                    _unmeasured(t, "statBases carries MaxFlightTime but no readable value: %s" % blob[:12])
+                    _unmeasured(t, "statBases carries MaxFlightTime but no readable value paired with it: %s" % blob[:12])
                 if not any(v > 0 for v in nums):
                     _fail("%s: MaxFlightTime reads %r; CanEverFly needs it above 0, so it cannot fly" % (kind, nums))
 
@@ -1596,10 +1618,12 @@ def dormancy(t):
                 ins = _inspect(t, [dv])
                 if _live(t) and not _has(ins[dv], RUN_PHRASE):
                     _fail("an awake dhuvvox shows no countdown: %s" % ins[dv])
-                # the flash window opened when the burst began (5,000 ticks); jump to 400 ticks before its end
+                # the flash window opened when the burst began (5,000 ticks); jump to 650 ticks before its end, so after this
+                # arm's 300 and the clock-off arm's 300 the window still has ~50 ticks: a slowing left on by a toggle-blind
+                # updater (checkIntervalTicks 250) cannot hide behind the hediff's natural expiry (GPT review)
                 rain_start = box.get("rain_tick", 0) - 300       # the Rain began 300 ticks before this read
                 if _live(t):
-                    _jump(t, max(1, rain_start + 5000 - 400 - _ticks(t)))
+                    _jump(t, max(1, rain_start + 5000 - 650 - _ticks(t)))
                 t.wait_ticks(300)
                 ins = _inspect(t, [dv])
                 pawns = _pawns(t, _rs(_pad(t)), "RM_Dhuvvox", health=True)
@@ -1620,7 +1644,9 @@ def dormancy(t):
                     pawns = _pawns(t, _rs(_pad(t)), "RM_Dhuvvox", health=True)
                 if _live(t):
                     row = next((p for p in pawns if p.get("id") == dv), None)
-                    if row is not None and "RM_DhuvvoxRunSlowing" in set(_flat(row.get("health"))):
+                    if row is None or row.get("health") is None:
+                        _unmeasured(t, "list_pawns returned no health row for the dhuvvox %s: the slowing hediff is unread" % dv)
+                    if "RM_DhuvvoxRunSlowing" in set(_flat(row.get("health"))):
                         _fail("dhuvvoxClockEnabled=false but the slowing hediff is still on")
                     if _has(ins[dv], RUN_PHRASE):
                         _fail("dhuvvoxClockEnabled=false but the countdown still shows: %s" % ins[dv])
@@ -1998,6 +2024,13 @@ def _highlight_selection_only_problems(src):
         gate = _cs_method_body(body[first_if.start():], ")")
         if gate is not None and "DrawFieldEdges" in gate:
             out.append("the toggle/off-map early return draws the outline")
+        if gate is None or "return;" not in gate:
+            out.append("the toggle/off-map branch does not return before the draw (GPT review)")
+        cond = body[first_if.start():first_if.start() + 200]
+        if not re.match(r"if\s*\(\s*!\s*RM_TheForgeSettings\.Active\(\s*RM_TheForgeSettings\.skyColumnHighlightEnabled\s*\)", cond):
+            out.append("the first gate is not 'return unless skyColumnHighlightEnabled' (toggle polarity, GPT review)")
+    else:
+        out.append("no toggle/off-map gate before the draw")
     return out
 
 
@@ -2050,11 +2083,18 @@ def sky_pastures(t):
     tree = _read_text(os.path.join("Defs", "ThinkTreeDefs", "RM_ThinkTree_ForgeSkyPasture.xml"))
     bulloo = _read_text(os.path.join("Defs", "ThingDefs_Races", "RM_Bulloo.xml"))
     with _comp(t, "sky_source_pasture_wander_is_wired", independent=True, toggle="skyColumnWanderEnabled"):
-        need("<insertTag>Animal_PreWander</insertTag>" in tree and "RimMandrake.TheForge.RM_JobGiver_SkyPastureWander" in tree,
+        givers = _tree_givers(tree) or {}
+        need("RimMandrake.TheForge.RM_JobGiver_SkyPastureWander" in givers.get("Animal_PreWander", []),
              "the pasture wander is in no think tree (the stage-5 gap: drifters never went to the columns)")
         need("class RM_JobGiver_SkyPastureWander : JobGiver_Wander" in src and "skyColumnWanderEnabled" in src,
              "no gated pasture JobGiver")
         need("CompProperties_VaporDrifter" in bulloo, "the bulloo (the ruled Fumerider) carries no drifter comp")
+        # stage 5b (LIVE 2026-11-04: the PreWander insert alone lost to vanilla's sleep/eat nodes, 2 jobs in 5000 ticks)
+        need("RimMandrake.TheForge.RM_JobGiver_SkyPastureHoming" in givers.get("Animal_PreMain", []),
+             "no homing ahead of the need nodes: a flock that lands away from the columns sleeps and grazes where it landed")
+        need("class RM_JobGiver_SkyPastureHoming : ThinkNode_JobGiver" in src
+             and "if (!RM_SkyKernel.HomingWanted(true, atHome, root.IsValid, hungry, tired))\n            {\n                return null;" in src,
+             "the homing JobGiver is missing or does not refuse through the fuzzed kernel (HomingWanted false -> no job)")
     with _comp(t, "sky_source_dhokkur_walks_vent_to_vent", independent=True, toggle="dhokkurColumnsEnabled"):
         need("RimMandrake.TheForge.RM_DhokkurColumnsExtension" in defs, "the dhokkur carries no column extension")
         need("dhokkurColumnsEnabled" in src and "IsSealed" in src, "the dhokkur's column walk is ungated or ignores its seal")
@@ -2072,14 +2112,16 @@ def sky_pastures(t):
                 r = _act(t, "Forge sky: report")
                 # the flock's own counters, never the map's: resident creatures at home must not carry the bar
                 gov, home = int(r.get("skyFlockGoverned", "0") or 0), int(r.get("skyFlockHome", "0") or 0)
-                w1 = int(r.get("skyFlockWanders", "0") or 0)
+                w1 = int(r.get("skyFlockWanders", "0") or 0) + int(r.get("skyFlockHomings", "0") or 0)
                 _note(t, "sky flock", {"spawned": f.get("_line"), "after": r.get("_line")})
                 if w1 < 1:
-                    _fail("no pasture wander job was given to the flock in %d ticks" % SKY_FLOCK_TICKS)
+                    _fail("no pasture wander or homing job was given to the flock in %d ticks (jobs now: %s)"
+                          % (SKY_FLOCK_TICKS, r.get("skyFlockJobs")))
                 # counted against the six set down: a dead or vanished bird is a bird not at home
                 if home < SKY_FLOCK_HOME_SHARE * SKY_FLOCK_SIZE:
                     _fail("only %d of the %d flock creatures (%d still governed) stand in a column or their leash after "
-                          "%d ticks (need %.0f%%)" % (home, SKY_FLOCK_SIZE, gov, SKY_FLOCK_TICKS, 100 * SKY_FLOCK_HOME_SHARE))
+                          "%d ticks (need %.0f%%; jobs now: %s)" % (home, SKY_FLOCK_SIZE, gov, SKY_FLOCK_TICKS,
+                                                                   100 * SKY_FLOCK_HOME_SHARE, r.get("skyFlockJobs")))
             finally:
                 # leave the map as found, pass or fail (the flock is set down off the pad, so pad teardown misses it)
                 # the raw session: t.bridge_call is a no-op once the component went UNMEASURED or failed upstream
@@ -2230,7 +2272,10 @@ def dhoggur_swell(t):
                     if not 19000 <= d["ticksLeft"] <= 20000:
                         _fail("swell should last 20000 ticks (1/3 day), %s left: %s" % (d["ticksLeft"], d["_line"]))
                     row = next((p for p in rows if p.get("id") == box.get("id")), None)
-                    if row is not None and SWELL_HEDIFF not in set(_flat(row.get("health"))):
+                    if row is None or row.get("health") is None:
+                        _unmeasured(t, "list_pawns returned no health row for the swollen dhoggur %s: its health block is unread"
+                                    % box.get("id"))
+                    if SWELL_HEDIFF not in set(_flat(row.get("health"))):
                         _fail("list_pawns' health block lacks %s although the report says hediff=True" % SWELL_HEDIFF)
                     box["swell_tick"] = _ticks(t)
                     box["left0"] = d["ticksLeft"]
@@ -2263,6 +2308,9 @@ def dhoggur_swell(t):
                     elapsed = _ticks(t) - box["swell_tick"]
                     if d["ticksLeft"] > box["left0"] - elapsed + 5:
                         _fail("a second hit refreshed the swell (%s left, expected <= %s)" % (d["ticksLeft"], box["left0"] - elapsed))
+                    if not d["swollen"] or d["ticksLeft"] < box["left0"] - elapsed - 300:
+                        _fail("a second hit cut the swell short (%s left, swollen=%s, expected ~%s; GPT review)"
+                              % (d["ticksLeft"], d["swollen"], box["left0"] - elapsed))
 
             with _comp(t, "swell_reverts_after_a_third_of_a_day", toggle="dhoggurSwellHours"):
                 d = _dhoggur(t)
@@ -2280,7 +2328,10 @@ def dhoggur_swell(t):
                     if not 59000 <= d["cooldownLeft"] <= 60000:
                         _fail("cooldown should be ~60000 ticks counted from the swell's end, is %s" % d["cooldownLeft"])
                     row = next((p for p in rows if p.get("id") == box.get("id")), None)
-                    if row is not None and SWELL_HEDIFF in set(_flat(row.get("health"))):
+                    if row is None or row.get("health") is None:
+                        _unmeasured(t, "list_pawns returned no health row for the dhoggur %s: the hediff's removal is unread"
+                                    % box.get("id"))
+                    if SWELL_HEDIFF in set(_flat(row.get("health"))):
                         _fail("list_pawns still shows %s after the swell ended" % SWELL_HEDIFF)
 
             with _comp(t, "cooldown_blocks_a_new_swell", toggle="dhoggurCooldownDays"):

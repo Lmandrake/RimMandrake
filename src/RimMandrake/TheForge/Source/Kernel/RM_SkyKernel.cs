@@ -39,6 +39,14 @@ namespace RimMandrake.TheForge
             return hasDhokkurExt && dhokkurOn && !isSealed;
         }
 
+        // Stage 5b, the pasture homing (sits ahead of needs, at Animal_PreMain): a governed pawn away from home (not in a column
+        // nor within its leash of one) with a column in reach walks home first, so it eats and sleeps in the pasture; it yields
+        // only to an urgent need (urgently hungry or starving, or exhausted), which vanilla's need nodes then take.
+        public static bool HomingWanted(bool governed, bool atHome, bool columnInReach, bool urgentlyHungry, bool exhausted)
+        {
+            return governed && !atHome && columnInReach && !urgentlyHungry && !exhausted;
+        }
+
         public static bool MoteAlive(int age) { return age < MoteLifeTicks; }
 
         public static void MotePos(float cx, float cz, float phase, float spin, int age, out float x, out float z)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using RimMandrake.EnvironmentalHazards;
 using RimWorld;
@@ -333,6 +334,8 @@ namespace RimMandrake.TheForge
         {
             RM_MapComponent_VaporColumns cols = map.GetComponent<RM_MapComponent_VaporColumns>();
             int governed = 0, home = 0, dhokkur = 0, dhokkurHome = 0, flock = 0, flockHome = 0;
+            // the flock's current jobs (diagnostic: which think node holds a bird that is not home, e.g. LayDown or Ingest)
+            SortedDictionary<string, int> jobs = new SortedDictionary<string, int>();
             if (cols != null)
             {
                 IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
@@ -343,14 +346,15 @@ namespace RimMandrake.TheForge
                     {
                         continue;
                     }
-                    bool inCol = cols.InColumn(p.Position);
-                    bool ok = RM_SkyKernel.WanderDestOk(inCol, leash, !inCol && leash > 0f && cols.NearestColumnCell(p.Position, leash).IsValid);
+                    bool ok = RM_JobGiver_SkyPastureWander.AtHome(cols, p.Position, leash);
                     governed++;
                     if (ok) home++;
                     if (testFlock.Contains(p))
                     {
                         flock++;
                         if (ok) flockHome++;
+                        string jd = p.CurJobDef == null ? "none" : p.CurJobDef.defName;
+                        jobs[jd] = jobs.TryGetValue(jd, out int jn) ? jn + 1 : 1;
                     }
                     if (isDhokkur)
                     {
@@ -361,10 +365,12 @@ namespace RimMandrake.TheForge
             }
             return "skyPastureGoverned=" + governed + " skyPastureHome=" + home + " skyDhokkurGoverned=" + dhokkur
                 + " skyDhokkurHome=" + dhokkurHome + " skyPastureWanders=" + StatPastureWanders
-                + " skyFlockGoverned=" + flock + " skyFlockHome=" + flockHome + " skyFlockWanders=" + StatFlockWanders;
+                + " skyFlockGoverned=" + flock + " skyFlockHome=" + flockHome + " skyFlockWanders=" + StatFlockWanders
+                + " skyPastureHomings=" + StatPastureHomings + " skyFlockHomings=" + StatFlockHomings
+                + " skyFlockJobs=" + (jobs.Count == 0 ? "none" : string.Join(",", jobs.Select(kv => kv.Key + ":" + kv.Value)));
         }
 
-        public int StatPastureWanders, StatFlockWanders;
+        public int StatPastureWanders, StatFlockWanders, StatPastureHomings, StatFlockHomings;
 
         // The pawns the last test flock set down (debug/proof only, not saved): the live bar measures THESE, never the map.
         private readonly HashSet<Pawn> testFlock = new HashSet<Pawn>();
@@ -404,6 +410,15 @@ namespace RimMandrake.TheForge
             }
         }
 
+        public void NotePastureHoming(Pawn p)
+        {
+            StatPastureHomings++;
+            if (testFlock.Contains(p))
+            {
+                StatFlockHomings++;
+            }
+        }
+
         public static readonly string[] TestFlockKinds = { "RM_FleetFlier", "RM_FleetFlier", "RM_FleetFlier", "RM_FleetFlier", "RM_Bulloo", "RM_Bulloo" };
 
         /// <summary>Debug/proof only: spawns the test flock, wild, on standable cells 18-30 cells from one column cell and
@@ -431,6 +446,7 @@ namespace RimMandrake.TheForge
             int spawned = 0;
             RemoveTestFlock();   // a second spawn never strands the first flock outside the tracking
             StatFlockWanders = 0;
+            StatFlockHomings = 0;
             for (int i = 0; i < TestFlockKinds.Length && spots.Count > 0; i++)
             {
                 PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(TestFlockKinds[i]);
@@ -643,8 +659,67 @@ namespace RimMandrake.TheForge
             {
                 return true;
             }
-            bool inCol = cols.InColumn(dest);
-            return RM_SkyKernel.WanderDestOk(inCol, leash, !inCol && leash > 0f && cols.NearestColumnCell(dest, leash).IsValid);
+            return AtHome(cols, dest, leash);
+        }
+
+        /// <summary>Whether a cell is home for a pawn with this leash: a column cell, or within the leash of one.</summary>
+        public static bool AtHome(RM_MapComponent_VaporColumns cols, IntVec3 c, float leash)
+        {
+            bool inCol = cols.InColumn(c);
+            return RM_SkyKernel.WanderDestOk(inCol, leash, !inCol && leash > 0f && cols.NearestColumnCell(c, leash).IsValid);
+        }
+    }
+
+    // ---- stage 5b: the pasture homing -----------------------------------------------------------------------------------
+    // LIVE 2026-11-04 (FORGE_SKY_PASTURES_1 A1 run): the Animal_PreWander insert alone gave a fresh flock 2 jobs in 5000 ticks.
+    // Vanilla's need nodes outrank it (decompiled 1.6: JobGiver_GetRest.GetPriority gives EVERY non-humanlike priority 8 from
+    // hour 22 to hour 6 at any rest level, and JobGiver_GetFood 9.5 below FoodLevelPercentageWantEat, with wild animals
+    // spawning at food 0.5-0.9), so a bird that landed away from the columns slept and grazed where it landed. This node sits at
+    // Animal_PreMain, ahead of the needs: a governed pawn away from home walks to a column first and then eats and sleeps in
+    // the pasture; an urgent need (urgently hungry, starving, exhausted) still wins (RM_SkyKernel.HomingWanted).
+    public class RM_JobGiver_SkyPastureHoming : ThinkNode_JobGiver
+    {
+        public float destRadius = 6f;
+
+        protected override Job TryGiveJob(Pawn pawn)
+        {
+            if (!RM_JobGiver_SkyPastureWander.Leash(pawn, out float search, out float leash, out _) || pawn.Downed)
+            {
+                return null;
+            }
+            RM_MapComponent_VaporColumns cols = pawn.Map.GetComponent<RM_MapComponent_VaporColumns>();
+            if (cols == null)
+            {
+                return null;
+            }
+            bool atHome = RM_JobGiver_SkyPastureWander.AtHome(cols, pawn.Position, leash);
+            IntVec3 root = atHome ? IntVec3.Invalid : cols.NearestColumnCell(pawn.Position, search);
+            bool hungry = pawn.needs?.food != null && pawn.needs.food.CurCategory >= HungerCategory.UrgentlyHungry;
+            bool tired = pawn.needs?.rest != null && pawn.needs.rest.CurCategory >= RestCategory.Exhausted;
+            if (!RM_SkyKernel.HomingWanted(true, atHome, root.IsValid, hungry, tired))
+            {
+                return null;
+            }
+            // RandomWanderDestFor's last fallbacks drop the validator (and finally return the pawn's own cell), so the result is
+            // re-checked: homing never sends a pawn anywhere that is not home, and no reachable home means no job.
+            IntVec3 dest = RCellFinder.RandomWanderDestFor(pawn, root, destRadius,
+                (Pawn p, IntVec3 c, IntVec3 r) => RM_JobGiver_SkyPastureWander.AtHome(cols, c, leash), Danger.Some);
+            if (!dest.IsValid || dest == pawn.Position || !RM_JobGiver_SkyPastureWander.AtHome(cols, dest, leash))
+            {
+                dest = root;
+                if (!dest.Standable(pawn.Map) || !pawn.CanReach(dest, PathEndMode.OnCell, Danger.Some))
+                {
+                    return null;
+                }
+            }
+            Job job = JobMaker.MakeJob(JobDefOf.GotoWander, dest);
+            job.locomotionUrgency = LocomotionUrgency.Jog;
+            RM_MapComponent_SkyPastures c2 = RM_MapComponent_SkyPastures.Of(pawn.Map);
+            if (c2 != null)
+            {
+                c2.NotePastureHoming(pawn);
+            }
+            return job;
         }
     }
 }
