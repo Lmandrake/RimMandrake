@@ -865,7 +865,16 @@ class Fx(object):
             sys.path.insert(0, utils)
         import live_def_check
         want, folded = {}, self.folded()
-        for mod in sorted(set(mods)):
+        pkgs = sorted({m.lower() for m in mods if "." in m})     # relentless_live_round.is_package: a workshop mod
+        if pkgs:
+            import modset_builder
+            closure, missing = modset_builder.package_closure(pkgs)
+            if missing:
+                return ("not in the running load: %s installed in neither the Steam workshop folder nor the game's Mods "
+                        "folder" % ", ".join(missing[:5]))
+            for p in closure:
+                want.setdefault(p if p in pkgs else "%s needs %s" % ("+".join(pkgs), p), p)
+        for mod in sorted(set(m for m in mods if "." not in m)):
             text = ""
             # a folder folded into a composed mod (Stillsand -> RimMandrake.Biomes/Biomes/Stillsand) loads under the
             # composed mod's About.xml; its own folder is absent from the game (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING)

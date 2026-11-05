@@ -478,7 +478,7 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
         "seat %s and releases it the moment you exit. Your one job: the running game must run the build at %s, so the "
         "supervisor can rerun this item's live proofs blind. You do NOT run or judge the proofs." % (i, g, r["seat"], sha),
         "1. Deploy: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <Mod>` for each mod that %s changed (plan "
-        "first, read it, then --apply), and for each mod a `live-mods:` line in the proofs below names (a build that "
+        "first, read it, then --apply), and for each mod folder a `live-mods:` line in the proofs below names (a build that "
         "changed only a proof still needs its mod's tree deployed). Load `rimworld-deploy` first." % sha,
         ("   DEPLOY ITEM: the supervisor owes the game these trees whole though no commit changed them: %s. You are the one "
          "allowed to write them: `python3 src/RimMandrake/Utils/deploy_custom_mods.py %s` (the plan), read it, then the same "
@@ -490,7 +490,9 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
          "`./game --idle-ok --why \"relentless final staging %s\" down|loading|up`." % i) if (st.get("game") or {}).get("full") else
         "2. The game must start after the deploy: restart it on the smallest mod list that holds those mods and every "
         "mod a `live-mods:` line in the proofs below names, with their About.xml dependencies "
-        "(`rimworld-load-round`: modlist_swap.py; all five DLC always). Never the full list for a GREEN-FULL clause: that "
+        "(`rimworld-load-round`: modlist_swap.py; all five DLC always). An entry with a dot is a packageId, a workshop "
+        "or game-folder mod: never deploy it, enable it (`modlist_swap.py --enable <packageId>` adds its dependency "
+        "closure across the workshop and the game's Mods folder). Never the full list for a GREEN-FULL clause: that "
         "is the batched final verification, staged on its own. Stamp each change with "
         "`./game --idle-ok --why \"relentless staging %s\" down|loading|up`." % i,
         "   Choose the smallest list that proves the item: a cold load is ~22 s on the 13-mod minimal list and 15-25 "
@@ -874,9 +876,13 @@ def _env(store, fx, r, item, rows, since, now, acts):
     st = store.load(item)
     tried = st.get("env_tried") or {}
     staged = st["game"].get("staged_at") or 0
+    try:        # the item's `live-mods:`: a type the load lacks is a load fix on its packageIds (relentless_envcause)
+        needs = relentless_live_round.live_mods(fx.proofs_at(item, st["game"].get("sha")))
+    except Exception:       # noqa: BLE001  an unreadable proofs file names no mod: the cause still routes, never builds
+        needs = []
     envs = []
     for v in rows.values():
-        e = relentless_envcause.classify(v, item)
+        e = relentless_envcause.classify(v, item, needs)
         if e:
             e["at"], e["decided"] = row_at(v), (relentless_live_round.decides(v)
                                                   or (v.get("why") or "").startswith(relentless_envcause.HARNESS[0]))

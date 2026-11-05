@@ -223,8 +223,16 @@ def enable(names, apply_it):
     full_ids = mods(FULL) or []
     known = {m.lower() for m in live_ids + full_ids}
     add, lost = [], []
+    pkgs = [n.lower() for n in names if "." in n]
+    if pkgs:    # a packageId (a workshop mod a `live-mods:` line names): its dependency closure across the Steam workshop
+        import modset_builder   # folder, the game's Mods folder and the DLC; a mod installed in none is refused by name
+        closure, missing = modset_builder.package_closure(pkgs)
+        lost += ["%s (installed in neither the Steam workshop folder nor the game's Mods folder)" % m for m in missing]
+        add += [p for p in closure if not p.startswith("ludeon.rimworld")]
     for n in names:
-        got = about(n) if "." not in n else (n.lower(), [])
+        if "." in n:
+            continue
+        got = about(n)
         if got is None:
             lost.append("%s (no About.xml with a packageId in the game folder or the repo)" % n)
             continue

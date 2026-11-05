@@ -154,6 +154,61 @@ def t_same_cause_after_unhold():
     x.done()
 
 
+# TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING's own row (runs.jsonl 2026-11-03), 20 of them, each back to a builder
+TNF = ("the proof exited 2: it did not measure: UNMEASURED  bridge: a static call failed: {'success': False, "
+       "'message': 'Type not found: AlienWorlds.PlanetTypeManager', 'operation': {'OperationId': 'op_6cca45'}}")
+AWF = "live-mods: CreatureBehaviors, 7f.alienworlds.tidallylocked ferny.worldbuilder\nlive-proof A2: python3 p.py\n"
+
+
+def t_type_not_found_classified():
+    """LIVE_MODS_FIX_WORKSHOP_UNNAMEABLE: a type the load lacks is the environment's, never the build's."""
+    e = E.classify(row(TNF), "I0", ["CreatureBehaviors", "7f.alienworlds.tidallylocked", "ferny.worldbuilder"])
+    ok(e and e.kind == "load" and e.fix and e.mods == ["7f.alienworlds.tidallylocked", "ferny.worldbuilder"],
+       "Type not found with packageIds on live-mods: a load fix enabling them: %r" % ((e and (e.kind, e.mods)),))
+    ok("AlienWorlds.PlanetTypeManager" in E.line(e) and "namespace AlienWorlds" in E.line(e), "its line names the type")
+    n = E.classify(row(TNF), "I0", ["CreatureBehaviors"])
+    ok(n and n.kind == "missing_mod" and not n.fix and "no live-mods line names its mod" in E.line(n),
+       "with no packageId to enable: a missing_mod route naming what to add: %s" % (n and E.line(n)))
+    ok(E.classify(row(WHYS["proof_call"]), "I0").kind == "proof_call", "a bare 'Type not found' tail is still proof_call")
+
+
+def t_type_not_found_fixed_once_then_held():
+    x = in_prove()
+    gen, built = x.st("I0")["gen"], len(x.w.impl)
+    x.w.proofs[("I0", ".txt")] = AWF
+    acts = []
+    acted = G._env(x.s, x.w, x.r, "I0", {"A2": row(TNF, x.now)}, 0, x.now, acts)
+    st = x.st("I0")
+    ok(acted and st["status"] == "game" and st["game"]["phase"] == "stage" and st["gen"] == gen
+       and not st.get("last_fail") and len(x.w.impl) == built,
+       "the lane stages a load holding the workshop mods, no builder, no gen: %s %s" % (st["game"]["phase"], acts))
+    ok(st["game"]["remedy"]["mods"] == ["7f.alienworlds.tidallylocked", "ferny.worldbuilder"],
+       "the staging enables the packageIds: %s" % st["game"].get("remedy"))
+    with x.s.lock():        # that staging ran and the game came up; the re-read says the same
+        s = x.s.load("I0")
+        s["game"].update(phase="prove", staged_at=x.now + 10)
+        s["game"].pop("remedy", None)
+        x.s.save(s)
+    acts = []
+    G._env(x.s, x.w, x.r, "I0", {"A2": row(TNF, x.now + 20)}, 0, x.now + 30, acts)
+    st = x.st("I0")
+    ok(st["status"] == "held" and st["hold"]["kind"] == "game" and st["gen"] == gen and len(x.w.impl) == built
+       and "AlienWorlds.PlanetTypeManager" in st["hold"]["why"] and "7f.alienworlds.tidallylocked" in st["hold"]["why"],
+       "still lacking after the fix: held naming the type and the mods, never a builder: %s" % st.get("hold"))
+    ok([a["do"] for a in acts] == ["game_env_route"], "one route: %s" % acts)
+    x.done()
+    x = in_prove()
+    built = len(x.w.impl)
+    x.w.proofs[("I0", ".txt")] = "live-mods: CreatureBehaviors\nlive-proof A2: python3 p.py\n"
+    ok(not G._env(x.s, x.w, x.r, "I0", {"A2": row(TNF, x.now)}, 0, x.now, []) and x.st("I0")["status"] == "game",
+       "no packageId to enable, first read: the lane's own retry (another game may hold it), no builder")
+    G._env(x.s, x.w, x.r, "I0", {"A2": row(TNF, x.now + 60, defect=True)}, 0, x.now + 60, [])
+    st = x.st("I0")
+    ok(st["status"] == "held" and "no live-mods line names its mod" in st["hold"]["why"] and len(x.w.impl) == built,
+       "the same on a reload: held with what to name, never a builder: %s" % st.get("hold"))
+    x.done()
+
+
 def t_unclassified_keeps_its_road():
     x = in_prove()
     ok(not G._env(x.s, x.w, x.r, "I0", {"A2": row("changed since the built commit, so the game cannot run sha1: a (b)",
@@ -167,7 +222,8 @@ def main():
     picked = set(sys.argv[1:])
     ran = 0
     for t in (t_classify, t_producer_fixed_once_then_routed, t_reload_rides_the_lanes_restage, t_route_kinds_routed_at_once,
-              t_same_cause_after_unhold, t_unclassified_keeps_its_road):
+              t_same_cause_after_unhold, t_type_not_found_classified, t_type_not_found_fixed_once_then_held,
+              t_unclassified_keeps_its_road):
         if picked and t.__name__ not in picked:
             continue
         ran += 1

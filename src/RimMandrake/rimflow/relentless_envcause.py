@@ -10,6 +10,8 @@ step ever ran `modcheck run Armoury`).
 classify(row) -> None (not an environment cause: the old roads stand) or an Env:
   kind  deploy | load | produce   the game lane fixes it itself, ONCE (fix is set), then re-reads
         proof_call | harness | proof_or_site   nothing the lane can do: routed ONCE to one fixer, the item waits
+        missing_mod   the proof reached for a type the load does not define and the item's `live-mods:` names no
+                      packageId that could bring it: routed ONCE, the hold naming the type and its namespace
   mods  mod folders or packageIds the next load must deploy / enable
   cmd   the producer to run on the up game before the re-read (kind produce)
   fp    the cause's key (relentless_live.cause: no paths, numbers or times), so the same cause is never tried twice
@@ -18,7 +20,7 @@ import hashlib
 import re
 
 FIX_KINDS = ("deploy", "load", "produce")
-ROUTE_KINDS = ("proof_call", "harness", "proof_or_site")
+ROUTE_KINDS = ("proof_call", "harness", "proof_or_site", "missing_mod")
 KINDS = FIX_KINDS + ROUTE_KINDS
 
 # relentless_live's own words (deploy_gap, mod_gap, the round's defect head); every pattern is from a runs.jsonl row
@@ -30,6 +32,9 @@ NOT_LOADED = re.compile(r"not in the running load: (?P<list>.+)")
 RELOAD_HOLDS = re.compile(r"reload needed: restart on a list .*?that holds (?P<holds>[^;]+)")
 LOAD_LACKS = re.compile(r"the running load lacks (?P<pkg>[\w.]+)")
 TIER_LACKS = re.compile(r"not loaded on this tier")
+# LIVE_MODS_FIX_WORKSHOP_UNNAMEABLE: the bridge's static call into a mod the load lacks (TIDAL_LOCK 20 runs:
+# "Type not found: AlienWorlds.PlanetTypeManager", each one back to a builder who could change nothing)
+TYPE_NOT_FOUND = re.compile(r"Type not found: (?P<type>[\w.+`]+)")
 # env_verify_check.py: no fresh `modcheck run <Mod>` verdict in infrastructure/state/modcheck_status.json
 NO_VERDICT = re.compile(r"UNMEASURED (?P<mod>\w+): (?:no modcheck_status entry|entry hash \S+ is not the mod's current|"
                         r"entry \(ts [^)]*\) does not postdate)")
@@ -56,9 +61,10 @@ def _env(kind, row, mods=(), cmd=None):
                criterion=row.get("criterion"), why=why, log=row.get("log"), fp=_key(kind, why))
 
 
-def classify(row, item=None):
+def classify(row, item=None, needs=()):
     """A runs.jsonl UNMEASURED row -> Env, or None when its cause is not the environment's (a stale build, a first dud,
-    a final wait, no game yet: the lane's old roads)."""
+    a final wait, no game yet: the lane's old roads). needs: the item's `live-mods:` entries; a type the load lacks is
+    a load fix on their packageIds (relentless_live_round.is_package), or with none a missing_mod route."""
     if not row or row.get("outcome") != "UNMEASURED":
         return None
     why = row.get("why") or ""
@@ -85,6 +91,12 @@ def classify(row, item=None):
         return _env("load", row, PKG.findall(m.group("list")) or re.findall(r"\w+", m.group("list"))[:1])
     if TIER_LACKS.search(why):
         return _env("load", row)
+    m = TYPE_NOT_FOUND.search(why)
+    if m:
+        pkgs = [x for x in needs or () if "." in x]
+        e = _env("load" if pkgs else "missing_mod", row, pkgs)
+        e["type"] = m.group("type")
+        return e
     if any(w in why for w in PROOF_CALL):
         return _env("proof_call", row)
     if any(why.startswith(w) or (": %s" % w) in why for w in HARNESS):
@@ -101,6 +113,12 @@ def dud(row, item=None):
 
 
 def line(e):
+    if e.type:      # the hold names what the load lacked: the type, its namespace and the packageIds tried
+        return "%s %s (the load lacks the mod that defines %s, namespace %s; %s%s): %s" % (
+            e.criterion or "?", e.kind, e.type, e.type.rsplit(".", 1)[0],
+            ("live-mods packageIds " + ", ".join(e.mods)) if e.mods else
+            "no live-mods line names its mod by packageId: name it (e.g. live-mods: 7f.alienworlds)",
+            ("; log " + e.log) if e.log else "", (e.why or "")[-200:])
     return "%s %s (%s%s%s): %s" % (e.criterion or "?", e.kind, ", ".join(e.mods) or "no mod named",
                                    ("; " + e.cmd) if e.cmd else "", ("; log " + e.log) if e.log else "",
                                    (e.why or "")[-300:])

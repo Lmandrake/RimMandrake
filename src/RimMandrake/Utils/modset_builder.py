@@ -978,6 +978,24 @@ def close_over(want, installed):
     return seen, missing
 
 
+_SCANNED = None
+
+
+def package_closure(pids, installed=None):
+    """packageIds (a Relentless `live-mods:` line may name a workshop mod by packageId, LIVE_MODS_FIX_WORKSHOP_UNNAMEABLE)
+    -> (closure, missing): every packageId, in load order (order), the load must hold for them, their About.xml dependencies walked
+    transitively (close_over) across the Steam workshop content folder, the game's Mods folder and the DLC (scan), and
+    the ones installed in none of them. DLC are never missing (every DLC is assumed). `installed` defaults to one scan
+    per process (about 11 s over the Windows mount, so it is paid only when a packageId is asked for)."""
+    global _SCANNED
+    if installed is None:
+        if _SCANNED is None:
+            _SCANNED = scan()
+        installed = _SCANNED
+    seen, missing = close_over([p.lower() for p in pids], installed)
+    return order(seen, installed), sorted(m for m in set(missing) if not m.startswith(CORE))
+
+
 def order(pids, installed):
     """Topological sort over loadAfter/loadBefore, Core first, ours last."""
     pids = set(pids)

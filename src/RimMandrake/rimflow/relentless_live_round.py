@@ -118,9 +118,25 @@ def live_mods(text, pattern=LIVE_MODS):
     return out
 
 
+def is_package(name):
+    """A `live-mods:` entry that names a mod by packageId (7f.alienworlds, ferny.worldbuilder), not a repo mod folder:
+    packageIds always hold a dot and no repo mod folder does (deploy_custom_mods.mod_dirs / folded, 2026-11-05).
+    LIVE_MODS_FIX_WORKSHOP_UNNAMEABLE: TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING's clause needed Alien Worlds and
+    Worldbuilder, workshop mods a folder-only line could not name, and read "Type not found: PlanetTypeManager" 20 times.
+    A packageId is enabled with its dependency closure across the workshop and the game's Mods folder
+    (modset_builder.package_closure) and checked in the running load; it is never deployed (it is no tree of ours)."""
+    return "." in (name or "")
+
+
+def folders(mods):
+    """The repo mod folders of a mod list: what a deploy plan may name (a packageId is no tree of ours)."""
+    return [m for m in mods if not is_package(m)]
+
+
 def live_deploy(text):
-    """A live_proofs file -> the mod folders whose whole tree the build owes the game folder (`live-deploy:`)."""
-    return live_mods(text, LIVE_DEPLOY)
+    """A live_proofs file -> the mod folders whose whole tree the build owes the game folder (`live-deploy:`); a
+    packageId there owes no tree (is_package) and is only loaded, as on a `live-mods:` line."""
+    return folders(live_mods(text, LIVE_DEPLOY))
 
 
 TERMINAL = ("PASS", "FAIL", "REFUSED")
@@ -290,6 +306,9 @@ def _plan_into(fx, mods, out):
     """The one plan over `mods` into a gap's off, dll and error. Headers and DLLs are all a gap reads, so --gate: 35 s
     where the full plan's byte compare and def guard took 260 s of a supervisor tick. A run still gates on the full plan
     (relentless_live.run), so other drifting files are caught there."""
+    mods = folders(mods)        # a packageId is loaded (modlist_enable, running_load_gap), never planned
+    if not mods:
+        return
     rc, plan = fx.deploy_plan(deploy_args(mods, fx.folded()) + " --gate", L.live_rules({})["gate_plan_max_s"])
     if rc not in (0, 1):
         out["error"] = "the deploy plan failed (exit %s): %s" % (rc, (plan or "")[-200:])
