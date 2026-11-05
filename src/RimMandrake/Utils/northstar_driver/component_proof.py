@@ -44,6 +44,23 @@ def find(out_path, chain, component):
     return None
 
 
+def refusal(out_path):
+    """-> one line naming why the driver refused before any chain ran, or "" when it did not refuse.
+    A bridge refusal for an UNKNOWN-outcome call is rimbridge_client's IndeterminateError: named so the live round
+    reads the run as a harness fault (relentless_live.EXIT1_HARNESS)."""
+    with open(out_path) as f:
+        doc = json.load(f)
+    if not doc.get("refused") or doc.get("components"):
+        return ""
+    bad = [p for p in doc.get("preflight", []) if p.get("status") != "PASS"]
+    ev = " | ".join("%s %s: %s" % (p.get("name"), p.get("status"), str(p.get("evidence") or "").split("\n")[0][:160])
+                    for p in bad)
+    tag = " (IndeterminateError: run rimbridge_client.py --reconcile)" if "UNKNOWN outcome" in ev else ""
+    # status words in lower case: a FAIL token here would read as the mod's observed FAIL (relentless_live.observed_fail)
+    line = "%s%s; %s" % (doc["refused"], tag, ev[:600])
+    return line.replace(" FAIL", "=fail").replace(" UNMEASURED", "=unmeasured")
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--mod", required=True)
@@ -74,6 +91,12 @@ def main(argv=None):
         return 1
     c = find(out, a.chain, a.component)
     if c is None:
+        why = refusal(out)
+        if why and not a.mock:
+            # the driver refused at preflight, so no chain ran: a harness reading, never the mod's FAIL
+            # (WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS gen 1: five "no component" FAILs were one stuck bridge marker)
+            print("UNMEASURED: preflight refused, chain %s never ran: %s -> %s" % (a.chain, why, out))
+            return 1
         print("FAIL: no component %s.%s in %s" % (a.chain, a.component, out))
         return 1
     v = str(c.get("verdict") or "")
@@ -81,7 +104,8 @@ def main(argv=None):
         print("EXISTS %s.%s (mock verdict %s) -> %s" % (a.chain, a.component, v, out))
         return 0
     ok = v.startswith("PASS")
-    print("%s %s.%s: %s -- %s -> %s" % ("PASS" if ok else "FAIL", a.chain, a.component, v,
+    head = "PASS" if ok else "UNMEASURED" if v.startswith("UNMEASURED") else "FAIL"   # a blind row is not the mod's FAIL
+    print("%s %s.%s: %s -- %s -> %s" % (head, a.chain, a.component, v,
                                         str(c.get("evidenceFull") or "")[:400], out))
     return 0 if ok else 1
 
