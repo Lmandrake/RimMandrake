@@ -14,6 +14,10 @@ in a row. Whole item: N=0 .75, 1 .52, 2 .42, 3 .21, 4 .11, 5 or more about .05. 
 2 .40, 3 .06, 4 .07, 5 or more under .01. A third miss is the cliff: the retest stops being worth its run.
 CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP had 314 and stayed red; one sitting found the cause.
 
+A sitting's core job is MEASURING SURPRISE (owner 2026-11-04): it LOOKs at the screen regularly, reads the test-state
+monitor (jawa/vitals) and the window stack, and scores each observation EXPECTED / ODD / ALARMING given the biome, the
+test's purpose and the map's history, with the one bridge read that explains it.
+
 Once the item is answered or blocked, a sitting explores the same loaded map like a player would (EXPLORATION PASS,
 TEST_PILOT_WIDEN_PAST_THE_CHECKLIST) and files what surprised it as checkable events.
 
@@ -40,6 +44,9 @@ HOSTS = ("stevedesktop", "archmagi")    # preference order: SteveDesktop's game 
 FREE_STATES = ("FREE", "STALE")
 EXPLORE = "EXPLORATION PASS"      # the brief's marker for the after-the-item pass (selftest pins it)
 EXPLORE_MAX_FILED = 5             # new items one sitting files from exploring; the rest wait in its PROGRESS file
+SURPRISE = "MEASURING SURPRISE"   # the brief's marker for the pilot's core framing (owner 2026-11-04; selftest pins it)
+LOOK_EVERY_MIN = 10               # a LOOK at sitting start, after every experiment, and at least this often
+SCORES = ("EXPECTED", "ODD", "ALARMING")   # each observation's surprise score
 
 
 def streaks(runs):
@@ -128,7 +135,30 @@ def brief(verdict, host):
                      "end. Take with --idle-ok; his OWNER hold still refuses, and then you pick the other host.")
     # LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL (owner 2026-11-04): "Make sure the Test Pilot's job is to EXPLAIN the
     # failure, not just try to execute a test. ... Then there needs to be follow-up work to address them."
-    lines += ["Read first: `rimflow show %s` and Player.log's first exception." % i,
+    lines += ["Read first: `rimflow show %s` and Player.log's first exception." % i]
+    # TEST_PILOT_WIDEN_PAST_THE_CHECKLIST, owner 2026-11-04: "it should regularly "look at" the screen and reason about
+    # what it's seeing. ... It should be given latitude to gather context and then reason about how surprising any of it
+    # is. That's what's the test pilot is really about. Measuring surprise."
+    lines += ["Your core job is %s: gather context (you have latitude to), then reason how surprising each observation "
+              "is given the biome, the test's purpose and the map's history. The bridge says why; the screen says what a "
+              "player sees. Use both." % SURPRISE,
+              "LOOK at sitting start (after the take and the PROGRESS skeleton; arm the monitor then: `jawa/vitals "
+              "action=arm`), after every experiment, and at least every ~%d minutes: `jawa/vitals action=status` (the "
+              "test-state monitor: tombstones, threats, blocking windows and their age, letters), `jawa/window_list_close "
+              "action=list` (a stale modal blocks every later call), then capture BEFORE any `jawa/clear_ui` (clearing "
+              "hides the modal you look for): at the Windows desktop `python3 src/RimMandrake/Utils/system_screenshot.py "
+              "<out.bmp>` (OS capture, sees dialogs, works when a modal blocks the bridge) and `jawa/take_screenshot` "
+              "(game render, either host; clear_ui first only for a map-only shot). Record a modal, then close it. "
+              "Never take focus or fullscreen. Crop to the subject, view at <=1500 px, and actually reason about "
+              "it." % LOOK_EVERY_MIN,
+              "Each look, ask at least: do the creatures shown belong in this biome; dead animals or colonists with no "
+              "cause; mechanoids, raiders, merchants or visitors present, and why; fire outside a fire test; a modal "
+              "dialog or error on screen; weather and temperature plausible; the red error counter (rimbridge/list_logs, "
+              "a ring). Score each %s with the bridge state read that explains or confirms it (one at least; dig further when it does not) (jawa/pawn_census, "
+              "jawa/damage_log, jawa/weather_get, jawa/incident_queue_peek, jawa/vitals), in your PROGRESS file; an "
+              "unexplained %s or %s one is filed as a strange thing below." % (" / ".join(SCORES), SCORES[1], SCORES[2]),
+              "Flyers are state-read only. Owner: \"Don't try to capture images of flight. It doesn't work.\" Never "
+              "capture, stage or test a flyer's flight to look at it.",
               "Your job is to EXPLAIN the failure, not just to run the test: what the proof expected, what the game did, "
               "the mechanism linking them, the evidence for each step, and the theories you ruled out and why.",
               "Each cause you explain gets ONE open follow-up item: this item when the fault is its own, else reuse the "
@@ -151,5 +181,5 @@ def brief(verdict, host):
               "no worldgen, ModsConfig backup and restore) do not loosen for it." % EXPLORE_MAX_FILED,
               "End: write the sitting into the mod's functional script, then rimflow note %s --text \"%s: <sha> | "
               "expected: ... | observed: ... | mechanism: ... | evidence: <one per step> | ruled out: <theory: why> | "
-              "follow-up: <ITEM> | explored: <what> | filed: <ids>\", then release the bridge." % (i, SAT)]
+              "follow-up: <ITEM> | explored: <what> | surprises: <n scored, ids filed> | filed: <ids>\", then release the bridge." % (i, SAT)]
     return "\n".join(lines)

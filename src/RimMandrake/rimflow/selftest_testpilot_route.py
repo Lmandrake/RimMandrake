@@ -160,8 +160,42 @@ def t_brief_carries_the_exploration_pass():
         assert b.index("Read first") < b.index(R.EXPLORE) < b.index("End:"), "the item first, then explore, then end"
         for want in ("never a reload", "HARNESS / SITE is a full result", "Neighbour expectations", "swim",
                      "EXPECTATION", "search src/", "~%d new items" % R.EXPLORE_MAX_FILED, "no flyer flight",
-                     "explored: <what> | filed: <ids>"):
+                     "explored: <what> | surprises: <n scored, ids filed> | filed: <ids>"):
             assert want in b, "%s brief lacks %r" % (host, want)
+
+
+def t_brief_makes_measuring_surprise_the_core_job():
+    # TEST_PILOT_WIDEN_PAST_THE_CHECKLIST (owner 2026-11-04): "regularly "look at" the screen ... Measuring surprise."
+    v = {"id": IT, "kind": "streak", "why": "3 non-pass runs in a row"}
+    assert R.SCORES == ("EXPECTED", "ODD", "ALARMING") and R.LOOK_EVERY_MIN == 10, (R.SCORES, R.LOOK_EVERY_MIN)
+    for host in R.HOSTS:
+        b = R.brief(v, host)
+        assert b.index("Read first") < b.index(R.SURPRISE) < b.index("EXPLAIN the failure") < b.index(R.EXPLORE), \
+            "%s: surprise is the core job, framed before the failure and the exploration pass" % host
+        assert b.index("action=arm") < b.index("jawa/vitals action=status") < b.index("action=list") \
+            < b.index("then capture BEFORE any `jawa/clear_ui`"), "%s: arm, status, modal list, capture, then clear" % host
+        for want in ("after every experiment, and at least every ~10 minutes", "jawa/vitals action=status",
+                     "jawa/take_screenshot", "system_screenshot.py", "Never take focus or fullscreen", "<=1500 px",
+                     "belong in this biome", "no cause", "merchants", "fire outside a fire test", "modal",
+                     "weather and temperature", "red error counter", "EXPECTED / ODD / ALARMING",
+                     "bridge state read that explains or confirms it (one at least", "biome, the test's purpose and the map's history",
+                     "Don't try to capture images of flight. It doesn't work.", "state-read only",
+                     "surprises: <n scored, ids filed>"):
+            assert want in b, "%s brief lacks %r" % (host, want)
+
+
+def t_agent_file_carries_measuring_surprise():
+    root = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+    with open(os.path.join(root, ".claude", "agents", "rm-testpilot.md")) as f:
+        a = f.read()
+    assert a.index(R.SURPRISE) < a.index("## The sitting"), "the framing leads the agent file"
+    for want in ("Measuring surprise.", "jawa/vitals", "jawa/take_screenshot",
+                 "system_screenshot.py", "EXPECTED, ODD or ALARMING", "bridge state read that explains or confirms it",
+                 "after every experiment, and at least every ~10 minutes", "`jawa/vitals action=arm`",
+                 "capture, BEFORE any `jawa/clear_ui`", "1500 px or less", "Never take focus or fullscreen",
+                 "rule 4 of \"Beyond the checklist\"", "Never capture, stage or test a flyer's flight",
+                 "Don't try to capture images of flight. It doesn't work.", "surprises: <n scored, ids filed>"):
+        assert want in a, "rm-testpilot.md lacks %r" % want
 
 
 def t_dispatcher_reads_the_route_and_tells_the_seat():
