@@ -511,3 +511,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T00:06:58Z","tsn":1793837218215803162}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A5 (L2), read-only proof","ts":"2026-11-05T00:07:08Z","tsn":1793837228424328428}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T00:07:34Z","tsn":1793837254686981011}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-05T01:08:37Z","tsn":1793840917819658544}
