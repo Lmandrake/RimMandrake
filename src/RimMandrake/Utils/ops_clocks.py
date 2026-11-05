@@ -18,6 +18,7 @@ src/RimMandrake/Utils/systemd/ops_clocks.json; `RM_OPS_DEPLOY` overrides the dep
                              still read live. The checker's own git is a second witness only where it holds the
                              commit: a checkout without that history (a blind export) cannot disprove it, and says so.
 """
+import ast
 import fnmatch
 import json
 import os
@@ -45,11 +46,44 @@ def deploy(conf=None):
     return os.environ.get("RM_OPS_DEPLOY") or (conf or load_conf())["deploy"]
 
 
+def _is_deploy_call(node):
+    """`__import__("ops_clocks").deploy()` or `ops_clocks.deploy()`, called with no arguments."""
+    if not (isinstance(node, ast.Call) and not node.args and not node.keywords and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "deploy"):
+        return False
+    owner = node.func.value
+    if isinstance(owner, ast.Name):
+        return owner.id == "ops_clocks"
+    return (isinstance(owner, ast.Call) and isinstance(owner.func, ast.Name) and owner.func.id == "__import__"
+            and len(owner.args) == 1 and isinstance(owner.args[0], ast.Constant) and owner.args[0].value == "ops_clocks")
+
+
+def deploy_default_ok(src):
+    """installer source -> True when it has an add_argument(..., "--deploy", ...) call, every one defaults to this
+    module's deploy(), and no set_defaults(deploy=...) overrides it. Judged on the call, never the text: a file may READ
+    RM_PULSE_DEPLOY elsewhere (ops_watch's DEPLOY_STALE), and wrapping the call over lines changes nothing
+    (NIGHTLY_COP_FIX_RED_YZWCJJ_JDSB). Unparseable source is False."""
+    try:
+        tree = ast.parse(src)
+    except SyntaxError:
+        return False
+    found = []
+    for n in ast.walk(tree):
+        if not (isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)):
+            continue
+        if n.func.attr == "add_argument" and any(isinstance(a, ast.Constant) and a.value == "--deploy" for a in n.args):
+            dflt = [k.value for k in n.keywords if k.arg == "default"]
+            found.append(len(dflt) == 1 and _is_deploy_call(dflt[0]))
+        elif n.func.attr == "set_defaults" and any(k.arg in ("deploy", None) for k in n.keywords):
+            found.append(False)   # overrides the add_argument default (or might, through **kwargs)
+    return bool(found) and all(found)
+
+
 def effective(unit_text):
     """systemctl cat text (unit + drop-ins, in order) -> {key: [values]} as systemd applies them: a later list entry
     appends, an empty assignment (`ExecStart=`) clears what came before. Comments and section headers are dropped."""
     out = {}
-    for raw in unit_text.splitlines():
+    for raw in re.sub(r"\\\n", " ", unit_text).splitlines():   # a trailing backslash continues the line
         line = raw.strip()
         if not line or line[0] in "#;[" or "=" not in line:
             continue
@@ -150,7 +184,8 @@ def judge_snapshot(snap, dep, now=None, repo=REPO, notes=None):
     probs = []
     if snap.get("deploy", "").rstrip("/") != str(dep).rstrip("/"):
         probs.append("snapshot is of %s, not the deploy %s" % (snap.get("deploy"), dep))
-    age_h = (now - snap.get("taken", 0)) / 3600.0
+    taken = snap.get("taken", 0)
+    age_h = (now - taken) / 3600.0 if isinstance(taken, (int, float)) else float("inf")
     if not 0 <= age_h <= SNAPSHOT_MAX_H:
         probs.append("snapshot is %.1f h old (limit %d h): rerun `ops_clocks.py snapshot` where the deploy is readable"
                      % (age_h, SNAPSHOT_MAX_H))
@@ -167,7 +202,10 @@ def judge_snapshot(snap, dep, now=None, repo=REPO, notes=None):
         elif notes is not None:
             notes.append("this checkout holds no commit %s (no git history here): ancestry not re-measured, relying on"
                          " the snapshot's recorded head_on_origin" % head[:10])
-    probs += ["local edit in the deploy (snapshot): %s" % ln for ln in snap.get("porcelain_src", ["?"])]
+    porc = snap.get("porcelain_src", ["?"])
+    if not isinstance(porc, list):
+        porc = ["porcelain_src unreadable: %r" % (porc,)]
+    probs += ["local edit in the deploy (snapshot): %s" % ln for ln in porc]
     return probs
 
 

@@ -84,8 +84,14 @@ check(OC.judge(OW.UNIT.format(deploy=DEP), DEP) == [], "ops_watch's unit templat
 check(OC.judge(TG.UNIT.format(deploy=DEP), DEP) == [], "timers_guard's unit template is clean on the deploy")
 for mod in ("ops_watch", "timers_guard", "account_usage", "switching_plan"):
     src = (HERE / (mod + ".py")).read_text(encoding="utf-8")
-    check('"--deploy", default=__import__("ops_clocks").deploy()' in src,   # ops_watch READS pulse-deploy's age (DEPLOY_STALE); only the default is judged
+    check(OC.deploy_default_ok(src),   # judged on the call: ops_watch READS pulse-deploy's age (DEPLOY_STALE); class guard selftest_ops_clocks_deploy_default.py
           "%s install defaults --deploy to the Operations deploy" % mod)
+check(not OC.deploy_default_ok('p.add_argument("-d", "--deploy", default="/x")\np.add_argument("--deploy", default=ops_clocks.deploy())\n'),
+      "deploy_default_ok: a bad --deploy default behind a short flag is seen")
+check(not OC.deploy_default_ok('p.add_argument("--deploy", default=ops_clocks.deploy())\np.set_defaults(deploy="/x")\n'),
+      "deploy_default_ok: set_defaults(deploy=...) overriding the default is seen")
+check(OC.effective("ExecStart=/usr/bin/python3 \\\n  /x/src/RimMandrake/a.py\n")["ExecStart"][0].endswith("/x/src/RimMandrake/a.py"),
+      "effective: a backslash-continued ExecStart keeps its continuation")
 
 # --- the pinned clause: deploy_dirty and the snapshot a checker uses when it cannot read the deploy
 import json  # noqa: E402
