@@ -46,7 +46,7 @@ sys.path.insert(0, HERE)
 BANK = os.path.join(HERE, "validator_replay", "bank.json")
 LOGS = os.path.join(HERE, "validator_replay", "logs")
 PROPS = ("outcome", "verdict", "verified", "harness", "acted", "gen_bump", "route", "candidate_kept", "closes",
-         "unresolved_kept", "rewoken")
+         "unresolved_kept", "rewoken", "route_after_wait", "hold_kind", "checks_after_wait")
 SHA = "sha1"
 
 
@@ -150,6 +150,8 @@ def measure_check(case):
         out = {}
         for n, v in enumerate(case["verdicts"]):
             st = x.st("I0")
+            if n and case.get("repair_between"):    # the box changed between checks (CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE):
+                x.r = dict(x.r, walls={"marker": {"enforce": False, "repaired": n}})    # else the recheck is held, not paid
             if st["status"] != "checking":
                 for _ in range(8):      # an unmeasured candidate waits recheck_at, then is checked again
                     x.tick(dt=4000)
@@ -178,6 +180,13 @@ def measure_check(case):
                        # what the next reader (a worker's learned file, or the standing check) still says of the clause
                        # the run could not reach
                        unresolved_kept=bool(unreached) and all(u[:60] in told for u in unreached))
+        if case.get("after_wait"):  # what the recheck does once its wait is over, and how many checks it paid for
+            launched = sum(1 for l in x.w.launches if "-check-" in l[1])
+            for _ in range(8):
+                x.tick(dt=4000)
+            st = x.st("I0")
+            out.update(route_after_wait=st["status"], hold_kind=(st.get("hold") or {}).get("kind"),
+                       checks_after_wait=sum(1 for l in x.w.launches if "-check-" in l[1]) - launched)
         if case.get("unhold"):      # the box was repaired: the same candidate is checked again, no worker is sent
             st = x.st("I0")
             gen, cand = st["gen"], (st.get("candidate") or {}).get("sha")

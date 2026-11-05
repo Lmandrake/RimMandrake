@@ -272,16 +272,26 @@ def to_check(x, i, sha="sha1"):
     raise AssertionError("never checked: %s" % x.st(i)["status"])
 
 
-def speak(x, i, word, reasons, defects=None):
+def speak(x, i, word, reasons, defects=None, repair=False):
     st = x.st(i)
     R.verdict(x.s, i, st["check"]["nonce"], word, reasons, defects=defects)
     x.w.up[st["check"]["run"]["unit"]] = False
     x.tick()
+    if repair:      # after the verdict is read, before the recheck's tick: the box changed in between
+        repair_box(x)
     x.tick()
     return x.st(i)
 
 
-def recheck(x, i):
+def repair_box(x):
+    """The box is repaired between checks: the walls profile changes, so the recheck is not a repaid one
+    (CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE: on an unchanged box it is held instead, relentless_reach.repays)."""
+    x.r = dict(x.r, walls={"marker": {"enforce": False, "repaired_at": x.now}})
+
+
+def recheck(x, i, repair=True):
+    if repair:
+        repair_box(x)
     for _ in range(30):
         if x.st(i)["status"] == "checking":
             return x.st(i)
@@ -304,10 +314,15 @@ def t_steve_replay():
     x.tick(600)
     ok(x.st("I0")["status"] == "candidate" and len(x.w.launches) == launches,
        "no checker before the re-check wait: the box is not repaired by asking again at once")
-    st = recheck(x, "I0")
-    ok(st["candidate"]["sha"] == "sha1" and st["gen"] == was["gen"], "the same sha is checked again, no worker between")
-    st = speak(x, "I0", "UNMEASURED", "CANNOT REACH: ssh stevedesktop exits 255 (ssh_config.d perms)")
-    ok(st["status"] == "held" and (st["hold"] or {}).get("kind") == "unmeasured", "twice blind holds for repair")
+    for _ in range(30):     # CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE: the box is unchanged, so no second Marker is paid
+        if x.st("I0")["status"] != "candidate":
+            break
+        x.tick(120)
+    st = x.st("I0")
+    ok(len(x.w.launches) == launches, "an unchanged box buys no recheck: no Marker launched after the wait")
+    ok(st["status"] == "held" and (st["hold"] or {}).get("kind") == "unmeasured" and "box is unchanged" in st["hold"]["why"],
+       "blind on an unchanged box holds for repair at the recheck: %s" % (st.get("hold") or {}).get("why", "")[:80])
+    ok(x.s.attempts("I0")[-1]["end"] == "reach_held", "recorded as reach_held, no check paid")
     ok(not R.hold_is_his(st["hold"]), "the hold is not his: tooling, the seat's to repair")
     ok(st["gen"] == was["gen"] and st["approach"] == "build", "still no gen and no approach change")
     x.tick()
@@ -349,8 +364,8 @@ def read_as_fail(x, item="I0"):
 def t_real_fail_after_blind():
     x = T.Rig(n=1, share=1.0, same_failure_limit=2, unmeasured_recheck_s=60)
     was = to_check(x, "I0")
-    speak(x, "I0", "FAIL", STEVE_G1)
-    recheck(x, "I0")
+    st = speak(x, "I0", "FAIL", STEVE_G1, repair=True)     # the recheck wait is shorter than speak's ticks
+    recheck(x, "I0", repair=False)
     # the Marker names the defect its run showed (--defect): a FAIL, not blindness; attributed PRODUCT the strike stands
     speak(x, "I0", "FAIL", REAL["FOCUS_CAP g1"], defects=["the cap leaks on the real path"])
     st = read_as_fail(x)

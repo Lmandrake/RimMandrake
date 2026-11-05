@@ -38,6 +38,7 @@ import relentless_integrity  # noqa: E402
 import relentless_packet  # noqa: E402
 import relentless_usage  # noqa: E402
 import relentless_wall  # noqa: E402
+import relentless_reach  # noqa: E402
 import relentless_game  # noqa: E402
 import relentless_expedite  # noqa: E402
 import relentless_block  # noqa: E402
@@ -444,7 +445,8 @@ def unmeasured(store, st, said, blind, r, now):
     reasons = (st["check"] or {}).get("reasons") or ""
     prev = st.get("blind") or {}
     n = prev.get("n", 0) + 1 if prev.get("sha") == sha else 1
-    st["blind"] = {"n": n, "sha": sha, "at": now, "said": said, "what": (blind or reasons)[:600]}
+    st["blind"] = {"n": n, "sha": sha, "at": now, "said": said, "what": (blind or reasons)[:600],
+                   "box": relentless_reach.fingerprint(r, st.get("contract"))}     # what a repair of the box would change
     st["check"] = None
     store.attempt(st["item"], {"at": iso(now), "gen": st["gen"], "end": "unmeasured", "said": said,
                                "detail": reasons[:600], "sha": sha})
@@ -641,14 +643,45 @@ def reload_needed(store, item, gen, text, now=None):
     relentless_game.session_note(store, li.get("started"), item, reload_why=text, now=now)
 
 
-def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, offbox=None):
+def reach_hold(store, r, item, now):
+    """The candidate branch's gate before any clone or Marker (CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE). -> why it held, or
+    None. Two cases cost a Marker to learn nothing: a proof that names what the box hides with nothing routing it (a contract
+    set before the contract-time probe), and an UNMEASURED recheck on the same sha with the same box. Held kind unmeasured:
+    the seat's to repair; `unhold --offbox NAME` routes it, a plain unhold is the Conductor's why (reach_ok) or a recheck."""
+    with store.lock():
+        st = store.load(item)
+        if not st or st["status"] != "candidate":
+            return None
+        found = relentless_reach.uncovered(st.get("contract"), r)
+        if found:
+            why = "held before launch, no Marker paid: %s" % relentless_reach.refusal(found, relentless_wall.adapters(r))
+        elif relentless_reach.repays(st, r):
+            why = ("held before the recheck, no Marker paid: %s was UNMEASURED and the box is unchanged since (walls, adapters "
+                   "and contract fingerprint %s), so a second Marker would buy the same answer: %s. Fix the box, or unhold "
+                   "--offbox NAME" % (st["blind"]["sha"], st["blind"]["box"], (st["blind"].get("what") or "")[:300]))
+        else:
+            return None
+        relentless_strikes.hold(st, why, "unmeasured", now)
+        st["hold"]["reach"] = bool(found)
+        st["status"] = "held"
+        st.pop("recheck_at", None)
+        store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "reach_held", "detail": why[:600],
+                             "sha": (st.get("candidate") or {}).get("sha")})
+        store.save(st)
+    return why
+
+
+def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, offbox=None, reach_ok=None, r=None):
     """Set by the first worker before it edits; only a redesign may change it, and says why. One exception: any worker
     may add a live line the contract lacks with the proof unchanged, since that only asks more of the work. Three
     workers of CLOSE_GATE_ENFORCE_DONE_IS_EARNED died on the lock before a redesign could add it. `offbox`: adapter names
     (relentless_rules.json offbox_adapters) the supervisor runs outside the Marker's wall at check time; adding them with the proof
     unchanged also widens, since the Marker still judges whether each one measures its clause. Outside a redesign the offbox
-    adapters and game clauses already set are kept: a change names more, never fewer."""
-    offbox = relentless_wall.check_offbox_names(offbox, rules())    # names of supervisor adapters only: no worker shell
+    adapters and game clauses already set are kept: a change names more, never fewer. `reach_ok`: the worker's why for a
+    proof that names what the walled Marker's box hides (relentless_reach.needs); without it or an adapter such a proof is
+    refused here, before a Marker is paid to say CANNOT REACH (CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE). `r`: the rules."""
+    r = rules() if r is None else r
+    offbox = relentless_wall.check_offbox_names(offbox, r)    # names of supervisor adapters only: no worker shell
     import live_line
     if live:
         live_line.parse(live)
@@ -679,7 +712,14 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
             if len(offbox) > relentless_wall.OFFBOX_MAX:
                 raise ValueError("at most %d offbox adapters (the contract already names %s)"
                                  % (relentless_wall.OFFBOX_MAX, ", ".join(had)))
+        reach_ok = (reach_ok or "").strip() or (None if st["approach"] == "redesign" else   # a redesign's new proof
+                                                  (st["contract"] or {}).get("reach_ok"))   # earns its own why
+        found = relentless_reach.uncovered({"proof": proof, "offbox": offbox, "reach_ok": reach_ok}, r)
+        if found:
+            raise ValueError(relentless_reach.refusal(found, relentless_wall.adapters(r)))
         st["contract"] = {"proof": proof, "live": live, "by_gen": gen, "why": why}
+        if reach_ok:
+            st["contract"]["reach_ok"] = reach_ok[:400]
         if game:
             st["contract"]["game"] = game
         if offbox:
@@ -1149,6 +1189,8 @@ def unhold(store, item, said, now=None, offbox=None):
             st["hold"].get("kind") == "proof_weak" and (st.get("last_fail") or {}).get("class") == "proof_weak"
             and relentless_wall.acted_weak("WEAK", (st.get("last_fail") or {}).get("detail")) == "PASS")
         was_his = hold_is_his(st["hold"])
+        if st["hold"].get("reach") and st.get("contract") and not relentless_wall.offbox_cmds(st["contract"]):
+            st["contract"]["reach_ok"] = ("unhold: %s" % said)[:400]    # the lift is the why; else it holds again next tick
         st["hold"] = None
         st["returned_at"] = now
         if game_back:       # a game hold back to its game phase, not a new worker: the offline proof stands on its sha
@@ -2792,7 +2834,9 @@ def worker_prompt(st, text, learned, r, history=None, causes=None):
             "Windows program. When the proof's truth lives there, add --offbox NAME naming a supervisor adapter from "
             "relentless_rules.json offbox_adapters (%s): the supervisor runs it outside the wall at check time and hands the "
             "checker its raw output. You cannot pass a command; a reading no adapter makes is a snag. A checker that still "
-            "cannot reach the evidence says UNMEASURED, which sends nothing back to you." % (", ".join(sorted(relentless_wall.adapters(rules()))) or "none yet"),
+            "cannot reach the evidence says UNMEASURED, which sends nothing back to you. `contract` refuses a proof that "
+            "names what the box hides (a masked path, git history, ssh, a Windows program) unless --offbox routes it or "
+            "--reach-ok says why the box can still show it; the live line is read for the checker outside the wall." % (", ".join(sorted(relentless_wall.adapters(rules()))) or "none yet"),
             "A contract with no live line may gain one from any worker: the same --proof plus --live and --why.",
             "An item whose fix died before (`rimflow show` says OWES A GUARD) closes only with a class guard test shown failing on "
             "the instance: `rimflow guard <ID> --test <selftest*.py>` before the fix lands, then commit the test and the ledger shard.",
@@ -3816,6 +3860,10 @@ def step(store, fx, r, item, now, acts):
         if now < (st.get("recheck_at") or 0):   # an unmeasured check waits before the same sha is checked again
             acts.append({"do": "check_waits", "item": item, "why": "re-check of an unmeasured sha"})
             return
+        reach = reach_hold(store, r, item, now)
+        if reach:
+            acts.append({"do": "reach_held", "item": item, "why": reach})
+            return
         why = None
         pub = fx.published(c["sha"])
         if pub is None:
@@ -3908,8 +3956,12 @@ def step(store, fx, r, item, now, acts):
         readings = offbox_readings(fx, st["contract"], r)
         if box and readings:        # what the box cannot reach, read outside it just now: raw output and exit, no worker words
             relentless_wall.write_offbox(box, readings)
+        if box and (st["contract"] or {}).get("live"):     # the live line's reading, too: 33 of 60 CANNOT REACH were it
+            relentless_reach.write_live(box, relentless_reach.live_reading(st["contract"]["live"],
+                                                                           getattr(fx, "live_check", None), now))
         if box:
             why = fx.launch(st, desc, "\n".join([relentless_wall.marker_prompt(st, fx.item_text(item), box)]
+                                                + relentless_reach.live_lines(st["contract"], box)
                                                 + relentless_game.checker_lines(st["contract"])), r["checker_agent"],
                             os.path.join(box, "tree"), r["check_max_s"],
                             relentless_wall.unit_env(relentless_wall.profile(r), box),
@@ -5344,6 +5396,9 @@ def main(argv=None):
             p.add_argument("--offbox", action="append", help="an adapter NAME from relentless_rules.json offbox_adapters, which "
                            "the supervisor runs outside the Marker's wall at check time, its raw output and exit handed in: "
                            "for evidence the box cannot reach (repeatable). Never a command")
+            p.add_argument("--reach-ok", dest="reach_ok", help="why the walled Marker can still show a proof that names "
+                           "what its box hides (a masked path, git history, ssh, a Windows program); without it or --offbox "
+                           "such a proof is refused")
             p.add_argument("--why")
         if name == "snag":
             p.add_argument("--class", dest="klass", required=True)
@@ -5485,7 +5540,7 @@ def main(argv=None):
             learn(store, a.item, a.gen, a.text)
         elif a.cmd == "contract":
             contract(store, a.item, a.gen, a.proof, a.live, a.why,
-                     game=relentless_game.parse_game(a.game, a.game_why, a.no_offline), offbox=a.offbox)
+                     game=relentless_game.parse_game(a.game, a.game_why, a.no_offline), offbox=a.offbox, reach_ok=a.reach_ok)
         elif a.cmd == "game-ready":
             relentless_game.ready(store, a.item, a.gen, a.text)
         elif a.cmd == "reload-needed":

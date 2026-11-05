@@ -235,7 +235,7 @@
   {
    "id": "STEVE_SANDBOX_DENIAL_TWICE",
    "layer": "check",
-   "row": "The same blindness twice -> held for repair of the box, candidate kept",
+   "row": "The same blindness twice on a box changed between checks -> held for repair of the box, candidate kept",
    "verdicts": [
     {
      "word": "UNMEASURED",
@@ -259,6 +259,33 @@
     "closes": false,
     "rewoken": true
    },
+   "unhold": true,
+   "repair_between": true
+  },
+  {
+   "id": "STEVE_SANDBOX_DENIAL_UNCHANGED_BOX",
+   "layer": "check",
+   "row": "Blind once, the box unchanged at the recheck -> held for repair with no second check paid (CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE)",
+   "verdicts": [
+    {
+     "word": "UNMEASURED",
+     "reasons": "x",
+     "unreached": [
+      "ssh stevedesktop: Bad owner or permissions"
+     ]
+    }
+   ],
+   "expect": {
+    "acted": "UNMEASURED",
+    "gen_bump": false,
+    "route": "candidate",
+    "closes": false,
+    "route_after_wait": "held",
+    "hold_kind": "unmeasured",
+    "checks_after_wait": 0,
+    "rewoken": true
+   },
+   "after_wait": true,
    "unhold": true
   },
   {
