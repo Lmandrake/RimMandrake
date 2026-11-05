@@ -74,10 +74,17 @@
     "ref": "rm-judge a426291698d9b77c4 stage-2 flagship asks",
     "stage": 2,
     "tokens": 38213
+   },
+   {
+    "at": "2026-11-05T17:38:10Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793900021",
+    "stage": 2,
+    "tokens": 276863
    }
   ],
   "reserve": 60000,
-  "spent": 2684424
+  "spent": 2961287
  },
  "history": [
   {
@@ -175,6 +182,12 @@
    "stage": 2,
    "what": "open",
    "why": "run rm-role-designer-1793900021, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-05T17:38:11Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793900021: stage 2 waiting_owner"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -324,32 +337,34 @@
    "stage": 3,
    "summary": "Stage 3 written: tree.json (17 leaves, lint PASS), sheet.md, plan.md, scenes.json (16 acceptance, 3 exploration; showcases burn_line/fire_cast/sky_and_shelter at 6/4/3 new, overlap 0; coverage complete), floor.json; filed PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL and PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES. Only refusal: showcase 1 has no flagship pick of his, so return to stage 2 to ask. Also owed his word: walk bar pyre_fresh_burn_feeds_the_field still says black rain washes the bonus away (false since 2026-11-05); it needs rewording and re-validation.",
    "to": 2
+  },
+  {
+   "at": "2026-11-05T17:38:10Z",
+   "inputs": {
+    "exam": null,
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "9674f15396a05e2f45f136626976c1c2bdb1d7438a056b0cb53c085932ade71d",
+    "scenes": "6b80733af1c6073d504d7bb0f2e7f1982d051f713b46ba922e535b1539099466",
+    "sheet": "50fdc497d2c4aee42bcc48e014692d5371364ef3791f215fc0083baa4b253e46",
+    "tree": "a499724555dc564cc2295c314e4cc10f3f3374826daf84e0512d52a8b204956f"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793900021",
+   "stage": 2,
+   "summary": "Root already in his words. Sent two reviewed asks (turn_04.md): a_flagship_pick (which of burn_line / fire_cast / sky_and_shelter is showcase 1; recommended burn_line) and a_bar_reword (re-validate north star with pyre_fresh_burn_feeds_the_field reworded to 'black rain compounds'). Firebreak root clause dropped as a notice, undoable."
   }
  ],
- "running": {
-  "at": "2026-11-05T17:33:50Z",
-  "inputs": {
-   "exam": null,
-   "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
-   "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-   "root": "9674f15396a05e2f45f136626976c1c2bdb1d7438a056b0cb53c085932ade71d",
-   "scenes": "6b80733af1c6073d504d7bb0f2e7f1982d051f713b46ba922e535b1539099466",
-   "sheet": "50fdc497d2c4aee42bcc48e014692d5371364ef3791f215fc0083baa4b253e46",
-   "tree": "a499724555dc564cc2295c314e4cc10f3f3374826daf84e0512d52a8b204956f"
-  },
-  "manifest": {
-   "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
-   "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
-  },
-  "owner_uncited": [
-   "1793766816609436834"
-  ],
-  "reserved": 500000,
-  "run": "rm-role-designer-1793900021",
-  "stage": 2
- },
+ "running": null,
  "schema": 1,
  "stage": 2,
- "status": "ready",
+ "status": "waiting_owner",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
