@@ -599,3 +599,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_GLASSWALK_SPEED_RATIO_1 A1 (L2), read-only proof","ts":"2026-11-05T10:16:35Z","tsn":1793873795746845147}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T10:16:42Z","tsn":1793873802576718624}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing GRAFFITI_SIGIL_FRAMES_ART_1: review savegame for the owner's look","ts":"2026-11-05T10:18:08Z","tsn":1793873889001194022}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T10:22:54Z","tsn":1793874174627264659}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T10:22:59Z","tsn":1793874179685128685}
