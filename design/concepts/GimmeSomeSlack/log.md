@@ -219,3 +219,10 @@ but not precise conduit path. For the shock, needs one more line on how a Pawn e
 approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they
 (or anyone else) gets shocked." Root revised to his two corrections only (turn_02.md); fallen_wire_shock scope opened by
 him; the fixer exemption is already built (GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED). Stage 2 next: a_junction_every.
+
+## 2026-11-05, run rm-role-designer-1793896735 (stage 2)
+
+a_junction_every reworded from "every cord vs one strip per cluster" (already answered by OWNER:1793596860187785113:
+every junction, every cord plugging in) to the real gap: Modern junctions draw the splitter box (Junction_X/T), the
+PowerStrip art only at device piles. Picture: mock_modern_junction_2026-11-05.png. Fresh Opus review: pass (wording
+fixed). Sent in turn_03.md. Five contradictions resolved as agent rulings into stage-3 acceptance scenes.

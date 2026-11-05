@@ -148,12 +148,30 @@
   },
   {
    "id": "a_junction_every",
-   "status": "draft",
+   "status": "sent",
    "about": [
-    "junction_strips"
+    "junction_strips",
+    "four_styles"
    ],
-   "source": "OWNER:1793596860187785113",
-   "text": "At a 3- or 4-way conduit junction, must every cord that meets there visibly plug into the strip or connector, or is one strip per junction cluster (with cords merely arriving near it) enough? A labelled mock of both would show it."
+   "source": [
+    "OWNER:1793596860187785113",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "design/concepts/GimmeSomeSlack/mock_modern_junction_2026-11-05.png"
+   ],
+   "text": "In the Modern (extension-cord) look, a 3- or 4-way conduit junction today draws a splitter box with every cord plugged into it (picture A, real art). Your 2026-11-02 words say \"power strips (modern style art)\" at those junctions. Is A what you meant, or should a Modern junction draw the long power strip instead (picture B, a crude mock; at a 3-way the strip takes two cords plus its own lead)? Either way every cord at the junction plugs into it, and the other three looks draw their connector boxes as now.",
+   "decision": "Which art a Modern-look 3/4-way junction draws: the built splitter box (Junction_X/T) or the 64x32 PowerStrip art used today only at device piles. His 'every junction, every cord plugging in' is already settled by OWNER:1793596860187785113 and is built (PoseJunction poses a decal on every Junction node, arms on the cord directions).",
+   "owner_cites": [
+    "OWNER:1793596860187785113",
+    "OWNER:1792128342129067198"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793896735",
+   "picture": "design/concepts/GimmeSomeSlack/mock_modern_junction_2026-11-05.png",
+   "review": {
+    "by": "rm-judge a1485dfe6ae6bd669 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "His 11-02 words name power strips for Modern junctions; code draws the splitter box at every junction and the strip only at device piles, so which art is his 'strip' is open and decides what gets built; not answered in log; 10-15 verification predates the words; answerable A or B. Wording fixed: 3-way case, 'plugs into it'."
+   }
   },
   {
    "id": "a_flagship",
@@ -554,7 +572,11 @@
     "OWNER:1792158918005115465",
     "ITEM:GSS_CORD_SILENCE_PHANTOM_SPARK"
    ],
-   "text": "His 2026-10-16 phantom second cable at a pump fed by adjacent conduit: item started 2026-10-16, never closed, no item file; connectivity_truth is core (2026-11-02) but this case has no row. Stage 3 files an acceptance scene with the adjacent-feed pump and a control."
+   "text": "His 2026-10-16 phantom second cable at a pump fed by adjacent conduit: item started 2026-10-16, never closed, no item file; connectivity_truth is core (2026-11-02) but this case has no row. Stage 3 files an acceptance scene with the adjacent-feed pump and a control.",
+   "core": true,
+   "resolved": true,
+   "resolution": "Agent ruling: not an owner decision. Built requirement (connectivity_truth, OWNER:1792158918005115465); stage 3 writes the acceptance scene: pump fed by adjacent conduit draws no second cable, plus a control.",
+   "resolved_by": "rm-role-designer-1793896735"
   },
   {
    "id": "junction_every_unknown",
@@ -562,14 +584,22 @@
     "OWNER:1793596860187785113",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
    ],
-   "text": "Strips/connectors are built as junction decals, but whether EVERY 3/4-way junction gets one with the other cords plugging into it is unmeasured (impl partly unknown)."
+   "text": "Strips/connectors are built as junction decals, but whether EVERY 3/4-way junction gets one with the other cords plugging into it is unmeasured (impl partly unknown).",
+   "core": true,
+   "resolved": true,
+   "resolution": "His 2026-11-02 words settle the requirement: a strip/connector at EVERY 3/4-way junction, hosting the cords plugging in. Built: every NodeType.Junction gets a JunctionPiece posed on its cord arms (CordBuilder.cs PoseJunction; CordAudit.cs:116 checks arm alignment for non-blob junctions). Open sub-question, Modern art at plain junctions (splitter box vs power strip), is ask a_junction_every. Blob junctions (IsBlob, arms not audited) get a stage-3 scene.",
+   "resolved_by": "rm-role-designer-1793896735"
   },
   {
    "id": "no_repeat_unmeasured",
    "source": [
     "OWNER:1793596860187785113"
    ],
-   "text": "'It should not repeat patterns': no instrument measures repetition of cord shapes across edges; only his eye has judged it. Stage 3 needs a measurable stand-in or an L4-only leaf."
+   "text": "'It should not repeat patterns': no instrument measures repetition of cord shapes across edges; only his eye has judged it. Stage 3 needs a measurable stand-in or an L4-only leaf.",
+   "core": true,
+   "resolved": true,
+   "resolution": "Agent ruling: stage 3 writes it as an L4 leaf (his eye, a judge agent predicting) with a measurable stand-in (shape variation across edges of equal length from the seed); no ask: his words already state the requirement.",
+   "resolved_by": "rm-role-designer-1793896735"
   },
   {
    "id": "cost_partial",
@@ -577,14 +607,22 @@
     "ITEM:GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS",
     "infrastructure/state/live_proofs/GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET.txt"
    ],
-   "text": "Slice items closed live, but the lone-rebuild case is verify partial (2026-10-27) and maxSliceMs < 20 is still tracked there; rebuild_cost is not yet proven whole."
+   "text": "Slice items closed live, but the lone-rebuild case is verify partial (2026-10-27) and maxSliceMs < 20 is still tracked there; rebuild_cost is not yet proven whole.",
+   "core": true,
+   "resolved": true,
+   "resolution": "Agent ruling: requirement settled by his words (no problematic delay, OWNER:1792999698321800383); the lone-rebuild partial is proof debt, carried into stage 3 as an acceptance scene with a frame-time bar, not an owner decision.",
+   "resolved_by": "rm-role-designer-1793896735"
   },
   {
    "id": "switches_partial",
    "source": [
     "ITEM:GSS_SWITCHES_PROVE_LAST_FOUR_STANDING"
    ],
-   "text": "Four settings (keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops, slideUnder) have no passing flip proof; gravship_connectivity rides on one of them."
+   "text": "Four settings (keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops, slideUnder) have no passing flip proof; gravship_connectivity rides on one of them.",
+   "core": true,
+   "resolved": true,
+   "resolution": "Agent ruling: proof debt, not a design question; stage 3 gives each of the four switches a flip scene (keepWiresOnGravship rides with gravship_connectivity).",
+   "resolved_by": "rm-role-designer-1793896735"
   }
  ],
  "built_reviewed": [
