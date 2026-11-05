@@ -55,6 +55,8 @@ import os
 import random
 import shutil
 import subprocess
+import threading
+from concurrent.futures import ThreadPoolExecutor
 import sys
 import time
 from contextlib import contextmanager
@@ -158,7 +160,24 @@ def store_lock():
 
 
 def own_bytes(root: Path) -> tuple[int, int]:
-    """(bytes only this tree holds, bytes hard-linked with something else). Allocated blocks."""
+    """(bytes only this tree holds, bytes hard-linked with something else). Allocated blocks. find does the walk: the same
+    lstat of every non-directory as os.walk, in C and outside the GIL, so pool_reading's threads overlap it (a 16-clone pool
+    walked in ~3 s of Python, 2026-11-05). A symlink to a directory counts its own blocks here (os.walk listed it as a dir)."""
+    try:     # -H: a root that is a symlink is followed, as os.walk(root) does; a timeout raises rather than walking twice
+        r = subprocess.run(["find", "-H", str(root), "!", "-type", "d", "-printf", "%n %b\n"], capture_output=True,
+                           text=True, timeout=300)
+        if r.returncode in (0, 1) and (r.stdout or not r.stderr):     # 1 = some entry unreadable: skipped, as os.walk does
+            own = linked = 0
+            for line in r.stdout.splitlines():
+                n, _, b = line.partition(" ")
+                if n.isdigit() and b.isdigit():
+                    if int(n) > 1:
+                        linked += int(b) * 512
+                    else:
+                        own += int(b) * 512
+            return own, linked
+    except OSError:      # no find on this box
+        pass
     own = linked = 0
     for dp, _dn, fn in os.walk(root):
         for n in fn:
@@ -539,17 +558,33 @@ def clone_idle_s(c: Path) -> float:
     return time.time() - newest if newest else 0.0
 
 
+_REFRESH_LOCK = threading.Lock()
+_PRINTS_LOCK = threading.Lock()
+POOL_READ_THREADS = 8
+
+
+def _per_clone(fn, clones: list) -> list:
+    """fn over every clone, in order, POOL_READ_THREADS at a time. Each clone's reading is git subprocesses and a tree walk,
+    so threads overlap the waits: the disk family read 16 pool clones in 8.8 s one by one (2026-11-05), past the metronome's
+    15 s sense limit beside its pair. Still a live read of every clone each pass; an exception in any clone raises, as before."""
+    if len(clones) < 2:
+        return [fn(c) for c in clones]
+    with ThreadPoolExecutor(max_workers=min(POOL_READ_THREADS, len(clones))) as ex:
+        return list(ex.map(fn, clones))
+
+
 def level_origin_ref(c: Path, refreshed: list) -> bool:
     """Bring an idle clone's origin/main up to the store's, so a verdict is not against a ref a day old; the store is refreshed
     once per reading, from the mirror (rm-mirror.timer, minutes behind GitHub against an hour's idle). No FETCH_HEAD: it is
     one of clone_idle_s's clocks, and a reading that wrote it would keep every clone it looks at from ever going idle.
     False = the ref stayed as it was; the verdict then errs toward stranded."""
-    try:
-        if not refreshed:
-            refreshed.append(True)
-            refresh()
-    except Exception:
-        pass     # a stale store still levels a staler clone
+    with _REFRESH_LOCK:      # pool_reading levels clones from threads: the store is refreshed once, before any fetch from it
+        try:
+            if not refreshed:
+                refreshed.append(True)
+                refresh()
+        except Exception:
+            pass     # a stale store still levels a staler clone
     try:
         git("fetch", "-q", "--no-write-fetch-head", "--no-auto-maintenance", "--no-tags", str(store_path()),
             f"+{STORE_REF}:refs/remotes/origin/main", cwd=c, timeout=120)
@@ -571,12 +606,10 @@ def pool_reading() -> dict:
         pass
     except OSError as e:
         raise PoolUnreadable(f"{root}: {e.strerror}") from e
-    rows = []
     refreshed: list = []
     now = time.time()
-    for c in sorted(root.glob("*")) if root.is_dir() else []:
-        if not (c / ".git").exists():
-            continue
+
+    def one(c: Path) -> dict:
         try:
             born = c.stat().st_ctime
         except OSError:
@@ -587,8 +620,11 @@ def pool_reading() -> dict:
         if stranded and level_origin_ref(c, refreshed):     # only a clone about to alarm is worth the fetch, and it is idle
             risk = clone_unpushed(c)
             stranded = bool(risk)
-        rows.append({"name": c.name, "bytes": clone_bytes(c), "age_h": round((now - born) / 3600, 2),
-                     "unpushed": risk, "stranded": stranded})
+        return {"name": c.name, "bytes": clone_bytes(c), "age_h": round((now - born) / 3600, 2),
+                "unpushed": risk, "stranded": stranded}
+
+    clones = [c for c in (sorted(root.glob("*")) if root.is_dir() else []) if (c / ".git").exists()]
+    rows = _per_clone(one, clones)
     tot = sum(r["bytes"] for r in rows)
     held = [r["name"] for r in rows if r["stranded"]]
     d = {"ts": now_iso(), "epoch": now, "root": str(root), "count": len(rows), "max_clones": cmax,
@@ -625,6 +661,11 @@ def scratch_clone_dirs() -> list[Path]:
 
 def main_prints() -> set:
     """{"author-second committer-second"} on main. Asked only when a clone holds commits the mirror's refs do not reach."""
+    with _PRINTS_LOCK:       # scratch_stranded's threads: one git log of main, not one each
+        return _main_prints()
+
+
+def _main_prints() -> set:
     global _MAIN_PRINTS
     if _MAIN_PRINTS is None:
         import scratch_reap as sr
@@ -701,14 +742,19 @@ def scratch_stranded() -> dict:
     """Live: every helper clone holding work nowhere else that nobody has touched for an hour. A clone on the reaper's PROTECTED
     list counts like any other: protected from deletion is not excused from landing. Written for RimPulse; ops_watch alarms."""
     now = time.time()
-    rows = []
-    for c in scratch_clone_dirs():
+    import scratch_reap as sr
+    sr.mirror_tips()     # its cache fills by appending: fill it before the threads read it
+
+    def one(c: Path) -> dict | None:
         idle = clone_idle_s(c)               # read before git touches anything in it
         risk, newest = clone_unlanded(c)
-        if risk:
-            idle = min(idle, now - newest) if newest else idle
-            rows.append({"path": str(c), "holds": risk, "idle_h": round(idle / 3600, 2),
-                         "stranded": idle >= POOL_IDLE_S and not clone_in_use(c)})
+        if not risk:
+            return None
+        idle = min(idle, now - newest) if newest else idle
+        return {"path": str(c), "holds": risk, "idle_h": round(idle / 3600, 2),
+                "stranded": idle >= POOL_IDLE_S and not clone_in_use(c)}
+
+    rows = [r for r in _per_clone(one, scratch_clone_dirs()) if r is not None]
     d = {"ts": now_iso(), "epoch": now, "stranded": [r["path"] for r in rows if r["stranded"]], "rows": rows}
     try:
         (state_dir() / "scratch_stranded.json").write_text(json.dumps(d))

@@ -110,6 +110,18 @@ def main() -> int:
             check(sh("git", "--git-dir", os.environ["RM_OBJSTORE"], "config", k) == v, f"store config {k}")
         own, linked = sc.own_bytes(BASE / "store.git/objects/pack")
         check(linked > 0 and own == 0, f"init re-uses the seed packs, writes no duplicate: own={own}")
+        ref = [0, 0]      # own_bytes walks with find: the same totals as the os.walk it replaced, hard links included
+        for dp, _dn, fn in os.walk(BASE):
+            for n in fn:
+                st = os.lstat(os.path.join(dp, n))
+                ref[st.st_nlink > 1] += st.st_blocks * 512
+        walk, sc.os.walk = sc.os.walk, None      # only find's answer may pass: the os.walk fallback is shut off
+        try:
+            ob = sc.own_bytes(BASE)
+        finally:
+            sc.os.walk = walk
+        check(ob == (ref[0], ref[1]) and ref[1] > 0, f"own_bytes {ob} == walk {ref}")
+        check(sc._per_clone(lambda x: x * 2, list(range(20))) == [x * 2 for x in range(20)], "per-clone reads keep their order")
 
         rc, out = quiet(sc.clone, "selftest plain", "plain", False, [], False, False)
         dest = Path(out.strip())
