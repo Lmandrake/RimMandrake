@@ -507,3 +507,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-04T23:49:01Z","tsn":1793836141637834830}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-04T23:58:33Z","tsn":1793836713949278016}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T00:06:18Z","tsn":1793837178759292354}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T00:06:49Z","tsn":1793837209229599318}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T00:06:58Z","tsn":1793837218215803162}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A5 (L2), read-only proof","ts":"2026-11-05T00:07:08Z","tsn":1793837228424328428}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T00:07:34Z","tsn":1793837254686981011}
