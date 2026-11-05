@@ -660,3 +660,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:17:48Z","tsn":1793888268793622165}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO L4 (L1), read-only proof","ts":"2026-11-05T14:18:08Z","tsn":1793888288873384558}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:18:24Z","tsn":1793888304851383402}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL A1 (L2), read-only proof","ts":"2026-11-05T14:19:12Z","tsn":1793888352687607092}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:19:19Z","tsn":1793888359868032801}
