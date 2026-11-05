@@ -893,7 +893,14 @@ namespace RimMandrake.FlowWorks
 				sides[s] = new System.Collections.Generic.List<string>();
 			}
 			int coupled = 0, corner = 0, cornerCoupled = 0;
-			CellRect around = pump.OccupiedRect().ExpandedBy(1);
+			CellRect pr = pump.OccupiedRect(), around = pr.ExpandedBy(1);
+			// HOSE_END_FIX_CELL_SHORT_OF_PORT: each side's port is read off the footprint (RM_PumpPortMath.PortCell), as HosePorts does
+			var port = new IntVec3[4];
+			for (int s = 0; s < 4; s++)
+			{
+				Machinery.RM_PumpPortMath.PortCell(pr.minX, pr.minZ, pr.Width, pr.Height, pump.Position.x, pump.Position.z, s, out int px, out int pz);
+				port[s] = new IntVec3(px, 0, pz);
+			}
 			if (comp != null)
 			{
 				foreach (Hose.CompHoseReel r in comp.OrderedReels())
@@ -908,7 +915,7 @@ namespace RimMandrake.FlowWorks
 					int bodySide = -1;
 					for (int s = 0; s < 4; s++)
 					{
-						if (body.Contains(pump.Position + new Rot4(s).FacingCell))
+						if (body.Contains(port[s]))
 						{
 							bodySide = s;
 							break;
@@ -930,12 +937,12 @@ namespace RimMandrake.FlowWorks
 					if (r.laid && r.far.IsValid && comp.RelayOf(r) == null && around.Contains(r.far))
 					{
 						bool endCoupled = Hose.HosePorts.FindAt(map, r.far, r.parent, out _, out _) == pump;
-						int endSide = Machinery.RM_PumpPortMath.SideOf(r.far.x - pump.Position.x, r.far.z - pump.Position.z);
+						int endSide = Machinery.RM_PumpPortMath.SideOfPort(pr.minX, pr.minZ, pr.Width, pr.Height, pump.Position.x, pump.Position.z, r.far.x, r.far.z);
 						if (endSide >= 0)
 						{
 							sides[endSide].Add("free:" + id + ":" + (endCoupled ? "c" : "r"));
 						}
-						else if (r.far != pump.Position)
+						else if (!pr.Contains(r.far))
 						{
 							corner++;
 							if (endCoupled) cornerCoupled++;
@@ -949,7 +956,7 @@ namespace RimMandrake.FlowWorks
 			}
 			for (int s = 0; s < 4; s++)
 			{
-				IntVec3 n = pump.Position + new Rot4(s).FacingCell;
+				IntVec3 n = port[s];
 				if (!n.InBounds(map))
 				{
 					continue;

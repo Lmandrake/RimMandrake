@@ -10,8 +10,8 @@ wall (MODERN_TANK_PORT_REDRAW_COUPLER_FLOATS, live art look 2026-10-22). This ga
     * a tank: the midpoint of the footprint edge the end cell shares with it (HoseJointProbe: cell centre + half a step),
       except RM_LiquidTank west/east, which couples at TankPortGeometry.PortPoint (HoseMath.cs PortDz table), and the lanes
       in TankPortGeometry.MovedAlong (OFF_BODY_PORTS), which slide along their edge onto the drawn body;
-    * a pump: only a side whose Position + FacingCell lies outside the footprint (RM_PumpPortMath.SideOf), at that
-      cell's shared edge midpoint --
+    * a pump: one port per side, Position walked out along the side to the first cell off the footprint
+      (RM_PumpPortMath.PortCell), at that cell's shared edge midpoint --
   map it into the texture (Graphic_Single, not rotatable: drawSize quad centred on the footprint centre + drawOffset)
   and require opaque art (alpha > 128) reaching the footprint edge there, spanning at least the hose's half-width (the
   filing's bar): the inward gap from the edge to the first opaque pixel is <= GAP_TOL cell at every sample within
@@ -200,8 +200,8 @@ def ports(b, look, dz_table, moves=None):
         px, pz = (w - 1) // 2, (h - 1) // 2          # Position of a north-facing thing (GenAdj.OccupiedRect inverse)
         for side, (dx, dz) in SIDES.items():
             cx, cz = px + dx, pz + dz
-            if 0 <= cx < w and 0 <= cz < h:
-                continue                              # Position + FacingCell inside the footprint: no end can lie there
+            while 0 <= cx < w and 0 <= cz < h:        # RM_PumpPortMath.PortCell: walk out to the first cell off the footprint
+                cx, cz = cx + dx, cz + dz
             out.append((side, 0, (cx + 0.5 - dx * 0.5, cz + 0.5 - dz * 0.5)))
         return out
     for side, (dx, dz) in SIDES.items():
@@ -421,7 +421,8 @@ def sanity(half_w):
     gi = [gap_at(inset, g, b["size"], pt, s, half_w) for s, _, pt in p]
     check(all(abs(x - 0.25) < 0.03 for x in gi), "sanity: art inset 0.25 cell reads gap 0.25 (%s)" % ", ".join("%.2f" % x for x in gi))
     pp = ports({"def": "P", "kind": "pump", "size": [3, 2]}, "Scrapper", None)
-    check([s for s, _, _ in pp] == ["south"], "sanity: a 3x2 pump takes a hose only on its south side (Position + FacingCell rule)")
+    check(sorted(s for s, _, _ in pp) == ["east", "north", "south", "west"],
+          "sanity: a 3x2 pump takes a hose on each of its four sides (RM_PumpPortMath.PortCell, HOSE_END_FIX_CELL_SHORT_OF_PORT)")
 
 
 def can_fail(defs, dz_table, half_w, geo):

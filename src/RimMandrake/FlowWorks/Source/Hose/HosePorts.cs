@@ -160,22 +160,27 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         // ---------------------------------------------------------------- FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE
-        /// <summary>The pump side a reel's body touches (RM_PumpPortMath.SideOf), or -1 when it touches only a corner.</summary>
+        /// <summary>The pump side whose port cell (RM_PumpPortMath.PortCell) a reel's body covers, or -1 (a corner, another lane).</summary>
         private static int ReelSideOn(Thing pump, CompHoseReel r)
         {
-            CellRect rc = r.parent.OccupiedRect();
+            // HOSE_END_FIX_CELL_SHORT_OF_PORT: the port cell is read off the pump's footprint (a 3x2 station has four too)
+            CellRect rc = r.parent.OccupiedRect(), pr = pump.OccupiedRect();
             for (int s = 0; s < 4; s++)
             {
-                IntVec3 n = pump.Position + new Rot4(s).FacingCell;
-                if (rc.Contains(n)) return s;
+                RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.PortCell(pr.minX, pr.minZ, pr.Width, pr.Height, pump.Position.x, pump.Position.z, s,
+                    out int nx, out int nz);
+                if (rc.Contains(new IntVec3(nx, 0, nz))) return s;
             }
             return -1;
         }
 
-        /// <summary>The pump side a free end at <paramref name="end"/> lies on, or -1 (a corner, or pushed onto the pump itself).</summary>
+        /// <summary>The pump side whose port cell a free end at <paramref name="end"/> lies on, or -1 (a corner, another lane of a
+        /// long side, or pushed onto the pump itself).</summary>
         private static int EndSideOn(Thing pump, IntVec3 end)
         {
-            return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.SideOf(end.x - pump.Position.x, end.z - pump.Position.z);
+            CellRect pr = pump.OccupiedRect();
+            return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.SideOfPort(pr.minX, pr.minZ, pr.Width, pr.Height, pump.Position.x, pump.Position.z,
+                end.x, end.z);
         }
 
         /// <summary>He typed 2026-10-20, "a HOSE must connect at one of the four sides": may <paramref name="self"/> (a reel, by

@@ -21,6 +21,36 @@ namespace RimMandrake.FlowWorks.Machinery
             return -1;
         }
 
+        /// <summary>HOSE_END_FIX_CELL_SHORT_OF_PORT / PUMP_PORT_FIX_ASSUMES_ONE_CELL: the port cell on <paramref name="side"/>
+        /// (Rot4 order) of a pump whose footprint is (minX, minZ, w, h) and whose Position is (posX, posZ): Position walked
+        /// out along the side's facing step to the first cell outside the footprint. For a 1x1 pump that is Position +
+        /// FacingCell, as before; a 3x2 pumping station gets one port on each of its four sides, not only the south one.</summary>
+        public static void PortCell(int minX, int minZ, int w, int h, int posX, int posZ, int side, out int x, out int z)
+        {
+            int dx = side == 1 ? 1 : side == 3 ? -1 : 0;
+            int dz = side == 0 ? 1 : side == 2 ? -1 : 0;
+            x = posX + dx;
+            z = posZ + dz;
+            if (dx == 0 && dz == 0) return;
+            while (x >= minX && x < minX + w && z >= minZ && z < minZ + h)
+            {
+                x += dx;
+                z += dz;
+            }
+        }
+
+        /// <summary>The side (Rot4 order) whose port cell (<see cref="PortCell"/>) is (x, z), or -1: a corner, another lane
+        /// of a long side, the footprint itself or further away.</summary>
+        public static int SideOfPort(int minX, int minZ, int w, int h, int posX, int posZ, int x, int z)
+        {
+            for (int s = 0; s < 4; s++)
+            {
+                PortCell(minX, minZ, w, h, posX, posZ, s, out int px, out int pz);
+                if (px == x && pz == z) return s;
+            }
+            return -1;
+        }
+
         /// <summary><see cref="HoseMayTake(int, int, int[])"/> over a list, without copying it (HOSE_TICK_REBUILD_ZERO_ALLOC: the
         /// hose port gate reads the other ids into reused scratch).</summary>
         public static bool HoseMayTake(int side, int hoseId, System.Collections.Generic.List<int> otherHoseIdsOnSide)

@@ -1,0 +1,3 @@
+live-mods: FlowWorks
+live-proof A1: mkdir -p /mnt/d/ClaudeWork/rimmandrake/scratch/hose_end_fix/live && python.exe src/RimMandrake/FlowWorks/northstar/station_port_live.py --out D:/ClaudeWork/rimmandrake/scratch/hose_end_fix/live/station_port_live.json < /dev/null
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 1

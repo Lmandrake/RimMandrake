@@ -64,6 +64,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!RM_PumpPortMath.HoseMayTake(2, 50, new[] { 40 }), "a second hose at a port is refused (lower id keeps it)");
                 Assert(RM_PumpPortMath.HoseMayTake(2, 40, new[] { 50 }), "the first hose keeps its port");
             });
+            // HOSE_END_FIX_CELL_SHORT_OF_PORT / PUMP_PORT_FIX_ASSUMES_ONE_CELL: a multi-cell pump's port on each side is Position
+            // walked out to the first cell off the footprint (the S5 east end (114,118) beside a 3x2 station at (112,118) lay loose)
+            Case("PumpPorts_station_footprint_ports", () =>
+            {
+                RM_PumpPortMath.PortCell(111, 118, 3, 2, 112, 118, 1, out int ex, out int ez);
+                Assert(ex == 114 && ez == 118, "S5: a 3x2 station at (112,118) has its east port at (114,118) (" + ex + "," + ez + ")");
+                Assert(RM_PumpPortMath.SideOfPort(111, 118, 3, 2, 112, 118, 114, 118) == 1, "S5: the east end couples on side 1");
+                Assert(RM_PumpPortMath.SideOfPort(111, 118, 3, 2, 112, 118, 112, 117) == 2, "S5: the south port is unchanged");
+                Assert(RM_PumpPortMath.SideOfPort(111, 118, 3, 2, 112, 118, 114, 119) < 0, "can-fail: the east side's other lane is no port");
+                Assert(RM_PumpPortMath.SideOfPort(111, 118, 3, 2, 112, 118, 114, 117) < 0, "can-fail: a corner is no port");
+                for (int w = 1; w <= 4; w++)
+                    for (int h = 1; h <= 4; h++)
+                    {
+                        int mx = 10, mz = 20, px = mx + (w - 1) / 2, pz = mz + (h - 1) / 2;
+                        var seen = new HashSet<long>();
+                        for (int s = 0; s < 4; s++)
+                        {
+                            RM_PumpPortMath.PortCell(mx, mz, w, h, px, pz, s, out int x, out int z);
+                            bool inside = x >= mx && x < mx + w && z >= mz && z < mz + h;
+                            int touch = 0;
+                            foreach (var d in new[] { (0, 1), (1, 0), (0, -1), (-1, 0) })
+                                if (x + d.Item1 >= mx && x + d.Item1 < mx + w && z + d.Item2 >= mz && z + d.Item2 < mz + h) touch++;
+                            Assert(!inside && touch == 1, w + "x" + h + " side " + s + ": the port is edge-beside the footprint");
+                            Assert(RM_PumpPortMath.SideOfPort(mx, mz, w, h, px, pz, x, z) == s, w + "x" + h + " side " + s + ": round trip");
+                            if (w == 1 && h == 1) Assert(RM_PumpPortMath.SideOf(x - px, z - pz) == s, "1x1: Position + FacingCell, as before");
+                            seen.Add(((long)x << 32) | (uint)z);
+                        }
+                        Assert(seen.Count == 4, w + "x" + h + ": four distinct ports");
+                    }
+            });
             Case("PumpPorts_pipes_join_adjacent_hoses_at_ports", () =>
             {
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
