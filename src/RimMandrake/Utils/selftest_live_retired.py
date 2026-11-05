@@ -114,6 +114,13 @@ def main(retired_path=None):
                       [], retired)
     check(not fix, "a settled item's promise on the retired rm-pulse-update.timer is not swept "
                    "(PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT)")
+    # FLEETWATCH_PAGE_REPAIR_BLIND_REVIEW_PARTLY (and three sibling FLEETWATCH_ items): closed on rm-fleetwatch.timer,
+    # which Fleet Watch's retirement deleted (d7080dccda); the sweep reopened it 2026-11-04 ('disabled')
+    fw = DM.promises({"FLEETWATCH_PAGE_REPAIR_BLIND_REVIEW_PARTLY": It(
+        live="unit=rm-fleetwatch.timer reading=/mnt/d/ClaudeWork/rimmandrake/fleetwatch/last_write.json max_age=30m",
+        live_broken="is-enabled says 'disabled'")}, [], retired)
+    check(not fw, "a settled item's promise on the retired rm-fleetwatch.timer is not swept "
+                  "(FLEETWATCH_PAGE_REPAIR_BLIND_REVIEW_PARTLY)")
     # LIVE_RESTORE_IM_BACK_HOOK: the "I'm back" hook was deleted with RimPulse; its hook promise must not be swept
     back = DM.promises({}, baseline + ["hook=im_back_hook.py"], retired)
     check(not [r for r in back if "im_back_hook" in r["line"]],
