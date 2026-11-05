@@ -110,6 +110,13 @@
    "source": "OWNER:1793895896496551063",
    "words": "Restate Honest: Faithfully represents connectivity but not precise conduit path. For the shock, needs one more line on how a Pawn ever fixes a sparking line: if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked.",
    "what": "Root approved as corrected (honest = connectivity, not conduit path; fixer safe, incidental crossers shocked)"
+  },
+  {
+   "id": "d_modern_junction_strip",
+   "speaker": "owner",
+   "source": "OWNER:1793909100631838579",
+   "quote": "The right power strip is better for modern look. Junctions work better for industrial.",
+   "text": "Modern-look 3/4-way junctions draw the long PowerStrip art (picture B), every cord plugging in; Industrial (StarWarsJawa) junctions keep the Junction_T/X box art; Scrapper and Futuristic keep their connectors as now"
   }
  ],
  "asks": [
@@ -148,7 +155,7 @@
   },
   {
    "id": "a_junction_every",
-   "status": "sent",
+   "status": "answered",
    "about": [
     "junction_strips",
     "four_styles"
@@ -171,6 +178,11 @@
     "by": "rm-judge a1485dfe6ae6bd669 (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "His 11-02 words name power strips for Modern junctions; code draws the splitter box at every junction and the strip only at device piles, so which art is his 'strip' is open and decides what gets built; not answered in log; 10-15 verification predates the words; answerable A or B. Wording fixed: 3-way case, 'plugs into it'."
+   },
+   "answer": {
+    "source": "OWNER:1793909100631838579",
+    "words": "The right power strip is better for modern look. Junctions work better for industrial.",
+    "took": "B: a Modern 3/4-way junction draws the long power strip (every cord plugs into it, at a 3-way two cords plus its own lead); Industrial keeps its junction box art as now"
    }
   },
   {
@@ -245,12 +257,13 @@
    "scope": "approved",
    "source": [
     "OWNER:1793596860187785113",
-    "OWNER:1792128342129067198"
+    "OWNER:1792128342129067198",
+    "OWNER:1793909100631838579"
    ],
    "scope_source": [
     "OWNER:1793596860187785113"
    ],
-   "note": "DecalKind PowerStrip/JunctionTape/JunctionTin in CordBuilder.cs; he walked the tangle stations 2026-10-15 ('all looks great'). No row asserts a strip at EVERY 3/4-way junction with the other cords plugging into it (his 2026-11-02 words): contradiction junction_every_unknown. Open: GSS_JUNCTION_REDRAW_BODY_WIDER_THAN_CORD, GSS_STRIP_LED_FIX_MISSED_REPAINT"
+   "note": "DecalKind PowerStrip/JunctionTape/JunctionTin in CordBuilder.cs; he walked the tangle stations 2026-10-15 ('all looks great'). No row asserts a strip at EVERY 3/4-way junction with the other cords plugging into it (his 2026-11-02 words): contradiction junction_every_unknown. Open: GSS_JUNCTION_REDRAW_BODY_WIDER_THAN_CORD, GSS_STRIP_LED_FIX_MISSED_REPAINT | 2026-11-05 ruling d_modern_junction_strip: Modern junctions must draw the PowerStrip, not the splitter box. Today PowerStrip is drawn only at device piles, so the Modern junction half is owed build work: stage 3 writes it into plan.md with an acceptance scene (Modern 3-way and 4-way junction, every cord plugged into the strip; Industrial control showing the box)."
   },
   {
    "id": "connectivity_truth",
@@ -587,7 +600,7 @@
    "text": "Strips/connectors are built as junction decals, but whether EVERY 3/4-way junction gets one with the other cords plugging into it is unmeasured (impl partly unknown).",
    "core": true,
    "resolved": true,
-   "resolution": "His 2026-11-02 words settle the requirement: a strip/connector at EVERY 3/4-way junction, hosting the cords plugging in. Built: every NodeType.Junction gets a JunctionPiece posed on its cord arms (CordBuilder.cs PoseJunction; CordAudit.cs:116 checks arm alignment for non-blob junctions). Open sub-question, Modern art at plain junctions (splitter box vs power strip), is ask a_junction_every. Blob junctions (IsBlob, arms not audited) get a stage-3 scene.",
+   "resolution": "His 2026-11-02 words settle the requirement: a strip/connector at EVERY 3/4-way junction, hosting the cords plugging in. Built: every NodeType.Junction gets a JunctionPiece posed on its cord arms (CordBuilder.cs PoseJunction; CordAudit.cs:116 checks arm alignment for non-blob junctions). Open sub-question, Modern art at plain junctions (splitter box vs power strip), is ask a_junction_every. Blob junctions (IsBlob, arms not audited) get a stage-3 scene. Sub-question answered 2026-11-05 (OWNER:1793909100631838579): Modern = power strip (B), Industrial = junction box.",
    "resolved_by": "rm-role-designer-1793896735"
   },
   {

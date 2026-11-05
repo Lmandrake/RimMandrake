@@ -226,3 +226,9 @@ a_junction_every reworded from "every cord vs one strip per cluster" (already an
 every junction, every cord plugging in) to the real gap: Modern junctions draw the splitter box (Junction_X/T), the
 PowerStrip art only at device piles. Picture: mock_modern_junction_2026-11-05.png. Fresh Opus review: pass (wording
 fixed). Sent in turn_03.md. Five contradictions resolved as agent rulings into stage-3 acceptance scenes.
+
+## 2026-11-05 a_junction_every answered (OWNER:1793909100631838579)
+
+Q (turn_03.md): Modern-look 3/4-way junction: built splitter box (A) or the long power strip (B)?
+His words: "The right power strip is better for modern look. Junctions work better for industrial."
+Taken: B for Modern (owed build: PowerStrip at Modern junctions, today drawn only at device piles); Industrial keeps its junction box. Recorded as decision d_modern_junction_strip.
