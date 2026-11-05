@@ -1,0 +1,178 @@
+{
+ "_doc": "Gravship rotation audit ledger (gravship_rotation_audit.py --check). groups: each defect group's filed item and its defs. row_ok: defect-class rows judged fine by hand. reviewed: DIRECTION_CODE (class, file) judgements. Item GRAVSHIP_ROTATION_AUDIT_EVERY_BUILDING_TURNS, 2026-11-05.",
+ "groups": [
+  {
+   "group": "FORCED_TURN",
+   "item": "GRAVSHIP_LOCKED_FIX_ENGINE_TURNS_THEM_ANYWAY",
+   "defs": [
+    "RM_DesalPlant_Kludged",
+    "RM_DesalPlant_Repaired",
+    "RM_DetoxWorks_Kludged",
+    "RM_DetoxWorks_Repaired",
+    "RM_PumpingStation_Kludged",
+    "RM_PumpingStation_Repaired",
+    "RM_TarRefinery_Kludged",
+    "RM_TarRefinery_Repaired",
+    "RM_TarVault",
+    "RM_HeatedSuitCharger",
+    "GS_ImperialLamp",
+    "GS_Palp_Throne",
+    "RSW_CrawlerTreadWreck",
+    "RSW_WreckedSkiff"
+   ]
+  },
+  {
+   "group": "PICTURE_SPIN",
+   "item": "GRAVSHIP_SPUN_ART_REDRAW_LYING_SIDEWAYS",
+   "defs": [
+    "RM_AttarStill",
+    "RM_DeepfirePress",
+    "RM_HospiceCradle",
+    "RM_LensBench",
+    "RM_SluiceBox",
+    "RM_SummGreatBone",
+    "RM_WringingStill",
+    "RUT_AncientWargamingTable",
+    "RUT_RuinedHospitalBed",
+    "kotor_PlasmaFurnace"
+   ]
+  },
+  {
+   "group": "MULTI_GAP",
+   "item": "GRAVSHIP_FACING_GAPS_REDRAW_BORROWED_SIDES",
+   "defs": [
+    "RM_ArchiveVat",
+    "RM_SlimeCompressor",
+    "KOTOR_PazaakTable",
+    "RM_FungiponicsBasin"
+   ]
+  },
+  {
+   "group": "FIXED_BUT_FACED",
+   "item": "GRAVSHIP_VENTS_WIRE_ART_DRAWN_NEVER_SHOWN",
+   "defs": [
+    "RUT_VentForge",
+    "RUT_VentKiln",
+    "RUT_VentSmelter"
+   ]
+  },
+  {
+   "group": "HOSE_REEL (first case, fixed)",
+   "item": "HOSE_REEL_FIX_TURNS_WITH_THE_SHIP",
+   "defs": []
+  }
+ ],
+ "row_ok": {
+  "GS_Carpet_Star": "top-down carpet: spinning the picture is the right turn",
+  "GS_Carpet_cult": "top-down carpet: spinning the picture is the right turn",
+  "GS_Carpet_forge": "top-down carpet: spinning the picture is the right turn",
+  "guy762_SecretFloorPanel_DoomgiverTile": "top-down floor panel (looks like deck): spins correctly",
+  "guy762_SecretFloorPanel_DreadnaughtCabinTile_black": "top-down floor panel (looks like deck): spins correctly",
+  "guy762_SecretFloorPanel_DreadnaughtCabinTile_blue": "top-down floor panel (looks like deck): spins correctly",
+  "guy762_SecretFloorPanel_darkwhiteoutlines": "top-down floor panel (looks like deck): spins correctly"
+ },
+ "reviewed": [
+  {
+   "class": "RM_Building_BankStake",
+   "file": "src/RimMandrake/FlowWorks/Source/Rivers/RM_FerryAndLevee.cs",
+   "verdict": "ok",
+   "why": "non-rotatable 1x1 stake: West/South are the lattice neighbours it dirties (rotation-free), the post is drawn round with MatAt(North)"
+  },
+  {
+   "class": "RM_Building_FerryPost",
+   "file": "src/RimMandrake/FlowWorks/Source/Rivers/RM_FerryAndLevee.cs",
+   "verdict": "ok",
+   "why": "same file as BankStake: lattice neighbours and a round post"
+  },
+  {
+   "class": "Building_RM_GutMotherVat",
+   "file": "src/RimMandrake/TheRot/Source/RM_GutMother.cs",
+   "verdict": "ok",
+   "why": "Rot4.North only in the spawn-site footprint test of a non-rotatable square vat"
+  },
+  {
+   "class": "CompProperties_RM_GutMotherDigest",
+   "file": "src/RimMandrake/TheRot/Source/RM_GutMother.cs",
+   "verdict": "ok",
+   "why": "same line: spawn-site footprint test"
+  },
+  {
+   "class": "RM_CompProperties_WarscarRing",
+   "file": "src/RimMandrake/Scarlands/Source/RM_WarscarRings.cs",
+   "verdict": "ok",
+   "why": "Rot4.North only in a placement footprint test of a non-rotatable square def"
+  },
+  {
+   "class": "CompProperties_StatuePicker",
+   "file": "src/RimUtinni/UtinniStatues/Source/RUT_StatuePicker.cs",
+   "verdict": "ok",
+   "why": "respawn of a non-rotatable square statue on one picture: its facing never shows"
+  },
+  {
+   "class": "RUT_Building_Statue",
+   "file": "src/RimUtinni/UtinniStatues/Source/RUT_StatuePicker.cs",
+   "verdict": "ok",
+   "why": "same respawn line"
+  },
+  {
+   "class": "RM_CompProperties_FlamePoints",
+   "file": "src/RimMandrake/FlameStatues/Source/RM_FlamePoints.cs",
+   "verdict": "ok",
+   "why": "flame offsets on non-rotatable square statues on one picture: art and flames stay together"
+  },
+  {
+   "class": "CompProperties_KoltoTank",
+   "file": "src/RimStarWars/Armoury/Source/KoltoTank/CompProperties_KoltoTank.cs",
+   "verdict": "ok",
+   "why": "KoltoTank is non-rotatable and square: its offsets never need to turn"
+  },
+  {
+   "class": "CompProperties_SecondLayer",
+   "file": "src/RimStarWars/Armoury/Source/KoltoTank/CompProperties_SecondLayer.cs",
+   "verdict": "ok",
+   "why": "KoltoTank overlay layer, same reason"
+  },
+  {
+   "class": "CompProperties_BactaImmersion",
+   "file": "src/RimStarWars/Bacta/Source/CompBactaImmersion.cs",
+   "verdict": "ok",
+   "why": "Rot4.North is the fill bar's orientation: a world-upright gauge, like vanilla fuel bars"
+  },
+  {
+   "class": "RM_CompFlamePoints",
+   "file": "src/RimMandrake/FlameStatues/Source/RM_FlamePoints.cs",
+   "verdict": "ok",
+   "why": "the comp behind RM_CompProperties_FlamePoints: same file, same verdict (flames ride non-rotatable square statues)"
+  },
+  {
+   "class": "RM_CompGutMotherDigest",
+   "file": "src/RimMandrake/TheRot/Source/RM_GutMother.cs",
+   "verdict": "ok",
+   "why": "the comp behind CompProperties_RM_GutMotherDigest: the file's only fixed direction is the spawn-site footprint test"
+  },
+  {
+   "class": "RM_CompRingAnalyzable",
+   "file": "src/RimMandrake/Scarlands/Source/RM_WarscarRings.cs",
+   "verdict": "ok",
+   "why": "same file as RM_CompProperties_WarscarRing: only a placement footprint test"
+  },
+  {
+   "class": "RM_CompWarscarRing",
+   "file": "src/RimMandrake/Scarlands/Source/RM_WarscarRings.cs",
+   "verdict": "ok",
+   "why": "the comp behind RM_CompProperties_WarscarRing: only a placement footprint test"
+  },
+  {
+   "class": "RUT_CompStatuePicker",
+   "file": "src/RimUtinni/UtinniStatues/Source/RUT_StatuePicker.cs",
+   "verdict": "ok",
+   "why": "the comp behind CompProperties_StatuePicker: the respawn line of a non-rotatable square statue"
+  },
+  {
+   "class": "CompBactaImmersion",
+   "file": "src/RimStarWars/Bacta/Source/CompBactaImmersion.cs",
+   "verdict": "ok",
+   "why": "the comp itself: Rot4.North is the world-upright fill bar, like vanilla fuel bars"
+  }
+ ]
+}
