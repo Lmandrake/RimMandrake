@@ -16,10 +16,17 @@
     "ref": "rm-judge a4076b10482d95ea4 ask_root review",
     "stage": 1,
     "tokens": 50157
+   },
+   {
+    "at": "2026-11-05T08:16:15Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793866044",
+    "stage": 1,
+    "tokens": 408751
    }
   ],
   "reserve": 50000,
-  "spent": 545260
+  "spent": 954011
  },
  "history": [
   {
@@ -51,6 +58,12 @@
    "stage": 1,
    "what": "open",
    "why": "run rm-role-designer-1793866044, stage 1, budget 450000"
+  },
+  {
+   "at": "2026-11-05T08:16:15Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1793866044: stage 1 waiting_owner"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
@@ -78,29 +91,32 @@
    "run": "rm-role-designer-1793864264",
    "stage": 0,
    "summary": "Stage 0 read: 10 inventory entries (9 built: arson raid, flame-harvest visit, rite send, rite lord, rite harvest duty, Tribes lookup, settings, thornvine patch, letters; 1 absent sheet canon: Impid fire-callers/cairns), none proven live. 3 contradictions (thornvine patch stranded in the campaign tier; two fix items implemented 2026-10-15 never closed; visit vs rite overlap), script audit of 4 scenes, 3 failure modes, 3 draft asks (flagship pick, what the visit does at the fire, arson-debt visibility) for stage 1-2."
+  },
+  {
+   "at": "2026-11-05T08:16:15Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793866044",
+   "stage": 1,
+   "summary": "ask_root (root paragraph, turn_01.md: the Deep Tribes as fire harvesters per R14, rite party judged first) is reviewed and sent; his yes or correction ends stage 1. a_flagship struck on review (covered by the judged-first line); a_harvest_visit_at_the_fire and a_debt_visible kept ready for stage 2."
   }
  ],
- "running": {
-  "at": "2026-11-05T08:07:36Z",
-  "inputs": {
-   "exam": null,
-   "floor": null,
-   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-   "root": null,
-   "scenes": null,
-   "sheet": null,
-   "tree": null
-  },
-  "manifest": {
-   "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
-   "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
-  },
-  "owner_uncited": [],
-  "reserved": 450000,
-  "run": "rm-role-designer-1793866044",
-  "stage": 1
- },
+ "running": null,
  "schema": 1,
  "stage": 1,
- "status": "ready"
+ "status": "waiting_owner",
+ "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

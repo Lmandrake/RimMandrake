@@ -1,5 +1,6 @@
 {
  "aliases": [],
+ "blocked_on": "CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED",
  "budget": {
   "cap": 500000,
   "charges": [
@@ -72,10 +73,59 @@
     "ref": "run rm-role-designer-1793863469",
     "stage": 3,
     "tokens": 1009093
+   },
+   {
+    "at": "2026-11-05T08:21:18Z",
+    "kind": "helper",
+    "ref": "exam examiner",
+    "stage": 4,
+    "tokens": 31562
+   },
+   {
+    "at": "2026-11-05T08:21:18Z",
+    "kind": "helper",
+    "ref": "exam challenger",
+    "stage": 4,
+    "tokens": 32384
+   },
+   {
+    "at": "2026-11-05T08:21:18Z",
+    "kind": "helper",
+    "ref": "exam reader_a",
+    "stage": 4,
+    "tokens": 33221
+   },
+   {
+    "at": "2026-11-05T08:21:18Z",
+    "kind": "helper",
+    "ref": "exam reader_b",
+    "stage": 4,
+    "tokens": 32253
+   },
+   {
+    "at": "2026-11-05T08:21:18Z",
+    "kind": "helper",
+    "ref": "exam control",
+    "stage": 4,
+    "tokens": 45840
+   },
+   {
+    "at": "2026-11-05T08:27:41Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793866712",
+    "stage": 4,
+    "tokens": 353740
+   },
+   {
+    "at": "2026-11-05T08:32:16Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793867400",
+    "stage": 5,
+    "tokens": 276807
    }
   ],
   "reserve": 50000,
-  "spent": 2923736
+  "spent": 3729543
  },
  "history": [
   {
@@ -197,6 +247,42 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1793863469: stage 3 done"
+  },
+  {
+   "at": "2026-11-05T08:18:42Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "2923736 of 500000 spent; run rm-role-designer-1793866712 goes on with 450000 (advisory)"
+  },
+  {
+   "at": "2026-11-05T08:18:42Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1793866712, stage 4, budget 450000"
+  },
+  {
+   "at": "2026-11-05T08:27:42Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1793866712: stage 4 done"
+  },
+  {
+   "at": "2026-11-05T08:30:06Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "3452736 of 500000 spent; run rm-role-designer-1793867400 goes on with 450000 (advisory)"
+  },
+  {
+   "at": "2026-11-05T08:30:06Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1793867400, stage 5, budget 450000"
+  },
+  {
+   "at": "2026-11-05T08:32:16Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1793867400: stage 5 blocked"
   }
  ],
  "item": "FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -339,11 +425,54 @@
    "run": "rm-role-designer-1793863469",
    "stage": 3,
    "summary": "Stage 3 written: sheet.md, tree.json (31 leaves: 24 built, 5 owed by his words, 1 instrument wetness_probe, 1 walk on the full list), scenes.json (28 scenes; showcases moat 13 new, garden 7 new, pit_trap 3 new with staging reasons; rivers, slime, quarry, map taps and settings in coverage_rest), floor.json (every line applicable), plan.md. Lint PASS, showcase set accepted. Filed build items: FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST, FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL, FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED, FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM, FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP, FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN, FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED. record.json: d_scene_moat gains flagship moat; three owed capabilities added to the inventory."
+  },
+  {
+   "at": "2026-11-05T08:27:41Z",
+   "inputs": {
+    "exam": "6e427afabb6d8019702ca4c13c34f3e314ce41cfe985236d00e91e3cb7b70e76",
+    "floor": "4df351b9abb87232d6e8afd0921afbbc10dccb6bd067026e77ad3f3a48367dd1",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "15d62e6fb6e8ef7e8f6099227d7087101d582eb0caaf19923147cbde39f2700a",
+    "scenes": "188a460dfcb4bca0d26610ddf966fcbc0cd974c40d5530efacf33dbb45bc1760",
+    "sheet": "68f9946f8e250af1b2dd19f7ccc901be45ed82c2550693f033dd4b7b83480070",
+    "tree": "572198fed9a064df1898d695529f85fc343cfeb09bab2d3fe5773bc3abab149d"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_exam.md": "3e3f16a15ed2c45e2851911d42c9369cdc7560758fe1f386dc38012b93534217"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793866712",
+   "stage": 4,
+   "summary": "Cold Reader exam passed: 17 frozen scenarios (12 Examiner, 5 Challenger; 12 reject cases), both blind Readers matched all 17, accept_where_reject_core 0, no Challenger misses. Control with raiders_fetch_their_fallen removed accepted the two scenarios that leaf rejects (e6, c4), so the set discriminates. exam.json frozen against tree 572198fe, sheet 68f9946f. Helpers charged 175260."
+  },
+  {
+   "at": "2026-11-05T08:32:16Z",
+   "inputs": {
+    "exam": "6e427afabb6d8019702ca4c13c34f3e314ce41cfe985236d00e91e3cb7b70e76",
+    "floor": "4df351b9abb87232d6e8afd0921afbbc10dccb6bd067026e77ad3f3a48367dd1",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "15d62e6fb6e8ef7e8f6099227d7087101d582eb0caaf19923147cbde39f2700a",
+    "scenes": "188a460dfcb4bca0d26610ddf966fcbc0cd974c40d5530efacf33dbb45bc1760",
+    "sheet": "68f9946f8e250af1b2dd19f7ccc901be45ed82c2550693f033dd4b7b83480070",
+    "tree": "572198fed9a064df1898d695529f85fc343cfeb09bab2d3fe5773bc3abab149d"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_lock.md": "9e093f9183fe0e759c9d0082bb3cd79c2c55ecbc2efda84c3f1b7e583ad37c75"
+   },
+   "on": "CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED",
+   "outcome": "blocked",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793867400",
+   "stage": 5,
+   "summary": "Lock blocked only on the Arbiter coverage signature: concept_tree.py gate refuses with 'no Arbiter coverage signature' alone (root validated, lint clean), the showcase set is accepted (moat 13, garden 7 new, pit_trap 3 new) and the exam passed at tree 572198fe / sheet 68f9946f. sign runs only inside an rm-role-arbiter-<n> run, and nothing launches an Arbiter run for a concept, so filed system item CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED. Artifacts untouched; no mod item filed (step 5 follows the signature)."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
- "status": "ready",
+ "stage": 5,
+ "status": "blocked",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

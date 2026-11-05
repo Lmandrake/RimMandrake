@@ -1,0 +1,2 @@
+{"run": "rm-role-designer-1793866712", "stage": 4, "outcome": "done",
+ "summary": "Cold Reader exam passed: 17 frozen scenarios (12 Examiner, 5 Challenger; 12 reject cases), both blind Readers matched all 17, accept_where_reject_core 0, no Challenger misses. Control with raiders_fetch_their_fallen removed accepted the two scenarios that leaf rejects (e6, c4), so the set discriminates. exam.json frozen against tree 572198fe, sheet 68f9946f. Helpers charged 175260."}

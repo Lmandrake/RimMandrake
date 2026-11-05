@@ -18,10 +18,17 @@
     "ref": "rm-judge a69772db192f51a71 ask_root review",
     "stage": 1,
     "tokens": 35579
+   },
+   {
+    "at": "2026-11-05T08:05:03Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793865628",
+    "stage": 1,
+    "tokens": 455091
    }
   ],
   "reserve": 50000,
-  "spent": 664778
+  "spent": 1119869
  },
  "history": [
   {
@@ -53,6 +60,12 @@
    "stage": 1,
    "what": "open",
    "why": "run rm-role-designer-1793865628, stage 1, budget 450000"
+  },
+  {
+   "at": "2026-11-05T08:05:04Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1793865628: stage 1 waiting_owner"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -82,31 +95,34 @@
    "run": "rm-role-designer-1793864529",
    "stage": 0,
    "summary": "Stage 0 read: 19 inventory entries (18 built: biome, flora, regrow, fauna, ash field, burn line, scorch-fruit, ruins, fire-hawk, furnace-beast, burrowers, ullai/giant, weather, firebreak/firefoam, sand shovel, rite hook, settings gate, art; lightning breaker absent and out by owner). All proofs stale (last green 2026-10-15) or missing (firebreak/firefoam, rite hook). 4 contradictions, script audit of 8 scenes (missing controls on firehawk, fire-born, burrowers; no fire-control scene), 3 failure modes, 3 draft asks (flagship, regrow thresholds, firebreak trust)."
+  },
+  {
+   "at": "2026-11-05T08:05:03Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793865628",
+   "stage": 1,
+   "summary": "ask_root (root paragraph, turn_01.md) is reviewed and sent; ready for him in the morning: his yes or correction of turn_01.md ends stage 1. a_flagship struck on review (covered by the judged-first line); a_fire_control_scene and a_regrow_thresholds kept ready for stage 2."
   }
  ],
- "running": {
-  "at": "2026-11-05T08:00:42Z",
-  "inputs": {
-   "exam": null,
-   "floor": null,
-   "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-   "root": null,
-   "scenes": null,
-   "sheet": null,
-   "tree": null
-  },
-  "manifest": {
-   "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
-   "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
-  },
-  "owner_uncited": [
-   "1793766816609436834"
-  ],
-  "reserved": 450000,
-  "run": "rm-role-designer-1793865628",
-  "stage": 1
- },
+ "running": null,
  "schema": 1,
  "stage": 1,
- "status": "ready"
+ "status": "waiting_owner",
+ "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
