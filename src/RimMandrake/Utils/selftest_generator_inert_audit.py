@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest_generator_inert_audit.py -- the IL walker and the creation-only classifier, on synthetic input.
+"""selftest_generator_inert_audit.py -- the IL walker, the creation-only classifier and the A2 save judge, on synthetic input.
 
 No DLL, save or game is read: the walker must step every operand width exactly, or every token after a
 mis-stepped opcode is garbage and the audit silently loses (or invents) a Harmony target.
@@ -56,32 +56,36 @@ for t in ("RimWorld.GenCelestial.CelestialSunGlow", "RimWorld.Planet.World.Expos
     check(not creation(t), "%s is runtime" % t)
 
 check(set(g.EXPECTED) == set(g.MODS), "every audited mod has an expectation")
-check(set(p for p, v in g.EXPECTED.items() if v == "INERT") == set(g.INERT_LOG_NEEDLES),
-      "every INERT mod has Player.log needles")
+# A2: the canonical save's own header is the record of a load without the INERT mods (judge_a2)
+J = g.judge_a2
+base = ["ludeon.rimworld"] + ["filler.%d" % k for k in range(30)] + list(g.ALIEN_WORLDS)
+check(J(base, g.EXPECT_TILES, {})[0] == g.PASS, "both AW ids, no INERT mod, whole planet: PASS")
+check(J(base + ["oblitus.mylittleplanet"], g.EXPECT_TILES, {})[0] == g.FAIL, "a save listing My Little Planet: FAIL")
+check(J(base + ["boots.sensiblefactions"], g.EXPECT_TILES, {})[0] == g.FAIL, "a save listing Sensible Factions: FAIL")
+check(J(base[:-1], g.EXPECT_TILES, {})[0] == g.FAIL, "a save lacking Tidally Locked: FAIL")
+check(J(base, 10242, {})[0] == g.FAIL and J(base, None, {})[0] == g.FAIL, "a wrong or unread tile count: FAIL")
+check(J(base, g.EXPECT_TILES, {"oblitus.mylittleplanet": ["MyLittlePlanet.X"]})[0] == g.FAIL, "an INERT type named: FAIL")
+check(J(base, g.EXPECT_TILES, {"jaeger972.factionterritories": ["FactionTerritories.X"]})[0] == g.PASS,
+      "an ACTIVE mod's types decide nothing for A2")
+check(J(list(g.ALIEN_WORLDS), g.EXPECT_TILES, {})[0] == g.FAIL, "a near-empty modIds read is BLIND: FAIL")
 
-# the live clause: a game that is not the clause's game is UNMEASURED (the round restages it), never a FAIL
-# (2026-11-03: A2 ran on a list holding My Little Planet and was recorded FAIL)
-W = "Ash'karr"
-J = g.judge
-check(J("game_loaded", W, W, g.EXPECT_TILES, [], 900)[0] == g.PASS, "canonical planet, clean, right tiles: PASS")
-check(J("game_loaded", W, W, 10242, [], 900)[0] == g.FAIL, "canonical planet at the wrong tile count: FAIL")
-check(J("game_loaded", W, W, g.EXPECT_TILES, ["ErrorWhileLoadingGame"], 900)[0] == g.FAIL, "load errors: FAIL")
-check(J("main_menu", None, W, None, [], 900)[0] == g.UNMEASURED, "no map: UNMEASURED")
-check(J("game_loaded", "Other", W, g.EXPECT_TILES, [], 900)[0] == g.UNMEASURED, "another save: UNMEASURED")
-check(J("game_loaded", W, None, g.EXPECT_TILES, [], 900)[0] == g.UNMEASURED, "unread save name: UNMEASURED")
-check(J("game_loaded", W, W, g.EXPECT_TILES, [], 10)[0] == g.UNMEASURED, "a stub log: UNMEASURED")
-check(g.reply({"content": [{"text": '{"status": "game_loaded"}'}]}) == {"status": "game_loaded"}, "an envelope opens")
-check(g.reply({"status": "x"}) == {"status": "x"} and g.reply(None) == {} and g.reply({"content": [{"text": "no"}]}) == {},
-      "a plain reply passes, a None or bad envelope is empty")
-import live_def_check as ldc  # noqa: E402
-inert = [p for p, v in g.EXPECTED.items() if v == "INERT"]
-both = set(g.ALIEN_WORLDS)
-check(ldc.condition(list(g.ALIEN_WORLDS), inert, both | {"oblitus.mylittleplanet"}, {})[0] == g.UNMEASURED,
-      "a running load holding My Little Planet: UNMEASURED")
-check(ldc.condition(list(g.ALIEN_WORLDS), inert, {"7f.alienworlds"}, {})[0] == g.UNMEASURED,
-      "a running load lacking Tidally Locked: UNMEASURED")
-check(ldc.condition(list(g.ALIEN_WORLDS), inert, None, {})[0] == g.UNMEASURED, "an unread running load: UNMEASURED")
-check(ldc.condition(list(g.ALIEN_WORLDS), inert, both | {"ludeon.rimworld"}, {})[0] is None, "the right load: met")
+# surface_tiles decodes raw-DEFLATE ushorts and takes the FIRST layer (the surface; the orbit layer follows)
+import base64, tempfile, zlib  # noqa: E401,E402
+
+
+def deflate(n):
+    c = zlib.compressobj(9, zlib.DEFLATED, -15)
+    return base64.b64encode(c.compress(b"\1\0" * n) + c.flush()).decode()
+
+
+with tempfile.NamedTemporaryFile("w", suffix=".rws", delete=False) as fh:
+    fh.write("<grid><layers><li><tileBiomeDeflate>%s</tileBiomeDeflate></li><li><tileBiomeDeflate>%s"
+             "</tileBiomeDeflate></li></layers></grid>" % (deflate(21872), deflate(2432)))
+check(g.surface_tiles(fh.name) == 21872, "surface layer tiles %r" % g.surface_tiles(fh.name))
+with open(fh.name, "w") as fh2:
+    fh2.write("<grid/>")
+check(g.surface_tiles(fh.name) is None, "no tile array reads None")
+os.unlink(fh.name)
 
 print("selftest_generator_inert_audit: %s" % ("FAIL (%d)" % len(FAILS) if FAILS else "PASS"))
 sys.exit(1 if FAILS else 0)

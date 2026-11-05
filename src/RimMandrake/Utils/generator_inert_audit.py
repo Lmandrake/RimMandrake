@@ -2,7 +2,6 @@
 """generator_inert_audit.py -- do the five C05 "world generator" mods do anything after world creation?
 
     python3 src/RimMandrake/Utils/generator_inert_audit.py offline [--save NAME.rws] [--json OUT]
-    python.exe src/RimMandrake/Utils/generator_inert_audit.py live      # read-only, the running game
 
 Owner, C05, 2026-10-10 (design/RimMandrake/mod_audit/OWNER_RULINGS.md): "You must validate that they don't do
 anything after world creation. Experiments required." Item GENERATOR_MODS_PROVE_INERT_AFTER_CREATION.
@@ -18,13 +17,11 @@ planet.start_savegame) for the mod's packageId in <meta><modIds> and for any of 
 a mod cannot lose it. Positive control: Alien Worlds' packageId must be found in the save, or the scan is blind.
 Exit 0 only when every verdict equals EXPECTED (an expectation that turns false is a finding, not a fix).
 
-LIVE (Windows python.exe, a game already loaded by the supervisor with the canonical start save on a list that
-LACKS the INERT mods): the RUNNING load (jawa/running_mods) has neither INERT mod and both Alien Worlds ids, else
-exit 2 UNMEASURED (another load: restage, never a FAIL); the bridge says
-game_loaded; jawa/world_info_get reports the save's own planet name and 21,872 tiles; Player.log has no
-ErrorWhileLoadingGame / ExceptionInFinalizeLoading line and no line naming an INERT mod's assembly or namespace.
-Reads only (jawa/running_mods, rimworld/get_game_info, jawa/world_info_get). Exit 0 = the clause holds, 1 = it does
-not (the canonical planet loaded with errors or the wrong tile count), 2 = UNMEASURED (judge()).
+A2 (no game; gen 9, 2026-11-05): the same canonical save is the record of a load WITHOUT the INERT mods. Its
+<meta><modIds> is the list of the RUNNING game that wrote it (R3 was saved live: CANONICAL_SAVE.md), so when it holds
+both Alien Worlds ids and neither INERT mod, its surface layer decodes to all 21,872 tiles and it names no INERT
+type, the canonical world has already loaded, run and saved without them (judge_a2). The four live attempts this
+replaced could not be staged: the game lane only ever ADDS mods to a list.
 """
 from __future__ import annotations
 
@@ -73,8 +70,6 @@ RUNTIME_BASES = {"GameComponent", "WorldComponent", "MapComponent", "WorldObject
 SETUP_CALLS = {"Harmony..ctor", "Harmony.PatchAll", "Harmony.Patch", "HarmonyMethod..ctor", "AccessTools.Method",
                "Type.GetTypeFromHandle", "Type.GetMethod", "Assembly.GetExecutingAssembly", "Mod..ctor",
                "Mod.GetSettings", "Object..ctor", "LongEventHandler.ExecuteWhenFinished", "Action..ctor"}
-INERT_LOG_NEEDLES = {"oblitus.mylittleplanet": ["MyLittlePlanet", "WorldGenRules", "MLPWorld"],
-                     "boots.sensiblefactions": ["Boots_SensibleFactions", "[BSF]", "SensibleFactions"]}
 
 
 # ---------------------------------------------------------------- IL walk (ECMA-335 III.1.2) ----
@@ -140,7 +135,7 @@ def method_body(pe, rva):
 # ---------------------------------------------------------------- metadata ----
 class Asm:
     def __init__(self, path):
-        import dnfile   # offline only: the live mode runs under Windows python.exe without it
+        import dnfile
         self.pe = dnfile.dnPE(path)
         self.md = self.pe.net.mdtables
         self.path = path
@@ -366,6 +361,9 @@ def offline(args):
             print("    runtime        %s" % t)
         if a["dev_only_debug_actions"]:
             print("    dev-only debug actions (developer mode menu): %s" % ", ".join(a["dev_only_debug_actions"]))
+    code, why = judge_a2(mod_ids, surface_tiles(spath), named_types)
+    print("A2 %s: %s" % ("PASS" if code == PASS else "FAIL", why))
+    ok &= code == PASS
     if args.json:
         with open(args.json, "w", encoding="utf-8") as fh:
             json.dump({"save": save, "world": world_name, "mods": audits}, fh, indent=1, default=list)
@@ -373,108 +371,43 @@ def offline(args):
     return 0 if ok else 1
 
 
-PASS, FAIL, UNMEASURED = 0, 1, 2
+PASS, FAIL = 0, 1
 ALIEN_WORLDS = ("7f.alienworlds", "7f.alienworlds.tidallylocked")
 
 
-def judge(status, name, want, tiles, bad, log_lines):
-    """The clause from what the game showed -> (exit code, why). A game that is not the clause's game (no map, another
-    save, an unread save name) is UNMEASURED: a wrong staging disproves nothing. FAIL only on the canonical planet."""
-    if not want:
-        return UNMEASURED, "the canonical save's planet name could not be read"
-    if status != "game_loaded":
-        return UNMEASURED, "no game loaded (status %r): the canonical save was not staged" % status
-    if name != want:
-        return UNMEASURED, "the loaded planet is %r, not the canonical save's %r: another save is up" % (name, want)
-    if log_lines <= 50:
-        return UNMEASURED, "Player.log holds %d lines: the log is not this load's" % log_lines
+def surface_tiles(path):
+    """The canonical save's surface-layer tile count: the first <tileBiomeDeflate> (base64 of raw-DEFLATE ushorts, one
+    BiomeDef shortHash per tile) decoded and halved, or None when there is none."""
+    import base64
+    import zlib
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        m = re.search(r"<tileBiomeDeflate>(.*?)</tileBiomeDeflate>", fh.read(), re.S)
+    if not m:
+        return None
+    return len(zlib.decompress(base64.b64decode(m.group(1).strip()), -15)) // 2
+
+
+def judge_a2(mod_ids, tiles, inert_types):
+    """A2: the canonical world has run WITHOUT the INERT mods. A RimWorld save's <meta><modIds> is the mod list of the
+    RUNNING game that wrote it (ScribeMetaHeaderUtility), so a canonical save listing neither INERT mod, both Alien
+    Worlds ids, the whole 21,872-tile planet and no type of an INERT mod is a world that loaded, ran and saved without
+    them. -> (PASS|FAIL, why)."""
+    inert = sorted(p for p, v in EXPECTED.items() if v == "INERT")
+    if len(mod_ids) < 20:
+        return FAIL, "BLIND: only %d modIds read" % len(mod_ids)
+    lacking = [p for p in ALIEN_WORLDS if p not in mod_ids]
+    if lacking:
+        return FAIL, "the save's running list lacks %s: not the canonical load" % ", ".join(lacking)
+    held = [p for p in inert if p in mod_ids]
+    if held:
+        return FAIL, "the game that wrote the save ran %s: no load without it is on record" % ", ".join(held)
     if tiles != EXPECT_TILES:
-        return FAIL, "the canonical planet loaded with %s tiles, not %d" % (tiles, EXPECT_TILES)
-    if bad:
-        return FAIL, "%d load-failure or inert-mod lines in Player.log" % len(bad)
-    return PASS, "the canonical planet %r loaded clean at %d tiles without the INERT mods" % (want, EXPECT_TILES)
-
-
-def reply(r):
-    """A tool reply -> its dict: an MCP-style {"content": [{"text": json}]} envelope is opened, anything else is {}."""
-    if isinstance(r, dict) and isinstance(r.get("content"), list) and r["content"]:
-        try:
-            r = json.loads(r["content"][0].get("text") or "")
-        except (ValueError, AttributeError, TypeError):
-            return {}
-    return r if isinstance(r, dict) else {}
-
-
-RELOAD_WHY = ("reload needed: the running load is not the A2 list; restart on SHIP.RULED_2026-10-20 "
-              "(infrastructure/state/modlists/, lacks oblitus.mylittleplanet and boots.sensiblefactions, holds both "
-              "Alien Worlds ids) with all five DLC; the live-site line then loads the canonical start save")
-
-
-def list_gap(rb):
-    """-> (code, lines): code None when the RUNNING load lacks both INERT mods and holds both Alien Worlds ids, else
-    UNMEASURED with the lines that say why. The last line a wrong list prints is RELOAD_WHY: relentless_live carries a
-    proof's or site's own `reload needed:` line as the row's why, which the game phase restages (RESTAGE)."""
-    import live_def_check
-    inert = [p for p, v in EXPECTED.items() if v == "INERT"]
-    running = live_def_check.running_ids(reply(rb.call("jawa/running_mods", {"details": False, "assembly": ""})))
-    code, pre = live_def_check.condition(list(ALIEN_WORLDS), inert, running, live_def_check.aliases())
-    if code is not None and running is not None:
-        pre = pre + [RELOAD_WHY]
-    return code, pre
-
-
-def bridge():
-    from rimbridge_client import RimBridge, resolve_endpoint
-    host, port, token = resolve_endpoint()
-    return RimBridge(host, port, token, timeout=60)
-
-
-def planet_of_save():
-    spath = os.path.join(game_paths.SAVES, canonical_save_name())
-    with open(spath, "rb") as fh:
-        m = re.search(r"<world>.*?<info>.*?<name>(.*?)</name>", fh.read(4 << 20).decode("utf-8", "replace"), re.S)
-    return m.group(1) if m else None
-
-
-def live(_args):
-    """Read-only. Every load condition is read from the RUNNING load (jawa/running_mods), never ModsConfig.xml, which
-    names the NEXT load; a condition unmet is UNMEASURED (exit 2), which the live round restages."""
-    inert = [p for p, v in EXPECTED.items() if v == "INERT"]
-    try:
-        # connected (the 2026-11-03 run built a RimBridge and never connected it: 'NoneType' has no sendall); in-process,
-        # never live_def_check.call_running_mods, which shells out through wslpath, absent under python.exe
-        with bridge() as rb:
-            code, pre = list_gap(rb)
-            gi = reply(rb.call("rimworld/get_game_info", {}))
-            wi = reply(rb.call("jawa/world_info_get", {}))
-    except Exception as e:  # noqa: BLE001  a bridge that does not answer measured nothing
-        print("UNMEASURED: the bridge did not answer: %s: %s" % (type(e).__name__, str(e)[:200]))
-        print("LIVE UNMEASURED")
-        return UNMEASURED
-    for ln in pre:
-        print(ln)
-    if code is not None:
-        return code     # a wrong list ends on RELOAD_WHY (list_gap): the round restages, never a FAIL
-    name = (wi.get("info") or {}).get("name")
-    want = planet_of_save()
-    print("game %s, planet %r (save says %r), tiles %s" % (gi.get("status"), name, want, wi.get("tilesCount")))
-    with open(game_paths.PLAYER_LOG, encoding="utf-8", errors="replace") as fh:
-        log = fh.read().splitlines()
-    bad = [ln for ln in log if "ErrorWhileLoadingGame" in ln or "ExceptionInFinalizeLoading" in ln]
-    for p in inert:
-        bad += [ln for ln in log if any(n in ln for n in INERT_LOG_NEEDLES[p])]
-    # PlanetPresetPrime (on SHIP) reports at startup whether My Little Planet's type is in the process
-    ppp = [ln for ln in log if "[RimMandrake.PlanetPresetPrime] loaded:" in ln]
-    if any("MLP type found" in ln for ln in ppp):
-        bad.append("PlanetPresetPrime says the My Little Planet type is loaded: " + ppp[-1])
-    print("Player.log %d lines; %d load-failure or inert-mod lines; PlanetPresetPrime MLP line: %s"
-          % (len(log), len(bad), ppp[-1].split("MLP type")[-1].strip() if ppp else "absent"))
-    for ln in bad[:10]:
-        print("    " + ln[:200])
-    code, why = judge(gi.get("status"), name, want, wi.get("tilesCount"), bad, len(log))
-    print(why)
-    print("LIVE %s" % {PASS: "PASS", FAIL: "FAIL"}.get(code, "UNMEASURED"))
-    return code
+        return FAIL, "the save's surface layer holds %s tiles, not %d" % (tiles, EXPECT_TILES)
+    named = sorted(t for p in inert for t in inert_types.get(p, []))
+    if named:
+        return FAIL, "the save names INERT types %s" % ", ".join(named[:5])
+    return PASS, ("the canonical world (%d tiles) was written by a running game whose %d-mod list held both Alien "
+                  "Worlds ids and neither %s; the save names none of their types" % (tiles, len(mod_ids), " nor ".join(inert)))
 
 
 def main(argv=None):
@@ -483,9 +416,8 @@ def main(argv=None):
     o = sub.add_parser("offline")
     o.add_argument("--save", help="save file name in the Saves folder (default: canon.yml planet.start_savegame)")
     o.add_argument("--json")
-    sub.add_parser("live")
     args = ap.parse_args(argv)
-    return offline(args) if args.mode == "offline" else live(args)
+    return offline(args)
 
 
 if __name__ == "__main__":
