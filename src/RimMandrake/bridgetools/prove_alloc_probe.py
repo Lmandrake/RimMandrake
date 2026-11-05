@@ -5,7 +5,7 @@ Done when (item note 2026-10-29): a known-allocation probe agrees with the count
 bytes/tick per system, and the trigger of the 120-140 ms GCs named.
 
     python3 prove_alloc_probe.py --clause A1            calibrate; exit 0 iff every counter got a MEASURED verdict
-                                                       (PASS / BLIND / OFF, none UNMEASURED) and one heap counter
+                                                       (PASS / BLIND / OFF, none UNMEASURED) and one counter (the thread counter itself, else a heap counter)
                                                        PASSed every known-allocation probe within 10 %
     python3 prove_alloc_probe.py --clause A2 [--minutes 7]
                                                        meter a window at speed 3 (paused after); exit 0 iff >= 2000 game
@@ -60,7 +60,7 @@ def judge_a1(probe):
                 fails.append("%s/%s %s" % (ins, pr, w))
     trusted = probe.get("trusted")
     if trusted not in INSTRUMENTS:
-        fails.append("no heap counter passed every known-allocation probe within 10%% (trusted=%s)" % trusted)
+        fails.append("no counter passed every known-allocation probe within 10%% (trusted=%s)" % trusted)
     elif any(v.get((trusted, pr)) != "PASS" for pr in PROBES):
         fails.append("trusted %s has a non-PASS probe" % trusted)
     thread = sorted({w for (i, _), w in v.items() if i == "threadAlloc"})

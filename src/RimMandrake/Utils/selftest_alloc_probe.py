@@ -3,6 +3,7 @@
 
     python3 src/RimMandrake/Utils/selftest_alloc_probe.py              core units + judges + every mutant (must go red)
     python3 src/RimMandrake/Utils/selftest_alloc_probe.py --no-mutants
+    python3 src/RimMandrake/Utils/selftest_alloc_probe.py --judges-only   parts 2-3 only (no dotnet.exe: runs in a walled box)
 
 1. bridgetools/AllocProbeSelfTest (net8, CoreCLR) compiles the PRODUCTION JawaBenchAllocCore.cs (a copy outside the clone)
    and runs its units: CoreCLR's exact GC.GetAllocatedBytesForCurrentThread PASSes the known-allocation calibration within
@@ -108,6 +109,9 @@ def judges():
         ("A1 trusted with a non-PASS probe fails", P.judge_a1(dict(good, trusted="monoUsedSize"))[0], 1),
         ("A1 missing probe fails", P.judge_a1(dict(good, calibration=cal_ok[:-1]))[0], 1),
         ("A1 bad verdict word fails", P.judge_a1(dict(good, calibration=cal_ok[:-1] + ["monoUsedSize/1MB WEIRD"]))[0], 1),
+        ("A1 thread counter trusted holds (it works: the item's own goal)", P.judge_a1(dict(good, trusted="threadAlloc", calibration=[
+            "threadAlloc/large PASS", "threadAlloc/small PASS", "threadAlloc/1MB PASS", "gcTotalMemory/large OFF", "gcTotalMemory/small OFF",
+            "gcTotalMemory/1MB OFF", "monoUsedSize/large OFF", "monoUsedSize/small OFF", "monoUsedSize/1MB OFF"]))[0], 0),
         ("A1 unknown trusted fails", P.judge_a1(dict(good, trusted="nonesuch"))[0], 1),
         ("A1 monoUsedSize UNMEASURED fails", P.judge_a1(dict(good, calibration=cal_ok[:-1] + ["monoUsedSize/1MB UNMEASURED"]))[0], 1),
         ("A2 good holds", P.judge_a2(good)[0], 0),
@@ -138,6 +142,12 @@ def wiring():
 
 
 def main(argv):
+    if "--judges-only" in argv:                                  # no Windows build: the runner's judges and the wiring
+        fails = judges() + wiring()
+        for f in fails:
+            print("FAIL " + f)
+        print("selftest_alloc_probe --judges-only: %s" % ("PASS" if not fails else "FAIL"))
+        return 1 if fails else 0
     core = read(CORE)
     units, fails = run(core, "base")
     fails += judges() + wiring()
