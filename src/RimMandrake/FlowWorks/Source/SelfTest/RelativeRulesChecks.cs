@@ -180,6 +180,55 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: near is assigned only by its declaration and by the search result");
                 Assert(f.Contains("return RM_PitRoomMath.CaptureLipPick(touch, near);"), "can-fail: the pick reads both results");
             });
+            Case("PitCapture_driver_repaths_from_reach_and_hold_each", () =>
+            {
+                // PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES gen 5: the earlier pins read the whole driver, so a Repath branch
+                // broken in ONE of reach/hold stayed green while the other still held the strings. Each toil is pinned alone.
+                string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
+                int drv = rooms.IndexOf("class JobDriver_CaptureDown", StringComparison.Ordinal);
+                Assert(drv > 0, "the driver is in RM_PitRooms.cs");
+                string body = rooms.Substring(drv);
+                Func<string, string, string> span = (from, to) =>
+                {
+                    int i = body.IndexOf(from, StringComparison.Ordinal);
+                    int j = i < 0 ? -1 : body.IndexOf(to, i + from.Length, StringComparison.Ordinal);
+                    Assert(i >= 0 && j > i, "driver section " + from + " .. " + to + " found");
+                    return body.Substring(i, j - i);
+                };
+                string pause = span("Toil pause = ToilMaker.MakeToil(\"RM_CaptureDown_Pause\");", "yield return pause;");
+                string walk = span("Toil walk = ToilMaker.MakeToil(\"RM_CaptureDown_ToLip\");", "yield return walk;");
+                string reach = span("Toil reach = ToilMaker.MakeToil(\"RM_CaptureDown_Reach\");", "yield return reach;");
+                string hold = span("hold.AddPreTickIntervalAction(", "yield return hold;");
+                Assert(body.IndexOf("yield return pause;", StringComparison.Ordinal) < body.IndexOf("yield return walk;", StringComparison.Ordinal)
+                    && body.IndexOf("yield return walk;", StringComparison.Ordinal) < body.IndexOf("yield return reach;", StringComparison.Ordinal)
+                    && body.IndexOf("yield return reach;", StringComparison.Ordinal) < body.IndexOf("yield return hold;", StringComparison.Ordinal),
+                    "can-fail: the toils run pause -> walk -> reach -> hold, so a repath's jump to pause walks again");
+                Assert(pause.Contains("int ticks = RM_PitRoomMath.CapturePauseTicks(repaths);") && pause.Contains("ReadyForNextToil();")
+                    && pause.Contains("pause.defaultDuration = RM_PitRoomMath.CaptureRepathPauseTicks;")
+                    && pause.Contains("pause.defaultCompleteMode = ToilCompleteMode.Delay;"),
+                    "can-fail: the pause skips on the first walk and lasts CaptureRepathPauseTicks after a repath");
+                Assert(walk.Contains("RM_PitRooms.FindCaptureLip(pawn, Victim.Position, out lip) == RM_PitRoomMath.CaptureLip.None")
+                    && walk.Contains("job.targetB = lip;") && walk.Contains("pawn.pather.StartPath(lip, PathEndMode.OnCell);"),
+                    "can-fail: walk heads for the lip FindCaptureLip chose (a Wait lip included)");
+                foreach (var kv in new[] { new[] { "reach", reach }, new[] { "hold", hold } })
+                {
+                    string t = kv[1];
+                    Assert(t.Contains("RM_PitRoomMath.CaptureDownNext(pawn.Position.AdjacentTo8WayOrInside(Victim.Position), onPit, repaths)"),
+                        "can-fail: " + kv[0] + " asks CaptureDownNext with the live touch, pit and repath count");
+                    int r = t.IndexOf("case RM_PitRoomMath.CaptureStep.Repath:", StringComparison.Ordinal);
+                    int d = t.IndexOf("default:", StringComparison.Ordinal);
+                    Assert(r > 0 && d > r, kv[0] + " has a Repath branch before its default");
+                    string rep = t.Substring(r, d - r);
+                    Assert(rep.Contains("repaths++;"), "can-fail: " + kv[0] + "'s repath spends the budget (else it never ends)");
+                    Assert(rep.Contains("job.targetB = IntVec3.Invalid;"), "can-fail: " + kv[0] + "'s repath forgets the old lip");
+                    Assert(rep.Contains("JumpToToil(pause);") && !rep.Contains("EndJobWith("),
+                        "can-fail: " + kv[0] + "'s repath walks again through the pause, it does not end the job");
+                    Assert(t.Substring(d).Contains("EndJobWith(JobCondition.Incompletable);"), kv[0] + ": GiveUp ends the job");
+                }
+                Assert(System.Text.RegularExpressions.Regex.Matches(body, @"\brepaths\s*=[^=]").Count == 0
+                    && System.Text.RegularExpressions.Regex.Matches(body, @"\brepaths\+\+").Count == 2,
+                    "can-fail: the repath count only ever grows, once per repath (no reset re-arms an unbounded chase)");
+            });
             Case("PitStuck_alert_only_for_a_held_colonist_cut_off_from_food_or_bed", () =>
             {
                 // PIT_ALERT_BUILD_RED_MEANS_HELP (owner card Q12, 2026-10-18)
