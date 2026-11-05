@@ -20,6 +20,10 @@ Bars (each prints PASS/FAIL; exit 1 on any FAIL):
      prose under infrastructure/state/items/ is not in a clean export, so it is cross-checked only where present
   B8 planted defects are caught: a thing in the clearing and a 95x90 clearing fail B3; a non-DLC def and a ThingDef used as
      terrain fail B5; a duplicate canon key fails B7's loader
+  B9 the live tier can run clause A1: infrastructure/state/live_proofs/PLAYER_START_SITE_1.txt holds exactly one
+     `live-proof A1:` line, it runs zeddos_yard_live_proof.py (which exists) with argument A1, the .criteria file
+     holds A1, and the live gate (relentless_live.refused_proof) accepts the line; sanity: a `$(...)` spelling of
+     the same line and one ending `; ./game UP` are both refused (the gate can see a refusal)
 """
 import os
 import re
@@ -38,6 +42,9 @@ import gen_zeddos_yard_plan as gen  # noqa: E402
 PLAN = os.path.join(MOD, "Templates", "zeddos_yard.txt")
 DEFS = os.path.join(MOD, "Defs", "GenStepDefs_ZeddosYard.xml")
 CANON = os.path.join(REPO, "infrastructure", "state", "canon.yml")
+LIVE_TXT = os.path.join(REPO, "infrastructure", "state", "live_proofs", "PLAYER_START_SITE_1.txt")
+LIVE_CRIT = os.path.join(REPO, "infrastructure", "state", "live_proofs", "PLAYER_START_SITE_1.criteria")
+LIVE_SCRIPT = "src/RimUtinni/StructureInjectionsRUT/Source/ZeddosYard/zeddos_yard_live_proof.py"
 PAINT = os.path.join(REPO, "infrastructure", "state", "items", "BIOME_PAINT_ONCE_AT_THE_END_1.md")
 GAME_DATA = os.environ.get("RIMWORLD_DATA", "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data")
 # The item's own numbers, FIXED here (never read from the generator, whose constants a bad edit could
@@ -225,6 +232,23 @@ def main():
     bar("B8 planted defects caught", bool(bad8) and short_rect is None and miss8 is not None and "THING RSW_WreckedSkiff" in miss8
         and miss8b is not None and "TERRAIN Steel" in miss8b and dup_err is not None,
         "clearing=%s short95x90=%s defs=%s terrain-type=%s dup-key=%r" % (bad8[:1], short_rect, miss8, miss8b, dup_err))
+
+    # B9 the live line is one the live tier will run (a gate refusal sent this item back twice, gen 6 and 7)
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+    import json
+    import relentless_live as rl
+    lr = rl.live_rules(json.load(open(os.path.join(REPO, "src", "RimMandrake", "rimflow", "relentless_rules.json"))))
+    a1 = [ln.split(":", 1)[1].strip() for ln in open(LIVE_TXT).read().splitlines() if ln.startswith("live-proof A1:")]
+    crit = open(LIVE_CRIT).read() if os.path.exists(LIVE_CRIT) else ""
+    line = a1[0] if len(a1) == 1 else ""
+    words = line.split()
+    why = rl.refused_proof(lr, "The formal player start site", crit, line) if line else "no single A1 line"
+    bad_dollar = rl.refused_proof(lr, "t", crit, line.replace(LIVE_SCRIPT, '"$(wslpath -w %s)x"' % LIVE_SCRIPT, 1))
+    bad_apply = rl.refused_proof(lr, "t", crit, line + "; ./game UP")
+    bar("B9 live gate accepts A1", len(a1) == 1 and LIVE_SCRIPT in words and words[words.index(LIVE_SCRIPT) + 1:][:1] == ["A1"]
+        and os.path.isfile(os.path.join(REPO, LIVE_SCRIPT)) and re.search(r"(?m)^A1\b", crit) is not None
+        and why is None and bad_dollar is not None and bad_apply is not None,
+        "lines=%d why=%r crit_A1=%s sanity_dollar=%r sanity_apply=%r" % (len(a1), why, "A1" in crit, bad_dollar, bad_apply))
 
     print("RESULT: %s" % ("GREEN" if not fails else "RED " + ", ".join(fails)))
     return 1 if fails else 0

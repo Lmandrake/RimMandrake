@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Live proof of PLAYER_START_SITE_1 clause A1: the yard spawns around an empty landing clearing.
 
-    python.exe "$(wslpath -w src/RimUtinni/StructureInjectionsRUT/Source/ZeddosYard/zeddos_yard_live_proof.py)" A1
+    python.exe src/RimUtinni/StructureInjectionsRUT/Source/ZeddosYard/zeddos_yard_live_proof.py A1 < /dev/null
 
 Needs: the game up on a disposable quicktest map (any size >= 170), StructureInjections +
 StructureInjectionsRUT deployed. MUTATES THAT MAP (runs RUT_GenStep_ZeddosYard through
