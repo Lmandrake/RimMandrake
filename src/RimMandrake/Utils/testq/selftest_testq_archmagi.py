@@ -94,7 +94,11 @@ class Rig:
             TESTQ_ARCHMAGI="1", TESTQ_ARCHMAGI_RUNNER=REPO, TESTQ_ARCHMAGI_HOME=p("arch_home"),
             TESTQ_ARCHMAGI_MODS_DIR=p("mods"), TESTQ_ARCHMAGI_CMD_RUN=mock, TESTQ_ARCHMAGI_CMD_DEPLOY="true",
             TESTQ_ARCHMAGI_PID="4242", TESTQ_BRIDGE_LOG=p("bridge_calls.jsonl"),
-            TESTQ_ARCHMAGI_FULL_LIST=p("full.xml"), TESTQ_ARCHMAGI_RUNNING=p("running.txt"))
+            TESTQ_ARCHMAGI_FULL_LIST=p("full.xml"), TESTQ_ARCHMAGI_RUNNING=p("running.txt"),
+            # the section 2 switch's ON rules are selftest_testq_archmagi_switch.py's; here it is forced on, the
+            # row-boundary grace is 0 (a take stops the attempt at once) and the yield file and ledger are the rig's
+            TESTQ_ARCHMAGI_SWITCH="force", TESTQ_ARCHMAGI_YIELD_GRACE_S="0",
+            TESTQ_ARCHMAGI_YIELD_FILE=p("yield.json"), TESTQ_LEDGER_EVENTS=p("ledger"))
         write_list(p("full.xml"), p("running.txt"), FULL_IDS)
         # both lanes' deploy phase refuses a companion not built from the job's sources; the default place is the
         # Mods folder's sibling BridgeTools/JawaBench, so one fixture serves both workers (they share p("mods"))

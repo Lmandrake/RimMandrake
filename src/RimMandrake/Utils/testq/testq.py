@@ -74,6 +74,16 @@ One tick, under a non-blocking lock (a second tick while one runs exits at once)
      backs off TESTQ_ARCHMAGI_BACKOFF_S, 1800 s). A window holder appearing mid-run (a forced take) stops the
      attempt and hands the job back. A red canary / refused pull pauses only this lane (archmagi_paused.json;
      `resume --lane archmagi`).
+     The section 2 trial switch (ARCHMAGI_BACKFILL_WIRE_TRIAL_SWITCH; work_allocation_framework_2026-10-26.md section 2,
+     rules in archmagi_switch.py) sits in front of the gate: with TESTQ_ARCHMAGI=1 the lane admits only while the
+     switch is ON (S1 saturation / S2 failover), never an S3 job (filler, guard, sweep; a deploy/load job outside a
+     train worth twice the load); 30-min cooldown after any OFF; 2 consecutive archmagi INVALID latch it until
+     ARCHMAGI_LATCH_FIX_TWO_STRIKES is closed on the ledger. State: archmagi_state.json "switch" (+ "takes", "yields").
+     A bridge take mid-run writes TESTQ_ARCHMAGI_YIELD_FILE: validation_core.row stops the proof at its next row
+     boundary and keeps the measured rows on the job (dropped from its selector); after TESTQ_ARCHMAGI_YIELD_GRACE_S
+     (180 s) without one the attempt is stopped outright. TESTQ_ARCHMAGI_SWITCH=force waives S1/S2 only (an operator's
+     or a test's seam). `testq.py archmagi-report [--days N]` judges the trial: verified items/day net of load time and
+     displaced interactive minutes, priced at SteveDesktop's verified items per lane-hour.
 """
 import argparse
 import fcntl
@@ -89,6 +99,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import schema as S  # noqa: E402
+import archmagi_switch as SW  # noqa: E402
 if os.path.dirname(os.path.dirname(HERE)) not in sys.path:
     sys.path.append(os.path.dirname(os.path.dirname(HERE)))      # src/RimMandrake, for contracts (stdlib-only modules)
 from contracts import compat as CC  # noqa: E402
@@ -276,11 +287,21 @@ def reconcile(rec):
         if host == ARCHMAGI and not rec.get("yield"):
             holder = bridge_holder()
             if holder:     # a window took the bridge anyway (forced): the seat wins, the job goes back
-                rec.update(**{"yield": holder})
+                # section 2: the attempt aborts at its NEXT ROW BOUNDARY (validation_core.row reads the yield file and
+                # leaves the rows it measured beside it); past the grace it is stopped outright, as before
+                ask_yield(holder, latest)
+                rec.update(**{"yield": holder, "yield_at": time.time()})
                 move(jid, "running", "running", rec)
-                remote(["stop", "--attempt", latest])
-                log("%s on archmagi: %s took the bridge mid-run; attempt %s stopped, the job goes back" % (
-                    jid, holder, latest))
+                note_switch_take(holder)
+                log("%s on archmagi: %s took the bridge mid-run; attempt %s asked to yield at its next row boundary "
+                    "(stopped outright after %d s)" % (jid, holder, latest, yield_grace_s()))
+        if host == ARCHMAGI and rec.get("yield") and not rec.get("stop_sent") and \
+                time.time() - (rec.get("yield_at") or 0) >= yield_grace_s():
+            rec["stop_sent"] = time.time()
+            move(jid, "running", "running", rec)
+            remote(["stop", "--attempt", latest])
+            log("%s on archmagi: no row boundary within %d s of the take; attempt %s stopped, the job goes back" % (
+                jid, yield_grace_s(), latest))
         return
     if state == "dead":
         rc, o = remote(["start"], stdin=json.dumps(job))
@@ -625,6 +646,14 @@ def archmagi_candidates(steve_up, steve_busy, now=None):
             continue
         if j.get("lane") == ARCHMAGI or (j.get("lane") == "any" and (not steve_up or steve_busy)):
             out.append(j)
+    # S3 Never (section 2): filler, guard and sweep never; a job needing a deploy/load only as part of a train worth
+    # twice the load
+    est = est_lane_s(now)
+    train = {}
+    for j in out:
+        train[SW.load_key(j)] = train.get(SW.load_key(j), 0) + est
+    out = [j for j in out if not SW.s3_refusal(j, train.get(SW.load_key(j), 0),
+                                               _env_int("TESTQ_ARCHMAGI_LOAD_S", SW.LOAD_S))]
     out.sort(key=lambda j: (-j["priority"], j["submitted"], j["id"]))
     return out
 
@@ -650,6 +679,10 @@ def archmagi_worker(args, stdin=None, timeout=180):
     # to MINIMAL, compose, or restore it. WSLENV carries the flag into python.exe (TESTQ_ARCHMAGI_FIX_OWNER_MODLIST_SWAP).
     env["MODCHECK_KEEP_MODLIST"] = "1"
     env["WSLENV"] = (env["WSLENV"] + ":" if env.get("WSLENV") else "") + "MODCHECK_KEEP_MODLIST"
+    # the row-boundary yield (section 2): validation_core.row stops a proof when this file exists; /p hands python.exe
+    # the path in Windows form, so it must live on a drive Windows sees (the agent storage root by default)
+    env["TESTQ_YIELD_FILE"] = yield_path()
+    env["WSLENV"] += ":TESTQ_YIELD_FILE/p"
     env.update(TESTQ_HOME=home, TESTQ_WORKER_HOST=ARCHMAGI,
                TESTQ_MODS_DIR=os.environ.get("TESTQ_ARCHMAGI_MODS_DIR") or ARCH_MODS_DIR)
     try:
@@ -666,11 +699,15 @@ def archmagi_bounce(rec, res):
     taken) or one stopped to yield to a window: the job goes back to pending instead of finishing. -> True if so."""
     job = rec["job"]
     jid = job["id"]
-    yielded = rec.get("yield") and res["outcome"] == "INTERRUPTED"
+    # asked to yield: whatever it ended as (INTERRUPTED by the stop, or a modcheck cut short at a row boundary) measured
+    # the mod only partly, so it goes back. A DONE that finished before it saw the request stands.
+    yielded = rec.get("yield") and res["outcome"] != "DONE"
     if not yielded and not (res["outcome"] == "REFUSED" and res["cause"] in ARCH_BOUNCE):
         return False
     why = "yielded to %s" % rec["yield"] if yielded else "%s/%s: %s" % (res["outcome"], res["cause"],
                                                                         (res.get("note") or "")[:200])
+    if yielded:
+        job = record_yield_progress(job, res)
     if res["cause"] == "DEPLOY" and not yielded:
         st = arch_state()
         skip = st.get("skip") or {}
@@ -693,10 +730,17 @@ def archmagi_tick(steve_up, steve_busy):
         return
     for rec in mine:
         reconcile(rec)
+    if not any(host_of(r) == ARCHMAGI and r.get("yield") for r in records("running")):
+        close_takes()       # no yielding attempt left: the game is the taker's from here on (switched on or off)
     drain_outbox(archmagi_worker(["outbox"])[1].get("outbox") or [], ARCHMAGI)
-    if os.environ.get("TESTQ_ARCHMAGI") != "1" or any(host_of(r) == ARCHMAGI for r in records("running")):
+    if os.environ.get("TESTQ_ARCHMAGI") != "1":
         return
     ok, why = archmagi_gate()
+    sw = switch_step(steve_up, ok, why)
+    if any(host_of(r) == ARCHMAGI for r in records("running")):
+        return
+    if ok and not sw.get("on"):
+        ok, why = False, "switch off (%s)" % sw.get("closed_why")
     cands = archmagi_candidates(steve_up, steve_busy) if ok else []
     said = why if not ok else ("no candidate job" if not cands else None)
     if said and arch_state().get("last_gate") != said.split(" (")[0].split(" used ")[0]:
@@ -705,15 +749,284 @@ def archmagi_tick(steve_up, steve_busy):
         arch_state_update(last_gate=said.split(" (")[0].split(" used ")[0])
         return
     job = cands[0]
+    clear_yield()           # a request left from an earlier take must not stop this attempt at its first row
     rc, o = archmagi_worker(["start"], stdin=json.dumps(job))
     if not o.get("attempt"):
         log("%s: archmagi start failed (exit %d): %s; stays pending" % (job["id"], rc, o.get("error") or o))
         return
     move(job["id"], "pending", "running", {"job": job, "attempt": o["attempt"], "sent": S.utcnow(), "host": ARCHMAGI,
-                                           "attempts": [o["attempt"]], "auto_retries": 0, "cancel": False})
+                                           "attempts": [o["attempt"]], "auto_retries": 0, "cancel": False,
+                                           "switch_rule": sw.get("rule")})
     arch_state_update(last_gate=None)
-    log("%s admitted on archmagi -> %s (%s, prio %d, %s, lane %s; gate: %s)" % (
-        job["id"], o["attempt"], job["purpose"], job["priority"], job["profile"], job["lane"], why))
+    log("%s admitted on archmagi -> %s (%s, prio %d, %s, lane %s; gate: %s; switch %s)" % (
+        job["id"], o["attempt"], job["purpose"], job["priority"], job["profile"], job["lane"], why, sw.get("rule")))
+
+
+# ---------------------------------------------------------------- the section 2 trial switch (ARCHMAGI_BACKFILL_WIRE_TRIAL_SWITCH)
+
+YIELD_GRACE_S = 180      # a bridge take: wait this long for a row boundary, then stop the attempt outright
+EST_DEFAULT_S = 900      # a job's lane seconds when no finished Steve job of the last 7 days says otherwise
+
+
+def yield_grace_s():
+    return _env_int("TESTQ_ARCHMAGI_YIELD_GRACE_S", YIELD_GRACE_S)
+
+
+def yield_path():
+    p = os.environ.get("TESTQ_ARCHMAGI_YIELD_FILE")
+    if p:
+        return p
+    sys.path.insert(0, os.path.join(HERE, ".."))
+    from rmpaths import rm_str
+    return rm_str("scratch", "testq_archmagi_yield.json")
+
+
+def ask_yield(holder, attempt):
+    p = yield_path()
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    for f in (p + ".rows.json",):
+        if os.path.exists(f):
+            os.remove(f)
+    S.dump({"holder": holder, "attempt": attempt, "asked": S.utcnow()}, p)
+
+
+def clear_yield():
+    p = yield_path()
+    for f in (p, p + ".rows.json"):
+        try:
+            os.remove(f)
+        except FileNotFoundError:
+            pass
+
+
+def record_yield_progress(job, res):
+    """A yielded attempt: keep the rows it measured (validation_core.row left them beside the yield file) in
+    archmagi_state.json "progress" (the job dict is schema-closed, testq_schema.json), and when the job names its rows,
+    drop the PASSED ones from its selector so the next attempt does not redo them. A FAIL row stays selected: the final
+    result must carry it, or the job would finish DONE with the failure hidden. Item/chain/full selectors cannot be
+    narrowed (the rows inside them are not named up front): their progress is recorded and the proof runs whole again."""
+    p = yield_path()
+    rows = [r for r in (read_json(p + ".rows.json") or {}).get("rows") or [] if isinstance(r, dict)]
+    measured = [r for r in rows if r.get("status") in ("PASS", "FAIL")]
+    job = dict(job)
+    sel = dict(job.get("selector") or {})
+    if sel.get("rows"):
+        passed = {r.get("id") for r in measured if r.get("status") == "PASS"}
+        left = [r for r in sel["rows"] if r not in passed]
+        if left and len(left) < len(sel["rows"]):
+            sel["rows"] = left
+            job["selector"] = sel
+    st = arch_state()
+    prog = st.get("progress") or {}
+    prog[job["id"]] = (prog.get(job["id"]) or [])[-20:] + [{"attempt": res.get("attempt"), "at": S.utcnow(),
+                                                           "rows": measured,
+                                                           "last_row": rows[-1].get("id") if rows else None}]
+    ys = (st.get("yields") or [])[-SW.HISTORY_MAX:]
+    ys.append({"at": time.time(), "job": job["id"], "attempt": res.get("attempt"), "rows_kept": len(measured)})
+    arch_state_update(yields=ys, progress=prog)
+    clear_yield()
+    return job
+
+
+def note_switch_take(holder):
+    """A bridge take while an attempt runs: remember when, so the report can charge the interactive time it displaced
+    (take -> the attempt handing the game back)."""
+    st = arch_state()
+    takes = (st.get("takes") or [])[-SW.HISTORY_MAX:]
+    takes.append({"at": time.time(), "holder": holder, "released": None})
+    arch_state_update(takes=takes)
+
+
+def close_takes(now=None):
+    """The attempt handed the game back: close every open take with that time."""
+    st = arch_state()
+    takes = st.get("takes") or []
+    if any(t.get("released") is None for t in takes):
+        for t in takes:
+            if t.get("released") is None:
+                t["released"] = now or time.time()
+        arch_state_update(takes=takes)
+
+
+def _ts(s):
+    try:
+        return S.parse_ts(s[:19] + "Z")
+    except (TypeError, ValueError):
+        return None
+
+
+def _res_span(done):
+    r = done.get("result") or {}
+    a, b = _ts(r.get("started") or ""), _ts(r.get("finished") or "")
+    return (a, b) if a is not None and b is not None else None
+
+
+def est_lane_s(now=None):
+    """Mean lane seconds of SteveDesktop's finished jobs over the last 7 days (EST_DEFAULT_S when there are none)."""
+    now = now or time.time()
+    spans = []
+    for d in records("done"):
+        if d.get("host", STEVE) != STEVE:
+            continue
+        sp = _res_span(d)
+        if sp and now - sp[1] < 7 * 86400 and sp[1] >= sp[0]:
+            spans.append(sp[1] - sp[0])
+    return int(sum(spans) / len(spans)) if spans else EST_DEFAULT_S
+
+
+def latch_closed_at(item=SW.LATCH_ITEM):
+    """-> epoch of the latest ledger `close` of ITEM, else None (TESTQ_LEDGER_EVENTS names the events dir)."""
+    d = os.environ.get("TESTQ_LEDGER_EVENTS") or os.path.join(REPO, "infrastructure", "state", "ledger", "events")
+    best = None
+    for f in glob.glob(os.path.join(d, "*.jsonl")):
+        try:
+            with open(f, encoding="utf-8") as fh:
+                for line in fh:
+                    if item not in line:
+                        continue
+                    try:
+                        ev = json.loads(line)
+                    except ValueError:
+                        continue
+                    if ev.get("id") == item and ev.get("event") == "close":
+                        t = _ts(ev.get("ts") or "")
+                        if t and (best is None or t > best):
+                            best = t
+        except OSError:
+            continue
+    return best
+
+
+def switch_inputs(steve_up, gate_ok, gate_why, now=None):
+    """Gather the section 2 switch's inputs from the queue and the lane files (archmagi_switch.decide reads them)."""
+    now = now or time.time()
+    pend = [j for j in records("pending") if ready(j, now)]
+    useful = [j for j in pend if j.get("requested_by") != FILLER]
+    waits = [now - _ts(j["submitted"]) for j in useful if _ts(j.get("submitted") or "")]
+    est = est_lane_s(now)
+    fix_ready = sum(1 for j in records("pending") if j.get("purpose") == "fix" and not j.get("owner_gate")
+                    and not (j.get("not_before") and S.parse_ts(j["not_before"]) > now)
+                    and j.get("lane") in ("stevedesktop", "any", ARCHMAGI))
+    n = inv = 0
+    arch = []
+    for d in records("done"):
+        sp = _res_span(d)
+        if not sp:
+            continue
+        if d.get("host", STEVE) == STEVE:
+            if now - sp[1] <= 6 * 3600:
+                n += 1
+                inv += (d["result"].get("outcome") == "INVALID")
+        elif d.get("host") == ARCHMAGI:
+            arch.append((sp[1], d["result"].get("outcome")))
+    sw = arch_state().get("switch")
+    # the trial starts clean: before the switch first ran, archmagi INVALIDs belong to the untried lane, not to it
+    cleared = (sw.get("latch_cleared_at") or 0) if sw else now
+    streak = 0
+    for t, outcome in sorted(arch, reverse=True):
+        if t <= cleared or outcome != "INVALID":
+            break
+        streak += 1
+    since = []
+    pz = paused(STEVE)
+    if pz:
+        since.append(_ts(pz.get("since") or "") or now)
+    ssh = read_json(q("ssh_state.json")) or {}
+    if not steve_up and ssh.get("down_since"):
+        since.append(_ts(ssh["down_since"]) or now)
+    return {"useful_oldest_wait_s": max(waits) if waits else None, "useful_lane_s": est * len(useful),
+            "fix_ready": fix_ready, "steve_invalid_share": (inv / n) if n else None,
+            "steve_unavailable_s": (now - min(since)) if since else None,
+            "gate_ok": gate_ok, "gate_why": gate_why, "bridge_holder": bridge_holder(),
+            "arch_invalid_streak": streak, "latch_closed_at": latch_closed_at(),
+            "force": os.environ.get("TESTQ_ARCHMAGI_SWITCH") == "force"}
+
+
+def switch_step(steve_up, gate_ok, gate_why, now=None):
+    """One tick of the section 2 switch: decide, store (archmagi_state.json "switch"), log each transition."""
+    now = now or time.time()
+    inp = switch_inputs(steve_up, gate_ok, gate_why, now)
+    st, events = SW.decide(inp, arch_state().get("switch") or {}, now)
+    st["inputs"] = {k: v for k, v in inp.items() if k not in ("gate_why",)}
+    st["read_at"] = S.utcnow()
+    arch_state_update(switch=st)
+    for ev in events:
+        log("archmagi switch %s%s: %s" % (ev["kind"].upper(), " " + ev["rule"] if ev.get("rule") else "", ev["why"]))
+    return st
+
+
+def _verified(done):
+    """-> the item ids a done record verified (DONE, at least one PASS row, no FAIL or UNMEASURED), else []. A job
+    naming no item counts as one unit under its job id."""
+    r = done.get("result") or {}
+    st = [x.get("status") for x in r.get("rows") or [] if isinstance(x, dict)]
+    if r.get("outcome") != "DONE" or "PASS" not in st or "FAIL" in st or "UNMEASURED" in st:
+        return []
+    job = done.get("job") or {}
+    items = list((job.get("selector") or {}).get("item") or []) or ([job["item"]] if job.get("item") else [])
+    return items or ["job:" + job.get("id", "?")]
+
+
+def archmagi_report(days=7.0, now=None):
+    """The trial's judgement (section 2): verified items per day on Archmagi, after charging its load time and the
+    interactive minutes it displaced. A charged hour is priced at SteveDesktop's verified items per lane-hour over the
+    same window (what that hour buys on the batch lane), so `net_items_per_day` is items, not hours."""
+    now = now or time.time()
+    if not days or days <= 0:
+        raise ValueError("--days must be > 0 (got %r)" % days)
+    lo = now - days * 86400
+    lanes = {ARCHMAGI: {"items": set(), "jobs": 0, "done": 0, "invalid": 0, "lane_s": 0, "load_s": 0},
+             STEVE: {"items": set(), "jobs": 0, "done": 0, "invalid": 0, "lane_s": 0, "load_s": 0}}
+    for d in records("done"):
+        sp = _res_span(d)
+        host = d.get("host", STEVE)
+        if not sp or sp[1] < lo or host not in lanes:
+            continue
+        L = lanes[host]
+        L["jobs"] += 1
+        L["done"] += (d["result"].get("outcome") == "DONE")
+        L["invalid"] += (d["result"].get("outcome") == "INVALID")
+        L["lane_s"] += max(0, sp[1] - sp[0])
+        L["load_s"] += int((d["result"].get("phase_s") or {}).get("load") or 0)
+        L["items"].update(_verified(d))
+    st = arch_state()
+    displaced = 0
+    for t in st.get("takes") or []:
+        end = t.get("released") or now
+        if end >= lo:
+            displaced += max(0, end - max(t["at"], lo))
+    a, b = lanes[ARCHMAGI], lanes[STEVE]
+    steve_rate = len(b["items"]) / (b["lane_s"] / 3600.0) if b["lane_s"] else None
+    charged_h = (a["load_s"] + displaced) / 3600.0
+    sw = st.get("switch") or {}
+    out = {"window_days": days, "archmagi_jobs": a["jobs"], "archmagi_done": a["done"], "archmagi_invalid": a["invalid"],
+           "verified_items": len(a["items"]), "verified_items_per_day": round(len(a["items"]) / days, 3),
+           "lane_h": round(a["lane_s"] / 3600.0, 3), "load_h": round(a["load_s"] / 3600.0, 3),
+           "displaced_interactive_min": round(displaced / 60.0, 1),
+           "steve_items_per_lane_h": None if steve_rate is None else round(steve_rate, 3),
+           "net_items_per_day": None if steve_rate is None and charged_h else
+           round((len(a["items"]) - charged_h * (steve_rate or 0)) / days, 3),
+           "yields": sum(1 for y in st.get("yields") or [] if y.get("at", 0) >= lo),
+           "switch": {"on": sw.get("on"), "rule": sw.get("rule"), "closed_why": sw.get("closed_why"),
+                      "latch": sw.get("latch"), "off_at": sw.get("off_at"),
+                      "transitions": sum(1 for e in sw.get("history") or [] if e.get("at", 0) >= lo)}}
+    return out
+
+
+def cmd_archmagi_report(a):
+    if a.days <= 0:
+        print("REFUSED: --days must be > 0")
+        return 2
+    r = archmagi_report(days=a.days)
+    print(json.dumps(r, indent=1))
+    net = r["net_items_per_day"]
+    print("archmagi trial, %g d: %d verified items (%.2f/day), load %.1f h, %.0f interactive min displaced -> net %s "
+          "items/day; switch %s%s" % (
+              r["window_days"], r["verified_items"], r["verified_items_per_day"], r["load_h"],
+              r["displaced_interactive_min"], "UNMEASURED (no SteveDesktop rate to price the charges)" if net is None
+              else "%.2f" % net, "ON " + str(r["switch"]["rule"]) if r["switch"]["on"] else "off",
+              "" if r["switch"]["on"] else " (%s)" % r["switch"]["closed_why"]))
+    return 0
 
 
 # ---------------------------------------------------------------- queue verbs
@@ -1684,6 +1997,8 @@ def main(argv=None):
     s.add_argument("--day-s", type=int, default=FILL_DAY_S,
                    help="filler lane seconds per local day (TESTQ_FILL_HOURS, default 8 h)")
     sub.add_parser("tick")
+    s = sub.add_parser("archmagi-report", help="the section 2 trial: verified items/day net of load and displaced time")
+    s.add_argument("--days", type=float, default=7.0)
     s = sub.add_parser("pause", help="pause the lane by hand (with --hours: intentional until then)")
     s.add_argument("--reason", required=True)
     s.add_argument("--hours", type=float)
@@ -1702,7 +2017,7 @@ def main(argv=None):
     return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "resume": cmd_resume,
             "sweep": cmd_sweep, "fill": cmd_fill,
             "tick": cmd_tick, "pause": cmd_pause, "maintenance": cmd_maintenance, "steward": cmd_steward, "steward-watch": cmd_steward_watch,
-            "install-timer": cmd_install_timer}[a.cmd](a)
+            "install-timer": cmd_install_timer, "archmagi-report": cmd_archmagi_report}[a.cmd](a)
 
 
 if __name__ == "__main__":

@@ -52,10 +52,33 @@ class Row(dict):
     pass
 
 
+class YieldAtRowBoundary(BaseException):
+    """The testq Archmagi backfill was asked to hand the game back (a bridge take, work_allocation_framework section 2):
+    raised right after a row is recorded, so no row is cut in half. A BaseException, so a driver's `except Exception`
+    does not swallow it."""
+
+
 def row(rows, rid, status, cls, detail):
     status, cls, detail = PRE.judge(status, cls, detail)
     rows.append({"id": rid, "status": status, "class": cls, "detail": detail})
     print("%-28s %-9s %s" % (rid, status, str(detail)[:150]), flush=True)
+    yield_check(rows)
+
+
+def yield_check(rows, path=None):
+    """Row boundary: when TESTQ_YIELD_FILE exists (testq wrote it on a bridge take), leave the rows measured so far
+    beside it (<file>.rows.json, so the job does not redo them) and stop the proof. Unset or absent: nothing happens."""
+    path = path or os.environ.get("TESTQ_YIELD_FILE")
+    if not path or not os.path.exists(path):
+        return
+    try:
+        with open(path + ".rows.json", "w", encoding="utf-8") as f:
+            json.dump({"rows": rows}, f, default=str)
+    except OSError as e:
+        print("yield: could not keep the rows beside %s: %s" % (path, e), flush=True)
+    print("TESTQ_YIELD at the row boundary after %s (%d rows kept)" % (rows[-1]["id"] if rows else None, len(rows)),
+          flush=True)
+    raise YieldAtRowBoundary(path)
 
 
 def rows_exit(rows):
