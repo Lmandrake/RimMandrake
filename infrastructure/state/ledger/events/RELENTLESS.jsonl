@@ -694,3 +694,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T15:33:37Z","tsn":1793892817312042879}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T15:33:46Z","tsn":1793892826704231432}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A1 (L2), read-only proof","ts":"2026-11-05T15:36:51Z","tsn":1793893011640914564}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T15:46:22Z","tsn":1793893582534935036}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A3 (L2), read-only proof","ts":"2026-11-05T15:46:40Z","tsn":1793893600019845088}
