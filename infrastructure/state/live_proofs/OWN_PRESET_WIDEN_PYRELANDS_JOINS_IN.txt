@@ -1,1 +1,2 @@
+live-mods: GimmeSomeSlack, Pyrelands
 live-proof A1: python.exe src/RimMandrake/bridgetools/own_preset_check.py --live
