@@ -532,3 +532,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP A1 (L2), read-only proof","ts":"2026-11-05T02:15:18Z","tsn":1793844918378165029}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:15:24Z","tsn":1793844924625503997}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN: deploy and restart for its live proofs","ts":"2026-11-05T02:17:34Z","tsn":1793845054156386557}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:30:19Z","tsn":1793845819523503175}
