@@ -1,0 +1,1 @@
+call_deadline_lint is RED on src/RimMandrake/Utils/northstar_driver/tool_snapshot_guard.py:38 (_git run() with no timeout=), introduced by ba8cda3efc NIGHTLY_COP_FIX_RED_LMTEZQ_YAXX; selftest_call_deadline_lint fails on main until it gets a timeout. Seen 2026-11-05 by FLEETWATCH_CODE_RETIRE_NOBODY_WAS_WATCHING.
