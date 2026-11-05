@@ -49,7 +49,7 @@ namespace RimMandrake.FlowWorks.Replay
             childT[depth] = childB[depth] = 0;
             childG[depth] = 0;
             g0[depth] = GC.CollectionCount(0);
-            b0[depth] = GC.GetAllocatedBytesForCurrentThread();
+            b0[depth] = Compat.AllocatedBytes();
             t0[depth] = Stopwatch.GetTimestamp();
             depth++;
         }
@@ -57,7 +57,7 @@ namespace RimMandrake.FlowWorks.Replay
         public void End()
         {
             long t = Stopwatch.GetTimestamp();
-            long b = GC.GetAllocatedBytesForCurrentThread();
+            long b = Compat.AllocatedBytes();
             int g = GC.CollectionCount(0);
             depth--;
             long dt = t - t0[depth], db = b - b0[depth];

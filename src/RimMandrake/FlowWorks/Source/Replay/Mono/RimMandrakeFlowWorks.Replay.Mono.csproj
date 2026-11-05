@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    HOSE_REPLAY_WIRE_MONO_TIMING_LANE: the replay built as net472 so it can run under the game's own Boehm-GC Mono
+    (RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll) through the embedding host in Host/. Same sources as the
+    .NET 8 replay (../Replay.Sources.props), never copied. Its time table is ADVISORY: the op-count gates of the .NET 8 run
+    stay the gate. Run: python3 src/RimMandrake/Utils/hose_replay.py mono
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakeFlowWorks.Replay.Mono</AssemblyName>
+    <RootNamespace>RimMandrake.FlowWorks.Replay</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <Import Project="..\Replay.Sources.props" />
+
+</Project>

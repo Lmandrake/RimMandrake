@@ -1,0 +1,47 @@
+<Project>
+  <!-- HOSE_REPLAY_WIRE_MONO_TIMING_LANE: the one list of what the replay compiles, imported by the .NET 8 replay
+       (RimMandrakeFlowWorks.Replay.csproj) and its net472 twin for the game-Mono timing lane (Mono/). Never copied. -->
+  <ItemGroup>
+    <!-- production cores (Verse-free), compiled in -->
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\_Shared\SlackGeometry\CordMath.cs" Link="Shared\SlackGeometry\CordMath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\_Shared\SlackGeometry\CordWorld.cs" Link="Shared\SlackGeometry\CordWorld.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseMath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseSpliceMath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseMateCache.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseMateEndQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseLayQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseFrameMemo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseCurveMetrics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseClothoid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseBandMath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseWorldPatch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseCorridorVersions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseRelay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseCrossShadows.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\ReelIntakeGeometry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseStyles.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Machinery\PipeStyles.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Machinery\LiquidJoinRule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Machinery\TankArtEdges.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Machinery\RM_PumpPortMath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseCarry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseLive.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\RM_HoseLegacyMath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Machinery\RM_LiquidNetKernel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Machinery\RM_LiquidTransfer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\RM_PumpMath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\RM_Volume.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\RM_StockMath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Machinery\RM_LineCrossingMath.cs" />
+    <!-- the replay itself -->
+    <Compile Include="$(MSBuildThisFileDirectory)Trace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TraceGen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ReplayTick.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Counters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Compat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Program.cs" />
+  </ItemGroup>
+</Project>

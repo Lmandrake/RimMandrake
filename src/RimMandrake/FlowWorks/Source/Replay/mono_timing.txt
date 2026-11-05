@@ -1,0 +1,69 @@
+# hose replay Mono timing lane (HOSE_REPLAY_WIRE_MONO_TIMING_LANE): written by `hose_replay.py mono --write`.
+# ADVISORY: times are never gated; the .NET 8 op-count gates stay the gate. Checked by `hose_replay.py mono-check`.
+# ms per tick from run 2 (no oracle); tick 0 includes JIT. ratio = mono mean / dotnet mean.
+MONO_DLL C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll
+MONO_RUNTIME Mono 6.13.0 (Visual Studio built mono)
+DOTNET_RUNTIME .NET 8.0.29
+MONO_EXIT 0
+DOTNET_EXIT 0
+#            scenario   system   dotnet mean p99 max  mono mean p99 max
+SCENARIO dry dotnet=PASS mono=PASS fp_dotnet=0ba79cd6675aeccc fp_mono=0ba79cd6675aeccc
+SCENARIO setup dotnet=PASS mono=PASS fp_dotnet=3b94e49c18b9041f fp_mono=3b94e49c18b9041f
+SCENARIO rain dotnet=PASS mono=PASS fp_dotnet=738c992b99fee156 fp_mono=738c992b99fee156
+SCENARIO cold dotnet=PASS mono=PASS fp_dotnet=57c698c110525b8e fp_mono=57c698c110525b8e
+SCENARIO dirty16383 dotnet=PASS mono=PASS fp_dotnet=9359880c0b10e650 fp_mono=9359880c0b10e650
+SCENARIO dirty16384 dotnet=PASS mono=PASS fp_dotnet=9359880c0b10e650 fp_mono=9359880c0b10e650
+SCENARIO dirty16385 dotnet=PASS mono=PASS fp_dotnet=cd1c7e6c9f55dc6b fp_mono=cd1c7e6c9f55dc6b
+SCENARIO settings dotnet=PASS mono=PASS fp_dotnet=7a5286145e91d6d8 fp_mono=7a5286145e91d6d8
+SCENARIO aligned dotnet=PASS mono=PASS fp_dotnet=07231e1cdc3e8a9a fp_mono=07231e1cdc3e8a9a
+SCENARIO splitjoin dotnet=PASS mono=PASS fp_dotnet=6e03437a565f7221 fp_mono=6e03437a565f7221
+TIME dry        World    dotnet 0.0002 0.0015 1.1311  mono 0.0002 0.0014 1.9602  ratio 1.00
+TIME dry        Recheck  dotnet 0.0088 0.2415 1.8014  mono 0.0200 0.5249 4.1035  ratio 2.27
+TIME dry        Lay      dotnet 0.0120 0.2301 43.3408  mono 0.0275 0.5129 99.9528  ratio 2.29
+TIME dry        Settle   dotnet 0.0008 0.0000 0.6325  mono 0.0033 0.0000 1.4797  ratio 4.12
+TIME dry        Move     dotnet 0.0002 0.0000 0.1517  mono 0.0006 0.0000 0.5761  ratio 3.00
+TIME setup      World    dotnet 0.0003 0.0000 1.2286  mono 0.0004 0.0000 1.8707  ratio 1.33
+TIME setup      Recheck  dotnet 0.0062 0.2048 1.7314  mono 0.0145 0.4665 3.7824  ratio 2.34
+TIME setup      Lay      dotnet 0.0140 0.2111 42.5890  mono 0.0311 0.4693 93.8476  ratio 2.22
+TIME setup      Settle   dotnet 0.0011 0.0000 1.3695  mono 0.0033 0.0000 1.5916  ratio 3.00
+TIME setup      Move     dotnet 0.0003 0.0000 0.6909  mono 0.0005 0.0000 0.5729  ratio 1.67
+TIME rain       World    dotnet 0.0196 0.1385 0.9533  mono 0.0296 0.2097 2.0608  ratio 1.51
+TIME rain       Recheck  dotnet 0.0449 0.5882 1.9001  mono 0.1022 1.2598 4.1242  ratio 2.28
+TIME rain       Lay      dotnet 0.0859 0.8185 42.5778  mono 0.1812 1.6647 102.8867  ratio 2.11
+TIME rain       Settle   dotnet 0.0009 0.0000 0.8738  mono 0.0028 0.0000 1.3791  ratio 3.11
+TIME rain       Move     dotnet 0.0002 0.0000 0.0744  mono 0.0009 0.0000 0.7033  ratio 4.50
+TIME cold       World    dotnet 0.0011 0.0000 1.1150  mono 0.0022 0.0000 2.1661  ratio 2.00
+TIME cold       Recheck  dotnet 0.0016 0.0120 0.0348  mono 0.0047 0.0342 0.0630  ratio 2.94
+TIME cold       Lay      dotnet 0.0417 0.0000 41.6606  mono 0.0964 0.0000 96.3673  ratio 2.31
+TIME cold       Settle   dotnet 0.0016 0.0000 0.9536  mono 0.0034 0.0000 1.2085  ratio 2.12
+TIME cold       Move     dotnet 0.0003 0.0000 0.0669  mono 0.0004 0.0000 0.1244  ratio 1.33
+TIME dirty16383 World    dotnet 0.0060 0.0000 2.4599  mono 0.0123 0.0000 5.4552  ratio 2.05
+TIME dirty16383 Recheck  dotnet 0.0727 0.9015 1.9441  mono 0.1579 1.2989 5.0018  ratio 2.17
+TIME dirty16383 Lay      dotnet 0.1506 0.7060 44.1717  mono 0.3211 1.5029 95.5637  ratio 2.13
+TIME dirty16383 Settle   dotnet 0.0016 0.0000 0.5040  mono 0.0044 0.0000 1.0257  ratio 2.75
+TIME dirty16383 Move     dotnet 0.0003 0.0000 0.0859  mono 0.0006 0.0000 0.1449  ratio 2.00
+TIME dirty16384 World    dotnet 0.0044 0.0000 1.7077  mono 0.0094 0.0000 3.7288  ratio 2.14
+TIME dirty16384 Recheck  dotnet 0.0715 0.6436 2.5798  mono 0.1656 1.8727 4.6880  ratio 2.32
+TIME dirty16384 Lay      dotnet 0.1500 0.9631 43.1980  mono 0.3302 1.6498 97.1106  ratio 2.20
+TIME dirty16384 Settle   dotnet 0.0010 0.0000 0.2328  mono 0.0044 0.0000 1.0267  ratio 4.40
+TIME dirty16384 Move     dotnet 0.0002 0.0000 0.0537  mono 0.0006 0.0000 0.1295  ratio 3.00
+TIME dirty16385 World    dotnet 0.0058 0.0000 2.4821  mono 0.0106 0.0000 4.4583  ratio 1.83
+TIME dirty16385 Recheck  dotnet 0.0704 0.6339 2.1109  mono 0.1749 1.7763 4.6473  ratio 2.48
+TIME dirty16385 Lay      dotnet 0.1531 0.7504 45.3533  mono 0.3388 2.0624 97.8130  ratio 2.21
+TIME dirty16385 Settle   dotnet 0.0011 0.0000 0.2491  mono 0.0054 0.0000 1.2182  ratio 4.91
+TIME dirty16385 Move     dotnet 0.0004 0.0000 0.1253  mono 0.0007 0.0000 0.2066  ratio 1.75
+TIME settings   World    dotnet 0.0012 0.0000 1.3741  mono 0.0017 0.0000 1.8202  ratio 1.42
+TIME settings   Recheck  dotnet 0.0016 0.0123 0.0770  mono 0.0050 0.0358 0.2681  ratio 3.12
+TIME settings   Lay      dotnet 0.0453 0.0000 46.7812  mono 0.1057 0.0000 109.3951  ratio 2.33
+TIME settings   Settle   dotnet 0.0007 0.0000 0.3027  mono 0.0027 0.0000 1.0241  ratio 3.86
+TIME settings   Move     dotnet 0.0002 0.0000 0.0700  mono 0.0006 0.0000 0.2819  ratio 3.00
+TIME aligned    World    dotnet 0.0013 0.0000 1.0540  mono 0.0021 0.0000 1.8682  ratio 1.62
+TIME aligned    Recheck  dotnet 0.0996 0.0000 97.6324  mono 0.1944 0.0000 188.2681  ratio 1.95
+TIME aligned    Lay      dotnet 0.0672 0.0000 45.3535  mono 0.1445 0.0000 96.9271  ratio 2.15
+TIME aligned    Settle   dotnet 0.0007 0.0000 0.3203  mono 0.0020 0.0000 0.7254  ratio 2.86
+TIME aligned    Move     dotnet 0.0002 0.0000 0.0789  mono 0.0003 0.0000 0.0839  ratio 1.50
+TIME splitjoin  World    dotnet 0.0005 0.0016 1.0739  mono 0.0009 0.0025 2.1141  ratio 1.80
+TIME splitjoin  Recheck  dotnet 0.0271 0.3841 1.8455  mono 0.0610 0.8538 4.2290  ratio 2.25
+TIME splitjoin  Lay      dotnet 0.0609 0.7532 46.9646  mono 0.1331 1.5208 103.8271  ratio 2.19
+TIME splitjoin  Settle   dotnet 0.0023 0.0178 0.8958  mono 0.0061 0.0475 1.1355  ratio 2.65
+TIME splitjoin  Move     dotnet 0.0010 0.0123 0.1038  mono 0.0020 0.0243 0.2334  ratio 2.00

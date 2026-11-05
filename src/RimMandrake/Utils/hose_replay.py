@@ -19,6 +19,15 @@ Time is reported (mean, p99, max, over-bar, worst ticks with their events), neve
     python3 src/RimMandrake/Utils/hose_replay.py run --scenario rain --inject Leak
     python3 src/RimMandrake/Utils/hose_replay.py run --write-baseline      # after a deliberate op-count change
     python3 src/RimMandrake/Utils/hose_replay.py gen --scenario dry --out /mnt/d/ClaudeWork/.../dry.rmreplay
+    python3 src/RimMandrake/Utils/hose_replay.py mono [--write]            # Mono timing lane (advisory)
+    python3 src/RimMandrake/Utils/hose_replay.py mono-check [REPORT]       # offline: is a Mono-lane report sound?
+
+Mono timing lane (HOSE_REPLAY_WIRE_MONO_TIMING_LANE): the same sources also build as net472 (Replay/Mono/) and run under
+the game's own Boehm-GC Mono, RimWorld\\MonoBleedingEdge\\EmbedRuntime\\mono-2.0-bdwgc.dll with the game's corlib, through
+a tiny embedding host (Replay/Mono/Host/). `mono` runs every scenario on .NET 8 (gated, as `run`) and on Mono, requires
+both green with identical fingerprint streams, and prints a side-by-side time table; --write also copies it to
+Replay/mono_timing.txt (commit it). The time table is ADVISORY: the op-count gates stay the gate. Boehm Mono's allocation counter
+is blind (answers 0), so on Mono the alloc gate skips and the bytes columns read UNMEASURED.
 
 Reports land in D:\\ClaudeWork\\rimmandrake\\hose_harness\\runs\\<stamp>\\ (<scenario>.txt, .fp, summary.txt).
 dotnet is the Windows-side SDK (see selftest_flowworks_stock.py). Only the linked sources are staged, into
@@ -125,6 +134,142 @@ def run_replay(args, out_dir=None, baseline=BASELINE, write_baseline=False, no_b
     return p.returncode, p.stdout, p.stderr, out_dir
 
 
+MONO_REPORT = os.path.join(os.path.dirname(CSPROJ), "mono_timing.txt")
+TRACEGEN = os.path.join(os.path.dirname(CSPROJ), "TraceGen.cs")
+GAME = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld"
+MONO_DLL_TAIL = "\\MonoBleedingEdge\\EmbedRuntime\\mono-2.0-bdwgc.dll"
+SYSTEMS = ["World", "Recheck", "Lay", "Settle", "Move"]
+
+
+def scenarios():
+    """TraceGen.Scenarios, read from the source (the checker needs no build)."""
+    import re
+    src = open(TRACEGEN, encoding="utf-8").read()
+    m = re.search(r"Scenarios\s*=\s*(?:new\s*(?:string)?\s*\[\s*\]\s*)?\{([^}]*)\}", src)
+    if not m:
+        raise SystemExit("cannot find TraceGen.Scenarios in %s" % TRACEGEN)
+    return re.findall(r'"([^"]+)"', m.group(1))
+
+
+def _report_facts(path):
+    """(runtime, {sys: (mean, p99, max)}) from one scenario report."""
+    runtime, times, in_time = None, {}, False
+    for line in open(path, encoding="utf-8"):
+        if line.startswith("hose replay: ") and "  runtime " in line:
+            runtime = line.split("  runtime ", 1)[1].split("  inject ", 1)[0].strip()
+        elif line.startswith("TIME per tick"):
+            in_time = True
+        elif in_time:
+            f = line.split()
+            if f and f[0] in SYSTEMS:
+                times[f[0]] = tuple(float(x) for x in f[1:4])
+            elif f and f[0] == "warm":
+                in_time = False
+    return runtime, times
+
+
+def _fp_digest(path):
+    import hashlib
+    return hashlib.sha256(open(path, "rb").read()).hexdigest()[:16]
+
+
+def mono_lane(write=False, timeout=520):
+    """Run every scenario on .NET 8 (gated) and on the game's Mono; return (rc, report text, out_dir)."""
+    dotnet = _find_dotnet()
+    if dotnet is None:
+        sys.exit("dotnet.exe not found at any of %r: UNMEASURED, not a pass or a fail" % DOTNET_CANDIDATES)
+    started = time.time()
+    out_dir = os.path.join(RUNS, "mono-" + time.strftime("%Y%m%d-%H%M%S"))
+    rc_n, out_n, err_n, _ = run_replay(["run"], out_dir=os.path.join(out_dir, "dotnet"), timeout=timeout)
+    if rc_n == 4:
+        return 4, "the .NET 8 replay did not build:\n" + out_n[-3000:], out_dir
+    root = os.path.join(HARNESS, "stage", "tree")
+    rdir = os.path.join(root, REPLAY_REL)
+    host = os.path.join(rdir, "Mono", "Host", "bin", "Release", "net8.0", "RimMandrakeFlowWorks.MonoHost.dll")
+    exe = os.path.join(rdir, "Mono", "bin", "Release", "net472", "RimMandrakeFlowWorks.Replay.Mono.exe")
+    mono_out = os.path.join(out_dir, "mono")
+    os.makedirs(mono_out, exist_ok=True)
+    with stage_lock(root):
+        for proj in ("Mono/RimMandrakeFlowWorks.Replay.Mono.csproj", "Mono/Host/RimMandrakeFlowWorks.MonoHost.csproj"):
+            b = subprocess.run([dotnet, "build", _to_windows_path(os.path.join(rdir, proj)), "-c", "Release", "-nologo", "-v:q"],
+                               capture_output=True, text=True, timeout=max(30, timeout - (time.time() - started)))
+            if b.returncode != 0:
+                return 4, "%s did not build:\n%s" % (proj, b.stdout[-3000:]), out_dir
+        p = subprocess.run([dotnet, _to_windows_path(host), GAME, _to_windows_path(exe), "run", "--scenario", "all",
+                            "--out", _to_windows_path(mono_out)],
+                           capture_output=True, text=True, timeout=max(30, timeout - (time.time() - started)))
+    dll = next((l.split("dll=", 1)[1].split(" corlib=", 1)[0] for l in p.stderr.splitlines() if l.startswith("MONOHOST ")), None)
+    lines = ["# hose replay Mono timing lane (HOSE_REPLAY_WIRE_MONO_TIMING_LANE): written by `hose_replay.py mono --write`.",
+             "# ADVISORY: times are never gated; the .NET 8 op-count gates stay the gate. Checked by `hose_replay.py mono-check`.",
+             "# ms per tick from run 2 (no oracle); tick 0 includes JIT. ratio = mono mean / dotnet mean."]
+    dn_rt = mono_rt = None
+    rows, time_rows = [], []
+    for sc in scenarios():
+        fn, fm = (os.path.join(out_dir, d, sc + ".fp") for d in ("dotnet", "mono"))
+        tn, tm = (os.path.join(out_dir, d, sc + ".txt") for d in ("dotnet", "mono"))
+        if not all(os.path.isfile(x) for x in (fn, fm, tn, tm)):
+            rows.append("SCENARIO %s MISSING" % sc)
+            continue
+        rn, timn = _report_facts(tn)
+        rm, timm = _report_facts(tm)
+        dn_rt, mono_rt = dn_rt or rn, mono_rt or rm
+        res = lambda out: ("PASS" if ("RESULT %s PASS" % sc) in out else "FAIL")
+        rows.append("SCENARIO %s dotnet=%s mono=%s fp_dotnet=%s fp_mono=%s" % (sc, res(out_n), res(p.stdout), _fp_digest(fn), _fp_digest(fm)))
+        for s_ in SYSTEMS:
+            a, b_ = timn.get(s_), timm.get(s_)
+            if a and b_:
+                ratio = "%.2f" % (b_[0] / a[0]) if a[0] > 0 else "-"
+                time_rows.append("TIME %-10s %-8s dotnet %.4f %.4f %.4f  mono %.4f %.4f %.4f  ratio %s" % ((sc, s_) + a + b_ + (ratio,)))
+    lines += ["MONO_DLL %s" % dll, "MONO_RUNTIME %s" % mono_rt, "DOTNET_RUNTIME %s" % dn_rt, "MONO_EXIT %d" % p.returncode,
+              "DOTNET_EXIT %d" % rc_n, "#            scenario   system   dotnet mean p99 max  mono mean p99 max"]
+    text = "\n".join(lines + rows + time_rows) + "\n"
+    with open(os.path.join(out_dir, "mono_timing.txt"), "w") as f:
+        f.write(text)
+    if write:
+        shutil.copyfile(os.path.join(out_dir, "mono_timing.txt"), MONO_REPORT)
+    if p.returncode not in (0, 1):
+        text += "mono host stderr:\n" + p.stderr[-3000:]
+    return mono_check_text(text)[0], text, out_dir
+
+
+def mono_check_text(text):
+    """(rc, problems): 0 when the report names the game's Boehm Mono, covers every scenario, both runtimes passed every
+    gate, every fingerprint stream matches across runtimes, and every scenario has a time row per system."""
+    probs, kv, sc_rows, time_keys = [], {}, {}, set()
+    for line in text.splitlines():
+        if not line or line.startswith("#"):
+            continue
+        f = line.split()
+        if f[0] == "SCENARIO":
+            sc_rows[f[1]] = dict(x.split("=", 1) for x in f[2:] if "=" in x)
+        elif f[0] == "TIME" and len(f) >= 12:
+            time_keys.add((f[1], f[2]))
+        elif f[0] in ("MONO_DLL", "MONO_RUNTIME", "DOTNET_RUNTIME", "MONO_EXIT", "DOTNET_EXIT"):
+            kv[f[0]] = line.split(" ", 1)[1].strip() if " " in line else ""
+    if not kv.get("MONO_DLL", "").endswith(MONO_DLL_TAIL):
+        probs.append("MONO_DLL is not the game's %s: %r" % (MONO_DLL_TAIL, kv.get("MONO_DLL")))
+    if not kv.get("MONO_RUNTIME", "").startswith("Mono "):
+        probs.append("MONO_RUNTIME is not Mono: %r" % kv.get("MONO_RUNTIME"))
+    if not kv.get("DOTNET_RUNTIME", "").startswith(".NET 8"):
+        probs.append("DOTNET_RUNTIME is not .NET 8: %r" % kv.get("DOTNET_RUNTIME"))
+    for k in ("MONO_EXIT", "DOTNET_EXIT"):
+        if kv.get(k) != "0":
+            probs.append("%s %r, not 0" % (k, kv.get(k)))
+    for sc in scenarios():
+        r = sc_rows.get(sc)
+        if r is None:
+            probs.append("scenario %s absent" % sc)
+            continue
+        if r.get("dotnet") != "PASS" or r.get("mono") != "PASS":
+            probs.append("scenario %s not PASS on both: %r" % (sc, r))
+        if not r.get("fp_dotnet") or r.get("fp_dotnet") != r.get("fp_mono"):
+            probs.append("scenario %s fingerprints differ: dotnet %s mono %s" % (sc, r.get("fp_dotnet"), r.get("fp_mono")))
+        missing = [s_ for s_ in SYSTEMS if (sc, s_) not in time_keys]
+        if missing:
+            probs.append("scenario %s has no time row for %s" % (sc, ",".join(missing)))
+    return (0 if not probs else 1), probs
+
+
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     write_baseline = "--write-baseline" in argv
@@ -136,6 +281,18 @@ def main(argv=None):
         i = argv.index("--out")
         out_dir = os.path.abspath(argv[i + 1])
         del argv[i:i + 2]
+    if argv and argv[0] == "mono-check":
+        path = argv[1] if len(argv) > 1 else MONO_REPORT
+        rc, probs = mono_check_text(open(path, encoding="utf-8").read())
+        for pr in probs:
+            print("MONO-CHECK FAIL " + pr)
+        print("MONO-CHECK %s %s (%d scenarios)" % ("PASS" if rc == 0 else "FAIL", path, len(scenarios())))
+        sys.exit(rc)
+    if argv and argv[0] == "mono":
+        rc, text, d = mono_lane(write="--write" in argv)
+        print(text, end="")
+        print("reports: %s%s" % (_to_windows_path(d), "; copied to %s" % MONO_REPORT if "--write" in argv else ""))
+        sys.exit(rc)
     if not argv or argv[0] not in ("run", "gen"):
         sys.exit(__doc__)
     if argv[0] == "gen":

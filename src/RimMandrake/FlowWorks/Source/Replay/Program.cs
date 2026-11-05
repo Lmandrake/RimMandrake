@@ -89,7 +89,7 @@ namespace RimMandrake.FlowWorks.Replay
                     : "green";
                 int firstDiff = FirstDiff(r1.Fingerprints, r2.Fingerprints);
                 gates["determinism"] = firstDiff < 0 ? "green" : "RED first diff at tick " + firstDiff;
-                gates["alloc"] = r2.C.PatchCallsWarm == 0 ? "skip (0 warm patches)" : r2.C.PatchBytesWarm == 0 ? "green" : "RED " + r2.C.PatchBytesWarm + " B in " + r2.C.PatchCallsWarm + " warm patches";
+                gates["alloc"] = !Compat.AllocMeasured ? "skip (this runtime has no GC.GetAllocatedBytesForCurrentThread)" : r2.C.PatchCallsWarm == 0 ? "skip (0 warm patches)" : r2.C.PatchBytesWarm == 0 ? "green" : "RED " + r2.C.PatchBytesWarm + " B in " + r2.C.PatchCallsWarm + " warm patches";
                 var ceil = new List<string>();
                 for (Work w = 0; w < Work.Count; w++)
                 {
@@ -148,7 +148,7 @@ namespace RimMandrake.FlowWorks.Replay
             var inv = CultureInfo.InvariantCulture;
             sb.Append("hose replay: ").Append(t.Name).Append("  ticks ").Append(t.Ticks).Append("  map ").Append(t.Width).Append('x').Append(t.Height)
               .Append("  reels ").Append(t.Reels.Count).Append("  tanks ").Append(t.Tanks.Count).Append("  events ").Append(t.Events.Count)
-              .Append("  runtime ").Append(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription)
+              .Append("  runtime ").Append(Compat.Runtime)
               .Append("  inject ").Append(fault).Append("  oracle checks ").Append(r1.OracleChecks)
               .Append(" (patch ").Append(r1.PatchChecks).Append(", comps ").Append(r1.CompChecks).Append(")  dropped events ").Append(r1.DroppedEvents).Append('\n');
             sb.Append("\nGATES\n");
@@ -156,6 +156,7 @@ namespace RimMandrake.FlowWorks.Replay
             foreach (string f in r1.Failures) sb.Append("    ").Append(f).Append('\n');
             sb.Append("\nTIME per tick, ms (run 2, no oracle; advisory, never gated; tick 0 includes JIT). bar ").Append(bar.ToString(inv)).Append(" ms\n");
             sb.Append("  system    mean      p99       max       over-bar  worst-tick  bytes-sum    bytes-max  gc0\n");
+            if (!Compat.AllocMeasured) sb.Append("  (bytes columns UNMEASURED: this runtime's allocation counter cannot see a probe allocation)\n");
             Counters c = r2.C;
             for (Sys s = 0; s < Sys.Count; s++)
             {

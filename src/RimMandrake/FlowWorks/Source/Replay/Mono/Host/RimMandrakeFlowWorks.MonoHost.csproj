@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- HOSE_REPLAY_WIRE_MONO_TIMING_LANE: the tiny embedding host. A .NET 8 exe whose only job is to load the game's
+       mono-2.0-bdwgc.dll, start a Mono domain and mono_jit_exec the net472 replay in it; no replay code runs on CoreCLR. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>RimMandrakeFlowWorks.MonoHost</AssemblyName>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>

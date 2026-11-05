@@ -280,9 +280,9 @@ namespace RimMandrake.FlowWorks.Replay
             bool skip = (fault & Fault.PatchSkip) != 0 && (patchCalls & 1) == 1;
             if (!skip)
             {
-                long b0 = GC.GetAllocatedBytesForCurrentThread();
+                long b0 = Compat.AllocatedBytes();
                 HoseWorldPatch.Patch(world, dirty, rule, maxCells);
-                long db = GC.GetAllocatedBytesForCurrentThread() - b0;
+                long db = Compat.AllocatedBytes() - b0;
                 if (patchCalls > 0) { C.PatchBytesWarm += db; C.PatchCallsWarm++; }
             }
             else dirty.DropLast(Math.Min(dirty.Count, maxCells));   // the batch is dropped unpatched
