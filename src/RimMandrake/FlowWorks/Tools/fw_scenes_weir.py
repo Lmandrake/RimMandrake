@@ -88,8 +88,27 @@ def terrain(w, h, P, wet):
     return Image.fromarray(np.dstack([np.clip(rgb, 0, 255), np.full((H, W), 255.0)]).astype(np.uint8), "RGBA")
 
 
-def art(d, look, name):
+def art_raw(d, look, name):
     return Image.open(Path(d) / look / (name + ".png")).convert("RGBA")
+
+
+def art(d, look, name):
+    """The picture on its 1x canvas: a look shipped at 2x (weir_by_photo.RES_2X, Futuristic) is box-reduced and its alpha
+    snapped as the generator snaps it, so every geometric check reads the same pixels per cell at either resolution."""
+    im = art_raw(d, look, name)
+    base = SIZES.get(name)
+    if not base or im.size == base:
+        return im
+    k = im.size[0] // base[0]
+    if k < 2 or im.size != (base[0] * k, base[1] * k):
+        return im                       # not a whole multiple: the canvas check reports it
+    a = np.asarray(im, np.float32)
+    pre = np.dstack([a[..., :3] * a[..., 3:4] / 255, a[..., 3]])
+    small = pre.reshape(base[1], k, base[0], k, 4).mean((1, 3))
+    al = small[..., 3]
+    rgb = np.where(al[..., None] > 0, small[..., :3] * 255 / np.maximum(al[..., None], 1e-6), 0)
+    al = np.where(al < 24, 0, np.where(al >= 240, 255, al))
+    return Image.fromarray(np.dstack([np.clip(rgb, 0, 255), al]).astype(np.uint8), "RGBA")
 
 
 def scene(look, d, kind="ew", P=128, foam=True):
@@ -102,9 +121,9 @@ def scene(look, d, kind="ew", P=128, foam=True):
         wet = lambda x, z: 2 <= z <= 5
     sc = fc.Scene(w, h, px=P, ground=False)
     ground = terrain(w, h, P, wet)
-    body = art(d, look, "RM_BankWeir_" + ("east" if kind == "ew" else "north"))
-    spill = art(d, look, "RM_BankWeirSpill_" + ("east" if kind == "ew" else "north"))
-    capi = art(d, look, "RM_BankWeirCap")
+    body = art_raw(d, look, "RM_BankWeir_" + ("east" if kind == "ew" else "north"))
+    spill = art_raw(d, look, "RM_BankWeirSpill_" + ("east" if kind == "ew" else "north"))
+    capi = art_raw(d, look, "RM_BankWeirCap")
     fo = Image.open(FOAM).convert("RGBA")
     if kind == "ew":
         z0 = 2
@@ -229,6 +248,17 @@ def smooth_no_red(d):
     return ok, "red px worst %.4f %s; median lum %.0f (>150); hard edges %.3f (<0.06)" % (worst, bad or "", med, hard)
 
 
+def _fundamental(ac):
+    """The period: the top of the FIRST peak in 33..128 that comes within 0.03 of the best. A 64-periodic crest
+    correlates as well at 128 (its second harmonic), and which of the two a bare argmax returns hangs on rounding; the
+    climb to the peak's top keeps the lag off the peak's rising flank (review: it read 62 for a true 64)."""
+    seg = ac[32:]
+    i = int(np.nonzero(seg >= seg.max() - 0.03)[0][0])
+    while i + 1 < len(seg) and seg[i + 1] >= seg[i]:
+        i += 1
+    return i + 33
+
+
 def zigzag_crest(d):
     east = art(d, "Futuristic", "RM_BankWeir_east")
     t = top_edge(east).astype(np.float32)
@@ -237,7 +267,7 @@ def zigzag_crest(d):
     x = t - t.mean()
     amp = float(t.max() - t.min())
     ac = np.array([np.dot(x, np.roll(x, k)) for k in range(1, 129)]) / max(np.dot(x, x), 1e-6)
-    lag = int(np.argmax(ac[32:]) + 33)
+    lag = _fundamental(ac)
     ok = abs(lag - 64) <= 4 and ac[lag - 1] > 0.6 and amp >= 10
     # the N-S art carries the same two teeth a cell: the cyan crest strip's x along the rows repeats every 64 rows
     na = _a(art(d, "Futuristic", "RM_BankWeir_north"))
@@ -249,7 +279,7 @@ def zigzag_crest(d):
         xs = np.where(np.isnan(xs), np.nanmean(xs), xs)
         y = xs - xs.mean()
         acn = np.array([np.dot(y, np.roll(y, k)) for k in range(1, 129)]) / max(np.dot(y, y), 1e-6)
-        nlag = int(np.argmax(acn[32:]) + 33)
+        nlag = _fundamental(acn)
         nr = float(acn[nlag - 1])
     ok_n = nlag is not None and abs(nlag - 64) <= 4 and nr > 0.6
     return ok and ok_n, ("crest period %d px (64+-4, r %.2f > 0.6), amplitude %.0f px (>=10); north crest period %s rows"
@@ -268,14 +298,19 @@ SIZES = {"RM_BankWeir_east": (256, 128), "RM_BankWeir_west": (256, 128), "RM_Ban
 def common(d, look):
     """[(name, ok, detail)] for one look's set."""
     out = []
+    raw = {n: art_raw(d, look, n) for n in SIZES}
     ims = {n: art(d, look, n) for n in SIZES}
-    bad = [n for n, s in SIZES.items() if ims[n].size != s]
-    out.append(("canvas", not bad, "wrong size: %s" % bad if bad else "9 files at their canvases"))
+    # 1x, or every body and the post at one whole multiple (a 2x look; its crest sheets stay 1x: they are fitted to the
+    # 1x crest and drawn one cell wide)
+    k = raw["RM_BankWeir_east"].size[0] // SIZES["RM_BankWeir_east"][0]
+    want = {n: (s if n.startswith("RM_BankWeirSpill") else (s[0] * k, s[1] * k)) for n, s in SIZES.items()}
+    bad = [n for n, s in want.items() if raw[n].size != s] + ([] if k in (1, 2) else ["scale %d" % k])
+    out.append(("canvas", not bad, "wrong size: %s" % bad if bad else "9 files at their canvases (bodies x%d)" % k))
     soft = []
     for n in SIZES:
         if n.startswith("RM_BankWeirSpill"):
             continue
-        al = _a(ims[n])[..., 3]
+        al = _a(raw[n])[..., 3]
         frac = float(((al > 0) & (al < 24)).sum()) / max(1, int((al > 0).sum()))
         if frac > 0:
             soft.append("%s %.3f" % (n, frac))
@@ -302,7 +337,7 @@ def common(d, look):
     dark = [k for k, w in ((0, wins[0]), (len(wins) - 1, wins[-1])) if ref - w > 12]
     out.append(("north_ends_drawn", not dark, "16-row windows at the section ends vs the darkest interior lum %.0f: first "
                 "%.0f, last %.0f (<= 12 darker)" % (ref, wins[0], wins[-1])))
-    mir = (np.asarray(ims["RM_BankWeir_south"]) == np.asarray(ims["RM_BankWeir_north"])[:, ::-1]).all()
+    mir = (np.asarray(raw["RM_BankWeir_south"]) == np.asarray(raw["RM_BankWeir_north"])[:, ::-1]).all()
     out.append(("south_mirrors_north", bool(mir), "south == north mirrored" if mir else "south is not north mirrored"))
     # the crest sheet lies on the wall it pours over: drawn once per water cell, so every opaque sheet pixel must fall
     # inside the body's column span (top..toe, either half of the 2-cell section, 4 px slack), and it must cover some
