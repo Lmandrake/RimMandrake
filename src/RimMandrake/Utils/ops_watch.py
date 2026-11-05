@@ -2371,7 +2371,10 @@ def rl_churn(store, now, cfg):
             g = rx.match(m)
             key = (by_hash.get(g.group(1)), int(g.group(2))) if g else None
             t = started.get(key) if key else None
-            if key and key[0] in per and not (ended_at.get(key) and ended_at[key] < tlo and (t or 0) < tlo):
+            if key and key[0] in per and key not in waited and not (ended_at.get(key) and ended_at[key] < tlo and (t or 0) < tlo):
+                # a gen whose last ending is a wait spent time, not work, as its return is no bounce: it is no rising
+                # spend (OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA, reopened: OPS_METRONOME_MIGRATE_CLOCKS_FENCED, each gen a planned
+                # one-clock-a-day wait that cut and published its clock, re-rang 'spend rising: 6.1M weighted, 4782k')
                 # the item's spend in the window's day files: a gen started earlier still burns, but one that also ENDED
                 # before the window spent nothing in it (OPS_CHURN_DIAGNOSE_BRIDGE_GRXX_AYXK: a day file reaches up to 48 h
                 # back, so BRIDGE_STALL_DIAGNOSTIC_1, blocked since 08:25Z the day before, read 1996k 'spend rising')

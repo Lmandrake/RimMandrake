@@ -504,6 +504,40 @@ def main():
             said = (pw.get(OW.CHURN_ITEM_PREFIX + nm) or {}).get("x", {}).get("said", "")
             ok(hit and "5 returns" in said and ret == 500, "9w: the same rows without wait=true still read churn",
                (said, ret))
+    # 9s OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA, reopened 20:17Z: OPS_METRONOME_MIGRATE_CLOCKS_FENCED, its bounce cleared by 9w,
+    # re-rang 'spend rising: 6.1M weighted, 4782k in the last 24h, nothing landed' off gens 19..25, each a planned
+    # one-clock-a-day `snag --wait-hours` ending (wait=true) that cut and published its clock. A wait gen's spend is time,
+    # not work, as its return is: it is no rising spend. The same spend on a gen whose last ending is no wait still reads
+    # 'spend rising' (the instrument can see).
+    cfg9s = dict(cfg9, item_bands=rules["relentless"]["item_bands"])
+    for waited in (True, False):
+        ss = TMP / ("s9s_%s" % waited)
+        nm = "METRONOME_SHAPE_ITEM"
+        d = ss / "items" / nm
+        d.mkdir(parents=True)
+        (d / "state.json").write_text(json.dumps({"status": "queued", "returns": 7, "gen": 26, "spent": 6072431,
+                                                  "failures": {"waiting_for_sample": 7}}))
+        rows, runs = [], {}
+        for i, g in enumerate((19, 21, 23, 25)):
+            t = NOW - (18 - 5 * i) * HOUR
+            last = g == 25 and not waited
+            rows += [{"gen": g, "at": iso(t), "start": marker(nm, g)},
+                     dict({"gen": g, "at": iso(t + 600), "end": "harness" if last else "waiting_for_sample",
+                           "approach_next": "build"}, **({} if last else {"wait": True}))]
+            runs[marker(nm, g)] = 1195500
+        (d / "attempts.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+        day = time.strftime("%Y%m%d", time.gmtime(NOW))
+        (ss / ("spend-%s.json" % day)).write_text(json.dumps({"spent": sum(runs.values()), "runs": runs}))
+        (TMP / "ops" / "alarms.json").write_text(json.dumps({OW.CHURN_ITEM_TAG + ":" + OW.CHURN_ITEM_PREFIX + nm: {}}))
+        ps = OW.rl_churn(ss, NOW, cfg9s)
+        got = ps.get(OW.CHURN_ITEM_PREFIX + nm) or {}
+        said = (got.get("x") or {}).get("said", "")
+        if waited:
+            ok(got.get("v") == 0 and got.get("m") == "MEASURED" and "spend rising" not in said,
+               "9s: four wait=true gens past the hot spent band are no rising spend; the held alarm reads 0", got)
+        else:
+            ok(got.get("v", 0) >= 1 and "spend rising" in said,
+               "9s: the same spend with its last gen no wait still reads 'spend rising'", got)
     # 9n OPS_CHURN_DIAGNOSE_NIGHTLY_WHTT_GXBQ: NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS waits for two green nightlies
     # (one sweep a day) and read 'bouncing: 6 returns; wait_two_nights failed it 6 times', filed 11:38Z by the pre-9w
     # code: gen 1's ending predates the wait flag (no wait key, 34 h old, outside the window), gens 3..11 are five
