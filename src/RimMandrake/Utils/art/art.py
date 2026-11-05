@@ -198,14 +198,14 @@ def cmd_status(a, verbose=False):
                 tag = "LIVE " if s in live_shas else ("PURGED " if idx.is_purged(s) else
                                                       "UNPURGED " if s in idx.unpurged else "")
                 v0 = vs[0]
-                print(f"     {tag}{s[:12]} {v0.get('facing','?'):<6} {v0.get('role','?'):<10} "
+                print(f"     {tag}{s[:12]} {v0.get('facing') or '?':<6} {v0.get('role') or '?':<10} "
                       + "; ".join(f"{v.get('kind')}:{v.get('date','')}:{(v.get('loc') or '')[-60:]}" for v in vs[:3]))
     keys = {L.subject_key(a.query)}
     rul = idx.subject_rulings(keys)
     if rul:
         print(f"\n   rulings on '{a.query}': {len(rul)}")
         for r in sorted(rul, key=lambda r: r.get("at") or ""):
-            print(f"     {(r.get('at') or '')[:10]} {r.get('verdict'):<14} trust={r.get('trust'):<17} "
+            print(f"     {(r.get('at') or '')[:10]} {str(r.get('verdict')):<14} trust={str(r.get('trust')):<17} "
                   f"{Path(r.get('source_file') or '').name[:48]}  {(r.get('note') or '')[:70]}")
     return 0
 
@@ -225,13 +225,15 @@ def cmd_install(a):
     try:
         if bool(a.sha) == bool(a.file):
             raise L.Refused("give exactly one of <sha> or --file <png>")
-        sha = a.sha
-        if a.file:
+        sha, data = a.sha, None
+        if a.file and a.dry_run:        # a dry run writes nothing, the store included: hand install the bytes
+            data = L.read_file_checked(a.file)
+            sha = L.sha256_bytes(data)
+            print(f"would put {a.file} -> {sha}")
+        elif a.file:
             sha = L.put_file_checked(a.file)
-            if a.dry_run:
-                print(f"put {a.file} -> {sha}")
         r = L.install(a.mod, a.rel, sha, ruling_id=a.ruling, owner_said=a.owner_said, reason=a.reason,
-                      by_card=a.by_card, per_ruling=a.per_ruling, why=a.why, dry_run=a.dry_run)
+                      by_card=a.by_card, per_ruling=a.per_ruling, why=a.why, dry_run=a.dry_run, data=data)
     except L.Refused as e:
         print(f"REFUSED: {e}")
         return 2

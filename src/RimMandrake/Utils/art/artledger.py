@@ -171,9 +171,9 @@ def store_put_file(p: Path) -> str:
 PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
 
 
-def put_file_checked(p) -> str:
-    """`art.py put` / `install --file`: a supported way to get bytes into the store. The file must be a regular
-    file (not a symlink), resolve inside this clone, and be a PNG. Returns the sha."""
+def read_file_checked(p) -> bytes:
+    """The bytes `put_file_checked` would store, under the same refusals, WITHOUT touching the store (what
+    `install --file X --dry-run` reads: a dry run writes nothing, the store included)."""
     raw = Path(p)
     root = src_root().resolve().parent        # this clone (a fixture's root under ART_SRC_ROOT)
     if raw.is_symlink():
@@ -189,7 +189,13 @@ def put_file_checked(p) -> str:
     b = rp.read_bytes()
     if not b.startswith(PNG_MAGIC):
         raise Refused(f"{p} is not a PNG")
-    return store_put_bytes(b)
+    return b
+
+
+def put_file_checked(p) -> str:
+    """`art.py put` / `install --file`: a supported way to get bytes into the store. The file must be a regular
+    file (not a symlink), resolve inside this clone, and be a PNG. Returns the sha."""
+    return store_put_bytes(read_file_checked(p))
 
 
 def store_get(sha: str) -> bytes:
@@ -1157,7 +1163,8 @@ def owner_keep_ruling(sha: str, *, owner_said: str | None = None, by_card: str |
 def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
             owner_said: str | None = None, reason: str | None = None,
             provenance: dict | None = None, dry_run: bool = False,
-            by_card: str | None = None, per_ruling: str | None = None, why: str | None = None) -> dict:
+            by_card: str | None = None, per_ruling: str | None = None, why: str | None = None,
+            data: bytes | None = None) -> dict:
     """The only sanctioned writer into src/**/Textures. Ledger-checked; saves the old
     picture into the store FIRST; atomic write; appends a `live` event.
 
@@ -1175,17 +1182,23 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
         installing without an owner decision. REFUSED when the displaced picture is
         protected by an owner keep — only his selection may replace a kept picture.
     """
+    if data is not None:
+        # the picture's bytes, not yet in the store (a dry run of `install --file`); they stand in for the store copy
+        if not dry_run:
+            raise Refused("install(data=...) is the dry-run path only — put the bytes in the store first")
+        if sha256_bytes(data) != sha:
+            raise Refused(f"the bytes given do not hash to {sha[:12]}")
     idx = cached_index()
-    hit = ban_match(idx, sha=sha)   # ph_of reads the store copy
+    hit = ban_match(idx, sha=sha, data=data)   # ph_of reads the store copy when no bytes are given
     if hit:
         raise Refused(ban_refusal(hit, sha))
     if idx.is_purged(sha):
         raise Refused(f"{sha[:12]} was purged by the owner — it cannot be installed")
-    if not store_has(sha):
+    if data is None and not store_has(sha):
         raise Refused(f"{sha[:12]} is not in the art store ({store_dir()}) — put it there first "
                       f"(art.py put <png>, or art.py install ... --file <png>)")
     mod, rel = canonical_mod(mod), canonical_rel(rel)
-    why_ph = placeholder_refusal(rel, store_get(sha))
+    why_ph = placeholder_refusal(rel, data if data is not None else store_get(sha))
     if why_ph:
         raise Refused(why_ph)
     target = src_root().resolve().parent / mod / "Textures" / rel
