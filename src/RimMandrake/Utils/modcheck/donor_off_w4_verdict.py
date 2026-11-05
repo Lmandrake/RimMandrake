@@ -47,6 +47,8 @@ for _p in (UTILS, HERE):
 
 DONOR = "mlie.starwarsanimalcollection"
 BIOMES = ("RUT_AridShrubland", "RM_TheRot", "RM_Webwork")
+DLC = ("ludeon.rimworld", "ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
+       "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")   # core + all five expansions (every DLC is assumed)
 TIMEOUT = 570         # relentless_live proof_max_s is 600; derive takes the rest
 
 
@@ -82,6 +84,10 @@ def judge_offline(man, dependents):
     if not closure or DONOR in closure:
         ok = False
         lines.append("tier closure: %s" % ("EMPTY" if not closure else "carries the donor"))
+    dlc_missing = [d for d in DLC if d not in closure]   # O01's PASS text says "all DLC" but never checks it
+    if dlc_missing:
+        ok = False
+        lines.append("tier closure lacks DLC: %s" % dlc_missing)
     ok &= not dependents
     lines.append("About.xml hard-depending on the donor: %s" % (dependents or "none"))
     kinds = {s["kind"] for s in man.get("species") or []} | {s["race"] for s in man.get("species") or []}

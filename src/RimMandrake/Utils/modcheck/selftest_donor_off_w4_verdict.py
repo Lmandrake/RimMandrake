@@ -2,6 +2,7 @@
 """selftest_donor_off_w4_verdict.py -- donor_off_w4_verdict.py judges each clause off synthetic round rows, offline,
 no bridge: a clause holds only on PASS rows it names, and every miss (FAIL, UNMEASURED, missing row, aborted round,
 exception in our defs, a capped log, a donor dependency) reads as a failure."""
+import json
 import os
 import sys
 import tempfile
@@ -25,7 +26,7 @@ def row(rid, status, detail=None):
 
 MAN = {"species": [{"kind": "K%02d" % i, "race": "R%02d" % i} for i in range(10)],
        "flyers": ["K01", "R02"],
-       "tier": {"closure": ["ludeon.rimworld", "mandrake.rsw.swbestiary"]},
+       "tier": {"closure": list(V.DLC) + ["mandrake.rsw.swbestiary"]},
        "offlineRows": [row(r, "PASS") for r in ("O01_TIER_RESOLVES", "O02_SUBJECTS_IN_TIER", "O03_ART_PRESENT",
                                                 "O04_MANIFEST_SANE")]}
 
@@ -59,6 +60,37 @@ def pin_rows():
         json.dump(bad, open(L.PIN, "w"))
         ok(any(p.startswith("species: derived") for p in L.derive(closure=closure)["problems"]),
            "a species count off the pin by one is an O04 problem")
+    finally:
+        L.PIN = saved
+
+
+def flyer_probe():
+    """scan_patches calls a race a flyer only on MaxFlightTime > 0, and a flyer count off the pin is O04 (sanity probe:
+    the instrument sees a patch-set flight stat, and a zeroed one drops the flyer)."""
+    import l1_donor_off_round as L
+    tmp = tempfile.mkdtemp(prefix="dow4fly_")
+    os.makedirs(os.path.join(tmp, "M", "Patches"))
+    with open(os.path.join(tmp, "M", "Patches", "Fly.xml"), "w") as fh:
+        fh.write('<Patch><Operation Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName="RSW_Up"]/statBases'
+                 '</xpath><value><MaxFlightTime>12</MaxFlightTime></value></Operation>'
+                 '<Operation Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName="RSW_Down"]/statBases</xpath>'
+                 '<value><MaxFlightTime>0</MaxFlightTime></value></Operation></Patch>')
+    saved = L.SRC
+    try:
+        L.SRC = tmp
+        got = L.scan_patches({})
+    finally:
+        L.SRC = saved
+    ok(got == {"RSW_Up"}, "scan_patches: MaxFlightTime 12 flies, 0 does not: %s" % sorted(got))
+    closure = {"ordered": [], "missing": [], "refusals": []}
+    pin, _ = L.load_pin()
+    saved = L.PIN
+    try:
+        L.PIN = os.path.join(tmp, "flydrift.json")
+        json.dump(dict(pin, expect={"species": pin["expect"]["species"], "flyers": pin["expect"]["flyers"] + 1}),
+                  open(L.PIN, "w"))
+        ok(any(p.startswith("flyers: derived") for p in L.derive(closure=closure)["problems"]),
+           "a flyer count off the pin by one is an O04 problem")
     finally:
         L.PIN = saved
 
@@ -107,6 +139,13 @@ def main():
     ok(not V.judge_offline(m, [])[0], "offline fails on a flyer that is no spawn subject")
     m = dict(MAN, tier={"closure": MAN["tier"]["closure"] + [V.DONOR]})
     ok(not V.judge_offline(m, [])[0], "offline fails on a donor in the closure")
+
+    for d in V.DLC[1:]:
+        m = dict(MAN, tier={"closure": [x for x in MAN["tier"]["closure"] if x.lower() != d]})
+        ok(not V.judge_offline(m, [])[0], "offline fails when the closure lacks %s" % d)
+    ok(not V.judge_offline(dict(MAN, flyers=[]), [])[0], "offline fails on no flyers at all (vacuous flight clause)")
+
+    flyer_probe()
 
     # donor_dependents sees a real <modDependencies> entry (sanity probe: the instrument can see)
     tmp = tempfile.mkdtemp(prefix="dow4_")
