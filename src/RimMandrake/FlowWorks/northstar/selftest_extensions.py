@@ -786,14 +786,18 @@ def _repair_probes(EXT, base):
 
     # fill-in: a colonist that cannot mine is UNMEASURED; the WorkGiver refusing the designated cell is the mod's FAIL
     def fillin(probe, depth_after):
+        st_in = {}
+
         def h(tl, p):
             if tl == "jawa/flowworks_job_probe":
                 return probe
+            if tl == "jawa/ordered_job":
+                st_in["ordered"] = True
             g = _gravel_mock(tl, p)
             if g is not None:
                 return g
-            if tl == "jawa/flowworks_excavation_report":
-                return {"success": True, "depth": depth_after, "fill": 0}
+            if tl == "jawa/flowworks_excavation_report":    # the dug D=1 until the order, then `depth_after`
+                return {"success": True, "depth": depth_after if st_in.get("ordered") else 1, "fill": 0}
             return base(tl, p)
         return _ext_run(EXT, "toggle_fill_in", h).get("fill_in_on")
     ok = FILLIN_OK["jawa/flowworks_job_probe"]
@@ -809,14 +813,17 @@ def _repair_probes(EXT, base):
                 st_off["probes"] = st_off.get("probes", 0) + 1
                 return dict(ok, workGiver={"hasJobOnCell": has_job or st_off["probes"] == 1,
                                            "jobDef": "RM_FillInCanalJob", "shouldSkip": False})
+            if tl == "jawa/ordered_job":
+                st_off["ordered"] = True
             g = _gravel_mock(tl, p)
             if g is not None:
                 return g
             if tl == "jawa/flowworks_excavation_drive" and "a" not in st_off:
                 st_off["a"] = p.get("x")                     # the chain digs the ON cell first
-            if tl == "jawa/flowworks_excavation_report":    # the ON cell is filled in (every read); OFF's stays D=1
+            if tl == "jawa/flowworks_excavation_report":    # the ON cell is filled in once ordered; OFF's stays D=1
                 # by CELL, not call order: _wait_filled_in polls the ON cell before _expect_state reads it
-                return {"success": True, "depth": 0 if p.get("x") == st_off.get("a") else 1, "fill": 0}
+                return {"success": True, "depth": 0 if p.get("x") == st_off.get("a") and st_off.get("ordered") else 1,
+                        "fill": 0}
             return base(tl, p)
         st_off = {}
         return h
@@ -840,6 +847,8 @@ def _repair_probes(EXT, base):
                 log.append(("vanish", p.get("pawn")))
             if tl == "jawa/spawn_pawn":
                 log.append(("spawn", None))
+            if tl == "jawa/flowworks_excavation_report":     # the dug D=1 (_expect_dug_one reads it before the spawn)
+                return {"success": True, "depth": 1, "fill": 1}
             g = _gravel_mock(tl, p)
             if g is not None:
                 return g

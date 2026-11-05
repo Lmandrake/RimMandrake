@@ -1286,6 +1286,19 @@ def _fill_in_budget(t, pid):
     return min(FILL_IN_TICKS_MAX, int(FILL_IN_WORK / (sp * FILL_IN_WORK_PER_TICK) * 1.25) + 600)
 
 
+def _expect_dug_one(t, cell):
+    """The fill-in budget is for ONE notch (FILL_IN_WORK is D=1's work, and one RM_FillInCanalJob raises the floor one
+    notch: JobDriver_FillInCanal.BaseWorkAmount reads WorkToDeepen(current - 1)). Re-read the dug cell before ordering:
+    FILLIN_PROOF_FIX_ORDER_NEVER_FILLS saw D=7 on a cell the chain dug with deepenLevels=1, and 20,000 ticks of waiting
+    could never reach D=0 from there. A cell not at D=1 is the fixture's fault, so UNMEASURED with the depth named."""
+    if not t._guard():
+        return
+    d = _rep(t, cell[0], cell[1]).get("depth")
+    if d != 1:
+        raise ExpectationFailed("UNMEASURED: fill-in fixture cell %s reads D=%r before the order, not the D=1 the chain dug; "
+                                "one fill-in moves one notch, so its budget cannot reach D=0" % (cell, d))
+
+
 def _wait_filled_in(t, pid, cell):
     """Advance in 2-pulse steps until `cell` reads D=0 or `_fill_in_budget` runs out (the caller's _expect_state
     decides). -> ticks waited."""
@@ -1308,6 +1321,7 @@ def toggle_fill_in(t):
         _fill(t, c[0], c[1], 1)
     pid = None
     with t.component("fill_in_on", toggle="fillInEnabled"):
+        _expect_dug_one(t, a)
         _stage(t, "jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % a)
         pid = _spawn_lone_filler(t, a[0] - 2, a[1])     # registered in _SPAWNED: the next chain vanishes it
         _order_fill_in(t, pid, a)
@@ -1342,6 +1356,7 @@ def toggle_fill_in_displacement(t):
         # D=0 before the sums mean anything, and the sanctioned overflow (RM_MapComponent_Excavation.cs ~643-662,
         # counted in overflowDestroyedTotal) is added back, so a correct engine that overflows is not a FAIL
         pid = _spawn_lone_filler(t, cells[1][0], cells[1][1] - 2)
+        _expect_dug_one(t, cells[1])
         r0 = [_rep(t, x, z) for x, z in cells] if t._guard() else []
         _stage(t, "jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % cells[1])
         _order_fill_in(t, pid, cells[1])
