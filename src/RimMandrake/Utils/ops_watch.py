@@ -3609,6 +3609,20 @@ def refusal_text(out, cap=300):
     return out[:half] + " ... " + out[-half:]
 
 
+FILING_DEFERRED = "deferred: this beat's filing time is spent; the next pass files it"
+FILING_PUBLISH_RESERVE_S = 4.0     # left for the publish and the rest of the pass when a metronome beat bounds it
+FILING_FIRST_GUESS_S = 3.0         # one spawn + raise before any is measured
+
+
+def beat_deadline():
+    """The metronome's kill time for this pass (METRONOME_DEADLINE, epoch), or None outside a beat."""
+    try:
+        t = float(os.environ.get("METRONOME_DEADLINE") or "nan")
+    except ValueError:
+        return None
+    return t if math.isfinite(t) else None
+
+
 def real_filer(todo, conf):
     """todo: [{"name", "title"}] -> {name: None | error}, plus "_publish". Spawns as RUNNER from the dispatch clone
     under QHOME/ingest.lock and publishes its RUNNER shard (testq ingest.py does both). Nothing is filed for a
@@ -3621,6 +3635,12 @@ def real_filer(todo, conf):
     spec.loader.exec_module(ing)
     nobody = alarm_receiver_problem(conf)     # only a NEW item needs it: a note or a reopen goes to one already filed
     res = {}
+    # inside a metronome beat (OPS_METRONOME_MIGRATE_CLOCKS_FENCED) the pass is killed at the deadline: a filing is
+    # started only when it and the publish still fit, the rest stay PENDING (FILING_DEFERRED, no try counted) and the
+    # publish always runs. A kill mid-spawn or mid-push is what this avoids; 13 pending filings overran beat 1749.
+    deadline = beat_deadline()
+    lock_wait = conf["lock_wait_s"] if deadline is None else max(
+        0.0, min(conf["lock_wait_s"], deadline - time.time() - FILING_PUBLISH_RESERVE_S - FILING_FIRST_GUESS_S))
     with open(qhome() / "ingest.lock", "w") as lk:
         t0 = time.time()
         while True:
@@ -3628,11 +3648,16 @@ def real_filer(todo, conf):
                 fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
                 break
             except BlockingIOError:
-                if time.time() - t0 > conf["lock_wait_s"]:
-                    return {a["name"]: "ingest.lock busy for %d s" % conf["lock_wait_s"] for a in todo}
-                time.sleep(2)
+                if time.time() - t0 > lock_wait:
+                    return {a["name"]: "ingest.lock busy for %d s" % lock_wait for a in todo}
+                time.sleep(min(2, max(0.2, lock_wait / 4)))
         n = 0
+        per = FILING_FIRST_GUESS_S
         for a in todo:
+            if deadline is not None and time.time() + per + FILING_PUBLISH_RESERVE_S > deadline:
+                res[a["name"]] = FILING_DEFERRED
+                continue
+            began = time.time()
             try:    # one alarm the spawn cannot carry (a NUL in an argument) costs itself, not the alarms behind it
                 if a.get("note_only"):
                     rc, out = ing.rimflow("note", a["item"], "--text", a["text"])
@@ -3676,6 +3701,7 @@ def real_filer(todo, conf):
                 rc, out = 1, "%s: %s" % (type(e).__name__, e)
             res[a["name"]] = None if rc == 0 else refusal_text(out)
             n += rc == 0
+            per = max(per, time.time() - began)
         res["_publish"] = ing.publish(n, message="ledger: ops_watch alarm(s) %s" % ", ".join(
             a["name"] for a in todo if res.get(a["name"]) is None and a["name"] not in res.get("_already", []))) if n else "nothing to publish"
     return res
@@ -4041,7 +4067,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
             try:
                 cur = state[a["aid"]]
                 err = res.get(a["name"])
-                cur["tries"] = _tries(cur) + (1 if filer else 0)
+                cur["tries"] = _tries(cur) + (1 if filer and err != FILING_DEFERRED else 0)
                 cur["last_try"] = iso(now)
                 if err is None:
                     cur.update(state="OPEN", item=a["name"], name=a["name"], error=None, filed=iso(now))   # name: a successor stays the alarm's item
@@ -4057,7 +4083,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                         tell_conductor(a["conductor_log"], "- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]), a["aid"], now, log, cur)
                 else:
                     cur["error"] = err
-                    if filer:
+                    if filer and err != FILING_DEFERRED:
                         log.append({"ts": iso(now), "event": "file_failed", "aid": a["aid"], "error": err})
             except Exception as e:  # noqa: BLE001  a corrupt counter costs this alarm's bookkeeping; found_filed recovers it
                 log.append({"ts": iso(now), "event": "step_failed", "aid": a["aid"], "error": str(e)[:200]})
@@ -4433,8 +4459,9 @@ def steve_release():
     reads TESTQ_QUEUE as this pass does. -> flags: it costs a flag when it fails, never the pass."""
     why = None
     try:
+        dl = beat_deadline()    # inside a beat the release must end before the kill, leaving the pass its room
         r = subprocess.run([sys.executable, str(HERE / "testq" / "brake_release.py")], capture_output=True, text=True,
-                           timeout=240)
+                           timeout=240 if dl is None else max(1.0, min(240.0, dl - time.time() - 6)))
         if r.returncode != 0:
             why = "exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:])
     except (OSError, subprocess.SubprocessError) as e:

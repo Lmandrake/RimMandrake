@@ -461,7 +461,8 @@ def run_phase(d, table, name, n, st, limit, slot, log):
         env[k] = _expand(v, ctx)
     staged = out / ("%s.%d.staged" % (name, n))
     env.update(METRONOME_DIR=str(d), METRONOME_GEN=str(n), METRONOME_PHASE=name, METRONOME_OUT=str(staged),
-               METRONOME_SHADOW="0" if p.get("owns") else "1", METRONOME_OLDEST_READING=str(oldest[1]) if oldest else "")
+               METRONOME_SHADOW="0" if p.get("owns") else "1", METRONOME_OLDEST_READING=str(oldest[1]) if oldest else "",
+               METRONOME_DEADLINE="%.3f" % (start + limit))   # when the kill comes: an acting child stops starting acts before it
     if slot:
         env["METRONOME_SLOT"] = slot
     logf = open(out / ("%s.log" % name), "w", encoding="utf-8")
