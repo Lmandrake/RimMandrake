@@ -350,7 +350,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Drawbridge_hose_cut_by_a_raised_leaf_carries_no_liquid", () =>
             {
                 string net = Src("Machinery", "RM_LiquidNet.cs");
-                string ends = Body(net, "private static bool Ends(RM_MapComponent_Hoses comp, CompHoseReel r, out object inlet, out object far)");
+                string ends = Body(net, "private static bool Ends(RM_MapComponent_Hoses comp, CompHoseReel r, out object inlet, out object far, out Thing bodyPort, out Thing endPort)");
                 int cut = ends.IndexOf("RM_Drawbridges.HoseCut(r)", StringComparison.Ordinal);
                 Assert(cut >= 0, "can-fail: the net's link builder reads the leaf cut");
                 Assert(cut < ends.IndexOf("comp.FeedsInto(r)", StringComparison.Ordinal) && cut < ends.IndexOf("r.FreeEnd()", StringComparison.Ordinal),

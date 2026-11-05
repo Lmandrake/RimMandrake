@@ -972,6 +972,32 @@ namespace RimMandrake.FlowWorks.Pits
 			return false;
 		}
 
+		/// <summary>How many leaves on the map are off their seat (RM_HoseLinks' slot cache folds it: a leaf that arrives already
+		/// raised toggles nothing, yet can cut a hose; HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN).</summary>
+		public static int RaisedLeafCount(Map map)
+		{
+			RM_MapComponent_SuspensionBridges comp = RM_MapComponent_SuspensionBridges.Of(map);
+			int n = 0;
+			if (comp == null)
+			{
+				return 0;
+			}
+			foreach (SuspensionBridgeRecord r in comp.Bridges)
+			{
+				if (r.IsDrawbridge)
+				{
+					foreach (DrawbridgeLeaf l in r.leaves)
+					{
+						if (l.progress > 0)
+						{
+							n++;
+						}
+					}
+				}
+			}
+			return n;
+		}
+
 		/// <summary>A laid hose whose walked trail (or, for a planned hose with no trail, the straight line from reel to end)
 		/// crosses a raised leaf square.</summary>
 		public static bool HoseCut(Hose.CompHoseReel r)

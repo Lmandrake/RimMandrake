@@ -398,6 +398,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			Bumps++;
 		}
 
+		/// <summary>The map's topology revision (RM_HoseLinks folds bumps it did not cause itself into its slot cache).</summary>
+		internal static int RevisionOf(Map map)
+		{
+			return map == null ? 0 : StateOf(map).revision;
+		}
+
 		/// <summary>The hose links changed; RM_HoseLinks recorded which in LinkDelta: a new revision rebuilding only those.</summary>
 		internal static void BumpLinks(Map map)
 		{
@@ -1032,6 +1038,11 @@ namespace RimMandrake.FlowWorks.Machinery
 	/// The link list is rebuilt only when its SIGNATURE changes (each live reel's id, inlet and far identity, read from the
 	/// reels' own 60-tick port caches and the relay index): that check is the backstop that bumps the map's topology revision
 	/// for any reel state, port or coupling change nobody announced (G11). Nothing else is rebuilt per tick.
+	/// HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN part (b): the per-reel (inlet, far) reads are memoised in RM_HoseLinkCache. A reel
+	/// is re-read only when a global input changed (settings, relay index, drawbridge leaves, a topology bump not ours), its own
+	/// key changed (carry, lay, far, role, its port / free-end re-read serial), a thing its last read touched despawned, or its
+	/// phased 60-tick audit came due (the window its own port and free-end caches go stale in). The signature fold and the
+	/// rebuild rule are unchanged; they run over the memoised ids.
 	/// </summary>
 	public sealed class RM_HoseLinks
 	{
@@ -1040,6 +1051,15 @@ namespace RimMandrake.FlowWorks.Machinery
 		private int checkedTick = int.MinValue;
 		private ulong sig;
 		private bool built;
+		private readonly RM_HoseLinkCache cache = new RM_HoseLinkCache();
+		private readonly List<CompHoseReel> scratch = new List<CompHoseReel>();
+		private int revSeen = int.MinValue;
+		private long foreignBumps;
+
+		/// <summary>Debug / A-B: evaluate every reel on every Refresh (the pre-cache walk).</summary>
+		internal static bool FullWalk;
+		/// <summary>State read: reel evaluations / skips by the slot cache this session (probe perf row).</summary>
+		public static long SlotEvals, SlotSkips;
 		private readonly List<RM_NetLink> all = new List<RM_NetLink>();
 		private readonly Dictionary<object, List<RM_NetLink>> at = new Dictionary<object, List<RM_NetLink>>();
 		private static readonly List<RM_NetLink> None = new List<RM_NetLink>();
@@ -1129,9 +1149,10 @@ namespace RimMandrake.FlowWorks.Machinery
 		}
 
 		/// <summary>The (inlet, far) of reel r if it forms a live link now, else false.</summary>
-		private static bool Ends(RM_MapComponent_Hoses comp, CompHoseReel r, out object inlet, out object far)
+		private static bool Ends(RM_MapComponent_Hoses comp, CompHoseReel r, out object inlet, out object far, out Thing bodyPort, out Thing endPort)
 		{
 			inlet = far = null;
+			bodyPort = endPort = null;
 			if (!Eligible(r))
 			{
 				return false;
@@ -1148,7 +1169,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 			else
 			{
-				Thing p = r.Port();
+				Thing p = bodyPort = r.Port();
 				if (p != null && RM_LiquidNet.RoleOfThing(p) != RM_NetRole.None)
 				{
 					inlet = RM_LiquidNet.VertexOf(p);
@@ -1162,6 +1183,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			else
 			{
 				HoseFreeEnd e = r.FreeEnd();
+				endPort = e.Port;
 				if (e.Port != null && RM_LiquidNet.RoleOfThing(e.Port) != RM_NetRole.None)
 				{
 					far = RM_LiquidNet.VertexOf(e.Port);
@@ -1234,40 +1256,68 @@ namespace RimMandrake.FlowWorks.Machinery
 				+ " readsMean=" + (pCalls == 0 ? 0 : (double)pReadsSum / pCalls).ToString("0.00", inv);
 		}
 
-		/// <summary>The Refresh body; returns the number of reels walked.</summary>
+		/// <summary>The Refresh body; returns the number of reels on the map (walked or skipped).
+		/// HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN (b): a reel's Ends is re-read only when its slot is due (RM_HoseLinkCache: the
+		/// global fold, its key, a watched thing gone or down, or its 60-tick phased audit); the links are re-diffed only when a
+		/// slot's (ok, inlet id, far id) changed and the old signature rule then also differs.</summary>
 		private int RefreshCore(int now)
 		{
 			RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
-			ulong h = RM_LiquidNetKernel.SigSeed ^ (RM_HoseSettings.enabled ? 1UL : 0UL);
-			// a copy: IsFed / FeedsInto may rebuild the relay index (and its order list) mid-loop
-			List<CompHoseReel> reels = comp != null && RM_HoseSettings.enabled ? new List<CompHoseReel>(comp.OrderedReels()) : null;
-			if (reels != null)
+			// a copy (reused, no allocation): IsFed / FeedsInto may rebuild the relay index (and its order list) mid-loop
+			scratch.Clear();
+			if (comp != null && RM_HoseSettings.enabled)
 			{
-				foreach (CompHoseReel r in reels)
+				scratch.AddRange(comp.OrderedReels());
+			}
+			int rev = RM_LiquidNet.RevisionOf(map);
+			if (rev != revSeen)
+			{
+				revSeen = rev;
+				foreignBumps++;
+			}
+			bool every = cache.Begin(scratch.Count, GlobalKey(foreignBumps)) || FullWalk;
+			bool changed = false;
+			for (int i = 0; i < scratch.Count; i++)
+			{
+				CompHoseReel r = scratch[i];
+				int id = r.parent.thingIDNumber;
+				if (!cache.Due(every, i, KeyOf(r), Gone(i), now, id))
 				{
-					if (Ends(comp, r, out object inlet, out object far))
-					{
-						h = RM_LiquidNetKernel.SigStep(h, r.parent.thingIDNumber, IdOf(inlet), IdOf(far));
-					}
+					SlotSkips++;
+					continue;
+				}
+				SlotEvals++;
+				bool ok = Ends(comp, r, out object inlet, out object far, out Thing bodyPort, out Thing endPort);
+				// the key is taken after Ends: a port / free-end re-read inside it bumps the reel's serial, and this read saw it
+				changed |= cache.Store(i, KeyOf(r), now, id, ok, inlet, ok ? IdOf(inlet) : 0, far, ok ? IdOf(far) : 0, bodyPort, endPort, Down(bodyPort) || Down(endPort));
+			}
+			if (!cache.End(changed) && built)
+			{
+				return scratch.Count;
+			}
+			// the old signature rule, folded over the memoised ids (no Ends call)
+			ulong h = RM_LiquidNetKernel.SigSeed ^ (RM_HoseSettings.enabled ? 1UL : 0UL);
+			for (int i = 0; i < scratch.Count; i++)
+			{
+				if (cache.Ok(i))
+				{
+					h = RM_LiquidNetKernel.SigStep(h, scratch[i].parent.thingIDNumber, cache.InletId(i), cache.FarId(i));
 				}
 			}
 			if (built && h == sig)
 			{
-				return reels?.Count ?? 0;
+				return scratch.Count;
 			}
 			sig = h;
 			bool first = !built;
 			built = true;
 			Rebuilds++;
 			var ends = new List<KeyValuePair<object, KeyValuePair<object, object>>>();
-			if (reels != null)
+			for (int i = 0; i < scratch.Count; i++)
 			{
-				foreach (CompHoseReel r in reels)
+				if (cache.Ok(i))
 				{
-					if (Ends(comp, r, out object inlet, out object far))
-					{
-						ends.Add(new KeyValuePair<object, KeyValuePair<object, object>>(r, new KeyValuePair<object, object>(inlet, far)));
-					}
+					ends.Add(new KeyValuePair<object, KeyValuePair<object, object>>(scratch[i], new KeyValuePair<object, object>(cache.Inlet(i), cache.Far(i))));
 				}
 			}
 			// LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: an unchanged reel keeps its link object and the net's delta records the rest, so
@@ -1289,7 +1339,53 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				RM_LiquidNet.BumpLinks(map);
 			}
-			return reels?.Count ?? 0;
+			revSeen = RM_LiquidNet.RevisionOf(map);   // our own bump is no foreign change
+			return scratch.Count;
+		}
+
+		/// <summary>Everything Ends reads that is not per reel: a change re-reads every reel.</summary>
+		private ulong GlobalKey(long foreign)
+		{
+			ulong g = RM_HoseLinkCache.Mix(RM_LiquidNetKernel.SigSeed, RM_HoseSettings.enabled ? 1 : 0);
+			g = RM_HoseLinkCache.Mix(g, RM_HoseSettings.freeEndRolesEnabled ? 1 : 0);
+			g = RM_HoseLinkCache.Mix(g, RM_MachinerySettings.liquidTheftEnabled ? 1 : 0);
+			g = RM_HoseLinkCache.Mix(g, RM_MachinerySettings.universalPipesEnabled ? 1 : 0);
+			g = RM_HoseLinkCache.Mix(g, RM_MachinerySettings.pipePolesEnabled ? 1 : 0);
+			g = RM_HoseLinkCache.Mix(g, RM_MapComponent_Hoses.RelayVersion);         // laid ends, footprints, drawbridge toggles (InvalidateEnds)
+			g = RM_HoseLinkCache.Mix(g, RM_MapComponent_Hoses.RelayIndexBuilds);     // the relay index (IsFed / FeedsInto) was rebuilt
+			g = RM_HoseLinkCache.Mix(g, Pits.RM_Drawbridges.ToggleCount);
+			g = RM_HoseLinkCache.Mix(g, Pits.RM_Drawbridges.RaisedLeafCount(map));    // HoseCut's gate; a leaf built raised toggles nothing
+			return RM_HoseLinkCache.Mix(g, foreign);                                 // pipes / tanks / factions changed (topology bump)
+		}
+
+		/// <summary>Everything Ends reads from the reel itself, plus the serial its port / free-end caches bump on a changed re-read.</summary>
+		private static ulong KeyOf(CompHoseReel r)
+		{
+			ulong k = RM_HoseLinkCache.Mix(RM_LiquidNetKernel.SigSeed, r.parent.thingIDNumber);
+			k = RM_HoseLinkCache.Mix(k, (long)r.carry);
+			k = RM_HoseLinkCache.Mix(k, (r.laid ? 1 : 0) | (r.parent.Spawned ? 2 : 0));
+			k = RM_HoseLinkCache.Mix(k, r.lay == null ? 0 : System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(r.lay) + 1L);
+			k = RM_HoseLinkCache.Mix(k, r.trail == null ? 0 : System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(r.trail) * 4096L + r.trail.Count + 1);
+			k = RM_HoseLinkCache.Mix(k, ((long)r.far.x << 32) ^ (uint)r.far.z);
+			k = RM_HoseLinkCache.Mix(k, (long)r.freeEndRole);
+			return RM_HoseLinkCache.Mix(k, r.linkInputSerial);
+		}
+
+		/// <summary>A thing slot i's last read used (its ends, its body port, its free end's port) has despawned since.</summary>
+		private bool Gone(int i)
+		{
+			if (i >= cache.Count)
+			{
+				return true;
+			}
+			return (cache.Ok(i) && (!Spawned(cache.Inlet(i)) || !Spawned(cache.Far(i))))
+				|| (cache.WatchA(i) is Thing a && !a.Spawned) || (cache.WatchB(i) is Thing b && !b.Spawned);
+		}
+
+		/// <summary>A thing the read saw already despawned: it may respawn with no key change (the slot stays due until then).</summary>
+		private static bool Down(Thing t)
+		{
+			return t != null && !t.Spawned;
 		}
 
 		private void Add(object v, RM_NetLink l)

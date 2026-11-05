@@ -1532,6 +1532,8 @@ namespace RimMandrake.FlowWorks.Hose
             int now = Find.TickManager?.TicksGame ?? 0;
             if (ends.TryGetValue(r, out var kv) && HoseLive.PhasedFresh(now, kv.Key, 60, r.parent.thingIDNumber) && kv.Value.Cell == (r.laid ? r.far : IntVec3.Invalid)) return kv.Value;
             HoseFreeEnd e = HoseEnds.Read(r);
+            bool had = ends.TryGetValue(r, out var old);
+            if (!had || old.Value.Kind != e.Kind || old.Value.Port != e.Port || old.Value.Relay != e.Relay || old.Value.Cell != e.Cell) r.linkInputSerial++;
             ends[r] = new KeyValuePair<int, HoseFreeEnd>(now, e);
             return e;
         }

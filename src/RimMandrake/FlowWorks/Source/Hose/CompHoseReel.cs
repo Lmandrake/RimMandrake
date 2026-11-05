@@ -75,6 +75,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Runtime only (HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN): the corridor version when the live corridor hash last
         /// equalled corridorHash; 0 = never (the next recheck hashes). Reset by every lay.</summary>
         public long corridorSeenAt;
+        /// <summary>Transient (not saved): bumped when a re-read of this reel's body port (Port) or free end (FreeEndOf) comes back
+        /// different; part of the reel's RM_HoseLinks slot key, so a changed coupling re-reads its link at once
+        /// (HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN part b).</summary>
+        public int linkInputSerial;
         public string lastProvider = "none";
         public bool lastSignal;
         // ---------------------------------------------------------------- real flow (hose port step 6, FINAL §3.2-3.4)
@@ -175,7 +179,9 @@ namespace RimMandrake.FlowWorks.Hose
             int now = Find.TickManager?.TicksGame ?? 0;
             if (!force && HoseLive.PhasedFresh(now, portTick, 60, parent.thingIDNumber) && (port == null || port.Spawned)) return port;
             portTick = now;
+            Thing was = port;
             port = HosePorts.Find(this, out portSide, out portContact, out portKind);
+            if (port != was) linkInputSerial++;
             return port;
         }
 

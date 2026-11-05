@@ -239,6 +239,8 @@
     <Compile Include="AdapterChecks.cs" />
     <Compile Include="HoseNetChecks.cs" />
     <Compile Include="HoseNetCacheChecks.cs" />
+    <Compile Include="HoseLinkCacheChecks.cs" />
+    <Compile Include="..\Machinery\RM_HoseLinkCache.cs" />
     <Compile Include="HoseSwitchFlipChecks.cs" />
     <Compile Include="PipeStraightVariantChecks.cs" />
     <Compile Include="HoseChecks.cs" />

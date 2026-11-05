@@ -13,7 +13,7 @@ namespace RimMandrake.FlowWorks.SelfTest
     {
         private static string hoseSuite = "?";
         /// <summary>Suites written for the port (not moved from GSS): excluded from the "moved" count.</summary>
-        private static readonly HashSet<string> NewSuites = new() { "HoseLegacyChecks", "HoseNetChecks", "HoseNetCacheChecks", "HoseReelLinkChecks" };
+        private static readonly HashSet<string> NewSuites = new() { "HoseLegacyChecks", "HoseNetChecks", "HoseNetCacheChecks", "HoseReelLinkChecks", "HoseLinkCacheChecks" };
         private static readonly List<(string suite, int n, int fails)> hoseCounts = new();
         private static int hoseN, hoseFails;
 
@@ -57,6 +57,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseSuite("HoseLegacyChecks", HoseLegacyChecks.Run);
             HoseSuite("HoseNetChecks", HoseNetChecks.Run);
             HoseSuite("HoseNetCacheChecks", HoseNetCacheChecks.Run);
+            HoseSuite("HoseLinkCacheChecks", HoseLinkCacheChecks.Run);
             HoseSuite("HoseFuzz", () => HoseFuzz.Run(args));
             Console.WriteLine($"hose: {hoseN - hoseFails}/{hoseN} assertions passed (moved from Gimme Some Slack: {hoseCounts.Where(c => !NewSuites.Contains(c.suite)).Sum(c => c.n)}; new: {hoseCounts.Where(c => NewSuites.Contains(c.suite)).Sum(c => c.n)})");
             return hoseFails;
