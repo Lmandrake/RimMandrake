@@ -95,10 +95,59 @@
     "ref": "run rm-role-designer-1793914392",
     "stage": 3,
     "tokens": 265141
+   },
+   {
+    "at": "2026-11-05T22:37:28Z",
+    "kind": "helper",
+    "ref": "examiner-ad83e1d4",
+    "stage": 4,
+    "tokens": 36817
+   },
+   {
+    "at": "2026-11-05T22:38:47Z",
+    "kind": "helper",
+    "ref": "readerB",
+    "stage": 4,
+    "tokens": 33467
+   },
+   {
+    "at": "2026-11-05T22:38:47Z",
+    "kind": "helper",
+    "ref": "readerA",
+    "stage": 4,
+    "tokens": 34290
+   },
+   {
+    "at": "2026-11-05T22:38:47Z",
+    "kind": "helper",
+    "ref": "control1",
+    "stage": 4,
+    "tokens": 31921
+   },
+   {
+    "at": "2026-11-05T22:38:47Z",
+    "kind": "helper",
+    "ref": "challenger",
+    "stage": 4,
+    "tokens": 37480
+   },
+   {
+    "at": "2026-11-05T22:39:46Z",
+    "kind": "helper",
+    "ref": "control2",
+    "stage": 4,
+    "tokens": 32939
+   },
+   {
+    "at": "2026-11-05T22:42:26Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793918145",
+    "stage": 4,
+    "tokens": 163188
    }
   ],
   "reserve": 60000,
-  "spent": 3508643
+  "spent": 3878745
  },
  "history": [
   {
@@ -226,6 +275,18 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1793914392: stage 3 done"
+  },
+  {
+   "at": "2026-11-05T22:35:57Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1793918145, stage 4, budget 431357"
+  },
+  {
+   "at": "2026-11-05T22:42:27Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1793918145: stage 4 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -445,11 +506,34 @@
    "run": "rm-role-designer-1793914392",
    "stage": 3,
    "summary": "Showcase 1 burn_line bound to his flagship pick (decision d_flagship_burn_line, OWNER:1793908883805179759). d_scorchfruit_rapid applied: leaf scorchfruit_born_of_fire, scene sc_scorchfruit, sheet and plan now read scorch-fruit coming up rapidly in the scar right behind the front (red adds 'appears only days later'); his flagship words added to the sheet. Stale open lines removed (flagship pick; bar reword, done by card d_bar_reworded). Lint PASS; showcases 6/4/3 new, overlap 0, accepted."
+  },
+  {
+   "at": "2026-11-05T22:42:27Z",
+   "inputs": {
+    "exam": "781c20ccfee15020138fa10bbaf550d91d696225760749d8aa010662d17d8d38",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "9674f15396a05e2f45f136626976c1c2bdb1d7438a056b0cb53c085932ade71d",
+    "scenes": "81ce4462b7430c2abd1412a6a29c57affcf0d15d93441c22f5bf6acee3565cee",
+    "sheet": "3eb3b863498fd29a45d22960b4106d660089e5bc9282ef306bfada15e33a861c",
+    "tree": "05b72bd6b7321aa834664b1593c813955ecd8df261b12a59faba1c8ea8f5a4e4"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_exam.md": "3e3f16a15ed2c45e2851911d42c9369cdc7560758fe1f386dc38012b93534217"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793918145",
+   "stage": 4,
+   "summary": "Cold Reader exam passed: 17 frozen scenarios (12 Examiner, 5 Challenger; 13 reject cases), both Readers 17/17, accept_where_reject_core 0, no Challenger miss. Control on a copy without scorchfruit_born_of_fire missed e4/c1 once its his-words quote was also removed (first control still caught them from that quote). exam.json frozen against the current tree and sheet hashes. Helpers charged 240k."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
