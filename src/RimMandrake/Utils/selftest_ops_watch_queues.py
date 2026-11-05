@@ -180,7 +180,8 @@ check("queues: the stragglers are wired (arena runner claims, replay watcher)",
       {"arena_ralph_c", "replay_watch"} <= set(_qnames)
       and all(q.get("reader", "dirs") in OW.QUEUE_READERS for q in _rlq["queues"]), _qnames)
 # census (QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS): the claim/lease queues are exactly these; a new one joins the census here
-_CENSUS = {"artpipe", "testq", "arena_ralph_c", "replay_watch"}
+_CENSUS = {"artpipe", "testq", "arena_ralph_c", "replay_watch",
+           "designer"}   # DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: ready concepts wait on a run-now launch
 check("queues: the wired set is exactly the claim/lease census (none dropped, none unaccounted)",
       set(_qnames) == _CENSUS and len(_qnames) == len(_CENSUS), sorted(set(_qnames) ^ _CENSUS))
 check("queues: the stragglers read through their own readers, not the dir reader",

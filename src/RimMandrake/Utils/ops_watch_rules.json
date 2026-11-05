@@ -30,6 +30,12 @@
    "name": "replay_watch",
    "_doc": "replay arms in flight with no replay_watch tick since; paths, arms and stop line from replay_watch.py",
    "reader": "replay_arms"
+  },
+  {
+   "name": "designer",
+   "_doc": "DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a concept whose stage.json reads status=ready waits on a run-now launch nobody schedules; pending since it last moved, the oldest ready concept's wait; the Designer's off switch pauses it",
+   "reader": "designer_stage",
+   "paused_file": "/mnt/d/ClaudeWork/rimmandrake/designer/DESIGNER_OFF"
   }
  ],
  "series_days": 8,
@@ -394,6 +400,20 @@
     }
    }
   },
+  "queues.designer.stalled_min": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a concept at status=ready with no Designer run for 60 min. The Designer is run-now only, so nothing launches it (FlowWorks sat at stage 2 ready from 2026-11-04 13:02Z for 12 h+ while 14 FlowWorks build items were concept_refused); measured runs take 2 to 11 min.",
+   "classes": {
+    "sane": {
+     "at_least": 0
+    },
+    "distressed": {
+     "at_least": 60
+    }
+   }
+  },
   "queues.blind": {
    "owner": "Operations",
    "ack_within_min": 30,
@@ -595,6 +615,18 @@
     "MEASURED"
    ],
    "why": "QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS: a replay arm is in flight and replay_watch has not ticked for over 30 min, so a dead or hung arm would wait on a person noticing"
+  },
+  {
+   "key": "queues.designer.stalled_min",
+   "op": ">",
+   "value": 60,
+   "alarm": true,
+   "tag": "QUEUE_STALLED",
+   "name": "OPS_DESIGNER_UNSTICK_READY_AND_WAITING",
+   "marks": [
+    "MEASURED"
+   ],
+   "why": "DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a concept has read status=ready for over 60 min with no Designer run; find the concept (status ready in the Designer clone's design/concepts/*/stage.json; `designer_stage.py status <dir>`) and launch it (`role_launch.py run-now --role Designer --concept design/concepts/<Mod>`) or set its real state"
   },
   {
    "key": "queues.blind",

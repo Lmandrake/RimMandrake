@@ -2931,7 +2931,46 @@ def _q_replay(q, now, pcache, cpath):
     return plist, [], [tick_t]
 
 
-QUEUE_READERS = {"dirs": _q_dirs, "ralph_c": _q_ralph_c, "replay_arms": _q_replay}
+def _q_designer(q, now, pcache, cpath):
+    """The Designer's concepts (DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN): the Designer is run-now only, so a concept
+    whose stage.json reads status=ready waits on someone launching it, and nothing else notices (FlowWorks sat at
+    stage 2 ready for 12 h+ on 2026-11-04). Each ready concept is pending since it last moved: the later of its last
+    history row (a run's open or close, an unblock, a reopen) and its open run's start. Pending times only, no marks,
+    so the stall is the OLDEST ready concept's (a run on one concept never hides another left behind); a run open
+    longer than the threshold with no close is a stall too (measured runs take 2 to 11 min). A concept waiting on him,
+    blocked or locked is not pending. root: the concepts dir (default designer_stage.concepts_root(), the Designer
+    clone's design/concepts); a missing root, a stage.json that does not parse, or a ready concept with no readable
+    time is blind."""
+    rf = str(HERE.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    if q.get("root"):
+        root = Path(q["root"])
+    else:
+        import designer_stage as DS
+        root = Path(DS.concepts_root())
+    if not root.is_dir():
+        raise OSError("concepts dir missing: %s" % root)
+    plist, alist = [], []
+    for f in sorted(root.glob("*/stage.json")):
+        with open(f, encoding="utf-8") as fh:
+            st = json.load(fh)
+        if not isinstance(st, dict):
+            raise ValueError("stage.json is not an object: %s" % f)
+        run_at = _iso_epoch((st.get("running") or {}).get("at")) if isinstance(st.get("running"), dict) else None
+        if run_at is not None:
+            alist.append(run_at)
+        if st.get("status") != "ready":
+            continue
+        hs = [h for h in (st.get("history") or []) if isinstance(h, dict)]
+        last = _iso_epoch(hs[-1].get("at")) if hs else None
+        if last is None and run_at is None:
+            raise ValueError("ready concept with no readable history or run time: %s" % f)
+        plist.append(max(t for t in (last, run_at) if t is not None))
+    return plist, alist, []
+
+
+QUEUE_READERS = {"dirs": _q_dirs, "ralph_c": _q_ralph_c, "replay_arms": _q_replay, "designer_stage": _q_designer}
 
 
 def c_queues(now, rules, ctx):
