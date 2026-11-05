@@ -33,6 +33,7 @@ The lease rule, enforced here and nowhere else: no bridge for an item whose offl
 (unless its contract says why none is possible), whose game clauses lack a proof line, that names flight, or while
 another item holds a game phase. One live user at a time.
 """
+import hashlib
 import json
 import os
 import re
@@ -729,6 +730,27 @@ class GameFx(object):
         import relentless_live_round
         return relentless_live_round.mod_gap(self._round_fx(), sha, self._mods_text(item, sha), running, item)
 
+    def game_names_check(self, item, sha):
+        """relentless_names over the item's live_proofs text (_mods_text) -> (refusal or None, [advice])."""
+        import relentless_live_round
+        import relentless_names
+        text = self._mods_text(item, sha)
+        index = relentless_names.default_index()
+        chk = relentless_names.check(relentless_live_round.live_mods(text), index)
+        scripts = {}
+        for p in relentless_names.proof_scripts(text):
+            try:
+                with open(os.path.join(self.books, p), encoding="utf-8", errors="replace") as f:
+                    scripts[p] = f.read()
+            except OSError:
+                pass
+        try:
+            have = set(chk["mods"]) | set(relentless_live_round.item_mods(self._round_fx(), item, sha))
+            advice = relentless_names.advise(text, scripts, have, index)
+        except (ValueError, OSError):
+            advice = []
+        return relentless_names.refusal(chk["refused"]), advice
+
     def game_batch_gap(self, builds):
         """relentless_live_round.batch_gap: every [(item, sha)] riding one load, for one deploy plan."""
         import relentless_live_round
@@ -1216,6 +1238,7 @@ def _preflight(store, fx, sup, r, item, lines, now, acts, sha):
     bad = fx.game_preflight(item, lines, sites)
     if any(RETIERED in b["why"] for b in bad) and _rerecord(store, fx, item, sha, acts) is None:
         bad = fx.game_preflight(item, lines, sites)
+    bad = bad + _names_bad(store, fx, item, sha, acts)
     if any(b["kind"] == "stale" for b in bad) and _carry(store, fx, item, sha, now, acts):
         return True     # the next tick reads the carried build afresh
     if not bad:
@@ -1227,6 +1250,24 @@ def _preflight(store, fx, sup, r, item, lines, now, acts, sha):
     fp = first["fp"] if stale else "+".join(sorted(b["fp"] for b in bad))
     _refuse(store, fx, sup, r, item, klass, "live preflight: %s" % why, fp, now, acts)
     return True
+
+
+def _names_bad(store, fx, item, sha, acts):
+    """LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_BOARDING: the item's `live-mods:`/`live-deploy:` names through the one resolver
+    (relentless_names) before any slot -> [a preflight refusal] when one names no mod this machine has (what it looked
+    like and the nearest names), else []. Its need inference is advice only: journaled once per build, never written into
+    a proof. A fake without game_names_check checks nothing."""
+    if not hasattr(fx, "game_names_check"):
+        return []
+    why, advice = fx.game_names_check(item, sha)
+    if advice and ((store.load(item) or {}).get("game") or {}).get("advised") != sha:
+        acts.append({"do": "live_mods_advice", "item": item, "sha": sha,
+                     "advice": ["%s (%s)" % (a["mod"], a["at"]) for a in advice][:8]})
+        _save(store, item, lambda s: s.setdefault("game", {}).update(advised=sha))
+    if not why:
+        return []
+    return [{"cid": "live-mods", "why": why, "kind": "refused",
+             "fp": "names:" + hashlib.sha1(why.encode("utf-8")).hexdigest()[:12]}]
 
 
 def _harness(store, fx, r, item, why, now, acts):
@@ -1560,6 +1601,11 @@ def step(store, fx, r, item, now, acts, sup):
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
         gaps = [fx.game_batch_gap([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                      if (o.get("game") or {}).get("sha")])]
+        bad = sorted({x["item"] for x in gaps[0].get("refused") or [] if x.get("pos")})
+        if bad:     # a rider whose names resolve nowhere drops itself only; its own preflight sends it back
+            acts.append({"do": "game_rider_names_refused", "item": item, "riders": bad,
+                         "why": "; ".join(x["why"] for x in gaps[0]["refused"] if x.get("pos"))[:300]})
+            others = [o for o in others if o["item"] not in bad]
         # every rider's own lane fix rides with it: a passenger marked staged without its remedy run would read its next
         # identical environment failure as a failed fix and hold (Codex, ..._TEN_MORE #9)
         remedy = merged_remedy([g.get("remedy")] + [(o.get("game") or {}).get("remedy") for o in others]) or {}

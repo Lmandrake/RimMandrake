@@ -218,15 +218,16 @@ def merged(live_ids, add, full_ids):
 
 
 def is_mod_folder(name):
-    """A mod folder this machine has by that exact name: the game's Mods folder or a repo mod (deploy_custom_mods)."""
+    """A mod folder this machine has by that exact name: the game's Mods folder, a repo mod, a folded source or a
+    compose target. Asked of the one resolver, rimflow/relentless_names.py (LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_BOARDING);
+    a folder deployed after it listed the Mods folder is still seen here."""
     if os.path.isfile(os.path.join(GAME_DIR, "Mods", name, "About", "About.xml")):
         return True
-    try:
-        import deploy_custom_mods as D
-        f = D.folded()
-        return name in D.mod_dirs() or name in f or name in {t for t, _k in f.values()}
-    except SystemExit:
-        return False
+    rimflow = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "rimflow")
+    if rimflow not in sys.path:
+        sys.path.insert(0, rimflow)
+    import relentless_names
+    return relentless_names.default_index().is_folder(name)
 
 
 def split_names(names, folder=None):

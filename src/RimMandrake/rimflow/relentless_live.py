@@ -834,11 +834,8 @@ def is_package(name, folder=None):
     if folder is not None:
         return not folder(name)
     if name not in _FOLDER_SEEN:
-        utils = os.path.join(os.path.dirname(HERE), "Utils")
-        if utils not in sys.path:
-            sys.path.insert(0, utils)
-        import modlist_swap
-        if not modlist_swap.is_mod_folder(name):
+        import relentless_names     # the one resolver (LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_BOARDING); it caches no blind read
+        if not relentless_names.default_index().is_folder(name):
             return True
         _FOLDER_SEEN[name] = True
     return not _FOLDER_SEEN[name]

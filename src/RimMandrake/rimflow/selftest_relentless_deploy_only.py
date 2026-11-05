@@ -213,6 +213,7 @@ def t_batch_names_every_tree():
     x.w.proofs[("I1", ".txt")] = "live-deploy: Doctrine\nlive-proof A2: %s\n" % PROOF.replace(ITEM, "I1")
     x.w.game_trees = types.MethodType(G.GameFx.game_trees, x.w)
     x.w._round_fx = lambda: types.SimpleNamespace(folded=dict)
+    x.w._mods_text = lambda i, _s: x.w.proofs.get((i, ".txt"), "")    # game_trees reads the books' file (20b6b34ba4)
     SG.two_in_prove(x)
     x.w.gap = {"I0": SG.GAPS["running"], "I1": SG.GAPS["modsconfig"]}
     with x.s.lock():
@@ -310,6 +311,7 @@ def t_staged_rig_walks_to_a_pass():
         x.w.proofs[(ITEM, ".txt")] = TEXT
         x.w.game_trees = types.MethodType(G.GameFx.game_trees, x.w)     # production's, not the rig's fake
         x.w._round_fx = lambda: types.SimpleNamespace(folded=dict)
+        x.w._mods_text = lambda i, _s: x.w.proofs.get((i, ".txt"), "")
         SG.to_game(x, ITEM)
         x.tick()
         now = time.time()

@@ -111,11 +111,21 @@ def live_mods(text, pattern=LIVE_MODS):
     out = []
     for line in (text or "").splitlines():
         m = pattern.match(line)
-        if m:
-            for x in re.split(r"[\s,]+", m.group("mods")):
+        if m:     # a `# ...` tail is a comment, never mod names (LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_BOARDING review)
+            for x in re.split(r"[\s,]+", m.group("mods").split("#", 1)[0]):
                 if x and x not in out:
                     out.append(x)
     return out
+
+
+def names_check(fx, names):
+    """relentless_names.check on fx.names_index() -> {"mods", "refused", ...}: every name resolved once, folded sources
+    normalised to their composed mod. A fake without names_index passes the names through unchecked."""
+    index = fx.names_index() if hasattr(fx, "names_index") else None
+    if index is None:
+        return {"mods": list(names), "refused": [], "normalized": [], "unverified": []}
+    import relentless_names
+    return relentless_names.check(names, index)
 
 
 def is_package(name):
@@ -291,9 +301,11 @@ def mod_gap(fx, sha, text, running=True, item=None):
     ModsConfig), "dll": [stale or missing DLLs in the game folder], "running": why the RUNNING load lacks them or None,
     "error": why the plan could not be read or None}. running=False skips the bridge read (no game, or a staging).
     item: the item built at `sha`, so a proof-only built commit stands for its item's mods (item_mods)."""
-    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None}
+    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None, "unknown": None}
+    chk = names_check(fx, live_mods(text))
+    out["unknown"] = _refusal(chk["refused"])     # left out of the plan; relentless_game._preflight refuses the item
     try:
-        mods = sorted(set(item_mods(fx, item, sha)) | set(live_mods(text)))
+        mods = sorted(set(item_mods(fx, item, sha)) | set(chk["mods"]))
     except ValueError as e:
         out["error"] = str(e)[:200]
         return out
@@ -311,18 +323,33 @@ def batch_gap(fx, builds):
     A staging needs only the union (enable_set, dll_mods); planned per item, 17 riders took 17 sequential plans of
     about 140 s over the Windows mount before the tick's 20-minute kill (TICK_SPEED_FIX_GAME_IDLES_WAITING). A build whose
     mods cannot be read rides without them and says so in `error`; the others still plan."""
-    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None}
+    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None, "refused": []}
     mods = set()
-    for b in builds:
+    for pos, b in enumerate(builds):
         sha, text, item = (tuple(b) + (None,))[:3]
+        # LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_BOARDING: each build's names are resolved BEFORE the union. A rider naming
+        # what no mod is drops itself alone (OPS_CHURN_DIAGNOSE_TITANIC_WYZE_DMPL: one rider's RimMandrake.FlowWorks
+        # refused the whole batched enable); the leader (pos 0) rides on its valid names, its own preflight refuses it
+        chk = names_check(fx, live_mods(text))
+        if chk["refused"]:
+            out["refused"].append({"item": item, "pos": pos, "why": _refusal(chk["refused"])})
+            if pos:
+                continue
         try:
-            mods |= set(item_mods(fx, item, sha)) | set(live_mods(text))
+            mods |= set(item_mods(fx, item, sha)) | set(chk["mods"])
         except ValueError as e:
             out["error"] = str(e)[:200]
     out["mods"] = sorted(mods)
     if mods:
         _plan_into(fx, out["mods"], out)
     return out
+
+
+def _refusal(refused):
+    if not refused:
+        return None
+    import relentless_names
+    return relentless_names.refusal(refused)
 
 
 def _plan_into(fx, mods, out):
@@ -398,6 +425,11 @@ class RoundFx(L.Fx):
             shells = {m["shell"]["source"]: m["target"]} if (m.get("shell") or {}).get("source") else {}
             self._mod_names = (set(D.mod_dirs()) | set(D.folded()), shells)
         return self._mod_names
+
+    def names_index(self):
+        """relentless_names.default_index: what this machine can load, for the one name resolver."""
+        import relentless_names
+        return relentless_names.default_index()
 
     def mods_of(self, sha):
         return loadable({m for m, _ in L.game_files(self.touched(sha), self.shippable)}, *self.mod_names())

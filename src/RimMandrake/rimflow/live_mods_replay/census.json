@@ -1,0 +1,111 @@
+[
+ {
+  "item": "TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING",
+  "root": "R1"
+ },
+ {
+  "item": "SETTLEMENT_VERBS_WAVE_1",
+  "root": "R1"
+ },
+ {
+  "item": "GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1",
+  "root": "R1"
+ },
+ {
+  "item": "CANON_MATERIALS_BUILD_1",
+  "root": "R1"
+ },
+ {
+  "item": "ART_OVERRIDE_FAMILY_SCRIPT_1",
+  "root": "R1"
+ },
+ {
+  "item": "TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO",
+  "root": "R1"
+ },
+ {
+  "item": "TITANIC_BODYSIZE_TEST_RACE_1",
+  "root": "R1"
+ },
+ {
+  "item": "WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR",
+  "root": "R1"
+ },
+ {
+  "item": "HEAVY_TEXTURES_MEASURE_REAL_VRAM",
+  "root": "R1"
+ },
+ {
+  "item": "WARSCAR_HOSPICE_DESERTERS_1",
+  "root": "R1"
+ },
+ {
+  "item": "MODCHECK_DONOR_ENVIRONMENTS_1",
+  "root": "R1"
+ },
+ {
+  "item": "HORRORS_RAIDING_FACTION_1",
+  "root": "R1"
+ },
+ {
+  "item": "RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY",
+  "root": "R2"
+ },
+ {
+  "item": "GRAFFITI_NORTHSTAR_GREEN_FULL_1",
+  "root": "R2"
+ },
+ {
+  "item": "PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET",
+  "root": "R2"
+ },
+ {
+  "item": "STILLSAND_DUNE_GALE_LIVE_1",
+  "root": "R2"
+ },
+ {
+  "item": "STILLSAND_SAND_SWIM_REMAINDER_1",
+  "root": "R2"
+ },
+ {
+  "item": "WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1",
+  "root": "R2"
+ },
+ {
+  "item": "WEEPINGSTONES_HANDLER_VANISHES_1",
+  "root": "R2"
+ },
+ {
+  "item": "SUMP_GLASSWALK_SPEED_RATIO_1",
+  "root": "R2"
+ },
+ {
+  "item": "WATER_DEPTH_RESKIN_HE_LOOKS_FIRST",
+  "root": "R4"
+ },
+ {
+  "item": "GENERATOR_MODS_PROVE_INERT_AFTER_CREATION",
+  "root": "R4",
+  "sha": "914c3b0be1^"
+ },
+ {
+  "item": "OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN",
+  "root": "R4"
+ },
+ {
+  "item": "OPS_CHURN_DIAGNOSE_TITANIC_WYZE_DMPL",
+  "root": "R4",
+  "rider_of": "TITANIC_BODYSIZE_TEST_RACE_1",
+  "text": "live-mods: RimMandrake.FlowWorks\n"
+ },
+ {
+  "item": "OPS_CHURN_DIAGNOSE_OLLOPOM_JLHV_AJHK",
+  "root": "R4",
+  "rider_of": "OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN",
+  "text": "live-mods: RimMandrake.Biomes, SWBestiary\n",
+  "expect_kinds": [
+   "composed",
+   "folder"
+  ]
+ }
+]
