@@ -6,7 +6,8 @@ throwing things back to fix without fixing the measurement").
 Rows:
   C1  each --defect carries a cause (product|measurement|environment|unknown); untagged is unknown, never product; a
       product claim is VALID only with a --control and a citation of the candidate (a diff path, or the proof's own name).
-  C2  the verdict script and the CLI door refuse a product: defect without a --control.
+  C2  the verdict script and the CLI door refuse a product: defect without a --control; the real CLI (R.main verdict)
+      records a product: defect WITH a --control (its controls reach verdict()), and refuses one without.
   C3  replay of the class-d sightings through the real tick: each routes away from the builder (no strike, no new code
       generation); a measurement defect goes to the proof road on the SAME sha.
   C4  an ENOSPC --defect opens an environment alarm keyed on the dependency `disk`.
@@ -103,6 +104,28 @@ def t_doors():
     ok(W.refusal("FAIL", ["product: x"], [], None) and not W.refusal("FAIL", ["product: x"], [], ["c"]),
        "C2 the CLI door says the same")
 
+
+def t_cli_door():
+    """C2 through the real CLI: main() must hand --control to verdict(), or no CLI Judge can ever file a product defect."""
+    prod = "product: %s drops the A2 row" % GAME_PY
+    for ctl in (["--control", "green on parent"], []):
+        x = T.Rig(n=1, reach_repair=False, share=1.0, same_failure_limit=2)
+        checked(x)
+        st = x.st("I0")
+        os.environ["RELENTLESS_ROOT"] = x.d
+        try:
+            rc = R.main(["verdict", "--item", "I0", "--nonce", st["check"]["nonce"], "FAIL", "ran it",
+                         "--defect", prod, *ctl])
+        finally:
+            os.environ.pop("RELENTLESS_ROOT", None)
+        chk = x.st("I0")["check"]
+        if ctl:
+            ok(rc in (0, None) and chk.get("verdict") == "FAIL" and chk.get("controls") == ["green on parent"]
+               and chk.get("defects") == [prod], "C2 the CLI records a product defect with its control: rc=%s %s"
+               % (rc, {k: chk.get(k) for k in ("verdict", "defects", "controls")}))
+        else:
+            ok(rc == 2 and chk.get("verdict") is None, "C2 the CLI refuses a product defect with no control: rc=%s" % rc)
+        x.done()
 
 def checked(x, i="I0"):
     return B.to_check(x, i)
@@ -227,7 +250,7 @@ def t_live_reading():
 
 
 def main():
-    for t in (t_causes_table, t_doors, t_replay, t_positive_control, t_fail_guard, t_game_lane, t_live_reading):
+    for t in (t_causes_table, t_doors, t_cli_door, t_replay, t_positive_control, t_fail_guard, t_game_lane, t_live_reading):
         t()
     print("selftest_relentless_cause: %s" % ("PASS" if not FAILS else "FAIL (%d)" % len(FAILS)))
     return 1 if FAILS else 0
