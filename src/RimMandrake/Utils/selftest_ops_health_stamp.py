@@ -125,6 +125,22 @@ OW.run_alarms(hp, dict(shipped, targets=tg, ranges={}), NOW + 900, set(), lambda
 ok("alarm: usable rules file nothing", not filed, filed)
 mark = H.ledger_mark(ev)
 ok("publish_health stamps the ledger watermark of ctx events", mark == {"events": 1, "last_ts": "2026-11-05T04:52:00Z", "last_tsn": 11})
+# through OW.publish_health itself (blind check GAP:DIFF): ctx events must reach health.json inputs.ledger. The replay is
+# faked so the case needs no real ledger model; the stamp is what is under test, not the world.
+_seen, _pc = [], sys.modules.get("pulse_core")
+sys.modules["pulse_core"] = types.SimpleNamespace(_model=lambda: types.SimpleNamespace(replay=lambda e: _seen.append(e)))
+try:
+    (D / "ow" / "health.json").unlink(missing_ok=True)
+    hp = OW.publish_health(PTS, {}, {"events": ev}, shipped, NOW)
+    hj = json.loads((D / "ow" / "health.json").read_text())
+finally:
+    if _pc is None:
+        sys.modules.pop("pulse_core", None)
+    else:
+        sys.modules["pulse_core"] = _pc
+ok("publish_health: ctx events replayed and their watermark lands in health.json inputs.ledger",
+   _seen == [ev] and hp["health.state"]["m"] == "MEASURED" and hj["inputs"]["ledger"] == mark == H.ledger_mark(ev),
+   (hp.get("health.state"), hj.get("inputs")))
 
 print("selftest_ops_health_stamp: " + ("PASS" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS))))
 sys.exit(1 if FAILS else 0)
