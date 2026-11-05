@@ -2102,6 +2102,9 @@ class Effects(relentless_game.GameFx):
                 cur = self.store.load(st["item"])
                 cur.pop("bundle", None)
                 self.store.save(cur)
+        # a worker must push to origin: a reused help-* consult clone kept pushurl=read-only-consult (help_checkout) and
+        # its ./publish died (CLONE_REUSE_FIX_CONSULT_PUSHURL_LINGERS); scratch_clone.pool_reuse clears it, this whatever path
+        self.git(c, "config", "--unset-all", "remote.origin.pushurl")
         self.store._write(os.path.join(c, ".git", "relentless.json"),     # atomic: the pre-push hook may be reading
                           json.dumps({"item": st["item"], "gen": st["gen"]}))
         return None

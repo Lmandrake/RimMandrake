@@ -2540,6 +2540,34 @@ def t_prepare_remakes_clone():
         shutil.rmtree(d, ignore_errors=True)
 
 
+def t_prepare_clears_consult_pushurl():
+    """CLONE_REUSE_FIX_CONSULT_PUSHURL_LINGERS: a worker's clone that kept a consult's read-only pushurl pushes to origin."""
+    d = tempfile.mkdtemp(prefix="rl-push-")
+    try:
+        fx = object.__new__(R.Effects)
+        fx.base, fx.books, fx.store = d, os.path.join(d, "books"), R.Store(os.path.join(d, "store"))
+        c = os.path.join(d, "clones", "I1")
+        subprocess.run(["git", "init", "-q", c], check=True)
+        for p in R.CLONE_PROBE:
+            if p != ".git":
+                os.makedirs(os.path.dirname(os.path.join(c, p)), exist_ok=True)
+                open(os.path.join(c, p), "a").close()
+        subprocess.run(["git", "-C", c, "remote", "add", "origin", "git@example.invalid:x.git"], check=True)
+        subprocess.run(["git", "-C", c, "remote", "set-url", "--push", "origin", "read-only-consult"], check=True)
+        st = R.new_state("I1", 0, "t")
+        st["clone"] = c
+        fx.store.save(st)
+        why = fx.prepare(dict(st))
+        pu = subprocess.run(["git", "-C", c, "config", "--get-all", "remote.origin.pushurl"], capture_output=True,
+                            text=True).stdout.strip()
+        url = subprocess.run(["git", "-C", c, "remote", "get-url", "--push", "origin"], capture_output=True,
+                             text=True).stdout.strip()
+        ok(why is None and pu == "" and url == "git@example.invalid:x.git",
+           "prepare clears a consult's gag, the fetch url stays: why=%r pushurl=%r push=%r" % (why, pu, url))
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
 def t_close_idempotent():
     """A close that already landed writes nothing more (the 2026-11-02 doubled closes were union-merge copies)."""
     fx = object.__new__(R.Effects)
@@ -4625,7 +4653,7 @@ def main():
     # the real launcher's TMPDIR, kept off the real root: a dir left there made the next run's t_breaker_di2 read "still in use"
     os.environ["RM_RUN_TMP_ROOT"] = tempfile.mkdtemp(prefix="rlruntmp-")
     atexit.register(shutil.rmtree, os.environ["RM_RUN_TMP_ROOT"], ignore_errors=True)
-    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_gate_refused_items_hold_no_line_place, t_incident_line_fills_every_place, t_staffed_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_reopened_done_reenrols, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb, t_foreign_retired,
+    for t in (t_contract_wall_redesigns_at_once, t_live_ending_is_diagnosed_first, t_refused_start_is_held, t_refused_start_reason_reaches_hold, t_hold_routing, t_hold_routing_real_ledger, t_hold_lift_needs, t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_parked_items_hold_no_place, t_line_full_of_one_mod_still_leases_another, t_waiting_items_hold_no_line_place, t_parked_system_items_hold_no_sys_room, t_plain_queued_items_hold_their_places, t_consulting_item_holds_no_line_place, t_refused_start_holds_no_line_place, t_gate_refused_items_hold_no_line_place, t_incident_line_fills_every_place, t_staffed_incident_line_fills_every_place, t_enrol_reads_store_once_per_line, t_enrol_skips_taken_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_review_wrong_verdicts_two, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_put_down_frees_places, t_prepare_remakes_clone, t_prepare_clears_consult_pushurl, t_close_idempotent, t_pool_real_git, t_put_down_real_commit_end_to_end, t_put_down_every_shape, t_books_frozen, t_flush_lands_prose_moves, t_reopened_done_reenrols, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb, t_foreign_retired,
               t_foreign_eligible, t_parked_list, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_breaker_forgets_when_proved, t_one_sha_checkout_charges_no_launcher, t_tick_budget_reaches_lease, t_level_books_leaves_run_output, t_level_books_shard_under_lock, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
