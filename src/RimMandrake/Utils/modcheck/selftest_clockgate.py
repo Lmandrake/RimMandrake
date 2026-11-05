@@ -265,6 +265,27 @@ def test_verify_pause():
     ok(raises(cg.PauseUnverified,
               lambda: cg.ensure_paused(s, tries=2, sleep=lambda x: None)),
        "ensure_paused raises PauseUnverified when pause never takes")
+    # HARNESS_REPAIR_CAUSE_E0B6DA41: a dead game's PauseUnverified names the bridge timeout behind it
+    dead = FakeClockSession(500, paused=True)
+
+    def timing_out(tool, **p):
+        raise RuntimeError("RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long "
+                           "event or the call may be frame-bound")
+    dead.call = timing_out
+    try:
+        cg.ensure_paused(dead, tries=2, sleep=lambda x: None)
+        msg = None
+    except cg.PauseUnverified as e:
+        msg = str(e)
+    ok(msg is not None and "timed out after 30.0s waiting for the bridge" in msg,
+       "PauseUnverified on a game that stopped answering names the bridge timeout (got %r)" % (msg,))
+    try:
+        cg.ensure_paused(s, tries=2, sleep=lambda x: None)
+        msg = None
+    except cg.PauseUnverified as e:
+        msg = str(e)
+    ok(msg is not None and "paused flag is False" in msg and "timed out" not in msg,
+       "PauseUnverified on a live game that will not pause says so, no timeout text (got %r)" % (msg,))
 
 
 def test_supervisor():

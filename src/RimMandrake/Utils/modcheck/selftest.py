@@ -1008,6 +1008,26 @@ def t_hold_bridge_timeout_reprobes_the_game():
         check("hold: only a bridge timeout re-probes (the regex)",
               runner.BRIDGE_TIMEOUT.search(str(timeout)) and runner.BRIDGE_TIMEOUT.search("DeadlineError: x")
               and not runner.BRIDGE_TIMEOUT.search("PauseUnverified: could not verify the game is paused"))
+        # HARNESS_REPAIR_CAUSE_E0B6DA41 (testq J20261104T053450Z-f699f6.a1): the hold raised PauseUnverified, not the
+        # timeout itself; the REAL ensure_paused against a game that stopped answering must still re-probe the canary.
+        import clockgate as CG
+
+        def pausing_kill(session, expected_ids=()):
+            calls.append("hold")
+            CG.ensure_paused(_Dead(), tries=1, sleep=lambda s: None)
+
+        class _Dead(object):
+            def call(self, tool, **p):
+                raise timeout
+        H.kill_hostiles = pausing_kill
+        del calls[:]
+        probe["ok"] = False
+        r = runner.run_suite(make_suite(), _fake_session(), hold_site=True, anchor=(10, 10))
+        rows = [(c["name"], c["verdict"], c.get("detail") or "") for ch in r["chains"] for c in ch["components"]]
+        check("hold: a PauseUnverified hiding a bridge timeout re-probes the game; a dead game is canary-red rows",
+              calls == ["hold", "canary"] and len(rows) == 3
+              and all(n == V.CANARY_ROW and v == UNMEASURED and "stopped answering the bridge" in d
+                      for n, v, d in rows), (calls, rows))
     finally:
         (H.SettingsTransaction, H.kill_hostiles, V.canary, runner.load_fixtures, runner.save_fixtures) = real
 

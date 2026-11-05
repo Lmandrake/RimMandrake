@@ -546,15 +546,19 @@ def step(session, gate, n, chunk=600, pause_first=True, on_chunk=None,
 
 
 # -------------------------------------------------------------------- pause
-def verify_pause(session, samples=3, gap_s=0.15, sleep=time.sleep):
+def verify_pause(session, samples=3, gap_s=0.15, sleep=time.sleep, why=None):
     """True only if paused flag is true AND ticksGame is identical across
     `samples` reads separated by real wall-clock gaps. Two equal reads
-    back-to-back are not proof (plan section 10 / GPT review)."""
+    back-to-back are not proof (plan section 10 / GPT review).
+    `why` (a list), when given, gets one line saying why a False was False."""
+    note = why.append if why is not None else (lambda _m: None)
     try:
         clock = read_clock(session)
-    except ClockLost:
+    except ClockLost as e:
+        note("clock unreadable: %s" % e)
         return False
     if _field(clock, "paused") is not True:
+        note("paused flag is %r" % (_field(clock, "paused"),))
         return False
     # MEASURED 2026-10-01: while paused the bridge still reports curTimeSpeed "Normal";
     # the `paused` flag is the truth, so the speed string is never consulted.
@@ -562,25 +566,32 @@ def verify_pause(session, samples=3, gap_s=0.15, sleep=time.sleep):
     for _ in range(max(1, int(samples) - 1)):
         sleep(gap_s)
         try:
-            if read_ticks(session) != first:
-                return False
-        except ClockLost:
+            now = read_ticks(session)
+        except ClockLost as e:
+            note("clock unreadable: %s" % e)
+            return False
+        if now != first:
+            note("ticksGame moved %d -> %d while flagged paused" % (first, now))
             return False
     return True
 
 
 def ensure_paused(session, tries=3, samples=3, gap_s=0.15, sleep=time.sleep):
+    """HARNESS_REPAIR_CAUSE_E0B6DA41 (testq J20261104T053450Z-f699f6.a1): the game stopped answering (the chain before
+    timed out on the bridge), the next site hold raised a bare PauseUnverified, and runner.BRIDGE_TIMEOUT could not see
+    the timeout behind it, so the canary was never re-asked. The exception now names the last underlying failure."""
+    why = []
     for _ in range(max(1, tries)):
-        if verify_pause(session, samples, gap_s, sleep):
+        if verify_pause(session, samples, gap_s, sleep, why=why):
             return True
         try:
             session.call("rimworld/pause_game", pause=True)
-        except Exception:
-            pass
-    if verify_pause(session, samples, gap_s, sleep):
+        except Exception as e:  # noqa: BLE001 - recorded, then re-verified
+            why.append("pause_game raised %s: %s" % (type(e).__name__, e))
+    if verify_pause(session, samples, gap_s, sleep, why=why):
         return True
     raise PauseUnverified("could not verify the game is paused after %d "
-                          "attempts" % tries)
+                          "attempts; last: %s" % (tries, (why[-1] if why else "no reason recorded")[:300]))
 
 
 # --------------------------------------------------------------- supervisor
