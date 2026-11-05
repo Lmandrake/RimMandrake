@@ -314,11 +314,40 @@ namespace RimMandrake.FlowWorks.SelfTest
 				{
 					Pulse(s, w, p, rep);
 					foreach (var (c, stand) in rep.CropDrowning) if (!killedAt.ContainsKey(c)) killedAt[c] = s.Pulse; // first report
-					foreach (var (c, dl) in rep.Soaked) if (c == film) filmSoak += dl;
+					foreach (var (c, dl, _) in rep.Soaked) if (c == film) filmSoak += dl;
 				}
 				Assert(killedAt.Count == 9, "every yard cell under standing overflow kills its crop after a week, got " + killedAt.Count);
 				foreach (var kv in killedAt) Assert(kv.Value == p.CropKillPulses, $"cell {kv.Key} killed at pulse {kv.Value}, not {p.CropKillPulses}");
 				Assert(!killedAt.ContainsKey(film) && filmSoak == 150, $"the film irrigates (soaked {filmSoak}) and never kills");
+				Assert(s.LedgerCloses, "ledger");
+			});
+
+			// D3 (FA_core_sim_4.3): soak is reported WITH the liquid that soaked. Fuel spreading onto dry ground soaks in there the
+			// same pulse; the engine must see that soak as fuel (it irrigates nothing), not as an unlisted square it took for water.
+			Case("Sheet_soak_reports_its_liquid_so_fuel_spreading_onto_dry_ground_never_irrigates", () =>
+			{
+				var w = new World(12, 12);
+				for (int c = 0; c < 144; c++) w.SoakMilliDl[c] = 1000;
+				w.Fluids[Chemfuel] = new FluidRule { InfiltrationPermille = 1000, EvaporationPermille = 0 };
+				var p = new Params();
+				var s = new State(12, 12, 9u);
+				ResolveSpills(s, w, p, new[] { Offer(20000, Chemfuel, Source.Pump, Idx(w, 6, 6)) });
+				var before = new HashSet<int>(s.Occ);
+				var rep = new PulseReport();
+				int fresh = 0, notFuel = 0;
+				for (int i = 0; i < 6; i++)
+				{
+					rep.Clear();
+					Pulse(s, w, p, rep);
+					foreach (var (c, dl, f) in rep.Soaked)
+					{
+						if (f != Chemfuel) notFuel++;
+						if (!before.Contains(c)) fresh++;
+					}
+					before = new HashSet<int>(s.Occ);
+				}
+				Assert(fresh > 0, "the case must exercise fuel soaking into a square it spread onto that same pulse (fresh " + fresh + ")");
+				Assert(notFuel == 0, notFuel + " soak entries do not carry the chemfuel that soaked");
 				Assert(s.LedgerCloses, "ledger");
 			});
 

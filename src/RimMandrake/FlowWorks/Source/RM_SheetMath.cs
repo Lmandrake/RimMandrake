@@ -99,7 +99,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Disclosed per-pulse effects for the engine to apply (Stage 2): irrigation and crop deaths.</summary>
 		public sealed class PulseReport
 		{
-			public readonly List<(int cell, int dl)> Soaked = new List<(int, int)>();
+			/// <summary>D3: what soaked in this pulse, per cell, WITH the liquid that soaked (FA_core_sim_4.3): a square a
+			/// non-water liquid spread onto during this same pulse is told apart from water without a pre-pulse snapshot.</summary>
+			public readonly List<(int cell, int dl, byte fluid)> Soaked = new List<(int, int, byte)>();
 			/// <summary>D3: cells whose standing-overflow counter is at CropKillPulses or past it, reported EVERY pulse
 			/// with the counter (saturated). The engine kills a crop there only once ITS OWN exposure,
 			/// <see cref="CropDrowns"/>, reaches the delay: a crop replanted under a standing sheet still gets its full
@@ -606,7 +608,7 @@ namespace RimMandrake.FlowWorks
 					long acc = s.SoakRem[c] + soakRate;
 					int take = (int)Math.Min(acc / 1000, s.Dl[c]);
 					s.SoakRem[c] = (int)(acc % 1000);
-					if (take > 0) { s.Dl[c] -= take; s.Soaked += take; rep?.Soaked.Add((c, take)); }
+					if (take > 0) { s.Dl[c] -= take; s.Soaked += take; rep?.Soaked.Add((c, take, s.Fluid[c])); }
 				}
 				if (evapRate > 0)
 				{

@@ -710,7 +710,6 @@ namespace RimMandrake.FlowWorks.Sheet
 			Ensure();
 			RefreshAround();
 			HandOverTakenCells();
-			NoteNonWater();
 			proofLastPulseTick = Find.TickManager.TicksGame;
 			proofPulseOutdoorTick = outdoorTick; // the outdoor reading this pulse's classification used (OutdoorExactC cache)
 			proofPulseOutdoorC = outdoorC;
@@ -806,9 +805,12 @@ namespace RimMandrake.FlowWorks.Sheet
 			if (RM_SheetSettings.irrigateEnabled && rep.Soaked.Count > 0 && SoakApi != null)
 			{
 				soakCells.Clear();
-				foreach (var (k, _) in rep.Soaked)
+				// the liquid the kernel reports for each soak, not a snapshot taken before the pulse: fuel or poison that
+				// spread onto a dry square and soaked in during this same pulse waters nothing (FA_core_sim_4.3)
+				int water = fluids.IndexOf(Water) + 1; // 0 when water never spilled here: every soak is another liquid
+				foreach (var (k, _, f) in rep.Soaked)
 				{
-					if (!nonWater.Contains(k))
+					if (f == water)
 					{
 						soakCells.Add(map.cellIndices.IndexToCell(k));
 					}
@@ -1119,22 +1121,6 @@ namespace RimMandrake.FlowWorks.Sheet
 		public FluidDef FluidAt(IntVec3 c) => state == null || !c.InBounds(map) ? null : FluidOf(state.Fluid[map.cellIndices.CellToIndex(c)]);
 
 		public static bool Burnable(FluidDef f) => f != null && f.fireKind != RM_FluidFireKind.None;
-
-		/// <summary>Squares holding a liquid other than water before this pulse (what they soak in irrigates nothing).</summary>
-		private readonly HashSet<int> nonWater = new HashSet<int>();
-
-		private void NoteNonWater()
-		{
-			nonWater.Clear();
-			int w = fluids.IndexOf(Water) + 1; // 0 when water never spilled here: every wet square is another liquid
-			foreach (int k in state.Occ)
-			{
-				if (state.Fluid[k] != w)
-				{
-					nonWater.Add(k);
-				}
-			}
-		}
 
 		/// <summary>The mouseover line for a wet undug square: "Spilled water 1.2 cm (24 L)", or "… frozen".</summary>
 		public static string ReadoutAt(Map map, IntVec3 c)
