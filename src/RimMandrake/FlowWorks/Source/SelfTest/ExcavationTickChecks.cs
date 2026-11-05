@@ -1230,7 +1230,38 @@ namespace RimMandrake.FlowWorks.SelfTest
                     aw.BodyAt(a);
                     aw.BodyAt(b, 1f, true);
                     aw.disabledFluid = ArrayWorld.Water;
-                    for (int p = 0; p < 4; p++) aw.Pulse(new List<int> { c });
+                    for (int p = 0; p < 4; p++)
+                    {
+                        aw.Pulse(new List<int> { c });
+                        // EXACT_SOURCE_PICK_VERIFY_DISABLED_FIRST: the tar's credit and the square's gain balance to the dL.
+                        Assert(aw.k.worstImbalance == 0, $"pulse {p}: ledger {string.Join("; ", aw.k.imbalanceReports)}");
+                    }
+                    Assert(aw.k.WaterOf(c) > 0 && ReferenceEquals(aw.cellFluid[c], ArrayWorld.Tar),
+                        $"water {(waterNorth ? "north" : "east")}: the square holds {aw.k.WaterOf(c)} dL of {(aw.cellFluid[c] as Fluid)?.name}");
+                }
+            });
+            Case("CsReview_exact_dry_square_skips_an_unclaimable_source", () =>
+            {
+                // EXACT_SOURCE_PICK_VERIFY_DISABLED_FIRST (GPT review 2 of EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES): the same
+                // square, the water source now enabled but its liquid one the square cannot claim (CanClaim false). Was: the
+                // first source's `continue` left the square dry and never tried the tar. The tar fills it from either side,
+                // and the ledger balances every pulse.
+                foreach (bool waterNorth in new[] { true, false })
+                {
+                    var aw = new ArrayWorld(3, 3);
+                    aw.k.levelExactEnabled = true; aw.k.levelBySurfaceEnabled = true;
+                    int c = 4, a = waterNorth ? 7 : 5, b = waterNorth ? 5 : 7;
+                    aw.k.depth[c] = 1;
+                    aw.natural[a] = true; aw.terrainFluid[a] = ArrayWorld.Water;
+                    aw.natural[b] = true; aw.terrainFluid[b] = ArrayWorld.Tar;
+                    aw.BodyAt(a);
+                    aw.BodyAt(b, 1f, true);
+                    aw.canClaim = f => f != ArrayWorld.Water;
+                    for (int p = 0; p < 4; p++)
+                    {
+                        aw.Pulse(new List<int> { c });
+                        Assert(aw.k.worstImbalance == 0, $"pulse {p}: ledger {string.Join("; ", aw.k.imbalanceReports)}");
+                    }
                     Assert(aw.k.WaterOf(c) > 0 && ReferenceEquals(aw.cellFluid[c], ArrayWorld.Tar),
                         $"water {(waterNorth ? "north" : "east")}: the square holds {aw.k.WaterOf(c)} dL of {(aw.cellFluid[c] as Fluid)?.name}");
                 }
