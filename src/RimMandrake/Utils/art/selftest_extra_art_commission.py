@@ -13,8 +13,8 @@ receipt line must stand on it verbatim; unreachable, that cross-check prints UNM
    dimorphism, a female pack row exactly when it is a female pack beast; every YOUNG row meets the guideline rule
  4 mutant probes: owed() gives no herd look to a solitary-canon, a group-of-one or an already-varied creature; check()
    goes red on a dropped table row, a state biome missing a job id, and a job id absent from the queue
- 5 the eligibility gate counts a commissioned slot as drawn by its def (NONE), and still refuses a path the table does
-   not name
+ 5 the eligibility gate counts a commissioned slot as drawn by its def (NONE while unmade, REFUSED_REGEN once a render
+   of ours is bound or installed), and still refuses a path the table does not name
 
     python3 src/RimMandrake/Utils/art/selftest_extra_art_commission.py
 """
@@ -130,10 +130,24 @@ except rmpaths.RmDataRootUnset:                 # a checker with no data root: t
 import regen_eligibility as RE  # noqa: E402
 
 gate = RE.Gate()
-r0 = next(r for r in table if r["facings"])
-dest = f"src/{r0['install_mod']}/Textures/{r0['tex_path']}_east.png"
+
+
+def _dest(r):
+    return f"src/{r['install_mod']}/Textures/{r['tex_path']}_east.png"
+
+
+def _ours(r):
+    """The slot already holds art of ours: installed in the repo, or a finished render bound to this def+path."""
+    tp = RE.key(r["tex_path"])
+    return (E.REPO / _dest(r)).is_file() or any(t in (tp, RE.key(r["tex_path"] + "_east"))
+                                                for t, _ in gate.bound_subject.get(r["race"].lower(), ()))
+
+
+faced = [r for r in table if r["facings"]]
+r0 = next((r for r in faced if not _ours(r)), faced[0])   # probe the NONE branch while any slot is still unmade
+dest = _dest(r0)
 v = gate.classify({"id": "probe", "target_def": r0["race"], "install_to": dest})
-want_v = "REFUSED_REGEN" if (E.REPO / dest).is_file() else "NONE"     # NONE before its art lands, ours after
+want_v = "REFUSED_REGEN" if _ours(r0) else "NONE"     # NONE before its art is made, ours once rendered or installed
 expect(v["verdict"] == want_v, f"gate misreads the commissioned slot {dest}: {v['verdict']} (want {want_v}) {v['reason'][:120]}")
 v2 = gate.classify({"id": "probe2", "target_def": r0["race"], "install_to": dest.replace(r0["tex_path"], r0["tex_path"] + "Bogus")})
 expect(v2["verdict"] not in RE.ELIGIBLE, f"gate accepts an uncommissioned path: {v2['verdict']}")
@@ -143,5 +157,6 @@ if fails:
     for f in fails[:40]:
         print("  -", f)
     sys.exit(1)
+print(f"gate probe: {r0['race']} -> {v['verdict']}")
 print(f"OK selftest_extra_art_commission: {len(table)} looks over {len({r['biome'] for r in table})} biomes, "
       f"{len(herd_races)} herd creatures covered, commissioned {sorted(state['biomes'])}")

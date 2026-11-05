@@ -1,0 +1,1 @@
+A selftest expecting a 'not yet made' verdict on a live pipeline slot goes red the day the pipeline makes it: pick the probe slot by state (first unmade), and count a bound-but-uninstalled render as made (selftest_extra_art_commission, SELFTEST_FIX_EXTRA_ART_COMMISSION_UBZM).
