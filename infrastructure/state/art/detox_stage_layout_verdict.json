@@ -1,0 +1,29 @@
+{
+  "item": "DETOX_WORKS_REDRAW_SAME_PLANT_EACH_STAGE",
+  "judge": "GPT via gpt_consult.py --lockdown (naive: did not make the images; job consult-20261105-062851-1316295)",
+  "date": "2026-11-05",
+  "master": {
+    "RM_DetoxWorks_Repaired": "2f136f92a8010edc1686690cca14d86b38482eda72eb0bb6152988693ba4ed75"
+  },
+  "candidates": {
+    "RM_DetoxWorks_Kludged": "e48709c2b1f2613dbf653c8b6808750e5517a77989a45c52e25c84d21a7468ab",
+    "RM_DetoxWorks_Wrecked": "dbadaa7fdec64cad562895c76e7b6afb947031d40dbf26178deaf1bc6aeca8c0"
+  },
+  "requirement": "Kludged, Repaired and Wrecked share one silhouette and tank layout; only condition (rust, patches, breakage) changes.",
+  "stages": {
+    "RM_DetoxWorks_Kludged": {
+      "verdict": "PASS",
+      "same_tank_layout": true,
+      "same_silhouette": true,
+      "condition_only": true,
+      "notes": "Matches the reference camera, footprint, two left tanks, central vessels, and right filter beds. Rust, bolted patches, and pipe repairs clearly convey patched but working. Readable at game scale; no visible background box or text."
+    },
+    "RM_DetoxWorks_Wrecked": {
+      "verdict": "PASS",
+      "same_tank_layout": true,
+      "same_silhouette": true,
+      "condition_only": true,
+      "notes": "Preserves the reference layout and recognizable silhouette despite localized collapse and breakage. Dry cracked tanks, broken pipes, damaged vessels, and vegetation clearly convey ruin. Camera matches; no visible background box or text."
+    }
+  }
+}
