@@ -713,3 +713,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T16:55:11Z","tsn":1793897711778441326}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-05T16:56:46Z","tsn":1793897806189551902}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1 (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T17:16:50Z","tsn":1793899010077605503}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:29:10Z","tsn":1793899750450025939}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T17:30:10Z","tsn":1793899810156375753}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:30:19Z","tsn":1793899819780461183}
