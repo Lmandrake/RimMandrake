@@ -207,7 +207,9 @@ console.log(JSON.stringify(o));
 def hotkey_tests():
     """The template's number hotkeys (and shift-number group bulk) call setDecision with ANY letter of the sheet, not only
     this row's: the COMMON_JS wrapper must refuse a letter that is not a usable set of the primary slot, or it is written
-    as that slot's pick and enact installs another lane's bytes at the primary texture (ART_SHEET_LANE_LETTERS_FIX_UNREVIEWED)."""
+    as that slot's pick and enact installs another lane's bytes at the primary texture (ART_SHEET_LANE_LETTERS_FIX_UNREVIEWED).
+    This unit test calls window.setDecision directly; selftest_sheet_hotkey_keydown.py drives the template's REAL keydown
+    and shift-digit bulk, so a template change that stops the wrapper installing cannot pass silently."""
     import sheet_js_harness as H
     if not H.node():
         check(False, "node is needed (UNMEASURED)")
