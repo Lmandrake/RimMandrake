@@ -2,7 +2,7 @@
 //   gen  --scenario NAME --out FILE                         write one generated trace
 //   run  (--scenario NAME|all | --trace FILE) --out DIR      replay, report, gate (exit 0 = every gate green)
 //        [--inject FAULT[,FAULT]] [--baseline FILE] [--write-baseline FILE] [--no-oracle] [--bar-ms 0.05]
-// Gates: conserve, noflow, patch, comps, determinism, alloc, ceiling, trace (see ReplayTick.Fault). A gate with nothing to check
+// Gates: conserve, noflow, patch, comps, determinism, alloc, ceiling, trace, replanquota (see ReplayTick.Fault). A gate with nothing to check
 // reads skip, never green. Time is reported, never gated.
 using System;
 using System.Collections.Generic;
@@ -81,6 +81,8 @@ namespace RimMandrake.FlowWorks.Replay
                     ["patch"] = !oracle ? "skip (--no-oracle)" : r1.PatchChecks > 0 ? null : "skip (0 patch checks)",
                     ["comps"] = !oracle ? "skip (--no-oracle)" : r1.CompChecks > 0 ? null : "skip (0 component checks)",
                     ["stale"] = !oracle ? "skip (--no-oracle)" : r1.StaleChecks > 0 ? null : "skip (0 skipped corridors)",
+                    // HOSE_RECHECK_TAME_REPLAN_OFF_TICK: no tick runs more CheckReplans than the shared per-tick quota
+                    ["replanquota"] = r1.C.WorkSum(Work.CheckReplans) > 0 ? null : "skip (0 replans)",
                 };
                 foreach (var kv in seen)
                     gates[kv.Key] = r1.GateFails.TryGetValue(kv.Key, out int n) ? "RED x" + n : kv.Value ?? "green";

@@ -67,6 +67,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// synchronous lay), so a background lay started before it is dropped when it lands, never applied
         /// (HoseLayQueue step 6, HOSE_LAY_FIX_STALE_EPOCH).</summary>
         public int layEpoch;
+        /// <summary>Runtime only (HOSE_RECHECK_TAME_REPLAN_OFF_TICK): the corridor recheck found the hose's corridor moved and its
+        /// replan (HoseReplanQueue) has not answered yet. Pending is never "no route": the hose stays laid, and carries no
+        /// liquid (RM_HoseLinks.Live) until the answer lands. Not saved: a loaded game rechecks on its own schedule.</summary>
+        public bool replanPending;
         public ulong corridorHash;
         /// <summary>Runtime only (HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN): the corridor version when the live corridor hash last
         /// equalled corridorHash; 0 = never (the next recheck hashes). Reset by every lay.</summary>

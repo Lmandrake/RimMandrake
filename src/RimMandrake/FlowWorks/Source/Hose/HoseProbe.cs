@@ -210,6 +210,7 @@ namespace RimMandrake.FlowWorks.Hose
               .Append(",\"worldBuilds\":").Append(RM_MapComponent_Hoses.WorldBuilds).Append(",\"liveCorridorChecks\":").Append(RM_MapComponent_Hoses.LiveCorridorChecks)
               .Append(",\"lastLayMs\":").Append(RM_MapComponent_Hoses.LastLayMs)
               .Append(",\"layQueue\":").Append(comp.LayQueueJson())   // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW
+              .Append(",\"replanQueue\":").Append(comp.ReplanQueueJson())   // HOSE_RECHECK_TAME_REPLAN_OFF_TICK
               .Append(",\"layerCache\":").Append(comp.LayerCacheJson())   // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP
               .Append(",\"crossIndex\":").Append(comp.CrossIndexJson())   // HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC
               .Append(",\"mateEnds\":").Append(comp.MateEndJson())   // HOSE_DRAW_FIX_STALLS_WHILE_WORKER_LAYS / HOSE_RELAY_FIX_BUDGET_STARVES_LATE_REELS

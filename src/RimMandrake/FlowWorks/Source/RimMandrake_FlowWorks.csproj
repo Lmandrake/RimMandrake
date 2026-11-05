@@ -98,6 +98,7 @@
     <Compile Include="Hose\HoseMateCache.cs" />
     <Compile Include="Hose\HoseMateEndQueue.cs" />
     <Compile Include="Hose\HoseLayQueue.cs" />
+    <Compile Include="Hose\HoseReplanQueue.cs" />
     <Compile Include="Hose\HoseFrameMemo.cs" />
     <Compile Include="Hose\HoseCurveMetrics.cs" />
     <Compile Include="Hose\HoseClothoid.cs" />

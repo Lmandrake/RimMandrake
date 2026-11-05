@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseMateCache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseMateEndQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseLayQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseReplanQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseFrameMemo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseCurveMetrics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\Hose\HoseClothoid.cs" />

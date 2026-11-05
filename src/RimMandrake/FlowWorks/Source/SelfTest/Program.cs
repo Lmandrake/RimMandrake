@@ -176,6 +176,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 HoseMateCacheChecks.Run(Case);
                 HoseMateEndQueueChecks.Run(Case);
                 HoseLayQueueChecks.Run(Case);
+                HoseReplanChecks.Run(Case);
                 HoseFrameMemoChecks.Run(Case);
                 HoseAllocChecks.Run(Case);
                 HoseLayerChecks.Run(Case);
@@ -2241,6 +2242,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseLayerChecks.Run(Case);         // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: cached broad-phase layering (HoseLayerChecks.cs)
             HoseCrossShadowChecks.Run(Case);   // HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC: indexed crossing shadows (HoseCrossShadowChecks.cs)
             HoseLayQueueChecks.Run(Case);      // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: draw/tick lays off the frame, budgeted (HoseLayQueueChecks.cs)
+            HoseReplanChecks.Run(Case);        // HOSE_RECHECK_TAME_REPLAN_OFF_TICK: the corridor replan off the tick, shared quota (HoseReplanChecks.cs)
             HoseMateCacheChecks.Run(Case);     // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: pair solves keyed on inputs, budgeted, off the frame (HoseMateCacheChecks.cs)
             HoseMateEndQueueChecks.Run(Case);  // live round 8: mate-end re-shape off the frame, rotating draw start, lay world reuse (HoseMateEndQueueChecks.cs)
             HoseSpliceChecks.Run(Case);        // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: G2 joiner (position, angle, curvature at both ends, |k| <= 1/MinBendRadius); two hose ends mate face to face (HoseSpliceChecks.cs)

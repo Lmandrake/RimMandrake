@@ -118,6 +118,7 @@
     <Compile Include="HoseMateCacheChecks.cs" />
     <Compile Include="HoseMateEndQueueChecks.cs" />
     <Compile Include="HoseLayQueueChecks.cs" />
+    <Compile Include="HoseReplanChecks.cs" />
     <Compile Include="HoseAllocChecks.cs" />
     <Compile Include="HoseLayerChecks.cs" />
     <Compile Include="HoseCrossShadowChecks.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="..\Hose\HoseMateCache.cs" />
     <Compile Include="..\Hose\HoseMateEndQueue.cs" />
     <Compile Include="..\Hose\HoseLayQueue.cs" />
+    <Compile Include="..\Hose\HoseReplanQueue.cs" />
     <Compile Include="..\Hose\HoseFrameMemo.cs" />
     <Compile Include="..\Hose\HoseCurveMetrics.cs" />
     <Compile Include="..\Hose\HoseClothoid.cs" />

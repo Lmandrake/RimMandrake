@@ -189,10 +189,14 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string mc = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
                 // HOSE_TICK_FIX_SPIKES_AT_SUPERFAST: the 250-tick re-check is its own method (TickRecheck), called on the 250-tick gate
-                RiverSwitchFlipChecks.Has(mc, @"if \(\(now \+ r\.parent\.thingIDNumber\) % 250 == 0\) TickRecheck\(r, now\);", "the re-check runs every 250 ticks");
+                RiverSwitchFlipChecks.Has(mc, @"if \(r\.replanPending \|\| \(now \+ r\.parent\.thingIDNumber\) % 250 == 0\) TickRecheck\(r, now\);", "the re-check runs every 250 ticks");
                 RiverSwitchFlipChecks.Has(mc, @"bool cut = RM_HoseSettings\.enabled && r\.layKey != null[^;]*;\s*RecPart\(1\);\s*if \(cut\)", "the obstacle check runs only with hoses on");
-                int at = mc.IndexOf("r.Retract(why); Retracts++;", StringComparison.Ordinal), gate = mc.IndexOf("bool cut = RM_HoseSettings.enabled && r.layKey != null", StringComparison.Ordinal);
-                Assert(gate > 0 && at > gate, "the automatic retract sits inside the gated block");
+                // HOSE_RECHECK_TAME_REPLAN_OFF_TICK: the retract is applied by PollReplan (the replan's answer), which a cut inside
+                // the gated block starts, and which drops the replan unapplied when hoses are off
+                int at = mc.IndexOf("r.Retract(a.Why); Retracts++;", StringComparison.Ordinal), gate = mc.IndexOf("bool cut = RM_HoseSettings.enabled && r.layKey != null", StringComparison.Ordinal);
+                int poll = mc.IndexOf("private void PollReplan(", StringComparison.Ordinal);
+                Assert(gate > 0 && at > gate && poll > 0 && at > poll, "the automatic retract sits outside PollReplan");
+                RiverSwitchFlipChecks.Has(mc, @"private void PollReplan\(CompHoseReel r, int now\)\s*\{\s*if \(!RM_HoseSettings\.enabled\) \{ CancelReplan\(r\); return; \}", "a pending replan is applied with hoses off");
             });
 
             // HOSE_ORDERS_MEND_WAITING_FOREVER C7b-F2..F8.

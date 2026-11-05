@@ -289,7 +289,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Corridor(trench, lay) != h0, "the trench did not move the corridor hash");
                 Assert(HoseMath.CheckReplan(trench, Reel, far, Len, false, null) == "no route", "a hose cut off by the trench was left laid");
                 // production wiring: World() writes bands, the live per-cell read folds band + links, the tick's corridor branch
-                // is the one that re-plans (layKey cleared) or retracts (CheckReplan -> Retract)
+                // is the one that re-plans (layKey cleared) or retracts (CheckReplan -> Retract), the replan asked of HoseReplanQueue
+                // (HOSE_RECHECK_TAME_REPLAN_OFF_TICK: PrepareReplan runs it, PollReplan applies it)
                 string comp = Src("Hose", "RM_MapComponent_Hoses.cs");
                 Assert(Body(comp, "private CordWorld BuildWorld(").Contains("FillWorld(cw)") && Body(comp, "private void FillWorld(").Contains("RM_HoseBands.Apply(map, cw)"), "World() does not read depth");
                 // HOSE_TICK_REBUILD_ZERO_ALLOC: a patched cell reads depth by the same per-cell rule (ApplyCell)
@@ -298,7 +299,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(live.Contains("RM_HoseBands.BandAt(map, c)") && live.Contains("RM_HoseBands.LinkMask(map, c, band)"), "LiveCellSig ignores band or links");
                 Assert(comp.Contains("CordSig.Of(walkable, door, extra, band, linkMask)"), "SigOf is not the shared CordSig.Of formula");
                 string tick = Body(comp, "private void TickRecheckBody(");  // the 250-tick block (TickRecheck, its own profilable method since round 9, times it)
-                Assert(tick.Contains("(r.lay == null || CorridorMoved(r, now))") && Body(comp, "private bool CorridorMoved(").Contains("CorridorHashLive(r.lay) != r.corridorHash") && tick.Contains("HoseMath.CheckReplan(w, r.Rect") && tick.Contains("CordWorld w = LegacyFrame ? World() : World(LayWorldMaxAge);") && tick.Contains("r.Retract(why)"),
+                Assert(tick.Contains("(r.lay == null || CorridorMoved(r, now))") && Body(comp, "private bool CorridorMoved(").Contains("CorridorHashLive(r.lay) != r.corridorHash") && tick.Contains("PollReplan(r, now);") && Body(comp, "private HoseReplanQueue.Work PrepareReplan(").Contains("HoseMath.CheckReplan(w, rect") && tick.Contains("CordWorld w = LegacyFrame ? World() : World(LayWorldMaxAge);") && Body(comp, "private void PollReplan(").Contains("r.Retract(a.Why)"),
                     "the 250-tick corridor branch is not the re-plan-or-retract");
                 Assert(Body(Src("Hose", "CompHoseReel.cs"), "internal bool TrailWalkable(").Contains("w.StepAllowed(prev.Value, k)"),
                     "a walked trail over a newly dug square still reads walkable");

@@ -1082,10 +1082,11 @@ namespace RimMandrake.FlowWorks.Machinery
 			return v != null && at.TryGetValue(v, out List<RM_NetLink> l) ? l : None;
 		}
 
-		/// <summary>The eligibility predicate, re-run on a route's links at transfer time (FINAL §3.5).</summary>
+		/// <summary>The eligibility predicate, re-run on a route's links at transfer time (FINAL §3.5). A hose whose corridor moved
+		/// and whose replan has not answered (CompHoseReel.replanPending, HOSE_RECHECK_TAME_REPLAN_OFF_TICK) carries nothing.</summary>
 		public bool Live(RM_NetLink l)
 		{
-			return l?.Reel is CompHoseReel r && Eligible(r) && !Pits.RM_Drawbridges.HoseCut(r) && Spawned(l.A) && Spawned(l.B);
+			return l?.Reel is CompHoseReel r && Eligible(r) && !r.replanPending && !Pits.RM_Drawbridges.HoseCut(r) && Spawned(l.A) && Spawned(l.B);
 		}
 
 		private static bool Spawned(object v)

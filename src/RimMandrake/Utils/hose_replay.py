@@ -12,6 +12,7 @@ FlowWorks/Source/Replay/RimMandrakeFlowWorks.Replay.csproj, never copied) and ga
   alloc        a warm HoseWorldPatch.Patch allocates 0 bytes
   ceiling      no op count (sum or per-tick max) exceeds the committed baseline (Replay/baseline.txt)
   trace        the trace has ticks and every event in it was applied (none outside ticks 0..N-1 or phases 0..2)
+  replanquota  no tick runs more CheckReplans than HoseReplanQueue.MaxStartsPerTick (HOSE_RECHECK_TAME_REPLAN_OFF_TICK)
 A gate with nothing to check reads skip, never green (--no-oracle, no read event, no committed move, no warm patch).
 Time is reported (mean, p99, max, over-bar, worst ticks with their events), never gated.
 

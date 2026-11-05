@@ -141,7 +141,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>State read: hose port stubs drawn last frame, and stub meshes built since load.</summary>
         public int lastPortStubs, portStubBuilds;
 
-        public RM_MapComponent_Hoses(Map map) : base(map) { layQueue = new HoseLayQueue { Released = ReleaseLayWork }; }
+        public RM_MapComponent_Hoses(Map map) : base(map) { layQueue = new HoseLayQueue { Released = ReleaseLayWork }; replanQueue = new HoseReplanQueue { Released = ReleaseReplanWork }; }
 
         /// <summary>FINAL §3.9 fallback: without the save-skip patch this component would be written into saves by class
         /// name, so MapComponentUpdate takes it off the map on its first frame (not here: see below); MapComponentTick is
@@ -193,6 +193,8 @@ namespace RimMandrake.FlowWorks.Hose
             drawnFittings.Remove(r);
             ghosts.RemoveAll(g => g.reel == r);
             layQueue.Forget(r.parent.thingIDNumber);
+            replanQueue.Forget(r.parent.thingIDNumber);
+            r.replanPending = false;
             mateEnds.Forget(r.parent.thingIDNumber);
         }
 
@@ -1061,6 +1063,10 @@ namespace RimMandrake.FlowWorks.Hose
             r.layKey = key;
             r.corridorHash = r.lay != null ? CorridorHash(w, lay) : 0;
             r.corridorSeenAt = 0;   // the snapshot w may lag the live map: the next recheck hashes live
+            // HOSE_RECHECK_TAME_REPLAN_OFF_TICK (review): a lay landing while a replan is pending changes what that replan read
+            // (r.lay, lastLayReason: a replan started on a failed lay would reel in a hose that now lays), so the running
+            // replan is forgotten and the next poll starts one on the reel as it is now; the hose stays pending meanwhile
+            if (r.replanPending) replanQueue.Forget(r.parent.thingIDNumber);
             DropMeshes(r);
         }
 
@@ -1368,7 +1374,7 @@ namespace RimMandrake.FlowWorks.Hose
                         RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.Flowing(r.flowUntil, now)))
                     RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.DrainHeld(r, map, RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.DrainCell(r, map));
                 Phase(1);
-                if (!r.laid) continue;
+                if (!r.laid) { if (r.replanPending) CancelReplan(r); continue; }
                 bool sig = HoseFlow.Signal(r, now, out r.lastProvider);
                 Phase(2);
                 r.lastSignal = sig;
@@ -1385,7 +1391,8 @@ namespace RimMandrake.FlowWorks.Hose
                 // where): the 250-tick re-check is its own method, as are World()'s rebuild (BuildWorld) and the lay's world
                 // copy (TakeLayWorld), so a profile names them
                 Phase(3);
-                if ((now + r.parent.thingIDNumber) % 250 == 0) TickRecheck(r, now);
+                // HOSE_RECHECK_TAME_REPLAN_OFF_TICK: a pending replan asks its queue every tick until it answers
+                if (r.replanPending || (now + r.parent.thingIDNumber) % 250 == 0) TickRecheck(r, now);
             }
         }
 
@@ -1409,6 +1416,8 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>TickRecheck's work (TickRecheck times it for ProofTickSplit and books its heap growth to "recheck").</summary>
         private void TickRecheckBody(CompHoseReel r, int now)
         {
+            // HOSE_RECHECK_TAME_REPLAN_OFF_TICK: a replan already asked is only polled (the 250-tick work below waits for it)
+            if (r.replanPending) { PollReplan(r, now); return; }
             // an obstacle built or removed across the hose (checked every 250 ticks): HOSE_BLOCKED_REROUTE_RETRACT_1 --
             // re-route if a route within the hose's length remains, else wind it back onto the reel with an alert.
             // A failed lay is never left laid-but-invisible (no ghost hose).
@@ -1441,19 +1450,65 @@ namespace RimMandrake.FlowWorks.Hose
                     r.layEpoch++;
                     return;
                 }
-                string why = HoseMath.CheckReplan(w, r.Rect, new Cell(r.far.x, r.far.z), r.MaxLength, r.lay == null, r.lastLayReason);
-                RecPart(4);
-                if (why != null)
-                {
-                    // S4: the cut hose is seen winding back along where it lay (a drawn ghost, no state: the reel is
-                    // already Stored, as ruled), not vanishing in one frame
-                    if (r.lay != null && r.lay.Flat.Count >= 2)
-                        ghosts.Add(new Ghost { reel = r, pts = new List<V2>(r.lay.Flat), start = now, len = Geo.Length(r.lay.Flat) });
-                    r.Retract(why); Retracts++; RecPart(5); return;
-                }
-                r.layKey = null;
-                r.layEpoch++;   // a lay started on the world before the obstacle is dropped, not applied
+                // HOSE_RECHECK_TAME_REPLAN_OFF_TICK: the replan (CheckReplan: a bounded A*, then an unbounded one to name the
+                // reason) runs on the replan queue under the shared per-tick quota; until it answers the hose stays laid and
+                // carries nothing (pending is never "no route")
+                r.replanPending = true;
+                PollReplan(r, now);
             }
+        }
+
+        // ------------------------------------------------------------------ HOSE_RECHECK_TAME_REPLAN_OFF_TICK: replans off the tick
+        /// <summary>The corridor rechecks' replans (HoseReplanQueue); the quota they start under is shared by every map.</summary>
+        private readonly HoseReplanQueue replanQueue;
+
+        /// <summary>Probe: the replan queue's counters (HoseProbe census "replanQueue").</summary>
+        internal string ReplanQueueJson() => replanQueue.Json();
+
+        /// <summary>A pending replan asked again: still pending, or its answer applied (reel in on a reason, else re-lay).</summary>
+        private void PollReplan(CompHoseReel r, int now)
+        {
+            if (!RM_HoseSettings.enabled) { CancelReplan(r); return; }
+            World(LayWorldMaxAge);   // the serial now (a patch only when a map event came in)
+            HoseReplanQueue.Answer a = replanQueue.Ask(r.parent.thingIDNumber, r.layEpoch, worldSerial, now, () => PrepareReplan(r));
+            RecPart(4);
+            if (a.Pending) return;
+            r.replanPending = false;
+            if (a.Why != null)
+            {
+                // S4: the cut hose is seen winding back along where it lay (a drawn ghost, no state: the reel is
+                // already Stored, as ruled), not vanishing in one frame
+                if (r.lay != null && r.lay.Flat.Count >= 2)
+                    ghosts.Add(new Ghost { reel = r, pts = new List<V2>(r.lay.Flat), start = now, len = Geo.Length(r.lay.Flat) });
+                r.Retract(a.Why); Retracts++; RecPart(5); return;
+            }
+            r.layKey = null;
+            r.layEpoch++;   // a lay started on the world before the obstacle is dropped, not applied
+        }
+
+        /// <summary>The replan is moot (reeled in, hoses switched off): forgotten, the hose no longer pending.</summary>
+        private void CancelReplan(CompHoseReel r)
+        {
+            replanQueue.Forget(r.parent.thingIDNumber);
+            r.replanPending = false;
+        }
+
+        /// <summary>Main thread, at a job's start: the replan's inputs copied and a world copy of its own (the lay pool's).</summary>
+        private HoseReplanQueue.Work PrepareReplan(CompHoseReel r)
+        {
+            HoseReelRect rect = r.Rect;
+            var far = new Cell(r.far.x, r.far.z);
+            double len = r.MaxLength;
+            bool failed = r.lay == null;
+            string reason = r.lastLayReason;
+            CordWorld w = TakeLayWorld();
+            return new HoseReplanQueue.Work { Run = () => HoseMath.CheckReplan(w, rect, far, len, failed, reason), World = w, Serial = layWorldsOut[w] };
+        }
+
+        private void ReleaseReplanWork(HoseReplanQueue.Work work, bool reusable)
+        {
+            if (reusable) GiveBackLayWorld(work.World);
+            else if (work.World != null) layWorldsOut.Remove(work.World);
         }
 
         // ------------------------------------------------------------------ S4: free-end kind, events, reel art

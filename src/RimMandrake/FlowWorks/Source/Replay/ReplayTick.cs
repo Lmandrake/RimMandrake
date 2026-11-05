@@ -96,6 +96,7 @@ namespace RimMandrake.FlowWorks.Replay
         public ulong CorridorHash, GeomHash;
         public string LastLayReason;
         public int LayEpoch;
+        public bool ReplanPending;   // CompHoseReel.replanPending (HOSE_RECHECK_TAME_REPLAN_OFF_TICK)
         public long HashedAt;         // HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN: corridor version when the live hash last matched (0: never)
         public RM_NetLink Link;
         public override string ToString() => "reel" + T.Id;
@@ -174,6 +175,10 @@ namespace RimMandrake.FlowWorks.Replay
         internal const int AuditEvery = 10;
         private CordWorld world, spare;
         private int mapVersion, worldVersion = -1, spareTick = -1, patchCalls, now;
+        // HOSE_RECHECK_TAME_REPLAN_OFF_TICK: RM_MapComponent_Hoses.worldSerial (bumped by every patch and rebuild), the replan
+        // queue (run on the caller here: Async off, still under the shared per-tick quota) and the CheckReplans run this tick
+        private int worldSerial, replansTick = -1, replansThisTick;
+        private readonly HoseReplanQueue replans = new HoseReplanQueue { Async = false };
 
         private readonly List<RTank> tanks = new List<RTank>();
         private readonly Dictionary<int, RTank> tankById = new Dictionary<int, RTank>();
@@ -203,6 +208,7 @@ namespace RimMandrake.FlowWorks.Replay
             HoseWorldPatch.Full(truth, new ReplayRule(cells, W));
             if (oracle) oracleWorld = new CordWorld(W, H);
             graph.Live = l => reelOfLink[l].Laid;
+            HoseReplanQueue.ResetQuota();   // the quota is process-wide: a second replay starts on a fresh tick count
             foreach (TraceTank tt in t.Tanks)
             {
                 var k = new RTank { Id = tt.Id, Units = tt.Units, Cap = tt.Cap, Mode = tt.Mode, Liquid = tt.Units > 0 ? liquids[tt.Liquid % liquids.Length] : null };
@@ -287,6 +293,7 @@ namespace RimMandrake.FlowWorks.Replay
             }
             else dirty.DropLast(Math.Min(dirty.Count, maxCells));   // the batch is dropped unpatched
             patchCalls++;
+            worldSerial++;
             C.End();
             if (oracle && dirty.Count == 0) CheckPatch();   // a part-patched world (a tick's batch) is not yet the map
         }
@@ -307,6 +314,7 @@ namespace RimMandrake.FlowWorks.Replay
             dirty.Clear();
             world = cw;
             worldVersion = version;
+            worldSerial++;
             C.End();
             if (oracle) CheckPatch();   // a reused spare snapshot must come out equal to a fresh Full too (GPT review 2026-10-28)
             return cw;
@@ -361,32 +369,74 @@ namespace RimMandrake.FlowWorks.Replay
         {
             // TickBody: a bounded batch of the dirty cells is patched ahead of any read
             if (world != null && worldVersion == mapVersion && dirty.Count > 0) PatchWorld(PatchBatchCells);
-            // TickBody: for each reel, if ((now + r.parent.thingIDNumber) % 250 == 0) TickRecheck(r, now)
+            // TickBody: for each reel, if (r.replanPending || (now + r.parent.thingIDNumber) % 250 == 0) TickRecheck(r, now);
+            // a reel no longer laid drops its pending replan (CancelReplan)
             foreach (RReel r in reels)
-                if (r.Laid && (now + r.T.Id) % RecheckTicks == 0) Recheck(r);
+            {
+                if (!r.Laid) { if (r.ReplanPending) { replans.Forget(r.T.Id); r.ReplanPending = false; } continue; }
+                if (r.ReplanPending || (now + r.T.Id) % RecheckTicks == 0) Recheck(r);
+            }
             // the draw-time EnsureLay (see the header): a laid reel without a lay key is laid now
             foreach (RReel r in reels)
                 if (r.Laid && !r.HasKey) EnsureLay(r);
         }
 
-        /// <summary>TickRecheckBody: EnsureLay, then if the live corridor hash moved, CheckReplan on the version-valid snapshot:
-        /// retract on a reason, else drop the lay key (re-laid next draw).</summary>
+        /// <summary>TickRecheckBody: a pending replan is polled; else EnsureLay, then if the live corridor hash moved, the replan
+        /// is asked of the queue (PollReplan): retract on a reason, else drop the lay key (re-laid next draw); pending = neither.</summary>
         private void Recheck(RReel r)
         {
             C.Begin(Sys.Recheck);
+            if (r.ReplanPending) { PollReplan(r); C.End(); return; }
             C.Add(Work.Rechecks);
             EnsureLay(r);
             bool twice = (fault & Fault.DoubleWork) != 0;
             if (r.HasKey && (r.Lay == null || CorridorMoved(r) | (twice && CorridorHashLive(r.Lay) != r.CorridorHash)))
             {
-                CordWorld w = World(LayWorldMaxAge);
-                C.Add(Work.CheckReplans);
-                string why = HoseMath.CheckReplan(w, r.Rect, r.Far, r.T.MaxLength, r.Lay == null, r.LastLayReason);
-                if (twice) { C.Add(Work.CheckReplans); HoseMath.CheckReplan(w, r.Rect, r.Far, r.T.MaxLength, r.Lay == null, r.LastLayReason); }
-                if (why != null) Retract(r);
-                else { r.HasKey = false; r.LayEpoch++; }
+                r.ReplanPending = true;
+                PollReplan(r);
             }
             C.End();
+        }
+
+        /// <summary>RM_MapComponent_Hoses.PollReplan / PrepareReplan: the queue's answer, or still pending.</summary>
+        private void PollReplan(RReel r)
+        {
+            World(LayWorldMaxAge);
+            HoseReplanQueue.Answer a = replans.Ask(r.T.Id, r.LayEpoch, worldSerial, now, () =>
+            {
+                CordWorld w = World(LayWorldMaxAge);
+                HoseReelRect rect = r.Rect;
+                Cell far = r.Far;
+                double len = r.T.MaxLength;
+                bool failed = r.Lay == null;
+                string reason = r.LastLayReason;
+                bool twice = (fault & Fault.DoubleWork) != 0;
+                return new HoseReplanQueue.Work
+                {
+                    World = w, Serial = worldSerial,
+                    Run = () =>
+                    {
+                        Replanned();
+                        string why = HoseMath.CheckReplan(w, rect, far, len, failed, reason);
+                        if (twice) { Replanned(); HoseMath.CheckReplan(w, rect, far, len, failed, reason); }
+                        return why;
+                    },
+                };
+            });
+            if (a.Pending) return;
+            r.ReplanPending = false;
+            if (a.Why != null) Retract(r);
+            else { r.HasKey = false; r.LayEpoch++; }
+        }
+
+        /// <summary>One CheckReplan on the main thread (Async off): counted, and the replanquota gate holds it to the shared
+        /// per-tick quota (HoseReplanQueue.MaxStartsPerTick).</summary>
+        private void Replanned()
+        {
+            C.Add(Work.CheckReplans);
+            if (replansTick != now) { replansTick = now; replansThisTick = 0; }
+            if (++replansThisTick > HoseReplanQueue.MaxStartsPerTick)
+                R.Fail("replanquota", now, replansThisTick + " CheckReplans on one tick, quota " + HoseReplanQueue.MaxStartsPerTick);
         }
 
         private void EnsureLay(RReel r)
@@ -641,12 +691,15 @@ namespace RimMandrake.FlowWorks.Replay
             if (oracle) CheckComponents(comps);   // the components a move used, not only those Settle used (GPT review 2026-10-28)
         }
 
+        /// <summary>RM_HoseLinks.Live: a laid reel's link, unless its replan is pending (it carries nothing until it answers).</summary>
+        private bool RouteLive(RM_NetLink l) => graph.Live(l) && !reelOfLink[l].ReplanPending;
+
         private int Transfer(RM_NetComponents comps, RM_NetComponent c, RTank src, RTank dst, int n)
         {
             C.Begin(Sys.Move);
             List<RM_NetLink> route = comps.RouteIn(c, src, dst);
             // RouteDeadBump (RM_LiquidNet.cs:394): an empty or null route passes; a route over a dead link bumps the revision
-            if ((fault & Fault.CutNoRoute) == 0 && route != null && route.Count > 0 && !RM_LiquidNetKernel.RouteLive(route, graph.Live))
+            if ((fault & Fault.CutNoRoute) == 0 && route != null && route.Count > 0 && !RM_LiquidNetKernel.RouteLive(route, RouteLive))
             {
                 revision++;
                 C.Add(Work.RouteDead);
@@ -780,7 +833,7 @@ namespace RimMandrake.FlowWorks.Replay
             foreach (RTank t in tanks) h = (h ^ (ulong)(uint)t.Units ^ ((ulong)(t.Liquid == null ? 0 : Array.IndexOf(liquids, t.Liquid) + 1) << 40)) * 1099511628211UL;
             foreach (RReel r in reels)
             {
-                h = (h ^ (r.Laid ? 1UL : 0UL) ^ (r.HasKey ? 2UL : 0UL) ^ (r.LastLayReason != null ? 4UL : 0UL) ^ r.GeomHash) * 1099511628211UL;
+                h = (h ^ (r.Laid ? 1UL : 0UL) ^ (r.HasKey ? 2UL : 0UL) ^ (r.LastLayReason != null ? 4UL : 0UL) ^ (r.ReplanPending ? 8UL : 0UL) ^ r.GeomHash) * 1099511628211UL;
                 h = (h ^ r.CorridorHash ^ ((ulong)(uint)r.LayEpoch << 32)) * 1099511628211UL;   // state the next recheck branches on
             }
             h = (h ^ (ulong)(uint)mapVersion ^ ((ulong)(uint)revision << 32)) * 1099511628211UL;

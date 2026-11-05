@@ -318,7 +318,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(ok >= pick.Length / 2, $"only {ok}/{pick.Length} lays Ok: the fixture does not exercise real lays");
                 string s = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
                 RiverSwitchFlipChecks.Has(s, @"CordWorld src = LegacyFrame \? World\(\) : World\(LayWorldMaxAge\);", "TakeLayWorld copies a version-valid snapshot up to LayWorldMaxAge old");
-                RiverSwitchFlipChecks.Has(s, @"if \(\(now \+ r\.parent\.thingIDNumber\) % 250 == 0\) TickRecheck\(r, now\);", "the 250-tick recheck is its own profilable method");
+                RiverSwitchFlipChecks.Has(s, @"if \(r\.replanPending \|\| \(now \+ r\.parent\.thingIDNumber\) % 250 == 0\) TickRecheck\(r, now\);", "the 250-tick recheck is its own profilable method");
                 RiverSwitchFlipChecks.Has(s, @"return BuildWorld\(now\);", "the snapshot rebuild is its own profilable method");
                 // HOSE_WORLD_SNAPSHOT_FIX_MISSES_LADDER_TOGGLE: a ladder toggle, the line-crossing switch, the climb generation
                 // and the climb-settings salt fire no map event; World() folds them into the version before it judges freshness
