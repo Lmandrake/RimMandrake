@@ -16623,3 +16623,5 @@
 {"seat":"RELENTLESS","event":"start","id":"COLDSTART_PROVE_NTDLL_CRASH_NO_FOLDER","why":"relentless supervisor takes the item","ts":"2026-11-05T21:48:25Z","tsn":1793915305678559415}
 {"seat":"RELENTLESS","event":"start","id":"PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP","why":"relentless supervisor takes the item","ts":"2026-11-05T21:48:33Z","tsn":1793915313398798233}
 {"seat":"RELENTLESS","event":"start","id":"OPS_CHURN_DIAGNOSE_WARSCAR_WWRK_FJER","why":"relentless supervisor takes the item","ts":"2026-11-05T21:48:41Z","tsn":1793915321159492138}
+{"seat":"RELENTLESS","event":"start","id":"PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH","why":"relentless supervisor takes the item","ts":"2026-11-05T21:54:20Z","tsn":1793915660324392772}
+{"seat":"RELENTLESS","event":"start","id":"GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS","why":"relentless supervisor takes the item","ts":"2026-11-05T21:54:40Z","tsn":1793915680351047346}
