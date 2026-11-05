@@ -39,8 +39,9 @@ back to Conductor and then to the human."* Picture of record: `design/RimMandrak
 
 - **Programs measure** (no AI): `ops_watch.py` every 15 min writes the full readings (`status.json`, `digest.md`,
   `alarms.json`, `series\`) and, from an allow-list of health series only, `digest_blind.md` for the roles that stay
-  blind (health, alarms and flags, no account reading); `rimflow_metrics.py`; the canon check (`check_canon.py`, run by the Dispatcher's measuring arm when
-  `canon.yml` changes, on commit and nightly, `CANON_BUILD_SWEEP_WHEN_CANON_MOVES`); the rulings reconciler
+  blind (health, alarms and flags, no account reading); `rimflow_metrics.py`; the canon check (`check_canon.py`, run by `canon_sweep.py` on `rm-canon-sweep.timer`:
+  in full when `canon.yml` moves and nightly, over changed docs per commit; new contradictions land in your log once,
+  the open set in `D:\ClaudeWork\rimmandrake\canon_sweep\findings.md`); the rulings reconciler
   (`RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS`).
 - **Operations analyses** the readings (`roles/operations.md`) and hands you every loosening, in plan words or as an
   owner-only proposal you read and bring to him (below).

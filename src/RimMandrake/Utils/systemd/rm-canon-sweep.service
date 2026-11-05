@@ -1,0 +1,19 @@
+# rm-canon-sweep: canon_sweep.py, the Dispatcher's measuring arm for canon (CANON_BUILD_SWEEP_WHEN_CANON_MOVES;
+# listed in src/RimMandrake/rimflow/dispatcher_schedule.json "measure"). No AI. A FULL check_canon.py sweep of
+# design/ when canon.yml or check_canon.py moved or the last full sweep is 20 h old (the nightly backstop); otherwise
+# only the design docs changed since the last swept sha (commits that landed past the write/commit hooks).
+# New contradictions go to the Conductor log once; reading: D:\ClaudeWork\rimmandrake\canon_sweep\latest.json.
+# Runs from the one Operations deploy (the dispatch clone, which only fast-forwards to origin/main; ops_clocks.json).
+# Exit 2 = UNMEASURED (no PyYAML, git failed): the unit fails, so signal_watch sees it.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-canon-sweep.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-canon-sweep.timer
+[Unit]
+Description=RimMandrake canon sweep (check_canon.py when canon moves, on commits, nightly)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/canon_sweep.py run
+Nice=10
+MemoryMax=2G
+TimeoutStartSec=420s

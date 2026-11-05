@@ -1,0 +1,10 @@
+# Every 30 min: see rm-canon-sweep.service. A run with nothing changed exits in about a second.
+[Unit]
+Description=RimMandrake canon sweep every 30 min
+
+[Timer]
+OnCalendar=*:17/30
+Persistent=true
+
+[Install]
+WantedBy=timers.target
