@@ -341,10 +341,16 @@ FAR_CAP = "far zoom, offline render (face ~0.08x; ~85 tiles across)"
 
 def copy_images(out, stem):
     img = os.path.join(BW.REPO, "Transient", stem + "_img")
+    src = os.path.join(out, "sheet")
+    # check the source BEFORE wiping: a sheet run without a prior gen must not leave the page with no pictures
+    missing = [p for p in (src, os.path.join(out, "stats.json")) if not os.path.exists(p)]
+    if missing or not os.listdir(src):
+        sys.exit(f"REFUSED: no source to rebuild from ({', '.join(missing) or src + ' is empty'}); "
+                 f"run gen first. {img} left untouched.")
     if os.path.isdir(img):
         for f in os.listdir(img): os.remove(os.path.join(img, f))
     os.makedirs(img, exist_ok=True)
-    for f in os.listdir(os.path.join(out, "sheet")): shutil.copy(os.path.join(out, "sheet", f), os.path.join(img, "ww_" + f))
+    for f in os.listdir(src): shutil.copy(os.path.join(src, f), os.path.join(img, "ww_" + f))
 
 
 def build_sheet(out):

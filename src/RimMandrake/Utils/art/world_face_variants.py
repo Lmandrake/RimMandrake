@@ -568,10 +568,15 @@ RENDER_CSS = """<style id="WFVIEWS">
 def build_sheet(out):
     import shutil
     tdir = os.path.join(REPO, "Transient"); img = os.path.join(tdir, STEM + "_img")
+    src = os.path.join(out, "sheet")
+    # check the source BEFORE wiping: a `sheet` run without a prior `gen` must not leave the page with no pictures
+    missing = [p for p in (src, os.path.join(out, "stats.json")) if not os.path.exists(p)]
+    if missing or not os.listdir(src):
+        sys.exit(f"REFUSED: no source to rebuild from ({', '.join(missing) or src + ' is empty'}); "
+                 f"run `gen --out {out}` first. {img} left untouched.")
     if os.path.isdir(img):                       # the image dir is rebuilt whole: no stale picture survives a rebuild
         for f in os.listdir(img): os.remove(os.path.join(img, f))
     os.makedirs(img, exist_ok=True)
-    src = os.path.join(out, "sheet")
     for f in os.listdir(src):
         shutil.copy(os.path.join(src, f), os.path.join(img, "wf_" + f))
     st = json.load(open(os.path.join(out, "stats.json")))
