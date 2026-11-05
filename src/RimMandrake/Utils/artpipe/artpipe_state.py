@@ -37,6 +37,11 @@ re-run: a job already further along in the destination is left alone, a job
 further along in the source replaces the destination's earlier-stage copy
 (done/failed > active > pending), and append-only jsonl logs are unioned by
 line. Plan: `design/RimMandrake/git_migration_phase5_artpipe_2026-10-02.md`.
+Every `_artsrc` file is AUDITED by sha before it is copied (ARTSRC_LEGACY_UNMIGRATED_AUDIT_PURGED): a picture the
+art ledger holds purged (owner delete), banned (his ✕) or rejected (an owner redo/reject named those bytes), a job a
+`--decisions` record rules purged/superseded, or a job the destination files in `_withdrawn/` only, is NOT copied
+(a blind copy resurrects it; the same two job rules hold for the done/failed/pending/active records); a destination file with other bytes is never overwritten (`conflict`); non-render
+clutter (hidden paths such as a job's stray .uv-cache/, *.lock) is skipped. `--audit-out FILE.json` writes the per-file verdicts.
 """
 from __future__ import annotations
 
@@ -340,8 +345,100 @@ def _other_terminal(root: Path, job_name: str, d: str) -> bool:
     return any((root / o / job_name).exists() for o in ("done", "failed") if o != d)
 
 
-def migrate(src: Path, dst: Path, dry: bool) -> dict:
+ARTSRC_COPY = "migrate"
+# verdicts that keep a legacy _artsrc file OUT of the destination; the rest are copied or already there
+ARTSRC_EXCLUDED = ("purged", "banned", "rejected", "retired", "withdrawn", "conflict", "clutter")
+ARTSRC_CLUTTER = ("CACHEDIR.TAG",)   # plus any hidden path part (.uv-cache/, .uv-python/, .gitkeep) and *.lock
+
+
+class Screen:
+    """What the art ledger says about a sha: purged (latest purge/unpurge is a purge), banned (his ✕, exact or
+    near-duplicate), rejected (an owner redo/reject named it). Built from an artledger Index; selftests pass sets."""
+
+    def __init__(self, purged=(), rejected=(), banned=(), banned_fn=None):
+        self.purged, self.rejected, self._banned, self._fn = set(purged), set(rejected), set(banned), banned_fn
+
+    def banned(self, sha: str, path: Path | None = None) -> bool:
+        return sha in self._banned or bool(self._fn and self._fn(sha, path))
+
+    @classmethod
+    def from_ledger(cls, repo: Path) -> "Screen":
+        L = _artledger(repo)
+        idx = L.Index()
+
+        def banned(h, path):
+            # a picture the ledger has never seen has no stored dHash: hand ban_match its bytes, or only an exact-sha
+            # ban could match and a re-encode of a ✕'d picture would slip through as a near-duplicate
+            if not idx.bans:
+                return False
+            data = None
+            if path is not None and not idx.variants.get(h) and not L.store_has(h):
+                data = path.read_bytes()
+            return L.ban_match(idx, sha=h, data=data) is not None
+        return cls(idx.purged, idx.rejected, banned_fn=banned)
+
+
+def _withdrawn_only(root: Path, job: str) -> bool:
+    """ROOT files JOB in _withdrawn/ and in no queue stage."""
+    return (root / "_withdrawn" / f"{job}.json").exists() and _where_is(root, f"{job}.json") is None
+
+
+def _job_of(rel: Path) -> str:
+    return rel.parts[0] if len(rel.parts) > 1 else rel.stem
+
+
+def artsrc_audit(src: Path, dst: Path, screen: Screen, retired=None) -> list[dict]:
+    """One row per file under SRC/_artsrc: {rel, job, sha, verdict, why}. Reads only. Order of precedence: clutter,
+    already (identical bytes in DST), conflict (DST holds other bytes), banned, purged, rejected, retired (a
+    decision record), withdrawn (DST files the job in _withdrawn/ and in no live stage), else migrate."""
+    retired = retired or {}
+    rows: list[dict] = []
+    base = src / "_artsrc"
+    if not base.is_dir():
+        return rows
+    for dirpath, _dirs, files in os.walk(base):
+        for fn in sorted(files):
+            s = Path(dirpath) / fn
+            rel = s.relative_to(base)
+            job = _job_of(rel)
+            row = {"rel": rel.as_posix(), "job": job, "sha": "", "verdict": ARTSRC_COPY, "why": ""}
+            rows.append(row)
+            if fn in ARTSRC_CLUTTER or fn.endswith(".lock") or any(part.startswith(".") for part in rel.parts):
+                row.update(verdict="clutter", why="not a render")
+                continue
+            try:
+                row["sha"] = h = _sha256(s)
+            except FileNotFoundError:
+                row.update(verdict="clutter", why="vanished while audited")
+                continue
+            d = dst / "_artsrc" / rel
+            if d.is_file():
+                same = _sha256(d) == h
+                row.update(verdict="already" if same else "conflict",
+                           why="identical bytes already in the destination" if same
+                           else "the destination holds other bytes at this path; never overwritten")
+            elif screen.banned(h, s):
+                row.update(verdict="banned", why="the art ledger bans this picture (his ✕)")
+            elif h in screen.purged:
+                row.update(verdict="purged", why="the art ledger's latest purge/unpurge of this sha is a purge")
+            elif h in screen.rejected:
+                row.update(verdict="rejected", why="an owner redo/reject named these bytes")
+            elif job in retired:
+                row.update(verdict="retired", why=f"{retired[job]['decision']} in {retired[job]['record']}")
+            elif _withdrawn_only(dst, job):
+                row.update(verdict="withdrawn", why="the destination files this job only in _withdrawn/")
+    return rows
+
+
+def migrate(src: Path, dst: Path, dry: bool, screen: Screen | None = None, retired=None,
+            audit: list | None = None) -> dict:
+    """`screen` None = an empty screen (nothing purged): only selftests and a ledger-less fixture pass that.
+    `audit`, when a list, receives the _artsrc audit rows."""
     stats: dict = {}
+    retired = retired or {}
+    rows = artsrc_audit(src, dst, screen or Screen(), retired)
+    if audit is not None:
+        audit.extend(rows)
     # queue dirs: stage precedence, never regress a job
     for d, rank in STAGE_RANK.items():
         sd = src / d
@@ -351,6 +448,13 @@ def migrate(src: Path, dst: Path, dry: bool) -> dict:
             (dst / d).mkdir(parents=True, exist_ok=True)
         for f in sd.iterdir():
             if not f.is_file():
+                continue
+            jname = f.name.split(".", 1)[0]
+            if jname in retired:                 # every stage: a pending copy would only be rendered again
+                stats["skipped_retired_job"] = stats.get("skipped_retired_job", 0) + 1
+                continue
+            if _withdrawn_only(dst, jname):     # withdrawn there since: copying it back resurrects it
+                stats["kept_withdrawn"] = stats.get("kept_withdrawn", 0) + 1
                 continue
             if f.name.endswith(".manifest.json") or not f.name.endswith(".json"):
                 if f.name.endswith(".manifest.json") and _other_terminal(dst, f.name[:-len(".manifest.json")] + ".json", d):
@@ -371,8 +475,17 @@ def migrate(src: Path, dst: Path, dry: bool) -> dict:
                 stats["advanced"] = stats.get("advanced", 0) + 1
                 if not dry:
                     (dst / here[0] / f.name).unlink(missing_ok=True)
-    # plain trees
+    # _artsrc: only what the audit clears, never over other bytes
+    for r in rows:
+        if r["verdict"] == ARTSRC_COPY:
+            _copy(src / "_artsrc" / r["rel"], dst / "_artsrc" / r["rel"], dry, stats, "_artsrc")
+        else:
+            k = f"_artsrc_{r['verdict']}"
+            stats[k] = stats.get(k, 0) + 1
+    # other plain trees
     for d in PLAIN_DIRS:
+        if d == "_artsrc":
+            continue
         sd = src / d
         if not sd.is_dir():
             continue
@@ -409,7 +522,16 @@ def cmd_migrate(args) -> int:
     dst = args.state
     if dst.resolve() == src:
         raise SystemExit("migrate: source and state dir are the same")
-    stats = migrate(src, dst, args.dry_run)
+    screen = Screen() if args.no_ledger else Screen.from_ledger(args.repo)
+    rows: list = []
+    stats = migrate(src, dst, args.dry_run, screen, load_decisions(args.decisions), rows)
+    if args.audit_out:
+        args.audit_out.parent.mkdir(parents=True, exist_ok=True)
+        args.audit_out.write_text(json.dumps({
+            "source": str(src), "dest": str(dst), "dry_run": bool(args.dry_run),
+            "decisions": [str(p) for p in args.decisions or []],
+            "ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "stats": stats,
+            "rows": [[r["rel"], r["sha"], r["verdict"]] for r in rows]}, indent=0) + "\n")
     print(("DRY RUN " if args.dry_run else "") + f"migrate {src} -> {dst}")
     for k in sorted(stats):
         print(f"  {k}: {stats[k]}")
@@ -686,6 +808,12 @@ def main(argv=None) -> int:
     m = sub.add_parser("migrate")
     m.add_argument("--from", dest="src", type=Path, required=True)
     m.add_argument("--dry-run", action="store_true")
+    m.add_argument("--decisions", type=Path, action="append",
+                   help="per-job decision record; purged/superseded jobs are not migrated")
+    m.add_argument("--audit-out", type=Path, help="write the per-file _artsrc audit (rel, sha, verdict) here")
+    m.add_argument("--repo", type=Path, default=state_dir.REPO_ROOT, help="clone whose art ledger screens _artsrc")
+    m.add_argument("--no-ledger", action="store_true",
+                   help="screen nothing (a fixture with no art ledger); a real migrate never passes this")
     oa = sub.add_parser("owner-accepted", help="move failed/ jobs the owner accepted anyway to done/")
     oa.add_argument("job_ids", nargs="+")
     oa.add_argument("--note", required=True, help="his words, or where/when he accepted it")

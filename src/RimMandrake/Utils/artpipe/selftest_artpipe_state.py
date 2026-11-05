@@ -167,7 +167,7 @@ def test_migrate(tmp: Path):
           (dst / "registry.jsonl").read_text().splitlines() == ["a", "c", "b"])
     check("source untouched", (src / "pending" / "j2.json").exists() and (src / "done" / "j1.json").exists())
     again = AS.migrate(src, dst, dry=False)
-    check("re-run is a no-op", not {k: v for k, v in again.items() if k != "kept_further_along"})
+    check("re-run is a no-op", not {k: v for k, v in again.items() if k not in ("kept_further_along", "_artsrc_already")})
     # the source job vanishes mid-copy (a live daemon moved it): dst's earlier-stage copy must survive
     _job(src / "done", "j4")
     _job(dst / "pending", "j4")
@@ -385,11 +385,68 @@ def test_twins(tmp: Path):
           and not (st / "failed" / "nopng.json").exists() and (st / "done" / "nopng.json").is_file())
 
 
+def test_migrate_audit(tmp: Path):
+    """ARTSRC_LEGACY_UNMIGRATED_AUDIT_PURGED: a legacy _artsrc is screened by sha before it is copied; purged, banned,
+    rejected, decision-retired and withdrawn renders stay out, other bytes in dst are never overwritten."""
+    import hashlib
+    src, dst = tmp / "old", tmp / "new"
+    pics = {}
+
+    def art(root, jid, body, name=None):
+        p = root / "_artsrc" / jid / (name or f"{jid}.png")
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes(body)
+        pics[jid] = hashlib.sha256(body).hexdigest()
+    for jid in ("keep", "pur", "ban", "rej", "ret", "wd", "same", "clash"):
+        _job(src / "done", jid)
+        art(src, jid, b"\x89PNG" + jid.encode())
+    art(src, "keep", b"cache", ".uv-cache/CACHEDIR.TAG")
+    art(src, "keep", b"", ".uv-cache/.lock")
+    art(dst, "same", b"\x89PNGsame")
+    art(dst, "clash", b"\x89PNGnewer-render")
+    _job(dst / "_withdrawn", "wd")
+    _job(src / "pending", "ret2")            # a retired job still queued in the legacy tree must not be re-queued
+    rec = tmp / "rec.json"
+    rec.write_text(json.dumps({"jobs": {"ret": {"decision": "superseded", "why": "t"},
+                                        "ret2": {"decision": "purged", "why": "t"}}}))
+    pics_now = {j: hashlib.sha256(b"\x89PNG" + j.encode()).hexdigest() for j in ("pur", "ban", "rej")}
+    screen = AS.Screen(purged=[pics_now["pur"]], rejected=[pics_now["rej"]], banned=[pics_now["ban"]])
+    rows = []
+    st = AS.migrate(src, dst, False, screen, AS.load_decisions([rec]), rows)
+    v = {r["job"]: r["verdict"] for r in rows if r["rel"].endswith(".png")}
+    check("audit verdict per render", v == {"keep": "migrate", "pur": "purged", "ban": "banned", "rej": "rejected",
+                                            "ret": "retired", "wd": "withdrawn", "same": "already", "clash": "conflict"})
+    check("clutter (hidden cache dirs, locks) is never copied",
+          sum(r["verdict"] == "clutter" for r in rows) == 2 and not (dst / "_artsrc" / "keep" / ".uv-cache").exists())
+    check("only the cleared render arrives", (dst / "_artsrc" / "keep" / "keep.png").is_file()
+          and not any((dst / "_artsrc" / j).exists() for j in ("pur", "ban", "rej", "ret", "wd")))
+    check("a differing dst render is never overwritten",
+          (dst / "_artsrc" / "clash" / "clash.png").read_bytes() == b"\x89PNGnewer-render")
+    check("a withdrawn job's record is not copied back to done/", not (dst / "done" / "wd.json").exists()
+          and st.get("kept_withdrawn") == 1)
+    check("a decision-retired job's record is not copied, from any stage", not (dst / "done" / "ret.json").exists()
+          and not (dst / "pending" / "ret2.json").exists() and st.get("skipped_retired_job") == 2)
+    seen = []
+    AS.Screen(banned_fn=lambda h, path: seen.append(path) or False).banned("x", src / "p.png")
+    check("the ban check is handed the file (near-duplicate match needs its bytes)", seen == [src / "p.png"])
+    check("stats count each exclusion", st.get("_artsrc") == 1 and st.get("_artsrc_purged") == 1
+          and st.get("_artsrc_conflict") == 1 and st.get("_artsrc_clutter") == 2)
+    # the CLI path: --audit-out writes one row per file with the same verdicts; dry run copies nothing new
+    out = tmp / "audit.json"
+    import contextlib
+    import io
+    with contextlib.redirect_stdout(io.StringIO()):
+        AS.main(["--state", str(dst), "migrate", "--from", str(src), "--dry-run", "--no-ledger", "--audit-out", str(out)])
+    doc = json.loads(out.read_text())
+    check("--audit-out holds every legacy file once", len(doc["rows"]) == len(rows)
+          and len({r[0] for r in doc["rows"]}) == len(rows))
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory() as t:
         tmp = Path(t)
         for i, fn in enumerate((test_resolver, test_collect, test_find_legacy, test_migrate, test_requeue,
-                                  test_owner_accepted, test_twins)):
+                                  test_owner_accepted, test_twins, test_migrate_audit)):
             sub = tmp / str(i)
             sub.mkdir()
             fn(sub)
