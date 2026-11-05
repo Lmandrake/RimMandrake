@@ -106,7 +106,7 @@ def _sanity_step(S, rec, act):
         if row.get("problems"):
             act(do="alarm", kind="scratch:sanity:" + end, note=True, conductor_log=True, raise_first=first,
                 why="scratch cleaner, %s of run: %s; item OPS_SCRATCH_DIRT_MEASURE_AT_%s" % (
-                    end, "; ".join(str(p) for p in row["problems"])[:400], end.upper()))
+                    end, "; ".join(str(p) for p in row["problems"] + (row.get("residual") or []))[:400], end.upper()))
 
 
 def plan(cfg, unit, timers):

@@ -2297,7 +2297,7 @@ def refusal_reasons(rows: list[dict], top: int = 4) -> list[str]:
     return [f"{c} refused, {human(b)}: {w}" for w, (c, b) in sorted(n.items(), key=lambda kv: -kv[1][1])[:top]]
 
 
-def sanity_write(sd: Path, phase: str, m: dict, problems: list[str]):
+def sanity_write(sd: Path, phase: str, m: dict, problems: list[str], residual: list[str] | None = None):
     """On disk before the work starts: the Dispatcher reads this, so a run that dies has already spoken. A new start
     drops the last run's end, whose alarm belongs to that run."""
     p = sd / "sanity.json"
@@ -2307,7 +2307,7 @@ def sanity_write(sd: Path, phase: str, m: dict, problems: list[str]):
             rec = json.loads(p.read_text())
         except (OSError, ValueError):
             rec = {}
-    rec[phase] = {"at": time.time(), "measures": m, "problems": problems}
+    rec[phase] = {"at": time.time(), "measures": m, "problems": problems, "residual": residual or []}
     write_json(p, rec)
     durable(p)
     durable(sd, False)
@@ -2334,9 +2334,9 @@ def sanity_end(sd: Path, now: float, rows: list[dict], rec: dict):
         problems.append(f"{len(rec['failures'])} failure(s): {rec['failures'][0][:160]}")
     if rec.get("deferred"):
         problems.append(f"{rec['deferred']} row(s) deferred past the time budget")
-    if problems:
-        problems += refusal_reasons(rows)
-    sanity_write(sd, "end", m, problems)
+    # The refusals by reason are context for a problem, not problems: counted as problems, one real line read as five
+    # (2026-11-05, OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ).
+    sanity_write(sd, "end", m, problems, refusal_reasons(rows) if problems else [])
     rec["oldest_h"] = m.get("oldest_h")
 
 

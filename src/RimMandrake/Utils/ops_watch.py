@@ -1339,7 +1339,8 @@ def c_disk(now, rules, ctx):
             d = json.loads(san.read_text()) if san.exists() else {}
             row = d.get(end) or {}
             out["disk.scratch_dirty_" + end] = M(len(row.get("problems") or []), "sanity problems at the %s of the last run" % end,
-                                                 problems=(row.get("problems") or [])[:6])
+                                                 problems=(row.get("problems") or [])[:6],
+                                                 residual=(row.get("residual") or [])[:4])
         except (OSError, ValueError, AttributeError) as e:
             out["disk.scratch_dirty_" + end] = M(9999, "sanity problems at the %s of the last run" % end, why="%s: %s" % (san, e))
     out.update(scratch_outside(san, now, rules))

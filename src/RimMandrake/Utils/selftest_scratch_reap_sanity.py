@@ -120,9 +120,11 @@ def main():
         return heard(sd)
 
     check(run_heard() == ["scratch:sanity:end", "scratch:sanity:start"], "dirty at both ends: two alarms")
-    end = json.loads((sd / "sanity.json").read_text())["end"]["problems"]
-    check("refused 1 over 0" in end and any(p.startswith("1 refused, ") and "rebase-merge" in p for p in end),
+    endrec = json.loads((sd / "sanity.json").read_text())["end"]
+    end, residual = endrec["problems"], endrec.get("residual") or []
+    check("refused 1 over 0" in end and any(p.startswith("1 refused, ") and "rebase-merge" in p for p in residual),
           "residual end: the dirt is raised with its reason")
+    check(end == ["refused 1 over 0"], "the reasons are context, not more problems: one line over reads as one, not two")
     R.sanity_start = lambda sd, now: {}
     check(run_heard() == ["scratch:sanity:end"], "mutant: no start reading, no start alarm (this check is the red)")
     R.sanity_start, R.sanity_end = real_start, lambda sd, now, rows, rec: None
