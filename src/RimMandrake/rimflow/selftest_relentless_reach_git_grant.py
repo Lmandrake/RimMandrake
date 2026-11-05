@@ -146,6 +146,31 @@ def test_reach(root):
           GRANT in RF.refreshed(r, st).get("grants", []), RF.refreshed(r, st))
 
 
+def skip_live(why):
+    """Row 5's live probe cannot run here. Off the box (unit_probe_selftests_candidate sets RELENTLESS_UNIT_PROBE_REQUIRED)
+    that is a red row, never a green skip: the reading exists only to run it."""
+    if os.environ.get("RELENTLESS_UNIT_PROBE_REQUIRED"):
+        check("(5) live probe ran where it is required", False, why)
+    else:
+        print("skip (5) live probe: %s" % why)
+
+
+def nested_unit_refused(root):
+    """-> why a user unit cannot see a folder this process made under `root`, or "" when it can. Inside the Marker's box
+    the user manager runs the unit outside the box's private view, so binding the box's own files fails (exit 226): the
+    environment's test, apart from the grant, whose real probe still runs (and goes red) wherever this one passes."""
+    d = tempfile.mkdtemp(prefix="nestcheck-", dir=root)
+    try:
+        p = subprocess.run(["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet",
+                            "-p", "BindReadOnlyPaths=%s" % d, "--", "/bin/test", "-d", d],
+                           capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "%s: %s" % (type(e).__name__, e)
+    finally:
+        os.rmdir(d)
+    return "" if p.returncode == 0 else ("systemd-run exit %d: %s" % (p.returncode, (p.stderr or p.stdout).strip()[-160:]))
+
+
 def test_sweep_and_probe(made):
     import selftest_relentless_reachfix as SR
     x = SR.rig(probe=(True, "ok"))
@@ -159,17 +184,24 @@ def test_sweep_and_probe(made):
     check("(5) the applied overlay holds the grant", RF.grants(st) == [GRANT], st.get("reach"))
     x.done()
     if not made or not os.path.exists("/usr/bin/systemd-run") or os.environ.get("RELENTLESS_NO_UNIT_PROBE"):
-        print("skip (5) live probe: no systemd-run here")
+        skip_live("no systemd-run here")
+        return
+    box, store, clone, sha = made
+    nest = nested_unit_refused(os.path.dirname(str(clone)))
+    if nest:
+        # inside the Marker's box a unit cannot make its own mount namespace (exit 226): the reach class nested_unit's
+        # adapter unit_probe_selftests_candidate runs this row outside the wall (CHECKER_REACH_FIX_OTHER_STILL_DARK)
+        skip_live("a user unit cannot see this sandbox's own files (%s); the offbox reading "
+                  "unit_probe_selftests_candidate runs it outside the wall" % nest)
         return
     import relentless as R
-    box, store, clone, sha = made
     fx = R.Effects.__new__(R.Effects)
     fx.books = str(clone)
     r = {"walls": {"marker": dict(prof(os.path.dirname(str(clone))), box_root=tempfile.mkdtemp(prefix="gprobe"))}}
     sroot = tempfile.mkdtemp(prefix="gstore")      # a store root that exists: a missing denied path fails the unit
     good, why = fx.reach_probe(r, [], [], {"sha": sha, "repo": str(clone)}, sroot, grants=[GRANT])
     if "probe unit" in why or "Failed to" in why or "bus" in why.lower():
-        print("skip (5) live probe: no user systemd here (%s)" % why[:120])
+        skip_live("no user systemd here (%s)" % why[:120])
         return
     check("(5) the grant's probe reads HEAD inside the wall", good and sha[:10] in why, why)
     bad, why = fx.reach_probe(r, [], [], {"sha": "0" * 40, "repo": str(clone)}, sroot, grants=[GRANT])
