@@ -242,15 +242,31 @@ namespace RimMandrake.Webwork
             if (map == null) return "REFUSED: no current map";
             string defName = (args ?? "").Trim().Length > 0 ? args.Trim() : "RM_Webwork_Anchor";
             ThingDef node = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
-            Pawn colonist = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
-            if (node == null || colonist == null) return "REFUSED: no " + (node == null ? defName : "free colonist");
+            // CREEP_WEB_HARVEST_LIVE_1 A4 (2026-11-05): the first free colonist on a quicktest may be unable to build, downed,
+            // asleep or have Construction off, and then never cuts the anchor however long we tick (A4 read nodePresent True
+            // after 4000 ticks with A1's forced WorkGiver_Deconstruct True). Pick an awake colonist who can construct and turn
+            // Construction on for him: a site precondition, not a change to what the mod must do.
+            Pawn colonist = map.mapPawns.FreeColonistsSpawned.Where(p => !p.Downed && !p.WorkTypeIsDisabled(WorkTypeDefOf.Construction))
+                .OrderBy(p => RestUtility.Awake(p) ? 0 : 1).FirstOrDefault();
+            if (node == null || colonist == null) return "REFUSED: no " + (node == null ? defName : "free colonist able to construct");
+            if (!RestUtility.Awake(colonist)) RestUtility.WakeUp(colonist);
+            if (colonist.workSettings != null && colonist.workSettings.EverWork)
+            {
+                colonist.workSettings.SetPriority(WorkTypeDefOf.Construction, 1);
+            }
             if (!CellFinder.TryFindRandomCellNear(colonist.Position, map, 4, x => x.Standable(map) && x.GetFirstBuilding(map) == null
                     && x.GetFirstItem(map) == null && x != colonist.Position, out IntVec3 cell))
                 return "REFUSED: no cell";
             Thing t = GenSpawn.Spawn(ThingMaker.MakeThing(node), cell, map);
             bool ok = DesignatableAfterTicks(t, out int seenAfter);
-            if (ok) map.designationManager.AddDesignation(new Designation(t, DesignationDefOf.Deconstruct));
-            return "DESIGNATED " + cell.x + "," + cell.z + " | designatable " + ok + " (after " + seenAfter + " ticks) | colonist " + colonist.LabelShort;
+            bool hasJob = false;
+            if (ok)
+            {
+                map.designationManager.AddDesignation(new Designation(t, DesignationDefOf.Deconstruct));
+                hasJob = new WorkGiver_Deconstruct().HasJobOnThing(colonist, t, forced: false);
+            }
+            return "DESIGNATED " + cell.x + "," + cell.z + " | designatable " + ok + " (after " + seenAfter + " ticks) | colonist " + colonist.LabelShort
+                + " | unforcedJob " + hasJob + " | awake " + RestUtility.Awake(colonist) + " | curJob " + (colonist.CurJobDef?.defName ?? "none");
         }
 
         /// <summary>"x,z": "READ nodePresent B | weaveNear N | lastYield N".</summary>
