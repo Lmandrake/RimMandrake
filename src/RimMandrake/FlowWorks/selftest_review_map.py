@@ -256,7 +256,7 @@ check(cv["uncovered"] == 0 and "python.exe src/RimMandrake/FlowWorks/review_map.
 books = R.sign_ops(S)
 bc = [tuple(int(v) for v in b.split("|")[:2]) for b in books]
 built = [t for t in S if not t["placeholder"]]
-inside = [c for c in bc if any(t["origin"][0] <= c[0] < t["origin"][0] + R.SW and t["origin"][1] <= c[1] < t["origin"][1] + R.SH
+inside = [c for c in bc if any(t["origin"][0] <= c[0] < t["origin"][0] + t["size"][0] and t["origin"][1] <= c[1] < t["origin"][1] + t["size"][1]
                                for t in S)]
 check(len(books) == len(built) and not inside and len(set(bc)) == len(bc) and all(b.split("|")[2].startswith("SIGN ") for b in books),
       "sign books: %d for %d built stations; inside a footprint: %s" % (len(books), len(built), inside[:5]))
@@ -268,6 +268,27 @@ vin = [c for c in vc for v in vdoc["stations"] for o in [R.VIS.origin_of(v, *R.V
 check(len(vb) == len(vdoc["stations"]) and not vin and len(set(vc + bc)) == len(vc) + len(bc)
       and all(len(b.split("|")[2]) > 0 for b in vb), "visuals sign books: %d for %d plots; inside a plot: %s"
       % (len(vb), len(vdoc["stations"]), vin[:5]))
+# SCRAPPER_PIPE_REDRAW_VERDIGRIS_DASH_RHYTHM (owner by card 2026-10-25): a 20+ cell STRAIGHT Scrapper pipe run, pinned
+# outside the gallery grid, clear of every other station and inside the buildable map (10-cell no-build edge)
+lr = [t for t in S if t["id"] == "pipe_long_run"]
+if not lr:
+    check(False, "long run: no pipe_long_run station")
+else:
+    lr = lr[0]
+    u = lr["setup"]
+    sty = {(c[1], c[2]): c[3] for c in u["style"]}
+    runs = {}
+    for c in u["build"]:
+        if c[0] == "RM_UniversalPipe" and sty.get((c[1], c[2])) == "RM_UniversalPipe_Scrapper":
+            runs.setdefault(c[2], set()).add(c[1])
+    longest = max((max(xs) - min(xs) + 1 for xs in runs.values() if len(xs) == max(xs) - min(xs) + 1), default=0)
+    ox, oz = lr["origin"]
+    w, h = lr["size"]
+    clear = not any(R._overlap((ox, oz, w, h), tuple(t["origin"]) + tuple(t["size"]), 4) for t in S if t is not lr)
+    edge = all(10 <= ox + c[1] < R.MAP_SIZE - 10 and 10 <= oz + c[2] < R.MAP_SIZE - 10 for c in u["build"])
+    check(longest >= 20 and len(runs) == 1 and clear and edge and lr["row"] is None and lr["n"] == len(S)
+          and not lr["placeholder"], "long run: scrapper straight %d cells (rows %s), clear %s, buildable %s, n %s/%d"
+          % (longest, sorted(runs), clear, edge, lr["n"], len(S)))
 pl = [(st_, None, dict(label=(20 + 30 * i, 40))) for i, st_ in enumerate(RV.STATIONS)]
 check(len(RV.sign_ops(pl)) == len(RV.STATIONS), "map R: one sign book a river station")
 

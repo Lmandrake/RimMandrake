@@ -4,7 +4,7 @@ Load the save in RimWorld (Load game > (no keeper saved yet: build, then --save)
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
-88 stations: 0 works in game, 79 built, not yet seen, 9 partly built, 0 not built yet.
+91 stations: 0 works in game, 81 built, not yet seen, 10 partly built, 0 not built yet.
 
 ## V - pits: what they look like (south-west block)
 
@@ -73,7 +73,7 @@ Two different liquids never mix: where their fronts meet, both stop. Drain one s
 
 **Look for:** weak spot: a cell between the fronts drawn as a blend; one liquid overwriting the other
 
-### 5. A small pond runs dry - built, not yet seen
+### 5. A small pond runs dry - partly built
 
 Any pond is a source: a lake touching the map edge never runs dry; an enclosed pond runs out. An enclosed pond supplies only the water it holds (2 levels a shallow square, 4 a deep one), then the flow stops.
 
@@ -85,6 +85,8 @@ Any pond is a source: a lake touching the map edge never runs dry; an enclosed p
 - a lake touching the map edge never runs out
 
 **Look for:** weak spot: water at the far end (the pond never runs out)
+
+**Not built yet in this feature:** a never-dry lake staying never-dry as it shrinks
 
 ### 6. A pond shrinks as it pays out - built, not yet seen
 
@@ -487,7 +489,20 @@ A raised ladder strands him
 
 **Look for:** weak spot: raised and lowered drawn the same (compare the station to the left); anyone using a raised ladder
 
-### 37. A pit prison, run from the lip - built, not yet seen
+### 37. Steel ladders in and out - built, not yet seen
+
+Steel ladders in and out
+
+**Look at:** a 5x5 pit: a steel fire-escape ladder SLID DOWN on its west wall, another SLID UP on its south wall, a colonist in it and steel on its floor
+
+**Poke it:**
+
+- undraft him: he climbs out by the west steel ladder
+- select the south ladder: Ladder down; it lies slid up on the rim until then
+
+**Look for:** weak spot: a steel ladder drawn like the wooden one, or slid up and slid down drawn alike
+
+### 38. A pit prison, run from the lip - built, not yet seen
 
 A walled-in pit is a room; add a prisoner bed and it's a prison you run from the edge. Wardens feed, tend, capture, recruit and convert from the lip without climbing down; nothing too wide is offered.
 
@@ -499,7 +514,7 @@ A walled-in pit is a room; add a prisoner bed and it's a prison you run from the
 
 **Look for:** weak spot: a warden climbing down; the room not labelled a prison
 
-### 38. Sun and cold wear him down - built, not yet seen
+### 39. Sun and cold wear him down - built, not yet seen
 
 An open pit bakes by day and freezes by night, wearing down a prisoner's resistance. Colonists whose beliefs mind cruelty are upset by it; psychopaths are not.
 
@@ -511,7 +526,7 @@ An open pit bakes by day and freezes by night, wearing down a prisoner's resista
 
 **Look for:** weak spot: the pit cell's temperature the same as the ground's
 
-### 39. Sluice and grate doors - built, not yet seen
+### 40. Sluice and grate doors - built, not yet seen
 
 Sluice gates and grate doors let liquid through but hold creatures and prisoners. They can't be opened from inside the pit; open one to let a held creature walk out.
 
@@ -525,7 +540,7 @@ Sluice gates and grate doors let liquid through but hold creatures and prisoners
 
 ## 6 · How it looks
 
-### 40. People sink as the ground deepens - built, not yet seen
+### 41. People sink as the ground deepens - built, not yet seen
 
 People sink as the ground deepens and rise as they climb out; in a pit the walls stand over their head. Someone in slime is drawn sunk into it, not standing on top.
 
@@ -537,7 +552,7 @@ People sink as the ground deepens and rise as they climb out; in a pit the walls
 
 **Look for:** weak spot: the D4 head showing over the wall; a snap instead of a step on the way out
 
-### 41. A canal looks dug and shows how deep its water is - partly built
+### 42. A canal looks dug and shows how deep its water is - partly built
 
 A canal looks dug, not like a gravel path, and shows how full it is. Trace, half and brimming fills look different; trenches read as obstacles without a tooltip.
 
@@ -551,7 +566,7 @@ A canal looks dug, not like a gravel path, and shows how full it is. Trace, half
 
 **Not built yet in this feature:** a dug canal looking dug, not like a gravel path
 
-### 42. Four more canal liquids - built, not yet seen
+### 43. Four more canal liquids - built, not yet seen
 
 Four more canal liquids
 
@@ -563,7 +578,7 @@ Four more canal liquids
 
 **Look for:** weak spot: boiling and icy water drawn like plain water; the V block holds the other seven canal liquids
 
-### 43. A pit reads as one dark hole - partly built
+### 44. A pit reads as one dark hole - partly built
 
 Pit walls are drawn with depth, Quarry-style, so a pit reads as one big dark hole. Every depth looks different; an occupied pit reads differently from an empty one; never like a building.
 
@@ -577,7 +592,7 @@ Pit walls are drawn with depth, Quarry-style, so a pit reads as one big dark hol
 
 **Not built yet in this feature:** a pit reading as a big dark hole
 
-### 44. Walls show what they are cut in - built, not yet seen
+### 45. Walls show what they are cut in - built, not yet seen
 
 Walls show what they are cut in
 
@@ -590,7 +605,7 @@ Walls show what they are cut in
 
 **Look for:** weak spot: all four walls one colour; a seam where the wall meets the floor
 
-### 45. Spikes, ladder, gates: own drawings - built, not yet seen
+### 46. Spikes, ladder, gates: own drawings - built, not yet seen
 
 Spikes, ladders and gates have their own drawings, not borrowed vanilla ones. Ladder, spikes, sluice and grate each ship their own texture.
 
@@ -602,7 +617,7 @@ Spikes, ladders and gates have their own drawings, not borrowed vanilla ones. La
 
 **Look for:** weak spot: any of the four drawn with a vanilla stand-in
 
-### 46. Tar and slime look thick - partly built
+### 47. Tar and slime look thick - partly built
 
 Tar looks thick and sticky; slime looks thick and opaque, not tinted water
 
@@ -616,7 +631,7 @@ Tar looks thick and sticky; slime looks thick and opaque, not tinted water
 
 **Not built yet in this feature:** slime looking thick and opaque, not tinted water
 
-### 47. Burning liquid looks alight - partly built
+### 48. Burning liquid looks alight - partly built
 
 Burning liquid looks alight, and a burnt-out canal looks scorched. The burning-liquid flame still uses the vanilla fire graphic; the scorched canal has its own art.
 
@@ -632,7 +647,7 @@ Burning liquid looks alight, and a burnt-out canal looks scorched. The burning-l
 
 ## 7 · Bottles, tanks and pumps
 
-### 48. Bottles, buckets, barrels - partly built
+### 49. Bottles, buckets, barrels - partly built
 
 Bottles, buckets and barrels: fill at a shore or tank, use, wash and reuse. Boiling water cools and blood spoils in a bottle; bottles are tagged for a future cooking mod.
 
@@ -646,7 +661,7 @@ Bottles, buckets and barrels: fill at a shore or tank, use, wash and reuse. Boil
 
 **Not built yet in this feature:** boiling water cooling and blood spoiling in a bottle; bottles tagged for future cooking
 
-### 49. Every liquid, every container - built, not yet seen
+### 50. Every liquid, every container - built, not yet seen
 
 Every liquid, every container
 
@@ -658,7 +673,7 @@ Every liquid, every container
 
 **Look for:** weak spot: two liquids whose containers read the same; the dirty ones not looking dirty
 
-### 50. Containers in every material - built, not yet seen
+### 51. Containers in every material - built, not yet seen
 
 Containers in every material
 
@@ -670,7 +685,7 @@ Containers in every material
 
 **Look for:** weak spot: every material drawn the same; a material named but not in the label
 
-### 51. Containers in the four looks - built, not yet seen
+### 52. Containers in the four looks - built, not yet seen
 
 Containers in the four looks
 
@@ -683,7 +698,7 @@ Containers in the four looks
 
 **Look for:** weak spot: the window not taking the liquid colour; the body tinted; two looks in one stack
 
-### 52. Tanks, pumps, hoses - built, not yet seen
+### 53. Tanks, pumps, hoses - built, not yet seen
 
 Tanks store liquid; pumps move it from ponds and canals; hoses and adapters connect it all. A tank holds as much as the same footprint of deepest canal: each tank square is one deep canal square.
 
@@ -695,7 +710,7 @@ Tanks store liquid; pumps move it from ponds and canals; hoses and adapters conn
 
 **Look for:** weak spot: the pond not going down; the tank's fill bar never moving
 
-### 53. A pump set to Pour - built, not yet seen
+### 54. A pump set to Pour - built, not yet seen
 
 A pump set to Pour
 
@@ -708,7 +723,7 @@ A pump set to Pour
 
 **Look for:** weak spot: pouring with no power; water poured onto dry ground
 
-### 54. Four tank sizes - built, not yet seen
+### 55. Four tank sizes - built, not yet seen
 
 Four tank sizes
 
@@ -720,7 +735,7 @@ Four tank sizes
 
 **Look for:** weak spot: both tall tanks are placeholder art (a drum stacked twice); a tall top cut off or hidden behind the label
 
-### 55. Tank looks: short and tall - built, not yet seen
+### 56. Tank looks: short and tall - built, not yet seen
 
 Tank looks: short and tall
 
@@ -733,7 +748,7 @@ Tank looks: short and tall
 
 **Look for:** weak spot: no Choose style button on a built tank; a look whose tall tank does not match its short one; a tall tank's top left in the old look after a switch
 
-### 56. Tank looks: cargo tanks - built, not yet seen
+### 57. Tank looks: cargo tanks - built, not yet seen
 
 Tank looks: cargo tanks
 
@@ -746,7 +761,7 @@ Tank looks: cargo tanks
 
 **Look for:** weak spot: the extra-tall tank's top running into the label above the station
 
-### 57. Tank modes - built, not yet seen
+### 58. Tank modes - built, not yet seen
 
 Tank modes
 
@@ -759,7 +774,7 @@ Tank modes
 
 **Look for:** weak spot: the Dump tank losing water with nothing connected; a Store tank being emptied
 
-### 58. A hose laid to a tank - built, not yet seen
+### 59. A hose laid to a tank - built, not yet seen
 
 A hose laid to a tank
 
@@ -772,7 +787,7 @@ A hose laid to a tank
 
 **Look for:** weak spot: the hose drawn through the tank; bends sharper than it can take; a nozzle with no art
 
-### 59. Four hose reel looks - built, not yet seen
+### 60. Four hose reel looks - built, not yet seen
 
 Four hose reel looks
 
@@ -784,7 +799,7 @@ Four hose reel looks
 
 **Look for:** weak spot: the scrapper look has no art folder of its own; two looks that read the same
 
-### 60. Four pipe looks - built, not yet seen
+### 61. Four pipe looks - built, not yet seen
 
 Four pipe looks
 
@@ -796,7 +811,7 @@ Four pipe looks
 
 **Look for:** weak spot: the tees (middle of the bottom run and the third run up) breaking the joins; a run that changes look half way
 
-### 61. Pipe-net adapters - built, not yet seen
+### 62. Pipe-net adapters - built, not yet seen
 
 Pipe-net adapters
 
@@ -808,7 +823,7 @@ Pipe-net adapters
 
 **Look for:** weak spot: the adapters exist only with Vanilla Chemfuel Expanded loaded; without it (the release test list) this pad is empty and the build notes say so
 
-### 62. Spilled liquid - built, not yet seen
+### 63. Spilled liquid - built, not yet seen
 
 Spilled liquid
 
@@ -820,7 +835,7 @@ Spilled liquid
 
 **Look for:** weak spot: the spill drawn as a vanilla water puddle; tar filth with no art
 
-### 63. Reels per look: laid, reeled in - built, not yet seen
+### 64. Reels per look: laid, reeled in - built, not yet seen
 
 Reels per look: laid, reeled in
 
@@ -833,7 +848,7 @@ Reels per look: laid, reeled in
 
 **Look for:** weak spot: a reeled-in drum not full again, or back in another look; a laid hose strand, wrap, coupling or end not in its reel's look (non-scrapper wraps have no cloth tint); the design's coil overlay is NOT BUILT (the reel swaps two whole images)
 
-### 64. Hose states: flat, filling, plump - built, not yet seen
+### 65. Hose states: flat, filling, plump - built, not yet seen
 
 Hose states: flat, filling, plump
 
@@ -846,7 +861,7 @@ Hose states: flat, filling, plump
 
 **Look for:** weak spot: a joiner drawn along a straight hose; filling jumping straight to plump; plump no wider than flat; the free end not the hose's own width
 
-### 65. Hoses crossing in a grid - built, not yet seen
+### 66. Hoses crossing in a grid - built, not yet seen
 
 Hoses crossing in a grid
 
@@ -859,7 +874,7 @@ Hoses crossing in a grid
 
 **Look for:** weak spot: a crossing that is not cleanly over/under in a fixed order (newest on top); where S-curve slack runs alongside another hose the two may overlap for a stretch
 
-### 66. A hose out of a maze - built, not yet seen
+### 67. A hose out of a maze - built, not yet seen
 
 A hose out of a maze
 
@@ -871,7 +886,7 @@ A hose out of a maze
 
 **Look for:** weak spot: not the SHORT route (out the inner chamber's west door, down, out the south-east gap); a bend clipping a wall corner in a one-cell corridor; the hose jumping a wall
 
-### 67. Maze, short way walled after - built, not yet seen
+### 68. Maze, short way walled after - built, not yet seen
 
 Maze, short way walled after
 
@@ -884,7 +899,7 @@ Maze, short way walled after
 
 **Look for:** weak spot: the hose passing THROUGH the new wall; neither a clean re-route north-east (about 25 of its 40 cells) nor a reel-in with a message and an alert saying how many cells the way round needs
 
-### 68. Relay reels: going farther - built, not yet seen
+### 69. Relay reels: going farther - built, not yet seen
 
 Relay reels: going farther
 
@@ -898,7 +913,7 @@ Relay reels: going farther
 
 **Look for:** weak spot: a hose that does not end in a brass coupling on the NEXT reel (two loose hoses, not a chain); the second hose not plump though fed; a loop back accepted
 
-### 69. Deploy by hand, then wind in - built, not yet seen
+### 70. Deploy by hand, then wind in - built, not yet seen
 
 Deploy by hand, then wind in
 
@@ -911,7 +926,7 @@ Deploy by hand, then wind in
 
 **Look for:** weak spot: the hose longer than his walk (jumping to the target); Retract making the hose vanish at once instead of winding back along its route; not ending Stored
 
-### 70. A carry dropped halfway - built, not yet seen
+### 71. A carry dropped halfway - built, not yet seen
 
 A carry dropped halfway
 
@@ -923,7 +938,7 @@ A carry dropped halfway
 
 **Look for:** weak spot: anyone shown carrying it before a colonist picks it up; the open end not lying at the hose's end; Move hose end / Retract not offered
 
-### 71. A hose laid into a pond - built, not yet seen
+### 72. A hose laid into a pond - built, not yet seen
 
 A hose laid into a pond
 
@@ -935,7 +950,7 @@ A hose laid into a pond
 
 **Look for:** weak spot: the end on the bank, not IN the water; the end drawing water by itself (owner ruling 2026-10-11 #3: it draws nothing; filling a tank takes a pump; the reel reads 'Not connected')
 
-### 72. A hose on THEIR tank - built, not yet seen
+### 73. A hose on THEIR tank - built, not yet seen
 
 A hose on THEIR tank
 
@@ -947,7 +962,7 @@ A hose on THEIR tank
 
 **Look for:** weak spot: the brass coupling not on THEIR tank; their faction is only a state read (HoseProbe census): nobody's inspect names it
 
-### 73. Drills, bleed wells and stills - built, not yet seen
+### 74. Drills, bleed wells and stills - built, not yet seen
 
 Drills and bleed wells bring underground liquids up, and cleaned water feeds thirst
 
@@ -959,7 +974,7 @@ Drills and bleed wells bring underground liquids up, and cleaned water feeds thi
 
 **Look for:** weak spot: a drill with nothing under it and no message saying so
 
-### 74. Liquid kits - partly built
+### 75. Liquid kits - partly built
 
 Liquid workings other biomes borrow: bills that use up a liquid, a vat where two liquids react, scalding floods and tar stains. Built and switchable in settings, first-guess numbers. Only the reaction vat can be built today; the other three wait for the biome that uses them to wire them in.
 
@@ -973,7 +988,7 @@ Liquid workings other biomes borrow: bills that use up a liquid, a vat where two
 
 **Not built yet in this feature:** workbench bills that need a liquid to hand and use it up; floods released boiling hot that scald until they cool; drained floods leaving a stain behind, such as tar
 
-### 75. Ruined liquid works - built, not yet seen
+### 76. Ruined liquid works - built, not yet seen
 
 Ruined industrial liquid plants (desalination, tar refinery, pumping station) are found and repaired. Never built from the menu in the campaign.
 
@@ -985,7 +1000,7 @@ Ruined industrial liquid plants (desalination, tar refinery, pumping station) ar
 
 **Look for:** weak spot: a wreck that offers no repair
 
-### 76. Wrecked, kludged, repaired - built, not yet seen
+### 77. Wrecked, kludged, repaired - built, not yet seen
 
 Wrecked, kludged, repaired
 
@@ -997,7 +1012,7 @@ Wrecked, kludged, repaired
 
 **Look for:** weak spot: the three stages hard to tell apart
 
-### 77. The other plants, mended - built, not yet seen
+### 78. The other plants, mended - built, not yet seen
 
 The other plants, mended
 
@@ -1009,9 +1024,33 @@ The other plants, mended
 
 **Look for:** weak spot: a kludged and a repaired plant drawn alike
 
+### 79. Ice melter and crushed ice - built, not yet seen
+
+Ice melter and crushed ice
+
+**Look at:** an ice melter bench with a heap of crushed ice beside it
+
+**Poke it:**
+
+- select the melter: its bills offer melt crushed ice (and melt blue ice); it needs power
+
+**Look for:** weak spot: crushed ice drawn like plain ice, or a melter with no melt bill
+
+### 91. Scrapper pipe, long straight run - built, not yet seen
+
+Scrapper pipe, long straight run
+
+**Look at:** a 26-cell straight scrapper pipe (top) over a 26-cell industrial pipe (bottom)
+
+**Poke it:**
+
+- zoom in on the top run and pan along it, then compare the industrial run below
+
+**Look for:** weak spot: the green verdigris dashes reading as an even, woven or candy-stripe rhythm instead of random patina; the same patch repeating every cell
+
 ## 8 · Rivers, shores and the land
 
-### 78. Many liquids as ground - built, not yet seen
+### 80. Many liquids as ground - built, not yet seen
 
 Many liquids exist as ground: brine, boiling water, propane, acid and more, each with its own flood, rain, river, lake and sea. Nobody goes swimming in sand for fun.
 
@@ -1023,7 +1062,7 @@ Many liquids exist as ground: brine, boiling water, propane, acid and more, each
 
 **Look for:** weak spot: two liquids that look the same
 
-### 79. Six more liquids - built, not yet seen
+### 81. Six more liquids - built, not yet seen
 
 Six more liquids
 
@@ -1035,7 +1074,7 @@ Six more liquids
 
 **Look for:** weak spot: the four waters reading as plain water
 
-### 80. Six odd grounds - built, not yet seen
+### 82. Six odd grounds - built, not yet seen
 
 Six odd grounds
 
@@ -1047,7 +1086,7 @@ Six odd grounds
 
 **Look for:** weak spot: tar glass that walks like liquid; churnmud that looks like plain mud
 
-### 81. Coloured waters and slimes - built, not yet seen
+### 83. Coloured waters and slimes - built, not yet seen
 
 Coloured waters and slimes
 
@@ -1060,7 +1099,7 @@ Coloured waters and slimes
 
 **Look for:** weak spot: two colours that read the same
 
-### 82. Deep sand - built, not yet seen
+### 84. Deep sand - built, not yet seen
 
 Deep sand
 
@@ -1073,7 +1112,7 @@ Deep sand
 
 **Look for:** weak spot: deep sand that reads as ordinary sand
 
-### 83. Liquid shores on new maps - built, not yet seen
+### 85. Liquid shores on new maps - built, not yet seen
 
 New maps get shores of the local liquid, and hot rivers steam in colour. The shores change only newly generated maps.
 
@@ -1085,7 +1124,7 @@ New maps get shores of the local liquid, and hot rivers steam in colour. The sho
 
 **Look for:** weak spot: no steam; the air over boiling water no warmer
 
-### 84. A swale turns sand to soil - partly built
+### 86. A swale turns sand to soil - partly built
 
 A water-fed canal improves the land: a swale turns sand into soil, and crops beside it count as watered. In the campaign the swale stays locked until found; its art comes from a real canal.
 
@@ -1099,7 +1138,7 @@ A water-fed canal improves the land: a swale turns sand into soil, and crops bes
 
 **Not built yet in this feature:** the swale being locked in the campaign until found; crops beside a filled canal counting as watered
 
-### 85. Panning and the sluice box - built, not yet seen
+### 87. Panning and the sluice box - built, not yet seen
 
 Pan a river for gold, or set a sluice box to sift ore from a stream
 
@@ -1112,7 +1151,7 @@ Pan a river for gold, or set a sluice box to sift ore from a stream
 
 **Look for:** weak spot: ore on the water end; compare with map R, where the river is real
 
-### 86. Every mechanic has a switch - built, not yet seen
+### 88. Every mechanic has a switch - built, not yet seen
 
 Every mechanic can be switched off in Mod Settings, and with everything off the mod still digs dry canals
 
@@ -1127,7 +1166,7 @@ Every mechanic can be switched off in Mod Settings, and with everything off the 
 
 ## 9 · Rivers: the bank works as they look (they work on map R)
 
-### 87. Ford stones (look) - built, not yet seen
+### 89. Ford stones (look) - built, not yet seen
 
 Ford stones (look)
 
@@ -1139,7 +1178,7 @@ Ford stones (look)
 
 **Look for:** weak spot: stones that read as dry ground; a seam at the stones' edge
 
-### 88. Bank works (look) - partly built
+### 90. Bank works (look) - partly built
 
 Bank works (look)
 

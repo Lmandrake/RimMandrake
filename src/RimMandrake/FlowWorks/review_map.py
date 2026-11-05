@@ -823,6 +823,20 @@ SETUPS = {
                         try_=["select a pipe: Choose style, for one pipe or its whole run"],
                         look="weak spot: the tees (middle of the bottom run and the third run up) breaking the joins; a run that changes "
                              "look half way"),
+    # SCRAPPER_PIPE_REDRAW_VERDIGRIS_DASH_RHYTHM (owner by card 2026-10-25: "add a 20+ cell straight scrapper-pipe run to
+    # the review map; he judges it at the next game-up"): a 16-wide station holds only 12-cell runs, where the verdigris
+    # dash cadence and the per-cell repeat never show, so this station is PINNED below the gallery grid (`at`, `size`)
+    # with a 26-cell Scrapper run over a 26-cell Industrial run to compare against. No tee, no bend: a pure straight.
+    "pipe_long_run": dict(short="Scrapper pipe, long straight run", notice="a 26-cell straight scrapper pipe (top) over a "
+                          "26-cell industrial pipe (bottom)", s="carry", at=(48, 12), size=(30, 8),
+                          probes=["xml:defName>RM_UniversalPipe_Scrapper<", "tex:Pipe/Scrapper"],
+                          build=[("RM_UniversalPipe", x, z, None, None) for z in (2, 5) for x in range(2, 28)],
+                          style=[("RM_UniversalPipe", x, z, "RM_UniversalPipe_" + lk) for z, lk in
+                                 ((5, "Scrapper"), (2, "Industrial")) for x in range(2, 28)],
+                          marks=[(0, 5, "scrapper"), (0, 2, "industrial")],
+                          try_=["zoom in on the top run and pan along it, then compare the industrial run below"],
+                          look="weak spot: the green verdigris dashes reading as an even, woven or candy-stripe rhythm "
+                               "instead of random patina; the same patch repeating every cell"),
     "pipe_adapter": dict(short="Pipe-net adapters", notice="the chemfuel and propane adapters next to a tank", s="carry",
                          after="pipe_styles", caps=["K10"], needs_def="RM_PipeAdapter_Chemfuel",
                          build=[("RM_LiquidTank", 1, 6, None, None), ("RM_PipeAdapter_Chemfuel", 6, 6, None, None),
@@ -1010,6 +1024,8 @@ def feature_order(m):
     by["flow"] = [i for i in by["flow"] if i in FIRST] + [i for i in by["flow"] if i not in FIRST]
     by["rivers"] = []
     for k, v in extras().items():               # an extra sits right after its `after` (neighbours differ in one thing)
+        if v.get("at"):                         # pinned outside the grid: station_list appends it after the grid
+            continue
         lst = by.setdefault(v["s"], [])
         a = v.get("after")
         lst.insert(lst.index(a) + 1 if a in lst else len(lst), k)
@@ -1046,6 +1062,24 @@ def station_list(m=None, st=None, capd=None, rows=None):
     S = []
     n = 0
     j = 0
+
+    def station(n, fid, sec, rname, origin, size):
+        setup = SETUPS.get(fid, {})
+        if fid in feats:
+            f = feats[fid]
+            status = st[fid]
+            title = f["title"]
+            say = f.get("say", "")
+            missing = missing_parts(m, f, capd)
+        else:
+            status, missing = extra_status(m, setup, capd, rows)
+            title = setup["short"]
+            say = ""
+        return dict(n=n, id=fid, section=sec, section_name=sec_name.get(sec, sec), row=rname, origin=origin,
+                    size=size, status=status, title=title, say=say, missing=missing,
+                    short=setup.get("short", fid), notice=setup.get("notice", ""), try_=setup.get("try_", []),
+                    look=setup.get("look", ""), setup=setup, placeholder=(status == "not"))
+
     for rname, secs in ROWS:
         ids = [(s, i) for s in secs for i in by.get(s, [])]
         i = 0
@@ -1056,29 +1090,24 @@ def station_list(m=None, st=None, capd=None, rows=None):
                 j += 1
                 i = 0
                 continue
-            if any(_overlap(rect, r, 2) for r in RESERVED + [VIS_RECT]):
+            if any(_overlap(rect, r, 2) for r in RESERVED + [VIS_RECT] + pinned_rects()):
                 i += 1
                 continue
             sec, fid = ids.pop(0)
             n += 1
-            setup = SETUPS.get(fid, {})
-            if fid in feats:
-                f = feats[fid]
-                status = st[fid]
-                title = f["title"]
-                say = f.get("say", "")
-                missing = missing_parts(m, f, capd)
-            else:
-                status, missing = extra_status(m, setup, capd, rows)
-                title = setup["short"]
-                say = ""
-            S.append(dict(n=n, id=fid, section=sec, section_name=sec_name.get(sec, sec), row=rname, origin=(x, z),
-                          size=(SW, SH), status=status, title=title, say=say, missing=missing,
-                          short=setup.get("short", fid), notice=setup.get("notice", ""), try_=setup.get("try_", []),
-                          look=setup.get("look", ""), setup=setup, placeholder=(status == "not")))
+            S.append(station(n, fid, sec, rname, (x, z), (SW, SH)))
             i += 1
         j += 1
+    for fid, setup in extras().items():        # pinned stations (setup `at` + `size`) are numbered after the grid
+        if setup.get("at"):
+            n += 1
+            S.append(station(n, fid, setup["s"], None, tuple(setup["at"]), tuple(setup["size"])))
     return S
+
+
+def pinned_rects():
+    """Footprints of the stations a setup pins outside the gallery grid (`at` origin, `size` footprint)."""
+    return [tuple(v["at"]) + tuple(v["size"]) for v in extras().values() if v.get("at")]
 
 
 # ------------------------------------------------------------------------------------------------ visuals block
@@ -1162,8 +1191,9 @@ def layout_check(S, doc=None):
         cells += [(r[2], r[3]) for r in u.get("items", [])] + [(r[1], r[2]) for r in u.get("pawns", [])]
         cells += [(r[0], r[1]) for r in u.get("beds", [])] + [(r[0], r[1]) for r in u.get("marks", [])]
         for c in cells:
-            if not (0 <= c[1] < SH and (0 <= c[0] < SW or (u.get("west_edge") and c[0] < SW))):
-                probs.append("station %d (%s): cell %s outside its %dx%d footprint" % (s["n"], s["id"], c, SW, SH))
+            sw, sh = s["size"]
+            if not (0 <= c[1] < sh and (0 <= c[0] < sw or (u.get("west_edge") and c[0] < sw))):
+                probs.append("station %d (%s): cell %s outside its %dx%d footprint" % (s["n"], s["id"], c, sw, sh))
             if s["origin"][0] + c[0] < 0:
                 probs.append("station %d: cell %s off the map" % (s["n"], c))
         if not u.get("west_edge"):
@@ -1229,11 +1259,12 @@ def label_ops(S, st, doc, m=None):
         add(vx + vw // 2, vz + vh // 2, "VISUALS PENDING", "review_map_stations_visuals.json not found", RUST)
     rows_seen = {}
     for s in S:
-        rows_seen.setdefault(s["row"], s)
+        if s["row"]:                            # a pinned station (setup `at`) has no gallery row header
+            rows_seen.setdefault(s["row"], s)
     for rname, first in rows_seen.items():
         secs = sorted({s["section_name"] for s in S if s["row"] == rname}, key=lambda t: t)
         nums = [s["n"] for s in S if s["row"] == rname]
-        add(GX0 - 7, first["origin"][1] + SH + 3, "   +   ".join(x.upper() for x in secs),
+        add(GX0 - 7, first["origin"][1] + first["size"][1] + 3, "   +   ".join(x.upper() for x in secs),
             "stations %d-%d" % (min(nums), max(nums)), TEAL, "small")
     for s in S:
         x, z = s["origin"]
@@ -1243,14 +1274,14 @@ def label_ops(S, st, doc, m=None):
         # the weak spot under the status word; zoomed out only the status word draws (modcheck/reviewmap)
         sign = STATUS_WORD[s["status"]] if s["placeholder"] else RM.weak_spot_sign(
             STATUS_WORD[s["status"]], "", (s["try_"] or [""])[0], s["look"])
-        add(x + SW // 2, z + SH + 1, "%d  %s" % (s["n"], s["short"]), sign, col[s["status"]], "small")
+        add(x + s["size"][0] // 2, z + s["size"][1] + 1, "%d  %s" % (s["n"], s["short"]), sign, col[s["status"]], "small")
         low = ("NOT BUILT yet: " + (s["say"] or s["title"])) if s["placeholder"] else s["notice"]
         if low:
             # owner walk 2026-10-16: seen from the next row up, these lines floated with no number ("two stations with
             # no numbers and nothing built"); the number card is north of the body, this line south of it. So every
             # line carries its station's number.
             for k, part in enumerate(wrap(low, 46)[:3]):
-                add(x + SW // 2, z - 1 - k, "%d: %s" % (s["n"], part), "", CREAM, "tiny")
+                add(x + s["size"][0] // 2, z - 1 - k, "%d: %s" % (s["n"], part), "", CREAM, "tiny")
         for dx, dz, text in s["setup"].get("marks", []):
             add(x + dx, z + dz, text, "", RUST, "tiny")
     fx, fz, fw, fh = FREE["rect"]
@@ -1303,7 +1334,7 @@ def sign_ops(S, doc=None):
         if s["placeholder"]:
             continue
         x, z = s["origin"]
-        L.append(RM.sign_book(x, z + SH, s["n"], s["short"], "%s. %s" % (STATUS_WORD[s["status"]], s["notice"]),
+        L.append(RM.sign_book(x, z + s["size"][1], s["n"], s["short"], "%s. %s" % (STATUS_WORD[s["status"]], s["notice"]),
                               "", (s["try_"] or [""])[0], RM.weak_decide(s["look"]),
                               more="Key sheet: station %d." % s["n"]))
     return L
@@ -1411,14 +1442,14 @@ class Review(object):
         if only in (None, "visuals"):
             out.append(VIS_RECT)
         if only in (None, "gallery"):
-            out += [(s["origin"][0] - 2, s["origin"][1] - 1, SW + 4, SH + 3) for s in S]
+            out += [(s["origin"][0] - 2, s["origin"][1] - 1, s["size"][0] + 4, s["size"][1] + 3) for s in S]
             for s in S:
                 if s["setup"].get("west_edge"):
-                    out.append((0, s["origin"][1], s["origin"][0], SH))
+                    out.append((0, s["origin"][1], s["origin"][0], s["size"][1]))
                 # a reel's hose leaves through its WEST outlet: the straight lead-out needs open, unfogged ground in the
                 # gap west of the station (2026-10-16: natural rock there refused two of station 63's three lays)
                 if any(s["setup"].get(k) for k in ("hose", "hose_order", "hose_trail")):
-                    out.append((s["origin"][0] - (PITCH_X - SW), s["origin"][1] - 1, PITCH_X - SW, SH + 3))
+                    out.append((s["origin"][0] - (PITCH_X - SW), s["origin"][1] - 1, PITCH_X - SW, s["size"][1] + 3))
         return out
 
     def held_rects(self, S, only):
@@ -1793,7 +1824,7 @@ class Review(object):
                               hostFaction="PlayerColony")
 
     def keep_rects(self, S):
-        return [(s["origin"][0] - 1, s["origin"][1] - 1, SW + 2, SH + 2) for s in S if s["setup"].get("keep")]
+        return [(s["origin"][0] - 1, s["origin"][1] - 1, s["size"][0] + 2, s["size"][1] + 2) for s in S if s["setup"].get("keep")]
 
     def verify_gallery(self, S):
         """Per station: dug cells and their depths as specified, buildings present (list_things in the footprint), the
@@ -1802,6 +1833,7 @@ class Review(object):
         ok = unread = 0
         for s in S:
             ox, oz = s["origin"]
+            sw, sh = s["size"]
             u = s["setup"]
             want = {}
             for x, z, w, h, d in ([] if s["placeholder"] else u.get("dig", [])):
@@ -1809,12 +1841,12 @@ class Review(object):
                     for j in range(h):
                         if 0 <= ox + x + i:
                             want[(ox + x + i, oz + z + j)] = d
-            ex = B.call("jawa/flowworks_excavation_rect", x=ox, z=oz, w=SW, h=SH, onlyNonZero=True, includeTerrain=False)
+            ex = B.call("jawa/flowworks_excavation_rect", x=ox, z=oz, w=sw, h=sh, onlyNonZero=True, includeTerrain=False)
             got = {(c["x"], c["z"]): c.get("d") for c in ex.get("rows") or [] if c.get("isExcavated")}
-            dig_ok = all(got.get(c) == d for c, d in want.items() if ox <= c[0] < ox + SW)
-            things = B.call("jawa/list_things", rect="%d,%d,%d,%d" % (ox, oz, SW, SH), limit=300).get("things") or []
+            dig_ok = all(got.get(c) == d for c, d in want.items() if ox <= c[0] < ox + sw)
+            things = B.call("jawa/list_things", rect="%d,%d,%d,%d" % (ox, oz, sw, sh), limit=300).get("things") or []
             miss = RV.missing_defs(u.get("build", []) + u.get("spawn", []) if not s["placeholder"] else [], things)
-            pw = B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % (ox, oz, SW, SH), limit=50).get("pawns") or []
+            pw = B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % (ox, oz, sw, sh), limit=50).get("pawns") or []
             want_kinds = [r[0] for r in u.get("pawns", [])] if not s["placeholder"] else []
             got_kinds = [q.get("kind") or q.get("kindDef") for q in pw]
             good = gallery_verdict(s["placeholder"] or s.get("absent", False), dig_ok, miss, want_kinds, got_kinds)
@@ -1857,7 +1889,7 @@ class Review(object):
             if s is None:
                 raise SystemExit("--goto %s: unknown station; valid: V, F, S0, M, %s" % (
                     which, ", ".join(str(s["n"]) for s in S)))
-            x, z, ww, h = s["origin"][0] - 2, s["origin"][1] - 2, SW + 4, SH + 5
+            x, z, ww, h = s["origin"][0] - 2, s["origin"][1] - 2, s["size"][0] + 4, s["size"][1] + 5
         return self.B.call("rimworld/frame_cell_rect", x=x, z=z, width=ww, height=h, paddingCells=2)
 
 
