@@ -1,0 +1,1 @@
+selftest_flowworks_stock.py --only 'Drawbridge_*' ran silent past 530 s (build ok, run never printed); narrower filters ('Drawbridge_Cables_*,Drawbridge_BaseAnchors_*') finish in about a minute. Filter the C# SelfTest to the cases you touched.
