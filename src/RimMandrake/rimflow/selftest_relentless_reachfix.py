@@ -228,6 +228,20 @@ def t_every_waiter_released():
     x.tick()
     ok(x.st("I2")["status"] in ("candidate", "checking"), "(4) an orphan on a passed class is released: %s"
        % x.st("I2")["status"])
+    book = RF.load(x.s)            # an orphan on an open repair joins its waiters
+    book["git"] = dict(book["git"], status="probe", owner="I0", waiters=[])
+    RF.save(x.s, book)
+    with x.s.lock():
+        st = x.st("I0")
+        st.update(status="blocked", wait={"kind": RF.WAIT, "on": "I0", "class": "git"})
+        x.s.save(st)
+        st = x.st("I1")
+        st.update(status="blocked", wait={"kind": RF.WAIT, "on": "I1", "class": "git"})
+        x.s.save(st)
+    x.w.probe_says = (False, "UNREADABLE")
+    x.tick()
+    ok("I1" in RF.load(x.s)["git"]["waiters"] and x.st("I1")["status"] == "blocked",
+       "(3) an orphan on an open repair joins its waiters: %s" % RF.load(x.s)["git"])
     x.done()
 
 

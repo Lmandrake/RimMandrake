@@ -315,15 +315,34 @@ def release_waiter(store, fx, item, name, now, iso, prop=None, owner=None):
 
 
 def orphans(store, fx, book, now, acts, iso):
-    """A reach-blocked item whose class repair already passed and that nobody will release (its owner is gone, or it
-    was promoted to a probe the book does not hold): it gets that class's passed overlay. -> the ids moved."""
+    """A reach-blocked item the book does not hold (promoted to a probe the book lost, or waiting on a finished owner):
+    on a class whose repair is open it joins that repair's waiters; on one that passed it gets the passed overlay.
+    -> the ids moved."""
     moved = []
     for st in store.states():
         w = st.get("wait") or {}
         if st["status"] != "blocked" or w.get("kind") != WAIT:
             continue
         ent = book.get(w.get("class")) or {}
-        if ent.get("status") != "ok" or ent.get("owner") == st["item"] or st["item"] in (ent.get("waiters") or []):
+        if ent.get("owner") == st["item"] or st["item"] in (ent.get("waiters") or []):
+            continue
+        if ent.get("status") in ("probe", "ticket", "failed") and ent.get("owner"):
+            on = ent["ticket"] if ent.get("status") == "ticket" and ent.get("ticket") else ent["owner"]
+            with store.lock():
+                cur = store.load(st["item"])
+                if cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
+                    continue
+                cur["wait"] = dict(cur["wait"], on=on, attributed_at=now)
+                cur["reach"] = dict(cur.get("reach") or {}, status="ticket" if on != ent["owner"] else "waiting")
+                cur["block_pending"] = {"kind": "item", "on": [on], "class": "reach",
+                                        "detail": "waits on the %s reach repair owned by %s" % (w["class"], ent["owner"])}
+                store.save(cur)
+            ent.setdefault("waiters", []).append(st["item"])
+            save(store, book)
+            moved.append(st["item"])
+            acts.append({"do": "reach_orphan_waits", "item": st["item"], "class": w["class"], "on": on})
+            continue
+        if ent.get("status") != "ok":
             continue
         last = store.load(ent["last_owner"]) if ent.get("last_owner") else None
         prop = ((last or {}).get("reach") or {}).get("proposal")
