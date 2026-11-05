@@ -59,6 +59,38 @@ def main():
         check(excl not in eff, "an importer in TARGET_EXCLUDE stays out")
         hand = list(M.TARGETS["role_launch"][1])
         check(eff[:len(hand)] == hand and len(eff) == len(set(eff)), "hand list first, no duplicates")
+
+    # the worker that runs each mutant's tests (cmd_runtests) and its per-clone cache use the effective list, and
+    # changed_targets re-mutates a target when only an auto-wired importer changed (blind check at 9d951ce8a0 swapped
+    # cmd_runtests back to the hand list and the direct tests_for checks above stayed green)
+    import json
+    import types
+    cwd = os.getcwd()
+    with tempfile.TemporaryDirectory() as td:
+        d = os.path.join(td, "src", "RimMandrake", "rimflow")
+        os.makedirs(d)
+        planted = "src/RimMandrake/rimflow/selftest_planted_runner.py"
+        open(os.path.join(td, planted), "w").write(
+            "import sys\ntry:\n    import role_launch\nexcept ImportError:\n    pass\n"
+            "open('planted_ran.txt', 'a').write('x')\nsys.exit(1)\n")
+        os.chdir(td)
+        try:
+            rc = M.cmd_runtests(types.SimpleNamespace(target="role_launch", timeout=60))
+            ran = os.path.exists("planted_ran.txt")
+            cache = ".mut-tests-role_launch.json"
+            cached = json.load(open(cache)) if os.path.exists(cache) else []
+        finally:
+            os.chdir(cwd)
+        check(ran, "cmd_runtests runs the planted importer against the mutant")
+        check(rc == 1, "cmd_runtests reports the planted importer's failure (rc=%r)" % rc)
+        check(planted in cached, "the per-clone .mut-tests cache holds the planted importer")
+        real_sh = M.sh
+        M.sh = lambda argv, cwd=None, **k: planted + "\n"
+        try:
+            ch = M.changed_targets("deadbeef", td)
+        finally:
+            M.sh = real_sh
+        check("role_launch" in ch, "changed_targets re-mutates role_launch when only its auto-wired importer changed")
     if FAILS:
         print("%d failure(s)" % len(FAILS))
         return 1
