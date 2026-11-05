@@ -66,6 +66,71 @@ for clause, (ok, muts) in PINS.items():
         got = P.verdict(clause, wrap(ok.replace(old, new)))
         check(got[0] == 1, "%s passed with %s %s (want %s): %s" % (clause, key, bad, good, got))
 
+# A4 walk against a fake bridge (gen 8; the gen 5/6 attribution): the no-cut FAIL must need a vetted colonist AND
+# >= 4000 MEASURED game ticks. A proof that counts requested ticks, or ignores unforcedJob/awake, goes red here.
+D_OK = ("DESIGNATED 150,159 | designatable True (after 0 ticks) | colonist Ava | unforcedJob True | awake True"
+        " | curJob Wait_Wander")
+D_OLD = "DESIGNATED 150,159 | designatable True (after 0 ticks) | colonist Ava"  # the 097710e DLL's reply
+
+
+class FakeRB:
+    """A game: step_game_ticks advances TicksGame by min(asked, deliver) + extra; a colonist cuts the anchor at cut_at."""
+
+    def __init__(self, designate=D_OK, deliver=500, cut_at=None, clock=True, read_ok=True, extra=0):
+        self.t, self.t0, self.deliver, self.cut_at, self.clock, self.extra = 1000, 1000, deliver, cut_at, clock, extra
+        self.designate, self.read_ok, self.asked = designate, read_ok, []
+
+    def call(self, name, args):
+        if name == "rimworld/step_game_ticks":
+            self.asked.append(args["ticks"])
+            self.t += min(args["ticks"], self.deliver) + self.extra
+            return {"success": True}
+        if name == "jawa/time_clock":
+            return {"success": True, "ticksGame": self.t} if self.clock else {"success": False, "error": "no game"}
+        if args["method"] == "ProofHarvestDesignate":
+            return {"success": True, "result": self.designate}
+        cut = self.cut_at is not None and self.t - self.t0 >= self.cut_at
+        y = "3" if self.read_ok else "0"
+        return {"success": True, "result": "READ nodePresent %s | weaveNear %s | lastYield %s"
+                % (not cut, y if cut else "0", y if cut else "0")}
+
+
+def a4(**kw):
+    rb = FakeRB(**kw)
+    return P.run("A4", rb, None), rb
+
+
+WALK = [  # (fake game, want exit code, what it shows)
+    (dict(cut_at=1500), 0, "a vetted colonist cuts it at 1500 measured ticks: PASS"),
+    (dict(cut_at=None), 1, "4000 measured ticks, vetted colonist, no cut: FAIL (the mod route)"),
+    (dict(cut_at=1500, read_ok=False), 1, "cut but no Hyperweave on the ground: FAIL"),
+    (dict(cut_at=None, deliver=50), 2, "step_game_ticks under-delivers (50/500): a no-cut is UNMEASURED, not FAIL"),
+    (dict(cut_at=None, deliver=0), 2, "the clock never moves: UNMEASURED"),
+    (dict(cut_at=None, clock=False), 2, "no ticksGame: UNMEASURED"),
+    (dict(cut_at=4500, extra=4500), 2, "cut seen only after an over-delivered 5000 ticks: within-4000 unproven"),
+    (dict(designate=D_OLD, cut_at=None), 2, "a DLL that does not vet the colonist: UNMEASURED"),
+    (dict(designate=D_OK.replace("awake True", "awake False"), cut_at=None), 2, "asleep colonist: UNMEASURED (SITE)"),
+    (dict(designate=D_OK.replace("unforcedJob True", "unforcedJob False"), cut_at=1500), 1,
+     "WorkGiver_Deconstruct refuses an unforced job to a vetted colonist: FAIL even if something else cut it"),
+    (dict(designate=D_OK.replace("designatable True", "designatable False")), 1, "designator refused: FAIL"),
+]
+for kw, want, what in WALK:
+    (code, why), rb = a4(**kw)
+    check(code == want, "A4 walk %s: got %d want %d: %s" % (what, code, want, why[:200]))
+# an UNMEASURED must name its own cause, so one guard cannot stand in silently for another
+REASON = [(dict(designate=D_OLD), "predates the colonist vetting"), (dict(clock=False), "gave no ticksGame"),
+          (dict(designate=D_OK.replace("awake True", "awake False")), "not awake"),
+          (dict(deliver=50), "ran only"), (dict(cut_at=4500, extra=4500), "within-limit unproven")]
+for kw, want in REASON:
+    (code, why), rb = a4(**kw)
+    check(code == 2 and want in why, "A4 UNMEASURED %s does not say %r: %s" % (kw, want, why[:200]))
+(code, why), rb = a4(cut_at=None, deliver=50)
+check(rb.t - rb.t0 < P.WALK_MAX and "measured" in why, "under-delivery walk did not report its measured ticks: " + why)
+(code, why), rb = a4(cut_at=None)
+check(sum(rb.asked) == P.WALK_MAX and rb.t - rb.t0 == P.WALK_MAX, "full walk asked %s ticks, ran %d"
+      % (sum(rb.asked), rb.t - rb.t0))
+check("4000 measured ticks" in why and "curJob" in why, "A4 FAIL does not carry the ticks and colonist state: " + why)
+
 loaded = wrap("REFUSED: no current map")
 log = "RimWorld 1.6.4633 rev1261\nLoading mandrake.rm.webwork\n"
 check(P.log_verdict(log, loaded)[0] == 0, "clean log not passed")
