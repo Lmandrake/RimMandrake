@@ -449,7 +449,7 @@ def main():
         ok, errs = run_cycle(d, repo, "run21")
         put(d, "exam.json", dict(exam, inputs=DS.inputs(d, DS.load_state(d), repo.root)))
         ok2, errs2 = run_cycle(d, repo, "run22")
-        CT.gate = lambda dd, rr=None, ff=None: (["no Arbiter coverage signature"], [])
+        CT.gate = lambda dd, rr=None, ff=None: (["no coverage signature"], [])
         ok3, errs3 = run_cycle(d, repo, "run23")
         check("stage 5: done with a failing gate is refused", ok and ok2 and not ok3
               and any("gate:" in e for e in errs3), (errs, errs2, errs3))

@@ -1747,6 +1747,9 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 act(do="alarm", kind="role:%s:stage_refused" % name, ticket=job["item"], note=True,
                     why="%s run-now on %s REFUSED by designer_stage: %s" % (name, concept, str(e)[:300]))
                 return
+            pre = (obs.get("coverage_pre") or coverage_pre)(concept)
+            if pre:
+                job = dict(job, pre_launch=pre)
         # built before anything is consumed: a raise here leaves the slot due (review V, V7)
         message = prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"] or 0, factor, spent, unit,
                          rows=job.get("rows"))
@@ -2081,6 +2084,20 @@ def stage_open(concept, unit, budget, commit=False, sync=True):
         if notes:
             raise DS.Refused("%s (judged without a fresh origin: %s)" % (e, "; ".join(notes)))
         raise
+
+
+def coverage_pre(concept):
+    """The pre-launch step of a Designer run on a concept at stage 5: the coverage judge (coverage_judge.py), so the lock
+    run starts signed or with the judge's verdict on file (CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED: nothing used to start
+    the signer). None at any other stage. The step itself is a no-op when already signed or the exam does not pass."""
+    import designer_stage as DS
+    try:
+        st = DS.load_state(concept)
+    except Exception:  # noqa: BLE001 - stage_open already read it; an unreadable state here adds no step
+        return None
+    if st.get("stage") != 5 or st.get("status") == "locked":
+        return None
+    return [["python3", "src/RimMandrake/rimflow/coverage_judge.py", "run", concept]]
 
 
 def stage_close(concept, unit, tokens, sync=True):

@@ -113,7 +113,8 @@ def stage(tmp, dry=False):
     return repo, d
 
 
-ARB_UNIT = "rm-role-arbiter-1793559668"
+ARB_UNIT = "rm-coverage-judge-1793559668"
+LEGACY_UNIT = "rm-role-arbiter-1793559668"   # the retired Arbiter: its recorded signatures stay valid
 
 
 def fake_note(repo, item, text, unit=None):
@@ -130,8 +131,8 @@ def fake_note(repo, item, text, unit=None):
 
 
 def ledger_cases(repo, d):
-    """CONCEPT_COVERAGE_HARDEN_SIGNED_ON_LEDGER: the stamp in tree.json is not enough; the Arbiter's note must be on
-    the ledger, on this tree and this sheet, from an Arbiter role run. Leaves the tree signed and the ledger matching."""
+    """CONCEPT_COVERAGE_HARDEN_SIGNED_ON_LEDGER: the stamp in tree.json is not enough; the coverage judge's note must be
+    on the ledger, on this tree and this sheet, from a coverage judge run. Leaves the tree signed and the ledger matching."""
     signed = CT.load(d)
     shard = os.path.join(repo, CT.LEDGER_DIR, "events", "BENCH.jsonl")
     with open(shard, encoding="utf-8") as f:
@@ -142,27 +143,27 @@ def ledger_cases(repo, d):
     check("the stamp names the ledger item", signed["coverage"].get("ledger_item") == "FOO_CONCEPT_ITEM", signed["coverage"])
     os.remove(shard)
     errs, _ = CT.gate(d, repo)
-    check("ledger: a forged stamp (no ledger event) is refused", errs == ["no Arbiter signature on the ledger"], errs)
+    check("ledger: a forged stamp (no ledger event) is refused", errs == ["no coverage signature on the ledger"], errs)
     fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed), unit="rm-relentless-work-abc-g1")
     errs, _ = CT.gate(d, repo)
-    check("ledger: a note from a non-Arbiter run is refused", any("not written by an Arbiter" in e for e in errs), errs)
+    check("ledger: a note from a non-judge run is refused", any("not written by a CoverageJudge run" in e for e in errs), errs)
     os.remove(shard)
     fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed), unit="")
     errs, _ = CT.gate(d, repo)
-    check("ledger: a note with no role stamp is refused", any("not written by an Arbiter" in e for e in errs), errs)
+    check("ledger: a note with no role stamp is refused", any("not written by a CoverageJudge run" in e for e in errs), errs)
     os.remove(shard)
-    fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed), unit="rm-role-arbiter-12x")
-    check("ledger: a near-miss unit is not the Arbiter's", any("not written by an Arbiter" in e for e in CT.gate(d, repo)[0]))
+    fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed), unit="rm-coverage-judge-12x")
+    check("ledger: a near-miss unit is not the judge's", any("not written by a CoverageJudge run" in e for e in CT.gate(d, repo)[0]))
     os.remove(shard)
     fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed).replace("tree=", "tree=0"), unit=ARB_UNIT)
     errs, _ = CT.gate(d, repo)
-    check("ledger: an Arbiter note on another tree hash is refused", errs == ["the ledger signature is on another tree or sheet"],
+    check("ledger: a judge note on another tree hash is refused", errs == ["the ledger signature is on another tree or sheet"],
           errs)
     os.remove(shard)
     sig = CT.signature_text(d, repo, signed)
     fake_note(repo, "FOO_CONCEPT_ITEM", re.sub(r"sheet=\S+", "sheet=" + "0" * 64, sig), unit=ARB_UNIT)
     errs, _ = CT.gate(d, repo)
-    check("ledger: an Arbiter note on this tree but another sheet is refused",
+    check("ledger: a judge note on this tree but another sheet is refused",
           errs == ["the ledger signature is on another tree or sheet"], errs)
     os.remove(shard)
     with open(shard, "a", encoding="utf-8") as f:
@@ -170,7 +171,7 @@ def ledger_cases(repo, d):
         f.write(json.dumps({"seat": "BENCH", "event": "file", "id": "FOO_CONCEPT_ITEM", "text": sig,
                             "role_unit": ARB_UNIT, "tsn": 1}) + "\n")
     errs, _ = CT.gate(d, repo)
-    check("ledger: a bad line and a non-note event sign nothing", errs == ["no Arbiter signature on the ledger"], errs)
+    check("ledger: a bad line and a non-note event sign nothing", errs == ["no coverage signature on the ledger"], errs)
     with open(shard, "w", encoding="utf-8") as f:
         f.write(real)
     check("ledger restored: gate passes", CT.gate(d, repo)[0] == [], CT.gate(d, repo)[0])
@@ -180,33 +181,51 @@ def ledger_cases(repo, d):
     os.rename(rolled, shard)
     stray = os.path.join(repo, CT.LEDGER_DIR, "scratch.jsonl")
     os.rename(shard, stray)
-    check("ledger: a stray .jsonl outside events/ signs nothing", CT.gate(d, repo)[0] == ["no Arbiter signature on the ledger"],
+    check("ledger: a stray .jsonl outside events/ signs nothing", CT.gate(d, repo)[0] == ["no coverage signature on the ledger"],
           CT.gate(d, repo)[0])
     os.rename(stray, os.path.join(repo, CT.LEDGER_DIR, "events.jsonl"))
     check("ledger: the frozen events.jsonl counts", CT.gate(d, repo)[0] == [], CT.gate(d, repo)[0])
     os.rename(os.path.join(repo, CT.LEDGER_DIR, "events.jsonl"), shard)
-    # sign itself: refuses any writer but an Arbiter run, writes nothing when the ledger write fails
+    # sign itself: refuses any writer but a coverage judge run, writes nothing when the ledger write fails
     before = open(os.path.join(d, "tree.json"), "rb").read()
     saved = os.environ.get("RM_ROLE_UNIT")
     os.environ["RM_ROLE_UNIT"] = "rm-relentless-work-abc-g1"
-    check("sign: refused outside an Arbiter role run", any("Arbiter role run" in e for e in CT.sign(d, "Arbiter", repo)))
+    check("sign: refused outside a coverage judge run", any("coverage judge run" in e for e in CT.sign(d, "CoverageJudge", repo)))
     os.environ.pop("RM_ROLE_UNIT")
-    check("sign: refused with no role unit", any("Arbiter role run" in e for e in CT.sign(d, "Arbiter", repo)))
+    check("sign: refused with no role unit", any("coverage judge run" in e for e in CT.sign(d, "CoverageJudge", repo)))
     os.environ["RM_ROLE_UNIT"] = saved
-    got = CT.sign(d, "Arbiter", repo, emit=lambda r, i, t: "rimflow note refused (exit 1): boom")
+    got = CT.sign(d, "CoverageJudge", repo, emit=lambda r, i, t: "rimflow note refused (exit 1): boom")
     check("sign: a failed ledger write is the refusal", got == ["rimflow note refused (exit 1): boom"], got)
     check("sign: a failed ledger write leaves tree.json untouched", open(os.path.join(d, "tree.json"), "rb").read() == before)
     sj = os.path.join(d, "stage.json")
     os.rename(sj, sj + ".x")
-    check("sign: no item, no signature", any("no item" in e for e in CT.sign(d, "Arbiter", repo)))
+    check("sign: no item, no signature", any("no item" in e for e in CT.sign(d, "CoverageJudge", repo)))
     seen = []
-    CT.sign(d, "Arbiter", repo, item="GIVEN_ITEM", emit=lambda r, i, t: seen.append(i))
+    CT.sign(d, "CoverageJudge", repo, item="GIVEN_ITEM", emit=lambda r, i, t: seen.append(i))
     check("sign: --item names the item when stage.json has none", seen == ["GIVEN_ITEM"], seen)
     os.rename(sj + ".x", sj)
     with open(shard, "w", encoding="utf-8") as f:
         f.write(real)
     with open(os.path.join(d, "tree.json"), "wb") as f:
         f.write(before)
+    # the retired Arbiter's recorded signature (FlowWorks, 2026-11-05) still passes; a judge stamp with an Arbiter
+    # note and an Arbiter stamp with a judge note do not mix
+    legacy = dict(CT.load(d), coverage=dict(CT.load(d)["coverage"], signed_by="Arbiter"))
+    CT.put(d, legacy)
+    os.remove(shard)
+    fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, legacy), unit=LEGACY_UNIT)
+    check("legacy: an Arbiter stamp with an Arbiter-run note passes", CT.gate(d, repo)[0] == [], CT.gate(d, repo)[0])
+    os.remove(shard)
+    fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, legacy), unit=ARB_UNIT)
+    check("legacy: an Arbiter stamp with a judge note is refused",
+          any("not written by a Arbiter run" in e for e in CT.gate(d, repo)[0]), CT.gate(d, repo)[0])
+    with open(shard, "w", encoding="utf-8") as f:
+        f.write(real)
+    with open(os.path.join(d, "tree.json"), "wb") as f:
+        f.write(before)
+    check("legacy: a judge-run note satisfies a judge stamp, never an Arbiter stamp",
+          CT.gate(d, repo)[0] == [] and not CT.ledger_signature_problem(d, repo, CT.load(d))
+          and CT.ledger_signature_problem(d, repo, CT.load(d), "Arbiter") is not None)
     check("ledger cases leave the gate passing", CT.gate(d, repo)[0] == [], CT.gate(d, repo)[0])
 
 
@@ -243,8 +262,8 @@ def main():
 
         errs, _ = CT.gate(d, repo)
         check("unsigned tree: gate refuses", any("signature" in e for e in errs), errs)
-        check("only the Arbiter signs", CT.sign(d, "Marker", repo) != [])
-        check("sign", CT.sign(d, "Arbiter", repo, at="2026-11-01T00:00:00Z") == [])
+        check("only the coverage judge signs", CT.sign(d, "Marker", repo) != [] and CT.sign(d, "Arbiter", repo) != [])
+        check("sign", CT.sign(d, "CoverageJudge", repo, at="2026-11-01T00:00:00Z") == [])
         check("sign replaces tree.json whole (no temp left)", not os.path.exists(os.path.join(d, ".tree.json.tmp")))
         errs, _ = CT.gate(d, repo)
         check("positive: gate passes", not errs, errs)
@@ -449,7 +468,7 @@ def main():
             with open(os.path.join(d, "tree.json"), "w", encoding="utf-8") as f:
                 f.write(junk)
             try:
-                got = CT.sign(d, "Arbiter", repo)
+                got = CT.sign(d, "CoverageJudge", repo)
             except Exception as ex:
                 got = "raised %r" % ex
             check("sign: tree.json %s is refused, not raised" % junk, isinstance(got, list) and got != [], got)
@@ -592,7 +611,7 @@ def main():
         got = CT.lint(d, repo)[0]
         check("tree.json as a directory: lint refuses, not raises", any("cannot be read" in e for e in got), got)
         check("tree.json as a directory: gate, sign, hash, askcheck refuse", CT.gate(d, repo)[0] != []
-              and CT.sign(d, "Arbiter", repo) != [] and CT.main(["hash", d]) == 1 and CT.main(["askcheck", d, "q"]) == 1)
+              and CT.sign(d, "CoverageJudge", repo) != [] and CT.main(["hash", d]) == 1 and CT.main(["askcheck", d, "q"]) == 1)
         os.rmdir(tp)
         with open(tp, "wb") as f:
             f.write(keep_tree)
@@ -675,7 +694,7 @@ def main():
         errs = CT.write(d2, dr, repo2, dry=True)
         check("dry: write", not errs, errs)
         check("dry: lint passes", not CT.lint(d2, repo2)[0], CT.lint(d2, repo2)[0])
-        check("dry: never signed", CT.sign(d2, "Arbiter", repo2) != [])
+        check("dry: never signed", CT.sign(d2, "CoverageJudge", repo2) != [])
         errs, _ = CT.gate(d2, repo2)
         check("dry: gate refuses", any("dry walk" in e for e in errs), errs)
         t = CT.load(d2)

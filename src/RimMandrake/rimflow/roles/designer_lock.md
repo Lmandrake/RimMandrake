@@ -9,10 +9,15 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    and 4: `return` to stage 2 with the decision "root validation" rather than rewriting here.
 2. **The artifacts are frozen.** The tree, sheet, scenes and floor are those stage 3 wrote and stage 4 examined; the
    launcher refuses a done result here if any of them changed since.
-3. **The Arbiter signs coverage** against those hashes: `concept_tree.py sign <dir> --by Arbiter [--item ID]`, run
-   inside an Arbiter role run (it refuses any other writer). It writes a `rimflow note` on the concept's item (stage.json
-   `item`) naming the tree and sheet hashes, then the stamp in tree.json; the gate wants both, so commit the ledger shard
-   with tree.json (the signature does not change the tree hash the launcher tracks).
+3. **The coverage judge has signed, or said why not.** You never sign. Before this run started, the launcher ran
+   `coverage_judge.py run <dir>` (role_launch `coverage_pre`): a fresh Opus run that did not make the tree read
+   `designer_scene_contract.md`, this packet and the frozen artifacts and judged coverage; on `covered` the program
+   signed (`concept_tree.py sign <dir> --by CoverageJudge`: a `rimflow note` on the concept's item naming the tree and
+   sheet hashes, then the stamp in tree.json). Its verdict is in `<dir>/coverage_verdict.json`. Signed: commit tree.json
+   and your seat's ledger shard (the gate wants both; the signature does not change the tree hash the launcher tracks).
+   `not_covered`: each gap names `return_to` 3 (yours to fix) or 2 (needs his answer); `return` there with the gaps as
+   the decision. No verdict (an error in the file): `blocked` on the error text. A signature the retired Arbiter already
+   recorded still counts.
 4. **The gate**: `concept_tree.py gate <dir>` passes, and `designer_stage.py showcases <dir>` accepts the showcase set:
    the lock is refused while a record.json inventory capability is exercised by no showcase and no scene, and the
    scenes the set names are rechecked against the scene contract (a scene added since stage 3 is not trusted by id).

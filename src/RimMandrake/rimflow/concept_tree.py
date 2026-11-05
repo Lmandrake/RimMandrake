@@ -5,20 +5,23 @@ Format: design/RimMandrake/relentless_tree_schema_2026-11-01.md. Meaning: concep
 
   write    <dir> --draft d.json [--dry-walk]   stamp hashes, check the shape, write tree.json (clears any signature)
   lint     <dir>                               Gate A: sheet + tree + floor. Exit 0 PASS, 1 REFUSED
-  gate     <dir>                               lint plus: not a dry walk, root VALIDATED at its hash, Arbiter signature on
-                                               this tree hash AND as the Arbiter's ledger event, every waiver in OWNER.jsonl
-  sign     <dir> --by Arbiter [--item ID]      the coverage signature: a `rimflow note` on the concept's item (stage.json
-                                               `item`, or --item) from inside an Arbiter role run, then the stamp in
-                                               tree.json. Refuses a dry walk, a lint failure, and any other writer
+  gate     <dir>                               lint plus: not a dry walk, root VALIDATED at its hash, the coverage judge's
+                                               signature on this tree hash AND as its ledger event, every waiver in OWNER.jsonl
+  sign     <dir> --by CoverageJudge [--item ID] the coverage signature: a `rimflow note` on the concept's item (stage.json
+                                               `item`, or --item) from inside a coverage judge run (coverage_judge.py), then
+                                               the stamp in tree.json. Refuses a dry walk, a lint failure, and any other writer
   askcheck <dir> "question"                    does this question re-raise a waiver? Exit 1 when it may; with no
                                                tree.json yet it prints HISTORY_NOT_CHECKED (exit 0), never "clear"
   hash     <dir>                               tree_hash
 
 Gate B, the Cold Reader exam, is not here: this program checks form, and a perfectly formed tree can be wrong. The
-Arbiter's signature comes after the exam (stage 5), or after `exam_waived` in his words.
+coverage judge's signature comes after the exam (stage 5), or after `exam_waived` in his words. The judge is a fresh
+Opus run that did not make the tree (coverage_judge.py; the role launcher starts it before a Designer stage-5 run).
+The Arbiter role that used to sign is retired (owner 2026-11-05, CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED); a signature
+it already recorded (`Arbiter`, rm-role-arbiter-<n>) is still accepted by the gate, never written again.
 
 The coverage stamp in tree.json is a copy any writer can forge, so the gate also wants the ledger event
-(CONCEPT_COVERAGE_HARDEN_SIGNED_ON_LEDGER): a `note` whose role_unit is an Arbiter role run (rm-role-arbiter-<n>) and
+(CONCEPT_COVERAGE_HARDEN_SIGNED_ON_LEDGER): a `note` whose role_unit is a coverage judge run (rm-coverage-judge-<n>) and
 whose text names this concept, tree hash and sheet hash. The ledger is append-only and committed, so a forged signature
 is an attributable line in git, not a silent edit; RM_ROLE_UNIT is still an environment variable, and a writer who sets
 it by hand forges this too.
@@ -41,7 +44,11 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 FLOOR_FILE = "concept_floor.json"
 OWNER_SHARD = "infrastructure/state/ledger/events/OWNER.jsonl"
 LEDGER_DIR = "infrastructure/state/ledger"
-ARBITER_UNIT = re.compile(r"rm-role-arbiter-[0-9]+")     # role_launch's unit name for an Arbiter run; always fullmatch
+SIGNER = "CoverageJudge"
+JUDGE_UNIT = re.compile(r"rm-coverage-judge-[0-9]+")     # coverage_judge.py's unit name; always fullmatch
+# the retired Arbiter's signatures already on the ledger (FlowWorks, 2026-11-05) stay valid; nothing writes one again
+LEGACY_SIGNERS = {"Arbiter": re.compile(r"rm-role-arbiter-[0-9]+")}
+SIGNER_UNITS = dict(LEGACY_SIGNERS, **{SIGNER: JUDGE_UNIT})
 SIGN_MARK = "coverage-signed"
 DRY_DIR = "_dry_walk"       # a dry walk lives only here, so nobody takes it for a real concept
 SCHEMA = 1
@@ -595,7 +602,7 @@ def concept_rel(d, repo):
 
 
 def signature_text(d, repo, tree):
-    """The one line the Arbiter's ledger note says; the gate wants it byte for byte."""
+    """The one line the signer's ledger note says; the gate wants it byte for byte."""
     return "%s concept=%s tree=%s sheet=%s" % (SIGN_MARK, concept_rel(d, repo), tree_hash(tree), sheet_hash(d) or "none")
 
 
@@ -632,17 +639,30 @@ def ledger_signatures(repo):
     return out
 
 
-def ledger_signature_problem(d, repo, tree):
-    """Why the ledger holds no Arbiter signature for this tree and sheet, or None."""
+def ledger_signature_problem(d, repo, tree, signer=SIGNER):
+    """Why the ledger holds no `signer` signature for this tree and sheet, or None."""
     want, alls = signature_text(d, repo, tree), ledger_signatures(repo)
     evs = [e for e in alls if str(e.get("text")) == want]
     if not evs:
         here = [e for e in alls if (" concept=%s " % concept_rel(d, repo)) in str(e.get("text"))]
-        return "the ledger signature is on another tree or sheet" if here else "no Arbiter signature on the ledger"
-    if not any(isinstance(e.get("role_unit"), str) and ARBITER_UNIT.fullmatch(e["role_unit"]) for e in evs):
-        return "the ledger signature was not written by an Arbiter role run (role_unit %s)" % (
+        return "the ledger signature is on another tree or sheet" if here else "no coverage signature on the ledger"
+    unit_re = SIGNER_UNITS.get(signer, JUDGE_UNIT)
+    if not any(isinstance(e.get("role_unit"), str) and unit_re.fullmatch(e["role_unit"]) for e in evs):
+        return "the ledger signature was not written by a %s run (role_unit %s)" % (signer, 
             ", ".join(sorted({str(e.get("role_unit")) for e in evs})))
     return None
+
+
+def coverage_problem(d, repo, tree):
+    """Why this tree carries no valid coverage signature (stamp and ledger event), or None."""
+    cov = tree.get("coverage") if isinstance(tree.get("coverage"), dict) else {}
+    if cov.get("signed_by") not in SIGNER_UNITS:
+        return "no coverage signature"
+    if cov.get("tree_hash") != tree_hash(tree):
+        return "the signature is on another tree hash"
+    if tree.get("kind") == "mod" and cov.get("sheet_hash") != sheet_hash(d):
+        return "the signature is on another sheet"
+    return ledger_signature_problem(d, repo, tree, cov["signed_by"])
 
 
 def gate(d, repo=REPO, floor_file=None):
@@ -659,17 +679,9 @@ def gate(d, repo=REPO, floor_file=None):
             errs.append("root is not VALIDATED: %s" % (why or state))
         elif tree.get("root_hash") != cur or tree.get("root_state") != "VALIDATED":
             errs.append("tree cites a root hash that is not the walk's")
-    cov = tree.get("coverage") if isinstance(tree.get("coverage"), dict) else {}
-    if cov.get("signed_by") != "Arbiter":
-        errs.append("no Arbiter coverage signature")
-    elif cov.get("tree_hash") != tree_hash(tree):
-        errs.append("the signature is on another tree hash")
-    elif tree.get("kind") == "mod" and cov.get("sheet_hash") != sheet_hash(d):
-        errs.append("the signature is on another sheet")
-    else:
-        why = ledger_signature_problem(d, repo, tree)
-        if why:
-            errs.append(why)
+    why = coverage_problem(d, repo, tree)
+    if why:
+        errs.append(why)
     ev = owner_events(repo)
     for w in [w for w in lst(tree.get("waived")) if isinstance(w, dict)]:
         why = his_words_problem(ev, w.get("ref"), w.get("scope"))
@@ -816,11 +828,11 @@ def rimflow_note(repo, item, text):
 
 def sign(d, by, repo=REPO, at=None, item=None, emit=None):
     """The ledger event first, then the stamp: a failed ledger write leaves tree.json unsigned."""
-    if by != "Arbiter":
-        return ["only the Arbiter signs coverage"]
+    if by != SIGNER:
+        return ["only the coverage judge (%s) signs coverage" % SIGNER]
     unit = os.environ.get("RM_ROLE_UNIT", "")
-    if not ARBITER_UNIT.fullmatch(unit):
-        return ["sign runs inside an Arbiter role run (RM_ROLE_UNIT rm-role-arbiter-<n>), not %r" % unit[:60]]
+    if not JUDGE_UNIT.fullmatch(unit):
+        return ["sign runs inside a coverage judge run (RM_ROLE_UNIT rm-coverage-judge-<n>), not %r" % unit[:60]]
     errs, _fl = lint(d, repo)
     if errs:
         return errs
@@ -831,7 +843,7 @@ def sign(d, by, repo=REPO, at=None, item=None, emit=None):
     if not item:
         return ["no item to sign on: stage.json names none and no --item was given"]
     import time
-    tree["coverage"] = {"signed_by": "Arbiter", "at": at or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    tree["coverage"] = {"signed_by": SIGNER, "at": at or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                         "tree_hash": tree_hash(tree), "sheet_hash": sheet_hash(d), "ledger_item": item}
     why = (emit or rimflow_note)(repo, item, signature_text(d, repo, tree))
     if why:

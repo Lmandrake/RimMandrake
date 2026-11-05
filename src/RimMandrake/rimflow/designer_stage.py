@@ -193,7 +193,7 @@ def _feed_of(u):
 
 def inputs(d, st, repo=REPO):
     """The current hash of every input a stage can depend on (None = absent). tree.json by its tree hash, so the
-    Arbiter's signature (coverage) does not count as a change."""
+    coverage judge's signature (coverage) does not count as a change."""
     try:
         tree = CT.load(d)
         th = CT.tree_hash(tree) if isinstance(tree, dict) else sha_file(os.path.join(d, "tree.json"))

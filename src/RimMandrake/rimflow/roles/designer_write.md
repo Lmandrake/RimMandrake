@@ -71,7 +71,7 @@ leaf: write your candidate line and a reject picture and let him correct them; k
   biomes in scope only, no live flight test without him, our names, superb Mod Settings.
 - Basic checkout covers the canonical supported list. Removal: document its consequences (`save_compat`); executing a
   removal test, and external compatibility, are extended checks that run only when asked.
-- Numeric lines stay advisory until calibrated; calibration is the Arbiter's, per line.
+- Numeric lines stay advisory until calibrated; calibration is the Conductor's, per line, on measured runs.
 
 ## plan.md
 
