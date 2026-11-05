@@ -267,6 +267,25 @@ def main():
        "8: a FAIL verdict does not end the bounce", None)
     ok(OW.churn_why(sg, sg_f + [(t1 + 3700, "game_fail")], NOW, CFG)[:1] == ["3 returns"],
        "8: a failure after the PASS bounces again", OW.churn_why(sg, sg_f + [(t1 + 3700, "game_fail")], NOW, CFG))
+    # OPS_CHURN_DIAGNOSE_ART_XODX_FYLS: ART_OVERRIDE_FAMILY_SCRIPT_1, returns 4, game_env_fix at 06:13Z and 08:17Z (a stale
+    # 'mandrake' remedy from the pre-d262af07 envcause parser), held, then unheld by the Conductor at 15:40Z with the cause
+    # removed; at 15:55Z it re-rang 'bouncing: 4 returns; game_env_fix failed it 2 times' off the failures the unhold resolved
+    art = {"returns": 4, "status": "game"}
+    art_f = [(NOW - 9.7 * HOUR, "game_env_fix"), (NOW - 7.6 * HOUR, "game_env_fix")]
+    art_rows = [{"at": iso(NOW - 9.7 * HOUR), "end": "game_env_fix", "gen": 9}, {"at": iso(NOW - 7.6 * HOUR), "end": "game_env_fix", "gen": 9},
+                {"at": iso(NOW - 0.25 * HOUR), "end": "unhold", "to": "game"}]
+    def why_r(fails, r):      # the pre-fix churn_why takes no resume time: it fails here, never crashes the run
+        try:
+            return OW.churn_why(art, fails, NOW, CFG, 0, r), OW.in_churn(art, fails, NOW, CFG, 0, r)
+        except TypeError as e:
+            return ["TypeError: %s" % e], True
+    art_r = OW.attempts_resumed(art_rows) if hasattr(OW, "attempts_resumed") else None
+    ok(art_r is not None and abs(art_r - (NOW - 0.25 * HOUR)) < 2, "8: the latest unhold row is the resume time", art_r)
+    ok(why_r(art_f, art_r) == ([], False), "8: an unhold after the last failure is no bounce (ART_OVERRIDE_FAMILY_SCRIPT_1)",
+       why_r(art_f, art_r))
+    ok(why_r(art_f + [(NOW - 60, "game_env_fix")], art_r)[0] == ["4 returns", "game_env_fix failed it 3 times"],
+       "8: a failure after the unhold bounces again, with its history", why_r(art_f + [(NOW - 60, "game_env_fix")], art_r))
+    ok(OW.churn_why(art, art_f, NOW, CFG) == ["4 returns", "game_env_fix failed it 2 times"], "8: no unhold, still a bounce", None)
     cfg8 = dict(CFG, item_bands=rules["relentless"]["item_bands"], churn_item_stuck_stages=["game", "checking"],
                 churn_item_new_per_pass=5)
     s8 = TMP / "s8"

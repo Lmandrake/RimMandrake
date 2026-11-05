@@ -1835,7 +1835,7 @@ def collect_marks(env, p):
         st = states.get(item)
         if not st:
             continue
-        unread, fails, waits = list(unread_all), [], 0
+        unread, fails, waits, rows = list(unread_all), [], 0, []
         try:
             for ln in env.read_text("%s/items/%s/attempts.jsonl" % (RELENTLESS_STORE, item)).splitlines():
                 try:
@@ -1843,6 +1843,7 @@ def collect_marks(env, p):
                     f = ops_watch.attempt_failed(r, ok_ends)
                 except ValueError:
                     continue
+                rows.append(r)
                 waits += ops_watch.attempt_waited(r)     # a planned wait is a return, never a bounce
                 if f:
                     fails.append((f[0] or 0, f[1]))
@@ -1851,7 +1852,7 @@ def collect_marks(env, p):
         except OSError as e:
             unread.append("churn UNMEASURED (%s)" % str(e)[:60])
         age = now - done_at[item] if st.get("status") == "done" and item in done_at else None
-        out[item] = item_mark(st, now, bands, age, ops_watch.in_churn(st, fails, now, rl, waits) if fails else False,
+        out[item] = item_mark(st, now, bands, age, ops_watch.in_churn(st, fails, now, rl, waits, ops_watch.attempts_resumed(rows)) if fails else False,
                               (item, st.get("gen")) in hits, item in (ghosts or ()), unread)
     return out
 

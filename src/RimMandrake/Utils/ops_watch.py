@@ -2067,15 +2067,23 @@ def attempt_waited(r):
     return isinstance(r, dict) and isinstance(r.get("gen"), int) and bool(r.get("end")) and r.get("wait") is True
 
 
-def in_churn(st, fails, now, cfg, waits=0):
+def attempts_resumed(rows):
+    """-> epoch of the latest `unhold` ending in an item's attempts rows, or None: the hold's cause was resolved and the item
+    put back, so churn_why counts the failures before it as spent (OPS_CHURN_DIAGNOSE_ART_XODX_FYLS)."""
+    ts = [epoch(r.get("at")) for r in rows if isinstance(r, dict) and r.get("end") == "unhold"]
+    ts = [t for t in ts if is_num(t)]
+    return max(ts) if ts else None
+
+
+def in_churn(st, fails, now, cfg, waits=0, resumed=None):
     """rl_churn's per-item rule, the one churn definition (RUNNING_NOW's row colours read it too): fails is
     [(epoch, class)] of the item's failed attempts; in churn when one is inside churn_window_h and state.json returns >=
     churn_returns or one class failed it churn_same_class times. waits: the item's wait rows (attempt_waited), whose
-    returns state.json counts too and churn does not."""
-    return bool(churn_why(st, fails, now, cfg, waits))
+    returns state.json counts too and churn does not. resumed: attempts_resumed of its rows."""
+    return bool(churn_why(st, fails, now, cfg, waits, resumed))
 
 
-def churn_why(st, fails, now, cfg, waits=0):
+def churn_why(st, fails, now, cfg, waits=0, resumed=None):
     """in_churn's reasons, [] when not in churn. The same-class count is windowed to the event (B7, 2026-11-05): a class
     counts only when it failed the item inside churn_window_h, so an old A,A and a new B is not a same-class repeat; an
     old A and a new A is one (the new failure repeats a known one, however slowly the item bounces)."""
@@ -2089,6 +2097,12 @@ def churn_why(st, fails, now, cfg, waits=0):
         # a blind PASS after the last failed attempt is forward progress, not a bounce: the returns before it are spent
         # (OPS_CHURN_DIAGNOSE_STILLSAND_WDMI_CRMC: STILLSAND_DUNE_GALE_LIVE_1, three returns of three causes, each fixed,
         # blind PASS at 11:36Z and waiting in the game phase, still read 'bouncing: 3 returns'); 'stuck' still speaks
+        return []
+    if is_num(resumed) and all((t or 0) < resumed for t, _ in fails):
+        # an unhold after the last failure is the same: the hold's cause was resolved and the item put back
+        # (OPS_CHURN_DIAGNOSE_ART_XODX_FYLS: ART_OVERRIDE_FAMILY_SCRIPT_1, held on a stale remedy from the pre-d262af07
+        # envcause parser, unheld 15:40Z with it removed, re-rang 15:55Z 'bouncing: 4 returns; game_env_fix failed it 2
+        # times' off the 06:13Z/08:17Z failures the unhold had resolved); a failure after it bounces with its history
         return []
     same = {}
     for _, c in fails:
@@ -2184,7 +2198,7 @@ def churn_item_points(per, now, cfg, spend_known, held="read"):
             # blocked on CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS, read 'unmeasured failed it 4 times; spend rising');
             # a held alarm on it reads 0 and clears, and it is read afresh once it is picked up again
             continue
-        why = ["bouncing: " + "; ".join(r)] if (r := churn_why(st, fails, now, cfg, more[0] if more else 0)) else []
+        why = ["bouncing: " + "; ".join(r)] if (r := churn_why(st, fails, now, cfg, *more[:2])) else []
         spent = st.get("spent") if is_num(st.get("spent")) else 0
         # closing is landing; a put-down item (held, blocked) is sent no run, so its spend is flat, not rising
         # (OPS_CHURN_DIAGNOSE_PIPELINE_NIZE_JOZV: PIPELINE_RENAME_WORKERS_NOW_SWAPPABLE, blocked on reach since 04:02Z with
@@ -2253,7 +2267,7 @@ def rl_churn(store, now, cfg):
     for n in names:
         by_hash[hashlib.sha1(n.encode()).hexdigest()[:10]] = n
         st = read_json(store / "items" / n / "state.json")
-        fails, cur, waits = [], None, 0
+        fails, cur, waits, rows = [], None, 0, []
         try:
             with open(store / "items" / n / "attempts.jsonl", encoding="utf-8") as f:
                 for ln in f:
@@ -2263,6 +2277,7 @@ def rl_churn(store, now, cfg):
                         continue
                     if not isinstance(r, dict):
                         continue
+                    rows.append(r)
                     if not isinstance(r.get("gen"), int):
                         # a gen-less ending (`done` is written without one) belongs to the gen open when it was written
                         if cur is not None and r.get("end") and "kind" not in r:
@@ -2288,10 +2303,10 @@ def rl_churn(store, now, cfg):
             pass        # an item never started has no attempts file
         if not isinstance(st, dict):
             torn += 1
-            per[n] = [None, fails, 0, waits]      # torn: a held alarm on it holds, never clears on a state it cannot read
+            per[n] = [None, fails, 0, waits, attempts_resumed(rows)]      # torn: a held alarm on it holds, never clears on a state it cannot read
             continue
-        per[n] = [st, fails, 0, waits]
-        if in_churn(st, fails, now, cfg, waits):
+        per[n] = [st, fails, 0, waits, attempts_resumed(rows)]
+        if in_churn(st, fails, now, cfg, waits, per[n][4]):
             churn.append((-(st.get("spent") or 0) if is_num(st.get("spent")) else 0, n))
             last = fails[-1][1]
             classes[last] = classes.get(last, 0) + 1
