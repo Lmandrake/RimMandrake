@@ -49,13 +49,13 @@ BLIND = {
     "ssh": "ssh stevedesktop 'df -h'",
     "winbuild": "python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/Stillsand/Source/RM_Stillsand.csproj",
     "an exe": "powershell.exe -Command Get-Date",
-    "seat tmp": "ls /home/mandrake/.seat-tmp/runs",
     "the box's RM_DATA_ROOT": 'test -s "$RM_DATA_ROOT/arena/health.json" && cat ${RM_DATA_ROOT}/arena/x',
     "a subshell": "(cd /home/mandrake/rm/bench && git log -1)",
     "git with options": "git --no-pager log -1 && env X=1 git -c core.x=1 show HEAD",
     "bash -c": "bash -c 'ssh stevedesktop df'",
 }
 SEEN = {
+    "seat tmp, named (MARKER_WALL_FIX_HIDES_ONLY_THE_DIARY: read through)": "ls /home/mandrake/.seat-tmp/runs",
     "relative selftest": "python3 src/RimMandrake/Utils/run_selftests.py --only selftest_relentless_reach.py",
     "relative path with slashes": "grep -q free_bytes infrastructure/state/facts/steve_c_drive_fill_2026-11-03.md",
     "a word git": "python3 src/RimMandrake/rimflow/selftest_git_efficiency.py",
@@ -81,8 +81,8 @@ def t_needs():
     ok(not RR.hidden("/home/mandrake/rm", PROF), "the deny_children root itself is no child")
     ok(not RR.hidden("/home/mandrake/rm/bench/skills/x/SKILL.md", PROF, carved=["/home/mandrake/rm/bench/skills/x"]),
        "a skill target the wall carves out stays readable")
-    ok(RR.needs("cat /home/mandrake/rm/bench/x /home/mandrake/rm/bench/x", PROF) ==
-       ["hidden path: /home/mandrake/rm/bench/x"], "each need once")
+    ok(RR.needs("cat /home/mandrake/rm/dispatch/x /home/mandrake/rm/dispatch/x", PROF) ==
+       ["hidden path: /home/mandrake/rm/dispatch/x"], "each need once")
     off = dict(REAL, walls={"marker": dict(PROF, enforce=False)})
     ok(RR.uncovered({"proof": BLIND["ssh"]}, off) == [], "an unwalled Marker reaches everything: no refusal")
     ok(RR.uncovered({"proof": BLIND["ssh"], "offbox": [ADAPTER]}, REAL) == [], "an offbox adapter routes it")
