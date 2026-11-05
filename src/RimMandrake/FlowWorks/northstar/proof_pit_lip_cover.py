@@ -17,7 +17,7 @@ reads what the cover drew in the last frame through jawa/static_call RM_PitLipOc
 
     python.exe proof_pit_lip_cover.py --clause A1|A2|A3|all [--origin 120,180] [--no-shots]
 
-Exit 0 when every asked clause holds, 1 when one fails, 2 when it could not measure. Settings it touches are restored.
+Exit 0 when every asked clause holds, 1 when one fails, 2 when it could not measure (a harness crash included). Settings it touches are restored.
 """
 import argparse
 import json
@@ -241,12 +241,30 @@ def main(argv=None):
         sts = [st for st, _ in verdicts.values()]
         return 0 if sts and all(s == "PASS" for s in sts) else (1 if "FAIL" in sts else 2)
     finally:
-        for f, v in saved.items():
-            if v is not None:
-                sset(f, v)
+        try:                                  # a restore that raises must not mask the exception that brought us here
+            for f, v in saved.items():
+                if v is not None:
+                    sset(f, v)
+        except Exception as e:
+            res["restoreError"] = "%s: %s" % (type(e).__name__, e)
+            print("settings restore failed: %s" % res["restoreError"], file=sys.stderr)
         save()
         print("result: %s" % os.path.join(a.out_dir, "result_%s.json" % stamp))
 
 
+def run(argv=None):
+    """main() with harness crashes read as UNMEASURED (exit 2). An uncaught traceback exits 1, which the live round
+    reads as a mod FAIL: gen 5's three FAILs were a rimbridge_client IndeterminateError raised at pause_game, before
+    the pit was ever read. A verdict comes only from the clause rows main() prints."""
+    try:
+        return main(argv)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print("UNMEASURED: the proof crashed before a verdict (harness, not the mod): %s: %s"
+              % (type(e).__name__, str(e)[:300]))
+        return 2
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(run())

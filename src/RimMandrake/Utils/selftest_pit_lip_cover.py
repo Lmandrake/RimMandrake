@@ -8,6 +8,7 @@
 2. The C# cases PitLip_* and PitSide_* of FlowWorks' SelfTest (selftest_flowworks_stock.py --only): the shipped decision math
    on s8's real pit (outside muffalo never covered, the west overhang is the in-pit muffalo under the side bank, the
    occupant window opens past half and stays shut at the clamp, the frame record is wired).
+3. A harness crash inside the live proof (a bridge exception) exits 2, UNMEASURED, never a traceback's exit 1 (= FAIL).
 
     python3 selftest_pit_lip_cover.py [--no-dotnet]
 """
@@ -68,8 +69,38 @@ def pure():
     check(P.v_window(shut, "Human2", clamp_on=False)[0] == "FAIL", "can-fail A3: clamp off with the window shut")
 
 
+def harness_crash():
+    """A bridge exception mid-proof reads UNMEASURED (exit 2), never a traceback's exit 1 (= a mod FAIL)."""
+    import tempfile
+    import types
+
+    class Boom(RuntimeError):
+        pass
+
+    class FakeBridge:
+        def call(self, tool, **kw):
+            if tool == "rimworld/get_ui_state":
+                return {"programState": "Playing"}
+            raise Boom("refusing %s: an earlier mutating call has an UNKNOWN outcome" % tool)
+
+    fake = types.ModuleType("validation_core")
+    fake.Bridge = FakeBridge
+    real = sys.modules.get("validation_core")
+    sys.modules["validation_core"] = fake
+    try:
+        with tempfile.TemporaryDirectory() as d:
+            rc = P.run(["--clause", "A1", "--no-shots", "--out-dir", d])
+    finally:
+        if real is not None:
+            sys.modules["validation_core"] = real
+        else:
+            sys.modules.pop("validation_core", None)
+    check(rc == 2, "a harness crash exits 2 (UNMEASURED), not 1: got %s" % rc)
+
+
 def main(argv):
     pure()
+    harness_crash()
     if "--no-dotnet" in argv:
         return 0
     r = subprocess.run([sys.executable, os.path.join(HERE, "selftest_flowworks_stock.py"), "--only", "PitLip*,PitSide*"])
