@@ -20,3 +20,12 @@ a_debt_visible (stage 2).
 His card answer to ask_root (OWNER:1793895903357725756, recorded by BENCH; card: rewrite the root as he says, then
 continue): *"If you try to pick the scorchfruit during one of their events, they issue warnings, then attack to drive you away (not a full blown raid, just defense of the fruit). Actually just remove the count thing... that's a mechanic we don't even need. They can't see you all the time. And never do they react to an animal doing something to blame the player. Attacking them overtly makes them raid you back of course, and they may continue to do so later."* Root revised to it and cited; shown back in `turn_02.md`. a_debt_visible struck (answered: no count).
 Drafted a_fruit_defence_reach. Core contradictions for stage 2: c_arson_count_built, c_rite_never_attacks_vs_fruit_defence.
+
+## Sitting 4, 2026-11-05 (run rm-role-designer-1793897555). Stage 2 Argue the edge
+
+Turn: `turn_03.md` (claim: the fruit defence guards the scar the rite lit, not the whole map; dumb version: any pick
+anywhere -> letter -> whole party hostile, i.e. a raid). Resolved without asking: c_arson_count_built (his decision; does-not
+lines, Relentless removes after lock); raid-back = vanilla hostility (d_raid_back_is_vanilla, delegated); fighting back =
+self-defence (d_fight_back_is_self_defence, delegated). Fresh-Opus review (rm-judge ac78232fd6dff8bde): a_fruit_defence_reach
+pass (wording fixed: 45-cell circle is around the walked-to spot, old burns included), a_harvest_visit_at_the_fire pass,
+a_fight_back struck (answered by "overtly"). Sent: a_fruit_defence_reach, a_harvest_visit_at_the_fire.

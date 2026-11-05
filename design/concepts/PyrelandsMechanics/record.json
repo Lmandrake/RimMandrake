@@ -80,6 +80,20 @@
    "source": "OWNER:1793895903357725756",
    "words": "Attacking them overtly makes them raid you back of course, and they may continue to do so later.",
    "what": "Does: an overt attack on the Tribes makes them hostile and they raid back, possibly repeatedly later (likely vanilla faction hostility; stage 2 confirms nothing extra is wanted)"
+  },
+  {
+   "id": "d_raid_back_is_vanilla",
+   "kind": "scope",
+   "speaker": "agent",
+   "source": "OWNER:1793895903357725756",
+   "what": "Delegated reading of d_raid_back: an overt attack is vanilla faction hostility (goodwill to war, storyteller raids follow); nothing extra is built. He can undo it (turn_03.md)."
+  },
+  {
+   "id": "d_fight_back_is_self_defence",
+   "kind": "scope",
+   "speaker": "agent",
+   "source": "OWNER:1793895903357725756",
+   "what": "Delegated reading of 'Attacking them overtly': a picker or helper fighting back during the fruit defence is self-defence; it ends with the fight, no goodwill-to-war, no raids. He can undo it (turn_03.md)."
   }
  ],
  "asks": [
@@ -104,7 +118,7 @@
   },
   {
    "id": "a_harvest_visit_at_the_fire",
-   "status": "draft",
+   "status": "sent",
    "speaker": "agent",
    "source": [
     "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs"
@@ -112,7 +126,18 @@
    "about": [
     "inv_flame_harvest_visit"
    ],
-   "text": "The flame-harvest visit today walks a party to the centre of a burn already standing and then they leave; they pick nothing (the code says the sheet only asked for them to be SEEN farming the fire). The rite party, by contrast, really picks scorch-fruit and carries it off. When you watch the visit party reach the fire, what do you expect to see them doing there?"
+   "text": "The peaceful group that walks in to a big standing fire today walks to its centre and leaves; it picks nothing. When they reach the fire, what do you picture: picking scorch-fruit and carrying it off like the rite party; standing at the fire in a short rite and then leaving; or simply passing through, as now? (turn_03.md)",
+   "decision": "What the flame-harvest visit party does at the burn (c_visit_vs_rite_overlap), so a scene can accept it",
+   "owner_cites": [
+    "OWNER:1793895903357725756"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793897555",
+   "review": {
+    "by": "rm-judge ac78232fd6dff8bde (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Accurate (LordJob_TravelAndExit to the burn centre, leaves on arrival, picks nothing); unruled; changes the build."
+   }
   },
   {
    "id": "a_debt_visible",
@@ -157,9 +182,9 @@
   },
   {
    "id": "a_fruit_defence_reach",
-   "status": "draft",
+   "status": "sent",
    "speaker": "agent",
-   "author": "rm-role-designer-1793896435",
+   "author": "rm-role-designer-1793897555",
    "offers_removal": false,
    "owner_cites": [
     "OWNER:1793895903357725756"
@@ -170,11 +195,42 @@
     "inv_flame_harvest_visit"
    ],
    "decision": "Which picking counts as trespass on their fruit, and what 'drive you away' ends with",
-   "text": "When the Tribes are on your map for their rite, which scorch-fruit is theirs: only the fruit in the scar their own party lit, or any scorch-fruit anywhere on the map while they are there? And once they have driven your picker off, is that the end of it (goodwill unchanged), or does it cost you goodwill?",
+   "text": "During their rite, which scorch-fruit is theirs: only the scar their party lit, or any scorch-fruit on the map while they are there? And once they have driven your picker off, is that the end of it, or does it also cost you goodwill with them? (turn_03.md)",
    "source": [
     "OWNER:1793895903357725756",
     "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_HarvestScorchFruit.cs"
-   ]
+   ],
+   "review": {
+    "by": "rm-judge ac78232fd6dff8bde (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "His words leave which fruit counts and the goodwill cost open; both change the build. Fixed on review: the 45-cell circle is around the spot the party walked to, old burns included."
+   }
+  },
+  {
+   "id": "a_fight_back",
+   "speaker": "agent",
+   "author": "rm-role-designer-1793897555",
+   "status": "struck",
+   "offers_removal": false,
+   "owner_cites": [
+    "OWNER:1793895903357725756"
+   ],
+   "about": [
+    "inv_fruit_defence",
+    "inv_fire_rite_lord"
+   ],
+   "decision": "Whether a colonist fighting back during the fruit defence counts as an overt attack (vanilla hostility, raids) or self-defence that ends with the fight",
+   "text": "If the picker (or a colonist who comes to help) fights back while being driven off, is that 'attacking them openly', so raids follow, or fair self-defence that ends when the fight ends? (turn_03.md)",
+   "source": [
+    "OWNER:1793895903357725756",
+    "src/RimUtinni/PyrelandsMechanics/Source/LordJob_RUT_FireRite.cs"
+   ],
+   "review": {
+    "by": "rm-judge ac78232fd6dff8bde (fresh Opus, not the author)",
+    "verdict": "struck",
+    "why": "Answered by 'Attacking them overtly': hitting back while driven off is not overt; settle as self-defence, undoable."
+   },
+   "struck_why": "answered by OWNER:1793895903357725756 ('overtly'); recorded as d_fight_back_is_self_defence"
   }
  ],
  "inventory": [
@@ -401,15 +457,16 @@
   {
    "id": "c_arson_count_built",
    "core": true,
-   "resolved": false,
+   "resolved": true,
    "speaker": "owner",
    "source": [
     "OWNER:1793895903357725756",
     "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs",
     "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs"
    ],
-   "status": "open",
-   "text": "Built: arson debt tallied from colony fires (including fire-hawk twigs and furnace-beast beds, in mandrake.rm.pyrelands' burn kernel) and RUT_FireRaid with its settings. His word removes the count and forbids animal blame. Removal is a Relentless build (both tiers: the tally lives in the franchise-free mod); nothing to ask him."
+   "status": "resolved",
+   "text": "Built: arson debt tallied from colony fires (including fire-hawk twigs and furnace-beast beds, in mandrake.rm.pyrelands' burn kernel) and RUT_FireRaid with its settings. His word removes the count and forbids animal blame. Removal is a Relentless build (both tiers: the tally lives in the franchise-free mod); nothing to ask him.",
+   "resolution": "Decided by him (d_no_arson_count, d_no_animal_blame): the tree carries does-not lines for the arson count, the arson raid and any animal blame; removal in both tiers is Relentless's build after lock. Nothing to ask."
   },
   {
    "id": "c_rite_never_attacks_vs_fruit_defence",
@@ -421,7 +478,8 @@
     "src/RimUtinni/PyrelandsMechanics/Source/LordJob_RUT_FireRite.cs"
    ],
    "status": "open",
-   "text": "Built rite lord: a party turned hostile simply leaves, never fights. His fruit defence needs a warn-then-drive-off step inside the rite (and visit) that is an attack yet not a war. Its reach is a_fruit_defence_reach."
+   "text": "Built rite lord: a party turned hostile simply leaves, never fights. His fruit defence needs a warn-then-drive-off step inside the rite (and visit) that is an attack yet not a war. Its reach is a_fruit_defence_reach.",
+   "resolution_pending": "a_fruit_defence_reach, a_fight_back (sent stage 2)"
   }
  ],
  "script_audit": [
