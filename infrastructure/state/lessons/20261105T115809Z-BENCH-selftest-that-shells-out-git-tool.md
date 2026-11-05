@@ -1,0 +1,1 @@
+A selftest that shells out to a git tool (dll_source_stamp.py) is red in every walled check box, and no regex over the proof text sees it: list such tools in relentless_rules.json reach_git_granted so relentless_reach.box_grants gives the box git_history (OPS_CHURN_DIAGNOSE_GRAFFITI_LOVJ_IMIL).

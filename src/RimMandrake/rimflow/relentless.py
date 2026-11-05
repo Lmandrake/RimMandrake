@@ -4901,7 +4901,8 @@ def step(store, fx, r, item, now, acts):
         box = None
         if relentless_wall.enforced(r):
             box = relentless_wall.make_box(relentless_wall.profile(r), clean, c["sha"], nonce,
-                                           grants=relentless_reachfix.grants(st))
+                                           grants=list(dict.fromkeys(relentless_reachfix.grants(st) +
+                                                  relentless_reach.box_grants(st.get("contract"), r, clean))))
         gen0 = st["gen"]
         thru = relentless_wall.through(relentless_wall.profile(r), [json.dumps(st.get("contract") or {}),
                                        c.get("evidence") or "", fx.item_text(item) or ""]) if box else []

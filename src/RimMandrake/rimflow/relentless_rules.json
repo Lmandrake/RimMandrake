@@ -49,6 +49,10 @@
   "reach_git_tools": [
     {"path": "src/RimMandrake/Utils/code_review_since.py", "why": "git rev-parse and merge-base --is-ancestor on the --after shas"}
   ],
+  "_reach_git_granted": "OPS_CHURN_DIAGNOSE_GRAFFITI_LOVJ_IMIL: tools that read git at HEAD only, so the git_history box grant (HEAD detached at the candidate) serves them. A proof naming one, or naming a repo file whose source names one (a selftest that shells out to it), earns the grant at check launch (relentless_reach.box_grants): GRAFFITI_V1_LIVE_PROOF_1's selftest_graffiti_v1_live.py runs dll_source_stamp.py check, red in every git-less box, and five checkers git-inited a copy by hand.",
+  "reach_git_granted": [
+    {"path": "src/RimMandrake/Utils/dll_source_stamp.py", "why": "git cat-file and ls-tree at HEAD"}
+  ],
   "_reach_grants": "CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS gen 3: a reach_classes row's `grants` (only relentless_wall.GRANTS: git_history) changes what the Marker's box is made with, not what is read outside it. Every row whose match hits the blind text adds its grants (a /proc text that also names git gets the history); a Judge may --propose git_history by name. git_history = tree/.git at the candidate, no refs, objects read only (relentless_wall.grant_git). There is no /proc grant: a sandboxed user unit runs in its own user namespace, and no property lets it readlink another process's cwd; proc_cwds (outside) is the only reach.",
   "reach_never": ["/home/mandrake/rm/relentless/store", "/home/mandrake/rm/relentless/transcripts", "/home/mandrake/rm/relentless/live", "/home/mandrake/.ssh", "/home/mandrake/.config/gh", "/home/mandrake/.claude-accounts", "/home/mandrake/.claude", "/home/mandrake/.remember", "/home/mandrake/.bash_history", "/home/mandrake/.zsh_history", "/home/mandrake/rm/bench/conversations", "/home/mandrake/rm/foundry/conversations", "/home/mandrake/rm/bench/infrastructure/state/ledger", "/home/mandrake/rm/foundry/infrastructure/state/ledger"],
   "reach_classes": [

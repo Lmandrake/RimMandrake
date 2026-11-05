@@ -91,6 +91,40 @@ def git_tool_rows(rules):
     return [(str(x["path"]), str(x.get("why") or "")) for x in rows if isinstance(x, dict) and x.get("path")]
 
 
+def git_granted_rows(rules):
+    """-> [(tool path, why)] from relentless_rules.json reach_git_granted: tools that read git at HEAD only, which the
+    git_history box grant serves (OPS_CHURN_DIAGNOSE_GRAFFITI_LOVJ_IMIL)."""
+    rows = (rules or {}).get("reach_git_granted") or []
+    return [(str(x["path"]), str(x.get("why") or "")) for x in rows if isinstance(x, dict) and x.get("path")]
+
+
+_PY_PATH = re.compile(r"(?<![\w./-])((?:[\w.-]+/)*[\w.-]+\.py)(?![\w.-])")
+
+
+def box_grants(contract, rules, root):
+    """-> the box grants the contract's proof earns at check launch: git_history when the proof names a reach_git_granted
+    tool, or names a file under `root` (the candidate's clean clone) whose source names one. No regex over the proof sees a
+    selftest that shells out to dll_source_stamp.py (GRAFFITI_V1_LIVE_PROOF_1: red in every git-less box, five checkers
+    git-inited a copy by hand). One level only; a file that cannot be read earns nothing."""
+    rows = git_granted_rows(rules)
+    t = _COMMENT.sub("", (contract or {}).get("proof") or "")
+    if not rows or not t:
+        return []
+    texts = [t]
+    for rel in dict.fromkeys(_PY_PATH.findall(t)):
+        f = os.path.join(str(root), rel)
+        if os.path.isabs(rel) or ".." in rel.split("/") or not os.path.isfile(f):
+            continue
+        try:
+            with open(f, encoding="utf-8", errors="replace") as fh:
+                texts.append(fh.read(2 << 20))
+        except OSError:
+            continue
+    if any(_names(path, x) for path, _ in rows for x in texts):
+        return [relentless_wall.GIT_GRANT]
+    return []
+
+
 def _names(path, t):
     return re.search(r"(?<![\w./-])(?:\S*/)?%s(?![\w.-])" % re.escape(os.path.basename(path)), t)
 

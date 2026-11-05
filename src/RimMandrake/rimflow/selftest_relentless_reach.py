@@ -382,8 +382,30 @@ def t_git_tool():
     x.done()
 
 
+
+def t_git_grant():
+    """OPS_CHURN_DIAGNOSE_GRAFFITI_LOVJ_IMIL: GRAFFITI_V1_LIVE_PROOF_1's proof names selftest_graffiti_v1_live.py, which runs
+    dll_source_stamp.py check; red in every git-less box, five checkers git-inited a copy by hand. The proof earns the grant."""
+    ok(any(os.path.basename(p) == "dll_source_stamp.py" for p, _ in RR.git_granted_rows(REAL)), "B1 the rules grant for dll_source_stamp.py")
+    repo = os.path.dirname(os.path.dirname(os.path.dirname(R.HERE)))
+    inst = ("python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/Graffiti/selftest_graffiti_v1_live.py "
+            "src/RimMandrake/Utils/selftest_graffiti_lint.py src/RimMandrake/Utils/selftest_graffiti_fuzz.py")
+    ok(os.path.isfile(os.path.join(repo, "src/RimMandrake/Graffiti/selftest_graffiti_v1_live.py")), "B2 the instance test exists")
+    ok(RR.box_grants({"proof": inst}, REAL, repo) == [W.GIT_GRANT], "B2 the instance proof earns git_history: %s"
+       % RR.box_grants({"proof": inst}, REAL, repo))
+    ok(RR.box_grants({"proof": "python3 src/RimMandrake/Utils/dll_source_stamp.py check"}, REAL, repo) == [W.GIT_GRANT],
+       "B3 naming the tool itself earns it")
+    ok(RR.box_grants({"proof": "python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/Utils/selftest_graffiti_lint.py"},
+                     REAL, repo) == [], "B4 a proof whose tests run no git tool earns nothing")
+    ok(RR.box_grants({"proof": "python3 x.py  # dll_source_stamp.py"}, REAL, repo) == [], "B5 a comment is prose")
+    ok(RR.box_grants({"proof": "python3 ../../etc/x.py /abs/dll.py"}, REAL, repo) == [], "B6 no path outside the clone is read")
+    ok(RR.box_grants({"proof": inst}, {}, repo) == [], "B7 no rule rows, no grant")
+    src = open(os.path.join(R.HERE, "relentless.py"), encoding="utf-8").read()
+    ok("relentless_reach.box_grants(st.get(\"contract\"), r, clean)" in src, "B8 the check launch hands the grants to make_box")
+    ok(not RR.uncovered({"proof": inst}, REAL), "B9 the grant is not a contract-time refusal")
+
 def main():
-    for t in (t_needs, t_contract_refuses, t_prelaunch_hold, t_live_into_box, t_through_into_box, t_no_repaid_recheck, t_host_only, t_git_tool):
+    for t in (t_needs, t_contract_refuses, t_prelaunch_hold, t_live_into_box, t_through_into_box, t_no_repaid_recheck, t_host_only, t_git_tool, t_git_grant):
         t()
     print("RESULT %s (%d failed)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0
