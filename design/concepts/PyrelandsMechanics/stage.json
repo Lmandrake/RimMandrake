@@ -44,10 +44,17 @@
     "ref": "run rm-role-designer-1793897555",
     "stage": 2,
     "tokens": 296004
+   },
+   {
+    "at": "2026-11-05T17:22:45Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793899225",
+    "stage": 2,
+    "tokens": 224818
    }
   ],
   "reserve": 60000,
-  "spent": 1570871
+  "spent": 1795689
  },
  "history": [
   {
@@ -115,6 +122,18 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1793897555: stage 2 waiting_owner"
+  },
+  {
+   "at": "2026-11-05T17:20:33Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793899225, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-05T17:22:45Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1793899225: stage 2 done"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
@@ -205,11 +224,32 @@
    "run": "rm-role-designer-1793897555",
    "stage": 2,
    "summary": "Stage 2 turn 3 (turn_03.md): arson count/raid removal resolved as his decision (does-not lines, Relentless build after lock); raid-back delegated as vanilla hostility; fighting back delegated as self-defence. Reviewed (fresh Opus) and sent: a_fruit_defence_reach (scar-only vs whole map; goodwill cost) and a_harvest_visit_at_the_fire (what the visit party does at the fire). a_fight_back struck on review as answered by 'overtly'."
+  },
+  {
+   "at": "2026-11-05T17:22:45Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "f8e9e5988a2d1daf5805c000f884646cc598553bbd08aea9202ee82d7f0fb338",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793899225",
+   "stage": 2,
+   "summary": "Both stage-2 card answers applied: the rite defends only the scar it lit and driving a picker off costs no goodwill; the visit group picks and carries off like the rite. Delegated: the visit defends the burn it harvests; warning = message + harvester approach, then a bounded drive-off of the picker only. Core contradictions resolved; thornvine tier and the two unclosed fix items carried to stage 3 as Relentless fixes. No ask sent."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 2,
- "status": "waiting_owner",
+ "stage": 3,
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
