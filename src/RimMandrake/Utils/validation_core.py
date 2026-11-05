@@ -453,6 +453,19 @@ def sweep_non_colonists(B):
             "kept": len(KEEP_PAWNS)}
 
 
+def evict_from_plots(B, ids):
+    """LIVE_SESSION_FIX_B1_NEEDS_PRISTINE_MAP (driver 7, ls_c1: a kept RM_Shambles stood in a validation_v2 plot and the run
+    ABORTed): vanish these exact non-colonist ids EVEN IF KEPT -- the caller has read them standing on ground it is about
+    to clear and dig, so keeping them would only spoil the run. Colonists are never touched (pick re-checks). The ids
+    leave the keep set. -> {"removed": [ids acted on], "left": [ids still standing]}."""
+    H = _helpers()
+    ids = set(ids)
+    res = H._kill_ids(B, ids, "evict_from_plots", lambda x: _sweepable(H, x), action="vanish")
+    KEEP_PAWNS.difference_update(ids)
+    H.KEEP_PAWNS.difference_update(ids)
+    return {"removed": sorted(res.evidence.get("targeted") or []), "left": list(res.residue)}
+
+
 def sweep_at_start(B, made_map):
     """PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN: the opening sweep every proof shares. made_map = this run generated the map
     (a fresh quicktest map, or a clean site save it loaded): the old bulk route, nothing to keep. Otherwise (the current

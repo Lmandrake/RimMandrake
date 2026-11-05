@@ -2224,7 +2224,7 @@ def _fold(L, cid, parts):
     if bad:
         return L.row(cid, False, bad[0][2], det)
     if unm:
-        return L.row(cid, False, "HARNESS", det, status="UNMEASURED")
+        return L.row(cid, False, unm[0][2] or "HARNESS", det, status="UNMEASURED")
     return L.row(cid, True, "", det)
 
 
@@ -2248,17 +2248,22 @@ def phase_L(L, args):
         # fresh maps; --fresh-map aborted every time). Pristine = nothing dug; the bodies are printed, not required to be 0.
         pristine = e.get("excavatedCellCount") == 0 and e.get("superdeepCellCount") == 0
         dry = rate is not None and rate <= 0.01
+        # LIVE_SESSION_FIX_B1_NEEDS_PRISTINE_MAP (driver 7: ls_c1b ran B1 again on ls_c1's map and read L1 FAIL + ABORT FAIL):
+        # every L1 part is a precondition on the MAP, not a reading of the mod -- a used, wet, wrong-size or running map
+        # says nothing about FlowWorks, so a false part reads UNMEASURED/SITE (ok None), never FAIL.
+        def pre(ok):
+            return True if ok else None
         _fold(L, "L1_fresh_map", [
-            ("loaded_paused", ui.get("programState") == "Playing" and e1.get("ticksGame") is not None and e1.get("ticksGame") == e2.get("ticksGame"), "SITE",
+            ("loaded_paused", pre(ui.get("programState") == "Playing" and e1.get("ticksGame") is not None and e1.get("ticksGame") == e2.get("ticksGame")), "SITE",
              "programState %s, ticksGame %s -> %s over 1 s" % (ui.get("programState"), e1.get("ticksGame"), e2.get("ticksGame"))),
-            ("map_250", size_ok, "SITE", "map %sx%s biome %s" % (mi.get("sizeX"), mi.get("sizeZ"), mi.get("mapBiome"))),
-            ("pristine", pristine, "SITE", "excavated %s bodies %s superdeep %s activeFluidRaw %s" % (
+            ("map_250", pre(size_ok), "SITE", "map %sx%s biome %s" % (mi.get("sizeX"), mi.get("sizeZ"), mi.get("mapBiome"))),
+            ("pristine", pre(pristine), "SITE", "excavated %s bodies %s superdeep %s activeFluidRaw %s" % (
                 e.get("excavatedCellCount"), e.get("bodyCount"), e.get("superdeepCellCount"), e.get("activeFluidRaw"))),
-            ("dry", dry, "SITE", "weather %s rainRate %s" % ((w.get("weather") or {}).get("current"), rate))])
+            ("dry", pre(dry), "SITE", "weather %s rainRate %s" % ((w.get("weather") or {}).get("current"), rate))])
         if not size_ok:
             raise Abort("map size")
         if not pristine:
-            raise Abort("site not pristine -- start a fresh quicktest map (--fresh-map)")
+            raise Abort("site not pristine (a prior run dug this map) -- UNMEASURED: rerun on a fresh quicktest map (--fresh-map)")
         if not dry:
             raise Abort("raining at start: every 0-tick vector would carry rain")
         # Verse.Log drops everything after 10,000 messages until cleared: reset it, or E9 reads a silent journal
@@ -2374,12 +2379,21 @@ def phase_site(L, args):
         db = _vc().sweep_non_colonists(B)
         L._log("    sweep non-colonists: %s removed %s, left %s" % (db.get("route"), db.get("removed"), db.get("left")))
         pw = B.call("jawa/list_pawns", limit=500)
+        # LIVE_SESSION_FIX_B1_NEEDS_PRISTINE_MAP (driver 7, ls_c1): on --current-map the sweep keeps the map's own animals,
+        # and one (RM_Shambles) stood in a plot -> ABORT. A non-colonist standing on ground this run clears is evicted
+        # by exact id, kept or not; only a colonist (or an eviction that did not take) still refuses, as UNMEASURED/SITE.
+        strays = [p.get("id") for p in pw.get("pawns") or [] if _in_any(_pos(p), rects) and p.get("id")
+                  and not p.get("dead") and not (p.get("isPlayer") and p.get("intelligence") == "Humanlike")]
+        if strays and pw.get("success"):
+            ev = _vc().evict_from_plots(B, strays)
+            L._log("    evicted from plots: %s" % ev)
+            pw = B.call("jawa/list_pawns", limit=500)
         inside = [(p.get("id") or p.get("thingId"), p.get("position") or (p.get("x"), p.get("z"))) for p in pw.get("pawns") or []
                   if _in_any(_pos(p), rects)]
         # an unread pawn list is not "no pawn in the plots" (full read 2026-10-19: a failed list_pawns read "0 pawns, none in")
         pawn_part = ("no_pawn_in_plots", None, "HARNESS", "list_pawns unreadable: %s" % str(pw)[:200]) \
             if not (pw.get("success") and isinstance(pw.get("pawns"), list)) else \
-            ("no_pawn_in_plots", not inside, "SITE", inside or "%d pawns, none in %d plot rects" % (
+            ("no_pawn_in_plots", None if inside else True, "SITE", inside or "%d pawns, none in %d plot rects" % (
                 len(pw.get("pawns") or []), len(rects)))
         if inside:
             _fold(L, "L4_site_ready", [pawn_part])
@@ -4379,6 +4393,12 @@ class MockBridge(object):
             return dict(success=False, error="mock: list_pawns failed")
         return dict(success=True, pawns=[dict(id="P%d" % i, position=dict(x=125 + i, z=125)) for i in range(3)] + self.pawns)
 
+    def t_jawa_pawn_force_incapacitate(self, pawn=None, action="kill", **kw):
+        """evict_from_plots' route (action=vanish): the pawn leaves the map, no corpse."""
+        self.pawns = [p for p in self.pawns if p.get("id") != pawn]
+        self.mp.pop(pawn, None)
+        return dict(success=True)
+
     def t_jawa_destroy_bulk(self, filter=None, dryRun=True):
         gone = [k for k, p in self.mp.items() if p["faction"] != "player"] if filter == "nonColonists" else []
         if not dryRun:
@@ -4841,7 +4861,8 @@ PHASES = ("L", "site", "S", "A", "B", "C", "R", "J", "rain", "P", "X", "tail")
 def abort_class(msg):
     """SITE when the abort names the map's own state (not pristine, a pawn standing in a plot); else HARNESS.
     A bare "pawn" substring also matched "spawn colonist ..." (a harness failure) -- match the phrases exactly."""
-    return "SITE" if ("pristine" in msg or "a pawn stands" in msg) else "HARNESS"
+    return "SITE" if ("pristine" in msg or "a pawn stands" in msg or msg == "map size"
+                      or msg.startswith("raining at start")) else "HARNESS"
 
 
 def run_identity_module():
@@ -4950,7 +4971,10 @@ def run_live(args, B=None, identity=None):
             fns[ph](L, args)
     except Abort as ex:
         aborted = str(ex)
-        L.row("ABORT", False, abort_class(aborted), aborted)
+        # a SITE abort (the map, not the mod: used, wet, wrong size, a colonist in a plot) measured nothing: UNMEASURED,
+        # never FAIL (LIVE_SESSION_FIX_B1_NEEDS_PRISTINE_MAP)
+        cls = abort_class(aborted)
+        L.row("ABORT", False, cls, aborted, status="UNMEASURED" if cls == "SITE" else None)
     finally:
         bad = L.restore_settings()
         L.row("Z_settings_restored", not bad, "HARNESS", bad or "%d touched settings back to shipped defaults" % len(L.touched))
