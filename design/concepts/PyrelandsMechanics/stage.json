@@ -79,10 +79,17 @@
     "ref": "run rm-role-designer-1793909339",
     "stage": 2,
     "tokens": 197288
+   },
+   {
+    "at": "2026-11-05T21:38:13Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793914531",
+    "stage": 3,
+    "tokens": 181651
    }
   ],
   "reserve": 60000,
-  "spent": 3073032
+  "spent": 3254683
  },
  "history": [
   {
@@ -198,6 +205,18 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1793909339: stage 2 done"
+  },
+  {
+   "at": "2026-11-05T21:36:00Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1793914531, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-05T21:38:13Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1793914531: stage 3 done"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
@@ -377,11 +396,33 @@
    "run": "rm-role-designer-1793909339",
    "stage": 2,
    "summary": "Both turn_04 asks answered by card 2026-11-05: flagship is (1) the rite party (OWNER:1793908890260302861, recorded as d_flagship_rite_party for showcase 1); north star validated as written (OWNER:1793908893473496687). No ask is sent; contradictions are Relentless fixes or settled by his answers. Note for stage 3: the validated north-star section still says 'DRAFT, binds nothing until he validates it' (false now, inside the hashed text; correcting it needs a same-sitting re-validation on his word)."
+  },
+  {
+   "at": "2026-11-05T21:38:13Z",
+   "inputs": {
+    "exam": null,
+    "floor": "60ba07bafe2c726553880839556f4d7d94d37be6b414ad4e5c88d279fe8d83b7",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "f8e9e5988a2d1daf5805c000f884646cc598553bbd08aea9202ee82d7f0fb338",
+    "scenes": "ef625cc5e068d07ed85aeed41537c3d9a2faac9a25507165b95643efa4171c21",
+    "sheet": "94fab6e39e72a0259432138a571bed4eb087d4da1b568773131296dda35bc3ff",
+    "tree": "8d85249f7028c05470902cc08c2f4a3c7e7daf856bbd461b86c28da750d11f3b"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793914531",
+   "stage": 3,
+   "summary": "Showcase 1 (rite_party) now bound to his flagship pick: decision d_flagship_rite_party (OWNER:1793908890260302861) carries flagship=rite_party, and the showcase cites that decision and tsn (it had pointed at a non-existent d_flagship and the root approval). Gate A lint PASS; showcase set accepted; floor and scenes unchanged."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
