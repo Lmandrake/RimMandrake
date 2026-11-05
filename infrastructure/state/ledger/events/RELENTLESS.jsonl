@@ -630,3 +630,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T12:58:45Z","tsn":1793883525834314782}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PUMP_ON_TANK_FIX_NO_COUPLER A1 (L2), read-only proof","ts":"2026-11-05T12:58:52Z","tsn":1793883532046857189}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T12:59:05Z","tsn":1793883545194928460}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HORRORS_RAIDING_FACTION_1 A3 (L2), read-only proof","ts":"2026-11-05T13:03:11Z","tsn":1793883791102676842}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T13:03:27Z","tsn":1793883807126528053}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WARSCAR_HOSPICE_DESERTERS_1 A3 (L2), read-only proof","ts":"2026-11-05T13:05:41Z","tsn":1793883941102776837}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T13:06:15Z","tsn":1793883975435068358}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL: deploy and restart for its live proofs","ts":"2026-11-05T13:10:17Z","tsn":1793884217109158981}
