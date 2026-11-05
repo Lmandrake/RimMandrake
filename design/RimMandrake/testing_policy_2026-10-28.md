@@ -121,8 +121,11 @@ Provenance of each tunable: **O** owner's words, **C** owner by card, **D** code
 - **Helps:** in the early rounds.
 - **Hurts:** rounds-until-zero; each round then costs hours for weak findings.
 - **It was a mistake when:** the round's findings were all weak and repeated an earlier round's.
-- **Cost:** UNMEASURED. There is no central consult log, and review records carry no consult id. Item owed:
-  GPT_CONSULT_MEASURE_COST_UNLOGGED.
+- **Cost:** measured per round by `python3 src/RimMandrake/Utils/gpt_consult_rounds.py report`: calls, timeouts,
+  real codex tokens and seconds from the per-call log every `gpt_consult.py` call writes, plus the review records
+  that cite a round's jobs (`mark-clean --gpt-job`). Tag each call of a round `--round NAME`; record what it found
+  with `gpt_consult_rounds.py yield --round NAME --findings N [--strong/--weak/--repeated]`. Calls from before
+  2026-11-05 are one untagged row with no seconds.
 - **Tunables:** `gpt_review.max_rounds_before_conditional_pass` 3 [C].
 
 ### 2.6 Mutation testing (`run_mutation.py`, mutmut on SteveDesktop)

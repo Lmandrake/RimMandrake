@@ -11,6 +11,11 @@ D:\\ClaudeWork\\rimmandrake\\scratch\\codex\\consult-<ts>\\ (it fails from an ex
 and written to --out when given. Default model: gpt-6.1-sol at high effort (owner,
 2026-10-02; CODEX_CONSULT_MODEL overrides). Art (codex_image.py) stays on gpt-5.5 — a separate default.
 
+Every call is metered in gpt_call_log (job, model, rc, real tokens, seconds, files inlined, and its review ROUND:
+`--round NAME` or $RM_CONSULT_ROUND). One round = one review pass over one subject; give every call of that pass the
+same name, record what it found with `gpt_consult_rounds.py yield`, and `gpt_consult_rounds.py report` prints cost and
+yield per round (GPT_CONSULT_MEASURE_COST_UNLOGGED).
+
 Every call first passes codex_advice.gate (slot_allocator's Codex advice): on HOLD only a call given
 `--required "<rule that requires this review>"` (or env RM_CODEX_REQUIRED) runs, exit 4 otherwise; on EXHAUSTED
 every call is refused, exit 5. No Claude fallback (owner routing ruling 2026-10-28).
@@ -89,7 +94,11 @@ def events_tokens(events_text):
     return tok
 
 
-def _log_call(job, model, prompt, answer_text, rc, codex_log_text=None, tokens=None):
+ROUND_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,79}$")
+
+
+def _log_call(job, model, prompt, answer_text, rc, codex_log_text=None, tokens=None, round_name=None, secs=None,
+              files=None):
     """One record per call in the arm-metering log (gpt_call_log: atomic file-per-call on drvfs), tagged from
     RM_ARM (absent -> arm null = flagged UNTAGGED by spend_census). tokens_used is the REAL codex figure when the
     codex log has it; in/out_tok_est are chars/4 ESTIMATES kept as a labelled fallback. Never fails the consult."""
@@ -97,7 +106,9 @@ def _log_call(job, model, prompt, answer_text, rc, codex_log_text=None, tokens=N
         import gpt_call_log
         rec = {"t": time.time(), "arm": os.environ.get("RM_ARM") or None, "job": job, "model": model, "rc": rc,
                "in_tok_est": len(prompt) // 4, "out_tok_est": len(answer_text) // 4,
-               "tokens_used": tokens if tokens is not None else real_tokens(codex_log_text)}
+               "tokens_used": tokens if tokens is not None else real_tokens(codex_log_text),
+               "round": round_name or None, "secs": None if secs is None else round(secs, 1),
+               "answered": bool(answer_text.strip()), "files": list(files or [])}
         gpt_call_log.write_record(rec)
     except Exception as e:                                  # noqa: BLE001
         print("[consult] WARN: call not metered: %s" % e, file=sys.stderr)
@@ -123,6 +134,9 @@ def main(argv=None):
     ap.add_argument("-i", "--image", action="append", default=[],
                     help="attach this image (PNG/JPG) for GPT to look at; repeatable. Copied into the job dir first.")
     ap.add_argument("--out", help="also write the answer here")
+    ap.add_argument("--round", default=os.environ.get("RM_CONSULT_ROUND") or None,
+                    help="review round this call belongs to (default $RM_CONSULT_ROUND); metered per round, see "
+                         "gpt_consult_rounds.py")
     ap.add_argument("-m", "--model", default=DEFAULT_CONSULT_MODEL)
     ap.add_argument("--effort", default="high", help="model_reasoning_effort (default high)")
     ap.add_argument("--timeout", type=int, default=1500)
@@ -135,6 +149,8 @@ def main(argv=None):
     ap.add_argument("--required", help="the rule that requires this review round: lets it run while the Codex "
                                        "advice is HOLD (never while EXHAUSTED)")
     a = ap.parse_args(argv)
+    if a.round is not None and not ROUND_RE.match(a.round):
+        ap.error("--round %r: 1-80 chars of A-Z a-z 0-9 _ . : - (starting alphanumeric)" % a.round)
     refused = codex_advice.gate("gpt_consult", a.required)
     if refused:
         return refused
@@ -176,8 +192,8 @@ def main(argv=None):
     if a.image:
         cmd.append("--")                                    # -i is VARIADIC: without this it eats the "-" below
     cmd.append("-")                                         # prompt from stdin
-    print("[consult] %d chars, %d file(s), %d image(s), model %s, job %s" % (
-        len(prompt), len(a.file), len(a.image), a.model, codex_image.wsl_to_win(job)), file=sys.stderr)
+    print("[consult] %d chars, %d file(s), %d image(s), model %s, round %s, job %s" % (
+        len(prompt), len(a.file), len(a.image), a.model, a.round or "-", codex_image.wsl_to_win(job)), file=sys.stderr)
     started = time.time()
     events = Path(a.events) if a.events else None
     if events:
@@ -202,7 +218,8 @@ def main(argv=None):
                 "codex_home_win": env["CODEX_HOME"] if env else None,
                 "refused_tool_calls": len(REFUSED_TOOL_RE.findall(clog or ""))}
         Path(str(events) + ".meta.json").write_text(json.dumps(meta, indent=1) + "\n", encoding="utf-8")
-    _log_call(job.name, a.model, prompt, answer.read_text() if answered else "", rc, clog, etok)
+    _log_call(job.name, a.model, prompt, answer.read_text() if answered else "", rc, clog, etok,
+              round_name=a.round, secs=time.time() - started, files=[p for p, _ in inlined])
     if not answered:
         tail = (job / "codex.log").read_text(errors="replace")[-2000:]
         print("ERROR: no answer (exit %d after %.0fs). Job kept: %s\n%s" % (
