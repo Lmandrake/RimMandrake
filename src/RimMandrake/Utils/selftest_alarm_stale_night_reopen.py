@@ -9,6 +9,11 @@ ops_watch.run_alarms, with the ledger's close times (ctx["closes"], {item: [epoc
 - a closed item, reading's night before its last close: held, no reopen;
 - the same item, a night after the close still crossed: reopened (OPS_ALARM_FIX_CLOSED_TICKET_SILENCES_FAULT stands);
 - a reading with no night: unchanged (reopens), and no close times known: unchanged (reopens).
+Second instance (NIGHTLY_COP_FIX_RED_BCBOSB_PWDD): NIGHTLY_RED:testing.red_bcbosb's item closed 2026-11-04T22:18:40Z on
+a green rerun; at 2026-11-05T05:22Z the same 11-04T11:00Z night reopened it (alarms_log "reopen_closed_still_crossed").
+
+  python3 selftest_alarm_stale_night_reopen.py --blob REV:PATH   replay ops_watch.py as it stood at REV (git), e.g.
+      --blob 618deb68f3^:src/RimMandrake/Utils/ops_watch.py, the code that reopened both instances: it must FAIL.
 """
 import os
 import sys
@@ -22,7 +27,18 @@ TMP = Path(tempfile.mkdtemp(prefix="selftest_alarm_stale_night_"))
 os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
 os.environ["RM_DATA_ROOT"] = str(TMP / "data")
 (TMP / "ops").mkdir()
-import ops_watch as OW          # noqa: E402
+if "--blob" in sys.argv:        # replay a past ops_watch.py, run under the real file's name so its HERE paths hold
+    import subprocess
+    import types
+    _blob = sys.argv[sys.argv.index("--blob") + 1]
+    _src = subprocess.run(["git", "show", _blob], cwd=str(HERE.parents[2]), capture_output=True, text=True, check=True).stdout
+    OW = types.ModuleType("ops_watch")
+    OW.__file__ = str(HERE / "ops_watch.py")
+    sys.modules["ops_watch"] = OW
+    exec(compile(_src, OW.__file__, "exec"), OW.__dict__)
+    print("replaying ops_watch.py from %s" % _blob)
+else:
+    import ops_watch as OW      # noqa: E402
 
 FAILS = []
 RULES = OW.load_rules()
@@ -101,6 +117,25 @@ def test_stale_night_holds():
     ok(st is not None and reopened(b, item), "the next night, still red after the close: reopened")
 
 
+def test_bcbosb_instance():
+    """NIGHTLY_COP_FIX_RED_BCBOSB_PWDD: closed 22:18:40Z on a green rerun, read again at 05:22Z on the 11:00Z night."""
+    global AID, KEY
+    saved = AID, KEY
+    AID = "NIGHTLY_RED:testing.red_bcbosb"
+    KEY = AID.split(":", 1)[1]
+    try:
+        reset()
+        close = OW.epoch("2026-11-04T22:18:40Z")
+        b = Bench(OW.epoch("2026-11-04T11:52:00Z") - 900)
+        item = filed_item(b, NIGHT1)
+        b.t = OW.epoch("2026-11-05T05:22:00Z") - 900
+        st = b.read(point(NIGHT1), set(), closed_at={item: [close]})
+        ok(st is not None and not reopened(b, item),
+           "red_bcbosb closed 22:18:40Z, read at 05:22Z on the 11:00Z night: no reopen (the second instance)")
+    finally:
+        AID, KEY = saved
+
+
 def test_unchanged_without_a_night_or_close_times():
     reset()
     b = Bench(CLOSE - 7200)
@@ -115,7 +150,7 @@ def test_unchanged_without_a_night_or_close_times():
 
 
 if __name__ == "__main__":
-    for fn in (test_stale_night_holds, test_unchanged_without_a_night_or_close_times):
+    for fn in (test_stale_night_holds, test_bcbosb_instance, test_unchanged_without_a_night_or_close_times):
         fn()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     sys.exit(1 if FAILS else 0)
