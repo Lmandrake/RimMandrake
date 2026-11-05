@@ -9,7 +9,9 @@ python.exe (Windows Python: WSL python3 cannot reach the bridge on Windows loopb
 unroofed and unfogged first). argv: optional out JSON path (its folder is made). Exit 0 = every window measured and under 20 ms; 1 = a window
 at or over 20 ms, a window that measured nothing (no slice, or the build never settled), or a window whose laidOnCaller
 is not 0 (GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: no cord edge is laid on the main thread; edges go to the lay worker);
-2 = GSS not loaded (UNMEASURED)."""
+2 = GSS not loaded (UNMEASURED).
+--fresh (GSS_PLAN_FIX_SECOND_PER_FULL_BUILD): after each window settles, the probe's `fresh` (one unbudgeted Build of the
+same world) must match the sliced result piece for piece: different, missing and extra all 0, else exit 1."""
 import sys, os, json, time
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Utils"))
 import rimbridge_client as rb
@@ -31,7 +33,9 @@ def probe(cmd, wait_s=20.0):
     return {"success": False, "error": "probe timed out"}
 BAR_MS, SIZE, STEP, LAMP = 20.0, 37, 6, 3
 SITES = [(20, 20), (80, 20), (20, 80), (80, 80)]
-OUT = sys.argv[1] if len(sys.argv) > 1 else None
+FRESH = "--fresh" in sys.argv[1:]
+_args = [a for a in sys.argv[1:] if a != "--fresh"]
+OUT = _args[0] if _args else None
 def cells(x0, z0, lamps):
     out = set()
     for z in range(z0, z0 + SIZE):
@@ -80,6 +84,13 @@ for i, (x0, z0) in enumerate(SITES):
         elif not w["winSlices"] or mx is None: fails.append("%s: UNMEASURED (no slice in the window)" % tag)
         elif w["pending"] != 0: fails.append("%s: never settled (pending %s)" % (tag, w["pending"]))
         elif mx >= BAR_MS: fails.append("%s: slice %.1f ms >= %.0f (record %s)" % (tag, mx, BAR_MS, json.dumps(w["maxNoGc"])[:400]))
+        if FRESH:
+            fr = probe("fresh", wait_s=60.0)
+            w["fresh"] = {k: fr.get(k) for k in ("edges", "same", "different", "missing", "extra", "pending", "error")}
+            print("%-16s fresh %s" % (tag, json.dumps(w["fresh"])), flush=True)
+            if not fr.get("success") or not fr.get("edges"): fails.append("%s: fresh UNMEASURED (%s)" % (tag, json.dumps(w["fresh"])))
+            elif fr.get("different") != 0 or fr.get("missing") != 0 or fr.get("extra") != 0:
+                fails.append("%s: sliced build differs from a fresh unbudgeted build %s" % (tag, json.dumps(w["fresh"])))
         if w["laidOnCaller"] != 0: fails.append("%s: laidOnCaller %s (a cord edge laid on the main thread, or unmeasured)" % (tag, w["laidOnCaller"]))
 res["fails"] = fails
 if OUT:
