@@ -19,3 +19,8 @@ FOR OWNER DIGEST - DO NOT ACT. GPT wants redo/cut on rows the owner has KEPT. Th
 - RM_GreyLady (art redo): Retain T129; T128 lacks the defining mature lace skirt. Rebuild T130's inconsistent review composite before judging the young-stage asset.
     - T130 live cut: Cut the inconsistent review composite, not the retained art: the main scene shows a developed veil while the single thumbnail shows a plain immature mushroom; r
 - RM_GiantAgarilux (art redo): T145 repeats Ullumbra's branching violet identity instead of the pale pillar; T146-T148 fit the description. Owner-kept art remains protected.
+
+## Outcome (Relentless, 2026-11-05)
+Delivered, no art touched: this item's file event (delegated: GPT biome review ingestion) was carried on the owner's
+2026-10-28 daily digest, recorded `complete` in `D:\ClaudeWork\rimmandrake\delegated_digest\state.json` (seen.ledger).
+All 13 defs above still exist in `src/`. The owner's keeps stand; to revisit a row he says so and it is filed then.
