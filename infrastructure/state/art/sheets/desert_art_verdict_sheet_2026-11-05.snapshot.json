@@ -1,0 +1,103 @@
+{
+ "biome": "SUBJECTS_desert_art_verdict",
+ "built": "2026-11-05T11:18:30-0800",
+ "census": "Transient/biome_ffar/desert_art_verdict.subjects.json",
+ "census_git_head": null,
+ "droppedAllRuled": [],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 43 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {},
+ "rows": {
+  "RSW_ImperialToad": {
+   "columns": {
+    "A": {
+     "east": "7e55b9b71a1f6618bbded2118d0229e5614190ed3c3cd5799e9c738528a4036a",
+     "north": "a676e241989e9804ed1e26cde8e86210d5cb8c9d9655d2fdec0ac97171d4eab7",
+     "south": "549be33d814774e2b0bbdae26e39d7ec6f03f87c5d0a71f5921a4f86376e04fa"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render desertportb_imperialtoad"
+   },
+   "pools": [],
+   "res": null,
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "imperialtoad"
+  },
+  "RSW_MossBeetle": {
+   "columns": {
+    "A": {
+     "east": "be5d5fc7530ec7caf86b1caeabb7547929a7815d885134ba1fa66d09218f8743",
+     "north": "4f1f11bb8a56134fc16f917d0de69d5688ec370e6e607ad891207c79de094ef6",
+     "south": "1f5e54fd95e74607a7319bb1d8d6fbbbf7e27a7114636c8a35ce3e90abe2431e"
+    },
+    "B": {
+     "north": "5c472b36a2642e56f0aa25130b53a4781bc105ad5ce1cfeccd492566809de42a"
+    },
+    "C": {
+     "east": "be5d5fc7530ec7caf86b1caeabb7547929a7815d885134ba1fa66d09218f8743",
+     "north": "f33c82cab843bcb89fa6dbb5cbb931f15dcd69404470e966e036d98da69f3ed4",
+     "south": "326e114b1f0bc05980e1c1b46138dc0f7eb73ee247f7a2ac5b11ea0b7ac285ca"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle",
+    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RSW_MossBeetle_r1_n",
+    "C": "render desertportb_mossbeetle"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "mossbeetle"
+  },
+  "RSW_MossBeetlePupa": {
+   "columns": {
+    "A": {
+     "east": "245469e830ba893a2c1ec7131d5b501af7416b3446a6fe0d5fa127b8c2cd96af"
+    },
+    "B": {
+     "east": "37021be931c713b43813ab27c4abd43433a32c31d25fb3cecff4caae9616dd50",
+     "north": "dd3e4d4eef0325b180bb1f90f15c5c239a67ad96332e5461d4effc505059cf50",
+     "south": "15d6b434973cb2e185212eacd8ccff85286a5f3ff817cc9a5f1e43d03ac98646"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BeetlePupae/BeetlePupa",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "history SWBestiary 2026-09-11",
+    "B": "render desertportb_mossbeetlepupa"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BeetlePupae/BeetlePupa"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BeetlePupae/BeetlePupa",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "mossbeetlepupa"
+  }
+ },
+ "sheetId": "desert_art_verdict_sheet_2026-11-05",
+ "snapshotId": "7956bcbd935a3dec"
+}

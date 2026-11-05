@@ -1,0 +1,30 @@
+{
+ "sheet": "desert_art_verdict_sheet_2026-11-05.html",
+ "looked_by": "seat:BENCH",
+ "when": "2026-11-05T11:19:37-0800",
+ "caught": "Of the 109 desert-port render jobs you had already ruled 96 (95 purged on the 2026-10-04 desert sheets, Strill east rejected), Bloddle and HubbaGourd sit on the current desert/deep_desert sheets, and 2 never reached the art store; only these 3 creatures remain. MossBeetle prefill C has a top-down north that mismatches its side views (A, in game, is the consistent set); ImperialToad has no def and is an Earth toad, still under your 2026-10-05 hold.",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "RSW_MossBeetle": {
+   "fp": "719741ba893ebb9b",
+   "verdict": "FLAG",
+   "note": "IN GAME A = render C south/east plus the arteval north (B). C north is a top-down dorsal view that does not match its own 3/4 south/east; the prefill C carries that mismatched north, so A is the consistent set."
+  },
+  "RSW_MossBeetlePupa": {
+   "fp": "f8d1d195b33f2ef5",
+   "verdict": "OK",
+   "note": "B (desertportb render) is a full S/E/N set, recognisable as a pale segmented pupa, consistent across facings; A is the old east-only history picture."
+  },
+  "RSW_ImperialToad": {
+   "fp": "c8af41063494935a",
+   "verdict": "FLAG",
+   "note": "Renders cleanly (S/E/N), but it is an instantly-nameable Earth toad, which the desert cards ban; RSW_ImperialToad has no ThingDef in the live dump (FALLBACK scale) and you put it on hold on leaningscrub_sheet_2026-10-05, so the row shows collapsed under that hold."
+  }
+ },
+ "dropped": []
+}
