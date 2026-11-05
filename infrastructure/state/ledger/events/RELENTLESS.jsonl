@@ -588,3 +588,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T09:33:33Z","tsn":1793871213487114403}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing GRAFFITI_SIGIL_FRAMES_ART_1: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T09:33:38Z","tsn":1793871218066890597}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T09:45:50Z","tsn":1793871950908939320}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live iteration ACC_BIOMES_FIXES_LIVE_RERUN_1","override":"took the driver lock from a dead or forced holder","role_unit":"rm-relentless-work-6d010e842f-g11","ts":"2026-11-05T09:51:45Z","tsn":1793872305228976628}
+{"seat":"RELENTLESS","event":"bridge","state":"released","role_unit":"rm-relentless-work-6d010e842f-g11","ts":"2026-11-05T09:52:06Z","tsn":1793872326643157294}
