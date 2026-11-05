@@ -535,3 +535,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:30:19Z","tsn":1793845819523503175}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T02:38:12Z","tsn":1793846292222008974}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:44:18Z","tsn":1793846658186051278}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T02:44:50Z","tsn":1793846690363997623}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:45:00Z","tsn":1793846700462065345}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CANON_MATERIALS_BUILD_1 A10 (L1), read-only proof","ts":"2026-11-05T02:45:06Z","tsn":1793846706507523996}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:45:13Z","tsn":1793846713194259887}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE A1 (L1), read-only proof","ts":"2026-11-05T02:45:21Z","tsn":1793846721498482220}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:45:28Z","tsn":1793846728322724434}
