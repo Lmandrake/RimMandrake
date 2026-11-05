@@ -571,7 +571,8 @@ class GameFx(object):
             return None
         crit = {c["id"]: c["level"] for c in it.criteria or []}
         return {"state": it.state, "built_sha": it.built_sha, "title": it.title or "",
-                "owed": {c: crit.get(c) for c in it.outstanding or []}}
+                "owed": {c: crit.get(c) for c in it.outstanding or []},
+                "passed": {p["criterion"]: p["level"] for p in it.passed or []}}     # met since this build
 
     def game_rows(self):
         import relentless_live_round
@@ -978,7 +979,10 @@ def step(store, fx, r, item, now, acts, sup):
             led = fx.game_ledger(item) if not why else led
         if why:
             return _back(store, fx, sup, r, item, "game_contract", "rimflow implemented refused: %s" % why, now, acts)
-        missing = [k for k in g["clauses"] if k not in led["owed"]]
+        # a clause already met at this build (a verify event since `implemented`) is not owed, and not missing either:
+        # it leaves the game clauses (MODCHECK_DONOR_ENVIRONMENTS_1: A2 passed live, then read as "missing" forever)
+        met = [k for k in g["clauses"] if k not in led["owed"] and k in (led.get("passed") or {})]
+        missing = [k for k in g["clauses"] if k not in led["owed"] and k not in met]
         notlive = [k for k in g["clauses"] if k in led["owed"] and led["owed"][k] not in LIVE_LEVELS()]
         if missing or notlive:
             return _back(store, fx, sup, r, item, "game_contract",
@@ -998,10 +1002,11 @@ def step(store, fx, r, item, now, acts, sup):
             return _back(store, fx, sup, r, item, "game_contract", "; ".join(
                 "%s/%s.txt %s: %s" % (PROOFS_DIR, item, k, w) for k, w in bad), now, acts)
         finals = [k for k in sorted(led["owed"]) if led["owed"][k] == FINAL_LEVEL and k not in g["clauses"] and k in lines]
-        owed_lines = {k: lines[k] for k in list(g["clauses"]) + finals if k in lines}
+        owed_lines = {k: lines[k] for k in list(g["clauses"]) + finals if k in lines and k not in met}
         if _preflight(store, fx, sup, r, item, owed_lines, now, acts, sha):
             return
-        _save(store, item, lambda s: s["game"].update(phase="prove", clauses=list(s["game"]["clauses"]) + finals))
+        _save(store, item, lambda s: s["game"].update(
+            phase="prove", clauses=[k for k in s["game"]["clauses"] if k not in met] + finals))
         acts.append({"do": "game_implemented", "item": item, "sha": sha})
         return
 

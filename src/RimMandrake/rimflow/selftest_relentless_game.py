@@ -1146,6 +1146,32 @@ def t_final_verification_waits_and_batches():
     x.done()
 
 
+def t_met_clause_is_not_missing():
+    """MODCHECK_DONOR_ENVIRONMENTS_1: A2 already passed live at this build (a verify event, so not outstanding); the
+    implement phase read it as "missing" and sent the item back for ever. A met clause leaves the game clauses."""
+    x = rig(1)
+    x.w.owed = {"A1": "L1"}
+    impl = x.w.game_implement
+
+    def implement(item, sha, crit, live=None):
+        impl(item, sha, crit, live)
+        x.w.led[item]["passed"] = {"A2": "L1"}
+    x.w.game_implement = implement
+    to_game(x, "I0", game={"clauses": ["A1", "A2"], "why": "both load"})
+    x.tick()
+    st = x.st("I0")
+    ok(not (st.get("last_fail") or {}).get("class") and st["status"] == "game", "a met clause sends nothing back: %s"
+       % (st.get("last_fail") or {}).get("detail"))
+    ok(st["game"]["phase"] == "prove" and st["game"]["clauses"] == ["A1"], "it leaves the clauses: %s" % st["game"])
+    x.done()
+    x = rig(1)
+    x.w.owed = {"A1": "L1"}
+    to_game(x, "I0", game={"clauses": ["A1", "A2"], "why": "both load"})
+    x.tick()
+    ok("missing ['A2']" in ((x.st("I0").get("last_fail") or {}).get("detail") or ""), "a clause neither owed nor met is missing")
+    x.done()
+
+
 def t_owed_final_joins_the_clauses():
     """A contract written before the tier rule names A1 only; the criteria file owes F1 GREEN-FULL with a proof line:
     F1 joins the game clauses at implement, so the item cannot wait on it forever."""
@@ -1478,7 +1504,7 @@ def main():
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
               t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline,
               t_stage_tries_a_newer_running_game_first,
-              t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses,
+              t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses, t_met_clause_is_not_missing,
               t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_retiered_rerecorded_every_phase, t_stale_build_caught_before_a_slot,
               t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_clock_restarts_at_lease,
               t_live_hold_lapses_when_its_game_is_gone,
