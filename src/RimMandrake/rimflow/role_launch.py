@@ -871,6 +871,14 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                     ticket=run.get("item"), note=True,
                     why="%s run %s on %s: %s" % (name, run["unit"], run["concept"], "stage result accepted" if ok
                                                  else "stage result REJECTED: " + "; ".join(errs[:4])))
+                # DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE: the advanced stage.json and renamed result files land on
+                # origin/main now; before, they sat in the Designer's clone until a person committed them
+                try:
+                    (obs.get("stage_land") or stage_land)(run["concept"], run["unit"])
+                except Exception as e:  # noqa: BLE001 - said; the files stay on disk and the next close lands them
+                    act(do="alarm", kind="role:%s:stage_land" % name, ticket=run.get("item"), note=True,
+                        why="%s run %s on %s: its stage state did not land on origin/main: %s" % (
+                            name, run["unit"], run["concept"], str(e)[:300]))
                 t = (obs.get("stage_turn") or stage_turn)(run["concept"]) if ok else None
                 if t:
                     escalate_turn(name, run, t, act)
@@ -1904,6 +1912,12 @@ def stage_close(concept, unit, tokens, sync=True):
     if sync:
         judge_sync(concept)
     return DS.close_run(concept, unit, tokens, repo=DS.REPO)
+
+
+def stage_land(concept, unit):
+    """designer_stage.land_state: the harvest's stage.json and result files onto origin/main -> its one line."""
+    import designer_stage as DS
+    return DS.land_state(concept, unit)
 
 
 def stage_turn(concept):

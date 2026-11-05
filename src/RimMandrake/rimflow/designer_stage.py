@@ -21,6 +21,7 @@ One concept folder, design/concepts/<Mod>/, holds the persisted state and the ch
   open     <dir> --run U [--run-cap N]     the launcher: refuse or return the stage packet (stdout) and reserve budget
   close    <dir> --run U [--tokens N]      the launcher: charge the run, validate result.json, advance or not
   charge   <dir> --tokens N --kind K --ref R   a helper, review or consult outside the run's own transcript
+  land     <dir> [--run U]                 land stage.json and the result files on origin/main (close does it itself)
   check    <dir>                           validate result.json now, write nothing (the Designer's dry run)
   status   <dir>                           stage, budget, staleness, open recovery
   spend    <dir>...                        per-stage weighted spend against the default cap (the cap's measurement)
@@ -1161,6 +1162,60 @@ def close_run(d, run, tokens=None, repo=REPO):
     return True, []
 
 
+LAND = os.path.join(os.path.dirname(HERE), "Utils", "land.sh")
+
+
+def state_paths(d, repo):
+    """The harvest's own files in a concept folder, relative to its clone: stage.json, every result*.json there, and
+    result.json when origin/main still has it after close renamed it away (a deletion lands too)."""
+    rel = os.path.relpath(os.path.abspath(d), repo)
+    out = [os.path.join(rel, "stage.json")] if os.path.isfile(os.path.join(d, "stage.json")) else []
+    out += sorted(os.path.join(rel, n) for n in os.listdir(d) if re.match(r"result(\..+)?\.json$", n))
+    gone = os.path.join(rel, "result.json")
+    if gone not in out:
+        import subprocess
+        r = subprocess.run(["git", "-C", repo, "ls-tree", "--name-only", "origin/main", "--", gone],
+                           capture_output=True, text=True)
+        if r.returncode == 0 and r.stdout.strip():
+            out.append(gone)
+    return out
+
+
+def land_state(d, run, timeout=120):
+    """DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE: close_run advances stage.json and renames result.json in the Designer's
+    clone; nothing committed them, so origin/main kept reading the old stage (3906e2b306 landed three by hand). This
+    lands exactly those paths with land.sh -m (a temp index from origin/main: the clone's index, HEAD and a peer's
+    staged or unstaged edits are never touched). -> "PUBLISHED <sha>" | "nothing to land" | "skipped: <why>".
+    Raises RuntimeError on a refused landing (the caller alarms; the files stay on disk for the next close)."""
+    import subprocess
+    if os.environ.get("RM_STAGE_LAND") == "0":
+        return "skipped: RM_STAGE_LAND=0"
+    r = subprocess.run(["git", "-C", d, "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+    if r.returncode != 0 or not r.stdout.strip():
+        return "skipped: %s is not in a git clone" % d
+    repo = r.stdout.strip()
+    rel = os.path.relpath(os.path.realpath(d), os.path.realpath(repo)).replace(os.sep, "/")
+    if not re.match(r"design/concepts/[^/]+$", rel):
+        # only a real concept folder lands: a selftest fixture (a temp dir, even inside some clone) never pushes
+        return "skipped: %s is not design/concepts/<Mod> of its clone" % d
+    paths = state_paths(os.path.realpath(d), os.path.realpath(repo))
+    if not paths:
+        return "skipped: no stage files in %s" % d
+    st = read_json(os.path.join(d, "stage.json"), {}) or {}
+    last = (st.get("results") or [{}])[-1]
+    mod = st.get("mod") or os.path.basename(os.path.abspath(d))
+    msg = ("Designer: %s stage %s %s (run %s), harvest lands its own state\n\n"
+           "Landed by designer_stage.land_state (DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE): stage.json and result files only."
+           % (mod, last.get("stage", st.get("stage")), last.get("outcome", st.get("status")), run))
+    p = subprocess.run([LAND, "-m", msg] + paths, cwd=repo, capture_output=True, text=True, timeout=timeout,
+                       env=dict(os.environ, LAND_REPO=repo))
+    if p.returncode == 0:
+        return p.stdout.strip().splitlines()[-1] if p.stdout.strip() else "PUBLISHED ?"
+    if "nothing to land" in p.stderr:
+        return "nothing to land"
+    raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:]))
+
+
 def safe(run):
     return re.sub(r"[^A-Za-z0-9_.-]", "_", str(run))
 
@@ -1424,6 +1479,9 @@ def main(argv=None):
     x.add_argument("--ref", required=True)
     for name in ("check", "status"):
         sub.add_parser(name).add_argument("dir")
+    x = sub.add_parser("land", help="land the concept's stage.json and result files on origin/main (close does it)")
+    x.add_argument("dir")
+    x.add_argument("--run", default="catch-up")
     x = sub.add_parser("unblock")
     x.add_argument("dir")
     x.add_argument("--why", required=True)
@@ -1485,10 +1543,20 @@ def main(argv=None):
             print(text)
         elif a.cmd == "close":
             ok, errs = close_run(a.dir, a.run, a.tokens)
+            try:
+                print("landed: %s" % land_state(a.dir, a.run), file=sys.stderr)
+            except (RuntimeError, OSError, ValueError, __import__("subprocess").SubprocessError) as e:
+                print("NOT LANDED: %s" % e, file=sys.stderr)
             if not ok:
                 print("REJECTED:\n" + "\n".join("  " + e for e in errs), file=sys.stderr)
                 return 1
             print("accepted: %s" % json.dumps(status(a.dir)))
+        elif a.cmd == "land":
+            try:
+                print(land_state(a.dir, a.run))
+            except (RuntimeError, OSError, ValueError, __import__("subprocess").SubprocessError) as e:
+                print("NOT LANDED: %s" % e, file=sys.stderr)
+                return 1
         elif a.cmd == "charge":
             st = charge(a.dir, a.tokens, a.kind, a.ref)
             print("charged %d; spent %d of %d" % (a.tokens, st["budget"]["spent"], st["budget"]["cap"]))

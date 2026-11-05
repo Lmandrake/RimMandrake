@@ -1558,7 +1558,7 @@ def replay_batch():
 # Role alarms reviewed as faults an Operations incident should hold (cause roles, via the role:* fallthrough).
 # RELAPSE_ROLES_FIX_DIED_TWICE: a role_launch alarm kind not on this list and not routed by its own row fails below, so
 # a new doorbell or self-retrying state cannot fall into cause roles unseen and reopen it as a "dead fix".
-ROLE_INCIDENT_SUFFIXES = {"supervise", "unit", "overtime", "stop_failed", "stage_rejected", "stage_close", "failed",
+ROLE_INCIDENT_SUFFIXES = {"supervise", "unit", "overtime", "stop_failed", "stage_rejected", "stage_close", "stage_land", "failed",
                           "after", "schedule", "ops", "stage_refused"}
 
 
