@@ -572,3 +572,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T08:13:59Z","tsn":1793866439568958491}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ART_OVERRIDE_FAMILY_SCRIPT_1 A1 (L2), read-only proof","ts":"2026-11-05T08:15:36Z","tsn":1793866536379992304}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T08:17:02Z","tsn":1793866622853811094}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A1 (L2), read-only proof","ts":"2026-11-05T08:21:26Z","tsn":1793866886091799090}
