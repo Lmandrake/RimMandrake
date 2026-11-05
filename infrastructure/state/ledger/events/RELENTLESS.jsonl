@@ -756,3 +756,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:10:48Z","tsn":1793905848972652676}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HORRORS_RAIDING_FACTION_1 A2 (L2), read-only proof","ts":"2026-11-05T19:12:01Z","tsn":1793905921713932684}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:12:16Z","tsn":1793905936474482863}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PUMP_DRAW_FIX_LOSES_A_LEVEL A1 (L2), read-only proof","ts":"2026-11-05T19:18:24Z","tsn":1793906304693326781}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:18:56Z","tsn":1793906336720630049}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing SILT_TRAP_STYLES_REDRAW_HALF_RES_FLAT: review savegame for the owner's look","ts":"2026-11-05T19:24:22Z","tsn":1793906662386354212}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:24:29Z","tsn":1793906669374507391}
