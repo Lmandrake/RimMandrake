@@ -12,7 +12,9 @@ always have been policy."* A run after a change covers only that change's chains
   --item ITEM_ID    a rimflow item. Chains are mapped by two links, both printed with the reason:
                       1. the chain's own source names ITEM_ID (a row written for that item cites it)
                       2. the item's ledger text (`rimflow show`: title, notes, prose file) names a chain or row id --
-                         an id with an underscore as a whole token, a one-word chain name only in backticks
+                         an id with an underscore as a whole token, a one-word chain name only in backticks -- AND
+                         names the mod (names_mod: its folder name in the text, or in the id with underscores
+                         ignored). Generic chain names (defs, defs_resolve) are declared by many mods.
                     No link -> refused, naming --chains/--rows. Never a fall-back to the full suite.
 
 Per-chain scope (focused_testing_plan_2026-10-25, option A): resolve() returns `scope` = {chain: {mode: full|prefix,
@@ -82,6 +84,13 @@ def _names_in(text, name):
     return ("`%s`" % name) in text
 
 
+def names_mod(mod, iid, text):
+    """True when an item names MOD: its folder name anywhere in the text (case-blind), or in the id, underscores
+    ignored (FLOW_WORKS_X and FLOWWORKS_X both name FlowWorks). Gates the TEXT links of resolve(--item) and
+    testq gapprobe (TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL)."""
+    return bool(mod) and (mod.lower() in (text or "").lower() or mod.upper() in (iid or "").replace("_", "").upper())
+
+
 def item_text(item_id, runner_mod=None):
     """Everything the ledger says about `item_id` (`rimflow show`): title, notes, prose. Raises TargetError if the
     item does not exist."""
@@ -143,6 +152,12 @@ def resolve(suite, chains=(), rows=(), item=None, text=None):
                 whole.add(name)
                 found = True
                 why.append("chain %s: its source names %s" % (name, item))
+        # a TEXT link holds only when the item names this mod: GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND names
+        # `defs`, which every biome mod declares (TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL)
+        if text and not names_mod(suite.name, item, text):
+            why.append("ledger text of %s does not name %s: its chain/row names are not links here"
+                       % (item, suite.name))
+            text = None
         for name in names:
             if text and _names_in(text, name):
                 picked.add(name)
@@ -158,7 +173,7 @@ def resolve(suite, chains=(), rows=(), item=None, text=None):
         if not found:
             raise TargetError(
                 "--item %s maps to no %s chain: no chain's source names it and its ledger text names no chain or "
-                "row id. Name them yourself: `modcheck run %s --chains <a,b>` or `--rows <r1,r2>` (chains: %s). "
+                "row id of a mod it names. Name them yourself: `modcheck run %s --chains <a,b>` or `--rows <r1,r2>` (chains: %s). "
                 "Refusing rather than running the full suite."
                 % (item, suite.name, suite.name, ", ".join(names)))
     for r in unknown_rows:

@@ -74,9 +74,26 @@ def t_resolve():
         ok(False, "item: a prefix of a cited id (PUMP_PORTS_FIX_WEST in ..._WEST_SIDE_1) must not map")
     except targeting.TargetError:
         ok(True, "item: a prefix of a cited id does not map")
-    sel = targeting.resolve(s, item="SOME_ITEM", text="the `thirst` chain and row lines_drawn_ok; lines and thirst")
+    sel = targeting.resolve(s, item="SOME_ITEM", text="ToyMod: the `thirst` chain and row lines_drawn_ok; lines and thirst")
     ok(sel["chains"] == ["lines", "thirst"], "item: ledger text naming a backticked chain / an underscored row id",
        sel["chains"])
+    # TESTQ_ITEMOWED_FIX_DEFS_CHAIN_ADOPTS_ALL: a text link needs the item to name the mod; a stranger's item naming a
+    # generic chain/row is refused (GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND was adopted by every biome's `defs`)
+    for t in ("a Stillsand item: the `thirst` chain", "Stillsand: row lines_drawn_ok fails"):
+        try:
+            sel = targeting.resolve(s, item="STILLSAND_DEFS_FIX", text=t)
+            ok(False, "item: text naming a chain/row but not the mod does not link", sel["chains"])
+        except targeting.TargetError as ex:
+            ok("of a mod it names" in str(ex), "item: text naming a chain/row but not the mod does not link: %r" % t,
+               str(ex))
+    sel = targeting.resolve(s, item="TOY_MOD_THIRST_FIX", text="the `thirst` chain")
+    ok(sel["chains"] == ["thirst"], "item: an id naming the mod (underscores ignored) keeps the text link", sel["chains"])
+    sel = targeting.resolve(s, item="PUMP_PORTS_FIX_WEST_SIDE_1", text="a Stillsand note naming `thirst`")
+    ok(sel["chains"] == ["pump_ports"], "item: a source link stands without the mod named; the stranger text adds none",
+       sel["chains"])
+    ok(targeting.names_mod("FlowWorks", "FLOW_WORKS_X", "") and targeting.names_mod("FlowWorks", "Y", "see flowworks")
+       and not targeting.names_mod("FlowWorks", "GREENTIDE_ANTS_X", "the `defs` chain") and not targeting.names_mod("", "A", "a"),
+       "names_mod: folder name in text (case-blind) or in the id, underscores ignored; nothing else")
     for kw, what in ((dict(item="SOME_ITEM", text="thirst lines everywhere, no ids"),
                       "item with no link (bare common words do not count) is refused"),
                      (dict(chains=["nope"]), "unknown chain is refused"),
@@ -410,16 +427,16 @@ def t_incomplete_catalogue_refused():
     sel = targeting.resolve(s, chains=["partial", "swallowed"], rows=["partial_first"])
     ok(sel["scope"]["partial"]["mode"] == "full" and sel["scope"]["partial"]["requested_rows"] == ["partial_first"],
        "incomplete: a row in a chain ALSO named whole is not refused (the whole chain runs)", sel["scope"])
-    sel = targeting.resolve(s, item="X_ITEM", text="the `partial` and `swallowed` chains, row partial_first")
+    sel = targeting.resolve(s, item="X_ITEM", text="ToyA: the `partial` and `swallowed` chains, row partial_first")
     ok(sel["scope"]["partial"]["mode"] == "full", "incomplete: item text naming the chain AND its row runs it whole",
        sel["scope"])
     try:
-        targeting.resolve(s, item="X_ITEM", text="see row big_b")
+        targeting.resolve(s, item="X_ITEM", text="ToyA: see row big_b")
         ok(False, "incomplete: a row found in ITEM TEXT gets the same hidden-owner refusal as --rows (codex r4)")
     except targeting.TargetError as ex:
         ok("incomplete" in str(ex) and "swallowed" in str(ex),
            "incomplete: a row found in ITEM TEXT gets the same hidden-owner refusal as --rows (codex r4)", str(ex))
-    sel = targeting.resolve(s, rows=["big_b"], item="X_ITEM", text="the `partial` and `swallowed` chains")
+    sel = targeting.resolve(s, rows=["big_b"], item="X_ITEM", text="ToyA: the `partial` and `swallowed` chains")
     ok(sel["scope"]["big"]["mode"] == "prefix" and sel["scope"]["partial"]["mode"] == "full",
        "incomplete: --rows is judged AFTER --item names the incomplete chains whole (codex r4)", sel["scope"])
 

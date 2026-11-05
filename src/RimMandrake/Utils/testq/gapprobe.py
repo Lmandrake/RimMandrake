@@ -23,12 +23,6 @@ if MC not in sys.path:
     sys.path.insert(0, MC)
 
 
-def names_mod(mod, iid, text):
-    """True when an item names MOD: its folder name anywhere in the text (case-blind), or in the id, underscores
-    ignored (FLOW_WORKS_X and FLOWWORKS_X both name FlowWorks)."""
-    return mod.lower() in (text or "").lower() or mod.upper() in (iid or "").replace("_", "")
-
-
 def main():
     req = json.loads(sys.stdin.read() or "{}")
     import contextlib
@@ -49,7 +43,7 @@ def main():
             # the item also names this mod. Generic names (defs, defs_resolve, site, flora) are declared by many mods,
             # and GREENTIDE_ANTS_MIGRATE_NO_ANT_LEFT_BEHIND was linked to the defs chain of every biome. Measured
             # 2026-11-04: all 32 of FlowWorks' text links name it; the dropped ones were all other mods' items.
-            named = names_mod(req["mod"], iid, text)
+            named = targeting.names_mod(req["mod"], iid, text)
             how = {}
             for n in names:
                 if n in offline:
