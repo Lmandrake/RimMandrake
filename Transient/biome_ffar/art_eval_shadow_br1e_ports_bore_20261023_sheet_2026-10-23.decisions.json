@@ -2,7 +2,7 @@
  "sheetId": "art_eval_shadow_br1e_ports_bore_20261023_sheet_2026-10-23",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_br1e_ports_bore_20261023_sheet_2026-10-23.snapshot.json",
- "snapshotId": "4057584ad75d9285",
+ "snapshotId": "c53e56fbf699896f",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "SUBJECTS_art_eval_shadow_br1e_ports_bore_20261023",
  "reviewStatus": {

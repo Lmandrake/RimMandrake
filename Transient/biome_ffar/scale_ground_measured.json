@@ -1,5 +1,37 @@
 {
+ "SUBJECTS_art_eval_shadow_br1e_ports_bore_20261023": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
+ "SUBJECTS_art_eval_shadow_br1e_ports_bore_20261023_r2": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
+ "SUBJECTS_art_eval_shadow_br1e_ports_bore_20261023_r3": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
  "SUBJECTS_desert_art_verdict": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
+ "SUBJECTS_drawbridge_art": {
   "rgb": [
    93,
    76,

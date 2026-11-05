@@ -1,0 +1,19 @@
+{
+ "sheet": "art_eval_shadow_br1e_ports_bore_20261023_r2_sheet_2026-10-23.html",
+ "looked_by": "judge:claude-opus-5-5+gpt-6.1-sol",
+ "when": "2026-10-23T21:20:13-0700",
+ "caught": "pipeline decided 2 REGEN; nothing dropped",
+ "rows": {
+  "RM_PumpingStation_Kludged": {
+   "fp": "32879d0520c6e14b",
+   "verdict": "FLAG",
+   "note": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: FOOTPRINT, PORT_UNDRAWN \u00b7 GPT unsure, unsettled K1, K3, K4"
+  },
+  "RM_HoseFreeEnd_Mouth": {
+   "fp": "16fd26aacb0239a7",
+   "verdict": "OK",
+   "note": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DESC_MISS \u00b7 GPT regen, unsettled K1, K2"
+  }
+ },
+ "dropped": []
+}

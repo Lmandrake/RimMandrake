@@ -1,0 +1,139 @@
+{
+ "schema": 1,
+ "generated": "2026-10-23T21:19:08-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_art_eval_shadow_br1e_ports_bore_20261023_r2"
+ ],
+ "biomes": {
+  "SUBJECTS_art_eval_shadow_br1e_ports_bore_20261023_r2": {
+   "label": "Art-eval shadow check \u2014 br1e_ports_bore_20261023_r2",
+   "slug": "art_eval_shadow_br1e_ports_bore_20261023_r2",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Art-eval shadow check \u2014 br1e_ports_bore_20261023_r2 \u2014 game art",
+   "lead_html": "<p><b>Shadow review</b> of art-eval run <code>br1e_ports_bore_20261023_r2</code>: the pipeline has ALREADY decided every row (owner, 2026-10-23: <i>build human review sheets AFTER the process works for quick human feedback</i>). Each row shows its decision and the reviewers' blocking reasons; press KEEP or an OVERRIDE. Skipping a row changes nothing.</p>",
+   "rows": [
+    {
+     "key": "RM_PumpingStation_Kludged",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "kludged pumping station",
+     "defNames": [
+      "RM_PumpingStation_Kludged"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_PumpingStation_Kludged"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_PumpingStation_Kludged found"
+     },
+     "reference_textures": [
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/station_r1.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/station_r1_asm.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/judge_crops/stk_z.png"
+     ],
+     "reopen": true
+    },
+    {
+     "key": "RM_HoseFreeEnd_Mouth",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_HoseFreeEnd_Mouth",
+     "defNames": [
+      "RM_HoseFreeEnd_Mouth"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_HoseFreeEnd_Mouth NOT in the dump"
+     },
+     "reference_textures": [
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Scrapper_r1.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/mouth_r1_swap.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/judge_crops/reels_z.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Industrial_r1.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Modern_r1.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Futuristic_r1.png"
+     ],
+     "reopen": true
+    }
+   ],
+   "question": {
+    "key": "pipeline_check",
+    "label": "Did the pipeline decide right?",
+    "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+    "options": [
+     [
+      "keep",
+      "KEEP the pipeline's decision"
+     ],
+     [
+      "should_accept",
+      "OVERRIDE: the art is fine, accept it"
+     ],
+     [
+      "should_regen",
+      "OVERRIDE: the art is bad, regenerate"
+     ],
+     [
+      "other",
+      "OVERRIDE: something else (write a note)"
+     ],
+     [
+      "revert",
+      "REVERT: put my kept version back (rows that replaced your kept art)"
+     ]
+    ],
+    "rows": {
+     "RM_PumpingStation_Kludged": {
+      "prefill": "keep",
+      "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: FOOTPRINT, PORT_UNDRAWN \u00b7 GPT unsure, unsettled K1, K3, K4",
+      "context": "judged candidate R1 (image sha a6c31aa9c9); PORT_UNDRAWN: No pipe stub or coupler mount descends from the manifold at the bottom centre; only wooden skids sit there.; FOOTPRINT: The machine fills roughly 2.5 by 1.7 of its 3x3 cells and sits low, leaving the north third empty."
+     },
+     "RM_HoseFreeEnd_Mouth": {
+      "prefill": "keep",
+      "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DESC_MISS \u00b7 GPT regen, unsettled K1, K2",
+      "context": "judged candidate R1 (image sha 18b4518e30); DESC_MISS: The pale grey fill nearly matches the canvas hose, so the tip reads as a solid capped stub rather than an open cut end of a hollow hose."
+     }
+    }
+   }
+  }
+ }
+}

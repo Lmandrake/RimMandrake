@@ -1,9 +1,19 @@
 {
  "biome": "SUBJECTS_drawbridge_art",
- "built": "2026-10-24T03:51:16-0700",
+ "built": "2026-11-05T14:27:53-0800",
  "census": "Transient/biome_ffar/drawbridge_art.subjects.json",
  "census_git_head": null,
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 11 mods \u2014 a test list): 320 active",
+ "droppedAllRuled": [
+  "DB_Icon_HoldRaised",
+  "DB_Icon_Lower",
+  "DB_LeafUp_Steel_Underside",
+  "DB_Modern_Gate_Open",
+  "DB_Modern_Planks",
+  "DB_Modern_Winch_Steel",
+  "DB_Planks_Timber"
+ ],
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 23 mods \u2014 a test list): 316 active",
+ "noncanonOptions": {},
  "rows": {
   "DB_Futuristic_Gate_Closed": {
    "columns": {},
@@ -477,26 +487,6 @@
    "shownBase": [],
    "subject_key": "db_modern_gate_closed"
   },
-  "DB_Modern_Gate_Open": {
-   "columns": {
-    "A": {
-     "east": "920861db757fb60ff585126c4ba065a70311ddbb0c3ac5a5e870e2841a5472a8"
-    }
-   },
-   "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Open"
-   },
-   "labels": {
-    "A": "render RM_DrawbridgeGate_Open_Modern"
-   },
-   "pools": [],
-   "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeGate_Open",
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "db_modern_gate_open"
-  },
   "DB_Modern_LeafUp_Edge": {
    "columns": {},
    "graphic_of": {},
@@ -527,26 +517,6 @@
    "shownBase": [],
    "subject_key": "db_modern_leafup_underside"
   },
-  "DB_Modern_Planks": {
-   "columns": {
-    "A": {
-     "single": "60d756cb372da1a4727fe57cb5b5c8b2f181a0f71b786eea3d7a0b262ac790f1"
-    }
-   },
-   "graphic_of": {
-    "A": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgePlanks"
-   },
-   "labels": {
-    "A": "render RM_DrawbridgePlanks_Modern"
-   },
-   "pools": [],
-   "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgePlanks",
-   "reserved": [
-    "A"
-   ],
-   "shownBase": [],
-   "subject_key": "db_modern_planks"
-  },
   "DB_Modern_Winch_Steel": {
    "columns": {
     "A": {
@@ -559,14 +529,11 @@
    "labels": {
     "A": "render RM_DrawbridgeWinch_Steel_Modern"
    },
-   "pools": [],
    "res": "RimMandrake/FlowWorks/Drawbridge/Modern/RM_DrawbridgeWinch_Steel",
    "reserved": [
     "A"
    ],
-   "shownBase": [
-    "f7812d5c6c49ff60e2f44a35959d044853b19827bd7751f8b3f7433f31201233"
-   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "db_modern_winch_steel"
   },
   "DB_Modern_Winch_Timber": {
@@ -939,5 +906,5 @@
   }
  },
  "sheetId": "drawbridge_art_sheet_2026-10-20",
- "snapshotId": "404919828ad6bf16"
+ "snapshotId": "b1e25b66bf04b75a"
 }

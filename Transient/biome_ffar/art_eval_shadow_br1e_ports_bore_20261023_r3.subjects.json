@@ -1,0 +1,139 @@
+{
+ "schema": 1,
+ "generated": "2026-10-23T21:20:16-0700",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_art_eval_shadow_br1e_ports_bore_20261023_r3"
+ ],
+ "biomes": {
+  "SUBJECTS_art_eval_shadow_br1e_ports_bore_20261023_r3": {
+   "label": "Art-eval shadow check \u2014 br1e_ports_bore_20261023_r3",
+   "slug": "art_eval_shadow_br1e_ports_bore_20261023_r3",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Art-eval shadow check \u2014 br1e_ports_bore_20261023_r3 \u2014 game art",
+   "lead_html": "<p><b>Shadow review</b> of art-eval run <code>br1e_ports_bore_20261023_r3</code>: the pipeline has ALREADY decided every row (owner, 2026-10-23: <i>build human review sheets AFTER the process works for quick human feedback</i>). Each row shows its decision and the reviewers' blocking reasons; press KEEP or an OVERRIDE. Skipping a row changes nothing.</p>",
+   "rows": [
+    {
+     "key": "RM_PumpingStation_Kludged",
+     "kind": "building",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "kludged pumping station",
+     "defNames": [
+      "RM_PumpingStation_Kludged"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_PumpingStation_Kludged"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_PumpingStation_Kludged found"
+     },
+     "reference_textures": [
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/station_r1.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/station_r1_swap_crop.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/judge_crops/stk_z.png"
+     ],
+     "reopen": true
+    },
+    {
+     "key": "RM_HoseFreeEnd_Mouth",
+     "kind": "other",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "RM_HoseFreeEnd_Mouth",
+     "defNames": [
+      "RM_HoseFreeEnd_Mouth"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [],
+      "searched": "live def dump: RM_HoseFreeEnd_Mouth NOT in the dump"
+     },
+     "reference_textures": [
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Scrapper_r2.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/mouth_r2_swap.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_caps/judge_crops/reels_z.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Industrial_r2.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Modern_r2.png",
+      "/mnt/d/ClaudeWork/rimmandrake/scratch/br1e_redraw_judge/gen/Mouth_Futuristic_r2.png"
+     ],
+     "reopen": true
+    }
+   ],
+   "question": {
+    "key": "pipeline_check",
+    "label": "Did the pipeline decide right?",
+    "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+    "options": [
+     [
+      "keep",
+      "KEEP the pipeline's decision"
+     ],
+     [
+      "should_accept",
+      "OVERRIDE: the art is fine, accept it"
+     ],
+     [
+      "should_regen",
+      "OVERRIDE: the art is bad, regenerate"
+     ],
+     [
+      "other",
+      "OVERRIDE: something else (write a note)"
+     ],
+     [
+      "revert",
+      "REVERT: put my kept version back (rows that replaced your kept art)"
+     ]
+    ],
+    "rows": {
+     "RM_PumpingStation_Kludged": {
+      "prefill": "keep",
+      "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK \u00b7 GPT strong_accept",
+      "context": "judged candidate R1b (image sha a6c31aa9c9); "
+     },
+     "RM_HoseFreeEnd_Mouth": {
+      "prefill": "keep",
+      "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: BORE_PLANE, DESC_MISS \u00b7 GPT regen, unsettled K1, K3",
+      "context": "judged candidate R2 (image sha efcb9ec5a2); DESC_MISS: In-game, the Modern end shows a pale ring around a light grey interior, so it reads more like a closed pale plug than an open hose end.; BORE_PLANE: The recess is still a fully shaded disc seen face-on in the texture. Only the C# squash keeps it narrow, so at zoom the end still faintly su"
+     }
+    }
+   }
+  }
+ }
+}
