@@ -201,6 +201,36 @@ def t_windows_build_nothing_to_probe():
     x.done()
 
 
+def t_every_waiter_released():
+    """The gh book of 2026-11-05: three waiters on JAM_CLASS; the pass promoted one to a probe the book lost, and two
+    stayed waiting on an owner whose repair was done. Every waiter gets the passed overlay, and an orphan is healed."""
+    x = rig(n=3)
+    for i in ("I0", "I1", "I2"):
+        B.to_check(x, i)
+        blind(x, i)
+    x.tick()
+    ok(RF.load(x.s)["git"]["waiters"] == ["I1", "I2"], "(3) two waiters on one owner")
+    x.w.items["CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS"] = "done"
+    x.w.probe_says = (True, "git_log_candidate exit 0")
+    for _ in range(6):
+        x.tick()
+    sts = {i: x.st(i) for i in ("I0", "I1", "I2")}
+    ok(all((s.get("reach") or {}).get("status") == "applied" and s["status"] in ("candidate", "checking")
+           for s in sts.values()), "(4) owner and both waiters get the passed overlay: %s"
+       % {i: (s["status"], (s.get("reach") or {}).get("status")) for i, s in sts.items()})
+    ok(RF.load(x.s)["git"]["status"] == "ok", "(3) the book stays ok, no lost probe")
+    # an orphan: blocked on a class whose repair passed, owner gone
+    with x.s.lock():
+        st = x.st("I2")
+        st.update(status="blocked", wait={"kind": RF.WAIT, "on": "I2", "class": "git"})
+        st["reach"] = dict(st["reach"], status="probe")
+        x.s.save(st)
+    x.tick()
+    ok(x.st("I2")["status"] in ("candidate", "checking"), "(4) an orphan on a passed class is released: %s"
+       % x.st("I2")["status"])
+    x.done()
+
+
 def t_legacy_off():
     x = rig()
     x.r = dict(x.r, reach_repair=False)
@@ -212,7 +242,7 @@ def t_legacy_off():
 
 def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
-              t_windows_build_nothing_to_probe, t_legacy_off):
+              t_windows_build_nothing_to_probe, t_every_waiter_released, t_legacy_off):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0

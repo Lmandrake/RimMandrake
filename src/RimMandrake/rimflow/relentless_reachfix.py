@@ -253,7 +253,7 @@ def sweep(store, fx, r, now, acts, iso):
             book[name] = dict(ent, status="ok", owner=None, waiters=[], ok_at=now, last_owner=owner)
             save(store, book)
             for w in waiters:
-                release_waiter(store, fx, w, name, now, iso)
+                release_waiter(store, fx, w, name, now, iso, prop=prop, owner=owner)
             store.journal({"at": iso(now), "do": "reach_repaired", "item": owner, "class": name, "waiters": waiters})
             acts.append({"do": "reach_repaired", "item": owner, "class": name, "waiters": waiters})
             continue
@@ -263,6 +263,7 @@ def sweep(store, fx, r, now, acts, iso):
             save(store, book)
             continue
         file_ticket(store, fx, r, book, name, owner, why, now, acts, iso)
+    orphans(store, fx, book, now, acts, iso)
 
 
 def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso):
@@ -294,24 +295,42 @@ def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso):
     acts.append({"do": "reach_ticket", "item": owner, "class": name, "ticket": ticket, "why": (why or "")[:200]})
 
 
-def release_waiter(store, fx, item, name, now, iso):
-    """The class's repair passed: the waiter probes its own proposal next (one cheap probe, no Marker), owning it."""
+def release_waiter(store, fx, item, name, now, iso, prop=None, owner=None):
+    """The class's repair passed its probe on the owner: the waiter gets the same overlay and its sha is checked once.
+    Blind again after it, and the applied-then-blind route files the class ticket. It never becomes a second owner:
+    the book is the sweep's, and a waiter promoted under it was lost when the sweep saved its own copy."""
     with store.lock():
         cur = store.load(item)
         if not cur or cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
-            return
-        book = load(store)
-        ent = book.get(name) or {}
-        if ent.get("status") in ("probe", "ticket", "failed") and ent.get("owner") not in (None, item):
-            return
-        cur["reach"] = dict(cur.get("reach") or {}, status="probe", at=now)
-        cur.pop("block_pending", None)
-        cur["wait"] = {"kind": WAIT, "on": item, "class": name, "attributed_at": now}
-        book[name] = dict(ent, owner=item, status="probe", since=now)
-        save(store, book)
-        store.attempt(item, {"at": iso(now), "gen": cur["gen"], "end": "reach_waiter_released", "class": name})
+            return False
+        if prop is None:
+            prop = (cur.get("reach") or {}).get("proposal") or {}
+        cur["reach"] = dict(cur.get("reach") or {}, sha=(cur.get("candidate") or {}).get("sha"))
+        _apply(cur, prop, name, now, "the %s repair passed its probe on %s" % (name, owner or "its owner"))
+        store.attempt(item, {"at": iso(now), "gen": cur["gen"], "end": "reach_waiter_released", "class": name,
+                             "owner": owner, "sha": cur["reach"]["sha"]})
         store.save(cur)
-    fx.ledger_unblock(item, "reach repair %s passed its probe; this item probes its own proposal" % name)
+    fx.ledger_unblock(item, "reach repair %s passed its probe on %s; this item's sha is checked once" % (name, owner))
+    return True
+
+
+def orphans(store, fx, book, now, acts, iso):
+    """A reach-blocked item whose class repair already passed and that nobody will release (its owner is gone, or it
+    was promoted to a probe the book does not hold): it gets that class's passed overlay. -> the ids moved."""
+    moved = []
+    for st in store.states():
+        w = st.get("wait") or {}
+        if st["status"] != "blocked" or w.get("kind") != WAIT:
+            continue
+        ent = book.get(w.get("class")) or {}
+        if ent.get("status") != "ok" or ent.get("owner") == st["item"] or st["item"] in (ent.get("waiters") or []):
+            continue
+        last = store.load(ent["last_owner"]) if ent.get("last_owner") else None
+        prop = ((last or {}).get("reach") or {}).get("proposal")
+        if release_waiter(store, fx, st["item"], w["class"], now, iso, prop=prop, owner=ent.get("last_owner")):
+            moved.append(st["item"])
+            acts.append({"do": "reach_orphan_released", "item": st["item"], "class": w["class"]})
+    return moved
 
 
 def adopt(store, st, r, now):
