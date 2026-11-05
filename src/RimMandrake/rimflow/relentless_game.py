@@ -326,8 +326,8 @@ def green_stands(st, attempts=()):
         if green["contract"] != contract_print(st.get("contract")):
             return None
     else:
-        since = green.get("at") or 0
-        if any("contract" in a and row_at(a) > since for a in attempts):
+        since = int(green.get("at") or 0)     # a row keeps whole seconds: one in green's own second may follow it
+        if any("contract" in a and row_at(a) >= since for a in attempts):
             return None
     held = st.get("proof_only") or {}
     if held.get("binding") and (held.get("at") or 0) > (green.get("at") or 0):
@@ -378,7 +378,7 @@ def outcomes(rows, item, sha, clauses):
     return {c: h[(item, c, sha)] for c in clauses if (item, c, sha) in h}
 
 
-RAN_DUD = re.compile(r"the proof (exited \d+: it did not measure|timed out)")
+RAN_DUD = re.compile(r"the proof (exited -?\d+: it did not measure|timed out)")   # -11: killed by a signal
 
 
 def with_log(v):
@@ -932,6 +932,8 @@ def _env(store, fx, r, item, rows, since, now, acts):
         needs = []
     envs = []
     for v in rows.values():
+        if row_at(v) < since:   # read before this staging: the staged game has not answered yet (Codex r5 game1 #2)
+            continue
         e = relentless_envcause.classify(v, item, needs)
         if e:
             e["at"], e["decided"] = row_at(v), (relentless_live_round.decides(v)
@@ -1405,6 +1407,9 @@ def step(store, fx, r, item, now, acts, sup):
         if spare is not None:
             _save(store, item, lambda s: s["game"].pop("spare_load", None))
             g = store.load(item)["game"]
+        if rd.get("state") is None:     # unread, as on the prove road: a harness gap, never a launch (Codex r5 game1 #1)
+            return _waits(store, fx, item, "harness: the game cannot be read from the supervisor: %s"
+                          % (rd.get("evidence") or "no reading"), now, acts)
         if rd.get("state") == "LOADING" and _load_gate(store, fx, r, item, g, rd, now, acts)[0]:
             return      # every road into a staging meets the load bound and the stall evidence, not only the prove one
         if rd.get("state") == "UP" and rd.get("started"):

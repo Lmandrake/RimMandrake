@@ -120,7 +120,7 @@ def t_deleted_shard_is_refused_by_name():
     shard = R.LEDGER_DIR + "X.jsonl"
     outs = {"rev-list": "1", "status": " D %s\0" % shard, "diff": ""}
     fake = types.SimpleNamespace(books=tempfile.gettempdir(), git_ok=lambda c, *a: outs[a[0]],
-                                 shuffled_shards=lambda rows: {})
+                                 shuffled_shards=lambda rows: {}, drop_stray_untracked=lambda rows: rows)
     bind(fake, "level_books")
     try:
         why = fake.level_books()

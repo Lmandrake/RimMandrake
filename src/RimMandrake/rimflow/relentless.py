@@ -535,6 +535,12 @@ def account_lost(store, st, lost, r, now):
     st["run"] = None
     st["status"] = "held" if st["hold"] else "blocked" if st.get("block_pending") or st.get("wait") else "queued"
     st["returned_at"] = st["returned_at"] or now
+    ps = st.get("pilot_step") or {}
+    if ps.get("sat_gen") == st["gen"] - 1:      # the pilot sitting the account cut stays owed (Codex r5 part0 #5)
+        if lost.get("session"):
+            ps["sat_gen"] = st["gen"]           # its resumed session goes on sitting it
+        else:
+            ps.pop("sat_gen", None)             # pending for the next lease, as pilot_sat leaves a lost worker's
     if lost.get("session"):     # it did real work: the next launch resumes that session instead of starting over
         st["resume"] = {"session": lost["session"], "gen": st["gen"], "at": now}
     else:
@@ -616,6 +622,9 @@ def charge(store, st, tokens, now, r, unit, basis=None):
         # the repaired day never did (Codex r4 part0 #1).
         raise SpendUnreadable("spend record unreadable (%s: %s): run %s stays uncharged until it is repaired"
                               % (type(e).__name__, e, unit)) from e
+    if not new:     # a replay after a crash: the item takes what the day booked, never a second figure (r5 part0 #2)
+        booked = d["runs"].get(unit, _day(store, now - 86400)["runs"].get(unit))
+        n = int(booked) if isinstance(booked, (int, float)) else n
     if new:
         d["runs"][unit] = n
         d["spent"] += n
@@ -631,10 +640,19 @@ def run_fixture_cmd(cmd, cwd, timeout):
     """-> (exit, tail). The fixture runs in its own session and its whole process group is killed when it ends or times
     out: a backgrounded child never outlives it to keep writing the books tree (Codex, ..._TEN_MORE #2)."""
     try:
-        p = subprocess.Popen(cmd, shell=True, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-                             errors="replace", stdin=subprocess.DEVNULL, start_new_session=True)
+        p = subprocess.Popen(cmd, shell=True, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                             stdin=subprocess.DEVNULL, start_new_session=True)
     except (OSError, subprocess.SubprocessError) as e:
         return None, "%s: %s" % (type(e).__name__, e)
+    import threading
+    tail = bytearray()
+
+    def drain():        # only a bounded tail is kept: a fixture that floods its output never grows our memory (r5 #8)
+        for chunk in iter(lambda: p.stdout.read(65536), b""):
+            tail.extend(chunk)
+            del tail[:-8192]
+    reader = threading.Thread(target=drain, daemon=True)
+    reader.start()
 
     def kill_group():
         try:
@@ -642,17 +660,19 @@ def run_fixture_cmd(cmd, cwd, timeout):
         except (ProcessLookupError, PermissionError):
             pass
     try:
-        out, err = p.communicate(timeout=timeout)
+        p.wait(timeout=timeout)
     except subprocess.TimeoutExpired as e:
         kill_group()
         try:
-            p.communicate(timeout=10)
+            p.wait(timeout=10)
         except subprocess.SubprocessError:
             pass
+        reader.join(10)
         return None, "TimeoutExpired: %s" % e
     finally:
         kill_group()        # the shell is done; a child it left running is not part of the answer
-    return p.returncode, ((out or "") + (err or ""))[-600:]
+    reader.join(10)         # the group is dead, so the pipe ends
+    return p.returncode, bytes(tail).decode("utf-8", errors="replace")[-600:]
 
 
 # ---------------------------------------------------------------- what a worker may call (all fenced)
@@ -807,6 +827,9 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
         if st["contract"] and not why:
             raise ValueError("changing the contract needs --why")
         if st["contract"] and st["approach"] != "redesign":  # a widening or a proof-only change asks more, never less:
+            if live and st["contract"].get("live") and live != st["contract"]["live"]:
+                raise ValueError("the live line is set (%r): only a redesign replaces it (Codex r5 part0 #1)"
+                                 % st["contract"]["live"])
             live = live or st["contract"].get("live")       # an obligation it leaves out is the one already set, and
             old_game = st["contract"].get("game")           # naming fewer adapters or game clauses drops none (GPT
             if old_game and game:                           # pass 10): the sets are merged, never replaced
@@ -842,6 +865,8 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
             st["contract"]["obligation"] = {"text": ob[:relentless_binding.TEXT_MAX],
                                             "version": (old_ob["version"] + 1) if prev else 1}
         keep = prev and st["approach"] != "redesign"       # outside a redesign the binding only gains: a fixture
+        if keep and scenario and prev.get("scenario") and scenario != prev["scenario"]:     # r5 part0 #3
+            raise ValueError("the scenario is set (%r): changing it is a binding repair, `rebind`" % prev["scenario"])
         if keep and freshness and prev.get("freshness") and freshness != prev["freshness"]:   # set is merged, and a
             raise ValueError("the freshness rule is set (%r): changing it is a binding repair, `rebind`"   # freshness
                              % prev["freshness"])                                                 # moves only by rebind
@@ -1477,7 +1502,14 @@ def hook_fence(toplevel, store=None):
     """pre-push. No marker file in .git: not a relentless clone, nothing to say. A marker there but unreadable is a
     relentless clone whose lease nobody can name: it fails closed."""
     try:
-        with open(os.path.join(toplevel, ".git", "relentless.json"), encoding="utf-8") as f:
+        gd = os.path.join(toplevel, ".git")
+        if os.path.isfile(gd):      # a linked worktree or submodule: `.git` names its git dir (Codex r5 part1 #3)
+            with open(gd, encoding="utf-8") as f:
+                line = f.read().strip()
+            if not line.startswith("gitdir:"):
+                raise ValueError(".git file names no gitdir")
+            gd = os.path.join(toplevel, line[len("gitdir:"):].strip())
+        with open(os.path.join(gd, "relentless.json"), encoding="utf-8") as f:
             m = json.load(f)
         item, mark = m["item"], int(m["gen"])
         gen = os.environ.get("RELENTLESS_GEN")     # set at launch, so a resumed old session cannot read the new marker
@@ -1558,7 +1590,8 @@ def hold(store, item, said, now=None):
         if st["status"] not in HOLD_FROM:
             raise ValueError("%s is %s, not open: nothing to hold" % (item, st["status"]))
         was = st["status"]
-        back = "candidate" if was == "candidate" and (st.get("candidate") or {}).get("sha") else "queued"
+        back = "candidate" if was == "candidate" and (st.get("candidate") or {}).get("sha") else \
+            "blocked" if was == "blocked" else "queued"     # a blocked item keeps its blocker (Codex r5 part1 #2)
         st["hold"] = {"why": ("hold: %s" % said)[:900], "kind": MANUAL_HOLD, "delivered": True, "routed": SEAT_QUEUE,
                       "at": now, "from": was, "back": back}
         if was == "running":
@@ -1614,6 +1647,15 @@ def unhold(store, item, said, now=None, offbox=None):
         elif st["hold"].get("kind") == "start_refused":    # what refused is fixed, or its wait starts over
             st.pop("start_refusals", None)
             st.pop("start_again_at", None)
+        if st["hold"].get("kind") == MANUAL_HOLD and st["hold"].get("back") == "blocked" \
+                and (st.get("block_pending") or st.get("wait")):
+            # a person's hold of a blocked item lifts to the same block: its blocker still stands (relentless_block)
+            st["hold"] = None
+            st["returned_at"] = now
+            st["status"] = "blocked"
+            store.attempt(item, {"at": iso(now), "end": "unhold", "said": said, "to": "blocked"})
+            store.save(st)
+            return
         if st["hold"].get("kind") == MANUAL_HOLD and st["hold"].get("back") == "candidate" \
                 and (st.get("candidate") or {}).get("sha"):
             # a person's hold of a candidate lifts to the same candidate: its check runs, no worker is sent
@@ -1905,9 +1947,9 @@ class Effects(relentless_game.GameFx):
         for p in filter(None, new):
             src = os.path.join(self.books, p)
             parts = p.split("/")
-            for q in ("/".join(parts[:i]) for i in range(1, len(parts))):       # a file where origin wants a folder
+            for q in ("/".join(parts[:i]) for i in range(1, len(parts))):       # a file (or a link, r5 #14) where origin wants a folder
                 at = os.path.join(self.books, q)
-                if os.path.lexists(at) and not os.path.isdir(at) and \
+                if os.path.lexists(at) and (os.path.islink(at) or not os.path.isdir(at)) and \
                         self.git(self.books, "ls-files", "--error-unmatch", "--", q).returncode != 0:
                     return "books behind: ignored file %s stands where origin now tracks %s" % (q, p)
             if os.path.isdir(src) and not os.path.islink(src):                  # a folder where origin wants a file
@@ -1955,6 +1997,8 @@ class Effects(relentless_game.GameFx):
         out = {}
         for st, p in rows:
             if not p.endswith(".jsonl") or p.startswith(BOOKS_DERIVED) or st.strip() != "M":
+                continue
+            if os.path.dirname(p) + "/" not in APPEND_ONLY_DIRS:     # only a merge=union shard's order is free (r5 #13)
                 continue
             try:
                 with open(os.path.join(self.books, p), "rb") as f:
@@ -2294,8 +2338,9 @@ class Effects(relentless_game.GameFx):
         if key not in memo:
             _, w = self.ledger_items()
             it = w.items.get(item)
-            # an ALL-CAPS token in the title cites another item (LEANINGSCRUB_STALL_SHARED_MOVE_1), not a mod this one touches
-            title = re.sub(r"\b[A-Z][A-Z0-9_]{3,}\b", " ", getattr(it, "title", "") or "")
+            # an ALL-CAPS token joined by underscores cites another item (LEANINGSCRUB_STALL_SHARED_MOVE_1), not a mod this
+            # one touches; a lone capitalised word may BE the mod (FOOMOD), so it stays (Codex r5 part2 #3)
+            title = re.sub(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b", " ", getattr(it, "title", "") or "")
             words = [x.lower() for x in re.split(r"[^A-Za-z0-9]+", "%s %s" % (item, title)) if x]
             names = set(words) | {a + b for a, b in zip(words, words[1:])}
             try:
@@ -2786,9 +2831,11 @@ class Effects(relentless_game.GameFx):
         """A clone folder with no .git has nothing to bundle from, and its untracked files are the only copy: moved whole
         beside the item's bundles (a rename, same disk). -> (where it went, None); (None, None) when it held no file;
         (None, why) when it could not move, and the caller then keeps it."""
+        def unreadable(e):      # os.walk swallows a listing error by default: an unread folder is not empty (r5 #17)
+            raise e
         try:
             empty = not any(files or any(os.path.islink(os.path.join(dp, x)) for x in dirs)    # a symlinked dir
-                            for dp, dirs, files in os.walk(c))      # is a thing to keep too (os.walk lists it as a dir)
+                            for dp, dirs, files in os.walk(c, onerror=unreadable))  # is a thing to keep too (a dir to os.walk)
         except OSError as e:
             return None, "its tree could not be read: %s" % str(e)[:200]
         if empty:
@@ -2828,12 +2875,12 @@ class Effects(relentless_game.GameFx):
         with open(os.path.join(out, "HEAD"), "w", encoding="utf-8") as f:
             f.write(self.git_ok(c, "rev-parse", "HEAD"))
         with open(os.path.join(out, "diff.patch"), "wb") as f:
-            subprocess.run(["git", "-C", c, "diff", "--binary", "HEAD"], stdout=f, check=True, timeout=300)
+            subprocess.run(["git", "-C", c, "diff", "--binary", "--no-textconv", "--no-ext-diff", "HEAD"], stdout=f, check=True, timeout=300)
         with open(os.path.join(out, "index.patch"), "wb") as f:   # staged content the working file no longer shows
-            subprocess.run(["git", "-C", c, "diff", "--binary", "--cached", "HEAD"], stdout=f, check=True, timeout=300)
+            subprocess.run(["git", "-C", c, "diff", "--binary", "--no-textconv", "--no-ext-diff", "--cached", "HEAD"], stdout=f, check=True, timeout=300)
         with open(os.path.join(out, "real.patch"), "wb") as f:
             if real:    # noise excluded by prefix, never the paths listed: thousands of them overflow argv (E2BIG)
-                subprocess.run(["git", "-C", c, "diff", "--binary", "HEAD", "--", ":(top)"]
+                subprocess.run(["git", "-C", c, "diff", "--binary", "--no-textconv", "--no-ext-diff", "HEAD", "--", ":(top)"]
                                + [":(top,exclude)" + p for p in POOL_NOISE], stdout=f, check=True, timeout=300)
         for name, want in (("untracked.tar", untracked), ("ignored.tar", ignored),
                            ("real_untracked.tar", [p for p in untracked if not p.startswith(POOL_NOISE)])):
@@ -2910,7 +2957,9 @@ class Effects(relentless_game.GameFx):
                 picked += 1
                 continue
             started = self.git(c, "rev-parse", "-q", "--verify", "CHERRY_PICK_HEAD", timeout=60).returncode == 0
-            if started and self.git(c, "diff", "--quiet", "HEAD", timeout=60).returncode == 0:   # origin already holds it
+            if started and self.git(c, "diff", "--quiet", "HEAD", timeout=60).returncode == 0 \
+                    and not self.git(c, "ls-files", "-u", timeout=60).stdout.strip():   # origin already holds it; an
+                # unmerged path (a modify/delete conflict leaves the tree as HEAD) is no landing (Codex r5 part3 #3)
                 self.git(c, "cherry-pick", "--skip", timeout=60)
                 landed += 1
                 continue
@@ -5485,7 +5534,10 @@ def help_step(store, fx, r, item, now, acts):
     elif gone:
         help_over(store, fx, item, "dropped", now, acts)
     else:
-        lost = fx.account_loss(h.get("run"), h.get("clone"), h["started_at"]) if h.get("agent") != VENDOR_AGENT else None
+        sat = any(q.get("clone") == h.get("clone") and not q.get("reaped") for q in cur["quarantined"])
+        # a quarantined helper may still run in that clone: no resume there with its nonce, a fresh try (Codex r5 part6 #1)
+        lost = fx.account_loss(h.get("run"), h.get("clone"), h["started_at"]) \
+            if h.get("agent") != VENDOR_AGENT and not sat else None
         if lost:
             help_account_lost(store, fx, r, item, lost, now, acts)
             return
@@ -6203,12 +6255,13 @@ def wake_taken(store):
         return False
 
 
-def game_pass(store, fx, r, now, acts):
+def game_pass(store, fx, r, now, acts, began=None):
     """The game items' steps and nothing else, ended rounds first, until one holds the game again: what a round's end
     needs, so the next proof starts now and not at the next tick (RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS; the Conductor
-    measured a proof row in 16 of 180 minutes with 35 items waiting). The caller holds tick.lock."""
+    measured a proof row in 16 of 180 minutes with 35 items waiting). The caller holds tick.lock. `began`: the wall time
+    the caller's game budget started at; a tick's wake spends the tick's remaining budget, never a fresh one (r5 #20)."""
     wall = getattr(fx, "wall", time.monotonic)
-    began = wall()
+    began = wall() if began is None else began
 
     def rank(s):
         g = s.get("game") or {}
@@ -6313,7 +6366,7 @@ def tick(store=None, fx=None, r=None, now=None):
             return acts
         wall = getattr(fx, "wall", time.monotonic)
         whole = wall()
-        phases, slow = {}, []
+        phases, slow, budget = {}, [], {}
 
         def serve_wake():
             """A round ended while this tick runs: the next proof does not wait for the rest of the tick."""
@@ -6321,13 +6374,15 @@ def tick(store=None, fx=None, r=None, now=None):
                 return
             acts.append({"do": "game_wake"})
             try:
-                game_pass(store, fx, r, clock(), acts)
+                game_pass(store, fx, r, clock(), acts, budget.get("began"))
             except Exception as e:  # noqa: BLE001  the next tick steps every game item anyway
                 acts.append({"do": "error", "item": None, "why": "game_pass %s: %s" % (type(e).__name__, e)})
 
-        def phase(name, since):
-            """Seconds this phase took, into the tick's journal row: the next slow tick names its own step."""
-            serve_wake()
+        def phase(name, since, wake=True):
+            """Seconds this phase took, into the tick's journal row: the next slow tick names its own step. No wake is
+            served after the final flush: its writes would go unflushed; game_next or the next tick takes it (r5 #21)."""
+            if wake:
+                serve_wake()
             at = wall()
             phases[name] = round(at - since, 1)
             return at
@@ -6346,6 +6401,7 @@ def tick(store=None, fx=None, r=None, now=None):
             acts.append({"do": "error", "item": None, "why": "lapse_holds %s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "lapse_holds_raised", "why": str(e)[:300]})
         began, skipped = phase("prelude", whole), 0
+        budget["began"] = began     # the step loop's game budget: a wake in it spends what is left
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now
             for item in store.items():
                 if final and (store.load(item) or {}).get("status") != "stopping":
@@ -6441,7 +6497,7 @@ def tick(store=None, fx=None, r=None, now=None):
         why = fx.flush()
         if why:
             acts.append({"do": "flush_retry", "why": why})
-        phase("flush", at)
+        phase("flush", at, wake=False)
         reading(store, r, now, acts, clock)
         if acts:
             store.journal({"at": iso(now), "do": "tick", "wall_s": int(wall() - whole), "phases": phases,
