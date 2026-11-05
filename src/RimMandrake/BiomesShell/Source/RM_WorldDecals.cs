@@ -281,7 +281,13 @@ namespace RimMandrake.Biomes
 
         public static string Info()
         {
+            // matAlpha: the colour alpha a live decal material actually carries (-1 when none exists),
+            // read back so the live proof sees the per-frame material fade itself, not only lastAlpha.
+            float matAlpha = -1f;
+            foreach (Material m in Mats.Values)
+                if (m != null) { matAlpha = m.color.a; break; }
             return lastInfo + " | enabled=" + RM_BiomesSettings.worldBiomeDecals + " alpha=" + lastAlpha
+                   + " matAlpha=" + matAlpha
                    + " altitude=" + (Find.WorldCameraDriver?.altitude ?? -1f) + " atlases=" + Grid.Count
                    + " | size=" + decalSize + " spread=" + decalSpread + " lift=" + decalLift + " queue=" + decalQueue
                    + " fullAlt=" + decalFullAlt + " goneAlt=" + decalGoneAlt + " flipX=" + decalFlipX;
