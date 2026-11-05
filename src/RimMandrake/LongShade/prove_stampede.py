@@ -301,7 +301,10 @@ def offline():
     inc = _read("src/RimMandrake/LongShade/Defs/IncidentDefs/RM_ShadeStampede.xml")
     if "<defName>RM_ShadeStampede</defName>" not in inc or "<workerClass>%s</workerClass>" % WORKER not in inc:
         bad.append("RM_ShadeStampede.xml no longer names the worker")
-    calls = set(re.findall(r'static\("(\w+)"', _read("src/RimMandrake/LongShade/prove_stampede.py")))
+    me = _read("src/RimMandrake/LongShade/prove_stampede.py")
+    if ("type=PROBE, method=method, " + 'args=arg or "x")') not in me:
+        bad.append('the driver can send args="" to jawa/static_call, which reads it as ZERO arguments (every probe method takes one)')
+    calls = set(re.findall(r'static\("(\w+)"', me))
     if not calls or not calls <= set(METHODS):
         bad.append("the driver calls probe methods outside METHODS: %s" % sorted(calls - set(METHODS)))
     g = judge(_good())
@@ -336,8 +339,10 @@ def _scene():
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
     from scenes import scenelib as S  # noqa: E402
 
-    def static(method, arg=""):
-        r = S.call("jawa/static_call", type=PROBE, method=method, args=arg)
+    def static(method, arg="x"):
+        # never args="": jawa/static_call reads "" as ZERO arguments, so every one-string probe method (Def, Can, Fire,
+        # Runners...) silently returned "" (LIVE 2026-11-04, scene record of gen 3); the probe ignores the "x".
+        r = S.call("jawa/static_call", type=PROBE, method=method, args=arg or "x")
         return str((r or {}).get("result", "")) if isinstance(r, dict) else str(r)
 
     if S.call("rimworld/get_ui_state").get("programState") != "Playing":
