@@ -13,6 +13,8 @@ Second instance (NIGHTLY_COP_FIX_RED_BCBOSB_PWDD): NIGHTLY_RED:testing.red_bcbos
 a green rerun; at 2026-11-05T05:22Z the same 11-04T11:00Z night reopened it (alarms_log "reopen_closed_still_crossed").
 Third instance (NIGHTLY_COP_FIX_RED_BGMSKV_VSAQ): NIGHTLY_RED:testing.red_bgmskv's item closed 2026-11-04T22:18:44Z on a
 green rerun (its red, selftest_bridge_hooks RootFinalizer, cured at cbfcc52bc7); reopened 05:23:45Z on the same night.
+Fourth instance (NIGHTLY_COP_FIX_RED_PJLJVQ_TTXI): NIGHTLY_RED:testing.red_pjljvq's item (the enrichment plan's PLAN
+DRIFT, cured at cbfcc52bc7) closed 2026-11-04T22:19:21Z on a green rerun; reopened 05:22Z on the same night.
 
   python3 selftest_alarm_stale_night_reopen.py --blob REV:PATH   replay ops_watch.py as it stood at REV (git), e.g.
       --blob 618deb68f3^:src/RimMandrake/Utils/ops_watch.py, the code that reopened both instances: it must FAIL.
@@ -150,6 +152,13 @@ def test_bgmskv_instance():
                     "red_bgmskv closed 22:18:44Z, read at 05:23:45Z on the 11:00Z night: no reopen (the third instance)")
 
 
+def test_pjljvq_instance():
+    """NIGHTLY_COP_FIX_RED_PJLJVQ_TTXI: closed 22:19:21Z on a green rerun (its PLAN DRIFT red cured at cbfcc52bc7),
+    reopened 05:22Z (alarms_log "reopen_closed_still_crossed") on the 11:00Z night, which ran before that fix."""
+    closed_instance("NIGHTLY_RED:testing.red_pjljvq", "2026-11-04T22:19:21Z", "2026-11-05T05:22:00Z",
+                    "red_pjljvq closed 22:19:21Z, read at 05:22Z on the 11:00Z night: no reopen (the fourth instance)")
+
+
 def test_unchanged_without_a_night_or_close_times():
     reset()
     b = Bench(CLOSE - 7200)
@@ -164,7 +173,8 @@ def test_unchanged_without_a_night_or_close_times():
 
 
 if __name__ == "__main__":
-    for fn in (test_stale_night_holds, test_bcbosb_instance, test_bgmskv_instance, test_unchanged_without_a_night_or_close_times):
+    for fn in (test_stale_night_holds, test_bcbosb_instance, test_bgmskv_instance, test_pjljvq_instance,
+               test_unchanged_without_a_night_or_close_times):
         fn()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     sys.exit(1 if FAILS else 0)
