@@ -24,9 +24,14 @@ TrySetDriverFill, in strips), ProofLevelLink (per-reel levelling state + process
 (n back-to-back RM_Levelling.Tick calls, Stopwatch + managed-heap delta); RM_LineProofs.ProofHoseRole / ProofHoseLine; the hose
 probe verb lay; jawa/build_batch; jawa/map_info.
 
-LAYOUT (absolute map coords on a 325 map): basin A x10..134, basin B x190..314, both z2..321 (125 x 320 = 40,000 squares),
-4 notches deep (2 m), A filled F=4 and B F=1 with RM_Fluid_Water (unequal, so links have work). The 55-wide gap holds rigs in
-four columns (x 139 / 150 / 161 / 172), one rig per 5 rows from z 4 (the fifth row and the 7-square lanes between columns are
+LAYOUT (absolute map coords on a 325 map; --basins interior, the default): basin A x10..134, basin B x190..314, both
+z10..314 (125 x 305 = 38,125 squares), so every basin square is at least EDGE_BAND (GenGrid.NoBuildEdgeWidth, 10) squares
+inside every map edge and no basin square is an edge sink (RM_MapControls.EdgeSinkAt). --basins edge is the pre-2026-11-05
+scene, z2..321 (40,000 squares): its south and north rows sit in the band, so with edge sinks on (shipped) both basins
+drain off the map (~2084 levels/pulse in the offline bench, PERF_SCENE_REMEASURE_BASINS_OFF_EDGE) and the timing measures
+drain churn, not levelling: every row of that scene is UNMEASURED/SITE unless --sinks-off (RimMandrakeFlowWorksSettings.
+edgeSinksEnabled held false for the run, put back after) or the setting reads false. 4 notches deep (2 m), A filled F=4 and B F=1 with RM_Fluid_Water (unequal, so links have work). The 55-wide gap holds rigs in
+four columns (x 139 / 150 / 161 / 172), one rig per 5 rows from the basins' z0 + 2 (the fifth row and the 7-square lanes between columns are
 free, so a hose from an inner column can route out): the pond rig's shape (walk_gaps_proof _pond_rig) -- two 2x2
 reels on footprints (cx, z) and (cx, z+2), each facing its lip (reel 1 West, reel 2 East: rig_ops), joined by an RM_UniversalPipe run at x cx+2, z..z+3 (rig_ops; NOT a tank: a tank does not conduct); reel 1 laid to A's lip (135, z) and set
 Intake, reel 2 laid to B's lip (189, z+2) and set Outflow. A hose holds 40 squares as shipped (HoseMath.DefaultMaxLength) and
@@ -65,6 +70,8 @@ WATER_FLUID = "RM_Fluid_Water"
 ITEM, CRIT = "PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL", "A3"
 ROW_IDS = ["LEVEL_PERF_TICK_TIME", "LEVEL_PERF_ALLOC"]
 MAP_NEED = 325
+EDGE_BAND = 10          # GenGrid.NoBuildEdgeWidth: RM_MapControls.EdgeSinkAt's band (a dug square inside it may be a sink)
+FWSET = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 HARD_CAP_S = 540.0      # the foreground-command cap every run must end inside, restores included
 CALL_CAP_S = 120.0      # no single bridge call may take longer than this (a frozen main thread is abandoned)
 
@@ -99,18 +106,46 @@ def fnum(v):
     return None if f != f else f
 
 
-def layout(size, rigs, rehearsal):
-    """(basins [(x,z,w,h,fill)], rig corners [(cx,z)], lipA x, lipB x). On a map smaller than 325 only with rehearsal."""
+def layout(size, rigs, rehearsal, basins="interior"):
+    """(basins [(x,z,w,h,fill)], rig corners [(cx,z)], lipA x, lipB x). On a map smaller than 325 only with rehearsal.
+    basins "interior": every basin square >= EDGE_BAND from every edge; "edge": the old scene, rows in the band."""
+    if basins not in ("interior", "edge"):
+        raise ValueError("basins must be interior or edge, not %r" % (basins,))
+    edge = basins == "edge"
     if not rehearsal:
-        bw, bh, ax, bx, z0 = 125, 320, 10, 190, 2
-    else:
+        bw, ax, bx = 125, 10, 190
+        bh, z0 = (320, 2) if edge else (size[1] - 2 * EDGE_BAND, EDGE_BAND)
+    elif edge:
         bh = max(20, min(320, size[1] - 6))
         bw = max(10, min(125, (size[0] - 70) // 2))
         ax, z0 = 5, 2
         bx = ax + bw + 55
+    else:
+        bh = max(20, min(305, size[1] - 2 * EDGE_BAND))
+        bw = max(10, min(125, (size[0] - 2 * EDGE_BAND - 55) // 2))
+        ax, z0 = EDGE_BAND, EDGE_BAND
+        bx = ax + bw + 55
     cols = (ax + bw + 5, ax + bw + 16, ax + bw + 27, ax + bw + 38)
     spots = [(cx, z) for z in range(z0 + 2, z0 + bh - 5, 5) for cx in cols]
     return ([(ax, z0, bw, bh, FILL_A), (bx, z0, bw, bh, FILL_B)], spots[:rigs], ax + bw, bx - 1)
+
+
+def band_squares(basins, size, band=EDGE_BAND):
+    """Basin squares inside the map-edge band (x < band, z < band, x >= sizeX - band or z >= sizeZ - band): the squares
+    RM_MapControls.EdgeSinkAt may make sinks (pure; the same test RM_MapComponent_Excavation.IsSink answers first)."""
+    sx, sz = size
+    n = 0
+    for (x, z, w, h) in (b[:4] for b in basins):
+        ix = max(0, min(x + w, sx - band) - max(x, band))       # columns clear of the west/east bands
+        iz = max(0, min(z + h, sz - band) - max(z, band))       # rows clear of the south/north bands
+        n += w * h - ix * iz
+    return n
+
+
+def drain_free(n_band, sinks_on):
+    """True when no basin square can drain off the map: none in the band, or edge sinks off (sinks_on False). A setting that
+    could not be read (None) with squares in the band is not drain-free (pure)."""
+    return n_band == 0 or sinks_on is False
 
 
 def rig_ops(cx, z, lip_a=None, lip_b=None):
@@ -140,22 +175,22 @@ def _moved(kv):
     return "SITE" if mv <= 0 else None
 
 
-def tick_verdict(kv, links, want_links, staged_ok):
+def tick_verdict(kv, links, want_links, staged_ok, no_drain=True):
     avg, tick = fnum(kv.get("msAvg")), fnum(kv.get("msPerTick"))
     if avg is None or tick is None:
         return "UNMEASURED", "HARNESS"
-    if not staged_ok or links is None or links < want_links:
+    if not staged_ok or not no_drain or links is None or links < want_links:
         return "UNMEASURED", "SITE"
     if _moved(kv):
         return "UNMEASURED", _moved(kv)
     return ("PASS" if avg <= BAR_MS_CYCLE and tick <= BAR_MS_TICK else "FAIL"), "MOD"
 
 
-def alloc_verdict(kv, links, want_links, staged_ok):
+def alloc_verdict(kv, links, want_links, staged_ok, no_drain=True):
     kb = fnum(kv.get("allocKBAvg"))
     if kb is None:
         return "UNMEASURED", "HARNESS"
-    if not staged_ok or links is None or links < want_links:
+    if not staged_ok or not no_drain or links is None or links < want_links:
         return "UNMEASURED", "SITE"
     if _moved(kv):
         return "UNMEASURED", _moved(kv)
@@ -168,6 +203,11 @@ def main(argv=None):
     ap.add_argument("--rigs", type=int, default=200)
     ap.add_argument("--calls", type=int, default=20, help="levelling cycles timed (1..200)")
     ap.add_argument("--rehearsal", action="store_true", help="scaled layout on a smaller map; rows capped at UNMEASURED")
+    ap.add_argument("--basins", choices=("interior", "edge"), default="interior",
+                    help="interior (default): every basin square >= %d from every edge; edge: the old z2..321 scene (rows SITE "
+                         "while edge sinks are on)" % EDGE_BAND)
+    ap.add_argument("--sinks-off", action="store_true",
+                    help="hold RimMandrakeFlowWorksSettings.edgeSinksEnabled false for this run (put back after, every phase)")
     ap.add_argument("--budget-s", type=float, default=None,
                     help="wall-clock budget (default: the most that fits --hard-cap-s; a larger one is clamped); spent, a call "
                          "that never returns, or 3 dead probe replies in a row writes the unwritten rows UNMEASURED/HARNESS")
@@ -299,8 +339,9 @@ def main(argv=None):
             all_rows("UNMEASURED", "A3 needs a 325x325 map; this one is %sx%s (no tool makes one: load or start one by hand)" % size,
                      "SITE")
             return finish(2)
-        basins, spots, lip_a, lip_b = layout(size, a.rigs, a.rehearsal or not big)
-        res["layout"] = {"basins": basins, "rigs": len(spots), "lipA": lip_a, "lipB": lip_b}
+        basins, spots, lip_a, lip_b = layout(size, a.rigs, a.rehearsal or not big, a.basins)
+        res["layout"] = {"basins": basins, "rigs": len(spots), "lipA": lip_a, "lipB": lip_b, "kind": a.basins,
+                         "bandSquares": band_squares(basins, size)}
 
         # ------------------------------------------------------------------ the site: drained, filled in, cleared, read back
         # LEVEL_REHEARSAL_FIX_POURS_ON_FULL_PONDS + PROOF_REELS_FIX_STILL_STAGED_WEST (b): the rehearsal's basins sat over
@@ -327,6 +368,23 @@ def main(argv=None):
                          "SITE")
                 return finish(2)
 
+        # ------------------------------------------------------------------ edge sinks (PERF_SCENE_REMEASURE_BASINS_OFF_EDGE)
+        sk0 = (B.call("jawa/mod_settings_field", typeName=FWSET, action="get", field="edgeSinksEnabled", _answer=True) or {}).get("value")
+        res["edgeSinks"] = {"before": sk0}
+        if a.sinks_off:
+            sinks_hold[0] = "True" if sk0 is None else sk0     # unread: put back the shipped value, never leave sinks off
+            sr = B.call("jawa/mod_settings_field", typeName=FWSET, action="set", field="edgeSinksEnabled", value="False",
+                        _answer=True) or {}
+            res["edgeSinks"]["setOff"] = sr.get("success")
+        sk1 = (B.call("jawa/mod_settings_field", typeName=FWSET, action="get", field="edgeSinksEnabled", _answer=True) or {}).get("value")
+        # the kernel's gate is setting || AnyDrainEdge (a drain-edge setter on the map): ProofDrainGate reads it whole; an older
+        # deploy without it falls back to the setting alone, and an unread one counts as open (drain_free)
+        gtxt = static("ProofDrainGate", "")[1]
+        g = parse(gtxt) if gtxt.startswith("DRAINGATE") else {}
+        sinks_on = {"true": True, "false": False}.get(str(g.get("gate", sk1)).strip().lower())
+        no_drain = drain_free(res["layout"]["bandSquares"], sinks_on)
+        res["edgeSinks"].update(during=sk1, gate=gtxt[:120], noDrain=no_drain)
+
         # ------------------------------------------------------------------ stage the basins (strips of <= 12,500 squares)
         staged = []
         for (x, z, w, h, fill) in basins:
@@ -351,10 +409,12 @@ def main(argv=None):
         len0 = (B.call("jawa/mod_settings_field", typeName=HS, action="get", field="maxLength", _answer=True) or {}).get("value")
         if a.restore_length is not None:
             len0 = a.restore_length
+        elif len0 is None:
+            len0 = "40"       # unread: HoseMath.DefaultMaxLength as shipped, never left at the run's 80
         try:
             lr80 = B.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value="80", _answer=True) or {}
             res["hoseMaxLength"] = {"before": len0, "set80": lr80.get("success")}
-            return _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows)
+            return _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows, no_drain)
         finally:
             if len0 is not None and not a.no_time:
                 restore("hose maxLength -> %s" % len0, G.call, "jawa/mod_settings_field", typeName=HS, action="set",
@@ -365,6 +425,8 @@ def main(argv=None):
         for rid in ROW_IDS:
             if rid not in done:
                 row(rid, st, {"why": why}, cls=cls)
+
+    sinks_hold = [None]       # the edgeSinksEnabled value --sinks-off found, put back in the finally below
 
     GStop = V._clockgate().GovernorStop
     try:
@@ -378,6 +440,10 @@ def main(argv=None):
         unwritten("UNMEASURED", "governor stop the site recovery could not clear: %s" % str(getattr(ex, "result", ex))[:200], "SITE")
         return finish(2)
     finally:
+        if a.sinks_off and sinks_hold[0] is not None:
+            res.setdefault("edgeSinks", {})["restored"] = str(restore(
+                "edgeSinksEnabled -> %s" % sinks_hold[0], G.call, "jawa/mod_settings_field", typeName=FWSET, action="set",
+                field="edgeSinksEnabled", value=str(sinks_hold[0]), _answer=True))[:120]
         if not a.mock:
             res["calmRestore"] = str(restore("site calm", V.site_calm_restore, G))[:160]
             save()
@@ -391,7 +457,7 @@ def lay_slice(spec, n):
     return lo, max(lo, min(n, int(hi) if hi else n))
 
 
-def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows):
+def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows, no_drain=True):
     for i in range(0, 0 if a.resume else len(spots), 40):
         ops = []
         for cx, z in spots[i:i + 40]:
@@ -422,10 +488,14 @@ def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size,
     want = len(spots)
     perf, tp = static("ProofLevelPerf", str(max(1, min(200, a.calls))))
     det = {"perf": tp[:300], "levelLink": tl[:300], "links": links, "wantLinks": want, "stagedOk": staged_ok,
-           "layFailures": lay_fail, "mapSize": size}
-    st, cls = tick_verdict(perf, links, want, staged_ok)
+           "layFailures": lay_fail, "mapSize": size, "basins": a.basins, "noDrain": no_drain,
+           "bandSquares": res.get("layout", {}).get("bandSquares"), "edgeSinks": res.get("edgeSinks", {}).get("during")}
+    if not no_drain:
+        det["why"] = ("basin squares in the %d-square edge band with edge sinks on: the cycles time drain churn, not levelling "
+                      "(--basins interior or --sinks-off)" % EDGE_BAND)
+    st, cls = tick_verdict(perf, links, want, staged_ok, no_drain)
     row("LEVEL_PERF_TICK_TIME", st, det, cls=cls)
-    st, cls = alloc_verdict(perf, links, want, staged_ok)
+    st, cls = alloc_verdict(perf, links, want, staged_ok, no_drain)
     row("LEVEL_PERF_ALLOC", st, det, cls=cls)
     fails = [r for r in rows if r["status"] == "FAIL"]
     return finish(1 if fails else (2 if any(r["status"] != "PASS" for r in rows) else 0))
@@ -441,9 +511,12 @@ class FakeBridge(object):
       small_map    the map is 250x250 (no --rehearsal)       -> both rows UNMEASURED/SITE
       probe_dead   every hose-probe reply times out          -> both rows UNMEASURED/HARNESS (watchdog), no hang
       mech_raid    a governed advance stops on a hostile the recovery cannot clear -> both rows UNMEASURED/SITE
+      drain_edge   a drain-edge setter on the map: the kernel's gate stays open with the setting off -> edge scene rows SITE
+      sinks_unread the edgeSinksEnabled get gives no value  -> --sinks-off still puts the shipped True back
       freeze       the game's main thread freezes at the first hose lay (maxLength already 80): that call and every later one never return
                    -> both rows UNMEASURED/HARNESS (watchdog per-call deadline), the run still ends inside --hard-cap-s"""
-    FAULTS = ("old_deploy", "no_link", "slow", "gc_every", "small_map", "probe_dead", "mech_raid", "freeze")
+    FAULTS = ("old_deploy", "no_link", "slow", "gc_every", "small_map", "probe_dead", "mech_raid", "freeze", "drain_edge",
+              "sinks_unread")
     _NEVER = threading.Event()      # never set: a frozen call waits on it forever
 
     def __init__(self, faults=(), size=MAP_NEED):
@@ -468,6 +541,10 @@ class FakeBridge(object):
             alloc = "NaN" if "gc_every" in self.f else "210.5"
             return "LEVELPERF calls=%s msAvg=%.3f msMax=%.3f msPerTick=%.5f allocKBAvg=%s allocCalls=%d gcs=0 links=%d moves=3 " \
                    "cycleTicks=250" % (arg, ms, ms * 1.5, ms / 250, alloc, 0 if alloc == "NaN" else int(arg), self.links())
+        if m == "ProofDrainGate":
+            on = str(getattr(self, "sinks", "True")) == "True"
+            edge = "drain_edge" in self.f
+            return "DRAINGATE gate=%s setting=%s drainEdge=%s sunk=0" % (on or edge, on, edge)
         if m == "ProofResetRect":
             return "RESET cells=0 levels=0 rolled=0 left=0"
         if m == "ProofStageBasin":
@@ -539,6 +616,15 @@ class FakeBridge(object):
             return {"success": True}
         if tool == "jawa/map_info":
             return {"success": True, "sizeX": self.size, "sizeZ": self.size}
+        if tool == "jawa/mod_settings_field" and kw.get("field") == "edgeSinksEnabled" and "sinks_unread" in self.f \
+                and kw.get("action") == "get":
+            return {"success": False}
+        if tool == "jawa/mod_settings_field" and kw.get("field") == "edgeSinksEnabled":
+            if kw.get("action") == "set":
+                self.sinks = kw.get("value")
+                self.sink_sets = getattr(self, "sink_sets", []) + [kw.get("value")]
+                return {"success": True}
+            return {"success": True, "value": getattr(self, "sinks", "True")}
         return {"success": True}
 
 

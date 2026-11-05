@@ -868,6 +868,23 @@ namespace RimMandrake.FlowWorks
 				+ " cycleTicks=" + RM_PumpMath.CycleTicks;
 		}
 
+		/// <summary>PERF_SCENE_REMEASURE_BASINS_OFF_EDGE. Read only; arg ignored. The edge-sink gate the excavation pulse hands its
+		/// kernel (RM_MapComponent_Excavation: flowKernel.edgeSinksEnabled = setting || AnyDrainEdge) and the map's running total
+		/// of levels sunk off the edge, so a perf timing can show it ran with no off-map drain: gate False and sunk not rising.
+		/// "DRAINGATE gate=b setting=b drainEdge=b sunk=f", or "REFUSED: ...".</summary>
+		public static string ProofDrainGate(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+			if (ex == null)
+			{
+				return "REFUSED: no current map with an excavation component";
+			}
+			bool setting = RimMandrakeFlowWorksSettings.edgeSinksEnabled, drainEdge = MapControls.RM_MapControls.AnyDrainEdge(map);
+			return "DRAINGATE gate=" + (setting || drainEdge) + " setting=" + setting + " drainEdge=" + drainEdge
+				+ " sunk=" + ex.SinkTransferredTotal.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture);
+		}
+
 		/// <summary>FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE A4. arg "x,z" (the pump): per side N/E/S/W, what sits at that port.
 		/// Each entry is reel:id:c|r (a reel's BODY on that side cell), free:id:c|r (a laid hose's free END on that side cell)
 		/// or pipe (a rigid pipe there: pipes are no ports and never block one), '+'-joined, or none; c = the shipping

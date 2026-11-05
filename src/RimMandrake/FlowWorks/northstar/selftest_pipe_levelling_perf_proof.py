@@ -38,7 +38,39 @@ check("alloc: NaN (GC in every call): UNMEASURED/HARNESS", L.alloc_verdict(dict(
       == ("UNMEASURED", "HARNESS"))
 
 basins, spots, la, lb = L.layout((325, 325), 200, False)
-check("layout: two 40,000-square basins", [b[2] * b[3] for b in basins] == [40000, 40000])
+check("layout (interior, default): two 38,125-square basins", [b[2] * b[3] for b in basins] == [38125, 38125])
+# PERF_SCENE_REMEASURE_BASINS_OFF_EDGE: the old scene (z2..321) put basin rows inside the 10-square edge band, so with edge
+# sinks on both basins drained off the map and the timing measured drain churn. Interior: no basin square in the band.
+check("interior: every basin square >= 10 from every edge (no square in the sink band)", L.band_squares(basins, (325, 325)) == 0
+      and all(b[0] >= 10 and b[1] >= 10 and b[0] + b[2] <= 315 and b[1] + b[3] <= 315 for b in basins))
+eb, es, ela, elb = L.layout((325, 325), 200, False, "edge")
+check("edge variant: the old scene, two 40,000-square basins z2..321", [b[2] * b[3] for b in eb] == [40000, 40000]
+      and all(b[1] == 2 and b[1] + b[3] == 322 for b in eb))
+check("can-fail band_squares: the edge scene has its south 8 (z2..9) and north 7 (z315..321) rows in the band",
+      L.band_squares(eb, (325, 325)) == 2 * 125 * 15)
+# band_squares against a brute-force count of RM_MapControls.EdgeSinkAt's test over every square, many rects
+import random as _r
+_rng = _r.Random(5)
+_ok = True
+for _ in range(300):
+    sx, sz = _rng.randint(25, 60), _rng.randint(25, 60)
+    x, z = _rng.randint(0, sx - 2), _rng.randint(0, sz - 2)
+    w, h = _rng.randint(1, sx - x), _rng.randint(1, sz - z)
+    brute = sum(1 for i in range(x, x + w) for j in range(z, z + h) if i < 10 or j < 10 or i >= sx - 10 or j >= sz - 10)
+    _ok = _ok and L.band_squares([(x, z, w, h, 1)], (sx, sz)) == brute
+check("band_squares equals a brute-force EdgeSinkAt band count on 300 random rects", _ok)
+check("drain_free: no band squares -> free whatever the setting", L.drain_free(0, True) and L.drain_free(0, None))
+check("drain_free: band squares + sinks off -> free; sinks on or unread -> not",
+      L.drain_free(5, False) and not L.drain_free(5, True) and not L.drain_free(5, None))
+check("can-fail tick: drain churn (no_drain False) is UNMEASURED/SITE, never a PASS",
+      L.tick_verdict(kv, 200, 200, True, False) == ("UNMEASURED", "SITE")
+      and L.alloc_verdict(kv, 200, 200, True, False) == ("UNMEASURED", "SITE"))
+for _rh in (False, True):
+    _sz = (325, 325) if not _rh else (120, 120)
+    _b, _s, _la, _lb = L.layout(_sz, 200, _rh)
+    check("interior %s: rigs clear of both basins and inside the map" % ("rehearsal 120" if _rh else "325"),
+          L.band_squares(_b, _sz) == 0 and _s and all(_la < cx and cx + 3 < _lb and _b[0][1] <= z and z + 3 < _b[0][1] + _b[0][3]
+                                                       for cx, z in _s))
 check("layout: basins inside 325", all(b[0] + b[2] <= 325 and b[1] + b[3] <= 325 for b in basins))
 check("layout: 200 rigs", len(spots) == 200)
 check("layout: rigs (3 wide x 4 deep, reels + pipe run) in the gap, clear of both basins",
@@ -69,6 +101,33 @@ for fault, want in EXPECT.items():
     bad = {k: v for k, v in got.items() if v[0] != "PASS"}
     check("mock %-10s -> %s" % (fault or "clean", want or "all PASS"),
           bad == want and len(rows) == 2 and all(r["status"] == "SKIP" and r["criterion"] == "A3" for r in rows))
+# PERF_SCENE_REMEASURE_BASINS_OFF_EDGE end to end: the edge scene with sinks on is SITE; --sinks-off sets the setting false
+# for the run and puts the value it found back; the interior default never touches the setting
+for args, faults, want_mock, want_sets in ((["--basins", "edge"], [], "UNMEASURED", []),
+                                           (["--basins", "edge", "--sinks-off"], [], "PASS", ["False", "True"]),
+                                           ([], [], "PASS", []),
+                                           # review: a drain-edge setter keeps the kernel's gate open with the setting off
+                                           (["--basins", "edge", "--sinks-off"], ["drain_edge"], "UNMEASURED", ["False", "True"]),
+                                           # review: an unread setting is put back to the shipped True, never left off
+                                           (["--basins", "edge", "--sinks-off"], ["sinks_unread"], "PASS", ["False", "True"])):
+    fb = L.FakeBridge(faults, L.MAP_NEED)
+    orig = L.FakeBridge
+
+    class _Same(orig):
+        def __new__(cls, *a, **k):
+            return fb
+    L.FakeBridge = _Same
+    out = os.path.join(tmp, "lp_edge_%d_%s.json" % (len(args), "-".join(faults)))
+    with contextlib.redirect_stdout(io.StringIO()):
+        L.main(["--mock", out] + args)
+    L.FakeBridge = orig
+    res = json.load(open(out))
+    rows = res["rows"]
+    check("mock %s %s -> %s, setting writes %s" % (" ".join(args) or "(interior)", ",".join(faults), want_mock, want_sets),
+          len(rows) == 2 and all(r["detail"].get("mock") == want_mock for r in rows)
+          and getattr(fb, "sink_sets", []) == want_sets
+          and all(r["detail"]["noDrain"] == (want_mock == "PASS") for r in rows)
+          and (want_mock == "PASS" or all(r["class"] == "SITE" and "drain churn" in r["detail"]["why"] for r in rows)))
 # can-fail: the old tank rig (two reels touching a tank, no pipe run) makes no link, so the rows are UNMEASURED/SITE, never PASS
 good_ops = L.rig_ops
 L.rig_ops = lambda cx, z, *_lips: [L.V.reel_west((cx, z)), L.V.reel_west((cx, z + 2)), "RM_LiquidTank:%d,%d" % (cx + 2, z + 1)]
