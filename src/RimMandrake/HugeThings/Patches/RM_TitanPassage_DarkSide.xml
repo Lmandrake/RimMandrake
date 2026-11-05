@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK (2026-11-05): the dark-side biomes where no giant can exist host no titan
+  passage. Owner, 2026-10-21: "A few exceptions such as rust cathedral and dark side biomes. Only if giants can exist
+  there." The per-biome calls and their reasons: design/RimMandrake/titan_passage_dark_side_calls_2026-11-05.md.
+
+  Today none of these rosters homes a T2+ giant, so the passage already skips them; the opt-out makes the call hold
+  when a roster later gains a big animal (TitanPassageUtility.Eligible reads `none` on any of the map's biomes).
+  RUT_Umbra and RM_TheChill are NOT here: the call there is that a giant can live in them (UMBRA_TITAN_POPULATE_BURNS_TO_WALK,
+  CHILL_TITAN_POPULATE_WAX_GIANT_TOO_SMALL).
+
+  The extension class lives in this mod, so the patch does too; each operation is a Conditional on the biome existing,
+  so a list without the biome's mod applies nothing and logs nothing.
+-->
+<Patch>
+  <!-- The Sleeping Ice (mandrake.rm.sleepingice): sleeping_ice.md section 6 bars anything that walks on the surface. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_SleepingIce"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/BiomeDef[defName="RM_SleepingIce"]</xpath>
+      <value>
+        <li Class="RimMandrake.TitanicCreatures.RM_TitanPassageExtension">
+          <none>true</none>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Its Utinni twin (mandrake.rut.patches): the same sheet, the same ban. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RUT_SleepingIce"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/BiomeDef[defName="RUT_SleepingIce"]</xpath>
+      <value>
+        <li Class="RimMandrake.TitanicCreatures.RM_TitanPassageExtension">
+          <none>true</none>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
