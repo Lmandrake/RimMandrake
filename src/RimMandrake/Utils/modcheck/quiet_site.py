@@ -529,13 +529,14 @@ class QuietSite(object):
         return path
 
 
-def ensure_colonists(session, count=3, x=None, z=30, kind="Colonist"):
+def ensure_colonists(session, count=3, x=None, z=30, kind="Colonist", exclude=()):
     """The pawn-less golden fixtures (FlowWorks NS_FlowWorks_TrialSite_v1: prep_site.py step 2 despawns EVERY pawn, so a
     fresh load holds no player colonist and the game ends within ~360 ticks) need colonists spawned before anything
     advances the clock. If >= `count` living colonists exist this does nothing. Otherwise it spawns the shortfall, DRAFTED
     (idle colonists wander into sites), off the plot grid (row z=30, centre x). Returns {'had','spawned','ids','problems'}.
     TESTENV_TRIALSITE_DIAGNOSE_NOBODY_HOME."""
-    have = [r["id"] for r in H.read_pawns(session, health=False) if H.is_colonist(r) and not r["dead"]]
+    gone = set(exclude or ())    # ids the caller is about to remove: they do not keep the colony alive
+    have = [r["id"] for r in H.read_pawns(session, health=False) if H.is_colonist(r) and not r["dead"] and r["id"] not in gone]
     out = {"had": len(have), "spawned": 0, "ids": list(have), "problems": []}
     if len(have) >= count:
         return out
@@ -553,7 +554,7 @@ def ensure_colonists(session, count=3, x=None, z=30, kind="Colonist"):
             out["spawned"] += 1
             if not _ok(session.call("jawa/set_draft", pawnId=pid, drafted=True)):
                 out["problems"].append("set_draft %s refused" % pid)
-    after = [r["id"] for r in H.read_pawns(session, health=False) if H.is_colonist(r) and not r["dead"]]
+    after = [r["id"] for r in H.read_pawns(session, health=False) if H.is_colonist(r) and not r["dead"] and r["id"] not in gone]
     if len(after) < count:
         out["problems"].append("only %d of %d living colonists after spawning" % (len(after), count))
     return out

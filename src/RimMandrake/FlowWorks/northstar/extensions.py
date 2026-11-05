@@ -464,13 +464,40 @@ def _sweep_earlier_chains(t):
     chain's leftover colonists wandered into later chains' pits and read as colonist_damaged "Blunt by nobody" (the
     mod's own fall damage), frostbite at night and fist fights with leftover prisoners -- 35 components UNMEASURED,
     0 FAIL. The bland map's restore heals injuries; it does not remove the pawns that keep collecting them."""
-    keep = []
+    keep, doomed = [], []
     for owner, pid in _SPAWNED:
         if owner == _chain_token(t):
             keep.append((owner, pid))
         elif pid:
-            t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+            doomed.append(pid)
+    if doomed:
+        _keep_colony(t, doomed)
+    for pid in doomed:
+        t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
     _SPAWNED[:] = keep
+
+
+KEEP_COLONISTS = 1     # living colonists that must remain after a sweep (vanilla ends the game at zero)
+
+
+def _keep_colony(t, doomed):
+    """TESTQ_SURPRISE_DIAGNOSE_SCRATCH_HALTS_CHAINS: before the sweep vanishes `doomed`, make sure the colony outlives it.
+    The trial site holds no colonist of its own (prep_site despawns every pawn), so when the only colonists were an
+    earlier chain's fixtures the sweep left ZERO, vanilla's GameEnder started its 400-tick countdown (unseen: the vitals
+    latch only sees a countdown that STARTS during an advance), and the next wait stopped on 'colony_loss: GameEnded
+    letter: Game Over' about 400 ticks in (bottle_revert/liquid_heat 2026-10-29: 420 of 2000/1250). Spawns the shortfall
+    DRAFTED off the plot grid (quiet_site.ensure_colonists); a keeper is not in _SPAWNED, so later sweeps leave it. Upkeep:
+    a failure is noted, never raised (the sweep is no worse than before)."""
+    try:
+        import quiet_site as QS  # noqa: E402 - the modcheck dir is on sys.path wherever clockgate imports
+        r = QS.ensure_colonists(t.session, count=KEEP_COLONISTS, exclude=doomed)
+    except Exception as ex:                                  # noqa: BLE001 - upkeep, never a verdict
+        r = {"spawned": 0, "problems": ["ensure_colonists raised %s: %s" % (type(ex).__name__, ex)]}
+    if r.get("spawned") or r.get("problems"):
+        rec = getattr(t, "_record", None)
+        if callable(rec):
+            rec("keep_colony before sweeping %d earlier-chain pawn(s): %s" % (len(doomed), r), r)
+    return r
 
 
 def _vanish_fixture(t, pid):

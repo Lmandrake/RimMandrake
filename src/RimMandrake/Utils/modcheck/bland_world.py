@@ -119,10 +119,20 @@ def queued_incidents(session):
     return r.get("incidents") or r.get("entries") or r.get("queue") or []
 
 
-def feed_colonists(session, floor=0.25):
+THIRST_NEED = "RM_Thirst"   # FlowWorks' own thirst need (Need_RM_Thirst); absent when FlowWorks is not loaded
+THIRST_FLOOR = 0.4          # above RM_ThirstMath.ThirstyBelow (0.3) by more than one 2000-tick chunk's fall, so a fed
+                            # colonist never turns thirsty mid-chunk
+
+
+def feed_colonists(session, floor=0.25, thirst_floor=THIRST_FLOOR):
     """Top up Food for colonists below `floor` (starvation is the one slow hazard a food-less bland map really has:
-    MEASURED 2026-10-01, Malnutrition aborted five long chains). Only a colonist that is LOW is touched, so a suite
-    that measures needs still sees its own effects. Returns the ids fed."""
+    MEASURED 2026-10-01, Malnutrition aborted five long chains), and FlowWorks' RM_Thirst below `thirst_floor` when the
+    pawn has that need. TESTQ_SURPRISE_DIAGNOSE_SCRATCH_HALTS_CHAINS: Food alone left a long testq session's colonists to
+    reach RM_ThirstMath.ThirstyBelow, and a thirsty colonist drinks the nearest liquid -- on the FlowWorks site a dug
+    channel of tar/oil/slime (ToxicBuildup +0.12 a drink, RM_ThirstMath.ToxicBuildupPerDrink): the surprise 'hurt:
+    health 1 -> 0.93; newest hediff ToxicBuildup age 15' that held dig_finds (and plot_C2) UNMEASURED. Only a colonist
+    that is LOW is touched, so a suite that measures needs still sees its own effects (or sets `t.feed = False`).
+    `thirst_floor=None` skips thirst. Returns the ids fed (one entry per pawn topped up, whichever need)."""
     fed = []
     for row in H.read_pawns(session, health=False):
         if not H.is_colonist(row) or row.get("dead") or not row.get("spawned", True):
@@ -132,8 +142,14 @@ def feed_colonists(session, floor=0.25):
                                                                          action="list").get("needs") or [])
         except Exception:                                        # noqa: BLE001
             continue
+        topped = False
         if needs.get("Food", 1.0) < floor:
             session.call("jawa/pawn_need", pawn=row["id"], action="need", need="Food", level=1.0)
+            topped = True
+        if thirst_floor is not None and THIRST_NEED in needs and needs[THIRST_NEED] < thirst_floor:
+            session.call("jawa/pawn_need", pawn=row["id"], action="need", need=THIRST_NEED, level=1.0)
+            topped = True
+        if topped:
             fed.append(row["id"])
     return fed
 

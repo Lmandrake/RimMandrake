@@ -166,7 +166,11 @@ def moving_edges(terrain, size):
 
 
 SWEPT_WAIT_CHUNK = 250          # RM_MapComponent_RiverCurrent.ScanIntervalTicks: a pawn is enrolled within one scan
-SWEPT_EXPECTED_HEDIFF = "Bruise"  # DamageDefOf.Blunt on flesh -> HediffDefOf.Bruise (ApplyHazards' TakeDamage)
+# the hurts the current DOES to the pawn it carries, declared so they resume the clock (only on the staged throwaways):
+# Bruise = DamageDefOf.Blunt on flesh (ApplyHazards' TakeDamage); RM_SwimExhaustion = the swim it is forced into
+# (RM_Swim.ExhaustionDef). TESTQ_SURPRISE_DIAGNOSE_SCRATCH_HALTS_CHAINS: testq 2026-11-05 06:25 held swept UNMEASURED on
+# 'hurt: health 1 -> 0.94; newest hediff RM_SwimExhaustion age 0' inside this very wait.
+SWEPT_EXPECTED_HEDIFF = ("Bruise", "RM_SwimExhaustion")
 PRISONER_STAY_TICKS = 600     # SWEEP_PRISONER_RETURN: a returned prisoner must still be on the map this long after
 SWEPT_WAIT_MAX = 1500          # an edge cell is one step from off-map: scan (<=250) + one cadence (<=~100 at size 1)
 
@@ -296,7 +300,7 @@ def swept(t):
                     import clockgate                 # the same module instance suite.wait_ticks advances through
                     import testenv_guards as TG
                     resumed0 = len(clockgate.BENIGN_STOPS)
-                    with clockgate.expected_disturbance("swept bruise (FlowWorks river hazard, owner card 2)",
+                    with clockgate.expected_disturbance("swept bruise/swim exhaustion (FlowWorks river hazard, owner card 2)",
                                                         TG.expected_hurt(staged, SWEPT_EXPECTED_HEDIFF)):
                         while waited < SWEPT_WAIT_MAX and now <= p0:
                             t.wait_ticks(SWEPT_WAIT_CHUNK)

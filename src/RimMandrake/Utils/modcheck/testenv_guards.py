@@ -307,10 +307,13 @@ def _num_id(x):
 def expected_hurt(subject_ids, hediff):
     """Predicate over one jawa/vitals trigger: True only for kind 'hurt' on one of `subject_ids` (ThingIDs like
     'Human460415' or bare numbers) whose newest hediff is `hediff` (the vitals detail reads 'newest hediff <Def>/<Part>').
-    Pure. A downed or dead subject is another kind, so it never matches. The id is the trailing digits of a ThingID, so a
-    race defName that itself ends in a digit parses to a different number and simply never matches (no resume)."""
+    `hediff` may be one defName or a tuple/list of them (a hazard that leaves more than one: the river current bruises
+    AND exhausts the swimmer it carries). Pure. A downed or dead subject is another kind, so it never matches. The id is
+    the trailing digits of a ThingID, so a race defName that itself ends in a digit parses to a different number and
+    simply never matches (no resume)."""
     ids = set(n for n in (_num_id(s) for s in subject_ids or ()) if n is not None)
-    pat = re.compile(r"newest hediff %s(/|\s|$)" % re.escape(hediff))
+    names = (hediff,) if isinstance(hediff, str) else tuple(hediff)
+    pat = re.compile(r"newest hediff (%s)(/|\s|$)" % "|".join(re.escape(h) for h in names))
 
     def pred(t):
         return (isinstance(t, dict) and t.get("kind") == "hurt" and _num_id(t.get("subjectId")) in ids
