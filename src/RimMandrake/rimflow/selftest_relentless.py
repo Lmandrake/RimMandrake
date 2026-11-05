@@ -204,6 +204,7 @@ class FakeWorld:
     def changed(self, base, sha, item):
         self.changed_calls.append((base, sha, item))
         return self.touched
+    def existed(self, sha, path): return path in getattr(self, "existing", ())
     def head(self): return "base"
     def commit_time(self, sha): return 5000 if sha == "sha1" else 0
 
@@ -4284,13 +4285,23 @@ def t_review_wrong_verdicts():
     x.done()
     # contract prose does not authorize a production edit for a proof-only worker
     class FxC:
+        existing = ()
         def changed(self, b, s, i): return ["src/runtime.py"]
+        def existed(self, sha, p): return p in self.existing if self.existing is not None else None
     st = {"item": "I", "proof_only": {"sha": "A"}, "contract": {"proof": "run t", "why": "leave src/runtime.py unchanged"}}
     k, _ = R.proof_gate(FxC(), RULES, st, {"sha": "B"})
     ok(k == "proof_rework", "a path named only in the why prose is still rework")
     st["contract"]["proof"] = "python3 src/runtime.py"
     k, _ = R.proof_gate(FxC(), RULES, st, {"sha": "B"})
-    ok(k is None, "a path the proof command names is the proof")
+    ok(k is None, "a proof script the proof-only worker wrote, named by the proof command, is the proof")
+    # Codex #1 (RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN): naming a product file in the proof does not license editing it
+    fx = FxC()
+    fx.existing = ("src/runtime.py",)
+    k, _ = R.proof_gate(fx, RULES, st, {"sha": "B"})
+    ok(k == "proof_rework", "a product file the weak sha already held is rework though the proof names it")
+    fx.existing = None
+    k, _ = R.proof_gate(fx, RULES, st, {"sha": "B"})
+    ok(k == "proof_rework", "an existence git cannot answer reads as existed")
     # an unreadable spend record blocks, never reads as an empty day
     x = Rig(n=1, share=1.0)
     ok(R.spent_today(x.s, x.now) == 0, "no day file is a new day")
@@ -4380,6 +4391,7 @@ def t_review_wrong_verdicts_two():
     # the proof gate matches whole path tokens, not substrings
     class FxC:
         def changed(self, b, s, i): return ["engine.py"]
+        def existed(self, sha, p): return False
     st = {"item": "I", "proof_only": {"sha": "A"}, "contract": {"proof": "python selftest_engine.py"}}
     k, _ = R.proof_gate(FxC(), RULES, st, {"sha": "B"})
     ok(k == "proof_rework", "engine.py is not named by 'selftest_engine.py'")

@@ -67,8 +67,14 @@ def t_gone_is_removed():
     gone = os.path.join(d, "clones", "GONE")
     fx.remove_clone({"clone": gone, "item": "GONE"})
     ok(not any(j.get("kind") == "remove_failed" for j in journal(s)), "a clone already gone journals no remove_failed")
-    stuck = os.path.join(d, "clones", "STUCK")
-    put(os.path.join(stuck, "sub", "f"), "x")
+    # a git-less clone holding a file is moved aside whole, not removed (RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN #3)
+    kept = os.path.join(d, "clones", "KEPT")
+    put(os.path.join(kept, "sub", "f"), "x")
+    fx.remove_clone({"clone": kept, "item": "KEPT"})
+    ok(not os.path.exists(kept) and any(j.get("do") == "clone_kept_gitless" for j in journal(s)),
+       "a git-less clone's files are kept aside, not deleted")
+    stuck = os.path.join(d, "clones", "STUCK")      # no file in it: nothing to keep, so it is removed, and cannot be
+    os.makedirs(os.path.join(stuck, "sub", "inner"))
     os.chmod(os.path.join(stuck, "sub"), 0o500)
     fx.remove_clone({"clone": stuck, "item": "STUCK"})
     ok(any(j.get("kind") == "remove_failed" for j in journal(s)), "one that cannot be removed still alarms")

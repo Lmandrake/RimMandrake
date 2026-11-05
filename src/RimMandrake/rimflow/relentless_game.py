@@ -1163,6 +1163,13 @@ def step(store, fx, r, item, now, acts, sup):
             return _back(store, fx, sup, r, item, "game_contract", "; ".join(
                 "%s/%s.txt %s: %s" % (PROOFS_DIR, item, k, w) for k, w in bad), now, acts)
         finals = [k for k in sorted(led["owed"]) if led["owed"][k] == FINAL_LEVEL and k not in g["clauses"] and k in lines]
+        # an owed GREEN-FULL with no proof line joins nothing, so nothing could ever verify it and the item would wait
+        # at the all-PASS return below forever: it goes back for its line (Codex review, RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN #7)
+        lineless = [k for k in sorted(led["owed"]) if led["owed"][k] == FINAL_LEVEL and k not in lines]
+        if lineless:
+            return _back(store, fx, sup, r, item, "game_contract",
+                         "owed %s criteria %s have no live-proof line: add `live-proof <id>: <command>` to %s/%s.txt"
+                         % (FINAL_LEVEL, lineless, PROOFS_DIR, item), now, acts)
         owed_lines = {k: lines[k] for k in list(g["clauses"]) + finals if k in lines and k not in met}
         if _preflight(store, fx, sup, r, item, owed_lines, now, acts, sha):
             return

@@ -16,6 +16,7 @@ Exit codes for worker verbs: 0 done, 2 usage or refused, 3 FENCED (your lease is
 """
 import argparse
 import contextlib
+import copy
 import fcntl
 import glob
 import hashlib
@@ -407,7 +408,8 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
     st["last_fail"] = {"class": klass, "detail": (detail or "")[:2000], "at": now}
     limit = r["same_failure_limit"]
     if klass in ("proof_weak", relentless_attrib.PROOF_OWED):
-        st["proof_only"] = {"sha": st["candidate"]["sha"], "at": now}
+        st["proof_only"] = {"sha": st["candidate"]["sha"], "at": now,
+                            "contract": copy.deepcopy(st.get("contract"))}     # what proof_gate compares a re-finish with
         if klass == "proof_weak":
             st["proof_only"]["weak"] = (detail or "")[:600]     # the verdict that set it, re-read under today's WEAK rule
         if "CONTRACT" in ((attributed or {}).get("targets") or []):
@@ -1234,8 +1236,16 @@ def proof_gate(fx, r, st, c):
     named = set(re.split(r"[\s'\"=:,;()]+", " ".join([k.get("proof") or "", k.get("live") or ""]
                                                      + relentless_wall.offbox_cmds(k))))     # the commands, never the `why` prose
     named = named | {x[2:] for x in named if x.startswith("./")}
-    rework = [p for p in fx.changed(held["sha"], c["sha"], st["item"])
-              if p not in named and not any(re.search(x, p) for x in r["proof_paths"])]
+    # a named path is a proof asset only when the weak sha did not hold it: a proof script the proof-only worker wrote.
+    # One the product already had is the code under test, and a proof-only worker may re-point the contract at any file
+    # (Codex review, RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN #1). An unanswerable existence reads as existed: refused.
+    moved = fx.changed(held["sha"], c["sha"], st["item"])
+    if not moved and "contract" in held and held["contract"] == st["contract"] and not held.get("binding"):
+        # an empty commit above the weak sha moved no proof and no contract (Codex #2): the same proof, read again
+        return "proof_unchanged", "%s moves no file and the contract is the one found weak: no proof moved" % c["sha"]
+    rework = [p for p in moved
+              if not any(re.search(x, p) for x in r["proof_paths"])
+              and (p not in named or fx.existed(held["sha"], p) is not False)]
     if rework:
         return "proof_rework", "proof-only worker moved code: %s" % ", ".join(rework[:10])
     return None, None
@@ -1752,6 +1762,8 @@ class Effects(relentless_game.GameFx):
             return "books %s behind: own commits outside the ledger: %s" % (behind, ", ".join(alien[:5]))
         read = {}
         for p in sorted({p for p in changed if p.startswith(LEDGER_DIR)} | {p for _s, p in rows if p.startswith(LEDGER_DIR)}):
+            if not os.path.isfile(os.path.join(self.books, p)):     # a deleted shard: refused by name, before anything
+                return "books %s behind: ledger shard %s is deleted" % (behind, p)      # moves (Codex #5)
             with open(os.path.join(self.books, p), "rb") as f:
                 read[p] = f.read()
             lost = set(read[p].decode("utf-8").splitlines()) - set(self.git_ok(self.books, "show", "origin/main:" + p).splitlines())
@@ -2254,7 +2266,8 @@ class Effects(relentless_game.GameFx):
 
     def touched(self, sha):
         """-> the paths `sha` changes, in books; None when git cannot read it."""
-        r = self.git(self.books, "diff-tree", "--no-commit-id", "--name-only", "-r", "--root", sha)
+        r = self.git(self.books, "diff-tree", "--no-commit-id", "--name-only", "-r", "--root",
+                     "--diff-merges=first-parent", sha)    # a merge lists what it brought in, not nothing (Codex #4)
         return r.stdout.split() if r.returncode == 0 else None
 
     def work_sha(self, item, sha):
@@ -2431,6 +2444,13 @@ class Effects(relentless_game.GameFx):
                     bundle = self.bundle_clone(st["item"], c)
                 except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
                     return "clone lacks %s and its bundle failed: %s" % (gap, str(e)[-200:])
+            else:       # no git to bundle from: the tree itself is kept, moved aside whole (Codex #3)
+                kept, why = self.keep_gitless(st["item"], c)
+                if why:
+                    return "clone lacks %s and %s" % (gap, why)
+                if kept:
+                    self.store.journal({"at": iso(time.time()), "do": "clone_kept_gitless", "clone": os.path.basename(c),
+                                        "kept": kept})
             if bundle:
                 st["bundle"] = bundle
                 with self.store.lock():
@@ -2535,6 +2555,28 @@ class Effects(relentless_game.GameFx):
         """Ignored files are nobody else's copy either. Bytecode is the one thing that is only ever derived."""
         out = self.git_ok(c, "ls-files", "-z", "--others", "--ignored", "--exclude-standard").split("\0")
         return [p for p in out if p and "__pycache__/" not in p and not p.endswith(".pyc")]
+
+    def keep_gitless(self, item, c):
+        """A clone folder with no .git has nothing to bundle from, and its untracked files are the only copy: moved whole
+        beside the item's bundles (a rename, same disk). -> (where it went, None); (None, None) when it held no file;
+        (None, why) when it could not move, and the caller then keeps it."""
+        try:
+            empty = not any(files for _, _, files in os.walk(c))
+        except OSError as e:
+            return None, "its tree could not be read: %s" % str(e)[:200]
+        if empty:
+            return None, None
+        home = self.store.p("items", item) if item and os.path.isdir(self.store.p("items", item)) else self.store.p("orphans")
+        stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+        out, n = os.path.join(home, "gitless", "%s-%s" % (stamp, os.path.basename(c))), 1
+        while os.path.lexists(out):
+            out, n = os.path.join(home, "gitless", "%s-%s-%d" % (stamp, os.path.basename(c), n)), n + 1
+        try:
+            os.makedirs(os.path.dirname(out), exist_ok=True)
+            os.rename(c, out)
+        except OSError as e:
+            return None, "its git-less tree could not be kept aside: %s" % str(e)[:200]
+        return out, None
 
     def bundle_clone(self, item, c):
         """Everything no remote has, on the store's disk, before a clone goes. -> the bundle dir, None when there is
@@ -2693,6 +2735,14 @@ class Effects(relentless_game.GameFx):
             except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
                 self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "bundle_failed", "clone": c, "why": str(e)[:300]})
                 return None
+        elif os.path.isdir(c):  # no git to bundle from: its files are moved aside whole, never deleted (Codex #3)
+            kept, why = self.keep_gitless(st.get("item") or clone_item(c), c)
+            if why:
+                self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "bundle_failed", "clone": c, "why": why})
+                return None
+            if kept:
+                self.store.journal({"at": iso(time.time()), "do": "clone_kept_gitless", "clone": os.path.basename(c),
+                                    "kept": kept})
         if before and out:
             before(out)         # the record learns of the bundle while the clone still stands
         warm = relentless_disk.park(c, os.path.join(self.base, "clones"), self.r.get("warm_clones", 0),
@@ -2931,13 +2981,20 @@ class Effects(relentless_game.GameFx):
     def head(self):
         return self.git(self.books, "rev-parse", "origin/main").stdout.strip() or None
 
+    def existed(self, sha, path):
+        """True / False: `path` is in `sha`'s tree; None when git cannot say (the sha unreadable here)."""
+        if self.git(self.books, "cat-file", "-e", sha + "^{commit}").returncode:
+            return None
+        return self.git(self.books, "cat-file", "-e", "%s:%s" % (sha, path)).returncode == 0
+
     def changed(self, base, sha, item):
         """Files of the final commit plus every commit since the item's base that names the item (the brief makes
         workers name it), so a hook change followed by a doc commit does not escape its live line."""
-        r = self.git(self.books, "show", "--format=", "--name-only", sha)
+        r = self.git(self.books, "show", "--format=", "--name-only", "--diff-merges=first-parent", sha)   # Codex #4
         got = set(x for x in r.stdout.splitlines() if x.strip()) if r.returncode == 0 else set()
         if base:
-            r = self.git(self.books, "log", "--format=", "--name-only", "--grep=" + item, "%s..%s" % (base, sha))
+            r = self.git(self.books, "log", "--format=", "--name-only", "--diff-merges=first-parent", "--grep=" + item,
+                         "%s..%s" % (base, sha))
             got |= set(x for x in r.stdout.splitlines() if x.strip())
         return sorted(got)
 
@@ -4060,7 +4117,8 @@ def content_pause(fx, states, order=None, ours=None, refused=None, now=None, sto
     nothing live). A queued system item whose not_before is still ahead waits on the clock, not a place: lease skips it,
     so it holds no content back either (RELENTLESS_PAUSE_FIX_CLOCK_WAIT_STALLS_ALL, 2026-11-05: one item's 342 min
     wait-hours snag paused every content item with 2 places live of 8). It keeps its first pick: the tick its wait ends,
-    it is placed before content.
+    it is placed before content. A start refused and cooling (start_again_at) or a consult out (help_pending) is the same
+    wait on something not a place (parked; Codex review, RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN #6).
     Scoped (DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE, owner card 2026-11-05 "Pause only what it touches"): the mode is
     global only when a shared integrity resource is impaired: the verdict's pause_scope says so (assessment unmeasured,
     storage headroom spent, no scopes named), the account circuit (breaker.json) is open, or the integrity gate's record
@@ -4074,7 +4132,8 @@ def content_pause(fx, states, order=None, ours=None, refused=None, now=None, sto
         return None
     now = time.time() if now is None else now
     waits = [s["item"] for s in states if s["status"] == "queued" and s["item"] in first
-             and not (s.get("not_before") or 0) > now]
+             and not (s.get("not_before") or 0) > now
+             and not (s.get("start_again_at") or 0) > now and not help_pending(s)]  # cooling or on a consult (Codex #6)
     waits += [i for i in (order or ()) if i in first and i not in (ours or ())]
     holding = [i for i in dict.fromkeys(waits) if not (refused and refused(i))]
     if not holding:

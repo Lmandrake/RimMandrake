@@ -1316,15 +1316,27 @@ def t_met_clause_is_not_missing():
 
 def t_owed_final_joins_the_clauses():
     """A contract written before the tier rule names A1 only; the criteria file owes F1 GREEN-FULL with a proof line:
-    F1 joins the game clauses at implement, so the item cannot wait on it forever."""
+    F1 joins the game clauses at implement, so the item cannot wait on it forever. An owed GREEN-FULL with no line (Z9)
+    sends the item back for one."""
     x = rig(1)
     x.w.owed = {"A1": "L1", "F1": G.FINAL_LEVEL, "Z9": G.FINAL_LEVEL}
     x.w.proofs[("I0", ".txt")] = FINAL_PROOF
     to_game(x, "I0", game={"clauses": ["A1"], "why": "small"})
     x.tick()
-    g = x.st("I0")["game"]
-    ok(g["phase"] == "prove" and g["clauses"] == ["A1", "F1"], "F1 joins, Z9 (no proof line) does not: %s" % g)
+    st = x.st("I0")
+    # changed on purpose (RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN #7): Z9 with no proof line used to stay out of the
+    # clauses and the item waited at the all-PASS return forever; it now goes back for its line
+    ok(st["last_fail"] and "game_contract" in st["last_fail"]["detail"] and "Z9" in st["last_fail"]["detail"]
+       and "F1" not in st["last_fail"]["detail"], "Z9 (owed GREEN-FULL, no proof line) sends the item back: %s" % st.get("last_fail"))
     x.done()
+    y = rig(1)
+    y.w.owed = {"A1": "L1", "F1": G.FINAL_LEVEL}
+    y.w.proofs[("I0", ".txt")] = FINAL_PROOF
+    to_game(y, "I0", game={"clauses": ["A1"], "why": "small"})
+    y.tick()
+    g = y.st("I0")["game"]
+    ok(g["phase"] == "prove" and g["clauses"] == ["A1", "F1"], "F1 joins the game clauses: %s" % g)
+    y.done()
 
 
 CUT = {"cid": "A2", "why": "I0 A2 is cut at 160 chars on the ledger and no prose holds the rest", "fp": "fpA",
