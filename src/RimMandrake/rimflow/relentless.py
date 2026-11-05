@@ -4475,7 +4475,7 @@ def step(store, fx, r, item, now, acts):
             paths = fx.changed(st.get("base"), c["sha"], item)
             if not paths:
                 why = "%s changes nothing" % c["sha"]
-            elif (live_line.needs_line(paths) or item.startswith(ALARM_PREFIXES)) and not (st["contract"] or {}).get("live"):
+            elif (live_line.needs_line(paths) or (item.startswith(ALARM_PREFIXES) and not live_line.prose_only(paths))) and not (st["contract"] or {}).get("live"):
                 why = "%s needs a live line in the contract: %s" % (c["sha"], (live_line.needs_line(paths) or ["alarm item"])[0])
             elif (fx.item_state(item) or {}).get("guard_owed"):
                 why = "%s: this fix died before, so the close will refuse it: `rimflow guard %s --test <selftest*.py>` first" % (c["sha"], item)

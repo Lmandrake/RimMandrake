@@ -2184,6 +2184,8 @@ def _live_gate(verb, args, it, sha):
     alarm = it is not None and args.id.startswith(("OPS_", "LIVE_RESTORE_"))
     if not line and not touched and not alarm:
         return None
+    if not line and alarm and not touched and paths and live_line.prose_only(paths):
+        line = live_line.DESIGN_ONLY_LINE       # design prose only: nothing runs, recorded as such
     if not line:
         die("%s: %s needs a live line: %s.\n\nSay what must stay alive, and rimflow checks it now:\n"
             "    --live \"unit=rm-foo.timer reading=<path> max_age=6h\"\n    --live \"hook=block_foo.py\"\n"

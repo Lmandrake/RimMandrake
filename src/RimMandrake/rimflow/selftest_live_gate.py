@@ -215,12 +215,13 @@ def gate():
                       capture_output=True, text=True)
     commit("src/x.py", "seed")
     plain = commit("src/game.py", "plain")
+    design = commit("design/RimMandrake/x_design.md", "design")
     unit = commit("src/RimMandrake/Utils/systemd/rm-foo.timer", "unit")
     ledger_only = commit("infrastructure/state/ledger/events/BENCH.jsonl", "ledger")
-    for i in ("CODE_FIX_ALPHA", "UNIT_FIX_ALPHA", "UNIT_FIX_BRAVO", "UNIT_FIX_CHARLIE", "OPS_FIX_ALPHA", "UNIT_FIX_DELTA"):
+    for i in ("CODE_FIX_ALPHA", "UNIT_FIX_ALPHA", "UNIT_FIX_BRAVO", "UNIT_FIX_CHARLIE", "OPS_FIX_ALPHA", "OPS_FIX_BRAVO", "UNIT_FIX_DELTA"):
         r = rf("file", i, "--for", "BENCH", "--title", "t")
         check(r.returncode == 0, "file %s %s" % (i, r.stderr[-200:]))
-    for i, s in (("CODE_FIX_ALPHA", plain), ("UNIT_FIX_ALPHA", unit), ("UNIT_FIX_BRAVO", unit), ("OPS_FIX_ALPHA", plain)):
+    for i, s in (("CODE_FIX_ALPHA", plain), ("UNIT_FIX_ALPHA", unit), ("UNIT_FIX_BRAVO", unit), ("OPS_FIX_ALPHA", plain), ("OPS_FIX_BRAVO", design)):
         r = rf("verify", i, "--sha", s, "--level", "L0", "--result", "pass", "--config", "c", "--evidence", "e")
         check(r.returncode == 0, "the check `close` asks for, on %s %s" % (i, r.stderr[-200:]))
     check(rf("close", "CODE_FIX_ALPHA", "--sha", plain).returncode == 0, "ordinary code closes with no new step")
@@ -238,6 +239,9 @@ def gate():
     check(r.returncode == 0, "a hook line that holds closes " + r.stderr[-200:])
     r = rf("close", "OPS_FIX_ALPHA", "--sha", plain)
     check(r.returncode and "Operations alarm" in r.stderr, "an Operations alarm needs a line even on plain code")
+    r = rf("close", "OPS_FIX_BRAVO", "--sha", design)
+    check(r.returncode == 0, "an Operations alarm closed by a design-prose commit needs no line " + r.stderr[-200:])
+    check("design-only change, nothing runs" in rf("show", "OPS_FIX_BRAVO").stdout, "the automatic once line is recorded")
     r = rf("implemented", "UNIT_FIX_CHARLIE", "--sha", unit, "--none-owed")
     check(r.returncode and "needs a live line" in r.stderr, "implemented is gated the same way")
     r = rf("implemented", "UNIT_FIX_CHARLIE", "--sha", unit, "--none-owed", "--live", "hook=wired_one.py")

@@ -76,6 +76,18 @@ def needs_line(paths):
     return [p for p in paths if NEEDS_LIVE_RX.search(p)]
 
 
+DESIGN_ONLY_LINE = "once: design-only change, nothing runs"
+
+
+def prose_only(paths):
+    """True when every changed path is design prose (design/** or *.md outside infrastructure/state) and none needs a
+    line: an alarm-prefixed item whose commit only edits prose has nothing to keep running. Pure."""
+    if not paths or needs_line(paths):
+        return False
+    return all((p.startswith("design/") or (p.endswith(".md") and not p.startswith("infrastructure/state/")))
+               for p in paths)
+
+
 def _systemctl(verb, unit, runner):
     try:
         r = runner(["systemctl", "--user", verb, unit], capture_output=True, text=True, timeout=30,

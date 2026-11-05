@@ -1018,6 +1018,20 @@ def t_crash_windows():
     x.tick()
     ok(x.st("OPS_X")["failures"].get("bad_candidate") == 1, "an alarm item with no live line is a bad candidate")
     x.done()
+    # ...but a design-prose-only commit on an alarm item has nothing to keep running: no live line owed
+    for touched, bad in ((["design/RimMandrake/post_event_recovery_mode_2026-11-05.md"], None),
+                         (["design/a.md", ".claude/hooks/block_x.py"], 1), (["src/x.py"], 1)):
+        x = Rig(n=1, share=1.0)
+        x.w.items["OPS_X"] = x.w.items["I0"]
+        x.w.touched = touched
+        R.enrol_one(x.s, "OPS_X", "t", x.now - 100)
+        x.run_one("OPS_X")
+        st = x.st("OPS_X")
+        R.contract(x.s, "OPS_X", st["gen"], "p")
+        R.finish(x.s, "OPS_X", st["gen"], "s", "e", now=x.now)
+        x.tick()
+        ok(x.st("OPS_X")["failures"].get("bad_candidate") == bad, "alarm item touching %s: bad_candidate=%s" % (touched, bad))
+        x.done()
     # rimflow's close refuses a fix that died with no guard: the candidate gate catches that first too
     x = Rig(n=1, share=1.0)
     x.w.guard_owed = {"I0"}
