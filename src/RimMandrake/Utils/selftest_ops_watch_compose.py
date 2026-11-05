@@ -87,11 +87,34 @@ st = json.loads((_TMP / "ops" / "status.json").read_text())
 check("health: the alarm pass makes the verdict, the next pass carries it", made == [h0], made)
 check("health: the carried verdict says when it was made", st["points"]["health.state"]["x"]["observed_at"] == OW.iso(h0),
       st["points"]["health.state"])
-for i in range(2, 40):      # pass after pass without the alarm family: the verdict ages out, then is made afresh
+for i in range(2, 40):      # pass after pass without the alarm family: the verdict ages out, never made without it
     OW.run(now=h0 + 60 * i, rules=rules, families=["accounts"], compose=True)
-check("health: a verdict carried past the round robin's age is made afresh", len(made) >= 2 and
-      made[1] - h0 >= OW.COMPOSE_MAX_AGE_S, made)
+st = json.loads((_TMP / "ops" / "status.json").read_text())
+check("health: past the round robin's age the verdict reads UNMEASURED, never made without the ledger",
+      made == [h0] and st["points"]["health.state"]["m"] == "UNMEASURED", (made, st["points"]["health.state"]))
 OW.publish_health = _ph
+
+# --- review fixes: flow joins testing; a carried reading counts once in the alarms; honest freshness ---------------
+calls.clear()
+OW.run(now=h0 + 3000, rules=rules, families=["testing", "disk"], compose=True)
+check("compose: testing brings flow (its ctx) into the pass", calls[:1] == ["flow"] and "testing" in calls, calls)
+seen_pts = []
+OW.run_alarms = lambda points, *a, **k: (seen_pts.append(set(points)), {})[1]
+t1 = h0 + 3100
+OW.run(now=t1, rules=rules, families=["disk", "timers"], compose=True)          # disk measured after the alarm pass
+OW.run(now=t1 + 60, rules=rules, families=["flow"], compose=True)
+OW.run(now=t1 + 120, rules=rules, families=["flow"], compose=True)
+check("alarms: a reading observed since the last alarm pass is in it", "disk.stub" in seen_pts[0], sorted(seen_pts[0])[:8])
+check("alarms: the same carried reading is held on the next alarm pass", "disk.stub" not in seen_pts[1]
+      and "flow.stub" in seen_pts[1], sorted(seen_pts[1])[:8])
+st = json.loads((_TMP / "ops" / "status.json").read_text())
+check("status: names what it measured and as of when each family reads",
+      st.get("measured") == ["flow"] and st["observed"].get("disk") == OW.iso(t1) and st.get("oldest_observed_at"),
+      {k: st.get(k) for k in ("measured", "oldest_observed_at")})
+lm = json.loads((_TMP / "ops" / "last_measured.json").read_text())["t"]
+check("last_measured: a carried reading is not stamped as measured now", lm.get("disk.stub", 0) < t1 + 120
+      and lm.get("flow.stub") == t1 + 120, (lm.get("disk.stub"), lm.get("flow.stub"), t1 + 120))
+OW.run_alarms = lambda *a, **k: (alarm_runs.append(1), {})[1]
 
 # --- the ownership fence ----------------------------------------------------------------------------------------------
 before = (_TMP / "ops" / "status.json").read_text()

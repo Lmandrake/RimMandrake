@@ -3967,12 +3967,26 @@ def steve_release():
 OLD_TIMER = "rm-ops-watch.timer"     # the clock the metronome's sense phase replaces (metronome_phases.json owns)
 SENSE_PHASE = "sense"
 EXIT_FENCED = 3
-COMPOSE_MAX_AGE_S = 1800.0   # a carried family reading older than this reads UNMEASURED (rules: compose_max_age_s)
+COMPOSE_MAX_AGE_S = 1000.0   # a carried family reading older than this reads UNMEASURED (rules: compose_max_age_s):
+                             # ~1.5 rounds of the sense round robin (21 families, 2 a beat, 60 s beats)
+COMPOSE_NEEDS_FLOW = ("testing",)   # collectors that read the flow collector's ctx (closes, open_ids): flow joins them
 COMPOSE_ALARM_FAMILY = "flow"  # a compose pass files alarms only when it measures this family (its ctx: the ledger ids)
 
 
 class Fenced(RuntimeError):
     """The metronome generation this pass acts for is no longer the live one: it publishes nothing more."""
+
+
+def observed_at(p):
+    """The epoch a carried point was observed at (compose passes), or None for this pass's own reading."""
+    o = (p.get("x") or {}).get("observed_at") if isinstance(p, dict) and isinstance(p.get("x"), dict) else None
+    if not o:
+        return None
+    try:
+        t = epoch(o)
+    except (TypeError, ValueError, OverflowError):
+        return None
+    return t if is_num(t) else None
 
 
 def carry_family(fam, recs, now, max_age):
@@ -4032,6 +4046,8 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         if still_owner is not None and not still_owner(what):
             raise Fenced("fenced before %s" % what)
     compose = bool(compose and families)
+    if compose and COMPOSE_ALARM_FAMILY not in families and any(f in families for f in COMPOSE_NEEDS_FLOW):
+        families = [COMPOSE_ALARM_FAMILY] + list(families)
     whole = not families or compose
     now = now or time.time()
     rules = rules or load_rules()
@@ -4081,6 +4097,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
             carried.update(carry_family(fam, prev[fam], now, max_age))
         points = dict(carried, **points)        # this pass's own readings win
     if filer is real_filer and (not families or "steve" in families):      # acts only where alarms are really filed
+        fence("the steve release")
         sick += steve_release()
     for fam, key in (("relentless", "relentless.blind"), ("seats", "seats.blind"), ("plan", "plan.blind"),
                      ("disk", "disk.scratch_outside_blind")):
@@ -4088,9 +4105,11 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
             points[key] = st_suppressed(points, fam)
             stamp_ranges(points, rules)
     health_flag = None
-    held = held_health(now, max_age) if compose and COMPOSE_ALARM_FAMILY not in families else None
-    if held:        # the verdict needs the ledger, which only the alarm pass reads: carry that pass's
-        points.update(held)
+    if compose and COMPOSE_ALARM_FAMILY not in families:
+        # the verdict needs the ledger, which only the alarm pass reads: carry that pass's, never make one without it
+        points.update(held_health(now, max_age) or {"health.state": U(
+            "the health verdict is made on the beat that measures %s; none within %d min" % (
+                COMPOSE_ALARM_FAMILY, max_age / 60))})
     elif whole:      # a limited pass has not measured every SLI: it never overwrites the verdict
         points.update(publish_health(points, prev, ctx, rules, now))
         if points["health.state"].get("m") != "MEASURED":
@@ -4108,7 +4127,8 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     lm_saved = _obj(read_json(lm_path)).get("t")
     lm_bad = lm_path.exists() and not (isinstance(lm_saved, dict)
                                        and all(is_num(v) and finite(v) for v in lm_saved.values()))
-    lastm, saved_lm = carry_last_measured(lastm, lm_saved, points, now)
+    fresh = {k: p for k, p in points.items() if not observed_at(p)}     # carried points were measured when observed
+    lastm, saved_lm = carry_last_measured(lastm, lm_saved, fresh, now)
     try:
         flags = andon(points, hist, lastm, rules, now) + sick
     except Exception as e:  # noqa: BLE001  no flags this pass, said aloud; the alarms still run
@@ -4136,6 +4156,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
                       "detail": "last_measured.json is unreadable: long-silent keys may read as not silent; repair or delete it"})
     try:
         if not lm_bad:
+            fence("last_measured")
             atomic_json(lm_path, {"t": saved_lm})
     except OSError as e:    # a full disk is what the alarms below are for: never let it stop them
         flags.append({"rule": "bad_rule", "key": "last_measured", "value": None, "window": "now",
@@ -4145,7 +4166,21 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
             alarms = _obj(read_json(ops_dir() / "alarms.json"))       # held: this beat's pass is not the alarm pass
         else:
             fence("the alarms")
-            alarms = run_alarms(points, rules, now, ctx.get("known_ids") or set(), filer, ctx.get("open_ids"))
+            apts, afiler = points, filer
+            if compose:
+                ap = ops_dir() / "compose_alarm_pass.json"
+                last_t = _obj(read_json(ap)).get("t")
+                last_t = last_t if is_num(last_t) and last_t <= now else None
+                # a carried reading counts once: one already seen by an earlier alarm pass holds (no clear, no file)
+                apts = {k: p for k, p in points.items() if not observed_at(p) or last_t is None
+                        or observed_at(p) > last_t}
+                if filer:
+                    def afiler(todo, conf, _f=filer):
+                        fence("filing")
+                        return _f(todo, conf)
+            alarms = run_alarms(apts, rules, now, ctx.get("known_ids") or set(), afiler, ctx.get("open_ids"))
+            if compose:
+                atomic_json(ap, {"t": now, "at": iso(now)})
     except Fenced:
         raise
     except Exception as e:  # noqa: BLE001  the digest still goes out, and says the alarms did not run
@@ -4166,10 +4201,21 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     run_s = round(time.time() - t0, 1)
     fence("the status")
     atomic_json(ops_dir() / "flags.json", {"at": iso(now), "flags": flags})
-    atomic_json(ops_dir() / "status.json", {"schema": SCHEMA, "at": iso(now), "t": now, "run_s": run_s,
-                                             "points": points, "flags": flags, "alarms": alarms})
+    st = {"schema": SCHEMA, "at": iso(now), "t": now, "run_s": run_s, "points": points, "flags": flags, "alarms": alarms}
+    if compose:     # `at` is this beat's; what each family's readings are as of is here
+        obs = {}
+        for k, p in points.items():
+            o = observed_at(p)
+            fam = k.split(".")[0]
+            if o and (fam not in obs or (obs[fam] or 0) > o):
+                obs[fam] = o
+        st["measured"] = sorted(families)
+        st["observed"] = {f: iso(t) for f, t in sorted(obs.items())}
+        st["oldest_observed_at"] = iso(min(obs.values())) if obs else iso(now)
+    atomic_json(ops_dir() / "status.json", st)
     # every key of this pass too, not only those with history: a new key's first sample counts (review night r1)
     hist_all = {k: hist.get(k, []) + ([(now, num(points[k]))] if points.get(k, {}).get("m") == "MEASURED"
+                                      and not observed_at(points[k])
                                       and num(points[k]) is not None else []) for k in set(hist) | set(points)}
     dg = build_digest(points, hist_all, flags, alarms, now, run_s)
     atomic_json(ops_dir() / "digest.json", dg)
