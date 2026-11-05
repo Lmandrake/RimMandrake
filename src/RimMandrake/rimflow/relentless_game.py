@@ -1440,7 +1440,7 @@ def step(store, fx, r, item, now, acts, sup):
                         {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()
-            _save(store, item, lambda s: s["game"].update(phase="stage"))
+            _save(store, item, lambda s: s["game"].update(phase="stage", **({"remedy": g["remedy"]} if g.get("remedy") else {})))
             acts.append({"do": "game_stage_launch_failed", "item": item, "why": why[:200]})
             return
         for o in others:        # once: this staging carries each rider's remedy too
