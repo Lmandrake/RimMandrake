@@ -159,5 +159,81 @@ chk(LW.one_way_verdict("ORDERED taken=True from=(129, 0, 125) landing=(127, 0, 1
     "one way: can-fail, a crossing that starts east of the wall")
 chk(LW.one_way_verdict("ERROR X: y", 128)[0] == "UNMEASURED", "one way: an error reply UNMEASURED")
 chk(LW.one_way_verdict("ORDERED taken=True", 128)[0] == "UNMEASURED", "one way: ORDERED with no from UNMEASURED")
+
+
+class FakeLadderBridge:
+    """A FAKE, not the game: just enough of the bridge for ladder_wall_proof.main() to run its rows end to end. The
+    first "climb:" crosses the colonist to the far side; the second (the ONE_WAY ask) answers `back`; later NO_CROSSING."""
+    def __init__(self, back):
+        self.back, self.climbs, self.xz, self.stops = back, 0, (0, 0), 0
+
+    def call(self, tool, **kw):
+        if tool == "jawa/map_info":
+            return {"sizeX": 250, "sizeZ": 250}
+        if tool == "jawa/list_pawns":
+            return {"pawns": [{"id": "Thing_Human7", "x": self.xz[0], "z": self.xz[1]}]}
+        if tool == "jawa/attack_target_probe":
+            return {"curJob": "Wait_Combat"}
+        if tool == "jawa/spawn_pawn":
+            return {"pawns": [{"id": "Thing_%s9" % kw.get("kindDef")}]}
+        if tool == "jawa/static_call" and kw.get("method") == "ProofLadderParity":
+            arg = kw.get("args", "")
+            if arg.startswith("may:"):
+                return {"result": "ladder=RM_LadderPortable mayClimb=True"}
+            self.climbs += 1
+            if self.climbs == 1:
+                self.xz = (129, 125)
+                return {"result": "ORDERED taken=True from=(127, 0, 125) landing=(129, 0, 125) byLadder=True"}
+            return {"result": self.back if self.climbs == 2 else "NO_CROSSING roofed=False"}
+        return {}
+
+    def probe_of(self, _typ, arg):
+        if arg == "colonists":
+            return {"pawns": [{"id": 7}]}
+        if "=tp:" in arg:
+            x, z = arg.split("=tp:")[1].split(",")
+            self.xz = (int(x), int(z))
+        if arg.endswith("=stop"):
+            self.stops += 1
+        return {}
+
+
+def one_way_row(back):
+    """Run ladder_wall_proof.main() on a FakeLadderBridge; -> (the emitted LADDER_PARITY_ONE_WAY status, the fake)."""
+    import contextlib
+    import io
+    import json
+    import tempfile
+    import types
+    fb = FakeLadderBridge(back)
+    fake_v = types.ModuleType("validation_core")
+    fake_v.Bridge = lambda: fb
+    fake_v.clear_threat_structures = lambda B: "fake"
+    fake_v.sweep_at_start = lambda B, made_map=False: {}
+    fake_v.prepare_site = lambda *a_, **k_: None
+    real = sys.modules.get("validation_core")
+    sys.modules["validation_core"] = fake_v
+    out = os.path.join(tempfile.mkdtemp(prefix="ladder_wall_selftest_"), "lw.json")
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            LW.main([out])
+    finally:
+        if real is None:
+            sys.modules.pop("validation_core", None)
+        else:
+            sys.modules["validation_core"] = real
+    rows = {r_["id"]: r_["status"] for r_ in json.load(open(out, encoding="utf-8"))["rows"]}
+    return rows.get("LADDER_PARITY_ONE_WAY"), fb
+
+
+_ow, _fb = one_way_row(_S5)
+chk(_ow == "PASS", "one way ROW: main() on the s5 walk-round reply (from=127, wallX=128) emits PASS, got %s" % _ow)
+chk(_fb.stops == 1, "one way ROW: the walk-round job is stopped after an ORDERED reply")
+_ow, _fb = one_way_row("ORDERED taken=True from=(129, 0, 125) landing=(127, 0, 125) byLadder=False")
+chk(_ow == "FAIL", "one way ROW: can-fail, main() on a crossing from the far side (from=129) emits FAIL, got %s" % _ow)
+_ow, _fb = one_way_row("NO_CROSSING roofed=False mightClimb=True")
+chk(_ow == "PASS" and _fb.stops == 0, "one way ROW: main() on NO_CROSSING emits PASS and stops nothing, got %s" % _ow)
+_ow, _fb = one_way_row("ERROR X: y")
+chk(_ow == "UNMEASURED", "one way ROW: main() on an unreadable reply emits UNMEASURED, got %s" % _ow)
 print("selftest_raid_trench: %s" % ("FAIL" if bad else "ok"))
 sys.exit(1 if bad else 0)
