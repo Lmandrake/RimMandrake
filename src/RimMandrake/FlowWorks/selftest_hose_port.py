@@ -109,6 +109,62 @@ def _credit_calls(text):
     return sum(1 for m in CREDIT_CALL.finditer(code) if not any(a <= m.start() <= b for a, b in spans))
 
 
+P9_GUARD = r"if \(RM_LiquidTransfer\.Move\(|if \(.*Try(Add|Remove)Liquid\(|if \(made\)"
+
+
+def _header(lines, i, j):
+    """The statement header ending at the `{` at lines[i][j]: that line's code before the brace plus the lines above it back
+    to the previous statement boundary (a multi-line `if (Move(...,\n ...) == n)` header is read whole; at most 6 lines)."""
+    out = [lines[i].split("//", 1)[0][:j]]
+    k = i - 1
+    while k >= 0 and len(out) < 7:
+        code = lines[k].split("//", 1)[0].rstrip()
+        if not code.strip() or code.rstrip().endswith((";", "{", "}")):
+            break
+        out.insert(0, code)
+        k -= 1
+    return "\n".join(out)
+
+
+def _open_brace(lines, at, col=None):
+    """(line, col) of the innermost unclosed `{` before line `at` (before column `col` of it when given), or None."""
+    depth = 0
+    for i in range(at, -1, -1):
+        code = lines[i].split("//", 1)[0]
+        hi = (col if i == at and col is not None else 0 if i == at else len(code))
+        for j in range(hi - 1, -1, -1):
+            if code[j] == "}":
+                depth += 1
+            elif code[j] == "{":
+                if depth == 0:
+                    return i, j
+                depth -= 1
+    return None
+
+
+def _enclosing_guard(lines, at):
+    """The guard that commits line `at`'s credit, as text for P9_GUARD to match ("" when there is none):
+    (a) the header of the innermost block holding it, or (b) an early-exit block just before it at the same level,
+    `if (Move(...) != n) { ... return; }` (its header, only when its body leaves by return/continue/break).
+    A 6-line text window passed a credit moved just after the guarded block's closing brace (GPT 7.11,
+    FW_PROOF_TOOLS_HARDEN_READ_GAPS); brace structure does not."""
+    got = []
+    ob = _open_brace(lines, at)
+    if ob:
+        got.append(_header(lines, *ob))
+    k = at - 1
+    while k >= 0 and not lines[k].split("//", 1)[0].strip():
+        k -= 1
+    if k >= 0 and lines[k].split("//", 1)[0].strip() == "}":
+        col = lines[k].index("}")
+        inner = _open_brace(lines, k, col)
+        if inner:
+            body = "\n".join(lines[inner[0]:k + 1])
+            if re.search(r"\b(return|continue|break)\b", body):
+                got.append(_header(lines, *inner))
+    return "\n".join(got)
+
+
 def p9_credit_sites(srcs=None):
     """(bad, calls): each CREDIT_SITES tag once on a credit line inside a committed transfer, and the production credit-call count.
     <srcs> plants {rel: text}; by default every non-SelfTest .cs under Source/."""
@@ -124,8 +180,7 @@ def p9_credit_sites(srcs=None):
         if len(hit) != 1 or not CREDIT_CALL.search(lines[hit[0]].split("//", 1)[0]):
             bad.append("%s: %s (%d)" % (rel, tag, len(hit)))
             continue
-        above = "\n".join(lines[max(0, hit[0] - 6):hit[0]])
-        if not re.search(r"if \(RM_LiquidTransfer\.Move\(|if \(.*Try(Add|Remove)Liquid\(|if \(made\)", above):
+        if not re.search(P9_GUARD, _enclosing_guard(lines, hit[0])):
             bad.append("%s: %s is not inside a committed transfer" % (rel, tag))
     return bad, sum(_credit_calls(t) for t in srcs.values())
 

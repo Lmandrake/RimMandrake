@@ -10,9 +10,14 @@ drafted, on the moat floor at (24, 4) -- the only colonist on the map, so the ra
 under the deck.
 PROVE raider positions every 60 ticks for --ticks (default 2400).
 EXPECT a raider sampled on a deck-covered floor square (12, 3..4) or east of it (x > 12) on the floor.
-LIES  raiders that never move (the lord sat) -> UNMEASURED; a raider ON the deck is not under it (the deck is the bridge's
-      row; under = the same squares at floor level: the floor is the only place a moat-bound raider can be).
+LIES  raiders that never move (the lord sat) -> UNMEASURED; a raider ON the deck is not under it: x,z alone cannot tell
+      deck from floor, so every sample on a decked square reads the pawn's band (RM_SuspensionProofs.ProofBand) and counts
+      as under only with under=True onDeck=False; onDeck=True there FAILS. Reaching the far side alone proves no route
+      (it may have climbed out and crossed the deck), so a raider east of the bridge with no band-confirmed under sample
+      is UNMEASURED (samples tighten to 15 ticks near the bridge). The moat's 8-notch depth is read back before the raid
+      (FW_PROOF_TOOLS_HARDEN_READ_GAPS, GPT 6.4).
 """
+import re
 import argparse
 import json
 import os
@@ -25,6 +30,35 @@ if HERE not in sys.path:
 NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 SPROOF = "RimMandrake.FlowWorks.Pits.RM_SuspensionProofs"
 ITEM = "SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD"
+MOAT_NOTCHES = 8
+
+
+def band_reading(text):
+    """ProofBand's "BAND under=b onDeck=b ..." -> (under, onDeck), or None when the read refused or is unparseable."""
+    m = re.search(r"under=(True|False)\b.*?onDeck=(True|False)\b", str(text or ""))
+    return None if not m else (m.group(1) == "True", m.group(2) == "True")
+
+
+def moat_depth_problems(rows, moat, want=MOAT_NOTCHES):
+    """excavation_rect rows -> the moat squares shallower than `want` ([] = the 4 m moat really is there; shovels_live's
+    moat reads the same `>= 8`)."""
+    d = {(r.get("x"), r.get("z")): r.get("d") for r in rows or []}
+    return sorted((c, d.get(c)) for c in moat if not isinstance(d.get(c), int) or d[c] < want)
+
+
+def verdict(moved, seen_under, on_deck, past, band_blind=()):
+    """(status, class) of UND_raiders_walk_under_moat. seen_under holds only band-confirmed under samples; a raider read
+    ON the deck fails only when none was confirmed under it; a blind band read or a far-side arrival with no confirmed
+    under sample measured nothing."""
+    if not moved:
+        return "UNMEASURED", "SITE"
+    if seen_under:
+        return "PASS", "MOD"
+    if on_deck:
+        return "FAIL", "MOD"
+    if past or band_blind:
+        return "UNMEASURED", "HARNESS"
+    return "FAIL", "MOD"
 
 
 def main():
@@ -75,7 +109,13 @@ def main():
         return 2
     moat = {P(x, z) for x in range(0, 26) for z in (3, 4)}
     for c in sorted(moat):
-        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=8, setFill=-1)
+        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=MOAT_NOTCHES, setFill=-1)
+    ex = B.call("jawa/flowworks_excavation_rect", x=P(0, 3)[0], z=P(0, 3)[1], w=26, h=2, includeTerrain=False) or {}
+    shallow = moat_depth_problems(ex.get("rows"), moat)
+    if not ex.get("success") or shallow:
+        row("UNMEASURED", "SITE", {"why": "the moat is not %d notches deep" % MOAT_NOTCHES, "bad": shallow[:6],
+                                   "read": ex.get("success")})
+        return 2
     bt = str((B.call("jawa/static_call", type=SPROOF, method="ProofBuild", args="%s;%s;steel;god" % (xz(P(12, 2)), xz(P(12, 5))),
                      _answer=True) or {}).get("result"))
     if "ok=True" not in bt:
@@ -101,11 +141,13 @@ def main():
             raiders.append(pid)
     B.call("jawa/lord_assault_spawn", pawns=",".join(raiders))
     under = {P(12, 3), P(12, 4)}
-    t, trail, seen_under, past, moved = 0, [], [], [], False
-    first = {}
+    t, trail, seen_under, on_deck, band_blind, past, moved = 0, [], [], [], [], [], False
+    first, near = {}, False
     while t < a.ticks:
-        step(60)
-        t += 60
+        dt = 15 if near else 60
+        step(dt)
+        t += dt
+        near = False
         ps = {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []}
         snap = []
         for pid in raiders:
@@ -115,19 +157,30 @@ def main():
             first.setdefault(pid, c)
             if c != first[pid]:
                 moved = True
+            if c[0] is not None and abs(c[0] - P(12, 0)[0]) <= 3:
+                near = True
             if c in under:
-                seen_under.append((t, pid, c))
+                kb = (B.call("jawa/static_call", type=SPROOF, method="ProofBand", args=re.sub(r"\D", "", str(pid)),
+                             _answer=True) or {}).get("result")
+                band = band_reading(kb)
+                if band is None:
+                    band_blind.append((t, pid, c, str(kb)[:80]))
+                elif band[0] and not band[1]:
+                    seen_under.append((t, pid, c))
+                elif band[1]:
+                    on_deck.append((t, pid, c))
             if c in moat and c[0] is not None and c[0] > P(12, 0)[0]:
                 past.append((t, pid, c))
         trail.append({"t": t, "raiders": snap})
         if seen_under and past:
             break
     res["trail"] = trail
-    det = {"bridge": bt, "under": seen_under[:6], "pastTheBridge": past[:6], "moved": moved, "ticks": t}
-    if not moved:
-        row("UNMEASURED", "SITE", dict(det, why="the raiders never moved"))
-    else:
-        row("PASS" if (seen_under or past) else "FAIL", "MOD", det)
+    det = {"bridge": bt, "under": seen_under[:6], "onDeck": on_deck[:6], "bandBlind": band_blind[:4],
+           "pastTheBridge": past[:6], "moved": moved, "ticks": t}
+    st, cls = verdict(moved, seen_under, on_deck, past, band_blind)
+    if st == "UNMEASURED":
+        det["why"] = "the raiders never moved" if not moved else "no band-confirmed under sample (band read blind or crossed between samples)"
+    row(st, cls, det)
     for pid in raiders + [col]:
         B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish", _answer=True)
     res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")

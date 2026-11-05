@@ -704,7 +704,16 @@ class Proof(object):
         ms = (rm.get("assembly") or {}).get("matches") or []
         self.res["env"] = dict(running=running or None,
                                running_sha256=hashlib.sha256("\n".join(running).encode("utf-8")).hexdigest() if running else None,
-                               assembly_matches=len(ms), assembly_sha256=ms[0].get("sha256") if len(ms) == 1 else None)
+                               assembly_matches=len(ms), assembly_sha256=None)
+        # GPT 7.1 (FW_PROOF_TOOLS_HARDEN_READ_GAPS): the sha running_mods reports is of the file on disk NOW; only
+        # type_probe's mvidMatchesFile says the process loaded that file, so the DLL identity validation.py's
+        # latest_hose_result requires is stamped only then (driver_stamp.stamp's rule for the core drivers)
+        tp = B.call("jawa/type_probe", typeName="RimMandrake.FlowWorks.RM_MapComponent_Excavation") or {}
+        if len(ms) == 1 and tp.get("mvidMatchesFile") is True and tp.get("assemblyFileSha256"):
+            self.res["env"]["assembly_sha256"] = tp["assemblyFileSha256"]
+        else:
+            self.res["env"]["assembly_why"] = "running_mods matches=%d; type_probe mvidMatchesFile=%r sha=%r error=%r" % (
+                len(ms), tp.get("mvidMatchesFile"), tp.get("assemblyFileSha256"), tp.get("identityError"))
         self.res["log_revive"] = V.log_revive(B)     # the log budget (Z) is blind once Verse.Log hit its 10,000 cap
         lg0 = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning") or {}
         logs0 = lg0.get("logs") or []

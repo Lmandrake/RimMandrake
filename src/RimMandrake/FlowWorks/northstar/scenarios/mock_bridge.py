@@ -98,7 +98,7 @@ class MockBridge(object):
             for (x, z), d in self.depth.items():
                 if d and self._in(x, z, (kw["x"], kw["z"], kw["w"], kw["h"])):
                     rows.append(dict(x=x, z=z, d=d, f=self.fill.get((x, z), 0), isExcavated=True,
-                                     fluid=self.fluid.get((x, z))))
+                                     dl=self.fill.get((x, z), 0) * 10000, fluid=self.fluid.get((x, z))))
             return self._ok(rows=rows)
         if t == "jawa/static_call":
             return self._static(kw.get("type", ""), kw.get("method", ""), str(kw.get("args", "")))

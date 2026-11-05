@@ -103,8 +103,10 @@ namespace JawaBench.BridgeTools
         private sealed class FwSnapshot
         {
             public int[] d, f;
+            public long[] dl;
             public bool[] src;
             public int sumF, rawFillAboveDepth;
+            public long sumDl;
             public float sink, overflow;
             public int nextPulseTick;
             public List<object> bodies;
@@ -122,8 +124,12 @@ namespace JawaBench.BridgeTools
             object next = FwField(type, comp, "nextPulseTick", missing);
             MethodInfo isSrc = type.GetMethod("IsSourceCell", FwInst);
             if (isSrc == null) missing.Add("RM_MapComponent_Excavation.IsSourceCell");
-            if (depth == null || fill == null || next == null || isSrc == null) return null;
-            var s = new FwSnapshot { d = new int[cells.Count], f = new int[cells.Count], src = new bool[cells.Count] };
+            // FW_PROOF_TOOLS_HARDEN_READ_GAPS (GPT 6.2): F is the floored whole notch; the exact water is dL (WaterDlAt).
+            MethodInfo wdl = type.GetMethod("WaterDlAt", FwInst, null, new[] { typeof(IntVec3) }, null);
+            if (wdl == null) missing.Add("RM_MapComponent_Excavation.WaterDlAt(IntVec3)");
+            if (depth == null || fill == null || next == null || isSrc == null || wdl == null) return null;
+            var waterDl = (Func<IntVec3, long>)Delegate.CreateDelegate(typeof(Func<IntVec3, long>), comp, wdl);
+            var s = new FwSnapshot { d = new int[cells.Count], f = new int[cells.Count], dl = new long[cells.Count], src = new bool[cells.Count] };
             CellIndices ci = map.cellIndices;
             for (int i = 0; i < cells.Count; i++)
             {
@@ -131,7 +137,8 @@ namespace JawaBench.BridgeTools
                 s.d[i] = idx < depth.Length ? depth[idx] : -1;
                 s.f[i] = idx < fill.Length ? fill[idx] : -1;
                 if (s.d[i] == 0) s.src[i] = (bool)isSrc.Invoke(comp, new object[] { cells[i] });
-                if (s.d[i] > 0) s.sumF += s.f[i];
+                s.dl[i] = waterDl(cells[i]);
+                if (s.d[i] > 0) { s.sumF += s.f[i]; s.sumDl += s.dl[i]; }
                 if (s.f[i] > s.d[i] && s.d[i] > 0) s.rawFillAboveDepth++;
             }
             s.sink = (float)type.GetProperty("SinkTransferredTotal").GetValue(comp);
@@ -147,20 +154,24 @@ namespace JawaBench.BridgeTools
 
         private static object FwSnapRecord(int pulse, FwSnapshot s, FwSnapshot prev)
         {
-            int changedD = 0, changedF = 0;
+            int changedD = 0, changedF = 0, changedDl = 0;
             if (prev != null)
                 for (int i = 0; i < s.d.Length; i++)
                 {
                     if (s.d[i] != prev.d[i]) changedD++;
                     if (s.f[i] != prev.f[i]) changedF++;
+                    if (s.dl[i] != prev.dl[i]) changedDl++;
                 }
             return new
             {
                 pulse,
                 fill = s.f,
                 depth = s.d,
+                dl = s.dl,
                 sumFill = s.sumF,
+                sumDl = s.sumDl,
                 cellsFillChanged = changedF,
+                cellsDlChanged = changedDl,
                 cellsDepthChanged = changedD,
                 rawFillAboveDepth = s.rawFillAboveDepth,
                 sinkTransferredTotal = s.sink,
@@ -189,8 +200,8 @@ namespace JawaBench.BridgeTools
                 "cell reads D=0 F=0 here with isSource=true (the getters would say 4/4).",
             ResultDescription =
                 "success, pulsesRequested, pulsesRun, mapId, cells[{x,z,isSourceAtStart}], " +
-                "pulses[{pulse (0 = before), fill[], depth[], sumFill (excavated cells only), " +
-                "cellsFillChanged, cellsDepthChanged, rawFillAboveDepth, sinkTransferredTotal, " +
+                "pulses[{pulse (0 = before), fill[], depth[], dl[] (exact water per cell, decilitres), " +
+                "sumFill and sumDl (excavated cells only), cellsFillChanged, cellsDepthChanged, cellsDlChanged, rawFillAboveDepth, sinkTransferredTotal, " +
                 "overflowDestroyedTotal, bodies[] (when includeBodies)}], nextPulseTickBefore/After " +
                 "(must be equal - proves the scheduler was not advanced), nextPulseTickUntouched, " +
                 "pulseIntervalTicks, flowPerPulse, depthEngineEnabled, gamePaused, ticksBefore, " +
@@ -315,7 +326,8 @@ namespace JawaBench.BridgeTools
                 "false for that). Cap 10000 cells. Never mutates anything.",
             ResultDescription =
                 "success, mapId, rect{x,z,w,h}, cellCount (rows returned), cellsScanned, " +
-                "rows[{x,z,d,f,dEff,fEff,isExcavated,isSource,isSink,terrain}], sumFill (raw F over " +
+                "rows[{x,z,d,f,dEff,fEff,dl,fluid,isExcavated,isSource,isSink,terrain}] (dl: exact water in decilitres, " +
+                "WaterDlAt; fluid: the recorded FluidDef defName, FluidAt, null when dry/unrecorded), sumFill (raw F over " +
                 "excavated rows), excavatedInRect, sourceInRect, sinkInRect, getterDisagreements " +
                 "(excavated rows where dEff/fEff differ from raw - F above D), excavatedCellCount " +
                 "(map), sinkTransferredTotal, overflowDestroyedTotal, ticksGame.")]
@@ -350,8 +362,11 @@ namespace JawaBench.BridgeTools
                 var depth = FwField(type, comp, "depthGrid", missing) as byte[];
                 var fill = FwField(type, comp, "fillGrid", missing) as byte[];
                 MethodInfo mD = type.GetMethod("DepthAt", FwInst), mF = type.GetMethod("FillAt", FwInst),
-                    mSrc = type.GetMethod("IsSourceCell", FwInst), mSink = type.GetMethod("IsSinkCell", FwInst);
+                    mSrc = type.GetMethod("IsSourceCell", FwInst), mSink = type.GetMethod("IsSinkCell", FwInst),
+                    mDl = type.GetMethod("WaterDlAt", FwInst, null, new[] { typeof(IntVec3) }, null),
+                    mFluid = type.GetMethod("FluidAt", FwInst, null, new[] { typeof(IntVec3) }, null);
                 if (mD == null || mF == null || mSrc == null || mSink == null) missing.Add("DepthAt/FillAt/IsSourceCell/IsSinkCell");
+                if (mDl == null || mFluid == null) missing.Add("WaterDlAt/FluidAt");
                 if (depth == null || fill == null || missing.Count > 0)
                     return Fail("FlowWorks members not found by reflection: " + string.Join(", ", missing));
 
@@ -367,6 +382,8 @@ namespace JawaBench.BridgeTools
                         int d = depth[idx], f = fill[idx];
                         int dEff = (byte)mD.Invoke(comp, a), fEff = (byte)mF.Invoke(comp, a);
                         bool isSrc = (bool)mSrc.Invoke(comp, a), isSink = (bool)mSink.Invoke(comp, a);
+                        long dl = (long)mDl.Invoke(comp, a);
+                        string fluid = (mFluid.Invoke(comp, a) as Def)?.defName;
                         scanned++;
                         if (d > 0) { exc++; sumFill += f; if (dEff != d || fEff != f) disagree++; }
                         if (isSrc) srcN++;
@@ -374,7 +391,7 @@ namespace JawaBench.BridgeTools
                         if (onlyNonZero && d == 0 && f == 0 && !isSrc) continue;
                         rows.Add(new
                         {
-                            x = c.x, z = c.z, d, f, dEff, fEff,
+                            x = c.x, z = c.z, d, f, dEff, fEff, dl, fluid,
                             isExcavated = d > 0, isSource = isSrc, isSink,
                             terrain = includeTerrain ? c.GetTerrain(map)?.defName : null
                         });

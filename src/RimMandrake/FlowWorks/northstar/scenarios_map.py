@@ -689,7 +689,10 @@ def review_class():
             spread, hauled loose items and passers-by are not the plot's state (live soak 2026-10-21)."""
             x, z, w, h = p["rect"]
             ex = self.B.call("jawa/flowworks_excavation_rect", x=x, z=z, w=w, h=h, onlyNonZero=True, includeTerrain=False)
-            dug = {(c["x"], c["z"]): (c.get("d"), c.get("f")) for c in ex.get("rows") or [] if c.get("isExcavated")}
+            # (d, f, dl, fluid): f is the floored whole notch, so exact water (dl) and the liquid's identity are read too
+            # (FW_PROOF_TOOLS_HARDEN_READ_GAPS, GPT 4.5); a bridge too old to send them reads None, which never matches.
+            dug = {(c["x"], c["z"]): (c.get("d"), c.get("f"), c.get("dl"), c.get("fluid"))
+                   for c in ex.get("rows") or [] if c.get("isExcavated")}
             th = self.B.call("jawa/list_things", rect="%d,%d,%d,%d" % p["rect"], limit=2000).get("things") or []
             u = p["sc"]["setup"]
             want_defs = set(built_defs(u, ("RM_PipeAdapter_Chemfuel",)))
@@ -715,6 +718,8 @@ def review_class():
                         c = (ox + x, oz + z)
                         if c in snap["dug"] and snap["dug"][c][1] != lvl:
                             bad_f[c] = (snap["dug"][c][1], lvl)
+                        elif c in snap["dug"] and lvl and snap["dug"][c][3] != fl:      # GPT 4.5: water where chemfuel is due
+                            bad_f[c] = ("fluid", snap["dug"][c][3], fl)
                 need = built_defs(u, optional_ok)
                 miss = {d: n - snap["defs"].get(d, 0) for d, n in need.items() if snap["defs"].get(d, 0) < n}
                 want_k = Counter(r[0] for r in u.get("pawns", []))

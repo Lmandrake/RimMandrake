@@ -554,10 +554,16 @@ def main():
                     ("proof_hose_20261011T000002.json", dict(good, mode="partial")),           # partial
                     ("proof_hose_20261011T000003.json", dict(good, certifiable=False))):       # not certifiable
         json.dump(d, open(os.path.join(tmp, name), "w"))
-    check("stale, partial and non-certifiable results are refused", vm.latest_hose_result("H1") is None)
-    json.dump(good, open(os.path.join(tmp, "proof_hose_20261011T000004.json"), "w"))
-    found = vm.latest_hose_result("H1")
-    check("a live certifiable result at the current hash is read", found is not None and found[1]["rows"][0]["status"] == "PASS")
+    check("stale, partial and non-certifiable results are refused", vm.latest_hose_result("H1", dll_sha="ab12") is None)
+    json.dump(good, open(os.path.join(tmp, "proof_hose_20261011T000004.json"), "w"))       # no deployed-DLL identity (GPT 7.1)
+    check("a result with no env.assembly_sha256 is refused (the game may have run an older DLL)",
+          vm.latest_hose_result("H1", dll_sha="ab12") is None and vm.latest_hose_result("H1") is None)
+    json.dump(dict(good, env={"assembly_sha256": "FF00"}), open(os.path.join(tmp, "proof_hose_20261011T000005.json"), "w"))
+    check("a result whose game ran another DLL is refused", vm.latest_hose_result("H1", dll_sha="ab12") is None)
+    json.dump(dict(good, env={"assembly_sha256": "AB12"}), open(os.path.join(tmp, "proof_hose_20261011T000006.json"), "w"))
+    found = vm.latest_hose_result("H1", dll_sha="ab12")
+    check("a live certifiable result at the current hash, run on the repo's DLL, is read",
+          found is not None and found[1]["rows"][0]["status"] == "PASS")
 
     # SL2's helper refuses an old hose class in the blob
     import validation_hose as VH

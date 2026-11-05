@@ -1310,12 +1310,16 @@ def sign_ops(S, doc=None):
 
 
 # ------------------------------------------------------------------------------------------------ live build
-def visual_verdict(p, want_f, scorched, rows, strength, n_player_pawns):
+def visual_verdict(p, want_f, scorched, rows, strength, n_player_pawns, want_fluid=None):
     """One visuals station: True / False, or None when the scorch read was blind (ProofScorchAt refused or gave no
-    "strength=", e.g. static_call refused in campaign) -- a missing reading is never "not scorched"."""
+    "strength=", e.g. static_call refused in campaign) -- a missing reading is never "not scorched". A wet station's
+    every cell must also hold `want_fluid` (excavation_rect's per-row fluid defName): water in the tar plot is not
+    built (FW_PROOF_TOOLS_HARDEN_READ_GAPS, GPT 7.12)."""
     ds = sorted({c.get("d") for c in rows})
     fs = sorted({c.get("f") for c in rows})
-    built = len(rows) == p["w"] * p["h"] and ds == [p["depth"]] and fs == [want_f] and n_player_pawns >= 1
+    fluid_ok = not want_f or {c.get("fluid") for c in rows} == {want_fluid}
+    built = (len(rows) == p["w"] * p["h"] and ds == [p["depth"]] and fs == [want_f] and fluid_ok
+             and n_player_pawns >= 1)
     if strength is None:
         return False if not built else None
     return built and (strength > 0) == bool(scorched)
@@ -1491,8 +1495,9 @@ class Review(object):
             pw = [q for q in B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % (ox, oz, VIS.PLOT_W, VIS.PLOT_H), limit=20)
                   .get("pawns") or [] if q.get("isPlayer")]
             want_f = s["fill_level"]
-            good = visual_verdict(p, want_f, s["scorched"], rows, strength, len(pw))
-            self.verify[v["id"]] = dict(ok=good, cells=len(rows), d=ds, f=fs, want=(p["depth"], want_f),
+            good = visual_verdict(p, want_f, s["scorched"], rows, strength, len(pw), want_fluid=s.get("fluid"))
+            self.verify[v["id"]] = dict(ok=good, cells=len(rows), d=ds, f=fs, want=(p["depth"], want_f, s.get("fluid")),
+                                        fluid=sorted({str(c.get("fluid")) for c in rows}),
                                         scorch=strength if strength is not None else "UNMEASURED: %s" % sc[:120],
                                         pawns=len(pw))
             ok += good is True

@@ -354,15 +354,19 @@ def hose_offline(t):
         _report_rows(t, rows, declare=HOFF.OFFLINE_IDS)
 
 
-def latest_hose_result(mod_hash):
-    """Newest proof_hose result JSON made AT `mod_hash`, live and certifiable (None if there is none)."""
+def latest_hose_result(mod_hash, dll_sha=None, ns=None):
+    """Newest proof_hose result JSON made AT `mod_hash`, live and certifiable, whose game ran the repo's DLL
+    (env.assembly_sha256 == `dll_sha`, stamped by proof_hose only when type_probe's mvidMatchesFile holds); None if
+    there is none. A result without that identity is not read: a repo-hash match alone certified a rebuilt hose fix the
+    game had never loaded (GPT 7.1, FW_PROOF_TOOLS_HARDEN_READ_GAPS; driver_rows_at's rule)."""
     best = None
-    for p in sorted(glob.glob(os.path.join(NS, "proof_hose_*.json"))):
+    for p in sorted(glob.glob(os.path.join(ns or NS, "proof_hose_*.json"))):
         try:
             d = json.load(open(p, encoding="utf-8"))
         except (OSError, ValueError):
             continue
-        if d.get("mode") == "live" and d.get("certifiable") and d.get("mod_hash") == mod_hash:
+        if d.get("mode") == "live" and d.get("certifiable") and d.get("mod_hash") == mod_hash and dll_sha \
+                and str((d.get("env") or {}).get("assembly_sha256") or "").lower() == dll_sha.lower():
             best = (p, d)
     return best
 
@@ -387,7 +391,7 @@ def hose_live_rows(t):
     rows, found, ru, hit = [], None, None, None
     if t._guard():
         from modcheck import status as _st  # noqa: E402
-        found = latest_hose_result(_st.mod_hash(HERE))
+        found = latest_hose_result(_st.mod_hash(HERE), dll_sha=repo_dll_sha256())
         if not found:
             ru, hit = _reusable("proof_hose_*.json", certifiable=True)
         if found:

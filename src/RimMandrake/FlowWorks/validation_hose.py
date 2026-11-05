@@ -775,6 +775,13 @@ def _save_reload(B, name):
     return True, {"saved": name + ".rws", "loadSeconds": waited}
 
 
+def cr5_ok(unforced_started, resumed, h):
+    """CR5 holds only when the UNFORCED WorkGiver start took the kept order: a resume a forced order made is a hose players
+    can resume only by hand (GPT 8.3, FW_PROOF_TOOLS_HARDEN_READ_GAPS), then carried and Laid at the target."""
+    return bool(unforced_started and resumed and h.get("carry") == "Laid" and tuple(h.get("far") or ()) == CTARGET
+                and h.get("pending") == "None" and h.get("layOk"))
+
+
 def run_carry(args):
     B = H()
     rows = []
@@ -858,7 +865,8 @@ def run_carry(args):
     B.hp("pawn:%d=undraft" % pid)
     sj = B.hp("startjob:%d,%d=work;%d" % (CREEL + (pid,)))
     how = "work"
-    if not sj.get("success"):
+    unforced = bool(sj.get("success"))
+    if not unforced:            # forced only so the later rows still have a laid hose; CR5 itself FAILs (cr5_ok)
         sj2 = B.hp("startjob:%d,%d=forced;%d" % (CREEL + (pid,)))
         how = {"work": sj, "forced": sj2}
     h, waited, seen = _poll(B, lambda x: x.get("carry") == "Carrying", 600, step=3)
@@ -874,9 +882,8 @@ def run_carry(args):
         if ok and hl.get("carry") == "Dropped":
             B.hp("startjob:%d,%d=work;%d" % (CREEL + (pid,)))
     h, waited2, seen2 = _poll(B, lambda x: x.get("carry") == "Laid", 1200)
-    V.row(rows, "CR5_resume_laid_at_target", "PASS" if resumed and h.get("carry") == "Laid" and tuple(h.get("far") or ()) == CTARGET
-          and h.get("pending") == "None" and h.get("layOk") else "FAIL", "MOD",
-          {"startjob": how, "resumeTicks": waited, "layTicks": waited2, "seen": seen + seen2, "hose": _carry_view(h)})
+    V.row(rows, "CR5_resume_laid_at_target", "PASS" if cr5_ok(unforced, resumed, h) else "FAIL", "MOD",
+          {"startjob": how, "unforcedStarted": unforced, "resumeTicks": waited, "layTicks": waited2, "seen": seen + seen2, "hose": _carry_view(h)})
     B.hp("flow:%d,%d=on" % CREEL)
     B.ticks(120)
     hp_, _ = B.hose(CREEL)

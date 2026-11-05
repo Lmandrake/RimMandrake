@@ -1,0 +1,1 @@
+A1 L1: on any loaded map, jawa/flowworks_excavation_rect over a 4x4 rect returns rows that each carry dl (a non-negative int, exact water in decilitres) and fluid (a FluidDef defName or null)

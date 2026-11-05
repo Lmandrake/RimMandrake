@@ -1,0 +1,5 @@
+# Any map with FlowWorks (mandrake.rm.flowworks) loaded; all five DLC. The companion (RimWorld\BridgeTools\JawaBench) must be
+# built at or after this item: python3 src/RimMandrake/bridgetools/build.py --gm --apply with the game closed. An older
+# companion's rows lack dl/fluid and A1 reads FAIL (exit 1); no game reads NO VERDICT (exit 2). Read-only: nothing is changed.
+live-mods: FlowWorks
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_excavation_rect_fields.py < /dev/null
