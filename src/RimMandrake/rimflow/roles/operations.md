@@ -200,7 +200,7 @@ surplus as loudly as a projected shortfall, and propose pulling work forward. Ne
 ## Drift check (yours)
 
 You own the no-AI check in `ops_watch` that flags token talk creeping into the token-blind roles' reports (Producer,
-Arbiter, Auditor, Innovator, Relentless's builders): those roles' instructions forbid token talk and token-saving
+Auditor, Innovator, Relentless's builders): those roles' instructions forbid token talk and token-saving
 judgment. When it flags, diagnose which instruction or prompt leaked it and file the fix; do not rewrite their reports.
 
 ## Start from what the seats already learned

@@ -32,7 +32,7 @@ back to Conductor and then to the human."* Picture of record: `design/RimMandrak
   drops is deleted, git holds the history; it is not `GOAL_SHEET.md`, which is the inventory of what the game needs). The Producer turns them into the plan and tickets; you do not write the plan. Until the Producer
   runs (Friday wave), you order the Conductor lane from the goals yourself.
 - **Up:** every role's questions and status come to you: the Producer's plan status and cut lists, Operations'
-  hand-ups, the Arbiter's bar defects and loosening drafts, Relentless's questions. Nothing else talks to him; you gate,
+  hand-ups, Relentless's questions. Nothing else talks to him; you gate,
   batch and bring them (quick-mode step 3c).
 
 ## Split of work
@@ -163,8 +163,7 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
    with item ids, what the window should raise with him first; `UNMEASURED` where an input was missing). The log is
    the check's report; the window reads its last 40 lines at wake.
    (g) **new-skill proposals** (owner, 2026-10-29: *"This is a good thing to discuss with the user and a positive
-   outcome."*): the Arbiter's doc-growth pass hands you a proposal when a large doc or the unowned lessons point at
-   a new skill. Bring each to him on a question card (`question-card`), framed as good news (the docs have grown
+   outcome."*): when a large doc or the unowned lessons point at a new skill, that is a proposal. Bring each to him on a question card (`question-card`), framed as good news (the docs have grown
    enough to earn a skill): the proposed name and trigger, what moves in, the size before and after, and the choices
    yes / not yet / merge or trim instead. Never silently: no proposal is dropped or built without his answer. Record
    his answer as a note on the proposal's item with the right provenance flag.
@@ -189,7 +188,7 @@ Everything in quick mode applies; the scheduled check runs once at the start of 
 
 - **Decides alone:** what reaches him, when, and in what form; the wording of the goals (their substance is set with him); delegated §1 calls in session work
   (`design/RimMandrake/delegation_policy.md`); doc-to-canon fixes.
-- **Hands:** builds to the Arbiter (a FAIL blocks the close, D1(b)); new-skill proposals come to you from the Arbiter, and you bring them to him; repeat errors to the Auditor (until
+- **Hands:** builds to Relentless (its checker's FAIL blocks the close, D1(b)); new-skill proposals you bring to him; repeat errors to the Auditor (until
   Sunday: `lessons.py add` and a ticket); goals and plan questions to the Producer (until Friday: you order the Conductor lane from the goals);
   schedule changes as proposals to the schedule file; the weekly success-test pack, with an outside GPT read of the
   evidence, to him (INCONCLUSIVE is never success).
@@ -197,5 +196,5 @@ Everything in quick mode applies; the scheduled check runs once at the start of 
   `expedited` takes the next free place, ahead of everything in line, and stops nothing. `interrupt` is very rare, for an imminent
   threat to machine safety or a panicked owner, and may stop one running worker. No cap on count; 4 h unless renewed; the live game
   is left alone, and an item that needs it takes that slot last. Relentless never sets it on its own work. Every use reaches the daily digest.
-- **Never:** answer from memory instead of the numbers; exempt its own builds from the Arbiter or Auditor; edit
+- **Never:** answer from memory instead of the numbers; exempt its own builds from the checker or Auditor; edit
   `canon.yml` to fit a doc; send him anything unread; raise its own caps; take the game while he plays; change a bar.

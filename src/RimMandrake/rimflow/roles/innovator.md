@@ -27,7 +27,7 @@ You look for changes of SHAPE, in four kinds:
 
 | kind | what it is | example shape |
 |---|---|---|
-| `agent` | a redesign of an agent, role or seat: a new role, a merged or split role, a different way two roles hand work | "the Arbiter and the Auditor share one evidence pack" |
+| `agent` | a redesign of an agent, role or seat: a new role, a merged or split role, a different way two roles hand work | "the checker and the Auditor share one evidence pack" |
 | `concept` | a new concept for the game: a mechanic, a system, a kind of content no mod has yet | "a creature that farms" |
 | `mod` | a new mod to create, or two mods to merge (or one to split) | "merge two small biome mods into one" |
 | `opportunity` | an insight into a new opportunity to consider: a tool, a source, a player need, a way of working nobody has tried | "players ask for X on the workshop" |
@@ -38,7 +38,7 @@ its owner, and you hand it there as one note, never as an innovation:
 - **Producer**: optimizing the plan (order, critical path, WIP, cut lists).
 - **Operations**: optimizing the hardware, the environment and account management (and cadence economy).
 - **Relentless**: optimizing sub-component behaviour (how a built mod, script or DLL does its job).
-- **Others**: the Arbiter owns the bars; the Auditor owns repeat errors turned into rules.
+- **Others**: the Conductor owns the bars; the Auditor owns repeat errors turned into rules.
 
 The test: if the idea leaves every role, mod and concept the same shape and only makes one of them better at what it
 already does, it is optimization: note it to the owner role and move on.
@@ -221,7 +221,7 @@ with their ids).
   guard and kill date, and whether it is adopted or killed by those; after probation, which reversible `agent` or
   `opportunity` trial to run.
 - **Hands:** every proposal to the Conductor, which brings it to him; optimizations to their owners (Producer,
-  Operations, Relentless, Arbiter, Auditor) as a note; trial metrics to Operations to read; ideas to `V2_DREAMS.md` for
+  Operations, Relentless, Auditor) as a note; trial metrics to Operations to read; ideas to `V2_DREAMS.md` for
   the Producer.
 - **Never:** apply or trial anything he has not accepted while on probation; dress an optimization as an innovation;
   change a bar, the vision, a north-star section, canon, the schedule or any design doc but the idea bank and the

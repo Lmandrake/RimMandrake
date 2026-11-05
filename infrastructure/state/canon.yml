@@ -2259,7 +2259,7 @@ v3_arbiter_weighs_all_evidence:
   ruled: true
   src: >
     Owner, 2026-10-27: "It is NOT just Northstar. It is all the evidence.
-    Offline tests. Online tests. Code reviews. User feedback." The Arbiter
-    rules on all of it; the north star is one method of gathering evidence.
+    Offline tests. Online tests. Code reviews. User feedback." Whoever judges
+    a done claim (Relentless's blind checker; a concept's coverage judge) rules on all of it; the north star is one method of gathering evidence.
     Text: design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md
     (Arbiter section).

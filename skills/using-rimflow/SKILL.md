@@ -113,14 +113,13 @@ here or touches only the ledger is refused. Then, each refused with its reason a
 - **unchecked:** no level-tagged pass on that sha. Record one first:
   `rimflow verify <ID> --sha <sha> --level L0 --result pass --config <what ran> --evidence <path>`. A pass on another sha does not count.
 - **fail:** the newest deciding run is a fail. A pass on that sha after it clears it.
-- **verdict:** an Arbiter FAIL stands. It takes `rimflow implemented` at a new sha and an Arbiter pass there. No verdict at all blocks nothing.
 - A sha touching none of the paths the item cites needs `--why`.
 
-`--owner-said`, `--by-card` or `--per-ruling` on the close lifts **fail** and **verdict** only. `--why` lifts neither.
+`--owner-said`, `--by-card` or `--per-ruling` on the close lifts **fail** only. `--why` lifts neither.
 
 A `verify` now moves state both ways. A fail on the built sha takes `validated` to `built` and owes the criterion again;
 a fail on a closed sha, or on a later commit that contains it, REOPENS the same item (`done` -> `ready`). A pass on any sha
-but the built one counts for nothing. The last pass stops short of done while an Arbiter FAIL stands. A run before
+but the built one counts for nothing. A run before
 `model.EARNED_FROM` replays as it was written.
 
 ## Done means running: `--live`
