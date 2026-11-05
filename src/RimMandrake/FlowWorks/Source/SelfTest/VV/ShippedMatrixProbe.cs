@@ -1,7 +1,7 @@
 // V&V pilot 1 (design/RimMandrake/vv_methods/pilot1_shipped_matrix_2026-10-16.md): the FlowWorks fuzz/property families
 // run at the kernel flags the mod SHIPS, with honest (uncapped) failure counts.
 //
-// NOT part of the normal SelfTest build: RimMandrakeFlowWorks.SelfTest.csproj has EnableDefaultCompileItems=false and
+// NOT-COMPILED by the normal SelfTest build (effective_def_lint's compile_include reads this marker and warns): RimMandrakeFlowWorks.SelfTest.csproj has EnableDefaultCompileItems=false and
 // does not list this file. src/RimMandrake/Utils/vv_shipped_matrix.py stages the SelfTest tree on D:, inserts ONE hook
 // line into the STAGED copy of ArrayWorld.Pulse (MatrixFlags.Apply(k) just before k.Pulse - the same moment the adapter,
 // RM_MapComponent_Excavation.DoPulse, writes the settings into the kernel) and one into Program.Case (the case name),

@@ -2,6 +2,8 @@
 // honest (uncapped) failure counts. The families stop at 3 failures; this calls each one per seed (n = 1) through
 // reflection, so every failing seed is counted. Not part of the normal fuzz build: src/RimMandrake/Utils/vv_shipped_matrix.py
 // builds a probe project around it on a D: stage.
+// NOT-COMPILED by any csproj in the clone, on purpose (it has its own Main): effective_def_lint's compile_include reads this
+// marker and warns instead of failing. Only vv_shipped_matrix.py builds it.
 //   rates --families ladder,timers,math --n N --base B --cap-seconds S --out FILE
 
 using System;
