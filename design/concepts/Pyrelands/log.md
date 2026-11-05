@@ -58,3 +58,7 @@ Root already revised to his words (sitting 3). Turn: `turn_04.md`. Fresh-Opus re
 a_flagship_pick pass (fix: cast/sky showcases are staged, not ordinary play); a_bar_reword pass (his word
 'compounds'); the root firebreak clause struck to a notice (d_firebreak_cut already decided, undoable). Sent:
 a_flagship_pick, a_bar_reword.
+
+## 2026-11-05 run rm-role-designer-1793909059 (stage 2, apply turn_04 answers)
+- a_flagship_pick, his words (OWNER:1793908883805179759): "The first. But the scorchfruit are rapid after the fire not in two days." -> d_flagship_burn_line (flagship: burn_line), d_scorchfruit_rapid (built already spawns fruit on the fire tick; showcase wording owed at stage 3).
+- a_bar_reword, by card (OWNER:1793908887025855333): "Yes, re-validate" -> d_bar_reworded; walk already carries the new words.

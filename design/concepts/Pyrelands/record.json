@@ -130,6 +130,39 @@
    "by": "rm-role-designer-1793898941",
    "what": "Evaluated at his request; cut RM_FE_FirebreakLine. It adds nothing a vanilla floor does not: the burn line's front (IgniteLine), the smoulder relight (TryReseedStandingBurn) and the fire-hawk drop all light cells through vanilla FireUtility.ChanceToStartFireIn, so any non-flammable plant-free floor (flagstone, stone tile, concrete) stops them exactly as the firebreak does, and scorch-fruit already refuses every non-Pyrelands ground (IsScorchableGround allowlist). Its only differences are a chemfuel cost he rejected and a Firefoam research gate. Player fire defence is vanilla: pave a strip at least two cells wide (vanilla fire's far-spread jump can cross a single cell), or keep a strip cut by hand. No mod-owned plant-clearing zone is added (ember grass regrows within a week, so paving is the durable answer). Owed: excise Firebreak.xml, the kernel's FirebreakDefName special case, and switch validation.py/human_review.py fire-hygiene pads to a vanilla floor. The firefoam sprayer is untouched (its scope was not opened). He can undo this.",
    "undo": "say \"keep the firebreak\" and it returns as a vanilla-priced floor with no chemfuel"
+  },
+  {
+   "id": "d_flagship_burn_line",
+   "kind": "does",
+   "speaker": "owner",
+   "flagship": "burn_line",
+   "source": [
+    "OWNER:1793908883805179759"
+   ],
+   "by": "rm-role-designer-1793909059",
+   "what": "Showcase 1, the Pyrelands' face when he first lands, is burn_line: the burn line walking across deep ash. His words: 'The first. But the scorchfruit are rapid after the fire not in two days.'"
+  },
+  {
+   "id": "d_scorchfruit_rapid",
+   "kind": "does",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793908883805179759",
+    "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs:277"
+   ],
+   "by": "rm-role-designer-1793909059",
+   "what": "Scorch-fruit comes up rapidly behind the fire, in the fresh scar, not days later. Built already agrees (pods roll on the burning cell's fire tick, FireEcologyHook.cs:277); only the showcase/turn wording 'a few days later ... scorch-fruit stands in the scar' is wrong. Stage 3 owes: burn_line showcase and sheet read the fruit standing in the scar right behind the front, the greening a few days later; the root's agent-written Judged-first sentence is read through this decision (root text unchanged)."
+  },
+  {
+   "id": "d_bar_reworded",
+   "kind": "does",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793908887025855333",
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "by": "rm-role-designer-1793909059",
+   "what": "Bar pyre_fresh_burn_feeds_the_field reworded to 'ground that has just burned grows noticeably faster for a few days, and black rain compounds that advantage rather than washing it away' and the north star re-validated by his card (commit 9232933404)."
   }
  ],
  "asks": [
@@ -283,13 +316,14 @@
    ],
    "offers_removal": false,
    "author": "rm-role-designer-1793900021",
-   "status": "sent",
+   "status": "answered",
    "review": {
     "by": "rm-judge a426291698d9b77c4 (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "No owner words answer it; a root approval is not a pick (designer_scene_contract.md). Fix applied: 'fresh map in ordinary play' false for staged cast/sky scenes."
    },
-   "source": "design/concepts/Pyrelands/turn_04.md"
+   "source": "design/concepts/Pyrelands/turn_04.md",
+   "answer": "OWNER:1793908883805179759"
   },
   {
    "id": "a_bar_reword",
@@ -304,13 +338,14 @@
    ],
    "offers_removal": false,
    "author": "rm-role-designer-1793900021",
-   "status": "sent",
+   "status": "answered",
    "review": {
     "by": "rm-judge a426291698d9b77c4 (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "His words settle the content; only his say-so re-validates. Wording uses his 'compounds'. Firebreak half struck to a notice: d_firebreak_cut already decided (delegated, undoable)."
    },
-   "source": "design/validation_walks/RimMandrake/Pyrelands.md"
+   "source": "design/validation_walks/RimMandrake/Pyrelands.md",
+   "answer": "OWNER:1793908887025855333"
   }
  ],
  "inventory": [
