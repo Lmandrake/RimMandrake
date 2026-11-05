@@ -516,3 +516,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T01:29:40Z","tsn":1793842180777978231}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T01:29:49Z","tsn":1793842189502422808}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WEEPINGSTONES_HANDLER_VANISHES_1 A1 (L2), read-only proof","ts":"2026-11-05T01:30:44Z","tsn":1793842244613328124}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T01:35:08Z","tsn":1793842508296573735}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SCARLANDS_CHATRAK_LIVE_RERUN_1 A1 (L2), read-only proof","ts":"2026-11-05T01:35:16Z","tsn":1793842516470763958}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T01:35:38Z","tsn":1793842538547081453}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A7 (L2), read-only proof","ts":"2026-11-05T01:35:47Z","tsn":1793842547483090522}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T01:36:18Z","tsn":1793842578303934984}
