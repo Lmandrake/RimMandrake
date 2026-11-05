@@ -217,6 +217,33 @@ def merged(live_ids, add, full_ids):
     return out
 
 
+def is_mod_folder(name):
+    """A mod folder this machine has by that exact name: the game's Mods folder or a repo mod (deploy_custom_mods)."""
+    if os.path.isfile(os.path.join(GAME_DIR, "Mods", name, "About", "About.xml")):
+        return True
+    try:
+        import deploy_custom_mods as D
+        f = D.folded()
+        return name in D.mod_dirs() or name in f or name in {t for t, _k in f.values()}
+    except SystemExit:
+        return False
+
+
+def split_names(names, folder=None):
+    """`--enable` names -> ([packageIds lower-case], [mod folders]). A dotted name is a packageId (a workshop mod a
+    `live-mods:` line names) UNLESS a mod folder holds that exact name: the composed RimMandrake.Biomes is a folder,
+    and OPS_CHURN_DIAGNOSE_TITANIC_WYZE_DMPL found a dotted folder read as packageId 'rimmandrake.biomes' refusing a
+    whole batch load. `folder` (default is_mod_folder) is injectable for the selftest."""
+    folder = folder or is_mod_folder
+    pkgs, dirs = [], []
+    for n in names:
+        if "." in n and not folder(n):
+            pkgs.append(n.lower())
+        else:
+            dirs.append(n)
+    return pkgs, dirs
+
+
 def enable(names, apply_it):
     """Add mod folders (or packageIds) and their About.xml dependencies to the live list. -> exit code: 0 written or
     nothing to do, 2 a name or dependency that resolves nowhere (nothing written)."""
@@ -227,15 +254,13 @@ def enable(names, apply_it):
     full_ids = mods(FULL) or []
     known = {m.lower() for m in live_ids + full_ids}
     add, lost = [], []
-    pkgs = [n.lower() for n in names if "." in n]
+    pkgs, folders = split_names(names)
     if pkgs:    # a packageId (a workshop mod a `live-mods:` line names): its dependency closure across the Steam workshop
         import modset_builder   # folder, the game's Mods folder and the DLC; a mod installed in none is refused by name
         closure, missing = modset_builder.package_closure(pkgs)
         lost += ["%s (installed in neither the Steam workshop folder nor the game's Mods folder)" % m for m in missing]
         add += [p for p in closure if not p.startswith("ludeon.rimworld")]
-    for n in names:
-        if "." in n:
-            continue
+    for n in folders:
         got = about(n)
         if got is None:
             lost.append("%s (no About.xml with a packageId in the game folder or the repo)" % n)

@@ -2,7 +2,7 @@
 # L1 and L3 run northstar/water_looks_proof.py (stages its own 3x3 pits at --origin on the current map, restores its settings;
 # needs the bridge and the deployed FlowWorks DLL carrying RM_WaterLookProofs). Exit 0 only when every named row PASSes.
 # L4 is a ledger read: exits 0 only when an OWNER event on this item, after the 2026-11-03 start, records him keeping the review.
-live-mods: RimMandrake.FlowWorks
+live-mods: FlowWorks
 live-proof L1: python.exe src/RimMandrake/FlowWorks/northstar/water_looks_proof.py --only A2_BAND_WIDENS_WITH_GAP,A2_BRIM_FULL_NO_BAND --skip-offline
 live-proof L3: python.exe src/RimMandrake/FlowWorks/northstar/water_looks_proof.py --only A1_FIVE_METRES_NAVY,A1_TEN_METRES_DARKER,A1_TERRAIN_STILL_WATERDEEP,A2_BAND_WIDENS_WITH_GAP,A2_BRIM_FULL_NO_BAND --skip-offline && python.exe src/RimMandrake/FlowWorks/northstar/wall_faces_proof.py
 live-proof L4: python3 -c "import json,re,sys; ev=[json.loads(l) for l in open('infrastructure/state/ledger/events/OWNER.jsonl') if 'WATER_DEPTH_RESKIN_HE_LOOKS_FIRST' in l]; ok=[e for e in ev if e.get('ts','')>'2026-11-03T17:20' and re.search(r'review|water look|wall band|tint',(e.get('byCard') or '')+(e.get('ownerSaid') or '')+(e.get('text') or ''),re.I) and re.search(r'\bkeep|\bkept|approve',(e.get('byCard') or '')+(e.get('ownerSaid') or ''),re.I)]; sys.exit(0 if ok else 1)"
