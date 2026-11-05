@@ -294,6 +294,13 @@ def _flock(name, shared=False):
             fcntl.flock(f, fcntl.LOCK_UN)
 
 
+def exclusive(stage_name):
+    """Hold a staged build's output from build through run: stage_build locks only the compile, so two tests sharing a
+    stage (TpsMathSelfTest: selftest_bridge_hooks plain, selftest_tps_record with a sampler seam) could run each
+    other's DLL, or one being rewritten (nightly 2026-11-05: 'C# units: 0'). Wrap stage_build AND the run in this."""
+    return _flock("run-" + stage_name)
+
+
 def _clone_pairs_lock():
     """The lock over THIS clone's dll/.srchash pairs. Only a clone's own copy-back writes them and only its own staging
     reads them, so the key is the clone: machine-wide, every build queued behind any tree's rsync of a large mod

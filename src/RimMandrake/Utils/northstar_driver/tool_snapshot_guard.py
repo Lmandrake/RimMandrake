@@ -35,7 +35,7 @@ def missing(cs_texts, snapshot_tools):
 
 
 def _git(root, *args):
-    return subprocess.run(["git", "-C", root] + list(args), capture_output=True, check=True).stdout
+    return subprocess.run(["git", "-C", root] + list(args), capture_output=True, check=True, timeout=60).stdout
 
 
 def staged(root):

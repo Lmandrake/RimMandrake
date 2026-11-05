@@ -1030,18 +1030,19 @@ def cs_parity(tr, res, text=None):
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             f.write(seam)
         extra = ("-p:SamplerSeamFile=" + winbuild.win(seam_path),)
-    try:
-        rc, rec = winbuild.stage_build(os.path.join(proj, "TpsMathSelfTest.csproj"), stage_name="TpsMathSelfTest",
-                                       extra=extra)
-    finally:
-        if seam_path:
-            os.unlink(seam_path)
-    if rc:
-        FAILS.append("C# parity harness build FAILED (rc %s)" % rc)
-        return
-    dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\TpsMathSelfTest.dll"
-    p = subprocess.run([winbuild.dotnet_exe(), dll], input=cs_input(tr), capture_output=True, text=True,
-                       cwd="/mnt/d/Luke/dev")
+    with winbuild.exclusive("TpsMathSelfTest"):   # the stage is shared with selftest_bridge_hooks' plain build
+        try:
+            rc, rec = winbuild.stage_build(os.path.join(proj, "TpsMathSelfTest.csproj"), stage_name="TpsMathSelfTest",
+                                           extra=extra)
+        finally:
+            if seam_path:
+                os.unlink(seam_path)
+        if rc:
+            FAILS.append("C# parity harness build FAILED (rc %s)" % rc)
+            return
+        dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\TpsMathSelfTest.dll"
+        p = subprocess.run([winbuild.dotnet_exe(), dll], input=cs_input(tr), capture_output=True, text=True,
+                           cwd="/mnt/d/Luke/dev")
     allout = [ln.strip() for ln in p.stdout.splitlines() if ln.strip()]
     got = [ln for ln in allout if not ln.startswith(("U ", "J ", "U-count "))]
     want = [ln.strip() for ln in py_lines(tr, res)]

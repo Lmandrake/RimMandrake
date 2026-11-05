@@ -39,6 +39,23 @@ def installs() -> dict[str, str]:
     return out
 
 
+def lineage(ledger: dict[str, str], cur: str) -> str:
+    """The sha of this item's install that `cur` descends from: a later install (an outline repaint, say) records the
+    picture it replaced as `prev` on its live event, so a repaint of this item's catch still traces back to it."""
+    prevs: dict[str, str] = {}
+    for shard in (ROOT / "infrastructure/state/art/events").glob("*.jsonl"):
+        for line in shard.read_text(encoding="utf-8").splitlines():
+            if '"type":"live"' in line and '"prev"' in line:
+                ev = json.loads(line)
+                if ev.get("sha") and ev.get("prev"):
+                    prevs.setdefault(ev["sha"], ev["prev"])
+    seen = set()
+    while cur not in ledger and cur in prevs and cur not in seen:
+        seen.add(cur)
+        cur = prevs[cur]
+    return cur
+
+
 def source_of(ledger: dict[str, str], cur: str, n: str) -> str | None:
     """Why the catch of RM_<n> whose live sha is `cur` fails its source record, or None: a ledger event of this item
     must name the creature and a settled picture of it, and that picture must really be RM_<n>'s in the ledger."""
@@ -79,8 +96,8 @@ def main() -> int:
     ledger = installs()
     for n, old in OLD.items():
         png = MOD / f"Textures/Things/Item/Fish/RM_{n}Catch.png"
-        cur = sha(png)
-        if cur.startswith(old):
+        cur = lineage(ledger, sha(png))
+        if cur.startswith(old) or sha(png).startswith(old):
             bad.append(f"RM_{n}Catch is still the old gapall picture")
         if cur not in ledger:
             bad.append(f"RM_{n}Catch {cur[:12]} has no ledger event naming {ITEM}")

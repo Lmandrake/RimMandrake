@@ -327,12 +327,13 @@ def cs_units():
     if not any(os.path.exists(c) for c in ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe"]):
         return ["C# units UNMEASURED: no dotnet.exe on this machine (pass --no-cs to accept the static audit alone)"]
     proj = os.path.join(HERE, "TpsMathSelfTest")
-    rc, rec = winbuild.stage_build(os.path.join(proj, "TpsMathSelfTest.csproj"), stage_name="TpsMathSelfTest")
-    if rc:
-        return ["TpsMathSelfTest build FAILED (rc %s)" % rc]
-    dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\TpsMathSelfTest.dll"
-    p = subprocess.run([winbuild.dotnet_exe(), dll], input="U\n", capture_output=True, text=True,
-                       cwd="/mnt/d/Luke/dev", timeout=400)
+    with winbuild.exclusive("TpsMathSelfTest"):   # the stage is shared with selftest_tps_record's seam build
+        rc, rec = winbuild.stage_build(os.path.join(proj, "TpsMathSelfTest.csproj"), stage_name="TpsMathSelfTest")
+        if rc:
+            return ["TpsMathSelfTest build FAILED (rc %s)" % rc]
+        dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\TpsMathSelfTest.dll"
+        p = subprocess.run([winbuild.dotnet_exe(), dll], input="U\n", capture_output=True, text=True,
+                           cwd="/mnt/d/Luke/dev", timeout=400)
     units = [ln.strip() for ln in p.stdout.splitlines() if ln.startswith("U ") and not ln.startswith("U-count")]
     mine = [u for u in units if re.match(r"U (Recorder|Guard|Writer)", u)]
     fails = [u for u in mine if not u.endswith(" ok")]
