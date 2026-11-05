@@ -1,0 +1,1 @@
+art_sheet.py can die with OSError ENOMEM (Errno 12) in artledger.store_get reading the D: art store over drvfs while 19 GB RAM is free; a plain rerun succeeded (2026-11-05, dessicated_corpses build). Retry once before debugging memory.
