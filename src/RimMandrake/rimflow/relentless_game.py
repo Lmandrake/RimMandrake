@@ -717,20 +717,27 @@ class GameFx(object):
         text = ({c["id"]: c for c in it.get("criteria") or []}.get(criterion) or {}).get("text") or ""
         return relentless_live.fingerprint(criterion, why, proof, text)
 
+    def _mods_text(self, item, sha):
+        """The live_proofs text whose `live-mods:`/`live-deploy:` lines a staging enables and deploys: the books' current
+        file, the one the live run itself reads (relentless_live_round.round: fx.proofs), else the build's. Read at the
+        build's sha, a name corrected on main after the build kept refusing every staging the run would have passed
+        (WATER_DEPTH_RESKIN_HE_LOOKS_FIRST held 2026-11-05 on 15d414c's 'RimMandrake.FlowWorks', main said FlowWorks)."""
+        return self._round_fx().proofs(item) or self.proofs_at(item, sha)
+
     def game_mod_gap(self, item, sha, running=True):
         """relentless_live_round.mod_gap for the build at `sha`, read as a live run would read it."""
         import relentless_live_round
-        return relentless_live_round.mod_gap(self._round_fx(), sha, self.proofs_at(item, sha), running, item)
+        return relentless_live_round.mod_gap(self._round_fx(), sha, self._mods_text(item, sha), running, item)
 
     def game_batch_gap(self, builds):
         """relentless_live_round.batch_gap: every [(item, sha)] riding one load, for one deploy plan."""
         import relentless_live_round
-        return relentless_live_round.batch_gap(self._round_fx(), [(s, self.proofs_at(i, s), i) for i, s in builds])
+        return relentless_live_round.batch_gap(self._round_fx(), [(s, self._mods_text(i, s), i) for i, s in builds])
 
     def game_trees(self, builds):
         """Every `live-deploy:` mod of [(item, sha)] riding one load -> (folders, deploy_custom_mods.py args), or None."""
         import relentless_live_round as R
-        got = sorted({m for i, s in builds for m in R.live_deploy(self.proofs_at(i, s))})
+        got = sorted({m for i, s in builds for m in R.live_deploy(self._mods_text(i, s))})
         return (got, R.deploy_args(got, self._round_fx().folded())) if got else None
 
     def _round_fx(self):

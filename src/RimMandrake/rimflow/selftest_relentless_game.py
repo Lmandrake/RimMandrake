@@ -1778,6 +1778,33 @@ def t_bridge_refused_costs_no_plan():
     x.done()
 
 
+def t_staging_reads_the_runs_live_mods():
+    """WATER_DEPTH_RESKIN_HE_LOOKS_FIRST: the build's file said RimMandrake.FlowWorks, main said FlowWorks; the run reads
+    main's, so the staging must too, and falls back to the build's only when the books have none."""
+    class Round(object):
+        def __init__(self, texts):
+            self.texts = texts
+
+        def proofs(self, item):
+            return self.texts.get(item, "")
+
+    class Fx(G.GameFx):
+        def __init__(self, texts):
+            self._round = Round(texts)
+
+        def _round_fx(self):
+            return self._round
+
+        def proofs_at(self, item, sha, ext=".txt"):
+            return "live-mods: RimMandrake.FlowWorks\n" if sha == "old" else ""
+    fx = Fx({"W": "live-mods: FlowWorks\n"})
+    ok(fx._mods_text("W", "old") == "live-mods: FlowWorks\n", "the books' current file wins over the build's")
+    ok(fx._mods_text("X", "old") == "live-mods: RimMandrake.FlowWorks\n", "no current file: the build's is read")
+    import relentless_live_round as LR
+    got = sorted({m for i, s in [("W", "old")] for m in LR.live_deploy(fx._mods_text(i, s))})
+    ok(got == [], "live-mods names no tree to deploy: %r" % got)
+
+
 def t_mod_gap_pure():
     import relentless_live_round as LR
     sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
@@ -1824,7 +1851,7 @@ def main():
               t_rebuilt_assembly_carries_the_build, t_stale_row_carries_the_build, t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_clock_restarts_at_lease,
               t_live_hold_lapses_when_its_game_is_gone,
               t_dead_prove_pid_frees_the_game, t_modlist_gate_before_slot, t_modlist_gate_reads_once_per_game,
-              t_modlist_enable_refused_holds, t_modlist_batch_enables_union, t_modlist_rider_refusal_stages_alone, t_mod_gap_pure,
+              t_modlist_enable_refused_holds, t_modlist_batch_enables_union, t_modlist_rider_refusal_stages_alone, t_mod_gap_pure, t_staging_reads_the_runs_live_mods,
               t_stage_plans_once_for_the_batch, t_bridge_refused_costs_no_plan):
         if picked and t.__name__ not in picked:
             continue
