@@ -22,6 +22,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import deploy_custom_mods as D                                  # noqa: E402
 from selftest_deploy_prune import write, git                     # noqa: E402
+import deploy_def_guard as G                                     # noqa: E402
 
 TIER = D.SRC_TIERS[0]
 
@@ -114,6 +115,37 @@ def build(tmp):
     return game
 
 
+def same_mod_cases(tmp):
+    """One def defined twice inside ONE mod (DEFGUARD_INDEX_FIX_SAME_MOD_DUP): index()
+    once kept one owner per mod, so this was invisible to DUP."""
+    d = os.path.join(tmp, "same")
+    def f(rel, *names):         # rel "<mod>/Defs/x.xml" -> ("Defs/x.xml", path)
+        write(os.path.join(d, rel), defs(*map(thing, names)))
+        return rel.split("/", 1)[1], os.path.join(d, rel)
+    a1, a2, s1, s2, s3 = (f("A/Defs/a.xml", "RM_Same"), f("A/Defs/b.xml", "RM_Same"),
+                          f("S/Defs/new.xml", "RM_S"), f("S/Defs/old.xml", "RM_S"),
+                          f("T/Defs/t.xml", "RM_T", "RM_T"))
+    post = {"ModA": dict([a1, a2]), "ModS": dict([s1, s2]), "ModT": dict([s3]),
+            "ModU": dict([f("U/Defs/u.xml", "RM_U")])}
+    repo = {"ModA": dict([a1, a2]), "ModS": dict([s1]), "ModT": dict([s3]),
+            "ModU": dict(post["ModU"])}
+    cmd = lambda mods, prune: "--mod %s --apply%s" % (" --mod ".join(mods), " --prune" * prune)  # noqa: E731
+    blk, old = G.check(post, {}, {"ModA", "ModS", "ModT"}, repo, cmd)
+    blk_u, old_u = G.check(post, {}, {"ModU"}, repo, cmd)
+    b = "\n".join(blk)
+    return [
+        ("same mod, two files, repo too: DUP blocks, says fix the repo",
+         "DUP ThingDef RM_Same defined 2 times in ONE mod ModA: Defs/a.xml, Defs/b.xml" in b
+         and "REPO defines it 2 times in ModA" in b),
+        ("same mod, stale game-only file: DUP blocks, fix prunes that mod",
+         "DUP ThingDef RM_S defined 2 times in ONE mod ModS" in b
+         and "stale copy in ModS; fix: --mod ModA --mod ModS --mod ModT --apply --prune" in b),
+        ("same mod, twice in one file: DUP", "DUP ThingDef RM_T defined 2 times in ONE mod ModT" in b),
+        ("same-mod dups do not block an unrelated deploy",
+         not blk_u and sum("in ONE mod" in m for m in old_u) == 3),
+    ]
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="defguard-")
     try:
@@ -175,7 +207,7 @@ def main():
             ("after: guard clean for the moved mods", "! " not in out_after.split("def guard")[1]
              .split("\n\n")[0] if "def guard" in out_after else False),
             ("--with without --compose is an argparse error", str(rc_w).startswith("exit")),
-        ]
+        ] + same_mod_cases(tmp)
         bad = 0
         for label, ok in cases:
             bad += not ok

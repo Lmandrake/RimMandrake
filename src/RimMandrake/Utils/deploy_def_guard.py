@@ -28,7 +28,7 @@ WHAT BLOCKS. Only findings that touch a mod this plan deploys. Anything else
 already wrong in the game copy is printed as PRE-EXISTING, never blocks an
 unrelated deploy.
 
-  DUP          (def type, defName) defined in two or more mods
+  DUP          (def type, defName) defined in two or more mods, or twice in ONE mod
   ALIAS-STALE  an RM_DefAliasDef `from` AND its `to` both live (old copy not pruned)
   ALIAS-DANGLING an alias `to` that is one of OUR defs (the repo defines it)
                but no deployed mod will define it
@@ -171,15 +171,20 @@ def parse_defs(path):
     return defs, aliases
 
 
-def index(mods, prefiltered=False):
+def index(mods, prefiltered=False, every=None):
     """mods: {mod: {rel: path}} -> (defs {key: {mod: rel}}, aliases [(mod, rel, from, to)]).
+    defs keeps each mod's FIRST file only; pass every={} to also collect
+    {key: {mod: [rel, ...]}}, one entry per definition, so a def defined twice
+    inside ONE mod (two files, or twice in one file) is visible.
     prefiltered: the maps already hold def files only (repo index)."""
     defs, aliases = {}, []
     for mod, files in mods.items():
-        for rel, p in (files.items() if prefiltered else def_files(files)):
+        for rel, p in sorted(files.items() if prefiltered else def_files(files)):
             ds, als = parse_defs(p)
             for k in ds:
                 defs.setdefault(k, {}).setdefault(mod, rel)
+                if every is not None:
+                    every.setdefault(k, {}).setdefault(mod, []).append(rel)
             for f, t in als:
                 aliases.append((mod, rel, f, t))
     return defs, aliases
@@ -211,9 +216,10 @@ def check(post, pre, targets, repo, cmd):
     what each mod's REPO would ship; cmd(mods, prune) -> fix command string.
 
     -> (blocking, preexisting): lists of message strings."""
-    pdefs, paliases = index(post)
+    pall, rall = {}, {}
+    pdefs, paliases = index(post, every=pall)
     predefs, _ = index(pre)
-    rdefs, raliases = index(repo, prefiltered=True)
+    rdefs, raliases = index(repo, prefiltered=True, every=rall)
     block, old = [], []
 
     def put(msg, mods):
@@ -230,9 +236,9 @@ def check(post, pre, targets, repo, cmd):
                     % ", ".join(orphans))
         need_prune = False          # a stale file with no repo counterpart survives a
         for m in others:            # plain --apply (game-only or uncommitted delete)
-            rel = pdefs.get(key, {}).get(m)
-            if rel and rel not in repo.get(m, {}):
-                need_prune = True
+            for rel in pall.get(key, {}).get(m, ()):
+                if rel not in repo.get(m, {}):
+                    need_prune = True
         mods = set(others) | (targets if set(owners) & targets else set())
         return cmd(sorted(mods), need_prune)
 
@@ -250,6 +256,19 @@ def check(post, pre, targets, repo, cmd):
                                                   fix(stale, key, owners))
         put("DUP %s defined in %d mods: %s\n      %s" % (_k(key), len(owners), where, hint),
             owners)
+
+    for key, owners in sorted(pall.items()):      # one def twice inside ONE mod
+        for m, rels in sorted(owners.items()):
+            if len(rels) < 2:
+                continue
+            where = ", ".join(rels)
+            if len(rall.get(key, {}).get(m, ())) >= 2:
+                hint = "the REPO defines it %d times in %s too -- fix the repo, no deploy " \
+                       "order cures it" % (len(rall[key][m]), m)
+            else:
+                hint = "stale copy in %s; fix: %s" % (m, fix([m], key, [m]))
+            put("DUP %s defined %d times in ONE mod %s: %s\n      %s"
+                % (_k(key), len(rels), m, where, hint), [m])
 
     for mod, rel, frm, to in paliases:
         if frm in pdefs and to in pdefs:
