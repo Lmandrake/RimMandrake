@@ -1,0 +1,58 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 29.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3372756
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_ModernBridge_leaf_planks",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "machine@v4",
+   "sha": "d24b10345e18"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "01a2e298653cda29589ef31d2ae3b3ef9e953ea3d105858da8f2a02f773ceec5",
+  "scale.png": "7527f5381d7e801a4d1d322eccba26a0dfadb6be73d9fc0e710abe386324d565",
+  "assembled_1.png": "2bc827fb6eedb58fc48646ed71ef8b0db3eeecb319f87be152a16eebcd51d65c",
+  "variants_1.png": "597ae3631518e69dd6eb21713d71942b4b5e1f315dd39ab056942ff20e23bab8",
+  "facings.png": "88f10777bb4180c4e058d04e09ab08634ae9b74a233621964ed1e7bdb626e1ab"
+ }
+}

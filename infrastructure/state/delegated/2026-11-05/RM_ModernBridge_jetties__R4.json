@@ -1,0 +1,60 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 30.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3436802
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_ModernBridge_jetties",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32', 'MATERIAL_PAINT']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "machine@v4",
+   "sha": "d24b10345e18"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a03cf6bc184310bde01e4fae6ce91e4af8694fee91f1de9ad9a7db1677d07108",
+  "east.png": "bc2778576b1851ceb24b4ac7f9315e1158fe8d86cc409862b1a30f8fc20c1514",
+  "north.png": "c858800acd1f9035f86c996058c46a1ff9325d5400bd0381f0a0d0d6c737d565",
+  "scale.png": "6e29d6b2b2441a7d5b333bf07886a274223ccb7560031766349b523540cc7e9f",
+  "assembled_1.png": "41babb00bc484cb90499a3c53618cbab0bfde60cdceda5f87757a5820373e664",
+  "variants_1.png": "a9c31b4fd3510b477d63a922257c0fe67303bf72d4ca7df8d8c882acf530b556",
+  "facings.png": "e2687fdd9f9ce92e90847fe83a98df1e9d82782c9dea15a5b087b84ae6e2e9bf"
+ }
+}

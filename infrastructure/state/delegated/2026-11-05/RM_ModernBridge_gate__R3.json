@@ -1,0 +1,59 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 29.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.336008
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_ModernBridge_gate",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['MATERIAL_PAINT']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "machine@v4",
+   "sha": "d24b10345e18"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "45a50d0b06ec9150d09ae9ec0692e37c8ecdfeaee8bf59e6a49aab34065463d7",
+  "east.png": "1123fc7305dc2db0be6fcca89dd7513ec29b22f26433208ecea0c6e166d574f0",
+  "scale.png": "8447323332fb595f41f3adeead1f78eb4d700d43f12637c2097c6435296420e7",
+  "assembled_1.png": "afa6d5c0b256f5dfb6fb58aea9fba1a884781dd0b85962cf61a5ce1e76a026c6",
+  "variants_1.png": "9f2143ae556756ece0c0846ef16ce8a3a2e3dc935175e8bb65123026e0b088e0",
+  "facings.png": "b908b3f261fa6cdcdd57a15a4e244da4b9cb5916aff8d84a8a56349f82419112"
+ }
+}

@@ -36,13 +36,21 @@ import waterworks_blue as WB  # noqa: E402
 SUSP = "RimMandrake/FlowWorks/SuspensionBridge/Modern"
 DRAW = "Things/Building/FlowWorks/Drawbridge"
 
-STEEL_H = 208 / 360   # cool grey
-STEEL_S = 0.07
-VAL_0, VAL_K = 0.16, 0.50
+STEEL_H = 208 / 360   # blue-grey highway-bridge steel
+STEEL_S = 0.15        # sheet FLAG "all-grey set too monotone": a darker, bluish accent so frames read against the
+VAL_0, VAL_K = 0.10, 0.42   # concrete and galvanised grey; s stays under the pipe-blue check's 0.20
 GRIME = 0.10
+# sheet FLAG "wreck reads flat": the wrecked bridge's former paint goes to rust and scorch (rust hue sits at 24..30 deg,
+# outside the pipe-red band of 20 deg)
+WRECK = "RM_SuspensionWreck"
+RUST_H, RUST_S, RUST_V0, RUST_VK = 26 / 360, 0.55, 0.12, 0.45
+SCORCH = 0.55
 # the bridge red sits within 10 deg of 0 (census 2026-10-24); the timber pieces' wood starts at 15 deg, so the band is
 # narrower than the pipe recolour's (16..34 deg would grey the wood a little more on every pass)
 RED_CORE, RED_EDGE = 10 / 360, 14 / 360
+# the red's lit highlights are pink (s 0.15..0.20), under waterworks_blue's saturation ramp: they stayed pink on the railing's
+# top rail (art-eval r3c, 2026-11-05), so the red band takes a lower ramp; neutral greys sit under s 0.06
+RSAT_LO, RSAT_HI = 0.07, 0.16
 
 # pipe-colour bands for the check: the retired firetruck red and the current waterworks blue
 RED_DEG, BLUE_LO, BLUE_HI = 20, 185, 225
@@ -52,9 +60,11 @@ MAX_SHARE = 0.01      # at most 1% of opaque pixels in a pipe colour
 
 
 def pieces(tex=TEX):
-    """Every Modern bridge picture (atlases excluded: they are rebuilt from their deck)."""
-    rels = sorted(p.relative_to(tex).as_posix() for p in (tex / SUSP).glob("*.png") if not p.stem.endswith("_Atlas"))
-    rels += sorted(p.relative_to(tex).as_posix() for p in (tex / DRAW).glob("*_Modern*.png"))
+    """Every Modern bridge picture (atlases excluded: they are rebuilt from their deck; `_m` CutoutComplex paint masks
+    excluded: a mask's red channel marks where stuff colour paints the steel, it is never drawn as a colour)."""
+    keep = lambda p: not p.stem.endswith(("_Atlas", "_m"))
+    rels = sorted(p.relative_to(tex).as_posix() for p in (tex / SUSP).glob("*.png") if keep(p))
+    rels += sorted(p.relative_to(tex).as_posix() for p in (tex / DRAW).glob("*_Modern*.png") if keep(p))
     return rels
 
 
@@ -74,7 +84,7 @@ def red_weight(rgb):
     s = np.where(mx > 0, (mx - mn) / np.maximum(mx, 1e-6), 0.0)
     h = WB._hue(rgb, mx, mn)
     dist = np.minimum(h, 1.0 - h)
-    return (1.0 - WB._ramp(dist, RED_CORE, RED_EDGE)) * WB._ramp(s, WB.SAT_LO, WB.SAT_HI)
+    return (1.0 - WB._ramp(dist, RED_CORE, RED_EDGE)) * WB._ramp(s, RSAT_LO, RSAT_HI)
 
 
 def repaint(im, name):
@@ -87,6 +97,11 @@ def repaint(im, name):
     scale = max(src.shape[:2]) / 256.0
     steel = WB._hsv_to_rgb(np.full(w.shape, STEEL_H), np.full(w.shape, STEEL_S), np.clip(VAL_0 + VAL_K * mx, 0, 1))
     steel *= (1.0 - GRIME * WB._field(w.shape, rng, 6 * scale) ** 1.5)[..., None]
+    if WRECK in name:   # rust where a field is high, soot where another is: only on the repainted (formerly red) pixels
+        rust = WB._hsv_to_rgb(np.full(w.shape, RUST_H), np.full(w.shape, RUST_S), np.clip(RUST_V0 + RUST_VK * mx, 0, 1))
+        r = np.clip((WB._field(w.shape, rng, 4 * scale) - 0.35) * 3.0, 0, 1)[..., None]
+        steel = steel * (1 - r) + rust * r
+        steel *= (1.0 - SCORCH * np.clip((WB._field(w.shape, rng, 5 * scale) - 0.5) * 2.5, 0, 1))[..., None]
     out = rgb * (1 - w[..., None]) + steel * w[..., None]
     res = np.dstack([np.clip(np.round(out * 255), 0, 255).astype(np.uint8), src[..., 3]])
     op = src[..., 3] > 128

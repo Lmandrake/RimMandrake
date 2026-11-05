@@ -8,6 +8,10 @@ only in the running game: hose geometry is drawn by C#, port offsets and draw-la
 `Altitudes`. A card without `assembled` is `HOLD_INPUT` (never judged, never accepted). Captures come from a
 keeper savegame through `rimworld-live-review`, batched, so a re-evaluation never needs the game again.
 
+**Module `structure`** (bridge decks, anchors, gates, towers, winches: no pipe, hose, coupler or cord) skips the BORE
+and PORTS questions: with nothing to bore or connect they had no answer but "n/a", which the policy counts as unreadable
+and routes to a regen (2026-11-05, MODERN_BRIDGE_REDRAW_BRIDGE_NOT_PLUMBING). Everything else is judged as for a part.
+
 ## Panels you are given
 
 - **facings.png** + each rotation alone (`south.png`, `east.png`, `north.png`; west if it has its own file).
@@ -44,14 +48,14 @@ keeper savegame through `rimworld-live-review`, batched, so a re-evaluation neve
 ```json template
 {
   "template": "machine",
-  "version": "machine@v3",
-  "modules": ["machine", "part", "hose", "coupler", "reel", "tank", "pump", "wall_mounted"],
+  "version": "machine@v4",
+  "modules": ["machine", "part", "hose", "coupler", "reel", "tank", "pump", "wall_mounted", "structure"],
   "required_panels": {"*": ["south", "facings", "scale", "assembled"],
                       "wall_mounted": ["south", "facings", "scale", "wall_context"]},
   "checklist": [
     {"id": "CAMERA",      "q": "Drawn from the building camera (about 35 degrees; round tops ellipses about 0.56; top face lit)?", "code": "CAM_WRONG"},
-    {"id": "BORE",        "q": "Where does each pipe/hose show its open bore? Only where it turns toward the camera?", "code": "BORE_PLANE"},
-    {"id": "PORTS",       "q": "In the assembled view, does every coupler/hose/cord meet its port at the same cell, height and plane?", "code": "PORT_MISFIT"},
+    {"id": "BORE",        "q": "Where does each pipe/hose show its open bore? Only where it turns toward the camera?", "code": "BORE_PLANE", "not_modules": ["structure"]},
+    {"id": "PORTS",       "q": "In the assembled view, does every coupler/hose/cord meet its port at the same cell, height and plane?", "code": "PORT_MISFIT", "not_modules": ["structure"]},
     {"id": "WALL_LEAN",   "q": "In wall_context, does each facing's lean/perspective match the wall side it stands on?", "code": "WALL_LEAN_WRONG", "modules": ["wall_mounted"]},
     {"id": "WALL_AXIS",   "q": "In wall_context, name the direction each facing's long axis runs on screen. A ladder (or any fixture that climbs a wall) on an EAST or WEST wall must run east-west, from its top at that wall's rim down and away from the wall into the pit; one drawn running north-south along the wall is wrong, however well it leans. Same for north/south walls: the long axis runs up/down the face, never along the rim.", "code": "WALL_AXIS_WRONG", "modules": ["wall_mounted"]},
     {"id": "PORTS_DRAWN", "q": "Does every code port on the card have a drawn connector at that point in that facing, and is every drawn connector a code port?", "code": "PORT_UNDRAWN", "when": "ports"},

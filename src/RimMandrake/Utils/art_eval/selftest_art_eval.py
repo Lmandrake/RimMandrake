@@ -542,6 +542,9 @@ def main():
     check("catch without living ref held", P.pre_route({"module": "catch", "panels": {"single": 1, "scale": 1}}, tpl, None) == "HOLD_INPUT")
     mtpl = P.load_template("machine")
     check("machine without capture held", P.pre_route({"module": "machine", "panels": {"south": 1, "facings": 1, "scale": 1}}, mtpl, None) == "HOLD_INPUT")
+    ids = lambda mod: {it["id"] for it in P.checklist_for(mtpl, mod, set())}
+    check("structure module skips BORE/PORTS, part keeps them",
+          not ids("structure") & {"BORE", "PORTS"} and {"BORE", "PORTS"} <= ids("part") and "MATERIAL" in ids("structure"))
 
     check("wall-mounted needs wall context", P.pre_route({"module": "wall_mounted", "panels": {"south": 1, "facings": 1, "scale": 1}}, mtpl, None) == "HOLD_INPUT")
     mids = {i["id"] for i in P.checklist_for(mtpl, "wall_mounted", P.card_facts({"ports": ["east side"]}))}

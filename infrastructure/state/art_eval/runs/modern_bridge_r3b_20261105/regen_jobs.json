@@ -1,0 +1,68 @@
+[
+ {
+  "id": "arteval_RM_ModernBridge_anchors__R3_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ModernBridge_anchors",
+  "prompt": "Recolour of the kept RimWorld sprite sheet 'Suspension bridge cable anchors (four kinds)', drawSize 1x1 per tile. Use the kept art as the reference image and preserve its silhouette, outline, drawing style, level of detail and transparent alpha exactly. Change colour only. All structural steel trim is dark blue-grey highway-bridge paint, a muted slate steel tone with subtle lighter edge highlights and darker recesses, reading as modern painted structural steel. The anchor blocks and footings are pale weathered poured concrete in warm grey. Grating and fittings are galvanised zinc grey with a soft metallic sheen. Suspension cables are bare braided steel wire in mid grey with fine strand detail. Timber parts on the Timber kinds are real wood in natural brown with visible grain. Overall the anchors read as parts of a modern highway suspension bridge: dark slate steel, grey concrete, galvanised metal, no red trim and no saturated blue. Transparent background, painterly vanilla RimWorld style, realistic, clean dark outline.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_bridge_r3b_20261105",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1,
+  "module": "part"
+ },
+ {
+  "id": "arteval_RM_ModernBridge_decks__R3_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ModernBridge_decks",
+  "prompt": "Recolour of the kept RimWorld suspension bridge deck tiles (concrete, grated, heavy, steel, timber), 1x1 tile, transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. Keep every shape, outline, brushwork and level of detail exactly as in the reference image. All structural trim, rails, edge beams, girders and bolted plates are painted dark blue-grey highway-bridge structural steel, a muted slate tone with subtle weathering and lighter edge highlights, reading as a modern steel and concrete bridge. Concrete decks are neutral mid-grey poured concrete with fine seams. Grated decks are galvanised silver-grey steel grating with dark gaps. Heavy and steel decks are dark blue-grey painted steel plate with rivets. Timber decks keep warm natural brown timber planks with dark blue-grey steel fixings. Suspension cables remain galvanised steel grey. The overall palette is restrained industrial greys, slate and natural timber brown, in the manner of a modern highway bridge.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_bridge_r3b_20261105",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1,
+  "module": "part"
+ },
+ {
+  "id": "arteval_RM_ModernBridge_gate__R3_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ModernBridge_gate",
+  "prompt": "Recolour the kept RimWorld drawbridge gate sprite (closed and open states) so it reads as a modern highway steel-and-concrete bridge. Reference: the kept art, used as the exact base. Keep every shape, outline, silhouette, footprint edge and level of detail identical to the reference, pixel for pixel; only the colour of the former trim changes. The deck surface is pale grey weathered concrete. Walkway and grate panels are galvanised steel grating in neutral silver-grey. Cables are bare grey steel. Timber parts, where present, are real wood in natural warm brown. The overall palette is neutral industrial grey, slate blue-grey and concrete, with natural brown only on wood, reading as a modern road bridge and as structural steel.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "modern_bridge_r3b_20261105",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1,
+  "module": "part"
+ }
+]

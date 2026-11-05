@@ -1,0 +1,58 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 22.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.31755259999999996
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_ModernBridge_tower_railing_wreck",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32', 'MATERIAL_PAINT']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "machine@v4",
+   "sha": "d24b10345e18"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "f1553ce1a98f0ac89ccc2a7c5fd5b08fb4af9eb52723522373eb598941b1b222",
+  "scale.png": "cd27cb9979070be5d71ff1560aa8dd8b811b0c4b0f1b9ef4e9b8821ef1c745dc",
+  "assembled_1.png": "62dff8a6c651c1531b44abc43cb0c57fd0f1165614f840cd3c136ffb10400faa",
+  "variants_1.png": "34c8a3fa224740d6259920eacd8b64929b588d10ed5ee3720a7f1afb197a536c",
+  "facings.png": "5e854bd096cd0441fee285a7cf8c00b271e41408ed772f356215fb3033fa8d42"
+ }
+}

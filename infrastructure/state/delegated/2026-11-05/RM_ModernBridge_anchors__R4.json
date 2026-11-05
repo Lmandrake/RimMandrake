@@ -1,0 +1,60 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 32.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3460248
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_ModernBridge_anchors",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32', 'MATERIAL_PAINT']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "machine@v4",
+   "sha": "d24b10345e18"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "13d87b5d38728affb21ee730cc14bea030038d277a4af271fbcbe7f8021a8a77",
+  "east.png": "6aadd11dce31f5f5fb974687e7b05cad2b84c44d6028c26fb95afc71a6f00499",
+  "north.png": "d531a805667319eed1013a90ccc3d3d6b68a2b6e97e434eb040e35ccc42d4468",
+  "scale.png": "ee3861047d012f0a4a7fa426b58fefdc6f870efa08d4ee720f0e2752b14142bb",
+  "assembled_1.png": "cfd0e083172230ba1780e3bb25220296964cec952db152696efd0bf459d0410d",
+  "variants_1.png": "4f740875b23cf89f2cb012dbcaae01297b1523803e094669ea172302b3cccf67",
+  "facings.png": "b437920f0e1e8a594394adfbe081179016c390bf38e8adf14e22758b1b6634e6"
+ }
+}
