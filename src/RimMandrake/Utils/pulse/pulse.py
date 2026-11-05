@@ -521,11 +521,15 @@ def withdraw(hid: str, superseded_by: str | None = None) -> dict:
 
 
 ROOT = Path(__file__).resolve().parents[4]   # the checkout this code runs from
-# what the sparse deploy checkout holds (systemd/install.sh sets the same list): pulse itself, rimflow's fold,
-# and art/ for prereview.py (the "to look at" gate). Files directly in a parent dir (Utils/rmpaths.py) come free.
+# what the sparse deploy checkout holds: pulse itself, rimflow's fold, and art/ for prereview.py (the "to look at"
+# gate). Files directly in a parent dir (Utils/rmpaths.py, Utils/close_evidence.py) come free. Every dir the deploy's
+# units reach must be here: selftest_pulse_sparse_dirs.py walks their imports (PULSEDEPLOY_FIX_SPARSE_LIST_FORGOT_CONTRACTS).
 SPARSE_DIRS = ("src/RimMandrake/Utils/pulse", "src/RimMandrake/rimflow", "src/RimMandrake/Utils/art",
                "src/RimMandrake/Utils/modcheck",    # modcheck/metrics.py: testing_metrics.py's owner-day + sheet loader
-               "src/RimMandrake/Utils/sim")         # sim/csuite_codex_limits.py: ops_watch.py's Codex reading
+               "src/RimMandrake/Utils/sim",         # sim/csuite_codex_limits.py: ops_watch.py's Codex reading
+               "src/RimMandrake/contracts",         # close_evidence.py path-loads contracts/jsonl.py; rimflow imports it
+               "src/RimMandrake/Utils/testq",       # ops_watch.py's brake reading; rimflow/dispatcher.py
+               "src/RimMandrake/Utils/artpipe")     # art/enact.py's fill_queue
 _CODE: dict = {}
 
 
