@@ -38,13 +38,13 @@
     "ts": 1789295361.399615
   },
   "Armoury": {
-    "hash": "56fca3738cf8bfce73b802ac5e2f02d80502d4c19da7d60197b46bff974d3319",
+    "hash": "18cbd40f5d818fbb59d5249a338ff19d1b190a7c1789e38c139d00f1d9fdf4eb",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Armoury@1793697836",
-    "status": "DRAFT-CHECKLIST",
-    "ts": 1793697861.3854253
+    "run_id": "Armoury@1793859462",
+    "status": "RED",
+    "ts": 1793859491.2638066
   },
   "AssailantSalvage": {
     "hash": "3d8e2cc737a63c400ed4354acfbc7af625ea2a3a96528c8499af9d0fe14e0a14",
