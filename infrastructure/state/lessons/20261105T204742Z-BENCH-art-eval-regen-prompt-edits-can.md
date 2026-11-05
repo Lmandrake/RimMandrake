@@ -1,0 +1,1 @@
+Art-eval regen prompt edits can re-insert 'keyline/outline' wording copied from the reference's rendering-treatment sentence; fill_queue then refuses the row (outlines retired). Strip the phrase from the row prompt before refiling.
