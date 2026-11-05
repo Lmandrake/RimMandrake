@@ -1091,13 +1091,80 @@ def t_composed_mod_reads_its_parent_about():
         live_def_check.call_running_mods = old
 
 
+def t_folded_source_goes_by_its_compose_key():
+    """A source folder folded under ANOTHER name (Scarlands -> key Warscar) or into the engine kits (CreatureBehaviors ->
+    Biomes/_Kits) is covered by a compose plan, found in the game folder and loaded under the composed About; and the
+    one readable expansion, the wsl-path conversion of a literal path, no longer refuses a proof
+    (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: 16 'does not cover Scarlands', 16 'no readable packageId', 17 '$')."""
+    import live_def_check
+    folded = {"Scarlands": ("RimMandrake.Biomes", "Warscar"), "CreatureBehaviors": ("RimMandrake.Biomes", "CreatureBehaviors")}
+    plan = ("compose: biomes  (manifest src/RimMandrake/Biomes.compose.json)\n"
+            "  compose  CreatureBehaviors    mandrake.rm.creaturebehaviors        40 file(s) -> Biomes/_Kits/CreatureBehaviors\n"
+            "  compose  Warscar              mandrake.rm.warscar                 163 file(s) -> Biomes/Warscar\n")
+    check("folded source covered by its key", L.deploy_gap([("Scarlands", "Defs/A.xml")], 0, plan, folded=folded) is None,
+          L.deploy_gap([("Scarlands", "Defs/A.xml")], 0, plan, folded=folded))
+    gap = L.deploy_gap([("Scarlands", "Defs/A.xml")], 0, plan) or ""
+    check("without the manifest it is still a gap (the instrument can see)", "does not cover Scarlands" in gap, gap)
+    gap = L.deploy_gap([("Nope", "Defs/A.xml")], 0, plan, folded=folded) or ""
+    check("an unfolded uncovered mod is still named", "does not cover Nope" in gap, gap)
+    drifted = plan + "\nRimMandrake.Biomes mandrake.rm.biomes   5 file(s)\n    ~  Biomes/Warscar/Defs/A.xml\n"
+    gap = L.deploy_gap([("Scarlands", "Defs/A.xml")], 0, drifted, folded=folded) or ""
+    check("drift on a folded file is read under its key, named by its source", "out of date" in gap
+          and gap.startswith("Scarlands/"), gap)
+    check("a live-deploy tree folded is covered", L.deploy_gap([], 0, plan, ["Scarlands"], folded) is None)
+    mods = tempfile.mkdtemp(prefix="rl_fold_")
+    os.makedirs(os.path.join(mods, "RimMandrake.Biomes", "About"))
+    os.makedirs(os.path.join(mods, "RimMandrake.Biomes", "Biomes", "Warscar", "Defs"))
+    os.makedirs(os.path.join(mods, "RimMandrake.Biomes", "Biomes", "_Kits", "CreatureBehaviors", "Defs"))
+    for rel in ("Biomes/Warscar/Defs/A.xml", "Biomes/_Kits/CreatureBehaviors/Defs/B.xml"):
+        open(os.path.join(mods, "RimMandrake.Biomes", rel), "w").write("<Defs/>")
+    with open(os.path.join(mods, "RimMandrake.Biomes", "About", "About.xml"), "w") as f:
+        f.write("<ModMetaData><packageId>mandrake.rm.biomes</packageId></ModMetaData>")
+    check("deployed_paths finds a renamed fold", len(L.deployed_paths(mods, "Scarlands", "Defs/A.xml", folded)) == 1)
+    check("deployed_paths finds a kit", len(L.deployed_paths(mods, "CreatureBehaviors", "Defs/B.xml", folded)) == 1)
+    check("deployed_paths without the manifest cannot (the probe sees)", not L.deployed_paths(mods, "Scarlands", "Defs/A.xml"))
+
+    class Fold(L.Fx):
+        def folded(self):
+            return folded
+    fx = Fold(mods_dir=mods)
+    old = live_def_check.call_running_mods
+    try:
+        live_def_check.call_running_mods = lambda t: {"mandrake.rm.biomes"}
+        for m in ("Scarlands", "CreatureBehaviors"):
+            check("%s loads under the composed About" % m, fx.running_load_gap([m]) is None, fx.running_load_gap([m]))
+        check("a mod neither standalone nor folded has no packageId",
+              "no readable packageId" in (fx.running_load_gap(["Nope"]) or ""))
+        check("mtime reads the renamed fold", fx.mtime("Scarlands", "Defs/A.xml") is not None)
+    finally:
+        live_def_check.call_running_mods = old
+    lr = L.live_rules({})
+    for proof in ('python.exe "$(wslpath -w src/RimMandrake/LongShade/prove_shade_extras.py)" --clause A1 < /dev/null',
+                  "python.exe $(wslpath -w src/a.py) --out \"$(wslpath -w /mnt/d/ClaudeWork/rimmandrake/x/y.json)\"",
+                  """python.exe "$(wslpath -w src/a.py)" --json '{"type":"X","method":"Y","args":[1,2]}'"""):
+        check("wsl-path idiom on a literal path runs %r" % proof, L.refused_proof(lr, "t", "c", proof) is None,
+              L.refused_proof(lr, "t", "c", proof))
+    for proof in ('python.exe "$(wslpath -w $HOME/a.py)"', 'python.exe "$(wslpath -w src/a.py)" "$X"',
+                  'python.exe "$(wslpath -w "src/a b.py")"', 'python.exe "$(wslpath -w src/a.py; rm x)"',
+                  'python3 "$(wslpath -w src/RimMandrake/Utils/deploy_custom_mods.py)" --ap$()ply',
+                  'python3 "$(wslpath -w src/RimMandrake/Utils/deploy_custom_mods.py)" --apply',
+                  'x $(wslpath -w -x)game UP', 'modcheck$(wslpath -w -x) run', '$(wslpath -w src/a)game UP',
+                  'python3 x.py $(wslpath -w src/a)$(wslpath -w b)', 'python.exe "$(wslpath -w -h)"',
+                  """python3 a.py "it's $X" """, """python3 a.py 'x' $Y 'z'""", """python3 a.py \\'{a,b}""",
+                  """python3 a.py 'open {a,b}""", """python3 a.py "{a,b}" """, """python3 a.py "'" $Z "'" """,
+                  'echo "$(wslpath -w /a) \' $(echo Z2FtZSBVUA==|base64 -d|sh) \'"',"echo x #'\n$(evil) '",
+                  "cat <<'E'\n$(evil)\nE", "echo a;game UP", "true&&game DOWN", "(game UP)", "echo a|game LOADING",
+'x"$(wslpath -w src/a)"game UP', 'echo "$(wslpath -w src/a)"x$Y'):
+        check("still refused %r" % proof, L.refused_proof(lr, "t", "c", proof) is not None, proof)
+
+
 def main():
     for t in (t_exit1_that_could_not_ask_is_no_fail, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
               t_load_condition, t_running_load_gap_is_unmeasured, t_tiers_small_first_final_last,
-              t_refusal_row_has_its_sha, t_composed_mod_reads_its_parent_about,
+              t_refusal_row_has_its_sha, t_composed_mod_reads_its_parent_about, t_folded_source_goes_by_its_compose_key,
               t_preflight_before_a_slot, t_undeployed_row_carries_its_game):
         try:
             t()

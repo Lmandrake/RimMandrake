@@ -108,7 +108,7 @@
   "_live": "relentless_live.py, the live tier (owner by card 2026-11-02: Relentless learns live testing). One built item's live criterion, a read-only proof on the running deployed game under the bridge lock. flyer_re refuses any run naming flight (standing ruling). forbid_re refuses a proof that would load, restart, swap or mutate the game. Seconds: proof_max_s for the proof, plan_max_s for deploy_custom_mods.py's plan. RA_S09: auto lets the tick start relentless_live_round.py (at most one, every round_every_s); a round runs up to round_max criteria that carry a `live-proof <CID>: <cmd>` line in their item's prose, and retries an UNMEASURED one after unmeasured_retry_s.",
   "live": {
     "flyer_re": "\\b(fly|flies|flying|flyers?|flight|wings?|airborne|takes? off|take-off)\\b",
-    "forbid_re": "modlist_swap|modcheck\\s+run|deploy_custom_mods\\.py\\b.*--apply|(^|[\\s/])game\\s+(UP|DOWN|DEPLOYING|LOADING)\\b|stop_game|launch_game|load_game|execute_debug_action|--yes-i-know-this-is-live",
+    "forbid_re": "modlist_swap|modcheck\\s+run|deploy_custom_mods\\.py\\b.*--apply|(^|[\\s/;&|()])game\\s+(UP|DOWN|DEPLOYING|LOADING)\\b|stop_game|launch_game|load_game|execute_debug_action|--yes-i-know-this-is-live",
     "proof_max_s": 600,
     "plan_max_s": 500,
     "gate_plan_max_s": 180,

@@ -412,7 +412,7 @@ def deployed(fx, item_id, text, lint=False):
             return 1, "no live-proof line runs `relentless_live_round.py deployed`"
         return 0, "OK %s names %s" % (item_id, ", ".join(trees))
     rc, plan = fx.deploy_plan(deploy_args(trees, fx.folded()), L.live_rules({})["plan_max_s"])
-    why = L.deploy_gap([], rc, plan, trees)
+    why = L.deploy_gap([], rc, plan, trees, fx.folded())
     if why:
         return (2 if why.startswith("the deploy plan") else 1), why
     return 0, "OK the game folder holds %s" % ", ".join(trees)

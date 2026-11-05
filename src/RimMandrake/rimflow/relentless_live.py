@@ -83,7 +83,7 @@ DEFAULTS = {
     "vehicle_re": r"\b(grav-?ships?|star-?ships?|space-?ships?|ships?|shuttles?|transport pods?|drop pods?)\b",
     "creature_re": r"\b(flyers?|fliers?|wings?|creatures?|animals?|birds?|insects?|bats?|mynocks?)\b"
                    r"|MaxFlightTime|FlightTracker|flyingAnimation",
-    "forbid_re": r"modlist_swap|modcheck\s+run|deploy_custom_mods\.py\b.*--apply|(^|[\s/])game\s+(UP|DOWN|DEPLOYING|LOADING)\b"
+    "forbid_re": r"modlist_swap|modcheck\s+run|deploy_custom_mods\.py\b.*--apply|(^|[\s/;&|()])game\s+(UP|DOWN|DEPLOYING|LOADING)\b"
                  r"|stop_game|launch_game|load_game|execute_debug_action|--yes-i-know-this-is-live",
     "proof_max_s": 600,
     "plan_max_s": 500,
@@ -277,15 +277,53 @@ def flyer_word(lr, title, *texts):
     return None
 
 
+# `$(wslpath -w <literal path>)`: the one expansion a gate can still read, for its output is that path's Windows spelling.
+# LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: all 17 '$' refusals since 7c16acb1 were this idiom. The path holds no quote, space,
+# `$`, backtick, glob, brace or shell operator and never starts with `-` (an option: wslpath prints nothing), and the
+# expansion is a whole word, so no command name can be spliced from it (`$(wslpath -w x)game UP`). Its output differs
+# from its text (`\\wsl.localhost\...`), so refused_proof gates both the text with the path in and with it gone.
+# Quotes around it are left in place (a swallowed lone `"` would let unquoted() misread every quote after it).
+WSLPATH = re.compile(r"(?:(?<![^\s=])|(?<=^\")|(?<=[\s=]\"))\$\(\s*wslpath\s+-w\s+([A-Za-z0-9_./][A-Za-z0-9_./+-]*)\s*\)"
+                     r"(?=[\s;|&<>]|$|\"(?:[\s;|&<>]|$))")
+
+
+def unquoted(text):
+    """`text` with the inside of every single-quoted span dropped: bash expands nothing there (`'{"a":1,"b":2}'` is no
+    brace expansion, `'$x'` no variable). A `'` inside double quotes or after a backslash opens nothing. An unclosed
+    span keeps its text, so the gate still reads it. Pure."""
+    out, i, dq = [], 0, False
+    while i < len(text):
+        c = text[i]
+        if c == "\\" and i + 1 < len(text):
+            out.append(text[i:i + 2])
+            i += 2
+            continue
+        if c == '"':
+            dq = not dq
+        elif c == "'" and not dq:
+            j = text.find("'", i + 1)
+            if j >= 0:
+                out.append("''")
+                i = j + 1
+                continue
+        out.append(c)
+        i += 1
+    return "".join(out)
+
+
 def refused_proof(lr, title, text, proof):
     """-> why this run may not happen on the live game, or None."""
     hit = flyer_word(lr, title, ("criterion", text), ("proof", proof))
     if hit:
         return "flyer: the %s names %r; a flyer's flight is never live-tested (standing ruling)" % hit
-    m = re.search(r"\$|`|\\\n|\beval\b|\{[^}]*,[^}]*\}", proof or "")     # expansion: bash builds the command at run time
+    gone = WSLPATH.sub(" ", proof or "")
+    # unquoted() knows no comment or heredoc, either of which can end a quote on another line: such a proof is read raw
+    scan = gone if ("\n" in gone or "<<" in gone) else unquoted(gone)
+    m = re.search(r"\$|`|\\\n|\beval\b|\{[^}]*,[^}]*\}", scan)     # expansion: bash builds the command at run time
     if m:
         return "the proof text builds its command at run time (%r): a gate cannot read what bash will run" % m.group(0)
-    m = re.search(lr["forbid_re"], re.sub(r"[\'\"\\]", "", proof or ""))     # bash drops quotes: ap''ply is --apply
+    m = next((m for m in (re.search(lr["forbid_re"], re.sub(r"[\'\"\\]", "", t))      # bash drops quotes: ap''ply is --apply
+                          for t in (WSLPATH.sub(r"\1", proof or ""), gone)) if m), None)
     if m:
         return "the proof would change the running game (%r): a load or a mutation is not this tier" % m.group(0)
     return None
@@ -624,8 +662,16 @@ def plan_sections(text):
     return covered, drift, off
 
 
-def deploy_gap(files, plan_rc, plan_text, trees=()):
+def folded_key(folded, mod):
+    """A source folder's name in the game folder and in a compose plan: its compose key when a manifest folds it in
+    (Scarlands -> Warscar), else itself. folded: deploy_custom_mods.folded(), {source: (target, key)}."""
+    return ((folded or {}).get(mod) or (None, mod))[1]
+
+
+def deploy_gap(files, plan_rc, plan_text, trees=(), folded=None):
     """-> why the built commit's game files are not what the game folder holds, or None.
+    folded: {source folder: (composed target, key)}; a compose plan prints the KEY, so a folded source is matched by it
+    (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: 16 runs 'does not cover Scarlands' on a plan that composed Warscar).
     trees: mod folders whose WHOLE tree the build owes the game (a `live-deploy:` line: RELENTLESS_DEPLOY_WIRE_NOBODY_MAY_APPLY,
     a deploy item commits no mod file). Any file the deploy would write counts, not only .xml and .dll; a `-` line does not
     (--apply leaves a file the repo lacks alone without --prune, so no staging could ever clear it) nor an H (held on purpose)."""
@@ -636,35 +682,49 @@ def deploy_gap(files, plan_rc, plan_text, trees=()):
     if "def guard" in plan_text and "REFUSED" in plan_text:
         return "the deploy plan refused: %s" % plan_text[-300:]
     covered, drift, off = plan_sections(plan_text)
+    named = {folded_key(folded, m): m for m in [m for m, _ in files] + list(trees)}
+    files = [(folded_key(folded, m), rel) for m, rel in files]
+    trees = [folded_key(folded, m) for m in trees]
     if off:
         return "the plan says %s" % "; ".join("%s: %s" % kv for kv in sorted(off.items()))
-    missing = sorted(({mod for mod, _ in files} | set(trees)) - covered)
+    missing = sorted(named[m] for m in ({mod for mod, _ in files} | set(trees)) - covered)
     if missing:
         return "the deploy plan does not cover %s: name it in --deploy" % ", ".join(missing)
     for mod, rel in files:
         for section, flag, entry in drift:
             if (section == mod and entry == rel) or entry.endswith("/%s/%s" % (mod, rel)) or entry == "%s/%s" % (mod, rel):
                 return "%s/%s is %s in the game folder (%s): the build is not what the game holds" % (
-                    mod, rel, "held" if flag == "H" else "out of date", section)
+                    named.get(mod, mod), rel, "held" if flag == "H" else "out of date", section)
     for mod in sorted({m for m, _ in files}):      # a file this commit did not touch, in a mod it ships, may be the one it needs
         for section, flag, entry in drift:      # an untouched H file is held out of the game on purpose (DEPLOY_HOLD.txt)
             if flag != "H" and entry.lower().endswith((".xml", ".dll")) and (section == mod or entry.startswith(mod + "/")
                                                               or ("/%s/" % mod) in entry):
                 return "%s has %s drift in the game folder (%s %s): the build is not what the game holds" % (
-                    mod, "held" if flag == "H" else "out-of-date", section, entry)
+                    named.get(mod, mod), "held" if flag == "H" else "out-of-date", section, entry)
     for mod in sorted(set(trees)):
         for section, flag, entry in drift:
             if flag in "~+" and (section == mod or entry.startswith(mod + "/") or ("/%s/" % mod) in entry):
                 return "%s has drift in the game folder (%s %s): the live-deploy tree is not what the game holds" % (
-                    mod, section, entry)
+                    named.get(mod, mod), section, entry)
     return None
 
 
-def deployed_paths(mods_dir, mod, rel):
-    """Where a mod file sits in the game folder: Mods/<Mod>/<rel>, or inside a composed mod, Mods/*/*/<Mod>/<rel>."""
-    return [p for p in [os.path.join(mods_dir, mod, rel)] + glob.glob(os.path.join(glob.escape(mods_dir), "*", "*",
-                                                                                     glob.escape(mod), glob.escape(rel)))
-            if os.path.isfile(p)]
+def folded_dirs(mods_dir, mod, folded=None):
+    """The game-folder dirs a folded source loads from: Mods/<target>/Biomes/<key> or Mods/<target>/Biomes/_Kits/<key>
+    (biomes_compose.dest_rel); [] when the manifest does not fold it."""
+    if mod not in (folded or {}):
+        return []
+    target, key = folded[mod]
+    return [os.path.join(mods_dir, target, "Biomes", key), os.path.join(mods_dir, target, "Biomes", "_Kits", key)]
+
+
+def deployed_paths(mods_dir, mod, rel, folded=None):
+    """Where a mod file sits in the game folder: Mods/<Mod>/<rel>, inside a composed mod Mods/*/*/<Mod>/<rel>, or for a
+    folded source under its compose key, engine kits one level deeper (folded_dirs)."""
+    got = [os.path.join(mods_dir, mod, rel)] + glob.glob(os.path.join(glob.escape(mods_dir), "*", "*", glob.escape(mod),
+                                                                      glob.escape(rel)))
+    got += [os.path.join(d, rel) for d in folded_dirs(mods_dir, mod, folded)]
+    return [p for p in dict.fromkeys(got) if os.path.isfile(p)]
 
 
 # ---------------------------------------------------------------- the one run
@@ -752,8 +812,18 @@ class Fx(object):
             return None, "the deploy plan took over %ds" % timeout
         return r.returncode, r.stdout + r.stderr
 
+    def folded(self):
+        """{source folder: (composed target, key)} from the compose manifest (deploy_custom_mods.folded)."""
+        utils = os.path.join(os.path.dirname(HERE), "Utils")
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        import deploy_custom_mods
+        if getattr(self, "_folded", None) is None:      # one manifest read per run, not one per file
+            self._folded = deploy_custom_mods.folded()
+        return self._folded
+
     def mtime(self, mod, rel):
-        got = deployed_paths(self.mods_dir, mod, rel)
+        got = deployed_paths(self.mods_dir, mod, rel, self.folded())
         return max(os.path.getmtime(p) for p in got) if got else None
 
     def game_started(self):
@@ -787,14 +857,17 @@ class Fx(object):
         if utils not in sys.path:
             sys.path.insert(0, utils)
         import live_def_check
-        want = {}
+        want, folded = {}, self.folded()
         for mod in sorted(set(mods)):
             text = ""
             # a folder folded into a composed mod (Stillsand -> RimMandrake.Biomes/Biomes/Stillsand) loads under the
             # composed mod's About.xml; its own folder is absent from the game (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING)
             for about in [os.path.join(self.mods_dir, mod, "About", "About.xml")] + sorted(
                     os.path.join(os.path.dirname(os.path.dirname(d)), "About", "About.xml") for d in
-                    glob.glob(os.path.join(glob.escape(self.mods_dir), "*", "*", glob.escape(mod))) if os.path.isdir(d)):
+                    glob.glob(os.path.join(glob.escape(self.mods_dir), "*", "*", glob.escape(mod))) if os.path.isdir(d)) + [
+                    # a folded source loads under its compose key, kits under Biomes/_Kits (Scarlands, CreatureBehaviors)
+                    os.path.join(self.mods_dir, folded[mod][0], "About", "About.xml") for _ in [0]
+                    if any(os.path.isdir(d) for d in folded_dirs(self.mods_dir, mod, folded))]:
                 try:
                     with open(about, encoding="utf-8-sig") as f:
                         text = f.read()
@@ -872,7 +945,7 @@ class Fx(object):
                 out["why"] = "%s/%s: the built commit %s has no such file under src/<tier>/" % (mod, rel, sha)
                 return out
             direct = os.path.join(self.mods_dir, mod, rel)
-            copies = deployed_paths(self.mods_dir, mod, rel)
+            copies = deployed_paths(self.mods_dir, mod, rel, self.folded())
             digests = {}
             for c in copies:
                 with open(c, "rb") as f:
@@ -963,7 +1036,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         return done("UNMEASURED", why)
     if files or trees:
         rc, plan = fx.deploy_plan(deploy or "", lr["plan_max_s"])
-        why = deploy_gap(files, rc, plan, trees)
+        why = deploy_gap(files, rc, plan, trees, getattr(fx, "folded", dict)())
         if why:     # a plan that failed or timed out is the harness's: it may pass in a minute, so no game stamp
             return done("UNMEASURED", "not deployed: %s" % why, **({"game": None} if rc != 0 else {}))
     if files:

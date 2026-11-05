@@ -253,7 +253,7 @@ def t_not_owed_returns():
 def t_refused_proof_returns_offline():
     """OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU: a line the live lane would refuse goes back at implement, no live row."""
     x = rig(1)
-    x.w.proofs[("I0", ".txt")] = 'live-proof A2: python.exe "$(wslpath -w src/RimMandrake/Utils/x.py)" < /dev/null\n'
+    x.w.proofs[("I0", ".txt")] = 'live-proof A2: python.exe "$(wslpath -w $HOME/x.py)" < /dev/null\n'
     to_game(x, "I0")
     x.tick()
     st = x.st("I0")
