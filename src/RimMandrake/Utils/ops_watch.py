@@ -2937,17 +2937,21 @@ def _q_designer(q, now, pcache, cpath):
     stage 2 ready for 12 h+ on 2026-11-04). Each ready concept is pending since it last moved: the later of its last
     history row (a run's open or close, an unblock, a reopen) and its open run's start. Pending times only, no marks,
     so the stall is the OLDEST ready concept's (a run on one concept never hides another left behind); a run open
-    longer than the threshold with no close is a stall too (measured runs take 2 to 11 min). A concept waiting on him,
-    blocked or locked is not pending. root: the concepts dir (default designer_stage.concepts_root(), the Designer
-    clone's design/concepts); a missing root, a stage.json that does not parse, or a ready concept with no readable
-    time is blind."""
+    longer than the threshold with no close is a stall too (measured runs take 2 to 11 min). A concept at
+    waiting_owner whose owner has ANSWERED (designer_stage.owner_moved; DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY)
+    is pending too, since his answer (designer_stage.owner_answered_at): only a run's open moves it back to ready, so
+    it is forgotten the same way. One still waiting on him, blocked or locked is not pending. root: the concepts dir
+    (default designer_stage.concepts_root(), the Designer clone's design/concepts); repo: the clone whose OWNER shard
+    is read (default designer_stage.REPO; the concept's own clone is read too); a missing root, a stage.json that does
+    not parse, a ready concept with no readable time, or a waiting concept whose OWNER shard is unreadable is blind."""
     rf = str(HERE.parent / "rimflow")
     if rf not in sys.path:
         sys.path.insert(0, rf)
+    import designer_stage as DS
+    repo = q.get("repo") or DS.REPO
     if q.get("root"):
         root = Path(q["root"])
     else:
-        import designer_stage as DS
         root = Path(DS.concepts_root())
     if not root.is_dir():
         raise OSError("concepts dir missing: %s" % root)
@@ -2960,6 +2964,14 @@ def _q_designer(q, now, pcache, cpath):
         run_at = _iso_epoch((st.get("running") or {}).get("at")) if isinstance(st.get("running"), dict) else None
         if run_at is not None:
             alist.append(run_at)
+        if st.get("status") == "waiting_owner":
+            try:
+                ans = DS.owner_answered_at(st, str(f.parent), repo)
+            except DS.Refused as e:
+                raise OSError("%s: %s" % (f, e))
+            if ans is not None:
+                plist.append(max(t for t in (ans, run_at) if t is not None))
+            continue
         if st.get("status") != "ready":
             continue
         hs = [h for h in (st.get("history") or []) if isinstance(h, dict)]

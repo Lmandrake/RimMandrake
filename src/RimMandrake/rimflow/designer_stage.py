@@ -175,7 +175,10 @@ def clone_of(d):
 
 def owner_feed(repo, item, d=None):
     """sha of owner_uncited: what the stages that depend on his words freeze."""
-    u = owner_uncited(repo, item, d)
+    return _feed_of(owner_uncited(repo, item, d))
+
+
+def _feed_of(u):
     return None if u is None else hashlib.sha256(",".join(u).encode("utf-8")).hexdigest()
 
 
@@ -1017,6 +1020,35 @@ def abort_run(d, run):
 def owner_moved(st, d, repo):
     w = st.get("waiting_owner_feed")
     return w is not None and owner_feed(repo, st.get("item"), d) != w
+
+
+def owner_answered_at(st, d, repo=REPO):
+    """A concept at waiting_owner whose owner has answered (owner_moved) waits on a run-now launch nobody schedules
+    (DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY). -> epoch seconds it has waited since: the earliest uncited owner
+    event newer than the wait began (its last history row), else the wait's start; None while he has not answered
+    (no waiting_owner_feed recorded, or the feed unchanged). Refused when the OWNER shard is unreadable: blind, not
+    silence."""
+    w = st.get("waiting_owner_feed")
+    if w is None:
+        return None
+    u = owner_uncited(repo, st.get("item"), d)
+    if u is None:
+        raise Refused("OWNER shard unreadable for %s" % st.get("item"))
+    if _feed_of(u) == w:
+        return None
+    hs = [h for h in st.get("history") or [] if isinstance(h, dict)]
+    began = _epoch(hs[-1].get("at")) if hs else None
+    if began is None:
+        raise Refused("waiting_owner concept with no readable history time")
+    newer = [int(t) / 1e9 for t in u if t.isdigit() and int(t) / 1e9 > began]
+    return min(newer) if newer else began
+
+
+def _epoch(s):
+    try:
+        return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc).timestamp()
+    except (TypeError, ValueError):
+        return None
 
 
 def charge_state(st, tokens, kind, ref):

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a Designer concept at status=ready with no run for over 60 min raises
-the ops_watch alarm for Operations. Fixture-only: stage.json files in temp dirs fed through c_queues and run_alarms
+the ops_watch alarm for Operations; so does one at status=waiting_owner whose owner has answered
+(DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY), pending since his answer. Fixture-only: stage.json files in temp dirs fed through c_queues and run_alarms
 with the real rules; no real concept is read and nothing is filed."""
 import json
 import os
@@ -99,6 +100,73 @@ shutil.rmtree(ROOT / "Torn")
 (ROOT / "NoTime" / "stage.json").write_text(json.dumps({"status": "ready", "history": [{"at": "garbled"}]}))
 check("a ready concept with no readable time is blind, never a guess", read()[KEY]["m"] == "UNMEASURED", read()[KEY])
 shutil.rmtree(ROOT / "NoTime")
+# DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY: waiting_owner with his answer in, and nobody opens the run
+sys.path.insert(0, str(HERE.parent / "rimflow"))
+import designer_stage as DS  # noqa: E402
+CL = _TMP / "clone"
+SHARD = CL / "infrastructure/state/ledger/events/OWNER.jsonl"
+SHARD.parent.mkdir(parents=True)
+SHARD.write_text("")
+ITEM = "SELFTEST_FIXTURE_CONCEPT_ZZQ"
+QR = {"queues": [dict(QR["queues"][0], repo=str(CL))]}
+
+
+def owner_event(min_ago, ident):
+    with open(SHARD, "a") as fh:
+        fh.write(json.dumps({"seat": "OWNER", "event": "note", "id": ITEM, "note": ident,
+                             "tsn": int((NOW - min_ago * 60) * 1e9)}) + "\n")
+
+
+def waiting(name, last_min, feed_now=True):
+    d = ROOT / name
+    d.mkdir(exist_ok=True)
+    st = {"schema": 1, "mod": name, "item": ITEM, "stage": 1, "status": "waiting_owner", "running": None,
+          "history": [{"at": iso(NOW - 900 * 60), "what": "init", "why": "", "stage": 0},
+                      {"at": iso(NOW - last_min * 60), "what": "close", "why": "", "stage": 1}]}
+    if feed_now:
+        st["waiting_owner_feed"] = DS.owner_feed(str(CL), ITEM, str(d))
+    (d / "stage.json").write_text(json.dumps(st))
+
+
+for _n in ("Fresh", "FlowWorks", "Busy", "Waiting", "Locked", "Blocked"):
+    shutil.rmtree(ROOT / _n, ignore_errors=True)
+owner_event(1000, "an older reply, already there when the asks went out")
+waiting("GSS", 300)
+check("waiting_owner, he has not answered (feed unchanged) for 300 min: not pending", stalled()["v"] == 0.0
+      and read()["queues.designer.pending"]["v"] == 0, read())
+owner_event(45, "his answer")
+check("his answer 45 min ago, no run: pending ~45 min, under the alarm (pending since his answer, not the wait)",
+      44.5 <= stalled()["v"] <= 45.5 and read()["queues.designer.pending"]["v"] == 1, read())
+owner_event(30, "a second reply")
+check("a second reply does not restart the clock: the earliest answer wins", 44.5 <= stalled()["v"] <= 45.5, stalled())
+SHARD.write_text("")
+owner_event(1000, "an older reply, already there when the asks went out")
+owner_event(61, "his answer")
+check("his answer 61 min ago, no run: ~61, the alarm's side", 60.5 <= stalled()["v"] <= 61.5, stalled())
+_pts = read()
+OW.stamp_ranges(_pts, RULES)
+check("the alarm target is crossed by an answered, forgotten waiting_owner concept",
+      OW.target_state(_pts, RULES).get("QUEUE_STALLED:" + KEY) is True, _pts[KEY])
+waiting("GSS", 300, feed_now=False)
+check("waiting_owner with no feed recorded is not answered (owner_moved's rule): 0", stalled()["v"] == 0.0, stalled())
+SHARD.write_text("")
+owner_event(1000, "an older reply, already there when the asks went out")
+waiting("GSS", 300)
+owner_event(400, "a reply older than the wait, newly visible (a clone that had not pulled it)")
+# the feed moved, but by no event newer than the wait: the clock is the wait's start
+_st = json.loads((ROOT / "GSS" / "stage.json").read_text())
+_st["waiting_owner_feed"] = "a-feed-that-no-longer-matches"
+(ROOT / "GSS" / "stage.json").write_text(json.dumps(_st))
+check("feed moved with no event newer than the wait: pending since the wait began (~300)",
+      299.5 <= stalled()["v"] <= 300.5, stalled())
+_orig = DS.owner_uncited
+DS.owner_uncited = lambda *a, **k: None
+_r = read()
+check("a waiting concept whose OWNER shard is unreadable is blind, never a calm 0", _r[KEY]["m"] == "UNMEASURED"
+      and _r["queues.blind"]["v"] == 1, _r)
+DS.owner_uncited = _orig
+shutil.rmtree(ROOT / "GSS")
+concept("FlowWorks", "ready", 120)
 QR_MISSING = {"queues": [dict(QR["queues"][0], root=str(_TMP / "nope"))]}
 _r = OW.c_queues(NOW, QR_MISSING, {})
 check("a missing concepts dir is blind", _r[KEY]["m"] == "UNMEASURED" and _r["queues.blind"]["v"] == 1, _r)

@@ -33,7 +33,7 @@
   },
   {
    "name": "designer",
-   "_doc": "DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a concept whose stage.json reads status=ready waits on a run-now launch nobody schedules; pending since it last moved, the oldest ready concept's wait; the Designer's off switch pauses it",
+   "_doc": "DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a concept whose stage.json reads status=ready waits on a run-now launch nobody schedules; pending since it last moved, the oldest ready concept's wait; DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY: a waiting_owner concept whose owner has answered (designer_stage.owner_moved) is pending too, since his answer; the Designer's off switch pauses it",
    "reader": "designer_stage",
    "paused_file": "/mnt/d/ClaudeWork/rimmandrake/designer/DESIGNER_OFF"
   }
@@ -404,7 +404,7 @@
    "owner": "Operations",
    "ack_within_min": 30,
    "max_age_min": 30,
-   "why": "DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a concept at status=ready with no Designer run for 60 min. The Designer is run-now only, so nothing launches it (FlowWorks sat at stage 2 ready from 2026-11-04 13:02Z for 12 h+ while 14 FlowWorks build items were concept_refused); measured runs take 2 to 11 min.",
+   "why": "DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a concept at status=ready with no Designer run for 60 min. The Designer is run-now only, so nothing launches it (FlowWorks sat at stage 2 ready from 2026-11-04 13:02Z for 12 h+ while 14 FlowWorks build items were concept_refused); measured runs take 2 to 11 min. DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY: a waiting_owner concept whose owner has answered counts from his answer, since only a run's open moves it back to ready.",
    "classes": {
     "sane": {
      "at_least": 0
@@ -626,7 +626,7 @@
    "marks": [
     "MEASURED"
    ],
-   "why": "DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a concept has read status=ready for over 60 min with no Designer run; find the concept (status ready in the Designer clone's design/concepts/*/stage.json; `designer_stage.py status <dir>`) and launch it (`role_launch.py run-now --role Designer --concept design/concepts/<Mod>`) or set its real state"
+   "why": "DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a concept has read status=ready (or waiting_owner with his answer in, DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY) for over 60 min with no Designer run; find the concept (status ready or waiting_owner in the Designer clone's design/concepts/*/stage.json; `designer_stage.py status <dir>`) and launch it (`role_launch.py run-now --role Designer --concept design/concepts/<Mod>`) or set its real state"
   },
   {
    "key": "queues.blind",
