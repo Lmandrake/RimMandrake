@@ -1600,7 +1600,10 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                        mode=a["mode"], budget=a["budget"], slot=a["slot"], band=a["band"],
                                        item=a["ticket"], seat=seat,
                                        run_max_s=a.get("run_max_s"), state="running", tokens=None,
-                                       **({"concept": a["concept"]} if a.get("concept") else {}))
+                                       **({"concept": a["concept"]} if a.get("concept") else {}),
+                                       # a resume (role_launch.resume_due): its chain, so a resumed death counts on
+                                       **({"resume_of": a["resume_of"], "resume_n": a.get("resume_n")}
+                                          if a.get("resume_of") else {}))
                             runs.append(run)
                             started.append(run)
                             do_persist()     # on disk BEFORE systemd-run (with decide's slot mark): review round R, A

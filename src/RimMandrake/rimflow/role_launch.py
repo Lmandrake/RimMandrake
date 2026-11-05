@@ -129,6 +129,19 @@ OVER_RATE = 0.2
 AUTH_TEXT_MAX = 400     # an auth death's result IS the short API error; a long result merely quotes one
 AUTH_RX = re.compile(r"failed to authenticate|oauth session expired|login expired|please run /login|"
                      r"authentication_failed", re.I)
+# A run the ACCOUNT ended (ROLE_RUNS_BUILD_RESUME_AFTER_ACCOUNT_LOSS; owner 2026-11-04: "You could just poke the agents
+# to continue where they were."): claude -p's result says is_error, terminal_reason api_error, api_error
+# usage_limit_reached / api_error_status 429 ("You've hit your weekly limit · resets 12pm (America/Los_Angeles)",
+# measured on 9 runs of the 2026-11-04 outage). Not a role failure: no role:<name>:failed. After real usage it is
+# RESUMABLE: rs["resume"] holds its session, and once the reset its message names has passed (or RESUME_WAIT_S when it
+# names none) and the account gate goes, the next tick relaunches it on the same unit template, slice and budget with
+# `--resume <session>` and a continue prompt, at most RESUME_MAX times in a chain. A 0-usage death stays a fresh run
+# on the normal schedule (it did no work to keep).
+ACCOUNT_ERRORS = ("usage_limit_reached", "rate_limit", "rate_limit_error", "overloaded_error")
+LIMIT_RX = re.compile(r"hit your (?:\w+ )?limit|usage limit|rate limit", re.I)
+RESUME_WAIT_S = 3600        # no reset named: try again after an hour (a still-dead account just waits again)
+RESUME_MAX = 3              # resumes in one chain; past it the run is given up, said
+RESUME_TTL_S = 2 * 86400    # a resume not launchable for this long is dropped, said
 
 try:
     import arbiter_pending as PW     # the rimflow dir is on sys.path (dispatcher.py, the selftests)
@@ -673,7 +686,8 @@ def transcript_usage(run, projects=PROJECTS):
     weighted and was charged 450,000). -> a `usage` dict in the result's shape (the four USAGE_KEYS and the
     cache_creation TTL split), or None (UNMEASURED: no transcript, or no assistant turn in it). Each API message is
     logged once per content block with the same usage; the last line of each message id is taken (matches the result
-    json exactly on rm-role-operations-1793627400)."""
+    json exactly on rm-role-operations-1793627400). A resumed run (resume_of) counts only turns from its launch on."""
+    since = run.get("at") if run.get("resume_of") else None
     per = {}
     for f in _transcript_files(run, projects):
         try:
@@ -686,6 +700,8 @@ def transcript_usage(run, projects=PROJECTS):
                     except ValueError:
                         continue
                     m = e.get("message") if isinstance(e, dict) and e.get("type") == "assistant" else None
+                    if since is not None and (utc_epoch(str(e.get("timestamp") or "")[:19] + "Z") or 0) < since:
+                        continue     # a resumed session's file also holds the turns of the run it continues
                     if isinstance(m, dict) and isinstance(m.get("usage"), dict) and m.get("id"):
                         per[(f, m["id"])] = m["usage"]
         except OSError:
@@ -947,7 +963,29 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                     why="%s ran over budget %d times in 7 days (of %d measured runs): its budget or its scope is "
                     "wrong" % (name, len(over), finished_in_window(rs, now)),
                     raise_first="%s keeps overrunning: re-set its budget or narrow its scope." % name)
-        if run["state"] == "failed":
+        acct = account_death(res) if run["state"] == "failed" else None
+        if acct:
+            # the account ended it, not the role: no role:<name>:failed (ROLE_RUNS_BUILD_RESUME_AFTER_ACCOUNT_LOSS)
+            rec, why = resume_record(run, res, acct, now, cfg, resume_account(obs))
+            old = rs.get("resume") if isinstance(rs.get("resume"), dict) else None
+            if rec and old and old.get("of") != rec["of"]:
+                # two chains cut off: the run that did more work is kept, the other one's session is named
+                keep = rec if (rec.get("tokens") or 0) >= (old.get("tokens") or 0) else old
+                gone = old if keep is rec else rec
+                act(do="role_hold", role=name, ticket=gone.get("item"), note=True,
+                    why="%s resume of %s dropped for %s's (more work): its work stays in session %s" % (
+                        name, gone.get("unit"), keep.get("unit"), gone.get("session")))
+                rec = keep
+                if keep is old:
+                    why = "the pending resume of %s did more work and is kept" % old.get("unit")
+            if rec:
+                rs["resume"] = rec
+            act(do="role_hold", role=name, ticket=run.get("item"), note=True,
+                blind=blind(name, "failed", run.get("mode"), run["unit"]),     # a closed-set outcome: true, and no alarm
+                why="%s run %s ended on the account (%s), not a role failure: %s" % (
+                    name, run["unit"], acct, ("resumable: session %s resumes at %s (resume %d of %d)" % (
+                        rec["session"], iso(rec["due"]), rec["n"], RESUME_MAX)) if rec else "not resumed, " + why))
+        elif run["state"] == "failed":
             text = res.get("result") or run.get("err_tail") or ""
             back = auth_failed_back(rs, run, text, now)
             act(do="alarm", kind="role:%s:failed" % name, ticket=run.get("item"), note=True, conductor_log=True,
@@ -961,6 +999,129 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                     + (text or "no result file")[:160]))
         run.pop("consumed", None)                        # read only just above; runs stay in state for 2 days
     rs["runs"] = [r for r in rs.get("runs") or [] if r.get("state") == "running" or now - r["at"] < 2 * 86400]
+
+
+def account_death(res):
+    """Pure. A claude -p result -> the account error that ended it ("usage_limit_reached", "429", ...), or None. Only an
+    is_error result whose api_error / api_error_status / short text says the account refused counts; an auth death
+    (AUTH_RX) is login_watch's and auth_failed_back's, not this."""
+    if not isinstance(res, dict) or not res.get("is_error"):
+        return None
+    err = str(res.get("api_error") or "")
+    if err in ACCOUNT_ERRORS:
+        return err
+    if res.get("api_error_status") == 429:
+        return "429"
+    text = str(res.get("result") or "")
+    if res.get("terminal_reason") == "api_error" and len(text) <= AUTH_TEXT_MAX and LIMIT_RX.search(text) \
+            and not AUTH_RX.search(text):
+        return "limit"
+    return None
+
+
+def limit_reset_at(text, at):
+    """-> the epoch the limit message names as its reset (login_watch.limit_reset), or None."""
+    try:
+        import login_watch as LW
+    except ImportError:
+        try:
+            from rimflow import login_watch as LW
+        except ImportError:
+            return None
+    return LW.limit_reset(text, at)
+
+
+def resume_record(run, res, err, now, cfg, account=None):
+    """Pure but for the clock it is handed. -> rs["resume"] for a run the account ended after real usage, or (None, why)
+    when it is not resumable. The chain count comes from the run (a resumed run carries resume_n)."""
+    n = int(run.get("resume_n") or 0)
+    if not run.get("tokens") and not run.get("resume_of"):   # a resume that died at once still holds the chain's work
+        return None, "it used no tokens, so the next scheduled run starts fresh"
+    if not (res.get("session_id") or run.get("session")):
+        return None, "no session id on record to resume"
+    if run.get("concept"):
+        return None, "a stage-machine run is reopened by its stage, never resumed"
+    if n >= RESUME_MAX:
+        return None, "it was resumed %d times already (RESUME_MAX)" % n
+    text = str(res.get("result") or "")
+    reset = limit_reset_at(text, now)
+    return {"of": run.get("resume_of") or run["unit"], "unit": run["unit"], "session": res.get("session_id") or
+            run.get("session"), "account": account, "mode": run.get("mode"), "budget": run.get("budget"), "slot": run.get("slot"),
+            "item": run.get("item") or cfg.get("ledger_item"), "band": run.get("band"), "error": err,
+            "tokens": run.get("tokens"), "n": n + 1, "at": now,
+            "due": reset if reset is not None else now + cfg.get("resume_wait_s", RESUME_WAIT_S)}, None
+
+
+def resume_account(obs):
+    """-> the account the machine runs on now (obs["account"]), or None unread."""
+    try:
+        return obs["account"]() if obs.get("account") else None
+    except Exception:  # noqa: BLE001 - unread: resume_due waits for the reset instead
+        return None
+
+
+def resume_prompt(cfg, rec, unit):
+    """The continue message a resumed run gets (its session already holds the original task and its work)."""
+    return ("You are %s, resumed. Your run %s was cut off by the account (%s) after %s weighted tokens; the account "
+            "answers again. Continue exactly where you left off: finish the task this session was given, within its "
+            "budget of %s weighted tokens, and end the way that task says a run ends. Do not start the task over. "
+            "This is resume %d of at most %d (unit %s)." % (
+                cfg.get("name"), rec["unit"], rec["error"], rec.get("tokens"), rec.get("budget") or 0, rec["n"],
+                RESUME_MAX, unit))
+
+
+def resume_due(name, rs, cfg, now, act, busy, gate, account=None, tick_launch=None):
+    """decide_roles' resume step for one role. -> True when this tick is spent on the resume (launched, or held so no
+    fresh run is launched over the context it would continue), False to decide the role as usual. Due once the reset
+    its message named has passed, or at once when the machine now runs on another account than the one that refused
+    it; either way the account gate must go. Kept RESUME_TTL_S past its due time, then dropped, said."""
+    rec = rs.get("resume")
+    if not isinstance(rec, dict) or not rec.get("unit") or not rec.get("session"):
+        rs.pop("resume", None)
+        return False
+    due = float(rec.get("due") or 0)
+    if now - max(float(rec.get("at") or 0), due) > RESUME_TTL_S:
+        rs.pop("resume", None)
+        act(do="role_hold", role=name, ticket=rec.get("item"), note=True,
+            why="%s resume of %s dropped: not launchable for %d s past its due time; its work stays in session %s" % (
+                name, rec.get("unit"), RESUME_TTL_S, rec.get("session")))
+        return False
+    if name in busy:
+        return True             # one run at a time; the resume goes once the running one ends
+    switched = bool(account and rec.get("account") and account != rec["account"])
+    if now < due and not switched:
+        if rs.get("resume_hold") != [rec["unit"], "due"]:
+            rs["resume_hold"] = [rec["unit"], "due"]
+            act(do="role_hold", role=name, why="%s holds for the resume of %s at %s (the account's reset): no fresh "
+                "run over the work it continues" % (name, rec["unit"], iso(due)))
+        return True
+    go, pk = gate("role_launch") if gate else (True, {})
+    if not go:
+        if rs.get("resume_hold") != [rec["unit"], "gate"]:
+            rs["resume_hold"] = [rec["unit"], "gate"]
+            act(do="role_hold", role=name, why="%s resume of %s held: %s" % (name, rec["unit"], pk.get("why")))
+        return True
+    unit = "rm-role-%s-%d" % (name.lower(), int(now))
+    # built before anything is consumed: a raise here leaves the resume pending (review V, V7)
+    kw = dict(do="role_launch", role=name, unit=unit, ticket=rec.get("item"), note=True, mode=rec.get("mode"),
+              budget=rec.get("budget") or 0, slot="resume of %s" % rec["unit"], band=rec.get("band"), seat=cfg["seat"],
+              run_max_s=max_s_of({}, cfg), account=pk.get("account"), resume=rec["session"],
+              resume_of=rec.get("of") or rec["unit"], resume_n=rec.get("n") or 1,
+              why="%s resume %s of %s (cut off by the account: %s, after %s weighted tokens%s), budget %s, unit %s, "
+              "session %s" % (name, rec.get("n"), rec["unit"], rec.get("error"), rec.get("tokens"),
+                              "; now on another account" if switched and now < due else "", rec.get("budget"), unit,
+                              rec["session"]),
+              blind=blind(name, "launched", rec.get("mode"), unit), message=resume_prompt(cfg, rec, unit))
+    rs.pop("resume_hold", None)
+    rs["pending_launch"] = {"unit": unit, "mode": "resume", "resume": rec}
+    rs.pop("resume")
+    if tick_launch is not None:
+        tick_launch[name] = unit
+    act(**kw)
+    if tick_launch is not None:
+        tick_launch.pop(name, None)
+    busy.add(name)
+    return True
 
 
 def auth_failed_back(rs, run, text, now):
@@ -1230,6 +1391,11 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         name = role.get("name", "?")
         req = (rst.get(name) or {}).get("run_now") if isinstance(rst.get(name), dict) else None
         if not role.get("enabled") and not req:
+            old = rst[name].pop("resume", None) if isinstance(rst.get(name), dict) else None
+            if isinstance(old, dict):     # a disabled role resumes nothing later, unannounced
+                act(do="role_hold", role=name, ticket=old.get("item"), note=True,
+                    why="%s resume of %s dropped: the role is disabled; its work stays in session %s" % (
+                        name, old.get("unit"), old.get("session")))
             return
         missing = [k for k in LAUNCH_KEYS if not role.get(k)]
         if missing:
@@ -1254,6 +1420,10 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             act(do="alarm", kind="role:%s:schedule" % name, ticket=role["ledger_item"], note=True,
                 blind=blind(name, "schedule_unreadable"),
                 why="role %s NOT RUN: its schedule entry is unreadable: %s" % (name, e))
+            return
+        # ---- a run the account cut off after real work goes first, resumed in its own session (account_death)
+        if rs.get("resume") and not req and obs["off"](wsl_path(role.get("off_file") or "")) is None \
+                and resume_due(name, rs, cfg, now, act, busy, gate, resume_account(obs), tick_launch):
             return
         # ---- the ledger, for a role that triggers on its events (Arbiter: done claims; Producer: plan-step
         # failures, replan requests). Blind: this role launches nothing this tick, not even a clock slot.
@@ -1652,6 +1822,9 @@ def unlaunch(rs, unit):
     if p.get("unit") != unit:
         return False
     rs.pop("pending_launch", None)
+    if p["mode"] == "resume":                 # a resume that did not launch is pending again, not lost
+        rs["resume"] = p["resume"]
+        return True
     if p["mode"] == "alarm":
         rs["alarms_seen"] = p["alarms_seen"]
         if p.get("alarm_day") is None:
@@ -1953,6 +2126,8 @@ def launch_role(role, a):
     model = mode_model(role, a.get("mode"))
     if model != role["model"]:
         role = dict(role, model=model)
+    if a.get("resume"):                       # account_death: the cut-off run's session, continued
+        role = dict(role, resume_session=a["resume"])
     if not a.get("run_now"):
         return role
     out = dict(role, enabled=True)
@@ -2129,8 +2304,9 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
         + list(role.get("launch_args") or []) + schema_args(role) + ["--output-format", "json", "--dangerously-skip-permissions"] \
-        + (["--session-id", session] if session else [])     # its transcript, found when no result is (transcript_usage)
-    pre = role.get("pre_launch")
+        + (["--resume", role["resume_session"]] if role.get("resume_session")      # continues that session (resume_due)
+           else ["--session-id", session] if session else [])     # its transcript, found when no result is
+    pre = None if role.get("resume_session") else role.get("pre_launch")    # a resume re-screens nothing
     if pre:
         # one argv, or a list of argvs run in order, each only if the one before exited 0 (the Arbiter:
         # isolated_evidence.py, then arbiter_tiers.py)
@@ -2198,7 +2374,7 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
     systemd-run itself said no; a raise (a timeout) leaves the caller's run record in place, since the unit may be up.
     The scope is named by the launcher (role_scope), never looked up: the caller recorded it before this call."""
     out, err = run_paths(root, unit)
-    session = str(uuid.uuid4())
+    session = role.get("resume_session") or str(uuid.uuid4())     # claude -p --resume keeps the session id
     # a real launch owns a TMPDIR (run_tmp.py; TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP); a test's fake runner makes no dir
     tmpdir = run_tmp.prepare(unit) if runner is subprocess.run else None
     r = runner(launch_argv(role, unit, msg, out, err, claude, session, tmpdir), capture_output=True, text=True, timeout=60,
