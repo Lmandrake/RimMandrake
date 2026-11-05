@@ -1571,6 +1571,9 @@ def third_review_cases(td: Path, origin: Path):
         live = object.__new__(R.Live)
         live.blind, live.paths = [], []
         check(live._repo_of(str(wt)) is None and live.blind, "a gitdir that is not there is blind")
+        live.blind.clear()
+        live._lenders(str(wt / "src"), quiet=True)
+        check(not live.blind, "a named path in a pruned worktree is not blind")
 
         # a file whose name carries a return reaches the tar
         age(cr)

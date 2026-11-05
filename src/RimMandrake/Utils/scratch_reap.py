@@ -644,7 +644,12 @@ class Live:
             if not m:
                 raise OSError(0, "no gitdir line")
             gd = os.path.join(d, m.group(1).strip())
-            os.stat(gd)                                 # a gitdir that is not there is not a repo that borrows nothing
+            try:
+                os.stat(gd)                             # a gitdir that is not there is not a repo that borrows nothing
+            except FileNotFoundError:
+                if quiet:                               # but a path merely named in a pruned worktree is no live repo:
+                    return None                         # argv naming /home/mandrake/wt_p3 held every run (2026-11-05)
+                raise
             try:
                 common = os.path.realpath(os.path.join(gd, open(os.path.join(gd, "commondir")).read().strip()))
             except FileNotFoundError:
