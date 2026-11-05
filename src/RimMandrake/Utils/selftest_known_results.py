@@ -489,10 +489,30 @@ def build(root: Path):
                     "--allow-empty", "-m", "x"], check=True)
 
 
-def settle():
+SETTLE_MARGIN_S = 1.5       # beyond known_results.TIME_SLOP_S: a loaded box or a WSL clock step must not eat it
+_SLOP = []
+
+
+def settle(root: Path):
     """A file touched within TIME_SLOP_S of a run's start refuses as changed-during-the-run; that is the instrument
-    working, so a fixture edit waits it out."""
+    working, so a fixture edit waits it out. The wait is measured, not guessed: until the newest ctime under the fixture
+    is TIME_SLOP_S + SETTLE_MARGIN_S old by the clock (ctime, because the fixture plants future mtimes on purpose).
+    A flat 2.2 s sleep against a 2 s slop went red 1 run in 6 under load (all of run 1 'changed during the run',
+    2026-11-05). A fixture that is not settled makes the run that follows no test, so that is a check of its own."""
+    if not _SLOP:
+        _SLOP.append(load().TIME_SLOP_S)
+    slop = _SLOP[0]
     time.sleep(2.2)
+    paths = [str(root)] + [os.path.join(d, n) for d, ds, fs in os.walk(root) for n in ds + fs]
+    for _ in range(40):
+        newest = max((os.lstat(p).st_ctime for p in paths if os.path.lexists(p)), default=0.0)
+        wait = newest + slop + SETTLE_MARGIN_S - time.time()
+        if wait <= 0:
+            break
+        time.sleep(min(wait + 0.05, 5.0))
+    ripe = [p for p in paths if os.path.lexists(p) and not os.path.islink(p)
+            and os.lstat(p).st_ctime >= time.time() - slop - SETTLE_MARGIN_S / 2]
+    eq(ripe[:1], [], "settle: no fixture path changed within TIME_SLOP_S + half the margin of the run that follows")
 
 
 def run(root: Path, *args, extra=None, state=None, timeout=240):
@@ -534,7 +554,7 @@ def st(states, name):
 def fixture(root: Path):
     build(root)
     state = root.parent / f"{root.name}.state"
-    settle()
+    settle(root)
     p, s = run(root)
     eq(p.returncode, 1, "run 1: the one real red reddens the run")
     for n in CACHEABLE + list(NEVER):
@@ -587,7 +607,7 @@ def fixture(root: Path):
     with open(root / "src/bin/mytool", "ab") as f:
         f.write(b"\0")
     (root / "src/an_unrelated_new_file.txt").write_text("x")
-    settle()
+    settle(root)
     p, s = run(root, extra={"FIX_KNOB": "good"})
     for n, what in [("import", "a transitive dependency"), ("data", "a data file"), ("listing", "a listing"),
                     ("env", "an env value"), ("tool", "a tool binary"), ("absent", "a file appearing"),
@@ -598,7 +618,7 @@ def fixture(root: Path):
 
     # the revert answers from the older record
     (root / "src/data.txt").write_text("v1\n")
-    settle()
+    settle(root)
     p, s = run(root, extra={"FIX_KNOB": "good"})
     eq(st(s, "data"), "KNOWN PASS", "run 4: a revert to a known state answers")
 
@@ -614,7 +634,7 @@ def fixture(root: Path):
 
     # the planted hidden dependency: same bytes, same size, another mtime; the key cannot see it
     os.utime(root / "src/hidden.txt", (2000000000, 2000000000))
-    settle()
+    settle(root)
     p, s = run(root, extra={"FIX_KNOB": "good"})
     eq(st(s, "hidden"), "KNOWN PASS", "planted: the key cannot see it (this is the false hit the audit exists for)")
     p, s = run(root, "--nightly", extra={"FIX_KNOB": "good", "RM_SELFTEST_AUDIT_RATE": "0"})
@@ -631,7 +651,7 @@ def fixture(root: Path):
 
     # quarantine: it passes, records nothing, and only a stated rerun lets it back
     os.utime(root / "src/hidden.txt", (1000000000, 1000000000))
-    settle()
+    settle(root)
     p, s = run(root, extra={"FIX_KNOB": "good"})
     eq(st(s, "hidden"), "PASS", "quarantined: it runs, nothing is answered for it")
     eq("QUARANTINED src/selftest_hidden.py" in p.stdout, True, "quarantined: and it says so")
@@ -724,7 +744,7 @@ def counterexamples(root: Path):
     os.symlink("same_a", src / "ln")
     subprocess.run([sys.executable, "-m", "compileall", "-q", str(src / "cached_dep.py")], check=True)
     state = root.parent / f"{root.name}.state"
-    settle()
+    settle(root)
     try:
         run(root, extra={"FIX_HANDED": "x", "FIX_WALK": "a"})
         p, s = run(root, extra={"FIX_HANDED": "x", "FIX_WALK": "a"})
@@ -756,7 +776,7 @@ def counterexamples(root: Path):
         (src / "linked.txt").write_text("no")
         os.unlink(src / "ln")
         os.symlink("same_b", src / "ln")
-        settle()
+        settle(root)
         p, s = run(root, extra={"FIX_HANDED": "x", "FIX_GATE": "bad", "FIX_WALK": "b", "FIX_FORK": "bad", "FIX_BYTES": "bad", "FIX_SHELL": "bad"})
         for n in stale:
             eq(st(s, n), "FAIL", f"second reader: {n} really ran and went red (no stale PASS)")
