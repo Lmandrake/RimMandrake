@@ -2218,7 +2218,9 @@ def rl_churn(store, now, cfg):
       and lane (work|check), largest first, each "<end>/<lane> <pct of total>%": the 2026-11-04 alarm was diagnosed by
       hand from the store; this reads the shared cause (account_lost/work, unmeasured/check ...) off the point itself."""
     win_h, toks_h = float(cfg.get("churn_window_h", 12)), float(cfg.get("tokens_window_h", 24))
-    ok_ends = set(cfg.get("churn_not_fail_ends") or ("finish", "done", "unhold", "blocked", "hold", "conductor_hold"))
+    ok_ends = set(cfg.get("churn_not_fail_ends") or ("finish", "done", "unhold", "blocked", "hold", "conductor_hold",
+                                                    "reach_adopted", "reach_repaired", "reach_waiter_released",
+                                                    "reach_held", "game_env_route"))
     tlo = now - toks_h * HOUR
     try:
         names = sorted(os.listdir(store / "items"))

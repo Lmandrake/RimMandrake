@@ -9,6 +9,7 @@ and no reading said so. Each check fails on the code before the change:
 2. rl_churn's returned tokens: spend runs whose (item, gen) failed, placed in time by the gen's start row. x.by_end splits
    that spend by the gen's failed ending and lane, so an alarm reads its shared cause off the point. 2b: a gen is
    returned only when its LAST ending (a gen-less `done` row belongs to the gen open when it was written) is a failure.
+   2c: under the shipped rules, the supervisor's reach/env bookkeeping rows (reach_repaired ...) are no failed attempt.
 3. rl_churn is UNMEASURED (never 0) with no spend, with too much spend it cannot place, and with no items dir.
 4. rules: a "returned" or "blind_fail" journal act is not progress; churn SLIs are incident SLIs whose units match.
 5. ops_health.incident names the incident SLIs reading bad, and verdict carries it.
@@ -133,6 +134,33 @@ def main():
        and pct["x"]["by_end"] == ["blind_fail/work 20.0%"],
        "2b: a gen that ended done is not returned (its earlier unmeasured/reach rows sent nothing back); one ending in a "
        "failure is (OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV)", pct)
+    # 2c: the supervisor's own bookkeeping rows are no failed attempt (OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV gen 5): the
+    # reach repair's probe passing (reach_repaired), its waiter released (reach_waiter_released), the move to the repair
+    # (reach_adopted), a hold before a re-check (reach_held) and an environment routed to a fixer with no builder
+    # (game_env_route). Read under the SHIPPED rules, they made 'unmeasured failed it 4 times' out of two blind checks
+    # and a passed probe, and put 6 of 50 items in churn on 2026-11-05.
+    rules_cfg = json.loads((Path(OW.__file__).parent / "ops_watch_rules.json").read_text())["relentless"]
+    s = TMP / "s1c"
+    t1 = NOW - 2 * HOUR
+    item(s, "G_ITEM", 0, [{"gen": 1, "at": iso(t1), "start": marker("G_ITEM", 1)},
+                          {"gen": 1, "at": iso(t1 + 60), "end": "finish"},
+                          {"gen": 1, "at": iso(t1 + 70), "end": "unmeasured"},
+                          {"gen": 1, "at": iso(t1 + 80), "end": "reach_adopted"},
+                          {"gen": 1, "at": iso(t1 + 90), "end": "reach_repaired"},
+                          {"gen": 1, "at": iso(t1 + 95), "end": "reach_waiter_released"},
+                          {"gen": 1, "at": iso(t1 + 96), "end": "reach_waiter_released"},
+                          {"gen": 1, "at": iso(t1 + 97), "end": "reach_held"},
+                          {"gen": 1, "at": iso(t1 + 98), "end": "game_env_route"},
+                          {"gen": 1, "at": iso(t1 + 99), "end": "game_env_route"}])
+    (s / ("spend-%s.json" % time.strftime("%Y%m%d", time.gmtime(NOW)))).write_text(
+        json.dumps({"runs": {marker("G_ITEM", 1): 700, marker("G_ITEM", 1, "check"): 300}}))
+    p = OW.rl_churn(s, NOW, rules_cfg)
+    ci, pct = p["relentless.churn_items"], p["relentless.returned_tokens_pct"]
+    ok(ci.get("v") == 0 and pct.get("m") == "MEASURED" and pct["x"]["returned"] == 0
+       and {"reach_adopted", "reach_repaired", "reach_waiter_released", "reach_held", "game_env_route"}
+       <= set(rules_cfg["churn_not_fail_ends"]),
+       "2c: reach/env bookkeeping ends are no failed attempt under the shipped rules: a repeated bookkeeping row is not churn and "
+       "a gen whose last row is game_env_route sent nothing back", (ci, pct.get("x"), rules_cfg["churn_not_fail_ends"]))
     # 3
     s = store_fixture(TMP / "s2", unmapped=5000)
     p = OW.rl_churn(s, NOW, CFG)
