@@ -1,3 +1,4 @@
+live-mods: RimMandrake.Biomes
 live-proof A1: python3 src/RimMandrake/Stillsand/prove_sandswim.py --clause A1
 live-proof A2: python3 src/RimMandrake/Stillsand/prove_sandswim.py --clause A2
 live-proof A3: python3 src/RimMandrake/Stillsand/prove_sandswim.py --clause A3
