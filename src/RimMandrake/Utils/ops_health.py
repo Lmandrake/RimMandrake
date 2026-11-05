@@ -245,9 +245,13 @@ def rank_of(iid, c):
 def is_system(item, c, mods):
     """Operations' classifier: an open item about the system itself, never one that names a game mod."""
     iid = getattr(item, "id", "") or ""
-    if rank_of(iid, c) is not None:     # named by hand beats every word below, either way
+    if iid in c["system_rank"]:         # named by hand, exactly, beats everything below
         return True
-    if iid in c["not_system"] or (getattr(item, "kind", None) or "") in c["content_kinds"]:
+    if iid in c["not_system"]:          # an exact not_system id beats a family glob (SELFTEST_* never claims one)
+        return False
+    if rank_of(iid, c) is not None:     # a family glob beats every word below, either way
+        return True
+    if (getattr(item, "kind", None) or "") in c["content_kinds"]:
         return False
     words = words_of(iid, "")       # the id, never the title: titles of content items name tools in passing
     if words & mods or words & {w.lower() for w in c["content_words"]}:

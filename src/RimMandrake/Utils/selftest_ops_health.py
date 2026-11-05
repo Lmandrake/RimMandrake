@@ -368,5 +368,12 @@ ok("rank: a family holds its new members, a closed one is gone", "NIGHT_RED_Z" i
 ok("rank: the unranked follow by the classifier", got[4:] == ["OPS_A"], got)
 ok("rank: not_system beats the word that matched", "SELFTEST_OF_A_MOD" not in got and "TULIP_RESKIN" not in got, got)
 
+# an exact not_system id beats a family glob; an exact system_rank id still beats not_system
+glob = {"health": dict(RULES["health"], system_rank=["SELFTEST_*", "BOTH_NAMED"], not_system=["SELFTEST_SOURCE_POLISH", "BOTH_NAMED"])}
+gw = types.SimpleNamespace(items={x.id: x for x in [item("SELFTEST_SOURCE_POLISH"), item("SELFTEST_RED_NEW"), item("BOTH_NAMED")]})
+got = H.system_ids(gw, glob, root)
+ok("rank: an exact not_system id beats a family glob", "SELFTEST_SOURCE_POLISH" not in got and "SELFTEST_RED_NEW" in got, got)
+ok("rank: an exact system_rank id still beats not_system", "BOTH_NAMED" in got, got)
+
 print("selftest_ops_health: " + ("PASS" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS))))
 sys.exit(1 if FAILS else 0)
