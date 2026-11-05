@@ -438,6 +438,82 @@ def closure_ids(mod_folder, folded):
     return [p.lower() for p in tier["want"]] if tier and tier.get("modcheck_closure") is True else []
 
 
+def composed_ids(mod_folder):
+    """The packageIds `run()` composes for one mod, in its order: hard dependencies, the mod's own (its composed mod's
+    when folded), then its tier closure."""
+    mod_dir = find_mod_dir(mod_folder)
+    folded = composed_into(mod_folder)
+    out = list(mod_dependency_ids(mod_dir))
+    own = folded[1] if folded else mod_package_id(mod_dir)
+    if own not in out:
+        out.append(own)
+    out.extend(t for t in closure_ids(mod_folder, folded) if t not in out)
+    return out
+
+
+def src_mods_by_id(root=None):
+    """{packageId (lower): deployable name} for every mod under src/: a standalone mod by its folder name, a folded
+    source and the composed mod itself by the compose target (e.g. RimMandrake.Biomes, deployed by `--compose`).
+    A folder whose About.xml will not read is left out (it cannot be deployed either)."""
+    root = root or ROOT
+    src = os.path.join(root, "src")
+    sys.path.insert(0, _UTILS)
+    import biomes_compose
+    manifest = biomes_compose.load_manifest(src)
+    folded = biomes_compose.folded_sources(src)
+    out = {}
+    if manifest:
+        out[manifest["about"]["packageId"].lower()] = manifest["target"]
+    for tier in ("RimMandrake", "RimStarWars", "RimUtinni"):
+        d = os.path.join(src, tier)
+        if not os.path.isdir(d):
+            continue
+        for n in sorted(os.listdir(d)):
+            if not os.path.isfile(os.path.join(d, n, "About", "About.xml")):
+                continue
+            try:
+                pid = mod_package_id(os.path.join(d, n))
+            except (OSError, RuntimeError):
+                continue
+            out.setdefault(pid, folded[n][0] if n in folded else n)
+    return out
+
+
+def deploy_closure(mod_folder, root=None):
+    """RELAPSE_STEVE_FIX_DIED_TWICE: the deployable names of OUR mods that the composed list names besides the mod
+    itself (its composed target when folded), in composed order. `run()` composes a mod's hard dependencies and tier
+    closure into ModsConfig, and RimWorld drops an id whose folder is not in the game's Mods directory; deploying only
+    the mod left any of our dependencies that nobody had deployed there out of the load (2026-11-04: TerminalBiomes jobs
+    J20261104T143941Z-f42090 and J20261104T144746Z-3c7909 ended INVALID/HARNESS stale_load, `not loaded:
+    mandrake.rm.luminouspigment`, and braked the Steve lane for hours), and tested the rest against whatever stale copy
+    was there. Donor and Ludeon ids are not ours and are left to the host."""
+    have = src_mods_by_id(root)
+    folded = composed_into(mod_folder)
+    me = have.get(folded[1]) if folded else mod_folder
+    out = []
+    for pid in composed_ids(mod_folder):
+        n = have.get(pid)
+        if n and n != me and n not in out:
+            out.append(n)
+    return out
+
+
+def deploy_args_for(mod_folder, root=None):
+    """The deploy_custom_mods.py flags that put a mod AND its deploy_closure in the game: a folded mod (or any
+    closure member that is the composed target) is one `--compose biomes`, the ordinary ones ride with `--with`;
+    otherwise every one is a `--mod`."""
+    folded = composed_into(mod_folder)
+    extra = deploy_closure(mod_folder, root)
+    sys.path.insert(0, _UTILS)
+    import biomes_compose
+    m = biomes_compose.load_manifest(os.path.join(root or ROOT, "src"))
+    target = m["target"] if m else None
+    ordinary = [n for n in ([] if folded else [mod_folder]) + extra if n != target]
+    if folded or (target is not None and target in extra):
+        return ["--compose", "biomes"] + [a for n in ordinary for a in ("--with", n)]
+    return [a for n in ordinary for a in ("--mod", n)]
+
+
 def compose_test_list(package_ids, config_path=None):
     """Append `package_ids` (the mods under test) to the live ModsConfig's
     <activeMods>, after `modlist_swap.py --minimal --apply` has made MINIMAL
@@ -1143,8 +1219,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
             for mod_folder, _item in mods:
                 mod_dir = find_mod_dir(mod_folder)
                 folded = composed_into(mod_folder)
-                deploy_args = (("--compose", folded[0]) if folded
-                               else ("--mod", mod_folder))
+                # the mod AND every mod of ours its composed list names (deploy_closure): RimWorld drops the rest
+                deploy_args = tuple(deploy_args_for(mod_folder))
                 if os.environ.get("MODCHECK_SKIP_DEPLOY"):
                     # The caller already deployed with the game DOWN and launched on that list; a re-deploy now
                     # fails on any DLL the running game holds (LIVE 2026-10-07: a peer rebuilt Hum.dll mid-run).

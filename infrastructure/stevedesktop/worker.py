@@ -468,6 +468,30 @@ RUN_BASE = ("export MODCHECK_SKIP_DEPLOY=1 MODCHECK_STALE_KEEP_COMPOSED=1 "
             # -X faulthandler: 0xC0000005 reaches WSL as "exit 5" with no output (MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET)
             "python.exe -X faulthandler src/RimMandrake/Utils/modcheck/cli.py run --drivers on")
 
+# a mod with no src folder answers []: deploy_custom_mods.py refuses that name itself, loudly, in the deploy step; a
+# tree with no modcheck runner composes nothing (modcheck run fails there by itself), so it answers [] too
+CLOSURE_PY = ("import glob, json, os, sys; M = 'src/RimMandrake/Utils/modcheck'; "
+              "os.path.isfile(M + '/runner.py') or (print('[]'), sys.exit(0)); "
+              "sys.path.insert(0, M); import runner; f = getattr(runner, 'deploy_closure', None); "
+              "known = glob.glob('src/*/%s/About/About.xml' % sys.argv[1]) or runner.composed_into(sys.argv[1]); "
+              "print(json.dumps(f(sys.argv[1]) if f and known else []))")
+
+
+def deploy_closure(mod, clone=None):
+    """RELAPSE_STEVE_FIX_DIED_TWICE: the mods of ours that the job's composed list names besides `mod`, read from the
+    job's own tree (modcheck runner.deploy_closure; a tree older than it answers []). modcheck composes a mod's hard
+    dependencies and tier closure, and RimWorld drops an id whose folder is not deployed: TerminalBiomes jobs ended
+    INVALID/HARNESS stale_load `not loaded: mandrake.rm.luminouspigment` (2026-11-04) because only the composed biomes
+    were deployed. Raises on any failure: guessing an empty closure is the defect itself."""
+    r = subprocess.run([sys.executable, "-c", CLOSURE_PY, mod], cwd=clone or CLONE, capture_output=True, text=True,
+                       timeout=120)
+    if r.returncode != 0:
+        raise RuntimeError("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:]))
+    out = json.loads(r.stdout.strip().splitlines()[-1])
+    if not isinstance(out, list) or not all(isinstance(m, str) for m in out):
+        raise RuntimeError("not a list of mod names: %r" % (out,))
+    return out
+
 
 
 def driver_budget_export(timeout_s):
@@ -570,6 +594,14 @@ class Attempt:
     def deploy(self):
         override = os.environ.get("TESTQ_CMD_DEPLOY")
         mods = [self.job["mod"]] + list(self.job.get("deploy") or [])
+        try:
+            extra = deploy_closure(self.job["mod"])
+        except Exception as e:  # noqa: BLE001 - a deploy that cannot name its closure would drop mods silently
+            return self.fail("INVALID", "DEPLOY", "deploy closure of %s failed: %s: %s"
+                             % (self.job["mod"], type(e).__name__, str(e)[:200]))
+        if extra:
+            self.say("deploy: with the mods of ours its composed list names: " + ", ".join(extra))
+        mods += [m for m in extra if m not in mods]
         if override:
             rc, tail = self.sh(override + " " + " ".join(shlex.quote(m) for m in mods), timeout=1200)
             if rc != 0 and refused_line(tail):     # a lane that may not deploy here (archmagi_phases.py): not a fault

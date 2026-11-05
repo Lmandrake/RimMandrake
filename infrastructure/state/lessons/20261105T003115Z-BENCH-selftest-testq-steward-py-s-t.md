@@ -1,0 +1,1 @@
+selftest_testq_steward.py's T+10 check fails when run inside a Relentless worker: the steward files its item 'for: RELENTLESS' from the ambient role env (role_unit rm-relentless-work-*), while the test expects BENCH. The test reads the caller's seat environment; it is not hermetic (seen 2026-11-05 under RELAPSE_STEVE_FIX_DIED_TWICE).
