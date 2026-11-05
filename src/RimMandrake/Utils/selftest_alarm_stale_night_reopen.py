@@ -17,6 +17,8 @@ Fourth instance (NIGHTLY_COP_FIX_RED_PJLJVQ_TTXI): NIGHTLY_RED:testing.red_pjljv
 DRIFT, cured at cbfcc52bc7) closed 2026-11-04T22:19:21Z on a green rerun; reopened 05:22Z on the same night.
 Fifth instance (NIGHTLY_COP_FIX_RED_QHQXLR_JQBT): NIGHTLY_RED:testing.red_qhqxlr's item (selftest_conductor_reset_mode
 "and only that one", cured at 40de8bea3d) closed 2026-11-04T22:19:24Z on a green rerun; reopened 05:22Z, same night.
+Sixth instance (NIGHTLY_COP_FIX_RED_UQUVZZ_AYSU): NIGHTLY_RED:testing.red_uquvzz's item (selftest_deploy_deleted's
+compare_then_vanish stub, cured at 2026-11-04 14:04Z) closed 2026-11-04T22:19:34Z on a green rerun; reopened 05:26:15Z.
 
   python3 selftest_alarm_stale_night_reopen.py --blob REV:PATH   replay ops_watch.py as it stood at REV (git), e.g.
       --blob 618deb68f3^:src/RimMandrake/Utils/ops_watch.py, the code that reopened both instances: it must FAIL.
@@ -168,6 +170,13 @@ def test_qhqxlr_instance():
                     "red_qhqxlr closed 22:19:24Z, read at 05:22Z on the 11:00Z night: no reopen (the fifth instance)")
 
 
+def test_uquvzz_instance():
+    """NIGHTLY_COP_FIX_RED_UQUVZZ_AYSU: closed 22:19:34Z on a green rerun (selftest_deploy_deleted's compare stub, cured
+    14:04Z), reopened 05:26:15Z ("live broken") on the 11:00Z night, which ran before that fix."""
+    closed_instance("NIGHTLY_RED:testing.red_uquvzz", "2026-11-04T22:19:34Z", "2026-11-05T05:26:15Z",
+                    "red_uquvzz closed 22:19:34Z, read at 05:26:15Z on the 11:00Z night: no reopen (the sixth instance)")
+
+
 def test_unchanged_without_a_night_or_close_times():
     reset()
     b = Bench(CLOSE - 7200)
@@ -183,7 +192,7 @@ def test_unchanged_without_a_night_or_close_times():
 
 if __name__ == "__main__":
     for fn in (test_stale_night_holds, test_bcbosb_instance, test_bgmskv_instance, test_pjljvq_instance, test_qhqxlr_instance,
-               test_unchanged_without_a_night_or_close_times):
+               test_uquvzz_instance, test_unchanged_without_a_night_or_close_times):
         fn()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     sys.exit(1 if FAILS else 0)
