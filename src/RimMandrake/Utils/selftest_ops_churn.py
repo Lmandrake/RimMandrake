@@ -259,6 +259,14 @@ def main():
     ok(not OW.in_churn({"returns": 0}, a_a_b, NOW, CFG) and OW.churn_why({"returns": 0}, a_a_b, NOW, CFG) == [],
        "8: B7, an old A,A and a new B is not a same-class repeat", OW.churn_why({"returns": 0}, a_a_b, NOW, CFG))
     ok(OW.in_churn({"returns": 0}, a_a_b + [(t1 + 9, "harness")], NOW, CFG), "8: a class failing again inside the window is", None)
+    # OPS_CHURN_DIAGNOSE_STILLSAND_WDMI_CRMC: STILLSAND_DUNE_GALE_LIVE_1, 3 returns of 3 causes, blind PASS after the last
+    sg = {"returns": 3, "status": "game", "check": {"verdict": "PASS", "verdict_at": t1 + 3600}}
+    sg_f = [(old, "blind_fail"), (old + 60, "proof_rework"), (t1, "game_fail")]
+    ok(OW.churn_why(sg, sg_f, NOW, CFG) == [], "8: a blind PASS after the last failure is no bounce", OW.churn_why(sg, sg_f, NOW, CFG))
+    ok(OW.churn_why(dict(sg, check={"verdict": "FAIL", "verdict_at": t1 + 3600}), sg_f, NOW, CFG) == ["3 returns"],
+       "8: a FAIL verdict does not end the bounce", None)
+    ok(OW.churn_why(sg, sg_f + [(t1 + 3700, "game_fail")], NOW, CFG)[:1] == ["3 returns"],
+       "8: a failure after the PASS bounces again", OW.churn_why(sg, sg_f + [(t1 + 3700, "game_fail")], NOW, CFG))
     cfg8 = dict(CFG, item_bands=rules["relentless"]["item_bands"], churn_item_stuck_stages=["game", "checking"],
                 churn_item_new_per_pass=5)
     s8 = TMP / "s8"

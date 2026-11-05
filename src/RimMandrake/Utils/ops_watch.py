@@ -2082,6 +2082,13 @@ def churn_why(st, fails, now, cfg, waits=0):
     recent = {c for t, c in fails if lo <= (t or 0) <= now + 300}
     if not recent:
         return []
+    chk = st.get("check") if isinstance(st.get("check"), dict) else {}
+    passed = chk.get("verdict_at") if chk.get("verdict") == "PASS" and is_num(chk.get("verdict_at")) else None
+    if passed is not None and all((t or 0) < passed for t, _ in fails):
+        # a blind PASS after the last failed attempt is forward progress, not a bounce: the returns before it are spent
+        # (OPS_CHURN_DIAGNOSE_STILLSAND_WDMI_CRMC: STILLSAND_DUNE_GALE_LIVE_1, three returns of three causes, each fixed,
+        # blind PASS at 11:36Z and waiting in the game phase, still read 'bouncing: 3 returns'); 'stuck' still speaks
+        return []
     same = {}
     for _, c in fails:
         same[c] = same.get(c, 0) + 1
