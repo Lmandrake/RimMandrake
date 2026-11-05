@@ -208,10 +208,30 @@ def read_objects() -> list[str]:
     return out
 
 
+_FORMATS: dict[str, str] = {}
+
+
+def object_format(repo: Path) -> str:
+    """sha1 or sha256, asked of git with no borrowed objects (cached per path). Unreadable reads as sha1, git's default."""
+    k = os.path.abspath(repo)
+    if k not in _FORMATS:
+        env = {k2: v for k2, v in os.environ.items() if not k2.startswith("GIT_") or k2 in ("GIT_CONFIG_GLOBAL", "GIT_CONFIG_SYSTEM")}
+        try:
+            r = subprocess.run(["git", "-C", k, "rev-parse", "--show-object-format"], capture_output=True, text=True,
+                               env=env, timeout=60)
+            _FORMATS[k] = r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else "sha1"
+        except (subprocess.TimeoutExpired, OSError):
+            _FORMATS[k] = "sha1"
+    return _FORMATS[k]
+
+
 def git(repo: Path, *a, stdin: str | None = None, timeout: int = 600) -> subprocess.CompletedProcess:
     env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_") or k in ("GIT_CONFIG_GLOBAL", "GIT_CONFIG_SYSTEM")}
     env.update(GIT_OPTIONAL_LOCKS="0", GIT_TERMINAL_PROMPT="0", GIT_NO_REPLACE_OBJECTS="1")
-    ro = read_objects()
+    # A mirror's objects lend only to a repo of the same object format: sha1 packs read from a sha256 repo log
+    # "wrong index v2 file size" / "commit-graph hash version" (MIRROR_PACK_REPAIR_STILL_GRUMBLING, 2026-11-04).
+    fmt = object_format(repo)
+    ro = [o for o in read_objects() if object_format(Path(o).parent) == fmt]
     if ro:
         env["GIT_ALTERNATE_OBJECT_DIRECTORIES"] = os.pathsep.join(ro)
     try:
