@@ -190,6 +190,13 @@ def windows_path(path):
     return os.pathsep.join(have + extra)
 
 
+def proof_budget(proof, default_s):
+    """The harness limit for one proof: `default_s`, or its own `--max-seconds N` plus 120 s when that is longer (a proof that
+    asks for 1800 s must not be killed at 600; GAMECOMP_STALL_HUNT_SEVEN_SECONDS A2 timed out twice). Pure."""
+    m = re.search(r"--max-seconds[ =](\d+)", proof or "")
+    return max(default_s, int(m.group(1)) + 120) if m else default_s
+
+
 def live_rules(r):
     out = dict(DEFAULTS)
     out.update((r or {}).get("live") or {})
@@ -1098,13 +1105,13 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                         last_line(slog) or ("timed out" if sc is None else "exit %d" % sc))
             if crashed is None and code is None:
                 row["proof_exit"] = None        # the proof starts: from here every outcome is the mod's (verdict)
-                code = fx.run_proof(proof, log, lr["proof_max_s"])
+                code = fx.run_proof(proof, log, proof_budget(proof, lr["proof_max_s"]))
                 row["proof_exit"] = code
                 again = wsl_rerun(proof, read_text(log)) if code != PASS else None     # a WSL traceback exits 1
                 if again:
                     os.replace(log, log[:-len(".log")] + "-wsl.log")
                     row["rerun"] = again
-                    code = fx.run_proof(again, log, lr["proof_max_s"])
+                    code = fx.run_proof(again, log, proof_budget(again, lr["proof_max_s"]))
                     row["proof_exit"] = code
                 if code in (PASS, FAIL) and files and (started != fx.game_started()
                                                        or stamps != [fx.mtime(m, rel) for m, rel in files]):

@@ -3,7 +3,7 @@
 Found by the FOUNDRY live session round 2 (`Transient/LIVE_SESSION_2_2026-10-01.md`), while proving
 `SOORRAK_FLIGHT_JOBSTART_NRE_1` (the NRE itself is gone: 0 exceptions over 5,000+ ticks).
 
-## What was seen (state reads only, `jawa/pawn_flight action=report kind=RM_Soorrak`; no flight was watched)
+## What was seen (state reads only, `jawa/pawn_flight action=report kind=RM_Soorrak`; nothing was watched)
 - 6 wild RM_Soorrak spawned on a 48 C RM_Stillsand quicktest. 4 left the map within 700 ticks (no corpse; consistent
   with `canLeaveMapFlying`, not verified as flight).
 - The 2 that stayed read `curJobDef = Wait_MaintainPosture` at **every** sample (10 x 500 ticks, 25 x 4 ticks, 12 x 7 ticks)
@@ -21,7 +21,7 @@ records `job.def` for RM_Soorrak, or read the soorrak's think tree / `RM_` job g
 
 ## criteria
 - A wild RM_Soorrak on a Stillsand quicktest shows a JobDef other than `Wait_MaintainPosture` and changes cell within
-  2,500 ticks, without any flight being watched.
+  2,500 ticks, read as state only.
 
 ## Source read 2026-10-01 (FOUNDRY, offline; no live run)
 Read against decompiled 1.6 (RimSage) and our source. None of these gives a job that runs out of toils inside

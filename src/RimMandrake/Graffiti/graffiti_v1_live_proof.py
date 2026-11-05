@@ -293,7 +293,7 @@ def _until(rb, call, method, done, limit):
 def run(clause, rb, R):
     last = {}
 
-    def call(m, a=""):
+    def call(m, a="x"):  # static_call reads "" as ZERO params; every probe method takes one string
         last["out"] = rb.call("jawa/static_call", {"type": PROBE, "method": m, "args": a})
         return _reply(last["out"])
 

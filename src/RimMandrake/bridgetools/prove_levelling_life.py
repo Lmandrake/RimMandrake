@@ -107,7 +107,7 @@ def main() -> int:
         s = rb.RimBridge(host=host, port=port, token=token, timeout=60.0)
         s.connect()
         texts, ticks = [], None
-        for arg in ("life", ""):
+        for arg in ("life", "time"):  # "" would be 0 params to static_call; ProofTiming has one string param, "time" matches no flag
             r = s.call("jawa/static_call", {"type": "RimMandrake.FlowWorks.Machinery.RM_Levelling",
                                             "method": "ProofTiming", "args": arg}) or {}
             texts.append(str(r.get("result", "")) if isinstance(r, dict) else str(r))
