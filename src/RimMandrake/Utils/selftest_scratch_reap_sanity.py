@@ -4,9 +4,11 @@
 No dispatcher runs here: the alarm is collected from signal_watch.step, so nothing can reach the real Conductor log."""
 import json
 import os
+import shutil
 import sys
 import tempfile
 import time
+import uuid
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -131,6 +133,27 @@ def main():
     check(run_heard() == ["scratch:sanity:start"], "mutant: no end reading, no end alarm (this check is the red)")
     R.sanity_end = real_end
 
+    # the 2026-11-05 07:16Z live end, under the SHIPPED limits: 467 young session dirs (eight workers) and five refusals
+    # with real reasons are what a finished run may honestly leave, so the end is quiet (OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ)
+    lim.write_text((HERE / "scratch_reap_sanity.json").read_text())
+    young = [{"verdict": "YOUNG", "bytes": 10 ** 6, "age_h": 2.0, "why": ["young"], "kind": "session", "path": f"/s/{i}"}
+             for i in range(467)]
+    real_refusals = [dict(refused, bytes=b, why=[w]) for b, w in (
+        (3.2e9, "/a/b: 3.2 GB of loose files, over the 512.0 MB preserve cap"),
+        (7.0e8, "/a/c: 699.7 MB of loose files, over the 512.0 MB preserve cap"),
+        (5.0e8, "/a/d: BENCH.jsonl names it"), (7.5e7, "/a/e: BENCH.jsonl names it"), (7.5e7, "/a/f: BENCH.jsonl names it"))]
+    sess_root = root / "W" / "claude-1000" / "proj"
+    for _ in range(467):
+        (sess_root / str(uuid.uuid4())).mkdir(parents=True)
+    R.judge_all = lambda ctx: [dict(r) for r in young + real_refusals]
+    run_heard()
+    endrec = json.loads((sd / "sanity.json").read_text())["end"]
+    check(endrec["problems"] == [] and endrec["measures"]["refused"] == 5,
+          "the live 07:16Z end (467 young sessions, 5 reasoned refusals) is not dirt under the shipped limits: %s"
+          % endrec["problems"])
+    check(endrec["measures"]["session_dirs"] == 467, "the session dirs are seen (the instrument can see): %s" % endrec["measures"]["session_dirs"])
+    shutil.rmtree(root / "W")
+
     # clean at both ends: silent
     R.judge_all = lambda ctx: []
     limits(lim)
@@ -163,7 +186,6 @@ def main():
     (fx / "f").write_text("fresh")
     os.utime(fx, (0, 0))
     check((R.fixture_age_h(fx, time.time()) or 1e9) < 1, "a fixture dir with fresh contents is young by content, not by dir mtime")
-    import shutil
     shutil.rmtree(td)
     print(f"selftest_scratch_reap_sanity: {'FAIL' if FAILS else 'PASS'}")
     return 1 if FAILS else 0
