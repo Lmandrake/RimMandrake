@@ -1,0 +1,10311 @@
+{
+"census": "/mnt/d/ClaudeWork/rimmandrake/scratch/texregen_unproven/census5/census.json",
+"git_head": "e87f41b812",
+"rows": [
+{
+"biome": "RM_LongShade",
+"row": "JOE_Landopus",
+"def": "JOE_Landopus",
+"bodies": [
+[
+"src/RimUtinni/UtinniPatches",
+"Things/Pawn/Animal/landopus/landopus"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Bokka",
+"def": "RM_Bokka",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Bokka/RM_Bokka"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Chorn",
+"def": "RM_Chorn",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Sollak/RM_Sollak"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Dakkra",
+"def": "RM_Dakkra",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Dunejelly",
+"def": "RM_Dunejelly",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Dunejelly/RM_Dunejelly"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Gennok",
+"def": "RM_Gennok",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Gennok/RM_Gennok"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Gloomcast",
+"def": "RM_Gloomcast",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"swanimals/Gloomcast/Gloomcast"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Gulloth",
+"def": "RM_Gulloth",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Gulloth/RM_Gulloth"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Harrok",
+"def": "RM_Harrok",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Harrok/RM_Harrok"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Khorrak",
+"def": "RM_Khorrak",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Khorrak/RM_Khorrak"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Mirrak",
+"def": "RM_Mirrak",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Mirrak/RM_Mirrak"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Oreclaw",
+"def": "RM_Oreclaw",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Pirrik",
+"def": "RM_Pirrik",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Pirrik/RM_Pirrik"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Qorrax",
+"def": "RM_Qorrax",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Qorrax/RM_Qorrax"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Sippra",
+"def": "RM_Sippra",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Sippra/RM_Sippra"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Skiralim",
+"def": "RM_Skiralim",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Skarrok/RM_Skarrok"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Tazzok",
+"def": "RM_Tazzok",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Tazzok/RM_Tazzok"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Tebbra",
+"def": "RM_Tebbra",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Tebbra/RM_Tebbra"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Vrekka",
+"def": "RM_Vrekka",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Vrekka/RM_Vrekka"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Bantha",
+"def": "RSW_Bantha",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Bantha/BanthaR"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Bantha/BanthaW_j"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Bolotaur",
+"def": "RSW_Bolotaur",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Bolotaur/Bolotaur"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Clodhopper",
+"def": "RSW_Clodhopper",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Clodhopper/Clodhopper"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Dewback",
+"def": "RSW_Dewback",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Dewback/Dewback"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Eopie",
+"def": "RSW_Eopie",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Eopie/Eopie"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Eopie/Eopie_j"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Falumpaset",
+"def": "RSW_Falumpaset",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Falumpaset/Falumpaset"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_FeralGrazer",
+"def": "RSW_FeralGrazer",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/FeralGrazer/FeralGrazer"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_FrilledGorg",
+"def": "RSW_FrilledGorg",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/FrilledGorg/FrilledGorg"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/FrilledGorg/FrilledGorg_j"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Gorg",
+"def": "RSW_Gorg",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Gorg/Gorg"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Gorg/Gorg_j"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Gutkurr",
+"def": "RSW_Gutkurr",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Gutkurr/Gutkurr"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Horax",
+"def": "RSW_Horax",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Horax/Horax"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Hrumph",
+"def": "RSW_Hrumph",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Hrumph/Hrumph"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Hrumph/Hrumph_j"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Iriaz",
+"def": "RSW_Iriaz",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Iriaz/Iriaz"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_IridonianReek",
+"def": "RSW_IridonianReek",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/IridonianReek/IridonianReek"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Reek/Reek_j"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Jakobeast",
+"def": "RSW_Jakobeast",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Jakobeast/Jakobeast"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Jakobeast/Jakobeast_j"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Jamel",
+"def": "RSW_Jamel",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Jamel/Jamel"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Jimvu",
+"def": "RSW_Jimvu",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Jimvu/Jimvu"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Krykna",
+"def": "RSW_Krykna",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Krykna/Krykna"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Kwi",
+"def": "RSW_Kwi",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Kwi/Kwi"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_LongtailGorg",
+"def": "RSW_LongtailGorg",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/LongtailGorg/LongtailGorg"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/LongtailGorg/LongtailGorg_j"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Nerf",
+"def": "RSW_Nerf",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Nerf/Nerf_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Nerf/Nerf_j"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Nerf/Nerf_m"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Nuna",
+"def": "RSW_Nuna",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Nuna/Nuna_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Nuna/Nuna_m"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Ronto",
+"def": "RSW_Ronto",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Ronto/Ronto"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Runyip",
+"def": "RSW_Runyip",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Runyip/Runyip"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Runyip/Runyip_j"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Shaak",
+"def": "RSW_Shaak",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Shaak/Shaak"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Shyrack",
+"def": "RSW_Shyrack",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Shyrack/Shyrack"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Skalder",
+"def": "RSW_Skalder",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Skalder/Skalder"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Sketto",
+"def": "RSW_Sketto",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Sketto/Sketto"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_TeeMuss",
+"def": "RSW_TeeMuss",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/TeeMuss/TeeMuss"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Uvak",
+"def": "RSW_Uvak",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Uvak/Uvak"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Varactyl",
+"def": "RSW_Varactyl",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Varactyl/Varactyl_f"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Voorpak",
+"def": "RSW_Voorpak",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Voorpak/Voorpak"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Worrt",
+"def": "RSW_Worrt",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Worrt/Worrt"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Worrt/Worrt_j"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Wraid",
+"def": "RSW_Wraid",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Wraid/Wraid"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_WraidAlpha",
+"def": "RSW_WraidAlpha",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Wraid/Wraid"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Zeer",
+"def": "RSW_Zeer",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Zeer/Zeer"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Dewfringe",
+"def": "RM_Dewfringe",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Plant/RM_Dewfringe"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Leachmoss",
+"def": "RM_Leachmoss",
+"bodies": [
+[
+"src/RimMandrake/EnvironmentalHazards",
+"Things/Plant/RM_Leachmoss"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Maidenbloom",
+"def": "RM_Maidenbloom",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Plant/RM_Maidenbloom"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Pavecrust",
+"def": "RM_Pavecrust",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Plant/RM_Pavecrust"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Shadespire",
+"def": "RM_Shadespire",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Plant/RM_Shadespire"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_SurraGrass",
+"def": "RM_SurraGrass",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Plant/RM_SurraGrass"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Thrannagourd",
+"def": "RM_Thrannagourd",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/RM_Thrannagourd"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_VellaraBloom",
+"def": "RM_VellaraBloom",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Plant/RM_VellaraBloom"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Venomvine",
+"def": "RM_Venomvine",
+"bodies": [
+[
+"src/RimMandrake/EnvironmentalHazards",
+"Things/Plant/RM_Venomvine"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RM_Vorrel",
+"def": "RM_Vorrel",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Plant/RM_Vorrel"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Plant_Chakroot_Wild",
+"def": "RSW_Plant_Chakroot_Wild",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Plant/RSW_Plant_Chakroot_Wild"
+]
+]
+},
+{
+"biome": "RM_LongShade",
+"row": "RSW_Plant_HubbaGourd_Wild",
+"def": "RSW_Plant_HubbaGourd_Wild",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Plant/RSW_Plant_HubbaGourd_Wild"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Aurrok",
+"def": "RM_Aurrok",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Aurrok/RM_Aurrok"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Drazzik",
+"def": "RM_Drazzik",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Drazzik/RM_Drazzik"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Duumma",
+"def": "RM_Duumma",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Duumma/RM_Duumma"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Gaanok",
+"def": "RM_Gaanok",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Gaanok/RM_Gaanok"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Ikee",
+"def": "RM_Ikee",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Ikee/RM_Ikee"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_LikkaLikka",
+"def": "RM_LikkaLikka",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Liikka/RM_Liikka"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Loomma",
+"def": "RM_Loomma",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Loomma/RM_Loomma"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Oommok",
+"def": "RM_Oommok",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Oommok/RM_Oommok"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Qorrax",
+"def": "RM_Qorrax",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Qorrax/RM_Qorrax"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_ShadeMite",
+"def": "RM_ShadeMite",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Siidda",
+"def": "RM_Siidda",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Siidda/RM_Siidda"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Soorrak",
+"def": "RM_Soorrak",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Ulgga",
+"def": "RM_Ulgga",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Ulgga/RM_Ulgga"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Veessa",
+"def": "RM_Veessa",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Veessa/RM_Veessa"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Vekka",
+"def": "RM_Vekka",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Vekka/RM_Vekka"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Vosska",
+"def": "RM_Vosska",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Vosska/RM_Vosska"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RSW_Gizka",
+"def": "RSW_Gizka",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Gizka/Gizka"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RSW_GraniteSlug",
+"def": "RSW_GraniteSlug",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/GraniteSlug/GraniteSlug"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RSW_GreaterKraytDragon",
+"def": "RSW_GreaterKraytDragon",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/GreaterKraytDragon/GreaterKraytDragon"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RSW_Kreetle",
+"def": "RSW_Kreetle",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Kreetle/Kreetle"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Kreetle/Kreetle_j"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RSW_Scurrier",
+"def": "RSW_Scurrier",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Scurrier/Scurrier_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Scurrier/Scurrier_m"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RSW_WarWyrm",
+"def": "RSW_WarWyrm",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/WarWyrm/WarWyrm"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_DuneCrawler",
+"def": "RM_DuneCrawler",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Item/Resource/RM_DuneCrawler"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Glasscrust",
+"def": "RM_Glasscrust",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Plant/RM_Glasscrust"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_KneelOllim",
+"def": "RM_KneelOllim",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Plant/RM_KneelOllim"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_LightPipeNub",
+"def": "RM_LightPipeNub",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Plant/RM_LightPipeNub"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Murrowbulb",
+"def": "RM_Murrowbulb",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/RM_Murrowbulb"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_Ollim",
+"def": "RM_Ollim",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Plant/RM_Ollim"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RM_UltrissPad",
+"def": "RM_UltrissPad",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Plant/RM_Ultracactus"
+]
+]
+},
+{
+"biome": "RM_Stillsand",
+"row": "RSW_Plant_Bloddle",
+"def": "RSW_Plant_Bloddle",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Plant/RSW_Plant_Bloddle"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Dorrak",
+"def": "RM_Dorrak",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/RM_Dorrak/RM_Dorrak"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Dovvik",
+"def": "RM_Dovvik",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/RM_Dovvik/RM_Dovvik"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Krissek",
+"def": "RM_Krissek",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/RM_Krissek/RM_Krissek"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Murrek",
+"def": "RM_Murrek",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/RM_Murrek/RM_Murrek"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Ossivel",
+"def": "RM_Ossivel",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Thunderbeast",
+"def": "RM_Thunderbeast",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Utikka",
+"def": "RM_Utikka",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/RM_Utikka/RM_Utikka"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Vekkit",
+"def": "RM_Vekkit",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/RM_Vekkit/RM_Vekkit"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Vhaulk",
+"def": "RM_Vhaulk",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Vrisk",
+"def": "RM_Vrisk",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/RM_Vrisk/RM_Vrisk"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Zhaaz",
+"def": "RM_Zhaaz",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RSW_Vapaad",
+"def": "RSW_Vapaad",
+"bodies": [
+[
+"src/RimUtinni/UtinniPatches",
+"Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Chimeglobe",
+"def": "RM_Chimeglobe",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Chimeglobe/RM_Chimeglobe"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Glassfern",
+"def": "RM_Glassfern",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Glassfern/RM_Glassfern"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Hazebell",
+"def": "RM_Hazebell",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Hazebell"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Kethevar",
+"def": "RM_Kethevar",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Kethevar/RM_Kethevar"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Lisqueth",
+"def": "RM_Lisqueth",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Lisqueth/RM_Lisqueth"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Longglass",
+"def": "RM_Longglass",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Longglass"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Milelace",
+"def": "RM_Milelace",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Milelace"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Palefloss",
+"def": "RM_Palefloss",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Palefloss/RM_Palefloss"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Qeshra",
+"def": "RM_Qeshra",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Qeshra/RM_Qeshra"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Rimetangle",
+"def": "RM_Rimetangle",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Rimetangle"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Vashpuk",
+"def": "RM_Vashpuk",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Vashpuk/RM_Vashpuk"
+]
+]
+},
+{
+"biome": "RM_BlueDesert",
+"row": "RM_Virr",
+"def": "RM_Virr",
+"bodies": [
+[
+"src/RimMandrake/BlueDesert",
+"Things/Plant/RM_Virr/RM_Virr"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Aveluthia",
+"def": "RM_Aveluthia",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Cindermare",
+"def": "RM_Cindermare",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Drokattak",
+"def": "RM_Drokattak",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Durrgak",
+"def": "RM_Durrgak",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Gharrek",
+"def": "RM_Gharrek",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Krizzak",
+"def": "RM_Krizzak",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Lirrith",
+"def": "RM_Lirrith",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Moravatha",
+"def": "RM_Moravatha",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Nevarithia",
+"def": "RM_Nevarithia",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Olumetha",
+"def": "RM_Olumetha",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Ossumatha",
+"def": "RM_Ossumatha",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Sesserith",
+"def": "RM_Sesserith",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Skarnix",
+"def": "RM_Skarnix",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Summ",
+"def": "RM_Summ",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ"
+],
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Ysvaltha",
+"def": "RM_Ysvaltha",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RSW_Taozin",
+"def": "RSW_Taozin",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/RSW_Taozin/RSW_Taozin"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Etchcap",
+"def": "RM_Etchcap",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Plant/Etchcap"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_GiantFibreStalk",
+"def": "RM_GiantFibreStalk",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Plant/RM_GiantFibreStalk"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_GiantGlowGlobe",
+"def": "RM_GiantGlowGlobe",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Plant/RM_GiantGlowGlobe"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_GlowberryBush",
+"def": "RM_GlowberryBush",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Plant/RM_GlowberryBush"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_GlowGlobe",
+"def": "RM_GlowGlobe",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Plant/RM_GlowGlobe"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_GlowingGrass",
+"def": "RM_GlowingGrass",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Plant/RM_GlowingGrass"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_PaddleVine",
+"def": "RM_PaddleVine",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Plant/RM_PaddleVine"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_SicklyGlowMushroom",
+"def": "RM_SicklyGlowMushroom",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Plant/RM_SicklyGlowMushroom"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_TreeMushroom",
+"def": "RM_TreeMushroom",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Plant/RM_TreeMushroom"
+]
+]
+},
+{
+"biome": "RM_Abyss",
+"row": "RM_Wickwood",
+"def": "RM_Wickwood",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Plant/RM_Wickwood"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_BedBug",
+"def": "RM_BedBug",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/RM_BedBug/RM_BedBug"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Bileworm",
+"def": "RM_Bileworm",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_Bileworm/RM_Bileworm"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_CrystalMit",
+"def": "RM_CrystalMit",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_DecayDrake",
+"def": "RM_DecayDrake",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Eskith",
+"def": "RM_Eskith",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/RM_Eskith/RM_Eskith"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_GalledRhossak",
+"def": "RM_GalledRhossak",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/RM_GalledRhossak/RM_GalledRhossak"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Garsulix",
+"def": "RM_Garsulix",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Mullgoth",
+"def": "RM_Mullgoth",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Radyak",
+"def": "RM_Radyak",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/RM_Radyak/RM_Radyak"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Rhossak",
+"def": "RM_Rhossak",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/RM_Rhossak/RM_Rhossak"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_SikkaSikka",
+"def": "RM_SikkaSikka",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Suush",
+"def": "RM_Suush",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/RM_Suush/RM_Suush"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Vexxiss",
+"def": "RM_Vexxiss",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Visceral",
+"def": "RM_Visceral",
+"bodies": [
+[
+"src/RimUtinni/UtinniPatches",
+"RimUtinni/UtinniPatches/Visceral/Visceral"
+],
+[
+"src/RimUtinni/UtinniPatches",
+"RimUtinni/UtinniPatches/Visceral/VisceralBaby"
+],
+[
+"src/RimUtinni/UtinniPatches",
+"RimUtinni/UtinniPatches/Visceral/VisceralTeen"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Zisska",
+"def": "RM_Zisska",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Pawn/Animal/RM_Zisska/RM_Zisska"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RSW_GraniteSlug",
+"def": "RSW_GraniteSlug",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/GraniteSlug/GraniteSlug"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RSW_Lylek",
+"def": "RSW_Lylek",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Lylek/Lylek"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RSW_Mynock",
+"def": "RSW_Mynock",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RSW_Neebray",
+"def": "RSW_Neebray",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Neebray/Neebray"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RSW_Silooth",
+"def": "RSW_Silooth",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Silooth/Silooth"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Silooth/Silooth_j"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RSW_Skalder",
+"def": "RSW_Skalder",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Skalder/Skalder"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RSW_VentStalker",
+"def": "RSW_VentStalker",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/VentStalker/VentStalker"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_BloodBouquet",
+"def": "RM_BloodBouquet",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_CrystalFlower",
+"def": "RM_CrystalFlower",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_DarkCrust",
+"def": "RM_DarkCrust",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_DarkCrust/RM_DarkCrust_a"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Fexxil",
+"def": "RM_Fexxil",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_Fexxil/RM_Fexxil"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_GiantAgariTox",
+"def": "RM_GiantAgariTox",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_GiantAgariTox/RM_GiantAgariTox_a"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_GiantToxicFlower",
+"def": "RM_GiantToxicFlower",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Ixalith",
+"def": "RM_Ixalith",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_Ixalith/RM_Ixalith"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_KeeningCordax",
+"def": "RM_KeeningCordax",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Kissaveth",
+"def": "RM_Kissaveth",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_Kissaveth/RM_Kissaveth"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_RavenNettle",
+"def": "RM_RavenNettle",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_RavenNettle/RM_RavenNettle_a"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_RedBugloss",
+"def": "RM_RedBugloss",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_RedBugloss/RM_RedBugloss_a"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Selvix",
+"def": "RM_Selvix",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_Selvix/RM_Selvix"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Sessarix",
+"def": "RM_Sessarix",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_Sessarix/RM_Sessarix"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Tsevrix",
+"def": "RM_Tsevrix",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_Tsevrix/RM_Tsevrix"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_TwistingThornwood",
+"def": "RM_TwistingThornwood",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_TwistingThornwood"
+]
+]
+},
+{
+"biome": "RM_Cauldron",
+"row": "RM_Xithess",
+"def": "RM_Xithess",
+"bodies": [
+[
+"src/RimMandrake/Cauldron",
+"Things/Plant/RM_Xithess/RM_Xithess_a"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Blisterfloat",
+"def": "RM_Blisterfloat",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Blisterfloat/RM_Blisterfloat"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Bloodlurk",
+"def": "RM_Bloodlurk",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_BloodyMess",
+"def": "RM_BloodyMess",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_ContagionIkee",
+"def": "RM_ContagionIkee",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Crispling",
+"def": "RM_Crispling",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Crispling/RM_Crispling"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Danglemaw",
+"def": "RM_Danglemaw",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Doublemaw",
+"def": "RM_Doublemaw",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Eyestinger",
+"def": "RM_Eyestinger",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Fleshsop",
+"def": "RM_Fleshsop",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Gawpsack",
+"def": "RM_Gawpsack",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Gnashling",
+"def": "RM_Gnashling",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Gnashling/RM_Gnashling"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Gorekite",
+"def": "RM_Gorekite",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Gorekite/RM_Gorekite"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_InfectedAerofleet",
+"def": "RM_InfectedAerofleet",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_InfectedAerofleet/RM_InfectedAerofleet"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Meltgut",
+"def": "RM_Meltgut",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Meltgut/RM_Meltgut"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_OcularJelly",
+"def": "RM_OcularJelly",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Ogleknot",
+"def": "RM_Ogleknot",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Ogleknot/RM_Ogleknot"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Peeper",
+"def": "RM_Peeper",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Peeper/RM_Peeper"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Scaldhide",
+"def": "RM_Scaldhide",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Scorchpod",
+"def": "RM_Scorchpod",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Scorchpod/RM_Scorchpod"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Skinflap",
+"def": "RM_Skinflap",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Skinflap/RM_Skinflap"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Sloshbelly",
+"def": "RM_Sloshbelly",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Sloshbelly/RM_Sloshbelly"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Sparkleech",
+"def": "RM_Sparkleech",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_SparkleechGrub",
+"def": "RM_SparkleechGrub",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Bleedleaf",
+"def": "RM_Bleedleaf",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_Bleedleaf/RM_Bleedleaf"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_BloodyFist",
+"def": "RM_BloodyFist",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_BloodyFist/RM_BloodyFist"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Eyebark",
+"def": "RM_Eyebark",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_Eyebark/RM_Eyebark"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Gorestalk",
+"def": "RM_Gorestalk",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_Gorestalk/RM_Gorestalk"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_HalfmadeTree",
+"def": "RM_HalfmadeTree",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_HalfmadeTreeBlighted",
+"def": "RM_HalfmadeTreeBlighted",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Lashgrass",
+"def": "RM_Lashgrass",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_Lashgrass/RM_Lashgrass"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Meatvine",
+"def": "RM_Meatvine",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_Meatvine/RM_Meatvine"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Rattlegrope",
+"def": "RM_Rattlegrope",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_Rattlegrope/RM_Rattlegrope"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_RustPuff",
+"def": "RM_RustPuff",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/RustPuff"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Sapblister",
+"def": "RM_Sapblister",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_Sapblister/RM_Sapblister"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Toothmoss",
+"def": "RM_Toothmoss",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_Toothmoss/RM_Toothmoss"
+]
+]
+},
+{
+"biome": "RM_Contagion",
+"row": "RM_Wombpod",
+"def": "RM_Wombpod",
+"bodies": [
+[
+"src/RimMandrake/Contagion",
+"Things/Plant/RM_Wombpod/RM_Wombpod"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Brathek",
+"def": "RM_Brathek",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_Brathek/RM_Brathek"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Chellow",
+"def": "RM_Chellow",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Drommath",
+"def": "RM_Drommath",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_Drommath/RM_Drommath"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Grolth",
+"def": "RM_Grolth",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_Grolth/RM_Grolth"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Kasselith",
+"def": "RM_Kasselith",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_Kasselith/RM_Kasselith"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Murrelith",
+"def": "RM_Murrelith",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Ollareth",
+"def": "RM_Ollareth",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_Ollareth/RM_Ollareth"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Silloch",
+"def": "RM_Silloch",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_Silloch/RM_Silloch"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Skellick",
+"def": "RM_Skellick",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Thornbug",
+"def": "RM_Thornbug",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_Thornbug/RM_Thornbug"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Vaulm",
+"def": "RM_Vaulm",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Pawn/Animal/RM_Vaulm/RM_Vaulm"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RSW_Convor",
+"def": "RSW_Convor",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Convor/Convor"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Convor/Convor_f"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RSW_Fambaa",
+"def": "RSW_Fambaa",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Fambaa/Fambaa"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Fambaa/Fambaa_j"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RSW_Gelagrub",
+"def": "RSW_Gelagrub",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Gelagrub/Gelagrub"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RSW_LongtailGorg",
+"def": "RSW_LongtailGorg",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/LongtailGorg/LongtailGorg"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/LongtailGorg/LongtailGorg_j"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RSW_Nuna",
+"def": "RSW_Nuna",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Nuna/Nuna_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Nuna/Nuna_m"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RSW_Urusai",
+"def": "RSW_Urusai",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Urusai/Urusai"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RSW_Whisperbird",
+"def": "RSW_Whisperbird",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Whisperbird/Whisperbird"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Ammeth",
+"def": "RM_Ammeth",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Ammeth/RM_Ammeth_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Cistrel",
+"def": "RM_Cistrel",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Cistrel/RM_Cistrel_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Claithe",
+"def": "RM_Claithe",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Claithe/RM_Claithe_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_CorriskTree",
+"def": "RM_CorriskTree",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/RM_CorriskTree"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Corvath",
+"def": "RM_Corvath",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Corvath/RM_Corvath_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Crimmelroot",
+"def": "RM_Crimmelroot",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/RM_Crimmelroot"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_GiantLeaf",
+"def": "RM_GiantLeaf",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_GiantLeaf"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Halquin",
+"def": "RM_Halquin",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Halquin/RM_Halquin_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_LumbrelTree",
+"def": "RM_LumbrelTree",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/RM_LumbrelTree"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Maulith",
+"def": "RM_Maulith",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Maulith/RM_Maulith_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Nubrith",
+"def": "RM_Nubrith",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Nubrith/RM_Nubrith_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Ossagrel",
+"def": "RM_Ossagrel",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Ossagrel/RM_Ossagrel_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Plennith",
+"def": "RM_Plennith",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Plennith/RM_Plennith_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Seepril",
+"def": "RM_Seepril",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Seepril/RM_Seepril_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Skimmel",
+"def": "RM_Skimmel",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Skimmel/RM_Skimmel_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Sodderel",
+"def": "RM_Sodderel",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Sodderel/RM_Sodderel_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Thulvane",
+"def": "RM_Thulvane",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Thulvane/RM_Thulvane_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Tullick",
+"def": "RM_Tullick",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Tullick/RM_Tullick_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Varnoth",
+"def": "RM_Varnoth",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Varnoth/RM_Varnoth_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Verrow",
+"def": "RM_Verrow",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Verrow/RM_Verrow_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RM_Wanlith",
+"def": "RM_Wanlith",
+"bodies": [
+[
+"src/RimMandrake/FeverWood",
+"Things/Plant/RM_Wanlith/RM_Wanlith_a"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RSW_Plant_Chakroot_Wild",
+"def": "RSW_Plant_Chakroot_Wild",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Plant/RSW_Plant_Chakroot_Wild"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RSW_Plant_HydenockTree_Wild",
+"def": "RSW_Plant_HydenockTree_Wild",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Plant/RSW_Plant_HydenockTree_Wild"
+]
+]
+},
+{
+"biome": "RM_FeverWood",
+"row": "RSW_Plant_JoganTree_Wild",
+"def": "RSW_Plant_JoganTree_Wild",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Plant/RSW_Plant_JoganTree_Wild"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Lirrith",
+"def": "RM_Lirrith",
+"bodies": [
+[
+"src/RimMandrake/Abyss",
+"RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Muttavaq",
+"def": "RM_Muttavaq",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Ommok",
+"def": "RM_Ommok",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Ommok/RM_Ommok"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Tarruq",
+"def": "RM_Tarruq",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Pawn/Animal/RM_Tarruq/RM_Tarruq"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Uttaqar",
+"def": "RM_Uttaqar",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"StandIn/Animal/RockTroll/RockTrollBaby"
+],
+[
+"src/RimMandrake/CrackedLands",
+"Things/Pawn/Animal/FloodedCanyon/RM_Uttaqar/RM_Uttaqar"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RSW_CanCell",
+"def": "RSW_CanCell",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/CanCell/CanCell"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RSW_Convor",
+"def": "RSW_Convor",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Convor/Convor"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Convor/Convor_f"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RSW_Creature_Mantrap",
+"def": "RSW_Creature_Mantrap",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RSW_Gornt",
+"def": "RSW_Gornt",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Gornt/Gornt"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RSW_MutagenicNorphea",
+"def": "RSW_MutagenicNorphea",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RSW_SandLeaper",
+"def": "RSW_SandLeaper",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RSW_SandPillar",
+"def": "RSW_SandPillar",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RSW_Woolamander",
+"def": "RSW_Woolamander",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Woolamander/Woolamander"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RUT_EmperorVulture",
+"def": "RUT_EmperorVulture",
+"bodies": [
+[
+"src/RimUtinni/UtinniPatches",
+"Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RUT_SealedSleeper",
+"def": "RUT_SealedSleeper",
+"bodies": [
+[
+"src/RimUtinni/UtinniPatches",
+"Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_CrackedThornwood",
+"def": "RM_CrackedThornwood",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_CrackedThornwood"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Harrovaq",
+"def": "RM_Harrovaq",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_Harrovaq/RM_Harrovaq"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Luqqim",
+"def": "RM_Luqqim",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_Luqqim/RM_Luqqim"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Nabbuq",
+"def": "RM_Nabbuq",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_Nabbuq/RM_Nabbuq"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Ruqqal",
+"def": "RM_Ruqqal",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_Ruqqal/RM_Ruqqal"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Sevvuq",
+"def": "RM_Sevvuq",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_Sevvuq/RM_Sevvuq"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_TalusClasp",
+"def": "RM_TalusClasp",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_TalusClasp"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_TwistingThorngrass",
+"def": "RM_TwistingThorngrass",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_TwistingThorngrass"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_TwistingThornweed",
+"def": "RM_TwistingThornweed",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_TwistingThornweed"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Veqma",
+"def": "RM_Veqma",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_Veqma"
+]
+]
+},
+{
+"biome": "RM_FloodedCanyon",
+"row": "RM_Zennaq",
+"def": "RM_Zennaq",
+"bodies": [
+[
+"src/RimMandrake/CrackedLands",
+"Things/Plant/RM_Zennaq/RM_Zennaq"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Dwommo",
+"def": "RM_Dwommo",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/Dwommo/RM_Dwommo"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Fubbum",
+"def": "RM_Fubbum",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/Fubbum/RM_Fubbum"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Gappo",
+"def": "RM_Gappo",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/Gappo/RM_Gappo"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_GappoGreater",
+"def": "RM_GappoGreater",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/Gappo/RM_GappoGreater"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_GappoLesser",
+"def": "RM_GappoLesser",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/Gappo/RM_GappoLesser"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Gelatid",
+"def": "RM_Gelatid",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/RM_Gelatid/RM_Gelatid"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_GreaterOomb",
+"def": "RM_GreaterOomb",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/RM_GreaterOomb/RM_GreaterOomb"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_LesserOomb",
+"def": "RM_LesserOomb",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/RM_LesserOomb/RM_LesserOomb"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Oomb",
+"def": "RM_Oomb",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/RM_Oomb/RM_Oomb"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Titanoslime",
+"def": "RM_Titanoslime",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Wuum",
+"def": "RM_Wuum",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Pawn/Animal/RM_Wuum/RM_Wuum"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Plant_Bellows",
+"def": "RM_Plant_Bellows",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Plant/RM_Bellows/RM_Bellows"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Plant_Readerbloom",
+"def": "RM_Plant_Readerbloom",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Plant/RM_Readerbloom/RM_Readerbloom"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Plant_SlimeGrass",
+"def": "RM_Plant_SlimeGrass",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Plant/RM_SlimeGrass/RM_SlimeGrass"
+]
+]
+},
+{
+"biome": "RM_GelatinousSlime",
+"row": "RM_Plant_Thumbstalk",
+"def": "RM_Plant_Thumbstalk",
+"bodies": [
+[
+"src/RimMandrake/GelatinousSlime",
+"Things/Plant/RM_Thumbstalk/RM_Thumbstalk"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_CanopySwinger",
+"def": "RM_CanopySwinger",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Dhollock",
+"def": "RM_Dhollock",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_Dhollock/RM_Dhollock"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Gristle",
+"def": "RM_Gristle",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_Gristle/RM_Gristle"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Illisk",
+"def": "RM_Illisk",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_Illisk/RM_Illisk"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Krannock",
+"def": "RM_Krannock",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_Krannock/RM_Krannock"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Saluksis",
+"def": "RM_Saluksis",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_Saluksis/RM_Saluksis"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Sulleth",
+"def": "RM_Sulleth",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_Sulleth/RM_Sulleth"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Thurrock",
+"def": "RM_Thurrock",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_Thurrock/RM_Thurrock"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Vurrak",
+"def": "RM_Vurrak",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_Vurrak/RM_Vurrak"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Yammeth",
+"def": "RM_Yammeth",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_Yammeth/RM_Yammeth"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Beldon",
+"def": "RSW_Beldon",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Beldon/Beldon"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Beldon/BeldonC"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Clodhopper",
+"def": "RSW_Clodhopper",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Clodhopper/Clodhopper"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Convor",
+"def": "RSW_Convor",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Convor/Convor"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Convor/Convor_f"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Dalgo",
+"def": "RSW_Dalgo",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Dalgo/Dalgo"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Dragonsnake",
+"def": "RSW_Dragonsnake",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_DragonsnakeAlbino",
+"def": "RSW_DragonsnakeAlbino",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/DragonsnakeAlbino/DragonsnakeAlbino"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Falumpaset",
+"def": "RSW_Falumpaset",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Falumpaset/Falumpaset"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Fambaa",
+"def": "RSW_Fambaa",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Fambaa/Fambaa"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Fambaa/Fambaa_j"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Gelagrub",
+"def": "RSW_Gelagrub",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Gelagrub/Gelagrub"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Gizka",
+"def": "RSW_Gizka",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Gizka/Gizka"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Hawkbat",
+"def": "RSW_Hawkbat",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Hawkbat/Hawkbat"
+],
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Hawkbat/Hawkbat_j"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Hssiss",
+"def": "RSW_Hssiss",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Hssiss/Hssiss"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Kinrath",
+"def": "RSW_Kinrath",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Kinrath/Kinrath"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Klorslug",
+"def": "RSW_Klorslug",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Klorslug/Klorslug"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Klorslug/Klorslug_j"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Lylek",
+"def": "RSW_Lylek",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Lylek/Lylek"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Mott",
+"def": "RSW_Mott",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Mott/Mott_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Mott/Mott_m"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Nuna",
+"def": "RSW_Nuna",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Nuna/Nuna_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Nuna/Nuna_m"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_PekoPeko",
+"def": "RSW_PekoPeko",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/PekoPeko/PekoPeko_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/PekoPeko/PekoPeko_m"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Shiro",
+"def": "RSW_Shiro",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Shiro/Shiro"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_ShiroTrap",
+"def": "RSW_ShiroTrap",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/ShiroTrap/ShiroTrap"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/ShiroTrap/ShiroTrap_i"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/ShiroTrap/ShiroTrap_j"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Whisperbird",
+"def": "RSW_Whisperbird",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Whisperbird/Whisperbird"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RSW_Worrt",
+"def": "RSW_Worrt",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Worrt/Worrt"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Worrt/Worrt_j"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Dubbol",
+"def": "RM_Dubbol",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Item/Fish/RM_Dubbol"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Karrun",
+"def": "RM_Karrun",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Item/Fish/RM_Karrun"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Lozh",
+"def": "RM_Lozh",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Item/Fish/RM_Lozh"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Saava",
+"def": "RM_Saava",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Item/Fish/RM_Saava"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_ScaaLumsigh",
+"def": "RM_ScaaLumsigh",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Item/Fish/RM_ScaaLumsigh"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Tuun",
+"def": "RM_Tuun",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Item/Fish/RM_Tuun"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Uvva",
+"def": "RM_Uvva",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Item/Fish/RM_Uvva"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Vashuu",
+"def": "RM_Vashuu",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Item/Fish/RM_Vashuu"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Zeev",
+"def": "RM_Zeev",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Item/Fish/RM_Zeev"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Brakkel",
+"def": "RM_Brakkel",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Brakkel/RM_Brakkel_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Brunnock",
+"def": "RM_Brunnock",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Brunnock/RM_Brunnock_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Cundral",
+"def": "RM_Cundral",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Cundral/RM_Cundral_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Ghemmel",
+"def": "RM_Ghemmel",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Ghemmel/RM_Ghemmel_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Gorbeleth",
+"def": "RM_Gorbeleth",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Greatbole",
+"def": "RM_Greatbole",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Greatbole/RM_Greatbole_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_GreentideGrass",
+"def": "RM_GreentideGrass",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_GreentideGrass"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_GreentideTallGrass",
+"def": "RM_GreentideTallGrass",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_GreentideGrass"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Illurin",
+"def": "RM_Illurin",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Illurin/RM_Illurin_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Kaddrath",
+"def": "RM_Kaddrath",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Kaddrath/RM_Kaddrath_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Maddrick",
+"def": "RM_Maddrick",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Maddrick/RM_Maddrick_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Mirrelbole",
+"def": "RM_Mirrelbole",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Mirrelbole/RM_Mirrelbole_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Mourvel",
+"def": "RM_Mourvel",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Mourvel/RM_Mourvel_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Nemmer",
+"def": "RM_Nemmer",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Nemmer/RM_Nemmer_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Phorrik",
+"def": "RM_Phorrik",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Phorrik/RM_Phorrik_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Quathis",
+"def": "RM_Quathis",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Quathis/RM_Quathis_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Sarnstilt",
+"def": "RM_Sarnstilt",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Sarquin",
+"def": "RM_Sarquin",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Sarquin/RM_Sarquin_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Tumbel",
+"def": "RM_Tumbel",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Tumbel/RM_Tumbel_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Veluthar",
+"def": "RM_Veluthar",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Veluthar/RM_Veluthar_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Vurmeloth",
+"def": "RM_Vurmeloth",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Wollick",
+"def": "RM_Wollick",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Wollick/RM_Wollick_a"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_YearningFruit",
+"def": "RM_YearningFruit",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_YearningFruit"
+]
+]
+},
+{
+"biome": "RM_Greentide",
+"row": "RM_Zhorrel",
+"def": "RM_Zhorrel",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Zhorrel/RM_Zhorrel_a"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Corrik",
+"def": "RM_Corrik",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Corrik/RM_Corrik"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Essarn",
+"def": "RM_Essarn",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Essarn/RM_Essarn"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Fessk",
+"def": "RM_Fessk",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Fessk/RM_Fessk"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Grusk",
+"def": "RM_Grusk",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Grusk/RM_Grusk"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Nissik",
+"def": "RM_Nissik",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Nissik/RM_Nissik"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Orruhmu",
+"def": "RM_Orruhmu",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Orruhmu/RM_Orruhmu"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Otheska",
+"def": "RM_Otheska",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Otheska/RM_Otheska"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Reefback",
+"def": "RM_Reefback",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Reefback/Reefback"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Thollim",
+"def": "RM_Thollim",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Thollim/RM_Thollim"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RSW_Reefback",
+"def": "RSW_Reefback",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Reefback/Reefback"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_EssarnCatch",
+"def": "RM_EssarnCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_GreySea/RM_EssarnCatch"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_GruskCatch",
+"def": "RM_GruskCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_GreySea/RM_GruskCatch"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_NissikCatch",
+"def": "RM_NissikCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_GreySea/RM_NissikCatch"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_ThollimCatch",
+"def": "RM_ThollimCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_GreySea/RM_ThollimCatch"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Brinecomb",
+"def": "RM_Brinecomb",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_Brinecomb"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_BrineCrown",
+"def": "RM_BrineCrown",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_BrineCrown"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_CruciblePod",
+"def": "RM_CruciblePod",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_CruciblePod"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_CubicSculpture",
+"def": "RM_CubicSculpture",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_CubicSculpture"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_GlassVeilKelp",
+"def": "RM_GlassVeilKelp",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_GlassVeilKelp"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Hoarstock",
+"def": "RM_Hoarstock",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_Hoarstock"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Masonmat",
+"def": "RM_Masonmat",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_Masonmat"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Milkwell",
+"def": "RM_Milkwell",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_Milkwell"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_MosaicFanPalm",
+"def": "RM_MosaicFanPalm",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_MosaicFanPalm"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Mournweft",
+"def": "RM_Mournweft",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_Mournweft"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Murkblush",
+"def": "RM_Murkblush",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_Murkblush"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Neverset",
+"def": "RM_Neverset",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_Neverset"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_SaltBladeGrey",
+"def": "RM_SaltBladeGrey",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_SaltBladeGrey"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_SaltBladeTwilight",
+"def": "RM_SaltBladeTwilight",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_SaltBladeTwilight"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_SaltChimneyVine",
+"def": "RM_SaltChimneyVine",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_SaltChimneyVine"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_Saltswoon",
+"def": "RM_Saltswoon",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_Saltswoon"
+]
+]
+},
+{
+"biome": "RM_GreySea",
+"row": "RM_SpherePlant",
+"def": "RM_SpherePlant",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_GreySea/RM_SpherePlant"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Blinker",
+"def": "RM_Blinker",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/Hydrocarbon/Blinker/Blinker"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_BloodropMoth",
+"def": "RM_BloodropMoth",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Candler",
+"def": "RM_Candler",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/Hydrocarbon/Candler/Candler"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Cleaver",
+"def": "RM_Cleaver",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/Crystal/Cleaver/Cleaver"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Drifter",
+"def": "RM_Drifter",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/Hydrocarbon/Drifter/Drifter"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Gembug",
+"def": "RM_Gembug",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Knocker",
+"def": "RM_Knocker",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/Hydrocarbon/Knocker/Knocker"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Pooler",
+"def": "RM_Pooler",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/Hydrocarbon/Pooler/Pooler"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Shoal",
+"def": "RM_Shoal",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/Shoal"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Sipper",
+"def": "RM_Sipper",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/Hydrocarbon/Sipper/Sipper"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Slick",
+"def": "RM_Slick",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/Hydrocarbon/Slick/Slick"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Tapper",
+"def": "RM_Tapper",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Fauna/Hydrocarbon/Tapper/Tapper"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_BrellikBulb",
+"def": "RM_BrellikBulb",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Plant/BrellikBulb"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_DeepMycelium",
+"def": "RM_DeepMycelium",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Plant/Mycelium"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_KuvraSpout",
+"def": "RM_KuvraSpout",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Plant/KuvraSpout"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_Lanternstone_Sowable",
+"def": "RM_Lanternstone_Sowable",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Crystals/LanternstoneMedium"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_NurrikGill",
+"def": "RM_NurrikGill",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Plant/NurrikGill"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_PrennaLace",
+"def": "RM_PrennaLace",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_QuorrFern",
+"def": "RM_QuorrFern",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Plant/QuorrFern"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_ThrakkCap",
+"def": "RM_ThrakkCap",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Plant/ThrakkCap"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_TwitchingPuffer",
+"def": "RM_TwitchingPuffer",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_VellokReed",
+"def": "RM_VellokReed",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Plant/VellokReed"
+]
+]
+},
+{
+"biome": "RM_LanternDeeps",
+"row": "RM_ZivvitTaper",
+"def": "RM_ZivvitTaper",
+"bodies": [
+[
+"src/RimMandrake/LanternDeeps",
+"RM_LanternDeeps/Things/Plant/ZivvitTaper"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Chikka",
+"def": "RM_Chikka",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Chikka/RM_Chikka"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Crustweevil",
+"def": "RM_Crustweevil",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Crustweevil/RM_Crustweevil"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Durrok",
+"def": "RM_Durrok",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Durrok/RM_Durrok"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Dustflutter",
+"def": "RM_Dustflutter",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Fuzzrunner",
+"def": "RM_Fuzzrunner",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Fuzzviper",
+"def": "RM_Fuzzviper",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Mullgoth",
+"def": "RM_Mullgoth",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Ribbonwhip",
+"def": "RM_Ribbonwhip",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Ribbonwhip/RM_Ribbonwhip"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Rollbug",
+"def": "RM_Rollbug",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Rollbug/RM_Rollbug"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Shirrel",
+"def": "RM_Shirrel",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Shirrel/RM_Shirrel"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Shokka",
+"def": "RM_Shokka",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Shokka/RM_Shokka"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Surrik",
+"def": "RM_Surrik",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Surrik/RM_Surrik"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Thornhold",
+"def": "RM_Thornhold",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Thornhold/RM_Thornhold"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Tikkit",
+"def": "RM_Tikkit",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Tikkit/RM_Tikkit"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_TruffleMole",
+"def": "RM_TruffleMole",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_TunnelSnake",
+"def": "RM_TunnelSnake",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Vissler",
+"def": "RM_Vissler",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Vissler/RM_Vissler"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Vurra",
+"def": "RM_Vurra",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Vurra/RM_Vurra"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Zellik",
+"def": "RM_Zellik",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Zellik/RM_Zellik"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Anooba",
+"def": "RSW_Anooba",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Anooba/Anooba_f"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Bantha",
+"def": "RSW_Bantha",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Bantha/BanthaR"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Bantha/BanthaW_j"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Cannok",
+"def": "RSW_Cannok",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Cannok/Cannok"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Convor",
+"def": "RSW_Convor",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Convor/Convor"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Convor/Convor_f"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Corinathoth",
+"def": "RSW_Corinathoth",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Corinathoth/Corinathoth"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Eopie",
+"def": "RSW_Eopie",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Eopie/Eopie"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Eopie/Eopie_j"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_FeralNerf",
+"def": "RSW_FeralNerf",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/FeralNerf/FeralNerf"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_FrilledGorg",
+"def": "RSW_FrilledGorg",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/FrilledGorg/FrilledGorg"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/FrilledGorg/FrilledGorg_j"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Gizka",
+"def": "RSW_Gizka",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Gizka/Gizka"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Gorg",
+"def": "RSW_Gorg",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Gorg/Gorg"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Gorg/Gorg_j"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Grank",
+"def": "RSW_Grank",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Grank/Grank"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Igitz",
+"def": "RSW_Igitz",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Igitz/Igitz"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Igitz/Igitz_j"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Iriaz",
+"def": "RSW_Iriaz",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Iriaz/Iriaz"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_KowakianMonkeyLizard",
+"def": "RSW_KowakianMonkeyLizard",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Kreetle",
+"def": "RSW_Kreetle",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Kreetle/Kreetle"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Kreetle/Kreetle_j"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Kybuck",
+"def": "RSW_Kybuck",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Kybuck/Kybuck"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_LongtailGorg",
+"def": "RSW_LongtailGorg",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/LongtailGorg/LongtailGorg"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/LongtailGorg/LongtailGorg_j"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Lothcat",
+"def": "RSW_Lothcat",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Lothcat/Lothcat_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Lothcat/Lothcat_m"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Massiff",
+"def": "RSW_Massiff",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Massiff/Massiff"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_MossBeetle",
+"def": "RSW_MossBeetle",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Mudhorn",
+"def": "RSW_Mudhorn",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Mudhorn/Mudhorn"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Mudhorn/Mudhorn_j"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Nuna",
+"def": "RSW_Nuna",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Nuna/Nuna_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Nuna/Nuna_m"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Pikobis",
+"def": "RSW_Pikobis",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Pikobis/Pikobis"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Porg",
+"def": "RSW_Porg",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Porg/Porg"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Porg/Porg_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Porg/Porg_j"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Pufferpig",
+"def": "RSW_Pufferpig",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Pufferpig/Pufferpig"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Qormot",
+"def": "RSW_Qormot",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Qormot/Qormot"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Ronto",
+"def": "RSW_Ronto",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Ronto/Ronto"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_ScrapNestBird",
+"def": "RSW_ScrapNestBird",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/RSW_ScrapNestBird/RSW_ScrapNestBird"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Scurrier",
+"def": "RSW_Scurrier",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Scurrier/Scurrier_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Scurrier/Scurrier_m"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_ShrublandGiant",
+"def": "RSW_ShrublandGiant",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/RSW_ShrublandGiant/RSW_ShrublandGiant"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Skalder",
+"def": "RSW_Skalder",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Skalder/Skalder"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Sketto",
+"def": "RSW_Sketto",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Sketto/Sketto"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Strill",
+"def": "RSW_Strill",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Strill/Strill"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_TunnelSnake",
+"def": "RSW_TunnelSnake",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/RSW_TunnelSnake/RSW_TunnelSnake"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Urusai",
+"def": "RSW_Urusai",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Urusai/Urusai"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Voorpak",
+"def": "RSW_Voorpak",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Voorpak/Voorpak"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Vulptex",
+"def": "RSW_Vulptex",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Vulptex/Vulptex"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Whisperbird",
+"def": "RSW_Whisperbird",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Whisperbird/Whisperbird"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Worrt",
+"def": "RSW_Worrt",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Worrt/Worrt"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Worrt/Worrt_j"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_CrownVenomvine",
+"def": "RM_CrownVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_CrownVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Cruststar",
+"def": "RM_Cruststar",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_Cruststar"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_DrippingVenomvine",
+"def": "RM_DrippingVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_DrippingVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Fuzz",
+"def": "RM_Fuzz",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_Fuzz"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Grellbush",
+"def": "RM_Grellbush",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_Grellbush"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Grellspine",
+"def": "RM_Grellspine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_Grellspine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_HoardVenomvine",
+"def": "RM_HoardVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_HoardVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_HollowVenomvine",
+"def": "RM_HollowVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_HollowVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_LureVenomvine",
+"def": "RM_LureVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_LureVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Pillowmoss",
+"def": "RM_Pillowmoss",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_Pillowmoss"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_QuenchVenomvine",
+"def": "RM_QuenchVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_QuenchVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_RearingVenomvine",
+"def": "RM_RearingVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_RearingVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Salvessa",
+"def": "RM_Salvessa",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/RM_Salvessa"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_SheddingVenomvine",
+"def": "RM_SheddingVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_SheddingVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_SleeperVenomvine",
+"def": "RM_SleeperVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_SleeperVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_StranglerVenomvine",
+"def": "RM_StranglerVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_StranglerVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_SwornVenomvine",
+"def": "RM_SwornVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_SwornVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Tanglefuzz",
+"def": "RM_Tanglefuzz",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_Tanglefuzz"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_TanniVine",
+"def": "RM_TanniVine",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plants/AB_Aaklac"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_TwitcherVenomvine",
+"def": "RM_TwitcherVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_TwitcherVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_VenomvineThicket",
+"def": "RM_VenomvineThicket",
+"bodies": [
+[
+"src/RimMandrake/EnvironmentalHazards",
+"Things/Plant/RM_VenomvineThicket"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_WalkingVenomvine",
+"def": "RM_WalkingVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_WalkingVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_WeeperVenomvine",
+"def": "RM_WeeperVenomvine",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_WeeperVenomvine"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_Whipfuzz",
+"def": "RM_Whipfuzz",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_Whipfuzz"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RM_WildHealroot",
+"def": "RM_WildHealroot",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Plant/RM_WildHealroot"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_JekkaGrass",
+"def": "RSW_JekkaGrass",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plants/AB_Aaklac"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_Plant_Nysyllin_Wild",
+"def": "RSW_Plant_Nysyllin_Wild",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swplants/Nysillin"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_QuissaBloom",
+"def": "RSW_QuissaBloom",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plants/AB_Aaklac"
+]
+]
+},
+{
+"biome": "RM_LeaningScrub",
+"row": "RSW_RuzzoCarpet",
+"def": "RSW_RuzzoCarpet",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plants/AB_Aaklac"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Bileworm",
+"def": "RM_Bileworm",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_Bileworm/RM_Bileworm"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Bozzuga",
+"def": "RM_Bozzuga",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Bozzuga/RM_Bozzuga"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_CrimsonOpeeJuv",
+"def": "RM_CrimsonOpeeJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_DecayDrake",
+"def": "RM_DecayDrake",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_FeverSwarm",
+"def": "RM_FeverSwarm",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Karravel",
+"def": "RM_Karravel",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Karravel/RM_Karravel"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Karrimeth",
+"def": "RM_Karrimeth",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Karrobel",
+"def": "RM_Karrobel",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Karrobel/RM_Karrobel"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Karrolun",
+"def": "RM_Karrolun",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Karrolun/RM_Karrolun"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Liliana",
+"def": "RM_Liliana",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Liliana/RM_Liliana"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Mantrap",
+"def": "RM_Mantrap",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Lastvine/RM_Lastvine"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Ommok",
+"def": "RM_Ommok",
+"bodies": [
+[
+"src/RimMandrake/LongShade",
+"Things/Pawn/Animal/RM_Ommok/RM_Ommok"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Ondrukka",
+"def": "RM_Ondrukka",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Ondrukka/RM_Ondrukka"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_ReefbackJuv",
+"def": "RM_ReefbackJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Reefback/Reefback"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_RustNipperJuv",
+"def": "RM_RustNipperJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Saluksis",
+"def": "RM_Saluksis",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Pawn/Animal/RM_Saluksis/RM_Saluksis"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_ShaleGorgerJuv",
+"def": "RM_ShaleGorgerJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Sharpshrimp",
+"def": "RM_Sharpshrimp",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Sharpshrimp/RM_Sharpshrimp"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Siezer",
+"def": "RM_Siezer",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Siezer/RM_Siezer"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_SiltLampreyJuv",
+"def": "RM_SiltLampreyJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Thermadon",
+"def": "RM_Thermadon",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Pawn/Animal/RM_Thermadon/RM_Thermadon"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_ThornbackColoJuv",
+"def": "RM_ThornbackColoJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_Anooba",
+"def": "RSW_Anooba",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Anooba/Anooba_f"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_Blarth",
+"def": "RSW_Blarth",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Blarth/Blarth"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_Blixus",
+"def": "RSW_Blixus",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Blixus/Blixus"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_Bogwing",
+"def": "RSW_Bogwing",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Bogwing/Bogwing"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_CrestedDragon",
+"def": "RSW_CrestedDragon",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_FaaJuv",
+"def": "RSW_FaaJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Faa/Faa"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_Grank",
+"def": "RSW_Grank",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Grank/Grank"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_LaaJuv",
+"def": "RSW_LaaJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Laa/Laa"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_MarshHaunt",
+"def": "RSW_MarshHaunt",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/MarshHaunt/MarshHaunt"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_MeeJuv",
+"def": "RSW_MeeJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Mee/Mee"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_OpeeSeaKillerJuv",
+"def": "RSW_OpeeSeaKillerJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_PodWorm",
+"def": "RSW_PodWorm",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_Runyip",
+"def": "RSW_Runyip",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Runyip/Runyip"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Runyip/Runyip_j"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_RustNipperJuv",
+"def": "RSW_RustNipperJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_Shiro",
+"def": "RSW_Shiro",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Shiro/Shiro"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_SiltLampreyJuv",
+"def": "RSW_SiltLampreyJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_Vornskyr",
+"def": "RSW_Vornskyr",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Vornskyr/Vornskyr"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_Whisperbird",
+"def": "RSW_Whisperbird",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Whisperbird/Whisperbird"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_YobshrimpJuv",
+"def": "RSW_YobshrimpJuv",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RSW_Zakkeg",
+"def": "RSW_Zakkeg",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Zakkeg/Zakkeg"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Aphreen",
+"def": "RM_Aphreen",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Aphreen/RM_Aphreen_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Braskeen",
+"def": "RM_Braskeen",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Braskeen"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Brelloch",
+"def": "RM_Brelloch",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Brelloch/RM_Brelloch_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Ilbareen",
+"def": "RM_Ilbareen",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Ilbareen/RM_Ilbareen_live"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Immarel",
+"def": "RM_Immarel",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Immarel/RM_Immarel_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Ismerrow",
+"def": "RM_Ismerrow",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Ismerrow"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Nemreth",
+"def": "RM_Nemreth",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Nemreth/RM_Nemreth_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Nogtyl",
+"def": "RM_Nogtyl",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Nogtyl"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Nyssolet",
+"def": "RM_Nyssolet",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Nyssolet/RM_Nyssolet_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Ollamane",
+"def": "RM_Ollamane",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Ollamane/RM_Ollamane_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Ommolyn",
+"def": "RM_Ommolyn",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Ommolyn/RM_Ommolyn_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Pallasheen",
+"def": "RM_Pallasheen",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Pallasheen/RM_Pallasheen_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Quennath",
+"def": "RM_Quennath",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Quennath/RM_Quennath_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Sarrash",
+"def": "RM_Sarrash",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Sarrash/RM_Sarrash_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Thessamor",
+"def": "RM_Thessamor",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Thessamor/RM_Thessamor_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Thrannock",
+"def": "RM_Thrannock",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Thrannock/RM_Thrannock_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Ullavess",
+"def": "RM_Ullavess",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Ullavess/RM_Ullavess_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Vellamine",
+"def": "RM_Vellamine",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Vellamine/RM_Vellamine_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Velluric",
+"def": "RM_Velluric",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Velluric/RM_Velluric_a"
+]
+]
+},
+{
+"biome": "RM_Miasma",
+"row": "RM_Wessaline",
+"def": "RM_Wessaline",
+"bodies": [
+[
+"src/RimMandrake/Miasma",
+"Things/Plant/RM_Wessaline/RM_Wessaline_a"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_Ashwallow",
+"def": "RM_Ashwallow",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_Barbslinger",
+"def": "RM_Barbslinger",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_Emberscythe",
+"def": "RM_Emberscythe",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Pawn/Animal/Pyrelands/Emberscythe/Emberscythe"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_FireHawk",
+"def": "RM_FireHawk",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_FireWasp",
+"def": "RM_FireWasp",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_Flamefang",
+"def": "RM_Flamefang",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_FurnaceBeast",
+"def": "RM_FurnaceBeast",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_Sytheclaw",
+"def": "RM_Sytheclaw",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_Ullai",
+"def": "RM_Ullai",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Pawn/Animal/Pyrelands/Ullai/Ullai"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RSW_Anooba",
+"def": "RSW_Anooba",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Anooba/Anooba_f"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RSW_Dalgo",
+"def": "RSW_Dalgo",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Dalgo/Dalgo"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RSW_Gizka",
+"def": "RSW_Gizka",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Gizka/Gizka"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RSW_Iriaz",
+"def": "RSW_Iriaz",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Iriaz/Iriaz"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RSW_Nuna",
+"def": "RSW_Nuna",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Nuna/Nuna_f"
+],
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Nuna/Nuna_m"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RSW_Orray",
+"def": "RSW_Orray",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Orray/Orray"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RSW_Zeer",
+"def": "RSW_Zeer",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Zeer/Zeer"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_FE_Plant_EmberGrass",
+"def": "RM_FE_Plant_EmberGrass",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Plant/RM_FE_EmberGrass"
+]
+]
+},
+{
+"biome": "RM_Pyrelands",
+"row": "RM_FE_Plant_Quickgrass",
+"def": "RM_FE_Plant_Quickgrass",
+"bodies": [
+[
+"src/RimMandrake/Pyrelands",
+"Things/Plant/RM_FE_Quickgrass"
+]
+]
+},
+{
+"biome": "RM_RustCathedral",
+"row": "RM_CathedralRoach",
+"def": "RM_CathedralRoach",
+"bodies": [
+[
+"src/RimMandrake/RustCathedral",
+"Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach"
+]
+]
+},
+{
+"biome": "RM_RustCathedral",
+"row": "RM_LivingBolt",
+"def": "RM_LivingBolt",
+"bodies": [
+[
+"src/RimMandrake/RustCathedral",
+"Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt"
+]
+]
+},
+{
+"biome": "RM_RustCathedral",
+"row": "RSW_Mynock",
+"def": "RSW_Mynock",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+]
+]
+},
+{
+"biome": "RM_RustCathedral",
+"row": "RSW_Vozzik",
+"def": "RSW_Vozzik",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
+]
+]
+},
+{
+"biome": "RM_RustCathedral",
+"row": "RM_CoolantEelCatch",
+"def": "RM_CoolantEelCatch",
+"bodies": [
+[
+"src/RimMandrake/RustCathedral",
+"Things/Item/Fish/RM_CoolantEelCatch"
+]
+]
+},
+{
+"biome": "RM_SleepingIce",
+"row": "RM_Zhissa",
+"def": "RM_Zhissa",
+"bodies": [
+[
+"src/RimMandrake/SleepingIce",
+"Things/Pawn/Animal/RM_Zhissa/RM_Zhissa"
+]
+]
+},
+{
+"biome": "RM_SleepingIce",
+"row": "RSW_CaveLemming",
+"def": "RSW_CaveLemming",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming"
+]
+]
+},
+{
+"biome": "RM_SleepingIce",
+"row": "RSW_Tauntaun",
+"def": "RSW_Tauntaun",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
+]
+]
+},
+{
+"biome": "RM_SleepingIce",
+"row": "RSW_Wampa",
+"def": "RSW_Wampa",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Wampa/Wampa"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Fessu",
+"def": "RM_Fessu",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Fessu/RM_Fessu"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Heemin",
+"def": "RM_Heemin",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Heemin/RM_Heemin"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Hesuun",
+"def": "RM_Hesuun",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Hesuun/RM_Hesuun"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Iliss",
+"def": "RM_Iliss",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Iliss/RM_Iliss"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Krellik",
+"def": "RM_Krellik",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Krellik/RM_Krellik"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Oddu",
+"def": "RM_Oddu",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Oddu/RM_Oddu"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Oovanam",
+"def": "RM_Oovanam",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Oovanam/RM_Oovanam"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Oovu",
+"def": "RM_Oovu",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Oovu/RM_Oovu"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Tarnn",
+"def": "RM_Tarnn",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Tarnn/RM_Tarnn"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Zhiil",
+"def": "RM_Zhiil",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Zhiil/RM_Zhiil"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_FessuCatch",
+"def": "RM_FessuCatch",
+"bodies": []
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_HeeminCatch",
+"def": "RM_HeeminCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TheChill/RM_HeeminCatch"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_IlissCatch",
+"def": "RM_IlissCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TheChill/RM_IlissCatch"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_KrellikCatch",
+"def": "RM_KrellikCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_KrellikCatch"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_OdduCatch",
+"def": "RM_OdduCatch",
+"bodies": []
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_OovanamCatch",
+"def": "RM_OovanamCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_OovanamCatch"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_OovuCatch",
+"def": "RM_OovuCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_OovuCatch"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_TarnnCatch",
+"def": "RM_TarnnCatch",
+"bodies": []
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_ZhiilCatch",
+"def": "RM_ZhiilCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_ZhiilCatch"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_ChillStillbloom",
+"def": "RM_ChillStillbloom",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Stillbloom/RM_Stillbloom"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Eldspar",
+"def": "RM_Eldspar",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Eldspar/RM_Eldspar"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Fuselight",
+"def": "RM_Fuselight",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Fuselight/RM_Fuselight"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Ghostpane",
+"def": "RM_Ghostpane",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Ghostpane/RM_Ghostpane"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Pitchpearl",
+"def": "RM_Pitchpearl",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Pitchpearl/RM_Pitchpearl"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Skyharp",
+"def": "RM_Skyharp",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Skyharp/RM_Skyharp"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Slackwax",
+"def": "RM_Slackwax",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Slackwax/RM_Slackwax"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Stonewater",
+"def": "RM_Stonewater",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Stonewater/RM_Stonewater"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Tarspool",
+"def": "RM_Tarspool",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Tarspool/RM_Tarspool"
+]
+]
+},
+{
+"biome": "RM_TheChill",
+"row": "RM_Thalquith",
+"def": "RM_Thalquith",
+"bodies": [
+[
+"src/RimMandrake/Greentide",
+"Things/Plant/RM_Thalquith/RM_Thalquith_a"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_Bulloo",
+"def": "RM_Bulloo",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_ColossalAerofleet",
+"def": "RM_ColossalAerofleet",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_Dhoggur",
+"def": "RM_Dhoggur",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_Dhokkur",
+"def": "RM_Dhokkur",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_Dhuvvox",
+"def": "RM_Dhuvvox",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_FleetFlier",
+"def": "RM_FleetFlier",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_Jossur",
+"def": "RM_Jossur",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Pawn/Animal/RM_Jossur/RM_Jossur"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_Julmox",
+"def": "RM_Julmox",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Pawn/Animal/RM_Julmox/RM_Julmox"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_Metallovore",
+"def": "RM_Metallovore",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Pawn/Animal/RM_Metallovore/RM_Metallovore"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_Ummisk",
+"def": "RM_Ummisk",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Pawn/Animal/RM_Ummisk/RM_Ummisk"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RSW_Beldon",
+"def": "RSW_Beldon",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Beldon/Beldon"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Beldon/BeldonC"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RSW_LavaFlea",
+"def": "RSW_LavaFlea",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/LavaFlea/LavaFlea"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/LavaFlea/LavaFlea_j"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RSW_Maguana",
+"def": "RSW_Maguana",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RSW_Tibidee",
+"def": "RSW_Tibidee",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Tibidee/Tibidee"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_CinderCrust",
+"def": "RM_CinderCrust",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Plant/RM_CinderCrust"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_FireLavender",
+"def": "RM_FireLavender",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Plant/FireLavender"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_FirevineTree",
+"def": "RM_FirevineTree",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Plant/RM_FirevineTree"
+]
+]
+},
+{
+"biome": "RM_TheForge",
+"row": "RM_HeatsinkFungus",
+"def": "RM_HeatsinkFungus",
+"bodies": [
+[
+"src/RimMandrake/TheForge",
+"Things/Plant/HeatsinkFungus"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Agaripawn",
+"def": "RM_Agaripawn",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSpecies/Agaripawn/Agaripawn"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Agaripod",
+"def": "RM_Agaripod",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Pawn/Animal/RM_Agaripod/RM_Agaripod"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Brogg",
+"def": "RM_Brogg",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RM_TheRot/Fauna/Redrawn/Brogg/Brogg"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Brullith",
+"def": "RM_Brullith",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RM_TheRot/Fauna/Redrawn/Brullith/Brullith"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Chittik",
+"def": "RM_Chittik",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Pawn/Animal/RM_Chittik/RM_Chittik"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Durrok",
+"def": "RM_Durrok",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Durrok/RM_Durrok"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Dustveil",
+"def": "RM_Dustveil",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSpecies/AngelMoth/AngelMoth"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Grellik",
+"def": "RM_Grellik",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RM_TheRot/Fauna/Redrawn/Grellik/Grellik"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Hwelgrue",
+"def": "RM_Hwelgrue",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Illoth",
+"def": "RM_Illoth",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RM_TheRot/Fauna/Redrawn/Illoth/Illoth"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Mullgoth",
+"def": "RM_Mullgoth",
+"bodies": [
+[
+"src/RimMandrake/LeaningScrub",
+"Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_MycoidColossus",
+"def": "RM_MycoidColossus",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSpecies/MycoidColossus/MycoidColossus"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Shambles",
+"def": "RM_Shambles",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Pawn/Animal/RM_Shambles/RM_Shambles"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Skerrith",
+"def": "RM_Skerrith",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RM_TheRot/Fauna/Redrawn/Skerrith/Skerrith"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Thozzik",
+"def": "RM_Thozzik",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_ThozzikColony",
+"def": "RM_ThozzikColony",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_ThozzikColonyQueen",
+"def": "RM_ThozzikColonyQueen",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_ThozzikQueen",
+"def": "RM_ThozzikQueen",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RSW_ShiroTrap",
+"def": "RSW_ShiroTrap",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/ShiroTrap/ShiroTrap"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/ShiroTrap/ShiroTrap_i"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/ShiroTrap/ShiroTrap_j"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RSW_Snoruuk",
+"def": "RSW_Snoruuk",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Snoruuk/Snoruuk"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Snoruuk/Snoruuk_j"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_AgaricusDomeCap",
+"def": "RM_AgaricusDomeCap",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plants/AB_AgaricusDomeCap"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_AgariluxPrime",
+"def": "RM_AgariluxPrime",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plants/AB_AgariluxPrime"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_AgelessCap",
+"def": "RM_AgelessCap",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/AgelessCap"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_AmbrosyxFungus",
+"def": "RM_AmbrosyxFungus",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Brightbell"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_ArbuscularMycorrhiza",
+"def": "RM_ArbuscularMycorrhiza",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plants/AB_ArbuscularMycorrhiza"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Arpeau",
+"def": "RM_Arpeau",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Arpeau"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_BlastpodShroom",
+"def": "RM_BlastpodShroom",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/RM_BlastpodShroom"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_BleedingTooth",
+"def": "RM_BleedingTooth",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/BleedingTooth"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Brightbell",
+"def": "RM_Brightbell",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Brightbell"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Bryolux",
+"def": "RM_Bryolux",
+"bodies": [
+[
+"src/RimUtinni/UtinniPatches",
+"Things/Plant/Bryolux"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_CrimsonCap",
+"def": "RM_CrimsonCap",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/CrimsonCap"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Dewshrooms",
+"def": "RM_Dewshrooms",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Seadew"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_DribblingCap",
+"def": "RM_DribblingCap",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plants/AB_DribblingCap"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_EuphoricCrown",
+"def": "RM_EuphoricCrown",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/EuphoricCrown"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_FalseFruit",
+"def": "RM_FalseFruit",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/FalseFruit"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_FlakespireFungus",
+"def": "RM_FlakespireFungus",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/FlakespireFungus"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_FruitingBodies",
+"def": "RM_FruitingBodies",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/FruitingBodies"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_GiantAgarilux",
+"def": "RM_GiantAgarilux",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plants/AB_GiantAgarilux"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_GlowingAgarilux",
+"def": "RM_GlowingAgarilux",
+"bodies": [
+[
+"src/RimUtinni/UtinniPatches",
+"Things/Plant/Agarilux"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Glowstool",
+"def": "RM_Glowstool",
+"bodies": [
+[
+"src/RimUtinni/UtinniPatches",
+"Things/Plant/Glowstool"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_GreyLady",
+"def": "RM_GreyLady",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_LilacBeacon",
+"def": "RM_LilacBeacon",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plants/AB_LilacBeacon"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_MortalMorelPlant",
+"def": "RM_MortalMorelPlant",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/RM_MortalMorelPlant"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Nuitae",
+"def": "RM_Nuitae",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Nuitae"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_PaleTree",
+"def": "RM_PaleTree",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/PaleTree"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Pusmelon",
+"def": "RM_Pusmelon",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Pusmelon"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_RecurvedStropharia",
+"def": "RM_RecurvedStropharia",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plants/AB_RecurvedStropharia"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_RegenerantVeil",
+"def": "RM_RegenerantVeil",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/RegenerantVeil"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Ruskara",
+"def": "RM_Ruskara",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plant/RM_Ruskara"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Sagecrust",
+"def": "RM_Sagecrust",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Sagecrust"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Shinecap",
+"def": "RM_Shinecap",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Shinecap/ShinecapGrown"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Skulltop",
+"def": "RM_Skulltop",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Skulltop/Skulltop"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_SlimyPholiota",
+"def": "RM_SlimyPholiota",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plants/AB_SlimyPholiota"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_TollukCap",
+"def": "RM_TollukCap",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/TollukCap"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Ullumbra",
+"def": "RM_Ullumbra",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plant/RM_Ullumbra"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Vellugra",
+"def": "RM_Vellugra",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plant/RM_Vellugra"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_VioletWimple",
+"def": "RM_VioletWimple",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/VioletWimple"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_WitchesOyster",
+"def": "RM_WitchesOyster",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"Things/Plants/AB_WitchesOyster"
+]
+]
+},
+{
+"biome": "RM_TheRot",
+"row": "RM_Wrinklecap",
+"def": "RM_Wrinklecap",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Wrinklecap"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Bladderboil",
+"def": "RM_Bladderboil",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Doss",
+"def": "RM_Doss",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Doss/RM_Doss"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Eesh",
+"def": "RM_Eesh",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Eesh/RM_Eesh"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Ekkel",
+"def": "RM_Ekkel",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Ekkel/RM_Ekkel"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Karrash",
+"def": "RM_Karrash",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Karrash/RM_Karrash"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Muddal",
+"def": "RM_Muddal",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Muddal/RM_Muddal"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Noohm",
+"def": "RM_Noohm",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Noohm/RM_Noohm"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_ScaldWalker",
+"def": "RM_ScaldWalker",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Shulla",
+"def": "RM_Shulla",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Shulla/RM_Shulla"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Thuum",
+"def": "RM_Thuum",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Thuum/RM_Thuum"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_BladderboilCatch",
+"def": "RM_BladderboilCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_BladderboilCatch"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_DossCatch",
+"def": "RM_DossCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_DossCatch"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_EeshCatch",
+"def": "RM_EeshCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_EeshCatch"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_EkkelCatch",
+"def": "RM_EkkelCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_EkkelCatch"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_KarrashCatch",
+"def": "RM_KarrashCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_KarrashCatch"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_MuddalCatch",
+"def": "RM_MuddalCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_MuddalCatch"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Saal",
+"def": "RM_Saal",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_Saal"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_ShullaCatch",
+"def": "RM_ShullaCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_ShullaCatch"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_ThuumCatch",
+"def": "RM_ThuumCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_ThuumCatch"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Crowncarpet",
+"def": "RM_Crowncarpet",
+"bodies": [
+[
+"src/RimMandrake/LuminousPigment",
+"Things/Plant/RM_Crowncarpet"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Foamgorse",
+"def": "RM_Foamgorse",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Foamgorse/RM_Foamgorse"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Kettlewick",
+"def": "RM_Kettlewick",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Kettlewick/RM_Kettlewick"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Seepcandle",
+"def": "RM_Seepcandle",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Seepcandle/RM_Seepcandle"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Simmerlace",
+"def": "RM_Simmerlace",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Simmerlace/RM_Simmerlace"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Threshreed",
+"def": "RM_Threshreed",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Threshreed/RM_Threshreed"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Thurlsponge",
+"def": "RM_Thurlsponge",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Thurlsponge/RM_Thurlsponge"
+]
+]
+},
+{
+"biome": "RM_TheScald",
+"row": "RM_Vekkfan",
+"def": "RM_Vekkfan",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_Vekkfan/RM_Vekkfan"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Dredgel",
+"def": "RM_Dredgel",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Pawn/Animal/RM_Dredgel/RM_Dredgel"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Gulveth",
+"def": "RM_Gulveth",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Pawn/Animal/RM_Gulveth/RM_Gulveth"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Kethrel",
+"def": "RM_Kethrel",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Skarrid",
+"def": "RM_Skarrid",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Pawn/Animal/RM_Skarrid/RM_Skarrid"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Skellarn",
+"def": "RM_Skellarn",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Pawn/Animal/RM_Skellarn/RM_Skellarn"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_SumpMouse",
+"def": "RM_SumpMouse",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Thrummel",
+"def": "RM_Thrummel",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Pawn/Animal/RM_Thrummel/RM_Thrummel"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_ThrummelBroodmother",
+"def": "RM_ThrummelBroodmother",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_ThrummelWarden",
+"def": "RM_ThrummelWarden",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RSW_Hssiss",
+"def": "RSW_Hssiss",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Hssiss/Hssiss"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Brindeth",
+"def": "RM_Brindeth",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Plant/RM_Brindeth/RM_Brindeth_a"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Dorvel",
+"def": "RM_Dorvel",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Plant/RM_Dorvel/RM_Dorvel_a"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Korveth",
+"def": "RM_Korveth",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Plant/RM_Korveth/RM_Korveth_a"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Lanneth",
+"def": "RM_Lanneth",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Plant/RM_Lanneth/RM_Lanneth"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Mirrelin",
+"def": "RM_Mirrelin",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Plant/RM_Mirrelin/RM_Mirrelin_a"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Pallick",
+"def": "RM_Pallick",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Plant/RM_Pallick/RM_Pallick_a"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Skelver",
+"def": "RM_Skelver",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Plant/RM_Skelver/RM_Skelver_a"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Soffeth",
+"def": "RM_Soffeth",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Plant/RM_Soffeth/RM_Soffeth_a"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Tolleth",
+"def": "RM_Tolleth",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Plant/RM_Tolleth/RM_Tolleth_a"
+]
+]
+},
+{
+"biome": "RM_TheSump",
+"row": "RM_Velloch",
+"def": "RM_Velloch",
+"bodies": [
+[
+"src/RimMandrake/TheSump",
+"Things/Plant/RM_Velloch/RM_Velloch_a"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Aluun",
+"def": "RM_Aluun",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Aluun/RM_Aluun"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Bulloo",
+"def": "RM_Bulloo",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_DancingSkresh",
+"def": "RM_DancingSkresh",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_DancingSkresh/RM_DancingSkresh"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_GrippingTerror",
+"def": "RM_GrippingTerror",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Hollu",
+"def": "RM_Hollu",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Hollu/RM_Hollu"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Kellu",
+"def": "RM_Kellu",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Kellu/RM_Kellu"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Lanternwhale",
+"def": "RM_Lanternwhale",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Liiru",
+"def": "RM_Liiru",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Liiru/RM_Liiru"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Loohn",
+"def": "RM_Loohn",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Loohn/RM_Loohn"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Lunoowa",
+"def": "RM_Lunoowa",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Murrol",
+"def": "RM_Murrol",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Murrol/RM_Murrol"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Niim",
+"def": "RM_Niim",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Niim/RM_Niim"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Noolim",
+"def": "RM_Noolim",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Noolim/RM_Noolim"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Nuudal",
+"def": "RM_Nuudal",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Nuudal/RM_Nuudal"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Oobo",
+"def": "RM_Oobo",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Oobo/RM_Oobo"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Pallu",
+"def": "RM_Pallu",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Pallu/RM_Pallu"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Tikkarr",
+"def": "RM_Tikkarr",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Weloon",
+"def": "RM_Weloon",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Pawn/Animal/RM_Weloon/RM_Weloon"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RSW_Faa",
+"def": "RSW_Faa",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Faa/Faa"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RSW_Lanternwhale",
+"def": "RSW_Lanternwhale",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RSW_Mee",
+"def": "RSW_Mee",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/Mee/Mee"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RSW_SandoAquaMonster",
+"def": "RSW_SandoAquaMonster",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_AluunCatch",
+"def": "RM_AluunCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_AluunCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_HolluCatch",
+"def": "RM_HolluCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/Fish/RM_HolluCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_KelluCatch",
+"def": "RM_KelluCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_KelluCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_LiiruCatch",
+"def": "RM_LiiruCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_LiiruCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_MurrolCatch",
+"def": "RM_MurrolCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_MurrolCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_NiimCatch",
+"def": "RM_NiimCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_NiimCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_NoolimCatch",
+"def": "RM_NoolimCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_NoolimCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_NuudalCatch",
+"def": "RM_NuudalCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_NuudalCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_OoboCatch",
+"def": "RM_OoboCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_OoboCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_PalluCatch",
+"def": "RM_PalluCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_PalluCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_TikkarrCatch",
+"def": "RM_TikkarrCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_TikkarrCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_WeloonCatch",
+"def": "RM_WeloonCatch",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Item/RM_TwilightSea/RM_WeloonCatch"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Almslight",
+"def": "RM_Almslight",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_TwilightSea/RM_Almslight"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Glimmerhusk",
+"def": "RM_Glimmerhusk",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_TwilightSea/RM_Glimmerhusk"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Gloamurn",
+"def": "RM_Gloamurn",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_TwilightSea/RM_Gloamurn"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_HoolimbrePlant",
+"def": "RM_HoolimbrePlant",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_TwilightSea/RM_HoolimbrePlant"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Hushcoral",
+"def": "RM_Hushcoral",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_TwilightSea/RM_Hushcoral"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Murkspindle",
+"def": "RM_Murkspindle",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_TwilightSea/RM_Murkspindle"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_NoothelmPlant",
+"def": "RM_NoothelmPlant",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_NoothelmPlant/RM_NoothelmPlant"
+]
+]
+},
+{
+"biome": "RM_TwilightSea",
+"row": "RM_Weircomb",
+"def": "RM_Weircomb",
+"bodies": [
+[
+"src/RimMandrake/TerminalBiomes",
+"Things/Plant/RM_TwilightSea/RM_Weircomb"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_Bileworm",
+"def": "RM_Bileworm",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_Bileworm/RM_Bileworm"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_Chatrak",
+"def": "RM_Chatrak",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_Chatrak/RM_Chatrak"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_ElectricGryllotalpa",
+"def": "RM_ElectricGryllotalpa",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_ElectricTick",
+"def": "RM_ElectricTick",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_ElectricTick/RM_ElectricTick"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_JuggernautBeetle",
+"def": "RM_JuggernautBeetle",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_JuggernautBeetle/RM_JuggernautBeetle"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_Korrum",
+"def": "RM_Korrum",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_Korrum/RM_Korrum"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_Pallbearer",
+"def": "RM_Pallbearer",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_Rakeshank",
+"def": "RM_Rakeshank",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_Rakeshank/RM_Rakeshank"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_Rimclaw",
+"def": "RM_Rimclaw",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_ScarRoach",
+"def": "RM_ScarRoach",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_Tetchik",
+"def": "RM_Tetchik",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Pawn/Animal/RM_Tetchik/RM_Tetchik"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_Vozzik",
+"def": "RM_Vozzik",
+"bodies": [
+[
+"src/RimMandrake/Stillsand",
+"Things/Pawn/Animal/RM_Vozzik/RM_Vozzik"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RSW_FoundryBeetle",
+"def": "RSW_FoundryBeetle",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RSW_MegaphoridLarva",
+"def": "RSW_MegaphoridLarva",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RSW_Mynock",
+"def": "RSW_Mynock",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RSW_Vozzik",
+"def": "RSW_Vozzik",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_Glower",
+"def": "RM_Glower",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Plant/RM_Glower"
+]
+]
+},
+{
+"biome": "RM_Warscar",
+"row": "RM_ScorchedStars",
+"def": "RM_ScorchedStars",
+"bodies": [
+[
+"src/RimMandrake/Scarlands",
+"Things/Plant/RM_ScorchedStars"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Boilhide",
+"def": "RM_Boilhide",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Boilhide/RM_Boilhide"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Excretor",
+"def": "RM_Excretor",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Excretor/RM_Excretor"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Frethik",
+"def": "RM_Frethik",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Frethik/RM_Frethik"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Gravelgut",
+"def": "RM_Gravelgut",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Grimewing",
+"def": "RM_Grimewing",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Grimewing/RM_Grimewing"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Gripper",
+"def": "RM_Gripper",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Gripper/RM_Gripper"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Gristleswarm",
+"def": "RM_Gristleswarm",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Kroffa",
+"def": "RM_Kroffa",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Kroffa/RM_Kroffa"
+],
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Scabspinner",
+"def": "RM_Scabspinner",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Scumslider",
+"def": "RM_Scumslider",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Scumslider/RM_Scumslider"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Slagmole",
+"def": "RM_Slagmole",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Slagmole/RM_Slagmole"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Sloghog",
+"def": "RM_Sloghog",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Sloghog/RM_Sloghog"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Smolderback",
+"def": "RM_Smolderback",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Smolderback/RM_Smolderback"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Sootgrazer",
+"def": "RM_Sootgrazer",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_SootGristleswarm",
+"def": "RM_SootGristleswarm",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RSW_BloodletterPetrel",
+"def": "RSW_BloodletterPetrel",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RSW_Borcatu",
+"def": "RSW_Borcatu",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Borcatu/Borcatu"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RSW_Sacapillar",
+"def": "RSW_Sacapillar",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RSW_Screecher",
+"def": "RSW_Screecher",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RUT_BrineBattery",
+"def": "RUT_BrineBattery",
+"bodies": [
+[
+"src/RimUtinni/UtinniPatches",
+"Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "VAEWaste_Megatardi",
+"def": "VAEWaste_Megatardi",
+"bodies": [
+[
+"src/RimUtinni/UtinniPatches",
+"Things/Pawn/Animal/Megatardi/Megatardi"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Boilbulb",
+"def": "RM_Boilbulb",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Plant/RM_Boilbulb"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Cinderfelt",
+"def": "RM_Cinderfelt",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Plant/RM_Cinderfelt"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_DosimeterLawn",
+"def": "RM_DosimeterLawn",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Plant/DosimeterLawn"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Pusberry",
+"def": "RM_Pusberry",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Plant/RM_Pusberry"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Scumgrass",
+"def": "RM_Scumgrass",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Plant/RM_Scumgrass"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_TallScumgrass",
+"def": "RM_TallScumgrass",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Plant/RM_TallScumgrass"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_VaultRoot",
+"def": "RM_VaultRoot",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Plant/VaultRoot"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_Wartshrub",
+"def": "RM_Wartshrub",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Plant/RM_Wartshrub"
+]
+]
+},
+{
+"biome": "RM_Wastes",
+"row": "RM_WastesScorchedStars",
+"def": "RM_WastesScorchedStars",
+"bodies": [
+[
+"src/RimMandrake/Wastes",
+"Things/Plant/RM_WastesScorchedStars"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Cravvet",
+"def": "RM_Cravvet",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Pawn/Animal/RM_Cravvet/RM_Cravvet"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Ollathrix",
+"def": "RM_Ollathrix",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Quarrok",
+"def": "RM_Quarrok",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Pawn/Animal/RM_Quarrok/RM_Quarrok"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Sivvern",
+"def": "RM_Sivvern",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Pawn/Animal/RM_Sivvern/RM_Sivvern"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Skennet",
+"def": "RM_Skennet",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Pawn/Animal/RM_Skennet/RM_Skennet"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Vennick",
+"def": "RM_Vennick",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Pawn/Animal/RM_Vennick/RM_Vennick"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Brennoth",
+"def": "RM_Brennoth",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Brennoth/RM_Brennoth_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Brimlock",
+"def": "RM_Brimlock",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Brimlock/RM_Brimlock_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Dulloth",
+"def": "RM_Dulloth",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Dulloth/RM_Dulloth_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Fellome",
+"def": "RM_Fellome",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Fellome/RM_Fellome_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Glasmaw",
+"def": "RM_Glasmaw",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/RM_Glasmaw"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Grennick",
+"def": "RM_Grennick",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Grennick/RM_Grennick_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Kessaroth",
+"def": "RM_Kessaroth",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Kessaroth/RM_Kessaroth_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Kollavane",
+"def": "RM_Kollavane",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Kollavane/RM_Kollavane_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Norrveth",
+"def": "RM_Norrveth",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Norrveth/RM_Norrveth_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Pellareth",
+"def": "RM_Pellareth",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Pellareth/RM_Pellareth_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Ruddreth",
+"def": "RM_Ruddreth",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Ruddreth/RM_Ruddreth_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Sellith",
+"def": "RM_Sellith",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Sellith/RM_Sellith_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Sorrivel",
+"def": "RM_Sorrivel",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Sorrivel/RM_Sorrivel_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Tavrosk",
+"def": "RM_Tavrosk",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Tavrosk/RM_Tavrosk_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Threllick",
+"def": "RM_Threllick",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Threllick/RM_Threllick_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Varrisk",
+"def": "RM_Varrisk",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Varrisk/RM_Varrisk_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RM_Vessark",
+"def": "RM_Vessark",
+"bodies": [
+[
+"src/RimMandrake/Webwork",
+"Things/Plant/RM_Vessark/RM_Vessark_a"
+]
+]
+},
+{
+"biome": "RM_Webwork",
+"row": "RSW_Plant_TookeTrap_Wild",
+"def": "RSW_Plant_TookeTrap_Wild",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"Things/Plant/RSW_Plant_TookeTrap_Wild"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Burrak",
+"def": "RM_Burrak",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Burrak/RM_Burrak"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Colossia",
+"def": "RM_Colossia",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Colossia/RM_Colossia"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Gorrask",
+"def": "RM_Gorrask",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Gorrask/RM_Gorrask"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Huldu",
+"def": "RM_Huldu",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Huldu/RM_Huldu"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Ivvol",
+"def": "RM_Ivvol",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Ivvol/RM_Ivvol"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Karrek",
+"def": "RM_Karrek",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Karrek/RM_Karrek"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Kirruk",
+"def": "RM_Kirruk",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Kirruk/RM_Kirruk"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Loomu",
+"def": "RM_Loomu",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Loomu/RM_Loomu"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Murrin",
+"def": "RM_Murrin",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Murrin/RM_Murrin"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Sillik",
+"def": "RM_Sillik",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Sillik/RM_Sillik"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Skarrin",
+"def": "RM_Skarrin",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Skarrin/RM_Skarrin"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Ssurr",
+"def": "RM_Ssurr",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Ssurr/RM_Ssurr"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Tirbak",
+"def": "RM_Tirbak",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Tirbak/RM_Tirbak"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Vellak",
+"def": "RM_Vellak",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Vellak/RM_Vellak"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Vhakk",
+"def": "RM_Vhakk",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Vhakk/RM_Vhakk"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Vizhik",
+"def": "RM_Vizhik",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Pawn/Animal/RM_Vizhik/RM_Vizhik"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RSW_Bantha",
+"def": "RSW_Bantha",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Bantha/BanthaR"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Bantha/BanthaW_j"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RSW_Boma",
+"def": "RSW_Boma",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Boma/Boma"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RSW_Dactillion",
+"def": "RSW_Dactillion",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Dactillion/Dactillion"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RSW_Dewback",
+"def": "RSW_Dewback",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Dewback/Dewback"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RSW_Eopie",
+"def": "RSW_Eopie",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Eopie/Eopie"
+],
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Eopie/Eopie_j"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RSW_Fanback",
+"def": "RSW_Fanback",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Fanback/Fanback"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RSW_Jamel",
+"def": "RSW_Jamel",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"swanimals/Jamel/Jamel"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RSW_Ollopom",
+"def": "RSW_Ollopom",
+"bodies": [
+[
+"src/RimStarWars/SWBestiary",
+"RimStarWars/SWBestiary/Ollopom/Ollopom"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Duul",
+"def": "RM_Duul",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_Duul"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_HulduCatch",
+"def": "RM_HulduCatch",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_HulduCatch"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Ikkal",
+"def": "RM_Ikkal",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_Ikkal"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_IvvolCatch",
+"def": "RM_IvvolCatch",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_IvvolCatch"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_KarrekCatch",
+"def": "RM_KarrekCatch",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_KarrekCatch"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_LoomuCatch",
+"def": "RM_LoomuCatch",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_LoomuCatch"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_MurrinCatch",
+"def": "RM_MurrinCatch",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/RM_MurrinCatch"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Ozhu",
+"def": "RM_Ozhu",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_Ozhu"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_SkarrinCatch",
+"def": "RM_SkarrinCatch",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_SkarrinCatch"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Tarrik",
+"def": "RM_Tarrik",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_Tarrik"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Ullo",
+"def": "RM_Ullo",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_Ullo"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_VizhikCatch",
+"def": "RM_VizhikCatch",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_VizhikCatch"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Vobbal",
+"def": "RM_Vobbal",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Item/Fish/RM_Vobbal"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "Plant_Reeds",
+"def": "Plant_Reeds",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Reeds"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Bladderquill",
+"def": "RM_Bladderquill",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Bladderquill"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Dewblade",
+"def": "RM_Dewblade",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Dewblade"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Dewgourd",
+"def": "RM_Dewgourd",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Dewgourd"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Dewshrooms",
+"def": "RM_Dewshrooms",
+"bodies": [
+[
+"src/RimMandrake/TheRot",
+"RotSporeKit/Things/Plant/Seadew"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Dripfringe",
+"def": "RM_Dripfringe",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Dripfringe"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Rockfinger",
+"def": "RM_Rockfinger",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Rockfinger"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Salvecomb",
+"def": "RM_Salvecomb",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Salvecomb"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Shadefern",
+"def": "RM_Shadefern",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Shadefern"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Steamfrond",
+"def": "RM_Steamfrond",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Steamfrond"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Talvessar",
+"def": "RM_Talvessar",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Talvessar"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Verdimoss",
+"def": "RM_Verdimoss",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Verdimoss"
+]
+]
+},
+{
+"biome": "RM_WeepingStones",
+"row": "RM_Weepmat",
+"def": "RM_Weepmat",
+"bodies": [
+[
+"src/RimMandrake/WeepingStones",
+"Things/Plant/RM_Weepmat"
+]
+]
+}
+]
+}

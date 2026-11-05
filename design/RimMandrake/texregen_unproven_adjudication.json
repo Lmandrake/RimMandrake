@@ -1,34 +1,36 @@
 {
- "generated": "2026-11-03T12:05:36-0800",
- "git_head": "1dc250ae25",
- "audit": "/mnt/d/ClaudeWork/rimmandrake/scratch/texregen_unproven/audit.json",
- "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/texregen_unproven/census/census.json",
+ "generated": "2026-11-04T23:50:46-0800",
+ "git_head": "e87f41b812",
+ "audit": "",
+ "census": "/mnt/d/ClaudeWork/rimmandrake/scratch/texregen_unproven/census5/census.json",
+ "roster_snapshot": "design/RimMandrake/texregen_unproven_roster_snapshot.json",
+ "roster_snapshot_rows": 916,
  "dhash_max": 10,
  "calibration": {
   "resave": {
-   "n": 264,
-   "p50": 2,
-   "p99": 8,
-   "over_max": 2
+   "n": 268,
+   "p50": 1,
+   "p99": 9,
+   "over_max": 3
   },
   "nearest_other_res": {
    "n": 150,
    "p05": 2,
-   "p10": 9,
-   "p50": 59,
-   "at_or_under_max": 17
+   "p10": 10,
+   "p50": 56,
+   "at_or_under_max": 15
   }
  },
  "counts": {
-  "OWNER_PICKED": 71,
-  "STAND_IN": 245,
-  "HAND_MADE": 93
+  "OWNER_PICKED": 56,
+  "STAND_IN": 248,
+  "HAND_MADE": 107
  },
  "counts_by_basis": {
-  "OWNER_PICKED": 71,
-  "STAND_IN": 245,
+  "OWNER_PICKED": 56,
+  "STAND_IN": 248,
   "HAND_MADE": 15,
-  "OURS_PRELEDGER": 63,
+  "OURS_PRELEDGER": 77,
   "OURS_RESAVED": 15
  },
  "counts_by_group": {
@@ -65,51 +67,56 @@
    "HAND_MADE": 1
   },
   "Pyrelands": {
-   "HAND_MADE": 3,
+   "HAND_MADE": 2,
    "OWNER_PICKED": 4
   },
   "ROSTER:RM_Abyss": {
    "OWNER_PICKED": 2
   },
   "ROSTER:RM_BlueDesert": {
-   "OWNER_PICKED": 6
+   "HAND_MADE": 6
   },
   "ROSTER:RM_Cauldron": {
    "HAND_MADE": 1
   },
+  "ROSTER:RM_FeverWood": {
+   "HAND_MADE": 1
+  },
   "ROSTER:RM_FloodedCanyon": {
-   "STAND_IN": 2
+   "STAND_IN": 3
   },
   "ROSTER:RM_GelatinousSlime": {
-   "OWNER_PICKED": 2
+   "HAND_MADE": 2
   },
   "ROSTER:RM_Greentide": {
    "STAND_IN": 2
   },
   "ROSTER:RM_LanternDeeps": {
-   "OWNER_PICKED": 1
+   "HAND_MADE": 1
+  },
+  "ROSTER:RM_LongShade": {
+   "STAND_IN": 2
   },
   "ROSTER:RM_Miasma": {
    "OWNER_PICKED": 2
   },
   "ROSTER:RM_Pyrelands": {
-   "HAND_MADE": 1,
    "OWNER_PICKED": 1
   },
   "ROSTER:RM_Stillsand": {
    "OWNER_PICKED": 2
   },
   "ROSTER:RM_TheRot": {
-   "OWNER_PICKED": 1
+   "HAND_MADE": 1
   },
   "ROSTER:RM_TheScald": {
-   "OWNER_PICKED": 2
+   "HAND_MADE": 2
   },
   "ROSTER:RM_TheSump": {
-   "OWNER_PICKED": 1
+   "HAND_MADE": 1
   },
   "ROSTER:RM_TwilightSea": {
-   "OWNER_PICKED": 2
+   "HAND_MADE": 2
   },
   "ROSTER:RM_Warscar": {
    "STAND_IN": 2
@@ -153,23 +160,13 @@
   }
  },
  "roster_counts": {
-  "OWNER_PICKED": 21,
-  "HAND_MADE": 31,
-  "STAND_IN": 6
+  "STAND_IN": 9,
+  "OWNER_PICKED": 20,
+  "HAND_MADE": 40
  },
  "sheet_decided_rejudged": {
-  "defs": {
-   "OWNER_PICKED": 17,
-   "HAND_MADE": 37,
-   "STAND_IN": 63,
-   "OWNER_PICKED + STAND_IN": 1,
-   "HAND_MADE + STAND_IN": 3
-  },
-  "roster": {
-   "OWNER_PICKED": 21,
-   "HAND_MADE": 27,
-   "STAND_IN": 6
-  }
+  "defs": {},
+  "roster": {}
  },
  "files": [
   {
@@ -205,9 +202,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/graniteslug/graniteslug_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "skarnix",
-     "rmskarnix"
+    "sheet_keeps": [
+     [
+      "skarnix",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Skarnix",
+      "c",
+      "2026-10-06T03:00:31.199Z"
+     ],
+     [
+      "skarnix",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Skarnix",
+      "c",
+      "2026-10-06T03:00:31.199Z"
+     ],
+     [
+      "skarnix",
+      "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Skarnix",
+      "c",
+      "2026-10-06T03:00:31.199Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -245,9 +261,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/acklay/acklay_eastm.png",
      "mad": null
     },
-    "sheet_stems": [
-     "cindermare",
-     "rmcindermare"
+    "sheet_keeps": [
+     [
+      "cindermare",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Cindermare",
+      "b",
+      "2026-10-06T03:05:00.830Z"
+     ],
+     [
+      "cindermare",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Cindermare",
+      "b",
+      "2026-10-06T03:05:00.830Z"
+     ],
+     [
+      "cindermare",
+      "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Cindermare",
+      "b",
+      "2026-10-06T03:05:00.830Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -286,9 +321,7 @@
      "loc": "design/RimStarWars/canon_references/aqualish/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "eggoval"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -325,9 +358,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gornt/gornt_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "eggoval"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -364,9 +395,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit3_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "eggoval"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -402,7 +431,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/acklay/acklay_eastm.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -438,9 +467,14 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/jakobeast/jakobeast_j_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "darkcrust",
-     "rmdarkcrust"
+    "sheet_keeps": [
+     [
+      "darkcrust",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_DarkCrust",
+      "a",
+      "2026-10-16T13:18:04.465Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -478,9 +512,14 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2198652536/Textures/Things/Plant/Echeveria/EcheveriaA.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sunbeam",
-     "rmsunbeam"
+    "sheet_keeps": [
+     [
+      "sunbeam",
+      "Transient/biome_ffar/picks_icons_sheet_2026-10-19.decisions.json",
+      "RM_Sunbeam",
+      "a",
+      "2026-10-19T13:54:24.256Z"
+     ]
     ]
    }
   },
@@ -517,7 +556,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoriaLarvae_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -557,9 +596,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/hawkbat/hawkbat_flying_2_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "infectedaerofleet"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -595,10 +632,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/urusai/urusai_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "vashuu",
-     "rmvashuu"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -635,9 +669,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/Nexu_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "gristle"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -673,10 +705,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/Nexu_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "gristle",
-     "rmgristle"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -714,7 +743,7 @@
      "loc": "design/RimStarWars/canon_references/geonosian/wookieepedia_poggle_geo.jpg",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -750,9 +779,30 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "deepmycelium"
-    ]
+    "sheet_keeps": [
+     [
+      "deepmycelium",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RM_DeepMycelium",
+      "e",
+      "2026-10-06T03:43:40.296Z"
+     ],
+     [
+      "deepmycelium",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RM_DeepMycelium",
+      "e",
+      "2026-10-06T03:43:40.296Z"
+     ],
+     [
+      "deepmycelium",
+      "Transient/biome_ffar/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RM_DeepMycelium",
+      "e",
+      "2026-10-06T03:43:40.296Z"
+     ]
+    ],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -788,9 +838,30 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/imperiallabor/head/head_northm.png",
      "mad": null
     },
-    "sheet_stems": [
-     "deepmycelium"
-    ]
+    "sheet_keeps": [
+     [
+      "deepmycelium",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RM_DeepMycelium",
+      "e",
+      "2026-10-06T03:43:40.296Z"
+     ],
+     [
+      "deepmycelium",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RM_DeepMycelium",
+      "e",
+      "2026-10-06T03:43:40.296Z"
+     ],
+     [
+      "deepmycelium",
+      "Transient/biome_ffar/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RM_DeepMycelium",
+      "e",
+      "2026-10-06T03:43:40.296Z"
+     ]
+    ],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -826,9 +897,8 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/fanback/fanback_swimming_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "zivvittaper"
-    ]
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -864,9 +934,8 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/b1/body/naked_male_eastm.png",
      "mad": null
     },
-    "sheet_stems": [
-     "quorrfern"
-    ]
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -902,9 +971,8 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TheRot/Textures/RotSporeKit/Things/Plant/FlakespireFungus/Flakespirefungus_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "quorrfern"
-    ]
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -940,9 +1008,8 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TheForge/Textures/Things/Plant/RM_CinderCrust/RM_CinderCrust_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "quorrfern"
-    ]
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -978,9 +1045,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/porg/porg_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "osskbramble"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -1016,9 +1081,8 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gornt/gornt_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "brellikbulb"
-    ]
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -1054,9 +1118,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggnodule/eggnodule_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "thrakkcap"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -1093,9 +1155,8 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/magnaguard/body/naked_male_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "prennalace"
-    ]
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -1131,9 +1192,8 @@
      "loc": "src/RimMandrake/TheRot/Textures/StandIn/Things/Plants/AB_GiantAgarilux/AB_GiantAgariluxA.png",
      "mad": null
     },
-    "sheet_stems": [
-     "prennalace"
-    ]
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -1169,9 +1229,8 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorg_j_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "vellokreed"
-    ]
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -1207,9 +1266,8 @@
      "loc": "bundle:ludeon.rimworld.odyssey/lavasnail_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "kuvraspout"
-    ]
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -1245,9 +1303,8 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "nurrikgill"
-    ]
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -1284,9 +1341,7 @@
      "loc": "src/RimUtinni/StructureInjectionsRUT/Textures/StandIn/Things/Building/Linked/WallInsectJelly_Atlas.png",
      "mad": null
     },
-    "sheet_stems": [
-     "lanternstonewall"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -1323,7 +1378,7 @@
      "loc": "src/RimUtinni/StructureInjectionsRUT/Textures/StandIn/Things/Building/Linked/WallInsectJelly_Atlas.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -1359,7 +1414,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/acklay/acklay_eastm.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -1396,7 +1451,7 @@
      "loc": "design/RimStarWars/canon_references/jawa/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -1433,7 +1488,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_insectile/meat_insectile_b.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -1472,7 +1527,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorgc_swimming_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -1511,7 +1566,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_pachydermoid/meat_pachydermoid_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -1547,8 +1602,49 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/reek/reek_j_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "gembug"
+    "sheet_keeps": [
+     [
+      "gembug",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RM_Gembug",
+      "a",
+      "2026-10-06T03:40:02.228Z"
+     ],
+     [
+      "gembug",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RSW_Gembug",
+      "a",
+      "2026-10-06T03:40:02.228Z"
+     ],
+     [
+      "gembug",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RM_Gembug",
+      "a",
+      "2026-10-06T03:40:02.228Z"
+     ],
+     [
+      "gembug",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RSW_Gembug",
+      "a",
+      "2026-10-06T03:40:02.228Z"
+     ],
+     [
+      "gembug",
+      "Transient/biome_ffar/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RM_Gembug",
+      "a",
+      "2026-10-06T03:40:02.228Z"
+     ],
+     [
+      "gembug",
+      "Transient/biome_ffar/lanterndeeps_sheet_2026-10-05.decisions.json",
+      "RSW_Gembug",
+      "a",
+      "2026-10-06T03:40:02.228Z"
+     ]
     ]
    }
   },
@@ -1585,9 +1681,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "bloodropmoth"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -1623,9 +1717,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Boarwolf/Boarwolf_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "mossbeetlelarvae"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -1661,9 +1753,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "puffertendrils"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -1699,9 +1789,21 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/building/droidbay/droidassembly_hk47_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmsweetlinetreea",
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -1738,8 +1840,21 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/kraytdragon/kraytdragon_f_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -1776,8 +1891,21 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/kraytdragon/kraytdragon_f_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -1814,8 +1942,21 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/building/droidbay/droidassembly_hk50_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -1852,8 +1993,21 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/wampa/wampa_j_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -1890,8 +2044,21 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/wampa/wampa_j_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -1928,9 +2095,21 @@
      "loc": "design/RimStarWars/canon_references/wookiee/wookieepedia_infobox_fullbody.jpg",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree",
-     "rmsweetlinetreeg"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -1967,8 +2146,21 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/teemuss/teemuss_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -2005,8 +2197,21 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/blixus/blixus_swimming_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -2043,8 +2248,21 @@
      "loc": "design/RimStarWars/canon_references/togruta/wookieepedia_negas_legends.jpg",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -2081,8 +2299,21 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/jamel/jamel_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -2119,8 +2350,21 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Greentide/Textures/Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a/RM_Sarnstilt_a_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -2157,8 +2401,21 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/LongShade/Textures/Things/Plant/RM_Vorrel/RM_Vorrel_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -2195,8 +2452,21 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/LongShade/Textures/Things/Plant/RM_Vorrel/RM_Vorrel_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sweetlinetree"
+    "sheet_keeps": [
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_SweetlineTree",
+      "a",
+      "2026-10-16T13:16:16.903Z"
+     ],
+     [
+      "sweetlinetree",
+      "Transient/biome_ffar/tree_tiers_sheet_2026-10-18.decisions.json",
+      "RM_SweetlineTree",
+      "a",
+      "2026-10-18T16:28:43.375Z"
+     ]
     ]
    }
   },
@@ -2233,7 +2503,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -2269,8 +2539,77 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/Nexu_j_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "trufflemole"
+    "sheet_keeps": [
+     [
+      "trufflemole",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/desert_sheet_2026-10-04.decisions.json",
+      "RM_TruffleMole",
+      "b",
+      "2026-10-05T03:29:44.217Z"
+     ],
+     [
+      "trufflemole",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/desert_sheet_2026-10-04.decisions.json",
+      "RSW_TruffleMole",
+      "b",
+      "2026-10-05T03:28:38.873Z"
+     ],
+     [
+      "trufflemole",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/leaningscrub_sheet_2026-10-05.decisions.json",
+      "RM_TruffleMole",
+      "b",
+      "2026-10-06T01:25:53.290Z"
+     ],
+     [
+      "trufflemole",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/desert_sheet_2026-10-04.decisions.json",
+      "RM_TruffleMole",
+      "b",
+      "2026-10-05T03:29:44.217Z"
+     ],
+     [
+      "trufflemole",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/desert_sheet_2026-10-04.decisions.json",
+      "RSW_TruffleMole",
+      "b",
+      "2026-10-05T03:28:38.873Z"
+     ],
+     [
+      "trufflemole",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/leaningscrub_sheet_2026-10-05.decisions.json",
+      "RM_TruffleMole",
+      "b",
+      "2026-10-06T01:25:53.290Z"
+     ],
+     [
+      "trufflemole",
+      "Transient/biome_ffar/art_eval_shadow_kept_swap_20261031_sheet_2026-10-31.decisions.json",
+      "RM_TruffleMole",
+      "c",
+      "2026-11-01T04:15:54.419Z"
+     ],
+     [
+      "trufflemole",
+      "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+      "RM_TruffleMole",
+      "b",
+      "2026-10-05T03:29:44.217Z"
+     ],
+     [
+      "trufflemole",
+      "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+      "RSW_TruffleMole",
+      "b",
+      "2026-10-05T03:28:38.873Z"
+     ],
+     [
+      "trufflemole",
+      "Transient/biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json",
+      "RM_TruffleMole",
+      "b",
+      "2026-10-06T01:25:53.290Z"
+     ]
     ]
    }
   },
@@ -2307,7 +2646,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/items/droidprogram/droidprogram_e.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -2343,9 +2682,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/lavaflea/lavaflea_j_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "liliana"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -2381,10 +2718,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/cancell/cancell_flying_2_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "liliana",
-     "rmliliana"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -2422,9 +2756,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorgc_swimming_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmlilianaegg"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -2461,9 +2793,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_pachydermoid/meat_pachydermoid_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmlilianaegg"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -2500,8 +2830,14 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TerminalBiomes/Textures/Things/Item/Resource/RM_BladderboilCatch/RM_BladderboilCatch_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "feplantembergrass"
+    "sheet_keeps": [
+     [
+      "feplantembergrass",
+      "Transient/biome_ffar/pyrelands_sheet_2026-10-05.decisions.json",
+      "RM_FE_Plant_EmberGrass",
+      "a",
+      "2026-10-11T21:50:45.045Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -2540,8 +2876,14 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "feplantembergrass"
+    "sheet_keeps": [
+     [
+      "feplantembergrass",
+      "Transient/biome_ffar/pyrelands_sheet_2026-10-05.decisions.json",
+      "RM_FE_Plant_EmberGrass",
+      "a",
+      "2026-10-11T21:50:45.045Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -2579,7 +2921,7 @@
      "loc": "design/RimStarWars/canon_references/geonosian/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -2615,7 +2957,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Boarwolf/Boarwolf_j_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -2651,7 +2993,7 @@
      "loc": "src/RimStarWars/Armoury/Textures/StandIn/Things/Item/Resource/Crystal/Synthetic/crystal_mantle.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -2687,46 +3029,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_ronto/meat_ronto_a.png",
      "mad": null
     },
-    "sheet_stems": []
-   }
-  },
-  {
-   "group": "Pyrelands",
-   "def": "RM_Sytheclaw",
-   "defs": [
-    "RM_Sytheclaw"
-   ],
-   "file": "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_east.png",
-   "sha": "9d762e5c385723775b3c6770b3888ba78eb5fab396e390cbce6459e56499fbc9",
-   "verdict": "HAND_MADE",
-   "basis": "OURS_PRELEDGER",
-   "why": "bytes from 42cd4d2089: Pyrelands full-review art wave: painterly renders",
-   "evidence": {
-    "ph": "0000000000000000002c13d08ea8722efd9acc58063982c60510000000000000",
-    "size": [
-     512,
-     512
-    ],
-    "bytes_commit": "42cd4d2089e0035dc24f3e2cf78f78f0f4c61ca0 2026-09-16 Pyrelands full-review art wave: 30 painterly renders, 8 canon creatures + Sytheclaw restyle + Mantistanis S/E + quickgrass burn state",
-    "commits": [
-     "8e3ccc69d4c8c08af212681dc6a48b0d144a086c 2026-10-03 Pyrelands: own the eight invented residents as RM_ defs in the free mod (defs, art, wildAnimals inline); campaign adds only the canon rows"
-    ],
-    "nearest_ours": {
-     "d": 47,
-     "kind": "install",
-     "loc": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess_north.png",
-     "mad": null
-    },
-    "nearest_donor": {
-     "d": 46,
-     "kind": "donor",
-     "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/scavrat/scavrat_dessicated.png",
-     "mad": null
-    },
-    "sheet_stems": [
-     "sytheclaw"
-    ],
-    "live_record": "backfill-observed"
+    "sheet_keeps": []
    }
   },
   {
@@ -2762,8 +3065,28 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2661356814/Textures/Things/Pawn/Animal/AM_Dryad_Ocular/AM_Dryad_Ocular_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "cathedralroach"
+    "sheet_keeps": [
+     [
+      "cathedralroach",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/rustcathedral_sheet_2026-10-05.decisions.json",
+      "RM_CathedralRoach",
+      "a",
+      "2026-10-06T02:17:28.561Z"
+     ],
+     [
+      "cathedralroach",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/rustcathedral_sheet_2026-10-05.decisions.json",
+      "RM_CathedralRoach",
+      "a",
+      "2026-10-06T02:17:28.561Z"
+     ],
+     [
+      "cathedralroach",
+      "Transient/biome_ffar/rustcathedral_sheet_2026-10-05.decisions.json",
+      "RM_CathedralRoach",
+      "a",
+      "2026-10-06T02:17:28.561Z"
+     ]
     ]
    }
   },
@@ -2800,8 +3123,28 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "cathedralroach"
+    "sheet_keeps": [
+     [
+      "cathedralroach",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/rustcathedral_sheet_2026-10-05.decisions.json",
+      "RM_CathedralRoach",
+      "a",
+      "2026-10-06T02:17:28.561Z"
+     ],
+     [
+      "cathedralroach",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/rustcathedral_sheet_2026-10-05.decisions.json",
+      "RM_CathedralRoach",
+      "a",
+      "2026-10-06T02:17:28.561Z"
+     ],
+     [
+      "cathedralroach",
+      "Transient/biome_ffar/rustcathedral_sheet_2026-10-05.decisions.json",
+      "RM_CathedralRoach",
+      "a",
+      "2026-10-06T02:17:28.561Z"
+     ]
     ]
    }
   },
@@ -2838,8 +3181,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/uvak/uvak_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "cathedralroach"
+    "sheet_keeps": [
+     [
+      "cathedralroach",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/rustcathedral_sheet_2026-10-05.decisions.json",
+      "RM_CathedralRoach",
+      "a",
+      "2026-10-06T02:17:28.561Z"
+     ],
+     [
+      "cathedralroach",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/rustcathedral_sheet_2026-10-05.decisions.json",
+      "RM_CathedralRoach",
+      "a",
+      "2026-10-06T02:17:28.561Z"
+     ],
+     [
+      "cathedralroach",
+      "Transient/biome_ffar/rustcathedral_sheet_2026-10-05.decisions.json",
+      "RM_CathedralRoach",
+      "a",
+      "2026-10-06T02:17:28.561Z"
+     ]
     ]
    }
   },
@@ -2887,7 +3250,7 @@
      "loc": "src/RimUtinni/StructureInjectionsRUT/Textures/StandIn/Things/Building/Linked/WallInsectJelly_Blueprint_Atlas.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -2923,9 +3286,35 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/GastroToad/Polluwog_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "qorrax",
-     "rmqorraxdessicated"
+    "sheet_keeps": [
+     [
+      "qorrax",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/biome_ffar/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/biome_ffar/facings_stand_tall_pilot_sheet_2026-10-16.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-16T13:42:00.410Z"
+     ]
     ]
    }
   },
@@ -2962,9 +3351,35 @@
      "loc": "design/RimStarWars/canon_references/zabrak/donor_current_sprite_iridonian_facialridges.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmqorraxswimming",
-     "qorrax"
+    "sheet_keeps": [
+     [
+      "qorrax",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/biome_ffar/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/biome_ffar/facings_stand_tall_pilot_sheet_2026-10-16.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-16T13:42:00.410Z"
+     ]
     ]
    }
   },
@@ -3001,9 +3416,35 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Glowtail/Glowtail_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmqorraxswimming",
-     "qorrax"
+    "sheet_keeps": [
+     [
+      "qorrax",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/biome_ffar/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/biome_ffar/facings_stand_tall_pilot_sheet_2026-10-16.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-16T13:42:00.410Z"
+     ]
     ]
    }
   },
@@ -3040,9 +3481,35 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Glowtail/Glowtail_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmqorraxswimming",
-     "qorrax"
+    "sheet_keeps": [
+     [
+      "qorrax",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/biome_ffar/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-05T05:08:31.111Z"
+     ],
+     [
+      "qorrax",
+      "Transient/biome_ffar/facings_stand_tall_pilot_sheet_2026-10-16.decisions.json",
+      "RM_Qorrax",
+      "a",
+      "2026-10-16T13:42:00.410Z"
+     ]
     ]
    }
   },
@@ -3079,7 +3546,7 @@
      "loc": "src/RimUtinni/StructureInjectionsRUT/Textures/StandIn/Things/Building/Linked/WallInsectJelly_Blueprint_Atlas.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -3116,9 +3583,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorga_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "crimsonopee"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3155,9 +3620,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/hssiss/hssissa_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "crimsonopee"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3194,9 +3657,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bolotaur/bolotaur_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "crimsonopee"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3233,9 +3694,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "crimsonopee"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3272,9 +3731,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/KellDragon/KellDragon_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "shalegorger"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3311,9 +3768,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/uvak/uvak_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "shalegorger"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3350,9 +3805,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/nuna/nuna_m_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "shalegorger"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3389,9 +3842,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swresource/Trophies/MankaTooth.png",
      "mad": null
     },
-    "sheet_stems": [
-     "shalegorger"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3427,7 +3878,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/hssiss/hssissa_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -3463,7 +3914,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/varactyl/varactyl_f_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -3499,7 +3950,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/Mycelium/A.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -3536,9 +3987,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/hssiss/hssissb_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "thornbackcolo"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3575,9 +4024,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/fanback/fanback_swimming_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "thornbackcolo"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3614,9 +4061,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/blarth/blarth_swimming_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "thornbackcolo"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3652,9 +4097,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bantha/bantha_jpack_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "grippingterror"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -3691,8 +4134,14 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/hssiss/hssiss_swimming_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "stormsando"
+    "sheet_keeps": [
+     [
+      "stormsando",
+      "Transient/biome_ffar/facings_stand_tall_pilot_sheet_2026-10-16.decisions.json",
+      "RM_StormSando",
+      "a",
+      "2026-10-16T13:42:26.637Z"
+     ]
     ]
    }
   },
@@ -3729,8 +4178,14 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/hssiss/hssissa_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "stormsando"
+    "sheet_keeps": [
+     [
+      "stormsando",
+      "Transient/biome_ffar/facings_stand_tall_pilot_sheet_2026-10-16.decisions.json",
+      "RM_StormSando",
+      "a",
+      "2026-10-16T13:42:26.637Z"
+     ]
     ]
    }
   },
@@ -3767,8 +4222,14 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/JewelBeetle/JewelBeetle_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "stormsando"
+    "sheet_keeps": [
+     [
+      "stormsando",
+      "Transient/biome_ffar/facings_stand_tall_pilot_sheet_2026-10-16.decisions.json",
+      "RM_StormSando",
+      "a",
+      "2026-10-16T13:42:26.637Z"
+     ]
     ]
    }
   },
@@ -3806,9 +4267,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/fanback/fanback_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "siltlamprey"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3845,9 +4304,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bolotaur/bolotaur_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "siltlamprey"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3884,9 +4341,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Gullipud/Gullipud_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "siltlamprey"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3923,9 +4378,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/eopie/eopie_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rustnipper"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -3962,9 +4415,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bolotaur/bolotaur_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rustnipper"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4001,9 +4452,7 @@
      "loc": "design/RimStarWars/canon_references/droid_dsd1/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rustnipper"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4040,9 +4489,7 @@
      "loc": "bundle:regrowth.botr.core/carpetscrubs_leaflessa.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rustnipper"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4079,9 +4526,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/frilledgorg/frilledgorga_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "reefback"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4118,9 +4563,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "reefback"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4157,9 +4600,7 @@
      "loc": "design/RimStarWars/canon_references/klatooinian/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "reefback"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4195,9 +4636,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_NightMule/AA_NightMule_female_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "starmaw"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4233,9 +4672,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/runyip/runyip_j_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "starmaw"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4271,9 +4708,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_NightMule/AA_NightMule_baby_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "starmaw"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4309,9 +4744,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/blixus/blixus_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "starmaw"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4347,9 +4780,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "lanternwhale"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4385,9 +4816,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "lanternwhale"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4423,9 +4852,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gelagrub/gelagrub_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "lanternwhale"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -4461,7 +4888,7 @@
      "loc": "design/RimStarWars/canon_references/iktotchi/wookieepedia_saesee_tiin_fullbody.jpg",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -4497,10 +4924,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/runyip/runyip_j_swimming_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "firevinetree",
-     "rmfirevinetree"
-    ],
+    "sheet_keeps": [],
     "live_record": "agent-why"
    }
   },
@@ -4537,10 +4961,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/wampa/wampa_j_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "bryolux",
-     "bryoluxa"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -4577,10 +4998,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "glowstoola",
-     "glowstool"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -4617,10 +5035,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/pufferpig/pufferpig_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "agariluxa",
-     "glowingagarilux"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -4659,7 +5074,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/acklay/acklay_eastm.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -4696,9 +5111,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TerminalBiomes/Textures/Things/Plant/RM_GreySea/RM_Brinecomb/RM_Brinecomb_A.png",
      "mad": null
     },
-    "sheet_stems": [
-     "nogtyl"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -4736,9 +5149,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/LeaningScrub/Textures/Things/Plant/RM_DrippingVenomvine/RM_DrippingVenomvine.png",
      "mad": null
     },
-    "sheet_stems": [
-     "nogtyl"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -4775,7 +5186,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swresource/Meat_Rancor_c.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -4811,7 +5222,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/nerf/nerf_j_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -4847,7 +5258,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1841354677/Textures/Things/Plants/AB_DessertTree/AB_DessertTreeC.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -4883,7 +5294,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3357632382/Textures/Things/Pawn/Animal/SW_AcidSpittingSpider/SW_AcidSpittingSpiderA_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -4919,7 +5330,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bantha/bantha_jpack_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -4955,7 +5366,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2801160906/Textures/Things/Pawn/Animal/Mechanoid/Mecharat/GR_Mechanoid_Rat_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -4991,7 +5402,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_tender/meat_tender_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5027,7 +5438,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_ronto/meat_ronto_b.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5063,7 +5474,7 @@
      "loc": "design/RimStarWars/canon_references/beldon/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5099,9 +5510,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swresource/PlantFoodRaw/Chakroot.png",
      "mad": null
     },
-    "sheet_stems": [
-     "dulcis"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -5137,7 +5546,7 @@
      "loc": "design/RimStarWars/canon_references/falleen/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5173,7 +5582,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/frilledgorg/frilledgorg_swimming_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5209,7 +5618,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/NexuW_eastm.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5245,9 +5654,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/mudhorn/mudhorn_j_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "brullith"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -5284,9 +5691,7 @@
      "loc": "design/RimStarWars/canon_references/hutt/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "thozzikcolonyqueen"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -5324,9 +5729,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/convor/convor_f_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "thozzikcolony"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -5362,9 +5765,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_saurian/meat_saurian_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "grellik"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -5400,9 +5801,7 @@
      "loc": "design/RimStarWars/canon_references/weequay/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "skerrith"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -5438,9 +5837,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/JewelBeetle/JewelBeetle_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "illoth"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -5476,7 +5873,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Grazer/Grazer_m_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5512,7 +5909,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/leather_scaled/leather_scaled_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5548,7 +5945,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Katarn/Katarn_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5584,7 +5981,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_rodentia/meat_rodentia_b.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5623,7 +6020,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorgc_swimming_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5662,7 +6059,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_pachydermoid/meat_pachydermoid_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5699,7 +6096,7 @@
      "loc": "design/RimStarWars/canon_references/jawa/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5736,7 +6133,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_insectile/meat_insectile_b.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5773,9 +6170,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/corinathoth/corinathoth_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "ambrosyx"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -5812,9 +6207,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggsilk/eggsilk_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "ambrosyx"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -5851,7 +6244,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TheRot/Textures/RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown/BoomshroomGrown_A.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5887,7 +6280,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/sketto/sketto_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5925,7 +6318,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/leather_shortfur/leather_shortfur_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -5965,7 +6358,7 @@
      "loc": "src/RimMandrake/MandrakePatches/Textures/StandIn/Things/Pawn/Animal/GRimTortoise/GRimTortoiseA_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6003,7 +6396,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/runyip/runyip_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6040,7 +6433,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/LeaningScrub/Textures/Things/Plant/RM_Grellspine/RM_Grellspine_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6077,9 +6470,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/horax/horax_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "liveingredienteuphoriccrown"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -6115,7 +6506,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BunkerBug/BunkerBug_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6151,7 +6542,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/teemuss/teemuss_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6187,7 +6578,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/LeaningScrub/Textures/Things/Plant/RM_HoardVenomvine/RM_HoardVenomvine_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6224,7 +6615,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6260,7 +6651,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6298,7 +6689,7 @@
      "loc": "design/RimStarWars/canon_references/gamorrean/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6334,7 +6725,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Snoruuk/Snoruuk_j_Stationary_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6370,7 +6761,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/hk/head/head_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6406,7 +6797,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/porg/porg_j_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6442,7 +6833,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/porg/porg_j_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6478,9 +6869,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/vapaad_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "mushroombridge"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -6516,9 +6905,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_tender/meat_tender_c.png",
      "mad": null
     },
-    "sheet_stems": [
-     "heavymushroombridge"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -6554,7 +6941,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gizka/gizkaw_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6591,7 +6978,7 @@
      "loc": "design/RimStarWars/canon_references/gamorrean/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6627,7 +7014,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6663,9 +7050,14 @@
      "loc": "design/RimStarWars/canon_references/bothan/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "scorchedstars",
-     "rmscorchedstars"
+    "sheet_keeps": [
+     [
+      "scorchedstars",
+      "Transient/biome_ffar/nonrm_plants_census_sheet_2026-10-16.decisions.json",
+      "RUT_ScorchedStars",
+      "a",
+      "2026-10-16T13:15:46.765Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -6703,9 +7095,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/krykna/krykna_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmrimclaw",
-     "rimclaw"
+    "sheet_keeps": [
+     [
+      "rimclaw",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/warscar_sheet_2026-10-05.decisions.json",
+      "RM_Rimclaw",
+      "a",
+      "2026-10-06T05:28:25.992Z"
+     ],
+     [
+      "rimclaw",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/warscar_sheet_2026-10-05.decisions.json",
+      "RM_Rimclaw",
+      "a",
+      "2026-10-06T05:28:25.992Z"
+     ],
+     [
+      "rimclaw",
+      "Transient/biome_ffar/warscar_sheet_2026-10-05.decisions.json",
+      "RM_Rimclaw",
+      "a",
+      "2026-10-06T05:28:25.992Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -6743,10 +7154,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/boma/boma_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmscarroach",
-     "scarroach"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -6785,7 +7193,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/gnk_eastm.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6821,7 +7229,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/building/droidbay/droidassembly_kx_west.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6857,7 +7265,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Greentide/Textures/Things/Plant/RM_Maddrick/RM_Maddrick_a/RM_Maddrick_a_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6893,7 +7301,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swresource/AnimalProduct/RikknitOvum.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6929,7 +7337,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/wraid/wraid_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -6965,7 +7373,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/jakobeast/jakobeast_j_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7001,7 +7409,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowberryBush/RM_GlowberryBush_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7037,7 +7445,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp2_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7073,7 +7481,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/horax/horax_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7109,7 +7517,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/wampa/wampa_j_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7145,7 +7553,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/beldon/beldon_flying_3_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7181,7 +7589,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bantha/banthaw_j_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7217,7 +7625,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/scavrat/scavrat_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7253,7 +7661,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/items/droidprogram/droidprogram_d.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7290,8 +7698,28 @@
      "loc": "design/RimStarWars/canon_references/defel/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "joelandopus"
+    "sheet_keeps": [
+     [
+      "joelandopus",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ],
+     [
+      "joelandopus",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ],
+     [
+      "joelandopus",
+      "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ]
     ]
    }
   },
@@ -7329,8 +7757,28 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/GastroToad/Polluwog_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "joelandopus"
+    "sheet_keeps": [
+     [
+      "joelandopus",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ],
+     [
+      "joelandopus",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ],
+     [
+      "joelandopus",
+      "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ]
     ]
    }
   },
@@ -7368,9 +7816,28 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3753477123/Textures/Things/Pawn/Animal/landopus/landopus_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "swimminglandopus",
-     "joelandopus"
+    "sheet_keeps": [
+     [
+      "joelandopus",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ],
+     [
+      "joelandopus",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ],
+     [
+      "joelandopus",
+      "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ]
     ]
    }
   },
@@ -7408,9 +7875,28 @@
      "loc": "design/RimStarWars/canon_references/zabrak/donor_current_sprite_iridonian_facialridges.png",
      "mad": null
     },
-    "sheet_stems": [
-     "swimminglandopus",
-     "joelandopus"
+    "sheet_keeps": [
+     [
+      "joelandopus",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ],
+     [
+      "joelandopus",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ],
+     [
+      "joelandopus",
+      "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ]
     ]
    }
   },
@@ -7448,9 +7934,28 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/hk/head/head_eastm.png",
      "mad": null
     },
-    "sheet_stems": [
-     "swimminglandopus",
-     "joelandopus"
+    "sheet_keeps": [
+     [
+      "joelandopus",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ],
+     [
+      "joelandopus",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ],
+     [
+      "joelandopus",
+      "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+      "JOE_Landopus",
+      "f",
+      "2026-10-08T05:23:26.023Z"
+     ]
     ]
    }
   },
@@ -7488,7 +7993,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/ronto/ronto_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7525,7 +8030,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/trophies/jakobeasthorn.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7562,7 +8067,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7599,7 +8104,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/hssiss/hssissb_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7636,7 +8141,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/nerf/nerf_m_northm.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7672,9 +8177,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bantha/bantha_jpack_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "vaewastemegatardi"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -7711,9 +8214,14 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Nightling/AA_Nightling_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "abcrystalhorna",
-     "drazz"
+    "sheet_keeps": [
+     [
+      "drazz",
+      "Transient/biome_ffar/picks_icons_sheet_2026-10-19.decisions.json",
+      "RM_Drazz",
+      "a",
+      "2026-10-19T13:39:45.772Z"
+     ]
     ]
    }
   },
@@ -7750,7 +8258,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/whisperbird/whisperbird_flying_3_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7786,7 +8294,7 @@
      "loc": "bundle:ludeon.rimworld.odyssey/lavasnail_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7829,7 +8337,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggwiggly/eggwiggly_a.png",
      "mad": 0.0
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7872,7 +8380,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggwiggly/eggwiggly_b.png",
      "mad": 0.0
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -7908,8 +8416,14 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/dalgo/dalgo_dessicated.png",
      "mad": 0.0
     },
-    "sheet_stems": [
-     "dalgo"
+    "sheet_keeps": [
+     [
+      "dalgo",
+      "Transient/biome_ffar/pyrelands_sheet_2026-10-05.decisions.json",
+      "RSW_Dalgo",
+      "h",
+      "2026-10-11T21:43:20.789Z"
+     ]
     ]
    }
   },
@@ -7946,9 +8460,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/hssiss/hssissa_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "gizka"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -7985,9 +8497,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage1_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "gizka"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -8024,8 +8534,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/dactillion/dactillion_dessicated.png",
      "mad": 0.0
     },
-    "sheet_stems": [
-     "dactillion"
+    "sheet_keeps": [
+     [
+      "dactillion",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/weepingstones_sheet_2026-10-05.decisions.json",
+      "RSW_Dactillion",
+      "b",
+      "2026-10-10T14:10:31.261Z"
+     ],
+     [
+      "dactillion",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/weepingstones_sheet_2026-10-05.decisions.json",
+      "RSW_Dactillion",
+      "b",
+      "2026-10-10T14:10:31.261Z"
+     ],
+     [
+      "dactillion",
+      "Transient/biome_ffar/weepingstones_sheet_2026-10-05.decisions.json",
+      "RSW_Dactillion",
+      "b",
+      "2026-10-10T14:10:31.261Z"
+     ]
     ]
    }
   },
@@ -8062,8 +8592,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/corinathoth/corinathoth_dessicated.png",
      "mad": 0.0
     },
-    "sheet_stems": [
-     "corinathoth"
+    "sheet_keeps": [
+     [
+      "corinathoth",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/leaningscrub_sheet_2026-10-05.decisions.json",
+      "RSW_Corinathoth",
+      "d",
+      "2026-10-08T14:59:23.473Z"
+     ],
+     [
+      "corinathoth",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/leaningscrub_sheet_2026-10-05.decisions.json",
+      "RSW_Corinathoth",
+      "d",
+      "2026-10-08T14:59:23.473Z"
+     ],
+     [
+      "corinathoth",
+      "Transient/biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json",
+      "RSW_Corinathoth",
+      "d",
+      "2026-10-08T14:59:23.473Z"
+     ]
     ]
    }
   },
@@ -8100,8 +8650,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/graniteslug/graniteslug_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "skarnix"
+    "sheet_keeps": [
+     [
+      "skarnix",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Skarnix",
+      "c",
+      "2026-10-06T03:00:31.199Z"
+     ],
+     [
+      "skarnix",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Skarnix",
+      "c",
+      "2026-10-06T03:00:31.199Z"
+     ],
+     [
+      "skarnix",
+      "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Skarnix",
+      "c",
+      "2026-10-06T03:00:31.199Z"
+     ]
     ]
    }
   },
@@ -8138,9 +8708,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Wildpod/AA_Wildpod_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "scrapnest"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -8176,9 +8744,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/wraid/wraid_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "scrapnest"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -8214,9 +8780,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Greentide/Textures/Things/Plant/RM_YearningFruit/RM_YearningFruit_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "scrapnest"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -8252,7 +8816,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/items/droidprogram/droidprogram_e.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8288,9 +8852,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Katarn/Katarn_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "maguana"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -8326,9 +8888,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Gullipud/Gullipud_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "podworm"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -8364,9 +8924,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3357632382/Textures/Things/Pawn/Animal/SW_GrenadeBug/SW_GrenadeBug_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "royalrhino"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -8404,7 +8962,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/pikobis/pikobis_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8442,7 +9000,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/convor/convor_f_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8479,9 +9037,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/cancell/cancell_flying_2_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "aaroxisdendoria"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -8517,9 +9073,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/lavaflea/lavaflea_j_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "aaroxisdendoria"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -8555,8 +9109,14 @@
      "loc": "src/RimStarWars/StarWarsPatches/Textures/StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/FelineEyes/TaxiCab_Feline.png",
      "mad": null
     },
-    "sheet_stems": [
-     "bloodletterpetrel"
+    "sheet_keeps": [
+     [
+      "bloodletterpetrel",
+      "Transient/biome_ffar/facing_regen_needs_eyes_sheet_2026-10-16.decisions.json",
+      "RSW_BloodletterPetrel",
+      "c",
+      "2026-10-17T14:26:58.920Z"
+     ]
     ]
    }
   },
@@ -8593,7 +9153,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_tough/meat_tough_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8629,7 +9189,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/building/droidbay/droidbay_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8665,7 +9225,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8701,7 +9261,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bantha/bantha_jpack_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8737,7 +9297,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/building/droidbay/droidassembly_magnaguard_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8773,7 +9333,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/building/droidbay/droidassembly_droideka_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8809,9 +9369,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Narglatch/Narglatch_f_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sandpillar"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -8851,7 +9409,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TheRot/Textures/RotSporeKit/Things/Plant/FruitingBodies/FruitingBodies_A.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8891,7 +9449,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorge_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8927,7 +9485,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/NexuW_eastm.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -8963,9 +9521,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_BoulderMit/AA_BoulderMit5_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "facetmoth"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -9001,7 +9557,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/mudhorn/mudhorn_j_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9037,7 +9593,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/HarvesterBeetle/HarvesterBeetle_j_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9073,7 +9629,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Boarwolf/Boarwolf_j_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9109,7 +9665,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Bursa/Bursa_Swimming_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9145,7 +9701,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp2_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9182,7 +9738,7 @@
      "loc": "design/RimStarWars/canon_references/hutt/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9219,7 +9775,7 @@
      "loc": "design/RimStarWars/canon_references/droid_gnk/donor_current_sprite_outerrim.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9256,7 +9812,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/LothWolf/LothWolf_m_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9293,7 +9849,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Frostling/AA_Frostling_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9329,7 +9885,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gelagrub/gelagrub_dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9365,7 +9921,7 @@
      "loc": "design/RimStarWars/canon_references/mimbanese/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9401,7 +9957,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/KwazelMaw/KwazelMaw_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9437,7 +9993,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/KwazelMaw/KwazelMaw_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9473,9 +10029,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2871933948/Textures/Things/Pawn/Animal/Alligator/Alligator_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "bovinebeetlelarvae"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -9511,9 +10065,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Aiwha/Aiwha_Swimming_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "foundrybeetle"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -9549,9 +10101,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gelagrub/gelagrub_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "maxolotl"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -9588,9 +10138,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/trophies/kraytpearl.png",
      "mad": null
     },
-    "sheet_stems": [
-     "fleecespider"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -9627,9 +10175,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/protocol/head/head_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "fleecespider"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -9665,7 +10211,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/eopie/eopied_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9701,7 +10247,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gelagrub/gelagrub_dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9737,7 +10283,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gelagrub/gelagrub_dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9773,8 +10319,28 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/Nexu_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "diggerpede"
+    "sheet_keeps": [
+     [
+      "diggerpede",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/greentide_sheet_2026-10-05.decisions.json",
+      "RSW_Diggerpede",
+      "c",
+      "2026-10-09T05:11:14.990Z"
+     ],
+     [
+      "diggerpede",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/greentide_sheet_2026-10-05.decisions.json",
+      "RSW_Diggerpede",
+      "c",
+      "2026-10-09T05:11:14.990Z"
+     ],
+     [
+      "diggerpede",
+      "Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json",
+      "RSW_Diggerpede",
+      "c",
+      "2026-10-09T05:11:14.990Z"
+     ]
     ]
    }
   },
@@ -9811,7 +10377,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bantha/banthapack_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9847,7 +10413,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9883,7 +10449,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/hssiss/hssissa_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9919,7 +10485,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Boarwolf/Boarwolf_j_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -9955,9 +10521,7 @@
      "loc": "src/RimStarWars/Armoury/Textures/StandIn/Things/Item/Resource/Crystal/Synthetic/crystal_14.png",
      "mad": null
     },
-    "sheet_stems": [
-     "facetmothpupa"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -9993,7 +10557,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/boma/boma_dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -10029,7 +10593,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/convor/convor_f_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -10065,7 +10629,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/scavrat/scavrat_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -10101,7 +10665,7 @@
      "loc": "design/RimStarWars/canon_references/ewok/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -10137,8 +10701,28 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Drexl/Drexl_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "mossbeetle"
+    "sheet_keeps": [
+     [
+      "mossbeetle",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/leaningscrub_sheet_2026-10-05.decisions.json",
+      "RSW_MossBeetle",
+      "b",
+      "2026-10-08T05:43:32.724Z"
+     ],
+     [
+      "mossbeetle",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/leaningscrub_sheet_2026-10-05.decisions.json",
+      "RSW_MossBeetle",
+      "b",
+      "2026-10-08T05:43:32.724Z"
+     ],
+     [
+      "mossbeetle",
+      "Transient/biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json",
+      "RSW_MossBeetle",
+      "b",
+      "2026-10-08T05:43:32.724Z"
+     ]
     ]
    }
   },
@@ -10175,9 +10759,7 @@
      "loc": "design/RimStarWars/canon_references/zabrak/donor_current_sprite_iridonian_facialridges.png",
      "mad": null
     },
-    "sheet_stems": [
-     "mutatingtumorfishfry"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10213,10 +10795,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "swimmingmutatingtumorfishstage2",
-     "mutatingtumorfishfry"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10252,10 +10831,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/igitz/igitz_j_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "swimmingmutatingtumorfishstage2",
-     "mutatingtumorfishfry"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10291,10 +10867,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bolotaur/bolotaur_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "swimmingmutatingtumorfishstage2",
-     "mutatingtumorfishfry"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10330,8 +10903,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gualaar/gualaar_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "creaturemantrap"
+    "sheet_keeps": [
+     [
+      "creaturemantrap",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ],
+     [
+      "creaturemantrap",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ],
+     [
+      "creaturemantrap",
+      "Transient/biome_ffar/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ]
     ]
    }
   },
@@ -10368,9 +10961,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gualaar/gualaar_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "creaturemantrap",
-     "mantrap"
+    "sheet_keeps": [
+     [
+      "creaturemantrap",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ],
+     [
+      "creaturemantrap",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ],
+     [
+      "creaturemantrap",
+      "Transient/biome_ffar/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -10408,9 +11020,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gualaar/gualaar_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "creaturemantrap",
-     "mantrap"
+    "sheet_keeps": [
+     [
+      "creaturemantrap",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ],
+     [
+      "creaturemantrap",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ],
+     [
+      "creaturemantrap",
+      "Transient/biome_ffar/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -10448,9 +11079,28 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "creaturemantrap",
-     "mantrap"
+    "sheet_keeps": [
+     [
+      "creaturemantrap",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ],
+     [
+      "creaturemantrap",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ],
+     [
+      "creaturemantrap",
+      "Transient/biome_ffar/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RSW_Creature_Mantrap",
+      "b",
+      "2026-10-10T05:48:29.277Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -10488,7 +11138,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/protocol/head/head_southm.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -10524,7 +11174,7 @@
      "loc": "design/RimStarWars/canon_references/klatooinian/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -10560,9 +11210,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Glowtail/Glowtail_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "screecher"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10598,7 +11246,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/fanback/fanback_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -10634,9 +11282,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_saurian/meat_saurian_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "fungalweevil"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10672,9 +11318,7 @@
      "loc": "design/RimStarWars/canon_references/weequay/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "maligoat"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10710,9 +11354,7 @@
      "loc": "design/RimStarWars/canon_references/weequay/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "maligoat"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10748,9 +11390,7 @@
      "loc": "design/RimStarWars/canon_references/weequay/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "fungalmantis"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10787,9 +11427,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "fungalmantis"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10826,9 +11464,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal_Alternate/AA_Gigantelope/AA_Gigantelope_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "fungalmantis"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10865,9 +11501,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Darkbeast/AA_Darkbeast_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "fungalmantis"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10903,9 +11537,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "megaphoridlarva"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -10942,9 +11574,7 @@
      "loc": "design/RimStarWars/canon_references/nikto/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "megaphoridlarva"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -10980,7 +11610,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Silooth/Silooth_j_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11016,7 +11646,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/grank/grank_dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11052,7 +11682,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11088,7 +11718,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Roggwart/Roggwart_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11124,9 +11754,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/scurrier/scurrier_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "bloodroplarvae"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -11162,9 +11790,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorgb_swimming_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "mutagenicnorphea"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -11200,9 +11826,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/scavrat/scavrat_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sandleaper"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -11238,7 +11862,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/JewelBeetle/JewelBeetle_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11274,7 +11898,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_reptomammal/meat_reptomammal_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11310,9 +11934,7 @@
      "loc": "design/RimStarWars/canon_references/bolotaur/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "aaroxisdendorialarvae"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -11348,9 +11970,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/jakobeast/jakobeast_j_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sacapillar"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -11386,7 +12006,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorg_j_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11422,7 +12042,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorg_j_swimming_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11458,7 +12078,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Boarwolf/Boarwolf_j_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11494,7 +12114,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/eopie/eopied_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11530,9 +12150,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "megaphorid"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -11568,9 +12186,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/b1/head/head_northm.png",
      "mad": null
     },
-    "sheet_stems": [
-     "megaphorid"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -11606,9 +12222,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2016436324/Textures/Things/Pawn/Animal/Monkey/Monkey_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "megaphorid"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -11644,9 +12258,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/KwazelMaw/KwazelMaw_Swimming_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "megaphorid"
-    ]
+    "sheet_keeps": []
    }
   },
   {
@@ -11682,7 +12294,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggfurry/eggfurry_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11718,7 +12330,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrystalCrab/CrystalCrabMale_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11754,7 +12366,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrystalCrab/CrystalCrabMale_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11790,7 +12402,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/dewback/dewbackw_southm.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11826,7 +12438,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/woolamander/woolamander_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11862,7 +12474,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggfurry/eggfurry_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11898,7 +12510,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/nerf/nerf_f_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -11951,7 +12563,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorgc_swimming_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12004,7 +12616,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_pachydermoid/meat_pachydermoid_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12040,7 +12652,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/frilledgorg/frilledgorgb_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12076,7 +12688,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/lothcat/lothcat_f_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12112,7 +12724,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/nerf/nerf_j_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12148,7 +12760,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/mott/mott_dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12184,7 +12796,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_cameloid/meat_cameloid_b.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12220,7 +12832,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggscaled/eggscaled_b.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12256,7 +12868,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Grazer/Grazer_m_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12301,7 +12913,7 @@
      "loc": "design/RimStarWars/canon_references/jawa/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12346,7 +12958,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_insectile/meat_insectile_b.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12382,7 +12994,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/leather_scaled/leather_scaled_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12418,7 +13030,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Katarn/Katarn_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12454,7 +13066,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/meat_rodentia/meat_rodentia_b.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12490,7 +13102,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/lavaflea/lavaflea_dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12526,7 +13138,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/leather_heavy/leather_heavy_b.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12562,7 +13174,7 @@
      "loc": "src/RimMandrake/MandrakePatches/Textures/StandIn/Things/Pawn/Animal/GRimPinkbird/GRimPinkbird_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12598,7 +13210,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/longtailgorg/longtailgorgc_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12634,7 +13246,7 @@
      "loc": "src/RimMandrake/MandrakePatches/Textures/StandIn/Things/Pawn/Animal/GRimTortoise/GRimTortoiseA_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12670,7 +13282,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/runyip/runyip_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12706,7 +13318,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggslime/eggslime_b.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12742,7 +13354,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/porg/porg_f_flying_3_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12778,7 +13390,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/dragonsnake/dragonsnake_dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12814,7 +13426,7 @@
      "loc": "design/RimStarWars/canon_references/kel_dor/donor_current_sprite_headflaps.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12850,7 +13462,7 @@
      "loc": "design/RimStarWars/canon_references/pekopeko/wookieepedia_infobox.jpg",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12886,7 +13498,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/dactillion/dactillion_flying_1_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12922,7 +13534,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3472275628/Textures/Animal/RockTroll/RockTroll_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12958,7 +13570,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/TetnissCrab/TetnissCrab_j_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -12995,7 +13607,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggslime/eggslime_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13032,7 +13644,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13069,7 +13681,7 @@
      "loc": "src/RimMandrake/CrackedLands/Textures/StandIn/Animal/RockTroll/RockTrollBaby_northm.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13106,7 +13718,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/blixus/blixus_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13143,7 +13755,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggslime/eggslime_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13180,7 +13792,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13216,7 +13828,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/KwazelMaw/KwazelMaw_Swimming_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13252,7 +13864,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/snoruuk_j_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13288,7 +13900,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/cancell/cancell_flying_1_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13324,7 +13936,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BunkerBug/BunkerBug_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13360,7 +13972,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/horax/horax_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13396,7 +14008,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggswirl/eggswirl_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13432,7 +14044,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/astromech/r2_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13468,7 +14080,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/Greentide/Textures/Things/Plant/RM_Mourvel/RM_Mourvel_a/RM_Mourvel_a_a.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13504,7 +14116,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Snoruuk/Snoruuk_j_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13540,7 +14152,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2260097569/Textures/Things/Pawn/Animal/ReGrowth/Rimclaw/BabyRimclaw_south.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13576,7 +14188,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/varactyl/varactyl_m_north.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -13613,9 +14225,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/HarvesterBeetle/HarvesterBeetle_j_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "yobshrimp"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -13654,9 +14264,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Gullipud/Gullipud_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "siltlamprey"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -13695,9 +14303,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/eopie/eopie_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rustnipper"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -13736,9 +14342,7 @@
      "loc": "bundle:regrowth.botr.core/carpetscrubs_leaflessa.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rustnipper"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -13776,7 +14380,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/urusai/urusai_east.png",
      "mad": null
     },
-    "sheet_stems": [],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -13814,7 +14418,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/fanback/fanback_dessicated.png",
      "mad": null
     },
-    "sheet_stems": [],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -13852,7 +14456,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling_east.png",
      "mad": null
     },
-    "sheet_stems": [],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -13890,8 +14494,21 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "opeeseakiller"
+    "sheet_keeps": [
+     [
+      "opeeseakiller",
+      "Transient/biome_ffar/facings_regen_picks_sheet_2026-10-18.decisions.json",
+      "RSW_OpeeSeaKiller",
+      "a",
+      "2026-10-22T06:45:01.934Z"
+     ],
+     [
+      "opeeseakiller",
+      "Transient/biome_ffar/facings_regen_picks_sheet_2026-10-18_foundry.decisions.json",
+      "RSW_OpeeSeaKiller",
+      "a",
+      "2026-10-22T06:45:01.934Z"
+     ]
     ],
     "live_record": "backfill-observed"
    }
@@ -13930,9 +14547,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gorg/gorga_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "crimsonopee"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -13970,9 +14585,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "crimsonopee"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -14010,9 +14623,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/KellDragon/KellDragon_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "shalegorger"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -14050,9 +14661,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swresource/Trophies/MankaTooth.png",
      "mad": null
     },
-    "sheet_stems": [
-     "shalegorger"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -14091,9 +14700,7 @@
      "loc": "design/RimStarWars/canon_references/klatooinian/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "reefback"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -14131,9 +14738,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/gelagrub/gelagrub_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "lanternwhale"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -14170,8 +14775,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bantha/bantha_jpack_east.png",
      "mad": null
     },
-    "sheet_stems": [
-     "eldersando"
+    "sheet_keeps": [
+     [
+      "eldersando",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/thescald_sheet_2026-10-05.decisions.json",
+      "RSW_ElderSando",
+      "a",
+      "2026-10-06T03:51:49.515Z"
+     ],
+     [
+      "eldersando",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/thescald_sheet_2026-10-05.decisions.json",
+      "RSW_ElderSando",
+      "a",
+      "2026-10-06T03:51:49.515Z"
+     ],
+     [
+      "eldersando",
+      "Transient/biome_ffar/thescald_sheet_2026-10-05.decisions.json",
+      "RSW_ElderSando",
+      "a",
+      "2026-10-06T03:51:49.515Z"
+     ]
     ]
    }
   },
@@ -14208,8 +14833,14 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/JewelBeetle/JewelBeetle_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "stormsando"
+    "sheet_keeps": [
+     [
+      "stormsando",
+      "Transient/biome_ffar/facings_stand_tall_pilot_sheet_2026-10-16.decisions.json",
+      "RM_StormSando",
+      "a",
+      "2026-10-16T13:42:26.637Z"
+     ]
     ]
    }
   },
@@ -14246,8 +14877,14 @@
      "loc": "src/RimStarWars/StarWarsPatches/Textures/StandIn/Things/Pawn/Humanlike/HeadAttachments/Eyes/ReptileEyes/TaxiCab_Reptile.png",
      "mad": null
     },
-    "sheet_stems": [
-     "coloclawfish"
+    "sheet_keeps": [
+     [
+      "coloclawfish",
+      "Transient/biome_ffar/facing_regen_needs_eyes_sheet_2026-10-16.decisions.json",
+      "RSW_ColoClawFish",
+      "c",
+      "2026-10-17T14:30:36.584Z"
+     ]
     ]
    }
   },
@@ -14284,7 +14921,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/Mycelium/A.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -14321,9 +14958,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/blarth/blarth_swimming_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "thornbackcolo"
-    ],
+    "sheet_keeps": [],
     "live_record": "backfill-observed"
    }
   },
@@ -14360,7 +14995,7 @@
      "loc": "design/RimStarWars/canon_references/eopie/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
    }
   },
   {
@@ -14396,7 +15031,129 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/shyrack/shyrack_flying_44_east.png",
      "mad": null
     },
-    "sheet_stems": []
+    "sheet_keeps": []
+   }
+  },
+  {
+   "group": "ROSTER:RM_LongShade",
+   "def": "RSW_Runyip",
+   "defs": [
+    "RSW_Runyip"
+   ],
+   "file": "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_j_north.png",
+   "sha": "243a393e40f1462c7bd5fa98ecfc787141961e3a3cc8ba8b2ca84ff396f5f557",
+   "verdict": "STAND_IN",
+   "basis": "STAND_IN",
+   "why": "bytes from e44e838264: MLIE_FAUNA_ABSORPTION_1 Pass 22: Runyip/Scavrat/Scurrier ported with the donor mod's textures",
+   "evidence": {
+    "ph": "0000010000c0030002a0169004d0094804d0171006900aa00140008000000000",
+    "size": [
+     256,
+     256
+    ],
+    "bytes_commit": "e44e8382648e6f7bf3663884235fc7877fd84c74 2026-09-18 MLIE_FAUNA_ABSORPTION_1 Pass 22: finish + wire Runyip/Scavrat/Scurrier (29 -> 26 remaining)",
+    "commits": [
+     "e40639d97f3b80e7e2aa32cbb374a30ced6a16d1 2026-10-16 Facings: S/N feet row seats on east's (rescale/regen/lint rule, tol 3%); 168 rescaled pictures re-seated, shift only",
+     "b654ffbf910ae8a742ff204d753a0cdc5068af54 2026-10-16 Rescale S/N facings to ground-camera standard on 168 pictures via art install (owner card 2026-10-16)",
+     "e44e8382648e6f7bf3663884235fc7877fd84c74 2026-09-18 MLIE_FAUNA_ABSORPTION_1 Pass 22: finish + wire Runyip/Scavrat/Scurrier (29 -> 26 remaining)"
+    ],
+    "nearest_ours": {
+     "d": 28,
+     "kind": "install",
+     "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Boarwolf/Boarwolf_j_south.png",
+     "mad": null
+    },
+    "nearest_donor": {
+     "d": 27,
+     "kind": "canon",
+     "loc": "design/RimStarWars/canon_references/droid_b1a/donor_current_sprite_head.png",
+     "mad": null
+    },
+    "sheet_keeps": [
+     [
+      "runyip",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/desert_sheet_2026-10-04.decisions.json",
+      "RSW_Runyip",
+      "g",
+      "2026-10-08T05:14:25.963Z"
+     ],
+     [
+      "runyip",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/desert_sheet_2026-10-04.decisions.json",
+      "RSW_Runyip",
+      "g",
+      "2026-10-08T05:14:25.963Z"
+     ],
+     [
+      "runyip",
+      "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+      "RSW_Runyip",
+      "g",
+      "2026-10-08T05:14:25.963Z"
+     ]
+    ],
+    "live_record": "install"
+   }
+  },
+  {
+   "group": "ROSTER:RM_LongShade",
+   "def": "RSW_Runyip",
+   "defs": [
+    "RSW_Runyip"
+   ],
+   "file": "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_j_south.png",
+   "sha": "f054ae1dd6228a7c340da67c4efb2e030c992d931b44205befe98ee41ce5b214",
+   "verdict": "STAND_IN",
+   "basis": "STAND_IN",
+   "why": "bytes from e44e838264: MLIE_FAUNA_ABSORPTION_1 Pass 22: Runyip/Scavrat/Scurrier ported with the donor mod's textures",
+   "evidence": {
+    "ph": "000004800b60069004d02d482aa82cc82aa80e881550171002a0014000000000",
+    "size": [
+     256,
+     256
+    ],
+    "bytes_commit": "e44e8382648e6f7bf3663884235fc7877fd84c74 2026-09-18 MLIE_FAUNA_ABSORPTION_1 Pass 22: finish + wire Runyip/Scavrat/Scurrier (29 -> 26 remaining)",
+    "commits": [
+     "e40639d97f3b80e7e2aa32cbb374a30ced6a16d1 2026-10-16 Facings: S/N feet row seats on east's (rescale/regen/lint rule, tol 3%); 168 rescaled pictures re-seated, shift only",
+     "b654ffbf910ae8a742ff204d753a0cdc5068af54 2026-10-16 Rescale S/N facings to ground-camera standard on 168 pictures via art install (owner card 2026-10-16)",
+     "e44e8382648e6f7bf3663884235fc7877fd84c74 2026-09-18 MLIE_FAUNA_ABSORPTION_1 Pass 22: finish + wire Runyip/Scavrat/Scurrier (29 -> 26 remaining)"
+    ],
+    "nearest_ours": {
+     "d": 40,
+     "kind": "install",
+     "loc": "src/RimStarWars/StarWarsRaces/Textures/RimMandrakeSW/SWX/Pawn/HeadType/desert_nomad/HeadPot_north.png",
+     "mad": null
+    },
+    "nearest_donor": {
+     "d": 27,
+     "kind": "donor",
+     "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/PaintedSpat/PaintedSpat_south.png",
+     "mad": null
+    },
+    "sheet_keeps": [
+     [
+      "runyip",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/desert_sheet_2026-10-04.decisions.json",
+      "RSW_Runyip",
+      "g",
+      "2026-10-08T05:14:25.963Z"
+     ],
+     [
+      "runyip",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/desert_sheet_2026-10-04.decisions.json",
+      "RSW_Runyip",
+      "g",
+      "2026-10-08T05:14:25.963Z"
+     ],
+     [
+      "runyip",
+      "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+      "RSW_Runyip",
+      "g",
+      "2026-10-08T05:14:25.963Z"
+     ]
+    ],
+    "live_record": "install"
    }
   },
   {
@@ -14409,7 +15166,7 @@
    "sha": "03b796ba9bd97f9ccbfa771c9d47e2ee2f780e45c6d102ed803b859372954a08",
    "verdict": "OWNER_PICKED",
    "basis": "OWNER_PICKED",
-   "why": "stem 'oommok' ruled in a review sheet's decisions.json",
+   "why": "bytes from b93da720e2: Stillsand sheet sitting 2 ingested: 30 installs of the owner's picks (Oommok)",
    "evidence": {
     "ph": "0140069008e81074249a463d06242512669a6692b6d656c21cc231e20a340000",
     "size": [
@@ -14435,9 +15192,28 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/TheRot/Textures/RotSporeKit/Things/Plant/Brightbell/Brightbell_A.png",
      "mad": null
     },
-    "sheet_stems": [
-     "oommok",
-     "rmoommok"
+    "sheet_keeps": [
+     [
+      "oommok",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Oommok",
+      "c",
+      "2026-10-06T05:35:35.831Z"
+     ],
+     [
+      "oommok",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Oommok",
+      "c",
+      "2026-10-06T05:35:35.831Z"
+     ],
+     [
+      "oommok",
+      "Transient/biome_ffar/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Oommok",
+      "c",
+      "2026-10-06T05:35:35.831Z"
+     ]
     ],
     "live_record": "install"
    }
@@ -14452,7 +15228,7 @@
    "sha": "5e6976fd4c1eb36dd222826bd9b8fc781ef32f219a59c2df21a1bc97239c37f2",
    "verdict": "OWNER_PICKED",
    "basis": "OWNER_PICKED",
-   "why": "stem 'oommok' ruled in a review sheet's decisions.json",
+   "why": "bytes from b93da720e2: Stillsand sheet sitting 2 ingested: 30 installs of the owner's picks (Oommok)",
    "evidence": {
     "ph": "031008e01078023c465da8ce6ceb64c964c966c9b2d2725072d11ac624280040",
     "size": [
@@ -14478,9 +15254,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/nerf/nerf_f_eastm.png",
      "mad": null
     },
-    "sheet_stems": [
-     "oommok",
-     "rmoommok"
+    "sheet_keeps": [
+     [
+      "oommok",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Oommok",
+      "c",
+      "2026-10-06T05:35:35.831Z"
+     ],
+     [
+      "oommok",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Oommok",
+      "c",
+      "2026-10-06T05:35:35.831Z"
+     ],
+     [
+      "oommok",
+      "Transient/biome_ffar/deep_desert_sheet_2026-10-04.decisions.json",
+      "RM_Oommok",
+      "c",
+      "2026-10-06T05:35:35.831Z"
+     ]
     ],
     "live_record": "install"
    }
@@ -14493,9 +15288,9 @@
    ],
    "file": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Dorrak/RM_Dorrak_north.png",
    "sha": "04b96bbc0bf0a20eb41507d0446aa67d137f0d5712d021f95de4fd85005a58e5",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'dorrak' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from c4a01a4aee: Dorrak/Krissek/Vekkit: 'own art replaces tinted vanilla placeholders'",
    "evidence": {
     "ph": "000000000000014002a002a0169006900e880e882e882cc80160028000000000",
     "size": [
@@ -14520,10 +15315,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage2_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "dorrak",
-     "rmdorrak"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -14535,9 +15327,9 @@
    ],
    "file": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Dorrak/RM_Dorrak_south.png",
    "sha": "90008c9b7ce36352c717db318941a2561a8246094e399716fa492994869f4b3a",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'dorrak' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from c4a01a4aee: Dorrak/Krissek/Vekkit: 'own art replaces tinted vanilla placeholders'",
    "evidence": {
     "ph": "0000010004c00b2016900c882cc80cc458845e842cc82cc80330044000000000",
     "size": [
@@ -14562,10 +15354,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/boma/boma_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "dorrak",
-     "rmdorrak"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -14577,9 +15366,9 @@
    ],
    "file": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vekkit/RM_Vekkit_north.png",
    "sha": "8d3e77ec770618813b0c18847516117e6042f0fc554a22d82ed80322a72078e6",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'rmvekkit' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from c4a01a4aee: Dorrak/Krissek/Vekkit: 'own art replaces tinted vanilla placeholders'",
    "evidence": {
     "ph": "00000000030004c00680028006900cc02cc80aa80aa80e880690014000000000",
     "size": [
@@ -14604,10 +15393,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/building/droidbay/droidassembly_b1_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmvekkit",
-     "vekkit"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -14619,9 +15405,9 @@
    ],
    "file": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vekkit/RM_Vekkit_south.png",
    "sha": "e505c849c5a5e8f349e6195b9d619602d2b59c70ff4bd35f6ef31ff274cf5e3e",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'rmvekkit' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from c4a01a4aee: Dorrak/Krissek/Vekkit: 'own art replaces tinted vanilla placeholders'",
    "evidence": {
     "ph": "00000000010004c004d009600b2012b01690169416900cc804d0012000400000",
     "size": [
@@ -14646,10 +15432,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/eggmammavian/eggmammavian_a.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmvekkit",
-     "vekkit"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -14661,9 +15444,9 @@
    ],
    "file": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz_north.png",
    "sha": "95d9baddbf1bf7ff8dc6275b43670eae1955c399abe8c300ed7bbd423aee4607",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'rmzhaaz' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from a4bcd5445c: BLUEDESERT_RULED_CONTENT_1: the ruled Blue Desert cast built with its own art (Zhaaz et al.)",
    "evidence": {
     "ph": "000000000080032004d004d00968096811301698269a21901980024000000000",
     "size": [
@@ -14688,10 +15471,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMothLarvae_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmzhaaz",
-     "zhaaz"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -14703,9 +15483,9 @@
    ],
    "file": "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz_south.png",
    "sha": "6279fda66000c856a8e919cf221da7e328fc9fe1afff349e85b531774429e9f5",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'rmzhaaz' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from a4bcd5445c: BLUEDESERT_RULED_CONTENT_1: the ruled Blue Desert cast built with its own art (Zhaaz et al.)",
    "evidence": {
     "ph": "000000000100065000e00978113812b81338251a213818d406c8012000800000",
     "size": [
@@ -14730,10 +15510,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/Nexu_j_northm.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmzhaaz",
-     "zhaaz"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -14747,7 +15524,7 @@
    "sha": "2d47f6a483a3869890693d8883e99f706045452273c623711bb53512c5190786",
    "verdict": "OWNER_PICKED",
    "basis": "OWNER_PICKED",
-   "why": "stem 'cindermare' ruled in a review sheet's decisions.json",
+   "why": "bytes from 1d34f1070b: Abyss sheet sitting 2 ingested: 15 installs of the owner's picks (Cindermare)",
    "evidence": {
     "ph": "00000080006001900590059003880b480b080790161016102d102d8015a00240",
     "size": [
@@ -14772,9 +15549,28 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/bx/body/naked_male_eastm.png",
      "mad": null
     },
-    "sheet_stems": [
-     "cindermare",
-     "rmcindermare"
+    "sheet_keeps": [
+     [
+      "cindermare",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Cindermare",
+      "b",
+      "2026-10-06T03:05:00.830Z"
+     ],
+     [
+      "cindermare",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Cindermare",
+      "b",
+      "2026-10-06T03:05:00.830Z"
+     ],
+     [
+      "cindermare",
+      "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Cindermare",
+      "b",
+      "2026-10-06T03:05:00.830Z"
+     ]
     ],
     "live_record": "install"
    }
@@ -14789,7 +15585,7 @@
    "sha": "5c5096af3a4c597d843563e46fdea5df400859a4eec528c5e609fcaa08b825a0",
    "verdict": "OWNER_PICKED",
    "basis": "OWNER_PICKED",
-   "why": "stem 'cindermare' ruled in a review sheet's decisions.json",
+   "why": "bytes from 1d34f1070b: Abyss sheet sitting 2 ingested: 15 installs of the owner's picks (Cindermare)",
    "evidence": {
     "ph": "0080004001b001880b480b480348168816880e882d102d901790039005a00240",
     "size": [
@@ -14814,9 +15610,28 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/fanback/fanback_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "cindermare",
-     "rmcindermare"
+    "sheet_keeps": [
+     [
+      "cindermare",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Cindermare",
+      "b",
+      "2026-10-06T03:05:00.830Z"
+     ],
+     [
+      "cindermare",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Cindermare",
+      "b",
+      "2026-10-06T03:05:00.830Z"
+     ],
+     [
+      "cindermare",
+      "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+      "RM_Cindermare",
+      "b",
+      "2026-10-06T03:05:00.830Z"
+     ]
     ],
     "live_record": "install"
    }
@@ -14854,10 +15669,45 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/mynock/mynock_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "mynock"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
+   }
+  },
+  {
+   "group": "ROSTER:RM_FeverWood",
+   "def": "RM_Drommath",
+   "defs": [
+    "RM_Drommath"
+   ],
+   "file": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_Drommath/RM_Drommath.png",
+   "sha": "2d92cc0fc3df0d66c7ee7aa5a0411e8f1d3b6fc6103316899245a21c7d79c900",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from de21ea2dd5: FEVERWOOD_SAP_SUCKER_GUILD_1: new sap-suckers (Drommath et al.) shipped with their own art",
+   "evidence": {
+    "ph": "0000000000000000000000000000000000000000000000000000000000000000",
+    "size": [
+     128,
+     128
+    ],
+    "bytes_commit": "de21ea2dd5febb0afc5cba5c60b2ff3a59815383 2026-09-26 FEVERWOOD_SAP_SUCKER_GUILD_1: the sap-drinker guild \u2014 three new sap-suckers plus the thornbug precedent",
+    "commits": [
+     "de21ea2dd5febb0afc5cba5c60b2ff3a59815383 2026-09-26 FEVERWOOD_SAP_SUCKER_GUILD_1: the sap-drinker guild \u2014 three new sap-suckers plus the thornbug precedent"
+    ],
+    "nearest_ours": {
+     "d": 0,
+     "kind": "install",
+     "loc": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Joins/Futuristic/UnderPipe.png",
+     "mad": null
+    },
+    "nearest_donor": {
+     "d": 0,
+     "kind": "donor",
+     "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/acklay/acklay_eastm.png",
+     "mad": null
+    },
+    "sheet_keeps": [],
+    "live_record": "backfill-observed"
    }
   },
   {
@@ -14893,8 +15743,28 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/Nexu_j_Dessicated.png",
      "mad": null
     },
-    "sheet_stems": [
-     "twistingthorngrass"
+    "sheet_keeps": [
+     [
+      "twistingthorngrass",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RM_TwistingThorngrass",
+      "b",
+      "2026-10-10T05:55:29.495Z"
+     ],
+     [
+      "twistingthorngrass",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RM_TwistingThorngrass",
+      "b",
+      "2026-10-10T05:55:29.495Z"
+     ],
+     [
+      "twistingthorngrass",
+      "Transient/biome_ffar/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RM_TwistingThorngrass",
+      "b",
+      "2026-10-10T05:55:29.495Z"
+     ]
     ],
     "live_record": "script:src/RimMandrake/Utils/art/floodedcanyon_kept_art_move.py"
    }
@@ -14932,8 +15802,87 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/bantha/banthaw_southm.png",
      "mad": null
     },
-    "sheet_stems": [
-     "twistingthorngrass"
+    "sheet_keeps": [
+     [
+      "twistingthorngrass",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RM_TwistingThorngrass",
+      "b",
+      "2026-10-10T05:55:29.495Z"
+     ],
+     [
+      "twistingthorngrass",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RM_TwistingThorngrass",
+      "b",
+      "2026-10-10T05:55:29.495Z"
+     ],
+     [
+      "twistingthorngrass",
+      "Transient/biome_ffar/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RM_TwistingThorngrass",
+      "b",
+      "2026-10-10T05:55:29.495Z"
+     ]
+    ],
+    "live_record": "script:src/RimMandrake/Utils/art/floodedcanyon_kept_art_move.py"
+   }
+  },
+  {
+   "group": "ROSTER:RM_FloodedCanyon",
+   "def": "RM_TwistingThornweed",
+   "defs": [
+    "RM_TwistingThornweed"
+   ],
+   "file": "src/RimMandrake/CrackedLands/Textures/Things/Plant/RM_TwistingThornweed/TwistingThornweed_b.png",
+   "sha": "3c3b2e8e2defb425c43543eb9b7bd66a1e17661930b193a5a37ee382518bc5ef",
+   "verdict": "STAND_IN",
+   "basis": "STAND_IN",
+   "why": "bytes from 589fecf3f2: POLLUTED_LANDS_FLORA_PORT_1: 'art copied from the live Workshop install'",
+   "evidence": {
+    "ph": "028019406730620af1e099747bccee84ccb0b2d4e49cc6a4daa79f0460580800",
+    "size": [
+     128,
+     128
+    ],
+    "bytes_commit": "589fecf3f2625c0caea4db0d654e3e51c80aba2e 2026-09-18 POLLUTED_LANDS_FLORA_PORT_1: port-or-cut the 21 unmapped BMT_ flora rows",
+    "commits": [
+     "4d22fec0f4f7f014d0bfb67ec1a785201fd164d4 2026-10-18 CrackedLands: owner-kept art moves out of the FloodedCanyon stub; stub folder and compose entry CrackedLandsKeptArt deleted"
+    ],
+    "nearest_ours": {
+     "d": 82,
+     "kind": "install",
+     "loc": "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionWreck",
+     "mad": null
+    },
+    "nearest_donor": {
+     "d": 79,
+     "kind": "donor",
+     "loc": "bundle:mlie.starwarsanimalcollection/vapaad_east.png",
+     "mad": null
+    },
+    "sheet_keeps": [
+     [
+      "twistingthornweed",
+      "Transient/art_sheet_design_2026-10-10/decisions_premigration_2026-10-10T1153/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RM_TwistingThornweed",
+      "b",
+      "2026-10-10T05:55:34.562Z"
+     ],
+     [
+      "twistingthornweed",
+      "Transient/art_sheet_design_2026-10-10/decisions_snapshot_2026-10-10T1130/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RM_TwistingThornweed",
+      "b",
+      "2026-10-10T05:55:34.562Z"
+     ],
+     [
+      "twistingthornweed",
+      "Transient/biome_ffar/floodedcanyon_sheet_2026-10-05.decisions.json",
+      "RM_TwistingThornweed",
+      "b",
+      "2026-10-10T05:55:34.562Z"
+     ]
     ],
     "live_record": "script:src/RimMandrake/Utils/art/floodedcanyon_kept_art_move.py"
    }
@@ -14946,9 +15895,9 @@
    ],
    "file": "src/RimMandrake/GelatinousSlime/Textures/Things/Pawn/Animal/Gappo/RM_Gappo_north.png",
    "sha": "425c33032be2849596010d614a434976d2930e70e22bb6cfba993832e3aba6db",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'gappo' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from 3874f85e33: GelatinousSlime: gappo family, our art (lesser/greater art jobs queued alongside)",
    "evidence": {
     "ph": "0000000000c00120079004b004b004a00ca00ea006800748014002b000000000",
     "size": [
@@ -14973,10 +15922,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/frilledgorg/frilledgorg_j_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "gappo",
-     "rmgappo"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -14988,9 +15934,9 @@
    ],
    "file": "src/RimMandrake/GelatinousSlime/Textures/Things/Pawn/Animal/Gappo/RM_Gappo_south.png",
    "sha": "1fc9103e7d680b780ee615e55b71337acdb7247fe411afdb198606ddce64aab7",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'gappo' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from 3874f85e33: GelatinousSlime: gappo family, our art (lesser/greater art jobs queued alongside)",
    "evidence": {
     "ph": "00000000014002a006900cc80aa80aa82b080cc00d4004d00690014000000000",
     "size": [
@@ -15015,10 +15961,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/Stintaril/Stintaril_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "gappo",
-     "rmgappo"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15057,10 +16000,7 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/b1a/head/head_northm.png",
      "mad": null
     },
-    "sheet_stems": [
-     "gristle",
-     "rmgristle"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15099,10 +16039,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/JewelBeetle/JewelBeetle_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "gristle",
-     "rmgristle"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15114,9 +16051,9 @@
    ],
    "file": "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth_south.png",
    "sha": "f37d6968ac567111b61187ee5dc46f6a946d90d6e876684385a8e60e0bd17048",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'bloodropmoth' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from 12f840ad64: Sheet art redos (BloodropMoth et al.): our redo renders installed in answer to sheet notes",
    "evidence": {
     "ph": "0040030004c000e008e812b02338261a251a0d48014004500610019002600000",
     "size": [
@@ -15142,9 +16079,7 @@
      "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal_Alternate/AA_DesertAve/AA_DesertAve_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "bloodropmoth"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15183,9 +16118,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/fambaa/fambaa_j_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "crimsonopee"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15224,50 +16157,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage2_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "crimsonopee"
-    ],
-    "live_record": "install"
-   }
-  },
-  {
-   "group": "ROSTER:RM_Pyrelands",
-   "def": "RM_Sytheclaw",
-   "defs": [
-    "RM_Sytheclaw"
-   ],
-   "file": "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png",
-   "sha": "bee45bac4116968dc7009ea59a7227cf167924c6d11115ff8c1f51cd287c78ab",
-   "verdict": "HAND_MADE",
-   "basis": "OURS_PRELEDGER",
-   "why": "bytes from 42cd4d2089: Pyrelands full-review art wave: painterly renders",
-   "evidence": {
-    "ph": "000000000000000004c019000cd006480c440f04024805a00200000000000000",
-    "size": [
-     512,
-     512
-    ],
-    "bytes_commit": "42cd4d2089e0035dc24f3e2cf78f78f0f4c61ca0 2026-09-16 Pyrelands full-review art wave: 30 painterly renders, 8 canon creatures + Sytheclaw restyle + Mantistanis S/E + quickgrass burn state",
-    "commits": [
-     "e40639d97f3b80e7e2aa32cbb374a30ced6a16d1 2026-10-16 Facings: S/N feet row seats on east's (rescale/regen/lint rule, tol 3%); 168 rescaled pictures re-seated, shift only",
-     "b654ffbf910ae8a742ff204d753a0cdc5068af54 2026-10-16 Rescale S/N facings to ground-camera standard on 168 pictures via art install (owner card 2026-10-16)",
-     "8e3ccc69d4c8c08af212681dc6a48b0d144a086c 2026-10-03 Pyrelands: own the eight invented residents as RM_ defs in the free mod (defs, art, wildAnimals inline); campaign adds only the canon rows"
-    ],
-    "nearest_ours": {
-     "d": 28,
-     "kind": "install",
-     "loc": "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Oomal/RM_Oomal_north.png",
-     "mad": null
-    },
-    "nearest_donor": {
-     "d": 23,
-     "kind": "donor",
-     "loc": "loose:/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3309003431/Textures/Things/Pawn/Animal/Swarmling/Swarmling_east.png",
-     "mad": null
-    },
-    "sheet_stems": [
-     "sytheclaw"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15281,7 +16171,7 @@
    "sha": "2a194998deb73037dd91f7ffa22ec76062f42a3533368ec1af00655ca390dec4",
    "verdict": "OWNER_PICKED",
    "basis": "OWNER_PICKED",
-   "why": "stem 'feplantquickgrass' ruled in a review sheet's decisions.json",
+   "why": "bytes from 2647b50a6d: Quickgrass candidates for owner review; 5cc8965527: 'Owner approved the full stage set 2026-09-14'",
    "evidence": {
     "ph": "03001ca0359a5598c9266b2e9b864d409d531a4238c49ecd57006b6814d40200",
     "size": [
@@ -15305,8 +16195,14 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/nerf/nerf_j_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "feplantquickgrass"
+    "sheet_keeps": [
+     [
+      "feplantquickgrass",
+      "Transient/biome_ffar/pyrelands_sheet_2026-10-05.decisions.json",
+      "RM_FE_Plant_Quickgrass",
+      "b",
+      "2026-10-11T21:52:48.984Z"
+     ]
     ],
     "live_record": "script:Transient/art_leftovers/dalgo_ns.json"
    }
@@ -15319,9 +16215,9 @@
    ],
    "file": "src/RimMandrake/TheRot/Textures/Things/Pawn/Animal/RM_Chittik/RM_Chittik_south.png",
    "sha": "ebfd195560e44c30ee2fc39c2afc38c980d2f38d2c77ed11ba313b717a214bff",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'chittik' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from c4e6fca25d: Land the Rot artpipe backlog: 'new bespoke art replacing donor/placeholder texPaths'",
    "evidence": {
     "ph": "0000000000000040020004d0086808e814d01710069001200280000000000000",
     "size": [
@@ -15346,10 +16242,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "chittik",
-     "rmchittik"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15361,9 +16254,9 @@
    ],
    "file": "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Shulla/RM_Shulla_north.png",
    "sha": "c0da0075b3affe12435b995e7ab811987bf726213e01d7b694070f0180be68df",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'shulla' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from ffced15dca: SCALD_FLOOR_PASS_1: 'wire 14 Scald renders' (Noohm/Shulla 3-facing owned art)",
    "evidence": {
     "ph": "000000000080014002a00cc0096002e80d480d40028001200040000000000000",
     "size": [
@@ -15388,10 +16281,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "shulla",
-     "rmshulla"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15403,9 +16293,9 @@
    ],
    "file": "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Shulla/RM_Shulla_south.png",
    "sha": "af03d2d0e3b4b6e98f6b2324383dbbd0528ebc39ab981b3a099c80f76864daef",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'shulla' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from ffced15dca: SCALD_FLOOR_PASS_1: 'wire 14 Scald renders' (Noohm/Shulla 3-facing owned art)",
    "evidence": {
     "ph": "00000000008001200390048009a01ab008e8096002a001400000000000000000",
     "size": [
@@ -15430,10 +16320,7 @@
      "loc": "design/RimStarWars/canon_references/zabrak/donor_current_sprite_iridonian_facialridges.png",
      "mad": null
     },
-    "sheet_stems": [
-     "shulla",
-     "rmshulla"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15445,9 +16332,9 @@
    ],
    "file": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_south.png",
    "sha": "dee1e9a0055391f183d779e09beb4e563b70f426058c6d016099832aeba44e39",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'sumpmouse' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from 0859de966d: Wire 105 finished artpipe renders into their defs' texPaths",
    "evidence": {
     "ph": "0000000000800340012002d004d004c00cc00d80059006800340000000000000",
     "size": [
@@ -15472,10 +16359,7 @@
      "loc": "design/RimStarWars/canon_references/droid_mse/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "sumpmouse",
-     "rmsumpmouse"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15487,9 +16371,9 @@
    ],
    "file": "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Noolim/RM_Noolim_north.png",
    "sha": "fd7ed6e0a47129da69ff0fac162344635cdeb0a5caf782371a0a0e64eb1f8a25",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'rmnoolim' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from 9349532535: Twilight Sea: 'wire 12 painterly floor creatures ... replacing flat placeholders'",
    "evidence": {
     "ph": "00000000008001400320061005082e880e080f1007000b2000c0010000000000",
     "size": [
@@ -15514,10 +16398,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swanimals/frilledgorg/frilledgorg_swimming_north.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmnoolim",
-     "noolim"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15529,9 +16410,9 @@
    ],
    "file": "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Noolim/RM_Noolim_south.png",
    "sha": "5f0f81e730a2694dd60a72e97b2ec3aa09a280dcac7872a6377a8604ec3f05f2",
-   "verdict": "OWNER_PICKED",
-   "basis": "OWNER_PICKED",
-   "why": "stem 'rmnoolim' ruled in a review sheet's decisions.json",
+   "verdict": "HAND_MADE",
+   "basis": "OURS_PRELEDGER",
+   "why": "bytes from 9349532535: Twilight Sea: 'wire 12 painterly floor creatures ... replacing flat placeholders'",
    "evidence": {
     "ph": "0000000000400b2007900d481d241b641aa40f4813300b000000000000000000",
     "size": [
@@ -15556,10 +16437,7 @@
      "loc": "design/RimStarWars/canon_references/gand/donor_current_sprite.png",
      "mad": null
     },
-    "sheet_stems": [
-     "rmnoolim",
-     "noolim"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15598,9 +16476,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva_north.png",
      "mad": 0.55
     },
-    "sheet_stems": [
-     "megaphoridlarva"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15639,9 +16515,7 @@
      "loc": "src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva_north.png",
      "mad": 0.79
     },
-    "sheet_stems": [
-     "megaphoridlarva"
-    ],
+    "sheet_keeps": [],
     "live_record": "install"
    }
   },
@@ -15678,10 +16552,7 @@
      "loc": "bundle:mlie.starwarsanimalcollection/textures/swresource/trophies/kraytpearl.png",
      "mad": null
     },
-    "sheet_stems": [
-     "frethik",
-     "rmfrethik"
-    ],
+    "sheet_keeps": [],
     "live_record": "script:src/RimMandrake/Utils/art/move_mod_textures.py"
    }
   },
@@ -15718,17 +16589,44 @@
      "loc": "bundle:neronix17.outerrim.droiddepot/textures/outerrim/droid/protocol/head/head_south.png",
      "mad": null
     },
-    "sheet_stems": [
-     "frethik",
-     "rmfrethik"
-    ],
+    "sheet_keeps": [],
     "live_record": "script:src/RimMandrake/Utils/art/move_mod_textures.py"
    }
   }
  ],
  "roster": [
   {
+   "biome": "RM_LongShade",
+   "row": "RSW_Runyip",
+   "def": "RSW_Runyip",
+   "bodies": [
+    [
+     "src/RimStarWars/SWBestiary",
+     "swanimals/Runyip/Runyip"
+    ],
+    [
+     "src/RimStarWars/SWBestiary",
+     "swanimals/Runyip/Runyip_j"
+    ]
+   ],
+   "files": [
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_j_north.png",
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_j_south.png"
+   ],
+   "file_verdicts": [
+    "STAND_IN"
+   ],
+   "verdict": "STAND_IN",
+   "recorded_since": [
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_east.png",
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_j_east.png",
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_north.png",
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_south.png"
+   ]
+  },
+  {
    "biome": "RM_Stillsand",
+   "row": "RM_Oommok",
    "def": "RM_Oommok",
    "bodies": [
     [
@@ -15750,6 +16648,7 @@
   },
   {
    "biome": "RM_Stillsand",
+   "row": "RSW_Gizka",
    "def": "RSW_Gizka",
    "bodies": [
     [
@@ -15771,6 +16670,7 @@
   },
   {
    "biome": "RM_BlueDesert",
+   "row": "RM_Dorrak",
    "def": "RM_Dorrak",
    "bodies": [
     [
@@ -15783,15 +16683,16 @@
     "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Dorrak/RM_Dorrak_south.png"
    ],
    "file_verdicts": [
-    "OWNER_PICKED"
+    "HAND_MADE"
    ],
-   "verdict": "OWNER_PICKED",
+   "verdict": "HAND_MADE",
    "recorded_since": [
     "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Dorrak/RM_Dorrak_east.png"
    ]
   },
   {
    "biome": "RM_BlueDesert",
+   "row": "RM_Vekkit",
    "def": "RM_Vekkit",
    "bodies": [
     [
@@ -15804,15 +16705,16 @@
     "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vekkit/RM_Vekkit_south.png"
    ],
    "file_verdicts": [
-    "OWNER_PICKED"
+    "HAND_MADE"
    ],
-   "verdict": "OWNER_PICKED",
+   "verdict": "HAND_MADE",
    "recorded_since": [
     "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Vekkit/RM_Vekkit_east.png"
    ]
   },
   {
    "biome": "RM_BlueDesert",
+   "row": "RM_Zhaaz",
    "def": "RM_Zhaaz",
    "bodies": [
     [
@@ -15825,15 +16727,16 @@
     "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz_south.png"
    ],
    "file_verdicts": [
-    "OWNER_PICKED"
+    "HAND_MADE"
    ],
-   "verdict": "OWNER_PICKED",
+   "verdict": "HAND_MADE",
    "recorded_since": [
     "src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz_east.png"
    ]
   },
   {
    "biome": "RM_Abyss",
+   "row": "RM_Cindermare",
    "def": "RM_Cindermare",
    "bodies": [
     [
@@ -15856,6 +16759,7 @@
   },
   {
    "biome": "RM_Abyss",
+   "row": "RM_Skarnix",
    "def": "RM_Skarnix",
    "bodies": [
     [
@@ -15878,6 +16782,7 @@
   },
   {
    "biome": "RM_Cauldron",
+   "row": "RSW_Mynock",
    "def": "RSW_Mynock",
    "bodies": [
     [
@@ -15899,6 +16804,7 @@
   },
   {
    "biome": "RM_Cauldron",
+   "row": "RM_DarkCrust",
    "def": "RM_DarkCrust",
    "bodies": [
     [
@@ -15916,7 +16822,30 @@
    "recorded_since": []
   },
   {
+   "biome": "RM_FeverWood",
+   "row": "RM_Drommath",
+   "def": "RM_Drommath",
+   "bodies": [
+    [
+     "src/RimMandrake/FeverWood",
+     "Things/Pawn/Animal/RM_Drommath/RM_Drommath"
+    ]
+   ],
+   "files": [
+    "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_Drommath/RM_Drommath.png"
+   ],
+   "file_verdicts": [
+    "HAND_MADE"
+   ],
+   "verdict": "HAND_MADE",
+   "recorded_since": [
+    "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_Drommath/RM_Drommath_east.png",
+    "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_Drommath/RM_Drommath_north.png"
+   ]
+  },
+  {
    "biome": "RM_FloodedCanyon",
+   "row": "RSW_Creature_Mantrap",
    "def": "RSW_Creature_Mantrap",
    "bodies": [
     [
@@ -15937,6 +16866,7 @@
   },
   {
    "biome": "RM_FloodedCanyon",
+   "row": "RM_TwistingThorngrass",
    "def": "RM_TwistingThorngrass",
    "bodies": [
     [
@@ -15957,7 +16887,30 @@
    ]
   },
   {
+   "biome": "RM_FloodedCanyon",
+   "row": "RM_TwistingThornweed",
+   "def": "RM_TwistingThornweed",
+   "bodies": [
+    [
+     "src/RimMandrake/CrackedLands",
+     "Things/Plant/RM_TwistingThornweed"
+    ]
+   ],
+   "files": [
+    "src/RimMandrake/CrackedLands/Textures/Things/Plant/RM_TwistingThornweed/TwistingThornweed_b.png"
+   ],
+   "file_verdicts": [
+    "STAND_IN"
+   ],
+   "verdict": "STAND_IN",
+   "recorded_since": [
+    "src/RimMandrake/CrackedLands/Textures/Things/Plant/RM_TwistingThornweed/TwistingThornweed_a.png",
+    "src/RimMandrake/CrackedLands/Textures/Things/Plant/RM_TwistingThornweed/TwistingThornweed_c.png"
+   ]
+  },
+  {
    "biome": "RM_GelatinousSlime",
+   "row": "RM_Gappo",
    "def": "RM_Gappo",
    "bodies": [
     [
@@ -15970,15 +16923,16 @@
     "src/RimMandrake/GelatinousSlime/Textures/Things/Pawn/Animal/Gappo/RM_Gappo_south.png"
    ],
    "file_verdicts": [
-    "OWNER_PICKED"
+    "HAND_MADE"
    ],
-   "verdict": "OWNER_PICKED",
+   "verdict": "HAND_MADE",
    "recorded_since": [
     "src/RimMandrake/GelatinousSlime/Textures/Things/Pawn/Animal/Gappo/RM_Gappo_east.png"
    ]
   },
   {
    "biome": "RM_Greentide",
+   "row": "RM_Gristle",
    "def": "RM_Gristle",
    "bodies": [
     [
@@ -15999,6 +16953,7 @@
   },
   {
    "biome": "RM_Greentide",
+   "row": "RSW_Gizka",
    "def": "RSW_Gizka",
    "bodies": [
     [
@@ -16020,6 +16975,7 @@
   },
   {
    "biome": "RM_Greentide",
+   "row": "RM_Vashuu",
    "def": "RM_Vashuu",
    "bodies": [
     [
@@ -16038,6 +16994,7 @@
   },
   {
    "biome": "RM_GreySea",
+   "row": "RM_Reefback",
    "def": "RM_Reefback",
    "bodies": [
     [
@@ -16060,6 +17017,7 @@
   },
   {
    "biome": "RM_GreySea",
+   "row": "RSW_Reefback",
    "def": "RSW_Reefback",
    "bodies": [
     [
@@ -16082,6 +17040,7 @@
   },
   {
    "biome": "RM_LanternDeeps",
+   "row": "RM_BloodropMoth",
    "def": "RM_BloodropMoth",
    "bodies": [
     [
@@ -16093,9 +17052,9 @@
     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth_south.png"
    ],
    "file_verdicts": [
-    "OWNER_PICKED"
+    "HAND_MADE"
    ],
-   "verdict": "OWNER_PICKED",
+   "verdict": "HAND_MADE",
    "recorded_since": [
     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth_east.png",
     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth_north.png"
@@ -16103,6 +17062,149 @@
   },
   {
    "biome": "RM_LanternDeeps",
+   "row": "RM_BrellikBulb",
+   "def": "RM_BrellikBulb",
+   "bodies": [
+    [
+     "src/RimMandrake/LanternDeeps",
+     "RM_LanternDeeps/Things/Plant/BrellikBulb"
+    ]
+   ],
+   "files": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/BrellikBulb/B.png"
+   ],
+   "file_verdicts": [
+    "OWNER_PICKED"
+   ],
+   "verdict": "OWNER_PICKED",
+   "recorded_since": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/BrellikBulb/A.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/BrellikBulb/C.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/BrellikBulb/D.png"
+   ]
+  },
+  {
+   "biome": "RM_LanternDeeps",
+   "row": "RM_DeepMycelium",
+   "def": "RM_DeepMycelium",
+   "bodies": [
+    [
+     "src/RimMandrake/LanternDeeps",
+     "RM_LanternDeeps/Things/Plant/Mycelium"
+    ]
+   ],
+   "files": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/Mycelium/B.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/Mycelium/C.png"
+   ],
+   "file_verdicts": [
+    "OWNER_PICKED"
+   ],
+   "verdict": "OWNER_PICKED",
+   "recorded_since": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/Mycelium/A.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/Mycelium/D.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/Mycelium/E.png"
+   ]
+  },
+  {
+   "biome": "RM_LanternDeeps",
+   "row": "RM_KuvraSpout",
+   "def": "RM_KuvraSpout",
+   "bodies": [
+    [
+     "src/RimMandrake/LanternDeeps",
+     "RM_LanternDeeps/Things/Plant/KuvraSpout"
+    ]
+   ],
+   "files": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/KuvraSpout/b.png"
+   ],
+   "file_verdicts": [
+    "OWNER_PICKED"
+   ],
+   "verdict": "OWNER_PICKED",
+   "recorded_since": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/KuvraSpout/a.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/KuvraSpout/c.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/KuvraSpout/d.png"
+   ]
+  },
+  {
+   "biome": "RM_LanternDeeps",
+   "row": "RM_NurrikGill",
+   "def": "RM_NurrikGill",
+   "bodies": [
+    [
+     "src/RimMandrake/LanternDeeps",
+     "RM_LanternDeeps/Things/Plant/NurrikGill"
+    ]
+   ],
+   "files": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/NurrikGill/B.png"
+   ],
+   "file_verdicts": [
+    "OWNER_PICKED"
+   ],
+   "verdict": "OWNER_PICKED",
+   "recorded_since": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/NurrikGill/A.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/NurrikGill/C.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/NurrikGill/D.png"
+   ]
+  },
+  {
+   "biome": "RM_LanternDeeps",
+   "row": "RM_PrennaLace",
+   "def": "RM_PrennaLace",
+   "bodies": [
+    [
+     "src/RimMandrake/LanternDeeps",
+     "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown"
+    ]
+   ],
+   "files": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown/B.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown/C.png"
+   ],
+   "file_verdicts": [
+    "OWNER_PICKED"
+   ],
+   "verdict": "OWNER_PICKED",
+   "recorded_since": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown/A.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown/D.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown/E.png"
+   ]
+  },
+  {
+   "biome": "RM_LanternDeeps",
+   "row": "RM_QuorrFern",
+   "def": "RM_QuorrFern",
+   "bodies": [
+    [
+     "src/RimMandrake/LanternDeeps",
+     "RM_LanternDeeps/Things/Plant/QuorrFern"
+    ]
+   ],
+   "files": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/QuorrFern/B.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/QuorrFern/C.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/QuorrFern/D.png"
+   ],
+   "file_verdicts": [
+    "OWNER_PICKED"
+   ],
+   "verdict": "OWNER_PICKED",
+   "recorded_since": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/QuorrFern/A.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/QuorrFern/E.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/QuorrFern/F.png"
+   ]
+  },
+  {
+   "biome": "RM_LanternDeeps",
+   "row": "RM_ThrakkCap",
    "def": "RM_ThrakkCap",
    "bodies": [
     [
@@ -16123,7 +17225,54 @@
    ]
   },
   {
+   "biome": "RM_LanternDeeps",
+   "row": "RM_VellokReed",
+   "def": "RM_VellokReed",
+   "bodies": [
+    [
+     "src/RimMandrake/LanternDeeps",
+     "RM_LanternDeeps/Things/Plant/VellokReed"
+    ]
+   ],
+   "files": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/VellokReed/B.png"
+   ],
+   "file_verdicts": [
+    "OWNER_PICKED"
+   ],
+   "verdict": "OWNER_PICKED",
+   "recorded_since": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/VellokReed/A.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/VellokReed/C.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/VellokReed/D.png"
+   ]
+  },
+  {
+   "biome": "RM_LanternDeeps",
+   "row": "RM_ZivvitTaper",
+   "def": "RM_ZivvitTaper",
+   "bodies": [
+    [
+     "src/RimMandrake/LanternDeeps",
+     "RM_LanternDeeps/Things/Plant/ZivvitTaper"
+    ]
+   ],
+   "files": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/ZivvitTaper/B.png"
+   ],
+   "file_verdicts": [
+    "OWNER_PICKED"
+   ],
+   "verdict": "OWNER_PICKED",
+   "recorded_since": [
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/ZivvitTaper/A.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/ZivvitTaper/C.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things/Plant/ZivvitTaper/D.png"
+   ]
+  },
+  {
    "biome": "RM_LeaningScrub",
+   "row": "RSW_Gizka",
    "def": "RSW_Gizka",
    "bodies": [
     [
@@ -16145,6 +17294,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RM_CrimsonOpeeJuv",
    "def": "RM_CrimsonOpeeJuv",
    "bodies": [
     [
@@ -16166,6 +17316,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RM_Liliana",
    "def": "RM_Liliana",
    "bodies": [
     [
@@ -16187,6 +17338,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RM_ReefbackJuv",
    "def": "RM_ReefbackJuv",
    "bodies": [
     [
@@ -16209,6 +17361,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RM_RustNipperJuv",
    "def": "RM_RustNipperJuv",
    "bodies": [
     [
@@ -16231,6 +17384,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RM_ShaleGorgerJuv",
    "def": "RM_ShaleGorgerJuv",
    "bodies": [
     [
@@ -16253,6 +17407,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RM_SiltLampreyJuv",
    "def": "RM_SiltLampreyJuv",
    "bodies": [
     [
@@ -16275,6 +17430,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RM_ThornbackColoJuv",
    "def": "RM_ThornbackColoJuv",
    "bodies": [
     [
@@ -16297,6 +17453,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RSW_FaaJuv",
    "def": "RSW_FaaJuv",
    "bodies": [
     [
@@ -16319,6 +17476,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RSW_MeeJuv",
    "def": "RSW_MeeJuv",
    "bodies": [
     [
@@ -16341,6 +17499,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RSW_OpeeSeaKillerJuv",
    "def": "RSW_OpeeSeaKillerJuv",
    "bodies": [
     [
@@ -16363,6 +17522,36 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RSW_Runyip",
+   "def": "RSW_Runyip",
+   "bodies": [
+    [
+     "src/RimStarWars/SWBestiary",
+     "swanimals/Runyip/Runyip"
+    ],
+    [
+     "src/RimStarWars/SWBestiary",
+     "swanimals/Runyip/Runyip_j"
+    ]
+   ],
+   "files": [
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_j_north.png",
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_j_south.png"
+   ],
+   "file_verdicts": [
+    "STAND_IN"
+   ],
+   "verdict": "STAND_IN",
+   "recorded_since": [
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_east.png",
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_j_east.png",
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_north.png",
+    "src/RimStarWars/SWBestiary/Textures/swanimals/Runyip/Runyip_south.png"
+   ]
+  },
+  {
+   "biome": "RM_Miasma",
+   "row": "RSW_RustNipperJuv",
    "def": "RSW_RustNipperJuv",
    "bodies": [
     [
@@ -16385,6 +17574,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RSW_SiltLampreyJuv",
    "def": "RSW_SiltLampreyJuv",
    "bodies": [
     [
@@ -16407,6 +17597,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RSW_YobshrimpJuv",
    "def": "RSW_YobshrimpJuv",
    "bodies": [
     [
@@ -16429,6 +17620,7 @@
   },
   {
    "biome": "RM_Miasma",
+   "row": "RM_Nogtyl",
    "def": "RM_Nogtyl",
    "bodies": [
     [
@@ -16450,27 +17642,7 @@
   },
   {
    "biome": "RM_Pyrelands",
-   "def": "RM_Sytheclaw",
-   "bodies": [
-    [
-     "src/RimMandrake/Pyrelands",
-     "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw"
-    ]
-   ],
-   "files": [
-    "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_east.png",
-    "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png"
-   ],
-   "file_verdicts": [
-    "HAND_MADE"
-   ],
-   "verdict": "HAND_MADE",
-   "recorded_since": [
-    "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_north.png"
-   ]
-  },
-  {
-   "biome": "RM_Pyrelands",
+   "row": "RSW_Gizka",
    "def": "RSW_Gizka",
    "bodies": [
     [
@@ -16492,6 +17664,7 @@
   },
   {
    "biome": "RM_Pyrelands",
+   "row": "RM_FE_Plant_EmberGrass",
    "def": "RM_FE_Plant_EmberGrass",
    "bodies": [
     [
@@ -16513,6 +17686,7 @@
   },
   {
    "biome": "RM_Pyrelands",
+   "row": "RM_FE_Plant_Quickgrass",
    "def": "RM_FE_Plant_Quickgrass",
    "bodies": [
     [
@@ -16534,6 +17708,7 @@
   },
   {
    "biome": "RM_RustCathedral",
+   "row": "RSW_Mynock",
    "def": "RSW_Mynock",
    "bodies": [
     [
@@ -16555,6 +17730,7 @@
   },
   {
    "biome": "RM_TheForge",
+   "row": "RM_FirevineTree",
    "def": "RM_FirevineTree",
    "bodies": [
     [
@@ -16573,6 +17749,7 @@
   },
   {
    "biome": "RM_TheRot",
+   "row": "RM_Chittik",
    "def": "RM_Chittik",
    "bodies": [
     [
@@ -16584,9 +17761,9 @@
     "src/RimMandrake/TheRot/Textures/Things/Pawn/Animal/RM_Chittik/RM_Chittik_south.png"
    ],
    "file_verdicts": [
-    "OWNER_PICKED"
+    "HAND_MADE"
    ],
-   "verdict": "OWNER_PICKED",
+   "verdict": "HAND_MADE",
    "recorded_since": [
     "src/RimMandrake/TheRot/Textures/Things/Pawn/Animal/RM_Chittik/RM_Chittik_east.png",
     "src/RimMandrake/TheRot/Textures/Things/Pawn/Animal/RM_Chittik/RM_Chittik_north.png"
@@ -16594,6 +17771,7 @@
   },
   {
    "biome": "RM_TheRot",
+   "row": "RM_Bryolux",
    "def": "RM_Bryolux",
    "bodies": [
     [
@@ -16612,6 +17790,7 @@
   },
   {
    "biome": "RM_TheRot",
+   "row": "RM_GlowingAgarilux",
    "def": "RM_GlowingAgarilux",
    "bodies": [
     [
@@ -16630,6 +17809,7 @@
   },
   {
    "biome": "RM_TheRot",
+   "row": "RM_Glowstool",
    "def": "RM_Glowstool",
    "bodies": [
     [
@@ -16648,6 +17828,7 @@
   },
   {
    "biome": "RM_TheScald",
+   "row": "RM_Shulla",
    "def": "RM_Shulla",
    "bodies": [
     [
@@ -16660,15 +17841,16 @@
     "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Shulla/RM_Shulla_south.png"
    ],
    "file_verdicts": [
-    "OWNER_PICKED"
+    "HAND_MADE"
    ],
-   "verdict": "OWNER_PICKED",
+   "verdict": "HAND_MADE",
    "recorded_since": [
     "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Shulla/RM_Shulla_east.png"
    ]
   },
   {
    "biome": "RM_TheSump",
+   "row": "RM_SumpMouse",
    "def": "RM_SumpMouse",
    "bodies": [
     [
@@ -16680,9 +17862,9 @@
     "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_south.png"
    ],
    "file_verdicts": [
-    "OWNER_PICKED"
+    "HAND_MADE"
    ],
-   "verdict": "OWNER_PICKED",
+   "verdict": "HAND_MADE",
    "recorded_since": [
     "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_east.png",
     "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_north.png"
@@ -16690,6 +17872,7 @@
   },
   {
    "biome": "RM_TwilightSea",
+   "row": "RM_GrippingTerror",
    "def": "RM_GrippingTerror",
    "bodies": [
     [
@@ -16712,6 +17895,7 @@
   },
   {
    "biome": "RM_TwilightSea",
+   "row": "RM_Lanternwhale",
    "def": "RM_Lanternwhale",
    "bodies": [
     [
@@ -16734,6 +17918,7 @@
   },
   {
    "biome": "RM_TwilightSea",
+   "row": "RM_Noolim",
    "def": "RM_Noolim",
    "bodies": [
     [
@@ -16746,15 +17931,16 @@
     "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Noolim/RM_Noolim_south.png"
    ],
    "file_verdicts": [
-    "OWNER_PICKED"
+    "HAND_MADE"
    ],
-   "verdict": "OWNER_PICKED",
+   "verdict": "HAND_MADE",
    "recorded_since": [
     "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Noolim/RM_Noolim_east.png"
    ]
   },
   {
    "biome": "RM_TwilightSea",
+   "row": "RSW_Faa",
    "def": "RSW_Faa",
    "bodies": [
     [
@@ -16777,6 +17963,7 @@
   },
   {
    "biome": "RM_TwilightSea",
+   "row": "RSW_Lanternwhale",
    "def": "RSW_Lanternwhale",
    "bodies": [
     [
@@ -16799,6 +17986,7 @@
   },
   {
    "biome": "RM_TwilightSea",
+   "row": "RSW_Mee",
    "def": "RSW_Mee",
    "bodies": [
     [
@@ -16821,6 +18009,7 @@
   },
   {
    "biome": "RM_Warscar",
+   "row": "RM_Rimclaw",
    "def": "RM_Rimclaw",
    "bodies": [
     [
@@ -16842,6 +18031,7 @@
   },
   {
    "biome": "RM_Warscar",
+   "row": "RM_ScarRoach",
    "def": "RM_ScarRoach",
    "bodies": [
     [
@@ -16863,6 +18053,7 @@
   },
   {
    "biome": "RM_Warscar",
+   "row": "RSW_MegaphoridLarva",
    "def": "RSW_MegaphoridLarva",
    "bodies": [
     [
@@ -16883,6 +18074,7 @@
   },
   {
    "biome": "RM_Warscar",
+   "row": "RSW_Mynock",
    "def": "RSW_Mynock",
    "bodies": [
     [
@@ -16904,6 +18096,7 @@
   },
   {
    "biome": "RM_Warscar",
+   "row": "RM_ScorchedStars",
    "def": "RM_ScorchedStars",
    "bodies": [
     [
@@ -16924,6 +18117,7 @@
   },
   {
    "biome": "RM_Wastes",
+   "row": "RM_Frethik",
    "def": "RM_Frethik",
    "bodies": [
     [

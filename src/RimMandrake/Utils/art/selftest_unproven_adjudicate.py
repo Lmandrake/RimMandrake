@@ -6,15 +6,19 @@ Proves unproven_adjudicate.py's provenance instrument and verdict order, the par
     name (rename detection calls that a fresh add — the trap behind the "retier" and "own it as RM_" commits), past a
     mechanical re-save listed in PASS_THROUGH, and NOT the path's first add when the picture was later replaced;
   - adjudicate_one's order: a dhash near-duplicate of our render wins, then a donor twin, then BYTES_RULES, then
-    FILE_RULES, then a sheet stem; nothing matched is UNRESOLVED (never silently ours);
+    FILE_RULES; a sheet keep is evidence only; nothing matched is UNRESOLVED (never silently ours);
   - the dhash threshold catches a LANCZOS rescale of the same picture and not an unrelated one;
+  - owner_picks (recorded as evidence, never a verdict) counts only the OWNER'S own keep decision on a row (never an
+    agent prefill, never redo/cut), matched on the exact row stem, a Catch row apart from its animal; --check says no
+    to a doc missing a roster row or a file verdict;
   - every hand-read rule names a known basis, every basis maps to one of the item's three verdicts, and the committed
-    adjudication carries one of the three on every file AND every UNPROVEN roster row of the audit it was made from.
+    adjudication carries one of the three on every file and on every roster row, all held in the committed snapshot.
 """
 from __future__ import annotations
 
 import json
 import random
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -117,17 +121,20 @@ def main():
         rule_sha = next(iter(U.BYTES_RULES))
         none = Hist("0000000000 x")
         near_both = NB((3, "artpipe", "r", "s", 0.2), (2, "donor", "d", "s", 0.1))
-        v, w, _e = U.adjudicate_one("RM_X", p, "s", near_both, "", Hist(rule_sha))
+        v, w, _e = U.adjudicate_one("RM_X", p, "s", near_both, {}, Hist(rule_sha))
         check(v == U.BYTES_RULES[rule_sha][0] and rule_sha in w,
               "the commit that brought THESE bytes in outranks any similarity match")
-        v, _w, _e = U.adjudicate_one("RM_X", p, "s", near_both, "", none)
+        v, _w, _e = U.adjudicate_one("RM_X", p, "s", near_both, {}, none)
         check(v == "STAND_IN", "no rule: a closer confirmed donor twin beats a farther render of ours")
-        v, _w, _e = U.adjudicate_one("RM_X", p, "s", NB((3, "artpipe", "r", "s", 0.2), (9, "donor", "d", "s", 0.3)), "", none)
+        v, _w, _e = U.adjudicate_one("RM_X", p, "s", NB((3, "artpipe", "r", "s", 0.2), (9, "donor", "d", "s", 0.3)), {}, none)
         check(v == "OURS_RESAVED", "no rule: a closer confirmed render of ours wins")
         unconf = NB((1, "artpipe", "r", "s", None), (1, "donor", "d", "s", None))
-        v, _w, _e = U.adjudicate_one("RM_Copyxyz", p, "s", unconf, U.T._norm("copyxyz"), none)
-        check(v == "OWNER_PICKED", "a dhash hit without pixel confirmation is no match; the sheet stem is the last rule")
-        v, _w, _e = U.adjudicate_one("RM_Zzzzz", p, "s", unconf, "", none)
+        pick = {"copyxyz": [("Transient/s.decisions.json", "RM_Copyxyz", "a", "2026-10-01T00:00:00Z")]}
+        v, _w, e = U.adjudicate_one("RM_Copyxyz", p, "s", unconf, pick, none)
+        check(v == "UNRESOLVED" and e["sheet_keeps"] and e["sheet_keeps"][0][2] == "RM_Copyxyz",
+              "a dhash hit without pixel confirmation is no match; the owner's keep on a sheet row is recorded as "
+              "evidence, never a verdict (a kept letter does not name these bytes)")
+        v, _w, _e = U.adjudicate_one("RM_Zzzzz", p, "s", unconf, {}, none)
         check(v == "UNRESOLVED", "nothing matched is UNRESOLVED, never silently ours")
 
         # the pixel confirm itself: same dhash bucket, different pixels -> rejected; a rescale -> accepted
@@ -181,18 +188,38 @@ def main():
     check(U.row_verdict({"OWNER_PICKED", "STAND_IN"}) == "STAND_IN" and U.row_verdict({"OWNER_PICKED", "HAND_MADE"})
           == "HAND_MADE" and U.row_verdict(set()) is None, "a mixed roster row takes STAND_IN, then HAND_MADE; none is none")
 
-    # roster_specs: every UNPROVEN row, sheet-decided included, with its census body textures; other classes skipped
-    audit = {"roster": {"B": [{"row": "k1", "defName": "D1", "class": "UNPROVEN", "sheet_decided": True},
-                              {"row": "k2", "defName": "D2", "class": "UNPROVEN"},
-                              {"row": "k3", "defName": "D3", "class": "REGEN"}]}}
+    # owner_picks: only the OWNER'S decision counts (decidedAt / overriding the prefill), only a keep, exact row stem
+    dtmp = Path(tempfile.mkdtemp(prefix="unproven_dec_"))
+    (dtmp / "Transient/x").mkdir(parents=True)
+    (dtmp / "Transient/x/s.decisions.json").write_text(json.dumps({"decisions": {
+        "RM_Prefillonly": {"decision": "A", "prefill": "A", "at": "t"},           # agent's seeded letter, never clicked
+        "RM_Clicked": {"decision": "b", "prefill": "A", "at": "t", "decidedAt": "t1"},
+        "RM_Overrode": {"decision": "C", "prefill": "A", "at": "t"},               # differs from the prefill: his
+        "RM_Redone": {"decision": "redo", "prefill": "A", "decidedAt": "t2"},     # his, but not a keep
+        "RM_ClickedCatch": {"decision": "a", "decidedAt": "t3"},                   # the catch icon, not the animal
+        "swanimals/Pathy/Pathy_f": {"decision": "a", "decidedAt": "t4"}}}))
+    real_repo = U.REPO
+    try:
+        U.REPO = dtmp
+        pk = U.owner_picks()
+    finally:
+        U.REPO = real_repo
+    check(set(pk) == {"clicked", "overrode", "clickedcatch", "pathy"} and pk["clicked"][0][2:] == ("b", "t1"),
+          f"owner_picks keeps only his own keep decisions, prefill-only and redo dropped, Catch kept apart ({sorted(pk)})")
+    check("clicked" in U.stems_for("RM_Clicked", Path("Clicked_south.png"))
+          and "clickedcatch" not in U.stems_for("RM_Clicked", Path("Clicked_south.png")),
+          "an animal's stems never reach its Catch row")
+    shutil.rmtree(dtmp, ignore_errors=True)
+
+    # roster_snapshot: every census row, body textures first, only live ones
     body = lambda m, r: {"res": r, "role": "body", "live": {"mod": m, "faces": {}}}  # noqa: E731
-    census = {"biomes": {"B": {"rows": [{"key": "k1", "art": {"resources": [body("src/M", "T/a"),
+    census = {"biome_order": ["B"], "biomes": {"B": {"rows": [{"key": "k1", "art": {"resources": [body("src/M", "T/a"),
                                                                              {"res": "T/m", "role": "mask"}]}},
                                          {"key": "k2", "art": {"resources": [{"res": "T/b", "live": {"mod": "src/N"}}]}},
                                          {"key": "k3", "art": {"resources": [body("src/M", "T/c")]}}]}}}
-    sp = U.roster_specs(audit, census)
-    check(sp == [("B", "D1", [("src/M", "T/a")]), ("B", "D2", [("src/N", "T/b")])],
-          f"roster_specs keeps sheet-decided UNPROVEN rows, body textures first, and skips other classes ({sp})")
+    sp = [(r["biome"], r["def"], r["bodies"]) for r in U.roster_snapshot(census)]
+    check(sp == [("B", "k1", [["src/M", "T/a"]]), ("B", "k2", [["src/N", "T/b"]]), ("B", "k3", [["src/M", "T/c"]])],
+          f"roster_snapshot keeps every row, body textures first, live ones only ({sp})")
 
     doc = json.load(open(U.OUT_JSON))
     check(doc["files"] and all(r["verdict"] in U.VERDICTS and U.CLASS_OF[r["basis"]] == r["verdict"] and r["why"]
@@ -200,17 +227,29 @@ def main():
           f"the committed adjudication has one of the three verdicts, its basis and a reason on all {len(doc['files'])} files")
     check(doc["roster"] and all(r["verdict"] in U.VERDICTS and r["bodies"] for r in doc["roster"]),
           f"every committed roster row ({len(doc['roster'])}) has one of the three verdicts and its body textures")
-    try:
-        a = json.load(open(doc["audit"]))
-    except OSError as e:
-        a = None
-        print(f"SKIP audit cover check: {doc['audit']} unreadable here ({e}); --check fails on it")
-    if a is not None:
-        want = {(bd, r["defName"]) for bd, rr in a["roster"].items() for r in rr if r["class"] == "UNPROVEN"}
-        check(want and want <= {(r["biome"], r["def"]) for r in doc["roster"]},
-              f"every UNPROVEN roster row of the recorded audit ({len(want)}) is on record")
+    snap = json.load(open(U.ROSTER_SNAP))["rows"]
+    check(len(snap) > 500 and {(r["biome"], r["def"]) for r in doc["roster"]} <= {(r["biome"], r["def"]) for r in snap},
+          f"the committed roster snapshot ({len(snap)} census rows) holds every adjudicated roster row; --check "
+          "re-classifies all of them now")
+    check(all(r["why"].startswith("bytes from ") or r["file"] in U.FILE_RULES
+              for r in doc["files"] if r["verdict"] == "OWNER_PICKED"),
+          "every OWNER_PICKED rests on a hand-read bytes commit or file look, never on a sheet row or stem")
 
-    import shutil
+    # --check itself fails on a doc missing a roster row or a file verdict (it must be able to say no)
+    real_out = U.OUT_JSON
+    for label, mut in (("a roster row", lambda x: x["roster"].pop(0)), ("a file verdict", lambda x: x["files"].pop(0))):
+        bad = json.loads(json.dumps(doc))
+        mut(bad)
+        t = Path(tempfile.mkdtemp(prefix="unproven_neg_")) / "adj.json"
+        t.write_text(json.dumps(bad))
+        try:
+            U.OUT_JSON = t
+            rc = U.check()
+        finally:
+            U.OUT_JSON = real_out
+            shutil.rmtree(t.parent, ignore_errors=True)
+        check(rc == 1, f"--check refuses the committed adjudication with {label} removed (rc {rc})")
+
     shutil.rmtree(tmp, ignore_errors=True)
     print(f"\n{'ALL PASS' if not FAILS else str(len(FAILS)) + ' FAIL'}")
     return 1 if FAILS else 0
