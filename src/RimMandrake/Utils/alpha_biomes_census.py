@@ -36,12 +36,20 @@ CATEGORIES = ("TerrainDef", "WeatherDef", "ThoughtDef", "BiomeDef", "TileMutator
 DECISION_WORDS = ("PORTED", "VANILLA", "DROPPED", "UNPORTED")
 MIN_TOKENS = 100  # a scan seeing fewer was blind: src/ held 223 on 2026-11-01
 TOKEN = re.compile(r"\bAB_[A-Za-z0-9_]+")
-# Fixtures with made-up AB_ names (not donor defs); every other tracked file counts.
+# Fixtures with made-up AB_ names (not donor defs); every other tracked file counts. A name seen
+# ONLY in selftest*.py files needs no decision (is_selftest): a hand list of them re-redded the
+# nightly census with each new selftest (NIGHTLY_COP_FIX_RED_ODAKND_UFTV). Selftests are still
+# scanned, so a decided donor name they cite is not STALE. Name only non-selftest files here.
 FIXTURES = {"src/RimMandrake/Utils/selftest_alpha_biomes_census.py",
             "src/RimMandrake/Utils/selftest_art_size_audit.py",        # sheet-row fixtures
             "src/RimMandrake/Utils/selftest_donor_retire_standin.py",  # stand-in fixtures
             "src/RimMandrake/Utils/art/selftest_move_mod_textures.py",  # a made-up texture path
             "src/RimMandrake/Utils/check_derelict_lab_design_coverage.py"}  # a made-up mutator name in its planted-break table
+
+
+def is_selftest(rel):
+    base = rel.rsplit("/", 1)[-1]
+    return base.startswith("selftest") and base.endswith(".py")
 BINARY = (".png", ".dds", ".dll", ".pdb", ".jpg", ".jpeg", ".wav", ".ogg", ".psd", ".mp3", ".zip", ".rws")
 
 
@@ -207,6 +215,8 @@ def verify(dec, inv, files, repo, donor_root=DONOR):
 
     known = known_tokens(dec)
     for t in sorted(set(seen) - known):
+        if all(is_selftest(f) for f in seen[t]):
+            continue
         finds.append("UNDECIDED_TOKEN %s in %s" % (t, sorted(seen[t])[0]))
     for t in sorted(set(dec["tokens"]) - set(seen)):
         finds.append("STALE_TOKEN %s (no longer in src/)" % t)
