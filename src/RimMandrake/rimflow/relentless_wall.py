@@ -53,7 +53,14 @@ RULE = (   # both Marker prompts: the unwalled and the walled one must never dif
     "only suspect and did not show is no gap. Look for a clause that is missing before you look for a thin test.",
     "If you say WEAK, begin the reasons with GAP:DIFF when a gap you showed is a part of this commit's own change "
     "that you put back as it was before the commit while the proof stayed green, and that part does what a clause "
-    "asks; begin with GAP:OTHER when every gap you showed is something else, such as a mutant you wrote yourself.")
+    "asks; begin with GAP:OTHER when every gap you showed is something else, such as a mutant you wrote yourself.",
+    "A WEAK must say what strong proof would look like (JUDGE_WEAK_RETHINK_NAME_THE_STRONG_PROOF; owner, 2026-11-05: "
+    "\"The Judge should have to be able to articulate what strong proof would look like.\"). Put two parts in the reasons: "
+    "'STRONG: <the exact command or observation that would prove the clause>' and 'LETS THROUGH: <the real product "
+    "defect, in the item's words, that the current proof would let ship>'. A WEAK missing either line is read as PASS. "
+    "If you can run that strong check yourself and the work passes it, that is PASS, with your run as the evidence: "
+    "never send work back to have a test written for a check you already made. Form, wording, citations, formatting "
+    "and missing paperwork are never a gap: note them on a PASS.")
 SHADOW = "narrow_weak_1"   # RELENTLESS_WEAK_MEASURE_PASS_COLLAPSE: the narrower WEAK, recorded per verdict; LIVE since 2026-11-03 (acted_weak)
 
 
@@ -509,7 +516,7 @@ def marker_prompt(st, text, box, adapter_names=()):
         "Then run exactly one of:",
         "  python3 %s PASS \"what you ran and saw\"" % qv,
         "  python3 %s WEAK \"the runs you made and what each showed, then each gap and the mutant or probe that "
-        "shows it, so the next worker can pin it\"" % qv,
+        "shows it, then a STRONG: line and a LETS THROUGH: line\"" % qv,
         "  python3 %s FAIL \"what is wrong, so the next worker can fix it\" --defect \"CAUSE: one wrong thing\" [--defect ...] "
         "[--control \"how your instrument showed it can see\"] [--unreached \"what you also could not reach\"]" % qv,
         "  python3 %s UNMEASURED \"CANNOT REACH: what, and the command that showed it; then what you did check\" "
@@ -797,7 +804,19 @@ def acted_weak(word, reasons):
     PASS under it). A WEAK holds only on GAP:DIFF, a hunk of this commit's own change put back with the proof still
     green; GAP:OTHER (a mutant the checker wrote elsewhere) is a PASS; an untagged WEAK stays WEAK, never guessed."""
     n = narrow_word(word, reasons)
-    return "WEAK" if n == "UNTAGGED" else n
+    n = "WEAK" if n == "UNTAGGED" else n
+    return n if n != "WEAK" or names_strong(reasons) else "PASS"
+
+
+_STRONG = re.compile(r"(?i)\bSTRONG:\s*\S.{8,}")
+_LETS = re.compile(r"(?i)\bLETS THROUGH:\s*\S.{8,}")
+
+
+def names_strong(reasons):
+    """JUDGE_WEAK_RETHINK_NAME_THE_STRONG_PROOF (owner 2026-11-05): a WEAK holds only when it names the strong proof and
+    the product defect the current proof lets through. Measured before the change: 269 returns in
+    7 days, 2 of a 15-sample fixed a product defect; the rest rewrote a test for a check the Judge had already run."""
+    return bool(_STRONG.search(reasons or "") and _LETS.search(reasons or ""))
 
 
 # ---- off-box measurements: a contract's `offbox` ADAPTER NAMES. Each name is a fixed command in relentless_rules.json

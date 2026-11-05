@@ -594,12 +594,17 @@ def full_pass(x, i, verdict="PASS"):
     prompt = x.w.launches[-1][2]
     ok("SENTINEL_OF_THE_ATTEMPTS" not in prompt and "text of" in prompt, "the checker's brief holds no record of the attempts")
     # a FAIL is withheld until it is attributed (a defect line is no PRODUCT by itself); the seat says PRODUCT here
-    R.verdict(x.s, i, st["check"]["nonce"], verdict, "ran it", defects=["ran it"] if verdict == "FAIL" else None)
+    R.verdict(x.s, i, st["check"]["nonce"], verdict, "ran it" + (STRONG_WEAK if verdict == "WEAK" else ""),
+              defects=["ran it"] if verdict == "FAIL" else None)
     x.w.up[st["check"]["run"]["unit"]] = False
     x.tick()
     x.tick()
     if verdict == "FAIL" and (x.st(i).get("wait") or {}).get("kind") == "attribution":
         blame_product(x, i)
+
+
+# JUDGE_WEAK_RETHINK_NAME_THE_STRONG_PROOF: a WEAK holds only when it names the strong proof and what the proof lets through
+STRONG_WEAK = " STRONG: rerun selftest_x with hunk 2 put back. LETS THROUGH: the pump pours back into the tank"
 
 
 def weak_round(x, i, sha, word="WEAK"):
@@ -612,7 +617,7 @@ def weak_round(x, i, sha, word="WEAK"):
     x.tick()
     st = x.st(i)
     if st["status"] == "checking":
-        R.verdict(x.s, i, st["check"]["nonce"], word, "holds; mutant M stays green",
+        R.verdict(x.s, i, st["check"]["nonce"], word, "holds; mutant M stays green" + (STRONG_WEAK if word == "WEAK" else ""),
                   defects=["mutant M stays green"] if word == "FAIL" else None)
         x.w.up[st["check"]["run"]["unit"]] = False
         x.tick()
@@ -713,7 +718,7 @@ def t_narrowed_weak_frees_proof_only():
     full_pass(x, "I0", "WEAK")
     with R.Store.lock(x.s):
         st = x.st("I0")
-        ok(st["proof_only"]["sha"] == "sha1" and st["proof_only"].get("weak") == "ran it", "the WEAK's reasons ride on proof_only")
+        ok(st["proof_only"]["sha"] == "sha1" and st["proof_only"].get("weak") == "ran it" + STRONG_WEAK, "the WEAK's reasons ride on proof_only")
         st["proof_only"] = {"sha": "sha1", "at": x.now}         # a state written before `weak` was kept
         st["status"], st["hold"] = "held", {"kind": "churn", "why": "triage", "at": x.now}
         st["last_fail"] = {"class": "proof_unchanged", "detail": "sha1 is the sha the proof was found weak at", "at": x.now}
@@ -725,7 +730,8 @@ def t_narrowed_weak_frees_proof_only():
     ok(st["status"] == "candidate" and st["proof_only"] is None, "unhold rechecks the same sha, proof_only void: %s %s"
        % (st["status"], st["proof_only"]))
     ok(R.proof_gate(x.w, x.r, st, {"sha": "sha1"}) == (None, None), "the gate lets the same sha reach the Marker")
-    for weak, want in (("GAP:OTHER. elsewhere", None), ("GAP:DIFF. own hunk", "proof_unchanged"), ("untagged", "proof_unchanged")):
+    for weak, want in (("GAP:OTHER. elsewhere", None), ("GAP:DIFF. own hunk" + STRONG_WEAK, "proof_unchanged"),
+                       ("untagged" + STRONG_WEAK, "proof_unchanged"), ("GAP:DIFF. own hunk, no strong proof named", None)):
         g = dict(st, proof_only={"sha": "sha1", "at": 0, "weak": weak})
         ok(R.proof_gate(x.w, x.r, g, {"sha": "sha1"})[0] == want, "gate on a %r WEAK -> %s" % (weak[:9], want))
     g = dict(st, proof_only={"sha": "sha1", "at": 0, "binding": True, "weak": "GAP:OTHER"})
@@ -739,6 +745,10 @@ def t_shadow_narrow_weak():
     ok(W.narrow_word("WEAK", "GAP:DIFF hunk 2 put back, proof green") == "WEAK", "a hunk of the diff stays WEAK")
     ok(W.narrow_word("WEAK", "ran it") == "UNTAGGED", "an untagged WEAK is never guessed")
     ok(W.narrow_word("FAIL", "GAP:OTHER") == "FAIL" and W.narrow_word("PASS", "") == "PASS", "only WEAK moves")
+    ok(W.acted_weak("WEAK", "GAP:DIFF hunk 2 put back, proof green") == "PASS", "a WEAK that names no strong proof is a PASS")
+    ok(W.acted_weak("WEAK", "GAP:DIFF hunk 2 put back." + STRONG_WEAK) == "WEAK", "a WEAK naming STRONG and LETS THROUGH holds")
+    ok(W.acted_weak("WEAK", "GAP:DIFF hunk 2. STRONG: rerun selftest_x reverted") == "PASS", "STRONG alone, no defect named, is a PASS")
+    ok(W.acted_weak("WEAK", "GAP:OTHER mine." + STRONG_WEAK) == "PASS", "GAP:OTHER stays a PASS whatever it names")
     x = Rig(n=1, share=1.0)
     full_pass(x, "I0", "WEAK")
     t = R.shadow_tally(x.s)

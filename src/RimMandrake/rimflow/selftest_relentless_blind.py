@@ -66,11 +66,15 @@ def t_classifier():
     for name, text in REAL.items():
         ok(W.read_as("FAIL", text) == ("FAIL", None), "%s: a red proof stays FAIL, blindness beside it or not" % name)
     ok(W.read_as("UNMEASURED", "CANNOT REACH: ssh stevedesktop exit 255")[0] == W.UNMEASURED, "the word itself stands")
-    ok(W.read_as("WEAK", STEVE_G1) == ("WEAK", None), "only FAIL is re-read: a WEAK is the Marker's call on the proof")
+    strong = " STRONG: rerun the proof with the hunk put back. LETS THROUGH: the clause ships broken"
+    ok(W.read_as("WEAK", STEVE_G1 + strong) == ("WEAK", None), "only FAIL is re-read: a WEAK is the Marker's call on the proof")
+    ok(W.read_as("WEAK", STEVE_G1) == ("PASS", None), "a WEAK naming no strong proof reads PASS (JUDGE_WEAK_RETHINK_NAME_THE_STRONG_PROOF)")
     ok(W.read_as("PASS", STEVE_G1) == ("PASS", None), "a PASS is never re-read")
     # the narrower WEAK is live (owner by card 2026-11-03, "Narrow it now")
     ok(W.read_as("WEAK", "GAP:OTHER. my own mutant of the parser stays green") == ("PASS", None), "GAP:OTHER is a PASS")
-    ok(W.read_as("WEAK", "GAP:DIFF. reverting the commit's guard stays green") == ("WEAK", None), "GAP:DIFF holds")
+    ok(W.read_as("WEAK", "GAP:DIFF. reverting the commit's guard stays green" + strong) == ("WEAK", None), "GAP:DIFF holds")
+    ok(W.read_as("WEAK", "GAP:DIFF. reverting the commit's guard stays green") == ("PASS", None),
+       "GAP:DIFF with no strong proof named is a PASS")
     ok(W.read_as("WEAK", "GAP:OTHER", [], []) == ("PASS", None), "GAP:OTHER is a PASS, structured too")
     ok(W.read_as("WEAK", "GAP:OTHER", ["row 7 is dropped"], []) == ("FAIL", None), "a defect still beats a GAP:OTHER")
     ok(W.UNMEASURED in W.WORDS and "UNMEASURED" in W.VERDICT_SCRIPT, "the box's verdict script takes the word")
