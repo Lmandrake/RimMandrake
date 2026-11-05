@@ -1,0 +1,1 @@
+art_eval machine template: a checklist item with no when/modules answered n/a counts as unreadable and routes WEAK -> GPT unsure -> REGEN; a port-less building part needs module 'structure' (machine@v4) or it can never ACCEPT. Also: an owner-kept install needs kept_install revert records on the spec or the run HOLD_KEPTs (MODERN_BRIDGE_REDRAW_BRIDGE_NOT_PLUMBING, 2026-11-05)
