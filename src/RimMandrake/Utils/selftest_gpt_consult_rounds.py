@@ -77,6 +77,7 @@ finally:
 
 ok("consults return", (rc1, rc2, rc3, rc4), (0, 0, 1, 0))
 ok("a malformed --round is refused before any call", bad_round, 2)
+ok("a round name with a trailing newline is refused", GC.ROUND_RE.match("ROUND1\n"), None)
 calls, bad = gpt_call_log.read_records()
 calls.sort(key=lambda c: c["t"])
 ok("every call is metered, none unreadable", (len(calls), bad), (4, 0))

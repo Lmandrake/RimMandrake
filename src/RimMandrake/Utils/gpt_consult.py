@@ -95,7 +95,7 @@ def events_tokens(events_text):
     return tok
 
 
-ROUND_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,79}$")
+ROUND_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,79}\Z")
 
 
 def _log_call(job, model, prompt, answer_text, rc, codex_log_text=None, tokens=None, round_name=None, secs=None,
@@ -162,7 +162,7 @@ def main(argv=None):
             sys.exit("--codex-home %s has no auth.json (set it up first; gpt_consult never seeds a home)" % home)
         env = codex_image.child_env(home)
     if a.prompt_file:
-        question = Path(a.prompt_file).read_text()
+        question = Path(a.prompt_file).read_text(encoding="utf-8")
     elif a.question:
         question = a.question
     else:
@@ -173,7 +173,7 @@ def main(argv=None):
     job = codex_image.CODEX_SCRATCH / ("consult-%s-%d-%s" % (time.strftime("%Y%m%d-%H%M%S"), os.getpid(),
                                                               uuid.uuid4().hex[:6]))   # unique per call, not per pid+s
     job.mkdir(parents=True, exist_ok=False)
-    (job / "prompt.md").write_text(prompt)
+    (job / "prompt.md").write_text(prompt, encoding="utf-8")
     answer = job / "answer.md"
     cmd = [str(codex_image.find_codex_cli()), "exec", "--sandbox", "read-only",
            "--skip-git-repo-check", "-o", codex_image.wsl_to_win(answer),
@@ -207,7 +207,7 @@ def main(argv=None):
                                 stderr=log if events else subprocess.STDOUT, timeout=a.timeout, env=env).returncode
     except subprocess.TimeoutExpired:
         rc = 124
-    answered = answer.is_file() and bool(answer.read_text().strip())
+    answered = answer.is_file() and bool(answer.read_text(encoding="utf-8", errors="replace").strip())
     _receipt(job.name, a.model, answered, inlined, rc)
     try:
         clog = (job / "codex.log").read_text(errors="replace")
@@ -220,17 +220,17 @@ def main(argv=None):
                 "codex_home_win": env["CODEX_HOME"] if env else None,
                 "refused_tool_calls": len(REFUSED_TOOL_RE.findall(clog or ""))}
         Path(str(events) + ".meta.json").write_text(json.dumps(meta, indent=1) + "\n", encoding="utf-8")
-    _log_call(job.name, a.model, prompt, answer.read_text() if answered else "", rc, clog, etok,
+    _log_call(job.name, a.model, prompt, answer.read_text(encoding="utf-8", errors="replace") if answered else "", rc, clog, etok,
               round_name=a.round, secs=time.time() - started, files=[p for p, _ in inlined])
     if not answered:
         tail = (job / "codex.log").read_text(errors="replace")[-2000:]
         print("ERROR: no answer (exit %d after %.0fs). Job kept: %s\n%s" % (
             rc, time.time() - started, job, tail), file=sys.stderr)
         return 1
-    text = answer.read_text()
+    text = answer.read_text(encoding="utf-8", errors="replace")
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-        Path(a.out).write_text(text)
+        Path(a.out).write_text(text, encoding="utf-8")
     print(text)
     print("[consult] answered in %.0fs" % (time.time() - started), file=sys.stderr)
     if not a.keep:
