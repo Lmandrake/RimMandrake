@@ -10,6 +10,10 @@ D:\\ClaudeWork\\rimmandrake\\scratch\\codex\\consult-<ts>\\ (it fails from an ex
 §2.3. The prompt goes in on stdin (no Windows command-line length limit). The answer is printed,
 and written to --out when given. Default model: gpt-6.1-sol at high effort (owner,
 2026-10-02; CODEX_CONSULT_MODEL overrides). Art (codex_image.py) stays on gpt-5.5 — a separate default.
+
+Every call first passes codex_advice.gate (slot_allocator's Codex advice): on HOLD only a call given
+`--required "<rule that requires this review>"` (or env RM_CODEX_REQUIRED) runs, exit 4 otherwise; on EXHAUSTED
+every call is refused, exit 5. No Claude fallback (owner routing ruling 2026-10-28).
 """
 import argparse
 import json
@@ -26,6 +30,7 @@ DEFAULT_CONSULT_MODEL = os.environ.get("CODEX_CONSULT_MODEL", "gpt-6.1-sol")
 sys.path.insert(0, str(ROOT / "skills" / "generating-images" / "scripts"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))          # review_identity (job receipts)
 import codex_image  # noqa: E402  (find_codex_cli, wsl_to_win, DEFAULT_MODEL, CODEX_SCRATCH)
+import codex_advice  # noqa: E402  (the Codex HOLD/EXHAUSTED gate)
 
 
 def build_prompt(question, files, inlined=None):
@@ -127,7 +132,12 @@ def main(argv=None):
                     help="no tools: --ephemeral, every tool feature disabled, web search off, strict config")
     ap.add_argument("--events", help="run codex --json and write its event stream (the transcript) here, plus "
                                      "<EVENTS>.meta.json naming the job dir and home")
+    ap.add_argument("--required", help="the rule that requires this review round: lets it run while the Codex "
+                                       "advice is HOLD (never while EXHAUSTED)")
     a = ap.parse_args(argv)
+    refused = codex_advice.gate("gpt_consult", a.required)
+    if refused:
+        return refused
     env = None
     if a.codex_home:
         home = Path(a.codex_home)

@@ -107,12 +107,21 @@ def call_claude(prompt: str, cwd: Path, rung: str = "opus", timeout: int = 420, 
     return env.get("result") or "", meta
 
 
-def call_gpt(prompt: str, images: list, workdir: Path, timeout: int = 900) -> tuple[str, dict]:
+# The pipeline rule that makes the second look a REQUIRED review round: on a Codex HOLD it still runs (owner routing
+# ruling 2026-10-28: reviews stay on Codex and are paced); on EXHAUSTED gpt_consult refuses it (exit 5) and the record
+# goes HOLD_ERROR. Experiments (race.py's GPT first pass and replays) pass no rule, so a HOLD refuses them.
+SECOND_LOOK_RULE = "art-eval pipeline: a WEAK Opus pass goes to the GPT targeted second look (owner 2026-10-23)"
+
+
+def call_gpt(prompt: str, images: list, workdir: Path, timeout: int = 900,
+             required: str | None = None) -> tuple[str, dict]:
     pf = workdir / "gpt_prompt.md"
     pf.write_text(prompt)
     out = workdir / "gpt_answer.md"
     out.unlink(missing_ok=True)   # a reply left by an earlier attempt must never be read as this one's
     cmd = [sys.executable, str(GPT_CONSULT), "--prompt-file", str(pf), "--out", str(out), "--timeout", str(timeout)]
+    if required:
+        cmd += ["--required", required]
     for im in images:
         cmd += ["-i", str(im)]
     t0 = time.time()
@@ -124,6 +133,8 @@ def call_gpt(prompt: str, images: list, workdir: Path, timeout: int = 900) -> tu
     meta = {"model_reported": m.group(1) if m else "UNMEASURED", "seconds": round(time.time() - t0, 1)}
     if r.returncode or not out.is_file():
         meta["error"] = (r.stderr or "")[-500:]
+        if r.returncode in (4, 5):   # codex_advice EXIT_HOLD / EXIT_EXHAUSTED: refused before Codex ran
+            meta["codex_refused"] = "HOLD" if r.returncode == 4 else "EXHAUSTED"
         return "", meta
     return out.read_text(), meta
 
@@ -240,7 +251,7 @@ class Reviewers:
         return call_claude(prompt, card_dir, "opus")
 
     def gpt(self, prompt, images, work):
-        return call_gpt(prompt, images, work)
+        return call_gpt(prompt, images, work, required=SECOND_LOOK_RULE)
 
     def regen(self, prompt, work):
         return call_claude(prompt, work, "sonnet", timeout=300, tools="")
