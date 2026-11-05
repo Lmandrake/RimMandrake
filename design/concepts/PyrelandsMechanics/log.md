@@ -29,3 +29,11 @@ lines, Relentless removes after lock); raid-back = vanilla hostility (d_raid_bac
 self-defence (d_fight_back_is_self_defence, delegated). Fresh-Opus review (rm-judge ac78232fd6dff8bde): a_fruit_defence_reach
 pass (wording fixed: 45-cell circle is around the walked-to spot, old burns included), a_harvest_visit_at_the_fire pass,
 a_fight_back struck (answered by "overtly"). Sent: a_fruit_defence_reach, a_harvest_visit_at_the_fire.
+
+## Sitting 5, 2026-11-05 (run rm-role-designer-1793899225). Stage 2 closed
+
+His card answers (recorded by BENCH): a_fruit_defence_reach → *"Their scar, no goodwill"* (OWNER:1793898835366988441);
+a_harvest_visit_at_the_fire → *"Pick and carry off"* (OWNER:1793898838472369653). Decisions d_defence_reach_scar,
+d_drive_off_no_goodwill, d_visit_picks (his); d_visit_defends_its_burn, d_warning_form (delegated, undoable).
+Resolved: c_rite_never_attacks_vs_fruit_defence, c_visit_vs_rite_overlap. Non-core, carried to the stage-3 plan as
+Relentless fixes: c_thornvine_wrong_tier, c_fix_items_never_closed. No ask left sent.

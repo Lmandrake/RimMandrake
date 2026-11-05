@@ -94,6 +94,48 @@
    "speaker": "agent",
    "source": "OWNER:1793895903357725756",
    "what": "Delegated reading of 'Attacking them overtly': a picker or helper fighting back during the fruit defence is self-defence; it ends with the fight, no goodwill-to-war, no raids. He can undo it (turn_03.md)."
+  },
+  {
+   "id": "d_defence_reach_scar",
+   "kind": "scope",
+   "speaker": "owner",
+   "source": "OWNER:1793898835366988441",
+   "what": "Does: during a rite the Tribes defend only the scorch-fruit in the scar their party lit. Does not: react to picking anywhere else on the map (old burns, other fires)."
+  },
+  {
+   "id": "d_drive_off_no_goodwill",
+   "kind": "scope",
+   "speaker": "owner",
+   "source": "OWNER:1793898835366988441",
+   "what": "Does not: driving a picker off costs no goodwill; once the picker leaves the scar the defence is over."
+  },
+  {
+   "id": "d_visit_picks",
+   "kind": "scope",
+   "speaker": "owner",
+   "source": "OWNER:1793898838472369653",
+   "what": "Does: the peaceful visit group that walks in to a big standing fire picks scorch-fruit in the black behind it (never a burning cell) and carries it off the map, like the rite party."
+  },
+  {
+   "id": "d_visit_defends_its_burn",
+   "kind": "scope",
+   "speaker": "agent",
+   "source": [
+    "OWNER:1793895903357725756",
+    "OWNER:1793898835366988441",
+    "OWNER:1793898838472369653"
+   ],
+   "what": "Delegated reading: the fruit defence applies during the visit too ('during one of their events'); the visit did not light its fire, so its 'scar' is the burned ground it is harvesting around its destination, the same reach as the rite's. He can undo it."
+  },
+  {
+   "id": "d_warning_form",
+   "kind": "scope",
+   "speaker": "agent",
+   "source": [
+    "OWNER:1793895903357725756",
+    "design/concepts/PyrelandsMechanics/turn_03.md"
+   ],
+   "what": "Delegated (turn_03 'I pick, you can undo'): the warning is a readable message naming the Tribes plus a harvester walking to the picker; if the picker keeps picking, nearby harvesters attack the picker only until the picker leaves the scar, then return to the fruit. Not a faction-wide hostility change."
   }
  ],
  "asks": [
@@ -118,7 +160,7 @@
   },
   {
    "id": "a_harvest_visit_at_the_fire",
-   "status": "sent",
+   "status": "answered",
    "speaker": "agent",
    "source": [
     "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs"
@@ -137,7 +179,9 @@
     "by": "rm-judge ac78232fd6dff8bde (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "Accurate (LordJob_TravelAndExit to the burn centre, leaves on arrival, picks nothing); unruled; changes the build."
-   }
+   },
+   "answer": "OWNER:1793898838472369653",
+   "answer_text": "By card: Pick and carry off (the visit group picks scorch-fruit in the black like the rite party)."
   },
   {
    "id": "a_debt_visible",
@@ -182,7 +226,7 @@
   },
   {
    "id": "a_fruit_defence_reach",
-   "status": "sent",
+   "status": "answered",
    "speaker": "agent",
    "author": "rm-role-designer-1793897555",
    "offers_removal": false,
@@ -204,7 +248,9 @@
     "by": "rm-judge ac78232fd6dff8bde (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "His words leave which fruit counts and the goodwill cost open; both change the build. Fixed on review: the 45-cell circle is around the spot the party walked to, old burns included."
-   }
+   },
+   "answer": "OWNER:1793898835366988441",
+   "answer_text": "By card: Their scar, no goodwill (only the scar their party lit; driving a picker off costs no goodwill)."
   },
   {
    "id": "a_fight_back",
@@ -270,10 +316,11 @@
     "src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/PyrelandsFuzz.cs"
    ],
    "proof_note": "live: dry run only; min-fires boundary UNMEASURED live, fuzzed offline (HarvestCanFire).",
-   "scope": "not_opened",
+   "scope": "opened_by_owner",
    "source": [
     "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs"
-   ]
+   ],
+   "scope_source": "OWNER:1793898838472369653"
   },
   {
    "id": "inv_fire_rite_party",
@@ -303,10 +350,11 @@
     "ITEM:FIRE_RITE_FIX_DEFENDERS_MISS_THE_WAR"
    ],
    "proof": "missing",
-   "scope": "not_opened",
+   "scope": "opened_by_owner",
    "source": [
     "src/RimUtinni/PyrelandsMechanics/Source/LordJob_RUT_FireRite.cs"
-   ]
+   ],
+   "scope_source": "OWNER:1793895903357725756"
   },
   {
    "id": "inv_rite_harvest_duty",
@@ -323,10 +371,11 @@
     "src/RimMandrake/Pyrelands/validation.py:2540"
    ],
    "proof_note": "route-through-fire is an UNMEASURED row (rite_harvest_route_avoids_fire) in RM Pyrelands' validation; carry cap fuzzed offline (RiteHarvestWanted).",
-   "scope": "not_opened",
+   "scope": "opened_by_owner",
    "source": [
     "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_HarvestScorchFruit.cs"
-   ]
+   ],
+   "scope_source": "OWNER:1793898835366988441"
   },
   {
    "id": "inv_tribes_lookup",
@@ -432,7 +481,9 @@
     "src/RimMandrake/Pyrelands/Source/JobGiver_RUT_FurnaceThermalCycle.cs"
    ],
    "text": "The thornvine nutrition patch serves the furnace-beast's thermal cycle, which moved to franchise-free mandrake.rm.pyrelands, but the patch stayed in this campaign mod. On a load without this mod JobDriver_Ingest refuses thornvine (no nutrition), so the beast's 'one of the only things that strips a thornvine patch' line silently breaks. A Relentless fix (move the patch), not a question for him.",
-   "status": "open"
+   "status": "relentless_fix",
+   "core": false,
+   "resolution": "Not core to his design: a tier-placement defect for Relentless (move the patch to mandrake.rm.pyrelands); carried into the stage-3 plan."
   },
   {
    "id": "c_fix_items_never_closed",
@@ -442,17 +493,23 @@
     "ITEM:RITE_HARVEST_FIX_PICKS_PAST_FULL"
    ],
    "text": "Both fix items show 'implemented' 2026-10-15 and were reassigned twice since, but never closed; their fixes are in the code. Each needs its live proof (the route-through-fire row stays UNMEASURED), which this pass's scenes should supply.",
-   "status": "open"
+   "status": "relentless_fix",
+   "core": false,
+   "resolution": "Not a design question: the two fix items close on the live proof the stage-3 scenes supply."
   },
   {
    "id": "c_visit_vs_rite_overlap",
-   "speaker": "agent",
+   "speaker": "owner",
    "source": [
     "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs",
-    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFireRite.cs"
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFireRite.cs",
+    "OWNER:1793898838472369653"
    ],
    "text": "Two built mechanisms put Tribes at a burn: the flame-harvest visit (walks to the fire, leaves, picks nothing) and the rite (lights it, picks scorch-fruit, carries it off). The sheet's 'burn-line walked for scorch-fruit' is only met by the rite. What the visit should look like at the fire is for him (ask a_harvest_visit_at_the_fire); neither is put up for removal.",
-   "status": "open"
+   "status": "resolved",
+   "core": true,
+   "resolved": true,
+   "resolution": "Decided by him (d_visit_picks): the visit picks and carries off like the rite; the two differ only in the trigger (rite: a scheduled front, they light it; visit: a big fire already standing). Both stay."
   },
   {
    "id": "c_arson_count_built",
@@ -471,15 +528,15 @@
   {
    "id": "c_rite_never_attacks_vs_fruit_defence",
    "core": true,
-   "resolved": false,
+   "resolved": true,
    "speaker": "owner",
    "source": [
     "OWNER:1793895903357725756",
     "src/RimUtinni/PyrelandsMechanics/Source/LordJob_RUT_FireRite.cs"
    ],
-   "status": "open",
+   "status": "resolved",
    "text": "Built rite lord: a party turned hostile simply leaves, never fights. His fruit defence needs a warn-then-drive-off step inside the rite (and visit) that is an attack yet not a war. Its reach is a_fruit_defence_reach.",
-   "resolution_pending": "a_fruit_defence_reach, a_fight_back (sent stage 2)"
+   "resolution": "Decided by him (d_fruit_defence, d_defence_reach_scar, d_drive_off_no_goodwill) with delegated d_warning_form, d_fight_back_is_self_defence: warn, then a bounded drive-off of the picker inside the scar, no goodwill change, no war. Relentless builds it after lock."
   }
  ],
  "script_audit": [
