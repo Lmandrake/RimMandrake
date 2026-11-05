@@ -93,6 +93,39 @@ def run_script(start, map_count, ticks=1, menu_works=True, at_menu=False):
     return code, out.getvalue(), log
 
 
+def s8_lost_launch_retried():
+    """S8 (test pilot gen 19, live 2026-11-05): WSL lost 4 of 6 python.exe launches (rc 1 in 10 s, stdout empty, only
+    "UtilAcceptVsock: accept4 failed 110" on stderr), and A2 stopped at "[0 needs]" with exit 2, measuring nothing.
+    northstar_full._run must retry such a lost launch (winbuild.run_interop_captured) and hand back the real answer."""
+    import tempfile
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+    import winbuild
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Graffiti"))
+    import northstar_full
+    old_wait, old_path = winbuild.INTEROP_WAIT_S, os.environ.get("PATH", "")
+    with tempfile.TemporaryDirectory() as d:
+        count = os.path.join(d, "n")
+        exe = os.path.join(d, "python.exe")
+        with open(exe, "w") as f:      # first launch lost the way WSL loses it, the second runs
+            f.write("#!/bin/sh\nn=$(cat '%s' 2>/dev/null || echo 0); echo $((n+1)) > '%s'\n"
+                    "if [ \"$n\" = 0 ]; then echo '<3>WSL (1 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110' >&2;"
+                    " exit 1; fi\necho 'PASS        needed_mods              running 10 mods'\n" % (count, count))
+        os.chmod(exe, 0o755)
+        winbuild.INTEROP_WAIT_S = 0
+        os.environ["PATH"] = d + os.pathsep + old_path
+        try:
+            with contextlib.redirect_stderr(io.StringIO()):
+                rc, txt = northstar_full._run(["python.exe", "needs-mods"], 30)
+        finally:
+            winbuild.INTEROP_WAIT_S = old_wait
+            os.environ["PATH"] = old_path
+        tries = int(open(count).read().strip() or 0)
+    if rc != 0 or "PASS" not in txt or tries != 2:
+        return ["S8 a lost WSL launch (UtilAcceptVsock, rc 1) was not retried: rc %s after %d launch(es), output %r"
+                % (rc, tries, txt[-160:])]
+    return []
+
+
 def main():
     fails = []
     code, out, log = run_script(E2_START, map_count=2)
@@ -127,6 +160,7 @@ def main():
     code, out, log = run_script(FRESH_START, map_count=1, at_menu=True)
     if code != 0 or "rimworld/go_to_main_menu" in log:
         fails.append("S7 at the menu: exit %s, calls %s" % (code, log))
+    fails += s8_lost_launch_retried()
     for f in fails:
         print("FAIL " + f)
     print("selftest_graffiti_fresh_quicktest: %s" % ("PASS" if not fails else "FAIL (%d)" % len(fails)))

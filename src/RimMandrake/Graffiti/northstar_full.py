@@ -128,10 +128,18 @@ def full_rung_verdict(doc, expected=None, compat_required=None, tier="full"):
 
 
 def _run(argv, timeout):
-    """(rc, output). A timeout or a failed launch is rc 2 with what output there was -- never an exception."""
+    """(rc, output). A timeout or a failed launch is rc 2 with what output there was -- never an exception.
+    A Windows exe goes through winbuild.run_interop_captured: under a loaded box WSL loses the launch (rc 1, stdout
+    empty, only "UtilAcceptVsock: accept4 failed 110"), 4 of 6 needs-mods launches in the gen 19 sitting, and A2 read
+    that as "did not measure" at step 0 (GRAFFITI_NORTHSTAR_GREEN_FULL_1)."""
+    run = subprocess.run
+    if argv[0].lower().endswith(".exe"):
+        sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+        import winbuild
+        run = winbuild.run_interop_captured
     try:
-        p = subprocess.run(argv, cwd=ROOT, capture_output=True, text=True, timeout=timeout,
-                           encoding="utf-8", errors="replace")
+        p = run(argv, cwd=ROOT, capture_output=True, text=True, timeout=timeout,
+                encoding="utf-8", errors="replace")
     except subprocess.TimeoutExpired as ex:
         part = ex.stdout or ""
         part = part.decode("utf-8", "replace") if isinstance(part, bytes) else part
