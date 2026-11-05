@@ -132,6 +132,58 @@ def conflicts(capture, cast_paths=()):
     return sorted(out)
 
 
+def orphaned(capture, pairs, cast_paths=()):
+    """[(race, biome)] from `pairs` that are NOT duplicates any more: the race is live in
+    the capture, but the biome side (capture wildAnimals plus our cast) lists no kind of it.
+
+    Returns None if the capture cannot be read.
+
+    🔴 ANIMALDUPES_ORPHAN_OPS_AUDIT_SOLE_SPAWN_CUT, measured 2026-10-26 and 2026-11-04: 67
+    shipped removals stripped an RSW_ race's ONLY registration for vanilla Desert,
+    AridShrubland and ExtremeDesert, because our cast had moved to the RUT_ twins and those
+    biomes no longer listed the race. A removal of the animal side is only free when the
+    biome side still lists the animal; without that it is an eviction, not a de-dup.
+
+    Why this does not break the union rule in existing_pairs(): our removal touches the
+    ANIMAL side only, so the biome side of a pair we fixed stays visible in a post-patch
+    capture. A race the capture does not know (its mod is not loaded) is never judged
+    here: there is no evidence either way, so it is carried. The same holds for a biome
+    the capture does not know and our cast does not write (its mod was not loaded).
+    ⚠️ Limit: a biome side created by a THIRD mod's patch, absent from the capture's load
+    while race and biome are present, reads as orphaned. Capture on the shipping list.
+    """
+    def load(name):
+        p = os.path.join(capture, "defs", name)
+        try:
+            with open(p, encoding="utf-8") as fh:
+                return json.load(fh)
+        except (OSError, ValueError):
+            return None
+
+    bio, kinds, things = load("BiomeDef.json"), load("PawnKindDef.json"), load("ThingDef.json")
+    if not bio or not kinds or not things:
+        return None
+    a_side = collections.defaultdict(set)
+    known = set()
+    for r in bio["defs"]:
+        known.add(r["defName"])
+        for rec in (r["fields"].get("wildAnimals") or []):
+            if isinstance(rec, dict) and rec.get("animal"):
+                a_side[r["defName"]].add(rec["animal"])
+    for _b, _kinds in our_cast(cast_paths).items():
+        known.add(_b)
+        a_side[_b] |= _kinds
+    race_kinds = collections.defaultdict(set)
+    for k in kinds["defs"]:
+        race = k["fields"].get("race")
+        if isinstance(race, str):
+            race_kinds[race].add(k["defName"])
+    live = {t["defName"] for t in things["defs"]
+            if isinstance(t["fields"].get("race"), dict)}
+    return [(race, b) for race, b in pairs
+            if race in live and b in known and not (race_kinds.get(race, set()) & a_side.get(b, set()))]
+
+
 def our_cast(paths):
     """biome -> {pawnKind defName} read from OUR OWN shipped XML, not from a capture.
 
@@ -212,7 +264,8 @@ def existing_pairs(path):
     next load with nothing in any log naming them.
 
     So this file is APPENDED TO, never replaced. A pair leaves it only when a human
-    deletes the line and says why.
+    deletes the line and says why, or when orphaned() proves it is no longer a duplicate
+    (the race is live and the biome side lists no kind of it).
     """
     if not os.path.isfile(path):
         return []
@@ -252,12 +305,15 @@ HEADER = """<?xml version="1.0" encoding="utf-8"?>
   queue.
 
   THE FIX, unchanged from the hand-written file: always remove the ANIMAL side.
-  The animal still spawns in that biome, at the biome's own commonality, so
-  nothing is lost - only the duplicate registration.
+  While the biome side still lists the animal, it still spawns there at the
+  biome's own commonality and only the duplicate registration is lost. A pair
+  whose biome side has dropped a live race is no longer a duplicate (its removal
+  would strip the race's only registration), so regeneration drops it
+  (orphaned(), ANIMALDUPES_ORPHAN_OPS_AUDIT_SOLE_SPAWN_CUT).
 
   Every op is a PatchOperationConditional, so a mod that is not loaded, or an
   author who fixes their def, turns it into a no-op instead of a red error.
-  ⚠️ Load Jawa_Patches LAST: several of these pairs are themselves created by
+  ⚠️ Load UtinniPatches (mandrake.rut.patches) LAST: several of these pairs are themselves created by
   another mod's patch, and the conditional must run after it.
 %(prov)s-->
 <Patch>
@@ -319,6 +375,18 @@ def main(argv=None):
         # appended.
         kind_of = {(race, b): k for b, k, race in rows}
         carried = existing_pairs(a.xml)
+        orphans = orphaned(cap, carried, casts)
+        if orphans is None:
+            print("UNMEASURED: capture " + cap + " could not be read for the orphan check.")
+            return 2
+        if orphans:
+            print("\n%d shipped pair(s) DROPPED: the race is live but the biome side no "
+                  "longer lists it, so the removal would strip its only registration:"
+                  % len(orphans))
+            for race, b in orphans:
+                print("     %-30s x %s" % (race, b))
+        dropped = set(orphans)
+        carried = [p for p in carried if p not in dropped]
         seen, ops, n = set(), [], 0
         for race, b in carried:
             seen.add((race, b))
@@ -344,9 +412,10 @@ def main(argv=None):
                 print("     %-30s x %s" % (race, b))
         prov = ("  Generated from capture %s\n"
                 "  %d pair(s) found this run; %d carried from the previous file that this\n"
-                "  capture can no longer see (our own removals hide their own evidence).\n"
-                "  %d operation(s), the UNION of every pair ever found.\n"
-                % (os.path.basename(cap), len(rows), len(gone), n))
+                "  capture can no longer see (our own removals hide their own evidence);\n"
+                "  %d dropped as orphaned (live race the biome side no longer lists).\n"
+                "  %d operation(s), the UNION of every pair ever found less the orphans.\n"
+                % (os.path.basename(cap), len(rows), len(gone), len(orphans), n))
         with open(a.xml, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(HEADER % {"prov": prov, "ops": "".join(ops)})
         print("\nwrote %d operation(s) -> %s" % (n, a.xml))
