@@ -649,3 +649,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A1 (L2), read-only proof","ts":"2026-11-05T14:05:00Z","tsn":1793887500038983482}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:08:27Z","tsn":1793887707398966247}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A2 (L2), read-only proof","ts":"2026-11-05T14:08:49Z","tsn":1793887729227757990}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:12:46Z","tsn":1793887966325676220}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-05T14:14:06Z","tsn":1793888046782310592}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:14:16Z","tsn":1793888056535737564}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO L1 (L1), read-only proof","ts":"2026-11-05T14:16:23Z","tsn":1793888183704996165}
