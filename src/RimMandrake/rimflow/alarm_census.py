@@ -29,7 +29,7 @@ FORWARDERS = {"signal_alarm": 2, "told": 0}     # pass on a kind (argument index
 POINT_MODULES = ("ops_watch.py",)
 POINT_MAKERS = ("M", "U", "E", "soft_point", "tt_point", "untriaged_reading")
 POINT_FAMILY_OF = {"red_groups": "testing.red_x"}       # the key is data made by known_reds.py; rules target testing.red_*
-POINT_REPLAYS = ("andon", "run")            # re-issue the keys of an earlier pass; every one was built above
+POINT_REPLAYS = ("andon", "run", "carry_family")  # re-issue the keys of an earlier pass; every one was built above
 
 
 class Unresolved(Exception):
