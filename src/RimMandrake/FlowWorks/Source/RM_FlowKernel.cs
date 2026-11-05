@@ -661,6 +661,7 @@ namespace RimMandrake.FlowWorks
 			}
 			worstImbalance = 0f;
 			imbalanceReports.Clear();
+			networkSinkDrained = false;
 			visited.Reset(width * height);
 			pulseSeedOrder.Clear();
 			pulseSeedOrder.AddRange(seedOrder);
@@ -739,7 +740,7 @@ namespace RimMandrake.FlowWorks
 				bool networkWalked = seamRotationEnabled && cappedWalk >= maxComponentCells;
 				if (networkWalked && BeginRotatedNetwork(seed, slicePulseCount))
 				{
-					lastStepCells += cappedWalk + networkCells.Count;
+					lastStepCells += cappedWalk + networkCells.Count + (networkSinkDrained ? netDrainCost : 0);
 					continue;
 				}
 				ResolveComponent(slicePulseCount);
@@ -856,11 +857,158 @@ namespace RimMandrake.FlowWorks
 			{
 				ComputeFlowOrder();
 			}
+			// A pulse with pocket rain keeps the partition drain: rain lands pocket by pocket inside each partition, before
+			// its sinks take their share, and a drain ahead of every partition would run before the rain it should see.
+			networkSinkDrained = ExactPath && edgeSinksEnabled && networkSinkSpreadEnabled && !rainArmed;
+			if (networkSinkDrained)
+			{
+				NetworkSinkDrain(pulseCount);
+			}
 			// A large odd stride spreads successive starts across the network instead of creeping one cell a pulse.
 			sliceNetStart = networkExcavated[SeamSlot(pulseCount, n)];
 			rotatedNetworks++;
 			sliceStage = StageNetworkStart;
 			return true;
+		}
+
+		/// <summary>EDGE_SINK_WATER_TAME_SEAM_FLICKER: true while the partitions of the rotated network in flight resolve, when
+		/// <see cref="NetworkSinkDrain"/> already took this pulse's sink drain for the whole network (each partition then
+		/// skips its own).</summary>
+		private bool networkSinkDrained;
+		/// <summary>EDGE_SINK_WATER_TAME_SEAM_FLICKER: on (shipped), <see cref="NetworkSinkDrain"/>; off = the pre-fix drain partition
+		/// by partition, kept for the selftests that need its churn (the picture budget and the sticky look) and to show the fix.</summary>
+		public bool networkSinkSpreadEnabled = true;
+		private readonly RM_StampSet netBodySeen = new RM_StampSet();
+		private readonly List<int> netBody = new List<int>();
+		/// <summary>Squares the last <see cref="NetworkSinkDrain"/> walked and read, counted into the slice cost.</summary>
+		private long netDrainCost;
+
+		/// <summary>EDGE_SINK_WATER_TAME_SEAM_FLICKER (exact path, a network over the cap, edge sinks on). Drained partition by
+		/// partition, only the partition holding the sink squares fell, a level body split across seams stood at two heights,
+		/// and the moving seams then averaged each square with lower water one pulse and higher the next: about half a level
+		/// of swing near the edge (bench: 30,678 squares flipped look band 4+ times in 38 pulses). Here the network's sinks
+		/// drain once, before any partition: each sink square still takes min(its water, flowPerPulse·U), the same dL as
+		/// before, but that total is taken from the whole wet body of the same liquid joined to the sink as one even fall of
+		/// its surface (each square gives min(its water, δ), the last dL nearest the sink), which is what one level body
+		/// draining at its edge does. A liquid that does not move this pulse (viscosity) drains at the sink squares, as
+		/// before. Networks within the cap, and pulses with pocket rain, are untouched.</summary>
+		private void NetworkSinkDrain(long pulseCount)
+		{
+			if (part == null || part.Length != width * height)
+			{
+				part = new ushort[width * height];
+			}
+			long per = flowPerPulse * (long)RM_LevelSolve.U;
+			netBodySeen.Reset(width * height);
+			netDrainCost = 0;
+			long total = 0;
+			for (int s = 0; s < networkExcavated.Count; s++)
+			{
+				int sink = networkExcavated[s];
+				if (netBodySeen.Contains(sink) || visited.Contains(sink) || !world.IsSink(sink) || IsSealed(sink) || WaterOf(sink) <= 0)
+				{
+					continue;
+				}
+				object fl = world.CellFluid(sink);
+				// the body: wet squares of this liquid joined to the sink through dug, unsealed squares of the network,
+				// breadth first from the sink (its own sink squares join as they are reached). A square already resolved this
+				// pulse (a dig between slices joined its component to this network) is done and stays out.
+				netBody.Clear();
+				netBody.Add(sink);
+				netBodySeen.Add(sink);
+				long take = 0;
+				for (int head = 0; head < netBody.Count; head++)
+				{
+					int c = netBody[head];
+					if (world.IsSink(c) && !IsSealed(c))
+					{
+						take += Math.Min(WaterOf(c), per);
+					}
+					for (int d = 0; d < 4; d++)
+					{
+						int nb = Cardinal(c, d);
+						if (nb < 0 || netBodySeen.Contains(nb) || visited.Contains(nb) || !networkVisited.Contains(nb) || !IsExcavated(nb) || IsSealed(nb)
+							|| WaterOf(nb) <= 0 || !SameFluid(world.CellFluid(nb), fl))
+						{
+							continue;
+						}
+						netBodySeen.Add(nb);
+						netBody.Add(nb);
+					}
+				}
+				if (take <= 0)
+				{
+					continue;
+				}
+				total += take;
+				if (viscosityEnabled && !RM_StockMath.FluidMovesThisPulse(pulseCount, world.TicksPerTile(fl)))
+				{
+					for (int i = 0; i < netBody.Count; i++)
+					{
+						int c = netBody[i];
+						if (world.IsSink(c) && !IsSealed(c))
+						{
+							SetWaterOf(c, WaterOf(c) - Math.Min(WaterOf(c), per));
+						}
+					}
+					continue;
+				}
+				// δ: the largest fall with Σ min(w, δ) ≤ take (take ≤ the body's water, so δ ≤ its wettest square)
+				// lo = take/N is always within (Σ min(w, δ) ≤ N·δ); when the driest square holds more than lo it IS δ (one more dL
+				// a square would take N·(lo+1) > take), the common case, so the search runs only for a body with squares that empty.
+				long lo = take / netBody.Count, hi = 0, driest = long.MaxValue;
+				for (int i = 0; i < netBody.Count; i++)
+				{
+					long w = WaterOf(netBody[i]);
+					hi = Math.Max(hi, w);
+					driest = Math.Min(driest, w);
+				}
+				netDrainCost += 2L * netBody.Count;
+				if (driest > lo)
+				{
+					hi = lo;
+				}
+				while (lo < hi)
+				{
+					long mid = lo + (hi - lo + 1) / 2;
+					long sum = 0;
+					for (int i = 0; i < netBody.Count && sum <= take; i++)
+					{
+						sum += Math.Min(WaterOf(netBody[i]), mid);
+					}
+					netDrainCost += netBody.Count;
+					if (sum <= take)
+					{
+						lo = mid;
+					}
+					else
+					{
+						hi = mid - 1;
+					}
+				}
+				long left = take;
+				for (int i = 0; i < netBody.Count; i++)
+				{
+					int c = netBody[i];
+					long w = WaterOf(c);
+					long t = Math.Min(w, lo);
+					SetWaterOf(c, w - t);
+					left -= t;
+				}
+				// the remainder (fewer dL than squares still wet), one dL a square, nearest the sink first
+				for (int i = 0; i < netBody.Count && left > 0; i++)
+				{
+					int c = netBody[i];
+					long w = WaterOf(c);
+					if (w > 0)
+					{
+						SetWaterOf(c, w - 1);
+						left--;
+					}
+				}
+			}
+			exactDrainDl += total;
+			sinkDrained += total / (float)RM_LevelSolve.U;
 		}
 
 		/// <summary>Every component resolves by <see cref="ResolveExact"/> (see <see cref="levelExactEnabled"/>).</summary>
@@ -1172,7 +1320,8 @@ namespace RimMandrake.FlowWorks
 				before += WaterOf(exDug[i]);
 			}
 			long drained = 0;
-			if (edgeSinksEnabled)
+			// a rotated network's sinks drained once for the whole network (NetworkSinkDrain), before its first partition
+			if (edgeSinksEnabled && !(networkOrder && networkSinkDrained))
 			{
 				long per = flowPerPulse * (long)U;
 				for (int i = 0; i < exDug.Count; i++)

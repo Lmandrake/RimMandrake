@@ -446,6 +446,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     bool exact = seed % 4 != 3;
                     var (aw, seeds) = PulseScene(seed, exact);
+                    aw.k.networkSinkSpreadEnabled = false;   // the digests are the pre-EDGE_SINK_WATER_TAME_SEAM_FLICKER drain's
                     for (int p = 0; p < 20; p++)
                     {
                         aw.Pulse(seeds);
@@ -677,6 +678,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 k.levelSetEnabled = true; k.creepWaterEnabled = true; k.viscosityEnabled = true; k.creepEnabled = true; k.flowPerPulse = 1;
                 k.part = new ushort[w * h];
                 k.edgeSinksEnabled = true;
+                k.networkSinkSpreadEnabled = false;   // the pre-fix drain: this case needs its churn (EDGE_SINK_WATER_TAME_SEAM_FLICKER)
                 var seeds = new List<int>();
                 for (int z = 2; z <= 321; z++)
                     for (int x = 10; x <= 314; x++)
@@ -770,6 +772,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 k.levelSetEnabled = true; k.creepWaterEnabled = true; k.viscosityEnabled = true; k.creepEnabled = true; k.flowPerPulse = 1;
                 k.part = new ushort[w * h];
                 k.edgeSinksEnabled = true;
+                k.networkSinkSpreadEnabled = false;   // the pre-fix drain: this case needs its churn (EDGE_SINK_WATER_TAME_SEAM_FLICKER)
                 var seeds = new List<int>();
                 for (int z = 2; z <= 321; z++)
                     for (int x = 10; x <= 314; x++)
@@ -823,6 +826,78 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(stickySticky * 10 <= exactSticky, $"sticky look reversed {stickySticky} pictures at the sticky edges, exact {exactSticky} (want at most 10%)");
                 Assert(stickyBack[0] == exactBack[0] && stickyBack[4] <= exactBack[4] + exactBack[4] / 10, "the dry/wet or 4|5 edge changed under the sticky look");
                 Assert(stickyWrites * 10 <= exactWrites * 6, $"sticky look wrote {stickyWrites} of {exactWrites} exact writes (want at least 40% fewer)");
+            });
+            Case("ExcavationTick_edge_sink_seams_no_flicker", () =>
+            {
+                // EDGE_SINK_WATER_TAME_SEAM_FLICKER: the live perf scene (325x325, two 125x320 basins over the 6000-square cap,
+                // the 10-square edge band all sinks, moving seams). Drained partition by partition, the water near the edge swung
+                // about half a level a pulse (bench: 30,678 squares flipped look band 4+ times in 38 pulses). Drained once per
+                // network as one body, every square only falls and no square flips 4+ times; each pulse the sinks still take
+                // min(water, flowPerPulse*U) from every sink square, as before.
+                const int w = 325, h = 325, edge = 10, pulses = 38, settle = 2;
+                (int flip4, int maxFlips, long maxRise, long drainedDl, string bad) Run(bool spread)
+                {
+                    var aw = new ArrayWorld(w, h);
+                    var k = aw.k;
+                    k.levelExactEnabled = true; k.maxComponentCells = 6000; k.seamRotationEnabled = true; k.levelBySurfaceEnabled = true;
+                    k.levelSetEnabled = true; k.creepWaterEnabled = true; k.viscosityEnabled = true; k.creepEnabled = true; k.flowPerPulse = 1;
+                    k.part = new ushort[w * h];
+                    k.edgeSinksEnabled = true;
+                    k.networkSinkSpreadEnabled = spread;
+                    var seeds = new List<int>();
+                    for (int z = 2; z <= 321; z++)
+                        for (int x = 10; x <= 314; x++)
+                        {
+                            bool a = x <= 134, b = x >= 190;
+                            if (!a && !b) continue;
+                            int i = z * w + x;
+                            k.depth[i] = 4; k.fill[i] = (byte)(a ? 4 : 1); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
+                            aw.sink[i] = x < edge || z < edge || x >= w - edge || z >= h - edge;
+                        }
+                    long U = RM_LevelSolve.U;
+                    var flips = new int[w * h];
+                    var band = new int[w * h];
+                    var prev = new long[w * h];
+                    foreach (int i in seeds) { prev[i] = k.WaterOf(i); band[i] = RM_LevelSolve.LookBand(prev[i]); }
+                    long rise = 0, drained = 0;
+                    string why = null;
+                    for (int p = 1; p <= pulses; p++)
+                    {
+                        long want = 0;
+                        foreach (int i in seeds) if (aw.sink[i]) want += Math.Min(k.WaterOf(i), k.flowPerPulse * U);
+                        long total0 = 0, total1 = 0;
+                        foreach (int i in seeds) total0 += k.WaterOf(i);
+                        aw.Pulse(seeds);
+                        foreach (int i in seeds) total1 += k.WaterOf(i);
+                        if (k.worstImbalance > 0 && why == null) why = $"pulse {p}: ledger {string.Join("; ", k.imbalanceReports)}";
+                        if (k.exactDrainDl != want && why == null) why = $"pulse {p}: sinks took {k.exactDrainDl} dL, their squares held {want} dL to give";
+                        if (total0 - total1 != k.exactDrainDl && why == null) why = $"pulse {p}: water fell {total0 - total1} dL, sinks took {k.exactDrainDl}";
+                        drained += k.exactDrainDl;
+                        foreach (int i in seeds)
+                        {
+                            long dl = k.WaterOf(i);
+                            int b = RM_LevelSolve.LookBand(dl);
+                            if (p > settle)
+                            {
+                                if (b != band[i]) flips[i]++;
+                                rise = Math.Max(rise, dl - prev[i]);
+                            }
+                            band[i] = b; prev[i] = dl;
+                        }
+                    }
+                    return (flips.Count(f => f >= 4), flips.Max(), rise, drained, why);
+                }
+                var on = Run(true);
+                var off = Run(false);
+                Console.WriteLine($"    325x325 draining down the edge, {pulses} pulses: squares flipping 4+ times {off.flip4} before, {on.flip4} now "
+                    + $"(most flips of one square {off.maxFlips} -> {on.maxFlips}); largest rise of one square in a pulse {off.maxRise} -> {on.maxRise} dL; "
+                    + $"drained {off.drainedDl} -> {on.drainedDl} dL");
+                Assert(on.bad == null, on.bad ?? "");
+                Assert(off.bad == null, "pre-fix drain: " + (off.bad ?? ""));
+                // The instrument can see: the pre-fix drain flickers this scene.
+                Assert(off.flip4 > 10000, $"the pre-fix drain flipped only {off.flip4} squares 4+ times: the scene no longer shows the flicker");
+                Assert(on.flip4 == 0, $"{on.flip4} squares flipped their look 4+ times (most {on.maxFlips})");
+                Assert(on.maxRise <= 1, $"a square ROSE {on.maxRise} dL in one pulse while the network drained");
             });
             Case("ExcavationTick_label_scratch_equals_reference", () =>
             {
@@ -1374,6 +1449,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                     bool exact = seed % 4 != 3;
                     var (exW, seeds) = seed % 2 == 0 ? RainScene(seed, exact) : PulseScene(seed, exact);
                     var (apW, _) = seed % 2 == 0 ? RainScene(seed, exact) : PulseScene(seed, exact);
+                    // the exact pass lands rain BEFORE a pulse that then runs dry; a pocket-rain pulse keeps the partition drain, so
+                    // both run the partition drain (EDGE_SINK_WATER_TAME_SEAM_FLICKER) and compare rain alone
+                    exW.k.networkSinkSpreadEnabled = false; apW.k.networkSinkSpreadEnabled = false;
                     var r = new Random(seed * 13 + 1);
                     var roof = new bool[exW.w * exW.h];
                     for (int i = 0; i < roof.Length; i++) roof[i] = r.Next(4) == 0;
