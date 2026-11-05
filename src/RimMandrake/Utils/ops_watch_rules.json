@@ -32,6 +32,9 @@
   "_churn_doc": "ops_watch.rl_churn: an item is in churn when it failed an attempt (attempts.jsonl end not in churn_not_fail_ends; the class is the signature) in the last churn_window_h and has churn_returns returns or one class churn_same_class times; returned tokens are the spend-file runs whose (item, gen) failed, placed by the gen's start row",
   "measured_runs": 40, "measured_window_h": 24, "measured_min_runs": 12,
   "_measured_doc": "relentless.live_measured_pct: PASS+FAIL share of the newest measured_runs live/runs.jsonl rows within measured_window_h; under measured_min_runs rows it is UNMEASURED (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING)"
+,
+  "checks_lost_window_h": 1,
+  "_checks_lost_doc": "relentless.checks_lost_items: the different items with a checker_lost journal act in the last checks_lost_window_h (CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD); account_lost is not counted"
  },
  "seats": {
   "_doc": "c_seats (OP2 in operating_requirements_2026-11-01.md), read from the Dispatcher's journal.jsonl and state.json under RM_DISPATCHER_STATE or state_dir. Every limit is in the ranges block. Bringing the seat back is DI1's, not this metric's",
@@ -566,6 +569,9 @@
   {"key": "relentless.jam_repeat", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_JAM_REPEAT", "name": "OPS_JAM_CLASS_FIX_AGAIN", "marks": ["MEASURED"], "title_field": "first",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS: no class jams twice. A class in jam_classes.json jammed after its fixed.at, so its fix did not hold: fix the class again (not the instance) and move fixed.at to the new fix. Clears then, or when the jam leaves window_days"},
+  {"key": "relentless.checks_lost_items", "op": ">", "value": 2, "alarm": true, "worse": {"factor": 2}, "tag": "RELENTLESS_CHECKERS_DYING", "name": "OPS_CHECKER_DEATHS_DIAGNOSE_SILENT", "marks": ["MEASURED"], "title_field": "first",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD: on 2026-11-03 every walled checker died at launch (EACCES under its own wall) for 2.5 h, 29 of 29, and each item read only its own checker_lost. Three or more different items losing a checker inside an hour is one cause on the checker's launch or wall, not three items: read an rm-relentless-check .err of the items named and fix the launch. The 2026-11-02..05 journal swept at 15 min crossed only inside that incident (from 20:15Z, 2 h before it was filed by hand); outside it the most was 2"},
   {"key": "relentless.game_hold_idle_min", "op": ">", "value": 30, "alarm": true, "worse": {"factor": 2}, "tag": "RELENTLESS_GAME_HOLD_IDLE", "name": "OPS_RELENTLESS_GAME_HOLD_UNSTICK", "marks": ["MEASURED"], "title_field": "holder",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER: one live user at a time, so a game-phase holder that does not use the game (a proving item whose prove pid is gone, a live-iterating worker that has not held the bridge for its item) parks every other game item; ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP held it 47 min on 2026-11-03 with the bridge free and ten items waiting. relentless_game.lapse_holds frees such a holder within 20 min (live_idle_s); above 30 the release is not happening. holder names the item"},

@@ -2141,6 +2141,60 @@ def rl_jams(store, now):
                                        window_days=c["window_days"])}
 
 
+CHECK_VERDICT_ACTS = ("blind_fail", "proof_weak", "game_entered", "unmeasured", "proof_rework")
+
+
+def rl_checks_lost(store, now, cfg, chunk=1 << 23):
+    """CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD: on 2026-11-03 every walled checker died at launch (EACCES) for 2.5 h,
+    29 of 29, and each item read only its own checker_lost. -> the point relentless.checks_lost_items: how many DIFFERENT
+    items lost a checker (journal act checker_lost; an account_lost is the account's, not the checker's) inside
+    checks_lost_window_h, with the checks started and the verdicts given in that window beside it. UNMEASURED when the
+    journal cannot be read, or the tail read does not reach back to the window's start (a count from half a window
+    would read low)."""
+    window = float(cfg.get("checks_lost_window_h", 1)) * 3600.0
+    start = now - window
+    p = store / "journal.jsonl"
+    try:
+        with open(p, "rb") as f:
+            f.seek(0, 2)
+            size = f.tell()
+            f.seek(max(0, size - chunk))
+            lines = f.read().split(b"\n")
+    except OSError as e:
+        return U("journal.jsonl unreadable: %s" % e, "items")
+    if size > chunk:
+        lines = lines[1:]       # the first line is torn by the seek
+    oldest, lost, started, verdicts = None, {}, 0, 0
+    for ln in lines:
+        try:
+            d = json.loads(ln)
+        except ValueError:
+            continue
+        t = epoch(d.get("at")) if isinstance(d, dict) else None
+        if t is None:
+            continue
+        oldest = t if oldest is None else min(oldest, t)
+        if t < start or t > now:
+            continue
+        for a in (d.get("acts") if d.get("do") in ("tick", "game_next") else [d]) or []:
+            if not isinstance(a, dict):
+                continue
+            do = a.get("do")
+            if do == "checker_lost" and a.get("item"):
+                lost[a["item"]] = lost.get(a["item"], 0) + 1
+            elif do == "check_started":
+                started += 1
+            elif do in CHECK_VERDICT_ACTS:
+                verdicts += 1
+    if size > chunk and (oldest is None or oldest > start):
+        return U("journal tail read (%d MB) does not reach back %g h" % (chunk >> 20, window / 3600.0), "items")
+    worst = sorted(lost, key=lambda i: (-lost[i], i))
+    return M(len(lost), "items", lost=sum(lost.values()), started=started, verdicts=verdicts, window_h=window / 3600.0,
+             items=worst[:12], first=("%d checkers lost on %d items in %g h, %d verdicts, %d checks started (%s)"
+                                      % (sum(lost.values()), len(lost), window / 3600.0, verdicts, started,
+                                         ", ".join(worst[:5])) if lost else "none"))
+
+
 def c_relentless(now, rules, ctx):
     """The belt's own readings (OP2), judged here (DI2: a stall names one cause) with no AI. Every limit is in
     rules["relentless"]. A source that is missing, torn, frozen or dated ahead makes its readings UNMEASURED and counts
@@ -2269,6 +2323,10 @@ def c_relentless(now, rules, ctx):
         pts[k] = p
         if p.get("m") == "UNMEASURED" and "unreadable" in str(p.get("why")) and p["why"] not in bad:
             bad.append(p["why"])      # an unreadable store or spend file is blind; no spend yet is only idle
+    lost_p = rl_checks_lost(store, now, cfg)
+    pts["relentless.checks_lost_items"] = lost_p
+    if lost_p.get("m") == "UNMEASURED":
+        bad.append(lost_p["why"])       # an unread journal hides every dead checker: blind, never quiet
     for k, p in rl_jams(store, now).items():
         pts[k] = p
         if p.get("m") == "UNMEASURED" and p["why"] not in bad:

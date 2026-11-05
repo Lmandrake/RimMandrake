@@ -36,6 +36,7 @@
     {"match": "help_raised", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless asked for help on an item and the ask itself failed"},
     {"match": "health.incident_slis", "route": "role", "reader": "Operations", "cause": "churn", "_why": "OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: churn or a blind instrument is its own cause; under work_belt (open since 2026-11-01) its Conductor line was swallowed the pass it first filed"},
     {"match": "health.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "relentless.checks_lost_items", "route": "role", "reader": "Operations", "cause": "checker_launch", "_why": "CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD: checkers dying across items is one cause on the checker launch; under work_belt an open belt incident would swallow its Conductor line"},
     {"match": "relentless.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "relentless_attention_*", "route": "role", "reader": "Operations", "cause": "spend"},
     {"match": "queues.*", "route": "role", "reader": "Operations", "cause": "queues"},
