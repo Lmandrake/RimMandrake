@@ -4,9 +4,17 @@
  ],
  "budget": {
   "cap": 500000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-05T07:22:09Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793862917",
+    "stage": 0,
+    "tokens": 653533
+   }
+  ],
   "reserve": 50000,
-  "spent": 0
+  "spent": 653533
  },
  "history": [
   {
@@ -14,14 +22,51 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 500000 (reserve 50000)"
+  },
+  {
+   "at": "2026-11-05T07:15:30Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designer-1793862917, stage 0, budget 450000"
+  },
+  {
+   "at": "2026-11-05T07:22:10Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1793862917: stage 0 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/GimmeSomeSlack",
  "recovery": [],
- "results": [],
+ "results": [
+  {
+   "at": "2026-11-05T07:22:10Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": null,
+    "scenes": null,
+    "sheet": "b7dd55e6646df716f5252676c46859687bb395d354bbd0dcc3758acce340bca1",
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_grounding.md": "fb68ff878668ca807e0bd99599424c10397dd137a28cc5ba345ddb0a68088cb5",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1793862917",
+   "stage": 0,
+   "summary": "GSS stage 0: 19 inventory entries (16 approved by his words, 3 not_opened, 1 out under waiver w1) account for all 32 built lines; 5 named contradictions (phantom cable unverified, every-junction strips unmeasured, no-repeat unmeasured, cost partial, four switches unproven); script audit: row-based scripts lack per-scene asserted starts, most controls, snapshot recovery and holds; two draft asks for stage 2 (flagship, junction plug-in). Failure modes: tidy, lying, cost."
+  }
+ ],
  "running": null,
  "schema": 1,
- "stage": 0,
+ "stage": 1,
  "status": "ready"
 }

@@ -14,13 +14,41 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 500000 (reserve 50000)"
+  },
+  {
+   "at": "2026-11-05T07:42:17Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designer-1793864529, stage 0, budget 450000"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/Pyrelands",
  "recovery": [],
  "results": [],
- "running": null,
+ "running": {
+  "at": "2026-11-05T07:42:17Z",
+  "inputs": {
+   "exam": null,
+   "floor": null,
+   "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+   "root": null,
+   "scenes": null,
+   "sheet": null,
+   "tree": null
+  },
+  "manifest": {
+   "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+   "designer_grounding.md": "fb68ff878668ca807e0bd99599424c10397dd137a28cc5ba345ddb0a68088cb5",
+   "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+  },
+  "owner_uncited": [
+   "1793766816609436834"
+  ],
+  "reserved": 450000,
+  "run": "rm-role-designer-1793864529",
+  "stage": 0
+ },
  "schema": 1,
  "stage": 0,
  "status": "ready"

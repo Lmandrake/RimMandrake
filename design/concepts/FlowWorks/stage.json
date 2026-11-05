@@ -58,10 +58,24 @@
     "ref": "run rm-role-designer-1793843896",
     "stage": 2,
     "tokens": 495722
+   },
+   {
+    "at": "2026-11-05T07:15:17Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793862763",
+    "stage": 2,
+    "tokens": 223329
+   },
+   {
+    "at": "2026-11-05T07:35:32Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793863469",
+    "stage": 3,
+    "tokens": 1009093
    }
   ],
   "reserve": 50000,
-  "spent": 1691314
+  "spent": 2923736
  },
  "history": [
   {
@@ -147,6 +161,42 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1793843896: stage 2 waiting_owner"
+  },
+  {
+   "at": "2026-11-05T07:13:02Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "1691314 of 500000 spent; run rm-role-designer-1793862763 goes on with 450000 (advisory)"
+  },
+  {
+   "at": "2026-11-05T07:13:02Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793862763, stage 2, budget 450000"
+  },
+  {
+   "at": "2026-11-05T07:15:17Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1793862763: stage 2 done"
+  },
+  {
+   "at": "2026-11-05T07:24:33Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "1914643 of 500000 spent; run rm-role-designer-1793863469 goes on with 450000 (advisory)"
+  },
+  {
+   "at": "2026-11-05T07:24:33Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1793863469, stage 3, budget 450000"
+  },
+  {
+   "at": "2026-11-05T07:35:33Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1793863469: stage 3 done"
   }
  ],
  "item": "FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -246,11 +296,54 @@
    "run": "rm-role-designer-1793843896",
    "stage": 2,
    "summary": "Turn 2 sent (design/concepts/FlowWorks/turn_02.md): two edges of his raid scenes, both judge-passed. ask_prisoner_click: are pit-held raiders prisoners automatically, by one click, or by click plus bed, since no bed can stand in a full moat. ask_match: a new colonist order to toss a flame in from the rim, or are vanilla incendiaries enough. Struck ask_rescue_ladder (his words settle it; recorded as decision d_raider_fetch_fallen, owed). Winch-destroyed drawbridge crash, raiders attacking winches, ladder wood from felled trees and liquid ignition from any fire were found built. c_spec_stale and c_proof_stale resolved as not his decisions."
+  },
+  {
+   "at": "2026-11-05T07:15:17Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "15d62e6fb6e8ef7e8f6099227d7087101d582eb0caaf19923147cbde39f2700a",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793862763",
+   "stage": 2,
+   "summary": "Turn 2 answered by card (OWNER:1793862531058884117, OWNER:1793862534552097818): capture from the rim stays, and a drained moat or pit is a prison without a bed (d_prison_no_bed, owed); a new 'toss a flame' order lights the square the player picks (d_toss_flame, owed). No ask is still sent; all contradictions resolved. Owed work for stage 3 to write as leaves: d_wetting, d_raider_fetch_fallen, d_prison_no_bed, d_toss_flame."
+  },
+  {
+   "at": "2026-11-05T07:35:33Z",
+   "inputs": {
+    "exam": null,
+    "floor": "4df351b9abb87232d6e8afd0921afbbc10dccb6bd067026e77ad3f3a48367dd1",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "15d62e6fb6e8ef7e8f6099227d7087101d582eb0caaf19923147cbde39f2700a",
+    "scenes": "188a460dfcb4bca0d26610ddf966fcbc0cd974c40d5530efacf33dbb45bc1760",
+    "sheet": "68f9946f8e250af1b2dd19f7ccc901be45ed82c2550693f033dd4b7b83480070",
+    "tree": "572198fed9a064df1898d695529f85fc343cfeb09bab2d3fe5773bc3abab149d"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "953ca0ef727ca7a6b2d8c3a831fdc650aca98f7f4e2abfa850092f6d1a0f2f1f"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793863469",
+   "stage": 3,
+   "summary": "Stage 3 written: sheet.md, tree.json (31 leaves: 24 built, 5 owed by his words, 1 instrument wetness_probe, 1 walk on the full list), scenes.json (28 scenes; showcases moat 13 new, garden 7 new, pit_trap 3 new with staging reasons; rivers, slime, quarry, map taps and settings in coverage_rest), floor.json (every line applicable), plan.md. Lint PASS, showcase set accepted. Filed build items: FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST, FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL, FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED, FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM, FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP, FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN, FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED. record.json: d_scene_moat gains flagship moat; three owed capabilities added to the inventory."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 2,
- "status": "waiting_owner",
+ "stage": 4,
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

@@ -2,9 +2,17 @@
  "aliases": [],
  "budget": {
   "cap": 500000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-05T07:41:43Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793864264",
+    "stage": 0,
+    "tokens": 495103
+   }
+  ],
   "reserve": 50000,
-  "spent": 0
+  "spent": 495103
  },
  "history": [
   {
@@ -12,14 +20,49 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 500000 (reserve 50000)"
+  },
+  {
+   "at": "2026-11-05T07:38:18Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designer-1793864264, stage 0, budget 450000"
+  },
+  {
+   "at": "2026-11-05T07:41:44Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1793864264: stage 0 done"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
  "mod": "RimMandrake/PyrelandsMechanics",
  "recovery": [],
- "results": [],
+ "results": [
+  {
+   "at": "2026-11-05T07:41:44Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_grounding.md": "fb68ff878668ca807e0bd99599424c10397dd137a28cc5ba345ddb0a68088cb5",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793864264",
+   "stage": 0,
+   "summary": "Stage 0 read: 10 inventory entries (9 built: arson raid, flame-harvest visit, rite send, rite lord, rite harvest duty, Tribes lookup, settings, thornvine patch, letters; 1 absent sheet canon: Impid fire-callers/cairns), none proven live. 3 contradictions (thornvine patch stranded in the campaign tier; two fix items implemented 2026-10-15 never closed; visit vs rite overlap), script audit of 4 scenes, 3 failure modes, 3 draft asks (flagship pick, what the visit does at the fire, arson-debt visibility) for stage 1-2."
+  }
+ ],
  "running": null,
  "schema": 1,
- "stage": 0,
+ "stage": 1,
  "status": "ready"
 }
