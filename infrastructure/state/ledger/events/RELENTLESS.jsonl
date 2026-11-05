@@ -777,3 +777,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T20:39:54Z","tsn":1793911195001196740}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T20:45:42Z","tsn":1793911542073945220}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T20:45:52Z","tsn":1793911552671007681}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES: deploy and restart for its live proofs","ts":"2026-11-05T20:52:31Z","tsn":1793911951092019131}
