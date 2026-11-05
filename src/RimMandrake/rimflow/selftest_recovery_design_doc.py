@@ -78,6 +78,70 @@ def doc_problems(text):
     return out
 
 
+PHASES = ("QUARANTINE", "RECONCILE", "VERIFY", "RAMP", "NORMAL", "STALLED")
+TERMINAL = {"NORMAL"}  # NORMAL has no exit by design: the record stays open for relapse_h and a recurrence reopens it
+TIMED = ("QUARANTINE", "RECONCILE", "VERIFY", "RAMP")  # the phases the doc gives a deadline
+REPLAYS = (("7.1", r"^### 7\.1 ", 8), ("7.2", r"^### 7\.2 ", 5))  # (label, heading, min timed rows)
+EMPTY = ("", "\u2014", "-", "--", "n/a", "tbd")
+
+
+def _blank(cell):
+    return cell.strip().lower() in EMPTY
+
+
+def _section(text, head_rx):
+    m = re.search(head_rx, text, re.M)
+    if not m:
+        return ""
+    rest = text[m.end():]
+    n = re.search(r"^##+ ", rest, re.M)
+    return rest[:n.start()] if n else rest
+
+
+def _rows(block):
+    """Body rows of every markdown table in block, as lists of cells (header and --- rule skipped)."""
+    out, prev_rule = [], False
+    for line in block.splitlines():
+        if not line.startswith("|"):
+            prev_rule = False
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if all(re.fullmatch(r":?-{3,}:?", c) for c in cells):
+            prev_rule = True
+            continue
+        if prev_rule or out and len(cells) == len(out[-1]):
+            out.append(cells)
+    return out
+
+
+def structure_problems(text):
+    """The phase table and both replay tables must carry content, not only their headings and keywords."""
+    out = []
+    table = {r[0].strip("* "): r for r in _rows(_section(text, r"^## 3\. The state machine")) if len(r) == 5}
+    for ph in PHASES:
+        r = table.get(ph)
+        if not r:
+            out.append("phase %s: no 5-cell row in the 3 table" % ph)
+            continue
+        for col, name in ((1, "Entry"), (2, "action"), (3, "Exit")):
+            if _blank(r[col]) and not (name == "Exit" and ph in TERMINAL):
+                out.append("phase %s: %s cell empty" % (ph, name))
+        if ph in TIMED and not re.search(r"\d+\s*(min|h)\b", r[4]):
+            out.append("phase %s: Deadline cell %r names no time" % (ph, r[4]))
+    for label, head, need in REPLAYS:
+        rows = [r for r in _rows(_section(text, head)) if len(r) == 4]
+        if len(rows) < need:
+            out.append("replay %s: %d table rows, need >= %d" % (label, len(rows), need))
+        for r in rows:
+            if _blank(r[0]):
+                out.append("replay %s: a row with no time" % label)
+            if len(r[2].strip()) < 20:
+                out.append("replay %s %s: no action described" % (label, r[0][:24]))
+            if _blank(r[3]):  # the contract: "each step citing a source"; the doc: "Each line cites its reading."
+                out.append("replay %s %s: reading cell empty, the step cites no source" % (label, r[0][:24]))
+    return out
+
+
 def rules_problems(rules):
     want = {"launch_breaker": 3, "breaker_cool_s": 900, "breaker_cool_max_s": 1800}
     return ["rules %s=%r, doc says %r" % (k, rules.get(k), v) for k, v in want.items() if rules.get(k) != v]
@@ -119,7 +183,7 @@ def main():
     with open(RULES, encoding="utf-8") as f:
         rules = json.load(f)
     rows = ledger_events(sorted(glob.glob(os.path.join(LEDGER, "*.jsonl"))))
-    for name, probs in (("doc", doc_problems(text)), ("rules", rules_problems(rules)), ("ledger", ledger_problems(rows))):
+    for name, probs in (("doc", doc_problems(text)), ("structure", structure_problems(text)), ("rules", rules_problems(rules)), ("ledger", ledger_problems(rows))):
         fails += ["%s: %s" % (name, p) for p in probs]
 
     # negative controls: the instrument must see a cut part, a changed number and a changed triage target
@@ -127,6 +191,32 @@ def main():
         fails.append("control: a doc without the STALLED age alarm passed")
     if not doc_problems(text.replace("Answer:", "Reply-", 1)):
         fails.append("control: a review finding with its answer removed passed")
+    # mutant A (checker, gen 3): every row of both replay tables deleted, headings and prose kept
+    def _cut_replay_rows(t):
+        keep, sec = [], None
+        for line in t.splitlines(True):
+            if line.startswith("### 7."):
+                sec = True
+            elif line.startswith("## ") or line.startswith("### "):
+                sec = None
+            if sec and line.startswith("|") and not line.startswith("| Time") and "---" not in line:
+                continue
+            keep.append(line)
+        return "".join(keep)
+    if not structure_problems(_cut_replay_rows(text)):
+        fails.append("control: a doc with its replay table rows deleted passed")
+    # mutant B (checker, gen 3): the Exit cell of every phase row blanked
+    def _blank_exits(t):
+        def sub(m):
+            c = m.group(0).rstrip("\n").split("|")
+            c[4] = " "
+            return "|".join(c) + "\n"
+        return re.sub(r"^\| \*\*(%s)\*\* \|.*\n" % "|".join(PHASES), sub, t, flags=re.M)
+    if not structure_problems(_blank_exits(text)):
+        fails.append("control: a doc with every phase Exit cell blanked passed")
+    one = re.sub(r"(^### 7\.1 [\s\S]*?^\| 02:45Z \|[^\n]*\| )[^|\n]+( \|$)", "\\1\u2014\\2", text, count=1, flags=re.M)
+    if one == text or not structure_problems(one):
+        fails.append("control: a 7.1 step with its reading removed passed")
     if not rules_problems(dict(rules, breaker_cool_max_s=3600)):
         fails.append("control: a changed breaker cap passed")
     bent = [dict(r, by="SOMETHING_ELSE") if r.get("id") == "HARNESS_REPAIR_CAUSE_C1644394" and r.get("event") == "supersede"
@@ -136,7 +226,7 @@ def main():
 
     for f_ in fails:
         print("FAIL", f_)
-    print("selftest_recovery_design_doc: %s (%d doc parts, %d triage rows, 4 controls)" % (
+    print("selftest_recovery_design_doc: %s (%d doc parts, %d triage rows, 7 controls)" % (
         "FAIL" if fails else "PASS", len(REQUIRED), len(TRIAGE)))
     return 1 if fails else 0
 
