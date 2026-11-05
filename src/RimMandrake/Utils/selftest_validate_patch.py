@@ -311,6 +311,67 @@ def t_defs_descendant_xpath_is_not_a_false_zero():
     assert V.rebase_for_root_element("/Defs//weaponTags") == ".//weaponTags"
 
 
+CUSTOM_OP_PATCH = """<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Vanilla Cooking Expanded</li></mods>
+    <match Class="RimMandrake.StarWars.Cuisine.PatchOperation_CuisineSetting">
+      <setting>reskinVceSealer</setting>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/RecipeDef[defName="VCE_CanEggsTYPO"]/label</xpath>
+            <value><label>x</label></value>
+          </li>
+        </operations>
+      </match>
+      <nomatch Class="PatchOperationReplace">
+        <xpath>Defs/RecipeDef[defName="VCE_CanFishTYPO"]/label</xpath>
+        <value><label>y</label></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="My.CustomOp">
+    <operations>
+      <li Class="PatchOperationRemove"><xpath>Defs/ThingDef[defName="Nope"]</xpath></li>
+    </operations>
+  </Operation>
+  <Operation Class="My.OpaqueOp"><foo/></Operation>
+</Patch>
+"""
+
+
+def t_custom_patchoperation_branches_are_xpath_checked():
+    """PATCHCHECK_CUSTOM_OPS_FIX_NEVER_DESCENDED: ops under a custom-Class op's
+    match/nomatch/operations were never yielded, so a planted typo passed OK."""
+    import xml.etree.ElementTree as ET
+    f = V.Findings()
+    ev = V.check_structure(ET.fromstring(CUSTOM_OP_PATCH.split("?>", 1)[1]), f)
+    xps = [e[2] for e in ev]
+    for want in ('Defs/RecipeDef[defName="VCE_CanEggsTYPO"]/label',
+                 'Defs/RecipeDef[defName="VCE_CanFishTYPO"]/label',
+                 'Defs/ThingDef[defName="Nope"]'):
+        assert want in xps, "%r never reached live evaluation: %r" % (want, xps)
+    # the custom op under a guard is guarded; one under nothing still warns
+    assert any("Operation[2]" in w and "not wrapped" in w for w in f.warnings), f.warnings
+    assert not any("Operation[1]" in w and "not wrapped" in w for w in f.warnings), f.warnings
+    # a custom op with nothing the validator can read says UNMEASURED, not OK
+    assert any("OpaqueOp" in w and "UNMEASURED" in w for w in f.warnings), f.warnings
+    # and the typo really counts as a dead xpath against a dump
+    assert n('Defs/RecipeDef[defName="VCE_CanEggsTYPO"]/label') == 0
+
+
+def t_the_real_vce_sealer_patch_is_fully_descended():
+    import xml.etree.ElementTree as ET
+    real = os.path.join(REPO, "src", "RimStarWars", "Cuisine", "Patches",
+                        "RSW_VceRationSealer.xml")
+    raw = open(real, encoding="utf-8").read()
+    f = V.Findings()
+    ev = V.check_structure(ET.fromstring(raw.encode("utf-8")), f)
+    want = raw.count("<xpath>")
+    assert want >= 10 and len(ev) == want, "evaluated %d of %d xpaths" % (len(ev), want)
+
+
 if __name__ == "__main__":
     for k, v in sorted(globals().items()):
         if k.startswith("t_"):

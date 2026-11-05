@@ -447,7 +447,8 @@ def check_comments(raw: bytes, f: Findings) -> None:
 def iter_operations(elem: ET.Element, path: str = ""):
     """
     Yield (operation_element, human_readable_path) for every operation in the
-    tree, descending into Sequence/Conditional/FindMod containers.
+    tree, descending into Sequence/Conditional/FindMod containers and into
+    the match/nomatch/operations children of any custom PatchOperation class.
     """
     for i, op in enumerate(elem.findall("./Operation")):
         here = f"{path}Operation[{i + 1}]"
@@ -455,20 +456,42 @@ def iter_operations(elem: ET.Element, path: str = ""):
         yield from _descend(op, here)
 
 
+# Every op class the engine ships. Anything else is a CUSTOM PatchOperation (a
+# mod's own C# class, e.g. RimMandrake.StarWars.Cuisine.PatchOperation_CuisineSetting):
+# the validator cannot know its semantics, but the ops it nests under <match>,
+# <nomatch> or <operations> are ordinary ops and must be xpath-checked like any
+# other (PATCHCHECK_CUSTOM_OPS_FIX_NEVER_DESCENDED: a planted typo under a custom
+# class passed "OK - 0 errors" because only Sequence/Conditional/FindMod descended).
+VANILLA_OPS = OPS_NEEDING_XPATH | CONTAINER_OPS
+
+
+def _is_custom(cls: str) -> bool:
+    return bool(cls) and cls not in VANILLA_OPS
+
+
 def _descend(op: ET.Element, path: str):
     cls = short(op.get("Class", ""))
-    if cls == "PatchOperationSequence":
+    if cls == "PatchOperationSequence" or _is_custom(cls):
         ops = op.find("operations")
         if ops is not None:
             for j, sub in enumerate(ops.findall("li")):
                 sub_path = f"{path} > operations/li[{j + 1}]"
                 yield sub, sub_path
                 yield from _descend(sub, sub_path)
-    elif cls in GUARD_OPS:
+    if cls in GUARD_OPS:
         for branch in ("match", "nomatch"):
             sub = op.find(branch)
             if sub is not None:
                 sub_path = f"{path} > {branch}"
+                yield sub, sub_path
+                yield from _descend(sub, sub_path)
+    elif _is_custom(cls):
+        # Labelled "custom:<branch>" so the guard check, which reads " > match"
+        # as a vanilla guard, does not treat a custom class as one.
+        for branch in ("match", "nomatch"):
+            sub = op.find(branch)
+            if sub is not None:
+                sub_path = f"{path} > custom:{branch}"
                 yield sub, sub_path
                 yield from _descend(sub, sub_path)
 
@@ -585,6 +608,17 @@ def check_structure(root: ET.Element, f: Findings) -> list[tuple[ET.Element, str
                 to_evaluate.append(
                     (op, path, xp,
                      _guarded_by_identical_test(path, xp, cond_tests)))
+
+        if _is_custom(cls):
+            nested = [b for b in ("match", "nomatch", "operations")
+                      if op.find(b) is not None]
+            if nested:
+                f.info(f"{path} ({cls}): custom PatchOperation class; its "
+                       f"{'/'.join(nested)} ops are checked, its own logic is not")
+            else:
+                f.warn(f"{path} ({cls}): custom PatchOperation class with no "
+                       f"<match>/<nomatch>/<operations> - UNMEASURED, the "
+                       f"validator cannot see what it does")
 
         if cls == "PatchOperationFindMod" and op.find("mods") is None:
             f.error(f"{path} (PatchOperationFindMod): no <mods> child")
