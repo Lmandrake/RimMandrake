@@ -164,7 +164,8 @@ def main():
     ok, _ = V._wait_playing(B, leave_s=0)
     if not ok:
         row("JS0_site_ready", "UNMEASURED", {"why": "game not Playing"})
-        return 1
+        print("VERDICT: UNMEASURED (game not Playing)", flush=True)
+        return 2
     res["site_calm"] = V.site_calm(B)
     site = (x - 5, z - 5, 11, 11)
     try:
@@ -178,7 +179,8 @@ def main():
     res["spawn"] = {k: r.get(k) for k in ("success", "error", "message")}
     if not pid:
         row("JS0_site_ready", "UNMEASURED", {"why": "Jawa spawn refused", "spawn": res["spawn"]})
-        return 1
+        print("VERDICT: UNMEASURED (Jawa spawn refused)", flush=True)
+        return 2
     B.call("jawa/order_pawn", pawnId=pid, x=x, z=z, draft=True, waitTicks=0, unpause=False)
     res["pawn"] = pid
 
@@ -213,9 +215,37 @@ def main():
     save()
     print("VERIFY cell=%d,%d %s" % (x, z, " ".join("%s=%s" % (r["id"], r["status"]) for r in rows
                                                      if r["id"].startswith("JS"))), flush=True)
-    measured = [r for r in rows if r["id"].startswith(("JS1_", "JS2_", "JS3_", "JS4_"))]
-    return 0 if len(measured) == 4 and all(r["status"] == "PASS" for r in measured) else 1
+    return exit_code(rows)
+
+
+def exit_code(rows):
+    """The live round's contract: 0 PASS, 1 FAIL, 2 UNMEASURED. FAIL only when a measured JS1-JS4 row says FAIL; a
+    missing or UNMEASURED row means the proof did not see, never that the mod is wrong (2026-11-04 run: a bridge-client
+    refusal traceback exited 1 and was recorded as a mod FAIL)."""
+    rows = [r for r in rows if r["id"].startswith(("JS1_", "JS2_", "JS3_", "JS4_"))]
+    if any(r["status"] == "FAIL" for r in rows):
+        print("VERDICT: FAIL", flush=True)
+        return 1
+    if len(rows) == 4 and all(r["status"] == "PASS" for r in rows):
+        print("VERDICT: PASS", flush=True)
+        return 0
+    print("VERDICT: UNMEASURED (%d of 4 rows measured)" % sum(r["status"] in ("PASS", "FAIL") for r in rows), flush=True)
+    return 2
+
+
+def guarded(fn):
+    """Run the live proof; an uncaught harness/bridge error is UNMEASURED (exit 2) with its reason, never a FAIL."""
+    try:
+        return fn()
+    except SystemExit:
+        raise
+    except Exception as e:            # noqa: BLE001  any bridge/harness fault: the proof did not see
+        import traceback
+        traceback.print_exc()
+        print("VERDICT: UNMEASURED (harness: %s: %s)" % (type(e).__name__, str(e).splitlines()[0][:200] if str(e) else ""),
+              flush=True)
+        return 2
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(guarded(main))

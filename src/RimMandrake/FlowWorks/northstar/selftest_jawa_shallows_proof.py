@@ -68,5 +68,23 @@ check("can-fail drowning: drowns with no swim read FAIL",
       J.drowning_verdict([dict(r, swim={"class": "None"}) for r in good])[0] == "FAIL")
 check("drowning: no reads UNMEASURED", J.drowning_verdict([])[0] == "UNMEASURED")
 
+# exit semantics the live round reads (0 PASS, 1 FAIL, else UNMEASURED): a harness fault is never a mod FAIL
+def rws(*st):
+    return [{"id": "JS%d_x" % (i + 1), "status": v} for i, v in enumerate(st)]
+
+
+check("exit: four PASS rows -> 0", J.exit_code(rws("PASS", "PASS", "PASS", "PASS")) == 0)
+check("exit: a measured FAIL -> 1", J.exit_code(rws("PASS", "FAIL", "PASS", "PASS")) == 1)
+check("exit: an UNMEASURED row, no FAIL -> 2", J.exit_code(rws("PASS", "PASS", "UNMEASURED", "PASS")) == 2)
+check("exit: no rows (died before JS1) -> 2", J.exit_code([{"id": "JS0_site_ready", "status": "UNMEASURED"}]) == 2)
+
+
+def boom():
+    raise RuntimeError("refusing rimworld/go_to_main_menu: 1 earlier mutating call(s) have an UNKNOWN outcome")
+
+
+check("guarded: a bridge refusal traceback -> 2, not 1", J.guarded(boom) == 2)
+check("guarded: a clean return passes through", J.guarded(lambda: 1) == 1)
+
 print("%d FAIL" % len(fails) if fails else "ALL OK")
 sys.exit(1 if fails else 0)
