@@ -210,6 +210,41 @@ def uncovered(r, prop, texts):
     return out
 
 
+def fill(r, name, prop, texts):
+    """-> the proposal with the seed adapters that cover what it leaves uncovered (CHECKER_REACH_FIX_CLONES_STILL_DARK gen
+    9: DESSICATED_CORPSES_JUDGE_THE_ONES_HE_MISSED's Judge proposed [proc_cwds, relentless_live_evidence, rm_pool_state],
+    named the bench seat clone, and the coverage gate filed this ticket though the clones seed's seat_clone_state covers
+    bench). Only seed adapters (the class row's and every row the texts match) whose `covers` hold a gap join; at
+    OFFBOX_MAX the proposal's own adapters that cover nothing named make room, last first. No gap filled: unchanged."""
+    gaps = uncovered(r, prop, texts)
+    if not gaps:
+        return prop
+    known = relentless_wall.adapters(r)
+    row = next((c for c in classes(r) if c["class"] == name), {})
+    seed = _union([x for x in row.get("adapters") or [] if x in known], adapters_for(r, texts), 64)
+
+    def covers(a, ps):
+        cv = [c.rstrip("/") for c in (known.get(a) or {}).get("covers") or [] if isinstance(c, str)]
+        return [p for p in ps if any(p == c or p.startswith(c + "/") for c in cv)]
+    have = list(prop.get("adapters") or [])
+    add = []
+    for a in seed:
+        if a not in have and covers(a, [g for g in gaps if not any(covers(b, [g]) for b in add)]):
+            add.append(a)
+    if not add:
+        return prop
+    named = [p for p in _paths_of(texts)]
+    while len(have) + len(add) > relentless_wall.OFFBOX_MAX:
+        idle = [a for a in have if not covers(a, named)]
+        if not idle:
+            break
+        have.remove(idle[-1])
+    out = (have + add)[:relentless_wall.OFFBOX_MAX]
+    by = prop.get("by") or "seed"
+    return dict(prop, adapters=out, by=by if by.endswith("+seed") or by == "seed" else by + "+seed",
+                filled=[a for a in add if a in out])
+
+
 def load(store):
     try:
         with open(store.p(BOOK), encoding="utf-8") as f:
@@ -336,7 +371,9 @@ def sweep(store, fx, r, now, acts, iso):
             file_ticket(store, fx, r, book, name, owner, ent.get("why"), now, acts, iso)
             continue
         why = None
-        gaps = uncovered(r, prop, [rp.get("still_blind"), (st.get("blind") or {}).get("what")])
+        texts = [rp.get("still_blind"), (st.get("blind") or {}).get("what")]
+        prop = fill(r, name, prop, texts)
+        gaps = uncovered(r, prop, texts)
         if gaps:
             # it would read, but nothing in it reaches what the Judge named: the re-check would be blind again
             good, why = False, "the proposal (adapters %s) does not cover %s" % (prop.get("adapters") or "-", gaps[:6])

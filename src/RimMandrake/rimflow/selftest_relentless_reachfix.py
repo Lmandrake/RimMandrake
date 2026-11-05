@@ -601,6 +601,36 @@ def t_clones_scratch_instance():
        "(8f) an empty proposal is left to the nothing-to-probe branch")
 
 
+BENCH_BLIND = ("the live serve_gated sheet server: ss -ltnp plus curl on :8765/:8790 show no sheet server; the 755 thumbnail "
+               "images under Transient/biome_ffar/img in the builder's clone: missing from the export, and not under "
+               "/home/mandrake/rm/bench (ls)")
+
+
+def t_clones_judge_gap_filled():
+    """CHECKER_REACH_FIX_CLONES_STILL_DARK gen 9 (the class guard, instance DESSICATED_CORPSES_JUDGE_THE_ONES_HE_MISSED):
+    the Judge proposed [proc_cwds, relentless_live_evidence, rm_pool_state] and its blind text named the bench seat clone,
+    which none of them covers. The coverage gate failed it and Relentless filed this ticket, though its own clones seed
+    holds seat_clone_state, which covers bench. Now (g) a Judge proposal that leaves a named masked path uncovered gains
+    the class seed adapters that cover it, within OFFBOX_MAX, and is probed; no ticket, one re-check."""
+    import json
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    judge = ["proc_cwds", "relentless_live_evidence", "rm_pool_state"]
+    x = rig(probe=(True, "read non-empty"))
+    x.r = dict(x.r, reach_classes=r["reach_classes"], reach_never=r.get("reach_never") or [],
+               walls={"marker": dict(r["walls"]["marker"], enforce=False)}, offbox_adapters=r["offbox_adapters"])
+    B.to_check(x, "I0")
+    blind(x, "I0", proposals=judge, what=BENCH_BLIND)
+    for _ in range(3):
+        x.tick()
+    probed = x.w.probes[0][1] if x.w.probes else []
+    ok(x.w.tickets == [] and len(x.w.probes) == 1 and "seat_clone_state" in probed
+       and all(a in probed for a in ("rm_pool_state",)) and len(probed) <= 4,
+       "(8g) a Judge proposal missing the bench clone gains seat_clone_state and is probed, no ticket: probes=%s tickets=%s"
+       % (x.w.probes, x.w.tickets))
+    ok(len(checks(x)) == 2, "(8g) the passed repair spends exactly one re-check: %d" % len(checks(x)))
+    x.done()
+
+
 def seat_tmp_rows(r):
     """CHECKER_REACH_FIX_SEAT_TMP_STILL_DARK: on the rules as SHIPPED, a Judge's seat-tmp read path is classed seat_tmp,
     kept by propose(), and bound by props() with no InaccessiblePaths over it. The probe that filed the ticket ran at
@@ -666,7 +696,7 @@ def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
               t_windows_build_nothing_to_probe, t_windows_build_seed_probes, t_every_waiter_released, t_legacy_off, t_clones_seed, t_store_seed,
               t_closed_ticket_reseeds, t_seat_tmp_reach, t_clones_scratch_instance, t_live_round_seed,
-              t_store_waiter_kuqy):
+              t_store_waiter_kuqy, t_clones_judge_gap_filled):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
