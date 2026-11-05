@@ -676,3 +676,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:32:47Z","tsn":1793889167632748961}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SOORRAK_INSTANT_JOB_LOOP_1 A1 (L2), read-only proof","ts":"2026-11-05T14:36:41Z","tsn":1793889401030016111}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:40:55Z","tsn":1793889655094512822}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO L1 (L1), read-only proof","ts":"2026-11-05T14:44:16Z","tsn":1793889856381995428}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:44:28Z","tsn":1793889868205368018}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO L4 (L1), read-only proof","ts":"2026-11-05T14:44:49Z","tsn":1793889889137905577}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:45:01Z","tsn":1793889901657303671}
