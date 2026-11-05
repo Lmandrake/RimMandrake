@@ -177,9 +177,13 @@ def t_ticket_only_on_failure():
 
 
 def t_windows_build_nothing_to_probe():
-    """HEAVY_TEXTURES_MEASURE_REAL_VRAM: dotnet.exe on a \\\\wsl.localhost path from inside the wall. No read path opens it:
-    straight to its ticket, no probe; the ticket's close is the repair and the one re-check its probe."""
+    """HEAVY_TEXTURES_MEASURE_REAL_VRAM: dotnet.exe on a \\\\wsl.localhost path from inside the wall. No read path opens it.
+    Its class seed was empty then: straight to its ticket, no probe. CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK's fix is a
+    rules change (the seed adapter jawabench_build_candidate): on the ticket's close the re-probe and the one re-check
+    carry it as the rules ship NOW, at the same sha."""
     x = rig()
+    shipped = x.r["reach_classes"]
+    x.r = dict(x.r, reach_classes=[dict(c, adapters=[]) if c["class"] == "windows_build" else c for c in shipped])
     B.to_check(x, "I0")
     n0 = len(checks(x))
     blind(x, "I0", what="CANNOT REACH: build.py --gm, dotnet.exe build on \\\\wsl.localhost\\Ubuntu\\mnt\\d\\ClaudeWork\\x "
@@ -187,17 +191,39 @@ def t_windows_build_nothing_to_probe():
     x.tick()
     ok(x.st("I0")["reach"]["class"] == "windows_build" and x.w.probes == []
        and x.w.tickets == ["CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK"],
-       "(5) a Windows build gap: its own class, nothing probed, its ticket filed: %s %s" % (x.w.probes, x.w.tickets))
+       "(5) a Windows build gap with an empty seed: its own class, nothing probed, its ticket filed: %s %s"
+       % (x.w.probes, x.w.tickets))
     for _ in range(10):
         x.tick(120)
     ok(len(checks(x)) == n0 and x.st("I0")["status"] == "blocked", "(1) no re-check while the ticket is open")
+    x.r = dict(x.r, reach_classes=shipped)
+    x.w.probe_says = (True, "jawabench_build_candidate exit 0")
     x.w.items["CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK"] = "done"
     for _ in range(4):
         if x.st("I0")["status"] == "checking":
             break
         x.tick()
-    ok(len(checks(x)) == n0 + 1 and x.st("I0")["candidate"]["sha"] == "sha1",
-       "(4) the ticket closed: the same sha checked once: %s" % x.st("I0")["status"])
+    st = x.st("I0")
+    ok([(a, s) for _, a, s in x.w.probes] == [(["jawabench_build_candidate"], "sha1")],
+       "(7) the closed ticket re-probes with the shipped seed adapter at the item's sha: %s" % x.w.probes)
+    ok("jawabench_build_candidate" in ((st.get("contract") or {}).get("offbox") or []),
+       "(7) the applied overlay puts jawabench_build_candidate on the re-check: %s" % (st.get("contract") or {}).get("offbox"))
+    ok(len(checks(x)) == n0 + 1 and st["candidate"]["sha"] == "sha1",
+       "(4) the ticket closed: the same sha checked once: %s" % st["status"])
+    x.done()
+
+
+def t_windows_build_seed_probes():
+    """With the shipped rules a Windows build gap is repaired, not ticketed: the seed adapter is probed and applied."""
+    x = rig(probe=(True, "jawabench_build_candidate exit 0"))
+    B.to_check(x, "I0")
+    blind(x, "I0", what="CANNOT REACH: build.py --gm: dotnet.exe returns 'Invalid argument'")
+    for _ in range(3):
+        x.tick()
+    st = x.st("I0")
+    ok([a for _, a, _ in x.w.probes][:1] == [["jawabench_build_candidate"]] and x.w.tickets == []
+       and "jawabench_build_candidate" in ((st.get("contract") or {}).get("offbox") or []),
+       "(5) shipped seed: probed, applied, no ticket: %s %s" % (x.w.probes, x.w.tickets))
     x.done()
 
 
@@ -431,7 +457,7 @@ def t_seat_tmp_reach():
 
 def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
-              t_windows_build_nothing_to_probe, t_every_waiter_released, t_legacy_off, t_clones_seed, t_store_seed,
+              t_windows_build_nothing_to_probe, t_windows_build_seed_probes, t_every_waiter_released, t_legacy_off, t_clones_seed, t_store_seed,
               t_closed_ticket_reseeds, t_seat_tmp_reach):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
