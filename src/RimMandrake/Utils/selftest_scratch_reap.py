@@ -1570,7 +1570,9 @@ def third_review_cases(td: Path, origin: Path):
         os.rename(pin, cr)
         live = object.__new__(R.Live)
         live.blind, live.paths = [], []
-        check(live._repo_of(str(wt)) is None and live.blind, "a gitdir that is not there is blind")
+        check(live._repo_of(str(wt)) is None and not live.blind
+              and (os.path.realpath(td / "no_such_repo.git"), "the missing gitdir a live worktree names") in live.paths,
+              "a gitdir that is not there is held by its path, not blind (REAPER_SPIKE_FIX_THREE_STRANGERS_AT_DOOR)")
         live.blind.clear()
         live._lenders(str(wt / "src"), quiet=True)
         check(not live.blind, "a named path in a pruned worktree is not blind")

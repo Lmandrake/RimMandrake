@@ -336,6 +336,9 @@ class Tree:
 
     def __init__(self, d: Path):
         self.newest, self.size, self.capped, self.errors, self.saves = 0.0, 0, False, [], []
+        # An entry gone between its listing and its stat was removed DURING the walk: someone is working in the tree
+        # (a selftest's rmtree, 2026-11-05 11:03Z: 106 rows). That is activity, not an unreadable spot.
+        self.vanished: list[str] = []
         self.nested: list[str] = []                     # a `.git` below the top: another repo, ignored or not
         self.top_ctime = 0                              # the pin must see this unmoved: see act
         self.sig = 0                                    # order-free sum over every entry below the top; see signature()
@@ -355,6 +358,9 @@ class Tree:
                     self.top_ctime = st.st_ctime_ns
                     self.sig += int.from_bytes(hashlib.sha256(b"top %d %d" % (st.st_mtime_ns, st.st_mode)).digest(), "big")
                 it = os.scandir(cur)
+            except FileNotFoundError:
+                self.vanished.append(cur)
+                continue
             except OSError as e:
                 self.errors.append(f"{cur}: {e.strerror}")
                 continue
@@ -367,6 +373,9 @@ class Tree:
                     try:
                         st = e.stat(follow_symlinks=False)
                         isdir = e.is_dir(follow_symlinks=False)
+                    except FileNotFoundError:
+                        self.vanished.append(e.path)
+                        continue
                     except OSError as x:
                         self.errors.append(f"{e.path}: {x.strerror}")
                         continue
@@ -645,11 +654,14 @@ class Live:
                 raise OSError(0, "no gitdir line")
             gd = os.path.join(d, m.group(1).strip())
             try:
-                os.stat(gd)                             # a gitdir that is not there is not a repo that borrows nothing
+                os.stat(gd)
             except FileNotFoundError:
-                if quiet:                               # but a path merely named in a pruned worktree is no live repo:
-                    return None                         # argv naming /home/mandrake/wt_p3 held every run (2026-11-05)
-                raise
+                # The gitdir is not there (a pruned worktree; /home/mandrake/wt_p3 names one in a repo that is gone
+                # too), so git reads no objects through it: nothing is borrowed. A process standing there made the scan
+                # blind and refused all 69 candidates (2026-11-05 15:01Z). Not blind: the named gitdir itself is held,
+                # so any candidate that holds that path (or comes to, in a race with its creation) is kept.
+                self.paths.append((os.path.realpath(gd), "the missing gitdir a live worktree names"))
+                return None
             try:
                 common = os.path.realpath(os.path.join(gd, open(os.path.join(gd, "commondir")).read().strip()))
             except FileNotFoundError:
@@ -1136,7 +1148,7 @@ def gitlink_files(c: Path) -> list[str]:
 
 def clone_state(c: Path) -> dict:
     """{hard: reasons to skip, soft: reasons to bundle, tips, unique, dirty}."""
-    out = {"hard": [], "soft": [], "tips": [], "unique": 0, "dirty": [], "changed": [], "tracked": 0}
+    out = {"hard": [], "soft": [], "tips": [], "unique": 0, "dirty": [], "changed": [], "tracked": 0, "corrupt": []}
     hard, soft = out["hard"], out["soft"]
     dotgit = c / ".git"
     if dotgit.is_file() or dotgit.is_symlink():
@@ -1144,6 +1156,7 @@ def clone_state(c: Path) -> dict:
         return out
     if git(c, "rev-parse", "--git-dir").returncode:
         hard.append(f"{c}: git cannot read it (corrupt or not a repo) — inspect by hand")
+        out["corrupt"].append(hard[-1])
         return out
     for m in ("rebase-merge", "rebase-apply", "MERGE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD", "BISECT_LOG"):
         if (dotgit / m).exists():
@@ -1167,6 +1180,7 @@ def clone_state(c: Path) -> dict:
     tips, n, changed, err = unique_commits(c, dead)
     if err:
         hard.append(f"{c}: {err}")
+        out["corrupt"].append(hard[-1])
     elif n:
         out["tips"], out["unique"] = tips, n
         no_remote = "" if git(c, "remote").stdout.strip() else ", no remote at all"
@@ -1186,11 +1200,13 @@ def clone_state(c: Path) -> dict:
     flags = git(c, "ls-files", "-v", "-z")
     if flags.returncode:
         hard.append(f"{c}: cannot read the index flags")
+        out["corrupt"].append(hard[-1])
     elif any(e and (e[0].islower() or (e[0] == "S" and os.path.lexists(c / e[2:]))) for e in flags.stdout.split("\0")):
         hard.append(f"{c}: a file is marked assume-unchanged or skip-worktree, so git status cannot vouch for it")
     paths, tracked, untracked, size, err = dirty_files(c)
     if err:
         hard.append(f"{c}: {err}")
+        out["corrupt"].append(hard[-1])
     else:
         out["dirty"], out["tracked"] = paths, tracked
         if tracked:
@@ -1340,7 +1356,7 @@ class Ctx:
             self.borrows = Borrows()
 
     def global_holds(self) -> list[str]:
-        return [f"cannot see a process: {x}" for x in self.live.blind[:3]] \
+        return [f"cannot see a process: {x}" for x in list(dict.fromkeys(self.live.blind))[:3]] \
             + [f"cannot read a borrower file: {x}" for x in self.borrows.hold[:3]]
 
 
@@ -1366,6 +1382,34 @@ def base_row(kind: str, p: Path, tree: Tree | None, now: float) -> dict:
     return row
 
 
+def walked(p: Path) -> Tree:
+    """Tree(p), walked again once if something vanished under it: a single delete mid-walk is not a changing tree."""
+    tree = Tree(p)
+    if not tree.vanished:
+        return tree
+    tree = Tree(p)
+    for v in list(tree.vanished):                       # still listed but never stat-able (a name WSL cannot map) is
+        try:                                            # no delete in progress: it is unreadable, and refused for it
+            listed = os.path.basename(v) in os.listdir(os.path.dirname(v))
+        except OSError:
+            listed = False
+        if listed:
+            tree.vanished.remove(v)
+            tree.errors.append(f"{v}: listed but cannot be read (No such file or directory)")
+    return tree
+
+
+def changing(row: dict, tree: Tree) -> dict | None:
+    """A tree still losing entries while we walk it is in use right now: never REFUSE (it is not unreadable, and a
+    refusal of what is mid-delete refused nothing, 2026-11-05 11:03Z), never DELETE (age is unprovable). YOUNG, marked
+    so judge_all drops it once it is gone."""
+    if not tree.vanished:
+        return None
+    row.update(verdict="YOUNG", changing=True, why=[f"changing during the scan: {tree.vanished[0]} vanished"
+                                                    + (f" (+{len(tree.vanished) - 1})" if len(tree.vanished) > 1 else "")])
+    return row
+
+
 def refuse(row: dict, why: list[str]) -> dict:
     row.update(verdict="REFUSE", why=row["why"] + why)
     return row
@@ -1384,12 +1428,14 @@ def judge_clone(p: Path, ctx: Ctx) -> dict:
     tree = None
     bad = guard(p)
     if not bad:
-        tree = Tree(p)
+        tree = walked(p)
     row = base_row("clone", p, tree, ctx.now)
     if bad:
         return refuse(row, [bad])
     if tree.capped:
         return refuse(row, [f"more than {WALK_CAP} entries: too big to age safely; inspect by hand"])
+    if changing(row, tree):
+        return row
     # Unreadable beats young: age cannot be proven over a tree we cannot read.
     if tree.errors:
         return refuse(row, [f"unreadable: {e}" for e in tree.errors[:3]])
@@ -1401,6 +1447,8 @@ def judge_clone(p: Path, ctx: Ctx) -> dict:
     why += st["hard"]
     why += [f"canonical save inside: {s}" for s in unpreserved_canon(p, tree.saves)[:3]]
     why += [f"a repo nested inside: {n}" for n in tree.nested[:3]]
+    if why and st["corrupt"] and set(why) <= set(st["corrupt"]):
+        row["corrupt"] = True                           # refused for git's reading alone: its session may say it once
     if why:
         return refuse(row, why)
     if st["soft"]:
@@ -1423,12 +1471,14 @@ def judge_session(p: Path, ctx: Ctx) -> tuple[dict, list[dict]]:
     tree = None
     bad = guard(p)
     if not bad:
-        tree = Tree(p)
+        tree = walked(p)
     row = base_row("session", p, tree, ctx.now)
     if bad:
         return refuse(row, [bad]), []
     if tree.capped:
         return refuse(row, [f"more than {WALK_CAP} entries — too big to age safely; inspect by hand"]), []
+    if changing(row, tree):
+        return row, []
     if ctx.now - tree.newest < ttl_s():
         row["verdict"] = "YOUNG"
         return row, []
@@ -1441,6 +1491,13 @@ def judge_session(p: Path, ctx: Ctx) -> tuple[dict, list[dict]]:
     row["bytes"] = max(0, tree.size - sum(r["bytes"] or 0 for r in rows))
     kept = [r for r in rows if r["verdict"] not in ("DELETE", "ARCHIVE")]
     why = ctx.borrows.of(p)                             # a bare repo is no clone: this is its only check
+    # Corrupt inner repos are ONE refusal, the session's: 94 of them in one FOUNDRY scratchpad (lender gone) were 94
+    # rows and ran the day proof red (2026-11-05 12:02Z). They stay kept; the session row names them all.
+    bad = [r for r in kept if r["verdict"] == "REFUSE" and r.get("corrupt")]
+    if bad:
+        why.append(f"{len(bad)} inner repo(s) git cannot read, kept: {bad[0]['path']}: {(bad[0]['why'] or ['?'])[0][:160]}")
+        row["corrupt_inner"] = [r["path"] for r in bad]
+        kept = [r for r in kept if not r.get("corrupt")]
     loose = [s for s in tree.saves if not any(s.startswith(r["path"] + "/") for r in rows)]    # a clone answers for its own
     why += [f"canonical save inside: {s}" for s in canonical_saves(loose)[:3]]
     if kept:
@@ -1448,7 +1505,7 @@ def judge_session(p: Path, ctx: Ctx) -> tuple[dict, list[dict]]:
     if row["bytes"] > RESIDUE_CAP:
         why.append(f"{human(row['bytes'])} of loose files, over the {human(RESIDUE_CAP)} preserve cap")
     if why:
-        return refuse(row, why), rows
+        return refuse(row, why), [r for r in rows if not (r["verdict"] == "REFUSE" and r.get("corrupt"))]
     if row["bytes"] or has_loose_file(p, row["clones"]):
         row.update(verdict="ARCHIVE", why=[f"{p}: {human(row['bytes'])} of loose session files"])
     return row, rows
@@ -1457,10 +1514,12 @@ def judge_session(p: Path, ctx: Ctx) -> tuple[dict, list[dict]]:
 def judge_fixture(p: Path, ctx: Ctx) -> dict:
     """An `enact_*` selftest fixture dir (RM_SCRATCH_FIX_ENACT_DIRS_UNREAPED): regenerable, no repo, so no archive."""
     bad = guard(p)
-    tree = None if bad else Tree(p)
+    tree = None if bad else walked(p)
     row = base_row("fixture", p, tree, ctx.now)
     if bad:
         return refuse(row, [bad])
+    if not tree.capped and changing(row, tree):
+        return row
     if tree.capped or tree.errors:
         return refuse(row, ["too big to age safely" if tree.capped else f"unreadable: {tree.errors[0]}"])
     if ctx.now - tree.newest < ttl_s():
@@ -1484,7 +1543,7 @@ def judge_all(ctx: Ctx) -> list[dict]:
             rows += inner + [s]
     # It can also vanish DURING its walk (106 /tmp selftest clones, 2026-11-05 11:03Z, OPS_SCRATCH_DIRT_MEASURE_AT_END_QLKI):
     # a refusal of a path no longer there refuses nothing, and its epoch age is not an age.
-    return [r for r in rows if r["verdict"] != "REFUSE" or os.path.lexists(r["path"])]
+    return [r for r in rows if (r["verdict"] != "REFUSE" and not r.get("changing")) or os.path.lexists(r["path"])]
 
 
 def human(n: int | None) -> str:
