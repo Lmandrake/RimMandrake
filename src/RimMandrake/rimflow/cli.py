@@ -4207,7 +4207,8 @@ def build_parser():
     return p
 
 
-READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex", "queue", "pilot", "incidents")
+READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex", "queue", "pilot", "incidents",
+             "namecheck")  # namecheck: a pure read the seatless nightly calls (NIGHTLY_COP_FIX_RED_MTJJIN_ODMC)
 
 
 # \u26d4 Bare assent is not an instruction. These are the words that mean "I agree
