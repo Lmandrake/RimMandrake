@@ -31,13 +31,17 @@ CORDS = "Source/SectionLayer_RM_MessyCords.cs"
 CB = "Source/Core/CordBuilder.cs"
 
 # part -> (label, drawSize [w, h] in cells, footprint, source)
+# the mast head is an overlay quad, not the mast's (2,4) graphic: TEXTURE WIDTH / 128 cells wide x 1 cell (main() sets the width
+# per row from its own picture: 256 px style art -> 2 x 1, the 128 px base art -> 1 x 1)
+MAST_TOP_SRC = f"{AER} DrawTops: plane10 scaled (top.mainTexture.width / 128f, 1, 1), i.e. texture px / 128 cells x 1 cell"
+MAST_TOPS = ("AerialMastTop", "AerialLampMastTop")
 STRAND = ([0.32, 0.08], "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord")
 PARTS = {
     "TapClamp":        ("power-tap clamp", [1.5, 1.5], f"{AER}:129 TapSize = 1.5 (v3 upright clamp, bite = canvas centre, jaws on their cord AerialMath.TapBiteInset 0.12 in from the node)"),
     "AerialMast":      ("power mast", [2.0, 4.0], "Defs/Aerial/RM_AerialAnchors.xml + RM_AerialStyles.xml drawSize (2,4)"),
-    "AerialMastTop":   ("power mast head (drawn above pawns)", [2.0, 4.0], "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"),
+    "AerialMastTop":   ("power mast head (drawn above pawns)", [2.0, 1.0], MAST_TOP_SRC),
     "AerialLampMast":  ("lamp mast", [2.0, 4.0], "Defs/Aerial drawSize (2,4)"),
-    "AerialLampMastTop": ("lamp mast head (drawn above pawns)", [2.0, 4.0], "AerialMaterials mast-head overlay, same quad as the mast drawSize (2,4)"),
+    "AerialLampMastTop": ("lamp mast head (drawn above pawns)", [2.0, 1.0], MAST_TOP_SRC),
     "WallBracket":     ("wall bracket", [1.0, 1.0], "Defs/Aerial drawSize (1,1), Graphic_Multi per facing"),
     "Insulator":       ("insulator", [0.25, 0.25], "AerialMaterials insulator overlay — size NOT located in source; 0.25 cells is an estimate"),
     "PoleTopDown":     ("pole seen from above", [1.0, 1.0], "AerialMaterials pole overlay — size NOT located in source; 1 cell is an estimate"),
@@ -59,19 +63,49 @@ PARTS = {
     "StandingLamp":    ("standing lamp", [1.0, 1.0], "Defs/RM_ConduitStyles.xml: inherits vanilla StandingLamp graphic (1x1)"),
     "SparkGlow":       ("spark glow", [0.5, 0.5], "CordMaterials.SparkGlow mote — size NOT located in source; 0.5 cells is an estimate"),
 }
-# FlowWorks hoses (moved there 2026-10-11): HoseMath / RM_MapComponent_Hoses constants
-HOSE_W = 0.38
+# FlowWorks hoses (moved there 2026-10-11): HoseMath / RM_MapComponent_Hoses constants (selftest_gss_art_manifest_sizes.py
+# re-reads the width, wrap, lip and fitting constants from the C#, so a retune there fails the test instead of silently
+# mis-sizing the sheet; the strand tile lengths and the reel drawSize are not pinned). Sizes are the shipped nominal case:
+# WidthScale 1, an empty (flat) hose, a mid-hose fitting (a port coupling is drawn larger by its `widen`).
+HM = "FlowWorks Source/Hose/HoseMath.cs"
+HC = "FlowWorks Source/Hose/RM_MapComponent_Hoses.cs"
+HOSE_W = 0.18                                   # HoseMath.FlatVisible (x WidthScale 1, the shipped thickness)
+PIECE_BAND = 0.25                               # HoseMath.PieceBand: a fitting canvas's hose band
+WRAP_K, WRAP_LEN, BIND_BAND = 1.3, 0.6, 0.95    # HoseMath.WrapK, HoseMath.WrapLength, RM_MapComponent_Hoses.BindBand
+FIT_MAX = {"Coupling": 0.508, "Nozzle": 0.375, "EndCap": 0.344}   # HoseMath.CouplingMax, NozzleMax, EndCapMax
+
+
+def fitting_size(max_band: float) -> float:
+    """HoseMath.FittingSize: matched to the hose by its band, never wider than 0.95 x the wrap."""
+    return round(min(HOSE_W / PIECE_BAND, 0.95 * WRAP_K * HOSE_W / max_band), 3)
+
+
 HOSE = {
-    "Strand_Flat":     ("hose, flat", [HOSE_W * 4, HOSE_W], "FlowWorks HoseMath.FlatVisible 0.38 cells across; tiled at width*4 (tile length estimated)"),
-    "Strand_Plump":    ("hose, full", [HOSE_W * 4, HOSE_W], "FlowWorks HoseMath.FlatVisible 0.38 (+PlumpExtra 0.085) across; tile length estimated"),
+    "Strand_Flat":     ("hose, flat", [HOSE_W * 4, HOSE_W], f"{HM} FlatVisible {HOSE_W} cells across; tiled at width*4 (tile length estimated)"),
+    "Strand_Plump":    ("hose, full", [HOSE_W * 4, HOSE_W], f"{HM} FlatVisible {HOSE_W} (+PlumpExtra 0.05) across; tile length estimated"),
     "Strand_Shadow":   ("hose shadow", [HOSE_W * 4, HOSE_W], "FlowWorks hose shadow at hose width; tile length estimated"),
-    "Reel_PumpHookup": ("hose reel, stored", [2.8, 2.8], "FlowWorks Defs/Hose/RM_HoseReel*.xml drawSize (2.8,2.8)"),
-    "Reel_Deployed":   ("hose reel, laid out", [2.8, 2.8], "FlowWorks reel drawSize (2.8,2.8)"),
+    "Reel_PumpHookup": ("hose reel, stored", [2.15, 2.15], "FlowWorks Defs/Hose/RM_HoseReel*.xml drawSize (2.15,2.15)"),
+    "Reel_Deployed":   ("hose reel, laid out", [2.15, 2.15], "FlowWorks reel drawSize (2.15,2.15)"),
+    # Binding: the wrap, drawn len x across (HC Wrap -> PieceXZ(hm.Binding, .., WrapLength, WrapWidth(vis) / BindBand)), never a square
+    "Binding":         ("hose binding wrap", [WRAP_LEN, round(WRAP_K * HOSE_W / BIND_BAND, 3)],
+                        f"{HC} Wrap: PieceXZ(Binding, WrapLength {WRAP_LEN} along x WrapWidth(vis)=WrapK {WRAP_K} x {HOSE_W} / BindBand {BIND_BAND} across)"),
+    # Mouth: EDGE-ON, a lip line (HoseMath.OpenEndLip: along 0.08 x vis, across 0.86 x vis), never a face-on disc
+    "Mouth":           ("hose open mouth (EDGE-ON lip, seen side-on)", [round(0.08 * HOSE_W, 4), round(0.86 * HOSE_W, 4)],
+                        f"{HM} OpenEndLip: drawn edge-on, along 0.08 x {HOSE_W} by across 0.86 x {HOSE_W} (HC PieceXZ(hm.Mouth, .., lipAlong, lipAcross))"),
 }
-for _p in ("Coupling_Brass", "Coupling_Bare", "Nozzle", "Nozzle_Bare", "EndCap", "EndCap_Bare", "Mouth", "Binding"):
-    HOSE[_p] = (("hose " + _p.replace("_", " ").lower()), [round(HOSE_W / 0.25, 2)] * 2,
-                "FlowWorks RM_MapComponent_Hoses.PieceBand: the 128 px canvas is scaled so its 0.25 hose band = hose width 0.38 -> 1.52 cells")
+for _p in ("Coupling_Brass", "Coupling_Bare", "Nozzle", "Nozzle_Bare", "EndCap", "EndCap_Bare"):
+    _mb = FIT_MAX[_p.split("_")[0]]
+    HOSE[_p] = (("hose " + _p.replace("_", " ").lower()), [fitting_size(_mb)] * 2,
+                f"{HM} FittingSize(vis {HOSE_W}, PieceBand {PIECE_BAND}, maxBand {_mb}) = min(vis/band, 0.95 x wrap/maxBand)")
 LOOK_ORDER = {l: i for i, l in enumerate(LOOKS)}
+
+
+def png_width(path: Path) -> int:
+    """A PNG's pixel width from its IHDR (bytes 16-20), no image library needed."""
+    head = path.read_bytes()[:24]
+    if head[:8] != b"\x89PNG\r\n\x1a\n":
+        raise SystemExit(f"not a PNG: {path}")
+    return int.from_bytes(head[16:20], "big")
 
 
 def classify_gss(rel: str):
@@ -110,6 +144,7 @@ def classify_gss(rel: str):
 
 def classify_hose(rel: str):
     res = re.sub(r"\.png$", "", rel)
+    res = re.sub(r"_(north|east|south|west)$", "", res)   # the reel's Graphic_Multi facings are one picture's row
     p = res.split("/")[3:]                       # drop RimMandrake/FlowWorks/Hose
     if p[0] == "Styles":
         return p[2], p[1], "", res
@@ -118,6 +153,11 @@ def classify_hose(rel: str):
 
 def row(part, look, variant, res_list, table, section, rk):
     label, ds, src = table[part]
+    if section == "GSS" and part in MAST_TOPS:      # an overlay quad whose width is its own picture's (MAST_TOP_SRC)
+        widths = {png_width(GSS_TEX / f"{r}.png") for r in res_list}
+        if len(widths) != 1:
+            raise SystemExit(f"{part} {look}: its pictures differ in width {sorted(widths)}; one row cannot hold one size")
+        ds = [widths.pop() / 128, 1.0]
     lk = look if look in LOOKS else ("all looks" if look == "shared" else "base def art (when no look is set)")
     li = LOOK_ORDER.get(look, 9 if look == "base" else 8)
     key = f"{section}_{rk:02d}_{part}_{li}{look}" + (f"_{variant}" if variant else "")
