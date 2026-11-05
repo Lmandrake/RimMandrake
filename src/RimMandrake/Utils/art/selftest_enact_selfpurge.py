@@ -94,6 +94,10 @@ def main():
         check(not L.store_has(s["oX"]) and not L.store_has(s["bB_n"]) and {s["oX"], s["bB_n"]} <= set(L.Index().bans),
               "same-row ✕ bytes deleted from the store and banned")
         idx = L.Index()
+        # the loop below checks only the keeps it finds: prove the one it is about exists, or it passes on none
+        check(any((r.get("target") or {}).get("row") == "RM_Beet" and r.get("verdict") == "keep"
+                  and (r.get("target") or {}).get("shas") for r in idx.rulings),
+              "ingest recorded RM_Beet's keep with its pictures (the ✕ check below is not run on nothing)")
         for r in idx.rulings:
             t = r.get("target") or {}
             if t.get("row") in ("RM_Beet", "RM_Aero") and r.get("verdict") == "keep":
