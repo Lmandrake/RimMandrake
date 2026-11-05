@@ -4,9 +4,13 @@
 # L4 is a ledger read: exits 0 only when an OWNER event on this item, after the 2026-11-03 start, records him keeping the review.
 live-mods: RimMandrake.FlowWorks
 live-proof L1: python.exe src/RimMandrake/FlowWorks/northstar/water_looks_proof.py --only A2_BAND_WIDENS_WITH_GAP,A2_BRIM_FULL_NO_BAND --skip-offline
-live-proof L3: python.exe src/RimMandrake/FlowWorks/northstar/water_looks_proof.py --only A1_FIVE_METRES_NAVY,A1_TEN_METRES_DARKER,A1_TERRAIN_STILL_WATERDEEP,A2_BAND_WIDENS_WITH_GAP,A2_BRIM_FULL_NO_BAND --skip-offline
+live-proof L3: python.exe src/RimMandrake/FlowWorks/northstar/water_looks_proof.py --only A1_FIVE_METRES_NAVY,A1_TEN_METRES_DARKER,A1_TERRAIN_STILL_WATERDEEP,A2_BAND_WIDENS_WITH_GAP,A2_BRIM_FULL_NO_BAND --skip-offline && python.exe src/RimMandrake/FlowWorks/northstar/wall_faces_proof.py
 live-proof L4: python3 -c "import json,re,sys; ev=[json.loads(l) for l in open('infrastructure/state/ledger/events/OWNER.jsonl') if 'WATER_DEPTH_RESKIN_HE_LOOKS_FIRST' in l]; ok=[e for e in ev if e.get('ts','')>'2026-11-03T17:20' and re.search(r'review|water look|wall band|tint',(e.get('byCard') or '')+(e.get('ownerSaid') or '')+(e.get('text') or ''),re.I) and re.search(r'\bkeep|\bkept|approve',(e.get('byCard') or '')+(e.get('ownerSaid') or ''),re.I)]; sys.exit(0 if ok else 1)"
 # gen 3: L3's distinguishability is pinned OFFLINE first by SelfTest WallFaces_five_looks_by_drop_to_over_2m (drops 0.5..2.5 m give
 # five different faces) and WallFaces_floor_bands_past_2m (2/4/8 m floors differ); both RED at ca3c9d4a (faces and FootDarkness
 # saturate at D4 = 2 m). gen 5 fixed RM_WallFaceMath at 5232afe8 (fifth look, NorthMax 0.62; FootDarkness 2/4/8 m = 0.84/0.90/0.94):
-# both GREEN. The live frame judge for L3 (are the five looks and the floor bands legible on screen) is still owed.
+# both GREEN. gen 7: the L3 line also runs northstar/wall_faces_proof.py: it stages dry pits at 0.5/1/1.5/2/2.5 m, a wet 2.5 m pit
+# with 1 m of water, and 4/8 m floors (origin 40,52, clear of water_looks' site), reads each pit's hollow from the game and calls the
+# LOADED DLL's RM_WallFaceMath ExposedDrop/NorthFaceHeight/SideFaceWidth/FootDarkness (the calls RM_ExcavationWalls draws with);
+# rows L3_FIVE_WALL_LOOKS_BY_DROP and L3_FLOOR_BANDS_PAST_2M FAIL on any two equal (an old ca3c9d4a deploy goes red). It is a state
+# read, not a pixel judge; legibility on screen is the owner's L4 look.
