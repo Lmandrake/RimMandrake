@@ -351,6 +351,38 @@ def test_twins(tmp: Path):
               for rel in ("failed/good.json", "done/good.json", "done/good.manifest.json")))
     check("twins: re-scan finds nothing left to prune",
           not [p for p in AS.twins_plan(st) if p["decision"] == "KEEP_DONE"])
+    # a committed per-job decision record excuses a lost PNG only for a job it rules purged/superseded
+    rec = tmp / "decisions.json"
+    rec.write_text(json.dumps({"jobs": {"nopng": {"decision": "purged", "why": "owner purged"},
+                                        "badman": {"decision": "superseded"}, "late": {"decision": "superseded"},
+                                        "halfstored": {"decision": "installed"}, "repoonly": "superseded"}}))
+    ret = AS.load_decisions([rec])
+    check("twins: load_decisions keeps only purged/superseded rulings", set(ret) == {"nopng", "badman", "late"}
+          and ret["nopng"] == {"decision": "purged", "why": "owner purged", "record": str(rec)})
+    bad = tmp / "notarecord.json"
+    bad.write_text("[]")
+    try:
+        AS.load_decisions([bad])
+        check("twins: a file with no jobs object is refused as a decision record", False)
+    except SystemExit:
+        check("twins: a file with no jobs object is refused as a decision record", True)
+    except AttributeError:
+        check("twins: a file with no jobs object is refused as a decision record", False)
+    rp = {p["id"]: p for p in AS.twins_plan(st, retired=ret)}
+    check("twins: a ruled-retired job with no PNG -> KEEP_DONE, the ruling as evidence",
+          rp["nopng"]["decision"] == "KEEP_DONE" and rp["nopng"]["evidence"] == {"retired": ret["nopng"]})
+    check("twins: a ruling excuses only the missing PNG (done not ok / PNG newer stay AMBIGUOUS; installed excuses "
+          "nothing)", rp["badman"]["decision"] == rp["late"]["decision"] == rp["halfstored"]["decision"]
+          == "AMBIGUOUS")
+    with contextlib.redirect_stdout(io.StringIO()):
+        rc = AS.main(["--state", str(st), "twins", "--decisions", str(rec), "--apply", "--why", "selftest2",
+                      "--backup-root", str(bk)])
+    log2 = [json.loads(x) for f in (st / AS.PRUNED_DIR).glob("*/PRUNED.jsonl") for x in f.read_text().splitlines()
+            if json.loads(x)["why"] == "selftest2"]
+    check("twins: --decisions --apply moves the ruled job's failed/ files with the ruling in provenance",
+          rc == 2 and sorted(r["file"].split("/")[-1] for r in log2) == ["nopng.json", "nopng.manifest.json"]
+          and all(r["evidence"] == {"retired": ret["nopng"]} for r in log2)
+          and not (st / "failed" / "nopng.json").exists() and (st / "done" / "nopng.json").is_file())
 
 
 def main() -> int:

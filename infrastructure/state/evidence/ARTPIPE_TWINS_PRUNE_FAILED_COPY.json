@@ -1,0 +1,1620 @@
+{
+ "item": "ARTPIPE_TWINS_PRUNE_FAILED_COPY",
+ "tool": "src/RimMandrake/Utils/artpipe/artpipe_state.py twins",
+ "decision_record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json",
+ "state_dir": "D:\\ClaudeWork\\rimmandrake\\artpipe",
+ "rescan_after": [
+  "twins: 0 ids ({}); 0 failed/ file(s) to prune",
+  "DRY RUN \u2014 nothing moved; --apply --why \"\u2026\" moves the KEEP_DONE failed/ files"
+ ],
+ "pruned_runs": {
+  "20261026T175700Z": [
+   {
+    "id": "RM_Hwelgrue_north",
+    "file": "failed/RM_Hwelgrue_north.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/RM_Hwelgrue_north.json",
+    "sha256": "834f5ca20f6ca7f62a1e56fdb469f3f4e1113311a22b9bd3360e280db2d51770",
+    "kept": [
+     "done/RM_Hwelgrue_north.json",
+     "done/RM_Hwelgrue_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791057141.2411172,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/RM_Hwelgrue_north.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "RM_Hwelgrue_north",
+    "file": "failed/RM_Hwelgrue_north.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/RM_Hwelgrue_north.manifest.json",
+    "sha256": "8304592ed1c4baa0b0f63897c02e4a294346721a19bbd8a34234fff7a25be96b",
+    "kept": [
+     "done/RM_Hwelgrue_north.json",
+     "done/RM_Hwelgrue_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791057141.2411172,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/RM_Hwelgrue_north.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "RM_Selvix",
+    "file": "failed/RM_Selvix.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/RM_Selvix.json",
+    "sha256": "0b3a6fecafc491b5c39b2f7463bd2a3f06de0363ef25b2e6293ff9f3ecf90592",
+    "kept": [
+     "done/RM_Selvix.json",
+     "done/RM_Selvix.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "5ea32dacab809a37bf3fb31e2da3728dee84d296b3148f13537a627eb9f390de"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791062163.4798472,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/RM_Selvix.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "RM_Selvix",
+    "file": "failed/RM_Selvix.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/RM_Selvix.manifest.json",
+    "sha256": "c3b084d367ad898ccb51eaa7fa0273959a09ac86829f1e29e59626018d186068",
+    "kept": [
+     "done/RM_Selvix.json",
+     "done/RM_Selvix.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "5ea32dacab809a37bf3fb31e2da3728dee84d296b3148f13537a627eb9f390de"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791062163.4798472,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/RM_Selvix.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "RM_Vhaulk_v3_east",
+    "file": "failed/RM_Vhaulk_v3_east.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/RM_Vhaulk_v3_east.json",
+    "sha256": "be02204888ca96f17c19feab4ecc9c821d224cd88c891b306758bb0a5d3ff671",
+    "kept": [
+     "done/RM_Vhaulk_v3_east.json",
+     "done/RM_Vhaulk_v3_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "07fbf467c0b343208be29534093a52f890445c4eedf0c2183b29af32eb0b750f"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791173367.9447594,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/RM_Vhaulk_v3_east.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "RM_Vhaulk_v3_east",
+    "file": "failed/RM_Vhaulk_v3_east.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/RM_Vhaulk_v3_east.manifest.json",
+    "sha256": "f918f5f419b36aebc4002446112c6d08979effb4e07ccc3ef090378366a6aef9",
+    "kept": [
+     "done/RM_Vhaulk_v3_east.json",
+     "done/RM_Vhaulk_v3_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "07fbf467c0b343208be29534093a52f890445c4eedf0c2183b29af32eb0b750f"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791173367.9447594,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/RM_Vhaulk_v3_east.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "RM_Yammeth_south",
+    "file": "failed/RM_Yammeth_south.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/RM_Yammeth_south.json",
+    "sha256": "d7bfec75ba9a83feb24fce5d181cfdc76744dea9454c7bb28adf2fe3a912100f",
+    "kept": [
+     "done/RM_Yammeth_south.json",
+     "done/RM_Yammeth_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "03555f27c0d22372d6d6a5c71848fbdda268df938961b61838d5f96a57be108c"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791062075.0551848,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/RM_Yammeth_south.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "RM_Yammeth_south",
+    "file": "failed/RM_Yammeth_south.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/RM_Yammeth_south.manifest.json",
+    "sha256": "313dc59a855d11b1192668240347a6399588d5a86b5de9a84553316af297185b",
+    "kept": [
+     "done/RM_Yammeth_south.json",
+     "done/RM_Yammeth_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "03555f27c0d22372d6d6a5c71848fbdda268df938961b61838d5f96a57be108c"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791062075.0551848,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/RM_Yammeth_south.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "bluedesert_Dovvik_v2_north",
+    "file": "failed/bluedesert_Dovvik_v2_north.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/bluedesert_Dovvik_v2_north.json",
+    "sha256": "d0951c86ad7c27718377b656b6ca6880323792fcbee7371a353d2f87f457d38a",
+    "kept": [
+     "done/bluedesert_Dovvik_v2_north.json",
+     "done/bluedesert_Dovvik_v2_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "fb814f932cccf41c9a0f51991a1be25422848e89cd600e40af769632914793e0"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791173540.832755,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/bluedesert_Dovvik_v2_north.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "bluedesert_Dovvik_v2_north",
+    "file": "failed/bluedesert_Dovvik_v2_north.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/bluedesert_Dovvik_v2_north.manifest.json",
+    "sha256": "b0aebb8412fb062664e59a1a50c411c4e63d55d50c7c2b25f8c7a84e810cd062",
+    "kept": [
+     "done/bluedesert_Dovvik_v2_north.json",
+     "done/bluedesert_Dovvik_v2_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "fb814f932cccf41c9a0f51991a1be25422848e89cd600e40af769632914793e0"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791173540.832755,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/bluedesert_Dovvik_v2_north.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "bluedesert_Thunderbeast_v2_south",
+    "file": "failed/bluedesert_Thunderbeast_v2_south.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/bluedesert_Thunderbeast_v2_south.json",
+    "sha256": "9e8cdc6f4bb38fe233a887d650a4b903b9c38d88c08b74be95f0c7adda541987",
+    "kept": [
+     "done/bluedesert_Thunderbeast_v2_south.json",
+     "done/bluedesert_Thunderbeast_v2_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef",
+      "b3e08d85a3db0739d1ac5e6c97fcd82b09e1e7a957482129761a54d5dd7412c3"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791226091.4759982,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/bluedesert_Thunderbeast_v2_south.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "bluedesert_Thunderbeast_v2_south",
+    "file": "failed/bluedesert_Thunderbeast_v2_south.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/bluedesert_Thunderbeast_v2_south.manifest.json",
+    "sha256": "53735f2861a2a8608e5dd7cc37117d439aea5c1171a87f76ea3e55f85db1da24",
+    "kept": [
+     "done/bluedesert_Thunderbeast_v2_south.json",
+     "done/bluedesert_Thunderbeast_v2_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef",
+      "b3e08d85a3db0739d1ac5e6c97fcd82b09e1e7a957482129761a54d5dd7412c3"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791226091.4759982,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/bluedesert_Thunderbeast_v2_south.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "bluedesert_Vrisk_v2_east",
+    "file": "failed/bluedesert_Vrisk_v2_east.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/bluedesert_Vrisk_v2_east.json",
+    "sha256": "c4e54cae1d22e6a5a79cb0e95d93fcb39d6f0febd7b879565f8d2cb756cddbd1",
+    "kept": [
+     "done/bluedesert_Vrisk_v2_east.json",
+     "done/bluedesert_Vrisk_v2_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "9708ec22481c0625529c5a44bb1c984bf786c3c60dbd810905a0871571b8841f"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791173846.274397,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/bluedesert_Vrisk_v2_east.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "bluedesert_Vrisk_v2_east",
+    "file": "failed/bluedesert_Vrisk_v2_east.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/bluedesert_Vrisk_v2_east.manifest.json",
+    "sha256": "622062f0ba1d3bb4d002f3fbbb18b34d1f880e79b06fa6f8c3c54b70f905496f",
+    "kept": [
+     "done/bluedesert_Vrisk_v2_east.json",
+     "done/bluedesert_Vrisk_v2_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "9708ec22481c0625529c5a44bb1c984bf786c3c60dbd810905a0871571b8841f"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791173846.274397,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/bluedesert_Vrisk_v2_east.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "bluedesert_Vrisk_v2_north",
+    "file": "failed/bluedesert_Vrisk_v2_north.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/bluedesert_Vrisk_v2_north.json",
+    "sha256": "69a1957db4edc5da3415fc986c302cbb13348e9ba284f7a095cf71c95b9924ac",
+    "kept": [
+     "done/bluedesert_Vrisk_v2_north.json",
+     "done/bluedesert_Vrisk_v2_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "44e40e7b7d9e18bd16a946368c45c619c8923108655993d78c71d0a09b5c2256"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791191690.6037266,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/bluedesert_Vrisk_v2_north.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "bluedesert_Vrisk_v2_north",
+    "file": "failed/bluedesert_Vrisk_v2_north.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/bluedesert_Vrisk_v2_north.manifest.json",
+    "sha256": "ad9c95d5e656c40766c4619de7f7baee730f059319ba5ef9ef40d1752aa7bf14",
+    "kept": [
+     "done/bluedesert_Vrisk_v2_north.json",
+     "done/bluedesert_Vrisk_v2_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "44e40e7b7d9e18bd16a946368c45c619c8923108655993d78c71d0a09b5c2256"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791191690.6037266,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/bluedesert_Vrisk_v2_north.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "bluedesert_Vrisk_v2_south",
+    "file": "failed/bluedesert_Vrisk_v2_south.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/bluedesert_Vrisk_v2_south.json",
+    "sha256": "ae377bc17e2f794e2f20eacf2c791afc5a03a7dadde6e5bead28d1745df46e1a",
+    "kept": [
+     "done/bluedesert_Vrisk_v2_south.json",
+     "done/bluedesert_Vrisk_v2_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791173990.6610389,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/bluedesert_Vrisk_v2_south.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "bluedesert_Vrisk_v2_south",
+    "file": "failed/bluedesert_Vrisk_v2_south.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/bluedesert_Vrisk_v2_south.manifest.json",
+    "sha256": "a8b8ae675f4b3f726330128ce7eab49d5674d036584041fd448b4f3157057765",
+    "kept": [
+     "done/bluedesert_Vrisk_v2_south.json",
+     "done/bluedesert_Vrisk_v2_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791173990.6610389,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/bluedesert_Vrisk_v2_south.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "cauldronsoilrich_breathes_a",
+    "file": "failed/cauldronsoilrich_breathes_a.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/cauldronsoilrich_breathes_a.manifest.json",
+    "sha256": "5b9083047f7a40013c58b150d1f01c70e7b78c107ecaaced73ebba2df34be225",
+    "kept": [
+     "done/cauldronsoilrich_breathes_a.json",
+     "done/cauldronsoilrich_breathes_a.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": null,
+    "failed_status": "worker_error",
+    "last_validated": [
+     1792544504.164672,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/cauldronsoilrich_breathes_a.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "cauldronsoilrich_breathes_a",
+    "file": "failed/cauldronsoilrich_breathes_a.manifest.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/cauldronsoilrich_breathes_a.manifest.manifest.json",
+    "sha256": "1baa3797cf3b162123ae5afecbe2603ae99655c0a1f1be67fba094f554734874",
+    "kept": [
+     "done/cauldronsoilrich_breathes_a.json",
+     "done/cauldronsoilrich_breathes_a.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": null,
+    "failed_status": "worker_error",
+    "last_validated": [
+     1792544504.164672,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/cauldronsoilrich_breathes_a.manifest.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "desert_gap_Destroyer_v1_south",
+    "file": "failed/desert_gap_Destroyer_v1_south.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/desert_gap_Destroyer_v1_south.json",
+    "sha256": "8ef4055936f758714eae9bf54a1149ecdc3dad24558a45704d12afb6a34c3c01",
+    "kept": [
+     "done/desert_gap_Destroyer_v1_south.json",
+     "done/desert_gap_Destroyer_v1_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "0e55b96521516d7f95fc4163ca758226a9a90d380dcf4075827af8104d711e63",
+      "ef84340faa88954652cbcb8a6e0ec18c4995ad9b523c477baf9a60272b16ceba"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791174116.6915112,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/desert_gap_Destroyer_v1_south.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "desert_gap_Destroyer_v1_south",
+    "file": "failed/desert_gap_Destroyer_v1_south.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/desert_gap_Destroyer_v1_south.manifest.json",
+    "sha256": "d4747fb9a54d7a1e70a1dd9a6b4f6ac6a5d45842cd47940ee3e2761a9f217758",
+    "kept": [
+     "done/desert_gap_Destroyer_v1_south.json",
+     "done/desert_gap_Destroyer_v1_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "0e55b96521516d7f95fc4163ca758226a9a90d380dcf4075827af8104d711e63",
+      "ef84340faa88954652cbcb8a6e0ec18c4995ad9b523c477baf9a60272b16ceba"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791174116.6915112,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/desert_gap_Destroyer_v1_south.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "longshade_rsw_bantha_v1_south",
+    "file": "failed/longshade_rsw_bantha_v1_south.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/longshade_rsw_bantha_v1_south.json",
+    "sha256": "883288c4b333b3c03ff9fa097a08dd628aefcb3c25419bdb08bd361efb03bb78",
+    "kept": [
+     "done/longshade_rsw_bantha_v1_south.json",
+     "done/longshade_rsw_bantha_v1_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "95075596f9498905c714cf75c4752cdaf087486ca6653487afef43e98c244535"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791174248.6248183,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/longshade_rsw_bantha_v1_south.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "longshade_rsw_bantha_v1_south",
+    "file": "failed/longshade_rsw_bantha_v1_south.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/longshade_rsw_bantha_v1_south.manifest.json",
+    "sha256": "221ee11914e38be696e5ac6773c330a066d28c70175645ea22cfc60219c8a13d",
+    "kept": [
+     "done/longshade_rsw_bantha_v1_south.json",
+     "done/longshade_rsw_bantha_v1_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "95075596f9498905c714cf75c4752cdaf087486ca6653487afef43e98c244535"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791174248.6248183,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/longshade_rsw_bantha_v1_south.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "longshade_rsw_bantha_v3_north",
+    "file": "failed/longshade_rsw_bantha_v3_north.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/longshade_rsw_bantha_v3_north.json",
+    "sha256": "c01bd1e5a9c0c76ff0febbd61fc5836726abb91fd2e57f82d6a84f5c9759c759",
+    "kept": [
+     "done/longshade_rsw_bantha_v3_north.json",
+     "done/longshade_rsw_bantha_v3_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "f5ba9dbde7881347453a192a7fe822410e1ae0c27b02f94dc72d9e9268a2272d"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791174467.5364213,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/longshade_rsw_bantha_v3_north.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "longshade_rsw_bantha_v3_north",
+    "file": "failed/longshade_rsw_bantha_v3_north.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/longshade_rsw_bantha_v3_north.manifest.json",
+    "sha256": "d3d2e969128108f45d23d8a45c4e2aac45084a79cb4d46b04001450849d8e346",
+    "kept": [
+     "done/longshade_rsw_bantha_v3_north.json",
+     "done/longshade_rsw_bantha_v3_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "f5ba9dbde7881347453a192a7fe822410e1ae0c27b02f94dc72d9e9268a2272d"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791174467.5364213,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/longshade_rsw_bantha_v3_north.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "longshade_rsw_ronto_v1_east",
+    "file": "failed/longshade_rsw_ronto_v1_east.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/longshade_rsw_ronto_v1_east.json",
+    "sha256": "5b779d8420f5ef9e13e6186811905e519d995cf9bb76a41336289e9047a11736",
+    "kept": [
+     "done/longshade_rsw_ronto_v1_east.json",
+     "done/longshade_rsw_ronto_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "46f2157a1fe6d8c1fe4c1a94e2dfff4f4c1db40e5e2f89e6cf43e470695e627f",
+      "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791229197.1671562,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/longshade_rsw_ronto_v1_east.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "longshade_rsw_ronto_v1_east",
+    "file": "failed/longshade_rsw_ronto_v1_east.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/longshade_rsw_ronto_v1_east.manifest.json",
+    "sha256": "7d9c17a683dd07dc81241f03173564c773272c9fce1eb53b4d82b4156ff34ee9",
+    "kept": [
+     "done/longshade_rsw_ronto_v1_east.json",
+     "done/longshade_rsw_ronto_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "46f2157a1fe6d8c1fe4c1a94e2dfff4f4c1db40e5e2f89e6cf43e470695e627f",
+      "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098"
+     ]
+    },
+    "failed_status": "failed_canon",
+    "last_validated": [
+     1791229197.1671562,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/longshade_rsw_ronto_v1_east.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_JOE_Landopus_swim_v1_east",
+    "file": "failed/ls_regen_JOE_Landopus_swim_v1_east.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_JOE_Landopus_swim_v1_east.json",
+    "sha256": "b50060630c30157ac60473b732841df2a7a50a547835ee2f29f1293de215059d",
+    "kept": [
+     "done/ls_regen_JOE_Landopus_swim_v1_east.json",
+     "done/ls_regen_JOE_Landopus_swim_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "9a6b1b3634b21b475917af6a3955c5721742d8c8c499ec2af1bf09f00e8ceb17"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791198250.314158,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_JOE_Landopus_swim_v1_east.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_JOE_Landopus_swim_v1_east",
+    "file": "failed/ls_regen_JOE_Landopus_swim_v1_east.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_JOE_Landopus_swim_v1_east.manifest.json",
+    "sha256": "897207be7972e48279aee94e4a86e8035eac86efb4324a855d215486225bbe53",
+    "kept": [
+     "done/ls_regen_JOE_Landopus_swim_v1_east.json",
+     "done/ls_regen_JOE_Landopus_swim_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "9a6b1b3634b21b475917af6a3955c5721742d8c8c499ec2af1bf09f00e8ceb17"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791198250.314158,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_JOE_Landopus_swim_v1_east.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Dakkra_down_v1_east",
+    "file": "failed/ls_regen_RM_Dakkra_down_v1_east.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Dakkra_down_v1_east.json",
+    "sha256": "daf2ef99e243e392bf2005e281045b4214c227427785675c230e2944e1318cc5",
+    "kept": [
+     "done/ls_regen_RM_Dakkra_down_v1_east.json",
+     "done/ls_regen_RM_Dakkra_down_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "20df6497bbad7e2af4dc48ad61871cfc9a49180f9904cefa630ca73f51ea14c8"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791198439.233147,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Dakkra_down_v1_east.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Dakkra_down_v1_east",
+    "file": "failed/ls_regen_RM_Dakkra_down_v1_east.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Dakkra_down_v1_east.manifest.json",
+    "sha256": "64248c79c5de7d4c180eb9a77e03949decf18b573edb7ce8ad71964707d323ad",
+    "kept": [
+     "done/ls_regen_RM_Dakkra_down_v1_east.json",
+     "done/ls_regen_RM_Dakkra_down_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "20df6497bbad7e2af4dc48ad61871cfc9a49180f9904cefa630ca73f51ea14c8"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791198439.233147,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Dakkra_down_v1_east.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Dakkra_rest_v1_east",
+    "file": "failed/ls_regen_RM_Dakkra_rest_v1_east.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Dakkra_rest_v1_east.json",
+    "sha256": "3d67def7e37d5e90419dd0025c23d6c9391070341bc8bca46759c6c0708ec863",
+    "kept": [
+     "done/ls_regen_RM_Dakkra_rest_v1_east.json",
+     "done/ls_regen_RM_Dakkra_rest_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089"
+     ]
+    },
+    "failed_status": null,
+    "last_validated": [
+     1791198502.4536145,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Dakkra_rest_v1_east.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Gennok_v1_east",
+    "file": "failed/ls_regen_RM_Gennok_v1_east.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Gennok_v1_east.json",
+    "sha256": "68eb4a414a62d3f71cbb6789b9d3abb25f2b8647b762772e7dc87565e0ef702e",
+    "kept": [
+     "done/ls_regen_RM_Gennok_v1_east.json",
+     "done/ls_regen_RM_Gennok_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "f93e3535210b155743d1efac07a745e674520d171d5495de4c5058ba9d3cc3ce"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791198615.6692708,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Gennok_v1_east.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Gennok_v1_east",
+    "file": "failed/ls_regen_RM_Gennok_v1_east.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Gennok_v1_east.manifest.json",
+    "sha256": "a56515f580ee66049ee4c0967be379db8c3b5a4d7201479d460011036d90d197",
+    "kept": [
+     "done/ls_regen_RM_Gennok_v1_east.json",
+     "done/ls_regen_RM_Gennok_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "f93e3535210b155743d1efac07a745e674520d171d5495de4c5058ba9d3cc3ce"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791198615.6692708,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Gennok_v1_east.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Gennok_v1_north",
+    "file": "failed/ls_regen_RM_Gennok_v1_north.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Gennok_v1_north.json",
+    "sha256": "fe8648a2cc2e51ddd61979cba5bbb9e46ec6c1c9cca5c8f6a78b56607114a455",
+    "kept": [
+     "done/ls_regen_RM_Gennok_v1_north.json",
+     "done/ls_regen_RM_Gennok_v1_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "d349110ae418ab24c77866e0dccab92cd0cff3c109a0f00624d1e2dce69fda63"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791199140.6853428,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Gennok_v1_north.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Gennok_v1_north",
+    "file": "failed/ls_regen_RM_Gennok_v1_north.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Gennok_v1_north.manifest.json",
+    "sha256": "e37a5f8491842d2eedd27bddcb2b8430451c69611583ef4df5c40c8ec38da403",
+    "kept": [
+     "done/ls_regen_RM_Gennok_v1_north.json",
+     "done/ls_regen_RM_Gennok_v1_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "d349110ae418ab24c77866e0dccab92cd0cff3c109a0f00624d1e2dce69fda63"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791199140.6853428,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Gennok_v1_north.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Gennok_v1_south",
+    "file": "failed/ls_regen_RM_Gennok_v1_south.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Gennok_v1_south.json",
+    "sha256": "da13e4e2c7f679463400edb13bbc742a4c42a4264beb4658af9fa3dc9feaae78",
+    "kept": [
+     "done/ls_regen_RM_Gennok_v1_south.json",
+     "done/ls_regen_RM_Gennok_v1_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "93a961fd0ef1b65983cba59d4b63d89ef24335e422cfd6615355f4003d88e7d0"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791198917.0673213,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Gennok_v1_south.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Gennok_v1_south",
+    "file": "failed/ls_regen_RM_Gennok_v1_south.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Gennok_v1_south.manifest.json",
+    "sha256": "bffe98bc990f164210cedd442ae12571b62720991e9824b8dc8e0808cf673ab5",
+    "kept": [
+     "done/ls_regen_RM_Gennok_v1_south.json",
+     "done/ls_regen_RM_Gennok_v1_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "93a961fd0ef1b65983cba59d4b63d89ef24335e422cfd6615355f4003d88e7d0"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791198917.0673213,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Gennok_v1_south.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Gloomcast_v1_east",
+    "file": "failed/ls_regen_RM_Gloomcast_v1_east.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Gloomcast_v1_east.json",
+    "sha256": "a295a2a6ac3a9aeb7dfa76708d651667f15b47bfc86e6b5b91b831352ad240f1",
+    "kept": [
+     "done/ls_regen_RM_Gloomcast_v1_east.json",
+     "done/ls_regen_RM_Gloomcast_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "760af72482f7515f8f622f893dc9762397f7f84447ccf1a4b5417c0bbf22d7ae"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791199012.3272622,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Gloomcast_v1_east.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Gloomcast_v1_east",
+    "file": "failed/ls_regen_RM_Gloomcast_v1_east.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Gloomcast_v1_east.manifest.json",
+    "sha256": "d943fb08379a32b00ecf25a590de777f5944548d4377065dd1f35bea786a96d0",
+    "kept": [
+     "done/ls_regen_RM_Gloomcast_v1_east.json",
+     "done/ls_regen_RM_Gloomcast_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "760af72482f7515f8f622f893dc9762397f7f84447ccf1a4b5417c0bbf22d7ae"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791199012.3272622,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Gloomcast_v1_east.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Gloomcast_v1_south",
+    "file": "failed/ls_regen_RM_Gloomcast_v1_south.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Gloomcast_v1_south.json",
+    "sha256": "f7e77daf930fd9ebb7ed291c1b2ff076352c770e4b32a526c247c30957e77639",
+    "kept": [
+     "done/ls_regen_RM_Gloomcast_v1_south.json",
+     "done/ls_regen_RM_Gloomcast_v1_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "37c4321e6fd55a4154b9a6b9372b21833fbd107997f0f78f9bc5e0a2ea1b17ee"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791199271.667552,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Gloomcast_v1_south.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "ls_regen_RM_Gloomcast_v1_south",
+    "file": "failed/ls_regen_RM_Gloomcast_v1_south.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/ls_regen_RM_Gloomcast_v1_south.manifest.json",
+    "sha256": "4cd3fb9c83a60f003aabe4f2b1d0077370848a95a59503403dd6cc030a9258f5",
+    "kept": [
+     "done/ls_regen_RM_Gloomcast_v1_south.json",
+     "done/ls_regen_RM_Gloomcast_v1_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "37c4321e6fd55a4154b9a6b9372b21833fbd107997f0f78f9bc5e0a2ea1b17ee"
+     ]
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791199271.667552,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/ls_regen_RM_Gloomcast_v1_south.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "rot_illoth_b_south",
+    "file": "failed/rot_illoth_b_south.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/rot_illoth_b_south.json",
+    "sha256": "420d8ee4b9df1e1552795fb4932794cc1480dde0c649d88672c7cb95bb658373",
+    "kept": [
+     "done/rot_illoth_b_south.json",
+     "done/rot_illoth_b_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "f79178ada94af101cf91d2801cbd4109f8c82fb616dd497b4ff4af2b5c47822e"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791043588.4220643,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/rot_illoth_b_south.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "rot_illoth_b_south",
+    "file": "failed/rot_illoth_b_south.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/rot_illoth_b_south.manifest.json",
+    "sha256": "53f211222989976c1cd1c38e9298fdc405ba042ea22954b77ab83549944991a1",
+    "kept": [
+     "done/rot_illoth_b_south.json",
+     "done/rot_illoth_b_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "f79178ada94af101cf91d2801cbd4109f8c82fb616dd497b4ff4af2b5c47822e"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791043588.4220643,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/rot_illoth_b_south.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "rot_thozzik_b_south",
+    "file": "failed/rot_thozzik_b_south.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/rot_thozzik_b_south.json",
+    "sha256": "cb0b7d2268cd8c54e39c45c9edb0eb329cfdb14d5dae602a1e2e0993ce2196be",
+    "kept": [
+     "done/rot_thozzik_b_south.json",
+     "done/rot_thozzik_b_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791043672.0166533,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/rot_thozzik_b_south.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "rot_thozzik_b_south",
+    "file": "failed/rot_thozzik_b_south.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/rot_thozzik_b_south.manifest.json",
+    "sha256": "807b065b50bf02e4e233ff3dd43e826e8ea8b6fa2ba02afc9019c91d667d4dc3",
+    "kept": [
+     "done/rot_thozzik_b_south.json",
+     "done/rot_thozzik_b_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791043672.0166533,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/rot_thozzik_b_south.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "rsw_blurrg_v2_north",
+    "file": "failed/rsw_blurrg_v2_north.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/rsw_blurrg_v2_north.json",
+    "sha256": "96ebf4c2d88372bc347930fad44fb8c266b961e996313a9a0470e2f70f5df5bd",
+    "kept": [
+     "done/rsw_blurrg_v2_north.json",
+     "done/rsw_blurrg_v2_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "e6cf149dd2cb4fd2949618602c280e4c9774466c884a71a3806291034726ce0d"
+     ]
+    },
+    "failed_status": "derivation_duplicate_check_error",
+    "last_validated": [
+     1790825679.6733024,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/rsw_blurrg_v2_north.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "rsw_blurrg_v2_north",
+    "file": "failed/rsw_blurrg_v2_north.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/rsw_blurrg_v2_north.manifest.json",
+    "sha256": "4436f5a236e0eba922d69eb6bbfc36d6dc3527488777d6406e90be34a55d5947",
+    "kept": [
+     "done/rsw_blurrg_v2_north.json",
+     "done/rsw_blurrg_v2_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "e6cf149dd2cb4fd2949618602c280e4c9774466c884a71a3806291034726ce0d"
+     ]
+    },
+    "failed_status": "derivation_duplicate_check_error",
+    "last_validated": [
+     1790825679.6733024,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/rsw_blurrg_v2_north.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "rut_greentideant_carapacewall_atlas",
+    "file": "failed/rut_greentideant_carapacewall_atlas.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/rut_greentideant_carapacewall_atlas.manifest.json",
+    "sha256": "456efda93b2c812a82cf24c6597495544325d2007cdfa32e899c7a93d0b03e07",
+    "kept": [
+     "done/rut_greentideant_carapacewall_atlas.json",
+     "done/rut_greentideant_carapacewall_atlas.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "f85bf85da059b3ae136d39b484f0145b0ee5b7041d19318213c6bef211f3780e"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1790627131.3890464,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/rut_greentideant_carapacewall_atlas.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   },
+   {
+    "id": "rut_greentideant_carapacewall_menuicon",
+    "file": "failed/rut_greentideant_carapacewall_menuicon.manifest.json",
+    "to": "_pruned_twins/20261026T175700Z/failed/rut_greentideant_carapacewall_menuicon.manifest.json",
+    "sha256": "bd4141b78f8ae56b789240b7053890a43ca941eb7e0070b31ddbf3c14a67aa6b",
+    "kept": [
+     "done/rut_greentideant_carapacewall_menuicon.json",
+     "done/rut_greentideant_carapacewall_menuicon.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "artstore": [
+      "7a088696cf311e9c9172ddab94e101f846b6fa6508b934508df7efabd1b3d703"
+     ]
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1790627243.1273272,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261026T175700Z/failed/rut_greentideant_carapacewall_menuicon.manifest.json",
+    "why": "delegated: art-eval/ledger housekeeping (ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG w101: done job's picture held in art store / installed; failed copies are stale attempts)",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-10-26T17:57:02Z"
+   }
+  ],
+  "20261105T003225Z": [
+   {
+    "id": "RM_Dredgel_east",
+    "file": "failed/RM_Dredgel_east.json",
+    "to": "_pruned_twins/20261105T003225Z/failed/RM_Dredgel_east.json",
+    "sha256": "d7a9d94acfb4b703586c011b1a7c35309d932e2aec3a80708ce67ba441d3a703",
+    "kept": [
+     "done/RM_Dredgel_east.json",
+     "done/RM_Dredgel_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "retired": {
+      "decision": "purged",
+      "why": "owner purged both shas (thesump_sheet_2026-10-05.decisions.json); followed by thesump_Dredgel_v2; picture unrecoverable and not wanted; twins leaves it AMBIGUOUS on purpose",
+      "record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json"
+     }
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791062939.5822856,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261105T003225Z/failed/RM_Dredgel_east.json",
+    "why": "ARTPIPE_TWINS_PRUNE_FAILED_COPY: last 5 twins ruled purged/superseded by the ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG decision record; failed/ copy describes no wanted art",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-11-05T00:32:26Z"
+   },
+   {
+    "id": "RM_Dredgel_east",
+    "file": "failed/RM_Dredgel_east.manifest.json",
+    "to": "_pruned_twins/20261105T003225Z/failed/RM_Dredgel_east.manifest.json",
+    "sha256": "830980571616a718ce1b8cfd7ca312870a83ad3f54702817451ab51f66ef70e2",
+    "kept": [
+     "done/RM_Dredgel_east.json",
+     "done/RM_Dredgel_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "retired": {
+      "decision": "purged",
+      "why": "owner purged both shas (thesump_sheet_2026-10-05.decisions.json); followed by thesump_Dredgel_v2; picture unrecoverable and not wanted; twins leaves it AMBIGUOUS on purpose",
+      "record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json"
+     }
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791062939.5822856,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261105T003225Z/failed/RM_Dredgel_east.manifest.json",
+    "why": "ARTPIPE_TWINS_PRUNE_FAILED_COPY: last 5 twins ruled purged/superseded by the ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG decision record; failed/ copy describes no wanted art",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-11-05T00:32:26Z"
+   },
+   {
+    "id": "RM_Dredgel_north",
+    "file": "failed/RM_Dredgel_north.json",
+    "to": "_pruned_twins/20261105T003225Z/failed/RM_Dredgel_north.json",
+    "sha256": "1e9c6dadb9b761ce9173ad19db65ca0e30531b6e335e0e553e299a011b9330c1",
+    "kept": [
+     "done/RM_Dredgel_north.json",
+     "done/RM_Dredgel_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "retired": {
+      "decision": "purged",
+      "why": "owner purged both shas (thesump_sheet_2026-10-05.decisions.json); followed by thesump_Dredgel_v2; picture unrecoverable and not wanted; twins leaves it AMBIGUOUS on purpose",
+      "record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json"
+     }
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791063027.7656364,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261105T003225Z/failed/RM_Dredgel_north.json",
+    "why": "ARTPIPE_TWINS_PRUNE_FAILED_COPY: last 5 twins ruled purged/superseded by the ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG decision record; failed/ copy describes no wanted art",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-11-05T00:32:26Z"
+   },
+   {
+    "id": "RM_Dredgel_north",
+    "file": "failed/RM_Dredgel_north.manifest.json",
+    "to": "_pruned_twins/20261105T003225Z/failed/RM_Dredgel_north.manifest.json",
+    "sha256": "cb5d40cf57c2a730b1c1c7633f1b6465a5ee03a3b294a6df195bf415b7128faf",
+    "kept": [
+     "done/RM_Dredgel_north.json",
+     "done/RM_Dredgel_north.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "retired": {
+      "decision": "purged",
+      "why": "owner purged both shas (thesump_sheet_2026-10-05.decisions.json); followed by thesump_Dredgel_v2; picture unrecoverable and not wanted; twins leaves it AMBIGUOUS on purpose",
+      "record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json"
+     }
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1791063027.7656364,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261105T003225Z/failed/RM_Dredgel_north.manifest.json",
+    "why": "ARTPIPE_TWINS_PRUNE_FAILED_COPY: last 5 twins ruled purged/superseded by the ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG decision record; failed/ copy describes no wanted art",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-11-05T00:32:26Z"
+   },
+   {
+    "id": "desertportb_greaterkraytdragon_south",
+    "file": "failed/desertportb_greaterkraytdragon_south.json",
+    "to": "_pruned_twins/20261105T003225Z/failed/desertportb_greaterkraytdragon_south.json",
+    "sha256": "e1104961b8c6b492625d6d9eab98caf0b70731ecdd4eef35f0e77c69e74197d4",
+    "kept": [
+     "done/desertportb_greaterkraytdragon_south.json",
+     "done/desertportb_greaterkraytdragon_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "retired": {
+      "decision": "superseded",
+      "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+      "record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json"
+     }
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1790388630.0730288,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261105T003225Z/failed/desertportb_greaterkraytdragon_south.json",
+    "why": "ARTPIPE_TWINS_PRUNE_FAILED_COPY: last 5 twins ruled purged/superseded by the ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG decision record; failed/ copy describes no wanted art",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-11-05T00:32:26Z"
+   },
+   {
+    "id": "desertportb_greaterkraytdragon_south",
+    "file": "failed/desertportb_greaterkraytdragon_south.manifest.json",
+    "to": "_pruned_twins/20261105T003225Z/failed/desertportb_greaterkraytdragon_south.manifest.json",
+    "sha256": "16b934dd30fd55e76aed7c1f00ab88d36a859dc1635e90b631ffb372a8378178",
+    "kept": [
+     "done/desertportb_greaterkraytdragon_south.json",
+     "done/desertportb_greaterkraytdragon_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "retired": {
+      "decision": "superseded",
+      "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+      "record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json"
+     }
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1790388630.0730288,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261105T003225Z/failed/desertportb_greaterkraytdragon_south.manifest.json",
+    "why": "ARTPIPE_TWINS_PRUNE_FAILED_COPY: last 5 twins ruled purged/superseded by the ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG decision record; failed/ copy describes no wanted art",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-11-05T00:32:26Z"
+   },
+   {
+    "id": "desertportb_pikobis_south",
+    "file": "failed/desertportb_pikobis_south.json",
+    "to": "_pruned_twins/20261105T003225Z/failed/desertportb_pikobis_south.json",
+    "sha256": "3c2f379543cc7419b4874b2ac8b6d00e73503ee5968ce2d2b0aa4e03dddd1b42",
+    "kept": [
+     "done/desertportb_pikobis_south.json",
+     "done/desertportb_pikobis_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "retired": {
+      "decision": "superseded",
+      "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+      "record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json"
+     }
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1790407247.9991093,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261105T003225Z/failed/desertportb_pikobis_south.json",
+    "why": "ARTPIPE_TWINS_PRUNE_FAILED_COPY: last 5 twins ruled purged/superseded by the ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG decision record; failed/ copy describes no wanted art",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-11-05T00:32:26Z"
+   },
+   {
+    "id": "desertportb_pikobis_south",
+    "file": "failed/desertportb_pikobis_south.manifest.json",
+    "to": "_pruned_twins/20261105T003225Z/failed/desertportb_pikobis_south.manifest.json",
+    "sha256": "2c503f43652c6f8630dc04c2425e94c9b64275b0f43b8b989a71179f6f8cd4a4",
+    "kept": [
+     "done/desertportb_pikobis_south.json",
+     "done/desertportb_pikobis_south.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "retired": {
+      "decision": "superseded",
+      "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+      "record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json"
+     }
+    },
+    "failed_status": "worker_error",
+    "last_validated": [
+     1790407247.9991093,
+     "fail"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261105T003225Z/failed/desertportb_pikobis_south.manifest.json",
+    "why": "ARTPIPE_TWINS_PRUNE_FAILED_COPY: last 5 twins ruled purged/superseded by the ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG decision record; failed/ copy describes no wanted art",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-11-05T00:32:26Z"
+   },
+   {
+    "id": "ls_regen_JOE_Landopus_v1_east",
+    "file": "failed/ls_regen_JOE_Landopus_v1_east.json",
+    "to": "_pruned_twins/20261105T003225Z/failed/ls_regen_JOE_Landopus_v1_east.json",
+    "sha256": "d2cb69b6877c54e8fd3127297253faf4735adaa86771549f884f219c798bb979",
+    "kept": [
+     "done/ls_regen_JOE_Landopus_v1_east.json",
+     "done/ls_regen_JOE_Landopus_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "retired": {
+      "decision": "superseded",
+      "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+      "record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json"
+     }
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791198854.7264335,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261105T003225Z/failed/ls_regen_JOE_Landopus_v1_east.json",
+    "why": "ARTPIPE_TWINS_PRUNE_FAILED_COPY: last 5 twins ruled purged/superseded by the ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG decision record; failed/ copy describes no wanted art",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-11-05T00:32:26Z"
+   },
+   {
+    "id": "ls_regen_JOE_Landopus_v1_east",
+    "file": "failed/ls_regen_JOE_Landopus_v1_east.manifest.json",
+    "to": "_pruned_twins/20261105T003225Z/failed/ls_regen_JOE_Landopus_v1_east.manifest.json",
+    "sha256": "329833669d7e18d806c03e6fb9369e9958e5f328a192a78eb4dfb65663fcdf93",
+    "kept": [
+     "done/ls_regen_JOE_Landopus_v1_east.json",
+     "done/ls_regen_JOE_Landopus_v1_east.manifest.json"
+    ],
+    "rule": "done wins over failed when the done copy's artifacts exist",
+    "evidence": {
+     "retired": {
+      "decision": "superseded",
+      "why": "the slot holds owner-kept art or our own later render; never re-queue (regen gate REFUSED_REGEN where checked)",
+      "record": "infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json"
+     }
+    },
+    "failed_status": "bad_job_file",
+    "last_validated": [
+     1791198854.7264335,
+     "pass"
+    ],
+    "backup": "/mnt/d/ClaudeWork/backups/artpipe_twins_20261105T003225Z/failed/ls_regen_JOE_Landopus_v1_east.manifest.json",
+    "why": "ARTPIPE_TWINS_PRUNE_FAILED_COPY: last 5 twins ruled purged/superseded by the ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG decision record; failed/ copy describes no wanted art",
+    "tool": "artpipe_state.py twins",
+    "host": "Archmagi",
+    "ts": "2026-11-05T00:32:26Z"
+   }
+  ]
+ }
+}

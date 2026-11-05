@@ -7,7 +7,7 @@
     python3 artpipe_state.py collect --from-jobs        # every done job carrying "install_to" not yet collected
     python3 artpipe_state.py migrate --from /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe [--dry-run]
     python3 artpipe_state.py owner-accepted <job_id> [...] --note "<his words / where he accepted it>"
-    python3 artpipe_state.py twins [--apply --why "<reason>"] [--backup-root DIR]   # done+failed twins: prune failed copy
+    python3 artpipe_state.py twins [--decisions REC.json] [--apply --why "<reason>"] [--backup-root DIR]   # done+failed twins
 
 `owner-accepted` moves a failed/ job the owner accepted anyway (an old `failed_canon` the grader got wrong) to
 done/: status ok, worker_status owner_accepted, the failed record kept under `failed_record`. Nothing else moves.
@@ -19,6 +19,10 @@ _artsrc/<id>/<id>.png no newer than that manifest). Then the failed/ files (and 
 from a misclaimed manifest) are backed up to <agent storage root>/backups/artpipe_twins_<stamp>/ and MOVED to
 <state>/_pruned_twins/<stamp>/failed/ with a provenance line each in PRUNED.jsonl. Anything else is AMBIGUOUS and
 left in place; a job with a file in pending/ or active/ is REFUSED. Exit 2 when anything was ambiguous or refused.
+`--decisions REC.json` (repeatable) names a committed per-job decision record (`{"jobs": {id: {"decision": …}}}`, e.g.
+infrastructure/state/evidence/ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG.json): a job it rules `purged` or `superseded`
+excuses its missing _artsrc PNG (the picture is gone and unwanted, so no copy describes art anyone uses) and its
+failed/ copy is pruned the same way; the record path and ruling go into the plan's evidence. Nothing else is excused.
 
 `collect` is how finished art reaches `src/`: the daemon never writes into a
 clone (it leaves `<state>/_artsrc/<id>/<id>.png` + `done/<id>.manifest.json`);
@@ -498,7 +502,24 @@ def _stored_pictures(ids) -> dict:
     return {j: sorted(s) for j, s in shas.items() if all(L.store_has(h) for h in s)}
 
 
-def twins_plan(root: Path, stored=None) -> list[dict]:
+RETIRED_DECISIONS = ("purged", "superseded")
+
+
+def load_decisions(paths) -> dict:
+    """job id -> {"decision", "why", "record"} for every job a decision record rules purged or superseded."""
+    out: dict = {}
+    for p in paths or []:
+        doc = json.loads(Path(p).read_text())
+        jobs = doc.get("jobs") if isinstance(doc, dict) else None
+        if not isinstance(jobs, dict):
+            raise SystemExit(f"twins: {p} has no \"jobs\" object — not a decision record")
+        for jid, d in jobs.items():
+            if isinstance(d, dict) and d.get("decision") in RETIRED_DECISIONS:
+                out[jid] = {"decision": d["decision"], "why": d.get("why", ""), "record": str(p)}
+    return out
+
+
+def twins_plan(root: Path, stored=None, retired=None) -> list[dict]:
     """Every job filed in BOTH done/ and failed/, with the decision. Reads only.
 
     KEEP_DONE (its failed/ files are pruned) only when the done copy's artifacts exist: done/<id>.json, a done
@@ -506,7 +527,9 @@ def twins_plan(root: Path, stored=None) -> list[dict]:
     later failed run, so the done record no longer describes the picture on disk). A missing _artsrc PNG is
     excused only when the art ledger records the job's picture and the art store holds every one of its bytes
     (`stored`: job id -> shas; default `_stored_pictures`); the plan names those shas as the evidence. Anything
-    else is AMBIGUOUS and left alone; a job with any file in pending/ or active/ is REFUSED, never touched."""
+    else is AMBIGUOUS and left alone; a job with any file in pending/ or active/ is REFUSED, never touched.
+    `retired` (job id -> decision, from `load_decisions`) excuses a missing PNG for a job ruled purged/superseded."""
+    retired = retired or {}
     done, failed = root / "done", root / "failed"
     by_id: dict = {}
     for f in sorted(failed.iterdir()) if failed.is_dir() else []:
@@ -538,6 +561,8 @@ def twins_plan(root: Path, stored=None) -> list[dict]:
             if not png.is_file():
                 if stored.get(jid):
                     evidence = {"artstore": list(stored[jid])}
+                elif jid in retired:
+                    evidence = {"retired": retired[jid]}
                 else:
                     why.append("no _artsrc PNG (and the art store holds no ledgered picture of this job)")
             elif dm.is_file() and png.stat().st_mtime > dm.stat().st_mtime + PNG_AFTER_DONE_SLACK_S:
@@ -608,7 +633,8 @@ def _default_backup_root() -> Path:
 
 def cmd_twins(args) -> int:
     root = state_dir.require(args.state)
-    plan = twins_plan(root)
+    retired = load_decisions(args.decisions)
+    plan = twins_plan(root, retired=retired)
     from collections import Counter
     for p in plan:
         lv = p["last_validated"]
@@ -616,7 +642,9 @@ def cmd_twins(args) -> int:
         print(f"  {p['decision']:<9} {p['id']:<44} failed={p['failed_status'] or '-':<16} last_validated={lvs:<16} "
               f"{', '.join(p['failed_files'])}" + (f"  [{'; '.join(p['why'])}]" if p["why"] else "")
               + (f"  (no _artsrc PNG; art store holds {', '.join(h[:12] for h in p['evidence']['artstore'])})"
-                 if p.get("evidence") else ""))
+                 if (p.get("evidence") or {}).get("artstore") else "")
+              + (f"  (no _artsrc PNG; ruled {p['evidence']['retired']['decision']} in {p['evidence']['retired']['record']})"
+                 if (p.get("evidence") or {}).get("retired") else ""))
     c = Counter(p["decision"] for p in plan)
     nfiles = sum(len(p["prune"]) for p in plan)
     print(f"twins: {len(plan)} ids ({dict(c)}); {nfiles} failed/ file(s) to prune")
@@ -628,7 +656,7 @@ def cmd_twins(args) -> int:
     res = twins_apply(root, plan, args.backup_root or _default_backup_root(), args.why)
     print(f"APPLIED: {res['moved']} file(s) of {res['ids']} ids moved to {res['pruned_dir']} "
           f"(PRUNED.jsonl); backup {res['backup']}")
-    left = [p for p in twins_plan(root) if p["decision"] == "KEEP_DONE"]
+    left = [p for p in twins_plan(root, retired=retired) if p["decision"] == "KEEP_DONE"]
     print(f"re-scan: {len(left)} prunable twin(s) left")
     return 1 if left else (0 if c["AMBIGUOUS"] + c["REFUSED"] == 0 else 2)
 
@@ -663,6 +691,8 @@ def main(argv=None) -> int:
     oa.add_argument("--note", required=True, help="his words, or where/when he accepted it")
     tw = sub.add_parser("twins", help="report (default) or --apply-prune jobs filed in both done/ and failed/")
     tw.add_argument("--apply", action="store_true")
+    tw.add_argument("--decisions", type=Path, action="append",
+                    help="per-job decision record; purged/superseded jobs excuse a missing PNG")
     tw.add_argument("--why", help="required with --apply: the reason, written into every provenance line")
     tw.add_argument("--backup-root", type=Path, help="default: <agent storage root>/backups (agent_storage.py)")
     args = ap.parse_args(argv)
