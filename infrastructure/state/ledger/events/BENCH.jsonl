@@ -16587,3 +16587,4 @@
 {"seat":"RELENTLESS","event":"start","id":"ARTSHEET_FIX_REFERENCE_TEXTURES_PICKABLE","why":"relentless supervisor takes the item","ts":"2026-11-05T21:06:06Z","tsn":1793912766512909398}
 {"seat":"RELENTLESS","event":"start","id":"GSS_GRAPH_JOB_PROVE_SUSTAINED_CHANGE","why":"relentless supervisor takes the item","ts":"2026-11-05T21:06:15Z","tsn":1793912775241336540}
 {"seat":"RELENTLESS","event":"start","id":"OWNER_RULINGS_HARDEN_DATES_ON_DISK","why":"relentless supervisor takes the item","ts":"2026-11-05T21:06:23Z","tsn":1793912783589836858}
+{"seat":"RELENTLESS","event":"start","id":"CTX_SIM_FIX_UNCACHED_INPUT_PRICE","why":"relentless supervisor takes the item","ts":"2026-11-05T21:12:49Z","tsn":1793913169750924651}
