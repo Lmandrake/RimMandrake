@@ -84,8 +84,21 @@ def host_only_rows(rules):
     return [(str(x["path"]), str(x.get("why") or "")) for x in rows if isinstance(x, dict) and x.get("path")]
 
 
-def needs(text, prof, carved=(), host_only=()):
+def git_tool_rows(rules):
+    """-> [(tool path, why)] from relentless_rules.json reach_git_tools: tools that run git themselves, so naming one is a
+    git history need though the proof text holds no git verb (OPS_CHURN_DIAGNOSE_RELENTLESS_HFDA_UHRX)."""
+    rows = (rules or {}).get("reach_git_tools") or []
+    return [(str(x["path"]), str(x.get("why") or "")) for x in rows if isinstance(x, dict) and x.get("path")]
+
+
+def _names(path, t):
+    return re.search(r"(?<![\w./-])(?:\S*/)?%s(?![\w.-])" % re.escape(os.path.basename(path)), t)
+
+
+def needs(text, prof, carved=(), host_only=(), git_tools=()):
     """-> ["kind: what", ...] the box cannot reach that `text` (a proof) names, once each, in order. Pure.
+    `git_tools`: (path, why) rows; a proof naming one runs git inside the tool (code_review_since.py's merge-base), which
+    no regex over the proof's own verbs sees: RELENTLESS_REVIEW_FINISH_TOO_BIG_TO_SKIM's gate passed one, five returns.
     `host_only`: (path, why) rows; a proof naming one (NIGHTLY_COP_REACH_FIX_ARENA_STAYS_DARK: the arena sandbox pair read
     bwrap, retired-trees git refs and the host's own DENY layout, which no read-only bind makes honest) is a need too."""
     out = []
@@ -111,8 +124,11 @@ def needs(text, prof, carved=(), host_only=()):
         add("another machine: `%s` (the box has no ssh keys)" % m.group(1))
     for m in _WINDOWS.finditer(t):
         add("a Windows program: `%s` (no Windows interop in the box)" % m.group(1))
+    for path, why in git_tools:
+        if _names(path, t):
+            add("git history: %s runs git itself (%s; the box is an export with no .git)" % (path, why or "reads history"))
     for path, why in host_only:
-        if re.search(r"(?<![\w./-])(?:\S*/)?%s(?![\w.-])" % re.escape(os.path.basename(path)), t):
+        if _names(path, t):
             add("a host-only test: %s (%s)" % (path, why or "reads the host itself"))
     return out
 
@@ -132,7 +148,7 @@ def uncovered(contract, rules):
     c = contract or {}
     if not prof or not relentless_wall.enforced(rules) or c.get("offbox") or c.get("reach_ok"):
         return []
-    return needs(c.get("proof"), prof, carved_of(prof), host_only_rows(rules))
+    return needs(c.get("proof"), prof, carved_of(prof), host_only_rows(rules), git_tool_rows(rules))
 
 
 def refusal(found, adapter_names):

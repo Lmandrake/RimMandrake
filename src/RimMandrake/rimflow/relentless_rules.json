@@ -45,6 +45,10 @@
     {"path": "src/RimMandrake/Utils/arena/selftest_arm_sandbox.py", "why": "checks the arena sandbox against the host: bwrap, refs in /home/mandrake/rm/retired-trees git trees, a DENY list holding ~/.claude/projects (reach_never)"},
     {"path": "src/RimMandrake/Utils/arena/selftest_arena_ralph_c.py", "why": "runs arena members in nested bwrap namespaces against /home/mandrake/rm/arena"}
   ],
+  "_reach_git_tools": "OPS_CHURN_DIAGNOSE_RELENTLESS_HFDA_UHRX: tools that run git themselves. A proof naming one is a git history need at contract time (relentless_reach.needs) though its text holds no git verb: RELENTLESS_REVIEW_FINISH_TOO_BIG_TO_SKIM's code_review_since.py proof passed the gate, exited 2 in the box (no .git) five times.",
+  "reach_git_tools": [
+    {"path": "src/RimMandrake/Utils/code_review_since.py", "why": "git rev-parse and merge-base --is-ancestor on the --after shas"}
+  ],
   "_reach_grants": "CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS gen 3: a reach_classes row's `grants` (only relentless_wall.GRANTS: git_history) changes what the Marker's box is made with, not what is read outside it. Every row whose match hits the blind text adds its grants (a /proc text that also names git gets the history); a Judge may --propose git_history by name. git_history = tree/.git at the candidate, no refs, objects read only (relentless_wall.grant_git). There is no /proc grant: a sandboxed user unit runs in its own user namespace, and no property lets it readlink another process's cwd; proc_cwds (outside) is the only reach.",
   "reach_never": ["/home/mandrake/rm/relentless/store", "/home/mandrake/rm/relentless/transcripts", "/home/mandrake/rm/relentless/live", "/home/mandrake/.ssh", "/home/mandrake/.config/gh", "/home/mandrake/.claude-accounts", "/home/mandrake/.claude", "/home/mandrake/.remember", "/home/mandrake/.bash_history", "/home/mandrake/.zsh_history", "/home/mandrake/rm/bench/conversations", "/home/mandrake/rm/foundry/conversations", "/home/mandrake/rm/bench/infrastructure/state/ledger", "/home/mandrake/rm/foundry/infrastructure/state/ledger"],
   "reach_classes": [

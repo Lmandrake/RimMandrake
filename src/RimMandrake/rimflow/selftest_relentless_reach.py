@@ -358,8 +358,32 @@ def t_host_only():
     x.done()
 
 
+def t_git_tool():
+    """OPS_CHURN_DIAGNOSE_RELENTLESS_HFDA_UHRX: RELENTLESS_REVIEW_FINISH_TOO_BIG_TO_SKIM's proof ran code_review_since.py,
+    which runs git itself; no git verb in the text, so the gate passed it and five checks could never run it."""
+    rows = RR.git_tool_rows(REAL)
+    ok(any(os.path.basename(p) == "code_review_since.py" for p, _ in rows), "G1 the rules list code_review_since.py")
+    inst = ("python3 src/RimMandrake/Utils/code_review_since.py --after c5a80db3 --after 7c16acb1 "
+            "src/RimMandrake/Utils/ops_watch.py   # exit 0, 9 PASS")
+    got = RR.uncovered({"proof": inst}, REAL)
+    ok(any(g.startswith("git history:") and "code_review_since.py" in g for g in got), "G2 the instance is a git need: %s" % got)
+    ok(not RR.uncovered({"proof": "python3 src/RimMandrake/Utils/code_review_status.py check x.py  # not code_review_since.py"},
+                        REAL), "G3 a comment naming it is prose; code_review_status is no git tool")
+    ok(not RR.uncovered({"proof": "python3 code_review_since.py.bak x"}, REAL), "G3 a longer name is not the tool")
+    ok(RR.uncovered({"proof": inst, "offbox": ["git_log_candidate"]}, REAL) == [], "G4 --offbox routes it")
+    x = T.Rig(n=1, share=1.0)
+    x.run_one("I0")
+    g = x.st("I0")["gen"]
+    try:
+        R.contract(x.s, "I0", g, inst, r=REAL)
+        ok(False, "G4 contract refuses the instance proof")
+    except ValueError as e:
+        ok("git history" in str(e) and "--offbox" in str(e), "G4 contract refuses the instance proof: %s" % str(e)[-120:])
+    x.done()
+
+
 def main():
-    for t in (t_needs, t_contract_refuses, t_prelaunch_hold, t_live_into_box, t_through_into_box, t_no_repaid_recheck, t_host_only):
+    for t in (t_needs, t_contract_refuses, t_prelaunch_hold, t_live_into_box, t_through_into_box, t_no_repaid_recheck, t_host_only, t_git_tool):
         t()
     print("RESULT %s (%d failed)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0
