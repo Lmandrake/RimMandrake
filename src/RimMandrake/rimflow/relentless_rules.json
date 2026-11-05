@@ -1,8 +1,8 @@
 {
   "_max_workers": "8 (owner by card 2026-11-02 18:35 PST, \"How hard should Relentless run this machine?\" -> \"8 workers, 16 clones / 70 GB\", from 4 workers and 10 clones / 40 GB; 8 workers + at most check_backlog_max checks + a consult fit the pool cap of 16 clones / 70 GB and the 24 GB seat slice, whose anon use was ~350 MB a scope, RELENTLESS_USAGE_MEASURE_NO_FLAT_GUESSES). The ceiling only, the total_max test ceiling of the plan. What runs is staffing's stage under the published budget. Steps back to 1 while available memory is under step_back_mem_gb (8); under min_mem_available_gb (6) nothing launches. relentless.worker_cap does the step-back.",
   "_": "The owner's tunable parameter and every limit of relentless.py, in data. See design/RimMandrake/relentless_owner_design_2026-10-31.md section 8 for why each number is what it is.",
-  "_only_system_and_live": "Owner 2026-11-03: \"Since we're near the end of our tokens, I'd like to pause all work EXCEPT system work and Live Testing.\" true: relentless.owner_hold, no new work on content; set false when he lifts it. It does not age out with the health verdict.",
-  "only_system_and_live": true,
+  "_only_system_and_live": "Owner 2026-11-03: \"Since we're near the end of our tokens, I'd like to pause all work EXCEPT system work and Live Testing.\" true: relentless.owner_hold, no new work on content; set false when he lifts it. It does not age out with the health verdict. LIFTED owner 2026-11-04: \"all token limits rescinded as well as work type. Token is no longer constrained.\"",
+  "only_system_and_live": false,
   "enabled": true,
   "share": 0.5,
   "pool_seats": ["BENCH"],
