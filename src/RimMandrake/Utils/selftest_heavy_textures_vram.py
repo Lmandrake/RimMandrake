@@ -83,5 +83,10 @@ md = h.markdown("T", h.judge_textures(good, W)[1], h.judge_process(proc, health)
                 [{"packageId": W[0], "texMB": 76.1}])
 check("markdown carries estimate and UNKNOWN", "76.1" in md and "UNMEASURED" in md and "UNKNOWN" in md)
 
+# the live call is not refused by the client's read-only guard (A1/A2 read UNMEASURED exit 3 on 2026-11-04 without this)
+import rimbridge_client  # noqa: E402
+check("texture_memory passes the read-only guard",
+      rimbridge_client.RimBridge.looks_read_only(object.__new__(rimbridge_client.RimBridge), "jawa/texture_memory", {}))
+
 print("FAILED %d" % len(FAILS) if FAILS else "OK selftest_heavy_textures_vram")
 sys.exit(1 if FAILS else 0)

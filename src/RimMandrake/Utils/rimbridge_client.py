@@ -561,8 +561,10 @@ READ_ONLY_PREFIXES = ("list_", "get_", "search_", "find_", "compile_", "ping")
 # map_info, thing_graphic and thing_explain are READ ONLY by their C# [Tool] descriptions (JawaBenchMapInfoTools,
 # JawaBenchNorthstarTools, JawaBenchAwarenessTools); refused here, GELATINOUSSLIME_KIT_ART_1's live proof read
 # UNMEASURED (exit 3, 2026-11-03) and no live proof could read the map without --yes-i-know-this-is-live.
+# texture_memory only walks Resources.FindObjectsOfTypeAll<Texture>() and the running mods' content lists ("Read only"
+# in JawaBenchTextureMemoryTools); refused here, HEAVY_TEXTURES_MEASURE_REAL_VRAM's A1/A2 read UNMEASURED (exit 3, 2026-11-04).
 READ_ONLY_TOOLS = ("jawa/companion_handshake", "jawa/running_mods", "jawa/map_info", "jawa/thing_graphic",
-                   "jawa/thing_explain")
+                   "jawa/thing_explain", "jawa/texture_memory")
 # jawa/static_call runs ANY static method, so it is mutating by default. These (type, method) pairs are reviewed getters:
 # a caller that declares its call read-only (CLI --read-only-static, live_def_check._bridge(read_only_static=True)) passes
 # the guard for these and only these. TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING's readback was refused as not read-only on
