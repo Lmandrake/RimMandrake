@@ -19,7 +19,8 @@ work *into* rigor ("careful with this one"), never out of it.
 "added to the ticket and wait." That's old foundry behavior. If you see something, fix it RIGHT THEN, ok? Standing
 policy."*). Every seat and helper: a known, small fix (a proof argument, a live line, a timeout, a packageId, a
 worded criterion, an unanswered hold whose answer exists) is made on the spot, published, and the item put back in
-Relentless. A ticket is filed only for what is not small, and it says why.
+Relentless. A ticket is filed only for what is not small, and it says why. And the pipeline never "blesses" a small change (owner, 2026-11-05): a quick manual validation is done by the
+agent on the spot and closed with that evidence, never queued for a Judge (`standing_rulings.md`).
 
 ## The expensive list — the only things that get ceremony
 

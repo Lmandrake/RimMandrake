@@ -6,6 +6,15 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (FOUNDRY, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
+## The pipeline never "blesses" a small change — owner, 2026-11-05
+
+*"Please make a ruling: The pipeline is NOT to be used to "bless" any change in the game. That's a huge expenditure
+for a small validation that could be manually performed."* A small change whose check is a quick manual validation
+(an installed picture equals his pick, a value reads back, a file is deployed) is checked by the agent that made it,
+on the spot (a hash, a read, a single bridge call), and closed with that evidence (`rimflow verify ... --level L0`
+then `close`). It is never queued, unheld or left open for Relentless to judge. Relentless builds and proves real work:
+code, systems, live proofs that need a game round. With "See it, fix it, then" in the CHARTER.
+
 ## North-star validation state
 
 - 🔴 **Validation state is never written as prose: `modcheck floor --all` measures it.** 🔴 **And the 81 walk findings are NOT rot:**
