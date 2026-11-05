@@ -2,7 +2,7 @@
 """selftest_retire_orphan_art.py — retire_orphan_art.py removes art from a mod, so it must:
   * refuse an owner-KEPT picture (dry run and --apply), leaving it untouched and uncopied;
   * refuse any file a def, patch or C# file still names — including XML in a LoadFolders/version folder
-    (`1.6/Defs`), a `Staged/` mod tree, a facing set (`X_north.png` named as `X`), a Graphic_Random folder, and a
+    (`1.6/Defs`), a `Staged/` mod tree, a facing set (`X_north.png` named as `X`), its masks (`X_northm.png`, `X_m.png`), a Graphic_Random folder, and a
     C# literal that builds the path from a folder prefix (`"Things/A/" + name`);
   * MOVE a true orphan: a byte-identical copy under the retired-trees root (RETIRED_TREES_DIR) and in the art
     store BEFORE the repo file goes, plus a `live` event with sha None — never a bare delete;
@@ -52,6 +52,8 @@ def main() -> int:
     files = {k: w(tex / f"{k}.png", png(k)) for k in
              ("orphan", "kept", "named", "staged", "version", "dyn_x")}
     files["face_north"] = w(tex / "Face" / "Face_north.png", png("face"))
+    files["face_northm"] = w(tex / "Face" / "Face_northm.png", png("facem"))
+    files["face_m"] = w(tex / "Face" / "Face_m.png", png("facem1"))
     files["rand_a"] = w(tex / "Rand" / "Rand_a.png", png("rand"))
     files["dryrun"] = w(tex / "dryrun.png", png("dryrun"))
     w(mod / "Defs" / "d.xml", "<Defs><ThingDef><graphicData><texPath>Things/A/named</texPath></graphicData>"
@@ -90,6 +92,8 @@ def main() -> int:
     # still-named files are refused
     for k, why in (("named", "Defs texPath"), ("version", "1.6/Defs (LoadFolders) texPath"),
                    ("staged", "Staged/ mod tree texPath"), ("face_north", "facing set named by its base path"),
+                   ("face_northm", "facing mask (_northm) of a drawn base path"),
+                   ("face_m", "mask (_m) of a drawn base path"),
                    ("rand_a", "Graphic_Random folder"), ("dyn", "C# folder-prefix literal")):
         rc, out = run("--apply", str(files[k]))
         check(rc != 0 and files[k].is_file() and "READ" in out, f"refused, still named by a {why}")

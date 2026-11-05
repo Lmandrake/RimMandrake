@@ -4,7 +4,7 @@
 A texture is an orphan when no XML and no C# anywhere under src/ (Defs, Patches, Source, LoadFolders/version
 folders such as `1.6/Defs`, Staged/ trees — every .xml/.cs outside obj/, bin/ and Textures/) names its texPath: not
 the file's stem (Things/X/Y for Things/X/Y.png, facing suffixes _north/_east/_south/_west/_side/_front/_back
-stripped), not its folder (a Graphic_Random / Graphic_Collection texPath names the folder), and not its folder as a
+stripped, and a mask's base path: Y_m, Y_Mask, Y_northm name Y), not its folder (a Graphic_Random / Graphic_Collection texPath names the folder), and not its folder as a
 string-literal prefix (`"Things/X/" + name` in C#). This script re-checks that before every retire and refuses a
 file that anything still names, so the reason it writes is a verifiable mechanical tag.
 
@@ -33,6 +33,9 @@ import artledger as A  # noqa: E402
 from rmpaths import rm_path  # noqa: E402
 
 FACING = re.compile(r"_(north|east|south|west|side|front|back)$")
+# a CutoutComplex mask of a drawn texPath X: X_m / X_Mask (single) or X_northm / X_north_m (per facing). Its
+# stripped stem is ADDED as a needle, never substituted: a stem merely ending in "m" must still match itself.
+MASK = re.compile(r"(_(north|east|south|west|side|front|back))?(_?m|_?Mask)$")
 SCAN_EXT = {".xml", ".cs"}
 SKIP_PARTS = {"obj", "bin", "Textures", ".git", "node_modules"}
 
@@ -82,6 +85,9 @@ def copy_out(path: Path, mod: str, rel: str, item: str) -> Path:
 def needles_for(rel: str) -> list[str]:
     stem = rel[:-4] if rel.lower().endswith(".png") else rel
     out = [FACING.sub("", stem)]
+    unmasked = MASK.sub("", stem)
+    if unmasked and unmasked not in out:
+        out.append(unmasked)
     if "/" in stem:
         out.append(stem.rsplit("/", 1)[0])
     return out

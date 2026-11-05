@@ -18,9 +18,9 @@
     * fleshType GR_Insectoid (VGE) -> vanilla Insectoid, blood Filth_BloodInsect;
     * useLeatherFrom AA_Aerofleet (Alpha Animals) -> no leather; extra product AA_BlueGel (Alpha Animals) -> none.
   Art: the game draws Textures/<texPath> below, the dregen render installed accepted-for-now by 3b6ac41125
-  (east+south only; Graphic_Multi draws south for north). The earlier stand-in, Textures/StandIn/<texPath> from
-  src/RimMandrake/Utils/art/garsulix_standin.py (the owner's sheet pick + the donor's dessicated picture), is not
-  drawn by any def: STANDIN_AUDIT_SHADOWED_COPIES_LEFT.
+  (east+south only; Graphic_Multi draws south for north). The earlier stand-in copies under Textures/StandIn/ were
+  drawn by no def and were retired through the art ledger (STANDIN_AUDIT_SHADOWED_COPIES_LEFT; the art store keeps
+  their bytes).
 -->
 <Defs>
 
