@@ -28,6 +28,7 @@ import shutil
 import subprocess
 import sys
 import time
+import uuid
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -169,8 +170,9 @@ def main(argv=None):
     inlined = []
     prompt = build_prompt(question, a.file, inlined)
 
-    job = codex_image.CODEX_SCRATCH / ("consult-%s-%d" % (time.strftime("%Y%m%d-%H%M%S"), os.getpid()))
-    job.mkdir(parents=True, exist_ok=True)
+    job = codex_image.CODEX_SCRATCH / ("consult-%s-%d-%s" % (time.strftime("%Y%m%d-%H%M%S"), os.getpid(),
+                                                              uuid.uuid4().hex[:6]))   # unique per call, not per pid+s
+    job.mkdir(parents=True, exist_ok=False)
     (job / "prompt.md").write_text(prompt)
     answer = job / "answer.md"
     cmd = [str(codex_image.find_codex_cli()), "exec", "--sandbox", "read-only",

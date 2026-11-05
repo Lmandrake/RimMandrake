@@ -114,13 +114,17 @@ def build_report(calls, yields, reviews, since=None, only=None):
         name = c.get("round") or UNTAGGED
         if only and name != only:
             continue
-        r = rows.setdefault(name, {"round": name, "calls": 0, "answered": 0, "timeouts": 0, "tokens": 0,
+        r = rows.setdefault(name, {"round": name, "calls": 0, "answered": 0, "ans_unmeasured": 0, "timeouts": 0,
+                                   "tokens": 0,
                                    "tok_unmeasured": 0, "secs": 0.0, "secs_unmeasured": 0, "reviews": 0,
                                    "first": t, "last": t, "jobs": []})
         r["calls"] += 1
         ans = c.get("answered")
-        if ans is None:                                 # legacy record: an answer leaves out_tok_est > 0
-            ans = (c.get("out_tok_est") or 0) > 0
+        if ans is None:                                 # legacy record: out_tok_est > 0 proves an answer; 0 may be a
+            if (c.get("out_tok_est") or 0) > 0:         # 1-3 char answer or none, so it is not counted either way
+                ans = True
+            else:
+                r["ans_unmeasured"] += 1
         r["answered"] += bool(ans)
         r["timeouts"] += c.get("rc") == 124
         if isinstance(c.get("tokens_used"), int):
@@ -147,8 +151,9 @@ def build_report(calls, yields, reviews, since=None, only=None):
 
 
 def _fmt(rows):
-    out = ["%-28s %5s %4s %4s %11s %5s %9s %7s %s" % ("round", "calls", "ans", "t/o", "tokens", "tok?", "secs",
-                                                    "reviews", "findings (strong/weak/repeated)")]
+    w = max([len("round")] + [len(r["round"]) for r in rows])
+    out = ["%-*s %5s %6s %4s %11s %5s %10s %7s %s" % (w, "round", "calls", "ans", "t/o", "tokens", "tok?", "secs",
+                                                     "reviews", "findings (strong/weak/repeated)")]
     for r in rows:
         secs = "UNMEASURED" if r["secs_unmeasured"] == r["calls"] else "%.0f%s" % (
             r["secs"], "+?" if r["secs_unmeasured"] else "")
@@ -159,9 +164,9 @@ def _fmt(rows):
             yt = "UNMEASURED"
         else:
             yt = "%d (%s/%s/%s)" % (y["findings"], *(str(y.get(k, "?")) for k in ("strong", "weak", "repeated")))
-        out.append("%-28s %5d %4d %4d %11d %5d %9s %7d %s" % (r["round"][:28], r["calls"], r["answered"],
-                                                            r["timeouts"], r["tokens"], r["tok_unmeasured"], secs,
-                                                            r["reviews"], yt))
+        ans = "%d%s" % (r["answered"], "+?" if r["ans_unmeasured"] else "")
+        out.append("%-*s %5d %6s %4d %11d %5d %10s %7d %s" % (w, r["round"], r["calls"], ans, r["timeouts"],
+                                                             r["tokens"], r["tok_unmeasured"], secs, r["reviews"], yt))
     return "\n".join(out)
 
 
@@ -181,6 +186,8 @@ def main(argv=None):
     rp.add_argument("--round", help="only this round")
     rp.add_argument("--json", action="store_true")
     a = ap.parse_args(argv)
+    if a.cmd == "report" and a.days is not None and a.days <= 0:
+        ap.error("--days must be positive")
     if a.cmd == "yield":
         try:
             rec = write_yield(a.round, a.findings, a.strong, a.weak, a.repeated, a.note)
@@ -192,7 +199,7 @@ def main(argv=None):
     import gpt_call_log
     calls, bad_calls = gpt_call_log.read_records()
     yields, bad_y = read_yields()
-    since = time.time() - a.days * 86400 if a.days else None
+    since = time.time() - a.days * 86400 if a.days is not None else None
     rows = build_report(calls, yields, review_jobs(_code_review_records()), since=since, only=a.round)
     if a.json:
         print(json.dumps({"rows": rows, "unreadable_call_lines": bad_calls, "unreadable_yield_lines": bad_y},

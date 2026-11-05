@@ -86,6 +86,7 @@ ok("real tokens from the codex log", [c["tokens_used"] for c in calls], [1234, 1
 ok("seconds are measured on every call", all(isinstance(c["secs"], (int, float)) for c in calls), True)
 ok("answered is recorded", [c["answered"] for c in calls], [True, True, False, True])
 ok("files inlined are named repo-relative", calls[0]["files"], ["src/RimMandrake/Utils/gpt_consult_rounds.py"])
+ok("every call has its own job id, even in one process and second", len({c["job"] for c in calls}), 4)
 
 # yield records
 GR.write_yield("PARSER_R1", 3, strong=1, weak=2)
@@ -122,8 +123,12 @@ ok("--days filter drops older calls", GR.build_report(calls, ys, reviews, since=
 legacy = [{"t": 1.0, "job": "consult-old", "rc": 0, "out_tok_est": 10, "tokens_used": 5},
           {"t": 2.0, "job": "consult-old2", "rc": 124, "out_tok_est": 0, "tokens_used": None}]
 lr = GR.build_report(legacy, {}, {})[0]
-ok("legacy calls land untagged, answered inferred, secs UNMEASURED",
-   (lr["round"], lr["answered"], lr["timeouts"], lr["secs_unmeasured"], lr["tokens"]), (GR.UNTAGGED, 1, 1, 2, 5))
+ok("legacy calls land untagged, a short/absent answer is unmeasured not unanswered, secs UNMEASURED",
+   (lr["round"], lr["answered"], lr["ans_unmeasured"], lr["timeouts"], lr["secs_unmeasured"], lr["tokens"]),
+   (GR.UNTAGGED, 1, 1, 1, 2, 5))
+long_name = "A" * 30 + "_R1"
+lt = GR._fmt(GR.build_report([dict(calls[0], round=long_name), dict(calls[0], round="A" * 30 + "_R2")], {}, {}))
+ok("long round names print whole", (long_name in lt, ("A" * 30 + "_R2") in lt), (True, True))
 text = GR._fmt(GR.build_report(calls + legacy, ys, reviews))
 ok("printed report says UNMEASURED for a round with no yield", "UNMEASURED" in text.splitlines()[2], True)
 ok("printed report shows the recorded yield", "4 (2/1/1)" in text.splitlines()[1], True)
@@ -138,6 +143,12 @@ out = json.loads(buf.getvalue())
 ok("report --json runs on the real stores", (rc, [r["round"] for r in out["rows"]], out["rows"][0]["reviews"]),
    (0, ["PARSER_R1", "PARSER_R2", GR.UNTAGGED], 1))
 ok("yield CLI refuses a bad count", GR.main(["yield", "--round", "PARSER_R3", "--findings", "1", "--weak", "2"]), 2)
+try:
+    GR.main(["report", "--days", "0"])
+    days0 = "accepted"
+except SystemExit as e:
+    days0 = e.code
+ok("report --days 0 is refused, not read as 'all time'", days0, 2)
 
 print("\n%s" % ("ALL PASS" if not FAILED else "FAILED: %s" % FAILED))
 sys.exit(1 if FAILED else 0)
