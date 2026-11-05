@@ -8,7 +8,7 @@
 //     the same cell ALSO heading (east-)south-east, so the raw ends overlap. Mated: B ends on C arriving WEST (face to face
 //     with A), its last JoinerHalf dead straight, G2 at the cut, curvature bound held, no self-overlap, clear of A's body.
 //  S3 straight-on / 90 degrees / opposed (B parallel beside A, same heading): the same bars.
-//  S4 a stiffer hose (MinBendRadius 2.0) keeps the bound, and the solve costs < 25 ms on the screenshot case.
+//  S4 a stiffer hose (MinBendRadius 2.0) keeps the bound, and the screenshot solve stays under a work bar (solves, iterations; not ms).
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -131,6 +131,8 @@ namespace RimMandrake.FlowWorks.SelfTest
         }
 
         // ------------------------------------------------------------------ bars
+        // S4's work bar: measured 71 solves / 687 iterations on the screenshot full search (2026-11-05), ~1.2x headroom as the old 25 ms bar had
+        private const long MaxSolves = 85, MaxIterations = 830;
         private const double Width = 0.25;   // a plump hose's visible width (HoseMath.VisibleWidth(1, 1) ~ 0.23)
 
         private static void JoinBars(string tag, List<V2> P, V2 p0, double th0, double k0, V2 p1, double th1, double k1, double kmax)
@@ -317,18 +319,22 @@ namespace RimMandrake.FlowWorks.SelfTest
                 List<V2> Bm = HoseSpliceMath.MateTail(B, C, -u, straight, k2, A, null, out _);
                 long ms = sw.ElapsedMilliseconds;
                 MateBars("stiff", B, Bm, C, -u, straight, k2, A);
-                // the best of 5, not the mean: the search is deterministic, so only machine load adds time, and the mean of 5 read
-                // 24.0 ms at the desk and 26.0 ms on SteveDesktop with a live game up (proof_hose's offline gate then refused the live run)
-                // (best of 15 since 25.1 ms still flaked under a live game: a real regression moves the minimum, load does not)
-                double per = double.MaxValue;
-                for (int i = 0; i < 15; i++)
-                {
-                    sw.Restart();
-                    HoseSpliceMath.MateTail(B, C, -u, straight, kmax, A, null, out _);
-                    per = Math.Min(per, sw.Elapsed.TotalMilliseconds);
-                }
-                Console.WriteLine($"    splice cost: cold {ms} ms (stiff), {per:0.0} ms per full search (best of 15)");
-                Assert(per < 25, $"the full search costs {per:0.0} ms (> 25)");
+                // The cost bar counts WORK, not wall-clock time (HOSE_SELFTEST_FIX_TIMING_BAR_FLAKE): a ms bar flaked under load three
+                // times (mean of 5 read 26.2 ms in a stock run, 26.0 ms beside a live game; best of 15 still read 25.1). The search is
+                // deterministic, so its Gauss-Newton solve and iteration counts are exact: a real regression moves them, load cannot.
+                // The time is still printed for a human reading the log, never asserted.
+                long s0 = HoseSpliceMath.Solves, i0 = HoseSpliceMath.Iterations;
+                sw.Restart();
+                HoseSpliceMath.MateTail(B, C, -u, straight, kmax, A, null, out _);
+                double per = sw.Elapsed.TotalMilliseconds;
+                long solves = HoseSpliceMath.Solves - s0, iters = HoseSpliceMath.Iterations - i0;
+                long s1 = HoseSpliceMath.Solves, i1 = HoseSpliceMath.Iterations;
+                HoseSpliceMath.MateTail(B, C, -u, straight, kmax, A, null, out _);
+                Console.WriteLine($"    splice cost: cold {ms} ms (stiff); full search {solves} solves, {iters} iterations, {per:0.0} ms (not asserted)");
+                Assert(HoseSpliceMath.Solves - s1 == solves && HoseSpliceMath.Iterations - i1 == iters,
+                    "the full search is not deterministic: a second run did different work, so a work bar cannot stand");
+                Assert(solves <= MaxSolves && iters <= MaxIterations,
+                    $"the full search does {solves} solves / {iters} iterations (bar {MaxSolves} / {MaxIterations})");
             });
         }
     }
