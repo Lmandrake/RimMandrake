@@ -1147,18 +1147,20 @@ namespace RimMandrake.FlowWorks
 				int bed = body.depthBeds[k];
 				RM_PondDepthMath.Stage st;
 				int w;
+				bool wetNow = owner.IsWaterNow(c);
 				if (exact)
 				{
+					// POND_DRAWN_FIX_VERYSHALLOW_NEVER_MUDS: wet or dry by the film (1 cm, 2 cm to re-wet), never by half a decilitre:
+					// a drained flat pond's level residue is wet ground (mud), not 25 very-shallow sources.
 					double wd = RM_LevelSolve.PondSquareWater(bed, surface);
-					w = wd >= 0.5 ? 1 : 0;
-					st = RM_PondDepthMath.StageForExact(wd, bed);
+					st = RM_PondDepthMath.StageForExact(wd, bed, wetNow);
+					w = st == RM_PondDepthMath.Stage.Mud ? 0 : 1;
 				}
 				else
 				{
 					w = RM_PondDepthMath.WaterAt(bed, s, patch.Contains(i));
 					st = w > 0 ? RM_PondDepthMath.StageFor(w, bed, false) : RM_PondDepthMath.Stage.Mud;
 				}
-				bool wetNow = owner.IsWaterNow(c);
 				TerrainDef cur = map.terrainGrid.BaseTerrainAt(c);
 				if (w > 0)
 				{

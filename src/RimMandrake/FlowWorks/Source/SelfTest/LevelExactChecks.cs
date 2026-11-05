@@ -144,6 +144,26 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(RM_PondDepthMath.StageForExact(0.2, 4) == RM_PondDepthMath.Stage.Mud, "under half a decilitre is mud");
 			});
 
+			Case("Exact_pond_drawn_flat_residue_is_mud", () =>
+			{
+				// POND_DRAWN_FIX_VERYSHALLOW_NEVER_MUDS: a 5x5 flat pond (bed 2, 50 levels) drawn to stock 0.00 still held a few
+				// litres; spread level they were > 0.5 dL a square, so all 25 stayed RM_WaterVeryShallow sources and none mudded.
+				int[] h = RM_PondDepthMath.Histogram(Enumerable.Repeat(2, 25).ToList());
+				foreach (long left in new long[] { 1, 40, 49, 25L * 199 })
+				{
+					double wd = RM_LevelSolve.PondSquareWater(2, RM_LevelSolve.PondSurfaceHeight(h, left));
+					Assert(wd >= 0.0 && RM_PondDepthMath.StageForExact(wd, 2) == RM_PondDepthMath.Stage.Mud,
+						left + " dL left on 25 squares (" + wd + " dL each) is mud, not very shallow");
+				}
+				Assert(RM_PondDepthMath.StageForExact(RM_PondDepthMath.PondFilmDl, 2) == RM_PondDepthMath.Stage.VeryShallow,
+					"a wet square at the 1 cm film keeps its water");
+				Assert(RM_PondDepthMath.StageForExact(300, 2, false) == RM_PondDepthMath.Stage.Mud,
+					"a dry square does not re-wet between the film and twice it (no flicker)");
+				Assert(RM_PondDepthMath.StageForExact(RM_PondDepthMath.PondRewetDl, 2, false) == RM_PondDepthMath.Stage.VeryShallow,
+					"a dry square re-wets at twice the film");
+				Assert(RM_PondDepthMath.StageForExact(2000, 2, false) == RM_PondDepthMath.Stage.VeryShallow, "10 cm is very shallow water");
+			});
+
 			Case("Exact_S1_limitless_canal_fills_by_pulse_10_unbroken", () =>
 			{
 				var w = World(20, 3);

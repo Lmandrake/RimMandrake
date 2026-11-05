@@ -142,13 +142,25 @@ namespace RimMandrake.FlowWorks
 			return w == 2 ? Stage.Shallow : Stage.Thin;
 		}
 
+		/// <summary>POND_DRAWN_FIX_VERYSHALLOW_NEVER_MUDS: the thinnest water a pond square still shows as water, 1 cm (200 dL, 20 L
+		/// on one square). A drawn-down FLAT pond spreads its last litres (what the draw left, or a refill trickle) exactly level over
+		/// every square; under half a decilitre each was the old dry line, so 5 L on a 5x5 pond kept all 25 squares very shallow
+		/// sources forever and none ever went to mud. Thinner than this is wet ground: mud. The stock still holds those litres.</summary>
+		public const double PondFilmDl = RM_LevelSolve.U / 50.0;
+
+		/// <summary>A DRY pond square shows water again only at twice the film (2 cm): the hysteresis that keeps a drawn pond whose
+		/// refill and draw balance near the film from flipping every square each pulse.</summary>
+		public const double PondRewetDl = 2.0 * PondFilmDl;
+
 		/// <summary>WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: the stage for a square standing in <paramref name="waterDl"/> decilitres
 		/// of water (the pond's exact surface, RM_LevelSolve.PondSquareWater) over a bed of <paramref name="bed"/> notches: the
 		/// look nearest its TRUE metres (RM_LevelSolve.LookBand), and the square's own original terrain when that is the look it
-		/// had full. Under 25 cm (band 1) is the very-shallow stage, the ladder's rung 1. Under half a decilitre is dry (mud).</summary>
-		public static Stage StageForExact(double waterDl, int bed)
+		/// had full. Under 25 cm (band 1) is the very-shallow stage, the ladder's rung 1. Under the film (<see cref="PondFilmDl"/>,
+		/// 1 cm) a wet square is dry (mud); a dry square takes water back only at <see cref="PondRewetDl"/> (<paramref name="wetNow"/>
+		/// false), so a pond hovering at the film does not flicker between mud and water every pulse.</summary>
+		public static Stage StageForExact(double waterDl, int bed, bool wetNow = true)
 		{
-			if (waterDl < 0.5)
+			if (waterDl < (wetNow ? PondFilmDl : PondRewetDl))
 			{
 				return Stage.Mud;
 			}

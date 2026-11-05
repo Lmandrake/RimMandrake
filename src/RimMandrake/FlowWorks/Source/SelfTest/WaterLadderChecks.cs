@@ -72,7 +72,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // the lake: StageForExact's wet stages are the ladder's rungs, for every depth below full
                 int U = RM_LevelSolve.U;
                 // below the deep band (a deep-bedded square holding 2 m+ keeps its own deep terrain: that is the Original rule)
-                for (long dl = 5; dl < 7L * U / 2; dl += 7)
+                // POND_DRAWN_FIX_VERYSHALLOW_NEVER_MUDS: from the film (1 cm) up; thinner than that a pond square is wet ground (mud)
+                Assert(RM_PondDepthMath.StageForExact(5, 40) == RM_PondDepthMath.Stage.Mud, "5 dl on a pond square is under the film: mud");
+                for (long dl = (long)RM_PondDepthMath.PondFilmDl; dl < 7L * U / 2; dl += 7)
                 {
                     RM_PondDepthMath.Stage st = RM_PondDepthMath.StageForExact(dl, 40);
                     Assert(st == RM_WaterLadder.PondStageOf(RM_WaterLadder.RungForDl(dl)), dl + " dl: pond stage " + st);
