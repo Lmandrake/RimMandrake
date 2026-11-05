@@ -2213,6 +2213,8 @@ namespace RimMandrake.FlowWorks
             Thirst.RM_ThirstProvider.Reapply();
             // DEEP_WATER_BUILD_SWIM_OR_SINK: swimming on/off (or the open-water switch) opens or closes the deep band on live maps
             Swimming.RM_SwimWater.Reapply();
+            // WADING_SETTINGS_FIX_STALE_PATH_COSTS: pawn effects on/off or the wading cost re-reads standing water's path costs
+            Sheet.RM_MapComponent_Sheet.ReapplyPathCosts();
         }
     }
 }

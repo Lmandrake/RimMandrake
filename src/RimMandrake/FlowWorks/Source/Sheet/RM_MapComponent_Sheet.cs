@@ -922,6 +922,45 @@ namespace RimMandrake.FlowWorks.Sheet
 			return t == Tier.Sheet ? RM_SheetSettings.sheetPathCost : t == Tier.Pool ? 2 * RM_SheetSettings.sheetPathCost : 0;
 		}
 
+		/// <summary>The settings PathCostAt reads: 0 with pawn effects off (no cost at all), else the wading cost + 1.</summary>
+		public static int PathCostFingerprint() => RM_SheetSettings.pawnEffectsEnabled ? RM_SheetSettings.sheetPathCost + 1 : 0;
+
+		private static int appliedPathCostFingerprint = int.MinValue;
+
+		/// <summary>WADING_SETTINGS_FIX_STALE_PATH_COSTS: settings changed (Mod.WriteSettings). The path grid re-reads a square only on a
+		/// tier change (EnginePulse), so toggling pawn effects or moving the wading-cost slider left every standing pool on its old
+		/// cost; when PathCostFingerprint moved, re-read every sheet- or pool-tier square on every map (the only squares whose cost
+		/// the two settings change).</summary>
+		public static void ReapplyPathCosts()
+		{
+			int fp = PathCostFingerprint();
+			if (fp == appliedPathCostFingerprint)
+			{
+				return;
+			}
+			appliedPathCostFingerprint = fp;
+			if (Current.ProgramState != ProgramState.Playing || Find.Maps == null)
+			{
+				return;
+			}
+			foreach (Map m in Find.Maps)
+			{
+				RM_MapComponent_Sheet s = Of(m);
+				if (s?.state == null || s.state.WetCount == 0 || m.pathing == null)
+				{
+					continue;
+				}
+				foreach (IntVec3 c in m.AllCells)
+				{
+					Tier t = s.TierAt(c);
+					if (t == Tier.Sheet || t == Tier.Pool)
+					{
+						m.pathing.RecalculatePerceivedPathCostAt(c);
+					}
+				}
+			}
+		}
+
 		/// <summary>Squares of spilled water on every map: the cheap gate the path-cost postfix reads before any map lookup.</summary>
 		private static int anyWet;
 		private static Game anyWetGame;
