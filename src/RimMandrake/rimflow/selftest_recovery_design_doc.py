@@ -63,6 +63,9 @@ TRIAGE = [("4D2C5B87", "supersede", "SITE_QUIET_FIX_COLONISTS_HURT_DOWNED_DEAD")
           ("2E27AD17", "close", None),
           ("3A38C661", "close", None)]
 STILL_OPEN = ("0CA2BE29", "5F134E3C", "E0B6DA41", "EBC39CFA")
+# §7.1 says these four were "still open after" the 11-05 04:39Z-04:41Z triage: a point-in-time claim, so only an end
+# before this cutoff contradicts it (Relentless closed 0CA2BE29 and E0B6DA41 later that morning, which is fine)
+TRIAGE_DONE = "2026-11-05T04:42:00Z"
 SPAWNED = 18
 
 
@@ -163,16 +166,19 @@ def ledger_problems(rows):
     pre = "HARNESS_REPAIR_CAUSE_"
     spawned = {r.get("name") for r in rows if r.get("event") == "spawn" and str(r.get("name", "")).startswith(pre)}
     out = [] if len(spawned) == SPAWNED else ["%d HARNESS_REPAIR_CAUSE_* spawned, doc says %d" % (len(spawned), SPAWNED)]
-    ends = {}
+    ends, ended_by_triage = {}, {}
     for r in sorted(rows, key=lambda r: r.get("tsn") or 0):
         i = r.get("id") or ""
         if i.startswith(pre) and r.get("event") in ("supersede", "close", "drop"):
             ends[i[len(pre):]] = (r["event"], r.get("by"))
+            if (r.get("ts") or "") < TRIAGE_DONE:
+                ended_by_triage[i[len(pre):]] = (r["event"], r.get("by"))
     for t, ev, by in TRIAGE:
         got = ends.get(t)
         if not got or got[0] != ev or (by and got[1] != by):
             out.append("%s: ledger %r, doc says %s %s" % (t, got, ev, by or ""))
-    out += ["%s: ledger ended it %r, doc says still open" % (t, ends[t]) for t in STILL_OPEN if t in ends]
+    out += ["%s: ledger ended it %r by the triage, doc says still open after it" % (t, ended_by_triage[t])
+            for t in STILL_OPEN if t in ended_by_triage]
     return out
 
 
@@ -223,10 +229,13 @@ def main():
             else r for r in rows]
     if not ledger_problems(bent):
         fails.append("control: a changed triage target passed")
+    early = rows + [{"event": "close", "id": "HARNESS_REPAIR_CAUSE_5F134E3C", "ts": "2026-11-05T04:40:00Z", "tsn": 1}]
+    if not ledger_problems(early):
+        fails.append("control: a still-open ticket closed during the triage passed")
 
     for f_ in fails:
         print("FAIL", f_)
-    print("selftest_recovery_design_doc: %s (%d doc parts, %d triage rows, 7 controls)" % (
+    print("selftest_recovery_design_doc: %s (%d doc parts, %d triage rows, 8 controls)" % (
         "FAIL" if fails else "PASS", len(REQUIRED), len(TRIAGE)))
     return 1 if fails else 0
 
