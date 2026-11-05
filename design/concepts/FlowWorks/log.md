@@ -29,3 +29,10 @@ Run rm-role-designer-1793796539 wrote the root from these (record.json `root`, w
 Text: design/concepts/FlowWorks/turn_02.md. Asks sent: ask_prisoner_click, ask_match. Struck by rm-judge a2dc4250bd4478b4a:
 ask_rescue_ladder (answered by his pit-trap words; recorded as decision d_raider_fetch_fallen). c_spec_stale and
 c_proof_stale resolved as not his decisions (record.json).
+
+## 2026-11-05 his answers to turn 2 (by card, recorded on the ledger by BENCH)
+
+- **ask_prisoner_click** (OWNER:1793862531058884117): "(b) you click 'capture' from the rim as now, but a drained moat (or pit) counts as a prison without a bed." → decision d_prison_no_bed (owed).
+- **ask_match** (OWNER:1793862534552097818): "a new order where a colonist walks to the rim and tosses a flame onto the square the player picks." → decision d_toss_flame (owed).
+
+Run rm-role-designer-1793862763: no ask sent, no core contradiction open. Stage 2 done.

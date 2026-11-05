@@ -112,6 +112,24 @@
     "OWNER:1793794392567351532",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs:488"
    ]
+  },
+  {
+   "id": "d_prison_no_bed",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793862531058884117",
+    "src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs:82"
+   ],
+   "text": "Pit-held raiders become prisoners by the existing 'capture' click from the rim, and a drained moat (or pit) counts as a prison without a bed. Owed: today capture needs a prisoner bed down there; the bed requirement goes for a drained moat or pit."
+  },
+  {
+   "id": "d_toss_flame",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793862534552097818",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs:15"
+   ],
+   "text": "Owed: a new order where a colonist walks to the rim and tosses a flame onto the square the player picks, lighting a burnable canal, moat or pit there. Existing ignition from any fire (molotov, incendiary, burning raider) stays."
   }
  ],
  "asks": [
@@ -203,7 +221,7 @@
    ],
    "offers_removal": false,
    "author": "rm-role-designer-1793843896",
-   "status": "sent",
+   "status": "answered",
    "source": [
     "src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs:82",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs:17",
@@ -213,7 +231,8 @@
     "by": "rm-judge a2dc4250bd4478b4a",
     "verdict": "pass",
     "why": "His words settle that they become prisoners, not how; the choice decides new capture code. Wording narrowed to what the code shows (no bed in a full moat)."
-   }
+   },
+   "answer": "OWNER:1793862531058884117"
   },
   {
    "id": "ask_match",
@@ -227,7 +246,7 @@
    ],
    "offers_removal": false,
    "author": "rm-role-designer-1793843896",
-   "status": "sent",
+   "status": "answered",
    "source": [
     "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs:15"
    ],
@@ -235,7 +254,8 @@
     "by": "rm-judge a2dc4250bd4478b4a",
     "verdict": "pass",
     "why": "True as stated: ignition is any vanilla fire on or beside the liquid; no player drop-a-flame order exists; his words do not say who lights it. 'Torch' replaced: vanilla has no carryable torch."
-   }
+   },
+   "answer": "OWNER:1793862534552097818"
   },
   {
    "id": "ask_rescue_ladder",
