@@ -161,6 +161,15 @@ POTABLE_TERRAIN = ("WaterShallow", "WaterDeep", "WaterMovingShallow", "WaterMovi
                    "RM_WaterVeryShallow", "RM_WaterThin", "RM_WaterChestDeepStill")
 
 
+def one_need_verdict(per):
+    """T2: per = {pawnId: [count(RM_Thirst), count(DBHThirst)]} -> (status, bad). No colonist read is no sample
+    (PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE: ls_c8 FAILed T2 on perColonist {} on a 0-colonist map): UNMEASURED. Pure."""
+    bad = {k: v for k, v in per.items() if v != [1, 0]}
+    if not per:
+        return "UNMEASURED", bad
+    return ("FAIL" if bad else "PASS"), bad
+
+
 def main(argv=None, bridge=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("out", nargs="?", default=None)
@@ -604,8 +613,8 @@ def main(argv=None, bridge=None):
                 pid = re.sub(r"^Thing_", "", c["pawnId"])
                 ns, _ = needs_of(pid)
                 per[pid] = [ns.count(NEED), ns.count("DBHThirst")]
-            bad = {k: v for k, v in per.items() if v != [1, 0]}
-            row("T2_one_thirst_need", "FAIL" if bad or not per else "PASS", "MOD", {"perColonist": per, "bad": bad})
+            st2, bad = one_need_verdict(per)
+            row("T2_one_thirst_need", st2, "HARNESS" if st2 == "UNMEASURED" else "MOD", {"perColonist": per, "bad": bad})
 
         # ---------------------------------------------------------------- T3 + T6 (one long advance)
         if want("T3") or want("T6"):

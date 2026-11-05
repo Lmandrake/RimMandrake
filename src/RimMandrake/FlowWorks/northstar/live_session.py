@@ -1835,10 +1835,18 @@ def snapshot(s):
     return snap
 
 
-def reload_verdict(ok_io, blind, diff):
-    """B7 -> status: UNMEASURED when the save/load failed or any snapshot key was unread on either side; else PASS when
-    nothing differs."""
-    if not ok_io or blind:
+def reload_sample_empty(snap):
+    """True when the snapshot holds nothing a save/load could lose: no dug cell in any zone and no pocket read back
+    (PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE: ls_c5 PASSed B7 with pairs {} on an undug site -- equal because empty). Pure."""
+    dug = any(v for k, v in snap.items() if k.startswith("dig_"))
+    pocket = any(re.search(r"\bpocket=True\b", str(v or "")) for k, v in snap.items() if k.startswith("pocket_"))
+    return not (dug or pocket)
+
+
+def reload_verdict(ok_io, blind, diff, empty=False):
+    """B7 -> status: UNMEASURED when the save/load failed, any snapshot key was unread on either side, or the sample
+    before the save was empty (nothing dug, no pocket: nothing to compare); else PASS when nothing differs."""
+    if not ok_io or blind or empty:
         return "UNMEASURED"
     return "PASS" if not diff else "FAIL"
 
@@ -1872,7 +1880,8 @@ def b7_reload(s):
     # a key unread on EITHER side is no comparison: None == None made the pocket/setting rows PASS with nothing read
     blind = sorted(k for k in before if before.get(k) is None or after.get(k) is None)
     ok_io = (sv.get("success") is True and ld.get("success") is True) or (s.mock and sv.get("success") is not False)
-    st = reload_verdict(ok_io, blind, diff)
+    empty = reload_sample_empty(before)
+    st = reload_verdict(ok_io, blind, diff, empty)
     # RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS: runs 20261018T232207 / T233414 failed on pocket_covers alone and
     # kept no strings. Keep both sides of every differing key, and one SETTLED re-read (> RM_PocketGrid.RebuildMinTicks
     # = 60 later): a key that agrees once settled was a stale grid read straight after the load (a transient), one that
@@ -1888,7 +1897,7 @@ def b7_reload(s):
     for item, cid in (("PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT", "A3"), ("PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP", "A2"),
                       ("PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH", "save_reload_pockets_identical")):
         s.row("B7_reload_%s" % cid[:24], item, cid, st, "MOD" if st != "UNMEASURED" else "HARNESS",
-              dict(save=name, differs=diff, unread=blind, pairs=pairs, settledSame=settled_same,
+              dict(save=name, differs=diff, unread=blind, emptySample=empty, pairs=pairs, settledSame=settled_same,
                    settleTicks=RELOAD_SETTLE_TICKS if diff else 0,
                    pocketTimingAfterLoad=(pocket_timing[:400] if ok_t else "unread: %s" % pocket_timing[:120])), "B7")
     s.row("B7_pipe_look_survives", "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD", "A2", "UNMEASURED", "OWED",

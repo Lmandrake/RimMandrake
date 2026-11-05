@@ -310,6 +310,11 @@ _dma = _dma[:_dma.find("return body.depthExempt == 0;")]
 check("DepthModelApplies exempts a non-fresh liquid's body (salt/brine never restaged onto the fresh ladder)",
       "IsOtherLiquidTerrain(t)" in _dma and "canalFluid != RimMandrakeFlowWorks_DefOf.RM_Fluid_Water" in _stock)
 
+# PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE: ls_c8 FAILed T2 with perColonist {} on a 0-colonist map
+check("T2: no colonist read is UNMEASURED, not FAIL", thirst_live.one_need_verdict({})[0] == "UNMEASURED")
+check("T2: one RM_Thirst, no DBHThirst on every colonist PASS", thirst_live.one_need_verdict({"a": [1, 0]})[0] == "PASS")
+check("can-fail T2: a DBHThirst beside RM_Thirst FAILs", thirst_live.one_need_verdict({"a": [1, 0], "b": [1, 1]}) == ("FAIL", {"b": [1, 1]}))
+
 print()
 if FAILS:
     print("selftest_thirst_live: %d FAILED: %s" % (len(FAILS), FAILS))

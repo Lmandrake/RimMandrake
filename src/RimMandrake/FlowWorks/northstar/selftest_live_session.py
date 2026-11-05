@@ -596,6 +596,15 @@ check(L.reload_verdict(True, [], []) == "PASS" and L.reload_verdict(True, [], ["
       "reload: equal is PASS, a differing key is FAIL")
 check(L.reload_verdict(True, ["pocket_covers"], []) == "UNMEASURED",
       "can-fail reload: a key unread on both sides (None == None) is UNMEASURED, never PASS")
+# PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE: ls_c5 PASSed B7 with pairs {} on an undug site (nothing to compare)
+_undug = {"dig_access": [], "dig_digdepth": [], "dig_covers": [], "pocket_access": "POCKET k=3 comp=0 pocket=False size=9",
+          "pocket_digdepth": "POCKET k=3 comp=0 pocket=False size=9", "pocket_covers": "POCKET k=3 comp=0 pocket=False size=9"}
+check(L.reload_sample_empty(_undug) is True, "reload: no dug cell and no pocket is an empty sample")
+check(L.reload_sample_empty(dict(_undug, dig_covers=[{"x": 1}])) is False, "reload: a dug cell is a sample")
+check(L.reload_sample_empty(dict(_undug, pocket_covers="POCKET k=3 comp=2 pocket=True size=4")) is False,
+      "reload: a pocket read back is a sample")
+check(L.reload_verdict(True, [], [], L.reload_sample_empty(_undug)) == "UNMEASURED",
+      "can-fail reload: equal-because-empty (pairs {}) is UNMEASURED, never PASS")
 
 
 class RideGame(object):

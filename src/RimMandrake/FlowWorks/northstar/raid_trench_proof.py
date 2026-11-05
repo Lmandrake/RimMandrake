@@ -100,7 +100,8 @@ CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP, test-pilot sitting 2026-10-31 (Archmagi, 11-
                                        east of the east bank (inside the 30 the criterion names); the direct raiders carry no
                                        ladder, so one should fell a tree to make one (RM_RaiderChopForLadder). EXPECT fewer
                                        oaks standing at the end than were planted (a stump, if the game leaves one, is
-                                       recorded), or an RM_RaiderChopForLadder job seen in a raider's job trace. LIES: no oak
+                                       recorded); an RM_RaiderChopForLadder job with every oak still standing is a FAIL
+                                       (chopped, never felled), not a PASS. LIES: no oak
                                        planted (terrain refused) or no raider within 15 squares = UNMEASURED; a raider that
                                        crossed some other way first may never need a tree (recorded as `crossedOtherwise`).
                                        Written offline 2026-10-23 (area P); OWED to its first live run.
@@ -275,8 +276,12 @@ def tree_verdict(planted, standing_after, chop_seen, came_near):
         return "UNMEASURED", "no oak stood after planting (terrain refused)"
     if standing_after is None:
         return "UNMEASURED", "the oaks could not be counted at the end"
-    if standing_after < planted or chop_seen:
+    if standing_after < planted:
         return "PASS", ""
+    # the bar says FELLS: a chop job with every oak still standing is not a fell (PROOF_ROWS_FIX_PASS_ON_EMPTY_SAMPLE:
+    # r55 PASSed on chopSeen alone, 6 of 6 standing, ~8000 ticks of chop jobs)
+    if chop_seen:
+        return "FAIL", "RM_RaiderChopForLadder jobs were seen but every oak still stands: chopped, never felled"
     if came_near < 1:
         return "UNMEASURED", "no raider came within 15 squares"
     return "FAIL", "raiders came near, every oak still stands and no RM_RaiderChopForLadder job was seen"
