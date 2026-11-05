@@ -92,6 +92,8 @@ def main(argv):
         time.sleep(IDLE + 0.5)
 
         s = load_reaper(rev, td)
+        from selftest_scratch_reap_tmp import own_tree     # a stranger's unreadable /proc in a walled box holds everything
+        s.proc_entries = own_tree                          # (REAPER_SELFTEST_FIX_BLIND_IN_EVERY_BOX)
         ctx = s.Ctx(time.time())
         out, rows = s.sweep_tmp(ctx, False, 0)
         picked = {os.path.relpath(r["path"], tmp) for r in rows}

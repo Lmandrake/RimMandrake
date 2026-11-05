@@ -7,6 +7,11 @@ Proves: an idle loose file and an idle dir go; a dir with a fresh file inside st
 stamp); a protected name, a socket, another uid's entry, a selftest fixture, a clone and a used dir stay; a dry run
 removes nothing; a crash's pin goes; the deadline defers; the run records the sweep (last_run.json, tmp_runs.jsonl, the
 manifest); the /tmp tmpfs's own mount is not an alias; and the pressure check fires on /tmp alone.
+
+The reaper's /proc scan is narrowed to this test's own process tree (REAPER_SELFTEST_FIX_BLIND_IN_EVERY_BOX): in a
+sandboxed user unit (the Marker's box) a stranger's /proc/<pid>/cwd is unreadable, and the reaper rightly holds
+everything on "cannot see a process", which turned the sweep checks red in every box. The --apply child gets the same
+lister; selftest_scratch_reap_tmp_committed_saves.py borrows own_tree.
 """
 import copy
 import json
@@ -22,6 +27,29 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 FAILS = []
 IDLE = 15           # seconds: long enough that a "young" entry stays young through every sweep below
+
+
+def own_tree(root: int | None = None) -> list[str]:
+    """The pids /proc shows under `root` (default: this process), plus root's parent: every process this test starts."""
+    root = os.getpid() if root is None else root
+    parents = {}
+    for pid in filter(str.isdigit, os.listdir("/proc")):
+        try:
+            with open(f"/proc/{pid}/stat", encoding="utf-8", errors="replace") as f:
+                parents[pid] = f.read().rpartition(")")[2].split()[1]
+        except (OSError, IndexError):
+            continue
+    mine, grew = {str(root)}, True
+    while grew:
+        more = {p for p, up in parents.items() if up in mine} - mine
+        mine |= more
+        grew = bool(more)
+    return sorted(mine | {parents.get(str(root), str(os.getppid()))})
+
+
+# the --apply run is a child interpreter: it narrows its scan to the test's tree (its parent's) before main()
+NARROWED = ("import os, sys; sys.path.insert(0, %r); import scratch_reap as s, selftest_scratch_reap_tmp as t; "
+            "s.proc_entries = lambda: t.own_tree(os.getppid()); sys.exit(s.main(sys.argv[1:]))")
 
 
 def ok(cond, what):
@@ -45,6 +73,10 @@ def main():
                       RM_RUN_TMP_ROOT=str(td / "runs"))
     os.environ.pop("SCRATCH_REAP_UNIT", None)
     import scratch_reap as s
+    real_entries = s.proc_entries
+    s.proc_entries = own_tree
+    whole, narrow = set(filter(str.isdigit, real_entries())), set(s.proc_entries())
+    ok(str(os.getpid()) in narrow and narrow < whole, "only this test narrows the reaper's /proc scan (%d of %d)" % (len(narrow), len(whole)))
     procs = []
     signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))     # a killed run still runs the finally: no leaked sleeps
     try:
@@ -185,7 +217,7 @@ def main():
 
         (tmp / "loose2.txt").write_text("q" * 10)
         time.sleep(IDLE + 0.2)
-        rc = subprocess.run([sys.executable, str(Path(s.__file__)), "--apply"], capture_output=True, text=True,
+        rc = subprocess.run([sys.executable, "-c", NARROWED % str(Path(s.__file__).parent), "--apply"], capture_output=True, text=True,
                             timeout=300, env=dict(os.environ, SCRATCH_REAP_TMP_IDLE_HOURS=str(IDLE / 3600)))
         rec = json.loads((td / "state" / "last_run.json").read_text())
         ok(rec.get("tmp", {}).get("removed", 0) >= 1 and rec["tmp"].get("before") is not None,
