@@ -3943,3 +3943,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-05T16:46:55Z","tsn":1793897215435643926}
 {"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","result":"kept","detail":"sweep: running again","ts":"2026-11-05T16:48:05Z","tsn":1793897285042996689}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU","result":"kept","detail":"sweep: running again","ts":"2026-11-05T16:48:08Z","tsn":1793897288214219466}
+{"seat":"RUNNER","event":"note","id":"SELFTEST_FIX_RECOVERY_DESIGN_DOC_JIVD","text":"ops_watch: new at 2026-11-05T16:49:13Z: src/RimMandrake/rimflow/selftest_recovery_design_doc.py (due 2026-11-08T11:00:00Z)","ts":"2026-11-05T16:49:19Z","tsn":1793897359503382715}
