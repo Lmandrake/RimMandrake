@@ -1158,6 +1158,35 @@ def t_folded_source_goes_by_its_compose_key():
         check("still refused %r" % proof, L.refused_proof(lr, "t", "c", proof) is not None, proof)
 
 
+def t_rebuilt_assembly_carries():
+    """carry: a later change to the build's compiled assembly alone (sources, proofs and defs unchanged) names the newest
+    rebuilding commit; a later change to a source, a deletion, a still-stale target or a fake without last_commit is None.
+    Paths outside src/ and live_proofs/ (the ledger shard) never decide (OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT)."""
+    dll = "src/RimMandrake/TheRot/Assemblies/RimMandrakeTheRot.dll"
+    led = "infrastructure/state/ledger/events/BENCH.jsonl"
+
+    class CFx(FakeFx):
+        def __init__(self, later, target_later=(), **kw):
+            FakeFx.__init__(self, touched=TOUCHED + [dll, dll + ".srchash", led], later=later, **kw)
+            self.target_later = list(target_later)
+
+        def last_commit(self, sha, paths):
+            return "beef00000000full"
+
+        def changed_since(self, sha, paths):
+            return [pc for pc in (self.target_later if sha.startswith("beef") else self.later) if pc[0] in paths]
+
+    got = L.carry(CFx([(dll, "beef00"), (dll + ".srchash", "beef00"), (led, "aaa111")]), SHA)
+    check("carry_assembly_only", got and got[0] == "beef00000000full" and "RimMandrakeTheRot.dll" in got[1], got)
+    check("carry_source_changed", L.carry(CFx([(dll, "beef00"), (TOUCHED[1], "beef00")]), SHA) is None)
+    check("carry_nothing_later", L.carry(CFx([(led, "aaa111")]), SHA) is None)
+    check("carry_deleted", L.carry(CFx([(dll, "beef00")], deleted=[TOUCHED[0]]), SHA) is None)
+    check("carry_target_still_stale", L.carry(CFx([(dll, "beef00")], target_later=[(dll, "cafe00")]), SHA) is None)
+    check("carry_needs_last_commit", L.carry(FakeFx(touched=[dll], later=[(dll, "beef00")]), SHA) is None)
+    check("assembly_out_rx", all(L.ASSEMBLY_OUT.search(p) for p in (dll, dll + ".srchash", dll[:-4] + ".pdb"))
+          and not L.ASSEMBLY_OUT.search(TOUCHED[1]) and not L.ASSEMBLY_OUT.search("src/A/B/Assemblies/x.xml"))
+
+
 def main():
     for t in (t_exit1_that_could_not_ask_is_no_fail, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
@@ -1165,7 +1194,7 @@ def main():
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
               t_load_condition, t_running_load_gap_is_unmeasured, t_tiers_small_first_final_last,
               t_refusal_row_has_its_sha, t_composed_mod_reads_its_parent_about, t_folded_source_goes_by_its_compose_key,
-              t_preflight_before_a_slot, t_undeployed_row_carries_its_game):
+              t_preflight_before_a_slot, t_undeployed_row_carries_its_game, t_rebuilt_assembly_carries):
         try:
             t()
         except Exception as e:     # a crash is a red, named

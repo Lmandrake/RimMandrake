@@ -612,8 +612,8 @@ class GameFx(object):
                            capture_output=True, text=True, timeout=60)
         return r.stdout if r.returncode == 0 else ""
 
-    def game_implement(self, item, sha, criteria_text, live=None):
-        args = ["implemented", item, "--sha", sha, "--why", "relentless: blind offline PASS; the game clauses stay owed"]
+    def game_implement(self, item, sha, criteria_text, live=None, why=None):
+        args = ["implemented", item, "--sha", sha, "--why", why or "relentless: blind offline PASS; the game clauses stay owed"]
         tmp = None
         if criteria_text.strip():
             tmp = os.path.join(self.base, "live", "%s.criteria" % item)
@@ -693,6 +693,14 @@ class GameFx(object):
         import relentless_live
         return relentless_live.preflight(relentless_live.Fx(books=self.books, seat=self.r["seat"]),
                                          relentless_live.live_rules(self.r), item, lines, sites)
+
+    def game_carry(self, item, sha):
+        """relentless_live.carry on the books: (newer sha, why) when only a rebuilt shared assembly made `sha` stale."""
+        import relentless_live
+        try:
+            return relentless_live.carry(relentless_live.Fx(books=self.books, seat=self.r["seat"]), sha, item)
+        except ValueError:
+            return None
 
     def refusal_print(self, item, criterion, why, proof):
         """A runs.jsonl refusal -> relentless_live.fingerprint over the criterion's whole text as the ledger reads now."""
@@ -1086,6 +1094,37 @@ def _rerecord(store, fx, item, sha, acts):
     return again
 
 
+CARRY_MAX = 8      # carries per game entry: a build carried this often is waiting on something else, and goes back
+
+
+def _carry(store, fx, item, sha, now, acts):
+    """A stale build whose only later change is another commit's rebuild of a shared assembly (relentless_live.carry):
+    the game phase moves to that commit, the Judge's offline green carried with its origin named, the ledger re-recorded
+    there. No worker, no strike: the worker it went to could only land a commit that changes nothing
+    (OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT). -> the new sha, or None (the stale build goes back as before)."""
+    g = store.load(item).get("game") or {}
+    if g.get("carries", 0) >= CARRY_MAX or not hasattr(fx, "game_carry"):
+        return None
+    got = fx.game_carry(item, sha)
+    if not got:
+        return None
+    new, why = got
+    if fx.game_implement(item, new, fx.proofs_at(item, new, ".criteria"), (store.load(item).get("contract") or {}).get("live"),
+                         why="relentless: carried from %s, %s" % (sha[:12], why)[:300]) is not None:
+        return None
+
+    def mv(s):
+        gg = s["game"]
+        green = dict(gg.get("offline_green") or {})
+        green.update(sha=new, carried_from=green.get("carried_from") or sha)
+        gg.update(sha=new, offline_green=green, carries=gg.get("carries", 0) + 1, proved_at=None,
+                  carried={"from": sha, "to": new, "at": now, "why": why[:300]})
+    _save(store, item, mv)
+    acts.append({"do": "game_carried", "item": item, "from": sha[:12], "to": new[:12]})
+    fx.ledger_note(item, "relentless game phase: build carried %s -> %s, no worker: %s" % (sha[:12], new[:12], why))
+    return new
+
+
 def _preflight(store, fx, sup, r, item, lines, now, acts, sha):
     """relentless_live.preflight before a game slot is spent (implement, before a staging load, before a proof round):
     -> True when the item was sent back or held. A stale build goes back to be rebuilt on the newer bytes; a refused
@@ -1096,6 +1135,8 @@ def _preflight(store, fx, sup, r, item, lines, now, acts, sha):
     bad = fx.game_preflight(item, lines, sites)
     if any(RETIERED in b["why"] for b in bad) and _rerecord(store, fx, item, sha, acts) is None:
         bad = fx.game_preflight(item, lines, sites)
+    if any(b["kind"] == "stale" for b in bad) and _carry(store, fx, item, sha, now, acts):
+        return True     # the next tick reads the carried build afresh
     if not bad:
         return False
     stale = [b for b in bad if b["kind"] == "stale"]
@@ -1300,6 +1341,8 @@ def step(store, fx, r, item, now, acts, sup):
         dead = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and relentless_live_round.decides(v)]
         if dead:        # a build no game can run, or a cause that outlived a reload: no stage or proof round can help
             v = dead[0]
+            if not v.get("defect") and _carry(store, fx, item, sha, now, acts):
+                return      # only a rebuilt shared assembly made it stale: proved on the carried build next round
             return _refuse(store, fx, sup, r, item, "game_proof_unmeasured" if v.get("defect") else "game_stale_build",
                            "%s %s UNMEASURED (%s): %s%s" % (v.get("criterion"), v.get("proof") or "", v.get("log") or "",
                                                             v.get("why") or "", (" [likewise %s: see their logs]" % ", ".join(

@@ -41,6 +41,7 @@ class GW(S.FakeWorld):
         self.owed = {"A2": "L1"}
         self.title = "a mod thing"
         self.pre, self.pre_calls = [], []        # relentless_live.preflight's answer, and who asked
+        self.carry, self.carry_calls = None, []     # relentless_live.carry's answer, and who asked
         self.gap, self.gap_calls, self.enabled, self.enable_why = {}, [], [], None     # relentless_live_round.mod_gap
 
     def game_preflight(self, item, lines, sites=None):
@@ -54,7 +55,11 @@ class GW(S.FakeWorld):
     def game_ledger(self, item):
         return self.led.get(item) or {"state": "doing", "built_sha": None, "title": self.title, "owed": {}}
 
-    def game_implement(self, item, sha, crit, live=None):
+    def game_carry(self, item, sha):
+        self.carry_calls.append((item, sha))
+        return self.carry(sha) if callable(self.carry) else self.carry
+
+    def game_implement(self, item, sha, crit, live=None, why=None):
         self.impl.append((item, sha, crit))
         self.events.append("implement")
         self.led[item] = {"state": "built", "built_sha": sha, "title": self.title, "owed": dict(self.owed)}
@@ -1484,6 +1489,66 @@ def t_stale_build_caught_before_a_slot():
     y.done()
 
 
+def t_rebuilt_assembly_carries_the_build():
+    """OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT: a build stale only because another commit rebuilt a shared assembly (carry
+    says so) moves to that commit inside the game phase: no worker, no strike, the Judge's green carried with its origin,
+    the ledger re-recorded there. carry None, or CARRY_MAX carries already, is the stale road as before."""
+    stale = [{"cid": None, "why": "changed since the built commit, so the game cannot run sha1: A.dll (c0ffee)",
+              "fp": "fpS", "kind": "stale"}]
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    ok(x.st("I0")["game"]["phase"] == "prove", "implemented, clean")
+    x.w.pre = lambda lines: stale if x.w.led["I0"]["built_sha"] == SHA else []
+    x.w.carry = lambda sha: ("sha2full", "only rebuilt assemblies changed") if sha == SHA else None
+    x.w.running = False
+    x.tick()
+    st = x.st("I0")
+    ok(not st.get("last_fail") and st["status"] == G.GAME, "carried, not sent back: %s" % st.get("last_fail"))
+    g = st["game"]
+    ok(g["sha"] == "sha2full" and g["offline_green"]["sha"] == "sha2full" and g["offline_green"]["carried_from"] == SHA
+       and g["carries"] == 1, "the game phase and its green moved, origin named: %s" % g)
+    ok(x.w.impl[-1][1] == "sha2full" and x.w.led["I0"]["built_sha"] == "sha2full", "the ledger re-recorded on the carry")
+    ok(x.w.carry_calls == [("I0", SHA)], "asked once, on the stale sha: %s" % x.w.carry_calls)
+    ok(not G.gate(st, "t", PROOF, "(?!x)x", None), "the carried green passes the lease gate: %s" % G.gate(st, "t", PROOF, "(?!x)x", None))
+    x.done()
+    y = rig(1)
+    to_game(y, "I0")
+    y.tick()
+    y.w.pre, y.w.carry = stale, None
+    y.w.running = False
+    y.tick()
+    ok(y.st("I0")["last_fail"] and y.st("I0")["last_fail"]["class"] == "game_stale_build",
+       "a stale build carry refuses (the build's own source changed) goes back as before")
+    y.done()
+    z = rig(1)
+    to_game(z, "I0")
+    z.tick()
+    G._save(z.s, "I0", lambda s: s["game"].update(carries=G.CARRY_MAX))
+    z.w.pre, z.w.carry = stale, ("sha2full", "why")
+    z.w.running = False
+    z.tick()
+    ok(z.st("I0")["last_fail"] and z.st("I0")["last_fail"]["class"] == "game_stale_build" and not z.w.carry_calls,
+       "past CARRY_MAX carries the stale build goes back")
+    z.done()
+
+
+def t_stale_row_carries_the_build():
+    """A stale row from a prove round (the assembly rebuilt between preflight and the run) carries the same way."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.tick()
+    ok(x.w.proves == ["I0"], "proving")
+    x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
+                 "proof": "python3 p.py", "why": "changed since the built commit, so the game cannot run sha1: a (b)"}]
+    x.w.carry = ("sha2full", "only rebuilt assemblies changed")
+    x.tick()
+    st = x.st("I0")
+    ok(not st.get("last_fail") and st["game"]["sha"] == "sha2full", "a stale row carries: %s" % st.get("last_fail"))
+    x.done()
+
+
 def t_dead_rows_go_back():
     """A stale-build row or a defect row (the same cause on two games) decides its build: the item goes back once with
     the row's reason instead of being proved every 15 minutes and reloaded every third run."""
@@ -1725,7 +1790,7 @@ def main():
               t_stage_tries_a_newer_running_game_first,
               t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses, t_met_clause_is_not_missing,
               t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_retiered_rerecorded_every_phase, t_stale_build_caught_before_a_slot,
-              t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_clock_restarts_at_lease,
+              t_rebuilt_assembly_carries_the_build, t_stale_row_carries_the_build, t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_clock_restarts_at_lease,
               t_live_hold_lapses_when_its_game_is_gone,
               t_dead_prove_pid_frees_the_game, t_modlist_gate_before_slot, t_modlist_gate_reads_once_per_game,
               t_modlist_enable_refused_holds, t_modlist_batch_enables_union, t_modlist_rider_refusal_stages_alone, t_mod_gap_pure,

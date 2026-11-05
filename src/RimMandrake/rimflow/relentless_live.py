@@ -451,6 +451,42 @@ def stale_build(fx, sha, item_id=None):
     return None, files
 
 
+PROOFS = "infrastructure/state/live_proofs/"     # the build's proof lines; the ledger and lessons it touched are books
+ASSEMBLY_OUT = re.compile(r"/Assemblies/[^/]+\.(?:dll|pdb)(?:\.srchash)?$")     # a compiled output, never a source
+
+
+def carry(fx, sha, item_id=None):
+    """-> (newer sha, why) when `sha` is stale only because another commit REBUILT a shared assembly the build ships, or
+    None. Every later change to the build's paths is a compiled output (ASSEMBLY_OUT), and every other path the build
+    touched under src/ or live_proofs/ (its sources, proofs, defs) holds the built bytes at HEAD: the newer commit's assembly was compiled from a tree
+    holding the build's own sources unchanged, so the build is redeployed there, not rebuilt. Anything else, or a fake
+    without `last_commit`, is None and the stale build goes back to a worker as before.
+    OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT: SUMP_TAR_FIRE_NETWORK_1 (Judge PASS 7/7) went back twice as game_stale_build because
+    SPREADING_FUEL_FIX_IRRIGATES_CROPS rebuilt RimMandrakeFlowWorks.dll 27 min after its candidate; that DLL took ~36
+    commits in 72 h, so every FlowWorks item waiting over an hour for the game was sent to a worker who could change
+    nothing."""
+    if not hasattr(fx, "last_commit"):
+        return None
+    shas = build_shas(fx, sha, item_id)
+    if any(fx.deleted(s) for s in shas):
+        return None
+    touched = [p for p in dict.fromkeys(p for s in shas for p in fx.touched(s)) if SRC_MOD.match(p) or p.startswith(PROOFS)]
+    later = fx.changed_since(sha, touched) if touched else []
+    if not later or any(not ASSEMBLY_OUT.search(p) for p, _ in later):
+        return None
+    new = fx.last_commit(sha, [p for p, _ in later])
+    if not new or new.startswith(sha) or sha.startswith(new):
+        return None
+    try:
+        again, _files = stale_build(fx, new)
+    except ValueError:
+        return None
+    if again:
+        return None
+    return new, "only rebuilt assemblies changed since %s (%s); the build's own sources are unchanged at %s" % (
+        sha[:12], ", ".join("%s (%s)" % pc for pc in later[:4]), new[:12])
+
+
 def preflight(fx, lr, item_id, lines, sites=None):
     """What a live run of each line would refuse whatever the game does, asked before any game slot is spent
     (LIVE_CUT_CRITERION_ENFORCE_AT_IMPLEMENT, LIVE_STALE_HARDEN_CAUGHT_BEFORE_SLOT). lines: {criterion: proof line}.
@@ -823,6 +859,12 @@ class Fx(object):
         if r.returncode:
             raise ValueError("git log %s: %s" % (sha, r.stderr[-200:]))
         return [h for h, _, subj in (ln.partition("\t") for ln in r.stdout.splitlines()) if h and cites(subj, item_id)]
+
+    def last_commit(self, sha, paths):
+        """-> the full sha of the newest commit after `sha` touching any of `paths`, or None."""
+        r = subprocess.run(["git", "log", "-1", "--format=%H", "%s..HEAD" % sha, "--", *paths], cwd=self.books,
+                           capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+        return (r.stdout.strip() or None) if r.returncode == 0 else None
 
     def touched(self, sha):
         """Every path the built commit touched, including ones HEAD no longer has: changed_since sees those as changed."""
