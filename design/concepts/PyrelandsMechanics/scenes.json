@@ -1,0 +1,318 @@
+{
+ "scenes": [
+  {
+   "id": "sc_rite_party",
+   "kind": "acceptance",
+   "requirement": [
+    "rite_party_arrives",
+    "rite_leaves_with_fruit"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::rite_party",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "colony vitals and pending incidents recorded",
+    "rite switch on"
+   ],
+   "action": "force the next scheduled front through rite_force_hook and watch until the party leaves",
+   "expect": "a party within group min-max walks in with a letter naming the Tribes; the first lit cells are within a few cells of the lead harvester; after the harvest hours each pawn walks off carrying 1 to fireRiteCarryPerPawn scorch-fruit; none dropped at the exit",
+   "control": {
+    "case": "the same front with the rite switch off",
+    "expect": "the plain front lights at its scheduled cell and no party or letter comes",
+    "rules_out": "a vanilla visitor group or a test spawn passing for the rite: only the rite path lights the line at the party"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_rite_harvest_route",
+   "kind": "acceptance",
+   "requirement": [
+    "rite_harvests_behind_front"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::rite_harvest_route",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "colony vitals and pending incidents recorded",
+    "ripe scorch-fruit standing in the fresh scar and, as bait, one ripe plant on an unburned cell beside the front (asserted)"
+   ],
+   "action": "force a rite; read every harvester's cell each game hour against the fire grid, and every pick's cell",
+   "expect": "no harvester ever stands on a burning cell; every pick is in the scar within FireRiteHarvestRadius; zero burn injuries",
+   "control": {
+    "case": "the bait plant on unburned ground beside the front",
+    "expect": "it is never picked",
+    "rules_out": "a duty that picks any scorch-fruit near the origin, scar or not"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_visit_picks",
+   "kind": "acceptance",
+   "requirement": [
+    "visit_picks_and_leaves"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::visit_picks",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "colony vitals and pending incidents recorded",
+    "flameHarvestMinFires fires standing on burnable grass (asserted)",
+    "ripe scorch-fruit in the burned ground around the fire"
+   ],
+   "action": "fire RUT_FlameHarvest and watch until the group leaves",
+   "expect": "the group walks to the burn, picks scorch-fruit only in burned cells, never on a burning one, and walks off carrying it",
+   "control": {
+    "case": "one fire fewer than flameHarvestMinFires",
+    "expect": "the incident refuses: no group comes",
+    "rules_out": "a visit that fires regardless of standing fire; and the old walk-to-centre-and-leave behaviour, which picks nothing"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_fruit_defence",
+   "kind": "acceptance",
+   "requirement": [
+    "fruit_defence_warns_then_drives"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::fruit_defence",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "colony vitals and pending incidents recorded",
+    "a forced rite under way, its scar recorded",
+    "one colonist able to harvest, a second able to fight"
+   ],
+   "action": "order the colonist to harvest scorch-fruit inside the scar and keep it picking; in a second run let it fight back",
+   "expect": "a message naming the Tribes, then a harvester walks to the colonist; picking on, nearby harvesters attack only that colonist; they stop and go back to the fruit once it leaves the scar; goodwill before equals after; no Tribes raid queued over three game days, fighting back included",
+   "control": {
+    "case": "the colonist stops picking at the warning and walks out",
+    "expect": "no attack follows",
+    "rules_out": "a faction-wide hostility flip, which would also attack a colonist who complied"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "owner_review"
+  },
+  {
+   "id": "sc_defence_reach",
+   "kind": "acceptance",
+   "requirement": [
+    "fruit_defence_their_scar_only"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::defence_reach",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "colony vitals and pending incidents recorded",
+    "a forced rite under way, its scar recorded",
+    "an older scar outside the party's scar holding ripe scorch-fruit, within the party's path reach (asserted)"
+   ],
+   "action": "order a colonist to pick in the older scar",
+   "expect": "no message and no attack",
+   "control": {
+    "case": "the same colonist picking inside the party's scar",
+    "expect": "the warning message arrives",
+    "rules_out": "silence because no harvester could reach the colonist at all"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_attack_raids",
+   "kind": "acceptance",
+   "requirement": [
+    "attack_brings_raids"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::attack_raids",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "colony vitals and pending incidents recorded",
+    "a forced rite under way"
+   ],
+   "action": "order a drafted colonist to shoot a harvester who is not defending fruit; advance days under a vitals and incident guard",
+   "expect": "the Tribes relation goes hostile on the attack; a later raid's faction is the Tribes",
+   "control": {
+    "case": "a colonist fighting back during the fruit defence (sc_fruit_defence's second run)",
+    "expect": "relation stays not hostile and goodwill unchanged",
+    "rules_out": "every fight with the party reading as an open attack"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_no_arson_tally",
+   "kind": "acceptance",
+   "requirement": [
+    "no_arson_tally"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::no_arson_tally",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "colony vitals and pending incidents recorded",
+    "the arson count removed (RUT_FireRaid and the tally absent, asserted by DefDatabase and the settings fields)"
+   ],
+   "action": "colonists light several grass fires over three game days; a tame fire-hawk drops twigs",
+   "expect": "goodwill unchanged; no Tribes letter or incident in the queue",
+   "control": {
+    "case": "an open attack on a Tribes harvester in the same window",
+    "expect": "goodwill drops and relation goes hostile",
+    "rules_out": "a goodwill reader that never moves"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_no_animal_blame",
+   "kind": "acceptance",
+   "requirement": [
+    "no_animal_blame"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::no_animal_blame",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "colony vitals and pending incidents recorded",
+    "a forced rite under way, its scar recorded",
+    "a tame fire-hawk and a tame furnace-beast on the map"
+   ],
+   "action": "the fire-hawk drops a twig inside the scar and the furnace-beast beds down there",
+   "expect": "no message, attack or goodwill change",
+   "control": {
+    "case": "a colonist picking scorch-fruit in the same scar",
+    "expect": "the warning message arrives",
+    "rules_out": "a defence that never fires, so animal silence would prove nothing"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_walk_tribes_season",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_tribes_season"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::walk_tribes_season",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "start": [
+    "his full list, a Pyrelands colony in ordinary play (asserted)",
+    "Deep Desert Tribes present, not hostile"
+   ],
+   "action": "play until a rite comes by its own roll (hook only after the time budget, recorded); pick in their scar; save mid-harvest; reload; next rite; second order; switches off and on",
+   "expect": "the digest before save equals after reload; the second rite harvests again; no Tribes pawn or lord left behind by the switches; log clean",
+   "control": {
+    "case": "the reload compared against a save made before the party arrived",
+    "expect": "the digests differ, so the comparison can see a change",
+    "rules_out": "a digest that reads equal whatever the state"
+   },
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_thornvine_tier",
+   "kind": "exploration",
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::thornvine_tier",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "question": "after the thornvine nutrition patch moves to mandrake.rm.pyrelands, does a furnace-beast still eat thornvine on a load without this mod, and does this mod ship no thornvine patch",
+   "start": [
+    "a load with RM Pyrelands and without this mod; a furnace-beast beside a thornvine patch"
+   ],
+   "action": "let the beast's thermal cycle run",
+   "expect": "the beast ingests thornvine; Plant_Thornvine reads Nutrition 0.25",
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_settings_switches",
+   "kind": "exploration",
+   "staged_by": "script",
+   "entry_point": "src/RimUtinni/PyrelandsMechanics/validation.py::settings_switches",
+   "entry_point_item": "TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE",
+   "question": "with the rite, the visit and the fruit defence each switched off, does a Pyrelands map play as an ordinary one with nothing of theirs left behind",
+   "start": [
+    "Pyrelands home map, burn line and fire clock running (asserted)",
+    "Deep Desert Tribes present, not hostile, goodwill recorded (asserted)",
+    "colony vitals and pending incidents recorded"
+   ],
+   "action": "flip each switch off in turn, force the front, fire the visit, pick in a scar",
+   "expect": "no party, no group, no warning for each switch off; every switch reads back",
+   "restore": "despawn every Tribes pawn and lord the scene brought, extinguish fire, restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin, put goodwill, relation and every poked setting back to its prior value",
+   "hold": "immediate"
+  }
+ ],
+ "showcases": [
+  {
+   "id": "rite_party",
+   "scenes": [
+    "sc_rite_party",
+    "sc_rite_harvest_route",
+    "sc_fruit_defence"
+   ],
+   "exercises": [
+    "inv_fire_rite_party",
+    "inv_fire_rite_lord",
+    "inv_rite_harvest_duty",
+    "inv_tribes_lookup",
+    "inv_letters_text",
+    "inv_fruit_defence"
+   ],
+   "source": [
+    "OWNER:1793895903357725756"
+   ],
+   "decision": "d_flagship"
+  }
+ ],
+ "coverage_rest": [
+  {
+   "capability": "inv_flame_harvest_visit",
+   "by": [
+    "sc_visit_picks",
+    "visit_picks_and_leaves"
+   ],
+   "why": "the visit shares the rite's Tribes, letters and fruit defence; alone it adds one new capability, below the three a second showcase needs, so its own scene checks it"
+  },
+  {
+   "capability": "inv_arson_justice_raid",
+   "by": [
+    "sc_no_arson_tally",
+    "no_arson_tally"
+   ],
+   "why": "removed by his word; its check is that RUT_FireRaid and the tally are gone and colony fires draw nothing"
+  },
+  {
+   "capability": "inv_mod_settings",
+   "by": [
+    "sc_settings_switches"
+   ],
+   "why": "switches are checked by flipping each one; no showcase is built round a menu"
+  },
+  {
+   "capability": "inv_thornvine_edible",
+   "by": [
+    "sc_thornvine_tier"
+   ],
+   "why": "a one-line patch owed a move to the franchise-free tier; a load without this mod checks it"
+  }
+ ]
+}

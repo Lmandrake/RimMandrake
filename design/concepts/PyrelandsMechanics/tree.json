@@ -1,0 +1,297 @@
+{
+ "schema_version": 1,
+ "subject": "PyrelandsMechanics",
+ "kind": "mod",
+ "authored_by": "concept",
+ "root_ref": "design/validation_walks/RimUtinni/PyrelandsMechanics.md#north-star",
+ "root_state": "DRAFT",
+ "root_hash": null,
+ "coverage": null,
+ "floor": {
+  "ref": "concept_floor.json",
+  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "off": []
+ },
+ "exam_waived": null,
+ "waived": [],
+ "advisory": [
+  "How often a rite comes (fireRiteFraction) and how many fires call a visit (flameHarvestMinFires) are playtest tuning, not a bar"
+ ],
+ "leaves": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the hook sends a party that walks in through the vanilla arrival; the read shows the lord toil change from travel to harvest; it refuses when the switch is off",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "rite_force_hook",
+   "by": "concept",
+   "root": [
+    "pmech_rite_party_walks_in"
+   ],
+   "leaf_kind": "instrument",
+   "clause_kind": "change",
+   "experience": "The tester forces the next scheduled front on a Pyrelands map to arrive as a rite party, and reads back the party's lord state, the cells its scar covers, each harvester's carried scorch-fruit and the Tribes' goodwill.",
+   "scenario": "Build a bridge call that makes PyrelandsFireRiteHook.TrySend send on the next front regardless of fireRiteFraction, and a read returning lord toil, scar cells, carried count per pawn and goodwill; it refuses with a reason when the rite switch is off or no Tribes faction is present.",
+   "false_pass": [
+    "the hook spawns Tribes pawns itself instead of going through TrySend, so the send path is never exercised"
+   ],
+   "red": "the hook is missing, so a rite can only be waited for at fireRiteFraction and its scar and carried fruit cannot be read",
+   "tier_proposed": "offline",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "rite_force_hook",
+   "oracle_proposed": "the first lit cells lie within a few cells of the lead harvester and are attributed to it; the letter names the Tribes faction; party size within the group min-max",
+   "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "rite_party_arrives",
+   "by": "concept",
+   "root": [
+    "pmech_rite_party_walks_in",
+    "pmech_rite_lights_line"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player, watching a Pyrelands map at play zoom when a scheduled burn comes, sees a small file of Deep Desert Tribes walk in off the sand with a letter naming them, stop, and the grass catches where they stand; the line then walks on like any front. It must not read as raiders, as a fire that lit before they arrived, or as a party that walks in and does nothing.",
+   "scenario": "Force the next front through the hook; capture the party's arrival, the letter text and the first fire cells; record the distance from the lead harvester to the first lit cell.",
+   "false_pass": [
+    "the front lights at its own scheduled cell and the party merely walks to it",
+    "the letter fires but no party spawns"
+   ],
+   "red": "the party walks in and the line lights at the map's scheduled spot far from them, so the Tribes look like tourists at someone else's fire",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: the party walking in and lighting the grass"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "rite_force_hook",
+   "oracle_proposed": "no harvester cell is a burning cell at any read; every pick is in the scar within FireRiteHarvestRadius; zero burn injuries on the party",
+   "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "rite_harvests_behind_front",
+   "by": "concept",
+   "root": [
+    "pmech_rite_harvests_behind_front"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player watches the party work the black behind the front: harvesters walk only on burned ground, pick scorch-fruit there and stay clear of burning cells; none of them catches fire. It must not read as pawns walking through the flames, pawns burning, or pawns wandering the unburned grass.",
+   "scenario": "After the rite lights, record every harvester's cell each game hour against the fire grid and the scar, and every pick's cell; count burns on the harvesters.",
+   "false_pass": [
+    "scorch-fruit placed by the test in an unburned cell is picked and counted as a harvest",
+    "the harvesters are kept far from the front by a long wait, so no path ever came near fire"
+   ],
+   "red": "a harvester paths through the burning front to reach fruit and catches fire",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "rite_force_hook",
+   "oracle_proposed": "carried count per pawn is above zero and at most fireRiteCarryPerPawn; each pawn exits by walking; no dropped scorch-fruit near the exit",
+   "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "rite_leaves_with_fruit",
+   "by": "concept",
+   "root": [
+    "pmech_rite_leaves_with_fruit"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees the party, after its harvest hours, walk off the map edge carrying the scorch-fruit it picked; the fruit leaves with them and none is left dropped at the edge.",
+   "scenario": "Read each harvester's carried scorch-fruit at the end of the harvest duty and at the moment it leaves the map; count scorch-fruit on the ground near the exit afterwards.",
+   "false_pass": [
+    "the party leaves empty-handed and the count is read from the pick jobs instead of the inventories",
+    "the party is despawned by the test rather than walking off"
+   ],
+   "red": "a harvester picks past fireRiteCarryPerPawn, drops the overflow and leaves a pile of fruit behind, or the party never leaves",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "picks above zero, all in burned cells around the destination; no harvester on a burning cell; carried count above zero at exit",
+   "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "visit_picks_and_leaves",
+   "by": "concept",
+   "root": [
+    "pmech_visit_picks_and_leaves"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player, with a big fire already standing on a Pyrelands map, sees a peaceful Tribes group walk in to the burn, pick scorch-fruit in the black behind it without stepping into a burning cell, and walk off carrying it. It must not read as visitors who walk to the fire's centre and leave with nothing (today's built behaviour).",
+   "scenario": "Light flameHarvestMinFires fires on burnable grass, fire RUT_FlameHarvest; record the group's picks, cells against the fire grid, and carried fruit at exit.",
+   "false_pass": [
+    "the group carries fruit the test put in its inventory",
+    "scorch-fruit picked is from an old burn far from the group's destination"
+   ],
+   "red": "the visit group walks to the fire's centre and leaves without picking, as built today",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "rite_force_hook",
+   "oracle_proposed": "a message naming the faction precedes any attack; attackers target only the picker; attacks stop within a short window after the picker leaves the scar; goodwill before equals after; no raid queued in three days",
+   "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "fruit_defence_warns_then_drives",
+   "by": "concept",
+   "root": [
+    "pmech_fruit_defence_warns_then_drives"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player orders a colonist to pick scorch-fruit in the scar of a Tribes rite or visit: a message names the Tribes and a harvester walks to the colonist; if the colonist keeps picking, nearby harvesters attack that colonist only until it leaves the scar, then go back to the fruit. Goodwill is unchanged after, no raid comes, and a colonist who fights back does not change that. It must not read as a raid, a faction turning hostile, or a party that ignores a thief.",
+   "scenario": "During a forced rite, order a colonist to harvest scorch-fruit inside the scar; read the message, the harvester's job, the attackers and their target, the colonist's cell when they stop; let the colonist fight back in a second run; read goodwill and the incident queue for three days after.",
+   "false_pass": [
+    "the test makes the whole faction hostile, so the party attacks, which looks right but is a war",
+    "the colonist is ordered out by the test before the warning step, so no attack was ever needed"
+   ],
+   "red": "the defence turns the whole Tribes faction hostile, so a picked fruit starts a war and raids follow",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: the warning and the drive-off reading as a defence, not a raid"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "rite_force_hook",
+   "oracle_proposed": "no message and no attack for the outside pick; the message arrives for the inside pick",
+   "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "fruit_defence_their_scar_only",
+   "by": "concept",
+   "root": [
+    "pmech_fruit_defence_scar_only"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player has a colonist pick scorch-fruit in an old burn elsewhere on the map while a Tribes rite is under way: the Tribes take no notice. Only their own scar is defended.",
+   "scenario": "During a forced rite, order a colonist to pick scorch-fruit in a scar the party did not light, outside the party's scar; then, as the positive case, inside it.",
+   "false_pass": [
+    "the outside pick is too far for any harvester to path to, so silence proves nothing about the rule"
+   ],
+   "red": "the party reacts to scorch-fruit picked anywhere on the map while it is present",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "relation goes to hostile on the attack; a later raid's faction is the Tribes",
+   "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "attack_brings_raids",
+   "by": "concept",
+   "root": [
+    "pmech_attack_brings_raids"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player orders colonists to attack a Tribes party openly: the Tribes turn hostile, and a raid from them comes in the following days, possibly again later. This is vanilla faction hostility; nothing in this mod adds to it.",
+   "scenario": "Order a drafted colonist to shoot a rite harvester who is not defending fruit; read goodwill and relation; let days pass and read the storyteller's raids by faction.",
+   "false_pass": [
+    "the hostility is set by the test",
+    "a raid from another faction is counted"
+   ],
+   "red": "the rite lord's turned-hostile exit swallows the attack, so the Tribes leave and stay friendly",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "goodwill unchanged, no Tribes letter or incident; DefDatabase has no RUT_FireRaid; no arson setting in Mod Settings",
+   "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
+   "cannot_show": "a raid, goodwill loss or warning from the Tribes caused by the colony's own fires",
+   "wall_expect_h": null,
+   "id": "no_arson_tally",
+   "by": "concept",
+   "root": [
+    "pmech_cannot_arson_tally"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player whose colony sets fires on a Pyrelands map, its own and its tamed animals', never sees a raid, a goodwill loss or a warning from the Tribes because of them.",
+   "scenario": "After the arson count is removed: let colonists light several grass fires over days with the Tribes present; read goodwill, letters and queued incidents; read that RUT_FireRaid, the arson debt tally and their settings no longer load.",
+   "false_pass": [
+    "the fires burn with the Tribes faction absent from the world, so nothing could react"
+   ],
+   "red": "the arson tally still counts colony fires and RUT_FireRaid still lands",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "rite_force_hook",
+   "oracle_proposed": "no message, attack or goodwill change for the animals; the colonist's pick draws the message",
+   "tier_reason": "a dev quicktest colony on a Pyrelands tile, minimal list plus RM Pyrelands, UtinniPatches and this mod, with the Deep Desert Tribes present and not hostile (asserted), gives the fire clock and the faction in about 90 s",
+   "cannot_show": "the Tribes counting an animal's act against the colony",
+   "wall_expect_h": null,
+   "id": "no_animal_blame",
+   "by": "concept",
+   "root": [
+    "pmech_cannot_animal_blame"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player whose fire-hawk drops a twig into the Tribes' scar during a rite, or whose furnace-beast beds down there, sees the Tribes do nothing about it; only a colonist picking fruit draws the defence.",
+   "scenario": "During a forced rite, have a fire-hawk's drop job and a tame furnace-beast act inside the scar; read messages, attacks and goodwill; then a colonist picks there as the positive case.",
+   "false_pass": [
+    "the animals act outside the scar, so no defence could fire anyway"
+   ],
+   "red": "the defence's trigger reads 'any colony-owned thing in the scar', so a tame animal sets it off",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "state digest before save equals after reload; the second rite harvests again; the switches leave no Tribes pawn or lord behind; log clean",
+   "tier_reason": "whether a rite ever comes in ordinary play, and survives a reload, shows only on his full list with the real fire clock (failure mode 1)",
+   "cannot_show": null,
+   "wall_expect_h": 3,
+   "id": "walk_tribes_season",
+   "by": "concept",
+   "root": [
+    "pmech_rite_party_walks_in",
+    "pmech_rite_harvests_behind_front",
+    "pmech_rite_leaves_with_fruit",
+    "pmech_fruit_defence_warns_then_drives"
+   ],
+   "leaf_kind": "walk",
+   "clause_kind": "change",
+   "experience": "The player plays a Pyrelands colony on the full list in ordinary play until a rite party comes on its own: watches it light the grass and pick behind the front, sends a colonist to pick in their scar and is warned off, saves while the party is harvesting, reloads, and finds the party, its lord, its scar and its carried fruit exactly as they were; the party then walks off with the fruit.",
+   "scenario": "On his full list, wait for a rite to arrive by its own roll (the hook only if none comes in the time budget, and recorded as such); save mid-harvest; reload and compare lord toil, scar cells, carried counts and goodwill; repeat the core action on the next rite; then a second order: a colonist picks first and the rite arrives while it is in the scar; switch the rite and the visit off and on mid-game and see nothing left behind.",
+   "false_pass": [
+    "the reload is from a save made before the party arrived",
+    "the rite is forced every time, so the ordinary-play roll is never seen"
+   ],
+   "red": "after the reload the party stands idle with no lord, or drops its fruit and never leaves",
+   "tier_proposed": "live_full",
+   "owner_part": "no"
+  }
+ ]
+}

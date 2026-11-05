@@ -1,0 +1,81 @@
+{
+ "lines": {
+  "tick_cost": {
+   "status": "applicable"
+  },
+  "long_stall": {
+   "status": "applicable"
+  },
+  "latency": {
+   "status": "applicable"
+  },
+  "memory": {
+   "status": "applicable",
+   "evidence_mode": "compressed",
+   "establishes": "heap measured before and after the walk; flatness over a long soak stays inferred"
+  },
+  "load_time": {
+   "status": "applicable"
+  },
+  "save_size": {
+   "status": "applicable",
+   "evidence_mode": "compressed",
+   "establishes": "save size on the walk's mid-harvest save and at its end; growth over a longer soak stays inferred"
+  },
+  "save_compat": {
+   "status": "applicable"
+  },
+  "load_order": {
+   "status": "applicable"
+  },
+  "log": {
+   "status": "applicable"
+  },
+  "mod_settings": {
+   "status": "applicable"
+  },
+  "multiplayer": {
+   "status": "applicable"
+  },
+  "art": {
+   "status": "not_applicable",
+   "evidence": "the mod ships no textures: src/RimUtinni/PyrelandsMechanics has Defs/DutyDefs, Defs/IncidentDefs, Patches and Source only; the Tribes are vanilla TribeCivil pawns reskinned elsewhere"
+  },
+  "reads_as": {
+   "status": "applicable"
+  },
+  "clickable": {
+   "status": "not_applicable",
+   "evidence": "no thing or building of its own: no Things defs in src/RimUtinni/PyrelandsMechanics/Defs"
+  },
+  "order_taken": {
+   "status": "applicable"
+  },
+  "motion": {
+   "status": "not_applicable",
+   "evidence": "the mod draws nothing of its own; pawns move by vanilla jobs"
+  },
+  "text": {
+   "status": "applicable"
+  },
+  "dlc": {
+   "status": "applicable"
+  },
+  "worldgen": {
+   "status": "applicable"
+  },
+  "biome_scope": {
+   "status": "applicable"
+  },
+  "flight": {
+   "status": "not_applicable",
+   "evidence": "nothing in this mod flies; the fire-hawk is mandrake.rm.pyrelands' and its scene here reads only its drop job"
+  },
+  "naming": {
+   "status": "applicable"
+  },
+  "test_isolation": {
+   "status": "applicable"
+  }
+ }
+}

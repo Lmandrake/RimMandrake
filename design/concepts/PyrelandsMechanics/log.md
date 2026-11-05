@@ -37,3 +37,13 @@ a_harvest_visit_at_the_fire → *"Pick and carry off"* (OWNER:179389883847236965
 d_drive_off_no_goodwill, d_visit_picks (his); d_visit_defends_its_burn, d_warning_form (delegated, undoable).
 Resolved: c_rite_never_attacks_vs_fruit_defence, c_visit_vs_rite_overlap. Non-core, carried to the stage-3 plan as
 Relentless fixes: c_thornvine_wrong_tier, c_fix_items_never_closed. No ask left sent.
+
+## Sitting 6, 2026-11-05 (run rm-role-designer-1793900422). Stage 3 Write, returned to stage 2
+
+The trigger ("revise the root to his words") was already done in sitting 3; root stands as OWNER:1793895903357725756.
+Written: a new DRAFT north star `design/validation_walks/RimUtinni/PyrelandsMechanics.md` (8 must-show, 2 cannot-show;
+the mod had none), tree.json (11 leaves, lint PASS), sheet.md, plan.md, scenes.json (9 acceptance, 2 exploration;
+showcase rite_party, 6 new; coverage_rest visit, arson removal, settings, thornvine), floor.json. Filed
+TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE (hook and entry points). Refused only on showcase 1: no flagship pick of his
+(a root approval is not a pick, as for Pyrelands). Returned to stage 2 with the flagship question; also owed his word:
+validating the new north star.
