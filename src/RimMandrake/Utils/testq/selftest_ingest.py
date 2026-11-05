@@ -455,6 +455,7 @@ def quarantine_repair_checks(env):
     fault filed (or was noted on), and no other attempt's repair item."""
     import ingest
     os.environ.update(env)
+    qhome, ingest.T.QHOME = ingest.T.QHOME, env["TESTQ_QUEUE"]    # hermetic: never the real queue's tick.log
     shard = ingest.shard_path()
     att, other = "JQ1.a1", "JQ2.a1"
     with open(shard, "a", encoding="utf-8") as f:
@@ -483,6 +484,7 @@ def quarantine_repair_checks(env):
         check(moved and "HARNESS_REPAIR_CAUSE_AAAA0001" in moved[0]["items"], "the quarantine record lists the repairs")
     finally:
         ingest.note_once, ingest.FM.rerun_job, ingest.FM.quarantine_move = saved
+        ingest.T.QHOME = qhome
 
 
 def template_checks(env):
@@ -498,8 +500,8 @@ def template_checks(env):
     def fake(*a):
         calls.append(a)
         return 0, "ok"
-    saved = ingest.rimflow, ingest.note_once, ingest.FM.load
-    ingest.rimflow = fake
+    saved = ingest.rimflow, ingest.note_once, ingest.FM.load, ingest.recorded_run, ingest.T.QHOME
+    ingest.rimflow, ingest.recorded_run, ingest.T.QHOME = fake, (lambda *a: None), env["TESTQ_QUEUE"]
     ingest.note_once = lambda it, needle, text: calls.append(("note", it, text)) or True
     ingest._REPAIR_ITEMS[0], windows = {}, []
     ingest.FM.load = lambda: (windows, {"clean_through_s": 0})
@@ -524,6 +526,14 @@ def template_checks(env):
         secs = re.findall(r"^## (.+)$", text, re.M)
         check(secs == ["spec", "classify", "verify", "negative control", "forbidden", "criteria"],
               "the template has every section: %s" % secs)
+        cls = text.split("## classify", 1)[-1].split("## verify", 1)[0]
+        kinds = [m for m in re.findall(r"^- (ENVIRONMENT|MOD|SITE|HARNESS)\b", cls, re.M)]
+        check(kinds == ["ENVIRONMENT", "MOD", "SITE", "HARNESS"] and "Decide the class FIRST" in cls,
+              "## classify names every class, decided first: %s" % kinds)
+        for k, needle in (("MOD", "the harness is not changed"), ("SITE", "Fix the staging, not the check"),
+                          ("HARNESS", "Fix it here")):
+            check(re.search(r"^- %s:.*%s" % (k, re.escape(needle)), cls, re.M) is not None,
+                  "the %s class says what it changes (%r)" % (k, needle))
         for needle, what in ((rec["job"]["id"], "the job id"), (rec["result"]["attempt"], "the attempt id"),
                              ("`c7`", "the chain held"), ("testq.py submit Mock --rows r1", "the re-run line"),
                              ("--for-item %s" % ITEM, "the re-run names the item"),
@@ -541,6 +551,26 @@ def template_checks(env):
         ingest.repair(rec2["job"], rec2["result"], cause, rec2)
         check([c[0] for c in calls] == ["note"] and open(path).read().endswith("KEEP\n"),
               "a second sighting notes the open item and leaves its template: %s" % calls)
+        # end to end: ingest_one hands the record to repair(); here only the RECORD states the run's time
+        ingest._REPAIRED.clear()
+        ingest._REPAIR_ITEMS[0] = {}
+        e2e = done_rec(ITEM, rows=(("r1", "PASS"),))
+        e2e["result"].update(rows=[dict(dead), {"row": "r1", "chain": "c2", "verdict": "PASS", "detail": ""}])
+        e2e["sent"], e2e["finished"] = "2026-11-02T10:00:00Z", "2026-11-02T10:20:00Z"
+        e2e_path = os.path.join(items_dir, R.repair_base(R.causes_of(e2e["result"])[0]) + ".md")
+        if os.path.exists(e2e_path):
+            os.remove(e2e_path)
+        windows[:] = [{"id": "F7", "start": "2026-11-02T09:00:00Z", "end": "2026-11-02T11:00:00Z"}]
+        del calls[:]
+        ingest.ingest_one(e2e)
+        check(not [c for c in calls if c[0] == "spawn"] and not os.path.exists(e2e_path),
+              "ingest_one: a cause inside a fault window (time on the record only) files nothing: %s"
+              % [c[0] for c in calls])
+        windows[:] = []
+        del calls[:]
+        ingest.ingest_one(e2e)
+        check(len([c for c in calls if c[0] == "spawn"]) == 1 and os.path.exists(e2e_path),
+              "ingest_one: the same record outside every window files its repair with a template")
         # the pass instrument, both ways
         ok, why = R.repaired_by(rec["result"], name)
         check(not ok and "still carries" in why, "negative control: the sighting fails its own repair: %s" % why)
@@ -572,9 +602,60 @@ def template_checks(env):
         check(ingest.repair_prose_paths(lambda *a: G) == ["infrastructure/state/items/%s.md" % name],
               "publish stages the spawned repair's template only: %s" % ingest.repair_prose_paths(lambda *a: G))
     finally:
-        ingest.rimflow, ingest.note_once, ingest.FM.load = saved
+        ingest.rimflow, ingest.note_once, ingest.FM.load, ingest.recorded_run, ingest.T.QHOME = saved
         ingest._REPAIR_ITEMS[0] = None
         ingest._REPAIRED.clear()
+
+
+def publish_prose_checks():
+    """A real publish() (temp repo + bare origin, stand-in lint): the pushed commit carries the RUNNER shard AND the
+    spawned repair's items/<NAME>.md; a template whose item was never spawned stays behind, untracked."""
+    import ingest as I
+    root = tempfile.mkdtemp(prefix="rf_prose_")
+    bare, disp = os.path.join(root, "origin.git"), os.path.join(root, "dispatch")
+
+    def sh(*a, cwd=disp):
+        return subprocess.run(["git"] + list(a), cwd=cwd, capture_output=True, text=True, timeout=60)
+    saved_env = {k: os.environ.pop(k) for k in ("RIMFLOW_LEDGER", "RIMFLOW_ITEMS") if k in os.environ}
+    old = I.REPO
+    try:
+        sh("init", "-q", "--bare", "-b", "main", bare, cwd=root)
+        sh("clone", "-q", bare, disp, cwd=root)
+        sh("config", "user.email", "st@x")
+        sh("config", "user.name", "st")
+        shard = os.path.join(disp, I.SHARD_REL)
+        os.makedirs(os.path.dirname(shard))
+        with open(shard, "w") as f:
+            f.write('{"a":1}\n')
+        sh("add", I.SHARD_REL)
+        sh("commit", "-qm", "init")
+        sh("push", "-q", "origin", "HEAD:main")
+        lint_py = os.path.join(disp, "src", "RimMandrake", "Utils", "ledger_lint.py")   # untracked stand-in lint
+        os.makedirs(os.path.dirname(lint_py))
+        with open(lint_py, "w") as f:
+            f.write(LINT_CLEAN)
+        name, nope = "HARNESS_REPAIR_CAUSE_ABCD1234", "HARNESS_REPAIR_CAUSE_NEVERSPAWN"
+        with open(shard, "a") as f:
+            f.write(json.dumps({"seat": "RUNNER", "event": "spawn", "name": name}) + "\n")
+        items = os.path.join(disp, I.ITEMS_REL)
+        os.makedirs(items, exist_ok=True)
+        for n in (name, nope):
+            with open(os.path.join(items, n + ".md"), "w") as f:
+                f.write("# %s\n\n## spec\n" % n)
+        I.REPO = disp
+        out = I.publish(1)
+        sh("fetch", "-q", "origin")
+        files = sh("show", "--name-only", "--format=", "origin/main").stdout.split()
+        rel = (I.ITEMS_REL.replace(os.sep, "/") + "/%s.md")
+        check(out == "pushed", "publish of a spawned repair pushes: %r" % out)
+        check(I.SHARD_REL.replace(os.sep, "/") in files and rel % name in files,
+              "the pushed commit carries the RUNNER shard and the spawned repair's template: %s" % files)
+        check(rel % nope not in files and "??" in sh("status", "--porcelain", "--", rel % nope).stdout,
+              "a template for an item never spawned stays behind, untracked: %s" % files)
+    finally:
+        I.REPO = old
+        os.environ.update(saved_env)
+        shutil.rmtree(root, ignore_errors=True)
 
 
 def main():
@@ -722,6 +803,7 @@ def main():
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     publish_checks()
+    publish_prose_checks()
     leftover_checks()
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
