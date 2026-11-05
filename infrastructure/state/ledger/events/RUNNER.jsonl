@@ -4152,3 +4152,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-05T21:11:00Z","tsn":1793913060161312868}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"broken","detail":"Ops alarm RELENTLESS_DISTRESS: under 34 min: 7 of 8 places, 470 ready: pool full: 16 clones, cap 16 (1 kept for checks), nothing to release: ARCHMAGI_BACKFILL_W","ts":"2026-11-05T21:12:15Z","tsn":1793913135167724925}
 {"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_UNSTICK_XARX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-05T21:12:19Z","tsn":1793913139022252072}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"kept","detail":"sweep: running again","ts":"2026-11-05T21:18:05Z","tsn":1793913485252431149}
