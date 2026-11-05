@@ -169,6 +169,9 @@ def seed_wall(td: Path, O, old: float) -> None:
         check(v.get("wallsha256lnk34xyz") == "KEEP", "a fixture whose .git is a symlink stays")
         check("seedrepo_toolong_name" not in v, "a name that is not mkdtemp's is not a candidate")
         check(lit_repo.exists() and lit_dest.exists(), "report only touches nothing")
+        import scratch_reap as R
+        check(R.inside_selftest_litter(root.parent, lit_wall) and not R.inside_selftest_litter(root.parent, linked),
+              "a wallsha256 git fixture is no reaper candidate; a look-alike whose .git is a symlink still is")
         real_run = O.subprocess.run
 
         def hung(*a, **k):
@@ -259,6 +262,19 @@ def main() -> int:
                         os.utime(os.path.join(dp, n), (old, old))
                 os.utime(path, (old, old))
             return path
+
+        # the reaper never judges a clone inside a fixture legacy_litter owns: deleting one restamped the fixture young,
+        # so it never aged out and every run re-reported it (SEAT_TMP_PRUNE_TESTS_LEFT_LUGGAGE)
+        import scratch_reap as R
+        fx = plant(root / "tmpfx3_x9zq", age=False)
+        inner = fx / "scratch/FOUNDRY/tracked_canon_clone"
+        plain = root / "tmpplainx9zq" / "c"
+        (plain / ".git").mkdir(parents=True)
+        check(R.inside_selftest_litter(td / "seat-tmp", inner), "a clone inside a reaper fixture is no reaper candidate")
+        check(not R.inside_selftest_litter(fx, inner), "a root inside the fixture (a selftest's own roots) still sees it")
+        check(not R.inside_selftest_litter(td / "seat-tmp", plain), "a clone in a mkdtemp dir of no fixture's shape is")
+        O.force_rm(fx)
+        O.force_rm(plain.parent)
 
         litter = plant(root / "tmpab3_x9zq")
         (litter / "denied").mkdir()

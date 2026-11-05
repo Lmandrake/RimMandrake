@@ -78,6 +78,7 @@ from __future__ import annotations
 
 import argparse
 import bisect
+import contextlib
 import datetime as dt
 import errno
 import fcntl
@@ -280,6 +281,23 @@ def find_clones(top: Path, depth: int = 8) -> list[Path]:
     return out
 
 
+def inside_selftest_litter(root: Path, c: Path) -> bool:
+    """A clone that is, or sits inside, a selftest fixture selftest_own_dirs.legacy_litter owns (a reaper selftest's
+    tmpXXXXXXXX tree, a wallsha256/seedrepo git fixture): not a candidate. Judging its fake clones DELETEd some, which
+    restamped the fixture young, so legacy_litter never aged it out and every run re-reported it
+    (SEAT_TMP_PRUNE_TESTS_LEFT_LUGGAGE). Only dirs below `root` count: a selftest's own roots sit inside its fixture."""
+    import selftest_own_dirs as O                                      # noqa: PLC0415  (only when a clone is found)
+    for d in [c, *c.parents]:
+        if d == root or root not in d.parents:
+            break
+        with contextlib.suppress(OSError):
+            if O.TMP_NAME.fullmatch(d.name) and O.shaped(d):
+                return True
+            if O.GIT_NAME.fullmatch(d.name) and O.git_fixture(d) is None:
+                return True
+    return False
+
+
 def candidates() -> list[tuple[str, Path]]:
     """[(kind, path)]: session dirs, then clones outside any session."""
     cands: list[tuple[str, Path]] = []
@@ -294,7 +312,8 @@ def candidates() -> list[tuple[str, Path]]:
                 cands.append(("session", p))
                 seen.add(p)
         for c in find_clones(r):
-            if not any(s == c or s in c.parents for s in c.parents if s in seen) and c not in seen:
+            if not any(s == c or s in c.parents for s in c.parents if s in seen) and c not in seen \
+                    and not inside_selftest_litter(r, c):
                 cands.append(("clone", c))
         for f in glob.glob(str(r / "*" / "enact_*")):                  # rm/scratch/<SEAT>/enact_*: art.py enact test fixtures
             fp = Path(f)
