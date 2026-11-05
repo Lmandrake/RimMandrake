@@ -57,10 +57,12 @@ def trigger_rows():
           "art takes the review-sheet route, the rest a review save")
 
 
-def manifest(d, sha="abc123", mods=None, built_by="rm-show-u1"):
+def manifest(d, sha="abc1234", mods=None, built_by="rm-show-u1"):
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, "s1.png"), "wb").write(b"x")
-    m = {"item": "A", "sha": sha, "route": "save", "save": "Showing_A", "mods": mods or [], "minutes": 4,
+    mods = mods or ["Moat"]
+    m = {"item": os.path.basename(d), "sha": sha, "route": "save", "save": "Showing_" + os.path.basename(d), "mods": mods, "minutes": 4,
+         "deployed": S.mods_fp(mods, os.path.join(os.path.dirname(os.path.dirname(d)), "Mods")),
          "stations": [{"n": 1, "label": "1 moat", "shows": "the moat", "judge": "does it read", "capture": "s1.png"}],
          "built_by": built_by}
     json.dump(m, open(os.path.join(d, S.MANIFEST), "w"))
@@ -72,26 +74,56 @@ def status_rows(tmp):
     d = os.path.join(tmp, "st")
     check(S.status(None, None, "abc", None, None)[0] == S.OWED, "nothing built reads OWED")
     m = manifest(d)
-    check(S.status(m, None, "abc123", None, None)[0] == S.UNJUDGED, "built, not judged: not ready")
-    j = {"judged_by": "rm-showj-u2", "sha": "abc123", "verdict": "pass"}
-    check(S.status(m, j, "abc123", None, "rm-showj-u2")[0] == S.READY, "a pass from the launched blind judge: READY TO SHOW")
-    check(S.status(m, dict(j, judged_by="rm-show-u1"), "abc123", None, "rm-show-u1")[0] == S.UNJUDGED,
+    check(S.status(m, None, "abc1234", None, None)[0] == S.UNJUDGED, "built, not judged: not ready")
+    j = {"judged_by": "rm-showj-u2", "sha": "abc1234", "verdict": "pass", "stations": {"1": "the moat reads"}}
+    check(S.status(m, j, "abc1234", None, "rm-showj-u2")[0] == S.READY, "a pass from the launched blind judge: READY TO SHOW")
+    check(S.status(m, dict(j, judged_by="rm-show-u1"), "abc1234", None, "rm-show-u1")[0] == S.UNJUDGED,
           "the builder judging its own showing is no judge")
-    check(S.status(m, j, "abc123", None, "rm-showj-other")[0] == S.UNJUDGED, "a judge.json the supervisor did not launch is no judge")
-    check(S.status(m, dict(j, verdict="fail"), "abc123", None, "rm-showj-u2")[0] == S.FAILED, "a fail is not ready")
-    check(S.status(m, j, "def456", None, "rm-showj-u2")[0] == S.STALE, "a new item sha makes it STALE")
+    check(S.status(m, j, "abc1234", None, "rm-showj-other")[0] == S.UNJUDGED, "a judge.json the supervisor did not launch is no judge")
+    check(S.status(m, dict(j, verdict="fail"), "abc1234", None, "rm-showj-u2")[0] == S.FAILED, "a fail is not ready")
+    check(S.status(m, j, "def4567", None, "rm-showj-u2")[0] == S.STALE, "a new item sha makes it STALE")
     mods = os.path.join(tmp, "Mods", "Moat")
     os.makedirs(mods)
     open(os.path.join(mods, "a.xml"), "w").write("1")
     fp = S.mods_fp(["Moat"], os.path.join(tmp, "Mods"))
     m2 = dict(m, deployed=fp)
-    check(S.status(m2, j, "abc123", fp, "rm-showj-u2")[0] == S.READY, "same deployed mod: still ready")
+    check(S.status(m2, j, "abc1234", fp, "rm-showj-u2")[0] == S.READY, "same deployed mod: still ready")
     time.sleep(0.01)
     open(os.path.join(mods, "a.xml"), "w").write("22")
     fp2 = S.mods_fp(["Moat"], os.path.join(tmp, "Mods"))
-    check(fp2 != fp and S.status(m2, j, "abc123", fp2, "rm-showj-u2")[0] == S.STALE, "a changed deployed mod makes it STALE")
+    check(fp2 != fp and S.status(m2, j, "abc1234", fp2, "rm-showj-u2")[0] == S.STALE, "a changed deployed mod makes it STALE")
+    check(S.status(m, dict(j, stations={}), "abc1234", None, "rm-showj-u2")[0] == S.UNJUDGED,
+          "a pass that leaves a station without a note is no verdict")
+    check(S.status(dict(m, mods=[]), j, "abc1234", None, "rm-showj-u2")[0] == S.INCOMPLETE,
+          "a review save naming no deployed mods is incomplete (nothing could say it went stale)")
+    check(S.status(dict(m, deployed=None), j, "abc1234", None, "rm-showj-u2")[0] == S.INCOMPLETE,
+          "a review save with no deployed fingerprint from its builder is incomplete")
+    check(S.status(dict(m, sha="a"), dict(j, sha="a"), "abc1234", None, "rm-showj-u2")[0] != S.READY,
+          "a one-letter sha prefix names no build")
+    check(S.status(m, j, "abc1234", None, "rm-showj-u2", None, "OTHER")[0] == S.INCOMPLETE, "another item's manifest is never this one's showing")
+    two = [dict(m["stations"][0]), dict(m["stations"][0], label="1 again")]
+    check(S.status(dict(m, stations=two), j, "abc1234", None, "rm-showj-u2")[0] == S.INCOMPLETE, "repeated station numbers are incomplete")
+    check(S.status(dict(m, route="art"), j, "abc1234", None, "rm-showj-u2")[0] == S.INCOMPLETE, "a route neither save nor sheet is incomplete")
+    check(S.status(dict(m, sha=None), dict(j, sha=None), None, None, "rm-showj-u2")[0] == S.INCOMPLETE,
+          "a showing naming no sha is never ready, even with no ledger sha")
+    check(S.status(m, dict(j, sha=None), "abc1234", None, "rm-showj-u2")[0] == S.STALE, "a judge naming no sha is no verdict on this build")
+    saves = os.path.join(tmp, "Saves")
+    os.makedirs(saves, exist_ok=True)
+    check(S.status(m, j, "abc1234", None, "rm-showj-u2", saves)[0] == S.INCOMPLETE, "a save not in the Saves folder is not ready")
+    open(os.path.join(saves, "Showing_st.rws"), "w").write("<savegame/>")
+    dg = S.digest(d, m, saves)
+    time.sleep(0.01)
+    open(os.path.join(saves, "Showing_st.rws"), "w").write("<savegame>other</savegame>")
+    check(S.digest(d, m, saves) != dg, "an overwritten review save changes the judged digest")
+    check(S.status(m, j, "abc1234", None, "rm-showj-u2", saves)[0] == S.READY, "and once it is there, ready")
+    check(S.route(item(title="Review hose sprites laid on a map")) == "save", "an in-place title takes the save route")
+    check(S.status(dict(m, sha=123), j, "abc1234", None, "rm-showj-u2")[0] == S.INCOMPLETE and
+          S.status(dict(m, mods=[{}]), j, "abc1234", None, "rm-showj-u2")[0] == S.INCOMPLETE and S.mods_fp([{}], tmp),
+          "a non-string sha or mod name is incomplete, never a crash")
+    check(S.status(dict(m, stations=[None]), j, "abc1234", None, "rm-showj-u2")[0] == S.INCOMPLETE,
+          "a malformed station is incomplete, never a crash")
     os.remove(os.path.join(d, "s1.png"))
-    check(S.status(m, j, "abc123", None, "rm-showj-u2")[0] == S.INCOMPLETE, "a capture missing on disk is not ready")
+    check(S.status(m, j, "abc1234", None, "rm-showj-u2")[0] == S.INCOMPLETE, "a capture missing on disk is not ready")
 
 
 class Fx:
@@ -113,6 +145,11 @@ class Fx:
     def bridge_release(self):
         self.releases += 1
 
+    holder = "RELENTLESS"
+
+    def bridge_reading(self):
+        return {"holder": self.holder}
+
     def launch(self, st, run, prompt, agent, clone, max_s, env):
         self.launched.append((st["item"], run["unit"], agent, prompt))
         self.live.add(run["unit"])
@@ -127,7 +164,7 @@ class Fx:
 def tick_rows(tmp):
     r = {"showings": {"enabled": True}, "seat": "BENCH"}
     store = relentless.Store(os.path.join(tmp, "root"))
-    a, b = item(built_sha="abc123", title="Drawbridge"), item(built_sha="fff000", title="Gate")
+    a, b = item(built_sha="abc1234", title="Drawbridge"), item(built_sha="fff0000", title="Gate")
     rows = [("A", a, "needs=owner", "is the moat right", None), ("B", b, "needs=owner", "is the gate right", None)]
     held = Fx(tmp, rows, hold="bridge NOT TAKEABLE: held by OWNER for the drawbridge session")
     acts = []
@@ -156,19 +193,142 @@ def tick_rows(tmp):
     check(any(x[0] == "B" and x[2] == "rm-testpilot" for x in fx.launched), "and B's build starts now the bridge is free")
     check(S.reading(store.root)["A"]["state"] == S.JUDGING, "A reads JUDGING, not ready")
     ju = judge[0][1]
-    json.dump({"judged_by": ju, "sha": "abc123", "verdict": "pass"}, open(os.path.join(fx.show_root, "A", S.JUDGE), "w"))
+    json.dump({"judged_by": ju, "sha": "abc1234", "verdict": "pass", "stations": {"1": "ok"}}, open(os.path.join(fx.show_root, "A", S.JUDGE), "w"))
     fx.live.discard(ju)
     S.tick(store, fx, r, 1300, [], relentless)
     got = S.reading(store.root)["A"]
     check(got["state"] == S.READY and got["save"] == "Showing_A" and got["minutes"] == 4 and got["dir"].endswith("showings\\A"),
           "after the blind pass A reads READY TO SHOW with its save, time and folder: %s" % got)
-    a.built_sha = "abc999"
+    time.sleep(0.01)
+    open(os.path.join(fx.show_root, "A", "s1.png"), "wb").write(b"a different picture")
+    S.tick(store, fx, r, 1350, [], relentless)
+    check(S.reading(store.root)["A"]["state"] != S.READY, "a capture replaced after the pass voids it: %s" % S.reading(store.root)["A"]["state"])
+    a.built_sha = "abc9999"
     S.tick(store, fx, r, 1400, [], relentless)
     check(S.reading(store.root)["A"]["state"] in (S.STALE, S.BUILDING, S.OWED) and S.reading(store.root)["A"]["state"] != S.READY,
           "a new sha: A is no longer ready: %s" % S.reading(store.root)["A"])
     fx.items = rows[1:]
     S.tick(store, fx, r, 1500, [], relentless)
     check("A" not in S.reading(store.root), "an item no longer waiting on his look leaves the reading")
+    supervision_rows(tmp)
+
+
+def supervision_rows(tmp):
+    """Codex review of the stage: a lost bridge renewal stops the build; an item leaving the stage mid-build has its
+    run stopped and its bridge released; an item with no ledger sha is not STALE against the HEAD it was built at."""
+    r = {"showings": {"enabled": True, "renew_s": 100}, "seat": "BENCH"}
+    store = relentless.Store(os.path.join(tmp, "sroot"))
+    a = item(built_sha="abc1234", title="Drawbridge")
+    fx = Fx(os.path.join(tmp, "s"), [("A", a, "needs=owner", "q", None)])
+    S.tick(store, fx, r, 1000, [], relentless)
+    unit = fx.launched[0][1]
+    fx.hold = "bridge NOT TAKEABLE: held by OWNER"
+    acts = []
+    S.tick(store, fx, r, 1200, acts, relentless)
+    check(unit not in fx.live and any(x["do"] == "showing_stopped" for x in acts), "a refused renewal stops the build at once: %s" % acts)
+    fx.hold = None
+    S.tick(store, fx, r, 1300, [], relentless)       # settled; a second try starts
+    unit2 = fx.launched[-1][1]
+    rel = fx.releases
+    fx.items = []
+    acts = []
+    S.tick(store, fx, r, 1400, acts, relentless)
+    check(unit2 not in fx.live and any(x["do"] == "showing_stopped" for x in acts), "an item leaving the stage mid-build: its run is stopped")
+    S.tick(store, fx, r, 1500, [], relentless)
+    check(fx.releases == rel + 1 and "A" not in S.load_state(store)["rows"], "and its bridge released, its row gone")
+    # a running build: his take of the bridge, or a new blocker, stops it on the next pass, not at renewal
+    store3 = relentless.Store(os.path.join(tmp, "s3root"))
+    fx3 = Fx(os.path.join(tmp, "s3"), [("A", a, "needs=owner", "q", None)])
+    S.tick(store3, fx3, r, 1000, [], relentless)
+    u3 = fx3.launched[-1][1]
+    fx3.holder = "OWNER"
+    acts = []
+    S.tick(store3, fx3, r, 1010, acts, relentless)
+    check(u3 not in fx3.live and any(x["do"] == "showing_stopped" and "OWNER" in x["why"] for x in acts),
+          "his take of the bridge mid-build stops it on the next pass: %s" % acts)
+    fx3.holder = "RELENTLESS"
+    S.tick(store3, fx3, r, 1020, [], relentless)
+    u4 = fx3.launched[-1][1]
+    fx3.items = [("A", a, "needs=owner", "q", ("DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED", "his note is not built yet"))]
+    acts = []
+    S.tick(store3, fx3, r, 1030, acts, relentless)
+    check(u4 != u3 and u4 not in fx3.live and any(x["do"] == "showing_stopped" for x in acts),
+          "a blocker that appears mid-build stops it: %s" % acts)
+    S.tick(store3, fx3, r, 1040, [], relentless)
+    check(S.reading(store3.root)["A"]["state"] == S.BLOCKED and len(fx3.launched) == 2, "and it reads BLOCKED, not rebuilt: %s %s" % (S.reading(store3.root)["A"], [x[1] for x in fx3.launched]))
+    # malformed worker output never crashes the pass; a new build gets fresh blind judges
+    store4 = relentless.Store(os.path.join(tmp, "s4root"))
+    g4 = item(built_sha="abc1234", title="Gate")
+    fx4 = Fx(os.path.join(tmp, "s4"), [("G", g4, "needs=owner", "q", None)])
+    S.tick(store4, fx4, r, 1000, [], relentless)
+    m4 = manifest(os.path.join(fx4.show_root, "G"), built_by=fx4.launched[-1][1])
+    m4.pop("_dir")
+    json.dump(dict(m4, stations=1, mods=5), open(os.path.join(fx4.show_root, "G", S.MANIFEST), "w"))
+    fx4.live.clear()
+    S.tick(store4, fx4, r, 1100, [], relentless)
+    check(S.reading(store4.root)["G"]["state"] in (S.INCOMPLETE, S.BUILDING), "stations 1, mods 5: incomplete, no crash: %s"
+          % S.reading(store4.root)["G"])
+    st4 = S.load_state(store4)
+    fx4.live.clear()
+    st4["rows"]["G"].update(judge_tries=2, tries=0, phase=None, run=None, bridge=False)
+    S.save_state(store4, st4)
+    n = len(fx4.launched)
+    S.tick(store4, fx4, r, 1200, [], relentless)
+    check(len(fx4.launched) == n + 1 and S.load_state(store4)["rows"]["G"].get("judge_tries") == 0,
+          "a new build starts with no spent judge tries")
+    # a passing sheet showing goes STALE when the owed look now needs the item in place (a save)
+    store5 = relentless.Store(os.path.join(tmp, "s5root"))
+    look = [{"id": "A2", "level": "L4", "text": "the owner looks at the walker sprites"}]
+    sk = item(built_sha="abc1234", title="Reskin the walker sprites", criteria=look, outstanding=["A2"])
+    fx5 = Fx(os.path.join(tmp, "s5"), [("K", sk, "needs=owner", "", None)])
+    d5 = os.path.join(fx5.show_root, "K")
+    m5 = manifest(d5, built_by="u1")
+    m5.pop("_dir")
+    pre = os.path.join(d5, "s.prereview.json")
+    open(pre, "w").write("{}")
+    open(os.path.join(d5, "s.html"), "w").write("<html/>")
+    json.dump(dict(m5, route="sheet", sheet=pre.replace("prereview.json", "html"), prereview=pre), open(os.path.join(d5, S.MANIFEST), "w"))
+    m5s = dict(m5, route="sheet", sheet="/missing/s.html", prereview=pre, _dir=d5)
+    check(S.complete(m5s) and S.complete(dict(m5s, sheet="http://x/s.html")) and S.complete(dict(m5s, sheet=pre, prereview="s.json")),
+          "a sheet or prereview that is not there is incomplete")
+    json.dump({"judged_by": "u2", "sha": "abc1234", "verdict": "pass", "stations": {"1": "ok"}}, open(os.path.join(d5, S.JUDGE), "w"))
+    st5 = S.load_state(store5)
+    st5["rows"]["K"] = {"phase": None, "tries": 2, "enrolled": 0, "judged": "u2", "built_sha": "abc1234"}
+    S.save_state(store5, st5)
+    S.tick(store5, fx5, r, 1000, [], relentless)
+    check(S.reading(store5.root)["K"]["state"] == S.READY, "the sheet showing reads ready: %s" % S.reading(store5.root)["K"])
+    st5 = S.load_state(store5)
+    st5["rows"]["K"]["judge_digest"] = S.digest(d5, S.read_json(os.path.join(d5, S.MANIFEST)))
+    S.save_state(store5, st5)
+    open(pre, "w").write('{"changed": 1}')
+    check(S.digest(d5, S.read_json(os.path.join(d5, S.MANIFEST))) != st5["rows"]["K"]["judge_digest"],
+          "a sheet's prereview changed since the judge read it changes the digest that voids the pass")
+    st5["rows"]["K"].pop("judge_digest")
+    S.save_state(store5, st5)
+    sk.criteria = [{"id": "A2", "level": "L4", "text": "the owner looks at the walker sprites live in game"}]
+    S.tick(store5, fx5, r, 1100, [], relentless)
+    check(S.reading(store5.root)["K"]["state"] in (S.STALE, S.BUILDING) and fx5.launched,
+          "its look now needs a save: STALE, rebuilt with new tries: %s" % S.reading(store5.root)["K"])
+    # switched off mid-build: the run is stopped, then its bridge released and its row gone
+    store6 = relentless.Store(os.path.join(tmp, "s6root"))
+    fx6 = Fx(os.path.join(tmp, "s6"), [("A", item(built_sha="abc1234", title="Drawbridge"), "needs=owner", "q", None)])
+    S.tick(store6, fx6, r, 1000, [], relentless)
+    u6 = fx6.launched[-1][1]
+    off = {"showings": {"enabled": False}, "seat": "BENCH"}
+    acts = []
+    S.tick(store6, fx6, off, 1010, acts, relentless)
+    check(u6 not in fx6.live and any(x["do"] == "showing_stopped" for x in acts), "switched off: its running build is stopped")
+    S.tick(store6, fx6, off, 1020, [], relentless)
+    check(fx6.releases == 1 and not S.load_state(store6)["rows"], "then its bridge released and its row gone")
+    store2 = relentless.Store(os.path.join(tmp, "s2root"))
+    h = item(built_sha=None, cited_shas=[], title="Gate")
+    fx2 = Fx(os.path.join(tmp, "s2"), [("H", h, "needs=owner", "q", None)])
+    S.tick(store2, fx2, r, 1000, [], relentless)
+    manifest(os.path.join(fx2.show_root, "H"), sha="feed123", built_by=fx2.launched[0][1])
+    fx2.live.clear()
+    S.tick(store2, fx2, r, 1100, [], relentless)
+    check(S.reading(store2.root)["H"]["state"] in (S.UNJUDGED, S.JUDGING), "no ledger sha: the HEAD it was built at stands, not STALE: %s"
+          % S.reading(store2.root)["H"])
 
 
 def owner_hold_rows(tmp):
@@ -193,7 +353,10 @@ def owner_hold_rows(tmp):
     check(rc != 0, "Relentless's showing take --idle-ok is refused under his hold: %s" % out[-120:])
     rc, out = rf(rel, "bridge", "take", "--idle-ok", "--for", "relentless staging A: deploy and restart")
     check(rc != 0, "and so is a staging take: nothing deploys or restarts under it")
+    rc, out = rf(owner, "bridge", "release")
+    check(rc == 0, "the owner releases it: %s" % out[-120:])
     rc, out = rf({"RIMFLOW_SEAT": "BENCH"}, "bridge", "take", "--for", "the Conductor's live session")
+    check(rc == 0, "the Conductor's window takes it: %s" % out[-120:])
     rc2, out2 = rf(rel, "bridge", "take", "--idle-ok", "--for", "relentless showing A")
     check(rc2 != 0, "under the Conductor's hold too (whoever holds it): %s" % out2[-120:])
 
@@ -201,7 +364,7 @@ def owner_hold_rows(tmp):
 def blocker_rows(tmp):
     """2026-11-05: the drawbridge showing was built on the 10-22 ask while his 11-03 spec on a successor was unbuilt."""
     now = time.mktime((2026, 11, 5, 4, 0, 0, 0, 0, 0)) - time.timezone
-    moat = item(built_sha="abc123", built_at="2026-10-22T10:00:00Z", blocked=False, superseded_by=None, caused_by=None)
+    moat = item(built_sha="abc1234", built_at="2026-10-22T10:00:00Z", blocked=False, superseded_by=None, caused_by=None)
     up = item(blocked=False, superseded_by=None, caused_by=None)      # DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED, unbuilt
     items = {"DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS": moat, "DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED": up}
     spec = {"seat": "OWNER", "event": "note", "id": "DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED", "ts": "2026-11-03T21:00:00Z",
@@ -230,11 +393,56 @@ def blocker_rows(tmp):
     fx = Fx(os.path.join(tmp, "b"), [("DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS", moat, "needs=owner", "q", got)])
     d = os.path.join(fx.show_root, "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS")
     manifest(d, built_by="u1")
-    json.dump({"judged_by": "u2", "sha": "abc123", "verdict": "pass"}, open(os.path.join(d, S.JUDGE), "w"))
+    json.dump({"judged_by": "u2", "sha": "abc1234", "verdict": "pass", "stations": {"1": "ok"}}, open(os.path.join(d, S.JUDGE), "w"))
     S.tick(store, fx, r, 1000, [], relentless)
     row = S.reading(store.root)["DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS"]
     check(row["state"] == S.BLOCKED and row["blocked_on"] == "DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED" and not fx.launched,
           "the stage: BLOCKED on the successor, nothing built, never READY TO SHOW: %s" % row)
+
+
+def harden_rows(tmp):
+    """SHOWINGS_HARDEN_FLYERS_OUT_SUBJECTS_TIGHT: a flyer's flight is never pre-built (by rule, no ledger block), the
+    same-subject test is the item family or a named defName (not the first id word), and a laid-hose look is a save."""
+    now = time.mktime((2026, 11, 5, 4, 0, 0, 0, 0, 0)) - time.timezone
+    lr = __import__("relentless_live").live_rules({})
+    bird = item(id="MYNOCK_BUILD_WINGS_AT_LAST", title="Mynock flies over the canyon", blocked=False)
+    check(S.flyer(bird, "does it fly right", lr), "a flyer's flight is caught by rule, with no ledger block")
+    look = [{"id": "A4", "level": "L4", "text": "the owner looks at the mynock in flight"}]
+    check(S.flyer(item(title="Mynock roost", criteria=look, outstanding=["A4"]), "", lr), "an owed criterion naming flight is caught")
+    check(S.flyer(item(title="Gravship flies to the seabed layer"), "", lr) is None, "a vehicle's flight is no flyer's")
+    check(S.flyer(item(title="Drawbridge over a moat"), "is the moat right", lr) is None, "a drawbridge is no flyer")
+    r = {"showings": {"enabled": True}, "seat": "BENCH"}
+    store = relentless.Store(os.path.join(tmp, "froot"))
+    fx = Fx(os.path.join(tmp, "f"), [("MYNOCK_BUILD_WINGS_AT_LAST", bird, "needs=owner", "does it fly right", None)])
+    S.tick(store, fx, r, 1000, [], relentless)
+    row = S.reading(store.root)["MYNOCK_BUILD_WINGS_AT_LAST"]
+    check(row["state"] == S.JOINT and not fx.launched and fx.takes == 0,
+          "the stage: a flyer reads JOINT SESSION, no bridge taken, nothing built: %s" % row)
+    # the subject: family words, one a word-prefix of the other, not the first id word
+    check(S.same_family("DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS", "DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED"), "DRAWBRIDGE and DRAWBRIDGE_UP are one family")
+    check(not S.same_family("REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH", "REEL_HOSE_FIX_KINKS_EVERYWHERE"), "REEL_NOZZLE and REEL_HOSE are not")
+    check(not S.same_family("PIPE_ELBOW_BUILD_BENDS_AT_LAST", "PIPE_VALVE_FIX_LEAKS_LESS"), "PIPE_ELBOW and PIPE_VALVE are not")
+    check(S.same_family("WATER_TOWER_2", "WATER_TOWER_FIX_STANDS_TALL"), "a legacy _N id: its words without the number")
+    reel = item(title="Redrawn reel: coupler beneath the outlet of RM_HoseReel", blocked=False, superseded_by=None, caused_by=None,
+                built_at="2026-10-23T14:14:20Z")
+    hose = item(title="Hose kinks", blocked=False, superseded_by=None, caused_by=None)
+    items = {"REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH": reel, "REEL_HOSE_FIX_KINKS_EVERYWHERE": hose}
+    note = {"seat": "OWNER", "event": "note", "id": "REEL_HOSE_FIX_KINKS_EVERYWHERE", "ts": "2026-11-03T21:00:00Z", "text": "kinks at bends"}
+    check(S.blockers("REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH", reel, items, [note], now) is None,
+          "his note on another reel family does not block")
+    named = dict(note, text="the RM_HoseReel outlet is wrong too")
+    got = S.blockers("REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH", reel, items, [named], now)
+    check(got and got[0] == "REEL_HOSE_FIX_KINKS_EVERYWHERE" and "RM_HoseReel" in got[1],
+          "his note naming the showing's defName blocks it across families: %s" % (got,))
+    # the route: REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH's look is a laid hose in place, a save not a sheet
+    a2 = [{"id": "A2", "level": "L4", "text": "owner looks at a south-facing Scrapper reel with laid hose: brass coupling drawn over the open outlet bore"}]
+    rt = S.route(item(id="REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH", criteria=a2, outstanding=["A2"],
+                      title="Redrawn reel (south facing, Scrapper): the laid hose's coupler draws BENEATH the reel's drawn open outlet pipe"))
+    check(rt == "save", "the reel's laid-hose look takes the save route: %s" % rt)
+    check(S.route(item(title="Gate, south facing")) == "save", "'facing' is no art word")
+    check(S.route(item(title="Reskin the walker sprites")) == "sheet", "a reskin still takes the sheet route")
+    check(S.flyer(item(title="Redraw the mynock flight frames"), "", lr) and
+          S.route(item(title="Redraw the mynock flight frames")) == "sheet", "a flyer's frames on a sheet are art, not flight: the rule is for the save route")
 
 
 def wiring_rows():
@@ -251,6 +459,7 @@ def main():
         status_rows(tmp)
         tick_rows(tmp)
         blocker_rows(tmp)
+        harden_rows(tmp)
         owner_hold_rows(os.path.join(tmp, "cli"))
         wiring_rows()
     finally:

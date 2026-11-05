@@ -2289,6 +2289,11 @@ class Effects(relentless_game.GameFx):
         sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
         return importlib.import_module("game_paths").LOCAL_MODS
 
+    @property
+    def saves_root(self):
+        sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+        return importlib.import_module("game_paths").SAVES
+
     def showing_items(self):
         """[(item, ledger item, trigger, his question, (blocked on, why) or None)] of every open item waiting only on his look, Designer first-touch
         passes left out (a sign-off, not a showing). owner_queue.is_his is the same test NEEDS YOU reads."""
@@ -4072,9 +4077,12 @@ def step(store, fx, r, item, now, acts):
     if s == "retiring":
         since = st["stopping_since"]
         if settle(store, fx, r, item, "run", since, now, acts) and settle(store, fx, r, item, "check", since, now, acts):
+            if st.get("release_bridge"):        # a dropped item's staging: its bridge goes back after its worker died
+                fx.bridge_release()
             with store.lock():
                 st = store.load(item)
                 st["status"] = "retired"
+                st.pop("release_bridge", None)
                 store.save(st)
             fx.remove_clone(st)
             acts.append({"do": "retired", "item": item})

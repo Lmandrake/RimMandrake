@@ -539,6 +539,46 @@ def t_stage_remakes_clone():
     x.done()
 
 
+def t_dropped_staging_keeps_bridge():
+    """SHOWINGS_HARDEN_FLYERS_OUT_SUBJECTS_TIGHT (Codex review): an item dropped mid-staging gave the bridge back before
+    its staging worker died, and `retiring` counted as no live user, so another item could stage beside it."""
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.w.running = False
+    x.tick()
+    st = x.st("I0")
+    ok(st["game"]["phase"] == "staging", "staging: %s" % st["game"]["phase"])
+    unit = st["run"]["unit"]
+    x.w.led["I0"] = {"state": "dropped", "built_sha": SHA, "title": "t", "owed": {}}
+    x.tick()
+    ok(x.st("I0")["status"] in ("retiring", "retired") and "release" not in x.w.events,
+       "dropped mid-staging: no release while its worker may still drive the game: %s" % x.st("I0")["status"])
+    ok(x.st("I0")["status"] != "retiring" or G.other_active(x.s.states(), "I9") == "I0",
+       "and the retiring item still counts as the game's live user")
+    x.w.up[unit] = False
+    for _ in range(3):
+        x.tick()
+    ok(x.st("I0")["status"] == "retired" and x.w.events.count("release") == 1, "once it is down: released once, retired")
+    x.done()
+
+
+def t_rides_ok():
+    """A batched item rides another's staging only past its own gate and preflight (Codex review)."""
+    w = GW(1)
+    o = {"item": "I1", "status": "game", "contract": {"game": {"clauses": ["A2"]}},
+         "game": {"sha": SHA, "clauses": ["A2"], "offline_green": {"sha": SHA}}}
+    w.led["I1"] = {"state": "built", "built_sha": SHA, "title": "a mod thing", "owed": {"A2": "L1"}}
+    ok(G._rides_ok(w, {}, o), "a clean batched item rides")
+    w.led["I1"] = dict(w.led["I1"], title="Mynock flies over the canyon")
+    w.proofs[("I1", ".txt")] = "live-proof A2: python3 x.py --flight\n"
+    ok(not G._rides_ok(w, {}, o), "a flyer's flight does not ride")
+    w.led["I1"] = dict(w.led["I1"], title="a mod thing")
+    w.proofs.pop(("I1", ".txt"))
+    w.pre = [{"cid": "A2", "why": "files changed since the build", "fp": "x", "kind": "changed"}]
+    ok(not G._rides_ok(w, {}, o), "one its own preflight refuses does not ride")
+
+
 def t_one_live_user():
     x = rig(2, share=1.0, max_workers=2)
     to_game(x, "I0")
@@ -1498,7 +1538,7 @@ def t_mod_gap_pure():
 def main():
     picked, ran = set(sys.argv[1:]), 0      # no names: every test
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
-              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_round_only_item, t_flyer_put_down, t_waits_put_down,
+              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_dropped_staging_keeps_bridge, t_rides_ok, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged, t_blind_stall_probe_ends_attempt,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,

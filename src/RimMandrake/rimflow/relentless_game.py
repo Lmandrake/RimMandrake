@@ -182,6 +182,8 @@ def other_active(states, item):
             return s["item"]
         if s["item"] != item and s["status"] == "running" and s.get("live_iter"):
             return s["item"]        # a worker iterating on the running game is its one live user
+        if s["item"] != item and s["status"] == "retiring" and s.get("release_bridge"):
+            return s["item"]        # a dropped item's staging worker not yet settled still drives the game
     return expedited_ahead(states, item) if item is not None else None
 
 
@@ -978,11 +980,11 @@ def step(store, fx, r, item, now, acts, sup):
     sha = g["sha"]
     led = fx.game_ledger(item)
     if led is None or led["state"] in ("dropped", "superseded"):
-        if g["phase"] == "staging":
-            fx.bridge_release()
         with store.lock():
             cur = store.load(item)
             cur["gen"] += 1
+            if g["phase"] == "staging":     # the bridge goes back once its staging worker is settled, never before:
+                cur["release_bridge"] = True    # other_active counts it the game's live user until then
             cur["status"] = "retiring"
             cur["stopping_since"] = now
             store.save(cur)
@@ -1240,7 +1242,7 @@ def step(store, fx, r, item, now, acts, sup):
         if why:
             return _waits(store, fx, item, "clone: " + why, now, acts)
         st = store.load(item)
-        others = batch(store.states(), item, now, full=bool(g.get("full")))
+        others = [o for o in batch(store.states(), item, now, full=bool(g.get("full"))) if _rides_ok(fx, r, o)]
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
         gaps = [fx.game_batch_gap([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                      if (o.get("game") or {}).get("sha")])]
@@ -1345,6 +1347,19 @@ def _owed_lines(fx, item, sha, g, led):
     """The game clauses still owed on the ledger -> {clause: its live-proof line at `sha`}."""
     lines = proof_lines(fx.proofs_at(item, sha))
     return {k: lines[k] for k in g["clauses"] if k in lines and k in (led.get("owed") or {})}
+
+
+def _rides_ok(fx, r, o):
+    """A batched item rides this staging only past its own gate and preflight (flyer, proof lines, changed files),
+    read without side effects: one that fails is left to stage on its own step, which refuses or sends it back."""
+    import relentless_live
+    og = o.get("game") or {}
+    led = fx.game_ledger(o["item"])
+    if led is None or led["state"] in ("dropped", "superseded", "done") or not og.get("sha"):
+        return False
+    if gate(o, led.get("title"), fx.proofs_at(o["item"], og["sha"]), relentless_live.live_rules(r)["flyer_re"], None):
+        return False
+    return not fx.game_preflight(o["item"], _owed_lines(fx, o["item"], og["sha"], og, led))
 
 
 def _lease_why(store, fx, r, item, sha, led):
