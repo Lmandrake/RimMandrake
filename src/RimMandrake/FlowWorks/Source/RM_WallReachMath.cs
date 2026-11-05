@@ -367,6 +367,114 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
+		/// <summary>EXCAVATION_TICKCHECK_HARDEN_SIM_COPY: the connectivity-delta queue RM_WallReach ships (one per map state),
+		/// Verse-free so the SelfTest drives this exact code instead of a copy. Squares are queued from any thread (GatherData's
+		/// Parallel.ForEach worker) under <see cref="Sync"/>; past <see cref="MaxQueuedDeltas"/> the queue overflows, drops the
+		/// rest, and the next judge is stale at once (<see cref="DeltaMovesKinds"/>' overflowed rule). The map tick drains it
+		/// (<see cref="Drain"/>) and judges the squares (<see cref="Judge"/>).</summary>
+		public sealed class DeltaQueue
+		{
+			/// <summary>The lock every queue write and the drain take.</summary>
+			public readonly object Sync = new object();
+			private readonly List<int> pending = new List<int>();
+			private readonly List<int> work = new List<int>();
+			private bool overflow;
+
+			/// <summary>Has the queue overflowed since the last drain? Read under <see cref="Sync"/> for a stable answer.</summary>
+			public bool OverflowedLocked => overflow;
+
+			/// <summary>Is anything queued and not yet judged (squares, or an overflow)? Takes the lock.</summary>
+			public bool Unjudged
+			{
+				get
+				{
+					lock (Sync)
+					{
+						return pending.Count > 0 || overflow;
+					}
+				}
+			}
+
+			/// <summary>Queue one square; the caller holds <see cref="Sync"/>. False: overflowed (now or before), the square was
+			/// dropped and the next judge is stale anyway, so the caller may stop adding.</summary>
+			public bool AddLocked(int idx)
+			{
+				if (overflow)
+				{
+					return false;
+				}
+				if (pending.Count >= MaxQueuedDeltas)
+				{
+					overflow = true;
+					return false;
+				}
+				pending.Add(idx);
+				return true;
+			}
+
+			/// <summary>Queue one square, taking the lock.</summary>
+			public bool Add(int idx)
+			{
+				lock (Sync)
+				{
+					return AddLocked(idx);
+				}
+			}
+
+			/// <summary>Take everything queued and reset the overflow. Null: nothing queued and no overflow (the common tick: no
+			/// judge, no bump). Otherwise the squares in queue order, in a scratch list this queue reuses on the next drain.</summary>
+			public List<int> Drain(out bool overflowed)
+			{
+				work.Clear();
+				lock (Sync)
+				{
+					overflowed = overflow;
+					if (pending.Count == 0 && !overflow)
+					{
+						return null;
+					}
+					work.AddRange(pending);
+					pending.Clear();
+					overflow = false;
+				}
+				return work;
+			}
+
+			/// <summary>Judge drained squares against the kinds snapshot the labels were built from: true moves the walkability
+			/// generation. A snapshot whose size is not the map's (<paramref name="numCells"/>) is no snapshot.</summary>
+			public static bool Judge(byte[] published, int numCells, IReadOnlyList<int> work, Func<int, byte> kindAt, bool overflowed)
+			{
+				if (published != null && published.Length != numCells)
+				{
+					published = null;
+				}
+				return DeltaMovesKinds(published, work, kindAt, overflowed);
+			}
+		}
+
+		/// <summary>EXCAVATION_TICKCHECK_HARDEN_SIM_COPY: the labels' stamp from its parts (the climb generation, the cliff-mask
+		/// settings salt, the walkability generation, the door print, the swim version, pit ramps on). A labelling whose stamp
+		/// equals the stamp now is current.</summary>
+		public static long StampOf(long climb, long salt, long wall, long door, long swim, long ramps)
+		{
+			long s = climb;
+			s = s * 31 + salt;
+			s = s * 1000003 + wall;
+			s = s * 1000003 + door;
+			s = s * 31 + swim;
+			s = s * 2 + ramps;
+			return s;
+		}
+
+		/// <summary>EXCAVATION_TICKCHECK_HARDEN_SIM_COPY: is a labelling built at <paramref name="builtStamp"/> current now? Not
+		/// when the stamp moved, nor when it was read while the game was loading (<paramref name="reload"/>, StaleAfterLoad).
+		/// A stale one is rebuilt when due (RebuildDue), and that rebuild keeps the labels when its inputs are byte-identical
+		/// (LabelSlot.Begin's skip).</summary>
+		public static bool StampCurrent(long builtStamp, long stamp, bool reload)
+		{
+			return builtStamp == stamp && !reload;
+		}
+
 		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: byte-identical inputs (both null counts as identical). Labelling is
 		/// a pure function of (kinds, depth, ramps, band, class), so identical inputs give identical labels and a rebuild may
 		/// keep the old ones.</summary>

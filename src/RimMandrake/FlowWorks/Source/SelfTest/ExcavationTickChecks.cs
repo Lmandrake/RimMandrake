@@ -205,29 +205,48 @@ namespace RimMandrake.FlowWorks.SelfTest
             return d;
         }
 
-        /// <summary>One simulated labelling under the new policy: the production classes (RM_WallReach.Kinds runs the
-        /// KindsSnapshot, RM_WallReach.Build the LabelSlot), driven without Verse.</summary>
-        private sealed class Sim
+        /// <summary>EXCAVATION_TICKCHECK_HARDEN_SIM_COPY: one labelling driven through the SHIPPED policy, no copy of it: the
+        /// delta queue and its judge (RM_WallReachMath.DeltaQueue, as RM_WallReach.NoteConnectivity / FlushDeltas run it), the
+        /// stamp and its current test (StampOf / StampCurrent, as StampOf / TickOwned), the kinds snapshot (KindsSnapshot, as
+        /// Kinds) and the slot with its content skip (LabelSlot). Only the generation counters and the world are the test's:
+        /// <see cref="climbGen"/> is the excavation engine's ClimbGeneration (any dig write moves it).</summary>
+        private sealed class Rig
         {
             public readonly RM_WallReachMath.KindsSnapshot kinds = new RM_WallReachMath.KindsSnapshot();
             public readonly RM_WallReachMath.LabelSlot slot = new RM_WallReachMath.LabelSlot();
-            public long gen;                 // wallGen
-            public long builtGen = -1;
-            public int bumps;
+            public readonly RM_WallReachMath.DeltaQueue deltas = new RM_WallReachMath.DeltaQueue();
+            public long wallGen, climbGen;
+            public int bumps, rebuilds;
+            private long builtStamp = long.MinValue;
             private long reads;
-            public byte[] snapshot => kinds.published;
-            public byte[] builtDepth => slot.builtDepth;
             public RM_WallReachMath.Labels labels => slot.labels;
             public int floods => slot.floods;
             public int skips => slot.skips;
 
-            public void Rebuild(byte[] liveKinds, byte[] depth, int w, int h, int band, int cls)
+            /// <summary>NoteConnectivity: a GatherData delta square, queued.</summary>
+            public void Note(int idx) => deltas.Add(idx);
+
+            /// <summary>One map tick: FlushDeltas judges the queue against the published snapshot, then a labelling whose
+            /// stamp moved is rebuilt (unthrottled here: RebuildDue's throttle is time, not content).</summary>
+            public void Tick(byte[] live, byte[] depth, int w, int h, int band, int cls)
             {
-                byte[] read = kinds.Take(liveKinds.Length);   // Kinds(): every square written, then published or kept as scratch
-                Array.Copy(liveKinds, read, liveKinds.Length);
+                List<int> work = deltas.Drain(out bool overflow);
+                if (work != null && RM_WallReachMath.DeltaQueue.Judge(kinds.published, w * h, work, i => live[i], overflow))
+                {
+                    wallGen++;
+                    bumps++;
+                }
+                long stamp = RM_WallReachMath.StampOf(climbGen, 0, wallGen, 0, -1, 0);
+                if (RM_WallReachMath.StampCurrent(builtStamp, stamp, false))
+                {
+                    return;
+                }
+                rebuilds++;
+                byte[] read = kinds.Take(live.Length);   // Kinds(): every square written, then published or kept as scratch
+                Array.Copy(live, read, live.Length);
                 byte[] snap = kinds.Publish(read, ++reads, w, h);
                 slot.Rebuild(snap, depth, null, w, h, band, cls);
-                builtGen = gen;
+                builtStamp = stamp;
             }
         }
 
@@ -1521,14 +1540,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                     byte[] live = RandomKinds(r, n);
                     byte[] depth = r.Next(3) == 0 ? null : RandomDepth(r, n, true);
                     int band = r.Next(0, 4);
-                    var sim = new Sim();
-                    sim.Rebuild(live, depth, w, h, band, cls);
+                    var sim = new Rig();
+                    sim.Tick(live, depth, w, h, band, cls);
                     for (int step = 0; step < 60; step++)
                     {
                         totalSteps++;
                         var deltas = new List<int>();
                         int noise = r.Next(0, 12);
                         for (int j = 0; j < noise; j++) deltas.Add(r.Next(n));
+                        bool dug = false;
                         bool real = false;
                         int roll = r.Next(10);
                         if (roll == 0)
@@ -1555,20 +1575,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                             byte was = depth[c];
                             depth[c] = (byte)r.Next(0, 6);
                             real = depth[c] != was;
+                            dug = true;
                         }
                         if (real) realSteps++;
-                        // judge the deltas (FlushDeltas) against the snapshot the labels came from
-                        byte[] snap = sim.snapshot;
-                        if (RM_WallReachMath.DeltaMovesKinds(snap, deltas, i => live[i], false))
-                        {
-                            sim.gen++;
-                            sim.bumps++;
-                        }
-                        bool depthMoved = !RM_WallReachMath.SameBytes(depth, sim.builtDepth);   // ClimbGeneration's own bump
-                        if (sim.gen != sim.builtGen || depthMoved)
-                        {
-                            sim.Rebuild(live, depth, w, h, band, cls);
-                        }
+                        // the shipped tick: GatherData queues the deltas, a dig moves ClimbGeneration, FlushDeltas judges, the stamp decides
+                        foreach (int d in deltas) sim.Note(d);
+                        if (dug) sim.climbGen++;
+                        sim.Tick(live, depth, w, h, band, cls);
                         oldFloods++;   // the old policy: GatherData bumped every step, every step re-flooded
                         var truth = RM_WallReachMath.Label(live, depth, w, h, band, cls);
                         Assert(SameLabels(sim.labels, truth), "seed " + seed + " step " + step + ": the delta policy's labels differ from a full scan");
@@ -1738,7 +1751,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 
                 string wr = Src("Superdeep", "RM_WallReach.cs");
                 RiverSwitchFlipChecks.Has(wr, @"if \(RM_WallReachMath\.StaleAfterLoad\(st\.builtMidLoad, playing\)\) \{ st\.kinds\.Invalidate\(\); st\.builtMidLoad = false; \}", "Tick re-reads the kinds after a load");
-                RiverSwitchFlipChecks.Has(wr, @"if \(e\.stamp == stamp && !reload\).{0,900}RebuildDue\(true, forced \|\| reload \|\| !covered,", "a mid-load labelling is rebuilt unthrottled in play (sliced: stale or reload, urgent while uncovered)");
+                RiverSwitchFlipChecks.Has(wr, @"if \(RM_WallReachMath\.StampCurrent\(e\.stamp, stamp, reload\)\).{0,900}RebuildDue\(true, forced \|\| reload \|\| !covered,", "a mid-load labelling is rebuilt unthrottled in play (sliced: stale or reload, urgent while uncovered)");
                 RiverSwitchFlipChecks.Has(wr, @"e\.jobMidLoad = Current\.ProgramState != ProgramState\.Playing;", "a build records whether it ran mid-load (at job start)");
                 RiverSwitchFlipChecks.Has(wr, @"e\.midLoad = e\.jobMidLoad; st\.builtMidLoad \|= e\.midLoad;", "the publish carries the job's mid-load flag");
                 RiverSwitchFlipChecks.Has(wr, @"doorScratch\.Clear\(\); RM_PocketGrid\.ExitOwner\(nested\); \}", "the suspect doors are let go in a finally");
@@ -1791,6 +1804,52 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine("    [excavation-tick] 325x325: flood " + floodMs.ToString("0.000") + " ms, 64-delta judge " + judgeMs.ToString("0.0000")
                     + " ms, SameBytes " + sameMs.ToString("0.000") + " ms");
                 Assert(judgeMs * 20 < floodMs, "the judge must cost a small fraction of the flood it saves");
+            });
+
+            // EXCAVATION_TICKCHECK_HARDEN_SIM_COPY: the queue / judge / stamp policy is the shipped Verse-free class, and the
+            // production map state runs it (no private copy of the queue or the stamp left in RM_WallReach.cs).
+            Case("WallReach_delta_queue_is_shipped_policy", () =>
+            {
+                var q = new RM_WallReachMath.DeltaQueue();
+                Assert(!q.Unjudged && q.Drain(out bool of0) == null && !of0, "an empty queue drains nothing");
+                for (int i = 0; i < RM_WallReachMath.MaxQueuedDeltas; i++) Assert(q.Add(i), "square " + i + " under the cap is queued");
+                Assert(q.Unjudged, "queued squares are unjudged");
+                Assert(!q.Add(-7), "past the cap the queue overflows");
+                lock (q.Sync) Assert(q.OverflowedLocked && !q.AddLocked(1), "an overflowed queue takes nothing more");
+                List<int> work = q.Drain(out bool of1);
+                Assert(of1 && work != null && work.Count == RM_WallReachMath.MaxQueuedDeltas && work[0] == 0 && work[work.Count - 1] == RM_WallReachMath.MaxQueuedDeltas - 1,
+                    "the drain hands the queued squares in order and the overflow");
+                Assert(!q.Unjudged && q.Drain(out bool of2) == null && !of2, "a drain resets the queue and the overflow");
+                Assert(q.Add(5) && q.Add(5), "a square may be queued twice");
+                work = q.Drain(out bool of3);
+                Assert(!of3 && work.Count == 2, "two notes, two squares");
+                var snap = new byte[10];
+                snap[5] = RM_WallReachMath.Wall;
+                Assert(!RM_WallReachMath.DeltaQueue.Judge(snap, 10, work, i => snap[i], false), "a square whose kind the snapshot holds is quiet");
+                Assert(RM_WallReachMath.DeltaQueue.Judge(snap, 10, work, i => RM_WallReachMath.Open, false), "a square whose kind moved bumps");
+                Assert(RM_WallReachMath.DeltaQueue.Judge(snap, 11, work, i => snap[i], false), "a snapshot of another map size is no snapshot: any delta bumps");
+                Assert(!RM_WallReachMath.DeltaQueue.Judge(snap, 11, new List<int>(), i => 0, false), "no snapshot, no delta: nothing");
+                Assert(RM_WallReachMath.DeltaQueue.Judge(snap, 10, work, i => snap[i], true), "an overflow bumps");
+                long[] parts = { 3, 5, 7, 11, -1, 1 };
+                long s0 = RM_WallReachMath.StampOf(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
+                for (int p = 0; p < parts.Length; p++)
+                {
+                    long[] q2 = (long[])parts.Clone();
+                    q2[p] += p == 5 ? -1 : 1;
+                    long s1 = RM_WallReachMath.StampOf(q2[0], q2[1], q2[2], q2[3], q2[4], q2[5]);
+                    Assert(s1 != s0 && !RM_WallReachMath.StampCurrent(s0, s1, false), "stamp part " + p + " moving makes the labels stale");
+                }
+                Assert(RM_WallReachMath.StampCurrent(s0, s0, false) && !RM_WallReachMath.StampCurrent(s0, s0, true), "same stamp is current, unless read while loading");
+                string wr = Src("Superdeep", "RM_WallReach.cs");
+                RiverSwitchFlipChecks.Has(wr, @"public readonly RM_WallReachMath\.DeltaQueue deltas = new RM_WallReachMath\.DeltaQueue\(\);", "the map state holds the shipped queue");
+                RiverSwitchFlipChecks.Has(wr, @"lock \(st\.deltas\.Sync\) \{ for \(int i = 0; i < deltas\.Count && !st\.deltas\.OverflowedLocked; i\+\+\) \{ if \(deltas\[i\]\.InBounds\(map\) && !st\.deltas\.AddLocked\(ci\.CellToIndex\(deltas\[i\]\)\)\)", "NoteConnectivity queues through it");
+                RiverSwitchFlipChecks.Has(wr, @"List<int> work = st\.deltas\.Drain\(out bool overflow\); if \(work == null\) \{ return; \}", "FlushDeltas drains it");
+                RiverSwitchFlipChecks.Has(wr, @"if \(RM_WallReachMath\.DeltaQueue\.Judge\(kinds, map\.cellIndices\.NumGridCells, work, kindAt, overflow\)\) \{ st\.wallGenBy\[WgDelta\]\+\+; Interlocked\.Increment\(ref st\.wallGen\);", "FlushDeltas judges with it and bumps the generation");
+                RiverSwitchFlipChecks.Has(wr, @"return RM_WallReachMath\.StampOf\(p\[StampClimb\], p\[StampSalt\], p\[StampWall\], p\[StampDoor\], p\[StampSwim\], p\[StampRamps\]\);", "StampOf composes with it");
+                RiverSwitchFlipChecks.Has(wr, @"if \(RM_WallReachMath\.StampCurrent\(e\.stamp, stamp, reload\)\)", "TickOwned's current test is it");
+                RiverSwitchFlipChecks.Has(wr, @"bool unjudged = st\.deltas\.Unjudged;", "a first build reads the queue's unjudged flag");
+                RiverSwitchFlipChecks.Has(wr, @"private static void QueueTouch\(MapState st, int idx\) \{ if \(idx < 0 \|\| !st\.kinds\.Reading\) \{ return; \} st\.deltas\.Add\(idx\); \}", "QueueTouch queues through it");
+                Assert(!System.Text.RegularExpressions.Regex.IsMatch(wr, @"pendingDeltas|deltaOverflow|deltaLock|\* 1000003|e\.stamp == stamp"), "no private copy of the queue or the stamp left in RM_WallReach.cs");
             });
 
             Case("WallReach_content_skip_equals_rebuild", () =>

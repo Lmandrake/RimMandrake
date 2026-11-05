@@ -151,10 +151,8 @@ namespace RimMandrake.FlowWorks
 			public int ticks;
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: GatherData's deltas, queued (under the lock: Parallel.ForEach worker)
 			// and judged on the map tick against the kinds snapshot (DeltaMovesKinds).
-			public readonly object deltaLock = new object();
-			public readonly List<int> pendingDeltas = new List<int>();
-			public bool deltaOverflow;
-			public readonly List<int> deltaScratch = new List<int>();
+			// The queue and its judge are RM_WallReachMath.DeltaQueue (EXCAVATION_TICKCHECK_HARDEN_SIM_COPY: Verse-free, SelfTest-driven).
+			public readonly RM_WallReachMath.DeltaQueue deltas = new RM_WallReachMath.DeltaQueue();
 			public double lastMs, maxMs, totalMs;
 			public int firstBuiltTick = int.MinValue;
 			public int pausedFrameTick = int.MinValue;   // the tick and stamp the last paused frame left (PausedUnthrottled)
@@ -228,17 +226,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			lock (st.deltaLock)
-			{
-				if (st.pendingDeltas.Count >= RM_WallReachMath.MaxQueuedDeltas)
-				{
-					st.deltaOverflow = true;
-				}
-				else if (!st.deltaOverflow)
-				{
-					st.pendingDeltas.Add(idx);
-				}
-			}
+			st.deltas.Add(idx);
 		}
 
 		// ── invalidation ────────────────────────────────────────────────────────────
@@ -273,20 +261,14 @@ namespace RimMandrake.FlowWorks
 			PathGrid pg = map.pathing?.Normal?.pathGrid;
 			byte[] kinds = st.kinds.published;
 			CellIndices ci = map.cellIndices;
-			lock (st.deltaLock)
+			lock (st.deltas.Sync)
 			{
-				for (int i = 0; i < deltas.Count && !st.deltaOverflow; i++)
+				for (int i = 0; i < deltas.Count && !st.deltas.OverflowedLocked; i++)
 				{
-					if (!deltas[i].InBounds(map))
+					if (deltas[i].InBounds(map) && !st.deltas.AddLocked(ci.CellToIndex(deltas[i])))
 					{
-						continue;
-					}
-					if (st.pendingDeltas.Count >= RM_WallReachMath.MaxQueuedDeltas)
-					{
-						st.deltaOverflow = true;
 						break;
 					}
-					st.pendingDeltas.Add(ci.CellToIndex(deltas[i]));
 				}
 			}
 			if (pg == null || kinds == null)
@@ -319,19 +301,10 @@ namespace RimMandrake.FlowWorks
 		/// squares, each one KindAt.</summary>
 		private static void FlushDeltas(Map map, MapState st)
 		{
-			List<int> work = st.deltaScratch;
-			work.Clear();
-			bool overflow;
-			lock (st.deltaLock)
+			List<int> work = st.deltas.Drain(out bool overflow);
+			if (work == null)
 			{
-				if (st.pendingDeltas.Count == 0 && !st.deltaOverflow)
-				{
-					return;
-				}
-				work.AddRange(st.pendingDeltas);
-				st.pendingDeltas.Clear();
-				overflow = st.deltaOverflow;
-				st.deltaOverflow = false;
+				return;
 			}
 			st.flushes++;
 			st.flushCells += work.Count;
@@ -345,10 +318,6 @@ namespace RimMandrake.FlowWorks
 			}
 			byte[] kinds = st.kinds.published;
 			Func<int, byte> kindAt = KindFn(map);
-			if (kinds != null && kinds.Length != map.cellIndices.NumGridCells)
-			{
-				kinds = null;
-			}
 			// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: a read in flight reads again every square it passed that a delta names;
 			// lost deltas (an overflow) restart it
 			if (st.kinds.Reading)
@@ -365,7 +334,7 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
-			if (RM_WallReachMath.DeltaMovesKinds(kinds, work, kindAt, overflow))
+			if (RM_WallReachMath.DeltaQueue.Judge(kinds, map.cellIndices.NumGridCells, work, kindAt, overflow))
 			{
 				st.wallGenBy[WgDelta]++;
 				Interlocked.Increment(ref st.wallGen);
@@ -506,13 +475,7 @@ namespace RimMandrake.FlowWorks
 			p[StampDoor] = st.doorPrint;
 			p[StampSwim] = SwimVersion(map);
 			p[StampRamps] = RimMandrakeFlowWorksSettings.pitRampsEnabled ? 1 : 0;
-			long s = p[StampClimb];
-			s = s * 31 + p[StampSalt];
-			s = s * 1000003 + p[StampWall];
-			s = s * 1000003 + p[StampDoor];
-			s = s * 31 + p[StampSwim];
-			s = s * 2 + p[StampRamps];
-			return s;
+			return RM_WallReachMath.StampOf(p[StampClimb], p[StampSalt], p[StampWall], p[StampDoor], p[StampSwim], p[StampRamps]);
 		}
 
 		/// <summary>A cheap fingerprint of every door's state the labels read (position, held open, the player's, a gate shut
@@ -981,7 +944,7 @@ namespace RimMandrake.FlowWorks
 				}
 				bool reload = RM_WallReachMath.StaleAfterLoad(e.midLoad, playing);
 				bool covered = RM_WallReachMath.Covers(e.coverGen, gen);
-				if (e.stamp == stamp && !reload)
+				if (RM_WallReachMath.StampCurrent(e.stamp, stamp, reload))
 				{
 					// current: a job for an older stamp is moot, and a forced change that moved no stamp part leaves the labels
 					// right (the rule before slicing: forced with nothing stale rebuilt nothing), so they cover it
@@ -1074,7 +1037,7 @@ namespace RimMandrake.FlowWorks
 						st.active = null;
 						st.jobsPublished++;
 						Publish(st, e, now);
-						if (drain && e.stamp != stamp)
+						if (drain && !RM_WallReachMath.StampCurrent(e.stamp, stamp, false))
 						{
 							due.Add(e);   // a drain leaves nothing stale
 						}
@@ -1245,11 +1208,7 @@ namespace RimMandrake.FlowWorks
 				// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: deltas not yet judged may have moved a kind the snapshot holds;
 				// a first build here (a query, on the cache owner: RM_PocketGrid.Owner) takes them as a change, the eager bump's rule, so it never labels
 				// from a stale snapshot. Tick judges them later; one extra rebuild at worst.
-				bool unjudged;
-				lock (st.deltaLock)
-				{
-					unjudged = st.pendingDeltas.Count > 0 || st.deltaOverflow;
-				}
+				bool unjudged = st.deltas.Unjudged;
 				if (unjudged)
 				{
 					st.wallGenBy[WgUnjudged]++;
