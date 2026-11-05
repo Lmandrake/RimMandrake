@@ -94,6 +94,90 @@ except TypeError:
 check("child grammar", all(n.count(":") == 1 and "." in n.split(":")[0] for n in W.CHILDREN), True)
 check("cap 32", len(W.CHILDREN) + 2 <= 32, True)
 
+# TEST_ENV_FIX_TRIBAL_VISIT_STOPS_SETUP: the staged map is quieted, and read back, before any tick advance.
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from rimdrive.fake import FakeWorld, pawn_row
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "modcheck"))
+import quiet_site
+
+
+def tribal_world():
+    w = FakeWorld(pawns=[pawn_row("Col1"),
+                         pawn_row("Tribal1", kind="Tribal_Warrior", faction="TribeRough", is_player=False, hostile=True),
+                         pawn_row("Visitor1", kind="Tribal_Trader", faction="TribeCivil", is_player=False)])
+    w.queue = [{"defName": "TraderCaravanArrival", "fireTick": 8358}, {"defName": "StrangerInBlackJoin", "fireTick": 9000}]
+    return w
+
+
+w = tribal_world()
+qs = W.quiet_stage(w)
+check("storyteller off", w.debug["enableStoryteller"], False)
+check("random mental states off", w.debug["enableRandomMentalStates"], False)
+check("threat scale 0", w.difficulty["threatScale"], 0.0)
+check("big threats off", w.difficulty["allowBigThreats"], False)
+check("incident queue empty", w.queue, [])
+alive = sorted(pid for pid, r in w.pawns.items() if not r.get("dead") and r.get("spawned", True))
+check("hostile removed, visitor and colonist kept", alive, ["Col1", "Visitor1"])
+check("receipt names every control", [c["name"] for c in qs.receipt()["controls"]], list(W.QUIET_CONTROLS))
+check("wild spawner left running (a timed child)", "wild_spawner_off" in W.QUIET_CONTROLS, False)
+qs.restore()
+check("restore turns the storyteller back on", w.debug["enableStoryteller"], True)
+# negative control: a game that ignores the setting is refused, never trusted
+w = tribal_world()
+w.modes.add("settings_lie")
+try:
+    W.quiet_stage(w)
+    FAILS.append("settings_lie: quiet_stage accepted a storyteller that read back ON")
+except (quiet_site.QuietSiteUnclean, quiet_site.H.HelperUnverified):
+    pass
+
+
+# a failure AFTER the storyteller went off (the hostile will not go) is refused AND undone
+class StubbornWorld(FakeWorld):
+    def _t_jawa_pawn_force_incapacitate(self, **_):
+        return {"success": True}
+
+
+w = StubbornWorld(pawns=tribal_world().pawns.values())
+try:
+    W.quiet_stage(w)
+    FAILS.append("stubborn hostile: quiet_stage accepted a hostile that stayed")
+except quiet_site.QuietSiteUnclean:
+    pass
+check("refused stage is undone: storyteller", w.debug["enableStoryteller"], True)
+check("refused stage is undone: threat scale", w.difficulty["threatScale"], 1.0)
+
+
+# the live adapter: RimBridge.call(tool, dict) -> call(tool, **params)
+class DictBridge(object):
+    def __init__(self, world):
+        self.w = world
+
+    def call(self, tool, params=None):
+        return self.w.call(tool, **(params or {}))
+
+
+w = tribal_world()
+qs = W.quiet_stage(W.KwSession(DictBridge(w)))
+check("KwSession: storyteller off", w.debug["enableStoryteller"], False)
+check("KwSession: queue empty", w.queue, [])
+check("restore_quiet ok", W.restore_quiet(qs), None)
+check("restore_quiet: storyteller back on", w.debug["enableStoryteller"], True)
+
+
+class Boom(object):
+    def restore(self):
+        raise RuntimeError("bridge gone")
+
+
+check("restore_quiet never raises", (W.restore_quiet(Boom()) or "").startswith("restore failed: RuntimeError"), True)
+# order: the live path quiets the map before it raises the speed for the window
+src = open(W.__file__).read()
+live = src[src.index("def _live("):]
+check("quiet before speed", live.index("quiet_stage(") < live.index('{"speed": a.speed}'), True)
+check("quiet restored in a finally after the window",
+      live.index('{"speed": a.speed}') < live.index("finally:") < live.index("restore_quiet(qs)"), True)
+
 if FAILS:
     print("\n".join("FAIL " + f for f in FAILS))
     print("selftest_mappretick_window: %d FAIL" % len(FAILS))

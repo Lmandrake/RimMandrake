@@ -10,7 +10,7 @@ named (NAMED: one timed child's own max is at least half of MapPreTick's max).
 Exit 0 = NOT_REPRODUCED or NAMED. Exit 1 = UNNAMED (a spike no timed child explains: Harmony patches on MapPreTick and
 the GC count change are printed as suspects), BLIND (MapPreTick never timed, profiler refused, no ticks), or a wrong
 scene (fewer than --min-mods running mods, any of the five expansions not running, no map of --size, or a map whose biome is not RUT_TheRot or whose tile
-is not --tile). The verdict is a pure function, selftested offline
+is not --tile), or UNQUIET (the quiet-site profile failed its read-back; the window is not run). The verdict is a pure function, selftested offline
 (selftest_mappretick_window.py).
 
 Live (Windows Python; the bridge is the supervisor's to lease):
@@ -52,6 +52,52 @@ CHILDREN = (
 )
 
 _NUM = re.compile(r"^\s*(-?\d+(?:\.\d+)?)")
+
+# TEST_ENV_FIX_TRIBAL_VISIT_STOPS_SETUP: live round 8 staged this 325 map with the storyteller ON, and a 3-pawn Tribal
+# arrival 8358 ticks in stopped the next long advance (clockgate GovernorStop hostile_arrival). The window now runs
+# under the shared quiet-site profile (modcheck/quiet_site.py), applied and READ BACK before the speed is raised.
+# wild_spawner_off is left out on purpose: WildAnimalSpawnerTick is one of the timed children above.
+QUIET_CONTROLS = ("storyteller_off", "random_events_off", "hostiles_removed", "queue_drain")
+
+
+class KwSession(object):
+    """RimBridge.call(tool, dict) -> the call(tool, **params) surface modcheck.quiet_site takes."""
+
+    def __init__(self, bridge):
+        self.b = bridge
+
+    def call(self, tool, **p):
+        return self.b.call(tool, p) or {}
+
+
+def quiet_stage(session):
+    """Quiet the staged map before any tick advance: storyteller off, incident queue cleared, threat scale 0, random
+    mental states/diseases off, hostiles present removed, named queued incidents drained. -> the applied QuietSite
+    (call .restore() after the window). Raises (QuietSiteUnclean / HelperUnverified) when a control fails its read-back, having undone what it set."""
+    here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for d in (here, os.path.join(here, "modcheck")):
+        if d not in sys.path:
+            sys.path.append(d)
+    import quiet_site
+    qs = quiet_site.QuietSite(session, suite="isolated", controls=list(QUIET_CONTROLS), row="mappretick_window")
+    try:
+        qs.apply()
+    except Exception:                                           # QuietSiteUnclean, or helpers.HelperUnverified
+        undo = restore_quiet(qs)                                # the apply failure is the one reported, plus the undo's
+        if undo:
+            print("UNQUIET_UNDO", undo, "(storyteller/difficulty may be left changed)", flush=True)
+        raise
+    return qs
+
+
+def restore_quiet(qs):
+    """Undo quiet_stage without raising, so a failed read-back never throws away a measured window.
+    -> None when restored, else the problem text (recorded with the window)."""
+    try:
+        qs.restore()
+        return None
+    except Exception as e:                                      # noqa: BLE001 -- HelperUnverified or a bridge error
+        return "restore failed: %s: %s" % (type(e).__name__, str(e)[:300])
 
 
 def us(v):
@@ -205,27 +251,41 @@ def _live(a):
                     suspects.append("%s %s %s" % (kind[:-2] if kind.endswith("es") else kind[:-1], q.get("owner"), q.get("patchMethod")))
         say("HARMONY_ON_MAPPRETICK", hp.get("harmonyError") or (suspects if suspects else "none"))
 
-        methods = ";".join((PRETICK,) + CHILDREN + ("Verse.TickManager:DoSingleTick",))
-        c("jawa/health_profile", {"action": "stop"})
-        s = c("jawa/health_profile", {"action": "start", "methods": methods, "minutes": 15})
-        time.sleep(2)  # the patch-install frame is not part of the window
-        c("jawa/health_profile", {"action": "stop"})
-        s = c("jawa/health_profile", {"action": "start", "methods": methods, "minutes": 15})
-        prof0 = s.get("profile") or {}
-        if not s.get("success") or isinstance(prof0.get("refused"), str):
-            say("PROFILE_START_FAILED", json.dumps(s, default=str)[:400])
-        time.sleep(1)
-        g0 = [gc(i) for i in range(3)]
-        k0 = ticks()
-        t0 = time.time()
-        c("jawa/set_game_speed", {"speed": a.speed})
-        time.sleep(a.secs)
-        c("jawa/set_game_speed", {"speed": "Paused"})
-        dt = time.time() - t0
-        k1 = ticks()
-        g1 = [gc(i) for i in range(3)]
-        prof = c("jawa/health_profile", {"action": "status"}).get("profile") or {}
-        c("jawa/health_profile", {"action": "stop"})
+        try:
+            qs = quiet_stage(KwSession(B))
+        except Exception as e:                                  # noqa: BLE001 -- QuietSiteUnclean or a bridge refusal
+            say("VERDICT", "UNQUIET", "the staged map could not be shown quiet before the window: %s" % str(e)[:400])
+            return 1
+        quiet = qs.receipt()
+        say("QUIET", json.dumps([[x["name"], x["readBack"]] for x in quiet["controls"]], default=str)[:600])
+        try:
+            methods = ";".join((PRETICK,) + CHILDREN + ("Verse.TickManager:DoSingleTick",))
+            c("jawa/health_profile", {"action": "stop"})
+            s = c("jawa/health_profile", {"action": "start", "methods": methods, "minutes": 15})
+            time.sleep(2)  # the patch-install frame is not part of the window
+            c("jawa/health_profile", {"action": "stop"})
+            s = c("jawa/health_profile", {"action": "start", "methods": methods, "minutes": 15})
+            prof0 = s.get("profile") or {}
+            if not s.get("success") or isinstance(prof0.get("refused"), str):
+                say("PROFILE_START_FAILED", json.dumps(s, default=str)[:400])
+            time.sleep(1)
+            g0 = [gc(i) for i in range(3)]
+            k0 = ticks()
+            t0 = time.time()
+            c("jawa/set_game_speed", {"speed": a.speed})
+            time.sleep(a.secs)
+            c("jawa/set_game_speed", {"speed": "Paused"})
+            dt = time.time() - t0
+            k1 = ticks()
+            g1 = [gc(i) for i in range(3)]
+            prof = c("jawa/health_profile", {"action": "status"}).get("profile") or {}
+            c("jawa/health_profile", {"action": "stop"})
+        finally:
+            try:
+                c("jawa/set_game_speed", {"speed": "Paused"})   # never restore the storyteller onto a running clock
+            except Exception:                                   # noqa: BLE001
+                pass
+            restored = restore_quiet(qs)
         dk = (k1 or 0) - (k0 or 0)
         gcd = [(y - x) if (x is not None and y is not None) else None for x, y in zip(g0, g1)]
         say("WINDOW speed=%s wall=%.1fs ticks=%s TPS=%.0f gcDelta(gen0,1,2)=%s" % (a.speed, dt, dk, dk / dt if dt else 0, gcd))
@@ -239,13 +299,14 @@ def _live(a):
                                    dlcs=dlcs, min_mods=a.min_mods, size=a.size, want_tile=a.tile)
         if word == "UNNAMED":
             text += "; suspects: harmony=%s gcDelta=%s" % (suspects or "none", gcd)
+        say("QUIET_RESTORED", restored or "yes")
         say("VERDICT", word, text)
         if a.out:
             os.makedirs(a.out, exist_ok=True)
             stamp = time.strftime("%Y%m%d_%H%M%S")
             with open(os.path.join(a.out, "mappretick_window_%s.json" % stamp), "w", encoding="utf-8") as f:
                 json.dump({"lines": out, "profile": prof, "ticks": dk, "wall": dt, "gcDelta": gcd, "mods": mods, "expansions": dlcs,
-                           "mapSize": size, "biome": (mi or {}).get("mapBiome"), "tile": (mi or {}).get("tile"), "harmony": suspects, "verdict": [code, word, text]}, f, default=str, indent=1)
+                           "quiet": quiet, "quietRestored": restored, "mapSize": size, "biome": (mi or {}).get("mapBiome"), "tile": (mi or {}).get("tile"), "harmony": suspects, "verdict": [code, word, text]}, f, default=str, indent=1)
         return code
 
 
