@@ -91,6 +91,41 @@ def main():
     check("absent T22 names the sprinkler driver", "sprinkler_live.py" in (by["T22_no_brine_spray"].detail or ""))
     check("PASS carries its evidence", any("T2_one_thirst_need" in e.get("call", "") for e in by["T2_one_thirst_need"].evidence))
 
+    # HARNESS_REPAIR_CAUSE_5F134E3C: a row its driver's PLAN never emits is an honest GAP, not an undelivered driver.
+    # testq/retest.py holds a chain whose row reads "no <driver> result at the current mod hash" until a rerun delivers it;
+    # for a row the driver never writes, that hold could never end.
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils", "testq"))
+    import retest as R  # noqa: E402
+    emits = V.driver_emits("sprinkler_live.py")
+    check("sprinkler_live.py's PLAN is read (draws_and_wets, T21)",
+          emits is not None and {"sprinkler.draws_and_wets", "T21_drinking_reserve"} <= emits)
+    check("a driver with no PLAN -> None (every row named on it stays its)", V.driver_emits("no_such_driver.py") is None)
+    V.driver_rows_at = lambda h, ns=None, dll_sha=None: {}
+    ST.mod_hash = lambda _dir: "H"
+    try:
+        t = _T()
+        V._driver_live_report(t, V.SPRINKLER_LIVE, "sprinkler_live.py", "ITEM")
+        tt = _T()
+        V._driver_live_report(tt, V.THIRST_LIVE, "thirst_live.py", "ITEM")
+    finally:
+        V.driver_rows_at, ST.mod_hash = real_at, real_hash
+    by = {c.name: c for c in t.components + tt.components}
+
+    def cause(rid):
+        c = by[rid]
+        return R.row_cause({"chain": "x", "verdict": c.verdict, "detail": c.detail})
+    for rid in ("sprinkler.liquid_key", "sprinkler.vfe_boost_skipped", "sprinkler.vfe_valve", "T30_pipe_faucet"):
+        check("%s (no driver writes it) -> UNMEASURED live check owed, a GAP testq keeps (cause %s)" % (rid, cause(rid)),
+              by[rid].verdict == "UNMEASURED" and "live check owed" in (by[rid].detail or "") and cause(rid) is None)
+    for rid in ("sprinkler.draws_and_wets", "T22_no_brine_spray", "T16_living_slime"):
+        check("%s (its driver writes it, no result) -> still driver_undelivered" % rid,
+              by[rid].verdict == "UNMEASURED" and str(cause(rid)).startswith("driver_undelivered"))
+    for spec, drv in ((V.THIRST_LIVE, "thirst_live.py"), (V.SPRINKLER_LIVE, "sprinkler_live.py")):
+        for rid, _, _ in spec:
+            e = V.driver_emits(V.DRIVER_OF.get(rid, drv))
+            if e is not None and rid in e:
+                check("emitted row %s is a driver row" % rid, str(cause(rid)).startswith("driver_undelivered"))
+
     decl = {}
     probe_t = V.suite.components_declared()
     check("the declaration probe still runs", len(probe_t) > 0)

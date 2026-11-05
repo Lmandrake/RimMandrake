@@ -1087,6 +1087,27 @@ DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "
 DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
 
 
+def driver_emits(driver):
+    """-> the row ids northstar/<driver> can ever write, read from its PLAN ((--only key, (row ids...), ...) tuples, parsed
+    with ast, never imported), or None when it declares no PLAN (then every row named on it is taken as its).
+    HARNESS_REPAIR_CAUSE_5F134E3C: sprinkler_live.py never drives sprinkler.liquid_key or the two VFE rows ("Not driven
+    here"), yet the missing result was blamed on it; testq read that as driver_undelivered and held the sprinklers chain
+    behind a repair no rerun of the driver could ever pass."""
+    import ast
+    try:
+        with open(os.path.join(HERE, "northstar", driver), encoding="utf-8") as f:
+            tree = ast.parse(f.read())
+    except (OSError, SyntaxError, ValueError):
+        return None
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and any(isinstance(n, ast.Name) and n.id == "PLAN" for n in node.targets):
+            try:
+                return {rid for entry in ast.literal_eval(node.value) for rid in entry[1]}
+            except (ValueError, TypeError, IndexError):
+                return None
+    return None
+
+
 def repo_dll_sha256():
     """sha256 of the committed FlowWorks assembly (None if unreadable)."""
     import hashlib
@@ -1146,8 +1167,13 @@ def _driver_live_report(t, spec, default_driver, item):
         if spare is not None and ru.mode() == ru.REUSE:
             found = spare
         drv = DRIVER_OF.get(rid, default_driver)
+        emits = driver_emits(drv)
         with t.component(rid, toggle=toggle):
             if t._guard():
+                if found is None and emits is not None and rid not in emits:
+                    # a real GAP: no driver writes this row, so no rerun can measure it (never "no <driver> result")
+                    raise ExpectationFailed("UNMEASURED: live check owed (%s) -- no driver drives this row (%s's PLAN does "
+                                            "not emit it): a look or a new driver step is owed; bar: %s" % (item, drv, bar))
                 if found is None:
                     raise ExpectationFailed("UNMEASURED: live check owed (%s) -- no %s result at the current mod hash carries "
                                             "this row: run `python.exe src/RimMandrake/FlowWorks/northstar/%s --only ...` on "
