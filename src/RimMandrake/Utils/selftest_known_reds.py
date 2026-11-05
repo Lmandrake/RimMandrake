@@ -331,11 +331,11 @@ last(_at[-1], [(OLD_RED, "FAIL", ["rc 1", "FAIL the old cause is one thing"]), (
                (PARKED, "FAIL", ["rc 1", "FAIL parked and still red"])])
 K.save([entry(test=PARKED, item="WIRE_OPEN_ITEM", added=stamp(WNOW - K.DAY), expires=stamp(WNOW + 5 * K.DAY))])
 _events = [ledger_file("WIRE_OPEN_ITEM", stamp(WNOW - 2 * K.DAY))]
-_saved_collectors, _saved_release, _saved_ledger = dict(OW.COLLECTORS), OW.steve_release, PC.read_ledger
+_saved_collectors, _saved_release, _saved_ledger = dict(OW.COLLECTORS), OW.steve_release_start, PC.read_ledger
 for _fam in list(OW.COLLECTORS):
     if _fam not in ("flow", "testing"):
         OW.COLLECTORS[_fam] = lambda now, rules, ctx: {}
-OW.steve_release = lambda: []
+OW.steve_release_start = lambda: {}
 PC.read_ledger = lambda: list(_events)
 try:
     rc, seen = wire_pass(ARGV)
@@ -395,7 +395,7 @@ try:
 finally:
     OW.COLLECTORS.clear()
     OW.COLLECTORS.update(_saved_collectors)
-    OW.steve_release, PC.read_ledger = _saved_release, _saved_ledger
+    OW.steve_release_start, PC.read_ledger = _saved_release, _saved_ledger
 
 print("known_reds: " + ("FAIL %d" % len(FAILS) if FAILS else "ok"))
 sys.exit(1 if FAILS else 0)

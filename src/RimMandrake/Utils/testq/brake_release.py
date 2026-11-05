@@ -3,7 +3,8 @@
 
 STEVE_BRAKE_FIX_KNOWN_CAUSES_RELEASE. 2026-11-03: the filler braked on a hardware crash and a job cancelled for a BIOS
 visit, ops_watch read steve.state=BRAKED with unowned_stall 0 because the steward was escalating, and nothing acted until
-the owner asked. rm-ops-watch runs this on every full pass (ops_watch.steve_release).
+the owner asked. ops_watch runs this on every filing pass that measures steve (ops_watch.steve_release_start;
+since 2026-11-05 the metronome's sense phase, about every 13 min), started before the collectors so a 15 s beat fits it.
 
 A pass, reading the lane through testq.fill_plan and nothing else:
   none       no filler brake (the normal answer)

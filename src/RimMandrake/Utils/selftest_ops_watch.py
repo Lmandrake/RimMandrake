@@ -1153,8 +1153,8 @@ _sj0.unlink()
 check("lane_fault_since: no steward.json -> None", OW.lane_fault_since(NOW) is None, "")
 if _sj0b is not None:
     _sj0.write_text(_sj0b)
-_calls, _rf0, _sr0 = [], OW.real_filer, OW.steve_release
-OW.steve_release = lambda: _calls.append(1) or [{"rule": "brake_release", "key": "steve.brake_release", "value": None, "window": "now", "detail": "the brake release pass failed: x"}]
+_calls, _rf0, _sr0 = [], OW.real_filer, OW.steve_release_start
+OW.steve_release_start = lambda: _calls.append(1) or {"why": "x"}
 OW.real_filer = lambda todo, conf: None
 try:
     OW.run(now=NOW, rules=RULES, filer=None, families=["disk"])
@@ -1165,7 +1165,7 @@ try:
     _dg = OW.run(now=NOW, rules=RULES, filer=OW.real_filer, families=["steve"])
     check("steve_release: a filing pass runs it, once, and its failure is a flag", _calls == [1] and any(f.get("rule") == "brake_release" for f in _dg.get("flags") or []), _dg.get("flags"))
 finally:
-    OW.real_filer, OW.steve_release = _rf0, _sr0
+    OW.real_filer, OW.steve_release_start = _rf0, _sr0
 r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "ready", 40, lease="live")), _M, NOW, RULES)
 check("incident: a live lease -> 0", r["v"] == 0.0, r)
 r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "ready", 40, lease="lapsed")), _M, NOW, RULES)

@@ -3628,7 +3628,6 @@ def refusal_text(out, cap=300):
 FILING_DEFERRED = "deferred: this beat's filing time is spent; the next pass files it"
 FILING_PUBLISH_RESERVE_S = 4.0     # left for the publish and the rest of the pass when a metronome beat bounds it
 FILING_FIRST_GUESS_S = 3.0         # one spawn + raise before any is measured
-BRAKE_RELEASE_MIN_S = 4.0          # testq/brake_release.py took 2.4-2.5 s (2026-11-05)
 
 
 def beat_deadline():
@@ -4536,34 +4535,58 @@ def publish_health(points, prev, ctx, rules, now):
             "health.drifted_slis": M(len(v["drifted"]), "SLIs whose point changed unit under them", said=", ".join(v["drifted"]))}
 
 
-def steve_release():
-    """Operations' deterministic hand on the Steve lane: testq/brake_release.py, its own process so its import of testq
-    reads TESTQ_QUEUE as this pass does. -> flags: it costs a flag when it fails, never the pass."""
-    why = None
-    dl = beat_deadline()
-    # inside a beat the release (~2.5 s) must end before the kill and leave the filer its room; when it cannot fit it
-    # waits for the next steve beat (no flag: nothing failed), and a timeout kills its whole process group
-    budget = 240.0 if dl is None else min(240.0, dl - time.time() - FILING_FIRST_GUESS_S - FILING_PUBLISH_RESERVE_S - 2)
-    if budget < BRAKE_RELEASE_MIN_S:
-        return []
+def steve_release_start():
+    """Start testq/brake_release.py, Operations' deterministic hand on the Steve lane, in its own process (its import of
+    testq reads TESTQ_QUEUE as this pass does) and its own session, output to ops_dir()/brake_release.out. -> the
+    started record for steve_release_finish. It starts BEFORE the collectors: inside a metronome beat (15 s) the
+    collectors of a steve beat took 8-15 s (2026-11-05), so a release started after them never fit and its reading
+    went stale for hours; started first it runs beside them (~2.5 s) and costs the beat nothing."""
+    out = ops_dir() / "brake_release.out"
     try:
-        proc = subprocess.Popen([sys.executable, str(HERE / "testq" / "brake_release.py")], stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE, text=True, start_new_session=True)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        with open(out, "w", encoding="utf-8") as fh:
+            proc = subprocess.Popen([sys.executable, str(HERE / "testq" / "brake_release.py")], stdout=fh,
+                                    stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
+    except (OSError, subprocess.SubprocessError) as e:
+        return {"why": "%s: %s" % (type(e).__name__, str(e)[:200])}
+    return {"proc": proc, "out": out}
+
+
+def steve_release_finish(started):
+    """-> flags: the release costs a flag when it fails, never the pass. Inside a beat it is waited for only while the
+    beat leaves the filer its room; past that it runs on in its own session (no flag: nothing failed) and its reading,
+    QHOME/brake_release.json, says how it ended. Outside a beat it gets 240 s, then its whole process group is
+    killed."""
+    why = started.get("why")
+    proc = started.get("proc")
+    if proc is not None:
+        dl = beat_deadline()
+        budget = 240.0 if dl is None else min(240.0, dl - time.time() - FILING_FIRST_GUESS_S - FILING_PUBLISH_RESERVE_S - 2)
         try:
-            out, err = proc.communicate(timeout=budget)
+            rc = proc.wait(timeout=max(budget, 0.01))
         except subprocess.TimeoutExpired:
+            if dl is not None:
+                return []
             try:
                 os.killpg(proc.pid, signal.SIGKILL)
             except OSError:
                 pass
-            proc.communicate()
-            raise
-        if proc.returncode != 0:
-            why = "exit %d: %s" % (proc.returncode, (err or out).strip()[-200:])
-    except (OSError, subprocess.SubprocessError) as e:
-        why = "%s: %s" % (type(e).__name__, str(e)[:200])
+            proc.wait()
+            rc = None
+            why = "TimeoutExpired: no end in %.0f s" % budget
+        if rc:
+            try:
+                tail = Path(started["out"]).read_text(encoding="utf-8", errors="replace").strip()[-200:]
+            except OSError as e:
+                tail = "its output is unreadable: %s" % e
+            why = "exit %d: %s" % (rc, tail)
     return [{"rule": "brake_release", "key": "steve.brake_release", "value": None, "window": "now",
              "detail": "the brake release pass failed: " + why}] if why else []
+
+
+def steve_release():
+    """One release, waited for (a hand run, and the tests): steve_release_start then steve_release_finish."""
+    return steve_release_finish(steve_release_start())
 
 
 OLD_TIMER = "rm-ops-watch.timer"     # the clock the metronome's sense phase replaces (metronome_phases.json owns)
@@ -4661,6 +4684,10 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     prev = {}
     sick = []
     unfit = []
+    release = None
+    if filer is real_filer and (not families or "steve" in families):      # acts only where alarms are really filed
+        fence("the steve release")
+        release = steve_release_start()     # before the collectors: it runs beside them (steve_release_start)
     for fam in ORDER:
         if families and fam not in families:
             continue
@@ -4699,9 +4726,8 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
             prev[fam] = read_series(fam, since)
             carried.update(carry_family(fam, prev[fam], now, max_age))
         points = dict(carried, **points)        # this pass's own readings win
-    if filer is real_filer and (not families or "steve" in families):      # acts only where alarms are really filed
-        fence("the steve release")
-        sick += steve_release()
+    if release is not None:
+        sick += steve_release_finish(release)
     for fam, key in (("relentless", "relentless.blind"), ("seats", "seats.blind"), ("plan", "plan.blind"),
                      ("disk", "disk.scratch_outside_blind")):
         if (whole or fam in families) and not counts_as_measured(points.get(key)):

@@ -94,10 +94,24 @@ res = OW.real_filer([dict(a) for a in todo], conf)
 ok(all(res.get(a["name"]) == OW.FILING_DEFERRED for a in todo), "lock busy inside a beat: all deferred (%s)" % set(res.values()))
 lk.close()
 
-# 6. the brake release is skipped (no flag) when it cannot fit before the kill, and runs outside a beat
+# 6. the brake release starts before the collectors; with no room left in the beat it is not waited for (no flag:
+# it runs on in its own session and its reading says how it ended); outside a beat its failure is a flag
+import subprocess  # noqa: E402
 os.environ["METRONOME_DEADLINE"] = "%.3f" % (time.time() + 2)
-ok(OW.steve_release() == [], "brake release: no room in the beat -> skipped, no flag")
+_p = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(4)"], start_new_session=True)
+_t = time.time()
+_r = OW.steve_release_finish({"proc": _p, "out": TMP / "rel_a.out"})
+ok(_r == [] and time.time() - _t < 1.0 and _p.poll() is None,
+   "brake release: no room in the beat -> not waited for, no flag, still running (%s, %.1f s)" % (_r, time.time() - _t))
+_p.kill()
+_p.wait()
 os.environ.pop("METRONOME_DEADLINE", None)
+with open(TMP / "rel_b.out", "w") as _fh:
+    _p = subprocess.Popen([sys.executable, "-c", "import sys; print('boom'); sys.exit(2)"], stdout=_fh,
+                          stderr=subprocess.STDOUT, start_new_session=True)
+_r = OW.steve_release_finish({"proc": _p, "out": TMP / "rel_b.out"})
+ok(len(_r) == 1 and _r[0]["rule"] == "brake_release" and "exit 2" in _r[0]["detail"] and "boom" in _r[0]["detail"],
+   "brake release outside a beat: waited for, a failing exit is a flag naming its output: %s" % _r)
 
 print("FAIL (%d)" % len(FAILS) if FAILS else "PASS")
 sys.exit(1 if FAILS else 0)
