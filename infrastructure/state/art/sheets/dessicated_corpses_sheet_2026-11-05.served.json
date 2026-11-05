@@ -1,0 +1,9 @@
+{
+ "url": "http://localhost:36565/?t=bIFFeDIgeOPiXkeCHVuJHg",
+ "unit": "rm-sheet-dessicated-corpses.service",
+ "served_from": "/home/mandrake/rm/bench",
+ "serve_log": "/home/mandrake/rm/bench/Transient/biome_ffar/dessicated_corpses_sheet_2026-11-05.serve.log",
+ "decisions": "/home/mandrake/rm/bench/Transient/biome_ffar/dessicated_corpses_sheet_2026-11-05.decisions.json",
+ "started": "2026-11-05",
+ "why": "systemd --user unit so it outlives the Relentless worker scope (gen1's setsid server died with its scope); served from the bench seat clone so his clicks land where the Conductor enacts"
+}
