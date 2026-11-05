@@ -1,0 +1,280 @@
+{
+ "sheet": "dessicated_corpses_sheet_2026-11-05.html",
+ "looked_by": "seat:BENCH",
+ "when": "2026-11-05T13:44:34+00:00",
+ "caught": "nothing broken: all 53 rows show a dessicated-corpse lane; 4 flagged (Rycrit, Taozin: render-only corpse art; Silooth juvenile and Snoruuk dregen look off)",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "RSW_Akk": {
+   "fp": "538fd00950ab2c7b",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Boarwolf": {
+   "fp": "f03ddb6b004a565d",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Bordok": {
+   "fp": "6dac6dd898ad5488",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Brezak": {
+   "fp": "a8fd5f775609b808",
+   "verdict": "OK",
+   "note": "corpse lane renders; the in-game corpse is a wingless reptile skeleton for a winged body"
+  },
+  "RSW_Bursa": {
+   "fp": "a5427dd331d341e9",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_CorellianHound": {
+   "fp": "356264b699241148",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Devourers": {
+   "fp": "1f7f87dc3802a3bd",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Drexl": {
+   "fp": "252a79ef87f1a4d1",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_EnergySpider": {
+   "fp": "564a590bccef133c",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_FrogDog": {
+   "fp": "c41d7c436b215adb",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Grazer": {
+   "fp": "7a5d2c1cbbde0901",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Gualaar": {
+   "fp": "8d08e1f4f97ded87",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Gullipud": {
+   "fp": "8633ece54a446651",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Gundark": {
+   "fp": "4da9d58e5adfb725",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_HarvesterBeetle": {
+   "fp": "d209d7fd0d8508ef",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Insectomorph": {
+   "fp": "2ad261505e97e335",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_JungleRancor": {
+   "fp": "4832e31cdcd9c5ce",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Kaadu": {
+   "fp": "7919a9578bc0dc60",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Katarn": {
+   "fp": "e224ee486da9fc75",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_KellDragon": {
+   "fp": "e73c5093f78ea18b",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_KwazelMaw": {
+   "fp": "36555981433a0b35",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Leaftail": {
+   "fp": "69b70fe591aeaa85",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_LothWolf": {
+   "fp": "a324a20108d56725",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Maalraas": {
+   "fp": "a81d665d2aa8d0a6",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Manka": {
+   "fp": "b8e88068d205b00a",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_MastiffPhalone": {
+   "fp": "59cc3b12cb25c0ad",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Mastmot": {
+   "fp": "1574345001eba08d",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Mawvorr": {
+   "fp": "89db2ef76a9b6252",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Narglatch": {
+   "fp": "5a6a1f300a45b612",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Nexu": {
+   "fp": "303f4a090ed597d7",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_PaintedSpat": {
+   "fp": "2425eb74cb26b25b",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it; one render column carries no job id in its label"
+  },
+  "RSW_Raxshir": {
+   "fp": "dfeaa94f110a613e",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Rikknit": {
+   "fp": "670ea3b3d7fc30a2",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Roggwart": {
+   "fp": "a8812161a15b2095",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Rancor": {
+   "fp": "6e37176bc046d3a5",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Warbird": {
+   "fp": "da55bb5ccc92eecb",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Silooth": {
+   "fp": "991d398cb5a376f0",
+   "verdict": "FLAG",
+   "note": "second corpse lane (juvenile texture) is a purple segmented husk that does not resemble the spider-like adult body"
+  },
+  "RSW_Snoruuk": {
+   "fp": "d37064b72c0b3dd3",
+   "verdict": "FLAG",
+   "note": "dregen render column in the juvenile corpse lane is a full-colour mushroom, not visibly dessicated"
+  },
+  "RSW_Squall": {
+   "fp": "e69ddc2e5143f196",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Stintaril": {
+   "fp": "ccebd4e11e214d72",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Tach": {
+   "fp": "f519539505c1a524",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Taozin": {
+   "fp": "f0184210cd6f22b1",
+   "verdict": "FLAG",
+   "note": "no installed corpse picture: both corpse lanes are dessic_taozin renders (adult and juvenile) beside the donor skeleton"
+  },
+  "RSW_Tauntaun": {
+   "fp": "ac9499ec7d156a95",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_TetnissCrab": {
+   "fp": "106ba41a78b81d3e",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Thranta": {
+   "fp": "3fb6d87743d71689",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Tibidee": {
+   "fp": "885277c056748a88",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Tooke": {
+   "fp": "f169ab71a17b2195",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Torton": {
+   "fp": "c936acfd3f66ea24",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Tukata": {
+   "fp": "b6d2eba4a5ee6579",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_TuskCat": {
+   "fp": "fc632d8c60557091",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Vapaad": {
+   "fp": "309061813535ec0f",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Veermok": {
+   "fp": "ec4bd3b961c7bf87",
+   "verdict": "OK",
+   "note": "corpse lane renders: in-game dessicated skeleton matches the body silhouette; donor skeleton shown beside it"
+  },
+  "RSW_Rycrit": {
+   "fp": "149825635e510ac7",
+   "verdict": "FLAG",
+   "note": "no installed body or corpse picture: the corpse lane is a dessic_rycrit render plus the donor skeleton only"
+  }
+ },
+ "dropped": []
+}
