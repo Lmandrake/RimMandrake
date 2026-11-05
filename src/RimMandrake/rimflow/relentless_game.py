@@ -1159,6 +1159,46 @@ def _carry(store, fx, item, sha, now, acts):
     return new
 
 
+RECARRY_EVERY_S = 600      # a returned stale build asks carry again at most this often (each ask is a few git calls)
+
+
+def recarry_returned(store, fx, now, acts):
+    """A stale build that went back to a worker and still waits for one (queued) is asked to carry again before any
+    worker is sent: the carry it was refused may have been the supervisor's own defect, fixed since. When the Judge's
+    green still stands (same sha as the candidate, same contract, clauses owed) and the item's OWN build now carries,
+    it re-enters the game phase on that green; the game step's preflight then carries it there (_carry). No worker, and
+    the item keeps its returns. OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT: SUMP_TAR_FIRE_NETWORK_1 went back at 18:16Z on a
+    carry refused by carry_scope's defect; d2ac77bb77 fixed it at 18:43Z and the same carry answered dfc2007c13, but the
+    item sat queued for a worker (approach pilot) who could change nothing, and its churn alarm re-rang at 19:07Z."""
+    if not hasattr(fx, "game_carry"):
+        return
+    for item in store.items():
+        st = store.load(item) or {}
+        g, lf = st.get("game") or {}, st.get("last_fail") or {}
+        green = g.get("offline_green") or {}
+        if (st.get("status") != "queued" or lf.get("class") != "game_stale_build" or st.get("hold") or st.get("wait")
+                or st.get("block_pending") or st.get("run") or st.get("awaiting_ledger") or not green.get("sha")
+                or (st.get("candidate") or {}).get("sha") != green["sha"] or not owes(st, green["sha"])
+                or green.get("contract") != contract_print(st.get("contract"))
+                or now - (st.get("recarry_at") or 0) < RECARRY_EVERY_S):
+            continue
+        _save(store, item, lambda s: s.update(recarry_at=now))
+        origin = green.get("carried_from") or green["sha"]
+        got = fx.game_carry(item, origin)
+        if not got:
+            continue
+        why = "returned stale build carries now: %s -> %s, %s" % (origin[:12], got[0][:12], got[1])
+        with store.lock():
+            cur = store.load(item)
+            if cur.get("status") != "queued" or cur.get("run") or (cur.get("last_fail") or {}).get("class") != "game_stale_build":
+                continue
+            reenter(store, cur, now, why)
+            store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": cur["gen"],
+                                 "routed": "recarried", "sha": green["sha"], "detail": why[:300], "to": GAME})
+        acts.append({"do": "game_recarried", "item": item, "from": origin[:12], "to": got[0][:12]})
+        fx.ledger_note(item, "relentless game phase: %s; back to the game step, no worker" % why)
+
+
 def _preflight(store, fx, sup, r, item, lines, now, acts, sha):
     """relentless_live.preflight before a game slot is spent (implement, before a staging load, before a proof round):
     -> True when the item was sent back or held. A stale build goes back to be rebuilt on the newer bytes; a refused

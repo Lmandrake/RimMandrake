@@ -1526,9 +1526,26 @@ def t_rebuilt_assembly_carries_the_build():
     y.tick()
     y.w.pre, y.w.carry = stale, None
     y.w.running = False
+    y.r = dict(y.r, max_workers=0)     # every place taken: the return waits queued, as SUMP_TAR_FIRE_NETWORK_1 did
     y.tick()
     ok(y.st("I0")["last_fail"] and y.st("I0")["last_fail"]["class"] == "game_stale_build",
        "a stale build carry refuses (the build's own source changed) goes back as before")
+    # SUMP_TAR_FIRE_NETWORK_1, 18:16Z: the refusal was the supervisor's own (carry_scope), fixed while the item waited
+    # queued for a worker; once carry answers, it re-enters the game step on the Judge's green, and no worker is sent
+    yst = y.st("I0")
+    if yst["status"] == "queued" and not yst.get("run"):
+        y.w.carry = lambda sha: ("sha2full", "only rebuilt assemblies changed") if sha == SHA else None
+        y.w.pre = lambda lines: stale if y.w.led["I0"]["built_sha"] == SHA else []
+        y.tick()
+        yst = y.st("I0")
+        ok(yst["status"] == G.GAME and not yst.get("run") and ("I0", SHA) in y.w.carry_calls,
+           "a queued stale return that carries now re-enters the game step, no worker: %s %s" % (yst["status"], yst.get("run")))
+        y.tick()
+        yst = y.st("I0")
+        ok(yst["status"] == G.GAME and yst["game"]["sha"] == "sha2full" and yst["game"]["offline_green"]["carried_from"] == SHA,
+           "and its preflight carries it to the rebuild: %s" % yst["game"])
+    else:
+        ok(False, "the stale return is queued with no worker yet: %s %s" % (yst["status"], yst.get("run")))
     y.done()
     z = rig(1)
     to_game(z, "I0")

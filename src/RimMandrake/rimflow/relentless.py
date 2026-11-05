@@ -6455,6 +6455,10 @@ def tick(store=None, fx=None, r=None, now=None):
         except Exception as e:  # noqa: BLE001  a failed read keeps the holds as they are; the steps still run
             acts.append({"do": "error", "item": None, "why": "lapse_holds %s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "lapse_holds_raised", "why": str(e)[:300]})
+        try:        # a returned stale build that carries now goes back to its game step before a worker is sent for it
+            relentless_game.recarry_returned(store, fx, now, acts)
+        except Exception as e:  # noqa: BLE001  a failed git read leaves the item queued, as before
+            acts.append({"do": "error", "item": None, "why": "recarry_returned %s: %s" % (type(e).__name__, e)})
         began, skipped = phase("prelude", whole), 0
         budget["began"] = began     # the step loop's game budget: a wake in it spends what is left
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now

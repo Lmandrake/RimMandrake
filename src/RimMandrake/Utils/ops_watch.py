@@ -2069,8 +2069,11 @@ def attempt_waited(r):
 
 def attempts_resumed(rows):
     """-> epoch of the latest `unhold` ending in an item's attempts rows, or None: the hold's cause was resolved and the item
-    put back, so churn_why counts the failures before it as spent (OPS_CHURN_DIAGNOSE_ART_XODX_FYLS)."""
-    ts = [epoch(r.get("at")) for r in rows if isinstance(r, dict) and r.get("end") == "unhold"]
+    put back, so churn_why counts the failures before it as spent (OPS_CHURN_DIAGNOSE_ART_XODX_FYLS). A `recarried` row is
+    the same for a stale build: the supervisor found it carries now and sent it back to its game step with no worker
+    (relentless_game.recarry_returned; OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT re-rang at 19:07Z on three stale builds whose
+    three causes were each fixed)."""
+    ts = [epoch(r.get("at")) for r in rows if isinstance(r, dict) and (r.get("end") == "unhold" or r.get("routed") == "recarried")]
     ts = [t for t in ts if is_num(t)]
     return max(ts) if ts else None
 
@@ -2106,7 +2109,7 @@ def churn_why(st, fails, now, cfg, waits=0, resumed=None):
         # build repeating inside the window still speaks (OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT's shared-DLL signal)
         n = {}
         for t, c in fails:
-            if c in env and lo <= (t or 0) <= now + 300:
+            if c in env and lo <= (t or 0) <= now + 300 and not (is_num(resumed) and (t or 0) < resumed):
                 n[c] = n.get(c, 0) + 1
         return ["%s failed it %d times" % (c, n[c]) for c in sorted(n) if n[c] >= int(cfg.get("churn_same_class", 2))]
     if passed is not None and all((t or 0) < passed for t, _ in fails):

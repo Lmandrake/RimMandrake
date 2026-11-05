@@ -304,7 +304,18 @@ def main():
     ok(OW.churn_why({"returns": 2}, two, NOW, CFG) == ["game_stale_build failed it 2 times"],
        "8s: two stale builds in the window still read a same-class repeat (the SUMP_TAR_FIRE_NETWORK_1 signal)",
        OW.churn_why({"returns": 2}, two, NOW, CFG))
-    cfg8 = dict(CFG, item_bands=rules["relentless"]["item_bands"], churn_item_stuck_stages=["game", "checking"],
+    # OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT, 19:07Z: three stale builds in the window (11:07Z, 15:35Z, 18:16Z), each a
+    # supervisor carry defect fixed since; a `recarried` row (the supervisor sent the returned build back to its game step,
+    # no worker) spends them, as an unhold does; a stale build after it still speaks
+    three = [(NOW - 8 * HOUR, "game_stale_build"), (NOW - 3.5 * HOUR, "game_stale_build"), (NOW - 0.9 * HOUR, "game_stale_build")]
+    rc = OW.attempts_resumed([{"at": iso(NOW - 0.2 * HOUR), "gen": 10, "routed": "recarried", "to": "game"}])
+    ok(rc is not None and abs(rc - (NOW - 0.2 * HOUR)) < 2, "8s: a recarried row is a resume time", rc)
+    ok(OW.churn_why({"returns": 5, "status": "game"}, three, NOW, CFG, 0, rc) == [],
+       "8s: stale builds before a recarry are spent (SUMP_TAR_FIRE_NETWORK_1)", OW.churn_why({"returns": 5}, three, NOW, CFG, 0, rc))
+    after = three + [(NOW - 0.1 * HOUR, "game_stale_build"), (NOW - 0.05 * HOUR, "game_stale_build")]
+    ok(OW.churn_why({"returns": 7}, after, NOW, CFG, 0, rc) == ["game_stale_build failed it 2 times"],
+       "8s: two stale builds after the recarry still speak", OW.churn_why({"returns": 7}, after, NOW, CFG, 0, rc))
+    cfg8 =dict(CFG, item_bands=rules["relentless"]["item_bands"], churn_item_stuck_stages=["game", "checking"],
                 churn_item_new_per_pass=5)
     s8 = TMP / "s8"
     def st8(name, state, rows):
