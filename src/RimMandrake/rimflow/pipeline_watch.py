@@ -71,10 +71,11 @@ def short(item):
 # ---------------------------------------------------------------- what is running
 
 def list_scopes():
-    """-> the active claude-seat scope names. The only command this file runs."""
+    """-> the active claude-seat scope names. The only command this file runs; 2 s at most, as it runs under the
+    station lock every tab shares."""
     try:
         r = subprocess.run(["systemctl", "--user", "list-units", "--state=active", "--plain", "--no-legend",
-                            "claude-seat-*-rm-relentless-*"], capture_output=True, text=True, timeout=10,
+                            "claude-seat-*-rm-relentless-*"], capture_output=True, text=True, timeout=2,
                            stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError):
         return None
@@ -92,14 +93,20 @@ def parse_scope(scope):
 
 
 _item_names = {}
-_listed_at = {}         # base -> when store/items was last listed
+_listed_at = {}         # base -> (when store/items was last listed, its mtime then)
 RELIST_S = 60             # a hash no item matches (an orphan) re-lists store/items at most this often, not every poll
 
 
 def item_for(hsh, base):
     """The item a unit's hash names (relentless.unit_name hashes the item id). Re-listed only on a miss."""
-    if hsh not in _item_names and time.time() - _listed_at.get(base, 0) >= RELIST_S:
-        _listed_at[base] = time.time()
+    items = os.path.join(base, "store", "items")
+    try:
+        mt = os.path.getmtime(items)
+    except OSError:
+        mt = None
+    seen = _listed_at.get(base, (0, None))
+    if hsh not in _item_names and (mt != seen[1] or time.time() - seen[0] >= RELIST_S):
+        _listed_at[base] = (time.time(), mt)     # a new item changes the dir's mtime: listed at once
         try:
             for name in os.listdir(os.path.join(base, "store", "items")):
                 _item_names.setdefault(short(name), name)
@@ -287,8 +294,7 @@ def render_event(d, width=110):
             c = b.get("content")
             if isinstance(c, list):
                 c = " ".join(x.get("text", "") for x in c if isinstance(x, dict))
-            lines = [x for x in str(c or "").splitlines() if x.strip()]
-            c = _clean(c) if c is not None else c
+            lines = [x for x in _clean(c or "").splitlines() if x.strip()]
             mark = "\033[31m✗" if b.get("is_error") else "\033[2m←"
             first = _one_line(lines[0], width - 24) if lines else "(no output)"
             more = " (+%d lines)" % (len(lines) - 1) if len(lines) > 1 else ""
