@@ -1195,8 +1195,12 @@ def step(store, fx, r, item, now, acts, sup):
         fails = [(k, v) for k, v in rows.items() if v.get("outcome") == "FAIL" and relentless_live.verdict(v) == "FAIL"]
         if fails:
             rd = fx.game_reading()      # still up on the build that failed: the next worker works it live, no reload
+            # only on the very game every FAIL ran on (its row's game_started): a game started since may not run the
+            # failed build, so no live iteration is granted on it (Codex, ..._TEN_MORE #10)
+            same_game = bool(rd.get("started")) and all(
+                v.get("game_started") == relentless_live.iso(rd["started"]) for _, v in fails)
             live = ({"started": rd.get("started"), "at": now, "sha": sha, "clauses": [k for k, _ in fails]}
-                    if rd.get("state") == "UP" and rd.get("started") else None)
+                    if rd.get("state") == "UP" and same_game else None)
             return _back(store, fx, sup, r, item, "game_fail", "; ".join(fail_detail(k, v) for k, v in fails), now,
                          acts, live=live)
         if len(rows) == len(g["clauses"]) and all(v.get("outcome") == "PASS" for v in rows.values()):
@@ -1395,7 +1399,9 @@ def step(store, fx, r, item, now, acts, sup):
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
         gaps = [fx.game_batch_gap([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                      if (o.get("game") or {}).get("sha")])]
-        remedy = g.get("remedy") or {}
+        # every rider's own lane fix rides with it: a passenger marked staged without its remedy run would read its next
+        # identical environment failure as a failed fix and hold (Codex, ..._TEN_MORE #9)
+        remedy = merged_remedy([g.get("remedy")] + [(o.get("game") or {}).get("remedy") for o in others]) or {}
         want = sorted(set(enable_set(gaps)) | set(remedy.get("mods") or []))
         if want and not g.get("full"):      # the full list's own staging restores FULL.LATEST, then enables on top
             why = fx.modlist_enable(want)
@@ -1437,6 +1443,9 @@ def step(store, fx, r, item, now, acts, sup):
             _save(store, item, lambda s: s["game"].update(phase="stage"))
             acts.append({"do": "game_stage_launch_failed", "item": item, "why": why[:200]})
             return
+        for o in others:        # once: this staging carries each rider's remedy too
+            if (o.get("game") or {}).get("remedy"):
+                _save(store, o["item"], lambda s: s["game"].pop("remedy", None))
         acts.append({"do": "game_stage", "item": item, "unit": unit})
         return
 
@@ -1498,6 +1507,17 @@ def _owed_lines(fx, item, sha, g, led):
     """The game clauses still owed on the ledger -> {clause: its live-proof line at `sha`}."""
     lines = proof_lines(fx.proofs_at(item, sha))
     return {k: lines[k] for k in g["clauses"] if k in lines and k in (led.get("owed") or {})}
+
+
+def merged_remedy(rems):
+    """Several lane fixes (_env_fix's remedy) as one: mods and producer commands unioned, the whys joined. None if none."""
+    rems = [x for x in rems if x]
+    if not rems:
+        return None
+    return {"mods": sorted({m for x in rems for m in x.get("mods") or []}),
+            "cmds": sorted({c for x in rems for c in x.get("cmds") or []}),
+            "why": "; ".join(x.get("why") or "" for x in rems if x.get("why"))[:600],
+            "at": max(x.get("at") or 0 for x in rems)}
 
 
 def _rides_ok(fx, r, o):

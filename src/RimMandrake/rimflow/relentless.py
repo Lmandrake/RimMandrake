@@ -26,6 +26,7 @@ import math
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -590,7 +591,8 @@ def charge(store, st, tokens, now, r, unit, basis=None):
     """Under the lock. A run with no measured usage (no tokens, basis absent or "estimated") is charged the reserve,
     never less; a measured zero (basis "result", RELENTLESS_SPEND_FIX_ZERO_USAGE_RESERVE) is charged 0. The day file
     is keyed by run, so a crash before the item's own marker is saved cannot count a run twice."""
-    measured = bool(tokens) or (tokens is not None and basis not in (None, "estimated"))
+    measured = basis != "estimated" and (bool(tokens) or (tokens is not None and basis is not None))
+    # an "estimated" basis is never a measurement, whatever number rides with it (Codex, ..._TEN_MORE #1)
     n = int(tokens) if measured else r["run_reserve"]
     try:
         d = _day(store, now)
@@ -604,6 +606,33 @@ def charge(store, st, tokens, now, r, unit, basis=None):
         pass        # never replace a damaged day file with a partial history; spent_today keeps refusing until it is fixed
     st["spent"] += n
     return n
+
+
+def run_fixture_cmd(cmd, cwd, timeout):
+    """-> (exit, tail). The fixture runs in its own session and its whole process group is killed when it ends or times
+    out: a backgrounded child never outlives it to keep writing the books tree (Codex, ..._TEN_MORE #2)."""
+    try:
+        p = subprocess.Popen(cmd, shell=True, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                             stdin=subprocess.DEVNULL, start_new_session=True)
+    except (OSError, subprocess.SubprocessError) as e:
+        return None, "%s: %s" % (type(e).__name__, e)
+
+    def kill_group():
+        try:
+            os.killpg(p.pid, signal.SIGKILL)
+        except (ProcessLookupError, PermissionError):
+            pass
+    try:
+        out, err = p.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired as e:
+        kill_group()
+        try:
+            p.communicate(timeout=10)
+        except subprocess.SubprocessError:
+            pass
+        return None, "TimeoutExpired: %s" % e
+    kill_group()        # the shell is done; a child it left running is not part of the answer
+    return p.returncode, ((out or "") + (err or ""))[-600:]
 
 
 # ---------------------------------------------------------------- what a worker may call (all fenced)
@@ -2300,11 +2329,7 @@ class Effects(relentless_game.GameFx):
     def run_fixture(self, cmd, timeout=180):
         """An incident's release fixture (relentless_incident.check), in the books tree. -> (exit, tail); exit None when it
         could not run or ran out of time, which never reads as a pass."""
-        try:
-            p = subprocess.run(cmd, shell=True, cwd=self.books, capture_output=True, text=True, timeout=timeout)
-        except (OSError, subprocess.SubprocessError) as e:
-            return None, "%s: %s" % (type(e).__name__, e)
-        return p.returncode, ((p.stdout or "") + (p.stderr or ""))[-600:]
+        return run_fixture_cmd(cmd, self.books, timeout)
 
     def expedite_note(self, item, text):
         """One use of the lane on the ledger; the `delegated:` why is what puts it in the daily digest."""
@@ -2455,8 +2480,9 @@ class Effects(relentless_game.GameFx):
                 st["bundle"] = bundle
                 with self.store.lock():
                     cur = self.store.load(st["item"])
-                    cur["bundle"] = bundle
-                    self.store.save(cur)
+                    if cur is not None:     # the synthetic SHOWINGS clone has no item record: its bundle lives in
+                        cur["bundle"] = bundle      # orphans/ and in the clone_remade journal line (Codex, ..._TEN_MORE #3)
+                        self.store.save(cur)
             why = relentless_disk.remove_tree(c)
             self.store.journal({"at": iso(time.time()), "do": "clone_remade", "clone": os.path.basename(c),
                                 "missing": gap, "bundle": bundle, "remove": why})
@@ -2648,8 +2674,10 @@ class Effects(relentless_game.GameFx):
             if not os.path.exists(tar):
                 continue
             listed = subprocess.run(["tar", "-tf", tar], capture_output=True, text=True, timeout=300)
-            clash = [p for p in listed.stdout.splitlines() if os.path.isfile(os.path.join(c, p))]
-            if clash:   # upstream has since tracked the name: never overwritten, and said
+            clash = [p for p in listed.stdout.splitlines()     # any non-directory member whose path is already taken
+                     if not p.endswith("/") and os.path.lexists(os.path.join(c, p.rstrip("/")))]
+            if clash:   # upstream has since tracked the name (a file, a directory, a link): never overwritten, and said
+                #   (a directory used to be skipped by --skip-old-files in silence; Codex, ..._TEN_MORE #5)
                 bad.append("%s kept in the bundle, upstream has them: %s" % (name, ", ".join(clash[:5])))
             r = subprocess.run(["tar", "--skip-old-files", "-C", c, "-xf", tar], capture_output=True, text=True, timeout=300)
             if r.returncode:
@@ -2695,8 +2723,11 @@ class Effects(relentless_game.GameFx):
             if tip and self.git(c, "merge-base", "--is-ancestor", sha, tip, timeout=60).returncode == 0:
                 continue        # on HEAD's line: it came back above
             area, name = ("refs/heads/", ref[11:]) if ref.startswith("refs/heads/") else ("refs/tags/", ref[10:])
-            want = ref if self.git(c, "rev-parse", "-q", "--verify", ref, timeout=60).returncode else "%scarried/%s" % (area, name)
-            r = self.git(c, "update-ref", want, sha, timeout=60)
+            want, n = ref, 1        # a name already taken (by the clone or an earlier restore) gets a fresh one: never
+            while self.git(c, "rev-parse", "-q", "--verify", want, timeout=60).returncode == 0:    # overwritten
+                want = "%scarried/%s" % (area, name) if n == 1 else "%scarried/%s-%d" % (area, name, n)
+                n += 1      # (Codex, ..._TEN_MORE #4)
+            r = self.git(c, "update-ref", want, sha, "0" * 40, timeout=60)     # old value zero: refuses if it now exists
             if r.returncode:
                 bad.append("%s did not come back: %s" % (ref, r.stderr[-120:]))
             else:
@@ -5076,10 +5107,6 @@ def help_start(store, fx, r, item, now, acts):
         return
     active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)
     hold = admission(store, fx, r, now, active, extra=1)
-    if not hold and r.get("staffing") and clones_this_tick(acts, "check") >= r["staffing"]["launch_per_tick"]:
-        hold = "clones per tick"
-    hold = hold or ("memory after its last clone" if now < st.get("clone_again_at", 0) else None)
-    hold = hold or make_room(store, fx, r, now, acts)
     if hold:
         acts.append({"do": "help_waits", "item": item, "why": hold})
         return
@@ -5091,8 +5118,15 @@ def help_start(store, fx, r, item, now, acts):
             cur["help"].update(nonce=None, clone=None)
             store.save(cur)
         res = None
-    if res:
-        help_resume(store, fx, r, item, now, acts)
+    if res:     # resumed in its own clone, before any room is made: make_room could evict the very tree it resumes in
+        help_resume(store, fx, r, item, now, acts)      # (Codex, ..._TEN_MORE #7)
+        return
+    if r.get("staffing") and clones_this_tick(acts, "check") >= r["staffing"]["launch_per_tick"]:
+        hold = "clones per tick"
+    hold = hold or ("memory after its last clone" if now < st.get("clone_again_at", 0) else None)
+    hold = hold or make_room(store, fx, r, now, acts)
+    if hold:
+        acts.append({"do": "help_waits", "item": item, "why": hold})
         return
     acts.append({"do": "clone_try", "by": "check"})
     sha = fx.head()
@@ -5421,6 +5455,13 @@ def lease(store, fx, r, now, acts):
             store.journal({"at": iso(now), "do": "pause_alarm_failed", "why": "%s: %s" % (type(e).__name__, str(e)[:200])})
 
 
+def fenced_meanwhile(store, item, st):
+    """True when the item's record moved past the lease `st` took (another gen, or no longer running)."""
+    with store.lock():
+        cur = store.load(item)
+    return cur is None or cur["gen"] != st["gen"] or cur["status"] != "running"
+
+
 def _lease(store, fx, r, now, acts, seen):
     cfg = r.get("staffing") or {}
     launched = clones_this_tick(acts, "work")
@@ -5586,6 +5627,11 @@ def _lease(store, fx, r, now, acts, seen):
                 why = "memory %.1f GB after the clone" % gb
             elif fx.paused():       # the pause may have come while the clone was prepared
                 why = POOL_REFUSED + ": paused while the clone was prepared"
+        if not why and fenced_meanwhile(store, item, st):
+            # a hold (or any fence) landed while the clone was prepared outside the lock: no worker on stale state, and
+            # its state is the hold's to settle, never put back to queued (Codex, ..._TEN_MORE #8)
+            acts.append({"do": "lease_fenced", "item": item, "gen": st["gen"]})
+            continue
         if not why:
             prompt = resume_prompt(st, "work") if st["run"].get("resume") else worker_prompt(
                 st, fx.item_text(item), store.learned(item), r, store.attempts(item),
@@ -5596,6 +5642,10 @@ def _lease(store, fx, r, now, acts, seen):
                             {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         with store.lock():
             cur = store.load(item)
+            if cur["gen"] != st["gen"] or cur["status"] != "running":
+                # fenced during the launch: a launched unit is the `stopping` step's to stop (its run is on the record)
+                acts.append({"do": "lease_fenced", "item": item, "gen": st["gen"], "launched": not why})
+                continue
             if why:
                 cur["gen"] += 1
                 cur["status"] = "queued"

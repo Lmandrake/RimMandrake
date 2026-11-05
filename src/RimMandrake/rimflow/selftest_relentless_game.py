@@ -1037,7 +1037,7 @@ def t_fail_on_a_running_game_is_worked_live():
     x.tick()
     x.w.started = x.now - 100
     x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "FAIL",
-                 "log": "/l/A2.log"}]
+                 "log": "/l/A2.log", "game_started": R.relentless_live.iso(x.w.started)}]
     x.tick()
     S.blame_product(x, "I0")
     st = x.st("I0")
@@ -1071,7 +1071,7 @@ def live_iterating(x, i="I0"):
     x.tick()
     x.w.started = x.now - 100
     x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": i, "criterion": "A2", "sha": SHA, "outcome": "FAIL",
-                 "log": "/l/A2.log"}]
+                 "log": "/l/A2.log", "game_started": R.relentless_live.iso(x.w.started)}]
     x.tick()
     S.blame_product(x, i)
     x.run_one(i)
@@ -1165,6 +1165,28 @@ def t_dead_prove_pid_frees_the_game():
     ok(x.st("I0")["game"]["phase"] == "prove" and acts and acts[0]["kind"] == "proving",
        "lapse_holds frees a proving holder whose pid is dead before any step runs: %s" % acts)
     x.done()
+
+
+def t_fail_on_a_restarted_game_is_offline():
+    """RELENTLESS_CORE_FIX_CODEX_FOUND_TEN_MORE #10: a FAIL read after the game restarted grants no live iteration on
+    the new process, which may not run the failed build; a row with no game_started cannot show it ran here."""
+    for label, game_of in (("another game", lambda x: R.relentless_live.iso(x.w.started - 5000)), ("no game", lambda x: None)):
+        x = rig(1)
+        to_game(x, "I0")
+        x.tick()
+        x.tick()
+        x.w.started = x.now - 100
+        row = {"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "FAIL",
+               "log": "/l/A2.log"}
+        if game_of(x):
+            row["game_started"] = game_of(x)
+        x.w.rows = [row]
+        x.tick()
+        S.blame_product(x, "I0")
+        st = x.st("I0")
+        ok(not st.get("live_iter") and st.get("last_fail"),
+           "a FAIL on %s: back to a worker, no live iteration on the game now up: %s" % (label, st.get("live_iter")))
+        x.done()
 
 
 def t_fail_with_no_game_is_offline():
@@ -1670,7 +1692,7 @@ def main():
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_green_sha_is_not_judged_again, t_bounce_from_checking_is_quarantined,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
-              t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline,
+              t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline, t_fail_on_a_restarted_game_is_offline,
               t_stage_tries_a_newer_running_game_first,
               t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses, t_met_clause_is_not_missing,
               t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_retiered_rerecorded_every_phase, t_stale_build_caught_before_a_slot,
