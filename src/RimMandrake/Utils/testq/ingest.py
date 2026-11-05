@@ -13,7 +13,7 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
                        attempt; a refused note (item not on origin yet) is an error, retried like a verify.
   a harness fault   -> no verdict (owner ruling by card 2026-10-31, retest.py). A chain the harness stopped is left out of
                        the verify, so it never reads as a feature's partial, and each distinct cause files ONE repair
-                       item, HARNESS_REPAIR_CAUSE_<HEX> (--for FOUNDRY for FlowWorks, else BENCH, needs offline), or a
+                       item, HARNESS_REPAIR_CAUSE_<HEX> (--for BENCH, needs offline; FOUNDRY is retired), or a
                        note on the open one. An INVALID job with no sheet does the same. The item is filed with its
                        template, items/<NAME>.md (repair_prose: job ids to re-run, classify first, pass = the same
                        job re-run yields a verdict, `retest.py passed`, forbidden fixes, a negative control), committed
@@ -27,6 +27,10 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
 SteveDesktop's SIMD fault (fault_monitor.py) goes first, whatever the record says: a job that ran inside a fault window
 is quarantined (its record leaves done/, its items get a note, an item job is re-queued), even if it was ingested before the
 window was known; a job with no clean canary cycle read since it finished is held, not marked, and asked again next pass.
+A repair item rests on its sightings (support(): the attempt in its spawn title plus each `seen again in testq ATT`
+note); a quarantine marks that attempt's sighting invalid (`testq ATT quarantined:` on the item), and withdraw()
+recomputes support: an open repair with no valid sighting left is dropped, its evidence and a reopen signature in the
+reason; a mixed one is kept. Late discovery so ends where early discovery would (TESTQ_QUARANTINE_BUILD_WITHDRAW_UNSUPPORTED).
 A lane-pausing outcome (testq.PAUSE_ON: a red canary, a refused runner pull) is also, item or not, a failed run of
 the lane (verify STEVE_LANE_MONITOR_PAUSE_FINDINGS --config steve-lane) plus one finding from it,
 STEVE_LANE_<CANARY_RED|SYNC_REFUSED>_<JOBHEX6> (design section 6: pause the lane, file a finding).
@@ -208,6 +212,12 @@ def items_dir():
     return os.environ.get("RIMFLOW_ITEMS") or os.path.join(REPO, ITEMS_REL)
 
 
+def ledger_items():
+    """-> the ledger's items now (id -> item with .state); one place, so a selftest can stand in for it."""
+    import gaps
+    return gaps.ledger()[2].items
+
+
 def env_window(rec):
     """ENVIRONMENT is checked at filing, never left to the builder: -> (window or None, what was read). A run whose span
     overlaps a known SteveDesktop fault window is the host's; it files no repair (the gate quarantines and re-queues it)."""
@@ -309,7 +319,6 @@ def write_repair_prose(name, text):
 def repair(job, res, cause, rec=None):
     """One repair item per CAUSE: file it with its template (items/NAME.md), or note the open one -> None, or an error
     string (retried). A run inside a known fault window is ENVIRONMENT: never filed, never noted."""
-    import gaps
     att, base = res["attempt"], R.repair_base(cause)
     if spawned_for(base, att):      # a retry of this attempt, even if its repair has closed since
         return None
@@ -319,7 +328,7 @@ def repair(job, res, cause, rec=None):
         return None
     try:
         if _REPAIR_ITEMS[0] is None:
-            _REPAIR_ITEMS[0] = gaps.ledger()[2].items
+            _REPAIR_ITEMS[0] = ledger_items()
     except Exception as e:  # noqa: BLE001 - retried like any record that could not be written
         return "repair %s: ledger unreadable: %s" % (base, e)
     if base in _REPAIRED:
@@ -332,7 +341,7 @@ def repair(job, res, cause, rec=None):
             else "repair note refused on %s" % name
     write_repair_prose(name, repair_prose(name, job, res, cause, env_read))
     cause_item = job.get("item") or next(iter(sorted((job.get("row_items") or {}).values())), None) or LANE_ITEM
-    rc, out = rimflow("spawn", "--from", cause_item, "--for", "FOUNDRY" if job["mod"] == "FlowWorks" else "BENCH",
+    rc, out = rimflow("spawn", "--from", cause_item, "--for", "BENCH",      # FOUNDRY is retired (owner, 2026-11-02)
                       "--needs", "offline", "--name", name,
                       "--title", ("harness fault, no verdict (testq %s, %s): %s" % (att, job["mod"], cause))[:160])
     if rc != 0:
@@ -495,6 +504,86 @@ def repairs_of(att):
     return sorted(n for n in names if n and n.startswith("HARNESS_REPAIR_"))
 
 
+_ATT = r"([^\s:,()]+)"
+_SPAWNED_BY = re.compile(r"\(testq %s, " % _ATT)
+_SEEN = re.compile(r"seen again in testq %s" % _ATT)
+_QUAR = re.compile(r"testq %s quarantined:" % _ATT)
+_QUAR_WIN = re.compile(r"fault window (\S+)")
+
+
+def support(names=None):
+    """-> {repair name: {"sightings": {attempt: how}, "invalid": {attempt: window id}, "dropped": bool}} from the
+    shard, for NAMES (default: every HARNESS_REPAIR_ item the shard speaks of). A sighting is the attempt that filed
+    the item (its spawn title) or a later `seen again in testq ATT` note; a `testq ATT quarantined:` note on the item
+    marks that sighting invalid. The shard is the record: it survives a restart and is the same on every reader."""
+    out = {}
+
+    def slot(n):
+        return out.setdefault(n, {"sightings": {}, "invalid": {}, "dropped": False})
+    try:
+        with open(shard_path(), encoding="utf-8") as f:
+            for line in f:
+                if REPAIR_PREFIX not in line:
+                    continue
+                e = json.loads(line)
+                ev, n = e.get("event"), e.get("name") if e.get("event") == "spawn" else e.get("id")
+                if not n or not n.startswith(REPAIR_PREFIX) or (names is not None and n not in names):
+                    continue
+                if ev == "spawn":
+                    m = _SPAWNED_BY.search(str(e.get("title")))
+                    if m:
+                        slot(n)["sightings"][m.group(1)] = "filed"
+                elif ev == "note":
+                    t = str(e.get("text"))
+                    q, m = _QUAR.search(t), _SEEN.search(t)
+                    if q:
+                        w = _QUAR_WIN.search(t)
+                        slot(n)["invalid"][q.group(1)] = w.group(1) if w else "?"
+                    elif m:
+                        slot(n)["sightings"].setdefault(m.group(1), "seen again")
+                elif ev == "drop":
+                    slot(n)["dropped"] = True
+    except (OSError, ValueError):
+        pass
+    return out
+
+
+def withdraw(names=None, terminal=("done", "dropped", "superseded")):
+    """Recompute each repair's support and drop an open one no valid sighting holds up -> the names dropped. A repair
+    whose filing sighting the shard does not hold (filed elsewhere) is never judged: unknown support is not zero."""
+    dead = [(n, s) for n, s in sorted(support(names).items())
+            if s["sightings"] and not s["dropped"] and not set(s["sightings"]) - set(s["invalid"])]
+    if not dead:
+        return []
+    try:
+        items = ledger_items()
+    except Exception as e:  # noqa: BLE001 - the next pass that recomputes tries again
+        T.log("ingest withdraw: ledger unreadable, nothing dropped: %s" % e)
+        return []
+    gone = []
+    for n, s in dead:
+        if n not in items or items[n].state in terminal:
+            continue
+        base = re.match(r"%sCAUSE_[0-9A-F]+" % REPAIR_PREFIX, n)
+        base = base.group(0) if base else n
+        reason = ("withdrawn by testq ingest (TESTQ_QUARANTINE_BUILD_WITHDRAW_UNSUPPORTED): every sighting it rested on "
+                  "ran inside a SteveDesktop fault window, so no evidence of a harness defect remains: %s. Evidence kept: "
+                  "`python3 src/RimMandrake/Utils/testq/testq.py show <attempt's job>` and fault_windows.json. Reopen "
+                  "signature: cause %s; a sighting outside a fault window files the next generation of %s."
+                  % (", ".join("%s in %s" % (a, s["invalid"][a]) for a in sorted(s["sightings"])), base, base))
+        rc, out = rimflow("drop", n, "--reason", reason[:900],
+                          "--why", "auto: support recomputed after a fault-window quarantine, no valid sighting left")
+        if rc != 0:
+            T.log("ingest withdraw %s refused, retried on the next quarantine: %s" % (n, out[-200:]))
+            continue
+        gone.append(n)
+        T.log("ingest withdraw %s: no valid sighting (%s)" % (n, ", ".join(sorted(s["sightings"]))))
+        if _REPAIRED.get(base) == n:        # a later sighting of the cause files anew, never notes the dropped one
+            del _REPAIRED[base]
+        _REPAIR_ITEMS[0] = None     # the cache may predate this item's filing: a stale one would re-file its name
+    return gone
+
+
 def quarantine_one(rec, window):
     """A result from inside a fault window: off done/, a note on each item it speaks for and on each repair item its
     harness fault filed, an item job queued again."""
@@ -515,11 +604,14 @@ def quarantine_one(rec, window):
             refused.append(it)
     for it in repairs:
         if not note_once(it, needle, "%s this sighting ran inside Steve SIMD fault window %s (last clean %s, first bad "
-                         "%s): a host fault, not evidence of a harness defect; drop this item if no sighting outside a "
-                         "window remains" % (needle, window["id"], window["start"], window["first_bad"])):
+                         "%s): a host fault, not evidence of a harness defect; this sighting no longer supports the "
+                         "item (withdrawn when none outside a window remains)"
+                         % (needle, window["id"], window["start"], window["first_bad"])):
             refused.append(it)
+    withdrawn = withdraw(repairs)
     items = items + repairs
-    FM.quarantine_move(rec, window, {"items": items, "rerun": new, "note_refused": refused, "was_ingested": bool(was)})
+    FM.quarantine_move(rec, window, {"items": items, "rerun": new, "note_refused": refused, "was_ingested": bool(was),
+                                     "withdrawn": withdrawn})
     T.log("ingest %s -> quarantined in %s, rerun %s%s" % (job["id"], window["id"], new,
                                                          ", note refused on %s" % refused if refused else ""))
 
@@ -864,6 +956,8 @@ def _ingest_locked():
             n += 1
         if fstate:
             fault_note(fstate)
+        if n:
+            withdraw()      # a drop refused earlier is tried again whenever the pass did anything
         if push and (n or unpublished()):
             T.log("ingest git: %s" % publish(n))
     return 0

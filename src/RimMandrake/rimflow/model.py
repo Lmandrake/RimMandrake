@@ -271,6 +271,14 @@ def from_disk(ev):
     return ev
 RUNNER_VERBS = ("verify", "finding", "note", "spawn", "raise", "live")
 DISPATCHER_VERBS = ("note",)
+# 🔑 RUNNER may also `drop`, but only a HARNESS_REPAIR_ item it spawned itself and nobody has started: testq ingest
+# withdraws a repair whose every sighting a fault window invalidated (TESTQ_QUARANTINE_BUILD_WITHDRAW_UNSUPPORTED).
+RUNNER_DROPS = "HARNESS_REPAIR_"
+
+
+def runner_may_withdraw(item):
+    return (item is not None and item.id.startswith(RUNNER_DROPS) and item.spawned_by == "RUNNER"
+            and item.state in ("proposed", "ready"))
 # 🔑 `spawn` and `raise` joined 2026-10-26 for the no-LLM SteveDesktop steward
 # (STEVE_STEWARD_BUILD_NO_LLM_OWNER, design/RimMandrake/work_allocation_framework_2026-10-26.md
 # §6.4): an idle lane nobody owns escalates as WORK, so the steward must be able to file
@@ -1663,7 +1671,7 @@ class Item(object):
                  "this_deployment",
                  "created_at", "created_index", "closed_sha", "superseded_by",
                  "live", "live_broken", "live_repeats", "live_from", "guard",
-                 "runs", "findings", "history", "caused_by", "claim_ts",
+                 "runs", "findings", "history", "caused_by", "spawned_by", "claim_ts",
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "built_by", "makers", "criteria", "outstanding",
                  "passed", "level_reached", "lease", "raised", "raised_tsn",
@@ -1684,6 +1692,7 @@ class Item(object):
         self.this_deployment = False
         self.created_at = None
         self.closed_sha = self.superseded_by = self.caused_by = None
+        self.spawned_by = None          # the seat whose `spawn` made it (RUNNER may withdraw only its own repairs)
         self.done_index = None          # the ledger index of the event that last made it done: a close's receipt, which
                                         # a later note does not move and a reopen-and-reclose does
         self.live = self.live_broken = self.live_from = None   # the promise, why it broke now, the state it broke from
@@ -2102,6 +2111,7 @@ def _apply_spawn(ev, index, world):
     new.needs = ev.get("needs") or "offline"
     new.this_deployment = bool(ev.get("this_deployment"))
     new.created_at, new.caused_by = ev["ts"], ev["from"]
+    new.spawned_by = ev.get("seat")
     # The spawn IS the new item's first history entry. Without this the item
     # renders with "history (0 events)" while plainly existing, which reads as a
     # gap in the record rather than as its beginning.
@@ -2722,7 +2732,10 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
     iid = ev.get("id")
     item = world.items.get(iid) if iid else None
 
-    if seat == "RUNNER" and verb not in RUNNER_VERBS:      # above `file`, which `_may` never sees
+    if seat == "RUNNER" and verb == "drop" and not runner_may_withdraw(item):
+        raise PermissionError_("RUNNER drops only a repair it spawned itself (%s…, still proposed or ready), when "
+                               "fault windows leave it no valid sighting; %s is not one." % (RUNNER_DROPS, iid))
+    if seat == "RUNNER" and verb not in RUNNER_VERBS + ("drop",):    # above `file`, which `_may` never sees
         raise PermissionError_("RUNNER records test runs only (%s); `%s` is a window's verb."
                                % (", ".join(RUNNER_VERBS), verb))
     if seat == "DISPATCHER" and verb not in DISPATCHER_VERBS:

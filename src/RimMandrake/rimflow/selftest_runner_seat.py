@@ -89,6 +89,23 @@ def steward_escalation(base, item):
     check(msg is not None and "only an open item" in msg, "a closed item cannot be raised")
 
 
+def runner_withdraw(base):
+    """TESTQ_QUARANTINE_BUILD_WITHDRAW_UNSUPPORTED: RUNNER drops only a HARNESS_REPAIR_ it spawned, while unstarted."""
+    rep = "HARNESS_REPAIR_CAUSE_ABCD1234"
+    drop = ev(seat="RUNNER", event="drop", id=rep, reason="withdrawn: no valid sighting")
+    w = model.replay(base + [spawn(rep, "BENCH", "offline"), drop], strict=True)
+    check(w.items[rep].state == "dropped" and w.items[rep].spawned_by == "RUNNER",
+          "RUNNER withdraws a repair it spawned, unstarted")
+    for evs, why in (([dict(spawn(rep, "BENCH", "offline"), seat="BENCH")], "a repair a window spawned"),
+                     ([spawn(rep, "BENCH", "offline"), ev(seat="BENCH", event="claim", id=rep),
+                       ev(seat="BENCH", event="start", id=rep)], "a repair a builder has started"),
+                     ([spawn("STEVE_LANE_X_OWNER_A", "BENCH", "offline")], "an item that is not a repair")):
+        bad = dict(drop, id=evs[0]["name"])
+        msg = refusal(base + evs + [bad])
+        check(msg is not None and "RUNNER drops only a repair" in msg, "RUNNER may not drop %s: %s"
+              % (why, (msg or "NOT REFUSED")[:120]))
+
+
 def main():
     item = "SOME_ITEM_FIX_IT"
     base = [filed(item), ev(seat="BENCH", event="claim", id=item)]
@@ -115,6 +132,7 @@ def main():
     check(refusal(base + [other]) is not None, "the owning-seat rule still holds for a window seat")
     check(model.shard_path("RUNNER").endswith(os.path.join("events", "RUNNER.jsonl")), "RUNNER has its own shard")
     steward_escalation(base, item)
+    runner_withdraw(base)
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
 

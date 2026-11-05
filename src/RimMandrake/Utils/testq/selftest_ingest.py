@@ -425,7 +425,8 @@ def harness_checks(env):
         spawn = [c for c in calls if c[0] == "spawn"]
         check(len(verify) == 1 and verify[0][verify[0].index("--result") + 1] == "pass",
               "a harness chain is left out of the verify: the measured rows carry the verdict: %s" % (out,))
-        check(len(spawn) == 1 and "FOUNDRY" in spawn[0], "a FlowWorks cause files one repair for FOUNDRY")
+        check(len(spawn) == 1 and "BENCH" in spawn[0] and "FOUNDRY" not in spawn[0],
+              "a FlowWorks cause files one repair for BENCH: FOUNDRY is retired")
         del calls[:]
         ingest.ingest_one(rec)
         check(not [c for c in calls if c[0] == "spawn"], "the same cause files nothing twice")
@@ -484,6 +485,157 @@ def quarantine_repair_checks(env):
         check(moved and "HARNESS_REPAIR_CAUSE_AAAA0001" in moved[0]["items"], "the quarantine record lists the repairs")
     finally:
         ingest.note_once, ingest.FM.rerun_job, ingest.FM.quarantine_move = saved
+        ingest.T.QHOME = qhome
+
+
+class _Item:
+    def __init__(self, state):
+        self.state = state
+
+
+def withdraw_checks():
+    """TESTQ_QUARANTINE_BUILD_WITHDRAW_UNSUPPORTED (plan step 6): a repair rests on its sightings; a quarantine marks
+    one invalid and support is recomputed. Two sightings, one invalid: kept; both invalid: dropped, with the evidence
+    and a reopen signature. Property: every order of ingest and fault discovery ends in the same state as early
+    discovery (per cause: the open tickets and the valid sightings each rests on)."""
+    import itertools
+    import ingest
+    saved_env = {k: os.environ.get(k) for k in ("RIMFLOW_LEDGER", "RIMFLOW_ITEMS")}
+    saved = (ingest.rimflow, ingest.ledger_items, ingest.env_window, ingest.FM.rerun_job, ingest.FM.quarantine_move,
+             ingest.T.QHOME)
+    cause = "access violation in ast.parse"
+    base = ingest.R.repair_base(cause)
+
+    def scenario(order, bad):
+        """ORDER: events ("ingest", k) / ("discover", k) over sightings 0 and 1; BAD: the sightings inside a window."""
+        tmp = tempfile.mkdtemp(prefix="rf_withdraw_")
+        os.environ["RIMFLOW_LEDGER"] = os.path.join(tmp, "ledger", "events.jsonl")
+        os.environ["RIMFLOW_ITEMS"] = os.path.join(tmp, "items")
+        os.makedirs(os.path.join(tmp, "ledger", "events"))
+        ingest.T.QHOME = tmp
+        led, known, ingested, drops = {}, set(), set(), []
+        shard = ingest.shard_path()
+
+        def fake(*a):
+            e = {"seat": "RUNNER", "event": a[0]}
+            if a[0] == "spawn":
+                e.update(name=a[a.index("--name") + 1], title=a[a.index("--title") + 1])
+                led[e["name"]] = _Item("open")
+            elif a[0] == "note":
+                e.update(id=a[1], text=a[a.index("--text") + 1])
+            elif a[0] == "drop":
+                if led.get(a[1]) is None or led[a[1]].state != "open":
+                    return 1, "refused: not open"
+                e.update(id=a[1], reason=a[a.index("--reason") + 1])
+                led[a[1]].state = "dropped"
+                drops.append(e)
+            with open(shard, "a", encoding="utf-8") as f:
+                f.write(json.dumps(e) + "\n")
+            return 0, "ok"
+        recs = []
+        for k in range(2):
+            r = done_rec(ITEM, "INVALID", "HARNESS")
+            r["job"]["id"] = "JW%d" % k
+            r["job"]["mod"] = "FlowWorks"
+            r["result"].update(attempt="JW%d.a1" % k, note=cause)
+            recs.append(r)
+        win = {"id": "F9", "start": "s", "first_bad": "b"}
+        ingest.rimflow, ingest.ledger_items = fake, lambda: dict(led)
+        ingest.env_window = lambda rec: ((win, "inside F9") if rec["result"]["attempt"] in known else (None, "none"))
+        ingest.FM.rerun_job, ingest.FM.quarantine_move = (lambda rec: None), (lambda rec, w, extra: None)
+        ingest._REPAIR_ITEMS[0] = None
+        ingest._REPAIRED.clear()
+        try:
+            for ev, k in order:
+                att = recs[k]["result"]["attempt"]
+                if ev == "discover":
+                    known.add(att)
+                    if k in ingested:               # late: the record was ingested before its window was known
+                        ingest.quarantine_one(recs[k], win)
+                elif att in known:                  # early: the gate quarantines it before ingest_one
+                    ingest.quarantine_one(recs[k], win)
+                else:
+                    ingest.repair(recs[k]["job"], recs[k]["result"], cause, recs[k])
+                    ingested.add(k)
+            sup = ingest.support()
+            end = sorted(tuple(sorted(set(sup.get(n, {}).get("sightings", {})) - set(sup.get(n, {}).get("invalid", {}))))
+                         for n, it in led.items() if it.state == "open" and n.startswith(base))
+            return end, drops, led
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+    try:
+        # the two fixtures, late discovery after both sightings
+        both = [("ingest", 0), ("ingest", 1)]
+        end, drops, led = scenario(both + [("discover", 0)], {0})
+        check(end == [("JW1.a1",)] and not drops, "two sightings, one inside a window: the ticket is kept on the "
+              "other: %s %s" % (end, drops))
+        end, drops, led = scenario(both + [("discover", 0), ("discover", 1)], {0, 1})
+        check(end == [] and len(drops) == 1 and drops[0]["id"] == base and led[base].state == "dropped",
+              "two sightings, both inside a window: the ticket is dropped: %s" % [d["id"] for d in drops])
+        reason = drops[0]["reason"] if drops else ""
+        check("JW0.a1 in F9" in reason and "JW1.a1 in F9" in reason and "Reopen signature: cause %s" % base in reason,
+              "the drop keeps the evidence (each sighting and its window) and a reopen signature: %s" % reason[:200])
+        end, drops, led = scenario([("ingest", 0), ("discover", 0)], {0})
+        check(end == [] and len(drops) == 1, "one sighting, quarantined: dropped")
+        # property: every interleaving of ingest and discovery ends where early discovery does
+        for bad in ({0}, {1}, {0, 1}, set()):
+            evs = [("ingest", 0), ("ingest", 1)] + [("discover", k) for k in sorted(bad)]
+            early, _, _ = scenario([e for e in evs if e[0] == "discover"] + [e for e in evs if e[0] == "ingest"], bad)
+            want = [tuple("JW%d.a1" % k for k in range(2) if k not in bad)] if len(bad) < 2 else []
+            check(early == want, "early discovery, bad %s: %s" % (sorted(bad), early))
+            diff = [(p, got) for p in itertools.permutations(evs) for got in [scenario(list(p), bad)[0]] if got != early]
+            check(not diff, "bad %s: all %d orders of ingest and discovery end as early discovery: %s"
+                  % (sorted(bad), len(list(itertools.permutations(evs))), diff[:2]))
+        # a refused drop is not lost: withdraw() over the whole shard tries again
+        tmp = tempfile.mkdtemp(prefix="rf_withdraw_")
+        try:
+            os.environ["RIMFLOW_LEDGER"] = os.path.join(tmp, "ledger", "events.jsonl")
+            os.makedirs(os.path.join(tmp, "ledger", "events"))
+            ingest.T.QHOME = tmp
+            with open(ingest.shard_path(), "w", encoding="utf-8") as f:
+                for e in ({"event": "spawn", "name": base + "_2", "title": "harness fault, no verdict (testq JX.a1, M): c"},
+                          {"event": "note", "id": base + "_2", "text": "testq JX.a1 quarantined: ran in fault window F3"},
+                          {"event": "spawn", "name": base + "_3", "title": "harness fault, no verdict (testq JY.a1, M): c"},
+                          {"event": "note", "id": base + "_7", "text": "testq JZ.a1 quarantined: fault window F3"}):
+                    f.write(json.dumps(e) + "\n")
+            dropped = []
+            ingest.ledger_items = lambda: {base + "_2": _Item("open"), base + "_3": _Item("open"),
+                                           base + "_7": _Item("open")}
+            ingest.rimflow = lambda *a: dropped.append(a[1]) or (0, "ok")
+            check(ingest.withdraw() == [base + "_2"] and dropped == [base + "_2"],
+                  "withdraw() drops only the open repair with no valid sighting; one whose filing it never saw is not "
+                  "judged: %s" % dropped)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+    finally:
+        (ingest.rimflow, ingest.ledger_items, ingest.env_window, ingest.FM.rerun_job, ingest.FM.quarantine_move,
+         ingest.T.QHOME) = saved
+        ingest._REPAIR_ITEMS[0] = None
+        ingest._REPAIRED.clear()
+        for k, v in saved_env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
+def withdraw_ledger_checks(env):
+    """The real rimflow, seat RUNNER: withdraw() drops a repair RUNNER spawned whose only sighting was quarantined."""
+    import ingest
+    os.environ.update(env)
+    qhome, ingest.T.QHOME = ingest.T.QHOME, env["TESTQ_QUEUE"]
+    rep = "HARNESS_REPAIR_CAUSE_E2E00001"
+    try:
+        rc1 = ingest.rimflow("spawn", "--from", ITEM, "--for", "BENCH", "--needs", "offline", "--name", rep,
+                             "--title", "harness fault, no verdict (testq JE2E.a1, Mock): c")[0]
+        rc2 = ingest.rimflow("note", rep, "--text", "testq JE2E.a1 quarantined: this sighting ran inside Steve SIMD "
+                             "fault window F7")[0]
+        got = ingest.withdraw([rep])
+        st = ingest.ledger_items()[rep].state
+        check(rc1 == 0 and rc2 == 0 and got == [rep] and st == "dropped",
+              "on the real ledger RUNNER withdraws its unsupported repair: rc %s/%s, %s, %s" % (rc1, rc2, got, st))
+        check(ingest.withdraw([rep]) == [], "a second recompute drops nothing twice")
+    finally:
         ingest.T.QHOME = qhome
 
 
@@ -773,6 +925,8 @@ def main():
         # a standing host (TESTQ_HOST_ITEM) hosts only item-less jobs: a job that names its own item is not noted there
         harness_checks(env)
         quarantine_repair_checks(env)
+        withdraw_checks()
+        withdraw_ledger_checks(env)
         template_checks(env)
         hr =done_rec(ITEM, "INVALID", "HANG")
         S.dump(hr, os.path.join(queue, "done", hr["job"]["id"] + ".json"))
