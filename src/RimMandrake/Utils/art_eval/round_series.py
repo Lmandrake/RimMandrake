@@ -164,6 +164,16 @@ def keeps_after(keeps: list, judged_at) -> list:
     return out
 
 
+def keeps_since(keeps: list, reset_at) -> list:
+    """The owner keeps stamped strictly AFTER RESET_AT (FRESH_SERIES_STOP_FIX_AFTER_OWNER_KEEP): a keep of the live art
+    made after the series reset is his newer word and stops the series until he re-asks (a newer reset). A keep with
+    no stamp cannot be shown newer and does not count (it would block every later reset for good)."""
+    r = _instant(reset_at) if reset_at else 0.0
+    if not r:
+        return []
+    return [k for k in keeps if _instant(k.get("at") or k.get("ts")) > r]
+
+
 def series(defname: str, rs: dict | None = None) -> int:
     r = record(defname, rs)
     return int(r["series"]) if r else 0

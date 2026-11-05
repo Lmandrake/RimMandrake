@@ -87,6 +87,36 @@ def bind_texpath(r: dict, texpath_of=None) -> dict:
     return r
 
 
+LIVE_FACES = ("south", "east", "north", "west", "single")
+
+
+def halted(defname: str, spec: dict | None, rs: dict | None = None, protected=None, sha_of=None) -> str | None:
+    """Why the def's fresh series must not continue, or None. An explicit stop line (`fauna_drive stop`), or
+    (FRESH_SERIES_STOP_FIX_AFTER_OWNER_KEEP) an owner keep on its LIVE art (spec images) made after the current
+    series reset: he kept Crustweevil/Dustflutter/Fuzzrunner while s1 ran. Only a newer reset (he re-asks) lifts it.
+    PROTECTED(sha) -> keep rulings and SHA_OF(path) default to the art ledger."""
+    stop = RS.stopped(defname, rs)
+    if stop:
+        return f"fresh series STOPPED ({stop.get('why') or stop.get('by_card') or stop.get('owner_said') or stop.get('per_ruling')})"
+    cur = RS.record(defname, rs)
+    if not cur or not spec:
+        return None
+    if protected is None or sha_of is None:
+        sys.path.insert(0, str(HERE.parent / "art"))
+        import artledger as AL
+        protected = protected or AL.cached_index().protected
+        sha_of = sha_of or AL.sha256_file
+    keeps = []
+    for f, p in (spec.get("images") or {}).items():
+        if f in LIVE_FACES and p and Path(p).is_file():
+            keeps += protected(sha_of(Path(p)))
+    newer = RS.keeps_since(keeps, cur.get("at"))
+    if newer:
+        return (f"owner keep(s) {sorted({k['id'] for k in newer})} of the live art made after series {cur.get('series')} "
+                f"reset ({cur.get('at')}) - series halted until he re-asks (a newer reset)")
+    return None
+
+
 def cmd_rows(a):
     rows = []
     for rid in a.runs:
@@ -102,9 +132,10 @@ def cmd_rows(a):
         specs[s["subject"]] = s
 
     rs = RS.resets()
-    for t in sorted({r["target_def"] for r in rows if RS.stopped(r["target_def"], rs)}):
-        print(f"{t}: fresh series STOPPED ({RS.stopped(t, rs).get('why') or RS.stopped(t, rs).get('by_card')}) - no row")
-    rows = [r for r in rows if not RS.stopped(r["target_def"], rs)]
+    halt = {t: halted(t, specs.get(t), rs) for t in {r["target_def"] for r in rows}}
+    for t in sorted(t for t, why in halt.items() if why):
+        print(f"{t}: {halt[t]} - no row")
+    rows = [r for r in rows if not halt[r["target_def"]]]
     nreg = RS.regen_counts(production(), rs)
     owner = RS.owner_prompts()
     held = []
@@ -182,15 +213,16 @@ def cmd_candidates(a):
     judged = judged_set(recs)
     nreg = RS.regen_counts(recs, rs)
     for d in a.defs:
-        if RS.stopped(d, rs):
-            print(f"{d}: fresh series STOPPED - no candidate")
+        base = next(Path(a.specs).glob(f"**/{d}.spec.json"), None)
+        why = halted(d, json.loads(base.read_text()) if base else None, rs)
+        if why:
+            print(f"{d}: {why} - no candidate")
             continue
         if a.auto:
             a.round = min(nreg.get(d, 0), 3)
             if a.round == 0 or (d, RS.tag(d, a.round, rs)) in judged or (d, RS.tag(d, a.round + 1, rs)) in judged:
                 continue
         tg = RS.tag(d, a.round, rs)
-        base = next(Path(a.specs).glob(f"**/{d}.spec.json"), None)
         if base is None:
             continue
         s = json.loads(base.read_text())
@@ -281,15 +313,20 @@ def cmd_install(a):
     Gates (all must hold): the candidate's pipeline decision is ACCEPT; the head-to-head compare says B; and when any
     installed file is owner-KEPT no keep may be newer than the first-pass judgement (he looked again and kept it: his
     newer word); the first-pass band no longer matters (kept_refusal, FURNACEBEAST_ART_INSTALL_OWNER_KEPT_IT) — then the install carries that card and the revert (old kept sha) is
-    logged in infrastructure/state/art_eval/fauna_installs.jsonl. A stopped series installs nothing."""
+    logged in infrastructure/state/art_eval/fauna_installs.jsonl. A stopped series installs nothing, nor
+    one whose live art he kept after its reset (halted)."""
     import shutil
-    if RS.stopped(a.defname):
-        print(f"{a.defname}: fresh series STOPPED ({RS.stopped(a.defname)}) - not installed")
-        return 2
     sys.path.insert(0, str(HERE.parent / "art"))
     import artledger as AL
-    base = next(Path(a.specs).glob(f"**/{a.defname}.spec.json"))
-    spec = json.loads(base.read_text())
+    base = next(Path(a.specs).glob(f"**/{a.defname}.spec.json"), None)
+    spec = json.loads(base.read_text()) if base else None
+    why = halted(a.defname, spec, RS.resets())
+    if why:
+        print(f"{a.defname}: {why} - not installed")
+        return 2
+    if spec is None:
+        print(f"{a.defname}: no spec under {a.specs} - not installed")
+        return 3
     cand = latest(a.defname, True)
     verdict = f"pipeline decision {(cand or {}).get('candidate')} ACCEPT at {(cand or {}).get('at')}"
     first = latest(a.defname, False)

@@ -112,6 +112,44 @@ def main():
             ("fauna_glass_reef_00", {"subject": "D", "candidate": "live", "decision": "REGEN", "at": "2026-10-23T09:43:10-07:00"})]
     check("latest candidate reads an auto run's candidate tag", (FD.latest("D", True, recs) or {}).get("candidate") == "r2")
     check("a first-pass 'live' record stays first pass", (FD.latest("D", False, recs) or {}).get("candidate") == "live")
+    # FRESH_SERIES_STOP_FIX_AFTER_OWNER_KEEP: he kept Crustweevil/Dustflutter/Fuzzrunner's live art while s1 ran and
+    # the series went on; an owner keep of the live art newer than the reset halts it until a newer reset (re-ask)
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        live = td / "Crust_south.png"
+        live.write_bytes(b"x")
+        spec = {"images": {"south": str(live), "scale": str(live)}}
+        rl = td / "round_resets.jsonl"
+        rl.write_text(json.dumps({"at": "2026-10-24T06:30:00-07:00", "def": "RM_Crust", "series": 1, "source_run": "r"}) + "\n")
+        keeps = {"S": [{"id": "keep_new", "ts": "2026-10-24T07:00:00-07:00"}]}
+        prot, sha = (lambda h: keeps.get(h, [])), (lambda p: "S")
+        why = FD.halted("RM_Crust", spec, RS.resets(rl), prot, sha)
+        check("keep of live art after the reset halts the series", bool(why) and "keep_new" in why, why)
+        keeps["S"] = [{"id": "keep_old", "ts": "2026-10-23T07:00:00-07:00"}]
+        check("keep older than the reset does not halt", FD.halted("RM_Crust", spec, RS.resets(rl), prot, sha) is None)
+        keeps["S"] = [{"id": "keep_nots"}]
+        check("unstamped keep cannot be shown newer", FD.halted("RM_Crust", spec, RS.resets(rl), prot, sha) is None)
+        keeps["S"] = [{"id": "keep_new", "ts": "2026-10-24T07:00:00-07:00"}]
+        with rl.open("a") as fh:
+            fh.write(json.dumps({"at": "2026-10-25T06:30:00-07:00", "def": "RM_Crust", "series": 2, "source_run": "r", "owner_said": "redo it"}) + "\n")
+        check("a newer reset (he re-asks) lifts the halt", FD.halted("RM_Crust", spec, RS.resets(rl), prot, sha) is None)
+        check("no series, no halt", FD.halted("RM_Other", spec, RS.resets(rl), prot, sha) is None)
+        with rl.open("a") as fh:
+            fh.write(json.dumps({"at": "2026-10-25T07:00:00-07:00", "def": "RM_Crust", "stop": True, "series": 2, "why": "kept"}) + "\n")
+        check("an explicit stop still halts", "STOPPED" in (FD.halted("RM_Crust", spec, RS.resets(rl), prot, sha) or ""))
+        # the commands honour it: install refuses with rc 2 before touching the ledger
+        (td / "specs").mkdir()
+        (td / "specs" / "RM_Crust.spec.json").write_text(json.dumps(spec))
+        rl.write_text(json.dumps({"at": "2026-10-24T06:30:00-07:00", "def": "RM_Crust", "series": 1, "source_run": "r"}) + "\n")
+        orig_res, orig_halt = RS.resets, FD.halted
+        try:
+            RS.resets = lambda path=rl: orig_res(rl)
+            FD.halted = lambda d, sp, rs=None: orig_halt(d, sp, rs, prot, sha)
+            import argparse
+            rc = FD.cmd_install(argparse.Namespace(defname="RM_Crust", specs=str(td / "specs"), round=1, dry_run=True))
+            check("install refuses a def he kept after the reset", rc == 2, rc)
+        finally:
+            RS.resets, FD.halted = orig_res, orig_halt
     print("FAILED: " + ", ".join(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 
