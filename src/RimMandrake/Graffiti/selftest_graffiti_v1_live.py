@@ -280,6 +280,50 @@ free = [n for n, e in defs.items() if e.findtext("designatorEligible") == "true"
         and e.find("requiresAnyMeme") is None and not e.findtext("requiresHostileToFactionDef")]
 check(len(free) >= 3, "fewer than 3 ungated designator marks for A7: %s" % free)
 
+# every clause's static_call carries as many '|'-separated args as its probe method takes, by the bridge's OWN rule
+# (JawaBenchCompanionProbeTools.cs StaticCall: "" is ZERO args, else args.Split('|'), matched on GetParameters().Length);
+# the args="" mutant of run() made every live line A1-A8 exit 2 ("No public static SpreeStart with 0 params")
+bridge_src = open(os.path.join(REPO, "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchCompanionProbeTools.cs"),
+                  encoding="utf-8").read()
+check("string.IsNullOrEmpty(args) ? new string[0] : args.Split('|')" in bridge_src
+      and "m.GetParameters().Length == raw.Length" in bridge_src,
+      "jawa/static_call's arity rule changed: re-derive the emulation below from JawaBenchCompanionProbeTools.cs")
+arity = {m: (0 if not ps.strip() else ps.count(",") + 1)
+         for m, ps in re.findall(r"public static string (\w+)\(([^)]*)\)", src)}
+check(len(arity) >= 13 and arity.get("SpreeStart") == 1, "probe signature scan is blind: %r" % arity)
+
+
+class ArityBridge:
+    """Answers jawa/static_call exactly as the real bridge would on arity; any other tool succeeds."""
+
+    def __init__(self):
+        self.static, self.refused = [], []
+
+    def call(self, tool, params=None):
+        if tool != "jawa/static_call":
+            return {"success": True}
+        m, a = params["method"], params.get("args", "")
+        raw = [] if not a else a.split("|")
+        self.static.append(m)
+        if params.get("type") != P.PROBE or arity.get(m) != len(raw):
+            self.refused.append((m, a))
+            return {"success": False, "message": "No public static %s with %d params." % (m, len(raw))}
+        return {"success": True, "result": "REFUSED offline arity bridge (no game)", "ticksGame": 1}
+
+
+_sleep2, P.time.sleep = P.time.sleep, (lambda s: None)
+try:
+    for clause in P.CLAUSES:
+        ab = ArityBridge()
+        try:
+            P.run(clause, ab, FakeR(tmp))
+        except Exception as ex:  # a probe reply this bridge cannot shape may end the run; the calls made still count
+            check(ab.static, "run %s raised before any static_call: %r" % (clause, ex))
+        check(ab.static, "run %s made no jawa/static_call (the arity scan is blind to it)" % clause)
+        check(not ab.refused, "run %s: the bridge would refuse %r (arg count != probe parameter count)" % (clause, ab.refused))
+finally:
+    P.time.sleep = _sleep2
+
 # the committed DLL is the one its sources stamp
 r = subprocess.run([sys.executable, os.path.join(REPO, "src/RimMandrake/Utils/dll_source_stamp.py"), "check"],
                    cwd=REPO, capture_output=True, text=True, timeout=300)
