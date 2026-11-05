@@ -14,9 +14,9 @@ DISPATCHER_PROVE_BLOCKED_TOP_AND_CURSOR; design/RimMandrake/rimflow_v3_risk_resp
    dispatcher.decide: (a) no tick at all for 7 h (the timer dead), events landing all through it, the oldest 6 h 35 min
    before the resume tick -- the first tick back launches one event run that names the oldest and counts the rest,
    moves the cursor and re-fires nothing after; (b) the ticks keep running every 2 min but the ledger is unreadable
-   for 7 h -- the cursor does not move and the first readable tick launches on the same events; (c) the Arbiter's
-   done-claims gate at a slot due after a 7 h outage sees a claim 6 h 50 min old. Planted fault: the same runs with
-   a window measured from NOW (now - 6 h) instead of from the cursor -- the checks that pass on the real code fail.
+   for 7 h -- the cursor does not move and the first readable tick launches on the same events. Planted fault: the
+   same runs with a window measured from NOW (now - 6 h) instead of from the cursor -- the checks that pass on the
+   real code fail.
 """
 import os
 import subprocess
@@ -182,35 +182,13 @@ def producer_checks(label, blind_ticks, planted):
     return ok
 
 
-def arbiter_outage(planted=False):
-    """Arbiter cursor at 09:55; the timer dead until the 17:00 slot (7 h 6 min); one done claim at 10:10."""
-    t17 = SD.at_local("17:00")
-    cur = t17 - 7 * H - 360
-    claim = dict(SD.BASE_EV, event="close", id="CLAIMED_ONE", ts=SD.lts(cur + 900))
-    st = SD.fresh()
-    st["roles"] = {"Arbiter": {"done": {"%s 11:00" % RL.day_of(t17): "missed"}, "runs": [], "event_cursor": cur,
-                               "events_seen": []}}
-    real, fake = now_window(t17)
-    if planted:
-        RL.unseen = fake
-    try:
-        a = SD.role_acts(SD.rdecide([SD.arbiter()], st, SD.lrobs(SD.ops_status(t17), SD.lread([SD.BASE_EV, claim])),
-                                    t17))
-    finally:
-        RL.unseen = real
-    la = [x for x in a if x["do"] == "role_launch"]
-    return [("arbiter 7 h outage: the 17:00 slot launches on a done claim 6 h 50 min old", len(la) == 1)]
-
-
 def test_cursor_survives_7h_outage():
-    rows = (producer_checks("timer dead 7 h", 0, False) + producer_checks("ledger blind 7 h", 210, False)
-            + arbiter_outage(False))
+    rows = producer_checks("timer dead 7 h", 0, False) + producer_checks("ledger blind 7 h", 210, False)
     for msg, ok in rows:
         check(ok, msg)
     # the planted fault on the same path: a window from now, not from the cursor. Each scenario must catch it.
     for label, rows in (("timer dead 7 h", producer_checks("timer dead 7 h", 0, True)),
-                        ("ledger blind 7 h", producer_checks("ledger blind 7 h", 210, True)),
-                        ("arbiter", arbiter_outage(True))):
+                        ("ledger blind 7 h", producer_checks("ledger blind 7 h", 210, True))):
         bad = [m for m, ok in rows if not ok]
         check(bool(bad), "planted fault (lookback from now) is caught by the %s case: %s" % (label, bad[:1]))
 

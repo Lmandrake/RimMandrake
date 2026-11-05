@@ -1608,20 +1608,7 @@ def test_execute_role_launch():
     check(len(acts) == 2 and acts[-1]["why"].endswith("no reservation to give back"), "a non-dict role state gives nothing back")
 
 
-def test_execute_verdicts_stop_notes_publish():
-    # verdicts
-    got = []
-    a = {"do": "role_verdicts", "path": "/p", "rows": [1, 2], "role": "Conductor", "ticket": "T"}
-    ex([a], verdicts_append=lambda path, rows: got.append((path, rows)))
-    check(got == [("/p", [1, 2])] and a["result"] == "appended 2", "verdicts appended: %r %r" % (got, a.get("result")))
-    a = {"do": "role_verdicts", "path": "/p", "rows": [1, 2], "role": "Conductor", "ticket": "T"}
-    acts = [a]
-    ex(acts, verdicts_append=lambda path, rows: 1 / 0)
-    al = acts[-1]
-    check(a["result"] == "error: ZeroDivisionError: division by zero" and al["do"] == "alarm" and al["kind"] == "role:Conductor:verdicts_append"
-          and al["note"] is True and al["ticket"] == "T" and al["role"] == "Conductor" and al["rows"] == [1, 2] and al["at"] == D.iso(NOW)
-          and al["why"] == "role Conductor: 2 verdict(s) NOT appended to /p: error: ZeroDivisionError: division by zero; they are in this journal entry only, their claims stay pending",
-          "verdict append failure alarmed: %r" % al)
+def test_execute_stop_notes_publish():
     # stop passes everything through, defaults
     seen = []
     ex([{"do": "role_stop", "unit": "U", "scope": "S", "seat": "BENCH", "unit_gone": True, "marker": "M", "force": True, "since": 5}],
@@ -1758,10 +1745,6 @@ def test_execute_truncation_and_counts():
     def long_exc(*x, **k):
         raise RuntimeError("y" * 500)
     L = 160
-    # verdicts error text
-    acts = [{"do": "role_verdicts", "path": "/p", "rows": [1], "role": "R", "ticket": "T"}]
-    ex(acts, verdicts_append=long_exc)
-    check(acts[0]["result"] == "error: RuntimeError: " + "y" * L, "verdicts error cut at 160")
     # note raise
     a = {"do": "skip", "why": "w", "note": True}
     ex([a], note=long_exc)
@@ -1914,7 +1897,7 @@ def test_execute_journal_records():
 
 def main():
     tests = [test_gate_lent_rule_steven, test_gate_switch_alarm_and_ticket, test_gate_off_and_invalid_and_unmeasured, test_gate_fallback_tickets_and_exact_text,
-             test_gate_hold_alarm_cadence, test_withdraw, test_stop_runs_locked, test_stop_runs_lock, test_withdraw_reading_long, test_tick, test_decide_ring_verification, test_decide_recover, test_decide_ring_path, test_decide_misc, test_main, test_execute_lock_and_alarms, test_execute_ring_withdraw, test_execute_recover, test_execute_role_launch, test_execute_verdicts_stop_notes_publish, test_execute_truncation_and_counts, test_execute_empty_defaults, test_execute_role_details, test_execute_journal_records]
+             test_gate_hold_alarm_cadence, test_withdraw, test_stop_runs_locked, test_stop_runs_lock, test_withdraw_reading_long, test_tick, test_decide_ring_verification, test_decide_recover, test_decide_ring_path, test_decide_misc, test_main, test_execute_lock_and_alarms, test_execute_ring_withdraw, test_execute_recover, test_execute_role_launch, test_execute_stop_notes_publish, test_execute_truncation_and_counts, test_execute_empty_defaults, test_execute_role_details, test_execute_journal_records]
     try:
         import selftest_dispatcher_mut2 as M2      # noqa: F401  (decide / execute / tick, appended below)
     except ImportError:

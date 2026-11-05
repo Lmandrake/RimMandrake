@@ -4,7 +4,7 @@ design/RimMandrake/rimflow_v3_2026-10-26.md §3, §6). dispatcher.decide() calls
 calls launch() / stop(). A program: it decides nothing the schedule and the role files do not say.
 
 What it runs: every role in dispatcher_schedule.json `roles` that is `enabled` AND carries the launch keys
-(LAUNCH_KEYS: instructions, seat, clone, model, ledger_item). An enabled role without them (Arbiter, Auditor, ...)
+(LAUNCH_KEYS: instructions, seat, clone, model, ledger_item). An enabled role without them (Auditor, ...)
 is still an ALARM, as in v3.0: switching on a role nobody can run must be loud.
 
 When: the role's clock slots — `quick_checks_local` (Conductor) or `runs_local` (Operations), local "HH:MM" — each
@@ -37,14 +37,6 @@ cursor is this clone's clock and an event's ts is its writer's, so an event writ
 can be pulled after it. The window reaches EVENT_LOOKBACK_S behind the cursor and `events_seen` (the events a run or
 the baseline already read) drops the ones counted; an event pulled more than EVENT_LOOKBACK_S late is still missed.
 An event run fits beside the day's scheduled runs still to come (their budgets are reserved, N3), else it waits.
-  - `slot_when: "done_claims"` (Arbiter): a scheduled slot launches only when a done claim — a `rimflow implemented`
-    event (built) or a `rimflow close` — landed after the cursor; else the slot is marked "no done claims" (a hold,
-    no alarm). The batches stay at the clock slots: the event is "claims are pending" (arbiter.md).
-  - `slot_when: "pending_work"` (Arbiter since ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK): a scheduled slot launches
-    when any `pending_work` kind (arbiter_pending.py: escapes, unresolved, done_claims, verify_backlog) has work, read
-    from STATE (the ledger plus verdicts.jsonl and tiers_history.jsonl), never from the cursor: a launch consumes
-    nothing, so what a run did not judge is pending again at the next slot. Nothing pending: the slot is marked
-    "nothing pending" (a hold, no alarm). Unreadable stores: the slot launches, the reason in its trigger.
   - `event_runs` (Producer: plan_step_failure, replan_request): a run outside the clock, at most
     `event_runs_per_day`, when one happened after the cursor. A plan-step failure is a `verify` with result fail or a
     `block`, on an item still open AND on the plan (`plan_scope`: "raised" = put atop `next` by `rimflow raise`;
@@ -93,8 +85,7 @@ run before PAUSE, a blind tick or a disabled role can end the tick (review round
 
 How it launches (proved 2026-10-27, D:\\ClaudeWork\\rimmandrake\\role_launch_2026-10-27\\proof\\RESULT.md): as its OWN
 transient user service, `systemd-run --user --collect --unit rm-role-<name>-<epoch>`, which runs
-`claude_bounded.sh -p <prompt> --model <alias> --output-format json` in the role's clone (a STRUCTURED role, the
-Arbiter, also gets `--json-schema` and its verdicts are appended by the launcher: STRUCTURED, harvest). The dispatcher tick is a
+`claude_bounded.sh -p <prompt> --model <alias> --output-format json` in the role's clone. The dispatcher tick is a
 oneshot unit whose cgroup systemd kills when it exits; a child started there (even setsid) died before
 claude_bounded made its scope, while the transient unit ran on and finished. PATH gets claude's directory: the user
 manager's PATH has no ~/.local/bin. The model is the schedule's alias; claude resolves it from its own settings
@@ -144,10 +135,6 @@ RESUME_MAX = 3              # resumes in one chain; past it the run is given up,
 RESUME_TTL_S = 2 * 86400    # a resume not launchable for this long is dropped, said
 
 try:
-    import arbiter_pending as PW     # the rimflow dir is on sys.path (dispatcher.py, the selftests)
-except ImportError:
-    from rimflow import arbiter_pending as PW
-try:
     import audit_prescreen as AP
 except ImportError:
     from rimflow import audit_prescreen as AP
@@ -170,7 +157,6 @@ ALARM_KEY_PREFIX = "alarm:"            # an Operations-only alarm (no ledger ite
 ALARM_RUN_GAP_S = 3600                 # at least this long between two alarm runs of a role (review W, W1)
 OPS_STALE_S = 45 * 60
 WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")      # time.localtime().tm_wday order
-DONE_CLAIM_VERBS = ("implemented", "close")   # a done claim on the ledger: built (L0 passed) or closed against a sha
 ACTIVE = ("active", "activating", "deactivating", "reloading")
 TERMINAL = ("inactive", "failed")      # the only states that end a run; anything else ("unknown", a failed query) is busy
 EVENT_LOOKBACK_S = 6 * 3600             # an event ingested this late after its writer stamped it still triggers (N4)
@@ -185,26 +171,6 @@ TOKEN_UNIT = "weighted_v1"             # stamped on each finished run: the unit 
 TOKEN_WEIGHTS = {"input_tokens": Fraction(1), "cache_write_5m": Fraction(5, 4), "cache_write_1h": Fraction(2),
                  "cache_read_input_tokens": Fraction(1, 10), "output_tokens": Fraction(5)}
 # genai_env.py (~/dev/Lodestar/bin/lib/genai_env.py) MODEL_VARS: the env var that names each alias's model id.
-# A role whose run returns STRUCTURED output (ARBITER_VERDICT_WIRE_JSON_SCHEMA_HANDOFF): its launch gets
-# `--json-schema <schema text>` (claude -p takes the schema itself, not a path: `claude -p --help`), the schema read from
-# the role's clone (contracts/export.py generates it from contracts.models; never hand-edited), and a finished `done`
-# run's result["structured_output"][key] entries are each validated against contracts.models.<model> (pydantic, imported
-# only then: the tick stays stdlib-only) and the valid ones appended to `sink` by dispatcher.execute (role_verdicts).
-# An invalid entry is refused, journaled whole and alarmed; its valid siblings still land (each verdict judges its own
-# claim, and a refused one leaves its claim pending, so the next batch judges it again: refusing the whole batch would
-# only throw away sound verdicts). No structured_output, or one not shaped {key: [...]}: alarm, nothing appended.
-# A run-now TRIAL's verdicts (role_launch.py run-now --trial) sink to `trial_sink`, never to `sink`: the real store
-# is the false-reject instrument and the pending gate's record of judged claims (arbiter_pending), so a hand-picked
-# trial batch (a fixture claim among them) must not count there. `note_each`: every valid entry is also noted on its
-# own claim's item (arbiter.md: the verdict lives on the item for its holder). `verdict_runs`: a real (never trial) entry
-# whose disposition VERDICT_RESULT maps also goes on the ledger as a `verify`, which is what makes a FAIL block a close.
-TRIAL_VERDICTS = os.path.join(os.path.dirname(PW.VERDICTS), "trial", "verdicts.jsonl")
-TRIAL_TIERS_DATA = os.path.join(os.path.dirname(PW.TIERS_HISTORY), "trial")
-STRUCTURED = {"Arbiter": {"schema": "src/RimMandrake/contracts/schemas/arbiter_batch.schema.json",
-                          "key": "verdicts", "model": "ArbiterVerdict", "sink": PW.VERDICTS,
-                          "trial_sink": TRIAL_VERDICTS, "note_each": True, "verdict_runs": True}}
-# Ruling D1(b), 2026-11-01. The rest (UNRESOLVED, FAIL-check, RESTART-environment) settle first: they record nothing.
-VERDICT_RESULT = {"PASS": "pass", "CONDITIONAL-PASS": "partial", "FAIL-module": "fail", "BAR-defect": "fail"}
 # A role whose pre-step screens "since my last finished run" (AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN): a run that
 # ends `done` gets a role_stamp action (dispatcher.execute writes it through AP.write_stamp, so a dry run writes
 # nothing) carrying the run's launch time, which is at or before its pre-screen's `now`: the next window overlaps by the
@@ -215,7 +181,6 @@ FINISH_STAMP = {"Auditor": AP.STAMP}
 # ticks could not launch for this long (busy, account hold) expires, said; refusals (off, ops, band, cap) consume it.
 RUN_NOW_TTL_S = 3600
 RUN_NOW_MODES = ("run", "quick", "weekly", "economy")
-CLAIM_PRE_ROLES = ("Arbiter",)         # roles whose run-now may name claims (isolated_evidence + arbiter_tiers pre-steps)
 MODEL_VARS = {"opus": "ANTHROPIC_DEFAULT_OPUS_MODEL", "sonnet": "ANTHROPIC_DEFAULT_SONNET_MODEL",
               "haiku": "ANTHROPIC_DEFAULT_HAIKU_MODEL"}
 
@@ -326,14 +291,8 @@ def validate_role(role):
                                                                              ", ".join(BAND_SLOTS)))
     if bands and not any("runway_ge" in b for b in bands.values()):
         raise ValueError("throttle_bands has no band with runway_ge: no band to fall back to")
-    if role.get("slot_when") not in (None, "done_claims", "pending_work"):
-        raise ValueError("slot_when %r is not done_claims or pending_work" % role["slot_when"])
-    kinds = role.get("pending_work", list(PW.KINDS))
-    if not (isinstance(kinds, list) and kinds and all(k in PW.KINDS for k in kinds)):
-        raise ValueError("pending_work %r is not a non-empty list of %s" % (kinds, ", ".join(PW.KINDS)))
-    if "claim_window_days" in role:
-        raise ValueError("claim_window_days is retired: the Arbiter's queue is the work after its cutoff stamp, with no "
-                         "age limit (ARBITER_FIX_CLAIMS_AGE_OUT_UNJUDGED); remove the key")
+    if "slot_when" in role:
+        raise ValueError("slot_when is retired with the Arbiter (CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED): remove the key")
     if "cover_window_s" in role and not (_num(role["cover_window_s"]) and role["cover_window_s"] >= 0):
         raise ValueError("cover_window_s %r is not a number >= 0" % (role["cover_window_s"],))
     if "pre_launch_max_s" in role and not (_num(role["pre_launch_max_s"]) and role["pre_launch_max_s"] > 0):
@@ -501,14 +460,6 @@ def _after(events, since):
             yield t, ev
 
 
-def done_claims(events, since):
-    """Pure. The done claims since `since` (epoch), oldest first: a `rimflow implemented` event (the item reached
-    built: published at a sha, every L0 criterion passing) or a `rimflow close` (closed against a commit) — the two
-    forms a "done" claim takes on the ledger (arbiter.md "When you run"). -> [(epoch, id, verb)]."""
-    return [(t, ev.get("id"), ev.get("event")) for t, ev in _after(events, since)
-            if ev.get("event") in DONE_CLAIM_VERBS and ev.get("id")]
-
-
 def on_plan(item, scope):
     """Is this item a step of the Producer's plan? scope (schedule `plan_scope`): "raised" = it was put at the top
     of a seat's `next` with `rimflow raise` (producer.md step 3, how the plan is written onto the ledger); "row" = it
@@ -517,9 +468,8 @@ def on_plan(item, scope):
 
 
 def plan_failures(events, world, since, scope, world_filter=True):
-    """Pure but for the World it is handed. A failed plan step since `since`, oldest first (producer.md: "an Arbiter
-    FAIL or an item blocked on the critical path"): a `verify` run with result `fail` (an Arbiter FAIL, which the launcher
-    records as one, verdict_run) or a `block`, on an item still open and
+    """Pure but for the World it is handed. A failed plan step since `since`, oldest first (producer.md: a failed
+    check or an item blocked on the critical path): a `verify` run with result `fail` or a `block`, on an item still open and
     on the plan (on_plan). world_filter False: every such event, open or on the plan or not: what a run READ, so an
     event filtered out at that moment is never run later when its item joins the plan (review V, V5).
     -> [(epoch, id, "verify fail" | "block")]."""
@@ -552,10 +502,8 @@ def pending_events(role, lr, since, world_filter=True):
                                  world_filter)
         elif kind == "replan_request":
             out += replan_requests(lr["events"], since, role.get("ledger_item"), role.get("replan_note_prefix"))
-        elif kind == "done_claims":
-            out += done_claims(lr["events"], since)
         else:
-            raise ValueError("event_runs kind %r is not one of plan_step_failure, replan_request, done_claims" % kind)
+            raise ValueError("event_runs kind %r is not one of plan_step_failure, replan_request" % kind)
     return sorted(out)
 
 
@@ -573,13 +521,9 @@ def legacy_key(ev):
 
 
 def role_events(role, lr, since, world_filter=False):
-    """Pure. Everything this role's run reads after `since`, for events_seen: its event_runs kinds plus, for
-    slot_when, the done claims (deduplicated, oldest first). Unfiltered by default: a run read the event whether or
+    """Pure. Everything this role's run reads after `since`, for events_seen: its event_runs kinds (oldest first). Unfiltered by default: a run read the event whether or
     not its item was on the plan then (review V, V5); the world filter applies only when choosing a trigger."""
-    out = set(pending_events(role, lr, since, world_filter))
-    if role.get("slot_when") == "done_claims":
-        out |= set(done_claims(lr["events"], since))
-    return sorted(out)
+    return sorted(set(pending_events(role, lr, since, world_filter)))
 
 
 def unseen(evs, rs):
@@ -938,8 +882,6 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
         if cfg.get("caps_advisory") is True and daily is not None and spent_today(rs, now) > daily:
             overspend_day(name, rs, run.get("item") or cfg.get("ledger_item"), daily, spent_today(rs, now), 0, now,
                           act, "its run %s just finished" % run["unit"])
-        if run["state"] == "done" and name in STRUCTURED:
-            harvest(name, run, res, act)
         if run["state"] == "done" and name in FINISH_STAMP:
             act(do="role_stamp", role=name, unit=run["unit"], ticket=run.get("item"), path=FINISH_STAMP[name],
                 at=run["at"], why="%s run %s finished done: its window ends at its launch %s" % (
@@ -1145,86 +1087,6 @@ def auth_failed_back(rs, run, text, now):
     return True
 
 
-def harvest(name, run, res, act):
-    """Pure but for act. A done STRUCTURED run's result -> one role_verdicts action carrying its valid entries (the
-    append happens in dispatcher.execute, so a dry run writes nothing), one :verdict_refused alarm journaling every
-    invalid entry whole with its errors, or one :verdicts alarm when structured_output is missing or misshapen.
-    Alarms are noted without blind text: they carry outside text, so route_note sends them to Operations' item."""
-    spec = dict(STRUCTURED[name])
-    trial = spec.get("trial_sink") and " run-now trial " in str(run.get("slot") or "")
-    if trial:
-        spec["sink"] = spec["trial_sink"]
-    key, unit, item = spec["key"], run.get("unit"), run.get("item")
-    so = res.get("structured_output") if isinstance(res, dict) else None
-    entries = so.get(key) if isinstance(so, dict) and set(so) == {key} else None
-    if not isinstance(entries, list):
-        act(do="alarm", kind="role:%s:verdicts" % name, ticket=item, note=True,
-            why="%s run %s finished done without a usable structured_output (%s): nothing appended to %s; its "
-                "claims stay pending" % (name, unit, "absent" if so is None else
-                                         "keys %s, want {%s: [...]}" % (sorted(so) if isinstance(so, dict)
-                                                                       else type(so).__name__, key), spec["sink"]))
-        return
-    try:
-        from contracts import models as CM
-        model = getattr(CM, spec["model"])
-    except Exception as e:  # noqa: BLE001 - no validator: nothing is appended unvalidated
-        act(do="alarm", kind="role:%s:verdicts" % name, ticket=item, note=True,
-            why="%s run %s: contracts.models.%s unavailable (%s: %s): %d entries NOT appended" % (
-                name, unit, spec["model"], type(e).__name__, str(e)[:120], len(entries)))
-        return
-    good, bad = [], []
-    for e in entries:
-        errs = CM.errors(model, e)
-        (bad if errs else good).append((e, errs))
-    if good:
-        act(do="role_verdicts", role=name, unit=unit, path=spec["sink"], rows=[e for e, _ in good],
-            why="%s run %s: %d %s appended to %s" % (name, unit, len(good), key, spec["sink"]))
-        for e, _ in good if spec.get("note_each") else ():
-            act(do="role_verdict_note", role=name, unit=unit, ticket=e["item"], note=True,
-                why="%s%s verdict on %s at sha %s: %s; causes: %s; "
-                    "evidence: %s; run %s; record %s" % (
-                        "TRIAL " if trial else "", name, e["item"], e["sha"], e["disposition"],
-                        ", ".join(e.get("causes") or []) or "none", "; ".join(e.get("evidence") or []) or "none",
-                        unit, spec["sink"]))
-        for e, _ in good if spec.get("verdict_runs") and not trial else ():
-            run = verdict_run(e)
-            if run:
-                act(do="role_verdict_run", role=name, unit=unit, ticket=e["item"], note=False, run=run,
-                    why="%s run %s: %s on %s at %s goes on the ledger" % (name, unit, e["disposition"], e["item"], e["sha"]))
-    if bad:
-        act(do="alarm", kind="role:%s:verdict_refused" % name, ticket=item, note=True,
-            refused=[e for e, _ in bad],
-            why="%s run %s: %d of %d %s refused by contracts.models.%s, NOT appended (their claims stay pending): %s"
-                % (name, unit, len(bad), len(entries), key, spec["model"], "; ".join(
-                    "%s: %s" % (e.get("item") if isinstance(e, dict) else repr(e)[:40], ", ".join(errs)[:200])
-                    for e, errs in bad)[:600]))
-
-
-def verdict_run(e):
-    """-> the `rimflow verify` arguments that put verdict `e` on the ledger | None when its disposition records nothing.
-    L0: the Arbiter judges from evidence on disk, it runs nothing live; L4 is his alone. The config is what the model
-    reads as a verdict (model.ARBITER_CONFIG)."""
-    result = VERDICT_RESULT.get(e.get("disposition"))
-    return ["verify", e["item"], "--sha", e["sha"], "--result", result, "--level", "L0",
-            "--config", "arbiter:%s" % e["disposition"],
-            "--evidence", "; ".join(e.get("evidence") or []) or "none"] if result else None
-
-
-def append_verdicts(path, rows):
-    """Append rows, one JSON line each, to path (its directory made), in ONE write of the whole batch with O_APPEND,
-    then fsync: a reader never sees half a batch's line. Raises OSError (dispatcher.execute alarms it)."""
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    data = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows).encode("utf-8")
-    fd = os.open(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
-    try:
-        n = os.write(fd, data)
-        if n != len(data):
-            raise OSError("short write to %s: %d of %d bytes" % (path, n, len(data)))
-        os.fsync(fd)
-    finally:
-        os.close(fd)
-
-
 # ---- notes for a token-blind role's ledger item (review dispatcher-full #2). A blind item gets ONLY a text built
 # here from closed sets: a known role name, a known mode, a dispatcher unit name, and a fixed outcome. Reasons, error
 # output, exception text, result subtypes and triggers (alarm keys, ledger event text) are outside text that can
@@ -1344,7 +1206,7 @@ def after_ready(cfg, rst, busy, job, now, after_cfg=None):
 def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
     """Mutates st["roles"]; calls act(**kw) per action. obs needs: ops() -> status dict|None, account() -> label|None,
     unit_state(unit) -> str, result(run) -> dict|None, off(path) -> first line|None, and, for a role with
-    `slot_when` or `event_runs`, ledger() -> read_ledger()'s dict (or raises). busy = supervise_roles()'s
+    `event_runs`, ledger() -> read_ledger()'s dict (or raises). busy = supervise_roles()'s
     answer (run here when the caller did not). gate("role_launch") -> (go, pick) is the dispatcher's account pick
     (account_pick.py), asked last, at the moment of release: a held launch keeps its slot due (it is missed only
     after slot_late_s, like any wait)."""
@@ -1425,10 +1287,10 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         if rs.get("resume") and not req and obs["off"](wsl_path(role.get("off_file") or "")) is None \
                 and resume_due(name, rs, cfg, now, act, busy, gate, resume_account(obs), tick_launch):
             return
-        # ---- the ledger, for a role that triggers on its events (Arbiter: done claims; Producer: plan-step
+        # ---- the ledger, for a role that triggers on its events (Producer: plan-step
         # failures, replan requests). Blind: this role launches nothing this tick, not even a clock slot.
         lr = None
-        if (cfg.get("slot_when") or cfg.get("event_runs")) and not req:      # a run-now reads no ledger, moves no cursor
+        if cfg.get("event_runs") and not req:      # a run-now reads no ledger, moves no cursor
             lr = ledger()
             if lr["state"] != "MEASURED":
                 return
@@ -1585,39 +1447,6 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                         "%s; the window does the check" % why if live else why))
                 return
             rs.pop("window_hold", None)
-        if job["slot"] and cfg.get("slot_when") == "done_claims":
-            claims = unseen(done_claims(lr["events"], rs["event_cursor"] - EVENT_LOOKBACK_S), rs)
-            if not claims:
-                mark(rs, job, "no done claims")
-                act(do="role_hold", role=name, why="%s %s not run: no done claim (implemented/close) since %s" % (
-                    name, job["trigger"], iso(rs["event_cursor"])))
-                return
-            job["trigger"] += ", %d done claim(s) since %s (oldest %s %s)" % (
-                len(claims), iso(rs["event_cursor"]), claims[0][2], claims[0][1])
-        if job["slot"] and cfg.get("slot_when") == "pending_work":
-            # state, not a cursor: nothing is consumed, so work a launch did not finish is pending at the next slot
-            # (ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK). Unreadable stores: launch, since work may be pending. No cutoff
-            # stamp: HOLD with an alarm, since launching would hand the Arbiter the whole pre-enable backlog
-            # (ARBITER_DECIDE_BACKLOG_NEVER_DRAINS).
-            try:
-                stores = obs["pending_stores"]() if obs.get("pending_stores") else None
-                if stores is None:
-                    raise OSError("no pending_stores reader in obs")
-                pend = PW.pending(lr, stores, now, cfg.get("pending_work") or PW.KINDS)
-                what = PW.summary(pend)
-            except PW.NoCutoff as e:
-                mark(rs, job, "no cutoff")
-                act(do="alarm", kind="role:%s:cutoff" % name, ticket=job["item"], note=True,
-                    why="%s %s not run: %s" % (name, job["trigger"], e))
-                return
-            except (OSError, ValueError) as e:
-                pend, what = True, "work stores UNMEASURED (%s), launched since work may be pending" % e
-            if not pend:
-                mark(rs, job, "nothing pending")
-                act(do="role_hold", role=name, why="%s %s not run: nothing pending (%s)" % (
-                    name, job["trigger"], ", ".join(cfg.get("pending_work") or PW.KINDS)))
-                return
-            job["trigger"] += ", pending: " + what
         wait = after_ready(cfg, rst, busy, job, now, dict(ROLE_DEFAULTS, **(by_name.get(cfg.get("after_role")) or {})))
         if wait:
             if (rs.get("waiting") or [None])[0] != job["key"]:      # journal the wait once, not every tick
@@ -1788,7 +1617,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 ad["keys"][k] = ad["keys"].get(k, 0) + 1
             rs["alarm_day"] = ad
         if lr is not None:
-            rs["event_cursor"] = now      # every run reads the events up to its launch (arbiter.md, producer.md)
+            rs["event_cursor"] = now      # every run reads the events up to its launch (producer.md)
             rs["events_seen"] = [event_key(e) for e in role_events(cfg, lr, now - EVENT_LOOKBACK_S)]
         act(do="role_launch", role=name, unit=unit, ticket=job["item"], note=True, mode=job["mode"], budget=budget,
             slot=job["key"], band=bname, seat=role["seat"], run_max_s=max_s_of({}, cfg), account=pk.get("account"),
@@ -1941,11 +1770,10 @@ def run_now_cap(cfg, mode):
     return cfg.get("run_token_cap") if mode in ("run", "weekly") else None
 
 
-CLAIM_RX = re.compile(r"([A-Za-z0-9_]+)@([0-9A-Za-z]{7,40})")
 
 
 def run_now_request(sch, a, now):
-    """Pure. A run-now request from its CLI fields (role, by, why, mode, claims ["ITEM@SHA"], trial, days) -> the
+    """Pure. A run-now request from its CLI fields (role, by, why, mode, concept) -> the
     record kept in st["roles"][role]["run_now"]. Raises ValueError naming the bad field."""
     role = next((r for r in sch.get("roles") or [] if isinstance(r, dict) and r.get("name") == a.get("role")), None)
     if role is None:
@@ -1960,18 +1788,6 @@ def run_now_request(sch, a, now):
     if mode not in RUN_NOW_MODES or run_now_cap(cfg, mode) is None:    # 0 is a cap; the launch applies it (g2r4)
         raise ValueError("mode %r: a run-now runs one of %s that %s has a token cap for" % (
             mode, "/".join(RUN_NOW_MODES), role["name"]))
-    claims = []
-    for c in a.get("claims") or []:
-        m = CLAIM_RX.fullmatch(str(c).strip())
-        if not m:
-            raise ValueError("claim %r is not ITEM@SHA (a ledger item, @, a 7-40 character sha)" % (c,))
-        claims.append([m.group(1), m.group(2).lower()])
-    if a.get("trial") and not claims:
-        raise ValueError("--trial needs --claim: a trial judges named claims only (without them the schedule's own "
-                         "pre-steps would write the real tiers record)")
-    if claims and role["name"] not in CLAIM_PRE_ROLES:
-        raise ValueError("claims name what to judge: a %s request only, not %s" % ("/".join(CLAIM_PRE_ROLES),
-                                                                                  role["name"]))
     concept = str(a.get("concept") or "").strip() or None
     if cfg.get("stage_machine") == "designer_stage":
         if not concept:
@@ -1981,31 +1797,13 @@ def run_now_request(sch, a, now):
         concept = concept_dir(cfg, concept)
     elif concept:
         raise ValueError("--concept is for a stage-machine role, not %s" % role["name"])
-    days = a.get("days")
-    days = 7 if days is None else days
-    if not (_num(days) and 0 < days <= 60):
-        raise ValueError("days %r: the claims' close window must be > 0 and <= 60" % (days,))
-    return dict({"at": now, "by": by, "why": why, "mode": mode, "claims": claims, "trial": bool(a.get("trial")),
-                 "days": days}, **({"concept": concept} if concept else {}))
+    return dict({"at": now, "by": by, "why": why, "mode": mode}, **({"concept": concept} if concept else {}))
 
 
 def run_now_job(cfg, req, now):
     """Pure. The due job for a run-now request: no slot (no slot gate, no after_role wait, no event cursor), its
-    mode's cap, and for named claims the Arbiter's pre-steps for exactly those claims (a trial's tiers in their own
-    data dir, its verdicts in TRIAL_VERDICTS: harvest reads " run-now trial " in the key)."""
-    trial, claims, days = bool(req.get("trial")), req.get("claims") or [], "%g" % req.get("days", 7)
-    pre = None
-    if claims:
-        pre = [["python3", "src/RimMandrake/rimflow/isolated_evidence.py", "--run", "--seat", "DISPATCHER"]
-               + [x for i, _ in claims for x in ("--item", i)] + ["--days", days],
-               ["python3", "src/RimMandrake/rimflow/arbiter_tiers.py"]
-               + [x for i, sh in claims for x in ("--claim", "%s@%s" % (i, sh))] + ["--days", days]
-               + (["--data", TRIAL_TIERS_DATA] if trial else [])]
+    mode's cap, no pre-launch steps."""
     trigger = "run-now by %s: %s" % (req.get("by"), req.get("why"))
-    if claims:
-        trigger += "; judge exactly these claims: " + ", ".join("%s@%s" % (i, sh) for i, sh in claims)
-    if trial:
-        trigger += "; TRIAL: the verdicts are recorded in %s, apart from the real record" % TRIAL_VERDICTS
     cap = run_now_cap(cfg, req.get("mode"))
     incident = None
     if req.get("covers_slot") and cfg.get("incident_token_cap") is not None:
@@ -2017,9 +1815,9 @@ def run_now_job(cfg, req, now):
         trigger += ("; INCIDENT RUN for %s: read memory.md (beside digest.md) and these incidents, not the whole "
                     "digest (your instructions, Incident runs)" % (", ".join(map(str, req.get("ids") or [])) or
                                                                     "the open incidents"))
-    return {"key": "%s run-now%s %s" % (day_of(now), " trial" if trial else "", iso(req.get("at") or now)),
+    return {"key": "%s run-now %s" % (day_of(now), iso(req.get("at") or now)),
             "slot": None, "first": False, "mode": req.get("mode") or "run", "cap": cap,
-            "item": cfg["ledger_item"], "trigger": trigger, "manual": req, "pre_launch": pre, "incident": incident}
+            "item": cfg["ledger_item"], "trigger": trigger, "manual": req, "pre_launch": None, "incident": incident}
 
 
 COVER_WINDOW_S = 7200
@@ -2139,7 +1937,7 @@ def mode_model(role, mode):
 def launch_role(role, a):
     """The schedule entry execute launches for action `a`: the entry itself, or a copy carrying the model for this
     run's mode (mode_model); for a run-now, a copy that is enabled for this one launch and runs the request's
-    pre-steps when it named claims."""
+    pre-steps (a Designer run at stage 5: coverage_pre)."""
     model = mode_model(role, a.get("mode"))
     if model != role["model"]:
         role = dict(role, model=model)
@@ -2295,38 +2093,19 @@ def scope_bound_s(role):
     return int(max_s_of({}, dict(ROLE_DEFAULTS, **(role or {})))) + SCOPE_GRACE_S
 
 
-def schema_args(role):
-    """["--json-schema", <compact schema text>] for a STRUCTURED role, read from its clone; [] for every other role.
-    Raises ValueError when the schema cannot be read or is not a JSON object: the launch is refused (execute alarms
-    role:<name>:launch_failed), never a schema-less run whose verdicts would have nowhere to go."""
-    spec = STRUCTURED.get(role.get("name"))
-    if not spec:
-        return []
-    p = os.path.join(role["clone"], spec["schema"])
-    try:
-        with open(p, encoding="utf-8") as f:
-            doc = json.load(f)
-    except (OSError, ValueError) as e:
-        raise ValueError("role %s: json schema %s unreadable: %s" % (role.get("name"), p, e))
-    if not isinstance(doc, dict):
-        raise ValueError("role %s: json schema %s is not a JSON object" % (role.get("name"), p))
-    return ["--json-schema", json.dumps(doc, separators=(",", ":"), sort_keys=True)]
-
-
 def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     """The transient unit's argv. A role's `pre_launch` (an argv or a list of argvs, run in its clone) runs first inside the same unit,
     its stdout sent to the err file so `out` stays claude's JSON alone; if it exits non-zero, claude never starts
-    (the Arbiter's arbiter_tiers.py: a batch with no fresh tiers.json would judge blind -- review AA brief AA7)."""
+    (the Designer's coverage_judge.py, the Auditor's pre-screen)."""
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
-        + list(role.get("launch_args") or []) + schema_args(role) + ["--output-format", "json", "--dangerously-skip-permissions"] \
+        + list(role.get("launch_args") or []) + ["--output-format", "json", "--dangerously-skip-permissions"] \
         + (["--resume", role["resume_session"]] if role.get("resume_session")      # continues that session (resume_due)
            else ["--session-id", session] if session else [])     # its transcript, found when no result is
     pre = None if role.get("resume_session") else role.get("pre_launch")    # a resume re-screens nothing
     if pre:
-        # one argv, or a list of argvs run in order, each only if the one before exited 0 (the Arbiter:
-        # isolated_evidence.py, then arbiter_tiers.py)
+        # one argv, or a list of argvs run in order, each only if the one before exited 0
         steps = pre if isinstance(pre, list) and pre and all(isinstance(x, list) for x in pre) else [pre]
         if not all(isinstance(st, list) and st and all(isinstance(x, str) and x for x in st) for st in steps):
             raise ValueError("role %s: pre_launch must be a non-empty argv list or a list of them, got %r"
@@ -2582,9 +2361,6 @@ def main(argv=None):
     r.add_argument("--by")
     r.add_argument("--why")
     r.add_argument("--mode", help="/".join(RUN_NOW_MODES) + " (default the role's own scheduled mode)")
-    r.add_argument("--claim", action="append", default=[], help="ITEM@SHA (Arbiter only): judge exactly these")
-    r.add_argument("--trial", action="store_true", help="verdicts to the trial record, apart from the real one")
-    r.add_argument("--days", type=float, default=7, help="the named claims closed within this many days")
     r.add_argument("--concept", help="design/concepts/<Mod> (a stage-machine role, the Designer: required)")
     r.add_argument("--covers-slot", action="store_true", help="this run IS the role's next scheduled run today (its slot is marked covered, the daily cap is asked for one run)")
     r.add_argument("--cancel", action="store_true")
@@ -2610,7 +2386,6 @@ def main(argv=None):
         try:
             sch = D.load_schedule(a.schedule)
             req = run_now_request(sch, {"role": a.role, "by": a.by, "why": a.why, "mode": a.mode,
-                                        "claims": a.claim, "trial": a.trial, "days": a.days,
                                         "concept": a.concept}, now)
             if a.covers_slot:
                 req["covers_slot"] = True

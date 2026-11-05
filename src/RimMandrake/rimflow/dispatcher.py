@@ -36,7 +36,7 @@ give-up, raises of a dead window on raise_ladder.py's ladder (life note, 2/8 min
 deaths in 7 days, login/quota gated per model; it replaced the flat recovers_per_seat_day cap), and a PAUSE file
 (state/PAUSE) that stops everything. §3's roles are listed in the
 schedule; role_launch.py starts an enabled role that has its launch keys on its clock slots (daily or
-weekday-qualified, "Wed 09:00") and on ledger events (a done claim gates the Arbiter's batches; a failed plan step or
+weekday-qualified, "Wed 09:00") and on ledger events (a failed plan step or
 a replan request launches the Producer), each as its own transient systemd unit, so the run outlives this oneshot
 tick, gated by its off switch, the ops_watch reading, its throttle band and its token caps; an enabled role without
 launch keys is an alarm, and an unreadable ledger launches no ledger-triggered role (one alarm per outage).
@@ -1231,15 +1231,6 @@ def ledger_note(item, text, run=subprocess.run):
     return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
 
 
-def ledger_verdict(args, run=subprocess.run):
-    """A verdict's `verify` (role_launch.verdict_run), seat RUNNER: the shard the testq publish carries beside DISPATCHER's."""
-    cli = os.path.join(HERE, "cli.py")
-    env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO)
-    r = run([sys.executable, cli, *args, "--seat", "RUNNER"], cwd=REPO, env=env,
-            capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
-    return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
-
-
 def stand(st, scope, keys, now):
     """Record what the reader of `scope` saw standing this tick (incident.standing_of reads it): with it a Dispatcher
     alarm's incident stays open while its source stands and closes on sustain_min once it is gone, never on silence
@@ -1456,8 +1447,6 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
         "publish", lambda n: publish_bounded(n, deadline - time.time()))
     do_lock = fx.get("lock", git_lock)
     do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
-    do_verdicts = fx.get("verdicts_append", RL.append_verdicts)
-    do_verdict_run = fx.get("verdict_run", ledger_verdict)
     do_stamp = fx.get("finish_stamp", RL.AP.write_stamp)
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
     do_conductor = fx.get("conductor_log", conductor_log)
@@ -1675,31 +1664,6 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 else:
                                     rs.pop("launch_failed_key", None)
                                 do_persist()
-                    elif a["do"] == "role_verdicts":
-                        # a STRUCTURED role's validated entries (role_launch.harvest); a failed append is alarmed:
-                        # the run is already done, so nothing else would ever carry these verdicts
-                        try:
-                            do_verdicts(a["path"], a["rows"])
-                            res = "appended %d" % len(a["rows"])
-                        except Exception as e:  # noqa: BLE001
-                            res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
-                            actions.append(dict(
-                                do="alarm", kind="role:%s:verdicts_append" % a.get("role"), at=iso(now), note=True,
-                                ticket=a.get("ticket"), role=a.get("role"), rows=a["rows"],
-                                why="role %s: %d verdict(s) NOT appended to %s: %s; they are in this journal entry "
-                                    "only, their claims stay pending" % (a.get("role"), len(a["rows"]), a["path"], res)))
-                    elif a["do"] == "role_verdict_run":
-                        # the verdict is already in the sink, so it would never be judged again: a refused one is alarmed
-                        try:
-                            ok, res = do_verdict_run(a["run"])
-                        except Exception as e:  # noqa: BLE001 - a rimflow timeout
-                            ok, res = False, "%s: %s" % (type(e).__name__, str(e)[:160])
-                        if not ok:
-                            actions.append(dict(
-                                do="alarm", kind="role:%s:verdict_run" % a.get("role"), at=iso(now), note=True,
-                                ticket=a.get("ticket"), role=a.get("role"),
-                                why="role %s: a verdict did NOT reach the ledger, so it blocks nothing: %s: %s" % (
-                                    a.get("role"), " ".join(a["run"][:6]), res)))
                     elif a["do"] == "role_stamp":
                         # a run finished done (role_launch FINISH_STAMP): the next pre-screen starts here. A failed
                         # write is alarmed: the next run then re-screens from the older stamp (overlap, never a gap)
@@ -1886,7 +1850,6 @@ def role_obs(sch):
         "scope": RL.scope_of,
         "procs": RL.procs_of,
         "ledger": RL.read_ledger,
-        "pending_stores": RL.PW.read_stores,
         "lent": lambda: AP.load_lent(sch.get("account_pick") or {}),
         "window_live": window_live,
     }

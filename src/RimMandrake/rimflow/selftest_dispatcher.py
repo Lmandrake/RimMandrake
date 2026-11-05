@@ -1223,8 +1223,8 @@ def test_role_execute_and_dry():
           and len(calls) == 1, "launch: the scope is named by the launcher (claude-seat-<seat>-<unit>), no MainPID query")
     check("CLAUDE_SCOPE_UNIT=claude-seat-BENCH-rm-role-conductor-1" in argv and "RM_ROLE_UNIT=rm-role-conductor-1" in argv,
           "launch: the unit tells claude_bounded the scope name and marks every process of the run")
-    # pre_launch (review AA brief AA7): the Arbiter's tiers.json is produced inside the unit before claude starts
-    pre_role = dict(role, pre_launch=["python3", "src/x y/arbiter_tiers.py"])
+    # pre_launch (review AA brief AA7): a step runs inside the unit before claude starts
+    pre_role = dict(role, pre_launch=["python3", "src/x y/pre_step.py"])
     pa = RL.launch_argv(pre_role, "u-pre", "it's \"msg\" $HOME", "/o", "/e", "/opt/bin/claude")
     j = pa.index("--")
     check(pa[j + 1:j + 3] == ["/bin/sh", "-c"] and pa[j + 4] == "role-pre-launch"
@@ -1251,8 +1251,7 @@ def test_role_execute_and_dry():
         check(False, "pre_launch as a string is refused")
     except ValueError:
         check(True, "pre_launch as a string is refused")
-    # a list of argvs runs in order, each only after the one before exited 0 (the Arbiter: isolated_evidence.py,
-    # then arbiter_tiers.py; ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK item 3)
+    # a list of argvs runs in order, each only after the one before exited 0
     with tempfile.TemporaryDirectory() as pd:
         log, errf = os.path.join(pd, "log"), os.path.join(pd, "err")
         for steps, want_rc, want_log, want_out in (
@@ -1796,9 +1795,9 @@ BASE_EV = {"seat": "BENCH", "event": "file", "id": "OLD_ONE", "ts": "2026-01-01T
 
 
 def arbiter(**kw):
-    r = {"name": "Arbiter", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/arbiter.md",
+    r = {"name": "Arbiter", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/auditor.md",
          "seat": "BENCH", "clone": os.path.join(TMP, "clone"), "model": "opus", "ledger_item": "ROLES_ITEM_X",
-         "off_file": os.path.join(TMP, "ARBITER_OFF"), "runs_local": ["11:00", "17:00"], "slot_when": "done_claims",
+         "off_file": os.path.join(TMP, "ARBITER_OFF"), "runs_local": ["11:00", "17:00"],
          "run_token_cap": 100000, "daily_token_cap": 250000}
     r.update(kw)
     return r
@@ -1874,210 +1873,13 @@ def test_role_weekday_slots():
           "RED Thursday: the daily run is held (weekly only)")
 
 
-def test_role_done_claims_gate():
+def test_role_pre_launch_max_s():
+    """ARBITER_MEASURE_PRELAUNCH_EVIDENCE_TIME: pre_launch_max_s is the pre-steps' own bound."""
     t = at_local("11:00")
     st = fresh()
-    old_claim = dict(BASE_EV, event="close", id="BEFORE_BASELINE", ts=lts(t - 9000))
-    led0 = lread([BASE_EV, old_claim])       # on the ledger at the baseline: seen, never a batch (N4: by identity)
-    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t - 7200), led0), t - 7200))
-    check(st["roles"]["Arbiter"]["event_cursor"] == t - 7200 and [x["do"] for x in a] == ["role_hold"]
-          and "baseline" in a[0]["why"], "Arbiter first seen enabled: baseline cursor, nothing run")
-    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t), lread([BASE_EV, old_claim])), t))
-    check(not [x for x in a if x["do"] == "role_launch"] and any("no done claim" in x.get("why", "") for x in a),
-          "11:00 with only claims before the baseline: slot held, no batch")
-    check(st["roles"]["Arbiter"]["done"].get("%s 11:00" % RL.day_of(t)) == "no done claims",
-          "the empty slot is spent (not retried every tick)")
-    t17 = at_local("17:00")
-    claims = [dict(BASE_EV, event="implemented", id="BUILT_ONE", ts=lts(t + 600)),
-              dict(BASE_EV, event="close", id="CLOSED_ONE", ts=lts(t + 900)),
-              dict(BASE_EV, event="note", id="NOISE", ts=lts(t + 950), text="x")]
-    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t17), lread([BASE_EV] + claims)), t17))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and "2 done claim(s)" in la[0]["why"] and "implemented BUILT_ONE" in la[0]["why"],
-          "17:00 with an implemented + a close since the cursor: the batch launches, naming the oldest")
-    check(st["roles"]["Arbiter"]["event_cursor"] == t17, "the launch moves the cursor to its own time")
-    check([c[1] for c in RL.done_claims(claims, t)] == ["BUILT_ONE", "CLOSED_ONE"],
-          "done_claims: implemented and close only, oldest first")
-    st2 = fresh()
-    st2["roles"] = {"Arbiter": {"done": {}, "runs": [], "event_cursor": t - 60}}
-    a = role_acts(rdecide([arbiter()], st2, lrobs(ops_status(t), lread([BASE_EV] + claims[:1]), off="owner: off"), t))
-    check([x["do"] for x in a] == ["role_hold"] and "off switch" in a[0]["why"], "claims pending + off file: held")
-
-
-class BacklogItem(object):
-    def __init__(self, state, owed, built_at=None):
-        self.state, self._owed, self.open, self.raised, self.row = state, owed, True, None, None
-        self.built_at = built_at
-
-    def owed_levels(self):
-        return list(self._owed)
-
-
-def pwobs(t, events, items=None, stores=None, **kw):
-    o = lrobs(ops_status(t), lread([BASE_EV] + events, items), **kw)
-    if callable(stores):
-        o["pending_stores"] = stores
-    elif stores is not False:
-        st = dict({"verdicts": [], "tiers_history": [], "cutoff": t - 86400 * 9}, **(stores or {}))
-        o["pending_stores"] = lambda: st
-    return o
-
-
-def test_role_pending_work_gate():
-    """ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK: a slot launches on ANY pending work, read from state; a launch that
-    did not judge it leaves it pending."""
-    t, t17 = at_local("11:00"), at_local("17:00")
-    arb = arbiter(slot_when="pending_work")
-    sha = "abcdef1"  # under 10 characters: live_only() drops a long sha git has never seen
-
-    def run(st, tt, *a, **kw):
-        acts = role_acts(rdecide([arb], st, pwobs(tt, *a, **kw), tt))
-        return [x for x in acts if x["do"] == "role_launch"], acts
-
-    def based():
-        st = fresh()
-        st["roles"] = {"Arbiter": {"done": {}, "runs": [], "event_cursor": t - 60, "events_seen": []}}
-        return st
-
-    la, acts = run(based(), t, [])
-    check(not la and any("nothing pending" in x.get("why", "") for x in acts), "pending_work: nothing pending: held")
-    # a carried UNRESOLVED alone (no new claim on the ledger) starts a batch
-    unres = {"item": "CARRIED", "sha": sha[:7], "disposition": "UNRESOLVED", "ts": lts(t - 86400 * 30)}
-    la, _ = run(based(), t, [], stores={"verdicts": [unres]})
-    check(la and "1 unresolved (first CARRIED)" in la[0]["why"], "pending_work: a carried UNRESOLVED alone launches")
-    # an escape alone: work filed against an item after the Arbiter passed it, no check spec filed yet
-    passed = {"item": "GOOD", "sha": sha, "disposition": "PASS", "ts": lts(t - 86400 * 20)}
-    esc = dict(BASE_EV, event="file", id="GOOD_BROKE_LATER", ts=lts(t - 86400 * 10), caused_by="GOOD")
-    la, _ = run(based(), t, [esc], stores={"verdicts": [passed]})
-    check(la and "1 escapes (first GOOD_BROKE_LATER)" in la[0]["why"], "pending_work: an escape alone launches")
-    spec = dict(BASE_EV, event="spawn", ts=lts(t - 3600), **{"from": "GOOD_BROKE_LATER", "for": "BENCH",
-                                                               "name": "GOOD_CHECK_SPEC"})
-    la, _ = run(based(), t, [esc, spec], stores={"verdicts": [passed]})
-    check(not la, "pending_work: an escape whose check spec is filed is no longer pending")
-    before = dict(esc, ts=lts(t - 86400 * 25))
-    la, _ = run(based(), t, [before], stores={"verdicts": [passed]})
-    check(not la, "pending_work: work filed BEFORE the pass is not an escape")
-    # the verify backlog alone (an L4-only item is his, not pending)
-    items = {"BUILT_L1": BacklogItem("built", ["L1", "L4"], lts(t - 3600))}
-    la, _ = run(based(), t, [], items=items)
-    check(la and "verify backlog (first BUILT_L1)" in la[0]["why"], "pending_work: a verify-backlog item launches")
-    la, _ = run(based(), t, [], items={"ONLY_L4": BacklogItem("validated", ["L4"], lts(t - 3600)),
-                                       "CLOSED": BacklogItem("closed", ["L1"], lts(t - 3600))})
-    check(not la, "pending_work: L4-only and closed items are not the Arbiter's backlog")
-    # a done claim, and a launch that never wrote a verdict: still pending at the next slot (nothing consumed)
-    close = dict(BASE_EV, event="close", id="CLAIMED", sha=sha, ts=lts(t - 3600))
-    st = based()
-    la, _ = run(st, t, [close])
-    check(la and "1 done claims (first CLAIMED)" in la[0]["why"], "pending_work: a done claim launches")
-    st["roles"]["Arbiter"].pop("pending_launch", None)
-    la, _ = run(st, t17, [close])
-    check(la and "CLAIMED" in la[0]["why"],
-          "pending_work: a launch that wrote no verdict consumed nothing: the claim launches the next slot too")
-    final = {"item": "CLAIMED", "sha": sha[:9], "disposition": "FAIL-check", "ts": lts(t + 60)}
-    la, _ = run(based(), t, [close], stores={"verdicts": [final]})
-    check(not la, "pending_work: a final verdict (short sha) acknowledges the claim")
-    la, _ = run(based(), t, [close], stores={"verdicts": [dict(final, disposition="UNRESOLVED")]})
-    check(la, "pending_work: an UNRESOLVED verdict does not acknowledge it")
-    for dec, want in (("PASS", False), ("AI", True), ("BOUNCE", True), ("HOLD", True)):
-        la, _ = run(based(), t, [close], stores={"tiers_history": [{"item": "CLAIMED", "sha": sha, "decision": dec}]})
-        check(bool(la) == want, "pending_work: tiers_history decision %s %s the claim" % (
-            dec, "leaves pending" if want else "acknowledges"))
-    # ARBITER_FIX_CLAIMS_AGE_OUT_UNJUDGED: a claim after the cutoff never ages out; one before it is not his queue
-    old = dict(close, ts=lts(t - 86400 * 8))
-    la, _ = run(based(), t, [old])
-    check(la and "CLAIMED" in la[0]["why"], "pending_work: an unjudged close 8 days old (after the cutoff) is pending")
-    la, _ = run(based(), t + 86400 * 364, [old], stores={"cutoff": t - 86400 * 9})    # 52 weeks: same slot, same DST
-    check(la and "CLAIMED" in la[0]["why"], "pending_work: an unjudged close after the cutoff is pending a year on")
-    pre = dict(close, ts=lts(t - 86400 * 10))
-    la, _ = run(based(), t, [pre])
-    check(not la, "pending_work: a close before the cutoff is the pre-enable backlog, not the Arbiter's queue")
-    # blind stores launch (work may be pending), with the reason in the trigger
-    def torn():
-        raise ValueError("verdicts.jsonl line 3 is not JSON")
-    la, _ = run(based(), t, [], stores=torn)
-    check(la and "UNMEASURED" in la[0]["why"] and "line 3" in la[0]["why"], "pending_work: torn store: launch, said")
-    la, _ = run(based(), t, [], stores=False)
-    check(la and "no pending_stores reader" in la[0]["why"], "pending_work: no store reader: launch, said")
-    # kinds can be narrowed; a bad kind is a schedule alarm, never a launch
-    a2 = role_acts(rdecide([arbiter(slot_when="pending_work", pending_work=["verify_backlog"])], based(),
-                           pwobs(t, [], stores={"verdicts": [unres]}), t))
-    check(not [x for x in a2 if x["do"] == "role_launch"], "pending_work: kinds narrowed to the backlog ignore UNRESOLVED")
-    for bad in ({"pending_work": ["escape"]}, {"pending_work": []}, {"claim_window_days": 0},
-                {"claim_window_days": 7}, {"pre_launch_max_s": 0}, {"pre_launch_max_s": "600"},
-                {"slot_when": "claims"}):
-        a2 = role_acts(rdecide([arbiter(**dict({"slot_when": "pending_work"}, **bad))], based(), pwobs(t, []), t))
-        check([x.get("kind") for x in a2] == ["role:Arbiter:schedule"], "pending_work: schedule %r refused" % (bad,))
-    # the store reader: absent files are empty (never ran), a misspelt disposition is torn
-    with tempfile.TemporaryDirectory() as d:
-        v, h = os.path.join(d, "verdicts.jsonl"), os.path.join(d, "tiers_history.jsonl")
-        c = os.path.join(d, "cutoff.json")
-        check(RL.PW.read_stores(v, h, c) == {"verdicts": [], "tiers_history": [], "cutoff": None},
-              "read_stores: absent files are empty, an absent cutoff is None")
-        with open(v, "w") as f:
-            f.write(json.dumps(dict(unres, disposition="PASSED")) + "\n")
-        try:
-            RL.PW.read_stores(v, h, c)
-            check(False, "read_stores: an unknown disposition is refused")
-        except ValueError:
-            check(True, "read_stores: an unknown disposition is refused")
-
-
-def test_role_arbiter_cutoff():
-    """ARBITER_DECIDE_BACKLOG_NEVER_DRAINS (BENCH delegated ruling 2026-10-27): the Arbiter's queue is the work after
-    the cutoff stamped at enable, oldest first; no stamp holds the slot with an alarm (never a launch over the whole
-    pre-enable backlog). ARBITER_MEASURE_PRELAUNCH_EVIDENCE_TIME: pre_launch_max_s is its own bound."""
-    t = at_local("11:00")
-    cut = t - 86400 * 2
-
-    def based():
-        st = fresh()
-        st["roles"] = {"Arbiter": {"done": {}, "runs": [], "event_cursor": t - 60, "events_seen": []}}
-        return st
-
-    def acts(role, events, **kw):
-        return role_acts(rdecide([role], based(), pwobs(t, events, **kw), t))
-    arb = arbiter(slot_when="pending_work")
-    c1 = dict(BASE_EV, event="close", id="NEWER", sha="abcdef1", ts=lts(cut + 7200))
-    c2 = dict(BASE_EV, event="close", id="OLDER", sha="1234567", ts=lts(cut + 60))
-    a = acts(arb, [c1, c2], stores={"cutoff": None})
-    check(not [x for x in a if x["do"] == "role_launch"]
-          and [x.get("kind") for x in a if x["do"] == "alarm"] == ["role:Arbiter:cutoff"]
-          and any("cutoff" in x.get("why", "") and "stamp" in x.get("why", "") for x in a),
-          "cutoff: no stamp holds the slot with an alarm naming `stamp`, never a launch over the backlog")
-    unres = {"item": "CARRIED", "sha": "abcdef1", "disposition": "UNRESOLVED", "ts": lts(t - 600)}
-    a = acts(arbiter(slot_when="pending_work", pending_work=["unresolved"]), [], stores={"cutoff": None,
-                                                                                         "verdicts": [unres]})
-    check([x for x in a if x["do"] == "role_launch"], "cutoff: kinds that need no cutoff launch without one")
-    a = acts(arb, [c1, c2], stores={"cutoff": cut})
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and "2 done claims (first OLDER)" in la[0]["why"], "cutoff: done claims are listed oldest first")
-    items = {"PRE": BacklogItem("built", ["L1"], lts(cut - 60)), "NONE": BacklogItem("validated", ["L2"])}
-    check(not [x for x in acts(arb, [], items=items, stores={"cutoff": cut}) if x["do"] == "role_launch"],
-          "cutoff: a backlog item built before the cutoff (or with no build time) is not the Arbiter's")
-    items["POST"] = BacklogItem("built", ["L1"], lts(cut + 60))
-    la = [x for x in acts(arb, [], items=items, stores={"cutoff": cut}) if x["do"] == "role_launch"]
-    check(la and "1 verify backlog (first POST)" in la[0]["why"], "cutoff: a backlog item built after it is")
-    # the stamp: written once, never overwritten; torn -> ValueError; read back as epoch
-    with tempfile.TemporaryDirectory() as d:
-        c = os.path.join(d, "arbiter", "cutoff.json")
-        check(RL.PW.read_cutoff(c) is None, "stamp: absent -> None")
-        RL.PW.stamp(c, "2026-10-30T09:00:00Z", by="BENCH", why="enable")
-        check(RL.PW.read_cutoff(c) == RL.PW.epoch("2026-10-30T09:00:00Z"), "stamp: read back")
-        try:
-            RL.PW.stamp(c, "2026-11-30T09:00:00Z", by="BENCH", why="again")
-            check(False, "stamp: a second stamp is refused")
-        except FileExistsError:
-            check(RL.PW.read_cutoff(c) == RL.PW.epoch("2026-10-30T09:00:00Z"), "stamp: a second stamp is refused")
-        with open(c, "w") as f:
-            f.write('{"cutoff": "2026-1')
-        try:
-            RL.PW.read_cutoff(c)
-            check(False, "stamp: a torn file raises ValueError")
-        except ValueError:
-            check(True, "stamp: a torn file raises ValueError")
-    # pre_launch_max_s: its own budget, added to the run's wall bound and recorded on the run
-    arb2 = arbiter(slot_when="pending_work", run_max_s=2700, pre_launch_max_s=1200)
-    la = [x for x in acts(arb2, [c1], stores={"cutoff": cut}) if x["do"] == "role_launch"]
+    st["roles"] = {"Arbiter": {"done": {}, "runs": []}}
+    arb2 = arbiter(run_max_s=2700, pre_launch_max_s=1200)
+    la = [x for x in role_acts(rdecide([arb2], st, robs(ops_status(t)), t)) if x["do"] == "role_launch"]
     check(la and la[0]["run_max_s"] == 3900, "pre_launch_max_s: the launch records run_max_s 2700 + 1200")
     check(RL.max_s_of({}, arb2) == 3900 and RL.max_s_of({"run_max_s": 3900}, arb2) == 3900
           and RL.max_s_of({}, arbiter(run_max_s=2700)) == 2700, "pre_launch_max_s: max_s_of sums it, absent = 0")
@@ -2278,25 +2080,23 @@ def test_role_ledger_unmeasured():
 
     for led, label in ((boom, "raises"), (lambda: None, "returns nothing"), (lread([]), "zero events")):
         st = fresh()
-        st["roles"] = {"Arbiter": {"done": {}, "runs": [], "event_cursor": t - 3600},
-                       "Producer": {"done": {}, "runs": [], "event_cursor": t - 3600}}
-        roles = [arbiter(), producer(after_role=None, runs_local=["11:00"])]
+        st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t - 3600}}
+        roles = [producer(after_role=None, runs_local=["11:00"])]
         a = role_acts(rdecide(roles, st, lrobs(ops_status(t), led), t))
         check(not [x for x in a if x["do"] == "role_launch"], "ledger %s: nothing launches, clock slots included" % label)
         al = [x for x in a if x.get("kind") == "role:ledger"]
         check(len(al) == 1 and "UNMEASURED" in al[0]["why"] and al[0]["note"], "ledger %s: ONE alarm" % label)
-        check("%s 11:00" % RL.day_of(t) not in st["roles"]["Arbiter"]["done"],
+        check("%s 11:00" % RL.day_of(t) not in st["roles"]["Producer"]["done"],
               "ledger %s: the slot is not spent (it waits, missed only after slot_late_s)" % label)
         a = role_acts(rdecide(roles, st, lrobs(ops_status(t + 120), led), t + 120))
         check(not [x for x in a if x.get("kind") == "role:ledger"] and not a,
               "ledger %s: next tick, no second alarm" % label)
-    claim = dict(BASE_EV, event="close", id="C1", ts=lts(t - 60))
-    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t + 240), lread([BASE_EV, claim])), t + 240))
+    a = role_acts(rdecide(roles, st, lrobs(ops_status(t + 240), lread([BASE_EV])), t + 240))
     check(any("readable again" in x.get("why", "") for x in a) and [x for x in a if x["do"] == "role_launch"]
           and "ledger_blind" not in st, "ledger readable again: journaled, the batch launches")
     st = fresh()
-    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t), boom), t))
-    check("event_cursor" not in st["roles"]["Arbiter"], "a blind first tick sets no baseline")
+    a = role_acts(rdecide([producer(after_role=None, runs_local=["11:00"])], st, lrobs(ops_status(t), boom), t))
+    check("event_cursor" not in st["roles"]["Producer"], "a blind first tick sets no baseline")
     a = role_acts(rdecide([conductor()], fresh(), robs(ops_status(at_local("08:00"))), at_local("08:00")))
     check([x["do"] for x in a] == ["role_launch"], "a role with no event keys never reads the ledger")
     check(RL.ledger_reading(RL.read_ledger)["state"] == "MEASURED", "read_ledger: the real ledger reads MEASURED")
@@ -2305,18 +2105,8 @@ def test_role_ledger_unmeasured():
 def test_role_real_schedule_triggers():
     sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")))
     roles = {r["name"]: r for r in sch["roles"]}
-    a, p = roles["Arbiter"], roles["Producer"]
-    check(a.get("slot_when") == "pending_work" and a["runs_local"] == ["11:00", "17:00"]
-          and a.get("pending_work", list(RL.PW.KINDS)) == list(RL.PW.KINDS),
-          "schedule: Arbiter batches at 11:00/17:00 gated on ANY pending work (escapes, unresolved, claims, backlog)")
-    check(a.get("pre_launch") == [["python3", "src/RimMandrake/rimflow/isolated_evidence.py", "--run", "--seat",
-                                   "DISPATCHER", "--since-cutoff", "--budget-s", "900"],
-                                  ["python3", "src/RimMandrake/rimflow/arbiter_tiers.py", "--since-cutoff", "--cap",
-                                   "6"]],
-          "schedule: the Arbiter's pre_launch runs isolated_evidence.py (900 s budget), then arbiter_tiers.py (cap 6)"
-          ", both from the cutoff")
-    check(a.get("pre_launch_max_s") == 1200 and a.get("run_max_s") == 2700 and "claim_window_days" not in a,
-          "schedule: the Arbiter's pre-step has its own 1200 s bound beside run_max_s 2700; no claim window")
+    p = roles["Producer"]
+    check("Arbiter" not in roles, "schedule: no Arbiter (retired: CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED)")
     check(roles["Auditor"].get("pre_launch") == [["python3", "src/RimMandrake/rimflow/audits.py", "ensure"],
                                                  ["python3", "src/RimMandrake/rimflow/audit_prescreen.py"],
                                                  ["python3", "src/RimMandrake/rimflow/audit_hardflag_file.py"]],
@@ -2357,7 +2147,7 @@ def test_review_t():
     msg = [x for x in a if x["do"] == "role_launch"][0]["message"].lower()
     check(not any(w in msg for w in ("token", "budget", "runway", "week left", "band")),
           "F1: a role without token_aware: no token content in its launch message")
-    for r in (producer(after_role=None), arbiter(slot_when=None)):
+    for r in (producer(after_role=None), arbiter()):
         msg = RL.prompt(r, "run", "x", "GREEN", {"runway": 2.0, "runway_m": "MEASURED", "week_left": 40,
                                                 "week_left_m": "MEASURED", "at": "now"}, 1, 2, 1.0, 3, "u").lower()
         check(not any(w in msg for w in ("token", "budget", "runway", "week left", "band", "stop at")),
@@ -2371,7 +2161,7 @@ def test_review_t():
     # F4: Operations' 07:30 skipped by its band -> the Producer's 09:00 follows the 19:30 run of the day before
     t9 = at_local("09:00")
     ops = operations(throttle_bands={"AMBER": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "quick"}})
-    p = producer(after_role="Operations", event_runs=None, slot_when=None, weekly_plan_weekday=None)
+    p = producer(after_role="Operations", event_runs=None, weekly_plan_weekday=None)
     yday = RL.day_of(t9 - 86400)
     st = fresh()
     st["roles"] = {"Operations": {"done": {"%s 19:30" % yday: "launch", "%s 07:30" % RL.day_of(t9): "band AMBER"},
@@ -2393,8 +2183,8 @@ def test_review_t():
           "F4: a 07:30 skipped for another reason (off switch) is not passed over")
     # F7: every role on opus (Agent_Policy.md, the one ladder)
     check(all(r.get("model") == "opus" for r in sch["roles"] if r["name"] in
-              ("Conductor", "Operations", "Producer", "Arbiter", "Auditor", "Innovator")),
-          "F7: Conductor, Operations, Producer, Arbiter, Auditor, Innovator are opus")
+              ("Conductor", "Operations", "Producer", "Auditor", "Innovator")),
+          "F7: Conductor, Operations, Producer, Auditor, Innovator are opus")
 
 
 def test_account_hold_dispatch():
@@ -2604,25 +2394,6 @@ def test_review_u_group4():
     st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t8w - 3600}}
     a = role_acts(rdecide([producer(after_role=None)], st, lrobs(ops_status(t8w), led), t8w))
     check([x["mode"] for x in a if x["do"] == "role_launch"] == ["event"], "N3: room for both -> the event runs")
-    # N4: an event stamped before the cursor but ingested after it still triggers, once
-    t11 = at_local("11:00")
-    st = fresh()
-    st["roles"] = {"Arbiter": {"done": {}, "runs": [], "event_cursor": t11 - 600, "events_seen": []}}
-    late = dict(BASE_EV, event="close", id="WRITTEN_ON_FOUNDRY", ts=lts(t11 - 900))
-    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t11), lread([BASE_EV, late])), t11))
-    la = [x for x in a if x["do"] == "role_launch"]
-    check(la and "WRITTEN_ON_FOUNDRY" in la[0]["why"], "N4: a claim ts'd before the cursor, ingested late, triggers")
-    check(any("WRITTEN_ON_FOUNDRY" in k for k in st["roles"]["Arbiter"]["events_seen"]), "N4: the launch records it seen")
-    t17 = at_local("17:00")
-    st["roles"]["Arbiter"]["runs"] = []
-    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t17), lread([BASE_EV, late])), t17))
-    check(not [x for x in a if x["do"] == "role_launch"] and any("no done claim" in x.get("why", "") for x in a),
-          "N4: the same claim does not trigger twice")
-    st = fresh()
-    st["roles"] = {"Arbiter": {"done": {}, "runs": [], "event_cursor": t11 - 600, "events_seen": []}}
-    ancient = dict(late, ts=lts(t11 - 600 - RL.EVENT_LOOKBACK_S - 60))
-    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t11), lread([BASE_EV, ancient])), t11))
-    check(not [x for x in a if x["do"] == "role_launch"], "N4: older than the look-back window: not an event")
     # N6: a failed launch alarms and gives the slot back; a PAUSE recheck gives it back; success clears the record
     root = os.path.join(TMP, "roles_exec_u")
     sch = sched(roles=[conductor()])
@@ -3035,14 +2806,14 @@ def test_golive_b3_wave1_config():
     check(not wave1_problems(real), "B3 the shipped schedule is within its go-live set: %s" % (wave1_problems(real),))
     on = wave1_base(real)
     check(not wave1_problems(on), "B3 Conductor + Operations enabled is within wave 1")
-    for name in ("Arbiter", "Auditor", "Producer", "Innovator"):
+    for name in ("Designer", "Auditor", "Producer", "Innovator"):
         x = copy.deepcopy(on)
         next(r for r in x["roles"] if r["name"] == name)["enabled"] = True
         check(wave1_problems(x) == ["role %s must stay disabled (go-live set: Conductor/Operations)" % name],
               "B3 %s enabled is refused" % name)
         del next(r for r in x["roles"] if r["name"] == name)["enabled"]
         check(wave1_problems(x), "B3 %s with no enabled key is refused (only an explicit false passes)" % name)
-    check({r["name"] for r in real["roles"]} >= set(WAVE1_ROLES) | {"Arbiter", "Auditor", "Producer", "Innovator"},
+    check({r["name"] for r in real["roles"]} >= set(WAVE1_ROLES) | {"Designer", "Auditor", "Producer", "Innovator"},
           "B3 the probe roles exist in the schedule")
     for seat in sorted(real["seats"]):
         x = copy.deepcopy(on)
@@ -3062,15 +2833,15 @@ def test_golive_trial_set_from_schedule():
           "TN the shipped schedule names its go-live set (golive.roles >= wave 1, golive.recover_dead a list): %s" % (g,))
     base = wave1_base(shipped_schedule())
     x = copy.deepcopy(base)
-    next(r for r in x["roles"] if r["name"] == "Arbiter")["enabled"] = True
-    check(wave1_problems(x) == ["role Arbiter must stay disabled (go-live set: Conductor/Operations)"],
-          "TN Arbiter enabled but not in golive.roles is refused: %s" % (wave1_problems(x),))
-    x["golive"]["roles"].append("Arbiter")
-    check(not wave1_problems(x), "TN Arbiter enabled AND listed in golive.roles passes (the trial flip): %s"
+    next(r for r in x["roles"] if r["name"] == "Designer")["enabled"] = True
+    check(wave1_problems(x) == ["role Designer must stay disabled (go-live set: Conductor/Operations)"],
+          "TN Designer enabled but not in golive.roles is refused: %s" % (wave1_problems(x),))
+    x["golive"]["roles"].append("Designer")
+    check(not wave1_problems(x), "TN Designer enabled AND listed in golive.roles passes (the trial flip): %s"
           % (wave1_problems(x),))
     next(r for r in x["roles"] if r["name"] == "Producer")["enabled"] = True
-    check(wave1_problems(x) == ["role Producer must stay disabled (go-live set: Conductor/Operations/Arbiter)"],
-          "TN listing Arbiter does not let Producer through: %s" % (wave1_problems(x),))
+    check(wave1_problems(x) == ["role Producer must stay disabled (go-live set: Conductor/Operations/Designer)"],
+          "TN listing Designer does not let Producer through: %s" % (wave1_problems(x),))
     y = copy.deepcopy(base)
     y["seats"]["FOUNDRY"] = {"enabled": True, "wake": True, "recover_dead": False, "session_name": "AGENT FOUNDRY", "clone": "/home/mandrake/rm/foundry", "model": "sonnet"}      # a worker seat: the live schedule has none since 2026-11-02
     y["seats"]["FOUNDRY"]["recover_dead"] = True
@@ -3082,9 +2853,9 @@ def test_golive_trial_set_from_schedule():
     z = copy.deepcopy(base)
     z.pop("golive")
     check(not wave1_problems(z), "TN no golive block -> wave 1 is the set (Conductor/Operations pass)")
-    next(r for r in z["roles"] if r["name"] == "Arbiter")["enabled"] = True
-    check(wave1_problems(z) == ["role Arbiter must stay disabled (go-live set: Conductor/Operations)"],
-          "TN no golive block -> Arbiter refused: %s" % (wave1_problems(z),))
+    next(r for r in z["roles"] if r["name"] == "Designer")["enabled"] = True
+    check(wave1_problems(z) == ["role Designer must stay disabled (go-live set: Conductor/Operations)"],
+          "TN no golive block -> Designer refused: %s" % (wave1_problems(z),))
 
 
 def test_golive_b1_busy_until_ended():
@@ -3814,8 +3585,8 @@ def main():
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_schedule_keeps_no_unread_helper_keys, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
-              test_role_weekday_slots, test_role_done_claims_gate, test_role_pending_work_gate,
-              test_role_arbiter_cutoff, test_role_plan_failure_events, test_role_event_skip_keeps_quota, test_role_event_cap_refusal_keeps_quota, test_role_review_r5,
+              test_role_weekday_slots, test_role_pre_launch_max_s,
+              test_role_plan_failure_events, test_role_event_skip_keeps_quota, test_role_event_cap_refusal_keeps_quota, test_role_review_r5,
               test_role_event_key_same_second_twins,
               test_role_review_night_r3,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,

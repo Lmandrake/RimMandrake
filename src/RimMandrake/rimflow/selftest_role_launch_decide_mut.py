@@ -7,7 +7,7 @@ emitted, minus the long launch message, and the role state it left). The expecte
 snapshot in GOLDEN below. Exact equality is the point: a mutated string literal is "XX<text>XX", which still
 CONTAINS the old text, so a substring check cannot see it. A few scenarios carry explicit semantic asserts beside
 the snapshot (boundaries). Regenerate the snapshot with `--gen` after a REVIEWED behaviour change.
-Pure: fake runners, no systemd, no clock. Imports selftest_dispatcher for its role fixtures (conductor(), arbiter()...).
+Pure: fake runners, no systemd, no clock. Imports selftest_dispatcher for its role fixtures (conductor(), producer()...).
 """
 import copy
 import json
@@ -25,8 +25,6 @@ time.tzset()
 import role_launch as RL  # noqa: E402
 import selftest_dispatcher as SD  # noqa: E402
 
-REAL_LIVE_ONLY = RL.PW.live_only
-RL.PW.live_only = lambda pairs: pairs     # the golden shas are invented: the replay must not ask this clone's git
 
 FAILS = []
 SCEN = []
@@ -450,10 +448,6 @@ def decide_event_runs():
     st = st0()
     out["bad event kind"] = decide([pbad], st, lo(SD.ops_status(t), evs, items), t, busy=set())
     out["pending_events kinds"] = [
-        RL.pending_events({"event_runs": ["done_claims"], "ledger_item": "X"},
-                          {"events": [dict(SD.BASE_EV, event="close", id="C1", ts=SD.lts(t)),
-                                      dict(SD.BASE_EV, event="note", id="C2", ts=SD.lts(t))], "world": SD.FakeWorld({})},
-                          t - 100),
         RL.pending_events({"event_runs": ["plan_step_failure"], "ledger_item": "X", "plan_scope": ["row"]},
                           {"events": evs, "world": SD.FakeWorld({"A": OpenItem()})}, t - 3000),
         RL.pending_events({"event_runs": ["plan_step_failure"], "ledger_item": "X"},
@@ -514,44 +508,6 @@ def decide_off_switch_on_event_run_is_not_spent():
     ob2 = lo(SD.ops_status(t + 600), evs, items)
     later = decide([p], st, ob2, t + 600, busy=set())
     return [first, later]
-
-
-@scen
-def decide_done_claims_slot_gate():
-    t = SD.at_local("11:00")
-    arb = SD.arbiter()
-    out = {}
-    st = fresh_st(Arbiter={"done": {}, "runs": [], "event_cursor": t - 600, "events_seen": []})
-    out["no claims"] = decide([arb], st, lo(SD.ops_status(t)), t, busy=set())
-    claims = [dict(SD.BASE_EV, event="implemented", id="BUILT", ts=SD.lts(t - 300)),
-              dict(SD.BASE_EV, event="close", id="CLOSED", ts=SD.lts(t - 200))]
-    st = fresh_st(Arbiter={"done": {}, "runs": [], "event_cursor": t - 600, "events_seen": []})
-    out["claims"] = decide([arb], st, lo(SD.ops_status(t), claims), t, busy=set())
-    return out
-
-
-@scen
-def decide_pending_work_slot_gate():
-    t = SD.at_local("11:00")
-    arb = SD.arbiter(slot_when="pending_work")
-    close = dict(SD.BASE_EV, event="close", id="CLAIMED", sha="abcdef1234567890", ts=SD.lts(t - 3600))
-    out = {}
-
-    def based():
-        return fresh_st(Arbiter={"done": {}, "runs": [], "event_cursor": t - 60, "events_seen": []})
-    st = based()
-    out["nothing pending"] = decide([arb], st, SD.pwobs(t, []), t, busy=set())
-    st = based()
-    out["pending"] = decide([arb], st, SD.pwobs(t, [close]), t, busy=set())
-    st = based()
-    out["no stores reader"] = decide([arb], st, SD.pwobs(t, [], stores=False), t, busy=set())
-    st = based()
-    def bad_stores():
-        raise OSError("disk")
-    out["stores raise"] = decide([arb], st, SD.pwobs(t, [], stores=bad_stores), t, busy=set())
-    st = based()
-    out["no cutoff"] = decide([arb], st, SD.pwobs(t, [], stores={"cutoff": None}), t, busy=set())
-    return out
 
 
 @scen
@@ -675,13 +631,12 @@ def pending_events_combines_kinds_and_since():
            dict(SD.BASE_EV, event="note", id="PLAN_X", ts=SD.lts(t - 700), text="REPLAN: change"),
            dict(SD.BASE_EV, event="implemented", id="BUILT", ts=SD.lts(t - 500))]
     lr = {"events": evs, "world": SD.FakeWorld(items)}
-    role = {"event_runs": ["plan_step_failure", "replan_request", "done_claims"], "ledger_item": "PLAN_X",
+    role = {"event_runs": ["plan_step_failure", "replan_request"], "ledger_item": "PLAN_X",
             "replan_note_prefix": "REPLAN", "plan_scope": ["raised", "row"]}
     out = {"all": RL.pending_events(role, lr, t - 3000)}
     out["since later"] = RL.pending_events(role, lr, t - 600)
     out["reverse order"] = RL.pending_events(dict(role, event_runs=list(reversed(role["event_runs"]))), lr, t - 3000)
     out["only replan"] = RL.pending_events(dict(role, event_runs=["replan_request"]), lr, t - 3000)
-    out["only claims"] = RL.pending_events(dict(role, event_runs=["done_claims"]), lr, t - 3000)
     out["world_filter off"] = RL.pending_events(dict(role, event_runs=["plan_step_failure"]),
                                                 {"events": evs, "world": SD.FakeWorld({})}, t - 3000, False)
     out["world_filter on, none open"] = RL.pending_events(dict(role, event_runs=["plan_step_failure"]),
@@ -1522,52 +1477,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                  'seat': 'BENCH',
                                                                                  'state': 'running',
                                                                                  'unit': 'live'}]}}},
- 'decide_done_claims_slot_gate': {'claims': {'acts': [{'account': None,
-                                                       'band': 'NONE',
-                                                       'blind': {'mode': 'run',
-                                                                 'outcome': 'launched',
-                                                                 'role': 'Arbiter',
-                                                                 'unit': 'rm-role-arbiter-1793185260'},
-                                                       'budget': 100000,
-                                                       'do': 'role_launch',
-                                                       'message': '<message>',
-                                                       'mode': 'run',
-                                                       'note': True,
-                                                       'role': 'Arbiter',
-                                                       'run_max_s': 1800,
-                                                       'seat': 'BENCH',
-                                                       'slot': '2026-10-28 11:00',
-                                                       'ticket': 'ROLES_ITEM_X',
-                                                       'unit': 'rm-role-arbiter-1793185260',
-                                                       'why': 'Arbiter slot 11:00 local, 2 done claim(s) since '
-                                                              '2026-10-28T10:51:00Z (oldest implemented BUILT), band '
-                                                              'NONE, budget 100000 (cap 100000 x 1.0), 0 used today, '
-                                                              'unit rm-role-arbiter-1793185260, model opus'}],
-                                             'ledger_blind': None,
-                                             'roles': {'Arbiter': {'done': {'2026-10-28 11:00': 'launch'},
-                                                                   'event_cursor': 1793185260.0,
-                                                                   'events_seen': ['1793184960.000000|BUILT|implemented',
-                                                                                   '1793185060.000000|CLOSED|close'],
-                                                                   'pending_launch': {'alarm_day': None,
-                                                                                      'alarm_last_run': None,
-                                                                                      'alarms_seen': None,
-                                                                                      'done': None,
-                                                                                      'event_cursor': 1793184660.0,
-                                                                                      'events_seen': [],
-                                                                                      'had_done': False,
-                                                                                      'key': '2026-10-28 11:00',
-                                                                                      'mode': 'run',
-                                                                                      'unit': 'rm-role-arbiter-1793185260'},
-                                                                   'runs': []}}},
-                                  'no claims': {'acts': [{'do': 'role_hold',
-                                                          'role': 'Arbiter',
-                                                          'why': 'Arbiter slot 11:00 local not run: no done claim '
-                                                                 '(implemented/close) since 2026-10-28T10:51:00Z'}],
-                                                'ledger_blind': None,
-                                                'roles': {'Arbiter': {'done': {'2026-10-28 11:00': 'no done claims'},
-                                                                      'event_cursor': 1793184660.0,
-                                                                      'events_seen': [],
-                                                                      'runs': []}}}},
  'decide_event_and_alarm_reserve_the_days_scheduled_runs': {'alarm fits exactly': {'acts': [{'do': 'role_hold',
                                                                                              'role': 'Operations',
                                                                                              'why': 'Operations slot '
@@ -1935,7 +1844,7 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                     'note': True,
                                                     'ticket': 'ROLES_ITEM_X',
                                                     'why': "role Producer NOT RUN: event_runs kind 'nonsense' is not "
-                                                           'one of plan_step_failure, replan_request, done_claims'}],
+                                                           'one of plan_step_failure, replan_request'}],
                                           'ledger_blind': None,
                                           'roles': {'Producer': {'done': {'2026-10-28 09:00': 'missed'},
                                                                  'event_cursor': 1793189460.0,
@@ -1988,8 +1897,8 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                                'unit': 'rm-role-producer-1793192460'},
                                                                             'runs': []}}},
                        'pending_events bad kind': "event_runs kind 'zzz' is not one of plan_step_failure, "
-                                                  'replan_request, done_claims',
-                       'pending_events kinds': [[[1793192460, 'C1', 'close']], [], [[1793190960, 'A', 'block']]],
+                                                  'replan_request',
+                       'pending_events kinds': [[], [[1793190960, 'A', 'block']]],
                        'quota used: held once a day': [{'acts': [{'do': 'role_hold',
                                                                   'role': 'Producer',
                                                                   'why': 'Producer slot 09:00 missed (tick 14460 s '
@@ -2516,146 +2425,6 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                                             'mode': 'event',
                                                                                             'unit': 'rm-role-producer-1793193060'},
                                                                          'runs': []}}}],
- 'decide_pending_work_slot_gate': {'no cutoff': {'acts': [{'do': 'alarm',
-                                                           'kind': 'role:Arbiter:cutoff',
-                                                           'note': True,
-                                                           'ticket': 'ROLES_ITEM_X',
-                                                           'why': 'Arbiter slot 11:00 local not run: no Arbiter '
-                                                                  'cutoff stamp at '
-                                                                  '/mnt/d/ClaudeWork/rimmandrake/arbiter/cutoff.json: '
-                                                                  'its queue (work after enable) is undefined. Stamp '
-                                                                  'it at enable: python3 '
-                                                                  'src/RimMandrake/rimflow/arbiter_pending.py stamp '
-                                                                  '--by SEAT --why ...'}],
-                                                 'ledger_blind': None,
-                                                 'roles': {'Arbiter': {'done': {'2026-10-28 11:00': 'no cutoff'},
-                                                                       'event_cursor': 1793185200.0,
-                                                                       'events_seen': [],
-                                                                       'runs': []}}},
-                                   'no stores reader': {'acts': [{'account': None,
-                                                                  'band': 'NONE',
-                                                                  'blind': {'mode': 'run',
-                                                                            'outcome': 'launched',
-                                                                            'role': 'Arbiter',
-                                                                            'unit': 'rm-role-arbiter-1793185260'},
-                                                                  'budget': 100000,
-                                                                  'do': 'role_launch',
-                                                                  'message': '<message>',
-                                                                  'mode': 'run',
-                                                                  'note': True,
-                                                                  'role': 'Arbiter',
-                                                                  'run_max_s': 1800,
-                                                                  'seat': 'BENCH',
-                                                                  'slot': '2026-10-28 11:00',
-                                                                  'ticket': 'ROLES_ITEM_X',
-                                                                  'unit': 'rm-role-arbiter-1793185260',
-                                                                  'why': 'Arbiter slot 11:00 local, pending: work '
-                                                                         'stores UNMEASURED (no pending_stores '
-                                                                         'reader in obs), launched since work may be '
-                                                                         'pending, band NONE, budget 100000 (cap '
-                                                                         '100000 x 1.0), 0 used today, unit '
-                                                                         'rm-role-arbiter-1793185260, model opus'}],
-                                                        'ledger_blind': None,
-                                                        'roles': {'Arbiter': {'done': {'2026-10-28 11:00': 'launch'},
-                                                                              'event_cursor': 1793185260.0,
-                                                                              'events_seen': [],
-                                                                              'pending_launch': {'alarm_day': None,
-                                                                                                 'alarm_last_run': None,
-                                                                                                 'alarms_seen': None,
-                                                                                                 'done': None,
-                                                                                                 'event_cursor': 1793185200.0,
-                                                                                                 'events_seen': [],
-                                                                                                 'had_done': False,
-                                                                                                 'key': '2026-10-28 '
-                                                                                                        '11:00',
-                                                                                                 'mode': 'run',
-                                                                                                 'unit': 'rm-role-arbiter-1793185260'},
-                                                                              'runs': []}}},
-                                   'nothing pending': {'acts': [{'do': 'role_hold',
-                                                                 'role': 'Arbiter',
-                                                                 'why': 'Arbiter slot 11:00 local not run: nothing '
-                                                                        'pending (escapes, unresolved, done_claims, '
-                                                                        'verify_backlog)'}],
-                                                       'ledger_blind': None,
-                                                       'roles': {'Arbiter': {'done': {'2026-10-28 11:00': 'nothing '
-                                                                                                          'pending'},
-                                                                             'event_cursor': 1793185200.0,
-                                                                             'events_seen': [],
-                                                                             'runs': []}}},
-                                   'pending': {'acts': [{'account': None,
-                                                         'band': 'NONE',
-                                                         'blind': {'mode': 'run',
-                                                                   'outcome': 'launched',
-                                                                   'role': 'Arbiter',
-                                                                   'unit': 'rm-role-arbiter-1793185260'},
-                                                         'budget': 100000,
-                                                         'do': 'role_launch',
-                                                         'message': '<message>',
-                                                         'mode': 'run',
-                                                         'note': True,
-                                                         'role': 'Arbiter',
-                                                         'run_max_s': 1800,
-                                                         'seat': 'BENCH',
-                                                         'slot': '2026-10-28 11:00',
-                                                         'ticket': 'ROLES_ITEM_X',
-                                                         'unit': 'rm-role-arbiter-1793185260',
-                                                         'why': 'Arbiter slot 11:00 local, pending: 1 done claims '
-                                                                '(first CLAIMED), band NONE, budget 100000 (cap '
-                                                                '100000 x 1.0), 0 used today, unit '
-                                                                'rm-role-arbiter-1793185260, model opus'}],
-                                               'ledger_blind': None,
-                                               'roles': {'Arbiter': {'done': {'2026-10-28 11:00': 'launch'},
-                                                                     'event_cursor': 1793185260.0,
-                                                                     'events_seen': [],
-                                                                     'pending_launch': {'alarm_day': None,
-                                                                                        'alarm_last_run': None,
-                                                                                        'alarms_seen': None,
-                                                                                        'done': None,
-                                                                                        'event_cursor': 1793185200.0,
-                                                                                        'events_seen': [],
-                                                                                        'had_done': False,
-                                                                                        'key': '2026-10-28 11:00',
-                                                                                        'mode': 'run',
-                                                                                        'unit': 'rm-role-arbiter-1793185260'},
-                                                                     'runs': []}}},
-                                   'stores raise': {'acts': [{'account': None,
-                                                              'band': 'NONE',
-                                                              'blind': {'mode': 'run',
-                                                                        'outcome': 'launched',
-                                                                        'role': 'Arbiter',
-                                                                        'unit': 'rm-role-arbiter-1793185260'},
-                                                              'budget': 100000,
-                                                              'do': 'role_launch',
-                                                              'message': '<message>',
-                                                              'mode': 'run',
-                                                              'note': True,
-                                                              'role': 'Arbiter',
-                                                              'run_max_s': 1800,
-                                                              'seat': 'BENCH',
-                                                              'slot': '2026-10-28 11:00',
-                                                              'ticket': 'ROLES_ITEM_X',
-                                                              'unit': 'rm-role-arbiter-1793185260',
-                                                              'why': 'Arbiter slot 11:00 local, pending: work stores '
-                                                                     'UNMEASURED (disk), launched since work may be '
-                                                                     'pending, band NONE, budget 100000 (cap 100000 '
-                                                                     'x 1.0), 0 used today, unit '
-                                                                     'rm-role-arbiter-1793185260, model opus'}],
-                                                    'ledger_blind': None,
-                                                    'roles': {'Arbiter': {'done': {'2026-10-28 11:00': 'launch'},
-                                                                          'event_cursor': 1793185260.0,
-                                                                          'events_seen': [],
-                                                                          'pending_launch': {'alarm_day': None,
-                                                                                             'alarm_last_run': None,
-                                                                                             'alarms_seen': None,
-                                                                                             'done': None,
-                                                                                             'event_cursor': 1793185200.0,
-                                                                                             'events_seen': [],
-                                                                                             'had_done': False,
-                                                                                             'key': '2026-10-28 '
-                                                                                                    '11:00',
-                                                                                             'mode': 'run',
-                                                                                             'unit': 'rm-role-arbiter-1793185260'},
-                                                                          'runs': []}}}},
  'decide_role_entries_and_schedule_errors': {'bad slot_late_s': {'acts': [{'blind': {'mode': None,
                                                                                      'outcome': 'schedule_unreadable',
                                                                                      'role': 'Conductor',
@@ -2953,17 +2722,14 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                              'x2 first': 120000,
                                                              'x3 weekly': 120000},
  'pending_events_combines_kinds_and_since': {'all': [[1793191560, 'A', 'block'],
-                                                     [1793191760, 'PLAN_X', 'replan request'],
-                                                     [1793191960, 'BUILT', 'implemented']],
+                                                     [1793191760, 'PLAN_X', 'replan request']],
                                              'bad': "event_runs kind 'x' is not one of plan_step_failure, "
-                                                    'replan_request, done_claims',
-                                             'only claims': [[1793191960, 'BUILT', 'implemented']],
+                                                    'replan_request',
                                              'only replan': [[1793191760, 'PLAN_X', 'replan request']],
                                              'reverse order': [[1793191560, 'A', 'block'],
-                                                               [1793191760, 'PLAN_X', 'replan request'],
-                                                               [1793191960, 'BUILT', 'implemented']],
+                                                               [1793191760, 'PLAN_X', 'replan request']],
                                              'scope default': [[1793191560, 'A', 'block']],
-                                             'since later': [[1793191960, 'BUILT', 'implemented']],
+                                             'since later': [],
                                              'world_filter off': [[1793191560, 'A', 'block']],
                                              'world_filter on, none open': []},
  'signal_marked_every_line': {'blind empty': 'marker scan UNMEASURED (proc unlistable)',
@@ -3982,21 +3748,9 @@ def alarm_dedupe():
     want("a scheduled launch holds the open alarms for its finish", bool(sa) and sa["keys"] == ["ITEM_ONE"], sa)
 
 
-def dead_shas():
-    """ARBITER_EVIDENCE_FIX_REPLAY_ERASES_FAIL: a sha no commit answers to cannot hold the batch cap."""
-    import subprocess
-    head = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, cwd=HERE).stdout.strip()
-    got = REAL_LIVE_ONLY([("LIVE", head), ("DEAD", "deadbeef0123"), ("TESTNAME", "docs1234")])
-    ok = [k for k, _ in got] == ["LIVE", "TESTNAME"]
-    print(("ok    " if ok else "FAIL  ") + "live_only keeps a real commit, drops a dead sha: %s" % got)
-    if not ok:
-        FAILS.append("dead_shas")
-
-
 _REACHED = []
 main()
 alarm_dedupe()
-dead_shas()
 _REACHED.append(1)
 print("%d failure(s)" % len(FAILS) if FAILS else "all ok")
 sys.exit(1 if (FAILS or _REACHED != [1]) else 0)

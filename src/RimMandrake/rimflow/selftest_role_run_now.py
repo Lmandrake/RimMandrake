@@ -2,8 +2,8 @@
 """Selftest of the one-shot role run (`role_launch.py run-now`; V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE, the v3 trial
 path). A run-now request sits in the dispatcher state (st["roles"][R]["run_now"]); the next tick launches it ONCE,
 even for a role whose schedule entry is not enabled, through every gate a scheduled run passes (off switch, busy,
-ops reading, band, daily cap, account), and consumes it on launch or refusal. An Arbiter request may name claims
-(isolated_evidence --item, arbiter_tiers --claim) and be a trial (its verdicts sink apart from the real ones).
+ops reading, band, daily cap, account), and consumes it on launch or refusal. The test role is
+selftest_dispatcher.arbiter(), a plain two-slot clock role (its name is the fixture's, the Arbiter role is retired).
 Pure but for a temp dir: fake obs, no systemd, no clock."""
 import json
 import os
@@ -24,14 +24,13 @@ def check(ok, msg):
         print("FAIL:", msg)
 
 
-T = SD.at_local("13:00")                  # no Arbiter slot (11:00, 17:00) is due: only a run-now can launch
-SHA = "abcdef1234567890"
+T = SD.at_local("13:00")                  # no fixture slot (11:00, 17:00) is due: only a run-now can launch
 
 
 def req(**kw):
     sch = SD.sched(roles=[SD.arbiter(enabled=False)])
-    return RL.run_now_request(sch, dict({"role": "Arbiter", "by": "BENCH", "why": "v3 trial", "mode": None,
-                                         "claims": [], "trial": False, "days": 7}, **kw), T - 60)
+    return RL.run_now_request(sch, dict({"role": "Arbiter", "by": "BENCH", "why": "v3 trial", "mode": None}, **kw),
+                              T - 60)
 
 
 def state(r=None, **rs):
@@ -48,7 +47,7 @@ def ledger_boom():
 
 def decide(st, role=None, status=None, now=T, **kw):
     ro = SD.lrobs(status if status is not None else SD.ops_status(now), ledger_boom, **kw)
-    return SD.role_acts(SD.rdecide([role or SD.arbiter(enabled=False, slot_when="pending_work")], st, ro, now))
+    return SD.role_acts(SD.rdecide([role or SD.arbiter(enabled=False)], st, ro, now))
 
 
 def launches(acts):
@@ -57,28 +56,18 @@ def launches(acts):
 
 def test_request_validated():
     r = req()
-    check(r["by"] == "BENCH" and r["why"] == "v3 trial" and r["mode"] == "run" and r["claims"] == []
-          and r["trial"] is False and r["at"] == T - 60, "request: the defaults (mode run for a run_token_cap role)")
+    check(r["by"] == "BENCH" and r["why"] == "v3 trial" and r["mode"] == "run" and r["at"] == T - 60
+          and set(r) == {"at", "by", "why", "mode"}, "request: the defaults (mode run for a run_token_cap role)")
     for kw, text in (({"role": "Nobody"}, "no role"), ({"by": ""}, "--by"), ({"why": " "}, "--why"),
-                     ({"mode": "alarm"}, "mode"), ({"mode": "event"}, "mode"), ({"mode": "quick"}, "mode"),
-                     ({"claims": ["NO_SHA"]}, "ITEM@SHA"), ({"claims": ["X@12"]}, "ITEM@SHA"),
-                     ({"days": 0}, "days"), ({"trial": True}, "--claim")):
+                     ({"mode": "alarm"}, "mode"), ({"mode": "event"}, "mode"), ({"mode": "quick"}, "mode")):
         try:
             req(**kw)
             check(False, "request %r refused" % kw)
         except ValueError as e:
             check(text in str(e), "request %r refused naming %s: %s" % (kw, text, e))
     sch = SD.sched(roles=[SD.operations(enabled=False)])
-    try:
-        RL.run_now_request(sch, {"role": "Operations", "by": "B", "why": "w", "claims": ["A@abcdef1"]}, T)
-        check(False, "claims on a role without the claim pre-steps refused")
-    except ValueError as e:
-        check("Arbiter" in str(e), "claims are an Arbiter request only: %s" % e)
     ok = RL.run_now_request(sch, {"role": "Operations", "by": "B", "why": "w", "mode": "economy"}, T)
     check(ok["mode"] == "economy", "a mode the role has a cap for is accepted (Operations economy)")
-    c = req(claims=["A_ITEM@ABCDEF1", "B@abcdef2"], trial=True)
-    check(c["claims"] == [["A_ITEM", "abcdef1"], ["B", "abcdef2"]] and c["trial"] is True,
-          "claims parsed, sha lower-cased: %r" % c["claims"])
 
 
 def test_launch_disabled_role_once():
@@ -138,9 +127,8 @@ def test_enabled_role_slot_untouched():
     t = SD.at_local("11:00")
     st = state(dict(req(), at=t - 60), event_cursor=t - 60, events_seen=[])
     # daily cap room for the run-now beside the two scheduled slots it keeps a reserve for (2 x 100000)
-    role = SD.arbiter(slot_when="pending_work", daily_token_cap=400000)
-    RL.PW.live_only = lambda pairs: pairs       # the fixture's sha is no commit: in a real clone live_only drops it
-    ro = SD.pwobs(t, [dict(SD.BASE_EV, event="close", id="CLAIMED", sha=SHA, ts=SD.lts(t - 3600))])
+    role = SD.arbiter(daily_token_cap=400000)
+    ro = SD.robs(SD.ops_status(t))
     la = launches(SD.role_acts(SD.rdecide([role], st, ro, t)))
     rs = st["roles"]["Arbiter"]
     check(len(la) == 1 and " run-now " in la[0]["slot"], "an enabled role: the run-now goes first")
@@ -152,35 +140,16 @@ def test_enabled_role_slot_untouched():
     check(len(la) == 1 and la[0]["slot"] == RL.slot_key(t, "11:00"), "the next tick runs the 11:00 slot as before")
     # review r1: a slot already past its late window keeps no reserve (13:00: 11:00 is gone, 17:00 is kept)
     t = SD.at_local("13:00")
-    ro = SD.pwobs(t, [dict(SD.BASE_EV, event="close", id="CLAIMED", sha=SHA, ts=SD.lts(t - 3600))])
+    ro = SD.robs(SD.ops_status(t))
     st = state(dict(req(), at=t - 60), event_cursor=t - 60, events_seen=[])
-    role = SD.arbiter(slot_when="pending_work", daily_token_cap=200000)
+    role = SD.arbiter(daily_token_cap=200000)
     la = launches(SD.role_acts(SD.rdecide([role], st, ro, t)))
     check(len(la) == 1 and " run-now " in la[0]["slot"], "13:00: only 17:00 is reserved, the run-now fits 200000")
     st = state(dict(req(), at=t - 60), event_cursor=t - 60, events_seen=[])
-    role = SD.arbiter(slot_when="pending_work", daily_token_cap=199999)
+    role = SD.arbiter(daily_token_cap=199999)
     acts = SD.role_acts(SD.rdecide([role], st, ro, t))
     check(not launches(acts) and st["roles"]["Arbiter"]["run_now_last"]["outcome"] == "refused: daily cap",
           "one token short of run-now + the 17:00 reserve: refused, consumed")
-
-
-def test_claims_and_trial():
-    st = state(req(claims=["SITH_ITEM@bd396393f6", "FIXTURE_ITEM@9e68653bbb"], trial=True, days=4))
-    la = launches(decide(st))
-    a = la[0] if la else {}
-    check(" run-now trial " in a.get("slot", ""), "a trial run's key says so (the harvest sinks it apart)")
-    pre = a.get("pre_launch") or []
-    flat = [" ".join(p) for p in pre]
-    check(len(pre) == 2 and "isolated_evidence.py --run --seat DISPATCHER" in flat[0]
-          and "--item SITH_ITEM --item FIXTURE_ITEM --days 4" in flat[0] and "--since-cutoff" not in flat[0]
-          and "--budget-s" not in flat[0], "pre-step 1: isolated evidence for the named items only: %r" % flat[:1])
-    check("arbiter_tiers.py --claim SITH_ITEM@bd396393f6 --claim FIXTURE_ITEM@9e68653bbb --days 4" in flat[1]
-          and "--data " + RL.TRIAL_TIERS_DATA in flat[1], "pre-step 2: tiers for the named claims, trial data dir: %r"
-          % flat[1:])
-    check("SITH_ITEM@bd396393f6" in a.get("message", ""), "the message names the claims to judge")
-    st = state(req())
-    a = launches(decide(st))[0]
-    check(a.get("pre_launch") is None, "no claims: the schedule's own pre-steps run (no override)")
 
 
 def test_launch_role_override():
@@ -190,13 +159,13 @@ def test_launch_role_override():
     check(r2["enabled"] is True and r2["pre_launch"] == [["y"]] and role["enabled"] is False,
           "a run-now: enabled for this launch only, its pre-steps; the schedule entry untouched")
     r3 = RL.launch_role(role, {"run_now": {"by": "B"}, "pre_launch": None})
-    check(r3["pre_launch"] == [["x"]], "a run-now without claims keeps the schedule's pre-steps")
+    check(r3["pre_launch"] == [["x"]], "a run-now with no pre-steps of its own keeps the schedule's")
 
 
 def test_execute_launches_disabled_role():
     role = SD.arbiter(enabled=False)
     sch = SD.sched(roles=[role])
-    st = state(req(claims=["SITH_ITEM@bd396393f6"]))
+    st = state(req())
     acts = decide(st, role=role)
     got = []
 
@@ -207,8 +176,8 @@ def test_execute_launches_disabled_role():
     fx = {"role_launch": fake_launch, "off": lambda p: None, "paused": lambda: None, "note": lambda i, t: (True, ""),
           "publish": lambda n: None}
     D.execute(acts, sch, st, root, True, T, fx)
-    check(len(got) == 1 and got[0]["enabled"] is True and "--claim" in " ".join(got[0]["pre_launch"][1]),
-          "execute launches the disabled role for the run-now, with the claim pre-steps: %r"
+    check(len(got) == 1 and got[0]["enabled"] is True,
+          "execute launches the disabled role for the run-now: %r"
           % [a.get("result") for a in acts])
     st = state(req())
     acts = decide(st, role=role)
@@ -216,51 +185,6 @@ def test_execute_launches_disabled_role():
     D.execute(acts, sch, st, root, True, T, dict(fx, paused=lambda: "owner pause"))
     rs = st["roles"]["Arbiter"]
     check(not got and rs.get("run_now"), "PAUSE at launch: not launched, the request given back")
-
-
-def test_harvest_notes_and_trial_sink():
-    acts, run = SD_finish("Arbiter", {"verdicts": [
-        dict(SD_verdict(item="GOOD_ONE"), disposition="PASS"),
-        dict(SD_verdict(item="BAD_ONE", sha="9e68653"), disposition="FAIL-check", causes=["check"],
-             evidence=["D:\\ClaudeWork\\rimmandrake\\isolated\\x.txt"])]})
-    notes = [a for a in acts if a["do"] == "role_verdict_note"]
-    sink = [a for a in acts if a["do"] == "role_verdicts"]
-    check(sink and sink[0]["path"] == RL.PW.VERDICTS, "a scheduled run's verdicts: the real sink")
-    check(sorted(a["ticket"] for a in notes) == ["BAD_ONE", "GOOD_ONE"] and all(a["note"] for a in notes),
-          "each verdict is noted on its own claim's item: %r" % [a.get("ticket") for a in notes])
-    bad = [a for a in notes if a["ticket"] == "BAD_ONE"]
-    check(bad and "FAIL-check" in bad[0]["why"] and "9e68653" in bad[0]["why"] and "causes: check" in bad[0]["why"]
-          and "isolated" in bad[0]["why"],
-          "the note: disposition, sha, causes, evidence: %r" % (bad[0]["why"] if bad else None))
-    check(not [a for a in acts if a["do"] == "role_verdict_run" and a["ticket"] == "BAD_ONE"],
-          "FAIL-check settles first: it writes no ledger run (ruling D1(b): FAIL-module and BAR-defect do)")
-    good = [a for a in acts if a["do"] == "role_verdict_run" and a["ticket"] == "GOOD_ONE"]
-    check(good and "arbiter:PASS" in good[0]["run"], "a PASS goes on the ledger as a verdict run: %r" % good)
-    acts, run = SD_finish("Arbiter", {"verdicts": [SD_verdict(item="GOOD_ONE")]}, slot="2026-10-28 run-now trial x")
-    sink = [a for a in acts if a["do"] == "role_verdicts"]
-    notes = [a for a in acts if a["do"] == "role_verdict_note"]
-    check(sink and sink[0]["path"] == RL.TRIAL_VERDICTS and RL.TRIAL_VERDICTS != RL.PW.VERDICTS,
-          "a trial run's verdicts sink apart (the real store stays the false-reject instrument)")
-    check(notes and notes[0]["why"].startswith("TRIAL "), "a trial verdict's note says TRIAL")
-    check(not [a for a in acts if a["do"] == "role_verdict_run"], "a trial verdict never reaches the ledger as a run")
-
-
-def SD_verdict(item="ITEM_A", sha="abcdef1", **kw):
-    v = {"item": item, "sha": sha, "disposition": "PASS", "causes": [], "interim": None,
-         "evidence": ["D:\\ClaudeWork\\x\\run.txt"], "ts": "2026-10-28T01:00:00Z"}
-    v.update(kw)
-    return v
-
-
-def SD_finish(name, so, slot="2026-10-28 11:00"):
-    acts = []
-    res = {"type": "result", "subtype": "success", "is_error": False, "result": "ok",
-           "usage": {k: 1 for k in RL.USAGE_KEYS}, "modelUsage": {"m": {}}, "structured_output": so}
-    obs = {"unit_state": lambda u: "inactive", "result": lambda r: res, "procs": lambda *a, **k: []}
-    rs = {"runs": [{"state": "running", "unit": "rm-role-%s-1" % name.lower(), "at": 0, "scope": "S.scope",
-                    "marker": "M", "item": "I", "budget": 10 ** 9, "mode": "run", "slot": slot}]}
-    RL._supervise_one(name, rs, {"run_max_s": 100, "seat": "S"}, obs, 50, lambda **kw: acts.append(kw), set())
-    return acts, rs["runs"][0]
 
 
 def test_cli_writes_request():
@@ -271,10 +195,10 @@ def test_cli_writes_request():
     base = ["run-now", "--schedule", sch_path, "--root", root, "--role", "Arbiter", "--by", "BENCH", "--why", "trial"]
     rc = RL.main(base)
     check(rc == 0 and not os.path.exists(os.path.join(root, "state.json")), "run-now without --apply writes nothing")
-    rc = RL.main(base + ["--claim", "A@abcdef1", "--trial", "--apply"])
+    rc = RL.main(base + ["--apply"])
     st = json.load(open(os.path.join(root, "state.json")))
     r = st["roles"]["Arbiter"]["run_now"]
-    check(rc == 0 and r["claims"] == [["A", "abcdef1"]] and r["trial"] is True and r["by"] == "BENCH",
+    check(rc == 0 and r["by"] == "BENCH" and r["why"] == "trial",
           "run-now --apply writes the request into the state")
     check(RL.main(base + ["--apply"]) == 1, "a second request while one is pending is refused (cancel it first)")
     check(RL.main(["run-now", "--schedule", sch_path, "--root", root, "--role", "Arbiter", "--cancel", "--apply"]) == 0
@@ -285,8 +209,8 @@ def test_cli_writes_request():
 
 
 TESTS = (test_request_validated, test_launch_disabled_role_once, test_refusals_consume, test_waits_keep_request,
-         test_enabled_role_slot_untouched, test_claims_and_trial, test_launch_role_override,
-         test_execute_launches_disabled_role, test_harvest_notes_and_trial_sink, test_cli_writes_request)
+         test_enabled_role_slot_untouched, test_launch_role_override, test_execute_launches_disabled_role,
+         test_cli_writes_request)
 
 
 def main():
