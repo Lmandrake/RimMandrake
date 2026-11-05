@@ -689,6 +689,13 @@ def short(item):
 
 def collect_items(env):
     states = env.item_states()
+    for s in states:        # a checking item's Judge may be done, its verdict waiting for the next tick to read it
+        out = ((s.get("check") or {}).get("run") or {}).get("out") if s.get("status") == "checking" else None
+        if out:
+            try:
+                s["_judge_out"] = env.mtime(out)
+            except OSError:
+                pass
     counts = collections.Counter(s.get("status") for s in states)
     by_status = collections.defaultdict(list)
     for s in states:
@@ -1733,7 +1740,8 @@ def ghost_places(p):
     if not it or not tree:
         return None
     alive = {x["id"].split("-")[0] for x in tree["groups"].values() if x["label"] == "worker"}
-    return [s["item"] for k in ("running", "checking") for s in it["by_status"][k] if short(s["item"]) not in alive]
+    return [s["item"] for k in ("running", "checking") for s in it["by_status"][k] if short(s["item"]) not in alive
+            and not s.get("_judge_out")]    # a Judge that wrote its result has left: the tick reads it, no process is owed
 
 
 def level(v, pair):
@@ -1769,6 +1777,14 @@ def item_mark(st, now, bands, age=None, churn=False, circling=False, ghost=False
             flash.append("NO PROCESS")
         beat = num(st.get("last_beat"))
         quiet = bands.get("stuck_silent_s")
+        if status == "checking":    # last_beat is the builder's: a Judge's life starts at its launch (PASS3_FLOOD board, 2026-11-05)
+            chk = st.get("check") or {}
+            judged = num(st.get("_judge_out"))
+            beat = max([v for v in (beat, num(chk.get("at"))) if v is not None], default=None)
+            if judged is not None:
+                beat = None
+                if quiet and now - judged >= quiet:
+                    flash.append("VERDICT UNREAD %s" % ago(now - judged).replace(" ", ""))
         if status in ("running", "checking") and quiet and beat is not None and now - beat >= quiet:
             flash.append("SILENT %s" % ago(now - beat).replace(" ", ""))
     return {"status": status, "age": age, "passes": passes, "spent": spent, "band": "hot" if flash else ("cool", "warm", "hot")[worst],

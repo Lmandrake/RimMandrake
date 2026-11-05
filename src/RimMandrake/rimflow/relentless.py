@@ -1106,6 +1106,43 @@ def cause_fail(store, st, r, now):
     return cause
 
 
+QUARANTINE = "quarantine"
+QUARANTINE_RETURNS = 2      # returns 2 is the board's "pass 3"
+
+
+def quarantine_due(st, r, returns, spent):
+    """Owner 2026-11-05 (CHECKING_BOUNCE_ENFORCE_QUARANTINE_HOLD): "Please watch carefully for dangerously expensive
+    poorly passing items. Quarantine them if they bounce again from Checking." Due when the item came to this verdict at
+    pass >= 3 or over its advisory item_spend_limit (the grace his yes bought included)."""
+    return returns >= QUARANTINE_RETURNS or spent >= r["item_spend_limit"] + (st.get("spent_grace") or 0)
+
+
+def quarantine(store, st, word, returns, spent, now):
+    """Under the lock, after the Judge's non-PASS verdict was routed as usual (its record, its count): the item is held
+    at once, over whatever the routing left (a stopping return settles to held; a hold it set is kept under this one), so
+    no builder, consult or re-check starts. Released only by `unhold`, whose CLI demands --owner-said or a ruling.
+    -> the Conductor attention line."""
+    if st["status"] in ("done", "closing", "retiring"):
+        return None
+    back = st["status"]
+    if back == "stopping":
+        back = "blocked" if st.get("block_pending") or st.get("wait") else "queued"
+    under = st.get("hold") or None      # a strikes hold fail() set on a stopping return included
+    reasons = ((st.get("last_fail") or {}).get("detail") or (st.get("blind") or {}).get("what") or "")[:300]
+    why = ("quarantine: bounced from checking at pass %d, %d tokens; the Judge said %s on %s: %s. No build, consult or "
+           "check runs until a ruling unholds it" % (returns + 1, spent, word, (st.get("candidate") or {}).get("sha"), reasons))
+    st["hold"] = {"why": why[:900], "kind": QUARANTINE, "at": now, "from": "checking", "back": back, "under": under,
+                  "verdict": word, "pass": returns + 1, "spent": spent}
+    if st["status"] != "stopping":
+        st["status"] = "held"
+    st.pop("recheck_at", None)
+    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"], "hold": QUARANTINE, "said": word, "pass": returns + 1,
+                               "spent": spent, "sha": (st.get("candidate") or {}).get("sha")})
+    store.save(st)
+    return "%s %s. Look: relentless.py show %s; release: relentless.py unhold %s with a ruling" % (
+        st["item"], why[:400], st["item"], st["item"])
+
+
 def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached=None, strict=True, proposals=None,
             controls=None, changed=None):
     """defects / unreached: the Marker's structured findings (GPT review of 0135b04912). None = an old-format verdict, read
@@ -1331,6 +1368,20 @@ def unhold(store, item, said, now=None, offbox=None):
             cmds = relentless_wall.check_offbox_names(have + [x for x in offbox if x not in have], rules())
             st["contract"]["offbox"] = cmds
             store.attempt(item, {"at": iso(now), "contract": st["contract"], "said": said})
+        if st["hold"].get("kind") == QUARANTINE:
+            q = st["hold"]
+            store.attempt(item, {"at": iso(now), "end": "unquarantine", "said": said, "pass": q.get("pass")})
+            if q.get("under"):      # the hold the verdict's routing set is released as its own kind would be
+                st["hold"] = q["under"]
+            else:
+                st["hold"] = None
+                st["returned_at"] = now
+                st["status"] = q.get("back") or "queued"
+                if st["status"] == "queued":
+                    st["spent_grace"] = st["spent"]
+                store.attempt(item, {"at": iso(now), "end": "unhold", "said": said, "to": st["status"]})
+                store.save(st)
+                return
         if st["hold"].get("kind") == "proof_weak":
             for k in PROOF_ENDS:
                 st["failures"].pop(k, None)
@@ -4456,6 +4507,16 @@ def step(store, fx, r, item, now, acts):
 
     if s == "candidate":
         c = st["candidate"]
+        green = relentless_game.green_stands(st, store.attempts(item))
+        if green:       # PASS3_FLOOD_FIX_REJUDGE_GREEN_SHA: the Judge passed this sha already; the game step is owed, not a check
+            with store.lock():
+                st = store.load(item)
+                if st["status"] == "candidate" and relentless_game.green_stands(st, store.attempts(item)):
+                    relentless_game.reenter(store, st, now, green)
+                    store.attempt(item, {"at": iso(now), "gen": st["gen"], "routed": "green_stands", "sha": c["sha"],
+                                         "detail": green, "to": relentless_game.GAME})
+                    acts.append({"do": "game_entered", "item": item, "sha": c["sha"], "why": green})
+            return
         if now < (st.get("recheck_at") or 0):   # an unmeasured check waits before the same sha is checked again
             acts.append({"do": "check_waits", "item": item, "why": "re-check of an unmeasured sha"})
             return
@@ -4627,11 +4688,14 @@ def step(store, fx, r, item, now, acts):
         died = fx.death_note(chk.get("run")) if word is None and not lost and now - chk["at"] < r["check_max_s"] else None
         c = st["candidate"]
         drop = []      # a checker clone a retry lets go: removed out of the lock, or it sits an hour as an orphan
+        told = []      # a quarantine's Conductor line, written out of the lock
         try:
             with store.lock():
                 st = store.load(item)
                 if st["status"] != "checking":
                     return
+                returns0, spent0 = st["returns"], st["spent"]       # what it came to this verdict with
+                due = quarantine_due(st, r, returns0, spent0)
                 word = st["check"].get("verdict")
                 if word is None and lost and lost.get("session"):
                     # it read the evidence before the cut: the same checker, clone, box and nonce resume once the breaker
@@ -4690,6 +4754,8 @@ def step(store, fx, r, item, now, acts):
                     gone = {"check": dict(st["check"]), "quarantined": st["quarantined"]}
                     said = unmeasured(store, st, word, blind, r, now)
                     acts.append({"do": "unmeasured", "item": item, "said": word, "held": st["status"] == "held"})
+                    if due:
+                        told.append(quarantine(store, st, word, returns0, spent0, now))
                 else:
                     said = None
                     if "blind" in st or "recheck_at" in st:
@@ -4703,6 +4769,8 @@ def step(store, fx, r, item, now, acts):
                         else:       # old-format prose: blamed before rebuild (relentless_attrib.gate), as before
                             fail(store, st, "blind_fail", st["check"].get("reasons"), r, now)
                             acts.append({"do": "blind_fail", "item": item})
+                        if due:
+                            told.append(quarantine(store, st, word, returns0, spent0, now))
                         return
                 weak = None
                 if acted == "WEAK":     # read_as decides: a word it reads as UNMEASURED was handled above
@@ -4710,9 +4778,15 @@ def step(store, fx, r, item, now, acts):
                     fail(store, st, "proof_weak", reasons, r, now)
                     weak = "blind check at %s: WEAK, the proof has holes and the work is unproven; item stays open: %s" % (c["sha"], reasons or "")
                     acts.append({"do": "proof_weak", "item": item})
+                    if due:
+                        told.append(quarantine(store, st, word, returns0, spent0, now))
         finally:
             for d in drop:
                 remove_check_clone(fx, d)
+            for t in told:
+                if t:       # one line per quarantine: the key is the item and its pass, never re-told on a timer
+                    attention(store, fx, "quarantine:%s" % item, t, now, level=(QUARANTINE_RETURNS, returns0))
+                    acts.append({"do": "quarantined", "item": item, "why": t[:200]})
         if said:            # the ledger's own write and the clone's removal, out of the store's lock
             remove_check_clone(fx, gone)
             fx.ledger_note(item, said)

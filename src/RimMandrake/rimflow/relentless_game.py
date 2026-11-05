@@ -300,7 +300,51 @@ def enter(store, st, sha, now):
     st.pop("live_iter", None)
     st["status"] = GAME
     st["game"] = {"sha": sha, "phase": "implement", "clauses": list(k["clauses"]), "stages": 0, "entered_at": now,
-                  "offline_green": {"sha": sha, "at": now, "nonce": (st.get("check") or {}).get("nonce")}}
+                  "offline_green": {"sha": sha, "at": now, "nonce": (st.get("check") or {}).get("nonce"),
+                                    "contract": contract_print(st.get("contract"))}}
+    store.save(st)
+
+
+def contract_print(contract):
+    """The contract's fingerprint as the Judge read it. reach_ok is left out: it says the box may be passed, not what is proved."""
+    import hashlib
+    k = {a: b for a, b in (contract or {}).items() if a != "reach_ok"}
+    return hashlib.sha256(json.dumps(k, sort_keys=True, default=str).encode()).hexdigest()[:16]
+
+
+def green_stands(st, attempts=()):
+    """-> why the Judge's PASS already on the candidate's sha still stands, or None. Pure. A candidate that a hold, an
+    unhold or a lifted wait sent back to the Judge on a sha it already passed (offline_green), with game clauses still
+    owed and the contract as it read it, would only pay a Judge to say PASS again (PASS3_FLOOD_FIX_REJUDGE_GREEN_SHA, 4 such
+    re-checks on 2026-11-05): it goes to its game step instead. The contract moved since (a fingerprint, or for an older
+    green a contract row in `attempts` after it) or a CONTRACT binding found since: the Judge reads it afresh."""
+    sha = (st.get("candidate") or {}).get("sha")
+    green = (st.get("game") or {}).get("offline_green") or {}
+    if not sha or green.get("sha") != sha or not owes(st, sha):
+        return None
+    if green.get("contract"):
+        if green["contract"] != contract_print(st.get("contract")):
+            return None
+    else:
+        since = green.get("at") or 0
+        if any("contract" in a and row_at(a) > since for a in attempts):
+            return None
+    held = st.get("proof_only") or {}
+    if held.get("binding") and (held.get("at") or 0) > (green.get("at") or 0):
+        return None
+    return "the Judge passed %s already (%s): its game clauses are owed, not another check" % (
+        sha[:12], time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(green.get("at") or 0)))
+
+
+def reenter(store, st, now, why):
+    """Under the store lock: back to the game step on the sha the Judge already passed, its offline green kept."""
+    green = dict(st["game"]["offline_green"])
+    green.setdefault("contract", contract_print(st.get("contract")))    # green_stands found it unchanged
+    st.pop("recheck_at", None)
+    st.pop("put_down", None)
+    enter(store, st, green["sha"], now)
+    st["game"]["offline_green"] = green
+    st["game"]["reentered"] = {"at": now, "why": why[:300]}
     store.save(st)
 
 

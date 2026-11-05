@@ -826,6 +826,106 @@ def t_unhold_game_hold_returns_to_game():
     x.done()
 
 
+def t_green_sha_is_not_judged_again():
+    """PASS3_FLOOD_FIX_REJUDGE_GREEN_SHA (2026-11-05): a hold of a queued item and its unhold sent four candidates back to
+    the Judge on the sha it had already passed; each paid a Judge to say PASS again and only then went to its game step.
+    A candidate whose sha holds the Judge's PASS goes to its game step; a contract moved since is judged afresh."""
+    x = rig(1)
+    to_game(x, "I0")
+    n = x.st("I0")["check_count"]
+    with x.s.lock():        # the incident: an old WEAK the live rule reads PASS, queued after the game, held, unheld
+        st = x.st("I0")
+        st["status"] = "queued"
+        st["proof_only"] = {"sha": "old", "at": x.now - 99, "weak": "GAP:OTHER the proof could be stronger"}
+        x.s.save(st)
+    R.hold(x.s, "I0", "conductor: stop the churn")
+    R.unhold(x.s, "I0", "conductor: the lane fix is live")
+    ok(x.st("I0")["status"] == "candidate", "the unhold lifts it to its candidate: %s" % x.st("I0")["status"])
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "game" and st["check_count"] == n, "no second Judge on the passed sha, back to the game step: "
+       "%s, %d checks" % (st["status"], st["check_count"]))
+    ok(st["game"]["offline_green"]["sha"] == SHA == st["game"]["sha"], "the Judge's green is kept on the same sha")
+    ok(any(a.get("routed") == "green_stands" for a in x.s.attempts("I0")), "the routing is written to the attempts")
+    x.done()
+    for why, change in (("a contract moved since", lambda s: s["contract"].update(proof="python3 selftest_y.py")),
+                        ("an older green with a contract row after it",
+                         lambda s: (s["game"]["offline_green"].pop("contract"),
+                                    x.s.attempt("I0", {"at": R.iso(x.now + 60), "contract": s["contract"]})))):
+        x = rig(1)
+        to_game(x, "I0")
+        with x.s.lock():
+            st = x.st("I0")
+            change(st)
+            st["status"] = "candidate"
+            x.s.save(st)
+        ok(G.green_stands(x.st("I0"), x.s.attempts("I0")) is None, "%s: the Judge reads it afresh" % why)
+        x.tick()
+        ok(x.st("I0")["status"] == "checking", "%s: a check is launched: %s" % (why, x.st("I0")["status"]))
+        x.done()
+
+
+def to_check(x, i):
+    x.run_one(i)
+    st = x.st(i)
+    R.contract(x.s, i, st["gen"], "python3 selftest_x.py", game=GAME)
+    R.finish(x.s, i, st["gen"], SHA, "evidence")
+    x.w.up[st["run"]["unit"]] = False
+    x.tick()
+    x.tick()
+    ok(x.st(i)["status"] == "checking", "%s: finish reaches the checker" % i)
+
+
+def t_bounce_from_checking_is_quarantined():
+    """CHECKING_BOUNCE_ENFORCE_QUARANTINE_HOLD, owner 2026-11-05: "Please watch carefully for dangerously expensive
+    poorly passing items. Quarantine them if they bounce again from Checking." An item at pass >= 3, or over its
+    advisory item_spend_limit, that the Judge does not PASS is held at once: no build, no re-check, one Conductor line,
+    out only by a ruling's unhold. Below both bars a bounce routes as before."""
+    cases = (("pass 3, WEAK", dict(returns=2), "WEAK", "pass 3"),
+             ("pass 3, FAIL", dict(returns=2), "FAIL", "pass 3"),
+             ("pass 3, UNMEASURED", dict(returns=2), "UNMEASURED", "pass 3"),
+             ("over the spend limit, pass 1, WEAK", dict(spent=5 * 10 ** 6), "WEAK", "pass 1"),
+             ("pass 1, under the limit, WEAK", {}, "WEAK", None))
+    for name, preset, word, at in cases:
+        x = rig(1)
+        x.r = dict(x.r, item_spend_limit=3 * 10 ** 6)
+        to_check(x, "I0")
+        with x.s.lock():
+            st = x.st("I0")
+            st.update(preset)
+            x.s.save(st)
+        st = x.st("I0")
+        R.verdict(x.s, "I0", st["check"]["nonce"], word, {"WEAK": "GAP:DIFF hunk 2 put back, proof green." + S.STRONG_WEAK,
+                                                          "FAIL": "the comp is never added",
+                                                          "UNMEASURED": "CANNOT REACH: ssh stevedesktop exit 255"}[word])
+        x.w.up[st["check"]["run"]["unit"]] = False
+        runs, checks = len(x.w.launches), x.st("I0")["check_count"]
+        for _ in range(4):
+            x.tick()
+            x.now += 3600       # past any recheck wait
+        st = x.st("I0")
+        h = st.get("hold") or {}
+        if at is None:
+            ok(h.get("kind") != R.QUARANTINE and not any("quarantine" in a for a in x.w.attn),
+               "%s: routed as before, no quarantine (%s)" % (name, st["status"]))
+            x.done()
+            continue
+        ok(st["status"] == "held" and h.get("kind") == R.QUARANTINE, "%s: held as quarantine: %s %s"
+           % (name, st["status"], h.get("kind")))
+        ok(h.get("why", "").startswith("quarantine: bounced from checking at %s, %d tokens" % (at, st["spent"])),
+           "%s: the reason leads with pass and tokens: %s" % (name, h.get("why", "")[:90]))
+        ok(len(x.w.launches) == runs and st["check_count"] == checks,
+           "%s: no build and no re-check starts: %d runs, %d checks" % (name, len(x.w.launches) - runs,
+                                                                         st["check_count"] - checks))
+        ok(sum("quarantine: bounced" in a for a in x.w.attn) == 1, "%s: one Conductor line: %d"
+           % (name, sum("quarantine: bounced" in a for a in x.w.attn)))
+        R.unhold(x.s, "I0", "PER RULING CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: rebuild it once")
+        st = x.st("I0")
+        ok(st["status"] != "held" or (st.get("hold") or {}).get("kind") != R.QUARANTINE,
+           "%s: a ruling's unhold lifts the quarantine: %s %s" % (name, st["status"], (st.get("hold") or {}).get("kind")))
+        x.done()
+
+
 def t_stage_refuses_a_clone_without_launcher():
     """QUICKTEST_POLICY_NRE_FULLLIST_1: systemd-run failed on a clone missing claude_bounded.sh. The stage checks the
     clone it is about to launch in, after prepare, and takes no bridge when it lacks the launcher."""
@@ -1547,6 +1647,7 @@ def main():
               t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_dropped_staging_keeps_bridge, t_rides_ok, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged, t_blind_stall_probe_ends_attempt,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
+              t_green_sha_is_not_judged_again, t_bounce_from_checking_is_quarantined,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
               t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline,
               t_stage_tries_a_newer_running_game_first,

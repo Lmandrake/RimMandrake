@@ -233,6 +233,11 @@ ghosts = R.ghost_places(R.gather(env, {}))
 check("an item holding a place with no unit is a ghost", [(g if isinstance(g, str) else g.get("item")) for g in ghosts] == ["SOME_ITEM_NO_PROCESS"])
 check("ghosts are unknown, not none, when the tree is unread", R.ghost_places(R.gather(Fake(fail=("ps",), items=[{"item": ITEM, "status": "checking"}]), {})) is None)
 check("the strip says so", "1 place with no process" in before_svg(page_of(env)))
+env_j = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running"},
+                                      {"item": "SOME_ITEM_JUDGED", "status": "checking", "check": {"run": {"out": "/r/judged.json"}}}])
+env_j.files = dict(getattr(env_j, "files", {}) or {}, **{"/r/judged.json": "{}"})
+check("a checking item whose Judge wrote its result is no ghost: the tick reads it (PASS3_FLOOD board)",
+      R.ghost_places(R.gather(env_j, {})) == [])
 
 # 6. a Dispatcher far behind leads the strip
 page = page_of(Fake(files={DISPATCH_STATE: {"last_tick": "2026-11-03T20:00:00Z"}}))
@@ -1529,6 +1534,12 @@ def rows_results():
     f = R.item_mark(run_st(last_beat=NOW - 3600), NOW, BANDS)
     ok("rows: a running item silent for stuck_silent_s flashes SILENT; one beat short does not",
           f["flash"] and f["flash"][0].startswith("SILENT") and not R.item_mark(run_st(last_beat=NOW - 3599), NOW, BANDS)["flash"])
+    ck = run_st(status="checking", last_beat=NOW - 150000, check={"at": NOW - 360})
+    ok("rows: a checking item is timed by its Judge's launch, not the builder's old beat (PASS3_FLOOD board)",
+       not R.item_mark(ck, NOW, BANDS)["flash"] and R.item_mark(dict(ck, check={"at": NOW - 3600}), NOW, BANDS)["flash"][0].startswith("SILENT"))
+    ok("rows: a Judge that wrote its result is no SILENT; unread past stuck_silent_s it is VERDICT UNREAD",
+       not R.item_mark(dict(ck, check={"at": NOW - 9000}, _judge_out=NOW - 120), NOW, BANDS)["flash"]
+       and R.item_mark(dict(ck, check={"at": NOW - 9000}, _judge_out=NOW - 3600), NOW, BANDS)["flash"][0].startswith("VERDICT UNREAD"))
     ok("rows: a queued item never flashes SILENT (no beat is owed)", not R.item_mark(run_st(status="queued", last_beat=NOW - 99999), NOW, BANDS)["flash"])
     d = R.item_mark(run_st(status="done", returns=5), NOW, BANDS, churn=True, circling=True, ghost=True)
     ok("rows: a done item never flashes, keeps its passes band", d["flash"] == [] and d["band"] == "hot" and d["why"] == ["passes hot"])
