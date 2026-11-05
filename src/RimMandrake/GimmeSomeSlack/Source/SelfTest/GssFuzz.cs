@@ -338,10 +338,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     // declared limit, from CordLayer.Sprawl: a loop or heap is spliced in only while the cord stays within 1.25 x the
                     // slack target (at most PathLen + MaxExtra), but the broad lateral excursions are NOT charged to that budget: each
                     // is a Gaussian bump of amplitude <= Cap x 1.1, whose extra arc length is at most its total variation 2 x amplitude,
-                    // and there are round(L / 2.6) of them. End work after that (IntoArt / PastFace overruns, limp curls, knot loops,
-                    // two end heaps on a run over LongRun) is allowed 3 cells, plus 4 for a long run.
+                    // and there are round(L / 2.6) of them. End work after that (IntoArt / PastFace overruns, limp curls, knot loops)
+                    // is allowed 3 cells. A long run's two end heaps are charged to the loop budget (GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET).
                     int nb = Math.Max(1, (int)Math.Round(p.PathLen / Math.Max(2.6, opt.Lay.ExcursionHi)));
-                    double limit = 1.25 * (p.PathLen + opt.Lay.MaxExtra) + nb * 2 * opt.Lay.Cap * 1.1 + 3.0 + (p.PathLen > CordLayer.LongRun ? 4.0 : 0.0);
+                    double limit = 1.25 * (p.PathLen + opt.Lay.MaxExtra) + nb * 2 * opt.Lay.Cap * 1.1 + 3.0;
                     if (!isTangle) MaxOver = Math.Max(MaxOver, len - limit);
                     if (!isTangle && len > limit && Environment.GetEnvironmentVariable("GSSFUZZ_DEBUG") == "pts") { Console.WriteLine("  PTS " + p.EndA + "|" + p.EndB + " len " + len.ToString("0.00") + ": " + string.Join(" ", st.Pts.Where((q, i) => i % 6 == 0 || i == st.Pts.Count - 1))); Console.WriteLine("  decals " + string.Join(",", p.Decals.Select(d => d.Kind.ToString())) + " settle: " + (st.Settle == null ? "none" : "sprawl " + st.Settle.SprawlLen.ToString("0.00") + " rest " + st.Settle.RestLen.ToString("0.00") + " settled " + st.Settle.SettledLen.ToString("0.00") + " heaps " + st.Settle.HeapsAt.Count) + " limp/pin"); }
                     if (!isTangle && len > limit) return "strand over its length limit: " + len.ToString("0.00") + " > " + limit.ToString("0.00") + " (path " + p.PathLen.ToString("0.00") + ", MaxExtra " + opt.Lay.MaxExtra + ", slack scale " + opt.Lay.SlackScale + ", " + p.Strands.Count + " strand(s), fellBack " + st.FellBack + ") in " + p.EndA + "|" + p.EndB;

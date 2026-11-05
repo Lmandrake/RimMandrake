@@ -92,6 +92,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             ConduitTargetChecks.Run();     // design 5 per-def conduit toggles (MotionBucketChecks.cs)
             PhantomSparkChecks.Run();      // GSS_CORD_SILENCE_PHANTOM_SPARK (owner 2026-10-16): PhantomSparkChecks.cs
             LoopLassoChecks.Run();         // CORD_LOOP_UNTANGLE_LASSOED_A_PIPE (live 2026-10-23): LoopLassoChecks.cs
+            EndHeapBudgetChecks.Run();     // GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET (GPT review 2026-10-23): EndHeapBudgetChecks.cs
             CordSlideUnderChecks.Run();    // CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT (owner walk 2026-10-23): CordSlideUnderChecks.cs
             WaterStubChecks.Run();         // GSS_WATER_STUB_FIX_PASSED_LAST_WEEK (bridge run 1 2026-10-23): WaterStubChecks.cs
             RebuildPerDigChecks.Run();     // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG (live 2026-10-26): RebuildPerDigChecks.cs

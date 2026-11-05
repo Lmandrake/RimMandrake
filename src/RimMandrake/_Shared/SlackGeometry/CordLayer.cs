@@ -451,6 +451,13 @@ namespace RimMandrake.Shared.Slack
             return false;
         }
 
+        /// <summary>The loop budget: a spliced loop, figure-8 or heap may not carry the cord past 1.25 x the slack target.
+        /// Shared by the ordinary loops and the long-run end heaps (GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET: the end heaps used
+        /// to skip it, and the settle's rest-length clamp keeps whatever was sprawled). <paramref name="share"/> &gt; 1 lets the
+        /// shape take only that fraction of the room left, so a later mandatory shape still fits.</summary>
+        internal static bool OverBudget(double curLen, List<V2> shape, double target, int share = 1)
+            => Geo.Length(shape) > (target * 1.25 - curLen) / Math.Max(1, share);
+
         internal static List<V2> AddLoops(CordWorld w, List<V2> Q, double[] ramp, LayParams prm, CordRng rr, double target, SettleStats st)
         {
             HashSet<Cell> own = OwnCells(w, Q);
@@ -477,6 +484,9 @@ namespace RimMandrake.Shared.Slack
                     for (int tries = 0; tries < 5 && r >= 0.18; tries++, r *= 0.7)
                     {
                         List<V2> c = Heap(Q[j], t, nrm, r, side, re);
+                        // GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET: an end heap spends the same budget as any loop, and the
+                        // first takes at most half the room left so the other end still gets one
+                        if (OverBudget(s[s.Length - 1], c, target, atEnd ? 2 : 1)) continue;
                         if (AllClear(w, c, LayParams.RC + 0.02) && !c.Any(q => w.IsDoor(q.Floor)) && !Lassoes(w, c, own)) { shape = c; break; }
                     }
                     if (shape == null) continue;
@@ -525,7 +535,7 @@ namespace RimMandrake.Shared.Slack
                 for (int tries = 0; tries < 5; tries++)
                 {
                     List<V2> c = cand.Key ? Heap(Q[j], t, nrm, r, side, rr) : fig8 ? Figure8(Q[j], t, nrm, r, side) : Loop(Q[j], t, nrm, r, side);
-                    bool over = s[s.Length - 1] + Geo.Length(c) > target * 1.25;
+                    bool over = OverBudget(s[s.Length - 1], c, target);
                     if (AllClear(w, c, LayParams.RC + 0.02) && !over && !Lassoes(w, c, own)) { shape = c; break; }
                     r *= 0.7;
                     if (r < 0.18) break;

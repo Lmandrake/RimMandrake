@@ -1,7 +1,8 @@
 # project: RimMandrake/GimmeSomeSlack/Source/RimMandrake_GimmeSomeSlack.csproj
-# dll: 1870bf321a7f91bf4c6f41e5fa495352071aa8eb9263852939e7c5b3e32dd793
+# dll: d24e276bb9a16429ccdf09f63a2139e4a479ad4651c34fba96744adc6ab36f73
 0725f8769b70f426e4a133870e3c1b3ba49181c0ad8264223886d7811906a638 ../../_Shared/SlackGeometry/CordWorld.cs
 07d760d041952cf9f31e3bf68e389fd2b85857b14bf774cf38e380b14ed8ce5b Core/ConduitTargets.cs
+09992f1e9b002db33afa60141a0b853adcb0a5b17dc102790255fcc6cab98160 ../../_Shared/SlackGeometry/CordLayer.cs
 0a52dc307cbcd5ca6fb5a2c13ec05eb5e37640adcd9e5e0c06edfc041d2a62d2 ../../_Shared/SettingsKit/SettingsKitMasters.cs
 0b00ab9ad17abe57ba11a55c2d13edb9ebf71b526e722baadcbc66242f148a4c GimmeSomeSlackMod.cs
 0b9fbb152b4a3e407e7518b2e099fb8e20288423aadeea65ae007560ab6ca9af Aerial/RestringJob.cs
@@ -40,7 +41,6 @@
 91d38bf31dae06bb08563846d60074563f4b18b403cc33d73dae418b3e607851 ../../_Shared/SlackGeometry/DrawOrder.cs
 95024c2ef96a5fc13beeeae247955dc4ff269af484f150fc2bceeeae9a8c6684 Aerial/AerialPowerPatch.cs
 96f31f4d901841d35e6d25b80e27b6070b18b495141d8deaad118ef8b40082e4 ../../_Shared/SlackGeometry/CordPlanner.cs
-982d2f0e6727099ece5c42330c5711e866ebf83fbb7a868857a9bda9c0f319cd ../../_Shared/SlackGeometry/CordLayer.cs
 9d8ad3ac25a99a95484e43f95bd42252249f3e1905557598dc125efa3899e819 GimmeSomeSlackDefOf.cs
 a49441650a92781e3829c389b5e6043fa23547f5a71a4aa735e9424f76402c8b ../../_Shared/StylePicker/StylePickerCore.cs
 a913c6f07f4792d721a1fea14262f3e0c4d219b3512519b6111dbd910f598f57 Aerial/AerialDefOf.cs
