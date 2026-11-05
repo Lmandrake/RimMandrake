@@ -2979,6 +2979,27 @@ def run_desc(store, r, unit, now):
             "err": os.path.join(d, unit + ".err"), "scope": "claude-seat-%s-%s.scope" % (r["seat"], unit)}
 
 
+def run_output(run):
+    """-> {out_bytes, err_tail} of a run's out and err files (run_desc), for a checker_lost act: a checker that died at
+    launch wrote nothing (out_bytes 0), and its err tail says why (EACCES). ops_watch reads a run of these across items
+    (CHECKER_DEATHS_MONITOR_29_NOBODY_NOTICED). A path that cannot be read is out_bytes None, never 0."""
+    got = {"out_bytes": None, "err_tail": None}
+    if not isinstance(run, dict):
+        return got
+    try:
+        got["out_bytes"] = os.path.getsize(run["out"]) if os.path.exists(run["out"]) else 0
+    except (OSError, KeyError, TypeError):
+        pass
+    try:
+        with open(run["err"], "rb") as f:
+            f.seek(max(os.path.getsize(run["err"]) - 2048, 0))
+            lines = [x for x in f.read().decode("utf-8", "replace").splitlines() if x.strip()]
+        got["err_tail"] = lines[-1][:200] if lines else ""
+    except (OSError, KeyError, TypeError):
+        pass
+    return got
+
+
 def unit_name(kind, item, gen):
     return "rm-relentless-%s-%s-g%d" % (kind, short(item), gen)
 
@@ -3998,7 +4019,7 @@ def step(store, fx, r, item, now, acts):
                         st["status"] = "candidate"
                         st["check"] = None
                         store.save(st)
-                    acts.append({"do": "checker_lost", "item": item})
+                    acts.append({"do": "checker_lost", "item": item, **run_output(chk.get("run"))})
                     return
                 acted, blind = relentless_wall.read_as(word, st["check"].get("reasons"), st["check"].get("defects"),
                                                        st["check"].get("unreached"))

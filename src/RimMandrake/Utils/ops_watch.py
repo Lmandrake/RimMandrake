@@ -2165,6 +2165,7 @@ def rl_checks_lost(store, now, cfg, chunk=1 << 23):
     if size > chunk:
         lines = lines[1:]       # the first line is torn by the seek
     oldest, lost, started, verdicts = None, {}, 0, 0
+    empty, err = 0, None        # CHECKER_DEATHS_MONITOR_29_NOBODY_NOTICED: relentless.run_output on the act
     for ln in lines:
         try:
             d = json.loads(ln)
@@ -2182,6 +2183,8 @@ def rl_checks_lost(store, now, cfg, chunk=1 << 23):
             do = a.get("do")
             if do == "checker_lost" and a.get("item"):
                 lost[a["item"]] = lost.get(a["item"], 0) + 1
+                empty += a.get("out_bytes") == 0        # it wrote no output: died at launch, not mid-check
+                err = a.get("err_tail") or err
             elif do == "check_started":
                 started += 1
             elif do in CHECK_VERDICT_ACTS:
@@ -2190,8 +2193,9 @@ def rl_checks_lost(store, now, cfg, chunk=1 << 23):
         return U("journal tail read (%d MB) does not reach back %g h" % (chunk >> 20, window / 3600.0), "items")
     worst = sorted(lost, key=lambda i: (-lost[i], i))
     return M(len(lost), "items", lost=sum(lost.values()), started=started, verdicts=verdicts, window_h=window / 3600.0,
-             items=worst[:12], first=("%d checkers lost on %d items in %g h, %d verdicts, %d checks started (%s)"
-                                      % (sum(lost.values()), len(lost), window / 3600.0, verdicts, started,
+             empty=empty, err=(err or "")[:200],
+             items=worst[:12], first=("%d checkers lost on %d items in %g h (%d wrote no output), %d verdicts, %d checks started (%s)"
+                                      % (sum(lost.values()), len(lost), window / 3600.0, empty, verdicts, started,
                                          ", ".join(worst[:5])) if lost else "none"))
 
 
