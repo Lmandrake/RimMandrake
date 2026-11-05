@@ -9,6 +9,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+sys.path.append(str(HERE.parent / "Utils"))
+from selftest_own_dirs import own_dir_for_run  # noqa: E402
+own_dir_for_run("relentless_wall")     # every mkdtemp below lands in one dir that goes even when the run is killed
 import relentless_wall as W     # noqa: E402
 
 FAILS = []

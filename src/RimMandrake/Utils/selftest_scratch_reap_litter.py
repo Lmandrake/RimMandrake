@@ -2,7 +2,8 @@
 # selftest-timeout: 120
 """Selftest for selftest_own_dirs.py (REAPER_FIX_OWN_SELFTEST_LITTERS_FAKE_SAVES): a reaper selftest killed mid-run
 leaves no fake CANONICAL_*.rws clone behind for longer than the next run, and nothing that is not provably its own
-is removed: a live run's dir, a dir that lost its marker, a real-sized save."""
+is removed: a live run's dir, a dir that lost its marker, a real-sized save. Also the seed and wall selftests' git
+fixtures (SELFTEST_LITTER_FIX_SEED_WALL_STRAGGLERS): no new ones are left, and the old ones are found by shape."""
 import json
 import os
 import signal
@@ -45,6 +46,147 @@ with own_dir("t", dir=sys.argv[2]) as d:
 def child(base: Path) -> tuple[subprocess.Popen, Path]:
     p = subprocess.Popen([sys.executable, "-c", CHILD, str(HERE), str(base)], stdout=subprocess.PIPE, text=True)
     return p, Path(p.stdout.readline().strip())
+
+
+RUN_CHILD = r"""
+import sys, tempfile, time
+from pathlib import Path
+sys.path.insert(0, sys.argv[1])
+from selftest_own_dirs import own_dir_for_run
+own_dir_for_run("seedwall")
+d = Path(tempfile.mkdtemp(prefix="seedrepo"))      # a bare mkdtemp, as the seed and wall selftests make them
+(d / "m.py").write_text("a = 1\n")
+print(d, flush=True)
+time.sleep(120)
+"""
+
+
+def git(d, *a, env=None):
+    subprocess.run(["git", *a], cwd=d, capture_output=True, text=True, check=True, env=env)
+
+
+def seed_wall(td: Path, O, old: float) -> None:
+    """SELFTEST_LITTER_FIX_SEED_WALL_STRAGGLERS: selftest_relentless_seeds.py and selftest_relentless_wall.py left
+    seedrepo*/seeddest*/wallsha256* git fixtures under ~/.seat-tmp/BENCH (~60 refusals a day)."""
+    rimflow = HERE.parent / "rimflow"
+    for t in ("seeds", "wall"):                       # the real selftests, clean: their TMPDIR is left as it was
+        tmp = td / f"run_{t}"
+        tmp.mkdir()
+        r = subprocess.run([sys.executable, str(rimflow / f"selftest_relentless_{t}.py")], capture_output=True, text=True,
+                           timeout=300, env={**os.environ, "TMPDIR": str(tmp), "SELFTEST_OWN_DIRS_REG": str(td / "reg2")})
+        check(r.returncode == 0 and list(tmp.iterdir()) == [], f"selftest_relentless_{t}.py passes and leaves its TMPDIR empty")
+    tmp = td / "run_killed"
+    tmp.mkdir()
+    env = {**os.environ, "TMPDIR": str(tmp), "SELFTEST_OWN_DIRS_REG": str(td / "reg2")}
+
+    def run_child():
+        c = subprocess.Popen([sys.executable, "-c", RUN_CHILD, str(HERE)], stdout=subprocess.PIPE, text=True, env=env)
+        return c, Path(c.stdout.readline().strip())
+    c, d = run_child()
+    check(d.is_dir() and d.parent.parent == tmp, "own_dir_for_run puts a bare mkdtemp inside the run's own dir")
+    c.send_signal(signal.SIGTERM)
+    c.wait(timeout=30)
+    check(list(tmp.iterdir()) == [], "a SIGTERM-killed run leaves nothing in its TMPDIR")
+    c, d = run_child()
+    c.send_signal(signal.SIGKILL)
+    c.wait()
+    c2, d2 = run_child()
+    check(not os.path.lexists(d.parent) and d2.is_dir(), "a SIGKILLed run's dir goes at the next run of the same tag")
+    c2.send_signal(signal.SIGTERM)
+    c2.wait(timeout=30)
+
+    # the litter left before: the fixture's name, entries, own git dir and fixture identities, old and unused
+    root = td / "seat-tmp" / "SEEDWALL"
+    root.mkdir(parents=True)
+    os.environ["SELFTEST_OWN_DIRS_LEGACY_ROOTS"] = str(root)
+    ident = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+
+    def who(name, mail):
+        return {**ident, "GIT_AUTHOR_NAME": name, "GIT_AUTHOR_EMAIL": mail, "GIT_COMMITTER_NAME": name,
+                "GIT_COMMITTER_EMAIL": mail}
+
+    def seedrepo(path: Path, name="a", mail="a@b"):
+        path.mkdir(parents=True)
+        git(path, "init", "-q", "-b", "main")
+        (path / ".claude/agents").mkdir(parents=True)
+        (path / ".claude/agents/rm-judge.md").write_text("old judge\n")
+        (path / "m.py").write_text("a = 1\n")
+        git(path, "add", "-A")
+        git(path, "commit", "-qm", "base", env=who(name, mail))
+        return path
+
+    def wallsha(path: Path):
+        path.mkdir(parents=True)
+        git(path, "init", "-q", "--object-format=sha256")
+        (path / "a.py").write_text("one\n")
+        git(path, "add", "a.py")
+        git(path, "commit", "-qm", "root", env=who("t", "t@t"))
+        return path
+
+    def age(path: Path):
+        for dp, dns, fns in os.walk(path):
+            for n in dns + fns:
+                os.utime(os.path.join(dp, n), (old, old), follow_symlinks=False)
+        os.utime(path, (old, old))
+        return path
+
+    lit_repo = age(seedrepo(root / "seedrepoab12cd34"))
+    staged = seedrepo(root / "seedrepostg_d34x")                    # a run killed mid-test: its own m.py staged
+    (staged / "m.py").write_text("a = 10\n")
+    git(staged, "add", "m.py")
+    age(staged)
+    lit_dest = root / "seeddestab12cd34"
+    lit_dest.mkdir()
+    git(lit_dest, "clone", "-q", str(lit_repo), "case")
+    age(lit_dest)
+    lit_wall = age(wallsha(root / "wallsha256ab12cd34"))
+    stranger = age(seedrepo(root / "seedreposcd34xyz", name="Lukas", mail="l@m"))   # someone else committed: not ours
+    work = seedrepo(root / "seedrepowrk34xyz")                       # real work beside the fixture's files
+    (work / "notes.md").write_text("mine\n")
+    age(work)
+    dirty = seedrepo(root / "seedrepodrt34xyz")                      # the fixture's entries, an untracked file inside
+    (dirty / ".claude" / "notes.md").write_text("mine\n")
+    age(dirty)
+    young = seedrepo(root / "seedrepoyng34xyz")
+    linked = root / "wallsha256lnk34xyz"                             # its .git a symlink into some clone: never ours
+    linked.mkdir()
+    (linked / "a.py").write_text("one\n")
+    (linked / ".git").symlink_to(lit_wall / ".git")
+    age(linked)
+    named = age(seedrepo(root / "seedrepo_toolong_name"))            # not the mkdtemp name shape
+    busy = age(seedrepo(root / "seedrepobsy34xyz"))
+    sl = subprocess.Popen(["sleep", "60"], cwd=busy)
+    try:
+        r = O.legacy_litter(apply=False)
+        v = {Path(x["path"]).name: x["verdict"] for x in r["rows"]}
+        check(v.get("seedrepoab12cd34") == "LITTER" and v.get("seeddestab12cd34") == "LITTER"
+              and v.get("wallsha256ab12cd34") == "LITTER", "old seedrepo, seeddest and wallsha256 fixtures are litter")
+        check(v.get("seedrepostg_d34x") == "LITTER", "a fixture with its own file staged (killed mid-test) is litter")
+        check(v.get("seedreposcd34xyz") == "KEEP", "a fixture-shaped repo someone else committed to stays")
+        check("seedrepowrk34xyz" not in v, "a repo holding a file the fixture never makes is not a candidate")
+        check(v.get("seedrepodrt34xyz") == "KEEP", "an untracked file the fixture never makes, deeper down, keeps it")
+        check(v.get("seedrepoyng34xyz") == "KEEP" and v.get("seedrepobsy34xyz") == "KEEP", "young or in use stays")
+        check(v.get("wallsha256lnk34xyz") == "KEEP", "a fixture whose .git is a symlink stays")
+        check("seedrepo_toolong_name" not in v, "a name that is not mkdtemp's is not a candidate")
+        check(lit_repo.exists() and lit_dest.exists(), "report only touches nothing")
+        real_run = O.subprocess.run
+
+        def hung(*a, **k):
+            raise subprocess.TimeoutExpired(a[0], 60)
+        O.subprocess.run = hung
+        try:
+            r = O.legacy_litter(apply=False)
+        finally:
+            O.subprocess.run = real_run
+        v = {Path(x["path"]).name: x["verdict"] for x in r["rows"]}
+        check(v.get("seedrepoab12cd34") == "KEEP", "a hung git keeps the fixture and the sweep goes on")
+        O.legacy_litter(apply=True)
+        check(not any(os.path.lexists(x) for x in (lit_repo, lit_dest, lit_wall, staged)), "--apply removes the git fixtures")
+        check(all(x.exists() for x in (stranger, work, dirty, young, busy, named)) and os.path.lexists(linked)
+              and (linked / ".git").is_symlink(), "and nothing else")
+    finally:
+        sl.kill()
+        sl.wait()
 
 
 def main() -> int:
@@ -176,6 +318,7 @@ def main() -> int:
             for x in (sl, sl2):
                 x.kill()
                 x.wait()
+        seed_wall(td, O, old)
     print(f"selftest_scratch_reap_litter: {'FAIL' if FAILS else 'PASS'}")
     return 1 if FAILS else 0
 

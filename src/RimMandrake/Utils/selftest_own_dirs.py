@@ -11,6 +11,7 @@ holds exactly the registered identity and that process is gone: the reaper's can
 the ones nothing uses. Report only by default, and report mode changes nothing (an unreadable fixture dir reads KEEP).
 """
 import argparse
+import atexit
 import contextlib
 import json
 import os
@@ -119,12 +120,92 @@ def own_dir(tag: str, dir: str | None = None):
             entry.unlink(missing_ok=True)
 
 
+_RUN_DIRS = []
+
+
+def own_dir_for_run(tag: str) -> str:
+    """own_dir for a whole selftest process: tempfile.tempdir and TMPDIR point into it, so every bare mkdtemp of the
+    run (and of its children) lands inside, and it goes at exit, on SIGTERM/SIGHUP, or at the next run of `tag`.
+    Built for selftests that mkdtemp freely and never clean up (SELFTEST_LITTER_FIX_SEED_WALL_STRAGGLERS)."""
+    stack = contextlib.ExitStack()
+    d = stack.enter_context(own_dir(tag))
+    _RUN_DIRS.append(stack)
+    atexit.register(stack.close)
+    tempfile.tempdir = d
+    for k in ("TMPDIR", "TMP", "TEMP"):
+        os.environ[k] = d
+    return d
+
+
 # --- the litter left before own_dir: found by the fixture's shape, never by a name alone ---------------------------
 
 SHAPES = ({"origin.git", "archive", "live_elsewhere"},                         # selftest_scratch_reap.py run()
           {"archive_tags", "corpus", "origin", "r_tags", "state", "tr"})        # selftest_scratch_reap_archive_tags.py
 TMP_NAME = re.compile(r"tmp[a-z0-9_]{8}")
 FAKE_SAVE_MAX = 64                                                              # the fixtures write "save" and kin
+
+
+# selftest_relentless_seeds.py repo()/delivered() and selftest_relentless_wall.py's sha256 repo, before own_dir_for_run:
+# the mkdtemp prefix, the exact top-level entries, the git dir that holds the repo, and the fixture's own author/committer
+# identities, and any uncommitted change on the fixture's own files only (a run killed mid-test leaves m.py staged). A
+# dir is this litter only when every one of them matches.
+GIT_FIXTURES = {
+    "seedrepo": {"entries": ({".claude", ".git", "m.py"}, {".claude", ".git", "m.py", "new.py"}), "repo": "",
+                 "who": {"a <a@b>", "relentless worker <worker@relentless>"}, "files": {"m.py", "new.py", ".claude/agents/rm-judge.md"}},
+    "seeddest": {"entries": ({"case"},), "repo": "case", "inner": ({".claude", ".git", "m.py"}, {".claude", ".git", "m.py", "new.py"}),
+                 "who": {"a <a@b>", "relentless worker <worker@relentless>"}, "files": {"m.py", "new.py", ".claude/agents/rm-judge.md"}},
+    "wallsha256": {"entries": ({".git", "a.py"},), "repo": "", "who": {"t <t@t>"}, "files": {"a.py"}},
+}
+GIT_NAME = re.compile(r"(%s)[a-z0-9_]{8}" % "|".join(GIT_FIXTURES))
+GIT_FIXTURE_MAX = 2 * 1024 * 1024                                              # the fixtures are a few KB
+
+
+def git_fixture(p: Path) -> str | None:
+    """None = a seed/wall selftest's git fixture; else why not. Read-only: git log reads, never writes."""
+    m = GIT_NAME.fullmatch(p.name)
+    if not m:
+        return "not a git fixture's name"
+    f = GIT_FIXTURES[m.group(1)]
+    names = set(os.listdir(p))
+    if names not in [set(e) for e in f["entries"]]:
+        return "not the fixture's entries"
+    repo = p / f["repo"] if f["repo"] else p
+    if f.get("inner") and set(os.listdir(repo)) not in [set(e) for e in f["inner"]]:
+        return "not the fixture's entries"
+    for n in [p / x for x in names] + [repo / x for x in os.listdir(repo)]:
+        if n.is_symlink():
+            return f"a symlink inside: {n}"
+    g = repo / ".git"
+    if not (g.is_dir() and (g / "HEAD").is_file() and (g / "objects").is_dir()):
+        return "no git dir of its own"
+    if tree_bytes(p) > GIT_FIXTURE_MAX:
+        return "too big for the fixture"
+    try:
+        return _git_fixture_history(repo, f)
+    except (subprocess.SubprocessError, ValueError) as e:            # a hung or undecodable git keeps it, never aborts
+        return f"git unreadable: {e!r}"[:200]
+
+
+def _git(repo: Path, *a: str) -> subprocess.CompletedProcess:
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    return subprocess.run(["git", "-c", "core.fsmonitor=false", "-C", str(repo), "--no-optional-locks", *a],
+                          capture_output=True, text=True, errors="replace", env=env, timeout=60)
+
+
+def _git_fixture_history(repo: Path, f: dict) -> str | None:
+    r = _git(repo, "log", "--all", "--format=%an <%ae>%n%cn <%ce>")
+    who = {x for x in r.stdout.splitlines() if x}
+    if r.returncode or not who:
+        return "no readable history"
+    if not who <= f["who"]:
+        return f"someone else committed here: {sorted(who - f['who'])[:2]}"
+    st = _git(repo, "status", "--porcelain", "-z", "--ignored", "--untracked-files=all")
+    if st.returncode:
+        return "no readable status"
+    dirty = {e[3:] for e in st.stdout.split("\0") if len(e) > 3}
+    if not dirty <= f["files"]:
+        return f"uncommitted changes beyond the fixture's files: {sorted(dirty - f['files'])[:2]}"
+    return None
 
 
 def legacy_roots() -> list[Path]:
@@ -142,7 +223,7 @@ def candidates() -> list[Path]:
         except OSError:                               # another user's dir in /tmp
             return []
     for r in legacy_roots():
-        tops = [p for p in kids(r) if TMP_NAME.fullmatch(p.name)]
+        tops = [p for p in kids(r) if TMP_NAME.fullmatch(p.name) or GIT_NAME.fullmatch(p.name)]
         tops += [q for p in kids(r) if p.name.startswith("selftest_run_") for q in kids(p) if TMP_NAME.fullmatch(q.name)]
         for p in tops:
             with contextlib.suppress(OSError):
@@ -176,9 +257,20 @@ def _judge(p: Path, now: float, min_age_s: float, open_locked: bool) -> str | No
     """None = selftest litter; else why it stays. Litter is the fixture's layout holding at least one fake CANONICAL_
     save, every save fixture-sized, every entry statable, untouched for min_age_s. open_locked: chmod the fixture's
     unreadable dirs so they can be seen (only when about to remove; report mode never changes a thing)."""
+    top = os.lstat(p)
+    if GIT_NAME.fullmatch(p.name):
+        if top.st_uid != os.getuid():
+            return "another user's"
+        why = git_fixture(p)
+        if why:
+            return why if why in ("not a git fixture's name", "not the fixture's entries") else f"git fixture look-alike: {why}"
+        newest = top.st_mtime
+        for dp, dns, fns in os.walk(p):
+            for n in dns + fns:
+                newest = max(newest, os.lstat(os.path.join(dp, n)).st_mtime)
+        return "young" if now - newest < min_age_s else None
     if not shaped(p):
         return "not a reaper selftest's shape"
-    top = os.lstat(p)
     if top.st_uid != os.getuid():
         return "another user's"
     errs = []
@@ -279,7 +371,8 @@ def legacy_litter(apply: bool, min_age_s: float = 6 * 3600) -> dict:
         bytes_ += size
         rows.append({"path": str(p), "verdict": "REMOVED" if apply else "LITTER", "bytes": size})
     rows += [{"path": str(p), "verdict": "KEEP", "why": why} for p, why in kept
-             if why not in ("not a reaper selftest's shape", "no fake canonical save: not this litter")]
+             if why not in ("not a reaper selftest's shape", "no fake canonical save: not this litter",
+                            "not a git fixture's name", "not the fixture's entries")]
     return {"apply": apply, "litter": removed, "bytes": bytes_, "rows": rows}
 
 
