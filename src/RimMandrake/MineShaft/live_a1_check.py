@@ -162,7 +162,7 @@ def capture_rocks(capdir):
         if not (res or (V.DEFAULTS["stoneBills"] and nat)):
             continue
         rocks.append((0 if res else 1, 0 if (b.get("mineableScatterCommonality") or 0) > 0 else 1,
-                      -(b.get("mineableScatterCommonality") or 0), 0, t["defName"], b["mineableThing"]))
+                      -(b.get("mineableScatterCommonality") or 0), V.base_hp(f), t["defName"], b["mineableThing"]))
     rocks.sort()
     return [(r[4], r[5]) for r in rocks]
 

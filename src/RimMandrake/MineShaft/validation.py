@@ -33,6 +33,19 @@ WALK = os.path.join(REPO, "design", "validation_walks", "RimMandrake", "MineShaf
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 from game_paths import LOCALLOW  # noqa: E402  (the one-path seam: never a LocalLow literal here)
 CAPTURES = os.path.join(LOCALLOW, "DefDump", "captures")
+def base_hp(fields):
+    """A captured ThingDef's BaseMaxHitPoints, the rule's fourth sort key (CompareSources: lower HP first). The capture
+    carries statBases; with no MaxHitPoints entry the stat's defaultBaseValue (100) applies. MINES_SWAP 2026-11-05: this
+    was a constant 0, so HP ties fell to defName and the replay named the wrong rock for 3 shared products."""
+    for m in fields.get("statBases") or []:
+        if isinstance(m, dict) and m.get("stat") == "MaxHitPoints":
+            try:
+                return int(round(float(m.get("value"))))
+            except (TypeError, ValueError):
+                return 100
+    return 100
+
+
 POLICY_TAG = "RimMandrake.MineShaft.MineShaftPolicyDef"
 PREFIX = "RM_MineShaft_"
 CANON_BARRED = ("KOTOR_IngotBeskar", "KOTOR_RawBeskar", "OuterRim_Beskar", "OuterRim_PureBeskar", "RSW_Durasteel", "KotORChunk_durasteel",
@@ -159,7 +172,7 @@ def replay(capdir=None):
         res, nat = bool(b.get("isResourceRock")), bool(b.get("isNaturalRock"))
         if not (res or (DEFAULTS["stoneBills"] and nat)):
             continue
-        hp = 0
+        hp = base_hp(f)
         rocks.append((0 if res else 1, 0 if (b.get("mineableScatterCommonality") or 0) > 0 else 1,
                       -(b.get("mineableScatterCommonality") or 0), hp, t["defName"], b["mineableThing"]))
     rocks.sort()
