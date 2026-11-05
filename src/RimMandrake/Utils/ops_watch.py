@@ -2071,7 +2071,9 @@ def rl_churn(store, now, cfg):
       signature); an item is IN CHURN when it has a failed attempt inside churn_window_h and either state.json returns >=
       churn_returns or one class failed it churn_same_class times or more.
       RETURNED TOKENS: every run in the spend-YYYYMMDD.json files (marker rm-relentless-{work|check}-<sha1(item)[:10]>-g<gen>)
-      whose (item, gen) ended in a failed attempt; a run is placed in time by its gen's start row. A run the instrument
+      whose (item, gen) LAST ending is a failure (a gen-less row, e.g. `done`, belongs to the gen open when it was written):
+      a gen that failed a check and was then accepted or resumed sent nothing back (OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV,
+      2026-11-05: such gens were 9.8 of a 66.2% reading); a run is placed in time by its gen's start row. A run the instrument
       cannot place (unknown marker or no start row) is `unmapped`: over churn_max_unmapped_pct of the window it reads
       UNMEASURED, and no spend in the window is UNMEASURED too (an idle lane is not a clean one).
       x.by_end (OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV): the returned spend per ending class of the gen's last failed row
@@ -2086,11 +2088,11 @@ def rl_churn(store, now, cfg):
         why = "items unreadable: %s" % str(e)[:120]
         return churn_blind(why)
     import hashlib
-    by_hash, failed, started, churn, classes, torn = {}, {}, {}, [], {}, 0
+    by_hash, gen_end, started, churn, classes, torn = {}, {}, {}, [], {}, 0
     for n in names:
         by_hash[hashlib.sha1(n.encode()).hexdigest()[:10]] = n
         st = read_json(store / "items" / n / "state.json")
-        fails = []
+        fails, cur = [], None
         try:
             with open(store / "items" / n / "attempts.jsonl", encoding="utf-8") as f:
                 for ln in f:
@@ -2098,13 +2100,21 @@ def rl_churn(store, now, cfg):
                         r = json.loads(ln)
                     except ValueError:
                         continue
-                    if not isinstance(r, dict) or not isinstance(r.get("gen"), int):
+                    if not isinstance(r, dict):
+                        continue
+                    if not isinstance(r.get("gen"), int):
+                        # a gen-less ending (`done` is written without one) belongs to the gen open when it was written
+                        if cur is not None and r.get("end") and "kind" not in r:
+                            gen_end[(n, cur)] = str(r["end"])
                         continue
                     if r.get("start"):
                         started[(n, r["gen"])] = epoch(r.get("at"))
-                    elif attempt_failed(r, ok_ends):
+                        cur = r["gen"]
+                        continue
+                    if r.get("end") and "kind" not in r:
+                        gen_end[(n, r["gen"])] = str(r["end"])
+                    if attempt_failed(r, ok_ends):
                         t, end = attempt_failed(r, ok_ends)
-                        failed[(n, r["gen"])] = end     # the gen's last failed ending names its cause
                         fails.append((t or 0, end))
         except OSError:
             pass        # an item never started has no attempts file
@@ -2115,6 +2125,9 @@ def rl_churn(store, now, cfg):
             churn.append((-(st.get("spent") or 0) if is_num(st.get("spent")) else 0, n))
             last = fails[-1][1]
             classes[last] = classes.get(last, 0) + 1
+    # a gen is RETURNED when its last ending is a failure: a gen that failed a check and then ended done (or resumed:
+    # unhold) sent nothing back to a worker, so its spend is not returned work
+    failed = {k: e for k, e in gen_end.items() if e not in ok_ends}
     churn.sort()
     cause = ", ".join("%d %s" % (v, k) for k, v in sorted(classes.items(), key=lambda kv: -kv[1])[:4]) or "none"
     pts = {"relentless.churn_items": M(len(churn), CHURN_UNITS[0], first=[n for _, n in churn[:5]], window_h=win_h,

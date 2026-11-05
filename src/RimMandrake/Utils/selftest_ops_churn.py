@@ -7,7 +7,8 @@ and no reading said so. Each check fails on the code before the change:
 1. rl_churn counts an item in churn by returns OR a repeated failure class, only with a failure inside the window; a
    blocked row or a finish is not a failure.
 2. rl_churn's returned tokens: spend runs whose (item, gen) failed, placed in time by the gen's start row. x.by_end splits
-   that spend by the gen's failed ending and lane, so an alarm reads its shared cause off the point.
+   that spend by the gen's failed ending and lane, so an alarm reads its shared cause off the point. 2b: a gen is
+   returned only when its LAST ending (a gen-less `done` row belongs to the gen open when it was written) is a failure.
 3. rl_churn is UNMEASURED (never 0) with no spend, with too much spend it cannot place, and with no items dir.
 4. rules: a "returned" or "blind_fail" journal act is not progress; churn SLIs are incident SLIs whose units match.
 5. ops_health.incident names the incident SLIs reading bad, and verdict carries it.
@@ -104,6 +105,29 @@ def main():
     ok(pct["x"].get("by_end") == ["harness/work 30.0%", "evidence/check 10.0%"],
        "2: by_end names the returned spend per ending class and lane, largest first (OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV)",
        pct["x"].get("by_end"))
+    # 2b: a gen whose LAST ending is an acceptance was not returned, whatever failed on the way (the
+    # OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV gen-1 shape: two UNMEASURED checks, a reach repair, then a gen-less `done`;
+    # nothing went back to a worker). The 2026-11-05 reading counted 9.8 of its 66.2 points from such gens.
+    s = TMP / "s1b"
+    t1 = NOW - 2 * HOUR
+    item(s, "E_ITEM", 0, [{"gen": 1, "at": iso(t1), "start": marker("E_ITEM", 1)},
+                          {"gen": 1, "at": iso(t1 + 60), "end": "finish"},
+                          {"gen": 1, "at": iso(t1 + 70), "end": "unmeasured"},
+                          {"gen": 1, "at": iso(t1 + 80), "end": "unmeasured"},
+                          {"gen": 1, "at": iso(t1 + 90), "end": "reach_adopted"},
+                          {"gen": 1, "at": iso(t1 + 95), "end": "reach_repaired"},
+                          {"at": iso(t1 + 99), "end": "done", "sha": "abc"}])
+    item(s, "F_ITEM", 1, [{"gen": 1, "at": iso(t1), "start": marker("F_ITEM", 1)},
+                          {"gen": 1, "at": iso(t1 + 60), "end": "finish"},
+                          {"gen": 1, "at": iso(t1 + 70), "end": "blind_fail"}])
+    runs = {marker("E_ITEM", 1): 500, marker("E_ITEM", 1, "check"): 300, marker("F_ITEM", 1): 200}
+    (s / ("spend-%s.json" % time.strftime("%Y%m%d", time.gmtime(NOW)))).write_text(json.dumps({"runs": runs}))
+    p = OW.rl_churn(s, NOW, CFG)
+    pct = p["relentless.returned_tokens_pct"]
+    ok(pct.get("m") == "MEASURED" and pct["x"]["returned"] == 200 and pct["v"] == 20.0
+       and pct["x"]["by_end"] == ["blind_fail/work 20.0%"],
+       "2b: a gen that ended done is not returned (its earlier unmeasured/reach rows sent nothing back); one ending in a "
+       "failure is (OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV)", pct)
     # 3
     s = store_fixture(TMP / "s2", unmapped=5000)
     p = OW.rl_churn(s, NOW, CFG)
