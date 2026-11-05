@@ -716,3 +716,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:29:10Z","tsn":1793899750450025939}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T17:30:10Z","tsn":1793899810156375753}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:30:19Z","tsn":1793899819780461183}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ART_OVERRIDE_FAMILY_SCRIPT_1 A1 (L2), read-only proof","ts":"2026-11-05T17:34:41Z","tsn":1793900081820095699}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:36:09Z","tsn":1793900169944649979}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL A1 (L2), read-only proof","ts":"2026-11-05T17:37:21Z","tsn":1793900241044583803}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:37:27Z","tsn":1793900247645600577}
