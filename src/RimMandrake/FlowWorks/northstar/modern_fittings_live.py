@@ -4,8 +4,8 @@ This script stages driver 5's recipe (ledger note 2026-10-24), reads what each t
 
   python.exe src/RimMandrake/FlowWorks/northstar/modern_fittings_live.py [--origin X,Z] [--out-dir DIR] [--fresh-map]
 
-Minimal list: FlowWorks + Gimme Some Slack (the pipe pole's span is GSS's aerial link) + their About.xml dependencies, all
-five DLC; a quicktest map is enough. The bridge must be held. Exit 0 = every row PASS; 1 = a FAIL; 2 = a row unmeasured.
+Minimal list: FlowWorks + Gimme Some Slack (the pipe pole's span is GSS's aerial link) + ModernFittingsCandidates (the
+harness-only overlay carrying the round-3 candidates) + their About.xml dependencies, all five DLC; a quicktest map is enough. The bridge must be held. Exit 0 = every row PASS; 1 = a FAIL; 2 = a row unmeasured.
 
 Scene (plot from --origin, default 140,140; reset and prepared 15 x 7 from (-1,-1)):
   pipe   RM_UniversalPipe x = 0..12, z = 0, each cell styled RM_UniversalPipe_Modern FIRST (jawa/set_thing_props)
@@ -14,6 +14,12 @@ Scene (plot from --origin, default 140,140; reset and prepared 15 x 7 from (-1,-
   poles  RM_PipePole (0,4) and (10,4) (10 cells, under the default pipePoleMaxSpan 12), styled RM_PipePole_Modern, then
          strung through GSS's own CompAerialAnchor.TryLink (RM_LineProofs.ProofLinkPoles)
 Rows:
+  CANDIDATES_SWAPPED_IN  the candidates (Transient/modern_style_20261023/cand_r3 RM_PipeFaucet, RM_SprinklerHead, PipeSpan)
+        are what the game draws: jawa/running_mods has mandrake.rm.modernfittingscandidates loaded AFTER
+        mandrake.rm.flowworks (a loose texture at the same path is taken from the LAST loaded mod; traps-art.md "Our own mods
+        shadow each other"), and each file under the RUNNING overlay folder hashes to the candidate in the repo. The
+        candidates are the same sizes as the installed art, so textureSize cannot tell them apart; the load order and bytes
+        can. A redeploy after launch changes the bytes but not the loaded texture: the live round deploys before it loads.
   FAUCET_DRAWS_MODERN / SPRINKLER_DRAWS_MODERN  jawa/thing_graphic: resolvedPath is .../Faucet/Modern/RM_PipeFaucet,
         .../Sprinkler/Modern/RM_SprinklerHead, badTex false. The draw is Thing.Graphic (RM_PipeSeat.Print prints
         onPipe.Graphic), so this is the art on screen. detail.matchedPipe says whether MatchPipeUnder did it; when it did
@@ -53,6 +59,12 @@ STYLE = {"RM_UniversalPipe": "RM_UniversalPipe_Modern", "RM_PipeFaucet": "RM_Pip
 HEADS = {"RM_PipeFaucet": (3, 0), "RM_SprinklerHead": (8, 0)}
 POLES = ((0, 4), (10, 4))
 PIPE_X = range(0, 13)
+REPO = os.path.normpath(os.path.join(HERE, "..", "..", "..", ".."))
+CAND_DIR = os.path.join(REPO, "Transient", "modern_style_20261023", "cand_r3")
+OVERLAY = "mandrake.rm.modernfittingscandidates"
+FLOWWORKS = "mandrake.rm.flowworks"
+CANDIDATES = {"Faucet/Modern/RM_PipeFaucet": "RM_PipeFaucet.png", "Sprinkler/Modern/RM_SprinklerHead": "RM_SprinklerHead.png",
+              "PipePole/Modern/PipeSpan": "PipeSpan.png"}   # texPath under TEX -> candidate file in CAND_DIR
 ROW_OF = {"RM_PipeFaucet": "FAUCET_DRAWS_MODERN", "RM_SprinklerHead": "SPRINKLER_DRAWS_MODERN"}
 
 
@@ -79,6 +91,50 @@ def v_head(defname, g, matched):
     if not matched:
         return "FAIL", "MOD", "%s draws Modern only after an explicit style: MatchPipeUnder did not match the Modern pipe" % defname
     return "PASS", "MOD", "%s draws %s, matched from the pipe under it" % (defname, drawn(g))
+
+
+def sha256(path):
+    """Hex sha256 of a file, None if it cannot be read."""
+    import hashlib
+    try:
+        with open(path, "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()
+    except OSError:
+        return None
+
+
+def v_candidates(rm):
+    """(status, cls, why) + detail: the running overlay sits after FlowWorks and its files are the candidates' bytes."""
+    det = {}
+    if not rm or not rm.get("success") or not isinstance(rm.get("mods"), list):
+        return ("UNMEASURED", "HARNESS", "jawa/running_mods gave no mods[]: %s" % str(rm)[:200]), det
+    by = {str(m.get("packageId") or "").lower(): m for m in rm["mods"]}
+    ov, fw = by.get(OVERLAY), by.get(FLOWWORKS)
+    if fw is None:
+        return ("UNMEASURED", "SITE", "FlowWorks is not in the running load"), det
+    if ov is None:
+        return ("FAIL", "SITE", "%s is not in the running load: the installed art is drawn, not the candidates" % OVERLAY), det
+    det.update(overlayOrder=ov.get("loadOrder"), flowworksOrder=fw.get("loadOrder"), folder=ov.get("folder"))
+    try:
+        after = int(ov.get("loadOrder")) > int(fw.get("loadOrder"))
+    except (TypeError, ValueError):
+        return ("UNMEASURED", "HARNESS", "loadOrder unreadable: %s" % det), det
+    if not after:
+        return ("FAIL", "SITE", "%s loads BEFORE FlowWorks (%s <= %s): FlowWorks' art wins" % (
+            OVERLAY, det["overlayOrder"], det["flowworksOrder"])), det
+    bad = []
+    for tex, cand in CANDIDATES.items():
+        want = sha256(os.path.join(CAND_DIR, cand))
+        got = sha256(os.path.join(local(ov.get("folder")), "Textures", *(TEX + tex + ".png").split("/")))
+        det[tex] = {"candidate": want, "running": got}
+        if want is None:
+            return ("UNMEASURED", "HARNESS", "candidate %s missing from the repo" % cand), det
+        if got != want:
+            bad.append("%s %s" % (tex, "missing" if got is None else "is not the candidate's bytes"))
+    if bad:
+        return ("FAIL", "SITE", "running overlay: " + "; ".join(bad)), det
+    return ("PASS", "SITE", "%s loaded after FlowWorks (%s > %s); its %d textures are the cand_r3 bytes" % (
+        OVERLAY, det["overlayOrder"], det["flowworksOrder"], len(CANDIDATES))), det
 
 
 def v_span(link_kv, pole_rows):
@@ -170,6 +226,8 @@ def run(B, V, a):
     if not ok:
         row("FAUCET_DRAWS_MODERN", ("UNMEASURED", "HARNESS", "no game in Playing"))
         return 2
+    cand_verdict, cand_det = v_candidates(B.call("jawa/running_mods", assembly="", details=True) or {})
+    row("CANDIDATES_SWAPPED_IN", cand_verdict, cand_det)
     res["site_calm"] = V.site_calm(B)
     B.call("jawa/static_call", type=NSP, method="ProofResetRect", args="%d;%d;%d;%d" % rect)
     site_rows = []
@@ -247,9 +305,14 @@ def run(B, V, a):
     res["captures"] = caps
     row("CAPTURE_WRITTEN", verdict, caps)
     manifest = {"item": ITEM, "stamp": stamp, "result": out, "captures": caps,
-                "subjects": {"RM_PipeFaucet_Modern": {"texPath": WANT["RM_PipeFaucet"], "panel": caps.get("heads")},
-                             "RM_SprinklerHead_Modern": {"texPath": WANT["RM_SprinklerHead"], "panel": caps.get("heads")},
-                             "RM_PipeSpan_Modern": {"texPath": SPAN_TEX, "panel": caps.get("span")}},
+                "candidatesSwappedIn": cand_verdict[0] == "PASS",
+                "subjects": {"RM_PipeFaucet_Modern": {"texPath": WANT["RM_PipeFaucet"], "panel": caps.get("heads"),
+                                                      "candidate": CANDIDATES["Faucet/Modern/RM_PipeFaucet"]},
+                             "RM_SprinklerHead_Modern": {"texPath": WANT["RM_SprinklerHead"], "panel": caps.get("heads"),
+                                                         "candidate": CANDIDATES["Sprinkler/Modern/RM_SprinklerHead"]},
+                             "RM_PipeSpan_Modern": {"texPath": SPAN_TEX, "panel": caps.get("span"),
+                                                    "candidate": CANDIDATES["PipePole/Modern/PipeSpan"]}},
+                "candidateDir": "Transient/modern_style_20261023/cand_r3",
                 "note": "in-game captures for the art-eval machine template's assembled panel"}
     with open(os.path.join(out_dir, "captures.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=1)

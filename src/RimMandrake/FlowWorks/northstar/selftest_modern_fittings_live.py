@@ -2,11 +2,16 @@
 The whole script runs against FakeBridge, a toy map that models only what the rows read (each thing's drawn path from its
 style, MatchPipeUnder copying the pipe's look onto a new head, the span strung by ProofLinkPoles, a screenshot file).
 The Modern scene must exit 0; a head whose look-match is broken (Modern only after an explicit style) FAILS; a pipe or pole
-that never took its Modern style is a staging fault (UNMEASURED, never a head/span FAIL); an unstrung span and a screenshot with no file must each NOT exit 0. Also checks the
+that never took its Modern style is a staging fault (UNMEASURED, never a head/span FAIL); an unstrung span and a screenshot with no file must each NOT exit 0.
+The candidates must be swapped in: the overlay mod (ModernFittingsCandidates) not running, loaded before FlowWorks, or running
+with bytes that are not cand_r3's each makes CANDIDATES_SWAPPED_IN FAIL and the run exit 1. Also checks the overlay mod in the
+repo carries exactly the candidate bytes at the Modern texPaths and loads after FlowWorks, and the
 files the rows promise exist in the repo: the Modern faucet, sprinkler and PipeSpan textures, the four StyleDefs, the
 spanTexPath contract, and the C# methods the script calls."""
 import os
+import hashlib
 import re
+import shutil
 import sys
 import tempfile
 
@@ -43,7 +48,7 @@ class FakeV:
 
 
 class FakeBridge:
-    FAULTS = ("pipe_unstyled", "pole_unstyled", "no_match", "unstrung", "no_shot", "uniform_shot")
+    FAULTS = ("no_overlay", "overlay_first", "overlay_stale", "pipe_unstyled", "pole_unstyled", "no_match", "unstrung", "no_shot", "uniform_shot")
 
     def __init__(self, faults, tmp):
         self.f, self.tmp, self.things, self.n, self.strung = set(faults), tmp, {}, 0, False
@@ -57,6 +62,19 @@ class FakeBridge:
 
     def call(self, tool, **k):
         k.pop("_answer", None)
+        if tool == "jawa/running_mods":
+            folder = os.path.join(self.tmp, "Mods", "ModernFittingsCandidates")
+            for tex, cand in M.CANDIDATES.items():
+                dst = os.path.join(folder, "Textures", *(M.TEX + tex + ".png").split("/"))
+                os.makedirs(os.path.dirname(dst), exist_ok=True)
+                src = os.path.join(FW, "Textures", *(M.TEX + tex + ".png").split("/")) if "overlay_stale" in self.f \
+                    else os.path.join(M.CAND_DIR, cand)
+                shutil.copyfile(src, dst)
+            mods = [{"loadOrder": 0, "packageId": "Ludeon.RimWorld", "folder": "x"},
+                    {"loadOrder": 6, "packageId": "mandrake.rm.flowworks", "folder": "y"}]
+            if "no_overlay" not in self.f:
+                mods.append({"loadOrder": 3 if "overlay_first" in self.f else 8, "packageId": M.OVERLAY, "folder": folder})
+            return {"success": True, "mods": mods, "packageIds": [m["packageId"] for m in mods]}
         if tool == "jawa/build_batch":
             for op in k["ops"].split(";"):
                 d, c = op.split(":")
@@ -119,9 +137,14 @@ def scenario(faults):
 
 code, rows, man = scenario([])
 check("Modern scene: exit 0", code == 0, (code, rows))
-check("Modern scene: four rows, all PASS", sorted(rows) == sorted(["FAUCET_DRAWS_MODERN", "SPRINKLER_DRAWS_MODERN",
+check("Modern scene: five rows, all PASS", sorted(rows) == sorted(["CANDIDATES_SWAPPED_IN", "FAUCET_DRAWS_MODERN", "SPRINKLER_DRAWS_MODERN",
       "SPAN_STRUNG_MODERN", "CAPTURE_WRITTEN"]) and set(rows.values()) == {"PASS"}, rows)
 check("Modern scene: captures.json written for the art pipeline", man)
+for fault, what in (("no_overlay", "candidate overlay not in the running load"),
+                    ("overlay_first", "candidate overlay loaded BEFORE FlowWorks (FlowWorks' art wins)"),
+                    ("overlay_stale", "running overlay holds the installed art, not the candidates")):
+    code, rows, _ = scenario([fault])
+    check("%s: CANDIDATES FAIL, exit 1" % what, code == 1 and rows.get("CANDIDATES_SWAPPED_IN") == "FAIL", (code, rows))
 code, rows, _ = scenario(["pipe_unstyled"])
 check("pipe that never took the Modern style: staging UNMEASURED (2), not a head FAIL", code == 2
       and rows.get("FAUCET_DRAWS_MODERN") == "UNMEASURED", (code, rows))
@@ -144,6 +167,24 @@ check("local(): a Windows screenshot path opens from WSL", M.local(r"D:\a\b.png"
 TEXD = os.path.join(FW, "Textures")
 for p in (M.WANT["RM_PipeFaucet"], M.WANT["RM_SprinklerHead"], M.SPAN_TEX, M.POLE_MODERN + "PipePole"):
     check("installed texture %s.png" % p, os.path.isfile(os.path.join(TEXD, p + ".png")))
+# the candidates are swapped in by the overlay mod: its bytes ARE cand_r3, they differ from the installed art, it loads after FW
+OVL = os.path.normpath(os.path.join(FW, "..", "ModernFittingsCandidates"))
+h = lambda p: hashlib.sha256(open(p, "rb").read()).hexdigest() if os.path.isfile(p) else None  # noqa: E731
+for tex, cand in M.CANDIDATES.items():
+    rel = (M.TEX + tex + ".png").split("/")
+    c, o, i = h(os.path.join(M.CAND_DIR, cand)), h(os.path.join(OVL, "Textures", *rel)), h(os.path.join(TEXD, *rel))
+    check("overlay %s is the candidate %s" % (tex, cand), c is not None and o == c, (c and c[:10], o and o[:10]))
+    check("candidate %s differs from the installed art (a swap is visible)" % cand, c is not None and c != i)
+ovl_tex = sorted(os.path.relpath(os.path.join(r, f), os.path.join(OVL, "Textures")).replace(os.sep, "/")
+                 for r, _, fs in os.walk(os.path.join(OVL, "Textures")) for f in fs)
+check("overlay carries only the three candidates", ovl_tex == sorted(M.TEX + t + ".png" for t in M.CANDIDATES), ovl_tex)
+about = open(os.path.join(OVL, "About", "About.xml"), encoding="utf-8").read() if os.path.isfile(os.path.join(OVL, "About", "About.xml")) else ""
+check("overlay About: packageId %s, loadAfter FlowWorks" % M.OVERLAY, "<packageId>%s</packageId>" % M.OVERLAY in about
+      and re.search(r"<loadAfter>.*<li>%s</li>.*</loadAfter>" % re.escape(M.FLOWWORKS), about, re.S) is not None)
+proofs = os.path.join(M.REPO, "infrastructure", "state", "live_proofs", M.ITEM + ".txt")
+lm = [l for l in open(proofs, encoding="utf-8").read().splitlines() if l.startswith("live-mods:")]
+check("live_proofs live-mods loads the overlay", bool(lm) and "ModernFittingsCandidates" in lm[0], lm)
+
 defs = ""
 for root, _, files in os.walk(os.path.join(FW, "Defs")):
     for f in files:

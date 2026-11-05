@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Modern Fittings Candidates (harness only)</name>
+  <packageId>mandrake.rm.modernfittingscandidates</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>HARNESS ONLY. Never shipped, never on a player's list.
+
+Carries the round-3 candidate art (Transient/modern_style_20261023/cand_r3) for the Modern
+faucet, sprinkler head and pipe span at FlowWorks' own texture paths. Loaded after FlowWorks,
+its loose textures win (last loaded wins), so a live capture shows the candidates in game.
+Proof: src/RimMandrake/FlowWorks/northstar/modern_fittings_live.py (row CANDIDATES_SWAPPED_IN).
+Item MODERN_FITTINGS_PROBE_FAUCET_NEVER_SEEN.</description>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.flowworks</packageId>
+      <displayName>RimMandrake: FlowWorks</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.flowworks</li>
+  </loadAfter>
+</ModMetaData>

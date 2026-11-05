@@ -1,7 +1,8 @@
-# MODERN_FITTINGS_PROBE_FAUCET_NEVER_SEEN: one sitting on a Playing quicktest map (FlowWorks + Gimme Some Slack and their
+# MODERN_FITTINGS_PROBE_FAUCET_NEVER_SEEN: one sitting on a Playing quicktest map (FlowWorks + Gimme Some Slack + the
+# harness-only ModernFittingsCandidates overlay (cand_r3 art at the Modern texPaths, loaded after FlowWorks) and their
 # About.xml dependencies, all five DLC). modern_fittings_live.py stages driver 5's recipe (Modern pipe first, then the faucet
 # and sprinkler on it, two Modern pipe poles strung), reads each thing's drawn texture (jawa/thing_graphic) and the span
 # (ProofLinkPoles), and photographs scene/heads/span. Exit 0 only when every row PASSES. Captures + captures.json:
 # D:\ClaudeWork\rimmandrake\live\MODERN_FITTINGS_PROBE_FAUCET_NEVER_SEEN\ (the art pipeline judges them afterwards).
-live-mods: FlowWorks, GimmeSomeSlack
+live-mods: FlowWorks, GimmeSomeSlack, ModernFittingsCandidates
 live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/modern_fittings_live.py < /dev/null
