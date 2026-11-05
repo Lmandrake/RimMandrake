@@ -365,21 +365,21 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Drommath/RM_Drommath</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.4</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Drommath/RM_Drommath</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.6</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Drommath/RM_Drommath</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.8</drawSize>
         </bodyGraphicData>
       </li>

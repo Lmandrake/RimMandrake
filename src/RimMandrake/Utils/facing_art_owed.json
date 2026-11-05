@@ -1,0 +1,28 @@
+{
+ "_doc": "texPaths the facing census (facing_art_census.py) classes OWED/PARTIAL/MULTI_GAP and an art item carries. Remove a line when its facings land and it is wired Graphic_Multi; never add one without an item.",
+ "item": "CREATURE_FACINGS_REDRAW_ONE_PICTURE_ZOO",
+ "itemByTexPath": {
+  "Things/Pawn/Animal/RM_Tellurox/RM_Tellurox": "TELLUROX_FACINGS_REDRAW_ALWAYS_SIDEWAYS"
+ },
+ "texPaths": [
+  "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_AV_B",
+  "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_AV_C",
+  "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_BV_I",
+  "Things/Pawn/Animal/Moornak/Moornak",
+  "Things/Pawn/Animal/Onnik/Onnik",
+  "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
+  "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
+  "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun",
+  "Things/Pawn/Animal/RM_Karrask/RM_Karrask",
+  "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
+  "Things/Pawn/Animal/RM_Oddu/RM_Oddu",
+  "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
+  "Things/Pawn/Animal/RM_Oovu/RM_Oovu",
+  "Things/Pawn/Animal/RM_Sekkulaath_Juvenile/RM_Sekkulaath_Juvenile",
+  "Things/Pawn/Animal/RM_Tarnn/RM_Tarnn",
+  "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq",
+  "Things/Pawn/Animal/RM_Tellurox/RM_Tellurox",
+  "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
+  "Things/Pawn/Animal/Skarnix/Skarnix"
+ ]
+}
