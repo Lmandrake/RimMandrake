@@ -14,6 +14,15 @@ runner)
     fi ;;
 esac
 root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+# A companion [Tool] is committed only with its tool_schemas.json entry (NIGHTLY_COP_FIX_RED_LMTEZQ_YAXX: the nightly
+# selftest_lint_calls went red three times on a [Tool] landed without one). A crash fails open.
+t="$root/src/RimMandrake/Utils/northstar_driver/tool_snapshot_guard.py"
+if [ -f "$t" ] && command -v python3 >/dev/null 2>&1; then
+    python3 "$t" --staged "$root"
+    r=$?
+    [ "$r" -gt 1 ] && { echo "pre-commit: tool_snapshot_guard.py crashed (exit $r), failing open" >&2; r=0; }
+    [ "$r" -ne 0 ] && exit $r
+fi
 g="$root/src/RimMandrake/Utils/art/game_art.py"
 [ -f "$g" ] || exit 0
 command -v python3 >/dev/null 2>&1 || { echo "pre-commit: python3 missing, sheet guard skipped" >&2; exit 0; }
