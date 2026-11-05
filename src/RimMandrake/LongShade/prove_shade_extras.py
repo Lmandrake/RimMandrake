@@ -246,6 +246,69 @@ def _breaks():
     }
 
 
+KERNEL_CS = "src/RimMandrake/LongShade/Source/Kernel/RM_ShadeExtrasKernel.cs"
+
+
+def kernel_fn(text, name):
+    """Execute a Verse-free kernel method from its C# source: one `return <expr>;` (plus float locals) transliterated to
+    Python. Runs the code as written, so a dropped or flipped condition in the kernel changes what this returns."""
+    m = re.search(r"public static bool %s\(([^)]*)\)\s*\{(.*?)\n        \}" % name, text, re.S)
+    if not m:
+        return None
+    params = [a.split()[-1] for a in m.group(1).split(",")]
+    body = re.sub(r"//[^\n]*", "", m.group(2))
+    py = []
+    for st in (x.strip() for x in body.split(";")):
+        if not st:
+            continue
+        st = re.sub(r"\b(\d+(?:\.\d+)?)f\b", r"\1", st).replace("Math.Abs", "abs")
+        st = st.replace("&&", " and ").replace("||", " or ")
+        st = re.sub(r"!(?!=)", " not ", st)
+        st = re.sub(r"^(?:float|int|bool|var) (\w+) =", r"\1 =", st)
+        if not re.match(r"^(return\b|\w+ =)", st):
+            return None
+        py.append("    " + st)
+    src = "def _k(%s):\n%s\n" % (", ".join(params), "\n".join(py))
+    ns = {}
+    exec(compile(src, KERNEL_CS, "exec"), {"abs": abs}, ns)
+    return ns["_k"]
+
+
+def check_kernel(bad):
+    """Item criterion 3, run on the kernel itself: resting prey only, body size <= 1.5 (1.5 strikes, 1.51 does not),
+    once per 900 ticks, strip of 6 cells and half width 0.9; plus the mechanism passes those arguments in that order."""
+    text = _read(KERNEL_CS)
+    can, strip = kernel_fn(text, "HarrokCanStrike"), kernel_fn(text, "InShadowStrip")
+    if can is None or strip is None:
+        bad.append("kernel HarrokCanStrike/InShadowStrip not found or not a plain return expression; cannot execute it")
+        return
+    for args, want in (((True, 1.0, 1.5, 9000, NEVER, 900), True), ((True, 1.5, 1.5, 9000, NEVER, 900), True),
+                       ((True, 1.51, 1.5, 9000, NEVER, 900), False), ((True, 2.0, 1.5, 9000, NEVER, 900), False),
+                       ((True, 4.0, 1.5, 9000, NEVER, 900), False), ((False, 1.0, 1.5, 9000, NEVER, 900), False),
+                       ((True, 1.0, 1.5, 9000, 8100, 900), True), ((True, 1.0, 1.5, 9000, 8101, 900), False),
+                       ((True, 1.0, 1.5, 9000, 9000, 900), False), ((False, 2.0, 1.5, 9000, 8500, 900), False)):
+        if bool(can(*args)) != want:
+            bad.append("kernel HarrokCanStrike%s is %s, item says %s" % (args, not want, want))
+    for args in ((2.2, 0, 1, 0), (6, 0, 1, 0), (6.01, 0, 1, 0), (3, 0.9, 1, 0), (3, 0.91, 1, 0), (-1, 0, 1, 0),
+                 (0, 0, 1, 0), (0, 3, 0, 1), (0, 6.5, 0, 1), (0.5, -2, 0, -1), (-3, 0.5, -1, 0)):
+        if bool(strip(*(args + (STRIP_LEN, STRIP_HALF)))) != in_strip(*args):
+            bad.append("kernel InShadowStrip%s disagrees with the item's 6-cell, 0.9 strip" % (args,))
+    mech = code_of(_read("src/RimMandrake/LongShade/Source/RM_ShadeExtras.cs"))
+    if "RM_LongShadeKernel.HarrokCanStrike(resting, prey.BodySize, Props.maxPreyBodySize, now, lastStrike, Props.cooldownTicks)" not in mech:
+        bad.append("RM_CompHarrokAmbush no longer passes (resting, prey.BodySize, maxPreyBodySize, now, lastStrike, cooldownTicks) to HarrokCanStrike")
+    if "RM_LongShadeKernel.InShadowStrip(c.x - pawn.Position.x, c.z - pawn.Position.z, dir.x, dir.y, Props.shadowLengthCells, Props.shadowHalfWidth)" not in mech:
+        bad.append("RM_CompHarrokAmbush no longer passes the cell offset, sun vector and Props strip to InShadowStrip")
+    if not re.search(r"if \(!RM_LongShadeKernel\.HarrokCanStrike\([^;]*\)\) continue;", mech):
+        bad.append("RM_CompHarrokAmbush no longer skips prey HarrokCanStrike refuses")
+    if "bool resting = prey.pather == null || !prey.pather.MovingNow || prey.Downed;" not in mech:
+        bad.append("RM_CompHarrokAmbush's resting test changed")
+
+
+def code_of(text):
+    out = re.sub(r'("(?:\\.|[^"\\\n])*")|//[^\n]*|/\*.*?\*/', lambda m: m.group(1) or " ", text, flags=re.S)
+    return re.sub(r"\s+", " ", out)
+
+
 def offline():
     bad = []
     proj = _read("src/RimMandrake/LongShade/Source/RM_LongShade.csproj")
@@ -287,6 +350,7 @@ def offline():
     calls = set(re.findall(r'static\("(\w+)"', _read("src/RimMandrake/LongShade/prove_shade_extras.py")))
     if not calls or not calls <= set(METHODS):
         bad.append("the driver calls probe methods outside METHODS: %s" % sorted(calls - set(METHODS)))
+    check_kernel(bad)
     g = judge(_good())
     bad += ["judge fails %s on a good record: %s" % (c, w) for c, (ok, w) in g.items() if not ok]
     if set(g) != set(CLAUSES):
