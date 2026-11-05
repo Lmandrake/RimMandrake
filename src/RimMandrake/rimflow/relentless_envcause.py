@@ -43,6 +43,7 @@ HARNESS = ("harness fault", "site not prepared", "the proof timed out", "bridge 
            "the running load's mod list could not be read")
 DEFECT = "proof or site defect"     # relentless_live.DEFECT
 PKG = re.compile(r"\(([\w.]+)\)")
+DOTTED = re.compile(r"(?<![\w.])\w+(?:\.\w+)+(?!\w)")    # a packageId anywhere: `pkg (why)` as well as `Name (pkg)`
 PRODUCER = "python.exe src/RimMandrake/Utils/modcheck/cli.py run %s --gate off --purpose fix --item %s"
 
 
@@ -88,7 +89,10 @@ def classify(row, item=None, needs=()):
         return _env("load", row, [x.strip() for x in m.group("holds").split(",")])
     m = NOT_LOADED.search(why)
     if m:
-        return _env("load", row, PKG.findall(m.group("list")) or re.findall(r"\w+", m.group("list"))[:1])
+        # every packageId in the list, wherever it stands; never the first bare word of one (`mandrake` of
+        # `mandrake.rm.warscar (owner of Rimclaw)` sent ART_OVERRIDE_FAMILY_SCRIPT_1 round four stagings)
+        lst = m.group("list")
+        return _env("load", row, DOTTED.findall(lst) or PKG.findall(lst) or re.findall(r"\w+", lst)[:1])
     if TIER_LACKS.search(why):
         return _env("load", row)
     m = TYPE_NOT_FOUND.search(why)

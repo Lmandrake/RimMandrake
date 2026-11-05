@@ -54,6 +54,15 @@ def t_classify():
     ok(E.classify(row(WHYS["load2"]))["mods"] == ["7f.alienworlds", "mandrake.rm.generators"], "a reload names its list")
     ok(E.classify(row(WHYS["load3"]))["mods"] == ["arandomkiwi.rimthemes", "mandrake.rut.menushell"],
        "not in the running load names the packageIds")
+    art = ("the proof exited 2: it did not measure: UNMEASURED: not in the running load: mandrake.rm.warscar (owner of "
+           "Rimclaw), mandrake.rm.webwork (defines RM_Ollathrix), sarg.alphamemes (live donor of AM_Dryad_Corruptor), "
+           "vanillaexpanded.vgeneticse ")     # ART_OVERRIDE_FAMILY_SCRIPT_1, 2026-11-05: `pkg (why)` read as `mandrake`
+    ok(E.classify(row(art))["mods"] == ["mandrake.rm.warscar", "mandrake.rm.webwork", "sarg.alphamemes",
+                                        "vanillaexpanded.vgeneticse"], "a `pkg (why)` list names its packageIds: %s"
+       % E.classify(row(art))["mods"])
+    ok(E.classify(row("not in the running load: SWBestiary (mandrake.rsw.swbestiary), SWBestiary needs "
+                      "mandrake.rm.biomes (mandrake.rm.biomes)"))["mods"] == ["mandrake.rm.biomes", "mandrake.rsw.swbestiary"],
+       "the modlist gate's `Name (pkg)` list still names its packageIds")
     p = E.classify(row(WHYS["produce"]), "I0")
     ok(p.cmd and "cli.py run Armoury" in p.cmd and "--item I0" in p.cmd, "a stale verdict names its producer: %s" % p.cmd)
     ok(E.classify(row("changed since the built commit, so the game cannot run sha1: a (b)")) is None,
