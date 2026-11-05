@@ -983,6 +983,48 @@ def chain(name, metric="m.q-1", items=()):
     return path, inc, look, due
 
 
+def test_escalation_clear_through_step():
+    """INCIDENT_ACK_FIX_OLD_NEWS_REACKS, blind check 8d94a18c: step's OWN escalation must record the ack it clears, so the
+    item action that auto-acked the incident before does not re-ack it on the next look. Every row after the first is
+    what step() wrote; none is planted."""
+    table = IN.load_table()
+    table["routes"] = [{"match": "m.*", "route": "program"}] + table["routes"]
+    told = T0
+    path = os.path.join(TMP, "escclear.jsonl")
+    IN.append([{"ev": "opened", "id": "e-2", "at": IN.iso(told), "t": told, "state": "open", "rung": 0, "rung_t": told, "told_t": told,
+                "told_at": IN.iso(told), "cause": "e", "class": "distressed", "metrics": {"m.e-2": {"class": "distressed", "event": False}},
+                "items": ["OPS_Z"], "reader": "Operations", "ack_min": 30, "acked_t": None, "ack_by": None, "plan": None}], path)
+    ledger = [{"id": "OPS_Z", "event": "start", "seat": "BENCH", "ts": IN.iso(told + M)}]
+
+    def inc():
+        return IN.fold(IN.read_rows(path))[0]["e-2"]
+
+    def look(now):
+        res = IN.step(table, IN.read_rows(path), {"t": now, "points": {"m.e-2": {"m": "MEASURED", "v": 5, "class": "distressed"}},
+                                                 "alarms": {}}, now, events=lambda: ledger)
+        IN.append(res["rows"], path)
+        return res, [x["ev"] for x in res["rows"]]
+    res, evs = look(told + 2 * M)
+    check("esc-chain: a new item action auto-acks the told incident", "acked" in evs and inc().get("auto_ack") is True
+          and inc()["plan"] == "start on OPS_Z", res["rows"])
+    t = IN.next_due(table, inc())
+    check("esc-chain: the auto-ack's recover_by is the next move", t == inc()["recover_by_t"], inc())
+    res, evs = look(t)
+    x = inc()
+    esc = [r for r in res["rows"] if r["ev"] == "escalated"]
+    check("esc-chain: recover_by passes, step escalates and clears the ack", esc and esc[0]["was_acked"] is True
+          and x["rung"] >= 1 and x.get("acked_t") is None, res["rows"])
+    check("esc-chain: step's escalation row records the ack clearing", esc and esc[0].get("ack_cleared_t") == t
+          and x.get("ack_cleared_t") == t and IN.ack_since(x) == IN.iso(t), (res["rows"], x))
+    res, evs = look(t + M)
+    check("esc-chain: the action that acked it before acks nothing on the next look", "acked" not in evs
+          and inc().get("acked_t") is None and inc()["plan"] is None, res["rows"])
+    ledger.append({"id": "OPS_Z", "event": "claim", "seat": "BENCH", "ts": IN.iso(t + 2 * M)})   # the instrument still sees new news
+    res, evs = look(t + 3 * M)
+    check("esc-chain: a new item action after the clearing auto-acks", "acked" in evs and inc().get("auto_ack") is True
+          and inc()["plan"] == "claim on OPS_Z", res["rows"])
+
+
 def test_chains_through_step():
     """Blind check 8c5731ec: the rows these clauses read must be the rows step() writes, never planted by hand."""
     # a plan rewritten after a quiet look: quiet must record the plan it saw
@@ -1422,7 +1464,7 @@ if "--replay-batch" in sys.argv:
 for t in (test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
           test_batched_run_held_and_covers_slot, test_denied_goes_to_conductor_first, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes, test_spend_alarms_do_not_buy_runs,
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
-          test_chains_through_step, test_each_field_of_a_reading, test_signal_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
+          test_escalation_clear_through_step, test_chains_through_step, test_each_field_of_a_reading, test_signal_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
           test_incidents_verb_says_the_news, test_replay_recorded, test_relapse_tamed, test_tamed_filer_waits_and_retries):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
