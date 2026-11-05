@@ -8,6 +8,8 @@ and NOT_RUN accounting, duplicate delivery, --retry, hang -> one restart -> DONE
 than it (a kept game with an older marker is restarted first, once per marker), a game gone or replaced after the run -> INVALID/GAME_DIED (also in
 the canary; alive + red canary -> CANARY; a status that cannot tell keeps the verdict), guard held by another driver -> deferred busy 75, busy -> 75, stop -> INTERRUPTED, a dead attempt
 finalized, SOURCE_SHA_MISSING, and the real deploy route: deploy_flags' flags pass deploy_custom_mods.py's checks.
+Attempt.deploy() deploys the composed closure (TerminalBiomes carries LuminousPigment) and an unreadable closure ends
+the job INVALID/DEPLOY (RELAPSE_STEVE_FIX_DIED_TWICE).
 """
 import json
 import os
@@ -30,6 +32,18 @@ if subprocess.run(["git", "-C", RUNNER, "rev-parse", "--verify", "HEAD"], captur
         if os.path.isdir(os.path.join(RUNNER, _rel)):
             shutil.copytree(os.path.join(RUNNER, _rel), os.path.join(_copy, _rel),
                             ignore=shutil.ignore_patterns("__pycache__", ".git"))
+    # case 14's deploy closure reads every mod's About.xml and the compose manifest (modcheck runner.src_mods_by_id)
+    import glob as _glob
+    for _p in sorted(_glob.glob(os.path.join(RUNNER, "src", "*", "*", "About"))
+                     + _glob.glob(os.path.join(RUNNER, "src", "*", "*.compose.json"))):
+        _dst = os.path.join(_copy, os.path.relpath(_p, RUNNER))
+        if os.path.exists(_dst):
+            continue
+        if os.path.isdir(_p):
+            shutil.copytree(_p, _dst)
+        else:
+            os.makedirs(os.path.dirname(_dst), exist_ok=True)
+            shutil.copy2(_p, _dst)
     _g = ["git", "-C", _copy, "-c", "user.name=selftest", "-c", "user.email=selftest@invalid"]
     for _a in (["init", "-q", "-b", "main"], ["add", "-A"], ["commit", "-q", "-m", "bare-export snapshot"]):
         subprocess.run(_g + _a, check=True, capture_output=True)
@@ -538,6 +552,20 @@ def main():
         vx = {r["row"]: r["verdict"] for r in res.get("rows", [])}
         check(vx == {"r1": "PASS", "r2": "FAIL", "r_lost": "NOT_RUN"}, "EXPECTED_ROWS absent from the sheet -> NOT_RUN: %s" % vx)
 
+        # 14. RELAPSE_STEVE_FIX_DIED_TWICE: Attempt.deploy() is where the Steve lane deploys, and it must put the mods
+        # of ours the composed list names in the game too. TerminalBiomes composes mandrake.rm.luminouspigment; a deploy
+        # of only the mod left it undeployed and RimWorld dropped it (INVALID/HARNESS stale_load, 2026-11-04). The
+        # recorder stands in for the deploy command, so the argv it sees IS what the worker deploys.
+        rec, recpy = os.path.join(tmp, "deploy_argv.json"), os.path.join(tmp, "deploy_recorder.py")
+        open(recpy, "w").write("import json, sys\njson.dump(sys.argv[1:], open(%r, 'w'))\n" % rec)
+        rc, o = w(["start"], S.make_job("TerminalBiomes", {"rows": ["r1"]}, "commission", "BENCH", head),
+                  TESTQ_CMD_DEPLOY="%s %s" % (sys.executable, recpy))
+        res = wait_result(o.get("attempt", "x"))
+        argv = json.load(open(rec)) if os.path.exists(rec) else None
+        check(argv is not None and argv[:1] == ["TerminalBiomes"] and "LuminousPigment" in argv,
+              "a TerminalBiomes job deploys its closure (LuminousPigment) with the mod: argv %s, %s %s"
+              % (argv, res.get("outcome"), res.get("note")))
+
         # 10. bolt 1: the attempt runs at EXACTLY source_sha even when the clone's HEAD is newer; main comes back after
         scratch = os.path.join(tmp, "clone")
         os.makedirs(scratch)
@@ -611,6 +639,25 @@ def main():
         res = wait_result(o.get("attempt", "x"))
         check(res.get("runner_sha") == second and g("symbolic-ref", "--short", "HEAD") == "main",
               "a detached clone without a marker is healed at the next start: %s" % res.get("runner_sha"))
+
+        # 14b. a closure that cannot be read ends the job INVALID/DEPLOY before anything is deployed: a deploy that
+        # guessed [] would drop the mod's dependencies silently, the defect itself. The scratch clone's modcheck
+        # runner is broken at the job's source_sha, so the worker's closure read fails there.
+        bad = os.path.join(scratch, "src", "RimMandrake", "Utils", "modcheck")
+        os.makedirs(bad, exist_ok=True)
+        open(os.path.join(bad, "runner.py"), "w").write("raise RuntimeError('selftest: a broken modcheck runner')\n")
+        g("add", "src/RimMandrake/Utils/modcheck/runner.py")
+        g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "broken runner")
+        broken = g("rev-parse", "HEAD")
+        if os.path.exists(rec):
+            os.remove(rec)
+        rc, o = w(["start"], S.make_job("Mock", {"rows": ["r1"]}, "commission", "BENCH", broken), TESTQ_CLONE=scratch,
+                  TESTQ_CMD_DEPLOY="%s %s" % (sys.executable, recpy))
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "DEPLOY" and "deploy closure" in (res.get("note") or "")
+              and not os.path.exists(rec),
+              "an unreadable deploy closure ends the job INVALID/DEPLOY, nothing deployed: %s/%s %s"
+              % (res.get("outcome"), res.get("cause"), res.get("note")))
 
         # 13. TESTQ_FIX_COMPOSE_ROUTE_MOD_WITH: the real deploy route (TESTQ_CMD_DEPLOY mocks it everywhere above).
         # The flags deploy_flags builds from the REAL src tree must get past deploy_custom_mods.py's own argument
