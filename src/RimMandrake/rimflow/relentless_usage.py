@@ -63,14 +63,19 @@ def _files(d, since, subagents_only=False):
 def transcript_result(clone, since, until=None, session=None, subagents_only=False):
     """-> a result-shaped {"usage": ...} summed over the assistant messages written in `clone`'s transcripts at or
     after `since` (one message counted once by its id, at its largest output), or None when there are none.
-    subagents_only: only the subagents/ transcripts, of `session` when it is known, else of every session there."""
+    subagents_only: only the subagents/ transcripts, of `session` when it is known, else of every session there.
+    session without subagents_only: only that session's own transcript (<session>.jsonl), never a neighbour's."""
     if not clone:
         return None
     best = {}
     d = project_dir(clone)
     if subagents_only and session:
         d = os.path.join(d, re.sub(r"[^A-Za-z0-9-]", "", str(session)) or "-")
-    for p in _files(d, since, subagents_only):
+    files = _files(d, since, subagents_only)
+    if session and not subagents_only:
+        own = re.sub(r"[^A-Za-z0-9-]", "", str(session)) + ".jsonl"
+        files = [f for f in files if os.path.basename(f) == own and os.path.dirname(f) == d]
+    for p in files:
         try:
             with open(p, encoding="utf-8", errors="replace") as f:
                 for line in f:
@@ -122,11 +127,19 @@ def subagent_tokens(RL, run, res):
 
 
 def measure(RL, run):
-    """-> (weighted tokens or 0, basis). 0 means unmeasurable: the caller charges the reserve and the basis says
-    "estimated"."""
+    """-> (weighted tokens, basis). Basis "estimated" (tokens 0) means unmeasurable: the caller charges the reserve.
+    A result object whose usage is whole and all zero is a MEASURED zero (RELENTLESS_SPEND_FIX_ZERO_USAGE_RESERVE: an
+    API 429 weekly-limit run never reached the API, duration_api_ms 0, and 48 such runs were charged 57.6M of phantom
+    reserve on 2026-11-04): it is charged what it spent, its session's transcript if that reads dearer, else 0."""
     res = RL.read_result({"out": run.get("out"), "err": run.get("err")})
     tok = RL.run_tokens(res) if res else None
-    if tok:
+    if tok is not None and int(tok) == 0:
+        sid = res.get("session_id") if isinstance(res, dict) else None
+        tr = transcript_result(clone_of(run), run.get("at") or 0, session=sid) if sid else None
+        ttok = RL.run_tokens(tr) if tr else None
+        if ttok:
+            return int(ttok), "transcript"
+    if tok is not None:
         sub = subagent_tokens(RL, run, res)
         return (int(tok) + sub, "result+subagents") if sub else (int(tok), "result")
     tr = transcript_result(clone_of(run), run.get("at") or 0)

@@ -74,6 +74,16 @@ def main():
     Path(out).write_text(json.dumps({"session_id": "a", "usage": {"input_tokens": 1, "cache_creation_input_tokens": 0,
                                                 "cache_read_input_tokens": 0, "output_tokens": 1}}))
     check("a result object wins", U.measure(RL, run) == (6, "result"), U.measure(RL, run))
+    zero = {"input_tokens": 0, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0, "output_tokens": 0}
+    Path(out).write_text(json.dumps({"session_id": "nosuch", "is_error": True, "duration_api_ms": 0, "usage": zero}))
+    check("a measured all-zero result (API 429) is measured 0 from the result, not estimated",
+          U.measure(RL, run) == (0, "result"), U.measure(RL, run))
+    Path(proj, "sess.jsonl").write_text(msg("z1", now - 20, 3, 0, 0, 7) + "\n")
+    Path(out).write_text(json.dumps({"session_id": "sess", "usage": zero}))
+    check("a zero result whose own session transcript spent is charged the dearer transcript",
+          U.measure(RL, run) == (RL.run_tokens(U.transcript_result(clone, run["at"], session="sess")), "transcript")
+          and 0 < U.measure(RL, run)[0] < want, (U.measure(RL, run), want))
+    os.unlink(os.path.join(proj, "sess.jsonl"))
     os.unlink(out)
     ghost = {"unit": "g", "at": now, "out": os.path.join(tmp, "runs", "g.json"), "err": ""}
     check("nothing anywhere is labelled estimated, never a number", U.measure(RL, ghost) == (0, "estimated"))
@@ -82,12 +92,15 @@ def main():
     rules = {"run_reserve": 1200000}
     s = {"spent": 0}
     check("an unmeasurable run still costs the reserve", R.charge(st, s, 0, now, rules, "g", "estimated") == 1200000)
+    check("a measured all-zero result is charged 0, not the reserve",
+          R.charge(st, s, 0, now, rules, "z", "result") == 0)
+    check("a zero with no basis still costs the reserve", R.charge(st, s, 0, now, rules, "y") == 1200000)
     R.charge(st, s, 77, now, rules, "u", "transcript")
     R.charge(st, s, 5, now, rules, "v", "result")
     day = json.loads(Path(st.p("spend-%s.json" % R.day_key(now))).read_text())
     check("the day file says which charges were not read from a result",
-          day["basis"] == {"g": "estimated", "u": "transcript"} and day["runs"]["u"] == 77, day)
-    check("and the spend record is still readable as before", R.spent_today(st, now) == 1200082, R.spent_today(st, now))
+          day["basis"] == {"g": "estimated", "u": "transcript"} and day["runs"]["z"] == 0 and day["runs"]["u"] == 77, day)
+    check("and the spend record is still readable as before", R.spent_today(st, now) == 2400082, R.spent_today(st, now))
 
     lines = ["x oom-kill:constraint=CONSTRAINT_MEMCG,oom_memcg=/a/rm-harness-1-2.scope,task=python3",
              "oom-kill:constraint=CONSTRAINT_MEMCG,oom_memcg=/a/claude-seat-BENCH-123.scope/claude-code-bash",

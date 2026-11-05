@@ -548,16 +548,18 @@ def spent_today(store, now):
 
 
 def charge(store, st, tokens, now, r, unit, basis=None):
-    """Under the lock. A run with no measured usage is charged the reserve, never less. The day file is keyed by run,
-    so a crash before the item's own marker is saved cannot count a run twice."""
-    n = int(tokens) if tokens else r["run_reserve"]
+    """Under the lock. A run with no measured usage (no tokens, basis absent or "estimated") is charged the reserve,
+    never less; a measured zero (basis "result", RELENTLESS_SPEND_FIX_ZERO_USAGE_RESERVE) is charged 0. The day file
+    is keyed by run, so a crash before the item's own marker is saved cannot count a run twice."""
+    measured = bool(tokens) or (tokens is not None and basis not in (None, "estimated"))
+    n = int(tokens) if measured else r["run_reserve"]
     try:
         d = _day(store, now)
         if unit not in d["runs"] and unit not in _day(store, now - 86400)["runs"]:
             d["runs"][unit] = n
             d["spent"] += n
             if basis and basis != "result":     # how a charge not read from the result object was reached
-                d.setdefault("basis", {})[unit] = basis if tokens else "estimated"
+                d.setdefault("basis", {})[unit] = basis if measured else "estimated"
             store._write(store.p("spend-%s.json" % day_key(now)), json.dumps(d))
     except (OSError, ValueError, TypeError, KeyError, AttributeError):
         pass        # never replace a damaged day file with a partial history; spent_today keeps refusing until it is fixed
