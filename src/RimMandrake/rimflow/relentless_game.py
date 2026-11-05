@@ -43,6 +43,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import relentless_expedite  # noqa: E402
+import relentless_envcause  # noqa: E402
 
 GAME = "game"
 READING_TTL_S = 30
@@ -422,8 +423,9 @@ def blocked_here(rows, clauses, sha, started, now):
     return out
 
 
-def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None):
-    """trees: `live-deploy:` mods riding this load -> (folders, deploy_custom_mods.py args covering them), or None."""
+def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None):
+    """trees: `live-deploy:` mods riding this load -> (folders, deploy_custom_mods.py args covering them), or None.
+    remedy: the lane's own fix of an environment cause (_env_fix): {"mods": to deploy and load, "cmds": producers}."""
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     en = "python3 src/RimMandrake/Utils/modlist_swap.py --enable %s --apply" % " ".join(enable)
@@ -463,6 +465,12 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None):
          "each build is in the tree: %s." % "; ".join(
              "%s at %s" % (o["item"], (o.get("game") or {}).get("sha", "?")[:12]) for o in others)) if others else
         "   No other game item waits for a reload.",
+        ("   LANE FIX (an earlier read measured nothing for an environment reason: %s): deploy %s (plan, read, --apply) "
+         "and hold them in this load%s." % ((remedy.get("why") or "")[:300], ", ".join(remedy.get("mods") or []) or "nothing more",
+                                            "; then, with the game up, run each producer once and keep its exit and last "
+                                            "lines for game-ready: %s" % " ; ".join("`%s`" % c for c in remedy["cmds"])
+                                            if remedy.get("cmds") else "")) if remedy else
+        "   LANE FIX: none.",
         "3. When the game is up on a map the proofs can read: `%s game-ready --item %s --gen %d \"what you deployed and "
         "which list\"`, then exit. Stopped: `%s snag --item %s --gen %d --class game_stage \"what stopped you\"`, exit."
         % (rc, i, g, rc, i, g),
@@ -795,27 +803,105 @@ def _back(store, fx, sup, r, item, klass, why, now, acts, live=None):
                                                               else "", why))
 
 
-UNMEASURED_END = "game_unmeasured"
+ENV_KEEP = 40      # environment causes kept per item (tried and routed): every clause of an item and its stale builds
 
 
-def _unmeasured(store, fx, sup, r, item, why, now, acts):
-    """A proof that ran on the game and measured nothing (not_measuring, blocked_here) is a MEASUREMENT or ENVIRONMENT
-    cause, never a product defect (CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN, plan step 5): it no longer goes `_back`
-    through fail(). The candidate is withheld for a read-only diagnosis (relentless_attrib.withhold: no gen, no strike, no
-    return, no builder) with the cause on its wait; only a diagnosis naming an observed PRODUCT violation sends a builder.
-    Before: GRAFFITI_NORTHSTAR_GREEN_FULL_1, GENERATOR_MODS_PROVE_INERT, ART_OVERRIDE_FAMILY_SCRIPT_1 went back to
-    builders 8-9 times for a game that never loaded their mods (catalog class d)."""
-    with store.lock():
-        st = store.load(item)
-        if st["status"] != GAME or not (st.get("candidate") or {}).get("sha"):
-            return
-        sup.pilot_count(store, st, UNMEASURED_END, why, r, now)     # a live non-pass run still counts toward a Test Pilot
-        sup.relentless_attrib.withhold(store, st, UNMEASURED_END, why, r, now, sup)
-        st["wait"]["cause"] = "measurement"
-        store.save(st)
-    acts.append({"do": UNMEASURED_END, "item": item, "why": why[:200], "gated": True, "cause": "measurement"})
-    fx.ledger_note(item, "relentless game phase: %s (measured nothing: withheld for diagnosis, no builder, no strike): %s"
-                   % (UNMEASURED_END, why))
+def _keep(book, got):
+    """got: cause key -> value (a time, or [the fix's time, the row's own time]); the newest ENV_KEEP are kept."""
+    out = dict(book or {})
+    out.update(got)
+    return dict(sorted(out.items(), key=lambda kv: kv[1] if isinstance(kv[1], list) else [kv[1]])[-ENV_KEEP:])
+
+
+def _t(v):
+    return v if isinstance(v, list) else [v, v]
+
+
+def _env(store, fx, r, item, rows, since, now, acts):
+    """UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES (owner 2026-11-05: "fix class not instance"): a clause that measured
+    nothing for an ENVIRONMENT reason (relentless_envcause.classify) never goes back to a builder or starts a generation.
+    A cause the lane can fix (deploy a mod the plan omitted, load a tier that holds the item's mods, run the producer a
+    proof reads) is fixed by the lane itself ONCE (_env_fix): the next staging deploys and enables its mods and runs its
+    producer, and the round re-reads. The same cause read again after a staging that carried the fix, or a cause nothing
+    in the lane can fix (the proof's own call, the harness, the proof or its site) that a rerun cannot change, is routed
+    ONCE to one fixer (_env_route) and the item waits. -> True when it acted (False: the lane's own roads go on).
+    Before: MODCHECK_DONOR_ENVIRONMENTS_1 spent 12 generations because no lane step ever ran `modcheck run Armoury`."""
+    import relentless_live_round
+    st = store.load(item)
+    tried = st.get("env_tried") or {}
+    staged = st["game"].get("staged_at") or 0
+    envs = []
+    for v in rows.values():
+        e = relentless_envcause.classify(v, item)
+        if e:
+            e["at"], e["decided"] = row_at(v), (relentless_live_round.decides(v)
+                                                  or (v.get("why") or "").startswith(relentless_envcause.HARNESS[0]))
+            envs.append(e)
+    fresh = [e for e in envs if e.fix and e.fp not in tried]
+    if fresh:
+        return _env_fix(store, item, fresh, now, acts)
+    # the fix's time is the lane clock, a row's is its own: a re-read is a NEWER row after a staging that carried it
+    again = [e for e in envs if e.fix and staged >= _t(tried[e.fp])[0] and e["at"] > _t(tried[e.fp])[1]]
+    stuck = [e for e in envs if not e.fix and e["decided"]]
+    if again or stuck:
+        _env_route(store, fx, item, again + stuck, now, acts,
+                   "the lane fixed it once and the re-read says the same" if again else None)
+        return True
+    return False
+
+
+def _env_fix(store, item, envs, now, acts):
+    """The lane's one fix: the staging's remedy (stage_prompt LANE FIX) names the mods to deploy and enable and the
+    producers to run. A cause the lane already restages for (RESTAGE: not deployed, not in the running load, reload
+    needed) rides that staging and its batch wait (-> False); any other is staged now on its voided rows (-> True)."""
+    import relentless_live
+    st = store.load(item)
+    sha = st["game"]["sha"]
+    # a mod named by an UNDEPLOYED row is in the build's own mod gap already (game_mod_gap -> enable_set): not again
+    mods = sorted({m for e in envs if not (e.why or "").startswith(relentless_live.UNDEPLOYED) for m in e.mods})
+    cmds = sorted({e.cmd for e in envs if e.cmd})
+    detail = "; ".join(relentless_envcause.line(e) for e in envs)
+    rides = all(any((e.why or "").startswith(w) for w in RESTAGE) for e in envs)
+    if not rides:
+        void_rows(store.root, item, sha, "lane fix: %s" % detail, now)
+
+    def f(s):
+        s["env_tried"] = _keep(s.get("env_tried"), {e.fp: [now, e["at"]] for e in envs})
+        rem = s["game"].get("remedy") or {}
+        s["game"]["remedy"] = {"mods": sorted(set(rem.get("mods") or []) | set(mods)),
+                               "cmds": sorted(set(rem.get("cmds") or []) | set(cmds)), "why": detail[:600], "at": now}
+        if not rides:
+            s["game"].update(phase="stage", stages=0, retry_at=None, ready=None, snag=None, waits_reload=None)
+            s["put_down"] = {"on": ("the lane fixes the environment once: %s" % detail)[:200], "at": now}
+    if _save(store, item, f) is None:
+        return True
+    store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": st["gen"], "end": "game_env_fix",
+                         "detail": detail[:600], "sha": sha})
+    acts.append({"do": "game_env_fix", "item": item, "why": detail[:200], "mods": mods, "cmds": cmds})
+    return not rides
+
+
+def _env_route(store, fx, item, envs, now, acts, head=None):
+    """Routed ONCE to one fixer: a game hold (the tick delivers it to the seat queue, never to the owner; an unhold
+    returns it to the prove phase on the same sha, never to a builder). Its rows are voided, so the re-read after the fix
+    is fresh; the same cause after an unhold holds it again, never a second route or a builder."""
+    envs = [e for e in envs if e]
+    st = store.load(item)
+    if st["status"] != GAME:
+        return
+    routed = st.get("env_routed") or {}
+    seen = [e for e in envs if e.fp in routed]
+    detail = "; ".join(relentless_envcause.line(e) for e in envs) or "no row named the cause"
+    why = ("game phase: environment, routed once to one fixer, no builder and no new generation%s%s: %s"
+           % ("; %s" % head if head else "", "; the same cause again after its route" if seen else "", detail))
+    _save(store, item, lambda s: s.update(env_routed=_keep(s.get("env_routed"), {e.fp: now for e in envs})))
+    void_rows(store.root, item, st["game"]["sha"], "routed: %s" % detail, now)
+    store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": st["gen"],
+                         "end": "game_env_route", "detail": detail[:600], "sha": st["game"]["sha"]})
+    store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm", "kind": "game_env",
+                   "item": item, "why": why[:300]})
+    _hold(store, fx, item, why[:900], now, acts)
+    acts[-1]["do"] = "game_env_route"
 
 
 def _hold(store, fx, item, why, now, acts):
@@ -1084,6 +1170,8 @@ def step(store, fx, r, item, now, acts, sup):
             return _refuse(store, fx, sup, r, item, "game_refused", v.get("why") or "refused",
                            fx.refusal_print(item, v.get("criterion"), v.get("why"), v.get("proof")), now, acts)
         import relentless_live_round
+        if _env(store, fx, r, item, rows, max(g.get("staged_at") or 0, g["entered_at"]), now, acts):
+            return      # an environment cause: the lane fixed it once and re-reads, or routed it once; never a builder
         infra = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and v.get("harness")
                  and row_at(v) >= max(g.get("staged_at") or 0, g["entered_at"])]
         if infra:       # INFRA on infra_games games: OUR failure, an alarm and a later restage, never a worker strike
@@ -1104,15 +1192,15 @@ def step(store, fx, r, item, now, acts, sup):
         if missed:  # the defect did not appear where its repro asked: a person reads it, no builder is sent
             return _not_reproduced(store, fx, item, missed, now, acts)
         dud = not_measuring(fx.game_rows(), item, built, g["clauses"], c["unmeasured_back"])
-        if dud:     # the proof ran and said it measured nothing, again: a measurement cause, never a builder's
-            return _unmeasured(store, fx, sup, r, item, "; ".join(
-                "%s: the proof ran %d times on this build and measured nothing %s" % (k, n, why[:400])
-                for k, (n, why) in sorted(dud.items())), now, acts)
+        if dud:     # the proof ran and said it measured nothing, again: the proof's or its site's, never a builder's
+            return _env_route(store, fx, item, [relentless_envcause.dud(rows.get(k), item) for k in sorted(dud)],
+                              now, acts, "the proof ran %s times on this build and measured nothing"
+                              % "/".join(str(n) for _, (n, _w) in sorted(dud.items())))
         here = blocked_here(rows, g["clauses"], built, rd0.get("started"), now)
-        if here:    # nothing left this game can measure, and a proof ran and measured nothing: diagnosed at once
-            return _unmeasured(store, fx, sup, r, item, "; ".join(
-                "%s: the proof ran on this game and build and measured nothing; the same game and build can only say "
-                "it again: %s" % (k, why[:400]) for k, why in sorted(here.items())), now, acts)
+        if here:    # nothing left this game can measure, and a proof ran and measured nothing: routed at once
+            return _env_route(store, fx, item, [relentless_envcause.dud(rows.get(k), item) for k in sorted(here)],
+                              now, acts, "the proof ran on this game and build and measured nothing; the same game and "
+                              "build can only say it again")
         since = max(g.get("staged_at") or 0, g["entered_at"])
         stale = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and row_at(v) >= since
                  and any((v.get("why") or "").startswith(w) for w in RESTAGE)]
@@ -1229,7 +1317,8 @@ def step(store, fx, r, item, now, acts, sup):
             # while CONTAGION's staging restarted the game, and would have staged a third load untried)
             built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
             seen = [v for v in outcomes(fx.game_rows(), item, built, g["clauses"]).values() if row_at(v) >= rd["started"]]
-            if not seen and busy(store, item) is None and (g.get("mod_gap") or {}).get("game") != rd["started"]:
+            if not seen and busy(store, item) is None and (g.get("mod_gap") or {}).get("game") != rd["started"] \
+                    and not g.get("remedy"):      # a lane fix needs its staging: the running game says the same
                 _save(store, item, lambda s: s["game"].update(phase="prove", staged_at=rd["started"], waits_reload=None))
                 acts.append({"do": "game_try_running", "item": item, "started": rd["started"]})
                 return
@@ -1246,7 +1335,8 @@ def step(store, fx, r, item, now, acts, sup):
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
         gaps = [fx.game_batch_gap([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                      if (o.get("game") or {}).get("sha")])]
-        want = enable_set(gaps)
+        remedy = g.get("remedy") or {}
+        want = sorted(set(enable_set(gaps)) | set(remedy.get("mods") or []))
         if want and not g.get("full"):      # the full list's own staging restores FULL.LATEST, then enables on top
             why = fx.modlist_enable(want)
             if why:     # no restart path holds these mods: held with the reason, never a load that cannot serve it
@@ -1272,6 +1362,7 @@ def step(store, fx, r, item, now, acts, sup):
             s["run"] = desc
             s["game"].update(phase="staging", staged_at=now, taken_at=now, stages=s["game"]["stages"] + 1,
                              ready=None, snag=None, waits_reload=None, batch=[o["item"] for o in others])
+            s["game"].pop("remedy", None)        # once: this staging carries it
         st = _save(store, item, f)
         if st is None:
             fx.bridge_release()
@@ -1279,7 +1370,7 @@ def step(store, fx, r, item, now, acts, sup):
         st["_proofs_text"] = fx.proofs_at(item, sha)
         trees = fx.game_trees([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                  if (o.get("game") or {}).get("sha")])
-        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees), r["pilot_agent"], st["clone"], c["stage_max_s"],
+        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy), r["pilot_agent"], st["clone"], c["stage_max_s"],
                         {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()

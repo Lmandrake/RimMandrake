@@ -277,11 +277,13 @@ def t_unmeasured_twice_returns_offline():
     ok(x.st("I0")["status"] == "game", "one not-measured exit is retried on the game (a busy bridge happens)")
     x.w.rows.append(dict(dud, at="2099-01-01T00:20:00Z"))
     x.w.rows.append(dict(dud, sha="other0000000", at="2099-01-01T00:21:00Z"))
+    gen = x.st("I0")["gen"]
     x.tick()
     st = x.st("I0")
-    ok(st["last_fail"] and st["last_fail"]["class"] == "game_unmeasured" and "A2" in st["last_fail"]["detail"]
-       and "2 times" in st["last_fail"]["detail"] and "Type not found" in st["last_fail"]["detail"],
-       "the second goes back to a worker with the proof's last line: %s" % st.get("last_fail"))
+    # UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES: the proof's dud is routed once to one fixer, never a worker
+    ok(st["status"] == "held" and st["hold"]["kind"] == "game" and not st.get("last_fail") and st["gen"] == gen
+       and "A2" in st["hold"]["why"] and "2 times" in st["hold"]["why"] and "Type not found" in st["hold"]["why"],
+       "the second is routed once to one fixer with the proof's last line, no worker: %s" % st.get("hold"))
     ok(G.not_measuring([dict(dud, why="not deployed: RM_Y")] * 3, "I0", SHA, ["A2"], 2) == {},
        "a staging cause (not deployed) is the restage path, never a proof defect")
     x.done()
@@ -304,11 +306,11 @@ def t_cap_returns_with_the_exit_reason_and_log():
     x.w.rows = [defect("No public static CleanRead with 0 params")]
     x.tick()
     st = x.st("I0")
-    ok(st["last_fail"] and st["last_fail"]["class"] == "game_proof_unmeasured"
-       and "CleanRead" in st["last_fail"]["detail"] and "/l/I0-A2.log" in st["last_fail"]["detail"],
-       "one defect row goes back at once, with the reason and the log: %s" % st.get("last_fail"))
-    first = sorted(st.get("refused_fps") or {})
-    ok(len(first) == 1, "the return is remembered: %s" % first)
+    ok(st["status"] == "held" and st["hold"]["kind"] == "game" and not st.get("last_fail")
+       and "proof_call" in st["hold"]["why"] and "CleanRead" in st["hold"]["why"] and "/l/I0-A2.log" in st["hold"]["why"],
+       "one defect row is routed at once to one fixer, with the reason and the log, no worker: %s" % st.get("hold"))
+    first = sorted(st.get("env_routed") or {})
+    ok(len(first) == 1, "the route is remembered: %s" % first)
     x.done()
     rows = [defect("No public static CleanRead with 0 params"), defect("Type not found: Foo")]
     fps = {relentless_live.fingerprint(v["criterion"], v["why"], v["proof"], "") for v in rows}
@@ -336,10 +338,10 @@ def t_dud_on_this_game_returns_at_once():
     x.w.rows = [dict(dud, game=relentless_live.iso(x.w.started))]
     x.tick()
     st = x.st("I0")
-    ok(st["last_fail"] and st["last_fail"]["class"] == "game_unmeasured" and "this game and build" in
-       st["last_fail"]["detail"] and "Type not found" in st["last_fail"]["detail"],
-       "one dud on this game and build goes back at once: %s" % st.get("last_fail"))
-    ok("/l/here.log" in st["last_fail"]["detail"], "that return names the log too: %s" % st["last_fail"])
+    ok(st["status"] == "held" and not st.get("last_fail") and "this game and build" in st["hold"]["why"]
+       and "Type not found" in st["hold"]["why"],
+       "one dud on this game and build is routed at once, no worker: %s" % st.get("hold"))
+    ok("/l/here.log" in st["hold"]["why"], "that route names the log too: %s" % st["hold"])
     ok(G.blocked_here({"A2": dict(dud, game=relentless_live.iso(x.w.started), why="bridge not taken: busy")}, ["A2"],
                       SHA, x.w.started, x.now) == {}, "a transient that is not a dud never sends it back")
     x.done()
@@ -354,16 +356,16 @@ def t_long_reason_survives_both_unmeasured_returns():
            "log": "/l/long.log", "why": reason}
 
     def seen(st):
-        d = (st.get("last_fail") or {})
-        return d.get("class") == "game_unmeasured" and "THE_END_OF_THE_REASON" in (d.get("detail") or "") \
-            and "/l/long.log" in (d.get("detail") or "")
+        d = (st.get("hold") or {})
+        return st["status"] == "held" and "THE_END_OF_THE_REASON" in (d.get("why") or "") \
+            and "/l/long.log" in (d.get("why") or "")
     x = rig(1)
     to_game(x, "I0")
     x.tick()
     x.tick()
     x.w.rows = [dict(dud), dict(dud, at="2099-01-01T00:20:00Z")]
     x.tick()
-    ok(seen(x.st("I0")), "the ran-N-times return keeps the end of a long reason: %s" % x.st("I0").get("last_fail"))
+    ok(seen(x.st("I0")), "the ran-N-times route keeps the end of a long reason: %s" % x.st("I0").get("hold"))
     x.done()
     x = rig(1)
     to_game(x, "I0")
@@ -372,7 +374,7 @@ def t_long_reason_survives_both_unmeasured_returns():
     x.w.started = x.now - 3000.0
     x.w.rows = [dict(dud, game=relentless_live.iso(x.w.started))]
     x.tick()
-    ok(seen(x.st("I0")), "the this-game-and-build return keeps the end of a long reason: %s" % x.st("I0").get("last_fail"))
+    ok(seen(x.st("I0")), "the this-game-and-build route keeps the end of a long reason: %s" % x.st("I0").get("hold"))
     x.done()
 
 
@@ -1354,7 +1356,11 @@ def t_dead_rows_go_back():
                           "outcome": "UNMEASURED", "proof": "python3 p.py"}, **row)]
         x.tick()
         st = x.st("I0")
-        ok(st["last_fail"] and st["last_fail"]["class"] == klass, "%s row goes back: %s" % (klass, st.get("last_fail")))
+        if klass == "game_stale_build":
+            ok(st["last_fail"] and st["last_fail"]["class"] == klass, "%s row goes back: %s" % (klass, st.get("last_fail")))
+        else:   # UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES: the proof's or site's, routed once, never a worker
+            ok(st["status"] == "held" and not st.get("last_fail") and "proof_or_site" in st["hold"]["why"],
+               "a defect row is routed once to one fixer, no worker: %s" % st.get("hold"))
         ok(x.w.proves == ["I0"], "no second prove round on it")
         x.done()
 

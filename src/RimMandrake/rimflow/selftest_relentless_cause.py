@@ -223,13 +223,13 @@ def t_game_lane():
     for here in (False, True):
         x = SG.rig(1)
         was, st = game_dud(x, here)
-        w = st.get("wait") or {}
-        ok(w.get("kind") == "attribution" and w.get("cause") == "measurement" and w.get("class") == "game_unmeasured"
-           and st["gen"] == was["gen"] and not st["failures"].get("game_unmeasured") and st.get("returns") == was.get("returns"),
-           "C7 %s: withheld for diagnosis with cause measurement, no strike, no return, no new gen: %s %s"
-           % ("blocked_here" if here else "not_measuring", st["failures"], {k: w.get(k) for k in ("kind", "class", "cause")}))
-        ok(st["last_fail"]["class"] == "game_unmeasured" and "Scarlands" in st["last_fail"]["detail"],
-           "C7 the reason is kept whole for the diagnosis")
+        h = st.get("hold") or {}
+        # UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES: no diagnosis that hands it to a builder; routed once to one fixer
+        ok(st["status"] == "held" and h.get("kind") == "game" and st["gen"] == was["gen"]
+           and not st["failures"].get("game_unmeasured") and st.get("returns") == was.get("returns"),
+           "C7 %s: routed once to one fixer, no strike, no return, no new gen: %s %s"
+           % ("blocked_here" if here else "not_measuring", st["failures"], h))
+        ok("Scarlands" in (h.get("why") or ""), "C7 the reason is kept for the fixer")
         x.done()
 
 
