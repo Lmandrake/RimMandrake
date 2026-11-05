@@ -13,7 +13,7 @@ With --file-alarms a dead arm (Dispatcher, ops_watch) or a broken timer promise 
 through pulse/phone_push.py, a fixed template with no AI in the path, once per outage (the key closes on recovery),
 whatever the ledger write did (DEADMAN_WIRE_PHONE_WITHOUT_AI). RM_DEADMAN_PUSH=0 turns the phone off.
 
-    ops_watch   $RM_OPS_WATCH_DIR/status.json  key "t" (epoch of the last pass; timer every 15 min)  limit 50 min
+    ops_watch   $RM_OPS_WATCH_DIR/status.json  key "t" (epoch of the last pass; a metronome beat, ~1 min)  limit 50 min
     dispatcher  $RM_DISPATCHER_STATE/state.json key "last_ok_tick" (ISO; timer every 2 min)            limit 15 min
                 the state of the mode the rm-dispatcher.service timer RUNS (`--apply` in its ExecStart: live, else
                 dry/; $RM_DISPATCHER_MODE live|dry overrides), never the fresher of the two: a dry run must not mask a
@@ -50,7 +50,9 @@ SETTLED = ("done", "built", "validated")
 RETIRED = ("dropped", "superseded")
 MAX_PER_PASS = 10
 FOLD_AT = 2                 # a second outage means the first fix did not fold
-ARM_UNITS = {"ops_watch": "rm-ops-watch.timer", "dispatcher": "rm-dispatcher.timer"}
+# ops_watch runs as the metronome's sense phase since 2026-11-05 (OPS_METRONOME_MIGRATE_CLOCKS_FENCED): its clock is
+# rm-metronome.timer, whose pause excuses a stale stamp exactly as the old timer's did.
+ARM_UNITS = {"ops_watch": "rm-metronome.timer", "dispatcher": "rm-dispatcher.timer"}
 
 
 def ops_dir():

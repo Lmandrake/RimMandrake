@@ -14,7 +14,8 @@
     "rm-running": "rm-running.timer",
     "rm-memwatch": "rm-memwatch.timer",
     "rm-objstore": "rm-objstore.timer",
-    "rm-metronome": "rm-metronome.timer"
+    "rm-metronome": "rm-metronome.timer",
+    "rm-ops-reds": "rm-ops-reds.timer"
   },
   "outside": {
     "rm-relentless": "the Relentless tick: its own belt (strategy §2 'Stay outside')",

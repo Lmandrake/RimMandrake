@@ -151,8 +151,12 @@ sense = t["phases"]["sense"]
 ok(fams is not None and sorted(sense["families"]) == sorted(fams),
    "shipped table: sense's round robin covers exactly ops_watch.FAMILIES")
 ok(len(fams or []) / sense["per_beat"] <= 15, "shipped table: every family within 15 beats")
-ok(all(p.get("argv") is None or "--apply" not in p["argv"] and "--file-alarms" not in p["argv"]
+ok(all(p.get("argv") is None or p.get("owns") or "--apply" not in p["argv"] and "--file-alarms" not in p["argv"]
        for p in t["phases"].values()), "shipped table: no shadow command acts (no --apply, no --file-alarms)")
+ok(sense.get("owns") == ["rm-ops-watch.timer"] and "--file-alarms" in sense["argv"] and "{gen}" in sense["argv"]
+   and "RM_OPS_WATCH_DIR" not in (sense.get("env") or {}),
+   "shipped table: sense owns rm-ops-watch.timer and files alarms into the real store, fenced by {gen}")
+ok("{state}" not in " ".join(t["phases"]["remember"]["argv"]), "shipped table: remember writes the real memory")
 for bad, why in ((table(budget=2), "reserve over budget"),
                  (table(dispatch={"limit_s": 44}), "a phase that can never fit beside the reserve")):
     try:
@@ -165,7 +169,7 @@ ok(t["phases"]["raise"].get("owns") == ["rm-restart-reconcile.timer"]
    and "--metronome-gen" in t["phases"]["raise"]["argv"] and "{gen}" in t["phases"]["raise"]["argv"]
    and "--no-file" not in t["phases"]["raise"]["argv"],
    "shipped table: raise owns rm-restart-reconcile.timer and runs the real pass with its generation")
-ok(m.owner_of("rm-restart-reconcile.timer") == "raise" and m.owner_of("rm-ops-watch.timer") is None,
+ok(m.owner_of("rm-restart-reconcile.timer") == "raise" and m.owner_of("rm-ops-watch.timer") == "sense" and m.owner_of("rm-dispatcher.timer") is None,
    "owner_of names the phase owning a cut-over timer, and none for a clock not cut over")
 for bad, why in (({"owns": "rm-x.timer"}, "owns not a list"),
                  ({"owns": ["rm-x.service"]}, "owns naming a non-timer"),
