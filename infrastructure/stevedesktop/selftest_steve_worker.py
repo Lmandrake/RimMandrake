@@ -214,6 +214,21 @@ def main():
         rc, o = w(["start"], j, MOCK_MODE="hang", TESTQ_RUN_TIMEOUT_S="2")
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "INVALID" and res.get("cause") == "HANG", "hang twice -> INVALID/HANG")
+        # FLOWWORKS_DIAGNOSE_FREEZE_AFTER_DRAWBRIDGE: the frozen game's log was lost to the restarts; the hung run's
+        # restart keeps it first (the mock stop deletes Player.log, as a cold start rotates it away)
+        hlogdir = os.path.join(tmp, "hanglog")
+        os.makedirs(hlogdir, exist_ok=True)
+        hlog = os.path.join(hlogdir, "Player.log")
+        hfix = b"frame-rest\r\nmain thread silent \xff\nlast line"
+        with open(hlog, "wb") as f:
+            f.write(hfix)
+        rc, o = w(["start"], job(), MOCK_MODE="hang", TESTQ_RUN_TIMEOUT_S="2", RM_GAME_LOGDIR=hlogdir,
+                  TESTQ_CMD_DOWN="rm -f %s" % hlog)
+        res = wait_result(o.get("attempt", "x"))
+        hkept = os.path.join(home, "attempts", o.get("attempt", "x"), "Player_hang1.log")
+        check(not os.path.exists(hlog) and os.path.exists(hkept) and open(hkept, "rb").read() == hfix
+              and res.get("cause") == "HANG",
+              "a hung run keeps Player.log before the restart, byte for byte: %s %s" % (hkept, res.get("note")))
 
         # 3a. STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: the game came up on FULL, modcheck refused the stale load and
         # left ModsConfig on its composed list; the worker restarts the game onto it once and runs again
@@ -357,6 +372,21 @@ def main():
               and len(open(wdowns).read().split()) == 1 and len(open(wprobes).read().split()) == 2,
               "a kept game deaf to two probes is restarted once and the job runs: %s %s %s"
               % (res.get("outcome"), res.get("cause"), res.get("bounced_unresponsive")))
+        os.remove(wdowns)
+        # FLOWWORKS_DIAGNOSE_FREEZE_AFTER_DRAWBRIDGE: the deaf game's log is kept BEFORE the stop takes it
+        wlogdir = os.path.join(tmp, "wedgelog")
+        os.makedirs(wlogdir, exist_ok=True)
+        wgame = os.path.join(wlogdir, "Player.log")
+        wfix = b"PGuiRender GUI/render\r\nheap creeping\nno newline"
+        with open(wgame, "wb") as f:
+            f.write(wfix)
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD=flaky, TESTQ_CMD_DOWN="echo down >> %s; rm -f %s" % (wdowns, wgame),
+                  TESTQ_CMD_PROBE=deaf, TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'", RM_GAME_LOGDIR=wlogdir)
+        res = wait_result(o.get("attempt", "x"))
+        wkept = os.path.join(home, "attempts", o.get("attempt", "x"), "Player_wedged.log")
+        check(res.get("outcome") == "DONE" and not os.path.exists(wgame) and os.path.exists(wkept)
+              and open(wkept, "rb").read() == wfix,
+              "a wedged kept game keeps Player.log before the restart takes it: %s %s" % (wkept, res.get("note")))
         os.remove(wdowns)
         rc, o = w(["start"], job(), TESTQ_CMD_LOAD=kept, TESTQ_CMD_DOWN="echo down >> %s; exit 1" % wdowns,
                   TESTQ_CMD_PROBE=deaf)

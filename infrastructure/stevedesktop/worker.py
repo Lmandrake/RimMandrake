@@ -726,6 +726,8 @@ class Attempt:
                 self.res["bounced_unresponsive" if wedged else "recycled_kept_game"] = wedged or overgrown
                 why = "kept game does not answer the bridge (%s)" % wedged if wedged else "kept game %s" % overgrown
                 self.say(why + ": restarting it")
+                if wedged:
+                    self.keep_game_log("Player_wedged.log")
                 rc, tail = self.sh(self.cmd_down(), timeout=300)
                 if rc != 0:
                     return self.fail("REFUSED" if refused_line(tail) else "INVALID", "LOAD",
@@ -970,6 +972,7 @@ class Attempt:
             self.res["retries"] += 1
             self.phase = "restart"
             self.beat()
+            self.keep_game_log("Player_hang%d.log" % attempt_no)
             rc_down, tail = self.sh(self.cmd_down(), timeout=300)
             if rc_down != 0 and refused_line(tail):    # the game may not be restarted here: no second run
                 return self.fail("INVALID", "HANG", "modcheck hung past %ss; no restart (%s)"
@@ -1028,12 +1031,15 @@ class Attempt:
         self.beat()
         return self.run_modcheck()
 
-    def keep_game_log(self):
+    def keep_game_log(self, name="Player.log"):
         """OPS_STEVE_DIAGNOSE_INVALID_MBTX: the next cold start overwrites Player.log, and a second one its -prev copy,
         so 186d97's world-start failure (Entry for 371 s, 11-01) went unread: no crash report, log gone within two jobs.
-        Keep it beside the attempt BEFORE the game stops, and put the fault in the note. Never fails the result."""
+        Keep it beside the attempt BEFORE the game stops, and put the fault in the note. Never fails the result.
+        FLOWWORKS_DIAGNOSE_FREEZE_AFTER_DRAWBRIDGE: a frozen game (10-26, main thread silent 400+ s after the drawbridge
+        proof) was killed and its log lost the same way, so the wedged-game and hung-run restarts keep it too, each
+        under its own `name` so two stops in one attempt do not overwrite each other."""
         src = os.path.join(os.environ.get("RM_GAME_LOGDIR") or os.environ.get("RM_GAME_USERDATA", ""), "Player.log")
-        dst = os.path.join(self.d, "Player.log")
+        dst = os.path.join(self.d, name)
         try:
             shutil.copyfile(src, dst)
             with open(dst, encoding="utf-8", errors="replace") as f:
