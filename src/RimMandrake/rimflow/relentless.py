@@ -3823,6 +3823,18 @@ def worker_prompt(st, text, learned, r, history=None, causes=None):
         head.append("Contract so far: %s" % json.dumps(st["contract"]))
     if st["last_fail"]:
         head.append("Last ending: %s: %s" % (st["last_fail"]["class"], st["last_fail"]["detail"]))
+    spent, limit = st.get("spent") or 0, r.get("item_spend_limit")
+    if spent:
+        # owner 2026-11-05: "A high past token cost indicates that something is really wrong... either in the
+        # validation or the work itself." The builder sees the bill; the blind Judge never does.
+        head.append("COST SO FAR: %.1fM weighted tokens over %d generation(s), %d return(s)%s." % (
+            spent / 1e6, st.get("gen", 0), st.get("total_failures", 0),
+            " (advisory item limit %.1fM)" % (limit / 1e6) if limit else ""))
+        if limit and spent * 2 >= limit:
+            head.append("HIGH COST: this much spend means something is really wrong, in the validation or in the work. "
+                        "Before any edit, decide which with evidence and record it with `learn`: a proof that cannot "
+                        "go green on sound work is a contract or harness defect (repair it as the rules above say), "
+                        "not a reason for another round of code.")
     if st.get("diagnose_owed"):
         head.append("DIAGNOSE FIRST: the last ending (%s) is the supervisor's reading of an exit code, not a diagnosis; no "
                     "agent has read its log. Your first job is to EXPLAIN it, not to rerun it (owner 2026-11-04: \"it needs "
