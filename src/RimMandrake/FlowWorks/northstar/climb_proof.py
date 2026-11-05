@@ -1,7 +1,7 @@
 """CLIMB live proof (PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP; design/RimMandrake/relative_depth_climb_design_2026-10-12.md
 §8.6, the debug_process rule: the proof script is written with the build item and grows with each later item).
 
-  python.exe src/RimMandrake/FlowWorks/northstar/climb_proof.py [out.json] [--origin X,Z] [--fresh-map]
+  python.exe src/RimMandrake/FlowWorks/northstar/climb_proof.py [out.json] [--origin X,Z] [--fresh-map] [--require ROW,..]
 
 Run from the repo root with python.exe; the bridge must be held. Exit 0 = every MEASURED row PASS (owed rows are UNMEASURED
 and say why). NEVER RUN BY THE BUILD ITEM ITSELF: written offline 2026-10-13 while a live driver held the game.
@@ -39,6 +39,12 @@ moat_verdict), CLIMB_hauler_fetches_ramped_floor (G: a sheer D 4 3x3 at (38..40,
 the floor's middle (39, 3), two squares from every lip; a Colonist with ONLY Hauling (priority 1, every other vanilla work
 type 0) and a Jade-only 2x2 stockpile at (43, 8) left to its own AI: first 600 ticks with NO ramp (the floor must keep the
 Jade), then a ramp on (40, 3) pointing east and up to 3000 ticks until the Jade lies in the stockpile; haul_verdict).
+CLIMB_maskswap_no_wall_crossing (H, PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH risk 2: the per-request mask swap under 1.6's
+multithreaded pathfinding while masks rebuild): a sheer D 4 3x3 at (16..18, 7..9); a Colonist on its floor (17, 8) ordered
+out to (17, 11) again and again; two Colonists on the surface at (14, 8) and (20, 8) ordered across to the other side, whose
+straight line runs over the pit (the legal way goes round it, z 6 or z 10); a CHURN cell (22, 11) dug D 4 and filled back
+EVERY sample (MS_STEP ticks), so the climb generation moves and RM_CliffMask.FullDerive runs again and again while path
+requests are queued on the Burst A*. Positions sampled by jawa/list_pawns every MS_STEP ticks; maskswap_verdict.
 Site 46 x 12 (x 0..45).  OWED (always UNMEASURED, see OWED below): CLIMB_save_reload_pockets_identical (live_session B7).
 
 ANTI-GUESSING NOTES
@@ -175,6 +181,55 @@ def in_rect(rect, xz):
     return not out_of(rect, xz)
 
 
+MS_STEPS, MS_STEP, MS_ORDER_EVERY = 120, 6, 4     # 720 ticks; walkers re-ordered every 24 ticks (alternating targets)
+MS_MIN_DERIVES, MS_MIN_ORDERS, MS_MIN_FLIPS = 20, 30, 2
+
+
+def maskswap_verdict(samples, rect, inside, outside, derives, orders, sealed):
+    """CLIMB_maskswap_no_wall_crossing -> (status, detail). Pure.
+    samples: [(step, pawn id, (x, z) or None)]; rect: the sheer pit; inside/outside: pawn ids that started on the floor /
+    on the surface; derives: (FullDerives before, after); orders: accepted drafted orders (each one a new path request);
+    sealed: the person band's mask on the pit's west lip has no east bit (True), has one (False), unread (None).
+    FAIL: a floor pawn ever sampled off the floor, or a surface pawn ever sampled on it. UNMEASURED unless the masks
+    re-derived >= MS_MIN_DERIVES times, >= MS_MIN_ORDERS orders were accepted, the walkers changed side >= MS_MIN_FLIPS
+    times (path requests were served: the legal way round was found, the instrument sees movement), every sample read a
+    position and the wall read sealed before the churn. Sampled every MS_STEP ticks: a crossing and a return inside one
+    sample would be missed (a 2 m climb out and back takes far longer), so PASS is "never seen", not "impossible"."""
+    x0, z0, w, h = rect
+    on_floor = lambda xz: x0 <= xz[0] < x0 + w and z0 <= xz[1] < z0 + h            # noqa: E731
+    side = lambda xz: "W" if xz[0] < x0 else "E" if xz[0] >= x0 + w else None        # noqa: E731
+    crossings, blind, flips, last = [], 0, 0, {}
+    for step, pid, xz in samples:
+        if xz is None or xz[0] is None:
+            blind += 1
+            continue
+        if pid in inside and not on_floor(xz):
+            crossings.append(dict(step=step, pawn=pid, at=list(xz), was="floor"))
+        if pid in outside:
+            if on_floor(xz):
+                crossings.append(dict(step=step, pawn=pid, at=list(xz), was="surface"))
+            sd = side(xz)
+            if sd and last.get(pid) and sd != last[pid]:
+                flips += 1
+            if sd:
+                last[pid] = sd
+    try:
+        nd = int(derives[1]) - int(derives[0])
+    except (TypeError, ValueError, IndexError):
+        nd = None
+    det = dict(crossings=crossings[:10], blindSamples=blind, sideFlips=flips, derives=nd, orders=orders,
+               sealed=sealed, samples=len(samples))
+    if crossings:
+        return "FAIL", det
+    why = [m for m, bad in (("wall not read sealed", sealed is not True), ("masks re-derived < %d" % MS_MIN_DERIVES,
+           nd is None or nd < MS_MIN_DERIVES), ("orders < %d" % MS_MIN_ORDERS, orders < MS_MIN_ORDERS),
+           ("walkers changed side < %d" % MS_MIN_FLIPS, flips < MS_MIN_FLIPS), ("blind samples", blind > 0),
+           ("no samples", not samples)) if bad]
+    if why:
+        return "UNMEASURED", dict(det, why=why)
+    return "PASS", det
+
+
 def haul_verdict(sealed_items, final_items, pit_rect, pile_rect):
     """CLIMB_hauler_fetches_ramped_floor -> (status, why). *_items = jawa/list_things rows of the Jade (def/x/z/spawned).
     sealed_items: read after HAUL_SEALED_TICKS with NO ramp; final_items: after the ramp, at the end of the poll.
@@ -275,6 +330,65 @@ def haul_rows(B, P, row, spawn, climb, rect_G, rect_pile):
     B.call("jawa/set_draft", pawnId=hauler, drafted=True)
 
 
+def require_exit(rows, want):
+    """--require: 0 iff every named row is present and PASS (a missing row is not a pass). Pure."""
+    got = {r["id"]: r["status"] for r in rows}
+    need = [w.strip() for w in want.split(",") if w.strip()]
+    return 0 if need and all(got.get(w) == "PASS" for w in need) else 1
+
+
+def maskswap_row(B, P, row, spawn, climb):
+    """H: CLIMB_maskswap_no_wall_crossing (the pit at (16..18, 7..9) is dug with the other scenes)."""
+    rect = (P(16, 7)[0], P(16, 7)[1], 3, 3)
+    churn = P(22, 11)
+    inner = spawn("Colonist", P(17, 8), "player")
+    west, east = spawn("Colonist", P(14, 8), "player"), spawn("Colonist", P(20, 8), "player")
+    B.ticks(SETTLE)
+    km, tm = climb("mask:%d,%d;2" % P(15, 8))
+    try:
+        sealed = (km.get("derived") == "True" and not int(km["bits"], 16) & 0x04) if km.get("bits") else None
+        d0 = int(km["derives"])
+    except (KeyError, ValueError, TypeError):
+        sealed, d0 = None, None
+    goals = {west: ((P(20, 8), P(20, 7)), (P(14, 8), P(14, 7))), east: ((P(14, 8), P(14, 7)), (P(20, 8), P(20, 7)))}
+    leg = {west: 0, east: 0}
+    samples, orders = [], 0
+
+    def go(pid, c):
+        o = B.call("jawa/order_pawn", pawnId=pid, x=c[0], z=c[1], waitTicks=0, draft=True) or {}
+        return sum(1 for p in o.get("pawns") or [] if p.get("id") == pid and p.get("orderAccepted") is True)
+
+    pos = {}
+    for k in range(MS_STEPS):
+        if k % 2 == 0:
+            B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=4, setFill=-1)
+        else:
+            B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=0, setFill=-1, fillInLevels=4)
+        if k % MS_ORDER_EVERY == 0:
+            for pid in (west, east):
+                tgt = goals[pid][leg[pid] % 2]
+                xz = pos.get(pid)
+                if xz and abs(xz[0] - tgt[0][0]) <= 1:      # reached this leg's side: walk back
+                    leg[pid] += 1
+                    tgt = goals[pid][leg[pid] % 2]
+                orders += go(pid, tgt[(k // MS_ORDER_EVERY) % 2])
+            orders += go(inner, P(17, 11))
+        B.ticks(MS_STEP)
+        lp = B.call("jawa/list_pawns", includeHealth=False, limit=500) or {}
+        bare = lambda i: str(i or "").replace("Thing_", "")             # noqa: E731  (ids with or without the prefix)
+        seen = {bare(p.get("id")): (p.get("x"), p.get("z")) for p in lp.get("pawns") or []}
+        for pid in (inner, west, east):
+            xz = seen.get(bare(pid))
+            samples.append((k, pid, xz))
+            if xz:
+                pos[pid] = xz
+    B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=0, setFill=-1, fillInLevels=4)
+    k1, t1 = climb("mask:%d,%d;2" % P(15, 8))
+    st, det = maskswap_verdict(samples, rect, {inner}, {west, east}, (d0, k1.get("derives")), orders, sealed)
+    row("CLIMB_maskswap_no_wall_crossing", st, "MOD", dict(det, mask=[tm, t1], pawns=dict(floor=inner, west=west, east=east),
+        caveat="sampled every %d ticks: never seen, not proven impossible" % MS_STEP))
+
+
 def moat_row(B, P, row, spawn, climb, ramp):
     isl = spawn("Pirate", P(32, 5), "hostile")
     mo = spawn("Pirate", P(30, 3), "hostile")
@@ -308,6 +422,8 @@ def main():
     ap.add_argument("out", nargs="?", default=None)
     ap.add_argument("--origin", default="120,120")
     ap.add_argument("--fresh-map", action="store_true")
+    ap.add_argument("--require", default="", help="comma-separated row ids: exit 0 iff every one of them reads PASS, 1 "
+                    "otherwise (2 still means the site was not ready); without it, every measured row must PASS")
     a = ap.parse_args()
     import proof_hose as PH           # noqa: E402  (bridge-side imports only on a live run)
     V = PH.V
@@ -390,6 +506,7 @@ def main():
                 dig(P(20 + x, 2 + z), 4)
                 dig(P(24 + x, 2 + z), 4)
                 dig(P(38 + x, 2 + z), 4)
+                dig(P(16 + x, 7 + z), 4)          # H: the mask-swap pit
         dig(P(16, 3), 2)
         dig(P(27, 3), 1)
         for x in range(5):                 # F: the moat ring around a 3x3 island
@@ -482,6 +599,8 @@ def main():
         else:
             row("CLIMB_rebuild_follows_fill", "PASS" if kv.get("pocket") == "False" else "FAIL", "MOD",
                 {"kv": kv, "fill": f1})
+        # H: the per-request mask swap holds while the masks re-derive under queued path requests
+        maskswap_row(B, P, row, spawn, climb)
         # G: a hauler fetches from a ramped pit floor (design §8.6), by its own AI
         haul_rows(B, P, row, spawn, climb, rect_G, rect_pile)
         # F: a raider never crosses a ramped moat over its wall (design §8.6); hostiles last, vanished at once
@@ -494,6 +613,8 @@ def main():
                 sset(f, v)
         res["settings_restored"] = {f: sget(f) for f in FIELDS}
         save()
+    if a.require:
+        return require_exit(rows, a.require)
     measured = [r for r in rows if r["class"] != "OWED" and r["id"] != "CLIMB_site_ready"]
     return 0 if measured and all(r["status"] == "PASS" for r in measured) else 1
 

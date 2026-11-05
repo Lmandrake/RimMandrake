@@ -415,6 +415,9 @@ def _run(argv, hold):
     ap = argparse.ArgumentParser()
     ap.add_argument("out", nargs="?", default=os.path.join(OUT, "raid_trench_%s.json" % time.strftime("%Y%m%dT%H%M%S")))
     ap.add_argument("--fresh-map", action="store_true")
+    ap.add_argument("--max-seconds", type=int, default=0, help="wall-clock cap on the raid's tick loop (0 = none); a run "
+                    "stopped by it says so in RAID_outcome (stoppedEarlyAtTick). relentless_live reads the same flag as "
+                    "its proof budget (+120 s)")
     ap.add_argument("--points", type=float, default=500)
     ap.add_argument("--ticks", type=int, default=15000)
     ap.add_argument("--jump-packs", action="store_true", help="--direct only: every gunner wears Apparel_PackJump "
@@ -664,7 +667,11 @@ def _run(argv, hold):
                 "restore": res["ladderChanceRestore"], "bar": "raiders >= 2; 1 <= carriers < raiders"})
     res["raid"] = fr
     t, k = 0, 0
+    deadline = time.time() + a.max_seconds if a.max_seconds > 0 else None
     while t < a.ticks:
+        if deadline is not None and time.time() > deadline:
+            res["stoppedEarlyAtTick"] = t
+            break
         k += 1
         if k % 2 == 0:
             B.call("jawa/flowworks_excavation_drive", x=churn[0], z=churn[1], deepenLevels=4, setFill=-1)
@@ -738,7 +745,7 @@ def _run(argv, hold):
                            for i_ in det["jobTrace"]}
         last_c = samples[-1].get("colonists") or []
         det["colonistsOffIsland"] = [q["id"] for q in last_c if q["x"] is not None and cheb((q["x"], q["z"]), c) > 4]
-    row("RAID_outcome", "MEASURED", dict(outcome=words, **det))
+    row("RAID_outcome", "MEASURED", dict(outcome=words, stoppedEarlyAtTick=res.get("stoppedEarlyAtTick"), **det))
     cameNear = len(det["cameNear"])
     crossed = det["onIsland"] + det["inTrench"]
     # RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP (owner ruling: raiders set ladders, fill, jump) made a crossing LEGAL when the raid

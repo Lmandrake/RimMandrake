@@ -94,5 +94,30 @@ check("reset read: left=0", C.reset_left("RESET cells=9 levels=36 rolled=0 left=
 check("can-fail reset: left>0 or REFUSED is not 0", C.reset_left("RESET cells=9 levels=36 rolled=0 left=2") == 2
       and C.reset_left("REFUSED: no excavation engine on the current map") is None)
 
+# PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH risk 2: the mask swap under queued path requests while the masks re-derive
+H = (136, 127, 3, 3)
+def ms(extra=(), n=40):
+    s = [(k, "F", (137, 128)) for k in range(n)]
+    s += [(k, "W", (134, 128) if (k // 10) % 2 == 0 else (140, 128)) for k in range(n)]
+    return s + list(extra)
+G = dict(rect=H, inside={"F"}, outside={"W"}, derives=(4, 64), orders=60, sealed=True)
+check("maskswap: nobody crossed, masks churned, walkers went round: PASS", C.maskswap_verdict(ms(), **G)[0] == "PASS")
+check("can-fail maskswap: the floor pawn sampled on the lip is FAIL", C.maskswap_verdict(ms([(41, "F", (135, 128))]), **G)[0] == "FAIL")
+check("can-fail maskswap: a surface pawn sampled on the pit floor is FAIL", C.maskswap_verdict(ms([(41, "W", (137, 127))]), **G)[0] == "FAIL")
+check("maskswap: masks never re-derived is UNMEASURED", C.maskswap_verdict(ms(), **dict(G, derives=(4, 6)))[0] == "UNMEASURED")
+check("maskswap: unread derives is UNMEASURED", C.maskswap_verdict(ms(), **dict(G, derives=(None, 9)))[0] == "UNMEASURED")
+check("maskswap: too few orders is UNMEASURED", C.maskswap_verdict(ms(), **dict(G, orders=3))[0] == "UNMEASURED")
+check("maskswap: walkers that never changed side (no path served) is UNMEASURED", C.maskswap_verdict(
+      [(k, p, (134, 128) if p == "W" else (137, 128)) for k in range(40) for p in ("F", "W")], **G)[0] == "UNMEASURED")
+check("maskswap: an unsealed or unread wall is UNMEASURED", C.maskswap_verdict(ms(), **dict(G, sealed=None))[0] == "UNMEASURED"
+      and C.maskswap_verdict(ms(), **dict(G, sealed=False))[0] == "UNMEASURED")
+check("maskswap: a blind sample is UNMEASURED, a crossing still FAIL", C.maskswap_verdict(ms([(41, "W", None)]), **G)[0] == "UNMEASURED"
+      and C.maskswap_verdict(ms([(41, "W", None), (42, "F", (139, 128))]), **G)[0] == "FAIL")
+
+RR = [{"id": "A", "status": "PASS"}, {"id": "B", "status": "UNMEASURED"}]
+check("--require: named rows all PASS exits 0", C.require_exit(RR, "A") == 0)
+check("can-fail --require: an UNMEASURED or missing row exits 1", C.require_exit(RR, "A,B") == 1 and C.require_exit(RR, "Z") == 1
+      and C.require_exit(RR, " , ") == 1)
+
 print("%s: %d failure(s)" % ("PASS" if not fails else "FAIL", len(fails)))
 sys.exit(1 if fails else 0)
