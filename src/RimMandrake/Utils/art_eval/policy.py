@@ -214,7 +214,9 @@ def validate_gpt(reply: dict, concerns: list) -> dict:
 def classify_findings(findings: list, facts: set, policy: dict) -> dict:
     out = {"blocking": [], "polish": [], "gross": []}
     for f in findings:
-        sev = severity(f["code"], facts, policy, f.get("confidence"))
+        # A synthetic finding stands for a checklist `fail`, a definite observation: its stand-in confidence must not
+        # let a code's polish_below_confidence floor demote it to polish (it would then pass silently).
+        sev = severity(f["code"], facts, policy, None if f.get("synthetic") else f.get("confidence"))
         g = dict(f, policy_severity=sev)
         out.get(sev, out["blocking"]).append(g)
     return out
@@ -222,7 +224,8 @@ def classify_findings(findings: list, facts: set, policy: dict) -> dict:
 
 def opus_band(reply: dict, items: list, facts: set, policy: dict) -> tuple[str, dict]:
     """(band, detail). A checklist `fail` with no matching finding becomes a finding of that item's code at
-    confidence 0.7 (a definite observation, but not a confident defect report), so it can never pass silently."""
+    confidence 0.7 (a definite observation, but not a confident defect report), so it can never pass silently: the 0.7
+    only weighs against high_confidence; no polish_below_confidence floor applies to it (classify_findings)."""
     findings = list(reply.get("findings", []))
     codes = {f["code"] for f in findings}
     incomplete = []
@@ -362,7 +365,7 @@ def regen_findings(opus_detail: dict, gpt_detail: dict | None, gpt_reply: dict |
     """The findings a regeneration must fix: Opus's blocking ones that GPT did not refute, plus GPT's own."""
     refuted = set()
     if gpt_reply:
-        refuted = {c.get("id") for c in gpt_reply.get("concerns", []) if c.get("answer") == "refuted"}
+        refuted = {c.get("id") for c in gpt_reply.get("concerns") or [] if isinstance(c, dict) and c.get("answer") == "refuted"}
     ks = concerns_from(opus_detail) if gpt_reply else []
     refuted_codes = {k["code"] for k in ks if k["id"] in refuted}
     out = [f for f in opus_detail["blocking"] + opus_detail["gross"] if f["code"] not in refuted_codes]

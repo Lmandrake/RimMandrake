@@ -561,6 +561,17 @@ def main():
     out, gd = P.gpt_outcome(g, ks, inv, pol)
     rf = {f["code"] for f in P.regen_findings(d, gd, g)}
     check("regen fixes confirmed + GPT's own, drops refuted", rf == {"STYLE_CARTOON", "ALPHA_HALO"}, rf)
+    g_bad = dict(g, concerns=g["concerns"] + ["not a card", None, 7])
+    try:
+        rf2 = {f["code"] for f in P.regen_findings(d, gd, g_bad)}
+    except Exception as e:  # noqa: BLE001 -- the check is that nothing raises
+        rf2 = repr(e)
+    check("regen_findings skips a non-dict concern", rf2 == {"STYLE_CARTOON", "ALPHA_HALO"}, rf2)
+    fail_code = next(i["code"] for i in items if i["id"] == "NORTH_REAR")
+    pol_hi = json.loads(json.dumps(pol)); pol_hi["codes"][fail_code]["polish_below_confidence"] = 0.95
+    band, d2 = P.opus_band(opus_reply(items, fail=("NORTH_REAR",)), items, inv, pol_hi)
+    check("synthetic checklist fail stays blocking under a polish floor above 0.7",
+          band == "WEAK" and [f["code"] for f in d2["blocking"]] == [fail_code], (band, d2))
     rp = P.deterministic_regen_prompt({"subject": "RM_Test", "description": "a beast", "departures": ["six legs"]},
                                       [{"code": "STYLE_EARTHLY", "fix": "six legs, three per side"}])
     check("anatomy regen drops the reference", rp["reference"] == "none" and "six legs" in rp["prompt"], rp)
