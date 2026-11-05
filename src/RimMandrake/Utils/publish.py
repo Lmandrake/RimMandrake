@@ -413,7 +413,10 @@ def install_pairs(top, head, scratch, pairs):
     """Put the rebuilt files into the worktree only where each still holds HEAD's bytes. The build takes minutes and the
     dirty check ran before it, so a peer's save in between was overwritten by a blind replace (Codex, 2026-11-01). Each
     file goes in by atomic swap (seat_sync._exchange) and the displaced bytes are checked: anything but HEAD's goes
-    straight back, every file already swapped is swapped back too, and the landing refuses naming the path."""
+    straight back, every file already swapped is swapped back too, and the landing refuses naming the path. The undo
+    displaces atomically too and checks what it displaced (PUBLISH_ROLLBACK_FIX_RACE_STILL_AJAR): a compare-then-swap
+    or compare-then-unlink lost a save landing in between. No side file is deleted unless it holds bytes this call
+    owns (HEAD's or the rebuild's); any other is kept and named on stderr."""
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import seat_sync
     def at_head(q):
@@ -422,7 +425,42 @@ def install_pairs(top, head, scratch, pairs):
         return r.stdout if r.returncode == 0 else None
     def read(path):
         return open(path, "rb").read() if os.path.isfile(path) and not os.path.islink(path) else None
-    done = []                                            # (worktree path, tmp holding HEAD's bytes, new bytes)
+    def settle(side, *ours):                             # delete a side file only when it holds bytes we own
+        if not os.path.lexists(side):
+            return
+        b = read(side)
+        if b is not None and any(b == o for o in ours if o is not None):
+            os.unlink(side)
+        else:
+            print("KEPT %s: it holds bytes publish did not write (a save landing during the DLL install); "
+                  "nothing was deleted" % side, file=sys.stderr, flush=True)
+    def undo(dst, tmp, want, new):
+        """Take one installed file back out. Displace first (atomic), then prove the displaced bytes were ours."""
+        if tmp is None:                                  # absent at HEAD: move it aside, never unlink blind
+            hold = "%s.publish-undo-%d" % (dst, os.getpid())
+            try:
+                os.rename(dst, hold)
+            except FileNotFoundError:
+                return
+            if read(hold) == new:
+                os.unlink(hold)
+                return
+            try:                                         # a peer saved over ours: put it back, never clobbering
+                os.link(hold, dst)
+            except FileExistsError:
+                pass
+            else:
+                os.unlink(hold)
+                return
+            settle(hold)
+            return
+        seat_sync._exchange(tmp, dst)                    # tmp held HEAD's bytes; now it holds what dst held
+        if read(tmp) == new:
+            settle(tmp, new)
+            return
+        seat_sync._exchange(tmp, dst)                    # a peer's save was displaced: it goes back to dst
+        settle(tmp, want, new)
+    done = []                                            # (worktree path, tmp holding HEAD's bytes, HEAD's, new)
     try:
         for q in pairs:
             dst, tmp, want = os.path.join(top, q), os.path.join(top, q) + ".publish-tmp", at_head(q)
@@ -439,28 +477,23 @@ def install_pairs(top, head, scratch, pairs):
                     raise Refuse("%s appeared in the worktree while the DLL rebuilt; left as it is." % q)
                 finally:
                     os.unlink(tmp)
-                done.append((dst, None, new))
+                done.append((dst, None, None, new))
                 continue
             seat_sync._exchange(tmp, dst)
             if read(tmp) != want:                        # a save landed between the compare and the swap
                 seat_sync._exchange(tmp, dst)
-                os.unlink(tmp)
+                settle(tmp, new)
                 raise Refuse("%s changed in the worktree while the DLL rebuilt (a save that is not mine to "
                              "overwrite); left as it is, nothing installed. Your commit is intact on HEAD." % q)
-            done.append((dst, tmp, new))
+            done.append((dst, tmp, want, new))
     except BaseException:
-        for dst, tmp, new in reversed(done):             # put HEAD's bytes back, unless someone wrote since
-            if read(dst) != new:
-                continue
-            if tmp is None:
-                os.unlink(dst)
-            else:
-                seat_sync._exchange(tmp, dst)
+        for dst, tmp, want, new in reversed(done):       # put HEAD's bytes back, unless someone wrote since
+            undo(dst, tmp, want, new)
         raise
-    finally:
-        for _, tmp, _ in done:
-            if tmp and os.path.lexists(tmp):
-                os.unlink(tmp)
+    else:
+        for _, tmp, want, _ in done:
+            if tmp:
+                settle(tmp, want)
 
 
 def guard_dlls(err):

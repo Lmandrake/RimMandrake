@@ -833,6 +833,84 @@ def t_dll_rebuild_never_overwrites_a_save_made_during_the_build(a, b):
     assert not [n for n in os.listdir(os.path.join(a, MOD, "Assemblies")) if n.endswith(".publish-tmp")]
 
 
+def rollback_world(a, absent=False):
+    """A clone whose HEAD holds X (or not, when `absent`) and Y, a scratch build of both, and Y saved over in the
+    worktree so install_pairs installs X and then refuses on Y: the rollback path runs on X."""
+    if not absent:
+        write(a, "X.bin", "X AT HEAD\n")
+    write(a, "Y.bin", "Y AT HEAD\n")
+    sh(a, "add", "--", *(["Y.bin"] if absent else ["X.bin", "Y.bin"]))
+    sh(a, "commit", "-qm", "seed rollback")
+    scratch = tempfile.mkdtemp(dir=os.path.dirname(a))
+    write(scratch, "X.bin", "X REBUILT\n")
+    write(scratch, "Y.bin", "Y REBUILT\n")
+    write(a, "Y.bin", "Y SAVED BY A PEER\n")
+    return sh(a, "rev-parse", "HEAD"), scratch
+
+
+def side_files(a):
+    return sorted(n for n in os.listdir(a) if ".publish-" in n)
+
+
+def t_rollback_keeps_a_save_landing_before_the_undo_swap(a, b):
+    """PUBLISH_ROLLBACK_FIX_RACE_STILL_AJAR: rollback compared read(dst)==new, then swapped HEAD's bytes back; a peer
+    save in that gap went into the tmp and the cleanup deleted it. It must survive in the worktree."""
+    import seat_sync as S
+    head, scratch = rollback_world(a)
+    real, n = S._exchange, []
+    def gap(x, y):
+        n.append(1)
+        if len(n) == 2:                                  # the rollback's swap: a peer saves X just before it
+            write(a, "X.bin", "X SAVED IN THE UNDO GAP\n")
+        real(x, y)
+    S._exchange = gap
+    try:
+        why = refused(P.install_pairs, a, head, scratch, ["X.bin", "Y.bin"])
+    finally:
+        S._exchange = real
+    assert why and "Y.bin" in why, why
+    assert open(os.path.join(a, "X.bin")).read() == "X SAVED IN THE UNDO GAP\n"
+    assert open(os.path.join(a, "Y.bin")).read() == "Y SAVED BY A PEER\n"
+    assert not side_files(a), side_files(a)
+
+
+def t_rollback_restores_head_when_nobody_saved(a, b):
+    """The plain rollback still puts HEAD's bytes back and leaves no side file."""
+    head, scratch = rollback_world(a)
+    why = refused(P.install_pairs, a, head, scratch, ["X.bin", "Y.bin"])
+    assert why and "Y.bin" in why, why
+    assert open(os.path.join(a, "X.bin")).read() == "X AT HEAD\n"
+    assert not side_files(a), side_files(a)
+
+
+def t_rollback_of_a_new_file_keeps_a_save_landing_before_the_undo(a, b):
+    """PUBLISH_ROLLBACK_FIX_RACE_STILL_AJAR: a file absent at HEAD was unlinked after the compare; a peer save in the
+    gap was deleted. It must survive in the worktree; with no save, the file goes."""
+    head, scratch = rollback_world(a, absent=True)
+    real = os.rename
+    def gap(x, y, *k, **kw):
+        if os.path.basename(str(x)) == "X.bin":
+            write(a, "X.bin", "X SAVED IN THE UNDO GAP\n")
+        return real(x, y, *k, **kw)
+    real_unlink = os.unlink
+    def unlink_gap(x, *k, **kw):                         # the old code's blind unlink: same gap, same save
+        if os.path.basename(str(x)) == "X.bin":
+            write(a, "X.bin", "X SAVED IN THE UNDO GAP\n")
+        return real_unlink(x, *k, **kw)
+    os.rename, os.unlink = gap, unlink_gap
+    try:
+        why = refused(P.install_pairs, a, head, scratch, ["X.bin", "Y.bin"])
+    finally:
+        os.rename, os.unlink = real, real_unlink
+    assert why and "Y.bin" in why, why
+    assert open(os.path.join(a, "X.bin")).read() == "X SAVED IN THE UNDO GAP\n"
+    assert not side_files(a), side_files(a)
+    head2, scratch2 = head, scratch
+    os.unlink(os.path.join(a, "X.bin"))
+    why = refused(P.install_pairs, a, head2, scratch2, ["X.bin", "Y.bin"])
+    assert why and not os.path.exists(os.path.join(a, "X.bin")) and not side_files(a), (why, side_files(a))
+
+
 PUBLISH_PY = os.environ.get("PUBLISH_PY", os.path.join(os.path.dirname(os.path.abspath(__file__)), "publish.py"))
 
 
