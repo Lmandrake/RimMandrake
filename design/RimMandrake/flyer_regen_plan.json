@@ -1101,9 +1101,9 @@
    "frames": "4"
   },
   "RSW_Whisperbird": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "gate_fails",
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
    "sets": [
     "Whisperbird"
    ],
