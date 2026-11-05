@@ -49,6 +49,7 @@ import relentless_strikes  # noqa: E402
 import relentless_attrib  # noqa: E402
 import relentless_explain  # noqa: E402
 import relentless_live  # noqa: E402
+import relentless_showing  # noqa: E402
 import run_tmp  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -2136,6 +2137,49 @@ class Effects(relentless_game.GameFx):
     # the clones
     def clone_path(self, item, q=0):
         return os.path.join(self.base, "clones", item + (".q%d" % q if q else ""))
+
+    # the showing stage (relentless_showing): an item waiting only on his look is staged before he is asked
+    show_root = None        # relentless_showing.SHOW_DIR
+
+    @property
+    def mods_root(self):
+        sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+        return importlib.import_module("game_paths").LOCAL_MODS
+
+    def showing_items(self):
+        """[(item, ledger item, trigger, his question, (blocked on, why) or None)] of every open item waiting only on his look, Designer first-touch
+        passes left out (a sign-off, not a showing). owner_queue.is_his is the same test NEEDS YOU reads."""
+        utils = os.path.join(os.path.dirname(HERE), "Utils")
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        oq = importlib.import_module("owner_queue")
+        ft = pkg("first_touch")
+        evs, w = self.ledger_items()
+        try:
+            passes = ft.pass_map(self.books, ft.load_passes(os.path.join(self.books, "src", "RimMandrake", "rimflow",
+                                                                         "designer_passes.json")))
+        except (OSError, ValueError):
+            passes = {}
+        qs = oq.load_questions(os.path.join(self.books, "infrastructure", "state", "owner_questions.json"))
+        mine = set(self.store.items())
+        want = {}
+        for iid, it in sorted(w.items.items()):
+            if not getattr(it, "open", False):
+                continue
+            his = oq.is_his(it, self.store.load(iid) if iid in mine else None, evs)
+            why = relentless_showing.wants(iid, it, his, lambda i: ft.is_pass_item(i, passes))
+            if why:
+                want[iid] = (it, why)
+        now = time.time()
+        return [(iid, it, why, (qs.get(iid) or it.title or iid).strip(),
+                 relentless_showing.blockers(iid, it, w.items, evs, now, lambda i: i in want))
+                for iid, (it, why) in sorted(want.items())]
+
+    def showing_clone(self):
+        """-> (the one clone every showing unit runs in, None) or (None, why)."""
+        st = {"item": "SHOWINGS", "clone": self.clone_path("SHOWINGS"), "gen": 0}
+        why = self.prepare(st) if not os.path.isdir(os.path.join(st["clone"], ".git")) or clone_gap(st["clone"]) else None
+        return (None, why) if why else (st["clone"], None)
 
     def prepare(self, st):
         """The item's clone (made once, kept across workers) and its fence marker. Verified first: a clone missing what
@@ -5194,7 +5238,7 @@ def live_tick(store, fx, r, now, acts):
         return
     if now - (last.get("at_s") or 0) < lr.get("round_every_s", 1800):
         return
-    if relentless_game.other_active(getattr(store, "states", list)(), None):     # one live user at a time: a game phase has the game
+    if relentless_game.other_active(getattr(store, "states", list)(), None) or relentless_game.showing_live(store):     # one live user at a time: a game phase has the game
         return
     pid = fx.live_round_launch()
     store._write(path, json.dumps({"pid": pid, "at_s": now, "at": iso(now)}))
@@ -5254,7 +5298,7 @@ def game_pass(store, fx, r, now, acts):
 
     for s in sorted((x for x in store.states() if x["status"] == relentless_game.GAME), key=rank):
         if (s.get("game") or {}).get("phase") != "proving":     # every ended round is read before anyone starts
-            if relentless_game.other_active(store.states(), None) or over_budget(r, wall() - began):
+            if relentless_game.busy(store, None) or over_budget(r, wall() - began):
                 break
         try:
             step(store, fx, r, s["item"], now, acts)
@@ -5467,6 +5511,11 @@ def tick(store=None, fx=None, r=None, now=None):
             live_tick(store, fx, r, now, acts)
         except Exception as e:  # noqa: BLE001  the live tier is an extra: it never costs the tick its flush
             acts.append({"do": "error", "item": None, "why": "live_tick %s: %s" % (type(e).__name__, e)})
+        try:        # OWNER_REVIEW_BUILD_SHOWS_READY_BEFORE_ASKED: what waits on his look is staged before he is asked
+            relentless_showing.tick(store, fx, r, now, acts, sys.modules[__name__])
+        except Exception as e:  # noqa: BLE001  the showing stage never costs the tick its flush
+            acts.append({"do": "error", "item": None, "why": "showings %s: %s" % (type(e).__name__, e)})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "showings_raised", "why": str(e)[:300]})
         run_tmp_sweep(store, fx, now, acts, "end")
         at = phase("staffing_live", at)
         why = fx.flush()

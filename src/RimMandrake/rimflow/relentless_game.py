@@ -185,6 +185,25 @@ def other_active(states, item):
     return expedited_ahead(states, item) if item is not None else None
 
 
+def busy(store, item):
+    """other_active, or a showing build that holds the game (relentless_showing): the bridge it holds is Relentless's
+    own, so a staging or a proof round would take it again and restart the game under the showing being built."""
+    return other_active(store.states(), item) or showing_live(store)
+
+
+def showing_live(store):
+    """-> "showing <ITEM>" while a showing build holds the bridge, else None."""
+    try:
+        with open(store.p("showings.json"), encoding="utf-8") as f:
+            rows = (json.load(f) or {}).get("rows") or {}
+    except (OSError, ValueError, AttributeError):
+        return None
+    for iid, row in sorted(rows.items()):
+        if isinstance(row, dict) and row.get("phase") == "build" and row.get("bridge"):
+            return "showing %s" % iid
+    return None
+
+
 def expedited_ahead(states, item):
     """An expedited item waiting its turn on the game goes next: nothing behind it starts. It stops no one (owner's card
     2026-11-03: "leaves the live game alone"), and one put down on a retry holds nothing; its 4 h expiry bounds the rest."""
@@ -1144,7 +1163,7 @@ def step(store, fx, r, item, now, acts, sup):
 
     if g["phase"] == "final":
         rd = fx.game_reading()
-        if other_active(store.states(), item) is not None:
+        if busy(store, item) is not None:
             return      # one live user at a time; waiting here holds nothing
         if rd.get("state") == "UP" and rd.get("started") and rd["started"] != g.get("final_game"):
             # a newer game may be the full list already (another item's load, or the owner's): one try, no load
@@ -1180,7 +1199,7 @@ def step(store, fx, r, item, now, acts, sup):
             # while CONTAGION's staging restarted the game, and would have staged a third load untried)
             built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
             seen = [v for v in outcomes(fx.game_rows(), item, built, g["clauses"]).values() if row_at(v) >= rd["started"]]
-            if not seen and other_active(store.states(), item) is None and (g.get("mod_gap") or {}).get("game") != rd["started"]:
+            if not seen and busy(store, item) is None and (g.get("mod_gap") or {}).get("game") != rd["started"]:
                 _save(store, item, lambda s: s["game"].update(phase="prove", staged_at=rd["started"], waits_reload=None))
                 acts.append({"do": "game_try_running", "item": item, "started": rd["started"]})
                 return
@@ -1302,7 +1321,7 @@ def _owed_lines(fx, item, sha, g, led):
 
 def _lease_why(store, fx, r, item, sha, led):
     import relentless_live
-    other = other_active(store.states(), item)
+    other = busy(store, item)
     why = gate(store.load(item), led.get("title"), fx.proofs_at(item, sha), relentless_live.live_rules(r)["flyer_re"],
                other)
     return why or fx.bridge_idle("relentless game phase %s" % item)
