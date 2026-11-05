@@ -118,6 +118,7 @@
     <Compile Include="Hose\RM_MapComponent_Hoses.cs" />
     <Compile Include="Hose\HoseProbe.cs" />
     <Compile Include="Hose\HoseStyleProbe.cs" />
+    <Compile Include="Hose\StyleReadback.cs" />
     <Compile Include="Hose\HoseNetProbe.cs" />
     <Compile Include="Hose\HoseJointProbe.cs" />
     <Compile Include="Hose\HosePorts.cs" />

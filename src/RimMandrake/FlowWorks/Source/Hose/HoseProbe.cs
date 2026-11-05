@@ -92,6 +92,8 @@ namespace RimMandrake.FlowWorks.Hose
             if (cmd == "finishbuild") return HoseStyleProbe.FinishBuild(map);
             if (cmd.StartsWith("place:")) return HoseStyleProbe.Place(map, cmd.Substring(6));
             if (cmd.StartsWith("reinstall:")) return HoseStyleProbe.Reinstall(map, cmd.Substring(10));
+            // STYLE_READBACK_PROBE_ANY_BUILT_THING: the style reader for ANY building on a cell (faucet, sprinkler, pole, ...)
+            if (cmd.StartsWith("stylerow:")) return StyleReadback.StyleRowOn(map, cmd.Substring(9));
             string netAnswer = HoseNetProbe.TryRun(map, cmd);   // real-flow verbs (tank/filltank/flick/pump/net), hose port step 8
             if (netAnswer != null) return netAnswer;
             int colon = cmd.IndexOf(':');

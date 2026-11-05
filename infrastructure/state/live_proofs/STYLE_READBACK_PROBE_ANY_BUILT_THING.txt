@@ -1,0 +1,5 @@
+# One staged strip on a quicktest map: RM_PipeFaucet / RM_SprinklerHead / RM_PipePole spawned with their _Modern ThingStyleDef
+# plus an unstyled Wall (StyleReadback.SpawnStyled), each read back through jawa/static_call StyleReadback.StyleRow "x,z" and
+# HoseProbe "stylerow:x,z". Exit 0 only when SR1-SR5 all PASS; the JSON at the out path holds every row.
+live-mods: FlowWorks, GimmeSomeSlack
+live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/style_readback_proof.py D:/ClaudeWork/rimmandrake/relentless/style_readback_live.json --fresh-map --cell 120,120 < /dev/null

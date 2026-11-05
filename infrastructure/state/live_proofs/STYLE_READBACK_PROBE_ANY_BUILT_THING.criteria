@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map, the any-building style reader returns style=<def>_Modern, look=Modern and a Modern drawn graphic for a spawned RM_PipeFaucet, RM_SprinklerHead and RM_PipePole, a present row with style null for an unstyled Wall, and the static_call and HoseProbe stylerow doors answer identical rows.

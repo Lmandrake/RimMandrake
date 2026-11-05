@@ -30,20 +30,8 @@ namespace RimMandrake.FlowWorks.Hose
             return new IntVec3(int.Parse(p[0], CultureInfo.InvariantCulture), 0, int.Parse(p[1], CultureInfo.InvariantCulture));
         }
 
-        private static string TexOf(Thing t)
-        {
-            try
-            {
-                Graphic g = t.Graphic;
-                return g?.MatAt(t.Rotation)?.mainTexture?.name ?? g?.path;
-            }
-            catch (Exception ex) { return "ERR " + ex.GetType().Name; }
-        }
-
-        private static string StyleRow(Thing t) =>
-            "\"id\":" + t.thingIDNumber + ",\"def\":" + S(t.def.defName) + ",\"x\":" + t.Position.x + ",\"z\":" + t.Position.z +
-            ",\"rot\":" + t.Rotation.AsInt + ",\"rawStyle\":" + S(HoseLook.RawStyle(t)?.defName) + ",\"style\":" + S(t.StyleDef?.defName) +
-            ",\"graphicPath\":" + S(t.Graphic?.path) + ",\"drawnTex\":" + S(TexOf(t));
+        // one definition of a style row: the shared any-building reader (StyleReadback.Row)
+        private static string StyleRow(Thing t) => StyleReadback.Row(t);
 
         public static string Place(Map map, string args)
         {
