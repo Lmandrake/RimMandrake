@@ -412,7 +412,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         return done("stopped: %s" % sick[:300])
     todo, counts = plan(fx, root, r, now, only, L.iso(started))
     summary.update(eligible=len(todo), skipped=counts, **({"only": only} if only else {}))
-    folded, ran, cap, gated = None, 0, max_items or lr["round_max"], set()
+    folded, ran, cap, gated = None, 0, lr["round_max"] if max_items is None else max_items, set()
     for item_id, cid, proof, sha in todo:     # the cap counts runs: a skip never starves the items behind it
         if ran >= cap:
             break

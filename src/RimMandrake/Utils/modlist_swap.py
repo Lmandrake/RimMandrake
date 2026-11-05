@@ -55,7 +55,7 @@ def mods(p):
         return None
     try:
         root = ET.parse(p).getroot()
-    except ET.ParseError:
+    except (OSError, ET.ParseError):
         return None
     am = root.find("activeMods")
     if am is None:
@@ -132,6 +132,10 @@ def snapshot():
             return existing
     stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     dst = os.path.join(STORE, "ModsConfig.PRESWAP.%s.xml" % stamp)
+    n = 1
+    while os.path.exists(dst):      # two distinct snapshots in one second must not overwrite each other
+        n += 1
+        dst = os.path.join(STORE, "ModsConfig.PRESWAP.%s_%d.xml" % (stamp, n))
     # Atomic even here: a half-written archive would be counted as a kept copy by the
     # md5 sweep above on the next swap, and the real backup would then be skipped.
     atomic_copy(LIVE, dst)
@@ -258,6 +262,8 @@ def enable(names, apply_it):
         return 0
     tree = ET.parse(LIVE)
     am = tree.getroot().find("activeMods")
+    if am is None:
+        am = ET.SubElement(tree.getroot(), "activeMods")
     for li in list(am):
         am.remove(li)
     for m in new:
