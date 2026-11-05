@@ -1,0 +1,25 @@
+{
+ "aliases": [],
+ "budget": {
+  "cap": 500000,
+  "charges": [],
+  "reserve": 50000,
+  "spent": 0
+ },
+ "history": [
+  {
+   "at": "2026-11-05T07:14:04Z",
+   "stage": 0,
+   "what": "init",
+   "why": "stage 0, budget 500000 (reserve 50000)"
+  }
+ ],
+ "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
+ "mod": "RimMandrake/PyrelandsMechanics",
+ "recovery": [],
+ "results": [],
+ "running": null,
+ "schema": 1,
+ "stage": 0,
+ "status": "ready"
+}
