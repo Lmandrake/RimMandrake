@@ -124,6 +124,16 @@ def live_deploy(text):
 
 
 TERMINAL = ("PASS", "FAIL", "REFUSED")
+# OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU: relentless_live.run's deploy and running-load gates read the item's mods and
+# its build, never the clause, so a clause stopped there speaks for every clause of that build on that game (2026-11-05:
+# TAOZIN L1-L3 wrote one "no readable packageId" three times in 17 s, a third of live_measured_pct's window never ran)
+ITEM_GATED = "a sibling clause stopped at the item's deploy or load gate"
+
+
+def item_gate(row):
+    """True when a runs.jsonl row stopped at an ITEM-level gate (relentless_live.UNDEPLOYED): no proof ran."""
+    return bool(row) and row.get("outcome") == "UNMEASURED" and "proof_exit" not in row and (
+        row.get("why") or "").startswith(L.UNDEPLOYED)
 
 
 def history(rows):
@@ -204,6 +214,11 @@ def candidates(items, proofs_of, hist, now, retry_s, game=None):
         if not owed:
             continue
         proofs = proof_lines(proofs_of(it["id"]))
+        # a sibling's item-level gate on this build and this game holds every clause, as it would hold the clause itself
+        # (due: "not deployed on this game"); a game phase's round (retry 0) has just staged, so it runs again
+        gated = bool(retry_s) and game and any(
+            k[0] == it["id"] and k[2] == it["built_sha"] and item_gate(v) and v.get("game") == game
+            for k, v in hist.items())
         for cid in owed:
             if cid not in proofs:
                 skip("no proof")
@@ -211,6 +226,9 @@ def candidates(items, proofs_of, hist, now, retry_s, game=None):
             last = hist.get((it["id"], cid, it["built_sha"]))
             if last and last.get("cut") and not crit[cid].get("cut"):
                 last = None     # refused while cut on the ledger; its prose now holds it whole: run it
+            if gated and not decides(last):
+                skip("not deployed on this game")
+                continue
             why = due(last, it["built_sha"], now, retry_s, game, per_game=bool(retry_s))   # a game phase restages
             if why:
                 skip(why)
@@ -375,10 +393,13 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         return done("stopped: %s" % sick[:300])
     todo, counts = plan(fx, root, r, now, only, L.iso(started))
     summary.update(eligible=len(todo), skipped=counts, **({"only": only} if only else {}))
-    folded, ran, cap = None, 0, max_items or lr["round_max"]
+    folded, ran, cap, gated = None, 0, max_items or lr["round_max"], set()
     for item_id, cid, proof, sha in todo:     # the cap counts runs: a skip never starves the items behind it
         if ran >= cap:
             break
+        if (item_id, sha) in gated:     # its gate is the build's, not the clause's: one row says it for all
+            summary["skipped"][ITEM_GATED] = summary["skipped"].get(ITEM_GATED, 0) + 1
+            continue
         try:
             mods = fx.mods_of(sha)
         except ValueError as e:
@@ -392,6 +413,8 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         row = run(fx, root, item_id, cid, proof, deploy_args(list(mods) + trees, folded), r, now=time.time(),
                   needs=live_mods(text), site=proof_lines(text, SITE_LINE).get(cid), trees=trees)
         summary["runs"].append({k: row.get(k) for k in ("item", "criterion", "outcome", "why", "sha")})
+        if item_gate(row):
+            gated.add((item_id, sha))
         if row["outcome"] == "UNMEASURED" and any(row.get("why", "").startswith(s) for s in STOP):
             return done("stopped: %s" % row["why"][:200])
     return done("done")
