@@ -584,3 +584,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","role_unit":"rm-relentless-work-3d22fea8d2-g3","ts":"2026-11-05T09:09:19Z","tsn":1793869759600008078}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live iteration OWN_PRESET_WIDEN_PYRELANDS_JOINS_IN","role_unit":"rm-relentless-work-3d22fea8d2-g3","ts":"2026-11-05T09:10:35Z","tsn":1793869835406279006}
 {"seat":"RELENTLESS","event":"bridge","state":"released","role_unit":"rm-relentless-work-3d22fea8d2-g3","ts":"2026-11-05T09:11:22Z","tsn":1793869882076848483}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing CHILL_AIR_PUMP_1: review savegame for the owner's look","ts":"2026-11-05T09:16:17Z","tsn":1793870177908132906}
