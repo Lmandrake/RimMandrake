@@ -31,7 +31,7 @@ def settings_fields():
     """WARSCAR_VALIDATION_FIDELITY_1: every scalar Mod Settings field and its shipped default, read from the C# field
     initialisers of RM_WarscarSettings (the hand-kept table this replaces had drifted: it omitted the aerosol, ring,
     glower, rarity and cross-biome settings)."""
-    src = open(os.path.join(HERE, "Source", "RM_WarscarMod.cs")).read()
+    src = open(os.path.join(HERE, "Source", "RM_WarscarMod.cs"), encoding="utf-8").read()
     body = src.split("class RM_WarscarSettings", 1)[1].split("ExposeData", 1)[0]
     out = {}
     for typ, name, val in re.findall(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);", re.sub(r"//[^\n]*", "", body)):
@@ -112,7 +112,7 @@ def reload_step_problems():
 def static_checks():
     """Return a list of failure strings; empty means pass. Needs no game."""
     bad = []
-    src = open(os.path.join(HERE, "Source", "RM_WarscarMod.cs")).read()
+    src = open(os.path.join(HERE, "Source", "RM_WarscarMod.cs"), encoding="utf-8").read()
     if len(DEFAULTS) < 40:
         bad.append("settings_fields() read only %d fields from RM_WarscarSettings (parser broken?)" % len(DEFAULTS))
     for f, dv in DEFAULTS.items():
@@ -126,7 +126,7 @@ def static_checks():
             bad.append("settings field %s: Scribe default %s differs from its initialiser %r" % (f, sd, dv))
         if not re.search(r"\b%s\b" % f, src.split("DoWindowContents")[1]):
             bad.append("settings field %s has no control in DoWindowContents" % f)
-    if 'Compile Include="RM_CompTurretAim.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read():
+    if 'Compile Include="RM_CompTurretAim.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj"), encoding="utf-8").read():
         bad.append("RM_CompTurretAim.cs missing from RM_Warscar.csproj")
     d = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_OldLineTurret.xml")).getroot()
     names = [e.findtext("defName") for e in d]
@@ -142,12 +142,12 @@ def static_checks():
     if float(turret.findtext("building/turretBurstCooldownTime")) < 10:
         bad.append("old-line turret cooldown is not long")
     # WARSCAR_TOTCHAK_WAKES_1
-    csproj = open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read()
+    csproj = open(os.path.join(HERE, "Source", "RM_Warscar.csproj"), encoding="utf-8").read()
     if 'Compile Include="RM_Totchak.cs"' not in csproj:
         bad.append("RM_Totchak.cs missing from RM_Warscar.csproj")
     if "0Harmony" not in csproj:
         bad.append("csproj has no Harmony reference (demolition postfixes need it)")
-    tc = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Totchak.cs")).read())
+    tc = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Totchak.cs"), encoding="utf-8").read())
     for needle in ("Mineable", "GenExplosion", "DestroyMode.Deconstruct", "All.Count == 0", "totchakEatsPlayerWalls",
                    "FindWall(pawn, false)", "ToSleep"):
         if needle not in tc:
@@ -167,12 +167,12 @@ def static_checks():
     for f, root in (("ThinkTreeDefs/RM_ThinkTree_Totchak.xml", "ThinkTreeDef"), ("JobDefs/RM_TotchakJobs.xml", "JobDef"),
                     ("GenStepDefs/RM_TotchakInWall.xml", "GenStepDef")):
         ET.parse(os.path.join(HERE, "Defs", *f.split("/")))
-    if "RM_TotchakInWall" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml")).read():
+    if "RM_TotchakInWall" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml"), encoding="utf-8").read():
         bad.append("biome does not run the RM_TotchakInWall genstep")
     # WARSCAR_OLD_TONGUE_1
     if 'Compile Include="RM_OldTongue.cs"' not in csproj:
         bad.append("RM_OldTongue.cs missing from RM_Warscar.csproj")
-    ot = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_OldTongue.cs")).read())
+    ot = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_OldTongue.cs"), encoding="utf-8").read())
     for needle in ("oldTongueSkillGate", "SkillDefOf.Intellectual", "level < gate".replace("level", "Level"), "read = true"):
         if needle not in ot:
             bad.append("RM_OldTongue.cs lacks %s" % needle)
@@ -220,22 +220,22 @@ def static_checks():
         bad.append("RM_OldTongueTranscription def missing")
     utp = os.path.join(HERE, "..", "..", "RimUtinni", "Antiquities", "Patches", "RUT_OldTongueTranscription.xml")
     if os.path.exists(utp):
-        ut = open(utp).read()
+        ut = open(utp, encoding="utf-8").read()
         for needle in ("CompProperties_Antiquity", "RimMandrake.Scarlands.RM_FactionBuyPremium",
                        "RUT_Jawa_AscendantHelix", "RUT_Jawa_DeepwaterCompact"):
             if needle not in ut:
                 bad.append("Utinni transcription patch lacks %s" % needle)
-    if "RM_InscribedPanels" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml")).read():
+    if "RM_InscribedPanels" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml"), encoding="utf-8").read():
         bad.append("biome does not run the RM_InscribedPanels genstep")
     ET.parse(os.path.join(HERE, "Defs", "GenStepDefs", "RM_InscribedPanels.xml"))
     p = ET.parse(os.path.join(HERE, "Patches", "Patches_BrokenTurretAim.xml")).getroot()
-    txt = open(os.path.join(HERE, "Patches", "Patches_BrokenTurretAim.xml")).read()
+    txt = open(os.path.join(HERE, "Patches", "Patches_BrokenTurretAim.xml"), encoding="utf-8").read()
     for b in BROKEN:
         if 'defName="%s"' % b not in txt:
             bad.append("patch does not target %s" % b)
     if "MayRequire" in txt.replace("no top-level MayRequire", ""):
         bad.append("patch uses MayRequire (inert on an Operation)")
-    cs = open(os.path.join(HERE, "Source", "RM_CompTurretAim.cs")).read()
+    cs = open(os.path.join(HERE, "Source", "RM_CompTurretAim.cs"), encoding="utf-8").read()
     cs = re.sub(r"//[^\n]*", "", cs)
     if re.search(r"\bVerb\b|Verb_|AttackTarget|TryStartCastOn|Projectile\b.*Launch", cs.split("OldLineTurretTuning")[0]):
         bad.append("the aim comp touches a verb or projectile -- it must stay verbless")
@@ -266,7 +266,7 @@ def static_checks():
             if li.text not in hed_names:
                 bad.append("%s names missing hediff %s" % (h.findtext("defName"), li.text))
     serv = ET.parse(os.path.join(D, "ThingDefs_Races", "RM_AncientServitor.xml")).getroot()
-    sraw = open(os.path.join(D, "ThingDefs_Races", "RM_AncientServitor.xml")).read()
+    sraw = open(os.path.join(D, "ThingDefs_Races", "RM_AncientServitor.xml"), encoding="utf-8").read()
     if "OverseerSubject" in re.sub(r"<!--.*?-->", "", sraw, flags=re.S):
         bad.append("servitor carries an overseer subject comp")
     if serv.find("ThingDef/comps").get("Inherit") != "False":
@@ -283,14 +283,14 @@ def static_checks():
     intact = [e for e in bld if e.findtext("defName") == "RM_KneelingChassis_Intact"][0]
     if intact.findtext("minifiedDef") != "MinifiedThing" or intact.find("designationCategory") is not None or intact.find("costList") is not None:
         bad.append("intact chassis must be minifiable and never fabricable")
-    if "RM_KneelingRings" not in open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml")).read():
+    if "RM_KneelingRings" not in open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml"), encoding="utf-8").read():
         bad.append("biome does not run the RM_KneelingRings genstep")
     for tex in ("Building/RM_KneelingChassis_Slagged", "Building/RM_KneelingChassis_Posed", "Building/RM_KneelingChassis_Intact",
                 "Building/RM_HospiceCradle", "Item/RM_ChassisCore", "Item/RM_FailedChassis",
                 "Pawn/Mechanoid/RM_AncientServitor_south", "Pawn/Mechanoid/RM_AncientServitor_east", "Pawn/Mechanoid/RM_AncientServitor_north"):
         if not os.path.exists(os.path.join(HERE, "Textures", "Things", *tex.split("/")) + ".png"):
             bad.append("hospice texture %s missing" % tex)
-    hs = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Hospice.cs")).read())
+    hs = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Hospice.cs"), encoding="utf-8").read())
     for needle in ("HospiceUnlocked", "hospiceFailureChance", "hospiceLashOut", "hospiceWalkInEnabled", "Reveal(0)", "Reveal(1)", "Reveal(2)",
                    "It looked at the Cathedral first.", "RM_FailedChassis", "MakeMinified", "stage++"):
         if needle not in hs:
@@ -336,7 +336,7 @@ def static_checks():
     if not ext:
         bad.append("RUT swap does not add RM_HospiceWakeExtension")
     # WARSCAR_RAINBOW_POOLS_1 (static: files, wiring and names; behaviour is the live chain below)
-    if 'Compile Include="RM_ReactionPools.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read():
+    if 'Compile Include="RM_ReactionPools.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj"), encoding="utf-8").read():
         bad.append("RM_ReactionPools.cs missing from RM_Warscar.csproj")
     for f in ("ThingDefs_Buildings/RM_ReactionPools.xml", "ThingDefs_Items/RM_PoolReagents.xml", "GenStepDefs/RM_ReactionPools.xml",
               "JobDefs/RM_ReactionPoolJobs.xml", "DamageDefs/RM_BloomAcid.xml"):
@@ -346,7 +346,7 @@ def static_checks():
     for need in ("RM_DielectricGel", "RM_Etchant", "RM_MedicalCoagulant", "RM_BloomLiquor", "RM_FilthBone"):
         if need not in names:
             bad.append("reagent def %s missing" % need)
-    pc = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_ReactionPools.cs")).read())
+    pc = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_ReactionPools.cs"), encoding="utf-8").read())
     for r in ("RM_DielectricGel", "RM_Etchant", "RM_MedicalCoagulant", "RM_BloomLiquor"):
         if '"%s"' % r not in pc:
             bad.append("phase table does not name %s" % r)
@@ -362,20 +362,20 @@ def static_checks():
     for tex in ("Building/RM_ReactionTap", "Item/RM_DielectricGel", "Item/RM_Etchant", "Item/RM_MedicalCoagulant", "Item/RM_BloomLiquor"):
         if not os.path.exists(os.path.join(HERE, "Textures", "Things", *tex.split("/")) + ".png"):
             bad.append("pool texture %s missing" % tex)
-    if "RM_ReactionPools" not in open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml")).read():
+    if "RM_ReactionPools" not in open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml"), encoding="utf-8").read():
         bad.append("biome does not run the RM_ReactionPools genstep")
     tap = [e for e in ET.parse(os.path.join(D, "ThingDefs_Buildings", "RM_ReactionPools.xml")).getroot() if e.findtext("defName") == "RM_ReactionTap"][0]
     if tap.findtext("comps/li/fuelFilter/thingDefs/li") != "RM_GlowerCrust":
         bad.append("tap hopper does not take glower crust")
-    turret = open(os.path.join(D, "ThingDefs_Buildings", "RM_OldLineTurret.xml")).read()
+    turret = open(os.path.join(D, "ThingDefs_Buildings", "RM_OldLineTurret.xml"), encoding="utf-8").read()
     if "<RM_Etchant>10</RM_Etchant>" not in turret or "<ComponentSpacer>3</ComponentSpacer>" not in turret:
         bad.append("old-line turret refit does not cost 10 etchant + 3 ComponentSpacer")
     fw = os.path.join(HERE, "..", "FlowWorks")
-    reg = open(os.path.join(fw, "Defs", "LiquidTypes", "LiquidDefs", "RM_LiquidDefRegistry.xml")).read()
-    gen = open(os.path.join(fw, "Tools", "generate_liquid_suite.py")).read()
+    reg = open(os.path.join(fw, "Defs", "LiquidTypes", "LiquidDefs", "RM_LiquidDefRegistry.xml"), encoding="utf-8").read()
+    gen = open(os.path.join(fw, "Tools", "generate_liquid_suite.py"), encoding="utf-8").read()
     if "RM_Liquid_ReactionLiquor" not in reg or "RM_Liquid_ReactionLiquor" not in gen:
         bad.append("RM_Liquid_ReactionLiquor registry row missing from generator table or generated registry")
-    terr = open(os.path.join(fw, "Defs", "LiquidTypes", "TerrainDefs", "RM_ReactionLiquor.xml")).read()
+    terr = open(os.path.join(fw, "Defs", "LiquidTypes", "TerrainDefs", "RM_ReactionLiquor.xml"), encoding="utf-8").read()
     for t in ("RM_ReactionLiquorShallow", "RM_ReactionLiquorDeep"):
         if "<defName>%s</defName>" % t not in terr:
             bad.append("terrain %s missing from FlowWorks" % t)
@@ -416,15 +416,15 @@ def static_checks():
             bad.append("%s lacks the stock invisibility comp" % h.findtext("defName"))
         if h.find("comps/li/disappearsAfterTicks") is not None:
             bad.append("%s is timed (owner ruling: cloak lacquer is permanent)" % h.findtext("defName"))
-    cl = open(os.path.join(D, "ThingDefs_Items", "RM_CloakLacquer.xml")).read()
+    cl = open(os.path.join(D, "ThingDefs_Items", "RM_CloakLacquer.xml"), encoding="utf-8").read()
     if "Disappears" in cl or "Timed" in cl:
         bad.append("lacquered cloak is timed")
-    if "RM_ChotrixOnMap" not in open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml")).read():
+    if "RM_ChotrixOnMap" not in open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml"), encoding="utf-8").read():
         bad.append("biome does not run the RM_ChotrixOnMap genstep")
     for f in ("south", "east", "north"):
         if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", "RM_Chotrix", "RM_Chotrix_%s.png" % f)):
             bad.append("chotrix texture %s missing" % f)
-    cx = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Chotrix.cs")).read())
+    cx = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Chotrix.cs"), encoding="utf-8").read())
     for needle in ("Verb_MeleeAttack", "TryCastShot", "IsLone", "lonePawnRadius", "IsNight", "Fleeing", "chotrixEnabled",
                    "lacquerCloakEnabled", "Notify_Unequipped", "GenSight.LineOfSight", "BecomeVisible"):
         if needle not in cx:
@@ -433,7 +433,7 @@ def static_checks():
     for c in ("RM_WarscarPatches.cs", "MapComponent_WreckLichen.cs"):
         if 'Compile Include="%s"' % c not in csproj:
             bad.append("%s missing from RM_Warscar.csproj" % c)
-    biome_txt = open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml")).read()
+    biome_txt = open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml"), encoding="utf-8").read()
     if "<label>Warscar</label>" not in biome_txt:
         bad.append("biome label is not 'Warscar'")
     if "<terrain>Soil</terrain>" in biome_txt:
@@ -495,32 +495,32 @@ def static_checks():
                 "Item/Resource/RM_WreckLichenScrapings/RM_WreckLichenScrapings", "Pawn/Animal/RM_TotchakDormant/RM_TotchakDormant"):
         if not os.path.exists(os.path.join(HERE, "Textures", "Things", *tex.split("/")) + ".png"):
             bad.append("texture %s missing" % tex)
-    it = open(os.path.join(D, "ThingDefs_Items", "RM_WarscarItems.xml")).read()
+    it = open(os.path.join(D, "ThingDefs_Items", "RM_WarscarItems.xml"), encoding="utf-8").read()
     if "<allowColorGenerators>false</allowColorGenerators>" not in it or "RM_ChatrakPlate" not in it:
         bad.append("chatrak plate leather missing or colour-generator not disabled")
-    wsrc = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_WarscarPatches.cs")).read())
+    wsrc = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_WarscarPatches.cs"), encoding="utf-8").read())
     for needle in ("CommonalityOfAnimalNow", "RM_Tetchik", "RM_Glower", "DesiredColor", "RM_ChatrakPlate"):
         if needle not in wsrc:
             bad.append("RM_WarscarPatches.cs lacks %s" % needle)
-    wl = open(os.path.join(D, "ThingDefs_Plants", "RM_WarscarFlora.xml")).read()
+    wl = open(os.path.join(D, "ThingDefs_Plants", "RM_WarscarFlora.xml"), encoding="utf-8").read()
     if "<defName>RM_WreckLichen</defName>" not in wl or "<neverBlightable>true</neverBlightable>" not in wl:
         bad.append("wreck-lichen def missing or blightable")
     if "<RM_WreckLichen>" in biome_txt:
         bad.append("wreck-lichen must never be a wildPlants row")
-    wm = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "MapComponent_WreckLichen.cs")).read())
+    wm = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "MapComponent_WreckLichen.cs"), encoding="utf-8").read())
     for needle in ("StartsWith(\"Ancient\")", "enableWreckLichenSeeder", "RM_Warscar"):
         if needle not in wm:
             bad.append("MapComponent_WreckLichen.cs lacks %s" % needle)
-    if "mandrake.rm.creaturebehaviors" not in open(os.path.join(HERE, "About", "About.xml")).read():
+    if "mandrake.rm.creaturebehaviors" not in open(os.path.join(HERE, "About", "About.xml"), encoding="utf-8").read():
         bad.append("About.xml lacks the CreatureBehaviors dependency (RM_EatCleanableExtension)")
-    ch = open(os.path.join(D, "ThingDefs_Races", "RM_Chotrix.xml")).read()
+    ch = open(os.path.join(D, "ThingDefs_Races", "RM_Chotrix.xml"), encoding="utf-8").read()
     for prey in ("RM_Tetchik", "RM_Chatrak"):
         if "<li>%s</li>" % prey in ch and prey not in fd:
             bad.append("chotrix prey %s does not resolve" % prey)
     # WARSCAR_SETTLING_WEATHER_1
     if 'Compile Include="RM_Settling.cs"' not in csproj:
         bad.append("RM_Settling.cs missing from RM_Warscar.csproj")
-    st = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Settling.cs")).read())
+    st = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Settling.cs"), encoding="utf-8").read())
     for needle in ("DoAirbornePawnToxicDamage", "windManager.WindSpeed", "WeatherOverlay_Fallout", "BeginDownwindSweep",
                    "SweepStep", "IsOrdnanceCell(c)", "DoCellSteadyEffects", "c.Roofed(map)"):
         if needle not in st:
@@ -528,7 +528,7 @@ def static_checks():
     if "CreatureBehaviors" in csproj and "Reference Include=\"RimMandrake.CreatureBehaviors" in csproj:
         bad.append("Warscar must reach the track grid by reflection, not an assembly reference (the condition runs without it)")
     sd = os.path.join(HERE, "Defs")
-    film = open(os.path.join(sd, "ThingDefs_Filth", "RM_SettledFilm.xml")).read()
+    film = open(os.path.join(sd, "ThingDefs_Filth", "RM_SettledFilm.xml"), encoding="utf-8").read()
     if "RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension" not in film:
         bad.append("RM_Filth_SettledFilm does not carry RM_TrackSurfaceExtension")
     cond = ET.parse(os.path.join(sd, "GameConditionDefs", "RM_Settling.xml")).getroot()[0]
@@ -537,14 +537,14 @@ def static_checks():
     if "The wind has dropped. The Settling begins." != cond.findtext("startMessage") or \
             "The wind is back. The ground forgets." != cond.findtext("endMessage"):
         bad.append("RM_Settling start/end messages are not the ruled readable signs")
-    if "RM_BuriedOrdnance" not in open(os.path.join(sd, "BiomeDefs", "RM_Warscar.xml")).read():
+    if "RM_BuriedOrdnance" not in open(os.path.join(sd, "BiomeDefs", "RM_Warscar.xml"), encoding="utf-8").read():
         bad.append("RM_Warscar biome does not list the RM_BuriedOrdnance genstep")
     for f in ("RM_Settling.xml",):
         pass
     # WARSCAR_GEIGER_CHOIR_1
     if 'Compile Include="RM_GeigerChoir.cs"' not in csproj:
         bad.append("RM_GeigerChoir.cs missing from RM_Warscar.csproj")
-    choir = open(os.path.join(HERE, "Source", "RM_GeigerChoir.cs")).read()
+    choir = open(os.path.join(HERE, "Source", "RM_GeigerChoir.cs"), encoding="utf-8").read()
     for needle in ("RM_MapComponent_GeigerChoir", "CompChotrix.All", "RM_Settling",
                    "choirWindEnabled", "choirReducedRepetition"):
         if needle not in choir:
@@ -554,28 +554,28 @@ def static_checks():
             ET.parse(os.path.join(HERE, "Defs", f))
         except Exception as e:
             bad.append("%s does not parse: %s" % (f, e))
-    snd = open(os.path.join(HERE, "Defs", "SoundDefs", "RM_GeigerChoir.xml")).read()
+    snd = open(os.path.join(HERE, "Defs", "SoundDefs", "RM_GeigerChoir.xml"), encoding="utf-8").read()
     for n in ("RM_GeigerTick", "RM_WindOnMetal", "RM_ProjectorHum", "RM_PoolBoil"):
         if "<defName>%s</defName>" % n not in snd:
             bad.append("sound def %s missing" % n)
     # WARSCAR_LOOSENED_PANEL_BUILD_1
-    lp = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_LoosenedPanel.xml")).read()
+    lp = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_LoosenedPanel.xml"), encoding="utf-8").read()
     for needle in ("<defName>RM_LoosenedPanel</defName>", "RimMandrake.Scarlands.RM_Building_LoosenedPanel",
                    "<passability>Impassable</passability>", "<useHitPoints>false</useHitPoints>", "<deconstructible>false"):
         if needle not in lp:
             bad.append("RM_LoosenedPanel lacks %s" % needle)
-    if "<li>RM_LoosenedPanels</li>" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml")).read():
+    if "<li>RM_LoosenedPanels</li>" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml"), encoding="utf-8").read():
         bad.append("RM_Warscar does not run RM_LoosenedPanels")
-    lcs = open(os.path.join(HERE, "Source", "RM_LoosenedPanel.cs")).read()
+    lcs = open(os.path.join(HERE, "Source", "RM_LoosenedPanel.cs"), encoding="utf-8").read()
     for needle in ("It won't give. Someone who knows this ground might.", "loosenedPanelsEnabled", "loosenedPanelsPerMap",
                    '"deepening"', '"AncientSealedCrate"', "AncientFortifiedWall"):
         if needle not in lcs:
             bad.append("RM_LoosenedPanel.cs lacks %s" % needle)
-    if 'Compile Include="RM_LoosenedPanel.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read():
+    if 'Compile Include="RM_LoosenedPanel.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj"), encoding="utf-8").read():
         bad.append("RM_LoosenedPanel.cs missing from RM_Warscar.csproj")
     if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Building", "RM_LoosenedPanel.png")):
         bad.append("RM_LoosenedPanel texture missing")
-    mark = open(os.path.join(HERE, "Defs", "HediffDefs", "RM_WarscarMark.xml")).read()
+    mark = open(os.path.join(HERE, "Defs", "HediffDefs", "RM_WarscarMark.xml"), encoding="utf-8").read()
     if "<label>deepening mark</label>" not in mark:
         bad.append("the mark has no 'deepening' stage for the panel gate to read")
     bad += bileworm_gas_problems()
@@ -604,16 +604,16 @@ def bileworm_gas_problems():
     if comp.findtext("bileFilth") != "Filth_CorpseBile":
         bad.append("bileworm filth is %r, not Filth_CorpseBile" % comp.findtext("bileFilth"))
     if comp.findtext("stenchThought") != "RM_BilewormStench" or "<defName>RM_BilewormStench</defName>" not in \
-            open(os.path.join(HERE, "Defs", "ThoughtDefs", "RM_BilewormStench.xml")).read():
+            open(os.path.join(HERE, "Defs", "ThoughtDefs", "RM_BilewormStench.xml"), encoding="utf-8").read():
         bad.append("stench thought RM_BilewormStench is not defined/wired")
-    if 'Compile Include="RM_BilewormGas.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read():
+    if 'Compile Include="RM_BilewormGas.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj"), encoding="utf-8").read():
         bad.append("RM_BilewormGas.cs missing from RM_Warscar.csproj")
-    cs = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_BilewormGas.cs")).read())
+    cs = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_BilewormGas.cs"), encoding="utf-8").read())
     for needle in ("RM_WarscarSettings.bilewormGasEnabled", "FilthMaker.TryMakeFilth", "Messages.Message",
                    "Faction.OfPlayer", "Renew()", "IsHashIntervalTick"):
         if needle not in cs:
             bad.append("RM_BilewormGas.cs lacks %s" % needle)
-    if "OWED" in open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Bileworm.xml")).read():
+    if "OWED" in open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Bileworm.xml"), encoding="utf-8").read():
         bad.append("RM_Bileworm.xml still calls the gas OWED")
     return bad
 
