@@ -623,10 +623,13 @@ def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
         # coverage is counted against the inventory: no readable inventory, no claim of coverage (an explicit empty
         # list is a real, readable inventory; an omitted one is not)
         return rows, ["record.json is missing or its inventory is absent or not a list, so coverage cannot be counted"]
-    unread = [i for i, e in enumerate(rec["inventory"]) if not isinstance(e, dict) or not CT.txt(e.get("id"))]
+    # a unit is decided by impl and scope: an entry without a readable id, impl and scope cannot be counted in or out
+    unread = [str(i) for i, e in enumerate(rec["inventory"]) if not isinstance(e, dict) or not CT.txt(e.get("id"))
+              or e.get("impl") not in IMPL or e.get("scope") not in SCOPE]
     if unread:
-        return rows, ["record.json inventory entr%s %s %s not an object with an id, so coverage cannot be counted" % (
-            "y" if len(unread) == 1 else "ies", ", ".join(str(i) for i in unread), "is" if len(unread) == 1 else "are")]
+        return rows, ["record.json inventory entr%s %s need%s an id, impl (%s) and scope (%s), so coverage cannot be "
+                      "counted" % ("y" if len(unread) == 1 else "ies", ", ".join(unread),
+                                   "s" if len(unread) == 1 else "", "/".join(IMPL), "/".join(SCOPE))]
     scenes = {s.get("id") for s in lst(sc.get("scenes")) if isinstance(s, dict) and CT.txt(s.get("id"))}
     leaves = {CT.txt(x.get("id")) for x in CT.lst((tree or {}).get("leaves")) if isinstance(x, dict)} \
         if isinstance(tree, dict) else set()
@@ -647,6 +650,8 @@ def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
         for r in refs:
             if r not in scenes:
                 errs.append("%s: scene %s is not in scenes.json" % (w, r))
+        if any(not CT.txt(u) for u in lst(s.get("exercises"))):
+            errs.append("%s: exercises holds an entry that is not an inventory id (text)" % w)
         ex = [u for u in lst(s.get("exercises")) if CT.txt(u)]
         if len(set(ex)) != len(ex):
             errs.append("%s: exercises lists a capability twice" % w)

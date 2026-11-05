@@ -558,16 +558,24 @@ def refusals_showcases(repo, root_src, good, flood, tree):
           st([s1, s2, s3], rec_=gone, rest_=rest + [{"capability": "gone", "by": ["s4"], "why": "removal check"}])[1]
           == [], "")
     # malformed input is a refusal, never a crash or a pass (GPT whole-file review)
-    try:
-        bad_dec = st([dict(s1, decision=[]), s2, dict(s3, exercises=["g", "h", "i", {}])])[1]
-        crashed = None
-    except Exception as e:  # noqa: BLE001 - the check is that nothing escapes
-        bad_dec, crashed = [], repr(e)
-    check("showcases: a list as decision and a dict among a later showcase's exercises refuse without crashing",
-          crashed is None and any("names no record.json decision" in e for e in bad_dec), crashed or bad_dec)
+    for label, shows, want in (
+            ("a list as decision", [dict(s1, decision=[]), s2, s3], "names no record.json decision"),
+            ("a dict among a later showcase's exercises", [s1, s2, dict(s3, exercises=["g", "h", "i", {}])],
+             "not an inventory id"),
+            ("a dict among a candidate's exercises during the greedy comparison",
+             [s1, s2, dict(s3, exercises=[{}, "g", "h", "i"])], "not an inventory id")):
+        try:
+            got, crashed = st(shows)[1], None
+        except Exception as e:  # noqa: BLE001 - the check is that nothing escapes
+            got, crashed = [], repr(e)
+        check("showcases: %s refuses without crashing" % label,
+              crashed is None and any(want in e for e in got), crashed or got)
     for label, r in (("a string inventory", {"inventory": "invalid"}), ("no record.json", None),
                      ("an omitted inventory", {}), ("an inventory entry that is not an object", {"inventory": [None]}),
-                     ("an inventory entry with no id", {"inventory": [{"impl": "present"}]})):
+                     ("an inventory entry with no id", {"inventory": [{"impl": "present", "scope": "approved"}]}),
+                     ("an inventory entry with no impl or scope", {"inventory": [{"id": "rope"}]}),
+                     ("an inventory entry with a misspelt impl and scope",
+                      {"inventory": [{"id": "rope", "impl": "presnt", "scope": "aproved"}]})):
         refuses("showcases: %s is refused, not read as zero capabilities to cover" % label,
                 DS.showcase_table({"scenes": scenes, "showcases": [], "coverage_rest": []}, r, tree, owner_ev,
                                   repo.root, rules)[1], "coverage cannot be counted")
