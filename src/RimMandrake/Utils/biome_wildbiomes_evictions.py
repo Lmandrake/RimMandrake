@@ -65,8 +65,14 @@ ALIASES = os.path.join(REPO, "src", "RimMandrake", "LeaningScrub", "Defs", "Misc
                        "RM_SWBRehome_Aliases.xml")
 
 
-def moved_names():
-    """{old RSW_ ThingDef name: new RM_ name} for creatures moved out of SWBestiary.
+def moved_names(def_types=("ThingDef",)):
+    """{old RSW_ name: new RM_ name} for creatures moved out of SWBestiary, read from the
+    alias rows whose defType is in `def_types` (ThingDef by default).
+
+    🔑 PAWN KINDS. A kind can be renamed with no ThingDef row of the same name
+    (RSW_Tellurox -> RM_Tellurox; its race is RSW_TelluroxRace). Code that canonicalizes a
+    PawnKindDef name passes ("ThingDef", "PawnKindDef"); the file maps no old name to two
+    different new names, so the union is unambiguous.
 
     🔑 WHY. The newest capture predates a move: it still knows RSW_Baseopsis and has never
     heard of RM_Baseopsis. Left raw, a regeneration would re-emit the dead RSW_ rows (and
@@ -78,9 +84,10 @@ def moved_names():
     if os.path.isfile(ALIASES):
         with open(ALIASES, encoding="utf-8") as fh:
             for m in re.finditer(
-                    r"<from>([^<]+)</from><to>([^<]+)</to><defType>ThingDef</defType>",
+                    r"<from>([^<]+)</from><to>([^<]+)</to><defType>([^<]+)</defType>",
                     fh.read()):
-                out[m.group(1)] = m.group(2)
+                if m.group(3) in def_types:
+                    out[m.group(1)] = m.group(2)
     return out
 
 
@@ -147,11 +154,12 @@ def race_to_kinds():
             pl = json.load(fh)
         pl = pl if isinstance(pl, list) else pl.get("defs") or []
         mv = moved_names()
+        mvk = moved_names(("ThingDef", "PawnKindDef"))
         out = collections.defaultdict(list)
         for k in pl:
             if isinstance(k, dict) and isinstance(k["fields"].get("race"), str):
                 r = k["fields"]["race"]
-                out[mv.get(r, r)].append(mv.get(k["defName"], k["defName"]))
+                out[mv.get(r, r)].append(mvk.get(k["defName"], k["defName"]))
         return out, os.path.basename(cap)
     return None, None
 

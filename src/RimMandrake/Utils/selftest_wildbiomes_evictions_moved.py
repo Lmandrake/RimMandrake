@@ -26,6 +26,11 @@ def check(cond, what):
 mv = E.moved_names()
 check(mv.get("RSW_Ikee") == "RM_Ikee", "alias map: RSW_Ikee -> RM_Ikee")
 check(mv.get("Corpse_RSW_Baseopsis") == "Corpse_RM_Baseopsis", "alias map: corpse names too")
+check("RSW_Tellurox" not in mv, "ThingDef map holds no PawnKind-only alias (RSW_Tellurox)")
+mvk = E.moved_names(("ThingDef", "PawnKindDef"))
+check(mvk.get("RSW_Tellurox") == "RM_Tellurox",
+      "kind map: PawnKind-only rename RSW_Tellurox -> RM_Tellurox")
+check(mvk.get("RSW_TelluroxRace") == "RM_TelluroxRace", "kind map keeps ThingDef aliases")
 check(len(mv) >= 40, "alias map reads the whole file (%d entries)" % len(mv))
 
 xml = os.path.join(E.REPO, "src", "RimUtinni", "UtinniPatches", "Patches", "BiomeCastEvictions_WildBiomes.xml")
@@ -37,7 +42,7 @@ check(not stale, "evictions file names no moved (old) def: %s" % stale[:5])
 bad = []
 for fp in glob.glob(os.path.join(E.ROSTERS, "*.json")):
     for f in (json.load(open(fp, encoding="utf-8")).get("fauna") or []):
-        if f.get("def") in mv:
+        if f.get("def") in mvk:
             bad.append((os.path.basename(fp), f["def"]))
 check(not bad, "rosters name no moved (old) def: %s" % bad[:5])
 
