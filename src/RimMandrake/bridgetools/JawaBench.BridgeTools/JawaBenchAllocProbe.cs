@@ -46,6 +46,8 @@ namespace JawaBench.BridgeTools
         internal static string Status = "never started", LastFault, StartedUtc;
         private static readonly List<string> Refused = new List<string>(), ExplicitHooks = new List<string>();
         private static long _faults, _foreign, _explicitCalls;
+        [ThreadStatic] private static bool _inHook;                  // re-entry guard: a hook reached from inside a hook does nothing
+        private static long _foreignTs = long.MinValue;               // a foreign thread's GC.Collect: kept 2 s or until a landing consumes it
         private static bool _explicitHooked;                           // every GC.Collect overload hooked (CollectIncremental is extern: incremental, never a full pause)
 
         private static bool Reserved(MethodBase mb) =>
@@ -179,6 +181,7 @@ namespace JawaBench.BridgeTools
                         var cands = t == null ? new List<MethodInfo>() : t.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
                             .Where(m => m.Name == s.Substring(c + 1) && !m.IsGenericMethodDefinition).ToList();
                         if (cands.Count != 1) { refused.Add(s + (t == null ? ": type not found" : ": " + cands.Count + " overloads")); continue; }
+                        if (!cands[0].IsStatic && cands[0].DeclaringType.IsValueType) { refused.Add(s + ": a struct's instance method (Harmony would box __instance every call)"); continue; }
                         if (Reserved(cands[0])) { refused.Add(s + ": reserved (the probe's own hooks, the companion, Harmony or GC.Collect)"); continue; }
                         Add(cands[0], s + " (inclusive)");
                     }
@@ -225,6 +228,7 @@ namespace JawaBench.BridgeTools
                 _gameTicks = 0; _faults = 0; _foreign = 0; _explicitCalls = 0; LastFault = null;
                 _lastGc = Gc(); _lastHeap = _heapAfterPrevGc = Heap(); _lastFrameTs = Stopwatch.GetTimestamp();
                 _hostKey = null; _pendingExplicit = null; _hostMs = 0;
+                Interlocked.Exchange(ref _foreignTs, long.MinValue);
                 double mins = double.IsNaN(minutes) || minutes <= 0 ? 10 : Math.Min(minutes, 60);
                 _startTs = Stopwatch.GetTimestamp();
                 Interlocked.Exchange(ref _untilTs, _startTs + (long)(mins * 60 * Stopwatch.Frequency));
@@ -258,6 +262,14 @@ namespace JawaBench.BridgeTools
         private static void Pre(MethodBase __originalMethod, object __instance, out St __state)
         {
             __state = default(St);
+            if (_inHook) return;
+            _inHook = true;
+            try { PreBody(__originalMethod, __instance, out __state); } finally { _inHook = false; }
+        }
+
+        private static void PreBody(MethodBase __originalMethod, object __instance, out St __state)
+        {
+            __state = default(St);
             try
             {
                 if (!Live()) return;
@@ -271,6 +283,13 @@ namespace JawaBench.BridgeTools
         }
 
         private static void Fin(St __state)
+        {
+            if (_inHook) return;
+            _inHook = true;
+            try { FinBody(__state); } finally { _inHook = false; }
+        }
+
+        private static void FinBody(St __state)
         {
             try
             {
@@ -291,6 +310,14 @@ namespace JawaBench.BridgeTools
         private static void TickPre(out St __state)
         {
             __state = default(St);
+            if (_inHook) return;
+            _inHook = true;
+            try { TickPreBody(out __state); } finally { _inHook = false; }
+        }
+
+        private static void TickPreBody(out St __state)
+        {
+            __state = default(St);
             try
             {
                 if (!Live()) return;
@@ -300,6 +327,13 @@ namespace JawaBench.BridgeTools
         }
 
         private static void TickFin(St __state)
+        {
+            if (_inHook) return;
+            _inHook = true;
+            try { TickFinBody(__state); } finally { _inHook = false; }
+        }
+
+        private static void TickFinBody(St __state)
         {
             try
             {
@@ -315,12 +349,22 @@ namespace JawaBench.BridgeTools
 
         private static void FrameFin()
         {
+            if (_inHook) return;
+            _inHook = true;
+            try { FrameFinBody(); } finally { _inHook = false; }
+        }
+
+        private static void FrameFinBody()
+        {
             try
             {
                 if (!Live()) return;
                 long now = Stopwatch.GetTimestamp();
                 long heap = Heap();
                 int g = Gc();
+                string expl = _pendingExplicit;
+                long ft = Interlocked.Read(ref _foreignTs);             // MinValue = none (never subtract it: it wraps)
+                if (expl == null && ft != long.MinValue && now - ft < 2 * Stopwatch.Frequency) expl = "(foreign thread)";
                 if (g != _lastGc && Landings.Count < MaxLandings)
                 {
                     Landings.Add(new A.Landing
@@ -328,11 +372,11 @@ namespace JawaBench.BridgeTools
                         Tick = Find.TickManager?.TicksGame ?? -1, Count = g - _lastGc,
                         FrameMs = (now - _lastFrameTs) * 1000.0 / Stopwatch.Frequency,
                         Host = _hostKey, HostMs = _hostMs, HeapBefore = _lastHeap, HeapAfter = heap,
-                        AllocSincePrev = _lastHeap - _heapAfterPrevGc, ExplicitCaller = _pendingExplicit,
+                        AllocSincePrev = _lastHeap - _heapAfterPrevGc, ExplicitCaller = expl,
                     });
                     _heapAfterPrevGc = heap;
                 }
-                if (g != _lastGc) { _hostKey = null; _hostMs = 0; }
+                if (g != _lastGc) { _hostKey = null; _hostMs = 0; if (ft != long.MinValue) Interlocked.CompareExchange(ref _foreignTs, long.MinValue, ft); }
                 _pendingExplicit = null;   // GC.Collect is synchronous: a call whose frame saw no collection collected nothing
                 _lastGc = g; _lastHeap = heap; _lastFrameTs = Stopwatch.GetTimestamp();
             }
@@ -341,11 +385,18 @@ namespace JawaBench.BridgeTools
 
         private static void CollectPre()
         {
+            if (_inHook) return;
+            _inHook = true;
+            try { CollectPreBody(); } finally { _inHook = false; }
+        }
+
+        private static void CollectPreBody()
+        {
             try
             {
                 if (!_on) return;
                 Interlocked.Increment(ref _explicitCalls);
-                if (!Live()) { _pendingExplicit = "(foreign thread)"; return; }   // still explicit, caller not walked off-thread
+                if (!Live()) { Interlocked.Exchange(ref _foreignTs, Stopwatch.GetTimestamp()); return; }   // explicit, caller not walked off-thread
                 string who = "?";
                 var st = new StackTrace(1, false);                       // allocates: acceptable, a full collection follows at once
                 for (int i = 0; i < st.FrameCount; i++)
