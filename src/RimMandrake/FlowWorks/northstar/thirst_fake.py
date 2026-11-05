@@ -73,6 +73,9 @@ faults (name -> intended effect):
   start_terrain_off   the save starts with drinkFromTerrain OFF (T10's ON arm must set it, and the final restore put it back OFF)
   start_lastresort_off the save starts with lastResortDrinking OFF (same, for T16)
   base_cancel_hemogen a baseliner's hemogen Ingest is accepted, ends after 100 ticks and consumes nothing -> T28 UNMEASURED
+  drink_after_hemogen THIRST_T28_DIAGNOSE_DOUBLE_BLOOD_QUENCH: as either pawn's hemogen Ingest ends it starts a 150-tick
+                      RM_DrinkFromTerrain (+0.5) -> T28 PASS on the level at the Ingest end, the later rise recorded
+  hemogen_double      the sanguophage's quench fires twice (+1.0 on one pack) -> T28 FAIL
   ice_eaten           the bill consumes the ice and its bucket but makes no product -> T26 FAIL (and must not crash)
   bucket_unreadable   jawa/list_things refuses RM_Bucket_FreshWater -> T19 UNMEASURED (unread is not 'partly drunk')
   canal_on_reload     the reloaded site holds canal fill water (RM_Fill_Water_Half), a fresh source -> T15R must dry it
@@ -810,7 +813,10 @@ class ThirstFakeBridge(object):
             if t is None:
                 return
             if t["def"] == "HemogenPack":
-                p.need = min(1.0, p.need + (0.5 if p.xeno == "Sanguophage" else (0.3 if c.get("slow_hemogen") else 0.0)))
+                q = 1.0 if "hemogen_double" in self.faults else 0.5
+                p.need = min(1.0, p.need + (q if p.xeno == "Sanguophage" else (0.3 if c.get("slow_hemogen") else 0.0)))
+                if "drink_after_hemogen" in self.faults:
+                    self._start(p, "RM_DrinkFromTerrain", 150, {"kind": None, "ordered": True})   # runs drafted, like the live one
             elif t["def"] == "RM_Bottle_SaltWater":
                 p.need = min(1.0, p.need + (0.6 if "salt_ratio" in self.faults else 0.42))
                 self._hurt(p, "RM_SaltPoisoning", 0.25)

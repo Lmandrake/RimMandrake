@@ -958,12 +958,22 @@ def main(argv=None, bridge=None):
                 trace.append((job(pid), need(pid)))
                 ticks(60)
                 live = ids_of("HemogenPack")
-                out28[tag] = {"levels": [l0, need(pid)], "accepted": r2.get("accepted"), "after": r2.get("afterJobDef"),
+                # THIRST_T28_DIAGNOSE_DOUBLE_BLOOD_QUENCH: three live FAILs read the cap (+0.8), once on the BASELINER, whom the
+                # quench never touches, and 9 of 9 runs since read +0.5 on unchanged C#. The pack is judged at the sample where
+                # the Ingest ended; a rise after it is a second drink (another job), recorded as laterRise, never the pack's
+                k = next((i for i, (j_, _l) in enumerate(trace) if j_ != "Ingest"), None) if ended else None
+                at_end = trace[k][1] if k is not None else None
+                tail = [l_ for _j, l_ in trace[k:]] if k is not None else []
+                later = [(trace[k + i + 1][0], round(b_ - a_, 3)) for i, (a_, b_) in enumerate(zip(tail, tail[1:]))
+                         if a_ is not None and b_ is not None and b_ - a_ > 0.02]
+                out28[tag] = {"levels": [l0, need(pid)], "atIngestEnd": at_end, "laterRise": later,
+                              "accepted": r2.get("accepted"), "after": r2.get("afterJobDef"),
                               "msg": r2.get("message"), "packLeft": count("HemogenPack"), "jobEnded": ended,
                               "trace": trace, "packId": hid, "packGone": None if live is None or not hid else hid not in live}
             bad = []
-            sgl = out28.get("sang", {}).get("levels") or [None, None]
-            bsl = out28.get("base", {}).get("levels") or [None, None]
+            # judged at the Ingest's end (atIngestEnd), not after the settle ticks a later drink can fill
+            sgl = [(out28.get("sang", {}).get("levels") or [None])[0], out28.get("sang", {}).get("atIngestEnd")]
+            bsl = [(out28.get("base", {}).get("levels") or [None])[0], out28.get("base", {}).get("atIngestEnd")]
             # "a baseliner's thirst did not rise" is vacuous unless the baseliner's Ingest order was accepted
             base_ordered = bool(out28.get("base", {}).get("accepted"))
             ended_all = all(out28.get(t_, {}).get("jobEnded") for t_ in ("sang", "base"))

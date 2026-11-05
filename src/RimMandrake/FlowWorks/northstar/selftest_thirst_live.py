@@ -174,6 +174,9 @@ CASES = [
     ("R2#1 T13: the 0.05 pawn drinks toxic water between samples", "T13", ["sneak_005_drink"], [("T13", "FAIL")]),
     ("R2#3 T26: the bill eats the ice and makes nothing (no crash)", "T26", ["ice_eaten"], [("T26", "FAIL")]),
     ("R2#4 T28: a baseliner's hemogen ingest is cancelled (pack not consumed)", "T28", ["base_cancel_hemogen"], [("T28", "UNMEASURED")]),
+    # THIRST_T28_DIAGNOSE_DOUBLE_BLOOD_QUENCH: live T28 read +0.8 (and once a baseliner +0.8): a later drink is not the pack's
+    ("T28 a second drink after the hemogen pack", "T28", ["drink_after_hemogen"], [("T28", "PASS")]),
+    ("T28 hemogen quench fires twice", "T28", ["hemogen_double"], [("T28", "FAIL")]),
     ("R2#5 T19: the bucket cannot be read", "T19", ["bucket_unreadable"], [("T19", "UNMEASURED")]),
     ("F2 reload canal water masked the stale mark", "T15R", ["stale_mark", "canal_on_reload"], [("T15R", "FAIL")]),
     ("F2 reload canal water is dried (clean)", "T15R", ["canal_on_reload"], [("T15R", "PASS")]),
