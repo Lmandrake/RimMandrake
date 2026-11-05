@@ -1,0 +1,9 @@
+[Unit]
+Description=Rerun the night's new red selftest groups every 10 minutes (ops_watch rerun-reds)
+
+[Timer]
+OnBootSec=5min
+OnUnitInactiveSec=10min
+
+[Install]
+WantedBy=timers.target

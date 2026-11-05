@@ -1,0 +1,18 @@
+# The nightly red reruns at origin/main (NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING), out of the metronome's sense beat:
+# a group's rerun takes ~17 s and sense has 15 s, so `ops_watch.py run --compose` only reads the verdicts this pays for
+# (OPS_METRONOME_MIGRATE_CLOCKS_FENCED). Test execution, so it stays outside the beat like the nightly selftests.
+# Installed when the metronome's sense phase takes over rm-ops-watch.timer (clock 2), not before: until then the old
+# 15-min pass reruns in the same store.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-ops-reds.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-ops-reds.timer
+[Unit]
+Description=RimMandrake ops_watch: rerun the night's new red selftest groups at origin/main
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/ops_watch.py rerun-reds
+Nice=10
+MemoryMax=4G
+# selftest.red_rerun_budget_s bounds the reruns; this bounds the unit.
+TimeoutStartSec=600s

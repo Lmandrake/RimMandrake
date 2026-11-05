@@ -116,6 +116,27 @@ check("last_measured: a carried reading is not stamped as measured now", lm.get(
       and lm.get("flow.stub") == t1 + 120, (lm.get("disk.stub"), lm.get("flow.stub"), t1 + 120))
 OW.run_alarms = lambda *a, **k: (alarm_runs.append(1), {})[1]
 
+# --- nightly red reruns: never inside a compose pass; each verdict saved as it lands -----------------------------------
+import known_reds  # noqa: E402
+_m, _u, _rg = known_reds.measure, known_reds.uncovered, OW.red_groups
+budgets = []
+known_reds.measure = lambda open_ids, now, with_cop=False: {"night": "N1", "news": [], "reds": [], "listed": [], "cured": [],
+    "cop": {"groups": [], "detail_read": True, "overdue": [], "overdue_said": ""}}
+known_reds.uncovered = lambda v: []
+OW.red_groups = lambda c, night, state=None, rerun="default", budget=None: (budgets.append(budget), {})[1]
+OW.nightly_news(time.time(), {"no_reruns": True})
+OW.nightly_news(time.time(), {})
+check("reruns: a compose pass gives the rerun gate no budget, a whole pass the policy's", budgets == [0, None], budgets)
+known_reds.measure, known_reds.uncovered, OW.red_groups = _m, _u, _rg
+ran = []
+gate = OW.RerunGate("N2", lambda tests, left: (ran.append(tests), ("green", "ok", "abc"))[1], 100)
+check("reruns: a gate with budget reruns a new group", gate.verdict({"key": "g1", "tests": ["t1"]}) == "green" and ran == [["t1"]])
+check("reruns: the verdict is on disk at once", json.loads(OW.rerun_path().read_text())["groups"]["g1"]["verdict"] == "green")
+cached = OW.RerunGate("N2", lambda tests, left: (ran.append(tests), ("red", "x", None))[1], 0)
+check("reruns: a no-budget gate reads a paid verdict", cached.verdict({"key": "g1", "tests": ["t1"]}) == "green" and len(ran) == 1)
+check("reruns: a no-budget gate never reruns a new group", cached.verdict({"key": "g2", "tests": ["t2"]}) == "later"
+      and len(ran) == 1, ran)
+
 # --- the ownership fence ----------------------------------------------------------------------------------------------
 before = (_TMP / "ops" / "status.json").read_text()
 asked = []

@@ -1010,8 +1010,35 @@ def nightly_news(now, ctx):
                       detail_read=c["detail_read"]),
            keys[3]: M(len(c["overdue"]), "nightly reds red past their fix deadline, owned or not", night=v["night"],
                       said=c["overdue_said"], news=c["overdue"][:30])}
-    out.update(red_groups(c, v["night"]))
+    # a compose pass (the metronome's sense beat, 15 s) never reruns: it reads the verdicts `rerun-reds` paid for, and
+    # a group not rerun yet reads "later" (held, files nothing), as a pass out of budget does
+    out.update(red_groups(c, v["night"], budget=0 if ctx.get("no_reruns") else None))
     return out
+
+
+def rerun_reds(now=None, rules=None):
+    """`ops_watch.py rerun-reds` (rm-ops-reds.timer): the NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING reruns, out of the
+    metronome's sense beat, which cannot fit one (a group's rerun takes ~17 s). It reads the night and its red groups
+    as a pass does (the flow collector for the open ids) and reruns each group a pass would file, within
+    selftest.red_rerun_budget_s, saving each verdict in nightly_rerun.json; it files nothing and writes no status.
+    Its own lock, so a sense pass is never Busy behind a rerun."""
+    import fcntl
+    now = now or time.time()
+    rules = rules or load_rules()
+    ops_dir().mkdir(parents=True, exist_ok=True)
+    with open(ops_dir() / "rerun.lock", "w") as lk:
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise Busy("another rerun-reds holds %s" % (ops_dir() / "rerun.lock"))
+        ctx = {}
+        c_flow(now, rules, ctx)
+        pts = nightly_news(now, ctx)
+    g = _obj(read_json(rerun_path()))
+    return "rerun-reds: night %s, %d group verdict(s) kept, %d green; %d group reading(s)" % (
+        g.get("night"), len(g.get("groups") or {}), sum(1 for e in (g.get("groups") or {}).values()
+                                                         if isinstance(e, dict) and e.get("verdict") == "green"),
+        sum(1 for k in pts if k.startswith("testing.red_")))
 
 
 def red_subject(tests):
@@ -1103,6 +1130,7 @@ class RerunGate:
         self.st["groups"][g["key"]] = {"verdict": v, "said": said, "sha": sha, "tests": list(g["tests"]),
                                        "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
         self.dirty = True
+        self.save()     # each verdict as it lands: a pass killed at its deadline keeps the reruns it paid for
         return v
 
     def green(self):
@@ -1111,6 +1139,7 @@ class RerunGate:
     def save(self):
         if self.dirty:
             atomic_json(rerun_path(), self.st)
+            self.dirty = False
 
 
 def rerun_budget_s():
@@ -1123,7 +1152,7 @@ def rerun_budget_s():
 RERUN_REDS = rerun_at_main
 
 
-def red_groups(c, night, state=None, rerun="default"):
+def red_groups(c, night, state=None, rerun="default", budget=None):
     """BUILD COP (known_reds.py): one testing.red_<id> reading per root-cause group of the night's unparked reds, for
     the wildcard alarm NIGHTLY_COP_FIX (one raised item per group). An absent key holds its alarm, so a group gone from
     a READ night reads 0 and clears; an unread night (the sweep is rewriting its output) emits no group and holds all.
@@ -1136,7 +1165,7 @@ def red_groups(c, night, state=None, rerun="default"):
     if not c.get("detail_read"):
         return {}
     run = RERUN_REDS if rerun == "default" else rerun
-    gate = RerunGate(night, run, rerun_budget_s()) if run else None
+    gate = RerunGate(night, run, rerun_budget_s() if budget is None else budget) if run else None
     if state is None:
         p = ops_dir() / "alarms.json"
         state = read_json(p) if p.exists() else {}
@@ -4052,7 +4081,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     now = now or time.time()
     rules = rules or load_rules()
     t0 = time.time()
-    ctx = {}
+    ctx = {"no_reruns": True} if compose else {}
     points = {}
     since = now - rules.get("series_days", 8) * DAY
     prev = {}
@@ -4326,6 +4355,7 @@ def main(argv=None):
     d = sub.add_parser("digest")
     d.add_argument("--blind", action="store_true", help="print digest_blind.md (the token-blind roles' digest)")
     sub.add_parser("backfill", help="seed an empty production series from rm-streams-collect' history")
+    sub.add_parser("rerun-reds", help="rerun the night's new red groups at origin/main (out of the metronome's beat)")
     ln = sub.add_parser("lint", help="refuse a ranges block with a metric short of owner, class, age, ack or why")
     ln.add_argument("--rules", help="the rules file, default the shipped one")
     i = sub.add_parser("install")
@@ -4367,6 +4397,12 @@ def main(argv=None):
         problems = ranges_problems(json.loads(Path(a.rules or rules_path()).read_text(encoding="utf-8")))
         print("\n".join("REFUSED: " + p for p in problems) or "ranges clean")
         return 1 if problems else 0
+    if a.cmd == "rerun-reds":
+        try:
+            print(rerun_reds())
+        except Busy as e:
+            print("skipped: %s" % e)
+        return 0
     if a.cmd == "backfill":
         print("production records backfilled: %d" % backfill_production())
         return 0
