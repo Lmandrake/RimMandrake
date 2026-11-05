@@ -10,6 +10,8 @@ red under its mutant:
   the blind rerun is the round for this item; a FAIL row returns the item with the finding; a ledger done finishes it;
   staging takes the bridge, launches the pilot agent and releases the bridge the moment it ends, snag or not; the
   global live round waits while a game phase holds the game.
+`--pre-recarry` turns relentless_game.recarry_returned off: a queued stale return whose carry now answers then waits for
+a worker, as SUMP_TAR_FIRE_NETWORK_1 did (t_rebuilt_assembly_carries_the_build goes red).
 """
 import json
 import os
@@ -1805,7 +1807,10 @@ def t_mod_gap_pure():
 
 
 def main():
-    picked, ran = set(sys.argv[1:]), 0      # no names: every test
+    args = sys.argv[1:]
+    if "--pre-recarry" in args:     # replays SUMP_TAR_FIRE_NETWORK_1's 19:07Z reopen as it ran before recarry_returned
+        G.recarry_returned = lambda store, fx, now, acts: None     # (OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT's class guard)
+    picked, ran = set(a for a in args if not a.startswith("--")), 0      # no names: every test
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
               t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_dropped_staging_keeps_bridge, t_rides_ok, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged, t_blind_stall_probe_ends_attempt,
