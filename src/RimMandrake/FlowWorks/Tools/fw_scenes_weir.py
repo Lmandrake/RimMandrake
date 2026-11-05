@@ -6,9 +6,11 @@ of his four photos (art_source/Weir/weir_by_photo.py draws them): Scrapper rubbl
 smooth curtain, Futuristic labyrinth.
 
 Scenes (what RM_Building_BankWeir.Print / DrawWhiteWater draw, read from RM_Weir.cs, not guessed): three 1x2 sections
-in a run across a river -- body plane (drawSize turned for E/W art) at Building, the crest sheet <look>Spill_<facing> one
+in a run across a river -- body plane (drawSize turned for E/W art) at Building, the crest sheet <look>Spill_<facing>_NN one
 cell per WATER cell at +0.25 AltInc, the free-end posts <look>Cap (0.7 cell, lifted 0.08) at +0.5 AltInc, and the
-look-free white water RM_WeirWhiteWater_00 at FloorEmplacement, one cell downstream of each wet cell (lane length 1).
+look-free white water RM_WeirWhiteWater_NN (its run-end variant) at FloorEmplacement, from FOAM_START cells upstream of
+the wet cell's downstream edge (under the wall) to one cell past it (lane length 1);
+both flip-books at the same frame NN (scene(frame=)).
   ew: the run E-W across a river flowing SOUTH (ArtRot East: the spill face toward the camera)
   ns: the run N-S across a river flowing EAST (ArtRot North: the apron to the right)
 The ground is the GAME's (lesson offline-sheet-floor-standin): vanilla Riverbank.png on the banks and the vanilla
@@ -23,7 +25,7 @@ selftest_weir_looks.py runs both):
   zigzag_crest        Futuristic: the crest edge oscillates at two teeth a cell (period 64 px +- 4), amplitude >= 10 px,
                       and the north art's cyan crest repeats every 64 rows +- 4 (two teeth a cell along a N-S run too)
 and on every look: canvases, clean alpha, seamless joins (E/W left == right column, N/S top == bottom row), the crest
-sheet on the wall (every sheet pixel inside the body's column span) with no bright bar across it (spill_no_white_bar),
+sheet following the crest (no sheet pixel above it, every frame) with no bright bar across the wall (spill_no_white_bar),
 the north art's section ends at most 12 lum darker than the darkest interior 16-row window (north_ends_drawn: else a grey
 bar every 2 cells along a N-S run),
 south == north mirrored, and facing
@@ -46,7 +48,11 @@ import fw_compositor as fc  # noqa: E402
 
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 INSTALLED = fc.TEX / "RimMandrake/FlowWorks/Weir"
-FOAM = INSTALLED / "WhiteWater/RM_WeirWhiteWater_00.png"
+FOAM = INSTALLED / "WhiteWater/RM_WeirWhiteWater_%02d.png"   # % frame
+FOAM_START = {"Futuristic": 0.39}   # RM_WeirArt.FoamStartByLook (default 0.5): how far upstream of the wet cell's
+FOAM_START_DEFAULT = 0.5            # downstream edge the white water starts, under the wall
+SPILL_FRAMES = 12       # RM_BankWeirSpill_<facing>_00..11 (weir_by_photo.SPILL_FRAMES; RM_Weir.cs FoamFrames)
+FACINGS = ("east", "west", "north", "south")
 VANILLA_TEX_DEFAULT = "/mnt/d/ClaudeWork/rimmandrake/scratch/vanilla_tex/ludeon.rimworld.core"
 TERRAIN_CELLS = 10      # cells one terrain texture repeat spans (fw_scenes_spikes.GRAVEL_CELLS, calibrated live)
 CAP_SIZE, CAP_LIFT = 0.7, 0.08   # RM_WeirArt.CapSize / CapLift
@@ -92,6 +98,21 @@ def art_raw(d, look, name):
     return Image.open(Path(d) / look / (name + ".png")).convert("RGBA")
 
 
+def spill_names(d, look, facing):
+    """The crest sheet's frame names for one facing: the animated set's RM_BankWeirSpill_<facing>_00..11
+    (WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED), or, for a set from before it (the timber 'before' set art_source/Weir/out),
+    its one static RM_BankWeirSpill_<facing>."""
+    base = "RM_BankWeirSpill_" + facing
+    if (Path(d) / look / (base + "_00.png")).is_file():
+        return [base + "_%02d" % k for k in range(SPILL_FRAMES)]
+    return [base]
+
+
+def spill_raw(d, look, facing, frame=0):
+    names = spill_names(d, look, facing)
+    return art_raw(d, look, names[frame % len(names)])
+
+
 def art(d, look, name):
     """The picture on its 1x canvas: a look shipped at 2x (weir_by_photo.RES_2X, Futuristic) is box-reduced and its alpha
     snapped as the generator snaps it, so every geometric check reads the same pixels per cell at either resolution."""
@@ -111,8 +132,9 @@ def art(d, look, name):
     return Image.fromarray(np.dstack([np.clip(rgb, 0, 255), al]).astype(np.uint8), "RGBA")
 
 
-def scene(look, d, kind="ew", P=128, foam=True):
-    """(rgba, meta): a run of three sections across a 4-cell river. d = a folder holding <look>/RM_BankWeir*.png."""
+def scene(look, d, kind="ew", P=128, foam=True, frame=0):
+    """(rgba, meta): a run of three sections across a 4-cell river at flip-book frame `frame` (the crest sheet and the
+    white water share RM_Weir.cs's clock). d = a folder holding <look>/RM_BankWeir*.png."""
     if kind == "ew":
         w, h = 8, 5
         wet = lambda x, z: 2 <= x <= 5
@@ -122,9 +144,14 @@ def scene(look, d, kind="ew", P=128, foam=True):
     sc = fc.Scene(w, h, px=P, ground=False)
     ground = terrain(w, h, P, wet)
     body = art_raw(d, look, "RM_BankWeir_" + ("east" if kind == "ew" else "north"))
-    spill = art_raw(d, look, "RM_BankWeirSpill_" + ("east" if kind == "ew" else "north"))
+    spill = spill_raw(d, look, "east" if kind == "ew" else "north", frame)
     capi = art_raw(d, look, "RM_BankWeirCap")
-    fo = Image.open(FOAM).convert("RGBA")
+    def fo(lo, hi):
+        """The white water at one wet cell, with RM_RiverMath.WeirFoamSuffix's end variant: _a where no foam lies on
+        the image-left side (falling south: west; falling east: south), _b on the right, as DrawWhiteWater picks it."""
+        end = "" if (lo and hi) else "_b" if lo else "_a" if hi else "_ab"
+        return Image.open(str(FOAM).replace(".png", end + ".png") % frame).convert("RGBA")
+    fs = FOAM_START.get(look, FOAM_START_DEFAULT)
     if kind == "ew":
         z0 = 2
         for x0 in (1, 3, 5):
@@ -133,7 +160,10 @@ def scene(look, d, kind="ew", P=128, foam=True):
                 if wet(x, z0):
                     sc.plane(spill, x + 0.5, z0 + 0.5, 1, 1, dy=ALT_INC * 0.25)
                     if foam:
-                        sc.plane(fo, x + 0.5, z0 - 0.5, 1, 1, alt="FloorEmplacement")
+                        # RM_Weir.DrawWhiteWater: from fs cells upstream of the wet cell's downstream edge (under the
+                        # body) to one cell past it (lane length 1)
+                        sc.plane(fo(wet(x - 1, z0), wet(x + 1, z0)), x + 0.5, z0 - (1 - fs) / 2, 1, fs + 1,
+                                 alt="FloorEmplacement")
         for cx in (1, 7):
             sc.plane(capi, cx, z0 + 0.5 + CAP_LIFT, CAP_SIZE, CAP_SIZE, dy=ALT_INC * 0.5)
     else:
@@ -144,7 +174,8 @@ def scene(look, d, kind="ew", P=128, foam=True):
                 if wet(x0, z):
                     sc.plane(spill, x0 + 0.5, z + 0.5, 1, 1, dy=ALT_INC * 0.25)
                     if foam:  # the frames fall south; the game turns them 270 deg (y) to fall east
-                        sc.plane(fo.rotate(90, expand=True), x0 + 1.5, z + 0.5, 1, 1, alt="FloorEmplacement")
+                        sc.plane(fo(wet(x0, z - 1), wet(x0, z + 1)).rotate(90, expand=True),
+                                 x0 + 1.5 - fs / 2, z + 0.5, fs + 1, 1, alt="FloorEmplacement")
         sc.plane(capi, x0 + 0.5, 1 + CAP_LIFT, CAP_SIZE, CAP_SIZE, dy=ALT_INC * 0.5)
         sc.plane(capi, x0 + 0.5, 7 + CAP_LIFT, CAP_SIZE, CAP_SIZE, dy=ALT_INC * 0.6)
     cv = ground.copy()
@@ -291,8 +322,8 @@ IDENTITY = {"Scrapper": rubble_not_timber, "Industrial": three_steps, "Modern": 
 
 # ---- every look ------------------------------------------------------------------------------------------------------
 SIZES = {"RM_BankWeir_east": (256, 128), "RM_BankWeir_west": (256, 128), "RM_BankWeir_north": (128, 256),
-         "RM_BankWeir_south": (128, 256), "RM_BankWeirCap": (128, 128), "RM_BankWeirSpill_east": (128, 128),
-         "RM_BankWeirSpill_west": (128, 128), "RM_BankWeirSpill_north": (128, 128), "RM_BankWeirSpill_south": (128, 128)}
+         "RM_BankWeir_south": (128, 256), "RM_BankWeirCap": (128, 128)}
+SPILL_SIZE = (128, 128)  # every crest-sheet frame: 1x, one cell (fitted to the 1x crest, drawn one cell wide)
 
 
 def common(d, look):
@@ -300,12 +331,18 @@ def common(d, look):
     out = []
     raw = {n: art_raw(d, look, n) for n in SIZES}
     ims = {n: art(d, look, n) for n in SIZES}
+    sp = {f: spill_names(d, look, f) for f in FACINGS}
+    for f in FACINGS:
+        for n in sp[f]:
+            raw[n] = art_raw(d, look, n)
+            ims[n] = raw[n]
     # 1x, or every body and the post at one whole multiple (a 2x look; its crest sheets stay 1x: they are fitted to the
     # 1x crest and drawn one cell wide)
     k = raw["RM_BankWeir_east"].size[0] // SIZES["RM_BankWeir_east"][0]
-    want = {n: (s if n.startswith("RM_BankWeirSpill") else (s[0] * k, s[1] * k)) for n, s in SIZES.items()}
+    want = {n: (SPILL_SIZE if n.startswith("RM_BankWeirSpill") else (SIZES[n][0] * k, SIZES[n][1] * k)) for n in raw}
     bad = [n for n, s in want.items() if raw[n].size != s] + ([] if k in (1, 2) else ["scale %d" % k])
-    out.append(("canvas", not bad, "wrong size: %s" % bad if bad else "9 files at their canvases (bodies x%d)" % k))
+    out.append(("canvas", not bad, "wrong size: %s" % bad if bad else "%d files at their canvases (bodies x%d)" % (
+        len(raw), k)))
     soft = []
     for n in SIZES:
         if n.startswith("RM_BankWeirSpill"):
@@ -339,33 +376,39 @@ def common(d, look):
                 "%.0f, last %.0f (<= 12 darker)" % (ref, wins[0], wins[-1])))
     mir = (np.asarray(raw["RM_BankWeir_south"]) == np.asarray(raw["RM_BankWeir_north"])[:, ::-1]).all()
     out.append(("south_mirrors_north", bool(mir), "south == north mirrored" if mir else "south is not north mirrored"))
-    # the crest sheet lies on the wall it pours over: drawn once per water cell, so every opaque sheet pixel must fall
-    # inside the body's column span (top..toe, either half of the 2-cell section, 4 px slack), and it must cover some
+    # the crest sheet follows the wall it pours over: drawn once per water cell, so no sheet pixel may stand above the
+    # body's crest in its column (top, either half of the 2-cell section, 4 px slack) and it must cover the wall; below
+    # the wall's foot it may run on to the cell's downstream edge (the boil, on the same water cell), every frame
     t, b = band_rows(ims["RM_BankWeir_east"])
     body = _a(ims["RM_BankWeir_east"])[..., 3] >= SOLID
     rr = np.arange(body.shape[0])[:, None]
     top = np.where(body, rr, body.shape[0]).min(0)
     bot = np.where(body, rr, -1).max(0)
     top, bot = np.minimum(top[:128], top[128:256]), np.maximum(bot[:128], bot[128:256])
-    sp = _a(ims["RM_BankWeirSpill_east"])[..., 3] > 0
-    ys, xs = np.nonzero(sp)
-    off = float(((ys < top[xs] - 4) | (ys > bot[xs] + 4)).mean()) if ys.size else 1.0
-    cover = float(sp.any(0).mean())
-    ok = ys.size > 0 and off <= 0.02 and cover >= 0.9
+    worst_off, worst_cover = 0.0, 1.0
+    for n in sp["east"]:
+        m = _a(ims[n])[..., 3] > 0
+        ys, xs = np.nonzero(m)
+        worst_off = max(worst_off, float((ys < top[xs] - 4).mean()) if ys.size else 1.0)
+        worst_cover = min(worst_cover, float(m.any(0).mean()))
+    ok = worst_off <= 0.02 and worst_cover >= 0.9
     # judge 2026-10-24 on v6: "a thin bright white line crosses every look, only where the wall is over water" --
-    # build.spill_south's flat 2-row lip (alpha 150, 245 grey). No sheet row may be a near-opaque white bar.
+    # build.spill_south's flat 2-row lip (alpha 150, 245 grey). No sheet row ON THE WALL (above its median foot; below
+    # it the boil runs into the white water) may be a near-opaque white bar, in any frame.
+    foot = int(np.median(bot[bot >= 0]))
     bars = []
-    for n in ("RM_BankWeirSpill_east", "RM_BankWeirSpill_west", "RM_BankWeirSpill_north"):
-        q = _a(ims[n])
-        if n.endswith("north"):
-            q = q.transpose(1, 0, 2)
-        hot = (q[..., 3] >= 120) & (_lum(q[..., :3]) >= 230)
-        if (hot.mean(1) >= 0.9).any():
-            bars.append(n)
+    for f in ("east", "west", "north"):
+        for n in sp[f]:
+            q = _a(ims[n])
+            if f == "north":
+                q = q.transpose(1, 0, 2)
+            hot = (q[..., 3] >= 120) & (_lum(q[..., :3]) >= 230)
+            if (hot.mean(1)[:foot] >= 0.9).any():
+                bars.append(n)
     out.append(("spill_no_white_bar", not bars, "white bar rows in %s" % bars if bars else
-                "no sheet row >= 90 % bright and alpha >= 120"))
-    out.append(("spill_fitted", bool(ok), "body rows %d-%d; sheet px off the wall %.3f (<= 0.02), columns covered %.2f "
-                "(>= 0.9)" % (t, b, off, cover)))
+                "no sheet row on the wall >= 90 %% bright and alpha >= 120 (%d frames)" % sum(map(len, sp.values()))))
+    out.append(("spill_fitted", bool(ok), "body rows %d-%d; sheet px above the crest %.3f (<= 0.02), columns covered "
+                "%.2f (>= 0.9), worst of %d frames" % (t, b, worst_off, worst_cover, len(sp["east"]))))
     return out
 
 

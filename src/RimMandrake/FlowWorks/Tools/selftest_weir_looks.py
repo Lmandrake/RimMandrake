@@ -12,8 +12,8 @@ scavver/crude, industrial, modern, futuristic.") as permanent offline checks on 
           zigzag_crest        Futuristic north art resampled to 3.5 teeth a cell (v5's N-S period, 73 rows)
           seamless            Modern east art with its right-hand column made transparent
           south_mirrors_north Scrapper south art == north art, not mirrored
-          spill_fitted        Industrial east crest sheet lifted 24 rows above the body band
-          spill_no_white_bar  Modern east crest sheet with one near-opaque white row painted across it
+          spill_fitted        Industrial east crest sheet (one frame, _03) lifted 24 rows above the body band
+          spill_no_white_bar  Modern east crest sheet (one frame, _07) with one near-opaque white row painted across it
           identity checks     a blank (transparent) set for each look
 """
 import shutil
@@ -49,7 +49,7 @@ def timber_dir(tmp):
     d = Path(tmp) / "timber"
     for look in W.LOOKS:
         (d / look).mkdir(parents=True)
-        for n in W.SIZES:
+        for n in list(W.SIZES) + ["RM_BankWeirSpill_" + f for f in W.FACINGS]:   # its crest sheets were static
             blob = subprocess.run(["git", "show", "%s:%s/%s/%s.png" % (TIMBER_SHA, rel, look, n)], cwd=root,
                                   capture_output=True, check=True).stdout
             (d / look / (n + ".png")).write_bytes(blob)
@@ -93,7 +93,7 @@ def main():
         diff = [str(p.relative_to(OUT_PHOTO)) for p in sorted(OUT_PHOTO.glob("*/*.png"))
                 if not (np.asarray(Image.open(p)) == np.asarray(Image.open(gen / p.relative_to(OUT_PHOTO)))).all()]
         n = len(list(OUT_PHOTO.glob("*/*.png")))
-        check("parity out_photo == weir_by_photo.py", n == 36 and not diff, "%d files, differ: %s" % (n, diff))
+        check("parity out_photo == weir_by_photo.py", n == len(W.LOOKS) * (len(W.SIZES) + len(W.FACINGS) * W.SPILL_FRAMES) and not diff, "%d files, differ: %s" % (n, diff))
 
         def darken_end(a):
             a[-16:, :, :3] = a[-16:, :, :3] * 0.75
@@ -113,11 +113,11 @@ def main():
             a[60, :] = (245, 245, 245, 160)
             return a
 
-        cases = [("spill_no_white_bar", "Modern", "RM_BankWeirSpill_east", white_row),
+        cases = [("spill_no_white_bar", "Modern", "RM_BankWeirSpill_east_07", white_row),
                  ("north_ends_drawn", "Industrial", "RM_BankWeir_north", darken_end),
                  ("zigzag_crest", "Futuristic", "RM_BankWeir_north", teeth_3_5),
                  ("seamless", "Modern", "RM_BankWeir_east", cut_right),
-                 ("spill_fitted", "Industrial", "RM_BankWeirSpill_east", lift)]
+                 ("spill_fitted", "Industrial", "RM_BankWeirSpill_east_03", lift)]
         for i, (chk, look, name, fn) in enumerate(cases):
             d = copy_set(OUT_PHOTO, tmp, "cf%d" % i)
             mutate(d, look, name, fn)

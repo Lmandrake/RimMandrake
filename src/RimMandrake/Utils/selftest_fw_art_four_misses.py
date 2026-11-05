@@ -6,9 +6,9 @@
   sign    RM_StationSign (installed): no baked ground shadow (no near-black semi-transparent pixels below the board).
   bottle  Industrial RM_Bottle (installed; RM_Bottle_FreshWater draws it): keylined (outer ring dark) and simplified
           (fewer coarse colours), with the very same alpha as the kept original, so RM_Bottle_m.png still fits.
-  weir    the staged spill sheets (art_source/Weir/out_photo, from weir_by_photo.crest_spill; the installed set is
-          owner-kept until WEIR_LOOKS_REDRAW_ONE_PER_PIPE_STYLE installs these): a visible sheet with a white lip
-          over the crest and a white foam toe at the foot, in every look and falling facing.
+  weir    the spill sheets (art_source/Weir/out_photo, from weir_by_photo.spill_frames, every frame since
+          WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED): a visible sheet and a white foam toe at the foot, in every look
+          and falling facing.
   judge   art_source/FourMisses/verdict.json: a judge that did not make the art ACCEPTs each of the four on the
           true-scale sheet beside it.
 
@@ -93,9 +93,13 @@ def main():
         for f in ("east", "north", "south"):
             kept = spill(FW / f"art_source/Weir/out/{look}/RM_BankWeirSpill_{f}.png", f)
             check(kept[0] < 60 and kept[2] < 0.2, f"probe kept {look} {f} spill is a weak strip (alpha {kept[0]:.0f}, toe {kept[2]:.2f})")
-            al, lip, toe = spill(FW / f"art_source/Weir/out_photo/{look}/RM_BankWeirSpill_{f}.png", f)
-            check(al >= 100 and lip >= 0.9 and toe >= 0.9,
-                  f"staged {look} {f} spill: a visible sheet (alpha {al:.0f} >= 100), white lip ({lip:.2f}) and foam toe ({toe:.2f}) >= 0.9")
+            # WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED (owner 2026-10-24: "We will want to animate a much better design of
+            # water going over the weir."): the sheet is a 12-frame flip-book; its lip is a translucent glint that
+            # shimmers (an opaque white lip is the bar spill_no_white_bar forbids), so the lip clause is gone
+            for k in range(12):
+                al, lip, toe = spill(FW / f"art_source/Weir/out_photo/{look}/RM_BankWeirSpill_{f}_{k:02d}.png", f)
+                check(al >= 100 and toe >= 0.9,
+                      f"staged {look} {f} spill frame {k:02d}: a visible sheet (alpha {al:.0f} >= 100) and foam toe ({toe:.2f}) >= 0.9")
     # judge
     vp = FM / "verdict.json"
     v = json.loads(vp.read_text()) if vp.exists() else {}

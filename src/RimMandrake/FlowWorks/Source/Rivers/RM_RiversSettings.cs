@@ -252,8 +252,8 @@ namespace RimMandrake.FlowWorks.Rivers
 				l.Label("  Weir holds at most " + RM_RiversSettings.weirHeldCatchCap + " items before it stops catching");
 				RM_RiversSettings.weirHeldCatchCap = Mathf.RoundToInt(l.Slider(RM_RiversSettings.weirHeldCatchCap, 5f, 200f));
 			}
-			l.CheckboxLabeled("Animated white water below weirs", ref RM_RiversSettings.weirWhiteWater,
-				"Tumbling foam where the river falls over a weir, stronger in fast water and floods. Off: no foam is drawn.");
+			l.CheckboxLabeled("Animated water over weirs", ref RM_RiversSettings.weirWhiteWater,
+				"Water pouring over a weir's crest and tumbling foam below it, stronger in fast water and floods. Off: no foam is drawn and the water over the crest holds still.");
 			l.CheckboxLabeled("Silt-traps richen the bank", ref RM_RiversSettings.siltRichening,
 				"On, a silt-trap slowly makes the bank soil beside it richer. Off: it only holds the silt.");
 			if (RM_RiversSettings.siltRichening)

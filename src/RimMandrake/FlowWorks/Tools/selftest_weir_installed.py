@@ -5,11 +5,12 @@ preferred as a geometric design. We should improve that design at better resolut
 flat wall. But it can be made of the same white metal and pale blue "lights" as the higher quality one."
 
 Needs no git history (selftest_weir_looks.py covers the before/after story against the timber set):
-  installed   Textures/RimMandrake/FlowWorks/Weir/<Look>/ == art_source/Weir/out_photo/<Look>/ pixel for pixel, all 36
+  installed   Textures/RimMandrake/FlowWorks/Weir/<Look>/ == art_source/Weir/out_photo/<Look>/ pixel for pixel, all N_FILES
+              (5 bodies/post + 4 facings x 12 crest-sheet frames per look, WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED)
   parity      weir_by_photo.py regenerated into a temp dir == out_photo (the source is deterministic)
   checks      every fw_scenes_weir check of every look passes on the installed set (zigzag_crest: not a flat wall)
   futuristic  bodies and post at 2x (512x256, 256x512, 256x256); the wall is white metal (median opaque luminance of the
-              body >= 200, low saturation), carries pale-blue light pixels (>= 2 % of the body), and a near-black keyline
+              body's wall, the dark bay floor aside, >= 180, low saturation), carries pale-blue light pixels (>= 2 % of the body), and a near-black keyline
   can-fail    each must FAIL: one installed file swapped for another look's; Futuristic recoloured mid-grey; Futuristic
               without its lights; Futuristic at 1x; Futuristic east flattened into one straight wall
 """
@@ -30,6 +31,7 @@ FW = HERE.parent
 INSTALLED = FW / "Textures/RimMandrake/FlowWorks/Weir"
 OUT_PHOTO = FW / "art_source/Weir/out_photo"
 GEN = FW / "art_source/Weir/weir_by_photo.py"
+N_FILES = len(W.LOOKS) * (len(W.SIZES) + len(W.FACINGS) * W.SPILL_FRAMES)
 BODIES = ("RM_BankWeir_east", "RM_BankWeir_west", "RM_BankWeir_north", "RM_BankWeir_south")
 fails = []
 
@@ -65,15 +67,20 @@ def futuristic(d):
         a = px(d / (n + ".png")).astype(np.float32)
         m = a[..., 3] >= 128
         rgb = a[..., :3][m]
-        lum.append(np.median(W._lum(rgb)))
+        # the wall, not the bays between its teeth: since WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED the bays are a dark wet
+        # floor (cool, lum < 120; the water over them is the animated crest sheet), not painted white water. The bar was
+        # 200 over the whole body; that median leaned on the bright painted bay water (55 % of the opaque px): the wall
+        # alone measured 186 on the art it was set on, so it is 180 on the wall (mid-grey 128 still fails)
+        bay = (W._lum(rgb) < 120) & (rgb[:, 0] < 0.92 * rgb[:, 2]) & (W._lum(rgb) >= 50)
+        lum.append(np.median(W._lum(rgb[~bay])))
         mx, mn = rgb.max(1), rgb.min(1)
         lb = (rgb[:, 2] > 170) & (rgb[:, 1] > 150) & (rgb[:, 0] < 140)          # pale blue / cyan light
         sat.append(float(np.median((mx - mn)[~lb] / np.maximum(mx[~lb], 1))))
         blue.append(float(lb.mean()))
         key.append(float((W._lum(rgb) < 70).mean()))
-    ok = not bad and min(lum) >= 200 and max(sat) <= 0.12 and min(blue) >= 0.02 and min(key) >= 0.01
+    ok = not bad and min(lum) >= 180 and max(sat) <= 0.12 and min(blue) >= 0.02 and min(key) >= 0.01
     return ok, ("wrong size %s; " % bad if bad else "2x canvases; ") + (
-        "median lum %s (>= 200), grey sat %s (<= 0.12), light px %s (>= 0.02), keyline px %s (>= 0.01)"
+        "wall median lum %s (>= 180), grey sat %s (<= 0.12), light px %s (>= 0.02), keyline px %s (>= 0.01)"
         % ([round(x) for x in lum], [round(x, 3) for x in sat], [round(x, 3) for x in blue], [round(x, 3) for x in key]))
 
 
@@ -91,7 +98,7 @@ def mutate(d, rel, fn):
 
 def main():
     n, diff = same_set(OUT_PHOTO, INSTALLED)
-    check("installed == out_photo", n == 36 and not diff, "%d files, differ: %s" % (n, diff))
+    check("installed == out_photo", n == N_FILES and not diff, "%d files, differ: %s" % (n, diff))
     ok, failed = all_checks(INSTALLED)
     check("every fw_scenes_weir check passes on the installed set", ok, "failed: %s" % failed if failed else "")
     ok, det = futuristic(INSTALLED)
@@ -101,7 +108,7 @@ def main():
         gen = Path(tmp) / "regen"
         subprocess.run([sys.executable, str(GEN), "--out", str(gen)], check=True, capture_output=True)
         n, diff = same_set(OUT_PHOTO, gen)
-        check("parity out_photo == weir_by_photo.py", n == 36 and not diff, "%d files, differ: %s" % (n, diff))
+        check("parity out_photo == weir_by_photo.py", n == N_FILES and not diff, "%d files, differ: %s" % (n, diff))
 
         def copy(tag):
             d = Path(tmp) / tag

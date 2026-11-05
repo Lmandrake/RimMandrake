@@ -9,6 +9,9 @@ reach; the material's alpha scales it to the lane (RM_RiverMath.WeirFoam).
 Seamless in TIME: every noise layer is periodic along the fall axis and moves a whole number of its periods over the
 loop, so frame 11 -> frame 0 does not jump. Seamless ACROSS: periodic along the wall, so joined sections read as one
 sheet of white water. Translucent off-white so the map's own water colour shows through (every water on the planet).
+No landing lip of its own (WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED): the plane starts under the wall, on its centre line
+(RM_WeirArt.FoamStart), so the body hides its first rows and the foam comes out at each look's foot, where the crest
+sheet's toe (weir_by_photo.spill_frames, on this field and clock) lands on it.
 
     python3 whitewater_frames.py [--out DIR]   (default: the mod's Textures/RimMandrake/FlowWorks/Weir/WhiteWater)
 """
@@ -52,21 +55,17 @@ def frames():
     # where foam stands: almost all of it under the crest, thinning to scattered flecks and streaks by the far edge
     thr = 0.30 + 0.42 * smoothstep(0.0, 1.0, v)
     haze = 0.30 * np.exp(-v / 0.35)                  # aerated water: a milky veil strongest at the foot of the fall
-    lipn = spectral_noise(41, 0.8, 3, 20)[0]         # one row: the lip's tongues along the wall (periodic across)
     out = []
     for k in range(FRAMES):
         m = np.roll(mass, int(round(k * SIZE / FRAMES)), axis=0)
         b = np.roll(boil, int(round(k * 2 * SIZE / FRAMES)), axis=0)
         fl = np.roll(fleck, int(round(k * 3 * SIZE / FRAMES)), axis=0)
         dens = 0.5 * m + 0.3 * b + 0.2 * fl
-        # the sheet landing: a white lip under the crest whose depth wavers along the wall and over time
-        depth = 0.05 + 0.09 * np.roll(lipn, int(round(k * SIZE / FRAMES)))[None, :]
-        curtain = smoothstep(depth, depth * 0.4, v)
         foam = smoothstep(thr - 0.04, thr + 0.06, dens)
         crown = smoothstep(thr + 0.06, thr + 0.2, dens)
-        a = np.maximum(np.maximum(foam * 0.92, haze), curtain * 0.95)
+        a = np.maximum(foam * 0.92, haze)
         a *= smoothstep(1.0, 0.85, v)                # soft far edge: no hard line downstream
-        lit = np.maximum(crown, curtain)
+        lit = crown
         shade = np.array([214, 222, 220])            # foam in its own shadow, a touch cool
         bright = np.array([251, 252, 248])
         rgb = shade * (1 - lit[..., None]) + bright * lit[..., None]

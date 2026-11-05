@@ -2,7 +2,7 @@
 <!-- The weir's four looks (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS, owner 2026-10-16: "(1) but in the four art styles"): one
      ThingStyleDef per look, RM_BankWeir_<Look>, picked through the shared style picker (Machinery/PipeLook.cs) like the pipes and
      tanks. Each set: RM_BankWeir_{north,east,south,west} (the wall per heading, seamless along it so sections join), RM_BankWeirCap
-     (free-end post) and RM_BankWeirSpill_{facing} (the water sheet over the crest), under RimMandrake/FlowWorks/Weir/<Look>/.
+     (free-end post) and RM_BankWeirSpill_{facing}_00..11 (the animated water over the crest), under RimMandrake/FlowWorks/Weir/<Look>/.
      Sources: art_source/Weir/. No StyleCategoryDef lists these. -->
 <Defs>
 

@@ -622,8 +622,10 @@ namespace RimMandrake.FlowWorks.Rivers
 		// ── art (RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS, owner 2026-10-16: "(1) but in the four art styles") ──
 		// A low timber wall per heading (Graphic_Multi _north/_east/_south/_west in the section's look), its facing taken
 		// from the current so the spill face is always downstream. Body textures are seamless along the wall, so joined
-		// sections read as one wall; a stout post is drawn only at a free end. <look>/RM_BankWeirSpill_<facing> (the sheet
-		// over the crest) is printed on water cells while the weir holds. Weir review 2026-10-23 (owner: "Static white water
+		// sections read as one wall; a stout post is drawn only at a free end. The water over the crest is NOT in the map
+		// mesh (WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED, owner 2026-10-24: "We will want to animate a much better design of
+		// water going over the weir."): <look>/RM_BankWeirSpill_<facing>_00..11 is a flip-book drawn in real time (DrawAt)
+		// on wet cells while the weir holds and the current crosses it, on the white water's clock. Weir review 2026-10-23 (owner: "Static white water
 		// that doesn't match anything. (needs to be an animated effect). A single blue tint above it."): the flat 1x3
 		// RM_BankWeirWater strip (pool tint + frozen foam) is gone - the current model has no raised level to tint - and
 		// the white water is a real-time flip-book (DrawAt), only where the current crosses the wall, scaled to the flow.
@@ -653,26 +655,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			bool flip = (rot == Rot4.West && g.WestFlipped) || (rot == Rot4.East && g.EastFlipped);
 			Printer_Plane.PrintPlane(layer, center, size, g.MatAt(rot, this), 0f, flip);
 
-			string basePath = StyleDef?.graphicData?.texPath ?? def.graphicData?.texPath;
-			bool holding = ArrestActive && !breaching && RM_RiversSettings.WorksActive;
-			if (holding)
-			{
-				Material spill = basePath == null ? null : RM_WeirArt.Mat(basePath + "Spill_" + RM_WeirArt.FacingName(rot), ShaderDatabase.Transparent);
-				foreach (IntVec3 c in this.OccupiedRect())
-				{
-					if (!RM_RiverWorks.IsWaterCell(Map, c))
-					{
-						continue;
-					}
-					Vector3 cc = c.ToVector3Shifted();
-					if (spill != null)
-					{
-						Vector3 sc = rot.IsHorizontal ? new Vector3(cc.x, center.y + Altitudes.AltInc * 0.25f, center.z)
-							: new Vector3(center.x, center.y + Altitudes.AltInc * 0.25f, cc.z);
-						Printer_Plane.PrintPlane(layer, sc, Vector2.one, spill);
-					}
-				}
-			}
+			string basePath = LookBase;
 			Material cap = basePath == null ? null : RM_WeirArt.Mat(basePath + "Cap", ShaderDatabase.Cutout);
 			if (cap != null)
 			{
@@ -694,21 +677,20 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 		}
 
-		/// <summary>The animated white water (drawerType MapMeshAndRealTime: the wall, posts and crest sheet are in the map
-		/// mesh; only the foam is drawn per frame, so base.DrawAt is NOT called - it would draw the wall twice). One plane per
-		/// wet section cell whose downstream neighbour is water, rotated so the crest edge sits on the wall and the foam runs
-		/// downstream; strength, speed and reach from the lane under it (RM_RiverMath.WeirFoam), frame from real time so it
-		/// moves like vanilla river water, also while paused.</summary>
+		/// <summary>The animated water over the weir (drawerType MapMeshAndRealTime: the wall and posts are in the map mesh;
+		/// only the moving water is drawn per frame, so base.DrawAt is NOT called - it would draw the wall twice): the crest
+		/// sheet (DrawSpill) and the white water below the wall (DrawWhiteWater), on one real-time clock so the sheet's boil
+		/// runs into the white water frame for frame (art_source/Weir/weir_by_photo.spill_frames samples the same field).
+		/// One plane per wet section cell, rotated so the crest edge sits on the wall and the foam runs downstream;
+		/// strength, speed and reach from the lane under it (RM_RiverMath.WeirFoam), frame from real time so it moves like
+		/// vanilla river water, also while paused. "Animated water over weirs" off: no white water, and the crest
+		/// sheet holds still on its first frame.</summary>
 		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
 		{
-			if (RM_RiversSettings.weirWhiteWater && RM_RiversSettings.WorksActive && Spawned && ArrestActive && !breaching)
+			if (!RM_RiversSettings.WorksActive || !Spawned || !ArrestActive || breaching)
 			{
-				DrawWhiteWater();
+				return;
 			}
-		}
-
-		private void DrawWhiteWater()
-		{
 			Map map = Map;
 			RM_MapComponent_RiverCurrent comp = map.GetComponent<RM_MapComponent_RiverCurrent>();
 			if (comp == null || !RM_RiverMath.WeirFoamStep(Rotation.AsInt, comp.FlowDirAt(WaterCell), out int dx, out int dz))
@@ -716,11 +698,58 @@ namespace RimMandrake.FlowWorks.Rivers
 				return; // the current runs along the wall, or there is none: nothing falls over it
 			}
 			bool surge = comp.SurgeActive; // read, not recomputed: the component refreshes it every scan
+			float pace = RM_RiverMath.WeirFoam(RM_RiverMath.LaneCentre, surge).fps;
+			// one clock for every section (phase 0, the centre lane's pace): joined sections show the same frame, so the
+			// tileable sheets have no seam
+			int frame = RM_RiverMath.WeirFoamFrame(Time.realtimeSinceStartup, pace, FoamFrames, 0);
+			bool animate = RM_RiversSettings.weirWhiteWater;
+			DrawSpill(map, animate ? frame : 0);
+			if (animate)
+			{
+				DrawWhiteWater(map, comp, dx, dz, surge, frame);
+			}
+		}
+
+		/// <summary>The look's art path stem: <look>/RM_BankWeir (Cap and Spill_<facing>_NN follow it).</summary>
+		private string LookBase => StyleDef?.graphicData?.texPath ?? def.graphicData?.texPath;
+
+		/// <summary>The crest sheet: frame <paramref name="frame"/> of <look>/RM_BankWeirSpill_<facing>, one cell per wet
+		/// section cell, centred on the wall across it, just above the wall and under the end posts (the altitudes the map
+		/// mesh used for the static sheet it replaces).</summary>
+		private void DrawSpill(Map map, int frame)
+		{
+			string basePath = LookBase;
+			if (basePath == null)
+			{
+				return;
+			}
+			Rot4 rot = ArtRot;
+			Material spill = RM_WeirArt.Mat(RM_WeirArt.SpillPath(basePath, rot, frame), ShaderDatabase.Transparent);
+			if (spill == null)
+			{
+				return;
+			}
+			Vector3 center = this.TrueCenter();
+			float y = center.y + Altitudes.AltInc * 0.25f;
+			foreach (IntVec3 c in this.OccupiedRect())
+			{
+				if (!c.InBounds(map) || !RM_RiverWorks.IsWaterCell(map, c))
+				{
+					continue;
+				}
+				Vector3 cc = c.ToVector3Shifted();
+				Vector3 at = rot.IsHorizontal ? new Vector3(cc.x, y, center.z) : new Vector3(center.x, y, cc.z);
+				Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(at, Quaternion.identity, Vector3.one), spill, 0);
+			}
+		}
+
+		private void DrawWhiteWater(Map map, RM_MapComponent_RiverCurrent comp, int dx, int dz, bool surge, int frame)
+		{
 			float y = AltitudeLayer.FloorEmplacement.AltitudeFor();
 			// the frames are drawn crest-at-top, falling south (-z); turn them to fall along (dx, dz)
 			Quaternion turn = Quaternion.Euler(0f, dz < 0 ? 0f : dz > 0 ? 180f : dx > 0 ? 270f : 90f, 0f);
 			RM_RiverMath.WeirFoamLeft(dx, dz, out int lx, out int lz);
-			float pace = RM_RiverMath.WeirFoam(RM_RiverMath.LaneCentre, surge).fps;
+			float start = RM_WeirArt.FoamStart(LookBase);
 			foreach (IntVec3 c in this.OccupiedRect())
 			{
 				if (!FallsAt(map, c, dx, dz))
@@ -732,9 +761,7 @@ namespace RimMandrake.FlowWorks.Rivers
 				{
 					continue;
 				}
-				// one clock for every section (phase 0, the centre lane's pace): joined sections show the same frame, so the
-				// tileable sheet has no seam; the lane changes only how strong the foam reads
-				int frame = RM_RiverMath.WeirFoamFrame(Time.realtimeSinceStartup, pace, FoamFrames, 0);
+				// the lane changes only how strong the foam reads, never its frame (the clock is DrawAt's)
 				// an end of the white water (no foam beside it along the wall) is drawn broken, not cut straight
 				string end = RM_RiverMath.WeirFoamSuffix(FoamBeside(map, c, lx, lz, dx, dz), FoamBeside(map, c, -lx, -lz, dx, dz));
 				Material mat = RM_WeirArt.Foam(frame, end, look.alpha);
@@ -742,10 +769,14 @@ namespace RimMandrake.FlowWorks.Rivers
 				{
 					return;
 				}
-				// the plane starts at the wall's downstream edge and reaches look.length cells downstream
-				Vector3 at = c.ToVector3Shifted() + new Vector3(dx, 0f, dz) * (0.5f + look.length * 0.5f);
+				// the plane starts `start` cells upstream of the cell's downstream edge, UNDER the wall (FloorEmplacement
+				// draws below the body), and reaches look.length cells past that edge: the body hides its top, so the foam
+				// comes out at the look's foot, under the crest sheet's toe, with no strip of still water between
+				// (WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED; RM_WeirArt.FoamStartByLook)
+				float reach = start + look.length;
+				Vector3 at = c.ToVector3Shifted() + new Vector3(dx, 0f, dz) * (0.5f + look.length - reach * 0.5f);
 				at.y = y;
-				Vector3 scale = new Vector3(1f, 1f, look.length);
+				Vector3 scale = new Vector3(1f, 1f, reach);
 				Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(at, turn, scale), mat, 0);
 			}
 		}
@@ -962,9 +993,27 @@ namespace RimMandrake.FlowWorks.Rivers
 		/// top, falling south.
 		/// Source: art_source/Weir/whitewater_frames.py (procedural, seamless in time).</summary>
 		public const string FoamRoot = "RimMandrake/FlowWorks/Weir/WhiteWater/RM_WeirWhiteWater_";
+		/// <summary>How far upstream of the wet cell's downstream edge the white-water plane starts (cells), per look folder:
+		/// under the body, between its solid part and its foot, so the foam comes out at the foot with nothing showing
+		/// through the wall. 0.5 = the wall's centre line; the labyrinth's upstream notches are open to row 78 of 128, so
+		/// Futuristic starts at 0.39. Pinned to the art by Tools/selftest_weir_spill_animated.py (foam_from_the_foot).</summary>
+		public const float FoamStartDefault = 0.5f;
+		public static readonly Dictionary<string, float> FoamStartByLook = new Dictionary<string, float> { { "Futuristic", 0.39f } };
+
+		/// <summary>The white water's start for a look, from its art path stem (.../Weir/<look>/RM_BankWeir).</summary>
+		public static float FoamStart(string lookBase)
+		{
+			string[] parts = lookBase?.Split('/');
+			string look = parts != null && parts.Length >= 2 ? parts[parts.Length - 2] : null;
+			return look != null && FoamStartByLook.TryGetValue(look, out float f) ? f : FoamStartDefault;
+		}
 		public const float CapSize = 0.7f;
 		public const float CapLift = 0.08f;
 		private static readonly Dictionary<string, Material> mats = new Dictionary<string, Material>();
+
+		/// <summary>The crest-sheet flip-book's frame path: <look>/RM_BankWeirSpill_<facing>_NN (weir_by_photo.spill_frames).
+		/// </summary>
+		public static string SpillPath(string basePath, Rot4 r, int frame) => basePath + "Spill_" + FacingName(r) + "_" + frame.ToString("00");
 
 		public static string FacingName(Rot4 r) => r == Rot4.North ? "north" : r == Rot4.East ? "east" : r == Rot4.South ? "south" : "west";
 

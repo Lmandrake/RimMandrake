@@ -49,7 +49,10 @@ in `Defs/Rivers/RM_BankWeirStyles.xml`; art sources `art_source/Weir/`.
    along gets none. **Scaled to flow:** margin lane = light, slower foam; centre lane = full; flood surge = brighter,
    faster, reaching further downstream. Foam is a translucent off-white so the map's own water colour shows through
    (every water colour on the planet). Frames are procedural (`art_source/Weir/whitewater_frames.py`), seamless in
-   time, one set for all four looks (water is look-free); the per-look crest sheet (`RM_BankWeirSpill_*`) is kept.
+   time, one set for all four looks (water is look-free). The per-look crest sheet is animated too
+   (`WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED`, owner 2026-10-24: *"We will want to animate a much better design of water
+   going over the weir."*): `RM_BankWeirSpill_<facing>_00..11`, drawn in real time on the same clock, its boil running
+   into the white water; no look paints water into its wall.
 
 ## Mod settings (WORKS section)
 
@@ -57,7 +60,7 @@ in `Defs/Rivers/RM_BankWeirStyles.xml`; art sources `art_source/Weir/`.
 |---|---|---|
 | Weirs catch what floats into them | on | "Weirs catch fish", "Weirs catch drift", catch interval, drift chance (removed) |
 | Weir holds at most N items | 30 | unchanged |
-| Animated white water below weirs | on (off = no foam drawn) | the static texture |
+| Animated water over weirs | on (off = no foam drawn, the crest sheet holds still) | the static texture |
 | Weir calms N squares upstream | 8 | unchanged |
 
 All-off degrades gracefully: the wall still arrests the current and things pile against it.
