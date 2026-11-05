@@ -292,11 +292,54 @@ class TestContext(object):
             return None
         x, z = self.anchor
         half = size // 2
-        r = self.session.call("jawa/destroy_batch",
-                              rects="%d,%d,%d,%d" % (x - half, z - half, size, size),
-                              categories="All")
+        rect = "%d,%d,%d,%d" % (x - half, z - half, size, size)
+        r = self.session.call("jawa/destroy_batch", rects=rect, categories="All")
         self._record("clear_area(%d)" % size, r)
+        removed = self._clear_pawns(rect)
+        if removed:
+            self._record("clear_area(%d) removed pawns %s" % (size, removed), removed)
         return r
+
+    def _clear_pawns(self, rect):
+        """Take every living pawn in `rect` off the map BY ID: jawa/destroy_batch categories=All never removes pawns
+        (DESTROY_BATCH_NEVER_KILLS_PAWNS_1; MODCHECK_CLEARAREA_FIX_PAWNS_STILL_LOITER), so a wild animal, a raider or
+        an earlier chain's leftover stood in the 'cleared' area. Removal is Destroy(Vanish) through
+        jawa/pawn_force_incapacitate (no corpse, no death action), falling back to a bullet only when the vanish does
+        not read back -- the Cauldron _remove_pawn rule. Kept: the site's own colonists (a humanlike player pawn this
+        chain did not spawn -- vanishing them can end the colony; helpers.settle_bystanders tends them) and any id in
+        `self._bystanders`. A chain's own fixtures ARE removed. Upkeep, never a verdict: an unreadable listing is
+        recorded and nothing is removed. Returns {"vanished": [...], "shot": [...]} or {} when nothing was touched."""
+        lp = self.session.call("jawa/list_pawns", rect=rect, limit=500)
+        if not isinstance(lp, dict) or not isinstance(lp.get("pawns"), list):
+            self._record("clear_area pawns unreadable: %s" % str(lp)[:160], lp)
+            return {}
+        if lp.get("truncated"):
+            self._record("clear_area pawn listing truncated (%s beyond the limit)" % lp.get("truncated"), lp)
+        keep = set(getattr(self, "_bystanders", ()) or ())
+        rx, rz, rw, rh = (int(v) for v in rect.split(","))
+        out = {"vanished": [], "shot": []}
+        for p in lp["pawns"]:
+            if not isinstance(p, dict):
+                continue
+            pid = p.get("id")
+            if not pid or p.get("dead") or p.get("spawned") is False or pid in keep:
+                continue
+            # the rect is re-checked here: a row with no readable cell, or one outside the rect (a list_pawns that
+            # ignored `rect`), is never removed on faith
+            px, pz = p.get("x"), p.get("z")
+            if not (isinstance(px, (int, float)) and isinstance(pz, (int, float))
+                    and rx <= px < rx + rw and rz <= pz < rz + rh):
+                continue
+            if (p.get("isPlayer") and p.get("intelligence") == "Humanlike"
+                    and pid not in self.fixture_ids):
+                continue
+            v = self.session.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+            if isinstance(v, dict) and v.get("destroyedAfter") is True:
+                out["vanished"].append(pid)
+                continue
+            self.session.call("jawa/damage", damageDef="Bullet", amount=5000, thingId=pid, allowColonists=True)
+            out["shot"].append(pid)     # not read back: the row says only that it was SHOT, not that it is gone
+        return out if (out["vanished"] or out["shot"]) else {}
 
     def spawn(self, defName, count=1, at="line"):
         """Spawn `count` of `defName` near the anchor, tracked for teardown.
