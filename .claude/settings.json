@@ -256,6 +256,11 @@
             "type": "command",
             "timeout": 120,
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/handoff_restart.py\" 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/notebox_deliver.py\" Stop 2>/dev/null || true",
+            "timeout": 15
           }
         ]
       }
@@ -300,6 +305,18 @@
             "type": "command",
             "timeout": 120,
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/wrapup_hook.py\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/notebox_deliver.py\" PostToolUse 2>/dev/null || true",
+            "timeout": 15
           }
         ]
       }
