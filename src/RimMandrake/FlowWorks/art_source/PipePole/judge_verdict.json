@@ -1,0 +1,41 @@
+{
+ "item": "PIPE_POLE_REDRAW_NOT_A_POWER_POLE",
+ "judge": "GPT via src/RimMandrake/Utils/gpt_consult.py (default model), receipt consult-20261105-062902-1317078; blind (did not make the art). An Opus rm-judge was refused by the helper allocator (N=0) at 2026-11-05T06:27",
+ "sheet": "src/RimMandrake/FlowWorks/art_source/PipePole/judge/sheet_final.png",
+ "sheet_sha256": "bc57fa3b508dd8365c0e8d3d7823a0250eaf46b3040d3578df143c07c471c1a4",
+ "heads": "src/RimMandrake/FlowWorks/art_source/PipePole/judge/heads_2x.png",
+ "prompt": "src/RimMandrake/FlowWorks/art_source/PipePole/judge/judge_prompt.md",
+ "reply": "src/RimMandrake/FlowWorks/art_source/PipePole/judge/judge_reply.md",
+ "looks": {
+  "Scrapper": {
+   "verdict": "PASS",
+   "why": "Weathered timber and rusty hardware match the material family. The saddle visibly supports the pipe at strand height; no insulators or electrical crossarm remain. Scale is sensible, with no noticeable rendering defects.",
+   "minor": [
+    "The dark saddle blends slightly into the timber at normal scale."
+   ],
+   "sha256": "a10553c7d3b2ad3e0d75cd896aaa07f5ab168616fbadaa9d0fc9f703cdea7c17"
+  },
+  "Industrial": {
+   "verdict": "PASS",
+   "why": "The bolted metal cradle clearly grips the pipe and reads as heavy industrial support hardware. Materials and scale fit; no insulators or visible rendering defects.",
+   "minor": [
+    "The oversized socket makes the head visually bulky, but suits this look."
+   ],
+   "sha256": "958a5c48c48353a3e83e42206121a01c5abc631056996ccd874ad6b40e822e79"
+  },
+  "Modern": {
+   "verdict": "PASS",
+   "why": "The concrete shaft and compact metal saddle form a convincing modern pipe support. The clamp meets the blue strand correctly, scale works beside the colonist, and no insulators or noticeable rendering defects appear.",
+   "minor": [
+    "The compact clamp is less distinct against the bright pipe at normal scale."
+   ],
+   "sha256": "aca0ad43e21930cd1d568f1daf034b0e366a11e1515105302534e6a011f88adb"
+  },
+  "Futuristic": {
+   "verdict": "PASS",
+   "why": "The faceted mast and curved metallic saddle visibly support the luminous strand. It matches the futuristic material family, has sensible scale, and shows no insulators or noticeable rendering defects.",
+   "minor": [],
+   "sha256": "3530f3139c424140cba947db48f4cb3e6cca7d5bc148b1771e080f065149a43c"
+  }
+ }
+}
