@@ -1,0 +1,1 @@
+relentless.py contract accepts a --proof naming a script that does not exist (src/RimMandrake/rimflow/run_selftests.py; the runner is src/RimMandrake/Utils/run_selftests.py) and a build attempt can never correct it: check the proof's script path exists before the first contract call (RELENTLESS_HOLD_BUILD_RELEASE_ON_ANSWER, 2026-11-05)
