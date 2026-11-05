@@ -265,8 +265,8 @@ ok(tick_health(None) == [], "tick: no health read -> no health act invented")
 h = R.health_order({"state": "unmeasured", "system_items": ["S1", "OPS_HEALTH_RULES_DIAGNOSE_X", "S2"],
                     "repair": ["OPS_HEALTH_RULES_DIAGNOSE_X"], "why": "UNMEASURED: rules"}, "fresh: unmeasured", lambda: ["X"])
 ok(h["first"] == {"OPS_HEALTH_RULES_DIAGNOSE_X": 0, "S1": 1, "S2": 2} and h["unmeasured"] and not h["fresh"]
-   and not h["degraded"] and "ASSESSMENT BROKEN" in h["why"],
-   "health: unmeasured puts the measurement repair first, is not fresh/healthy, pauses no content", h)
+   and not h["degraded"] and "ASSESSMENT BROKEN" in h["why"] and (h["pause"] or {}).get("global"),
+   "health: unmeasured puts the measurement repair first, is not fresh/healthy, pauses content globally", h)
 h = R.health_order({"state": "unmeasured", "system_items": None, "repair": [], "why": "UNMEASURED"}, "fresh: unmeasured",
                    lambda: ["S9"])
 ok(h["first"] == {"S9": 0} and h["unmeasured"] and "none filed yet" in h["why"],

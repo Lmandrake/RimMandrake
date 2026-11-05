@@ -9,7 +9,8 @@ are already being worked non system work can be selected." Ruling text: design/R
 "Relentless fixes the system first"; design: build_system_practices_2026-11-03.md idea 5.
 
 ops_watch.run() calls publish() every pass; it writes $RM_OPS_WATCH_DIR/health.json:
-  {schema, as_of, t, state: healthy|degraded|unmeasured, inputs, repair, budget: {<sli>: {...}}, spent: [<sli>], drifted: [<sli>], system_items: [ids, best first],
+  {schema, as_of, t, state: healthy|degraded|unmeasured, inputs, repair, budget: {<sli>: {...}}, spent: [<sli>],
+   spent_scope: {<sli>: integrity|all|game|system}, drifted: [<sli>], system_items: [ids, best first],
    content_paused: bool, why}
   SLI      a point ops_watch already measured, bad when it crosses its line (rules "health" block, `slis`). UNMEASURED is
            not bad and not good: it is said, and spends nothing.
@@ -18,10 +19,12 @@ ops_watch.run() calls publish() every pass; it writes $RM_OPS_WATCH_DIR/health.j
            SLI moved to a new key keeps its past through `was` [{key, unit}], read only for passes the new key is absent from.
   BUDGET   per SLI, the hours it read bad in the last window_h, a gap between passes counted at most max_gap_h. Spent at
            allowed_bad_h ("When any SLI is over budget for 24 h, Relentless staffs only pipeline items until it recovers").
-  STATE    degraded while any SLI's budget is spent, else healthy. Degraded pauses NEW content; running work continues.
+  STATE    degraded while any SLI's budget is spent, else healthy. Degraded pauses NEW content only as far as the spent
+           SLIs' `scope` reaches (SCOPES; Relentless reads spent_scope); running work continues.
            UNMEASURED when the health rules are unusable: no budget was read, so the verdict says nothing about health and
-           never reads as healthy (OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY; it once gave b={} -> healthy). It pauses no
-           content; Relentless puts `repair` (open REPAIR_ALARM items, ops_watch's health.unmeasured alarm) first.
+           never reads as healthy (OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY; it once gave b={} -> healthy). Relentless reads
+           it as a shared resource impaired (all new content waits while a system item waits for a place, card
+           2026-11-05 "Pause only what it touches") and puts `repair` (open REPAIR_ALARM items, ops_watch's health.unmeasured alarm) first.
   INPUTS   every verdict names what it was made from: rules_sha256 (canonical JSON of the rules ops_watch passed), the
            collector's git sha (the clone this file runs from), the ledger watermark (events, last ts/tsn; None = no
            ledger this pass). Same inputs -> byte-identical verdict, so a strange verdict is explained by re-running it.
@@ -57,6 +60,10 @@ SCHEMA = "rm.ops_health/1"
 HOUR = 3600.0
 FILE = "health.json"
 STATES = ("healthy", "degraded", "unmeasured")
+# What a spent SLI pauses (DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE; owner card 2026-11-05 "Pause only what it touches"):
+# integrity/all = a shared resource every run uses, all new content waits; game = content whose lane is the live game;
+# system = no content lane depends on it, only places are reserved for the system items. No scope = all, said.
+SCOPES = ("integrity", "all", "game", "system")
 REPAIR_ALARM = "OPS_HEALTH_RULES_DIAGNOSE"     # ops_watch_rules.json: the alarm on health.unmeasured; its minted ids start so
 DEFAULTS = {
     "max_age_min": 45, "window_h": 48, "allowed_bad_h": 24, "max_gap_h": 1.0,
@@ -124,6 +131,8 @@ def sli_problems(c):
             out.append("health sli needs name, key, unit, op in %s, a numeric x and was [{key, unit}]: %r" % (sorted(OPS), s))
         elif not isinstance(s.get("incident", False), bool):
             out.append("health sli %s: incident must be true or false" % s["name"])
+        elif s.get("scope", "all") not in SCOPES:
+            out.append("health sli %s: scope must be one of %s" % (s["name"], ", ".join(SCOPES)))
     for k in ("max_age_min", "window_h", "allowed_bad_h", "max_gap_h"):
         if not is_num(c.get(k)) or c[k] <= 0:
             out.append("health.%s must be a positive number" % k)
@@ -307,6 +316,8 @@ def verdict(points, history, world, rules, root, now, stamp=None):
     probs = sli_problems(c)
     b = budget(points, history, c, now) if not probs else {}
     spent = sorted(k for k, v in b.items() if v.get("spent"))
+    scope_of = {s["name"]: s.get("scope", "all") for s in c.get("slis") or [] if isinstance(s, dict) and s.get("name")}
+    spent_scope = {k: scope_of.get(k, "all") for k in spent}
     drifted = sorted(k for k, v in b.items() if v.get("drifted"))
     state = "unmeasured" if probs else "degraded" if spent else "healthy"
     stamp = dict(stamp or {})
@@ -327,7 +338,7 @@ def verdict(points, history, world, rules, root, now, stamp=None):
     if ids is None:
         why += "; no ledger this pass: system_items unknown"
     repair = [i for i in ids or () if i.startswith(REPAIR_ALARM)] if probs else []
-    return {"schema": SCHEMA, "as_of": iso(now), "t": now, "state": state, "inputs": inputs, "repair": repair, "budget": b, "spent": spent, "drifted": drifted,
+    return {"schema": SCHEMA, "as_of": iso(now), "t": now, "state": state, "inputs": inputs, "repair": repair, "budget": b, "spent": spent, "spent_scope": spent_scope, "drifted": drifted,
             "system_items": ids, "recurring": recurring, "incident": incident(b, c), "recurring_unguarded": unguarded(world, c) if world is not None else None, "content_paused": state == "degraded", "max_age_min": c["max_age_min"], "why": why}
 
 

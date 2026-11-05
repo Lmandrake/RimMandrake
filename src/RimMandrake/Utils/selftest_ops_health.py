@@ -101,6 +101,8 @@ p = d / "health.json"
 v = H.publish({"testing.nightly_news": M(84)}, series(30), world, RULES, root, NOW, path=p)
 ok("verdict: a spent SLI reads degraded, content paused, names it",
    v["state"] == "degraded" and v["content_paused"] and v["spent"] == ["reds"] and "reds" in v["why"], v)
+ok("verdict: a spent SLI with no scope is published as scope all (a global pause, DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE)",
+   v["spent_scope"] == {"reds": "all"}, v.get("spent_scope"))
 ok("verdict: the died-once fix is listed as owing a guard test",
    [x["id"] for x in v["recurring"]] == ["RELENTLESS_DIED_FIX_ONCE"] and "guard test" in v["recurring"][0]["owes"], v["recurring"])
 got, why = H.read_verdict(NOW + 60, p)

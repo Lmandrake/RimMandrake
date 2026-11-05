@@ -299,7 +299,8 @@ def health_order(verdict, why, fallback):
     """Operations' health verdict (Utils/ops_health.py, health.json) as Relentless obeys it; it judges nothing itself.
     The owner, 2026-11-03: "I want it to ask "the system" for its health assessment, and that belongs to the operations
     component." -> {first: {item: place}, degraded, fresh, unmeasured, why}. An `unmeasured` verdict (unusable health
-    rules) is an assessment broken, never healthy: fresh False, its `repair` items placed before every other system item. With no fresh verdict every open system item is first
+    rules) is an assessment broken, never healthy: fresh False, its `repair` items placed before every other system item, and its
+    `pause` global (pause_scope). With no fresh verdict every open system item is first
     at once, by Operations' own classifier (`fallback`), and content is never paused (owner card 2026-11-03: "System
     work immediately but existing non system work continues")."""
     ids = verdict.get("system_items") if verdict else None
@@ -310,12 +311,33 @@ def health_order(verdict, why, fallback):
         except Exception as e:  # noqa: BLE001  no classifier: ordinary order, said aloud
             ids, said = [], "%s; system items unknown (%s: %s): ordinary order" % (said, type(e).__name__, str(e)[:120])
     unmeasured = bool(verdict) and verdict.get("state") == "unmeasured"
-    if unmeasured:      # the assessment is broken, not healthy: its measurement repair goes first, content is not paused
+    if unmeasured:      # the assessment is broken, not healthy: its measurement repair goes first; pause_scope: global
         rep = [i for i in verdict.get("repair") or () if isinstance(i, str)]
         ids = rep + [i for i in ids if i not in rep]
         said = "ASSESSMENT BROKEN (state unmeasured): %s; repair first: %s" % (said, ", ".join(rep) or "none filed yet")
-    return {"first": {i: n for n, i in enumerate(ids)}, "degraded": bool(verdict) and verdict.get("state") == "degraded",
-            "fresh": bool(verdict) and not unmeasured, "unmeasured": unmeasured, "why": said}
+    degraded = bool(verdict) and verdict.get("state") == "degraded"
+    return {"first": {i: n for n, i in enumerate(ids)}, "degraded": degraded,
+            "fresh": bool(verdict) and not unmeasured, "unmeasured": unmeasured, "why": said,
+            "pause": pause_scope(verdict) if degraded or unmeasured else None}
+
+
+def pause_scope(verdict):
+    """What a degraded or unmeasured verdict pauses (DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE; owner card 2026-11-05,
+    "What should happen to mod work while the system is unhealthy? -> Pause only what it touches"; spec
+    design/RimMandrake/relentless_recovery_plan_2026-11-05.md section 3) -> {global: why or None, lanes: [lane]}.
+    Global when a shared integrity resource is impaired: the assessment is unmeasured, or a spent SLI's scope is
+    integrity/all (storage headroom), or the verdict names no scopes (an older collector: the old, whole pause). The
+    account circuit and a suspect store are Relentless's own readings, added in content_pause. Otherwise the lanes the
+    spent SLIs reach (`game`: content that needs the live game); scope `system` pauses no content lane. Pure."""
+    if verdict.get("state") == "unmeasured":
+        return {"global": "health assessment unmeasured", "lanes": []}
+    scopes = verdict.get("spent_scope")
+    if not isinstance(scopes, dict) or not scopes:
+        return {"global": "verdict names no SLI scope (spent: %s)" % (", ".join(verdict.get("spent") or ()) or "?"), "lanes": []}
+    wide = sorted(k for k, v in scopes.items() if v not in ("game", "system"))
+    if wide:
+        return {"global": "shared resource SLI spent: " + ", ".join("%s (%s)" % (k, scopes[k]) for k in wide), "lanes": []}
+    return {"global": None, "lanes": sorted({v for v in scopes.values() if v != "system"})}
 
 
 def pilot_count(store, st, klass, detail, r, now):
@@ -1885,10 +1907,25 @@ class Effects(relentless_game.GameFx):
         pool = [i for i in pool if i.kind != "mod" or not self.concept_refusal(i.id)]   # no tree, no worker
         pool = [i for i in pool if not self.first_touch_hold(i.id)]     # a mod's first touch waits for the Designer
         h = self.health()       # the system's own items before content: first pick, never preemption (stable sort)
-        self.first, self.degraded = h["first"], h["degraded"]
+        self.first, self.degraded, self.pause_scope = h["first"], h["degraded"], h.get("pause")
         pool.sort(key=lambda i: (i.id not in self.first, self.first.get(i.id, 0)))
         self.plan = {i.id: plist.position(i, orders) for i in pool if plist.position(i, orders) <= plist.MAX_ENTRIES}
         return [i.id for i in pool], w
+
+    def owner_ruled_at(self, item):
+        """The epoch of the newest owner ruling on `item` (an OWNER-seat event carrying his words or his card), or None.
+        A standing ruling cited by reference (perRuling) is not a ruling on this item. Indexed once per ledger read."""
+        evs, _ = self.ledger_items()
+        idx = self.__dict__.get("_ruled")
+        if idx is None or idx[0] is not evs:
+            got = {}
+            for e in evs:
+                if e.get("seat") == "OWNER" and (e.get("ownerSaid") or e.get("byCard")) and e.get("id"):
+                    t = ts_epoch(e.get("ts"))
+                    if t is not None and t > got.get(e["id"], -1.0):
+                        got[e["id"]] = t
+            idx = self._ruled = (evs, got)
+        return idx[1].get(item)
 
     def health(self):
         """Operations' verdict, read once per tick (health_order). Relentless asks; it never assesses."""
@@ -3886,7 +3923,7 @@ def enrol(store, fx, r, now):
     first = getattr(fx, "first", None) or {}    # Operations' system items: order puts them first (pool_order)
     # a system item waits for neither the share nor content in the line, only for the per-tick and line caps
     sys_room = min(r["enrol_per_tick"], r["max_queued"] - sum(1 for s in in_turn if s["item"] in first))
-    paused = content_paused(fx, states, order, ours, refused=refusal_memo(fx), now=now)   # lease's own exemptions
+    pause = content_pause(fx, states, order, ours, refused=refusal_memo(fx), now=now, store=store)   # lease's own exemptions
     for i in order:
         if i in first and i not in plan and room <= 0:
             if sys_room <= 0 or i in ours:
@@ -3895,8 +3932,10 @@ def enrol(store, fx, r, now):
             break
         if i in ours:
             continue
-        if paused and i not in first and i not in plan:
-            break
+        if pause_stops(pause, fx, {"item": i}, plan, now):     # global: nothing further enrols; scoped: the next may
+            if pause["mode"] == "global":
+                break
+            continue
         if owner_hold(r, i, first):
             continue
         if one_per_mod:     # a candidate whose mod is already taken would only park: walk on to work that can start
@@ -3938,32 +3977,142 @@ def write_queue_next(store, fx, r, now, shown=8):
     pause, a degraded verdict or their own not_before (the same tests lease applies). A reading: nothing acts on it."""
     states = store.states()
     plan, first = getattr(fx, "plan", None) or {}, getattr(fx, "first", None) or {}
-    paused = content_paused(fx, states, refused=refusal_memo(fx), now=now)
+    pause = content_pause(fx, states, refused=refusal_memo(fx), now=now, store=store)
     free, waiting = [], []
     for st in queue_order(states, plan, first):
         i = st["item"]
-        stopped = owner_hold(r, i, first, st) or st.get("not_before", 0) > now or (
-            paused and not st.get("expedite") and i not in first and i not in plan)
+        stopped = owner_hold(r, i, first, st) or st.get("not_before", 0) > now or bool(pause_stops(pause, fx, st, plan, now))
         (waiting if stopped else free).append(i)
     store._write(store.p("queue_next.json"), json.dumps({"t": now, "free": free[:shown], "waiting": waiting[:shown]}, indent=1))
 
 
-def content_paused(fx, states, order=None, ours=None, refused=None, now=None):
-    """True while Operations' verdict reads degraded and a system item still waits for a place: in the line, or in the
-    pool not yet enrolled. When every system item is already being worked, content may start (owner card 2026-11-03).
-    `refused(item)` -> a reason marks a system item the concept gate keeps from any worker: it waits on a Designer pass,
-    not a place, so it holds no content back (21:06Z 2026-11-04: twenty refused items paused content with nothing live).
-    A queued system item whose not_before is still ahead waits on the clock, not a place: lease skips it, so it holds no
-    content back either (RELENTLESS_PAUSE_FIX_CLOCK_WAIT_STALLS_ALL, 2026-11-05: one item's 342 min wait-hours snag paused
-    every content item with 2 places live of 8). It keeps its first pick: the tick its wait ends, it is placed before content."""
+FRESH_RULING_S = 48 * 3600     # content he ruled on this recently passes a scoped pause (section 3 of the spec)
+PAUSE_ALARM_S = 6 * 3600        # runnable content held this long by the pause is told to the Conductor
+GAME_LANE_NEEDS = ("deploy", "game-up", "bridge", "harvest")
+PAUSED_WHY = "health degraded: content paused while system items wait"     # jam_classes content_paused_idle matches it
+
+
+def ts_epoch(ts):
+    """A ledger ts (2026-11-05T05:37:35Z) as epoch seconds, or None."""
+    try:
+        return time.mktime(time.strptime(str(ts)[:19], "%Y-%m-%dT%H:%M:%S")) - time.timezone
+    except (TypeError, ValueError):
+        return None
+
+
+def content_pause(fx, states, order=None, ours=None, refused=None, now=None, store=None):
+    """-> None, or {mode: global|scoped, why, holding: [system items waiting for a place], lanes: [lane]}.
+    A pause exists while Operations' verdict reads degraded (or unmeasured) and a system item still waits for a place: in
+    the line, or in the pool not yet enrolled. When every system item is already being worked, content may start (owner
+    card 2026-11-03). `refused(item)` -> a reason marks a system item the concept gate keeps from any worker: it waits on
+    a Designer pass, not a place, so it holds no content back (21:06Z 2026-11-04: twenty refused items paused content with
+    nothing live). A queued system item whose not_before is still ahead waits on the clock, not a place: lease skips it,
+    so it holds no content back either (RELENTLESS_PAUSE_FIX_CLOCK_WAIT_STALLS_ALL, 2026-11-05: one item's 342 min
+    wait-hours snag paused every content item with 2 places live of 8). It keeps its first pick: the tick its wait ends,
+    it is placed before content.
+    Scoped (DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE, owner card 2026-11-05 "Pause only what it touches"): the mode is
+    global only when a shared integrity resource is impaired: the verdict's pause_scope says so (assessment unmeasured,
+    storage headroom spent, no scopes named), the account circuit (breaker.json) is open, or the integrity gate's record
+    reads blocked (the store is suspect). Otherwise it is scoped: only content in the spent SLIs' lanes waits, and lease
+    reserves a place for each holding system item. An Fx with no pause_scope reads degraded as global (the old pause)."""
     first = getattr(fx, "first", None) or {}
-    if not getattr(fx, "degraded", False) or not first:
-        return False
+    sc = getattr(fx, "pause_scope", "unset")
+    if sc == "unset":
+        sc = {"global": "degraded", "lanes": []} if getattr(fx, "degraded", False) else None
+    if not first or not sc:
+        return None
     now = time.time() if now is None else now
     waits = [s["item"] for s in states if s["status"] == "queued" and s["item"] in first
              and not (s.get("not_before") or 0) > now]
     waits += [i for i in (order or ()) if i in first and i not in (ours or ())]
-    return any(not (refused and refused(i)) for i in waits)
+    holding = [i for i in dict.fromkeys(waits) if not (refused and refused(i))]
+    if not holding:
+        return None
+    impaired = [sc["global"]] if sc.get("global") else []
+    if store is not None:
+        br = load_breaker(store)
+        if br.get("until", 0) > now:
+            impaired.append("account circuit open until %s" % iso(br["until"]))
+        if (relentless_integrity.read_record(store) or {}).get("blocked"):
+            impaired.append("store suspect: the integrity gate is blocking")
+    if impaired:
+        return {"mode": "global", "why": "; ".join(impaired), "holding": holding, "lanes": []}
+    return {"mode": "scoped", "why": "lanes " + (", ".join(sc.get("lanes") or ()) or "none"), "holding": holding,
+            "lanes": list(sc.get("lanes") or ())}
+
+
+def content_paused(fx, states, order=None, ours=None, refused=None, now=None, store=None):
+    """True while any content pause, global or scoped, stands (content_pause)."""
+    return content_pause(fx, states, order, ours, refused, now, store) is not None
+
+
+def item_lane(fx, st):
+    """`game` for an item whose work needs the live game (a game clause on its contract, or ledger needs in
+    GAME_LANE_NEEDS), else `offline`."""
+    if (st.get("contract") or {}).get("game"):
+        return "game"
+    ask = getattr(fx, "item_state", None)
+    led = ask(st["item"]) if ask else None
+    return "game" if (led or {}).get("needs") in GAME_LANE_NEEDS else "offline"
+
+
+def fresh_ruling(fx, item, now):
+    """True when the owner ruled on this item (his words or card on the ledger) within FRESH_RULING_S."""
+    ask = getattr(fx, "owner_ruled_at", None)
+    t = ask(item) if ask else None
+    return t is not None and now - t < FRESH_RULING_S
+
+
+def pause_stops(pause, fx, st, plan=None, now=None):
+    """-> why this item waits on the pause, or None. Expedited, system and priority-list items never wait; a global pause
+    stops all other content; a scoped one stops content in a paused lane unless he ruled on it within 48 h (the ruling
+    raises priority; every other check still applies). Reserved places are lease's (pause_reserve)."""
+    if not pause:
+        return None
+    i = st["item"]
+    if st.get("expedite") or i in (getattr(fx, "first", None) or {}) or i in (plan or {}):
+        return None
+    if pause["mode"] == "global":
+        return "global: " + pause["why"]
+    if fresh_ruling(fx, i, time.time() if now is None else now):
+        return None
+    lane = item_lane(fx, st)
+    return "lane %s paused" % lane if lane in pause["lanes"] else None
+
+
+def pause_reserve(store, pause):
+    """The system items of a scoped pause still queued now: one free place is kept for each."""
+    if not pause or pause["mode"] != "scoped":
+        return []
+    return [i for i in pause["holding"] if (store.load(i) or {}).get("status") == "queued"]
+
+
+def pause_alarm(store, fx, seen, now, acts):
+    """Runnable content held by the pause past PAUSE_ALARM_S: one line to the Conductor naming the system items that hold
+    it (attention: once per 6 h). The clock starts the first tick content is held and clears the first tick none is."""
+    if not seen.get("known"):
+        return
+    path = store.p("content_pause.json")
+    if not seen["stopped"]:
+        if os.path.exists(path):
+            os.remove(path)
+        return
+    try:
+        with open(path, encoding="utf-8") as f:
+            rec = json.load(f)
+    except (OSError, ValueError):
+        rec = {"since": now}
+    pause = seen["pause"] or {}
+    rec.update({"holding": pause.get("holding", []), "stopped": seen["stopped"][:20], "mode": pause.get("mode"),
+                "why": pause.get("why")})
+    store._write(path, json.dumps(rec, sort_keys=True))
+    held = now - rec["since"]
+    if held > PAUSE_ALARM_S:
+        text = ("runnable content paused %.1f h (> %d h, %s pause: %s): %d content items held (%s) by system items %s. "
+                "Look: %s" % (held / 3600, PAUSE_ALARM_S // 3600, rec["mode"], rec["why"], len(seen["stopped"]),
+                              ", ".join(seen["stopped"][:5]), ", ".join(rec["holding"][:8]) or "none", path))
+        if attention(store, fx, "content_paused_6h", text, now):
+            acts.append({"do": "content_paused_alarm", "hours": round(held / 3600, 1), "holding": rec["holding"][:8]})
 
 
 def refusal_memo(fx):
@@ -5126,7 +5275,19 @@ def mods_held(store, fx, item, states=None):
 
 
 def lease(store, fx, r, now, acts):
-    """Fill the free places, top of the queue first. An item the machine cannot run now keeps its place."""
+    """Fill the free places, top of the queue first. An item the machine cannot run now keeps its place. Afterwards,
+    content the health pause held is timed for the Conductor's alarm (pause_alarm)."""
+    seen = {"known": False, "pause": None, "stopped": []}
+    try:
+        return _lease(store, fx, r, now, acts, seen)
+    finally:
+        try:
+            pause_alarm(store, fx, seen, now, acts)
+        except Exception as e:  # noqa: BLE001  the alarm's clock never stops a lease; said on the journal
+            store.journal({"at": iso(now), "do": "pause_alarm_failed", "why": "%s: %s" % (type(e).__name__, str(e)[:200])})
+
+
+def _lease(store, fx, r, now, acts, seen):
     cfg = r.get("staffing") or {}
     launched = clones_this_tick(acts, "work")
     per_tick = cfg.get("work_launch_per_tick", cfg.get("launch_per_tick")) if cfg else None
@@ -5140,7 +5301,10 @@ def lease(store, fx, r, now, acts):
             return
     first = getattr(fx, "first", None) or {}
     refused = refusal_memo(fx)
-    paused = content_paused(fx, store.states(), refused=refused, now=now)
+    plan = getattr(fx, "plan", None) or {}
+    pause = seen["pause"] = content_pause(fx, store.states(), refused=refused, now=now, store=store)
+    seen["known"] = True
+    said_reserve = said_lane = False
     no_room = None      # make_room's hold, once it said there is no room for a new clone this tick
     incidents = relentless_breakers.load(store)
     for st in queue_order(store.states(), getattr(fx, "plan", None), first):
@@ -5154,10 +5318,19 @@ def lease(store, fx, r, now, acts):
             continue
         if owner_hold(r, st["item"], first, st):
             continue
-        if paused and not st.get("expedite") and st["item"] not in first and st["item"] not in (getattr(fx, "plan", None) or {}):
-            # degraded: content waits, what runs finishes; the priority list is his word and still goes
-            acts.append({"do": "wait", "why": "health degraded: content paused while system items wait"})
-            return
+        stop = pause_stops(pause, fx, st, plan, now)
+        if stop:
+            # degraded: content waits, what runs finishes; the priority list is his word and still goes. Global: the line
+            # stops here. Scoped: only this item's lane is paused, the next item may start
+            if not st.get("not_before", 0) > now:
+                seen["stopped"].append(st["item"])
+            if pause["mode"] == "global":
+                acts.append({"do": "wait", "why": "%s (%s)" % (PAUSED_WHY, stop)})
+                return
+            if not said_lane:       # once a tick: a long line of game-lane content would flood the acts
+                said_lane = True
+                acts.append({"do": "content_paused", "item": st["item"], "why": "%s (%s)" % (PAUSED_WHY, stop)})
+            continue
         if not st["ledger_started"] and fx.item_state(st["item"]) is None:     # not published yet: see retire()
             continue
         if st.get("not_before", 0) > now:
@@ -5175,6 +5348,15 @@ def lease(store, fx, r, now, acts):
                 continue
         # a stopping item holds its place: its slot is not free for a fresh item while it returns to the top
         active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)
+        if pause and pause["mode"] == "scoped" and st["item"] not in first and not st.get("expedite") \
+                and st["item"] not in plan and not fresh_ruling(fx, st["item"], now):
+            held = pause_reserve(store, pause)      # a place kept for each system item still in line
+            if held and worker_cap(fx, r, 0, store) - active <= len(held):
+                seen["stopped"].append(st["item"])
+                if not said_reserve:
+                    said_reserve = True
+                    acts.append({"do": "wait", "why": "%s (%d places reserved for %s)" % (PAUSED_WHY, len(held), ", ".join(held[:5]))})
+                continue
         why = admission(store, fx, r, now, active)
         if not why and not fx.clone_present(st["clone"] or fx.clone_path(st["item"], len(st["quarantined"]))):
             # no room for a NEW clone holds only the items that need one: one further down whose clone is still there
@@ -5792,7 +5974,7 @@ def tick(store=None, fx=None, r=None, now=None):
         h = getattr(fx, "_health", None)
         if h:       # what Relentless obeyed this tick; a missing or stale verdict is said here (Operations raises it)
             acts.append({"do": "health", "fresh": h["fresh"], "degraded": h["degraded"], "first": len(h["first"]),
-                         "unmeasured": bool(h.get("unmeasured")),
+                         "unmeasured": bool(h.get("unmeasured")), "pause": h.get("pause"),
                          "why": h["why"][:300]})
         try:        # after enrol, which reads the verdict the choice of victim needs
             active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)

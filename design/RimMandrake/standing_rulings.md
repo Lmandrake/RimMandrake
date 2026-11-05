@@ -526,7 +526,7 @@ A code version is `gate.code_version`: the chain's runtime hash, the runtime has
 system before continuing content creation yes."* Any known fault in the system itself (Relentless, Operations, the
 Conductor, the Designer, the Dispatcher, timers, tests, tools: anything that is not game content) outranks content
 creation: while such an item is open and buildable, Relentless takes it before any content item. When the system misses
-its health targets (its error budget is spent), content work stops until it is healthy again. Design: top-5 #5 of
+its health targets (its error budget is spent), new content stops only as far as the broken part reaches (below). Design: top-5 #5 of
 `design/RimMandrake/build_system_practices_2026-11-03.md`; build item `PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF`.
 
 🔑 **Operations owns the health assessment; Relentless only asks** — owner, 2026-11-03: *"I don't want relentless to own
@@ -543,6 +543,15 @@ are already being worked non system work can be selected. Keeps system work at m
 wait pointlessly."* So a system item always takes the next free place; work already running is never stopped for it;
 when every open, buildable system item is already being worked, a free place takes content. With no verdict, Relentless
 applies this at once, treating every open system item as first (no grace period), and says so in its reading.
+
+🔑 **An unhealthy system pauses only what it touches** — owner, by card 2026-11-05: *"What should happen to mod work while
+the system is unhealthy?"* → **Pause only what it touches.** All new content waits only while a shared integrity resource
+is impaired (the account circuit is open, storage headroom is spent, the assessment is unmeasured, or the store is
+suspect). Otherwise only content in the spent SLI's lane waits (each SLI's `scope` in `ops_watch_rules.json`
+`health.slis`: `game` reaches content that needs the live game, `system` reaches no content), a free place is kept for
+each system item still in line, and content he ruled on within 48 h may take a kept place (every other check still
+applies). Runnable content held over 6 h is told to the Conductor, naming the system items holding it. Build item
+`DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE`; spec `design/RimMandrake/relentless_recovery_plan_2026-11-05.md` §3.
 
 ## Wrap-up is a script, never a request — owner, 2026-11-03
 
