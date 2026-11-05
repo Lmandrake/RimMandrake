@@ -2513,7 +2513,8 @@ class Effects(relentless_game.GameFx):
             os.makedirs(prof["box_root"], exist_ok=True)
             box = tempfile.mkdtemp(prefix="reachprobe-", dir=prof["box_root"])
             try:
-                os.makedirs(os.path.join(box, "projects"), exist_ok=True)
+                for sub in ("projects", "tmp"):        # props() binds both into the unit
+                    os.makedirs(os.path.join(box, sub), exist_ok=True)
                 body = ('for p do if [ -d "$p" ]; then ls -- "$p" >/dev/null || { echo "UNREADABLE $p"; exit 3; }; '
                         'elif [ -r "$p" ]; then head -c 1 -- "$p" >/dev/null || { echo "UNREADABLE $p"; exit 3; }; '
                         'else echo "UNREADABLE $p"; exit 3; fi; echo "read $p"; done')

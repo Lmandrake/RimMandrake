@@ -164,7 +164,8 @@ def props(prof, box, extra=(), through_paths=()):
         out += ["-p", "BindReadOnlyPaths=-" + p]
     for p in prof.get("write_through", ()):     # MARKER_WALL_FIX_HIDES_ONLY_THE_DIARY: the Windows build stage, bound
         out += ["-p", "BindPaths=-" + unit_path(p)]     # as the host's drvfs so dotnet.exe is handed D:\, not a UNC path
-    return out + ["-p", "BindPaths=%s:%s/.claude/projects" % (Path(box, "projects"), HOME)]
+    return out + ["-p", "BindPaths=%s:%s/.claude/projects" % (Path(box, "projects"), HOME),
+                  "-p", "BindPaths=%s:%s" % (Path(box, "tmp"), UNIT_TMP)]     # tmp_env(): a short TMPDIR, still the box's
 
 
 # CHECKER_REACH_FIX_NAMED_SCRATCH_READ_ONLY (2026-11-05): 24 items held `unmeasured`, 17 of them on evidence under
@@ -251,11 +252,15 @@ def through_lines(paths):
             "them as the evidence they are; a path in this list is never --unreached." % ", ".join(paths)]
 
 
+UNIT_TMP = "/tmp"
+
+
 def tmp_env(box):
-    """A walled run's TMPDIR: inside its box. run_tmp's root (~/.seat-tmp/runs) sits behind the wall, and Claude dies at
-    start on a TMPDIR it cannot mkdir in, so no checker ever gave a verdict. relentless_disk.reap_boxes takes this with the tree."""
-    d = os.path.join(box, "tmp")
-    return {"TMPDIR": d, "TMP": d, "TEMP": d}
+    """A walled run's TMPDIR: its box's tmp, which props() binds over the unit's /tmp. run_tmp's root (~/.seat-tmp/runs)
+    sits behind the wall, and Claude dies at start on a TMPDIR it cannot mkdir in, so no checker ever gave a verdict.
+    Named as /tmp, not <box>/tmp: 50 bytes of box path plus run_selftests' selftest_run_* dir and a test's own mkdtemp
+    passed AF_UNIX's 107-byte limit (CHECKER_TMPDIR_FIX_SOCKETS_DONT_FIT). relentless_disk.reap_boxes takes it with the tree."""
+    return {"TMPDIR": UNIT_TMP, "TMP": UNIT_TMP, "TEMP": UNIT_TMP}
 
 
 def unit_env(prof, box):

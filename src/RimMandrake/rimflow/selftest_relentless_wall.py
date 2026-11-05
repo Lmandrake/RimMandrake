@@ -2,6 +2,7 @@
 """selftest_relentless_wall.py - the Marker's wall as data and as a box. The wall in force is proved live, not here."""
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -72,7 +73,7 @@ def test_profile_and_props():
     o = W.props(p, "/b", ["/store"])
     check("deny property", "InaccessiblePaths=/store" in o, o)
     check("tmpfs property", "TemporaryFileSystem=" + str(Path(root, "kids/scratch")) in o, o)
-    check("transcripts bound into the box", o[-1] == "BindPaths=/b/projects:%s/.claude/projects" % W.HOME, o)
+    check("transcripts bound into the box", "BindPaths=/b/projects:%s/.claude/projects" % W.HOME in o, o)
     check("every property has its flag", o[0::2] == ["-p"] * (len(o) // 2), o)
     sp = W.props({"deny": ["/srv/private data"], "tmpfs": ["/tmp/a b"]}, "/b")
     check("a path with a space stays one entry", 'InaccessiblePaths="/srv/private data"' in sp and 'TemporaryFileSystem="/tmp/a b"' in sp, sp)
@@ -265,10 +266,36 @@ def test_tmpdir_inside_the_wall():
     wall = prof(root)
     box = W.make_box(wall, src, sha, "n7")
     env = W.tmp_env(box)
-    check("the box's TMPDIR exists, is the run's alone and is inside the box",
-          os.path.isdir(env["TMPDIR"]) and env["TMPDIR"].startswith(box + "/")
-          and os.stat(env["TMPDIR"]).st_mode & 0o777 == 0o700 and set(env) == {"TMPDIR", "TMP", "TEMP"}, env)
-    check("nothing in the wall covers it", not any(env["TMPDIR"].startswith(d + "/") for d in W.denied(wall)))
+    btmp = os.path.join(box, "tmp")
+    check("the box's tmp exists and is the run's alone",
+          os.path.isdir(btmp) and os.stat(btmp).st_mode & 0o777 == 0o700 and set(env) == {"TMPDIR", "TMP", "TEMP"}, env)
+    check("props bind the box's tmp at the unit's TMPDIR",
+          "BindPaths=%s:%s" % (btmp, env["TMPDIR"]) in W.props(wall, box), env)
+    check("nothing in the wall covers it", not any((env["TMPDIR"] + "/").startswith(d + "/") for d in W.denied(wall)
+                                                   + list(wall.get("tmpfs", ()))))
+    # CHECKER_TMPDIR_FIX_SOCKETS_DONT_FIT: <box>/tmp (50 bytes live) + run_selftests' selftest_run_XXXXXXXX + a test's
+    # own mkdtemp + "tmp/agent.s0" was 120 bytes, past AF_UNIX's 107: selftest_scratch_reap_tmp CRASHed in every box
+    live_box = os.path.join(W.profile(live)["box_root"], "0" * 24)
+    deep = os.path.join(W.tmp_env(live_box)["TMPDIR"], "selftest_run_abcdefgh", "selftest_scratch_reap_tmp_abcdefgh",
+                        "tmp", "agent.s0")
+    check("a socket two mkdtemps under the walled TMPDIR fits AF_UNIX with room to spare", len(deep) <= 107 - 20, deep)
+    sock_dir = tempfile.mkdtemp(prefix="selftest_run_")
+    try:     # the instrument can see: the same depth under a 50-byte TMPDIR is refused by the kernel
+        long_dir = os.path.join(sock_dir, "q" * (50 - len(sock_dir) - 1), "selftest_run_abcdefgh",
+                                "selftest_scratch_reap_tmp_abcdefgh", "tmp")
+        os.makedirs(long_dir)
+        import socket
+        sk = socket.socket(socket.AF_UNIX)
+        try:
+            sk.bind(os.path.join(long_dir, "agent.s0"))
+            refused = False
+        except OSError:
+            refused = True
+        finally:
+            sk.close()
+        check("probe: the kernel refuses that socket under the old 50-byte box TMPDIR", refused, long_dir)
+    finally:
+        shutil.rmtree(sock_dir, ignore_errors=True)
 
     def launched(extra):
         seen, prepared = [], []
@@ -298,7 +325,8 @@ def test_unit_env():
     import relentless as R
     real = W.profile(R.rules(os.path.join(R.HERE, "relentless_rules.json")))
     env = W.unit_env(real, "/b/ox")
-    check("the walled unit keeps its box's TMPDIR", env["TMPDIR"] == "/b/ox/tmp", env)
+    check("the walled unit's TMPDIR is the short /tmp its box's tmp is bound over", env["TMPDIR"] == W.UNIT_TMP == "/tmp"
+          and "BindPaths=/b/ox/tmp:/tmp" in W.props(real, "/b/ox"), env)
     check("the walled unit's data root is a tmpfs inside the wall", env.get("RM_DATA_ROOT") in real["tmpfs"], env)
     check("a profile with no env names only the temp", set(W.unit_env({}, "/b")) == {"TMPDIR", "TMP", "TEMP"})
 
@@ -326,7 +354,7 @@ def test_through():
     check("only the named things", sorted(got) == sorted([os.path.join(root, "ops/s.json"), os.path.join(root, "q")]), got)
     o = W.props(dict(p, deny=[]), "/b", [], got)
     check("props binds each read only, a gone one skipped", ("BindReadOnlyPaths=-" + got[0]) in o and o.count("-p") ==
-          len(got) + 1, o)
+          len(got) + 2, o)      # + the transcripts and the tmp binds
     check("no paths, no bind", not any("BindReadOnlyPaths" in x for x in W.props(dict(p, deny=[]), "/b")))
     check("the Marker is told what was bound", got[0] in "\n".join(W.through_lines(got)) and W.through_lines([]) == [])
     ev = W.through(dict(p, env={"RM_DATA_ROOT": root}), ['test -s "$RM_DATA_ROOT/ops/s.json" && cat ${RM_DATA_ROOT}/q/tick.log'])
