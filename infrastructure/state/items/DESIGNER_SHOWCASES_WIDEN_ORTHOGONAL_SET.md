@@ -15,6 +15,7 @@ Asked about the Designer designing only the one first-judged scene (FlowWorks: t
 
 ## Owed
 - Calibrate the two numbers on the first two concepts reaching stage 3 (FlowWorks first); record in showcase_rules.json.
+  Filed as `SHOWCASE_RULES_TUNE_AWAITING_STAGE_THREE` (2026-11-05: FlowWorks still at stage 2).
 - The event deliberately does not name the FlowWorks concept item: owner events naming it wake its stage 2 (waiting
   on his turn-2 answers). Stage 3 reads the rule from its packet.
 
