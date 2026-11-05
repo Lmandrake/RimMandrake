@@ -43,12 +43,14 @@ namespace RimMandrake.Biomes
         public static string blendShader = "WorldOverlayTransparentLit";
         public static int blendQueue = 3505;        // above terrain (3500), under hills (3510) and rivers (3520)
 
+        // Film numbers = the "wider shelf" row the owner confirmed (2026-10-24, WORLD_WATER_REDRAW_SEAS_THAT_READ_DEEP);
+        // world_water_variants.FILMS["shelf"] is the source and selftest_sea_films_picked.py holds the two equal.
         public static string seaShoreColor = "0.40,0.62,0.72";  // pale film near the coast
-        public static float seaShoreAlpha = 0.40f;
-        public static float seaShoreTiles = 1.0f;
+        public static float seaShoreAlpha = 0.45f;
+        public static float seaShoreTiles = 2f;
         public static string seaDeepColor = "0.05,0.09,0.20";   // dark film far from it
-        public static float seaDeepAlpha = 0.5f;
-        public static float seaDeepTiles = 4f;
+        public static float seaDeepAlpha = 0.62f;
+        public static float seaDeepTiles = 6f;
         public static string seaShader = "WorldOverlayTransparentLit";
         public static int seaQueue = 3502;          // above the ocean (3500), under the border blend (3505)
 
