@@ -9,7 +9,9 @@ the next carry was computed from 890c85, so the item went back stale a third tim
 
 Unlike selftest_relentless_game's carry rows (fake carry answers), this runs the REAL relentless_live.preflight and
 relentless_live.carry on a REAL git repo, through the game phase of the supervisor's tick: the chain of commits is the
-instance's own shape, then a seeded sweep of other orders. No arguments: every row. Exit 1 on any FAIL."""
+instance's own shape, then a seeded sweep of other orders. No arguments: every row. Exit 1 on any FAIL.
+`--pre-fix` replays the instance as it ran before 6cfce056d6: each carry is computed from the item's CURRENT game sha (the
+carried commit), not its origin build. Red there is the guard shown failing on the instance (`rimflow guard --instance`)."""
 import os
 import random
 import shutil
@@ -88,6 +90,8 @@ class RealGW(SG.GW):
         return L.preflight(LFx(self.repo.d, self), L.live_rules({}), item, lines, sites)
 
     def game_carry(self, item, sha):
+        if PRE_FIX and getattr(self, "cur", None):
+            sha = self.cur      # the pre-fix supervisor carried from the sha in the game, not from the origin build
         self.carry_calls.append((item, sha))
         try:
             return L.carry(LFx(self.repo.d, self), sha, item)
@@ -118,6 +122,7 @@ def enter(repo, built):
 
 
 def step(x, label):
+    x.w.cur = (x.st("I0").get("game") or {}).get("sha")
     x.tick()
     st = x.st("I0")
     return st, (st.get("last_fail") or {}).get("class")
@@ -180,7 +185,12 @@ def t_sweep(seeds=6, length=5):
             shutil.rmtree(repo.d, ignore_errors=True)
 
 
+PRE_FIX = False
+
+
 def main():
+    global PRE_FIX
+    PRE_FIX = "--pre-fix" in sys.argv[1:]
     t_the_instance()
     t_sweep()
     if S.FAILS:
