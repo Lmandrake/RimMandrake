@@ -13,7 +13,9 @@ one clause off modcheck's own results JSON (Transient/modcheck/Stillsand_*.json,
 One gale serves every clause: a results JSON from the last REUSE_S seconds that holds all three rows is judged
 instead of running the chain again, so the four live-proof lines cost one 6000-tick gale.
 
-Exit: 0 PASS, 1 FAIL / UNMEASURED / row missing / unknown clause, 2 no results JSON written.
+Exit: 0 PASS, 1 FAIL / UNMEASURED row / row missing / unknown clause, 2 nothing measured: no results JSON written, or
+the sheet modcheck wrote is a refusal (summary.refused or summary.unmeasured set, e.g. stale_load: the running game is
+not on the composed list) so no gale ran and no Stillsand behaviour was observed.
 """
 import argparse
 import glob
@@ -31,11 +33,25 @@ ROWS = ["gale_phases_and_aftermath", "gale_dims_sun_exposure", "gale_carry_drag_
 REUSE_S = 1800
 
 
-def _components(path):
+def _summary(path):
     try:
         summary = json.load(open(path, encoding="utf-8"))["summary"]
     except (OSError, ValueError, KeyError):
         return {}
+    return summary if isinstance(summary, dict) else {}
+
+
+def _refusal(path):
+    """The sheet's own refusal (runner.py writes chains=[] with `refused` and/or `unmeasured`), or None."""
+    s = _summary(path)
+    why, cause = s.get("refused"), s.get("unmeasured")
+    if not why and not cause:
+        return None
+    return "%s%s" % (("[%s] " % cause) if isinstance(cause, str) and cause else "", why or "")
+
+
+def _components(path):
+    summary = _summary(path)
     out = {}
     for ch in summary.get("chains") or []:
         for c in ch.get("components") or []:
@@ -77,6 +93,10 @@ def main(argv=None):
         path = fresh[0]
     c = _components(path).get(row)
     if c is None:
+        why = _refusal(path)
+        if why:
+            print("UNMEASURED: %s %s not run: modcheck refused the run: %s (%s)" % (a.clause, row, why[:600], path))
+            return 2
         print("%s %s missing from %s" % (a.clause, row, path))
         return 1
     print("%s %s: %s -- %s (%s)" % (a.clause, row, c.get("verdict"), str(c.get("detail"))[:600], path))

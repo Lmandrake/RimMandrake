@@ -2,7 +2,8 @@
 the item (the water skin, the track-grid hook, the gale proof probes).
 
 prove_dune_gale.py: modcheck is faked (subprocess.call writes a results JSON the way runner.write_sheet does). PASS ->
-0; FAIL, UNMEASURED, a missing row, an unknown clause -> 1; no JSON -> 2. A fresh JSON holding all three gale rows is
+0; FAIL, UNMEASURED, a missing row, an unknown clause -> 1; no JSON -> 2; a refused sheet (runner.py's chains=[] with
+`refused` and/or `unmeasured`, the 2026-11-05 stale_load sheets) -> 2 for every clause, never 1. A fresh JSON holding all three gale rows is
 reused (no second gale); a stale one is not. It pins that modcheck is asked for exactly the three gale rows.
 
 Static: RM_CaravanWaterSkin carries RM_CompProperties_WaterVolume and sits in the mummifiedCaravan row; the eraser
@@ -33,7 +34,11 @@ def _summary(verdicts):
     return {"chains": [{"name": "gale", "components": comps}]}
 
 
-def run_case(clause, verdicts, write=True, preexisting_age=None):
+REFUSED_STALE = {"chains": [], "all_green": False, "findings": [], "unmeasured": "stale_load",
+                 "refused": "UNMEASURED: the running load is not the composed list (restart the game on it): not loaded: x"}
+
+
+def run_case(clause, verdicts, write=True, preexisting_age=None, summary=None):
     """-> (exit code, argv modcheck was called with or None)."""
     root = tempfile.mkdtemp(prefix="prove_dune_gale_")
     out = os.path.join(root, "Transient", "modcheck")
@@ -43,7 +48,8 @@ def run_case(clause, verdicts, write=True, preexisting_age=None):
     def write_json(name, when=None):
         p = os.path.join(out, name)
         with open(p, "w", encoding="utf-8") as f:
-            json.dump({"mod": "Stillsand", "stamp": "x", "summary": _summary(verdicts)}, f)
+            json.dump({"mod": "Stillsand", "stamp": "x",
+                       "summary": summary if summary is not None else _summary(verdicts)}, f)
         if when is not None:
             os.utime(p, (when, when))
 
@@ -124,6 +130,14 @@ def main():
     expect("A2 row missing", run_case("A2", v)[0], 1)
     expect("unknown clause", run_case("A9", ALL_PASS)[0], 1)
     expect("no results JSON", run_case("A2", ALL_PASS, write=False)[0], 2)
+    for clause in sorted(P.CLAUSES):
+        expect("%s refused stale_load sheet" % clause, run_case(clause, ALL_PASS, summary=REFUSED_STALE)[0], 2)
+    only_refused = dict(REFUSED_STALE)
+    del only_refused["unmeasured"]
+    expect("refused-only sheet", run_case("A1", ALL_PASS, summary=only_refused)[0], 2)
+    only_unm = dict(REFUSED_STALE, refused="")
+    expect("unmeasured-only sheet", run_case("A2", ALL_PASS, summary=only_unm)[0], 2)
+    expect("empty chains, no refusal: row missing", run_case("A3", ALL_PASS, summary={"chains": [], "refused": ""})[0], 1)
     rc, argv = run_case("A4", ALL_PASS, write=False, preexisting_age=60)
     expect("fresh JSON reused", rc, 0)
     check("fresh JSON reused without a second run", argv is None)
