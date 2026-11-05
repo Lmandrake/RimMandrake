@@ -45,7 +45,7 @@
                                             served and opened; no agent in the loop (review_queue.py)
     art.py enact     <decisions.json> [--apply] [--hold S]... [--mark-done ROW]... [--no-deploy]
                                             a ruled sheet in ONE pass: ingest, install picks, queue redraws,
-                                            purge ✕ (never protected ones), cut rows, deploy touched mods (enact.py)
+                                            ✕ = delete + ban (newest mark wins), cut rows, deploy touched mods (enact.py)
     art.py archive   <sha> --decisions FILE --row ROW   his ✕ (newest mark) on a picture in the game: bytes stay in the
                                             store, the file leaves through the ledger carrying the sheet mark; never a
                                             purge. Refused when a keep of his is newer than the ✕. [--dry-run]

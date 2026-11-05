@@ -10,7 +10,7 @@ accept these things, regenerate these things, and cut this animal from the biome
 Without --apply it is a DRY RUN: the full plan is printed and nothing changes. Steps, in order:
 
   1 INGEST    the sheet's rulings into the art ledger (ingest.py; content-idempotent, repo-relative `via`).
-              The ✕ purges are NOT run by ingest (it would release keeps) — step 4 does them.
+              His ✕ marks are NOT carried out by ingest (it would release keeps) — step 4 does them.
   2 INSTALL   every keep/pick: per-graphic picks win over the row pick; a `_byname` column on a row with
               several graphics is ambiguous and becomes a CONFLICT. Each facing goes to the slot the ledger
               says is live for that texPath (any of our mods shipping it). A slot that is not ours (donor art
@@ -2346,14 +2346,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                 R["x_deleted"] += 1
             except L.Refused as e:
                 R["conflicts"].append(f"{ar['row']}: ✕ {ar['sha'][:12]} not deleted - {e}")
-        # 4 purge
-        for p in P["purge"]:
-            try:
-                L.purge(p["sha"], owner_said=p["note"] or f"reject+purge on sheet {sheet}",
-                        via=I.rel_via(decisions), release_keep=set(p.get("release") or ()))
-                R["purged"] += 1
-            except L.Refused as e:
-                R["conflicts"].append(f"{p['row']}: ✕ {p['sha'][:12]} not purged — {e}")
+        # 4 no raw purge: every ✕ went through x_delete above (newest mark wins; ENACT_X_FIX_PURGE_OF_KEPT_ART)
         # 5 cut
         for c in P["cuts"]:
             pl = c["plan"]
