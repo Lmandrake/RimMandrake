@@ -1,0 +1,143 @@
+{
+ "subject": "RM_FleetFlier C / RM_Murrelith D,E,F,H facings moved since his ruling",
+ "item": "FLYER_VARIANTS_FIX_RULED_COLUMNS_MOVED",
+ "card": "Flyer art: redrawn since your ruling → Judge decides, show me (2026-11-03)",
+ "finding": "Not redrawn: 8605d39e4b (ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL) rescaled/shifted them under his card 'Rescale all ~345'; selftest_flyer_variants proves same art per facing",
+ "judge_model": {
+  "claude": "fresh rm-judge (opus), not the maker"
+ },
+ "maker": "8605d39e4b scripted rescale",
+ "procedure": "judge viewed ruled fixture (left) vs current (right) per facing plus pixel checks; KEEP_NOW or REVERT_TO_RULED; judge verdict stands",
+ "rows": [
+  {
+   "subject": "RM_FleetFlier C south",
+   "verdict": "KEEP_NOW",
+   "reason": "Pixel-identical art moved up 11 px with no scaling; intact, nothing to restore.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/1749a36dd973.png",
+   "after": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_C_south.png",
+   "pin": "1749a36dd973",
+   "now": "c17e66b64f96",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/1749a36dd973.png src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_C_south.png && art install (ruled column, sha 1749a36dd973)"
+  },
+  {
+   "subject": "RM_FleetFlier C north",
+   "verdict": "KEEP_NOW",
+   "reason": "Pixel-identical art moved up 9 px with no scaling; intact.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/978d2dafdaac.png",
+   "after": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_C_north.png",
+   "pin": "978d2dafdaac",
+   "now": "d9623dc837fa",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/978d2dafdaac.png src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_C_north.png && art install (ruled column, sha 978d2dafdaac)"
+  },
+  {
+   "subject": "RM_Murrelith D south",
+   "verdict": "KEEP_NOW",
+   "reason": "Same art scaled cleanly to 0.78; sharp, no artifacts or recolour, and the wingspan now sits in scale with the D east view instead of filling the canvas edge to edge.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/4cf8b40151e4.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_D_south.png",
+   "pin": "4cf8b40151e4",
+   "now": "c2214922fc43",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/4cf8b40151e4.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_D_south.png && art install (ruled column, sha 4cf8b40151e4)"
+  },
+  {
+   "subject": "RM_Murrelith D north",
+   "verdict": "KEEP_NOW",
+   "reason": "Same art scaled cleanly to 0.78; crisp crest and tail drops, and now in proportion with the D east view.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/384c97f7c94e.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_D_north.png",
+   "pin": "384c97f7c94e",
+   "now": "0d29fc3d30a2",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/384c97f7c94e.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_D_north.png && art install (ruled column, sha 384c97f7c94e)"
+  },
+  {
+   "subject": "RM_Murrelith E south",
+   "verdict": "KEEP_NOW",
+   "reason": "Pixel-identical art moved up 7 px; the crest now touches the top edge but no pixels are lost.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/f529f88240d4.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_E_south.png",
+   "pin": "f529f88240d4",
+   "now": "2738f305ba1f",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/f529f88240d4.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_E_south.png && art install (ruled column, sha f529f88240d4)"
+  },
+  {
+   "subject": "RM_Murrelith E east",
+   "verdict": "KEEP_NOW",
+   "reason": "Pixel-identical art moved down 24 px with no scaling; intact.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/12c76db6b423.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_E_east.png",
+   "pin": "12c76db6b423",
+   "now": "e7ca6f3027dd",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/12c76db6b423.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_E_east.png && art install (ruled column, sha 12c76db6b423)"
+  },
+  {
+   "subject": "RM_Murrelith E north",
+   "verdict": "KEEP_NOW",
+   "reason": "Pixel-identical art moved up 6 px; the crest touches the top edge but nothing is lost.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/62e4cf875a47.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_E_north.png",
+   "pin": "62e4cf875a47",
+   "now": "aab33cb170e2",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/62e4cf875a47.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_E_north.png && art install (ruled column, sha 62e4cf875a47)"
+  },
+  {
+   "subject": "RM_Murrelith F south",
+   "verdict": "KEEP_NOW",
+   "reason": "Same art moved up 5 px; the topmost crest row is clipped by less than 1 px of alpha, which is invisible.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/5cf46eea6825.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_F_south.png",
+   "pin": "5cf46eea6825",
+   "now": "727d09f8132c",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/5cf46eea6825.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_F_south.png && art install (ruled column, sha 5cf46eea6825)"
+  },
+  {
+   "subject": "RM_Murrelith F east",
+   "verdict": "KEEP_NOW",
+   "reason": "Pixel-identical art moved down 17 px; intact.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/9cb5b19c17b1.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_F_east.png",
+   "pin": "9cb5b19c17b1",
+   "now": "f52d343e5d63",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/9cb5b19c17b1.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_F_east.png && art install (ruled column, sha 9cb5b19c17b1)"
+  },
+  {
+   "subject": "RM_Murrelith F north",
+   "verdict": "KEEP_NOW",
+   "reason": "Pixel-identical art moved up 4 px; intact.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/21fdabcf883e.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_F_north.png",
+   "pin": "21fdabcf883e",
+   "now": "f3dd97114302",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/21fdabcf883e.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_F_north.png && art install (ruled column, sha 21fdabcf883e)"
+  },
+  {
+   "subject": "RM_Murrelith H south",
+   "verdict": "KEEP_NOW",
+   "reason": "Same art moved up 1 px; one faint (alpha 43 or less) crest row is dropped, which is invisible.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/0bf1f96e97ca.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_H_south.png",
+   "pin": "0bf1f96e97ca",
+   "now": "7919182ece89",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/0bf1f96e97ca.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_H_south.png && art install (ruled column, sha 0bf1f96e97ca)"
+  },
+  {
+   "subject": "RM_Murrelith H east",
+   "verdict": "KEEP_NOW",
+   "reason": "Pixel-identical art moved down 7 px; feet now near the bottom edge but intact.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/4cf5bdffe576.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_H_east.png",
+   "pin": "4cf5bdffe576",
+   "now": "a1695cbb7298",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/4cf5bdffe576.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_H_east.png && art install (ruled column, sha 4cf5bdffe576)"
+  },
+  {
+   "subject": "RM_Murrelith H north",
+   "verdict": "KEEP_NOW",
+   "reason": "Pixel-identical to the ruled sprite; unchanged.",
+   "before": "src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/8140e74b3c63.png",
+   "after": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_H_north.png",
+   "pin": "8140e74b3c63",
+   "now": "5a995a6e7172",
+   "revert": "cp src/RimMandrake/Utils/art/fixtures/flyer_variants_ruled/8140e74b3c63.png src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_MurrelithV_H_north.png && art install (ruled column, sha 8140e74b3c63)"
+  }
+ ]
+}
