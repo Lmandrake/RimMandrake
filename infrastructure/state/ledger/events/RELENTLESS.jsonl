@@ -550,3 +550,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T03:51:02Z","tsn":1793850662272120884}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T03:51:12Z","tsn":1793850672891282003}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","ts":"2026-11-05T03:54:55Z","tsn":1793850895395514530}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T04:03:10Z","tsn":1793851390642373926}
