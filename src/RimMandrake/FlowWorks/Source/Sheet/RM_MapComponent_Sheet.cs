@@ -1079,6 +1079,10 @@ namespace RimMandrake.FlowWorks.Sheet
 			}
 			foreach (int k in taken)
 			{
+				if (state.Tiers[k] == Tier.Ice)
+				{
+					continue; // D10: a frozen sheet neither flows nor returns; it is handed over once Freeze thaws it
+				}
 				if (world.Kinds[k] == Kind.Sink)
 				{
 					byte bf = world.BodyFluid[k];
