@@ -67,8 +67,53 @@ CASES = [
 ]
 
 
+class FakeBridge:
+    """rimbridge_client stand-in that applies jawa/static_call's real argument rule (JawaBenchCompanionProbeTools.cs
+    StaticCall: an empty args string is ZERO parameters; only overloads with that many parameters match) to
+    RM_Levelling's one overload, ProofTiming(string). gen 8 blind checker: main() passed args='' and could never exit 0."""
+    calls: list = []
+
+    def __init__(self, **_kw):
+        pass
+
+    def connect(self):
+        pass
+
+    def call(self, tool, params):
+        FakeBridge.calls.append((tool, dict(params)))
+        args = params.get("args", "")
+        raw = [] if not args else args.split("|")
+        if tool != "jawa/static_call" or params.get("method") != "ProofTiming" or len(raw) != 1:
+            return {"success": False, "error": f"No public static ProofTiming with {len(raw)} params."}
+        a = raw[0].strip()
+        text = life() if "life" in a else ("RESET" if "reset" in a else R17)
+        return {"success": True, "result": text, "ticksGame": NOW}
+
+
+def main_reads_through_static_call() -> int:
+    """main() end to end on a perfect r17 readout: exit 0, and no call can reset or mis-arity the profile."""
+    import types
+    fake = types.ModuleType("rimbridge_client")
+    fake.resolve_endpoint = lambda: ("127.0.0.1", 0, "")
+    fake.RimBridge = FakeBridge
+    saved = sys.modules.get("rimbridge_client")
+    sys.modules["rimbridge_client"] = fake
+    FakeBridge.calls = []
+    try:
+        rc = P.main()
+    finally:
+        if saved is None:
+            sys.modules.pop("rimbridge_client", None)
+        else:
+            sys.modules["rimbridge_client"] = saved
+    args = [c[1].get("args", "") for c in FakeBridge.calls]
+    ok = rc == 0 and len(args) == 2 and all(a.strip() and "reset" not in a and "fast=" not in a for a in args)
+    print(("ok   " if ok else "FAIL ") + f"main() through a static_call-rule fake bridge: exit {rc} (want 0), args {args}")
+    return 0 if ok else 1
+
+
 def main() -> int:
-    bad = 0
+    bad = main_reads_through_static_call()
     for name, lt, tt, now, want in CASES:
         rc, line = P.judge(lt, tt, now)
         ok = rc == want
@@ -79,7 +124,7 @@ def main() -> int:
     if pins != (1, 28, 35000, 48000, 48300, 1000, 4, 20.0):
         bad += 1
         print(f"FAIL r17 pins changed: {pins}")
-    print(f"{len(CASES) + 1 - bad}/{len(CASES) + 1} ok")
+    print(f"{len(CASES) + 2 - bad}/{len(CASES) + 2} ok")
     return 1 if bad else 0
 
 

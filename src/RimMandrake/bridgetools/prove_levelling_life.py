@@ -4,7 +4,7 @@
 The clause: after a COLD launch, the first Levelling cycle on BENCH_r17_midrain map1 (325x325, the 100 hose rigs) and
 every cycle of the next >= 1000 ticks stay under 20 ms. Three read-only bridge reads decide it:
   1. RM_Levelling.ProofTiming("life")  - whole-process readout (never reset): pre-JIT result, cycles walked, slowest cycle.
-  2. RM_Levelling.ProofTiming("")      - LEVELTIME; its first=[...] holds the first 3 Levelling calls of the process
+  2. RM_Levelling.ProofTiming("time")  - LEVELTIME (never "": static_call makes "" ZERO params, and ProofTiming has one); its first=[...] holds the first 3 Levelling calls of the process
      (only a "reset" arg clears it; this script never passes one). Each entry carries map=, walked=, ports=, tick=.
   3. the ticksGame jawa/static_call returns beside the second read - ticks now.
 It holds when ALL of:
