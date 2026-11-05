@@ -103,7 +103,9 @@ BOOKS_RUN_ARTEFACTS = ("src/RimMandrake/Utils/modcheck/test_site_saves.json",)
 # a proof run from the books clone also writes these. Not ours to restore (the registry is status.py's output) and not in
 # the way: they stay, and the fast-forward itself refuses if origin moved one. 32 of 70 ticks on 2026-11-03 would not level
 # on them, so the engine ran old code (TICK_SPEED_FIX_GAME_IDLES_WAITING)
-BOOKS_LEFT_IN_PLACE = ("Transient/", "infrastructure/state/modcheck_status.json")
+# validation_v2 run from the books clone writes its triplet report beside the northstar (OPS_JAM_CLASS_FIX_AGAIN_HJWN)
+BOOKS_LEFT_IN_PLACE = ("Transient/", "infrastructure/state/modcheck_status.json",
+                       "src/RimMandrake/GimmeSomeSlack/northstar/validation_triplet_")
 GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
 PROOF_ENDS = ("proof_weak", "proof_rework", "proof_unchanged", relentless_attrib.PROOF_OWED)     # one road: strengthen the proof, never redesign the code
 PROOF_DEFECT = "proof_found_defect"     # a worker's stronger proof went red on the held code: back to ordinary work
