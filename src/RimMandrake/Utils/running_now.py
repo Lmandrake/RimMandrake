@@ -1256,16 +1256,10 @@ def live_row(s, y, d, busy_means, closed_means, closed_rough):
 
 # --------------------------------------------------------------------------- the Relentless panel
 def stage_since(st):
-    """When an item entered the stage it is in, by the field each stage writes; None when the stage has no clock."""
-    def field(d, k):
-        v = d.get(k) if isinstance(d, dict) else None
-        return float(v) if isinstance(v, (int, float)) else None
-    status = st.get("status")
-    chk, cand = st.get("check"), st.get("candidate")
-    return {"queued": field(st, "returned_at") or field(st, "enrolled_at"), "running": field(st, "started_at"), "candidate": field(cand, "at"),
-            "checking": field(chk, "at"), "closing": field(st, "tomb_since") or field(chk, "verdict_at") or field(cand, "at"),
-            "game": field(st.get("game"), "entered_at"), "held": field(st.get("hold"), "at"), "blocked": field(st, "blocked_at"),
-            "stopping": field(st, "stopping_since"), "retiring": field(st, "stopping_since")}.get(status)
+    """When an item entered the stage it is in; None when the stage has no clock. One definition, in ops_watch
+    (its per-item churn alarm reads the same clock)."""
+    import ops_watch
+    return ops_watch.stage_since(st)
 
 
 def oldest_in(it, name, now):

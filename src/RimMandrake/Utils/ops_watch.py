@@ -2054,14 +2054,132 @@ def in_churn(st, fails, now, cfg):
     """rl_churn's per-item rule, the one churn definition (RUNNING_NOW's row colours read it too): fails is
     [(epoch, class)] of the item's failed attempts; in churn when one is inside churn_window_h and state.json returns >=
     churn_returns or one class failed it churn_same_class times."""
+    return bool(churn_why(st, fails, now, cfg))
+
+
+def churn_why(st, fails, now, cfg):
+    """in_churn's reasons, [] when not in churn. The same-class count is windowed to the event (B7, 2026-11-05): a class
+    counts only when it failed the item inside churn_window_h, so an old A,A and a new B is not a same-class repeat; an
+    old A and a new A is one (the new failure repeats a known one, however slowly the item bounces)."""
     lo = now - float(cfg.get("churn_window_h", 12)) * HOUR
-    if not any(lo <= (t or 0) <= now + 300 for t, _ in fails):
-        return False
+    recent = {c for t, c in fails if lo <= (t or 0) <= now + 300}
+    if not recent:
+        return []
     same = {}
     for _, c in fails:
         same[c] = same.get(c, 0) + 1
     rets = st.get("returns") if is_num(st.get("returns")) else 0
-    return rets >= int(cfg.get("churn_returns", 3)) or max(same.values()) >= int(cfg.get("churn_same_class", 2))
+    out = ["%d returns" % rets] if rets >= int(cfg.get("churn_returns", 3)) else []
+    rep = sorted(c for c in recent if same[c] >= int(cfg.get("churn_same_class", 2)))
+    return out + ["%s failed it %d times" % (c, same[c]) for c in rep]
+
+
+def stage_since(st):
+    """When an item entered the stage it is in, by the field each stage writes; None when the stage has no clock. The one
+    definition: RUNNING_NOW's time-in-place and churn_item's stuck reason both read it."""
+    def field(d, k):
+        v = d.get(k) if isinstance(d, dict) else None
+        return float(v) if is_num(v) else None
+    chk, cand, status = st.get("check"), st.get("candidate"), st.get("status")
+    if not isinstance(status, str):
+        return None
+    return {"queued": field(st, "returned_at") or field(st, "enrolled_at"), "running": field(st, "started_at"), "candidate": field(cand, "at"),
+            "checking": field(chk, "at"), "closing": field(st, "tomb_since") or field(chk, "verdict_at") or field(cand, "at"),
+            "game": field(st.get("game"), "entered_at"), "held": field(st.get("hold"), "at"), "blocked": field(st, "blocked_at"),
+            "stopping": field(st, "stopping_since"), "retiring": field(st, "stopping_since")}.get(status)
+
+
+CHURN_ITEM_UNIT = "reasons this item churns: bouncing, spend rising with no landed result, stuck in a stage"
+CHURN_ITEM_TAG = "CHURN_ITEM"
+CHURN_ITEM_PREFIX = "relentless.churn_item."
+
+
+def churn_subject(item):
+    """-> the subject of an item's churn alarm, OPS_CHURN_DIAGNOSE_<subject>_<twist>: the item's first plain word (an intent
+    or banned word would break the name grammar) and four letters of the whole id, so each item has one fixed name of its
+    own and two items sharing a first word never share one."""
+    try:
+        import pulse_core as pc
+        m = pc._model()
+        bad = set(m.INTENT_WORDS) | set(m.BANNED_NAME_WORDS)
+    except Exception:  # noqa: BLE001 -- no word bank: a fixed plain word still mints
+        bad = None
+    word = next((w[:12] for w in str(item).split("_") if re.fullmatch(r"[A-Z][A-Z0-9]*", w) and bad is not None
+                 and w[:12] not in bad), "ITEM")
+    return "%s_%s" % (word, alarm_twist(str(item)))
+
+
+def held_churn_items(state=None):
+    """Items whose churn alarm alarms.json holds: a held item no longer churning must read 0 to clear (an absent key holds).
+    None when alarms.json is there but unreadable: then nothing new may file (the cap cannot be counted)."""
+    if state is None:
+        p = ops_dir() / "alarms.json"
+        state = read_json(p) if p.exists() else {}
+    if not isinstance(state, dict):
+        return None
+    pre = CHURN_ITEM_TAG + ":" + CHURN_ITEM_PREFIX
+    return {aid[len(pre):] for aid in (state if isinstance(state, dict) else {}) if aid.startswith(pre)}
+
+
+def churn_item_points(per, now, cfg, spend_known, held="read"):
+    """CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER (owner 2026-11-05: "what items are just bouncing around the build pipeline,
+    costing more and more, or stuck in testing a very very long time without progress"): one relentless.churn_item.<ID>
+    reading per item, its value the number of reasons it churns, for the wildcard alarm OPS_CHURN_DIAGNOSE_* (one fixed
+    item per churning item, routed to Operations by its OPS_ name). per: {item: (state, fails, spend placed in the
+    tokens window)}. Reasons, numbers from relentless.item_bands (shared with RUNNING_NOW's row colours):
+      bouncing: churn_why (returns, or a class repeated that failed it inside the window);
+      spend rising: not done or retired, state.json spent at the hot `spent` band, and spend placed in the window;
+      stuck: in a churn_item_stuck_stages stage (game, checking) for the hot age_s band of that stage.
+    A held item no longer churning reads 0 (clears); with the spend files unread it holds (UNMEASURED) unless another
+    reason still names it. New items come at most churn_item_new_per_pass a pass, and never past churn_item_max_open held
+    at once, largest spend first; the rest are absent, so not filed, and come later (57 items read in churn on
+    2026-11-05: one raised OPS_ item each would take the whole belt; past the cap relentless.churn_items' incident alarm
+    is the one that speaks)."""
+    bands = cfg.get("item_bands") if isinstance(cfg.get("item_bands"), dict) else {}
+    hot_spent = (bands.get("spent") or [None, None])[1]
+    ages = bands.get("age_s") if isinstance(bands.get("age_s"), dict) else {}
+    stages = cfg.get("churn_item_stuck_stages") or ("game", "checking")
+    held = held_churn_items() if held == "read" else held
+    if held is None:
+        return {}           # alarms.json unreadable: every churn alarm holds, none files (run_alarms holds filing too)
+    cap = max(0, min(int(cfg.get("churn_item_new_per_pass", 5)), int(cfg.get("churn_item_max_open", 12)) - len(held)))
+    flagged = []
+    torn = set()
+    for n, (st, fails, recent) in per.items():
+        if not isinstance(st, dict):
+            torn.add(n)
+            continue
+        status = st.get("status") if isinstance(st.get("status"), str) else None
+        if status in ("done", "retired"):
+            continue
+        why = ["bouncing: " + "; ".join(r)] if (r := churn_why(st, fails, now, cfg)) else []
+        spent = st.get("spent") if is_num(st.get("spent")) else 0
+        if is_num(hot_spent) and spent >= hot_spent and recent > 0 and status != "closing":     # closing is landing
+            why.append("spend rising: %.1fM weighted, %dk in the last %gh, nothing landed" % (
+                spent / 1e6, round(recent / 1e3), float(cfg.get("tokens_window_h", 24))))
+        t, band = stage_since(st), ages.get(status)
+        if status in stages and t and isinstance(band, list) and len(band) > 1 and now - t >= band[1]:
+            why.append("stuck: %s for %.1f h, no progress out of it" % (status, (now - t) / HOUR))
+        if why:
+            flagged.append((-spent, n, st, why))
+    flagged.sort(key=lambda f: (f[0], f[1]))
+    out, fresh = {}, 0
+    for neg, n, st, why in flagged:
+        if n not in held:
+            if fresh >= cap:
+                continue
+            fresh += 1
+        out[CHURN_ITEM_PREFIX + n] = M(len(why), CHURN_ITEM_UNIT, item=n, subject=churn_subject(n), status=st.get("status"),
+                                       gen=st.get("gen"), returns=st.get("returns"), spent=-neg,
+                                       said="%s: %s" % (n, "; ".join(why))[:400], reasons=why)
+    for n in sorted(held - {f[1] for f in flagged}):
+        if n in torn:
+            out[CHURN_ITEM_PREFIX + n] = U("state.json of %s torn: whether it still churns is unknown" % n, CHURN_ITEM_UNIT)
+        elif spend_known or n not in per:
+            out[CHURN_ITEM_PREFIX + n] = M(0, CHURN_ITEM_UNIT, item=n, said="%s: no longer churning" % n)
+        else:
+            out[CHURN_ITEM_PREFIX + n] = U("spend files unread: whether %s still churns on spend is unknown" % n, CHURN_ITEM_UNIT)
+    return out
 
 
 def rl_churn(store, now, cfg):
@@ -2089,7 +2207,7 @@ def rl_churn(store, now, cfg):
         why = "items unreadable: %s" % str(e)[:120]
         return churn_blind(why)
     import hashlib
-    by_hash, gen_end, started, churn, classes, torn = {}, {}, {}, [], {}, 0
+    by_hash, gen_end, started, churn, classes, torn, per = {}, {}, {}, [], {}, 0, {}
     for n in names:
         by_hash[hashlib.sha1(n.encode()).hexdigest()[:10]] = n
         st = read_json(store / "items" / n / "state.json")
@@ -2121,7 +2239,9 @@ def rl_churn(store, now, cfg):
             pass        # an item never started has no attempts file
         if not isinstance(st, dict):
             torn += 1
+            per[n] = [None, fails, 0]      # torn: a held alarm on it holds, never clears on a state it cannot read
             continue
+        per[n] = [st, fails, 0]
         if in_churn(st, fails, now, cfg):
             churn.append((-(st.get("spent") or 0) if is_num(st.get("spent")) else 0, n))
             last = fails[-1][1]
@@ -2145,6 +2265,7 @@ def rl_churn(store, now, cfg):
         if not isinstance(runs, dict):
             why = "spend file unreadable: %s" % p
             pts.update(churn_blind(why, tokens_only=True))
+            pts.update(churn_item_points(per, now, cfg, False))
             return pts
         for m, tk in runs.items():
             if not is_num(tk):
@@ -2152,6 +2273,8 @@ def rl_churn(store, now, cfg):
             g = rx.match(m)
             key = (by_hash.get(g.group(1)), int(g.group(2))) if g else None
             t = started.get(key) if key else None
+            if key and key[0] in per:
+                per[key[0]][2] += tk     # the item's spend in the window's day files: a gen started earlier still burns
             if t is None:
                 unmapped += tk     # its day file is in the window; when in it, unknown: counted against the reading
                 continue
@@ -2162,6 +2285,7 @@ def rl_churn(store, now, cfg):
                 ret += tk
                 k = "%s/%s" % (failed[key], m.split("-")[2])
                 by_end[k] = by_end.get(k, 0) + tk
+    pts.update(churn_item_points(per, now, cfg, True))     # the spend was read: no placed spend is no rising spend
     if tot <= 0:
         why = "no placed spend in the last %gh (%d spend files)" % (toks_h, len(files))
         pts.update(churn_blind(why, tokens_only=True))

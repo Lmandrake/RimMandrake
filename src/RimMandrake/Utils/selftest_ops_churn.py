@@ -15,6 +15,11 @@ and no reading said so. Each check fails on the code before the change:
 6. run_alarms files health.incident_slis at once under ONE fixed id and a repeat reopens that id (no new item).
 7. The Steve unclaimed alarm names an owner: its todo carries the STEVE_LANE_UNSTICK_* ids to expedite, its title says
    so, and expedite_owner runs `relentless.py expedite set <id> --level expedited --by Operations` without a worker env.
+8. CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER: one relentless.churn_item.<ID> reading per item that is bouncing, whose spend
+   rises with nothing landed, or that is stuck in game/checking; the same-class repeat is windowed to a failure inside
+   the window (B7: old A,A + new B is not churn); a held item no longer churning reads 0, and UNMEASURED when only the
+   unread spend could still name it; new ones are capped per pass; the wildcard rule mints one fixed OPS_ name per item
+   and run_alarms files it.
 
 Fixtures only: a temp store, a temp RM_OPS_WATCH_DIR, a fake relentless.py, fake filer.
 
@@ -213,6 +218,81 @@ def main():
     ok(str(out.get("BAD_ITEM", "")).startswith("exit 3"), "7: a refusal is said per id, never raised", out)
     del os.environ["RELENTLESS_GEN"]
     ok(OW.expedite_of(st, {"x": {"first": ["x; rm -rf", "OK_ID"]}}) == ["OK_ID"], "7: only item-shaped ids are expedited", None)
+    # 8
+    t1, old = NOW - 2 * HOUR, NOW - 40 * HOUR
+    a_a_b = [(old, "harness"), (old + 60, "harness"), (t1, "evidence")]
+    ok(not OW.in_churn({"returns": 0}, a_a_b, NOW, CFG) and OW.churn_why({"returns": 0}, a_a_b, NOW, CFG) == [],
+       "8: B7, an old A,A and a new B is not a same-class repeat", OW.churn_why({"returns": 0}, a_a_b, NOW, CFG))
+    ok(OW.in_churn({"returns": 0}, a_a_b + [(t1 + 9, "harness")], NOW, CFG), "8: a class failing again inside the window is", None)
+    cfg8 = dict(CFG, item_bands=rules["relentless"]["item_bands"], churn_item_stuck_stages=["game", "checking"],
+                churn_item_new_per_pass=5)
+    s8 = TMP / "s8"
+    def st8(name, state, rows):
+        d = s8 / "items" / name
+        d.mkdir(parents=True)
+        (d / "state.json").write_text(json.dumps(state))
+        (d / "attempts.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    st8("BOUNCE_ITEM", {"status": "queued", "returns": 3, "gen": 4, "spent": 2e6},
+        [{"gen": 4, "at": iso(t1), "start": marker("BOUNCE_ITEM", 4)}, {"gen": 4, "at": iso(t1 + 60), "end": "harness"}])
+    st8("SPEND_ITEM", {"status": "running", "returns": 0, "gen": 1, "spent": 7e6},
+        [{"gen": 1, "at": iso(t1), "start": marker("SPEND_ITEM", 1)}])
+    st8("STUCK_ITEM", {"status": "game", "returns": 0, "gen": 1, "spent": 1e6, "game": {"entered_at": NOW - 8 * 86400}}, [])
+    st8("CALM_ITEM", {"status": "checking", "returns": 0, "gen": 1, "spent": 9e6, "check": {"at": NOW - 600}},
+        [{"gen": 1, "at": iso(old), "start": marker("CALM_ITEM", 1)}])
+    st8("LANDED_ITEM", {"status": "done", "returns": 5, "gen": 6, "spent": 9e6},
+        [{"gen": 6, "at": iso(t1), "start": marker("LANDED_ITEM", 6)}, {"gen": 6, "at": iso(t1 + 5), "end": "harness"},
+         {"gen": 6, "at": iso(t1 + 6), "end": "harness"}])
+    runs = {marker("SPEND_ITEM", 1): 400000, marker("BOUNCE_ITEM", 4): 1000, marker("LANDED_ITEM", 6): 5000,
+            marker("OLDGEN_ITEM", 1): 9000}
+    st8("OLDGEN_ITEM", {"status": "running", "returns": 0, "gen": 1, "spent": 8e6},
+        [{"gen": 1, "at": iso(old), "start": marker("OLDGEN_ITEM", 1)}])
+    (s8 / ("spend-%s.json" % time.strftime("%Y%m%d", time.gmtime(NOW)))).write_text(json.dumps({"runs": runs}))
+    (TMP / "ops" / "alarms.json").write_text(json.dumps({"CHURN_ITEM:relentless.churn_item.CALM_ITEM": {"state": "OPEN"}}))
+    p8 = OW.rl_churn(s8, NOW, cfg8)
+    ci = {k[len(OW.CHURN_ITEM_PREFIX):]: v for k, v in p8.items() if k.startswith(OW.CHURN_ITEM_PREFIX)}
+    ok(set(ci) == {"BOUNCE_ITEM", "SPEND_ITEM", "STUCK_ITEM", "CALM_ITEM", "OLDGEN_ITEM"}, "8: one reading per churning or held item, none for a landed one", sorted(ci))
+    ok(ci.get("BOUNCE_ITEM", {}).get("v") == 1 and "bouncing: 3 returns" in ci["BOUNCE_ITEM"]["x"]["said"],
+       "8: a bouncer is named with its returns", ci.get("BOUNCE_ITEM"))
+    ok(ci.get("SPEND_ITEM", {}).get("v") == 1 and "spend rising" in ci["SPEND_ITEM"]["x"]["said"],
+       "8: spend at the hot band, rising in the window, nothing landed", ci.get("SPEND_ITEM"))
+    ok(ci.get("STUCK_ITEM", {}).get("v") == 1 and "stuck: game" in ci["STUCK_ITEM"]["x"]["said"],
+       "8: a game item past its hot age band is stuck", ci.get("STUCK_ITEM"))
+    ok(ci.get("CALM_ITEM", {}).get("v") == 0 and ci["CALM_ITEM"].get("m") == "MEASURED",
+       "8: a held item no longer churning reads 0 (clears); high lifetime spend alone is not rising", ci.get("CALM_ITEM"))
+    ok(ci.get("OLDGEN_ITEM", {}).get("v") == 1, "8: a gen started before the window that still burns is rising spend", ci.get("OLDGEN_ITEM"))
+    p8b = OW.rl_churn(s8, NOW, dict(cfg8, churn_item_new_per_pass=1))
+    ok(sorted(k for k in p8b if k.startswith(OW.CHURN_ITEM_PREFIX)) == [OW.CHURN_ITEM_PREFIX + "CALM_ITEM", OW.CHURN_ITEM_PREFIX + "OLDGEN_ITEM"],
+       "8: new items are capped per pass, largest spend first; held ones always read", sorted(p8b))
+    full = OW.churn_item_points({"NEW_ITEM": ({"status": "queued", "returns": 3, "spent": 1}, [(t1, "x")], 0)}, NOW,
+                                dict(cfg8, churn_item_max_open=2), True, {"H1_ITEM", "H2_ITEM"})
+    ok(OW.CHURN_ITEM_PREFIX + "NEW_ITEM" not in full and full.get(OW.CHURN_ITEM_PREFIX + "H1_ITEM", {}).get("v") == 0,
+       "8: no new item past churn_item_max_open held", sorted(full))
+    odd = OW.churn_item_points({"T_ITEM": (None, [], 0), "L_ITEM": ({"status": ["x"], "returns": 3}, [(t1, "x")], 0)},
+                               NOW, cfg8, True, {"T_ITEM"})
+    ok(odd.get(OW.CHURN_ITEM_PREFIX + "T_ITEM", {}).get("m") == "UNMEASURED" and OW.CHURN_ITEM_PREFIX + "L_ITEM" in odd,
+       "8: a torn held state holds; an odd status never crashes the reading", odd)
+    ok(OW.churn_item_points({"N_ITEM": ({"status": "queued", "returns": 3}, [(t1, "x")], 0)}, NOW, cfg8, True,
+                            OW.held_churn_items(["torn"])) == {}, "8: alarms.json unreadable: nothing new files", None)
+    held = OW.churn_item_points({"CALM_ITEM": ({"status": "running", "spent": 9e6}, [], 0)}, NOW, cfg8, False, {"CALM_ITEM"})
+    ok(held[OW.CHURN_ITEM_PREFIX + "CALM_ITEM"].get("m") == "UNMEASURED", "8: spend unread, a held item holds", held)
+    tg8 = next(t for t in rules["targets"] if t.get("key") == "relentless.churn_item.*")
+    import pulse_core as pc
+    names = {}
+    for n in ("ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP", "ATMOSBASE_BUILD_OTHER_THING", "BUILD_CHURN_WATCH_THING", "B58_X_FIX_Y"):
+        k = OW.CHURN_ITEM_PREFIX + n
+        pt8 = OW.M(1, OW.CHURN_ITEM_UNIT, subject=OW.churn_subject(n))
+        names[n] = OW.alarm_prefix(tg8, "CHURN_ITEM", k, {}, "CHURN_ITEM:" + k, pt8)
+        ok(names[n] == OW.alarm_prefix(tg8, "CHURN_ITEM", k, {}, "CHURN_ITEM:" + k, pt8) and names[n].startswith("OPS_CHURN_DIAGNOSE_")
+           and not pc._model().mint_problems(names[n], set()), "8: %s mints one fixed OPS_ name" % n, names[n])
+    ok(len(set(names.values())) == len(names), "8: two items sharing a first word never share an alarm", names)
+    (TMP / "ops" / "alarms.json").unlink()
+    sent.clear()
+    r8 = {"alarms": {"clear_passes": 1}, "targets": [tg8]}
+    OW.run_alarms({OW.CHURN_ITEM_PREFIX + "BOUNCE_ITEM": ci["BOUNCE_ITEM"]}, r8, NOW, set(), filer)
+    a8 = sent[-1][0] if sent else {}
+    ok(a8.get("name", "").startswith("OPS_CHURN_DIAGNOSE_BOUNCE_") and "BOUNCE_ITEM" in a8.get("title", ""),
+       "8: run_alarms files the item's own OPS_ alarm, its title naming the item", a8)
+    ok(OW.held_churn_items() == {"BOUNCE_ITEM"}, "8: alarms.json now holds it, so its next calm pass reads 0", OW.held_churn_items())
     shutil.rmtree(TMP, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
