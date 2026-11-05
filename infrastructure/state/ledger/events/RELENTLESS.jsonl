@@ -643,3 +643,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A1 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T13:50:00Z","tsn":1793886600730702581}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T13:54:29Z","tsn":1793886869895009420}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A2 (L2), read-only proof","ts":"2026-11-05T13:54:43Z","tsn":1793886883821662587}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:00:18Z","tsn":1793887218488250134}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A3 (L2), read-only proof","ts":"2026-11-05T14:00:30Z","tsn":1793887230291706811}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T14:04:42Z","tsn":1793887482699291543}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A1 (L2), read-only proof","ts":"2026-11-05T14:05:00Z","tsn":1793887500038983482}
