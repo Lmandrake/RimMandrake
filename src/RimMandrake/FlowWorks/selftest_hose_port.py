@@ -151,7 +151,9 @@ def _enclosing_guard(lines, at):
     got = []
     ob = _open_brace(lines, at)
     if ob:
-        got.append(_header(lines, *ob))
+        h = _header(lines, *ob)
+        if _move_guard(h) in (None, "commit"):
+            got.append(h)
     k = at - 1
     while k >= 0 and not lines[k].split("//", 1)[0].strip():
         k -= 1
@@ -159,10 +161,107 @@ def _enclosing_guard(lines, at):
         col = lines[k].index("}")
         inner = _open_brace(lines, k, col)
         if inner:
-            body = "\n".join(lines[inner[0]:k + 1])
-            if re.search(r"\b(return|continue|break)\b", body):
-                got.append(_header(lines, *inner))
+            body = "\n".join(ln.split("//", 1)[0] for ln in lines[inner[0]:k + 1])
+            body = body[inner[1] + 1:]   # from just inside the opening brace (its column survives the comment strip)
+            h = _header(lines, *inner)
+            if _ends_in_exit(body[:body.rindex("}")]) and _move_guard(h) in (None, "refuse"):
+                got.append(h)
     return "\n".join(got)
+
+
+# TRANSFER_LINT_HARDEN_REFUSED_CREDIT_PASSES (Codex rev_i), mirroring TransferChecks.CommittedBlocks: a Move guard commits only
+# as the Move call plus ONE comparison, `== name` or `> 0` (`== 0` is the refusal: Move returns 0 on every refusal); an
+# early-exit branch is `!= name` and must END in an exit at its own top level (a return nested in an inner if falls through).
+# `name` is Move's own first argument, what was asked for (`== none`, none = 0, is the refusal again under another name).
+
+
+def _close_paren(s, i):
+    """Index of the ')' matching the '(' at s[i] (string literals skipped), or -1."""
+    depth, j = 0, i
+    while j < len(s):
+        c = s[j]
+        if c == '"':
+            j += 1
+            while j < len(s) and s[j] != '"':
+                j += 2 if s[j] == "\\" else 1
+        elif c == "(":
+            depth += 1
+        elif c == ")":
+            depth -= 1
+            if depth == 0:
+                return j
+        j += 1
+    return -1
+
+
+def _first_arg(s, open_, close):
+    """The text of the call's first argument (between the '(' at s[open_] and its first top-level ',' or its ')')."""
+    depth, j = 0, open_ + 1
+    while j < close:
+        c = s[j]
+        if c == '"':
+            j += 1
+            while j < close and s[j] != '"':
+                j += 2 if s[j] == "\\" else 1
+        elif c == "'" and j + 2 < close:
+            j += 3 if s[j + 1] == "\\" else 2
+        elif c in "([{":
+            depth += 1
+        elif c in ")]}":
+            depth -= 1
+        elif c == "," and depth == 0:
+            return s[open_ + 1:j].strip()
+        j += 1
+    return s[open_ + 1:close].strip()
+
+
+def _move_guard(header):
+    """None when the header names no Move; "commit" for `if (RM_LiquidTransfer.Move(n, ...) == n)` or `... > 0)`; "refuse" for
+    `... != n)`; "" for any other Move header (a Move that is not the whole left side, `== 0`, `== other`, `== n || x`)."""
+    if not re.search(r"RM_LiquidTransfer\.Move\(", header):
+        return None
+    m = re.search(r"if\s*\(\s*RM_LiquidTransfer\.Move\(", header)
+    if not m:
+        return ""
+    close, mclose = _close_paren(header, header.index("(", m.start())), _close_paren(header, m.end() - 1)
+    if close < 0 or mclose < 0 or mclose > close:
+        return ""
+    tail = header[mclose + 1:close].strip()
+    if re.match(r"^>\s*0$", tail):
+        return "commit"
+    eq = re.match(r"^(==|!=)\s*(.+)$", tail)
+    asked = re.sub(r"\s+", "", _first_arg(header, m.end() - 1, mclose))
+    if not eq or not asked or re.sub(r"\s+", "", eq.group(2)) != asked:
+        return ""
+    return "commit" if eq.group(1) == "==" else "refuse"
+
+
+def _ends_in_exit(body):
+    """True when a block body's last top-level statement is return/continue/break (nested blocks read as "{}")."""
+    top, depth, j = [], 0, 0
+    while j < len(body):
+        c = body[j]
+        if c == '"':
+            j += 1
+            while j < len(body) and body[j] != '"':
+                j += 2 if body[j] == "\\" else 1
+            if depth == 0:
+                top.append('""')
+        elif c == "'" and j + 2 < len(body):   # review: a '}' char literal is no brace
+            j += 3 if body[j + 1] == "\\" else 2
+            continue
+        elif c == "{":
+            depth += 1
+            if depth == 1:
+                top.append("{")
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                top.append("}")
+        elif depth == 0:
+            top.append(c)
+        j += 1
+    return re.search(r"(^|[;}])\s*(return\b[^;{}]*|continue|break);\s*$", "".join(top)) is not None
 
 
 def p9_credit_sites(srcs=None):
@@ -197,6 +296,23 @@ def p9_planted():
     srcs["Machinery/RM_LiquidNet.cs"] = srcs["Machinery/RM_LiquidNet.cs"].replace("// credit site: dump drain", "//")
     srcs["Machinery/Extra.cs"] = "class E { void F() { RM_LiquidNet.Credit(a, b, c, 1, 2); } }"
     return p9_credit_sites(srcs)
+
+
+def p9_refused_planted():
+    """P9's refused-credit can-fail (TRANSFER_LINT_HARDEN_REFUSED_CREDIT_PASSES): the real checker on two real sites made wrong -
+    the bath's committed guard turned to `== 0` (a credit on the refusal) and the pump pour's refusal branch given only a
+    conditional return (a refused pour falls through to its credit). Both must be caught, by those two sites' tags only."""
+    root = os.path.join(HERE, "Source")
+    srcs = {os.path.relpath(p, root).replace(os.sep, "/"): open(p, encoding="utf-8").read()
+            for p in glob.glob(os.path.join(root, "**", "*.cs"), recursive=True)
+            if not any(x in p.replace(os.sep, "/") for x in ("/SelfTest/", "/bin/", "/obj/"))}
+    bath, pump = "Machinery/Kits/RM_LiquidBath.cs", "LiquidTypes/Building_LiquidPump.cs"
+    srcs[bath], nb = re.subn(r"out _\) == ext\.UnitsPerCraft\)", "out _) == 0)", srcs[bath])
+    srcs[pump], np_ = re.subn(r"(\n\s*)(return mv\.DestRefused \?[^;]*;)", r"\1if (mv.DestRefused) { \2 }", srcs[pump], count=1)
+    melt = "RM_IceMelter.cs"   # == another name than what was asked for
+    srcs[melt], nm = re.subn(r"out RM_MoveOutcome o\) == units\)", "out RM_MoveOutcome o) == spare)", srcs[melt])
+    bad, _ = p9_credit_sites(srcs)
+    return bad, nb + np_ + nm
 
 
 OLD_HOSE_PATHS = ("GimmeSomeSlack/validation_hose", "GimmeSomeSlack/validation_style_hose", "GimmeSomeSlack/Source/Hose/")
@@ -320,6 +436,15 @@ def main():
     pbad, pcalls = p9_planted()
     check("P9 can-fail: a planted unguarded credit, a missing tag and an extra call are all caught", len(pbad) == 2 and pcalls == len(CREDIT_SITES) + 1,
           (pbad, pcalls))
+    rbad, planted = p9_refused_planted()
+    units = (_move_guard("if (ok && RM_LiquidTransfer.Move(n, a, b, out _) == n)"), _move_guard("if (RM_LiquidTransfer.Move(n, a, b, out _) == n || x)"),
+             _move_guard("if (RM_LiquidTransfer.Move(f(a, b), a, b, out _) != f(a, b))"), _ends_in_exit(" char c = '}'; if (y) { return; } "),
+             _ends_in_exit(" if (x) return; "), _ends_in_exit(' log("}"); return mv.A ? 1 : 2; '))
+    check("P9 refused-credit can-fail: a credit under `if (Move(...) == 0)` (bath), one after a refusal branch whose return is only "
+          "conditional (pump pour) and one under `== another name` (ice melter) are all caught; a Move not alone on the left, "
+          "a '}' char literal and `if (x) return;` are not committed shapes", planted == 3 and sorted(b.split(":")[0] for b in rbad) ==
+          ["LiquidTypes/Building_LiquidPump.cs", "Machinery/Kits/RM_LiquidBath.cs", "RM_IceMelter.cs"]
+          and units == ("", "", "refuse", False, False, True), (rbad, planted, units))
     allsrc = "".join(open(p, encoding="utf-8").read() for p in glob.glob(os.path.join(HERE, "Source", "**", "*.cs"), recursive=True) if "/SelfTest/" not in p)
     gone = [x for x in ("class FlowWorksPumpFlow", "class RelayHoseFlow", "class HoseTint", "bool useFlowWorksPumps", "string defaultFluid",
                                   "hose_useFlowWorksPumps", "hose_defaultFluid") if x in allsrc]

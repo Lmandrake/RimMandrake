@@ -491,6 +491,20 @@ namespace RimMandrake.FlowWorks.SelfTest
             planted["Machinery/NewThing.cs"] = "class Z { void W() { tank.TryRemoveLiquid(5); } }";
             List<string> caught = Lint(planted, out _, out _);
             Assert(caught.Count == 4, "can-fail: 4 planted violations caught, got " + caught.Count + ": " + string.Join("; ", caught));
+            // refused-credit can-fail (TRANSFER_LINT_HARDEN_REFUSED_CREDIT_PASSES): a credit under `== 0` (the refusal) and a credit
+            // after a refusal branch whose only return is conditional are both caught; the correct early-return shape is not
+            var refused = new Dictionary<string, string>(files);
+            refused["Machinery/RefusedCredit.cs"] = "class R { void A() { if (RM_LiquidTransfer.Move(n, s, d, out _) == 0) { RM_LiquidNet.Credit(p, t, l, n, 250); } }\n"
+                + " void B() { if (RM_LiquidTransfer.Move(n, s, d, out _) != n) { if (x) { return; } } RM_LiquidNet.Credit(p, t, l, n, 250); }\n"
+                + " void C() { if (RM_LiquidTransfer.Move(n, s, d, out _) != n) { Log(\"}\"); return; } RM_LiquidNet.Credit(p, t, l, n, 250); }\n"
+                + " void D() { if (RM_LiquidTransfer.Move(n, s, d, out _) == none) { RM_LiquidNet.Credit(p, t, l, n, 250); } }\n"
+                + " void E() { if (RM_LiquidTransfer.Move(n, s, d, out _) != n) { char c = '}'; if (y) { return; } } RM_LiquidNet.Credit(p, t, l, n, 250); } }";
+            List<string> refusedCaught = Lint(refused, out _, out _).Where(x => x.StartsWith("Machinery/RefusedCredit.cs")).ToList();
+            string lines = string.Join(",", refusedCaught.Select(x => x.Substring(x.LastIndexOf(' ') + 1)).OrderBy(x => x));
+            Assert(lines == "1,2,4,5", "refused-credit can-fail: the == 0 credit (line 1), the conditional-return credit (line 2), the == another-name"
+                + " credit (line 4) and the char-literal '}' credit (line 5) caught, the early-return one (line 3) not; got " + string.Join("; ", refusedCaught));
+            Assert(!EndsInReturn(" if (x) return; ") && EndsInReturn(" a(); return b ? 1 : 2; ") && !EndsInReturn(" return; a(); "),
+                "refused-credit: EndsInReturn reads only the last top-level statement");
         }
 
         internal static Dictionary<string, string> ProductionSources()
@@ -567,7 +581,13 @@ namespace RimMandrake.FlowWorks.SelfTest
             return spans;
         }
 
-        /// <summary>The { } block right after `if (RM_LiquidTransfer.Move(...) ...)`: where a committed move may credit.</summary>
+        /// <summary>The { } block right after `if (RM_LiquidTransfer.Move(n, ...) == n)` or `... > 0)`: where a committed move may credit.
+        /// TRANSFER_LINT_HARDEN_REFUSED_CREDIT_PASSES (Codex rev_i): the whole condition is read, not a prefix of it. A committed
+        /// guard is the Move call and one comparison, `== n` (n = Move's own first argument) or `> 0`, nothing else: `== 0` is the
+        /// REFUSAL (Move returns 0 on every refusal), and `== other` or `== n || x` commits nothing. A refusal branch,
+        /// `if (Move(n, ...) != n) { ... return ...; }`, makes the
+        /// rest of its method committed only when its LAST top-level statement is a return; a return nested in an inner if lets a
+        /// refused move fall through to the credit.</summary>
         private static List<(int a, int b)> CommittedBlocks(string src)
         {
             var blocks = new List<(int, int)>();
@@ -575,24 +595,25 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 int open = src.IndexOf('(', m.Index);
                 int close = Match(src, open, '(', ')');
-                if (close < 0) continue;
-                string cond = src.Substring(open, close - open);
-                if (!Regex.IsMatch(cond, @"\)\s*(==\s*\w|>\s*0)")) continue;   // != (a refusal branch) is not a committed block
+                int moveOpen = m.Index + m.Length - 1;
+                int moveClose = Match(src, moveOpen, '(', ')');
+                if (close < 0 || moveClose < 0 || moveClose > close) continue;
+                string tail = src.Substring(moveClose + 1, close - moveClose - 1).Trim();
+                // `== x` / `!= x` compare against what was asked for: Move's own first argument (review: `== none` with none = 0
+                // is the refusal again under another name)
+                string asked = Regex.Replace(FirstArg(src, moveOpen, moveClose), @"\s+", "");
+                Match eq = Regex.Match(tail, @"^(==|!=)\s*(.+)$");
+                bool same = eq.Success && asked.Length > 0 && Regex.Replace(eq.Groups[2].Value, @"\s+", "") == asked;
+                bool committed = Regex.IsMatch(tail, @"^>\s*0$") || (same && eq.Groups[1].Value == "==");
+                bool refusal = same && eq.Groups[1].Value == "!=";
+                if (!committed && !refusal) continue;
                 int brace = src.IndexOf('{', close);
                 if (brace < 0 || src.Substring(close + 1, brace - close - 1).Trim().Length > 0) continue;
                 int end = Match(src, brace, '{', '}');
-                if (end > brace) blocks.Add((brace, end));
-            }
-            // the pour site returns on a refusal, so the rest of its method body is the committed block
-            foreach (Match m in Regex.Matches(src, @"if\s*\(\s*RM_LiquidTransfer\.Move\("))
-            {
-                int open = src.IndexOf('(', m.Index);
-                int close = Match(src, open, '(', ')');
-                if (close < 0 || !Regex.IsMatch(src.Substring(open, close - open), @"\)\s*!=\s*\w")) continue;
-                int brace = src.IndexOf('{', close);
-                int end = Match(src, brace, '{', '}');
-                if (end < 0 || !Regex.IsMatch(src.Substring(brace, end - brace), @"\breturn\b")) continue;
-                // up to the end of the enclosing method: the next "}" at a lower depth
+                if (end <= brace) continue;
+                if (committed) { blocks.Add((brace, end)); continue; }
+                if (!EndsInReturn(src.Substring(brace + 1, end - brace - 1))) continue;
+                // the refusal branch returns, so the rest of its enclosing block is committed: up to the next "}" at a lower depth
                 int depth = 0, i = end + 1;
                 for (; i < src.Length; i++)
                 {
@@ -602,6 +623,48 @@ namespace RimMandrake.FlowWorks.SelfTest
                 blocks.Add((end, i));
             }
             return blocks;
+        }
+
+        /// <summary>The text of a call's first argument: from just after its '(' at <paramref name="open"/> to the first ',' at its own
+        /// depth (or its ')'), strings and char literals skipped.</summary>
+        private static string FirstArg(string s, int open, int close)
+        {
+            int depth = 0;
+            for (int i = open + 1; i < close; i++)
+            {
+                char ch = s[i];
+                if (ch == '"') { for (i++; i < close && s[i] != '"'; i++) if (s[i] == '\\') i++; continue; }
+                if (ch == '\'' && i + 2 < close) { i += s[i + 1] == '\\' ? 3 : 2; continue; }
+                if (ch == '(' || ch == '[' || ch == '{') depth++;
+                else if (ch == ')' || ch == ']' || ch == '}') depth--;
+                else if (ch == ',' && depth == 0) return s.Substring(open + 1, i - open - 1).Trim();
+            }
+            return s.Substring(open + 1, close - open - 1).Trim();
+        }
+
+        /// <summary>True when a block body's last top-level statement is `return ...;` (nested blocks are read as "{}", so a
+        /// return inside an inner if or loop does not count, nor does `if (x) return;`).</summary>
+        internal static bool EndsInReturn(string body)
+        {
+            var top = new System.Text.StringBuilder();
+            int depth = 0;
+            for (int i = 0; i < body.Length; i++)
+            {
+                char ch = body[i];
+                if (ch == '"')
+                {
+                    int j = i + 1;
+                    for (; j < body.Length && body[j] != '"'; j++) if (body[j] == '\\') j++;
+                    if (depth == 0) top.Append("\"\"");
+                    i = j;
+                    continue;
+                }
+                if (ch == '\'' && i + 2 < body.Length) { i += body[i + 1] == '\\' ? 3 : 2; continue; }   // review: '}' is no brace
+                if (ch == '{') { if (depth++ == 0) top.Append('{'); continue; }
+                if (ch == '}') { if (--depth == 0) top.Append('}'); continue; }
+                if (depth == 0) top.Append(ch);
+            }
+            return Regex.IsMatch(top.ToString(), @"(^|[;}])\s*return\b[^;{}]*;\s*$");
         }
 
         private static int Match(string s, int open, char o, char c)
