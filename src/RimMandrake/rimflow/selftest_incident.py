@@ -1487,6 +1487,53 @@ def test_disjoint_reopen_is_new_incident():
           len(incs) == 4 and len(back) == 1 and a in back[0]["metrics"] and back[0]["state"] == "open", incs)
 
 
+def test_standing_source_holds_incident_open():
+    """RELAPSE_HELPERS_FIX_DIED_TWICE: helpers-20261101162643 closed 2026-11-02 11:29:28Z on event_quiet_min (a
+    Dispatcher alarm has no sane value) after a 5.6 h tick gap, while helper_lost:3378fb18's receipt was still unacked;
+    the same tick's repeat reopened it 2 min later, and that reopen was counted as an ack's fix dying. With the
+    Dispatcher's standing reading a signal metric is read like any other: open while its source stands, closed on
+    sustain_min once it is gone, and a stale reading is unknown, never quiet."""
+    table = IN.load_table()
+    pol = table["policy"]
+    lost = "helper_lost:3378fb18"
+    max_age = pol["status_max_age_min"] * M
+
+    def run(standing_at, until, start=T0, step_s=5 * M, fire_at=(T0,)):
+        rows, cur = [], 0
+        t = start
+        while t <= until:
+            rows.extend({"metric": lost, "class": None, "at": IN.iso(t), "t": t} for f in fire_at if f == t)
+            res = IN.step(table, rows, {"t": t, "points": {}, "alarms": {}}, t, cur, standing=standing_at(t))
+            rows.extend(res["rows"])
+            cur = len(rows)
+            t += step_s
+        return IN.fold(rows)[0], rows
+
+    q = pol["event_quiet_min"] * M
+    incs, _ = run(lambda t: None, T0 + q + 30 * M)
+    check("standing control: with no reader the signal incident closes on event_quiet_min (the old rule; the check can fail)",
+          [x["state"] for x in incs.values()] == ["closed"], incs)
+    incs, _ = run(lambda t: {"helper_lost": {"t": t, "keys": [lost]}}, T0 + q + 3 * H)
+    check("standing: an unacked receipt read fresh every tick holds its incident open past event_quiet_min",
+          [x["state"] for x in incs.values()] == ["open"] and not any(x.get("sane_since") for x in incs.values()), incs)
+    gap_end = T0 + 9.8 * H                          # the instance: last tick 05:52Z, next 11:29Z, reading from before
+    incs, rows = run(lambda t: {"helper_lost": {"t": min(t, T0 + H), "keys": [lost]}}, gap_end, step_s=H / 5)
+    check("standing: a reading staler than status_max_age_min is unknown, never quiet: no close across the tick gap",
+          [x["state"] for x in incs.values()] == ["open"] and "closed" not in [r.get("ev") for r in rows], incs)
+    acked = T0 + 2 * H
+    incs, rows = run(lambda t: {"helper_lost": {"t": t, "keys": [lost] if t < acked else []}},
+                     acked + pol["sustain_min"] * M + 10 * M)
+    closed = [r for r in rows if r.get("ev") == "closed"]
+    check("standing: once the receipt is acked the incident closes on sustain_min, not event_quiet_min",
+          len(closed) == 1 and acked + pol["sustain_min"] * M <= closed[0]["t"] <= acked + pol["sustain_min"] * M + 5 * M,
+          [(r.get("ev"), r.get("at")) for r in rows])
+    check("standing_of: a <scope>:reader metric and an uncovered metric are not judged by any reading",
+          IN.standing_of({"helper_lost": {"t": T0, "keys": []}}, "helper_lost:reader", T0, max_age) is None
+          and IN.standing_of({"helper_lost": {"t": T0, "keys": []}}, "long_helper:abc", T0, max_age) is None
+          and IN.standing_of({"budget:failed": {"t": T0, "keys": []}}, "budget:failed", T0, max_age) is False
+          and IN.standing_of({"budget:failed": {"t": T0 - max_age - 1, "keys": []}}, "budget:failed", T0, max_age) == "stale")
+
+
 def test_replay_recorded():
     n = runs_through_step(RECORDED_REVISITS)
     check("replay: the 27 recorded revisits are 12 runs through step()", n == 12, n)
@@ -1510,7 +1557,7 @@ def replay_batch():
 
 if "--replay-batch" in sys.argv:
     sys.exit(replay_batch())
-for t in (test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
+for t in (test_standing_source_holds_incident_open, test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
           test_batched_run_held_and_covers_slot, test_denied_goes_to_conductor_first, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes, test_spend_alarms_do_not_buy_runs,
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
           test_escalation_clear_through_step, test_chains_through_step, test_each_field_of_a_reading, test_signal_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,

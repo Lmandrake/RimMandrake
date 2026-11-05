@@ -423,7 +423,7 @@ def incident_step(sch, st, obs, now, act):
         return
     cursor = (st.get("incident") or {}).get("cursor", 0)
     res = IN.step(reader["table"](), rows, reader["status"](), now, cursor=cursor if cursor <= len(rows) else 0,
-                  events=reader.get("events"))
+                  events=reader.get("events"), standing=st.get("standing"))
     act(do="incident", **{k: res[k] for k in ("rows", "rings", "cursor", "snapshot")})
     roles = obs.get("roles")
     if roles and res["keys"]:
@@ -716,8 +716,8 @@ def decide(sch, st, obs, now, apply, out=None):
             if ss.get("ring") and not ss["ring"].get("consumed_at"):
                 act(do="withdraw", seat=seat, ring_id=ss["ring"]["ring_id"], pending=ss.pop("ring"))
         return actions
-    long_helper_alarms(sch, obs, now, act)
-    helper_lost_alarms(sch, obs, act)
+    long_helper_alarms(sch, obs, now, act, st)
+    helper_lost_alarms(sch, obs, act, st, now)
     # a seat switched off, or its waking switched off, keeps no deliverable ring in its inbox (review dispatcher-full
     # #8), decided BEFORE the agents gate like PAUSE above: a blind `claude agents` must not leave it ringing (review
     # r2 #6). A ring the doorbell already took stays pending and is verified (one_seat)
@@ -1240,7 +1240,22 @@ def ledger_verdict(args, run=subprocess.run):
     return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
 
 
-def long_helper_alarms(sch, obs, now, act):
+def stand(st, scope, keys, now):
+    """Record what the reader of `scope` saw standing this tick (incident.standing_of reads it): with it a Dispatcher
+    alarm's incident stays open while its source stands and closes on sustain_min once it is gone, never on silence
+    alone (RELAPSE_HELPERS_FIX_DIED_TWICE). keys None: no reader (switched off), so it claims nothing and the
+    event_quiet_min rule applies; keys False: the reader raised, so the reading is unknown (stale), never quiet."""
+    if st is None:
+        return
+    if keys is None:
+        (st.get("standing") or {}).pop(scope, None)
+    elif keys is False:
+        st.setdefault("standing", {})[scope] = {"t": None, "keys": [], "unknown_since": now}
+    else:
+        st.setdefault("standing", {})[scope] = {"t": now, "keys": sorted(set(keys))}
+
+
+def long_helper_alarms(sch, obs, now, act, st=None):
     """CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW (owner, 2026-10-29: "Long standing runs beyond n hour should raise an
     alarm in conductor."): one alarm per Conductor-window helper (Agent/Task) still running after long_helper.
     alarm_after_s (3600). Start = the helper transcript's first record (obs["long_helpers"]() -> [{id, age_s}]).
@@ -1249,14 +1264,18 @@ def long_helper_alarms(sch, obs, now, act):
     cfg = sch.get("long_helper") or {}
     fn = obs.get("long_helpers")
     if not cfg.get("enabled") or not fn:
+        stand(st, "long_helper", None, now)
         return
     limit = float(cfg.get("alarm_after_s", 3600))
     try:
         found = fn() or []
     except Exception as e:  # noqa: BLE001
+        stand(st, "long_helper", False, now)
         act(do="alarm", kind="long_helper:reader", note=True, why="long-helper reader raised %s: %s" % (
             type(e).__name__, str(e)[:200]))
         return
+    stand(st, "long_helper", ["long_helper:" + str(h["id"])[:12] for h in found if float(h.get("age_s") or 0) > limit],
+          now)
     for h in found:
         if float(h.get("age_s") or 0) > limit:
             act(do="alarm", kind="long_helper:" + str(h["id"])[:12], note=True, conductor_log=True, impact=float(h["age_s"]),
@@ -1267,19 +1286,23 @@ def long_helper_alarms(sch, obs, now, act):
                     "context; stop it or let it finish" % (str(h["id"])[:12], h["age_s"] / 60, limit / 60))
 
 
-def helper_lost_alarms(sch, obs, act):
+def helper_lost_alarms(sch, obs, act, st=None, now=None):
     """HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS: one alarm per open receipt of a dead window, repeating at alarm_every_s
     until `helper_receipts.py ack`. The route for the deaths no wake reads: /clear, a quit, a crash, a reboot. Off only
     when helper_receipts.enabled is false; a failing reader alarms, because silence here is the loss it exists to stop."""
     fn = obs.get("helper_receipts")
+    now = time.time() if now is None else now
     if (sch.get("helper_receipts") or {}).get("enabled") is False or not fn:
+        stand(st, "helper_lost", None, now)
         return
     try:
         found = fn() or []
     except Exception as e:  # noqa: BLE001
+        stand(st, "helper_lost", False, now)
         act(do="alarm", kind="helper_lost:reader", note=True, why="helper-receipt reader raised %s: %s" % (
             type(e).__name__, str(e)[:200]))
         return
+    stand(st, "helper_lost", ["helper_lost:" + str(r["session"])[:8] for r in found], now)
     for r in found:
         act(do="alarm", kind="helper_lost:" + str(r["session"])[:8], note=True, conductor_log=True,
             ticket=(sch.get("helper_receipts") or {}).get("item") or sch.get("alarm_item"),

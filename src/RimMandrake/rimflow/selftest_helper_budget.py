@@ -119,6 +119,10 @@ out = HB.tick_step(ON, st, root, NOW, sa=bad, journal=lambda rec: jr.append(rec)
 check("tick_step: a failing compute returns an alarm, does not raise", out and out["do"] == "alarm"
       and out["kind"] == "budget:failed" and "meter gone" in out["why"], out)
 check("tick_step: the alarm is journalled", len(jr) == 1, jr)
+check("tick_step: a failing publish records budget:failed standing (RELAPSE_HELPERS_FIX_DIED_TWICE)",
+      (st.get("standing") or {}).get("budget:failed") == {"t": NOW, "keys": ["budget:failed"]}, st.get("standing"))
+check("tick_step: a failing publish makes the token-pacing reading unknown, not quiet",
+      ((st.get("standing") or {}).get("budget:token_pacing") or {}).get("t", 0) is None, st.get("standing"))
 HB.tick_step(ON, st, root, NOW + 120, sa=bad, journal=lambda rec: jr.append(rec))
 check("tick_step: the same failure 2 min later is not journalled again", len(jr) == 1, jr)
 HB.tick_step(ON, st, root, NOW + 3700, sa=bad, journal=lambda rec: jr.append(rec))

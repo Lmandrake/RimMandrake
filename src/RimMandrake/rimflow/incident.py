@@ -14,7 +14,9 @@ The Dispatcher tick runs step() in decide (pure) and execute() in its execute pa
   * past the rung's ack time, or past recover_by acked or not, the incident moves up the chain: the route's reader,
     Conductor, a fresh Operations run, him; a rung asking the reader's own role again is skipped (next_rung). The last agent writes his line (`rimflow incident-line`); with none, the
     fixed template goes out marked unread, his accepted exception. A rung does not move while the readings are sane.
-  * it closes only on reading: every metric seen sane for sustain_min (event_quiet_min for a signal).
+  * it closes only on reading: every metric seen sane for sustain_min (event_quiet_min for a signal no reader
+    covers; a Dispatcher alarm whose reader records what stands is read like any metric, and a stale reading is
+    unknown, never quiet: standing_of, RELAPSE_HELPERS_FIX_DIED_TWICE).
   * at his rung it is never left to sit: past recover_by (acked) or owner_revisit_min after it reached him or was last
     revisited (unacked), it is REVISITED -- the ack and plan go, and a fresh Operations run is rung to re-read it and
     resolve it, re-ack it with a current plan, or rewrite his line (OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS: seven
@@ -341,9 +343,29 @@ def ack_since(inc):
     return max(inc["told_at"], iso(t)) if t else inc["told_at"]
 
 
-def step(table, rows, status, now, cursor=0, events=None):
+def standing_of(standing, metric, now, max_age_s):
+    """A Dispatcher alarm's own reading of its source (RELAPSE_HELPERS_FIX_DIED_TWICE). `standing` is the tick state's
+    {scope: {t, keys}}: what the reader of `scope` (a family such as long_helper, or one exact key such as budget:failed)
+    saw standing when it last ran. -> True (its source still stands), False (read and gone), "stale" (its reader has not
+    run for max_age_s: unknown, never quiet), or None (no reader covers it: the event_quiet_min rule). A `<scope>:reader`
+    metric is the reader failing and is never judged by the reading it failed to make."""
+    if metric.endswith(":reader"):
+        return None
+    for scope, r in (standing or {}).items():
+        if metric == scope or metric.startswith(scope + ":"):
+            if not isinstance(r, dict) or not isinstance(r.get("t"), (int, float)) or now - r["t"] > max_age_s:
+                return "stale"
+            return metric in (r.get("keys") or ())
+    return None
+
+
+def step(table, rows, status, now, cursor=0, events=None, standing=None):
     """Pure. -> {rows, rings, keys, cursor, snapshot}. `events`: a callable -> ledger events, called only when an
-    unacked incident names an item."""
+    unacked incident names an item. `standing`: the Dispatcher's readings of its own alarms' sources (standing_of): a
+    signal metric a reader covers is judged by it, held open while its source stands and closed on sustain_min once it
+    is gone, instead of closing on event_quiet_min of silence while the source still stands (helpers-20261101162643,
+    2026-11-02 11:29Z: helper_lost:3378fb18 closed on quiet across a 5.6 h tick gap, its receipt unacked, and the same
+    tick's repeat reopened it as a fix that died)."""
     pol = table["policy"]
     incs, signals = fold(rows)
     out, rings = [], []
@@ -441,18 +463,24 @@ def step(table, rows, status, now, cursor=0, events=None):
             if hit:
                 emit("acked", inc, acked_t=now, ack_by=hit[1], plan="%s on %s" % (hit[2], hit[0]), auto_ack=True,
                      recover_by_t=now + pol["recover_min"] * 60, recover_by=iso(now + pol["recover_min"] * 60))
-        states = []
+        states, quiet = [], False
         for m, v in inc["metrics"].items():
-            if m in bad or m in fired:
+            sr = standing_of(standing, m, now, pol["status_max_age_min"] * 60) if v.get("event") else None
+            if m in bad or m in fired or sr is True:
                 states.append(False)
+            elif sr == "stale":
+                states.append(None)
+            elif sr is False:
+                states.append(True)
             elif v.get("event"):
                 states.append(True)
+                quiet = True
             else:
                 states.append(seen.get(m) if fresh else None)
         if all(s is True for s in states):
             if not inc.get("sane_since"):
                 emit("sane", inc, sane_since=now)
-            need = pol["event_quiet_min"] if any(v.get("event") for v in inc["metrics"].values()) else pol["sustain_min"]
+            need = pol["event_quiet_min"] if quiet else pol["sustain_min"]
             if now - inc["sane_since"] >= need * 60:
                 emit("closed", inc, state="closed", closed_t=now)
                 continue

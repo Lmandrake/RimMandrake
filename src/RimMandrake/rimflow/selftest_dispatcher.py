@@ -3725,6 +3725,23 @@ def test_long_helper_alarm():
     o["long_helpers"] = lambda: [{"id": "aaaaaaaaaaaaaaaa", "age_s": 3601.0}]
     off = D.decide(sched(long_helper={"enabled": False}), D.load_state(os.path.join(TMP, "lh2")), o, 5000.0, True)
     check(not [x for x in off if str(x.get("kind")).startswith("long_helper")], "long helper: disabled = silent")
+    # RELAPSE_HELPERS_FIX_DIED_TWICE: each reader records what stands, so the incident reads its source, not silence
+    check(st.get("standing", {}).get("long_helper", {}).get("keys") == ["long_helper:aaaaaaaaaaaa"]
+          and st["standing"]["long_helper"]["t"] == 5000.0, "long helper: the tick records what stands (%r)" % st.get("standing"))
+    st3 = {"standing": {"long_helper": {"t": 1.0, "keys": ["long_helper:x"]}}}
+    D.long_helper_alarms(sched(long_helper={"enabled": False}), o, 5000.0, lambda **k: None, st3)
+    check("long_helper" not in st3["standing"], "long helper: off claims no reading")
+    o["long_helpers"] = lambda: (_ for _ in ()).throw(OSError("gone"))
+    st4 = {"standing": {"long_helper": {"t": 1.0, "keys": []}}}
+    D.long_helper_alarms(sch, o, 5000.0, lambda **k: None, st4)
+    check(st4["standing"]["long_helper"]["t"] is None, "long helper: a raising reader leaves an unknown reading, never quiet")
+    st5 = {}
+    D.helper_lost_alarms(sched(), {"helper_receipts": lambda: [{"seat": "BENCH", "session": "3378fb18-30af", "line": "x"}]},
+                         lambda **k: None, st5, 7000.0)
+    check(st5.get("standing", {}).get("helper_lost") == {"t": 7000.0, "keys": ["helper_lost:3378fb18"]},
+          "helper lost: an open receipt stands (%r)" % st5)
+    D.helper_lost_alarms(sched(), {"helper_receipts": lambda: []}, lambda **k: None, st5, 7300.0)
+    check(st5["standing"]["helper_lost"] == {"t": 7300.0, "keys": []}, "helper lost: an acked receipt is read gone")
 
 
 def test_unring_gives_back_a_backoff_and_bad_roles_are_skipped():

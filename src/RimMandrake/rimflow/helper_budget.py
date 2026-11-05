@@ -136,6 +136,18 @@ def read(root=None, now=None, max_age_s=MAX_AGE_S, sa=None):
 ATTENTION_KIND = "budget:token_pacing"
 
 
+def _stand(st, key, on, now):
+    """What this tick read for one budget alarm key, for incident.standing_of (RELAPSE_HELPERS_FIX_DIED_TWICE): its
+    incident stays open while the alarm's cause stands and closes on sustain_min once it is gone. on None: no reader
+    (off); on "unknown": this tick could not read it, so it is stale, never quiet."""
+    if on is None:
+        (st.get("standing") or {}).pop(key, None)
+    elif on == "unknown":
+        st.setdefault("standing", {})[key] = {"t": None, "keys": [], "unknown_since": now}
+    else:
+        st.setdefault("standing", {})[key] = {"t": now, "keys": [key] if on else []}
+
+
 def attention(sch, st, rec, now, journal=None, tell=None):
     """Token pacing is ADVISORY (owner, 2026-11-02: "Please make token limits advisory at this time everywhere. Nothing
     gets killed or stopped for that, but it might call attention from another agent (Conductor, Operations) to
@@ -147,9 +159,11 @@ def attention(sch, st, rec, now, journal=None, tell=None):
     alarms = st.setdefault("alarms", {})
     if (sch.get("helper_budget") or {}).get("pacing_attention", True) is False:
         alarms.pop(ATTENTION_KIND, None)
+        _stand(st, ATTENTION_KIND, None, now)
         return None
     adv = (rec or {}).get("advice") or {}
     short = {k: v for k, v in (adv.get("short") or {}).items() if isinstance(v, int) and v > 0}
+    _stand(st, ATTENTION_KIND, bool(short), now)
     if not short:
         alarms.pop(ATTENTION_KIND, None)
         return None
@@ -182,12 +196,16 @@ def tick_step(sch, st, root, now, sa=None, journal=None, tell=None):
     Conductor log. Opt-in: only a schedule with helper_budget.enabled true publishes (the live
     dispatcher_schedule.json does), so a fixture schedule in a selftest never computes over the real transcripts."""
     if (sch.get("helper_budget") or {}).get("enabled") is not True:
+        for k in ("budget:failed", ATTENTION_KIND):
+            _stand(st, k, None, now)
         return None
     alarms = st.setdefault("alarms", {})
     key = "budget:failed"
     try:
         pub = publish(root, now, sa)
     except Exception as e:  # noqa: BLE001  a budget failure must never stop a tick: the hook falls back on its own
+        _stand(st, key, True, now)
+        _stand(st, ATTENTION_KIND, "unknown", now)    # no published advice this tick: the pacing reading is not current
         rec = {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm", "kind": key,
                "why": "helper budget not published (%s: %s); the spawn hook computes for itself"
                       % (type(e).__name__, str(e)[:200])}
@@ -200,6 +218,7 @@ def tick_step(sch, st, root, now, sa=None, journal=None, tell=None):
                     pass
         return rec
     alarms.pop(key, None)
+    _stand(st, key, False, now)
     return attention(sch, st, pub, now, journal, tell)
 
 
