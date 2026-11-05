@@ -1085,6 +1085,31 @@ def canonical_commit(name):
     return out
 
 
+def ledger_only_refusal(sha, prof, cwd=None):
+    """-> the refusal text when `sha` changes ONLY paths the Marker's box replays from the candidate's parent
+    (walls.marker.tree_from_parent: the ledger, code_review), else None. Such a commit's change is invisible to the
+    checker: change.diff is empty and the ledger reads as before it (OPS_CHURN_DIAGNOSE_STALE_EDEN_EOCX:
+    STALE_BLOCKS_UNBLOCK_GATES_ALREADY_OPEN blind-failed twice on ledger-only a8d05bca). A git error refuses nothing."""
+    snap = list(prof.get("tree_from_parent") or ())
+    if not snap:
+        return None
+    try:
+        r = subprocess.run(["git", "diff-tree", "--no-commit-id", "--name-only", "-r", "--root", "-m", "--first-parent", sha],
+                           cwd=cwd, capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if r.returncode:
+        return None
+    paths = [p for p in r.stdout.splitlines() if p.strip()]
+    under = lambda p, s: p == s.rstrip("/") or p.startswith(s.rstrip("/") + "/")    # noqa: E731
+    if not paths or not all(any(under(p, s) for s in snap) for p in paths):
+        return None
+    return ("%s changes only %s, which the blind checker reads from the candidate's PARENT (walls.marker.tree_from_parent):"
+            " it would see an empty change and the ledger as before your events. Land those events, then finish on a LATER"
+            " commit that names the item and changes a file outside them (a lesson, a test, the live_proofs line)."
+            % (sha[:10], ", ".join(s for s in snap if any(under(p, s) for p in paths))))
+
+
 REV_EXPR = re.compile(r"[\s/:~^@{}*?\[\\]|\.\.|^-")
 
 
@@ -6807,7 +6832,11 @@ def main(argv=None):
         elif a.cmd == "snag":
             snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section, wait_hours=a.wait_hours, on=a.on, blocker=a.blocker)
         elif a.cmd == "finish":
-            finish(store, a.item, a.gen, canonical_commit(a.sha), a.evidence)
+            sha = canonical_commit(a.sha)
+            hidden = ledger_only_refusal(sha, rules().get("walls", {}).get("marker", {}))
+            if hidden:
+                raise ValueError(hidden)
+            finish(store, a.item, a.gen, sha, a.evidence)
         elif a.cmd == "help":
             env_gen = os.environ.get("RELENTLESS_GEN")
             gen = a.gen if a.gen is not None else int(env_gen) if env_gen else None
