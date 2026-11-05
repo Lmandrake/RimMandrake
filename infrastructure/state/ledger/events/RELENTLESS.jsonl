@@ -766,3 +766,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:27:34Z","tsn":1793906854557481474}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR: deploy and restart for its live proofs","ts":"2026-11-05T19:29:04Z","tsn":1793906944837087549}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T19:50:19Z","tsn":1793908219456449708}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T20:01:43Z","tsn":1793908903853675702}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T20:02:03Z","tsn":1793908923851997659}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T20:02:13Z","tsn":1793908933681447002}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: review savegame for the owner's look","ts":"2026-11-05T20:04:38Z","tsn":1793909078456264958}
