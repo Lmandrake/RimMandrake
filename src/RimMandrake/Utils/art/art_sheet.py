@@ -739,8 +739,12 @@ addEventListener('DOMContentLoaded', () => {
        another lane, e.g. the young plant or the corpse, drawn as the adult): refuse it. Taking a letter back is allowed. */
     if (it_ && key && key.length === 1 && /[A-Za-z]/.test(key) && !(opts && opts.toggle && DEC[id] && DEC[id].decision === key)) {
       const c = g ? window.SLX.colIn(it_, DEC[id] || { decision: '', note: '' }, g.key, key) : null;
-      const usable = g ? !!(c && !c.purgedLive && !c.noSelect) : !it_.letters || it_.letters.includes(key);
-      if (!usable) { if (typeof showErr === 'function') showErr('Set ' + key + ' is not a set of ' + (((g || {}).slot || {}).label || 'this row') + ' — nothing was recorded.'); return; }
+      /* a row with lanes whose primary lane is NOT a slot (unassigned / reference first) has no slot a bare letter could
+         fill: enact would route it by name and install it nowhere, so every letter is refused there
+         (SHEET_UNASSIGNED_PRIMARY_FIX_NOSLOT); a row with no lane model keeps its own letter list */
+      const noSlot = !g && (it_.graphics || []).some(x => x.lane);
+      const usable = g ? !!(c && !c.purgedLive && !c.noSelect) : !noSlot && (!it_.letters || it_.letters.includes(key));
+      if (!usable) { if (typeof showErr === 'function') showErr(noSlot ? 'This row has no slot a letter can fill — say what each render is (its "this is" / use control) — nothing was recorded.' : 'Set ' + key + ' is not a set of ' + (((g || {}).slot || {}).label || 'this row') + ' — nothing was recorded.'); return; }
     }
     orig(id, key, opts);
     if (DEC[id]) {
@@ -1498,6 +1502,15 @@ def flipbook_cols(idx: L.Index, words, exact, prefixes=()) -> list[dict]:
                            "label": f"IN GAME — {pre.rsplit('/', 1)[-1]}", "prompt": "",
                            "detail": f"the flip-book the game draws now ({len(faces)} frames under {pre})"})
     return out
+
+
+def row_letters(gitems: list) -> list:
+    """The letters the row's right-hand buttons and number hotkeys may record: the usable sets of the primary lane when
+    it is a SLOT. A row whose first lane is the unassigned or reference lane has no slot those letters could fill (enact
+    routes such a bare letter by name and installs it nowhere or as a conflict), so it offers none: its renders are used
+    through the lane's own `use` control (SHEET_UNASSIGNED_PRIMARY_FIX_NOSLOT)."""
+    return [c["letter"] for g in gitems if g["primary"] and g.get("lane", "slot") == "slot" for c in g["cols"]
+            if not c.get("purgedLive") and not c.get("noSelect")]
 
 
 def flip_layout(cols: list[dict]) -> tuple[list[str], int, list[str]]:
@@ -3412,8 +3425,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "prefill": letter, "prefillWhy": why, "prefillSource": source,
             "contested": source in ("inferred", "none"), "inferred": source == "inferred",
             "prefillPicks": picks, "graphics": gitems, "thumbs": thumbs, "fulls": fulls, "canon": canon,
-            "letters": [c["letter"] for g in gitems if g["primary"] for c in g["cols"]
-                        if not c.get("purgedLive") and not c.get("noSelect")],
+            "letters": row_letters(gitems),
             "dependsOn": (key[:-len("Catch")] if key.endswith("Catch") and key[:-len("Catch")] in {x["key"] for x in rows}
                           else None),
             "related": [{"id": o, "label": labels[o], "why": w} for o, w in sorted(rel.get(key, {}).items())],

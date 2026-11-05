@@ -17,6 +17,8 @@
            · needs-you lists required slots with no answer and unlabelled renders; asks set and clear
            · an old tick (legacyVariants) is answered IN the row: keep / drop toggle, clicking again takes it back,
              a letter that is not an old tick is refused (owner 2026-10-10: no separate old-ticks sheet)
+  no-slot  a row whose FIRST lane is unassigned/reference: every letter refused, no letters offered
+           (SHEET_UNASSIGNED_PRIMARY_FIX_NOSLOT)
   builder  the row markup labels every lane with its slot and offers no pool tick off a pool lane; a row with an old tick
            shows keep / drop on THAT picture (pool wording on a pool lane), one with none shows no old-tick markup.
 """
@@ -321,10 +323,68 @@ def markup_tests():
     check("old-ticks sheet" not in lh, "no row sends him to the retired old-ticks sheet")
 
 
+NOSLOT_ITEM = {
+    "id": "RM_Noslot", "rev": "s1", "prefill": "", "thumbs": {}, "letters": ["R"], "graphics": [
+        {"key": "_byname", "res": None, "primary": True, "lane": "unassigned", "pool": False, "facings": ["single"],
+         "role": "renders", "slot": {"label": "RENDERS NOT YET ASSIGNED", "kind": "unassigned"},
+         "cols": [{"letter": "R", "kind": "artpipe", "faces": {"single": "r1"}, "setId": "sr", "purgeable": True}]},
+        {"key": "N/Adult", "res": "N/Adult", "primary": False, "lane": "slot", "pool": False, "facings": ["single"],
+         "role": "body", "slot": {"label": "ADULT", "kind": "adult", "required": False},
+         "cols": [{"letter": "A", "kind": "live", "winner": True, "faces": {"single": "a1"}, "setId": "sa"},
+                  {"letter": "B", "kind": "artpipe", "faces": {"single": "b1"}, "setId": "sb", "purgeable": True}]}]}
+
+
+def unassigned_primary_tests():
+    """SHEET_UNASSIGNED_PRIMARY_FIX_NOSLOT: a row whose FIRST lane is the unassigned (or reference) lane has no primary
+    slot. The right-hand buttons and number hotkeys used to fall back to it.letters (that lane's letters) and record
+    decision = R with no slots{} entry, which enact routes by name and installs nowhere (or as a conflict). Every letter
+    is refused on such a row, the builder offers it no letters, and a row with no lane model keeps its letter list."""
+    import art_sheet as AS
+    import sheet_js_harness as H
+    check(AS.row_letters(NOSLOT_ITEM["graphics"]) == [], "builder: a row whose primary lane is unassigned offers no letters")
+    ref = [dict(NOSLOT_ITEM["graphics"][0], lane="reference", key="_reference:X")] + NOSLOT_ITEM["graphics"][1:]
+    check(AS.row_letters(ref) == [], "builder: a row whose primary lane is a reference lane offers no letters")
+    check(AS.row_letters(ITEM["graphics"]) == ["A", "B", "C"], "builder: a primary SLOT lane still offers its sets")
+    if not H.node():
+        check(False, "node is needed (UNMEASURED)")
+        return
+    import subprocess
+    stubs = H.STUBS.replace("const addEventListener = () => {};",
+                            "const __dcl = []; const addEventListener = (ev, f) => { if (ev === 'DOMContentLoaded') __dcl.push(f); };")
+    legacy = {"id": "RM_Plain", "prefill": "", "thumbs": {}, "letters": ["P"],
+              "graphics": [{"key": "x", "res": "x", "primary": True, "cols": [{"letter": "P", "faces": {"single": "p"}}]}]}
+    tpl = r"""
+window.setDecision = (id, key, opts = {}) => { const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = {decision: '', note: ''}); rec.decision = (rec.decision === key && opts.toggle) ? '' : key; };
+const it = """ + json.dumps(NOSLOT_ITEM) + r""", lg = """ + json.dumps(legacy) + r""";
+byId.set(it.id, it); byId.set(lg.id, lg);
+__dcl.forEach(f => f());
+const o = {}, cp = x => JSON.parse(JSON.stringify(x));
+window.setDecision(it.id, 'R'); o.r = cp(DEC[it.id] || null); o.errR = errs.slice();
+window.setDecision(it.id, 'A'); o.a = cp(DEC[it.id] || null);
+window.setDecision(it.id, 'redo'); o.redo = cp(DEC[it.id] || null);
+window.setDecision(lg.id, 'P'); o.plain = cp(DEC[lg.id] || null);
+console.log(JSON.stringify(o));
+"""
+    prog = stubs + H.render_script() + "\n;(() => {\n" + tpl + "\n})();"
+    r = subprocess.run([H.node(), "-e", prog], capture_output=True, text=True, timeout=60)
+    if r.returncode:
+        check(False, "no-slot harness ran (" + (r.stderr or r.stdout)[-300:] + ")")
+        return
+    o = json.loads([l for l in r.stdout.splitlines() if l.strip()][-1])
+    check(o["r"] is None and o["errR"] and "nothing was recorded" in o["errR"][-1],
+          "letter R of the unassigned FIRST lane is refused (no decision, no slot-less pick), with a message")
+    check(o["a"] is None, "letter A of a non-primary slot lane is refused on that row too (bare letters have no slot)")
+    check(o["redo"] is not None and o["redo"]["decision"] == "redo" and not (o["redo"].get("slots") or {}),
+          "redo still records on that row (no slot is written)")
+    check(o["plain"] is not None and o["plain"]["decision"] == "P", "a row with no lane model keeps its own letter list")
+
+
 def main():
     derive_tests()
     js_tests()
     hotkey_tests()
+    unassigned_primary_tests()
     markup_tests()
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAILED")
     return 1 if FAILS else 0
