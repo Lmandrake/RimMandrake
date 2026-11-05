@@ -230,9 +230,11 @@ def sweep(store, fx, r, now, acts, iso):
             continue
         why = None
         if not prop.get("adapters") and not prop.get("paths"):
-            why = "the Judge proposed nothing Relentless may apply%s" % (
-                " (refused: %s)" % prop.get("refused") if prop.get("refused") else "")
-            good = False
+            # nothing to probe: a closed ticket is the repair, and the one re-check is its probe (blind again -> ticket)
+            good = status == "ticket"
+            why = ("%s closed; nothing to probe from here, so the one re-check is the probe" % ent.get("ticket") if good
+                   else "the Judge proposed nothing Relentless may apply%s" % (
+                       " (refused: %s)" % prop.get("refused") if prop.get("refused") else ""))
         else:
             good, why = fx.reach_probe(r, prop.get("paths") or [], prop.get("adapters") or [],
                                        {"sha": rp.get("sha") or "", "repo": fx.books}, store.root)

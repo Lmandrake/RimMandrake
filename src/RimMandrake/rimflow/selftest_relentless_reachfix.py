@@ -176,6 +176,31 @@ def t_ticket_only_on_failure():
     x.done()
 
 
+def t_windows_build_nothing_to_probe():
+    """HEAVY_TEXTURES_MEASURE_REAL_VRAM: dotnet.exe on a \\\\wsl.localhost path from inside the wall. No read path opens it:
+    straight to its ticket, no probe; the ticket's close is the repair and the one re-check its probe."""
+    x = rig()
+    B.to_check(x, "I0")
+    n0 = len(checks(x))
+    blind(x, "I0", what="CANNOT REACH: build.py --gm, dotnet.exe build on \\\\wsl.localhost\\Ubuntu\\mnt\\d\\ClaudeWork\\x "
+          "returns 'Invalid argument'")
+    x.tick()
+    ok(x.st("I0")["reach"]["class"] == "windows_build" and x.w.probes == []
+       and x.w.tickets == ["CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK"],
+       "(5) a Windows build gap: its own class, nothing probed, its ticket filed: %s %s" % (x.w.probes, x.w.tickets))
+    for _ in range(10):
+        x.tick(120)
+    ok(len(checks(x)) == n0 and x.st("I0")["status"] == "blocked", "(1) no re-check while the ticket is open")
+    x.w.items["CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK"] = "done"
+    for _ in range(4):
+        if x.st("I0")["status"] == "checking":
+            break
+        x.tick()
+    ok(len(checks(x)) == n0 + 1 and x.st("I0")["candidate"]["sha"] == "sha1",
+       "(4) the ticket closed: the same sha checked once: %s" % x.st("I0")["status"])
+    x.done()
+
+
 def t_legacy_off():
     x = rig()
     x.r = dict(x.r, reach_repair=False)
@@ -186,7 +211,8 @@ def t_legacy_off():
 
 
 def main():
-    for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure, t_legacy_off):
+    for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
+              t_windows_build_nothing_to_probe, t_legacy_off):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
