@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map, liquid_pump.pump_unpowered_idle holds the 3-cell channel at 6.00 levels (exact water) and pump_draws_into_tank reads channel == 6 - moved within 0.02 levels and tank == 10000 x moved units (no level lost to a draw)

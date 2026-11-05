@@ -1,0 +1,1 @@
+A live bar summing excavation integer fill floors part levels: 3 conserved levels spread 1.5+1.5+0 read 2. Any level/conservation bar must read exact water (_water / ProofPitWater dL), never fill. (PUMP_DRAW_FIX_LOSES_A_LEVEL: run4's 'lost level' was this, not the pump.)
