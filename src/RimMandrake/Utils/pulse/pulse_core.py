@@ -56,7 +56,8 @@ DONE_WINDOW_SECS = 12 * 3600
 SEAT_WAIT_FADE_SECS = 2 * 3600   # "finished, waiting for you" fades to a plain chip after this
 SEATS = ("BENCH", "FOUNDRY")     # the only windows that can ask for the owner
 OLD_ASK_SECS = 3 * 86400        # older asks fold into one "older (N)" line (nothing dropped)
-RULE_WINDOW_SECS = 14 * 86400   # a ruling older than this (since needs became owner) leaves the widget, not rimflow
+# No age cutoff on rulings: an unresolved ask never leaves his list by turning old (OWNER_ASKS_AUDIT_FIFTY_NINE_DEEP,
+# GPT rec 4 - the old 14-day RULE_WINDOW hid undecided asks silently). OLD_ASK_SECS folds, never drops.
 SHEETS_DIRS = [c / "Transient" for c in CLONES]   # every sheet root under Transient (one level of subfolders too)
 # Telemetry (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED): the Windows-side telemetryd writes its alert
 # verdicts + sparklines here; pulse only displays them (design 08 §5.6: pulse is the attention surface).
@@ -314,6 +315,12 @@ def owner_rulings(ledger: list[dict]) -> dict:
     for e in ledger:
         if e.get("event") == "file" and e.get("id") in became:
             filed.setdefault(e["id"], e)
+    blocks: dict[str, list[str]] = {}       # ask id -> open items blocked on it (the agents waiting on his call)
+    for other in world.items.values():
+        if other.open and other.blocked:
+            for on in (other.blocked_on, *(other.blocked_also or ())):
+                if on in became and other.id not in blocks.setdefault(on, []):
+                    blocks[on].append(other.id)
     out = {}
     for iid, ev in became.items():
         it = world.items[iid]
@@ -322,7 +329,7 @@ def owner_rulings(ledger: list[dict]) -> dict:
         to, to_why = ask_addressee(it, ev, filed.get(iid))
         out[iid] = {"ev": ev, "t": iso_to_epoch(ev.get("ts", "")), "seat": (ev.get("seat") or "").upper(),
                     "reason": ev.get("reason") or it.title, "state": it.state, "class": klass, "class_why": why,
-                    "addressee": to, "addressee_why": to_why,
+                    "addressee": to, "addressee_why": to_why, "blocks": sorted(blocks.get(iid, ())),
                     "answered": ({"t": iso_to_epoch(an.get("ts", "")), "event": an.get("event"),
                                   "seat": (an.get("seat") or "").upper(),
                                   "by": "card" if an.get("byCard") else "his words",
@@ -1290,29 +1297,30 @@ def classify_ledger(ledger: list[dict], since: float, now: float,
         t, e = ru["t"], ru["ev"]
         if ru.get("class") == "walk":
             continue                      # a live walkthrough is a joint session, never a row to open
-        if now - t < RULE_WINDOW_SECS:
-            full = " ".join(str(ru.get("reason") or titles.get(iid) or "(no reason recorded on the needs event)").split())
-            reason = short(full, 90)
-            lk = link_for(e) or item_link(iid)
-            an = ru.get("answered")
-            # answered = his card/words landed after the ask; the agent owes the follow-through, he owes nothing
-            kind = "answered" if an else ASK_KINDS.get(ru.get("class") or "rule", "review")
-            r = _row(f"needs:{iid}", kind, (e.get("seat") or "").upper(),
-                     f"{iid} — {reason}", t, link=lk, src="ledger")
-            r.update({"seat": (e.get("seat") or "").upper(), "title": nice_id(iid), "reason": reason, "full": full,
-                      "iid": iid, "ask": ru.get("class") or "rule", "ask_why": ru.get("class_why"),
-                      # no addressee recorded is 'unknown', never his (owner_view keeps it out of his list)
-                      "addressee": ru.get("addressee") or "unknown", "addressee_why": ru.get("addressee_why"),
-                      "state": ru.get("state"),
-                      "label": ask_label(iid, titles.get(iid) or "", str(ru.get("reason") or "")),
-                      "answered": an, "src_detail": f"rimflow: {iid} open, needs=owner since {e.get('event')}"})
-            if kind == "chore":
-                r.update({"minutes": chore_minutes(full), "machine": chore_machine(iid, full)})
-            if kind == "look":
-                if not _is_artifact_link(lk):
-                    continue            # a look is a thing he OPENS (sheet, image, page); an item .md or a commit is not
-                r.update({"ltype": "item look", "seen_id": None, "group": None, "thumb": False, "opened": False})
-            rows.append(r)
+        full = " ".join(str(ru.get("reason") or titles.get(iid) or "(no reason recorded on the needs event)").split())
+        reason = short(full, 90)
+        lk = link_for(e) or item_link(iid)
+        an = ru.get("answered")
+        # answered = his card/words landed after the ask; the agent owes the follow-through, he owes nothing
+        kind = "answered" if an else ASK_KINDS.get(ru.get("class") or "rule", "review")
+        r = _row(f"needs:{iid}", kind, (e.get("seat") or "").upper(),
+                 f"{iid} — {reason}" + (f" · blocks {', '.join(ru['blocks'][:3])}"
+                                         + (f" +{len(ru['blocks']) - 3}" if len(ru['blocks']) > 3 else "")
+                                         if ru.get("blocks") else ""), t, link=lk, src="ledger")
+        r.update({"seat": (e.get("seat") or "").upper(), "title": nice_id(iid), "reason": reason, "full": full,
+                  "iid": iid, "ask": ru.get("class") or "rule", "ask_why": ru.get("class_why"),
+                  # no addressee recorded is 'unknown', never his (owner_view keeps it out of his list)
+                  "addressee": ru.get("addressee") or "unknown", "addressee_why": ru.get("addressee_why"),
+                  "state": ru.get("state"), "blocks": list(ru.get("blocks") or ()),
+                  "label": ask_label(iid, titles.get(iid) or "", str(ru.get("reason") or "")),
+                  "answered": an, "src_detail": f"rimflow: {iid} open, needs=owner since {e.get('event')}"})
+        if kind == "chore":
+            r.update({"minutes": chore_minutes(full), "machine": chore_machine(iid, full)})
+        if kind == "look":
+            if not _is_artifact_link(lk):
+                continue            # a look is a thing he OPENS (sheet, image, page); an item .md or a commit is not
+            r.update({"ltype": "item look", "seen_id": None, "group": None, "thumb": False, "opened": False})
+        rows.append(r)
     # one line per thing: a later event on the same key replaces the earlier line
     dedup: dict[str, dict] = {}
     for r in rows:
@@ -2034,7 +2042,10 @@ def order_rows(rows: list[dict]) -> list[dict]:
         base = KIND_ORDER.get(r["kind"], 9)
         if r["kind"] in ("red", "amber", "amber_soft", "warn") and acked:
             base = 6.5               # acked alarms drop below the live roster, still visible
-        return (base, -(r.get("since") or 0) if r["kind"] in ("done", "red", "review", "look", "provide", "chore", "answered", "failed", "held") else (r.get("since") or 0))
+        if str(r.get("key", "")).startswith("needs:") and r["kind"] != "answered":
+            # his asks: those an agent is blocked on first, then the oldest unresolved (GPT rec 4)
+            return (base, 0 if r.get("blocks") else 1, r.get("since") or 0)
+        return (base, 0, -(r.get("since") or 0) if r["kind"] in ("done", "red", "review", "look", "provide", "chore", "answered", "failed", "held") else (r.get("since") or 0))
     return sorted(rows, key=k)
 
 

@@ -258,15 +258,32 @@ check("rimworld chip is plain, there is no mem chip; artpipe is the ART colour",
 red_oom = pc._row("oom:x", "red", "BENCH", "OOM", NOW, src="kernel")
 check("an OOM does not make a mem chip", not any(c["label"] == "mem" for c in pc.build_chips([red_oom], NOW)))
 
-# rulings: newest first, titles, never a seat word in the label
+# rulings: oldest first, titles, never a seat word in the label
 r2 = pc.classify_ledger([fi("OLDER_ASK_1", 9 * 86400 + 5), le("needs", "OLDER_ASK_1", 9 * 86400, to="owner", reason="old"),
                          fi("NEWER_ASK_1", 105), le("needs", "NEWER_ASK_1", 100, to="owner", reason="fresh")],
                         NOW - 3600, NOW)[0]
 r2 = [r for r in r2 if r["kind"] == "review"]
 ordr = [r["key"] for r in pc.order_rows(r2)]
-check("rulings sort newest first", ordr == ["needs:NEWER_ASK_1", "needs:OLDER_ASK_1"], ordr)
+check("rulings sort oldest first (GPT rec 4: the oldest unresolved decision leads)",
+      ordr == ["needs:OLDER_ASK_1", "needs:NEWER_ASK_1"], ordr)
 check("a ruling carries a readable title, its seat and a reason",
       r2[1]["title"] in ("newer ask", "older ask") and r2[0]["seat"] == "FOUNDRY" and r2[0]["reason"], r2)
+# OWNER_ASKS_AUDIT_FIFTY_NINE_DEEP: no silent age cutoff; asks an agent is blocked on lead, and name who waits
+aged = pc.classify_ledger([fi("ANCIENT_ASK_1", 40 * 86400 + 5), le("needs", "ANCIENT_ASK_1", 40 * 86400, to="owner", reason="old q")],
+                          NOW - 3600, NOW)[0]
+check("an unresolved ask 40 days old is still listed (the 14-day RULE_WINDOW dropped it silently)",
+      [r["key"] for r in aged] == ["needs:ANCIENT_ASK_1"], aged)
+check("the cutoff constant is gone, not merely widened", not hasattr(pc, "RULE_WINDOW_SECS"))
+bl = pc.classify_ledger([fi("OLD_FREE_ASK_1", 9 * 86400 + 5), le("needs", "OLD_FREE_ASK_1", 9 * 86400, to="owner", reason="nobody waits"),
+                         fi("NEW_GATE_ASK_1", 105), le("needs", "NEW_GATE_ASK_1", 100, to="owner", reason="work waits"),
+                         fi("WAITING_WORK_1", 90), le("block", "WAITING_WORK_1", 80, reason="his call", on="NEW_GATE_ASK_1")],
+                        NOW - 3600, NOW)[0]
+bl = [r for r in bl if r["key"].startswith("needs:")]
+bo = pc.order_rows(bl)
+check("an ask an agent is blocked on outranks an older free one",
+      [r["key"] for r in bo] == ["needs:NEW_GATE_ASK_1", "needs:OLD_FREE_ASK_1"], [r["key"] for r in bo])
+check("the top ask names the item blocked on it, in its fields and its text",
+      bo[0]["blocks"] == ["WAITING_WORK_1"] and "WAITING_WORK_1" in bo[0]["text"] and bo[1]["blocks"] == [], bo)
 repointed = pc.classify_ledger([fi("ACCEPTED_1", 300), le("needs", "ACCEPTED_1", 200, to="owner", reason="watch it"),
                                 le("needs", "ACCEPTED_1", 100, to="offline", reason="he accepted it")], NOW - 3600, NOW)[0]
 check("a needs re-pointed off the owner leaves 'to rule' (FIREHAWK stayed listed after he accepted it, 2026-10-10)",

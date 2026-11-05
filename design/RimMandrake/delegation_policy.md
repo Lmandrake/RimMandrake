@@ -120,6 +120,12 @@ may not validate.
    not; `bridge take --idle-ok` and `./game --idle-ok` take it; the events carry `why` `delegated: ...`. The flyer
    refusal is self-declared: `--flyer` and any purpose that names flying refuse, but the tool cannot know what the
    seat will actually drive. A seat that will fly anything passes `--flyer`.
+7. **Certifying a mod's first-touch Designer pass.** *"the first time an item names a mod, it gets a deep Designer
+   pass to read out its code/spec, expand the spec and validation strategies, certifies it with the user/clarifies
+   confusion, then writes it all out for Relentless."* (owner, 2026-11-04 UTC, ledger `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`;
+   tool `src/RimMandrake/rimflow/first_touch.py`). The reading, the expanded spec and the build items are the
+   Designer's; only the certification sitting with him is reserved. One item per mod (`<FOLDER>_DESIGN_FIRST_TOUCH`):
+   each sitting certifies a different spec, so no one ruling settles the family.
 
 A reserved call is asked as a card (the `question-card` skill) or filed `--for OWNER --kind decision`, and the
 work waits on it. It never times out into a decision.
