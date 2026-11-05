@@ -24,6 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import scratch_reap as R  # noqa: E402
+from selftest_own_dirs import own_dir  # noqa: E402
 
 os.environ["SCRATCH_REAP_RM_SCRATCH"] = "/nonexistent"    # the sanity reading is proved in selftest_scratch_reap_sanity.py:
 R.pool_measures = lambda: {}                              # here a du of the real rm/scratch per run would cost 18 s each
@@ -135,6 +136,12 @@ def main() -> int:
     if os.environ.get("SCRATCH_REAP_SELFTEST_ONCE"):      # the parent below holds the lock: taking it here would deadlock
         return run()
     lock = serial_lock()
+    try:                                   # dirs killed runs left before own_dir existed, by the fixture's shape
+        import selftest_own_dirs
+        swept = selftest_own_dirs.legacy_litter(apply=True)
+        print(f"litter: removed {swept['litter']} fixture dirs a killed run left", flush=True)
+    except Exception as e:                 # housekeeping, not the test: never let it fail the run
+        print(f"litter: sweep skipped: {e!r}", flush=True)
     # A stranger's unreadable pid on a busy machine rightly holds every fixture (Live.blind): one bad attempt says nothing,
     # three in a row say the code. Fresh processes: an attempt that died leaves no patched module behind.
     for attempt in range(1, 4):
@@ -149,7 +156,9 @@ def main() -> int:
 
 def run() -> int:
     check("1" in REAL_PROC_ENTRIES() and "1" not in R.proc_entries(), "the reaper's own scan is the whole machine; only this test narrows it")
-    with tempfile.TemporaryDirectory() as tds:
+    # own_dir, not TemporaryDirectory: a run killed at its timeout left fake CANONICAL_*.rws clones the real reaper
+    # then refused forever (REAPER_FIX_OWN_SELFTEST_LITTERS_FAKE_SAVES); the next run removes a killed one's dir
+    with own_dir("scratch_reap") as tds:
         td = Path(tds)
         for k, v in {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t",
                      "GIT_COMMITTER_EMAIL": "t@t", "GIT_CONFIG_GLOBAL": "/dev/null"}.items():

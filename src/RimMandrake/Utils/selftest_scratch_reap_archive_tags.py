@@ -8,12 +8,12 @@ import shutil
 import subprocess
 import sys
 import tarfile
-import tempfile
 import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import selftest_scratch_reap as T  # noqa: E402
+from selftest_own_dirs import own_dir  # noqa: E402
 from selftest_scratch_reap import R, age, check, clone, clone_old, commit, git, acts, run_reaper  # noqa: E402
 
 
@@ -217,7 +217,8 @@ def zombie_cases(td: Path):
 
 def main() -> int:
     lock = None if os.environ.get("SCRATCH_REAP_SELFTEST_ONCE") else T.serial_lock()   # run by hand: wait for any other run
-    with tempfile.TemporaryDirectory(dir="/tmp") as tds:        # not $TMPDIR: on a seat that is a root the real reaper reaps
+    # not $TMPDIR: on a seat that is a root the real reaper reaps; own_dir: a killed run's dir goes with the next run
+    with own_dir("scratch_reap_archive_tags", dir="/tmp") as tds:
         td = Path(tds)
         os.environ.update(GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t",
                           GIT_CONFIG_GLOBAL="/dev/null")
