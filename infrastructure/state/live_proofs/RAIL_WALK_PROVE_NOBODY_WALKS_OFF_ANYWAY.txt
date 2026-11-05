@@ -1,1 +1,2 @@
+live-mods: FlowWorks
 live-proof A3: python.exe src/RimMandrake/FlowWorks/northstar/rail_walk_live.py < /dev/null

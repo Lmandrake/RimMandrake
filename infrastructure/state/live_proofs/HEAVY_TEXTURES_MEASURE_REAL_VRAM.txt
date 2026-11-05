@@ -3,5 +3,6 @@
 # `python3 src/RimMandrake/Utils/modlist_swap.py --enable rwnodetree.rwplanetatmosphere vesper.egihologramsandprojectors zacharyfoster.mineralsframework zacharyfoster.mineralsrock fourtoo.glowingbush --apply`
 # on any tier (the minimal list is enough; all five DLC), and deploy the JawaBench companion of this build. Exit 2 = this
 # load cannot answer (a mod not running, no bridge, companion without jawa/texture_memory): restage, never a FAIL.
+live-mods: rwnodetree.rwplanetatmosphere, vesper.egihologramsandprojectors, zacharyfoster.mineralsframework, zacharyfoster.mineralsrock, fourtoo.glowingbush
 live-proof A1: python3 src/RimMandrake/Utils/heavy_textures_vram.py live --clause A1
 live-proof A2: python3 src/RimMandrake/Utils/heavy_textures_vram.py live --clause A2

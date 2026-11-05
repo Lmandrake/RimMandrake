@@ -1,1 +1,2 @@
+live-mods: RimMandrake.Biomes
 live-proof A1: python.exe src/RimMandrake/TheSump/prove_glasswalk_speed.py < /dev/null
