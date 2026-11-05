@@ -250,7 +250,8 @@ def run(tmp: Path) -> int:
           and hashlib.sha256(live.read_bytes()).hexdigest() == p4["orig_sha"],
           "PLANTED: an archive name already on disk is refused and left byte-unchanged; the live shard is untouched")
     squat.unlink()
-    stray = ev / "archive" / "notes.jsonl"
+    late_append_survives(L, ev, seat, live)
+    stray =ev / "archive" / "notes.jsonl"
     stray.write_text("")
     try:
         L.shard_files(ev)
@@ -262,6 +263,44 @@ def run(tmp: Path) -> int:
 
     print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
+
+
+def late_append_survives(L, ev: Path, seat: str, live: Path) -> None:
+    """ART_ROTATE_FIX_LATE_APPEND_LOST: a Writer appending in the window between rotate_apply's last hash
+    check and os.replace must not be lost. The replace is intercepted: a real L.append() starts in a thread
+    and gets 0.5 s to land before the swap goes ahead. Unlocked, it lands on the old inode and the swap
+    discards it; under the writers' flock it waits, sees the inode moved, and appends to the new tail."""
+    import threading
+    with open(live, "ab") as fh:
+        for i in range(2 * L.ROTATE_MIN_TAIL_LINES):
+            fh.write(b'{"id":"zz_late_fill_%d","type":"probe","ts":"9999-01-02T00:00:00-0700"}\n' % i)
+    plan = L.rotate_plan(seat, keep_bytes=0)
+    check(bool(plan["archives"]), "late-append plan has something to move")
+    late = {"id": "zz_late_append", "type": "probe", "ts": "9999-01-03T00:00:00-0700"}
+    real_replace, real_seat = L.os.replace, L.seat
+    L.seat = lambda: seat               # RIMFLOW_SEAT in the caller's env would otherwise pick the shard
+    box = {}
+
+    def racing_replace(src, dst):
+        if Path(dst) == live and "t" not in box:
+            box["t"] = threading.Thread(target=lambda: box.setdefault("ev", L.append(dict(late))))
+            box["t"].start()
+            box["t"].join(0.5)          # an unlocked append has long landed on the old inode by now
+        return real_replace(src, dst)
+    L.os.replace = racing_replace
+    try:
+        L.rotate_apply(plan)
+    finally:
+        L.os.replace = real_replace
+        if "t" in box:
+            box["t"].join(10)
+        L.seat = real_seat
+    check("t" in box and not box["t"].is_alive() and "ev" in box, "sanity probe: the racing append ran and returned")
+    ids = [json.loads(x)["id"] for x in live.read_bytes().splitlines() if x.strip()]
+    check(ids.count("zz_late_append") == 1 and ids[-1] == "zz_late_append",
+          "PLANTED: an append landing between rotate_apply's last hash check and os.replace survives in the live tail")
+    check(plan["tail"] == live.read_bytes()[:len(plan["tail"])], "the swapped-in tail is intact ahead of the late line")
+    check(not live.with_suffix(".jsonl.rotating").exists(), "no .rotating temp left behind")
 
 
 if __name__ == "__main__":

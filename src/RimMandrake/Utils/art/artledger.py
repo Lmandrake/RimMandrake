@@ -417,7 +417,10 @@ def rotate_plan(seat_name: str, *, before: str | None = None, keep_bytes: int | 
 
 def rotate_apply(plan: dict) -> list[Path]:
     """Write the plan's archives (create-exclusive, fsync'd) then swap in the tail — only if the
-    live file is still byte-identical to what was planned (a concurrent append refuses)."""
+    live file is still byte-identical to what was planned (a concurrent append refuses).
+    The final check and the swap run under the flock Writer.flush takes (`_open_shard_locked`), plus
+    the shared directory lock: an append either lands before the check (refused, re-plan) or waits on
+    the old inode, sees it replaced and reopens the new one; it can never land on the old inode in between."""
     if not plan["pure_move"]:
         raise SystemExit("rotate: plan is not a pure move — refusing")
     if not plan["archives"]:
@@ -436,12 +439,21 @@ def rotate_apply(plan: dict) -> list[Path]:
     tmp = live.with_suffix(".jsonl.rotating")
     with open(tmp, "wb") as fh:
         fh.write(plan["tail"]); fh.flush(); os.fsync(fh.fileno())
-    if hashlib.sha256(live.read_bytes()).hexdigest() != plan["orig_sha"]:
-        tmp.unlink()
-        for p in written:
-            p.unlink()
-        raise SystemExit(f"rotate: {live} changed during the rotation — rolled back, re-plan")
-    os.replace(tmp, live)
+    dlock = _dir_lock(os.path.dirname(live))
+    try:
+        lock = _open_shard_locked(live)    # the writers' lock, on the inode now at `live`
+        try:
+            if hashlib.sha256(live.read_bytes()).hexdigest() != plan["orig_sha"]:
+                tmp.unlink()
+                for p in written:
+                    p.unlink()
+                raise SystemExit(f"rotate: {live} changed during the rotation — rolled back, re-plan")
+            os.replace(tmp, live)
+        finally:
+            os.close(lock)                 # a waiting writer wakes on the old inode, sees it moved, reopens
+    finally:
+        if dlock is not None:
+            os.close(dlock)
     return written + [live]
 
 
