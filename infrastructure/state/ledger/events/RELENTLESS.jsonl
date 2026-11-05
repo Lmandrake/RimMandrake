@@ -720,3 +720,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:36:09Z","tsn":1793900169944649979}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL A1 (L2), read-only proof","ts":"2026-11-05T17:37:21Z","tsn":1793900241044583803}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:37:27Z","tsn":1793900247645600577}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A1 (L2), read-only proof","ts":"2026-11-05T17:42:13Z","tsn":1793900533098583820}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:42:40Z","tsn":1793900560988980739}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A2 (L2), read-only proof","ts":"2026-11-05T17:42:54Z","tsn":1793900574230189080}
