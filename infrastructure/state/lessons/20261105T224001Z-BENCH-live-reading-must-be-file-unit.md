@@ -1,0 +1,1 @@
+A --live reading must be a file the unit rewrites EVERY run; scratch_reap's alarms.log is written only on a new refusal, so a promise on it ages out with the unit healthy (MIRROR_PACK_REPAIR_STILL_GRUMBLING reopen 2026-11-05). Use last_run.json; guard selftest_scratch_reap_live_reading.py.
