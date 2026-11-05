@@ -755,7 +755,7 @@ class Index:
                 self.provenance_fixes[ev.get("corrects")] = ev
 
     def authority(self, ruling: dict) -> dict:
-        """A ruling's owner-authority fields (said / by_card / per_ruling) as corrected by the latest
+        """A ruling's (or purge/unpurge/ban's) owner-authority fields (said / by_card / per_ruling) as corrected by the latest
         provenance_fix naming it. Past events are never edited; the correction is an appended event. It changes
         WHICH field records his authority, never whether the keep protects (verdict, by, trust stay)."""
         out = {k: ruling.get(k) for k in AUTHORITY_FIELDS if ruling.get(k)}
@@ -1034,19 +1034,34 @@ def case_twin_refusal(target: Path, stop: Path) -> str | None:
 
 
 AUTHORITY_FIELDS = ("said", "by_card", "per_ruling")
+CORRECTABLE_TYPES = ("ruling", "purge", "unpurge", "ban")    # owner acts whose authority fields a provenance_fix restates
+
+
+def card_text_in_said(said: str | None) -> bool:
+    """`said` holds a question-card pick (our "question → option" text), not his typed words."""
+    s = (said or "").strip()
+    return "→" in s or s.upper().startswith(("BY CARD", "(BY CARD", "BY-CARD"))
+
+
+def card_said_events(idx=None) -> list:
+    """Owner rulings/purges/unpurges/bans whose EFFECTIVE `said` (after provenance fixes) is card text."""
+    idx = idx or Index()
+    return [e for e in idx.events if e.get("type") in CORRECTABLE_TYPES and e.get("by") == "owner"
+            and card_text_in_said(idx.authority(e).get("said"))]
 
 
 def correct_provenance(ruling_id: str, *, why: str, owner_said: str | None = None, by_card: str | None = None,
                        per_ruling: str | None = None, dry_run: bool = False) -> dict:
     """ART_INSTALL_WIRE_BY_CARD_FLAG_MISSING: append a `provenance_fix` re-stating which field carries the owner's
-    authority on an existing owner ruling (a card pick recorded under `said`, before install had --by-card). The
-    fix states the WHOLE corrected set (a field it omits is no longer claimed); the original event is untouched."""
+    authority on an existing owner ruling, purge, unpurge or ban (a card pick recorded under `said`, before install
+    and purge had --by-card; PURGE_CARDS_FIX_WRONG_POCKET). The fix states the WHOLE corrected set (a field it omits
+    is no longer claimed); the original event is untouched."""
     idx = cached_index()
-    r = next((x for x in idx.rulings if x.get("id") == ruling_id), None)
+    r = next((x for x in idx.events if x.get("id") == ruling_id and x.get("type") in CORRECTABLE_TYPES), None)
     if r is None:
-        raise Refused(f"no ruling {ruling_id} in the ledger")
+        raise Refused(f"no ruling, purge, unpurge or ban {ruling_id} in the ledger")
     if r.get("by") != "owner":
-        raise Refused(f"ruling {ruling_id} is by {r.get('by')!r}, not the owner — nothing to re-attribute")
+        raise Refused(f"{r.get('type')} {ruling_id} is by {r.get('by')!r}, not the owner — nothing to re-attribute")
     if not (owner_said or by_card or per_ruling):
         raise Refused("a provenance fix must name the corrected authority (--owner-said / --by-card / --per-ruling)")
     if not why or not why.strip():

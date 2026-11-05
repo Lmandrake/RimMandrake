@@ -20,6 +20,7 @@
                                             his words only; --by-card a card decision (our label); --per-ruling a
                                             standing ruling cited. --why = the agent's own reason: grants nothing
                                             (alone: mechanical guards apply; e.g. "delegated: art <verdict file>")
+    art.py card-said                       owner rulings/purges still holding card text in said (exit 1 if any)
     art.py correct-provenance <ruling-id>... (--by-card "..." | --per-ruling REF | --owner-said "...") --why "..."
                                             append a provenance_fix re-stating which field carries his authority
                                             on an owner keep (never edits the past event) [--dry-run]
@@ -253,6 +254,15 @@ def cmd_correct_provenance(a):
             print(f"REFUSED {rid}: {e}")
             rc = 2
     return rc
+
+
+def cmd_card_said(a):
+    """Read-only audit: owner events whose effective `said` is still card text. Exit 1 when any remain."""
+    rows = L.card_said_events()
+    for e in rows:
+        print(f"{e.get('type')} {e.get('id')} said={(e.get('said') or '')[:90]!r}")
+    print(f"card-said: {len(rows)} owner event(s) still carry card text in said")
+    return 1 if rows else 0
 
 
 def cmd_doctor(a):
@@ -505,6 +515,7 @@ def main(argv=None):
     p.add_argument("--per-ruling", help="a standing ruling of his, cited by item id or ledger event")
     p.add_argument("--why", help="the acting agent's own reason; grants no owner authority")
     p.add_argument("--dry-run", action="store_true")
+    sp.add_parser("card-said")
     p = sp.add_parser("correct-provenance"); p.add_argument("ruling_ids", nargs="+")
     p.add_argument("--by-card"); p.add_argument("--per-ruling"); p.add_argument("--owner-said")
     p.add_argument("--why", required=True); p.add_argument("--dry-run", action="store_true")
@@ -552,7 +563,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "unban": cmd_unban, "bans": cmd_bans, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "card-said": cmd_card_said, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "unban": cmd_unban, "bans": cmd_bans, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 

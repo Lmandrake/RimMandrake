@@ -5,7 +5,7 @@ Proves `art.py install` takes the owner-authority fields one per kind, as rimflo
 the ledger"): --by-card and --per-ruling record owner keeps that protect like --owner-said without putting our text in
 `said`; --why grants nothing (alone it installs under the mechanical guards, never over a kept picture) and is recorded
 on the live event; and `correct-provenance` appends a provenance_fix that re-attributes a card pick filed under `said`
-without touching the original event.
+without touching the original event — on an owner purge too (PURGE_CARDS_FIX_WRONG_POCKET), which `card-said` audits.
 """
 from __future__ import annotations
 
@@ -129,6 +129,28 @@ def main():
     check(rc2 == 0 and L.shard_path().read_bytes() == after, "re-running the fix is idempotent")
     check(art.main(["correct-provenance", "nope", "--by-card", card, "--why", "x"]) == 2, "an unknown ruling id is refused")
     check(art.main(["correct-provenance", rid, "--why", "x"]) == 2, "a fix naming no authority field is refused")
+
+    # PURGE_CARDS_FIX_WRONG_POCKET: an owner purge whose card pick sits in said is corrected the same way, and the
+    # card-said audit sees it before and not after
+    pz = noisy(9)
+    spz = L.store_put_bytes(pz)
+    pcard = "Crossed-out pictures → Delete now"
+    L.purge(spz, owner_said=pcard)
+    idx = L.Index()
+    pev = idx.purged[spz]
+    check(pev.get("said") == pcard, "fixture: a purge filed with card text under said")
+    check(art.main(["card-said"]) == 1 and any(e["id"] == pev["id"] for e in L.card_said_events(idx)),
+          "card-said flags the purge (exit 1)")
+    before = L.shard_path().read_bytes()
+    rc = art.main(["correct-provenance", pev["id"], "--by-card", pcard, "--why", "purge card pick was filed under said"])
+    idx = L.Index()
+    check(rc == 0 and L.shard_path().read_bytes().startswith(before), "correct-provenance accepts a purge; appended only")
+    check(idx.purged[spz].get("said") == pcard, "the original purge event is unchanged")
+    check(idx.authority(idx.purged[spz]) == {"by_card": pcard}, "Index.authority reads the purge's corrected fields")
+    check(idx.is_purged(spz), "the correction changes the field, not the purge")
+    check(not any(e["id"] == pev["id"] for e in L.card_said_events(idx)), "card-said no longer flags the fixed purge")
+    check(not L.card_text_in_said("delete it") and L.card_text_in_said("by-card 2026-10-19: Remove all"),
+          "card text detection: his words pass, a by-card prefix is caught")
 
     # CLI end to end
     out = subprocess.run([sys.executable, str(HERE / "art.py"), "install", mod, "Things/Tank/Cli.png", sc,
