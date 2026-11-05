@@ -204,8 +204,14 @@ namespace RimMandrake.FlowWorks.Hose
                     Row(r, "free_on_port", gc <= 0.5 + HoseJoints.Tolerance, Math.Max(0, gc - 0.5), P(pts[n - 1]), fe.Port.def.defName + " (end lies on it)");
                     continue;
                 }
-                V2 faceAt = pts[n - 1] + dp * 0.5;             // DrawEnds: the coupling's face (Fitting end) on a port
-                V2 portAt = comp.PortEnd(r, out V2 pa, out _) ? pa : new V2(fe.Cell.x + 0.5, fe.Cell.z + 0.5) + dp * 0.5;
+                // HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE: beside a pipe the port is the saddle's spigot tip near the pipe's centre
+                // line, never the cell edge (measuring the edge passed a coupling that stopped half a cell short of the pipe). On a
+                // saddle free_port_end only restates the rule; the drawn check is collar_box below (the coupling DrawEnds drew
+                // last frame against the spigot tip)
+                bool onSaddle = RM_MapComponent_Hoses.PipeSaddleFace(fe, out V2 saddleFace);
+                V2 faceAt = onSaddle ? saddleFace : pts[n - 1] + dp * 0.5;   // DrawEnds: the coupling's face (Fitting end) on a port
+                V2 portAt = onSaddle ? new V2(fe.Port.Position.x + 0.5, fe.Port.Position.z + 0.5) - dp * RimMandrake.FlowWorks.Machinery.LiquidJoinRule.SaddleSpigotReach
+                    : comp.PortEnd(r, out V2 pa, out _) ? pa : new V2(fe.Cell.x + 0.5, fe.Cell.z + 0.5) + dp * 0.5;
                 HoseJoints.Meets(faceAt, portAt, out double gp);
                 Row(r, "free_port_end", gp <= HoseJoints.Tolerance, gp, P(faceAt), fe.Port.def.defName + " port at " + P(portAt));
                 Collar(r, "port_end", portAt, fe.Port.def.defName + " port");

@@ -129,6 +129,8 @@ namespace RimMandrake.FlowWorks.Hose
             public int sx, sz;
             public CellRect rect;
             public float w, y;
+            /// <summary>HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE: the hose end a saddle reach starts from (0,0 on a tank / machine).</summary>
+            public double fromX, fromZ;
             public Mesh mesh;
         }
 
@@ -2073,7 +2075,9 @@ namespace RimMandrake.FlowWorks.Hose
                 float widen = fe.PortKind == HosePortKind.Tank || fe.PortKind == HosePortKind.Machine ? PortCouplingWiden : 1f;
                 // HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: met from the side, the coupling is an elbow with no lead-in past the hose
                 double size0 = HoseMath.FittingSize(vis, PieceBand, CouplingMax), portSize = size0 * widen;
-                HoseMath.PortFitting(pts, pts[n - 1] + dp * 0.5, dp, ref portSize, vis, out V2 portFace, out double portWrap);
+                // HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE: beside a pipe the coupling runs on past the cell edge to the saddle's spigot
+                bool onSaddle = PipeSaddleFace(fe, out V2 saddleFace);
+                HoseMath.PortFitting(pts, onSaddle ? saddleFace : pts[n - 1] + dp * 0.5, dp, ref portSize, vis, out V2 portFace, out double portWrap);
                 Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, portFace, dp, vis, y, wrapTint, (float)(portSize / size0), portWrap, r, "port_end");
                 // HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY: the pipe's own fitting under the coupling (saddle on it, flange beside it)
                 RimMandrake.FlowWorks.Machinery.RM_LiquidJoins.DrawHosePortFitting(fe.Port, fe.PortSide.X, fe.PortSide.Z, y - 0.0006f);
@@ -2082,7 +2086,7 @@ namespace RimMandrake.FlowWorks.Hose
                 // building layer); it replaces the hose's own stub ribbon there. A pipe port keeps the stub path.
                 V2 portAtEdge = pts[n - 1] + dp * 0.5;
                 if (!RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.Draw(fe.Port, portAtEdge.X, portAtEdge.Z, fe.PortSide.X, fe.PortSide.Z, y - 0.001f))
-                    DrawPortStub(r, fe, hm, vis, y - 0.001f);
+                    DrawPortStub(r, fe, hm, vis, y - 0.001f, pts[n - 1], onSaddle ? saddleFace : (V2?)null);
                 lastPortCouplings++;
             }
             else if (lying && r.carry != HoseCarryState.Retracting && RelayOf(r) != null)
@@ -2136,10 +2140,26 @@ namespace RimMandrake.FlowWorks.Hose
         /// footprint (LiquidJoinRule.CentreStub), in the hose band -- below the building layer, so the building's opaque body
         /// hides it and its see-through margins show it. Pipes are the section layer's (SectionLayer_RM_PipeCentreStubs).
         /// </summary>
-        private void DrawPortStub(CompHoseReel r, HoseFreeEnd fe, HoseLookMats hm, float vis, float y)
+        /// <summary>HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE: a free end lying beside a pipe cell couples on the saddle clamped there; the
+        /// coupling's face (the spigot tip, LiquidJoinRule.HoseSaddleBeside) in map cells. False for any other end (on the pipe
+        /// cell itself, or a tank / machine port).</summary>
+        internal static bool PipeSaddleFace(HoseFreeEnd fe, out V2 face)
         {
-            if (!RimMandrake.FlowWorks.Machinery.RM_MachinerySettings.pipesUnderToCentre) return;
-            if (fe.Port == null || !fe.Port.Spawned || (fe.PortKind != HosePortKind.Tank && fe.PortKind != HosePortKind.Machine)) return;
+            face = default(V2);
+            int sx = fe.PortSide.X, sz = fe.PortSide.Z;
+            if (fe.Kind != HoseEndKind.Port || fe.PortKind != HosePortKind.Pipe || fe.Port == null || Math.Abs(sx) + Math.Abs(sz) != 1) return false;
+            RimMandrake.FlowWorks.Machinery.LiquidJoinRule.HoseSaddleBeside(sx, sz, out double fx, out double fz, out _);
+            face = new V2(fe.Port.Position.x + 0.5 + fx, fe.Port.Position.z + 0.5 + fz);
+            return true;
+        }
+
+        private void DrawPortStub(CompHoseReel r, HoseFreeEnd fe, HoseLookMats hm, float vis, float y, V2 hoseEnd, V2? saddleFace)
+        {
+            // HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE: beside a pipe the hose runs on from its end to the saddle's spigot (whatever
+            // pipesUnderToCentre says: this is the hose reaching the pipe, not a run beneath a building)
+            if (!saddleFace.HasValue && !RimMandrake.FlowWorks.Machinery.RM_MachinerySettings.pipesUnderToCentre) return;
+            if (fe.Port == null || !fe.Port.Spawned) return;
+            if (!saddleFace.HasValue && fe.PortKind != HosePortKind.Tank && fe.PortKind != HosePortKind.Machine) return;
             int sx = fe.PortSide.X, sz = fe.PortSide.Z;
             if (Math.Abs(sx) + Math.Abs(sz) != 1) return;
             CellRect rect = fe.Port.OccupiedRect();
@@ -2147,10 +2167,14 @@ namespace RimMandrake.FlowWorks.Hose
             bool plump = pi.Eased >= 0.5;
             float w = plump ? (float)HoseMath.MeshWidthPlump(vis) : (float)HoseMath.MeshWidthFlat(vis);
             stubMeshes.TryGetValue(r, out StubCache sc);
-            if (sc == null || sc.cell != fe.Cell || sc.sx != sx || sc.sz != sz || sc.rect != rect || sc.w != w || sc.y != y)
+            V2 from = saddleFace.HasValue ? hoseEnd : default(V2);
+            if (sc == null || sc.cell != fe.Cell || sc.sx != sx || sc.sz != sz || sc.rect != rect || sc.w != w || sc.y != y
+                || sc.fromX != from.X || sc.fromZ != from.Z)
             {
                 // a hose on a tank's drawn port runs on from the flange straight to the centre (it is on the centre line)
-                double[] poly = PortEnd(r, out V2 pa, out _)
+                double[] poly = saddleFace.HasValue
+                    ? new[] { hoseEnd.X, hoseEnd.Z, saddleFace.Value.X, saddleFace.Value.Z }
+                    : PortEnd(r, out V2 pa, out _)
                     ? new[] { pa.X, pa.Z, rect.minX + rect.Width / 2.0, rect.minZ + rect.Height / 2.0 }
                     : RimMandrake.FlowWorks.Machinery.LiquidJoinRule.CentreStub(fe.Cell.x, fe.Cell.z, sx, sz, rect.minX, rect.minZ, rect.Width, rect.Height);
                 if (sc == null) stubMeshes[r] = sc = new StubCache();
@@ -2163,7 +2187,7 @@ namespace RimMandrake.FlowWorks.Hose
                     sc.mesh = Ribbon(pts, w, y, 0.37);
                     portStubBuilds++;
                 }
-                sc.cell = fe.Cell; sc.sx = sx; sc.sz = sz; sc.rect = rect; sc.w = w; sc.y = y;
+                sc.cell = fe.Cell; sc.sx = sx; sc.sz = sz; sc.rect = rect; sc.w = w; sc.y = y; sc.fromX = from.X; sc.fromZ = from.Z;
             }
             if (sc.mesh == null) return;
             Graphics.DrawMesh(sc.mesh, Matrix4x4.identity, plump ? hm.Plump(1f, Tint(r)) : hm.Flat(1f), 0);

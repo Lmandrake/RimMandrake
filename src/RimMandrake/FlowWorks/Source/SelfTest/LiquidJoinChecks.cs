@@ -33,6 +33,28 @@ namespace RimMandrake.FlowWorks.SelfTest
                 try { LiquidJoinRule.Flange(1, 1, out _, out _, out _); } catch (ArgumentException) { threw = true; }
                 Assert(threw, "can-fail: a diagonal flange is refused");
             });
+            Case("LiquidJoin_hose_saddle_beside_pipe_reaches_spigot", () =>
+            {
+                // HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE: a hose end at pipe - side couples on the saddle's spigot tip, 0.15 cell from
+                // the pipe's centre toward the hose, and the spigot (canvas (0,-1), turned clockwise by the angle) points at it
+                foreach (var (sx, sz) in new[] { (1, 0), (0, 1), (-1, 0), (0, -1) })
+                {
+                    LiquidJoinRule.HoseSaddleBeside(sx, sz, out double fx, out double fz, out double a);
+                    Assert(Near(fx, -sx * LiquidJoinRule.SaddleSpigotReach) && Near(fz, -sz * LiquidJoinRule.SaddleSpigotReach),
+                        $"saddle ({sx},{sz}) face toward the hose, got ({fx},{fz})");
+                    double r = a * Math.PI / 180;
+                    Assert(Math.Abs(-Math.Sin(r) + sx) < 1e-9 && Math.Abs(-Math.Cos(r) + sz) < 1e-9,
+                        $"saddle ({sx},{sz}) spigot points at the hose (-side), angle {a}");
+                    // can-fail: the old face on the cell edge is 0.5 from the centre, far from the spigot
+                    Assert(Math.Abs(Math.Abs(fx + fz) - 0.5) > 0.3, "the face is not the cell edge");
+                }
+                bool threw = false;
+                try { LiquidJoinRule.HoseSaddleBeside(0, 0, out _, out _, out _); } catch (ArgumentException) { threw = true; }
+                Assert(threw, "can-fail: an end ON the pipe is not a beside saddle");
+                string joins = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs"));
+                Assert(joins.Contains("Material m = Mat(\"Saddle\", LookOf(port));") && joins.Contains("LiquidJoinRule.HoseSaddleBeside(sideX, sideZ, out _, out _, out double ang)"),
+                    "DrawHosePortFitting draws a turned saddle beside a pipe, not a flange");
+            });
             Case("LiquidJoin_on_pipe_fixture_is_not_a_partner", () =>
             {
                 // SCRAPPER_PIPE_REDRAW_ASKED_TWICE_NOW: a sprinkler head on a pipe is part of the run (no flange band beside it)

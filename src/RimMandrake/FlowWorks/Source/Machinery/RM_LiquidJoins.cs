@@ -324,11 +324,13 @@ namespace RimMandrake.FlowWorks.Machinery
         }
 
         /// <summary>RM_MapComponent_Hoses.DrawEnds: the pipe-side fitting of a hose end coupled to a pipe. On the pipe (side 0,0):
-        /// a saddle across the pipe cell, along the pipe's run. Beside it: a flange on the pipe cell's edge facing the hose end.</summary>
+        /// a saddle across the pipe cell, along the pipe's run. Beside it (HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE): a saddle on the
+        /// pipe cell's centre, its spigot turned toward the hose end (LiquidJoinRule.HoseSaddleBeside), where the coupling meets it;
+        /// the old flange on the cell edge hid under a coupling that stopped half a cell short of the pipe.</summary>
         public static void DrawHosePortFitting(Thing port, int sideX, int sideZ, float y)
         {
             if (!RM_MachinerySettings.joinFittings || port == null || !port.Spawned || !RM_LiquidNet.IsPipe(port)) return;
-            Material m = Mat(sideX == 0 && sideZ == 0 ? "Saddle" : "Flange", LookOf(port));
+            Material m = Mat("Saddle", LookOf(port));
             if (m == null) return;
             Vector3 c = port.Position.ToVector3Shifted();
             c.y = y;
@@ -340,11 +342,11 @@ namespace RimMandrake.FlowWorks.Machinery
                     new Vector3((float)LiquidJoinRule.SaddleLength, 1f, (float)LiquidJoinRule.SaddleWidth)), m, 0);
                 return;
             }
-            // the flange faces from the pipe toward the hose end: the end is at port - side, so the flange faces -side
-            LiquidJoinRule.Flange(-sideX, -sideZ, out double ox, out double oz, out double ang);
-            float s = (float)LiquidJoinRule.FlangeSize;
-            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(c + new Vector3((float)ox, 0f, (float)oz), Quaternion.Euler(0f, -(float)ang, 0f),
-                new Vector3(s, 1f, s)), m, 0);
+            if (System.Math.Abs(sideX) + System.Math.Abs(sideZ) != 1) return;
+            // the hose end is at port - side; the saddle sits on the pipe's centre line with its spigot toward it
+            LiquidJoinRule.HoseSaddleBeside(sideX, sideZ, out _, out _, out double ang);
+            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(c, Quaternion.Euler(0f, (float)ang, 0f),
+                new Vector3((float)LiquidJoinRule.SaddleLength, 1f, (float)LiquidJoinRule.SaddleWidth)), m, 0);
         }
     }
 

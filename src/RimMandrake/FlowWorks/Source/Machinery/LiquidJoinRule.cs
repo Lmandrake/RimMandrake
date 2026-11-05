@@ -17,6 +17,26 @@ namespace RimMandrake.FlowWorks.Machinery
         /// <summary>Drawn size of the hose saddle on a pipe cell, cells (one cell square, the pipe across its middle).</summary>
         public const double SaddleLength = 1.0, SaddleWidth = 1.0;
 
+        /// <summary>HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE: how far the saddle's hose spigot reaches from the pipe cell's centre, cells.
+        /// Measured from the four looks' Joins/&lt;Look&gt;/Saddle.png (256 px = one cell, the spigot pointing to the canvas's
+        /// bottom): tip rows 162..169, i.e. 0.13..0.16 cell (selftest_hose_pipe_saddle.py re-measures them).</summary>
+        public const double SaddleSpigotReach = 0.15;
+
+        /// <summary>HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE (naive judge, live 2026-10-23: a hose coupled to a universal pipe from the
+        /// north ended on the cell edge, ~0.5 cell short of the pipe's centre line, mid-air, with no saddle). A hose end lying
+        /// BESIDE a pipe cell on side (sx, sz) (the pipe is at end + side) couples to a saddle clamped on the pipe, its spigot
+        /// toward the hose: the coupling's face sits on the spigot tip, offset (faceX, faceZ) from the pipe cell's centre, and
+        /// the saddle turns by <paramref name="angleDeg"/> (Unity's y rotation, clockwise seen from above: 0 = spigot south).</summary>
+        public static void HoseSaddleBeside(int sx, int sz, out double faceX, out double faceZ, out double angleDeg)
+        {
+            if (Math.Abs(sx) + Math.Abs(sz) != 1) throw new ArgumentException("a hose meets a pipe from a cardinal side");
+            faceX = -sx * SaddleSpigotReach;
+            faceZ = -sz * SaddleSpigotReach;
+            // the spigot points from the pipe toward the hose, -side; the canvas spigot (0,-1) turned clockwise by a points
+            // along (-sin a, -cos a), so sin a = sx, cos a = sz
+            angleDeg = sx == 0 ? (sz == 1 ? 0 : 180) : (sx == 1 ? 90 : 270);
+        }
+
         /// <summary>The flange of a pipe cell joining the neighbour on side (dx, dz) (a unit cardinal): its centre, offset from the
         /// pipe cell's centre, sits so the flange's face (the canvas's right edge) lies ON the shared cell edge, and its angle
         /// (degrees, counter-clockwise from east, the direction the flange faces).</summary>
