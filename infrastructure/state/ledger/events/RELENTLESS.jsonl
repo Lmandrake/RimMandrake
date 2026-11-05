@@ -746,3 +746,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T18:11:36Z","tsn":1793902296438388834}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN A6 (L2), read-only proof","ts":"2026-11-05T18:14:07Z","tsn":1793902447976347443}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T18:15:17Z","tsn":1793902517146014106}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: review savegame for the owner's look","ts":"2026-11-05T18:21:44Z","tsn":1793902904384287940}
