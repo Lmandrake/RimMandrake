@@ -67,9 +67,21 @@ def cls(r, cid):
     return next(c for c in r["classes"] if c["id"] == cid)
 
 
+def has_git():
+    import subprocess
+    try:
+        return subprocess.run(["git", "-C", str(JC.REPO), "rev-parse", "--git-dir"], capture_output=True,
+                              timeout=30).returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+
 def lint():
-    bad = JC.lint(REG, TARGETS)
+    git = has_git()
+    bad = JC.lint(REG, TARGETS, check_sha=git)
     check(bad == [], "the shipped registry lints clean: %s" % bad)
+    if not git:
+        print("UNMEASURED fixed.sha: this tree has no git history; every other lint rule ran")
     for m in REG["meta_targets"]:
         check(m in TARGETS, "meta target %s is an ops_watch target" % m)
     rules = json.load(open(JC.OPS_RULES, encoding="utf-8"))
@@ -156,6 +168,22 @@ def census():
     return rows, now
 
 
+def books_dirty_refix():
+    """OPS_JAM_CLASS_FIX_AGAIN_HJWN: the class fixed again moves fixed.at past the jam that reopened it (11:20Z on
+    rail_walk_result_*), so that jam stops counting as a repeat; one after the new fix still counts."""
+    fx = cls(REG, "books_dirty")["fixed"]
+    check(JC.epoch(fx["at"]) > JC.epoch("2026-11-05T11:20:00Z"), "books_dirty.fixed.at is after the reopening jam: %s" % fx)
+    why = ("books 3 behind: dirty outside the ledger: "
+           "src/RimMandrake/FlowWorks/northstar/rail_walk_result_20261105T021421.json")
+    rows = [{"at": "2026-11-05T11:20:00Z", "do": "alarm", "kind": "jam", "why": why}]
+    c = JC.census(REG, journal(rows), JC.epoch("2026-11-05T12:00:00Z"))
+    check(c.get("by_class") == {"books_dirty": 1} and c.get("repeats") == [],
+          "the 11:20Z books_dirty jam is classed and is no repeat: %s" % c)
+    rows.append({"at": "2026-11-05T13:00:00Z", "do": "alarm", "kind": "jam", "why": why})
+    c = JC.census(REG, journal(rows), JC.epoch("2026-11-05T14:00:00Z"))
+    check([r["at"] for r in c.get("repeats", [])] == ["2026-11-05T13:00:00Z"], "a jam after the new fix is a repeat: %s" % c)
+
+
 def ops(rows, now):
     store = Path(TMP) / "store"
     store.mkdir()
@@ -200,6 +228,7 @@ if __name__ == "__main__":
         classify()
         rows, now = census()
         ops(rows, now)
+        books_dirty_refix()
         help_folder()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
