@@ -163,7 +163,7 @@ def parse_session(path: str):
             cr = u.get("cache_read_input_tokens") or 0
             it = u.get("input_tokens") or 0
             ccd = u.get("cache_creation") or {}
-            calls.append({"t": _ts(d["timestamp"]), "ctx": it + cc + cr, "cc": cc + it, "cr": cr,
+            calls.append({"t": _ts(d["timestamp"]), "ctx": it + cc + cr, "cc": cc, "it": it, "cr": cr,
                           "out": u.get("output_tokens") or 0,
                           "c1h": ccd.get("ephemeral_1h_input_tokens") or 0,
                           "c5m": ccd.get("ephemeral_5m_input_tokens") or 0,
@@ -182,6 +182,12 @@ GAP_BUCKETS = [(0, 60, "<1 min"), (60, 300, "1-5 min"), (300, 900, "5-15 min"), 
                (3600, 7200, "1-2 h"), (7200, 1e12, ">2 h")]
 
 
+def call_ite(x) -> float:
+    """ITE of one per_call tuple at the harness's 1-h prices: cache read 0.1x, cache write 2x,
+    uncached input_tokens 1x (never a cache write), output 5x."""
+    return READ_X * x[2] + WRITE_X["1h"] * x[3] + x[7] + OUT_X * x[4]
+
+
 def warm_window_table(per_call) -> dict:
     """MEASURED warm/cold split per API call by gap since the previous call (same session).
 
@@ -189,13 +195,13 @@ def warm_window_table(per_call) -> dict:
     ITE at the harness's real 1-h prices; the 5-min counterfactual re-prices every call whose gap
     exceeds 300 s as a full prefix write at 1.25x (and every other write at 1.25x)."""
     rows = []
-    tot = sum(READ_X * cr + WRITE_X["1h"] * cc + OUT_X * o for _, _, cr, cc, o, _, _ in per_call) or 1.0
+    tot = sum(call_ite(x) for x in per_call) or 1.0
     tot5 = 0.0
-    for g, ctx, cr, cc, o, rw, first in per_call:
+    for g, ctx, cr, cc, o, rw, first, it in per_call:
         if g > TTL_S["5m"] and not rw:
-            tot5 += WRITE_X["5m"] * ctx + OUT_X * o
+            tot5 += WRITE_X["5m"] * (ctx - it) + it + OUT_X * o
         else:
-            tot5 += READ_X * cr + WRITE_X["5m"] * cc + OUT_X * o
+            tot5 += READ_X * cr + WRITE_X["5m"] * cc + it + OUT_X * o
     for lo, hi, name in GAP_BUCKETS:
         sel = [x for x in per_call if lo <= x[0] < hi]
         if not sel:
@@ -208,12 +214,12 @@ def warm_window_table(per_call) -> dict:
             "warm": sum(x[2] >= 0.5 * x[1] for x in sel) / n,
             "full_rewrite": len(rw) / n,
             "mean_ctx": sum(x[1] for x in sel) / n,
-            "ite_share": sum(READ_X * x[2] + WRITE_X["1h"] * x[3] + OUT_X * x[4] for x in sel) / tot,
-            "rewrite_ite_share": sum(WRITE_X["1h"] * x[3] for x in rw) / tot,
+            "ite_share": sum(call_ite(x) for x in sel) / tot,
+            "rewrite_ite_share": sum(WRITE_X["1h"] * x[3] + x[7] for x in rw) / tot,
         })
     inround = [x for x in per_call if not x[6]]
     return {"rows": rows, "calls": len(per_call),
-            "rewrite_ite_share_total": sum(WRITE_X["1h"] * x[3] for x in per_call if x[5]) / tot,
+            "rewrite_ite_share_total": sum(WRITE_X["1h"] * x[3] + x[7] for x in per_call if x[5]) / tot,
             "share_gap_over_5m": sum(x[0] > 300 for x in per_call) / len(per_call),
             "share_gap_over_1h": sum(x[0] > 3600 for x in per_call) / len(per_call),
             "inround_share_over_5m": sum(x[0] > 300 for x in inround) / max(1, len(inround)),
@@ -224,7 +230,7 @@ def warm_window_table(per_call) -> dict:
 def calibrate(repo: str) -> dict:
     files = sorted(glob.glob(TRANSCRIPTS))
     real_ite, real_ctx, real_rounds = 0.0, [], 0
-    per_call = []   # (gap_s, ctx, cache_read, cache_write, out, full_rewrite, first_call_of_round)
+    per_call = []   # (gap_s, ctx, cache_read, cache_write, out, full_rewrite, first_call_of_round, uncached_in)
     used, base_ctx, deltas, cpr, outs, gaps, call_gaps = [], [], [], [], [], [], []
     round_dur = []          # wall seconds from a round's first call to its last (gaps are idle time between rounds)
     miss_events, max_ctx, c1h, c5m, tool_tok = [], [], 0, 0, 0.0
@@ -242,7 +248,7 @@ def calibrate(repo: str) -> dict:
             continue
         used.append(os.path.basename(f)[:8])
         w_real = WRITE_X["1h"]
-        real_ite += sum(READ_X * c["cr"] + w_real * c["cc"] + OUT_X * c["out"] for c in calls)
+        real_ite += sum(READ_X * c["cr"] + w_real * c["cc"] + c["it"] + OUT_X * c["out"] for c in calls)
         real_ctx += [c["ctx"] for c in calls]
         real_rounds += len({c["round"] for c in calls})
         base_ctx.append(calls[0]["ctx"])
@@ -250,10 +256,10 @@ def calibrate(repo: str) -> dict:
         for a, b in zip(calls, calls[1:]):
             g = b["t"] - a["t"]
             call_gaps.append(g)
-            rewrite = b["cc"] > 0.5 * b["ctx"] and b["ctx"] > 20_000
+            rewrite = b["cc"] + b["it"] > 0.5 * b["ctx"] and b["ctx"] > 20_000
             if rewrite:
                 miss_events.append(g)
-            per_call.append((g, b["ctx"], b["cr"], b["cc"], b["out"], rewrite, b["round"] != a["round"]))
+            per_call.append((g, b["ctx"], b["cr"], b["cc"], b["out"], rewrite, b["round"] != a["round"], b["it"]))
         c1h += sum(c["c1h"] for c in calls)
         c5m += sum(c["c5m"] for c in calls)
         by_round = {}
