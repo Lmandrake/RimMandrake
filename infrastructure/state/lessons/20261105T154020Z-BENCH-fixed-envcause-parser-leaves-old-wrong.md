@@ -1,0 +1,1 @@
+A fixed envcause parser leaves old wrong mods in game.remedy: _env_fix unions the new mods with the stored remedy, so a bare 'mandrake' from before d262af07e4 kept ART_OVERRIDE_FAMILY_SCRIPT_1 held after the fix. Clear the remedy entry, then unhold.
