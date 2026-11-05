@@ -26,6 +26,9 @@ Eighth instance (SELFTEST_FIX_LIVE_QUEUE_QBHV), a second ROUTE: NIGHTLY_RED:test
 2026-11-05T13:05:45Z on its fix; the dispatch clone's ledger read lacked the item, so its alarm went PENDING
 (open_without_item), then at 14:49:55Z "found_closed" re-armed it as a reopen with no stale_for_close check, and a light
 beat (file_held) filed it 16:26:25Z on the 2026-11-05T11:00Z night, which ran before the fix.
+Ninth instance (SELFTEST_FIX_EXTRA_ART_COMMISSION_UBZM), the same route with no crossed reading that pass: red_znpqoq's
+item closed 13:34:26Z; at 14:49:55Z a compose pass had dropped the carried reading (crossed None), found_closed marked a
+reopen with no stale check, and file_held filed it 16:23:46Z on the same pre-close night.
 
   python3 selftest_alarm_stale_night_reopen.py --blob REV:PATH   replay ops_watch.py as it stood at REV (git), e.g.
       --blob 618deb68f3^:src/RimMandrake/Utils/ops_watch.py, the code that reopened both instances: it must FAIL.
@@ -221,6 +224,37 @@ def test_found_closed_route():
         AID, KEY = saved
 
 
+def test_znpqoq_instance():
+    """SELFTEST_FIX_EXTRA_ART_COMMISSION_UBZM: the found_closed route with NO crossed reading that pass. Its item closed
+    2026-11-05T13:34:26Z; at 14:49:55Z the compose pass had dropped the carried 11:00Z reading (crossed None), so
+    QBHV's stale_for_close never ran, "found_closed" marked a reopen, and file_held filed it at 16:23:46Z."""
+    global AID, KEY
+    saved = AID, KEY
+    AID = "NIGHTLY_RED:testing.red_znpqoq"
+    KEY = AID.split(":", 1)[1]
+    try:
+        reset()
+        b = Bench(OW.epoch("2026-11-05T12:37:00Z") - 900)
+        item = filed_item(b, NIGHT2)
+        closed = {item: [OW.epoch("2026-11-05T13:34:26Z")]}
+        p = OW.ops_dir() / "alarms.json"
+        st = OW.read_json(p)
+        st[AID].update(state="PENDING", item=None, deferred_at="2026-11-05T14:39:40Z")    # after open_without_item
+        OW.atomic_json(p, st)
+        b.t = OW.epoch("2026-11-05T14:49:55Z")
+        b.sent = []
+        st = OW.run_alarms({}, RULES, b.t, b.filed | {"SOME_ITEM"}, b.filer, set(), closed_at=closed)   # reading dropped
+        cur = (st or {}).get(AID) or {}
+        ok(not reopened(b, item) and not cur.get("reopen"),
+           "red_znpqoq closed 13:34:26Z, found closed at 14:49:55Z with no reading this pass: not re-armed (the ninth instance)")
+        held = OW.file_held(b.filer, RULES, b.t + 60) or {}
+        ok(not reopened(b, item) and not (held.get(AID) or {}).get("reopen"), "a light beat files nothing for it")
+        st = b.read(point("2026-11-06T11:00:00Z"), set(), closed_at=closed)
+        ok(st is not None and reopened(b, item), "the next night, still red after the close: reopened")
+    finally:
+        AID, KEY = saved
+
+
 def test_unchanged_without_a_night_or_close_times():
     reset()
     b = Bench(CLOSE - 7200)
@@ -236,7 +270,7 @@ def test_unchanged_without_a_night_or_close_times():
 
 if __name__ == "__main__":
     for fn in (test_stale_night_holds, test_bcbosb_instance, test_bgmskv_instance, test_pjljvq_instance, test_qhqxlr_instance,
-               test_uquvzz_instance, test_wabghy_instance, test_found_closed_route,
+               test_uquvzz_instance, test_wabghy_instance, test_found_closed_route, test_znpqoq_instance,
                test_unchanged_without_a_night_or_close_times):
         fn()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
