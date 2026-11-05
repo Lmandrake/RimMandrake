@@ -749,3 +749,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: review savegame for the owner's look","ts":"2026-11-05T18:21:44Z","tsn":1793902904384287940}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T18:32:16Z","tsn":1793903536959865309}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PUMP_STATION_REDRAW_PLUMBED_FOR_GIANTS: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T18:32:27Z","tsn":1793903547491407127}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T18:37:34Z","tsn":1793903854381424094}
