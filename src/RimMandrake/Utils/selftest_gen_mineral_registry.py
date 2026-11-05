@@ -109,12 +109,16 @@ def test_analyse_and_registry():
     lis = {li.text: li.get("MayRequire") for d in defs for li in d.iter("li") if li.text}
     ok(lis.get("Gold") is None and lis.get("DV_Pyrinth") == "mandrake.rm.pyrinth", "MayRequire only off-Core")
     ok(defs[0].find("biomes/li/biome").text == "RM_B", "zero biome cells omitted, non-zero kept")
-    # a RUT_ biome with no cell reads its RM_ twin (kernel RegistryValue): an explicit 0 there must survive emission
-    twin = dict(row("Gold", "item:Gold", RM_B="40"), RUT_B="0", RUT_C="0.0")
-    tx = ET.fromstring(g.emit_registry([(twin, g.parse_bindings("Gold", "item:Gold")[0][0])], FakeIndex(known)).split("?>", 1)[1])
+    # a RUT_ twin with no cell reads its PAINTED RM_ biome (kernel RegistryValue via RM_MineralTwinMap): an explicit 0 there must
+    # survive emission; a same-suffix RM_ column that the map does not pair is no twin (MINERAL_KERNEL_REWIRE_TWINS_BY_PAINT_MAP)
+    pairs = {"RUT_C": "RM_B", "RUT_Umbra": "RUT_Umbra"}
+    twin = dict(row("Gold", "item:Gold", RM_B="40"), RUT_B="0", RUT_C="0.0", RUT_Umbra="0")
+    tx = ET.fromstring(g.emit_registry([(twin, g.parse_bindings("Gold", "item:Gold")[0][0])], FakeIndex(known), pairs=pairs).split("?>", 1)[1])
     cells = {li.findtext("biome"): li.findtext("value") for li in tx.iter("li") if li.find("biome") is not None}
-    ok(cells.get("RUT_B") == "0", "explicit 0 in a RUT_ column with an RM_ twin is emitted (else the twin's 40 leaks in): %s" % cells)
-    ok("RUT_C" not in cells and "RM_A" not in cells, "zeros with no twin column stay omitted (0.0 included): %s" % cells)
+    ok(cells.get("RUT_C") == "0.0", "explicit 0 in a painted twin's column is emitted (else RM_B's 40 leaks in): %s" % cells)
+    ok("RUT_B" not in cells, "RUT_B is not RM_B's twin unless the painted map says so: its 0 stays omitted: %s" % cells)
+    ok("RUT_Umbra" not in cells and "RM_A" not in cells, "a kept RUT_ biome (itself) and plain zeros stay omitted: %s" % cells)
+
     bad = g.analyse([row("x", "item:Gold", deep="1", other="5")], FakeIndex(known))
     ok(any("OTHER_vanilla_biomes" in h for h in bad["hard"]), "vanilla biomes + deep weight is hard")
     twice = g.analyse([row("a", "item:Gold"), row("b", "item:Gold")], FakeIndex(known))
@@ -122,6 +126,42 @@ def test_analyse_and_registry():
     a2 = g.analyse(rows, FakeIndex(known, dump={"MineableX": {"pkg": "p", "mineableThing": "XOre", "deep": 0,
                                                              "resourceRock": True}}))
     ok(any("MineableX" in u for u in a2["uncovered"]), "coverage sees an unbound resource mineable (probe)")
+
+
+def test_twins():
+    """MINERAL_KERNEL_REWIRE_TWINS_BY_PAINT_MAP: kernel and generator resolve RUT_ twins through the painted map's pairs."""
+    pairs = g.twin_pairs()
+    import json
+    d = json.load(open(g.PAINT_REMAP, encoding="utf-8"))
+    want = {k: v for k, v in d["biome"].items() if k.startswith("RUT_")}
+    ok(len(want) >= 25 and all(pairs.get(k) == v for k, v in want.items()),
+       "every RUT_ row of paint_inputs_remap.json biome is a pair (%d)" % len(want))
+    renamed = {"RUT_AridShrubland": "RM_LeaningScrub", "RUT_Desert": "RM_LongShade", "RUT_ExtremeDesert": "RM_Stillsand",
+               "RUT_CrackedLands": "RM_FloodedCanyon", "RUT_Slime": "RM_GelatinousSlime", "RUT_Sump": "RM_TheSump",
+               "RUT_PropaneLake": "RM_TheChill", "RUT_Scarlands": "RM_Warscar", "RUT_ForsakenCrags": "RM_Abyss"}
+    for k, v in renamed.items():
+        ok(g.twin_of(k, pairs) == v, "renamed twin %s resolves to %s (got %s)" % (k, v, g.twin_of(k, pairs)))
+    measured = sorted(k for k, v in pairs.items() if v != k and v != "RM_" + k[4:])
+    ok(measured == sorted(renamed), "the renamed set is exactly the suffix rule's misses: %s" % measured)
+    ok(g.twin_of("RUT_Umbra", pairs) == "RUT_Umbra" and pairs.get("RUT_Umbra") == "RUT_Umbra", "RUT_Umbra resolves to itself")
+    ok(g.twin_of("RUT_NoSuch", pairs) == "RUT_NoSuch", "an unnamed RUT_ biome resolves to itself")
+    ok(all(k.startswith("RUT_") for k in pairs) and "ZBiome_Grasslands" not in pairs, "only RUT_ keys enter the kernel table")
+    committed = open(g.TWIN_CS, encoding="utf-8").read()
+    ok(committed == g.emit_twin_cs(pairs), "committed RM_MineralTwinMap.cs == --write-twins output (regenerate after a remap change)")
+    ok(committed != g.emit_twin_cs(dict(pairs, RUT_Desert="RM_Desert")), "a changed pair breaks the table check (probe)")
+    for k, v in pairs.items():
+        ok(('{ "%s", "%s" },' % (k, v)) in committed, "C# table carries %s -> %s" % (k, v))
+    kern = open(os.path.join(os.path.dirname(g.TWIN_CS), "RM_MineralPolicyKernel.cs"), encoding="utf-8").read()
+    ok(not re.search(r'"RM_"\s*\+\s*biome', kern), "kernel holds no \"RM_\" + suffix twin rule")
+    ok("RM_MineralTwinMap.Resolve(biome)" in kern, "kernel RegistryValue resolves twins through RM_MineralTwinMap")
+    gen = open(g.__file__, encoding="utf-8").read()
+    ok(not re.search(r'"RM_"\s*\+\s*c\[4:\]', gen), "generator holds no \"RM_\" + suffix twin rule")
+    src = os.path.dirname(os.path.dirname(g.TWIN_CS))
+    for cp in ("RimMandrake_Minerals.csproj", os.path.join("SelfTest", "RimMandrakeMinerals.SelfTest.csproj")):
+        ok("RM_MineralTwinMap.cs" in open(os.path.join(src, cp), encoding="utf-8").read(), "%s compiles the twin table" % cp)
+    prog = open(os.path.join(src, "SelfTest", "Program.cs"), encoding="utf-8").read()
+    ok("foreach (var pair in RM_MineralTwinMap.Pairs)" in prog and all(k in prog for k in renamed),
+       "C# SelfTest asserts RegistryValue for every pair and names every renamed twin")
 
 
 def test_meteorites():
@@ -227,6 +267,7 @@ def main():
     test_grammar()
     test_deep()
     test_analyse_and_registry()
+    test_twins()
     test_meteorites()
     test_real_csv()
     test_registry_committed()

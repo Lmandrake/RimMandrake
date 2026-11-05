@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <Compile Include="Kernel\RM_MineralPolicyKernel.cs" />
+    <Compile Include="Kernel\RM_MineralTwinMap.cs" />
     <Compile Include="Kernel\RM_MineralSurfaceKernel.cs" />
     <Compile Include="Kernel\RM_MineralMeteoriteKernel.cs" />
     <Compile Include="Kernel\RM_MineralLayoutKernel.cs" />

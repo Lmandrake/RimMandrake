@@ -218,7 +218,9 @@ namespace RimMandrake.Minerals
         public static string OverrideKey(string materialId, string biome) { return materialId + "|" + biome; }
 
         /// <summary>The registry value of a row in a biome, before overrides and multipliers: the biome's own cell; a RUT_ twin with no
-        /// column of its own reads its RM_ column; any biome that is not ours (no RM_/RUT_ prefix) reads OTHER_vanilla_biomes. Null when
+        /// column of its own reads the column of the RM_ biome the painted map pairs it with (RM_MineralTwinMap, generated from
+        /// paint_inputs_remap.json; never "RM_" + suffix, which misses every renamed twin); a RUT_ biome the map keeps (RUT_Umbra) or
+        /// does not name resolves to itself; any biome that is not ours (no RM_/RUT_ prefix) reads OTHER_vanilla_biomes. Null when
         /// the cell is a token (deep-only, herd, unbounded): not a number in the row's unit.</summary>
         public static float? RegistryValue(MineralRow row, string biome)
         {
@@ -227,7 +229,8 @@ namespace RimMandrake.Minerals
             if (row.Cells.TryGetValue(biome, out float v)) return v;
             if (biome.StartsWith("RUT_", StringComparison.Ordinal))
             {
-                string twin = "RM_" + biome.Substring(4);
+                string twin = RM_MineralTwinMap.Resolve(biome);
+                if (twin == biome) return 0f;
                 if (row.Tokens.ContainsKey(twin)) return null;
                 if (row.Cells.TryGetValue(twin, out float tv)) return tv;
                 return 0f;

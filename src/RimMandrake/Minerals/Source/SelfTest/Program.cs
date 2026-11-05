@@ -229,15 +229,48 @@ namespace RimMandrake.Minerals.SelfTest
             {
                 var cell = num.Cells.First(kv => kv.Key.StartsWith("RM_") && kv.Value > 0f);
                 Check(RM_MineralPolicyKernel.RegistryValue(num, cell.Key) == cell.Value, "registry value of own cell");
-                string twin = "RUT_" + cell.Key.Substring(3);
-                if (!num.Cells.ContainsKey(twin) && !num.Tokens.ContainsKey(twin))
-                    Check(RM_MineralPolicyKernel.RegistryValue(num, twin) == cell.Value, "RUT twin must read its RM column");
+                Check(RM_MineralPolicyKernel.RegistryValue(num, "RUT_NoSuchTwin") == 0f, "a RUT_ biome the painted map does not name reads 0");
                 Check(RM_MineralPolicyKernel.RegistryValue(num, "TemperateForest") == num.OtherBiomes, "vanilla biome reads OTHER_vanilla_biomes");
                 var ov = new Dictionary<string, float> { { RM_MineralPolicyKernel.OverrideKey(num.MaterialId, cell.Key), 7f } };
                 Check(RM_MineralPolicyKernel.EffectiveValue(num, cell.Key, ov, 2f) == 14f, "override x multiplier");
                 Check(RM_MineralPolicyKernel.EffectiveValue(num, cell.Key, null, 0.5f) == cell.Value * 0.5f, "registry x multiplier");
                 Check(RM_MineralPolicyKernel.RegistryValue(num, "RM_NoSuchBiomeColumn") == 0f, "an RM_ biome without a cell is 0");
             }
+            // --- RUT_ twins resolve through the painted map (MINERAL_KERNEL_REWIRE_TWINS_BY_PAINT_MAP), never "RM_" + suffix
+            var renamed = new Dictionary<string, string> {
+                { "RUT_AridShrubland", "RM_LeaningScrub" }, { "RUT_Desert", "RM_LongShade" }, { "RUT_ExtremeDesert", "RM_Stillsand" },
+                { "RUT_CrackedLands", "RM_FloodedCanyon" }, { "RUT_Slime", "RM_GelatinousSlime" }, { "RUT_Sump", "RM_TheSump" },
+                { "RUT_PropaneLake", "RM_TheChill" }, { "RUT_Scarlands", "RM_Warscar" }, { "RUT_ForsakenCrags", "RM_Abyss" } };
+            foreach (var kv in renamed)
+                Check(RM_MineralTwinMap.Resolve(kv.Key) == kv.Value, "renamed twin " + kv.Key + " must resolve to " + kv.Value);
+            Check(RM_MineralTwinMap.Resolve("RUT_Umbra") == "RUT_Umbra", "RUT_Umbra resolves to itself");
+            Check(RM_MineralTwinMap.Pairs.Count >= 25, "twin table holds the painted map's pairs: " + RM_MineralTwinMap.Pairs.Count);
+            int twinChecks = 0;
+            foreach (var pair in RM_MineralTwinMap.Pairs)
+            {
+                // synthetic row: the twin has no column, its RM_ biome has one; then a token there; then the twin's own cell wins
+                var t = new MineralRow { MaterialId = "twin" }; t.Cells[pair.Value] = 42f; t.OtherBiomes = 3f;
+                if (pair.Key == pair.Value)
+                {
+                    Check(RM_MineralPolicyKernel.RegistryValue(t, pair.Key) == 42f, pair.Key + " reads its own column");
+                    t.Cells.Remove(pair.Key);
+                    Check(RM_MineralPolicyKernel.RegistryValue(t, pair.Key) == 0f, pair.Key + " with no column reads 0, never OTHER");
+                    twinChecks++; continue;
+                }
+                Check(RM_MineralPolicyKernel.RegistryValue(t, pair.Key) == 42f, pair.Key + " must read " + pair.Value + "'s column");
+                t.Cells[pair.Key] = 5f;
+                Check(RM_MineralPolicyKernel.RegistryValue(t, pair.Key) == 5f, pair.Key + "'s own column wins over its RM_ biome");
+                var tt = new MineralRow { MaterialId = "twintok" }; tt.Tokens[pair.Value] = "deep-only";
+                Check(RM_MineralPolicyKernel.RegistryValue(tt, pair.Key) == null, pair.Key + " reads " + pair.Value + "'s token as null");
+                twinChecks++;
+            }
+            Check(twinChecks == RM_MineralTwinMap.Pairs.Count, "every twin pair checked");
+            // the shipped registry: every twin with no column of its own reads its painted RM_ biome's cell
+            foreach (MineralRow r in rows)
+                foreach (var pair in RM_MineralTwinMap.Pairs)
+                    if (pair.Key != pair.Value && !r.Cells.ContainsKey(pair.Key) && !r.Tokens.ContainsKey(pair.Key))
+                        Check(RM_MineralPolicyKernel.RegistryValue(r, pair.Key) == (r.Tokens.ContainsKey(pair.Value) ? (float?)null
+                              : (r.Cells.TryGetValue(pair.Value, out float rv) ? rv : 0f)), r.MaterialId + ": " + pair.Key + " reads " + pair.Value);
             MineralRow tok = rows.FirstOrDefault(r => r.Tokens.Count > 0);
             Check(tok != null && RM_MineralPolicyKernel.RegistryValue(tok, tok.Tokens.Keys.First()) == null, "token cell must be null (not a number)");
             Check(Math.Abs(RM_MineralPolicyKernel.LumpsForEpm(1200f, 40f) - 1f) < 1e-5f, "1200 EPM of a 40/cell ore is one lump");
