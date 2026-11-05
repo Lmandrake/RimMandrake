@@ -321,10 +321,42 @@ def t_closed_ticket_reseeds():
     x.done()
 
 
+def seat_tmp_rows(r):
+    """CHECKER_REACH_FIX_SEAT_TMP_STILL_DARK: on the rules as SHIPPED, a Judge's seat-tmp read path is classed seat_tmp,
+    kept by propose(), and bound by props() with no InaccessiblePaths over it. The probe that filed the ticket ran at
+    03:59Z on 2026-11-05 when ~/.seat-tmp was still in walls.marker.deny: a bind under an inaccessible path reads as
+    UNREADABLE, so the repair could never pass. A transcript under seat-tmp stays refused. -> [(cond, name)]"""
+    import relentless_wall as W
+    prof = W.profile(r)
+    seat = "/home/mandrake/.seat-tmp/BENCH"
+    named = [seat, seat + "/FlowWorks.files"]
+    cls = RF.classify(r, ["CANNOT REACH %s: the box shows an empty seat-tmp" % seat])
+    prop = RF.propose(r, cls, named, [], "")
+    pr = W.props(prof, "/nonexistent-box", [], prop["paths"])
+    dark = [x.split("=", 1)[1] for x in pr if x.startswith("InaccessiblePaths=")]
+    over = [d for d in dark for p in named if p == d or p.startswith(d.rstrip("/") + "/")]
+    transcript = seat + "/claude-1000/x/tasks/a1.output"
+    return [
+        (cls.get("class") == "seat_tmp", "(8) a seat-tmp gap is classed seat_tmp: %s" % cls.get("class")),
+        (prop["paths"] == named and not prop["refused"], "(8) seat-tmp read paths are kept: %s" % prop),
+        (not over, "(8) no InaccessiblePaths covers a seat-tmp path, so its bind can read: %s" % over),
+        (all("BindReadOnlyPaths=-" + p in pr for p in named), "(8) each named seat-tmp path is bound read only"),
+        (RF.refused(transcript, r) is not None, "(8) a transcript under seat-tmp stays refused"),
+    ]
+
+
+def t_seat_tmp_reach():
+    import json
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json"), encoding="utf-8") as f:
+        r = json.load(f)
+    for cond, name in seat_tmp_rows(r):
+        ok(cond, name)
+
+
 def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
               t_windows_build_nothing_to_probe, t_every_waiter_released, t_legacy_off, t_clones_seed,
-              t_closed_ticket_reseeds):
+              t_closed_ticket_reseeds, t_seat_tmp_reach):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
