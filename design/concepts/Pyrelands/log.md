@@ -51,3 +51,10 @@ PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES. The only refusal left: showcase 1 mu
 "Judged first" sentence was agent text he approved inside the root (a root approval is not a pick; a_flagship was struck
 at stage 1 before the showcase rule of 2026-11-05). Returned to stage 2 to ask it. Also owed his word: north star bar
 pyre_fresh_burn_feeds_the_field still says black rain washes the bonus away, false since his 2026-11-05 card.
+
+## Sitting 7, 2026-11-05 (run rm-role-designer-1793900021). Stage 2, returned for the flagship pick
+
+Root already revised to his words (sitting 3). Turn: `turn_04.md`. Fresh-Opus review (rm-judge a426291698d9b77c4):
+a_flagship_pick pass (fix: cast/sky showcases are staged, not ordinary play); a_bar_reword pass (his word
+'compounds'); the root firebreak clause struck to a notice (d_firebreak_cut already decided, undoable). Sent:
+a_flagship_pick, a_bar_reword.

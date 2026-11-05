@@ -265,6 +265,52 @@
     "source": "OWNER:1793898829233582581",
     "by_card": "How should black rain compound on a fresh burn scar? → Just stop the wipe (wet plus burn 190%, bonus fades on its 6-day clock)"
    }
+  },
+  {
+   "id": "a_flagship_pick",
+   "text": "Which of the three showcases is the moment you judge the Pyrelands by when you first land: (1) the burn line walking across deep ash, its scar greening with scorch-fruit a few days later; (2) the fire's cast at work (fire-hawk carrying a burning twig, ashwallow diving, ullai drifting to two-day-old burns); (3) weathering the sky (ash fall, cinderfall, black rain over a blackened ruin, colonists sheltering by a furnace-beast)? Recommended: (1).",
+   "decision": "showcase 1 (flagship) binding: which showcase is the biome's face; the root's 'Judged first' line is agent text, not his pick",
+   "about": [
+    "inv_burn_line_fire_clock",
+    "inv_firehawk_ember",
+    "inv_burrowers_heat_dome",
+    "inv_ullai_herd_giant",
+    "inv_weather",
+    "inv_furnacebeast"
+   ],
+   "owner_cites": [
+    "OWNER:1793895899845199295"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793900021",
+   "status": "sent",
+   "review": {
+    "by": "rm-judge a426291698d9b77c4 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "No owner words answer it; a root approval is not a pick (designer_scene_contract.md). Fix applied: 'fresh map in ordinary play' false for staged cast/sky scenes."
+   },
+   "source": "design/concepts/Pyrelands/turn_04.md"
+  },
+  {
+   "id": "a_bar_reword",
+   "text": "Re-validate the north star with bar pyre_fresh_burn_feeds_the_field reworded to: 'ground that has just burned grows noticeably faster for a few days, and black rain compounds that advantage rather than washing it away'?",
+   "decision": "north-star prose correction needs his re-validation (owner 2026-09-17); the current bar contradicts d_blackrain_stop_wipe",
+   "about": [
+    "inv_ash_field"
+   ],
+   "owner_cites": [
+    "OWNER:1793895899845199295",
+    "OWNER:1793898829233582581"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793900021",
+   "status": "sent",
+   "review": {
+    "by": "rm-judge a426291698d9b77c4 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "His words settle the content; only his say-so re-validates. Wording uses his 'compounds'. Firebreak half struck to a notice: d_firebreak_cut already decided (delegated, undoable)."
+   },
+   "source": "design/validation_walks/RimMandrake/Pyrelands.md"
   }
  ],
  "inventory": [

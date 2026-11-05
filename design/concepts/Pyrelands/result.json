@@ -1,4 +1,6 @@
-{"run": "rm-role-designer-1793899497", "stage": 3, "outcome": "return", "to": 2,
- "decision": "his flagship pick: which showcase is the Pyrelands' face when he first lands (showcase 1 must be bound to an owner decision with flagship; the root's 'Judged first' line was agent text inside the root he approved, and a root approval is not a pick)",
- "question": "When you first land on the Pyrelands, which moment should be the biome's face, the one you judge it by? (1) The burn line: a line of grass fire walking across deep ash with a black trail, and a few days later the scar greening with scorch-fruit standing in it. (2) The fire's cast at work: a fire-hawk carrying a burning twig ahead of the blaze, an ashwallow diving as the front reaches it, ullai drifting to two-day-old burns. (3) Weathering the sky: ash fall, cinderfall and black rain over a blackened ruin where colonists shelter with a furnace-beast. The other two follow as showcases 2 and 3.",
- "summary": "Stage 3 written: tree.json (17 leaves, lint PASS), sheet.md, plan.md, scenes.json (16 acceptance, 3 exploration; showcases burn_line/fire_cast/sky_and_shelter at 6/4/3 new, overlap 0; coverage complete), floor.json; filed PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL and PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES. Only refusal: showcase 1 has no flagship pick of his, so return to stage 2 to ask. Also owed his word: walk bar pyre_fresh_burn_feeds_the_field still says black rain washes the bonus away (false since 2026-11-05); it needs rewording and re-validation."}
+{
+ "run": "rm-role-designer-1793900021",
+ "stage": 2,
+ "outcome": "waiting_owner",
+ "summary": "Root already in his words. Sent two reviewed asks (turn_04.md): a_flagship_pick (which of burn_line / fire_cast / sky_and_shelter is showcase 1; recommended burn_line) and a_bar_reword (re-validate north star with pyre_fresh_burn_feeds_the_field reworded to 'black rain compounds'). Firebreak root clause dropped as a notice, undoable."
+}

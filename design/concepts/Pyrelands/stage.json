@@ -60,10 +60,24 @@
     "ref": "run rm-role-designer-1793898941",
     "stage": 2,
     "tokens": 321398
+   },
+   {
+    "at": "2026-11-05T17:31:22Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793899497",
+    "stage": 3,
+    "tokens": 795719
+   },
+   {
+    "at": "2026-11-05T17:36:14Z",
+    "kind": "review",
+    "ref": "rm-judge a426291698d9b77c4 stage-2 flagship asks",
+    "stage": 2,
+    "tokens": 38213
    }
   ],
   "reserve": 60000,
-  "spent": 1850492
+  "spent": 2684424
  },
  "history": [
   {
@@ -143,10 +157,29 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1793898941: stage 2 done"
+  },
+  {
+   "at": "2026-11-05T17:25:07Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1793899497, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-05T17:31:22Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793899497: stage 3 return"
+  },
+  {
+   "at": "2026-11-05T17:33:50Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793900021, stage 2, budget 500000"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/Pyrelands",
+ "pending_decision": "his flagship pick: which showcase is the Pyrelands' face when he first lands (showcase 1 must be bound to an owner decision with flagship; the root's 'Judged first' line was agent text inside the root he approved, and a root approval is not a pick)",
  "recovery": [],
  "results": [
   {
@@ -264,11 +297,59 @@
    "run": "rm-role-designer-1793898941",
    "stage": 2,
    "summary": "Both stage-2 asks answered by card 2026-11-05 and applied. Black rain: stop the wipe (wet fresh scar 190%, bonus fades on its own 6-day clock); c_blackrain_fades_vs_compounds resolved, change rides the tree to Relentless. Firebreak: evaluated at his request and cut (delegated, undoable): front, smoulder relight and hawk drop all ignite through vanilla ChanceToStartFireIn, so any paved non-flammable floor two cells wide does the job; Firebreak.xml, the kernel special case and the harness pads are owed excision. Firefoam sprayer split out, untouched. No ask sent, no core contradiction open."
+  },
+  {
+   "at": "2026-11-05T17:31:22Z",
+   "decision": "his flagship pick: which showcase is the Pyrelands' face when he first lands (showcase 1 must be bound to an owner decision with flagship; the root's 'Judged first' line was agent text inside the root he approved, and a root approval is not a pick)",
+   "inputs": {
+    "exam": null,
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "9674f15396a05e2f45f136626976c1c2bdb1d7438a056b0cb53c085932ade71d",
+    "scenes": "6b80733af1c6073d504d7bb0f2e7f1982d051f713b46ba922e535b1539099466",
+    "sheet": "50fdc497d2c4aee42bcc48e014692d5371364ef3791f215fc0083baa4b253e46",
+    "tree": "a499724555dc564cc2295c314e4cc10f3f3374826daf84e0512d52a8b204956f"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "return",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "question": "When you first land on the Pyrelands, which moment should be the biome's face, the one you judge it by? (1) The burn line: a line of grass fire walking across deep ash with a black trail, and a few days later the scar greening with scorch-fruit standing in it. (2) The fire's cast at work: a fire-hawk carrying a burning twig ahead of the blaze, an ashwallow diving as the front reaches it, ullai drifting to two-day-old burns. (3) Weathering the sky: ash fall, cinderfall and black rain over a blackened ruin where colonists shelter with a furnace-beast. The other two follow as showcases 2 and 3.",
+   "run": "rm-role-designer-1793899497",
+   "stage": 3,
+   "summary": "Stage 3 written: tree.json (17 leaves, lint PASS), sheet.md, plan.md, scenes.json (16 acceptance, 3 exploration; showcases burn_line/fire_cast/sky_and_shelter at 6/4/3 new, overlap 0; coverage complete), floor.json; filed PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL and PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES. Only refusal: showcase 1 has no flagship pick of his, so return to stage 2 to ask. Also owed his word: walk bar pyre_fresh_burn_feeds_the_field still says black rain washes the bonus away (false since 2026-11-05); it needs rewording and re-validation.",
+   "to": 2
   }
  ],
- "running": null,
+ "running": {
+  "at": "2026-11-05T17:33:50Z",
+  "inputs": {
+   "exam": null,
+   "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+   "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+   "root": "9674f15396a05e2f45f136626976c1c2bdb1d7438a056b0cb53c085932ade71d",
+   "scenes": "6b80733af1c6073d504d7bb0f2e7f1982d051f713b46ba922e535b1539099466",
+   "sheet": "50fdc497d2c4aee42bcc48e014692d5371364ef3791f215fc0083baa4b253e46",
+   "tree": "a499724555dc564cc2295c314e4cc10f3f3374826daf84e0512d52a8b204956f"
+  },
+  "manifest": {
+   "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+   "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+  },
+  "owner_uncited": [
+   "1793766816609436834"
+  ],
+  "reserved": 500000,
+  "run": "rm-role-designer-1793900021",
+  "stage": 2
+ },
  "schema": 1,
- "stage": 3,
+ "stage": 2,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
