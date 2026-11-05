@@ -159,7 +159,18 @@ def _pid(d):
         return ""
 
 
-def required_mods(rows, binding, retired, repo=REPO):
+def composed_ids(repo=REPO):
+    """{folded packageId: composed packageId}: a mod folded into RimMandrake.Biomes loads as mandrake.rm.biomes, never
+    under its own id (ART_OVERRIDE_FAMILY_SCRIPT_1 read 'not in the running load: mandrake.rm.warscar, mandrake.rm.webwork'
+    on a load holding the composed mod, 2026-11-05). {} when the repo has no compose manifest."""
+    try:
+        import biomes_compose
+        return biomes_compose.folded_ids(os.path.join(repo, "src"))
+    except Exception:       # noqa: BLE001  an unreadable manifest folds nothing: the plain ids are still required
+        return {}
+
+
+def required_mods(rows, binding, retired, repo=REPO, folded=None):
     """{packageId: why} the running load must hold before any row is judged: each live row's owner mod (manifest
     `owner`), the mod of ours that DEFINES each bound kind (RM_Ollathrix is Webwork's, skinned by Shokk), and each live
     (non-retired) donor a kind binds to. Read from the manifest and src/, never a hand list. Run 1 (2026-11-03) judged a
@@ -182,7 +193,11 @@ def required_mods(rows, binding, retired, repo=REPO):
                 need.setdefault(homes[k], "defines " + k)
             elif src.startswith("donor:") and src.split(":", 1)[1].lower() not in retired:
                 need.setdefault(src.split(":", 1)[1].lower(), "live donor of " + k)
-    return need
+    fold = composed_ids(repo) if folded is None else folded
+    out = {}
+    for p, why in need.items():
+        out.setdefault(fold.get(p, p), why if p not in fold else "%s, as %s" % (why, p))
+    return out
 
 
 def load_gap(need, running):
@@ -497,7 +512,9 @@ def selftest():
                 ("retired donor not required", sorted(required_mods(rows, b, {"d.old"}, repo=td)) == ["t.own"]),
                 ("full load judged", load_gap(need, {"t.own", "d.old", "x"}) is None),
                 ("owner absent refuses", "t.own" in (load_gap(need, {"d.old"}) or "")),
-                ("unreadable load refuses", load_gap(need, None) is not None)]
+                ("unreadable load refuses", load_gap(need, None) is not None),
+                ("a folded owner is its composed mod",
+                 load_gap(required_mods(rows, b, set(), repo=td, folded={"t.own": "t.comp"}), {"t.comp", "d.old"}) is None)]
         fails += ["load %s" % g for g, ok in gaps if not ok]
     n = len(want) + 1 + len(cases) + 5 + len(gaps)
     for f in fails:
