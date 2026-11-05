@@ -18,13 +18,16 @@ prompt_for() {
   ridge_h) echo "Subject: a LOW EARTH LEVEE RIDGE running left to right across the whole canvas and continuing off both side edges (a repeating section of a longer bank; both ends cut flush at the canvas edges, no end posts). Packed brown earth with a lit flat crest, its face toward the camera retained by a low crib of boards in the look's material, two crib uprights, a darker damp band along the foot. Earth stays earth-brown in every look.";;
   ridge_v) echo "Subject: a LOW EARTH LEVEE RIDGE seen from above running from the top edge to the bottom edge of the canvas and continuing off both (a repeating section; ends cut flush, no end posts): packed brown earth with a lit flat crest down the middle, the right flank retained by crib boards in the look's material, two crib uprights set in the crest. Earth stays earth-brown in every look.";;
   post) echo "Subject: one lamp-topped bank stake standing alone in the centre: a stout post in the look's material driven into a small mound of packed brown earth, a lashing band, and a small lantern on top with a warm glowing pane. Only this one post and its footing; nothing else.";;
+  baffle3q) echo "SILT_TRAP_STYLES_REDRAW_HALF_RES_FLAT: image 1 is the CAMERA AND SILHOUETTE reference, not a grey guide: redraw exactly its three-quarter oblique view - the baffle wall running diagonally from upper-left back to lower-right front, posts with their lit tops visible, the boards' top edge showing real thickness, the wall's foot set into a strip of wet brown bank mud with a dark wet waterline and small ripples at the posts. Keep that camera, composition and depth. Image 2 is THIS look's silt-trap drawn flat: take ALL materials, trim and colours from image 2 instead of from image 1 (its board colour, its caps, brackets, bolts and accent trim must stay recognisable), and draw no tank.";;
   baffle) echo "Subject: a SILT-TRAP BAFFLE: a short sturdy wall of boards in the look's material set between three posts, standing in the shallow edge of a river: its lower band is dark and visibly wet with a thin bright waterline, and a faint ring of small ripples where the posts meet the water. Draw no ground and no water body other than that waterline ring.";;
  esac
 }
 run() {
+  local G="$HERE/guides/guide_$1.png" REF="$TANK"
+  [ "$1" = baffle3q ] && REF="$HERE/raw/${LOOK}_baffle.png"
   [ -s "$HERE/raw/${LOOK}_$1.png" ] && { echo "$LOOK $1 cached"; return 0; }
-  python3 "$CI" edit --model gpt-6.1-sol --out "$HERE/raw/${LOOK}_$1.png" --image "$HERE/guides/guide_$1.png" --image "$TANK" \
-    --codex-home "$RMS/codex/home_riverworks_$LOOK" --timeout 480 --prompt "$COMMON $(prompt_for "$1")" > "$HERE/raw/${LOOK}_$1.log" 2>&1
+  python3 "$CI" edit --model gpt-6.1-sol --out "$HERE/raw/${LOOK}_$1.png" --image "$G" --image "$REF" \
+    --codex-home "$RMS/codex/home_riverworks_${LOOK}_$1" --timeout 480 --prompt "$COMMON $(prompt_for "$1")" > "$HERE/raw/${LOOK}_$1.log" 2>&1
   echo "$LOOK $1 exit=$?"
 }
 PIECES="${*:-post ridge_h ridge_v baffle}"

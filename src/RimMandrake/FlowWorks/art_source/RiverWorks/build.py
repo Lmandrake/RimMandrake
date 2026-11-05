@@ -6,7 +6,9 @@ raw/<Look>_{post,ridge_h,ridge_v,baffle}.png and raw/silt_wedge.png (codex $imag
   <Look>/RM_BankStake          128x128  the lamp post on its earth footing (drawn 0.8 cell)
   <Look>/RM_BankStakeRidge_h   128x48   levee span between two stakes side by side (one period of the raw, seamless E-W)
   <Look>/RM_BankStakeRidge_v   64x128   levee span between two stakes one above the other (seamless N-S)
-  <Look>/RM_SiltTrap           128x128  the baffle with its wet waterline (drawn 1.2 cells, as before)
+  <Look>/RM_SiltTrap           256x256  the baffle in three-quarter oblique view on its wet bank strip (drawn 1.2 cells), from
+                                        raw/<Look>_baffle3q.png: the old base trap's camera and resolution with the look's
+                                        trim (SILT_TRAP_STYLES_REDRAW_HALF_RES_FLAT; raw/<Look>_baffle.png was a frontal panel)
   RM_SiltWedge                 128x128  look-free silt deposit, broad edge at the bottom, tip up (code turns the tip upstream)
 Usage: build.py [Look ...]"""
 import importlib.util
@@ -70,7 +72,7 @@ def build(look):
     W.clean_alpha(fit(op("post"), (120, 120), (CELL, CELL))).save(out / "RM_BankStake.png")
     W.clean_alpha(one_period_h(op("ridge_h"), 48)).save(out / "RM_BankStakeRidge_h.png")
     W.clean_alpha(one_period_v(op("ridge_v"), 64)).save(out / "RM_BankStakeRidge_v.png")
-    W.clean_alpha(fit(op("baffle"), (124, 124), (CELL, CELL))).save(out / "RM_SiltTrap.png")
+    W.clean_alpha(fit(op("baffle3q"), (248, 248), (2 * CELL, 2 * CELL))).save(out / "RM_SiltTrap.png")
     print(look, "ok")
 
 
