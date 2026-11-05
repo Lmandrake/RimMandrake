@@ -1,0 +1,334 @@
+{
+ "scope": [
+  {
+   "id": "s_tribes_are_fire_farmers",
+   "speaker": "agent",
+   "source": [
+    "design/Jawa/worldbuilding/biomes/the_pyrelands.md:175"
+   ],
+   "text": "Canon (owner-ratified sheet): the Deep Desert Tribes are the fire's farmers; the flame harvest is controlled burns on their schedule with the burn-line walked for scorch-fruit; an unplanned burn is answered by arson-justice, short furious raids."
+  },
+  {
+   "id": "s_pyre_burns_without_them",
+   "speaker": "agent",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/About/About.xml"
+   ],
+   "text": "Ruling recorded in About.xml: 'they are FIRE HARVESTERS, and they are the Deep Tribes ... the Pyre burns with or without them' -> the rite is a fraction of the fire clock, never all of it."
+  },
+  {
+   "id": "s_tribes_light_fires_primitively",
+   "speaker": "agent",
+   "source": [
+    "ITEM:TECHPRINT_FACTION_GATING_1",
+    "infrastructure/state/ledger/events/OWNER.jsonl"
+   ],
+   "text": "Owner note 2026-09-26 (no tsn on that event, so not citable as OWNER:): the Deep Tribes do light fires in the Pyrelands, just not with flamethrowers or industrial firebombs. The rite's torch-lighting fits this."
+  },
+  {
+   "id": "s_franchise_split",
+   "speaker": "agent",
+   "source": [
+    "ITEM:PYRELANDS_RM_MOD_BUILD_1",
+    "src/RimUtinni/PyrelandsMechanics/About/About.xml"
+   ],
+   "text": "PYRELANDS_RM_MOD_BUILD_1 \u00a76 moved the franchise-free burn-line, arson tally, fire-hawk and furnace-beast to mandrake.rm.pyrelands; this mod keeps only what names the Deep Desert Tribes (a campaign faction)."
+  }
+ ],
+ "decisions": [],
+ "asks": [
+  {
+   "id": "a_flagship",
+   "status": "draft",
+   "speaker": "agent",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFireRite.cs",
+    "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs"
+   ],
+   "about": [
+    "inv_fire_rite_party",
+    "inv_arson_justice_raid"
+   ],
+   "text": "Picture the one moment that makes you say 'that is the Pyrelands Tribes'. Is it a small file of Tribes walking in with a covered coal, lighting the grass themselves, then working the black behind the front for scorch-fruit? Or a short furious raid arriving the morning after your colony set a fire it should not have? (This picks the first showcase.)"
+  },
+  {
+   "id": "a_harvest_visit_at_the_fire",
+   "status": "draft",
+   "speaker": "agent",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs"
+   ],
+   "about": [
+    "inv_flame_harvest_visit"
+   ],
+   "text": "The flame-harvest visit today walks a party to the centre of a burn already standing and then they leave; they pick nothing (the code says the sheet only asked for them to be SEEN farming the fire). The rite party, by contrast, really picks scorch-fruit and carries it off. When you watch the visit party reach the fire, what do you expect to see them doing there?"
+  },
+  {
+   "id": "a_debt_visible",
+   "status": "draft",
+   "speaker": "agent",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs"
+   ],
+   "about": [
+    "inv_arson_justice_raid"
+   ],
+   "text": "Arson debt builds silently from every fire your colony owns, your tamed fire-hawk and furnace-beast included, until a raid lands. Before that raid, should you have been able to see the debt growing (a goodwill warning, a letter, a number somewhere), or is the surprise the point?"
+  }
+ ],
+ "inventory": [
+  {
+   "id": "inv_arson_justice_raid",
+   "what": "RUT_FireRaid: arson debt from player-owned fires past arsonDebtRaidThreshold brings a short ImmediateAttack EdgeWalkIn Tribes raid at a fraction of threat points; a goodwill hit first, refuses if that does not reach war; debt cleared on success",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs",
+    "src/RimUtinni/PyrelandsMechanics/Defs/IncidentDefs/RUT_PyrelandsIncidents.xml",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs"
+   ],
+   "proof": "missing",
+   "proof_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/validation.py",
+    "src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/PyrelandsFuzz.cs"
+   ],
+   "proof_note": "live: only a fire_incident dry run; the debt-past-threshold row is UNMEASURED in validation.py. Offline: the gate (RaidCanFire, ArsonStep) is fuzzed in PyrelandsFuzz.cs.",
+   "scope": "not_opened",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs"
+   ]
+  },
+  {
+   "id": "inv_flame_harvest_visit",
+   "what": "RUT_FlameHarvest: with >= flameHarvestMinFires fires standing on a Pyrelands home map and the Tribes not hostile, a peaceful Tribes group walks to the burn centre (LordJob_TravelAndExit) and leaves; neutral letter",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs",
+    "src/RimUtinni/PyrelandsMechanics/Defs/IncidentDefs/RUT_PyrelandsIncidents.xml"
+   ],
+   "proof": "missing",
+   "proof_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/validation.py",
+    "src/RimMandrake/Pyrelands/Source/SelfTest/Fuzz/PyrelandsFuzz.cs"
+   ],
+   "proof_note": "live: dry run only; min-fires boundary UNMEASURED live, fuzzed offline (HarvestCanFire).",
+   "scope": "not_opened",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs"
+   ]
+  },
+  {
+   "id": "inv_fire_rite_party",
+   "what": "Fire rite send: RM_Pyrelands' fire clock offers each scheduled front through PyrelandsFireRiteHook.TrySend; at fireRiteFraction a small adult Tribes party (group min-max, from the Peaceful group maker) walks in and a neutral letter is sent; else the plain front lights",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFireRite.cs",
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsMod.cs",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsFireRiteHook.cs"
+   ],
+   "proof": "missing",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py:2540"
+   ],
+   "proof_note": "no live run sends a rite; RiteRoll boundary fuzzed offline.",
+   "scope": "not_opened",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFireRite.cs"
+   ]
+  },
+  {
+   "id": "inv_fire_rite_lord",
+   "what": "LordJob_RUT_FireRite: travel (vanilla subgraph with defend toil) -> on arrival or timeout light the line at the party's position, attributed to the lead harvester -> RUT_RiteHarvest duty for fireRiteHarvestHours -> exit with inventories; turning hostile ends the rite (they leave, no battle)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/Source/LordJob_RUT_FireRite.cs",
+    "ITEM:FIRE_RITE_FIX_DEFENDERS_MISS_THE_WAR"
+   ],
+   "proof": "missing",
+   "scope": "not_opened",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/LordJob_RUT_FireRite.cs"
+   ]
+  },
+  {
+   "id": "inv_rite_harvest_duty",
+   "what": "RUT_RiteHarvest duty: seek safe temperature, else pick up / harvest RM_FE scorch-fruit within FireRiteHarvestRadius of the rite origin, never a burning cell, stop at fireRiteCarryPerPawn; else wander near origin",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/Defs/DutyDefs/RUT_PyrelandsDuties.xml",
+    "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_HarvestScorchFruit.cs",
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsDefOf.cs",
+    "ITEM:RITE_HARVEST_FIX_PICKS_PAST_FULL"
+   ],
+   "proof": "missing",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py:2540"
+   ],
+   "proof_note": "route-through-fire is an UNMEASURED row (rite_harvest_route_avoids_fire) in RM Pyrelands' validation; carry cap fuzzed offline (RiteHarvestWanted).",
+   "scope": "not_opened",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_HarvestScorchFruit.cs"
+   ]
+  },
+  {
+   "id": "inv_tribes_lookup",
+   "what": "PyrelandsFactions.TribesOrNull: the Tribes are vanilla TribeCivil reskinned by UtinniPatches DeepDesertTribes.xml; first non-defeated, non-temporary one",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFactions.cs",
+    "src/RimUtinni/UtinniPatches/Patches/DeepDesertTribes.xml"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py:2435"
+   ],
+   "scope": "not_opened",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFactions.cs"
+   ]
+  },
+  {
+   "id": "inv_mod_settings",
+   "what": "Mod Settings: three master switches (arson justice, flame harvest, fire rite) and tunables (debt threshold, min fires, rite fraction, party size, hours, carry per pawn), grouped, searchable, per-section reset",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsMod.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/validation.py",
+    "ITEM:PYRELANDS_MECHANICS_FIRST_SCRIPT_1"
+   ],
+   "proof_note": "settings flip/read-back chain verified 2026-10-07; not re-run since.",
+   "scope": "not_opened",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsMod.cs"
+   ]
+  },
+  {
+   "id": "inv_thornvine_edible",
+   "what": "Patch giving Plant_Thornvine Nutrition 0.25 (preferability left NeverForNutrition) so RM_Pyrelands' furnace-beast thermal cycle can eat it",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/Patches/RUT_Thornvine_Edible.xml"
+   ],
+   "proof": "missing",
+   "scope": "not_opened",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Patches/RUT_Thornvine_Edible.xml"
+   ]
+  },
+  {
+   "id": "inv_letters_text",
+   "what": "Keyed letters for flame harvest, fire raid and fire rite, faction name read from the faction",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimUtinni/PyrelandsMechanics/Languages/English/Keyed/PyrelandsMechanics.xml"
+   ],
+   "proof": "missing",
+   "scope": "not_opened",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Languages/English/Keyed/PyrelandsMechanics.xml"
+   ]
+  },
+  {
+   "id": "inv_impid_fire_callers",
+   "what": "Sheet canon not built here: Impids leading the burns, sacred fire carried away to Tribes hearths, burn-scheduling cairns / moving harvest camps",
+   "impl": "absent",
+   "search_scope": "grep -rli impid over src/**/*.xml,*.cs: Impids exist as a xenotype (src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml) and in faction/spawn patches, but no rite, harvest or burn code references them; src/RimUtinni/PyrelandsMechanics has no cairn, camp or carried-fire code",
+   "proof": "missing",
+   "scope": "not_opened",
+   "source": [
+    "design/Jawa/worldbuilding/biomes/the_pyrelands.md:180"
+   ]
+  }
+ ],
+ "built_reviewed": [
+  {
+   "ref": "src/RimUtinni/PyrelandsMechanics",
+   "covered_by": "inv_fire_rite_party"
+  },
+  {
+   "ref": "PYRELANDS_MECHANICS_FIRST_SCRIPT_1",
+   "covered_by": "inv_mod_settings"
+  }
+ ],
+ "contradictions": [
+  {
+   "id": "c_thornvine_wrong_tier",
+   "speaker": "agent",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Patches/RUT_Thornvine_Edible.xml",
+    "src/RimMandrake/Pyrelands/Source/JobGiver_RUT_FurnaceThermalCycle.cs"
+   ],
+   "text": "The thornvine nutrition patch serves the furnace-beast's thermal cycle, which moved to franchise-free mandrake.rm.pyrelands, but the patch stayed in this campaign mod. On a load without this mod JobDriver_Ingest refuses thornvine (no nutrition), so the beast's 'one of the only things that strips a thornvine patch' line silently breaks. A Relentless fix (move the patch), not a question for him.",
+   "status": "open"
+  },
+  {
+   "id": "c_fix_items_never_closed",
+   "speaker": "agent",
+   "source": [
+    "ITEM:FIRE_RITE_FIX_DEFENDERS_MISS_THE_WAR",
+    "ITEM:RITE_HARVEST_FIX_PICKS_PAST_FULL"
+   ],
+   "text": "Both fix items show 'implemented' 2026-10-15 and were reassigned twice since, but never closed; their fixes are in the code. Each needs its live proof (the route-through-fire row stays UNMEASURED), which this pass's scenes should supply.",
+   "status": "open"
+  },
+  {
+   "id": "c_visit_vs_rite_overlap",
+   "speaker": "agent",
+   "source": [
+    "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs",
+    "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFireRite.cs"
+   ],
+   "text": "Two built mechanisms put Tribes at a burn: the flame-harvest visit (walks to the fire, leaves, picks nothing) and the rite (lights it, picks scorch-fruit, carries it off). The sheet's 'burn-line walked for scorch-fruit' is only met by the rite. What the visit should look like at the fire is for him (ask a_harvest_visit_at_the_fire); neither is put up for removal.",
+   "status": "open"
+  }
+ ],
+ "script_audit": [
+  {
+   "scene": "incident dry runs (RUT_FlameHarvest, RUT_FireRaid)",
+   "source": "src/RimUtinni/PyrelandsMechanics/validation.py",
+   "lacks": [
+    "asserted start (Pyrelands map, burn standing, Tribes present/non-hostile)",
+    "discriminating control (below-threshold refusal)",
+    "restoration",
+    "the incident actually executing"
+   ]
+  },
+  {
+   "scene": "arson_debt_past_threshold_fires_fireraid (UNMEASURED row)",
+   "source": "src/RimUtinni/PyrelandsMechanics/validation.py",
+   "lacks": [
+    "entry point: needs a proof hook to read/set the arson debt",
+    "control: lightning-only burn accrues no debt",
+    "restoration",
+    "hold"
+   ]
+  },
+  {
+   "scene": "flameharvest_needs_flameHarvestMinFires (UNMEASURED row)",
+   "source": "src/RimUtinni/PyrelandsMechanics/validation.py",
+   "lacks": [
+    "entry point lighting N-1 / N fires",
+    "control at N-1",
+    "restoration"
+   ]
+  },
+  {
+   "scene": "fire rite end to end (none staged in this mod's script; RM Pyrelands has rite_harvest_route_avoids_fire UNMEASURED)",
+   "source": "src/RimMandrake/Pyrelands/validation.py:2540",
+   "lacks": [
+    "any entry point that forces TrySend",
+    "start assertion (pods behind a lit line)",
+    "control (rite disabled -> plain front, no party)",
+    "hostility-ends-rite control",
+    "restoration (despawn party, extinguish, restore terrain)"
+   ]
+  }
+ ],
+ "failure_modes": [
+  "He never sees it: every mechanism needs a Pyrelands home map, a live burn-line and fire clock, a present non-hostile Tribes faction, and then a roll (rite fraction, storyteller chance, min fires); nothing has ever been run live end to end, so in real play it may simply never fire and nothing says why.",
+  "It reads wrong when it fires: the visit party walks to the fire and leaves without harvesting (a pointless visitor, not a farmer), harvesters path through the flames or burn, or a rite party ends in a fight; the Tribes then look like victims or tourists instead of the fire's farmers.",
+  "The punishment feels arbitrary: arson debt grows invisibly from any colony-owned fire, his tamed fire-hawk and furnace-beast included, and a raid lands with no warning he could act on; or the franchise split breaks quietly (thornvine left in the wrong tier) so a neighbour's mechanic fails on a load without this mod."
+ ]
+}
