@@ -62,6 +62,12 @@ def main(retired_path=None):
     # LIVE_RESTORE_RM_PULSE_DIGEST: the baseline line 2a1e978b75 wrote for the digest timer, deleted with RimPulse
     rows = DM.promises({}, [DIGEST], retired)
     check(not rows, "the retired digest timer's old baseline line is not swept (LIVE_RESTORE_RM_PULSE_DIGEST)")
+    # LIVE_RESTORE_RM_PULSE_STREAMS: the streams timer was RENAMED, not dropped: the old name is retired, the new one promised
+    streams = DM.promises({}, baseline + ["unit=rm-pulse-streams.timer max_age=2h"], retired)
+    check(not [r for r in streams if "rm-pulse-streams" in r["line"]],
+          "a baseline promise for the retired rm-pulse-streams.timer is not swept (LIVE_RESTORE_RM_PULSE_STREAMS)")
+    check("unit=rm-streams-collect.timer" in {DM.subject(l) for l in baseline},
+          "its successor rm-streams-collect.timer is promised in the baseline (LIVE_RESTORE_RM_PULSE_STREAMS)")
     # the class, on fixtures: every kind of subject, from the baseline and from a settled item
     fx = DM.parse_retired(["unit=rm-gone.timer  # retired", "hook=gone_hook.py", "role=Gone"])
     lines = ["unit=rm-gone.timer max_age=2h", "unit=rm-here.timer max_age=2h", "hook=gone_hook.py", "role=Gone max_age=3d"]
