@@ -155,13 +155,61 @@ def live_mods_row():
         text = fh.read()
     mods = R.live_mods(text)
     check("live-mods names HugeThings and HugeThingsTestRaces", set(mods) >= {"HugeThings", "HugeThingsTestRaces"}, "%r" % mods)
-    for m in mods:                                   # every folder the gate will demand must exist, or A2 is UNMEASURED forever
+    check("live-mods names neku.largepawns as a packageId (gen11: without it the footprint row read UNMEASURED SITE 3 builds running)",
+          "neku.largepawns" in mods and R.is_package("neku.largepawns") and "neku.largepawns" not in R.folders(mods), "%r" % mods)
+    for m in R.folders(mods):                        # every folder the gate will demand must exist, or A2 is UNMEASURED forever
         about = os.path.join(ROOT, "src", "RimMandrake", m, "About", "About.xml")
         pid = ET.parse(about).getroot().findtext("packageId") if os.path.isfile(about) else None
         check("live-mods folder %s has a packageId" % m, bool(pid and pid.strip()), "read %r" % pid)
     check("proofs file names neku.largepawns for the stager", "neku.largepawns" in text.lower())
     check("A2 proof line still parses with the live-mods header", R.proof_lines(text).get("A2", "") == "python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py < /dev/null",
           "%r" % R.proof_lines(text))
+
+
+class FakeSiteRun(object):
+    """R2's bridge, faked: destroy_batch answers `clear`, SiteReport walks `counts`, KillTitanAt names the asked tier."""
+    def __init__(self, clear, counts):
+        self.clear, self.counts, self.rows, self.calls = clear, list(counts), [], []
+
+    def call(self, tool, **kw):
+        self.calls.append((tool, kw))
+        return {"success": self.clear}
+
+    def hook(self, method, args=""):
+        self.calls.append((method, args))
+        if method == "SiteReport":
+            return True, "sites=%d" % self.counts.pop(0)
+        return True, "killed X tier=%s bodySize=1 corpse=C" % ("T3" if "T3" in args else "T2")
+
+    def ticks(self, n):
+        pass
+
+    def row(self, rid, status, cls, detail):
+        self.rows.append((rid, status, cls))
+
+
+def corpse_site_clear():
+    """Gen 11: 20261103T214715Z read R2 'FAIL MOD' with a corpse site already on the map and kill cells never cleared, while
+    SiteFits refuses any edifice in the 4x4 site rect: a refused conversion was judged as the mod. Pins: both kill cells are
+    cleared (9x9 rect centred on each) before any kill; a clear that fails is UNMEASURED SITE with no kill; after a clear,
+    0->1->1 is PASS and 0->0->0 a MOD FAIL."""
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "northstar"))
+    import titan_test_races_live as L
+    cells = [(125, 125), (137, 125)]
+    check("clear_rect centres a 9x9 on the cell", L.clear_rect(125, 125) == "121,121,9,9", L.clear_rect(125, 125))
+    f = FakeSiteRun(False, [0, 0, 0])
+    L.corpse_site_row(f, cells)
+    check("failed clear -> UNMEASURED SITE, no kill", f.rows == [("t3_corpse_becomes_a_harvest_site", "UNMEASURED", "SITE")]
+          and not any(c[0] == "KillTitanAt" for c in f.calls), "%r" % f.rows)
+    f = FakeSiteRun(True, [0, 1, 1])
+    L.corpse_site_row(f, cells)
+    first_kill = next(i for i, c in enumerate(f.calls) if c[0] == "KillTitanAt")
+    clears = [c[1].get("rects") for c in f.calls[:first_kill] if c[0] == "jawa/destroy_batch"]
+    check("both kill cells cleared before the first kill", clears == ["121,121,9,9", "133,121,9,9"], "%r" % clears)
+    check("cleared, 0->1->1 -> PASS", f.rows == [("t3_corpse_becomes_a_harvest_site", "PASS", "MOD")], "%r" % f.rows)
+    f = FakeSiteRun(True, [0, 0, 0])
+    L.corpse_site_row(f, cells)
+    check("cleared, 0->0->0 -> FAIL MOD", f.rows == [("t3_corpse_becomes_a_harvest_site", "FAIL", "MOD")], "%r" % f.rows)
 
 
 def footprint_row():
@@ -359,6 +407,7 @@ def main():
     judges()
     footprint_row()
     live_mods_row()
+    corpse_site_clear()
     no_bridge_no_verdict()
     n_ok = sum(1 for r in results if r)
     print("%d/%d PASS" % (n_ok, len(results)))

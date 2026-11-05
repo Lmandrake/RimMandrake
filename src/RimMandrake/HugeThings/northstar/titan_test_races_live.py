@@ -10,7 +10,8 @@ DIRTIED (a T3 and a T2 are killed into corpses): use a throwaway quicktest map. 
 Rows {id, criterion, status PASS|FAIL|UNMEASURED, cls MOD|SITE|HARNESS, detail}; JSON -> Transient/modcheck/ by default.
   R1 t2_t3_tiers                    TierReport: T2 race reads T2, T3 reads T3, the forced-out control None, Elephant T1;
                                     tiered races carry CompTitanicWake.
-  R2 t3_corpse_becomes_a_harvest_site KillTitanAt T3 -> one more RM_TitanicCorpseSite; KillTitanAt T2 -> none more.
+  R2 t3_corpse_becomes_a_harvest_site each kill cell cleared (jawa/destroy_batch, 9x9) first; KillTitanAt T3 -> one more
+                                    RM_TitanicCorpseSite; KillTitanAt T2 -> none more. A failed clear is UNMEASURED SITE.
   R3 butcher_yield_curve_reduces_t1_t2_yield ButcherYieldReport on the body-size 12 pair (RM_TestTitanT2Heavy and its
                                     same-mass forced-out control): T2 meat = control meat x the kernel factor (expected
                                     sqrt(8/12) = 0.8165), within per-pawn rounding; the control is unreduced. A kernel factor
@@ -60,6 +61,15 @@ def parse_tiers(txt):
         name = part.split(" ", 1)[0]
         out[name] = {k: kv(part, k) for k in ("tier", "adultTier", "bodySize", "wakeComp")}
     return out
+
+
+CLEAR = 9      # a cleared square around each kill cell: the 4x4 corpse site's rect (OccupiedRect) with margin
+
+
+def clear_rect(x, z, size=CLEAR):
+    """jawa/destroy_batch's `rects` text (x,z,w,h) for a size x size square centred on (x, z)."""
+    h = size // 2
+    return "%d,%d,%d,%d" % (x - h, z - h, size, size)
 
 
 def sites(txt):
@@ -209,9 +219,21 @@ def body(R, cells):
     st, d = judge_yield(y2, yc) if ok2 and okc else (None, "hook failed: %s || %s" % (y2, yc))
     R.row("butcher_yield_curve_reduces_t1_t2_yield", st or "UNMEASURED", "MOD" if st else "HARNESS", d)
 
+    corpse_site_row(R, cells)
+
+
+def corpse_site_row(R, cells):
+    """R2, last: it leaves two corpses and a site behind."""
+    (x, z), (x2, z2) = cells[0], cells[1]
+    # SiteFits refuses a site whose 4x4 rect holds any edifice (rock, ruin, an earlier run's site): the kill cells are
+    # cleared first, or a refused conversion on a used map reads as a MOD FAIL (gen11: 20261103T214715Z, a site already
+    # stood at 140,140). A clear that does not report success leaves the row UNMEASURED SITE, never judged.
+    cleared = [R.call("jawa/destroy_batch", rects=clear_rect(cx, cz), categories="All") for (cx, cz) in ((x, z), (x2, z2))]
+    if not all(c.get("success") is True for c in cleared):
+        R.row("t3_corpse_becomes_a_harvest_site", "UNMEASURED", "SITE", "kill cells not cleared: %s" % str(cleared)[:240])
+        return
     ok, before = R.hook("SiteReport")
     n0 = sites(before) if ok else None
-    (x, z), (x2, z2) = cells[0], cells[1]
     ok3, k3 = R.hook("KillTitanAt", "%s|%d,%d" % (T3, x, z))
     R.ticks(300)
     _, mid = R.hook("SiteReport")

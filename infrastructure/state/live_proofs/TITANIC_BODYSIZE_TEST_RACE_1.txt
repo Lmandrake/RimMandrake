@@ -1,5 +1,5 @@
-# LOAD: the round runs A2 only on a game holding both folders below (and their About.xml deps); any other load reads
-# UNMEASURED and is restaged. Stager: the list ALSO needs Large Pawns (neku.largepawns, workshop 3777700657), a workshop
-# mod live-mods cannot name (it reads Mods/<folder>/About.xml); without it row large_pawns_footprint_bridge is UNMEASURED.
-live-mods: HugeThings, HugeThingsTestRaces
+# LOAD: the round runs A2 only on a game holding the two folders below (and their About.xml deps) and Large Pawns,
+# named by packageId (neku.largepawns, workshop 3777700657; loaded with its dependency closure, never deployed);
+# any other load reads UNMEASURED and is restaged. Without Large Pawns, large_pawns_footprint_bridge is UNMEASURED SITE.
+live-mods: HugeThings, HugeThingsTestRaces, neku.largepawns
 live-proof A2: python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py < /dev/null
