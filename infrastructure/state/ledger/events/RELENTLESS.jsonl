@@ -641,3 +641,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T13:48:15Z","tsn":1793886495985700252}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: review savegame for the owner's look","ts":"2026-11-05T13:48:19Z","tsn":1793886499696152109}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A1 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T13:50:00Z","tsn":1793886600730702581}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T13:54:29Z","tsn":1793886869895009420}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A2 (L2), read-only proof","ts":"2026-11-05T13:54:43Z","tsn":1793886883821662587}
