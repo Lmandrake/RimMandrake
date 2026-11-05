@@ -1,0 +1,149 @@
+{
+ "schema": 1,
+ "_doc": "Rules read by slot_allocator.py (SLOT_ALLOCATOR_BUILD_RULES_FILE). Design: design/RimMandrake/operating_modes_2026-10-26.md §1.1-1.5 and §9 (the measured pacing). Every number here is a line from those sections; [A] marks a proposal the owner has not ruled, [O] one he ruled (with his words). Change a number here, not in the code.",
+ "_owner_2026-10-29": "[O] \"The worker opennpolicy for conductor should only be for work started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents only. Long standing runs beyond n hour should raise an alarm in conductor.\" (n hour = an hour.) conductor_window below: the interactive Conductor window (AGENT_SEAT BENCH, no RM_ROLE_UNIT) is unlimited while his last typed message is under open_min old, else capped at cap_n; the numbers below govern scheduled and Dispatcher-launched runs and FOUNDRY.",
+ "conductor_window": {
+  "open_min": 20,
+  "cap_n": 2
+ },
+ "_owner": "[O] 2026-10-26 13:05 PDT, relayed by BENCH: 'If you already built the capability, please use it to determine the number of Foundry and Bench agents yourself. My 5 was a guess.' So no fixed cap: the allocator sets N per seat inside the budget.",
+ "advisory": {
+  "enabled": true,
+  "n_total": 10,
+  "_n_total": "Owner 2026-11-04: \"all token limits rescinded as well as work type. Token is no longer constrained.\" So the placed total is total_max (10, a never-paid limit, not a token one) whatever the token pace reads; it was CRUISE's 6. Only his word (slot_override.json) and the disk brake lower it; Steve's account keeps its 50% stop (lent_accounts, check_plan). Scoped the same day: \"System work always precedes content work ... And Steve's account stop at 50% remains. You will still monitor token spending on items and launch investigations if they are too large.\" So only the Dispatcher's token pacing goes; Relentless per-item/day spend attention, the system-before-content order and Steve's 50% stop stay.",
+  "_doc": "Owner, 2026-11-02 (TOKEN_LIMITS_TAME_BARK_NO_BITE): \"Please make token limits advisory at this time everywhere. Nothing gets killed or stopped for that, but it might call attention from another agent (Conductor, Operations) to investigate and THAT agent may determine it needs to be killed for evidence-based reasons.\" So the token pace (DARK/ALMOST_OUT/CRUISE steps), the payback cut, the switching-plan notice, the 5-hour session brake and the session cap no longer lower the placed seats: the placed total is never below n_total (total_max 10 since owner 2026-11-04, see _n_total; total_max still caps it, a never-paid limit, not a token one), DARK zeroes no Conductor session, and the paced numbers are kept in the decision's advice only (helper_budget's raise to the Conductor log is off since 2026-11-04: dispatcher_schedule helper_budget.pacing_attention false).tick_step when they would place fewer. His word (slot_override.json) and the disk brake still bind. enabled false restores the paced seats exactly."
+ },
+ "seats": [
+  "BENCH",
+  "FOUNDRY"
+ ],
+ "enforce_seats": [
+  "BENCH",
+  "FOUNDRY"
+ ],
+ "split": {
+  "rule": "v3",
+  "conductor_session_n": 3,
+  "_doc": "v3 (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER; design/RimMandrake/rimflow_v3_2026-10-26.md §2: no BENCH seat, the Conductor's helpers are session only, FOUNDRY is the one autonomous builder): FOUNDRY gets the whole machine total (the pace fit above); the Conductor (allocator key BENCH = the owner's window, published by the Dispatcher as CONDUCTOR) gets conductor_session_n, never above the total, only while he wrote in its window in the last presence.bench_min minutes, and every Conductor helper-hour is owed (base 0) and paid back from FOUNDRY once he has left and his word has lapsed. His word (slot_override.json) stands over both. conductor_session_n 3 is [A]: the 13:05 hand baseline for BENCH. Rollback to v2: \"rule\": \"share\", \"FOUNDRY_share\": 0.25 (FOUNDRY floor(total x share), BENCH the rest)."
+ },
+ "total_max": 10,
+ "_total_max": "[A] operating_modes §3.1: more than about 10 at once never paid.",
+ "fallback_n": {
+  "BENCH": 3,
+  "FOUNDRY": 1,
+  "_doc": "used by the hook only when no Dispatcher budget, allocation or computation can be read: the 13:05 hand baseline (BENCH = the Conductor's window)."
+ },
+ "burn_account": "auto",
+ "_burn_account": "auto = the account whose latest MEASURED reading came from THIS machine's own live login (account_usage.py `machine`); name an account here to pin it.",
+ "token": {
+  "DARK": {
+   "n": 0,
+   "enter_pct_used_ge": 98
+  },
+  "ALMOST_OUT": {
+   "n": 1,
+   "enter_p_lt": 0.5,
+   "leave_p_gt": 0.8,
+   "leave_hold_h": 2
+  },
+  "CRUISE": {
+   "n": 6,
+   "steps": [
+    [
+     0.8,
+     2
+    ],
+    [
+     1.0,
+     3
+    ],
+    [
+     1.2,
+     4
+    ]
+   ],
+   "_steps": "[A] used only when no burn rate is measured: P under 0.8 -> 2 total, under 1.0 -> 3, under 1.2 -> 4, else n."
+  },
+  "BURN": {
+   "n": 10,
+   "enter_p_gt": 1.5,
+   "enter_reset_h_lt": 48,
+   "leave_p_lt": 1.2,
+   "leave_reset_h_lt": 6
+  },
+  "SWEEP": {
+   "n": 3,
+   "hold_h": 12
+  },
+  "cross_hold_h": 2,
+  "min_mode_min": 60,
+  "session_brake_pct_used_gt": 90,
+  "_session_brake": "§1.5 rule 2: the burn account's 5-hour window above 90% used -> no new helpers until it resets"
+ },
+ "fit": {
+  "window_h": 3,
+  "slope_min_points": 4,
+  "slope_min_span_h": 1.5,
+  "msgs_per_pct": 1460,
+  "_msgs_per_pct": "[A] the 13:05 hand calibration: 6 days of Lodestar usage_ledger.py message counts on the system account against its weekly %; used only while the account_usage series has too few points for a slope.",
+  "min_mean_helpers": 0.5,
+  "raise_step": 1,
+  "_doc": "R8: total fit = mean helpers running over the window x (sustainable %/h = % left / hours to reset) / measured %/h. Raised by at most raise_step per 15-min check; lowered at once."
+ },
+ "spare": {
+  "min_pct_left": 10,
+  "_doc": "an account the seats do not burn, with no entry under lent_accounts, is named as a recommendation when it has this much left. Never switched automatically."
+ },
+ "lent_accounts": {
+  "steven": {
+   "_owner": "[O] 2026-10-27, owner ruling (ledger note on LIVE_FIXER_DESIGN_ONE_SEAT_NO_SHUTTLE, 7a3e09b63f): 'Dispatcher can use Steve up to 50% after a fresh reset only.' (narrows his 2026-10-26 rule: 'Steven uses his for other things ... We don't ever want to crowd him out.')",
+   "max_used_by_us_pct": 48,
+   "_max_used_by_us_pct": "[O] 'up to 50%': at most 50% of his week used, all of it counted as ours (the meter cannot tell his use from ours; the side that never crowds him out). 48 since the card of 2026-10-28 10:20, Steven: 'Leave at 52% left' (the standard switching plan, switching_plan.json).",
+   "prefer_start_of_week_h": 48,
+   "_prefer_start_of_week_h": "[O] 'after a fresh reset only'; the 48 h is [A] (the agent's reading of 'fresh reset'): we may draw only while at most 48 h have passed since his weekly reset (hours_to_reset >= 168-48); outside it the cap is 0. A hard limit.",
+   "floor_pct_left": 10,
+   "_floor_pct_left": "[A] safety floor: no plan may leave him under 10% of his week, ever.",
+   "off_limits_through": "2026-10-28T15:00:00-07:00",
+   "_off_limits_through": "[O] 'That has already happened this week, so we should simply leave Steve's account alone for now': off-limits until his weekly reset (account_usage week_resets_at 2026-10-28 15:00 PDT, read 2026-10-26 13:02). Set the next one only on his word."
+  }
+ },
+ "queue": {
+  "paydown_enter": {
+   "A1_gt": 100,
+   "D1_ge": 10
+  },
+  "paydown_leave": {
+   "A1_lt": 60,
+   "D1_lt": 5
+  }
+ },
+ "presence": {
+  "bench_min": 30,
+  "afk_min": 60,
+  "_doc": "[O] 'No, just adjust later to make up for any additional spend I incur.' Presence no longer lowers N; it only says whether he is in a window, which is when payback waits."
+ },
+ "overage": {
+  "finish_margin_h": 6,
+  "min_window_h": 1,
+  "default_window_h": 24,
+  "bench_floor": 1,
+  "max_accrual_dt_h": 1,
+  "_doc": "[O] 'adjust later to make up for any additional spend I incur'. Helper-hours above the computed N are owed; payback lowers N by ceil(owed / (hours to reset - finish_margin_h)), BENCH never under bench_floor. default_window_h applies when the reset is unknown. max_accrual_dt_h caps one interval so a gap in checks cannot invent hours."
+ },
+ "helpers": {
+  "live_window_s": 900,
+  "_doc": "A helper is running when its transcript was written in the last live_window_s (over the 600 s silence kill) and its last assistant record is not a clean end_turn (no tool_use pending); a clean end_turn is finished at once. When in doubt, running."
+ },
+ "ops": {
+  "_doc": "What the allocator takes from ops_watch.py's status.json (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE). Only MEASURED points act (Codex runway also ESTIMATE). The disk brake caps the total before the owner's word, so his override still wins; Codex and the Steve lane are advice lines, because this allocator places Claude helpers, not Codex or testq work. A status older than stale_min is ignored and said so.",
+  "stale_min": 45,
+  "disk_brake_free_gb": 210,
+  "_disk_brake_free_gb": "the DISK_LOW line in ops_watch_rules.json: one worst day of scratch growth (207 GB, 2026-10-26) left on the WSL volume",
+  "disk_brake_total": 1,
+  "_disk_brake_total": "one helper: enough to clear scratch or fix the cause, not enough to fill the disk",
+  "codex_conserve_runway": 1.0,
+  "steve_stall_min": 30,
+  "steve_invalid_streak": 3
+ },
+ "_fixture": "FROZEN copy of slot_rules.json (2026-11-05) for selftest_streams pacing(); never synced to the live file (SELFTEST_FIX_STREAMS_FQCB: an owner retune must not turn the nightly red)"
+}

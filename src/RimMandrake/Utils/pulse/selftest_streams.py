@@ -22,6 +22,9 @@ atexit.register(shutil.rmtree, tempfile.tempdir, True)
 os.environ["RM_PULSE_STATE"] = tempfile.mkdtemp(prefix="ss_state_")
 os.environ["RM_STREAMS_DIR"] = tempfile.mkdtemp(prefix="ss_dir_")
 HERE = Path(__file__).resolve().parent
+# A frozen rules fixture, never the live slot_rules.json: an owner retune of the live file turned pacing() red twice
+# (SELFTEST_FIX_STREAMS_FQCB; guard selftest_streams_rules_drift.py). Set before slot_allocator is imported.
+os.environ["RM_SLOT_RULES"] = str(HERE / "fixtures" / "slot_rules_streams.json")
 sys.path.insert(0, str(HERE))
 import streams as S  # noqa: E402
 import testing_metrics as T  # noqa: E402
@@ -239,7 +242,9 @@ os.environ.update(RM_SLOT_PROJECTS=str(fx / "projects"), RM_ACCOUNT_USAGE_DIR=st
 pc_ = S.pacing(tn)
 al = json.loads((Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").read_text()) \
     if (Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").exists() else {}
-_adv = SA.load_rules().get("advisory") or {}   # owner 2026-11-02/04: token pace is advice; the placed total is the floor
+check("pacing(): reads the frozen rules fixture, not the live slot_rules.json", SA.RULES == Path(os.environ["RM_SLOT_RULES"])
+      and SA.RULES.parent.name == "fixtures", SA.RULES)
+_adv = SA.load_rules().get("advisory") or {}   # the fixture's advisory: the placed total is the floor (owner 2026-11-02/04)
 _want = max(6, _adv.get("n_total", 0)) if _adv.get("enabled") is True else 6   # 6 = CRUISE's pace on this fixture
 check("pacing(): runs the allocator and writes allocation.json for the hook", al.get("seats") == pc_.get("seats")
       and pc_.get("seats") == {"BENCH": 0, "FOUNDRY": _want}, (pc_, al.get("seats"), _want))
