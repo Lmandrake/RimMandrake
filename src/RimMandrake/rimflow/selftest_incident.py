@@ -1015,18 +1015,41 @@ def test_chains_through_step():
     t = due()
     res, evs = look(t, v=6, events=ev)
     check("chain: launched, its plan cleared", "revisited" in evs and inc()["plan"] is None and inc().get("auto_ack") is False, res["rows"])
+    # INCIDENT_ACK_FIX_OLD_NEWS_REACKS: the action read before this revisit is old news; it must not re-ack the incident
     res, evs = look(t + M, v=6, events=ev)
-    check("chain: the item action auto-acks, marked as one", evs == ["acked"] and inc().get("auto_ack") is True, res["rows"])
+    check("chain: an action older than the revisit acks nothing", "acked" not in evs and inc().get("acked_t") is None
+          and inc()["plan"] is None, res["rows"])
+    ledger.append({"id": "OPS_X", "event": "start", "seat": "BENCH", "ts": IN.iso(t + 2 * M)})   # a new action after the revisit
+    res, evs = look(t + 3 * M, v=6, events=ev)
+    check("chain: a new item action auto-acks, marked as one", evs == ["acked"] and inc().get("auto_ack") is True
+          and inc()["plan"] == "start on OPS_X", res["rows"])
     t = due()
     res, evs = look(t, v=6, events=ev)
     check("chain: an item action with no run answering launches", evs == ["revisited"] and res["rings"]
-          and res["rows"][0]["news"] == ["no run has answered: no plan of its own"], res["rows"])
+          and res["rows"][0]["news"] == ["no run has answered: no plan of its own", "start on OPS_X"], res["rows"])
     res, evs = look(t + M, v=6, events=ev)
-    check("chain: auto-acked again", evs == ["acked"] and inc().get("auto_ack") is True, res["rows"])
-    row = IN.ack("q-1", "OPERATIONS", "a plan of its own", path=path, now=t + 2 * M)
+    check("chain: a revisit with only old item actions stays unacked", "acked" not in evs and inc().get("acked_t") is None, res["rows"])
+    t2 = due()
+    res, evs = look(t2, v=6, events=ev)
+    check("chain: and at its next due it is revisited (rung), not re-acked", "acked" not in evs and "revisited" in evs
+          and any(r.get("revisit") for r in res["rings"]), res["rows"])
+    row = IN.ack("q-1", "OPERATIONS", "a plan of its own", path=path, now=t2 + 2 * M)
     check("chain: a run's ack clears the auto mark", row.get("auto_ack") is False and inc().get("auto_ack") is False, inc())
     res, evs = look(due(), v=6, events=ev)
     check("chain: and then a floor of nothing is quiet", evs == ["revisit_quiet"] and not res["rings"], res["rows"])
+
+    # an escalation that clears an ack below his rung: the action that acked it before acks nothing again
+    told = T0 - 9 * H
+    inc0 = {"ev": "opened", "id": "e-1", "t": told, "state": "open", "rung": 0, "rung_t": told, "told_t": told, "told_at": IN.iso(told),
+            "cause": "e", "class": "distressed", "metrics": {"m.e-1": {"class": "distressed", "event": False}}, "items": ["OPS_Y"],
+            "reader": "Operations", "ack_min": 30, "acked_t": None, "ack_by": None, "plan": None}
+    esc = {"ev": "escalated", "id": "e-1", "t": T0, "rung": 1, "rung_t": T0, "acked_t": None, "ack_by": None, "plan": None,
+           "recover_by": None, "recover_by_t": None, "ack_cleared_t": T0}
+    x = IN.fold([inc0, esc])[0]["e-1"]
+    check("escalation: ack_since moves to the ack clearing", IN.ack_since(x) == IN.iso(T0), IN.ack_since(x))
+    check("escalation: an action from before the clearing is not found",
+          IN.item_acted([{"id": "OPS_Y", "event": "start", "seat": "BENCH", "ts": IN.iso(T0 - H)}], x["items"], IN.ack_since(x)) is None)
+    check("escalation: a never-revisited incident reads from told_at", IN.ack_since(IN.fold([inc0])[0]["e-1"]) == IN.iso(told))
 
     # the baseline moves with each quiet look: a clock going back from the LAST look is news
     path, inc, look, due = chain("clockchain", metric="r.under_min")

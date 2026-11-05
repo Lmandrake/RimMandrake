@@ -317,6 +317,13 @@ def item_acted(events, items, since):
     return None
 
 
+def ack_since(inc):
+    """-> iso time from which an item action can auto-ack: the latest of told_at, the last revisit and the last ack
+    cleared by an escalation. An action already read before the ack was cleared is old news and acks nothing again."""
+    t = max(inc.get("revisit_t") or 0, inc.get("ack_cleared_t") or 0)
+    return max(inc["told_at"], iso(t)) if t else inc["told_at"]
+
+
 def step(table, rows, status, now, cursor=0, events=None):
     """Pure. -> {rows, rings, keys, cursor, snapshot}. `events`: a callable -> ledger events, called only when an
     unacked incident names an item."""
@@ -338,7 +345,7 @@ def step(table, rows, status, now, cursor=0, events=None):
     def revisit(inc, reads, news):
         was = inc.get("plan")
         emit("revisited", inc, rung_t=now, acked_t=None, ack_by=None, plan=None, last_plan=was, recover_by=None,
-             recover_by_t=None, revisits=inc.get("revisits", 0) + 1, revisit_t=now, revisit_seen_t=now, revisit_read=reads,
+             recover_by_t=None, ack_cleared_t=now, revisits=inc.get("revisits", 0) + 1, revisit_t=now, revisit_seen_t=now, revisit_read=reads,
              revisit_status_t=status_t, revisit_plan=None, auto_ack=False, quiet_revisits=0, news=news)
         ring(inc, revisit_ring(inc, was, news))
 
@@ -411,7 +418,7 @@ def step(table, rows, status, now, cursor=0, events=None):
         if inc["state"] != "open":
             continue
         if inc["items"] and not inc.get("acked_t") and events is not None:
-            hit = item_acted(events(), inc["items"], inc["told_at"])
+            hit = item_acted(events(), inc["items"], ack_since(inc))
             if hit:
                 emit("acked", inc, acked_t=now, ack_by=hit[1], plan="%s on %s" % (hit[2], hit[0]), auto_ack=True,
                      recover_by_t=now + pol["recover_min"] * 60, recover_by=iso(now + pol["recover_min"] * 60))
@@ -447,6 +454,8 @@ def step(table, rows, status, now, cursor=0, events=None):
             r = next_rung(table, inc)
             f = dict(rung=r, rung_t=now, acked_t=None, ack_by=None, plan=None, recover_by=None, recover_by_t=None)
             was = bool(inc.get("acked_t"))
+            if was:
+                f["ack_cleared_t"] = now
             inc.update(f)
             d = next_due(table, inc)
             emit("escalated", inc, was_acked=was, ack_due=iso(d) if d else None, ack_due_t=d, **f)
