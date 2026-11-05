@@ -837,8 +837,19 @@ def main():
         import xml.etree.ElementTree as ET
         import fauna_spec as FS
         from PIL import Image
+        sys.path.insert(0, str(HERE.parent / "art"))
+        import scale_panel as SP
         with tempfile.TemporaryDirectory() as td:
             td = Path(td)
+            # NIGHTLY_COP_REACH_FIX_ARENA_STAYS_DARK: the scale panel's vanilla human and rat are read from the D: mirror's
+            # untracked bundle_textures extract, absent in a walled box; these checks test build_spec, not vanilla art,
+            # so they draw stand-ins of the same names.
+            vt = td / "vanilla"
+            vt.mkdir()
+            for nm in ("Naked_Male_south", "ShirtBasic_Male_south", "Male_Average_Normal_south", "Mop_south", "Rat_east"):
+                Image.new("RGBA", (128, 128), (128, 128, 128, 255)).save(vt / f"{nm}.png")
+            real_vt, SP.VANILLA_TEX = SP.VANILLA_TEX, vt
+            SP._vanilla.cache_clear()
             tdir = td / "src/Mod/M/Textures/X"
             tdir.mkdir(parents=True)
             def png(rel):
@@ -915,6 +926,8 @@ def main():
                     check(f"build_spec {what}: refuses by name", False)
                 except SystemExit as ex:
                     check(f"build_spec {what}: refuses by name", "fauna_spec" in str(ex), str(ex))
+            SP.VANILLA_TEX = real_vt
+            SP._vanilla.cache_clear()
     except ImportError as e:
         check("fauna_spec importable", False, repr(e))
 
