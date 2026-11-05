@@ -29,6 +29,9 @@ beat (file_held) filed it 16:26:25Z on the 2026-11-05T11:00Z night, which ran be
 Ninth instance (SELFTEST_FIX_EXTRA_ART_COMMISSION_UBZM), the same route with no crossed reading that pass: red_znpqoq's
 item closed 13:34:26Z; at 14:49:55Z a compose pass had dropped the carried reading (crossed None), found_closed marked a
 reopen with no stale check, and file_held filed it 16:23:46Z on the same pre-close night.
+Tenth instance (SELFTEST_FIX_RELENTLESS_TICK_STAMP_DVDQ), the eighth's route: red_hooqkv's item closed 13:05:57Z on its
+fix (selftest_relentless_tick_stamp's fake folded(), cured at 021255da88); reopened 16:29:05Z and 16:32:52Z on the
+2026-11-05T11:00Z night, before bc25b60bda landed. Replaying bc25b60bda^ FAILs.
 
   python3 selftest_alarm_stale_night_reopen.py --blob REV:PATH   replay ops_watch.py as it stood at REV (git), e.g.
       --blob 618deb68f3^:src/RimMandrake/Utils/ops_watch.py, the code that reopened both instances: it must FAIL.
