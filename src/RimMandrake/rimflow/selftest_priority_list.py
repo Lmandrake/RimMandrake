@@ -83,6 +83,9 @@ def pool():
         def first_touch_hold(self, item):    # pool_order consults it; the first-touch rule is selftest_first_touch's
             return None
 
+        def concept_refusal(self, item):     # pool_order asks it of a mod item; the concept gate is selftest_relentless's
+            return None
+
         def health(self):       # Operations' verdict: none fresh, no system items, so the list alone decides
             return R.health_order(None, "selftest: no verdict", lambda: [])
 
