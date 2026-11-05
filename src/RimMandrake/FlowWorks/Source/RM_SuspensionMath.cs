@@ -645,6 +645,20 @@ namespace RimMandrake.FlowWorks
 
 		public const int TicksPerHour = 2500;
 
+		/// <summary>True on the one tick, among ticks that pass a <paramref name="gate"/>-tick cadence (now % gate == 0), that
+		/// falls first inside each in-game hour. A bare now % TicksPerHour == 0 behind a 60-tick gate fires only every
+		/// lcm(60, 2500) = 7500 ticks, i.e. every third hour (BRIDGE_FLOOD_FIX_RUNS_EVERY_THREE_HOURS).</summary>
+		public static bool IsHourTick(int now, int gate)
+		{
+			int g = gate < 1 ? 1 : gate;
+			int m = now % TicksPerHour;
+			if (m < 0)
+			{
+				m += TicksPerHour;
+			}
+			return m < g;
+		}
+
 		/// <summary>Natural water a deck may cross (Q5): rivers and lakes with the water setting on, the sea with the sea
 		/// setting on (the backtrack levers). Not water: never.</summary>
 		public static bool WaterSpannable(bool isWater, bool isOcean, bool waterOn, bool seaOn)

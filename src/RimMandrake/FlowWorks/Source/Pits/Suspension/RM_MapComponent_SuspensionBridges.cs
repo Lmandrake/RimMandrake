@@ -825,7 +825,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			SweepUnder();
 			PruneUnder();
-			if (now % RM_SuspensionMath.TicksPerHour == 0)
+			if (RM_SuspensionMath.IsHourTick(now, 60))   // once per hour behind the 60-tick gate above, not every 7500 ticks
 			{
 				RM_SuspensionWaters.FloodHour(map, bridges);
 			}
