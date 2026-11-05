@@ -603,3 +603,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T10:22:59Z","tsn":1793874179685128685}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T10:38:27Z","tsn":1793875107568386514}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T10:38:37Z","tsn":1793875117621085683}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T10:44:17Z","tsn":1793875457770204046}
