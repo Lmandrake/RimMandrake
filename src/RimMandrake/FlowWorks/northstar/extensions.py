@@ -3239,6 +3239,8 @@ def liquid_pump(t):
             _expect(k.get("moved") == m0 and k.get("running") == "False" if t._guard() else None,
                     "pump moved liquid with liquidPumpEnabled OFF: %s -> %s" % (m0, k))
     with t.component("pump_pours_back"):
+        # The new tank is Store, and POUR drains only a Dump tank (PUMP_POUR_PROOF_FIX_TANK_NOT_DUMP): mark it first.
+        _tank_set(t, tank, "Dump")
         lv0 = level()
         rd("pour")
         t.wait_ticks(600)
