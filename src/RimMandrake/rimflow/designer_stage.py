@@ -593,7 +593,7 @@ def coverage_units(rec):
     """The capabilities a showcase set must account for: every built inventory entry (whatever its scope: a built
     thing scoped out still ships until removed) and every unbuilt one in scope."""
     out = []
-    for e in (rec or {}).get("inventory") or []:
+    for e in lst((rec if isinstance(rec, dict) else {}).get("inventory")):
         if not isinstance(e, dict) or not CT.txt(e.get("id")):
             continue
         if e.get("impl") == "present" or e.get("scope") in UNIT_SCOPES:
@@ -602,7 +602,8 @@ def coverage_units(rec):
 
 
 def out_units(rec):
-    return {e.get("id") for e in (rec or {}).get("inventory") or [] if isinstance(e, dict) and e.get("scope") == "out"}
+    return {CT.txt(e.get("id")) for e in lst((rec if isinstance(rec, dict) else {}).get("inventory"))
+            if isinstance(e, dict) and e.get("scope") == "out"}
 
 
 def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
@@ -613,12 +614,17 @@ def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
     limit, min_new = rules["max_overlap"], rules["min_new_after_first"]
     units = coverage_units(rec)
     uset, scoped_out = set(units), out_units(rec)
-    decisions = {x.get("id"): x for x in (rec or {}).get("decisions") or [] if isinstance(x, dict)}
+    decisions = {CT.txt(x.get("id")): x for x in lst((rec if isinstance(rec, dict) else {}).get("decisions"))
+                 if isinstance(x, dict)}
     errs, rows = [], []
     if not isinstance(sc, dict):
         return rows, ["scenes.json is missing, so no showcase set"]
+    if not isinstance(rec, dict) or not isinstance(rec.get("inventory", []), list):
+        # coverage is counted against the inventory: no readable inventory, no claim of coverage (an empty list is
+        # a real, readable inventory)
+        return rows, ["record.json is missing or its inventory is not a list, so coverage cannot be counted"]
     scenes = {s.get("id") for s in lst(sc.get("scenes")) if isinstance(s, dict) and CT.txt(s.get("id"))}
-    leaves = {x.get("id") for x in CT.lst((tree or {}).get("leaves")) if isinstance(x, dict)} \
+    leaves = {CT.txt(x.get("id")) for x in CT.lst((tree or {}).get("leaves")) if isinstance(x, dict)} \
         if isinstance(tree, dict) else set()
     shows = sc.get("showcases")
     if not isinstance(shows, list) or not shows:
@@ -655,7 +661,7 @@ def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
         share = (float(len(over)) / len(ex)) if ex else 0.0
         if i == 0:
             src = [x for x in lst(s.get("source")) if isinstance(x, str) and x.startswith("OWNER:")]
-            dec = decisions.get(s.get("decision")) or {}
+            dec = decisions.get(CT.txt(s.get("decision"))) or {}
             dsrc = [x for x in lst(dec.get("source")) if isinstance(x, str)]
             if not src:
                 errs.append("%s: showcase 1 is the flagship he picked; source needs his OWNER:<tsn>" % w)
@@ -675,7 +681,7 @@ def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
             # greedy over the chosen set: when this one was picked, no later showcase offered more new coverage
             for j, t in enumerate(shows[i + 1:], i + 2):
                 if isinstance(t, dict):
-                    tn = len({u for u in lst(t.get("exercises")) if u in uset} - seen)
+                    tn = len({u for u in lst(t.get("exercises")) if CT.txt(u) and u in uset} - seen)
                     if tn > len(new):
                         errs.append("%s: newly exercises %d, but showcase %d (%s) would have added %d here: the order "
                                     "is not greedy (most new coverage first)" % (w, len(new), j, t.get("id"), tn))

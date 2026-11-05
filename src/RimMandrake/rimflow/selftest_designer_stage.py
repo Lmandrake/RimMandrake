@@ -557,6 +557,21 @@ def refusals_showcases(repo, root_src, good, flood, tree):
     check("showcases: a built scoped-out capability in coverage_rest is accepted",
           st([s1, s2, s3], rec_=gone, rest_=rest + [{"capability": "gone", "by": ["s4"], "why": "removal check"}])[1]
           == [], "")
+    # malformed input is a refusal, never a crash or a pass (GPT whole-file review)
+    try:
+        bad_dec = st([dict(s1, decision=[]), s2, dict(s3, exercises=["g", "h", "i", {}])])[1]
+        crashed = None
+    except Exception as e:  # noqa: BLE001 - the check is that nothing escapes
+        bad_dec, crashed = [], repr(e)
+    check("showcases: a list as decision and a dict among a later showcase's exercises refuse without crashing",
+          crashed is None and any("names no record.json decision" in e for e in bad_dec), crashed or bad_dec)
+    for label, r in (("a string inventory", {"inventory": "invalid"}), ("no record.json", None)):
+        refuses("showcases: %s is refused, not read as zero capabilities to cover" % label,
+                DS.showcase_table({"scenes": scenes, "showcases": [], "coverage_rest": []}, r, tree, owner_ev,
+                                  repo.root, rules)[1], "coverage cannot be counted")
+    check("showcases: an explicitly empty inventory with no showcases is accepted (nothing to cover)",
+          DS.showcase_table({"scenes": scenes, "showcases": []}, {"inventory": []}, tree, owner_ev, repo.root,
+                            rules)[1] == [], "")
     only_out = {"inventory": [inv(id="rope", scope="out")]}
     check("showcases: a set whose only units are built-but-scoped-out passes on coverage_rest alone (no showcase)",
           DS.showcase_table({"scenes": scenes, "showcases": [],
