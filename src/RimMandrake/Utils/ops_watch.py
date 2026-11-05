@@ -2078,6 +2078,20 @@ def attempts_resumed(rows):
     return max(ts) if ts else None
 
 
+def fails_since_close(fails, rows):
+    """-> fails without those at or before the item's latest `done` ending in its attempts rows: a done row is a blind PASS
+    accepted and closed, so the life before it is spent, and a reopened item starts its churn count fresh
+    (OPS_CHURN_DIAGNOSE_OPS_LPTI_ESRT: OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT, closed 16:33Z and 18:59Z, rang 'bouncing: bad_candidate
+    failed it 2 times' at 19:36Z off its gen-3 16:21Z failure and a gen-9 one, its gen-11 candidate in check). A reopen is
+    rm-deadman's outage count, not a bounce. Returned spend is not read through this."""
+    ts = [epoch(r.get("at")) for r in rows if isinstance(r, dict) and r.get("end") == "done"]
+    ts = [t for t in ts if is_num(t)]
+    if not ts:
+        return list(fails)
+    hi = max(ts)
+    return [f for f in fails if (f[0] or 0) > hi]
+
+
 def in_churn(st, fails, now, cfg, waits=0, resumed=None):
     """rl_churn's per-item rule, the one churn definition (RUNNING_NOW's row colours read it too): fails is
     [(epoch, class)] of the item's failed attempts; in churn when one is inside churn_window_h and state.json returns >=
@@ -2324,6 +2338,7 @@ def rl_churn(store, now, cfg):
             torn += 1
             per[n] = [None, fails, 0, waits, attempts_resumed(rows)]      # torn: a held alarm on it holds, never clears on a state it cannot read
             continue
+        fails = fails_since_close(fails, rows)
         per[n] = [st, fails, 0, waits, attempts_resumed(rows)]
         if in_churn(st, fails, now, cfg, waits, per[n][4]):
             churn.append((-(st.get("spent") or 0) if is_num(st.get("spent")) else 0, n))

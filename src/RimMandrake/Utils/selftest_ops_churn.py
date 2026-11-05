@@ -347,6 +347,27 @@ def main():
          {"gen": 13, "at": iso(old + 400), "end": "blocked", "kind": "item", "class": "blocked_by_predecessor"}])
     st8("OLDGEN_ITEM", {"status": "running", "returns": 0, "gen": 1, "spent": 8e6},
         [{"gen": 1, "at": iso(old), "start": marker("OLDGEN_ITEM", 1)}])
+    # OPS_CHURN_DIAGNOSE_OPS_LPTI_ESRT: OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT, closed 16:33Z and 18:59Z, rang 'bouncing:
+    # bad_candidate failed it 2 times' at 19:36Z, its gen-11 candidate in check, off a gen-3 failure before the first
+    # close and a gen-9 one: a done row spends the life before it, a reopened item counts fresh
+    reo = [{"gen": 3, "at": iso(NOW - 3.3 * HOUR), "start": marker("REOPENED_ITEM", 3)},
+           {"gen": 3, "at": iso(NOW - 3.2 * HOUR), "end": "bad_candidate"},
+           {"at": iso(NOW - 3 * HOUR), "end": "done", "sha": "a"},
+           {"gen": 9, "at": iso(NOW - 0.6 * HOUR), "start": marker("REOPENED_ITEM", 9)},
+           {"gen": 9, "at": iso(NOW - 0.4 * HOUR), "end": "bad_candidate"},
+           {"gen": 11, "at": iso(NOW - 0.4 * HOUR), "start": marker("REOPENED_ITEM", 11)},
+           {"gen": 11, "at": iso(NOW - 0.2 * HOUR), "end": "finish", "sha": "b"}]
+    st8("REOPENED_ITEM", {"status": "checking", "returns": 1, "gen": 11, "spent": 1e5, "check": {"at": NOW - 600}}, reo)
+    rf = [(NOW - 3.2 * HOUR, "bad_candidate"), (NOW - 0.4 * HOUR, "bad_candidate")]
+    ok(OW.churn_why({"returns": 1}, rf, NOW, CFG) == ["bad_candidate failed it 2 times"],
+       "8r: across all rows the two failures read a repeat (the pre-fix 19:36Z reading)", OW.churn_why({"returns": 1}, rf, NOW, CFG))
+    ok(hasattr(OW, "fails_since_close") and OW.fails_since_close(rf, reo) == rf[1:],
+       "8r: a done row spends the failures before it", OW.fails_since_close(rf, reo) if hasattr(OW, "fails_since_close") else None)
+    ok(hasattr(OW, "fails_since_close") and OW.fails_since_close(rf, reo[:2] + reo[3:]) == rf,
+       "8r: no done row, every failure stands", None)
+    reo_after = rf + [(NOW - 0.1 * HOUR, "bad_candidate")]
+    ok(hasattr(OW, "fails_since_close") and OW.churn_why({"returns": 2}, OW.fails_since_close(reo_after, reo), NOW, CFG)
+       == ["bad_candidate failed it 2 times"], "8r: two failures after the close still repeat", None)
     (s8 / ("spend-%s.json" % time.strftime("%Y%m%d", time.gmtime(NOW)))).write_text(json.dumps({"runs": runs}))
     (TMP / "ops" / "alarms.json").write_text(json.dumps({"CHURN_ITEM:relentless.churn_item.CALM_ITEM": {"state": "OPEN"}}))
     p8 = OW.rl_churn(s8, NOW, cfg8)
@@ -360,6 +381,8 @@ def main():
        "8: a game item past its hot age band is stuck", ci.get("STUCK_ITEM"))
     ok(ci.get("CALM_ITEM", {}).get("v") == 0 and ci["CALM_ITEM"].get("m") == "MEASURED",
        "8: a held item no longer churning reads 0 (clears); high lifetime spend alone is not rising", ci.get("CALM_ITEM"))
+    ok("REOPENED_ITEM" not in ci, "8r: a reopened item counts no failure from before its close (SUMP_GSVT 19:36Z)",
+       ci.get("REOPENED_ITEM"))
     ok("PARKED_ITEM" not in ci, "8: a gen that started and ended before the window is no spend in it (a parked item)",
        ci.get("PARKED_ITEM"))
     ok("PUT_DOWN_ITEM" not in ci, "8: a blocked item's window spend is flat, not 'spend rising'", ci.get("PUT_DOWN_ITEM"))

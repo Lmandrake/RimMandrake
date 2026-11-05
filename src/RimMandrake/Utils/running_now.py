@@ -1852,6 +1852,7 @@ def collect_marks(env, p):
         except OSError as e:
             unread.append("churn UNMEASURED (%s)" % str(e)[:60])
         age = now - done_at[item] if st.get("status") == "done" and item in done_at else None
+        fails = ops_watch.fails_since_close(fails, rows)     # a closed life is spent (OPS_CHURN_DIAGNOSE_OPS_LPTI_ESRT)
         out[item] = item_mark(st, now, bands, age, ops_watch.in_churn(st, fails, now, rl, waits, ops_watch.attempts_resumed(rows)) if fails else False,
                               (item, st.get("gen")) in hits, item in (ghosts or ()), unread)
     return out
