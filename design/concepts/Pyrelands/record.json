@@ -38,7 +38,7 @@
    "source": [
     "OWNER:1791817029416124872"
    ],
-   "text": "Black Rain waters ~1 day; north-star bars approved as worded (ash redesign \u00a76)."
+   "text": "Black Rain waters ~1 day; north-star bars approved as worded (ash redesign §6)."
   },
   {
    "id": "s_art_sheet_approved",
@@ -69,11 +69,16 @@
  "asks": [
   {
    "id": "a_flagship",
-   "status": "draft",
+   "status": "struck",
    "source": [
     "design/validation_walks/RimMandrake/Pyrelands.md"
    ],
-   "text": "Which moment is the Pyrelands' face when you first land: watching the burn line walk across the map and the cast follow it (hawk carrying embers, ullai drifting to old burns, ashwallow diving), or the harvest race (scorch-fruit picked mid-burn before it rots)?"
+   "text": "Which moment is the Pyrelands' face when you first land: watching the burn line walk across the map and the cast follow it (hawk carrying embers, ullai drifting to old burns, ashwallow diving), or the harvest race (scorch-fruit picked mid-burn before it rots)?",
+   "review": {
+    "by": "rm-judge a69772db192f51a71 (fresh Opus, not the author)",
+    "verdict": "struck",
+    "why": "Covered by ask_root's judged-first line; sending both asks the same thing twice."
+   }
   },
   {
    "id": "a_regrow_thresholds",
@@ -90,6 +95,41 @@
     "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml"
    ],
    "text": "The firebreak line and firefoam sprayer are built but no bar says what you should see. Picture a burn heading for your fields: what must the firebreak do for you to trust it, hold every time, or slow and mostly hold?"
+  },
+  {
+   "id": "ask_root",
+   "text": "Is the paragraph above the Pyrelands? Correct any word, or say \"yes\". (the paragraph: turn_01.md / record.json root_draft)",
+   "decision": "The root text: what the Pyrelands are and what the biome is judged on first; stage 1 cannot end without his approval of it.",
+   "about": [
+    "inv_ash_field",
+    "inv_embergrass_regrow",
+    "inv_burn_line_fire_clock",
+    "inv_scorchfruit",
+    "inv_firehawk_ember",
+    "inv_ullai_herd_giant",
+    "inv_burrowers_heat_dome",
+    "inv_furnacebeast",
+    "inv_weather",
+    "inv_ruins_scorched",
+    "inv_biome_self_contained",
+    "inv_firebreak_firefoam"
+   ],
+   "owner_cites": [
+    "OWNER:1791815330395605033",
+    "OWNER:1791817028468666199",
+    "OWNER:1791817029416124872"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793865628",
+   "status": "sent",
+   "source": [
+    "design/concepts/Pyrelands/turn_01.md"
+   ],
+   "review": {
+    "by": "rm-judge a69772db192f51a71 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Answerable in a phrase; settles stage 1; quotes verbatim. Fixed on review: fresh-burn bonus fades by itself and rain cuts it short; furnace-beast warms pawns near it, not the ground (CompFurnaceWarmthAura.cs); bar count 20+1."
+   }
   }
  ],
  "inventory": [
@@ -330,7 +370,7 @@
   },
   {
    "id": "inv_furnacebeast",
-   "what": "Furnace-beast: a giant that warms the ground around it (local ambient offset, strength slider), banks heat in the burn (thermal charge cycle), smoulders the bed it lies in, is immune to its own heat, and heats an enclosed room",
+   "what": "Furnace-beast: a giant that warms pawns standing near it (felt-temperature aura) (local ambient offset, strength slider), banks heat in the burn (thermal charge cycle), smoulders the bed it lies in, is immune to its own heat, and heats an enclosed room",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Source/CompFurnaceWarmthAura.cs",
@@ -671,5 +711,10 @@
   "It looks green but isn't: every bar was last green on 2026-10-15 on a test site with mechanics isolated and clocks compressed; since then the opening front and the defName migration landed, so in ordinary play on the composed mandrake.rm.biomes list the burn line, regrowth or fire-born fruit may not behave as the rows claim, and nothing he walks would show which.",
   "The fire is a hazard, not a farm: the burn line, smoulder relights and fire-hawk embers burn his colony faster than the firebreak and firefoam can answer (neither has any scene proving it holds), so the biome reads as punishment rather than the 'fire pays' loop of scorch-fruit, fresh-burn fertility and glass sand.",
   "The cast doesn't read: the behaviours that make the creatures the fire's creatures (hawk carrying embers, ullai drifting to two-day-old burns, ashwallow diving and doming, furnace-beast smouldering its bed) are proven only by job/state reads or not at all, so in play they look like ordinary animals wandering, and flight cannot be checked without him present."
- ]
+ ],
+ "root_draft": {
+  "text": "The Pyrelands are a grass savanna that has burned for millennia and is burning still. Almost all the ground is deep ash, quite fertile wherever water reaches it, carpeted thick in ember grass that burns black and is largely green again within about a week, while free-flying ash blows across it like snow. A line of grass fire walks the map and never fully goes out. Behind it the fire pays: scorch-fruit grows only from freshly burned ground and must be picked before it rots, and fresh burns grow crops faster for a few days, and black rain washes the bonus away early. The animals are the fire's own cast: a fire-hawk carries a burning twig ahead of the blaze to start a new fire, ullai herds graze where it burned two days ago, the ashwallow dives underground as the front reaches it and comes through unharmed, and the giant furnace-beast warms anyone standing near it and heats a room it shelters in. The sky brings ash fall, cinderfall and black rain, and never ordinary rain. Ruins stand blackened. The biome is whole on its own, with no other mod's plants or animals, and (built, not yet in your words) a sprayed firebreak line and a firefoam sprayer let a colony defend its fields. Judged first: a fresh map in ordinary play where the burn line is visibly walking across deep ash with a scorched trail behind it, and a few days later the grass behind it is greening and scorch-fruit stands in the scar.",
+  "source": "design/concepts/Pyrelands/turn_01.md",
+  "speaker": "agent"
+ }
 }
