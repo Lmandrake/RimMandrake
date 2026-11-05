@@ -286,6 +286,24 @@ def main():
     ok(why_r(art_f + [(NOW - 60, "game_env_fix")], art_r)[0] == ["4 returns", "game_env_fix failed it 3 times"],
        "8: a failure after the unhold bounces again, with its history", why_r(art_f + [(NOW - 60, "game_env_fix")], art_r))
     ok(OW.churn_why(art, art_f, NOW, CFG) == ["4 returns", "game_env_fix failed it 2 times"], "8: no unhold, still a bounce", None)
+    # 8s OPS_CHURN_DIAGNOSE_WORLD_AVST_JRDU: WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE, blind PASS on gen 7 (10:55Z), then at
+    # 18:11Z a game_stale_build (WORLD_WATER_REDRAW_SEAS_THAT_READ_DEEP rebuilt the shared DLL and edited RM_WorldLook.cs),
+    # re-finished on HEAD at 18:21Z; at 18:29:49Z, its gen-9 check in flight (state.json's check now that one, the gen-7
+    # PASS gone), it re-rang 'bouncing: 4 returns' off three returns the PASS had spent. A stale build is written only in
+    # the game phase, entered only through a blind PASS: it proves that PASS and is no failure of the item's work.
+    wd = {"returns": 4, "status": "checking", "check": {"at": NOW - 6 * 60}}
+    wd_f = [(NOW - 61 * HOUR, "proof_weak"), (NOW - 61 * HOUR + 600, "proof_rework"), (NOW - 8.8 * HOUR, "proof_found_defect"),
+            (NOW - 0.3 * HOUR, "game_stale_build")]
+    ok(OW.churn_why(wd, wd_f, NOW, CFG) == [] and not OW.in_churn(wd, wd_f, NOW, CFG),
+       "8s: a stale build after a PASS spends the returns before it (WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE)",
+       OW.churn_why(wd, wd_f, NOW, CFG))
+    ok(OW.churn_why(dict(wd, returns=5), wd_f + [(NOW - 60, "game_fail")], NOW, CFG)[:1] == ["5 returns"],
+       "8s: a real failure after the stale build bounces with its history",
+       OW.churn_why(dict(wd, returns=5), wd_f + [(NOW - 60, "game_fail")], NOW, CFG))
+    two = [(NOW - 3 * HOUR, "game_stale_build"), (NOW - 0.3 * HOUR, "game_stale_build")]
+    ok(OW.churn_why({"returns": 2}, two, NOW, CFG) == ["game_stale_build failed it 2 times"],
+       "8s: two stale builds in the window still read a same-class repeat (the SUMP_TAR_FIRE_NETWORK_1 signal)",
+       OW.churn_why({"returns": 2}, two, NOW, CFG))
     cfg8 = dict(CFG, item_bands=rules["relentless"]["item_bands"], churn_item_stuck_stages=["game", "checking"],
                 churn_item_new_per_pass=5)
     s8 = TMP / "s8"

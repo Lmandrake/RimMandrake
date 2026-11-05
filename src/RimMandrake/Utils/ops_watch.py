@@ -2083,6 +2083,9 @@ def in_churn(st, fails, now, cfg, waits=0, resumed=None):
     return bool(churn_why(st, fails, now, cfg, waits, resumed))
 
 
+CHURN_ENV_ENDS = ("game_stale_build",)  # endings that prove a blind PASS and blame another commit (churn_why)
+
+
 def churn_why(st, fails, now, cfg, waits=0, resumed=None):
     """in_churn's reasons, [] when not in churn. The same-class count is windowed to the event (B7, 2026-11-05): a class
     counts only when it failed the item inside churn_window_h, so an old A,A and a new B is not a same-class repeat; an
@@ -2093,6 +2096,19 @@ def churn_why(st, fails, now, cfg, waits=0, resumed=None):
         return []
     chk = st.get("check") if isinstance(st.get("check"), dict) else {}
     passed = chk.get("verdict_at") if chk.get("verdict") == "PASS" and is_num(chk.get("verdict_at")) else None
+    env = set(cfg.get("churn_env_ends") or CHURN_ENV_ENDS)
+    staled = [t for t, c in fails if c in env and is_num(t)]
+    if staled and all((t or 0) <= max(staled) for t, c in fails if c not in env):
+        # a stale build is written only in the game phase, entered only through a blind PASS: it proves that PASS (which
+        # state.json's check loses once the rebuild's check starts) and is no failure of the item's work, so the returns
+        # before it are spent (OPS_CHURN_DIAGNOSE_WORLD_AVST_JRDU: WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE, gen-7 PASS, staled
+        # 18:11Z by another item's commit, re-rang 'bouncing: 4 returns' at 18:29Z with its rebuild in check); a stale
+        # build repeating inside the window still speaks (OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT's shared-DLL signal)
+        n = {}
+        for t, c in fails:
+            if c in env and lo <= (t or 0) <= now + 300:
+                n[c] = n.get(c, 0) + 1
+        return ["%s failed it %d times" % (c, n[c]) for c in sorted(n) if n[c] >= int(cfg.get("churn_same_class", 2))]
     if passed is not None and all((t or 0) < passed for t, _ in fails):
         # a blind PASS after the last failed attempt is forward progress, not a bounce: the returns before it are spent
         # (OPS_CHURN_DIAGNOSE_STILLSAND_WDMI_CRMC: STILLSAND_DUNE_GALE_LIVE_1, three returns of three causes, each fixed,
