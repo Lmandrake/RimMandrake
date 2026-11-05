@@ -133,8 +133,10 @@ MENTION_DAYS = 7
 BLIND_RETRIES = 5
 PRESSURE_GB = 420.0         # ops_watch_rules' DISK_TWO_DAYS line
 TMP_IDLE_H = 6.0            # owner-authority brief 2026-11-03: a /tmp entry nothing inside was touched in 6 h may go
-TMP_PRESSURE_GB = 4.0       # /tmp tmpfs free below this (or TMP_PRESSURE_PCT used) starts a run now
-TMP_PRESSURE_PCT = 80.0
+TMP_PRESSURE_GB = 4.0       # the TMP_FULL alarm's lines when ops_watch_rules.json cannot be read; the run starts
+TMP_PRESSURE_PCT = 80.0     # TMP_PRESSURE_MARGIN_PCT / _GB before them (tmp_pressure_lines)
+TMP_PRESSURE_MARGIN_PCT = 10.0  # OPS_TMP_DRAIN_RESTORE_JVCO: a trigger ON the alarm line drained only after the alarm fired
+TMP_PRESSURE_MARGIN_GB = 2.0
 TMP_PRESSURE_IDLE_H = 1.0   # under that pressure the idle line drops to this (OPS_TMP_DRAIN_RESTORE_JVCO: 6 h kept 4 GB of
                             # 1-2 h idle mutation copies while /tmp hit 97.5 %); every hold (process, mount, clone) stands
 # Never ours to judge, by name: sockets and session dirs of the desktop, ssh, tmux, editors, snaps, the WSL plumbing,
@@ -1978,10 +1980,38 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
     return out
 
 
+def tmp_alarm_lines() -> tuple[float, float]:
+    """-> (used-% line, GB-free line) of ops_watch's TMP_FULL alarm, from ops_watch_rules.json beside this file
+    (RM_OPS_WATCH_RULES overrides); TMP_PRESSURE_PCT / TMP_PRESSURE_GB when it cannot be read."""
+    found = {}
+
+    def walk(o):
+        if isinstance(o, dict):
+            if o.get("tag") == "TMP_FULL" and o.get("key") in ("disk.tmp_used_pct", "disk.tmp_free_gb"):
+                found[o["key"]] = float(o["value"])
+            for v in o.values():
+                walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v)
+    try:
+        walk(json.loads(Path(os.environ.get("RM_OPS_WATCH_RULES", Path(__file__).resolve().parent / "ops_watch_rules.json")).read_text()))
+    except (OSError, ValueError, TypeError, KeyError):
+        pass
+    return found.get("disk.tmp_used_pct", TMP_PRESSURE_PCT), found.get("disk.tmp_free_gb", TMP_PRESSURE_GB)
+
+
+def tmp_pressure_lines() -> tuple[float, float]:
+    """-> (used-% trigger, GB-free trigger): the alarm's lines moved a margin earlier, so the drain starts before
+    TMP_FULL fires. SCRATCH_REAP_TMP_PRESSURE_PCT / _GB set a trigger outright."""
+    pct, gb = tmp_alarm_lines()
+    return (float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_PCT", pct - TMP_PRESSURE_MARGIN_PCT)),
+            float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_GB", gb + TMP_PRESSURE_MARGIN_GB)))
+
+
 def tmp_low(t: dict | None) -> bool:
-    """A /tmp reading past the alarm's lines: under TMP_PRESSURE_GB free or over TMP_PRESSURE_PCT used."""
-    tline = float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_GB", TMP_PRESSURE_GB))
-    tpct = float(os.environ.get("SCRATCH_REAP_TMP_PRESSURE_PCT", TMP_PRESSURE_PCT))
+    """A /tmp reading past the pressure triggers (tmp_pressure_lines): too little free or too much used."""
+    tpct, tline = tmp_pressure_lines()
     return bool(t) and (t["free_gb"] < tline or (t["used_pct"] or 0) > tpct)
 
 
