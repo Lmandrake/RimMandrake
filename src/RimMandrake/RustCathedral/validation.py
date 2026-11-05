@@ -932,7 +932,7 @@ def _build_suite():
                              toggle=(field if ty == "bool" else None), beyond_toggle=(ty != "bool")):
                 if not _live(t):
                     continue
-                old = _raw(t, typ, "get", field).get("value")
+                old = raw_old = _raw(t, typ, "get", field).get("value")
                 if old is None and ty == "string":
                     # LIVE 2026-10-08: crossBiomeBiomeList defaults to "" and the bridge reports an empty string as
                     # no value. The set/read-back below still proves the field is registered; a missing field fails there.
@@ -956,7 +956,9 @@ def _build_suite():
                 finally:
                     _raw(t, typ, "set", field, old)
                 back = _raw(t, typ, "get", field).get("value")
-                if not _same(ty, back, old):
+                # LIVE 2026-11-03: restoring "" reads back None, the same no-value reading the default gave before the
+                # write (the bridge reports "" as no value). Restored means "reads exactly as it read before the probe".
+                if not (back == raw_old or _same(ty, back, old)):
                     raise ExpectationFailed("%s.%s did not restore to %r (read %r)" % (typ, field, old, back))
 
     @suite.chain("biome_wiring")
