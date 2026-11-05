@@ -1,0 +1,513 @@
+{
+ "item": "ARTEVAL_JUDGE_LIVE_HEAD_TO_HEAD",
+ "prompt": "live_h2h_field@v2",
+ "labels": "/mnt/d/ClaudeWork/rimmandrake/pipeline_tuning/owner_labelled.jsonl",
+ "work": "/mnt/d/ClaudeWork/rimmandrake/pipeline_tuning/live_h2h_field_v2_rep2",
+ "rows": [
+  {
+   "sheet": "owner_escalations_cauldron_sheet_2026-10-24",
+   "subject": "RM_BedBug",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "live",
+   "reason": "C is the only set that reads as a real bedbug: it has the oval, segmented abdomen, a piercing proboscis, antennae and six legs, and its rear view and true side profile match the same individual. A and B are painted well but look like many-legged mites or spiders with fangs, and their north views dri",
+   "cost_usd": 0.24436259999999999
+  },
+  {
+   "sheet": "owner_escalations_cauldron_sheet_2026-10-24",
+   "subject": "RM_CrystalMit",
+   "live_label": "OWNER_PURGED",
+   "tags": [
+    "live",
+    "r1",
+    "r2",
+    "r3"
+   ],
+   "letters": {
+    "r2": "A",
+    "r3": "B",
+    "live": "C",
+    "r1": "D"
+   },
+   "winner": "r2",
+   "reason": "Set A reads clearly as a rock-armoured mite with quartz-like crystals growing from its back. Its three facings match in size and markings, it has a true side profile and a faceless rear, and the painterly stone texture looks realistic. B shows the mineral-eating idea more strongly with its dense cry",
+   "cost_usd": 0.2566782
+  },
+  {
+   "sheet": "owner_escalations_cauldron_sheet_2026-10-24",
+   "subject": "RM_DecayDrake",
+   "live_label": "OWNER_RETIRED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "r1",
+   "reason": "Set A is the clearest reading of the description: a heavy, flightless drake with small stunted wings folded on its shoulders, a huge bloated amber belly running with fermenting mash, and a visible haze of breath. All three facings match, the alpha is clean and the painting is realistic. B shows the ",
+   "cost_usd": 0.2419888
+  },
+  {
+   "sheet": "owner_escalations_cauldron_sheet_2026-10-24",
+   "subject": "RM_Mullgoth",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r3"
+   ],
+   "letters": {
+    "r3": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "r3",
+   "reason": "A is the only set that shows every element of the description clearly: long pale hair to the ground, grey-green moss, obvious lilac lichen patches and black slime dripping from the underside, all on a low domed hillock. Its three facings match in size and markings and read as true front, side and re",
+   "cost_usd": 0.245194
+  },
+  {
+   "sheet": "owner_escalations_cauldron_sheet_2026-10-24",
+   "subject": "RM_Vexxiss",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "live": "B",
+    "r1": "C"
+   },
+   "winner": "r2",
+   "reason": "Set A reads as a moving hill of slag: rusted smelter-scab and bark plates fused together, eyeless, with crystal fans running down the spine like boiler vents, and all three facings show the same individual at a consistent size. B has a thick uniform black keyline around the whole silhouette, which i",
+   "cost_usd": 0.2419418
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Bloodlurk",
+   "live_label": "OWNER_RETIRED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "B fits the description best: it is a dark, jointed body made almost entirely of huge mantis-like forelimbs dripping red, with a clear siphon proboscis, and it is consistent and correctly posed across all three facings. A is a solid dark creature with a good siphon in profile, but it reads as a gener",
+   "cost_usd": 0.2456844
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_ContagionIkee",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "B is the clearest eye-cluster on legs: the south view shows many watching eyes, the east view is a true side profile, and the north view shows the pale backs of the eyeballs with no pupils facing the camera, so it reads correctly as the rear. A is the same concept, but its north view still shows man",
+   "cost_usd": 0.2404436
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Danglemaw",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "live": "B",
+    "r1": "C"
+   },
+   "winner": "r2",
+   "reason": "A is the only set that shows the whole idea in one read: a muscular, sinewy cord hanging from a clump of leafy Eyebark canopy, ending in a heavy fanged jaw, with a strong side profile on east. Its north view still shows the ring of teeth, so the rear facing reads as a mouth seen from behind; B gets ",
+   "cost_usd": 0.2457082
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Gawpsack",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "A reads clearly as a sagging, drifting sack crammed with mismatched eyes (different sizes, slit pupils, blue, green and amber irises, one triple-pupil eye), and most of its irises sit high in the socket, so it comes closest to 'all looking up'; its three facings match in size and identity, with an e",
+   "cost_usd": 0.2440944
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Meltgut",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r2": "B",
+    "r1": "C"
+   },
+   "winner": "r2",
+   "reason": "B is the only set that reads as a huge slug with a see-through belly holding three swallowed things at clearly different stages of being dissolved (intact, half-collapsed, reduced to rubble), and all three facings are correct without a hard defect. C shows the same idea just as well on its south and",
+   "cost_usd": 0.243776
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_OcularJelly",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "live": "B",
+    "r1": "C"
+   },
+   "winner": "r2",
+   "reason": "Set A reads clearly as a drifting, gas-filled bladder with a watching eye, and its haze is properly faint and reddish. All three facings are the same individual at the same scale, and the north view shows the rear with no eye. Set C is almost the same creature, but its plume is thick and opaque rath",
+   "cost_usd": 0.2439286
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Peeper",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "B is the only set that shows all three parts of the description: a heavy, gone-soft body that still has a predator's fangs, ears and paws, and many eyes opened across the whole hide rather than only on the face. A is well painted and docile but reads as a plain hippo with a cluster of face-eyes and ",
+   "cost_usd": 0.2432664
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Scaldhide",
+   "live_label": "OWNER_PURGED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r2": "B",
+    "r1": "C"
+   },
+   "winner": "live",
+   "reason": "A reads clearly as a low, armoured slab: pale plates are fused at odd angles, the red scar tissue runs through every seam, and all three facings are consistent, with a true side profile and a faceless rear that ends in a tail stub. B is a strong, realistic runner-up with scorched plates, but its tid",
+   "cost_usd": 0.2444386
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Chikka",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "Set A is the only one that clearly matches the description on all three facings: a ball-shaped body that narrows to a blunt face, small furious eyes on the south view, a true side profile on the east with tiny feet, and a rear view on the north with no face. Its long, ridged, pale green quills are p",
+   "cost_usd": 0.2441332
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Crustweevil",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r2": "B",
+    "r1": "C"
+   },
+   "winner": "live",
+   "reason": "A is the only set where all three facings show the same creature: a weevil-snouted, plated grazer with a correct face-forward south, a true side profile on east and a faceless rear on north, all on clean alpha. B and C draw the lichen-crusted weevil more convincingly, but each replaces a whole facin",
+   "cost_usd": 0.2431652
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Durrok",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "live": "B",
+    "r2": "C"
+   },
+   "winner": "r2",
+   "reason": "C is the only set that shows what the description asks for: a haystack of glossy ropes with no head or neck, a blunt faceless front, lichen draped in trailing strands, and a fall of white cords as a tail in the east and north views. A gives the creature a clear face with eyes and snout, which the de",
+   "cost_usd": 0.2456526
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Dustflutter",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "live",
+   "reason": "C is the only set that shows a readable individual dustflutter: a dusty grey-brown moth-like flier with clear south, east and north facings that match each other, the right look for a creature that 'cannot really fly' but bursts up from the fuzz. A is a coherent swarm, but at in-game size it reads a",
+   "cost_usd": 0.2445174
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Fuzzrunner",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r1": "B",
+    "r2": "C"
+   },
+   "winner": "r2",
+   "reason": "C is a round, fog-fat, whiskered runway rodent: realistic painterly fur, consistent across all three facings, with a true side profile and a faceless rear showing only the tail. A is a lean, spidery creature that contradicts \"round with fog-fat\" and has a heavy keyline on the south facing, and B's e",
+   "cost_usd": 0.23944900000000002
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Fuzzviper",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "live": "B",
+    "r1": "C"
+   },
+   "winner": "live",
+   "reason": "B is the only set that reads at once as both a root and a viper: its body is made of fibrous, root-like strands, and it has a clear fanged head in south and east, all in a painterly, non-cartoon style. A disguises itself as a root very well but has almost no viper about it and leans on overhead view",
+   "cost_usd": 0.2450538
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Ribbonwhip",
+   "live_label": "OWNER_RETIRED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "live": "B",
+    "r1": "C"
+   },
+   "winner": "r2",
+   "reason": "A is the only set that reads as one distinct ribbon-bodied predator, and its facings work: the head faces the camera in south, east is a clean side profile, and north shows the tapering rear with no face, all with the same leaf-green and rust banding. Its body is wider and more blade-like than \"the ",
+   "cost_usd": 0.24626340000000002
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Rollbug",
+   "live_label": "NOT_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r2": "B",
+    "r1": "C"
+   },
+   "winner": "r2",
+   "reason": "B is the clearest picture of the description: an armoured isopod pushing a packed ball of bones, scrap and hide that is much bigger than itself, and its facings agree with each other (the ball sits in front of the bug when it faces the camera and beyond it from the rear, matching the east profile). ",
+   "cost_usd": 0.2507606
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Shirrel",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r1": "B",
+    "r2": "C"
+   },
+   "winner": "r2",
+   "reason": "C shows a creature built for the description: long climbing claws for a sweetline tree and folded vanes along the back that could open like a kite. All three facings read correctly as the same alien individual, painted realistically with clean alpha. B carries the kite idea most literally, but its n",
+   "cost_usd": 0.24351699999999998
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Shokka",
+   "live_label": "NOT_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "B best matches the description: a low, flattened animal with a soft dappled sandy pelt that would blend into barrens, painted realistically, with clean alpha and the same individual in every facing. Its north view is shot from a steep rear-overhead angle that comes close to a plan view, but that is ",
+   "cost_usd": 0.2480714
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Surrik",
+   "live_label": "NOT_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r1": "B",
+    "r2": "C"
+   },
+   "winner": "r2",
+   "reason": "C is the only set that shows the surrik actually swimming through the root-bound crust: a low, heavy body ploughing through the mat, with a true side profile on east and a consistent individual on all three facings. A is a well-painted but generic snake rising out of a hole, with a dark keyline roun",
+   "cost_usd": 0.2453608
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_TunnelSnake",
+   "live_label": "OWNER_PURGED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "A reads clearly as a long, low predator lying dormant in a coil: the east facing gives a true side profile, and all three facings match in size, banding and fringe, so the same painterly individual shows from every angle. B is equally strong as a painting, but its north facing is visibly larger and ",
+   "cost_usd": 0.2431006
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Vissler",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r1": "B",
+    "r2": "C"
+   },
+   "winner": "r2",
+   "reason": "C reads clearly as a creature built around one oversized, detachable arm: the orange seam ring marks where the arm comes off, the stump nub shows regrowth, and the arm stays on the creature's left in every facing. B has the same concept with a stronger arm, but its north view puts the arm on the wro",
+   "cost_usd": 0.24618679999999998
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Vurra",
+   "live_label": "OWNER_RETIRED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "B is the most painterly and alien of the three, and its south, east and north facings read clearly as the same armoured worm at the same size, with a true side profile and a rear view that shows no face. C is a believable, suitably unferocious grub but has a dark keyline and a slightly toy-like look",
+   "cost_usd": 0.24338579999999999
+  }
+ ],
+ "score": {
+  "subjects": 27,
+  "live_wanted": 17,
+  "live_unwanted": 10,
+  "no_verdict": [],
+  "keep_live_on_wanted": [
+   "RM_BedBug",
+   "RM_Crustweevil",
+   "RM_Dustflutter",
+   "RM_Fuzzviper"
+  ],
+  "keep_live_on_unwanted": [
+   "RM_Scaldhide"
+  ],
+  "rescue_share": 0.235,
+  "clears_bar": false
+ }
+}

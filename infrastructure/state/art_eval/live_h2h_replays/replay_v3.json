@@ -1,0 +1,520 @@
+{
+ "item": "ARTEVAL_JUDGE_LIVE_HEAD_TO_HEAD",
+ "prompt": "live_h2h_incumbent@v3",
+ "labels": "/mnt/d/ClaudeWork/rimmandrake/pipeline_tuning/owner_labelled.jsonl",
+ "work": "/mnt/d/ClaudeWork/rimmandrake/pipeline_tuning/live_h2h_field_v3",
+ "rows": [
+  {
+   "sheet": "owner_escalations_cauldron_sheet_2026-10-24",
+   "subject": "RM_BedBug",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "live",
+   "reason": "Set C is a sound, painterly installed set: it reads clearly as a bedbug, with a piercing beak, antennae and red eyes, a true side profile on east and a rear-facing north with no face, all three the same individual and the same size. Neither redraw is clearly better: B's north is an overhead plan vie",
+   "cost_usd": 0.24362620000000001
+  },
+  {
+   "sheet": "owner_escalations_cauldron_sheet_2026-10-24",
+   "subject": "RM_CrystalMit",
+   "live_label": "OWNER_PURGED",
+   "tags": [
+    "live",
+    "r1",
+    "r2",
+    "r3"
+   ],
+   "letters": {
+    "r2": "A",
+    "r3": "B",
+    "live": "C",
+    "r1": "D"
+   },
+   "winner": "r3",
+   "reason": "The installed set C has a flat, saturated blue cartoon style with a heavy dark keyline. Its south facing has no readable face and its silhouettes change between facings, so it fails the realistic and painterly rule and does not read as a mineral-eating Pebblemit. B is a painterly rock-plated mite wi",
+   "cost_usd": 0.25937520000000003
+  },
+  {
+   "sheet": "owner_escalations_cauldron_sheet_2026-10-24",
+   "subject": "RM_DecayDrake",
+   "live_label": "OWNER_RETIRED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "r1",
+   "reason": "The installed set C has a north facing that reads as an overhead view, with the spine and tail laid out top-down, and its lean crocodile build and large wings don't match a heavy, bloated drake with stunted wings. Set A fixes both with a clean, painterly, consistent set showing the bloated fermentin",
+   "cost_usd": 0.2459032
+  },
+  {
+   "sheet": "owner_escalations_cauldron_sheet_2026-10-24",
+   "subject": "RM_Mullgoth",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r3"
+   ],
+   "letters": {
+    "r3": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "r1",
+   "reason": "The installed set C is rich, painterly work, but its facings don't match in size: the south view is noticeably bigger and taller than the north and is seen from a raised angle that shows the top of the back. Set B shows a consistent, believable hairy, mossy, slime-dripping mound at a matching scale ",
+   "cost_usd": 0.24576299999999998
+  },
+  {
+   "sheet": "owner_escalations_cauldron_sheet_2026-10-24",
+   "subject": "RM_Vexxiss",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "live": "B",
+    "r1": "C"
+   },
+   "winner": "r2",
+   "reason": "The installed set B has a thick, even black keyline around every facing, which is a hard cartoon defect, and its south view is noticeably larger than its north view. Set A is a clean, painterly hill of slag and bark plates with a crystal-fan spine and no eyes; it stays consistent across all three fa",
+   "cost_usd": 0.2421308
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Bloodlurk",
+   "live_label": "OWNER_RETIRED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "live",
+   "reason": "Set C, the installed set, is solid painterly alien art: its three facings match in size and identity, read correctly, and have clean alpha, so it has no hard defect for a redraw to fix. Set A fits the 'dark jointed shadow with a siphon' idea more literally, but its north facing is smaller and reads ",
+   "cost_usd": 0.24634799999999998
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_ContagionIkee",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "Installed set C is fine painterly art, but it shows a single slit-pupil eye on octopus tentacles rather than an eye-cluster on legs, and its east and north facings don't match the south in size or pose. Set B is clearly an eye-cluster on jointed legs, matches across all three facings, and handles th",
+   "cost_usd": 0.24555259999999998
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Danglemaw",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "live": "B",
+    "r1": "C"
+   },
+   "winner": "live",
+   "reason": "Installed set B is rich, painterly, alien art of a jaw hanging on a knotted cord, and its north facing is a proper closed rear with no mouth or teeth showing. Its cord runs off the top edge, which reads as hanging from the canopy above rather than a cropped limb, while both redraws show the open too",
+   "cost_usd": 0.2446972
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Gawpsack",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "live",
+   "reason": "Set C, the installed set, is sound, painterly art of a drifting veined sac full of mixed eyes, with trailing tendrils that sell the floating. Its south, east and north facings read correctly as the same individual. Redraws A and B are competent eye-studded pouches, but neither is clearly better. Bot",
+   "cost_usd": 0.2429434
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Meltgut",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r2": "B",
+    "r1": "C"
+   },
+   "winner": "live",
+   "reason": "Set A is sound: its south, east and north facings read correctly, and it is a painterly, properly alien slug whose translucent belly shows half-dissolved remains, which fits the rendering-vat description. B swaps that menace for a cute-leaning garden slug with glossy round eye-stalk eyes and a story",
+   "cost_usd": 0.2451504
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_OcularJelly",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "live": "B",
+    "r1": "C"
+   },
+   "winner": "live",
+   "reason": "The installed set B is sound, painterly and alien: a drifting gas-bladder with trailing tendrils and a reddish haze, a face-forward south, a true side-profile east and a faceless rear north. Redraws A and C are competent, but their single glossy round eye pushes them toward cute, and A's east facing",
+   "cost_usd": 0.2407976
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Peeper",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "The installed set C has broken facings: its south view is turned three-quarters instead of facing the camera, and its north view shows a twisted head instead of a clean rear. It also reads as a lean, spiky hunter, not a docile animal gone soft. Redraw B is clean painterly art of a heavy-bodied forme",
+   "cost_usd": 0.2451954
+  },
+  {
+   "sheet": "owner_escalations_contagion_sheet_2026-10-24",
+   "subject": "RM_Scaldhide",
+   "live_label": "OWNER_PURGED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r2": "B",
+    "r1": "C"
+   },
+   "winner": "r2",
+   "reason": "Set B shows the creature most clearly: a low, flat slab of fused, charred, scarred plates on short legs, painted with realistic texture. It has a readable face to the south, a true side profile to the east and a faceless rear to the north, all the same individual. Set A has no hard defects either, b",
+   "cost_usd": 0.24830760000000002
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Chikka",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "Set A is clearly the better picture of this creature: a ball of long, ridged, pale green quills narrowing to a blunt face with a small pair of furious eyes. Its south, east and north match each other, it has no hard defects, and the painting is excellent. The installed set C shows the body from a ne",
+   "cost_usd": 0.2473822
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Crustweevil",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r2": "B",
+    "r1": "C"
+   },
+   "winner": "live",
+   "reason": "Both redraws have a facing that shows bollards or posts instead of the creature (B north, C south), so neither can replace the installed set. Set A is consistent, painterly weevil art with a correct south face, a true side profile and a faceless rear, so it stays.",
+   "cost_usd": 0.2393342
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Durrok",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "live": "B",
+    "r2": "C"
+   },
+   "winner": "r2",
+   "reason": "The installed set B has a south facing that looks like a rear view, almost the same as its north, and its north is noticeably smaller than the other two facings. Set C is clean, painterly art of the 'drowned haystack' in the description, with no head, heavy rope-like hair, drifts of lichen and a tai",
+   "cost_usd": 0.24966159999999998
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Dustflutter",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "live",
+   "reason": "Set B's east facing is a sheet of barrels and pillars instead of the creature, which is disqualifying. Set A draws a swarm of tiny moths whose south and east/north facings look like different bugs, with no single readable creature or facing. The installed set C is a sound, painterly single dustflutt",
+   "cost_usd": 0.24326640000000002
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Fuzzrunner",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r1": "B",
+    "r2": "C"
+   },
+   "winner": "r2",
+   "reason": "Set C clearly shows the fuzzrunner the description names: a round, fog-fat, whiskered runway creature drawn painterly and realistic, the same animal at the same size in true south, east and north views on clean alpha. The installed set A is a lean, spiky, long-legged beast that misses the round fog-",
+   "cost_usd": 0.24417799999999998
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Fuzzviper",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "live": "B",
+    "r1": "C"
+   },
+   "winner": "live",
+   "reason": "The installed set B is sound, painterly art of a root-like fibrous viper: a fanged face toward the camera on south, a clean side profile on east, and a tail-only rear on north, all the same individual. Both redraws draw the body as long overhead plan views stretched along the frame, and neither is a",
+   "cost_usd": 0.2422628
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_1_sheet_2026-10-24",
+   "subject": "RM_Ribbonwhip",
+   "live_label": "OWNER_RETIRED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "live": "B",
+    "r1": "C"
+   },
+   "winner": "r2",
+   "reason": "Installed set B has a hard defect: its north facing is the east profile again, with the head and eye showing at the right end, and its south is a sideways body with a small head stuck in the middle rather than a true front view. Set A gives a clean front view with the face, a true side profile and a",
+   "cost_usd": 0.2449124
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Rollbug",
+   "live_label": "NOT_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r2": "B",
+    "r1": "C"
+   },
+   "winner": "live",
+   "reason": "Set A is sound: it is a painterly, armoured beetle that fits a corridor-trundling rollbug, the facings are correctly oriented and consistent, and the alpha is clean. B is striking art, but its north facing reads as an overhead dorsal plan of the bug, and C has the same near-overhead north, a south w",
+   "cost_usd": 0.2471696
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Shirrel",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r1": "B",
+    "r2": "C"
+   },
+   "winner": "r2",
+   "reason": "Set A is well-painted and has no hard defect, but it shows a heavy, lynx-like ground stalker with nothing that could open like a kite, so it hardly reads as the shirrel; set B's south and north are overhead plan views (spine and splayed legs seen from above). Set C is equally painterly, consistent a",
+   "cost_usd": 0.250386
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Shokka",
+   "live_label": "NOT_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "live",
+   "reason": "The installed set C is sound, painterly art of a low-slung, stalking ambush predator with a dappled pelt, and it shows consistent front, side and rear facings. Redraw A has dry-grass tufts baked into every facing and a north view that reads as a faceless blob with no tail, and redraw B's north is an",
+   "cost_usd": 0.2478204
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Surrik",
+   "live_label": "NOT_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r1": "B",
+    "r2": "C"
+   },
+   "winner": "live",
+   "reason": "Set A is sound, painterly art of a serpentine crust-swimmer that fits the description: it rises out of a root-bound crust mat, and its three facings match in size, markings and colour. B is disqualified by an east facing that shows barrels and pillars instead of the creature, and C is attractive but",
+   "cost_usd": 0.24332979999999998
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_TunnelSnake",
+   "live_label": "OWNER_PURGED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r2": "A",
+    "r1": "B",
+    "live": "C"
+   },
+   "winner": "r1",
+   "reason": "Installed set C has a hard defect: its north facing is drawn much smaller than the south and east facings. It is also flat, low-detail art with a heavy dark outline. Redraw B is sound on every facing, keeps one consistent coiled individual with grasping mandibles, and its leaf-like fringe reads as a",
+   "cost_usd": 0.2464096
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Vissler",
+   "live_label": "OWNER_PICKED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "live": "A",
+    "r1": "B",
+    "r2": "C"
+   },
+   "winner": "r2",
+   "reason": "Set A shows a starfish laid flat in overhead plan view on all three facings, so it has no real front, rear or side, which breaks the facing rule. Set C shows the vissler as a creature with one oversized, twitch-ready arm, painted in a painterly style, and keeps that arm on the same side of the body ",
+   "cost_usd": 0.24957580000000001
+  },
+  {
+   "sheet": "owner_escalations_leaningscrub_2_sheet_2026-10-24",
+   "subject": "RM_Vurra",
+   "live_label": "OWNER_RETIRED",
+   "tags": [
+    "live",
+    "r1",
+    "r2"
+   ],
+   "letters": {
+    "r1": "A",
+    "r2": "B",
+    "live": "C"
+   },
+   "winner": "r2",
+   "reason": "Set C is sound and has no hard defects, but B is plainly the better painting: its armoured plates have richer, more detailed shading and texture, all three facings show the same individual at a consistent size, and the result reads as a menacing alien worm rather than C's softer, larval look. A also",
+   "cost_usd": 0.24599479999999999
+  }
+ ],
+ "score": {
+  "subjects": 27,
+  "live_wanted": 17,
+  "live_unwanted": 10,
+  "no_verdict": [],
+  "keep_live_on_wanted": [
+   "RM_BedBug",
+   "RM_Danglemaw",
+   "RM_Gawpsack",
+   "RM_Meltgut",
+   "RM_OcularJelly",
+   "RM_Crustweevil",
+   "RM_Dustflutter",
+   "RM_Fuzzviper"
+  ],
+  "keep_live_on_unwanted": [
+   "RM_Bloodlurk",
+   "RM_Rollbug",
+   "RM_Shokka",
+   "RM_Surrik"
+  ],
+  "rescue_share": 0.471,
+  "clears_bar": false
+ }
+}
