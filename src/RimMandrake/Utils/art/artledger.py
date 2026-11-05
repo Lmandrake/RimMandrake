@@ -302,7 +302,13 @@ class Writer:
         dlock = _dir_lock(os.path.dirname(p))
         try:
             with os.fdopen(_open_shard_locked(p), "w", encoding="utf-8") as fh:   # closing drops the flock
+                before = os.fstat(fh.fileno()).st_size
                 fh.write(body)
+                fh.flush()
+                st = os.fstat(fh.fileno())
+            # what this append did to the shard, measured under its lock: _absorb folds our own lines into the cached
+            # Index only if nothing else touched the shards since that Index was read
+            _FLUSHED.append((str(p), before, len(body.encode("utf-8")), st.st_size, st.st_mtime_ns))
         finally:
             if dlock is not None:
                 os.close(dlock)
@@ -865,6 +871,7 @@ class Index:
 
 
 _IDX: dict = {"sig": None, "idx": None}
+_FLUSHED: list = []    # (shard, size before, bytes written, size after, mtime after) per Writer.flush since the last _absorb
 
 
 def _shard_sig() -> tuple:
@@ -879,17 +886,42 @@ def cached_index() -> "Index":
     files); rebuilt whenever a shard changed under it (another writer, another ledger dir)."""
     s = _shard_sig()
     if _IDX["sig"] != s or _IDX["idx"] is None:
+        _FLUSHED.clear()          # flushes before this read are in the new signature already
         _IDX.update(sig=s, idx=Index())
     return _IDX["idx"]
 
 
 def _absorb(evs: list[dict]):
-    """Fold this process's own appends into the cached Index and re-sign it."""
+    """Fold this process's own appends into the cached Index and re-sign it — only when the shards now read exactly
+    as the cached signature plus this process's own flushes. Anything else (another process appended between
+    cached_index() and our flush, a rotation, a level_books rewrite) drops the cache, so the next cached_index()
+    rebuilds from disk instead of signing over lines it never read."""
+    flushed, _FLUSHED[:] = list(_FLUSHED), []
     if _IDX["idx"] is None:
+        return
+    sig = _IDX["sig"]
+    expect = {e[0]: list(e[1:]) for e in (sig or ())[1:]}
+    ok = sig is not None
+    for path, before, n, after, mtime in flushed:
+        if not ok:
+            break
+        size = expect.get(path, [0, None])[0]
+        ok = size == before and after == before + n
+        expect[path] = [after, mtime]
+    # every flushed byte must be one of `evs` (a bare append() elsewhere in the process wrote lines the Index lacks)
+    ok = ok and sum(f[2] for f in flushed) == sum(
+        len((json.dumps(ev, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")) for ev in evs)
+    now_sig = _shard_sig()
+    if ok and now_sig[0] == sig[0]:
+        ok = {e[0]: list(e[1:]) for e in now_sig[1:]} == expect
+    else:
+        ok = False
+    if not ok:
+        _IDX.update(sig=None, idx=None)
         return
     for ev in evs:
         _IDX["idx"].add(ev)
-    _IDX["sig"] = _shard_sig()
+    _IDX["sig"] = now_sig
 
 
 def subject_key(raw: str) -> str:
