@@ -9,7 +9,8 @@
      room substantially"): a stack melts one crushed ice per 4 hours above 0 C, into the water at the pile or as a puddle,
      and each melting pile cools its room (setting iceMeltCoolingPerSecond, default a vanilla cooler's 21 heat/s).
      The ice melter puts the water into tanks instead and neither heats nor cools its room: its heating bath pays the melt.
-     Placeholder art: vanilla rubble tinted ice-blue and the electric smelter tinted (art item filed). -->
+     Own art (ICE_ART_RESKIN_BORROWED_RUBBLE_AND_SMELTER): three crushed-ice heaps and a 3x1 ice melter, judged in
+     infrastructure/state/delegated/2026-11-05/RM_IceMelter_RM_CrushedIce.json. -->
 <Defs>
   <ThingDef ParentName="ResourceBase">
     <defName>RM_CrushedIce</defName>
@@ -18,9 +19,8 @@
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Rare</tickerType>
     <graphicData>
-      <texPath>Things/Filth/RubbleRock</texPath>
+      <texPath>Things/Item/Resource/FlowWorks/RM_CrushedIce</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(196,222,240)</color>
     </graphicData>
     <stackLimit>25</stackLimit>
     <statBases>
@@ -50,10 +50,9 @@
     <description>An electric heating bath that melts crushed ice into fresh water and pipes it into the tanks on its liquid net (touching it or hosed to it). Each crushed ice gives the water its cut removed: 1,000 L. Its heating bath pays for the melt, so the room is neither warmed nor cooled. A bill waits until a tank has room.</description>
     <thingClass>Building_WorkTable_HeatPush</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/ElectricSmelter</texPath>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_IceMelter</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(3.5,1.5)</drawSize>
-      <color>(170,200,225)</color>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>

@@ -1,0 +1,48 @@
+{
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@367b84293f",
+ "subject": "RM_IceMelter+RM_CrushedIce",
+ "verdicts": [
+  {
+   "picture": "RM_IceMelter_south.png",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "C3: orthographic, lit top (tub, hopper) over a front panel band about 1/3 of depth, no convergence. D2: 448x192 = drawSize 3.5x1.5 x128; D3 bbox 24..424 x 19..182 sits in canvas; D4 real alpha, no ground shadow. B1/B2: clean keyline, grey steel body clearly apart from ground at 32 px/cell, reads as a few bold shapes (judge_play32_x3.png). B4 steel reads as metal. E1/E2 not donor, not script-drawn. Style sits at the clean/cartoon end of vanilla machines but is not flat toy cel and keylines are not huge. Scale beside vanilla human fine (judge_truescale_128.png)."
+  },
+  {
+   "picture": "RM_IceMelter_north.png",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "C2: same size, proportions, palette as south; rear panel shows power socket and vent, hopper and valve wheel swap sides correctly for a 180-degree turn. Top face still visible from the overhead camera, as expected. D2/D3/D4 as south."
+  },
+  {
+   "picture": "RM_IceMelter_east.png",
+   "facing": "east",
+   "verdict": "KEEP",
+   "notes": "Re-judged regenerated file (mtime 11:52). Hopper now at the SOUTH end and valve wheel at the NORTH end, so it keeps the same left/right as south and north; redrawn rather than flipped, steam still rises upward. C2: same size, proportions and palette as south/north; 192x448 = swapped 1.5x3.5 mesh; D3 bbox 43..148 x 14..434 inside canvas; D4 real alpha, no shadow; B2 reads at play zoom."
+  },
+  {
+   "picture": "RM_CrushedIce_a.png",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "Low spread pile of ice shards and packed snow; reads as broken ice/snow spoil (B4 material). D2 256x256 for drawSize 1 (generous); D3 bbox 20..236 x 140..232 inside the cell, sits on the base; D4 real alpha. B2: pale blue-white clearly apart from ground at 32 px/cell, thin dark-blue keyline."
+  },
+  {
+   "picture": "RM_CrushedIce_b.png",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "Taller heap, same palette, keyline and lighting as a and c (B3 variant set coherent). D3 bbox 20..236 x 69..232 inside cell; D4 real alpha; B2 reads at play zoom."
+  },
+  {
+   "picture": "RM_CrushedIce_c.png",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "Two small piles, same style as a/b; D3 bbox 20..236 x 115..232 inside cell; D4 real alpha; B2 reads at play zoom."
+  }
+ ],
+ "inputs_note": "Given: full-res PNGs and pv_final.png (no vanilla human, no 32 px copy). Judge built judge_truescale_128.png and judge_play32(_x3).png with Core Naked_Male_south beside them. No sibling keeps, donor art or owner notes were given; none are expected for a new RimMandrake-tier thing with no canon entry, so treated as absent rather than UNSURE.",
+ "proposals": [
+  "Add to C2: a Graphic_Multi building's facings agree on handedness (a feature on the thing's right stays on its right when rotated) - evidence: RM_IceMelter_east.png has the hopper at the north end while south/north put it on the bench's right.",
+  "Decide whether painted steam/vapour wisps on a static building sprite are allowed under D4 (they read as an effect baked into the texture and show even when the bench is unpowered) - evidence: steam on RM_IceMelter south/north/east."
+ ]
+}
