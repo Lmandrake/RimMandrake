@@ -541,3 +541,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:45:13Z","tsn":1793846713194259887}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE A1 (L1), read-only proof","ts":"2026-11-05T02:45:21Z","tsn":1793846721498482220}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T02:45:28Z","tsn":1793846728322724434}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-05T02:47:48Z","tsn":1793846868588445777}
