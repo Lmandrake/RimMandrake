@@ -609,9 +609,13 @@ namespace JawaBench.BridgeTools
                 "is read on THAT layer; the map parent then defaults to the layer's DefaultWorldObject " +
                 "(RM_SeabedSite), so the floor generator its biome names runs - no ship landing needed. " +
                 "'biome' (test fixtures only) sets that tile's PrimaryBiome first, so a sea with no painted " +
-                "tiles can still be checked out.",
+                "tiles can still be checked out. " +
+                "TILEMAP_GENERATE_FIX_FACTIONLESS_PARENT: when no MapParent exists yet and the parent def is a " +
+                "Settlement class, it is created HERE with 'faction' (default Player) before GetOrGenerateMap - " +
+                "vanilla would add a FACTIONLESS Settlement (a Base_Faction ruin map full of hostiles, and a " +
+                "NullReferenceException per frame drawing it on the world layer). An unknown faction refuses.",
             ResultDescription =
-                "success, tile, layer, mapParentDef, biome, biomeWas, wasAlreadyGenerated, mapSize{x,z}, mapIndex " +
+                "success, tile, layer, mapParentDef, parentFaction, parentCreated, biome, biomeWas, wasAlreadyGenerated, mapSize{x,z}, mapIndex " +
                 "(Find.Maps position), pawnCount, thingCount, mapFinalize{failedSteps, steps[]}.")]
         public static async Task<object> WorldTileMapGenerate(
             IRimBridgeContext ctx,
@@ -625,7 +629,9 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "PlanetLayerDef defName to read the tile on (e.g. RM_SeabedLayer). Empty = the surface.")]
             string layer = "",
             [ToolParameter(Description = "Test fixtures only: set the tile's PrimaryBiome to this BiomeDef before generating.")]
-            string biome = "")
+            string biome = "",
+            [ToolParameter(Description = "Faction of a Settlement-class parent this call has to CREATE: FactionDef defName, or 'Player'/'PlayerColony'. Default 'Player'. Ignored when a MapParent already stands on the tile.")]
+            string faction = "Player")
         {
             if (tile < 0) return Fail("Give 'tile', a valid world tile id.");
             // Half a size is not a size: the pair is used only when BOTH are positive, so
@@ -669,6 +675,40 @@ namespace JawaBench.BridgeTools
                 var pt = new PlanetTile(tile, pl);
                 var existing = Current.Game != null ? Current.Game.FindMap(pt) : null;
 
+                // TILEMAP_GENERATE_FIX_FACTIONLESS_PARENT - GetOrGenerateMap, finding no MapParent,
+                // makes one of 'wod' and never sets its faction. For a Settlement that is a
+                // factionless base: GenStep_Settlement builds a Base_Faction ruin with ~110
+                // hostile pawns, and Settlement drawing throws a NullReferenceException every
+                // frame on the world layer (measured 2026-10-24). So a Settlement-class parent
+                // this call must create is created here, with a resolved faction, first.
+                var standingParent = Find.WorldObjects != null ? Find.WorldObjects.MapParentAt(pt) : null;
+                bool settlementClass = wod.worldObjectClass != null && typeof(Settlement).IsAssignableFrom(wod.worldObjectClass);
+                bool mustCreateParent = standingParent == null && existing == null && settlementClass;
+                Faction parentFac = null;
+                if (mustCreateParent)
+                {
+                    string fname = (faction ?? "").Trim();
+                    if (fname.Length == 0)
+                        return Fail("'faction' is empty, and a '" + wod.defName + "' parent must be created at tile " + tile +
+                                    " - a factionless Settlement generates a hostile ruin map and errors every frame. " +
+                                    "Give a FactionDef defName or 'Player'.");
+                    if (string.Equals(fname, "Player", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(fname, "PlayerColony", StringComparison.OrdinalIgnoreCase))
+                    {
+                        parentFac = Faction.OfPlayer;
+                        if (parentFac == null) return Fail("No player faction exists yet (Faction.OfPlayer is null).");
+                    }
+                    else
+                    {
+                        var fd = DefDatabase<FactionDef>.GetNamedSilentFail(fname);
+                        if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
+                        parentFac = Find.FactionManager != null ? Find.FactionManager.FirstFactionOfDef(fd) : null;
+                        if (parentFac == null) return Fail("FactionDef '" + faction + "' exists but no such faction is in this world.");
+                    }
+                }
+                var parentFactionOut = mustCreateParent ? parentFac.def.defName
+                    : (standingParent != null && standingParent.Faction != null ? standingParent.Faction.def.defName : null);
+
                 var size = (sizeX > 0 && sizeZ > 0) ? new IntVec3(sizeX, 1, sizeZ)
                     : (Find.World != null ? Find.World.info.initialMapSize : new IntVec3(250, 1, 250));
 
@@ -682,6 +722,8 @@ namespace JawaBench.BridgeTools
                         biome = biomeDef != null ? biomeDef.defName : biomeWas,
                         biomeWas,
                         mapParentDef = wod.defName,
+                        parentFaction = parentFactionOut,
+                        parentCreated = mustCreateParent,
                         wasAlreadyGenerated = existing != null,
                         mapSize = new { x = size.x, z = size.z }
                     };
@@ -705,6 +747,24 @@ namespace JawaBench.BridgeTools
                 int callThreadId = Thread.CurrentThread.ManagedThreadId;
                 Log.Message("[TILEGEN_SILENT_REUSE_1] call #" + callSeq + " thread=" + callThreadId +
                             " requesting tile=" + pt + " BEFORE GetOrGenerateMap");
+
+                if (mustCreateParent)
+                {
+                    try
+                    {
+                        if (wod == WorldObjectDefOf.Settlement)
+                            SettleUtility.AddNewHome(pt, parentFac);
+                        else
+                        {
+                            var s = (Settlement)WorldObjectMaker.MakeWorldObject(wod);
+                            s.Tile = pt;
+                            s.SetFaction(parentFac);
+                            s.Name = SettlementNameGenerator.GenerateSettlementName(s);
+                            Find.WorldObjects.Add(s);
+                        }
+                    }
+                    catch (Exception e) { return Fail("Creating the '" + wod.defName + "' parent for faction " + parentFac.def.defName + " threw: " + e.GetType().Name + ": " + e.Message); }
+                }
 
                 Map map;
                 try { map = GetOrGenerateMapUtility.GetOrGenerateMap(pt, size, wod); }
@@ -755,7 +815,9 @@ namespace JawaBench.BridgeTools
                     biome = map.Biome != null ? map.Biome.defName : null,
                     biomeWas,
                     mapGenerator = map.generatorDef != null ? map.generatorDef.defName : null,
-                    mapParentDef = wod.defName,
+                    mapParentDef = map.Parent != null ? map.Parent.def.defName : wod.defName,
+                    parentFaction = map.Parent != null && map.Parent.Faction != null ? map.Parent.Faction.def.defName : null,
+                    parentCreated = mustCreateParent,
                     wasAlreadyGenerated = existing != null,
                     mapSize = new { x = map.Size.x, z = map.Size.z },
                     // mapId is the STABLE identity (Map.uniqueID, the convention every other
