@@ -4225,7 +4225,7 @@ def step(store, fx, r, item, now, acts):
                 return
             if broken:
                 fail(store, st, "live_broken", broken, r, now)
-                acts.append({"do": "live_broken", "item": item})
+                acts.append({"do": "live_broken", "item": item, "after_check": True})   # a checker PASSed: ends ops_watch's run of dead checkers
                 return
             cur = st["check"] or {}     # read as above: a WEAK the live rule reads as PASS closes too (GPT pass 12)
             if not cur.get("verdict") or relentless_wall.read_as(cur["verdict"], cur.get("reasons"), cur.get("defects"),
@@ -4239,6 +4239,7 @@ def step(store, fx, r, item, now, acts):
                 st["status"] = "closing"
                 st.pop("close_retry", None)
                 store.save(st)
+                acts.append({"do": "check_passed", "item": item, "sha": c["sha"]})  # a verdict: ops_watch's run of dead checkers ends here
         if game:
             remove_check_clone(fx, st)
             acts.append({"do": "game_entered", "item": item, "sha": c["sha"]})

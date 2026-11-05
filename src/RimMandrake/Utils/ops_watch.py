@@ -2247,6 +2247,71 @@ def rl_checks_lost(store, now, cfg, chunk=1 << 23):
                                          ", ".join(worst[:5])) if lost else "none"))
 
 
+CHECK_RUN_BREAKS = CHECK_VERDICT_ACTS + ("check_passed",)   # done is not one: an item closes off the checker too
+CHECK_DEATHS = ("checker_lost", "check_launch_fail")
+
+
+def rl_checker_deaths_run(store, now, cfg, chunk=1 << 23):
+    """CHECKER_DEATHS_MONITOR_29_NOBODY_NOTICED: on 2026-11-03 every walled checker died at launch for 2.5 h and none
+    gave a verdict; each item read only its own checker_lost. -> the point relentless.checker_deaths_run: how many
+    DIFFERENT items are in the run of checker deaths (checker_lost, check_launch_fail) that ends now, across items, with
+    no verdict between and every death empty. The run is broken by any verdict act (CHECK_RUN_BREAKS, and a live_broken read
+    after a checker's PASS: a checker that judged, so the launch works; a closing retry's live_broken is not one) and by a checker_lost whose run wrote output (out_bytes > 0: it started and died
+    mid-check, not at launch). out_bytes 0 or check_launch_fail is empty; out_bytes absent or None (an act from before
+    relentless.run_output, or an unreadable out file) is not known to hold output, so it stays in the run and counts as
+    unknown. Only acts inside checker_run_window_h are read. UNMEASURED as rl_checks_lost: unreadable journal, or a tail
+    read that does not reach back to the window's start."""
+    window = float(cfg.get("checker_run_window_h", 3)) * 3600.0
+    start = now - window
+    p = store / "journal.jsonl"
+    try:
+        with open(p, "rb") as f:
+            f.seek(0, 2)
+            size = f.tell()
+            f.seek(max(0, size - chunk))
+            lines = f.read().split(b"\n")
+    except OSError as e:
+        return U("journal.jsonl unreadable: %s" % e, "items")
+    if size > chunk:
+        lines = lines[1:]       # the first line is torn by the seek
+    oldest, run, since, err, broke = None, [], None, None, None
+    empty = unknown = 0
+    for ln in lines:
+        try:
+            d = json.loads(ln)
+        except ValueError:
+            continue
+        t = epoch(d.get("at")) if isinstance(d, dict) else None
+        if t is None:
+            continue
+        oldest = t if oldest is None else min(oldest, t)
+        if t < start or t > now:
+            continue
+        for a in (d.get("acts") if d.get("do") in ("tick", "game_next") else [d]) or []:
+            if not isinstance(a, dict):
+                continue
+            do = a.get("do")
+            wrote = do == "checker_lost" and isinstance(a.get("out_bytes"), int) and a["out_bytes"] > 0
+            if do in CHECK_RUN_BREAKS or (do == "live_broken" and a.get("after_check")) or wrote:
+                run, since, err, empty, unknown = [], None, None, 0, 0
+                broke = "%s %s at %s" % (do, a.get("item") or "", d.get("at"))
+            elif do in CHECK_DEATHS and a.get("item"):
+                run.append(a["item"])
+                since = since or d.get("at")
+                if do == "check_launch_fail" or a.get("out_bytes") == 0:
+                    empty += 1
+                else:
+                    unknown += 1
+                err = a.get("err_tail") or a.get("why") or err
+    if size > chunk and (oldest is None or oldest > start):
+        return U("journal tail read (%d MB) does not reach back %g h" % (chunk >> 20, window / 3600.0), "items")
+    items = list(dict.fromkeys(run))
+    return M(len(items), "items", deaths=len(run), empty=empty, unknown=unknown, since=since, err=(err or "")[:200],
+             broken_by=broke or "nothing in the window", window_h=window / 3600.0, items=items[:12],
+             first=("%d checkers in a row on %d items died with no verdict since %s (%d wrote no output, %d unknown; "
+                    "last break: %s): %s" % (len(run), len(items), since, empty, unknown, broke or "none in window",
+                                             ", ".join(items[:5])) if run else "none"))
+
 def c_relentless(now, rules, ctx):
     """The belt's own readings (OP2), judged here (DI2: a stall names one cause) with no AI. Every limit is in
     rules["relentless"]. A source that is missing, torn, frozen or dated ahead makes its readings UNMEASURED and counts
@@ -2379,6 +2444,10 @@ def c_relentless(now, rules, ctx):
     pts["relentless.checks_lost_items"] = lost_p
     if lost_p.get("m") == "UNMEASURED":
         bad.append(lost_p["why"])       # an unread journal hides every dead checker: blind, never quiet
+    run_p = rl_checker_deaths_run(store, now, cfg)
+    pts["relentless.checker_deaths_run"] = run_p
+    if run_p.get("m") == "UNMEASURED" and run_p["why"] not in bad:
+        bad.append(run_p["why"])        # the same journal: blind, never quiet
     for k, p in rl_jams(store, now).items():
         pts[k] = p
         if p.get("m") == "UNMEASURED" and p["why"] not in bad:
