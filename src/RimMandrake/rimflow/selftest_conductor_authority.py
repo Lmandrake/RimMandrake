@@ -284,6 +284,9 @@ OWNER_ONLY = {
     "src/RimMandrake/Utils/art/backfill.py": "reads a decisions doc's provenance, authorizes nothing",
     "src/RimMandrake/rimflow/delegated_digest.py": "lists the open items he owns, with age and waiters, for his daily "
                                                    "digest (OWNER_ASKS_MEASURE_AGE_IN_DIGEST); authorizes nothing",
+    "src/RimMandrake/rimflow/relentless_showing.py": "reads his recent OWNER notes so a showing waits until what he "
+                                                     "asked for is built (OWNER_REVIEW_BUILD_SHOWS_READY_BEFORE_ASKED); "
+                                                     "authorizes nothing",
     "src/RimMandrake/Utils/modcheck/northstar.py": "record_validation only persists the words its caller (modcheck/cli, "
                                                    "via CA.words) already gated",
     "design/RimStarWars/canon_references/gpt_review/check_review_complete.py": "compares a review row's disposition "
