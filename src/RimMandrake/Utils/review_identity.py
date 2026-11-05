@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""review_identity.py -- WHO reviewed a file, in a form the Arbiter can check (CODE_REVIEW_WIRE_REVIEWER_SEAT).
+"""review_identity.py -- WHO reviewed a file, in a form a checker can verify (CODE_REVIEW_WIRE_REVIEWER_SEAT).
 
-A code-review clean mark used to carry only the seat whose shard it landed in: the RECORDING seat. The Arbiter read
+A code-review clean mark used to carry only the seat whose shard it landed in: the RECORDING seat. Readers took
 that as the reviewer, so a BENCH helper recording a GPT review, or a FOUNDRY seat recording its own work, looked the
 same. A mark-clean record now carries two things, kept apart:
 
@@ -20,7 +20,7 @@ gpt_consult writes one receipt per job (`receipts.jsonl`, append-only, mac'd): j
 and the repo-relative path + sha256 of every file it inlined. The job dir is scratch and is deleted; the receipt is
 what makes the job id durable.
 
-identity(record, key, find) -> the tuple the Arbiter compares (arbiter_tiers.load_clean_hashes):
+identity(record, key, find) -> the tuple a reader compares:
   ("unknown", seat, None)       an old record, or a review block that does not verify: never independent
   ("self", seat, bridge_session) recorder reviewed; its seat came from whoami's own sources
   ("asserted", seat, session)   a reviewer the recorder only named (kind agent, or a self with no sure seat)
@@ -40,7 +40,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import close_evidence as ce  # noqa: E402
 
 RECEIPTS_ENV = "RM_CONSULT_RECEIPTS"
-#: whoami() seat sources that name a seat the process itself read (mirrors arbiter_tiers.SEAT_SOURCES)
+#: whoami() seat sources that name a seat the process itself read
 SEAT_SOURCES = ("RIMFLOW_SEAT", "AGENT_SEAT", "session role file")
 KINDS = ("unknown", "self", "asserted", "external")
 

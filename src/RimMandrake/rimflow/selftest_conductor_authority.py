@@ -267,7 +267,6 @@ OWNER_ONLY = {
     "src/RimMandrake/rimflow/driver_lock.py": "OWNER bridge hold 45-min rule (owner by card 2026-10-30)",
     "src/RimMandrake/rimflow/wrapup.py": "never auto-releases his OWNER bridge hold (owner by card 2026-10-30); grants nothing",
     "src/RimMandrake/rimflow/host_guard.py": "OWNER bridge hold 45-min rule (owner by card 2026-10-30)",
-    "src/RimMandrake/rimflow/arbiter_tiers.py": "reads who closed (attribution), authorizes nothing",
     "src/RimMandrake/rimflow/owner_interaction.py": "measures HIS activity clock, authorizes nothing",
     "src/RimMandrake/rimflow/incident.py": "routes a needs=owner alarm to the OWNER seat, authorizes nothing",
     "src/RimMandrake/Utils/broadcast.py": "OWNER ONLY broadcast skill: announce to every window is his",

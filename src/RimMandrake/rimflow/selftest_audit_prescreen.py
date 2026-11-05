@@ -216,9 +216,6 @@ ok("a design doc or run artifact is not a source claim", "reason_paths_not_in_sh
 ok("unresolvable sha raises only its own flag", "reason_paths_not_in_sha" in fl(cl(named), git=lambda s: None), False)
 ok("a blind checker's quoted proof command claims nothing", "reason_paths_not_in_sha" in fl(
     cl("relentless: blind PASS at a: run_selftests.py --only src/x/selftest_y.py")), False)
-from rimflow import arbiter_tiers                                  # noqa: E402
-ok("the Arbiter gives a screened claim an AI verdict", {"reason_paths_not_in_sha", "evidence_path_absent"} <=
-   set(arbiter_tiers.FORCE_T2), True)
 ok("reason_paths_not_in_sha is hard", "reason_paths_not_in_sha" in R["hard_flags"], True)
 # ...and the real gap-2 half: a ledger-shard-only sha carries no work
 ok("ledger-only sha touches nothing", "sha_touches_nothing" in fl(cl("done"), git=LEDGER), True)

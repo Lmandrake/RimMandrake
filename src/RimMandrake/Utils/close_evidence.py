@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""close_evidence.py -- machine evidence per commit sha, so the Arbiter's no-AI gates can decide a close.
+"""close_evidence.py -- machine evidence per commit sha, so no-AI gates can decide a close.
 
 CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE (design/RimMandrake/rimflow_v3_arbiter_tiers_2026-10-27.md, "Missing gates"):
 94% of closes recorded no machine evidence, although selftests, C# builds, patch validation and modcheck all ran.
@@ -28,7 +28,7 @@ A line (v4): {v, ts, tool, clone, sha, dirty, dirty_n, dirty_paths, start, paths
   * live_only -- the result describes a running game, not a tree (modcheck: the game holds whatever it loaded at
               launch, and nothing fingerprints that load). Never sha evidence (F3).
   * variant -- a weaker form of the tool (validate_patch "static" / "defnames"): summarize keys it apart (F6) and the
-              Arbiter never counts it as a pass (review AA3).
+              close gates never count it as a pass (review AA3).
   * result -- PASS / FAIL / UNMEASURED, nothing else.
   * origin -- what the WRITER can vouch for (review AA4): {via: "inproc" | "cli", start, end, pid, host}. start is
               "snapshot" only when the start state carries a token minted by snapshot()/tree_state() IN THIS PROCESS
@@ -301,7 +301,7 @@ def whoami() -> dict:
     """WHO ran a tool, in rimflow's own seat order (rimflow/cli.py resolve_seat, minus --seat): RIMFLOW_SEAT, AGENT_SEAT,
     then `.claude/session_roles/<this session id>` -- this session's file only, never the newest. A value that is not a
     rimflow seat is kept as `seat_raw` and the seat stays None: a wrong seat is worse than none. Never raises.
-    bridge_session is the id a commit's `Claude-Session:` trailer names, so the Arbiter can tell a run made by the
+    bridge_session is the id a commit's `Claude-Session:` trailer names, so a judge can tell a run made by the
     session that made the commit. -> {seat, seat_from, seat_raw, session, bridge_session, agent}"""
     seats, root = _seats_and_root()
     sid = os.environ.get("CLAUDE_SESSION_ID") or os.environ.get("CLAUDE_CODE_SESSION_ID") or None
@@ -1168,7 +1168,7 @@ def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=F
         raise ValueError("lookup needs a sha or an item")
     if sha is not None and not (isinstance(sha, str) and _SHA_FULL.fullmatch(sha)):
         raise ValueError("lookup needs ONE full 40-hex lowercase sha, got %r (review AC2: resolve a short sha or rev "
-                         "expression to its commit first, e.g. arbiter_tiers.resolve_sha_any)" % (sha,))
+                         "expression to its commit first)" % (sha,))
     key = _key()                       # raises when missing: nothing verifiable is UNMEASURED, not "no evidence"
     bad: list = []
     hits, unver, where = [], [], []

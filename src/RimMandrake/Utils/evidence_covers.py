@@ -14,12 +14,9 @@ Never by name similarity (selftest_foo.py beside foo.py proves nothing until foo
 DECLS `trees`/`files` (cache INPUTS: declared broadly on purpose, so a stale PASS is impossible -- the opposite of a
 coverage claim), never from files a test merely opened (a lint that reads every def is not a test of every def).
 
-predict() is the static, one-hop version for planning (isolated_evidence's dry run): the imports and `*.py` string
-literals of the test source, resolved against the files of the tree. It is a PREDICTION and is never recorded.
 """
 from __future__ import annotations
 
-import ast
 import json
 import os
 import re
@@ -353,59 +350,3 @@ def merge(per_test: dict) -> tuple:
                 by.setdefault(s, set()).add(t)
     covers_by = {s: sorted(v) for s, v in sorted(by.items())}
     return sorted(tests | set(covers_by)), covers_by
-
-
-# ------------------------------------------------------------------ static prediction (plans only)
-
-def _imports(src: str):
-    """(module dotted names, '*.py' string literals) the source names. A syntax error yields nothing."""
-    try:
-        tree = ast.parse(src)
-    except (SyntaxError, ValueError):
-        return [], []
-    mods, lits = [], []
-    for n in ast.walk(tree):
-        if isinstance(n, ast.Import):
-            mods += [a.name for a in n.names]
-        elif isinstance(n, ast.ImportFrom) and n.module and not n.level:
-            mods.append(n.module)
-            mods += ["%s.%s" % (n.module, a.name) for a in n.names if a.name != "*"]
-        elif isinstance(n, ast.Constant) and isinstance(n.value, str) and n.value.endswith(".py") \
-                and len(n.value) < 200 and "\n" not in n.value:
-            lits.append(n.value)
-    return mods, lits
-
-
-def predict(rel: str, read, tree) -> set:
-    """Static one-hop guess of what the test at `rel` loads: each import / `*.py` literal resolved against the test's
-    directory, its ancestors and src/RimMandrake/Utils, kept only when that file exists in `tree` (a set of repo
-    paths). `read(rel)` -> source text or None. Planning only: evidence comes from traced()."""
-    src = read(rel)
-    if src is None:
-        return set()
-    tree = set(tree)
-    d = os.path.dirname(rel)
-    bases = []
-    while True:
-        bases.append(d)
-        if not d:
-            break
-        d = os.path.dirname(d)
-    bases.append("src/RimMandrake/Utils")
-    mods, lits = _imports(src)
-    out = set()
-    for m in mods:
-        p = m.replace(".", "/")
-        for b in bases:
-            for c in (p + ".py", p + "/__init__.py"):
-                f = (b + "/" + c) if b else c
-                if f in tree:
-                    out.add(f)
-    for lit in lits:
-        lit = lit.replace("\\", "/").lstrip("./")
-        for b in bases:
-            f = os.path.normpath((b + "/" + lit) if b else lit).replace(os.sep, "/")
-            if f in tree:
-                out.add(f)
-    out.discard(rel)
-    return out

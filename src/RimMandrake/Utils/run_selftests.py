@@ -308,7 +308,7 @@ def _rel(path: Path, root=None) -> str:
 
 def _test_root(path) -> Path:
     """The checkout a test runs FROM (its cwd, and the root its special invocation is built for): REPO_ROOT for a test
-    inside it, else the git toplevel holding the test -- an isolated_evidence private checkout runs this clone's
+    inside it, else the git toplevel holding the test -- a private checkout runs this clone's
     runner over ITS files (review AD1), and a test using relative paths must read and build that tree. A path in no
     clone at all (a scratch fixture) keeps REPO_ROOT."""
     p = Path(path).resolve()

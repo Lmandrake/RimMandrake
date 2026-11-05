@@ -53,7 +53,7 @@ TIER_DIR = "RimMandrake"
 # 18 GB tmpfs that agent scratch fills: on 2026-11-03T17:28Z four live proofs died with ENOSPC in this mkdtemp
 # (TMPFS_SCRATCH_PRUNE_FIFTH_LESSON_SAME_DISK). So the scratch goes on the ext4 disk the sources live on, inside
 # ~/.seat-tmp (a scratch_reap root, aged out by claude-seat-tmp.conf), never on a tmpfs. D: (drvfs) is ~24x slower
-# for many small files (MEASURED, rimflow/isolated_evidence.py), so not there. Env RM_COMPOSE_TMP overrides.
+# for many small files (MEASURED), so not there. Env RM_COMPOSE_TMP overrides.
 _TMPFS_ROOTS = ("/tmp", "/dev/shm", "/run")
 
 

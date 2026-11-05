@@ -1738,7 +1738,7 @@ def tt_texts(now, rules, ctx):
         for sn in seats:
             bad["commits." + sn] = "git log unreadable: %s: %s" % (type(e).__name__, str(e)[:120])
     rd = tt_roles_dir()
-    names = set(cfg.get("roles") or ["producer", "arbiter", "auditor", "innovator"])
+    names = set(cfg.get("roles") or ["producer", "auditor", "innovator"])
     try:
         if not rd.is_dir():
             raise RuntimeError("role run folder %s absent" % rd)
@@ -1789,7 +1789,7 @@ def c_tokentalk(now, rules, ctx):
     out = {}
     seats = cfg.get("seats") or ["FOUNDRY"]
     groups = list(seats) + ["commits." + s for s in seats] + ["role." + r for r in (cfg.get("roles") or
-              ["producer", "arbiter", "auditor", "innovator"])]
+              ["producer", "auditor", "innovator"])]
     for g in groups:
         why = bad.get(g) or bad.get("role._all") if g.startswith("role.") else bad.get(g)
         if why:

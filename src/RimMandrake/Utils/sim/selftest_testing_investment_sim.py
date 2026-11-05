@@ -91,7 +91,7 @@ finally:
 # 5 census classifier probes
 check("path: .cs -> csharp", C.path_kind("src/RimMandrake/FlowWorks/Source/Pump.cs") == "csharp")
 check("path: Defs xml -> xml", C.path_kind("src/RimMandrake/Cauldron/Defs/ThingDefs/X.xml") == "xml")
-check("path: rimflow -> machinery", C.path_kind("src/RimMandrake/rimflow/arbiter_tiers.py") == "machinery")
+check("path: rimflow -> machinery", C.path_kind("src/RimMandrake/rimflow/role_launch.py") == "machinery")
 check("path: Utils tool -> python_tooling", C.path_kind("src/RimMandrake/Utils/deploy_custom_mods.py") == "python_tooling")
 check("path: ledger shard ignored", C.path_kind("infrastructure/state/ledger/events/BENCH.jsonl") is None)
 check("selftest under a mod -> mod_selftest",
@@ -99,7 +99,7 @@ check("selftest under a mod -> mod_selftest",
 check("selftest under Utils -> python_tooling",
       C.selftest_kind("src/RimMandrake/Utils/selftest_refresh.py") == "python_tooling")
 check("selftest under rimflow -> machinery",
-      C.selftest_kind("src/RimMandrake/rimflow/selftest_arbiter_tiers.py") == "machinery")
+      C.selftest_kind("src/RimMandrake/rimflow/selftest_role_launch.py") == "machinery")
 check("text: evidence path is not machinery", C.text_kind("Evidence D:\\ClaudeWork\\x.png") != "machinery")
 check("text: harmony -> csharp", C.text_kind("HARMONY postfix NRE in tick") == "csharp")
 check("channel: GPT review", C.channel_of("GPT review r3 found a fail-open") == "review")

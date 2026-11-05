@@ -65,9 +65,6 @@ TARGETS = {
                                                 U + "selftest_close_evidence_chain.py",
                                                 U + "selftest_close_evidence_blast.py",
                                                 U + "selftest_evidence_harden_ad.py"]),
-    "arbiter_tiers": (R + "arbiter_tiers.py", [R + "selftest_arbiter_tiers.py", U + "selftest_evidence_harden_ad.py",
-                                         R + "selftest_isolated_evidence.py", R + "selftest_isolated_evidence_mut.py"]),
-    "isolated_evidence": (R + "isolated_evidence.py", [R + "selftest_isolated_evidence.py", R + "selftest_isolated_evidence_mut.py"]),
     "dispatcher": (R + "dispatcher.py", [R + "selftest_login_watch.py", R + "selftest_conductor_identity.py", R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py", R + "selftest_dispatcher_mut.py", R + "selftest_dispatcher_mut2.py",
                                          R + "selftest_role_launch.py", R + "selftest_seat_restart.py", R + "selftest_testpilot_route.py",
                                          U + "selftest_alarm_repeat_worse.py", U + "selftest_conductor_log_guard.py", R + "selftest_designer_stage.py",
@@ -86,9 +83,6 @@ TARGETS = {
 # reports every other importing selftest missing from TARGETS.
 _SCAFFOLD = "imports the module as scaffolding for another subject; not its oracle, so a mutant here would be caught by the target's own list (audited 2026-11-03, NIGHTLY_REDS_FIX_REMAINING_REAL_FAILS)"
 TARGET_EXCLUDE = {
-    "arbiter_tiers": {
-        R + "selftest_audit_prescreen.py": _SCAFFOLD,
-    },
     "dispatcher": {
         R + "selftest_dispatcher_busy_replay.py": _SCAFFOLD,
         R + "selftest_focus_cap.py": _SCAFFOLD,
@@ -118,7 +112,7 @@ FLAKY = {
     "role_launch": ("B1 procs_of on the real /proc sees a live marked process", "B1 procs_of: none once it is gone"),
 }
 #: measured selftest seconds per target on SteveDesktop, 2026-10-27 (sizes the shards; 3.0 for a target not here)
-BASELINE_S = {"close_evidence": 17.5, "arbiter_tiers": 3.0, "isolated_evidence": 2.0, "dispatcher": 3.4,
+BASELINE_S = {"close_evidence": 17.5, "dispatcher": 3.4,
               "v3_vs_v2": 3.5, "delegated_digest": 2.2, "role_launch": 5.0}
 STATUS = {"ok_killed": "killed", "bad_survived": "survived", "bad_timeout": "timeout",
           "ok_suspicious": "suspicious", "skipped": "skipped", "untested": "untested"}

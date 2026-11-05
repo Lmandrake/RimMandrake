@@ -8,7 +8,6 @@
   AD4 declared csproj covers honour Compile Remove / Exclude; Conditions, Imports, properties, legacy projects and a
       Directory.Build file that touches Compile fail closed (the csproj only)
   AD5 FAIL -> PASS -> FAIL written in the same second by the same process stays three records (per-record nonce)
-  AD6 an abbreviated sha that is ambiguous in a clone, or that any clone could not answer for, is UNMEASURED
 
     python3 src/RimMandrake/Utils/selftest_evidence_harden_ad.py
 """
@@ -255,48 +254,6 @@ def ad5(root, store):
           % [r["result"] for r in got])
 
 
-# ---------------------------------------------------------------------------------------------------- AD6
-def _ambiguous_repo(root):
-    """A repo with two commits sharing a 4-hex prefix (deterministic: fixed content and dates)."""
-    repo = Path(root) / "amb"
-    repo.mkdir()
-    git(repo, "init", "-q")
-    stream = []
-    for i in range(1, 801):
-        msg = "c%d\n" % i
-        stream.append("commit refs/heads/main\nmark :%d\ncommitter t <t@t> 1700000000 +0000\ndata %d\n%s%s\n"
-                      % (i, len(msg), msg, "from :%d\n" % (i - 1) if i > 1 else ""))
-    git(repo, "fast-import", "--quiet", inp="".join(stream))
-    shas = git(repo, "rev-list", "main").split()
-    seen = {}
-    for s in shas:
-        if s[:4] in seen:
-            return repo, s[:4], seen[s[:4]], s
-        seen[s[:4]] = s
-    return repo, None, None, None
-
-
-def ad6(root):
-    import arbiter_tiers as AT
-    repo, pre, s1, s2 = _ambiguous_repo(root)
-    check(pre is not None, "AD6 fixture has an ambiguous 4-hex commit prefix: %r" % pre)
-    if pre:
-        check(AT._rev_one(pre, str(repo)) == AT.GIT_ERROR,
-              "AD6 _rev_one: a prefix ambiguous inside one clone is GIT_ERROR, not 'absent': %r"
-              % AT._rev_one(pre, str(repo)))
-        check(AT._rev_one(s1[:12], str(repo)) == s1, "AD6 _rev_one: an unambiguous prefix resolves")
-        check(AT._rev_one("1234567890ab", str(repo)) is None or AT._rev_one("1234567890ab", str(repo)) == AT.GIT_ERROR,
-              "AD6 _rev_one: an unknown prefix is absent")
-    full = "a" * 40
-    rev = lambda answers: (lambda sha, repo: answers[repo])
-    check(AT.resolve_sha_any(full[:10], repos=("x", "y"), rev=rev({"x": full, "y": AT.GIT_ERROR})) == AT.GIT_ERROR,
-          "AD6 short sha found in one clone, ambiguous/erroring in another -> GIT_ERROR (UNMEASURED)")
-    check(AT.resolve_sha_any(full[:10], repos=("x", "y"), rev=rev({"x": full, "y": None})) == full,
-          "AD6 short sha found in one clone, absent in the other -> that commit")
-    check(AT.resolve_sha_any(full, repos=("x", "y"), rev=rev({"x": full, "y": AT.GIT_ERROR})) == full,
-          "AD6 a FULL sha cannot be ambiguous: one clone's error does not void it")
-
-
 def main():
     if os.environ.get("AD_CWD_PROBE"):           # AD1's probe of the instrument clone: print the cwd and exit
         ok = os.path.realpath(os.getcwd()) == os.path.realpath(str(HERE.parents[2]))
@@ -312,7 +269,7 @@ def main():
         os.environ.pop("RIMFLOW_ITEM", None)
         try:
             for name, fn, args in (("ad1", ad1, ()), ("ad2", ad2, (store,)), ("ad3", ad3, (store,)),
-                                   ("ad4", ad4, ()), ("ad5", ad5, (store,)), ("ad6", ad6, ())):
+                                   ("ad4", ad4, ()), ("ad5", ad5, (store,))):
                 d = td / name
                 d.mkdir()
                 try:

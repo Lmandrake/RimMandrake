@@ -156,19 +156,6 @@
     }
    }
   },
-  "roles.Arbiter.acted_share": {
-   "owner": "Operations",
-   "max_age_min": 60,
-   "why": "RO1: the share of Arbiter's outputs somebody later acted on. Report-only and coarse: under range two weeks running gets a named fix of its input or its reader from the Conductor, and nothing rings. 0.25 is a first line, set by hand from the 2026-11-01 reading, not a target. Most verdicts feed gates or pass an item, with no ledger action to see, so this one reads low on a working Arbiter: read it beside the gates.",
-   "classes": {
-    "under": {
-     "at_least": 0
-    },
-    "sane": {
-     "at_least": 0.25
-    }
-   }
-  },
   "roles.Producer.acted_share": {
    "owner": "Operations",
    "max_age_min": 60,
@@ -511,11 +498,6 @@
     "coarse": "(?i)^audit",
     "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
    },
-   "Arbiter": {
-    "marked": "(?i)^arbiter \\d\\d:\\d\\d batch|role_verdict_note Arbiter|rm-role-arbiter-\\d",
-    "coarse": "(?i)^arbiter\\b",
-    "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
-   },
    "Producer": {
     "marked": "(?i)^producer (status|daily|weekly|event|run)|rm-role-producer-\\d",
     "coarse": "(?i)^producer\\b",
@@ -789,7 +771,7 @@
   "window_days": 7,
   "min_reports": 5,
   "seats": ["FOUNDRY"],
-  "roles": ["producer", "arbiter", "auditor", "innovator"],
+  "roles": ["producer", "auditor", "innovator"],
   "_seats_why": "owner 2026-10-31: \"Conductor accesses everything.\" Seat BENCH (the Conductor and its helpers) and the conductor role are not measured.",
   "terms": ["tokens?", "burn(?:s|ed|ing)?", "budget(?:s|ed|ing)?", "quota", "runway", "throttl\\w*", "(?:token|daily|week(?:ly)?|session|usage) caps?", "spend(?:s|ing)?", "spent", "cheap(?:er|ly)?", "economi[sz]\\w*", "thrift\\w*"]
  },

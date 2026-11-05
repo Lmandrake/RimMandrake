@@ -63,7 +63,6 @@ SELFTESTS = {
                    U + "selftest_deadman_check.py", R + "selftest_role_tokens.py"],
     "Conductor": [R + "selftest_delegated_digest.py", R + "selftest_role_launch.py"],
     "Operations": [U + "selftest_ops_watch.py", R + "selftest_blind_view.py", R + "selftest_role_launch.py"],
-    "Arbiter": [R + "selftest_arbiter_tiers.py", R + "selftest_isolated_evidence.py", R + "selftest_role_launch.py"],
     "Auditor": [R + "selftest_audits.py", R + "selftest_audit_prescreen.py", R + "selftest_audit_prescreen_window.py", R + "selftest_role_launch.py"],
     "Producer": [R + "selftest_role_launch.py"],
     "Innovator": [R + "selftest_role_launch.py"],
@@ -410,7 +409,7 @@ def selftest_results(ctx):
 
 def role_globs(ctx, name=None):
     out = []
-    for n in ([name] if name else ["conductor", "operations", "arbiter", "auditor", "producer", "innovator"]):
+    for n in ([name] if name else ["conductor", "operations", "auditor", "producer", "innovator"]):
         for p in glob.glob(os.path.join(ctx.repo, R, "selftest_%s*.py" % n.lower())):
             out.append(os.path.relpath(p, ctx.repo))
     return out
@@ -440,7 +439,7 @@ def selftest_row(ctx, comp, res, why):
     return row(comp, "selftests", "GO", "PASS %d/%d%s" % (len(files), len(files), note))
 
 
-ROLE_NAMES = ("Conductor", "Operations", "Arbiter", "Auditor", "Producer", "Innovator")
+ROLE_NAMES = ("Conductor", "Operations", "Auditor", "Producer", "Innovator")
 
 
 def run_records(ctx, role, state):

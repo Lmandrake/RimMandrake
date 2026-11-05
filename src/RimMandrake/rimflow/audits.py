@@ -3,7 +3,7 @@
 
 The schema is audits.schema.json beside this file; this module is its only reader and enforcer. Everything that
 reads or writes D:\\ClaudeWork\\rimmandrake\\auditor\\audits.jsonl goes through here: audit_prescreen.py and
-arbiter_tiers.py (past_audit_failed), the Auditor's appends (roles/auditor.md "Two records per result") and the
+the Auditor's appends (roles/auditor.md "Two records per result") and the
 waiting index ("Carried picks").
 
   ensure   create the file when it is absent (an empty file = no audits yet), never truncate one that exists, then

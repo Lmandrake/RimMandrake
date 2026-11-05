@@ -55,7 +55,7 @@ def check(cond, msg):
 
 
 NOW = 1793232000.0  # 2026-10-29T00:00:00Z
-ROLES = ["Conductor", "Arbiter", "Auditor", "Operations", "Producer", "Innovator"]
+ROLES = ["Conductor", "Auditor", "Operations", "Producer", "Innovator"]
 GOOD_USAGE = {"input_tokens": 10, "cache_creation_input_tokens": 1000, "cache_read_input_tokens": 10000,
               "output_tokens": 1000,
               "cache_creation": {"ephemeral_1h_input_tokens": 1000, "ephemeral_5m_input_tokens": 0}}
@@ -297,12 +297,16 @@ try:
     os.remove(os.path.join(ctx.repo, "src/RimMandrake/rimflow/roles/producer.md"))
     rows = rows_of(ctx)
     check(verdict(rows, "Producer", "instructions") == "NO-GO", "R7 missing instructions: NO-GO")
-    check(verdict(rows, "Arbiter", "instructions") == "GO", "R7 other roles unaffected")
+    check(verdict(rows, "Auditor", "instructions") == "GO", "R7 other roles unaffected")
 
     # R8
     root, ctx, fake = fresh(); roots.append(root)
     st = json.load(open(os.path.join(ctx.S, "state.json")))
-    st["roles"]["Arbiter"]["runs"][0]["tokens"] = 600000
+    st["roles"]["Producer"]["runs"][0]["tokens"] = 600000
+    wjson(os.path.join(ctx.S, "state.json"), st)
+    check(verdict(rows_of(ctx), "Producer", "last run under cap") == "NO-GO", "R8 over cap: NO-GO")
+    root, ctx, fake = fresh(); roots.append(root)
+    st = json.load(open(os.path.join(ctx.S, "state.json")))
     st["roles"]["Auditor"]["runs"][0]["state"] = "failed"
     st["roles"]["Innovator"]["runs"] = []
     st["roles"]["Operations"]["runs"][0]["tokens"] = 500000  # economy cap 550k: under
@@ -311,7 +315,6 @@ try:
     wjson(os.path.join(ctx.S, "roles", "rm-role-producer-1793230000.json"),
           {"subtype": "success", "is_error": False, "usage": GOOD_USAGE})
     rows = rows_of(ctx)
-    check(verdict(rows, "Arbiter", "last run under cap") == "NO-GO", "R8 over cap: NO-GO")
     check(verdict(rows, "Auditor", "last run under cap") == "NO-GO", "R8 failed run: NO-GO")
     check(verdict(rows, "Innovator", "last run under cap") == "UNMEASURED", "R8 never run: UNMEASURED")
     check(verdict(rows, "Operations", "last run under cap") == "GO", "R8 economy run under economy cap: GO")
