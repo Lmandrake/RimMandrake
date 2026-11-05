@@ -1,0 +1,1 @@
+A stubbed runner.run() selftest reaches the REAL bridge whenever runner gains a new bridge read nobody stubbed (11-04: verify_loaded_list -> jawa/running_mods, 5 FAILs from WSL; from Windows Python it would drive the live game). selftest_targeting now fences rimbridge_client in stubbed_run and FAILs 'hermetic' naming the caller; copy the fence into any selftest that stubs runner.
