@@ -67,21 +67,31 @@ def git(d, *a):
     return subprocess.run(["git", "-C", d, *a], capture_output=True, text=True, env=env, check=True).stdout.strip()
 
 
+def adapter_tests():
+    """-> the adapter's fixed test list, read from its argv (selftest_relentless_reach_item_prose joined it, gen 3)."""
+    import ast
+    import re
+    src = next(a for a in W.adapters(rules())[ADAPTER]["argv"] if "tests = [" in a)
+    return ast.literal_eval(re.search(r"tests = (\[[^\]]*\])", src).group(1))
+
+
 def commit(repo, body):
     d = os.path.join(repo, "src", "RimMandrake", "rimflow")
     os.makedirs(d, exist_ok=True)
     os.makedirs(os.path.join(repo, "src", "RimMandrake", "Utils"), exist_ok=True)
     with open(os.path.join(repo, "src", "RimMandrake", "Utils", "keep.txt"), "w") as f:
         f.write("u\n")
-    f = os.path.join(d, "selftest_relentless_reach_git_grant.py")
+    for t in adapter_tests():    # every test the adapter's fixed list runs gets the body (a new one joins by rules change)
+        f = os.path.join(d, t + ".py")
+        if body is None:
+            if os.path.exists(f):
+                os.remove(f)
+        else:
+            with open(f, "w") as g:
+                g.write(body)
     if body is None:
-        if os.path.exists(f):
-            os.remove(f)
         with open(os.path.join(d, "other.py"), "w") as g:
             g.write("x = 1\n")
-    else:
-        with open(f, "w") as g:
-            g.write(body)
     git(repo, "add", "-A")
     git(repo, "commit", "-qm", "c")
     return git(repo, "rev-parse", "HEAD")

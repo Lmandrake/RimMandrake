@@ -3125,6 +3125,11 @@ class Effects(relentless_game.GameFx):
             seen.append(what)
             if not ok:
                 return False, "; ".join(seen)
+        if relentless_wall.ITEM_GRANT in (grants or ()):
+            ok, what = self._probe_items(r, values, store_root)
+            seen.append(what)
+            if not ok:
+                return False, "; ".join(seen)
         if paths:
             prof = relentless_wall.profile(r)
             os.makedirs(prof["box_root"], exist_ok=True)
@@ -3181,6 +3186,37 @@ class Effects(relentless_game.GameFx):
             out = ((p.stdout or "") + (p.stderr or "")).strip()
             good = p.returncode == 0 and ("HEAD " + sha) in out
             return good, ("git_history exit %d: %s" % (p.returncode, out))[-400:]
+        finally:
+            shutil.rmtree(box, ignore_errors=True)
+
+    def _probe_items(self, r, values, store_root):
+        """The item_prose grant (relentless_wall.grant_items), made in a throwaway box at the candidate and listed from
+        inside the wall: an item file must read there, as it will in the Marker's tree."""
+        import tempfile
+        prof = relentless_wall.profile(r)
+        sha, repo = values.get("sha") or "", values.get("repo") or self.books
+        if not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", sha):
+            return False, "item_prose: no candidate sha to probe at (%r)" % sha[:20]
+        os.makedirs(prof["box_root"], exist_ok=True)
+        box = tempfile.mkdtemp(prefix="reachprobe-", dir=prof["box_root"])
+        try:
+            for sub in ("projects", "tmp", "tree"):
+                os.makedirs(os.path.join(box, sub), exist_ok=True)
+            try:
+                relentless_wall.grant_items(box, repo, sha)
+            except (OSError, RuntimeError, subprocess.SubprocessError) as e:
+                return False, "item_prose: the grant could not be made at %s: %s" % (sha[:10], str(e)[-200:])
+            # positional only: systemd substitutes $name in the command line (a named shell variable reads empty)
+            body = 'set -- "$1"/*.md; [ -r "$1" ] && head -c 1 -- "$1" >/dev/null && echo "read $1"'
+            argv = (["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet"]
+                    + relentless_wall.props(prof, box, [store_root])
+                    + ["--", "/bin/sh", "-c", body, "sh", os.path.join(box, "tree", relentless_wall.ITEMS)])
+            try:
+                p = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+            except (OSError, subprocess.SubprocessError) as e:
+                return False, "probe unit: %s: %s" % (type(e).__name__, e)
+            out = ((p.stdout or "") + (p.stderr or "")).strip()
+            return p.returncode == 0 and "read " in out, ("item_prose exit %d: %s" % (p.returncode, out))[-400:]
         finally:
             shutil.rmtree(box, ignore_errors=True)
 

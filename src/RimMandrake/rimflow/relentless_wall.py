@@ -333,6 +333,13 @@ def make_box(prof, source, sha, nonce, grants=()):
     (box / "nonce").write_text(nonce, encoding="ascii")
     (box / "verdict").write_text(VERDICT_SCRIPT, encoding="utf-8")
     os.chmod(box / "verdict", 0o755)
+    if ITEM_GRANT in (grants or ()):
+        try:    # the items as of the ledger snapshot's commit, so the two agree; a root commit has only itself
+            grant_items(box, source, parent if parent == sha + "^" else sha)
+        except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as e:
+            shutil.rmtree(tree / ITEMS, ignore_errors=True)
+            (box / ITEM_NOTE).unlink(missing_ok=True)
+            (box / "item_grant_failed").write_text(str(e)[-400:], encoding="utf-8")
     if GIT_GRANT in (grants or ()):
         try:
             grant_git(box, source, sha)
@@ -355,8 +362,17 @@ def make_box(prof, source, sha, nonce, grants=()):
 # prompt says those are workers' words. The wall stops accident, not a hostile Marker (module doc); refs to later commits
 # (origin/main, the supervisor's verdict commits) are never written, so --all walks the candidate's ancestry only.
 GIT_GRANT = "git_history"
-GRANTS = (GIT_GRANT,)
 GIT_NOTE = "gitobj.json"
+# CHECKER_REACH_FIX_OTHER_STILL_DARK gen 3: tree_exclude keeps infrastructure/state/items out of every box, and a proof that
+# reads the live item glob (NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK's selftest: "UMBRA_TITAN_POPULATE_BURNS_TO_WALK.md ...
+# whole items dir absent in export") classed `other`, whose repair binds HOST paths: it passed its probe and the Judge
+# stayed blind, since no bind puts a file into the exported tree. A passed items repair grants the box that folder from
+# git as of the ledger snapshot's commit (tree_from_parent), read only, like the ledger. It is filers' prose, never a
+# worker's account (the builder's commit cannot touch it: LEDGER_ONLY), and the prompt says to judge by runs, not by it.
+ITEM_GRANT = "item_prose"
+ITEMS = "infrastructure/state/items"
+ITEM_NOTE = "items.json"
+GRANTS = (GIT_GRANT, ITEM_GRANT)
 GIT_COPY_MAX = 2 << 30      # a borrower's own objects past this are no --shared check clone: no grant, the plain box
 
 
@@ -431,6 +447,27 @@ def grant_git(box, source, sha):
         subprocess.run(["git", "update-index", "-z", "--skip-worktree", "--stdin"], env=env, input=b"\0".join(gone) + b"\0",
                        capture_output=True, timeout=300, check=True)
     (box / GIT_NOTE).write_text(json.dumps({"sha": sha, "binds": binds}), encoding="utf-8")
+
+
+def grant_items(box, source, rev):
+    """tree/infrastructure/state/items as of rev, read only (_snapshot); a rev with no item file is no grant."""
+    box = Path(box)
+    tree = box / "tree"
+    _snapshot(source, rev, [ITEMS], tree, box)
+    n = sum(len(fn) for _, _, fn in os.walk(tree / ITEMS))
+    if not n:
+        raise RuntimeError("item grant: no %s at %s" % (ITEMS, str(rev)[:12]))
+    (box / ITEM_NOTE).write_text(json.dumps({"rev": rev, "files": n}), encoding="utf-8")
+
+
+def item_reads(box):
+    """-> {rev, files} when the box was made with the item_prose grant, else {}."""
+    try:
+        with open(os.path.join(str(box), ITEM_NOTE), encoding="utf-8") as f:
+            got = json.load(f)
+        return got if isinstance(got, dict) and got.get("files") else {}
+    except (OSError, ValueError):
+        return {}
 
 
 def git_reads(box):
@@ -513,6 +550,8 @@ def marker_prompt(st, text, box, adapter_names=()):
         "there is no branch or remote, and every ancestor reads. Commit messages, and the excluded folders git can still "
         "show, are workers' words, not evidence: judge by your own runs." % c["sha"],
         *RULE,
+        *(["%s/ is in your tree as of %s (a reach repair granted it), read only: it is the filers' item prose, not "
+           "evidence the work was done." % (ITEMS, str(item_reads(box)["rev"])[:12])] if item_reads(box) else []),
         "Then run exactly one of:",
         "  python3 %s PASS \"what you ran and saw\"" % qv,
         "  python3 %s WEAK \"the runs you made and what each showed, then each gap and the mutant or probe that "
