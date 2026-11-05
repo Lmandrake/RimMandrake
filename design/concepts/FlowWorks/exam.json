@@ -1,0 +1,345 @@
+{
+ "author": "rm-role-designer-1793863469",
+ "examiner": "agent:ade4a89b3cdad9f61 (rm-judge, fresh)",
+ "challenger": "agent:a250cb39796902286 (rm-judge, fresh)",
+ "inputs": {
+  "tree": "572198fed9a064df1898d695529f85fc343cfeb09bab2d3fe5773bc3abab149d",
+  "sheet": "68f9946f8e250af1b2dd19f7ccc901be45ed82c2550693f033dd4b7b83480070"
+ },
+ "scenarios": [
+  {
+   "id": "e1",
+   "text": "A raid of six reaches a fortress ringed by a deep water moat under a raised drawbridge. The raiders enter the water and swim; partway across, their rest bars fall steadily and they slow. The player opens the sluice and the moat level falls quickly over a few seconds of play until the bed is bare, with the raiders still down in it.",
+   "expect": "accept: the flagship sequence is raiders swimming the deep moat and tiring, then the sluice draining it fast with them held in the pit",
+   "expect_source": "moat_raid_sequence"
+  },
+  {
+   "id": "e2",
+   "text": "After the moat has drained, the raiders standing on the dry moat bed walk to the inner wall and step straight up onto the ground beside the fortress, with no ladder, climbing gear or jump involved, and continue toward the door.",
+   "expect": "reject: the design's red condition is raiders climbing out once the moat is drained; they must be held in the pit",
+   "expect_source": "moat_raid_sequence"
+  },
+  {
+   "id": "e3",
+   "text": "Two downed raiders lie in a drained moat; there is no prisoner bed anywhere in the hole. The player selects a colonist on the rim and orders capture. The raiders become prisoners and remain down in the moat, and over the next day they are brought food like other prisoners.",
+   "expect": "accept: capture from the rim works with no bed; the hole is the prison and the prisoner is fed and kept like any prisoner",
+   "expect_source": "drained_hole_is_a_prison"
+  },
+  {
+   "id": "e4",
+   "text": "The player orders a toss-a-flame on a chemfuel moat square six cells from the nearest colonist. The square ignites on the same tick the order is given, while the colonist stays where they were.",
+   "expect": "reject: a colonist must walk to the rim and toss the flame; the order lighting the square instantly with no colonist walking is a listed false pass",
+   "expect_source": "toss_flame_from_rim"
+  },
+  {
+   "id": "e5",
+   "text": "A covered spiked pit lies across a passage to the colony door. At play zoom nothing marks it. A raider heavier than the cover's tier steps onto it and drops through onto the spikes below; a light colonist walking a twin cover crosses without falling.",
+   "expect": "accept: a covered pit is unseen at play zoom and drops a heavy enemy onto spikes",
+   "expect_source": "covered_pit_springs"
+  },
+  {
+   "id": "e6",
+   "text": "Two raiders have fallen into a covered spiked pit. The remaining four ignore them entirely and walk on to attack the colony door; nobody cuts wood or tries to retrieve the fallen.",
+   "expect": "reject: raiders whose comrades fell must chop wood for a ladder to fetch them; ignoring them and attacking the door is the red condition",
+   "expect_source": "raiders_fetch_their_fallen"
+  },
+  {
+   "id": "e7",
+   "text": "A raider is trapped in a superdeep 1x1 pit. At play zoom the raider's sprite is drawn standing upright on the floor level above the pit, at full height, like a pawn on normal ground, though greyed out.",
+   "expect": "reject: a pawn caught in a pit is never drawn standing at ground level; standing but greyed is a listed false pass",
+   "expect_source": "no_snared_standing"
+  },
+  {
+   "id": "e8",
+   "text": "A 200-square pond fills a 60-cell moat. Immediately after the fill, the pond's drawn shoreline has pulled back and its level is visibly lower. Over the following rainy days its shore creeps back out a little each day.",
+   "expect": "accept: the source pays, its shore recedes, and it refills slowly with visible progress",
+   "expect_source": "source_pays_and_refills"
+  },
+  {
+   "id": "e9",
+   "text": "A player lights the far end of a tar canal joined to a tar pool with a real fire. The canal flares across its length and is fully out within about a second, the pool untouched, and only the bank grass is left smouldering.",
+   "expect": "reject: the burnable canal must burn long and back to its source; flashing out in a second and never reaching the pool is the red condition",
+   "expect_source": "canal_fire_burns_back"
+  },
+  {
+   "id": "e10",
+   "text": "A colonist is ordered across a D2 slime canal and, beside it, a D2 water canal. On the slime crossing the colonist sinks in, slips back repeatedly on the climb out, and takes far longer than the colonist crossing the water canal.",
+   "expect": "accept: slime is thick, a pawn sinks, slips and slides back, so the crossing is nearly closed",
+   "expect_source": "slime_holds_the_crossing"
+  },
+  {
+   "id": "e11",
+   "text": "A powered pump fills a tank, which feeds a hose to a second tank. The player drops (unscrews) the hose. The tester reading litres sees the second tank keep filling at the same rate after the hose is dropped.",
+   "expect": "reject: a dropped hose carries nothing; the second tank filling while the hose lies dropped is the red condition",
+   "expect_source": "one_liquid_network"
+  },
+  {
+   "id": "e12",
+   "text": "Beside a full canal on dry sand, the cells within two squares of it show the wetted-sand look. A pawn walking over them wades as through shallow water, and the inspect pane reports litres of standing water on those cells.",
+   "expect": "reject: wetted ground is never standing water; wetted cells holding litres a pawn wades through is the red condition",
+   "expect_source": "wetting_is_not_flood"
+  },
+  {
+   "id": "c1",
+   "text": "A 60-cell moat is filled from a 200-square dug pond. When the fill finishes, the moat stands full and the water front stopped at the moat's end. The inspect pane on the pond shows its stock down by about a third, but the pond is still drawn edge to edge, with its shoreline exactly where it was before the fill.",
+   "expect": "reject: the pond looks full right after a moat drew heavily from it; its number dropped but its drawn shore never moved",
+   "expect_source": "no_full_source_after_draw"
+  },
+  {
+   "id": "c2",
+   "text": "A 1x12 D2 canal cut into a pond fills cell by cell and stops at its end. When it stands full, the bank cells on either side show a thin glossy water layer at the same tint as the canal. The weather is clear and no flood has been triggered. The tester notes that the inspect pane counts those bank cells as 'wet' rather than as liquid.",
+   "expect": "reject: canal liquid is drawn standing on undug bank ground with no flood; calling the tinted bank 'not liquid' is the listed false pass",
+   "expect_source": "no_liquid_on_open_ground"
+  },
+  {
+   "id": "c3",
+   "text": "Two downed raiders lie in a drained D4 moat. The player orders capture from the rim and nothing happens. The player then has a prisoner bed built at the bottom of the moat and orders capture again. A colonist captures both from the rim, and a day later they are fed and held in the hole as prisoners.",
+   "expect": "reject: capture was refused until a prisoner bed was put down there; the design requires the hole itself to be the prison with no bed",
+   "expect_source": "drained_hole_is_a_prison"
+  },
+  {
+   "id": "c4",
+   "text": "A covered spiked pit on the passage to the door catches two raiders. The other four chop saplings, build a ladder, and lay it across the pit as a span. They cross toward the defenders, and when arrows drive them back they retreat over it, leaving the two in the pit, who become prisoners.",
+   "expect": "reject: the raiders used the ladder to cross instead of going down to fetch their fallen, which is the listed false pass",
+   "expect_source": "raiders_fetch_their_fallen"
+  },
+  {
+   "id": "c5",
+   "text": "A hose runs from a powered pump to a tank, and a wall stands across the straight route. The hose sprite bends around the wall's end and looks properly laid. Litres leave the pump and arrive in the tank in equal amounts. Reading the hose's network cells shows that the path goes straight through the wall cell, not along the drawn detour.",
+   "expect": "reject: the hose is drawn round the wall but carries through the impassable cell, which is the listed false pass",
+   "expect_source": "no_impossible_plumbing"
+  }
+ ],
+ "scenarios_hash": "b946d2c53e91ba8f874b045affe4d21a191244e1797821c577de1812ca11b46c",
+ "readers": [
+  "agent:a973694af5dc4757a",
+  "agent:acddc523961c33401"
+ ],
+ "reader_verdicts": {
+  "a": [
+   {
+    "id": "e1",
+    "verdict": "accept",
+    "leaf": "moat_raid_sequence",
+    "why": "Raiders swim and tire under the raised drawbridge, the sluice drains the moat fast, and they are left held in the pit."
+   },
+   {
+    "id": "e2",
+    "verdict": "reject",
+    "leaf": "moat_raid_sequence",
+    "why": "The red case is raiders who walk across the bed or climb out once it is drained; ways_in_and_out allows only a ladder, climbing gear or a jump."
+   },
+   {
+    "id": "e3",
+    "verdict": "accept",
+    "leaf": "drained_hole_is_a_prison",
+    "why": "Capture from the rim with no bed, and the prisoner is held in the hole and fed like any prisoner."
+   },
+   {
+    "id": "e4",
+    "verdict": "reject",
+    "leaf": "toss_flame_from_rim",
+    "why": "False pass: the order lights the square instantly with no colonist walking to the rim."
+   },
+   {
+    "id": "e5",
+    "verdict": "accept",
+    "leaf": "covered_pit_springs",
+    "why": "The pit is unseen at play zoom, the heavy raider drops onto the spikes, and the light colonist crosses the twin safely."
+   },
+   {
+    "id": "e6",
+    "verdict": "reject",
+    "leaf": "raiders_fetch_their_fallen",
+    "why": "The red case exactly: raiders ignore their fallen and attack the door."
+   },
+   {
+    "id": "e7",
+    "verdict": "reject",
+    "leaf": "no_snared_standing",
+    "why": "The red case and a named false pass: the trapped pawn is drawn standing on the floor above, greyed out."
+   },
+   {
+    "id": "e8",
+    "verdict": "accept",
+    "leaf": "source_pays_and_refills",
+    "why": "The pond's shore pulls back and its level drops after the fill, then it refills visibly a little each day."
+   },
+   {
+    "id": "e9",
+    "verdict": "reject",
+    "leaf": "canal_fire_burns_back",
+    "why": "The red case: the canal flashes out in a second, never reaches the pool, and only the bank grass burns."
+   },
+   {
+    "id": "e10",
+    "verdict": "accept",
+    "leaf": "slime_holds_the_crossing",
+    "why": "The pawn sinks and slips back, and the slime crossing is far slower than the water one."
+   },
+   {
+    "id": "e11",
+    "verdict": "reject",
+    "leaf": "one_liquid_network",
+    "why": "The red case: the second tank keeps filling after the hose is dropped."
+   },
+   {
+    "id": "e12",
+    "verdict": "reject",
+    "leaf": "wetting_is_not_flood",
+    "why": "The red case: wetted cells hold litres of standing water that a pawn wades through."
+   },
+   {
+    "id": "c1",
+    "verdict": "reject",
+    "leaf": "source_pays_and_refills",
+    "why": "False pass: the pond's number drops but its drawn shore never moves (also no_full_source_after_draw)."
+   },
+   {
+    "id": "c2",
+    "verdict": "reject",
+    "leaf": "wetting_is_not_flood",
+    "why": "The bank cells are drawn as a glossy water sheet in the canal's tint, which is the 'wetting is a thin flood sheet' false pass; fill_flows_along_canal also forbids liquid on the banks."
+   },
+   {
+    "id": "c3",
+    "verdict": "reject",
+    "leaf": "drained_hole_is_a_prison",
+    "why": "The red case: capture is refused until a prisoner bed is built down in the hole."
+   },
+   {
+    "id": "c4",
+    "verdict": "reject",
+    "leaf": "raiders_fetch_their_fallen",
+    "why": "False pass: the raiders use the ladder to cross the pit instead of going down for their fallen."
+   },
+   {
+    "id": "c5",
+    "verdict": "reject",
+    "leaf": "no_impossible_plumbing",
+    "why": "False pass: the hose is drawn round the wall but carries through the wall cell."
+   }
+  ],
+  "b": [
+   {
+    "id": "e1",
+    "verdict": "accept",
+    "leaf": "moat_raid_sequence",
+    "why": "Swim under raised drawbridge, tire, sluice drains fast, raiders held in pit: the flagship sequence."
+   },
+   {
+    "id": "e2",
+    "verdict": "reject",
+    "leaf": "ways_in_and_out",
+    "why": "Ladders, climbing gear and jumps are the only ways out of a pit; walking out breaks the trap."
+   },
+   {
+    "id": "e3",
+    "verdict": "accept",
+    "leaf": "drained_hole_is_a_prison",
+    "why": "Capture from rim with no bed; prisoners held in the hole and fed like any prisoner."
+   },
+   {
+    "id": "e4",
+    "verdict": "reject",
+    "leaf": "toss_flame_from_rim",
+    "why": "A colonist must walk to the rim and toss the flame; instant lighting with no walk is a named false pass."
+   },
+   {
+    "id": "e5",
+    "verdict": "accept",
+    "leaf": "covered_pit_springs",
+    "why": "Unseen at play zoom, heavy enemy drops onto spikes, light colonist crosses twin safely."
+   },
+   {
+    "id": "e6",
+    "verdict": "reject",
+    "leaf": "raiders_fetch_their_fallen",
+    "why": "Raiders ignoring fallen comrades and attacking the door is the leaf's red."
+   },
+   {
+    "id": "e7",
+    "verdict": "reject",
+    "leaf": "no_snared_standing",
+    "why": "A pit-caught pawn is never drawn standing at ground level."
+   },
+   {
+    "id": "e8",
+    "verdict": "accept",
+    "leaf": "source_pays_and_refills",
+    "why": "Pond drops and shore recedes after the draw, then refills slowly."
+   },
+   {
+    "id": "e9",
+    "verdict": "reject",
+    "leaf": "canal_fire_burns_back",
+    "why": "Canal must burn long and back to the source; a one-second flash with pool untouched and only grass burning is red/false pass."
+   },
+   {
+    "id": "e10",
+    "verdict": "accept",
+    "leaf": "slime_holds_the_crossing",
+    "why": "Slime sinks, slips back, crossing nearly closed compared to water."
+   },
+   {
+    "id": "e11",
+    "verdict": "reject",
+    "leaf": "one_liquid_network",
+    "why": "A dropped hose carries nothing; tank still filling is the red."
+   },
+   {
+    "id": "e12",
+    "verdict": "reject",
+    "leaf": "wetting_is_not_flood",
+    "why": "Wetted cells holding litres a pawn wades through is the leaf's red."
+   },
+   {
+    "id": "c1",
+    "verdict": "reject",
+    "leaf": "no_full_source_after_draw",
+    "why": "Pond must not look full after a heavy draw; shoreline unchanged while stock dropped a third fails."
+   },
+   {
+    "id": "c2",
+    "verdict": "reject",
+    "leaf": "wetting_is_not_flood",
+    "why": "Wetted banks drawn as a glossy water layer read as standing water (thin flood sheet false pass), regardless of the inspect label."
+   },
+   {
+    "id": "c3",
+    "verdict": "reject",
+    "leaf": "drained_hole_is_a_prison",
+    "why": "Capture refused without a bed in the hole is the red; the hole itself must be the prison."
+   },
+   {
+    "id": "c4",
+    "verdict": "reject",
+    "leaf": "raiders_fetch_their_fallen",
+    "why": "Ladder must go down to fetch the fallen; using it to cross the pit instead is a named false pass."
+   },
+   {
+    "id": "c5",
+    "verdict": "reject",
+    "leaf": "no_impossible_plumbing",
+    "why": "Hose drawn round the wall but carrying through it is the named false pass."
+   }
+  ]
+ },
+ "control": {
+  "broken_leaf": "raiders_fetch_their_fallen",
+  "reader": "agent:ad5c99c50ba874a30",
+  "missed": true,
+  "missed_ids": [
+   "e6",
+   "c4"
+  ],
+  "note": "leaf removed from tree and its two sheet lines; control accepted both scenarios that leaf rejects, all 15 others matched"
+ },
+ "score": {
+  "right": 17,
+  "total": 17
+ },
+ "accept_where_reject_core": 0,
+ "challenger_misses": [],
+ "notes": "Both readers matched expect on all 17; Reader A cited source_pays_and_refills for c1 and Reader B ways_in_and_out for e2 (same verdict, neighbouring leaf)."
+}
