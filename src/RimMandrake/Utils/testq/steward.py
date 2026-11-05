@@ -55,8 +55,11 @@ Escalation (section 6.4), each at most once per incident:
              when rimflow incident.receiver_problem says nobody would pick it up (T2, ALARMS_REWIRE_OFF_RETIRED_BENCH);
              a failed `steve:lane` record lights the pulse health row
   T+30 min   `rimflow raise` it: first in relentless pool_order and `rimflow next --seat BENCH`, a line in the phone brief
-  T+120 min  with no claim: spawn for OWNER (needs owner, the Conductor's sitting; a seat's item stays open beside it; titled "IN PERSON:" when
-             SteveDesktop is unreachable)
+  T+120 min  with no claim: tell Operations, never him (STEWARD_RUNG_FIX_ASKS_THE_WRONG_GROWNUP: unsticking a lane is no
+             delegation_policy s2 call, and its OWNER needs=owner item went back to agents): one told row, metric
+             STEVE_RUNG_KIND, routed by alarm_routes.json steve.* to an Operations incident whose chain climbs to the
+             Conductor; it names the drainable item, which stays open, and says "IN PERSON:" when SteveDesktop is
+             unreachable. No new item. (An older incident's incident.owner_item is only retired.)
 Recovery (a DONE+canary job after the incident began) records `steve:lane` ok, notes the item and drops the items the incident spawned.
 
 The LLM wake (the owner's card ruling 2026-10-26 12:27 PDT, "Yes, after 30 min", on STEVE_STEWARD_BUILD_NO_LLM_OWNER):
@@ -250,19 +253,34 @@ BENCH_SHARD = "infrastructure/state/ledger/events/BENCH.jsonl"
 # the L1 item's seat: relentless's home pool (relentless_rules.json pool_seats), which its workers drain; the T2 check
 # (rimflow incident.receiver_problem) refuses the spawn if no program would pick it up
 ALARM_SEAT = "BENCH"
+# the T+120 rung's told-ledger metric: alarm_routes.json steve.* sends it to Operations (alarm_census reads it here)
+STEVE_RUNG_KIND = "steve.lane_unowned_rung"
+
+
+def _incident_mod():
+    """rimflow incident.py of this tree (ingest.REPO), loaded by path: the steward runs outside the rimflow dir."""
+    import importlib.util
+    import ingest
+    spec = importlib.util.spec_from_file_location(
+        "steward_incident", os.path.join(ingest.REPO, "src/RimMandrake/rimflow/incident.py"))
+    inc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(inc)
+    return inc
+
+
+def tell_operations(why, item, now):
+    """The T+120 rung: one told row for Operations' incident ladder (incident.step folds it; its `item` rides along).
+    Raises on a write it could not make, so the caller retries next pass."""
+    IN = _incident_mod()
+    IN.append([{"metric": STEVE_RUNG_KIND, "kind": STEVE_RUNG_KIND, "why": str(why)[:300], "told_at": iso(now),
+                "item": item, "class": (IN.route_of(IN.load_table(), STEVE_RUNG_KIND) or {}).get("class")}])
 
 
 def nobody_for(seat, needs):
     """-> why nobody would pick up an item filed --for seat --needs needs, or None (incident.receiver_problem in this
     tree). A tree that cannot answer is reported as a problem, so an alarm is never filed blind."""
     try:
-        import importlib.util
-        import ingest
-        spec = importlib.util.spec_from_file_location(
-            "steward_incident", os.path.join(ingest.REPO, "src/RimMandrake/rimflow/incident.py"))
-        inc = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(inc)
-        return inc.receiver_problem(seat, needs)
+        return _incident_mod().receiver_problem(seat, needs)
     except Exception as e:     # noqa: BLE001
         return "receiver check failed: %s: %s" % (type(e).__name__, e)
 
@@ -815,7 +833,7 @@ def _escalate(inc, ls, now, last_item, src):
     what = "%s: %s%s" % (inc["state"], ls["reason"][:200], (" (jobs %s)" % ",".join(map(str, ls["jobs"])))
                          if ls.get("jobs") else "")
     if inc["level"] >= 1 and left:                  # closed or left under a continuing fault: open (or reuse) another.
-        inc.update(level=0, item=None)              # At L3 too: the OWNER rung is no seat's to drain (ETBS)
+        inc.update(level=0, item=None)              # At L3 too: Operations' told row is no item to drain (ETBS)
     if inc["level"] < 1:
         if not item_open(last_item, w) or abandoned(last_item, now, w):
             last_item = open_lane_item(w, now)
@@ -848,20 +866,19 @@ def _escalate(inc, ls, now, last_item, src):
         inc.update(level=2, error=None)
         jlog({"ts": iso(now), "event": "escalate", "level": 2, "item": inc["item"], "by": src})
     if inc["level"] < 3 and u >= L3_S and not claim_pauses(inc, now, w):
-        if item_open(inc.get("owner_item"), w):     # a reissued item: he already holds this incident's rung
+        if inc.get("told"):                         # a reissued item: Operations already holds this incident's rung
             inc.update(level=3, error=None)
             return inc["item"]
-        down = inc["state"] == "UNREACHABLE"
-        name = mint(w, tag, "OWNER")
-        rc, out = rimflow("spawn", "--from", STEWARD_ITEM, "--for", "OWNER", "--needs", "owner", "--name", name,
-                          "--title", ("%sSteveDesktop lane %s %d min, no seat on %s: %s"
-                                      % ("IN PERSON: " if down else "", inc["state"], u // 60, inc["item"],
-                                         ls["reason"]))[:160])
-        if rc != 0:
-            inc["error"] = out[-200:]
+        why = ("%sSteveDesktop lane %s %d min, no seat on %s: %s"
+               % ("IN PERSON: " if inc["state"] == "UNREACHABLE" else "", inc["state"], u // 60, inc["item"],
+                  ls["reason"]))
+        try:
+            tell_operations(why, inc["item"], now)
+        except Exception as e:     # noqa: BLE001  (a torn or unwritable told ledger: retried next pass)
+            inc["error"] = ("told: %s: %s" % (type(e).__name__, e))[-200:]
             return inc["item"]
-        inc.update(level=3, owner_item=name, error=None)
-        jlog({"ts": iso(now), "event": "escalate", "level": 3, "item": name, "by": src})
+        inc.update(level=3, told=iso(now), error=None)
+        jlog({"ts": iso(now), "event": "escalate", "level": 3, "item": inc["item"], "told": STEVE_RUNG_KIND, "by": src})
     return inc["item"]
 
 
@@ -913,25 +930,25 @@ def _steward_pass(now, mods):
         # no wake while a job holds the lane.
         if prev.get("fault") or prev.get("state") == "RUNNING":
             inc["unowned_s"] = int(inc["unowned_s"] + dt - capped_cover(inc, now - dt, now))
-        rung = (inc["level"], inc.get("item"), inc.get("owner_item"))
+        rung = (inc["level"], inc.get("item"), inc.get("told"))
         last_item = escalate(inc, dict(ls, reason="lane RUNNING again (%s) but no DONE+canary job since %s"
                                        % (ls["reason"], inc["since"])), now, last_item) or last_item
-        if (inc["level"], inc.get("item"), inc.get("owner_item")) != rung:
+        if (inc["level"], inc.get("item"), inc.get("told")) != rung:
             jlog({"ts": iso(now), "event": "rung_publish", "item": inc.get("item"), "result": safe_publish()})
     elif fault:
         if not inc:
             inc = {"state": ls["state"], "since": iso(now), "unowned_s": 0, "level": 0, "item": None,
-                   "owner_item": None}
+                   "told": None}
             dt = 0.0
         inc["state"] = ls["state"]
         if prev.get("fault") or prev.get("state") == "RUNNING":
             inc["unowned_s"] = int(inc["unowned_s"] + dt - capped_cover(inc, now - dt, now))
         if ls["at_once"]:
             inc["unowned_s"] = max(inc["unowned_s"], L1_S)
-        rung = (inc["level"], inc.get("item"), inc.get("owner_item"))
+        rung = (inc["level"], inc.get("item"), inc.get("told"))
         item = escalate(inc, ls, now, last_item)
         last_item = item or last_item
-        if (inc["level"], inc.get("item"), inc.get("owner_item")) != rung:
+        if (inc["level"], inc.get("item"), inc.get("told")) != rung:
             jlog({"ts": iso(now), "event": "rung_publish", "item": inc.get("item"), "result": safe_publish()})
         maybe_wake(inc, ls, now)
     rec = {"ts": iso(now), "epoch": now, "state": ls["state"], "fault": fault, "reason": ls["reason"],
@@ -982,7 +999,7 @@ def _watch_pass(now):
         reason = "steward.json not written for %d s (the tick or the steward stopped)" % age
         if not inc:
             inc = {"state": "STALE_HEARTBEAT", "since": iso(now), "unowned_s": 0, "level": 0, "item": None,
-                   "owner_item": None, "restarted": None}
+                   "told": None, "restarted": None}
             jlog({"ts": iso(now), "event": "state", "state": "STALE_HEARTBEAT", "fault": True, "reason": reason,
                   "by": "watch"})
         prev_t = wst.get("epoch") or now

@@ -359,12 +359,6 @@ def steward_unowned_min(st):
     return None
 
 
-def steward_escalated(st):
-    """True when the steward's incident has reached him (an owner item is filed, §6.4 last rung)."""
-    inc = st.get("incident") if isinstance(st.get("incident"), dict) else {}
-    return bool(inc.get("owner_item") or st.get("escalated_to") == "owner" or st.get("escalation") == "owner")
-
-
 def steve_state(src, now):
     lv = TM.steve_live(src, now)
     st, why = steward_now(now, src.get("root"))
@@ -531,11 +525,8 @@ def needs_and_badges(ms, rem, inp, steve, now):
                        "label": _v(d4, "blocker"), "link": f"/item/{_v(d4, 'blocker')}"}]})
     g1 = ms.get("G1")
     st = (steve or {}).get("steward") or {}
-    if st and steward_escalated(st):
-        oi = ((st.get("incident") or {}).get("owner_item")) if isinstance(st.get("incident"), dict) else None
-        remote.append({"signal": "Steward escalation", "text": f"SteveDesktop {st.get('state')}: no seat claimed it. "
-                       f"{_short(st.get('reason') or '', 160)}", "rule": "T+120 min with no seat claiming the steward's item",
-                       "items": [{"id": oi, "label": oi, "link": f"/item/{oi}"}] if oi else []})
+    # no "Steward escalation" remote signal: the steward's T+120 rung tells Operations, never him
+    # (STEWARD_RUNG_FIX_ASKS_THE_WRONG_GROWNUP); an unreachable host is the in-person row below
     if steve.get("state") == "DOWN" and steve.get("down_min", 0) >= 30:
         person.append({"signal": "Machine unreachable", "text": f"SteveDesktop not answering ssh for {steve['down_min']} min",
                        "rule": "SteveDesktop or Archmagi not answering for 30 min"})

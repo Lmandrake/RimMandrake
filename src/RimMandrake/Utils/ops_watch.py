@@ -1460,9 +1460,10 @@ def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
     """steve.incident_unclaimed_min: the age of the OLDEST open steward incident item (id prefix
     rules steve_incident.prefix) that no seat holds: still proposed/ready (not doing/built/validated) (claim/start), no live lease, not blocked. The steward
     escalating a stall makes c_steve call it owned; this is the point that says nobody has picked the escalation up
-    (owner 2026-10-28: the lane sat paused 21 min with an open STEVE_LANE_UNSTICK item and no alarm). An OWNER rung is
-    no seat's to claim, so it never counts: the steward keeps a seat's UNOWNED item open beside it, and that one does
-    (OPS_STEVE_UNSTICK_UNCLAIMED_ETBS: 2E27 read 35.9 and went on rising with a wake working the incident).
+    (owner 2026-10-28: the lane sat paused 21 min with an open STEVE_LANE_UNSTICK item and no alarm). An OWNER rung
+    (an id holding rules steve_incident.owner_rung) is no seat's to claim, so it never counts; the steward has not filed
+    one since STEWARD_RUNG_FIX_ASKS_THE_WRONG_GROWNUP (its T+120 rung is a told row for Operations), so only an older
+    one matches (OPS_STEVE_UNSTICK_UNCLAIMED_ETBS: 2E27 read 35.9 and went on rising with a wake working the incident).
     A `doing` item whose lease lapsed has no claimant either. A BLOCKED one has none once the lane is in a fault with the
     machine up (FAULT_SINCE, lane_fault_since), for as long as that fault has stood: 2026-11-03 this read 0.0 for 75 min
     of BRAKED, the only item blocked on the in-person step of the UNREACHABLE fault that had already ended."""

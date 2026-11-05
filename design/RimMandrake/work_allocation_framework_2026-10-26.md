@@ -249,7 +249,6 @@ Two kinds of signal, kept apart because they ask different things of you.
 | Waiting on you | D1 any item over 3 d; badge shows the count and the oldest | 32 over 3 d; oldest 45 d [M] |
 | Blocker fan-in | a blocker holding 5 or more items that needs you | none needing you today [M] |
 | Budget | the week's token pace says N must drop, or a budget decision is needed | system 56% used, about 21%/day left [M] |
-| Steward escalation | T+120 min with no seat claiming the steward's item (§6.4) | [U] until the steward exists |
 
 ### 5.2 In person: only you, at the desk or the machine
 | signal | rule | today |
@@ -304,7 +303,7 @@ PASS/FAIL at the same manifest (flaky or environment-sensitive), counted separat
 |---|---|
 | T+10 min | file (or refresh, never duplicate) one rimflow item `--for BENCH`, `needs=offline`, naming the state and job ids; `pulse.py report steve:lane failed --cause <state>` lights the health row |
 | T+30 min | raise that item to the top of `rimflow next --seat BENCH`; add a phone brief line |
-| T+120 min with no claim | your card queue (remote), or the IN PERSON badge if the host is unreachable |
+| T+120 min with no claim | Operations: one `steve.*` told row naming the item (its incident climbs to the Conductor); "IN PERSON:" in its text if the host is unreachable. Never his queue: unsticking a lane is no delegation_policy §2 call (STEWARD_RUNG_FIX_ASKS_THE_WRONG_GROWNUP) |
 
 "A named seat" is BENCH, because BENCH owns testq and the lanes. The steward does not wake a seat (nothing in the system
 can, today); it puts the item first in the queue that the next BENCH session reads. An LLM wake (a headless session

@@ -6,7 +6,8 @@ A temp queue, a temp ledger (RIMFLOW_LEDGER / RIMFLOW_ITEMS, the steward's own i
 (RM_PULSE_STATE), push off (TESTQ_INGEST_PUSH=0); the clock is passed in, rimflow is the real CLI. Proves the three
 acceptance injections of section 8 and the states around them:
   a brake          BRAKED is a fault: T+10 spawns one BENCH item (needs offline) and a failed steve:lane record, T+30
-                   raises it, T+120 with no claim spawns an OWNER item (needs owner); each rung once
+                   raises it, T+120 with no claim tells Operations (one steve.* told row naming the item; no item for
+                   OWNER, nothing needs=owner: STEWARD_RUNG_FIX_ASKS_THE_WRONG_GROWNUP); each rung once
   recovery         only a DONE job with its canary on, after the incident began, ends it: steve:lane ok, a note on the
                    item. RUNNING, then INVALID/CANARY, keeps it open with its clock running; the day brake and
                    EXHAUSTED freeze it; a reboot after a proof starts a fresh clock; an item a seat started is left
@@ -54,8 +55,10 @@ def main():
         open(led, "w").close()
         for k in ("RIMFLOW_SEAT", "CLAUDE_PROJECT_DIR", "TESTQ_FILL_MODS"):
             os.environ.pop(k, None)
+        ops = os.path.join(tmp, "ops_watch")      # the told ledger the T+120 rung writes (never the real one)
+        os.makedirs(ops)
         os.environ.update(TESTQ_QUEUE=queue, RIMFLOW_LEDGER=led, RIMFLOW_ITEMS=items, TESTQ_INGEST_PUSH="0",
-                          RM_PULSE_STATE=pulse)
+                          RM_PULSE_STATE=pulse, RM_OPS_WATCH_DIR=ops)
         sys.path.insert(0, HERE)
         import schema as S
         import testq as T
@@ -173,7 +176,7 @@ def main():
         rec = step(base + 600)
         sp = events("spawn")
         item = rec["incident"]["item"]
-        check(rec["incident"]["level"] == 1 and len(sp) == 1 and sp[0]["for"] == "BENCH" and
+        check(rec["incident"]["level"] == 1 and len(sp) == 1 and W.world()[0].read_name(sp[0]["for"]) == "BENCH" and
               sp[0].get("needs") == "offline" and sp[0]["name"] == item and item.startswith(
                   "STEVE_LANE_UNSTICK_BRAKED_UNOWNED_") and j1["id"] in sp[0].get("title", ""),
               "T+10: one BENCH item, needs offline, naming the state and a job: %s" % sp)
@@ -195,16 +198,23 @@ def main():
         step(base + 3600)
         rec = step(base + 7200)
         sp = events("spawn")
-        check(rec["incident"]["level"] == 3 and len(sp) == 2 and sp[1]["for"] == "OWNER" and
-              sp[1].get("needs") == "owner" and rec["incident"]["owner_item"] == sp[1]["name"] and
-              not sp[1]["title"].startswith("IN PERSON"),
-              "T+120 with no claim: one OWNER item, needs owner, remote: %s" % sp[1:])
+        told = [json.loads(x) for x in open(os.path.join(ops, "told.jsonl"), encoding="utf-8") if x.strip()]
+        IN = W._incident_mod()
+        rt = IN.route_of(IN.load_table(), told[0]["metric"]) if told else None
+        check(rec["incident"]["level"] == 3 and len(sp) == 1 and rec["incident"].get("told") and
+              not any(e.get("for") == "OWNER" or e.get("needs") == "owner" for e in sp) and len(told) == 1 and
+              told[0]["metric"] == W.STEVE_RUNG_KIND and told[0]["item"] == item and
+              rt and rt["route"] == "role" and rt["reader"] == "Operations" and "owner_item" not in rec["incident"] and
+              not told[0]["why"].startswith("IN PERSON"),
+              "T+120 with no claim: one told row for Operations naming the item, no OWNER item, no needs=owner: "
+              "%s %s %s" % (sp[1:], told, rt))
         step(base + 9000)
         check(len(wakes) == 1, "one wake per incident")
-        check(len(events("spawn")) == 2 and len(events("raise")) == 1, "past T+120: nothing more is written")
+        check(len(events("spawn")) == 1 and len(events("raise")) == 1 and
+              sum(1 for x in open(os.path.join(ops, "told.jsonl"), encoding="utf-8") if x.strip()) == 1,
+              "past T+120: nothing more is written")
         # ------------------------------------------------ recovery
         notes0 = len(events("note"))
-        rec0_owner = sp[1]["name"]
         # STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING: RUNNING, then INVALID/CANARY, keeps the incident open, clock running
         u0 = step(base + 9050)["incident"]["unowned_s"]
         rj = running(base + 9100)
@@ -233,17 +243,17 @@ def main():
         check(pulses()[-1]["status"] == "ok", "recovery records steve:lane ok")
         check(len(events("note")) == notes0 + 1 and events("note")[-1]["id"] == item, "recovery notes the item")
         dropped = sorted(e["id"] for e in events("drop"))
-        check(dropped == sorted([item, rec0_owner]), "recovery drops both items the incident spawned: %s" % dropped)
+        check(dropped == [item], "recovery drops the item the incident spawned: %s" % dropped)
         # ------------------------------------------------ the next incident
         reset()
         filler("INVALID", "HANG", base), filler("INVALID", "HANG", base)
         step(base + 10000)
         rec = step(base + 10600)
-        check(rec["incident"]["item"] != item and len(events("spawn")) == 3,
+        check(rec["incident"]["item"] != item and len(events("spawn")) == 2,
               "a new incident after a recovery opens its own item: the old one was dropped")
         item = rec["incident"]["item"]
         rec = step(base + 10700)
-        check(rec["incident"]["item"] == item and len(events("spawn")) == 3, "while the item is open, never a second one")
+        check(rec["incident"]["item"] == item and len(events("spawn")) == 2, "while the item is open, never a second one")
         # ------------------------------------------------ an abandoned claim: a live lease freezes the clock
         rc, out = cli("claim", item)
         check(rc == 0, "BENCH claims the item: %s" % out[-160:])
@@ -538,7 +548,7 @@ def main():
             kept = T.read_json(T.q("steward.json"))
             t0 = base + 500000
             stale = {"state": "UNREACHABLE", "since": W.iso(t0 - 9000), "unowned_s": 4200, "level": 0, "item": None,
-                     "owner_item": None}
+                     "told": None}
             S.dump({"ts": W.iso(t0 - 60), "epoch": t0 - 60, "state": "UNREACHABLE", "fault": True, "reason": "x",
                     "jobs": [], "incident": dict(stale), "last_item": None, "to_retire": [], "since": W.iso(t0 - 60)},
                    T.q("steward.json"))
@@ -673,14 +683,14 @@ def main():
         rc, out = cli("file", "STEVE_CLOSED_UNDER_ITEM", "--for", "BENCH", "--title", "closed under")
         rc, out = cli("close", "STEVE_CLOSED_UNDER_ITEM", "--reason", "x", "--no-code", "a probe")
         inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 1, "item": "STEVE_CLOSED_UNDER_ITEM",
-               "owner_item": None}
+               "told": None}
         sp_n = len(events("spawn"))
         W.escalate(inc, {"reason": "r", "jobs": []}, base + 5, "STEVE_CLOSED_UNDER_ITEM")
         check(inc["item"] != "STEVE_CLOSED_UNDER_ITEM" and inc["level"] >= 1 and W.item_open(inc["item"], W.world()),
               "an item closed at level 1 under a continuing fault is replaced: %s" % inc)
         real_rf = W.rimflow
         W.rimflow = lambda *a: (1, "rimflow: only an open item can be raised")
-        inc = {"state": "BRAKED", "since": "x", "unowned_s": 2000, "level": 1, "item": item, "owner_item": None}
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 2000, "level": 1, "item": item, "told": None}
         W.escalate(inc, {"reason": "r", "jobs": []}, base + 5, item)
         check(inc["level"] == 1 and inc.get("error"), "a refused raise is not recorded as level 2")
         W.rimflow = real_rf
@@ -689,7 +699,7 @@ def main():
               "T2: the steward's L1 seat is relentless's pool; a needs=live BENCH item would have no receiver")
         real_nf, real_ol = W.nobody_for, W.open_lane_item
         W.nobody_for, W.open_lane_item = (lambda s, n: "nobody drains %s" % s), (lambda w, now: None)
-        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "owner_item": None}
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "told": None}
         sp_n = len(events("spawn"))
         W.escalate(inc, {"reason": "r", "jobs": []}, base + 5, "STEVE_CLOSED_UNDER_ITEM")
         W.nobody_for, W.open_lane_item = real_nf, real_ol
@@ -700,7 +710,7 @@ def main():
         last_wake = base + 40000
         S.dump({"ts": W.iso(last_wake), "epoch": last_wake}, T.q("wake.json"))
         cool = int(os.environ.get("TESTQ_WAKE_COOLDOWN_S", "14400"))
-        winc = {"state": "BRAKED", "level": 3, "item": item, "owner_item": None, "unowned_s": 9000}
+        winc = {"state": "BRAKED", "level": 3, "item": item, "told": None, "unowned_s": 9000}
         W.reach_wake_clone, real_reach = (lambda c, i: None), W.reach_wake_clone
         said = W.maybe_wake(winc, {"reason": "r"}, last_wake + 60)
         check(said.startswith("skipped: cooldown") and len(wakes) == n_wakes, "A00D: inside the cooldown it skips: %s" % said)
@@ -725,32 +735,31 @@ def main():
         n_sp = len(events("spawn"))
         check(W.open_lane_item(w, fresh) == left and W.open_lane_item(w, later) != left,
               "A00D: the lost-steward.json search skips a left item: %s" % W.open_lane_item(w, fresh))
-        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "owner_item": None}
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "told": None}
         W.escalate(inc, {"reason": "r", "jobs": []}, fresh, left)
         check(inc["item"] == left and len(events("spawn")) == n_sp, "A00D: a live holder keeps the item: %s" % inc)
-        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "owner_item": None}
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "told": None}
         W.escalate(inc, {"reason": "r", "jobs": []}, later, left)
         sp = events("spawn")
         check(inc["level"] == 1 and inc["item"] != left and len(sp) == n_sp + 1 and sp[-1]["name"] == inc["item"] and
-              sp[-1]["for"] == W.ALARM_SEAT and sp[-1].get("needs") == "offline",
+              W.world()[0].read_name(sp[-1]["for"]) == W.ALARM_SEAT and sp[-1].get("needs") == "offline",
               "A00D: a new fault mints a fresh item relentless can drain: %s" % inc)
         fresh_item = inc["item"]
-        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 1, "item": left, "owner_item": None}
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 1, "item": left, "told": None}
         W.escalate(inc, {"reason": "r", "jobs": []}, later, None)
         check(inc["item"] == fresh_item and inc["level"] == 1, "A00D: a rung already on a left item moves off it: %s" % inc)
-        # OPS_STEVE_UNSTICK_UNCLAIMED_ETBS: the OWNER rung is no seat's, so L3 keeps a drainable item beside it
-        rung = "STEVE_LANE_UNSTICK_BRAKED_OWNER_0E7B"
-        check(W.rimflow("spawn", "--from", W.STEWARD_ITEM, "--for", "OWNER", "--needs", "owner", "--name", rung,
-                        "--title", "his rung")[0] == 0, "ETBS: an open OWNER rung")
-        n_sp, n_up = len(events("spawn")), len(events("raise"))
-        inc = {"state": "BRAKED", "since": "x", "unowned_s": 8000, "level": 3, "item": left, "owner_item": rung}
+        # OPS_STEVE_UNSTICK_UNCLAIMED_ETBS: Operations' told row is no item to drain, so L3 keeps a drainable one
+        told_n = lambda: sum(1 for x in open(os.path.join(os.environ["RM_OPS_WATCH_DIR"], "told.jsonl"),
+                                             encoding="utf-8") if x.strip())
+        n_sp, n_up, n_told = len(events("spawn")), len(events("raise")), told_n()
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 8000, "level": 3, "item": left, "told": "x"}
         W.escalate(inc, {"reason": "r", "jobs": []}, fresh, None)
         check(inc["item"] == left and inc["level"] == 3 and len(events("raise")) == n_up,
               "ETBS: a live holder at L3 keeps the item: %s" % inc)
         W.escalate(inc, {"reason": "r", "jobs": []}, later, None)
-        check(inc["item"] == fresh_item and inc["level"] == 3 and inc["owner_item"] == rung and
+        check(inc["item"] == fresh_item and inc["level"] == 3 and inc["told"] == "x" and told_n() == n_told and
               len(events("spawn")) == n_sp and len(events("raise")) == n_up + 1,
-              "ETBS: a left item at L3 moves to a raised drainable item, no second OWNER rung: %s" % inc)
+              "ETBS: a left item at L3 moves to a raised drainable item, no second told row: %s" % inc)
         W.escalate(inc, {"reason": "r", "jobs": []}, later, None)
         check(len(events("raise")) == n_up + 1, "ETBS: settled at L3, the next pass adds nothing: %s" % inc)
         real_drop, real_pb = W.drop_as_bench, W.publish_bench
@@ -810,7 +819,7 @@ def main():
         try:
             S.dump({"first_seen": base, "epoch": base + 32000, "incident": {
                 "state": "STALE_HEARTBEAT", "since": W.iso(base + 31000), "unowned_s": 0, "level": 0, "item": None,
-                "owner_item": None, "restarted": "already"}}, T.q("steward_watch.json"))
+                "told": None, "restarted": "already"}}, T.q("steward_watch.json"))
             try:
                 wst, died = W.watch_pass(now=base + 32000 + W.L1_S), None
             except Exception as e:  # noqa: BLE001
@@ -854,7 +863,7 @@ def main():
               % (died, wj.get("to_retire")))
         # level >= 2 with an item and no wake yet: maybe_wake reads claim_pauses (the ledger) before either heartbeat
         winc = {"state": "PAUSED", "since": W.iso(base + 31000), "unowned_s": W.L3_S - 60, "level": 2,
-                "item": "VHRP_PROBE_ITEM", "owner_item": None, "wake": None, "error": None}
+                "item": "VHRP_PROBE_ITEM", "told": None, "wake": None, "error": None}
         n_wake = len(journal("wake"))
         try:
             got, died = W.maybe_wake(dict(winc), {"reason": "r", "jobs": []}, base + 32210), None

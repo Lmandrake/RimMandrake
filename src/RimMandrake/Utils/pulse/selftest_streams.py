@@ -101,8 +101,6 @@ os.utime(sp, (NOW - 600, NOW - 600))
 st, why = S.steward_now(NOW, sr)
 check("a steward.json older than 5 min is STALE_HEARTBEAT, not read", st is None and "STALE_HEARTBEAT" in why, why)
 check("no steward.json names the build item", "STEVE_STEWARD_BUILD_NO_LLM_OWNER" in S.steward_now(NOW, tempfile.mkdtemp())[1])
-check("owner escalation reads incident.owner_item", S.steward_escalated({"incident": {"owner_item": "X_1"}})
-      and not S.steward_escalated({"incident": {"owner_item": None}}))
 
 
 # ---- badges and where-you're-needed (§5): no rule fires on UNMEASURED
@@ -137,13 +135,13 @@ check("Steve unreachable 45 min -> in person and live badge YOU (in person)",
 nd, b = S.needs_and_badges(ms, [], [], {"state": "DOWN", "down_min": 10, "steward": {}}, NOW)
 check("Steve down 10 min is not yet his move", b["live"] == "agents" and not nd["in_person"], b)
 nd, b = S.needs_and_badges(dict(ms, G1=S.M(12, NOW)), [], [], {"state": "BRAKED", "down_min": 0,
-                           "steward": {"state": "BRAKED", "fault": True, "incident": {"owner_item": None}}}, NOW)
-check("a steward fault before the owner rung -> steward badge, no remote signal",
+                           "steward": {"state": "BRAKED", "fault": True, "incident": {"told": None}}}, NOW)
+check("a steward fault -> steward badge, no remote signal",
       b["live"] == "steward" and not any(r["signal"] == "Steward escalation" for r in nd["remote"]), (b, nd["remote"]))
 nd, b = S.needs_and_badges(ms, [], [], {"state": "BRAKED", "down_min": 0, "steward": {
-    "state": "BRAKED", "fault": True, "incident": {"owner_item": "STEVE_OWNER_1"}}}, NOW)
-check("a steward escalation to him is a remote decision with its item link",
-      any(r["signal"] == "Steward escalation" and r["items"][0]["link"] == "/item/STEVE_OWNER_1" for r in nd["remote"]), nd["remote"])
+    "state": "BRAKED", "fault": True, "incident": {"level": 3, "told": "2026-11-05T00:00:00Z"}}}, NOW)
+check("the steward's T+120 rung tells Operations, never his remote queue (STEWARD_RUNG_FIX_ASKS_THE_WRONG_GROWNUP)",
+      not any(r["signal"] == "Steward escalation" for r in nd["remote"]), nd["remote"])
 
 
 # ---- hourly bucketing and staleness
