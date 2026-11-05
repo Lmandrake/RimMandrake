@@ -235,6 +235,14 @@ def main():
     # RIVER_BUILD_FIX_IN_PLACE_SWEEPS_STATIONS: an in-place --river --build (no --fresh-map) on a map that already holds
     # map R refuses with exit 2 before ANY write (destroy, build, spawn, terrain, sweep), naming --fresh-map
     import argparse
+    import shutil
+    # SELFTEST_RIVER_FIX_INKS_MAP_R_PLACED: river_main writes M.MAP_R_PLACED (the committed review/scenarios file);
+    # point it at a tempdir copy for these in-place builds so a selftest run never modifies the repo
+    committed_r, keep_r = M.MAP_R_PLACED, M.MAP_R_PLACED
+    committed_bytes = open(committed_r, "rb").read() if os.path.exists(committed_r) else None
+    M.MAP_R_PLACED = os.path.join(tempfile.mkdtemp(prefix="map_r_placed_"), "map_r_placed.json")
+    if committed_bytes is not None:
+        shutil.copyfile(committed_r, M.MAP_R_PLACED)
     a_ = argparse.Namespace(build=True, fresh_map=False, log=None, soak=False, save=False, labels=False, goto=None,
                             allow_red_joints=False, name=None)
     seen_before = len(BR.calls)
@@ -257,6 +265,9 @@ def main():
     with contextlib.redirect_stdout(buf):
         rc_c = M.river_main(CLEAN, argparse.Namespace(**vars(a_)))
     ct = [t for t, _ in CLEAN.calls]
+    M.MAP_R_PLACED = keep_r
+    check("in-place --river builds wrote the tempdir copy, never the committed map_r_placed.json",
+          (open(committed_r, "rb").read() if os.path.exists(committed_r) else None) == committed_bytes)
     check("in-place --river --build on a CLEAN map still builds: exit 0, no --fresh-map refusal, build_batch issued",
           rc_c == 0 and "--fresh-map" not in buf.getvalue() and "jawa/build_batch" in ct,
           (rc_c, buf.getvalue()[-300:], sorted(set(ct))))
