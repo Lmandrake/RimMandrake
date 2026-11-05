@@ -561,3 +561,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T06:32:48Z","tsn":1793860368608007572}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HEAVY_TEXTURES_MEASURE_REAL_VRAM A2 (L1), read-only proof","ts":"2026-11-05T06:32:57Z","tsn":1793860377717160416}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T06:33:39Z","tsn":1793860419527959428}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-05T06:39:13Z","tsn":1793860753779950491}
