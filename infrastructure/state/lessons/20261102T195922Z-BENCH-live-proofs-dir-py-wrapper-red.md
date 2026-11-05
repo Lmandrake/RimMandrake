@@ -1,2 +1,0 @@
-selftest_relentless_live_round.py is red on origin/main (b0d323f25): infrastructure/state/live_proofs/PLANET_ATMOSPHERE_CLOUD_COST_1_live.py (commit 2a00378d0e) is a .py wrapper in live_proofs/, but that directory may only hold <ID>.txt and <ID>.criteria (check 'proofs: every real live_proofs file is .txt (or .criteria) and every line parses'). Move the wrapper out (e.g. next to its mod) and point the A-line at the new path.
-home: NONE
