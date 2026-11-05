@@ -26,7 +26,7 @@ def check(ok, what):
 
 
 POOL = {"pool_clones": 1, "pool_clones_cap": 10, "pool_gb": 1.0, "pool_gb_cap": 40.0}
-LOOSE = dict.fromkeys(("rm_scratch_clones", "rm_scratch_gb", "selftest_stale", "session_dirs", "refused", "refused_gb",
+LOOSE = dict.fromkeys(("rm_scratch_clones", "rm_scratch_gb", "selftest_stale", "session_dirs", "session_stale", "refused", "refused_gb",
                        "oldest_h", "root_disk_pct"), 1e9)
 
 

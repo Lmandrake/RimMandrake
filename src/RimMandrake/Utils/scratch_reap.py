@@ -2224,8 +2224,8 @@ def pool_measures() -> dict:
 
 
 def fixture_age_h(p: Path, now: float) -> float | None:
-    """Hours since anything inside a fixture was touched: the SAME newest-content reading sweep_fixtures judges YOUNG
-    by. A directory's own mtime is not it (an epoch-stamped dir holding fresh files read 498211 h old while the reaper
+    """Hours since anything inside a fixture (or a session dir) was touched: the SAME newest-content reading the sweep
+    judges YOUNG by. A directory's own mtime is not it (an epoch-stamped dir holding fresh files read 498211 h old while the reaper
     rightly kept it). A tree the walk cannot read whole falls back to the directory's own stamps."""
     try:
         tree = Tree(p)
@@ -2244,13 +2244,19 @@ def measure(now: float, rows: list[dict] | None, prev: dict) -> dict:
         age = fixture_age_h(p, now)
         if age is not None:
             fx_ages.append(age)
-    sessions = sum(1 for r in roots() for s in glob.glob(str(r / "*" / "claude-*" / "*" / "*"))
-                   if UUID.match(os.path.basename(s)))
+    # Session dirs: the count is a reading only (eight workers keep hundreds young); the line is on the ones past the TTL
+    # by the sweep's own newest-content age (OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF). At the end, the run's rows say it.
+    sess = [Path(s) for r in roots() for s in glob.glob(str(r / "*" / "claude-*" / "*" / "*")) if UUID.match(os.path.basename(s))]
+    sessions = len(sess)
+    if rows is None:
+        stale_sess = sum(1 for s in sess if (lambda a: a is not None and a * 3600 >= ttl_s())(fixture_age_h(s, now)))
+    else:
+        stale_sess = sum(1 for r in rows if r["kind"] == "session" and r["verdict"] not in ("DELETED", "YOUNG"))
     scratch = rm_scratch()
     m = pool_measures()
     m.update(rm_scratch_clones=len(find_clones(scratch)) if scratch.is_dir() else 0, rm_scratch_gb=unique_gb(scratch),
              selftest_dirs=len(fx_ages), selftest_stale=sum(1 for a in fx_ages if a * 3600 >= FIXTURE_TTL_S),
-             session_dirs=sessions, root_disk_pct=round(100 * (lambda u: u.used / u.total)(shutil.disk_usage("/")), 1))
+             session_dirs=sessions, session_stale=stale_sess, root_disk_pct=round(100 * (lambda u: u.used / u.total)(shutil.disk_usage("/")), 1))
     if rows is None:
         m.update(refused=(prev.get("counts") or {}).get("REFUSE"), refused_gb=round(prev.get("refused_bytes", 0) / 1e9, 2),
                  oldest_h=round(max(fx_ages + [prev.get("oldest_h") or 0.0]), 1))

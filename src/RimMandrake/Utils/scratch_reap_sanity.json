@@ -1,10 +1,10 @@
 {
- "_why": "End selftest_stale is 200 because it reads the top directory's age and the sweep waits on the newest file inside: on 2026-11-01, 170 fixtures read stale with contents 6-12 h old. Lines between a cleaner that keeps up and one that does not: start reads before any work, end reads what the run left. Over a line, the reaper writes sanity.json and the Dispatcher raises it to the Conductor log; ops_watch files or reopens one fixed item per end. The pool's own cap comes from scratch_clone, not from here. Start lines are the wildly-dirty ones, set near twice a quiet machine: 2026-11-01 it was 14,199 stale fixtures, and 16 clones at 94 GB in rm/scratch that the pool cap cannot see. End lines are what a finished run may honestly leave: young work, and refusals with a real reason.",
+ "_why": "End selftest_stale is 200 because it reads the top directory's age and the sweep waits on the newest file inside: on 2026-11-01, 170 fixtures read stale with contents 6-12 h old. Lines between a cleaner that keeps up and one that does not: start reads before any work, end reads what the run left. Over a line, the reaper writes sanity.json and the Dispatcher raises it to the Conductor log; ops_watch files or reopens one fixed item per end. The pool's own cap comes from scratch_clone, not from here. Start lines are the wildly-dirty ones, set near twice a quiet machine: 2026-11-01 it was 14,199 stale fixtures, and 16 clones at 94 GB in rm/scratch that the pool cap cannot see. End lines are what a finished run may honestly leave: young work, and refusals with a real reason. session_dirs is a reading, not a line: on 2026-11-05 eight Relentless workers kept 443 of 475 session dirs inside the 24 h TTL, so the old 400/300 lines alarmed on young work; session_stale counts the ones past the TTL by newest content (start) or left un-reaped by the run (end), lined like refused.",
  "start": {
   "rm_scratch_clones": 12,
   "rm_scratch_gb": 60,
   "selftest_stale": 500,
-  "session_dirs": 400,
+  "session_stale": 100,
   "refused": 100,
   "refused_gb": 40,
   "oldest_h": 720,
@@ -14,7 +14,7 @@
   "rm_scratch_clones": 8,
   "rm_scratch_gb": 50,
   "selftest_stale": 200,
-  "session_dirs": 300,
+  "session_stale": 60,
   "refused": 60,
   "refused_gb": 25,
   "oldest_h": 480,
