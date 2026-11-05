@@ -115,6 +115,7 @@ import top_heads  # noqa: E402
 import squat_heads  # noqa: E402,F401  (puts art_source/ModernStyle on the path; fw_scenes_sprinkler's "squat" mode uses it)
 import waterworks_blue as wb  # noqa: E402
 import firehose_reel as fr  # noqa: E402
+import girth_fit as gf  # noqa: E402
 sys.path.insert(0, str(HERE.parent / "art_source" / "LiquidContainers"))
 import modern_soda_pail as msp  # noqa: E402
 
@@ -250,7 +251,10 @@ def sprinkler():
 def modern_blue():
     import numpy as np
     from PIL import Image
-    pairs = [(rel, Image.open(wb.RED / rel).convert("RGBA"), wb.TEX / rel) for rel in wb.PIECES]
+    # MODERN_FIT_REDRAW_ROUND_FOUR_PENDING: the Flange and Coupler rings were widened across the pipe (girth_fit.fit, rows
+    # repeated, geometry only), so their "red original" here is the fitted red: installed == recolour(fit(red)), alpha == fit's
+    pairs = [(rel, gf.fit(Image.open(wb.RED / rel)) if rel in gf.PIECES else Image.open(wb.RED / rel).convert("RGBA"), wb.TEX / rel)
+             for rel in wb.PIECES]
     head = wb.saturated_red_share(Image.open(wb.TEX / wb.SPRINKLER).convert("RGBA"))
     want(head < 0.002, "modern blue: %s installed (top-down, cut from the Modern pump) has no saturated red (%.4f < 0.002)"
          % (wb.SPRINKLER, head))
