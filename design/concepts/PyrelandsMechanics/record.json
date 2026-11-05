@@ -6,7 +6,7 @@
    "source": [
     "design/Jawa/worldbuilding/biomes/the_pyrelands.md:175"
    ],
-   "text": "Canon (owner-ratified sheet): the Deep Desert Tribes are the fire's farmers; the flame harvest is controlled burns on their schedule with the burn-line walked for scorch-fruit; an unplanned burn is answered by arson-justice, short furious raids."
+   "text": "Canon (owner-ratified sheet, wording superseded by R14): the Deep Desert Tribes work the fire; the flame harvest is controlled burns on their schedule with the burn-line walked for scorch-fruit; an unplanned burn is answered by arson-justice, short furious raids. The sheet's 'fire-farmers' is struck by R14."
   },
   {
    "id": "s_pyre_burns_without_them",
@@ -32,14 +32,19 @@
     "ITEM:PYRELANDS_RM_MOD_BUILD_1",
     "src/RimUtinni/PyrelandsMechanics/About/About.xml"
    ],
-   "text": "PYRELANDS_RM_MOD_BUILD_1 \u00a76 moved the franchise-free burn-line, arson tally, fire-hawk and furnace-beast to mandrake.rm.pyrelands; this mod keeps only what names the Deep Desert Tribes (a campaign faction)."
+   "text": "PYRELANDS_RM_MOD_BUILD_1 §6 moved the franchise-free burn-line, arson tally, fire-hawk and furnace-beast to mandrake.rm.pyrelands; this mod keeps only what names the Deep Desert Tribes (a campaign faction)."
+  },
+  {
+   "id": "s_r14_harvesters_not_farmers",
+   "text": "Freeze ruling R14: no fire-farmers as a distinct people; the owner: 'They are not \"farmers,\" I have never liked that term.' They are FIRE HARVESTERS, the Deep Tribes, coming periodically for their sacred fire rites and to reap the bounty, then returning to the deep desert; the Pyre burns with or without them.",
+   "source": "design/Jawa/worldbuilding/biomes/_freeze_rulings_2026-09-07.md:313"
   }
  ],
  "decisions": [],
  "asks": [
   {
    "id": "a_flagship",
-   "status": "draft",
+   "status": "struck",
    "speaker": "agent",
    "source": [
     "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFireRite.cs",
@@ -49,7 +54,12 @@
     "inv_fire_rite_party",
     "inv_arson_justice_raid"
    ],
-   "text": "Picture the one moment that makes you say 'that is the Pyrelands Tribes'. Is it a small file of Tribes walking in with a covered coal, lighting the grass themselves, then working the black behind the front for scorch-fruit? Or a short furious raid arriving the morning after your colony set a fire it should not have? (This picks the first showcase.)"
+   "text": "Picture the one moment that makes you say 'that is the Pyrelands Tribes'. Is it a small file of Tribes walking in with a covered coal, lighting the grass themselves, then working the black behind the front for scorch-fruit? Or a short furious raid arriving the morning after your colony set a fire it should not have? (This picks the first showcase.)",
+   "review": {
+    "by": "rm-judge a4076b10482d95ea4 (fresh Opus, not the author)",
+    "verdict": "struck",
+    "why": "Asks the same rite-or-raid question the root's judged-first line already answers; he can correct that line through ask_root."
+   }
   },
   {
    "id": "a_harvest_visit_at_the_fire",
@@ -74,6 +84,31 @@
     "inv_arson_justice_raid"
    ],
    "text": "Arson debt builds silently from every fire your colony owns, your tamed fire-hawk and furnace-beast included, until a raid lands. Before that raid, should you have been able to see the debt growing (a goodwill warning, a letter, a number somewhere), or is the surprise the point?"
+  },
+  {
+   "id": "ask_root",
+   "text": "Is the paragraph above the Deep Tribes in the Pyrelands? Correct any word, or say \"yes\". (the paragraph: turn_01.md)",
+   "decision": "The root text: what the Deep Tribes do in the Pyrelands and what the mod is judged on first; stage 1 cannot end without his approval of it.",
+   "about": [
+    "inv_fire_rite_party",
+    "inv_fire_rite_lord",
+    "inv_rite_harvest_duty",
+    "inv_flame_harvest_visit",
+    "inv_arson_justice_raid"
+   ],
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793866044",
+   "status": "sent",
+   "source": [
+    "design/concepts/PyrelandsMechanics/turn_01.md",
+    "design/Jawa/worldbuilding/biomes/_freeze_rulings_2026-09-07.md:313"
+   ],
+   "review": {
+    "by": "rm-judge a4076b10482d95ea4 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Settles the root, answerable in a phrase, offers no removal. Fixed on review: the line catches at the lead harvester (no lighting job); a raid comes only if the goodwill hit makes them hostile, debt decays; raid 0.6x with a 250-point floor so 'usually smaller'; after the raid only the debt clears and the Tribes stay at war (no rites while hostile); a shot-at party defends itself; any colony-attributed fire counts; the check is Pyrelands biome, not home map; R14 harvester wording attributed to the ruling, not quoted as his."
+   }
   }
  ],
  "inventory": [
@@ -330,5 +365,9 @@
   "He never sees it: every mechanism needs a Pyrelands home map, a live burn-line and fire clock, a present non-hostile Tribes faction, and then a roll (rite fraction, storyteller chance, min fires); nothing has ever been run live end to end, so in real play it may simply never fire and nothing says why.",
   "It reads wrong when it fires: the visit party walks to the fire and leaves without harvesting (a pointless visitor, not a farmer), harvesters path through the flames or burn, or a rite party ends in a fight; the Tribes then look like victims or tourists instead of the fire's farmers.",
   "The punishment feels arbitrary: arson debt grows invisibly from any colony-owned fire, his tamed fire-hawk and furnace-beast included, and a raid lands with no warning he could act on; or the franchise split breaks quietly (thornvine left in the wrong tier) so a neighbour's mechanic fails on a load without this mod."
- ]
+ ],
+ "root_draft": {
+  "text_file": "design/concepts/PyrelandsMechanics/turn_01.md",
+  "status": "sent as ask_root"
+ }
 }
