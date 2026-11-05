@@ -59,6 +59,13 @@ OUT = os.path.join(HERE, "review", "scenarios")
 # rewrote the committed KEYSHEET.md + keysheet.html for the live save with mock text and "(not saved yet)". Only a live
 # build or save writes OUT; an offline sheet goes here (a human reads it once: Transient).
 OFFLINE_OUT = os.path.join(REPO, "Transient", "fw_scenarios_offline")
+
+
+def keysheet_dir(saved=False, only=None):
+    """KEYSHEET_FIX_ONLY_BUILD_SCRIBBLES_ON_IT (2026-10-23): a live --build --only C5 --no-soak rewrote the committed
+    sheet with "(not saved yet)" and map-C rects "river-anchored (live)". The committed OUT describes the saved
+    walkthrough, so only a successful --save of the FULL build (no --only) writes it; every other run -> OFFLINE_OUT."""
+    return OUT if saved and not only else OFFLINE_OUT
 TAG = "fw_scen"
 MAP_SIZE = 250
 EDGE_SINK = 10
@@ -1256,7 +1263,8 @@ def river_save_text(save):
 
 
 def keysheet(placed, live=None, save=None, mock=None, out_dir=None):
-    """Write KEYSHEET.md + keysheet.html into out_dir (default OUT, the committed walkthrough sheet: live/save runs only)."""
+    """Write KEYSHEET.md + keysheet.html into out_dir (default OUT, the committed walkthrough sheet: callers pick it
+    with keysheet_dir(), which gives OUT to a full --save only)."""
     out_dir = out_dir or OUT
     os.makedirs(out_dir, exist_ok=True)
     E = html.escape
@@ -1501,7 +1509,7 @@ def main(argv=None):
             len(placed) - len(bad), len(placed), " (FAIL %s)" % bad if bad else "",
             "skipped" if res["soak"] is None else ("all still" if not moved else "MOVED %s" % moved), len(res["notes"]),
             res["wall_s"]))
-        keysheet(placed, live=res)
+        print("key sheet (build, not the committed one) -> %s" % keysheet(placed, live=res, out_dir=keysheet_dir()))
         if bad or moved:
             if a.save:
                 print("build FAILED (%s): not saved as a walkthrough" % (bad + moved))
@@ -1543,7 +1551,7 @@ def main(argv=None):
         print("save %s: ok=%s new=%s changed=%s gone=%s signs=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"],
                                                                      r.get("signs")))
         if r["ok"]:
-            keysheet(placed, save=name)
+            print("key sheet -> %s" % keysheet(placed, save=name, out_dir=keysheet_dir(saved=True, only=only)))
         return 0 if r["ok"] else 1
     if a.labels:
         print("labels: %s" % {k: R.place_labels(placed).get(k) for k in ("added", "count")})

@@ -280,6 +280,55 @@ def main():
     check("full build: the calm sweep holds nothing (every plot is restaged)", full_seen and full_seen[0] == [], full_seen[:1])
     check("hold_rects: none without --only, never the --only plot's own rect",
           M.hold_rects(None) == [] and not any(r == p["rect"] for r in M.hold_rects({"C3"}) for p in M.placed_c({"C3"})))
+    # KEYSHEET_FIX_ONLY_BUILD_SCRIBBLES_ON_IT: a live --build (partial or not) never writes the committed key sheet;
+    # only a successful --save of the full build (no --only) does. main() driven on its live path with a fake bridge.
+    class FakeR(object):
+        hold = ()
+        def __init__(self, *a): pass
+        def sweep(self, *a, **k): pass
+        def keep_rects(self, placed): return []
+        def pin_clock(self): pass
+        def call(self, *a, **k): return {}
+    fake_res = dict(verify={}, soak=None, notes=[], wall_s=0)
+    tmp_repo = tempfile.mkdtemp(prefix="ks_repo_")
+    os.makedirs(os.path.join(tmp_repo, "Transient"))
+    keep_m = dict((k, getattr(M, k)) for k in ("OUT", "OFFLINE_OUT", "REPO", "use_map", "run_build", "review_class",
+                                                "joint_gate_ok", "label_ops"))
+    keep_r = dict((k, getattr(RMv, k)) for k in ("LiveBridge", "free_save_name", "saves_stat", "save_keeper"))
+    runs = {}
+    try:
+        M.REPO, M.use_map, M.run_build = tmp_repo, (lambda B, w: True), (lambda *a, **k: copy.deepcopy(fake_res))
+        M.review_class, M.joint_gate_ok, M.label_ops = (lambda: FakeR), (lambda B, why=None: True), (lambda placed: [])
+        RMv.LiveBridge = lambda: MockBridge()
+        RMv.free_save_name, RMv.saves_stat = (lambda base, existing: base), (lambda saves=None: {})
+        RMv.save_keeper = lambda B, name, **k: dict(ok=True, new=[name], changed=[], gone=[], signs=0)
+        for label, argv in (("build --only C5 --no-soak", ["--build", "--only", "C5", "--no-soak"]),
+                            ("build --no-soak (full, no save)", ["--build", "--no-soak"]),
+                            ("build --only C5 --no-soak --save", ["--build", "--only", "C5", "--no-soak", "--save"]),
+                            ("build --no-soak --save (full)", ["--build", "--no-soak", "--save"])):
+            M.OUT, M.OFFLINE_OUT = tempfile.mkdtemp(prefix="ks_c_"), tempfile.mkdtemp(prefix="ks_o_")
+            with contextlib.redirect_stdout(io.StringIO()):
+                rc = M.main(argv)
+            ks = None
+            if os.path.exists(os.path.join(M.OUT, "KEYSHEET.md")):
+                ks = open(os.path.join(M.OUT, "KEYSHEET.md"), encoding="utf-8").read()
+            runs[label] = (rc, sorted(os.listdir(M.OUT)), sorted(os.listdir(M.OFFLINE_OUT)), ks)
+    finally:
+        for k, v in keep_m.items():
+            setattr(M, k, v)
+        for k, v in keep_r.items():
+            setattr(RMv, k, v)
+    for label in ("build --only C5 --no-soak", "build --no-soak (full, no save)", "build --only C5 --no-soak --save"):
+        rc, out_l, off_l, _ = runs[label]
+        check("live %s: committed key sheet untouched, sheet goes to OFFLINE_OUT" % label,
+              rc == 0 and out_l == [] and off_l == ["KEYSHEET.md", "keysheet.html"], runs[label][:3])
+    rc, out_l, off_l, ks = runs["build --no-soak --save (full)"]
+    check("live --build --save of the full build writes the committed key sheet, naming the save, every map-C rect",
+          rc == 0 and out_l == ["KEYSHEET.md", "keysheet.html"] and ks and "(not saved yet)" not in ks
+          and M.SAVE_MAIN in ks and all(str(p["rect"]) in ks for p in M.placed_c()), runs["build --no-soak --save (full)"][:3])
+    check("can-fail: keysheet() with no out_dir (the pre-fix build call) writes the committed OUT",
+          M.keysheet.__defaults__[-1] is None and M.keysheet_dir() != M.OUT and M.keysheet_dir(saved=True) == M.OUT
+          and M.keysheet_dir(saved=True, only={"C5"}) != M.OUT)
     print("\n%d FAIL" % len(FAILS) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
 
