@@ -26,6 +26,7 @@
 """
 import glob
 import json
+import shlex
 import os
 import shutil
 import subprocess
@@ -113,8 +114,11 @@ try:
     post = [argv[i + 1] for i, a in enumerate(argv[:-1]) if a == "-p" and argv[i + 1].startswith("ExecStopPost=")]
     check(len(post) == 1 and "wrapup.py unit --unit rm-relentless-work-abc-g1 --seat BENCH --clone /x/clone --carried"
           in post[0] and argv.index("-p") < argv.index("--"), "W1 role_launch: ExecStopPost=wrapup unit, carried for relentless")
-    check(post and post[0].startswith("ExecStopPost=-+/usr/bin/python3 ") and os.path.isfile(post[0].split()[1]),
-          "W1 the ExecStopPost runs outside the sandbox, never fails the unit, and its tool exists")
+    pw = shlex.split(post[0][len("ExecStopPost=-"):]) if post else []
+    check(post and post[0].startswith("ExecStopPost=-/usr/bin/systemd-run --user ") and "--no-block" in pw
+          and "rm-relentless-work-abc-g1-wrapup" in pw and pw[pw.index("--") + 1] == "/usr/bin/python3"
+          and os.path.isfile(pw[pw.index("--") + 2]),
+          "W1 the ExecStopPost hands the wrap-up to its own unit (outside the wall), never fails the unit, its tool exists")
     role2 = dict(role, name="Operations", seat="OPERATIONS")
     argv2 = role_launch.launch_argv(role2, "rm-role-ops-1", "m", "/o", "/e", "/usr/bin/claude")
     post2 = [a for a in argv2 if a.startswith("ExecStopPost=")]

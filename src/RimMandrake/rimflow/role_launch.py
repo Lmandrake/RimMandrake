@@ -2096,14 +2096,30 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
 def wrapup_argv(role, unit):
     """The run's deterministic wrap-up (wrapup.py; AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED): systemd runs it however the
     unit ends. The launcher's own copy, not the run's clone (that one may be gone by then). A Relentless worker's clone is
-    carried to the item's next worker, so its work in progress is not debris. "-+": "+" runs it outside the unit's sandbox
-    (a walled run's InaccessiblePaths hide the launcher's checkout and the state dir), "-" so it can never fail the unit
-    (measured 2026-11-04 on a transient user unit: the main command was denied the path, the "+" post read it, exit 3 ignored)."""
+    carried to the item's next worker, so its work in progress is not debris. Handed off to its own unit (stoppost_handoff):
+    a walled run's InaccessiblePaths hide the launcher's checkout and the state dir from anything run inside the unit."""
     tool = os.path.join(os.path.dirname(os.path.abspath(__file__)), "wrapup.py")
     words = ["/usr/bin/python3", tool, "unit", "--unit", unit, "--seat", role["seat"], "--clone", role["clone"]]
     if role.get("name") == "relentless":
         words.append("--carried")
-    return "-+" + " ".join(shlex.quote(w) for w in words)
+    return stoppost_handoff(unit + "-wrapup", words)
+
+
+# what the wrap-up and the `rimflow bridge release` it may run read from the unit's environment; one unset is skipped
+HANDOFF_ENV = ("PATH", "AGENT_SEAT", "RIMFLOW_SEAT", "RIMFLOW_BRIDGE_SEAT", "RIMFLOW_SHARED_BRIDGE", "RM_ROLE_UNIT",
+               "RM_WRAPUP_DIR", "RM_WRAPUP_SEAT_CLONES", "RM_UNDER_SELFTEST", "RM_DATA_ROOT")
+
+
+def stoppost_handoff(name, words):
+    """-> an ExecStopPost= value that starts `words` as a transient unit of its own, outside the stopping unit's sandbox.
+    RELENTLESS_WRAPUP_FIX_STOPPOST_NAMESPACE (measured 2026-11-04, systemd 259, user manager): a "+" post still sets up a
+    mount namespace when the unit has BindPaths= or TemporaryFileSystem= (the wall always binds ~/.claude/projects) and
+    fails 'Failed to set up mount namespacing: Operation not supported', 3 of 3; InaccessiblePaths= alone passes. A
+    systemd-run --user from inside the namespace reaches the manager and runs. "-": a failed handoff never fails the unit;
+    --quiet: nothing on success, so the unit's StandardOutput=file: result is never touched."""
+    env = sum((["-E", k] for k in HANDOFF_ENV), [])
+    argv = ["/usr/bin/systemd-run", "--user", "--quiet", "--no-block", "--collect", "--unit", name] + env + ["--"] + words
+    return "-" + " ".join(shlex.quote(w) for w in argv)
 
 
 def tmp_setenv(tmpdir):
