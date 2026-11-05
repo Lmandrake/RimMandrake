@@ -58,10 +58,24 @@
     "ref": "run rm-role-designer-1793900422",
     "stage": 3,
     "tokens": 731212
+   },
+   {
+    "at": "2026-11-05T17:53:22Z",
+    "kind": "review",
+    "ref": "rm-judge a592f41e9d9d73006 turn_04 review",
+    "stage": 2,
+    "tokens": 33773
+   },
+   {
+    "at": "2026-11-05T17:55:31Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793901065",
+    "stage": 2,
+    "tokens": 315070
    }
   ],
   "reserve": 60000,
-  "spent": 2526901
+  "spent": 2875744
  },
  "history": [
   {
@@ -153,6 +167,18 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1793900422: stage 3 return"
+  },
+  {
+   "at": "2026-11-05T17:51:13Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793901065, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-05T17:55:31Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793901065: stage 2 waiting_owner"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
@@ -290,11 +316,32 @@
    "stage": 3,
    "summary": "Stage 3 written: new DRAFT north star design/validation_walks/RimUtinni/PyrelandsMechanics.md (8 must-show, 2 cannot-show), tree.json (11 leaves, lint PASS), sheet.md, plan.md (owed: arson count removed both tiers, visit picks, fruit defence, thornvine moves tier), scenes.json (9 acceptance, 2 exploration; one showcase rite_party, 6 new; visit, arson removal, settings, thornvine in coverage_rest), floor.json; filed TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE. Only refusal: showcase 1 has no flagship pick of his, so return to stage 2 to ask. Also owed his word: validating the new north star before the stage 5 gate.",
    "to": 2
+  },
+  {
+   "at": "2026-11-05T17:55:31Z",
+   "inputs": {
+    "exam": null,
+    "floor": "60ba07bafe2c726553880839556f4d7d94d37be6b414ad4e5c88d279fe8d83b7",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "f8e9e5988a2d1daf5805c000f884646cc598553bbd08aea9202ee82d7f0fb338",
+    "scenes": "d04b035536f8a26df0dd9b4f713b7ee2cdda696d26de9a2e4888bd3f9c430b9b",
+    "sheet": "94fab6e39e72a0259432138a571bed4eb087d4da1b568773131296dda35bc3ff",
+    "tree": "8d85249f7028c05470902cc08c2f4a3c7e7daf856bbd461b86c28da750d11f3b"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793901065",
+   "stage": 2,
+   "summary": "Trigger's root revision was already done (sitting 3). turn_04.md sends a_flagship_pick (which showcase is the face; recommended the plain rite party) and a_validate_north_star (the new DRAFT north star, bars summarised, four delegated readings listed as undoable). Fresh-Opus review rm-judge a592f41e9d9d73006 passed both after wording fixes."
   }
  ],
  "running": null,
  "schema": 1,
  "stage": 2,
- "status": "ready",
+ "status": "waiting_owner",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
