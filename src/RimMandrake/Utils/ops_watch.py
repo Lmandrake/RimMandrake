@@ -2371,7 +2371,12 @@ def rl_churn(store, now, cfg):
             g = rx.match(m)
             key = (by_hash.get(g.group(1)), int(g.group(2))) if g else None
             t = started.get(key) if key else None
-            if key and key[0] in per and key not in waited and not (ended_at.get(key) and ended_at[key] < tlo and (t or 0) < tlo):
+            landed = key is not None and gen_end.get(key) in ("finish", "done")
+            # a gen whose last ending is finish put its result on origin/main (a later check failure writes a newer
+            # ending for the same gen): its work and check spend is landed spend, never 'nothing landed'
+            # (OPS_CHURN_DIAGNOSE_WARSCAR_WWRK_FJER: WARSCAR_HOSPICE_DESERTERS_1 read 'spend rising: 11.8M, 944k' at
+            # 21:39Z, its gen 3 proof repair finished at 21:19Z and in its blind check, which passed)
+            if key and key[0] in per and key not in waited and not landed and not (ended_at.get(key) and ended_at[key] < tlo and (t or 0) < tlo):
                 # a gen whose last ending is a wait spent time, not work, as its return is no bounce: it is no rising
                 # spend (OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA, reopened: OPS_METRONOME_MIGRATE_CLOCKS_FENCED, each gen a planned
                 # one-clock-a-day wait that cut and published its clock, re-rang 'spend rising: 6.1M weighted, 4782k')

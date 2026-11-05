@@ -587,6 +587,33 @@ def main():
                "9g: a gated (withheld) row plus its attributed row is one game_fail, no churn", (sorted(pg), said))
         else:
             ok("game_fail failed it 2 times" in said, "9g: the same rows without gated still count twice", said)
+    # 9f OPS_CHURN_DIAGNOSE_WARSCAR_WWRK_FJER: WARSCAR_HOSPICE_DESERTERS_1 read 'spend rising: 11.8M weighted, 944k ...,
+    # nothing landed' at 21:39Z while its gen 3 (a proof repair, `finish` at 21:19Z) sat in its blind check. A gen whose
+    # last ending is finish landed: its spend is no rising spend. The same spend with a later failed ending for that gen
+    # (the check sent it back) still reads 'spend rising' (the instrument can see).
+    for landed in (True, False):
+        sf = TMP / ("s9f_%s" % landed)
+        nm = "WARSCAR_SHAPE_ITEM"
+        d = sf / "items" / nm
+        d.mkdir(parents=True)
+        (d / "state.json").write_text(json.dumps({"status": "checking", "returns": 0, "gen": 3, "spent": 11.8e6}))
+        t = NOW - 2 * HOUR
+        rows = [{"gen": 3, "at": iso(t), "start": marker(nm, 3)},
+                {"gen": 3, "at": iso(t + 600), "end": "finish", "sha": "d" * 40}]
+        if not landed:
+            rows.append({"gen": 3, "at": iso(t + 1800), "end": "check_fail", "approach_next": "build"})
+        (d / "attempts.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+        day = time.strftime("%Y%m%d", time.gmtime(NOW))
+        (sf / ("spend-%s.json" % day)).write_text(json.dumps({"spent": 944000, "runs": {marker(nm, 3): 944000}}))
+        (TMP / "ops" / "alarms.json").write_text(json.dumps({OW.CHURN_ITEM_TAG + ":" + OW.CHURN_ITEM_PREFIX + nm: {}}))
+        pf = OW.rl_churn(sf, NOW, cfg9s)
+        got = pf.get(OW.CHURN_ITEM_PREFIX + nm) or {}
+        said = (got.get("x") or {}).get("said", "")
+        if landed:
+            ok(got.get("v") == 0 and got.get("m") == "MEASURED" and "spend rising" not in said,
+               "9f: a finished gen in its check, past the hot spent band, is no rising spend; the held alarm reads 0", got)
+        else:
+            ok("spend rising" in said, "9f: the same gen sent back by its check still reads 'spend rising'", got)
     shutil.rmtree(TMP, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
