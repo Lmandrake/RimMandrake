@@ -8,6 +8,8 @@ in-memory mutants of it (no ledger copy is written; artledger.read_events is swa
   m3  a later ledger install puts other bytes on the Akk slot             -> UNLEDGERED, exit 1
   m4  the Akk file reads as other bytes on disk                           -> STALE, exit 1
   m5  no dessic binding events at all                                     -> BLIND, exit 2
+  m6  the owner keeps on the live Akk/Devourer v1 removed                 -> their v2 renders STALE, exit 1
+      (KEPT_OTHER passes a render only while an owner keep holds the slot; m0 pins it at 2)
 Each mutant must turn the named job red, and only the real ledger may pass.
 """
 from __future__ import annotations
@@ -27,6 +29,7 @@ import dessic_install_check as C  # noqa: E402
 AKK = "swanimals/Akk/Akk_Dessicated.png"
 AKK_SHA = "71d28cb4e7274bf2b4ece065740d88025639b39849090531c47e6849b76c98ae"
 ART_PY_INSTALL_IDS = {"be152726e1e848f49da6", "7ade4aebce8d4790b4f3"}   # Akk, Devourer (2026-11-03)
+OWNER_KEEP_IDS = {"e5d5bf96c997361ef946", "063d0b6cc98659e0cd38"}       # his keeps on those v1 pictures (2026-11-03)
 
 
 def run(events):
@@ -54,7 +57,7 @@ def main() -> int:
             fails.append(name)
 
     rc, out = run(base)
-    expect("m0 real ledger", rc, out, 0, "LIVE=56")
+    expect("m0 real ledger", rc, out, 0, "KEPT_OTHER=2 LIVE=60 RETIRED=3")
 
     m1 = [e for e in base if e.get("id") not in ART_PY_INSTALL_IDS]
     assert len(base) - len(m1) == 2, "sanity: both art.py install events must exist in the ledger"
@@ -93,6 +96,12 @@ def main() -> int:
     m5 = [e for e in base if not (e.get("type") == "binding" and str(e.get("job", "")).startswith("dessic_"))]
     rc, out = run(m5)
     expect("m5 blind", rc, out, 2, "BLIND")
+
+    m6 = [e for e in base if e.get("id") not in OWNER_KEEP_IDS]
+    assert len(base) - len(m6) == 2, "sanity: both owner keep rulings must exist in the ledger"
+    rc, out = run(m6)
+    expect("m6 owner keeps removed", rc, out, 1, "STALE: dessic_akk_dessicated_v2")
+    expect("m6 owner keeps removed (Devourer)", rc, out, 1, "STALE: dessic_devourer_dessicated_v2")
 
     print(f"selftest_dessic_install_check: {len(seen) - len(fails)}/{len(seen)} PASS" + (f"; FAIL {fails}" if fails else ""))
     return 1 if fails else 0

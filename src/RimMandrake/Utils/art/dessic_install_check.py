@@ -10,10 +10,14 @@ is reported as RETIRED, not as a failure.
 Bytes alone do not prove the install went THROUGH art.py: a LIVE slot must also be the art ledger's current
 live picture (artledger.Index().live, folded by causal prev) at that sha, and the ledger must hold a
 type=live event for that slot and sha written by an art.py install path — `art.py install` (reason
-"install") or the 2026-10-18 bulk accept (bulk_accept_renders.py, which calls artledger.install). A file
+"install" on a ruling, or "artpipe-collect" for a collected artpipe render) or the 2026-10-18 bulk accept (bulk_accept_renders.py, which calls artledger.install). A file
 whose bytes match but whose slot has no such event is UNLEDGERED (a plain copy that bypassed art.py).
 
-Exit 0 when every bound render is LIVE or RETIRED; 1 when any is UNLEDGERED (right bytes, no art.py install event), STALE (other bytes at a path a
+A render whose slot holds OTHER bytes that the owner kept (an active owner keep on the ledger's live picture
+there, e.g. his 2026-11-03 "Simply accept all art as currently rendered" over a v2 drawn the next day) is
+KEPT_OTHER: displacing kept art is his call, so it is reported, not failed.
+
+Exit 0 when every bound render is LIVE, RETIRED or KEPT_OTHER; 1 when any is UNLEDGERED (right bytes, no art.py install event), STALE (other bytes at a path a
 def still draws) or MISSING (a path a def still draws has no file); 2 when the instrument is blind
 (no dessic bindings found — a zero here is a query bug, never a pass).
 """
@@ -31,13 +35,22 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import artledger as A  # noqa: E402
 
 FACING = re.compile(r"_(east|west|north|south)$")
-ART_PY_REASONS = ("install",)
+ART_PY_REASONS = ("install", "artpipe-collect")   # artledger.install on a ruling, or --reason artpipe-collect (art guard verifies it)
 ART_PY_REASON_PREFIXES = ("script:src/RimMandrake/Utils/art/bulk_accept_renders.py bulk accept",)
 
 
 def installed_through_art_py(ev: dict) -> bool:
     r = ev.get("reason") or ""
     return r in ART_PY_REASONS or r.startswith(ART_PY_REASON_PREFIXES)
+
+
+def kept_other(index: "A.Index", path: str, cur: str) -> bool:
+    """The slot holds another picture the owner KEPT (an unreleased owner keep on those bytes, and it is the
+    ledger's live picture there): displacing kept art is his call (delegation_policy §2), so this render was
+    passed over by his decision, not left uninstalled."""
+    split = A.split_texture_path(path)
+    led = index.live.get((A.mod_key(split[0]), A.rel_key(split[1]))) if split else None
+    return bool(led and led.get("sha") == cur and index.protected(cur))
 
 
 def repo_root() -> str:
@@ -92,6 +105,8 @@ def main() -> int:
                 cls = "UNLEDGERED"
         elif not still_drawn:
             cls = "RETIRED"
+        elif cur is not None and kept_other(index, path, cur):
+            cls = "KEPT_OTHER"
         elif cur is None:
             cls = "MISSING"
         else:
