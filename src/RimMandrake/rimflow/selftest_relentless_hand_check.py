@@ -118,6 +118,50 @@ R.hand_back(store, fx, r, NOW, acts)
 ok(store.load("ROSTER_X")["status"] == "retired", "its candidate is bounced on the next tick, before the check")
 ok(R.hand_back(store, NS(), r, NOW, []) is None, "an Fx with no ledger reader bounces nothing")
 
+
+# --- eligible by title pattern (the clause the id test alone left open)
+ok(not R.eligible(item("SIGNS_X", "Live look on the walk save: signs are signboards"), r),
+   "eligible refuses a hand check matched by title pattern alone")
+ok(R.eligible(item("SIGNS_Y", "Signs render as signboards on the walk save"), r), "the same subject as real work enrols")
+
+# --- the real tick: hand_back runs inside R.tick() before any check or launch (a direct call proves the helper only)
+import selftest_relentless as T  # noqa: E402
+
+
+def t_tick_never_checks_or_launches_a_hand_check():
+    x = T.Rig(n=4)                              # share 0.5 of 4: I0 and I1 enrol
+    x.r["hand_check"] = {}                      # both enrolled and built before the rule
+    for i in ("I0", "I1"):
+        x.run_one(i)
+        st = x.st(i)
+        R.contract(x.s, i, st["gen"], "proof", live="once: test")
+        R.finish(x.s, i, st["gen"], "sha1", "evidence")
+        x.w.up[st["run"]["unit"]] = False
+    q = R.new_state("I2", x.now, "test")        # a queued hand check, never yet launched
+    x.s.save(q)
+    x.w.items["I2"] = "proposed"
+    world = NS(items={"I0": item("I0", "Fix the thing", state="doing", owner=x.r.get("seat"), makers=["ARTIST"]),
+                      "I1": item("I1", "Fix the other thing", state="doing", owner=x.r.get("seat")),
+                      "I2": item("I2", "Live look on the walk save", state="proposed")})
+    x.w.ledger_items = lambda: (None, world)
+    x.r["hand_check"] = {"ids": {"I0": "a value reads back"}, "title_rx": [r"(?i)^live look\b"]}
+    before = len(x.w.launches)
+    x.tick()
+    x.tick()
+    later = [l[:2] for l in x.w.launches[before:]]   # (item, unit): the prompt is pages long
+    ok(x.st("I0")["status"] == "retired", "tick(): a hand-check candidate ends retired", x.st("I0")["status"])
+    ok(not x.st("I0").get("check"), "tick(): no check was started on it", x.st("I0").get("check"))
+    ok(not [l for l in later if l[0] == "I0"], "tick(): nothing launched for the hand-check candidate", later)
+    ok(x.st("I2")["status"] == "retired", "tick(): a queued hand check (title pattern) ends retired", x.st("I2")["status"])
+    ok(not [l for l in later if l[0] == "I2"], "tick(): the queued hand check is never launched", later)
+    ok(any(R.HAND_CHECK_SAID in n for n in x.w.notes), "tick(): its maker gets the note", x.w.notes)
+    # sanity probe: the same tick does check ordinary work, so the rig can see a check start
+    ok(x.st("I1")["status"] == "checking", "tick(): the ordinary candidate beside it is checked", x.st("I1")["status"])
+    x.done()
+
+
+t_tick_never_checks_or_launches_a_hand_check()
+
 # --- lint
 probs = R.hand_check_lint({"hand_check": {"ids": {"NOT_FILED_X": "w", "ART_PICK_CONFIRM_INSTALLED": ""},
                                           "title_rx": ["("]}}, {"ART_PICK_CONFIRM_INSTALLED": 1})
