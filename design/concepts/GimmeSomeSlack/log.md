@@ -211,3 +211,11 @@ per-scene recovery or hold. Draft asks for stage 2: the flagship showcase, and h
 Turn: `turn_01.md` (root paragraph, attack: the honesty sentence makes a look mod a truth mod). Fresh-Opus review
 (rm-judge afe0c6f5be13477fd): ask_root pass after four wording fixes; ask_face (a_flagship) struck, already answered by
 his 11-02 words. Sent: ask_root. Ready, not sent: a_junction_every (stage 2).
+
+## Sitting 5, 2026-11-05 (run rm-role-designer-1793896010). Stage 1 closed
+
+His card answer to ask_root (OWNER:1793895896496551063), verbatim: "Restate Honest: Faithfully represents connectivity
+but not precise conduit path. For the shock, needs one more line on how a Pawn ever fixes a sparking line: if they
+approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they
+(or anyone else) gets shocked." Root revised to his two corrections only (turn_02.md); fallen_wire_shock scope opened by
+him; the fixer exemption is already built (GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED). Stage 2 next: a_junction_every.

@@ -55,6 +55,20 @@
    "speaker": "owner",
    "source": "OWNER:1792764476096951152",
    "quote": "It should favor diagonal approaches sliding underneath, to avoid confusion."
+  },
+  {
+   "id": "s_honest_connectivity",
+   "text": "Honest means the drawing faithfully represents connectivity, not the precise conduit path",
+   "speaker": "owner",
+   "source": "OWNER:1793895896496551063",
+   "quote": "Restate Honest: Faithfully represents connectivity but not precise conduit path."
+  },
+  {
+   "id": "s_shock_fix_safe",
+   "text": "A pawn approaching a sparking line intending to fix it is safe; a pawn incidentally going over the sparking end on a different job, or anyone else, is shocked",
+   "speaker": "owner",
+   "source": "OWNER:1793895896496551063",
+   "quote": "if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked."
   }
  ],
  "decisions": [
@@ -88,6 +102,14 @@
    "source": "OWNER:1792128342129067198",
    "text": "He walked the 31-station walk save RM_gss_walk_20261015b and verified it",
    "quote": "GimmeSomeSlack all looks great! Verified."
+  },
+  {
+   "id": "d_root",
+   "kind": "root",
+   "speaker": "owner",
+   "source": "OWNER:1793895896496551063",
+   "words": "Restate Honest: Faithfully represents connectivity but not precise conduit path. For the shock, needs one more line on how a Pawn ever fixes a sparking line: if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked.",
+   "what": "Root approved as corrected (honest = connectivity, not conduit path; fixer safe, incidental crossers shocked)"
   }
  ],
  "asks": [
@@ -110,7 +132,7 @@
    ],
    "offers_removal": false,
    "author": "rm-role-designer-1793865048",
-   "status": "sent",
+   "status": "answered",
    "source": [
     "design/concepts/GimmeSomeSlack/turn_01.md"
    ],
@@ -118,6 +140,10 @@
     "by": "rm-judge afe0c6f5be13477fd (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "Answerable with yes; settles stage 1. Fixed on review: 'no frame time' overclaim -> his 'no problematic delay'; strips at every 3/4-way junction (his words); shock marked built-not-in-his-words; 'replaces invisible conduit' inverted; 'steady goodwill drain' his words."
+   },
+   "answer": {
+    "source": "OWNER:1793895896496551063",
+    "words": "Restate Honest: Faithfully represents connectivity but not precise conduit path. For the shock, needs one more line on how a Pawn ever fixes a sparking line: if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked."
    }
   },
   {
@@ -317,19 +343,21 @@
   },
   {
    "id": "fallen_wire_shock",
-   "what": "A live fallen wire shocks pawns touching it and can ignite fuel puddles",
+   "what": "A live fallen wire shocks pawns touching it (and can ignite fuel puddles); the colonist on the re-string job for that cut is exempt, anyone crossing it on another job is shocked",
    "impl": "present",
    "impl_evidence": [
-    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+    "ITEM:GSS_FALLEN_LINE_FIX_SHOCKS_THIN_AIR",
+    "ITEM:GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED",
     "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_FallenWireShock.xml",
-    "ITEM:GSS_FALLEN_LINE_FIX_SHOCKS_THIN_AIR"
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs"
    ],
    "proof": "stale",
-   "scope": "not_opened",
+   "scope": "opened_by_owner",
    "source": [
     "ITEM:GSS_FALLEN_LINE_FIX_SHOCKS_THIN_AIR"
    ],
-   "note": "not in the north star. FALLEN_WIRE_SHOCK_1 verify partial 2026-10-12 (chemfuel half PASS). Open: GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT, _SHOCK_OUTLIVES_WIRE, _SHOCK_STILL_BITES."
+   "note": "not in the north star. FALLEN_WIRE_SHOCK_1 verify partial 2026-10-12 (chemfuel half PASS). Open: GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT, _SHOCK_OUTLIVES_WIRE, _SHOCK_STILL_BITES. Fixer exemption built: RM_FallenWireShock.cs exempts a pawn on RM_RestringSpan for the wires of the cut it splices (GSS_RESTRING_DIAGNOSE_FIXER_GETS_ZAPPED, closed 2026-10-15); matches his 2026-11-05 rule.",
+   "scope_source": "OWNER:1793895896496551063"
   },
   {
    "id": "wire_down_alert",
@@ -616,5 +644,12 @@
   "text": "Gimme Some Slack hides the tidy conduit and draws in its place what a scavenger base really looks like: too-long extension cords sprawling across the floor in loose loops and coils, piling against walls, plugging into power strips (or connectors, in the other three looks) at every three- or four-way junction, and sagging overhead lines strung between masts. The mess is honest: every cord explains a real power connection, a cut line lies on the ground sparking where it is live and dead where it is not, and nothing is drawn that is not wired. Even a huge base with many wires and connectors shows no problematic delay. Around that look ride a few consequences, all built: a colonist re-strings a cut span, a clamp on a neighbour's line steals their power with a steady goodwill drain if caught, and (built, not yet in his words) a live fallen wire shocks whoever touches it. Judged first: one room of floor cords meeting at a strip, and one cut that leaves a sparking live end and a dead end, with the drawing true to the grid in both.",
   "source": "design/concepts/GimmeSomeSlack/turn_01.md",
   "speaker": "agent"
+ },
+ "root": {
+  "text": "Gimme Some Slack hides the tidy conduit and draws in its place what a scavenger base really looks like: too-long extension cords sprawling across the floor in loose loops and coils, piling against walls, plugging into power strips (or connectors, in the other three looks) at every three- or four-way junction, and sagging overhead lines strung between masts. The mess is honest: it faithfully represents connectivity but not the precise conduit path. Every cord explains a real power connection, nothing is drawn that is not wired, and a cut line lies on the ground sparking where it is live and dead where it is not. Even a huge base with many wires and connectors shows no problematic delay. Around that look ride a few consequences, all built: a clamp on a neighbour's line steals their power with a steady goodwill drain if caught; a live fallen wire shocks whoever touches it; and a colonist re-strings a cut span. A pawn who approaches a sparking line intending to fix it is safe; one who incidentally goes over the sparking end on a different job (or anyone else) gets shocked. Judged first: one room of floor cords meeting at a strip, and one cut that leaves a sparking live end and a dead end, with the drawing true to the grid's connectivity in both.",
+  "source": "OWNER:1793895896496551063",
+  "speaker": "owner",
+  "quote": "Restate Honest: Faithfully represents connectivity but not precise conduit path. For the shock, needs one more line on how a Pawn ever fixes a sparking line: if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked.",
+  "note": "turn_01 root_draft corrected by his card answer 2026-11-05 to ask_root (\"Correct any word, or say yes\"); his two corrections applied, nothing else changed. Shown back in turn_02.md for undo."
  }
 }
