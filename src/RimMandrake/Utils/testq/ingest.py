@@ -14,7 +14,11 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
   a harness fault   -> no verdict (owner ruling by card 2026-10-31, retest.py). A chain the harness stopped is left out of
                        the verify, so it never reads as a feature's partial, and each distinct cause files ONE repair
                        item, HARNESS_REPAIR_CAUSE_<HEX> (--for FOUNDRY for FlowWorks, else BENCH, needs offline), or a
-                       note on the open one. An INVALID job with no sheet does the same.
+                       note on the open one. An INVALID job with no sheet does the same. The item is filed with its
+                       template, items/<NAME>.md (repair_prose: job ids to re-run, classify first, pass = the same
+                       job re-run yields a verdict, `retest.py passed`, forbidden fixes, a negative control), committed
+                       with the shard; a run inside a known fault window is ENVIRONMENT and files nothing
+                       (TESTQ_REPAIR_FIX_TICKETS_NAME_THEIR_PASS).
   no item, a FAIL   -> FILL_ITEM (STEVE_FILLER_MONITOR_FAIL_FINDINGS, a standing host) is verified from the job's rows
                        and gets one finding per FAIL row, so the filler's failures reach flow.untriaged_findings
                        (TESTQ_FILLER_DIAGNOSE_FAILS_NOBODY_HEARD: 35 FAIL rows in 18 such jobs had been dropped).
@@ -194,11 +198,124 @@ def spawned_for(base, att):
         return False
 
 
-def repair(job, res, cause):
-    """One repair item per CAUSE: file it, or note the open one -> None, or an error string (retried)."""
+ITEMS_REL = os.path.join("infrastructure", "state", "items")
+REPAIR_PREFIX = "HARNESS_REPAIR_"
+#: the class a cause kind most likely belongs to; the builder confirms it before anything else (## classify)
+CLASS_PRIOR = {"site_hold": "SITE", "surprise": "SITE", "selftest_not_run": "MOD", "canary": "ENVIRONMENT"}
+
+
+def items_dir():
+    return os.environ.get("RIMFLOW_ITEMS") or os.path.join(REPO, ITEMS_REL)
+
+
+def env_window(rec):
+    """ENVIRONMENT is checked at filing, never left to the builder: -> (window or None, what was read). A run whose span
+    overlaps a known SteveDesktop fault window is the host's; it files no repair (the gate quarantines and re-queues it)."""
+    res = (rec or {}).get("result") or {}
+    host = res.get("host", T.STEVE)
+    if host != T.STEVE:
+        return None, "host %s: SteveDesktop's fault windows do not apply" % host
+    windows, state = FM.load()
+    span = FM.job_span(rec)
+    if span is None:
+        return None, "UNCHECKED: the record states no time"
+    w = FM.window_of(span, windows)
+    if w:
+        return w, "inside fault window %s" % w.get("id")
+    return None, "%d known fault window(s) in fault_windows.json, none overlaps the run (%s .. %s)%s" % (
+        len(windows), FM.stamp(span[0]), FM.stamp(span[1]),
+        "" if state else "; UNCHECKED beyond that: the fault monitor has never run")
+
+
+def rerun_line(job):
+    """The testq.py submit line that re-runs JOB as it was (same mod, selector, purpose, items), at the fix's sha."""
+    sel, out = job.get("selector") or {}, ["python3 src/RimMandrake/Utils/testq/testq.py submit", job["mod"]]
+    for k in ("chains", "rows"):
+        if sel.get(k):
+            out += ["--%s" % k, ",".join(sel[k])]
+    for it in sel.get("item") or []:
+        out += ["--item", it]
+    if sel.get("full"):
+        out.append("--full")
+    out += ["--purpose", job.get("purpose") or "fix", "--by BENCH --sha <the fix's published sha>"]
+    if job.get("item"):
+        out += ["--for-item", job["item"]]
+    for k, v in sorted((job.get("row_items") or {}).items()):
+        out += ["--row-item", "%s=%s" % (k, v)]
+    if job.get("profile"):
+        out += ["--profile", job["profile"]]
+    return " ".join(out)
+
+
+def repair_prose(name, job, res, cause, env_read):
+    """TESTQ_REPAIR_FIX_TICKETS_NAME_THEIR_PASS: what a repair item builds and how it passes, written at filing, so no
+    builder invents what "fixed" means (the cheapest invention silences the check)."""
+    att, kind = res["attempt"], cause.split(":")[0].strip()
+    prior = CLASS_PRIOR.get(kind, "HARNESS")
+    held = sorted(c for c, v in R.split_rows(res.get("rows") or [])[2].items() if v == cause) \
+        if res.get("outcome") == "DONE" else []
+    return "\n".join([
+        "# %s" % name, "",
+        "Filed by testq ingest.repair() (TESTQ_REPAIR_FIX_TICKETS_NAME_THEIR_PASS). A harness fault: the run measured "
+        "nothing for what it held, so no verdict was recorded.", "",
+        "## spec", "",
+        "- cause signature: `%s`" % cause,
+        "- job `%s`, attempt `%s`, mod %s, host %s, outcome %s/%s" % (
+            job["id"], att, job["mod"], res.get("host", T.STEVE), res.get("outcome"), res.get("cause")),
+        "- chains held without a verdict: %s" % (", ".join("`%s`" % c for c in held) or "the whole job (no sheet)"),
+        "- runner note: %s" % (res.get("note") or "")[:300].replace("\n", " "),
+        "- read the sighting: `python3 src/RimMandrake/Utils/testq/testq.py show %s`" % job["id"],
+        "- later sightings land as `seen again in testq <attempt>` notes on this item: re-run those jobs too.", "",
+        "## classify", "",
+        "Decide the class FIRST, from the sighting, before changing any code. Prior from the cause kind `%s`: %s." % (
+            kind, prior),
+        "- ENVIRONMENT (the host: SIMD fault, reboot, disk) was checked at filing: %s. If the host still did it, "
+        "drop this item with that evidence; never change the harness for a host fault." % env_read,
+        "- MOD: the mod under test stopped the harness reading it. File a finding or item on the mod and supersede "
+        "this one; the harness is not changed.",
+        "- SITE: the test site (map, fixture, quiet hold, a surprise event) did it. Fix the staging, not the check.",
+        "- HARNESS: the harness's own code. Fix it here.", "",
+        "## verify", "",
+        "Pass = the SAME job re-run yields a verdict. After the fix is published, queue it again:",
+        "", "    %s" % rerun_line(job), "",
+        "and when it finishes: `python3 src/RimMandrake/Utils/testq/retest.py passed <new job id> %s` exits 0 (the run "
+        "is DONE, rows carry PASS/FAIL/SKIP, and none carries this cause). A FAIL verdict passes this item: a real "
+        "FAIL is a verdict." % name, "",
+        "## negative control", "",
+        "`python3 src/RimMandrake/Utils/testq/retest.py passed %s %s` must exit 1 both before and after the fix: the "
+        "original sighting still carries the cause. If it exits 0, the fix silenced the detector." % (job["id"], name), "",
+        "## forbidden", "",
+        "- heal: no retry, auto-restart or self-repair that turns the fault into a pass without removing its cause.",
+        "- tolerance: no widened timeout, threshold or budget that lets the same fault through unseen.",
+        "- drop the check: no removed row, chain, `retest.CAUSES` pattern or validity test; no row re-labelled to "
+        "escape it.", "",
+        "## criteria", "",
+        "- the class is recorded on this item (note) with its evidence before the fix;",
+        "- `retest.py passed <re-run job> %s` exits 0 on a job run at the fix's sha;" % name,
+        "- the negative control above exits 1.", ""])
+
+
+def write_repair_prose(name, text):
+    """Write items/NAME.md once (a later sighting is a note, never a rewrite) -> the path, or None if it existed."""
+    path = os.path.join(items_dir(), name + ".md")
+    if os.path.exists(path):
+        return None
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+    return path
+
+
+def repair(job, res, cause, rec=None):
+    """One repair item per CAUSE: file it with its template (items/NAME.md), or note the open one -> None, or an error
+    string (retried). A run inside a known fault window is ENVIRONMENT: never filed, never noted."""
     import gaps
     att, base = res["attempt"], R.repair_base(cause)
     if spawned_for(base, att):      # a retry of this attempt, even if its repair has closed since
+        return None
+    w, env_read = env_window(rec or {"job": job, "result": res})
+    if w:
+        T.log("ingest %s: cause %s ran inside fault window %s: ENVIRONMENT, no repair filed" % (att, base, w.get("id")))
         return None
     try:
         if _REPAIR_ITEMS[0] is None:
@@ -211,8 +328,9 @@ def repair(job, res, cause):
         name, how = R.repair_slot(_REPAIR_ITEMS[0], base)
     if how == "note":
         needle = "seen again in testq %s" % att
-        return None if note_once(name, needle, "%s: %s" % (needle, (res.get("note") or cause)[:160])) \
+        return None if note_once(name, needle, "%s (job %s): %s" % (needle, job["id"], (res.get("note") or cause)[:160])) \
             else "repair note refused on %s" % name
+    write_repair_prose(name, repair_prose(name, job, res, cause, env_read))
     cause_item = job.get("item") or next(iter(sorted((job.get("row_items") or {}).values())), None) or LANE_ITEM
     rc, out = rimflow("spawn", "--from", cause_item, "--for", "FOUNDRY" if job["mod"] == "FlowWorks" else "BENCH",
                       "--needs", "offline", "--name", name,
@@ -234,7 +352,7 @@ def ingest_one(rec):
     else:
         causes = [c for c in [R.job_cause(res)] if c]
     for cause in sorted(set(causes)):       # before the no-item return: the filler's jobs name no item
-        err = repair(job, res, cause)
+        err = repair(job, res, cause, rec)
         if err:
             return {"error": err}
     # the standing host stands in only for a job with no item of its own (as in groups_of)
@@ -453,6 +571,32 @@ def repo_lock(wait_s=0):
             _HELD.pop()
 
 
+def repair_prose_paths(git):
+    """-> the repo-relative items/HARNESS_REPAIR_*.md that repair() wrote and the RUNNER shard spawned, not yet committed:
+    they travel in the shard's commit (a template for an item the ledger never got stays behind, unpublished)."""
+    r = git("status", "--porcelain", "--untracked-files=all", "--", ITEMS_REL)
+    if getattr(r, "returncode", 1) != 0:
+        return []
+    spawned = set()
+    try:
+        with open(shard_path(), encoding="utf-8") as f:
+            for line in f:
+                if REPAIR_PREFIX in line and '"spawn"' in line:
+                    with contextlib.suppress(ValueError):
+                        e = json.loads(line)
+                        if e.get("event") == "spawn":
+                            spawned.add(e.get("name"))
+    except OSError:
+        return []
+    out = []
+    for line in r.stdout.splitlines():
+        rel = line[3:].strip().strip('"')
+        name = os.path.basename(rel)[:-3] if rel.endswith(".md") else None
+        if name in spawned and os.path.dirname(rel) == ITEMS_REL.replace(os.sep, "/"):
+            out.append(rel)
+    return sorted(out)
+
+
 def publish(n, shard_rel=SHARD_REL, message=None):
     """_publish under the clone lock (waits up to 120 s), after clearing a leftover rebase / stale index.lock
     (clear_leftovers); what it did leads the result."""
@@ -477,11 +621,12 @@ def _publish(n, shard_rel=SHARD_REL, message=None):
     DISPATCHER shard (rimflow/dispatcher.py passes its own shard and message)."""
     def git(*a):
         return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=300)
-    a = git("add", "--", shard_rel)
+    paths = [shard_rel] + (repair_prose_paths(git) if shard_rel == SHARD_REL else [])
+    a = git("add", "--", *paths)
     if a.returncode != 0:
         return "add failed (the lines stay in the working tree; the next ingest retries): " + a.stderr.strip()[-200:]
-    if git("diff", "--cached", "--quiet", "--", shard_rel).returncode != 0:
-        c = git("commit", "-q", "-m", message or "ledger: RUNNER ingest of %d testq job(s)" % n, "--", shard_rel)
+    if git("diff", "--cached", "--quiet", "--", *paths).returncode != 0:
+        c = git("commit", "-q", "-m", message or "ledger: RUNNER ingest of %d testq job(s)" % n, "--", *paths)
         if c.returncode != 0:
             return "commit failed: " + c.stderr.strip()[-200:]
     p = None
@@ -637,7 +782,10 @@ def unpublished(shard_rel=SHARD_REL):
     before its commit; the done records are already marked, so n is 0 from then on) or commits not pushed."""
     def git(*a):
         return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=60).stdout.strip()
-    return bool(git("status", "--porcelain", "--", shard_rel)) or git("rev-list", "--count", "origin/main..HEAD") \
+    return bool(git("status", "--porcelain", "--", shard_rel)) \
+        or (shard_rel == SHARD_REL and bool(repair_prose_paths(lambda *a: subprocess.run(
+            ["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=60)))) \
+        or git("rev-list", "--count", "origin/main..HEAD") \
         not in ("", "0")
 
 

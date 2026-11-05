@@ -16,6 +16,7 @@ left uncommitted make the next ingest publish though it has nothing new (the old
 """
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -409,8 +410,9 @@ def harness_checks(env):
     def fake(*a):
         calls.append(a)
         return 0, "HX/run-1@steve-targeted recorded"
-    saved = ingest.rimflow, ingest.recorded_run, ingest.note_once
+    saved = ingest.rimflow, ingest.recorded_run, ingest.note_once, ingest.FM.load
     ingest.rimflow, ingest.recorded_run = fake, lambda *a: None
+    ingest.FM.load = lambda: ([], None)     # hermetic: the real queue's fault windows must not decide a filing
     ingest.note_once = lambda it, needle, text: calls.append(("note", it, text)) or True
     try:
         dead = {"row": "r9", "chain": "c1", "verdict": "UNMEASURED", "detail": "canary red, chain body not run"}
@@ -443,7 +445,7 @@ def harness_checks(env):
         check(len(spawn) == 1 and "BENCH" in spawn[0] and "skipped" in out, "an item-less dead job still files its repair")
         check(spawn[0][spawn[0].index("--name") + 1] == R.repair_base(R.job_cause(rec["result"])), "named for the cause")
     finally:
-        ingest.rimflow, ingest.recorded_run, ingest.note_once = saved
+        ingest.rimflow, ingest.recorded_run, ingest.note_once, ingest.FM.load = saved
         ingest._REPAIR_ITEMS[0] = None
         ingest._REPAIRED.clear()
 
@@ -481,6 +483,98 @@ def quarantine_repair_checks(env):
         check(moved and "HARNESS_REPAIR_CAUSE_AAAA0001" in moved[0]["items"], "the quarantine record lists the repairs")
     finally:
         ingest.note_once, ingest.FM.rerun_job, ingest.FM.quarantine_move = saved
+
+
+def template_checks(env):
+    """TESTQ_REPAIR_FIX_TICKETS_NAME_THEIR_PASS: a repair item is filed with what it builds and how it passes; a run
+    inside a fault window (ENVIRONMENT) files nothing; the pass and negative-control instrument decides both ways."""
+    import ingest
+    import retest as R
+    os.environ.update(env)
+    items_dir = ingest.items_dir()
+    check(items_dir == env["RIMFLOW_ITEMS"], "the template goes to the redirected items dir: %s" % items_dir)
+    calls = []
+
+    def fake(*a):
+        calls.append(a)
+        return 0, "ok"
+    saved = ingest.rimflow, ingest.note_once, ingest.FM.load
+    ingest.rimflow = fake
+    ingest.note_once = lambda it, needle, text: calls.append(("note", it, text)) or True
+    ingest._REPAIR_ITEMS[0], windows = {}, []
+    ingest.FM.load = lambda: (windows, {"clean_through_s": 0})
+    try:
+        dead = {"row": "r9", "chain": "c7", "verdict": "UNMEASURED", "detail": "could not hold the site quiet (3 raids)"}
+        rec = done_rec(ITEM, rows=(("r1", "PASS"),))
+        rec["result"].update(rows=[dict(dead), {"row": "r1", "chain": "c2", "verdict": "PASS", "detail": ""}],
+                             host="stevedesktop", started="2026-11-01T10:00:00Z", finished="2026-11-01T10:20:00Z")
+        rec["finished"] = "2026-11-01T10:21:00Z"
+        cause = R.causes_of(rec["result"])[0]
+        name = R.repair_base(cause)
+        path = os.path.join(items_dir, name + ".md")
+        # ENVIRONMENT: the run overlaps a known window -> nothing filed, nothing noted, no template
+        windows.append({"id": "F9", "start": "2026-11-01T09:00:00Z", "end": "2026-11-01T11:00:00Z"})
+        check(ingest.repair(rec["job"], rec["result"], cause, rec) is None and not calls and not os.path.exists(path),
+              "a cause inside a fault window is ENVIRONMENT: never filed or noted: %s" % calls)
+        windows[:] = [{"id": "F8", "start": "2026-10-30T09:00:00Z", "end": "2026-10-30T11:00:00Z"}]
+        ingest.repair(rec["job"], rec["result"], cause, rec)
+        spawn = [c for c in calls if c[0] == "spawn"]
+        check(len(spawn) == 1 and spawn[0][spawn[0].index("--name") + 1] == name, "outside every window it is filed")
+        text = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
+        secs = re.findall(r"^## (.+)$", text, re.M)
+        check(secs == ["spec", "classify", "verify", "negative control", "forbidden", "criteria"],
+              "the template has every section: %s" % secs)
+        for needle, what in ((rec["job"]["id"], "the job id"), (rec["result"]["attempt"], "the attempt id"),
+                             ("`c7`", "the chain held"), ("testq.py submit Mock --rows r1", "the re-run line"),
+                             ("--for-item %s" % ITEM, "the re-run names the item"),
+                             ("Prior from the cause kind `site_hold`: SITE", "a class prior"),
+                             ("none overlaps the run", "the window check at filing"),
+                             ("retest.py passed %s %s` must exit 1" % (rec["job"]["id"], name), "the negative control"),
+                             ("heal:", "heal forbidden"), ("tolerance:", "tolerance forbidden"),
+                             ("drop the check:", "dropping the check forbidden")):
+            check(needle in text, "the template carries %s (%r)" % (what, needle))
+        # a second sighting is a note; the template is never rewritten
+        open(path, "a").write("KEEP\n")
+        rec2 = json.loads(json.dumps(rec))
+        rec2["result"]["attempt"] = rec2["job"]["id"] + ".a2"
+        del calls[:]
+        ingest.repair(rec2["job"], rec2["result"], cause, rec2)
+        check([c[0] for c in calls] == ["note"] and open(path).read().endswith("KEEP\n"),
+              "a second sighting notes the open item and leaves its template: %s" % calls)
+        # the pass instrument, both ways
+        ok, why = R.repaired_by(rec["result"], name)
+        check(not ok and "still carries" in why, "negative control: the sighting fails its own repair: %s" % why)
+        good = dict(rec["result"], rows=[dict(dead, verdict="PASS", detail=""), {"row": "r1", "chain": "c2",
+                                                                                 "verdict": "PASS", "detail": ""}])
+        check(R.repaired_by(good, name)[0], "a re-run where the held chain has a verdict passes")
+        check(R.repaired_by(dict(good, rows=[dict(dead, verdict="FAIL", detail="x")]), name + "_2")[0],
+              "a FAIL is a verdict, and an _N generation is the same cause")
+        check(not R.repaired_by({"outcome": "INVALID", "cause": "HANG", "note": "x"}, name)[0],
+              "a run with no sheet does not pass")
+        check(not R.repaired_by(dict(good, rows=[]), name)[0], "a DONE run with no verdict row does not pass")
+        tmpf = os.path.join(os.path.dirname(items_dir), "orig.json")
+        with open(tmpf, "w") as f:
+            json.dump(rec, f)
+        cli = [sys.executable, os.path.join(HERE, "retest.py"), "passed", tmpf, name]
+        check(subprocess.run(cli, capture_output=True, timeout=60).returncode == 1, "retest.py passed: sighting exits 1")
+        with open(tmpf, "w") as f:
+            json.dump(dict(rec, result=good), f)
+        check(subprocess.run(cli, capture_output=True, timeout=60).returncode == 0, "retest.py passed: a verdict exits 0")
+        # publish carries the template of a spawned repair, and no other
+        shard = ingest.shard_path()
+        with open(shard, "a", encoding="utf-8") as f:
+            f.write(json.dumps({"seat": "RUNNER", "event": "spawn", "name": name}) + "\n")
+        st = "?? infrastructure/state/items/%s.md\n?? infrastructure/state/items/HARNESS_REPAIR_CAUSE_NEVERSPAWN.md\n" \
+             " M infrastructure/state/items/OTHER_ITEM.md\n" % name
+
+        class G:
+            returncode, stdout = 0, st
+        check(ingest.repair_prose_paths(lambda *a: G) == ["infrastructure/state/items/%s.md" % name],
+              "publish stages the spawned repair's template only: %s" % ingest.repair_prose_paths(lambda *a: G))
+    finally:
+        ingest.rimflow, ingest.note_once, ingest.FM.load = saved
+        ingest._REPAIR_ITEMS[0] = None
+        ingest._REPAIRED.clear()
 
 
 def main():
@@ -598,6 +692,7 @@ def main():
         # a standing host (TESTQ_HOST_ITEM) hosts only item-less jobs: a job that names its own item is not noted there
         harness_checks(env)
         quarantine_repair_checks(env)
+        template_checks(env)
         hr =done_rec(ITEM, "INVALID", "HANG")
         S.dump(hr, os.path.join(queue, "done", hr["job"]["id"] + ".json"))
         subprocess.run([sys.executable, os.path.join(HERE, "ingest.py")], env=dict(env, TESTQ_HOST_ITEM=MANY_A),

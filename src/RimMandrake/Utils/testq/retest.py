@@ -163,3 +163,68 @@ def repair_open(items, cause, terminal=("done", "dropped", "superseded")):
     """True while an item is open for CAUSE. No item yet (a run from before this rule, or ingest still to come) holds
     nothing: a hold nobody can see or release would be a silent stop."""
     return any(items[n].state not in terminal for n in _generations(items, repair_base(cause)))
+
+
+def causes_of(res):
+    """-> every cause signature RES carries: one per chain the harness stopped (DONE), or the job's own (no sheet)."""
+    res = res or {}
+    if res.get("outcome") == "DONE":
+        return sorted(set(split_rows(res.get("rows") or [])[2].values()))
+    return [c for c in [job_cause(res)] if c]
+
+
+def repaired_by(res, name):
+    """TESTQ_REPAIR_FIX_TICKETS_NAME_THEIR_PASS: does the result RES pass repair item NAME (a HARNESS_REPAIR_CAUSE_<HEX>,
+    or its _N generation)? -> (ok, why). It passes only when the run measured (DONE, at least one row with a verdict) and
+    no cause it carries is NAME's cause. So the sighting that filed NAME must FAIL this (the negative control): a fix
+    that makes it pass silenced the detector instead of repairing the fault."""
+    base = re.sub(r"_\d+$", "", name)
+    res = res or {}
+    hit = [c for c in causes_of(res) if repair_base(c) == base]
+    if hit:
+        return False, "still carries the cause: %s" % hit[0]
+    if res.get("outcome") != "DONE":
+        return False, "no sheet: outcome %s (%s)" % (res.get("outcome"), res.get("cause"))
+    judged = [r for r in res.get("rows") or [] if r.get("verdict") in ("PASS", "FAIL", "SKIP")]
+    if not judged:
+        return False, "DONE, but no row carries a verdict"
+    return True, "%d row(s) carry a verdict and none carries %s's cause" % (len(judged), base)
+
+
+def main(argv=None):
+    """`retest.py passed <job-id|record.json> <REPAIR_ITEM>`: exit 0 when that job's result passes the repair item, 1
+    when it does not, 2 when there is no finished record to read."""
+    import argparse
+    import json
+    import os
+    import sys
+    ap = argparse.ArgumentParser(prog="retest.py")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("passed", help="does a finished job's result pass a HARNESS_REPAIR_CAUSE_ item?")
+    p.add_argument("job", help="a testq job id (looked up in the queue) or a path to its done record")
+    p.add_argument("item")
+    a = ap.parse_args(argv)
+    if os.path.isfile(a.job):
+        path = a.job
+    else:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import testq as T
+        st = T.where(a.job)
+        path = T.q(st, a.job + ".json") if st else None
+    try:
+        with open(path, encoding="utf-8") as f:
+            rec = json.load(f)
+    except (TypeError, OSError, ValueError) as e:
+        print("UNMEASURED: no finished record for %s (%s)" % (a.job, e))
+        return 2
+    res = rec.get("result")
+    if not res:
+        print("UNMEASURED: %s has no result yet" % a.job)
+        return 2
+    ok, why = repaired_by(res, a.item)
+    print("%s: %s %s" % ("PASS" if ok else "FAIL", a.job, why))
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
