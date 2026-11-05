@@ -728,7 +728,10 @@ addEventListener('DOMContentLoaded', () => {
   const orig = window.setDecision;
   if (typeof orig === 'function') window.setDecision = function (id, key, opts) {
     const it_ = byId.get(id);
-    if (it_ && window.artNoSelect(it_).has(key)) { if (typeof showErr === 'function') showErr('Set ' + key + ' is placeholder art — it cannot be picked.'); return; }
+    /* the template refuses a frozen sheet or an unknown row: hand those straight to it (its message, no record). The
+       stamping below once ran regardless, writing decidedAt and a slot pick the template never accepted. */
+    if (!it_ || (typeof frozen !== 'undefined' && frozen)) return orig(id, key, opts);
+    if (window.artNoSelect(it_).has(key)) { if (typeof showErr === 'function') showErr('Set ' + key + ' is placeholder art — it cannot be picked.'); return; }
     const g = window.SLX && it_ && (it_.graphics || []).find(x => x.primary && x.lane === 'slot');
     /* a letter reaches here from the right-hand buttons (only this row's letters) AND from the template's number hotkeys
        and shift-number group bulk, which send ANY letter of the sheet. A letter that is not a usable set of the primary
