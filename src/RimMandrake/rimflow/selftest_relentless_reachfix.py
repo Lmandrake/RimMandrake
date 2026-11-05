@@ -336,14 +336,15 @@ def t_store_seed():
     cls = RF.classify(r, [what])
     store_root = "/home/mandrake/rm/relentless/store"
     prop = RF.propose(r, cls, [], [], what, store_root)
-    ok(cls["class"] == "store" and prop["adapters"] == ["relentless_store_attempts"] and prop["paths"] == []
+    ok(cls["class"] == "store" and prop["adapters"] == ["relentless_store_attempts", "relentless_store_journal"]
+       and prop["paths"] == []
        and store_root in prop["refused"],
        "(8) the store gap seeds relentless_store_attempts and still refuses the store root: %s" % prop)
     judge = RF.propose(r, cls, ["relentless_store_attempts", store_root + "/items/X/learned.md"], [], what, store_root)
     ok(judge["adapters"] == ["relentless_store_attempts"] and judge["paths"] == [] and judge["refused"],
        "(8) a Judge naming the adapter gets it, and a store path it names stays refused: %s" % judge)
     old = {"adapters": [], "paths": [], "by": "seed"}
-    ok(RF.reseed(r, "store", old)["adapters"] == ["relentless_store_attempts"],
+    ok(RF.reseed(r, "store", old)["adapters"] == ["relentless_store_attempts", "relentless_store_journal"],
        "(8) the stale empty store proposal gains the adapter when its ticket closes (reseed)")
     ad = W.adapters(r).get("relentless_store_attempts") or {}
     argv, why = W.fill_argv(ad.get("argv") or ["x"], {})
@@ -392,6 +393,91 @@ def t_store_seed():
     ok("SECRET" not in out and "ends=finish:1,other:1" in out,
        "(8) no learned.md, receipt, state prose, attempt detail, odd item id or free-text ending crosses: %r" % out)
     ok(blank.startswith("store ") and "NO_STORE" in blank, "(8) no store reads NO_STORE, not a clean empty: %r" % blank)
+
+
+KUQY_BLIND = ("git commits behind the pre-existing fixed.sha values in jam_classes.json (no .git in export; /mnt/d/Luke/dev/"
+              "RimMandrake/.git Permission denied; /home/mandrake/rm/bench empty); live relentless journal showing "
+              "relentless.jam_unnamed = 0 after the fix (ls /home/mandrake/rm/relentless/store: Permission denied; the "
+              "relentless_store_attempts offbox reading carries attempts, not journal reasons)")
+
+
+def t_store_waiter_kuqy():
+    """CHECKER_REACH_FIX_STORE_STILL_DARK gen 3 (the fix died once): OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND_KUQY waited on
+    IWIV's store repair and was released with IWIV's proposal (relentless_store_attempts only). Its own blind text also
+    named git history (the git class: grant git_history) and the store JOURNAL's jam rows, which no adapter read. So the
+    one re-check was blind again. Now: (9a) a seed proposal carries the adapters of every class its text matches, with the
+    first class's first, and the store class seeds relentless_store_journal; (9b) a waiter released on another item's
+    repair gets that repair PLUS its own proposal's grants and adapters; (9c) the journal adapter reads the jam rows of
+    the kinds the candidate's registry names, in its window, as journal lines a Judge can census in the box."""
+    import json
+    import subprocess
+    import tempfile
+    import time
+    import relentless_wall as W
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    store_root = "/home/mandrake/rm/relentless/store"
+    cls = RF.classify(r, [KUQY_BLIND])
+    prop = RF.propose(r, cls, [], [], KUQY_BLIND, store_root)
+    ok(cls["class"] == "store" and prop["adapters"][:2] == ["relentless_store_attempts", "relentless_store_journal"]
+       and "git_log_candidate" in prop["adapters"] and "git_history" in prop["grants"]
+       and len(prop["adapters"]) <= W.OFFBOX_MAX,
+       "(9a) KUQY's text seeds the store adapters, the journal one included, and the git class's adapters and grant: %s"
+       % prop)
+    # (9b) through the real tick: I0 owns the store repair (IWIV's text), I1 (KUQY's text) waits and is released on it
+    x = rig(n=2)
+    iwiv = "Relentless store attempts: ls /home/mandrake/rm/relentless/store -> Permission denied"
+    B.to_check(x, "I0")
+    blind(x, "I0", what=iwiv)
+    B.to_check(x, "I1")
+    blind(x, "I1", what=KUQY_BLIND)
+    x.tick()
+    ok((x.st("I1").get("reach") or {}).get("status") in ("waiting", "ticket") and RF.load(x.s)["store"]["waiters"] == ["I1"],
+       "(9b) KUQY waits on the store repair's owner: %s" % (x.st("I1").get("reach") or {}).get("status"))
+    x.w.items["CHECKER_REACH_FIX_STORE_STILL_DARK"] = "done"       # IWIV's ticket closed, as at a96a77071d on 2026-11-05
+    x.w.probe_says = (True, "relentless_store_attempts read non-empty")
+    for _ in range(4):
+        x.tick()
+    st = x.st("I1")
+    got = (st.get("reach") or {}).get("proposal") or {}
+    off = (st.get("contract") or {}).get("offbox") or []
+    ok((st.get("reach") or {}).get("status") == "applied" and "git_history" in RF.grants(st)
+       and "relentless_store_journal" in off and "relentless_store_attempts" in off,
+       "(9b) the released waiter carries its own git grant and the journal adapter: %s/%s grants %s offbox %s proposal %s"
+       % (st["status"], (st.get("reach") or {}).get("status"), RF.grants(st), off, got))
+    x.done()
+    # (9c) the journal adapter, run as the supervisor runs it, on a fake store and a fake candidate registry
+    ad = W.adapters(r).get("relentless_store_journal") or {}
+    now = time.time()
+    iso = lambda dt: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now - dt))
+    with tempfile.TemporaryDirectory() as home:
+        repo = os.path.join(home, "repo")
+        os.makedirs(os.path.join(repo, "src", "RimMandrake", "rimflow"))
+        with open(os.path.join(repo, "src", "RimMandrake", "rimflow", "jam_classes.json"), "w") as f:
+            json.dump({"window_days": 2, "kinds": ["jam", "books_stale"], "classes": []}, f)
+        argv, why = W.fill_argv(ad["argv"], {"repo": repo, "sha": "ab" * 20}) if ad else (None, "no such adapter")
+        s = os.path.join(home, "rm", "relentless", "store")
+        os.makedirs(s)
+        rows = [{"at": iso(3600), "do": "alarm", "kind": "jam", "why": "check_backlog", "item": "SECRET_ITEM"},
+                {"at": iso(3600), "do": "alarm", "kind": "jam", "why": "check_backlog"},
+                {"at": iso(1800), "do": "alarm", "kind": "books_stale", "why": "breaker open until 2026-11-05T00:00:00Z: "
+                 "books 4 behind"},
+                {"at": iso(1800), "do": "alarm", "kind": "remove_failed", "why": "SECRET other kind"},
+                {"at": iso(5 * 86400), "do": "alarm", "kind": "jam", "why": "SECRET too old"},
+                {"at": iso(60), "do": "tick", "acts": [{"why": "SECRET act"}]}]
+        with open(os.path.join(s, "journal.jsonl"), "w") as f:
+            f.write("".join(json.dumps(x) + "\n" for x in rows) + '{"torn')
+        out = subprocess.run(argv or ["false"], env=dict(os.environ, HOME=home), cwd=home, capture_output=True, text=True,
+                             timeout=120).stdout if argv else ""
+        blank = subprocess.run(argv or ["false"], env=dict(os.environ, HOME=os.path.join(home, "none")), cwd=home,
+                               capture_output=True, text=True, timeout=120).stdout if argv else ""
+    lines = [json.loads(ln) for ln in out.splitlines() if ln.startswith("{")]
+    ok(argv is not None and argv[:3] == ["python3", "-I", "-c"] and "jam_rows=2" in out and "kinds=books_stale,jam" in out
+       and sorted(d["why"] for d in lines) == ["books 4 behind", "check_backlog"]
+       and all(set(d) == {"at", "do", "kind", "why"} and d["do"] == "alarm" for d in lines),
+       "(9c) the journal adapter prints the window's jam rows of the registry's kinds, deduped, breaker prefix off: %s %r"
+       % (why, out[:600]))
+    ok("SECRET" not in out, "(9c) no other kind, old row, item id or act text crosses: %r" % out[:600])
+    ok("NO_JOURNAL" in blank, "(9c) no journal reads NO_JOURNAL, not a clean zero: %r" % blank[:200])
 
 
 def t_closed_ticket_reseeds():
@@ -553,7 +639,8 @@ def t_live_round_seed():
 def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
               t_windows_build_nothing_to_probe, t_windows_build_seed_probes, t_every_waiter_released, t_legacy_off, t_clones_seed, t_store_seed,
-              t_closed_ticket_reseeds, t_seat_tmp_reach, t_clones_scratch_instance, t_live_round_seed):
+              t_closed_ticket_reseeds, t_seat_tmp_reach, t_clones_scratch_instance, t_live_round_seed,
+              t_store_waiter_kuqy):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0

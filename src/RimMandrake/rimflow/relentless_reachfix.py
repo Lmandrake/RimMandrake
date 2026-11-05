@@ -72,6 +72,24 @@ def grants_for(r, texts):
     return out
 
 
+def adapters_for(r, texts):
+    """-> the seed adapters of EVERY reach_classes row whose match finds the texts, in rules order (CHECKER_REACH_FIX_
+    STORE_STILL_DARK gen 3: KUQY's text named the store and git history; classify() took the store row alone)."""
+    blob = "\n".join(t for t in texts if t)
+    known = relentless_wall.adapters(r)
+    out = []
+    for c in classes(r):
+        if c.get("match") and re.search(c["match"], blob, re.I):
+            out += [a for a in c.get("adapters") or [] if a in known and a not in out]
+    return out
+
+
+def _union(first, more, cap):
+    out = [x for x in first or []]
+    out += [x for x in more or [] if x not in out]
+    return out[:cap]
+
+
 def _paths_of(texts):
     out = []
     for t in texts:
@@ -108,7 +126,8 @@ def propose(r, cls, proposals, unreached, what, store_root=None):
     paths = _paths_of([x for x in said if x not in known and x not in grants])
     by = "judge" if said else "seed"
     if not said:
-        ads = [x for x in cls.get("adapters") or [] if x in known]
+        ads = _union([x for x in cls.get("adapters") or [] if x in known],
+                     adapters_for(r, list(unreached or []) + [what or ""]), relentless_wall.OFFBOX_MAX)
         paths = _paths_of(list(unreached or []) + [what or ""]) if cls.get("paths") else []
     elif not ads and not grants and all(refused(p, r, store_root) for p in paths):
         # CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK gen 3: the Judge named only what no repair opens (the live folder);
@@ -152,6 +171,8 @@ def refreshed(r, st):
         if g in relentless_wall.GRANTS and g not in have:
             have.append(g)
     prop["grants"] = have
+    if prop.get("by") != "judge":     # a seed rides with every class its text names; a Judge's own list stands as said
+        prop["adapters"] = _union(prop.get("adapters"), adapters_for(r, texts), relentless_wall.OFFBOX_MAX)
     return prop
 
 
@@ -342,7 +363,7 @@ def sweep(store, fx, r, now, acts, iso):
             book[name] = dict(ent, status="ok", owner=None, waiters=[], ok_at=now, last_owner=owner)
             save(store, book)
             for w in waiters:
-                release_waiter(store, fx, w, name, now, iso, prop=prop, owner=owner)
+                release_waiter(store, fx, w, name, now, iso, prop=prop, owner=owner, r=r)
             store.journal({"at": iso(now), "do": "reach_repaired", "item": owner, "class": name, "waiters": waiters})
             acts.append({"do": "reach_repaired", "item": owner, "class": name, "waiters": waiters})
             continue
@@ -352,7 +373,7 @@ def sweep(store, fx, r, now, acts, iso):
             save(store, book)
             continue
         file_ticket(store, fx, r, book, name, owner, why, now, acts, iso)
-    orphans(store, fx, book, now, acts, iso)
+    orphans(store, fx, book, now, acts, iso, r)
 
 
 def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso):
@@ -384,7 +405,7 @@ def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso):
     acts.append({"do": "reach_ticket", "item": owner, "class": name, "ticket": ticket, "why": (why or "")[:200]})
 
 
-def release_waiter(store, fx, item, name, now, iso, prop=None, owner=None):
+def release_waiter(store, fx, item, name, now, iso, prop=None, owner=None, r=None):
     """The class's repair passed its probe on the owner: the waiter gets the same overlay and its sha is checked once.
     Blind again after it, and the applied-then-blind route files the class ticket. It never becomes a second owner:
     the book is the sweep's, and a waiter promoted under it was lost when the sweep saved its own copy."""
@@ -394,6 +415,14 @@ def release_waiter(store, fx, item, name, now, iso, prop=None, owner=None):
             return False
         if prop is None:
             prop = (cur.get("reach") or {}).get("proposal") or {}
+        else:
+            # the owner's passed repair, PLUS this waiter's own adapters and grants (CHECKER_REACH_FIX_STORE_STILL_DARK
+            # gen 3: KUQY got IWIV's store proposal alone and was blind again on the git history its own text named).
+            # Its own read paths stay out: they were never probed.
+            mine = refreshed(r, cur) if r is not None else ((cur.get("reach") or {}).get("proposal") or {})
+            prop = dict(prop, adapters=_union(prop.get("adapters"), mine.get("adapters"), relentless_wall.OFFBOX_MAX),
+                        grants=_union(prop.get("grants"), [g for g in mine.get("grants") or []
+                                                           if g in relentless_wall.GRANTS], len(relentless_wall.GRANTS)))
         cur["reach"] = dict(cur.get("reach") or {}, sha=(cur.get("candidate") or {}).get("sha"))
         _apply(cur, prop, name, now, "the %s repair passed its probe on %s" % (name, owner or "its owner"))
         store.attempt(item, {"at": iso(now), "gen": cur["gen"], "end": "reach_waiter_released", "class": name,
@@ -403,7 +432,7 @@ def release_waiter(store, fx, item, name, now, iso, prop=None, owner=None):
     return True
 
 
-def orphans(store, fx, book, now, acts, iso):
+def orphans(store, fx, book, now, acts, iso, r=None):
     """A reach-blocked item the book does not hold (promoted to a probe the book lost, or waiting on a finished owner):
     on a class whose repair is open it joins that repair's waiters; on one that passed it gets the passed overlay.
     -> the ids moved."""
@@ -435,7 +464,7 @@ def orphans(store, fx, book, now, acts, iso):
             continue
         last = store.load(ent["last_owner"]) if ent.get("last_owner") else None
         prop = ((last or {}).get("reach") or {}).get("proposal")
-        if release_waiter(store, fx, st["item"], w["class"], now, iso, prop=prop, owner=ent.get("last_owner")):
+        if release_waiter(store, fx, st["item"], w["class"], now, iso, prop=prop, owner=ent.get("last_owner"), r=r):
             moved.append(st["item"])
             acts.append({"do": "reach_orphan_released", "item": st["item"], "class": w["class"]})
     return moved
