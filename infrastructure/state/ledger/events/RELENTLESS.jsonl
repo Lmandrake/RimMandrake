@@ -723,3 +723,13 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A1 (L2), read-only proof","ts":"2026-11-05T17:42:13Z","tsn":1793900533098583820}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:42:40Z","tsn":1793900560988980739}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A2 (L2), read-only proof","ts":"2026-11-05T17:42:54Z","tsn":1793900574230189080}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:43:24Z","tsn":1793900604184651553}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A3 (L2), read-only proof","ts":"2026-11-05T17:43:43Z","tsn":1793900623561765162}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:44:09Z","tsn":1793900649408663091}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A4 (L2), read-only proof","ts":"2026-11-05T17:44:31Z","tsn":1793900671336461120}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:44:56Z","tsn":1793900696175262221}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A5 (L2), read-only proof","ts":"2026-11-05T17:45:13Z","tsn":1793900713802075540}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:45:50Z","tsn":1793900750249016853}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A6 (L2), read-only proof","ts":"2026-11-05T17:46:09Z","tsn":1793900769420642216}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T17:46:42Z","tsn":1793900802422411445}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging FW_PROOF_TOOLS_HARDEN_READ_GAPS: deploy and restart for its live proofs","ts":"2026-11-05T17:47:58Z","tsn":1793900878661497022}
