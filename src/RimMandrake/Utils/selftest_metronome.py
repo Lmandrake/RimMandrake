@@ -42,6 +42,11 @@ elif mode == "crash":
     sys.exit(3)
 elif mode == "sleep":
     time.sleep(arg); stage()
+elif mode == "slow_once":
+    if not os.path.exists(os.environ["KID_MARK"]):
+        open(os.environ["KID_MARK"], "w").write("slow")
+        time.sleep(arg)
+    stage()
 elif mode == "ignore_term":
     signal.signal(signal.SIGTERM, signal.SIG_IGN)
     open(os.environ["KID_MARK"], "w").write(str(os.getpid()))
@@ -390,6 +395,26 @@ m.beat(d, tr)
 m.beat(d, tr)
 ok(by(d, 1, "sense")["families"] == ["a", "b"] and by(d, 2, "sense")["families"] == ["c", "a"],
    "round robin: beat 2 carries on where beat 1 stopped")
+
+# 14b. an overrun families pass loses no family for a whole round (OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC: the
+# disk family, killed beside a slow neighbour, waited a full cycle and its reading went stale): the families of a
+# killed pass are retried one a beat before the round robin moves on; a retried one that fails again is not held
+d = fresh("rr_overrun")
+os.environ["KID_MARK"] = str(d / "slow.mark")
+to = table(sense={"families": ["a", "b", "c", "d"], "per_beat": 2,
+                  "argv": ["{python}", str(KIDP), "slow_once", "3"]})
+for _ in range(4):
+    m.beat(d, to)
+got = [(by(d, i, "sense") or {}).get("families") for i in (1, 2, 3, 4)]
+ok(by(d, 1, "sense")["exit"] == "overrun" and got == [["a", "b"], ["a"], ["b"], ["c", "d"]],
+   "round robin: a killed pass's families are retried one a beat before it moves on (got %s)" % got)
+d = fresh("rr_overrun_again")
+tl = table(sense={"families": ["a", "b", "c"], "per_beat": 2, "argv": ["{python}", str(KIDP), "sleep", "3"]})
+for _ in range(4):
+    m.beat(d, tl)
+got = [(by(d, i, "sense") or {}).get("families") for i in (1, 2, 3, 4)]
+ok(got == [["a", "b"], ["a"], ["b"], ["c", "a"]],
+   "round robin: a retry that overruns again is dropped, so a slow family cannot stall the round (got %s)" % got)
 
 # 15. a reading older than the phase allows is refused, and the line names the oldest reading used
 d = fresh("stale")

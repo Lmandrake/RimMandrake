@@ -30,7 +30,9 @@ The rules that make "a crash is just the next beat" true, each a case in selftes
   operation ids  every act outside the program takes an id first (`op begin`, deterministic from kind+key), and
                  ends it after (`op end`). An id begun and never ended is `unresolved`: the caller looks for it
                  in the world (`op reconcile --found|--absent`), never just acts again.
-  persistence    beat number, round-robin position, overdue phases, wall-clock slots done (keyed "YYYY-MM-DDTHH:MM"
+  retry          a families phase killed or failed loses no family for a whole round: its families run again,
+                 one a beat, before the round robin moves on; a retry that fails again is dropped (no stall).
+  persistence    beat number, round-robin position, families to retry, overdue phases, wall-clock slots done (keyed "YYYY-MM-DDTHH:MM"
                  local, never by beat number) and last success per phase live in state.json, written whole.
   freshness      a phase's `reads` name the outputs it uses and the oldest age it accepts; an older (or missing,
                  or fenced) one makes the phase refuse that beat (`stale_input`), and the beat line names the
@@ -202,7 +204,7 @@ def load_table(path=None):
 # ---------------------------------------------------------------- state, slots
 
 def new_state():
-    return {"beat": 0, "generation": 0, "rr": 0, "overdue": [], "slots_done": {}, "last_ok": {},
+    return {"beat": 0, "generation": 0, "rr": 0, "fam_retry": {}, "overdue": [], "slots_done": {}, "last_ok": {},
             "last_run": {}, "inflight": None}
 
 
@@ -443,10 +445,15 @@ def run_phase(d, table, name, n, st, limit, slot, log):
         line.update(seconds=0.0, exit="no_command", why=p.get("why_no_command", "no shadow command"))
         log(line)
         return "no_command"
-    fams = []
+    fams, retry = [], []
     if p.get("families"):
         f = p["families"]
-        fams = [f[(st["rr"] + i) % len(f)] for i in range(min(p["per_beat"], len(f)))]
+        retry = [x for x in (st["fam_retry"].get(name) or []) if x in f]
+        if retry:                       # a killed pass's families, one a beat, before the round moves on
+            fams = retry[:1]
+            line["retry"] = True
+        else:
+            fams = [f[(st["rr"] + i) % len(f)] for i in range(min(p["per_beat"], len(f)))]
         line["families"] = fams
     ctx = {"python": sys.executable, "repo": str(REPO), "state": str(d), "gen": str(n)}
     argv = []
@@ -504,8 +511,11 @@ def run_phase(d, table, name, n, st, limit, slot, log):
             st["slots_done"][name] = st["slots_done"][name][-50:]
     for leftover in out.glob("%s.*.staged" % name):
         leftover.unlink()
-    if fams:
+    if retry:                           # tried once more, whatever came of it: a slow family never stalls the round
+        st["fam_retry"][name] = retry[1:]
+    elif fams:
         st["rr"] = (st["rr"] + len(fams)) % len(p["families"])
+        st["fam_retry"][name] = list(fams) if rc != 0 else []
     st["last_run"][name] = end
     st["inflight"] = None
     write_json(d / "state.json", st)
