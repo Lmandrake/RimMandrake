@@ -1,0 +1,675 @@
+{
+ "scope": [
+  {
+   "id": "s_northstar_validated",
+   "speaker": "agent",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "text": "The walk's north star is VALIDATED: 20 must-show bars in four groups (populations, fire ecology, fire cast, weather) and 1 cannot-show (no ordinary rain). Each is checked on a fresh Pyrelands map in ordinary play."
+  },
+  {
+   "id": "s_distributions_bars",
+   "speaker": "agent",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "text": "Walk quotes the owner 2026-09-17 (no tsn on that ruling, so recorded as agent text): 'Correct animal and plant distributions.' are two bars to add."
+  },
+  {
+   "id": "s_deep_ash",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1791815330395605033"
+   ],
+   "text": "the Pyrelands have burned for millennia, so most places should already have deep ash; the ash should be QUITE fertile with water added."
+  },
+  {
+   "id": "s_free_flying_ash",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1791817028468666199"
+   ],
+   "text": "Normal ground. And there should also be a LOT of free-flying ash blowing around like snow."
+  },
+  {
+   "id": "s_ash_bars_approved",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1791817029416124872"
+   ],
+   "text": "Black Rain waters ~1 day; north-star bars approved as worded (ash redesign \u00a76)."
+  },
+  {
+   "id": "s_art_sheet_approved",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792122659817386516"
+   ],
+   "text": "Ok, I'm approving this whole sheet. This is amazing. There may be tweaks ... that's playtest tuning much later."
+  },
+  {
+   "id": "s_rituals_v2",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792755155388442236"
+   ],
+   "text": "All rituals to interact with the Nine based on unique Baroque Biome content are deferred to v2 (struck-glass rite out of this deployment)."
+  },
+  {
+   "id": "s_clock_warp_risky",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1791855166951137487"
+   ],
+   "text": "Warping ahead in time is an EXTREMELY risky proposition in the game. Almost anything can happen."
+  }
+ ],
+ "decisions": [],
+ "asks": [
+  {
+   "id": "a_flagship",
+   "status": "draft",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "text": "Which moment is the Pyrelands' face when you first land: watching the burn line walk across the map and the cast follow it (hawk carrying embers, ullai drifting to old burns, ashwallow diving), or the harvest race (scorch-fruit picked mid-burn before it rots)?"
+  },
+  {
+   "id": "a_regrow_thresholds",
+   "status": "draft",
+   "source": [
+    "OWNER:1791815332013853792"
+   ],
+   "text": "Ember grass re-greens about a third by day 3 and 60% by day 7 on deep ash. Does that read as 'visibly re-greening in a few days, largely green in a week' to you, or should it be faster?"
+  },
+  {
+   "id": "a_fire_control_scene",
+   "status": "draft",
+   "source": [
+    "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml"
+   ],
+   "text": "The firebreak line and firefoam sprayer are built but no bar says what you should see. Picture a burn heading for your fields: what must the firebreak do for you to trust it, hold every time, or slow and mostly hold?"
+  }
+ ],
+ "inventory": [
+  {
+   "id": "inv_biome_self_contained",
+   "what": "RM_FE_Pyrelands BiomeDef shipped self-contained (own terrains, plants, weather, creatures, mechanics; no donor), places itself on new worlds behind a Mod Settings switch; de-campaigned generic text; ships composed in mandrake.rm.biomes",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+    "src/RimMandrake/Pyrelands/Defs/GenStepDefs/PyrelandsGenSteps.xml",
+    "src/RimMandrake/Pyrelands/About/About.xml",
+    "ITEM:PYRELANDS_SELF_CONTAINED_BIOME_1",
+    "ITEM:PYRELANDS_RM_MOD_BUILD_1",
+    "ITEM:PYRELANDS_DEFNAME_RENAME_1",
+    "ITEM:PYRELANDS_WORLD_SWITCH_1",
+    "ITEM:PYRELANDS_GENERIC_TEXT_1",
+    "ITEM:PYRELANDS_MAPGEN_SCRUB_1",
+    "ITEM:PYRELANDS_TERRAIN_BURNDEF_1"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::startup_and_def_wiring",
+    "src/RimMandrake/Pyrelands/validation.py::mapgen_log"
+   ],
+   "scope": "approved",
+   "source": [
+    "src/RimMandrake/Pyrelands",
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_mapgen_log_clean. Zero painted tiles is expected (paint-once ruling), never a defect.",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md (north star VALIDATED)"
+   ]
+  },
+  {
+   "id": "inv_plant_roster",
+   "what": "Wild flora is ember grass + quick grass only (scorch-fruit is fire-born); runtime wild-plant allowlist evicts leaking donor flora; density enforcer holds the owner's tripled plant density so open ground is carpeted",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/Quickgrass.xml",
+    "src/RimMandrake/Pyrelands/Source/WildPlantAllowlist.cs",
+    "src/RimMandrake/Pyrelands/Source/RM_PyrelandsDensityEnforcer.cs",
+    "ITEM:PYRELANDS_FLORA_LEAK_1",
+    "ITEM:PYRELANDS_DENSITY_TRIPLE_1",
+    "ITEM:PYRELANDS_GRASS_SATURATION_1"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::plant_census",
+    "src/RimMandrake/Pyrelands/validation.py::grass_cover"
+   ],
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bars pyre_plant_distribution_correct, pyre_grass_chokes_ground. GRASS_SATURATION machine half live r5, owner approved the look OWNER:1792122657732868287",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ]
+  },
+  {
+   "id": "inv_embergrass_regrow",
+   "what": "Burned ember grass re-greens within days and is largely green within about a week at the biome's heat",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Source/PlantGrowthStages.cs",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::embergrass_regrow"
+   ],
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; long split only; regrow uses a compressed override window. Thresholds (34% d3 / 59.8% d7 vs 25/60) owed a re-ask once the ash rework settled (OWNER:1791815332013853792)",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ]
+  },
+  {
+   "id": "inv_animal_roster",
+   "what": "Fire-ecology cast: fire-hawk, furnace-beast, ullai, ashwallow, emberscythe, flamefang (venom bite), sytheclaw, barbslinger, fire-wasp plus patch-added roster keys; small grazers outnumber big predators; donor creatures cut; invented RUT_ animals moved to RM_",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Emberscythe.xml",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ashwallow.xml",
+    "src/RimMandrake/Pyrelands/Defs/HediffDefs/RM_FlamefangVenom.xml",
+    "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml",
+    "ITEM:PYRELANDS_FAUNA_WIRING_1",
+    "ITEM:PYRELANDS_DONOR_PORT_4",
+    "ITEM:PYRELANDS_FAUNA_TIER_PORT_BUILD_1",
+    "ITEM:PYRELANDS_DEDICATED_GRAZER_1",
+    "ITEM:PYRELANDS_ANIMALS_GENSTEP_1",
+    "ITEM:PYRELANDS_FIRE_WEB_COMMISSION_1"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::animal_census"
+   ],
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_animal_distribution_correct; the real cast is patch-added in UtinniPatches, so the census must read the resolved roster (biome_probe), which it does",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ]
+  },
+  {
+   "id": "inv_ash_field",
+   "what": "Ground is deep ash almost everywhere (millennia of burning); deep ash is quite fertile when watered; fresh burns give a fertility bonus that black rain fades; ambient ash blows like snow and banks as loose-ash filth",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshField.xml",
+    "src/RimMandrake/Pyrelands/Defs/TerrainDefs/ScorchableGround.xml",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Ash/Filth_LooseAsh.xml",
+    "design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::ground_deep_ash",
+    "src/RimMandrake/Pyrelands/validation.py::ash_fertility_watered",
+    "src/RimMandrake/Pyrelands/validation.py::fresh_burn_bonus",
+    "src/RimMandrake/Pyrelands/validation.py::ambient_ash_drift"
+   ],
+   "scope": "approved",
+   "source": [
+    "OWNER:1791815330395605033",
+    "OWNER:1791817028468666199"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bars pyre_ground_deep_ash (PROVISIONAL 0.85; measured 0.840 once, PYRE_DEEP_ASH_TUNE_ONE_POINT_SHORT), pyre_ash_fertile_when_watered, pyre_fresh_burn_feeds_the_field",
+   "scope_source": [
+    "OWNER:1791817029416124872"
+   ]
+  },
+  {
+   "id": "inv_burn_line_fire_clock",
+   "what": "The burn line: grass fire walks the map with its own front logic (burn kernel, fire-front clock), never fully goes out (a smoulder relights in open grass far from buildings after a quiet spell), a fresh map opens with a small smouldering front, and fire-tick effects spawn props while it burns",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+    "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+    "ITEM:PYRELANDS_MECHANICS_1",
+    "ITEM:PYRELANDS_FIRE_CADENCE_1"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::burn_line",
+    "src/RimMandrake/Pyrelands/validation.py::opening_front",
+    "src/RimMandrake/Pyrelands/validation.py::fire_tick_effects"
+   ],
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md",
+    "infrastructure/state/items/PYRE_OPENING_FRONT_BUILD_SMOKE_ON_ARRIVAL.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_burn_line_present; burn_line is a long split (StandingBurnQuietTicks wait); opening front built in code with its chain but its item is still open",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ]
+  },
+  {
+   "id": "inv_scorchfruit",
+   "what": "Scorch-fruit pods appear only where flame has just cracked ground, ripen to an edible harvest, and rot fast (plant within a day, harvested fruit within ~4 days)",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml",
+    "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::scorchfruit_fire_born",
+    "src/RimMandrake/Pyrelands/validation.py::scorchfruit_produces",
+    "src/RimMandrake/Pyrelands/validation.py::scorchfruit_spoils",
+    "src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py"
+   ],
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bars pyre_scorchfruit_fire_born / _produces / _spoils_fast; fire_born was once order-dependent in the 16-chain run (PYRE_FIREBORN_DIAGNOSE_TWENTYONE_RETURN)",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ]
+  },
+  {
+   "id": "inv_ruins_scorched",
+   "what": "Ruins generate blackened and fire-scarred (deep ash on footprints, loose-ash filth) so the player is warned what happens here",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Defs/GenStepDefs/PyrelandsGenSteps.xml",
+    "ITEM:PYRELANDS_SCORCHED_RUINS_1"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::ruins"
+   ],
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_ruins_scorched",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ]
+  },
+  {
+   "id": "inv_firehawk_ember",
+   "what": "Fire-hawk picks up a burning twig and drops it ahead of the blaze to start a new fire",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Source/CompFireHawkSpread.cs",
+    "src/RimMandrake/Pyrelands/Source/JobGiver_RUT_FireHawkCarryEmber.cs",
+    "src/RimMandrake/Pyrelands/Source/JobDriver_RUT_FireHawkCarryEmber.cs",
+    "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_FireHawkThinkTree.xml"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::firehawk"
+   ],
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_firehawk_carries_ember; job-state read only: flyer flight is never live-tested without the owner",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ]
+  },
+  {
+   "id": "inv_furnacebeast",
+   "what": "Furnace-beast: a giant that warms the ground around it (local ambient offset, strength slider), banks heat in the burn (thermal charge cycle), smoulders the bed it lies in, is immune to its own heat, and heats an enclosed room",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Source/CompFurnaceWarmthAura.cs",
+    "src/RimMandrake/Pyrelands/Source/CompFurnaceThermalCharge.cs",
+    "src/RimMandrake/Pyrelands/Source/CompFurnaceBedIgnition.cs",
+    "src/RimMandrake/Pyrelands/Source/JobGiver_RUT_FurnaceThermalCycle.cs",
+    "src/RimMandrake/Pyrelands/Source/Patch_FurnaceBeastHeatImmunity.cs",
+    "src/RimMandrake/Pyrelands/Source/FurnaceWarmthMath.cs",
+    "src/RimMandrake/Pyrelands/Source/CompPawnHeatPusher.cs",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_FurnaceKernel.cs",
+    "ITEM:PYRELANDS_FURNACE_WARMTH_AMBIENT_1",
+    "ITEM:PYRELANDS_HEAT_KIND_BUILD_1"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::furnace_warmth",
+    "src/RimMandrake/Pyrelands/validation.py::furnace_room"
+   ],
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bars pyre_furnacebeast_warmth, pyre_furnacebeast_heats_room (both with controls). Bed ignition and thermal charge have no walk bar of their own",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ]
+  },
+  {
+   "id": "inv_burrowers_heat_dome",
+   "what": "Burrowing grazers (ashwallow) go to ground ahead of a fire front and come through unharmed; the ashwallow curls into its dome stance when struck by heat",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Source/RM_BurrowHeatReaction.cs",
+    "src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs",
+    "src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs",
+    "src/RimMandrake/Pyrelands/Source/RM_BurrowOnFireExtension.cs",
+    "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_BurrowOnFireThinkTree.xml"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::burrowers",
+    "src/RimMandrake/Pyrelands/validation.py::heat_dome"
+   ],
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_burrowers_dive; heat_dome has no walk bar; dome sprite is the standing body until art lands",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ]
+  },
+  {
+   "id": "inv_ullai_herd_giant",
+   "what": "Ullai herds drift to where it burned about two days ago (burn-centre history), and the furnace-beast is a giant whose herds migrate",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml",
+    "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_UllaiThinkTree.xml",
+    "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_FurnaceBeastThinkTree.xml",
+    "ITEM:PYRELANDS_ULLAI_GIANT_BUILD_1"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::ullai_and_giant"
+   ],
+   "scope": "not_opened",
+   "source": [
+    "ITEM:PYRELANDS_ULLAI_GIANT_BUILD_1"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; no walk bar; herd verdict reads one 2500-tick step"
+  },
+  {
+   "id": "inv_weather",
+   "what": "Ash fall (dims the map, banks loose-ash drifts), cinderfall (its own look, brings lightning), black rain (dark, puts fires out, washes ash); no ordinary rain ever",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Defs/WeatherDefs/AshFall.xml",
+    "src/RimMandrake/Pyrelands/Defs/WeatherDefs/Cinderfall.xml",
+    "src/RimMandrake/Pyrelands/Defs/WeatherDefs/BlackRain.xml",
+    "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::ashfall_weather_accumulation",
+    "src/RimMandrake/Pyrelands/validation.py::ashfall_drifts",
+    "src/RimMandrake/Pyrelands/validation.py::cinderfall",
+    "src/RimMandrake/Pyrelands/validation.py::blackrain",
+    "src/RimMandrake/Pyrelands/validation.py::no_ordinary_rain"
+   ],
+   "scope": "approved",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bars pyre_ashfall_darkens_drifts, pyre_cinderfall_distinct, pyre_blackrain_reads, pyre_cannot_ordinary_rain. cinderfall/blackrain rows compare def fields, not what he sees",
+   "scope_source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ]
+  },
+  {
+   "id": "inv_firebreak_firefoam",
+   "what": "Player fire control: a sprayed firebreak line terrain and a firefoam sprayer weapon that aims at fire",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Sprayer/FirefoamSprayer.xml",
+    "src/RimMandrake/Pyrelands/Source/RM_FirefoamAimProof.cs"
+   ],
+   "proof": "missing",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/firefoam_aim_live_proof.py"
+   ],
+   "scope": "not_opened",
+   "source": [
+    "src/RimMandrake/Pyrelands/About/About.xml"
+   ],
+   "proof_note": "no validation.py component: the firebreak is only the suite's own fire-hygiene fixture; the sprayer has a one-off aim probe (FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE), no player-facing scene"
+  },
+  {
+   "id": "inv_sand_shovel",
+   "what": "A 'Shovel sand' dig order on Pyrelands sand yields 5 glass sand per cell and leaves gravel, so every sand patch is a finite deposit",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Source/RM_TerrainDig.cs",
+    "src/RimMandrake/Pyrelands/Defs/SandShovel/RM_ShovelSand.xml",
+    "ITEM:PYRELANDS_SAND_TERRAIN_YIELD_1"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "src/RimMandrake/Pyrelands/validation.py::sand_shovel"
+   ],
+   "scope": "not_opened",
+   "source": [
+    "ITEM:PYRELANDS_SAND_TERRAIN_YIELD_1"
+   ],
+   "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; no walk bar; shovels are now required for digging (SHOVELS_BUILD_NO_DIGGING_BARE_HANDED), the scene must hand the pawn one"
+  },
+  {
+   "id": "inv_lightning_breaker",
+   "what": "Lightning breakers (metal+sand forge recipe) and fulgurite drops: built once, then excised",
+   "impl": "absent",
+   "search_scope": "grep -i breaker over src/RimMandrake/Pyrelands *.xml and *.cs (0 files), 2026-11-05",
+   "proof": "missing",
+   "scope": "out",
+   "source": [
+    "OWNER:1792117206817868996",
+    "ITEM:PYRELANDS_LIGHTNING_BREAKER_BUILD_1"
+   ],
+   "note": "owner 'Drop both' 2026-10-16 (FULGURITE_BREAKER_EXCISE_STRUCK_OFF). Coverage: its absence check only."
+  },
+  {
+   "id": "inv_fire_rite_hook",
+   "what": "PyrelandsFireRiteHook: the one door through which a campaign mod (PyrelandsMechanics, RUT tier) answers the biome's fire clock without this mod depending on it",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Source/PyrelandsFireRiteHook.cs",
+    "ITEM:PYRELANDS_FIRE_RITE_TAKE_TUNING_1",
+    "ITEM:PYRELANDS_MECHANICS_FIRST_SCRIPT_1"
+   ],
+   "proof": "missing",
+   "proof_evidence": [
+    "design/concepts/PyrelandsMechanics/record.json"
+   ],
+   "scope": "not_opened",
+   "source": [
+    "src/RimMandrake/Pyrelands/Source/PyrelandsFireRiteHook.cs"
+   ],
+   "proof_note": "never run live end to end (PyrelandsMechanics stage 0 record); owned by the PyrelandsMechanics concept; this mod owes only that the hook fires and is inert with the neighbour absent"
+  },
+  {
+   "id": "inv_settings_gate",
+   "what": "Mod Settings: ~47 static switches/tunings (each mechanic on/off, world placement toggle, strengths); the Baroque Biomes roster toggle gates mechanics, not only worldgen",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs",
+    "ITEM:PYRELANDS_SHIP_READINESS_1"
+   ],
+   "proof": "stale",
+   "proof_evidence": [
+    "infrastructure/state/live_proofs/PYRELANDS_SHIP_READINESS_1.txt",
+    "src/RimMandrake/Pyrelands/gate_live_proof.py"
+   ],
+   "scope": "not_opened",
+   "source": [
+    "ITEM:PYRELANDS_SHIP_READINESS_1"
+   ],
+   "proof_note": "live proof A1/A2 of the gate recorded at ship readiness; suite isolation flips burnLine/fireHawk/fireClock off during controlled bars and restores them"
+  },
+  {
+   "id": "inv_art_and_text",
+   "what": "The shipped art set (creatures, plants, weather/scar textures, facings) and descriptions, approved as a sheet by the owner",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/Pyrelands/Textures",
+    "ITEM:PYRELANDS_CREATURE_RERENDER_1",
+    "ITEM:PYRELANDS_FACING_COMPLETE_1",
+    "ITEM:PYRELANDS_FACING_REGRESSION_1",
+    "ITEM:PYRELANDS_SOUTH_TOPDOWN_REGEN_1",
+    "ITEM:PYRELANDS_FLORA_ART_IDENTITY_1",
+    "ITEM:PYRELANDS_WEATHER_SCAR_ART_1",
+    "ITEM:PYRELANDS_BEDAZZLE_SITTING_1",
+    "ITEM:PYRELANDS_ART_AUDIT_GPT_UNKEPT_REDO_LIST",
+    "ITEM:PYRELANDS_DESCS_CORRECT_GPT_REWRITES",
+    "ITEM:PYRELANDS_LORE_NAMING_DRIFT_1"
+   ],
+   "proof": "exercised_unrecorded",
+   "proof_evidence": [
+    "OWNER:1792122659817386516"
+   ],
+   "scope": "approved",
+   "source": [
+    "OWNER:1792122659817386516"
+   ],
+   "proof_note": "he approved the whole sheet 2026-10-16 ('This is amazing ... playtest tuning much later'); open follow-ups: grass lifecycle states, kept-art judge digest, ashwallow dome sprite"
+  }
+ ],
+ "built_reviewed": [
+  {
+   "ref": "ITEM:PYRELANDS_NORTHSTAR_VALIDATE_1",
+   "not_a_capability": "the owner's re-validation of the walk's north star: the bars every inv_* scope_source cites"
+  },
+  {
+   "ref": "ITEM:PYRELANDS_NORTHSTAR_WIRING_1",
+   "not_a_capability": "proof wiring: one validation.py component per bar (shows=)"
+  },
+  {
+   "ref": "ITEM:PYRELANDS_WALKLINT_FINDINGS_1",
+   "not_a_capability": "lint findings on the walk doc, fixed"
+  },
+  {
+   "ref": "ITEM:PYRELANDS_WRONG_BIOME_DEF_1",
+   "covered_by": "inv_biome_self_contained"
+  }
+ ],
+ "contradictions": [
+  {
+   "id": "c_opening_front_item_open",
+   "source": [
+    "infrastructure/state/items/PYRE_OPENING_FRONT_BUILD_SMOKE_ON_ARRIVAL.md",
+    "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs"
+   ],
+   "text": "RearmOpeningFront and the opening_front chain exist in code, but PYRE_OPENING_FRONT_BUILD_SMOKE_ON_ARRIVAL is still a live item: either unproven or never closed. Resolve by a run, not by asking him.",
+   "status": "open"
+  },
+  {
+   "id": "c_bars_vs_capabilities",
+   "source": [
+    "design/validation_walks/RimMandrake/Pyrelands.md",
+    "src/RimMandrake/Pyrelands/validation.py"
+   ],
+   "text": "Five built capabilities have no walk bar: ullai herd follows the burn, ashwallow heat dome, sand shovel, firebreak/firefoam, furnace bed ignition and thermal charge. validation.py proves three of them as unbarred components; firebreak/firefoam and bed ignition have no scene at all.",
+   "status": "open"
+  },
+  {
+   "id": "c_regrow_thresholds_reask",
+   "source": [
+    "OWNER:1791815332013853792"
+   ],
+   "text": "Embergrass regrow thresholds (34% d3 / 59.8% d7 vs the bar's 25/60) were to be re-asked once the ash rework settled; no later owner event settles them.",
+   "status": "open"
+  },
+  {
+   "id": "c_greens_open_while_trial_ran_green",
+   "source": [
+    "infrastructure/state/items/PYRELANDS_GREEN_MINIMAL_1.md",
+    "infrastructure/state/items/PYRELANDS_GREEN_FULL_1.md",
+    "infrastructure/state/ledger/events/BENCH.jsonl"
+   ],
+   "text": "GREEN_MINIMAL_1 / GREEN_FULL_1 / NORTHSTAR_TRIAL_1 remain live (FOUNDRY-era) though the ratchet recorded 34 PASS 0 FAIL on 2026-10-15; FOUNDRY is retired, so they need re-bucketing to Relentless's game_prove lane.",
+   "status": "open"
+  }
+ ],
+ "script_audit": [
+  {
+   "scene": "firehawk_carries_ember",
+   "lacks": [
+    "control: a fire on a pad with no hawk (or hawk spread off) to rule out ordinary fire spread lighting the drop cell",
+    "start assertion that no fire exists ahead of the blaze before the hawk acts"
+   ],
+   "source": "src/RimMandrake/Pyrelands/validation.py::firehawk"
+  },
+  {
+   "scene": "scorchfruit_fire_born",
+   "lacks": [
+    "control: an unburned pad of the same ground and age that must show 0 scorch-fruit",
+    "start assertion of 0 scorch-fruit map-wide (it was order-dependent once)"
+   ],
+   "source": "src/RimMandrake/Pyrelands/validation.py::scorchfruit_fire_born"
+  },
+  {
+   "scene": "burrowers_dive",
+   "lacks": [
+    "control: the same grazer with the burrow toggle off takes fire damage (rules out the fire simply missing it)"
+   ],
+   "source": "src/RimMandrake/Pyrelands/validation.py::burrowers"
+  },
+  {
+   "scene": "embergrass_regrow / fresh_burn_bonus / burn_line",
+   "lacks": [
+    "the compressed-clock and long waits are the owner's 'extremely risky' warp: assert colony vitals and map events before and after (vitals guard exists, threat/incident guard per row does not)"
+   ],
+   "source": "src/RimMandrake/Pyrelands/validation.py"
+  },
+  {
+   "scene": "cinderfall_distinct / blackrain_reads",
+   "lacks": [
+    "an acceptance read of what he sees (a capture), not def-field inequality; ash fall dimming is read from the overlay def too"
+   ],
+   "source": "src/RimMandrake/Pyrelands/validation.py::cinderfall"
+  },
+  {
+   "scene": "all chains",
+   "lacks": [
+    "restoration covers settings, weather and fire only; terrain/things changed on pads are not restored (site is disposable, but a held owner_review scene needs a snapshot)",
+    "no hold: every scene ends immediately"
+   ],
+   "source": "src/RimMandrake/Pyrelands/validation.py::_teardown"
+  },
+  {
+   "scene": "firebreak_stops_fire / firefoam_puts_out (missing)",
+   "lacks": [
+    "no scene at all; needs start (grass bed both sides), action (fire against the line), control (same bed with no line burns through)"
+   ],
+   "source": "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml"
+  },
+  {
+   "scene": "sand_shovel",
+   "lacks": [
+    "start must hand the pawn a shovel (digging now needs one); control: a non-sand terrain cell refuses the order"
+   ],
+   "source": "src/RimMandrake/Pyrelands/validation.py::sand_shovel"
+  }
+ ],
+ "failure_modes": [
+  "It looks green but isn't: every bar was last green on 2026-10-15 on a test site with mechanics isolated and clocks compressed; since then the opening front and the defName migration landed, so in ordinary play on the composed mandrake.rm.biomes list the burn line, regrowth or fire-born fruit may not behave as the rows claim, and nothing he walks would show which.",
+  "The fire is a hazard, not a farm: the burn line, smoulder relights and fire-hawk embers burn his colony faster than the firebreak and firefoam can answer (neither has any scene proving it holds), so the biome reads as punishment rather than the 'fire pays' loop of scorch-fruit, fresh-burn fertility and glass sand.",
+  "The cast doesn't read: the behaviours that make the creatures the fire's creatures (hawk carrying embers, ullai drifting to two-day-old burns, ashwallow diving and doming, furnace-beast smouldering its bed) are proven only by job/state reads or not at all, so in play they look like ordinary animals wandering, and flight cannot be checked without him present."
+ ]
+}
