@@ -286,6 +286,12 @@ def main():
        "8: the same item, picked up again, reads bouncing and spend rising", said)
     pdh = OW.churn_item_points({"PD_BLOCKED": (dict(jam, status="blocked"), unm, 9e6)}, NOW, cfg8, True, {"PD_BLOCKED"})
     ok(pdh.get(OW.CHURN_ITEM_PREFIX + "PD_BLOCKED", {}).get("v") == 0, "8: a held alarm on a put-down item reads 0 (clears)", pdh)
+    # OPS_CHURN_DIAGNOSE_NIGHTLY_SCRM_GZGX: NIGHTLY_COP_FIX_RED_CYGHVG_QCWJ, quarantine-held (status held) after two
+    # UNMEASURED checks at gen 9, was filed 'unmeasured failed it 2 times' by the code before the JAM fix; its alarm clears
+    unm2 = [(t1, "unmeasured"), (t1 + 1, "unmeasured")]
+    pdq = OW.churn_item_points({"PD_QUAR": (dict(jam, status="held", gen=9, spent=5.2e6, hold={"kind": "quarantine"}),
+                                            unm2, 0)}, NOW, cfg8, True, {"PD_QUAR"})
+    ok(pdq.get(OW.CHURN_ITEM_PREFIX + "PD_QUAR", {}).get("v") == 0, "8: a held alarm on a quarantine-held item reads 0", pdq)
     p8b = OW.rl_churn(s8, NOW, dict(cfg8, churn_item_new_per_pass=1))
     ok(sorted(k for k in p8b if k.startswith(OW.CHURN_ITEM_PREFIX)) == [OW.CHURN_ITEM_PREFIX + "CALM_ITEM", OW.CHURN_ITEM_PREFIX + "OLDGEN_ITEM"],
        "8: new items are capped per pass, largest spend first; held ones always read", sorted(p8b))
