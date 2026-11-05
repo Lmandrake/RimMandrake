@@ -18,8 +18,9 @@ work *into* rigor ("careful with this one"), never out of it.
 **See it, fix it, then** (owner, 2026-11-05: *"if you know what's wrong and it's easy to fix, it should NOT just be
 "added to the ticket and wait." That's old foundry behavior. If you see something, fix it RIGHT THEN, ok? Standing
 policy."*). Every seat and helper: a known, small fix (a proof argument, a live line, a timeout, a packageId, a
-worded criterion, an unanswered hold whose answer exists) is made on the spot, published, and the item put back in
-Relentless. A ticket is filed only for what is not small, and it says why. And the pipeline never "blesses" a small change (owner, 2026-11-05): a quick manual validation is done by the
+worded criterion, an unanswered hold whose answer exists) is made on the spot, published, and then the fixer runs the item's remaining check itself and closes it; the item goes
+back to Relentless only if real build work remains, never for one more generation just to re-check (owner, 2026-11-05).
+A diagnosis is never written onto a ticket in place of the fix. A ticket is filed only for what is not small, and it says why. And the pipeline never "blesses" a small change (owner, 2026-11-05): a quick manual validation is done by the
 agent on the spot and closed with that evidence, never queued for a Judge (`standing_rulings.md`).
 
 ## The expensive list — the only things that get ceremony

@@ -15,6 +15,17 @@ on the spot (a hash, a read, a single bridge call), and closed with that evidenc
 then `close`). It is never queued, unheld or left open for Relentless to judge. Relentless builds and proves real work:
 code, systems, live proofs that need a game round. With "See it, fix it, then" in the CHARTER.
 
+## Fix it and check it yourself; no notes, no re-run generations — owner, 2026-11-05
+
+*"We MUST stop this endless token burn by making little cute notes on tickets and letting the system totally restart
+each item once more time to do a check, ok?"* (He had just said *"NO! Do not write this diagnosis onto the item...
+YOU DO IT NOW!"* to a Conductor that diagnosed `MODCHECK_DONOR_ENVIRONMENTS_1` and wrote the next step on the item.)
+Any seat or helper that finds why an item is stuck does the fix and the remaining check itself, in the same sitting
+(a run, a read, a bridge call, one live line), and closes the item with that evidence. Never write the diagnosis or a
+`NEXT:` onto the ticket instead, and never unhold or re-release an item so a whole new Relentless generation can rebuild
+it only to re-run a check. An item returns to Relentless only when real build work remains. With "The pipeline never
+blesses a small change" above.
+
 ## North-star validation state
 
 - 🔴 **Validation state is never written as prose: `modcheck floor --all` measures it.** 🔴 **And the 81 walk findings are NOT rot:**
