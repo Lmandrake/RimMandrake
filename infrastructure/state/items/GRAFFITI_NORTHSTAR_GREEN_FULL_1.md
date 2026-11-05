@@ -33,3 +33,18 @@ that, sees the old game Playing and exits 0, and `northstar_full.py` proceeds on
 `QUICKTEST_FRESH_FIX_OLD_GAME_PASSES`. RULED OUT: the quicktest itself makes a 120x120 map (its home map was 0, RM_TheRot);
 Graffiti's code makes that map. OWED (code worker): the fresh-map step leaves a Playing game first and exits 1 unless the start
 answered success and exactly one map is loaded.
+
+## test pilot sitting, gen 19 (2026-11-05, live on Archmagi, small 10-mod list)
+The Conductor's fresh-map mend (d0c3eefe0a) WORKS live: `prove_quicktest_world.py` left a Playing test game (tick 15035) for the
+menu and started a fresh 250x250 quicktest, `success:true`, tick 1, one map, in 12 s. The full A2 line then measured for the
+first time: every functional/state row PASS; judge 12 PASS / 2 FAIL / 7 UNMEASURED. Three causes:
+1. **HOST/HARNESS, fixed (316cb641d1)**: WSL lost 4 of 6 `python.exe` launches (`UtilAcceptVsock accept4 failed 110`, rc 1, empty
+   stdout), and A2 stopped at `[0 needs]` with exit 2. `northstar_full._run` now retries through `winbuild.run_interop_captured`.
+   Guard: `selftest_graffiti_fresh_quicktest.py` S8.
+2. **HARNESS, OWED here**: the 7 UNMEASURED are UNJUDGEABLE captures: `rimworld/screenshot_cell_rect` captures at the current
+   zoom (rootSize 24, about 20 px per cell); `mark_reads_at_play_zoom` asks for about 64 px. Measured live: `rootSize` 7.35 gives
+   64.3 ppc. Capture the judged shots at play zoom (per-run, since a 24-cell gallery page cannot fit at 64 ppc).
+3. **MOD art**: the 2 FAILs (`mark_carries_no_earth_signage`, `mark_register_is_punk_urban`) are `RM_Graffiti_Vandal`
+   vandal_1 (a prohibition sign) and vandal_0 (a hazard bolt) -> `GRAFFITI_VANDAL_REDRAW_TWO_SIGNS_GONE_LEGIT`.
+Also filed: `GRAFFITI_SIGILMATS_FIX_OFF_THREAD_FIRST_GAME`, `GRAFFITI_SUITE_DIAGNOSE_QUIET_KILLS`. F1/F2 still wait for a
+full-list load. Evidence: `D:\ClaudeWork\rimmandrake\testpilot_GRAFFITI_NORTHSTAR_GREEN_FULL_1\g19\`.

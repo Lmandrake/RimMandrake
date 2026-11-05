@@ -590,3 +590,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T09:45:50Z","tsn":1793871950908939320}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live iteration ACC_BIOMES_FIXES_LIVE_RERUN_1","override":"took the driver lock from a dead or forced holder","role_unit":"rm-relentless-work-6d010e842f-g11","ts":"2026-11-05T09:51:45Z","tsn":1793872305228976628}
 {"seat":"RELENTLESS","event":"bridge","state":"released","role_unit":"rm-relentless-work-6d010e842f-g11","ts":"2026-11-05T09:52:06Z","tsn":1793872326643157294}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"test pilot GRAFFITI_NORTHSTAR_GREEN_FULL_1","role_unit":"rm-relentless-work-63acb63b52-g19","ts":"2026-11-05T09:52:45Z","tsn":1793872365972834296}
+{"seat":"RELENTLESS","event":"bridge","state":"released","role_unit":"rm-relentless-work-63acb63b52-g19","ts":"2026-11-05T10:09:40Z","tsn":1793873380525947673}
