@@ -1,0 +1,24 @@
+[
+ {
+  "id": "arteval_RSW_Bursa__Bursa_Swimming_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Bursa__Bursa_Swimming_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (the accepted east side view of the swimming bursa): same anatomy, same proportions, same colours and markings, same body bulk, same size on the canvas, now seen from behind (rear view: the back of the head, the spine, the rump and the trailing limbs toward the viewer; the eyes and tusked snout face away from the viewer). A creature sprite for RimWorld: the bursa. Bursas were a species of ursidae creatures native to planet of Naboo. They had tusked snouts and feathery tufts of brown hair on their thick-skinned bodies. They were popular as circus animals due to their intelligence, but more often than not this resulted in them escaping and forming wild populations on various temperate worlds. Pose: the bursa swims away from the viewer in the same flat swimming pose as the east view, its heavy body held low and wide. Its height and width on the canvas match the east view, about 3 cells of bulk. The broad shoulders, wide rump and heavy haunches fill the width of the body, and the hind and fore limbs paddle out to both sides in the same swimming posture as the east view. The tall feathery brown crest rises along the head and spine and shows clearly over the back. The upper back, crest, shoulders and rump ride above the implied water surface. The lower rear body and the paddling feet meet the water at the animal's own edge: the fur there is darker, wet and glossy, and the silhouette ends in a clean dark outline directly against fully transparent pixels. The water is implied only by this wet-fur lower edge, and the animal is a single self-contained silhouette. Visible features it shows: the canon Naboo bursa (see canon entry bursa); feathery tufts of brown hair on a thick-skinned body; the tusked snout belonging to the head, turned away from the viewer. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background everywhere outside the animal's outline: only the bursa is drawn, with no ground, no cast shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker"
+ }
+]

@@ -1,0 +1,58 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 49.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3736564
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Dragonsnake__Dragonsnake_B_n",
+ "decision": "ESCALATE",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_SIZE_JUMP', 'F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish ['LEGIB_32']",
+  "still failing after 3 regen rounds \u2014 one line to the owner"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "214e73a611c8551bcc33b3fbfe11fdccc6e2bfb6fa4daedd3d05d376053f09e9",
+  "east.png": "07caa90f44154bcd7206c50c9b32ac0c28695025ee255207cafe6be43d1b291d",
+  "north.png": "fc0eac6a70c392201462a23f3db3e7ec1d45b3d69632c70aa94daea4034e81e0",
+  "scale.png": "2b3fba46b0be35a9f5dcdf5de944479fc2ace7b92432cb3e3241e6119740887c",
+  "facings.png": "4757bf84481f2aa82023b5320172902aa0192aec2bf99d901f2a2db9b28b35e7"
+ }
+}

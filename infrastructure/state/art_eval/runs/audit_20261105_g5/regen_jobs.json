@@ -1,0 +1,68 @@
+[
+ {
+  "id": "arteval_RSW_Fambaa__Fambaa_j_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Fambaa__Fambaa_j",
+  "prompt": "A creature sprite for RimWorld: the fambaa. Fambaas were large herbivorous amphibians most often found in swamps, with the scaly hide of reptiles, and were used as beasts of burden. Body plan: a huge, low-slung swamp amphibian with reptile-scaled hide and a broad, heavy back built for hauling loads. A short, thick neck is carried forward and only slightly raised, so the broad heavy head projects forward at about shoulder height, like a big lizard grazing. The lower jaw carries a short pale tusk on each side near the front of the mouth, jutting upward past the upper lip, clearly visible from the front and in side profile. A long, thick-based, tapering scaly tail extends from the rump: in side view it trails straight out behind the hips, in rear view, seen from behind, it hangs down visibly between the haunches, and it turns consistently with the body on every facing. Colouring: the whole back, upper flanks, neck and head are olive-khaki to greenish-tan, with darker olive mottling across the scales; the throat, belly, undersides and inner legs are paler grey-cream. The olive-khaki back and flanks are the dominant colour on every facing: front view, side view and rear view alike. A frilled crest along the head and neck in a deeper olive shade of the same hide colour. Keep the body shape, scaled hide, broad back, tusks, tail and frilled crest as in the previous render; only the hide colour changes. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible including the full tail, nothing cut off. Fully transparent background with only the creature drawn.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g5",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Gullipud__Gullipud_Swimming_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gullipud__Gullipud_Swimming_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same body bulk, seen from the view this job asks for. A creature sprite for RimWorld: the gullipud, a bulky, loose-skinned, self-inflating amphibian of the Naboo swamps, with a spine it can extend to be harder to swallow. This is the rear view, seen from behind: the back, the broad inflated haunches and the rump face the viewer, and the eyes are hidden. The body is drawn at full size and full breadth, as wide and as heavy as in the front view: a wide, round, inflated rump and torso with loose skin bulging out on both sides, spanning about 85% of the canvas width and about 80% of its height, at the same scale as the other facings. The widest part of the silhouette is the pair of broad inflated haunches. The animal is centred with its whole body visible inside the canvas. The red dorsal stripe runs as one bare, uninterrupted band down the middle of the back. The hooked spines are scattered over the back and flanks in rows beside the stripe, in the same places as on the side view. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred. Fully transparent background, with the animal alone on the canvas.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g5",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_PekoPeko__PekoPeko_m_ns_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_PekoPeko__PekoPeko_m_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same blue-and-gold colours and markings, same size on the canvas, seen from the view this job asks for. A creature sprite for RimWorld: the Peko-peko, a large colourful reptavian native to the swamps of Naboo, with scaly reptile skin, a strong heavy beak with a downward hook at the tip, and a dark charcoal crest sweeping back from the rear of the skull. Keep the reference's exact rendering treatment: a thick, bold, even black keyline of the same weight as the reference around the whole silhouette, large smooth colour areas with two or three tones of shading per area, and a few large scale-pattern marks, so this view and the east view read as one sprite set. Add natural painterly form lighting from the upper left and layered overlapping wing and scale shapes, like a wildlife illustration rather than a mascot. The front view (eyes toward the viewer) shows the head facing the camera, the beak closed or only slightly parted so the heavy hooked beak reads clearly, the dark crest framing the top and sides of the head, the pale blue and gold on the chest and wings, and the legs and feet below. The rear view (seen from behind) shows the back, folded wings, tail and haunches, with the dark crest at the back of the skull and the eyes hidden. Exactly ONE creature, centred, the whole body visible with nothing cut off. Realistic painterly vanilla RimWorld sprite style with a clean dark outline. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_CARTOON, CANON_MISS, SIBLING_MISMATCH, STYLE_CARTOON, CANON_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g5",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.5,
+  "module": "flyer"
+ }
+]

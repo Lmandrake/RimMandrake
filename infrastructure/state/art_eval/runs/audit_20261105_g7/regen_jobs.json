@@ -1,0 +1,40 @@
+[
+ {
+  "id": "arteval_RM_Huldu_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east view): same anatomy, same proportions, same warm brown fur colour and sheen, same cream flank markings, same tail fin shape, same size on the canvas, now seen in rear view, from behind. A creature sprite for RimWorld: the huldu, a small, sleek, forearm-length water-hunter built like an otter, with a dense, oiled, luxurious brown coat that dries to a deep, shifting sheen. In this rear view the back, the folded dorsal comb, the haunches and the tail fin face the viewer, and the eyes and face are hidden. The warm brown fur-textured back has exactly the tone and sheen of the east view, with cream showing only along the flanks at the edges of the body. A dorsal comb of wet-looking strands, in the same brown family as the coat, lies folded flat along the spine from the nape to the base of the tail. Two short arms sit high on the chest; their long-fingered, flexible gripping hands, made to cling to and wrap around a human forearm, show at the sides of the shoulders. The torso is full and rounded, filling the canvas at the same height and the same shoulder width as the south view. Behind the haunches, the tail fin is the same warm brown and the same shape as the tail in the east view, spread low behind the body and seen from behind. It hunts underwater, drives prey against rock with sweeps of the tail, and can drag itself onto land on its arms and hop off the tail. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g7",
+  "drawsize": 0.8,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RM_Murrin_ns_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Murrin_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same size on the canvas, seen from the view this job asks for (front view with eyes toward the viewer, or rear view seen from behind). A creature sprite for RimWorld: the murrin, a hand-length pool fish, deep-keeled, with one tall dorsal comb-fin. Visible features it must show: a single tall comb-like dorsal fin running along the back, its edge divided into separate comb teeth rather than one smooth sail; a deep, laterally compressed body that tapers below into a thin, distinct blade-like keel along the belly (in the front view the deep body narrows downward to a thin blade-edged belly keel beneath the barbels; in the rear view the keel shows as a sharp ridge along the underside); 3-4 clear ring-within-ring markings painted on the body, concentric rings in a deeper shade of the body colour, identical to the reference in size, softness and opacity on every view. The comb-fin rises clearly at the top of the fish. The picture shows only the fish itself, body and fins, drawn on fully transparent alpha, with clean empty transparent space all around the comb-fin and the body; every visible pixel belongs to the animal, and the pool-surface ripples are supplied by a separate effect. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ALPHA_HALO, DEPARTURE_MISSING, ALPHA_HALO, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g7",
+  "drawsize": 0.7,
+  "module": "swimmer"
+ }
+]

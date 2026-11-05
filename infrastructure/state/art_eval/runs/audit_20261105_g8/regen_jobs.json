@@ -1,0 +1,21 @@
+[
+ {
+  "id": "arteval_RM_Skarrin_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Skarrin_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (the installed side view): same anatomy, same proportions, same silver colouring and sheen, same body bulk, the same hooked and swept row of thin sharp fins, turned directly away from the camera. A creature sprite for RimWorld: the skarrin. A forearm-long, knife-slender silver eel with a row of thin, sharp fin blades along its body that it can flex out stiff into cutting lines. The view is the rear view, seen from behind at the game's angled camera, level with the animal: the tail end of the eel faces the viewer, foreshortened into a compact silhouette, the tapering tail tip at the centre of the figure and the body receding behind it. The fin blades fan out around the body in a radial spread, long, swept and hooked exactly as in the side view, and the haunch-end of the body shows its rounded cross-section. The round sucker mouth and the eyes are on the far side of the body, out of sight. The eel is centred on the canvas, its silhouette about 200 px of the 256 px canvas height, the same scale and the same fin-fan width as the front view, so the front and rear read as one body turned around. Visible features it shows: the forearm-long knife-slender silver body, the tapering tail tip toward the viewer, the row of thin sharp swept fins radiating around the body. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_TOPDOWN, F_NORTH_FACE, F_INCONSISTENT, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g8",
+  "drawsize": 0.85,
+  "module": "swimmer"
+ }
+]

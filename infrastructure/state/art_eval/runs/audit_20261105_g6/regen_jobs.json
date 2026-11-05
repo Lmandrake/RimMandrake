@@ -1,0 +1,68 @@
+[
+ {
+  "id": "arteval_RSW_SandLeaper_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_SandLeaper_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view), turned to face away from the camera, so it is seen from directly behind (rear view, level with the animal). Same bulky, hunched, rounded olive-khaki body, same overlapping plates of chitin, same naked mauve prehensile tail, same palette, same proportions, same size on the canvas. A creature sprite for RimWorld: the qetta, something like a rodent assembled from the wrong parts, with no forelimbs at all. In this rear view a large, wide haunch mass fills the lower silhouette, with short folded hind legs tucked beneath it and the chitin plates overlapping down the hunched, rounded back. The long naked mauve tail rises from the rump and curls upward. The head is tucked low and hidden behind the hunched back, with the eyes out of sight. Painted in the same flat 2D painterly vanilla RimWorld style as the east view: broad flat tone blocks, matte cel-like shading, a clean thick dark outline around the whole silhouette with the same line weight as the east view, and soft painted edges in a deeper shade of the local colour. Realistic proportions. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, STYLE_OFF, OWNER_NOTE_IGNORED, F_TOPDOWN, F_SOUTH_NOT_FRONT, F_INCONSISTENT, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g6",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_Varactyl__Varactyl_f_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Varactyl__Varactyl_f_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same low sprawling stance, same body width and bulk, same size on the canvas, now seen in rear view, from behind at the game's low camera angle. A creature sprite for RimWorld: the varactyl. A giant reptavian herbivore from Utapau, with a beaked head, feathered mane and long, powerful tail. Fine gripping structures on its feet let it climb steep rock faces, even while carrying a rider. Visible features it must show: the canon Utapau varactyl (see canon entry varactyl); a beaked head and a feathered mane; a long powerful tail and gripping feet. The rear view is seen from behind and slightly above, like a standing animal viewed by a ground-level game camera. The rounded haunches and rump fill the lower centre of the image, and the hind legs stand deeply bent with the knees projecting out to both sides. The feet are seen edge-on, planted on the ground, broadly spaced and well outside the body line, so the stance reads wide and low. The tail base comes toward the viewer from the centre of the rump and rises in its hook. The back is foreshortened and recedes upward behind the haunches, so the rump overlaps most of the torso. The neck rises beyond the back and ends in the rear of the feathered ruff, with the beaked head turned away and the eyes hidden. The forelimb elbows bend out wide, and the shoulder span and ruff are as broad as in the front view. The body, ruff, shoulder span and haunches match the front view's width and bulk, and the creature fills the same share of the canvas. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_TOPDOWN, F_SIZE_JUMP, F_TOPDOWN, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g6",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 6.0,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Drazzik_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Drazzik_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (the accepted east side view): same anatomy, same pale colour, same markings, same chevron spine plates, same proportions, same size on the canvas, now seen from behind. A creature sprite for RimWorld: the drazzik, a pale, patient, flat-bodied ambusher that lies in wait and hums a false vibration through the ground. This is the rear view, seen from behind at the game's angled camera, with the eyes hidden: the low, broad, flat pale back with its row of chevron spine plates runs up the centre; the knobbed tail club curls up toward the camera in the middle of the body; the four splayed clawed legs and hind feet show at both sides, as in the accepted east view. The body is complete down to the feet resting on the ground and the belly line, and a clean dark outline closes the full silhouette, including the toes, the same as in the south and east views. The width on the canvas matches the south view, with the same compact body footprint. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the pale body colour. Exactly ONE creature, centred, the whole animal visible with nothing cut off at the sides or bottom. Fully transparent background: no painted sand, no ground texture, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_SIZE_JUMP, OWNER_NOTE_IGNORED, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g6",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.5,
+  "module": "walker"
+ }
+]

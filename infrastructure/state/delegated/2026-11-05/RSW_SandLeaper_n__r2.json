@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 48.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.35554359999999996
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 33.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 11.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1197122
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_SandLeaper_n",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'STYLE_OFF', 'OWNER_NOTE_IGNORED', 'F_TOPDOWN', 'F_SOUTH_NOT_FRONT', 'STYLE_CARTOON']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5'], own blocking ['F_INCONSISTENT', 'STYLE_OFF']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "45fdbfc51ca544e14f13f40b4b690d885172a73969010247a2a3583845de6ae8",
+  "east.png": "f71941805460fd917dbed8d8cc56cce1c01b1dca9dd5d2143e564909acb7b341",
+  "north.png": "e92e4846bfe912382f73f034b268bb251f2ae594d4807a417e44189f1d58afbb",
+  "scale.png": "74b832a4b60a35a2e7bef3586ef5a95cb63b1b2fff31d6e0a087dab56d4706d7",
+  "facings.png": "9b890b01a456f9f5d555ca48d9d12ad9afc7c318ec1642e35b2e6364d61a091b"
+ }
+}

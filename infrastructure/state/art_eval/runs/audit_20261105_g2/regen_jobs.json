@@ -1,0 +1,44 @@
+[
+ {
+  "id": "arteval_RM_CrimsonOpee_ns_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CrimsonOpee_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same rust-red barnacled colours and markings, same size on the canvas, now seen from behind. A creature sprite for RimWorld: the crimson opee. A warm-shallows morph of the opee, barnacled and rust-red, that hunts with its tongue already out as a lure. It is a crustacean-fish hybrid with a segmented back and a broad lobed tail fan, the opee sea-killer form. Its lure set is exactly the accepted east view's: the same number of stalks, the same attachment points and the same lengths, including the two long filament-bearing side lures that arch out past the flanks of the body. The body is broad, with flanks as wide as in the accepted east view. Rear view (north), seen at the game's angled camera, a low three-quarter-height viewpoint looking at the animal's back end, with the body length strongly foreshortened toward the camera. The broad lobed tail fan is the nearest, largest form, seen end-on from behind and filling the lower half of the sprite. It has the same lobes and fin rays as the east view's fan and is spread wide as the widest part of the sprite, joined to the body by a short thick tail base. Rising behind the tail base, the segmented back plates form a short stepped stack, each plate overlapping the one behind and receding away from the viewer. The head end sits hidden behind the body mass, high in the frame. The legs stand on the ground beneath the body: the rear pair planted close together under the haunches, the far pair partly hidden behind them, feet at the bottom of the sprite. Only the lure tips and the two long side lures show, arching up and out past the flanks from behind the body. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible. Fully transparent background, with the creature alone on the canvas.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_TOPDOWN, F_INCONSISTENT, DEPARTURE_MISSING, F_TOPDOWN, F_INCONSISTENT, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g2",
+  "drawsize": 2.48,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Blixus_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Blixus",
+  "prompt": "A creature sprite for RimWorld: the blixus. Blixus were rare, half-shelled crustapod creatures native to the planet Sljee. These semi-aquatic predators were known to be deadly in the swamps and lagoons they inhabit. They were known to periodically shed their exoskeleton if broken or damaged which could be harvested for useful chitin. It is believed many were accidently transplanted to various worlds as exotic display animals or pets that grew too large to contain. Visible features it must show: the canon Sljee blixus (see canon entry blixus); half-shelled crustapod, with a grey chitin shell covering only part of the body and soft flesh showing on the rest; six spike legs in total; exactly five long feeler tentacles, each continuous from its root at the body to its tip and each ending in one rounded sucker pad, so five tentacles and five sucker pads in total. The south and north views show the six spike legs, three on each side of the body. The east profile shows three near-side spike legs fully visible and three far-side spike legs partly hidden behind them, six legs in total, and the same five tentacles as the south and north views, the near-side tentacles overlapping the far-side ones so that five tips can be counted. Keep the palette, body plan and shell coverage of the previous render unchanged. Realistic painterly vanilla RimWorld sprite style, with a clean dark outline in a deeper shade of the local colour. Every tentacle edge is a clean, crisp anti-aliased alpha cut-out, one or two pixels wide, whose edge pixels take the exact colour of the adjacent flesh or grey chitin, so the outline reads as one dark deeper shade of the local colour and the creature separates cleanly from the background. The space around the creature, between the tentacles and above the shell is fully transparent, flat and empty, uniform in all three views: only body, shell, legs and tentacles carry colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ALPHA_HALO, CANON_MISS, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_g2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 6.0,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Blixus/Blixus"
+ }
+]
