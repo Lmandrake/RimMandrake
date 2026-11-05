@@ -123,8 +123,8 @@ def t_gap_reads_a_gate_plan():
     seen = []
 
     class Fx:
-        def folded(self):
-            return ["Fold"]
+        def folded(self):       # deploy_custom_mods.folded(): {source folder: (composed target, key)}
+            return {"Fold": ("RimMandrake.Biomes", "fold")}
 
         def deploy_plan(self, args, timeout):
             seen.append((args, timeout))
