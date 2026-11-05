@@ -262,16 +262,26 @@ def deploy_args(mods, folded):
     return " ".join("--mod %s" % m for m in mods)
 
 
-def mod_gap(fx, sha, text, running=True):
+def item_mods(fx, item_id, sha):
+    """The build's mod folders: those of the built commit, or, when it touched no shippable mod file, those of every
+    commit citing the item (relentless_live.build_shas, PROOF_SHA_FIX_DEPLOYS_NOTHING_TWICE: a proof-only fix landed
+    last deployed nothing and checked no running-load gap). Raises ValueError as mods_of does."""
+    if item_id is None or not hasattr(fx, "cited"):
+        return list(fx.mods_of(sha))
+    return sorted({m for s in L.build_shas(fx, sha, item_id) for m in fx.mods_of(s)})
+
+
+def mod_gap(fx, sha, text, running=True, item=None):
     """What a run of this build would find missing from the game, asked BEFORE a game slot is spent
     (LIVE_MODLIST_ENFORCE_BEFORE_SLOT: 6 of 28 live runs were HORRORS 'UtinniPatches not enabled in ModsConfig',
     GRAFFITI 'not in the running load', DRAWBRIDGE a stale FlowWorks DLL). The build's mods plus its `live-mods:` are
     planned once (deploy_custom_mods.py, read only). -> {"mods", "off": {folder: flag} (NOT DEPLOYED / not enabled in
     ModsConfig), "dll": [stale or missing DLLs in the game folder], "running": why the RUNNING load lacks them or None,
-    "error": why the plan could not be read or None}. running=False skips the bridge read (no game, or a staging)."""
+    "error": why the plan could not be read or None}. running=False skips the bridge read (no game, or a staging).
+    item: the item built at `sha`, so a proof-only built commit stands for its item's mods (item_mods)."""
     out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None}
     try:
-        mods = sorted(set(fx.mods_of(sha)) | set(live_mods(text)))
+        mods = sorted(set(item_mods(fx, item, sha)) | set(live_mods(text)))
     except ValueError as e:
         out["error"] = str(e)[:200]
         return out
@@ -285,15 +295,16 @@ def mod_gap(fx, sha, text, running=True):
 
 
 def batch_gap(fx, builds):
-    """mod_gap for every build riding one load, for ONE deploy plan over their union: [(sha, proofs text)] -> one gap.
+    """mod_gap for every build riding one load, for ONE deploy plan over their union: [(sha, proofs text[, item])] -> one gap.
     A staging needs only the union (enable_set, dll_mods); planned per item, 17 riders took 17 sequential plans of
     about 140 s over the Windows mount before the tick's 20-minute kill (TICK_SPEED_FIX_GAME_IDLES_WAITING). A build whose
     mods cannot be read rides without them and says so in `error`; the others still plan."""
     out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None}
     mods = set()
-    for sha, text in builds:
+    for b in builds:
+        sha, text, item = (tuple(b) + (None,))[:3]
         try:
-            mods |= set(fx.mods_of(sha)) | set(live_mods(text))
+            mods |= set(item_mods(fx, item, sha)) | set(live_mods(text))
         except ValueError as e:
             out["error"] = str(e)[:200]
     out["mods"] = sorted(mods)
@@ -420,7 +431,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
             summary["skipped"][ITEM_GATED] = summary["skipped"].get(ITEM_GATED, 0) + 1
             continue
         try:
-            mods = fx.mods_of(sha)
+            mods = item_mods(fx, item_id, sha)
         except ValueError as e:
             summary["runs"].append({"item": item_id, "criterion": cid, "outcome": "UNMEASURED", "why": str(e)[:200]})
             continue

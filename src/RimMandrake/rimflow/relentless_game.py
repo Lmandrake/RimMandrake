@@ -697,12 +697,12 @@ class GameFx(object):
     def game_mod_gap(self, item, sha, running=True):
         """relentless_live_round.mod_gap for the build at `sha`, read as a live run would read it."""
         import relentless_live_round
-        return relentless_live_round.mod_gap(self._round_fx(), sha, self.proofs_at(item, sha), running)
+        return relentless_live_round.mod_gap(self._round_fx(), sha, self.proofs_at(item, sha), running, item)
 
     def game_batch_gap(self, builds):
         """relentless_live_round.batch_gap: every [(item, sha)] riding one load, for one deploy plan."""
         import relentless_live_round
-        return relentless_live_round.batch_gap(self._round_fx(), [(s, self.proofs_at(i, s)) for i, s in builds])
+        return relentless_live_round.batch_gap(self._round_fx(), [(s, self.proofs_at(i, s), i) for i, s in builds])
 
     def game_trees(self, builds):
         """Every `live-deploy:` mod of [(item, sha)] riding one load -> (folders, deploy_custom_mods.py args), or None."""

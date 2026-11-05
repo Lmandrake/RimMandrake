@@ -415,14 +415,33 @@ def fingerprint(criterion, why, proof, text=""):
     return hashlib.sha1(raw.encode("utf-8", "replace")).hexdigest()[:16]
 
 
-def stale_build(fx, sha):
+def cites(subject, item_id):
+    """True when a commit subject names `item_id` as a whole token (FOO_1 is not FOO_12, nor XFOO_1)."""
+    return bool(item_id) and re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(item_id), subject or "") is not None
+
+
+def build_shas(fx, sha, item_id=None):
+    """The commits whose game files are the build's -> [sha, ...]. Normally the built commit alone. When it touched no
+    shippable mod file (a proof-only or harness-only fix landed last) and the item is known, every non-merge ancestor
+    commit whose SUBJECT names the item joins it (fx.cited): those hold the item's mod files.
+    PROOF_SHA_FIX_DEPLOYS_NOTHING_TWICE: GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS was built on 8f6c177 then 2e9ce47, which
+    touched only proofs and lessons, so runs.jsonl read deploy='' and no running-load gap: A1 ran and FAILED twice on a
+    game without GimmeSomeSlack. A fake without `cited` keeps the built commit alone."""
+    if not item_id or not hasattr(fx, "cited") or game_files(fx.touched(sha), fx.shippable):
+        return [sha]
+    return [sha] + [s for s in fx.cited(item_id, sha) if not (s.startswith(sha) or sha.startswith(s))]
+
+
+def stale_build(fx, sha, item_id=None):
     """-> (why or None, game files of the build). why says the game cannot run `sha`: it deleted a shipped file (a stale
     game copy cannot be told from the build), or a game file it touched changed in a later commit (STALE). Raises
-    ValueError when the built commit cannot be read."""
-    gone = [p for p in fx.deleted(sha) if SRC_MOD.match(p) and fx.shippable(SRC_MOD.match(p).group(3))]
+    ValueError when the built commit cannot be read. item_id: a built commit with no game file stands for the game files
+    of every commit citing the item (build_shas); staleness is still judged against `sha`, the build."""
+    shas = build_shas(fx, sha, item_id)
+    gone = [p for s in shas for p in fx.deleted(s) if SRC_MOD.match(p) and fx.shippable(SRC_MOD.match(p).group(3))]
     if gone:
         return "the build deleted %s: a stale game copy cannot be told from the build" % ", ".join(gone[:5]), []
-    touched = fx.touched(sha)
+    touched = list(dict.fromkeys(p for s in shas for p in fx.touched(s)))
     files = game_files(touched, fx.shippable)
     paths = [p for p in touched if SRC_MOD.match(p) and SRC_MOD.match(p).group(2, 3) in files]
     later = fx.changed_since(sha, paths) if paths else []
@@ -454,7 +473,7 @@ def preflight(fx, lr, item_id, lines, sites=None):
             out.append({"cid": cid, "why": why, "fp": fingerprint(cid, why, lines[cid], text), "kind": "refused"})
     if item and item.get("built_sha"):
         try:
-            why, _files = stale_build(fx, item["built_sha"])
+            why, _files = stale_build(fx, item["built_sha"], item_id)
         except ValueError:
             why = None      # an unreadable commit is the run's to report, with its own row
         if why and why.startswith(STALE):
@@ -769,6 +788,16 @@ class Fx(object):
                 out.append(f.read())
         return "\n".join(out)
 
+    def cited(self, item_id, sha):
+        """-> the full shas of every non-merge commit up to and including `sha` whose subject names `item_id` (cites),
+        newest first (build_shas). --grep reads the whole message; only the subject counts, so a body that merely
+        mentions the item (a caused_by, a filing) adds nothing."""
+        r = subprocess.run(["git", "log", "--no-merges", "-F", "--grep=%s" % item_id, "--format=%H%x09%s", sha],
+                           cwd=self.books, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+        if r.returncode:
+            raise ValueError("git log %s: %s" % (sha, r.stderr[-200:]))
+        return [h for h, _, subj in (ln.partition("\t") for ln in r.stdout.splitlines()) if h and cites(subj, item_id)]
+
     def touched(self, sha):
         """Every path the built commit touched, including ones HEAD no longer has: changed_since sees those as changed."""
         return self._paths([], sha)
@@ -1045,7 +1074,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     if site:
         row["site"] = site
     try:
-        why, files = stale_build(fx, sha)
+        why, files = stale_build(fx, sha, item_id)
     except ValueError as e:
         return done("UNMEASURED", "cannot read the built commit: %s" % e)
     if why:
