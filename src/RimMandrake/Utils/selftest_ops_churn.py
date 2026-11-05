@@ -319,6 +319,30 @@ def main():
     ok(a8.get("name", "").startswith("OPS_CHURN_DIAGNOSE_BOUNCE_") and "BOUNCE_ITEM" in a8.get("title", ""),
        "8: run_alarms files the item's own OPS_ alarm, its title naming the item", a8)
     ok(OW.held_churn_items() == {"BOUNCE_ITEM"}, "8: alarms.json now holds it, so its next calm pass reads 0", OW.held_churn_items())
+    # 9 PUT_DOWN_ENDS (OPS_CHURN_DIAGNOSE_HORRORS_XSDJ_RKYR): HORRORS_RAIDING_FACTION_1, 3 returns, every real failure
+    # older than the window, read 'bouncing: 3 returns' because a Conductor `hold` ending (relentless.hold: "No strike, no
+    # failed approach") counted as a failed attempt inside it. The SHIPPED ends list decides.
+    ends = rules["relentless"]["churn_not_fail_ends"]
+    cfg9 = dict(CFG, churn_not_fail_ends=ends)
+    old9 = NOW - 30 * HOUR
+    for end in ("hold", "conductor_hold", "game_fail"):
+        s9 = TMP / ("s9_" + end)
+        nm = "H9_ITEM"
+        d = s9 / "items" / nm
+        d.mkdir(parents=True)
+        (d / "state.json").write_text(json.dumps({"status": "queued", "returns": 3, "gen": 6, "spent": 1}))
+        rows = [{"gen": 5, "at": iso(old9), "start": marker(nm, 5)}, {"gen": 5, "at": iso(old9 + 60), "end": "game_fail"},
+                {"gen": 6, "at": iso(NOW - 4 * HOUR), "end": end, "said": "x"}]
+        (d / "attempts.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+        (TMP / "ops" / "alarms.json").write_text("{}")
+        p9 = OW.rl_churn(s9, NOW, cfg9)
+        hit = OW.CHURN_ITEM_PREFIX + nm in p9
+        if end == "game_fail":
+            ok(hit and "bouncing: 3 returns" in p9[OW.CHURN_ITEM_PREFIX + nm]["x"]["said"],
+               "9: a real failure in the window still reads bouncing", p9.get(OW.CHURN_ITEM_PREFIX + nm))
+        else:
+            ok(end in ends and not hit and p9["relentless.churn_items"].get("v") == 0,
+               "9: a '%s' ending is a put-down, not a failure: no churn" % end, (end in ends, sorted(p9)))
     shutil.rmtree(TMP, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
