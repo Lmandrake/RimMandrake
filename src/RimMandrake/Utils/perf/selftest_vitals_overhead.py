@@ -234,6 +234,17 @@ check("live-proof lines A1 and A2 parse", sorted(_lines), ["A1", "A2"])
 for _c, _cmd in sorted(_lines.items()):
     check("live-proof %s passes the game gate" % _c, RL.refused_proof(RL.live_rules({}), "", "", _cmd), None)
 check("A2 line runs --tier full", "--tier full" in _lines.get("A2", ""), True)
+# gen9's live FAILs were the SITE: a 14-mod game. The staging loads only what `live-mods:` names, so the line must name
+# every ratchet_pilot want id (A1's tier); A2 is the full-list clause, so it is GREEN-FULL and waits for the full list
+import relentless_live_round as RLR
+_lm = [m.lower() for m in RLR.live_mods(_lp)]
+for _w in [w for w in _t["want"] if not TM.MB._is_retired_donor(w) and w != TM.MB.BRIDGE]:
+    check("live-mods names %s" % _w, _w.lower() in _lm, True)
+check("live-mods are packageIds, never trees", RLR.folders(_lm), [])
+_cr = dict(l.split(":", 1)[0].split(" ", 1) for l in open(os.path.join(HERE, "..", "..", "..", "..", "infrastructure",
+           "state", "live_proofs", "VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL.criteria")) if l[:1] == "A")
+check("A1 is a small-list clause", _cr.get("A1"), "L2")
+check("A2 is the full-list clause", _cr.get("A2"), RL.FINAL)
 
 if FAILS:
     print("FAIL selftest_vitals_overhead: %d" % len(FAILS))

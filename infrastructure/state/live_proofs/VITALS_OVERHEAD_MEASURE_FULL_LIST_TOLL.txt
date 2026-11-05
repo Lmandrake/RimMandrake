@@ -1,2 +1,3 @@
+live-mods: mandrake.rm.biomes, mandrake.rut.patches, mandrake.rsw.swbestiary, mandrake.rut.pyrelandsmechanics, mandrake.rm.flowworks, mandrake.rm.gimmesomeslack, mandrake.rm.patches
 live-proof A1: python.exe src/RimMandrake/Utils/perf/test_vitals_tier_makeup.py < /dev/null && python.exe src/RimMandrake/Utils/perf/vitals_overhead.py --tier minimal --out 'D:\ClaudeWork\rimmandrake\VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL' < /dev/null && python.exe src/RimMandrake/Utils/perf/test_vitals_tier_makeup.py < /dev/null
 live-proof A2: python.exe src/RimMandrake/Utils/perf/vitals_overhead.py --tier full --out 'D:\ClaudeWork\rimmandrake\VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL' < /dev/null
