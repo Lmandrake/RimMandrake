@@ -189,12 +189,14 @@ def reseed(r, name, prop):
 def uncovered(r, prop, texts):
     """-> the masked paths the blind texts name that the proposal covers nowhere (CHECKER_REACH_FIX_CLONES_STILL_DARK gen 3:
     a probe asks only whether the repair READS; SCRATCH_CLONES_PRUNE_LANDED_DEAD_WEIGHT got seat_clone_state, which reads,
-    and stayed blind on ~/rm/scratch). Opt-in: it judges only a proposal with an adapter that declares `covers`. A path
-    counts as covered under an adapter's covers or under a proposal path the wall would bind."""
+    and stayed blind on ~/rm/scratch). It judges every proposal that READS (an adapter or a path); an adapter that declares
+    no `covers` covers nothing (gen 5: proc_cwds reads, covers no root, and spent the re-check again). A path counts as
+    covered under an adapter's covers or under a proposal path the wall would bind. A proposal that reads nothing is left
+    to the nothing-to-probe branch, where a closed ticket's one re-check is its probe."""
+    if not prop.get("adapters") and not prop.get("paths"):
+        return []
     known = relentless_wall.adapters(r)
     ads = [known[a] for a in prop.get("adapters") or [] if a in known]
-    if not any(isinstance(a.get("covers"), list) for a in ads):
-        return []
     prof = relentless_wall.profile(r) or {}
     masks = [m.rstrip("/") for m in list(prof.get("deny_children") or []) + list(prof.get("deny") or [])]
     cover = [c.rstrip("/") for a in ads for c in a.get("covers") or [] if isinstance(c, str)]

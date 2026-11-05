@@ -573,6 +573,32 @@ def t_clones_scratch_instance():
        "(8c) a proposal that covers none of the named paths probes nothing and files the ticket, no re-check: %s %s %d"
        % (x.w.probes, x.w.tickets, len(checks(x))))
     x.done()
+    # (8d) gen 5 blind_fail: coverage was opt-in, so a proposal whose adapter reads but declares no covers (proc_cwds)
+    # went to the probe and spent the re-check again. An adapter without covers covers nothing.
+    nc = unc(r, {"adapters": ["proc_cwds"], "paths": [], "grants": []}, [SCRATCH_BLIND]) if unc else []
+    ok("/home/mandrake/rm/scratch/BENCH" in nc and "/home/mandrake/rm/relentless-seeds" in nc,
+       "(8d) a covers-less reading adapter (proc_cwds) leaves the named roots uncovered: %s" % nc)
+    x = rig(probe=(True, "proc_cwds read non-empty"))
+    x.r = dict(x.r, reach_classes=[dict(c, adapters=["proc_cwds"]) if c["class"] == "clones" else c
+                                   for c in x.r["reach_classes"]],
+               walls={"marker": dict(r["walls"]["marker"], enforce=False)}, offbox_adapters=r["offbox_adapters"])
+    B.to_check(x, "I0")
+    blind(x, "I0", what=SCRATCH_BLIND)
+    for _ in range(3):
+        x.tick()
+    ok(x.w.probes == [] and x.w.tickets == ["CHECKER_REACH_FIX_CLONES_STILL_DARK"] and checks(x) and len(checks(x)) == 1,
+       "(8d) a covers-less reading proposal probes nothing and files the ticket, no re-check: %s %s %d"
+       % (x.w.probes, x.w.tickets, len(checks(x))))
+    x.done()
+    # (8e) the classes whose adapters read a masked root still pass the gate: the store and live adapters cover theirs
+    st = unc(r, {"adapters": ["relentless_store_attempts", "relentless_store_journal"]},
+             ["ls /home/mandrake/rm/relentless/store -> Permission denied"]) if unc else ["RF.uncovered missing"]
+    lv = unc(r, {"adapters": ["relentless_live_evidence"]},
+             ["/home/mandrake/rm/relentless/live -> Permission denied"]) if unc else ["RF.uncovered missing"]
+    ok(st == [] and lv == [], "(8e) the store and live adapters cover the roots they read: %s %s" % (st, lv))
+    # (8f) a proposal that reads nothing is not judged here: an empty proposal on a closed ticket is still its own probe
+    ok(unc(r, {"adapters": [], "paths": [], "grants": []}, [SCRATCH_BLIND]) == [] if unc else False,
+       "(8f) an empty proposal is left to the nothing-to-probe branch")
 
 
 def seat_tmp_rows(r):
