@@ -551,3 +551,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T03:51:12Z","tsn":1793850672891282003}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WARSCAR_HOSPICE_DESERTERS_1: deploy and restart for its live proofs","ts":"2026-11-05T03:54:55Z","tsn":1793850895395514530}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T04:03:10Z","tsn":1793851390642373926}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WATER_DEPTH_RESKIN_HE_LOOKS_FIRST: deploy and restart for its live proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T04:19:10Z","tsn":1793852350830164668}
