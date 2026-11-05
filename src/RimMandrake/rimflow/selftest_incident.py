@@ -1555,6 +1555,59 @@ def replay_batch():
     return 0
 
 
+# Role alarms reviewed as faults an Operations incident should hold (cause roles, via the role:* fallthrough).
+# RELAPSE_ROLES_FIX_DIED_TWICE: a role_launch alarm kind not on this list and not routed by its own row fails below, so
+# a new doorbell or self-retrying state cannot fall into cause roles unseen and reopen it as a "dead fix".
+ROLE_INCIDENT_SUFFIXES = {"supervise", "unit", "overtime", "stop_failed", "stage_rejected", "stage_close", "failed",
+                          "after", "schedule", "ops", "stage_refused"}
+
+
+def test_role_relapse_kinds_do_not_reopen():
+    """RELAPSE_ROLES_FIX_DIED_TWICE: roles-20261103041057 was tamed after reopens by role:Conductor:scope (a run's unit
+    collected a tick before its scope or marked processes: re-checked every tick, a stuck one alarms as overtime) and
+    role:Designer:waiting_owner (a doorbell raised first in the Conductor log). Neither is a fix that can die."""
+    table = IN.load_table()
+    for kind in ("role:Designer:waiting_owner", "role:Conductor:scope", "role:Operations:scope", "role:Designer:scope"):
+        r = IN.route_of(table, kind)
+        check("%s routes program" % kind, r is not None and r.get("route") == "program", r)
+    for kind in ("role:Conductor:overtime", "role:Conductor:stop_failed", "role:Operations:failed"):
+        r = IN.route_of(table, kind)
+        check("%s still reaches an Operations incident" % kind, r is not None and r.get("route") == "role", r)
+    src = open(os.path.join(HERE, "role_launch.py"), encoding="utf-8").read()
+    emitted = set(re.findall(r'kind="role:%s:([a-z_]+)"', src))
+    check("role_launch alarm kinds are read (sanity: scope, waiting_owner, overtime among them)",
+          {"scope", "waiting_owner", "overtime"} <= emitted, sorted(emitted))
+    fall = {x for x in emitted if (IN.route_of(table, "role:Any:" + x) or {}).get("match") == "role:*"}
+    check("every role_launch alarm falling through to cause roles is a reviewed fault (new: %s; gone: %s)" % (
+          sorted(fall - ROLE_INCIDENT_SUFFIXES), sorted(ROLE_INCIDENT_SUFFIXES - fall)), fall == ROLE_INCIDENT_SUFFIXES)
+    pol = table["policy"]
+    q = pol["event_quiet_min"] * M
+    rows, cur = [], [0]
+
+    def tick(now, *metrics):
+        rows.extend({"metric": m, "class": "distressed", "at": IN.iso(now), "t": now} for m in metrics)
+        res = IN.step(table, rows, {"t": now, "points": {}, "alarms": {}}, now, cur[0])
+        rows.extend(res["rows"])
+        cur[0] = len(rows)
+
+    def episode(t, *metrics):
+        tick(t, *metrics)
+        tick(t + M)
+        tick(t + M + q + M)
+        return t + M + q + M + H
+
+    t = episode(T0, "role:Conductor:scope")       # the instance: scope, scope, then a Designer ask, each inside relapse_h
+    t = episode(t, "role:Conductor:scope", "role:Designer:waiting_owner")
+    t = episode(t, "role:Designer:waiting_owner")
+    evs = [r["ev"] for r in rows if "ev" in r]
+    check("instance: the incident's relapse kinds open, reopen and tame nothing", not evs, evs)
+    t = episode(t, "role:Conductor:overtime")      # control: a real role fault back inside relapse_h still reopens
+    episode(t, "role:Conductor:overtime")
+    evs = [r["ev"] for r in rows if "ev" in r]
+    check("control: role:Conductor:overtime back inside relapse_h reopens its incident (the check can fail)",
+          "opened" in evs and "reopened" in evs, evs)
+
+
 if "--replay-batch" in sys.argv:
     sys.exit(replay_batch())
 for t in (test_standing_source_holds_incident_open, test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
@@ -1562,7 +1615,7 @@ for t in (test_standing_source_holds_incident_open, test_silent_reader, test_cha
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
           test_escalation_clear_through_step, test_chains_through_step, test_each_field_of_a_reading, test_signal_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
           test_incidents_verb_says_the_news, test_replay_recorded, test_relapse_tamed, test_tamed_filer_waits_and_retries,
-          test_disjoint_reopen_is_new_incident):
+          test_disjoint_reopen_is_new_incident, test_role_relapse_kinds_do_not_reopen):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)

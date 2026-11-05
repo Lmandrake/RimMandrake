@@ -97,6 +97,8 @@
     {"match": "role:*:overspend_day*", "route": "program", "_why": "as overbudget: on 2026-11-02 role:Operations:overspend_day fell through to role:* and opened a fresh Operations incident run (OPS_OVERSPEND_FIX_ALARM_FEEDS_ITS_METER)"},
     {"match": "role:*:cap", "route": "program"},
     {"match": "role:*:cutoff", "route": "program"},
+    {"match": "role:*:waiting_owner", "route": "program", "_why": "a doorbell, not a fault: role_launch.escalate_turn already raises it first in the Conductor log; as an incident every new Designer ask reopened roles-20261103041057 as a dead fix (RELAPSE_ROLES_FIX_DIED_TWICE)"},
+    {"match": "role:*:scope", "route": "program", "_why": "a run winding down (unit gone, scope or marked processes not yet): the supervisor keeps it busy and re-checks every tick, and one that stays so is alarmed as role:*:overtime then stop_failed; as an incident each one-tick sighting reopened roles-20261103041057 (RELAPSE_ROLES_FIX_DIED_TWICE)"},
     {"match": "role:*", "route": "role", "reader": "Operations", "cause": "roles"},
     {"match": "jam", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "understaffed", "route": "role", "reader": "Operations", "cause": "work_belt"},
