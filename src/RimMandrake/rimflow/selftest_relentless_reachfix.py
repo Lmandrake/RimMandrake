@@ -521,10 +521,39 @@ def t_seat_tmp_reach():
         ok(cond, name)
 
 
+LIVE_BLIND = ("live game run of the A3 Cauldron and A4 Forge live-proof lines: northstar_bar_proof.py fails in this box with "
+              "PermissionError on \\\\wsl.localhost\\Ubuntu\\mnt\\d\\ClaudeWork; relentless-live evidence logs "
+              "UNPROVEN_LIVE_LEGS_TRIAGE_1-A3-20261104T061212Z.log / -A4-20261104T061301Z.log: ls -ld "
+              "/home/mandrake/rm/relentless/live -> Permission denied")
+
+
+def t_live_round_seed():
+    """CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK gen 3 (the instance: UNPROVEN_LIVE_LEGS_TRIAGE_1 at f3fd31f845). The Judge
+    wanted the live round's evidence logs; the text says wsl.localhost, so the windows_build class caught it, and the
+    Judge's only proposal, the live folder, is rightly refused (reach_never): the repair proposed nothing and its ticket
+    was filed. Now a live-round gap is its own class, seeded with the supervisor adapter relentless_live_evidence, and a
+    Judge proposal refused whole falls back to the class seed instead of proposing nothing."""
+    import json
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    live = "/home/mandrake/rm/relentless/live"
+    cls = RF.classify(r, [LIVE_BLIND, LIVE_BLIND])
+    prop = RF.propose(r, cls, [live], [LIVE_BLIND], LIVE_BLIND)
+    ok(cls["class"] == "live", "(9) the live-round evidence gap is classed live, not windows_build: %s" % cls["class"])
+    ok(prop["adapters"] == ["relentless_live_evidence"] and prop["paths"] == [] and live in prop["refused"],
+       "(9) the refused live folder falls back to the seed adapter relentless_live_evidence: %s" % prop)
+    win = [c for c in RF.classes(r) if c["class"] == "windows_build"][0]
+    prop = RF.propose(r, win, ["/home/mandrake/rm/relentless/store"], [], "dotnet.exe 'Invalid argument'")
+    ok(prop["adapters"] == ["jawabench_build_candidate"] and prop["by"] == "judge+seed",
+       "(9) any Judge proposal refused whole falls back to its class seed: %s" % prop)
+    prop = RF.propose(r, win, ["git_log_candidate"], [], "dotnet.exe 'Invalid argument'")
+    ok(prop["adapters"] == ["git_log_candidate"] and prop["by"] == "judge",
+       "(9) a usable Judge proposal is kept as said: %s" % prop)
+
+
 def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
               t_windows_build_nothing_to_probe, t_windows_build_seed_probes, t_every_waiter_released, t_legacy_off, t_clones_seed, t_store_seed,
-              t_closed_ticket_reseeds, t_seat_tmp_reach, t_clones_scratch_instance):
+              t_closed_ticket_reseeds, t_seat_tmp_reach, t_clones_scratch_instance, t_live_round_seed):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0

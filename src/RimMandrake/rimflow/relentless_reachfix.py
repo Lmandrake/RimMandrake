@@ -110,6 +110,11 @@ def propose(r, cls, proposals, unreached, what, store_root=None):
     if not said:
         ads = [x for x in cls.get("adapters") or [] if x in known]
         paths = _paths_of(list(unreached or []) + [what or ""]) if cls.get("paths") else []
+    elif not ads and not grants and all(refused(p, r, store_root) for p in paths):
+        # CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK gen 3: the Judge named only what no repair opens (the live folder);
+        # proposing nothing filed a ticket at once, so the class seed adapters stand in for the refused proposal
+        ads = [x for x in cls.get("adapters") or [] if x in known]
+        by = "judge+seed" if ads else by
     # the classes' grants ride along with what the Judge said: it names what it lacks, not how the box is made
     for g in list(cls.get("grants") or []) + grants_for(r, list(unreached or []) + [what or ""]):
         if g in relentless_wall.GRANTS and g not in grants:
@@ -320,7 +325,7 @@ def sweep(store, fx, r, now, acts, iso):
                        " (refused: %s)" % prop.get("refused") if prop.get("refused") else ""))
         else:
             good, why = fx.reach_probe(r, prop.get("paths") or [], prop.get("adapters") or [],
-                                       {"sha": rp.get("sha") or "", "repo": fx.books}, store.root,
+                                       {"sha": rp.get("sha") or "", "repo": fx.books, "item": owner}, store.root,
                                        grants=prop.get("grants") or [])
         if good:
             with store.lock():

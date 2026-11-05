@@ -4679,7 +4679,7 @@ def step(store, fx, r, item, now, acts):
                 relentless_wall.remove_box(box)
             acts.append({"do": "check_race", "item": item})
             return
-        readings = offbox_readings(fx, st["contract"], r, {"sha": c["sha"], "repo": clean})
+        readings = offbox_readings(fx, st["contract"], r, {"sha": c["sha"], "repo": clean, "item": st["item"]})
         if box and readings:        # what the box cannot reach, read outside it just now: raw output and exit, no worker words
             relentless_wall.write_offbox(box, readings)
         if box and (st["contract"] or {}).get("live"):     # the live line's reading, too: 33 of 60 CANNOT REACH were it

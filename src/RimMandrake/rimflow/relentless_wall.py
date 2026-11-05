@@ -854,7 +854,9 @@ def check_offbox_names(names, rules):
 # ADAPTERS: 5 holds wanted git history the box has no .git for): {sha} the candidate commit, {repo} the check's clean clone
 # outside the wall (full history, checked out at {sha}). Each value is shape-checked before it fills a token.
 _SLOT = re.compile(r"\{([a-z_]+)\}")
-_SLOT_OK = {"sha": re.compile(r"^[0-9a-f]{40}$"), "repo": re.compile(r"^/[^\x00-\x1f{}]+$")}
+_SLOT_OK = {"sha": re.compile(r"^[0-9a-f]{40}$"), "repo": re.compile(r"^/[^\x00-\x1f{}]+$"),
+            # the item under check (CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK gen 3: relentless_live_evidence reads its runs)
+            "item": re.compile(r"^[A-Z][A-Z0-9_]{1,120}$")}
 
 
 def fill_argv(argv, values):

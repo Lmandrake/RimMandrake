@@ -68,8 +68,8 @@ def t_readings():
 
 def t_launch():
     src = inspect.getsource(R)
-    ok('offbox_readings(fx, st["contract"], r, {"sha": c["sha"], "repo": clean})' in src,
-       "G3 the check launch passes the candidate sha and the clean clone to the offbox readings")
+    ok('offbox_readings(fx, st["contract"], r, {"sha": c["sha"], "repo": clean, "item": st["item"]})' in src,
+       "G3 the check launch passes the candidate sha, the clean clone and the item to the offbox readings")
 
 
 def t_rules():
