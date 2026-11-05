@@ -1,23 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Barbslinger",
  "nearest_earth_animal": "scorpion",
  "earth_body_named": true,
  "departures": [
-  "a broad shield-like carapace plate covering the back, wider than a scorpion's segmented body",
-  "calf-sized bulk, heavy and low, far bigger than any Earth scorpion",
-  "heat-cured chitin plating that looks fire-hardened and scorched, with ash-dark burnished plates",
-  "a tail ending in a cluster of barbs instead of a single smooth stinger",
-  "pincers sized for turning over ash and ground, coated in ash at the tips"
+  {
+   "feature": "shield-like plate covering the back",
+   "quote": "A shield-backed scorpion"
+  },
+  {
+   "feature": "body larger than a cow",
+   "quote": "bigger than a cow"
+  },
+  {
+   "feature": "body plated in heat-cured chitin",
+   "quote": "plated in heat-cured chitin"
+  },
+  {
+   "feature": "barbed tail",
+   "quote": "The barbed tail"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:41:32-07:00",
+ "at": "2026-11-05T05:56:05-08:00",
  "source": "description only (no image)"
 }

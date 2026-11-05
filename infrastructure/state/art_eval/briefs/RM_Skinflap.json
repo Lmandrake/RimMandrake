@@ -1,23 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Skinflap",
  "nearest_earth_animal": "manta ray",
  "earth_body_named": false,
  "departures": [
-  "no head, eyes, mouth or face anywhere: the creature is only a single flat sheet of skin",
-  "no limbs, fins, tail or central body mass; the edges of the sheet are loose and irregular, not the symmetrical diamond outline of a ray's wings",
-  "loose, wrinkled, wet-glistening skin that sags and folds like a damp cloth rather than a firm muscular body",
-  "water visibly dripping from the underside of the sheet",
-  "shown draped limp over a branch, hanging like laundry, or slapping mid-air between canopy layers"
+  {
+   "feature": "no distinct body: the creature is only a flat flap, with no head, torso or limbs",
+   "quote": "no body to speak of, just the flap"
+  },
+  {
+   "feature": "made of a loose sheet of skin, not a firm, muscular fin or wing",
+   "quote": "A sheet of loose wet skin"
+  }
  ],
  "body_plan": "flyer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:51:23-07:00",
+ "at": "2026-11-05T05:57:19-08:00",
  "source": "description only (no image)"
 }

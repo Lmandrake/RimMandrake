@@ -1,23 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Danglemaw",
  "nearest_earth_animal": "snake",
  "earth_body_named": false,
  "departures": [
-  "The body is a bare muscular cord like a stretched tendon: no scales, no torso, and no thickening into a trunk anywhere along it",
-  "The upper end is rooted directly into the Eyebark canopy, so it does not coil or wrap around a branch the way a hanging snake does",
-  "The free end is just a jaw with no head behind it: no eyes, no skull shape, no neck",
-  "It hangs slack and straight down under its own weight, not in S-curves or a raised, poised strike pose",
-  "It has no limbs and no tail tip; the cord runs from the anchor point to the jaw and nothing else"
+  {
+   "feature": "the whole creature is a mouth on a cord, with no torso, head or limbs",
+   "quote": "A mouth on a tendon"
+  },
+  {
+   "feature": "body is a muscular cord whose top end is fixed in the tree canopy",
+   "quote": "a muscular cord anchored in the Eyebark canopy"
+  },
+  {
+   "feature": "a free-hanging jaw at the lower end of the cord",
+   "quote": "a free-hanging jaw at the end of it"
+  }
  ],
- "body_plan": "serpentine",
+ "body_plan": null,
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:51:33-07:00",
+ "at": "2026-11-05T05:56:26-08:00",
  "source": "description only (no image)"
 }

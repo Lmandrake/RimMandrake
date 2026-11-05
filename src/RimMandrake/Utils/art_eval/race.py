@@ -72,13 +72,7 @@ def load_rows(paths: list) -> list:
 
 def spec_of(row: dict) -> dict:
     s = C.pilot_spec(row["pilot"]) if row.get("pilot") else json.loads((ROOT / row["spec"]).read_text())
-    brief = C.BRIEFS / f"{s['subject']}.json"
-    if not s.get("departures") and brief.is_file():        # as production specs do (pilot_spec, fauna_spec.py)
-        b = json.loads(brief.read_text())
-        s["departures"] = b.get("departures") or []
-        s["earth_body_named"] = bool(b.get("earth_body_named"))
-        if b.get("body_plan"):
-            s["body_plan"] = b["body_plan"]
+    C.apply_brief(s)                        # as production specs do (pilot_spec, fauna_spec.py, build_card)
     s.pop("depends_on", None)
     s["owner_kept"] = False                 # a race judges the picture, never the kept-art routing
     return s

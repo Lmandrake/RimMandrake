@@ -1,23 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Gorekite",
  "nearest_earth_animal": "manta ray",
  "earth_body_named": false,
  "departures": [
-  "body is a single flat stretched membrane of hide, tent-sized, with no distinct head, eyes or face",
-  "no wings, fins or feathered limbs; the hide itself is the whole airfoil, pulled taut like a sail",
-  "exactly one long trailing grasper hangs from beneath the hide, with no paired limbs or tail fins",
-  "the grasper is visibly wet and glistening, unlike the dry surface of the hide",
-  "body is sized and shaped to drape over and smother prey from above, so the hide reads as a blanket or canopy rather than a streamlined animal"
+  {
+   "feature": "body is a single stretched hide, tent-sized, not a fish or bat body",
+   "quote": "A stretched hide the size of a tent"
+  },
+  {
+   "feature": "one long wet grasper trailing below the hide",
+   "quote": "trailing one long wet grasper"
+  }
  ],
  "body_plan": "flyer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:51:36-07:00",
+ "at": "2026-11-05T05:56:49-08:00",
  "source": "description only (no image)"
 }

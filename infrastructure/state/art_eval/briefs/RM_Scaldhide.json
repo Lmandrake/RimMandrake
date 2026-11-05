@@ -1,22 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Scaldhide",
  "nearest_earth_animal": "armadillo",
  "earth_body_named": false,
  "departures": [
-  "Body is a low, flat slab rather than a domed shell or rounded banded carapace",
-  "Armour plates fused wrong: irregular, misaligned and asymmetric, not neat overlapping bands or scutes",
-  "Surface reads as scar tissue (puckered, seared, keloid-like), not scaly or leathery animal hide",
-  "The slab sits on legs as a separate mass on top of them, not a shelled animal with a head and limbs sticking out of its shell"
+  {
+   "feature": "body is a low slab of scar tissue on legs rather than a distinct head, shell and tail",
+   "quote": "A low armoured slab of scar tissue on legs"
+  },
+  {
+   "feature": "armour plates fused together irregularly instead of in neat overlapping bands",
+   "quote": "plates fused wrong"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:51:24-07:00",
+ "at": "2026-11-05T05:57:11-08:00",
  "source": "description only (no image)"
 }

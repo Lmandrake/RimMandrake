@@ -1,23 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Ssurr",
  "nearest_earth_animal": "frilled lizard",
  "earth_body_named": false,
  "departures": [
-  "a single enormous half-circle crest-fan as the dominant structure, not a neck collar or ruff around the throat",
-  "when open the fan reads as a wheel: a rigid half-circle disc with radiating spokes, far larger than the head",
-  "when folded the fan lies flat into one straight blade-like edge along the body",
-  "the fan's rim or spokes carry fine comb-like tines (its dew-comb), so the fan has a toothed edge, not a smooth membrane",
-  "hound-sized and hound-proportioned reptile body, not a small slender lizard"
+  {
+   "feature": "a single enormous half-circle crest-fan",
+   "quote": "one enormous half-circle crest-fan"
+  },
+  {
+   "feature": "the crest-fan folds flat into a blade shape when closed",
+   "quote": "closed it is a blade"
+  },
+  {
+   "feature": "the crest-fan opens into a wheel shape",
+   "quote": "open it is a wheel"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v1",
-  "sha": "946be1a006c9"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T06:19:59-07:00",
+ "at": "2026-11-05T05:58:03-08:00",
  "source": "description only (no image)"
 }

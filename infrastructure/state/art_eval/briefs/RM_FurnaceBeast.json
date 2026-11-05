@@ -1,22 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_FurnaceBeast",
- "nearest_earth_animal": "hippopotamus",
+ "nearest_earth_animal": "rhinoceros",
  "earth_body_named": false,
  "departures": [
-  "hide made of separate stone-like mineral plates, not continuous skin",
-  "plates banded in visible horizontal strata of differing mineral colours across the whole body",
-  "seams between the plates glow bright ember-orange from stored heat",
-  "body reads as a heavy mineral mass on legs, like a stove, with no smooth, wet, grey, fleshy hide anywhere"
+  {
+   "feature": "banded hide of mineral, not skin or fur",
+   "quote": "banded mineral hide"
+  },
+  {
+   "feature": "glow showing in the seams between hide plates",
+   "quote": "glows between the plates"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:41:26-07:00",
+ "at": "2026-11-05T05:56:46-08:00",
  "source": "description only (no image)"
 }

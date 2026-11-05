@@ -1,23 +1,18 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Surrik",
  "nearest_earth_animal": "mole",
  "earth_body_named": false,
- "departures": [
-  "creature hunkered down low, body resting directly on the ground surface (a flat, level resting pose), with NO surrounding terrain, crust, roots, vegetation, crater, nest, bow wave or wake painted: the creature alone on a transparent background",
-  "massive broad shoulders as the heaviest mass, with a blunt low head set directly on the shoulders with no neck, not a pointed snout out in front",
-  "seal-like streamlined bulk with smooth matte slate-brown hide and paler underside, small wide-set dark eyes, flipper stubs for forelimbs and no spade-like digging forepaws or claws",
-  "mouth a slit that opens upward, suiting a creature that takes prey from underneath"
- ],
- "body_plan": "seal-like hunkered bulk resting on the ground",
+ "departures": [],
+ "body_plan": null,
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:49:30-07:00",
- "source": "description only (no image)",
- "owner_note": "2026-10-24 owner: show it hunkered down onto the surface, no terrain around it; judge must NOT demand visible crust-swimming"
+ "at": "2026-11-05T05:57:20-08:00",
+ "source": "description only (no image)"
 }

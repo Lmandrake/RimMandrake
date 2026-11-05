@@ -1,23 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Bloodlurk",
- "nearest_earth_animal": "praying mantis",
+ "nearest_earth_animal": "crab",
  "earth_body_named": false,
  "departures": [
-  "forelimbs so large and long they make up most of the body; the rest is small beside them",
-  "a tubular siphon where the head or mouth would be, with no jaws, mandibles or insect face",
-  "jointed, segmented limbs and body built from rigid sections, not soft flesh",
-  "a dark, shadow-coloured silhouette with no bright or patterned markings",
-  "shown at a red-tinged waterline, partly at the water's edge"
+  {
+   "feature": "body dominated by forelimbs and a siphon instead of a full set of legs and a body",
+   "quote": "all forelimb and siphon"
+  },
+  {
+   "feature": "a dark, shadow-like jointed form",
+   "quote": "A jointed shadow"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:51:12-07:00",
+ "at": "2026-11-05T05:56:26-08:00",
  "source": "description only (no image)"
 }

@@ -101,8 +101,14 @@ as **owner's rule + guard**, with the evidence that made the guard necessary and
 - **Why:** the owner's 8 catch REDOs were exactly the catches of species he redid the same sitting (pilot SCORE §5).
 - **Guard (alien):** instead of the blunt "nameable Earth animal → REDO", each invented creature/plant gets a
   description-derived brief (`runner.py brief`, `prompts/departures_brief.md`): its nearest Earth body, whether the
-  description itself names that body (`earth_body_named` demotes `STYLE_EARTHLY` to polish), and 3–5 visible
-  departures the reviewer checks one by one (`DEPARTURE_MISSING`).
+  description itself names that body (`earth_body_named` demotes `STYLE_EARTHLY` to polish), and 0–5 visible
+  departures the reviewer checks one by one (`DEPARTURE_MISSING`). Since `departures_brief@v3` each departure quotes
+  the description words that state it; code (`cards.ground_departures`, applied again in `build_card`) drops any whose
+  quote is not in the description, and a brief from an older prompt gives no departures until `fauna_spec.py`
+  rewrites it. `cards.py audit-briefs --subjects-from <file>` checks a set.
+- **Why:** the v2 brief invented specifics (RM_Flamefang: "charred ash-grey cracked scales … half-buried in ash",
+  none of it in the description) and DEPARTURE_MISSING sat in nearly every one of 61 REGENs over 65 live fauna
+  (ARTEVAL_DEPARTURES_TUNE_ALMOST_EVERYTHING).
 - **Why:** the blunt rule would have rejected Burrak/Vobbal-style subjects whose text names the Earth body (pilot
   §6.2) — and, measured in the e2e run, a plant described as "a fern" (criteria ledger CL-001).
 

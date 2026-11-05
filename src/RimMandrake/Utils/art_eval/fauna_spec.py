@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build art_eval specs for LIVE fauna defs (not the pilot bundle): one spec per PawnKind/ThingDef pair.
 
-    python3 fauna_spec.py build DEF [DEF...] --out <dir>      # spec JSON + scale panel (+ departures brief if missing)
+    python3 fauna_spec.py build DEF [DEF...] --out <dir>      # spec JSON + scale panel (+ departures brief if missing or stale)
 
 Reads only the repo: ThingDef (description, label), PawnKindDef lifeStages bodyGraphicData (texPath, adult drawSize =
 max over life stages), the textures under src/**/Textures, and `flyingAnimationFramePathPrefix`/`MaxFlightTime` to
@@ -218,30 +218,23 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
         spec["owner_kept_unmeasured"] = "art ledger unreadable: owner_kept NOT established"
     elif kept:
         spec["owner_kept"], spec["kept_install"] = True, kept
-    bf = C.BRIEFS / f"{defname}.json"
-    if bf.is_file():
-        b = json.loads(bf.read_text())
-        spec["departures"] = b.get("departures") or []
-        spec["earth_body_named"] = bool(b.get("earth_body_named"))
-        if b.get("body_plan"):
-            spec["body_plan"] = b["body_plan"]
-    return spec
+    return C.apply_brief(spec)
 
 
-def ensure_brief(spec: dict):
+def ensure_brief(spec: dict, call=None) -> bool:
+    """Write the subject's departures brief when it is missing or from an older prompt; True when one was written.
+    Re-apply it to the spec (C.apply_brief) afterwards."""
     bf = C.BRIEFS / f"{spec['subject']}.json"
-    if bf.is_file():
-        return
-    prompt = (R.PROMPTS / "departures_brief.md").read_text() + "\n\n# Subject\n\n" + json.dumps(
-        {"defName": spec["subject"], "label": spec.get("label"), "description": spec.get("description")}, indent=1)
+    if bf.is_file() and C.brief_current(json.loads(bf.read_text())):
+        return False
     work = R.storage_root() / "briefs"
     work.mkdir(parents=True, exist_ok=True)
-    text, meta = R.call_claude(prompt, work, "opus", timeout=240, tools="")
-    b = P.parse_reply(text)
-    b.update({"by": meta.get("models_reported"), "prompt_version": P.prompt_version(R.PROMPTS / "departures_brief.md"),
-              "at": R.now(), "source": "description only (no image)"})
+    text, meta = (call or (lambda p: R.call_claude(p, work, "opus", timeout=240, tools="")))(
+        C.brief_prompt(spec, R.PROMPTS / "departures_brief.md"))
+    b = C.finish_brief(P.parse_reply(text), spec, meta, P.prompt_version(R.PROMPTS / "departures_brief.md"), R.now())
     C.BRIEFS.mkdir(parents=True, exist_ok=True)
     bf.write_text(json.dumps(b, indent=1))
+    return True
 
 
 def main(argv=None):
@@ -258,13 +251,9 @@ def main(argv=None):
     def one(n):
         spec = build_spec(n, things, kinds, tex, out / "panels")
         ensure_brief(spec)
-        bf = C.BRIEFS / f"{n}.json"
-        b = json.loads(bf.read_text())
-        spec["departures"], spec["earth_body_named"] = b.get("departures") or [], bool(b.get("earth_body_named"))
-        if b.get("body_plan"):
-            spec["body_plan"] = b["body_plan"]
-            if spec["module"] == "walker" and b["body_plan"] == "swimmer":
-                spec["module"] = "swimmer"  # the brief was only just written; build_spec could not see it
+        C.apply_brief(spec)
+        if spec["module"] == "walker" and spec.get("body_plan") == "swimmer":
+            spec["module"] = "swimmer"  # the brief was only just written; build_spec could not see it
         (out / f"{n}.spec.json").write_text(json.dumps(spec, indent=1))
         print(f"spec {n} module={spec['module']} faces={[k for k in spec['images'] if k in C.FACINGS]}", file=sys.stderr, flush=True)
 

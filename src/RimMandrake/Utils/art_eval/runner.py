@@ -748,13 +748,10 @@ def summary(recs: list, run_id: str, test: bool) -> str:
 # ------------------------------------------------------------------ departures brief
 def write_brief(defname: str, rev_call=None) -> dict:
     spec = C.pilot_spec(defname + ":A") if ":" not in defname else C.pilot_spec(defname)
-    prompt = (PROMPTS / "departures_brief.md").read_text() + "\n\n# Subject\n\n" + json.dumps(
-        {"defName": spec["subject"], "label": spec.get("label"), "description": spec.get("description")}, indent=1)
+    prompt = C.brief_prompt(spec, PROMPTS / "departures_brief.md")
     work = storage_root() / "briefs"; work.mkdir(parents=True, exist_ok=True)
     text, meta = (rev_call or (lambda p: call_claude(p, work, "opus", timeout=240, tools="")))(prompt)
-    b = P.parse_reply(text)
-    b.update({"by": meta.get("models_reported"), "prompt_version": P.prompt_version(PROMPTS / "departures_brief.md"),
-              "at": now(), "source": "description only (no image)"})
+    b = C.finish_brief(P.parse_reply(text), spec, meta, P.prompt_version(PROMPTS / "departures_brief.md"), now())
     C.BRIEFS.mkdir(parents=True, exist_ok=True)
     (C.BRIEFS / f"{spec['subject']}.json").write_text(json.dumps(b, indent=1))
     return b

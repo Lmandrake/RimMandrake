@@ -1,22 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Fleshsop",
- "nearest_earth_animal": "slug",
- "earth_body_named": false,
+ "nearest_earth_animal": "sea sponge",
+ "earth_body_named": true,
  "departures": [
-  "body hangs like a sodden rag of flesh, sagging and drooping with no firm outline",
-  "stands upright only by leaning its slumped weight against a wall or object beside it",
-  "wet, glistening raw-flesh surface with goo dripping or pooling where it touches",
-  "faintly humanoid remnant of an Unfinished's form still visible in the collapsing mass, not a smooth slug body"
+  {
+   "feature": "made of the goo's own flesh tissue, not ordinary sponge material",
+   "quote": "A sponge of the goo's own tissue"
+  },
+  {
+   "feature": "walks on its own, unlike a rooted sponge",
+   "quote": "Fleshsops walk out"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:51:05-07:00",
+ "at": "2026-11-05T05:56:46-08:00",
  "source": "description only (no image)"
 }

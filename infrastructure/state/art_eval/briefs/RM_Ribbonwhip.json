@@ -1,22 +1,23 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Ribbonwhip",
- "nearest_earth_animal": "vine snake",
+ "nearest_earth_animal": "snake",
  "earth_body_named": false,
  "departures": [
-  "flat ribbon-shaped body, not a round tubular snake body",
-  "body no wider than a plant stem along its whole length",
-  "shown resting across the top of the canopy, with no part touching the ground",
-  "body laid in the same curves as the surrounding wind-bent plants, so it blends into the canopy line"
+  {
+   "feature": "flat ribbon-shaped body only as wide as a plant stem, not a round snake body",
+   "quote": "a ribbon the width of a stem"
+  }
  ],
  "body_plan": "serpentine",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:49:26-07:00",
+ "at": "2026-11-05T05:57:12-08:00",
  "source": "description only (no image)"
 }

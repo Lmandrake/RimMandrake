@@ -1,22 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Sytheclaw",
- "nearest_earth_animal": "lion",
+ "nearest_earth_animal": "hyena",
  "earth_body_named": false,
  "departures": [
-  "back covered in overlapping dry yellow-gold armour plates, no fur or mane",
-  "forelimbs end in long serrated blades instead of paws with claws",
-  "underside a raw furnace red that contrasts sharply with the gold plated upper body",
-  "very low-slung body held close to the ground, lower than any big cat's stance"
+  {
+   "feature": "body covered in gold plates instead of fur",
+   "quote": "dry gold plates"
+  },
+  {
+   "feature": "red underside contrasting with the gold back",
+   "quote": "a furnace-red underside"
+  },
+  {
+   "feature": "forelimbs end in serrated blades instead of paws",
+   "quote": "serrated forelimb blades"
+  },
+  {
+   "feature": "body carried low to the ground",
+   "quote": "A low-slung pack predator"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:41:33-07:00",
+ "at": "2026-11-05T05:57:22-08:00",
  "source": "description only (no image)"
 }

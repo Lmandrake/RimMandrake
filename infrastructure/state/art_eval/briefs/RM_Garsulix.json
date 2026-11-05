@@ -1,23 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Garsulix",
- "nearest_earth_animal": "tick",
+ "nearest_earth_animal": "jellyfish",
  "earth_body_named": false,
  "departures": [
-  "Floats in mid-air with no wings: the body hangs clear of the ground and the legs touch nothing",
-  "The main body is one swollen, translucent, veined gas sac, much larger than any head or thorax, with no segmented insect body",
-  "Chitin plates cover only the top of the sac like a cap, and the veined sac shows below and around them",
-  "Hooked legs hang down from the underside of the sac, curled and dangling as if to grab, not planted or walking",
-  "A working mouth sits on the underside among the hanging legs, not on a separate head at the front"
+  {
+   "feature": "body is a floating gas sac with visible veins",
+   "quote": "A floating, veined gas sac"
+  },
+  {
+   "feature": "the top of the sac is capped with chitin plates",
+   "quote": "capped with chitin plates"
+  },
+  {
+   "feature": "hooked legs hang beneath the sac",
+   "quote": "with hooked legs"
+  },
+  {
+   "feature": "a mouth hangs beneath the sac",
+   "quote": "a working mouth hanging beneath"
+  }
  ],
  "body_plan": "flyer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:50:14-07:00",
+ "at": "2026-11-05T05:56:48-08:00",
  "source": "description only (no image)"
 }

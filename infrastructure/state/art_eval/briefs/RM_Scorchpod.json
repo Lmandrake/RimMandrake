@@ -1,23 +1,39 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Scorchpod",
  "nearest_earth_animal": "beetle",
  "earth_body_named": false,
  "departures": [
-  "body is a single blistered seed-case shell, not a segmented insect body with head, thorax and abdomen",
-  "too few legs: fewer than an insect's six, sparse and undersized for the body",
-  "shell surface beaded with liquid-metal sweat, silvery and mirror-like rather than matte chitin",
-  "faint smoke rising from the shell where light strikes it",
-  "no visible head, eyes, antennae or mandibles; the pod itself is the whole body"
+  {
+   "feature": "body is a seed-case, not an insect body",
+   "quote": "A gallium-based seed-case"
+  },
+  {
+   "feature": "too few legs for its body",
+   "quote": "on too few legs"
+  },
+  {
+   "feature": "blistered shell",
+   "quote": "its blistered shell"
+  },
+  {
+   "feature": "metal beading on the shell like sweat",
+   "quote": "sweating metal"
+  },
+  {
+   "feature": "smoke rising from the shell",
+   "quote": "smoking in sunlight"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:50:52-07:00",
+ "at": "2026-11-05T05:57:14-08:00",
  "source": "description only (no image)"
 }

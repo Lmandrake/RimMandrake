@@ -1,22 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Crustweevil",
  "nearest_earth_animal": "weevil",
- "earth_body_named": true,
+ "earth_body_named": false,
  "departures": [
-  "shown tiny, at centimetre scale, pressed flat against a ground of soil crust and lichen rather than on a plant stem or grain",
-  "a broad, low grazing mouth held down against the lichen surface instead of a long, thin, down-curved boring snout",
-  "a low, wide body built to hug the crust rather than a tall, domed, hard-shelled beetle back",
-  "a lichen-grazed patch of crust visible beside or behind it, showing it as a surface grazer"
+  {
+   "feature": "body covered in overlapping shell plates instead of a single hard wing-case",
+   "quote": "protected by overlapping shell plates"
+  },
+  {
+   "feature": "low-slung body held close to the ground",
+   "quote": "A small, low-slung animal"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:49:45-07:00",
+ "at": "2026-11-05T05:56:25-08:00",
  "source": "description only (no image)"
 }

@@ -1,22 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Vexxiss",
- "nearest_earth_animal": "tortoise",
+ "nearest_earth_animal": "rhinoceros",
  "earth_body_named": false,
  "departures": [
-  "no eyes anywhere on the head or body",
-  "hide made of grown-together plates of slag-like smelter-scab and old bark, not a shell or scales",
-  "a row of crystal fans standing upright down the spine like the vents on a boiler",
-  "a lumpy hill-of-slag silhouette, with no clean domed shell outline"
+  {
+   "feature": "no eyes",
+   "quote": "eyeless"
+  },
+  {
+   "feature": "body armoured in overlapping plates of bark and mineral slag",
+   "quote": "armoured in overlapping plates of bark and mineral slag"
+  },
+  {
+   "feature": "crystal fans rising along the spine",
+   "quote": "with crystal fans rising along its spine"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:50:34-07:00",
+ "at": "2026-11-05T05:57:28-08:00",
  "source": "description only (no image)"
 }

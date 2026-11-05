@@ -1,22 +1,29 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_ContagionIkee",
- "nearest_earth_animal": "spider",
+ "nearest_earth_animal": "octopus",
  "earth_body_named": false,
  "departures": [
-  "The body is a cluster of many eyes, with no separate head or torso",
-  "No mouth, jaws or face: the eyes are the only features on the body",
-  "Several thin legs come straight out from under the eye-cluster, with no thorax or abdomen between them",
-  "The eyes are wet and glistening, of different sizes, and bunched close together with no fur or carapace around them"
+  {
+   "feature": "the body is a single eye, with no separate head or mantle",
+   "quote": "A shivering eye"
+  }
  ],
- "body_plan": "walker",
+ "body_plan": null,
+ "dropped": [
+  {
+   "feature": "the eye sits on top of a knot of fleshy tendrils instead of arms coming out of a head",
+   "quote": "an eye on a knot of fleshy tendrils",
+   "why": "quote not in the description"
+  }
+ ],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:50:52-07:00",
+ "at": "2026-11-05T05:56:26-08:00",
  "source": "description only (no image)"
 }

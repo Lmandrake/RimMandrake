@@ -1,22 +1,23 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_FireWasp",
  "nearest_earth_animal": "wasp",
  "earth_body_named": false,
  "departures": [
-  "whole body plated in overlapping heavy scales, not smooth glossy wasp chitin",
-  "no yellow-and-black warning stripes; the scale plating sets its colour and pattern",
-  "broad wings held spread for gliding on rising hot air, not narrow wings blurred by fast beating",
-  "drawn hanging inside flames or heat-haze with its scales untouched by fire"
+  {
+   "feature": "body covered in scale plates",
+   "quote": "scale-plated"
+  }
  ],
  "body_plan": "flyer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:41:40-07:00",
+ "at": "2026-11-05T05:56:41-08:00",
  "source": "description only (no image)"
 }

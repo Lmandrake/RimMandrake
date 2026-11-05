@@ -174,6 +174,7 @@ def build_card(spec: dict, out: Path) -> dict:
     """Write the card directory for `spec` into `out` and return card.json's content."""
     if not spec.get("canon") and canon_for(spec.get("subject", "").split("__")[0]):
         spec = dict(spec, canon=canon_for(spec["subject"].split("__")[0]))
+    spec = apply_brief(dict(spec))      # a spec saved with an older brief's departures never reaches a reviewer
     out = Path(out)
     if out.exists():
         shutil.rmtree(out)
@@ -305,14 +306,100 @@ def pilot_spec(ref: str) -> dict:
             lc = next(x for x in c["candidates"] if x["letter"] == living)
             imgs["living_reference"] = {f: str(d / v["file"]) for f, v in lc["files"].items()}
     spec["images"] = imgs
-    brief = BRIEFS / f"{defname}.json"
-    if brief.is_file():
-        b = json.loads(brief.read_text())
-        spec["departures"] = b.get("departures") or []
-        spec["earth_body_named"] = bool(b.get("earth_body_named"))
-        if b.get("body_plan"):
-            spec["body_plan"] = b["body_plan"]
+    apply_brief(spec)
     return spec
+
+
+# ------------------------------------------------------------------ departures briefs (departures_brief.md)
+# A departure the description does not state is a false REGEN (ARTEVAL_DEPARTURES_TUNE_ALMOST_EVERYTHING: the v2
+# brief gave RM_Flamefang "charred ash-grey cracked scales … half-buried in ash", none of it in its description).
+# Since v3 every departure carries the description words that state it, and code keeps only those whose quote is
+# really in the description; a brief from an older prompt contributes NO departures until it is rewritten.
+BRIEF_TAG = "departures_brief@v3"
+
+
+def _norm(s: str) -> str:
+    s = (s or "").lower()
+    for a, b in (("\u2018", "'"), ("\u2019", "'"), ("\u201c", '"'), ("\u201d", '"'), ("\u2013", "-"),
+                 ("\u2014", "-"), ("\u2026", "...")):
+        s = s.replace(a, b)
+    return " ".join(s.split()).strip(" .,;:'\"")
+
+
+def ground_departures(departures, description: str) -> tuple[list, list]:
+    """(kept, dropped): kept = the departure dicts whose `quote` occurs in `description` (case, whitespace and
+    typographic quotes/dashes ignored); dropped = the rest, each with a `why`."""
+    desc, kept, dropped = _norm(description), [], []
+    for d in departures or []:
+        q = _norm(d.get("quote")) if isinstance(d, dict) else ""
+        if not isinstance(d, dict) or not (d.get("feature") or "").strip():
+            dropped.append({"departure": d, "why": "not a {feature, quote} object"})
+        elif not q:
+            dropped.append({**d, "why": "no quote"})
+        elif q not in desc:
+            dropped.append({**d, "why": "quote not in the description"})
+        else:
+            kept.append({"feature": d["feature"].strip(), "quote": d["quote"].strip()})
+    return kept, dropped
+
+
+def brief_current(b: dict) -> bool:
+    return ((b or {}).get("prompt_version") or {}).get("tag") == BRIEF_TAG
+
+
+def apply_brief(spec: dict) -> dict:
+    """Copy the subject's brief onto the spec: departures (feature strings, re-grounded against THIS spec's
+    description, so a description edited since the brief drops what it no longer states), earth_body_named,
+    body_plan. A brief from an older prompt sets `departures_stale` and no departures."""
+    bf = BRIEFS / f"{spec.get('subject', '').split('__')[0]}.json"
+    if not bf.is_file():
+        return spec
+    b = json.loads(bf.read_text())
+    spec.pop("departures_stale", None)
+    spec["earth_body_named"] = bool(b.get("earth_body_named"))
+    if b.get("body_plan"):
+        spec["body_plan"] = b["body_plan"]
+    if brief_current(b):
+        kept, _ = ground_departures(b.get("departures"), spec.get("description") or "")
+        spec["departures"] = [d["feature"] for d in kept]
+    else:
+        spec["departures"] = []
+        spec["departures_stale"] = (b.get("prompt_version") or {}).get("tag") or "UNVERSIONED"
+    return spec
+
+
+def brief_prompt(spec: dict, prompt_path: Path) -> str:
+    return prompt_path.read_text() + "\n\n# Subject\n\n" + json.dumps(
+        {"defName": spec["subject"], "label": spec.get("label"), "description": spec.get("description")}, indent=1)
+
+
+def finish_brief(b: dict, spec: dict, meta: dict, prompt_version: dict, at: str) -> dict:
+    """Ground a parsed model reply against the description and stamp it; the dropped departures are kept on the
+    record (`dropped`) so a prompt that keeps inventing shows up in the briefs, not only in false REGENs."""
+    kept, dropped = ground_departures(b.get("departures"), spec.get("description") or "")
+    b.update({"departures": kept, "dropped": dropped, "by": meta.get("models_reported"),
+              "prompt_version": prompt_version, "at": at, "source": "description only (no image)"})
+    return b
+
+
+def audit_briefs(subjects: list, descriptions: dict) -> list:
+    """One problem line per subject whose brief is missing, stale, or holds a departure its description does not
+    state. Empty = every brief is current and grounded."""
+    bad = []
+    for s in subjects:
+        bf = BRIEFS / f"{s}.json"
+        if s not in descriptions:
+            bad.append(f"{s}: no ThingDef description found"); continue
+        if not bf.is_file():
+            bad.append(f"{s}: no brief"); continue
+        b = json.loads(bf.read_text())
+        if not brief_current(b):
+            bad.append(f"{s}: brief is {(b.get('prompt_version') or {}).get('tag')}, not {BRIEF_TAG}"); continue
+        kept, dropped = ground_departures(b.get("departures"), descriptions[s])
+        if dropped:
+            bad.append(f"{s}: {len(dropped)} departure(s) not stated by the description: "
+                       + "; ".join(str(d.get("quote") or d.get("departure")) for d in dropped))
+    return bad
 
 
 def main(argv=None):
@@ -320,7 +407,17 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("build"); b.add_argument("spec"); b.add_argument("--out", required=True)
     p = sub.add_parser("pilot"); p.add_argument("ref"); p.add_argument("--out", required=True)
+    au = sub.add_parser("audit-briefs", help="exit 1 unless every listed subject's brief is current and grounded")
+    au.add_argument("--subjects-from", required=True, help="file: one defName per line")
     a = ap.parse_args(argv)
+    if a.cmd == "audit-briefs":
+        import fauna_spec  # noqa: E402  (imports this module; lazy to avoid the cycle)
+        subjects = [l.strip() for l in Path(a.subjects_from).read_text().splitlines() if l.strip()]
+        things, _ = fauna_spec.index_defs()
+        desc = {n: " ".join((d.findtext("description") or "").split()) for n, (_, d) in things.items()}
+        bad = audit_briefs(subjects, desc)
+        print("\n".join(bad) if bad else f"audit-briefs: {len(subjects)} subjects, every brief {BRIEF_TAG} and grounded")
+        return 1 if bad else 0
     spec = json.loads(Path(a.spec).read_text()) if a.cmd == "build" else pilot_spec(a.ref)
     card = build_card(spec, Path(a.out))
     print(f"card {card['subject']} -> {a.out} panels={sorted(card['panels'])} gates={card['gates'].get('height_spread')}")

@@ -1,22 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_OcularJelly",
  "nearest_earth_animal": "jellyfish",
  "earth_body_named": false,
  "departures": [
-  "floats in open air at tree-canopy height, not in water",
-  "a swollen, gas-filled float body rather than a thin translucent bell",
-  "one or more prominent eyes, angled downward as if watching what lies below",
-  "a faint reddish haze breathed out of the body and drifting beneath it"
+  {
+   "feature": "bell is visibly veined",
+   "quote": "veined bell"
+  },
+  {
+   "feature": "bell is gas-filled (an inflated, buoyant bell rather than a water-jelly dome)",
+   "quote": "A gas-filled, veined bell"
+  },
+  {
+   "feature": "reddish haze exhaled from the body",
+   "quote": "It exhales a reddish haze"
+  }
  ],
  "body_plan": "flyer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:51:42-07:00",
+ "at": "2026-11-05T05:57:13-08:00",
  "source": "description only (no image)"
 }

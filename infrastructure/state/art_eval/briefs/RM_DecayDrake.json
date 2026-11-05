@@ -1,23 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_DecayDrake",
- "nearest_earth_animal": "komodo dragon",
+ "nearest_earth_animal": "lizard",
  "earth_body_named": false,
  "departures": [
-  "Stunted, vestigial wings folded flat over the back and sides, too small for flight",
-  "Grossly bloated, distended belly, far rounder and heavier than any lizard's",
-  "A visible haze or cloud of yeast-mist breathed out from the mouth or nostrils",
-  "Heavy, squat drake body: a dragon-shaped head and frame, not a lizard's slender profile",
-  "Soft, bubbling mounds of fermenting mash on the ground where it rests"
+  {
+   "feature": "stunted wings folded against the body",
+   "quote": "stunted wings folded over a bloated belly"
+  },
+  {
+   "feature": "bloated belly",
+   "quote": "a bloated belly"
+  },
+  {
+   "feature": "heavy drake body",
+   "quote": "A heavy, flightless drake"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:50:27-07:00",
+ "at": "2026-11-05T05:56:41-08:00",
  "source": "description only (no image)"
 }

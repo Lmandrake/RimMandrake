@@ -1,23 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Radyak",
  "nearest_earth_animal": "antelope",
  "earth_body_named": false,
  "departures": [
-  "hide is overlapping bone-white armour plates, not fur or hair",
-  "face is a bare bone mask with no flesh, fur or visible eyes, only deep black sockets",
-  "a jagged ridge of hard green crystal breaks up through the plates along the spine",
-  "the plates are cracked and split where the crystal pushes outward",
-  "lean, very long-legged frame carrying the armour plates, not a soft-bodied deer or antelope build"
+  {
+   "feature": "bone-white armour covering the body",
+   "quote": "bone-white armour"
+  },
+  {
+   "feature": "bare, skull-like face",
+   "quote": "a bare skull-like face"
+  },
+  {
+   "feature": "green crystals growing up through plates along the spine",
+   "quote": "Green crystals grow through its spinal plates"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:50:38-07:00",
+ "at": "2026-11-05T05:57:11-08:00",
  "source": "description only (no image)"
 }

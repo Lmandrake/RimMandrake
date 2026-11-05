@@ -1,22 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Mullgoth",
- "nearest_earth_animal": "musk ox",
+ "nearest_earth_animal": "sheep",
  "earth_body_named": false,
  "departures": [
-  "body is a single low, domed mound with no distinct head, neck or snout: it reads as a hillock, not a quadruped's torso",
-  "long pale hair drapes all the way to the ground, nearly hiding four short, thick, hairy legs",
-  "the hair is patched with grey-green moss and lilac lichen growing on it like ground cover",
-  "black, glistening slime drips from the underside onto the ground"
+  {
+   "feature": "low, domed body",
+   "quote": "A low, domed animal"
+  },
+  {
+   "feature": "patches of grey-green moss and lilac lichen growing on the hair",
+   "quote": "patched with grey-green moss and lilac lichen"
+  },
+  {
+   "feature": "black slime dripping from the belly",
+   "quote": "Black slime drips from its belly"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:48:59-07:00",
+ "at": "2026-11-05T05:56:52-08:00",
  "source": "description only (no image)"
 }

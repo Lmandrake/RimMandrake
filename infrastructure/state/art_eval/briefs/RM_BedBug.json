@@ -1,21 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_BedBug",
  "nearest_earth_animal": "bedbug",
  "earth_body_named": true,
  "departures": [
-  "oversized insect body, large enough to bring down animals bigger than itself rather than a tiny speck",
-  "prominent biting mouthparts or fangs at the head for its venom bite, not a thin piercing straw folded under the head",
-  "heavier, sturdier legs and head than a flat parasite has, built to bite and hold larger prey"
+  {
+   "feature": "glowing red eyes",
+   "quote": "glowing red eyes"
+  },
+  {
+   "feature": "long stabbing proboscis",
+   "quote": "a long stabbing proboscis"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:50:22-07:00",
+ "at": "2026-11-05T05:56:04-08:00",
  "source": "description only (no image)"
 }

@@ -1,23 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Shirrel",
  "nearest_earth_animal": "flying squirrel",
  "earth_body_named": false,
  "departures": [
-  "body unfolds into one flat, kite-shaped (diamond) sail, not a furry skin flap stretched between four legs",
-  "the open sail is held taut by stiff, spar-like struts across it, the way a kite's frame holds its cloth",
-  "when closed, the creature folds into a compact form with no sail visible, so it plainly 'opens' rather than just spreading its limbs",
-  "gripping limbs built for climbing tree trunks, not small rodent paws",
-  "no bushy-tailed, big-eyed rodent head-and-tail silhouette"
+  {
+   "feature": "broad membranes folded along the flanks rather than loose furred skin",
+   "quote": "broad membranes folded along its flanks"
+  },
+  {
+   "feature": "membranes spread into a kite shape in flight",
+   "quote": "spreads those membranes into a kite"
+  }
  ],
  "body_plan": "flyer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:49:40-07:00",
+ "at": "2026-11-05T05:57:14-08:00",
  "source": "description only (no image)"
 }

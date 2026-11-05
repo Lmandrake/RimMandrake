@@ -1,23 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_GalledRhossak",
- "nearest_earth_animal": "moose",
+ "nearest_earth_animal": "elk",
  "earth_body_named": false,
  "departures": [
-  "trunk-like, root-flesh body shaped like a tree trunk rather than a deer's furred torso",
-  "pale, fleshy, bulbous galls swelling across the body, the legs and the antlers",
-  "antlers lumpy and gall-encrusted rather than clean bone tines",
-  "skin draped in hanging moss instead of fur or hide",
-  "no seed pods or seed structures anywhere on the body"
+  {
+   "feature": "body swollen with pale, fleshy galls",
+   "quote": "swollen with pale, fleshy galls"
+  },
+  {
+   "feature": "moss hanging over the body",
+   "quote": "beneath hanging moss"
+  },
+  {
+   "feature": "galls also growing along the legs and antlers",
+   "quote": "even along its legs and antlers"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:50:10-07:00",
+ "at": "2026-11-05T05:56:48-08:00",
  "source": "description only (no image)"
 }

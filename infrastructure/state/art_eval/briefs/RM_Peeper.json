@@ -1,22 +1,23 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Peeper",
- "nearest_earth_animal": "dog",
+ "nearest_earth_animal": "deer",
  "earth_body_named": false,
  "departures": [
-  "many extra eyes open across the hide: back, flanks and limbs, not only on the head",
-  "eyes on the back face upward, looking at the sky",
-  "predator build gone soft: a slack, rounded body instead of a lean hunting body",
-  "blunted, dull fangs and claws left over from its predator past"
+  {
+   "feature": "extra eyes scattered across its hide",
+   "quote": "extra eyes scattered through its hide"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:51:02-07:00",
+ "at": "2026-11-05T05:57:11-08:00",
  "source": "description only (no image)"
 }

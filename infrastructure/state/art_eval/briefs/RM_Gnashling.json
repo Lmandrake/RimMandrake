@@ -1,23 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Gnashling",
  "nearest_earth_animal": "piranha",
  "earth_body_named": false,
  "departures": [
-  "body is almost entirely one oversized mouth packed with teeth, with no distinct torso behind it",
-  "legs sprout directly from beneath the mouth-mass, small and stubby next to it",
-  "fist-sized and compact, a rounded clenched lump rather than a streamlined fish shape",
-  "no fins, tail or gills; it is a land creature standing on legs",
-  "no separate head or neck; the teeth make up most of its outline"
+  {
+   "feature": "body is a fist-sized cluster of teeth carried on legs",
+   "quote": "A fist of teeth with legs"
+  },
+  {
+   "feature": "body is mostly mouth, with little else to it",
+   "quote": "mostly mouth, the rest an afterthought"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:51:19-07:00",
+ "at": "2026-11-05T05:56:48-08:00",
  "source": "description only (no image)"
 }

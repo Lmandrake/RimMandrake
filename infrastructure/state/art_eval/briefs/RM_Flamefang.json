@@ -1,22 +1,18 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Flamefang",
- "nearest_earth_animal": "viper",
+ "nearest_earth_animal": "snake",
  "earth_body_named": true,
- "departures": [
-  "Scales charred to ash-grey and black, cracked like burnt ground, so the coiled body blends into a smouldering root-mat",
-  "Ember-orange glow showing between the cracked scales, as if fire is still burning under the skin",
-  "Oversized fangs that glow ember-hot at the tips, showing the burning venom",
-  "Shown coiled tight, half-buried in ash and smouldering roots, not on bare ground or in green grass"
- ],
+ "departures": [],
  "body_plan": "serpentine",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:41:38-07:00",
+ "at": "2026-11-05T05:56:39-08:00",
  "source": "description only (no image)"
 }

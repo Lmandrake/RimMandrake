@@ -1,22 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Huldu",
  "nearest_earth_animal": "otter",
  "earth_body_named": false,
  "departures": [
-  "hairless velvet skin, not a fur coat; any fur-like look comes only from the folded comb",
-  "a dorsal comb running along the back, folded flat against the body in wet-looking strands",
-  "grasping limbs or gripping surfaces made to cling to and wrap around a forearm, not otter paws",
-  "small forearm-length body sized to press flat along a human arm, not an otter's long torso and tail"
+  {
+   "feature": "velvet skin, not fur",
+   "quote": "velvet-skinned swimmer"
+  },
+  {
+   "feature": "a dorsal comb lying flat along the back",
+   "quote": "dorsal comb folded flat like wet fur"
+  }
  ],
  "body_plan": "swimmer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v1",
-  "sha": "946be1a006c9"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T06:19:48-07:00",
+ "at": "2026-11-05T05:58:02-08:00",
  "source": "description only (no image)"
 }

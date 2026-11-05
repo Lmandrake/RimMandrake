@@ -1,23 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Durrok",
  "nearest_earth_animal": "musk ox",
  "earth_body_named": false,
  "departures": [
-  "No head or neck visible at all: the front end is a blunt, featureless mound of hair with no horns, eyes, ears, muzzle or face",
-  "Long, pale, glossy hair hanging in heavy, wet-looking ropes or cords all the way to the ground, hiding the body's outline",
-  "Mats of grey-green lichen in drifts across the back, shoulders and legs, with loose strands trailing where they slip",
-  "No real tail: behind it there is only a tail-like fall of white cords",
-  "Low, barrel-shaped body on four short, thick legs that barely show under the hair, so it looks like a soaked haystack"
+  {
+   "feature": "head and neck hidden entirely under hanging hair",
+   "quote": "its head and neck buried beneath pale, wet-looking ropes of hair"
+  },
+  {
+   "feature": "pale, wet-looking rope-like hair rather than a brown shaggy coat",
+   "quote": "pale, wet-looking ropes of hair"
+  },
+  {
+   "feature": "mats of grey-green lichen growing on the head and neck",
+   "quote": "mats of grey-green lichen"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:49:02-07:00",
+ "at": "2026-11-05T05:56:41-08:00",
  "source": "description only (no image)"
 }

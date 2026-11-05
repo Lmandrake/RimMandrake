@@ -1,22 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Meltgut",
  "nearest_earth_animal": "slug",
  "earth_body_named": true,
  "departures": [
-  "house-sized: dwarfs nearby pawns and buildings, not a garden-scale slug",
-  "translucent belly wall that you can see through into the gut",
-  "exactly three swallowed objects visible inside the belly, lined up one after another",
-  "the three objects at clearly different stages of dissolution: one nearly whole, one half-dissolved, one almost gone"
+  {
+   "feature": "house-sized body",
+   "quote": "A house-sized slug"
+  },
+  {
+   "feature": "translucent belly",
+   "quote": "translucent belly"
+  },
+  {
+   "feature": "three swallowed things visible through the belly, each at a different stage of dissolving",
+   "quote": "shows the last three things it swallowed, at three stages of not existing any more"
+  }
  ],
  "body_plan": "serpentine",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:51:19-07:00",
+ "at": "2026-11-05T05:56:51-08:00",
  "source": "description only (no image)"
 }

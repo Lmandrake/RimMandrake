@@ -390,6 +390,58 @@ def tuning_checks():
         finally:
             runner.STATE, RS.RESETS = old
 
+def departures_checks():
+    """ARTEVAL_DEPARTURES_TUNE_ALMOST_EVERYTHING: a departure the description does not state never reaches a card."""
+    import cards as C
+    import fauna_spec as FS
+    v = P.prompt_version(P.REFS / "prompts" / "departures_brief.md")
+    check("departures prompt is the grounded version", v["tag"] == C.BRIEF_TAG and "quote" in
+          (P.REFS / "prompts" / "departures_brief.md").read_text(), v)
+    desc = ("A venomous snake of the burning undergrowth. Its fangs are long and hollow, and a ridge of bony spines "
+            "runs down its back.")
+    reply = {"departures": [
+        {"feature": "Scales charred to ash-grey and black, cracked like burnt ground", "quote": "charred ash-grey scales"},
+        {"feature": "Oversized fangs that glow ember-hot at the tips", "quote": "glowing fangs"},
+        {"feature": "Shown coiled tight, half-buried in ash", "quote": ""},
+        {"feature": "Long hollow fangs", "quote": "fangs are  long and HOLLOW"},
+        {"feature": "A ridge of bony spines down the back", "quote": "a ridge of bony spines runs down its back."},
+        "a bare string departure"]}
+    kept, dropped = C.ground_departures(reply["departures"], desc)
+    check("grounding keeps only departures the description states",
+          [d["feature"] for d in kept] == ["Long hollow fangs", "A ridge of bony spines down the back"]
+          and len(dropped) == 4, (kept, dropped))
+    old = C.BRIEFS
+    with tempfile.TemporaryDirectory() as td:
+        C.BRIEFS = Path(td)
+        try:
+            calls = []
+            spec = {"subject": "RM_Flamefang", "description": desc, "module": "serpentine"}
+            (Path(td) / "RM_Flamefang.json").write_text(json.dumps({     # the 2026-10-23 v2 brief, verbatim shape
+                "departures": ["Scales charred to ash-grey and black, cracked like burnt ground",
+                               "Shown coiled tight, half-buried in ash and smouldering roots"],
+                "earth_body_named": True, "body_plan": "serpentine",
+                "prompt_version": {"tag": "departures_brief@v2", "sha": "9cda888a5233"}}))
+            s1 = C.apply_brief(dict(spec, departures=["baked into a saved spec"]))
+            check("a pre-v3 brief puts no departures on a card (and overrides a saved spec's)",
+                  s1["departures"] == [] and s1.get("departures_stale") == "departures_brief@v2", s1)
+            check("audit-briefs flags the stale brief", C.audit_briefs(["RM_Flamefang"], {"RM_Flamefang": desc}) != [])
+            wrote = FS.ensure_brief(spec, call=lambda p: (calls.append(p), (json.dumps(reply), {"models_reported": ["m"]}))[1])
+            b = json.loads((Path(td) / "RM_Flamefang.json").read_text())
+            check("ensure_brief rewrites a stale brief, grounded, with what it dropped",
+                  wrote and len(calls) == 1 and desc in calls[0] and b["prompt_version"]["tag"] == C.BRIEF_TAG
+                  and len(b["departures"]) == 2 and len(b["dropped"]) == 4, b)
+            check("ensure_brief leaves a current brief alone", FS.ensure_brief(spec, call=lambda p: 1 / 0) is False)
+            s2 = C.apply_brief(dict(spec))
+            check("a v3 brief's grounded departures reach the card",
+                  s2["departures"] == ["Long hollow fangs", "A ridge of bony spines down the back"]
+                  and "departures_stale" not in s2, s2)
+            s3 = C.apply_brief(dict(spec, description="A venomous snake. Its fangs are long and hollow."))
+            check("a departure the edited description no longer states is dropped at card time",
+                  s3["departures"] == ["Long hollow fangs"], s3)
+            check("audit-briefs passes a current grounded brief", C.audit_briefs(["RM_Flamefang"], {"RM_Flamefang": desc}) == [])
+        finally:
+            C.BRIEFS = old
+
 
 def main():
     pol = P.load_policy()
@@ -1034,6 +1086,7 @@ def main():
 
     tuning_checks()
     cap_checks()
+    departures_checks()
     print(f"{'PASS' if not FAILS else 'FAIL'}: art_eval selftest, {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

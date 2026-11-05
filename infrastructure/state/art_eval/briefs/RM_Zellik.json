@@ -1,22 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Zellik",
  "nearest_earth_animal": "bat",
  "earth_body_named": false,
  "departures": [
-  "at rest the whole body is a furled, closed canopy shaped like a folded umbrella, not a furry body with two wings folded against it",
-  "the canopy is held open by radial ribs set around a central shaft like umbrella spokes, not by the finger bones of two paired wings",
-  "it perches hunched upright on top of a bough or turbine head, not hanging upside down",
-  "no bat face: no large ears, snout or visible fur; it reads as a drab, unwanted object rather than a mammal"
+  {
+   "feature": "folded membranes shaped like a battered umbrella, not bat wings",
+   "quote": "folded membranes resemble a battered umbrella"
+  },
+  {
+   "feature": "hunched body",
+   "quote": "A hunched aerial predator"
+  }
  ],
  "body_plan": "flyer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-23T09:49:12-07:00",
+ "at": "2026-11-05T05:57:31-08:00",
  "source": "description only (no image)"
 }
