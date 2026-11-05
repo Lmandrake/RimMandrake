@@ -2224,6 +2224,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PlotDBodyPruneChecks.Run(Case);    // PLOT_D_BODY_PRUNE_STALE_SEA: the dev plot reset releases body claims (PlotDBodyPruneChecks.cs)
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
             PitCoverBeneathChecks.Run(Case);   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: a lid laid over a pit occupant keeps her below (PitCoverBeneathChecks.cs)
+            PitCoverLookChecks.Run(Case);   // PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: a lid in an open pit shows its planks (PitCoverLookChecks.cs)
             PitDrawHoldChecks.Run(Case);       // PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL: the sink holds the DRAWN (tweened) centre above the near lip (PitDrawHoldChecks.cs)
             SpikeDrawChecks.Run(Case);         // PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE: stakes on the floor, never the walls; gone under 1 m (SpikeDrawChecks.cs)
             CoverFloorSurveyChecks.Run(Case);   // PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS + DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES (owner cards 2026-10-22)

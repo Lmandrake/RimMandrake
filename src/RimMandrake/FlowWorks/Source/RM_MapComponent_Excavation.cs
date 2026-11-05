@@ -1712,6 +1712,11 @@ namespace RimMandrake.FlowWorks
 				RM_PitRooms.NotifyPitnessChanged(map, c);
 			}
 			RM_PitRooms.NotifyDepthCrossed(map, c, before, d);
+			// PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: a square that opened or closed changes what the lids round it show
+			if (Pits.RM_PitCoverLookMath.FlipsNeighbourLids(before, d))
+			{
+				Pits.RM_PitCoverUtility.DirtyNeighbourLids(map, c);
+			}
 			// PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 2 (P4): the cut has committed; the lines on this square break, once.
 			Machinery.RM_LineDigBreak.OnDigCommitted(map, c, before, d);
 			return d;
@@ -1809,6 +1814,11 @@ namespace RimMandrake.FlowWorks
 				RM_PitRooms.NotifyPitnessChanged(map, c);
 			}
 			RM_PitRooms.NotifyDepthCrossed(map, c, d, newD);
+			// PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: a square that opened or closed changes what the lids round it show
+			if (Pits.RM_PitCoverLookMath.FlipsNeighbourLids(d, newD))
+			{
+				Pits.RM_PitCoverUtility.DirtyNeighbourLids(map, c);
+			}
 			if (newD == RM_ExcavationDepth.Surface)
 			{
 				excavatedCells.Remove(c);

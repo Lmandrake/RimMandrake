@@ -175,6 +175,47 @@ namespace RimMandrake.FlowWorks
 			Graphics.DrawMesh(m, Matrix4x4.TRS(new Vector3(0f, y, 0f), Quaternion.identity, Vector3.one), edgeShadeMat, 0);
 		}
 
+		private static readonly System.Collections.Generic.Dictionary<int, Mesh> artPieces = new System.Collections.Generic.Dictionary<int, Mesh>();
+		private static float artPiecesAlpha = -1f;
+		private static int artPiecesFrame = -1;
+
+		/// <summary>PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: a unit quad whose UVs are the texture window of the piece [l,r] x [a,b] of
+		/// lid cell (cx, cz) (RM_PitCoverLookMath.PieceUv, snapped to 1/64 cell), so a lid square drawn over a pit occupant shows
+		/// the same planks the lid shows there. Cached per window, at the frame quad's alpha; null for an empty window.</summary>
+		private static Mesh ArtPieceMesh(int cx, int cz, float l, float r, float a, float b)
+		{
+			if (!Pits.RM_PitCoverLookMath.PieceUv(cx, cz, l, r, a, b, out int u0, out int u1, out int v0, out int v1))
+			{
+				return null;
+			}
+			// flushed only on this frame's first piece (none of its draws queued yet: a destroyed mesh would blank them)
+			int frame = Time.frameCount;
+			bool firstThisFrame = frame != artPiecesFrame;
+			artPiecesFrame = frame;
+			if (artPiecesAlpha != quadAlpha || (firstThisFrame && artPieces.Count > 4096))
+			{
+				foreach (Mesh old in artPieces.Values)
+				{
+					UnityEngine.Object.Destroy(old);
+				}
+				artPieces.Clear();
+				artPiecesAlpha = quadAlpha;
+			}
+			int key = Pits.RM_PitCoverLookMath.UvKey(u0, u1, v0, v1);
+			if (!artPieces.TryGetValue(key, out Mesh mesh) || mesh == null)
+			{
+				float s = 1f / Pits.RM_PitCoverLookMath.UvSteps;
+				Color c = new Color(1f, 1f, 1f, quadAlpha);
+				mesh = new Mesh { name = "RM_PitLipLidArt" };
+				mesh.vertices = new[] { new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 1f), new Vector3(1f, 0f, 1f), new Vector3(1f, 0f, 0f) };
+				mesh.uv = new[] { new Vector2(u0 * s, v0 * s), new Vector2(u0 * s, v1 * s), new Vector2(u1 * s, v1 * s), new Vector2(u1 * s, v0 * s) };
+				mesh.colors = new[] { c, c, c, c };
+				mesh.triangles = new[] { 0, 1, 2, 0, 2, 3 };
+				artPieces[key] = mesh;
+			}
+			return mesh;
+		}
+
 		private static Mesh Quad(float alpha)
 		{
 			if (quad == null)
@@ -501,6 +542,13 @@ namespace RimMandrake.FlowWorks
 				// a lid square is drawn in the ground the lid prints, not the pit floor under it
 				Pits.Building_PitCover lid = eng.HollowDepthAt(g) > 0 ? Pits.RM_PitCoverUtility.CoverAt(map, g) : null;
 				TerrainDef t = lid != null ? lid.PrintedSurface : map.terrainGrid.TerrainAt(g);
+				// PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: a lid beside an open pit square shows its planks; its square is drawn as
+				// the pit floor under it (what the lattice gaps show) with the matching window of the lid's art over that
+				Material art = lid?.PrintedArt != null ? RM_FaceMaterial.OccluderMat(lid.PrintedArt) : null;
+				if (art != null)
+				{
+					t = map.terrainGrid.TerrainAt(g);
+				}
 				if (t == null || t.IsWater)
 				{
 					continue;
@@ -543,6 +591,15 @@ namespace RimMandrake.FlowWorks
 					float pl = pc == 0 ? l1 : l2, pr = pc == 0 ? r1 : r2;
 					Matrix4x4 m = Matrix4x4.TRS(new Vector3(pl, frameY, a), Quaternion.identity, new Vector3(pr - pl, 1f, b - a));
 					Graphics.DrawMesh(frameMesh, m, mat, 0);
+					if (art != null)
+					{
+						Mesh piece = ArtPieceMesh(cx, cz, pl, pr, a, b);
+						if (piece != null)
+						{
+							Graphics.DrawMesh(piece, Matrix4x4.TRS(new Vector3(pl, frameY + Altitudes.AltInc * 0.02f, a), Quaternion.identity,
+								new Vector3(pr - pl, 1f, b - a)), art, 0);
+						}
+					}
 					RecordPiece(p, sideOf >= 0 ? 'S' : 'N', pl, pr, a, b);
 					bool sun = SunMayShade(pl, pr, a, b);
 					if (casters != 0 || sun)

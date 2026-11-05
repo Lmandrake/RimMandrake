@@ -269,6 +269,7 @@
     <Compile Include="Pits\Building_PitCover.cs" />
     <Compile Include="Pits\RM_PitCoverBeneath.cs" />
     <Compile Include="Pits\RM_PitCoverBeneathMath.cs" />
+    <Compile Include="Pits\RM_PitCoverLookMath.cs" />
     <Compile Include="Pits\Building_SpanDeck.cs" />
     <Compile Include="Pits\Suspension\Building_SuspensionDeck.cs" />
     <Compile Include="Pits\Suspension\RM_SuspensionDeckLink.cs" />

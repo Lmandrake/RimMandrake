@@ -115,9 +115,17 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The terrain's own material, cloned into the occluder queue (after pawns).</summary>
 		public static Material OccluderMat(TerrainDef t) => Clone(t, occluderClones, OccluderQueue);
 
+		/// <summary>PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: a lid's own art (its graphic's material), cloned into the occluder
+		/// queue, for a lid square drawn over a pit occupant beside a lid that shows its planks.</summary>
+		public static Material OccluderMat(Material art) => CloneMat(art, occluderClones, OccluderQueue);
+
 		private static Material Clone(TerrainDef t, Dictionary<Material, Material> cache, int queue)
 		{
-			Material src = t?.DrawMatSingle;
+			return CloneMat(t?.DrawMatSingle, cache, queue);
+		}
+
+		private static Material CloneMat(Material src, Dictionary<Material, Material> cache, int queue)
+		{
 			if (src == null)
 			{
 				return null;

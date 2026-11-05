@@ -89,6 +89,42 @@ namespace RimMandrake.FlowWorks.Pits
             return deck;
         }
 
+        /// <summary>PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: does the lid on <paramref name="c"/> draw its own art (an open
+        /// pit square among its 8 neighbours betrays the pit, RM_PitCoverLookMath.ShowsArt) instead of the ground?</summary>
+        public static bool LidShowsArt(Map map, IntVec3 c)
+        {
+            RM_MapComponent_Excavation eng = map?.GetComponent<RM_MapComponent_Excavation>();
+            if (eng == null)
+            {
+                return false;
+            }
+            int[] seen = new int[8];
+            for (int i = 0; i < 8; i++)
+            {
+                IntVec3 n = c + GenAdj.AdjacentCells[i];
+                seen[i] = n.InBounds(map) ? RM_SuspensionUnderpass.SeenDepthAt(map, eng, n) : -1;
+            }
+            return RM_PitCoverLookMath.ShowsArt(seen);
+        }
+
+        /// <summary>PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: the square <paramref name="c"/> opened or closed (dug, filled, a lid or
+        /// deck laid or lifted): the lids round it re-print, since whether they show art or ground reads their neighbours.</summary>
+        public static void DirtyNeighbourLids(Map map, IntVec3 c)
+        {
+            if (map?.mapDrawer == null)
+            {
+                return;
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                IntVec3 n = c + GenAdj.AdjacentCells[i];
+                if (CoverAt(map, n) != null)
+                {
+                    map.mapDrawer.MapMeshDirty(n, (ulong)MapMeshFlagDefOf.Things | (ulong)MapMeshFlagDefOf.Buildings);
+                }
+            }
+        }
+
         /// <summary>The terrain the cover should look like: the commonest non-excavated terrain around it.</summary>
         public static TerrainDef SurfaceAround(Map map, IntVec3 c)
         {
@@ -220,6 +256,10 @@ namespace RimMandrake.FlowWorks.Pits
         /// occluder can draw a lid square in the ground it shows without a per-frame SurfaceAround census.</summary>
         public TerrainDef PrintedSurface { get; private set; }
 
+        /// <summary>PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: the lid's own art material when it last printed its art (a lid beside
+        /// an open pit square), else null; the pit lip occluder then draws its lid square from this art, not PrintedSurface.</summary>
+        public Material PrintedArt { get; private set; }
+
         public override void Print(SectionLayer layer)
         {
             Map map = Map;
@@ -227,6 +267,17 @@ namespace RimMandrake.FlowWorks.Pits
             {
                 return;
             }
+            // owner 2026-10-24 "says it's a plank covered pit, but it sure doesn't look like it (empty pit appearance?)": a lid in
+            // an open pit hides nothing, so it shows its planks (gaps show the hole); a wholly covered pit keeps the ground print
+            Material art = Graphic?.MatSingle;
+            if (art != null && RM_PitCoverUtility.LidShowsArt(map, Position))
+            {
+                PrintedArt = art;
+                PrintedSurface = null;
+                Graphic.Print(layer, this, 0f);
+                return;
+            }
+            PrintedArt = null;
             TerrainDef surface = RM_PitCoverUtility.SurfaceAround(map, Position);
             PrintedSurface = surface;
             Material mat = surface?.graphic?.MatSingle;

@@ -66,6 +66,8 @@ namespace RimMandrake.FlowWorks.Pits
 		{
 			base.SpawnSetup(map, respawningAfterLoad);
 			Notify_DeckPathChanged(map, Position, respawningAfterLoad);
+			// PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: the square stopped showing a hole; the lids round it may turn back to ground
+			RM_PitCoverUtility.DirtyNeighbourLids(map, Position);
 		}
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
@@ -74,6 +76,7 @@ namespace RimMandrake.FlowWorks.Pits
 			IntVec3 pos = Position;
 			base.DeSpawn(mode);
 			Notify_DeckPathChanged(map, pos, false);
+			RM_PitCoverUtility.DirtyNeighbourLids(map, pos);   // PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: the hole shows again
 		}
 
 		/// <summary>PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS (owner card 2026-10-22 "covered cells are floor"): a deck laid or lifted
