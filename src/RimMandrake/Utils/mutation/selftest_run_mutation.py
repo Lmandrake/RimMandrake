@@ -219,9 +219,11 @@ def gate_checks():
         import importlib
         importlib.reload(M)
 
-    # TARGETS completeness: every selftest that imports a target module directly is in its list
-    gaps = M.audit_targets(M.REPO)
-    check(gaps == {}, "audit_targets: no selftest that imports a target module is missing from TARGETS (%s)" % gaps)
+    # TARGETS completeness: every selftest that imports a target module directly reaches its mutants -- the hand list
+    # or tests_for's auto-wiring (a new importer must not turn the nightly red: NIGHTLY_COP_FIX_RED_YWAYLS_DPFF)
+    gaps = {n: [t for t in miss if t not in M.tests_for(n, M.REPO)] for n, miss in M.audit_targets(M.REPO).items()}
+    gaps = {n: miss for n, miss in gaps.items() if miss}
+    check(gaps == {}, "audit_targets: every selftest that imports a target module is in its effective list (%s)" % gaps)
     with tempfile.TemporaryDirectory() as td:
         d = os.path.join(td, "src", "RimMandrake", "rimflow")
         os.makedirs(d)

@@ -446,6 +446,14 @@ def audit_targets(root):
     return gaps
 
 
+def tests_for(name, root=None):
+    """The selftests that run against `name`'s mutants: its hand list, then every other selftest under `root` that
+    imports the module (bar TARGET_EXCLUDE). A new importer is wired in with no TARGETS edit: twice a hand list
+    missed one and the nightly sweep went red (NIGHTLY_COP_FIX_RED_YWAYLS_DPFF)."""
+    tests = list(TARGETS[name][1])
+    return tests + [t for t in audit_targets(root or REPO).get(name, []) if t not in tests]
+
+
 # --- mutant inventory ----------------------------------------------------------------------------------------------
 
 def mutant_lines(path):
@@ -461,7 +469,12 @@ def mutant_lines(path):
 # --- worker side ---------------------------------------------------------------------------------------------------
 
 def cmd_runtests(a):
-    _mod, tests = TARGETS[a.target]
+    cache = ".mut-tests-%s.json" % a.target   # the walk is ~0.4 s and runs once per mutant otherwise; selftests never mutate
+    if os.path.exists(cache):
+        tests = json.load(open(cache))
+    else:
+        tests = tests_for(a.target, os.getcwd())
+        json.dump(tests, open(cache, "w"))
     env = test_env()
     reap_stale(PGID_FILE)
     for t in tests:
@@ -600,7 +613,7 @@ def last_run_path():
 
 def changed_targets(since, repo=BASE_CLONE):
     files = set(sh(["git", "diff", "--name-only", since, "origin/main"], cwd=repo).split())
-    return [n for n, (m, ts) in TARGETS.items() if m in files or files.intersection(ts)]
+    return [n for n, (m, _ts) in TARGETS.items() if m in files or files.intersection(tests_for(n, repo))]
 
 
 def last_shas(last):
@@ -905,7 +918,7 @@ def main(argv=None):
         for n, (m, ts) in TARGETS.items():
             print(n, m, " ".join(ts))
         for n, miss in audit_targets(REPO).items():
-            print("GAP %s: importing selftests not in TARGETS: %s" % (n, " ".join(miss)))
+            print("AUTO %s: importing selftests wired in by tests_for: %s" % (n, " ".join(miss)))
         return 0
     return {"plan": cmd_plan, "launch": cmd_launch, "nightly": cmd_nightly, "status": cmd_status, "collect": cmd_collect,
             "_runtests": cmd_runtests, "_gate": cmd_gate, "_worker": cmd_worker}[a.cmd](a)
