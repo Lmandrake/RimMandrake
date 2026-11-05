@@ -110,6 +110,20 @@ launch is refused, tell him once in one line and keep working.
 `D:\ClaudeWork\rimmandrake\conductor\CONDUCTOR_OFF` (anyone may create it; its first line says why). Either one: the
 Dispatcher launches no quick run; a session is his window and is never stopped by a file, and has no helper limit (see Helpers, below).
 
+## After a major system event, sweep the queue for trash (owner, 2026-11-05)
+
+*"Could you please go through all of the 98 items and make sure there's no more trash in there? We should not be idly
+watching stuff like this flowing through and spending millions of tokens, right? This should be something you do
+proactively when there's a major system event."* A major system event is any change to how Relentless judges, charges,
+gates or walls work (a Judge or wall change, a gate opened, a spend-accounting fix), an outage, or a finding that
+items were spending on nothing. After one, without being asked, sweep every waiting item (queued, held, game,
+candidate) with helpers: DONE (origin already does it: close), DUPLICATE (supersede), STALE (a later ruling or item
+replaced it: supersede or drop), DEAD (its target is gone: drop), CANNOT SUCCEED (needs him, hardware or a flyer
+test: hold), CHURNING (3+ returns or spend over 3M going in circles: hold with the one thing that unsticks it), else
+KEEP. Before staging any owner look, read the item's successors and his notes of the last two weeks on the subject.
+This is removing trash, not trimming work: true work, however old, is KEEP, and the rule below still stands for it.
+First sweep: `D:\ClaudeWork\rimmandrake\conductor\triage_20261105\`.
+
 ## You do not trim work (owner, 2026-10-27)
 
 You never trim, defer or shrink work to save anything. The Dispatcher, a program, decides whether you run and picks
@@ -163,6 +177,7 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
 
 Today's Conductor session: design, the hardest bugs and live testing with him. Relentless builds FlowWorks + GSS too (FOUNDRY retired, owner by card 2026-11-02);
 The Conductor takes only their needs=owner live looks.
+**Showings are pre-built (owner, 2026-11-05: "For all the items waiting for human review, please have them pre-build anything needed for the live showing ... a general policy for Relentless Pipeline").** Before you show him a look, read its NEEDS YOU line on RUNNING NOW: show only an item reading READY TO SHOW, and load the save it names; the stations, captures and blind verdict are in `D:\ClaudeWork\rimmandrake\showings\<ITEM>\`. An item reading BLOCKED waits on the successor or his later note that it names: build that first, never show the old build. Design: `design/RimMandrake/relentless_agent_design_2026-11-01.md` section 8.1.
 Relentless's tooling holds (proof_weak, strikes, a non-flyer game hold) are yours, never his: only an `owner_call` or a flyer's flight sets needs=owner. Each reaches you as a ledger note and a Conductor log line; `python3 src/RimMandrake/Utils/owner_queue.py --seat` lists them, `python3 src/RimMandrake/rimflow/relentless.py unhold <ID> --per-ruling <id>` lifts one.
 Helpers: design · builder · live-test. **No helper limit only for work started within 20 min of his last typed message in this window; after that, two concurrent helpers**
 (Owner, 2026-10-29: "The worker opennpolicy for conductor should only be for work started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents only. Long standing runs beyond n hour should raise an alarm in conductor." The hook `.claude/hooks/block_agent_over_slots.py` reads his last typed message from this session's transcript; unreadable = two. Numbers: `conductor_window` in `slot_rules.json`. A Conductor helper running over an hour raises a `long_helper:<id>` alarm: a RAISE FIRST line in the conductor log and a ledger note, `long_helper` in `dispatcher_schedule.json`.) Scheduled and Dispatcher-launched runs (quick checks, other roles, FOUNDRY) keep the allocator's
