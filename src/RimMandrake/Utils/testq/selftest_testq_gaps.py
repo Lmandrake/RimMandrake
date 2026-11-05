@@ -342,8 +342,32 @@ def t_pilot_routed_skipped():
         TP.routed = real
 
 
+def t_pilot_owner_only():
+    """STEVE_FILLER_DIAGNOSE_NINETY_CHAINS_HELD: a chain is held for a pilot only when the routed item OWNS it. A
+    chain the routed item merely names (another item owns it) and a chain whose multi-item run listed the routed item
+    beside the item its rows were for stay fillable; 13 of 19 FlowWorks pilot holds were of these two kinds."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(os.path.join(HERE, "..", "..", "rimflow"))))
+    from rimflow import testpilot_route as TP
+    world = (Model, [], World({"X": Item("built", ["L1"], "pump", [0]), "Y": Item("built", ["L1"], "pipe", [0]),
+                               "Z": Item("built", ["L1"], "tank", [0])}))
+    pr = fake_probe(["alpha", "gamma", "delta", "eps"], item_chains={"X": ["gamma", "delta"], "Y": ["delta"]})
+    r2 = rec(2, 21, [("eps", "e1", "FAIL")], item="Z")
+    r2["job"]["row_items"] = {"x9": "X"}            # the run was for Z and X; eps's rows were recorded against Z
+    recs = [rec(1, 20, [("alpha", "a1", "PASS")]), r2]
+    real = TP.routed
+    try:
+        TP.routed = lambda w, evs: [{"id": "X", "kind": "streak", "why": "3 non-pass runs in a row"}]
+        pil = G.settled(MOD, recs, world, fake_git(), pr)["pilot"]
+        check(pil == {"gamma": "X"}, "only the chain X owns is held for its pilot: %s" % pil)
+        TP.routed = lambda w, evs: [{"id": "Z", "kind": "streak", "why": "3 non-pass runs in a row"}]
+        pil = G.settled(MOD, recs, world, fake_git(), pr)["pilot"]
+        check(pil == {"eps": "Z"}, "an unowned chain goes with the item its last rows were for: %s" % pil)
+    finally:
+        TP.routed = real
+
+
 def main():
-    for t in (t_pilot_routed_skipped, t_identity_and_verdicts, t_pass_and_unfixed_fail_never_filler, t_fix_landed, t_item_owed, t_shared_chain_owner,
+    for t in (t_pilot_routed_skipped, t_pilot_owner_only, t_identity_and_verdicts, t_pass_and_unfixed_fail_never_filler, t_fix_landed, t_item_owed, t_shared_chain_owner,
               t_unmeasured_and_dry, t_never_run_and_identity, t_flaky_is_reported_never_repeated, t_blind, t_real_probe, t_fill_plan):
         try:
             t()

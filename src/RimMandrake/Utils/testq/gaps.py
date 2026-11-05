@@ -289,20 +289,26 @@ def routed_ids(world):
 
 
 def pilot_chains(world, st, pr):
-    """-> {chain: item id} for chains tied to an item the Test Pilot rule routes (rimflow testpilot_route): the item's
-    own owed chains (pr item_chains) and the chains its latest run was for. A Test Pilot, not another code-and-retest
-    run, takes those; the filler, the sweep and submit all skip them. An unreadable ledger routes nothing."""
+    """-> {chain: item id} for chains tied to an item the Test Pilot rule routes (rimflow testpilot_route). A Test
+    Pilot, not another code-and-retest run, takes those; the filler, the sweep and submit all skip them. A chain is tied
+    to the item that OWNS it (owner_of: the strongest link, never a passing mention), and a chain no owed item owns to
+    the item its latest run's rows were recorded against (that run's chain_items, else its only item). Never to every
+    item a multi-item run listed, nor every item naming it: that held 13 of 19 FlowWorks chains for pilots of items
+    that did not own them (STEVE_FILLER_DIAGNOSE_NINETY_CHAINS_HELD). An unreadable ledger routes nothing."""
     routed = routed_ids(world)
     if not routed:
         return {}
-    out = {}
-    for iid, chains in (pr.get("item_chains") or {}).items():
-        if iid in routed:
-            out.update({c: iid for c in chains})
+    own = owner_of(pr)
+    out = {c: iid for c, iid in own.items() if iid in routed}
     for c, s in st.items():
-        for iid in s["last"][0].get("items") or []:
-            if iid in routed:
-                out.setdefault(c, iid)
+        if c in own:
+            continue
+        run = s["last"][0]
+        iid = (run.get("chain_items") or {}).get(c)
+        if iid is None and len(run.get("items") or []) == 1:
+            iid = run["items"][0]
+        if iid in routed:
+            out[c] = iid
     return out
 
 
