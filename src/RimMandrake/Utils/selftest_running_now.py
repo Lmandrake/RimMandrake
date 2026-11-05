@@ -415,6 +415,13 @@ sections = re.findall(r"^<div style=.*$", page, re.M)
 check("each html section is one block, one line", len(sections) >= 8 and all(x.rstrip().endswith("</div>") for x in sections))
 check("every svg stays one block", all("\n" not in x for x in re.findall(r"<svg.*?</svg>", page, re.S)))
 check("the phone copy is short and plain", len(phone) < 2500 and "<" not in phone and "NEEDS YOU 2" in phone and "Archmagi: busy" in phone and "SteveDesktop" in phone)
+# OWNER_REVIEW_BUILD_SHOWS_READY_BEFORE_ASKED: NEEDS YOU names the save and the time of a ready showing, or why not
+SHOWN = {"items": {"K_X": {"state": "READY TO SHOW", "save": "Showing_K_X", "minutes": 6, "dir": "D:\\ClaudeWork\\rimmandrake\\showings\\K_X"},
+                   "DRAW_A": {"state": "BLOCKED", "blocked_on": "DRAW_UP_FIX", "why": "on DRAW_UP_FIX: his note is not built yet"}}}
+sp, _s, sphone = R.build(Fake(ps=PS, cg=WORKER, items=ITEMS, files={R.FLEET_CACHE: FLEET, R.SHOWINGS: SHOWN}), {}, [])
+check("NEEDS YOU shows a ready showing's save and time", "READY TO SHOW: load save Showing_K_X, about 6 min" in sp and "Showing_K_X" in sphone)
+check("NEEDS YOU says a blocked showing is BLOCKED and on what, never ready", "DRAW_A: showing BLOCKED on DRAW_UP_FIX" in sp and "Showing_DRAW" not in sp)
+check("no showings file: NEEDS YOU still renders, with no showing words", "READY TO SHOW" not in page and "NEEDS YOU, 2" in page)
 frozen = dict(FLEET, t=NOW - R.FLEET_STALE - 1)
 frozen_page = R.build(Fake(ps=PS, files={R.FLEET_CACHE: frozen}), {}, [])[0]
 check("a mods count from a refresh long past reads UNMEASURED", "mods accepted (" in frozen_page.split("<div><svg")[0] and "1 of 10" not in frozen_page)

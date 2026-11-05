@@ -71,6 +71,7 @@ BRIDGE_FILES = ["/home/mandrake/rm/dispatch/infrastructure/state/BRIDGE", "/home
 LEDGER_EVENTS = "/home/mandrake/rm/dispatch/infrastructure/state/ledger/events"
 RELENTLESS_STORE = "/home/mandrake/rm/relentless/store"
 LIVE_RUNS = "/home/mandrake/rm/relentless/live/runs.jsonl"
+SHOWINGS = RELENTLESS_STORE + "/showings.json"     # relentless_showing.py: each look-only item's pre-built showing
 RUNS_TAIL = 2 * 1024 * 1024
 IDLE_WINDOW_MIN = 180
 FUEL_TAIL = 512 * 1024      # series.jsonl gains about 470 bytes per account per 15-minute poll: this holds days
@@ -704,6 +705,23 @@ def collect_queue_next(env, now):
     if now - q["t"] > QUEUE_NEXT_MAX_AGE:
         raise Unmeasured("queue_next.json is %s old" % ago(now - q["t"]))
     return q
+
+
+def collect_showings(env):
+    """{item: {state, why, save, minutes, dir, blocked_on}} the showing stage wrote (OWNER_REVIEW_BUILD_SHOWS_READY_BEFORE_ASKED)."""
+    s = env.read_json(SHOWINGS)
+    if not isinstance(s.get("items"), dict):
+        raise Unmeasured("showings.json has no items")
+    return s["items"]
+
+
+def showing_words(row):
+    """One plain line for a NEEDS YOU row: the save and the time when it is READY TO SHOW, else the stage and why."""
+    if row.get("state") == "READY TO SHOW":
+        return "READY TO SHOW: load save %s, about %s min; stations and captures in %s" % (row.get("save") or "?", row.get("minutes") or "?", row.get("dir") or "?")
+    if row.get("state") == "BLOCKED":
+        return "showing BLOCKED on %s: %s" % (row.get("blocked_on") or "?", row.get("why") or "")
+    return "showing %s: %s" % (row.get("state") or "?", row.get("why") or "")
 
 
 def collect_staffing(env):
@@ -2267,9 +2285,13 @@ def needs_html(p):
     if not f:
         return box(HEAD % "NEEDS YOU", '<b style="color:%s">UNMEASURED</b> ' % WARN, hesc(clip(p.get("fleet_why") or "not read yet", 120)))
     n = f["needs"]
+    shows = p.get("showings") or {}
     rows = []
     for t in n.get("topics") or []:
         more = "".join("<div style='margin-left:18px;color:%s;font-size:12px'>also: %s</div>" % (DIM, hesc(clip(o, 120))) for o in t["others"])
+        more += "".join("<div style='margin-left:18px;font-size:12px;color:%s'>%s%s</div>" % (
+            GOOD if shows[i].get("state") == "READY TO SHOW" else DIM, hesc(i + ": ") if len(t["items"]) > 1 else "", hesc(clip(showing_words(shows[i]), 200)))
+            for i in t["items"] if i in shows)
         rows.append("<div>• %s %s%s</div>" % (hesc(clip(t["q"], 130)), SMALL % hesc(t["items"][0] if len(t["items"]) == 1 else "%s, %d items" % (t["topic"], len(t["items"]))), more))
     ans = n.get("answered") or []
     tail = ""
@@ -2602,7 +2624,10 @@ def phone_copy(p, chips):
     if f:
         n = f["needs"]
         out.append("NEEDS YOU %d" % n["count"])
-        out += ["- " + clip(t["q"], 70) for t in (n.get("topics") or [])[:5]]
+        shows = p.get("showings") or {}
+        for t in (n.get("topics") or [])[:5]:
+            out.append("- " + clip(t["q"], 70))
+            out += ["  " + clip(showing_words(shows[i]), 90) for i in t["items"] if shows.get(i, {}).get("state") == "READY TO SHOW"]
         if len(n.get("topics") or []) > 5:
             out.append("- and %d more" % (len(n["topics"]) - 5))
     else:
@@ -2807,6 +2832,7 @@ def gather(env, state, hist=(), write=True):
     p["items"], why = guarded(collect_items, env)
     if why:
         p["unmeasured"].append("Relentless items (%s)" % why)
+    p["showings"], p["showings_why"] = guarded(collect_showings, env)
     p["queue_next"], why = guarded(collect_queue_next, env, now)
     if why:
         p["unmeasured"].append("Relentless next in line (%s)" % why)
