@@ -86,7 +86,9 @@ def main() -> int:
         ok(S.check(m, repo, lambda b, w: ("REFUSED_UNCONFIRMED", "x")), "check fails on UNCONFIRMED")
         ok(S.check(m, repo, lambda b, w: ("REFUSED_REGEN", "x")), "a probe must be DONOR, not merely known")
         nonprobe = lambda b, w: ("REFUSED_REGEN", "x") if w not in S.PROBES else ("DONOR", "x")  # noqa: E731
-        ok(S.check(m, repo, nonprobe) == [], "a non-probe row in a known state passes")
+        ok(S.check(m, repo, nonprobe), "a donor-identical row the gate refuses (REFUSED_REGEN) fails")
+        ph = lambda b, w: ("PLACEHOLDER", "x") if w not in S.PROBES else ("DONOR", "x")  # noqa: E731
+        ok(S.check(m, repo, ph) == [], "a non-probe PLACEHOLDER row passes")
         mm = dict(m, rows=[r for r in m["rows"] if r["ours"] != S.PROBES[3]])
         ok(any("probe" in f for f in S.check(mm, repo, donor)), "check fails on a missing probe")
         put(ours / S.PROBES[2], png(99))
@@ -97,7 +99,9 @@ def main() -> int:
         evs = S.donor_events(m)
         ok(len(evs) == len(m["rows"]) and all(e["kind"] == "donor" and not e["donor_pkg"].startswith("mandrake.")
                                               for e in evs), "events are kind=donor, foreign package")
-        ok(len({e["id"] for e in evs}) == len({(e["sha"], e["loc"]) for e in evs}), "event ids are deterministic per sha+loc")
+        ok([e["id"] for e in S.donor_events(S.load_manifest(mpath))] == [e["id"] for e in evs],
+           "event ids are deterministic: a second build gives the same ids (record is idempotent)")
+        ok(len({e["id"] for e in evs}) == len({(e["sha"], e["loc"]) for e in evs}), "one id per sha+loc")
 
         # the real gate's byte rule, on a fake repo and an in-memory ledger holding those events
         import artledger as L

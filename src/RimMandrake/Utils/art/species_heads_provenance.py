@@ -14,8 +14,8 @@ copy matches nothing and stays unconfirmed (listed under "unmatched", never gues
                        per matched sha into the art ledger (idempotent: deterministic ids). Needs the Steam workshop.
     check              offline: every manifest row's repo bytes still hash to its sha, and the eligibility gate itself
                        (Gate.judge_bytes, game index stubbed out: it judges bytes from the ledger alone) calls each
-                       matched sha DONOR or a stronger known state (REFUSED_REGEN / REFUSED_KEPT / PLACEHOLDER), never
-                       REFUSED_UNCONFIRMED; the 8 probe textures of 2026-10-26 must be matched and DONOR. Exit 0/1.
+                       matched sha DONOR or PLACEHOLDER, never a
+                       REFUSED_* state; the 8 probe textures of 2026-10-26 must be matched and DONOR. Exit 0/1.
 """
 from __future__ import annotations
 
@@ -47,7 +47,7 @@ PROBES = [
     "OR/Things/Pawn/Humanlike/Heads/Dathomirian/Male_Dathomirian0_south.png",
     "OR/OuterRim/Genes/Headbone/Montrals_south.png",
 ]
-OK_STATES = {"DONOR", "REFUSED_REGEN", "REFUSED_KEPT", "PLACEHOLDER"}
+OK_STATES = {"DONOR", "PLACEHOLDER"}   # a donor-identical sha the gate refuses for any reason is a failure
 
 
 def sha256(p: Path) -> str:
@@ -176,9 +176,7 @@ def main(argv=None) -> int:
         if a.apply:
             import artledger as L
             w = L.Writer()
-            for ev in donor_events(m):
-                w.add(ev)
-            n = len(w.buf)
+            n = sum(w.add(ev) for ev in donor_events(m))     # add() flushes at 500: count its returns, not buf
             for r in m["rows"]:
                 L.store_put_file(REPO / OURS / r["ours"])
             w.flush()
