@@ -30,10 +30,31 @@
     "ref": "run rm-role-designer-1793793891",
     "stage": 1,
     "tokens": 396596
+   },
+   {
+    "at": "2026-11-04T12:51:16Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793796539",
+    "stage": 1,
+    "tokens": 336012
+   },
+   {
+    "at": "2026-11-04T13:02:14Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793797195",
+    "stage": 1,
+    "tokens": 176649
+   },
+   {
+    "at": "2026-11-05T02:01:06Z",
+    "kind": "review",
+    "ref": "a2dc4250bd4478b4a",
+    "stage": 2,
+    "tokens": 37995
    }
   ],
   "reserve": 50000,
-  "spent": 644936
+  "spent": 1195592
  },
  "history": [
   {
@@ -65,6 +86,54 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designer-1793793891: stage 1 waiting_owner"
+  },
+  {
+   "at": "2026-11-04T12:49:06Z",
+   "stage": 1,
+   "what": "over_budget",
+   "why": "644936 of 500000 spent; run rm-role-designer-1793796539 goes on with 450000 (advisory)"
+  },
+  {
+   "at": "2026-11-04T12:49:06Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designer-1793796539, stage 1, budget 450000"
+  },
+  {
+   "at": "2026-11-04T12:51:16Z",
+   "stage": 1,
+   "what": "retry",
+   "why": "run rm-role-designer-1793796539 result rejected: decisions[d_budget_advisory]: OWNER:1793796507483890758 finds no event in OWNER.jsonl"
+  },
+  {
+   "at": "2026-11-04T13:00:05Z",
+   "stage": 1,
+   "what": "over_budget",
+   "why": "980948 of 500000 spent; run rm-role-designer-1793797195 goes on with 450000 (advisory)"
+  },
+  {
+   "at": "2026-11-04T13:00:05Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designer-1793797195, stage 1, budget 450000"
+  },
+  {
+   "at": "2026-11-04T13:02:14Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793797195: stage 1 done"
+  },
+  {
+   "at": "2026-11-05T01:58:19Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "1157597 of 500000 spent; run rm-role-designer-1793843896 goes on with 450000 (advisory)"
+  },
+  {
+   "at": "2026-11-05T01:58:19Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793843896, stage 2, budget 450000"
   }
  ],
  "item": "FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -113,11 +182,60 @@
    "run": "rm-role-designer-1793793891",
    "stage": 1,
    "summary": "Turn 1 sent (design/concepts/FlowWorks/turn_01.md): a root paragraph for his approval (defence spine, stock that pays, four defensive canals judged first, everything built stays), plus the raid scene FlowWorks is judged on and the reach of canal-side watering. Three asks reviewed by a fresh Opus judge; all pass, irrigation narrowed to the reach."
+  },
+  {
+   "at": "2026-11-04T12:51:16Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1793796539",
+   "stage": 1,
+   "why": [
+    "decisions[d_budget_advisory]: OWNER:1793796507483890758 finds no event in OWNER.jsonl"
+   ]
+  },
+  {
+   "at": "2026-11-04T13:02:14Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "15d62e6fb6e8ef7e8f6099227d7087101d582eb0caaf19923147cbde39f2700a",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "66ff37dbd7ac28e780a0e7829755cc07bacff2ca6e54480c1bc7b2f489c5b84b",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793797195",
+   "stage": 1,
+   "summary": "Root approved (OWNER:1793794915205594887): FlowWorks' main job is deadly earthworks (pits, moats, traps, drawbridges filled, drained and lit on the player's timing); first-judged scene is the moat sequence (swim and tire, sluice drains, prisoner pit, chemfuel from above, lit, under a raised drawbridge). His pit-trap and island-bridge scenes and two-square canal wetting (Stillsand technique) recorded as decisions; c_irrigation resolved. Stage 2 edges to argue: whether trapped raiders become prisoners without a capture job, chemfuel pumped from above into a pit, the makeshift sapling ladder, winch destruction."
   }
  ],
- "running": null,
+ "running": {
+  "at": "2026-11-05T01:58:19Z",
+  "inputs": {
+   "exam": null,
+   "floor": null,
+   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "root": "15d62e6fb6e8ef7e8f6099227d7087101d582eb0caaf19923147cbde39f2700a",
+   "scenes": null,
+   "sheet": null,
+   "tree": null
+  },
+  "manifest": {
+   "designer.md": "77326d28bc7aa08e44a3b6cc6b6bf2882b64c3a2f307a4f343a3302919009ca8",
+   "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+  },
+  "owner_uncited": [],
+  "reserved": 450000,
+  "run": "rm-role-designer-1793843896",
+  "stage": 2
+ },
  "schema": 1,
- "stage": 1,
- "status": "waiting_owner",
+ "stage": 2,
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

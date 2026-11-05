@@ -103,6 +103,15 @@
    "source": [
     "OWNER:1793796507483890758"
    ]
+  },
+  {
+   "id": "d_raider_fetch_fallen",
+   "speaker": "agent",
+   "text": "Owed (from his pit-trap scene): raiders whose comrades fell into a pit get them back with a ladder made from wood they chop (reusing the built crossing-ladder supply: carried, standing, wood, felled tree), and retreat, leaving the fallen, when defenders drive them off. The built trench-crossing ladder (RM_RaiderTrench) only crosses; the built pit rescue (RM_PitAccess) is for colonists only.",
+   "source": [
+    "OWNER:1793794392567351532",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs:488"
+   ]
   }
  ],
  "asks": [
@@ -179,6 +188,78 @@
     "why": "Pass on the radius only: whether canals water crops is already answered (his 09-16 words, ruling 1, ruling 36). Reworded to ask only the reach."
    },
    "answer": "OWNER:1793794389686592719"
+  },
+  {
+   "id": "ask_prisoner_click",
+   "text": "In your moat and pit-trap scenes the raiders end up as prisoners in the pit. Today that takes one order from the rim: 'capture' on a raider the pit holds, and only if a prisoner bed is down there (built, your 2026-09-17 words: nobody has to go down). A bed cannot be built in a full moat, so as things stand a moat cannot hold prisoners. Which do you picture: (a) they become prisoners by themselves once the pit holds them and the raid gives up, no bed needed; (b) you click 'capture' from the rim as now, but a drained moat counts as a prison without a bed; or (c) as now, bed and click, and the moat sequence uses a pit beside the moat?",
+   "decision": "Whether being held in a pit makes a raider a prisoner automatically, by one click, or by click plus bed; decides new capture code and whether a moat can be a prison room.",
+   "about": [
+    "inv_pits",
+    "inv_pit_access"
+   ],
+   "owner_cites": [
+    "OWNER:1793794915205594887",
+    "OWNER:1793794392567351532"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793843896",
+   "status": "sent",
+   "source": [
+    "src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs:82",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitRooms.cs:17",
+    "src/RimMandrake/FlowWorks/Source/RM_PitTrapMath.cs"
+   ],
+   "review": {
+    "by": "rm-judge a2dc4250bd4478b4a",
+    "verdict": "pass",
+    "why": "His words settle that they become prisoners, not how; the choice decides new capture code. Wording narrowed to what the code shows (no bed in a full moat)."
+   }
+  },
+  {
+   "id": "ask_match",
+   "text": "'Someone drops in a match from above.' Today a burnable canal lights from any fire on or beside it: a molotov, an incendiary shell, a burning raider (built). There is no order for a colonist to walk to the rim and toss a flame in. Which lights your moat: a new order where a colonist walks to the edge and tosses a flame in (slower, but anyone can do it and you choose the square), or a thrown molotov or a fired incendiary, as now?",
+   "decision": "Whether a new 'drop a flame' order is built for igniting a liquid from the rim, or vanilla incendiaries are the only lighter.",
+   "about": [
+    "inv_fire"
+   ],
+   "owner_cites": [
+    "OWNER:1793794392567351532"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793843896",
+   "status": "sent",
+   "source": [
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs:15"
+   ],
+   "review": {
+    "by": "rm-judge a2dc4250bd4478b4a",
+    "verdict": "pass",
+    "why": "True as stated: ignition is any vanilla fire on or beside the liquid; no player drop-a-flame order exists; his words do not say who lights it. 'Torch' replaced: vanilla has no carryable torch."
+   }
+  },
+  {
+   "id": "ask_rescue_ladder",
+   "text": "In the pit-trap scene the raiders chop saplings to build a ladder down to their two fallen men. What is built today: raiders who cannot reach you chop a tree, make ladders and climb DOWN, ACROSS and UP a trench to get at you; they do not go down for their own fallen. On screen the two look alike (raiders chopping and carrying wood under your arrows), but in yours they want their men back, and they leave when they cannot. Is the crossing-ladder raid your scene, or must raiders go for their fallen, and give up and run when they cannot?",
+   "decision": "Whether a new raider 'fetch our fallen from a pit' behaviour is built, or the built trench-crossing ladder is the pit-trap scene's raider half.",
+   "about": [
+    "inv_pit_access",
+    "inv_pits"
+   ],
+   "owner_cites": [
+    "OWNER:1793794392567351532"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793843896",
+   "status": "struck",
+   "source": [
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs:12",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs:488"
+   ],
+   "review": {
+    "by": "rm-judge a2dc4250bd4478b4a",
+    "verdict": "struck",
+    "why": "Already answered by his words: the raiders build the ladder 'to retrieve them' and 'are driven off'. Recorded as decision d_raider_fetch_fallen instead."
+   }
   }
  ],
  "inventory": [
@@ -792,7 +873,8 @@
     "design/validation_walks/RimMandrake/FlowWorks.md:7"
    ],
    "core": false,
-   "resolved": false
+   "resolved": true,
+   "resolution": "Not his decision: stage 3 writes the sheet and tree from the code and his rulings (record.json decisions), never from spec section 4 or the walk's status-hint line; the stale table is already filed as FLOWWORKS_MECHANICS_TABLE_STALE_1."
   },
   {
    "id": "c_proof_stale",
@@ -802,7 +884,8 @@
     "design/RimMandrake/mod_definition_lessons_2026-11-02.md:104"
    ],
    "core": false,
-   "resolved": false
+   "resolved": true,
+   "resolution": "Not his decision: every inventory line keeps proof=stale and the tree's leaves carry acceptance scenes (stage 3 floor.json); Relentless's game_prove lane re-proves at the current hash (ITEM:FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH). 'Validated' is not cited as proof anywhere in the tree."
   }
  ],
  "built_reviewed": [

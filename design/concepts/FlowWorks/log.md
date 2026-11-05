@@ -23,3 +23,9 @@ Reviewed by rm-judge ab76299400ce54ecc: all three pass; ask_irrigation narrowed 
 - Budget (OWNER:1793796507483890758): concept budgets are advisory.
 
 Run rm-role-designer-1793796539 wrote the root from these (record.json `root`, with its derivation). Stage 1 done.
+
+## 2026-11-04 turn 2 (run rm-role-designer-1793843896), sent
+
+Text: design/concepts/FlowWorks/turn_02.md. Asks sent: ask_prisoner_click, ask_match. Struck by rm-judge a2dc4250bd4478b4a:
+ask_rescue_ladder (answered by his pit-trap words; recorded as decision d_raider_fetch_fallen). c_spec_stale and
+c_proof_stale resolved as not his decisions (record.json).
