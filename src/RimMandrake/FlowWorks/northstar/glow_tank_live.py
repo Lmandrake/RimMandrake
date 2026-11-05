@@ -9,15 +9,26 @@ RM_LiquidTank touching it holding 10 draws of SALT water (scene S), FRESH water 
 Rows:
   GLOWTANK_SALT_DRAWN_ONE_UNIT   EXPECT within 500 ticks S's tank lost exactly one draw (200 L = 2000 dL) and the glow tank
                                  reads "Ocean water: ... (salt water)"; F's and B's tanks lost nothing and read "Dry".
-  GLOWTANK_SALT_CROP_GROWS       EXPECT over --ticks (default 6000) S's crop grew more than F's (F is parched: growth paused).
+  GLOWTANK_SALT_CROP_GROWS       EXPECT over --ticks (default 60000, one whole day) S's crop grew more than F's (F is parched:
+                                 growth paused).
   GLOWTANK_SETTING_OFF_NO_LINE   EXPECT with LuminousPigmentSettings.tankNeedsWater off the inspect has no water line
                                  (restored after).
+SITE  GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP: a fresh quicktest map is often out of growing season, and the engine's
+      PlantUtility.GrowthSeasonNow(cell) reads the CELL temperature (> minGrowthTemperature 0), which no tool can raise
+      outdoors. So every scene stands in a walled room (jawa/make_empty_room) whose roof is lifted over the glow tank's 2x2
+      only: 4 open of 32 interior cells is under Room.UsesOutdoorTemperature's 25%, so the room keeps its own temperature
+      while the crop still sees daylight; jawa/room_heat sets it to PIN_C before every stepped chunk (equalization drags
+      it back toward ambient). The clock is only ever stepped, never set. A glow tank that still reads "Cannot grow" after
+      the window is a SITE miss (UNMEASURED), never a crop FAIL.
+      The window is a whole day because Plant.Resting stops growth outside day 0.25-0.8, and the read is the plant
+      inspect's integer "N% grown" line (growDays 12: about 4% a day), never a "Growth" prefix (lesson 20261029T080817Z).
 LIES  an unpowered tank grows nothing either (the battery is read charged and the inspect shows no 'needs power'); a plant
       that never spawned reads growth None -> UNMEASURED.
 """
 import argparse
 import json
 import os
+import re
 import sys
 import time
 
@@ -29,6 +40,26 @@ LPS = "RimMandrake.LuminousPigment.LuminousPigmentSettings"
 ITEM = "GLOW_TANK_LIQUID_FEED_1"
 LIQ = {"S": "RM_Liquid_SaltWater", "F": "RM_Liquid_FreshWater", "B": "RM_Liquid_Brine"}
 DRAW = 2000
+PIN_C = 22.0          # inside crowncarpet's optimal band (default PlantProperties 6-42 C)
+CHUNK = 1000          # ticks between pins: a 32-cell room with 4 open drifts ~18% of the way to ambient per chunk
+MIN_GROW_C = 0.0      # crowncarpet's minGrowthTemperature (PlantProperties default): a pin found at or under it is a SITE miss
+GROWN = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*%\s*grown\b", re.I)
+NO_SEASON = "cannot grow"
+
+
+def grown_fraction(lines):
+    """The plant inspect's 'N% grown' lines as fractions; 'Growth rate: 71%' and the rest are not growth."""
+    out = []
+    for ln in lines or []:
+        m = GROWN.match(ln or "")
+        if m:
+            out.append(float(m.group(1)) / 100.0)
+    return out
+
+
+def room_rect(ox, z):
+    """The scene's room: walls on x ox..ox+9, z z-2..z+3; interior 8x4 = 32 cells holds battery, conduits, glow tank, tank."""
+    return (ox, z - 2, 10, 6)
 
 
 def main():
@@ -36,7 +67,7 @@ def main():
     ap.add_argument("out", nargs="?", default=None)
     ap.add_argument("--origin", default="60,150")
     ap.add_argument("--fresh-map", action="store_true")
-    ap.add_argument("--ticks", type=int, default=6000)
+    ap.add_argument("--ticks", type=int, default=60000)
     a = ap.parse_args()
     import proof_hose as PH  # noqa: E402
     V = PH.V
@@ -58,6 +89,27 @@ def main():
     def step(n):
         return B.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=max(60000, n * 40)) or {}
 
+    pins = []
+
+    def pin():
+        """Hold every scene's room at PIN_C; a refused set (no room), or a room found at or under MIN_GROW_C when the
+        pin came (it cooled out of season between pins: temperatureBefore), is recorded and judged at the crop row."""
+        rnd = len(pins) // max(1, len(sc))
+        for name, s in sc.items():
+            if s.get("batId"):          # a whole day at 180 W would spend much of the battery: top it up with the pin
+                B.call("jawa/battery_set", thing=s["batId"], mode="setPct", value=1.0)
+            r = B.call("jawa/room_heat", x=s["pinCell"][0], z=s["pinCell"][1], mode="set", value=PIN_C) or {}
+            pins.append({"scene": name, "round": rnd, "ok": bool(r.get("success")), "before": r.get("temperatureBefore"),
+                         "after": r.get("temperatureAfter"), "msg": None if r.get("success") else str(r)[:160]})
+
+    def step_pinned(n):
+        left = n
+        while left > 0:
+            pin()
+            k = min(CHUNK, left)
+            step(k)
+            left -= k
+
     ox, oz = (int(v) for v in a.origin.split(","))
     if a.fresh_map:
         B.call("rimworld/go_to_main_menu")
@@ -78,14 +130,18 @@ def main():
     for k, name in enumerate(("S", "F", "B")):
         z = oz + 2 + 10 * k
         gt, bat, cond, tank = (ox + 4, z), (ox + 1, z), (ox + 2, z), (ox + 6, z)
+        room = B.call("jawa/make_empty_room", rect="%d,%d,%d,%d" % room_rect(ox, z), stuffDef="Steel") or {}
+        sky = B.call("jawa/set_roof_batch", ops="None:%d,%d,2,2" % gt) or {}
         bb = B.call("jawa/build_batch", ops="RM_GlowTank:%d,%d;Battery:%d,%d;PowerConduit:%d,%d;PowerConduit:%d,%d;RM_LiquidTank:%d,%d"
                     % (gt + bat + cond + (ox + 3, z) + tank), faction="player", wipeExisting=False) or {}
-        sc[name] = dict(gt=gt, bat=bat, tank=tank, build=str(bb)[:200])
+        sc[name] = dict(gt=gt, bat=bat, tank=tank, pinCell=(ox + 2, z - 1), build=str(bb)[:200], room=str(room)[:160], sky=str(sky)[:160],
+                        roomOk=bool(room.get("success")) and bool(sky.get("success")))
     step(2)
     for name, s in sc.items():
         lt = (B.call("jawa/list_things", defName="RM_GlowTank", rect="%d,%d,3,3" % (s["gt"][0] - 1, s["gt"][1] - 1), limit=2) or {}).get("things") or []
         s["gid"] = lt[0]["id"] if lt else None
         bt = (B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % s["bat"], limit=2) or {}).get("things") or [{}]
+        s["batId"] = bt[0].get("id")
         if bt[0].get("id"):
             B.call("jawa/battery_set", thing=bt[0]["id"], mode="setPct", value=1.0)
         if s["gid"]:
@@ -100,6 +156,9 @@ def main():
     if not all(s.get("gid") for s in sc.values()):
         row("GLOWTANK_SALT_DRAWN_ONE_UNIT", "UNMEASURED", "SITE", {"why": "a glow tank did not stand", "scenes": sc})
         return 2
+    if not all(s.get("roomOk") for s in sc.values()):
+        row("GLOWTANK_SALT_DRAWN_ONE_UNIT", "UNMEASURED", "SITE", {"why": "a scene's room or its open sky did not build", "scenes": sc})
+        return 2
 
     def inspect(s):
         ins = B.call("jawa/inspect_string", thingIds=str(s["gid"])) or {}
@@ -112,16 +171,9 @@ def main():
         if not ids:
             return None
         ins = B.call("jawa/inspect_string", thingIds=ids) or {}
-        vals = []
-        for t in ins.get("things") or []:
-            for ln in t.get("inspect") or []:
-                if ln.lower().startswith("growth"):
-                    try:
-                        vals.append(float(ln.split(":")[1].strip().rstrip("%")) / 100.0)
-                    except (IndexError, ValueError):
-                        pass
+        vals = grown_fraction([ln for t in (ins.get("things") or []) for ln in (t.get("inspect") or [])])
         return (sum(vals) / len(vals)) if vals else None
-    step(500)
+    step_pinned(500)
     for name, s in sc.items():
         s["units1"] = B.hp("tank:%d,%d" % s["tank"]).get("units")
         s["inspect1"] = inspect(s)
@@ -137,18 +189,29 @@ def main():
     row("GLOWTANK_SALT_DRAWN_ONE_UNIT", "PASS" if drawS == DRAW and salt_line and dry_f and dry_b else "FAIL", "MOD",
         {"saltDrawn": drawS, "saltInspect": S["inspect1"], "fresh": [F["units0"], F["units1"], F["inspect1"]],
          "brine": [Bb["units0"], Bb["units1"], Bb["inspect1"]]})
-    step(a.ticks)
-    for name, s in sc.items():
+    step_pinned(a.ticks)
+    for name, s in sc.items():          # read BEFORE any re-pin: a pin would hide a room that cooled out of season
         s["growth2"] = growth(s)
         s["units2"] = B.hp("tank:%d,%d" % s["tank"]).get("units")
+        s["inspect2"] = inspect(s)
+    pin()                               # the closing pin reads how cold each room got over the last chunk
+    cold = [p for p in pins if p["ok"] and p["round"] > 0 and (p["before"] is None or float(p["before"]) <= MIN_GROW_C)]
+    res["pins"] = {"count": len(pins), "refused": [p for p in pins if not p["ok"]][:6], "cold": cold[:6],
+                   "minBefore": min([float(p["before"]) for p in pins if p["ok"] and p["round"] > 0 and p["before"] is not None] or [None]),
+                   "last": pins[-3:]}
+    off_season = [n for n in ("S", "F") if any(NO_SEASON in ln.lower() for ln in sc[n]["inspect2"]) or not sc[n]["inspect2"]]
     gS = (S["growth2"] or 0) - (S["growth1"] or 0) if S["growth1"] is not None and S["growth2"] is not None else None
     gF = (F["growth2"] or 0) - (F["growth1"] or 0) if F["growth1"] is not None and F["growth2"] is not None else None
-    if gS is None or gF is None:
-        row("GLOWTANK_SALT_CROP_GROWS", "UNMEASURED", "SITE", {"why": "crop growth unreadable", "S": [S.get("growth1"), S.get("growth2")],
+    if res["pins"]["refused"] or res["pins"]["cold"] or off_season:
+        row("GLOWTANK_SALT_CROP_GROWS", "UNMEASURED", "SITE", {"why": "the growing-season pin did not hold", "offSeason": off_season,
+                                                              "pins": res["pins"], "S": S.get("inspect2"), "F": F.get("inspect2")})
+    elif gS is None or gF is None:
+        row("GLOWTANK_SALT_CROP_GROWS", "UNMEASURED", "HARNESS", {"why": "crop growth unreadable", "S": [S.get("growth1"), S.get("growth2")],
                                                               "F": [F.get("growth1"), F.get("growth2")], "plant": S.get("plant")})
     else:
         row("GLOWTANK_SALT_CROP_GROWS", "PASS" if gS > gF and gS > 0 else "FAIL", "MOD",
-            {"saltGrowth": [S["growth1"], S["growth2"]], "freshGrowth": [F["growth1"], F["growth2"]], "saltUnits": [S["units0"], S["units1"], S["units2"]]})
+            {"saltGrowth": [S["growth1"], S["growth2"]], "freshGrowth": [F["growth1"], F["growth2"]], "saltUnits": [S["units0"], S["units1"], S["units2"]],
+             "pins": res["pins"]["count"], "pinLast": res["pins"]["last"]})
     w0 = (B.call("jawa/mod_settings_field", typeName=LPS, action="get", field="tankNeedsWater") or {}).get("value")
     B.call("jawa/mod_settings_field", typeName=LPS, action="set", field="tankNeedsWater", value="False")
     try:

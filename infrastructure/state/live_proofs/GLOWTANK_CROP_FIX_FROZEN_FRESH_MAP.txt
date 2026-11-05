@@ -1,0 +1,6 @@
+# GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP: one sitting on a fresh quicktest map (minimal list + FlowWorks + LuminousPigment, all
+# five DLC). glow_tank_live.py --fresh-map walls each scene, opens the sky over the glow tank only, pins the room at 22 C on
+# every 2500-tick chunk (the clock is stepped, never set) and steps a whole day; exit 0 only when every row PASSes, the
+# crop row included (salt grew, fresh parched did not). Result: Transient/glow_tank_frozen/glow_tank.json
+live-mods: FlowWorks, LuminousPigment
+live-proof A2: mkdir -p Transient/glow_tank_frozen && python.exe src/RimMandrake/FlowWorks/northstar/glow_tank_live.py Transient/glow_tank_frozen/glow_tank.json --fresh-map < /dev/null

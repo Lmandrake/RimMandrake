@@ -1,0 +1,1 @@
+A2 L2: on a fresh quicktest map, glow_tank_live.py --fresh-map reads GLOWTANK_SALT_CROP_GROWS PASS: the salt-fed glow tank crop grew over a pinned whole day while the parched fresh-water one did not, with no "Cannot grow (bad seasonal temperature)" on either; the drawn-one-unit and setting-off rows still PASS
