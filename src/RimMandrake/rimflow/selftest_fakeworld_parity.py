@@ -10,6 +10,9 @@ The check is static: every `fx.<name>` used in a relentless*.py module, that the
 not guarded by getattr/hasattr, must exist on a bare FakeWorld. KNOWN_GAPS is the frozen list of gaps that predate
 this guard (each reached only by rigs that set the method themselves); it may only shrink. A new name failing here is
 fixed by giving FakeWorld a neutral recording default, not by adding it to KNOWN_GAPS.
+
+`--strip NAME` replays an instance: the scan runs on a FakeWorld without NAME, as it stood when that method was missing
+(`--strip reach_probe` is the 2026-11-05 red, NIGHTLY_COP_FIX_RED_TOJBIY_TAAI's repeat); it must fail.
 """
 import glob
 import inspect
@@ -19,6 +22,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+STRIP = sys.argv[sys.argv.index("--strip") + 1].split(",") if "--strip" in sys.argv[:-1] else []
 sys.argv = sys.argv[:1]
 
 import relentless as R               # noqa: E402
@@ -57,20 +61,25 @@ def gaps(fake_cls=T.FakeWorld):
     return out
 
 
+def stripped(names):
+    """-> a FakeWorld class that lacks `names`, as it did before they were given defaults."""
+    class Stripped(T.FakeWorld):
+        def __getattribute__(self, name):
+            if name in names:
+                raise AttributeError(name)
+            return object.__getattribute__(self, name)
+    return Stripped
+
+
 def main():
-    missing = gaps()
+    missing = gaps(stripped(STRIP)) if STRIP else gaps()
     new = [m for m in missing if m not in KNOWN_GAPS]
     check(not new, "every unguarded fx.<method> the real Effects has exists on a bare FakeWorld (new gaps: %s)" % new)
     healed = sorted(KNOWN_GAPS - set(missing))
     check(not healed, "KNOWN_GAPS holds no name FakeWorld now has (remove: %s)" % healed)
 
     # sanity probe: the instrument can see a gap (a FakeWorld stripped of a method it has is caught)
-    class Stripped(T.FakeWorld):
-        def __getattribute__(self, name):
-            if name == "launch":
-                raise AttributeError(name)
-            return object.__getattribute__(self, name)
-    check("launch" in gaps(Stripped), "the scan sees a stripped method (launch)")
+    check("launch" in gaps(stripped(["launch"])), "the scan sees a stripped method (launch)")
     print("RESULT %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 
