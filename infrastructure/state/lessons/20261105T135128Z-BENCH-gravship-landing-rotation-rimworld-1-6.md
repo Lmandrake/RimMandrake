@@ -1,0 +1,1 @@
+Gravship landing rotation (RimWorld 1.6 Gravship.GetPlacementValues): rotatable things turn with the ship; rotatable=false SQUARE things keep defaultPlacingRot (never turn); rotatable=false NON-square Buildings are FORCED to the ship's rotation anyway. Audit/lint: src/RimMandrake/Utils/gravship_rotation_audit.py --check.
