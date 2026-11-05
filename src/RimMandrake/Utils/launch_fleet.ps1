@@ -7,6 +7,8 @@ launch_fleet.ps1 — open the fleet's windows, each Windows Terminal window plac
                                 launched FIRST so it is up before any seat, and independent of all)
     TOP-RIGHT    EMERGENCY     (small floating window, D:\Luke\dev)
     BOTTOM-LEFT  CONDUCTOR     (green — with the owner)
+    BOTTOM-RIGHT Pipeline      (teal — FOUNDRY's old tile: a read-only viewer, one tab per Relentless station;
+                                no LLM, zero tokens; see THE PIPELINE WINDOW below)
 
 Redesign #4, 2026-08-27: the four-seat fleet (DECIDE/CHECK/BUILD/REP quadrants) is
 retired, the status board stays removed, and the queue publisher loop is gone too —
@@ -79,11 +81,21 @@ a window kept by mistake there is a seat never relaunched. -Fresh closes every
 window of the seats it launches (only those: the Artist console survives a switch)
 and opens each anew.
 
+THE PIPELINE WINDOW (PIPELINE_WINDOW_BUILD_TABS_NOT_TERMINALS, owner 2026-11-05)
+==================================================================================
+Report step 2 of design/RimMandrake/agent_visibility_2026-11-04/report.md ("1 yes ... 3 no": built, no phone
+route). One window at FOUNDRY's old rect; tab `Pipeline` is the station table, then one tab per station
+(`Pipeline B1`..`B8` builders, `J1`..`J4` judges, `C1` the consult), each running
+src/RimMandrake/rimflow/pipeline_watch.sh <station> from BENCH's clone. The workers stay systemd units: the tabs
+only READ their transcripts, so closing the window stops nothing and opening it starts nothing. It is opened
+only here, and it never keeps the focus: the window that had the focus before it opened gets it back. A tab's
+title follows the active tab, so the window is found by the pattern `^Pipeline( [BJC]\d+)?$`, not one title.
+
 Normally invoked by the Desktop shortcut written by install_fleet_shortcut.py.
 #>
 param(
     [int]$Gap = 0,
-    [string[]]$Seats = @('SERVER', 'HESTIA', 'ARTIST', 'EMERGENCY', 'BENCH'),
+    [string[]]$Seats = @('SERVER', 'HESTIA', 'ARTIST', 'EMERGENCY', 'PIPELINE', 'BENCH'),
     [int]$TimeoutSec = 30,
     [int]$DelaySec = 0,
     [switch]$Test,
@@ -113,6 +125,8 @@ public class Fleet {
     [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr h, int x, int y, int w, int t, bool repaint);
     [DllImport("user32.dll")] public static extern bool SetProcessDPIAware();
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
+    [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+    [DllImport("user32.dll")] public static extern void keybd_event(byte vk, byte scan, uint flags, UIntPtr extra);
     [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
     [DllImport("user32.dll")] public static extern bool SystemParametersInfoW(uint a, uint b, ref RECT r, uint d);
     [DllImport("dwmapi.dll")] public static extern int DwmGetWindowAttribute(IntPtr h, int attr, out RECT r, int size);
@@ -125,6 +139,20 @@ public class Fleet {
             StringBuilder s = new StringBuilder(512);
             GetWindowTextW(h, s, 512);
             if (s.ToString() == title) hits.Add(h);
+            return true;
+        }, IntPtr.Zero);
+        return hits.ToArray();
+    }
+
+    // The Pipeline window's title is its ACTIVE tab's (`Pipeline`, `Pipeline B3`), so it is found by pattern.
+    public static IntPtr[] WindowsMatching(string pattern) {
+        List<IntPtr> hits = new List<IntPtr>();
+        System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex(pattern);
+        EnumWindows(delegate(IntPtr h, IntPtr l) {
+            if (!IsWindowVisible(h)) return true;
+            StringBuilder s = new StringBuilder(512);
+            GetWindowTextW(h, s, 512);
+            if (re.IsMatch(s.ToString())) hits.Add(h);
             return true;
         }, IntPtr.Zero);
         return hits.ToArray();
@@ -215,6 +243,7 @@ $place = [ordered]@{
     EMERGENCY = @(($X + 2909), ($Y + 465),  923, 374)
     BENCH     = @(($X + 24),   ($Y + 900), 1835, 1151)
     FOUNDRY   = @(($X + 1899), ($Y + 901), 1930, 1151)
+    PIPELINE  = @(($X + 1899), ($Y + 901), 1930, 1151)   # FOUNDRY's tile, which FOUNDRY no longer opens
 }
 
 # The wt profile name IS the live window title (no --title override on a real
@@ -229,6 +258,38 @@ $titleFor = [ordered]@{
     EMERGENCY = 'EMERGENCY'
     BENCH     = 'CONDUCTOR'      # seat BENCH's tile is named CONDUCTOR (install_wt_seat_profiles.py TILE_NAME)
     FOUNDRY   = 'AGENT FOUNDRY'
+    PIPELINE  = 'Pipeline'
+}
+
+# Every live window carrying a fleet title. Only the Pipeline's is a pattern (its title follows the active tab).
+function Find-Fleet([string]$title) {
+    if ($title -eq 'Pipeline') { return [Fleet]::WindowsMatching('^Pipeline( [BJC]\d+)?$') }
+    return [Fleet]::WindowsTitled($title)
+}
+
+# Give the focus back to the window that had it. Windows may refuse SetForegroundWindow to a process that is no
+# longer foreground (wt just took it); a bare Alt tap is the documented unlock, then one retry, then a warning.
+function Restore-Focus([IntPtr]$h) {
+    if ([Fleet]::SetForegroundWindow($h) -and [Fleet]::GetForegroundWindow() -eq $h) { return }
+    [Fleet]::keybd_event(0x12, 0, 0, [UIntPtr]::Zero); [Fleet]::keybd_event(0x12, 0, 2, [UIntPtr]::Zero)
+    if (-not ([Fleet]::SetForegroundWindow($h) -and [Fleet]::GetForegroundWindow() -eq $h)) {
+        Write-Warning "Pipeline: could not hand the focus back to window $h"
+    }
+}
+
+# The Pipeline window's tabs: the station table, then each station (pipeline_watch.py STATIONS). `;` is wt's
+# subcommand separator, so each tab's command is the wrapper script with one argument and no shell text.
+$pipelineSh = '/home/mandrake/rm/bench/src/RimMandrake/rimflow/pipeline_watch.sh'
+$pipelineTabs = @('overview') + (1..8 | ForEach-Object { "B$_" }) + (1..4 | ForEach-Object { "J$_" }) + @('C1')
+function Get-PipelineArgs {
+    $a = @('-w', 'new')
+    foreach ($s in $pipelineTabs) {
+        $t = if ($s -eq 'overview') { 'Pipeline' } else { "Pipeline $s" }
+        if ($a.Count -gt 2) { $a += ';' }
+        $a += @('new-tab', '--title', ('"' + $t + '"'), '--suppressApplicationTitle', '--tabColor', '"#4FB3A9"',
+                'wsl.exe', '-d', 'Ubuntu', '--', $pipelineSh, $s)
+    }
+    return $a + @(';', 'focus-tab', '-t', '0')
 }
 
 $wt = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
@@ -236,10 +297,12 @@ $wt = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
 # Sweep every fleet title, retired ones included, whatever -Seats names: a dead
 # window is dead. -Survey reports and stops; a real launch closes the dead.
 if (-not $Test) {
-    $freshTitles = if ($Fresh) { @($Seats | Where-Object { $titleFor.Contains($_) } | ForEach-Object { $titleFor[$_] }) } else { @() }
+    # The Pipeline is never closed by -Fresh: it holds no session to restart, and WM_CLOSE on a many-tab WT window
+    # can stop at WT's "close all tabs?" prompt, leaving it open beside a second copy.
+    $freshTitles = if ($Fresh) { @($Seats | Where-Object { $titleFor.Contains($_) -and $_ -ne 'PIPELINE' } | ForEach-Object { $titleFor[$_] }) } else { @() }
     $closed = @()
     foreach ($name in $titleFor.Values) {
-        foreach ($h in [Fleet]::WindowsTitled($name)) {
+        foreach ($h in (Find-Fleet $name)) {
             $state = if ($freshTitles -contains $name) { 'stopped' } else { Get-TermState $h }
             if ($Survey) { "{0,-14} {1,-8} {2}" -f $name, $state, $h; continue }
             if ($state -eq 'dead' -or $state -eq 'stopped') {
@@ -253,7 +316,7 @@ if (-not $Test) {
     # A closed window lingers a moment; until it is gone it would read as "already open" below.
     $deadline = (Get-Date).AddSeconds(10)
     while ($closed.Count -and (Get-Date) -lt $deadline) {
-        $still = @($titleFor.Values | ForEach-Object { [Fleet]::WindowsTitled($_) } | Where-Object { $closed -contains $_ })
+        $still = @($titleFor.Values | ForEach-Object { Find-Fleet $_ } | Where-Object { $closed -contains $_ })
         if (-not $still.Count) { break }
         Start-Sleep -Milliseconds 200
     }
@@ -273,8 +336,8 @@ foreach ($seat in $Seats) {
 
     # Any window still carrying this title after the sweep is a seat that is
     # ALREADY OPEN and live (or unreadable, so kept): leave it where it is.
-    $before = [Fleet]::WindowsTitled($title)
-    if ($before.Count -gt 0 -and -not $Test -and -not $Fresh) { "kept live $title"; continue }
+    $before = @(Find-Fleet $title)
+    if ($before.Count -gt 0 -and -not $Test -and (-not $Fresh -or $seat -eq 'PIPELINE')) { "kept live $title"; continue }
 
     # `--title` pins the window title the same way the seat profile's tabTitle
     # does, so the wait-and-place path below is EXACTLY the one being tested.
@@ -290,14 +353,17 @@ foreach ($seat in $Seats) {
     # exits within a second or two and takes the window with it, so only the
     # last-launched tile was ever on screen at once.
     $wtArgs = if ($Test) { @('-w', 'new', '--title', $q, 'cmd.exe', '/k', 'rem') }
+              elseif ($seat -eq 'PIPELINE') { Get-PipelineArgs }
               else       { @('-w', 'new', '-p', $q) }
+    # The Pipeline never keeps the focus: whoever had it gets it back once the window is placed.
+    $prevFg = if ($seat -eq 'PIPELINE') { [Fleet]::GetForegroundWindow() } else { [IntPtr]::Zero }
     Start-Process -FilePath $wt -ArgumentList $wtArgs | Out-Null
 
     $deadline = (Get-Date).AddSeconds($TimeoutSec)
     $h = [IntPtr]::Zero
     while ((Get-Date) -lt $deadline) {
         Start-Sleep -Milliseconds 150
-        $new = [Fleet]::WindowsTitled($title) | Where-Object { $before -notcontains $_ }
+        $new = Find-Fleet $title | Where-Object { $before -notcontains $_ }
         if ($new) { $h = @($new)[0]; break }
     }
     if ($h -eq [IntPtr]::Zero) { Write-Warning "$title never appeared"; continue }
@@ -307,6 +373,7 @@ foreach ($seat in $Seats) {
     $b = [Fleet]::Border($h)
     [void][Fleet]::MoveWindow($h, $r[0] - $b.L, $r[1] - $b.T,
                                   $r[2] + $b.L + $b.R, $r[3] + $b.T + $b.B, $true)
+    if ($prevFg -ne [IntPtr]::Zero) { Restore-Focus $prevFg }
 }
 
 # Leave the focus where the owner starts: BENCH, the window that works with him.
