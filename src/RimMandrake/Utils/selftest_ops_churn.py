@@ -24,7 +24,7 @@ and no reading said so. Each check fails on the code before the change:
 
 Fixtures only: a temp store, a temp RM_OPS_WATCH_DIR, a fake relentless.py, fake filer.
 
-    python3 src/RimMandrake/Utils/selftest_ops_churn.py
+    python3 src/RimMandrake/Utils/selftest_ops_churn.py [--ops-watch <ops_watch.py to replay, e.g. a pre-fix copy>]
 """
 import hashlib
 import json
@@ -40,7 +40,14 @@ TMP = Path(tempfile.mkdtemp(prefix="selftest_ops_churn_"))
 os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
 (TMP / "ops").mkdir()
 import ops_health as OH  # noqa: E402
-import ops_watch as OW  # noqa: E402
+if "--ops-watch" in sys.argv:  # replay an instance: run these checks against another ops_watch.py (rimflow guard --instance)
+    import types  # its source runs as if it sat in this Utils dir, so its HERE, rules and siblings are the real ones
+    OW = types.ModuleType("ops_watch")
+    OW.__file__ = str(Path(__file__).resolve().parent / "ops_watch.py")
+    sys.modules["ops_watch"] = OW
+    exec(compile(Path(sys.argv[sys.argv.index("--ops-watch") + 1]).read_text(), OW.__file__, "exec"), OW.__dict__)
+else:
+    import ops_watch as OW  # noqa: E402
 
 FAILS = []
 NOW = time.time()
