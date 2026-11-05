@@ -34,6 +34,7 @@ So the job has two halves, and you owe both:
 | adding a new `[Tool]` to JawaBench | `rimbridge-companion` |
 | launching, swapping mod lists, reading the first exception at load | `rimworld-load-round`, `rimworld-start-prep` |
 | the debugging *process* itself: the first-script contract, the ladder, GPT consults | `design/RimMandrake/debug_process.md` (binding; this skill is its live-run half) |
+| deciding whether a live proof is the right test at all, or how much to run | `design/RimMandrake/testing_policy_2026-10-28.md` §2.8 (live proofs: helps, hurts, when it was a mistake) and §4 (maturity × risk table); tunables in `src/RimMandrake/rimflow/testing_policy.json` |
 
 ## The anatomy of a proof
 

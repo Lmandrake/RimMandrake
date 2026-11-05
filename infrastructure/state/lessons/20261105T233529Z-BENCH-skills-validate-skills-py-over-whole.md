@@ -1,0 +1,1 @@
+skills/validate_skills.py over the whole tree exits 1 (2026-11-05): 6 ERRORs in rimbridge/rimbridge-companion name jawa/ tools that do not exist (jawa/step_game_ticks, jawa/list_colonists, jawa/revoke, jawa/anomaly_ ...). A proof that runs the bare validator is red on unrelated skills; scope it with skill names as args (validate_skills.py <skill> ...).

@@ -96,6 +96,11 @@ anywhere in this path.
   then stops). A bare `systemctl stop` of rm-*/testq-* timers on 2026-10-28 05:04 killed every no-LLM lane
   and the watchdogs until 09:41. `account-plan` is deliberately outside that glob.
 
+- Test spend is throttled by policy, not by hand: `design/RimMandrake/testing_policy_2026-10-28.md` (tunables
+  `src/RimMandrake/rimflow/testing_policy.json`, reader `testing_policy.py`). Mutation runs (`run_mutation.py`,
+  mutmut on SteveDesktop; gate enforced in code): testing_policy_2026-10-28.md §2.6. Nightly sweep: §2.3. testq
+  lanes and filler hours: §2.7. Which test for which code: §4. Only D/A tunables may be moved by an agent: §0.
+
 ## 7. Traps
 
 - Never parse a tail-truncated command output: `claude-account --json status` is ~2000 chars and a
