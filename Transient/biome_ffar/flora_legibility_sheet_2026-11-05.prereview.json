@@ -1,0 +1,610 @@
+{
+ "sheet": "flora_legibility_sheet_2026-11-05.html",
+ "looked_by": "seat:BENCH",
+ "when": "2026-11-05T11:24:49-0800",
+ "caught": "nothing dropped; 2 rows flagged (Nogtyl, Arpeau): their max-zoom panel crops the plant, so grade them from the normal-play panel",
+ "criteria": [
+  "renders, and is recognisable as the named thing",
+  "every candidate in a question depicts the same object",
+  "coupled states are offered as sets",
+  "does not repeat a ruling he already made"
+ ],
+ "rows": {
+  "RM_Aaklac": {
+   "fp": "9ef85f4b39ce0740",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_DribblingCap": {
+   "fp": "c79c56c751bd868f",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Aphreen": {
+   "fp": "9963f0a9dfa5a178",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Bleedleaf": {
+   "fp": "75125a6c002e1fb9",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_BloodBouquet": {
+   "fp": "d800d257ebed5b05",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Brakkel": {
+   "fp": "e03d24aec8324f92",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Brindeth": {
+   "fp": "e68007f669942de1",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Nogtyl": {
+   "fp": "10fe3eda9cfaafdd",
+   "verdict": "FLAG",
+   "note": "max-zoom panel crops the tall plant to a sliver at its left edge; the normal-play panel shows it whole: grade from that one"
+  },
+  "RM_Chimeglobe": {
+   "fp": "0a8e8293b5aa7c7c",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Arpeau": {
+   "fp": "d6de0069e7b6fc22",
+   "verdict": "FLAG",
+   "note": "max-zoom panel crops the crystal plant to a sliver at its left edge; the normal-play panel shows it whole: grade from that one"
+  },
+  "RM_CrownVenomvine": {
+   "fp": "e6cb138fffc2836c",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_CrystalFlower": {
+   "fp": "b92a10b94b4f963d",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_CrystalHorn": {
+   "fp": "66371dbb93726e15",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_JungleTree": {
+   "fp": "1f9d5bd7e671f949",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Dorvel": {
+   "fp": "0a0d86095362f72f",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Shinecap": {
+   "fp": "5384f37ed4a3315a",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_DyingCreep": {
+   "fp": "58cf35d7a22a4c90",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_FireLavender": {
+   "fp": "bfbb18887122c50b",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_FirevineTree": {
+   "fp": "ea6e8ae36feef37d",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_FloatstoneGarden": {
+   "fp": "29b8e3db99221011",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_FrostLeaf": {
+   "fp": "24acb3fc1ce774e3",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_GargantuanLithops": {
+   "fp": "b38d4e49e7080a08",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_GiantAgariTox": {
+   "fp": "415fd7d3b1dda686",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_GiantFibreStalk": {
+   "fp": "31026e9db8e8381a",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_GiantLeaf": {
+   "fp": "dec366b4235505f1",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_GiantToxicFlower": {
+   "fp": "c14320047531d860",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Glimmerhusk": {
+   "fp": "d83654b54ea63a74",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_GlobularPlant": {
+   "fp": "d6d528d2829f158f",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Gomphoeria": {
+   "fp": "12d961c5e5f2bfcc",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Gorestalk": {
+   "fp": "b46f68dcfc3e1d57",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_GlowingGrass": {
+   "fp": "c35e817acdabbb5a",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_AgariluxPrime": {
+   "fp": "65670923dc09c6c0",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Pusmelon": {
+   "fp": "287e08517822edee",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_HalfAlienTree": {
+   "fp": "689a5e544e92d117",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_HardyGrass": {
+   "fp": "fe8be7b1b786e0af",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_HeatsinkFungus": {
+   "fp": "e775195aa17a5036",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Bryolux": {
+   "fp": "3660f730c1c99d63",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Hoarstock": {
+   "fp": "ac8e781256b41741",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Iashiphus": {
+   "fp": "5094b00ea9b0d237",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Illurin": {
+   "fp": "b719647d0ee92c20",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_GlowingAgarilux": {
+   "fp": "2570941b4207efa7",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_KeeningCordax": {
+   "fp": "a8cd85709a3853a3",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Kethevar": {
+   "fp": "9a4030ed23f29fd6",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Korveth": {
+   "fp": "6481f4ac9f11207d",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_LargeSlimyTree": {
+   "fp": "2199da59edac200f",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Luqqim": {
+   "fp": "2af24e8a111b7869",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_ArbuscularMycorrhiza": {
+   "fp": "997e831e70805868",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_MangrovePalm": {
+   "fp": "62955ea93ea6c6f0",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_MangroveTree": {
+   "fp": "2bf69b9cb0a644d3",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Maulith": {
+   "fp": "6bd7d57f7292469c",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_MosaicFanPalm": {
+   "fp": "3b17f78dde438e64",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_AlienTree_Polluted": {
+   "fp": "340d88472052d397",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Nemreth": {
+   "fp": "260c2b356f3b89c7",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Nuitae": {
+   "fp": "05f4f4062087794c",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Glowstool": {
+   "fp": "db3310ed3c4c507b",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_NurrikGill": {
+   "fp": "5fdba06dff8eb22d",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_AlienGrass": {
+   "fp": "7c4353f03a8878f1",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_RedLeaves": {
+   "fp": "c04c70e5e87d6aaa",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_RedPlantsTall": {
+   "fp": "e7daa542dff747c6",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_AlienTree": {
+   "fp": "9f9e48c7e12f4b2f",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_AgelessCap": {
+   "fp": "e47fcc951c317b9b",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_RecurvedStropharia": {
+   "fp": "f087cf09807ef565",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Pallasheen": {
+   "fp": "83b4721511b1fa27",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_ParasiticMangrove": {
+   "fp": "0e2ceba60f0f1705",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Phorrik": {
+   "fp": "7a6c56c82946976c",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_FruitingBodies": {
+   "fp": "2fe6e0eb2110b763",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Plennith": {
+   "fp": "44c6744dca3513e4",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_PoisonShrub": {
+   "fp": "56a74f4e83a3ffdf",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_VioletWimple": {
+   "fp": "fd935ab4446125d7",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Quennath": {
+   "fp": "bca799111fa22cd2",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_LilacBeacon": {
+   "fp": "e1a666a4738542b7",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_QuorrFern": {
+   "fp": "c1e3b5943861ffb6",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_RavenNettle": {
+   "fp": "d31acc83ea54bb66",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_RedBugloss": {
+   "fp": "55d313889d6b01a4",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_CrimsonCap": {
+   "fp": "4c37a2b0ac99ca5d",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_BleedingTooth": {
+   "fp": "ce25cac2011611c2",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Rimetangle": {
+   "fp": "29aedbfb57048582",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Wrinklecap": {
+   "fp": "6eea33adb9444721",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_SaltBladeGrey": {
+   "fp": "5713ef931adfca43",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Sapblister": {
+   "fp": "b5239d61fd656e15",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_FE_Plant_ScorchFruit": {
+   "fp": "a9ceea942ea6e004",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_ScorchedStars": {
+   "fp": "7fa454fb78f8cdbf",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Sellith": {
+   "fp": "c9eb165b4127431d",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_SheddingVenomvine": {
+   "fp": "2b6e2db63d263369",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Dewshrooms": {
+   "fp": "4ddce5e17c35fbc8",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_AgaricusDomeCap": {
+   "fp": "3a3ddb6651bb9f45",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Skyharp": {
+   "fp": "eece26d4457d1466",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Slimecasia": {
+   "fp": "66dc25d4c5b4b13b",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_SlimyFern": {
+   "fp": "20aa5f826481e354",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_SlimyTree": {
+   "fp": "f3b2588d741bacb5",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Sodderel": {
+   "fp": "7029e86efe69959b",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Stonewater": {
+   "fp": "e84c821d6c411de1",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_SugarFamewort": {
+   "fp": "7d7255a76307597a",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_GreyLady": {
+   "fp": "e56b8cbc9a2c121f",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_TallSlimyGrass": {
+   "fp": "6edaa27f96440ddd",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_TangleTea": {
+   "fp": "87d41b21b2eee244",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_FlakespireFungus": {
+   "fp": "b33df44590784249",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Tavrosk": {
+   "fp": "ad5e7fa478562ecf",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Sagecrust": {
+   "fp": "2ae77a45c8b099b9",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_ThrakkCap": {
+   "fp": "3062a2a92253d9ee",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Threshreed": {
+   "fp": "150111e7b0099419",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Tollhorn": {
+   "fp": "9512fc788e928631",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_WitchesOyster": {
+   "fp": "d5b32be1b08516bc",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_TwistingThorngrass": {
+   "fp": "e2761fe6d36ee5ff",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_TwistingThornweed": {
+   "fp": "e6fc6794fa4bea59",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_TwistingThornwood": {
+   "fp": "726a6f9ee4c840f3",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_TwitcherVenomvine": {
+   "fp": "1983f098439b504f",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Varnoth": {
+   "fp": "9e0d6b3365f13228",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Skulltop": {
+   "fp": "987e2515753523d7",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Vellamine": {
+   "fp": "1bd1e06f20f7a26c",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Venomvine": {
+   "fp": "be24c29eb84711e3",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Vessark": {
+   "fp": "dd00d0f47daaea7f",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_GiantAgarilux": {
+   "fp": "c880325734231d83",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Wartshrub": {
+   "fp": "b084733be34f3434",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Wessaline": {
+   "fp": "fffcf30e50c23586",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Glasmaw": {
+   "fp": "e82ed34c0fe3ab0f",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_LumbrelTree": {
+   "fp": "416a884cee68b55f",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_Xithess": {
+   "fp": "bd0cde601647d604",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  },
+  "RM_MortalMorelPlant": {
+   "fp": "98c051a09a22f50d",
+   "verdict": "OK",
+   "note": "renders at true scale beside the human; recognisable as a plant; in-game columns only"
+  }
+ },
+ "dropped": []
+}

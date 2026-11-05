@@ -1,0 +1,4923 @@
+{
+ "schema": 1,
+ "generated": "2026-11-05T11:21:49-0800",
+ "git_head": null,
+ "biome_order": [
+  "SUBJECTS_flora_legibility"
+ ],
+ "biomes": {
+  "SUBJECTS_flora_legibility": {
+   "label": "Flora legibility \u2014 grading",
+   "slug": "flora_legibility",
+   "subjects": true,
+   "ground_terrain": "Soil",
+   "title": "Flora legibility \u2014 grading \u2014 game art",
+   "lead_html": "<p><b>Flora legibility grading (FLORA_LEGIBILITY_BAR_1).</b> 119 of our 374 shipped plants (one per picture, split by size: 18 tree, 22 clump, 79 single). For each row, pick <b>Works / Borderline / Mud</b> for the picture the game draws, at true scale. Nothing is pre-filled. Column picks and notes work as on any art sheet but are optional here. A row you skip simply stays ungraded; the model is fitted from the rows you grade.</p>",
+   "rows": [
+    {
+     "key": "RM_AlienTree",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "ocular tree",
+     "defNames": [
+      "RM_AlienTree"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_OcularTree",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_AlienTree"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_AlienTree found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_AlienTree_Polluted",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "mutated ocular tree",
+     "defNames": [
+      "RM_AlienTree_Polluted"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_PollutedAlienTree",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_AlienTree_Polluted"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_AlienTree_Polluted found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Arpeau",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "churrun mast",
+     "defNames": [
+      "RM_Arpeau"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/Arpeau",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Arpeau"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Arpeau found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_FirevineTree",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "firevine tree",
+     "defNames": [
+      "RM_FirevineTree"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_FirevineTree",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_FirevineTree"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_FirevineTree found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_FlakespireFungus",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "tarrusk spire",
+     "defNames": [
+      "RM_FlakespireFungus"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/FlakespireFungus",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_FlakespireFungus"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_FlakespireFungus found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_GiantFibreStalk",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "giant fibre stalk",
+     "defNames": [
+      "RM_GiantFibreStalk"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RM_Abyss/Things/Plant/RM_GiantFibreStalk",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_GiantFibreStalk"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_GiantFibreStalk found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_HalfAlienTree",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "half transformed ocular tree",
+     "defNames": [
+      "RM_HalfAlienTree"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_HalfAlienTree",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_HalfAlienTree"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_HalfAlienTree found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_HeatsinkFungus",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "heatsink fungus",
+     "defNames": [
+      "RM_HeatsinkFungus"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/HeatsinkFungus",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_HeatsinkFungus"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_HeatsinkFungus found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_JungleTree",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "deep jungle tree",
+     "defNames": [
+      "RM_JungleTree"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "StandIn/Things/Plants/RM_JungleTree",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_JungleTree"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_JungleTree found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_LumbrelTree",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "wild lumbrel tree",
+     "defNames": [
+      "RM_LumbrelTree"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/RM_LumbrelTree",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_LumbrelTree"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_LumbrelTree found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_MangrovePalm",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "mangrove palm",
+     "defNames": [
+      "RM_MangrovePalm"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_MangrovePalm",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_MangrovePalm"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_MangrovePalm found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_MangroveTree",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "mangrove tree",
+     "defNames": [
+      "RM_MangroveTree"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_MangroveTree",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_MangroveTree"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_MangroveTree found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Nogtyl",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "brommok timber",
+     "defNames": [
+      "RM_Nogtyl"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/Nogtyl",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Nogtyl"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Nogtyl found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Quennath",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "quennath",
+     "defNames": [
+      "RM_Quennath"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Quennath/RM_Quennath_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Quennath"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Quennath found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Shinecap",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "dremmik cap",
+     "defNames": [
+      "RM_Shinecap"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Shinecap"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Shinecap found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Skulltop",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "vekkra choker",
+     "defNames": [
+      "RM_Skulltop"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Skulltop"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Skulltop found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_ThrakkCap",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "thrakk cap",
+     "defNames": [
+      "RM_ThrakkCap"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RM_LanternDeeps/Things/Plant/ThrakkCap",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_ThrakkCap"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_ThrakkCap found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_TwistingThornwood",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "twisting thornwood",
+     "defNames": [
+      "RM_TwistingThornwood"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_TwistingThornwood",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_TwistingThornwood"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_TwistingThornwood found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_AlienGrass",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "ocular grass",
+     "defNames": [
+      "RM_AlienGrass"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/GU_AlienGrass",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_AlienGrass"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_AlienGrass found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Bleedleaf",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "bleedleaf",
+     "defNames": [
+      "RM_Bleedleaf"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Bleedleaf/RM_Bleedleaf",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Bleedleaf"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Bleedleaf found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_BloodBouquet",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "blood bouquet",
+     "defNames": [
+      "RM_BloodBouquet"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_BloodBouquet"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_BloodBouquet found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Bryolux",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "hessuk moss",
+     "defNames": [
+      "RM_Bryolux"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/Bryolux",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Bryolux"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Bryolux found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_CrimsonCap",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "redsong",
+     "defNames": [
+      "RM_CrimsonCap"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/CrimsonCap",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_CrimsonCap"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_CrimsonCap found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_CrystalFlower",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "crystal flower",
+     "defNames": [
+      "RM_CrystalFlower"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_CrystalFlower"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_CrystalFlower found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Dewshrooms",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sikkra lure",
+     "defNames": [
+      "RM_Dewshrooms"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/Seadew",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Dewshrooms"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Dewshrooms found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_FireLavender",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "fire lavender",
+     "defNames": [
+      "RM_FireLavender"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/FireLavender",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_FireLavender"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_FireLavender found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_FruitingBodies",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pimmik mold",
+     "defNames": [
+      "RM_FruitingBodies"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/FruitingBodies",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_FruitingBodies"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_FruitingBodies found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_GiantLeaf",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "giant leaf",
+     "defNames": [
+      "RM_GiantLeaf"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_GiantLeaf",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_GiantLeaf"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_GiantLeaf found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_GlowingGrass",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "grass",
+     "defNames": [
+      "RM_GlowingGrass"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RM_Abyss/Things/Plant/RM_GlowingGrass",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_GlowingGrass"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_GlowingGrass found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Glowstool",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "nubbik",
+     "defNames": [
+      "RM_Glowstool"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/Glowstool",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Glowstool"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Glowstool found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_HardyGrass",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "hardy grass",
+     "defNames": [
+      "RM_HardyGrass"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_HardyGrass",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_HardyGrass"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_HardyGrass found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_MortalMorelPlant",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "yullcomb",
+     "defNames": [
+      "RM_MortalMorelPlant"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/RM_MortalMorelPlant",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_MortalMorelPlant"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_MortalMorelPlant found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Pusmelon",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "gubbra gourd",
+     "defNames": [
+      "RM_Pusmelon"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/Pusmelon",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Pusmelon"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Pusmelon found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_RavenNettle",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "raven nettle",
+     "defNames": [
+      "RM_RavenNettle"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_RavenNettle/RM_RavenNettle_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_RavenNettle"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_RavenNettle found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_RedBugloss",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "red bugloss",
+     "defNames": [
+      "RM_RedBugloss"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_RedBugloss/RM_RedBugloss_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_RedBugloss"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_RedBugloss found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Sagecrust",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "tavvik crust",
+     "defNames": [
+      "RM_Sagecrust"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/Sagecrust",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Sagecrust"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Sagecrust found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_TallSlimyGrass",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "tall slimy grass",
+     "defNames": [
+      "RM_TallSlimyGrass"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_SlimeGrass",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_TallSlimyGrass"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_TallSlimyGrass found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_TwistingThorngrass",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "twisting thorngrass",
+     "defNames": [
+      "RM_TwistingThorngrass"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_TwistingThorngrass",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_TwistingThorngrass"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_TwistingThorngrass found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_VioletWimple",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pursk hood",
+     "defNames": [
+      "RM_VioletWimple"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/VioletWimple",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_VioletWimple"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_VioletWimple found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Wrinklecap",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "rukka cap",
+     "defNames": [
+      "RM_Wrinklecap"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/Wrinklecap",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Wrinklecap"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Wrinklecap found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Aaklac",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "aaklac",
+     "defNames": [
+      "RM_Aaklac"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_Aaklac",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Aaklac"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Aaklac found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_AgaricusDomeCap",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "skarrowdome",
+     "defNames": [
+      "RM_AgaricusDomeCap"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_AgaricusDomeCap",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_AgaricusDomeCap"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_AgaricusDomeCap found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_AgariluxPrime",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "grath elder",
+     "defNames": [
+      "RM_AgariluxPrime"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_AgariluxPrime",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_AgariluxPrime"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_AgariluxPrime found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_AgelessCap",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "orlath cap",
+     "defNames": [
+      "RM_AgelessCap"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/AgelessCap",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_AgelessCap"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_AgelessCap found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Aphreen",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "aphreen",
+     "defNames": [
+      "RM_Aphreen"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Aphreen/RM_Aphreen_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Aphreen"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Aphreen found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_ArbuscularMycorrhiza",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "madruka",
+     "defNames": [
+      "RM_ArbuscularMycorrhiza"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_ArbuscularMycorrhiza",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_ArbuscularMycorrhiza"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_ArbuscularMycorrhiza found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_BleedingTooth",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "rhukk tooth",
+     "defNames": [
+      "RM_BleedingTooth"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/BleedingTooth",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_BleedingTooth"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_BleedingTooth found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Brakkel",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "brakkel",
+     "defNames": [
+      "RM_Brakkel"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Brakkel/RM_Brakkel_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Brakkel"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Brakkel found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Brindeth",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "brindeth",
+     "defNames": [
+      "RM_Brindeth"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Brindeth/RM_Brindeth_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Brindeth"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Brindeth found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Chimeglobe",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "chimeglobe",
+     "defNames": [
+      "RM_Chimeglobe"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Chimeglobe"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Chimeglobe found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_CrownVenomvine",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "crown venomvine",
+     "defNames": [
+      "RM_CrownVenomvine"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_CrownVenomvine",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_CrownVenomvine"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_CrownVenomvine found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_CrystalHorn",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "crystal horn",
+     "defNames": [
+      "RM_CrystalHorn"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_CrystalHorn",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_CrystalHorn"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_CrystalHorn found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Dorvel",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "dorvel",
+     "defNames": [
+      "RM_Dorvel"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Dorvel/RM_Dorvel_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Dorvel"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Dorvel found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_DribblingCap",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "amber weeper",
+     "defNames": [
+      "RM_DribblingCap"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_DribblingCap",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_DribblingCap"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_DribblingCap found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_DyingCreep",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "dying creep",
+     "defNames": [
+      "RM_DyingCreep"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_DyingCreep",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_DyingCreep"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_DyingCreep found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_FE_Plant_ScorchFruit",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "scorch-fruit pod",
+     "defNames": [
+      "RM_FE_Plant_ScorchFruit"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_FE_ScorchFruitPod",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_FE_Plant_ScorchFruit"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_FE_Plant_ScorchFruit found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_FloatstoneGarden",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "floatstone garden",
+     "defNames": [
+      "RM_FloatstoneGarden"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_FloatstoneGarden",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_FloatstoneGarden"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_FloatstoneGarden found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_FrostLeaf",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "frost leaf",
+     "defNames": [
+      "RM_FrostLeaf"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_FrostLeaf",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_FrostLeaf"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_FrostLeaf found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_GargantuanLithops",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "gargantuan lithops",
+     "defNames": [
+      "RM_GargantuanLithops"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_Lithops",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_GargantuanLithops"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_GargantuanLithops found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_GiantAgariTox",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "giant agaritox",
+     "defNames": [
+      "RM_GiantAgariTox"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_GiantAgariTox/RM_GiantAgariTox_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_GiantAgariTox"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_GiantAgariTox found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_GiantAgarilux",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "vokkun pillar",
+     "defNames": [
+      "RM_GiantAgarilux"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_GiantAgarilux",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_GiantAgarilux"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_GiantAgarilux found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_GiantToxicFlower",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "giant toxic flower",
+     "defNames": [
+      "RM_GiantToxicFlower"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_GiantToxicFlower"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_GiantToxicFlower found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Glasmaw",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "wild glasmaw",
+     "defNames": [
+      "RM_Glasmaw"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/RM_Glasmaw",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Glasmaw"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Glasmaw found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Glimmerhusk",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "glimmerhusk",
+     "defNames": [
+      "RM_Glimmerhusk"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_TwilightSea/RM_Glimmerhusk",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Glimmerhusk"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Glimmerhusk found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_GlobularPlant",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "globular aberration",
+     "defNames": [
+      "RM_GlobularPlant"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_GlobularPlant",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_GlobularPlant"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_GlobularPlant found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_GlowingAgarilux",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "ithrani glowcap",
+     "defNames": [
+      "RM_GlowingAgarilux"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/Agarilux",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_GlowingAgarilux"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_GlowingAgarilux found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Gomphoeria",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "gomphoeria",
+     "defNames": [
+      "RM_Gomphoeria"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_Gomphoeria",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Gomphoeria"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Gomphoeria found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Gorestalk",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "gorestalk",
+     "defNames": [
+      "RM_Gorestalk"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Gorestalk"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Gorestalk found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_GreyLady",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sylla lace",
+     "defNames": [
+      "RM_GreyLady"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_GreyLady"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_GreyLady found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Hoarstock",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "hoarstock",
+     "defNames": [
+      "RM_Hoarstock"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_GreySea/RM_Hoarstock",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Hoarstock"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Hoarstock found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Iashiphus",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "iashiphus",
+     "defNames": [
+      "RM_Iashiphus"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "StandIn/Things/Plants/RM_Iashiphus",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Iashiphus"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Iashiphus found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Illurin",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "illurin",
+     "defNames": [
+      "RM_Illurin"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Illurin/RM_Illurin_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Illurin"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Illurin found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_KeeningCordax",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "keening cordax",
+     "defNames": [
+      "RM_KeeningCordax"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_KeeningCordax"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_KeeningCordax found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Kethevar",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "kethevar",
+     "defNames": [
+      "RM_Kethevar"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Kethevar/RM_Kethevar",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Kethevar"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Kethevar found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Korveth",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "korveth",
+     "defNames": [
+      "RM_Korveth"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Korveth/RM_Korveth_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Korveth"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Korveth found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_LargeSlimyTree",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "large slimy tree",
+     "defNames": [
+      "RM_LargeSlimyTree"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_LargeSlimyTree",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_LargeSlimyTree"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_LargeSlimyTree found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_LilacBeacon",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "quessa spire",
+     "defNames": [
+      "RM_LilacBeacon"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_LilacBeacon",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_LilacBeacon"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_LilacBeacon found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Luqqim",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "luqqim",
+     "defNames": [
+      "RM_Luqqim"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Luqqim/RM_Luqqim",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Luqqim"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Luqqim found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Maulith",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "maulith",
+     "defNames": [
+      "RM_Maulith"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Maulith/RM_Maulith_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Maulith"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Maulith found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_MosaicFanPalm",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "mosaic fan palm",
+     "defNames": [
+      "RM_MosaicFanPalm"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_GreySea/RM_MosaicFanPalm",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_MosaicFanPalm"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_MosaicFanPalm found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Nemreth",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "nemreth",
+     "defNames": [
+      "RM_Nemreth"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Nemreth/RM_Nemreth_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Nemreth"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Nemreth found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Nuitae",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "nissik gill",
+     "defNames": [
+      "RM_Nuitae"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RotSporeKit/Things/Plant/Nuitae",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Nuitae"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Nuitae found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_NurrikGill",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "nurrik gill",
+     "defNames": [
+      "RM_NurrikGill"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RM_LanternDeeps/Things/Plant/NurrikGill",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_NurrikGill"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_NurrikGill found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Pallasheen",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "pallasheen",
+     "defNames": [
+      "RM_Pallasheen"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Pallasheen/RM_Pallasheen_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Pallasheen"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Pallasheen found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_ParasiticMangrove",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "parasitic mangrove",
+     "defNames": [
+      "RM_ParasiticMangrove"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_ParasiticMangrove",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_ParasiticMangrove"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_ParasiticMangrove found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Phorrik",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "phorrik",
+     "defNames": [
+      "RM_Phorrik"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Phorrik/RM_Phorrik_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Phorrik"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Phorrik found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Plennith",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "plennith",
+     "defNames": [
+      "RM_Plennith"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Plennith/RM_Plennith_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Plennith"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Plennith found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_PoisonShrub",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "poison shrub",
+     "defNames": [
+      "RM_PoisonShrub"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "StandIn/Plant/PoisonShrub",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_PoisonShrub"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_PoisonShrub found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_QuorrFern",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "quorr fern",
+     "defNames": [
+      "RM_QuorrFern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "RM_LanternDeeps/Things/Plant/QuorrFern",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_QuorrFern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_QuorrFern found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_RecurvedStropharia",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "orrusk crook",
+     "defNames": [
+      "RM_RecurvedStropharia"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_RecurvedStropharia",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_RecurvedStropharia"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_RecurvedStropharia found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_RedLeaves",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "ocular plant",
+     "defNames": [
+      "RM_RedLeaves"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/GU_RedLeaves",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_RedLeaves"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_RedLeaves found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_RedPlantsTall",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "ocular plant",
+     "defNames": [
+      "RM_RedPlantsTall"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/GU_RedLeaves2",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_RedPlantsTall"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_RedPlantsTall found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Rimetangle",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "rimetangle",
+     "defNames": [
+      "RM_Rimetangle"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Rimetangle",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Rimetangle"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Rimetangle found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_SaltBladeGrey",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "salt-rimed blade",
+     "defNames": [
+      "RM_SaltBladeGrey"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_GreySea/RM_SaltBladeGrey",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SaltBladeGrey"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SaltBladeGrey found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Sapblister",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sapblister",
+     "defNames": [
+      "RM_Sapblister"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Sapblister/RM_Sapblister",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Sapblister"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Sapblister found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_ScorchedStars",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "scorched stars",
+     "defNames": [
+      "RM_ScorchedStars"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_ScorchedStars",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_ScorchedStars"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_ScorchedStars found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Sellith",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sellith",
+     "defNames": [
+      "RM_Sellith"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Sellith/RM_Sellith_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Sellith"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Sellith found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_SheddingVenomvine",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "shedding venomvine",
+     "defNames": [
+      "RM_SheddingVenomvine"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_SheddingVenomvine",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SheddingVenomvine"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SheddingVenomvine found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Skyharp",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "skyharp",
+     "defNames": [
+      "RM_Skyharp"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Skyharp/RM_Skyharp",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Skyharp"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Skyharp found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Slimecasia",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "slimecasia",
+     "defNames": [
+      "RM_Slimecasia"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_Slimecasia",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Slimecasia"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Slimecasia found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_SlimyFern",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "slimy fern",
+     "defNames": [
+      "RM_SlimyFern"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_SlimyFern",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SlimyFern"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SlimyFern found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_SlimyTree",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "slimy tree",
+     "defNames": [
+      "RM_SlimyTree"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_SlimyTree",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SlimyTree"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SlimyTree found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Sodderel",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sodderel",
+     "defNames": [
+      "RM_Sodderel"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Sodderel/RM_Sodderel_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Sodderel"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Sodderel found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Stonewater",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "stonewater",
+     "defNames": [
+      "RM_Stonewater"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Stonewater/RM_Stonewater",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Stonewater"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Stonewater found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_SugarFamewort",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "sugar famewort",
+     "defNames": [
+      "RM_SugarFamewort"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "StandIn/Things/Plants/RM_SugarFamewort",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_SugarFamewort"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_SugarFamewort found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_TangleTea",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "tangle tea",
+     "defNames": [
+      "RM_TangleTea"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_TangleTea",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_TangleTea"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_TangleTea found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Tavrosk",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "tavrosk",
+     "defNames": [
+      "RM_Tavrosk"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Tavrosk/RM_Tavrosk_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Tavrosk"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Tavrosk found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Threshreed",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "threshreed",
+     "defNames": [
+      "RM_Threshreed"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Threshreed/RM_Threshreed",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Threshreed"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Threshreed found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Tollhorn",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "tollhorn",
+     "defNames": [
+      "RM_Tollhorn"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_TwilightSea/RM_Tollhorn",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Tollhorn"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Tollhorn found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_TwistingThornweed",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "twisting thornweed",
+     "defNames": [
+      "RM_TwistingThornweed"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_TwistingThornweed",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_TwistingThornweed"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_TwistingThornweed found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_TwitcherVenomvine",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "twitcher venomvine",
+     "defNames": [
+      "RM_TwitcherVenomvine"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_TwitcherVenomvine",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_TwitcherVenomvine"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_TwitcherVenomvine found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Varnoth",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "varnoth",
+     "defNames": [
+      "RM_Varnoth"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Varnoth/RM_Varnoth_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Varnoth"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Varnoth found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Vellamine",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "vellamine",
+     "defNames": [
+      "RM_Vellamine"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Vellamine/RM_Vellamine_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Vellamine"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Vellamine found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Venomvine",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "venomvine",
+     "defNames": [
+      "RM_Venomvine"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Venomvine",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Venomvine"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Venomvine found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Vessark",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "vessark",
+     "defNames": [
+      "RM_Vessark"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Vessark/RM_Vessark_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Vessark"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Vessark found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Wartshrub",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "wartshrub",
+     "defNames": [
+      "RM_Wartshrub"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Wartshrub",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Wartshrub"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Wartshrub found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Wessaline",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "wessaline",
+     "defNames": [
+      "RM_Wessaline"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Wessaline/RM_Wessaline_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Wessaline"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Wessaline found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_WitchesOyster",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "Tumrata's shelf",
+     "defNames": [
+      "RM_WitchesOyster"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plants/AB_WitchesOyster",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_WitchesOyster"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_WitchesOyster found"
+     },
+     "reopen": true
+    },
+    {
+     "key": "RM_Xithess",
+     "kind": "flora",
+     "port": null,
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "label": "xithess",
+     "defNames": [
+      "RM_Xithess"
+     ],
+     "commonality_max": null,
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RM_Xithess/RM_Xithess_a",
+        "role": "body",
+        "joined_by": "def",
+        "subjects": [
+         "RM_Xithess"
+        ]
+       }
+      ],
+      "searched": "live def dump: RM_Xithess found"
+     },
+     "reopen": true
+    }
+   ],
+   "question": {
+    "key": "legibility",
+    "label": "Legibility at true scale",
+    "explain": "Grade the picture the game draws (the runtime-live column) at its true in-game size beside the human: does the plant read? Works / borderline / mud. No keyline is expected on flora (vanilla convention, measured 2026-09-13); judge value/shape contrast and silhouette. These grades fit the flora legibility model (FLORA_LEGIBILITY_BAR_1). Nothing is pre-filled.",
+    "options": [
+     [
+      "works",
+      "Works"
+     ],
+     [
+      "borderline",
+      "Borderline"
+     ],
+     [
+      "mud",
+      "Mud / regen"
+     ]
+    ],
+    "rows": {
+     "RM_AlienTree": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_AlienTree_Polluted": {
+      "context": "tree \u00b7 size-stratified pick"
+     },
+     "RM_Arpeau": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_FirevineTree": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_FlakespireFungus": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_GiantFibreStalk": {
+      "context": "tree \u00b7 size-stratified pick"
+     },
+     "RM_HalfAlienTree": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_HeatsinkFungus": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_JungleTree": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_LumbrelTree": {
+      "context": "tree \u00b7 size-stratified pick"
+     },
+     "RM_MangrovePalm": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_MangroveTree": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Nogtyl": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Quennath": {
+      "context": "tree \u00b7 size-stratified pick"
+     },
+     "RM_Shinecap": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Skulltop": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_ThrakkCap": {
+      "context": "tree \u00b7 size-stratified pick"
+     },
+     "RM_TwistingThornwood": {
+      "context": "tree \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_AlienGrass": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Bleedleaf": {
+      "context": "clump \u00b7 size-stratified pick"
+     },
+     "RM_BloodBouquet": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Bryolux": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_CrimsonCap": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_CrystalFlower": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Dewshrooms": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_FireLavender": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_FruitingBodies": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_GiantLeaf": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_GlowingGrass": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Glowstool": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_HardyGrass": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_MortalMorelPlant": {
+      "context": "clump \u00b7 size-stratified pick"
+     },
+     "RM_Pusmelon": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_RavenNettle": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_RedBugloss": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Sagecrust": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_TallSlimyGrass": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_TwistingThorngrass": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_VioletWimple": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Wrinklecap": {
+      "context": "clump \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Aaklac": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_AgaricusDomeCap": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_AgariluxPrime": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_AgelessCap": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Aphreen": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_ArbuscularMycorrhiza": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_BleedingTooth": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Brakkel": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Brindeth": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Chimeglobe": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_CrownVenomvine": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_CrystalHorn": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Dorvel": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_DribblingCap": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_DyingCreep": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_FE_Plant_ScorchFruit": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_FloatstoneGarden": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_FrostLeaf": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_GargantuanLithops": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_GiantAgariTox": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_GiantAgarilux": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_GiantToxicFlower": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Glasmaw": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Glimmerhusk": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_GlobularPlant": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_GlowingAgarilux": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Gomphoeria": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Gorestalk": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_GreyLady": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Hoarstock": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Iashiphus": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Illurin": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_KeeningCordax": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Kethevar": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Korveth": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_LargeSlimyTree": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_LilacBeacon": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Luqqim": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Maulith": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_MosaicFanPalm": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Nemreth": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Nuitae": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_NurrikGill": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Pallasheen": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_ParasiticMangrove": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Phorrik": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Plennith": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_PoisonShrub": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_QuorrFern": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_RecurvedStropharia": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_RedLeaves": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_RedPlantsTall": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Rimetangle": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_SaltBladeGrey": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Sapblister": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_ScorchedStars": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Sellith": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_SheddingVenomvine": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Skyharp": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Slimecasia": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_SlimyFern": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_SlimyTree": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Sodderel": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Stonewater": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_SugarFamewort": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_TangleTea": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Tavrosk": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Threshreed": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Tollhorn": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_TwistingThornweed": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_TwitcherVenomvine": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Varnoth": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Vellamine": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Venomvine": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Vessark": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Wartshrub": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_Wessaline": {
+      "context": "single \u00b7 size-stratified pick"
+     },
+     "RM_WitchesOyster": {
+      "context": "single \u00b7 continues the 2026-09-13 wave"
+     },
+     "RM_Xithess": {
+      "context": "single \u00b7 size-stratified pick"
+     }
+    }
+   },
+   "hide_sets": [
+    "render "
+   ]
+  }
+ }
+}

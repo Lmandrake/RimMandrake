@@ -1,0 +1,378 @@
+{
+ "key": "legibility",
+ "label": "Legibility at true scale",
+ "explain": "Grade the picture the game draws (the runtime-live column) at its true in-game size beside the human: does the plant read? Works / borderline / mud. No keyline is expected on flora (vanilla convention, measured 2026-09-13); judge value/shape contrast and silhouette. These grades fit the flora legibility model (FLORA_LEGIBILITY_BAR_1). Nothing is pre-filled.",
+ "options": [
+  [
+   "works",
+   "Works"
+  ],
+  [
+   "borderline",
+   "Borderline"
+  ],
+  [
+   "mud",
+   "Mud / regen"
+  ]
+ ],
+ "rows": {
+  "RM_AlienTree": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_AlienTree_Polluted": {
+   "context": "tree \u00b7 size-stratified pick"
+  },
+  "RM_Arpeau": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_FirevineTree": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_FlakespireFungus": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_GiantFibreStalk": {
+   "context": "tree \u00b7 size-stratified pick"
+  },
+  "RM_HalfAlienTree": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_HeatsinkFungus": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_JungleTree": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_LumbrelTree": {
+   "context": "tree \u00b7 size-stratified pick"
+  },
+  "RM_MangrovePalm": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_MangroveTree": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Nogtyl": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Quennath": {
+   "context": "tree \u00b7 size-stratified pick"
+  },
+  "RM_Shinecap": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Skulltop": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_ThrakkCap": {
+   "context": "tree \u00b7 size-stratified pick"
+  },
+  "RM_TwistingThornwood": {
+   "context": "tree \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_AlienGrass": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Bleedleaf": {
+   "context": "clump \u00b7 size-stratified pick"
+  },
+  "RM_BloodBouquet": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Bryolux": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_CrimsonCap": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_CrystalFlower": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Dewshrooms": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_FireLavender": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_FruitingBodies": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_GiantLeaf": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_GlowingGrass": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Glowstool": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_HardyGrass": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_MortalMorelPlant": {
+   "context": "clump \u00b7 size-stratified pick"
+  },
+  "RM_Pusmelon": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_RavenNettle": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_RedBugloss": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Sagecrust": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_TallSlimyGrass": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_TwistingThorngrass": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_VioletWimple": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Wrinklecap": {
+   "context": "clump \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Aaklac": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_AgaricusDomeCap": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_AgariluxPrime": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_AgelessCap": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Aphreen": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_ArbuscularMycorrhiza": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_BleedingTooth": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Brakkel": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Brindeth": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Chimeglobe": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_CrownVenomvine": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_CrystalHorn": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Dorvel": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_DribblingCap": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_DyingCreep": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_FE_Plant_ScorchFruit": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_FloatstoneGarden": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_FrostLeaf": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_GargantuanLithops": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_GiantAgariTox": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_GiantAgarilux": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_GiantToxicFlower": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Glasmaw": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Glimmerhusk": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_GlobularPlant": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_GlowingAgarilux": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Gomphoeria": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Gorestalk": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_GreyLady": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Hoarstock": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Iashiphus": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Illurin": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_KeeningCordax": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Kethevar": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Korveth": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_LargeSlimyTree": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_LilacBeacon": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Luqqim": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Maulith": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_MosaicFanPalm": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Nemreth": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Nuitae": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_NurrikGill": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Pallasheen": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_ParasiticMangrove": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Phorrik": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Plennith": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_PoisonShrub": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_QuorrFern": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_RecurvedStropharia": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_RedLeaves": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_RedPlantsTall": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Rimetangle": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_SaltBladeGrey": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Sapblister": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_ScorchedStars": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Sellith": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_SheddingVenomvine": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Skyharp": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Slimecasia": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_SlimyFern": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_SlimyTree": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Sodderel": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Stonewater": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_SugarFamewort": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_TangleTea": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Tavrosk": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Threshreed": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Tollhorn": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_TwistingThornweed": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_TwitcherVenomvine": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Varnoth": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Vellamine": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Venomvine": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Vessark": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Wartshrub": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_Wessaline": {
+   "context": "single \u00b7 size-stratified pick"
+  },
+  "RM_WitchesOyster": {
+   "context": "single \u00b7 continues the 2026-09-13 wave"
+  },
+  "RM_Xithess": {
+   "context": "single \u00b7 size-stratified pick"
+  }
+ }
+}
