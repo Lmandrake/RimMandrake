@@ -13,9 +13,10 @@ What it emulates (read from the C#, not guessed):
   * the spikes (Building altitude, above all of that): BEFORE = the shipped Graphic_Random sprite on the whole 1x1 cell at
     full opacity; AFTER = Building_RM_Spikes: RM_SpikeDrawMath.Layout's stakes (sampled from the variant's stake atlas,
     art_source/Spikes/atlas/ == the installed RM_SpikeStakes textures) inside FloorRect, opacity
-    SubmergedAlpha(fill) quantised to 1/32 as the C# does. The math below mirrors RM_SpikeDrawMath bit for bit (Hash) and
-    to float precision (Layout); SpikeDrawChecks.Spikes_parity_fixture_matches_python holds the two together with
-    PARITY below.
+    SubmergedAlpha(fill) quantised to 1/32 as the C# does. The math below mirrors RM_SpikeDrawMath bit for bit: Hash, and
+    Layout / FloorRect / SubmergedAlpha in float32 (SPIKES_PARITY_FIX_FLOAT32_MIRROR). selftest_spike_float32_parity.py
+    holds them to C#-generated outputs (spike_parity_golden.json); SpikeDrawChecks.Spikes_parity_fixture_matches_python
+    to PARITY below.
 
 Floors (PIT_SPIKES_FIX_READ_AS_FUZZ_LIVE): render(floor="standin") is the flat grey the owner-approved sheet was drawn on;
 floor="real" is the game's dug-floor terrain (vanilla Gravel x RM_Channel_* <color>), which live fwclose_03 matches.
@@ -73,6 +74,15 @@ METRES_PER_LEVEL = 0.5          # RM_Volume.MetresPerLevel (SelfTest VolumeCheck
 ALPHA_STEPS = 32                # Building_RM_Spikes.AlphaSteps
 
 
+# SPIKES_PARITY_FIX_FLOAT32_MIRROR: the C# runs FloorRect / SubmergedAlpha / Layout in float32, every operation rounded
+# to single; a Python double mirror (x0 + Margin = 0.05 against the C#'s 0.0499999970) can take the other side of a
+# threshold (cap, lo/hi, bot, cellTop) at a boundary. So the mirror computes in np.float32 scalars, constant by constant
+# and operation by operation in the C#'s own order, and the parity selftest (selftest_spike_float32_parity.py) holds it
+# bit for bit to C#-generated outputs (spike_parity_golden.json).
+F32 = np.float32
+F0, F1, FH = F32(0.0), F32(1.0), F32(0.5)
+
+
 def _tab(t, k):
     return 0.0 if k <= 0 else t[min(k, len(t) - 1)]
 
@@ -83,27 +93,30 @@ def exposed_drop(d, n, f):
 
 
 def floor_rect(d, n, s, w, e, faces=True, outline=True):
+    """RM_SpikeDrawMath.FloorRect, in float32 as the C# runs it (SPIKES_PARITY_FIX_FLOAT32_MIRROR)."""
     lines = faces and outline
-    top = left = right = bottom = 0.0
+    top = left = right = bottom = F0
     if faces:
-        top, left, right = _tab(NORTH, exposed_drop(d, n, 0)), _tab(SIDE, exposed_drop(d, w, 0)), _tab(SIDE, exposed_drop(d, e, 0))
+        top, left, right = (F32(_tab(NORTH, exposed_drop(d, n, 0))), F32(_tab(SIDE, exposed_drop(d, w, 0))),
+                            F32(_tab(SIDE, exposed_drop(d, e, 0))))
     if lines:
         if d - n > 0:
-            top = max(top, RIM_LINE)
+            top = max(top, F32(RIM_LINE))
         if d - w > 0:
-            left = max(left, SIDE_LINE)
+            left = max(left, F32(SIDE_LINE))
         if d - e > 0:
-            right = max(right, SIDE_LINE)
+            right = max(right, F32(SIDE_LINE))
         if d - s > 0:
-            bottom = _tab(SOUTH, d - s)
-    return left, bottom, 1 - right, 1 - top
+            bottom = F32(_tab(SOUTH, d - s))
+    return float(left), float(bottom), float(F1 - right), float(F1 - top)
 
 
 def submerged_alpha(fill):
+    """RM_SpikeDrawMath.SubmergedAlpha, in float32."""
     if fill <= 0:
         return 1.0
-    t = 1 - fill * METRES_PER_LEVEL / SUBMERGE_M
-    return 0.0 if t <= 0 else t * t
+    t = F1 - F32(fill) * F32(METRES_PER_LEVEL) / F32(SUBMERGE_M)
+    return 0.0 if t <= F0 else float(t * t)
 
 
 def hash32(seed, k):
@@ -153,26 +166,34 @@ def approved_foreign(variant):
 
 def layout(variant, seed, x0, z0, x1, z1, lib=None):
     """RM_SpikeDrawMath.Layout: [(x, z, w, h, u0, v0, u1, v1)] far (north) first. lib: (stakes, pitch) to lay out instead
-    of the current library (the approved one, for the comparison render)."""
+    of the current library (the approved one, for the comparison render). float32 throughout, in the C#'s operation order
+    (SPIKES_PARITY_FIX_FLOAT32_MIRROR); Math.Floor / Math.Round take the float32 quotient widened to double, as in C#."""
     lib, (ppx, ppz) = lib or library(variant)
+    lib = [tuple(F32(q) for q in st) for st in lib]
+    ppx, ppz = F32(ppx), F32(ppz)
+    x0, z0, x1, z1 = F32(x0), F32(z0), F32(x1), F32(z1)
+    M = F32(MARGIN)
     n = len(lib)
-    if n == 0:
+    wmax = hmax = F0
+    for st in lib:
+        wmax, hmax = max(wmax, st[0]), max(hmax, st[1])
+    fw, fh = x1 - x0 - F32(2.0) * M, z1 - z0 - F32(2.0) * M
+    if n == 0 or fw <= F0 or fh <= F0:
         return []
-    wmax, hmax = max(s[0] for s in lib), max(s[1] for s in lib)
-    fw, fh = x1 - x0 - 2 * MARGIN, z1 - z0 - 2 * MARGIN
-    if n == 0 or fw <= 0 or fh <= 0:
-        return []
-    sc = min(1.0, fh / hmax, fw / wmax)
-    lo, hi, bot, top = x0 + MARGIN, x1 - MARGIN, z0 + MARGIN, z1 - MARGIN
+    sc = min(F1, min(fh / hmax, fw / wmax))
+    lo, hi, bot, top = x0 + M, x1 - M, z0 + M, z1 - M
     clamp = lambda v, a, b: a if v < a else (b if v > b else v)
-    span = max(0.0, 1.0 - hmax * 0.5)   # base rows run 0..1-hmax/2: the tallest stakes of the top rows are pulled down to the cell top
-    cell_top = top >= 1.0 - MARGIN - 1e-4
-    nrow, ncol = max(1, int(math.floor(span / ppz)) + 1), max(1, int(math.floor(1.0 / ppx + 0.5)))
-    rpz, rpx = (span / (nrow - 1) if nrow > 1 else 0.0), 1.0 / ncol
+    span = max(F0, F1 - hmax * FH)   # base rows run 0..1-hmax/2: the tallest stakes of the top rows are pulled down to the cell top
+    cell_top = bool(top >= F1 - M - F32(1e-4))
+    nrow = max(1, int(math.floor(float(span / ppz))) + 1)
+    q = float(F1 / ppx)                                       # Math.Round(q, MidpointRounding.AwayFromZero), q > 0
+    ncol = max(1, int(math.floor(q)) + (1 if q - math.floor(q) >= 0.5 else 0))
+    rpz, rpx = (span / F32(nrow - 1) if nrow > 1 else F0), F1 / F32(ncol)
     # PIT_SPIKES_TUNE_NORTH_ROW_TOO_SPARSE: a rect the north face shortens keeps every row the cell top would keep: a
     # base up to half a stake under the rect top, plus half a row pitch, is pulled down inside (as the cell top pulls in
     # its top row) instead of being dropped, so the north cell keeps a middle cell's density on its shorter floor.
-    cap = top - hmax * sc * 0.5 + 0.5 * rpz
+    cap = top - hmax * sc * FH + FH * rpz
+    j255, quarter = F32(255.0), F32(0.5)
     out = []
     for pas in range(2):
         if out:
@@ -184,17 +205,17 @@ def layout(variant, seed, x0, z0, x1, z1, lib=None):
                 h = hash32(seed, k)
                 st = lib[h % n]
                 w, ht = st[0] * sc, st[1] * sc
-                xc = (col if odd else col + 0.5) * rpx
-                jx = (((h >> 8) & 0xFF) / 255 - 0.5) * 0.5 * rpx
-                jz = (((h >> 16) & 0xFF) / 255 - 0.5) * 0.5 * rpz
-                if xc + w * 0.5 <= lo or xc - w * 0.5 >= hi:
+                xc = (F32(col) if odd else F32(col) + FH) * rpx
+                jx = (F32((h >> 8) & 0xFF) / j255 - FH) * quarter * rpx
+                jz = (F32((h >> 16) & 0xFF) / j255 - FH) * quarter * rpz
+                if xc + w * FH <= lo or xc - w * FH >= hi:
                     continue
-                zb = r * rpz + jz
+                zb = F32(r) * rpz + jz
                 if (((zb > cap and not cell_top) or (r > 0 and zb < bot)) if pas == 0 else r != 0):
                     continue
-                out.append((clamp(xc + jx - w * 0.5, lo, hi - w), clamp(zb, bot, top - ht), w, ht) + tuple(st[2:]) + (k,))
+                out.append((clamp(xc + jx - w * FH, lo, hi - w), clamp(zb, bot, top - ht), w, ht) + tuple(st[2:]) + (k,))
     out.sort(key=lambda q: (-q[1], q[8]))
-    return [q[:8] for q in out]
+    return [tuple(float(v) for v in q[:8]) for q in out]
 
 
 # Parity fixture: SpikeDrawChecks.Spikes_parity_fixture_matches_python asserts the same numbers from the C#.

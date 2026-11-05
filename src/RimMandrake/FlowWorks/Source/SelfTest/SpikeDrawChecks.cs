@@ -195,13 +195,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var quads = new List<float>();
                 int k = RM_SpikeDrawMath.Layout(1, 42, 0.04f, 0.065f, 0.96f, 0.5f, quads);
                 Assert(k == 18, "layout count parity: " + k);
-                float[] first = { 0.35623f, 0.193124f, 0.09375f, 0.296876f, 0.050781f, 0.675781f, 0.074219f, 0.824219f };
-                float[] last = { 0.85625f, 0.075f, 0.09375f, 0.320312f, 0.925781f, 0.671875f, 0.949219f, 0.832031f };
+                // SPIKES_PARITY_FIX_FLOAT32_MIRROR: the mirror runs float32 like this code, so the quads match BIT FOR BIT (was 1e-4,
+                // which let a double mirror take the other side of a threshold); selftest_spike_float32_parity.py sweeps 8k rects.
+                uint[] first = { 0x3eb663bau, 0x3e45c24cu, 0x3dc00000u, 0x3e980022u, 0x3d4fffbdu, 0x3f2cfffcu, 0x3d980022u, 0x3f530004u };
+                uint[] last = { 0x3f5b3333u, 0x3d999999u, 0x3dc00000u, 0x3ea3ffefu, 0x3f6cfffcu, 0x3f2c0000u, 0x3f730004u, 0x3f54fffcu };
                 int o = (k - 1) * RM_SpikeDrawMath.Out;
                 for (int i = 0; i < RM_SpikeDrawMath.Out; i++)
                 {
-                    Assert(Math.Abs(quads[i] - first[i]) < 1e-4f, "first quad [" + i + "] " + quads[i] + " vs python " + first[i]);
-                    Assert(Math.Abs(quads[o + i] - last[i]) < 1e-4f, "last quad [" + i + "] " + quads[o + i] + " vs python " + last[i]);
+                    uint a = unchecked((uint)BitConverter.SingleToInt32Bits(quads[i])), b = unchecked((uint)BitConverter.SingleToInt32Bits(quads[o + i]));
+                    Assert(a == first[i], "first quad [" + i + "] " + a.ToString("x8") + " vs python " + first[i].ToString("x8"));
+                    Assert(b == last[i], "last quad [" + i + "] " + b.ToString("x8") + " vs python " + last[i].ToString("x8"));
                 }
             });
         }

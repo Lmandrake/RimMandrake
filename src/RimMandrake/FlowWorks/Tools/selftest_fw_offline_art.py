@@ -518,9 +518,10 @@ def spikes():
         spk.floor_rect, spk.submerged_alpha = real_rect, real_alpha
     hashes, (n, first, last) = spk.parity()
     want(hashes == [0, 2836592880, 1249282371], "spikes parity: hash fixture %s" % hashes)
-    fx = ((0.35623, 0.193124, 0.09375, 0.296876, 0.050781, 0.675781, 0.074219, 0.824219),
-          (0.85625, 0.075, 0.09375, 0.320312, 0.925781, 0.671875, 0.949219, 0.832031))
-    want(n == 18 and all(abs(a - b) < 1e-4 for q, f in zip((first, last), fx) for a, b in zip(q, f)),
+    # SPIKES_PARITY_FIX_FLOAT32_MIRROR: float32 bits, exact (SpikeDrawChecks asserts the same bits)
+    fx = ((0x3eb663ba, 0x3e45c24c, 0x3dc00000, 0x3e980022, 0x3d4fffbd, 0x3f2cfffc, 0x3d980022, 0x3f530004),
+          (0x3f5b3333, 0x3d999999, 0x3dc00000, 0x3ea3ffef, 0x3f6cfffc, 0x3f2c0000, 0x3f730004, 0x3f54fffc))
+    want(n == 18 and all(int(spk.np.float32(a).view(spk.np.uint32)) == b for q, f in zip((first, last), fx) for a, b in zip(q, f)),
          "spikes parity: layout fixture (18 stakes, first/last quad) == SpikeDrawChecks (%d)" % n)
     st = spk.STAKES
     # the owner approved the 4f12810a3e render ("spikes look great!"): its selection, sizes and pitch stay, pinned
