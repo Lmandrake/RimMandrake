@@ -3695,3 +3695,6 @@
 {"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","result":"kept","detail":"sweep: running again","ts":"2026-11-05T12:03:05Z","tsn":1793880185219186723}
 {"seat":"RUNNER","event":"live","id":"OPS_GAME_HEALTH_DEBUG_PXQI","result":"kept","detail":"sweep: running again","ts":"2026-11-05T12:03:08Z","tsn":1793880188309199659}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU","result":"kept","detail":"sweep: running again","ts":"2026-11-05T12:03:11Z","tsn":1793880191349822582}
+{"seat":"RUNNER","event":"note","id":"OPS_RELENTLESS_UNSTICK_XARX","text":"ops_watch: cleared at 2026-11-05T12:07:00Z (relentless.distressed now 0)","ts":"2026-11-05T12:07:41Z","tsn":1793880461613197290}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_START: disk.scratch_dirty_start = 2 sanity problems at the start of the last run (MEASURED), line > 0","ts":"2026-11-05T12:07:44Z","tsn":1793880464951788824}
+{"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-05T12:07:48Z","tsn":1793880468383984392}
