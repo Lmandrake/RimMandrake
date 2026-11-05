@@ -28,6 +28,8 @@ def ok(cond, what, got=None):
 
 
 CALLS = []
+UNSTUB = set()          # --unstub NAME: leave runner.NAME real in stubbed_run (replays a missed-stub instance)
+BRIDGE_REACHES = []     # every rimbridge_client reach any stubbed run made, by runner caller
 
 
 def make_suite():
@@ -180,6 +182,24 @@ def stubbed_run():
     fake_rimdrive.Session = Session
     real_rd = sys.modules.get("rimdrive")
     sys.modules["rimdrive"] = fake_rimdrive
+    # NIGHTLY_COP_FIX_RED_OIMKSA_WDRT: fence the bridge. runner imports rimbridge_client lazily, so a new bridge read
+    # (the 11-04 instance: verify_loaded_list -> jawa/running_mods) left unstubbed reached the REAL bridge: it failed
+    # from WSL and would drive the live game from Windows Python. Every reach is recorded with its caller and refused.
+    seen["bridge"] = []
+    fake_rb = type(sys)("rimbridge_client")
+
+    def _reach(*a, **k):
+        import traceback
+        callers = [f.name for f in traceback.extract_stack()[:-1] if f.filename.endswith("runner.py")]
+        seen["bridge"].append(callers[-1] if callers else "?")
+        raise ConnectionError("HERMETIC: the stubbed run reached rimbridge_client")
+
+    class _FencedBridge(object):
+        def __init__(self, *a, **k):
+            _reach()
+    fake_rb.resolve_endpoint, fake_rb.RimBridge = _reach, _FencedBridge
+    real_rbm = sys.modules.get("rimbridge_client")
+    sys.modules["rimbridge_client"] = fake_rb
 
     def fake_suite(s, sess, **k):
         seen["suite"].append(([n for n, _ in s.chains], k.get("hold_site"), k.get("floor_suite")))
@@ -194,6 +214,10 @@ def stubbed_run():
     runner.run_suite = fake_suite
     runner.write_sheet = lambda m, s: "/tmp/ToyMod_sheet.html"
     runner.mod_dependency_ids, runner.composed_into, runner.mod_package_id = (lambda d: []), (lambda m: None), (lambda d: "x.y")
+    if UNSTUB - set(names):     # an unknown name would replay nothing and pass vacuously
+        raise SystemExit("--unstub: %s is not a stubbed runner name (%s)" % (sorted(UNSTUB - set(names)), names))
+    for n in UNSTUB:
+        setattr(runner, n, real[n])
     status.record_run = lambda *a, **k: seen["record"].append(a[0])
     def fake_sub(cmd, **k):     # rimflow's real behaviour with no seat in reach: refuse
         seen["verify"].append(cmd)
@@ -217,6 +241,11 @@ def stubbed_run():
             sys.modules.pop("rimdrive", None)
         else:
             sys.modules["rimdrive"] = real_rd
+        if real_rbm is None:
+            sys.modules.pop("rimbridge_client", None)
+        else:
+            sys.modules["rimbridge_client"] = real_rbm
+        BRIDGE_REACHES.extend(seen["bridge"])
 
 
 def t_run_records_without_seat():
@@ -661,7 +690,12 @@ def t_changed_stem_whole_token():
        "an underscore-free stem (WaterPump.cs) maps by whole-token match", res)
 
 
-def main():
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    while "--unstub" in argv:
+        i = argv.index("--unstub")
+        UNSTUB.add(argv[i + 1])
+        del argv[i:i + 2]
     for t in (t_resolve, t_targeted_suite_keeps_site_hold, t_emit_verify_seat, t_run_records_without_seat,
               t_run_targeted, t_cli_refusals, t_scope_and_preview, t_incomplete_catalogue_refused,
               t_offline_chains_out_of_live, t_stop_after_runtime, t_hold_contract_every_run, t_cli_preview,
@@ -671,6 +705,8 @@ def main():
             t()
         except Exception as ex:     # noqa: BLE001 - one broken test must not hide the others
             ok(False, "%s raised %s: %s" % (t.__name__, type(ex).__name__, ex))
+    ok(not BRIDGE_REACHES, "hermetic: the stubbed run never reaches the bridge (stub the runner caller named)",
+       sorted(set(BRIDGE_REACHES)))
     print("\nSELFTEST %s -- %d failed" % ("FAILED" if FAILS else "OK", len(FAILS)))
     return 1 if FAILS else 0
 
