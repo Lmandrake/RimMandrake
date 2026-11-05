@@ -221,9 +221,23 @@ def read_settings(s, type_name, expect):
     for f, v in expect.items():
         got = _ok(s.call("jawa/mod_settings_field", typeName=type_name, action="get", field=f),
                   "mod_settings_field(get)").get("value")
-        if str(got) != str(v):
+        if not setting_equals(got, v):
             bad[f] = got
     return bad
+
+
+def setting_equals(got, want):
+    """A bridge-read setting equals its shipped default. The game prints a float without a trailing `.0`
+    (`1f` reads "1") while a default parsed from source is 1.0: compare numbers as numbers, bools by their
+    lower-case word, the rest as text. A string compare refused every float field (WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1)."""
+    if isinstance(want, bool) or isinstance(got, bool):
+        return str(got).strip().lower() == str(want).strip().lower()
+    if isinstance(want, (int, float)):
+        try:
+            return abs(float(str(got).strip()) - float(want)) <= 1e-6 * max(1.0, abs(float(want)))
+        except (TypeError, ValueError):
+            return False
+    return str(got) == str(want)
 
 
 def log_offset(player_log):
