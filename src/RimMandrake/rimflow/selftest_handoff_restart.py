@@ -156,6 +156,39 @@ def test_schedule():
           and not SR.says_handoff_ready("say `HANDOFF READY` once `--check` passes"), "the words inside a sentence are not")
 
 
+
+def test_quoted_last_reply():
+    """HANDOFF_HOOK_FIX_QUOTED_READY_COUNTS: a fresh window copies the dead one's last reply whole (cmd_last_reply), and
+    that reply ends in HANDOFF READY. The copy is not this window's handoff; its own words after the copy still are."""
+    old = "All closed.\n\n---\n\nHANDOFF READY (Wed Nov 4, 12:36 AM PST)"
+    for top in ("Last reply from the old window:\n\n<<<\n%s\n>>>\n\n" % old,   # markers kept: a --- inside is not the end
+                "Last reply from the old window:\n\n%s\n\n---\n\n" % old.replace("\n\n---", ""),   # ended by a rule
+                "**Last reply from the old window:**\n<<<\n%s\n>>>\n" % old):
+        check(not SR.says_handoff_ready(top + "**Where things stand**\nnothing open."),
+              "the copied old reply's HANDOFF READY is not the signal (%r)" % top[:40])
+        check(SR.says_handoff_ready(top + "Done, handed off.\n\nHANDOFF READY (Wed Nov 4, 9:00 AM PST)"),
+              "the fresh window's own HANDOFF READY after the copy still is (%r)" % top[:40])
+    check(not SR.says_handoff_ready("Last reply from the old window:\n\n" + old.replace("\n\n---", "")),
+          "a copy with no end marker runs to the message's end")
+    check(SR.says_handoff_ready("<<<\nquoted\n>>>\nHANDOFF READY"), "a bare <<< >>> block is skipped, the line after counts")
+    # a fresh review's four inputs (2026-11-05), each once wrong
+    check(not SR.says_handoff_ready("Last reply from the old window:\n\nAll closed.\n\n---\n\nHANDOFF READY (Wed)\n\n"
+                                    "---\n\nWhere things stand: nothing."), "no markers: a --- inside the copy does not end it")
+    check(not SR.says_handoff_ready("**Last reply from the old window**:\n\nok\n\nHANDOFF READY (Wed)\n\n---\n\nnothing open.")
+          and not SR.says_handoff_ready("Last reply from the old window (Tue 12:55):\n\nHANDOFF READY (Wed)\n\n---\nnothing."),
+          "the header with its colon outside the bold, or a stamp, is still the header")
+    check(SR.says_handoff_ready("Example:\n```\n<<<\nfoo\nLast reply from the old window:\n```\nDone.\n\nHANDOFF READY (Wed)"),
+          "a marker or header inside a fence is an example: the real handoff after it is heard")
+    check(not SR.says_handoff_ready("Last reply from the old window:\n<<<\nLast reply from the old window:\n<<<\nx\n>>>\n"
+                                    "HANDOFF READY (Wed)\n>>>\nnothing open."), "a copy holding its own copy: depth counted")
+    # the second review's three (2026-11-05)
+    check(SR.says_handoff_ready("Last reply from the old window was its handoff; I picked it up and closed both items.\n\n"
+                                "HANDOFF READY (Wed 9:00 AM)"), "a sentence opening with the header words is prose, not the header")
+    check(SR.says_handoff_ready("Last reply from the old window:\n\nold\n\nHANDOFF READY (Tue)\n\n---\n\nDone.\n\n"
+                                "HANDOFF READY (Wed)\n\n---\n\nFiles: a.py"), "no markers, two rules: this window's own words are heard")
+    check(SR.says_handoff_ready("Last reply from the old window:\n<<<\nx\n<<<\nHANDOFF READY (Wed)\n>>>\nnothing open.\n\n"
+                                "HANDOFF READY (Thu)"), "a <<< never closed falls back to the unmarked rule")
+
 def test_wait():
     w = start("wait")
     w.at(120)
@@ -574,7 +607,7 @@ def test_doorbell():
 
 if __name__ == "__main__":
     try:
-        for t in (test_schedule, test_wait, test_rings, test_human, test_deferred, test_spin, test_fresh, test_conductor_now, test_hook, test_doorbell):
+        for t in (test_schedule, test_quoted_last_reply, test_wait, test_rings, test_human, test_deferred, test_spin, test_fresh, test_conductor_now, test_hook, test_doorbell):
             print("== " + t.__name__)
             t()
     finally:

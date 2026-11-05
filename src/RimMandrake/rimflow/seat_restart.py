@@ -847,23 +847,70 @@ LABEL_TICKETS = ("GOODBYE", HANDOFF_TICKET)
 REFUSED_ALARM_S = 120                          # a refused handoff the window did not put right is the Conductor's after this
 
 
+LAST_REPLY_HEADER = "Last reply from the old window"   # cmd_last_reply orders the copy under this line, in <<< >>>
+# the header is the whole line: the words, an optional (stamp), bold and a colon; a sentence opening with them is prose
+_LAST_REPLY_RE = re.compile(r"[*_# ]*%s[*_ ]*(\([^)]*\))?[*_ ]*:?[*_ ]*$" % re.escape(LAST_REPLY_HEADER), re.I)
+
+
+def _ready_line(x):
+    """A line, already stripped of bold and heading marks, that says HANDOFF READY on its own or with a stamp."""
+    return x.rstrip(".!") == "HANDOFF READY" or bool(re.match(r"HANDOFF READY\s*[\u2014\u2013:(-]", x))
+
+
+def _bare(x):
+    return x.strip("*_# ").strip()
+
+
 def says_handoff_ready(text):
     """A message that closes a seat's handoff: a line of its own reading HANDOFF READY (bold or a full stop allowed), or
     a last line opening with those words, or any line opening with them and then a stamp (HANDOFF READY — Tue 12:55 PM,
     then the file list: the 2026-11-03 Conductor handoff, whose words sat mid-message and read as not said, so nothing
-    fired). The words inside a sentence, a quote or a code span are not the signal."""
-    lines, fenced = [], False
+    fired). The words inside a sentence, a quote, a code span or a fence are not the signal, nor inside the dead window's
+    last reply that a fresh window copies whole under a "Last reply from the old window:" line (cmd_last_reply's order;
+    HANDOFF_HOOK_FIX_QUOTED_READY_COUNTS: the copied words refused a fresh Conductor window's turn 1/3). That copy runs
+    from its header to the >>> matching its <<< (nested pairs counted; a bare >>> line inside the old reply still
+    ends it early, accepted as rare). A copy without markers, or with a <<< never
+    closed, is best effort: it runs through its first HANDOFF READY line (the old reply's own close) and on to the next
+    --- rule if one follows (the old reply's trailing file list); with no such line at all, to the end. Erring there costs a restart one turn late; erring the other way blocked a fresh window."""
+    raw, fenced = [], False
     for x in (text or "").splitlines():
         x = x.strip()
         if x.startswith("```"):
-            fenced = not fenced             # a fenced block is an example, not the signal
+            fenced = not fenced             # a fenced block is an example, not the signal, nor a header or a marker
             continue
-        x = x.strip("*_# ").strip()
-        if x and not fenced and not x.startswith((">", "`")):   # a quote line or a code span is not the signal either
+        if not fenced:
+            raw.append(x)
+
+    def unmarked_end(j):
+        """-> the index after a copy without markers that starts at j."""
+        while j < len(raw) and not _ready_line(_bare(raw[j])):
+            j += 1
+        j += 1
+        rule = next((k for k in range(j, len(raw)) if raw[k] == "---"), None)
+        return j if rule is None else rule + 1
+
+    lines, i = [], 0
+    while i < len(raw):
+        x = raw[i]
+        header = bool(_LAST_REPLY_RE.match(x))
+        j = i + 1 if header else i
+        while header and j < len(raw) and not raw[j]:
+            j += 1
+        if raw[j:j + 1] == ["<<<"]:         # the copied block, markers kept: to its matching >>>
+            depth, k = 1, j + 1
+            while k < len(raw) and depth:
+                depth += (raw[k] == "<<<") - (raw[k] == ">>>")
+                k += 1
+            i = k if not depth else unmarked_end(j + 1)
+            continue
+        if header:
+            i = unmarked_end(j)
+            continue
+        x = _bare(x)
+        if x and not x.startswith((">", "`")):   # a quote line or a code span is not the signal either
             lines.append(x)
-    return bool(lines) and (any(x.rstrip(".!") == "HANDOFF READY" for x in lines)
-                            or bool(re.match(r"HANDOFF READY\b", lines[-1]))
-                            or any(re.match(r"HANDOFF READY\s*[\u2014\u2013:(-]", x) for x in lines))
+        i += 1
+    return bool(lines) and (any(_ready_line(x) for x in lines) or bool(re.match(r"HANDOFF READY\b", lines[-1])))
 
 
 def last_assistant_text(path, tail_bytes=1 << 20, skip=()):
@@ -2963,8 +3010,8 @@ def _wake_last_reply(rec, cfg=None, me=None):
         print("UNMEASURED: no reply could be read from %s. Say so to him in one line." % (path or "(no transcript named)"))
         return
     print("<<<\n%s\n>>>" % text.strip())
-    print("Copy it whole and word for word to the very top of your first reply, under the line \"Last reply from the old "
-          "window:\", and only then answer or report. Do not summarize it.")
+    print("Copy it whole and word for word to the very top of your first reply, under the line \"%s:\", with its <<< "
+          "and >>> lines, and only then answer or report. Do not summarize it." % LAST_REPLY_HEADER)
 
 
 def cmd_last_reply(args):
