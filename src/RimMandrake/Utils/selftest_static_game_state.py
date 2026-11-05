@@ -133,7 +133,6 @@ REVIEWED = {
     "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs::lastComp": "with lastMap",
     # FlowWorks, triaged by STATIC_STATE_FIX_RELOAD_TICK_MEMOS (2026-10-26)
     "src/RimMandrake/FlowWorks/Source/Machinery/RM_PipeStraightVariantsDraw.cs::mats": "material cache keyed by (Texture2D, Material) asset objects, never game ids; assets outlive games",
-    "src/RimMandrake/FlowWorks/Source/Pits/Drawbridge/RM_DrawbridgeArt.cs::leafMeshes": "geometry cache keyed by a quantised UV crop; pure function of its key",
     "src/RimMandrake/FlowWorks/Source/Rivers/RM_Weir.cs::foam": "material cache keyed by frame/variant/alpha; pure function of its key",
     "src/RimMandrake/FlowWorks/Source/RM_Shovels.cs::cacheTick": "per-pawn-per-tick FindShovelFor memo, invalidated when cacheGame != Current.Game",
     "src/RimMandrake/FlowWorks/Source/RM_Shovels.cs::cacheFound": "with cacheTick; also re-checked Spawned and on the pawn's map before reuse",
