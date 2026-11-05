@@ -2047,10 +2047,13 @@ def churn_blind(why, tokens_only=False):
 
 
 def attempt_failed(r, ok_ends):
-    """One attempts.jsonl row -> (epoch or None, ending class) when it is a FAILED ATTEMPT (rl_churn's doc), else None."""
+    """One attempts.jsonl row -> (epoch or None, ending class) when it is a FAILED ATTEMPT (rl_churn's doc), else None.
+    A `gated` row (relentless_attrib.withhold: withheld until attributed, no strike, no return) is none: the attribution
+    writes the gen's real ending row, and counting both read 'game_fail failed it 2 times' off one live fail
+    (OPS_CHURN_DIAGNOSE_PACK_HMAO_RAYY)."""
     if not isinstance(r, dict) or not isinstance(r.get("gen"), int) or r.get("start"):
         return None
-    if r.get("end") and r["end"] not in ok_ends and "kind" not in r and not attempt_waited(r):
+    if r.get("end") and r["end"] not in ok_ends and "kind" not in r and not attempt_waited(r) and not r.get("gated"):
         return epoch(r.get("at")), str(r["end"])
     return None
 
@@ -2263,7 +2266,7 @@ def rl_churn(store, now, cfg):
                         started[(n, r["gen"])] = epoch(r.get("at"))
                         cur = r["gen"]
                         continue
-                    if r.get("end") and "kind" not in r:
+                    if r.get("end") and "kind" not in r and not r.get("gated"):     # withheld: not the gen's ending
                         gen_end[(n, r["gen"])] = str(r["end"])
                         (waited.add if attempt_waited(r) else waited.discard)((n, r["gen"]))
                         waits += attempt_waited(r)

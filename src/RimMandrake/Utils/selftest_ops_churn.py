@@ -450,6 +450,30 @@ def main():
     got = pn.get(OW.CHURN_ITEM_PREFIX + nm) or {}
     ok(got.get("v") == 0 and got.get("m") == "MEASURED" and pn["relentless.churn_items"].get("v") == 0,
        "9n: one legacy unflagged wait plus five wait=true endings, alarm held, reads 0 (clears)", got)
+    # 9g OPS_CHURN_DIAGNOSE_PACK_HMAO_RAYY: PACK_ANIMALS_RESTORE_EMPTY_SADDLES read 'game_fail failed it 2 times' off ONE
+    # A5 fail: relentless_attrib.withhold writes a `gated` row (withheld until attributed: no strike, no return) and the
+    # attribution writes the real row for the same gen. The gated row is no failed attempt. Without `gated` the same two
+    # rows still count twice (the instrument can see).
+    for gated in (True, False):
+        sg = TMP / ("s9g_%s" % gated)
+        nm = "G9_ITEM"
+        d = sg / "items" / nm
+        d.mkdir(parents=True)
+        (d / "state.json").write_text(json.dumps({"status": "queued", "returns": 1, "gen": 5, "spent": 1}))
+        t = NOW - HOUR
+        rows = [{"gen": 4, "at": iso(t), "start": marker(nm, 4)},
+                dict({"gen": 4, "at": iso(t + 60), "end": "game_fail", "sha": "a" * 40},
+                     **({"gated": "attribution"} if gated else {})),
+                {"gen": 4, "at": iso(t + 600), "end": "game_fail", "approach_next": "build"}]
+        (d / "attempts.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+        (TMP / "ops" / "alarms.json").write_text("{}")
+        pg = OW.rl_churn(sg, NOW, cfg9)
+        said = (pg.get(OW.CHURN_ITEM_PREFIX + nm) or {}).get("x", {}).get("said", "")
+        if gated:
+            ok(OW.CHURN_ITEM_PREFIX + nm not in pg and not OW.attempt_failed(rows[1], ends),
+               "9g: a gated (withheld) row plus its attributed row is one game_fail, no churn", (sorted(pg), said))
+        else:
+            ok("game_fail failed it 2 times" in said, "9g: the same rows without gated still count twice", said)
     shutil.rmtree(TMP, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
