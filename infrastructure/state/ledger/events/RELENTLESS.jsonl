@@ -760,3 +760,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:18:56Z","tsn":1793906336720630049}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing SILT_TRAP_STYLES_REDRAW_HALF_RES_FLAT: review savegame for the owner's look","ts":"2026-11-05T19:24:22Z","tsn":1793906662386354212}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:24:29Z","tsn":1793906669374507391}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WARSCAR_HOSPICE_DESERTERS_1 A2 (L2), read-only proof","ts":"2026-11-05T19:26:05Z","tsn":1793906765565785915}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:26:39Z","tsn":1793906799079784288}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WARSCAR_HOSPICE_DESERTERS_1 A4 (L2), read-only proof","ts":"2026-11-05T19:26:58Z","tsn":1793906818347883135}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T19:27:34Z","tsn":1793906854557481474}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR: deploy and restart for its live proofs","ts":"2026-11-05T19:29:04Z","tsn":1793906944837087549}
