@@ -1,0 +1,1 @@
+A companion [Tool] committed without tool_schemas.py --supplement-only turned the nightly selftest_lint_calls red three times (2026-10-10, 10-26, 11-03); infrastructure/githooks/pre-commit now refuses it via northstar_driver/tool_snapshot_guard.py. Also: a relentless contract --live hook=<name> means a Claude settings.json hook; a git hook takes once:.
