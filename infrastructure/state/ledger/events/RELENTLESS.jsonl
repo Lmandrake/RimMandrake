@@ -563,3 +563,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T06:33:39Z","tsn":1793860419527959428}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING: deploy and restart for its live proofs","ts":"2026-11-05T06:39:13Z","tsn":1793860753779950491}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T07:06:10Z","tsn":1793862370470204896}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ART_OVERRIDE_FAMILY_SCRIPT_1: deploy and restart for its live proofs","ts":"2026-11-05T07:30:18Z","tsn":1793863818796885331}
