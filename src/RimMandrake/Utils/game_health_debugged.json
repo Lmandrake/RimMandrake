@@ -1,0 +1,18 @@
+{
+ "_doc": "game_health_check.py debugged: full-list sessions whose breaches were debugged (OPS_GAME_HEALTH_DEBUG_PXQI). ops_watch counts only a newest session's breaches NOT listed here, so a finished, explained session stops re-ringing; a key not listed and every other session still ring, and no limit in game_health_thresholds.json changes. Write rows only through the verb, after `explain --session ID` names a cause for every key.",
+ "debugged": [
+  {
+   "at": "2026-11-05T12:03:08Z",
+   "item": "OPS_GAME_HEALTH_DEBUG_PXQI",
+   "keys": [
+    "log.errors",
+    "log.errors_lower_bound",
+    "mem.managed_growth_mb_per_h",
+    "mem.managed_peak_mb",
+    "mem.private_peak_mb"
+   ],
+   "session": "e50b27dff30645f3829414f4594fab33",
+   "why": "debugged offline 2026-11-04/05 (explain --session e50b27df): heap/private peaks and growth are scale, a bench run generating maps up to 924x924 (13.7x a 250x250 map, 360k things), heap flat after the last map change; errors +391 at 16:15Z from loading the stale disposable save BENCH_leaf_scenes_20261026 (dead def names, 'Could not load reference'); the lower bound is cold-load eviction (3958-message rise at 13:26Z, inside the 775 s load)"
+  }
+ ]
+}

@@ -31,14 +31,22 @@ bound says whether the queue was already full at the first read (load messages e
 rise of Verse.Log's message count (>= the queue size proves an eviction between two scans). Attribution never
 removes or softens a breach. `explain [--session ID]` re-reads a session from disk and prints it.
 
+A finished session stays the newest row until the next full-list session, so once its breaches are debugged the alarm
+would re-ring on the same numbers for good (session e50b27df re-opened this item 19 times). `debugged --session ID --item
+ITEM --why "..."` writes (session, its current breach keys, item, why) into the COMMITTED game_health_debugged.json;
+`latest` then carries `open_breaches` (breaches not debugged) and `debugged` ({key: "ITEM: why"}), and ops_watch counts
+only the open ones. No limit changes: a key not debugged, and every other session, still rings.
+
     python3 src/RimMandrake/Utils/game_health_check.py record [--dry-run] [--json]   append new finished sessions
     python3 src/RimMandrake/Utils/game_health_check.py report [--last N] [--curve]   sessions over time (+ newest curve)
     python3 src/RimMandrake/Utils/game_health_check.py latest --json                 the newest recorded row (ops_watch)
+    python3 src/RimMandrake/Utils/game_health_check.py debugged --session ID --item ITEM --why "..."
+                                                                                     record a session's breaches as debugged
     python3 src/RimMandrake/Utils/game_health_check.py fields [--session ID]          live proof: exit 0 when the newest
                                                                                      session's context rows carry the
                                                                                      companion memory/log fields
 History (outside git): $RM_GAME_HEALTH_DIR/history.jsonl, default D:\ClaudeWork\rimmandrake\game_health.
-$RM_GAME_HEALTH_TPS_DIR overrides where `record` reads the TPS record (selftests).
+$RM_GAME_HEALTH_TPS_DIR overrides where `record` reads the TPS record, $RM_GAME_HEALTH_ACKS the debugged record (selftests).
 """
 from __future__ import annotations
 
@@ -56,6 +64,7 @@ import tps_record as T  # noqa: E402
 
 SCHEMA = 1
 THRESHOLDS = os.path.join(HERE, "game_health_thresholds.json")
+DEBUGGED = os.path.join(HERE, "game_health_debugged.json")
 MEM_FIELDS = (("managed", "heapMB"), ("private", "privateMB"), ("native", "unityReservedMB"), ("gfx", "gfxMB"))
 LIVE_FIELDS = ("privateMB", "unityReservedMB", "unityAllocMB", "logErr", "logWarn", "upS")
 
@@ -390,6 +399,59 @@ def breaches(m, rules):
     return out
 
 
+# ------------------------------------------------------------------ debugged sessions
+def acks_path():
+    return os.environ.get("RM_GAME_HEALTH_ACKS") or DEBUGGED
+
+
+def load_acks(path=None):
+    """The committed debugged record as a dict; a missing file is an empty record, a corrupt one raises (an unreadable
+    record must not silently clear or keep an alarm)."""
+    try:
+        with open(path or acks_path()) as fh:
+            d = json.load(fh)
+    except FileNotFoundError:
+        return {"debugged": []}
+    if not isinstance(d, dict) or not isinstance(d.get("debugged", []), list):
+        raise ValueError("%s: 'debugged' is not a list" % (path or acks_path()))
+    d.setdefault("debugged", [])
+    return d
+
+
+def split_breaches(row, acks=None):
+    """(open breaches, {key: "ITEM: why"}) for one history row against the debugged record. A record row matches the
+    row's session by prefix (at least 8 characters, as explain prints) and debugs only the keys it names."""
+    acks = load_acks() if acks is None else acks
+    sid = str(row.get("session") or "")
+    done = {}
+    for a in acks.get("debugged") or []:
+        s = str(a.get("session") or "") if isinstance(a, dict) else ""
+        if len(s) >= 8 and sid.startswith(s):
+            for k in a.get("keys") or []:
+                done[k] = "%s: %s" % (a.get("item"), a.get("why"))
+    brs = [b for b in row.get("breaches") or [] if isinstance(b, dict)]
+    return [b for b in brs if b.get("key") not in done], {b["key"]: done[b["key"]] for b in brs if b.get("key") in done}
+
+
+def debug_session(sid, item, why, path=None):
+    """Append one record row for history session `sid` (prefix); 1 when the session is unknown or has no breach."""
+    h = [r for r in read_history() if sid and str(r.get("session") or "").startswith(sid)]
+    if len(h) != 1 or not h[0].get("breaches"):
+        print("FAIL: session %s is %s" % (sid, "not in the history" if not h else "ambiguous" if len(h) > 1 else
+                                          "without a breach"))
+        return 1
+    p = path or acks_path()
+    d = load_acks(p)
+    d["debugged"].append({"session": h[0]["session"], "keys": sorted(b["key"] for b in h[0]["breaches"]),
+                          "item": item, "why": why, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
+    with open(p + ".tmp", "w") as fh:
+        json.dump(d, fh, indent=1, sort_keys=True)
+        fh.write("\n")
+    os.replace(p + ".tmp", p)
+    print("debugged %s: %s (%s)" % (h[0]["session"][:8], ", ".join(d["debugged"][-1]["keys"]), p))
+    return 0
+
+
 # ------------------------------------------------------------------ history
 def read_history(path=None):
     p = path or history_path()
@@ -483,6 +545,10 @@ def main(argv=None):
     b.add_argument("--curve", action="store_true")
     c = sub.add_parser("latest")
     c.add_argument("--json", action="store_true")
+    g = sub.add_parser("debugged")
+    g.add_argument("--session", required=True)
+    g.add_argument("--item", required=True)
+    g.add_argument("--why", required=True)
     e = sub.add_parser("explain")
     e.add_argument("--session")
     e.add_argument("--dir")
@@ -503,7 +569,14 @@ def main(argv=None):
     if args.cmd in ("report", "latest"):
         h = sorted(read_history(), key=lambda r: str(r.get("start")))   # a late-finalized session appends late
         if args.cmd == "latest":
-            print(json.dumps(h[-1] if h else None, sort_keys=True))
+            row = h[-1] if h else None
+            if row is not None:
+                try:
+                    row["open_breaches"], row["debugged"] = split_breaches(row)
+                except (OSError, ValueError) as e:   # an unreadable record debugs nothing: every breach still rings
+                    row["open_breaches"], row["debugged"] = row.get("breaches") or [], {}
+                    row["debuggedError"] = "%s: %s" % (type(e).__name__, str(e)[:200])
+            print(json.dumps(row, sort_keys=True))
             return 0
         if not h:
             print("no full-list session recorded yet (%s)" % history_path())
@@ -515,6 +588,11 @@ def main(argv=None):
             for k, v in sorted(r["curves"].items()):
                 print("  %-10s %s" % (k, " ".join("%s:%s" % (p[0], p[1]) for p in v)))
         return 0
+    if args.cmd == "debugged":
+        if not args.item.strip() or not args.why.strip() or len(args.session) < 8:
+            print("FAIL: --item and --why must say something, --session at least 8 characters")
+            return 2
+        return debug_session(args.session, args.item.strip(), args.why.strip())
     if args.cmd == "explain":
         sess = sessions_on_disk(args.dir or os.environ.get("RM_GAME_HEALTH_TPS_DIR") or T.record_dir())
         h = sorted(read_history(), key=lambda r: str(r.get("start")))

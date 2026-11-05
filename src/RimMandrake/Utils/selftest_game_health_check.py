@@ -333,5 +333,94 @@ with tempfile.TemporaryDirectory() as tmp:
     check("ops_watch: health keys are machine health (blind roles see them)",
           {"tps.health_breaches", "tps.health_age_h", "tps.health_sessions"} <= OW.BLIND_KEYS)
 
+    # a debugged session stops ringing (OPS_GAME_HEALTH_DEBUG_PXQI gen 5): the alarm re-rang 19 times on the SAME
+    # session e50b27df after its breaches were explained, since nothing could clear a finished session but a newer one.
+    # A breach whose (session, key) is in the committed debugged record is carried as `debugged`, not counted; an
+    # un-acked key, or any other session, still rings. The limits are untouched.
+    h9 = os.path.join(tmp, "h9")
+    os.makedirs(h9, exist_ok=True)
+    with open(os.path.join(h9, "history.jsonl"), "w") as fh:
+        fh.write(json.dumps(s9) + "\n")
+    acks = os.path.join(tmp, "debugged.json")
+    os.environ["RM_GAME_HEALTH_ACKS"] = acks
+    old_dir = os.environ.get("RM_GAME_HEALTH_DIR")
+    os.environ["RM_GAME_HEALTH_DIR"] = h9
+    os.environ["RM_GAME_HEALTH_TPS_DIR"] = os.path.join(tmp, "empty_rec")
+    os.makedirs(os.environ["RM_GAME_HEALTH_TPS_DIR"], exist_ok=True)
+
+    def ring(ack_rows):
+        with open(acks, "w") as fh:
+            json.dump({"debugged": ack_rows}, fh)
+        OW.subprocess.run = fake
+        try:
+            return OW.game_health(NOW).get("tps.health_breaches") or {}
+        finally:
+            OW.subprocess.run = real
+
+    def verb(args):
+        try:
+            return G.main(args)
+        except SystemExit as e:          # an absent verb must FAIL the check, not crash the test
+            return "SystemExit %s" % e.code
+    allk = sorted(k9)
+    hb0 = ring([])
+    check("debugged: with no record, the replay rings every breach", hb0.get("v") == len(k9), hb0)
+    hb1 = ring([{"session": "9" * 32, "keys": allk, "item": "X_ITEM", "why": "bench maps"}])
+    x1 = hb1.get("x") or {}
+    check("debugged: a session whose every breach is debugged rings nothing (MEASURED 0)",
+          hb1.get("m") == "MEASURED" and hb1.get("v") == 0, hb1)
+    check("debugged: the debugged keys stay visible on the reading, with the item that debugged them",
+          sorted((x1.get("debugged") or {})) == allk and all("X_ITEM" in str(v) for v in (x1.get("debugged") or {}).values()),
+          x1)
+    hb2 = ring([{"session": "9" * 32, "keys": [k for k in allk if k != "log.errors"], "item": "X_ITEM", "why": "w"}])
+    check("debugged: an un-acked key still rings, alone", hb2.get("v") == 1 and (hb2.get("x") or {}).get("keys") ==
+          ["log.errors"], hb2)
+    hb3 = ring([{"session": "8" * 32, "keys": allk, "item": "X_ITEM", "why": "w"}])
+    check("debugged: an ack for another session clears nothing", hb3.get("v") == len(k9), hb3)
+    hb4 = ring([{"session": "9" * 8, "keys": allk, "item": "X_ITEM", "why": "w"}])
+    check("debugged: a session prefix of 8 hex is enough (explain prints 8)", hb4.get("v") == 0, hb4)
+    with open(acks, "w") as fh:
+        json.dump({"debugged": []}, fh)
+    check("debugged verb: refuses a session not in the history (exit 1)",
+          verb(["debugged", "--session", "7" * 8, "--item", "X_ITEM", "--why", "w"]) == 1)
+    rc = verb(["debugged", "--session", "9" * 8, "--item", "X_ITEM", "--why", "bench maps"])
+    rows = (json.load(open(acks)).get("debugged") or []) if rc == 0 else []
+    check("debugged verb: writes one row naming the full session, every current breach key, item and why",
+          rc == 0 and len(rows) == 1 and rows[0].get("session") == "9" * 32 and sorted(rows[0].get("keys") or []) == allk
+          and rows[0].get("item") == "X_ITEM" and rows[0].get("why") == "bench maps", (rc, rows))
+    check("debugged verb: refuses an empty why (exit 2)",
+          verb(["debugged", "--session", "9" * 8, "--item", "X_ITEM", "--why", " "]) == 2)
+    lat = None
+    import io
+    import contextlib
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        verb(["latest", "--json"])
+    try:
+        lat = json.loads(buf.getvalue())
+    except ValueError:
+        pass
+    check("latest --json: carries open_breaches [] and every key under debugged once the session is acked",
+          isinstance(lat, dict) and lat.get("open_breaches") == [] and sorted(lat.get("debugged") or {}) == allk,
+          (lat or {}).get("open_breaches"))
+    shipped = json.load(open(os.path.join(HERE, "game_health_debugged.json"))) if os.path.exists(
+        os.path.join(HERE, "game_health_debugged.json")) else {}
+    e50 = [r for r in shipped.get("debugged") or [] if str(r.get("session", "")).startswith("e50b27df")]
+    check("shipped record: e50b27df is debugged, all five keys, by this item",
+          len(e50) == 1 and set(e50[0].get("keys") or []) == {"mem.managed_peak_mb", "mem.managed_growth_mb_per_h",
+                                                            "mem.private_peak_mb", "log.errors", "log.errors_lower_bound"}
+          and e50[0].get("item") == "OPS_GAME_HEALTH_DEBUG_PXQI", e50)
+    with open(acks, "w") as fh:
+        fh.write("{not json")
+    OW.subprocess.run = fake
+    try:
+        hb5 = OW.game_health(NOW).get("tps.health_breaches") or {}
+    finally:
+        OW.subprocess.run = real
+    check("debugged: a corrupt record debugs nothing, every breach still rings", hb5.get("v") == len(k9), hb5)
+    os.environ.pop("RM_GAME_HEALTH_ACKS", None)
+    if old_dir is not None:
+        os.environ["RM_GAME_HEALTH_DIR"] = old_dir
+
 print("\n%d failed" % len(FAILS) if FAILS else "\nALL PASS")
 sys.exit(1 if FAILS else 0)

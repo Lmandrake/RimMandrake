@@ -1577,14 +1577,19 @@ def game_health(now):
     if not isinstance(row, dict) or not isinstance(row.get("breaches"), list):
         return {k: U("no full-list game session recorded yet") for k in keys}
     end = epoch(row.get("end"))
-    br = [b.get("key") for b in row["breaches"] if isinstance(b, dict)]
+    # breaches already debugged for this session (game_health_check.py debugged, a committed record) are carried, not
+    # counted: else a finished session re-rings until the next full-list session (OPS_GAME_HEALTH_DEBUG_PXQI, 19 times)
+    opn = row.get("open_breaches") if isinstance(row.get("open_breaches"), list) else row["breaches"]
+    opn = [b for b in opn if isinstance(b, dict)]
+    br = [b.get("key") for b in opn]
     out = {"tps.health_breaches": M(len(br), "limits crossed by the newest full-list session", session=row.get("session"),
                                     keys=br, said="; ".join("%s=%s (limit %s %s)" % (b.get("key"), b.get("value"),
                                                                                      b.get("op"), b.get("limit"))
-                                                            for b in row["breaches"])[:400] or None,
+                                                            for b in opn)[:400] or None,
+                                    debugged=row.get("debugged") or None,
                                     # what the session was doing when each limit fell (game_health_check.py attribute)
                                     attribution={k: "; ".join(v)[:600] for k, v in (row.get("attribution") or {}).items()
-                                                 if isinstance(v, list)} or None),
+                                                 if isinstance(v, list) and k in br} or None),
            "tps.health_age_h": M(round((now - end) / 3600.0, 1), "h since the newest full-list session ended")
            if end is not None else U("newest row has no readable end time")}
     try:
