@@ -96,11 +96,31 @@ suite.toggles = []   # no Source/, no ModSettings of its own -- every component 
 
 GEOMETRY_DEF = "RUT_WS_AshkarrGeometry"
 
+# FULL type name: jawa/get_defs resolves a bare type name only in Verse and
+# RimWorld, so "PlanetGeometryDef" alone answered "No def TYPE named
+# 'PlanetGeometryDef'" on a load where the def WAS present (2026-11-03,
+# ASHKARR_WEATHER_INSTALL_THE_SLEEPING_STORMS A1). Namespace read from
+# src/RimMandrake/WeatherSuite/Source/WeatherSuiteHook.cs, not guessed.
+GEOMETRY_TYPE = "RimMandrake.StarWars.WeatherSuite.PlanetGeometryDef"
+
+# Values verbatim from WeatherGeometryDefs_Ashkarr.xml. The bridge returns
+# floats as JSON numbers (63.0), so _field_matches compares numerically.
 GEOMETRY_EXPECT = {
-    "substellarLat": "0", "substellarLon": "0",
-    "terminatorBandMinArc": "63", "terminatorBandMaxArc": "117",
-    "nightsideBandMinArc": "117",
+    "substellarLat": 0, "substellarLon": 0,
+    "terminatorBandMinArc": 63, "terminatorBandMaxArc": 117,
+    "nightsideBandMinArc": 117, "fixedSun": True,
 }
+
+
+def _field_matches(got, expect):
+    """A bool must come back as a bool; a number as an equal number
+    (63 == 63.0); anything else, including '(no such field)', is a miss."""
+    if isinstance(expect, bool):
+        return got is expect or str(got).lower() == str(expect).lower()
+    try:
+        return float(got) == float(expect)
+    except (TypeError, ValueError):
+        return False
 
 # Verbatim substrings from AshkarrWeather_FolkSigns.xml, not guessed.
 FOLK_SIGN_EXPECT = {
@@ -186,7 +206,7 @@ def planet_geometry_readback(t):
         # (plural)'s `fields=` parameter is the documented escape hatch for
         # reading an arbitrary def type's own scalar fields.
         r = t.bridge_call(
-            "jawa/get_defs", defs="PlanetGeometryDef/%s" % GEOMETRY_DEF,
+            "jawa/get_defs", defs="%s/%s" % (GEOMETRY_TYPE, GEOMETRY_DEF),
             fields=",".join(GEOMETRY_EXPECT))
         if _live(t):
             rows = (r or {}).get("defs") or []
@@ -194,12 +214,12 @@ def planet_geometry_readback(t):
             fields = (row or {}).get("fields") or {}
             if not fields:
                 raise ExpectationFailed(
-                    "jawa/get_defs(PlanetGeometryDef/%s) returned no fields: %r"
-                    % (GEOMETRY_DEF, r))
+                    "jawa/get_defs(%s/%s) returned no fields: %r"
+                    % (GEOMETRY_TYPE, GEOMETRY_DEF, r))
             bad = []
             for field, expect in GEOMETRY_EXPECT.items():
                 got = fields.get(field)
-                if str(got) != str(expect):
+                if not _field_matches(got, expect):
                     bad.append("%s: expected %r, got %r" % (field, expect, got))
             if bad:
                 raise ExpectationFailed(

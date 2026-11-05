@@ -12,9 +12,14 @@ Asserts, offline:
      the engine also enable the wiring mod, at the index directly after the engine.
   2. The wiring mod's About.xml hard-depends on and loads after the engine.
   3. Exactly one PlanetGeometryDef ships in src/ (ActiveGeometry takes FirstOrDefault).
+  4. The live A1 readback (AshkarrWeatherSuite/validation.py) asks jawa/get_defs for the def by the
+     class's FULL type name (a bare name resolves only in Verse/RimWorld: the 2026-11-03 live A1
+     FAIL "No def TYPE named 'PlanetGeometryDef'"), and expects exactly the shipped XML's values.
 Lists are parsed as XML (never grepped; instrument_traps.md).
 """
+import ast
 import glob
+import re
 import os
 import sys
 import xml.etree.ElementTree as ET
@@ -82,9 +87,58 @@ def check_one_geometry():
     return []
 
 
+VALIDATION = os.path.join(REPO, "src", "RimUtinni", "AshkarrWeatherSuite", "validation.py")
+HOOK_CS = os.path.join(REPO, "src", "RimMandrake", "WeatherSuite", "Source", "WeatherSuiteHook.cs")
+GEOMETRY_XML = os.path.join(REPO, "src", "RimUtinni", "AshkarrWeatherSuite", "Defs",
+                            "WeatherGeometryDefs", "WeatherGeometryDefs_Ashkarr.xml")
+
+
+def _module_literals(path, names):
+    out = {}
+    for node in ast.parse(open(path, encoding="utf-8").read()).body:
+        if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+            if node.targets[0].id in names:
+                out[node.targets[0].id] = ast.literal_eval(node.value)
+    return out
+
+
+def check_readback_matches():
+    bad = []
+    lit = _module_literals(VALIDATION, {"GEOMETRY_TYPE", "GEOMETRY_EXPECT", "GEOMETRY_DEF"})
+    src = open(HOOK_CS, encoding="utf-8").read()
+    ns = re.search(r"^\s*namespace\s+([\w.]+)", src, re.M)
+    if not ns or not re.search(r"\bclass\s+PlanetGeometryDef\s*:\s*Def\b", src):
+        return ["cannot read namespace/class PlanetGeometryDef from %s" % os.path.relpath(HOOK_CS, REPO)]
+    full = ns.group(1) + ".PlanetGeometryDef"
+    if lit.get("GEOMETRY_TYPE") != full:
+        bad.append("validation.py GEOMETRY_TYPE %r is not the class's full name %r"
+                   % (lit.get("GEOMETRY_TYPE"), full))
+    if re.search(r"defs\s*=\s*[\"']PlanetGeometryDef/", open(VALIDATION, encoding="utf-8").read()):
+        bad.append("validation.py still asks jawa/get_defs for the bare 'PlanetGeometryDef/' type")
+    el = next((e for e in ET.parse(GEOMETRY_XML).getroot() if isinstance(e.tag, str)
+               and e.tag.endswith("PlanetGeometryDef")), None)
+    if el is None:
+        return bad + ["no PlanetGeometryDef in %s" % os.path.relpath(GEOMETRY_XML, REPO)]
+    if el.tag != full:
+        bad.append("XML element %r is not the class's full name %r" % (el.tag, full))
+    if lit.get("GEOMETRY_DEF") != el.findtext("defName"):
+        bad.append("GEOMETRY_DEF %r != XML defName %r" % (lit.get("GEOMETRY_DEF"), el.findtext("defName")))
+    shipped = {c.tag: (c.text or "").strip() for c in el if c.tag != "defName"}
+    expect = lit.get("GEOMETRY_EXPECT") or {}
+    if set(shipped) != set(expect):
+        bad.append("GEOMETRY_EXPECT fields %r != shipped XML fields %r" % (sorted(expect), sorted(shipped)))
+    for k, v in expect.items():
+        x = shipped.get(k)
+        ok = (x is not None and (x.lower() == str(v).lower() if isinstance(v, bool)
+                                 else float(x) == float(v)))
+        if not ok:
+            bad.append("GEOMETRY_EXPECT[%s]=%r but the XML ships %r" % (k, v, x))
+    return bad
+
+
 def main():
     lb, seen = check_lists()
-    bad = lb + check_about() + check_one_geometry()
+    bad = lb + check_about() + check_one_geometry() + check_readback_matches()
     for b in bad:
         print("FAIL", b)
     print("%s: %d list(s) with the engine checked, %d failure(s)" % (os.path.basename(__file__), seen, len(bad)))
