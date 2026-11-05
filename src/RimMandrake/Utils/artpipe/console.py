@@ -390,14 +390,20 @@ class StatusFile:
     (`--status`, or `Console.tick`'s own next read) never sees a half
     written file."""
 
+    # Stable liveness reading for rm-artpiped's live promise (a live line cannot name a per-pid file, and
+    # registry.jsonl only moves when a job finishes). Must not match --status's `artpiped_*.json` glob.
+    HEARTBEAT_NAME = "heartbeat.json"
+
     def __init__(self, status_dir: Path, pid: int | None = None):
         status_dir.mkdir(parents=True, exist_ok=True)
         self.dir = status_dir
         self.path = status_dir / f"artpiped_{pid if pid is not None else os.getpid()}.json"
+        self.heartbeat_path = status_dir / self.HEARTBEAT_NAME
 
     def write(self, snapshot: dict) -> None:
         try:
             common.atomic_write_json(self.path, snapshot)
+            common.atomic_write_json(self.heartbeat_path, snapshot)
         except OSError:
             pass  # presentation must never abort the daemon
 
