@@ -88,10 +88,17 @@
     "ref": "run rm-role-designer-1793909059",
     "stage": 2,
     "tokens": 282215
+   },
+   {
+    "at": "2026-11-05T21:35:35Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793914392",
+    "stage": 3,
+    "tokens": 265141
    }
   ],
   "reserve": 60000,
-  "spent": 3243502
+  "spent": 3508643
  },
  "history": [
   {
@@ -207,6 +214,18 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1793909059: stage 2 done"
+  },
+  {
+   "at": "2026-11-05T21:33:19Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1793914392, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-05T21:35:35Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1793914392: stage 3 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -402,11 +421,35 @@
    "run": "rm-role-designer-1793909059",
    "stage": 2,
    "summary": "Both turn_04 asks answered and applied. Flagship: burn_line (d_flagship_burn_line, flagship field, OWNER:1793908883805179759); his correction that scorch-fruit comes up rapidly behind the fire, not days later, recorded as d_scorchfruit_rapid (build already agrees; stage 3 rewords the burn_line showcase/sheet and binds showcase 1 source+decision). Bar reword re-validated by card (d_bar_reworded). No ask sent, no core contradiction open."
+  },
+  {
+   "at": "2026-11-05T21:35:35Z",
+   "inputs": {
+    "exam": null,
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "9674f15396a05e2f45f136626976c1c2bdb1d7438a056b0cb53c085932ade71d",
+    "scenes": "81ce4462b7430c2abd1412a6a29c57affcf0d15d93441c22f5bf6acee3565cee",
+    "sheet": "3eb3b863498fd29a45d22960b4106d660089e5bc9282ef306bfada15e33a861c",
+    "tree": "05b72bd6b7321aa834664b1593c813955ecd8df261b12a59faba1c8ea8f5a4e4"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793914392",
+   "stage": 3,
+   "summary": "Showcase 1 burn_line bound to his flagship pick (decision d_flagship_burn_line, OWNER:1793908883805179759). d_scorchfruit_rapid applied: leaf scorchfruit_born_of_fire, scene sc_scorchfruit, sheet and plan now read scorch-fruit coming up rapidly in the scar right behind the front (red adds 'appears only days later'); his flagship words added to the sheet. Stale open lines removed (flagship pick; bar reword, done by card d_bar_reworded). Lint PASS; showcases 6/4/3 new, overlap 0, accepted."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
