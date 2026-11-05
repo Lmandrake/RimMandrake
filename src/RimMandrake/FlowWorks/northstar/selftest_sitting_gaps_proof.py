@@ -118,6 +118,26 @@ try:
     check("the S3 copy equals water_scenes_walk.s3_geom shifted to plot-local", same)
 except Exception as ex:  # noqa: BLE001
     check("water_scenes_walk.s3_geom importable offline (%r)" % ex, False)
+# SITTING_GAPS_FIX_READS_BLANK_GRAPHIC_PATHS (live run 1, 2026-10-23): the real thing_graphic row of a linked thing has
+# graphicPath null (the wrapper's) and the leaf in resolvedPath; the rows must read the leaf, or every look reads "unstyled"
+linked_row = {"graphicPath": None, "resolvedPath": "RimMandrake/FlowWorks/Pipe/Modern/UniversalPipe_Atlas",
+              "graphicChain": ["Graphic_Linked", "Graphic_Single"]}
+check("leaf_path reads resolvedPath under a null Linked graphicPath", "/modern/" in str(G.leaf_path(linked_row)).lower())
+check("leaf_path keeps a plain row's graphicPath", G.leaf_path({"graphicPath": "Things/x"}) == "Things/x")
+check("leaf_path prefers a Graphic_Random variant", G.leaf_path({"graphicPath": "a", "resolvedPath": "a", "variantPath": "a/b"}) == "a/b")
+check("can-fail guardrail: the stuff subgraphic draws another texture",
+      G.guardrail_verdict(dict(gr, Steel=dict(gr["Steel"], texture="Fence_Atlas")))[0] == "FAIL")
+fm = G.FakeBridge()
+fm.things["T1"] = dict(defName="RM_UniversalPipe", cell=(0, 0), style="RM_UniversalPipe_Modern", stuff=None)
+mrow = (fm.call("jawa/thing_graphic", rect="0,0,1,1", defs="RM_UniversalPipe").get("things") or [{}])[0]
+check("the mock thing_graphic mirrors the tool: a linked pipe's graphicPath is null, its resolvedPath the look",
+      mrow.get("graphicPath") is None and "/modern/" in str(mrow.get("resolvedPath")).lower())
+# hose B: a dug canal square is hose band 1 (CordWorld.StepAllowed), so its lay must end on a band-0 bank square
+canal = set(G.S3["canal"])
+check("S3 hose B ends on bank squares only: none dug, none forbidden, each beside the canal",
+      bool(G.S3["outflow_bank"]) and not canal & set(G.S3["outflow_bank"])
+      and not set(G.S3["outflow_bank"]) & G.s3_forbidden((0, 0), "B")
+      and all(any(abs(b[0] - c[0]) + abs(b[1] - c[1]) == 1 for c in canal) for b in G.S3["outflow_bank"]))
 found = {q: True for q in G.SEARCH_QUERIES}
 check("search PASS", G.search_verdict(True, {"t": 1}, found, False)[0] == "PASS")
 check("can-fail search: one query misses", G.search_verdict(True, {"t": 1}, dict(found, pieces=False), False)[0] == "FAIL")

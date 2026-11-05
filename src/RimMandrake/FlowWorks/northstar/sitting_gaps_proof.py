@@ -76,7 +76,7 @@ ROWS (PROVE / EXPECT / LIES), in run order:
      footprint on that side, and no drawn cell behind the reel (a U-turn). LIES: a lay refused = UNMEASURED/SITE.
   S3_HOSES_ON_BARE_GROUND     HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE A1. The water_scenes_walk S3 rig, plot-local at (0,30)
      (s3_geom shifted; selftest checks the copy): a 4x3 WaterDeep pond, a 6-cell depth-1 canal, pump (9,32), reel A on
-     (9,33) laid to the pond edge Intake, reel B on (9,30) laid to the canal Outflow, battery (12,36). EXPECT neither hose's
+     (9,33) laid to the pond edge Intake, reel B on (9,30) laid to a bank square beside the canal (S3 outflow_bank: a dug cell is another hose band), battery (12,36). EXPECT neither hose's
      drawn cells (census poseCells) enter the pump square, the battery, or the OTHER reel's footprint. LIES: an unlaid hose
      draws nothing (UNMEASURED/SITE).
   SETTINGS_SEARCH_FINDS_ROW   SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND A1. FlowWorks Mod Settings opened; each of 'Liquid
@@ -136,7 +136,11 @@ REEL_CORNERS = {r: (34 + 16 * r, 22) for r in range(4)}
 REEL_REACH = 11                                                  # cells from the footprint edge along the facing
 # water_scenes_walk.s3_geom() shifted to plot-local (its INTERIOR S3 origin (40,30) -> (0,30)); selftest checks the copy
 S3 = dict(pond=[(1 + i, 31 + j) for i in range(4) for j in range(3)], canal=[(15 + i, 32) for i in range(6)], pump=(9, 32),
-          reelA=(9, 33), reelB=(9, 30), intake=(4, 32), intake_alt=[(4, 31), (4, 33)], outflow=(15, 32), battery=(12, 36))
+          reelA=(9, 33), reelB=(9, 30), intake=(4, 32), intake_alt=[(4, 31), (4, 33)], outflow=(15, 32), battery=(12, 36),
+          # SITTING_GAPS_FIX_READS_BLANK_GRAPHIC_PATHS: hose B ends on a BANK square beside the canal, never on `outflow`.
+          # A dug square is hose band 1 and CordWorld.StepAllowed refuses a band change with no ramp/ladder link (PIPE_POLES
+          # phase 6), so a lay onto canal cell 1 reads "no route" (live 2026-10-23, run 1). These are band 0, tried in turn.
+          outflow_bank=[(16, 31), (17, 31), (15, 31), (18, 31)])
 LAKE = (40, 40, 6, 6)
 STILL = (60, 46)                  # RM_FueledStill 2x2 footprint (60..61, 46..47), clear of the reel lanes and the lake
 ICY_TANK, SALT_TANK, OUT_TANK = (58, 46), (62, 46), (60, 48)    # 2x2 RM_LiquidTanks touching it W / E / N
@@ -386,6 +390,14 @@ def faucet_drink_verdict(u0, u1, jobs, need0, need1, memories):
     return "PASS", "MOD", ""
 
 
+def leaf_path(g):
+    """The texture path a jawa/thing_graphic row actually draws. graphicPath is the TOP graphic's path, and a Graphic_Linked /
+    Graphic_LinkedAsymmetric wrapper has none (null: run 1, 2026-10-23, every pipe and guardrail); the leaf the tool unwraps
+    to is resolvedPath (variantPath for a Graphic_Random). SITTING_GAPS_FIX_READS_BLANK_GRAPHIC_PATHS."""
+    g = g or {}
+    return g.get("variantPath") or g.get("resolvedPath") or g.get("graphicPath")
+
+
 def look_verdict(per_look, looks=LOOKS, bad_log=()):
     """per_look: {look: {styled, path, badTex}}; PASS when every look's faucet resolves its own art."""
     missing = [lk for lk in looks if lk not in per_look]
@@ -422,6 +434,8 @@ def guardrail_verdict(reads):
             bad.append("%s rail draws %s" % (stuff, r.get("path")))
         if "appearances" not in " ".join(str(c) for c in r.get("chain") or []).lower():
             bad.append("%s rail graphic chain %s has no Graphic_Appearances" % (stuff, r.get("chain")))
+        if r.get("texture") is not None and not str(r.get("texture")).startswith("RM_PitGuardrail"):
+            bad.append("%s rail's %s subgraphic draws texture %s" % (stuff, stuff, r.get("texture")))
         if r.get("badTex") is not False:
             bad.append("%s rail badTex %r" % (stuff, r.get("badTex")))
     return ("FAIL" if bad else "PASS"), "MOD", "; ".join(bad)
@@ -891,12 +905,12 @@ def _faucet_looks(ctx, mine):
                 .get("things") or [{}])[0].get("id")
         sp = B.call("jawa/set_thing_props", thing=pipe, style="RM_UniversalPipe_%s" % look, _answer=True) if pipe else {}
         pg = ctx["graphic"]((c[0], c[1], 1, 1), "RM_UniversalPipe")
-        styled = bool(pipe) and sp.get("success") is not False and any("/%s/" % look.lower() in str(g.get("graphicPath")).lower()
+        styled = bool(pipe) and sp.get("success") is not False and any("/%s/" % look.lower() in str(leaf_path(g)).lower()
                                                                      for g in pg)
         ctx["build"]("RM_PipeFaucet:%d,%d" % c)
         fg = ctx["graphic"]((c[0], c[1], 1, 1), "RM_PipeFaucet")
         g = fg[0] if fg else {}
-        per[look] = dict(styled=styled, path=g.get("graphicPath") if fg else None, badTex=g.get("badTex"), pipePath=[x.get("graphicPath") for x in pg][:1])
+        per[look] = dict(styled=styled, path=leaf_path(g) if fg else None, badTex=g.get("badTex"), pipePath=[leaf_path(x) for x in pg][:1])
     bad = ctx["lines"](t, "RM_PipeFaucet", "rror")
     why_log = log_ok(alive, t.lost)
     shot = ctx["shot"]("faucet_looks", (P(10, 12)[0], P(10, 12)[1], 12, 1))
@@ -925,7 +939,7 @@ def scene_guardrail(ctx, mine):
         g0 = g[0] if g else {}
         # list_things' stuff may come back as the defName or its label ("wood log", "steel"): match the word, not the spelling
         reads[stuff] = dict(spawned=bool(th) and stuff.lower()[:4] in str(th[0].get("stuff")).lower(), stuffRead=th[0].get("stuff") if th else None,
-                            path=g0.get("graphicPath") if g else None,
+                            path=leaf_path(g0) if g else None, texture=g0.get("textureName"),
                             chain=g0.get("graphicChain") or [g0.get("graphicClass")], badTex=g0.get("badTex"))
     st, cls, why = guardrail_verdict(reads)
     row("GUARDRAIL_ATLAS_RESOLVES", st, cls, dict(why=why, reads=reads, shot=ctx["shot"]("guardrail", (P(19, 1)[0], P(19, 1)[1], 4, 4))))
@@ -976,7 +990,12 @@ def scene_s3(ctx, mine):
         if la.get("success"):
             break
         la = B.hp("lay:%d,%d,%d,%d" % (posA + L(alt)), answer=True)
-    lb = B.hp("lay:%d,%d,%d,%d" % (posB + L(S3["outflow"])), answer=True)
+    lb, layB = {}, []
+    for tgt in S3["outflow_bank"]:
+        lb = B.hp("lay:%d,%d,%d,%d" % (posB + L(tgt)), answer=True)
+        layB.append((tgt, lb.get("reason")))
+        if lb.get("success"):
+            break
     laid, cross, drawn = {}, {}, {}
     for k, corner in (("A", ra), ("B", rb)):
         h = _census_hose(B, corner) or {}
@@ -986,7 +1005,7 @@ def scene_s3(ctx, mine):
         drawn[k] = bool(h.get("poseCells"))
     st, cls, why = s3_verdict(laid, cross, drawn)
     ctx["row"]("S3_HOSES_ON_BARE_GROUND", st, cls, dict(why=why, laid=laid, crossings=cross, layA=la.get("reason"),
-                                                        layB=lb.get("reason"),
+                                                        layB=layB,
                                                         shot=ctx["shot"]("s3_hoses", L((-2, 28)) + (26, 12))))
 
 
@@ -1186,6 +1205,9 @@ class FakeBridge(object):
                 return {"success": False, "error": "no hose reel at %d,%d" % (rx, rz)}
             if "reel_lay_refused" in self.f and r.get("tag") is None:     # the four facing reels only (S3's are tagged)
                 return {"success": False, "reason": "mock: lay refused"}
+            if self.dug.get((x, z), (0, 0))[0] > 0 and not self.dug.get((x, z), (0, 0))[1]:
+                # the hose band rule: a dry dug square is another band, joined only by a ramp or ladder
+                return {"success": False, "reason": "no route"}
             r.update(laid=True, to=(x, z))
             return {"success": True, "layOk": True}
         if verb == "filltank":
@@ -1363,7 +1385,12 @@ class FakeBridge(object):
                     chain = ["Graphic_LinkedAsymmetric", "Graphic_Single" if fence else "Graphic_Appearances"]
                 else:
                     path, chain = "Things/x", ["Graphic_Single"]
-                out.append(dict(id=t, graphicPath=path, graphicChain=chain, badTex=False))
+                # the real tool: graphicPath is the TOP graphic's (null for a Linked wrapper), resolvedPath the leaf's, and
+                # textureName the per-stuff subgraphic's texture (Graphic_Appearances.MatAt delegates to SubGraphicFor)
+                linked = chain[0].startswith("Graphic_Linked")
+                tex = ("RM_PitGuardrail_Atlas_Smooth" if chain[-1] == "Graphic_Appearances" else path.split("/")[-1])
+                out.append(dict(id=t, graphicPath=None if linked else path, resolvedPath=path, graphicChain=chain,
+                                textureName=tex, badTex=False))
             return {"success": True, "things": out}
         if tool == "rimworld/list_architect_categories":
             cats = [{"id": "architect-category:structure", "label": "Structure"}]
