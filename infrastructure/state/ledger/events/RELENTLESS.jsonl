@@ -804,3 +804,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T23:41:41Z","tsn":1793922101382348248}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:41:51Z","tsn":1793922111795141457}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SCARLANDS_CHATRAK_LIVE_RERUN_1 A1 (L2), read-only proof","ts":"2026-11-05T23:41:58Z","tsn":1793922118680195918}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:44:42Z","tsn":1793922282820842643}
