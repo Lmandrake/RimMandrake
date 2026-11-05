@@ -29,6 +29,9 @@ namespace RimMandrake.FlowWorks
 		public static ThingDef RM_Shovel;
 		public static JobDef RM_CaptureDown;
 
+		/// <summary>PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP: the held pawn's pin during capture down — a wait that never swings.</summary>
+		public static JobDef RM_CaptureDownPinned;
+
 		/// <summary>D = 1. Keeps its original defName so every save's dug cells
 		/// survive the arrival of the depth ladder.</summary>
 		public static TerrainDef RM_Channel_Empty;

@@ -40,4 +40,14 @@
     <casualInterruptible>false</casualInterruptible>
   </JobDef>
 
+  <!-- PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP: the held pawn's pin while the warden takes it from the lip. Vanilla's Wait
+       (PawnUtility.ForceWait) melees every adjacent hostile every 4 ticks, and the warden at the lip is adjacent. -->
+  <JobDef>
+    <defName>RM_CaptureDownPinned</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_CaptureDownPinned</driverClass>
+    <reportString>pinned from the edge of the pit.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <suspendable>false</suspendable>
+  </JobDef>
+
 </Defs>

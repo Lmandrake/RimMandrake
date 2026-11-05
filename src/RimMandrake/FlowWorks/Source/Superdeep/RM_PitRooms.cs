@@ -761,7 +761,7 @@ namespace RimMandrake.FlowWorks
 				switch (RM_PitRoomMath.CaptureDownNext(pawn.Position.AdjacentTo8WayOrInside(Victim.Position), onPit, repaths))
 				{
 					case RM_PitRoomMath.CaptureStep.Hold:
-						PawnUtility.ForceWait(Victim, RM_PitRoomMath.CaptureDownTicks + 30, pawn);
+						JobDriver_CaptureDownPinned.Pin(Victim, pawn, RM_PitRoomMath.CaptureDownTicks + 30);
 						return;
 					case RM_PitRoomMath.CaptureStep.Repath:
 						repaths++;
@@ -777,14 +777,16 @@ namespace RimMandrake.FlowWorks
 			yield return reach;
 			Toil hold = Toils_General.Wait(RM_PitRoomMath.CaptureDownTicks, TargetIndex.A)
 				.WithProgressBarToilDelay(TargetIndex.A);
-			// PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES: the pin is not a cage (a hostile it holds keeps swinging at the
-			// warden); a held pawn that slips out of reach mid-hold is followed (bounded), not a failed job.
+			// PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES: a held pawn that slips out of reach mid-hold is followed (bounded),
+			// not a failed job. PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP: the swinging that note saw was vanilla's Wait, the old pin.
 			hold.AddPreTickIntervalAction(delegate(int delta)
 			{
 				bool onPit = RM_PitRooms.IsPitFloor(pawn.Map, RM_SuperdeepTrap.EngineOf(pawn.Map), pawn.Position);
 				switch (RM_PitRoomMath.CaptureDownNext(pawn.Position.AdjacentTo8WayOrInside(Victim.Position), onPit, repaths))
 				{
 					case RM_PitRoomMath.CaptureStep.Hold:
+						// PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP: a pin something else ended (damage, its lord) is put back
+						JobDriver_CaptureDownPinned.Pin(Victim, pawn, ticksLeftThisToil + 30);
 						return;
 					case RM_PitRoomMath.CaptureStep.Repath:
 						repaths++;
@@ -805,6 +807,61 @@ namespace RimMandrake.FlowWorks
 				Messages.Message("RMFlow_CapturedDown".Translate(pawn.LabelShort, v.LabelShort), v,
 					MessageTypeDefOf.PositiveEvent);
 			});
+		}
+	}
+	/// <summary>PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP: the held pawn's pin while the warden takes it from the lip. It stands
+	/// still facing the warden and does nothing else. The old pin was vanilla's PawnUtility.ForceWait, whose
+	/// JobDriver_Wait.CheckForAutoAttack melees any hostile in the 9 cells around it every 4 ticks — and the warden at
+	/// the lip is one of them (live round 5: Scratch and Crack on the warden, capture stopped). The job's
+	/// expiryInterval ends it, as ForceWait's did; it also ends when the warden stops capturing.</summary>
+	public class JobDriver_CaptureDownPinned : JobDriver
+	{
+		/// <summary>Pin <paramref name="victim"/> for <paramref name="ticks"/>, facing <paramref name="warden"/>. A pawn
+		/// already pinned is left alone; a downed, sleeping, bedded or shut-down one (it swings at nobody) keeps
+		/// vanilla's posture-aware wait.</summary>
+		public static void Pin(Pawn victim, Pawn warden, int ticks)
+		{
+			if (victim == null || victim.jobs == null || !victim.Spawned || ticks <= 0
+				|| victim.CurJobDef == RimMandrakeFlowWorks_DefOf.RM_CaptureDownPinned)
+			{
+				return;
+			}
+			if (victim.Downed || !victim.Awake() || victim.InBed() || victim.IsDeactivated() || victim.IsSelfShutdown())
+			{
+				if (victim.CurJobDef != JobDefOf.Wait && victim.CurJobDef != JobDefOf.Wait_MaintainPosture)
+				{
+					PawnUtility.ForceWait(victim, ticks, warden);
+				}
+				return;
+			}
+			Job job = JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_CaptureDownPinned, warden);
+			job.expiryInterval = ticks;
+			victim.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);
+		}
+
+		private Pawn Warden => job.targetA.Thing as Pawn;
+
+		public override bool TryMakePreToilReservations(bool errorOnFailed)
+		{
+			return true;
+		}
+
+		protected override IEnumerable<Toil> MakeNewToils()
+		{
+			this.FailOnDespawnedOrNull(TargetIndex.A);
+			this.FailOn(() => Warden == null || Warden.CurJobDef != RimMandrakeFlowWorks_DefOf.RM_CaptureDown);
+			Toil pinned = ToilMaker.MakeToil("RM_CaptureDownPinned");
+			pinned.initAction = delegate
+			{
+				pawn.pather?.StopDead();
+			};
+			pinned.handlingFacing = true;
+			pinned.tickAction = delegate
+			{
+				pawn.rotationTracker.FaceTarget(job.targetA);
+			};
+			pinned.defaultCompleteMode = ToilCompleteMode.Never;
+			yield return pinned;
 		}
 	}
 }
