@@ -32,6 +32,7 @@ import html
 import json
 import os
 import re
+import subprocess
 import sys
 import unicodedata
 
@@ -497,19 +498,62 @@ def lint(d, repo=REPO, floor_file=None):
     return errs, flags(floor)
 
 
-def owner_events(repo):
-    out = {}
+_ORIGIN_SHARD = {}
+
+
+def origin_shard(repo):
+    """OWNER.jsonl as origin/main has it in `repo`'s git, as text, or None (not a clone's top level, no origin/main,
+    or git failed). DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP: the Dispatcher judged a Designer run-now from ~/rm/dispatch
+    while that clone was behind origin, and refused WAITING_OWNER with his answer already published. An owner event on
+    origin is his word whether or not this working tree has pulled it yet. Cached per clone, keyed on origin/main's sha."""
     try:
-        with open(os.path.join(repo, OWNER_SHARD), encoding="utf-8", errors="replace") as f:   # a bad byte spoils its line only
-            for line in f:
-                try:
-                    ev = json.loads(line)
-                except (ValueError, RecursionError):
-                    continue
-                if isinstance(ev, dict) and ev.get("tsn"):
-                    out[str(ev["tsn"])] = ev
-    except OSError:
-        pass
+        r = subprocess.run(["git", "-C", repo, "rev-parse", "--show-toplevel", "origin/main"], capture_output=True,
+                           text=True, timeout=20)
+        top, sha = (r.stdout.split() + ["", ""])[:2] if r.returncode == 0 else ("", "")
+        if not sha or os.path.realpath(top) != os.path.realpath(repo):   # a temp dir inside another clone is not it
+            return None
+        key = os.path.realpath(repo)
+        if (_ORIGIN_SHARD.get(key) or ("",))[0] != sha:          # one entry per clone: its latest origin/main only
+            g = subprocess.run(["git", "-C", repo, "show", "%s:%s" % (sha, OWNER_SHARD)], capture_output=True,
+                               timeout=60)
+            _ORIGIN_SHARD[key] = (sha, g.stdout.decode("utf-8", "replace") if g.returncode == 0 else None)
+        return _ORIGIN_SHARD[key][1]
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+
+def owner_lines(*repos):
+    """-> every OWNER.jsonl line any of `repos` holds, in its working tree or on its origin/main, each once (the shard
+    is append-only, so the union is the truest copy), or None when no copy is readable at all."""
+    seen, out, read = set(), [], False
+    for repo in dict.fromkeys(r for r in repos if r):
+        texts = []
+        try:
+            with open(os.path.join(repo, OWNER_SHARD), encoding="utf-8", errors="replace") as f:
+                texts.append(f.read())
+        except OSError:
+            pass
+        texts.append(origin_shard(repo))
+        for t in texts:
+            if t is None:
+                continue
+            read = True
+            for ln in t.splitlines():
+                if ln.strip() and ln not in seen:
+                    seen.add(ln)
+                    out.append(ln)
+    return out if read else None
+
+
+def owner_events(repo, *more):
+    out = {}
+    for line in owner_lines(repo, *more) or []:       # a bad byte spoils its line only
+        try:
+            ev = json.loads(line)
+        except (ValueError, RecursionError):
+            continue
+        if isinstance(ev, dict) and ev.get("tsn"):
+            out[str(ev["tsn"])] = ev
     return out
 
 

@@ -14,6 +14,7 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+os.environ.setdefault("RM_JUDGE_SYNC", "0")    # role_launch.judge_sync: fixture concepts, no fetch of this clone
 import concept_tree as CT  # noqa: E402
 import designer_stage as DS  # noqa: E402
 

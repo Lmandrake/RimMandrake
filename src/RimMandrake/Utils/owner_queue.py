@@ -11,6 +11,9 @@ flyer's flight (§2.6). Every other Relentless hold (proof_weak, spend, strikes,
 failure is never his. Relentless routes those to the seat, not the ledger's needs=owner (RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS);
 they are the seat queue, read with --seat. Reading the hold here as well keeps a needs=owner another writer set from counting.
 
+A Designer turn that closed waiting_owner is his too, until an OWNER event naming its item lands
+(DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP; designer_turns() reads designer_stage.pending_turns): its asks are the line.
+
 The list only names what he has not yet answered (RUNNING_PAGE_FIX_REVIEW_LEFTOVERS): an item leaves it when his own note
 landed after the ledger last routed it to him, because his turn is over and the next move is ours. A later `needs owner`
 event gives it back to him. It stays open; needs_you() lists it under "answered". Items sharing a leading word
@@ -29,7 +32,7 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))   # relentless_game, designer_stage
 import relentless_game  # noqa: E402  the supervisor's own test of a flyer hold: two copies of it disagreed
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 QUESTIONS = os.path.join(REPO, "infrastructure", "state", "owner_questions.json")
@@ -73,11 +76,6 @@ def answered(it, evs):
     return False        # no routing event on record: nothing says his turn came, so nothing says it ended
 
 
-def is_his(it, rs, evs=None):
-    """evs: the ledger's events, when the caller has them: without them `answered` cannot be told and stays on the list."""
-    return routed(it) and tooling_hold(rs) is None and not answered(it, evs)
-
-
 def load_questions(path=QUESTIONS):
     try:
         with open(path) as f:
@@ -102,12 +100,43 @@ def fold(lines):
     return sorted(out.values(), key=lambda t: t["items"][0])
 
 
-def needs_you(items, rel, questions=None, evs=None):
-    """-> {"count", "lines": [{"item", "q"}], "topics", "answered", "text"}, sorted by item id (stable hashes)."""
+def designer_turns(root=None):
+    """-> {item or "DESIGNER_<MOD>": one plain line} for every Designer turn that waits on him
+    (designer_stage.pending_turns: status waiting_owner, no OWNER event naming the concept's item since it closed).
+    DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP: FlowWorks turn 2 sat five hours in turn_02.md, on no list he reads.
+    A folder or the whole root that cannot be read is a line too (DESIGNER_TURNS_UNMEASURED): never "nothing waits"."""
+    try:
+        import designer_stage as DS
+        turns, bad = DS.pending_turns(root)
+    except Exception as e:      # noqa: BLE001
+        return {"DESIGNER_TURNS_UNMEASURED": "Designer turns UNMEASURED (%s): read designer_stage.py turns" % str(e)[:120]}
+    out = {(t.get("item") or "DESIGNER_%s" % str(t["mod"]).upper()): DS.turn_line(t) for t in turns}
+    if bad:
+        out["DESIGNER_TURNS_UNMEASURED"] = "Designer turns UNMEASURED for %s" % "; ".join(bad)[:300]
+    return out
+
+
+def is_his(it, rs, evs=None, turns=None):
+    """evs: the ledger's events, when the caller has them: without them `answered` cannot be told and stays on the list.
+    turns: designer_turns(); an item whose Designer turn waits on him is his whatever the ledger routes."""
+    if turns and getattr(it, "id", None) in turns:
+        return True
+    return routed(it) and tooling_hold(rs) is None and not answered(it, evs)
+
+
+def needs_you(items, rel, questions=None, evs=None, turns=None):
+    """-> {"count", "lines": [{"item", "q"}], "topics", "answered", "text"}, sorted by item id (stable hashes).
+    turns: designer_turns() (None: not read here; the board and the CLI pass it). A waiting turn's line replaces the
+    item's own question, and a turn whose item the ledger does not hold is its own line."""
     questions = load_questions() if questions is None else questions
-    line = lambda iid, it: {"item": iid, "q": (questions.get(iid) or it.title or iid).strip()}  # noqa: E731
-    lines = [line(iid, it) for iid, it in sorted(items.items()) if is_his(it, rel.get(iid), evs)]
-    gone = [line(iid, it) for iid, it in sorted(items.items()) if routed(it) and tooling_hold(rel.get(iid)) is None and answered(it, evs)]
+    turns = turns or {}
+    line = lambda iid, it: {"item": iid, "q": (turns.get(iid) or questions.get(iid) or it.title or iid).strip()}  # noqa: E731
+    lines = [line(iid, it) for iid, it in sorted(items.items()) if is_his(it, rel.get(iid), evs)
+             or iid in turns]
+    lines += [{"item": iid, "q": q} for iid, q in sorted(turns.items()) if iid not in items]
+    lines.sort(key=lambda x: x["item"])
+    gone = [line(iid, it) for iid, it in sorted(items.items()) if iid not in turns and routed(it)
+            and tooling_hold(rel.get(iid)) is None and answered(it, evs)]
     text = "" if not lines else "%d %s: %s" % (len(lines), "thing" if len(lines) == 1 else "things",
                                                " · ".join(x["q"] for x in lines))
     return {"count": len(lines), "lines": lines, "text": text, "topics": fold(lines), "answered": gone}
@@ -142,7 +171,7 @@ def main():
         for iid, kind in misrouted(world.items, rel):
             print("%s\t%s" % (iid, kind))
         return 0
-    n = needs_you(world.items, rel, evs=evs)
+    n = needs_you(world.items, rel, evs=evs, turns=designer_turns())
     print("%d truly his" % n["count"])
     for x in n["lines"]:
         print("%s\t%s" % (x["item"], x["q"]))

@@ -594,7 +594,7 @@ def gather(now, days=DAYS, detached_done=()):
         r.setdefault("title", (it.title if it else "") or r["item"])
         r["where"], r["infra"] = where(r["item"], item_mods, cross, folders)
     return {"factory": factory(now), "receipts": rec, "mods": mods(now, log, world, evs, rel, mc, folders, days),
-            "needs": owner_queue.needs_you(world.items, rel, evs=evs)}
+            "needs": owner_queue.needs_you(world.items, rel, evs=evs, turns=owner_queue.designer_turns())}
 
 
 def where(item, item_mods, cross, folders):

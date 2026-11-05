@@ -26,6 +26,7 @@ One concept folder, design/concepts/<Mod>/, holds the persisted state and the ch
   scene-begin <dir> --scene S --recovery TEXT | scene-end <dir> --scene S | scene-hold <dir> --scene S --until TEXT
   manifest                                 the stage -> packet files table, with hashes
   showcases <dir>                          the showcase set: per showcase new coverage and overlap, what is uncovered
+  turns [--root R]                         every turn that waits on him: waiting_owner, no OWNER event since it closed
 
 Exit: 0 ok, 1 refused (the reason on stderr), 2 unreadable.
 What this cannot do, said plainly: injecting a packet proves it was supplied, not followed; the record's sources are
@@ -138,20 +139,19 @@ def owner_uncited(repo, item, d=None):
     so recording his answer inside a run is not a change underneath that run. None = the shard is unreadable."""
     if not item:
         return None
-    try:
-        with open(os.path.join(repo, CT.OWNER_SHARD), encoding="utf-8", errors="replace") as f:
-            tsns = []
-            for ln in f:
-                if item not in ln:
-                    continue
-                try:
-                    ev = json.loads(ln)
-                except ValueError:
-                    continue
-                if isinstance(ev, dict) and ev.get("tsn"):
-                    tsns.append(str(ev["tsn"]))
-    except OSError:
+    lines = CT.owner_lines(repo, clone_of(d))     # working trees AND origin/main: a stale clone is not his silence
+    if lines is None:
         return None
+    tsns = []
+    for ln in lines:
+        if item not in ln:
+            continue
+        try:
+            ev = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(ev, dict) and ev.get("tsn"):
+            tsns.append(str(ev["tsn"]))
     cited = ""
     for name in ("record.json", "tree.json"):
         try:
@@ -160,6 +160,17 @@ def owner_uncited(repo, item, d=None):
         except OSError:
             pass
     return sorted(t for t in tsns if not re.search(r"OWNER:%s(?![0-9])" % re.escape(t), cited))
+
+
+def clone_of(d):
+    """The clone a concept folder lives in (the Designer writes in its own clone, the Dispatcher judges from another),
+    or None: the nearest parent holding the ledger's events folder."""
+    p = os.path.abspath(d) if d else None
+    while p and os.path.dirname(p) != p:
+        if os.path.isdir(os.path.join(p, os.path.dirname(CT.OWNER_SHARD))):
+            return p
+        p = os.path.dirname(p)
+    return None
 
 
 def owner_feed(repo, item, d=None):
@@ -836,7 +847,7 @@ def result_errors(res, d, st, repo=REPO):
         return ["result names run %r, not the open run %r" % (res.get("run"), (st.get("running") or {}).get("run"))]
     if out not in OUTCOMES:
         return ["outcome %r is not one of %s" % (out, "/".join(OUTCOMES))]
-    owner_ev = CT.owner_events(repo)
+    owner_ev = CT.owner_events(repo, clone_of(d))
     rec = read_json(os.path.join(d, "record.json"))
     if out == "blocked":
         return [] if CT.txt(res.get("on")) else ["blocked names no dependency (on)"]
@@ -1177,6 +1188,145 @@ def packet(d, st, hashes, budget, why=None, retries=0, manifest=MANIFEST, repo=N
     return "\n".join(head + body)
 
 
+# ---------------------------------------------------------------- turns waiting on him (the doorstep)
+# DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP: FlowWorks turn 2 closed waiting_owner at 02:02Z on 2026-11-05 and sat five
+# hours in turn_02.md until he asked "Did it ever happen?". A waiting turn is read from here by every surface he looks
+# at (owner_queue.needs_you -> NEEDS YOU and RUNNING NOW, the Conductor's wake); role_launch escalates it on close.
+SCHEDULE = os.path.join(HERE, "dispatcher_schedule.json")
+LIFECYCLE = ("lease", "claim", "start", "release", "seat", "unclaim", "renew")   # a seat moving the item is not his answer
+
+
+def designer_clone(schedule=SCHEDULE):
+    """The Designer role's clone (dispatcher_schedule.json), where its runs write design/concepts, or None."""
+    try:
+        with open(schedule, encoding="utf-8") as f:
+            sch = json.load(f)
+    except (OSError, ValueError):
+        return None
+    for r in (sch.get("roles") if isinstance(sch, dict) else None) or []:
+        if isinstance(r, dict) and r.get("stage_machine") == "designer_stage" and r.get("clone"):
+            return r["clone"]
+    return None
+
+
+def concepts_root(schedule=SCHEDULE):
+    return os.path.join(designer_clone(schedule) or REPO, "design", "concepts")
+
+
+def epoch(iso):
+    try:
+        return datetime.datetime.strptime(iso, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc).timestamp()
+    except (TypeError, ValueError):
+        return None
+
+
+def his_answers(lines, item, since):
+    """tsns of OWNER-shard events naming `item` after `since` (epoch s) that carry his own word (ownerSaid or byCard):
+    the answer that takes a waiting turn off his doorstep. A seat's lifecycle move or a --per-ruling note also lands on
+    OWNER.jsonl, but it is not his answer to these asks."""
+    out = []
+    for ln in lines or []:
+        if item not in ln:
+            continue
+        try:
+            ev = json.loads(ln)
+        except ValueError:
+            continue
+        if (not isinstance(ev, dict) or ev.get("id") != item or ev.get("event") in LIFECYCLE
+                or not (CT.txt(ev.get("ownerSaid")) or CT.txt(ev.get("byCard")))):
+            continue
+        try:
+            tsn = int(ev.get("tsn"))
+        except (TypeError, ValueError):
+            continue
+        if tsn / 1e9 > since:
+            out.append(str(tsn))
+    return sorted(out)
+
+
+def turn_file(d, entry):
+    """The turn_NN.md the waiting result names, else the newest one in the folder, else None (repo-relative when
+    the summary names it)."""
+    m = re.search(r"(?:[A-Za-z0-9_./-]*/)?turn_[0-9]+\.md", str((entry or {}).get("summary") or ""))
+    if m and os.path.isfile(os.path.join(d, os.path.basename(m.group(0)))):
+        return os.path.join(d, os.path.basename(m.group(0)))
+    try:
+        turns = sorted(n for n in os.listdir(d) if re.fullmatch(r"turn_[0-9]+\.md", n))
+    except OSError:
+        return None
+    return os.path.join(d, turns[-1]) if turns else None
+
+
+def pending_turn(d, repo=REPO, lines=None):
+    """-> the turn in `d` that waits on him, or None: status waiting_owner and no answer of his (an OWNER event naming
+    the concept's item, with ownerSaid or byCard) since the turn closed. {mod, item, stage, run, at, turn, asks: [{id, text}], dir}. A state
+    that cannot be read raises (the caller says UNMEASURED, never "nothing waits")."""
+    st = load_state(d)
+    if st.get("status") != "waiting_owner":
+        return None
+    item = st.get("item")
+    waits = [r for r in st.get("results") or [] if r.get("outcome") == "waiting_owner"]
+    last = waits[-1] if waits else {}
+    since = epoch(last.get("at")) or 0
+    if lines is None:
+        lines = CT.owner_lines(repo, clone_of(d))
+    if item and lines is not None and his_answers(lines, item, since):
+        return None
+    rec = read_json(os.path.join(d, "record.json")) or {}
+    asks = [{"id": a.get("id"), "text": " ".join(str(a.get("text") or "").split())}
+            for a in rec.get("asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]
+    return {"mod": st.get("mod") or os.path.basename(d), "item": item, "stage": st.get("stage"),
+            "run": last.get("run"), "at": last.get("at"), "turn": turn_file(d, last), "asks": asks, "dir": d,
+            "owner_unread": lines is None}
+
+
+def pending_turns(root=None, repo=REPO):
+    """-> ([turn], [unreadable: "<dir>: why"]) over every concept folder under `root` (default: the Designer's clone).
+    `_`-prefixed folders (the dry walk) are never real concepts."""
+    root = root or concepts_root()
+    out, bad = [], []
+    try:
+        names = sorted(os.listdir(root))
+    except OSError as e:
+        return [], ["%s: %s" % (root, e)]
+    lines = None
+    for n in names:
+        d = os.path.join(root, n)
+        if n.startswith("_") or not os.path.isfile(os.path.join(d, "stage.json")):
+            continue
+        try:
+            if lines is None:
+                lines = CT.owner_lines(repo, clone_of(d))
+            t = pending_turn(d, repo, lines)
+        except Exception as e:      # noqa: BLE001 - one bad folder is said, never drops the rest
+            bad.append("%s: %s" % (d, str(e)[:160]))
+            continue
+        if t:
+            out.append(t)
+    return out, bad
+
+
+MIRROR = "D:\\Luke\\dev\\RimMandrake"     # the owner reads paths in his read-only Windows mirror
+
+
+def owner_path(p):
+    """A path as the owner opens it: inside a clone, the same file in his mirror; anything else unchanged."""
+    c = clone_of(os.path.dirname(p)) if p else None
+    if not c:
+        return p
+    return MIRROR + "\\" + os.path.relpath(p, c).replace("/", "\\")
+
+
+def turn_line(t):
+    """One plain line for his queue, headline first (boards clip it): whose turn, how many asks, where to read them,
+    then each ask."""
+    n = len(t["asks"])
+    return "%s Designer turn (stage %s) waits on you since %s: %d %s%s in %s%s" % (
+        t["mod"], t["stage"], (t.get("at") or "?").replace("T", " "), n, "ask" if n == 1 else "asks",
+        " (%s)" % ", ".join(str(a["id"]) for a in t["asks"]) if n else "", owner_path(t.get("turn") or t["dir"]),
+        "".join(" | %s: %s" % (a["id"], a["text"][:160]) for a in t["asks"]))
+
+
 def status(d, repo=REPO):
     st = load_state(d)
     s, changed = stale_stage(d, st, repo)
@@ -1221,10 +1371,20 @@ def main(argv=None):
         if name == "scene-hold":
             x.add_argument("--until", required=True)
     sub.add_parser("manifest")
+    sub.add_parser("turns", help="every concept turn that waits on him (status waiting_owner, unanswered)").add_argument(
+        "--root", default=None)
     sub.add_parser("showcases", help="per showcase: new coverage, overlap; the capabilities left uncovered").add_argument(
         "dir")
     a = p.parse_args(argv)
     try:
+        if a.cmd == "turns":
+            turns, bad = pending_turns(a.root)
+            for t in turns:
+                print(turn_line(t))
+            for b in bad:
+                print("UNMEASURED %s" % b)
+            print("%d Designer turn(s) wait on him" % len(turns))
+            return 1 if bad else 0
         if a.cmd == "manifest":
             print(json.dumps({"stage_%d" % s: manifest_hashes(s) for s in STAGES}, indent=1))
         elif a.cmd == "init":

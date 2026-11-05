@@ -911,6 +911,9 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                     ticket=run.get("item"), note=True,
                     why="%s run %s on %s: %s" % (name, run["unit"], run["concept"], "stage result accepted" if ok
                                                  else "stage result REJECTED: " + "; ".join(errs[:4])))
+                t = (obs.get("stage_turn") or stage_turn)(run["concept"]) if ok else None
+                if t:
+                    escalate_turn(name, run, t, act)
             except Exception as e:  # noqa: BLE001 - said, never lost: the next open charges its reservation
                 act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
                     why="%s run %s on %s: designer_stage close failed: %s" % (name, run["unit"], run["concept"],
@@ -1872,17 +1875,64 @@ def concept_dir(cfg, concept):
     return concept if os.path.isabs(concept) else os.path.join(cfg.get("clone") or os.path.dirname(os.path.dirname(_SRC)), concept)
 
 
-def stage_open(concept, unit, budget, commit=False):
-    """designer_stage.open_run: (packet, run budget) or raises. decide previews (commit False, nothing written);
-    execute commits just before systemd-run (DESIGNER_STAGES_REBUILD_LAUNCHER_HOLDS_LEASH)."""
+def judge_sync(concept, timeout=45, repos=None):
+    """Fetch origin into every clone the judge reads before judging a concept: the Dispatcher's own (designer_stage's
+    REPO, ~/rm/dispatch) and the concept's (the Designer's clone). designer_stage reads OWNER.jsonl from each working
+    tree AND its origin/main (concept_tree.owner_lines), so a fetched ref is enough: no working tree is moved under a
+    running Designer. DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP: ~/rm/dispatch was behind origin and refused
+    "WAITING_OWNER: no new owner event" with his answer already published. -> [notes] (a failed fetch is said, and the
+    judge goes on with what is on disk: refusing every run because the network blinked is not better)."""
     import designer_stage as DS
-    return DS.open_run(concept, unit, budget or None, commit=commit)
+    notes = []
+    if os.environ.get("RM_JUDGE_SYNC") == "0":     # a selftest's fixture concept: no network fetch of a real clone
+        return notes
+    for repo in dict.fromkeys(r for r in (repos or (DS.REPO, DS.clone_of(concept))) if r):
+        try:
+            r = subprocess.run(["git", "-C", repo, "fetch", "-q", "origin", "main"], capture_output=True, text=True,
+                               timeout=timeout)
+            if r.returncode != 0:
+                notes.append("fetch %s exited %d: %s" % (repo, r.returncode, (r.stderr or "").strip()[:160]))
+        except (OSError, subprocess.SubprocessError) as e:
+            notes.append("fetch %s: %s" % (repo, e))
+    return notes
 
 
-def stage_close(concept, unit, tokens):
+def stage_open(concept, unit, budget, commit=False, sync=True):
+    """designer_stage.open_run: (packet, run budget) or raises. decide previews (commit False, nothing written);
+    execute commits just before systemd-run (DESIGNER_STAGES_REBUILD_LAUNCHER_HOLDS_LEASH). Fetches first (judge_sync)."""
+    import designer_stage as DS
+    notes = judge_sync(concept) if sync else []
+    try:
+        return DS.open_run(concept, unit, budget or None, repo=DS.REPO, commit=commit)
+    except DS.Refused as e:
+        if notes:
+            raise DS.Refused("%s (judged without a fresh origin: %s)" % (e, "; ".join(notes)))
+        raise
+
+
+def stage_close(concept, unit, tokens, sync=True):
     """designer_stage.close_run: the run's charge, then its result.json validated -> (accepted, reasons)."""
     import designer_stage as DS
-    return DS.close_run(concept, unit, tokens)
+    if sync:
+        judge_sync(concept)
+    return DS.close_run(concept, unit, tokens, repo=DS.REPO)
+
+
+def stage_turn(concept):
+    """-> the concept's turn that waits on him (designer_stage.pending_turn), or None."""
+    import designer_stage as DS
+    return DS.pending_turn(concept, repo=DS.REPO)
+
+
+def escalate_turn(name, run, t, act):
+    """A turn just closed waiting_owner: a Dispatcher escalation line in the Conductor's log, so a live Conductor puts
+    each ask to him as a question card now, not when he asks (DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP)."""
+    import designer_stage as DS
+    act(do="alarm", kind="role:%s:waiting_owner" % name, ticket=t.get("item") or run.get("item"), note=True,
+        conductor_log=True,
+        raise_first="%s's turn on %s waits on him: %d ask(s) in %s. Put each to him as a question card now." % (
+            name, t["mod"], len(t["asks"]), t.get("turn") or t["dir"]),
+        why=DS.turn_line(t))
 
 
 def stage_abort(concept, unit):

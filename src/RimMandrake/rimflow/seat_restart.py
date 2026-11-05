@@ -3245,6 +3245,26 @@ def _wake_receipts(seat, cfg, rec):
         print("\n".join(lines))
 
 
+def _wake_designer_turns():
+    """Designer turns that closed waiting_owner and no OWNER event has answered (DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP):
+    every wake says them, so a fresh Conductor brings them to him as question cards before anything else he is owed."""
+    try:
+        import designer_stage as DS
+        turns, bad = DS.pending_turns()
+    except Exception as e:               # noqa: BLE001 - the wake must reach its last line
+        print("\n== DESIGNER TURNS UNMEASURED (%r): run designer_stage.py turns yourself" % e)
+        return
+    if not turns and not bad:
+        print("\n== Designer turns waiting on him: none")
+        return
+    print("\n== DESIGNER TURNS WAITING ON HIM (%d): put each ask to him as a question card; record his answer with "
+          "`rimflow note <item> --owner-said` (or --by-card), which takes it off every list" % len(turns))
+    for t in turns:
+        print("- " + DS.turn_line(t))
+    for b in bad:
+        print("- UNMEASURED " + b)
+
+
 def cmd_wake(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
     seat = SEAT_ALIAS.get(seat, seat)
@@ -3270,6 +3290,7 @@ def cmd_wake(args):
         for path, risks in sorted(rec["clones"].items()):
             print("- %s: %s" % (path, ", ".join(risks)))
     _wake_receipts(seat, cfg, rec)
+    _wake_designer_turns()
     if cfg.get("kind") == "conductor":
         pid = doorbell.claude_ancestor()
         _wake_last_reply(rec, cfg, (session_file(pid) or {}).get("sessionId") if pid else None)
