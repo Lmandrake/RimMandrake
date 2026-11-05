@@ -307,39 +307,80 @@ namespace RimMandrake.FlowWorks.SelfTest
             // between the neighbour scan and the coupler print goes red here.
             Case("LiquidJoin_machine_branch_reaches_tank_join", () =>
             {
-                // raw text, not Src(): Src folds the file onto one line, so a // comment would swallow the rest of it
-                string joins = System.IO.File.ReadAllText(RiverSwitchFlipChecks.SrcPath(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs")));
-                int from = joins.IndexOf("RM_LiquidNet.RoleOfKind(t) == RM_NetRole.Machine)", System.StringComparison.Ordinal);
-                int to = from < 0 ? -1 : joins.IndexOf("lastCouplers = couplers;", from, System.StringComparison.Ordinal);
-                Assert(from >= 0 && to > from, "the joins layer has a machine branch ending before the counters are stored");
-                if (from < 0 || to <= from) return;
-                string body = System.Text.RegularExpressions.Regex.Replace(joins.Substring(from, to - from), @"//[^\n]*", "");
-                body = System.Text.RegularExpressions.Regex.Replace(body, @"\s+", "");
-                string[] guards =
-                {
-                    "if(!n.InBounds(map))continue;",
-                    "if(!(bisBuilding_LiquidTank)||!seen.Add(b))continue;",
-                    "if(join==null)continue;",
-                    "if(m==null)continue;",
-                };
-                int at = 0;
-                foreach (string g in guards)
-                {
-                    int i = body.IndexOf(g, at, System.StringComparison.Ordinal);
-                    Assert(i >= 0, "the machine branch carries, in order, the guard " + g);
-                    if (i >= 0) at = i + g.Length;
-                }
-                int skips = System.Text.RegularExpressions.Regex.Matches(body, @"\bcontinue;|\bbreak;|\breturn\b").Count;
-                Assert(skips == guards.Length, "can-fail: the machine branch skips only on its four named guards (found " + skips + ")");
-                Assert(!body.Contains("||true") && !body.Contains("&&false") && !body.Contains("if(true)") && !body.Contains("if(false)"),
-                    "can-fail: no constant short-circuit in the machine branch");
-                int scan = body.IndexOf("foreach(IntVec3nina.ExpandedBy(1).EdgeCells)", System.StringComparison.Ordinal);
-                int rule = body.IndexOf("LiquidJoinRule.MachineTankJoin(b.def.defName,look,a.minX,a.minZ,a.Width,a.Height,br.minX,br.minZ,br.Width,br.Height)", System.StringComparison.Ordinal);
-                int drop = body.IndexOf("PrintStrip(this,pm,join.Drop,yPipe)>0)drops++;", System.StringComparison.Ordinal);
-                int coup = body.IndexOf("couplers++;", System.StringComparison.Ordinal);
-                Assert(scan >= 0 && rule > scan && drop > rule && coup > drop,
-                    "the branch scans the ring around the machine, asks the rule for each tank, prints the drop, then counts the coupler");
+                string fault = MachineBranchFault(JoinsRaw());
+                Assert(fault == null, "the joins layer's machine branch reaches MachineTankJoin and prints for every tank neighbour: " + fault);
             });
+            // the branch check carries its own mutants (gen 5): each is the shipped source with one edit that leaves a pump
+            // beside a tank printing no coupler, no drop, or a coupler that is not counted where the live proof reads it.
+            // Every mutant must apply (the edit's anchor exists) and must be caught, so the check cannot silently go blind.
+            Case("LiquidJoin_machine_branch_kills_its_mutants", () =>
+            {
+                string raw = JoinsRaw();
+                var mutants = new (string name, string from, string to)[]
+                {
+                    ("B: '|| true' on the tank filter", "|| !seen.Add(b)) continue;", "|| !seen.Add(b) || true) continue;"),
+                    ("tank filter inverted", "if (!(b is Building_LiquidTank) ||", "if ((b is Building_LiquidTank) ||"),
+                    ("extra skip before the rule", "CellRect br = b.OccupiedRect();", "if (b.def.size.x > 1) continue; CellRect br = b.OccupiedRect();"),
+                    ("rule asked but its answer dropped", "LiquidJoinRule.MachineJoin join = LiquidJoinRule.MachineTankJoin(", "LiquidJoinRule.MachineJoin join = null; var asked = LiquidJoinRule.MachineTankJoin("),
+                    ("drop never printed", "if (join.Drop != null)", "if (join.Drop == null)"),
+                    ("coupler off the rule's point", "new Vector3((float)join.CouplerX, yTop, (float)join.CouplerZ)", "new Vector3((float)a.minX, yTop, (float)a.minZ)"),
+                    ("coupler never printed", "Printer_Plane.PrintPlane(this, new Vector3((float)join.CouplerX", "if (false) Printer_Plane.PrintPlane(this, new Vector3((float)join.CouplerX"),
+                    ("on-port count dropped", "if (join.OnDrawnPort) onPort++;", ""),
+                    ("ring scan narrowed to the machine", "a.ExpandedBy(1).EdgeCells", "a.Cells"),
+                };
+                foreach (var (name, from, to) in mutants)
+                {
+                    int at = raw.IndexOf(from, StringComparison.Ordinal);
+                    Assert(at >= 0, "mutant '" + name + "' applies: its anchor is in RM_LiquidJoins.cs");
+                    string mutated = raw.Substring(0, at) + to + raw.Substring(at + from.Length);
+                    Assert(MachineBranchFault(mutated) != null, "can-fail: the branch check catches mutant '" + name + "'");
+                }
+            });
+        }
+
+        private static string JoinsRaw() =>
+            // raw text, not Src(): Src folds the file onto one line, so a // comment would swallow the rest of it
+            System.IO.File.ReadAllText(RiverSwitchFlipChecks.SrcPath(System.IO.Path.Combine("Machinery", "RM_LiquidJoins.cs")));
+
+        /// <summary>null when the joins layer's machine branch scans the ring around the machine, keeps every
+        /// Building_LiquidTank, asks LiquidJoinRule.MachineTankJoin, prints the drop and a coupler at the rule's point and
+        /// counts both; else what is wrong.</summary>
+        private static string MachineBranchFault(string joins)
+        {
+            int from = joins.IndexOf("RM_LiquidNet.RoleOfKind(t) == RM_NetRole.Machine)", StringComparison.Ordinal);
+            int to = from < 0 ? -1 : joins.IndexOf("lastCouplers = couplers;", from, StringComparison.Ordinal);
+            if (from < 0 || to <= from) return "no machine branch ending before the counters are stored";
+            string body = System.Text.RegularExpressions.Regex.Replace(joins.Substring(from, to - from), @"//[^\n]*", "");
+            body = System.Text.RegularExpressions.Regex.Replace(body, @"\s+", "");
+            string[] guards =
+            {
+                "if(!n.InBounds(map))continue;",
+                "if(!(bisBuilding_LiquidTank)||!seen.Add(b))continue;",
+                "if(join==null)continue;",
+                "if(m==null)continue;",
+            };
+            int at = 0;
+            foreach (string g in guards)
+            {
+                int i = body.IndexOf(g, at, StringComparison.Ordinal);
+                if (i < 0) return "missing, in order, the guard " + g;
+                at = i + g.Length;
+            }
+            int skips = System.Text.RegularExpressions.Regex.Matches(body, @"\bcontinue;|\bbreak;|\breturn\b").Count;
+            if (skips != guards.Length) return "skips on more than its four named guards (found " + skips + ")";
+            if (body.Contains("||true") || body.Contains("&&false") || body.Contains("if(true)") || body.Contains("if(false)"))
+                return "a constant short-circuit in the machine branch";
+            int scan = body.IndexOf("foreach(IntVec3nina.ExpandedBy(1).EdgeCells)", StringComparison.Ordinal);
+            int rule = body.IndexOf("LiquidJoinRule.MachineJoinjoin=LiquidJoinRule.MachineTankJoin(b.def.defName,look,a.minX,a.minZ,a.Width,a.Height,br.minX,br.minZ,br.Width,br.Height)", StringComparison.Ordinal);
+            int dropIf = body.IndexOf("if(join.Drop!=null){", StringComparison.Ordinal);
+            int drop = body.IndexOf("PrintStrip(this,pm,join.Drop,yPipe)>0)drops++;", StringComparison.Ordinal);
+            int print = body.IndexOf("Printer_Plane.PrintPlane(this,newVector3((float)join.CouplerX,yTop,(float)join.CouplerZ)", StringComparison.Ordinal);
+            int coup = body.IndexOf("couplers++;", StringComparison.Ordinal);
+            int port = body.IndexOf("if(join.OnDrawnPort)onPort++;", StringComparison.Ordinal);
+            if (!(scan >= 0 && rule > scan && dropIf > rule && drop > dropIf && print > drop && coup > print && port > coup))
+                return "the branch does not scan the ring, ask the rule, print the drop, print the coupler at the rule's point, then count it and its port"
+                    + $" (scan {scan}, rule {rule}, dropIf {dropIf}, drop {drop}, print {print}, coupler {coup}, port {port})";
+            return null;
         }
     }
 }
