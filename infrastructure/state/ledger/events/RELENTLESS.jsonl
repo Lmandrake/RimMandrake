@@ -611,3 +611,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T11:28:54Z","tsn":1793878134779779678}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T11:28:59Z","tsn":1793878139955672158}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless showing WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T11:47:55Z","tsn":1793879275389874347}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T11:54:42Z","tsn":1793879682559327123}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T11:54:52Z","tsn":1793879692672426715}
