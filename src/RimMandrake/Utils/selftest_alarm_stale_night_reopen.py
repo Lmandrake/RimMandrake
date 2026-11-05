@@ -19,6 +19,9 @@ Fifth instance (NIGHTLY_COP_FIX_RED_QHQXLR_JQBT): NIGHTLY_RED:testing.red_qhqxlr
 "and only that one", cured at 40de8bea3d) closed 2026-11-04T22:19:24Z on a green rerun; reopened 05:22Z, same night.
 Sixth instance (NIGHTLY_COP_FIX_RED_UQUVZZ_AYSU): NIGHTLY_RED:testing.red_uquvzz's item (selftest_deploy_deleted's
 compare_then_vanish stub, cured at 2026-11-04 14:04Z) closed 2026-11-04T22:19:34Z on a green rerun; reopened 05:26:15Z.
+Seventh instance (NIGHTLY_COP_FIX_RED_WABGHY_BUUY): NIGHTLY_RED:testing.red_wabghy's item (selftest_shipped_defs, the
+StarWarsPatches def floor 30 over 29 real, cured at 40de8bea3d) closed 2026-11-04T22:19:37Z on a green rerun; reopened
+05:22Z (alarms_log "reopen_closed_still_crossed") on the same night.
 
   python3 selftest_alarm_stale_night_reopen.py --blob REV:PATH   replay ops_watch.py as it stood at REV (git), e.g.
       --blob 618deb68f3^:src/RimMandrake/Utils/ops_watch.py, the code that reopened both instances: it must FAIL.
@@ -177,6 +180,13 @@ def test_uquvzz_instance():
                     "red_uquvzz closed 22:19:34Z, read at 05:26:15Z on the 11:00Z night: no reopen (the sixth instance)")
 
 
+def test_wabghy_instance():
+    """NIGHTLY_COP_FIX_RED_WABGHY_BUUY: closed 22:19:37Z on a green rerun (selftest_shipped_defs' StarWarsPatches floor,
+    cured at 40de8bea3d, 14:04Z), reopened 05:22Z (alarms_log "reopen_closed_still_crossed") on the 11:00Z night."""
+    closed_instance("NIGHTLY_RED:testing.red_wabghy", "2026-11-04T22:19:37Z", "2026-11-05T05:22:00Z",
+                    "red_wabghy closed 22:19:37Z, read at 05:22Z on the 11:00Z night: no reopen (the seventh instance)")
+
+
 def test_unchanged_without_a_night_or_close_times():
     reset()
     b = Bench(CLOSE - 7200)
@@ -192,7 +202,7 @@ def test_unchanged_without_a_night_or_close_times():
 
 if __name__ == "__main__":
     for fn in (test_stale_night_holds, test_bcbosb_instance, test_bgmskv_instance, test_pjljvq_instance, test_qhqxlr_instance,
-               test_uquvzz_instance, test_unchanged_without_a_night_or_close_times):
+               test_uquvzz_instance, test_wabghy_instance, test_unchanged_without_a_night_or_close_times):
         fn()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     sys.exit(1 if FAILS else 0)
