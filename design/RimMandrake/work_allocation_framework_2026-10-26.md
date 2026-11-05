@@ -180,10 +180,10 @@ getting old, a machine sitting idle) so resources can move before the work stall
 ### 3.6 Your live walk
 | measure | definition | instrument | today | target / alarm |
 |---|---|---|---|---|
-| W1 Walks owed | open items that need your eyes in game | ledger `needs=owner` with a walk/in-game marker | 6 items whose title says walk; 2 say in game [M, by title match: a weak instrument] | a staged walk is ready before you sit down |
-| W2 Walk readiness | owed walks whose scene and save are staged and pre-reviewed | none | [U]: no record of staging | every owed walk staged before you are home |
-| W3 Last walk age | days since your last live walk, and what it found | none: no ledger event marks a walk (`ranBy` holds only BENCH and FOUNDRY) | [U] | shown, not targeted: you decide when to walk |
-| W4 Walk yield | findings per walk that the automated lanes missed | the criteria ledger | [U] | each one becomes a check, so the next walk finds less |
+| W1 Walks owed | open items that need your eyes in game | ledger `needs=owner` with a walk/in-game title or a `walk` event (`rimflow walks`) | 6 items whose title says walk; 2 say in game [M, by title match: a weak instrument] | a staged walk is ready before you sit down |
+| W2 Walk readiness | owed walks whose scene and save are staged and pre-reviewed | `rimflow walk staged <ID> --save …` (any seat); `rimflow walks` | [U]: no record of staging | every owed walk staged before you are home |
+| W3 Last walk age | days since your last live walk, and what it found | `rimflow walk done <ID> --found N` (OWNER only: relayed with --owner-said/--by-card/--per-ruling); `rimflow walks` | [U] | shown, not targeted: you decide when to walk |
+| W4 Walk yield | findings per walk that the automated lanes missed | `found`/`--findings` on `walk done`; `rimflow walks` (UNMEASURED until a done walk records `found`) | [U] | each one becomes a check, so the next walk finds less |
 
 ## 4. (c) The adjustment loop
 The loop has four levels. The bottom three run without you; the top one is you reading Pulse.
@@ -254,7 +254,7 @@ Two kinds of signal, kept apart because they ask different things of you.
 | signal | rule | today |
 |---|---|---|
 | Machine unreachable | SteveDesktop or Archmagi host not answering the bridge or ssh for 30 min, after the steward's restart path is exhausted | none [M: SteveDesktop running at 18:00Z] |
-| Walk ready | a staged walk (W2) is waiting for you | [U]: no staging record |
+| Walk ready | a staged walk (W2) is waiting for you | `walk staged` events (`rimflow walks`, W2) |
 | A login or a physical action | Steam, a Windows prompt, a UAC dialog, a cable | logged when it happens; none today |
 
 Each signal is a row on the Streams panel with a badge **YOU (remote)** or **YOU (in person)**, and appears on the phone

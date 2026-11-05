@@ -2724,6 +2724,29 @@ def cmd_needs(args, seat):
     return 0
 
 
+def cmd_walk(args, seat):
+    """The owner's live walk on an item: `staged` (any seat: scene and save ready) or `done` (OWNER: he walked it).
+    W1-W4 read these (walk_metrics.py; OWNER_WALK_MEASURE_STAGED_AND_DONE)."""
+    if args.phase == "staged" and (args.found is not None or args.findings):
+        die("--found and --findings belong to `walk done`: a staged walk has found nothing yet", 2)
+    findings = [f.strip() for f in (args.findings or "").split(",") if f.strip()] or None
+    _, w = load()
+    _emit({"seat": seat, "event": "walk", "id": args.id, "phase": args.phase, "save": args.save,
+           "found": args.found, "findings": findings, "detail": args.detail}, w, quiet=True)
+    print("walk %s %s%s" % (args.phase, args.id, "" if args.found is None else " (found %d)" % args.found))
+    return 0
+
+
+def cmd_walks(args, seat):
+    try:
+        from . import walk_metrics
+    except ImportError:
+        from rimflow import walk_metrics
+    m = walk_metrics.measure(_replay_now())
+    print(json.dumps(m, indent=1, sort_keys=True) if args.json else walk_metrics.render(m))
+    return 0
+
+
 def cmd_retarget(args, seat):
     _, w = load()
     _emit({"seat": seat, "event": "retarget", "id": args.id, "to": args.to,
@@ -4097,6 +4120,20 @@ def build_parser():
             _simple("raise", (("reason", "reason"),)))
     s.add_argument("id")
     s.add_argument("--reason")
+
+    s = add("walk", "the owner's live walk: `staged` (any seat; scene and save ready, pre-reviewed) or `done` "
+            "(OWNER: he walked it; relay with --owner-said/--by-card/--per-ruling). W1-W4 read it: `rimflow walks`",
+            cmd_walk)
+    s.add_argument("phase", choices=("staged", "done"))
+    s.add_argument("id")
+    s.add_argument("--save", help="staged: the save or scene he will walk")
+    s.add_argument("--found", type=int, help="done: findings the automated lanes had missed (a count >= 0)")
+    s.add_argument("--findings", help="done: the ids those findings were filed as, comma-separated")
+    s.add_argument("--detail", help="one line: what was walked or what it found")
+
+    s = add("walks", "W1-W4 of the owner's live walk (work_allocation_framework §3.6), read from `walk` events",
+            cmd_walks)
+    s.add_argument("--json", action="store_true")
 
     s = add("note", "a line of context. Prose belongs in items/<ID>.md",
             _simple("note", (("text", "text"),)))

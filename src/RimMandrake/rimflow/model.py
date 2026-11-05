@@ -563,6 +563,14 @@ VERBS = {
     # cannot fall off the queue because the game went DOWN. Any seat, like `note`.
     # ⚠️ A reader older than this entry refuses the unknown verb into `world.errors`.
     "raise":     {"who": "any",   "req": (), "opt": ("reason",)},
+    # 🔑 `walk` (2026-11-05, OWNER_WALK_MEASURE_STAGED_AND_DONE; work_allocation_framework_2026-10-26.md §3.6 W1-W4):
+    # the owner's live walk on an item. `phase` staged|done. `staged`: an agent has the scene and save ready and
+    # pre-reviewed (`save` names it); any seat. `done`: HE walked it; OWNER only (an agent relays it with --owner-said,
+    # --by-card or --per-ruling), `found` = how many findings the automated lanes had missed (an int >= 0), `findings`
+    # the ids they were filed as. State does not move; walk_metrics.py reads W1-W4 off `item.walks`. A walk may land on
+    # a closed item: he often walks what is already done. ⚠️ A reader older than this entry refuses the unknown verb
+    # into `world.errors` and applies nothing.
+    "walk":      {"who": "any",   "req": ("phase",), "opt": ("save", "found", "findings", "detail")},
     # 🔑 `reconcile` (rimflow redesign step 1, 2026-10-07): a seat's JUDGEMENT of commits
     # that name an item — `complete` (the item's scope is built), `partial` (some of it;
     # `remaining` says what is left) or `unrelated` (the commits only mention it).
@@ -1675,7 +1683,7 @@ class Item(object):
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "built_by", "makers", "criteria", "outstanding",
                  "passed", "level_reached", "lease", "raised", "raised_tsn",
-                 "held", "done_index")
+                 "held", "done_index", "walks")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1718,6 +1726,7 @@ class Item(object):
         # released}. Liveness is a function of the clock: see `lease_status`.
         self.lease = None
         self.raised = None              # ts of the first `raise`, or None
+        self.walks = []                 # `walk` events, in ledger order: [{ts, seat, phase, save, found, findings, detail}]
         self.raised_tsn = 0             # tsn of that same first `raise` (0 when absent): `ts` is to the
         #                                 second, so a Producer raising C, A, B in one run needs it for order
 
@@ -1808,6 +1817,7 @@ class World(object):
 # not think of; a terminal set fails closed. Prefer the second wherever the states are
 # few and the consequence is losing the record.
 TERMINAL = ("done", "dropped", "superseded")
+WALK_PHASES = ("staged", "done")    # the `walk` verb's phases (OWNER_WALK_MEASURE_STAGED_AND_DONE)
 
 # The named refusals. Their value is the MESSAGE — the terminal rule above already
 # stops all of them, and each entry here replaces "refused" with a sentence saying
@@ -1866,6 +1876,11 @@ def _who_refusal(ev, item):
     # and played with it to their satisfaction) that is gated, the same way
     # `game UP` is gated on `measured` rather than in the VERBS table — a
     # value-specific check, not a new mechanism.
+    if verb == "walk" and ev.get("phase") == "done" and seat != "OWNER":
+        return ("only the OWNER records a walk `done`: W3 and W4 count HIS walks, so an agent's own word cannot "
+                "make one.\n\n"
+                "✅ If he walked it, relay his words (or his card, or the standing ruling):\n"
+                "    python3 src/RimMandrake/rimflow/cli.py walk done <ID> --found N --owner-said \"<his words>\"")
     if verb == "capability" and ev.get("function_rung") == "played" and seat != "OWNER":
         return ("only the OWNER enters `played` — the expensive rung, entered "
                 "ONLY by his decision, in deliberate batches, never at check-in.\n\n"
@@ -2604,6 +2619,18 @@ def _apply_item_verb(ev, index, item, seat, world):
                                 "remaining": ev.get("remaining")})
     elif verb == "lease":
         _apply_lease(ev, item, seat)
+    elif verb == "walk":
+        phase, found = ev["phase"], ev.get("found")
+        if phase not in WALK_PHASES:
+            raise SchemaError("walk %s: phase %r is not one of %s" % (item.id, phase, "|".join(WALK_PHASES)))
+        if found is not None and (phase != "done" or isinstance(found, bool) or not isinstance(found, int) or found < 0):
+            raise SchemaError("walk %s: `found` is a count >= 0 on a `done` walk only (got %r on %s)"
+                              % (item.id, found, phase))
+        findings = ev.get("findings")
+        if findings is not None and not (isinstance(findings, list) and all(isinstance(f, str) for f in findings)):
+            raise SchemaError("walk %s: `findings` is a list of item ids (got %r)" % (item.id, findings))
+        item.walks.append({"ts": ev["ts"], "seat": seat, "phase": phase, "save": ev.get("save"),
+                           "found": found, "findings": list(findings or ()), "detail": ev.get("detail")})
     elif verb == "raise":
         if not item.open:
             raise SchemaError("raise %s: it is %s; only an open item can be raised"

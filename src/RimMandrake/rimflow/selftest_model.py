@@ -1152,6 +1152,7 @@ CANONICAL = {
                         needs="bridge", criteria=[{"id": "O1", "level": "L0", "text": "x"},
                                                   {"id": "A1", "level": "L1"}]),
     # step 3 (selftest_lease.py covers the semantics; this fuzzes the field reads)
+    "walk":      dict(seat="BUILD", id="A_B_1", phase="staged", save="s.rws"),
     "lease":     dict(seat="BUILD", id="A_B_1", action="take", token="BUILD.abc.1234abcd",
                       expires="2099-01-01T00:30:00Z"),
 }
