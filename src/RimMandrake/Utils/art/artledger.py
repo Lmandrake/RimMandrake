@@ -1040,7 +1040,13 @@ CORRECTABLE_TYPES = ("ruling", "purge", "unpurge", "ban")    # owner acts whose 
 def card_text_in_said(said: str | None) -> bool:
     """`said` holds a question-card pick (our "question → option" text), not his typed words."""
     s = (said or "").strip()
-    return "→" in s or s.upper().startswith(("BY CARD", "(BY CARD", "BY-CARD"))
+    return "→" in s or bool(_CARD_TEXT_RE.search(s))
+
+
+# The forms agents filed card picks under `said` in (measured over the art ledger, 2026-11-05): the card arrow, its
+# ASCII spelling, a "question card"/"by card" mention anywhere ("decision taken by question card 2026-10-08 ..."),
+# and a parenthesised "(card <date>" tag. His typed words carry none of these (PURGE_CARDS_FIX_WRONG_POCKET).
+_CARD_TEXT_RE = re.compile(r"\s->\s|\bquestion[ -]card\b|\bby[ -]card\b|\(card\s+\d{4}-\d\d-\d\d", re.I)
 
 
 def card_said_events(idx=None) -> list:

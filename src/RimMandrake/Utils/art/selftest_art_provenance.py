@@ -151,6 +151,15 @@ def main():
     check(not any(e["id"] == pev["id"] for e in L.card_said_events(idx)), "card-said no longer flags the fixed purge")
     check(not L.card_text_in_said("delete it") and L.card_text_in_said("by-card 2026-10-19: Remove all"),
           "card text detection: his words pass, a by-card prefix is caught")
+    # the phrasings agents actually filed card picks in (blind check, gen 1: 102 purges missed by a prefix-only test)
+    for card in ("reject+purge on sheet leaningscrub_sheet_2026-10-05 (decision taken by question card 2026-10-08)",
+                 "decision taken by question card 2026-10-08 19:05: delete all 17 LeaningScrub conflict pictures",
+                 "rescale ALL flagged creatures to the ground-camera standard (question card 2026-10-16)",
+                 "Shut gate drafts A-D -> Install all four",
+                 "Yes, install my picks (card 2026-10-21: install the 12 held bridge-redraw picks?)"):
+        check(L.card_text_in_said(card), f"card text detection catches {card[:50]!r}")
+    for words in ("Accept Option A, B, C as all live variants. Drop the donor.", "x->y is the pipe", "a card table"):
+        check(not L.card_text_in_said(words), f"card text detection passes his words {words!r}")
 
     # CLI end to end
     out = subprocess.run([sys.executable, str(HERE / "art.py"), "install", mod, "Things/Tank/Cli.png", sc,
