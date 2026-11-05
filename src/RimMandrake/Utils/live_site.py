@@ -5,7 +5,8 @@
     python.exe src/RimMandrake/Utils/live_site.py --not-biome RM_LeaningScrub --biome RM_BlueDesert
     python.exe src/RimMandrake/Utils/live_site.py --save rm_proof_atmosphere
     python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 20
-    python.exe src/RimMandrake/Utils/live_site.py --without oblitus.mylittleplanet --needs 7f.alienworlds --save NAME
+    python.exe src/RimMandrake/Utils/live_site.py --without oblitus.mylittleplanet --needs 7f.alienworlds --save NAME --ignore-missing-mods
+    python.exe src/RimMandrake/Utils/live_site.py --save rm_proof_atmosphere --restage-with AtmosphericBase
 
 RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED: the live stage ran HORIZON_CARAVAN_VANILLA_REFUSES_1's Stillsand probe on a
 Leaning Scrub map eight times and LEANINGSCRUB_STALL_SHARED_MOVE_1's proof on the very biome its criteria exclude, while
@@ -31,6 +32,12 @@ quicktest map for the proofs after it. Same --max-ticks refusal: the map it drop
 load (jawa/running_mods, never ModsConfig.xml, which names the NEXT load). A load that lacks a --needs id or holds a
 --without one cannot be made right without a restart, so the site ends on a `reload needed: ...` line (exit 2), which
 relentless_live carries as the row's why and the game phase restages; nothing is loaded on the wrong list.
+--ignore-missing-mods (with --save): load_game with ignoreModCompatibility, for a proof whose experiment IS loading a save
+without some of the mods it recorded (pair it with --without, so the running list is checked first).
+
+--restage-with MOD (with --save rm_proof_*): when the load is refused (the fixture recorded mods the running list lacks,
+or it is gone), src/RimMandrake/<MOD>/stage_proof_site.py re-makes it on the CURRENT map and list, then it is loaded.
+Only a rm_proof_* fixture: a canonical or player save is never re-made.
 
 Exit 0 the scene is up (read back), 2 it could not be made (UNMEASURED; never 1: a site is not a verdict).
 Runs under Windows Python: RimBridge binds Windows loopback.
@@ -173,12 +180,53 @@ def biome_site(a):
         return READY
 
 
-def save_site(a):
+RESTAGE_PREFIX = "rm_proof_"     # only a proof fixture save is ever re-made; a canonical or player save never is
+
+
+def stager_path(mod):
+    """--restage-with MOD -> src/RimMandrake/<MOD>/stage_proof_site.py (absolute), or None when MOD is not a plain
+    folder name or holds no stager."""
+    if not mod or not mod.replace("_", "").isalnum():
+        return None
+    p = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), mod, "stage_proof_site.py")
+    return p if os.path.isfile(p) else None
+
+
+def run_stager(path, save):
+    """The mod's stager on the CURRENT map, saving as `save` -> its exit code (it refuses a colony itself)."""
+    import subprocess
+    r = subprocess.run([sys.executable, path, "--save", save], capture_output=True, text=True, timeout=900)
+    print(((r.stdout or "") + (r.stderr or "")).strip()[-800:])
+    return r.returncode
+
+
+def load_save(a):
+    """-> the load_game reply. --ignore-missing-mods passes ignoreModCompatibility (GENERATOR_MODS_PROVE_INERT_AFTER_
+    CREATION: the save records mods the experiment deliberately runs without, so the bridge's save.missing_mods
+    pre-check would refuse the very load the proof is about)."""
+    params = {"saveName": a.save}
+    if a.ignore_missing_mods:
+        params["ignoreModCompatibility"] = True
     with connect(120) as rb:
-        r = rb.call("rimworld/load_game", {"saveName": a.save})
-        if not isinstance(r, dict) or r.get("success") is False:
-            print("NOT READY: load_game %s refused: %s" % (a.save, str(r)[:300]))
+        return rb.call("rimworld/load_game", params)
+
+
+def save_site(a):
+    r = load_save(a)
+    if (not isinstance(r, dict) or r.get("success") is False) and a.restage_with:
+        # ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP: the fixture save recorded 6 mods the current list lacks
+        # (save.missing_mods on every game). A proof fixture is re-made on the running list by its own stager, then
+        # loaded, so the fixture can never age out of the load again.
+        print("site: load_game %s refused (%s); re-staging it on the running list with %s"
+              % (a.save, str((r or {}).get("code") if isinstance(r, dict) else r)[:80], a.restage_with))
+        rc = run_stager(stager_path(a.restage_with), a.save)
+        if rc != 0:
+            print("NOT READY: the %s stager could not re-make %s (exit %s)" % (a.restage_with, a.save, rc))
             return NOT_READY
+        r = load_save(a)
+    if not isinstance(r, dict) or r.get("success") is False:
+        print("NOT READY: load_game %s refused: %s" % (a.save, str(r)[:300]))
+        return NOT_READY
     with connect(60) as rb:
         if not wait_ready(rb, a.budget):
             print("NOT READY: %s did not reach Playing with a map in %ds" % (a.save, a.budget))
@@ -246,7 +294,18 @@ def main(argv=None):
     ap.add_argument("--budget", type=int, default=300)
     ap.add_argument("--needs", action="append", default=[], help="a packageId the RUNNING load must hold (repeatable)")
     ap.add_argument("--without", action="append", default=[], help="a packageId it must not hold (repeatable)")
+    ap.add_argument("--ignore-missing-mods", action="store_true",
+                    help="--save: load even though the save records mods the running list lacks (ignoreModCompatibility)")
+    ap.add_argument("--restage-with", metavar="MOD",
+                    help="--save of a %s* fixture: when the load is refused, re-make the save on the running list with "
+                         "src/RimMandrake/<MOD>/stage_proof_site.py, then load it" % RESTAGE_PREFIX)
     a = ap.parse_args(argv)
+    if (a.ignore_missing_mods or a.restage_with) and not a.save:
+        ap.error("--ignore-missing-mods and --restage-with need --save")
+    if a.restage_with and not a.save.startswith(RESTAGE_PREFIX):
+        ap.error("--restage-with re-makes only a %s* proof fixture, never %s" % (RESTAGE_PREFIX, a.save))
+    if a.restage_with and not stager_path(a.restage_with):
+        ap.error("--restage-with %s: no src/RimMandrake/%s/stage_proof_site.py" % (a.restage_with, a.restage_with))
     if sum((bool(a.save), bool(a.biome or a.not_biome), a.menu_dwell is not None)) != 1:
         ap.error("give one of --save, --biome / --not-biome, --menu-dwell")
     if a.menu_dwell is not None and not 1 <= a.menu_dwell <= 300:

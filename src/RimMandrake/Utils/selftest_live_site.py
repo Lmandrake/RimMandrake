@@ -43,6 +43,12 @@ class FakeRB:
             return {"programState": FakeRB.shared["programState"]}
         if tool == "jawa/running_mods":
             return {"packageIds": list(FakeRB.running)}
+        if tool == "rimworld/load_game":
+            FakeRB.loads.append(dict(params or {}))
+            if FakeRB.missing and not (params or {}).get("ignoreModCompatibility"):
+                return {"success": False, "code": "save.missing_mods", "message": "6 mod(s) not active"}
+            FakeRB.shared["programState"] = "Playing"
+            return {"success": True}
         if tool == "rimbridge/get_bridge_status":
             return {"state": {"automationReady": True, "currentMapId": 1, "longEventPending": False,
                               "programState": FakeRB.shared["programState"]}}
@@ -53,6 +59,8 @@ def run(argv, running=("ludeon.rimworld", "7f.alienworlds"), **kw):
     log = []
     FakeRB.running = running
     FakeRB.shared = {"programState": "Playing"}
+    FakeRB.missing = kw.pop("missing", False)
+    FakeRB.loads = []
     L.connect = lambda timeout: FakeRB(log, **kw)
     clock = [0.0]       # a fake clock: every sleep advances it, so a wait that never succeeds ends at once
     L.time = types.SimpleNamespace(time=lambda: clock[0], sleep=lambda s: clock.__setitem__(0, clock[0] + s))
@@ -107,7 +115,54 @@ gap = L.load_gap([], ["x.y"], None, {})
 check("an unread running list is NOT READY, never `reload needed`", gap and not gap[-1].startswith("reload needed"))
 check("load_gap: a fitting list is None", L.load_gap(["a.b"], ["c.d"], {"a.b"}, {}) is None)
 
+# --ignore-missing-mods (GENERATOR_MODS_PROVE_INERT_AFTER_CREATION): the save records MLP/SF the experiment runs without
+with contextlib.redirect_stdout(io.StringIO()):
+    rc, log = run(["--without", "oblitus.mylittleplanet", "--save", "S"], missing=True)
+check("a save recording absent mods, plain load -> NOT READY (the bridge pre-check)", rc == L.NOT_READY)
+with contextlib.redirect_stdout(io.StringIO()):
+    rc, log = run(["--without", "oblitus.mylittleplanet", "--save", "S", "--ignore-missing-mods"], missing=True)
+check("--ignore-missing-mods -> load_game carries ignoreModCompatibility, READY",
+      rc == L.READY and FakeRB.loads and FakeRB.loads[-1].get("ignoreModCompatibility") is True)
+with contextlib.redirect_stdout(io.StringIO()):
+    rc, log = run(["--without", "oblitus.mylittleplanet", "--save", "S", "--ignore-missing-mods"],
+                  running=("ludeon.rimworld", "oblitus.mylittleplanet"), missing=True)
+check("--ignore-missing-mods still checks the running list first", rc == L.NOT_READY and not FakeRB.loads)
+
+# --restage-with (ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP): a refused fixture is re-made on the running list, then loaded
+staged = []
+
+
+def _stager(path, save):
+    staged.append((path, save))
+    FakeRB.missing = False      # the re-made save records the running list
+    return 0
+
+
+L.run_stager = _stager
+with contextlib.redirect_stdout(io.StringIO()):
+    rc, log = run(["--save", "rm_proof_atmosphere", "--restage-with", "AtmosphericBase"], missing=True)
+check("--restage-with: refused load -> stager on that save, second load READY",
+      rc == L.READY and len(staged) == 1 and staged[0][1] == "rm_proof_atmosphere"
+      and staged[0][0].endswith(os.path.join("AtmosphericBase", "stage_proof_site.py")) and len(FakeRB.loads) == 2)
+staged.clear()
+with contextlib.redirect_stdout(io.StringIO()):
+    rc, log = run(["--save", "rm_proof_atmosphere", "--restage-with", "AtmosphericBase"])
+check("--restage-with: a loadable fixture is not re-made", rc == L.READY and not staged and len(FakeRB.loads) == 1)
+L.run_stager = lambda path, save: 2
+with contextlib.redirect_stdout(io.StringIO()):
+    rc, log = run(["--save", "rm_proof_atmosphere", "--restage-with", "AtmosphericBase"], missing=True)
+check("--restage-with: a stager that cannot make the site -> NOT READY, no second load",
+      rc == L.NOT_READY and len(FakeRB.loads) == 1)
+
 # argument exclusivity
+for argv in (["--save", "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3", "--restage-with", "AtmosphericBase"],
+             ["--save", "rm_proof_atmosphere", "--restage-with", "NoSuchMod"], ["--biome", "X", "--ignore-missing-mods"]):
+    try:
+        with contextlib.redirect_stderr(io.StringIO()):
+            L.main(argv)
+        check("argparse refuses %s" % argv, False)
+    except SystemExit as e:
+        check("argparse refuses %s" % argv, e.code == 2)
 for argv in (["--menu-dwell", "5", "--save", "x"], ["--menu-dwell", "0"], []):
     try:
         L.main(argv)
