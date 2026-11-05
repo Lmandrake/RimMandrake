@@ -32,6 +32,9 @@ reopen with no stale check, and file_held filed it 16:23:46Z on the same pre-clo
 Tenth instance (SELFTEST_FIX_RELENTLESS_TICK_STAMP_DVDQ), the eighth's route: red_hooqkv's item closed 13:05:57Z on its
 fix (selftest_relentless_tick_stamp's fake folded(), cured at 021255da88); reopened 16:29:05Z and 16:32:52Z on the
 2026-11-05T11:00Z night, before bc25b60bda landed. Replaying bc25b60bda^ FAILs.
+Eleventh instance (SELFTEST_FIX_DESSIC_INSTALL_CHECK_HZAH), the eighth's route: red_kgewff's item (dessic_install_check
+STALE renders, cured at 12c4540e38) closed 13:19:32Z; found_closed 14:49:55Z, file_held filed it 16:35:25Z on the
+2026-11-05T11:00Z night, four minutes before bc25b60bda landed. Replaying bc25b60bda^ FAILs.
 
   python3 selftest_alarm_stale_night_reopen.py --blob REV:PATH   replay ops_watch.py as it stood at REV (git), e.g.
       --blob 618deb68f3^:src/RimMandrake/Utils/ops_watch.py, the code that reopened both instances: it must FAIL.
