@@ -15,6 +15,12 @@ words>"`), run it yourself, and never hand him a command to paste. When he is pr
 you are at his side: do what he says, ask questions the moment they exist. He opts
 work *into* rigor ("careful with this one"), never out of it.
 
+**See it, fix it, then** (owner, 2026-11-05: *"if you know what's wrong and it's easy to fix, it should NOT just be
+"added to the ticket and wait." That's old foundry behavior. If you see something, fix it RIGHT THEN, ok? Standing
+policy."*). Every seat and helper: a known, small fix (a proof argument, a live line, a timeout, a packageId, a
+worded criterion, an unanswered hold whose answer exists) is made on the spot, published, and the item put back in
+Relentless. A ticket is filed only for what is not small, and it says why.
+
 ## The expensive list — the only things that get ceremony
 
 1. **A cold-load slot** (~15 min on the full list, MEASURED 2026-09-07). Batch questions; write the Player.log strings that
