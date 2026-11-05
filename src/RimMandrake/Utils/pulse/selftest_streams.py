@@ -239,8 +239,10 @@ os.environ.update(RM_SLOT_PROJECTS=str(fx / "projects"), RM_ACCOUNT_USAGE_DIR=st
 pc_ = S.pacing(tn)
 al = json.loads((Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").read_text()) \
     if (Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").exists() else {}
+_adv = SA.load_rules().get("advisory") or {}   # owner 2026-11-02/04: token pace is advice; the placed total is the floor
+_want = max(6, _adv.get("n_total", 0)) if _adv.get("enabled") is True else 6   # 6 = CRUISE's pace on this fixture
 check("pacing(): runs the allocator and writes allocation.json for the hook", al.get("seats") == pc_.get("seats")
-      and pc_.get("seats") == {"BENCH": 0, "FOUNDRY": 6}, (pc_, al.get("seats")))
+      and pc_.get("seats") == {"BENCH": 0, "FOUNDRY": _want}, (pc_, al.get("seats"), _want))
 check("pacing(): carries the accounts with % left and hours to reset", any(a["name"] == "system" and a["burn"]
       and a["pct_left"] == 40.0 for a in pc_.get("accounts") or []), pc_.get("accounts"))
 check("collect() records pacing every 15 min", "pacing" in S.collect.__code__.co_names or "pacing(" in
