@@ -619,10 +619,14 @@ def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
     errs, rows = [], []
     if not isinstance(sc, dict):
         return rows, ["scenes.json is missing, so no showcase set"]
-    if not isinstance(rec, dict) or not isinstance(rec.get("inventory", []), list):
-        # coverage is counted against the inventory: no readable inventory, no claim of coverage (an empty list is
-        # a real, readable inventory)
-        return rows, ["record.json is missing or its inventory is not a list, so coverage cannot be counted"]
+    if not isinstance(rec, dict) or not isinstance(rec.get("inventory"), list):
+        # coverage is counted against the inventory: no readable inventory, no claim of coverage (an explicit empty
+        # list is a real, readable inventory; an omitted one is not)
+        return rows, ["record.json is missing or its inventory is absent or not a list, so coverage cannot be counted"]
+    unread = [i for i, e in enumerate(rec["inventory"]) if not isinstance(e, dict) or not CT.txt(e.get("id"))]
+    if unread:
+        return rows, ["record.json inventory entr%s %s %s not an object with an id, so coverage cannot be counted" % (
+            "y" if len(unread) == 1 else "ies", ", ".join(str(i) for i in unread), "is" if len(unread) == 1 else "are")]
     scenes = {s.get("id") for s in lst(sc.get("scenes")) if isinstance(s, dict) and CT.txt(s.get("id"))}
     leaves = {CT.txt(x.get("id")) for x in CT.lst((tree or {}).get("leaves")) if isinstance(x, dict)} \
         if isinstance(tree, dict) else set()

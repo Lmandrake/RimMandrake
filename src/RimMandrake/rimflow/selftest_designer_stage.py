@@ -565,7 +565,9 @@ def refusals_showcases(repo, root_src, good, flood, tree):
         bad_dec, crashed = [], repr(e)
     check("showcases: a list as decision and a dict among a later showcase's exercises refuse without crashing",
           crashed is None and any("names no record.json decision" in e for e in bad_dec), crashed or bad_dec)
-    for label, r in (("a string inventory", {"inventory": "invalid"}), ("no record.json", None)):
+    for label, r in (("a string inventory", {"inventory": "invalid"}), ("no record.json", None),
+                     ("an omitted inventory", {}), ("an inventory entry that is not an object", {"inventory": [None]}),
+                     ("an inventory entry with no id", {"inventory": [{"impl": "present"}]})):
         refuses("showcases: %s is refused, not read as zero capabilities to cover" % label,
                 DS.showcase_table({"scenes": scenes, "showcases": [], "coverage_rest": []}, r, tree, owner_ev,
                                   repo.root, rules)[1], "coverage cannot be counted")
