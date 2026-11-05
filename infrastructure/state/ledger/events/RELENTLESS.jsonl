@@ -807,3 +807,12 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:44:42Z","tsn":1793922282820842643}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ART_OVERRIDE_FAMILY_SCRIPT_1 A1 (L2), read-only proof","ts":"2026-11-05T23:47:14Z","tsn":1793922434347280501}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:48:58Z","tsn":1793922538412785677}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO L2 (L2), read-only proof","ts":"2026-11-05T23:53:08Z","tsn":1793922788076137740}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:53:19Z","tsn":1793922799131239155}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO L3 (L2), read-only proof","ts":"2026-11-05T23:53:40Z","tsn":1793922820131988391}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:53:50Z","tsn":1793922830691565626}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HEADS_VERIFY_SHRUNK_TO_FIT_THE_HATS A1 (L2), read-only proof","ts":"2026-11-05T23:54:45Z","tsn":1793922885572982404}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:55:00Z","tsn":1793922900431714474}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ASHKARR_WEATHER_INSTALL_THE_SLEEPING_STORMS A1 (L1), read-only proof","ts":"2026-11-05T23:55:59Z","tsn":1793922959366222144}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T23:56:21Z","tsn":1793922981185003573}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","ts":"2026-11-05T23:59:34Z","tsn":1793923174166661713}
