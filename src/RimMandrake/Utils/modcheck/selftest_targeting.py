@@ -588,11 +588,85 @@ def t_item_text_utf8_under_cp1252():
        "item_text decodes rimflow output as UTF-8 under a cp1252 default (byte 0x9d does not crash it)", repr(text))
 
 
+def _git_repo():
+    """A throwaway repo under the system temp dir with a mod folder; -> (root, mod_dir, git)."""
+    import tempfile
+    root = tempfile.mkdtemp(prefix="selftest_targeting_")
+    env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t",
+               GIT_COMMITTER_EMAIL="t@t", GIT_CONFIG_NOSYSTEM="1", HOME=root)
+
+    def git(*a):
+        subprocess.run(["git"] + list(a), cwd=root, check=True, capture_output=True, env=env)
+    git("init", "-q", "-b", "main")
+    git("config", "core.quotepath", "true")      # git's default: non-ASCII paths come back C-quoted without -z
+    mod = os.path.join(root, "Mod")
+    os.makedirs(os.path.join(mod, "Defs"))
+    return root, mod, git
+
+
+def _w(path, text):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
+
+
+def t_changed_files_every_spec():
+    """MODCHECK_CHANGEDFILES_FIX_FIRST_DIFF_WINS: every diff spec counts, paths are read raw, renames and a staged
+    change restored in the worktree are seen."""
+    import shutil
+    root, mod, git = _git_repo()
+    try:
+        a = os.path.join(mod, "Defs", "a.xml")
+        _w(a, "<defName>RM_Base</defName>\n")
+        _w(os.path.join(mod, "Defs", "old.xml"), "<defName>RM_Moved</defName>\n")
+        _w(os.path.join(mod, "Defs", "staged.xml"), "<defName>RM_Staged</defName>\n")
+        git("add", "-A")
+        git("commit", "-q", "-m", "base")
+        _w(a, "<defName>RM_Base</defName>\n<defName>RM_Committed</defName>\n")
+        u = os.path.join(mod, "Defs", "\u00fcber.xml")
+        _w(u, "<defName>RM_Uber</defName>\n")
+        git("add", "-A")
+        git("mv", "Mod/Defs/old.xml", "Mod/Defs/new.xml")
+        git("commit", "-q", "-m", "range")
+        _w(a, "<defName>RM_Base</defName>\n<defName>RM_Committed</defName>\n<defName>RM_Uncommitted</defName>\n")
+        st = os.path.join(mod, "Defs", "staged.xml")
+        _w(st, "<defName>RM_StagedEdit</defName>\n")
+        git("add", "Mod/Defs/staged.xml")
+        _w(st, "<defName>RM_Staged</defName>\n")         # worktree back to HEAD; the index still differs
+        got = dict(targeting.changed_files(mod, "HEAD~1..HEAD", root=root))
+        ta = got.get("Defs/a.xml") or ""
+        ok("RM_Committed" in ta and "RM_Uncommitted" in ta,
+           "a file changed both uncommitted and in --range keeps both specs' lines", ta)
+        ok("Defs/\u00fcber.xml" in got and "RM_Uber" in (got["Defs/\u00fcber.xml"] or ""),
+           "a non-ASCII path is read raw (-z), not git's C-quoted form", sorted(got))
+        ok("Defs/old.xml" in got and "Defs/new.xml" in got, "a rename lists its source path too", sorted(got))
+        ok("RM_StagedEdit" in (got.get("Defs/staged.xml") or ""),
+           "a staged change whose worktree was restored to HEAD is still seen", got.get("Defs/staged.xml"))
+        wt = dict(targeting.changed_files(mod, "WORKTREE", root=root))
+        ok("RM_Uncommitted" in (wt.get("Defs/a.xml") or "") and "RM_Committed" not in (wt.get("Defs/a.xml") or ""),
+           "WORKTREE alone carries only the uncommitted lines", wt.get("Defs/a.xml"))
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def t_changed_stem_whole_token():
+    s = Suite("X")
+
+    @s.chain("pumps")
+    def pumps(t):
+        """drives WaterPump through its ports"""
+        return t
+    res = targeting.changed(s, [("Source/WaterPump.cs", "x"), ("Source/Unrelated.cs", "y")])
+    ok("pumps" in res["suggest"] and res["unknown"] == ["Source/Unrelated.cs"],
+       "an underscore-free stem (WaterPump.cs) maps by whole-token match", res)
+
+
 def main():
     for t in (t_resolve, t_targeted_suite_keeps_site_hold, t_emit_verify_seat, t_run_records_without_seat,
               t_run_targeted, t_cli_refusals, t_scope_and_preview, t_incomplete_catalogue_refused,
               t_offline_chains_out_of_live, t_stop_after_runtime, t_hold_contract_every_run, t_cli_preview,
-              t_nested_evidence_stays_on_outer, t_item_text_utf8_under_cp1252):
+              t_nested_evidence_stays_on_outer, t_item_text_utf8_under_cp1252, t_changed_files_every_spec,
+              t_changed_stem_whole_token):
         try:
             t()
         except Exception as ex:     # noqa: BLE001 - one broken test must not hide the others

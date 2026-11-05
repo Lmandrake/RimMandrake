@@ -279,20 +279,33 @@ def changed_files(mod_dir, rev_range="WORKTREE", root=None):
             raise TargetError("--changed: git %s failed: %s" % (" ".join(a), (p.stderr or p.stdout or "").strip()[-200:]))
         return p.stdout or ""
 
-    specs = [["HEAD"]] + ([] if rev_range in (None, "", "WORKTREE") else [[rev_range]])
+    # every spec is diffed and every file keeps the lines of ALL the specs that name it: a file changed both uncommitted
+    # and in the range keeps its committed lines (first-spec-wins dropped them). Uncommitted = staged (--cached, index
+    # vs HEAD) AND unstaged (index vs worktree), separately: `diff HEAD` misses a staged change restored in the worktree.
+    # -z: raw paths (no C-quoting of non-ASCII); --no-renames: a rename lists its source path too.
+    specs = [["--cached"], []] + ([] if rev_range in (None, "", "WORKTREE") else [[rev_range]])
     names = {}
     for sp in specs:
-        for n in git("diff", "--name-only", *sp, "--", rel_mod).splitlines():
-            names.setdefault(n.strip(), sp)
-    untracked = set(n.strip() for n in git("ls-files", "--others", "--exclude-standard", "--", rel_mod).splitlines())
+        for n in git("diff", "--name-only", "-z", "--no-renames", *sp, "--", rel_mod).split("\0"):
+            if n and sp not in names.setdefault(n, []):
+                names[n].append(sp)
+    untracked = set(n for n in git("ls-files", "-z", "--others", "--exclude-standard", "--", rel_mod).split("\0") if n)
     out = []
     for n in sorted(set(names) | untracked):
-        if not n:
-            continue
         text = None
         if n in names:
-            d = git("diff", "-U0", *names[n], "--", n)
-            text = "\n".join(l[1:] for l in d.splitlines() if l[:1] in "+-" and l[:3] not in ("+++", "---"))
+            lines = []
+            for sp in names[n]:
+                hunk = False
+                for l in git("--literal-pathspecs", "diff", "-U0", "--no-renames", "--no-ext-diff", *sp, "--",
+                             n).splitlines():
+                    if l.startswith("diff --git "):
+                        hunk = False
+                    elif l.startswith("@@"):
+                        hunk = True
+                    elif hunk and l[:1] in "+-":    # body only: a content line "-- x" is "--- x", not a header
+                        lines.append(l[1:])
+            text = "\n".join(lines)
         out.append((os.path.relpath(os.path.join(root, n), os.path.join(root, rel_mod)).replace(os.sep, "/"), text))
     return out
 
@@ -319,7 +332,10 @@ def changed(suite, files, mod_dir=None):
                     why = "%s matches declared input %s" % (rel, g)
                     break
             by_base = re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(base), srcs[n]) is not None
-            if why is None and (by_base or (len(stem) > 3 and _names_in(srcs[n], stem))):
+            # the stem as a whole token: _names_in wants backticks for an underscore-free name, so WaterPump.cs never matched
+            by_stem = len(stem) > 3 and re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(stem),
+                                                  srcs[n]) is not None
+            if why is None and (by_base or by_stem):
                 why = "chain source names %s" % (base if by_base else stem)
             if why is None and base.lower().endswith(".xml"):
                 defs = _DEFNAME.findall(text or "")
