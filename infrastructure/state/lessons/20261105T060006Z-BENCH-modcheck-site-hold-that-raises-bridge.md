@@ -1,0 +1,1 @@
+A modcheck site hold that raises a bridge timeout after a GREEN canary usually means the game stopped answering mid-run, not a noisy site: re-ask the canary before spending another chain (testq J20261031T195557Z-deb97a.a1: 4 chains x 30 s holds, 4 site_hold faults, one dead game; HARNESS_REPAIR_CAUSE_0CA2BE29).

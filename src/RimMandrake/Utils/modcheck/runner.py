@@ -28,6 +28,7 @@ called and asserted on in isolation, which is what `selftest.py` does.
 import json
 import os
 import subprocess
+import re
 import sys
 import time
 
@@ -757,6 +758,11 @@ def _default_anchor(session):
     return r.get("sizeX", 200) // 2, r.get("sizeZ", 200) // 2
 
 
+# A hold that raised THIS (rimbridge_client's socket timeout, or its DeadlineError) may mean the game stopped answering:
+# run_suite re-asks the canary before spending another chain on it (HARNESS_REPAIR_CAUSE_0CA2BE29).
+BRIDGE_TIMEOUT = re.compile(r"timed out after [\d.]+s waiting for the bridge|\bDeadlineError\b")
+
+
 def _hold_site(session, tx, expected_ids):
     """MODCHECK_SITE_FIX_MECHS_WAKE_MID_RUN: a live run WITHOUT --situational (both FlowWorks runs of 2026-10-24) built
     no Watch, so prepare_bland_map never ran: the storyteller stayed on and nothing swept hostiles, mechs, wildlife or
@@ -769,7 +775,8 @@ def _hold_site(session, tx, expected_ids):
         pre = _H.kill_hostiles(session, ())
         rep = _H.prepare_bland_map(session, tx, sorted(expected_ids), kill=True, resurrect=False)
     except Exception as e:     # noqa: BLE001 - a hold that could not run is a reason, never a crash
-        return {"bland": False, "problems": ["site hold raised %s: %s" % (type(e).__name__, e)]}
+        return {"bland": False, "problems": ["site hold raised %s: %s" % (type(e).__name__, e)],
+                "bridge_timeout": bool(BRIDGE_TIMEOUT.search("%s: %s" % (type(e).__name__, e)))}
     out = rep.as_dict()
     out["steps"] = [pre.as_dict()] + list(out.get("steps") or [])
     return out
@@ -976,6 +983,26 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             _modal = None
             _hold = (_hold_site(session, hold_tx, fixtures) if hold_tx is not None
                      else {"bland": False, "problems": [hold_err]} if hold_err else None)
+            if _hold is not None and _hold.get("bridge_timeout"):
+                # HARNESS_REPAIR_CAUSE_0CA2BE29 (testq J20261031T195557Z-deb97a.a1): the canary was GREEN, then the game
+                # stopped answering and EVERY chain's hold spent 30 s on a bridge timeout and filed a site_hold fault. A
+                # hold that timed out on the bridge re-asks the canary: a dead game makes this chain and every later live
+                # chain one canary-red HARNESS row (bodies and holds not run); a live game keeps the site_hold row below.
+                import validity as _V  # noqa: E402
+                _probe = _V.canary(session, anchor)
+                if not _probe["ok"]:
+                    canary_res = dict(_probe, problems=[
+                        "the game stopped answering the bridge mid-run (chain %s's site hold: %s)"
+                        % (name, "; ".join(str(p) for p in _hold["problems"])[:200])] + list(_probe["problems"]))
+                    print("[modcheck] chain %s: game stopped answering after a site-hold timeout; canary RED: %s"
+                          % (name, "; ".join(canary_res["problems"])[:300]), file=sys.stderr, flush=True)
+                    if name not in getattr(suite, "offline_chains", ()):
+                        chains_out.append({"name": name, "components": [_V.canary_component(canary_res).as_dict()],
+                                           "situational": None, "modal_check": None, "site_hold": _hold,
+                                           "env_reset": None,
+                                           "phase_s": {"hold": round(time.monotonic() - _m0, 1), "body": 0.0,
+                                                       "teardown": 0.0}})
+                        continue
             if situational:
                 # A force-pause dialog (the colony-naming dialog that surfaces mid-run, or a Mod Settings dialog a previous
                 # chain left open) is a modal_open SURPRISE that aborts and TAINTS the chain. Close them before every chain.

@@ -944,9 +944,78 @@ def t_site_held_between_chains_without_watch():
           '"refused": why,' in inspect.getsource(runner.run) and '"drivers": drv}' in inspect.getsource(runner.run))
 
 
+def t_hold_bridge_timeout_reprobes_the_game():
+    """HARNESS_REPAIR_CAUSE_0CA2BE29 (testq J20261031T195557Z-deb97a.a1): canary GREEN, then every chain's site hold
+    raised 'timed out after 30.0s waiting for the bridge' and each filed a site_hold fault. A hold that times out on the
+    bridge re-asks the canary; a dead game turns this chain and every later live chain into one canary-red row."""
+    import helpers as H
+    import validity as V
+    from suite import UNMEASURED
+    calls = []
+    timeout = RuntimeError("RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long "
+                           "event or the call may be frame-bound")
+
+    class Tx(object):
+        def __init__(self, session):
+            pass
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            pass
+
+    def raising_kill(session, expected_ids=()):
+        calls.append("hold")
+        raise timeout
+
+    def make_suite():
+        suite = Suite("t_mod")
+        for n in ("c1", "c2", "c3"):
+            def body(t, n=n):
+                calls.append("chain_" + n)
+                with t.component("comp_" + n, beyond_toggle=True):
+                    pass
+            suite.chains.append((n, body))
+        return suite
+
+    probe = {"ok": False}
+
+    def fake_canary(session, anchor):
+        calls.append("canary")
+        return ({"ok": True, "problems": [], "steps": ["programState Playing"]} if probe["ok"] else
+                {"ok": False, "problems": ["RimBridgeError: timed out after 30.0s waiting for the bridge"], "steps": []})
+
+    real = (H.SettingsTransaction, H.kill_hostiles, V.canary, runner.load_fixtures, runner.save_fixtures)
+    H.SettingsTransaction, H.kill_hostiles, V.canary = Tx, raising_kill, fake_canary
+    runner.load_fixtures = lambda *a, **k: set()
+    runner.save_fixtures = lambda *a, **k: None
+    try:
+        r = runner.run_suite(make_suite(), _fake_session(), hold_site=True, anchor=(10, 10))
+        rows = [(ch["name"], c["name"], c["verdict"], c.get("detail") or "") for ch in r["chains"] for c in ch["components"]]
+        check("hold: a bridge timeout re-probes the game; a dead game spends ONE hold and ONE probe, no body runs",
+              calls == ["hold", "canary"], calls)
+        check("hold: a bridge timeout on a dead game makes every chain one canary-red HARNESS row naming the stop",
+              len(rows) == 3 and all(n == V.CANARY_ROW and v == UNMEASURED and "canary red" in d
+                                     and "stopped answering the bridge" in d for _, n, v, d in rows), rows)
+        del calls[:]
+        probe["ok"] = True
+        r = runner.run_suite(make_suite(), _fake_session(), hold_site=True, anchor=(10, 10))
+        rows = [(c["verdict"], c.get("detail") or "") for ch in r["chains"] for c in ch["components"]]
+        check("hold: a bridge timeout on a live game keeps the site_hold row per chain and goes on",
+              calls == ["hold", "canary"] * 3 and len(rows) == 3
+              and all(v == UNMEASURED and "could not hold the site quiet" in d for v, d in rows), (calls, rows))
+        check("hold: only a bridge timeout re-probes (the regex)",
+              runner.BRIDGE_TIMEOUT.search(str(timeout)) and runner.BRIDGE_TIMEOUT.search("DeadlineError: x")
+              and not runner.BRIDGE_TIMEOUT.search("PauseUnverified: could not verify the game is paused"))
+    finally:
+        (H.SettingsTransaction, H.kill_hostiles, V.canary, runner.load_fixtures, runner.save_fixtures) = real
+
+
 TESTS = [
     t_fixture_declared_without_watch,
     t_site_held_between_chains_without_watch,
+    t_hold_bridge_timeout_reprobes_the_game,
     t_dependency_closure_and_composed_folders,
     t_floor_uncovered,
     t_compose_test_list_appends_once_and_reads_back,
