@@ -1,3 +1,10 @@
+# TIERS (Conductor mend 2026-11-05; no single list serves every clause, so each clause's live-site checks the RUNNING load and ends `reload needed:` on the wrong one, which restages):
+# STAGING list U (A1, A4, A3): Stillsand + RimMandrake.Biomes + the Utinni layer (mandrake.rut.patches) + Dubs Bad Hygiene Lite and Thirst (dubwise.dubsbadhygiene.lite, dubwise.dubsbadhygiene.thirst, both on FULL.LATEST), all five DLC.
+# STAGING list R (A2): the same RM mods WITHOUT the Utinni layer (no mandrake.rut.patches: no RUT_SunDebt ledger def may load), all five DLC; DBH not needed.
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --needs mandrake.rut.patches --needs dubwise.dubsbadhygiene.lite --needs dubwise.dubsbadhygiene.thirst --biome RM_Stillsand
+live-site A2: python.exe src/RimMandrake/Utils/live_site.py --without mandrake.rut.patches --biome RM_Stillsand
+live-site A3: python.exe src/RimMandrake/Utils/live_site.py --biome RM_Stillsand
+live-site A4: python.exe src/RimMandrake/Utils/live_site.py --needs mandrake.rut.patches --needs dubwise.dubsbadhygiene.lite --needs dubwise.dubsbadhygiene.thirst --biome RM_Stillsand
 live-proof A1: python3 src/RimMandrake/Stillsand/prove_stillsand_return.py --clause A1
 live-proof A2: python3 src/RimMandrake/Stillsand/prove_stillsand_return.py --clause A2
 live-proof A3: python3 src/RimMandrake/Stillsand/prove_stillsand_return.py --clause A3

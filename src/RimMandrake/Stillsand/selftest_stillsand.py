@@ -1237,6 +1237,18 @@ def sac_static_mutants(bad):
             bad.append("sac mutant %r did not change the XML (the mutant's pattern is stale)" % name)
         elif V.sac_static_defect(a, b) is None:
             bad.append("sac mutant %r: sac_static_defect stayed clean" % name)
+    # through the ROW (blind check gen 7, mutant m1: deleting A1's own `if sac_bad: _fail(sac_bad)` stayed green, since
+    # the mutants above call sac_static_defect directly): with the comp deleted, A1's row must FAIL on the sac
+    row = "water.return_sun_debt_gale_opens_good_outcome_pays"
+    real = V.sac_static_defect
+    V.sac_static_defect = lambda sac_xml=None, fillout_xml=None: real(no_comp, fill)
+    try:
+        got = run().get(row, ("MISSING", ""))
+    finally:
+        V.sac_static_defect = real
+    if got[0] != "FAIL":
+        bad.append("sac comp deleted, read through %s: %s, not FAIL (the row no longer runs the offline sac check)"
+                   % (row, got[0]))
 
 
 def loomma_hop_defect(fill=None, dash_src=None):
