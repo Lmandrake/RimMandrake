@@ -196,6 +196,7 @@ class FakeWorld:
     def tokens(self, run): return self.tok
     def activity(self, st): return 0
     def account_loss(self, run, clone, since, box=None): return getattr(self, "account_sign", None)
+    def death_note(self, run): return getattr(self, "death_err", None)
     def mem_gb(self):
         v, self.mem_once = getattr(self, "mem_once", None), None
         return self.mem if v is None else v

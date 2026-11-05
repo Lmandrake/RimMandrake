@@ -2543,6 +2543,11 @@ class Effects(relentless_game.GameFx):
         """-> {"kind", "why"} when the account, not the item, ended this dead run; else None."""
         return relentless_account.loss(run, clone, since, box=box)
 
+    def death_note(self, run):
+        """-> the .err tail of a dead run that left no result object, else None. A Marker that dies at start (EACCES under
+        its own wall, 2026-11-03) writes its reason there and nothing to .json: thirty such deaths read checker_lost, silent."""
+        return death_note(run)
+
     def alive(self, run):
         """Unit, scope, or a marked process: any one of them means the run is not over."""
         if not run:
@@ -3107,6 +3112,25 @@ def cause_key(why):
     """Same fault, same key: run names, paths and numbers differ between tries, the words do not. The tail, because
     launch and clone errors arrive cut to their last 200-300 characters, so their first words shift with a name's length."""
     return re.sub(r"\s+", " ", CAUSE_TOKEN.sub("#", why)).strip().lower()[-120:]
+
+
+def death_note(run):
+    """-> the last 300 characters of `run`'s .err when its .json holds no result object, else None (no .err text: a
+    plain lost run, the checker_lost count's business)."""
+    if not run:
+        return None
+    try:
+        with open(run.get("out") or "", encoding="utf-8") as f:
+            if json.load(f) is not None:
+                return None
+    except (OSError, ValueError):
+        pass
+    try:
+        with open(run.get("err") or "", encoding="utf-8", errors="replace") as f:
+            text = f.read().strip()
+    except OSError:
+        return None
+    return text[-300:] or None
 
 
 def launch_failed(store, r, now, why):
@@ -3915,6 +3939,8 @@ def step(store, fx, r, item, now, acts):
         if not settle(store, fx, r, item, "check", min(since, now), now, acts):
             return
         lost = fx.account_loss(chk.get("run"), chk.get("clone"), chk["at"], chk.get("box")) if word is None else None
+        # its own death, not our stop at check_max_s (a stopped run may leave a line on .err too)
+        died = fx.death_note(chk.get("run")) if word is None and not lost and now - chk["at"] < r["check_max_s"] else None
         c = st["candidate"]
         drop = []      # a checker clone a retry lets go: removed out of the lock, or it sits an hour as an orphan
         try:
@@ -3949,6 +3975,18 @@ def step(store, fx, r, item, now, acts):
                     seen = st["check"].setdefault("lost_seen", now)
                     if now - seen < r.get("account_settle_s", 0):
                         store.save(st)
+                        return
+                    if died:
+                        # it died saying why on .err with no .json: the launch path, not the item. No count, same
+                        # candidate; the breaker carries it, so repeats open it and one cause twice is the emergency
+                        why = "checker %s died with no output: %s" % ((st["check"].get("run") or {}).get("unit"), died)
+                        drop.append({"check": dict(st["check"]), "quarantined": list(st["quarantined"])})
+                        st["status"] = "candidate"
+                        st["check"] = None
+                        store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "check_launch_fail", "detail": why[:600]})
+                        store.save(st)
+                        launch_failed(store, r, now, why)
+                        acts.append({"do": "check_launch_fail", "item": item, "why": why[:200]})
                         return
                     n = st.get("check_lost", 0) + 1
                     st["check_lost"] = n
