@@ -605,3 +605,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T10:38:37Z","tsn":1793875117621085683}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T10:44:17Z","tsn":1793875457770204046}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T10:53:27Z","tsn":1793876007794595605}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T10:53:38Z","tsn":1793876018638078714}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing THRIXWEAVE_RESELL_BUILD_DEARLY_SOLD: review savegame for the owner's look","ts":"2026-11-05T11:05:15Z","tsn":1793876715929035943}
