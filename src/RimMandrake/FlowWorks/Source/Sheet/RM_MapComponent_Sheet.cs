@@ -777,15 +777,18 @@ namespace RimMandrake.FlowWorks.Sheet
 		private void Effects()
 		{
 			// D3: a crop under standing overflow for the whole delay drowns (the kernel's timer fired this pulse); a readable sign
-			if (RM_SheetSettings.cropsDrownEnabled && rep.CropKilled.Count > 0)
+			if (RM_SheetSettings.cropsDrownEnabled && rep.CropDrowning.Count > 0)
 			{
 				int killed = 0;
 				IntVec3 at = IntVec3.Invalid;
-				foreach (int k in rep.CropKilled)
+				// D3 per crop (FA_core_sim_4.4): the cell has stood long enough; the crop drowns only once ITS exposure has
+				int pulseTicks = RimMandrakeFlowWorksSettings.PulseIntervalTicks;
+				foreach (var (k, stand) in rep.CropDrowning)
 				{
 					IntVec3 c = map.cellIndices.IndexToCell(k);
 					Plant plant = c.GetPlant(map);
-					if (plant != null && !plant.Destroyed && plant.def.plant != null && !plant.def.plant.IsTree)
+					if (plant != null && !plant.Destroyed && plant.def.plant != null && !plant.def.plant.IsTree
+						&& RM_SheetMath.CropDrowns(stand, plant.Age, pulseTicks, prm))
 					{
 						plant.Kill();
 						killed++;

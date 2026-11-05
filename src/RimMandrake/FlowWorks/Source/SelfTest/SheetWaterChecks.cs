@@ -313,13 +313,53 @@ namespace RimMandrake.FlowWorks.SelfTest
 				for (int i = 0; i < p.CropKillPulses + 50; i++)
 				{
 					Pulse(s, w, p, rep);
-					foreach (int c in rep.CropKilled) { Assert(!killedAt.ContainsKey(c), "a crop is killed once"); killedAt[c] = s.Pulse; }
+					foreach (var (c, stand) in rep.CropDrowning) if (!killedAt.ContainsKey(c)) killedAt[c] = s.Pulse; // first report
 					foreach (var (c, dl) in rep.Soaked) if (c == film) filmSoak += dl;
 				}
 				Assert(killedAt.Count == 9, "every yard cell under standing overflow kills its crop after a week, got " + killedAt.Count);
 				foreach (var kv in killedAt) Assert(kv.Value == p.CropKillPulses, $"cell {kv.Key} killed at pulse {kv.Value}, not {p.CropKillPulses}");
 				Assert(!killedAt.ContainsKey(film) && filmSoak == 150, $"the film irrigates (soaked {filmSoak}) and never kills");
 				Assert(s.LedgerCloses, "ledger");
+			});
+
+			// D3 per crop (FA_core_sim_4.4): exposure belongs to each crop, not a one-time event of the cell. A crop replanted
+			// under a sheet that stays up still drowns after its OWN full delay; one planted shortly before the cell's counter
+			// crosses is not killed early; the cell keeps reporting while the sheet stands.
+			Case("Sheet_crop_drowning_is_each_crops_own_exposure_not_a_one_time_puddle", () =>
+			{
+				const int T = 250; // ticks per pulse in this model
+				var w = new World(12, 12);
+				Ring(w, 2, 2, 6, 6, Kind.Blocked);
+				var p = new Params { CropKillPulses = 40 };
+				var s = new State(12, 12, 8u);
+				int cell = Idx(w, 4, 4);
+				for (int x = 3; x <= 5; x++) for (int z = 3; z <= 5; z++)
+					ResolveSpills(s, w, p, new[] { Offer(5000, Water, Source.Rain, Idx(w, x, z)) });
+				var rep = new PulseReport();
+				// crop A was there before the water; crop B is planted 10 pulses before the cell crosses
+				long plantedA = -1000, plantedB = p.CropKillPulses - 10, plantedC = -1, diedA = -1, diedB = -1, diedC = -1;
+				int reportsAfterCrossing = 0;
+				for (int i = 1; i <= 4 * p.CropKillPulses; i++)
+				{
+					Pulse(s, w, p, rep);
+					Assert(s.Tiers[cell] >= p.CropStandMinTier, "the yard stays at sheet depth for the whole test");
+					int stand = -1;
+					foreach (var (c, st) in rep.CropDrowning) if (c == cell) stand = st;
+					if (i >= p.CropKillPulses) { Assert(stand >= p.CropKillPulses, $"pulse {i}: a standing cell past the delay is reported every pulse"); reportsAfterCrossing++; }
+					else Assert(stand < 0, $"pulse {i}: reported before the delay");
+					if (stand < 0) continue;
+					int AgeTicks(long planted) => (int)((i - planted) * T);
+					if (diedA < 0 && RM_SheetMath.CropDrowns(stand, AgeTicks(plantedA), T, p)) { diedA = i; plantedC = i; } // replant at once
+					if (diedB < 0 && i >= plantedB && RM_SheetMath.CropDrowns(stand, AgeTicks(plantedB), T, p)) diedB = i;
+					if (diedC < 0 && plantedC >= 0 && i > plantedC && RM_SheetMath.CropDrowns(stand, AgeTicks(plantedC), T, p)) diedC = i;
+				}
+				Assert(diedA == p.CropKillPulses, $"the crop there before the water drowns as the cell crosses, got {diedA}");
+				Assert(diedB == plantedB + p.CropKillPulses, $"a crop planted 10 pulses before the crossing drowns after its own {p.CropKillPulses}, got {diedB}");
+				Assert(diedC == plantedC + p.CropKillPulses, $"a crop replanted under the standing sheet drowns after its own {p.CropKillPulses}, got {diedC} (planted {plantedC})");
+				Assert(reportsAfterCrossing == 3 * p.CropKillPulses + 1, "the cell reports every pulse after crossing");
+				// the pure rule: age rounds down to whole pulses; a young crop never drowns however long the cell stood
+				Assert(!RM_SheetMath.CropDrowns(int.MaxValue, 40 * T - 1, T, p) && RM_SheetMath.CropDrowns(40, 40 * T, T, p)
+					&& !RM_SheetMath.CropDrowns(39, 1000 * T, T, p) && !RM_SheetMath.CropDrowns(40, 0, T, p), "CropDrowns = min(stand, age) >= delay");
 			});
 
 			// §3 blocking rules: no mixing; a limitless lake absorbs and discloses; a foreign body refuses

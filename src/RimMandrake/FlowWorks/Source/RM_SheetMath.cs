@@ -100,10 +100,14 @@ namespace RimMandrake.FlowWorks
 		public sealed class PulseReport
 		{
 			public readonly List<(int cell, int dl)> Soaked = new List<(int, int)>();
-			public readonly List<int> CropKilled = new List<int>();
+			/// <summary>D3: cells whose standing-overflow counter is at CropKillPulses or past it, reported EVERY pulse
+			/// with the counter (saturated). The engine kills a crop there only once ITS OWN exposure,
+			/// <see cref="CropDrowns"/>, reaches the delay: a crop replanted under a standing sheet still gets its full
+			/// exposure, and one planted just before the cell crossed is not killed early (FA_core_sim_4.4).</summary>
+			public readonly List<(int cell, int stand)> CropDrowning = new List<(int, int)>();
 			public readonly List<(int cell, Tier from, Tier to)> TierChanged = new List<(int, Tier, Tier)>();
 			public readonly List<(int cell, int dl)> Returned = new List<(int, int)>(); // credit these through the engine
-			public void Clear() { Soaked.Clear(); CropKilled.Clear(); TierChanged.Clear(); Returned.Clear(); }
+			public void Clear() { Soaked.Clear(); CropDrowning.Clear(); TierChanged.Clear(); Returned.Clear(); }
 		}
 
 		/// <summary>The map's topology and rates as the engine sees it this pulse. NOT persisted by the kernel: the
@@ -624,7 +628,8 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>§3 step 5: tiers with hysteresis; only a tier change is reported (bounds picture writes). Then the
-		/// D3 crop timer: consecutive pulses at CropStandMinTier or above; fires once at CropKillPulses; resets below.</summary>
+		/// D3 crop timer: consecutive pulses at CropStandMinTier or above (saturating past CropKillPulses); reported every
+		/// pulse from CropKillPulses on, the engine judging each crop by its own exposure; resets below.</summary>
 		private static void Tiers(State s, Params p, PulseReport rep)
 		{
 			// cells that dried during this pulse are reported FIRST (FlowWorks GPT review 2026-10-22): a cell that dried in one
@@ -638,10 +643,20 @@ namespace RimMandrake.FlowWorks
 				if (t >= p.CropStandMinTier)
 				{
 					if (s.Stand[c] <= p.CropKillPulses) s.Stand[c]++;
-					if (s.Stand[c] == p.CropKillPulses) rep?.CropKilled.Add(c);
+					if (s.Stand[c] >= p.CropKillPulses) rep?.CropDrowning.Add((c, s.Stand[c]));
 				}
 				else s.Stand[c] = 0;
 			}
+		}
+
+		/// <summary>D3, per crop: a crop's exposure is the pulses it has stood under the sheet, i.e. the lesser of the
+		/// cell's consecutive standing pulses and the crop's own age in pulses. It drowns once that reaches
+		/// CropKillPulses. Age in ticks rounds down to whole pulses (a crop younger than the delay never drowns).</summary>
+		public static bool CropDrowns(int standPulses, int plantAgeTicks, int pulseTicks, Params p)
+		{
+			if (pulseTicks <= 0) throw new ArgumentOutOfRangeException(nameof(pulseTicks));
+			int agePulses = plantAgeTicks <= 0 ? 0 : plantAgeTicks / pulseTicks;
+			return Math.Min(standPulses, agePulses) >= p.CropKillPulses;
 		}
 
 		private static void FlushDried(State s, PulseReport rep)
