@@ -1,3 +1,4 @@
+# mod list: any tier carrying mandrake.rm.flowworks and the JawaBench bridge companion, all five DLC; a debug quicktest map is enough (the proof digs and fills its own canal at --origin, default 120,150). The build is the item's cited commits; a later FlowWorks DLL rebuild alone carries it (relentless_live.carry). Never fullscreen or focus the game.
 live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/proof_tar_fire_gate.py --clause A1 < /dev/null
 live-proof A2: python.exe src/RimMandrake/FlowWorks/northstar/proof_tar_fire_gate.py --clause A2 < /dev/null
 live-proof A3: python.exe src/RimMandrake/FlowWorks/northstar/proof_tar_fire_gate.py --clause A3 < /dev/null
