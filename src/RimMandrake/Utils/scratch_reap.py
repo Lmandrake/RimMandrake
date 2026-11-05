@@ -1476,7 +1476,9 @@ def judge_all(ctx: Ctx) -> list[dict]:
         else:
             s, inner = judge_session(p, ctx)
             rows += inner + [s]
-    return rows
+    # It can also vanish DURING its walk (106 /tmp selftest clones, 2026-11-05 11:03Z, OPS_SCRATCH_DIRT_MEASURE_AT_END_QLKI):
+    # a refusal of a path no longer there refuses nothing, and its epoch age is not an age.
+    return [r for r in rows if r["verdict"] != "REFUSE" or os.path.lexists(r["path"])]
 
 
 def human(n: int | None) -> str:
