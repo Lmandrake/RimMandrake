@@ -128,6 +128,20 @@ def contract_models():
     return mod
 
 
+_OUTER = {}     # basename -> bytes of the outer worker's files, captured before the pin (STEVE_SPAWN_FIX_COPIES_THE_PAST)
+
+
+def capture_outer():
+    """Read worker.py, schema.py and companion_identity.py NOW, while the clone is still on the pulled main.
+
+    With CLONE == RUNNER the pin checks these very files out at source_sha; copying them after it ran the OLD outer
+    worker, the thing the copy exists to prevent. Like contract_models(), spawn writes these bytes, not the disk's."""
+    _OUTER.clear()
+    for src in (os.path.abspath(__file__), S.__file__, CI.__file__):
+        with open(src, "rb") as f:
+            _OUTER[os.path.basename(src)] = f.read()
+
+
 def contract_errors(res):
     """-> [] when TestqResult accepts `res`, else its 'loc: msg' lines. Raises ContractMissing."""
     m = contract_models()
@@ -384,6 +398,7 @@ def cmd_start(retry):
             return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": "SOURCE_SHA_MISSING"})
         # the attempt runs at EXACTLY source_sha, not at whatever newer HEAD happens to contain it (bolt 1)
         want = git("rev-parse", "--verify", job["source_sha"] + "^{commit}")[1]
+        capture_outer()     # before the pin: with CLONE == RUNNER it rewrites these very files
         # (tests that skip the pull must not move the real checkout: they pin only in a scratch TESTQ_CLONE)
         no_pin = os.environ.get("TESTQ_SKIP_PULL") == "1" and CLONE == RUNNER
         if want and want != head and not no_pin:
@@ -425,8 +440,11 @@ def spawn(aid, d):
     # than this code would otherwise run ITS worker.py and never unpin
     outer = p("outer")
     os.makedirs(outer, exist_ok=True)
-    for src in (os.path.abspath(__file__), S.__file__, CI.__file__):
-        shutil.copy2(src, os.path.join(outer, os.path.basename(src)))
+    if not _OUTER:
+        capture_outer()
+    for name, data in _OUTER.items():
+        with open(os.path.join(outer, name), "wb") as f:
+            f.write(data)
     contract_models()           # loaded by cmd_start before the pin; a no-op then
     with open(os.path.join(outer, OUTER_MODELS), "wb") as f:
         f.write(_MODELS[1])
