@@ -30,6 +30,10 @@ file can prove without the game, each as one numbered check:
      it ("day"), keeps the original once and restores it; the antipode formula, swept over the sphere, always gives arc
      180 (> nightsideBandMinArc + 5) and the on-tile one arc 0; prove_night_horrors_live.py falls back to it only when
      the world has no candidate tile and restores in a finally.
+ 12. The live tier loads the geometry the gate reads (the 2026-11-05 A2 FAIL: 25x "no geometry", the running load
+     lacked mandrake.rut.weathersuite): the live_proofs file's live-mods names every src mod folder that ships a
+     PlanetGeometryDef with that packageId, and prove_night_horrors_live.py asks Geometry "show" before judging either
+     clause and fails on anything but a loaded def (else A3 passes vacuously).
 Exit 0 = all pass. Offline, no game."""
 import os
 import re
@@ -276,6 +280,36 @@ probe_ok["on-tile arc <= 0.1 (%.3f)" % worst_day] = worst_day <= 0.1
 probe_ok["live proof falls back only when no candidate"] = "if not tiles:" in live and 'shift = "night" if night else "day"' in live
 probe_ok["live proof restores in finally"] = 'finally:' in live and 'probe(g, "Geometry", "restore")' in live
 check(11, all(probe_ok.values()), "live proof's geometry move: %s" % {k: v for k, v in probe_ok.items() if not v})
+
+# 12 the live tier loads the PlanetGeometryDef the gate reads
+LIVEP = os.path.join(REPO, "infrastructure", "state", "live_proofs", "HORRORS_RAIDING_FACTION_1.txt")
+named = []
+for line in text(LIVEP).splitlines():
+    m = re.match(r"^\s*live-(?:mods|deploy)\s*:\s*(.*)$", line)
+    if m:
+        named += [x for x in re.split(r"[\s,]+", m.group(1)) if x]
+geo_mods = []
+for tier in ("RimMandrake", "RimUtinni", "RimStarWars"):
+    td = os.path.join(REPO, "src", tier)
+    for d in sorted(os.listdir(td)) if os.path.isdir(td) else []:
+        dd = os.path.join(td, d, "Defs")
+        for root, _, fs in os.walk(dd):
+            if any(f.endswith(".xml") and re.search(r"<(?:[\w.]+\.)?PlanetGeometryDef[\s>]", text(os.path.join(root, f))) for f in fs):
+                geo_mods.append(d)
+                break
+GEOFILE = os.path.join(REPO, "src", "RimUtinni", "AshkarrWeatherSuite", "About", "About.xml")
+geo_pkg = ET.parse(GEOFILE).getroot().findtext("packageId") if os.path.isfile(GEOFILE) else None
+live2 = text(os.path.join(MOD, "prove_night_horrors_live.py"))
+rb = live2.split("def run(clause):", 1)[-1].split("def judge(", 1)[0]
+gi = rb.find('probe(g, "Geometry", "show")')
+geo_ok = {
+    "a src mod ships a PlanetGeometryDef (%s)" % geo_mods: bool(geo_mods),
+    "it is mandrake.rut.weathersuite (%s)" % geo_pkg: geo_pkg == "mandrake.rut.weathersuite" and "AshkarrWeatherSuite" in geo_mods,
+    "live-mods names every one (named %s)" % named: bool(geo_mods) and all(m in named for m in geo_mods),
+    "run() reads Geometry show before any tile or judge": gi != -1 and gi < rb.find("candidates(") and gi < rb.find("judge("),
+    "and fails unless it is a loaded def": 'if not shown.startswith("geometry "):' in rb and "return 1" in rb[gi:rb.find("candidates(")],
+}
+check(12, all(geo_ok.values()), "live tier loads the gate's geometry: %s" % {k: v for k, v in geo_ok.items() if not v})
 
 print("RESULT", "PASS" if not fails else "FAIL %s" % sorted(set(fails)))
 sys.exit(1 if fails else 0)

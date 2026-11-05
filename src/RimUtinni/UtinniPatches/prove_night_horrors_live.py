@@ -21,6 +21,8 @@ the tile, arc 0), prints the move, and restores the original point at the end ("
 The arc uses the shipped geometry def (WeatherGeometryDefs_Ashkarr.xml) and the same formula as
 RM_WeatherKernel.ArcDegrees, over the live world's own tile table (jawa/world_tile_export: tile indices belong to the
 world that wrote them). Each run founds one player settlement, generates its map, and drops the map again at the end.
+Both clauses first read the live PlanetGeometryDef (Geometry "show") and FAIL by name when none is loaded: without it
+the gate is false everywhere, so A3 would pass vacuously and A2 cannot be measured.
 Exit 0 = the clause holds, 1 = it does not (or could not be measured)."""
 import csv
 import json
@@ -144,6 +146,14 @@ def run(clause):
         print("FAIL %s: no game loaded" % clause)
         return 1
     night = clause == "A2"
+    # The nightside gate reads the live PlanetGeometryDef (mandrake.rut.weathersuite, live-mods: AshkarrWeatherSuite).
+    # Without one every gate is false: A2 cannot pass and A3 would pass VACUOUSLY (2026-11-05 A2: 25x "no geometry").
+    shown = probe(g, "Geometry", "show")
+    print("live geometry:", shown)
+    if not shown.startswith("geometry "):
+        print("FAIL %s: no live PlanetGeometryDef (%s): mandrake.rut.weathersuite is not in the running load, so the "
+              "nightside gate cannot be measured" % (clause, shown))
+        return 1
     tiles, note = candidates(g, geo, night)
     print(note)
     shift = None
