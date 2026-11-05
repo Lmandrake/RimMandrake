@@ -16,6 +16,14 @@
   "pool_parked_lists": {"BIOME_PAINT_ONCE_AT_THE_END_1": ["WARSCAR_PILGRIM_CAMP_SITES_1"]},
   "_proof_paths": "What a proof-only worker may land after a WEAK, as regexes on repo paths; a path the contract names counts too. Anything else is code and is refused without spending a Marker.",
   "proof_paths": ["(^|/)selftest_[^/]*$", "(^|/)test_[^/]*$", "(^|/)tests?/", "(^|/)testdata/", "^infrastructure/state/", "^conversations/", "(^|/)prove_[^/]*\\.py$", "(^|/)[^/]*_proof[^/]*\\.py$", "(^|/)stage_proof_[^/]*\\.py$", "(^|/)validation[^/]*\\.py$", "(^|/)SelfTest/"],
+  "_hand_check": "PIPELINE_BLESS_ENFORCE_HAND_CHECKS_SMALL (owner 2026-11-05: \"The pipeline is NOT to be used to bless any change in the game. That's a huge expenditure for a small validation that could be manually performed.\"): an item whose only remaining work is a small manual validation (installed art is his pick, a value reads back, a deploy landed, a look) is never enrolled or rechecked; relentless.hand_back bounces one already in the store to its maker with 'check by hand, close with evidence'. ids: judged by the 2026-11-05 queue sweep, with the why; title_rx: shapes that are always a hand check (eligible, pool_why and hand_back ask relentless.hand_check). `relentless.py hand-checks --lint` checks both; `--bounce` notes each matched open item once.",
+  "hand_check": {
+    "ids": {
+      "COLD_STORAGE_RSW_RESEARCH_VERIFY_LAYOUT": "a value reads back: two research-tab positions, read in game and moved if they overlap",
+      "SHORTPREGNANCY_DEPLOY_SAVE_THE_EGGS": "a deploy landed: two deploy_custom_mods.py --apply runs and a look at the game folder"
+    },
+    "title_rx": ["(?i)\\b(it is built|it exists)\\b.{0,40}\\bverify\\b", "(?i)^(first )?live look\\b", "(?i)\\bfirst live look\\b"]
+  },
   "enrol_per_tick": 2,
   "max_queued": 8,
   "max_workers": 8,

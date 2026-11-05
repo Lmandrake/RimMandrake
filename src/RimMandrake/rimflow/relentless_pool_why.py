@@ -49,6 +49,8 @@ def reasons(it, w, r, now, refused=None, first_touch=None, words=()):
         out.append("kind=%s" % it.kind)
     if R.pool_excluded(it.id, r):
         out.append("pool_excluded")
+    if R.hand_check(it, r):
+        out.append("hand_check")
     if getattr(it, "lease", None):
         out.append("lease")
     if it.owner == R.foreign_seat(r) and not R.foreign_ok(it, r):

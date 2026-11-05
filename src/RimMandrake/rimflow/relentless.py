@@ -3061,7 +3061,126 @@ def eligible(it, r, world=None, now=None):
             and it.needs != "owner" and (it.needs in r["pool_needs"] or it.needs in relentless_game.pool_needs(r))
             and getattr(it, "kind", None) not in r.get("pool_kinds_exclude", [])
             and not pool_excluded(it.id, r) and not getattr(it, "lease", None)
+            and not hand_check(it, r)
             and (it.owner != foreign_seat(r) or foreign_ok(it, r)))
+
+
+HAND_CHECK_SAID = ("check by hand, close with evidence")
+HAND_CHECK_RULING_SHORT = "owner 2026-11-05: the pipeline does not bless a change in the game"
+
+
+def hand_check(it, r):
+    """-> why `it` is a hand check, or None. PIPELINE_BLESS_ENFORCE_HAND_CHECKS_SMALL: an item whose only remaining work
+    is a small manual validation (installed art is his pick, a value reads back, a deploy landed) is never enrolled or
+    rechecked; the agent that made the change checks it by hand and closes it with the evidence. Data, not judgment:
+    rules hand_check.ids (an id the sweep judged, with its why) or a hand_check.title_rx match on its title."""
+    hc = r.get("hand_check") or {}
+    why = (hc.get("ids") or {}).get(getattr(it, "id", None))
+    if why:
+        return why
+    title = getattr(it, "title", None) or ""
+    for rx in hc.get("title_rx") or ():
+        if re.search(rx, title):
+            return "its title reads as a hand check (%s)" % rx
+    return None
+
+
+def hand_note(why, makers):
+    """The bounce, one ledger note under NOTE_MAX: what to do first, so a cut never loses it, then who and why."""
+    head = "%s (maker %s): Relentless will not enrol or recheck it, %s. Why: " % (
+        HAND_CHECK_SAID, ", ".join(makers) or "unknown", HAND_CHECK_RULING_SHORT)
+    return (head + why)[:NOTE_MAX]
+
+
+def hand_check_lint(r, items):
+    """-> [problem, ...] in rules hand_check: an id the ledger never filed, an empty why, a pattern that does not compile."""
+    hc, out = r.get("hand_check") or {}, []
+    for i, why in sorted((hc.get("ids") or {}).items()):
+        if i not in items:
+            out.append("hand_check.ids %s: not on the ledger" % i)
+        if not (why or "").strip():
+            out.append("hand_check.ids %s: no why" % i)
+    for rx in hc.get("title_rx") or ():
+        try:
+            re.compile(rx)
+        except re.error as e:
+            out.append("hand_check.title_rx %r: %s" % (rx, e))
+    return out
+
+
+def hand_checks_cli(r, lint=False, bounce=False):
+    """The 2026-11-05 sweep, re-runnable: every open item the rule matches; --bounce writes the note hand_back writes
+    (once per item, through this tree's rimflow) for those never enrolled."""
+    model = pkg("model")
+    evs = model.read()
+    w = model.replay(evs)
+    rc = 0
+    if lint:
+        probs = hand_check_lint(r, w.items)
+        for x in probs:
+            print("LINT " + x)
+        rc = 1 if probs else 0
+    told = {ev.get("id") for ev in evs if ev.get("event") == "note" and HAND_CHECK_SAID in (ev.get("text") or "")}
+    for it in sorted(w.items.values(), key=lambda x: x.id):
+        if it.state not in ("proposed", "ready", "doing", "built"):
+            continue
+        why = hand_check(it, r)
+        if not why:
+            continue
+        print("%-8s %-8s %s  %s%s" % (it.state, it.needs, it.id, why, "  (told)" if it.id in told else ""))
+        if bounce and it.id not in told:
+            makers = [m for m in dict.fromkeys(list(it.makers or []) + [it.built_by, it.owner]) if m]
+            res = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "note", it.id, "--text",
+                                  hand_note(why, makers),
+                                  "--why", "relentless hand-checks --bounce: the 2026-11-05 queue sweep"],
+                                 capture_output=True, text=True, timeout=120)
+            if res.returncode:
+                print("  note refused: " + (res.stderr or res.stdout)[-300:])
+                rc = 1
+    return rc
+
+
+HAND_BACK_FROM = ("queued", "candidate", "held", "blocked")
+
+
+def hand_back(store, fx, r, now, acts):
+    """A hand-check item already in the store (enrolled before the rule, or its title changed) is bounced, not run or
+    rechecked: one ledger note to its makers, the ledger lease handed back if ours, then `retired`, which nothing enrols
+    again. A running item is left to end; its candidate is bounced here before any check starts. A refused note or
+    reclaim keeps the state as it is, so the next tick tries again."""
+    if not (r.get("hand_check") or {}) or not hasattr(fx, "ledger_items"):
+        return
+    try:
+        w = fx.ledger_items()[1]
+    except Exception as e:  # noqa: BLE001  an unreadable ledger bounces nothing this tick
+        acts.append({"do": "error", "item": None, "why": "hand_back %s: %s" % (type(e).__name__, e)})
+        return
+    for st in store.states():
+        if st["status"] not in HAND_BACK_FROM:
+            continue
+        it = w.items.get(st["item"])
+        why = hand_check(it, r) if it is not None else None
+        if not why:
+            continue
+        makers = [m for m in dict.fromkeys(list(getattr(it, "makers", None) or []) + [getattr(it, "built_by", None),
+                                                                                       it.owner]) if m]
+        err = fx.ledger_note(st["item"], hand_note(why, makers))
+        if not err and st.get("ledger_started") and it.state == "doing" and it.owner == r.get("seat"):
+            err = fx.ledger_reclaim(st["item"])
+        if err:
+            acts.append({"do": "hand_back_waits", "item": st["item"], "why": err})
+            continue
+        with store.lock():
+            cur = store.load(st["item"])
+            if cur["status"] not in HAND_BACK_FROM:
+                continue
+            was = cur["status"]
+            cur["status"] = "retired"
+            cur.pop("recheck_at", None)
+            store.save(cur)
+            store.attempt(st["item"], {"at": iso(now), "gen": cur["gen"], "end": "hand_check", "said": why, "from": was})
+            store.journal({"at": iso(now), "do": "hand_back", "item": st["item"], "why": why, "from": was})
+        acts.append({"do": "hand_back", "item": st["item"], "from": was})
 
 
 # ---------------------------------------------------------------- prompts
@@ -5611,6 +5730,7 @@ def tick(store=None, fx=None, r=None, now=None):
             return at
 
         books_alarm(store, fx, fx.sync(), now, acts, r)
+        hand_back(store, fx, r, now, acts)       # before any check or launch of this tick: a hand check is never run
         retire(store, fx, store.states(), now, acts, r)
         relentless_block.sweep(store, fx, now, acts, iso)
         relentless_reachfix.sweep(store, fx, r, now, acts, iso)     # a blind Judge's repair: probe, apply, or ticket
@@ -5828,6 +5948,10 @@ def main(argv=None):
     p.add_argument("--key", required=True)
     p.add_argument("--evidence", required=True)
     sub.add_parser("wall", help="report only: what the Marker's wall would deny, from the checks' tool calls")
+    p = sub.add_parser("hand-checks", help="the open items the hand_check rule keeps out of the pipeline (owner "
+                                           "2026-11-05); --lint checks the rule, --bounce notes each one to its maker once")
+    p.add_argument("--lint", action="store_true")
+    p.add_argument("--bounce", action="store_true")
     p = sub.add_parser("trust")
     p.add_argument("--set", default="E1")
     p.add_argument("--arm", help="read results_<arm>, a changed Marker's run of the same set")
@@ -5967,6 +6091,8 @@ def main(argv=None):
                 raise ValueError(why)
             st = reenrol(Store(), a.item, a.why, time.time())
             print("%s %s gen %d" % (a.item, st["status"], st["gen"]))
+        elif a.cmd == "hand-checks":
+            return hand_checks_cli(rules(), lint=a.lint, bounce=a.bounce)
         elif a.cmd == "wall":
             import relentless_seeds
 
