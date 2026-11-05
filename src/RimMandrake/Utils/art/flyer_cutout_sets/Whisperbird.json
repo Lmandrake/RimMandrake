@@ -2,7 +2,7 @@
  "set": "Whisperbird",
  "folder": "src/RimStarWars/SWBestiary/Textures/swanimals/Whisperbird",
  "prefix": "Whisperbird_Flying_",
- "note": "shared by RSW_Whisperbird and RSW_ScrapNestBird. Describes the INSTALLED set, the owner's flying pick C (installed 00c5bae015, 2026-10-24): a still-body rebuild whose master is frame 1 of each facing (the grounded art he picked on facings_regen_picks, wings beat DOWN from that raised pose). A rebuild reads frame 1 only. The earlier annotation (masters north 2, east 4, south 2) described the art pick C replaced and was deleted (FLYER_STABLE_BODY_GATE_1, 2026-11-04).",
+ "note": "RSW_Whisperbird's set. RSW_ScrapNestBird's def borrows it, but that bird is a long-necked wader with another body: a defect, and it owes its own flip-book (tier 1), so it is not counted locked here. Describes the INSTALLED set, the owner's flying pick C (installed 00c5bae015, 2026-10-24): a still-body rebuild whose master is frame 1 of each facing (the grounded art he picked on facings_regen_picks, wings beat DOWN from that raised pose). A rebuild reads frame 1 only. The earlier annotation (masters north 2, east 4, south 2) described the art pick C replaced and was deleted (FLYER_STABLE_BODY_GATE_1, 2026-11-04).",
  "facings": {
   "south": {
    "master": 1,
