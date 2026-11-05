@@ -6,7 +6,13 @@
  "root_ref": "design/validation_walks/RimMandrake/FlowWorks.md#north-star",
  "root_state": "VALIDATED",
  "root_hash": "a038d71b2055240d6cfd2242234d71168c65ff6b808dba5993a116e1af8e6812",
- "coverage": null,
+ "coverage": {
+  "signed_by": "Arbiter",
+  "at": "2026-11-05T09:03:46Z",
+  "tree_hash": "572198fed9a064df1898d695529f85fc343cfeb09bab2d3fe5773bc3abab149d",
+  "sheet_hash": "68f9946f8e250af1b2dd19f7ccc901be45ed82c2550693f033dd4b7b83480070",
+  "ledger_item": "FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS"
+ },
  "floor": {
   "ref": "concept_floor.json",
   "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
