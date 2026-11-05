@@ -11,8 +11,9 @@ Sources: `About/About.xml`, `Source/PyrelandsFireRite.cs`, `Source/LordJob_RUT_F
 - Every shipped def resolves in the running game. → shipped_defs chain
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: 3203d10e48d2b19888d290ee35b4873872c593f408f3c4f5efd32745bbf3ee80
+validated-by: BY CARD: Deep Tribes north star (8 must-show, 2 cannot-show, read to him in full on the card), validate as written? -> Yes, validate
 
 Drafted by the Designer, 2026-11-05, from the root paragraph the owner approved by card (OWNER:1793895903357725756) and
 his card answers OWNER:1793898835366988441 and OWNER:1793898838472369653. DRAFT, binds nothing until he validates it.
