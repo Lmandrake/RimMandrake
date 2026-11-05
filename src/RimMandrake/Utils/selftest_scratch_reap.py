@@ -1654,4 +1654,7 @@ def clone_old(origin, dest):
 
 
 if __name__ == "__main__":
+    if sys.argv[1:2] == ["--reap-own-litter"]:          # report (or --apply) the dirs killed runs left; runs no test
+        import selftest_own_dirs
+        sys.exit(selftest_own_dirs.main(sys.argv[2:]))
     sys.exit(main())
