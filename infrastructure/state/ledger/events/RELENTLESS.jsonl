@@ -608,3 +608,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T10:53:38Z","tsn":1793876018638078714}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing THRIXWEAVE_RESELL_BUILD_DEARLY_SOLD: review savegame for the owner's look","ts":"2026-11-05T11:05:15Z","tsn":1793876715929035943}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless showing THRIXWEAVE_RESELL_BUILD_DEARLY_SOLD (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T11:21:50Z","tsn":1793877710726973974}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T11:28:54Z","tsn":1793878134779779678}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T11:28:59Z","tsn":1793878139955672158}
