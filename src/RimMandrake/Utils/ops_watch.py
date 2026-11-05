@@ -4061,54 +4061,104 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
         if filer:
             try:
                 res = filer(todo, conf)
+            except Fenced:      # a lost generation is not a failed try: run() stops the pass
+                raise
             except Exception as e:  # noqa: BLE001  a filing that raises stays PENDING; the pass still reports
                 res = {a["name"]: "filer raised %s: %s" % (type(e).__name__, str(e)[:200]) for a in todo}
         else:
             res = {a["name"]: "filing off (run without --file-alarms)" for a in todo}
-        for a in todo:
-            if a.get("note_only"):
-                cur = state.get(a.get("aid"))
-                if res.get(a["name"]) is None and isinstance(cur, dict):    # unsaid on a failed note: the next pass says it again
-                    if a.get("noted"):
-                        cur["noted"] = a["noted"]
-                    if a.get("told"):
-                        cur.update(told=a["told"], worse_n=worse_count(cur) + 1)
-                        log.append({"ts": iso(now), "event": "worse", "aid": a["aid"], "item": a["item"], "said": a["worse"]})
-                        # not conductor_line_owed: an open incident of this cause holds that line, and telling past it is the point
-                        tell_conductor(a.get("conductor_log"), "- %s ops_watch WORSE %s: %s\n" % (iso(now), a["item"], a["worse"]), a["aid"], now, log, cur)
-                continue
-            try:
-                cur = state[a["aid"]]
-                err = res.get(a["name"])
-                if filer and err == FILING_DEFERRED:     # not a try: last_try and the last real error stand
-                    cur["deferred_n"] = int(cur.get("deferred_n") or 0) + 1
-                    log.append({"ts": iso(now), "event": "file_deferred", "aid": a["aid"], "n": cur["deferred_n"]})
-                    continue
-                cur["tries"] = _tries(cur) + (1 if filer else 0)
-                cur["last_try"] = iso(now)
-                if err is None:
-                    cur.update(state="OPEN", item=a["name"], name=a["name"], error=None, filed=iso(now))   # name: a successor stays the alarm's item
-                    # the item is in the RUNNER shard whatever _publish says: a publish that failed is retried by the
-                    # next testq ingest (testq/ingest.py _publish keeps the lines), so OPEN is right either way
-                    log.append({"ts": iso(now), "event": "found_filed" if a["name"] in (res.get("_already") or []) else "filed",
-                                "aid": a["aid"], "item": a["name"], "publish": res.get("_publish")})
-                    if (res.get("_raise") or {}).get(a["name"]):
-                        log.append({"ts": iso(now), "event": "raise_failed", "aid": a["aid"], "item": a["name"],
-                                    "error": res["_raise"][a["name"]]})
-                    # a rule that also owes the Conductor a line (rules key conductor_log), one per cause: an outage is one ring
-                    if a.get("conductor_log") and conductor_line_owed(a.get("key"), said_causes):
-                        tell_conductor(a["conductor_log"], "- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]), a["aid"], now, log, cur)
-                else:
-                    cur["error"] = err
-                    if filer:
-                        log.append({"ts": iso(now), "event": "file_failed", "aid": a["aid"], "error": err})
-            except Exception as e:  # noqa: BLE001  a corrupt counter costs this alarm's bookkeeping; found_filed recovers it
-                log.append({"ts": iso(now), "event": "step_failed", "aid": a["aid"], "error": str(e)[:200]})
+        settle_filing(state, todo, res, filer, now, log, said_causes)
     atomic_json(p, state)
     if log:
         with open(ops_dir() / "alarms_log.jsonl", "a", encoding="utf-8") as f:
             for r in log:
                 f.write(json.dumps(r, sort_keys=True) + "\n")
+    return state
+
+
+def settle_filing(state, todo, res, filer, now, log, said_causes):
+    """Each todo alarm's filing result into its alarms.json entry and the alarm log: OPEN on its item, the error kept,
+    or a deferral counted (no try). Shared by the alarm pass (run_alarms) and a light beat's held filing (file_held)."""
+    for a in todo:
+        if a.get("note_only"):
+            cur = state.get(a.get("aid"))
+            if res.get(a["name"]) is None and isinstance(cur, dict):    # unsaid on a failed note: the next pass says it again
+                if a.get("noted"):
+                    cur["noted"] = a["noted"]
+                if a.get("told"):
+                    cur.update(told=a["told"], worse_n=worse_count(cur) + 1)
+                    log.append({"ts": iso(now), "event": "worse", "aid": a["aid"], "item": a["item"], "said": a["worse"]})
+                    # not conductor_line_owed: an open incident of this cause holds that line, and telling past it is the point
+                    tell_conductor(a.get("conductor_log"), "- %s ops_watch WORSE %s: %s\n" % (iso(now), a["item"], a["worse"]), a["aid"], now, log, cur)
+            continue
+        try:
+            cur = state[a["aid"]]
+            err = res.get(a["name"])
+            if filer and err == FILING_DEFERRED:     # not a try: last_try and the last real error stand
+                cur["deferred_n"] = int(cur.get("deferred_n") or 0) + 1
+                cur["deferred_at"] = iso(now)       # file_held takes it on the next light beat
+                log.append({"ts": iso(now), "event": "file_deferred", "aid": a["aid"], "n": cur["deferred_n"]})
+                continue
+            cur["tries"] = _tries(cur) + (1 if filer else 0)
+            cur["last_try"] = iso(now)
+            cur.pop("deferred_at", None)        # a real try: from here the alarm pass retries it, as before
+            if err is None:
+                cur.update(state="OPEN", item=a["name"], name=a["name"], error=None, filed=iso(now))   # name: a successor stays the alarm's item
+                # the item is in the RUNNER shard whatever _publish says: a publish that failed is retried by the
+                # next testq ingest (testq/ingest.py _publish keeps the lines), so OPEN is right either way
+                log.append({"ts": iso(now), "event": "found_filed" if a["name"] in (res.get("_already") or []) else "filed",
+                            "aid": a["aid"], "item": a["name"], "publish": res.get("_publish")})
+                if (res.get("_raise") or {}).get(a["name"]):
+                    log.append({"ts": iso(now), "event": "raise_failed", "aid": a["aid"], "item": a["name"],
+                                "error": res["_raise"][a["name"]]})
+                # a rule that also owes the Conductor a line (rules key conductor_log), one per cause: an outage is one ring
+                if a.get("conductor_log") and conductor_line_owed(a.get("key"), said_causes):
+                    tell_conductor(a["conductor_log"], "- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]), a["aid"], now, log, cur)
+            else:
+                cur["error"] = err
+                if filer:
+                    log.append({"ts": iso(now), "event": "file_failed", "aid": a["aid"], "error": err})
+        except Exception as e:  # noqa: BLE001  a corrupt counter costs this alarm's bookkeeping; found_filed recovers it
+            log.append({"ts": iso(now), "event": "step_failed", "aid": a["aid"], "error": str(e)[:200]})
+
+
+def file_held(filer, rules, now):
+    """A light beat's filing (ALARM_FILING_FIX_NO_ROOM_AT_INN). Alarms are composed on the beat that measures
+    COMPOSE_ALARM_FAMILY, the heaviest sense pair (8-15 s of 15), so its filer, which starts a filing only when one and
+    the publish still fit, deferred nearly every alarm: 8 nightly reds sat PENDING 12-17 passes and reached nobody.
+    Every other compose pass (most take 0.4-3 s) files here what that pass DEFERRED (deferred_at), in its saved name
+    and title, through the same filer and bookkeeping. A PENDING alarm whose last result was a real failure is not
+    taken: the alarm pass retries it at its old cadence. Nothing is decided here: crossing, clearing and naming stay
+    the alarm pass's, which has the readings and the ledger. -> the alarms.json state (unchanged when nothing is held)."""
+    p = ops_dir() / "alarms.json"
+    state = read_json(p) if p.exists() else {}
+    if not isinstance(state, dict):
+        return {}
+    todo = []
+    for aid, cur in sorted(state.items(), key=lambda kv: str((kv[1] or {}).get("last_try") or "")
+                           if isinstance(kv[1], dict) else ""):
+        if not (isinstance(cur, dict) and cur.get("state") == "PENDING" and cur.get("deferred_at")
+                and isinstance(cur.get("name"), str) and cur.get("name") and isinstance(cur.get("title"), str)):
+            continue
+        todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": cur.get("conductor_log"),
+                     "key": aid.split(":", 1)[-1], "reopen": bool(cur.get("reopen")),
+                     "expedite": cur.get("expedite") or []})
+    if not todo:
+        return state
+    log = []
+    try:
+        res = filer(todo, alarm_conf(rules))
+    except Fenced:
+        raise
+    except Exception as e:  # noqa: BLE001  a filing that raises stays PENDING; the pass still reports
+        res = {a["name"]: "filer raised %s: %s" % (type(e).__name__, str(e)[:200]) for a in todo}
+    settle_filing(state, todo, res, filer, now, log, set())
+    for r in log:
+        r["held"] = True        # which beat filed it: the light one
+    atomic_json(p, state)
+    with open(ops_dir() / "alarms_log.jsonl", "a", encoding="utf-8") as f:
+        for r in log:
+            f.write(json.dumps(r, sort_keys=True) + "\n")
     return state
 
 
@@ -4577,7 +4627,8 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
     """One pass. `families` limits it to those collectors. With `compose` (the metronome's sense phase, a family or two
     a beat, round robin) every other family's last series record is carried in (carry_family), so the status, health
     verdict, digest and flags are a whole pass's; the alarms run, over that composite, only on the pass that measures
-    COMPOSE_ALARM_FAMILY, about once a round. `still_owner(what)` (the metronome's ownership fence) is asked before the
+    COMPOSE_ALARM_FAMILY, about once a round; every other compose pass files what that pass deferred (file_held).
+    `still_owner(what)` (the metronome's ownership fence) is asked before the
     series are written, before the alarms and before the status: False raises Fenced."""
     def fence(what):
         if still_owner is not None and not still_owner(what):
@@ -4700,7 +4751,15 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
                       "detail": "last_measured.json not written: %s" % str(e)[:160]})
     try:
         if compose and COMPOSE_ALARM_FAMILY not in families:
-            alarms = _obj(read_json(ops_dir() / "alarms.json"))       # held: this beat's pass is not the alarm pass
+            # this beat's pass is not the alarm pass: it composes nothing, but files what the alarm pass had to defer
+            if filer:
+                fence("filing held alarms")
+                def hfiler(todo, conf, _f=filer):
+                    fence("filing")
+                    return _f(todo, conf)
+                alarms = _obj(file_held(hfiler, rules, now))
+            else:
+                alarms = _obj(read_json(ops_dir() / "alarms.json"))
         else:
             fence("the alarms")
             apts, afiler = points, filer
