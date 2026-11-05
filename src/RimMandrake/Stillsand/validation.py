@@ -1846,14 +1846,41 @@ def _cycle(t, pid, giver, recipe, workgiver, product, rect, budget):
     return 0, spent, r
 
 
+def _sand_depth(t, cx, cz):
+    """The sand depth on one cell, read back through jawa/set_weather_buildup mode=add depth=0 (no bridge tool reads
+    the sandGrid without writing; an add of 0 leaves the depth as it was). None when the reply carries no reading."""
+    r = t.bridge_call("jawa/set_weather_buildup", kind="sand", mode="add", rect="%d,%d,1,1" % (cx, cz), depth=0.0)
+    for c in (r or {}).get("cells") or []:
+        if c.get("x") == cx and c.get("z") == cz and isinstance(c.get("sand"), (int, float)):
+            return float(c["sand"])
+    return None
+
+
 def _clear_drift(t, pid, cells, area, before):
     """Order the colonist to clear each drift cell (vanilla ClearSnow job, CleanClearSnow priority work) until all
-    three have been worked; returns the RM_GlassSand dropped over `area` since `before`."""
+    three have been worked; returns the RM_GlassSand dropped over `area` since `before`.
+    STILLSAND_GLASS_CHAIN_REMAINDER_1 (live 2026-11-05T12:11Z, 'dropped 0'): the yield is judged only on a clear that
+    happened. A job the pawn never took, or a drift that never fell, is UNMEASURED, never a yield FAIL."""
     got = 0
     for cx, cz in cells:
-        t.bridge_call("jawa/prioritized_work", pawnId=pid, jobDef="ClearSnow", workGiverDef="CleanClearSnow",
-                      targetAX=cx, targetAZ=cz, waitTicks=0, timeoutSeconds=30)
-        t.wait_ticks(600)
+        r = None
+        for _ in range(3):
+            r = t.bridge_call("jawa/prioritized_work", pawnId=pid, jobDef="ClearSnow", workGiverDef="CleanClearSnow",
+                              targetAX=cx, targetAZ=cz, waitTicks=30, timeoutSeconds=30) or {}
+            if r.get("accepted") and (r.get("success") or r.get("nowRunningRequested")):
+                break
+            t.wait_ticks(120)
+        if not (r.get("accepted") and (r.get("success") or r.get("nowRunningRequested"))):
+            _unmeasured(t, "the colonist never took the ClearSnow job on drift cell %d,%d: %s"
+                        % (cx, cz, json.dumps(r, default=str)[:300]))
+        depth, spent = _sand_depth(t, cx, cz), 0
+        while _live(t) and spent < 600 and (depth is None or depth >= 0.5 - 1e-3):
+            t.wait_ticks(150)
+            spent += 150
+            depth = _sand_depth(t, cx, cz)
+        if depth is None or depth >= 0.5 - 1e-3:
+            _unmeasured(t, "the ClearSnow job ran on drift cell %d,%d but its sand depth did not fall from 0.5 in %d "
+                        "ticks (reads %r): nothing was cleared, so the yield cannot be judged" % (cx, cz, spent, depth))
         got = _stacks(t, "RM_GlassSand", area) - before
     return got
 
@@ -1973,6 +2000,9 @@ def _glass_live_rows(t, ids):
             before = _stacks(t, "RM_GlassSand", area)
             for cx, cz in cells:
                 t.bridge_call("jawa/set_weather_buildup", kind="sand", mode="set", rect="%d,%d,1,1" % (cx, cz), depth=0.5)
+                d = _sand_depth(t, cx, cz)
+                if d is None or abs(d - 0.5) > 1e-3:
+                    _unmeasured(t, "the 0.5 drift did not stand on cell %d,%d (sand depth reads %r)" % (cx, cz, d))
             t.bridge_call("jawa/paint_area", area="snow", ops=";".join("%d,%d,1,1" % c for c in cells))
             # FlowWorks (when loaded) makes sand shovelling need a shovel; that rule is FlowWorks' to prove. Off for
             # this row so the clear job runs bare-handed, restored after.

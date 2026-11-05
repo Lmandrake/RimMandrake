@@ -928,21 +928,29 @@ class Fake(object):
 
     def t_set_weather_buildup(self, kind=None, mode=None, rect=None, depth=0.0, **k):
         r = globals()["rect"](rect)
-        self.sand[(r[0], r[1])] = float(depth)
-        return {"success": True}
+        c = (r[0], r[1])
+        if mode == "add":
+            self.sand[c] = self.sand.get(c, 0.0) + float(depth)
+        elif "drift_not_set" not in self.b:        # drift_not_set: the cell cannot hold sand (SetDepth forces 0)
+            self.sand[c] = float(depth)
+        return {"success": True, "cells": [{"x": c[0], "z": c[1], "snow": 0.0, "sand": self.sand.get(c, 0.0)}]}
 
     def t_paint_area(self, **k):
         return {"success": True}
 
     def t_prioritized_work(self, pawnId=None, jobDef=None, workGiverDef=None, targetAX=-1, targetAZ=-1, **k):
         c = (targetAX, targetAZ)
-        if jobDef != "ClearSnow" or workGiverDef != "CleanClearSnow" or not self.sand.get(c):
-            return {"success": False}
+        if jobDef != "ClearSnow" or workGiverDef != "CleanClearSnow" or not self.sand.get(c) \
+                or "drift_job_refused" in self.b:   # drift_job_refused: the pawn never takes the order
+            return {"success": False, "accepted": False, "afterJobDef": None, "nowRunningRequested": False}
+        ran = {"success": True, "accepted": True, "afterJobDef": "ClearSnow", "nowRunningRequested": True}
+        if "drift_not_cleared" in self.b:           # the job runs but the drift never falls (and nothing drops)
+            return ran
         blocked = self.ext[(V.FLOWWORKS_SETTINGS, "shovelRequired")] == "True"   # FlowWorks' FailOn: no shovel
         dug = self.sand.pop(c)
         if not blocked and self.ext[(V.DUNES_SETTINGS, "clearYieldEnabled")] == "True" and "drift_no_yield" not in self.b:
             self.new("RM_GlassSand", c[0], c[1], stackCount=int(round(dug * 6)))
-        return {"success": True}
+        return ran
 
     def t_inspect_string(self, thingIds=None, **k):
         t = self.things.get(thingIds)
@@ -1351,6 +1359,12 @@ def _main(bad):
         red = dict((k, v) for k, v in res.items() if k.startswith("glass.") and v[0] != "PASS" and k not in owed)
         if red:
             bad.append("%s run: glass rows not PASS: %s" % (variant, red))
+    # STILLSAND_GLASS_CHAIN_REMAINDER_1 (live 2026-11-05T12:11Z 'dropped 0'): a clear that never happened is not a
+    # yield verdict. A refused job, a drift that never stood, a drift that never fell: UNMEASURED, never FAIL or PASS.
+    for variant in ("drift_job_refused", "drift_not_set", "drift_not_cleared"):
+        got = run([variant]).get("glass.drift_clear_drops_glass_sand", ("",))
+        if got[0] != "UNMEASURED":
+            bad.append("%s run: glass.drift_clear_drops_glass_sand should read UNMEASURED: %s" % (variant, got))
     if run(["no_dbh"]).get("water.dbh_thirst_drink_books_debt", ("",))[0] != "UNMEASURED":   # A4 without DBH
         bad.append("a tier without DBH's thirst did not read water.dbh_thirst_drink_books_debt UNMEASURED")
     if run(["rm_tier", "rm_ledger_live"]).get("water.rm_tier_has_no_ledger", ("",))[0] != "FAIL":
