@@ -138,7 +138,11 @@ def measure_check(case):
     import relentless as R
     import relentless_wall as W
     import selftest_relentless as S
-    x = S.Rig(n=1, share=1.0)
+    # a case may pin a rule (the legacy reach_repair-false route) and what the reach repair's probe finds (the live
+    # route, BLIND_JUDGE_BUILD_FIXES_OWN_EYES): FakeWorld's own probe fails, so an unpinned blind case files the ticket
+    x = S.Rig(n=1, share=1.0, **(case.get("rules") or {}))
+    if "probe" in case:
+        x.w.reach_probe = lambda r, paths, adapters, values, store_root, grants=(): tuple(case["probe"])
     try:
         x.run_one("I0")
         st = x.st("I0")

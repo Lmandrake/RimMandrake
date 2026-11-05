@@ -1,0 +1,1 @@
+selftest_relentless t_breaker_di2 ('told lands once it can', 'roads that landed are not repeated') failed once under run_selftests --only with 6 parallel workers and passed alone and on rerun (2026-11-05, NIGHTLY_COP_FIX_RED_FDYIER_ALCO): it mutates os.environ RM_OPS_WATCH_DIR and is load-sensitive; a single red there is a flake until rerun.

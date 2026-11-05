@@ -217,7 +217,7 @@
   {
    "id": "STEVE_SANDBOX_DENIAL",
    "layer": "check",
-   "row": "Sandbox denial -> UNREACHED, no product strike (real: STEVE_DISK gen 1)",
+   "row": "Sandbox denial -> UNREACHED, no product strike (real: STEVE_DISK gen 1) [legacy route: rule reach_repair false]",
    "verdicts": [
     {
      "word": "FAIL",
@@ -230,12 +230,15 @@
     "candidate_kept": true,
     "route": "candidate",
     "closes": false
+   },
+   "rules": {
+    "reach_repair": false
    }
   },
   {
    "id": "STEVE_SANDBOX_DENIAL_TWICE",
    "layer": "check",
-   "row": "The same blindness twice on a box changed between checks -> held for repair of the box, candidate kept",
+   "row": "The same blindness twice on a box changed between checks -> held for repair of the box, candidate kept [legacy route: rule reach_repair false]",
    "verdicts": [
     {
      "word": "UNMEASURED",
@@ -260,12 +263,15 @@
     "rewoken": true
    },
    "unhold": true,
-   "repair_between": true
+   "repair_between": true,
+   "rules": {
+    "reach_repair": false
+   }
   },
   {
    "id": "STEVE_SANDBOX_DENIAL_UNCHANGED_BOX",
    "layer": "check",
-   "row": "Blind once, the box unchanged at the recheck -> held for repair with no second check paid (CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE)",
+   "row": "Blind once, the box unchanged at the recheck -> held for repair with no second check paid (CHECKER_REACH_PROBE_BEFORE_PAYING_TWICE) [legacy route: rule reach_repair false]",
    "verdicts": [
     {
      "word": "UNMEASURED",
@@ -286,7 +292,54 @@
     "rewoken": true
    },
    "after_wait": true,
-   "unhold": true
+   "unhold": true,
+   "rules": {
+    "reach_repair": false
+   }
+  },
+  {
+   "id": "STEVE_SANDBOX_DENIAL_REPAIRED",
+   "layer": "check",
+   "row": "Blind once, the Judge's reach repair passes its probe -> the same candidate is checked once more, no work back (BLIND_JUDGE_BUILD_FIXES_OWN_EYES)",
+   "verdicts": [
+    {
+     "word": "FAIL",
+     "reasons": "Doc clauses hold. The live clause (C: free >=55GB) could not be run from the box: ssh stevedesktop: Bad owner or permissions on /etc/ssh/ssh_config.d"
+    }
+   ],
+   "probe": [
+    true,
+    "replay bank: the adapter reads it"
+   ],
+   "expect": {
+    "acted": "UNMEASURED",
+    "gen_bump": false,
+    "candidate_kept": true,
+    "route": "checking",
+    "closes": false
+   }
+  },
+  {
+   "id": "STEVE_SANDBOX_DENIAL_UNREPAIRABLE",
+   "layer": "check",
+   "row": "Blind once, the Judge's reach repair fails its probe -> the class ticket is filed and the item blocks on it, candidate kept (BLIND_JUDGE_BUILD_FIXES_OWN_EYES)",
+   "verdicts": [
+    {
+     "word": "FAIL",
+     "reasons": "Doc clauses hold. The live clause (C: free >=55GB) could not be run from the box: ssh stevedesktop: Bad owner or permissions on /etc/ssh/ssh_config.d"
+    }
+   ],
+   "probe": [
+    false,
+    "replay bank: still unreadable"
+   ],
+   "expect": {
+    "acted": "UNMEASURED",
+    "gen_bump": false,
+    "candidate_kept": true,
+    "route": "blocked",
+    "closes": false
+   }
   },
   {
    "id": "STEVE_PROOF_GREPS_TYPED_NUMBER",

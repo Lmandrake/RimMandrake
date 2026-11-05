@@ -71,6 +71,28 @@ class FakeWorld:
         self.alarm_fail = None
         self.pool = {}          # per world: a class-level dict leaks one test's clones into the next
 
+    # Neutral recording defaults for Effects methods a tick reaches (selftest_fakeworld_parity.py keeps this current;
+    # rigs that test these lanes overwrite them per instance). A bare FakeWorld's reach probe fails: nothing is probed.
+    books = "/books"
+    mods_root = "/mods"
+
+    def reach_probe(self, r, paths, adapter_names, values, store_root, grants=()):
+        self.__dict__.setdefault("probes", []).append((list(paths), list(adapter_names), values.get("sha")))
+        return False, "fake world: nothing probed"
+
+    def reach_ticket(self, item, text):
+        self.__dict__.setdefault("tickets", []).append(item)
+        self.items.setdefault(item, "proposed")
+
+    def ledger_block(self, item, kind, ons, reason):
+        self.__dict__.setdefault("blocks", []).append((item, kind, list(ons)))
+
+    def ledger_unblock(self, item, reason):
+        self.__dict__.setdefault("unblocks", []).append(item)
+
+    def run_offbox(self, name, adapter, timeout):
+        return {"cmd": name, "exit": 1, "out": "fake world: no offbox adapter runs", "at": self.__dict__.get("now", 0)}
+
     def budget(self): return self.budget_v
     def head_helpers(self): return self.helpers
     def burn(self): return self.burn_v
