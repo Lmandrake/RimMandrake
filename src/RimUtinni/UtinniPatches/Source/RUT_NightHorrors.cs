@@ -225,6 +225,47 @@ namespace RimMandrake.Utinni.UtinniPatches
             if (arg == null || !arg.Contains("keep")) PocketMapUtility.DestroyPocketMap(below);
             return result;
         }
+
+        // Live-proof instrument (HORRORS_RAIDING_FACTION_1 A2/A3): the test world the proof runs on may hold no
+        // nightside land at all (a partial-coverage world). The nightside gate reads the live PlanetGeometryDef
+        // instance, so the proof moves its substellar point instead: "night <tile>" puts it on the tile's
+        // antipode (arc 180), "day <tile>" on the tile itself (arc 0). The original point is kept once and put
+        // back by "restore"; "show" reads it. Never called by the mod itself.
+        private static bool shifted;
+        private static float origLat, origLon;
+
+        public static string Geometry(string arg)
+        {
+            PlanetGeometryDef geo = WeatherGeometryUtility.ActiveGeometry;
+            if (geo == null) return "no geometry";
+            string[] a = (arg ?? "").Split(' ');
+            string verb = a[0];
+            if (verb == "restore")
+            {
+                if (shifted) { geo.substellarLat = origLat; geo.substellarLon = origLon; shifted = false; }
+                return Show(geo);
+            }
+            if ((verb == "night" || verb == "day") && a.Length > 1 && int.TryParse(a[1], out int t))
+            {
+                if (Find.WorldGrid == null) return "no world";
+                PlanetTile tile = new PlanetTile(t);
+                if (!tile.Valid) return "bad tile " + t;
+                if (!shifted) { origLat = geo.substellarLat; origLon = geo.substellarLon; shifted = true; }
+                UnityEngine.Vector2 ll = Find.WorldGrid.LongLatOf(tile);
+                if (verb == "day") { geo.substellarLat = ll.y; geo.substellarLon = ll.x; }
+                else { geo.substellarLat = -ll.y; geo.substellarLon = ll.x > 0f ? ll.x - 180f : ll.x + 180f; }
+                return Show(geo) + " tileArc=" + WeatherGeometryUtility.ArcFromSubstellar(tile).ToString("F1")
+                    + " nightside=" + WeatherGeometryUtility.TileInNightsideBand(tile);
+            }
+            return Show(geo);
+        }
+
+        private static string Show(PlanetGeometryDef geo)
+        {
+            return "geometry " + geo.defName + " lat=" + geo.substellarLat.ToString("F2") + " lon=" + geo.substellarLon.ToString("F2")
+                + " terminatorMin=" + geo.terminatorBandMinArc.ToString("F0") + " nightsideMin=" + geo.nightsideBandMinArc.ToString("F0")
+                + " shifted=" + shifted;
+        }
     }
 
     public class RUT_CompProperties_HorrorCrysalis : CompProperties

@@ -25,6 +25,11 @@ file can prove without the game, each as one numbered check:
      first lair on a surface map always tries for a door; the live probe RUT_HorrorSinkholeProbe.Descend exists.
  10. No load-time Config error the 2026-11-03 live A1 read (Player.log lines 250/257/258): no PawnKindDef of ours sets
      weaponMoney without weaponTags, and no ThingDef of ours with useHitPoints false is flammable (Flammability > 0).
+ 11. The live proof runs on ANY world (the 2026-11-04 A2 FAIL: the lane's partial-coverage world held no nightside land,
+     max arc 89.7): RUT_HorrorSinkholeProbe.Geometry moves the live substellar point to a tile's antipode ("night") or onto
+     it ("day"), keeps the original once and restores it; the antipode formula, swept over the sphere, always gives arc
+     180 (> nightsideBandMinArc + 5) and the on-tile one arc 0; prove_night_horrors_live.py falls back to it only when
+     the world has no candidate tile and restores in a finally.
 Exit 0 = all pass. Offline, no game."""
 import os
 import re
@@ -243,6 +248,34 @@ def flam(d):
 nohp = [d for d in defs.iter("ThingDef") if d.findtext("useHitPoints") == "false"]
 burn = [d.findtext("defName") for d in nohp if flam(d) != 0]
 check(10, bool(nohp) and not burn, "%d hit-point-less things, none flammable (offenders %s)" % (len(nohp), burn))
+
+# 11 the live proof's geometry move (world-independent A2/A3)
+import math
+gb = body("public static string Geometry(string arg)")
+probe_ok = {
+    "Geometry probe": bool(gb),
+    "keeps original once": "if (!shifted) { origLat = geo.substellarLat; origLon = geo.substellarLon; shifted = true; }" in gb,
+    "restore puts it back": "geo.substellarLat = origLat; geo.substellarLon = origLon; shifted = false;" in gb,
+    "day on tile": "geo.substellarLat = ll.y; geo.substellarLon = ll.x;" in gb,
+    "night antipode": "geo.substellarLat = -ll.y; geo.substellarLon = ll.x > 0f ? ll.x - 180f : ll.x + 180f;" in gb,
+}
+
+
+def arc(lat, lon, lat0, lon0):
+    r = math.radians
+    c = math.sin(r(lat0)) * math.sin(r(lat)) + math.cos(r(lat0)) * math.cos(r(lat)) * math.cos(r(lon - lon0))
+    return math.degrees(math.acos(max(-1.0, min(1.0, c))))
+
+
+sweep = [(la, lo) for la in range(-89, 90, 7) for lo in range(-179, 180, 11)] + [(0, 0), (0, 180), (0, -180), (45, 0.0)]
+worst_night = min(arc(la, lo, -la, lo - 180 if lo > 0 else lo + 180) for la, lo in sweep)
+worst_day = max(arc(la, lo, la, lo) for la, lo in sweep)
+live = text(os.path.join(MOD, "prove_night_horrors_live.py"))
+probe_ok["antipode arc >= 179 over the sphere (%.2f)" % worst_night] = worst_night >= 179.0
+probe_ok["on-tile arc <= 0.1 (%.3f)" % worst_day] = worst_day <= 0.1
+probe_ok["live proof falls back only when no candidate"] = "if not tiles:" in live and 'shift = "night" if night else "day"' in live
+probe_ok["live proof restores in finally"] = 'finally:' in live and 'probe(g, "Geometry", "restore")' in live
+check(11, all(probe_ok.values()), "live proof's geometry move: %s" % {k: v for k, v in probe_ok.items() if not v})
 
 print("RESULT", "PASS" if not fails else "FAIL %s" % sorted(set(fails)))
 sys.exit(1 if fails else 0)
