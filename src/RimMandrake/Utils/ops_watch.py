@@ -3398,6 +3398,21 @@ def real_filer(todo, conf):
                     rc, out = ing.rimflow("note", a["item"], "--text", a["text"])
                 elif a.get("reopen"):     # a repeat: the same item goes back to work and the outage is counted
                     rc, out = ing.rimflow("live", a["name"], "--result", "broken", "--detail", a["title"][:300])
+                    if rc != 0 and "retired item holds no promise" in (out or ""):
+                        # the fixed item was dropped or superseded: a retired item cannot be reopened, so the alarm
+                        # files a successor and keeps that name from here on (OPS_WATCH_FIX_RETIRED_ALARM_ITEM)
+                        for k in range(1, 6):
+                            w = a["name"].split("_")      # a name has 3-7 words: a 7-word base gives up its last one
+                            new = "%s_%s" % ("_".join(w[:6]), alarm_twist("%s#%d" % (a["name"], k)))
+                            rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
+                                                  "--name", new, "--title", a["title"],
+                                                  "--why", "ops_watch alarm (deterministic, no AI): %s; %s was retired" % (a["aid"], a["name"]))
+                            if rc != 0 and already_filed(out, new):
+                                continue
+                            break
+                        if rc == 0:
+                            res.setdefault("_renamed", {})[a["name"]] = new
+                            a["name"] = new
                 elif nobody:            # stays PENDING with the reason on its entry, retried every pass
                     rc, out = 1, "no receiver: " + nobody
                 else:
@@ -3789,7 +3804,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                 cur["tries"] = _tries(cur) + (1 if filer else 0)
                 cur["last_try"] = iso(now)
                 if err is None:
-                    cur.update(state="OPEN", item=a["name"], error=None, filed=iso(now))
+                    cur.update(state="OPEN", item=a["name"], name=a["name"], error=None, filed=iso(now))   # name: a successor stays the alarm's item
                     # the item is in the RUNNER shard whatever _publish says: a publish that failed is retried by the
                     # next testq ingest (testq/ingest.py _publish keeps the lines), so OPEN is right either way
                     log.append({"ts": iso(now), "event": "found_filed" if a["name"] in (res.get("_already") or []) else "filed",

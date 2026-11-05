@@ -130,6 +130,7 @@ BROKEN_CAP = DIRTY_CAP      # a .git no bundle can read is tarred whole, up to t
 RESIDUE_CAP = 512 * 1024 ** 2   # a session's loose files
 BUNDLE_CAP = 5 * 1024 ** 3
 MENTION_DAYS = 7
+SELF_ITEMS = ("REAPER_", "SCRATCH_", "OPS_SCRATCH_")     # the cleaner's own ledger items: their mentions never pin
 BLIND_RETRIES = 5
 PRESSURE_GB = 420.0         # ops_watch_rules' DISK_TWO_DAYS line
 TMP_IDLE_H = 6.0            # owner-authority brief 2026-11-03: a /tmp entry nothing inside was touched in 6 h may go
@@ -1259,9 +1260,14 @@ def mention_blocks(f: str, line: str, now: float) -> bool:
     limit = MENTION_DAYS * 86400
     if f.endswith(".jsonl"):
         try:
-            ts = json.loads(line)["ts"]
+            ev = json.loads(line)
+            # a note on the cleaner's own items that lists what it refused is a report of the refusal, not a use of the
+            # directory: letting it pin made every refusal write the note that renewed the next week's refusal
+            if str(ev.get("id") or "").startswith(SELF_ITEMS):
+                return False
+            ts = ev["ts"]
             return now - dt.datetime.fromisoformat(str(ts).replace("Z", "+00:00")).timestamp() < limit
-        except (ValueError, KeyError, TypeError):
+        except (ValueError, KeyError, TypeError, AttributeError):
             return True
     if "/items/closed/" in f or "/handoffs/" in f:
         try:
