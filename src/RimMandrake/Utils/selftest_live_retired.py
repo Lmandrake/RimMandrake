@@ -68,6 +68,12 @@ def main(retired_path=None):
           "a baseline promise for the retired rm-pulse-streams.timer is not swept (LIVE_RESTORE_RM_PULSE_STREAMS)")
     check("unit=rm-streams-collect.timer" in {DM.subject(l) for l in baseline},
           "its successor rm-streams-collect.timer is promised in the baseline (LIVE_RESTORE_RM_PULSE_STREAMS)")
+    # LIVE_RESTORE_RM_PULSE_UPDATE: the updater was RENAMED too (rm-pulse-update -> rm-deploy-update); same rule
+    update = DM.promises({}, baseline + ["unit=rm-pulse-update.timer max_age=2h"], retired)
+    check(not [r for r in update if "rm-pulse-update" in r["line"]],
+          "a baseline promise for the retired rm-pulse-update.timer is not swept (LIVE_RESTORE_RM_PULSE_UPDATE)")
+    check("unit=rm-deploy-update.timer" in {DM.subject(l) for l in baseline},
+          "its successor rm-deploy-update.timer is promised in the baseline (LIVE_RESTORE_RM_PULSE_UPDATE)")
     # the class, on fixtures: every kind of subject, from the baseline and from a settled item
     fx = DM.parse_retired(["unit=rm-gone.timer  # retired", "hook=gone_hook.py", "role=Gone"])
     lines = ["unit=rm-gone.timer max_age=2h", "unit=rm-here.timer max_age=2h", "hook=gone_hook.py", "role=Gone max_age=3d"]

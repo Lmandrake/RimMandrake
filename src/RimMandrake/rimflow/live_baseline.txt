@@ -6,6 +6,7 @@ unit=rm-artpipe-idle-fill.timer max_age=2h
 unit=rm-codebase-health.timer max_age=2h
 unit=rm-deadman.timer max_age=2h
 unit=rm-dispatcher.timer max_age=2h
+unit=rm-deploy-update.timer max_age=2h
 unit=rm-memwatch.timer max_age=2h
 unit=rm-mirror.timer max_age=2h
 unit=rm-objstore.timer max_age=3h
