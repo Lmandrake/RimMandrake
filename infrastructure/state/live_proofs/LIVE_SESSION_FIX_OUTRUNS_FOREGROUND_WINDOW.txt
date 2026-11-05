@@ -1,0 +1,7 @@
+# A whole FlowWorks live_session (B0-B10) run as resumable --state chunk processes, each killed at 540 s; it ends with
+# --check-state: exit 0 only when every unit ran, every chunk ended inside 540 s, B4_dehydration_rate is PASS or FAIL
+# (measured, not UNMEASURED) and thirst_live was handed this load's Player.log; 1 otherwise. ~30 min wall (--max-seconds).
+# It drives the map (digs, weather, one save+reload) on a fresh quicktest map: --no-owner-save keeps it to that one save.
+live-mods: FlowWorks
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 5 --needs mandrake.rm.flowworks
+live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/live_session.py --chunks --max-seconds 3000 --no-owner-save --out-dir D:/ClaudeWork/rimmandrake/scratch/LSFIX/live < /dev/null

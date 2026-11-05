@@ -11,6 +11,11 @@ material in a tighter timeline?"*
                                                                                      # a fresh Playing quicktest map
   options: --only B1,B2 (blocks, a PARTIAL run: never recordable) --skip B9 --frame-budget-ms 150 --out-dir DIR
            --no-owner-save --list (catalog only). A crashed block is always recorded and the run goes on (no flag).
+  RESUMABLE (a whole session outruns one 540 s foreground call): `--state FILE` runs the next units that fit
+  --chunk-s (default 450 s), keeps rows/env/pawns/sites in FILE and exits 3 while units are owed -- rerun the same
+  command until it exits 0; B0 runs once. `--chunks --max-seconds N` loops those chunks itself (each killed at 540 s)
+  and ends with `--check-state FILE` (exit 0 only for a whole session with B4_dehydration_rate measured).
+  thirst_live gets --log: --player-log, else a copy of the game's Player.log taken when it runs.
   Wrap the live run for the keeper-saves check:
   python3 src/RimMandrake/Utils/save_guard.py run --current-slot none -- python.exe <this script>
 
@@ -366,6 +371,7 @@ class Session(object):
         self.pawns = {}
         self.ride_stop = False
         self.site_bad = {}          # zone -> [why]: a site that did not read back clear, or a dig that missed its depth
+        self.state, self.state_path = None, None    # --state: the resumable chunk state (run_state_chunk)
 
     # ---- output
     def say(self, s):
@@ -388,6 +394,8 @@ class Session(object):
         return r
 
     def save(self):
+        if getattr(self, "state", None) is not None:
+            save_state(self)
         p = os.path.join(self.out_dir, "session.json")
         with open(p + ".tmp", "w", encoding="utf-8") as f:
             json.dump(dict(script="live_session.py", mode="mock" if self.mock else "live", env=self.env, zones=self.zones,
@@ -1417,9 +1425,17 @@ def g_rail_lip(s):
     s.call("jawa/kill_hostiles")
 
 
+RIDE_MIN_TICKS = 6000
+# LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW (ls_c3, 2026-10-23): the ride stopped when the other B4 blocks did, after
+# 1,000 ticks; Need_RM_Thirst.NeedInterval adds dehydration every 150 ticks, so 1,000 ticks is 6 quanta and read 0.27/60k
+# against a 0.30 bar. 6,000 ticks is 40 quanta (+/- one = 2.5 %, inside the 10 % tolerance): the ride holds the shared
+# clock until it has them, and gives no rate on less.
+
+
 def g_dehydration_ride(s):
-    """THIRST T6 compressed: one drafted colonist held at thirst 0 for the WHOLE shared clock; RM_Dehydration's
-    severity rate is measured and extrapolated to 60,000 ticks (bar 0.30 +/- 0.03): INFERRED."""
+    """THIRST T6 compressed: one drafted colonist held at thirst 0 for the WHOLE shared clock, and at least
+    RIDE_MIN_TICKS; RM_Dehydration's severity rate is measured and extrapolated to 60,000 ticks (bar 0.30 +/- 0.03):
+    INFERRED."""
     x, z, _w, _h = s.zones["ride"]
     p = s.spawn(HUMAN, (x + 2, z + 2))
     if not p:
@@ -1446,10 +1462,10 @@ def g_dehydration_ride(s):
             here = (s.climb(p) or {}).get("cell")
             if here != home:
                 wandered.append(here)        # a pawn that moved could have drunk: the rate is not the bar's
-        if s.ride_stop:
+        if s.ride_stop and s.now() - t0 >= RIDE_MIN_TICKS:     # t0: the first severity read, else the start
             break
     sev1, t1 = hediffs(s.call("jawa/pawn_get", pawn=p)).get("RM_Dehydration"), s.now()
-    if sev0 is None or sev1 is None or t1 - t0 < 2000 or wandered or (home is None and not s.mock):
+    if sev0 is None or sev1 is None or t1 - t0 < RIDE_MIN_TICKS or wandered or (home is None and not s.mock):
         st, proj = "UNMEASURED", None
     else:
         proj = (sev1 - sev0) / float(t1 - t0) * 60000.0
@@ -1472,6 +1488,8 @@ def b4_shared(s):
     done = {}
     res, spent = run_shared_with_stop(s, gens, done)
     s.timing["B4_ticks"] = spent
+    # B7 compares access/digdepth/covers: a session (or chunk state) without them staged compares bare ground
+    s.env["b4_staged"] = all(res.get(n) == "done" and not s.site_bad.get(n) for n in ("access", "digdepth", "covers"))
     for name, state in res.items():
         if state != "done":
             s.row("B4_block_%s" % name, "-", "-", "UNMEASURED", "HARNESS", dict(state=state), "B4")
@@ -1753,6 +1771,10 @@ def b6_flood(s):
     # open dug squares (rainFillsExcavationsEnabled, the mod's design, proven by its own rows), which this row is not
     # about. Rain fill off for the row (restored in finally); the changed squares keep their before/after values.
     rain_fill_was = s.sget("rainFillsExcavationsEnabled")
+    if isinstance(getattr(s, "env", None), dict):
+        s.env["b6_rain_fill_was"] = rain_fill_was      # a chunk killed in this block: the next one restores it
+        if getattr(s, "state", None) is not None:
+            s.save()
     if rain_fill_was is None:
         # review fw4 (2026-10-26): an unread original was later "restored" to a guessed True. Unread -> not switched
         # off at all (rain_off False: a FAIL then reads UNMEASURED/SITE below), and nothing to restore.
@@ -1882,6 +1904,11 @@ def b7_reload(s):
     ok_io = (sv.get("success") is True and ld.get("success") is True) or (s.mock and sv.get("success") is not False)
     empty = reload_sample_empty(before)
     st = reload_verdict(ok_io, blind, diff, empty)
+    if not s.env.get("b4_staged"):
+        # LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW (ls_c5: --only B0,B6,B7 PASSed all three): no B4 in this session (or
+        # its --state) means no pits in the snapshot zones and no rescue pawn: equal bare ground is no reload verdict
+        st = "UNMEASURED"
+        blind = blind + ["no B4 pits staged cleanly in this session (run B4 first, or resume its --state)"]
     # RELOAD_POCKETS_DIAGNOSE_KEPT_NO_RECEIPTS: runs 20261018T232207 / T233414 failed on pocket_covers alone and
     # kept no strings. Keep both sides of every differing key, and one SETTLED re-read (> RM_PocketGrid.RebuildMinTicks
     # = 60 later): a key that agrees once settled was a stale grid read straight after the load (a transient), one that
@@ -2183,7 +2210,7 @@ def run_sub(s, step):
         if a == "{out}":
             fill.append(out)
         elif a == "{log}":
-            fill.append(s.args.player_log or "")
+            fill.append(player_log_for(s, script))
         elif a.startswith("{origin:"):
             zx, zz, _w, _h = s.zones[a[8:-1]]
             fill.append("%d,%d" % (zx, zz))
@@ -2283,9 +2310,18 @@ def verdicts(rows):
     return out
 
 
+def rel(path):
+    """Repo-relative when it can be: python.exe runs the repo from \\wsl.localhost\... and --out-dir is on D:, and relpath
+    across Windows drives raises (it crashed a finished session's ending). Then the absolute path."""
+    try:
+        return os.path.relpath(path, REPO)
+    except ValueError:
+        return os.path.abspath(path)
+
+
 def write_verify_lines(s):
     p = os.path.join(s.out_dir, "verify_lines.txt")
-    ev = os.path.relpath(os.path.join(s.out_dir, "session.json"), REPO)
+    ev = rel(os.path.join(s.out_dir, "session.json"))
     lines = []
     if s.env.get("partial"):
         lines.append("# PARTIAL run (--only/--skip): never recordable as the session result; each line stands only for its own rows")
@@ -2354,6 +2390,209 @@ def write_driver_result(s, stamp):
     return p
 
 
+# ============================================================================ resumable chunks
+# LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW (driver 7, 2026-10-23): a whole session does not fit one 540 s foreground call,
+# so it ran as `--only B0,<block>` processes: each one re-ran B0, forgot B4's pawns and pits (B7 compared bare ground), and
+# passed thirst_live no --log (T1/T7 UNMEASURED). `--state FILE` makes ONE session out of several processes: a UNIT (one
+# block step or one sub script) runs once, rows/env/pawns/site_bad/zones live in the state between chunks, and a chunk
+# starts no unit its budget cannot hold. `--chunks` loops chunk processes itself (each <= CHUNK_MAX_S) for a live proof.
+CHUNK_MAX_S = 540            # the foreground window a chunk must fit (agent tool calls, 600 s silence watchdog)
+CHUNK_S = 450                # default --chunk-s: start no unit that would end past it
+# ESTIMATED wall seconds per unit: the largest MEASURED in driver 7's chunks (D:\ClaudeWork\rimmandrake\scratch\br1g_caps\
+# ls_c1..ls_c9 session.json timing) x ~1.2, B4 plus the RIDE_MIN_TICKS ride at the measured 60 t/s
+UNIT_EST_S = {"B0:b0_preflight": 15, "B1:validation_v2.py": 365, "B2:b2_settings_dialog": 10, "B2:b2_tank_tall": 5,
+              "B2:b2_readouts": 5, "B3:trench_cover_proof.py": 15, "B3:climb_proof.py": 85, "B3:sprinkler_live.py": 165,
+              "B3:liquid_checks.py": 95, "B3:proof_hose.py": 155, "B4:b4_shared": 300, "B5:b5_cold_snap": 100,
+              "B6:b6_flood": 35, "B7:b7_reload": 60, "B8:raid_trench_proof.py": 70, "B9:b9_owner": 145,
+              "B10:thirst_live.py": 95}
+STEPS = dict(B0=["b0_preflight"], B2=["b2_settings_dialog", "b2_tank_tall", "b2_readouts"], B4=["b4_shared"],
+             B5=["b5_cold_snap"], B6=["b6_flood"], B7=["b7_reload"], B9=["b9_owner"])
+STATE_KEYS = ("rows", "notes", "timing", "env", "pawns", "site_bad", "zones")
+
+
+def units_of(sel):
+    """The session's units in run order: (key, block, 'fn'|'sub', name). Pure."""
+    out = []
+    for bid in sel:
+        for fn in STEPS.get(bid, []):
+            out.append(("%s:%s" % (bid, fn), bid, "fn", fn))
+        for step in SUBS:
+            if step[0] == bid:
+                out.append(("%s:%s" % (bid, step[1]), bid, "sub", step[1]))
+    return out
+
+
+def next_units(units, done, elapsed, chunk_s, ran):
+    """The next unit this chunk may start, or None (pure): the first unit not done, unless the chunk has already run one
+    and its ESTIMATED wall would carry the chunk past chunk_s. A first unit always runs (one unit is the smallest chunk)."""
+    for u in units:
+        if u[0] in done:
+            continue
+        if ran and elapsed + UNIT_EST_S.get(u[0], 60) > chunk_s:
+            return None
+        return u
+    return None
+
+
+def new_state(sel, partial, out_dir, stamp):
+    return dict(version=1, sel=list(sel), partial=partial, out_dir=out_dir, stamp=stamp, done=[], running=None, chunks=[])
+
+
+def save_state(s):
+    st = s.state
+    for k in STATE_KEYS:
+        st[k] = getattr(s, k)
+    st["size"] = list(s.size)
+    with open(s.state_path + ".tmp", "w", encoding="utf-8") as f:
+        json.dump(st, f, indent=1, default=str)
+    os.replace(s.state_path + ".tmp", s.state_path)
+
+
+def load_state(s, st):
+    """Restore a chunk state into a fresh Session: everything a later block reads off `s` (zones, the B4 pawns, the bad
+    sites, B0's env verdicts) comes back as the earlier chunk left it."""
+    for k in STATE_KEYS:
+        if k in st:
+            setattr(s, k, st[k])
+    s.zones = {k: tuple(v) for k, v in (st.get("zones") or s.zones).items()}
+    s.size = tuple(st.get("size") or s.size)
+    s.state = st
+
+
+def player_log_for(s, script):
+    """thirst_live's --log (T1/T7 read this load's Player.log): --player-log when given; else a copy of the game's own
+    Player.log (game_paths.PLAYER_LOG, or env FW_PLAYER_LOG) taken now, beside the session. '' when there is none to copy:
+    run_sub then drops the flag and the rows that need it read UNMEASURED, as before. Live only, unless FW_PLAYER_LOG."""
+    if s.args.player_log:
+        lp = os.path.abspath(s.args.player_log)        # run_sub's script runs in REPO, not the caller's directory
+        s.env.setdefault("player_logs", {})[script] = lp
+        return lp
+    src = os.environ.get("FW_PLAYER_LOG")
+    if not src and not s.mock:
+        try:
+            if UTILS not in sys.path:
+                sys.path.insert(0, UTILS)
+            import game_paths as GP
+            src = GP.PLAYER_LOG
+        except Exception as ex:  # noqa: BLE001
+            s.notes.append("player log: game_paths unreadable: %s" % ex)
+            return ""
+    if not src or not os.path.isfile(src):
+        s.notes.append("player log: none at %r for %s" % (src, script))
+        return ""
+    n = len((getattr(s, "state", None) or {}).get("chunks") or []) or 1
+    dst = os.path.join(s.out_dir, "Player_%s_chunk%d.log" % (os.path.splitext(script)[0], n))
+    import shutil
+    try:
+        shutil.copyfile(src, dst)        # Unity holds Player.log open for writing; a refused read is a note, not a crash
+    except OSError as ex:
+        s.notes.append("player log: copy of %s refused: %s" % (src, ex))
+        return ""
+    s.env.setdefault("player_logs", {})[script] = dst
+    return dst
+
+
+def check_state(st):
+    """--check-state (pure): (ok, reasons). ok only for a FULL session (no --only/--skip) with no unit owed or left
+    running, every chunk ended inside CHUNK_MAX_S, B4_dehydration_rate measured (PASS or FAIL), and thirst_live given a
+    Player.log when B10 ran."""
+    why = []
+    if st.get("partial"):
+        why.append("partial session (--only/--skip): not a full live_session")
+    owed = [u[0] for u in units_of(st.get("sel") or ORDER) if u[0] not in (st.get("done") or [])]
+    if owed:
+        why.append("units owed: %s" % ",".join(owed[:6]))
+    if st.get("running"):
+        why.append("unit left running: %s" % st["running"])
+    ch = st.get("chunks") or []
+    if not ch:
+        why.append("no chunk recorded")
+    for c in ch:
+        if c.get("wall_s") is None:
+            why.append("chunk %s never ended (killed past the window?)" % c.get("n"))
+        elif c["wall_s"] > CHUNK_MAX_S:
+            why.append("chunk %s ran %.0f s > %d" % (c.get("n"), c["wall_s"], CHUNK_MAX_S))
+    ride = [r for r in st.get("rows") or [] if r.get("id") == "B4_dehydration_rate"]
+    if not ride:
+        why.append("no B4_dehydration_rate row")
+    elif ride[-1].get("status") not in ("PASS", "FAIL"):
+        why.append("B4_dehydration_rate %s: %s" % (ride[-1].get("status"), json.dumps(ride[-1].get("detail"), default=str)[:160]))
+    if "B10" in (st.get("sel") or ORDER) and not ((st.get("env") or {}).get("player_logs") or {}).get("thirst_live.py"):
+        why.append("thirst_live ran with no Player.log (--log)")
+    return not why, why
+
+
+def tree_kwargs():
+    """Popen kwargs that make the chunk the root of its own process tree (so kill_tree reaches its scripts)."""
+    if os.name == "nt":
+        return dict(creationflags=getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0x200))
+    return dict(start_new_session=True)
+
+
+def kill_tree(p):
+    """Kill a chunk and every process under it (run_sub's script): taskkill /T on Windows, the process group elsewhere."""
+    try:
+        if os.name == "nt":
+            subprocess.run(["taskkill", "/T", "/F", "/PID", str(p.pid)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                           timeout=60)
+        else:
+            import signal
+            os.killpg(p.pid, signal.SIGKILL)
+    except (OSError, subprocess.SubprocessError):
+        p.kill()
+    try:
+        p.wait(timeout=30)
+    except subprocess.TimeoutExpired:
+        pass
+
+
+def run_chunks(a, argv):
+    """--chunks: run chunk processes (`--state`, each killed at CHUNK_MAX_S) until the session is whole or --max-seconds
+    is spent, then --check-state it. Exit 0 a whole, measured session; 1 otherwise; 2 a chunk refused to start."""
+    # no --state: a FRESH session in <--out-dir or Transient/live_session>/chunks_<stamp>/ (a rerun never resumes an old one)
+    state = a.state or os.path.join(a.out_dir or os.path.join(REPO, "Transient", "live_session"),
+                                    "chunks_" + time.strftime("%Y%m%dT%H%M%S"), "state.json")
+    state = os.path.abspath(state)
+    os.makedirs(os.path.dirname(state), exist_ok=True)
+    child_out = os.path.abspath(a.out_dir) if (a.state and a.out_dir) else os.path.dirname(state)
+    keep, skip_next = [], False
+    for x in argv:
+        if skip_next:
+            skip_next = False
+            continue
+        if x in ("--chunks", "--max-seconds", "--state", "--out-dir"):
+            skip_next = x != "--chunks"
+            continue
+        if x.startswith(("--max-seconds=", "--state=", "--out-dir=")):
+            continue
+        keep.append(x)
+    t0 = time.time()
+    while a.max_seconds - (time.time() - t0) >= 30:
+        cmd = [sys.executable, os.path.abspath(__file__), "--state", state, "--out-dir", child_out] + keep
+        print("CHUNK %s" % " ".join(cmd), flush=True)
+        p = subprocess.Popen(cmd, **tree_kwargs())        # this cwd: a relative --player-log means the same file
+        try:
+            rc = p.wait(timeout=min(CHUNK_MAX_S, a.max_seconds - (time.time() - t0)))
+        except subprocess.TimeoutExpired:
+            kill_tree(p)                 # its run_sub script too: a survivor would drive the map under the next chunk
+            print("CHUNK killed at %d s" % CHUNK_MAX_S, flush=True)
+            rc = 3                       # the next chunk voids the unit it left running and goes on
+        if rc == 0:
+            break
+        if rc != 3:
+            print("CHUNK exit %s: stopping" % rc, flush=True)
+            if not os.path.exists(state):
+                return 2
+            break
+    try:
+        with open(state, encoding="utf-8") as f:
+            ok, why = check_state(json.load(f))
+    except (OSError, ValueError) as ex:
+        ok, why = False, ["state unreadable: %s" % ex]
+    print("CHECK %s %s %s" % ("PASS" if ok else "FAIL", state, "; ".join(why)), flush=True)
+    return 0 if ok else 1
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true")
@@ -2366,17 +2605,56 @@ def main(argv=None):
     ap.add_argument("--player-log", default="", help="this load's Player.log copy (thirst T1/T7)")
     ap.add_argument("--no-owner-save", action="store_true")
     ap.add_argument("--out-dir", default=None)
+    ap.add_argument("--state", default="", help="resumable session: run the next units that fit --chunk-s, keep "
+                    "everything in this file, exit 3 while units are owed (rerun the same command), 0 when whole")
+    ap.add_argument("--chunk-s", type=float, default=CHUNK_S, help="with --state: start no unit whose ESTIMATED end "
+                    "passes this many seconds into the chunk (a first unit always runs)")
+    ap.add_argument("--check-state", default="", help="read-only: exit 0 when this state is a whole session in "
+                    "chunks <= %d s with B4_dehydration_rate measured, 1 otherwise" % CHUNK_MAX_S)
+    ap.add_argument("--chunks", action="store_true", help="run --state chunks as child processes (each killed at "
+                    "%d s) until whole or --max-seconds, then --check-state" % CHUNK_MAX_S)
+    ap.add_argument("--max-seconds", type=int, default=3000)
+    raw = sys.argv[1:] if argv is None else list(argv)
     a = ap.parse_args(argv)
     if a.list:
         print(json.dumps(dict(blocks=BLOCKS, catalog=C), indent=1))
         return 0
-    sel = [b for b in ORDER if (not a.only or b in a.only.split(",")) and b not in a.skip.split(",")]
-    stamp = time.strftime("%Y%m%dT%H%M%S")
-    out_dir = a.out_dir or os.path.join(REPO, "Transient", "live_session", ("mock_" if a.mock else "dry_" if a.dry_run else "") + stamp)
+    if a.check_state:
+        try:
+            with open(a.check_state, encoding="utf-8") as f:
+                ok, why = check_state(json.load(f))
+        except (OSError, ValueError) as ex:
+            ok, why = False, ["state unreadable: %s" % ex]
+        print("CHECK %s %s" % ("PASS" if ok else "FAIL", "; ".join(why)))
+        return 0 if ok else 1
+    if a.chunks:
+        return run_chunks(a, raw)
+    st = None
+    if a.state and os.path.exists(a.state):
+        with open(a.state, encoding="utf-8") as f:
+            st = json.load(f)
+    sel = st["sel"] if st else [b for b in ORDER if (not a.only or b in a.only.split(",")) and b not in a.skip.split(",")]
+    stamp = st["stamp"] if st else time.strftime("%Y%m%dT%H%M%S")
+    out_dir = (st["out_dir"] if st else None) or a.out_dir or (os.path.dirname(os.path.abspath(a.state)) if a.state else None) \
+        or os.path.join(REPO, "Transient", "live_session", ("mock_" if a.mock else "dry_" if a.dry_run else "") + stamp)
+    out_dir = os.path.abspath(out_dir)          # run_sub's scripts run in REPO: a relative out dir names another place
     os.makedirs(out_dir, exist_ok=True)
+    if a.state and os.path.abspath(a.state) == os.path.join(out_dir, "session.json"):
+        print("REFUSED: --state must not be the session's own session.json (each save would overwrite the other)")
+        return 2
     s = Session(a, out_dir)
-    s.env["partial"] = bool(a.only or a.skip)
-    print_plan(s, sel)
+    if a.state:
+        s.state_path = os.path.abspath(a.state)
+        os.makedirs(os.path.dirname(s.state_path), exist_ok=True)
+        if st:
+            load_state(s, st)
+        else:
+            s.state = new_state(sel, bool(a.only or a.skip), out_dir, stamp)
+            s.env["partial"] = s.state["partial"]
+    else:
+        s.env["partial"] = bool(a.only or a.skip)
+    if not st:
+        print_plan(s, sel)
     if a.dry_run:
         s.say("DRY RUN: no bridge touched.")
         return 0
@@ -2396,8 +2674,9 @@ def main(argv=None):
     walk_args = argparse.Namespace(mock=a.mock, no_shots=True, mock_fail=None)
     s.w = FC.make_walk(walk_args, os.path.join(out_dir, "walk"))
     t_start = time.time()
-    steps = dict(B0=[b0_preflight], B2=[b2_settings_dialog, b2_tank_tall, b2_readouts], B4=[b4_shared], B5=[b5_cold_snap],
-                 B6=[b6_flood], B7=[b7_reload], B9=[b9_owner])
+    if a.state:
+        return run_state_chunk(s, sel, stamp, t_start)
+    steps = dict((b, [globals()[n] for n in fns]) for b, fns in STEPS.items())
     for bid in sel:
         s.say("=== %s %s  (t+%.0fs, tick %s)" % (bid, next(b["title"] for b in BLOCKS if b["id"] == bid), time.time() - t_start, s.now()))
         w0 = time.time()
@@ -2415,15 +2694,109 @@ def main(argv=None):
                     s.row("%s_%s_crashed" % (bid, step[1]), "-", "-", "UNMEASURED", "HARNESS", dict(error=str(ex)), bid)
         s.timing[bid] = round(time.time() - w0, 1)
     s.timing["total_s"] = round(time.time() - t_start, 1)
+    return finish_session(s, stamp)
+
+
+def run_unit(s, u):
+    """One unit, its crash recorded as a row (the session goes on), its wall in s.timing."""
+    key, bid, kind, name = u
+    w0 = time.time()
+    if kind == "fn":
+        try:
+            globals()[name](s)
+        except Exception as ex:  # noqa: BLE001 - recorded, the session goes on
+            s.say(traceback.format_exc())
+            s.row("%s_%s_crashed" % (bid, name), "-", "-", "UNMEASURED", "HARNESS", dict(error=str(ex)), bid)
+    else:
+        step = next(x for x in SUBS if x[0] == bid and x[1] == name)
+        try:
+            run_sub(s, step)
+        except Exception as ex:  # noqa: BLE001
+            s.row("%s_%s_crashed" % (bid, name), "-", "-", "UNMEASURED", "HARNESS", dict(error=str(ex)), bid)
+    s.timing[bid] = round(s.timing.get(bid, 0) + time.time() - w0, 1)
+
+
+def undo_interrupted(s, bid):
+    """A unit killed mid-run left its map-wide change in place: end B5's cold, put B6's weather back (restore_after_weather
+    also heals and feeds), and note what is NOT undone (B2's settings flips: the next read of them says so)."""
+    if bid == "B5":
+        for n in COLD_CONDITIONS:
+            s.call("jawa/game_condition", action="end", condition=n)
+    if bid in ("B5", "B6"):
+        restore_after_weather(s, bid + " interrupted")
+    if bid == "B6" and s.env.get("b6_rain_fill_was") is not None:      # b6_flood switches rain fill off for its row
+        for _ in range(12):                     # as b6_flood: the torrent's RainRate fades over the transition
+            if s.mock or not fnum(rain_rate(s)):
+                break
+            s.advance(500)
+        s.sset("rainFillsExcavationsEnabled", s.env["b6_rain_fill_was"])
+    if bid == "B2":
+        s.notes.append("B2 interrupted: settings it flips (pitGuardrailEnabled) are not restored; re-read before trusting")
+
+
+def run_state_chunk(s, sel, stamp, t_start):
+    """One chunk of a --state session: void a unit an earlier chunk was killed inside, then run units in order while the
+    next one's ESTIMATED wall fits --chunk-s. Exit 3 with units owed, else the whole session's ending (exit 0)."""
+    st = s.state
+    for c in st["chunks"]:
+        if c.get("wall_s") is None and not c.get("killed"):
+            c["killed"] = True               # it never wrote its end: killed at the window (check_state counts it)
+    n = len(st["chunks"]) + 1
+    chunk = dict(n=n, started=time.strftime("%Y-%m-%dT%H:%M:%S"), units=[], wall_s=None)
+    st["chunks"].append(chunk)
+    if st.get("running"):
+        key = st["running"]
+        bid = key.split(":")[0]
+        for r in s.rows[st["running_from"] if st.get("running_from") is not None else len(s.rows):]:
+            if r.get("status") in ("PASS", "FAIL"):      # a verdict whose unit never finished stands for nothing
+                r["detail"] = dict(r["detail"] if isinstance(r["detail"], dict) else {"detail": r["detail"]},
+                                   statusIfWhole=r["status"], interrupted=key)
+                r["status"], r["cls"] = "UNMEASURED", "HARNESS"
+        undo_interrupted(s, bid)
+        s.row("%s_interrupted" % key.replace(":", "_"), "-", "-", "UNMEASURED", "HARNESS",
+              dict(why="chunk %d ended inside this unit (killed past the window?): its map state is unknown, never rerun" % (n - 1)), bid)
+        st["done"].append(key)
+        st["running"] = None
+    units = units_of(sel)
+    ran = 0
+    while True:
+        u = next_units(units, set(st["done"]), time.time() - t_start, s.args.chunk_s, ran)
+        if u is None:
+            break
+        s.say("=== chunk %d %s  (t+%.0fs, tick %s)" % (n, u[0], time.time() - t_start, s.now()))
+        st["running"], st["running_from"] = u[0], len(s.rows)
+        s.save()
+        run_unit(s, u)
+        st["done"].append(u[0])
+        st["running"] = None
+        chunk["units"].append(u[0])
+        ran += 1
+        s.save()
+    owed = [u[0] for u in units if u[0] not in st["done"]]
+    if owed:
+        chunk["wall_s"] = round(time.time() - t_start, 1)
+        s.save()
+        s.say("RESUME: chunk %d ran %s in %.0f s; %d unit(s) owed, next %s. Rerun the same command (--state %s)."
+              % (n, ",".join(chunk["units"]), chunk["wall_s"], len(owed), owed[0], s.state_path))
+        return 3
+    rc = finish_session(s, stamp)
+    # the chunk's end is written only after the session's own ending: a chunk killed inside finish_session never ended
+    chunk["wall_s"] = round(time.time() - t_start, 1)
+    s.timing["total_s"] = round(sum(c.get("wall_s") or 0 for c in st["chunks"]), 1)
     s.save()
-    if not a.mock:
+    return rc
+
+
+def finish_session(s, stamp):
+    s.save()
+    if not s.mock:
         write_driver_result(s, stamp)
     p, n = write_verify_lines(s)
     counts = {}
     for r in s.rows:
         counts[r["status"]] = counts.get(r["status"], 0) + 1
-    s.say("DONE %s rows %s  verify lines %d -> %s  session %s" % (len(s.rows), counts, n, os.path.relpath(p, REPO),
-                                                                  os.path.relpath(os.path.join(out_dir, "session.json"), REPO)))
+    s.say("DONE %s rows %s  verify lines %d -> %s  session %s" % (len(s.rows), counts, n, rel(p),
+                                                                  rel(os.path.join(s.out_dir, "session.json"))))
     eyes = sorted({(r["item"], r["criterion"]) for r in s.rows if r.get("eyes")})
     s.say("OWNER EYES (%d): %s" % (len(eyes), "; ".join("%s %s" % e for e in eyes)))
     return 0

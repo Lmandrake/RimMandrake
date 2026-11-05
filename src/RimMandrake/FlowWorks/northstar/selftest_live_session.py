@@ -721,6 +721,149 @@ check(not getattr(s, "ssets", []) and r["status"] == "UNMEASURED" and any("pitGu
       "can-fail B2: an unread guardrail setting is not flipped, not restored to a guess, row UNMEASURED (ssets %s, %s)"
       % (getattr(s, "ssets", []), r["status"]))
 
+# 8f. LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW: the ride holds the clock to RIDE_MIN_TICKS; resumable --state chunks
+class StopNowRideSession(RideSession):
+    """Every other B4 block already finished: ride_stop is set from the first tick (ls_c3's 1,500-tick shared clock)."""
+    def __init__(self, g):
+        RideSession.__init__(self, g)
+        self.ride_stop = True
+
+
+g = RideGame()
+s = StopNowRideSession(g)
+for w in L.g_dehydration_ride(s):
+    g.t += w.ticks
+r = g.rows[-1]
+check(r["status"] == "PASS" and r["detail"]["ticks"] >= L.RIDE_MIN_TICKS,
+      "ride: with every other B4 block done it still rides %d+ ticks and reads a rate (%s ticks, %s)"
+      % (L.RIDE_MIN_TICKS, r["detail"]["ticks"], r["detail"].get("projected60k")))
+
+
+class LateRideGame(RideGame):
+    """RM_Dehydration only appears at tick 16,500: the ride's last 40 x 500 ticks leave < RIDE_MIN_TICKS of rate."""
+    def call(self, tool, **kw):
+        if tool == "jawa/pawn_get" and self.t < 16500:
+            return dict(pawns=[dict(hediffs=[])])
+        return RideGame.call(self, tool, **kw)
+
+
+r = run_ride(LateRideGame())
+check(r["status"] == "UNMEASURED" and r["detail"]["ticks"] < L.RIDE_MIN_TICKS,
+      "can-fail ride: a rate over fewer than RIDE_MIN_TICKS (%s) is UNMEASURED, never a 0.27-style verdict"
+      % r["detail"]["ticks"])
+
+U = L.units_of(L.ORDER)
+check([u[0] for u in U][:3] == ["B0:b0_preflight", "B1:validation_v2.py", "B2:b2_settings_dialog"]
+      and len(U) == len(set(u[0] for u in U)) and all(u[0] in L.UNIT_EST_S for u in U),
+      "units: every step and sub script is one keyed unit with an estimate, in session order")
+check(max(L.UNIT_EST_S.values()) < L.CHUNK_MAX_S, "units: no unit's ESTIMATED wall is past the %d s window" % L.CHUNK_MAX_S)
+check(L.next_units(U, set(), 0, 0, 0)[0] == "B0:b0_preflight", "chunk: a first unit always runs, even on a 0 s budget")
+check(L.next_units(U, {"B0:b0_preflight"}, 100, 450, 1) is None,
+      "can-fail chunk: a second unit whose estimate passes --chunk-s waits for the next chunk (validation_v2 365 s at t+100)")
+check(L.next_units(U, {"B0:b0_preflight"}, 10, 450, 1)[0] == "B1:validation_v2.py", "chunk: a unit that fits runs")
+
+
+def good_state():
+    st = L.new_state(list(L.ORDER), False, "/tmp/x", "S")
+    st["done"] = [u[0] for u in U]
+    st["chunks"] = [dict(n=1, wall_s=420.0), dict(n=2, wall_s=300.0)]
+    st["rows"] = [dict(id="B4_dehydration_rate", status="PASS", detail={})]
+    st["env"] = dict(player_logs={"thirst_live.py": "/tmp/x/Player_thirst_live_chunk2.log"})
+    return st
+
+
+check(L.check_state(good_state())[0], "check-state: a whole session in short chunks with the ride measured is ok")
+for what, mut in (("a chunk past the window", lambda st: st["chunks"].append(dict(n=3, wall_s=600.0))),
+                  ("a chunk that never ended", lambda st: st["chunks"].append(dict(n=3, wall_s=None))),
+                  ("a unit owed", lambda st: st["done"].pop()),
+                  ("a unit left running", lambda st: st.update(running="B5:b5_cold_snap")),
+                  ("a partial session", lambda st: st.update(partial=True)),
+                  ("B4_dehydration_rate UNMEASURED", lambda st: st["rows"][0].update(status="UNMEASURED")),
+                  ("no B4_dehydration_rate row", lambda st: st.update(rows=[])),
+                  ("thirst_live with no Player.log", lambda st: st.update(env={}))):
+    st = good_state()
+    mut(st)
+    ok, why = L.check_state(st)
+    check(not ok and why, "can-fail check-state: %s is not a whole session (%s)" % (what, "; ".join(why)[:90]))
+
+# a --mock session as separate processes, one unit per chunk, then a chunk "killed" inside a unit, then --chunks to the end
+import json as _json  # noqa: E402
+d = tempfile.mkdtemp(prefix="ls_chunks_")
+stp = os.path.join(d, "state.json")
+plog = os.path.join(d, "fake_Player.log")
+with open(plog, "w") as f:
+    f.write("fake log\n")
+env = dict(os.environ, FW_PLAYER_LOG=plog)
+LS = os.path.join(HERE, "live_session.py")
+rcs = []
+for _ in range(3):
+    r = subprocess.run([sys.executable, LS, "--mock", "--no-owner-save", "--state", stp, "--chunk-s", "0"], env=env,
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, timeout=300)
+    rcs.append(r.returncode)
+st = _json.load(open(stp))
+check(rcs == [3, 3, 3] and st["done"] == ["B0:b0_preflight", "B1:validation_v2.py", "B2:b2_settings_dialog"]
+      and [c["units"] for c in st["chunks"]] == [["B0:b0_preflight"], ["B1:validation_v2.py"], ["B2:b2_settings_dialog"]],
+      "chunks: three --chunk-s 0 processes run one unit each, in order, and exit 3 (rcs %s, done %s)" % (rcs, st["done"]))
+st["running"] = "B2:b2_tank_tall"          # as if the 4th chunk was killed inside this unit
+st["running_from"] = len(st["rows"])
+st["rows"].append(dict(id="B2_half_unit_probe", item="PROBE_ITEM", criterion="A1", status="PASS", cls="MOD", detail={},
+                       block="B2", eyes=False))
+st["chunks"].append(dict(n=4, started="x", units=[], wall_s=None))
+st["env"]["probe"] = "kept"
+st["pawns"]["probe"] = "Thing_Human7"
+st["site_bad"]["probe_zone"] = ["dig 1,1: probe"]
+with open(stp, "w") as f:
+    _json.dump(st, f)
+r = subprocess.run([sys.executable, LS, "--chunks", "--mock", "--no-owner-save", "--state", stp, "--max-seconds", "500"],
+                   env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, timeout=540)
+st = _json.load(open(stp))
+ids = [x["id"] for x in st["rows"]]
+check("Traceback" not in r.stdout and not st["running"] and set(st["done"]) == set(u[0] for u in U),
+      "chunks: --chunks resumes the state to a whole session with no traceback")
+check(sum(1 for i in ids if i == "B0_tier_truth") == 1, "chunks: B0 ran once across every chunk (%d tier rows)"
+      % sum(1 for i in ids if i == "B0_tier_truth"))
+check("B2_b2_tank_tall_interrupted" in ids and not any(i.startswith("B2_tank") for i in ids)
+      and st["chunks"][3].get("killed"),
+      "chunks: a unit a killed chunk left running is voided UNMEASURED/HARNESS and never rerun")
+check(isinstance(L.rel("/nonexistent/x"), str) and L.rel("/nonexistent/x"), "rel: a path off the repo still renders")
+half = [x for x in st["rows"] if x["id"] == "B2_half_unit_probe"]
+check(half and half[0]["status"] == "UNMEASURED" and half[0]["detail"].get("statusIfWhole") == "PASS"
+      and ("PROBE_ITEM", "A1") not in L.verdicts(st["rows"]),
+      "can-fail chunks: a PASS row written by a unit that was then killed is demoted, and verifies nothing")
+check(st["env"].get("probe") == "kept" and st["pawns"].get("probe") == "Thing_Human7" and "probe_zone" in st["site_bad"],
+      "chunks: env, pawns and site_bad survive between chunk processes")
+logs = (st["env"].get("player_logs") or {}).get("thirst_live.py") or ""
+thirst = [x for x in st["rows"] if x["id"].startswith("B10_thirst_live")]
+check(logs and os.path.exists(logs) and thirst and "--log" in thirst[0]["detail"].get("argv", [])
+      and logs in thirst[0]["detail"]["argv"],
+      "chunks: thirst_live is handed --log <this chunk's Player.log copy> (%s)" % (thirst[0]["detail"].get("argv") if thirst else None))
+ok, why = L.check_state(st)
+check(not ok and why == [w for w in why if w.startswith(("B4_dehydration_rate", "chunk 4 never ended"))] and len(why) == 2,
+      "can-fail chunks: the mock state fails check-state on the killed chunk and the mock's unmeasured ride only (%s)"
+      % "; ".join(why)[:160])
+check(r.returncode == 1 and "CHECK FAIL" in r.stdout, "chunks: --chunks exits 1 with CHECK FAIL on a session that is not whole")
+r = subprocess.run([sys.executable, LS, "--mock", "--no-owner-save", "--only", "B0,B7", "--out-dir", tempfile.mkdtemp()],
+                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, timeout=300)
+b7 = [ln for ln in r.stdout.splitlines() if ln.strip().startswith("B7_reload_A3")]
+check(b7 and "UNMEASURED" in b7[0] and "no B4 pits" in r.stdout,
+      "can-fail B7: a session that never staged B4's pits reads its reload rows UNMEASURED, never a bare-ground PASS")
+
+# a chunk killed at the window takes its script with it (GPT review: a surviving run_sub script drove the next chunk's map)
+pidf = os.path.join(tempfile.mkdtemp(), "grandchild.pid")
+pp = subprocess.Popen([sys.executable, "-c", "import subprocess,sys,time; c=subprocess.Popen([sys.executable,'-c','import time; "
+                       "time.sleep(120)']); open(sys.argv[1],'w').write(str(c.pid)); time.sleep(120)", pidf], **L.tree_kwargs())
+import time as _t  # noqa: E402
+for _ in range(100):
+    if os.path.exists(pidf) and open(pidf).read():
+        break
+    _t.sleep(0.05)
+gpid = int(open(pidf).read())
+L.kill_tree(pp)
+_t.sleep(0.3)
+alive = os.path.exists("/proc/%d" % gpid) and "zombie" not in open("/proc/%d/status" % gpid).read().lower() \
+    if os.name != "nt" else None
+check(pp.poll() is not None and alive in (False, None), "kill_tree: the chunk AND its script (grandchild) are gone")
+
 # 9. --dry-run and --mock exit 0 offline
 for flag in ("--dry-run", "--mock"):
     d = tempfile.mkdtemp(prefix="ls_selftest_")

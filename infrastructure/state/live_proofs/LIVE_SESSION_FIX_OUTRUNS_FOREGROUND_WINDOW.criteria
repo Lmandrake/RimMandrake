@@ -1,0 +1,1 @@
+A1 L2: a full live_session completes across resumable chunks of <=540 s each, with B4_dehydration_rate measured (PASS or FAIL, not UNMEASURED) and thirst_live given --log
