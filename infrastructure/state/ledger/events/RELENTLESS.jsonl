@@ -590,8 +590,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T09:45:50Z","tsn":1793871950908939320}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live iteration ACC_BIOMES_FIXES_LIVE_RERUN_1","override":"took the driver lock from a dead or forced holder","role_unit":"rm-relentless-work-6d010e842f-g11","ts":"2026-11-05T09:51:45Z","tsn":1793872305228976628}
 {"seat":"RELENTLESS","event":"bridge","state":"released","role_unit":"rm-relentless-work-6d010e842f-g11","ts":"2026-11-05T09:52:06Z","tsn":1793872326643157294}
-{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"test pilot GRAFFITI_NORTHSTAR_GREEN_FULL_1","role_unit":"rm-relentless-work-63acb63b52-g19","ts":"2026-11-05T09:52:45Z","tsn":1793872365972834296}
-{"seat":"RELENTLESS","event":"bridge","state":"released","role_unit":"rm-relentless-work-63acb63b52-g19","ts":"2026-11-05T10:09:40Z","tsn":1793873380525947673}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-05T10:14:05Z","tsn":1793873645124381661}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T10:14:13Z","tsn":1793873653959900996}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY A3 (L2), read-only proof","ts":"2026-11-05T10:14:19Z","tsn":1793873659949742899}
@@ -599,5 +597,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_GLASSWALK_SPEED_RATIO_1 A1 (L2), read-only proof","ts":"2026-11-05T10:16:35Z","tsn":1793873795746845147}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T10:16:42Z","tsn":1793873802576718624}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing GRAFFITI_SIGIL_FRAMES_ART_1: review savegame for the owner's look","ts":"2026-11-05T10:18:08Z","tsn":1793873889001194022}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"test pilot GRAFFITI_NORTHSTAR_GREEN_FULL_1","role_unit":"rm-relentless-work-63acb63b52-g19","ts":"2026-11-05T09:52:45Z","tsn":1793872365972834296}
+{"seat":"RELENTLESS","event":"bridge","state":"released","role_unit":"rm-relentless-work-63acb63b52-g19","ts":"2026-11-05T10:09:40Z","tsn":1793873380525947673}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T10:22:54Z","tsn":1793874174627264659}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing REEL_NOZZLE_FIX_COUPLER_HIDES_UNDERNEATH: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T10:22:59Z","tsn":1793874179685128685}
