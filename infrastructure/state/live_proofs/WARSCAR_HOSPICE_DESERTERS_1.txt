@@ -2,6 +2,9 @@
 # Biomes composite built at this sha) with all five DLC, a quicktest colony map loaded, bridge held. Each clause is one
 # jawa/static_call into RimMandrake.Scarlands.RM_HospiceProof on the current map; A4 also advances time with
 # jawa/safe_advance (test profile). Exit 0 holds, 1 fails, 2 instrument blind. Run A1..A4 in order on one map.
+# A2 is the standalone RM_AncientServitor wake: on a load where the RUT campaign swap is live (UtinniPatches with
+# Droidworks, spec 7) the cradle wakes a Droidworks droid by design, so A2 reads the cradle def first and ends on
+# `reload needed: ... lacks mandrake.rsw.droidworks` (exit 2, a restage). Offline: Utils/selftest_hospice_live_proof.py.
 live-proof A1: python3 src/RimMandrake/Scarlands/hospice_live_proof.py A1 < /dev/null
 live-proof A2: python3 src/RimMandrake/Scarlands/hospice_live_proof.py A2 < /dev/null
 live-proof A3: python3 src/RimMandrake/Scarlands/hospice_live_proof.py A3 < /dev/null
