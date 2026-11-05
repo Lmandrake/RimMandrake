@@ -47,3 +47,11 @@ showcase rite_party, 6 new; coverage_rest visit, arson removal, settings, thornv
 TRIBES_RITE_SCENES_BUILD_FORCE_THE_FIRE (hook and entry points). Refused only on showcase 1: no flagship pick of his
 (a root approval is not a pick, as for Pyrelands). Returned to stage 2 with the flagship question; also owed his word:
 validating the new north star.
+
+## Sitting 7, 2026-11-05 (run rm-role-designer-1793901065). Stage 2, flagship returned from stage 3
+
+The trigger ("revise the root to his words") was already done in sitting 3. Turn: `turn_04.md` (claim: the face is the
+plain rite party; attack: the defence is the only part where the Tribes act on the player). Fresh-Opus review (rm-judge
+a592f41e9d9d73006): a_flagship_pick pass (fixes: "ordinary play", rarity claim cut, (3) means a showcase rebuild),
+a_validate_north_star pass (fixes: defence bar keeps "keeps picking"/"attack"; four agent readings listed, not two).
+Sent both; waiting on him.

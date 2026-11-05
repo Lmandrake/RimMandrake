@@ -277,6 +277,62 @@
     "why": "Answered by 'Attacking them overtly': hitting back while driven off is not overt; settle as self-defence, undoable."
    },
    "struck_why": "answered by OWNER:1793895903357725756 ('overtly'); recorded as d_fight_back_is_self_defence"
+  },
+  {
+   "id": "a_flagship_pick",
+   "speaker": "agent",
+   "author": "rm-role-designer-1793901065",
+   "status": "sent",
+   "offers_removal": false,
+   "owner_cites": [
+    "OWNER:1793895903357725756"
+   ],
+   "about": [
+    "inv_fire_rite_party",
+    "inv_fire_rite_lord",
+    "inv_rite_harvest_duty",
+    "inv_fruit_defence",
+    "inv_flame_harvest_visit"
+   ],
+   "decision": "showcase 1 (flagship) binding: which moment is the mod's face; the root's 'Judged first' line is agent text, not his pick",
+   "text": "Which moment says 'that is the Pyrelands Tribes', judged first: (1) the rite party walking in, lighting the line, picking in the black and leaving with the fruit; (2) the same rite with one of your colonists picking in their scar, warned then driven out, no goodwill lost, no raid; (3) the visit, a peaceful group picking in the black around a big standing fire? Recommended: (1). (turn_04.md)",
+   "review": {
+    "by": "rm-judge a592f41e9d9d73006 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Not answered by his words; a root approval is not a pick. Fixes applied: 'ordinary play' not 'every player'; rarity claim cut; (3) rebuild noted."
+   },
+   "source": "design/concepts/PyrelandsMechanics/turn_04.md"
+  },
+  {
+   "id": "a_validate_north_star",
+   "speaker": "agent",
+   "author": "rm-role-designer-1793901065",
+   "status": "sent",
+   "offers_removal": false,
+   "owner_cites": [
+    "OWNER:1793895903357725756",
+    "OWNER:1793898835366988441",
+    "OWNER:1793898838472369653"
+   ],
+   "about": [
+    "inv_fire_rite_party",
+    "inv_fire_rite_lord",
+    "inv_rite_harvest_duty",
+    "inv_flame_harvest_visit",
+    "inv_fruit_defence",
+    "inv_arson_justice_raid"
+   ],
+   "decision": "validation of the new DRAFT north star design/validation_walks/RimUtinni/PyrelandsMechanics.md (owner-only; owed before the stage-5 gate)",
+   "text": "The mod's new north star (8 must-show, 2 cannot-show bars, summarised in turn_04.md): validate it as written, or correct any bar.",
+   "review": {
+    "by": "rm-judge a592f41e9d9d73006 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Validation needs his own word; offers no removal. Fixes applied: defence bar keeps 'keeps picking'/'attack'; all four agent readings listed."
+   },
+   "source": [
+    "design/validation_walks/RimUtinni/PyrelandsMechanics.md",
+    "design/concepts/PyrelandsMechanics/turn_04.md"
+   ]
   }
  ],
  "inventory": [
