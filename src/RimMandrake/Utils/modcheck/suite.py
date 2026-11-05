@@ -805,14 +805,26 @@ class TestContext(object):
         return got
 
     # ----------------------------------------------------------- evidence
-    def screenshot(self, name=None, rect=None, padding=1):
+    def screenshot(self, name=None, rect=None, padding=1, ppc=None):
         """`rect=(x, z, w, h)` frames THAT rect (`rimworld/screenshot_cell_rect`)
         instead of the anchor -- a component that must be judged on one subject
-        needs the subject in frame, not the anchor. Omitted: unchanged behaviour."""
+        needs the subject in frame, not the anchor. Omitted: unchanged behaviour.
+        `ppc=64` (with a rect) captures at that many px per cell, measured on the PNG (play_zoom.py);
+        a rect taller than one screen at that zoom is shot in bands and stitched into ONE image."""
         if not self._guard():
             return None
         x, z = self.anchor
         name = name or (self._current.name if self._current else "modcheck")
+        if rect and ppc:
+            import play_zoom
+            if not hasattr(self, "_zoom"):
+                self._zoom = play_zoom.Calibration()
+            _Shot.n += 1
+            path = play_zoom.shoot(self.session, self._zoom, rect, padding, ppc,
+                                   "%s_%d_%d" % (name, int(time.time() * 1000), _Shot.n), ExpectationFailed)
+            if self._current is not None:
+                self._current.screenshots.append(path)
+            return path
         path = None
         try:
             self.session.call("jawa/clear_ui")

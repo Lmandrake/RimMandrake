@@ -103,6 +103,10 @@ FOREIGN_MEMBERS = {
 FOREIGN_DEFS = {pid: [d for d, _ in _mark_defs(dd)] for pid, dd in FOREIGN_MEMBERS.items()}
 
 LANE_LEN, LANE_DX, LANE_DZ = 14, 30, 16     # lanes > 12-cell search radius apart
+# every JUDGED shot is captured at play zoom, measured on the PNG (modcheck/play_zoom.py; plan 3.9). Live 2026-11-05:
+# at the current zoom (rootSize 24 = 19.7 px/cell) the judge called 7 bars UNJUDGEABLE. spree_variety is not: its
+# three lanes span 44 cells, wider than one screen at 64 px/cell, and it judged fine at the current zoom.
+PLAY_PPC = 64
 
 
 def _marks_in(t, rect, defs=MARK_CSV):
@@ -343,7 +347,7 @@ def spree_wall(t):
                 raise ExpectationFailed("lane(s) %s have no mark from the whole pool after 3000 ticks "
                                         "(counts per lane: %s)" % (empty, [len(m) for m in per_lane]))
         l0 = lanes[0]
-        t.screenshot(rect=(l0["x0"], l0["wall_z"] - 3, LANE_LEN, 7))
+        t.screenshot(rect=(l0["x0"], l0["wall_z"] - 3, LANE_LEN, 7), ppc=PLAY_PPC)
 
     with t.component("spree_variety", shows=["marks_visibly_various"]):
         if t._guard():
@@ -364,7 +368,7 @@ def spree_wall(t):
             if not per_lane[0] or bad:
                 raise ExpectationFailed("lane 0 marks not on cells cardinal to the wall run: %s" % bad[:5])
             m0 = per_lane[0][0]
-            t.screenshot(rect=(m0["x"] - 3, ln["wall_z"] - 2, 7, 5), padding=0)
+            t.screenshot(rect=(m0["x"] - 5, ln["wall_z"] - 3, 11, 7), padding=0, ppc=PLAY_PPC)
 
     _compat_foreign(t, lanes)        # LAST in the chain, and chain state restored: compat never gates a Graffiti row
 
@@ -430,16 +434,16 @@ def gallery(t):
                          shows=["mark_reads_at_play_zoom", "mark_reads_as_deliberate",
                                 "mark_register_is_punk_urban", "mark_carries_no_earth_signage"]):
             build()
-            t.screenshot(rect=(x0, z0 - 1, 22, 6 * len(runs)))
+            t.screenshot(rect=(x0, z0 - 1, 22, 6 * len(runs)), ppc=PLAY_PPC)
 
         for ri, defs in enumerate(runs):
             with t.component("closeup_page_%d_%d" % (pi, ri), shows=["never_real_world_english"]):
                 placed = build(runs=[defs])
-                t.screenshot(rect=(x0, z0 - 1, 22, 3), padding=0)
+                t.screenshot(rect=(x0, z0 - 1, 22, 3), padding=0, ppc=PLAY_PPC)
 
             with t.component("dirt_page_%d_%d" % (pi, ri), shows=["never_reads_as_dirt"]):
                 build(runs=[defs], controls="Filth_Dirt")
-                t.screenshot(rect=(x0, z0 - 1, 22, 3), padding=0)
+                t.screenshot(rect=(x0, z0 - 1, 22, 3), padding=0, ppc=PLAY_PPC)
 
 
 @suite.chain("beauty_pair")
@@ -470,7 +474,7 @@ def beauty_pair(t):
                             val = s.get("value")
                 if val is None or abs(float(val) - beauty) > 0.01:
                     raise ExpectationFailed("%s Beauty read %r, expected %s" % (d, val, beauty))
-        t.screenshot(rect=(x - 8, z - 1, 17, 4), padding=0)
+        t.screenshot(rect=(x - 8, z - 1, 17, 4), padding=0, ppc=PLAY_PPC)
 
 
 # ------------------------------------------------------------------ settings (all six)

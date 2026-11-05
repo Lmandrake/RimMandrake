@@ -330,7 +330,7 @@ class MockGame(object):
         if tool == "jawa/get_defs":
             return {"success": True, "foundCount": 1, "notFound": []}
         if tool == "rimworld/screenshot_cell_rect":
-            return {"success": True, "path": "/nonexistent/mock.png"}
+            return self._cell_rect_shot(p)
         if tool == "rimworld/get_camera_state":
             return {"success": True, "rootSize": 12.0}
         if tool == "jawa/spawn_thing":
@@ -356,6 +356,33 @@ class MockGame(object):
 
     MARKS = ["RM_Graffiti_Vandal", "RM_Graffiti_Tag_A", "RM_Graffiti_Tag_B", "RM_Graffiti_ThrowUp_A",
              "RM_Graffiti_Scratches", "RM_Graffiti_TallyMarks", "RM_Graffiti_WarningGlyph"]
+
+    _SHOT_K, _SCREEN = 472.8, (2304, 985)       # live 2026-11-05: px per cell = 472.8 / rootSize, 2304x985 screen
+    _shot_dir = None
+
+    def _cell_rect_shot(self, p):
+        """As the live tool answers (D:\\ClaudeWork\\rimmandrake\\testpilot_GRAFFITI_NORTHSTAR_GREEN_FULL_1\\g19\\zt_*.txt): the
+        crop's clipRect at the applied zoom (the current rootSize 24 when none is asked), fullyVisible, the camera's viewRect, and
+        a real PNG of that size, so modcheck/play_zoom.py can calibrate and stitch against the mock."""
+        import tempfile
+        root = float(p.get("rootSize") or 24.0)
+        ppc = self._SHOT_K / root
+        pad = int(p.get("paddingCells") or 0)
+        w, h = int(p.get("width") or 1) + 2 * pad, int(p.get("height") or 1) + 2 * pad
+        vw, vh = self._SCREEN[0] / ppc, self._SCREEN[1] / ppc
+        cw, ch = max(1, int(round(w * ppc))), max(1, int(round(h * ppc)))
+        if MockGame._shot_dir is None:
+            MockGame._shot_dir = tempfile.mkdtemp(prefix="ns_mock_shots_")
+        path = os.path.join(MockGame._shot_dir, "%s__cell_rect.png" % (p.get("fileName") or uuid.uuid4().hex[:8]))
+        try:
+            from PIL import Image
+            Image.new("RGB", (cw, ch), (90, 90, 90)).save(path)
+        except Exception:              # noqa: BLE001 - no PIL: the path stays absent, as a lost shot would be
+            pass
+        return {"success": True, "path": path, "clipRect": {"x": 0, "y": 0, "width": cw, "height": ch},
+                "paddedRect": {"x": int(p.get("x", 0)) - pad, "z": int(p.get("z", 0)) - pad, "width": w, "height": h},
+                "fullyVisible": w <= vw and h <= vh, "appliedRootSize": root,
+                "cameraDuringCapture": {"rootSize": root, "viewRect": {"width": int(vw), "height": int(vh)}}}
 
     def _paint(self, px, pz):
         """Mock of JobDriver_PaintGraffiti: a mark on the floor cell cardinal to the nearest wall."""

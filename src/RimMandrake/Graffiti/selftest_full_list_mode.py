@@ -532,6 +532,18 @@ def t9_spree_rows_measurable():
           r.returncode == 0 and "selftest graffiti spree surprise: PASS" in out, out[-600:])
 
 
+def t10_judged_shots_at_play_zoom():
+    """A2/F2's judge rows need images a judge can read: live A2 2026-11-05 measured every functional row PASS and 7 bars
+    UNJUDGEABLE, all shot at the current zoom (19.7 px per cell) against a ~64 px bar. This runs that guard, so a judged
+    Graffiti shot without ppc=PLAY_PPC, or a play_zoom that hands back an unmeasured zoom, goes red here too."""
+    import subprocess
+    st = os.path.join(HERE, "selftest_graffiti_play_zoom.py")
+    r = subprocess.run([sys.executable, st], capture_output=True, text=True, timeout=240, cwd=ROOT)
+    out = (r.stdout or "") + (r.stderr or "")
+    check("10 every judged Graffiti shot is captured at ~64 px per cell, measured (selftest_graffiti_play_zoom)",
+          r.returncode == 0 and "selftest graffiti play zoom: PASS" in out, out[-600:])
+
+
 def _raises_any(fn, *a):
     try:
         fn(*a)
@@ -551,6 +563,7 @@ def main():
     t7_live_proofs()
     t8_supervisor_gates()
     t9_spree_rows_measurable()
+    t10_judged_shots_at_play_zoom()
     print("RESULT: %s (%d failure(s))" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0
 
