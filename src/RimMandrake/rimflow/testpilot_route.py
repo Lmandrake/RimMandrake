@@ -16,7 +16,10 @@ CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP had 314 and stayed red; one sitting found the
 
 A sitting's core job is MEASURING SURPRISE (owner 2026-11-04): it LOOKs at the screen regularly, reads the test-state
 monitor (jawa/vitals) and the window stack, and scores each observation EXPECTED / ODD / ALARMING given the biome, the
-test's purpose and the map's history, with the one bridge read that explains it.
+test's purpose and the map's history, with the one bridge read that explains it. Each ODD or ALARMING one gets one
+EXPLAIN-AWAY from context (the SURPRISE BOOK, surprise_book.py: the biome's real roster, the test's purpose, recent
+letters, what earlier sittings learned) before it is filed; a (kind, context) that keeps ending explained or not a
+bug is retired there, and a real bug revives it (owner 2026-11-04: "This can be the agent learning.").
 
 Once the item is answered or blocked, a sitting explores the same loaded map like a player would (EXPLORATION PASS,
 TEST_PILOT_WIDEN_PAST_THE_CHECKLIST) and files what surprised it as checkable events.
@@ -47,6 +50,9 @@ EXPLORE_MAX_FILED = 5             # new items one sitting files from exploring; 
 SURPRISE = "MEASURING SURPRISE"   # the brief's marker for the pilot's core framing (owner 2026-11-04; selftest pins it)
 LOOK_EVERY_MIN = 10               # a LOOK at sitting start, after every experiment, and at least this often
 SCORES = ("EXPECTED", "ODD", "ALARMING")   # each observation's surprise score
+BOOK = "SURPRISE BOOK"            # the brief's marker for surprise_book.py (SURPRISE_BOOK_BUILD_RETIRE_THE_BORING; selftest pins it)
+BOOK_CLI = "python3 src/RimMandrake/rimflow/surprise_book.py"
+EXPLAIN = "EXPLAIN-AWAY"          # one attempt to prove an ODD/ALARMING observation unsurprising before filing it
 
 
 def streaks(runs):
@@ -157,6 +163,25 @@ def brief(verdict, host):
               "a ring). Score each %s with the bridge state read that explains or confirms it (one at least; dig further when it does not) (jawa/pawn_census, "
               "jawa/damage_log, jawa/weather_get, jawa/incident_queue_peek, jawa/vitals), in your PROGRESS file; an "
               "unexplained %s or %s one is filed as a strange thing below." % (" / ".join(SCORES), SCORES[1], SCORES[2]),
+              # SURPRISE_BOOK_BUILD_RETIRE_THE_BORING, owner 2026-11-04: "when it finds what seems surprising (omg there
+              # are mushrooms everywhere) it then has a chance to prove it's not surprising (oh, this is the rot biome,
+              # that makes sense) ... If it keeps thinking boring things are surprising we will need to retire some
+              # surprise. ... This can be the agent learning."
+              "%s: at sitting start, once you know the map's biome, read what earlier sittings learned: `%s settle` "
+              "(earlier filings whose item has ended become not_a_bug, abandoned or co_occurred), then `%s start --context "
+              "biome=<BiomeDef defName> --sitting %s@<YYYY-MM-DDTHHMM>` (retired keys score EXPECTED in that context "
+              "only; it names this sitting's SAMPLE, a retired entry you re-check by state read and record `--sample "
+              "--outcome sample_ok|real_bug`, so silence is tested). A real bug revives a retired key only with `--cause "
+              "'<fix_commit|pilot_cause|gone_after_fix>: <evidence>'` showing the observation directly causes or results "
+              "from it; without one it is recorded as co_occurred and the key stays retired (owner 2026-11-04: \"not "
+              "just 'a mushroom was nearby'\")." % (BOOK, BOOK_CLI, BOOK_CLI, i),
+              "%s: each %s or %s observation gets ONE attempt to prove it unsurprising from context before it is filed: "
+              "`%s explain --kind <slug> --context biome=<defName> --sitting %s@<YYYY-MM-DDTHHMM> --def <defName seen>...` "
+              "checks the book and the biome's real roster (BiomeDef wildAnimals/wildPlants plus the patch-added cast); "
+              "the test's purpose and recent letters (jawa/vitals) are yours to cite. EXPLAINED (cite the fact): `record "
+              "--outcome explained --evidence \"<source>: <fact>\"`. STANDS: file it, then `record --outcome filed --item "
+              "<ID>`. Reuse a kind slug the book already has. Never retire by hand: the book retires and revives." % (
+                  EXPLAIN, SCORES[1], SCORES[2], BOOK_CLI, i),
               "Flyers are state-read only. Owner: \"Don't try to capture images of flight. It doesn't work.\" Never "
               "capture, stage or test a flyer's flight to look at it.",
               "Your job is to EXPLAIN the failure, not just to run the test: what the proof expected, what the game did, "
@@ -181,5 +206,7 @@ def brief(verdict, host):
               "no worldgen, ModsConfig backup and restore) do not loosen for it." % EXPLORE_MAX_FILED,
               "End: write the sitting into the mod's functional script, then rimflow note %s --text \"%s: <sha> | "
               "expected: ... | observed: ... | mechanism: ... | evidence: <one per step> | ruled out: <theory: why> | "
-              "follow-up: <ITEM> | explored: <what> | surprises: <n scored, ids filed> | filed: <ids>\", then release the bridge." % (i, SAT)]
+              "follow-up: <ITEM> | explored: <what> | surprises: <n scored, ids filed> | book: explained <n>, retired <keys> "
+              "(`%s summary --sitting %s@<YYYY-MM-DDTHHMM>`) | filed: <ids>\", then commit the book "
+              "(infrastructure/state/testpilot/surprise_book.jsonl) and release the bridge." % (i, SAT, BOOK_CLI, i)]
     return "\n".join(lines)

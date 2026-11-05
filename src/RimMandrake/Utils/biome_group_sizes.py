@@ -31,7 +31,9 @@ EXTRA_LIVE = {"RUT_Umbra"}
 def is_live(biome):
     return biome.startswith("RM_") or biome in EXTRA_LIVE
 SKIP_PARTS = ("selftest_fixtures", "Backup", "backup", "_archive", "retired")
-ROSTER_XPATH = re.compile(r"""BiomeDef\[defName=(["'])([^"']+)\1\]/wildAnimals$""")
+ROSTER_FIELDS = ("wildAnimals", "wildPlants")   # surprise_book.py reads the plant roster by the same rules
+ROSTER_XPATHS = {f: re.compile(r"""BiomeDef\[defName=(["'])([^"']+)\1\]/%s$""" % f) for f in ROSTER_FIELDS}
+ROSTER_XPATH = ROSTER_XPATHS["wildAnimals"]
 DEF_XPATH = re.compile(r"""Defs/(\w+)\[defName=(["'])([^"']+)\2\]""")
 
 
@@ -48,8 +50,8 @@ def parse(path):
         return None
 
 
-def collect(root=SRC):
-    """Return (defs by type, patch roster ops) from every XML file under root."""
+def collect(root=SRC, roster="wildAnimals"):
+    """Return (defs by type, patch roster ops on the `roster` list) from every XML file under root."""
     defs = {"ThingDef": {}, "PawnKindDef": {}, "BiomeDef": {}, "_all": set()}
     named = {"ThingDef": {}, "PawnKindDef": {}, "BiomeDef": {}}
     ops = []
@@ -73,7 +75,7 @@ def collect(root=SRC):
             parents = {c: p for p in top.iter() for c in p}
             for op in top.iter():
                 xp = (op.findtext("xpath") or "").strip()
-                m = ROSTER_XPATH.search(xp)
+                m = ROSTER_XPATHS[roster].search(xp)
                 cls = op.get("Class", "")
                 if m and cls not in ("PatchOperationAdd", "PatchOperationReplace", "PatchOperationConditional"):
                     raise ValueError(f"{path}: roster op {cls} on {m.group(2)} is not understood")
@@ -81,12 +83,12 @@ def collect(root=SRC):
                     value = op.find("value")
                     if value is None:
                         continue
-                    rows = value.find("wildAnimals") if cls == "PatchOperationReplace" else value
+                    rows = value.find(roster) if cls == "PatchOperationReplace" else value
                     if rows is None:
-                        raise ValueError(f"{path}: Replace on {m.group(2)}'s wildAnimals carries no <wildAnimals>")
+                        raise ValueError(f"{path}: Replace on {m.group(2)}'s {roster} carries no <{roster}>")
                     inherit = rows.get("Inherit", "").lower() != "false"
                     ops.append((m.group(2), cls, [c.tag for c in rows if isinstance(c.tag, str)], inherit,
-                                branch(op, parents, m.group(2))))
+                                branch(op, parents, m.group(2)), roster))
     return defs, named, ops
 
 
@@ -103,10 +105,10 @@ def branch(op, parents, biome):
     return conds
 
 
-def resolve(conds, biome, all_defs, exists):
+def resolve(conds, biome, all_defs, exists, roster="wildAnimals"):
     """True when every enclosing Conditional lets the op run; refuses a test this reader cannot evaluate."""
     for tag, test in conds:
-        m = ROSTER_XPATH.search(test)
+        m = ROSTER_XPATHS[roster].search(test)
         d = DEF_XPATH.fullmatch(test.lstrip("/"))
         if m and m.group(2) == biome:
             ok = exists
@@ -134,15 +136,15 @@ def live_biomes(defs):
     return sorted(b for b in defs["BiomeDef"] if is_live(b))
 
 
-def inherited_roster(el, named_biomes):
-    """The def's wildAnimals tags merged down its ParentName chain (child first; Inherit="False" stops it)."""
+def inherited_roster(el, named_biomes, roster="wildAnimals"):
+    """The def's `roster` tags merged down its ParentName chain (child first; Inherit="False" stops it)."""
     chain, depth = [el], 0
     while chain[-1].get("ParentName") in named_biomes and depth < 20:
         chain.append(named_biomes[chain[-1].get("ParentName")])
         depth += 1
     cast = None
     for node in chain:
-        wa = node.find("wildAnimals")
+        wa = node.find(roster)
         if wa is None:
             continue
         cast = (cast or []) + [c.tag for c in wa if isinstance(c.tag, str) and c.tag not in (cast or [])]
@@ -151,20 +153,20 @@ def inherited_roster(el, named_biomes):
     return cast
 
 
-def rosters(defs, ops, named):
+def rosters(defs, ops, named, roster="wildAnimals"):
     """Each live biome's cast: patches run on the def's own XML first, then ParentName inheritance merges in,
-    the order RimWorld uses. An Add to a wildAnimals that does not exist matches nothing, as in game."""
+    the order RimWorld uses. An Add to a list that does not exist matches nothing, as in game."""
     own, inherit = {}, {}
     for b in live_biomes(defs):
         if len(defs["BiomeDef"][b]) != 1:
             raise ValueError(f"{b}: {len(defs['BiomeDef'][b])} BiomeDefs")
-        wa = defs["BiomeDef"][b][0][1].find("wildAnimals")
+        wa = defs["BiomeDef"][b][0][1].find(roster)
         own[b] = [c.tag for c in wa if isinstance(c.tag, str)] if wa is not None else None
         inherit[b] = wa is None or wa.get("Inherit", "").lower() != "false"
-    for b, cls, rows, keeps, conds in ops:
+    for b, cls, rows, keeps, conds, _roster in ops:
         if b not in own or own[b] is None:
             continue
-        if not resolve(conds, b, defs["_all"], True):
+        if not resolve(conds, b, defs["_all"], True, roster):
             continue
         if cls == "PatchOperationReplace":
             own[b], inherit[b] = list(rows), keeps
@@ -175,7 +177,7 @@ def rosters(defs, ops, named):
         cast = list(cast or [])
         parent = defs["BiomeDef"][b][0][1].get("ParentName")
         if inherit[b] and parent in named["BiomeDef"]:
-            cast += [r for r in inherited_roster(named["BiomeDef"][parent], named["BiomeDef"]) or [] if r not in cast]
+            cast += [r for r in inherited_roster(named["BiomeDef"][parent], named["BiomeDef"], roster) or [] if r not in cast]
         out[b] = cast
     return out
 

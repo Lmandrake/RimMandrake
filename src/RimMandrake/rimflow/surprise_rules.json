@@ -1,0 +1,40 @@
+{
+  "_status": "UNMEASURED: these numbers were chosen 2026-11-04 (SURPRISE_BOOK_BUILD_RETIRE_THE_BORING), not fit to data. Replay them on the book (surprise_book.py replay) once it holds 20 or more settled outcomes, and record what a different N would have retired and revived.",
+  "retire_after": 3,
+  "retire_min_sittings": 2,
+  "retire_again_after_revive": 5,
+  "sample_per_sitting": 1,
+  "not_bug_outcomes": [
+    "explained",
+    "not_a_bug",
+    "sample_ok"
+  ],
+  "bug_outcomes": [
+    "real_bug"
+  ],
+  "neutral_outcomes": [
+    "filed",
+    "superseded",
+    "abandoned",
+    "co_occurred"
+  ],
+  "settle_states": {
+    "dropped": "not_a_bug",
+    "done": "co_occurred",
+    "superseded": "superseded"
+  },
+  "abandoned_drop_reason": "(?i)duplicat|supersed|replaced|defer|later|obsolete|out of scope|wont ?fix|won't fix|no time|no longer|retired|unactionable|stale|moved to|re-file",
+  "roster_kinds": [
+    "creature_unexpected",
+    "creature_off_roster",
+    "plant_unexpected",
+    "plant_off_roster",
+    "mushrooms_everywhere"
+  ],
+  "cause_links": [
+    "fix_commit",
+    "pilot_cause",
+    "gone_after_fix"
+  ],
+  "_cause": "Owner 2026-11-04: a retired entry comes back only for a real bug it is shown to directly cause or result from, never co-occurrence. real_bug needs --cause '<link>: <evidence>'; without it the line is co_occurred."
+}

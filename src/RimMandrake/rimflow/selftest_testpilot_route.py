@@ -160,7 +160,8 @@ def t_brief_carries_the_exploration_pass():
         assert b.index("Read first") < b.index(R.EXPLORE) < b.index("End:"), "the item first, then explore, then end"
         for want in ("never a reload", "HARNESS / SITE is a full result", "Neighbour expectations", "swim",
                      "EXPECTATION", "search src/", "~%d new items" % R.EXPLORE_MAX_FILED, "no flyer flight",
-                     "explored: <what> | surprises: <n scored, ids filed> | filed: <ids>"):
+                     "explored: <what> | surprises: <n scored, ids filed> | book: explained <n>, retired <keys>",
+                     "| filed: <ids>"):
             assert want in b, "%s brief lacks %r" % (host, want)
 
 
@@ -197,6 +198,36 @@ def t_agent_file_carries_measuring_surprise():
                  "Don't try to capture images of flight. It doesn't work.", "surprises: <n scored, ids filed>"):
         assert want in a, "rm-testpilot.md lacks %r" % want
 
+
+
+def t_brief_reads_explains_and_writes_the_surprise_book():
+    # SURPRISE_BOOK_BUILD_RETIRE_THE_BORING (owner 2026-11-04): explain-away before filing; retire boring surprise.
+    v = {"id": IT, "kind": "streak", "why": "3 non-pass runs in a row"}
+    for host in R.HOSTS:
+        b = R.brief(v, host)
+        assert b.index(R.SURPRISE) < b.index(R.BOOK) < b.index(R.EXPLAIN) < b.index(R.EXPLORE) < b.index("End:"), \
+            "%s: the book is read, then explain-away, before exploring and the end" % host
+        assert b.index("surprise_book.py settle") < b.index("surprise_book.py start"), "%s: settle, then start" % host
+        for want in ("--sitting %s@<YYYY-MM-DDTHHMM>" % IT, "in that context only", "SAMPLE", "--sample --outcome sample_ok|real_bug", "co_occurred and the key stays retired", "gone_after_fix",
+                     "ONE attempt to prove it unsurprising from context before it is filed", "surprise_book.py explain",
+                     "patch-added cast", "test's purpose and recent letters (jawa/vitals)", "--outcome explained",
+                     "--outcome filed --item", "Never retire by hand", "surprise_book.py summary --sitting %s@<YYYY-MM-DDTHHMM>" % IT,
+                     "explained <n>, retired <keys>", "infrastructure/state/testpilot/surprise_book.jsonl"):
+            assert want in b, "%s brief lacks %r" % (host, want)
+        end = b[b.index("End:"):]
+        assert "explained <n>, retired <keys>" in end, "the TESTPILOT_SAT note carries the book's summary"
+
+
+def t_agent_file_carries_the_surprise_book():
+    root = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+    with open(os.path.join(root, ".claude", "agents", "rm-testpilot.md")) as f:
+        a = f.read()
+    assert a.index(R.SURPRISE) < a.index(R.BOOK) < a.index("## The sitting"), "the book follows the framing"
+    for want in ("This can be the agent learning.", "surprise_book.py settle", "surprise_book.py start", "SAMPLE",
+                 "EXPLAIN-AWAY", "surprise_book.py explain", "WildAnimals_<Biome>.xml", "reading BiomeDefs alone sees half",
+                 "--outcome explained", "--outcome filed --item", "Never retire by hand", "in one context",
+                 "revives it at once", "explained <n>, retired <keys>", "surprise_book.jsonl` with your paths"):
+        assert want in a, "rm-testpilot.md lacks %r" % want
 
 def t_dispatcher_reads_the_route_and_tells_the_seat():
     out = "%s   ready  row 1  needs bridge  target x\ntitle\n\n%s\n" % (
