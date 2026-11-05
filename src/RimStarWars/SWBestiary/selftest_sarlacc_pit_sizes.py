@@ -181,7 +181,12 @@ def main(argv):
                              "--fuzz-only", "sarlacc"], capture_output=True, text=True, timeout=520)
         line = next((ln for ln in fz.stdout.splitlines() if ln.startswith("fuzz sarlacc:")), "")
         if fz.returncode != 0 or not re.search(r"fuzz sarlacc: [1-9]\d* cases, .* 0 failures", line):
-            fails.append("kernel fuzz failed (rc %d): %s" % (fz.returncode, (line or fz.stdout[-600:] or fz.stderr[-600:]).strip()))
+            # the child's stderr travels too: a WSL-dropped dotnet.exe launch leaves run_selftests' INTEROP_DROP marker
+            # ("UtilAcceptVsock") only there, and without it the runner cannot rerun the red (NIGHTLY_COP_FIX_RED_CAHLTS_WGAG)
+            err = fz.stderr.strip()[-600:]
+            head = (line or fz.stdout[-600:]).strip()
+            fails.append("kernel fuzz failed (rc %d): %s" % (fz.returncode, head or err)
+                         + ("\n  child stderr: " + err if err and head else ""))
         else:
             notes.append(line)
 
