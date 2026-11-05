@@ -30,10 +30,24 @@
     "ref": "run rm-role-designer-1793896435",
     "stage": 1,
     "tokens": 287490
+   },
+   {
+    "at": "2026-11-05T16:54:42Z",
+    "kind": "review",
+    "ref": "rm-judge ac78232fd6dff8bde stage-2 asks review",
+    "stage": 2,
+    "tokens": 33366
+   },
+   {
+    "at": "2026-11-05T16:56:59Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793897555",
+    "stage": 2,
+    "tokens": 296004
    }
   ],
   "reserve": 60000,
-  "spent": 1241501
+  "spent": 1570871
  },
  "history": [
   {
@@ -89,6 +103,18 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1793896435: stage 1 done"
+  },
+  {
+   "at": "2026-11-05T16:52:42Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793897555, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-05T16:57:00Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793897555: stage 2 waiting_owner"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
@@ -158,11 +184,32 @@
    "run": "rm-role-designer-1793896435",
    "stage": 1,
    "summary": "Root revised to his 2026-11-05 card corrections (no arson count, no animal blame, fruit defence warn-then-drive-off not a raid, overt attack brings raids back) and cited as OWNER:1793895903357725756. Two core contradictions for stage 2/Relentless: built arson count and raid to remove (c_arson_count_built), rite never attacks vs fruit defence (c_rite_never_attacks_vs_fruit_defence). a_debt_visible struck as answered; a_fruit_defence_reach drafted with a_harvest_visit_at_the_fire. turn_02.md shows him the revised root for undo."
+  },
+  {
+   "at": "2026-11-05T16:56:59Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "f8e9e5988a2d1daf5805c000f884646cc598553bbd08aea9202ee82d7f0fb338",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793897555",
+   "stage": 2,
+   "summary": "Stage 2 turn 3 (turn_03.md): arson count/raid removal resolved as his decision (does-not lines, Relentless build after lock); raid-back delegated as vanilla hostility; fighting back delegated as self-defence. Reviewed (fresh Opus) and sent: a_fruit_defence_reach (scar-only vs whole map; goodwill cost) and a_harvest_visit_at_the_fire (what the visit party does at the fire). a_fight_back struck on review as answered by 'overtly'."
   }
  ],
  "running": null,
  "schema": 1,
  "stage": 2,
- "status": "ready",
+ "status": "waiting_owner",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

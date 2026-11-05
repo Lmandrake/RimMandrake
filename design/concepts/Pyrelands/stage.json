@@ -46,10 +46,17 @@
     "ref": "rm-judge ae01fc3bd872b7339 stage-2 asks round 2",
     "stage": 2,
     "tokens": 48267
+   },
+   {
+    "at": "2026-11-05T16:50:18Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793897137",
+    "stage": 2,
+    "tokens": 55877
    }
   ],
   "reserve": 60000,
-  "spent": 1473217
+  "spent": 1529094
  },
  "history": [
   {
@@ -111,6 +118,12 @@
    "stage": 2,
    "what": "open",
    "why": "run rm-role-designer-1793897137, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-05T16:50:18Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793897137: stage 2 waiting_owner"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -186,32 +199,34 @@
    "run": "rm-role-designer-1793896289",
    "stage": 1,
    "summary": "Root revised to his 2026-11-05 card corrections (genetically engineered; never out for long; fire offers some solace, not pays; black rain compounds the fresh-burn bonus) and cited as OWNER:1793895899845199295. Black-rain ruling reverses built fade: core contradiction c_blackrain_fades_vs_compounds, a_blackrain_compound drafted for stage 2 with a_fire_control_scene and a_regrow_thresholds. turn_02.md shows him the revised root for undo."
+  },
+  {
+   "at": "2026-11-05T16:50:18Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "9674f15396a05e2f45f136626976c1c2bdb1d7438a056b0cb53c085932ade71d",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793897137",
+   "stage": 2,
+   "summary": "Stage 2 turn_03.md sends two reviewed asks: a_blackrain_compound (stop the wipe = 190% wet scar, or more?) and a_fire_control_scene ((a) firebreak always holds the ground front, hawks the only crossing, no reseed inside the ring, vs (b) usually holds). a_regrow_thresholds struck as already answered by card 2026-10-15; c_regrow_thresholds_reask resolved. Finding: biome reseed and hawk drop both ignore firebreak rings."
   }
  ],
- "running": {
-  "at": "2026-11-05T16:45:59Z",
-  "inputs": {
-   "exam": null,
-   "floor": null,
-   "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-   "root": "9674f15396a05e2f45f136626976c1c2bdb1d7438a056b0cb53c085932ade71d",
-   "scenes": null,
-   "sheet": null,
-   "tree": null
-  },
-  "manifest": {
-   "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
-   "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
-  },
-  "owner_uncited": [
-   "1793766816609436834"
-  ],
-  "reserved": 500000,
-  "run": "rm-role-designer-1793897137",
-  "stage": 2
- },
+ "running": null,
  "schema": 1,
  "stage": 2,
- "status": "ready",
+ "status": "waiting_owner",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
