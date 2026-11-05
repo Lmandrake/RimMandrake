@@ -1,0 +1,4 @@
+# One COLD START (game launched fresh, reaching the main menu or a quicktest map) on the smallest list; all five DLC. No mod tree is owed.
+# Run >= 60 s after launch (the 2026-10-26 death came ~44 s in). Reads both crash witnesses since the running RimWorldWin64 started:
+# Crash_* folders and Application-log Event 1000/1001; no running process = the start died = FAIL.
+live-proof A1: python3 src/RimMandrake/Utils/coldstart_crashes.py --since-process < /dev/null

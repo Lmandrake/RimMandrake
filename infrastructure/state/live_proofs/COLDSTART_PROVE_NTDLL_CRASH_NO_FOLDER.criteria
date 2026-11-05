@@ -1,0 +1,1 @@
+A1 L1: after one cold start, RimWorldWin64 is running and since its start there is no Crash_* folder AND no Application-log Event 1000/1001 (APPCRASH, BEX, FaultTolerantHeap ...) for RimWorldWin64.exe, with the Application log readable (record count > 0)

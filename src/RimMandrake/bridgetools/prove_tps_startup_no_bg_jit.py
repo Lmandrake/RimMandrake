@@ -9,7 +9,9 @@ built from these sources must therefore show, for the NEWEST TPS session (newest
   1. the deployed companion DLL is FRESH against --rev (companion_identity: embedded source hash);
   2. the session row was written (the record opened) and session_<id>.json exists, last written at
      least 10 s after the session row: the manifest waited for idle;
-  3. no Crash_* folder under the Unity crash root is newer than the session start;
+  3. RimWorld did not crash since the session start: no Crash_* folder under the Unity crash root AND no
+     Application-log Event 1000/1001 for RimWorldWin64.exe (an ntdll heap death writes no folder:
+     COLDSTART_PROVE_NTDLL_CRASH_NO_FOLDER; both witnesses read by Utils/coldstart_crashes.py);
   4. the session's record holds no error row from "install", "manifest" or "idle-pump";
   5. if Player-prev.log predates the session and archivePlayerLog is on, its content is kept in
      JawaBench/tps/logs as *_<sha12>.log (the archive dedupes by content, so an existing copy counts).
@@ -30,12 +32,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, os.path.join(REPO, "src/RimMandrake/Utils"))
 from game_paths import LOCALLOW, GAME_DIR  # noqa: E402
+import coldstart_crashes  # noqa: E402
 
 IDLE_S = 10.0
 TPS = os.path.join(LOCALLOW, "JawaBench", "tps")
-# Unity writes crash folders to %LOCALAPPDATA%\Temp\<company>\<product>\Crashes; LOCALLOW is %USERPROFILE%\AppData\LocalLow\<company>\<product>
-_APPDATA = os.path.dirname(os.path.dirname(os.path.dirname(LOCALLOW)))
-CRASHES = os.path.join(_APPDATA, "Local", "Temp", *LOCALLOW.replace("\\", "/").rstrip("/").split("/")[-2:], "Crashes")
 DLL = os.path.join(GAME_DIR, "BridgeTools", "JawaBench", "JawaBench.BridgeTools.dll")
 
 
@@ -90,11 +90,7 @@ def main():
     else:
         say(False, "2 manifest %s missing (startup never went idle, or the pump lost it)" % man)
 
-    if not os.path.isdir(CRASHES):
-        say(False, "3 crash root %s not found: cannot see crashes (UNMEASURED)" % CRASHES)
-    else:
-        new = [d for d in os.listdir(CRASHES) if d.startswith("Crash_") and os.path.getmtime(os.path.join(CRASHES, d)) >= start - 5]
-        say(not new, "3 Crash_ folders since session start: %s" % (new or "none"))
+    coldstart_crashes.check(start, lambda ok, msg: say(ok, "3 " + msg))
 
     bad = [x for x in rows if x.get("kind") == "error" and x.get("where") in ("install", "manifest", "idle-pump")]
     say(not bad, "4 startup error rows: %s" % ([(x.get("where"), x.get("error")) for x in bad] or "none"))
