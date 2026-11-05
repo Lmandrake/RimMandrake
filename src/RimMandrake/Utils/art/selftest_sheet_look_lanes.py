@@ -10,6 +10,8 @@ row, and enact would have installed every look onto the Scrapper file.
             this lane for its own; its own texPath, a dead path, or a job with a `slot` stay put
   record    decisions_v2.accept_looks: one pick per lane in every row; a lane with two renders needs --prefer; an old
             one-lane `assign` is superseded, not kept as a live choice; his words are required
+  declined  his specific no outranks the bulk yes: a ✕/retired letter or one assigned not_needed / other_subject is
+            never picked (those assigns stay live); a lane with nothing left is reported under `declined`, unchanged
 """
 from __future__ import annotations
 
@@ -86,8 +88,47 @@ def record() -> None:
         check(not r["ok"] and "remap" in r["error"], "refuses against a different snapshot (remap first)")
 
 
+def declined() -> None:
+    lanes = {x: T.format(x) for x in ("Scrapper", "Futuristic", "Modern")}
+    snap = {"snapshotId": "s1", "rows": {
+        "RM_LiquidTank": {"res": lanes["Scrapper"],
+                          "columns": {L: {"single": L * 64} for L in "ABCDEF"},
+                          "graphic_of": {"A": lanes["Scrapper"], "B": lanes["Futuristic"], "C": lanes["Scrapper"],
+                                         "D": lanes["Futuristic"], "E": lanes["Modern"], "F": lanes["Scrapper"]},
+                          "labels": {"A": "IN GAME", "B": "render b", "C": "render c", "D": "render d",
+                                     "E": "render e", "F": "render f"}}}}
+    said = "Just accept the art and go on."
+    row = {"reject": {lanes["Scrapper"]: ["C"]}, "retire": {lanes["Futuristic"]: ["D"]},
+           "assign": {"B": "not_needed", "E": "other_subject:RM_Other"}}
+    doc = {"snapshotId": "s1", "snapshot": "x", "decisions": {"RM_LiquidTank": row}}
+    with tempfile.TemporaryDirectory() as td:
+        p = Path(td) / "d.json"
+        p.write_text(json.dumps(doc))
+        r = DV.accept_looks(p, said, prefer={"RM_LiquidTank": ["C"]}, snapshot=snap)
+        check(not r["ok"] and "prefer_declined" in r["unresolved"]["RM_LiquidTank"][lanes["Scrapper"]],
+              "a --prefer naming a letter he x-ed is reported, never applied")
+        r = DV.accept_looks(p, said, snapshot=snap, apply=True)
+        v = json.loads(p.read_text())["decisions"]["RM_LiquidTank"]
+        picks = {g: s["pick"] for g, s in v["slots"].items() if s["state"] == "pick"}
+        check(r["ok"] and picks == {lanes["Scrapper"]: "F"},
+              "the x-ed C is skipped; the only other Scrapper render F is picked (no two-render ambiguity)")
+        check(r["declined"] == {"RM_LiquidTank": {lanes["Futuristic"]: ["B", "D"], lanes["Modern"]: ["E"]}},
+              "lanes whose renders are all retired / not_needed / other_subject are reported under declined")
+        check(v["assign"] == row["assign"] and "assignSuperseded" not in v,
+              "an assign to not_needed / other_subject stays live (it is not a wrong-lane assign)")
+        check(v["reject"] == row["reject"] and v["retire"] == row["retire"], "his reject and retire are untouched")
+        doc2 = {"snapshotId": "s1", "snapshot": "x", "decisions": {"RM_LiquidTank": {
+            **row, "reject": {lanes["Scrapper"]: ["C", "F"]}}}}
+        p.write_text(json.dumps(doc2))
+        r = DV.accept_looks(p, said, snapshot=snap, apply=True)
+        check(r["ok"] and r["picked"] == {} and json.loads(p.read_text()) == doc2
+              and set(r["declined"]["RM_LiquidTank"]) == set(lanes.values()),
+              "a row where he said no to every render is left byte-for-byte as it was, and reported")
+
+
 if __name__ == "__main__":
     builder()
     record()
+    declined()
     print(f"{'FAIL' if FAILS else 'PASS'} selftest_sheet_look_lanes: {len(FAILS)} failure(s)")
     sys.exit(1 if FAILS else 0)

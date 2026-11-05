@@ -216,7 +216,13 @@ def accept_looks(path: Path, said: str, prefer: dict | None = None, apply: bool 
     the art and go on. You had it so that I had to choose between "use this" for each art style... when actually all four
     art styles could be chosen together."* A lane holding several renders needs PREFER {row: letter} naming one of them,
     else the row is reported and left unchanged. His `assign` of a render to a lane it was NOT filed for (the old sheet
-    offered one lane only) is dropped and kept under `assignSuperseded`. `said` must be his words."""
+    offered one lane only) is dropped and kept under `assignSuperseded`. `said` must be his words.
+
+    His specific no outranks this bulk yes (ACCEPT_LOOKS_DECIDE_REJECTS_STILL_STAND, 2026-11-05): a render letter the row
+    lists under `reject` (✕ not for this slot) or `retire` in ANY lane, or `assign`s to "not_needed" /
+    "other_subject:<def>", is never picked, and those assigns stay live (they are not wrong-lane assigns). A lane whose
+    renders are all such letters is left as it was and reported under `declined` {row: {lane: [letters]}}; a PREFER
+    naming such a letter is reported under `unresolved`."""
     said = (said or "").strip()
     if len(said) < 8:
         return {"ok": False, "error": "--accept-looks needs his words (the sentence where he accepted the art) or " + CA.ROUTE}
@@ -230,7 +236,7 @@ def accept_looks(path: Path, said: str, prefer: dict | None = None, apply: bool 
                                       f"{snapshot['snapshotId']}: run remap_decisions.py first"}
     at = at or time.strftime("%Y-%m-%dT%H:%M:%S%z")
     prefer = prefer or {}
-    picked, unresolved = {}, {}
+    picked, unresolved, declined = {}, {}, {}
     decs = doc.setdefault("decisions", {})
     for row, srow in sorted((snapshot.get("rows") or {}).items()):
         gof, labels, cols = srow.get("graphic_of") or {}, srow.get("labels") or {}, srow.get("columns") or {}
@@ -240,17 +246,26 @@ def accept_looks(path: Path, said: str, prefer: dict | None = None, apply: bool 
                 lanes.setdefault(g, []).append(letter)
         if not lanes:
             continue
+        old = decs.get(row) if isinstance(decs.get(row), dict) else {}
+        no = _said_no(old)
         choice = {}
-        for g, ls in sorted(lanes.items()):
-            want = [x for x in prefer.get(row, []) if x in ls]
-            if len(ls) == 1 or len(want) == 1:
+        for g, all_ls in sorted(lanes.items()):
+            ls = [x for x in all_ls if x not in no]
+            asked = [x for x in prefer.get(row, []) if x in all_ls]
+            want = [x for x in asked if x in ls]
+            if asked and not want:
+                unresolved.setdefault(row, {})[g] = {"prefer_declined": asked, "pickable": ls}
+            elif not ls:
+                declined.setdefault(row, {})[g] = all_ls
+            elif len(ls) == 1 or len(want) == 1:
                 choice[g] = want[0] if want else ls[0]
             else:
                 unresolved.setdefault(row, {})[g] = ls
-        if row in unresolved:
+        if row in unresolved or not choice:
             continue
-        v = dict(decs.get(row) or {})
-        stale = {k: x for k, x in (v.get("assign") or {}).items() if gof.get(k) not in (None, "_byname") and gof.get(k) != x}
+        v = dict(old)
+        stale = {k: x for k, x in (v.get("assign") or {}).items()
+                 if not _assign_is_no(x) and gof.get(k) not in (None, "_byname") and gof.get(k) != x}
         if stale:
             v["assignSuperseded"] = {**(v.get("assignSuperseded") or {}), **stale}
             v["assign"] = {k: x for k, x in (v.get("assign") or {}).items() if k not in stale}
@@ -269,8 +284,26 @@ def accept_looks(path: Path, said: str, prefer: dict | None = None, apply: bool 
         doc["savedAt"], doc["savedBy"] = at, "decisions_v2 --accept-looks (owner's words)"
         if not _write_unless_changed(path, raw, json.dumps(doc, indent=2) + "\n"):
             return {"ok": False, "error": f"{path.name}: the sheet saved meanwhile; nothing written — run it again",
-                    "picked": picked, "unresolved": unresolved, "applied": False}
-    return {"ok": not unresolved, "picked": picked, "unresolved": unresolved, "applied": apply and bool(picked)}
+                    "picked": picked, "unresolved": unresolved, "declined": declined, "applied": False}
+    return {"ok": not unresolved, "picked": picked, "unresolved": unresolved, "declined": declined,
+            "applied": apply and bool(picked)}
+
+
+def _assign_is_no(x) -> bool:
+    """An `assign` value that says the render is not for this def at all (not a lane)."""
+    return isinstance(x, str) and (x == "not_needed" or x.startswith("other_subject:"))
+
+
+def _said_no(v: dict) -> set:
+    """Letters this record says no to: ✕ (`reject`) or `retire` in any lane, or assigned away (`_assign_is_no`)."""
+    out = set()
+    for key in ("reject", "retire"):
+        m = v.get(key)
+        for ls in (m.values() if isinstance(m, dict) else []):
+            out |= {x for x in (ls or []) if isinstance(x, str)}
+    a = v.get("assign")
+    out |= {k for k, x in (a.items() if isinstance(a, dict) else []) if _assign_is_no(x)}
+    return out
 
 
 def asks_of(v: dict) -> dict:
