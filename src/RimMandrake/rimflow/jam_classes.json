@@ -20,7 +20,7 @@
    "match": ["dirty outside the ledger", "behind: staged:", "own commits outside the ledger"],
    "detector": {"target": "OPS_RELENTLESS_BOOKS_UNSTICK", "how": "relentless.books_behind_min: minutes the books clone has stood behind origin"},
    "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::level_books", "what": "levels the books past reordered ledger shards, run artefacts and the paths BOOKS_LEFT_IN_PLACE names; a new stray path is the class coming back"},
-   "fixed": {"sha": "b010c5b289", "at": "2026-11-03T21:26:33Z", "item": "BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT"},
+   "fixed": {"sha": "5b634b0b84", "at": "2026-11-05T00:42:14Z", "item": "OPS_JAM_CLASS_FIX_AGAIN_HJWN"},
    "examples": ["books 2 behind: dirty outside the ledger: infrastructure/state/modcheck_status.json, Transient/northstar/ArtFold_20261103T121727Z.json"]
   },
   {
