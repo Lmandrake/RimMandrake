@@ -540,7 +540,11 @@ def fixture(root: Path):
     for n in CACHEABLE + list(NEVER):
         eq(st(s, n), "PASS", f"run 1: {n} ran and passed under tracing")
     eq(st(s, "red"), "FAIL", "run 1: the red is red")
-    recs = {r.name: json.loads(r.read_text()) for r in (state / "known_results/records").iterdir()}
+    recs = {r.name: json.loads(r.read_text()) for r in (state / "known_results/records").iterdir()} \
+        if (state / "known_results/records").is_dir() else {}
+    if not recs:        # the ledger went blind (no shim, no records): say why, or 23 'measured' lines hide the cause
+        why = [ln for ln in p.stdout.splitlines() if ln.startswith(("known results", "  not recordable", "  ran ("))]
+        print("     run 1 recorded nothing; runner says:\n" + "\n".join(why[:12]) + f"\n     stderr tail:\n{p.stderr[-1500:]}")
 
     def rec(name):
         return recs.get(f"src__selftest_{name}.py.json", [{}])[0]

@@ -3556,11 +3556,25 @@ def worse_news(cur, aid, points, rules):
     return ("; ".join(said), keep, tg.get("conductor_log")) if said else None
 
 
-def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
+def stale_for_close(point, closes):
+    """True when a reading's `night` is no later than the item's last close: what it measured ran before the fix that
+    closed it, so it is no evidence the fix died. False when either time is missing or unreadable. Pure."""
+    night = ((point or {}).get("x") or {}).get("night") if isinstance(point, dict) else None
+    try:
+        last = max(float(c) for c in closes) if closes else None
+    except (TypeError, ValueError):
+        return False
+    t = epoch(night) if isinstance(night, str) else None
+    return bool(t and last and t <= last)
+
+
+def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=None):
     """Edge-triggered: file once on a NEW crossing, keep it while it holds, re-arm when it clears. A target with note_field
     also says what is new while it stays crossed: a note on its open item, or, the item closed (open_ids), a reopen. So
     does an alarm that got worse (ALARM_REPEAT_FIX_BREAK_ON_WORSE: its severity rose, or its value passed the target's
-    stated `worse` step), which also gives the Conductor a line and, through worse_n, Operations a fresh alarm run."""
+    stated `worse` step), which also gives the Conductor a line and, through worse_n, Operations a fresh alarm run.
+    closed_at ({item: [close epoch, ...]}, the flow collector's ctx["closes"]): a closed item is not reopened on a
+    reading whose `night` predates its last close (NIGHTLY_COP_FIX_RED_ENVEHB_GOEW): that night ran before the fix."""
     p = ops_dir() / "alarms.json"
     state = read_json(p) if p.exists() else {}
     if not isinstance(state, dict):
@@ -3657,6 +3671,8 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             # the ticket is not fixing the fault: with nothing new to say this returned and the alarm stayed silent for
             # good, so it reopens here even with no news. open_ids None means the ledger was not read: nothing judged
             closed = bool(crossed and open_ids is not None and cur.get("item") and cur["item"] not in open_ids)
+            if closed and stale_for_close(points.get(aid.split(":", 1)[1]), (closed_at or {}).get(cur["item"])):
+                return      # NIGHTLY_COP_FIX_RED_ENVEHB_GOEW: the only reading is from before the close; the next one judges
             if not fresh and not worse and not closed:
                 return
             if open_ids is None or cur.get("item") in open_ids:
@@ -4386,7 +4402,8 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
                     def afiler(todo, conf, _f=filer):
                         fence("filing")
                         return _f(todo, conf)
-            alarms = run_alarms(apts, rules, now, ctx.get("known_ids") or set(), afiler, ctx.get("open_ids"))
+            alarms = run_alarms(apts, rules, now, ctx.get("known_ids") or set(), afiler, ctx.get("open_ids"),
+                                ctx.get("closes"))
             if compose:
                 atomic_json(ap, {"t": now, "at": iso(now)})
     except Fenced:
