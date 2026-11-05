@@ -254,9 +254,77 @@ def t_legacy_off():
     x.done()
 
 
+def t_clones_seed():
+    """CHECKER_REACH_FIX_CLONES_STILL_DARK: FOUNDRY_CLONE_RESCUE_GHOST_HOLDS_CLOSINGS's Judge read 'ls /home/mandrake/rm/
+    foundry' -> Permission denied. The clones class seeded no adapter and its only path, the clone root, is rightly refused
+    (conversations/ and the ledger lie under it), so the repair proposed nothing and the probe failed. Now the shipped rules
+    seed the supervisor adapter seat_clone_state: git state per seat clone, file names only, conversations/ left out."""
+    import json
+    import subprocess
+    import tempfile
+    import relentless_wall as W
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    what = ("Whether /home/mandrake/rm/foundry was synced to origin/main (was 1877 behind): 'ls /home/mandrake/rm/foundry' "
+            "-> Permission denied")
+    cls = RF.classify(r, [what])
+    prop = RF.propose(r, cls, [], [], what)
+    ok(cls["class"] == "clones" and prop["adapters"] == ["seat_clone_state"] and prop["paths"] == []
+       and "/home/mandrake/rm/foundry" in prop["refused"],
+       "(6) the clones gap seeds seat_clone_state and still refuses the clone root: %s" % prop)
+    ad = W.adapters(r).get("seat_clone_state") or {}
+    argv, why = W.fill_argv(ad.get("argv") or ["x"], {})
+    ok(argv is not None and argv[:3] == ["python3", "-I", "-c"], "(6) the adapter is a slot-free no-shell script: %s" % why)
+    with tempfile.TemporaryDirectory() as home:
+        b = os.path.join(home, "rm", "bench")
+        os.makedirs(os.path.join(b, "conversations"))
+        env = dict(os.environ, HOME=home, GIT_CONFIG_GLOBAL="/dev/null", GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t",
+                   GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
+        for c in (["init", "-q", "-b", "main"], ["commit", "-q", "--allow-empty", "-m", "a"]):
+            subprocess.run(["git", "-C", b] + c, env=env, check=True, capture_output=True)
+        with open(os.path.join(b, "conversations", "secret_talk.md"), "w") as f:
+            f.write("SECRET_WORDS")
+        with open(os.path.join(b, "BENCH.jsonl"), "w") as f:
+            f.write("SHARD_CONTENT")
+        out = subprocess.run(argv or ["false"], env=env, cwd=home, capture_output=True, text=True, timeout=120).stdout
+    ok("bench " in out and "dirty=1" in out and "BENCH.jsonl" in out and "foundry" in out and "NO_CLONE" in out,
+       "(6) the reading names each clone's state and its dirty files: %r" % out[:400])
+    ok("secret_talk" not in out and "SECRET_WORDS" not in out and "SHARD_CONTENT" not in out,
+       "(6) no conversation name and no file content crosses: %r" % out[:400])
+
+
+def t_closed_ticket_reseeds():
+    """CHECKER_REACH_FIX_CLONES_STILL_DARK: the owner's seed was empty (clone root refused), so its probe failed and the
+    clones ticket was filed. The ticket's fix is a rules change (a seed adapter); on its close the re-probe and the one
+    re-check must carry the adapter as the rules ship NOW, not the stale empty proposal."""
+    x = rig()
+    old = [dict(c, adapters=[]) if c["class"] == "clones" else c for c in x.r["reach_classes"]]
+    x.r = dict(x.r, reach_classes=old)
+    B.to_check(x, "I0")
+    blind(x, "I0", what="Whether /home/mandrake/rm/foundry was synced: 'ls /home/mandrake/rm/foundry' -> Permission denied")
+    for _ in range(3):
+        x.tick()
+    ok(x.w.tickets == ["CHECKER_REACH_FIX_CLONES_STILL_DARK"] and x.w.probes == [],
+       "(7) an empty clones seed probes nothing and files the clones ticket: %s %s" % (x.w.tickets, x.w.probes))
+    x.r = dict(x.r, reach_classes=[dict(c, adapters=["seat_clone_state"]) if c["class"] == "clones" else c
+                                   for c in x.r["reach_classes"]])
+    x.w.probe_says = (True, "seat_clone_state read non-empty")
+    x.w.items["CHECKER_REACH_FIX_CLONES_STILL_DARK"] = "done"
+    for _ in range(4):
+        if x.st("I0")["status"] in ("checking", "candidate"):
+            break
+        x.tick()
+    st = x.st("I0")
+    ok([a for _, a, _ in x.w.probes] == [["seat_clone_state"]],
+       "(7) the closed ticket re-probes with the class's current seed adapter: %s" % x.w.probes)
+    ok("seat_clone_state" in ((st.get("contract") or {}).get("offbox") or []) and st["reach"]["status"] == "applied",
+       "(7) the applied overlay puts seat_clone_state on the re-check: %s" % (st.get("contract") or {}).get("offbox"))
+    x.done()
+
+
 def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
-              t_windows_build_nothing_to_probe, t_every_waiter_released, t_legacy_off):
+              t_windows_build_nothing_to_probe, t_every_waiter_released, t_legacy_off, t_clones_seed,
+              t_closed_ticket_reseeds):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0

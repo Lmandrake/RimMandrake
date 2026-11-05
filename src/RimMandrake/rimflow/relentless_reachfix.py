@@ -104,6 +104,16 @@ def propose(r, cls, proposals, unreached, what, store_root=None):
             "by": by}
 
 
+def reseed(r, name, prop):
+    """A closed ticket is usually a rules change: the class's seed adapters as the rules ship NOW join the stored proposal
+    (CHECKER_REACH_FIX_CLONES_STILL_DARK: the clones class gained seat_clone_state after its owner's empty seed failed)."""
+    row = next((c for c in classes(r) if c["class"] == name), {})
+    known = relentless_wall.adapters(r)
+    have = list(prop.get("adapters") or [])
+    add = [x for x in row.get("adapters") or [] if x in known and x not in have]
+    return dict(prop, adapters=(have + add)[:relentless_wall.OFFBOX_MAX]) if add else prop
+
+
 def load(store):
     try:
         with open(store.p(BOOK), encoding="utf-8") as f:
@@ -225,6 +235,7 @@ def sweep(store, fx, r, now, acts, iso):
             if led.get("state") != "done" or ent.get("probed_event") == event:
                 continue
             ent["probed_event"] = event
+            prop = reseed(r, name, prop)
         if status == "failed":
             file_ticket(store, fx, r, book, name, owner, ent.get("why"), now, acts, iso)
             continue
