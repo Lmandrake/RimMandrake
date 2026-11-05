@@ -587,3 +587,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","role_unit":"rm-relentless-work-3d22fea8d2-g3","ts":"2026-11-05T09:11:22Z","tsn":1793869882076848483}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T09:33:33Z","tsn":1793871213487114403}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing GRAFFITI_SIGIL_FRAMES_ART_1: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T09:33:38Z","tsn":1793871218066890597}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T09:45:50Z","tsn":1793871950908939320}
