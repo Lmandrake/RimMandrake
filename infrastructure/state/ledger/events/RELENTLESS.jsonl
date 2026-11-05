@@ -691,3 +691,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL: deploy and restart for its live proofs","ts":"2026-11-05T14:57:06Z","tsn":1793890626862433109}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T15:17:22Z","tsn":1793891842542898570}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T15:22:19Z","tsn":1793892139825695620}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-05T15:33:37Z","tsn":1793892817312042879}
