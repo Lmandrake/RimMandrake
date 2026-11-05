@@ -153,9 +153,55 @@ def t_enable_adds_the_closure():
         S.LIVE, S.FULL, zoom_guard.with_zoom = old
 
 
+def t_compose_target_is_a_folder():
+    """OPS_CHURN_DIAGNOSE_OLLOPOM_JLHV_AJHK: `live-mods: RimMandrake.Biomes, SWBestiary` (OLLOPOM and 8 other proofs)
+    read the composed folder as packageId 'rimmandrake.biomes' and the gate never passed (8.1M weighted tokens)."""
+    import live_def_check
+    folded = {"CreatureBehaviors": ("RimMandrake.Biomes", "CreatureBehaviors")}
+    old_seen = dict(L._FOLDER_SEEN)
+    L._FOLDER_SEEN.clear()
+    L._FOLDER_SEEN.update({"RimMandrake.Biomes": True, "7f.alienworlds": False})
+    try:
+        ok(not R.is_package("RimMandrake.Biomes"), "a dotted name a mod folder holds is a folder, not a packageId")
+        ok(R.is_package("7f.alienworlds"), "a dotted name no folder holds stays a packageId")
+        ok(not L.is_package("RimMandrake.Biomes", folder=lambda n: n == "RimMandrake.Biomes")
+           and L.is_package("rimmandrake.biomes", folder=lambda n: False), "the injected folder test decides")
+        ok(R.folders(["RimMandrake.Biomes", "SWBestiary", "7f.alienworlds"]) == ["RimMandrake.Biomes", "SWBestiary"],
+           "folders() keeps the composed folder: %s" % R.folders(["RimMandrake.Biomes", "SWBestiary", "7f.alienworlds"]))
+        a = R.deploy_args(["RimMandrake.Biomes", "SWBestiary"], folded)
+        ok(a == "--compose biomes --with SWBestiary", "the composed folder plans through --compose biomes: %s" % a)
+        a = R.deploy_args(["CreatureBehaviors", "RimMandrake.Biomes", "SWBestiary"], folded)
+        ok(a == "--compose biomes --with SWBestiary", "beside a folded source, once: %s" % a)
+        mods = tempfile.mkdtemp(prefix="wlm_comp_")
+        about(mods, "RimMandrake.Biomes", "mandrake.rm.biomes", ["brrainz.harmony"])
+        about(mods, "SWBestiary", "mandrake.sw.bestiary")
+        os.makedirs(os.path.join(mods, "RimMandrake.Biomes", "Biomes", "_Kits", "CreatureBehaviors"))   # as deployed
+        fx = L.Fx(mods_dir=mods)
+        fx._folded = folded
+        old = live_def_check.call_running_mods
+        try:
+            live_def_check.call_running_mods = lambda t: {"brrainz.harmony", "mandrake.rm.biomes", "mandrake.sw.bestiary"}
+            gap = fx.running_load_gap(["CreatureBehaviors", "RimMandrake.Biomes", "SWBestiary"])
+            ok(gap is None, "a load holding mandrake.rm.biomes serves RimMandrake.Biomes: %s" % gap)
+            live_def_check.call_running_mods = lambda t: {"brrainz.harmony", "mandrake.sw.bestiary"}
+            gap = fx.running_load_gap(["RimMandrake.Biomes", "SWBestiary"]) or ""
+            ok("RimMandrake.Biomes (mandrake.rm.biomes)" in gap and "installed in neither" not in gap,
+               "one without it names the folder and its packageId, never 'installed in neither': %s" % gap)
+            about(mods, "Wlm.Dotted", "wlm.dotted")      # a dotted folder only this Fx's game folder holds
+            L._FOLDER_SEEN["Wlm.Dotted"] = False
+            live_def_check.call_running_mods = lambda t: {"wlm.dotted"}
+            gap = fx.running_load_gap(["Wlm.Dotted"])
+            ok(gap is None, "a dotted folder in the Fx's own game folder is read as a folder: %s" % gap)
+        finally:
+            live_def_check.call_running_mods = old
+    finally:
+        L._FOLDER_SEEN.clear()
+        L._FOLDER_SEEN.update(old_seen)
+
+
 def main():
     for t in (t_closure_spans_both_roots, t_live_mods_split, t_running_load_gate_wants_the_closure,
-              t_enable_adds_the_closure):
+              t_enable_adds_the_closure, t_compose_target_is_a_folder):
         print("--", t.__name__)
         t()
     print("selftest_workshop_live_mods: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

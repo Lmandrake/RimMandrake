@@ -735,6 +735,32 @@ def deploy_gap(files, plan_rc, plan_text, trees=(), folded=None):
     return None
 
 
+_FOLDER_SEEN = {}
+
+
+def is_package(name, folder=None):
+    """A `live-mods:` name that is a workshop packageId (7f.alienworlds), not a mod folder of ours: it holds a dot and no
+    mod folder has that exact name (modlist_swap.is_mod_folder: the game's Mods folder, a repo mod, a folded source or a
+    compose target). OPS_CHURN_DIAGNOSE_OLLOPOM_JLHV_AJHK: the composed folder RimMandrake.Biomes, named on 9 live_proofs
+    files, read as packageId 'rimmandrake.biomes' "installed in neither the Steam workshop folder nor the game's Mods
+    folder", so OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN's gate could never pass (8.1M weighted tokens restaging).
+    `folder` is injectable for the selftest. Only a folder is cached: is_mod_folder answers False on an unreadable repo
+    (SystemExit from mod_dirs) or a folder not yet deployed, and a cached False would refuse that folder all process."""
+    if "." not in (name or ""):
+        return False
+    if folder is not None:
+        return not folder(name)
+    if name not in _FOLDER_SEEN:
+        utils = os.path.join(os.path.dirname(HERE), "Utils")
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        import modlist_swap
+        if not modlist_swap.is_mod_folder(name):
+            return True
+        _FOLDER_SEEN[name] = True
+    return not _FOLDER_SEEN[name]
+
+
 def folded_dirs(mods_dir, mod, folded=None):
     """The game-folder dirs a folded source loads from: Mods/<target>/Biomes/<key> or Mods/<target>/Biomes/_Kits/<key>
     (biomes_compose.dest_rel); [] when the manifest does not fold it."""
@@ -894,7 +920,9 @@ class Fx(object):
             sys.path.insert(0, utils)
         import live_def_check
         want, folded = {}, self.folded()
-        pkgs = sorted({m.lower() for m in mods if "." in m})     # relentless_live_round.is_package: a workshop mod
+        # a dotted folder in THIS Fx's game folder is a folder too, whatever the machine's Mods folder holds
+        pkg = {m for m in mods if is_package(m) and not os.path.isfile(os.path.join(self.mods_dir, m, "About", "About.xml"))}
+        pkgs = sorted({m.lower() for m in pkg})     # a workshop mod, never a dotted folder of ours
         if pkgs:
             import modset_builder
             closure, missing = modset_builder.package_closure(pkgs)
@@ -903,7 +931,7 @@ class Fx(object):
                         "folder" % ", ".join(missing[:5]))
             for p in closure:
                 want.setdefault(p if p in pkgs else "%s needs %s" % ("+".join(pkgs), p), p)
-        for mod in sorted(set(m for m in mods if "." not in m)):
+        for mod in sorted(set(m for m in mods if m not in pkg)):
             text = ""
             # a folder folded into a composed mod (Stillsand -> RimMandrake.Biomes/Biomes/Stillsand) loads under the
             # composed mod's About.xml; its own folder is absent from the game (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING)

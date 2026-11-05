@@ -120,12 +120,14 @@ def live_mods(text, pattern=LIVE_MODS):
 
 def is_package(name):
     """A `live-mods:` entry that names a mod by packageId (7f.alienworlds, ferny.worldbuilder), not a repo mod folder:
-    packageIds always hold a dot and no repo mod folder does (deploy_custom_mods.mod_dirs / folded, 2026-11-05).
+    packageIds always hold a dot; a mod folder rarely does.
     LIVE_MODS_FIX_WORKSHOP_UNNAMEABLE: TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING's clause needed Alien Worlds and
     Worldbuilder, workshop mods a folder-only line could not name, and read "Type not found: PlanetTypeManager" 20 times.
     A packageId is enabled with its dependency closure across the workshop and the game's Mods folder
-    (modset_builder.package_closure) and checked in the running load; it is never deployed (it is no tree of ours)."""
-    return "." in (name or "")
+    (modset_builder.package_closure) and checked in the running load; it is never deployed (it is no tree of ours).
+    The dot rule alone read the composed folder RimMandrake.Biomes as a packageId; a dotted name some mod folder holds
+    is a folder (relentless_live.is_package, OPS_CHURN_DIAGNOSE_OLLOPOM_JLHV_AJHK)."""
+    return L.is_package(name)
 
 
 def folders(mods):
@@ -257,8 +259,9 @@ def deploy_args(mods, folded):
     """The item's mod folders -> deploy_custom_mods.py plan arguments covering each. A folder folded into the composed
     biomes mod is planned through --compose biomes, the rest beside it with --with, or alone with --mod."""
     mods = sorted(set(mods))
-    if any(m in folded for m in mods):
-        return " ".join(["--compose biomes"] + ["--with %s" % m for m in mods if m not in folded])
+    targets = {t for t, _k in folded.values()}      # RimMandrake.Biomes itself: the composed mod, planned by --compose
+    if any(m in folded or m in targets for m in mods):
+        return " ".join(["--compose biomes"] + ["--with %s" % m for m in mods if m not in folded and m not in targets])
     return " ".join("--mod %s" % m for m in mods)
 
 
