@@ -745,3 +745,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A3 (L2), read-only proof","ts":"2026-11-05T18:10:00Z","tsn":1793902200558104562}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T18:11:36Z","tsn":1793902296438388834}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN A6 (L2), read-only proof","ts":"2026-11-05T18:14:07Z","tsn":1793902447976347443}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T18:15:17Z","tsn":1793902517146014106}
