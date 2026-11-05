@@ -1,0 +1,1 @@
+Editing a file that holds an allowlisted no-timeout subprocess call (call_deadline_allowlist.json) and removing/fixing that call leaves allowlist slack, which turns selftest_call_deadline_lint.py red nightly. After such an edit run: python3 src/RimMandrake/Utils/call_deadline_lint.py --prune and commit the allowlist with it. (NIGHTLY_COP_FIX_RED_NDYODU_HSUA, from 8c9ca005a7)
