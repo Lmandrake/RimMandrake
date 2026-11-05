@@ -1,0 +1,753 @@
+{
+ "scenes": [
+  {
+   "id": "sc_dig_and_read",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/extensions.py::plot_H_depth_ladder",
+   "start": [
+    "pads cut at D0,1,2,3,4,8,16 on sand and soil (asserted by depth read)",
+    "daylight, no weather, play zoom"
+   ],
+   "action": "capture each pad dry, then filled; a colonist digs one more cell",
+   "expect": "depths read apart, banks dry, the dig takes hours",
+   "control": {
+    "case": "the same pads with wall faces drawing switched off",
+    "expect": "the blind reader can no longer order the depths",
+    "rules_out": "depth read from the inspect label or colour rather than the wall faces"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "canal_reads_as_dug",
+    "no_liquid_on_open_ground"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_dig_finds",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/extensions.py::dig_finds",
+   "start": [
+    "one undug cell on a quarry-bearing stone",
+    "a colonist with digging enabled"
+   ],
+   "action": "cut the cell three times",
+   "expect": "each cut yields the local find or spoil and takes game hours",
+   "control": {
+    "case": "the same cuts on plain sand",
+    "expect": "no stone find appears",
+    "rules_out": "finds spawned regardless of ground"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "canal_reads_as_dug"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_fill_front",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_fill_front",
+   "start": [
+    "two dry 1x12 D2 canals, one cut to water and one to tar (asserted dry)"
+   ],
+   "action": "open both on the same tick",
+   "expect": "front advances cell by cell, tar behind water, banks dry",
+   "control": {
+    "case": "the tar canal made water",
+    "expect": "the two fronts arrive together",
+    "rules_out": "a fixed per-cell delay unrelated to viscosity"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "fill_flows_along_canal"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_fill_tiers",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/extensions.py::plot_B_fill_tiers",
+   "start": [
+    "five 1x6 D5 runs at F0..F4 (asserted by litres)",
+    "four liquids at one fill beside their sources"
+   ],
+   "action": "capture at play zoom",
+   "expect": "fill tiers and liquids told apart; 0.5 m reads silty",
+   "control": {
+    "case": "two runs at the same fill and liquid",
+    "expect": "the blind reader cannot tell them apart",
+    "rules_out": "the reader using position, not look"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "fill_level_legible"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_one_surface",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_one_surface",
+   "start": [
+    "pond, canal over uneven ground and D4 pit, dry (asserted)"
+   ],
+   "action": "open the canal and let it settle 2 game hours",
+   "expect": "one level in every cell within one step",
+   "control": {
+    "case": "the canal shut by a sluice midway",
+    "expect": "the two sides stand at different levels",
+    "rules_out": "a level set by hand rather than solved"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "one_still_surface"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_source_pays",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_source_pays",
+   "start": [
+    "a 200-square dug pond, full (asserted litres)",
+    "a dry 60-cell moat",
+    "an edge-touching lake and a dry moat beside it"
+   ],
+   "action": "fill both moats; draw the pond empty with a Sink tap; 5 days of rain",
+   "expect": "pond and shore drop, flow stops when empty, refill visible; the lake never drops and reads Endless",
+   "control": {
+    "case": "the Sink tap set to zero",
+    "expect": "the pond does not drop beyond the moat's take",
+    "rules_out": "a pond drawn by a hidden script"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "source_pays_and_refills",
+    "no_full_source_after_draw"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_canal_fire",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/validation_v2.py::_x10_canal_fire",
+   "start": [
+    "a 1x6 D1 tar run joined to a tar pool, unlit (asserted)",
+    "a water run beside it"
+   ],
+   "action": "light the far end with a real fire",
+   "expect": "the tar burns back to the pool and leaves a spent channel",
+   "control": {
+    "case": "the water run lit the same way",
+    "expect": "the water does not burn",
+    "rules_out": "fire spawned over any canal regardless of liquid"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "canal_fire_burns_back"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_slime",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/extensions.py::slime_slip",
+   "start": [
+    "a D2 slime canal and a D2 water canal across a corridor (asserted litres)"
+   ],
+   "action": "order a colonist across each",
+   "expect": "slime crossing far slower with slide-backs",
+   "control": {
+    "case": "the water canal",
+    "expect": "crossed at water speed with no slide-back",
+    "rules_out": "the slowdown coming from depth, not slime"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "slime_holds_the_crossing"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_pawn_height",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_pawn_height",
+   "start": [
+    "the D0..D16 pad ladder, dry then filled to 2 m (asserted)"
+   ],
+   "action": "walk a colonist across and back",
+   "expect": "draw offset follows depth both ways; swims and tires at 2 m",
+   "control": {
+    "case": "the same walk on undug ground",
+    "expect": "no offset change, no swim",
+    "rules_out": "an offset applied by path step rather than cell depth"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "pawn_height_follows_depth"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_pit_reads",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/extensions.py::plot_G_pit",
+   "start": [
+    "a 3x3 and a 1x1 D4 pit, empty, then with a downed and a trapped raider (asserted)"
+   ],
+   "action": "capture at play zoom",
+   "expect": "read as holes; occupant below the lip; occupied and trapped told apart",
+   "control": {
+    "case": "the empty twin pit",
+    "expect": "the reader marks it empty",
+    "rules_out": "the reader using the label"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "pit_reads_as_hole",
+    "no_snared_standing"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_covered_pit",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/extensions.py::pit_cover_fall",
+   "start": [
+    "a covered spiked D4 pit across a corridor (asserted covered)",
+    "a hostile heavier than the tier"
+   ],
+   "action": "the hostile walks the cover",
+   "expect": "it falls onto the spikes and is hurt",
+   "control": {
+    "case": "a light colonist walks the twin cover",
+    "expect": "the colonist does not fall",
+    "rules_out": "the cover removed by proximity rather than weight"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "covered_pit_springs"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_ways_out",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/live_session.py::g_pit_access",
+   "start": [
+    "four 3x3 pits: 2 m with portable ladder, 4 m sheer, 4 m wall ladder down, 4 m wall ladder up (asserted)",
+    "a geared and an ungeared colonist"
+   ],
+   "action": "order each colonist out of each pit",
+   "expect": "out by ladder or gear only; jump into the 2 m pit unhurt",
+   "control": {
+    "case": "the ungeared colonist in the sheer pit",
+    "expect": "the order is refused: no path",
+    "rules_out": "the pawn climbing the sheer wall without ladder or gear"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "ways_in_and_out"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_sluice",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/extensions.py::flow_doors",
+   "start": [
+    "a full D4 moat behind a shut sluice above a dry drain pit (asserted litres)",
+    "a grate gate twin"
+   ],
+   "action": "open the sluice",
+   "expect": "moat litres move to the drain fast",
+   "control": {
+    "case": "the sluice left shut",
+    "expect": "no litres move",
+    "rules_out": "liquid deleted rather than moved"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "sluice_drains_on_command"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_hose_look",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_hose_look",
+   "start": [
+    "a reel laid 10 cells from a pump on a water channel; a two-reel relay; four styles side by side; a span over"
+   ],
+   "action": "pump on, capture; pump off, capture",
+   "expect": "plump and tinted when flowing, flat when not; styles apart",
+   "control": {
+    "case": "the pump unpowered",
+    "expect": "the hose stays flat",
+    "rules_out": "the plump look keyed to the reel being laid"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "hose_reads_as_hose"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_one_network",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/extensions.py::machinery_pipes",
+   "start": [
+    "a powered pump on a 3-cell water channel, pipe to a tank 5 cells away, a hose to a second tank (asserted empty tanks)"
+   ],
+   "action": "run the pump, then drop the hose",
+   "expect": "litres conserved along pipe and hose; nothing through the dropped hose",
+   "control": {
+    "case": "the hose dropped before the pump runs",
+    "expect": "the second tank stays empty",
+    "rules_out": "litres created at the tank"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "one_liquid_network",
+    "no_impossible_plumbing"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_trench_cover",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_trench_cover",
+   "start": [
+    "a D2 trench and a D4 pit beside a raid path, a colonist in the trench (asserted)"
+   ],
+   "action": "a raid of 4 arrives and fires",
+   "expect": "the trench pawn is covered and shown so; no raider shelters in the pit",
+   "control": {
+    "case": "the same colonist on open ground",
+    "expect": "no cover",
+    "rules_out": "cover granted by a flag rather than the higher neighbour"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "trench_gives_cover"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_hung_bridge",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py::posts",
+   "start": [
+    "a suspension bridge across a D2 canal, anchors placed (asserted)"
+   ],
+   "action": "one colonist over, one along the canal under",
+   "expect": "both paths complete; reads hung",
+   "control": {
+    "case": "the bridge with one anchor removed",
+    "expect": "the deck is refused or falls",
+    "rules_out": "a floor tile that ignores its anchors"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "hung_bridge_spans"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_ice",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_ice",
+   "start": [
+    "a frozen pond on a cold map (asserted ice)"
+   ],
+   "action": "cut a cell, then warm above freezing",
+   "expect": "crushed ice on the cut that melts back into the pond",
+   "control": {
+    "case": "cut an unfrozen pond",
+    "expect": "no crushed ice",
+    "rules_out": "crushed ice spawned on every cut"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "ice_cuts_and_melts"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_river",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/river_scenes_walk.py::scene_R1",
+   "start": [
+    "a river map with weir, ferry, levee and field (asserted river cells)"
+   ],
+   "action": "sweep a colonist; run 2 days",
+   "expect": "Endless readout, weir pool held, swept pawn returns with a message",
+   "control": {
+    "case": "the levee removed",
+    "expect": "the field floods",
+    "rules_out": "the field staying dry for another reason"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "river_flows_endless"
+   ],
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+  },
+  {
+   "id": "sc_moat_raid",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_moat_raid",
+   "start": [
+    "the flagship fortress map: D4 water moat full from a pond, drawbridge raised, sluice shut to a dry drain pit, chemfuel tank and pump at the rim (each asserted)",
+    "a raid of 6 at the map edge"
+   ],
+   "action": "the raiders swim; open the sluice; capture two from the rim; pump chemfuel; order toss a flame",
+   "expect": "swim and tire, drain fast, held and captured, chemfuel pumped from the tank, moat burns",
+   "control": {
+    "case": "the same raid with the drawbridge lowered",
+    "expect": "the raiders walk over the bridge and never swim",
+    "rules_out": "the raiders swimming because of a forced path rather than the raised drawbridge"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "owner_review",
+   "requirement": [
+    "moat_raid_sequence"
+   ],
+   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+  },
+  {
+   "id": "sc_hole_prison",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_hole_prison",
+   "start": [
+    "a drained D4 moat, two downed raiders, no bed anywhere in it (asserted)"
+   ],
+   "action": "order capture from the rim; one day passes",
+   "expect": "both prisoners, held in the hole, needs met",
+   "control": {
+    "case": "the same with the bed-less prison setting off",
+    "expect": "capture refused",
+    "rules_out": "a bed spawned out of sight"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "drained_hole_is_a_prison"
+   ],
+   "entry_point_item": "FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED"
+  },
+  {
+   "id": "sc_toss_flame",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_toss_flame",
+   "start": [
+    "a chemfuel moat and a water moat twin, unlit (asserted)"
+   ],
+   "action": "order the toss on a picked square 6 cells away",
+   "expect": "the colonist walks to the rim and that square lights first",
+   "control": {
+    "case": "the same order on the water twin",
+    "expect": "nothing lights",
+    "rules_out": "fire started by any nearby source, not the toss"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "toss_flame_from_rim"
+   ],
+   "entry_point_item": "FLOWWORKS_FLAME_BUILD_TOSS_FROM_THE_RIM"
+  },
+  {
+   "id": "sc_wetting",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_wetting",
+   "start": [
+    "crops either side of a full D2 canal on dry sand; a twin field by a dry canal (asserted by the wetness probe)"
+   ],
+   "action": "grow 5 days; drain the canal a week; flood part of the field",
+   "expect": "wetted to 2 squares, crops watered, wetting used up, flood drunk down",
+   "control": {
+    "case": "the dry-canal twin",
+    "expect": "no wetting, crops dry",
+    "rules_out": "wetting from rain rather than the canal"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "canal_wets_two_squares",
+    "wetting_is_not_flood"
+   ],
+   "entry_point_item": "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP"
+  },
+  {
+   "id": "sc_fetch_fallen",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_fetch_fallen",
+   "start": [
+    "a covered spiked pit on the passage, saplings beside it, defenders across (asserted)",
+    "a raid of 6"
+   ],
+   "action": "two fall; the rest act; defenders fire",
+   "expect": "chop, ladder into the pit, climb down to a fallen; retreat under fire",
+   "control": {
+    "case": "the same raid with no one fallen",
+    "expect": "no ladder goes into the pit",
+    "rules_out": "the crossing-ladder raid mistaken for a rescue"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "raiders_fetch_their_fallen"
+   ],
+   "entry_point_item": "FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN"
+  },
+  {
+   "id": "sc_islands",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_islands",
+   "start": [
+    "two islands, a long bridge, a drawbridge and winch at each end (asserted lowered)",
+    "a raid of 6 on the span"
+   ],
+   "action": "raise both drawbridges; let the raiders act",
+   "expect": "trapped, a winch destroyed, that drawbridge falls, they escape",
+   "control": {
+    "case": "the winches made indestructible",
+    "expect": "the raiders stay trapped",
+    "rules_out": "pathing failure rather than the raised drawbridges"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "owner_review",
+   "requirement": [
+    "island_bridges_trap_and_fail"
+   ],
+   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+  },
+  {
+   "id": "sc_walk",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_walk_moat_season",
+   "start": [
+    "his full mod list; the flagship map with a wetted garden (asserted)"
+   ],
+   "action": "fill, save mid-swim, reload, toggle off and on, repeat the fill, run the second order",
+   "expect": "state digests match across the reload; the pond pays again; no leftovers; log clean",
+   "control": {
+    "case": "a reload from a save made before the fill",
+    "expect": "the digests differ (the check can see a change)",
+    "rules_out": "a digest that hashes nothing that moves"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "walk_moat_season"
+   ],
+   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+  },
+  {
+   "id": "sc_pit_trap_raid",
+   "kind": "interaction",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_pit_trap_raid",
+   "start": [
+    "his pit-trap passage: covered spiked pit before the door, saplings, defenders across with bows (asserted)",
+    "a raid of 6"
+   ],
+   "action": "the raid runs; defenders fire; capture the fallen from the rim",
+   "expect": "two fall onto spikes, the rest try a ladder under arrows, are driven off, the fallen become prisoners in the pit",
+   "control": {
+    "case": "the cover left off (an open pit)",
+    "expect": "the raiders path round it and no one falls",
+    "rules_out": "falls caused by spawning raiders on the pit"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "owner_review",
+   "features": [
+    "covered_pit_springs",
+    "raiders_fetch_their_fallen",
+    "drained_hole_is_a_prison",
+    "trench_gives_cover"
+   ],
+   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+  },
+  {
+   "id": "sc_garden",
+   "kind": "interaction",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_garden",
+   "start": [
+    "a field by a filled canal, sprinklers on a pumped pipe from a drilled well, a hose to a tank, a faucet and bottles, a liquid converter on the network (asserted)",
+    "colonists with the thirst need"
+   ],
+   "action": "run 5 days; flood one corner",
+   "expect": "wetted rows and sprinkled rows grow, the hose fills the tank, colonists drink from bottles, the flood is drunk down",
+   "control": {
+    "case": "the pump unpowered",
+    "expect": "sprinklers, hose and faucet stop; the canal rows stay wetted",
+    "rules_out": "the canal's wetting coming from the sprinklers"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "owner_review",
+   "features": [
+    "canal_wets_two_squares",
+    "one_liquid_network",
+    "hose_reads_as_hose"
+   ],
+   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+  }
+ ],
+ "showcases": [
+  {
+   "id": "moat",
+   "scenes": [
+    "sc_moat_raid",
+    "sc_hole_prison",
+    "sc_toss_flame",
+    "sc_sluice"
+   ],
+   "exercises": [
+    "inv_dig_depth",
+    "inv_flow_level",
+    "inv_stock",
+    "inv_swim",
+    "inv_doors",
+    "inv_bridges",
+    "inv_pits",
+    "inv_prison_no_bed",
+    "inv_liquid_net",
+    "inv_fire",
+    "inv_toss_flame",
+    "inv_liquid_roster",
+    "inv_looks"
+   ],
+   "source": [
+    "OWNER:1793794915205594887"
+   ],
+   "decision": "d_scene_moat"
+  },
+  {
+   "id": "garden",
+   "scenes": [
+    "sc_garden",
+    "sc_wetting"
+   ],
+   "exercises": [
+    "inv_irrigation",
+    "inv_overflow_sheet",
+    "inv_sprinklers",
+    "inv_hoses",
+    "inv_bottles_thirst",
+    "inv_drilling",
+    "inv_converters",
+    "inv_liquid_net"
+   ]
+  },
+  {
+   "id": "pit_trap",
+   "scenes": [
+    "sc_pit_trap_raid",
+    "sc_fetch_fallen"
+   ],
+   "exercises": [
+    "inv_pit_access",
+    "inv_raider_fetch_fallen",
+    "inv_trench_cover",
+    "inv_pits",
+    "inv_prison_no_bed"
+   ],
+   "source": [
+    "OWNER:1793794392567351532"
+   ],
+   "decision": "d_scene_pittrap",
+   "overlap_why": {
+    "inv_pits": "his scene is a covered pit trap: the pit is the stage the rescue ladder goes into",
+    "inv_prison_no_bed": "his scene ends with the fallen as prisoners in the pit; capture is how the raid ends"
+   }
+  }
+ ],
+ "coverage_rest": [
+  {
+   "capability": "inv_rivers",
+   "by": [
+    "sc_river",
+    "river_flows_endless"
+   ],
+   "why": "rivers share nothing with the raids or the garden and add one capability; a river scene checks it directly"
+  },
+  {
+   "capability": "inv_slime",
+   "by": [
+    "sc_slime",
+    "slime_holds_the_crossing"
+   ],
+   "why": "one liquid's property; a two-canal crossing timing is cheaper than a showcase built round it"
+  },
+  {
+   "capability": "inv_quarry",
+   "by": [
+    "sc_dig_finds"
+   ],
+   "why": "a dig yields a find or not: one cut on the right stone checks it"
+  },
+  {
+   "capability": "inv_map_controls",
+   "by": [
+    "sc_source_pays"
+   ],
+   "why": "a map-maker tool; the source scene drives the Sink tap and flow meter and its zero-rate control checks they do what they say"
+  },
+  {
+   "capability": "inv_settings",
+   "by": [
+    "sc_walk",
+    "walk_moat_season"
+   ],
+   "why": "the walk turns the master switch off and on mid-game; per-toggle checks are the floor's mod_settings line"
+  }
+ ]
+}

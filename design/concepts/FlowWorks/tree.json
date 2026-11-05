@@ -1,0 +1,861 @@
+{
+ "schema_version": 1,
+ "subject": "FlowWorks",
+ "kind": "mod",
+ "authored_by": "concept",
+ "root_ref": "design/validation_walks/RimMandrake/FlowWorks.md#north-star",
+ "root_state": "VALIDATED",
+ "root_hash": "a038d71b2055240d6cfd2242234d71168c65ff6b808dba5993a116e1af8e6812",
+ "coverage": null,
+ "floor": {
+  "ref": "concept_floor.json",
+  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "off": []
+ },
+ "exam_waived": null,
+ "waived": [],
+ "advisory": [
+  "Full-list speed with FlowWorks loaded stays near the other mods' cost (the 346 to ~120 TPS drop is the floor's tick_cost line, measured on the walk)"
+ ],
+ "leaves": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "blind reader on captures orders the four depths and names them dug ground; a job timer reads the dig in game hours",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "canal_reads_as_dug",
+   "root": [
+    "canal_reads_as_dug_channel",
+    "canal_dry_reads_as_obstacle",
+    "filled_excavation_reads_as_obstacle",
+    "pit_depth_ladder_legible",
+    "digging_takes_hours"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player, at play zoom in daylight, sees a dug canal as a channel cut into the ground, dry or filled, at every depth D1-D4 and in each of the four directions; the depths read apart by their wall faces, and a colonist takes hours, not seconds, to dig one. It must not read as a path, a floor or a built wall.",
+   "scenario": "Designate a 1x8 canal and a ladder of pads at D1, D2, D3, D4 on sand and on soil; a colonist digs one cell; capture each pad dry and filled with water at play zoom, N/E/S/W runs.",
+   "false_pass": [
+    "the depths are the same texture with a number in the inspect pane",
+    "the dig finishes in one tick"
+   ],
+   "red": "every depth draws the same flat tile, so a D1 ditch and a D4 pit look alike",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "per-cell fill read each 250 ticks: the front advances monotonically and tar's front is behind water's at every read; captures show it",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "fill_flows_along_canal",
+   "root": [
+    "canal_fill_spreads_along_itself",
+    "canal_fill_front_watchable",
+    "tar_fill_front_lags_water",
+    "canal_holds_only_the_channel"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player opening a canal onto a source watches the liquid front move cell by cell along the channel and stop at its end, never spilling onto the banks; a tar front visibly lags a water front opened at the same moment.",
+   "scenario": "Two parallel 1x12 D2 canals, one cut into a water body and one into a tar body, opened on the same tick; capture every 250 ticks until both stand full.",
+   "false_pass": [
+    "the whole canal fills on one tick",
+    "tar and water arrive together"
+   ],
+   "red": "the canal fills all at once, or the liquid also covers the bank cells",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "blind reader sorts fill tiers and names liquids from captures; state read matches each capture",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "fill_level_legible",
+   "root": [
+    "canal_partial_fill_distinct",
+    "fill_tier_legible",
+    "fill_fluid_distinct",
+    "depth_and_fill_jointly_legible",
+    "canal_reads_as_same_liquid_as_reservoir",
+    "half_metre_water_reads_as_silt"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player at play zoom tells how full a canal is (dry, very shallow, half, full) and with what liquid (water, tar, chemfuel, slime), and that it is the same liquid as the body it came from; half a metre of water reads as silty shallows, not clear deep water.",
+   "scenario": "Five parallel D5 runs filled to F0..F4, and four runs of different liquids at the same fill, beside their source bodies.",
+   "false_pass": [
+    "only the inspect pane says the fill",
+    "every liquid draws as water"
+   ],
+   "red": "a half-full and a full canal draw identically, or tar draws as water",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "bridge read of all cells' surface level: max minus min at most one step; capture shows no seam",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "one_still_surface",
+   "root": [
+    "still_water_one_surface_height"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The tester reading every cell of a still connected body (canal, pit and pond joined) sees one surface level, within one decilitre-step, after it settles; the player sees no stepped water in it.",
+   "scenario": "Dig a canal joining a pond to a D4 pit across uneven ground; let it settle 2 game hours; read every cell's level.",
+   "false_pass": [
+    "levels equal because every cell was set by hand",
+    "level equal only in the cells the probe reads"
+   ],
+   "red": "the far end of the canal stands lower than the pond forever",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "body report volume and drawn shoreline cell count before/after; Endless readout on the edge lake; captures",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "source_pays_and_refills",
+   "root": [
+    "reservoir_fill_visibly_drops",
+    "reservoir_shoreline_recedes",
+    "empty_reservoir_stops_flow",
+    "reservoir_recharge_progress_visible",
+    "limitless_body_marked"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player who fills a moat from a pond sees the pond's level drop and its shoreline pull back; an emptied pond stops the flow; over the following days rain and season refill it with visible progress; a body touching the map edge is marked Endless and never drops.",
+   "scenario": "A 200-square dug pond feeds a 60-cell moat; capture before, after the fill, after a further draw by a Sink tap to empty, then each day of rain for 5 days; a second moat fed from an edge-touching lake.",
+   "false_pass": [
+    "the pond's number drops but its drawn shore never moves",
+    "refill is instant"
+   ],
+   "red": "the pond stays full however much the moat takes",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "fire cell count on canal cells over time, liquid consumed, pool ignited; the water run does not burn; captures",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "canal_fire_burns_back",
+   "root": [
+    "canal_burning_reads_as_burning_liquid",
+    "canal_fire_reaches_reservoir",
+    "canal_fire_persists",
+    "canal_spent_after_burn"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player who lights a tar or chemfuel canal sees the liquid itself burn along the channel, for long enough to deny it, run back to the source body and set it alight, and leave a spent dark channel when it is out.",
+   "scenario": "A 1x6 D1 tar run joined to a tar pool, lit at its far end by a real fire source; capture at ignition, mid, at the pool, after; a water run beside it is lit the same way.",
+   "false_pass": [
+    "fire filth spawned over the cells with no link to the liquid",
+    "the fire burns the bank grass, not the canal"
+   ],
+   "red": "the canal flashes and is out in a second, or the fire never reaches the pool",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "crossing time ratio slime vs water, slide-back events counted; blind reader names slime thick from captures",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "slime_holds_the_crossing",
+   "root": [
+    "slime_reads_as_viscous_not_water",
+    "slime_occupant_below_surface"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees slime in a canal as thick, not as water, and a pawn crossing it sinks into it, slips and slides back on the climb out, so the crossing is nearly closed.",
+   "scenario": "A D2 slime canal across a corridor and a D2 water canal beside it; order a colonist across each; time both.",
+   "false_pass": [
+    "slime is water recoloured green",
+    "the pawn crosses slime as fast as water"
+   ],
+   "red": "a pawn walks straight through the slime canal at water speed",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "per-cell draw offset read along the path; swim state and rest need fall in deep water; capture sequence",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "pawn_height_follows_depth",
+   "root": [
+    "pawn_height_ladder_legible",
+    "pawn_lowers_on_deeper_cell",
+    "pawn_rises_on_shallower_cell",
+    "deep_water_pawn_swims"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player watching a colonist walk from dry ground down a stepped canal sees it sink lower at each deeper cell and rise again as it climbs out; in water 2 m deep or more it swims and tires.",
+   "scenario": "The D0..D16 pad ladder, a colonist ordered across it and back; a second run with the pads filled to 2 m.",
+   "false_pass": [
+    "the pawn's draw offset changes only on the destination cell",
+    "swimming is a label with no fatigue"
+   ],
+   "red": "the colonist floats at ground height over a D4 pit",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "blind reader names hole, occupied, trapped from captures; lip occlusion state read",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "pit_reads_as_hole",
+   "root": [
+    "pit_reads_as_hole",
+    "pit_walls_have_visible_depth",
+    "pit_not_vanilla_trap",
+    "pit_reads_at_size",
+    "pit_occupant_below_floor",
+    "pit_occupied_distinguishable",
+    "pit_trapped_reads_as_trapped"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player at play zoom sees a superdeep pit as a hole with deep walls, at 1x1 and 3x3, never as a labelled vanilla trap; a pawn in it reads as down in the hole, below the lip; an occupied pit and a trapped pawn are told apart from an empty one without clicking.",
+   "scenario": "A 3x3 D4 pit and a 1x1 D4 pit, empty and with a downed raider and a standing trapped raider; capture at play zoom.",
+   "false_pass": [
+    "the pit draws a trap icon",
+    "the occupant draws above the lip"
+   ],
+   "red": "the pit draws as a dark square with the occupant standing on top of it",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "occupant ends on the D4 cell with spike damage; the light colonist does not fall; blind reader cannot find the covered pit",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "covered_pit_springs",
+   "root": [
+    "pit_covered_invisible",
+    "pit_covered_seam_at_max_zoom",
+    "spikes_read_distinct",
+    "pit_cover_unlike_bridge"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "A raider, and the player watching, cannot see a covered pit at play zoom (only a faint seam at max zoom); a heavy enemy stepping on it drops onto the spikes below; spikes read as spikes and the cover never reads as a bridge.",
+   "scenario": "A covered D4 spiked pit across a corridor; a hostile heavier than the cover's tier walks it; a light colonist walks a twin.",
+   "false_pass": [
+    "the cover is simply removed when an enemy is adjacent",
+    "the pit is visible as a pit under its cover"
+   ],
+   "red": "the raider walks over the cover, or the cover is plainly a pit",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "path read crosses the ladder cell; sheer pit refuses the ungeared pawn; ladder state captures",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "ways_in_and_out",
+   "root": [
+    "ladder_state_legible",
+    "wall_ladder_rides_on_rails",
+    "portable_ladder_leans_on_its_wall",
+    "climbing_gear_reads_as_kit",
+    "geared_pawn_climbs_out",
+    "jump_into_pit_lands_unhurt",
+    "geared_pawn_scales_built_wall"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees how a pawn gets in and out of a pit: a wall ladder raised or lowered on its rails, a portable ladder leaning on its wall, climbing gear worn as kit; a geared pawn climbs out of a sheer 4 m pit and scales a built wall, an ungeared one cannot; a pawn jumping into a shallow pit lands unhurt.",
+   "scenario": "Four 3x3 pits on one strip: 2 m with a portable ladder, 4 m sheer, 4 m with a wall ladder lowered, 4 m with it raised; a geared and an ungeared colonist in each.",
+   "false_pass": [
+    "the pawn teleports out",
+    "the ungeared pawn also climbs the sheer wall"
+   ],
+   "red": "a pawn climbs out of the sheer pit without ladder or gear",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "moat volume falls and drain volume rises by the same litres within the window; open and shut captures read apart",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "sluice_drains_on_command",
+   "root": [
+    "sluice_gate_state_legible"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees a sluice gate shut or open at a glance; opening it drains the moat behind it fast, toward the lower ground, while a grate gate always lets liquid through.",
+   "scenario": "A full D4 moat held by a shut sluice above a lower drain pit; open the gate; a grate twin beside it.",
+   "false_pass": [
+    "the moat empties by deletion, with no liquid reaching the drain",
+    "the gate reads the same open and shut"
+   ],
+   "red": "opening the gate changes its sprite but the moat stays full",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "blind reader on captures: hose vs cord, plump vs flat, four styles apart; flow state read matches",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "hose_reads_as_hose",
+   "root": [
+    "hose_thicker_stiffer_than_cord",
+    "hose_plump_when_flowing_flat_when_not",
+    "hose_plumps_only_from_powered_pump",
+    "hose_joiner_reads_brass_screwed_together",
+    "reel_hose_leaves_brass_outlet_nozzle",
+    "reel_laid_and_wound_look_differ",
+    "relay_chain_reads_connected",
+    "reel_offers_choose_style",
+    "four_reel_looks_distinguishable",
+    "hose_drawn_under_overhead_span",
+    "hose_tint_is_carried_liquid"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees a hose as a thick stiff hose, not a power cord: it plumps when liquid flows and lies flat when not, tinted with what it carries, joined by brass fittings, its reel laid or wound looking different, in four styles told apart, and drawn under overhead spans.",
+   "scenario": "A reel laid 10 cells from a powered pump on a water channel, a relay chain of two reels, the four styles side by side; pump on, then off; a span overhead.",
+   "false_pass": [
+    "the plump look switches on whenever the reel is laid, pump or not",
+    "the four styles are one sprite"
+   ],
+   "red": "the hose stays flat while water flows, or plumps from an unpowered pump",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "litre ledger: source loss equals tanks' gain at every step; zero flow through a dropped hose; captures of joins",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "one_liquid_network",
+   "root": [
+    "hose_carries_real_units",
+    "hose_dropped_carries_nothing",
+    "hose_follows_port_changes",
+    "hose_far_end_pump_reaches_reel_tank",
+    "relay_chain_carries_liquid",
+    "pipe_and_hose_one_net",
+    "tank_feeds_hose_without_pump",
+    "pipe_meets_building_centre",
+    "pump_hose_joins_at_side_port"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The tester reading litres sees pipes, pumps, tanks and hoses act as one network: a pump moves real litres into a tank down a pipe and on through a hose, a tank feeds a screwed-in hose with no pump, a dropped hose carries nothing, and the player sees pipes meet each building at its centre and hoses join pumps at a side port.",
+   "scenario": "A powered pump on a 3-cell water channel feeds a tank 5 pipe cells away, the tank feeds a hose to a second tank, the hose is then dropped; litres read at each step.",
+   "false_pass": [
+    "litres appear in the far tank with none leaving the source",
+    "the dropped hose still fills the tank"
+   ],
+   "red": "the second tank fills while the hose lies dropped, or litres are created on the way",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "cover value read for the trench pawn; raider shelter cells never in the D4 pit; capture of the cover indicator",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "trench_gives_cover",
+   "root": [
+    "trench_wall_cover_shown",
+    "raiders_never_shelter_in_a_cage"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees a pawn in a dug trench covered by the higher ground beside it, like a sandbag, and shown as covered; raiders shelter only in trenches they can climb out of, never in a cage-like pit.",
+   "scenario": "A D2 trench and a D4 pit both near a raid's path; a colonist in the trench under fire; raiders pick shelter.",
+   "false_pass": [
+    "the cover number changes but no cover is shown",
+    "raiders hide in the D4 pit"
+   ],
+   "red": "a pawn in the trench takes hits as though standing in the open",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "both paths complete through the bridge cell; blind reader names it hung from captures",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "hung_bridge_spans",
+   "root": [
+    "suspension_bridge_reads_hung",
+    "pawn_walks_under_deck"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees a suspension bridge as a deck hung between its two anchor posts over a canal or water, and a pawn walks under the deck along the canal while another walks over it.",
+   "scenario": "A suspension bridge across a D2 canal; one colonist ordered across, one ordered along the canal under it.",
+   "false_pass": [
+    "the deck is a floor tile with posts drawn beside it",
+    "the under-path is blocked"
+   ],
+   "red": "the bridge blocks the canal so nothing can pass beneath",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "crushed-ice item appears on the cut; liquid volume rises by its melt when warm",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "ice_cuts_and_melts",
+   "root": [
+    "ice_cuts_to_crushed_ice_that_melts"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player whose colonist digs into frozen water sees the cut make crushed ice that melts back into the liquid when it warms.",
+   "scenario": "A frozen pond in a cold map; a colonist cuts a cell; then the temperature is raised above freezing.",
+   "false_pass": [
+    "the cut leaves plain water at once",
+    "the crushed ice never melts"
+   ],
+   "red": "cutting ice deletes it with no crushed ice and no melt",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "Endless readout; swept pawn returns with a message; weir pool level held; captures",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "river_flows_endless",
+   "root": [
+    "limitless_body_marked"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees a river as an Endless body with a current: a weir holds a pool, a ferry crosses, a levee keeps it off the fields, and a pawn swept downstream is returned by land.",
+   "scenario": "A river map: weir across the river, a ferry, a levee beside a field, a colonist swept by the current.",
+   "false_pass": [
+    "the current is a label with no movement",
+    "the swept pawn simply vanishes"
+   ],
+   "red": "the river drains like a pond, or a swept pawn is lost without a sign",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "per step: swim state and rest drop, moat litres fall to the drain, raiders' paths out refused, prisoner status after capture, chemfuel litres leave the tank into the moat, fire on moat cells; capture sequence for him",
+   "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "cannot_show": null,
+   "wall_expect_h": 2,
+   "id": "moat_raid_sequence",
+   "root": [
+    "deep_water_pawn_swims",
+    "sluice_gate_state_legible",
+    "pit_trapped_reads_as_trapped",
+    "canal_burning_reads_as_burning_liquid"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player defending a fortress watches the whole moat sequence at play zoom: raiders swim a deep water moat under a raised drawbridge and tire; the sluice opens and the moat drains fast; the raiders are held in the pit, cannot climb out, and are taken as prisoners from the rim; then chemfuel is pumped in from above and lit, and the moat burns. It must not read as raiders walking across, a moat that empties by magic, or fire that is not the liquid.",
+   "scenario": "The flagship map: fortress, one deep D4 water moat fed from a pond, a raised drawbridge, a sluice to a drain pit, a chemfuel tank and pump at the rim; a raid of 6 arrives; the player opens the sluice, captures two, pumps chemfuel and tosses a flame.",
+   "false_pass": [
+    "the raid is spawned already in the drained pit",
+    "chemfuel is spawned in the moat, not pumped",
+    "the fire is lit by dev tool, not by the order"
+   ],
+   "red": "the raiders walk across the moat bed, or climb out once it is drained",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: the moat sequence capture, played at play zoom",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "prisoner status set, prisoner stays in the hole, needs met for a day; capture with a bed elsewhere does not move him",
+   "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "drained_hole_is_a_prison",
+   "root": [
+    "pit_trapped_reads_as_trapped"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player clicks capture from the rim on a raider held in a drained moat or a pit with no prisoner bed there, and the raider becomes a prisoner held in that hole, fed and kept like any prisoner.",
+   "scenario": "A drained D4 moat with two downed raiders and no bed; the player orders capture from the rim; a day passes.",
+   "false_pass": [
+    "the raider is made a prisoner by teleporting to a bed elsewhere",
+    "capture works but the prisoner escapes at once"
+   ],
+   "red": "capture is refused because no prisoner bed is down there",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "colonist path to the rim, then fire on the picked square first; the water twin does not light; capture",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "toss_flame_from_rim",
+   "root": [
+    "canal_burning_reads_as_burning_liquid"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player picks a square of a burnable canal, moat or pit; a colonist walks to the rim and tosses a flame onto that square, and the liquid there lights.",
+   "scenario": "A chemfuel moat; the player orders the toss on a square 6 cells from the nearest colonist; a water moat twin.",
+   "false_pass": [
+    "the order lights the square instantly with no colonist walking",
+    "it lights the colonist's own cell"
+   ],
+   "red": "the order exists but nothing lights, or it lights a square the player did not pick",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "wetness_probe",
+   "oracle_proposed": "wetness probe per cell: wetted to distance 2 and not 3; plant water need met; wetting falls under fast growth; flood level falls over drinking plants",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "canal_wets_two_squares",
+   "root": [
+    "canal_holds_only_the_channel"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees ground within two squares of a filled canal wetted, by the same technique Stillsand uses for spilled water on sand, and crops there have water; fast-growing plants use the wetting up until the canal reapplies it, and plants under standing flood water drink it, lowering the flood.",
+   "scenario": "A field of crops either side of a filled D2 canal on dry sand, and a twin field beside a dry canal; then the canal drained for a week; then a shallow flood over part of the field.",
+   "false_pass": [
+    "every cell of the map is wetted",
+    "wetting shows but plants get no water",
+    "wetting never runs out"
+   ],
+   "red": "crops two squares from a full canal are as dry as crops beside a dry canal",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "raider job sequence: chop, carry, ladder placed into the pit, climb down to a fallen; under fire, retreat with fallen left; capture",
+   "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "raiders_fetch_their_fallen",
+   "root": [
+    "pit_trapped_reads_as_trapped",
+    "portable_ladder_leans_on_its_wall"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player whose pit trap has caught two raiders watches the rest chop wood, make a ladder and go down for their fallen; when the defenders drive them off they retreat and leave the fallen behind.",
+   "scenario": "A covered spiked pit on a passage to the door, saplings beside it, defenders across the pit; a raid of 6.",
+   "false_pass": [
+    "raiders cross the trench with the ladder instead of fetching anyone",
+    "raiders retreat without trying"
+   ],
+   "red": "raiders whose comrades fell ignore them and attack the door",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "drawbridge state per tick, raider paths refused while raised, winch destroyed then drawbridge lowered, raiders leave; capture",
+   "tier_reason": "a raid with pathing, swimming and capture runs only in a played map; the minimal list plus FlowWorks isolates it",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "island_bridges_trap_and_fail",
+   "root": [
+    "suspension_bridge_reads_hung"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player watches raiders walking a long bridge between islands get trapped on the span when both drawbridges rise; they reach a winch and destroy it, the drawbridge falls back and they escape; the defence still counts as a success.",
+   "scenario": "Two islands joined by a long bridge with a drawbridge at each end and a winch at each; a raid of 6 on the span; both raised.",
+   "false_pass": [
+    "the raiders are stuck because pathing breaks, not because the bridges are up",
+    "the winch dies and nothing falls"
+   ],
+   "red": "destroying the winch leaves the drawbridge up, or the raiders walk off a raised drawbridge",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "blind reader on the same captures; bank cells' liquid read zero",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": "liquid on undug ground without a flood; a canal that reads as gravel; dug ground that reads as a building",
+   "wall_expect_h": null,
+   "id": "no_liquid_on_open_ground",
+   "root": [
+    "never_liquid_on_open_ground",
+    "never_gravel_path",
+    "never_reads_as_building"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player never sees canal liquid standing on undug ground unless it is a flood sheet, never sees a canal read as a gravel path, and never sees dug ground read as a building.",
+   "scenario": "The canal_reads_as_dug and fill_flows_along_canal captures, read for these three.",
+   "false_pass": [
+    "the bank is tinted wet and counted as not liquid"
+   ],
+   "red": "liquid draws on the bank cells beside a full canal",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "shoreline cell count after the draw is below before",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": "a full-looking source after a heavy draw",
+   "wall_expect_h": null,
+   "id": "no_full_source_after_draw",
+   "root": [
+    "never_full_reservoir_after_heavy_draw"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player never sees a pond look full right after a moat drew heavily from it.",
+   "scenario": "The source_pays_and_refills captures after the fill.",
+   "false_pass": [
+    "the shore is redrawn full on the next load"
+   ],
+   "red": "the pond reads full a tick after filling the moat",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "occupant draw offset below the lip",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": "a snared pawn drawn standing at ground level",
+   "wall_expect_h": null,
+   "id": "no_snared_standing",
+   "root": [
+    "never_snared_standing"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player never sees a pawn caught in a pit drawn standing at ground level.",
+   "scenario": "The pit_reads_as_hole captures with a trapped raider.",
+   "false_pass": [
+    "the pawn draws standing but greyed"
+   ],
+   "red": "a trapped raider draws standing on the floor above the pit",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "hose route avoids the wall; network ids differ either side of the tank; no flow in the VE pipe",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": "a hose across impassable ground; a tank bridging two pipe runs; an external pipe carrying without an adapter",
+   "wall_expect_h": null,
+   "id": "no_impossible_plumbing",
+   "root": [
+    "never_hose_across_impassable",
+    "never_tank_bridges_pipe_runs",
+    "never_external_pipe_carries"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The tester never sees a hose laid across an impassable cell, a tank join two pipe runs into one, or another mod's pipe carry FlowWorks liquid without an adapter.",
+   "scenario": "The one_liquid_network map with a wall across the hose route, two pipe runs touching one tank, and a VE pipe with no adapter.",
+   "false_pass": [
+    "the hose is drawn round the wall but carries through it"
+   ],
+   "red": "the hose crosses the wall cell, or the two runs share one network through the tank",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "wetness_probe",
+   "oracle_proposed": "wetted cells' liquid read zero; no wading cost on them",
+   "tier_reason": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
+   "cannot_show": "wetted ground that is standing water",
+   "wall_expect_h": null,
+   "id": "wetting_is_not_flood",
+   "root": [
+    "never_liquid_on_open_ground"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player never sees wetted ground drawn or behaving as standing water: wetting is not flood water, though a flood also wets what it passes.",
+   "scenario": "The canal_wets_two_squares field.",
+   "false_pass": [
+    "wetting is a thin flood sheet"
+   ],
+   "red": "wetted cells hold liquid litres that a pawn wades through",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the probe answers on a hand-wetted cell and on a dry cell differently; refuses when wetting is off",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "wetness_probe",
+   "root": [
+    "canal_holds_only_the_channel"
+   ],
+   "leaf_kind": "instrument",
+   "clause_kind": "change",
+   "experience": "The tester reads, per cell, the wetting level, its cause (canal, flood or none) and the water a plant drew today.",
+   "scenario": "Build a bridge read that returns, for a rectangle of cells, wetting level, cause and per-plant water drawn; refuse with a reason when the wetting system is absent.",
+   "false_pass": [
+    "the probe returns a constant for every cell"
+   ],
+   "red": "the probe is missing, so no wetting claim can be measured",
+   "tier_proposed": "offline",
+   "owner_part": "no",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "state digest before save and after reload equal; second fill debits the pond again; toggle leaves no leftovers; log clean",
+   "tier_reason": "the breadth failure only shows on his full list with every system at once, and a reload from a mid-way save",
+   "cannot_show": null,
+   "wall_expect_h": 3,
+   "id": "walk_moat_season",
+   "root": [
+    "deep_water_pawn_swims",
+    "reservoir_fill_visibly_drops",
+    "pit_trapped_reads_as_trapped"
+   ],
+   "leaf_kind": "walk",
+   "clause_kind": "change",
+   "experience": "The player, playing a colony through a season on the full list, does the moat sequence, saves mid-way, reloads, and finds the moat, the pond, the swimmers and the prisoners exactly as they were; the hoses, pipes, bridges and fields keep working alongside it.",
+   "scenario": "Build the flagship map on his full list; fill the moat; save while raiders swim; reload and check level, stock, swim and prisoner state match; turn the FlowWorks master switch off and back on mid-game; repeat the core action (fill, drain, refill) and see the pond pay again; then run the main actions in a second order (pump chemfuel in first and drain water after), and a garden of wetted crops runs the whole time.",
+   "false_pass": [
+    "the reload is from a save made before the moat was filled",
+    "the repeat runs on a fresh map"
+   ],
+   "red": "after the reload the moat is empty or the swimmers stand on the bed",
+   "tier_proposed": "live_full",
+   "owner_part": "no",
+   "by": "concept"
+  }
+ ]
+}

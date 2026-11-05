@@ -68,7 +68,8 @@
    "source": [
     "OWNER:1793794915205594887",
     "OWNER:1793794392567351532"
-   ]
+   ],
+   "flagship": "moat"
   },
   {
    "id": "d_scene_pittrap",
@@ -869,6 +870,57 @@
    ],
    "speaker": "agent",
    "note": "most north-star bars are visual; he judged looks on walks (2026-10-07 'Yes, that looks great!', 2026-10-21/22 girth rulings) but no bar records a current pass"
+  },
+  {
+   "id": "inv_prison_no_bed",
+   "what": "A drained moat or pit holds raiders as prisoners after the capture click from the rim, with no prisoner bed down there",
+   "text": "Capture from the rim works in a drained moat or pit with no bed; the hole counts as the prison",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs and Superdeep/RM_PitRooms.cs: capture still needs a prisoner bed in the pit room (line 82); no bed-less prison path found",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": [
+    "OWNER:1793862531058884117"
+   ],
+   "source": [
+    "OWNER:1793862531058884117",
+    "src/RimMandrake/FlowWorks/Source/RM_PitRoomMath.cs:82"
+   ],
+   "speaker": "agent"
+  },
+  {
+   "id": "inv_toss_flame",
+   "what": "An order: a colonist walks to the rim and tosses a flame onto the square the player picks, lighting a burnable canal, moat or pit",
+   "text": "Toss-a-flame order from the rim onto a chosen square",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs and the Defs JobDefs/DesignatorDefs: ignition only from an existing fire (line 15); no order to throw a flame found",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": [
+    "OWNER:1793862534552097818"
+   ],
+   "source": [
+    "OWNER:1793862534552097818",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs:15"
+   ],
+   "speaker": "agent"
+  },
+  {
+   "id": "inv_raider_fetch_fallen",
+   "what": "Raiders whose comrades fell into a pit chop wood, make a ladder and go down for them; driven off, they retreat and leave the fallen",
+   "text": "Raiders fetch their fallen from a pit with a chopped-wood ladder, and give up under fire",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs (crossing only, line 488) and RM_PitAccess (colonists only): no raider rescue of fallen comrades found",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": [
+    "OWNER:1793794392567351532"
+   ],
+   "source": [
+    "OWNER:1793794392567351532",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderTrench.cs:488"
+   ],
+   "speaker": "agent"
   }
  ],
  "contradictions": [
