@@ -38,6 +38,9 @@ STALE renders, cured at 12c4540e38) closed 13:19:32Z; found_closed 14:49:55Z, fi
 Twelfth instance (SELFTEST_FIX_LIVE_VERDICT_GJIC), the eighth's route: red_nkoszv's item (selftest_live_verdict, _env
 intercepting a harness row, cured at 9c5cef0c08) closed 13:19:53Z; found_closed 14:49:55Z, file_held filed it 16:37:58Z
 on the 2026-11-05T11:00Z night, 95 s before bc25b60bda landed. Replaying bc25b60bda^ FAILs.
+Thirteenth instance (SELFTEST_FIX_RELENTLESS_REACH_GIT_GRANT_FWMI), the eighth's route: red_rjrllz's item
+(selftest_relentless_reach_git_grant, fixtures under UNIT_TMP, cured at 55f6e33d9b) closed 13:29:47Z; found_closed 14:49:55Z,
+file_held filed it 16:39:20Z on the 2026-11-05T11:00Z night, 13 s before bc25b60bda landed. Replaying bc25b60bda^ FAILs.
 
   python3 selftest_alarm_stale_night_reopen.py --blob REV:PATH   replay ops_watch.py as it stood at REV (git), e.g.
       --blob 618deb68f3^:src/RimMandrake/Utils/ops_watch.py, the code that reopened both instances: it must FAIL.
@@ -241,6 +244,13 @@ def test_nkoszv_instance():
                             "red_nkoszv closed 13:19:53Z", "twelfth")
 
 
+def test_rjrllz_instance():
+    """SELFTEST_FIX_RELENTLESS_REACH_GIT_GRANT_FWMI: filed 12:23:53Z, closed 13:29:47Z on its fix (55f6e33d9b); found_closed
+    14:49:55Z and file_held filed it 16:39:20Z on the 11:00Z night, which ran before that fix."""
+    test_found_closed_route("NIGHTLY_RED:testing.red_rjrllz", "2026-11-05T12:23:53Z", "2026-11-05T13:29:47Z",
+                            "red_rjrllz closed 13:29:47Z", "thirteenth")
+
+
 def test_znpqoq_instance():
     """SELFTEST_FIX_EXTRA_ART_COMMISSION_UBZM: the found_closed route with NO crossed reading that pass. Its item closed
     2026-11-05T13:34:26Z; at 14:49:55Z the compose pass had dropped the carried 11:00Z reading (crossed None), so
@@ -287,7 +297,8 @@ def test_unchanged_without_a_night_or_close_times():
 
 if __name__ == "__main__":
     for fn in (test_stale_night_holds, test_bcbosb_instance, test_bgmskv_instance, test_pjljvq_instance, test_qhqxlr_instance,
-               test_uquvzz_instance, test_wabghy_instance, test_found_closed_route, test_nkoszv_instance, test_znpqoq_instance,
+               test_uquvzz_instance, test_wabghy_instance, test_found_closed_route, test_nkoszv_instance,
+               test_rjrllz_instance, test_znpqoq_instance,
                test_unchanged_without_a_night_or_close_times):
         fn()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
