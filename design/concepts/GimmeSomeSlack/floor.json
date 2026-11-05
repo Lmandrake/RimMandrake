@@ -1,0 +1,79 @@
+{
+ "lines": {
+  "tick_cost": {
+   "status": "applicable"
+  },
+  "long_stall": {
+   "status": "applicable"
+  },
+  "latency": {
+   "status": "applicable"
+  },
+  "load_time": {
+   "status": "applicable"
+  },
+  "save_compat": {
+   "status": "applicable"
+  },
+  "load_order": {
+   "status": "applicable"
+  },
+  "log": {
+   "status": "applicable"
+  },
+  "mod_settings": {
+   "status": "applicable"
+  },
+  "multiplayer": {
+   "status": "applicable"
+  },
+  "art": {
+   "status": "applicable"
+  },
+  "reads_as": {
+   "status": "applicable"
+  },
+  "clickable": {
+   "status": "applicable"
+  },
+  "order_taken": {
+   "status": "applicable"
+  },
+  "motion": {
+   "status": "applicable"
+  },
+  "text": {
+   "status": "applicable"
+  },
+  "dlc": {
+   "status": "applicable"
+  },
+  "worldgen": {
+   "status": "applicable"
+  },
+  "naming": {
+   "status": "applicable"
+  },
+  "test_isolation": {
+   "status": "applicable"
+  },
+  "memory": {
+   "status": "applicable",
+   "evidence_mode": "compressed",
+   "establishes": "heap and texture MB before and after the walk's week on a large wired base; flatness over a 30-day soak stays inferred"
+  },
+  "save_size": {
+   "status": "applicable",
+   "evidence_mode": "compressed",
+   "establishes": "save size on the walk's mid-way save and at its end; the cord drawing is rebuilt on load, not stored; growth over a longer soak stays inferred"
+  },
+  "biome_scope": {
+   "status": "not_applicable",
+   "evidence": "GSS has no biome mechanic: it redraws conduit and adds masts, taps and a re-string job wherever power is built (src/RimMandrake/GimmeSomeSlack/Defs holds no BiomeDef or biome-gated def)"
+  },
+  "flight": {
+   "status": "not_applicable",
+   "evidence": "GSS adds no creature: no PawnKindDef or race ThingDef under src/RimMandrake/GimmeSomeSlack/Defs"
+  }
+ }
+}

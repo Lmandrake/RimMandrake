@@ -1,0 +1,526 @@
+{
+ "schema_version": 1,
+ "subject": "GimmeSomeSlack",
+ "kind": "mod",
+ "authored_by": "concept",
+ "root_ref": "design/validation_walks/RimMandrake/GimmeSomeSlack.md#north-star",
+ "root_state": "VALIDATED",
+ "root_hash": "c1c7124cf298bf8ea24a161f5d0422e0a7cb644c51999d3aa7e46b8d1ce47bc1",
+ "coverage": null,
+ "floor": {
+  "ref": "concept_floor.json",
+  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "off": []
+ },
+ "exam_waived": null,
+ "waived": [
+  {
+   "id": "w1",
+   "scope": "I don't much care about savegame continuity",
+   "date": "2026-11-02",
+   "ref": "OWNER:1793590546413059482"
+  }
+ ],
+ "advisory": [
+  "Each of the four looks is judged by his eye; none is reject-level on its own (OWNER:1793590546413059482)"
+ ],
+ "leaves": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "conduit Graphic alpha 0 on PowerConduit and WaterproofConduit; cord meshes present per edge; HiddenConduit cells own no cord edge; overlay connector count unchanged; captures at play zoom",
+   "tier_reason": "drawing and the def's graphic are only real in a running game; a dev quicktest colony on the minimal list shows them in about 90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "conduit_invisible",
+   "root": [
+    "conduit_reads_invisible"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, at play zoom over a powered room in each of the four looks, sees no vanilla conduit pipe anywhere: only loose cords show where power goes, while the power overlay still draws its connector lines. It must not read as vanilla conduit reskinned, or as a run with neither pipe nor cord.",
+   "scenario": "Lay a conduit run with a battery, a generator and two consumers in each look; capture at play zoom with the overlay off and on; then lay a vanilla HiddenConduit run beside it.",
+   "false_pass": [
+    "the conduit def's graphic swapped for a cord texture laid on the conduit cell, so a pipe-shaped cord follows the grid exactly",
+    "the conduit hidden and no cord drawn, so the room reads clean because nothing is drawn"
+   ],
+   "red": "conduit cells still draw the vanilla pipe under the cords, or a hidden-conduit run grows cords it should not",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: a room with no conduit pipe, only cords",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "per edge: drawn length / chord at least 1.4; no bend tighter than the minimum radius; at least one excursion of a cell or more off the conduit line per edge longer than four cells; captures",
+   "tier_reason": "cord geometry is built in game from the live grid; a quicktest colony gives it in 90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "cords_lie_slack",
+   "root": [
+    "cord_lies_slack_in_loops",
+    "never_taut_straight_cord"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, at play zoom over a workshop floor of a dozen devices, sees every cord between two nodes lying in broad loose loops and coils, visibly much longer than the straight line between its ends, resisting tight turns, wandering off the conduit line and back. It must not read as a taut straight cable, a cord tracing the conduit cell by cell, or a hairpin kink.",
+   "scenario": "Stage a 12x12 workshop with conduit in an L, a T and a straight run; read every edge's drawn length against its chord and its minimum bend radius; capture at play zoom.",
+   "false_pass": [
+    "a fixed wavy texture tiled along the conduit, so length is long but the cord still traces the grid",
+    "slack only on the edges the test happens to read"
+   ],
+   "red": "cords are drawn straight between nodes, or follow the conduit cell by cell",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: the floor reads as over-long extension cords",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "every sampled point of every cord curve lies on a walkable cell or on a wall-face stub; each wall crossing has a stub on both faces; each dive has two plates; captures",
+   "tier_reason": "walkability and the drawn curves exist only in game; a quicktest colony gives both",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "cords_meet_walls_at_face",
+   "root": [
+    "cord_meets_wall_at_its_face",
+    "never_cord_across_impassable"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, at play zoom where conduit runs into and through walls and past a rock outcrop, sees each cord pile against the wall and end at the wall's face as if it goes in there, coming out on the other face; no cord is drawn across the top of a wall, rock or any other impassable cell, and an unroutable cord dives under a barrier with a plate on each side. It must not read as a cord painted over a wall top or clipping through rock.",
+   "scenario": "Conduit through a wall, along a wall, round a rock outcrop and into a fully enclosed unroutable pocket; read every cord vertex against walkability; capture both faces of each wall.",
+   "false_pass": [
+    "the cord simply stops a cell short of the wall, so nothing crosses it but nothing meets the face either",
+    "vertices checked only at cell centres while the curve between them crosses the wall"
+   ],
+   "red": "a cord is drawn across the top of a wall or through rock",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: cords pile against walls and end at the wall face",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "for every NodeType.Junction: exactly one JunctionPiece of the look's family; every arm's end within the piece's socket tolerance (CordAudit arm check, blob junctions included); Modern pieces are the PowerStrip art; captures",
+   "tier_reason": "junction nodes and their posed pieces exist only in the live cord graph",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "strip_at_every_junction",
+   "root": [
+    "dense_grid_reads_as_tangle"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, at play zoom over every 3-way and 4-way conduit junction in a base, sees a joining piece there with every cord at that junction plugging into it: in the Modern look the long power strip (at a 3-way it takes two cords plus its own lead), in the Industrial look the junction box, in Scrapper and Futuristic their own connector. It must not read as a cord passing through the junction with nothing joining it, a strip with a cord stopping short of it, or the splitter box in the Modern look.",
+   "scenario": "Build a grid holding ten 3-way and ten 4-way junctions in each look, some inside a dense block; count joining pieces and plugged cord ends per junction; capture each look.",
+   "false_pass": [
+    "one strip per room rather than per junction",
+    "the strip drawn while the cords end at the junction cell centre beside it"
+   ],
+   "red": "a 3-way junction draws no joining piece, or the Modern look still draws the splitter box at junctions",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: cords plugging into a strip or connector at every junction",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "tangle-pile pieces present over the block; cord crossings per cell above the sparse room's; a judge agent's read of the capture against the parallel-lines reject picture",
+   "tier_reason": "the pile is a live drawing; a quicktest capture shows it",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "dense_block_tangle",
+   "root": [
+    "dense_grid_reads_as_tangle"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, at play zoom over a 6x6 block packed with conduit, sees one tangled heap of wires and power strips all swirled together. It must not read as tidy parallel lines, a grid of identical cords, or an empty square.",
+   "scenario": "Fill a 6x6 block with conduit in the Modern look beside a sparse room; capture both; a judge agent compares them against the reject picture of parallel lines.",
+   "false_pass": [
+    "the dense block drawn as many independent slack cords that happen to run parallel"
+   ],
+   "red": "a dense block draws as parallel tidy lines",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: a dense block reads as a tangle",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a bridge read that dumps sampled cord curves per edge, and an offline script that prints the distance table",
+   "tier_reason": "the curves exist only in the live cord graph",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "cord_shape_variation_probe",
+   "root": [
+    "cord_lies_slack_in_loops"
+   ],
+   "leaf_kind": "instrument",
+   "experience": "The log reports, for a set of cord edges of equal length and orientation, how different their drawn shapes are from one another, as a number per pair.",
+   "scenario": "Read every edge's sampled curve from the cord graph, normalise to its chord, and print the pairwise shape distance for edges in the same length class.",
+   "false_pass": [
+    "the distance computed on the edge seeds rather than on the drawn curve"
+   ],
+   "red": "every edge of the same length draws the identical curve, and nothing can tell",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "cord_shape_variation_probe",
+   "oracle_proposed": "every pair of same-class edges above a minimum shape distance (cord_shape_variation_probe); a judge agent predicting his read of the capture",
+   "tier_reason": "same as its instrument: the curves are live",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "cords_never_repeat",
+   "root": [
+    "cord_lies_slack_in_loops"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, at play zoom over a room with many cord runs of the same length side by side, sees no repeated pattern: each cord takes its own loops and coils, like real messy cables strewn across the floor. It must not read as a stamped tile or a row of identical squiggles.",
+   "scenario": "Lay eight parallel conduit runs of the same length in one room; read the shape distance table; capture at play zoom for his eye and a judge agent.",
+   "false_pass": [
+    "variation only in colour while the curve is the same"
+   ],
+   "red": "cords of the same length draw the same curve, so a room shows a repeating stamp",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: no repeating pattern on the floor",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "for every drawn cord: both ends in one PowerNet; each device has exactly one cord end per power connection; no cord end on a pipe slot; the adjacent-feed pump case named",
+   "tier_reason": "PowerNets and drawn cords both exist only in the running game",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "drawing_true_to_grid",
+   "root": [
+    "conduit_reads_invisible"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, reading a base's power only from its cords (the conduit is invisible), is told the truth: every cord joins two things on one power net, every device on a net has a cord reaching it, no device shows a second phantom cable, and no plug goes into a pipe slot. The route may be circuitous. It must not read as a cord joining two separate grids, a device fed by adjacent conduit wearing a second disconnected cable, or a plug in a pipe port.",
+   "scenario": "Stage two separate nets side by side, one cell apart; a pump fed by adjacent conduit that does not pass under it; a device with both power and pipe ports; read every cord edge's two ends against PowerNet membership and port kind.",
+   "false_pass": [
+    "the check reads the conduit graph instead of the drawn cords, so a drawn cross-net cord passes",
+    "the adjacent-feed pump left out of the test"
+   ],
+   "red": "a cord bridges two separate power nets, or the adjacent-fed pump draws a second disconnected cable",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "after the cut: no edge spans the gap; two terminal ends; the powered-net end flagged live, the other dead; after switch-off, live flag clears within 250 ticks; captures",
+   "tier_reason": "destroying a cell and reading PowerNet state needs the running game",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "cut_live_and_dead_ends",
+   "root": [
+    "break_live_and_dead_ends_differ"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, at normal zoom after a conduit cell in a powered line is destroyed, sees two loose ends and no cord across the gap: the end still on power sparks, the far end lies limp and dead; switching the source off makes the live end dead within a few seconds. It must not read as an unbroken cord, both ends sparking, or both dead.",
+   "scenario": "A generator, a run of conduit and a lamp; destroy a middle cell; read both terminal ends' state; switch the generator off and wait one 250-tick poll; capture before and after.",
+   "false_pass": [
+    "the ends drawn but the live/dead state taken from which side is nearer the generator rather than from power",
+    "a line that was never powered reading dead, passing for the switched-off case"
+   ],
+   "red": "a cut leaves both ends sparking, or the cord is still drawn across the gap",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: one cut, a sparking live end and a dead end",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "SliceWindow max slice ms and frame time per action; the touched edge's drawing is current after the action",
+   "tier_reason": "frame time is only real in a running game on his machine; the minimal list keeps other mods' cost out",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "no_stall_on_rewire",
+   "root": [
+    "dense_grid_reads_as_tangle"
+   ],
+   "leaf_kind": "constraint",
+   "experience": "at most 20 ms per frame of cord rebuild on the main thread on Archmagi, his machine, when a wire is placed, cut, dug past or a mast falls in a base of 2000 conduit cells",
+   "scenario": "A 2000-cell conduit base with masts; place a cell, cut one, dig beside one, kill a mast, each alone and then in a burst of ten; read the slice timer and frame time.",
+   "false_pass": [
+    "the rebuild skipped (stale drawing) so the frame is cheap",
+    "only the burst case read, hiding the lone-rebuild cost"
+   ],
+   "red": "a lone rebuild on a large base takes 140 ms on the main thread",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "span altitude layer above pawns and buildings; sag depth above zero; the three bad links refused with their reasons; one PowerNet across the span; captures",
+   "tier_reason": "draw layers and link refusal live in the running game",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "spans_above_everything",
+   "root": [
+    "overhead_span_above_everything"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, at play zoom over a yard where a sagging line crosses from a mast to a far mast over a wall, a building and a walking colonist, sees the span drawn above all of them, sagging between its anchors. It must not read as a line passing under a pawn or a roof, or a ruler-straight wire.",
+   "scenario": "Two masts and a wall bracket linked across a shed and a walkway; a colonist walks under; out-of-range, hostile and non-anchor links attempted; capture.",
+   "false_pass": [
+    "the span drawn above only because nothing stands under it in the capture"
+   ],
+   "red": "an overhead span draws under a pawn or a building, or an out-of-range link is accepted",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: a sagging line crossing to a far mast",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "fallen wire present at ground layer below pawns; live/dead ends per net state; captures",
+   "tier_reason": "killing a mast and drawing the fallen wire needs the running game",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "fallen_span_on_ground",
+   "root": [
+    "downed_span_lies_on_ground",
+    "break_live_and_dead_ends_differ"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, after a mast is killed or a span is cut by an explosion, sees the wire lying on the ground below pawns, its live end sparking and its dead end limp. It must not read as a span still hanging in the air, or a wire that vanished.",
+   "scenario": "A powered span between two masts; kill one mast; on a second span, explode a charge under it; read each fallen wire's layer and ends; capture.",
+   "false_pass": [
+    "the span hidden on cut, so nothing hangs but nothing lies either"
+   ],
+   "red": "a cut span keeps hanging in the air between the masts",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: one wire lying sparking on the ground",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "shock hediff or damage on the hauler and the visitor; none on the re-stringer while on RM_RestringSpan; none on the dead-wire haul; the fixer's path is asserted to cross the sparking end",
+   "tier_reason": "pawn jobs and shock damage are live behaviour",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "fallen_wire_shocks_crossers",
+   "root": [
+    "downed_span_lies_on_ground"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player sees a colonist hauling across a live fallen wire get shocked, and a visitor crossing it shocked too, while the colonist who walks up to re-string that wire is not; a dead fallen wire shocks no one. It must not read as shocks from thin air, a fixer shocked at the job, or a dead wire that still bites.",
+   "scenario": "A live fallen wire across a hauling path; one colonist hauls across it; a visitor walks across; a second colonist takes the re-string job; then cut power and repeat the haul.",
+   "false_pass": [
+    "the fixer exempt because no pawn ever steps on the sparking cell during the test",
+    "every pawn exempt, so no one is shocked and the fixer passes"
+   ],
+   "red": "the colonist re-stringing the wire is shocked, or no one crossing a live wire is",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "alert lists the anchor; a pawn's job is RM_RestringSpan at that anchor; after it, the span exists, one PowerNet spans it, the alert is gone",
+   "tier_reason": "the job and the alert are live",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "restring_cut_span",
+   "root": [
+    "downed_span_lies_on_ground"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player sees a Wire down alert listing the cut anchor, jumps to it, and a colonist goes there on a re-string job and strings the span back up; power flows again and the alert clears. It must not read as a span that heals itself with no colonist, or an alert that stays after the fix.",
+   "scenario": "Cut a powered span; read the alert; let a colonist take RM_RestringSpan; read the span, the net and the alert after; toggle the alert setting off and confirm it hides.",
+   "false_pass": [
+    "the span restored by the test calling the link directly"
+   ],
+   "red": "a cut span never gets a re-string job, or comes back with no colonist doing it",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "tap net draws from the victim's net only; goodwill of the victim faction falls each day after sighting and stops after removal; no drain without a witness",
+   "tier_reason": "factions, goodwill and sight are live",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "tap_steals_and_costs_goodwill",
+   "root": [
+    "overhead_span_above_everything"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player clamps a power tap onto a neighbour's line and sees their power flow one way into the colony; when a pawn of theirs sees the clamp, goodwill with them drains steadily, and removing the clamp stops it. It must not read as free power with no risk, a one-off goodwill hit, or the drain hitting the wrong faction.",
+   "scenario": "A neighbour settlement's powered line on the map; clamp a tap; read power flow; walk one of their pawns into sight; read goodwill over two days; remove the clamp; read again. Control: the clamp with no witness.",
+   "false_pass": [
+    "the goodwill change from another cause (a gift, a raid) in the same window",
+    "power read flowing both ways"
+   ],
+   "red": "a caught tap costs no goodwill, or costs a different faction",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "each run's members report one style; the merged run reports one; captures judged against the four reference sheets",
+   "tier_reason": "style picks and drawing are live",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "four_looks_one_run",
+   "root": [
+    "four_styles_distinguishable",
+    "one_run_one_style"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player, at play zoom over four separate runs built in Scrapper, Industrial, Modern and Futuristic, tells each look apart by its cords, poles and connectors; every piece of one connected run draws in one look, its lamps included, while two runs side by side differ. It must not read as one look recoloured, or a run that changes look midway.",
+   "scenario": "Four runs side by side, one per look, each with a mast and a lamp; join two of them and read the merged run's look; capture.",
+   "false_pass": [
+    "the looks differing only by tint"
+   ],
+   "red": "one connected run draws in two looks, or two looks are indistinguishable",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: four looks told apart",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "per switch: the feature's observable state differs between off and on and returns on flip-back; every Harmony patch maps to one switch; captures for the master",
+   "tier_reason": "patches and drawing are live",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "settings_switch_cleanly",
+   "root": [
+    "conduit_reads_invisible"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player flips the master switch off and sees vanilla conduit and lamp art come back without a restart; flips each feature switch, including keep wires on gravship, cut wires on owner change, drip loops and slide under, and sees just that feature change; the FlowWorks pipe-pole switch moves pipe poles and leaves power poles alone. It must not read as a switch that does nothing, or one that needs a restart.",
+   "scenario": "For the master and each feature switch: read the feature's state, flip it, read again, flip back; pipe-pole switch flipped with GSS master both on and off.",
+   "false_pass": [
+    "the setting value changes while the patch stays applied"
+   ],
+   "red": "turning drip loops off leaves drip loops drawn, or the master switch needs a restart",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the drawing_true_to_grid read passes on the landed ship; with the switch off its stated behaviour holds",
+   "tier_reason": "a gravship launch needs Odyssey's flight and a landing map, more than a quicktest stages reliably; the minimal list with all DLC holds it",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "gravship_keeps_connections",
+   "root": [
+    "conduit_reads_invisible"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player flies a gravship with cords aboard and, after it lands, sees cords that still explain the real connections aboard; the exact drawing may change. It must not read as cords left behind, cords to nothing, or no cords at all.",
+   "scenario": "A gravship with conduit, a battery and two consumers; launch and land; run the drawing-true-to-grid read on the landed ship; repeat with keep wires on gravship off.",
+   "false_pass": [
+    "the read taken before launch"
+   ],
+   "red": "after landing the ship's devices have no cords, or cords lead off the ship",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "offline scan: no ThingDef, texture or class for hoses or reels under src/RimMandrake/GimmeSomeSlack",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "no_hose_in_gss",
+   "root": [
+    "conduit_reads_invisible"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The reader of the mod's defs and source finds no hose, reel or pipe drawing in Gimme Some Slack: it draws power cords only, hoses live in FlowWorks. It must not read as a hose def or texture left behind.",
+   "scenario": "Scan GSS defs and C# for hose, reel and pipe drawing classes and textures.",
+   "false_pass": [
+    "the scan matching only def names, missing a texture folder"
+   ],
+   "red": "a hose reel def still ships in GSS",
+   "tier_proposed": "offline",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "after reload the connectivity and live/dead reads match before save; the repeat and the second order pass the same reads; log clean; frame time under the rewire bar",
+   "tier_reason": "breadth failures show only on his full list in ordinary play with a mid-way reload",
+   "cannot_show": null,
+   "wall_expect_h": 3,
+   "id": "walk_scavenger_base",
+   "root": [
+    "conduit_reads_invisible",
+    "cord_lies_slack_in_loops",
+    "break_live_and_dead_ends_differ",
+    "downed_span_lies_on_ground"
+   ],
+   "leaf_kind": "walk",
+   "experience": "The player plays a scavenger colony on his full list for about a week: wires a workshop with floor cords into strips, strings overhead lines to a far mast, a raid kills a mast and cuts a floor line, a colonist re-strings it, saves mid-way with a wire down, reloads, and finds the cords still telling the truth about the grid.",
+   "scenario": "Fresh colony on his full list; wire a workshop and strings to a mast; let a raid or a charge cut a floor cell and kill a mast; save with the wire down; reload and run the drawing-true-to-grid and live/dead reads; repeat the core action by rewiring a second room; then a second order: string the overhead line first and lay floor cords after; switch the master off and on mid-game.",
+   "false_pass": [
+    "the reload is from a save made before any cut",
+    "the repeat runs on a fresh map"
+   ],
+   "red": "after the reload a cut line draws as whole, or cords join two nets",
+   "tier_proposed": "live_full",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change"
+  }
+ ]
+}
