@@ -348,6 +348,17 @@ def main():
     check("SL4 with only a Dropped hose and no colonist to stage: UNMEASURED, staging recorded (reel1/reel2)",
           sl4["status"] == "UNMEASURED" and (sl4["detail"].get("staging") or {}).get("error") == "no colonist"
           and "dropped(CR4a)" in sl4["detail"] and "carrying(CR4b)" in sl4["detail"], (sl4["status"], str(sl4["detail"])[:200]))
+    # HOSE_SL4_FIX_CARRY_NEVER_STAGED: the census names a reel by its build Position (corner + facing shift); SL4's staging asks
+    # by footprint corner. run4: pawn 410 carried reel (82,75) while _hose_by asked (82,74) by exact tuple -> every field null.
+    import validation_core as VC0
+    hb = PH.Proof._hose_by
+    run4 = {"hoses": [{"reel": [82, 75], "carry": "Carrying", "carrier": 410}, {"reel": [82, 69], "carry": "Dropped"}]}
+    check("SL4 _hose_by finds run4's East reels by their footprint corners (82,74)->(82,75), (82,68)->(82,69)",
+          hb(run4, (82, 74)).get("carrier") == 410 and hb(run4, (82, 68)).get("carry") == "Dropped", run4)
+    every = all(hb({"hoses": [{"reel": list(VC0.reel_pos(c, r)), "carry": "Carrying"}]}, c).get("carry") == "Carrying"
+                for c in (VH0.CREEL, P.CARRY_REEL2) for r in range(4))
+    check("SL4 _hose_by finds both staged reels at every facing", every)
+    check("SL4 _hose_by does not hand back a neighbour's reel", hb(run4, (82, 71)) == {} and hb({"hoses": [{"reel": None}]}, (82, 74)) == {})
     # HW1 (HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS): every laid hose's census wallCross must read 0
     wv = PH.walls_verdict
     laid = lambda i, **kw: dict({"id": i, "reel": [i, 1], "laid": True, "layOk": True, "wallCross": 0, "wallCrossAt": None}, **kw)

@@ -1,0 +1,1 @@
+A1 L2: on a flowworks quicktest map proof_hose --only carry,save_load stages reel 1 Dropped and reel 2 Carrying (staging fields non-null), and SL4_carry_states_survive reads PASS after the save/load

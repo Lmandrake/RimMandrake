@@ -786,8 +786,11 @@ class Proof(object):
     # ---------------------------------------------------------------- the one save (hose half of GSS's old SL1-SL4)
     @staticmethod
     def _hose_by(c, reel):
+        # `reel` is the footprint corner the staging built at; the census names the reel's build Position, which a facing
+        # shifts (REEL_POS_SHIFT: East (0,1)). An exact tuple match never found an East reel, so SL4 read every carry null
+        # though pawn 410 carried reel (82,75) (HOSE_SL4_FIX_CARRY_NEVER_STAGED, run4). Match like B.hose: V.reel_at.
         for h in c.get("hoses") or []:
-            if tuple(h["reel"]) == tuple(reel):
+            if V.reel_at(h.get("reel"), reel):
                 return h
         return {}
 
