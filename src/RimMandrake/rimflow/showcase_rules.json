@@ -1,0 +1,9 @@
+{
+ "_doc": "The showcase set (owner, 2026-11-05: multiple showcases, as orthogonal as possible, each later one featuring ONLY very different functionality, until efficient coverage is had). Read by designer_stage.py showcase_errors at stage 3 (Write) and stage 5 (Lock), and by `designer_stage.py showcases <dir>`. Doctrine: roles/designer_scene_contract.md section 'The showcase set'. A coverage unit is a record.json inventory capability (see units_doc).",
+ "max_overlap": 0.25,
+ "max_overlap_doc": "share of a showcase's exercised capabilities (2nd showcase on) that earlier showcases already exercised. Above it, every overlapped capability needs a staging reason in overlap_why. Showcase 1 has no prior, so 0.",
+ "min_new_after_first": 3,
+ "min_new_doc": "a 2nd or later showcase must newly exercise at least this many capabilities; fewer and those capabilities are cheaper as ordinary scene/leaf checks (coverage_rest). This is the stop criterion's 'efficient' half.",
+ "status": "UNMEASURED: both numbers are a first guess (2026-11-05), not yet replayed against a real concept's showcase set. Calibrate on the first two concepts that reach stage 3 (FlowWorks first) and record what changed and why here.",
+ "units_doc": "inventory entries with impl == present (whatever their scope: a built capability ships until it is removed) or scope in approved/opened_by_owner. A built entry scoped out may only be covered through coverage_rest, never by a showcase. Leaves are covered by the existing rule (each experience/walk leaf off the offline tier has its own acceptance scene), which the showcase set never replaces."
+}

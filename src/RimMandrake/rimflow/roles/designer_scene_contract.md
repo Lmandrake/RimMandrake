@@ -44,4 +44,54 @@ most mods do not have mature testing scripts. That's part of what I'd like Desig
 
 The intent behind a scene is the approved requirement it cites (`requirement`), or the exploration's `question`.
 
+## The showcase set
+
+Owner, 2026-11-05: *"Maybe it might be good to add the idea of multiple showcases then that are as orthogonal as
+possible. The Other showcases (if present) should feature ONLY very different functionality compared to the prior ones,
+until efficient coverage is had."*
+
+A mod's face is an **ordered list of showcases**, not one first-judged scene. A showcase is a group of scenes from this
+file that he judges as the mod's face. In `scenes.json`, beside `scenes`:
+
+```
+"showcases": [
+ {"id": "moat", "scenes": ["<scene id>", ...], "exercises": ["<inventory id>", ...], "source": ["OWNER:<tsn>"],
+  "decision": "<record.json decision id>"},
+ {"id": "...", "scenes": [...], "exercises": [...], "overlap_why": {"<inventory id>": "why staging needs it"}}],
+"coverage_rest": [{"capability": "<inventory id>", "by": ["<scene id or leaf id>"], "why": "why an ordinary check is cheaper"}]
+```
+
+- **The unit** is a record.json inventory capability: every built entry (`impl: present`, whatever its scope: it ships
+  until it is removed) and every entry in scope (`approved`, `opened_by_owner`). A built entry scoped `out` is covered
+  only through `coverage_rest` (its removal or absence check), never by a showcase. `exercises` names the capabilities
+  the showcase really uses in play, not those it merely has on the map.
+- **Showcase 1 is the flagship he picked**: its `decision` names the record.json decision (speaker `owner`) that records
+  his pick, with `"flagship": "<this showcase id>"`, and its `source` shares that decision's `OWNER:<tsn>`. His root
+  approval is not a pick. If he has picked none, ask at stage 2. A mod whose only units are built but scoped out has no
+  showcase: `coverage_rest` covers them.
+- **Each next showcase is chosen greedily**: of the candidates, the one that newly exercises the most capabilities no
+  earlier showcase exercised. The program checks this against every later showcase in the list: none may have offered
+  more new capabilities at an earlier position. It features ONLY very different functionality: what it shares with earlier showcases is
+  the minimum needed to stage it. The numbers are in `src/RimMandrake/rimflow/showcase_rules.json`: `max_overlap` 0.25
+  (share of its exercised capabilities that earlier showcases already exercised) and `min_new_after_first` 3. Both are
+  **UNMEASURED** first guesses until replayed against real concepts. Above the overlap limit, every shared capability
+  carries its staging reason in `overlap_why`. A scene he named that is not orthogonal (FlowWorks' pit trap and island
+  bridges both reuse the moat's pits and drawbridges) stays a scene; it is a showcase only if it passes these rules, or
+  its shared capabilities carry `overlap_why`.
+- **Stop criterion: efficient coverage.** Add showcases until no candidate would newly exercise at least
+  `min_new_after_first` capabilities within the overlap limit. Then stop: every capability left is listed in
+  `coverage_rest` with the cheaper ordinary scene or leaf check that covers it (`by`: a scene id here or a tree leaf id)
+  and `why`. Coverage is had when every unit is exercised by a showcase or listed in `coverage_rest`; no capability is
+  silently uncovered.
+- **Interactions stay.** Orthogonality chooses showcases; it deletes no check. The per-mod `walk` leaf, every leaf whose
+  point IS an interaction, and every `interaction` scene remain whatever they share with a showcase. Each experience or
+  walk leaf still has its own acceptance scene; a showcase never stands in for one.
+
+What the program checks (`designer_stage.py showcases <dir>` prints it; stage 3 and stage 5 refuse on it): per
+showcase the new-coverage count and overlap; showcase 1 is bound to his recorded pick; a later showcase newly exercises
+at least `min_new_after_first`, and no later showcase would have added more at its position (greedy order); an overlap over the limit has a staging
+reason for each shared capability; each `coverage_rest` entry names a real scene or leaf and a why; and every unit is
+covered. Whether two showcases are "very different" in play is a judgement the exam and his review make, not the
+program.
+
 Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation; the rules are in `designer.md`.

@@ -1,8 +1,8 @@
 # Designer packet: Stage 3, Write
 
 Injected with `designer.md` and `designer_scene_contract.md`. You write `sheet.md`, the tree, `plan.md`, `scenes.json`
-and `floor.json`. Stage 3 is `done` when `concept_tree.py lint` passes and `designer_stage.py check` accepts the scenes
-and the floor. 🔑 Ask him to approve the root text **before** this stage (it is stage 1's result): the tree is written once,
+and `floor.json`. Stage 3 is `done` when `concept_tree.py lint` passes and `designer_stage.py check` accepts the scenes,
+the showcase set and the floor. 🔑 Ask him to approve the root text **before** this stage (it is stage 1's result): the tree is written once,
 against an approved root, and then examined, signed and gated at that version.
 
 ## The sheet
@@ -78,5 +78,13 @@ leaf: write your candidate line and a reject picture and let him correct them; k
 Structure, reuse, order (instrument leaves first), risks, three designs if there is a real choice. Its proof obligations
 are not disposable: every scene lives in `scenes.json` (checked), and every missing script entry point, control or
 restoration step is a filed build item named in that scene's `entry_point_item`. You write no code.
+
+## The showcase set
+
+`scenes.json` also carries the ordered `showcases` and the `coverage_rest` list (`designer_scene_contract.md`, "The
+showcase set"): showcase 1 is his flagship, each next one is the greedy pick of most new capabilities with only very
+different functionality, and you stop when every built or in-scope inventory capability is exercised by a showcase or
+listed with the cheaper scene or leaf check that covers it. Run `designer_stage.py showcases <dir>` before `done`.
+Interaction checks and the `walk` leaf stay; orthogonality chooses showcases and deletes nothing.
 
 Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation; the rules are in `designer.md`.

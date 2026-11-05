@@ -25,6 +25,7 @@ One concept folder, design/concepts/<Mod>/, holds the persisted state and the ch
   status   <dir>                           stage, budget, staleness, open recovery
   scene-begin <dir> --scene S --recovery TEXT | scene-end <dir> --scene S | scene-hold <dir> --scene S --until TEXT
   manifest                                 the stage -> packet files table, with hashes
+  showcases <dir>                          the showcase set: per showcase new coverage and overlap, what is uncovered
 
 Exit: 0 ok, 1 refused (the reason on stderr), 2 unreadable.
 What this cannot do, said plainly: injecting a packet proves it was supplied, not followed; the record's sources are
@@ -568,6 +569,162 @@ def scene_errors(sc, tree=None, repo=REPO):
     return errs
 
 
+# ---------------------------------------------------------------- the showcase set
+# Owner, 2026-11-05: several showcases, as orthogonal as possible; each later one features ONLY very different
+# functionality, until efficient coverage is had. Doctrine: roles/designer_scene_contract.md "The showcase set".
+
+SHOWCASE_RULES = os.path.join(HERE, "showcase_rules.json")
+UNIT_SCOPES = ("approved", "opened_by_owner")
+
+
+def load_showcase_rules(path=None):
+    path = path or SHOWCASE_RULES
+    r = read_json(path)
+    if not isinstance(r, dict):
+        raise Refused("%s is missing or not an object" % path)
+    mo, mn = r.get("max_overlap"), r.get("min_new_after_first")
+    if isinstance(mo, bool) or not isinstance(mo, (int, float)) or not 0 <= mo < 1 \
+            or isinstance(mn, bool) or not isinstance(mn, int) or mn < 1:
+        raise Refused("%s needs max_overlap in [0, 1) and min_new_after_first >= 1" % path)
+    return r
+
+
+def coverage_units(rec):
+    """The capabilities a showcase set must account for: every built inventory entry (whatever its scope: a built
+    thing scoped out still ships until removed) and every unbuilt one in scope."""
+    out = []
+    for e in (rec or {}).get("inventory") or []:
+        if not isinstance(e, dict) or not CT.txt(e.get("id")):
+            continue
+        if e.get("impl") == "present" or e.get("scope") in UNIT_SCOPES:
+            out.append(e["id"])
+    return out
+
+
+def out_units(rec):
+    return {e.get("id") for e in (rec or {}).get("inventory") or [] if isinstance(e, dict) and e.get("scope") == "out"}
+
+
+def showcase_table(sc, rec, tree=None, owner_ev=None, repo=REPO, rules=None):
+    """-> (rows, errs). One row per showcase in order: new-coverage count, overlap share and the overlapped units;
+    errs = why the showcase set cannot be accepted. The program checks what is countable (coverage, overlap, order,
+    the stop criterion); whether a showcase's functionality is 'very different' in play is the reviewer's to read."""
+    rules = rules or load_showcase_rules()
+    limit, min_new = rules["max_overlap"], rules["min_new_after_first"]
+    units = coverage_units(rec)
+    uset, scoped_out = set(units), out_units(rec)
+    decisions = {x.get("id"): x for x in (rec or {}).get("decisions") or [] if isinstance(x, dict)}
+    errs, rows = [], []
+    if not isinstance(sc, dict):
+        return rows, ["scenes.json is missing, so no showcase set"]
+    scenes = {s.get("id") for s in lst(sc.get("scenes")) if isinstance(s, dict) and CT.txt(s.get("id"))}
+    leaves = {x.get("id") for x in CT.lst((tree or {}).get("leaves")) if isinstance(x, dict)} \
+        if isinstance(tree, dict) else set()
+    shows = sc.get("showcases")
+    if not isinstance(shows, list) or not shows:
+        if set(units) - scoped_out:
+            errs.append("scenes.json names no showcases: the mod's face is an ordered list, showcase 1 his pick")
+        shows = []
+    seen = set()
+    for i, s in enumerate(shows):
+        w = "showcase[%s]" % (s.get("id", i + 1) if isinstance(s, dict) else i + 1)
+        if not isinstance(s, dict) or not CT.txt(s.get("id")):
+            errs.append("%s: not an object with an id" % w)
+            continue
+        refs = [r for r in lst(s.get("scenes")) if CT.txt(r)]
+        if not refs:
+            errs.append("%s: names no scenes (the scenes.json scene ids it is staged by)" % w)
+        for r in refs:
+            if r not in scenes:
+                errs.append("%s: scene %s is not in scenes.json" % (w, r))
+        ex = [u for u in lst(s.get("exercises")) if CT.txt(u)]
+        if len(set(ex)) != len(ex):
+            errs.append("%s: exercises lists a capability twice" % w)
+        ex = list(dict.fromkeys(ex))
+        if not ex:
+            errs.append("%s: exercises names no capability" % w)
+        for u in ex:
+            if u not in uset:
+                errs.append("%s: exercises %s, which is not a built or in-scope inventory capability" % (w, u))
+            elif u in scoped_out:
+                errs.append("%s: exercises %s, which is scoped out: list it in coverage_rest (the check that covers "
+                            "it until removal), never in a showcase" % (w, u))
+        ex = [u for u in ex if u in uset]
+        new = [u for u in ex if u not in seen]
+        over = [u for u in ex if u in seen]
+        share = (float(len(over)) / len(ex)) if ex else 0.0
+        if i == 0:
+            src = [x for x in lst(s.get("source")) if isinstance(x, str) and x.startswith("OWNER:")]
+            dec = decisions.get(s.get("decision")) or {}
+            dsrc = [x for x in lst(dec.get("source")) if isinstance(x, str)]
+            if not src:
+                errs.append("%s: showcase 1 is the flagship he picked; source needs his OWNER:<tsn>" % w)
+            else:
+                errs += source_errors(src, w, repo, owner_ev)
+            # binds his words to THIS showcase: the record.json decision (speaker owner) whose `flagship` field
+            # names this showcase id and cites the same event. A root approval, or any owner decision that does
+            # not name this showcase as his flagship, is not his pick.
+            if dec.get("speaker") != "owner" or not set(src) & set(dsrc) or dec.get("flagship") != s["id"]:
+                errs.append("%s: showcase 1 names no record.json decision (decision) of his picking it: an owner "
+                            "decision with flagship: \"%s\" that cites the same OWNER event" % (w, s["id"]))
+        else:
+            if len(new) < min_new:
+                errs.append("%s: newly exercises %d capabilit%s, under min_new_after_first %d; those belong in "
+                            "coverage_rest as ordinary scene/leaf checks" % (w, len(new), "y" if len(new) == 1 else
+                                                                             "ies", min_new))
+            # greedy over the chosen set: when this one was picked, no later showcase offered more new coverage
+            for j, t in enumerate(shows[i + 1:], i + 2):
+                if isinstance(t, dict):
+                    tn = len({u for u in lst(t.get("exercises")) if u in uset} - seen)
+                    if tn > len(new):
+                        errs.append("%s: newly exercises %d, but showcase %d (%s) would have added %d here: the order "
+                                    "is not greedy (most new coverage first)" % (w, len(new), j, t.get("id"), tn))
+            if share > limit:
+                why = s.get("overlap_why") if isinstance(s.get("overlap_why"), dict) else {}
+                bare = [u for u in over if not CT.txt(why.get(u))]
+                if bare:
+                    errs.append("%s: overlap %.2f with earlier showcases is over the limit %.2f and %s ha%s no staging "
+                                "reason in overlap_why" % (w, share, limit, ", ".join(bare),
+                                                           "s" if len(bare) == 1 else "ve"))
+        rows.append({"id": s["id"], "order": i + 1, "exercises": len(ex), "new": len(new), "overlap": round(share, 3),
+                     "overlapped": over})
+        seen.update(ex)
+    rest = {}
+    for i, c in enumerate(lst(sc.get("coverage_rest"))):
+        w = "coverage_rest[%s]" % (c.get("capability", i) if isinstance(c, dict) else i)
+        if not isinstance(c, dict) or not CT.txt(c.get("capability")):
+            errs.append("%s: not an object with a capability" % w)
+            continue
+        u = c["capability"]
+        if u not in uset:
+            errs.append("%s: %s is not a built or in-scope inventory capability" % (w, u))
+        elif u in seen:
+            errs.append("%s: a showcase already exercises %s; coverage_rest lists only the rest" % (w, u))
+        by = [b for b in lst(c.get("by")) if CT.txt(b)]
+        if not by:
+            errs.append("%s: by names no scene or leaf that checks it" % w)
+        for b in by:
+            if b not in scenes and b not in leaves:
+                errs.append("%s: by %s is neither a scenes.json scene nor a tree leaf" % (w, b))
+        if not CT.txt(c.get("why")):
+            errs.append("%s: no why (why an ordinary check is the cheaper cover)" % w)
+        rest[u] = by
+    bare = [u for u in units if u not in seen and u not in rest]
+    if bare:
+        errs.append("coverage: %d capabilit%s exercised by no showcase and no scene: %s (a showcase or a "
+                    "coverage_rest entry each; none is silently uncovered)" % (
+                        len(bare), "y is" if len(bare) == 1 else "ies are", ", ".join(bare)))
+    return rows, errs
+
+
+def showcase_check(sc, rec, tree, owner_ev, repo=REPO, rules=None):
+    """showcase_table's errs; an unreadable rules file is a refusal reason, never a pass."""
+    try:
+        return showcase_table(sc, rec, tree, owner_ev, repo, rules)[1]
+    except Refused as e:
+        return [str(e)]
+
+
 def floor_errors(fl, tree=None, floor=None, owner_ev=None):
     floor = floor or CT.load_floor()[0]
     if not isinstance(fl, dict) or not isinstance(fl.get("lines"), dict):
@@ -719,12 +876,22 @@ def result_errors(res, d, st, repo=REPO):
         errs += ["lint: %s" % e for e in lint_errs]
         tree = CT.load(d) if not lint_errs else None
         errs += scene_errors(read_json(os.path.join(d, "scenes.json")), tree, repo)
+        errs += ["showcases: %s" % e for e in showcase_check(read_json(os.path.join(d, "scenes.json")), rec, tree,
+                                                              owner_ev, repo)]
         errs += floor_errors(read_json(os.path.join(d, "floor.json")), tree, owner_ev=owner_ev)
     elif stage == 4:
         errs += exam_errors(read_json(os.path.join(d, "exam.json")), d, st, repo)
     elif stage == 5:
         gate_errs, _ = CT.gate(d, repo)
         errs += ["gate: %s" % e for e in gate_errs]
+        # the lock refuses while a capability is exercised by no showcase and no scene (record.json can move after
+        # stage 3: an inventory line added since then is caught here)
+        try:
+            tree = CT.load(d)
+        except (FileNotFoundError, ValueError):
+            tree = None
+        errs += ["showcases: %s" % e for e in showcase_check(read_json(os.path.join(d, "scenes.json")), rec, tree,
+                                                              owner_ev, repo)]
     return errs
 
 
@@ -1029,6 +1196,8 @@ def main(argv=None):
         if name == "scene-hold":
             x.add_argument("--until", required=True)
     sub.add_parser("manifest")
+    sub.add_parser("showcases", help="per showcase: new coverage, overlap; the capabilities left uncovered").add_argument(
+        "dir")
     a = p.parse_args(argv)
     try:
         if a.cmd == "manifest":
@@ -1055,6 +1224,22 @@ def main(argv=None):
             return 1 if errs else 0
         elif a.cmd == "status":
             print(json.dumps(status(a.dir), indent=1))
+        elif a.cmd == "showcases":
+            try:
+                tree = CT.load(a.dir)
+            except (FileNotFoundError, ValueError):
+                tree = None
+            rules = load_showcase_rules()
+            rows, errs = showcase_table(read_json(os.path.join(a.dir, "scenes.json")),
+                                        read_json(os.path.join(a.dir, "record.json")), tree, CT.owner_events(REPO),
+                                        REPO, rules)
+            print("limits: max_overlap %s, min_new_after_first %s (%s)" % (
+                rules["max_overlap"], rules["min_new_after_first"], str(rules.get("status", ""))[:40]))
+            for r in rows:
+                print("%d %-28s exercises %2d  new %2d  overlap %.2f  %s" % (
+                    r["order"], r["id"], r["exercises"], r["new"], r["overlap"], ",".join(r["overlapped"])))
+            print("\n".join(errs) if errs else "showcase set accepted")
+            return 1 if errs else 0
         elif a.cmd == "unblock":
             unblock(a.dir, a.why)
         elif a.cmd == "scene-begin":

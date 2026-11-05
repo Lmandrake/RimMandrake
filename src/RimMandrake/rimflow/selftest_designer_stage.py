@@ -365,8 +365,19 @@ def main():
               "")
         refusals_scene_floor(repo, tree, good, flood, inter, expl, lines, floor)
         refusals_record_result(tmp, repo, tree)
+        refusals_showcases(repo, root_src, good, flood, tree)
+        show = [{"id": "ladder_show", "scenes": ["climb"], "exercises": ["ladder"], "source": [root_src],
+                 "decision": "d_flag"}]
+        flag = {"id": "d_flag", "text": "judged first on the ladder climb", "source": [root_src], "speaker": "owner",
+                "flagship": "ladder_show"}
+        rec["decisions"] = [flag]
+        put(d, "record.json", rec)
         put(d, "scenes.json", {"scenes": [good, flood]})
         put(d, "floor.json", {"lines": lines})
+        ok, errs = run_cycle(d, repo, "run12a")
+        check("stage 3: scenes.json with no showcase set is refused (the mod's face is a list, showcase 1 his pick)",
+              not ok and any("names no showcases" in e for e in errs), errs)
+        put(d, "scenes.json", {"scenes": [good, flood], "showcases": show})
         ok, errs = run_cycle(d, repo, "run12")
         check("stage 3 done with lint, scenes and floor valid -> stage 4", ok and DS.load_state(d)["stage"] == 4, errs)
 
@@ -417,7 +428,7 @@ def main():
         ok, errs = DS.close_run(d, "run17", 1000, repo=repo.root)
         check("late owner correction: stage 2 cannot finish until the record takes his correction in",
               not ok and any("not taken in" in e for e in errs), errs)
-        rec["decisions"] = [{"id": "d_steel", "text": "steel ladders only", "source": steel, "speaker": "owner"}]
+        rec["decisions"] = [flag, {"id": "d_steel", "text": "steel ladders only", "source": steel, "speaker": "owner"}]
         put(d, "record.json", rec)
         ok, errs = run_cycle(d, repo, "run17b")
         check("stage 2 done clears the must_cite list it was reopened with", ok and "must_cite" not in DS.load_state(d),
@@ -429,7 +440,7 @@ def main():
         ok, errs = run_cycle(d, repo, "run19")
         check("stage 4 done with a fresh exam -> stage 5", ok and DS.load_state(d)["stage"] == 5, errs)
         # an artifact edit after the exam invalidates stage 3 onward
-        put(d, "scenes.json", {"scenes": [good, flood, expl]})
+        put(d, "scenes.json", {"scenes": [good, flood, expl], "showcases": show})
         text, _ = DS.open_run(d, "run20", repo=repo.root)
         check("an edited scenes.json after the exam reopens stage 3", DS.load_state(d)["stage"] == 3 and
               "scenes" in text, DS.load_state(d)["stage"])
@@ -442,6 +453,11 @@ def main():
         check("stage 5: done with a failing gate is refused", ok and ok2 and not ok3
               and any("gate:" in e for e in errs3), (errs, errs2, errs3))
         CT.gate = lambda dd, rr=None, ff=None: ([], [])
+        put(d, "record.json", dict(rec, inventory=rec["inventory"] + [inv(id="rope", what="a rope")]))
+        ok, errs = run_cycle(d, repo, "run23b")
+        check("stage 5: the lock is refused while an inventory capability is exercised by no showcase and no scene",
+              not ok and any("exercised by no showcase and no scene: rope" in e for e in errs), errs)
+        put(d, "record.json", rec)
         ok, errs = run_cycle(d, repo, "run24")
         st = DS.load_state(d)
         check("stage 5 done with the gate passing -> locked", ok and st["status"] == "locked", errs)
@@ -503,6 +519,129 @@ def main():
 
 
 # ---- one refusal per branch: each mutates ONE field of a clean baseline and names the refusal it must draw
+def refusals_showcases(repo, root_src, good, flood, tree):
+    """The showcase set (owner, 2026-11-05): orthogonal showcases until efficient coverage, numbers in
+    showcase_rules.json."""
+    rules = {"max_overlap": 0.25, "min_new_after_first": 3}
+    owner_ev = CT.owner_events(repo.root)
+    units = "abcdefghij"
+    other = repo.said("the pit should be deep", item="SOME_OTHER_ITEM_ENTIRELY")
+    rec = {"inventory": [inv(id=u, what=u) for u in units] + [
+        inv(id="idea", impl="absent", search_scope="src", scope="not_opened")],
+        "decisions": [{"id": "d_flag", "text": "judged first", "source": [root_src], "speaker": "owner", "flagship": "flag"},
+                      {"id": "d_agent", "text": "judged first", "source": [root_src], "speaker": "agent",
+                       "flagship": "flag"},
+                      {"id": "d_root", "text": "the root is approved", "source": [root_src], "speaker": "owner"}]}
+    scenes = [dict(good, id=s) for s in ("s1", "s2", "s3", "s4")] + [flood]
+    s1 = {"id": "flag", "scenes": ["s1"], "exercises": ["a", "b", "c"], "source": [root_src], "decision": "d_flag"}
+    s2 = {"id": "two", "scenes": ["s2"], "exercises": ["d", "e", "f"]}
+    s3 = {"id": "three", "scenes": ["s3"], "exercises": ["g", "h", "i"]}
+    rest = [{"capability": "j", "by": ["flood_ok"], "why": "one leaf check covers it"}]
+
+    def st(shows, rest_=rest, rec_=rec, sc_=scenes):
+        return DS.showcase_table({"scenes": sc_, "showcases": shows, "coverage_rest": rest_}, rec_, tree, owner_ev,
+                                 repo.root, rules)
+    rows, errs = st([s1, s2, s3])
+    check("showcases: the baseline set is accepted, with new coverage 3/3/3 and overlap 0 reported",
+          errs == [] and [r["new"] for r in rows] == [3, 3, 3] and [r["overlap"] for r in rows] == [0, 0, 0],
+          (rows, errs))
+    check("showcases: an unbuilt, unopened inventory line is not a unit", DS.coverage_units(rec) == list(units),
+          DS.coverage_units(rec))
+    gone = dict(rec, inventory=rec["inventory"] + [inv(id="gone", scope="out")])
+    check("showcases: a BUILT capability scoped out is still a unit (it ships until removed)",
+          "gone" in DS.coverage_units(gone), DS.coverage_units(gone))
+    refuses("showcases: a built scoped-out capability with no cover is refused",
+            st([s1, s2, s3], rec_=gone)[1], "exercised by no showcase and no scene: gone")
+    refuses("showcases: a showcase exercising a scoped-out capability is refused (coverage_rest only)",
+            st([s1, s2, dict(s3, exercises=["g", "h", "i", "gone"])], rec_=gone)[1], "scoped out")
+    check("showcases: a built scoped-out capability in coverage_rest is accepted",
+          st([s1, s2, s3], rec_=gone, rest_=rest + [{"capability": "gone", "by": ["s4"], "why": "removal check"}])[1]
+          == [], "")
+    only_out = {"inventory": [inv(id="rope", scope="out")]}
+    check("showcases: a set whose only units are built-but-scoped-out passes on coverage_rest alone (no showcase)",
+          DS.showcase_table({"scenes": scenes, "showcases": [],
+                             "coverage_rest": [{"capability": "rope", "by": ["s4"], "why": "removal check"}]},
+                            only_out, tree, owner_ev, repo.root, rules)[1] == [], "")
+    rows, errs = st([s1, dict(s2, exercises=["a", "d", "e", "f"]), s3])
+    check("showcases: overlap at the limit (1 of 4 = 0.25) is accepted and reported with the shared capability",
+          errs == [] and rows[1]["overlap"] == 0.25 and rows[1]["overlapped"] == ["a"], (rows, errs))
+    over = dict(s2, exercises=["a", "b", "d", "e", "f"])
+    rows, errs = st([s1, over, s3])
+    refuses("showcases: overlap 0.40 over the limit with no staging reason is refused", errs, "no staging reason")
+    check("showcases: the refusal names the overlap and the bare capabilities", rows[1]["overlap"] == 0.4 and
+          any("a, b have no staging reason" in e for e in errs), errs)
+    rows, errs = st([s1, dict(over, overlap_why={"a": "the raid needs the moat to reach the pit", "b": "x"}), s3])
+    check("showcases: over the limit with a staging reason for every shared capability is accepted", errs == [], errs)
+    refuses("showcases: a reason for only some shared capabilities is refused",
+            st([s1, dict(over, overlap_why={"a": "staging"}), s3])[1], "b has no staging reason")
+    refuses("showcases: a later showcase with fewer than min_new_after_first new capabilities is refused",
+            st([s1, dict(s2, exercises=["d", "e"]), s3], rest_=rest + [
+                {"capability": "f", "by": ["s4"], "why": "cheap"}])[1], "under min_new_after_first 3")
+    big = dict(s3, exercises=["g", "h", "i", "j"])
+    refuses("showcases: a later showcase newly exercising more than the one before it is refused (not greedy)",
+            st([s1, s2, big], rest_=[])[1], "the order is not greedy")
+    # GPT review counterexample: counts 1,3,3 look non-increasing, but showcase 3 offered 4 new when 2 was picked
+    zrec = dict(rec, inventory=rec["inventory"] + [inv(id="z", what="z")])
+    refuses("showcases: greedy is checked against every later chosen showcase, not only the next count",
+            st([dict(s1, exercises=["z"]), dict(s2, exercises=["a", "b", "c"]),
+                dict(s3, exercises=["a", "d", "e", "f"])], rec_=zrec,
+               rest_=[{"capability": u, "by": ["s4"], "why": "cheap"} for u in "ghij"])[1],
+            "showcase 3 (three) would have added 4 here")
+    check("showcases: showcase 1 is exempt from min_new and the greedy order (his pick)",
+          st([dict(s1, exercises=["a"]), dict(s2, exercises=["b", "c", "d", "e", "f"]),
+              dict(s3, exercises=["g", "h", "i"])])[1] == [], "")
+    refuses("showcases: showcase 1 without his OWNER source is refused",
+            st([dict(s1, source=["log.md#L3"]), s2, s3])[1], "flagship he picked")
+    refuses("showcases: showcase 1 citing a real but unrelated OWNER event is refused (not bound to his pick)",
+            st([dict(s1, source=[other]), s2, s3])[1], "names no record.json decision")
+    refuses("showcases: showcase 1 bound to his root approval (same OWNER event, no flagship pick) is refused",
+            st([dict(s1, decision="d_root"), s2, s3])[1], "names no record.json decision")
+    refuses("showcases: showcase 1 bound to his pick of ANOTHER showcase id is refused",
+            st([dict(s1, id="other_face"), s2, s3])[1], "names no record.json decision")
+    refuses("showcases: showcase 1 bound to an agent's decision is refused",
+            st([dict(s1, decision="d_agent"), s2, s3])[1], "names no record.json decision")
+    refuses("showcases: showcase 1 citing an OWNER event that does not exist is refused",
+            st([dict(s1, source=["OWNER:99999999"]), s2, s3])[1], "finds no event")
+    refuses("showcases: exercising an unbuilt, unopened capability is refused",
+            st([s1, dict(s2, exercises=["d", "e", "f", "idea"]), s3])[1], "not a built or in-scope")
+    refuses("showcases: a showcase naming a scene that is not in scenes.json is refused",
+            st([s1, dict(s2, scenes=["nowhere"]), s3])[1], "scene nowhere is not in scenes.json")
+    refuses("showcases: a capability covered by no showcase and no coverage_rest is refused (stop criterion)",
+            st([s1, s2, s3], rest_=[])[1], "exercised by no showcase and no scene: j")
+    refuses("showcases: coverage_rest naming no real scene or leaf is refused",
+            st([s1, s2, s3], rest_=[dict(rest[0], by=["ghost"])])[1], "neither a scenes.json scene nor a tree leaf")
+    refuses("showcases: coverage_rest without a why is refused",
+            st([s1, s2, s3], rest_=[dict(rest[0], why="")])[1], "no why")
+    refuses("showcases: coverage_rest listing a capability a showcase exercises is refused",
+            st([s1, s2, s3], rest_=rest + [{"capability": "a", "by": ["s1"], "why": "x"}])[1], "lists only the rest")
+    refuses("showcases: no showcases at all while capabilities exist is refused", st([])[1], "names no showcases")
+    check("showcases: a mod with no unit needs no showcase", st([], rest_=[], rec_={"inventory": []})[1] == [], "")
+    tmp_rules = os.path.join(repo.root, "bad_rules.json")
+    with open(tmp_rules, "w") as f:
+        json.dump({"max_overlap": 1.5, "min_new_after_first": 3}, f)
+    real_path = DS.SHOWCASE_RULES
+    DS.SHOWCASE_RULES = tmp_rules
+    try:
+        bad = DS.showcase_check({"scenes": scenes, "showcases": [s1]}, rec, tree, owner_ev, repo.root)
+        DS.SHOWCASE_RULES = os.path.join(repo.root, "no_such_rules.json")
+        missing = DS.showcase_check({"scenes": scenes, "showcases": [s1]}, rec, tree, owner_ev, repo.root)
+    finally:
+        DS.SHOWCASE_RULES = real_path
+    check("showcases: a missing rules file is a refusal reason, never a pass",
+          any("missing" in e for e in missing), missing)
+    check("showcases: a rules file with an impossible limit is refused, never a silent pass",
+          any("max_overlap in [0, 1)" in e for e in bad), bad)
+    real = DS.load_showcase_rules()
+    check("showcases: the real rules file reads, and labels its numbers UNMEASURED",
+          real["max_overlap"] == 0.25 and real["min_new_after_first"] == 3 and "UNMEASURED" in real["status"], real)
+    # interactions stay: the showcase set never replaces a leaf's acceptance scene or an interaction check
+    walk_tree = dict(tree, leaves=tree["leaves"] + [{"id": "walk_main", "leaf_kind": "walk",
+                                                       "tier_proposed": "quicktest"}])
+    refuses("showcases: full showcase coverage does not excuse a walk leaf from its own acceptance scene",
+            DS.scene_errors({"scenes": scenes, "showcases": [s1, s2, s3], "coverage_rest": rest}, walk_tree,
+                            repo.root), "leaf walk_main")
+
+
 def refuses(name, errs, needle):
     check(name, any(needle in e for e in errs), errs)
 

@@ -37,9 +37,9 @@ and you say what moved you. You are never contrary for sport and never agreeable
 | 0 Read | `designer_grounding.md`, `designer_scene_contract.md` | `record.json` holds the inventory, accounts for every line of the packet's **What is already built**, and names the three ways this mod could fail him (`failure_modes`) |
 | 1 Argue the idea | `designer_dialogue.md` | `record.json` `root` cites the OWNER event in which he approved the root text |
 | 2 Argue the edge | `designer_dialogue.md` | no ask is still `sent`, no core contradiction is unresolved |
-| 3 Write | `designer_write.md`, `designer_scene_contract.md` | Gate A lint passes, `scenes.json` and `floor.json` validate |
+| 3 Write | `designer_write.md`, `designer_scene_contract.md` | Gate A lint passes, `scenes.json` (with its showcase set) and `floor.json` validate |
 | 4 Exam | `designer_exam.md` | `exam.json` passes against the current tree and sheet hashes, or `exam_waived` in his words |
-| 5 Lock | `designer_lock.md` | `concept_tree.py gate` passes |
+| 5 Lock | `designer_lock.md` | `concept_tree.py gate` passes and every inventory capability is exercised by a showcase or a scene |
 
 Each run works one recorded stage; a stage may take several runs. A run ends by writing `result.json` in the folder:
 
