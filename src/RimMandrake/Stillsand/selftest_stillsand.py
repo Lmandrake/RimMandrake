@@ -371,6 +371,9 @@ class Fake(object):
     def t_get_defs(self, defs="", fields=None, limit=200, **k):
         want = [d for d in defs.split(";") if d]
         nf = [d for d in want if d.endswith("NoSuchDef_Probe")]
+        # Armoury's glass fold swaps the furnace recipe (STILLSAND_GLASS_CHAIN_REMAINDER_1)
+        nf += [d for d in want if d == ("RecipeDef/RM_MeltSunGlass" if "campaign_glass" in self.b
+                                        else "RecipeDef/RSW_MeltTransparisteel")]
         if "missing_def" in self.b:
             nf += [d for d in want if d.endswith("/RM_KneelOllim")]
         if "custom_missing" in self.b:
@@ -437,6 +440,8 @@ class Fake(object):
             if tok:
                 x, z = [int(v) for v in tok.split(",")]
                 shade = 1.0 if self.grid_roofed(x, z) and "roof_no_cover" not in self.b else 0.0
+                if self.cast_shaded(x, z):
+                    shade = 1.0
                 rows.append({"x": x, "z": z, "inBounds": True, "shade": shade, "exposure": self.exposure(x, z)})
         glow = 1.0
         if "night_falls" in self.b and (self.ticks // 30000) % 2 == 1:
@@ -445,6 +450,12 @@ class Fake(object):
                 "pinnedSun": {"present": True, "isActive": "no_pinned" not in self.b,
                               "sunElevationDegrees": 70.0},
                 "skyGlow": glow, "cells": rows}
+
+    def cast_shaded(self, x, z):
+        """oven_row_shaded: the live 2026-11-04 site, a cast-shade strip thrown west of every 8x8 roofed block
+        over its rows, where the open oven's first candidate cell stands (validation.OVEN_CELLS[0])."""
+        return "oven_row_shaded" in self.b and any(
+            r[2] == 8 and r[3] == 8 and on and x < r[0] and r[1] <= z < r[1] + r[3] for r, on, _ in self.roofs)
 
     # ---- weather and incidents
     def t_weather_set(self, weather=None, lockWeather=False, unlock=False, **k):
@@ -867,7 +878,7 @@ class Fake(object):
     # ---- glass live rows (STILLSAND_GLASS_CHAIN_REMAINDER_1): bills worked through a WorkGiver, drift clears
     GIVERS = {"RM_DoBillsSunTables": ("RM_SunFurnace", "RM_LensBench"), "DoBillsCook": ("RM_SolarOven",)}
     PRODUCTS = {"RM_MeltSunGlass": ("RM_SunGlass", 10, 900), "RM_GrindPrecisionLens": ("RM_PrecisionLens", 1, 3000),
-                "CookMealSimple": ("MealSimple", 1, 1600)}
+                "CookMealSimple": ("MealSimple", 1, 1600), "RSW_MeltTransparisteel": ("RSW_Transparisteel", 5, 1400)}
 
     def t_set_pawn_skill(self, **k):
         return {"success": True}
@@ -876,6 +887,8 @@ class Fake(object):
         return {"success": True}
 
     def t_bill_add(self, giverId=None, recipe=None, **k):
+        if recipe == ("RM_MeltSunGlass" if "campaign_glass" in self.b else "RSW_MeltTransparisteel"):
+            return {"success": False, "message": "No RecipeDef '%s'." % recipe, "details": {"suggestions": []}}
         self.bills.setdefault(giverId, []).append(recipe)
         return {"success": True}
 
@@ -888,6 +901,8 @@ class Fake(object):
         if t["def"] == "RM_SolarOven" and "oven_in_shade" in self.b:
             return True
         if self.cur_weather() in ("RM_DuneGale", "Sandstorm") and "gale_ignored" not in self.b:
+            return False
+        if self.cast_shaded(t["x"], t["z"]):
             return False
         return not self.roofed(t["x"], t["z"])
 
@@ -941,6 +956,8 @@ class Fake(object):
                 lines = ["Disabled in Mod Settings (Stillsand: glass and lenses)."]
             elif self.roofed(t["x"], t["z"]) and "no_roof_check" not in self.b:
                 lines = ["Not working: under a roof (sun 0%, needs 30%)."]
+            elif self.cast_shaded(t["x"], t["z"]):
+                lines = ["Not working: in shade (sun 0%, needs 50%)."]
             elif "table_no_sun_line" in self.b:
                 lines = ["Idle."]
             else:
@@ -1328,6 +1345,12 @@ def _main(bad):
                     ("water.wet_line_drawn_then_gale_wipes", "PASS")):
         if rm.get(k, ("",))[0] != want:
             bad.append("rm_tier run: %s should read %s: %s" % (k, want, rm.get(k)))
+    # STILLSAND_GLASS_CHAIN_REMAINDER_1: the two live-site causes of 2026-11-04 are healthy variants, not breaks
+    for variant in ("campaign_glass", "oven_row_shaded"):
+        res = run([variant])
+        red = dict((k, v) for k, v in res.items() if k.startswith("glass.") and v[0] != "PASS" and k not in owed)
+        if red:
+            bad.append("%s run: glass rows not PASS: %s" % (variant, red))
     if run(["no_dbh"]).get("water.dbh_thirst_drink_books_debt", ("",))[0] != "UNMEASURED":   # A4 without DBH
         bad.append("a tier without DBH's thirst did not read water.dbh_thirst_drink_books_debt UNMEASURED")
     if run(["rm_tier", "rm_ledger_live"]).get("water.rm_tier_has_no_ledger", ("",))[0] != "FAIL":

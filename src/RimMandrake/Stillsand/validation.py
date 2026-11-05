@@ -1551,6 +1551,34 @@ def soorrak_chain(t):
 
 # ----------------------------------------------------------------------------- chain: sun-fed glass
 
+# Where the open solar oven may stand, tried in order (dx, dz from the anchor). Each keeps the oven and its
+# interaction cell (dz - 1) clear of the furnace, the bench, the roofed block, the drift cells and the item drops.
+# STILLSAND_GLASS_CHAIN_REMAINDER_1 (live run 2026-11-04T15:46Z): the first one, (-8, +5), stands in the same
+# column as the furnace and bench and in the roofed block's rows, and the directional cast shade
+# (RM_MapComponent_ShadeGrid: every building throws a strip up to 16 cells along the sun vector) covered it:
+# the oven never read 'Sun: NN%' and the sun gate refused its bill. The cell is now chosen by the grid itself.
+OVEN_CELLS = ((-8, 5), (1, -3), (-1, 8), (8, -4), (-10, -10), (2, 1), (-2, -10), (10, -10))
+
+
+def _sunlit_oven(t):
+    """Stand the open RM_SolarOven on the first OVEN_CELLS cell the (rebuilt) shade grid reads as unshaded,
+    then step past the next grid rebuild so its own cast shade is in the grid. Returns the cell."""
+    if not _live(t):
+        return None
+    x, z = t.anchor
+    cand = [(x + dx, z + dz) for dx, dz in OVEN_CELLS]
+    r = _sun(t, ";".join("%d,%d" % c for c in cand))
+    shade = dict(((c.get("x"), c.get("z")), c.get("shade")) for c in (r.get("cells") or []) if c.get("inBounds"))
+    for c in cand:
+        if shade.get(c) is None or float(shade[c]) > 0.1:
+            continue
+        t.bridge_call("jawa/spawn_batch", ops="RM_SolarOven:%d,%d" % c)
+        if _things(t, "RM_SolarOven", "%d,%d,1,1" % c):
+            _settle_shade(t)
+            return c
+    _unmeasured(t, "no unshaded cell would take the open solar oven (shade %s)" % sorted(shade.items()))
+
+
 TABLES = (("RM_SunFurnace", "sunFurnaceEnabled"), ("RM_LensBench", "lensBenchEnabled"),
           ("RM_SolarOven", "solarOvenEnabled"))
 
@@ -1585,9 +1613,10 @@ def glass_chain(t):
         if _live(t):
             t.bridge_call("jawa/spawn_batch", ops="RM_SunFurnace:%d,%d" % (x - 8, z))
             t.bridge_call("jawa/spawn_batch", ops="RM_LensBench:%d,%d" % (x - 8, z - 5))
-            t.bridge_call("jawa/spawn_batch", ops="RM_SolarOven:%d,%d" % (x - 8, z + 5))
             t.bridge_call("jawa/set_roof_batch", ops=_rs(roof), roofDef="RoofConstructed")
             t.bridge_call("jawa/spawn_batch", ops="RM_SunFurnace:%d,%d" % (roof[0] + 3, roof[1] + 3))
+            _settle_shade(t)
+            ids["oven_cell"] = _sunlit_oven(t)
             for d, _f in TABLES:
                 rows = _things(t, d, _rs(_rect(t)))
                 if not rows:
@@ -1602,7 +1631,7 @@ def glass_chain(t):
                                "%d outside)" % (len(under), len(open_)))
             ids["roofed"], ids["open"] = under[0]["id"], open_[0]["id"]
             ids["RM_SunFurnace"] = ids["open"]
-            _settle_shade(t)
+            # the shade grid was rebuilt after the last spawn, inside _sunlit_oven
 
     # RULED OUT: night / the loomma chain ticking the clock into darkness — the sun is pinned (no night);
     #   the line read "in shade (sun 0%)", which FactorAt only writes when Intensity > 0 and the cached
@@ -1644,9 +1673,10 @@ def glass_chain(t):
     for d, field in TABLES:
         with _comp(t, "%s_toggle_off_disabled" % d[3:].lower(), toggle=field):
             if _live(t):
-                if not re.search(r"Sun: \d+%", _table_state(t, ids[d])):
-                    _unmeasured(t, "%s does not read 'Sun: NN%%' with its toggle on: the off arm proves "
-                                   "nothing" % d)
+                on = _table_state(t, ids[d])
+                if not re.search(r"Sun: \d+%", on):
+                    _unmeasured(t, "%s does not read 'Sun: NN%%' with its toggle on (it reads %r): the off arm "
+                                   "proves nothing" % (d, on[:160]))
                 with _setting(t, field, False):
                     off = _table_state(t, ids[d])
                 if "Disabled in Mod Settings" not in off:
@@ -1828,6 +1858,22 @@ def _clear_drift(t, pid, cells, area, before):
     return got
 
 
+# The furnace's glass recipe on the loaded tier: (recipe, ingredient, count, product, count, the lens bench's glass).
+# STILLSAND_GLASS_CHAIN_REMAINDER_1 (live run 2026-11-04T15:46Z, "No RecipeDef 'RM_MeltSunGlass'"): with Armoury
+# loaded, RSW_Transparisteel_GlassFold.xml removes RM_MeltSunGlass / RM_MeltLensGlass and adds RSW_MeltTransparisteel
+# (fine sand -> transparisteel at the sun furnace), and the lens recipes take transparisteel for lens glass.
+GLASS_TIERS = (("RM_MeltSunGlass", "RM_GlassSand", 20, "RM_SunGlass", 10, "RM_LensGlass"),
+               ("RSW_MeltTransparisteel", "RM_FineSand", 10, "RSW_Transparisteel", 5, "RSW_Transparisteel"))
+
+
+def _glass_tier(t):
+    dd, _ = _get_defs(t, ";".join("RecipeDef/%s" % g[0] for g in GLASS_TIERS), "label")
+    for g in GLASS_TIERS:
+        if g[0] in dd:
+            return g
+    _unmeasured(t, "neither glass recipe is loaded (%s)" % ", ".join(g[0] for g in GLASS_TIERS))
+
+
 def _glass_live_rows(t, ids):
     x, z = t.anchor
     pad = _rect(t)
@@ -1845,48 +1891,50 @@ def _glass_live_rows(t, ids):
                 _unmeasured(t, "the roofed solar oven did not stand")
             st["oven_roofed"] = ov[0]["id"]
             st["pid"] = _crafter(t, x - 4, z - 2)
+            st["glass"] = _glass_tier(t)
             _settle_shade(t)    # the new roofed oven's cell must read as shade before anything is asked of it
 
     # A2 -- furnace and bench each complete one cycle in full sun, and stop in the gale and under a roof.
     with _comp(t, "furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof"):
         if _live(t):
             pid = st["pid"]
+            melt, sand, n_sand, glass, n_glass, lens_in = st["glass"]
             # under a roof: refused by the sun gate, before any sun cycle ran
-            rr = _bill_now(t, pid, ids["roofed"], "RM_MeltSunGlass", "RM_DoBillsSunTables")
+            rr = _bill_now(t, pid, ids["roofed"], melt, "RM_DoBillsSunTables")
             if not _refused_by_sun(rr):
                 _fail("a roofed sun furnace was not refused by its sun gate: %s" % json.dumps(rr, default=str)[:400])
             _drop_bill(t, ids["roofed"])
             # full sun: one cycle each
-            t.bridge_call("jawa/spawn_batch", ops="RM_GlassSand:%d,%d,20;RM_LensGlass:%d,%d,2"
-                          % (x - 4, z, x - 4, z - 5))
-            fur, fur_ticks, _ = _cycle(t, pid, ids["RM_SunFurnace"], "RM_MeltSunGlass", "RM_DoBillsSunTables",
-                                       "RM_SunGlass", pad, 6000)
+            t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,%d;%s:%d,%d,2"
+                          % (sand, x - 4, z, n_sand, lens_in, x - 4, z - 5))
+            fur, fur_ticks, _ = _cycle(t, pid, ids["RM_SunFurnace"], melt, "RM_DoBillsSunTables",
+                                       glass, pad, 6000)
             ben, ben_ticks, _ = _cycle(t, pid, ids["RM_LensBench"], "RM_GrindPrecisionLens", "RM_DoBillsSunTables",
                                        "RM_PrecisionLens", pad, 12000)
             _note(t, "sun cycles: furnace sun glass / ticks, bench lenses / ticks", [fur, fur_ticks, ben, ben_ticks])
-            if fur != 10:
-                _fail("one RM_MeltSunGlass cycle in full sun made %d sun glass in %d ticks (want 10)" % (fur, fur_ticks))
+            if fur != n_glass:
+                _fail("one %s cycle in full sun made %d %s in %d ticks (want %d)" % (melt, fur, glass, fur_ticks, n_glass))
             if ben != 1:
                 _fail("one RM_GrindPrecisionLens cycle in full sun made %d precision lenses in %d ticks (want 1)"
                       % (ben, ben_ticks))
             # the gale: both tables refused while it blows (the weather is listed by name in noSunWeathers)
-            t.bridge_call("jawa/spawn_batch", ops="RM_GlassSand:%d,%d,20;RM_LensGlass:%d,%d,2"
-                          % (x - 4, z, x - 4, z - 5))
+            t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,%d;%s:%d,%d,2"
+                          % (sand, x - 4, z, n_sand, lens_in, x - 4, z - 5))
             t.bridge_call("jawa/weather_set", weather="RM_DuneGale", lockWeather=True)
             t.wait_ticks(60)
             if _weather_now(t) != "RM_DuneGale":
                 _unmeasured(t, "the gale weather did not take (weather reads %r)" % _weather_now(t))
             try:
-                for giver, recipe in ((ids["RM_SunFurnace"], "RM_MeltSunGlass"),
+                for giver, recipe in ((ids["RM_SunFurnace"], melt),
                                       (ids["RM_LensBench"], "RM_GrindPrecisionLens")):
                     rg = _bill_now(t, pid, giver, recipe, "RM_DoBillsSunTables")
                     if not _refused_by_sun(rg):
                         _fail("%s was not refused by its sun gate in the gale: %s"
                               % (giver, json.dumps(rg, default=str)[:400]))
-                before = _stacks(t, "RM_SunGlass", pad)
+                before = _stacks(t, glass, pad)
                 t.wait_ticks(3000)     # longer than the sun cycle took: nothing may come out in the gale
-                if _stacks(t, "RM_SunGlass", pad) != before:
-                    _fail("the sun furnace made sun glass during the gale")
+                if _stacks(t, glass, pad) != before:
+                    _fail("the sun furnace made %s during the gale" % glass)
             finally:
                 t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
             for giver in (ids["RM_SunFurnace"], ids["RM_LensBench"]):
