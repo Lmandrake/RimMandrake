@@ -425,6 +425,31 @@ def main():
             said = (pw.get(OW.CHURN_ITEM_PREFIX + nm) or {}).get("x", {}).get("said", "")
             ok(hit and "5 returns" in said and ret == 500, "9w: the same rows without wait=true still read churn",
                (said, ret))
+    # 9n OPS_CHURN_DIAGNOSE_NIGHTLY_WHTT_GXBQ: NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS waits for two green nightlies
+    # (one sweep a day) and read 'bouncing: 6 returns; wait_two_nights failed it 6 times', filed 11:38Z by the pre-9w
+    # code: gen 1's ending predates the wait flag (no wait key, 34 h old, outside the window), gens 3..11 are five
+    # wait=true endings, returns 6, its alarm held. Five waits off six returns is 1; the one real failure is out of the
+    # window: the held alarm reads 0 and clears.
+    sn = TMP / "s9n"
+    nm = "NIGHTLY_SHAPE_ITEM"
+    d = sn / "items" / nm
+    d.mkdir(parents=True)
+    (d / "state.json").write_text(json.dumps({"status": "queued", "returns": 6, "gen": 12, "spent": 3.9e6,
+                                              "failures": {"wait_two_nights": 6}}))
+    rows = [{"gen": 1, "at": iso(NOW - 35 * HOUR), "start": marker(nm, 1)},
+            {"gen": 1, "at": iso(NOW - 34 * HOUR), "end": "wait_two_nights", "approach_next": "build"}]
+    for i, g in enumerate((3, 5, 7, 9, 11)):
+        t = NOW - (28 - 6 * i) * HOUR
+        rows += [{"gen": g, "at": iso(t), "start": marker(nm, g)},
+                 {"gen": g, "at": iso(t + 60), "end": "wait_two_nights", "approach_next": "build", "wait": True}]
+    (d / "attempts.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    day = time.strftime("%Y%m%d", time.gmtime(NOW))
+    (sn / ("spend-%s.json" % day)).write_text(json.dumps({"spent": 700, "runs": {marker(nm, 11): 700}}))
+    (TMP / "ops" / "alarms.json").write_text(json.dumps({OW.CHURN_ITEM_TAG + ":" + OW.CHURN_ITEM_PREFIX + nm: {}}))
+    pn = OW.rl_churn(sn, NOW, cfg9)
+    got = pn.get(OW.CHURN_ITEM_PREFIX + nm) or {}
+    ok(got.get("v") == 0 and got.get("m") == "MEASURED" and pn["relentless.churn_items"].get("v") == 0,
+       "9n: one legacy unflagged wait plus five wait=true endings, alarm held, reads 0 (clears)", got)
     shutil.rmtree(TMP, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
