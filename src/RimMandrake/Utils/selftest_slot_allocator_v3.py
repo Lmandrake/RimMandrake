@@ -123,6 +123,8 @@ check("absent, 40 helper-h owed, 42 h window -> FOUNDRY lowered by 1, CONDUCTOR 
 # ---- token pacing is ADVISORY (owner 2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE): it never lowers the placed seats
 check("slot_rules.json ships the advisory pass on", (live.get("advisory") or {}).get("enabled") is True
       and isinstance((live.get("advisory") or {}).get("n_total"), int), live.get("advisory"))
+check("owner 2026-11-04 (all token limits rescinded): the shipped advisory total is total_max, not a token step",
+      (live.get("advisory") or {}).get("n_total") == live.get("total_max"), (live.get("advisory"), live.get("total_max")))
 RA = copy.deepcopy(R)
 RA["advisory"] = {"enabled": True, "n_total": 6}
 r = d(rules=RA, owner_window_min=2.0, week_pct_used=99.0, week_pct_left=1.0)

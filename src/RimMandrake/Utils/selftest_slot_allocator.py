@@ -628,7 +628,19 @@ r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 600, week_pct_left=20.0, 
 check("cap: his word stands over the cap", r["seats"]["BENCH"] == 4, r["seats"])
 r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 600, week_pct_left=33.0, week_pct_used=67.0)
 check("cap: FOUNDRY is not touched by BENCH's sitting cap", r["seats"]["FOUNDRY"] >= 0 and r["seats"]["BENCH"] == 0)
-check("cap: the configured value is read from dispatcher_schedule.json", SA.session_cap_pct() == 6.0, SA.session_cap_pct())
+check("cap: the shipped schedule has no session cap (owner 2026-11-04: all token limits rescinded)",
+      SA.session_cap_pct() is None, SA.session_cap_pct())
+_sch = tempfile.NamedTemporaryFile("w", suffix=".json", delete=False)
+json.dump({"roles": [{"name": "Conductor", "session_week_pct_cap": 6}]}, _sch)
+_sch.close()
+_was = os.environ.get("RM_DISPATCHER_SCHEDULE")
+os.environ["RM_DISPATCHER_SCHEDULE"] = _sch.name
+check("cap: a configured value is read from the schedule", SA.session_cap_pct() == 6.0, SA.session_cap_pct())
+if _was is None:
+    os.environ.pop("RM_DISPATCHER_SCHEDULE", None)
+else:
+    os.environ["RM_DISPATCHER_SCHEDULE"] = _was
+os.unlink(_sch.name)
 
 # ---- code-review night 2026-10-27 (slot_allocator full-file review)
 # S1: a one-minute reset_at jitter is the same reset for the token dial too, not a reset that drops ALMOST_OUT

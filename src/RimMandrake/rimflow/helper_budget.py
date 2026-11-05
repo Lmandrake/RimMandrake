@@ -22,7 +22,10 @@ with its own 15-min writer, so two writers never advance that state.
 Role runs (rm-role-* units) are counted as the seat they run as (AGENT_SEAT); their token caps are advisory.
 
 Token pacing never lowers the published seats (owner 2026-11-02; slot_rules.json advisory): the paced seats ride
-along as `advice`, and attention() raises them to the Conductor log and Operations when they would place fewer.
+along as `advice`. attention() raised them to the Conductor log and Operations when they would place fewer; it is off
+(schedule helper_budget.pacing_attention false) since the owner, 2026-11-04: "all token limits rescinded as well as work
+type. Token is no longer constrained." (scoped the same day to the Dispatcher's token pacing; Relentless
+per-item spend attention, system-before-content and Steve's 50% stop stay).
 
     python3 src/RimMandrake/rimflow/helper_budget.py show      # what the Dispatcher last published
     python3 src/RimMandrake/rimflow/helper_budget.py now       # compute now, print, publish nothing
@@ -139,8 +142,12 @@ def attention(sch, st, rec, now, journal=None, tell=None):
     investigate and THAT agent may determine it needs to be killed for evidence-based reasons."). When the published
     budget's advice says pacing would place fewer helpers than were placed, say so: journalled (the journal callback
     also signals Operations' incident ledger) and one line to the Conductor log via `tell`, once per alarm_every_s
-    while it lasts. -> the alarm record when it fired, else None."""
+    while it lasts. -> the alarm record when it fired, else None. Off when the schedule's helper_budget.pacing_attention
+    is false (owner 2026-11-04: "all token limits rescinded as well as work type. Token is no longer constrained.")."""
     alarms = st.setdefault("alarms", {})
+    if (sch.get("helper_budget") or {}).get("pacing_attention", True) is False:
+        alarms.pop(ATTENTION_KIND, None)
+        return None
     adv = (rec or {}).get("advice") or {}
     short = {k: v for k, v in (adv.get("short") or {}).items() if isinstance(v, int) and v > 0}
     if not short:

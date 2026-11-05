@@ -104,6 +104,16 @@ check("tick_step: a schedule with no helper_budget block publishes nothing and c
 live = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
 check("the live dispatcher_schedule.json opts in: helper_budget.enabled true",
       (live.get("helper_budget") or {}).get("enabled") is True, live.get("helper_budget"))
+check("the live schedule turns the token-pacing attention off (owner 2026-11-04: all token limits rescinded)",
+      (live.get("helper_budget") or {}).get("pacing_attention") is False, live.get("helper_budget"))
+SHORT = {"seats": {"CONDUCTOR": 3, "FOUNDRY": 6}, "advice": {"paced_seats": {"CONDUCTOR": 0, "FOUNDRY": 3},
+                                                             "short": {"CONDUCTOR": 3, "FOUNDRY": 3}, "token_mode": "DARK"}}
+told = []
+check("pacing attention on (default): a short pace is told", HB.attention(ON, {}, SHORT, NOW, tell=told.append) is not None
+      and len(told) == 1, told)
+check("pacing_attention false: the same short pace tells nothing",
+      HB.attention({"helper_budget": {"enabled": True, "pacing_attention": False}}, {}, SHORT, NOW, tell=told.append) is None
+      and len(told) == 1, told)
 bad = FakeSA({}, streams, raise_=RuntimeError("meter gone"))
 out = HB.tick_step(ON, st, root, NOW, sa=bad, journal=lambda rec: jr.append(rec))
 check("tick_step: a failing compute returns an alarm, does not raise", out and out["do"] == "alarm"
