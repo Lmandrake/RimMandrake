@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Null Texture Trace (local)</name>
+  <packageId>mandrake.rm.nulltextrace</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Diagnostic instrument for WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR, not player-facing content. Player.log fills with "null texture passed to GUI.DrawTexture" and Unity writes that warning with no managed stack. From its Mod constructor, at load and before the main menu, this mod puts a Harmony prefix on Unity's internal 12-argument GUI.DrawTexture: every public overload funnels into it, and it is the only place the warning is written. Under the engine's own condition (Repaint, Unity-null image) it records the managed caller and writes [NullTexTrace] lines to Player.log through UnityEngine.Debug.Log, which Verse's message cap cannot silence. A line marks each new caller, and summaries follow at 1, 10, 100 ... null calls. The prefix never changes what the engine does. Remove it from the mod list once the flood is attributed.</description>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
