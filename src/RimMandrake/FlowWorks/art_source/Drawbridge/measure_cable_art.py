@@ -24,8 +24,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 TEX = os.path.join(HERE, "..", "..", "Textures")
 OUT = os.path.join(HERE, "anchor_cable_art.json")
 LOOKS = ["Scrapper", "Industrial", "Modern", "Futuristic"]
-MATS = ["Timber", "Steel", "Heavy"]
-BASE_MATS = ["Rope", "Timber", "Steel", "Heavy"]
+MATS = ["Timber"]                         # Steel/Heavy anchors paint their own cables (SUSPENSION_BRIDGE_REDRAW_HEAVY_JUST_PAINTED)
+BASE_MATS = ["Rope", "Timber"]
 LEAF_EDGES = ["Edge_Scrapper", "Edge_Industrial", "Edge_Modern", "Edge_Futuristic", "Timber_Edge", "Steel_Edge"]
 ALPHA = 40
 

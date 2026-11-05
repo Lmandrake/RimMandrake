@@ -58,6 +58,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -69,6 +70,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Steel_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -80,6 +82,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -91,6 +94,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Steel_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -102,6 +106,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Heavy_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -113,6 +118,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Heavy_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -120,10 +126,11 @@
   <ThingStyleDef>
     <defName>RM_SuspensionDeck_Heavy_Modern</defName>
     <label>modern</label>
-    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck</uiIconPath>
+    <uiIconPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Heavy</uiIconPath>
     <graphicData>
-      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Atlas</texPath>
+      <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Heavy_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -135,6 +142,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Heavy_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -146,6 +154,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeckGrated_Steel_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -157,6 +166,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeckGrated_Steel_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -168,6 +178,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Steel_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -179,6 +190,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeckGrated_Steel_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -190,6 +202,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeckGrated_Heavy_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -201,6 +214,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeckGrated_Heavy_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -212,6 +226,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeckGrated_Heavy_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -223,6 +238,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeckGrated_Heavy_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
   </ThingStyleDef>
@@ -354,6 +370,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Steel</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
     </graphicData>
   </ThingStyleDef>
 
@@ -364,6 +381,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_Steel</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
     </graphicData>
   </ThingStyleDef>
 
@@ -374,6 +392,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Steel</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
     </graphicData>
   </ThingStyleDef>
 
@@ -384,6 +403,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_Steel</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
     </graphicData>
   </ThingStyleDef>
 
@@ -394,6 +414,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Heavy</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
     </graphicData>
   </ThingStyleDef>
 
@@ -404,6 +425,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_Heavy</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
     </graphicData>
   </ThingStyleDef>
 
@@ -414,6 +436,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Heavy</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
     </graphicData>
   </ThingStyleDef>
 
@@ -424,6 +447,7 @@
     <graphicData>
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_Heavy</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
     </graphicData>
   </ThingStyleDef>
 

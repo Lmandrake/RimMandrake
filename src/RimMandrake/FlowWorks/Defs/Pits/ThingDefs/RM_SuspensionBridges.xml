@@ -200,6 +200,7 @@
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Steel_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
@@ -251,6 +252,7 @@
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_SteelGrated_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
@@ -302,6 +304,7 @@
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Steel</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>
@@ -345,6 +348,7 @@
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Heavy_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
@@ -398,6 +402,7 @@
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_HeavyGrated_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
@@ -451,6 +456,7 @@
     <graphicData>
       <texPath>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_Heavy</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>

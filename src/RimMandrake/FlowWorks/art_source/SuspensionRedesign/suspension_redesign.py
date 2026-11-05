@@ -51,7 +51,9 @@ import build_deck_atlas as BDA  # noqa: E402
 THINGS = "Things/Building/FlowWorks/SuspensionBridge"
 N = 256          # texture edge
 SS = 4           # supersampling while drawing
-BAND = 28        # build_deck_atlas's band for the Steel/Heavy decks (JOBS): side structure lives in x < 28 and x >= 228
+BAND = 44        # the deck atlas's side band (build_deck_atlas.build(.., BAND)): side structure lives in x < 44 and x >= 212;
+                 # 28 (the old JOBS band) left the truss and cables ~9 px wide at play zoom, unreadable (judge 2026-11-05)
+K = BAND / 28    # the band drawings below are laid out on a 28 px band and stretched across to BAND
 
 # ---- palette: no red (hue within RED_DEG of 0 at sat > RED_SAT) anywhere ----------------------------------------------
 STEEL = (132, 138, 144)
@@ -138,6 +140,7 @@ class Pic:
     def done(self):
         a = np.asarray(self.im, np.float32) / 255
         out = BDA.premul_resize(a, (N, N))
+        out[out[..., 3] < 4 / 255] = 0           # antialias dust (alpha 1-3) is not a picture: corners stay truly clear
         im = Image.fromarray((out * 255 + .5).astype(np.uint8), "RGBA")
         mk = self.mk.resize((N, N), Image.LANCZOS)
         mask = Image.merge("RGBA", (mk, Image.new("L", (N, N), 0), Image.new("L", (N, N), 0), Image.new("L", (N, N), 255)))
@@ -178,30 +181,37 @@ def _grating(p: Pic, col, hi, edge):
         p.rect(BAND, y, N - BAND, y + 2, hi, True)
 
 
-def _steel_band(p: Pic, X):
-    """West band of the steel deck (X maps a west x to this side): stringer, rail posts, pipe handrail, hangers, cable."""
+def _steel_band(p: Pic, X0):
+    """West band of the steel deck (X maps a west x to this side): stringer, rail posts, pipe handrail, the criss-cross
+    hanger cables and the main cable, which hangs ABOVE the deck: its shadow falls on the planks inside the band."""
+    def X(x):
+        return X0(x * K)
     def r(x0, y0, x1, y1, col, a=255):
         p.rect(min(X(x0), X(x1)), y0, max(X(x0), X(x1)), y1, col, True, a)
-    r(20, 0, 28, N, STEEL_EDGE)              # edge stringer (a channel seen from above)
-    r(21, 0, 27, N, STEEL)
-    r(22, 0, 24, N, STEEL_HI)
-    for y in (16, 80, 144, 208):             # I-section rail posts
-        r(12, y - 5, 22, y + 5, STEEL_EDGE)
-        r(12, y - 5, 22, y - 3, STEEL)
-        r(12, y + 3, 22, y + 5, STEEL)
-        r(16, y - 3, 18, y + 3, STEEL)
-    r(14, 0, 20, N, STEEL_EDGE)              # pipe handrail
-    r(15, 0, 19, N, STEEL)
-    r(16, 0, 17.5, N, STEEL_HI)
-    for y in range(0, N, 32):                # hanger rods: cable down to the stringer
-        y0 = y + 16
-        p.line(X(5.5), y0, X(20), y0 + 2, 3.0, STEEL_EDGE, True)
-        p.line(X(5.5), y0, X(20), y0 + 2, 1.4, STEEL_HI, True)
-        p.dot(X(5.5), y0, 3.2, STEEL_DK, True)
-    r(1, 0, 10, N, STEEL_EDGE)               # main cable, bold enough to read at play zoom (a twist every 4 px)
-    r(2.5, 0, 8.5, N, CABLE)
+    p.shade_line(X(34), 0, X(34), N, 6, 85)  # the overhead main cable's shadow on the planks (sun to the south-east)
+    r(22, 0, 28, N, STEEL_EDGE)              # edge stringer (a channel seen from above)
+    r(23, 0, 27, N, STEEL)
+    r(24, 0, 25.5, N, STEEL_HI)
+    for y in (0, 64, 128, 192, 256):         # I-section rail posts at every hanger node
+        r(13, y - 5, 23, y + 5, STEEL_EDGE)
+        r(13, y - 5, 23, y - 3, STEEL)
+        r(13, y + 3, 23, y + 5, STEEL)
+        r(17, y - 3, 19, y + 3, STEEL)
+    r(15, 0, 21, N, STEEL_EDGE)              # pipe handrail
+    r(16, 0, 20, N, STEEL)
+    r(17, 0, 18.5, N, STEEL_HI)
+    for y in range(0, N + 1, 64):            # criss-cross hanger cables: an X between every two nodes
+        for (ya, yb) in ((y, y + 64), (y + 64, y)):
+            p.line(X(6), ya, X(22), yb, 2.8, STEEL_EDGE, True)
+            p.line(X(6), ya, X(22), yb, 1.3, CABLE_HI, True)
+    for y in range(0, N + 1, 64):            # cable clamps at the nodes
+        p.dot(X(6), y, 4.2, STEEL_EDGE, True)
+        p.dot(X(6), y, 2.6, STEEL_HI, True)
+    r(0, 0, 12, N, STEEL_EDGE)               # main cable, bold enough to read at play zoom (a twist every 4 px)
+    r(1.5, 0, 10.5, N, CABLE)
+    r(2.5, 0, 5, N, CABLE_HI)
     for y in range(0, N, 4):
-        p.line(X(3.5), y, X(7.5), y + 3, 0.9, CABLE_HI, True)
+        p.line(X(3), y, X(8.5), y + 3, 0.9, CABLE_HI, True)
 
 
 def steel_deck(grated=False):
@@ -214,26 +224,42 @@ def steel_deck(grated=False):
     return p.done()
 
 
-def _truss_band(p: Pic, X):
-    """West band of the heavy deck: the through truss's top chord with its gusset plates, seen from above."""
+def _truss_band(p: Pic, X0):
+    """West band of the heavy deck: the Pratt through-truss wall, drawn as its face leaning out (RimWorld's usual cheat for a
+    tall side): the top chord outside, the bottom chord on the kerb, a vertical at every panel point and the diagonals
+    between them, all riveted box members. Panel points every 64 px so a run tiles into one continuous truss."""
+    def X(x):
+        return X0(x * K)
     def r(x0, y0, x1, y1, col, steel=True, a=255):
         p.rect(min(X(x0), X(x1)), y0, max(X(x0), X(x1)), y1, col, steel, a)
-    r(25, 0, 28, N, CEMENT_EDGE, False)      # the paving's kerb under the chord
-    r(2, 0, 26, N, HVY_EDGE)                 # top chord: a riveted box girder
-    r(3, 0, 25, N, HVY)
-    r(4, 0, 24, 3, HVY_DK)
-    r(5, 0, 8, N, HVY_HI)                    # flange highlights
-    r(19, 0, 21, N, HVY_DK)
-    for y in range(4, N, 10):                # rivet rows
-        p.dot(X(6.5), y, 1.1, HVY_DK, True)
-        p.dot(X(20), y, 1.1, HVY_DK, True)
-    for yc in (0, 128, 256):                 # gusset plates at the panel points (vertical post caps)
-        r(0, yc - 14, 28, yc + 14, HVY_EDGE)
-        r(1, yc - 13, 27, yc + 13, HVY_HI)
-        r(2, yc - 12, 26, yc + 12, HVY)
-        for dy in (-8, 0, 8):
-            for dx in (6, 14, 22):
-                p.dot(X(dx), yc + dy, 1.3, HVY_DK, True)
+    r(26, 0, 28, N, CEMENT_EDGE, False)      # the paving's kerb under the bottom chord
+    r(0, 0, 28, N, CEMENT_FACE, False)       # the deep inner face behind the web (in shadow)
+    p.shade(min(X(0), X(28)), 0, max(X(0), X(28)), N, 90)
+    for y in range(0, N + 1, 64):            # diagonals: Pratt, sloping down toward mid-span, two per panel bay
+        for (ya, yb) in ((y, y + 64),):
+            p.line(X(8), ya, X(21), yb, 7, HVY_EDGE, True)
+            p.line(X(8), ya, X(21), yb, 4.2, HVY, True)
+            p.line(X(8), ya, X(21), yb, 1.4, HVY_HI, True)
+    for y in range(0, N + 1, 64):            # verticals at the panel points
+        r(5, y - 6, 24, y + 6, HVY_EDGE)
+        r(6, y - 5, 23, y + 5, HVY)
+        r(6, y - 5, 23, y - 3, HVY_HI)
+    r(0, 0, 10, N, HVY_EDGE)                 # top chord: a riveted box girder, the heaviest member
+    r(1, 0, 9, N, HVY)
+    r(2, 0, 4, N, HVY_HI)
+    r(20, 0, 27, N, HVY_EDGE)                # bottom chord on the kerb
+    r(21, 0, 26, N, HVY)
+    r(21, 0, 22.5, N, HVY_HI)
+    for y in range(4, N, 8):                 # rivet rows
+        p.dot(X(6.5), y, 1.0, HVY_DK, True)
+        p.dot(X(23.5), y, 1.0, HVY_DK, True)
+    for yc in range(0, N + 1, 64):           # gusset plates where verticals meet the chords
+        for (x0, x1) in ((0, 12), (18, 28)):
+            r(x0, yc - 10, x1, yc + 10, HVY_EDGE)
+            r(x0 + 1, yc - 9, x1 - 1, yc + 9, HVY_HI)
+            r(x0 + 2, yc - 8, x1 - 2, yc + 8, HVY)
+            for dy in (-5, 5):
+                p.dot(X((x0 + x1) / 2), yc + dy, 1.2, HVY_DK, True)
 
 
 def heavy_deck(grated=False):
@@ -244,25 +270,19 @@ def heavy_deck(grated=False):
         p.rect(BAND, 0, N - BAND, N, PAVE)
         p.noise(BAND, 0, N - BAND, N, 7, 21, grain=1)
         p.noise(BAND, 0, N - BAND, N, 4, 22, grain=6)
-        p.rect(BAND, 126, N - BAND, 130, (112, 112, 110))         # a slab joint at mid panel
-    # the truss walls stand tall beside the road: their shadow and dark inner face (atlas shows the surface from x 38)
-    p.shade(38, 0, 50, N, 95)
-    p.shade(N - 50, 0, N - 38, N, 95)
-    # overhead floor strut at the panel point (the tile seam: half on each end so tiling makes one strut)
-    for (y0, y1) in ((0, 6), (N - 6, N)):
+        for y in (62, 190):                                        # slab joints between the floor beams
+            p.rect(BAND, y, N - BAND, y + 3, (112, 112, 110))
+        p.rect(126, 0, 130, N, (166, 166, 162))                    # a pale centre joint down the roadway
+    # the truss walls stand tall beside the road: the dark band of their shadow along each inner edge
+    p.shade(BAND, 0, BAND + 16, N, 110)
+    p.shade(N - BAND - 16, 0, N - BAND, N, 110)
+    # overhead floor beam (sway strut) at each panel point; the one on the tile seam is split so a run makes one beam
+    for (y0, y1) in ((0, 4), (N - 4, N)):
         p.rect(BAND - 2, y0, N - BAND + 2, y1, HVY_EDGE, True)
-        p.rect(BAND - 2, y0 + (1 if y0 == 0 else 0), N - BAND + 2, y1 - (0 if y0 == 0 else 1), HVY, True)
+        p.rect(BAND - 2, y0 + 1, N - BAND + 2, y1 - 1, HVY, True)
+        p.rect(BAND - 2, y0 + 1, N - BAND + 2, y0 + 2, HVY_HI, True)
     if not grated:
-        p.shade(BAND, 6, N - BAND, 16, 70)                         # the strut's shadow on the road
-        p.shade_line(BAND + 8, 10, N - BAND + 8, N + 10, 7, 90)    # the bracing's shadows (sun to the south-east)
-        p.shade_line(N - BAND + 8, 10, BAND + 8, N + 10, 7, 90)
-    # overhead X lateral bracing (angle irons) between the two top chords, across the road
-    for (a, b) in (((BAND - 2, 2), (N - BAND + 2, N - 2)), ((N - BAND + 2, 2), (BAND - 2, N - 2))):
-        p.line(*a, *b, 5, HVY_EDGE, True)
-        p.line(*a, *b, 3, HVY, True)
-        p.line(a[0], a[1] - 1, b[0], b[1] - 1, 1.5, HVY_HI, True)
-    p.rect(121, 121, 135, 135, HVY_EDGE, True)                     # the bracing's centre plate
-    p.rect(123, 123, 133, 133, HVY_HI, True)
+        p.shade(BAND, 10, N - BAND, 17, 55)                        # the overhead beam's shadow, cast well off it: it is high
     _mirror_x(p, _truss_band)
     return p.done()
 
@@ -274,9 +294,10 @@ def _slab(p, x0, y0, x1, y1, face, seed, col=CEMENT):
     """A cement block seen from above-south: its top, and its south face `face` px tall below it."""
     p.rect(x0, y0, x1, y1 + face, CEMENT_EDGE)
     p.rect(x0 + 1, y0 + 1, x1 - 1, y1, col)
-    p.rect(x0 + 1, y1, x1 - 1, y1 + face - 1, CEMENT_FACE)
+    if face > 1:
+        p.rect(x0 + 1, y1, x1 - 1, y1 + face - 1, CEMENT_FACE)
     p.rect(x0 + 1, y0 + 1, x1 - 1, y0 + 3, (196, 194, 188))
-    p.noise(x0 + 1, y0 + 1, x1 - 1, y1 + face - 1, 6, seed, grain=1)
+    p.noise(max(0, x0 + 1), max(0, y0 + 1), min(N, x1 - 1), min(N, max(y1, y1 + face - 1)), 6, seed, grain=1)
 
 
 def _ibeam_post(p, x0, x1, y_top, y_base, col=STEEL, hi=STEEL_HI, dk=STEEL_DK, edge=STEEL_EDGE):
@@ -326,25 +347,48 @@ def _tower_face(p, y_top, y_mid, y_base):
         p.rect(x - 6, y_top - 5, x + 6, y_top + 1, STEEL_HI, True)
 
 
+def _tall_shadow(p, x_base, y0, y1, length, a=135, xbrace=True):
+    """The shadow a tall tower portal casts west across its abutment (sun low in the east): the portal laid flat as a crisp
+    dark silhouette - the two posts, the top and middle ties and the X brace between them - its length the tower's height.
+    The east picture cannot draw the tower rising (it would leave the cell, and in projection the whole portal collapses onto
+    one line), so the height reads from this shadow, the same portal the north and south pictures show face-on."""
+    sh = Image.new("RGBA", p.im.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(sh)
+    s = Pic._s
+    xt, xm = x_base - length, x_base - length * 0.62
+    def ln(x0, ya, x1, yb, w):
+        d.line(s((x0, ya, x1, yb)), fill=(0, 0, 0, a), width=round(w * SS))
+    for y in (y0, y1):
+        ln(x_base, y, xt, y, 14)                                       # the posts
+    ln(xt, y0, xt, y1, 13)                                             # the top tie
+    ln(xm, y0, xm, y1, 9)                                              # the middle tie
+    if xbrace:
+        ln(xm, y0, xt, y1, 6)                                          # the X brace
+        ln(xm, y1, xt, y0, 6)
+    sh = sh.filter(ImageFilter.GaussianBlur(SS * 0.7))
+    p.im = Image.alpha_composite(p.im, sh)
+    p.d = ImageDraw.Draw(p.im)
+
+
 def steel_anchor(facing):
     p = Pic()
     if facing == "south":           # deck below: the tower stands at the south end, backstays run north to the blocks
         _slab(p, 10, 58, N - 10, 232, 18, 31)
-        for x in (40, N - 40):
-            _ground_block(p, x, 26)
-        y_top, y_mid, y_base = 92, 168, 240
+        for x in (44, N - 44):
+            _ground_block(p, x, 18)
+        y_top, y_mid, y_base = 30, 92, 240        # a tall tower: both ties high overhead, the walkway open below
         for x, gx in ((14, 40), (N - 14, N - 40)):
             p.shade_line(x + 6, y_base, gx + 6, 30, 4, 70)
         _tower_face(p, y_top, y_mid, y_base)
         for x, gx in ((14, 40), (N - 14, N - 40)):
-            _cable(p, x, y_top - 2, gx, 26)                            # backstay
+            _cable(p, x, y_top - 2, gx + (4 if x < 128 else -4), 18)   # backstay
             dx = 5.5 if x < 128 else N - 5.5
             _cable(p, x, y_top - 2, dx, N)                             # main cable onto the deck band
     elif facing == "north":         # deck above: the tower at the north end, backstays run south to the blocks
         _slab(p, 10, 4, N - 10, 196, 18, 32)
         for x in (40, N - 40):
             _ground_block(p, x, 230)
-        y_top, y_mid, y_base = 22, 98, 168
+        y_top, y_mid, y_base = 4, 62, 168
         for x, gx in ((14, 40), (N - 14, N - 40)):
             p.shade_line(x + 6, y_base, gx + 6, 234, 4, 70)
         _tower_face(p, y_top, y_mid, y_base)
@@ -356,7 +400,7 @@ def steel_anchor(facing):
         _slab(p, 4, 8, N, 236, 16, 33)
         for y in (40, N - 40):
             _ground_block(p, 28, y)
-        p.shade(206, 26, 222, N - 2, 80)                               # the overhead tie's shadow (sun to the south-east)
+        _tall_shadow(p, 200, 14, N - 14, 150)                         # the tall tower's portal, as its shadow
         p.rect(194, 14, 208, N - 14, STEEL_EDGE, True)                 # top tie, from above (an I-beam's top flange)
         p.rect(195, 14, 207, N - 14, STEEL, True)
         p.rect(196, 14, 198, N - 14, STEEL_HI, True)
@@ -430,25 +474,23 @@ def _bearing(p, cx, cy):
 def heavy_anchor(facing):
     p = Pic()
     if facing == "south":
-        _slab(p, 2, 30, N - 2, 226, 26, 41)
-        for y in range(236, 250, 6):                                    # formwork lines in the face
-            p.line(4, y, N - 4, y, 1, CEMENT_EDGE, a=120)
-        _approach(p, 28, 34, N - 28, 226, True, 42)
+        _slab(p, 2, 30, N - 2, N + 4, 0, 41)                           # runs to the deck-facing edge: no seam at the deck
+        _approach(p, 28, 34, N - 28, N, True, 42)
         for x in (14, N - 14):
             _bearing(p, x, 214)
-        _portal_face(p, 100, 222)
+        _portal_face(p, 34, 222)                # the portal strut high overhead, the roadway open below
     elif facing == "north":
-        _slab(p, 2, 2, N - 2, 200, 26, 43)
+        _slab(p, 2, -4, N - 2, 200, 26, 43)                            # runs to the deck-facing edge: no seam at the deck
         for y in range(210, 224, 6):
             p.line(4, y, N - 4, y, 1, CEMENT_EDGE, a=120)
-        _approach(p, 28, 2, N - 28, 196, True, 44)
+        _approach(p, 28, 0, N - 28, 196, True, 44)
         for x in (14, N - 14):
             _bearing(p, x, 16)
-        _portal_face(p, 14, 136)
+        _portal_face(p, 4, 136)
     elif facing == "east":
         _slab(p, 2, 4, N, 228, 24, 45)
         _approach(p, 2, 26, N, 230, False, 46)
-        p.shade(218, 20, 236, N - 6, 80)
+        _tall_shadow(p, 226, 14, N - 14, 120, xbrace=False)           # the truss portal's shadow (latticed strut)
         for y in (14, N - 14):                                         # the end posts from above, on their bearings
             _bearing(p, 226, y)
             p.rect(212, y - 12, 240, y + 12, HVY_EDGE, True)
@@ -471,6 +513,12 @@ def heavy_anchor(facing):
 
 # ---- the set ----------------------------------------------------------------------------------------------------------
 FACINGS = ("south", "east", "north")
+DECKS = ("RM_SuspensionDeck_Steel", "RM_SuspensionDeck_SteelGrated", "RM_SuspensionDeck_Heavy", "RM_SuspensionDeck_HeavyGrated")
+
+
+def pieces_names():
+    """The base names of every redrawn single picture (decks, then the per-facing anchors)."""
+    return DECKS + tuple(f"RM_SuspensionAnchor_{t}_{f}" for f in FACINGS for t in ("Steel", "Heavy"))
 
 
 def pieces():
@@ -493,7 +541,7 @@ def atlases(pcs, tmp):
     tmp = Path(tmp)
     tmp.mkdir(parents=True, exist_ok=True)
     for rel, (im, mk) in pcs.items():
-        if "/RM_SuspensionDeck_" not in rel:
+        if "/RM_SuspensionDeck" not in rel:
             continue
         a = tmp / (Path(rel).name + ".png")
         b = tmp / (Path(rel).name + "_m.png")
@@ -505,6 +553,61 @@ def atlases(pcs, tmp):
         ma[..., 1:3] = 0
         ma[..., 3] = 255
         out[rel + "_Atlas"] = (atlas, Image.fromarray(ma, "RGBA"))
+    return out
+
+
+# ---- the four looks ---------------------------------------------------------------------------------------------------
+# The shared style picker's looks (RM_SuspensionStyles.xml) draw the SAME bridge in another finish, never another bridge
+# and never red: the steel (mask red) and the cement/wood/paving (mask black) are each pulled toward a finish colour.
+LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
+LOOK_DIR = "RimMandrake/FlowWorks/SuspensionBridge"
+#           steel: (mix colour, mix share, gain)     rest: (mix colour, mix share, gain)      grime speckle
+LOOK_FINISH = {
+    "Scrapper":   (((104, 98, 88), 0.30, 0.80),   ((118, 108, 92), 0.18, 0.86),   8),    # weathered, oily, sun-bleached
+    "Industrial": (((72, 82, 94), 0.25, 0.92),    ((150, 150, 150), 0.10, 0.96),  6),    # galvanised blue-grey
+    "Modern":     (((200, 204, 208), 0.15, 1.04), ((200, 198, 192), 0.08, 1.02),  0),    # clean, the base finish
+    "Futuristic": (((214, 224, 236), 0.45, 1.06), ((208, 214, 222), 0.30, 1.04),  0),    # white-steel, cool composite
+}
+LOOK_NAME = {  # base piece name -> the look's file name (the looks' grated decks are named RM_SuspensionDeckGrated_<tier>)
+    "RM_SuspensionDeck_SteelGrated": "RM_SuspensionDeckGrated_Steel",
+    "RM_SuspensionDeck_HeavyGrated": "RM_SuspensionDeckGrated_Heavy",
+}
+
+
+def look_variant(im, mk, look, seed=0):
+    """(picture, mask) in `look`'s finish: same drawing, same alpha, same mask."""
+    (sc, ss, sg), (rc, rs, rg), grime = LOOK_FINISH[look]
+    a = np.asarray(im.convert("RGBA"), np.float32)
+    steel = (np.asarray(mk.convert("RGBA"))[..., 0] > 128)[..., None]
+    rgb = a[..., :3]
+    st = (rgb * (1 - ss) + np.array(sc, np.float32) * ss) * sg
+    rs_ = (rgb * (1 - rs) + np.array(rc, np.float32) * rs) * rg
+    out = np.where(steel, st, rs_)
+    if grime:
+        rng = np.random.default_rng(seed)
+        n = rng.normal(0, grime, out.shape[:2])
+        n = np.kron(n[::2, ::2], np.ones((2, 2)))[:out.shape[0], :out.shape[1]]
+        out = out + np.minimum(n, 0)[..., None]          # grime darkens only: no coloured speckle
+    a[..., :3] = np.clip(out, 0, 255)
+    return Image.fromarray(a.astype(np.uint8), "RGBA"), mk
+
+
+def install_set(tmp):
+    """{Textures-relative path (no .png): (picture, mask)}: every file this redesign installs - the base set, the four looks
+    (each with its deck atlases), all with their _m paint masks."""
+    base = pieces()
+    out = dict(base)
+    out.update(atlases(base, Path(tmp) / "base"))
+    for i, look in enumerate(LOOKS):
+        lp = {}
+        for rel, (im, mk) in base.items():
+            name = Path(rel).name
+            for k, v in LOOK_NAME.items():
+                if name == k:
+                    name = v
+            lp[f"{LOOK_DIR}/{look}/{name}"] = look_variant(im, mk, look, seed=97 * i + len(name))
+        out.update(lp)
+        out.update(atlases(lp, Path(tmp) / look))
     return out
 
 
@@ -568,9 +671,7 @@ def main(argv=None):
     if len(argv) != 1:
         raise SystemExit(__doc__)
     out = Path(argv[0])
-    pcs = pieces()
-    allp = dict(pcs)
-    allp.update(atlases(pcs, out / "_atlas_src"))
+    allp = install_set(out / "_atlas_src")
     for rel, (im, mk) in allp.items():
         f = out / (rel + ".png")
         f.parent.mkdir(parents=True, exist_ok=True)

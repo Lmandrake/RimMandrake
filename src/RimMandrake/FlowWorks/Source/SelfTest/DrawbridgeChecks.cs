@@ -1016,7 +1016,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         }
                     }
                 }
-                Assert(setups >= 80, "graded only " + setups + " rope prints");
+                Assert(setups >= 30, "graded only " + setups + " rope prints");
                 Assert(oldStood > 0, "can-fail: the shipped N/S hook loop must read as standing up");
                 // the halo: a coil ahead of the head (no foot rule) on an upright _north print floats off the foot
                 int halo = 0, ring = 0, north = 0;
@@ -1034,7 +1034,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                         if (AtFoot(RM_DrawbridgeCableMath.Slack(r, true, foot + RM_DrawbridgeCableMath.CoilAspect * RM_DrawbridgeCableMath.CoilWide), foot) != null) ring++;
                     }
                 }
-                Assert(north >= 16, "graded only " + north + " upright _north ropes");
+                Assert(north >= 12, "graded only " + north + " upright _north ropes");
                 Assert(halo == north, $"can-fail: every coil placed ahead of a _north head must float off the foot ({halo}/{north})");
                 Assert(ring == north, $"can-fail: every coil ringed round a _north foot must reach behind the post ({ring}/{north})");
                 Assert(RM_DrawbridgeCableMath.SlackFoot("Scrapper/Heavy", "east") < 0 && RM_DrawbridgeCableMath.SlackFoot("base/Rope", "single") < 0
@@ -1048,7 +1048,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string root = Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_DrawbridgeMath.cs")), "..");
                 string xml = File.ReadAllText(Path.Combine(root, "Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml"));
                 var measured = Anchors(out _);
-                foreach (string m in new[] { "Rope", "Timber", "Steel", "Heavy" })
+                foreach (string m in new[] { "Rope", "Timber" })   // Steel/Heavy: opaque abutments, no rope table (below)
                 {
                     var d = System.Text.RegularExpressions.Regex.Match(xml, "<defName>RM_SuspensionAnchor_" + m + "</defName>.*?<graphicClass>(\\w+)</graphicClass>", System.Text.RegularExpressions.RegexOptions.Singleline);
                     Assert(d.Success && d.Groups[1].Value == "Graphic_Multi", "RM_SuspensionAnchor_" + m + " is " + (d.Success ? d.Groups[1].Value : "missing") + ", an upright bollard needs Graphic_Multi");
@@ -1061,22 +1061,29 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
             });
 
-            Case("Drawbridge_StyledHeavyAnchors_upright_per_facing", () =>
+            Case("Suspension_SteelHeavyAnchors_no_rope_table", () =>
             {
-                // ANCHOR_BASE_REDRAW_STILL_LYING_FLAT A2: the styled Heavy anchors stand upright like the styled Timber/Steel ones,
-                // so their rope attachment is per facing (look/Heavy/facing), not the one shared flat-fixture row
-                foreach (string look in new[] { "Scrapper", "Industrial", "Modern", "Futuristic" })
+                // SUSPENSION_BRIDGE_REDRAW_HEAVY_JUST_PAINTED: the Steel and Heavy anchors are cement abutments that paint their own
+                // cables (Heavy has none: owner 2026-10-24 "no cables"), so no rope is measured or drawn for them in any look; the
+                // Timber and Rope anchors keep theirs. Fails on the old table, which held a rope pair for every Steel/Heavy print.
+                foreach (string look in new[] { "base", "Scrapper", "Industrial", "Modern", "Futuristic" })
                 {
-                    foreach (string f in new[] { "south", "east", "north" })
-                        Assert(RM_DrawbridgeCableMath.Art.ContainsKey(look + "/Heavy/" + f), "no per-facing rope table " + look + "/Heavy/" + f + ": the styled Heavy anchor is still the flat fixture");
-                    Assert(!RM_DrawbridgeCableMath.Art.ContainsKey(look + "/Heavy"), look + "/Heavy still has the shared flat-fixture row");
+                    foreach (string m in new[] { "Steel", "Heavy" })
+                        foreach (string f in new[] { "south", "east", "north" })
+                            Assert(!RM_DrawbridgeCableMath.Art.ContainsKey(look + "/" + m + "/" + f), "rope table " + look + "/" + m + "/" + f + " still draws ropes on the " + m + " anchor");
+                    Assert(look == "base" || RM_DrawbridgeCableMath.Art.ContainsKey(look + "/Timber/north"), look + "/Timber lost its rope table");
+                }
+                foreach (string m in new[] { "Steel", "Heavy" })
+                {
+                    Assert(RM_DrawbridgeCableMath.KeyOf("Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionAnchor_" + m, true) == null, "KeyOf keys the " + m + " anchor: its ropes would print");
+                    Assert(RM_DrawbridgeCableMath.KeyOf("RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_" + m, true) == null, "KeyOf keys the styled " + m + " anchor");
                 }
             });
 
             Case("Drawbridge_Cables_lowered_reach_deck_raised_slack_vs_art", () =>
             {
                 var measured = Anchors(out _);
-                Assert(measured.Count >= 48, "the fixture measured " + measured.Count + " anchor pictures (expected 48: 4 looks x 3 materials x 3 facings + 4 base x 3 facings)");
+                Assert(measured.Count >= 18, "the fixture measured " + measured.Count + " anchor pictures (expected 18: 4 looks x Timber x 3 facings + Rope and Timber base x 3 facings; Steel/Heavy paint their own cables)");
                 List<string> bad = RM_DrawbridgeCableMath.Art.Count > 0 ? Grade(RM_DrawbridgeCableMath.Art, measured) : new List<string> { "empty table" };
                 Assert(bad.Count == 0, bad.Count + " cable failures, first: " + string.Join(" | ", bad.GetRange(0, Math.Min(4, bad.Count))));
             });
@@ -1118,7 +1125,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string threw = null;
                 try
                 {
-                    single = RM_DrawbridgeCableMath.RopesFor("base/Steel", "single");
+                    single = RM_DrawbridgeCableMath.RopesFor("base/Timber", "single");
                     unknown = RM_DrawbridgeCableMath.RopesFor("NoLook/NoMat", "east");
                 }
                 catch (Exception e)
@@ -1127,7 +1134,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 Assert(threw == null, "can-fail: RopesFor threw " + threw + " for a print with no per-facing table");
                 Assert(single == null && unknown == null, "an unmeasured print must get no rope table");
-                Assert(RM_DrawbridgeCableMath.RopesFor("base/Steel", "north") == RM_DrawbridgeCableMath.Art["base/Steel/north"], "a measured facing still finds its table");
+                Assert(RM_DrawbridgeCableMath.RopesFor("base/Timber", "north") == RM_DrawbridgeCableMath.Art["base/Timber/north"], "a measured facing still finds its table");
                 foreach (string k in RM_DrawbridgeCableMath.Art.Keys)
                     Assert(k.Split('/').Length == 3, "rope table " + k + " is not per facing (look/material/facing)");
                 string art = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Drawbridge", "RM_DrawbridgeArt.cs"));
