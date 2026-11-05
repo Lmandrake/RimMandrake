@@ -294,7 +294,7 @@ def t_clones_seed():
             "-> Permission denied")
     cls = RF.classify(r, [what])
     prop = RF.propose(r, cls, [], [], what)
-    ok(cls["class"] == "clones" and prop["adapters"] == ["seat_clone_state"] and prop["paths"] == []
+    ok(cls["class"] == "clones" and prop["adapters"] == ["seat_clone_state", "rm_pool_state"] and prop["paths"] == []
        and "/home/mandrake/rm/foundry" in prop["refused"],
        "(6) the clones gap seeds seat_clone_state and still refuses the clone root: %s" % prop)
     ad = W.adapters(r).get("seat_clone_state") or {}
@@ -423,6 +423,72 @@ def t_closed_ticket_reseeds():
     x.done()
 
 
+SCRATCH_BLIND = ("contents of /home/mandrake/rm/scratch/BENCH (ra_s09, transfer, agent-improve-20261101-192155, restart-now, "
+                 "review_b): empty tmpfs mask, seen with ls /home/mandrake/rm/scratch and mount; /home/mandrake/rm/relentless-"
+                 "seeds/{census,verify,store/items}: mode-000 mask, ls gives Permission denied")
+
+
+def t_clones_scratch_instance():
+    """CHECKER_REACH_FIX_CLONES_STILL_DARK gen 3 (the class guard): SCRATCH_CLONES_PRUNE_LANDED_DEAD_WEIGHT waited on the
+    clones repair, was released with seat_clone_state (bench and foundry only), and its Judge was blind again on the
+    scratch pool and relentless-seeds: the probe passed because it only asks whether the adapter READS, never whether it
+    covers what the Judge named. Now (a) on this instance, the stored proposal reseeded after the ticket closes carries an
+    adapter whose `covers` hold every masked path the blind text names; (b) that adapter lists the pool by name only;
+    (c) a proposal that reads but covers none of the named paths fails before any probe, so it files the ticket instead
+    of spending the one re-check."""
+    import json
+    import subprocess
+    import tempfile
+    import relentless_wall as W
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    cls = RF.classify(r, [SCRATCH_BLIND])
+    stored = {"adapters": ["seat_clone_state"], "by": "seed", "paths": [], "grants": [],
+              "refused": {"/home/mandrake/rm/foundry": "under /home/mandrake/rm/foundry/conversations"}}
+    prop = RF.reseed(r, cls["class"], stored)
+    unc = getattr(RF, "uncovered", None)
+    gaps = unc(r, prop, [SCRATCH_BLIND]) if unc else ["RF.uncovered missing"]
+    ok(cls["class"] == "clones" and gaps == [],
+       "(8a) the instance's reseeded clones proposal covers every masked path it named: %s %s -> %s" % (
+           cls["class"], prop.get("adapters"), gaps))
+    bare = unc(r, stored, [SCRATCH_BLIND]) if unc else []
+    ok("/home/mandrake/rm/scratch/BENCH" in bare and "/home/mandrake/rm/relentless-seeds" in bare,
+       "(8a) seat_clone_state alone leaves the scratch pool and relentless-seeds uncovered: %s" % bare)
+    ad = W.adapters(r).get("rm_pool_state") or {}
+    argv, why = W.fill_argv(ad.get("argv") or ["false"], {})
+    ok(argv is not None and argv[:3] == ["python3", "-I", "-c"] and "rm_pool_state" in prop.get("adapters", []),
+       "(8b) rm_pool_state is a slot-free no-shell script the clones class seeds: %s %s" % (why, prop.get("adapters")))
+    with tempfile.TemporaryDirectory() as home:
+        env = dict(os.environ, HOME=home, GIT_CONFIG_GLOBAL="/dev/null", GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t",
+                   GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
+        c = os.path.join(home, "rm", "scratch", "BENCH", "review_b")
+        os.makedirs(os.path.join(c, "conversations"))
+        for g in (["init", "-q", "-b", "main"], ["commit", "-q", "--allow-empty", "-m", "a"]):
+            subprocess.run(["git", "-C", c] + g, env=env, check=True, capture_output=True)
+        with open(os.path.join(c, "conversations", "secret_talk.md"), "w") as f:
+            f.write("SECRET_WORDS")
+        with open(os.path.join(c, "notes.txt"), "w") as f:
+            f.write("FILE_CONTENT")
+        os.makedirs(os.path.join(home, "rm", "relentless-seeds", "store", "items"))
+        out = subprocess.run(argv or ["false"], env=env, cwd=home, capture_output=True, text=True, timeout=120).stdout
+    ok("scratch/BENCH/review_b" in out and "HEAD=" in out and "dirty=1" in out
+       and "relentless-seeds/store/items" in out and "ra_s09" not in out,
+       "(8b) the reading names each pool entry, its git state and the seeds tree: %r" % out[:500])
+    ok("secret_talk" not in out and "SECRET_WORDS" not in out and "FILE_CONTENT" not in out and "conversations" not in out,
+       "(8b) no conversation and no file content crosses: %r" % out[:500])
+    x = rig(probe=(True, "seat_clone_state read non-empty"))
+    x.r = dict(x.r, reach_classes=[dict(c, adapters=["seat_clone_state"]) if c["class"] == "clones" else c
+                                   for c in x.r["reach_classes"]],
+               walls={"marker": dict(r["walls"]["marker"], enforce=False)}, offbox_adapters=r["offbox_adapters"])
+    B.to_check(x, "I0")
+    blind(x, "I0", what=SCRATCH_BLIND)
+    for _ in range(3):
+        x.tick()
+    ok(x.w.probes == [] and x.w.tickets == ["CHECKER_REACH_FIX_CLONES_STILL_DARK"] and checks(x) and len(checks(x)) == 1,
+       "(8c) a proposal that covers none of the named paths probes nothing and files the ticket, no re-check: %s %s %d"
+       % (x.w.probes, x.w.tickets, len(checks(x))))
+    x.done()
+
+
 def seat_tmp_rows(r):
     """CHECKER_REACH_FIX_SEAT_TMP_STILL_DARK: on the rules as SHIPPED, a Judge's seat-tmp read path is classed seat_tmp,
     kept by propose(), and bound by props() with no InaccessiblePaths over it. The probe that filed the ticket ran at
@@ -458,7 +524,7 @@ def t_seat_tmp_reach():
 def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
               t_windows_build_nothing_to_probe, t_windows_build_seed_probes, t_every_waiter_released, t_legacy_off, t_clones_seed, t_store_seed,
-              t_closed_ticket_reseeds, t_seat_tmp_reach):
+              t_closed_ticket_reseeds, t_seat_tmp_reach, t_clones_scratch_instance):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0

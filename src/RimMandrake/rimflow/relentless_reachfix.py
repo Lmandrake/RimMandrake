@@ -160,6 +160,28 @@ def reseed(r, name, prop):
     return dict(prop, adapters=(have + add)[:relentless_wall.OFFBOX_MAX]) if add else prop
 
 
+def uncovered(r, prop, texts):
+    """-> the masked paths the blind texts name that the proposal covers nowhere (CHECKER_REACH_FIX_CLONES_STILL_DARK gen 3:
+    a probe asks only whether the repair READS; SCRATCH_CLONES_PRUNE_LANDED_DEAD_WEIGHT got seat_clone_state, which reads,
+    and stayed blind on ~/rm/scratch). Opt-in: it judges only a proposal with an adapter that declares `covers`. A path
+    counts as covered under an adapter's covers or under a proposal path the wall would bind."""
+    known = relentless_wall.adapters(r)
+    ads = [known[a] for a in prop.get("adapters") or [] if a in known]
+    if not any(isinstance(a.get("covers"), list) for a in ads):
+        return []
+    prof = relentless_wall.profile(r) or {}
+    masks = [m.rstrip("/") for m in list(prof.get("deny_children") or []) + list(prof.get("deny") or [])]
+    cover = [c.rstrip("/") for a in ads for c in a.get("covers") or [] if isinstance(c, str)]
+    cover += [p.rstrip("/") for p in prop.get("paths") or [] if relentless_wall.through_reachable(p, prof)]
+    out = []
+    for p in _paths_of(texts):
+        if not any(p == m or p.startswith(m + "/") for m in masks):
+            continue
+        if not any(p == c or p.startswith(c + "/") for c in cover) and p not in out:
+            out.append(p)
+    return out
+
+
 def load(store):
     try:
         with open(store.p(BOOK), encoding="utf-8") as f:
@@ -286,7 +308,11 @@ def sweep(store, fx, r, now, acts, iso):
             file_ticket(store, fx, r, book, name, owner, ent.get("why"), now, acts, iso)
             continue
         why = None
-        if not prop.get("adapters") and not prop.get("paths") and not prop.get("grants"):
+        gaps = uncovered(r, prop, [rp.get("still_blind"), (st.get("blind") or {}).get("what")])
+        if gaps:
+            # it would read, but nothing in it reaches what the Judge named: the re-check would be blind again
+            good, why = False, "the proposal (adapters %s) does not cover %s" % (prop.get("adapters") or "-", gaps[:6])
+        elif not prop.get("adapters") and not prop.get("paths") and not prop.get("grants"):
             # nothing to probe: a closed ticket is the repair, and the one re-check is its probe (blind again -> ticket)
             good = status == "ticket"
             why = ("%s closed; nothing to probe from here, so the one re-check is the probe" % ent.get("ticket") if good
