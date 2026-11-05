@@ -91,6 +91,14 @@
    "speaker": "owner",
    "source": "OWNER:1793895899845199295",
    "quote": "Reword \"Behind it the fire (offers some solace):\" (rather than pays)"
+  },
+  {
+   "id": "s_firebreak_not_needed",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1793898832335289326"
+   ],
+   "text": "Please evaluate whether we need a firebreak. It should not need chemfuel. ... any other surface type that isn't fertile. I don't think this is a needed feature for this mod."
   }
  ],
  "decisions": [
@@ -101,6 +109,27 @@
    "source": "OWNER:1793895899845199295",
    "words": "Substitute \"A (genetically engineered) grass savanna...\" \"never fully goes out (for long).\" Correction: black rain should not wash away that benefit but compound it. Reword \"Behind it the fire (offers some solace):\" (rather than pays)",
    "what": "Root approved as corrected (genetically engineered; out not for long; fire offers some solace; black rain compounds the burn bonus)"
+  },
+  {
+   "id": "d_blackrain_stop_wipe",
+   "kind": "decision",
+   "speaker": "owner",
+   "source": "OWNER:1793898829233582581",
+   "what": "Black rain no longer wipes the fresh-burn bonus: a wet fresh scar reads watered plus burn (deep ash 190%), and the bonus fades only on its own 6-day clock. Owed change to PyrelandsAshField.cs (drop the rain-accumulator fade) and bar pyre_fresh_burn_feeds_the_field; carried by the tree and plan at stage 3."
+  },
+  {
+   "id": "d_firebreak_cut",
+   "kind": "delegated",
+   "speaker": "agent",
+   "source": [
+    "OWNER:1793898832335289326",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs",
+    "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs"
+   ],
+   "by": "rm-role-designer-1793898941",
+   "what": "Evaluated at his request; cut RM_FE_FirebreakLine. It adds nothing a vanilla floor does not: the burn line's front (IgniteLine), the smoulder relight (TryReseedStandingBurn) and the fire-hawk drop all light cells through vanilla FireUtility.ChanceToStartFireIn, so any non-flammable plant-free floor (flagstone, stone tile, concrete) stops them exactly as the firebreak does, and scorch-fruit already refuses every non-Pyrelands ground (IsScorchableGround allowlist). Its only differences are a chemfuel cost he rejected and a Firefoam research gate. Player fire defence is vanilla: pave a strip at least two cells wide (vanilla fire's far-spread jump can cross a single cell), or keep a strip cut by hand. No mod-owned plant-clearing zone is added (ember grass regrows within a week, so paving is the durable answer). Owed: excise Firebreak.xml, the kernel's FirebreakDefName special case, and switch validation.py/human_review.py fire-hygiene pads to a vanilla floor. The firefoam sprayer is untouched (its scope was not opened). He can undo this.",
+   "undo": "say \"keep the firebreak\" and it returns as a vanilla-priced floor with no chemfuel"
   }
  ],
  "asks": [
@@ -142,7 +171,7 @@
   },
   {
    "id": "a_fire_control_scene",
-   "status": "sent",
+   "status": "answered",
    "source": [
     "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml",
     "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs",
@@ -164,6 +193,10 @@
     "by": "rm-judge ae01fc3bd872b7339 (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "Round 2: claims match Firebreak.xml; decides what the scene checks. Found: hawk drop target ignores firebreaks (JobGiver_RUT_FireHawkCarryEmber.cs:103), and smoulder relight / front start (TryReseedStandingBurn, IgniteLine) can light a field inside a firebreak ring (they exclude home area and 32 cells from buildings only), so (a) also changes that check; wording added. Vanilla spark jump distance unverified."
+   },
+   "answer": {
+    "source": "OWNER:1793898832335289326",
+    "words": "Please evaluate whether we need a firebreak. It should not need chemfuel. It's just a zone where they destroy any plants that grow. Or they could just build hard packed earth or any other surface type that isn't fertile. I don't think this is a needed feature for this mod."
    }
   },
   {
@@ -218,7 +251,7 @@
    ],
    "offers_removal": false,
    "author": "rm-role-designer-1793897137",
-   "status": "sent",
+   "status": "answered",
    "source": [
     "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
     "design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md"
@@ -227,6 +260,10 @@
     "by": "rm-judge ae01fc3bd872b7339 (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "His 2026-11-05 words settle that rain stops wiping the bonus but not whether compound means more; numbers match code (0.40/1.40, +0.50 for 6 d, 12 rain-hours at black rain 1.1, cap 2.0). Wording fix (percentages, wet-duration) applied."
+   },
+   "answer": {
+    "source": "OWNER:1793898829233582581",
+    "by_card": "How should black rain compound on a fresh burn scar? → Just stop the wipe (wet plus burn 190%, bonus fades on its 6-day clock)"
    }
   }
  ],
@@ -343,7 +380,7 @@
   },
   {
    "id": "inv_ash_field",
-   "what": "Ground is deep ash almost everywhere (millennia of burning); deep ash is quite fertile when watered; fresh burns give a fertility bonus that black rain fades; ambient ash blows like snow and banks as loose-ash filth",
+   "what": "Ground is deep ash almost everywhere (millennia of burning); deep ash is quite fertile when watered; fresh burns give a fertility bonus (built: black rain fades it; ruled 2026-11-05: rain stops wiping it, d_blackrain_stop_wipe); ambient ash blows like snow and banks as loose-ash filth",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshField.xml",
@@ -573,10 +610,25 @@
   },
   {
    "id": "inv_firebreak_firefoam",
-   "what": "Player fire control: a sprayed firebreak line terrain and a firefoam sprayer weapon that aims at fire",
+   "what": "Firebreak line: a buildable floor (2 chemfuel a cell, Firefoam research) that fire will not cross; to be excised",
    "impl": "present",
    "impl_evidence": [
-    "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml",
+    "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml"
+   ],
+   "proof": "missing",
+   "proof_evidence": [],
+   "scope": "out",
+   "source": [
+    "src/RimMandrake/Pyrelands/About/About.xml"
+   ],
+   "scope_source": "OWNER:1793898832335289326",
+   "note": "Cut by d_firebreak_cut (delegated evaluation he asked for); vanilla non-flammable floors serve. Coverage: its absence check only, once excised."
+  },
+  {
+   "id": "inv_firefoam_sprayer",
+   "what": "Firefoam sprayer: a weapon that aims at fire (Firefoam research)",
+   "impl": "present",
+   "impl_evidence": [
     "src/RimMandrake/Pyrelands/Defs/ThingDefs_Sprayer/FirefoamSprayer.xml",
     "src/RimMandrake/Pyrelands/Source/RM_FirefoamAimProof.cs"
    ],
@@ -588,7 +640,7 @@
    "source": [
     "src/RimMandrake/Pyrelands/About/About.xml"
    ],
-   "proof_note": "no validation.py component: the firebreak is only the suite's own fire-hygiene fixture; the sprayer has a one-off aim probe (FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE), no player-facing scene"
+   "proof_note": "one-off aim probe (FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE), no player-facing scene"
   },
   {
    "id": "inv_sand_shovel",
@@ -724,7 +776,7 @@
     "design/validation_walks/RimMandrake/Pyrelands.md",
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "text": "Five built capabilities have no walk bar: ullai herd follows the burn, ashwallow heat dome, sand shovel, firebreak/firefoam, furnace bed ignition and thermal charge. validation.py proves three of them as unbarred components; firebreak/firefoam and bed ignition have no scene at all.",
+   "text": "Five built capabilities have no walk bar: ullai herd follows the burn, ashwallow heat dome, sand shovel, firefoam sprayer, furnace bed ignition and thermal charge. validation.py proves three of them as unbarred components; the firefoam sprayer and bed ignition have no scene at all. (Firebreak cut 2026-11-05, d_firebreak_cut.)",
    "status": "open"
   },
   {
@@ -754,7 +806,10 @@
    "source": [
     "OWNER:1793895899845199295",
     "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs"
-   ]
+   ],
+   "resolved": true,
+   "status": "resolved",
+   "resolution": "Answered by card OWNER:1793898829233582581: stop the wipe (d_blackrain_stop_wipe); the code change goes to Relentless with the tree."
   }
  ],
  "script_audit": [

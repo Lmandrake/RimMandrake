@@ -27,3 +27,16 @@ compounds); a_blackrain_compound drafted for stage 2.
 ## Sitting 4, 2026-11-05 (run rm-role-designer-1793897137). Stage 2 Argue the edge
 
 Turn: `turn_03.md`. Fresh-Opus review (rm-judge ae01fc3bd872b7339), two rounds. a_blackrain_compound pass (numbers 0.40/1.40/+0.50 6 d/12 rain-h checked; percentages wording). a_fire_control_scene struck round 1 (called the firebreak a one-cell sprayed strip; it is a painted floor of any width), pass round 2 with "biome never starts a new fire inside the ring" added: hawk drop ignores firebreaks, and smoulder relight/front start can light a field inside a ring. a_regrow_thresholds struck: answered by card OWNER:1792093476867252720 (25/60, 26.2/59.8 PASS); c_regrow_thresholds_reask resolved. Sent: a_blackrain_compound, a_fire_control_scene.
+
+## Sitting 5, 2026-11-05 (run rm-role-designer-1793898941). Stage 2 closed
+
+His card answers, recorded on BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS:
+- a_blackrain_compound (OWNER:1793898829233582581), by card: "How should black rain compound on a fresh burn scar? →
+  Just stop the wipe (wet plus burn 190%, bonus fades on its 6-day clock)". Decision d_blackrain_stop_wipe;
+  c_blackrain_fades_vs_compounds resolved; the code change rides the tree to Relentless.
+- a_fire_control_scene (OWNER:1793898832335289326), verbatim: "Please evaluate whether we need a firebreak. It should not
+  need chemfuel. It's just a zone where they destroy any plants that grow. Or they could just build hard packed earth or
+  any other surface type that isn't fertile. I don't think this is a needed feature for this mod."
+  Evaluation (d_firebreak_cut, delegated, he can undo): cut. Front, smoulder relight and hawk drop all go through vanilla
+  ChanceToStartFireIn, so any non-flammable plant-free floor stops them as the firebreak does; scorch-fruit already
+  refuses non-Pyrelands ground. The sprayer was split out (inv_firefoam_sprayer) and is untouched, scope not opened.
