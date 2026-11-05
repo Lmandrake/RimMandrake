@@ -17,7 +17,10 @@ validation.py. This proves, without the game:
      kotorsound_GonkDroid (both Armoury's own defs), `--absent` SetIngredients and RecipeDefGenerator, and its
      env_verify_check; A2 `--has` both AutomatedSmelter states (WreckedMachines' own defs), `--absent`
      SetIngredients, RecipeDefGenerator and GenerateAutoProcesses (an NRE naming each reads FAIL), and its
-     env_verify_check.
+     env_verify_check;
+  8. every clause with a live-proof line has exactly one line in live_proofs/MODCHECK_DONOR_ENVIRONMENTS_1.criteria
+     at a live level (L1/L2), and the reverse, and that line names the clause's witnesses, the error tokens its
+     log check refuses, and `modcheck run <Mod>`, so the supervisor owes it live (gen 10 ended proof_owed on A2).
 
     python3 src/RimMandrake/Utils/modcheck/selftest_modcheck_donor_envs.py
 """
@@ -251,9 +254,75 @@ def t_clause_parts_on_lines():
         check("%s: a clean log reads PASS" % clause, code == live_log_check.PASS, code)
 
 
+CRIT = "infrastructure/state/live_proofs/MODCHECK_DONOR_ENVIRONMENTS_1.criteria"
+
+
+def criteria_lines(path=CRIT):
+    """-> {clause: [(level, text), ...]} of the criteria file."""
+    out = {}
+    with open(os.path.join(ROOT, path), encoding="utf-8") as f:
+        for ln in f:
+            m = re.match(r"\s*([A-Z]\d+)\s+(L\d)\s*:\s*(.*)", ln)
+            if m:
+                out.setdefault(m.group(1), []).append((m.group(2), m.group(3)))
+    return out
+
+
+def live_clauses(path=LIVE):
+    with open(os.path.join(ROOT, path), encoding="utf-8") as f:
+        return {m.group(1) for m in (re.match(r"live-proof ([A-Z]\d+):", ln) for ln in f) if m}
+
+
+def criteria_bind_faults(crit, clauses):
+    """-> list of faults binding the live-proof clauses to the criteria lines (empty when bound)."""
+    faults = []
+    for c in sorted(set(clauses) | set(CLAUSE_PARTS)):
+        rows = crit.get(c, [])
+        if len(rows) != 1:
+            faults.append("%s: %d criteria lines, want 1" % (c, len(rows)))
+            continue
+        level, text = rows[0]
+        if level not in ("L1", "L2"):
+            faults.append("%s: level %s is not live (L1/L2)" % (c, level))
+        want = CLAUSE_PARTS.get(c)
+        if want is None:
+            continue
+        for k in want["has"]:
+            name = k.split("/", 1)[-1]
+            if name not in text and "_" + name.rsplit("_", 1)[-1] not in text:
+                faults.append("%s: criteria does not name witness %s" % (c, name))
+        for t in want["absent"]:
+            if t not in text:
+                faults.append("%s: criteria does not name refused token %s" % (c, t))
+        if "modcheck run %s" % want["mod"] not in text:
+            faults.append("%s: criteria does not name `modcheck run %s`" % (c, want["mod"]))
+    for c in sorted(set(crit) - set(clauses)):
+        faults.append("%s: criteria line with no live-proof line" % c)
+    return faults
+
+
+def t_criteria_bound_to_lines():
+    crit, clauses = criteria_lines(), live_clauses()
+    check("criteria: every live clause is A1 and A2", clauses == set(CLAUSE_PARTS), sorted(clauses))
+    faults = criteria_bind_faults(crit, clauses)
+    check("criteria: each live clause owed once at a live level, naming its parts", not faults, faults)
+    # probes: the instrument sees each break
+    drop_a2 = {k: v for k, v in crit.items() if k != "A2"}
+    check("criteria probe: a missing A2 line is a fault", any(f.startswith("A2:") for f in
+          criteria_bind_faults(drop_a2, clauses)))
+    l0 = dict(crit, A2=[("L0", crit.get("A2", [("L1", "")])[0][1])])
+    check("criteria probe: A2 at a non-live level is a fault", any("not live" in f for f in
+          criteria_bind_faults(l0, clauses)))
+    bare = dict(crit, A1=[("L1", "the load is fine")])
+    check("criteria probe: an A1 line naming none of its parts is a fault",
+          len([f for f in criteria_bind_faults(bare, clauses) if f.startswith("A1:")]) >= 4)
+    check("criteria probe: a criteria clause with no live line is a fault",
+          any("no live-proof line" in f for f in criteria_bind_faults(dict(crit, A3=[("L1", "x")]), clauses)))
+
+
 if __name__ == "__main__":
     for t in (t_env_files_and_tiers, t_armoury_donors_out, t_closure_on_installed, t_compose_case_blind,
-              t_a2_excludes_ve_siblings, t_clause_parts_on_lines):
+              t_a2_excludes_ve_siblings, t_clause_parts_on_lines, t_criteria_bound_to_lines):
         t()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     sys.exit(1 if FAILS else 0)
