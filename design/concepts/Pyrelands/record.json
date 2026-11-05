@@ -63,9 +63,46 @@
     "OWNER:1791855166951137487"
    ],
    "text": "Warping ahead in time is an EXTREMELY risky proposition in the game. Almost anything can happen."
+  },
+  {
+   "id": "s_genetically_engineered",
+   "text": "The Pyrelands savanna is genetically engineered",
+   "speaker": "owner",
+   "source": "OWNER:1793895899845199295",
+   "quote": "Substitute \"A (genetically engineered) grass savanna...\""
+  },
+  {
+   "id": "s_fire_out_not_for_long",
+   "text": "The burn line never fully goes out for long",
+   "speaker": "owner",
+   "source": "OWNER:1793895899845199295",
+   "quote": "\"never fully goes out (for long).\""
+  },
+  {
+   "id": "s_blackrain_compounds",
+   "text": "Black rain compounds the fresh-burn fertility bonus instead of washing it away",
+   "speaker": "owner",
+   "source": "OWNER:1793895899845199295",
+   "quote": "Correction: black rain should not wash away that benefit but compound it."
+  },
+  {
+   "id": "s_fire_solace",
+   "text": "The fire behind the burn line offers some solace (not 'pays'): a consolation, not a farm",
+   "speaker": "owner",
+   "source": "OWNER:1793895899845199295",
+   "quote": "Reword \"Behind it the fire (offers some solace):\" (rather than pays)"
   }
  ],
- "decisions": [],
+ "decisions": [
+  {
+   "id": "d_root",
+   "kind": "root",
+   "speaker": "owner",
+   "source": "OWNER:1793895899845199295",
+   "words": "Substitute \"A (genetically engineered) grass savanna...\" \"never fully goes out (for long).\" Correction: black rain should not wash away that benefit but compound it. Reword \"Behind it the fire (offers some solace):\" (rather than pays)",
+   "what": "Root approved as corrected (genetically engineered; out not for long; fire offers some solace; black rain compounds the burn bonus)"
+  }
+ ],
  "asks": [
   {
    "id": "a_flagship",
@@ -121,7 +158,7 @@
    ],
    "offers_removal": false,
    "author": "rm-role-designer-1793865628",
-   "status": "sent",
+   "status": "answered",
    "source": [
     "design/concepts/Pyrelands/turn_01.md"
    ],
@@ -129,7 +166,30 @@
     "by": "rm-judge a69772db192f51a71 (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "Answerable in a phrase; settles stage 1; quotes verbatim. Fixed on review: fresh-burn bonus fades by itself and rain cuts it short; furnace-beast warms pawns near it, not the ground (CompFurnaceWarmthAura.cs); bar count 20+1."
+   },
+   "answer": {
+    "source": "OWNER:1793895899845199295",
+    "words": "Substitute \"A (genetically engineered) grass savanna...\" \"never fully goes out (for long).\" Correction: black rain should not wash away that benefit but compound it. Reword \"Behind it the fire (offers some solace):\" (rather than pays)"
    }
+  },
+  {
+   "id": "a_blackrain_compound",
+   "text": "Black rain now compounds the fresh-burn bonus instead of washing it away. Picture a two-day-old scar when black rain falls: should crops there grow faster still (the rain adds its own bonus on top of the burn's), or should the burn's bonus simply stop fading for as long as the ground stays wet?",
+   "decision": "What 'compound' means in play: an added bonus or a halted fade; the built ash field fades the bonus with rain (PyrelandsAshField.cs), so either answer changes what gets built",
+   "about": [
+    "inv_ash_field"
+   ],
+   "owner_cites": [
+    "OWNER:1793895899845199295",
+    "OWNER:1791817029416124872"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793896289",
+   "status": "draft",
+   "source": [
+    "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+    "design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md"
+   ]
   }
  ],
  "inventory": [
@@ -268,8 +328,10 @@
    ],
    "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bars pyre_ground_deep_ash (PROVISIONAL 0.85; measured 0.840 once, PYRE_DEEP_ASH_TUNE_ONE_POINT_SHORT), pyre_ash_fertile_when_watered, pyre_fresh_burn_feeds_the_field",
    "scope_source": [
-    "OWNER:1791817029416124872"
-   ]
+    "OWNER:1791817029416124872",
+    "OWNER:1793895899845199295"
+   ],
+   "note": "2026-11-05 he ruled black rain compounds the fresh-burn bonus (OWNER:1793895899845199295); built code fades it with rain (PyrelandsAshField.cs rainAtBurn/rainAcc, ash redesign §4): a build delta, see c_blackrain_fades_vs_compounds."
   },
   {
    "id": "inv_burn_line_fire_clock",
@@ -644,6 +706,15 @@
    ],
    "text": "GREEN_MINIMAL_1 / GREEN_FULL_1 / NORTHSTAR_TRIAL_1 remain live (FOUNDRY-era) though the ratchet recorded 34 PASS 0 FAIL on 2026-10-15; FOUNDRY is retired, so they need re-bucketing to Relentless's game_prove lane.",
    "status": "open"
+  },
+  {
+   "id": "c_blackrain_fades_vs_compounds",
+   "text": "Built: a Black Rain fades the fresh-burn fertility bonus (rain accumulator, rainBudget 12 rain-hours; bar pyre_fresh_burn_feeds_the_field). Ruled 2026-11-05: black rain compounds it. Core; what 'compound' means is a_blackrain_compound (stage 2), then the change goes to Relentless.",
+   "core": true,
+   "source": [
+    "OWNER:1793895899845199295",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs"
+   ]
   }
  ],
  "script_audit": [
@@ -709,12 +780,19 @@
  ],
  "failure_modes": [
   "It looks green but isn't: every bar was last green on 2026-10-15 on a test site with mechanics isolated and clocks compressed; since then the opening front and the defName migration landed, so in ordinary play on the composed mandrake.rm.biomes list the burn line, regrowth or fire-born fruit may not behave as the rows claim, and nothing he walks would show which.",
-  "The fire is a hazard, not a farm: the burn line, smoulder relights and fire-hawk embers burn his colony faster than the firebreak and firefoam can answer (neither has any scene proving it holds), so the biome reads as punishment rather than the 'fire pays' loop of scorch-fruit, fresh-burn fertility and glass sand.",
+  "The fire is a hazard, not a farm: the burn line, smoulder relights and fire-hawk embers burn his colony faster than the firebreak and firefoam can answer (neither has any scene proving it holds), so the biome reads as punishment rather than the solace the fire offers (his word, 2026-11-05) of scorch-fruit, fresh-burn fertility and glass sand.",
   "The cast doesn't read: the behaviours that make the creatures the fire's creatures (hawk carrying embers, ullai drifting to two-day-old burns, ashwallow diving and doming, furnace-beast smouldering its bed) are proven only by job/state reads or not at all, so in play they look like ordinary animals wandering, and flight cannot be checked without him present."
  ],
  "root_draft": {
   "text": "The Pyrelands are a grass savanna that has burned for millennia and is burning still. Almost all the ground is deep ash, quite fertile wherever water reaches it, carpeted thick in ember grass that burns black and is largely green again within about a week, while free-flying ash blows across it like snow. A line of grass fire walks the map and never fully goes out. Behind it the fire pays: scorch-fruit grows only from freshly burned ground and must be picked before it rots, and fresh burns grow crops faster for a few days, and black rain washes the bonus away early. The animals are the fire's own cast: a fire-hawk carries a burning twig ahead of the blaze to start a new fire, ullai herds graze where it burned two days ago, the ashwallow dives underground as the front reaches it and comes through unharmed, and the giant furnace-beast warms anyone standing near it and heats a room it shelters in. The sky brings ash fall, cinderfall and black rain, and never ordinary rain. Ruins stand blackened. The biome is whole on its own, with no other mod's plants or animals, and (built, not yet in your words) a sprayed firebreak line and a firefoam sprayer let a colony defend its fields. Judged first: a fresh map in ordinary play where the burn line is visibly walking across deep ash with a scorched trail behind it, and a few days later the grass behind it is greening and scorch-fruit stands in the scar.",
   "source": "design/concepts/Pyrelands/turn_01.md",
   "speaker": "agent"
+ },
+ "root": {
+  "text": "The Pyrelands are a genetically engineered grass savanna that has burned for millennia and is burning still. Almost all the ground is deep ash, quite fertile wherever water reaches it, carpeted thick in ember grass that burns black and is largely green again within about a week, while free-flying ash blows across it like snow. A line of grass fire walks the map and never fully goes out for long. Behind it the fire offers some solace: scorch-fruit grows only from freshly burned ground and must be picked before it rots, and fresh burns grow crops faster for a few days, and black rain compounds that bonus rather than washing it away. The animals are the fire's own cast: a fire-hawk carries a burning twig ahead of the blaze to start a new fire, ullai herds graze where it burned two days ago, the ashwallow dives underground as the front reaches it and comes through unharmed, and the giant furnace-beast warms anyone standing near it and heats a room it shelters in. The sky brings ash fall, cinderfall and black rain, and never ordinary rain. Ruins stand blackened. The biome is whole on its own, with no other mod's plants or animals, and (built, not yet in your words) a sprayed firebreak line and a firefoam sprayer let a colony defend its fields. Judged first: a fresh map in ordinary play where the burn line is visibly walking across deep ash with a scorched trail behind it, and a few days later the grass behind it is greening and scorch-fruit stands in the scar.",
+  "source": "OWNER:1793895899845199295",
+  "speaker": "owner",
+  "quote": "Substitute \"A (genetically engineered) grass savanna...\" \"never fully goes out (for long).\" Correction: black rain should not wash away that benefit but compound it. Reword \"Behind it the fire (offers some solace):\" (rather than pays)",
+  "note": "turn_01 root_draft corrected by his card answer 2026-11-05 to ask_root (\"Correct any word, or say yes\"); his four corrections applied (his parentheses read as insertion marks and dropped), nothing else changed. Shown back in turn_02.md for undo."
  }
 }
