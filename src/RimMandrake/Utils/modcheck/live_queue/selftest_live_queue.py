@@ -42,8 +42,19 @@ class VirtualClock:
 
 CLOCK = VirtualClock()
 # verify_pause/ensure_paused bind sleep=time.sleep as a DEFAULT, so swap the default (callers pass none).
+# Swap it BY NAME: verify_pause later grew a trailing `why=None`, and a swap of the LAST default turned `why` into
+# the sleep function (why.append -> AttributeError -> "not paused"), failing every abort_proof hazard.
+def _swap_default(fn, name, value):
+    import inspect
+    params = [p for p in inspect.signature(fn).parameters.values() if p.default is not inspect.Parameter.empty]
+    i = [p.name for p in params].index(name)                 # ValueError names a renamed parameter loudly
+    d = list(fn.__defaults__)
+    d[len(d) - len(params) + i] = value
+    fn.__defaults__ = tuple(d)
+
+
 for _fn in (clockgate.verify_pause, clockgate.ensure_paused):
-    _fn.__defaults__ = _fn.__defaults__[:-1] + (CLOCK.sleep,)
+    _swap_default(_fn, "sleep", CLOCK.sleep)
 
 _results = []
 
