@@ -235,17 +235,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(power.Contains("!AerialKinds.CarriesPower(a.Kind)"), "can-fail: GSS's power carry skips pipe anchors");
                 string csproj = Src("RimMandrake_FlowWorks.csproj");
                 Assert(csproj.Contains("Machinery\\RM_PipePoleMath.cs") && csproj.Contains("Machinery\\RM_PipePoles.cs"), "both files in the mod build");
-                // the four looks: style defs exist for each pipe look, with stand-in art that exists on disk (no uninstalled path)
+                // the four looks: style defs exist for each pipe look, with the look's own pole art that exists on disk (no
+                // uninstalled path). PIPE_POLE_REDRAW_NOT_A_POWER_POLE (372cb3feac) replaced the GSS-mast stand-in with
+                // FlowWorks' own saddle-clamp art; pinning the old GSS path here reddened proof_hose's offline gate
+                // (HARNESS_REPAIR_CAUSE_C1B99C19).
                 XDocument doc = XDocument.Load(Path.Combine(ModRoot(), "Defs", "Machinery", "RM_PipePoles.xml"));
                 foreach (string look in PipeStyles.Looks)
                 {
                     XElement st = doc.Root.Elements("ThingStyleDef").SingleOrDefault(e => (string)e.Element("defName") == PipeStyles.StyleDefName("RM_PipePole", look));
                     Assert(st != null && (string)st.Attribute("MayRequire") == "mandrake.rm.gimmesomeslack", "style for " + look);
                     string tex = st.Element("graphicData").Element("texPath").Value;
-                    // the stand-in PNG on disk: the winbuild stage copies no Textures folder, so on a stage this half is
-                    // selftest_flowworks_pipe_pole_art.py's (WSL, the real tree); here only the path's shape is checked
-                    Assert(tex.StartsWith("RimMandrake/GimmeSomeSlack/Aerial/Styles/" + look + "/", StringComparison.Ordinal), "stand-in path for " + look + ": " + tex);
-                    string texRoot = Path.Combine(ModRoot(), "..", "GimmeSomeSlack", "Textures");
+                    // the PNG on disk: the winbuild stage copies no Textures folder, so on a stage this half is
+                    // selftest_pipe_pole_art.py's (WSL, the real tree); here only the path's shape is checked
+                    Assert(tex == "RimMandrake/FlowWorks/PipePole/" + look + "/PipePole", "the look's own pole art path for " + look + ": " + tex);
+                    string texRoot = Path.Combine(ModRoot(), "Textures");
                     string png = Path.Combine(texRoot, tex.Replace('/', Path.DirectorySeparatorChar) + ".png");
                     Assert(!Directory.Exists(texRoot) || File.Exists(png), "can-fail: the stand-in exists on disk: " + png);
                 }

@@ -1141,6 +1141,11 @@ def main(argv=None):
         gate["wall_s"] = round(time.time() - t, 1)
         print("offline gate: %d red %s (%ss)" % (len(gate["red"]), gate["red"], gate["wall_s"]), flush=True)
         if gate["red"]:
+            # HARNESS_REPAIR_CAUSE_C1B99C19: the modcheck receipt keeps only this output's tail, and a bare list of red
+            # step names hid which C# case was red on three SteveDesktop runs; name each red step's last lines.
+            for name in gate["red"]:
+                for ln in (gate.get("steps", {}).get(name) or {}).get("tail") or []:
+                    print("  red %s: %s" % (name, str(ln)[:200]), flush=True)
             print("REFUSED: offline red -- not going live")
             return 1
     P = Proof(a)
