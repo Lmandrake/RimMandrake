@@ -218,6 +218,50 @@ R.lease(s, fx, dict(RULES, share=0), NOW + 3600, [])      # an early return know
 ok(os.path.exists(s.p("content_pause.json")), "alarm: a lease that never read the pause leaves the clock alone")
 shutil.rmtree(d, ignore_errors=True)
 
+# --- the real ledger reader: Effects.owner_ruled_at (the fakes above stub it; this drives the shipped method)
+class Led:
+    """Only what Effects.owner_ruled_at reads: ledger_items() -> (events, world). The method is the real one, unbound."""
+    owner_ruled_at = R.Effects.owner_ruled_at
+    first = {}
+
+    def __init__(self, evs):
+        self.evs = evs
+
+    def ledger_items(self):
+        return self.evs, None
+
+    def item_state(self, item, fresh=False):
+        return {"state": "doing", "needs": "bridge", "block_holds": False}
+
+
+T0 = R.ts_epoch("2026-11-05T05:37:35Z")
+H = 3600.0
+evs = [{"seat": "OWNER", "verb": "note", "id": "C_CARD", "byCard": "q -> a", "ts": "2026-11-05T05:37:35Z"},
+       {"seat": "OWNER", "verb": "note", "id": "C_SAID", "ownerSaid": "do it", "ts": "2026-11-03T05:37:35Z"},
+       {"seat": "OWNER", "verb": "note", "id": "C_SAID", "ownerSaid": "again", "ts": "2026-11-05T05:37:35Z"},
+       {"seat": "OWNER", "verb": "note", "id": "C_REF", "perRuling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM",
+        "ts": "2026-11-05T05:37:35Z"},
+       {"seat": "BENCH", "verb": "note", "id": "C_SEAT", "ownerSaid": "relayed", "byCard": "q -> a",
+        "ts": "2026-11-05T05:37:35Z"},
+       {"seat": "OWNER", "verb": "note", "id": "C_OLD", "ownerSaid": "long ago", "ts": "2026-11-01T05:37:35Z"}]
+led = Led(evs)
+ok(T0 is not None and led.owner_ruled_at("C_CARD") == T0, "reader: an OWNER byCard event is a ruling at its ts",
+   led.owner_ruled_at("C_CARD"))
+ok(led.owner_ruled_at("C_SAID") == T0, "reader: the newest OWNER ownerSaid wins", led.owner_ruled_at("C_SAID"))
+ok(led.owner_ruled_at("C_REF") is None, "reader: a perRuling citation is not a ruling on the item")
+ok(led.owner_ruled_at("C_SEAT") is None, "reader: an agent seat's ownerSaid/byCard is not his ruling")
+ok(led.owner_ruled_at("C_NONE") is None, "reader: an item with no event has no ruling")
+ok(R.fresh_ruling(led, "C_CARD", T0 + 47 * H) and not R.fresh_ruling(led, "C_CARD", T0 + 49 * H),
+   "reader: fresh_ruling flips between 47 h and 49 h after a card")
+ok(R.fresh_ruling(led, "C_SAID", T0 + 47 * H), "reader: an older ownerSaid does not shadow a newer one")
+ok(not R.fresh_ruling(led, "C_OLD", T0 + 1 * H), "reader: an ownerSaid 4 days old is not fresh")
+ok(R.pause_stops(sp, led, {"item": "C_CARD"}, now=T0 + H) is None
+   and R.pause_stops(sp, led, {"item": "C_CARD"}, now=T0 + 49 * H) == "lane game paused"
+   and R.pause_stops(sp, led, {"item": "C_REF"}, now=T0 + H) == "lane game paused",
+   "reader: through the real reader a fresh card passes the scoped pause, a stale one or a citation waits")
+led.evs = evs + [{"seat": "OWNER", "verb": "note", "id": "C_LATE", "byCard": "q -> b", "ts": "2026-11-05T06:00:00Z"}]
+ok(led.owner_ruled_at("C_LATE") is not None, "reader: a new ledger read is re-indexed")
+
 # --- the real rules and the collector
 with open(os.path.join(os.path.dirname(HERE), "Utils", "ops_watch_rules.json"), encoding="utf-8") as f:
     hr = json.load(f)["health"]
