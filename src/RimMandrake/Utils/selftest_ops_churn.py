@@ -312,6 +312,14 @@ def main():
     said = pd.get(OW.CHURN_ITEM_PREFIX + "PD_LIVE", {}).get("x", {}).get("said", "")
     ok("bouncing: unmeasured failed it 4 times" in said and "spend rising" in said,
        "8: the same item, picked up again, reads bouncing and spend rising", said)
+    # OPS_CHURN_DIAGNOSE_OLLOPOM_JLHV_AJHK: OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN, offline-green and in the game phase
+    # (put down: one live user at a time) from 10:05Z, re-rang 'spend rising: 8.1M, 325k in the last 24h' off its 09:54Z
+    # gen-2 work run: the game phase sends no work or check run, so its window spend is flat; 'stuck: game' still speaks
+    gw = {"returns": 0, "gen": 2, "spent": 8.1e6, "status": "game", "game": {"entered_at": NOW - 7200, "phase": "prove"},
+          "put_down": {"on": "one live user at a time: showing X holds the game phase", "at": NOW - 60}}
+    pg = OW.churn_item_points({"GAME_WAIT": (gw, [], 325e3)}, NOW, cfg8, True, {"GAME_WAIT"})
+    ok(pg.get(OW.CHURN_ITEM_PREFIX + "GAME_WAIT", {}).get("v") == 0,
+       "8: a game-phase item's window spend is not 'spend rising'; its held alarm clears", pg)
     pdh = OW.churn_item_points({"PD_BLOCKED": (dict(jam, status="blocked"), unm, 9e6)}, NOW, cfg8, True, {"PD_BLOCKED"})
     ok(pdh.get(OW.CHURN_ITEM_PREFIX + "PD_BLOCKED", {}).get("v") == 0, "8: a held alarm on a put-down item reads 0 (clears)", pdh)
     # OPS_CHURN_DIAGNOSE_NIGHTLY_SCRM_GZGX: NIGHTLY_COP_FIX_RED_CYGHVG_QCWJ, quarantine-held (status held) after two
