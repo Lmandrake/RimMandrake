@@ -620,3 +620,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T12:17:56Z","tsn":1793881076493626977}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES A1 (L2), read-only proof","ts":"2026-11-05T12:30:57Z","tsn":1793881857073880497}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T12:33:22Z","tsn":1793882002533490835}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WEEPINGSTONES_HANDLER_VANISHES_1 A1 (L2), read-only proof","ts":"2026-11-05T12:38:24Z","tsn":1793882304057016763}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T12:42:39Z","tsn":1793882559714882617}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WEEPINGSTONES_HANDLER_VANISHES_1 A2 (L2), read-only proof","ts":"2026-11-05T12:42:48Z","tsn":1793882568976959524}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-05T12:43:04Z","tsn":1793882584491911544}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging HORRORS_RAIDING_FACTION_1: deploy and restart for its live proofs","ts":"2026-11-05T12:46:57Z","tsn":1793882817034666237}
