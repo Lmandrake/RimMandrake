@@ -119,19 +119,52 @@
   },
   {
    "id": "a_regrow_thresholds",
-   "status": "draft",
+   "status": "struck",
    "source": [
+    "OWNER:1791815332013853792",
+    "design/validation_walks/RimMandrake/Pyrelands.md"
+   ],
+   "text": "As built, a burned ember-grass patch on deep ash is about a third green again on day 3 and about 60% green on day 7, so four cells in ten are still black after a week. Is that your 'largely green again within about a week', or should a week-old scar look nearly all green?",
+   "decision": "The regrow pace the pyre_embergrass_regrows bar holds the build to (day-3 and day-7 green fractions); a faster answer changes the regrow tuning",
+   "about": [
+    "inv_embergrass_regrow"
+   ],
+   "owner_cites": [
     "OWNER:1791815332013853792"
    ],
-   "text": "Ember grass re-greens about a third by day 3 and 60% by day 7 on deep ash. Does that read as 'visibly re-greening in a few days, largely green in a week' to you, or should it be faster?"
+   "offers_removal": false,
+   "author": "rm-role-designer-1793897137",
+   "review": {
+    "by": "rm-judge ae01fc3bd872b7339 (fresh Opus, not the author)",
+    "verdict": "struck",
+    "why": "Already answered by card 2026-10-15 (OWNER:1792093476867252720): targets stay 25% d3 / 60% d7, measured 26.2/59.8 counts as PASS."
+   }
   },
   {
    "id": "a_fire_control_scene",
-   "status": "draft",
+   "status": "sent",
    "source": [
-    "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml"
+    "src/RimMandrake/Pyrelands/Defs/TerrainDefs/Firebreak.xml",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Sprayer/FirefoamSprayer.xml"
    ],
-   "text": "The firebreak line and firefoam sprayer are built but no bar says what you should see. Picture a burn heading for your fields: what must the firebreak do for you to trust it, hold every time, or slow and mostly hold?"
+   "text": "The firebreak is a floor your colonists build (2 chemfuel a cell, after Firefoam research), as wide as you paint it, and fire will not burn on it. Picture the walking burn line reaching a firebreak you laid around a field: what must you see to trust it? (a) a line two or three cells wide always stops the ground fire, and only a fire-hawk's dropped twig ever gets across, which a colonist with the firefoam sprayer puts out, and the biome never starts a new fire inside the ring; or (b) it usually holds, the odd spark gets across, and you send someone out with the sprayer.",
+   "decision": "What the firebreak/firefoam acceptance scene requires: a guaranteed hold against the ground front at a stated width (hawks the only crossing) or a usual hold with sprayer cleanup; it decides whether spark crossings must be blocked and what the scene checks",
+   "about": [
+    "inv_firebreak_firefoam",
+    "inv_burn_line_fire_clock",
+    "inv_firehawk_ember"
+   ],
+   "owner_cites": [
+    "OWNER:1793895899845199295"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793897137",
+   "review": {
+    "by": "rm-judge ae01fc3bd872b7339 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Round 2: claims match Firebreak.xml; decides what the scene checks. Found: hawk drop target ignores firebreaks (JobGiver_RUT_FireHawkCarryEmber.cs:103), and smoulder relight / front start (TryReseedStandingBurn, IgniteLine) can light a field inside a firebreak ring (they exclude home area and 32 cells from buildings only), so (a) also changes that check; wording added. Vanilla spark jump distance unverified."
+   }
   },
   {
    "id": "ask_root",
@@ -174,7 +207,7 @@
   },
   {
    "id": "a_blackrain_compound",
-   "text": "Black rain now compounds the fresh-burn bonus instead of washing it away. Picture a two-day-old scar when black rain falls: should crops there grow faster still (the rain adds its own bonus on top of the burn's), or should the burn's bonus simply stop fading for as long as the ground stays wet?",
+   "text": "Today a fresh burn makes the ash 50 points richer for 6 days. Black rain keeps the ground wet for the whole rain and about a day after, which lifts deep ash from 40% to 140% fertility, but it also wipes the burn bonus within about half a day, so a rained-on fresh scar reads 140%. The cheapest 'compound' is to stop the wipe: the same scar reads 190% while wet (watered plus burn), and the bonus then fades on its own 6-day clock. Is that what you meant, or should black rain do more on a burn scar (stretch the bonus while wet, or add a further bonus of its own)?",
    "decision": "What 'compound' means in play: an added bonus or a halted fade; the built ash field fades the bonus with rain (PyrelandsAshField.cs), so either answer changes what gets built",
    "about": [
     "inv_ash_field"
@@ -184,12 +217,17 @@
     "OWNER:1791817029416124872"
    ],
    "offers_removal": false,
-   "author": "rm-role-designer-1793896289",
-   "status": "draft",
+   "author": "rm-role-designer-1793897137",
+   "status": "sent",
    "source": [
     "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
     "design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md"
-   ]
+   ],
+   "review": {
+    "by": "rm-judge ae01fc3bd872b7339 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "His 2026-11-05 words settle that rain stops wiping the bonus but not whether compound means more; numbers match code (0.40/1.40, +0.50 for 6 d, 12 rain-hours at black rain 1.1, cap 2.0). Wording fix (percentages, wet-duration) applied."
+   }
   }
  ],
  "inventory": [
@@ -692,10 +730,12 @@
   {
    "id": "c_regrow_thresholds_reask",
    "source": [
-    "OWNER:1791815332013853792"
+    "OWNER:1791815332013853792",
+    "OWNER:1792093476867252720"
    ],
    "text": "Embergrass regrow thresholds (34% d3 / 59.8% d7 vs the bar's 25/60) were to be re-asked once the ash rework settled; no later owner event settles them.",
-   "status": "open"
+   "status": "resolved",
+   "resolution": "Settled by card 2026-10-15: targets stay 25% day 3 / 60% day 7, measured 26.2/59.8 is a PASS."
   },
   {
    "id": "c_greens_open_while_trial_ran_green",
