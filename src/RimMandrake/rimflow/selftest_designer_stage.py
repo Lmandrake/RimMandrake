@@ -528,6 +528,31 @@ def main():
         r = refused(DS.charge, d3, 10, "lunch", "x")
         check("an unknown charge kind is refused", r is not None, r)
 
+        # ---- the default cap holds a measured stage-0 read (DESIGNER_CAP_REMEASURE_STAGE_ZERO_ATE_IT)
+        dC = os.path.join(tmp, "design/concepts/Cap")
+        DS.init(dC, "Cap", "CAP_ITEM")
+        DS.charge(dC, 653533, "stage", "the largest measured stage-0 read (GimmeSomeSlack)")
+        DS.charge(dC, 50157, "review", "the largest measured review")
+        DS.open_run(dC, "c1", run_cap=450000, repo=repo.root)
+        st = DS.load_state(dC)
+        check("the default cap survives a measured stage-0 read and review: stage 1 opens without over_budget",
+              not any(h["what"] == "over_budget" for h in st["history"]), st["budget"]["spent"])
+        check("the default cap holds six median stages (529,000 measured) and the reserve the largest review",
+              DS.DEFAULT_CAP >= 6 * 529000 and DS.DEFAULT_RESERVE >= 50157, (DS.DEFAULT_CAP, DS.DEFAULT_RESERVE))
+        rows = DS.spend_by_stage(st)
+        check("spend_by_stage splits a stage's runs from its reviews and helpers",
+              rows == {0: {"total": 703690, "runs": 653533, "other": 50157}}, rows)
+        dL = os.path.join(tmp, "design/concepts/Legacy")
+        DS.init(dL, "Legacy", "LEG_ITEM", cap=500000, reserve=50000)
+        DS.charge(dL, 495103, "stage", "PyrelandsMechanics stage 0")
+        DS.open_run(dL, "l1", run_cap=450000, repo=repo.root)
+        st = DS.load_state(dL)
+        check("a state on the legacy 500,000 cap is upgraded at load, says so, and the next open is not over_budget",
+              st["budget"]["cap"] == DS.DEFAULT_CAP and st["budget"]["reserve"] == DS.DEFAULT_RESERVE
+              and any(h["what"] == "cap_reset" for h in st["history"])
+              and not any(h["what"] == "over_budget" for h in st["history"]), st["budget"])
+        check("a cap set by hand is never upgraded", DS.load_state(d3)["budget"]["cap"] == 100000, "")
+
         refusals_launcher(tmp, repo)
         # ---- the launcher wiring
         wiring(tmp, repo)

@@ -23,6 +23,7 @@ One concept folder, design/concepts/<Mod>/, holds the persisted state and the ch
   charge   <dir> --tokens N --kind K --ref R   a helper, review or consult outside the run's own transcript
   check    <dir>                           validate result.json now, write nothing (the Designer's dry run)
   status   <dir>                           stage, budget, staleness, open recovery
+  spend    <dir>...                        per-stage weighted spend against the default cap (the cap's measurement)
   scene-begin <dir> --scene S --recovery TEXT | scene-end <dir> --scene S | scene-hold <dir> --scene S --until TEXT
   manifest                                 the stage -> packet files table, with hashes
   showcases <dir>                          the showcase set: per showcase new coverage and overlap, what is uncovered
@@ -52,8 +53,16 @@ STAGES = (0, 1, 2, 3, 4, 5)
 STAGE_NAMES = {0: "Read", 1: "Argue the idea", 2: "Argue the edge", 3: "Write", 4: "Exam", 5: "Lock"}
 OUTCOMES = ("done", "waiting_owner", "return", "blocked")
 DIALOGUE = (1, 2)                       # only these stages send him questions
-DEFAULT_CAP = 500000                    # the task's weighted-token budget across every stage, retry and helper
-DEFAULT_RESERVE = 50000                 # kept back for checkpointing: no new run eats into it
+# The task's weighted-token budget across every stage, retry and helper (role_launch.TOKEN_WEIGHTS; advisory, owner
+# 2026-11-04). MEASURED 2026-11-05 (DESIGNER_CAP_REMEASURE_STAGE_ZERO_ATE_IT, `designer_stage.py spend` over the four
+# committed concepts): the charge is already weighted (rm-role-designer-1793864264: 495,103 weighted of 2,008,722
+# raw); the per-stage spend of the 12 stages walked is 206k-1,009k, median ~520k, so ONE stage-0 read (495k-654k)
+# ate the old 500,000 whole. The one full walk (FlowWorks, stages 0-5 with two stage-1 retries) spent 3,729,543.
+# Cap = 6 stages x the ~520k median stage + ~25% for retries, rounded: a normal walk stays under it, a walk stuck in
+# retries goes over_budget. Reserve = the largest measured review charge (50,157), rounded up.
+DEFAULT_CAP = 4000000
+DEFAULT_RESERVE = 60000                 # kept back for checkpointing: no new run eats into it
+LEGACY_CAPS = {500000: 50000}           # cap -> reserve of states made before the measurement: upgraded at load
 CHARGE_KINDS = ("stage", "retry", "review", "helper", "consult", "unmeasured")
 IMPL = ("present", "absent", "unknown")
 PROOF = ("current", "stale", "missing", "exercised_unrecorded")
@@ -937,7 +946,31 @@ def load_state(d):
     st = read_json(state_path(d))
     if not isinstance(st, dict):
         raise Refused("no stage.json in %s (designer_stage.py init)" % d)
+    upgrade_cap(st)
     return st
+
+
+def upgrade_cap(st):
+    """A state still on a legacy default (LEGACY_CAPS: the 500,000 one stage-0 read spent) takes the measured
+    defaults; the next write keeps it. A cap set by hand (any other value) is left alone. -> True when upgraded."""
+    b = st.get("budget") or {}
+    if b.get("cap") in LEGACY_CAPS and b.get("reserve") == LEGACY_CAPS[b["cap"]]:
+        hist(st, "cap_reset", "legacy cap %d (reserve %d) -> measured %d (reserve %d); %d spent" % (
+            b["cap"], b["reserve"], DEFAULT_CAP, DEFAULT_RESERVE, b.get("spent", 0)))
+        b["cap"], b["reserve"] = DEFAULT_CAP, DEFAULT_RESERVE
+        return True
+    return False
+
+
+def spend_by_stage(st):
+    """Pure. -> {stage: {"total": weighted tokens, "runs": stage/retry/unmeasured charges, "other": review/helper/
+    consult}} from the state's charges: the measurement the cap is set from."""
+    out = {}
+    for c in (st.get("budget") or {}).get("charges") or []:
+        row = out.setdefault(c.get("stage"), {"total": 0, "runs": 0, "other": 0})
+        row["total"] += c.get("tokens") or 0
+        row["runs" if c.get("kind") in ("stage", "retry", "unmeasured") else "other"] += c.get("tokens") or 0
+    return out
 
 
 def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE, aliases=()):
@@ -1402,6 +1435,8 @@ def main(argv=None):
             x.add_argument("--recovery", required=True)
         if name == "scene-hold":
             x.add_argument("--until", required=True)
+    sub.add_parser("spend", help="per-stage weighted spend of each concept against the default cap").add_argument(
+        "dirs", nargs="+")
     sub.add_parser("manifest")
     sub.add_parser("turns", help="every concept turn that waits on him (status waiting_owner, unanswered)").add_argument(
         "--root", default=None)
@@ -1417,6 +1452,29 @@ def main(argv=None):
                 print("UNMEASURED %s" % b)
             print("%d Designer turn(s) wait on him" % len(turns))
             return 1 if bad else 0
+        if a.cmd == "spend":
+            stages = []
+            for d in a.dirs:
+                st = read_json(state_path(d))
+                if not isinstance(st, dict):
+                    print("UNMEASURED %s: no stage.json" % d)
+                    return 1
+                rows = spend_by_stage(st)
+                stages += [r["total"] for r in rows.values()]
+                print("%-20s stage %s %-13s spent %9d  %s" % (
+                    os.path.basename(os.path.normpath(d)), st.get("stage"), st.get("status"),
+                    st["budget"]["spent"], "  ".join("s%s %d" % (k, rows[k]["total"]) for k in sorted(rows))))
+            if not stages:
+                print("UNMEASURED: no charges in %d concept(s)" % len(a.dirs))
+                return 1
+            stages.sort()
+            med = stages[len(stages) // 2]
+            print("%d stages walked: min %d, median %d, max %d; 6 stages x median = %d; default cap %d, reserve %d"
+                  % (len(stages), stages[0], med, stages[-1], 6 * med, DEFAULT_CAP, DEFAULT_RESERVE))
+            if DEFAULT_CAP < 6 * med or DEFAULT_CAP <= stages[-1]:
+                print("CAP TOO LOW: the default cap does not hold a walk of median stages")
+                return 1
+            return 0
         if a.cmd == "manifest":
             print(json.dumps({"stage_%d" % s: manifest_hashes(s) for s in STAGES}, indent=1))
         elif a.cmd == "init":
