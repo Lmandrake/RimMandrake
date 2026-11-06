@@ -1,0 +1,1 @@
+RESET_MODE_TEST_FIX_WRONG_WINDOW_WINS: a selftest that drives a real wake/handoff subprocess must assert absence only inside the block it owns (split at the delimiter), never over the whole output — the real handoff text after it can say anything. Fixed in 40de8bea3d; check git log -S before re-fixing a red test filed days earlier.
