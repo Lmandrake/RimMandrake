@@ -2307,7 +2307,7 @@ def pool_measures() -> dict:
     """The worker pool, as its cap sees it. It counts relentless/clones alone; rm/scratch has its own lines."""
     try:
         import scratch_clone
-        d = scratch_clone.pool_reading()
+        d = scratch_clone.pool_reading(risk=False)     # count and bytes: no git reading of every clone
         return {k: d[j] for k, j in (("pool_clones", "count"), ("pool_clones_cap", "max_clones"), ("pool_gb", "gb"),
                                      ("pool_gb_cap", "max_gb"))}
     except Exception:  # noqa: BLE001 - a sanity reading never kills the run it reports on

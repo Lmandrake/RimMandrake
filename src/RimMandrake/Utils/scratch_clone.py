@@ -609,8 +609,13 @@ class PoolUnreadable(OSError):
     """The pool root exists and this process may not look (a walled unit). ops_watch turns it into its 9999 alarm."""
 
 
-def pool_reading() -> dict:
-    """Live: count, bytes, oldest clone, and every clone with unpushed work. Written to pool.json for RimPulse."""
+def pool_reading(risk: bool = True) -> dict:
+    """Live: count, bytes, oldest clone, and every idle clone with unpushed work. Written to pool.json for RimPulse.
+    A clone someone is using (touched within the idle hour, a process's cwd, or named by a live item) can never be stranded,
+    so its git reading is skipped and it is listed as busy: reading every clone's unpushed commits cost the ops_watch disk
+    family ~1000 git spawns a pass and pushed the metronome's sense phase past its 15 s limit
+    (DISK_COLLECTOR_SHRINK_THOUSAND_FORKS_A_BEAT). `risk=False` (count and bytes only: the reaper's sanity) reads no git
+    at all and writes no pool.json, as its unpushed and stranded lists are not a reading."""
     root, (cmax, bmax) = pool_root(), pool_cap()
     try:
         os.listdir(root)     # is_dir() is False on a denied parent too: a blind look is not an empty pool, and writes no reading
@@ -626,14 +631,16 @@ def pool_reading() -> dict:
             born = c.stat().st_ctime
         except OSError:
             born = now
-        risk = clone_unpushed(c)
-        # unpushed work in a clone someone is working in is the job; unpushed work nobody touches for an hour is stranded
-        stranded = bool(risk) and clone_idle_s(c) >= POOL_IDLE_S and not clone_in_use(c) and not owned_by_item(c)
+        # unpushed work in a clone someone is working in is the job; unpushed work nobody touches for an hour is stranded.
+        # The cheap gates first: idle is read before git touches anything in it, and a busy clone's git is never read.
+        busy = not risk or clone_idle_s(c) < POOL_IDLE_S or clone_in_use(c) or owned_by_item(c)
+        unp = None if busy else clone_unpushed(c)
+        stranded = bool(unp)
         if stranded and level_origin_ref(c, refreshed):     # only a clone about to alarm is worth the fetch, and it is idle
-            risk = clone_unpushed(c)
-            stranded = bool(risk)
+            unp = clone_unpushed(c)
+            stranded = bool(unp)
         return {"name": c.name, "bytes": clone_bytes(c), "age_h": round((now - born) / 3600, 2),
-                "unpushed": risk, "stranded": stranded}
+                "unpushed": unp, "busy": busy, "stranded": stranded}
 
     clones = [c for c in (sorted(root.glob("*")) if root.is_dir() else []) if (c / ".git").exists()]
     rows = _per_clone(one, clones)
@@ -641,8 +648,11 @@ def pool_reading() -> dict:
     held = [r["name"] for r in rows if r["stranded"]]
     d = {"ts": now_iso(), "epoch": now, "root": str(root), "count": len(rows), "max_clones": cmax,
          "bytes": tot, "gb": round(tot / 1e9, 2), "max_gb": round(bmax / 1e9, 1),
-         "oldest_h": max([r["age_h"] for r in rows], default=0.0), "unpushed": [r["name"] for r in rows if r["unpushed"]], "stranded": held, "clones": rows}
+         "oldest_h": max([r["age_h"] for r in rows], default=0.0), "unpushed": [r["name"] for r in rows if r["unpushed"]],
+         "busy": [r["name"] for r in rows if r["busy"]], "stranded": held, "clones": rows}
     d["breach"] = int(len(rows) > cmax) + int(tot > bmax) + len(held)
+    if not risk:
+        return d
     try:
         (state_dir() / "pool.json").write_text(json.dumps(d))
     except OSError:
@@ -779,7 +789,7 @@ def pool_admit(dest: Path, reading: dict | None = None) -> str | None:
     """None = may create; else the refusal. Called before any pool clone is made."""
     if dest.parent != pool_root():
         return None
-    r = reading or pool_reading()
+    r = reading or pool_reading(risk=False)     # count and bytes are all it asks
     cmax, bmax = pool_cap()
     if r["count"] >= cmax:
         return f"pool full: {r['count']} clones, cap {cmax} (no idle clone to reuse); finish or push one, then retry"

@@ -408,6 +408,41 @@ def main() -> int:
             check(not sc.owned_by_item(pool / "p2") and sc.pool_reading()["stranded"] == ["p2"], f"a put-down item's clone still holding work is stranded ({down})")
         owner.write_text(json.dumps({"status": "done", "clone": str(pool / "p2")}))
         check(sc.pool_reading()["stranded"] == ["p2"], "a finished item owns nothing")
+        # DISK_COLLECTOR_SHRINK_THOUSAND_FORKS_A_BEAT: a clone someone is using can never be stranded, so its unpushed work is
+        # not read at all (that reading of every clone was ~1000 git spawns an ops_watch pass); the idle one still is.
+        spawned, real_init = [], subprocess.Popen.__init__
+
+        def counting(self, args, *a, **k):
+            spawned.append((list(args) if isinstance(args, (list, tuple)) else [args], str(k.get("cwd") or "")))
+            real_init(self, args, *a, **k)
+
+        def git_in(c, fn):
+            spawned.clear()
+            subprocess.Popen.__init__ = counting
+            try:
+                rd = fn()
+            finally:
+                subprocess.Popen.__init__ = real_init
+            return rd, sum(1 for args, cwd in spawned if args[0] == "git" and (cwd == str(c) or str(c) in args))
+        p2 = pool / "p2"
+        owner.write_text(json.dumps({"status": "running", "clone": str(p2)}))
+        rd, n = git_in(p2, sc.pool_reading)
+        check(n == 0 and "p2" in rd["busy"] and rd["stranded"] == [], f"an item-owned clone costs no git reading: {n} spawn(s), busy {rd['busy']}")
+        owner.write_text(json.dumps({"status": "done", "clone": str(p2)}))
+        idx = p2 / ".git" / "index"
+        then = idx.stat().st_mtime
+        os.utime(idx)       # touched now: under the idle hour
+        rd, n = git_in(p2, sc.pool_reading)
+        check(n == 0 and "p2" in rd["busy"] and rd["stranded"] == [], f"a clone touched within the hour costs no git reading: {n} spawn(s)")
+        os.utime(idx, (then, then))
+        rd, n = git_in(p2, sc.pool_reading)
+        check(n > 0 and rd["stranded"] == ["p2"] and "p2" not in rd["busy"] and rd["breach"] == 1,
+              f"the idle one is still read, stranded and a breach: {n} spawn(s), {rd['stranded']}")
+        last = (sc.state_dir() / "pool.json").read_text()
+        rd, n = git_in(pool, lambda: sc.pool_reading(risk=False))
+        check(sum(1 for args, _ in spawned if args[0] == "git") == 0 and rd["stranded"] == [] and rd["count"] >= 2,
+              f"a count-only reading spawns no git: {[a[:2] for a, _ in spawned]}")
+        check((sc.state_dir() / "pool.json").read_text() == last, "and writes no pool.json over the full reading")
         # the DEFAULT glob, which every other check here overrides, must find what relentless's own Store writes
         sys.path.insert(0, str(HERE.parent / "rimflow"))
         import relentless as R
