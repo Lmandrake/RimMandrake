@@ -1,0 +1,2 @@
+{"run": "rm-role-designer-1793951586", "stage": 4, "outcome": "done",
+ "summary": "Cold Reader exam passed: 22 frozen scenarios (12 Examiner, 10 Challenger), both fresh Readers matched expect on 22/22, accept_where_reject_core 0, no Challenger misses; control with drawing_true_to_grid removed accepted the four cross-net/phantom-cable rejects the real tree caught. exam.json frozen against the current tree and sheet hashes."}
