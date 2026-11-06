@@ -1,7 +1,7 @@
 """GLOW TANK WATER live check (GLOW_TANK_LIQUID_FEED_1 A2 + A3, LuminousPigment LP-2 on a FlowWorks tank; BENCH belt
 2026-10-22).
 
-  python.exe src/RimMandrake/FlowWorks/northstar/glow_tank_live.py [out.json] [--origin X,Z] [--fresh-map] [--ticks N]
+  python.exe src/RimMandrake/FlowWorks/northstar/glow_tank_live.py [out.json] [--origin X,Z] [--fresh-map] [--ticks N] [--max-seconds S]
 
 Three identical scenes 10 squares apart: an RM_GlowTank (2x2) powered by a charged Battery over a PowerConduit, seeded
 (jawa/thing_refuel 1 = the crowncarpet culture), RM_CrowncarpetCultured planted in its four squares at growth 0.10, and an
@@ -68,7 +68,13 @@ def main():
     ap.add_argument("--origin", default="60,150")
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--ticks", type=int, default=60000)
+    ap.add_argument("--max-seconds", type=int, default=0,
+                    help="wall-clock cap on the whole run (0 = none). The day stepped at ~60 ticks/s needs ~1000 s, past the "
+                         "live lane's 600 s default; relentless_live.proof_budget reads this flag and allows S + 120 s, so a run "
+                         "that outruns S stops itself and reads UNMEASURED instead of being killed mid-day "
+                         "(GAMEENV_FIX_HARNESS_EEE35FD9_ITEMS_WAIT)")
     a = ap.parse_args()
+    deadline = time.time() + a.max_seconds if a.max_seconds > 0 else None
     import proof_hose as PH  # noqa: E402
     V = PH.V
     B = PH.PB()
@@ -103,12 +109,17 @@ def main():
                          "after": r.get("temperatureAfter"), "msg": None if r.get("success") else str(r)[:160]})
 
     def step_pinned(n):
+        """-> False when the --max-seconds wall stopped the stepping short (the caller reads that as UNMEASURED)."""
         left = n
         while left > 0:
+            if deadline is not None and time.time() > deadline:
+                res["stoppedEarly"] = {"ticksLeft": left, "of": n, "maxSeconds": a.max_seconds}
+                return False
             pin()
             k = min(CHUNK, left)
             step(k)
             left -= k
+        return True
 
     ox, oz = (int(v) for v in a.origin.split(","))
     if a.fresh_map:
@@ -189,7 +200,7 @@ def main():
     row("GLOWTANK_SALT_DRAWN_ONE_UNIT", "PASS" if drawS == DRAW and salt_line and dry_f and dry_b else "FAIL", "MOD",
         {"saltDrawn": drawS, "saltInspect": S["inspect1"], "fresh": [F["units0"], F["units1"], F["inspect1"]],
          "brine": [Bb["units0"], Bb["units1"], Bb["inspect1"]]})
-    step_pinned(a.ticks)
+    day_whole = step_pinned(a.ticks)
     for name, s in sc.items():          # read BEFORE any re-pin: a pin would hide a room that cooled out of season
         s["growth2"] = growth(s)
         s["units2"] = B.hp("tank:%d,%d" % s["tank"]).get("units")
@@ -202,7 +213,10 @@ def main():
     off_season = [n for n in ("S", "F") if any(NO_SEASON in ln.lower() for ln in sc[n]["inspect2"]) or not sc[n]["inspect2"]]
     gS = (S["growth2"] or 0) - (S["growth1"] or 0) if S["growth1"] is not None and S["growth2"] is not None else None
     gF = (F["growth2"] or 0) - (F["growth1"] or 0) if F["growth1"] is not None and F["growth2"] is not None else None
-    if res["pins"]["refused"] or res["pins"]["cold"] or off_season:
+    if not day_whole:
+        row("GLOWTANK_SALT_CROP_GROWS", "UNMEASURED", "HARNESS", {"why": "UNMEASURED: the day outran --max-seconds %d" % a.max_seconds,
+                                                                  "stoppedEarly": res.get("stoppedEarly")})
+    elif res["pins"]["refused"] or res["pins"]["cold"] or off_season:
         row("GLOWTANK_SALT_CROP_GROWS", "UNMEASURED", "SITE", {"why": "the growing-season pin did not hold", "offSeason": off_season,
                                                               "pins": res["pins"], "S": S.get("inspect2"), "F": F.get("inspect2")})
     elif gS is None or gF is None:
@@ -223,7 +237,15 @@ def main():
     res["scenes"] = sc
     res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save()
-    return 0 if all(r["status"] == "PASS" for r in rows) else 1
+    return verdict(rows)
+
+
+def verdict(rows):
+    """Exit 0 = every row PASS, 1 = a FAIL, 2 = no FAIL but a row UNMEASURED (lightspeed-authoring: 2 is UNMEASURED)."""
+    st = [r["status"] for r in rows]
+    if st and all(x == "PASS" for x in st):
+        return 0
+    return 1 if "FAIL" in st else 2
 
 
 if __name__ == "__main__":

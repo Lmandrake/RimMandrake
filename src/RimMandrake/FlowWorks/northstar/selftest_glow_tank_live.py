@@ -268,6 +268,44 @@ def main():
         check("any start hour: crop row PASS (start tick %d)" % start,
               rows.get("GLOWTANK_SALT_CROP_GROWS", {}).get("status") == "PASS", rows.get("GLOWTANK_SALT_CROP_GROWS"))
 
+    # GAMEENV_FIX_HARNESS_EEE35FD9_ITEMS_WAIT: the day needs ~1000 s, the lane kills at 600 s unless the proof line carries
+    # --max-seconds; the run then stops itself at its own wall and reads UNMEASURED (exit 2), never a kill or a FAIL
+    real_time = G.time
+    clock = [0.0]
+
+    def fake_time():
+        clock[0] += 5.0          # every clock read costs 5 s: the 60-chunk day takes far longer than a 100 s wall
+        return clock[0]
+    G.time = types.SimpleNamespace(time=fake_time, strftime=real_time.strftime)
+    try:
+        f = Fake()
+        rc, rows, res = run(f, ["--max-seconds", "100"])
+    finally:
+        G.time = real_time
+    crop = rows.get("GLOWTANK_SALT_CROP_GROWS", {})
+    check("a day that outruns --max-seconds is UNMEASURED HARNESS with its reason, exit 2",
+          rc == 2 and crop.get("status") == "UNMEASURED" and crop.get("class") == "HARNESS"
+          and "UNMEASURED: the day outran --max-seconds 100" in crop["detail"]["why"] and res.get("stoppedEarly"), (rc, crop))
+    n_steps = sum(1 for c in f.calls if c[0] == "rimworld/step_game_ticks")
+    check("the wall stops the stepping short", n_steps < 1 + 60000 // G.CHUNK, n_steps)
+    rc, rows, _ = run(Fake(), ["--max-seconds", "100000"])
+    check("a wall the day fits inside changes nothing: exit 0, crop PASS",
+          rc == 0 and rows.get("GLOWTANK_SALT_CROP_GROWS", {}).get("status") == "PASS", (rc, rows.get("GLOWTANK_SALT_CROP_GROWS")))
+    check("verdict: all PASS 0, a FAIL 1, UNMEASURED without FAIL 2",
+          (G.verdict([{"status": "PASS"}]), G.verdict([{"status": "PASS"}, {"status": "FAIL"}, {"status": "UNMEASURED"}]),
+           G.verdict([{"status": "PASS"}, {"status": "UNMEASURED"}])) == (0, 1, 2))
+    # the live proof line must carry a wall the lane honours (proof_budget = max-seconds + 120 over the 600 s default)
+    root = os.path.normpath(os.path.join(HERE, "..", "..", "..", ".."))
+    sys.path.insert(0, os.path.join(root, "src", "RimMandrake", "rimflow"))
+    import re
+    import relentless_live as RL
+    lp = os.path.join(root, "infrastructure", "state", "live_proofs", "GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP.txt")
+    lines = [ln for ln in open(lp, encoding="utf-8") if ln.startswith("live-proof ") and "glow_tank_live.py" in ln]
+    walls = [int(m.group(1)) for ln in lines for m in [re.search(r"--max-seconds (\d+)", ln)] if m]
+    check("the GLOWTANK live proof carries --max-seconds >= 1500 and the lane allows it + 120 s",
+          lines and len(walls) == len(lines) and all(w >= 1500 and RL.proof_budget(ln, 600) == w + 120
+                                                     for w, ln in zip(walls, lines)), (walls, lines[:1]))
+
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
