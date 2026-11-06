@@ -38,7 +38,9 @@ def decide(live, reading, last_good, frm, at):
 
 
 def sh(*cmd, timeout=240):
-    return subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+    # systemd-run units start with a bare PATH that lacks ~/.local/bin (where claude-account lives)
+    env = dict(os.environ, PATH=os.path.expanduser("~/.local/bin") + os.pathsep + os.environ.get("PATH", ""))
+    return subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, env=env)
 
 
 def log(row):
