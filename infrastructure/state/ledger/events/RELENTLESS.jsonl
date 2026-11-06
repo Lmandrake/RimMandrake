@@ -1298,3 +1298,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES T1 (L2), read-only proof","ts":"2026-11-06T19:02:31Z","tsn":1793991751555289827}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:04:17Z","tsn":1793991857925902671}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES T2 (L2), read-only proof","ts":"2026-11-06T19:04:28Z","tsn":1793991868955385913}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:06:14Z","tsn":1793991974811426120}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES: deploy and restart for its live proofs","ts":"2026-11-06T19:07:38Z","tsn":1793992058693372110}
