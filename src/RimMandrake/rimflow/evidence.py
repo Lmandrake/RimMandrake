@@ -7,12 +7,16 @@ record; no guard reads it yet (09b adds a shadow predicate in cli.py, 09c delete
 Layout, under the Relentless store dir (<root>/store):
     evidence/<ID>/<sha>.jsonl   the record: one JSON entry per line, each a step (a box run, a Marker verdict, ...)
     evidence/index.jsonl        every append, store-wide: (item, sha, n, hash) - the anchor that makes a cut tail visible
-    evidence/.lock              flock held across one append (record line + index line)
+    evidence/HEAD.json          the seal: index length and last hash after the last whole append (a cut tail shows)
+    evidence/.pending.json      the append in flight: written before either file, removed after HEAD; a crash leaves it
+                                and the next locked reader or writer rolls that one append forward (nothing stranded)
+    evidence/.lock              flock held across one append, and by readers (no half-written append is ever seen)
 
 Every entry carries `prev` (the hash of the entry before it in the same record, ZERO for the first) and `hash` (sha256 of
 the entry's canonical JSON without `hash`). The index is chained the same way. So an edited line breaks its own hash and
-the next line's prev; a deleted or cut line disagrees with the index; a rewritten index breaks its own chain. verify()
-says which. Appending to a record that does not verify is refused (TamperError): new evidence is never laid on top of
+the next line's prev; a deleted or cut line disagrees with the index; a rewritten index breaks its own chain; a tail cut
+from both the record and the index (two valid prefixes) disagrees with HEAD, which is required once any index row is
+`sealed` (a store from before HEAD gains it on its next append). verify() and read() check the index and HEAD too. Appending to a record that does not verify is refused (TamperError): new evidence is never laid on top of
 changed evidence. Files are left read-only (0444) between appends, so a careless editor fails loudly first.
 
 Kinds (one schema version, V):
@@ -29,6 +33,7 @@ import argparse
 import contextlib
 import fcntl
 import hashlib
+import io
 import json
 import os
 import re
@@ -42,6 +47,8 @@ ZERO = "0" * 64
 KINDS = ("run", "marker")
 MARKER_WORDS = ("PASS", "WEAK", "FAIL", "UNMEASURED")
 INDEX = "index.jsonl"
+HEAD = "HEAD.json"          # the seal: the index length and last hash after the last whole append
+PENDING = ".pending.json"    # the one append in flight: written first, removed last, rolled forward after a crash
 _ID = re.compile(r"^[A-Za-z0-9_][A-Za-z0-9_.-]{0,159}$")     # never "." / ".." / a dotfile: no way out of evidence/
 _SHA = re.compile(r"^[0-9a-f]{40}([0-9a-f]{24})?$")
 
@@ -118,21 +125,49 @@ def _index(store_dir):
     return _lines(os.path.join(base(store_dir), INDEX))
 
 
+def _head(store_dir):
+    """-> (HEAD dict, None) or (None, problem); (None, None) when there is no HEAD file."""
+    try:
+        with open(os.path.join(base(store_dir), HEAD), encoding="utf-8") as f:
+            h = json.loads(f.read())
+    except FileNotFoundError:
+        return None, None
+    except (OSError, ValueError) as e:
+        return None, "HEAD is not readable JSON (%s)" % type(e).__name__
+    return (h, None) if isinstance(h, dict) else (None, "HEAD is not a JSON object")
+
+
+def _index_problems(store_dir, rows):
+    """The index's own chain plus the HEAD seal: a tail cut from the index (with or without its record lines) leaves a
+    valid prefix chain, and only HEAD, written after every append, still names the true length and last hash."""
+    bad = _chain(rows, INDEX)
+    ents = [e for _, e in rows if e]
+    h, why = _head(store_dir)
+    if why:
+        bad.append(why)
+    elif h is None:
+        if any(e.get("sealed") for e in ents):
+            bad.append("HEAD is missing but the index was sealed (HEAD deleted)")
+    elif h.get("n") != len(ents) or h.get("hash") != (ents[-1]["hash"] if ents else ZERO):
+        bad.append("HEAD names %s index rows ending %s, the index has %d ending %s (a tail cut, or HEAD rewritten)" % (
+            h.get("n"), str(h.get("hash"))[:10], len(ents), (ents[-1].get("hash") if ents else ZERO)[:10]))
+    return bad
+
+
 def verify_index(store_dir):
-    return _chain(_index(store_dir), INDEX)
+    with _consistent(store_dir) as rbad:
+        return rbad + _index_problems(store_dir, _index(store_dir))
 
 
-def verify(store_dir, item, sha, index_rows=None):
-    """-> [problem]; [] = the record is exactly what was appended. Checks the record's chain and that the store-wide
-    index names every one of its lines with the same hash (a cut tail or a removed record shows here)."""
+def _verify_record(store_dir, item, sha, rows, index_rows):
+    """-> [problem] for one record against one snapshot of the index (the record's chain, its envelope, and that the
+    index names every one of its lines with the same hash)."""
     path = record_path(store_dir, item, sha)
-    rows = _lines(path)
     bad = _chain(rows, os.path.relpath(path, base(store_dir)))
     for ln, e in rows:
         if e and (e.get("item"), e.get("sha"), e.get("v")) != (item, sha, V):
             bad.append("line %d: names %s@%s v%s, not this record" % (ln, e.get("item"), str(e.get("sha"))[:10], e.get("v")))
-    idx = [e for _, e in (_index(store_dir) if index_rows is None else index_rows)
-           if e and e.get("item") == item and e.get("sha") == sha]
+    idx = [e for _, e in index_rows if e and e.get("item") == item and e.get("sha") == sha]
     have = {e.get("n"): e.get("hash") for _, e in rows if e}
     for e in idx:       # an index row names the record's line by entry_n (its own n is its place in the index)
         if e.get("entry_n") not in have:
@@ -145,12 +180,25 @@ def verify(store_dir, item, sha, index_rows=None):
     return bad
 
 
+def verify(store_dir, item, sha):
+    """-> [problem]; [] = the record is exactly what was appended AND the index it is checked against verifies (its
+    chain and its HEAD seal) - a record is never vouched for by an index nobody checked."""
+    path = record_path(store_dir, item, sha)
+    with _consistent(store_dir) as rbad:
+        idx = _index(store_dir)
+        return rbad + _index_problems(store_dir, idx) + _verify_record(store_dir, item, sha, _lines(path), idx)
+
+
 def read(store_dir, item, sha, strict=True):
-    """-> [entry] in order. strict: raises TamperError when the record does not verify."""
-    bad = verify(store_dir, item, sha)
+    """-> [entry] in order, from the one snapshot that was verified. strict: raises TamperError when the record or the
+    index does not verify."""
+    path = record_path(store_dir, item, sha)
+    with _consistent(store_dir) as rbad:
+        idx, rows = _index(store_dir), _lines(path)
+        bad = rbad + _index_problems(store_dir, idx) + _verify_record(store_dir, item, sha, rows, idx)
     if bad and strict:
         raise TamperError("; ".join(bad[:5]))
-    return [e for _, e in _lines(record_path(store_dir, item, sha)) if e]
+    return [e for _, e in rows if e]
 
 
 def records(store_dir):
@@ -172,14 +220,20 @@ def records(store_dir):
 
 def verify_all(store_dir):
     """-> {"index": [problem], "<item>@<sha>": [problem], ...} - only the ones with problems, plus index."""
-    rows = _index(store_dir)
-    out = {"index": _chain(rows, INDEX)}
-    seen = set()
-    for item, sha in records(store_dir):
-        seen.add((item, sha))
-        bad = verify(store_dir, item, sha, rows)
-        if bad:
-            out["%s@%s" % (item, sha)] = bad
+    with _consistent(store_dir) as rbad:
+        rows = _index(store_dir)
+        out = {"index": rbad + _index_problems(store_dir, rows)}
+        seen = set()
+        for item, sha in records(store_dir):
+            seen.add((item, sha))
+            try:
+                path = record_path(store_dir, item, sha)
+            except ValueError as e:
+                out["%s@%s" % (item, sha)] = ["not a record a writer could have made (%s)" % e]
+                continue
+            bad = _verify_record(store_dir, item, sha, _lines(path), rows)
+            if bad:
+                out["%s@%s" % (item, sha)] = bad
     for _, e in rows:       # a whole record deleted: its index lines stay
         k = (e or {}).get("item"), (e or {}).get("sha")
         if e and k not in seen:
@@ -188,11 +242,134 @@ def verify_all(store_dir):
     return out
 
 
-# ---------------------------------------------------------------- appending
+# ---------------------------------------------------------------- durability and the one transaction
+
+def _fsync_dir(path):
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def _makedirs(path):
+    """os.makedirs, with every directory it creates made durable in its parent."""
+    path = os.path.abspath(path)
+    missing = []
+    while not os.path.isdir(path):
+        missing.append(path)
+        path = os.path.dirname(path)
+    for d in reversed(missing):
+        try:
+            os.mkdir(d)
+        except FileExistsError:
+            pass
+        _fsync_dir(os.path.dirname(d))
+
+
+def _write_all(fd, data):
+    """os.write until every byte is down: a short write (a full disk) is an OSError, never a silent truncation."""
+    view = memoryview(data)
+    while view:
+        n = os.write(fd, view)
+        if n <= 0:
+            raise OSError("evidence: write wrote %r bytes" % (n,))
+        view = view[n:]
+
+
+def _append_bytes(path, data):
+    """data on the end of path, fsynced (and its directory entry, when the file is new); the file left 0444."""
+    new = not os.path.exists(path)
+    if not new:
+        os.chmod(path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+    fd = os.open(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+    try:
+        _write_all(fd, data)
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+        os.chmod(path, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+    if new:
+        _fsync_dir(os.path.dirname(path))
+
+
+def _replace(path, text):
+    """path replaced whole by text, atomically and durably (tmp, fsync, rename, fsync the directory)."""
+    tmp = path + ".tmp"
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o644)
+    try:
+        _write_all(fd, text.encode("utf-8"))
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+    os.replace(tmp, path)
+    _fsync_dir(os.path.dirname(path))
+
+
+def _line(entry):
+    return json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n"
+
+
+def _size(path):
+    try:
+        return os.path.getsize(path)
+    except FileNotFoundError:
+        return 0
+
+
+def _finish_tail(path, pre_len, line, what):
+    """Bring path to exactly its pre_len bytes + line: nothing past pre_len (the crash came first), a prefix of line (a
+    torn write), line itself, or - a power loss before the fsync - a tail whose every byte is line's or NUL (cut back
+    to pre_len and written again). Anything else past pre_len is not this transaction: TamperError."""
+    data = line.encode("utf-8")
+    size = _size(path)
+    if size < pre_len:
+        raise TamperError("%s is shorter (%d bytes) than before the pending append (%d): cut" % (what, size, pre_len))
+    with open(path, "rb") if os.path.exists(path) else io.BytesIO() as f:
+        f.seek(pre_len)
+        tail = f.read()
+    if not data.startswith(tail):
+        if len(tail) > len(data) or any(b != 0 and b != data[i] for i, b in enumerate(tail)):
+            raise TamperError("%s holds %d bytes past the pending append that are not its line" % (what, len(tail)))
+        os.chmod(path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+        os.truncate(path, pre_len)
+        tail = b""
+    if len(tail) < len(data):
+        if not os.path.exists(os.path.dirname(path)):
+            _makedirs(os.path.dirname(path))
+        _append_bytes(path, data[len(tail):])
+
+
+def _recover(store_dir):
+    """Complete the append a crash interrupted (the caller holds the lock). append() writes PENDING (the record line,
+    the index line, HEAD and both files' lengths before) BEFORE it touches either file, and removes it last; a PENDING
+    left on disk is rolled FORWARD to exactly that transaction, so a crash between the record line and the index line
+    strands nothing. A PENDING that does not fit the files is tampering, refused and left in place."""
+    p = os.path.join(base(store_dir), PENDING)
+    try:
+        with open(p, encoding="utf-8") as f:
+            t = json.loads(f.read())
+    except FileNotFoundError:
+        return
+    except (OSError, ValueError) as e:
+        raise TamperError("%s is not readable JSON (%s)" % (PENDING, type(e).__name__))
+    try:
+        path = record_path(store_dir, t["item"], t["sha"])
+        _finish_tail(path, int(t["rec_len"]), t["line"], os.path.relpath(path, base(store_dir)))
+        _finish_tail(os.path.join(base(store_dir), INDEX), int(t["idx_len"]), t["ix_line"], INDEX)
+        head = t["head"]
+        _fsync_dir(os.path.dirname(path))      # the crash may have come between creating an entry and syncing it
+        _fsync_dir(os.path.dirname(os.path.dirname(path)))
+    except (KeyError, TypeError, ValueError, AttributeError) as e:
+        raise TamperError("%s is malformed (%s: %s)" % (PENDING, type(e).__name__, e))
+    _replace(os.path.join(base(store_dir), HEAD), json.dumps(head, sort_keys=True))
+    os.remove(p)
+    _fsync_dir(base(store_dir))
+
 
 @contextlib.contextmanager
 def _locked(store_dir):
-    os.makedirs(base(store_dir), exist_ok=True)
+    _makedirs(base(store_dir))
     fd = os.open(os.path.join(base(store_dir), ".lock"), os.O_CREAT | os.O_RDWR, 0o644)
     try:
         fcntl.flock(fd, fcntl.LOCK_EX)
@@ -201,47 +378,66 @@ def _locked(store_dir):
         os.close(fd)
 
 
-def _append_line(path, entry):
-    """One line on the end of path, fsynced, the file left 0444."""
-    line = json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n"
-    if os.path.exists(path):
-        os.chmod(path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
-    fd = os.open(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
-    try:
-        os.write(fd, line.encode("utf-8"))
-        os.fsync(fd)
-    finally:
-        os.close(fd)
-        os.chmod(path, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+@contextlib.contextmanager
+def _consistent(store_dir):
+    """A reader's view: the append lock held (so no half-written append is seen) and an interrupted append completed.
+    Yields [problem] - a recovery that could not complete - for the reader to report; a store with no evidence/ dir is
+    read as it is (no lock, nothing created)."""
+    if not os.path.isdir(base(store_dir)):
+        yield []
+        return
+    with _locked(store_dir):
+        try:
+            _recover(store_dir)
+            bad = []
+        except (TamperError, OSError) as e:
+            bad = ["an interrupted append could not be completed: %s" % e]
+        yield bad
 
 
-def append(store_dir, item, sha, kind, body, at=None):
-    """-> the entry written (with n, prev, hash). Refuses (TamperError) when the record or the index does not verify;
-    ValueError on a bad id, sha or kind. body keys never override the envelope."""
+# ---------------------------------------------------------------- appending
+
+def append(store_dir, item, sha, kind, body, at=None, nonce=None):
+    """-> the entry written (with n, prev, hash), or None when nonce is given and the record already holds a marker
+    entry with it (checked under the same lock as the write, so two writers cannot both pass). Refuses (TamperError)
+    when the record or the index does not verify; ValueError on a bad id, sha or kind. body keys never override the
+    envelope."""
     if kind not in KINDS:
         raise ValueError("evidence: kind is one of %s, not %r" % ("/".join(KINDS), kind))
     path = record_path(store_dir, item, sha)
     with _locked(store_dir):
-        idx_rows = _index(store_dir)
-        bad = _chain(idx_rows, INDEX) + verify(store_dir, item, sha, idx_rows)
+        _recover(store_dir)
+        idx_rows, rec_rows = _index(store_dir), _lines(path)
+        bad = _index_problems(store_dir, idx_rows) + _verify_record(store_dir, item, sha, rec_rows, idx_rows)
         if bad:
             raise TamperError("evidence for %s@%s does not verify, nothing appended: %s" % (item, sha[:10], "; ".join(bad[:5])))
-        rows = [e for _, e in _lines(path) if e]
+        rows = [e for _, e in rec_rows if e]
+        if nonce and any(e.get("nonce") == nonce for e in rows):
+            return None
         entry = dict(body or {})
+        if nonce:
+            entry["nonce"] = nonce
         entry.update(v=V, kind=kind, item=item, sha=sha, n=len(rows), prev=rows[-1]["hash"] if rows else ZERO,
                      at=at or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
         entry.pop("hash", None)
         entry["hash"] = entry_hash(entry)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        _append_line(path, entry)
         last = [e for _, e in idx_rows if e]
         ix = {"v": V, "n": len(last), "prev": last[-1]["hash"] if last else ZERO, "item": item, "sha": sha,
-              "entry_n": entry["n"], "entry": entry["hash"], "kind": kind, "at": entry["at"]}
+              "entry_n": entry["n"], "entry": entry["hash"], "kind": kind, "at": entry["at"], "sealed": 1}
         for k in ("kind_of_run", "mode", "verdict"):     # what an SLI counts without opening every record
             if k in entry:
                 ix[k] = entry[k]
         ix["hash"] = entry_hash(ix)
-        _append_line(os.path.join(base(store_dir), INDEX), ix)
+        ipath = os.path.join(base(store_dir), INDEX)
+        txn = {"item": item, "sha": sha, "rec_len": _size(path), "line": _line(entry), "idx_len": _size(ipath),
+               "ix_line": _line(ix), "head": {"v": V, "n": len(last) + 1, "hash": ix["hash"]}}
+        _replace(os.path.join(base(store_dir), PENDING), json.dumps(txn, sort_keys=True))
+        _makedirs(os.path.dirname(path))
+        _append_bytes(path, txn["line"].encode("utf-8"))
+        _append_bytes(ipath, txn["ix_line"].encode("utf-8"))
+        _replace(os.path.join(base(store_dir), HEAD), json.dumps(txn["head"], sort_keys=True))
+        os.remove(os.path.join(base(store_dir), PENDING))
+        _fsync_dir(base(store_dir))
         return entry
 
 
@@ -304,12 +500,9 @@ def append_marker(store_dir, item, sha, verdict, classes=None, session=None, non
     word = str(verdict or "").upper()
     if word not in MARKER_WORDS:
         raise ValueError("evidence: a Marker verdict is one of %s, not %r" % ("/".join(MARKER_WORDS), verdict))
-    if nonce and os.path.exists(record_path(store_dir, item, sha)):
-        if any(e.get("kind") == "marker" and e.get("nonce") == nonce for e in read(store_dir, item, sha)):
-            return None
     return append(store_dir, item, sha, "marker", {"verdict": word, "classes": list(classes or []), "session": session,
                                                     "defects": list(defects or []), "nonce": nonce,
-                                                    "reasons_sha256": sha256_text(reasons)})
+                                                    "reasons_sha256": sha256_text(reasons)}, nonce=nonce)
 
 
 def _harvest_nonce(chk):
@@ -319,9 +512,10 @@ def _harvest_nonce(chk):
     return "harvest-" + sha256_text(raw)[:24]
 
 
-def harvest(store):
+def harvest(store, failures=None):
     """Append every Marker verdict a store item holds now (check.verdict on its candidate's sha) that its record does
-    not have yet. -> [(item, sha, verdict)] appended. The tick's call site is not wired yet (WP-09a edits no relentless.py):
+    not have yet. -> [(item, sha, verdict)] appended; each one that failed is added to `failures` as (item, reason)
+    (the CLI exits 1 when any did: "nothing new" and "every receipt failed" must not look alike). The tick's call site is not wired yet (WP-09a edits no relentless.py):
     run `evidence.py harvest` until it is."""
     got = []
     for st in store.states():
@@ -334,6 +528,8 @@ def harvest(store):
                               nonce=chk.get("nonce") or _harvest_nonce(chk))
         except (ValueError, OSError) as ex:
             print("evidence: harvest %s: %s" % (st.get("item"), ex), file=sys.stderr)
+            if failures is not None:
+                failures.append((st.get("item"), str(ex)))
             continue
         if e:
             got.append((st["item"], cand["sha"], e["verdict"]))
@@ -396,9 +592,10 @@ def main(argv=None):
     if a.cmd == "harvest":
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
         import relentless
-        got = harvest(relentless.Store(os.path.dirname(d)))
-        print("evidence: harvested %d Marker verdict(s)" % len(got))
-        return 0
+        failed = []
+        got = harvest(relentless.Store(os.path.dirname(d)), failed)
+        print("evidence: harvested %d Marker verdict(s)%s" % (len(got), ", %d FAILED" % len(failed) if failed else ""))
+        return 1 if failed else 0
     return 2
 
 
