@@ -1074,3 +1074,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:31:09Z","tsn":1793964669861505700}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL A2 (L2), read-only proof","ts":"2026-11-06T11:31:29Z","tsn":1793964689323786954}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:31:59Z","tsn":1793964719339731961}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A1 (L2), read-only proof","ts":"2026-11-06T11:34:28Z","tsn":1793964868049714730}
