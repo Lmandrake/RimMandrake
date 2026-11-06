@@ -42,6 +42,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 TMP = tempfile.mkdtemp(prefix="selftest_wrapup_")
 os.environ["RM_WRAPUP_DIR"] = os.path.join(TMP, "state")
 os.environ["RIMFLOW_SHARED_BRIDGE"] = ""            # the real lock is never read or written here
+os.environ["RM_WRAPUP_PREV_LOG"] = ""               # the real game's relaunch never voids a test debt
 
 import wrapup  # noqa: E402
 import role_launch  # noqa: E402

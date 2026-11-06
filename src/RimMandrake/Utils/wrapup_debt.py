@@ -52,7 +52,7 @@ def paid(token):
 # The reply carries the value before and after the write, so no caller has to say anything:
 #   the first write that CHANGES a key owes it, undo = set it back to the value it had then (`orig`);
 #   a later write, by any process, that lands the key back on `orig` pays it.
-# A setting the game itself resets (a restart) stays owed until `wrapup.py resolve`: the register cannot see a restart.
+# A setting the game itself resets (a restart) is void once the game relaunches: wrapup.void_debt reads Player-prev.log.
 # rimworld/set_god_mode (core RimBridge, writes DebugSettings.godMode) is not read: its reply shape is not ours.
 # A stager that owes its own coarser row (scenelib.setting, SettingsTransaction, validation_v2.sset) still does: a run
 # killed inside one files that row too, beside the door's exact per-field rows.

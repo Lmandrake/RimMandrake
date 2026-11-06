@@ -33,7 +33,8 @@ WHAT IT CENSUSES (one row each; act = cleaned | filed | carried | covered | ok |
 FILED means: written to <dir>/open/<key>.json. ops_watch's `wrapup` family re-measures every open row (standing() below)
 and the target `wrapup.debris_standing > 0` files ONE fixed alarm item (OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP), reopened on a
 repeat. A row stops standing when its debris is gone (clone clean and pushed or removed, bridge no longer that hold,
-item no longer doing, debt paid); `wrapup.py sweep` moves fully cleared files to resolved/. Every wrap-up appends one
+item no longer doing, debt paid or owed to a game process that has since exited: void_debt); `wrapup.py sweep` moves
+fully cleared files to resolved/ and pays void debts. Every wrap-up appends one
 line to <dir>/runs.jsonl, an error included: the wrap-up itself never fails silently and never fails its unit.
 
     wrapup.py unit --unit U --seat S --clone C [--holder H] [--carried]
@@ -68,6 +69,17 @@ DEFAULT_DIR_WINDOWS = "D:\\ClaudeWork\\rimmandrake\\wrapup"     # a python.exe h
 SEAT_CLONES_DEFAULT = "/home/mandrake/rm/bench"     # = mirror.SEAT_CLONES
 RELENTLESS_START_WHY = "relentless supervisor takes the item"                                # = relentless.ledger_start
 DEBT_AGE_S = 6 * 3600       # a debt older than this stands whoever owes it: an owner no wrap-up can name still shows
+# RELAPSE_WRAPUP_FIX_DIED_TWICE: every relapse of the wrap-up alarm (2026-11-05/06) was setting debts owed to a game
+# process that had since exited, voided by hand each time. Every debt is in-process state: DebugSettings, the loaded
+# game's difficulty, a ModSettings static (jawa/mod_settings_field never calls WriteSettings), a staged scene on a
+# disposable map. So a debt owed before the game's last launch died with that process. Unity rotates Player.log to
+# Player-prev.log at launch, keeping its mtime: that mtime is the end of the previous process, before the current one.
+# VOID_MARGIN_S: the log's mtime is the Windows clock, a debt's `at` often WSL's, which lags after a sleep; a debt must
+# predate the relaunch by this much to be void (one owed by the running game inside the lag must still stand).
+VOID_MARGIN_S = 300
+# The two paths = Utils/game_paths.PREV_LOG (not imported: its import scans the dump root).
+PREV_LOG_WSL = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player-prev.log"
+PREV_LOG_WIN = "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Player-prev.log"
 
 
 def state_dir():
@@ -165,7 +177,7 @@ def debts_keyed(key):
     out = []
     for f in sorted(glob.glob(_p("debts", "*.json")) + glob.glob(_p("debts", "filed", "*.json"))):
         d = _read_json(f)
-        if d and d.get("key") == key:
+        if isinstance(d, dict) and d.get("key") == key:
             out.append(d)
     return out
 
@@ -174,7 +186,7 @@ def debts_of(owner):
     out = []
     for f in sorted(glob.glob(_p("debts", "*.json"))):
         d = _read_json(f)
-        if d and d.get("owner") == owner:
+        if isinstance(d, dict) and d.get("owner") == owner:
             out.append(d)
     return out
 
@@ -220,6 +232,16 @@ class World(object):
 
     def exists(self, path):
         return os.path.isdir(path)
+
+    def game_relaunched(self):
+        """-> epoch seconds the previous game process last wrote its log (every process older than the running one
+        had ended by then), or None when unmeasured: a debt is never voided on ignorance. Env RM_WRAPUP_PREV_LOG
+        names the file ('' = unmeasured)."""
+        p = os.environ.get("RM_WRAPUP_PREV_LOG", PREV_LOG_WIN if os.name == "nt" else PREV_LOG_WSL)
+        try:
+            return os.path.getmtime(p) if p else None
+        except OSError:
+            return None
 
 
 def claims_of(evs, states, seat, since):
@@ -305,7 +327,7 @@ def census(world, ctx):
     for d in debts_of(ctx["owner"]):
         rows.append({"kind": "debt", "what": "%s: %s" % (d.get("kind"), d.get("what")), "act": "filed",
                      "why": "still owed at the agent's end; undo: %s" % (d.get("undo") or "none recorded"),
-                     "token": d.get("token"), "keyed": bool(d.get("key"))})
+                     "token": d.get("token"), "keyed": bool(d.get("key")), "at": d.get("at")})
     for c in ctx["clones"]:
         rows.append(check_clone(world, c, ctx.get("carried", False)))
     if ctx["kind"] == "session" and ctx.get("seat"):
@@ -361,9 +383,23 @@ def run(world, ctx):
 
 # ---------------------------------------------------------------- re-measure what is filed (ops_watch, sweep)
 
+def void_debt(world, at):
+    """-> the relaunch time (ISO) when a debt owed at `at` died with an exited game process, else None."""
+    try:
+        t = world.game_relaunched()
+    except Exception:  # noqa: BLE001  unmeasured: the debt stands
+        return None
+    if t is None or not at:
+        return None
+    rel = _iso(t)
+    return rel if str(at) < _iso(t - VOID_MARGIN_S) else None
+
+
 def row_standing(world, row, rec):
     """Is this filed row's debris still there?"""
     k = row.get("kind")
+    if k == "debt" and void_debt(world, row.get("at") or rec.get("at")):
+        return False                            # owed to a game process that has exited
     if k == "clone":
         return check_clone(world, row["what"], False)["act"] in ("filed", "unmeasured")
     if k == "bridge":
@@ -380,24 +416,49 @@ def row_standing(world, row, rec):
     return True                                 # other debts, wrapup error: until someone resolves it
 
 
-def aged_debts(now=None):
+def aged_debts(now=None, world=None):
     """Debts on the register older than DEBT_AGE_S, whatever their owner: a python.exe harness whose owner key no
-    wrap-up matches (its environment did not cross), or an agent whose wrap-up never ran. -> [debt]"""
+    wrap-up matches (its environment did not cross), or an agent whose wrap-up never ran. A debt owed to a game
+    process that has since exited is not one (void_debt; sweep pays it). -> [debt]"""
     now = _now() if now is None else now
     cut = _iso(now - DEBT_AGE_S)
     out = []
     for f in sorted(glob.glob(_p("debts", "*.json"))):
         d = _read_json(f)
+        if not isinstance(d, dict):
+            d = None                            # unreadable or not an object: stands as unreadable
+        if d is not None and world is not None and void_debt(world, d.get("at")):
+            continue
         if d is None or str(d.get("at") or "") < cut:
             out.append(d or {"token": os.path.basename(f)[:-5], "what": "unreadable debt file"})
     return out
+
+
+def pay_void_debts(world):
+    """Move every registered debt owed to an exited game process to resolved/ (the record) and off the register.
+    -> how many."""
+    n = 0
+    for f in sorted(glob.glob(_p("debts", "*.json")) + glob.glob(_p("debts", "filed", "*.json"))):
+        d = _read_json(f)
+        rel = void_debt(world, d.get("at")) if isinstance(d, dict) else None
+        if not rel:
+            continue
+        d["resolved"] = {"at": _iso(_now()), "why": "void: owed at %s to a game process that exited by %s "
+                                                     "(Player-prev.log)" % (d.get("at"), rel)}
+        _write_json(_p("resolved", "debt-" + os.path.basename(f)), d)
+        try:
+            os.remove(f)
+            n += 1
+        except OSError:
+            pass
+    return n
 
 
 def standing(world=None, now=None):
     """-> [(path, rec, [standing rows])] for every open file, plus one pseudo-file for the aged debts."""
     world = world or World()
     out = []
-    old = aged_debts(now)
+    old = aged_debts(now, world)
     if old:
         out.append((_p("debts", "aged.json"), {}, [{"kind": "debt", "what": "%s: %s" % (d.get("kind"), d.get("what")),
                                                     "act": "filed", "why": "owed over %d h by %s; undo: %s" % (
@@ -414,7 +475,9 @@ def standing(world=None, now=None):
 
 
 def sweep(world=None):
-    """Move every open file whose rows have all cleared to resolved/. -> (cleared, still open)."""
+    """Move every open file whose rows have all cleared to resolved/, and pay every debt owed to an exited game
+    process. -> (cleared, still open)."""
+    world = world or World()
     cleared, left = 0, 0
     for f, rec, rows in standing(world):
         if not rec:                             # the aged debts: cleared only by paid() or `wrapup.py paid`
@@ -425,6 +488,7 @@ def sweep(world=None):
             continue
         _resolve(f, "every filed row cleared on re-measure")
         cleared += 1
+    cleared += pay_void_debts(world)
     return cleared, left
 
 
