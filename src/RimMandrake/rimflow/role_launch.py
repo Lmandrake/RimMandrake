@@ -882,6 +882,8 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 t = (obs.get("stage_turn") or stage_turn)(run["concept"]) if ok else None
                 if t:
                     escalate_turn(name, run, t, act)
+                if ok:
+                    chain_next(name, rs, cfg, run, now, act, obs.get("stage_status") or stage_status)
             except Exception as e:  # noqa: BLE001 - said, never lost: the next open charges its reservation
                 act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
                     why="%s run %s on %s: designer_stage close failed: %s" % (name, run["unit"], run["concept"],
@@ -1259,6 +1261,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
     roles = decide_order([r for r in sch.get("roles") or [] if isinstance(r, dict)])
     def one(role):
         name = role.get("name", "?")
+        if isinstance(rst.get(name), dict):
+            chain_pop(rst[name], now)
         req = (rst.get(name) or {}).get("run_now") if isinstance(rst.get(name), dict) else None
         if not role.get("enabled") and not req:
             old = rst[name].pop("resume", None) if isinstance(rst.get(name), dict) else None
@@ -1918,6 +1922,82 @@ def stage_land(concept, unit):
     """designer_stage.land_state: the harvest's stage.json and result files onto origin/main -> its one line."""
     import designer_stage as DS
     return DS.land_state(concept, unit)
+
+
+# DESIGNER_STAGES_WIRE_NOBODY_PRESSED_GO: a stage-machine role whose row sets chain_stages true chains its own next
+# stage. A run whose close is ACCEPTED and leaves the concept at status=ready (stage N done -> N+1, or a return to an
+# earlier stage) queues a run-now for that concept, by the Dispatcher, launched by the next decide through every gate a
+# hand-pressed run-now passes (off file, ops band, account pick, stage_open's refusals). waiting_owner, blocked and
+# locked chain nothing (the owner, the dependency or nobody moves them); a REJECTED result chains nothing (its alarm
+# stands, and a retry loop would spend unwatched). run_now is one slot per role: a chain that finds it taken waits in
+# rs["run_now_queue"] (one entry per concept) and takes the slot once it frees. Before this, every finished stage sat
+# ready until queues.designer.stalled_min alarmed (OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV: 3 concepts, 60+ min).
+CHAIN_MAX_PER_DAY = 8        # chained launches per concept per day: stages 0-5 plus two returns; a loop past it alarms
+
+
+def stage_status(concept):
+    """-> the concept's stage.json (designer_stage.load_state)."""
+    import designer_stage as DS
+    return DS.load_state(concept)
+
+
+def chain_next(name, rs, cfg, run, now, act, status):
+    """After an accepted stage close: queue the concept's next run (see CHAIN_MAX_PER_DAY). -> the queued request or
+    None. status(concept) -> its stage.json; an unreadable one is said and chains nothing."""
+    if cfg.get("chain_stages") is not True or not run.get("concept"):
+        return None
+    concept = run["concept"]
+    try:
+        st = status(concept)
+    except Exception as e:  # noqa: BLE001 - said; a hand run-now still works
+        act(do="alarm", kind="role:%s:chain" % name, ticket=run.get("item"), note=True,
+            why="%s run %s on %s: next stage NOT chained, its stage.json is unreadable: %s" % (
+                name, run["unit"], concept, str(e)[:200]))
+        return None
+    if not isinstance(st, dict) or st.get("status") != "ready":
+        return None
+    day = day_of(now)
+    counts = {k: v for k, v in (rs.get("chain_day") or {}).items() if k.startswith(day + " ")}
+    key = "%s %s" % (day, concept)
+    cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)
+    if counts.get(key, 0) >= cap:
+        act(do="alarm", kind="role:%s:chain_cap" % name, ticket=run.get("item"), note=True, conductor_log=True,
+            raise_first="%s chained %s %d times today: it is looping; look at its stage history." % (
+                name, os.path.basename(os.path.normpath(concept)), counts[key]),
+            why="%s run %s on %s: stage %s ready but NOT chained, %d chained runs today (chain_max_per_day %d)" % (
+                name, run["unit"], concept, st.get("stage"), counts[key], cap))
+        rs["chain_day"] = counts
+        return None
+    rs["chain_day"] = counts
+    pending = rs.get("run_now")
+    if isinstance(pending, dict) and pending.get("concept") == concept:
+        return None                               # already asked for: the pending request runs this stage
+    counts[key] = counts.get(key, 0) + 1
+    req = {"at": now, "by": "Dispatcher", "mode": run.get("mode") or "run", "concept": concept,
+           "chained_from": run["unit"],
+           "why": "chain: %s run %s closed, stage %s ready" % (name, run["unit"], st.get("stage"))}
+    if isinstance(pending, dict):
+        queue = [q for q in rs.get("run_now_queue") or [] if isinstance(q, dict) and q.get("concept") != concept]
+        rs["run_now_queue"] = queue + [req]
+        how = "queued behind the pending run-now on %s" % pending.get("concept")
+    else:
+        rs["run_now"] = req
+        how = "run-now asked"
+    act(do="role_hold", role=name, ticket=run.get("item"), note=True,
+        why="%s: %s stage %s ready after run %s: next stage chained (%s)" % (
+            name, os.path.basename(os.path.normpath(concept)), st.get("stage"), run["unit"], how))
+    return req
+
+
+def chain_pop(rs, now):
+    """A free run-now slot takes the oldest chained request waiting for it, stamped now (its TTL starts here)."""
+    if rs.get("run_now") is None and rs.get("run_now_queue"):
+        q = [x for x in rs["run_now_queue"] if isinstance(x, dict)]
+        if q:
+            rs["run_now"] = dict(q[0], at=now)
+        rs["run_now_queue"] = q[1:]
+        if not rs["run_now_queue"]:
+            rs.pop("run_now_queue")
 
 
 def stage_turn(concept):
