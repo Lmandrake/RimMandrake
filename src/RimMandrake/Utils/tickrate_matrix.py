@@ -38,6 +38,8 @@ sys.path.insert(0, HERE)
 CELLS = {"T1": ("minimal", "empty"), "T2": ("minimal", "busy"), "T3": ("full", "empty"), "T4": ("full", "busy")}
 SITE = "calm"
 BUSY_KIND, BUSY_N = "Muffalo", 60
+# jawa/spawn_pawn refuses count > 50 (JawaBenchTerrainTools.cs SpawnPawn), so BUSY_N goes in calls of at most this.
+SPAWN_CAP = 50
 MINIMAL_MAX, FULL_MIN = 100, 300
 WARMUP_S, WINDOW_S, REPEATS = 5.0, 20.0, 3
 SPREAD_MAX = 0.5
@@ -121,14 +123,21 @@ def run_cell(call, cell, reload, sleep=time.sleep, clock=time.time, repeats=REPE
             return 2, res
         before = pawns(call)
         if mp == "busy":
-            sp = call("jawa/spawn_pawn", kindDef=BUSY_KIND, x=125, z=125, faction="none", count=BUSY_N) or {}
-            tr["spawn"] = {"success": sp.get("success")}
+            calls, left = [], BUSY_N
+            while left > 0:
+                k = min(left, SPAWN_CAP)
+                sp = call("jawa/spawn_pawn", kindDef=BUSY_KIND, x=125, z=125, faction="none", count=k) or {}
+                calls.append({"count": k, "success": sp.get("success"), "error": sp.get("error")})
+                left -= k
+            tr["spawn"] = {"success": all(c["success"] is True for c in calls), "calls": calls}
         after = pawns(call)
         tr["pawns"] = after
         if mp == "busy" and (before is None or after is None or after - before < BUSY_N):
             res["trials"].append(tr)
-            res["uncontrolled"] = "the busy map gained %s pawns of %d" % (
-                None if before is None or after is None else after - before, BUSY_N)
+            errs = [c["error"] for c in tr.get("spawn", {}).get("calls", []) if c.get("error")]
+            res["uncontrolled"] = "the busy map gained %s pawns of %d%s" % (
+                None if before is None or after is None else after - before, BUSY_N,
+                (" (spawn_pawn: %s)" % "; ".join(str(e)[:160] for e in errs)) if errs else "")
             return 1, res
         tr.update(trial(call, sleep, clock))
         res["trials"].append(tr)
@@ -203,6 +212,8 @@ class Game(object):
         if tool == "jawa/list_pawns":
             return {"pawns": [{}] * self.n}
         if tool == "jawa/spawn_pawn":
+            if kw["count"] > SPAWN_CAP:  # the live tool's own refusal, so the mock cannot hide an over-cap ask
+                return {"success": False, "error": "count %d > 50. Spawn fewer, or call again." % kw["count"]}
             self.n += kw["count"] if self.spawn_gain is None else self.spawn_gain
             return {"success": True}
         if tool == "jawa/time_clock":
@@ -249,7 +260,12 @@ def selftest():
     rc2, r2 = go("T2", g)
     check("T2: busy is slower than empty on the same game", rc2 == 0 and r2["meanTps"] < r["meanTps"], (r["meanTps"], r2))
     check("T2: the busy map holds the spawned pawns", r2["trials"][0]["pawns"] == 3 + BUSY_N, r2["trials"][0])
-    check("T2: Muffalo spawned wild, once per trial", g.calls.count("jawa/spawn_pawn") == 3, g.calls)
+    check("T2: Muffalo spawned wild in two capped calls (50 + 10) per trial", g.calls.count("jawa/spawn_pawn") == 6
+          and [c["count"] for c in r2["trials"][0]["spawn"]["calls"]] == [50, 10] and r2["trials"][0]["spawn"]["success"],
+          (g.calls, r2["trials"][0]))
+    g = Game()
+    check("mock spawn_pawn refuses an over-cap ask as the live tool does", g("jawa/spawn_pawn", count=60)["success"]
+          is False and g.n == 3, g.n)
     rc, r = go("T3", Game(mods=40))
     check("T3 on a 40-mod list: UNMEASURED WRONG_LIST, nothing run", rc == 2 and r["unmeasured"].startswith("WRONG_LIST")
           and not r["trials"], r)
@@ -260,6 +276,14 @@ def selftest():
     rc, r = go("T2", Game(spawn_gain=0))
     check("a spawn that adds no pawns is uncontrolled (exit 1), not a busy figure", rc == 1 and "gained 0" in
           r["uncontrolled"], r)
+    g = Game()
+    real = g.__call__
+    g.__class__ = type("RefusingGame", (Game,), {"__call__": lambda self, tool, **kw: (
+        self.calls.append(tool) or {"success": False, "error": "No PawnKindDef named 'Muffalo'."})
+        if tool == "jawa/spawn_pawn" else real(tool, **kw)})
+    rc, r = go("T2", g)
+    check("a refused spawn names the tool's error in the uncontrolled verdict", rc == 1
+          and "No PawnKindDef named" in r["uncontrolled"], r)
     rc, r = go("T1", Game(load_ok=False))
     check("a site that will not load: UNMEASURED", rc == 2 and "did not load" in r["unmeasured"], r)
     rc, r = go("T1", Game(force_pause=True))
