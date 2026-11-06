@@ -11,7 +11,10 @@ once, then judge one clause off modcheck's own results JSON (Transient/modcheck/
 One run serves every clause: a results JSON from the last REUSE_S seconds that holds all four rows is judged
 instead of running the suite again.
 
-Exit: 0 PASS, 1 FAIL / UNMEASURED / row missing / unknown clause, 2 no results JSON written.
+Exit: 0 PASS, 1 FAIL / UNMEASURED / row missing / unknown clause, 2 no results JSON written, or modcheck REFUSED the
+run (summary.refused, e.g. stale_load with chains []): nothing ran, so it is UNMEASURED, never FAIL
+(MODCHECK_READERS_FIX_REFUSAL_READ_AS_FAIL). judge_path() is pure and selftested
+(src/RimMandrake/Utils/modcheck/live_queue/selftest_refusal_readers.py).
 """
 import argparse
 import glob
@@ -29,11 +32,16 @@ ROWS = list(CLAUSES.values())
 REUSE_S = 1800
 
 
-def _components(path):
+def _summary(path):
     try:
-        summary = json.load(open(path, encoding="utf-8"))["summary"]
-    except (OSError, ValueError, KeyError):
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)["summary"] or {}
+    except (OSError, ValueError, KeyError, TypeError):
         return {}
+
+
+def _components(path):
+    summary = _summary(path)
     out = {}
     for ch in summary.get("chains") or []:
         for c in ch.get("components") or []:
@@ -52,6 +60,20 @@ def _reusable(now):
         if all(r in _components(p) for r in ROWS):
             return p
     return None
+
+
+def judge_path(path, clause, row):
+    """(exit code, line) for one results JSON: 2 when modcheck refused the run, else 0 iff `row` PASSes."""
+    summary = _summary(path)
+    why = str(summary.get("refused") or "").strip()
+    if why:
+        return 2, "%s UNMEASURED  modcheck refused the run (%s): %s  [%s]" % (
+            clause, summary.get("unmeasured") or "refused", why[:300], path)
+    c = _components(path).get(row)
+    if c is None:
+        return 1, "%s %s missing from %s" % (clause, row, path)
+    return (0 if c.get("verdict") == "PASS" else 1), "%s %s: %s -- %s (%s)" % (
+        clause, row, c.get("verdict"), str(c.get("detail"))[:600], path)
 
 
 def main(argv=None):
@@ -73,12 +95,9 @@ def main(argv=None):
             print("NO RESULTS: modcheck exited %d and wrote no Bones results JSON" % rc)
             return 2
         path = fresh[0]
-    c = _components(path).get(row)
-    if c is None:
-        print("%s %s missing from %s" % (a.clause, row, path))
-        return 1
-    print("%s %s: %s -- %s (%s)" % (a.clause, row, c.get("verdict"), str(c.get("detail"))[:600], path))
-    return 0 if c.get("verdict") == "PASS" else 1
+    code, line = judge_path(path, a.clause, row)
+    print(line)
+    return code
 
 
 if __name__ == "__main__":

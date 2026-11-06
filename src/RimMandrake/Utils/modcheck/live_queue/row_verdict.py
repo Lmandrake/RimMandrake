@@ -12,7 +12,9 @@ It only READS the newest Transient/modcheck/<Mod>_<stamp>.json (runner.write_she
   --unmeasured-ok RX  an UNMEASURED row whose detail matches RX counts as holding (a site fact the criterion allows).
   --max-age-min N     the newest run must be younger than N minutes (a stale run is not this sitting's evidence).
 
-Exit 0 = every row holds; 1 = a row is missing, FAIL, UNMEASURED (not allowed), NOT_RUN, or the run is stale/absent.
+Exit 0 = every row holds; 1 = a row is missing, FAIL, UNMEASURED (not allowed), NOT_RUN, or the run is stale/absent;
+2 = UNMEASURED: modcheck REFUSED the run (summary.refused, e.g. stale_load with chains []): nothing ran, so it is
+neither PASS nor FAIL (MODCHECK_READERS_FIX_REFUSAL_READ_AS_FAIL).
 judge() is pure; `--selftest` exercises it offline.
 """
 import argparse
@@ -30,6 +32,18 @@ SHEET_DIR = os.path.join(ROOT, "Transient", "modcheck")
 
 def components(data):
     return [c for ch in ((data or {}).get("summary") or {}).get("chains") or [] for c in ch.get("components") or []]
+
+
+def refused(data):
+    """modcheck's own refusal of the run ('' when it ran): summary.refused; its kind (e.g. stale_load) is
+    summary.unmeasured. A refused run's chains are [], so a reader of chains alone would score it FAIL."""
+    summ = (data or {}).get("summary") or {}
+    return str(summ.get("refused") or "").strip()
+
+
+def refusal_line(data, path):
+    return "UNMEASURED  modcheck refused the run (%s): %s  [%s]" % (
+        ((data or {}).get("summary") or {}).get("unmeasured") or "refused", refused(data)[:300], path)
 
 
 def find(comps, row):
@@ -75,6 +89,8 @@ def check(sheet_dir, mod, rows, max_age_min, unmeasured_ok=None):
         data = json.load(f)
     if data.get("mod") != mod:
         return 1, ["%s names mod %r, not %r" % (path, data.get("mod"), mod)]
+    if refused(data):
+        return 2, [refusal_line(data, path)]
     ok, lines = judge(data, rows, unmeasured_ok)
     return (0 if ok else 1), ["run %s" % path] + lines
 
@@ -105,7 +121,16 @@ def selftest():
         if got != want:
             bad += 1
             print("case %d: want %s got %s %s" % (i, want, got, lines))
-    print("row_verdict selftest: %s (%d cases)" % ("PASS" if not bad else "FAIL", len(cases)))
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:
+        with open(os.path.join(td, "M_20261105T234400Z.json"), "w", encoding="utf-8") as f:
+            json.dump({"mod": "M", "summary": {"chains": [], "refused": "UNMEASURED: the running load is not the "
+                       "composed list", "unmeasured": "stale_load"}}, f)
+        code, lines = check(td, "M", ["a_round_trips"], 60)
+        if code != 2:
+            bad += 1
+            print("refused run: want exit 2 got %d %s" % (code, lines))
+    print("row_verdict selftest: %s (%d cases)" % ("PASS" if not bad else "FAIL", len(cases) + 1))
     return 1 if bad else 0
 
 
@@ -123,7 +148,7 @@ def main(argv=None):
     if not a.mod or not a.row:
         ap.error("--mod and at least one --row are required")
     code, lines = check(a.dir, a.mod, a.row, a.max_age_min, a.unmeasured_ok)
-    print(("PASS " if code == 0 else "FAIL ") + a.mod)
+    print({0: "PASS ", 2: "UNMEASURED "}.get(code, "FAIL ") + a.mod)
     for line in lines:
         print("  " + line)
     return code
