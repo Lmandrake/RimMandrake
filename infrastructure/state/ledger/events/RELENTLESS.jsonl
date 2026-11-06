@@ -1379,3 +1379,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:16:35Z","tsn":1794006995775392482}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging PLANET_ATMOSPHERE_CLOUD_COST_1: deploy and restart for its live proofs","ts":"2026-11-06T23:22:04Z","tsn":1794007324920718298}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:31:09Z","tsn":1794007869330778386}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T23:32:13Z","tsn":1794007933538315117}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:32:26Z","tsn":1794007946497300879}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSTILE_FLORA_FIRST_SCRIPT_1 A2 (L2), read-only proof","ts":"2026-11-06T23:32:53Z","tsn":1794007973850676666}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:34:17Z","tsn":1794008057093967375}
