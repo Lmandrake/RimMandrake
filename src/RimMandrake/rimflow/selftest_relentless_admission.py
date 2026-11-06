@@ -6,7 +6,7 @@ One check per acceptance clause, each red under its mutant:
     the replay of old rows leaves no pre-bridge UNMEASURED row unclassified (the CLI exits 0);
   B a forced deploy-gap row fires the lane's deploy fix (relentless_game._env -> the staging remedy);
   C a forced stale-build row fires its recarry (carried to the new sha) or decides the build (game_stale_build);
-  D a NOT_ADMITTED key reruns only after one part (sha, load, site, harness) moves; a transient cause is the timer's;
+  D a NOT_ADMITTED key reruns only after one part (sha, load, site, harness) moves; a transient cause runs again at once (no timer);
   E the supervisor's live_check reader (relentless.Effects.live_check through relentless_reach.live_reading) reads;
   F the four SLIs and the old row share are printed.
 No game, no bridge, no ledger.
@@ -135,30 +135,29 @@ def t_stale_build_fires_recarry():
 
 
 def t_key_reruns_only_on_a_moved_part():
-    """D: (sha, load, site, harness): same key holds; any part moved runs now; a transient cause waits the timer only."""
+    """D: (sha, load, site, harness): same key holds; any part moved runs now; a transient cause runs again at once."""
     site = "python.exe live_site.py --biome RM_Stillsand"
     now = 1_800_000_000
     at = L.iso(now - 60)
     row = {"sha": "s1", "at": at, "outcome": L.NOT_ADMITTED, "admit": "old_build", "action": "wait_load",
            "why": "the game started %s, before the build's files were deployed" % GAME, "game": GAME, "slot": False,
            "key": L.admit_key("s1", GAME, site)}
-    held = LR.due(row, "s1", now, 900, game=GAME, site=site)
+    held = LR.due(row, "s1", now, True, game=GAME, site=site)
     ok(held and held.startswith("not admitted (old_build)"), "D: same key holds: %s" % held)
     gap = dict(row, admit="running_load", why="not in the running load: Graffiti (mandrake.rm.graffiti)")
-    held = LR.due(gap, "s1", now, 900, game=GAME, site=site, per_game=False)
+    held = LR.due(gap, "s1", now, True, game=GAME, site=site, per_game=False)
     ok(held and held.startswith("not admitted (running_load)"), "D: a game phase's round holds on the key too: %s" % held)
-    ok(LR.due(gap, "s1", now, 900, game=GAME, site=site + " --size 40", per_game=False) is None,
+    ok(LR.due(gap, "s1", now, True, game=GAME, site=site + " --size 40", per_game=False) is None,
        "D: and runs when its site moves")
-    ok(LR.due(row, "s1", now, 900, game="2026-11-06T13:00:00Z", site=site) is None, "D: a new load runs at once")
-    ok(LR.due(row, "s1", now, 900, game=GAME, site=site + " --size 40") is None, "D: a new site runs at once")
-    ok(LR.due(row, "s2", now, 900, game=GAME, site=site) is None, "D: a new build runs at once")
+    ok(LR.due(row, "s1", now, True, game="2026-11-06T13:00:00Z", site=site) is None, "D: a new load runs at once")
+    ok(LR.due(row, "s1", now, True, game=GAME, site=site + " --size 40") is None, "D: a new site runs at once")
+    ok(LR.due(row, "s2", now, True, game=GAME, site=site) is None, "D: a new build runs at once")
     moved = dict(row, key=dict(row["key"], harness="0" * 12))
-    ok(LR.due(moved, "s1", now, 900, game=GAME, site=site) is None, "D: a repaired harness runs at once")
-    ok(LR.due(row, "s1", now + 10**6, 900, game=GAME, site=site), "D: same key never ages into a rerun")
+    ok(LR.due(moved, "s1", now, True, game=GAME, site=site) is None, "D: a repaired harness runs at once")
+    ok(LR.due(row, "s1", now + 10**6, True, game=GAME, site=site), "D: same key never ages into a rerun")
     busy = dict(row, admit="bridge_busy", action="retry", why="bridge not taken: busy")
-    ok(LR.due(busy, "s1", now, 900, game=GAME, site=site) == "unmeasured lately"
-       and LR.due(busy, "s1", now + 900, 900, game=GAME, site=site) is None,
-       "D: a transient cause is the retry timer's, never the key's")
+    ok(LR.due(busy, "s1", now, True, game=GAME, site=site) is None,
+       "D: a transient cause runs in the next round, never held by the key or a clock")
     ok(L.admit_key("s1", GAME, site)["harness"] == L.harness_rev() and len(L.harness_rev()) == 12,
        "D: the harness part is the harness source's hash")
 

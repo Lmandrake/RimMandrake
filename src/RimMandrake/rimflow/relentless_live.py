@@ -1734,7 +1734,7 @@ def admit_key(sha, load, site, cause=None):
 
 def admit_waits(last, sha, game, site=None):
     """-> why a NOT_ADMITTED `last` still stands on (sha, game, site), or None when it may run now. A transient cause, a
-    row with no key or no load read, or any key part changed: None (the caller's timer still applies to a transient one).
+    row with no key or no load read, or any key part changed: None (due() then decides; a transient cause runs in the next round).
     site None: the caller did not read it, so only the other parts are compared."""
     k = last.get("key") or {}
     c = last.get("admit")
@@ -1744,7 +1744,7 @@ def admit_waits(last, sha, game, site=None):
     parts = [p for p in ("sha", "load", "harness") + (("site",) if site is not None else ()) + (
         ("full",) if c == "full_list" else ()) if k.get(p) != now[p]]
     if c == "full_list" and now.get("full") is None:
-        return None     # the full list cannot be read now: no proof it still stands; the retry timer applies
+        return None     # the full list cannot be read now: no proof it still stands; due() routes it
     if parts:
         return None
     return "not admitted (%s): waits for a new build, load, site or harness" % c
