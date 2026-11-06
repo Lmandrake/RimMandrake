@@ -132,6 +132,12 @@ The general method is the global skill `~/.claude/skills/confident-wrong-numbers
   offline). For a time scrub call `GenCelestial.CelestialSunGlow(PlanetTile,int)` with explicit ticks, or
   only move the clock forward. Detail: `design/RimMandrake/world_physics_audit_2026-10-20.md` §5.
 
+- 🔴 **`findings_fold.md`'s `generated` stamp is not liveness.** An unchanged rerun writes nothing (the designed one-file
+  publication), so while the testq lane is paused the file stays days old with the fold ticking every minute
+  (FINDINGS_FOLD_REVIVE_STALE_SINCE_NOV1: 1319 `unchanged since` runs 2026-11-01→03 during the Steve NVMe swap). Ask the
+  journal: `journalctl --user -u testq-tick.service | grep findings_fold | tail`; every run prints `unchanged since <generated>`,
+  a write, or `UNMEASURED`.
+
 ## Doc rot and stale gates
 
 - **A doc can describe defects that were fixed before the doc was written.**
