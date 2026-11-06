@@ -1,0 +1,5 @@
+# One snapshot-mode dump of the running RimWorld through health_minidump.py (Windows python), then: the game is still
+# alive 2 s later and the dump parses offline with RimWorldWin64.exe in its module list. Writes only under
+# D:\ClaudeWork\rimmandrake\minidump_spike\live (dump, its .json, <incident>.result.json with duration/pause/size).
+# Exit 0 holds, 1 does not, 2 UNMEASURED (no single game process, or python.exe unrunnable).
+live-proof A1: python3 src/RimMandrake/Utils/health_minidump_spike.py live

@@ -148,13 +148,23 @@ def capture_guards(D):
             f.write(b"x" * st["size"])
         return True
     fake_ct = types.SimpleNamespace(sizeof=lambda c: 8, byref=lambda o: o, get_last_error=lambda: 5,
-                                    c_void_p=lambda v: types.SimpleNamespace(value=v))
+                                    c_void_p=lambda v=None: types.SimpleNamespace(value=v))
+
+    def pss(h, flags, ctx, ref):
+        st["pss"].append(flags)
+        if st["pss_err"]:
+            return st["pss_err"]
+        ref.value = 77
+        return 0
+    st.update(pss=[], pss_err=0, freed=[], cbinfo=[])
     k32 = types.SimpleNamespace(OpenProcess=lambda *a: 9 if st["open_ok"] else 0, CloseHandle=lambda h: True,
-                                CreateFileW=create)
+                                CreateFileW=create, PssCaptureSnapshot=pss, GetCurrentProcess=lambda: -1,
+                                PssFreeSnapshot=lambda p, s: st["freed"].append(s.value))
     psapi = types.SimpleNamespace(GetProcessMemoryInfo=lambda *a: True)
     dbg = types.SimpleNamespace(MiniDumpWriteDump=dump)
-    old = (os.name, D._win, D.shutil, D.CAP_BYTES)
+    old = (os.name, D._win, D.shutil, D.CAP_BYTES, D._callback_info)
     os.name = "nt"
+    D._callback_info = lambda ct, snapshot, hook: (st["cbinfo"].append(snapshot), (None, None))[1]
     D._win = lambda: (fake_ct, k32, psapi, dbg, PMC)
     D.shutil = types.SimpleNamespace(disk_usage=lambda d: types.SimpleNamespace(free=100 * GB))
     try:
@@ -216,10 +226,64 @@ def capture_guards(D):
         pruned = D.prune_dumps(d, new)
         D.CAP_BYTES = old[3]
         check("prune_cap_counts_the_new_dump", pruned == names[:1], repr(pruned))
+
+        # snapshot mode (the default): the dump reads a PSS clone, frees it, and says how long the game paused
+        d = tempfile.mkdtemp()
+        st["pss"], st["freed"], st["cbinfo"] = [], [], []
+        rec = D.capture(4242, "inc-snap", d)
+        check("snapshot_is_default_and_freed", rec.get("mode") == "snapshot" and st["pss"] == [D.PSS_FLAGS]
+              and st["freed"] == [77] and st["cbinfo"] == [True] and rec.get("suspendedMs") is not None
+              and rec.get("status") == "ok", repr((rec, st["pss"], st["freed"], st["cbinfo"])))
+        d = tempfile.mkdtemp()
+        rec = D.capture(4242, "inc-direct", d, mode="direct")
+        check("direct_mode_suspends_for_the_whole_write", rec.get("mode") == "direct" and len(st["pss"]) == 1
+              and rec.get("suspendedMs") == rec.get("durationMs"), rec)
+        st["pss_err"] = 87
+        n_freed = len(st["freed"])
+        d = tempfile.mkdtemp()
+        rec = D.capture(4242, "inc-pssfail", d)
+        st["pss_err"] = 0
+        check("snapshot_failure_falls_back_to_direct", rec.get("status") == "ok" and rec.get("mode") == "direct"
+              and rec.get("fallbackFrom") == "snapshot" and rec.get("pssError") == 87 and len(st["freed"]) == n_freed
+              and rec.get("suspendedMs") == rec.get("durationMs") and os.path.exists(rec.get("path", "")), rec)
+        dump0 = dbg.MiniDumpWriteDump
+        dbg.MiniDumpWriteDump = lambda *a: False
+        rec = D.capture(4242, "inc-writefail", tempfile.mkdtemp())
+        dbg.MiniDumpWriteDump = lambda *a: (_ for _ in ()).throw(OSError("boom"))
+        rec2 = D.capture(4242, "inc-raise", tempfile.mkdtemp())
+        dbg.MiniDumpWriteDump = dump0
+        check("failed_write_reported_partial", all(r.get("status") == "failed" and r.get("path", "").endswith(".partial")
+              and os.path.exists(r["path"]) and os.path.exists(r["path"][:-len(".partial")] + ".json") for r in (rec, rec2))
+              and "boom" in rec2.get("reason", ""), repr((rec, rec2)))
+        check("unknown_mode_fails", D.capture(4242, "inc-mode", tempfile.mkdtemp(), mode="full").get("status") == "failed")
     except Exception as e:                                       # noqa: BLE001
         check("capture_guards_ran", False, repr(e))
     finally:
-        os.name, D._win, D.shutil, D.CAP_BYTES = old
+        os.name, D._win, D.shutil, D.CAP_BYTES, D._callback_info = old
+    orphan_report(D)
+
+
+def orphan_report(D):
+    """A dumper killed mid-write leaves a .dmp with no record: the next capture reports it, and once no writer can
+    still own it (ORPHAN_AGE_S) renames it .partial. Foreign dumps and recorded dumps are never touched."""
+    d = tempfile.mkdtemp()
+    names = {"old": "rimworld_1_20261001T000000Z.dmp", "young": "rimworld_1_20261002T000000Z.dmp",
+             "done": "rimworld_1_20261003T000000Z.dmp", "foreign": "unity_crash_1.dmp"}
+    for k, n in names.items():
+        open(os.path.join(d, n), "wb").write(b"x")
+    open(os.path.join(d, names["done"] + ".json"), "w").write("{}")
+    now = 10000.0
+    os.utime(os.path.join(d, names["old"]), (now - D.ORPHAN_AGE_S - 1,) * 2)
+    os.utime(os.path.join(d, names["young"]), (now - 1,) * 2)
+    for k in ("done", "foreign"):
+        os.utime(os.path.join(d, names[k]), (now - 999,) * 2)
+    got = D.orphans(d, now=now)
+    check("orphans_reported_old_renamed_partial", got == [names["old"] + ".partial", names["young"]]
+          and os.path.exists(os.path.join(d, names["old"] + ".partial"))
+          and os.path.exists(os.path.join(d, names["young"])), repr(got))
+    check("orphans_skip_recorded_and_foreign", os.path.exists(os.path.join(d, names["done"]))
+          and os.path.exists(os.path.join(d, names["foreign"])), sorted(os.listdir(d)))
+    check("orphans_partial_reported_once", D.orphans(d, now=now) == [names["young"]], repr(sorted(os.listdir(d))))
 
 
 def main():

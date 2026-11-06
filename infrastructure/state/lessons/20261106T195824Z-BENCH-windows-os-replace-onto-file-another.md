@@ -1,0 +1,1 @@
+Windows os.replace onto a file another process has open fails WinError 5/32, and Defender briefly holds a just-closed .dmp: a heartbeat writer or a rename-to-.partial must retry, not raise (MINIDUMP_PROVE_SPIKE_BEFORE_THE_KILL spike harness)

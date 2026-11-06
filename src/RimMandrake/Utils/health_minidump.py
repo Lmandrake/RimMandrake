@@ -4,8 +4,10 @@
 MANUAL ONLY on a live game, one SMALL dump per incident, disk headroom checked first, retention capped. Never
 automatic on a game that is to keep running (AUTOMATIC = False): GPT review 1.9 requires a utility spike first - a
 dump that identifies a deliberately blocked main thread, stacks that survive offline analysis, measured duration and
-size, proof the dumper cannot strand the process suspended, and failures/partial dumps reported. None of that is
-measured yet.
+size, proof the dumper cannot strand the process suspended, and failures/partial dumps reported. The spike ran
+offline on a stand-in target (health_minidump_spike.py, 2026-11-06, MINIDUMP_PROVE_SPIKE_BEFORE_THE_KILL; evidence
+D:\\ClaudeWork\\rimmandrake\\minidump_spike\\spike_2026-11-06, `verify` PASS); its one live clause (a dump of the real
+game, which must keep running) is still owed, and AUTOMATIC stays False until it passes.
 
 The ONE automatic use is `--before-kill` (BEFORE_KILL_AUTOMATIC): a caller whose very next act kills the game
 (FLOWWORKS_DIAGNOSE_FREEZE_AFTER_DRAWBRIDGE: the SteveDesktop worker's wedged-kept-game and hung-run restarts, where a
@@ -25,11 +27,18 @@ duration and size for the spike. Its output is one JSON line.
     measured duration and size, or the error; a failed write leaves the file renamed .partial and says so.
   * Retention: newest 5 dumps (partials included), 4 GB total, over this tool's own rimworld_<pid>_<utc>.dmp names
     only; the dump just written is never pruned.
-  * Hazard, UNMEASURED: MiniDumpWriteDump suspends the target's threads while it writes; if THIS process is
-    killed mid-write the target may stay suspended. Do not kill it; if the game stays frozen after a dump,
-    that is the first suspect.
+  * Mode `snapshot` (default): PssCaptureSnapshot clones the process (VA clone) and the dump is written from the
+    clone, so the game pauses only while the clone is taken. MEASURED on the stand-in (64 MB / 1 GB working set):
+    pause 4-6 / 37-58 ms, whole capture 21-25 / 58-78 ms, dump ~105 KB either way (three runs); `direct`
+    (MiniDumpWriteDump on the live process, the control) 70-108 ms. A dumper killed mid-write left the target running in both modes. A failed
+    snapshot (measured: error 1450 on the 1 GB target under memory pressure) falls back to direct; the record says
+    `fallbackFrom` and `pssError`.
+  * A dumper killed mid-write leaves a .dmp with no .json: the next capture in that folder reports it (`orphans`)
+    and, once it is ORPHAN_AGE_S old, renames it .partial. A cancelled or failed write is recorded `failed`.
+  * Offline reading: minidump_read.py (plain Python, any OS) names native frames by export from DLL copies of the
+    dumped machine; Mono JIT frames are bare addresses.
 
-Status: written, not deployed or run (2026-10-14); cost UNMEASURED.
+Status: offline spike PASS 2026-11-06; live clause A1 (the real game) owed.
 """
 import argparse
 import json
@@ -170,7 +179,47 @@ def _win():
                     ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t), ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
                     ("PagefileUsage", ctypes.c_size_t), ("PeakPagefileUsage", ctypes.c_size_t)]
     psapi.GetProcessMemoryInfo.argtypes = [wintypes.HANDLE, ctypes.POINTER(PMC), wintypes.DWORD]
+    k32.GetCurrentProcess.restype = wintypes.HANDLE
+    k32.PssCaptureSnapshot.restype = wintypes.DWORD
+    k32.PssCaptureSnapshot.argtypes = [wintypes.HANDLE, wintypes.DWORD, wintypes.DWORD, ctypes.POINTER(ctypes.c_void_p)]
+    k32.PssFreeSnapshot.restype = wintypes.DWORD
+    k32.PssFreeSnapshot.argtypes = [wintypes.HANDLE, ctypes.c_void_p]
     return ctypes, k32, psapi, dbg, PMC
+
+
+# MINIDUMP_CALLBACK_INPUT is pshpack4: ProcessId @0, ProcessHandle @4, CallbackType @12 (x64)
+CB_TYPE_OFFSET = 12
+CancelCallback, IsProcessSnapshotCallback = 6, 16
+S_FALSE = 1
+# PSS_CAPTURE_VA_CLONE | HANDLES | HANDLE_NAME/BASIC/TYPE_SPECIFIC/TRACE | THREADS | THREAD_CONTEXT(_EXTENDED)
+PSS_FLAGS = 0x1 | 0x4 | 0x8 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100 | 0x200
+CONTEXT_ALL_AMD64 = 0x10001F
+MODES = ("snapshot", "direct")
+MODE = "snapshot"
+
+
+def _callback_info(ctypes, snapshot, hook):
+    """MINIDUMP_CALLBACK_INFORMATION answering IsProcessSnapshotCallback with S_FALSE (the handle is a PSS
+    snapshot), and calling `hook(callback_type)` on every callback: the spike's slow-write and cancel cases. A hook
+    returning 'cancel' cancels the dump at its CancelCallback. -> (info struct, keepalive) or (None, None)."""
+    if not snapshot and hook is None:
+        return None, None
+    proto = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p)
+
+    def cb(_param, inp, outp):
+        t = ctypes.c_ulong.from_address(inp + CB_TYPE_OFFSET).value
+        if t == IsProcessSnapshotCallback and snapshot:
+            ctypes.c_long.from_address(outp).value = S_FALSE
+            return 1
+        if hook is not None and hook(t) == "cancel" and t == CancelCallback:
+            ctypes.c_int.from_address(outp).value = 1        # CheckCancel
+            ctypes.c_int.from_address(outp + 4).value = 1    # Cancel
+        return 1
+
+    class INFO(ctypes.Structure):
+        _fields_ = [("CallbackRoutine", ctypes.c_void_p), ("CallbackParam", ctypes.c_void_p)]
+    fn = proto(cb)
+    return INFO(ctypes.cast(fn, ctypes.c_void_p), None), fn
 
 
 def find_game_pids():
@@ -187,8 +236,51 @@ def find_game_pids():
     return pids
 
 
-def capture(pid, incident, directory):
-    """One small dump. Returns the record written beside it (also printed)."""
+ORPHAN_AGE_S = 30
+
+
+def _mark_partial(path, tries=10):
+    """Rename a failed dump to .partial. A scanner (Defender) may hold a just-closed file for a moment (measured:
+    WinError 32 on the spike's 1 GB case), so retry; if it never lets go the dump keeps its name and its record (status
+    failed, written beside it either way) is what says it is partial. -> the path the dump now has."""
+    for i in range(tries):
+        try:
+            os.replace(path, path + ".partial")
+            return path + ".partial"
+        except FileNotFoundError:
+            return path
+        except OSError:
+            time.sleep(0.1 * (i + 1))
+    return path
+
+
+def orphans(directory, now=None):
+    """Our .dmp files with no .json record: a dumper killed mid-write (or a crash) left them. One older than
+    ORPHAN_AGE_S (no live writer) is renamed .partial, so its name says what it is. -> names reported."""
+    now = time.time() if now is None else now
+    out = []
+    for n in sorted(os.listdir(directory)):
+        p = os.path.join(directory, n)
+        if not OURS.match(n) or n.endswith(".partial") or os.path.exists(p + ".json"):
+            continue
+        try:
+            age = now - os.path.getmtime(p)
+        except OSError:
+            continue
+        if age >= ORPHAN_AGE_S:
+            try:
+                os.replace(p, p + ".partial")
+                n += ".partial"
+            except OSError:
+                pass
+        out.append(n)
+    return out
+
+
+def capture(pid, incident, directory, mode=None, hook=None):
+    """One small dump. Returns the record written beside it (also printed). mode 'snapshot' (default) dumps a PSS
+    clone, so the game is suspended only while the clone is taken and a dumper killed mid-write strands nothing;
+    'direct' is MiniDumpWriteDump on the live process (the spike's control). `hook` is the spike's test seam."""
     if os.name != "nt":
         return {"status": "unavailable", "reason": "Windows python (python.exe) only"}
     why = incident_claim(directory, incident)
@@ -196,16 +288,26 @@ def capture(pid, incident, directory):
         return {"status": "refused", "reason": why}
     attempted = [False]
     try:
-        return _capture(pid, incident, directory, attempted)
+        rec = _capture(pid, incident, directory, attempted, mode or MODE, hook)
     finally:
         if not attempted[0]:
             incident_release(directory, incident)
+    left = orphans(directory)
+    if left:
+        rec["orphans"] = left
+    return rec
 
 
-def _capture(pid, incident, directory, attempted):
+def _capture(pid, incident, directory, attempted, mode=MODE, hook=None):
+    if mode not in MODES:
+        return {"status": "failed", "reason": "unknown mode %r" % mode}
     ctypes, k32, psapi, dbg, PMC = _win()
     PROCESS_QUERY_INFORMATION, PROCESS_VM_READ = 0x0400, 0x0010
-    h = k32.OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, False, pid)
+    PROCESS_DUP_HANDLE, PROCESS_CREATE_PROCESS = 0x0040, 0x0080
+    want = PROCESS_QUERY_INFORMATION | PROCESS_VM_READ
+    if mode == "snapshot":
+        want |= PROCESS_DUP_HANDLE | PROCESS_CREATE_PROCESS
+    h = k32.OpenProcess(want, False, pid)
     if not h:
         return {"status": "failed", "reason": "OpenProcess(%d) failed: error %d" % (pid, ctypes.get_last_error())}
     try:
@@ -217,7 +319,7 @@ def _capture(pid, incident, directory, attempted):
         except OSError:
             free = None
         ok, hw = headroom_ok(free, ws)
-        rec = {"pid": pid, "incident": incident, "dumpFlags": DUMP_FLAGS, "headroom": hw, "workingSetBytes": ws}
+        rec = {"pid": pid, "incident": incident, "mode": mode, "dumpFlags": DUMP_FLAGS, "headroom": hw, "workingSetBytes": ws}
         if not ok:
             rec.update(status="refused", reason=hw)
             return rec
@@ -230,15 +332,41 @@ def _capture(pid, incident, directory, attempted):
             return rec
         t0 = time.perf_counter()
         attempted[0] = True
+        snap = None
+        wrote, err, fail = False, 0, None
         try:
-            wrote = dbg.MiniDumpWriteDump(h, pid, fh, DUMP_FLAGS, None, None, None)
-            err = ctypes.get_last_error()
+            src = h
+            if mode == "snapshot":
+                snap = ctypes.c_void_p()
+                e = k32.PssCaptureSnapshot(h, PSS_FLAGS, CONTEXT_ALL_AMD64, ctypes.byref(snap))
+                rec["suspendedMs"] = round((time.perf_counter() - t0) * 1000, 1)   # the game's only pause
+                if e:
+                    # MEASURED 2026-11-06: error 1450 (ERROR_NO_SYSTEM_RESOURCES) on a 1 GB target with ~3 GB commit
+                    # free; a VA clone needs commit. Fall back to a direct dump (the kill test stranded nothing there
+                    # either) rather than leave the hang unrecorded.
+                    snap = None
+                    rec.update(mode="direct", fallbackFrom="snapshot", pssError=e)
+                else:
+                    src = snap.value
+            if fail is None:
+                info, _keep = _callback_info(ctypes, snap is not None, hook)   # _keep holds the callback alive
+                wrote = dbg.MiniDumpWriteDump(src, pid, fh, DUMP_FLAGS, None, None,
+                                              ctypes.byref(info) if info is not None else None)
+                err = ctypes.get_last_error()
+        except Exception as e:                                       # noqa: BLE001 - recorded, never raised
+            fail = "dump raised %r" % e
         finally:
-            k32.CloseHandle(fh)
+            k32.CloseHandle(fh)                                      # closed BEFORE any rename (share mode 0)
+            if snap is not None:
+                k32.PssFreeSnapshot(k32.GetCurrentProcess(), snap)
         rec["durationMs"] = round((time.perf_counter() - t0) * 1000, 1)
-        if not wrote:
-            os.replace(path, path + ".partial")
-            rec.update(status="failed", reason="MiniDumpWriteDump failed: error %d (file kept as .partial)" % err, path=path + ".partial")
+        if rec["mode"] == "direct" and fail is None:
+            rec["suspendedMs"] = rec["durationMs"]      # MiniDumpWriteDump holds the threads for the whole write
+        if fail is not None:
+            rec.update(status="failed", reason=fail + " (file kept as .partial)", path=_mark_partial(path))
+        elif not wrote:
+            rec.update(status="failed", reason="MiniDumpWriteDump failed: error %d (0x%08x) (file kept as .partial)"
+                       % (err, err & 0xFFFFFFFF), path=_mark_partial(path))
         else:
             rec.update(status="ok", path=path, sizeBytes=os.path.getsize(path))
         with open(path + ".json", "w") as f:
