@@ -73,6 +73,67 @@ def quiet(fn, *a, **kw):
         return fn(*a, **kw), buf.getvalue()
 
 
+def toy_repo():
+    rp = tempfile.mkdtemp(prefix="repo_", dir=TMP)
+    for a in (("init", "-q", "-b", "main"), ("config", "user.email", "t@t"), ("config", "user.name", "t"),
+              ("config", "commit.gpgsign", "false")):
+        git_in(rp, *a)
+    commit(rp, "root", {"README": "x"})
+    return rp
+
+
+def git_in(rp, *a):
+    return subprocess.run(["git", *a], cwd=rp, capture_output=True, text=True, timeout=60).stdout.strip()
+
+
+def commit(rp, subject, files):
+    for path, text in files.items():
+        os.makedirs(os.path.dirname(os.path.join(rp, path)) or rp, exist_ok=True)
+        with open(os.path.join(rp, path), "w") as f:
+            f.write(text)
+        git_in(rp, "add", path)
+    git_in(rp, "commit", "-q", "--no-verify", "-m", subject)
+    return git_in(rp, "rev-parse", "HEAD")
+
+
+def corpus_build():
+    """findings 5 and 6: a no_code exam's --no-code PASS close is valid; a rebuild that dies keeps the old corpus."""
+    sd = store("corpus")
+    nc = {"proof": "true", "live": None, "no_code": True}
+    hold(sd, "NC_OK", "c" * 40, contract=nc)
+    hold(sd, "NC_BAD", "d" * 40)
+    for iid in ("NC_OK", "NC_BAD"):
+        p = os.path.join(sd, "items", iid, "state.json")
+        with open(p) as f:
+            st = json.load(f)
+        st["check"] = {"verdict": "PASS"}
+        with open(p, "w") as f:
+            json.dump(st, f)
+    ev = [{"event": "close", "id": iid, "sha": "e" * 10, "ts": "t", "why": "relentless: blind check passed",
+           "noCode": "bookkeeping"} for iid in ("NC_OK", "NC_BAD")]
+    c = G.build_corpus(ev, sd, [])
+    cls = {r["item"]: r["class"] for r in c["closes"]}
+    check(cls == {"NC_OK": "valid", "NC_BAD": "false"}, "corpus build: a no_code exam's --no-code close is valid, "
+          "any other --no-code close false (%s)" % cls)
+    bad, n = G.check_corpus(c)
+    check(not bad and n["valid_accepted"] == 1 and n["false_rejected"] == 1,
+          "corpus check: the predicate agrees with both labels (%s)" % bad[:1])
+    path = os.path.join(TMP, "corpus.json")
+    G.write_corpus(path, c)
+    with open(path) as f:
+        before = f.read()
+    try:
+        G.write_corpus(path, dict(c, closes=c["closes"] + [{"unserialisable": object()}]))
+        check(False, "corpus write: a failing rebuild raises")
+    except TypeError:
+        pass
+    with open(path) as f:
+        after = f.read()
+    check(before == after and json.loads(after)["closes"] and os.listdir(TMP).count("corpus.json") == 1
+          and not [x for x in os.listdir(TMP) if x.startswith("corpus.json.tmp")],
+          "corpus write: an interrupted rebuild leaves the old corpus whole and no temp file")
+
+
 def corpus_and_breaks():
     with open(G.CORPUS, encoding="utf-8") as f:
         corpus = json.load(f)
@@ -142,17 +203,43 @@ def shadow():
     row, _ = quiet(G.shadow, "ITEM_PASS", "", "bookkeeping", [], sd=sd)
     check(row and row["record"] == a and "empty diff" in [G.reason_class(r) for r in row["reasons"]],
           "shadow: a --no-code close reads the candidate's record and rejects (empty diff)")
-    # a close at the work commit, an ancestor of the candidate where the Marker ran
-    heads = git("log", "--format=%H", "-n", "2", "HEAD").split()
-    hold(sd, "ITEM_WORK", heads[0])
-    record(sd, "ITEM_WORK", heads[0], "PASS")
-    row, _ = quiet(G.shadow, "ITEM_WORK", heads[1][:10], "", [], sd=sd, cwd=REPO)
-    check(row and row["record"] == heads[0] and row["predicate"] == "accept",
-          "shadow: a close at the work commit (short sha, an ancestor) reads the candidate's record")
+    # a close at the work commit, an ancestor of the candidate where the Marker ran (a throwaway repo: the work, then
+    # bookkeeping and another item's landing on top)
+    rp = toy_repo()
+    work = commit(rp, "ITEM_WORK: the work", {"src/f.py": "1"})
+    commit(rp, "ledger: ITEM_WORK note", {"infrastructure/state/ledger/events/X.jsonl": "{}"})
+    cand = commit(rp, "OTHER_ITEM: its own work", {"src/other.py": "1"})
+    hold(sd, "ITEM_WORK", cand)
+    record(sd, "ITEM_WORK", cand, "PASS")
+    row, _ = quiet(G.shadow, "ITEM_WORK", work[:10], "", [], sd=sd, cwd=rp)
+    check(row and row["record"] == cand and row["predicate"] == "accept",
+          "shadow: a close at the work commit (short sha, an ancestor; bookkeeping and another item between) reads "
+          "the candidate's record")
+    # finding 1: the work at `work` was broken, a later commit fixed it and the candidate passed on the fix
+    fixed = commit(rp, "ITEM_WORK: fix the bug", {"src/f.py": "2"})
+    hold(sd, "ITEM_WORK", fixed)
+    record(sd, "ITEM_WORK", fixed, "PASS")
+    row, _ = quiet(G.shadow, "ITEM_WORK", work, "", [], sd=sd, cwd=rp)
+    check(row is not None and row["record"] is None and row["predicate"] == "reject",
+          "shadow: an ancestor whose item files a later ITEM_WORK commit changed is not vouched for by the fix's pass "
+          "(%s)" % (row and row["reasons"][:1]))
+    edited = commit(rp, "UNRELATED: touches f.py", {"src/f.py": "3"})
+    hold(sd, "ITEM_WORK2", edited)
+    record(sd, "ITEM_WORK2", edited, "PASS")
+    row, _ = quiet(G.shadow, "ITEM_WORK2", fixed, "", [], sd=sd, cwd=rp)
+    check(row is not None and row["record"] is None,
+          "shadow: no commit naming the item (ITEM_WORK2) leaves its work unknown: code between refuses the ancestor")
     row, _ = quiet(G.shadow, "NOT_RELENTLESS", a, "", [], sd=sd)
     check(row is None, "shadow: an item the store does not hold is not judged")
     n = len(G.rows(sd))
-    check(n == 5, "shadow: one row per judged close (%d)" % n)
+    check(n == 7, "shadow: one row per judged close (%d)" % n)
+    # finding 4: a torn last row (crash mid-append) must not swallow the next whole observation
+    with open(os.path.join(sd, G.SHADOW), "a") as f:
+        f.write('{"item": "TORN", "sha": "x", "gate": "acc')
+    row, _ = quiet(G.shadow, "ITEM_PASS", a, "", [], sd=sd)
+    rs = G.rows(sd)
+    check(row and len(rs) == n + 1 and rs[-1] == row, "shadow: after a torn row the next append is its own line (%d rows)"
+          % len(rs))
     # broken store: the shadow log is a directory; a record that does not verify
     broken = store("broken")
     hold(broken, "ITEM_PASS", a)
@@ -170,6 +257,19 @@ def shadow():
         f.write(json.dumps({"kind": "marker", "verdict": "PASS"}) + "\n")
     row, _ = quiet(G.shadow, "ITEM_PASS", a, "", [], sd=broken)
     check(row and "tampered" in [G.reason_class(r) for r in row["reasons"]], "shadow: a forged record line is tampered")
+    # finding 2: judge reads and verifies ONE snapshot - a separate verify() then read() is a race it must not run
+    real = (E.verify, E.read)
+    E.verify = E.read = lambda *a, **k: (_ for _ in ()).throw(AssertionError("verify/read called apart"))
+    try:
+        j = G.judge(broken, "ITEM_PASS", a, "")
+        check(j and not j["accepted"] and "tampered" in [G.reason_class(r) for r in j["reasons"]],
+              "judge: entries and verdict come from one snapshot (evidence.read_verified), not verify() then read()")
+    except AssertionError as ex:
+        check(False, "judge: entries and verdict come from one snapshot (%s)" % ex)
+    finally:
+        E.verify, E.read = real
+    ents, bad = E.read_verified(broken, "ITEM_PASS", a)
+    check(bad and ents and ents[-1].get("kind") == "marker", "read_verified: the forged line and its problem together")
 
 
 def report():
@@ -190,7 +290,7 @@ def report():
 def cli_end_to_end():
     import live_line
     good = []
-    for sha in git("log", "origin/main", "--format=%H", "-n", "300", "--", "src/RimMandrake/Utils/").split():
+    for sha in git("log", "HEAD", "--format=%H", "-n", "300", "--", "src/RimMandrake/Utils/").split():
         paths = git("diff-tree", "--no-commit-id", "--name-only", "-r", "--root", sha).split()
         if paths and not live_line.needs_line(paths):
             good.append(sha)
@@ -213,12 +313,12 @@ def cli_end_to_end():
         r = subprocess.run([sys.executable, CLI, *args], cwd=REPO, env=env, capture_output=True, text=True, timeout=120)
         return r.returncode, r.stdout + r.stderr
 
-    def item(iid, sha, word):
+    def item(iid, sha, word, contract=CONTRACT):
         for a in (("file", iid, "--for", "BENCH", "--title", "fixture %s" % iid), ("claim", iid)):
             rc, out = cli(*a)
             if rc:
                 raise AssertionError(out[-300:])
-        hold(sd, iid, sha)
+        hold(sd, iid, sha, contract)
         record(sd, iid, sha, word)
 
     def passed(iid, sha):
@@ -238,6 +338,17 @@ def cli_end_to_end():
     check(rc == 0 and "closed at" in out, "cli: the gate's close goes through though the record says WEAK")
     check(len(rows) == 2 and rows[-1]["disagree"] and rows[-1]["gate"] == "accept" and "DISAGREES" in out,
           "cli: the shadow logs that close as a disagreement and says so")
+    # finding 3: the shadow logs the close's verdict AFTER _live_gate - a live line that does not hold refuses the close,
+    # and the row says refuse, not an accept/accept agreement on the raw --live text
+    live_c = dict(CONTRACT, live="unit=rm-nope.timer reading=/nonexistent max_age=6h")
+    item("LIVE_4_PROBE_FIXTURE", b, "PASS", live_c)
+    passed("LIVE_4_PROBE_FIXTURE", b)
+    n0 = len(G.rows(sd))
+    rc, out = cli("close", "LIVE_4_PROBE_FIXTURE", "--sha", b, "--live", "unit=rm-nope.timer reading=/nonexistent max_age=6h")
+    rows = G.rows(sd)
+    check(rc != 0 and "does not hold" in out and len(rows) == n0 + 1 and rows[-1]["gate"] == "refuse"
+          and rows[-1]["gate_reasons"] == ["live"] and rows[-1]["item"] == "LIVE_4_PROBE_FIXTURE",
+          "cli: a close the live gate refuses is logged refuse (%s)" % (rows[-1:] and rows[-1]["gate"]))
     item("UNWRITABLE_2_PROBE_FIXTURE", b, "PASS")
     passed("UNWRITABLE_2_PROBE_FIXTURE", b)
     os.rename(os.path.join(sd, G.SHADOW), os.path.join(sd, "moved.jsonl"))
@@ -258,6 +369,7 @@ def main():
         rules()
         shadow()
         report()
+        corpus_build()
         cli_end_to_end()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)

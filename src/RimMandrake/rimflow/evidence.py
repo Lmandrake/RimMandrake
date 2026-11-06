@@ -189,16 +189,23 @@ def verify(store_dir, item, sha):
         return rbad + _index_problems(store_dir, idx) + _verify_record(store_dir, item, sha, _lines(path), idx)
 
 
-def read(store_dir, item, sha, strict=True):
-    """-> [entry] in order, from the one snapshot that was verified. strict: raises TamperError when the record or the
-    index does not verify."""
+def read_verified(store_dir, item, sha):
+    """-> ([entry] in order, [problem]) from ONE snapshot: the entries are exactly the lines the problems were found
+    in, so a record rewritten between a verify() and a read() can never pair new entries with the old verdict."""
     path = record_path(store_dir, item, sha)
     with _consistent(store_dir) as rbad:
         idx, rows = _index(store_dir), _lines(path)
         bad = rbad + _index_problems(store_dir, idx) + _verify_record(store_dir, item, sha, rows, idx)
+    return [e for _, e in rows if e], bad
+
+
+def read(store_dir, item, sha, strict=True):
+    """-> [entry] in order, from the one snapshot that was verified. strict: raises TamperError when the record or the
+    index does not verify."""
+    entries, bad = read_verified(store_dir, item, sha)
     if bad and strict:
         raise TamperError("; ".join(bad[:5]))
-    return [e for _, e in rows if e]
+    return entries
 
 
 def records(store_dir):

@@ -10,11 +10,11 @@ record can carry it (section 2.1; breaks, hunks and holdouts have no entry kind 
     - its newest Marker verdict is PASS: WEAK, FAIL and UNMEASURED do not close ("a WEAK verdict cannot close"), and
       a WEAK the live narrow rule reads as PASS (relentless_wall.acted_weak) is still WEAK here
     - an empty-diff close (--no-code) closes only on a `no_code` exam (G15: empty-diff Judge closes are false closes)
-    - an exam that declares a live clause closes done only with a live attestation (today: the close's `--live` line,
-      which cli._live_gate checks right after); without one the item is `built`, not done
+    - an exam that declares a live clause closes done only with a live attestation (today: the line cli._live_gate has
+      checked and accepted, never the raw --live text); without one the item is `built`, not done
 
-SHADOW ONLY: cli.py `_close_gate` calls `shadow()` for every close of an item the Relentless store holds, before it
-refuses or passes. It never refuses, never raises and never waits long (git calls time out at GIT_TIMEOUT_S); it
+SHADOW ONLY: cli.py calls `shadow()` for every close of an item the Relentless store holds, once the close is decided
+(after `_close_gate` and `_live_gate`, so the gate's word is the whole close's and `live` is a checked line). It never refuses, never raises and never waits long (git calls time out at GIT_TIMEOUT_S); it
 appends one row per close to <store>/evidence_shadow.jsonl - the gate's word, the predicate's word, `disagree`.
 09c deletes the replaced guards one at a time once the corpus and SAMPLE closes of this log agree; until then nothing
 here decides anything.
@@ -34,6 +34,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -50,6 +51,9 @@ GIT_TIMEOUT_S = 5
 CORPUS = os.path.join(HERE, "evidence_gate_corpus.json")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 AUDITS = os.path.join(REPO, "infrastructure", "state", "close_audits.jsonl")
+BOOKKEEPING = ("infrastructure/state/ledger/", "infrastructure/state/items/", "infrastructure/state/queue/",
+               "infrastructure/state/code_review/")      # relentless.BOOKKEEPING, not imported (cli.py stays light)
+WORK_DEPTH = 60             # commits naming the item read under the candidate (relentless.WORK_SHA_DEPTH)
 RELENTLESS_WHY = "relentless"       # relentless.py closes with --why "relentless: blind check passed"
 
 
@@ -107,9 +111,35 @@ def _git(cwd, *a):
     return r.returncode, r.stdout.strip()
 
 
+def _same_work(cwd, item, full, cand):
+    """-> True when the candidate `cand` (a descendant of `full`) tested this item's work exactly as it stands at
+    `full`: every path that differs between them outside the bookkeeping is a path no commit naming the item touched
+    (another item's landing in between). A fix of this item after `full` - or anyone's edit of this item's files -
+    differs, and the candidate's record does not speak for `full` (A broken, B fixed and passed: closing at A is not
+    B's pass). Git that cannot say is False."""
+    rc, out = _git(cwd, "diff", "--name-only", full, cand)
+    if rc:
+        return False
+    changed = {p for p in out.splitlines() if p and not p.startswith(BOOKKEEPING)}
+    if not changed:
+        return True
+    rc, out = _git(cwd, "log", "--format=%x01%s", "--name-only", "-F", "--grep=" + item, "-n", str(WORK_DEPTH), cand)
+    if rc:
+        return False
+    name = re.compile(r"(?<![A-Z0-9_])%s(?![A-Z0-9_])" % re.escape(item))
+    mine, keep = set(), False
+    for line in out.splitlines():
+        if line.startswith("\x01"):
+            keep = bool(name.search(line[1:]))
+        elif line and keep and not line.startswith(BOOKKEEPING):
+            mine.add(line)
+    return bool(mine) and not (changed & mine)
+
+
 def _record_for(sd, item, sha, cand, no_code, cwd):
     """-> the sha whose record speaks for this close, or None. The close's own sha; else the store's candidate (where
-    the Marker ran) when the close is --no-code, is that sha, or is under it (relentless closes at the work commit)."""
+    the Marker ran) when the close is --no-code, is that sha, or is a descendant that holds the same work for this item
+    (relentless closes at the work commit under a bookkeeping candidate; `_same_work`)."""
     full = sha
     if sha and not evidence._SHA.match(sha):
         rc, out = _git(cwd, "rev-parse", "--verify", "-q", sha + "^{commit}")
@@ -117,7 +147,9 @@ def _record_for(sd, item, sha, cand, no_code, cwd):
     if full and evidence._SHA.match(full) and os.path.exists(evidence.record_path(sd, item, full)):
         return full
     if cand and evidence._SHA.match(cand) and os.path.exists(evidence.record_path(sd, item, cand)):
-        if no_code or full == cand or _git(cwd, "merge-base", "--is-ancestor", full, cand)[0] == 0:
+        if no_code or full == cand:
+            return cand
+        if full and _git(cwd, "merge-base", "--is-ancestor", full, cand)[0] == 0 and _same_work(cwd, item, full, cand):
             return cand
     return None
 
@@ -133,16 +165,17 @@ def judge(sd, item, sha, no_code, live=None, cwd=None):
     cand = str((st.get("candidate") or {}).get("sha") or "")
     rec = _record_for(sd, item, sha, cand, no_code, cwd or HERE)
     entries, bad = [], []
-    if rec:
-        bad = evidence.verify(sd, item, rec)
-        entries = evidence.read(sd, item, rec, strict=False)
+    if rec:     # one snapshot: the entries judged are the very lines that were verified
+        entries, bad = evidence.read_verified(sd, item, rec)
     ok, why = green(entries, exam_of(st.get("contract")), bool(no_code), live, bad)
     return {"record": rec, "accepted": ok, "reasons": why}
 
 
 def shadow(item, sha, no_code, gate_found, live=None, cwd=None, sd=None, out=None):
-    """cli._close_gate's call. Logs the predicate beside the gate's own refusals (`gate_found`, [(kind, why)]) and
-    returns the row, or None. NEVER raises and never refuses: any failure is one stderr line and the close goes on."""
+    """cli's call, once the close is decided. Logs the predicate beside the gate's own refusals (`gate_found`,
+    [(kind, why)] - the live gate's included) and returns the row, or None. `live` is an attestation the live gate has
+    CHECKED, never the raw --live text. NEVER raises and never refuses: any failure is one stderr line and the close
+    goes on."""
     t0 = time.time()
     out = out or sys.stderr      # resolved per call, so a redirected stderr is honoured
     try:
@@ -155,8 +188,7 @@ def shadow(item, sha, no_code, gate_found, live=None, cwd=None, sd=None, out=Non
                "no_code": bool(no_code), "record": j["record"], "gate": "accept" if gate_ok else "refuse",
                "gate_reasons": sorted({str(k) for k, _ in gate_found}), "predicate": "accept" if j["accepted"] else "reject",
                "reasons": j["reasons"], "disagree": gate_ok != j["accepted"], "ms": int((time.time() - t0) * 1000)}
-        with open(os.path.join(sd, SHADOW), "a", encoding="utf-8") as f:
-            f.write(json.dumps(row, sort_keys=True) + "\n")
+        _append_row(os.path.join(sd, SHADOW), json.dumps(row, sort_keys=True))
         if row["disagree"]:
             print("close: %s: evidence shadow DISAGREES (gate %s, record %s: %s). Shadow only: this changes nothing."
                   % (item, row["gate"], row["predicate"], "; ".join(reason_class(r) for r in j["reasons"]) or "green"),
@@ -169,6 +201,19 @@ def shadow(item, sha, no_code, gate_found, live=None, cwd=None, sd=None, out=Non
         except Exception:        # noqa: BLE001
             pass
         return None
+
+
+def _append_row(path, line):
+    """Append one JSON line. A torn last line (a crash mid-append, no newline) is closed off first, so this row starts
+    a line of its own and rows() loses only the fragment, never the next whole observation."""
+    with open(path, "ab+") as f:
+        f.seek(0, os.SEEK_END)
+        lead = b""
+        if f.tell():
+            f.seek(-1, os.SEEK_END)
+            if f.read(1) != b"\n":
+                lead = b"\n"
+        f.write(lead + line.encode("utf-8") + b"\n")
 
 
 # ---------------------------------------------------------------- the report
@@ -224,7 +269,7 @@ def corpus_entries(row):
 
 
 def corpus_judge(row):
-    exam = {"hash": row["exam_hash"], "live": row["live_declared"], "no_code": False}
+    exam = {"hash": row["exam_hash"], "live": row["live_declared"], "no_code": bool(row.get("no_code_exam"))}
     return green(corpus_entries(row), exam, row["no_code"], row["live"] or None)
 
 
@@ -268,7 +313,11 @@ def build_corpus(events, sd, audits):
         ex = exam_of(st.get("contract"))
         row = {"item": iid, "sha": e["sha"], "ts": e.get("ts"), "marker": word, "no_code": bool(e.get("noCode")),
                "live_declared": ex["live"], "live": bool(e.get("live")), "exam_hash": ex["hash"][:16]}
-        if e.get("noCode"):
+        if ex["no_code"]:
+            row["no_code_exam"] = True
+        if word == "PASS" and e.get("noCode") and ex["no_code"]:
+            row.update(cls="valid", kind="no_code exam close")
+        elif e.get("noCode"):
             row.update(cls="false", kind="empty-diff --no-code close")
         elif word == "WEAK":
             row.update(cls="false", kind="WEAK close (store)")
@@ -295,6 +344,22 @@ def build_corpus(events, sd, audits):
             "how": "evidence_gate.py corpus build: real Relentless closes, records reconstructed from the store (module doc)"}
 
 
+def write_corpus(path, corpus):
+    """Write beside the old corpus, then replace it in one rename: an interrupted rebuild leaves the old one whole."""
+    tmp = "%s.tmp.%d" % (path, os.getpid())
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:       # one close per line: a diff of a rebuild reads per close
+            f.write('{"built": %s, "how": %s, "closes": [\n' % (json.dumps(corpus["built"]), json.dumps(corpus["how"])))
+            f.write(",\n".join(json.dumps(r, sort_keys=True, separators=(",", ":")) for r in corpus["closes"]))
+            f.write("\n]}\n")
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, path)
+    finally:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--store-dir", help="the Relentless store dir (default: $RELENTLESS_ROOT/store)")
@@ -317,11 +382,7 @@ def main(argv=None):
         if os.path.exists(AUDITS):
             with open(AUDITS, encoding="utf-8") as f:
                 audits = [json.loads(x) for x in f if x.strip()]
-        corpus = build_corpus(model.read(), sd, audits)
-        with open(a.path, "w", encoding="utf-8") as f:       # one close per line: a diff of a rebuild reads per close
-            f.write('{"built": %s, "how": %s, "closes": [\n' % (json.dumps(corpus["built"]), json.dumps(corpus["how"])))
-            f.write(",\n".join(json.dumps(r, sort_keys=True, separators=(",", ":")) for r in corpus["closes"]))
-            f.write("\n]}\n")
+        write_corpus(a.path, build_corpus(model.read(), sd, audits))
     with open(a.path, encoding="utf-8") as f:
         corpus = json.load(f)
     bad, n = check_corpus(corpus)
