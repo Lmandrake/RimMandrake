@@ -291,10 +291,52 @@
     "ref": "run rm-role-designer-1793982561",
     "stage": 3,
     "tokens": 622144
+   },
+   {
+    "at": "2026-11-06T16:40:31Z",
+    "kind": "helper",
+    "ref": "examiner-a11d3c96",
+    "stage": 4,
+    "tokens": 37204
+   },
+   {
+    "at": "2026-11-06T16:40:31Z",
+    "kind": "helper",
+    "ref": "challenger-a20ed956",
+    "stage": 4,
+    "tokens": 36789
+   },
+   {
+    "at": "2026-11-06T16:40:31Z",
+    "kind": "helper",
+    "ref": "readerA-a4776bd5",
+    "stage": 4,
+    "tokens": 40913
+   },
+   {
+    "at": "2026-11-06T16:40:31Z",
+    "kind": "helper",
+    "ref": "readerB-a5794ebc",
+    "stage": 4,
+    "tokens": 41102
+   },
+   {
+    "at": "2026-11-06T16:40:31Z",
+    "kind": "helper",
+    "ref": "control-a1581c0f",
+    "stage": 4,
+    "tokens": 41946
+   },
+   {
+    "at": "2026-11-06T16:57:49Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793982967",
+    "stage": 4,
+    "tokens": 60204
    }
   ],
   "reserve": 60000,
-  "spent": 9338503
+  "spent": 9596661
  },
  "history": [
   {
@@ -632,6 +674,24 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1793982561: stage 3 done"
+  },
+  {
+   "at": "2026-11-06T16:36:58Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "9338503 of 4000000 spent; run rm-role-designer-1793982967 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T16:36:58Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1793982967, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-06T16:57:50Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1793982967: stage 4 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -988,11 +1048,34 @@
    "run": "rm-role-designer-1793982561",
    "stage": 3,
    "summary": "Worldgen carried per d_worldgen_outside_promise: sheet floor:worldgen now reads 'No worldgen of our own; the vanilla new-world placement switch is outside the promise and unchecked', floor.json worldgen stays applicable, a delegated line names the switch and PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT (coverage_rest cannot carry it: the program refuses a capability a showcase already exercises). Five judge gaps (rm-coverage-judge-1793981105) closed: new leaf flamefang_bite_carries_venom + sc_flamefang_venom (control non-venomous bite); ash_ground_and_blowing_ash gains fire-left loose ash + sc_fire_dusts_ash (control ashDustingEnabled off vs unburned twin); furnacebeast_warms gains the giant (live bs 6) + sc_furnace_giant (control classic restore 3.2); sc_heat_dome split out with the dome switch off as its own control; sheet lines for ashwallow and three_skies say what the tree tests. Showcases corrected: burn_line adds inv_animal_roster, fire_cast drops it and gains sc_heat_dome and sc_furnace_giant; showcase set accepted. Filed PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME (Relentless, game-up)."
+  },
+  {
+   "at": "2026-11-06T16:57:50Z",
+   "inputs": {
+    "exam": "911ff719d1919b3309ba328af029ab1434c11aaf183249280fb7b4b08d61839c",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+    "scenes": "d40c63d076cecf9baf3fd3dc186b96bdab2c0e242a6f422150ccfc2d830e2273",
+    "sheet": "8c52c66fd037c78d8fd7612b048aa4143f6f0a8a42c291984d189766f8887ad4",
+    "tree": "6aadb4907945b6208129e83aa261b4476509e9f8ce9a78a3799ba10f5ca8bcaa"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_exam.md": "3e3f16a15ed2c45e2851911d42c9369cdc7560758fe1f386dc38012b93534217"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793982967",
+   "stage": 4,
+   "summary": "Cold Reader exam re-run against the stage-3 tree and sheet of rm-role-designer-1793982561 (worldgen floor reworded, five coverage gaps closed). 22 frozen scenarios (Examiner 16, Challenger 6), covering the new leaves flamefang venom, fire-left loose ash, furnace-beast giant size and ashwallow dome stance. Both Readers 22/22, accept_where_reject_core 0, no Challenger misses. Control with flamefang_bite_carries_venom removed accepted e1 and c1, which the real tree rejects. The worldgen floor line has no leaf, so no scenario can cite it (it is outside the promise per d_worldgen_outside_promise)."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
