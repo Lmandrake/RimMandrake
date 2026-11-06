@@ -1,0 +1,1 @@
+bridge_concurrency_guard's 10s ended-call window refuses a driver's OWN earlier one-shot python.exe client (e.g. relentless_live's jawa/running_mods health read before live_site.py). A driver that spawns a process sequence must export RM_BRIDGE_LINEAGE (bridge_concurrency_guard.export_lineage) so its children read as one client. (GAMEENV_FIX_HARNESS_09849AF1_ITEMS_WAIT)
