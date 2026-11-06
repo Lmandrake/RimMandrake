@@ -31,11 +31,14 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
 - A5. The canon grader's score is evidence, never the verdict. — Owner card 2026-10-15 (`art_requirements.md` req 6)
 
 ### B. Style
-- B1. The painterly vanilla-RimWorld style: real anatomy, legs allowed, high resolution where the player sees it,
-  a clean black outline readable at standard zoom. Not toy-figurine flat cel, not HUGE BLACK keylines. — Owner
-  2026-09-14 (`infrastructure/state/items/ART_PAINTERLY_RESTORATION_1.md`)
-- B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a keyline and a body
-  value clearly apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a
+- B1. The painterly vanilla-RimWorld style: real anatomy, legs allowed, high resolution where the player sees it.
+  Not toy-figurine flat cel. — Owner 2026-09-14 (`infrastructure/state/items/closed/ART_PAINTERLY_RESTORATION_1.md`)
+- B1a. **No outlines.** The silhouette is carried by value and colour contrast against the ground, never by a drawn
+  black outline or keyline; a sprite without one is correct, and a heavy drawn keyline is STYLE_OFF. — Owner card
+  2026-10-04 (`ART_VERSION_WRANGLING_1`; the house register `HOUSE_ART_REGISTER` in
+  `src/RimMandrake/Utils/artpipe/common.py`). It retired the outline clause B1 carried from 2026-09-14.
+- B2. Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes with a body value clearly
+  apart from the ground; grey mud is a REDO reason. Advisory measure only, never a refusal on a
   number. — Lesson 2026-09-12, softened by Owner 2026-09-14
 - B3. Matches its **sibling keeps**: the other sex, lifestages and variants he already approved set the style,
   palette and scale; a candidate that reads as a different artist or size class is REDO. — Owner 2026-10-21

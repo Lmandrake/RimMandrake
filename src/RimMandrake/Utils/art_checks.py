@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Deterministic pixel checks on sprite art. No ML, no vision model, no score.
 
-Five checks, each emitting structured Findings. Severity is DATA: this module never
+Four checks, each emitting structured Findings. Severity is DATA: this module never
 decides whether a finding rejects a sprite, and never aggregates findings into a
 number. The owner killed a scoring gate once; the caller rules.
 
@@ -23,7 +23,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageFilter
+from PIL import Image, ImageChops
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
@@ -33,10 +33,6 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 # Anything in 8..32 gives the same answer on all 57 Pyrelands facings; 16 is the middle.
 ALPHA_VISIBLE = 16
 
-# RGB under low alpha is undefined — exporters leave it black or leave it garbage.
-# Only sample COLOUR where the pixel was actually painted. GUESS: 100/255 is a
-# comfortable "really painted" line, not a measured one.
-ALPHA_SOLID = 100
 
 # transparency_real -------------------------------------------------------------
 # A PNG whose alpha is essentially all-255 has no cutout at all — the subject is
@@ -108,20 +104,6 @@ SYMMETRY_MIN_NS = 0.80
 # north/south bound — no owner-confirmed case either way — so it is medium, and
 # the threshold is set high to avoid punishing a genuinely round animal.
 SYMMETRY_MAX_EW = 0.85
-
-# outline_coherence -----------------------------------------------------------
-# Luminance at or below this reads as a keyline against this art's midtones.
-# GUESS: 90/255. Measured effect: 54 of 57 Pyrelands facings score 1.000 at this
-# value, so it is not firing indiscriminately.
-KEYLINE_DARK_LUM = 90
-# How far inside the silhouette edge to look for the keyline, in px. A painterly
-# keyline is a few px thick and sits under a soft alpha ramp, so a 1 px probe misses it.
-KEYLINE_INSET_PX = 3
-# GUESS: 95% of the silhouette edge must carry a keyline.
-KEYLINE_MIN_FRAC = 0.95
-# A single long break reads worse than the same total spread thinly, so it gets its
-# own threshold: 2% of the silhouette perimeter. GUESS.
-KEYLINE_MAX_GAP_FRAC = 0.02
 
 FACING_RE = re.compile(r"^(?P<base>.+)_(?P<facing>east|west|north|south)$")
 # Variants of one creature for duplicate purposes only. `_f`/`_m` are the sex splits;
@@ -347,8 +329,6 @@ def _hdetail(facings: dict, frac: dict) -> str:
                      for f in sorted(facings))
 
 
-# --- 4. outline_coherence ---------------------------------------------------
-
 def facing_symmetry(creature: str, facings: dict) -> list:
     """North/south must be symmetric front/rear views; east/west must be profiles.
 
@@ -382,71 +362,17 @@ def facing_symmetry(creature: str, facings: dict) -> list:
     return out
 
 
-def outline_coherence(s: Sprite) -> list:
-    boundary = ImageChops.subtract(s.mask, s.mask.filter(ImageFilter.MinFilter(3)))
-    n_bnd = boundary.histogram()[255]
-    if n_bnd == 0:
-        return []
-    # Look for the keyline only where the pixel is really painted; elsewhere 255
-    # (bright) so it can never be mistaken for a dark line.
-    cand = Image.new("L", s.size, 255)
-    cand.paste(s.lum, mask=s.alpha.point(lambda v: 255 if v >= ALPHA_SOLID else 0))
-    inner = cand.filter(ImageFilter.MinFilter(KEYLINE_INSET_PX * 2 + 1))
-    dark = inner.point(lambda v: 255 if v <= KEYLINE_DARK_LUM else 0)
-    keyed = ImageChops.multiply(boundary, dark)
-    gap = ImageChops.subtract(boundary, keyed)
-    frac = keyed.histogram()[255] / n_bnd
-    max_gap = _largest_component(gap)
-    gap_frac = max_gap / n_bnd
-    inst = ("fraction of silhouette-boundary px (alpha>%d) with luminance<=%d within "
-            "%dpx inside, sampled only where alpha>=%d"
-            % (ALPHA_VISIBLE, KEYLINE_DARK_LUM, KEYLINE_INSET_PX, ALPHA_SOLID))
-    out = []
-    if frac < KEYLINE_MIN_FRAC:
-        out.append(Finding(
-            "outline_coherence", "medium", s.path.name, round(frac, 3), inst,
-            "keyline covers only %.1f%% of the %d px silhouette edge"
-            % (100 * frac, n_bnd),
-        ))
-    if gap_frac > KEYLINE_MAX_GAP_FRAC:
-        out.append(Finding(
-            "outline_coherence", "medium", s.path.name, max_gap,
-            "largest 8-connected run of un-keylined boundary px, in px "
-            "(approximates arc length along a %d px silhouette edge)" % n_bnd,
-            "unbroken keyline gap of %d px = %.1f%% of the silhouette edge"
-            % (max_gap, 100 * gap_frac),
-        ))
-    return out
 
 
-def _largest_component(gap: Image.Image) -> int:
-    bb = gap.getbbox()
-    if bb is None:
-        return 0
-    crop = gap.crop(bb)
-    w, h = crop.size
-    live = {i for i, v in enumerate(crop.tobytes()) if v}
-    best = 0
-    while live:
-        stack = [live.pop()]
-        size = 0
-        while stack:
-            i = stack.pop()
-            size += 1
-            y, x = divmod(i, w)
-            for dy in (-1, 0, 1):
-                for dx in (-1, 0, 1):
-                    ny, nx = y + dy, x + dx
-                    if 0 <= ny < h and 0 <= nx < w:
-                        j = ny * w + nx
-                        if j in live:
-                            live.discard(j)
-                            stack.append(j)
-        best = max(best, size)
-    return best
 
 
-# --- 5. duplicate_facings ---------------------------------------------------
+
+
+# There is no outline/keyline check: the owner ruled outlines OUT by card on
+# 2026-10-04 (ART_VERSION_WRANGLING_1; common.HOUSE_ART_REGISTER says "no outlines"),
+# so a sprite without a keyline is the target, not a finding.
+
+# --- 4. duplicate_facings ---------------------------------------------------
 
 def duplicate_facings(variant_group: str, sprites: list) -> list:
     by_hash = defaultdict(list)
@@ -522,7 +448,6 @@ def run(paths, originals=False) -> list:
         s = sprites[f]
         findings.extend(transparency_real(s))
         findings.extend(boundaries_respected(s))
-        findings.extend(outline_coherence(s))
 
     creatures = defaultdict(dict)
     for f in files:
@@ -645,25 +570,6 @@ HEIGHT_REGRESSION = {}
 # Whether that flag should reject is the owner's call, not this module's.
 HEIGHT_CONFLICT = {"FurnaceBeast": 1.636}
 
-OUTLINE_MAX_FLAGGED_FILES = 5
-# PROVISIONAL art accepted by owner card 2026-10-12, revisit after his in-game look.
-# Commit 68ee19c27d added these three keyline flags (Bolotaur/FurnaceBeast/Zeer, unchanged
-# since, were the prior 3); they are expected and excluded from the cap, which is NOT raised.
-# 2026-10-20: GizkaW_east (set D, 10-15) and the RM_FE plants EmberGrassA / QuickgrassA / ScorchFruit (bulk-accepted
-# renders 10-18, icons enact 10-19) keyline-flag too; owner-accepted art, same revisit.
-OUTLINE_PROVISIONAL_FLAGGED = {"Dalgo_east.png", "Orray_east.png", "RM_FE_Quickgrass_b.png", "GizkaW_east.png",
-                               "RM_FE_EmberGrassA.png", "RM_FE_QuickgrassA.png", "RM_FE_ScorchFruit.png"}
-# FireWasp (art_eval accept 2026-10-28, not an owner look): every gap is its wing flames, drawn light with no edge on
-# purpose, and a keyline round a flame would be the defect. Excluded by file, so the thresholds and cap stay as they are.
-# Ullai_east and Emberscythe_east (art_eval accept 2026-10-23) stay COUNTED: real small gaps, so the cap has no headroom
-# left, and one new flag fails here on purpose. Look at it; do not raise the cap.
-OUTLINE_FLAME_EDGED = {"FireWasp_east.png", "FireWasp_north.png", "FireWasp_south.png"}
-# A Pack texture is an overlay the engine draws on the body's own quad, so its edge is not the creature's silhouette:
-# the check asks a question that does not apply. Measured 2026-11-03 on the two that flagged after
-# PACK_OVERLAYS_BUILD_SHARED_SADDLEBAGS (BolotaurPack_north 2.1%, OrrayPack_north 2.9%, line 2.0%): 73 of their 76 gap px
-# lie on the animal's own body, on the sunlit top of the bedroll. Excluded from the cap only; they still emit findings.
-OUTLINE_PACK_OVERLAY_RE = re.compile(r"Pack_(east|west|north|south)\.png$")
-
 # Facings whose visible content touches a canvas edge and is clipped, re-measured
 # 2026-09-18. The previous pin, `Nuna_f_east.png`, is GONE and legitimately so —
 # the 2026-09-17 wave replaced that file and its top margin is no longer 0.
@@ -768,27 +674,6 @@ def selftest() -> int:
 
     fails.extend(_duplicate_facings_proof())
 
-    # The keyline break confirmed by eye: FurnaceBeast north's
-    # shoulder spikes are light grey with no dark edge.
-    if not any(f.check == "outline_coherence" and "FurnaceBeast_north" in f.subject
-               for f in findings):
-        fails.append("outline_coherence did NOT flag FurnaceBeast_north.png, whose "
-                     "shoulder-spike keyline gap was confirmed by eye")
-    if any(f.check == "outline_coherence" and "Anooba" in f.subject for f in findings):
-        fails.append("outline_coherence flagged an Anooba facing; its keyline "
-                     "measures 1.000 and must stay clean")
-    # A check that flags most of the corpus carries no information, so cap it:
-    # loosening DARK/MIN_FRAC until everything trips must fail here rather than look
-    # like a productive sweep.
-    keyed = {f.subject for f in findings if f.check == "outline_coherence"}
-    keyed -= OUTLINE_PROVISIONAL_FLAGGED | OUTLINE_FLAME_EDGED
-    keyed = {name for name in keyed if not OUTLINE_PACK_OVERLAY_RE.search(name)}
-    if len(keyed) > OUTLINE_MAX_FLAGGED_FILES:
-        fails.append("outline_coherence flagged %d files (%s); more than %d means the "
-                     "keyline thresholds have stopped discriminating"
-                     % (len(keyed), ", ".join(sorted(keyed)),
-                        OUTLINE_MAX_FLAGGED_FILES))
-
     # Severity matters here: the low-severity margin advisory would keep catching this
     # file even if the touching/clipped rule were neutered, so require the high one.
     for name, why in BOUNDARY_MUST_FLAG_HIGH:
@@ -828,7 +713,7 @@ def selftest() -> int:
              FACING_HEIGHT_MAX_RATIO))
     print("PASS  duplicate_facings fires on byte-identical copies and does NOT "
           "fire on a one-pixel difference (synthetic fixture, corpus-independent)")
-    print("PASS  outline_coherence, and boundaries_respected on %d pinned clipped "
+    print("PASS  boundaries_respected on %d pinned clipped "
           "facings + %d pinned repaired facings, all %d present in the corpus"
           % (len(BOUNDARY_MUST_FLAG_HIGH), len(BOUNDARY_MUST_NOT_FLAG_HIGH),
              len(BOUNDARY_MUST_FLAG_HIGH) + len(BOUNDARY_MUST_NOT_FLAG_HIGH)))

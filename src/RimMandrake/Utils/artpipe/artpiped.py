@@ -1946,7 +1946,7 @@ def run_validator(validator_script: Path, reference, candidate: Path,
 # failure. The fixture is a plain correctly-sized rectangle, which genuinely violates
 # transparency and boundaries — the gate was right and the fixture is not a sprite.
 # Same disabled-by-default shape the legibility gate already uses.
-FACTS_SINGLE_FILE_CHECKS = ("transparency_real", "boundaries_respected", "outline_coherence")
+FACTS_SINGLE_FILE_CHECKS = ("transparency_real", "boundaries_respected")
 
 
 def run_facts_gate(candidate: Path):
