@@ -138,9 +138,9 @@ TIERS = {
                "mandrake.rm.environmentalhazards is a hard <modDependencies> "
                "entry (RM_WaterTruceExtension); mandrake.rut.rotsporekit is "
                "needed for the shared RUT_Dewshrooms wildPlants row; "
-               "mandrake.rsw.swbestiary pulls sarg.alphaanimals + "
-               "mlie.starwarsanimalcollection transitively via its own "
-               "modDependencies (also needed directly for AA_Eyeling).",
+               "mandrake.rsw.swbestiary supplies the Star Wars fauna (the "
+               "art donors it once pulled, Alpha Animals and the Star Wars "
+               "Animal Collection, were retired 2026-10-18 and never load).",
         "want": [
             # BAROQUE_BIOMES_WAVE2_FOLD_1: weepingstones + environmentalhazards
             # both folded into mandrake.rm.biomes, one entry covers both now.
@@ -148,7 +148,6 @@ TIERS = {
             "mandrake.rm.biomes",
             "mandrake.rut.patches",
             "mandrake.rsw.swbestiary",
-            "sarg.alphaanimals",
         ],
         "dlc": True,
     },
@@ -304,15 +303,12 @@ TIERS = {
                "RimMandrake.CreatureBehaviors, and a missing comp TYPE discards the "
                "whole def silently -- so criterion 1 (no 'Could not find type named') "
                "is the first thing this tier exists to answer. "
-               "sarg.alphaanimals is a REQUIRED dependency, not a convenience: "
-               "removing it breaks ScenPart_StartingAnimal because some SWBestiary "
-               "defs inherit an Alpha-Animals parent (MEASURED, ruled out as a "
-               "workaround by BRIDGE_PAWN_SPAWN_CRASHES_VEF_1).",
+               "The art donors (sarg.alphaanimals, mlie.starwarsanimalcollection) "
+               "were retired 2026-10-18 (infrastructure/state/facts/retired_mods.json) "
+               "and never load; SWBestiary no longer inherits from them.",
         "want": [
             BRIDGE,
             "mandrake.rsw.swbestiary",
-            "sarg.alphaanimals",
-            "mlie.starwarsanimalcollection",
             # 🔴 BOTH of these are REQUIRED by SWBestiary and INVISIBLE to
             # dependency closure. MEASURED live 2026-09-20 on this tier:
             #  - mandrake.rm.creaturebehaviors supplies five RM_CompProperties_*
@@ -340,7 +336,7 @@ TIERS = {
                "spawns, guardians/fauna present, connectivity holds -- "
                "mandrake.rut.injections is NOT in the owner's live FULL list "
                "yet, so this is the smallest closure that loads it.",
-        "want": [BRIDGE, "mandrake.rut.injections", "sarg.alphaanimals"],
+        "want": [BRIDGE, "mandrake.rut.injections"],
         "dlc": True,
     },
     "oracle": {
@@ -458,8 +454,7 @@ TIERS = {
                "(RSW_ShadeWhale's RM_CompDungSeeder / RM_FilterFeedExtension and the "
                "new RSW_Filth_WhaleDung) and VENOMVINE_PATHCOST_AND_FLYER_1 "
                "(RM_Venomvine, mandrake.rm.environmentalhazards). "
-               "🔑 mandrake.rm.creaturebehaviors, sarg.alphaanimals, "
-               "mlie.starwarsanimalcollection and "
+               "🔑 mandrake.rm.biomes (creaturebehaviors folded in) and "
                "mandrake.rm.proximityhatch are named EXPLICITLY for the reasons "
                "spelled out on the `beastmechanics` tier -- SWBestiary carries them "
                "under <loadAfter> or not at all, closure walks only "
@@ -472,14 +467,13 @@ TIERS = {
             "mandrake.rm.biomes",  # BAROQUE_BIOMES_WAVE2_FOLD_1: creaturebehaviors + environmentalhazards both folded
             "mandrake.rm.proximityhatch",
             "mandrake.rut.patches",
-            "sarg.alphaanimals",
-            "mlie.starwarsanimalcollection",
         ],
         "dlc": True,
     },
     "donor_off_w4": {
         "why": "DONOR_DEFS_PORT_TO_OURS_1 W4 gate: the Star Wars donor (mlie.starwarsanimalcollection) is NOT in the list. "
-               "Same cast as `shrublandfauna` minus that one mod (sarg.alphaanimals stays: another donor, W5; insectoid2 retired 2026-10-18). "
+               "Same cast as `shrublandfauna` plus mandrake.rsw.shokk. Both art donors (it and sarg.alphaanimals) were retired "
+               "2026-10-18 and never load in any tier, so this now matches `shrublandfauna` on donors. "
                "Read the first exception, every cross-ref/config error and texture miss on RSW_/RUT_/RM_ or sw* paths.",
         "want": [
             BRIDGE,
@@ -488,7 +482,6 @@ TIERS = {
             "mandrake.rm.proximityhatch",
             "mandrake.rut.patches",
             "mandrake.rsw.shokk",
-            "sarg.alphaanimals",
         ],
         "dlc": True,
     },
@@ -531,8 +524,6 @@ TIERS = {
             "mandrake.rm.biomes",
             "mandrake.rsw.swbestiary",
             "mandrake.rut.patches",
-            "sarg.alphaanimals",
-            "mlie.starwarsanimalcollection",
         ],
         "dlc": True,
     },
@@ -799,7 +790,7 @@ TIERS["acc_20261009b"] = {
            "swbestiary + Utinni/StarWars patch layers, graffiti, rites, wasterun, warcasket) so ~60 skipped criteria and "
            "everything built after the first deploy (Illisk, venomvines, LongShade, WasteRun proof hooks) can be measured.",
     "want": list(TIERS["acc_20261009"]["want"]) + ["mandrake.rsw.bacta", "mandrake.rm.bazaar", "mandrake.rut.empirepursuit", "mandrake.rut.cathedralpass",
-             "mandrake.rsw.swbestiary", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mandrake.rm.graffiti", "mandrake.rut.rites", "mandrake.rut.wasterun",
+             "mandrake.rsw.swbestiary", "mandrake.rm.graffiti", "mandrake.rut.rites", "mandrake.rut.wasterun",
              "mandrake.rm.warcasket"],
     "dlc": True,
 }
