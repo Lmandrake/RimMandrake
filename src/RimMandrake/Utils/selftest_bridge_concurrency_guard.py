@@ -73,6 +73,17 @@ out = _sp.run([sys.executable, "-c", "import sys, os; sys.path.insert(0, %r); os
 w = (out.stdout.strip().split("\n") or [""])[-1].split(" ")
 check("relentless_live.Fx exports a lineage for its children (%s)" % (out.stderr.strip()[-200:] or "ok"),
       out.returncode == 0 and len(w) == 2 and w[0] and G.LINEAGE_ENV in w[1].split(":"))
+# LIVETIER_PREFLIGHT_FIX_TRIPS_OWN_GUARD: the instance's two shapes. Log PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET-A1-20261106T142756Z:
+# the supervisor's own ping (pid 39752) ended 1 s before validation.py's go_to_main_menu; a sibling tick's one-shot
+# jawa/running_mods (lineage ca88009edf7e, 2026-11-06T21:00:29Z) landed inside round f9bfdc62032a, under another lineage.
+ping = lambda lin, **kw: dict(st("i", 39752, 1, "rimbridge/ping"), script="rimbridge_client.py", mutating=False, lineage=lin, **kw)
+write([ping("f9bf"), en("i")]); check("own supervisor's ping 1 s before setup proceeds", G.foreign_activity(p, now, 33880, alive=LIVE, lineage="f9bf") is None)
+write([ping("ca88"), en("i")]); check("another lineage's finished one-shot read proceeds", G.foreign_activity(p, now, 33880, alive=lambda r: False, lineage="f9bf") is None)
+write([ping("ca88"), en("i")]); check("another lineage's read from a LIVE writer refuses (a driver between calls)", G.foreign_activity(p, now, 33880, alive=LIVE, lineage="f9bf") is not None)
+write([dict(ping("ca88"), mutating=True), en("i")]); check("another lineage's finished MUTATING call refuses", G.foreign_activity(p, now, 33880, alive=lambda r: False, lineage="f9bf") is not None)
+write([ping("ca88")]); check("an unended read from a live writer refuses", G.foreign_activity(p, now, 33880, alive=LIVE, lineage="f9bf") is not None)
+child = subprocess.Popen([sys.executable, "-c", "pass"]); child.wait()
+write([dict(ping("ca88"), pid=child.pid, os=os.name), en("i")]); check("real exited one-shot read proceeds (writer_alive)", G.foreign_activity(p, now, 33880, lineage="f9bf") is None)
 os.environ["RM_ALLOW_CONCURRENT_BRIDGE"] = "1"
 G.refuse_if_foreign_activity("go_to_main_menu", log=p, now=now, own_pid=222, alive=LIVE); check("env override allows", True)
 print("FAIL" if F else "PASS", len(F), "failure(s)")

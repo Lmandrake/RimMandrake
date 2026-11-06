@@ -12,7 +12,11 @@ process cannot check (another OS, no pid) stays presumed alive.
 GAMEENV_FIX_HARNESS_09849AF1_ITEMS_WAIT: one driver that runs its calls as a SEQUENCE of processes (Relentless's live
 lane: a one-shot jawa/running_mods health read, then live_site.py) is not two clients. Its process exports LINEAGE_ENV
 (export_lineage, carried to python.exe children through WSLENV); rimbridge_client writes it on each start row, and a
-row carrying the caller's own non-empty lineage is the caller's own, like its own pid."""
+row carrying the caller's own non-empty lineage is the caller's own, like its own pid.
+LIVETIER_PREFLIGHT_FIX_TRIPS_OWN_GUARD: a read-only call (mutating False on its start row) that ended, from a writer now
+provably gone, no longer counts inside the window: a one-shot ping or jawa/running_mods from another lineage (a Relentless
+tick's admission read during a round) has changed nothing and can drive nothing. A mutating, unmarked or live writer's
+call still counts."""
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
@@ -107,7 +111,9 @@ def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S, alive=
             continue
         # active = a call with no end row yet, or one that ended within window_s (TESTENV_GUARD_UNSTICK_BLOCKS_ITS_OWN_SEQUEL:
         # a finished client's start time is no evidence it is still driving the game)
-        if (cid not in ended and age <= UNENDED_S and alive(r)) or (cid in ended and now - ended[cid] <= window_s):
+        finished_read = r.get("mutating") is False and not alive(r)
+        if (cid not in ended and age <= UNENDED_S and alive(r)) or (
+                cid in ended and now - ended[cid] <= window_s and not finished_read):
             return "pid %s (%s) %s %s %ds ago%s" % (r.get("pid"), r.get("script"), r.get("tool"), r.get("t"),
                                                     age, "" if cid in ended else " [no end row: still running]")
     return None

@@ -144,13 +144,16 @@ WSL_BRIDGE = ("cannot reach the bridge from WSL", "Re-run under Windows Python",
 # UNMEASURED; 14 items churned on such rows read as game_fail strikes. could_not_ask() reads the log's tail; every
 # pattern is from a real FAIL row of 2026-11-02..04 (relentless/live/*.log).
 # The box or the instrument failed: no proof or mod change helps (relentless_game._harness: alarm, restage later, no strike)
+GUARD_REFUSAL = r"ConcurrentBridgeClient: refusing "
 EXIT1_HARNESS = re.compile(
     r"cannot reach the bridge from WSL|IndeterminateError|No space left on device|\[Errno 28\]|Wsl/Service/"
     r"|object has no attribute 'sendall'|UtilAcceptVsock|BrokenPipeError|ConnectionResetError|ConnectionRefusedError|ConnectionAbortedError"
     # PROOF_CRASH_FIX_READ_AS_MOD_FAILURE: modcheck's deploy died on a DLL the running game holds (STILLSAND 2026-11-05,
     # RuntimeError "deploy of Stillsand FAILED" then "NOT written ... locked by the running game"); the reader chained
     # after it judged an older run and printed "FAIL Stillsand", booked as the mod's FAIL
-    r"|locked by the running game|NOTHING WAS WRITTEN, and the repo and game still DIFFER")
+    r"|locked by the running game|NOTHING WAS WRITTEN, and the repo and game still DIFFER"
+    # LIVETIER_PREFLIGHT_FIX_TRIPS_OWN_GUARD: bridge_concurrency_guard refused a step of the proof; see setup_refused
+    r"|" + GUARD_REFUSAL)
 # The running load is not the one the proof needs (wrong tier, a stale DLL): RELOAD, so the game phase restages
 EXIT1_RELOAD = re.compile(r"^(?:WRONG_TIER|WRONG_LIST)\b|stale deploy|redeployed after launch")
 # The same, as one row of a proof that may also have charged the mod: read only when no `FAIL MOD` row did (TITANIC's
@@ -998,6 +1001,16 @@ def could_not_ask(path, proof=None):
         if read_nothing(line):
             return "unknown", ("UNKNOWN: a None or zero-row read (a measured absence or a blind instrument; RMOBS "
                                "absence says which): %s" % line)[:200]
+    return None
+
+
+def setup_refused(path, proof=None):
+    """The guard's refusal line when a step of the proof was refused, else None. LIVETIER_PREFLIGHT_FIX_TRIPS_OWN_GUARD:
+    PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET's `--live --fresh-map; --triplet` lost its scene build to the refusal and its next
+    step judged whatever map stood: the exit is that step's, 0 as readily as 1, and neither says anything about the mod."""
+    for line in reversed(side_lines(proof) + tail_lines(path)):
+        if re.search(GUARD_REFUSAL, line):
+            return line[:200]
     return None
 
 
@@ -2136,6 +2149,11 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 said = "the proof %s: it did not measure: %s: %s" % (ended, st, why)
     elif code == FAIL and not crashed:
         unable = could_not_ask(log, proof)
+    if code == PASS and not crashed and not unable and log:
+        refused = setup_refused(log, proof)
+        if refused:
+            unable = ("harness", refused)
+            said = "%s: the proof exited 0 with a step refused, so its map was never prepared: %s" % (HARNESS, refused)
     if unable:
         row["unable"] = unable[0]
     if unable and said is None:      # LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL: an exit 1 that could not ask is no FAIL and no verify

@@ -282,7 +282,13 @@ STILLSAND_DEPLOY_CRASH = (     # the real log, its paths cut
     "FAIL Stillsand\n  newest run Transient/modcheck/Stillsand_20261105T084841Z.json is 337 min old (> 30): rerun the "
     "live half")
 
+TRIPLET_REFUSED = ("Traceback (most recent call last):\n  File \"validation.py\", line 790, in live_battery\n"
+                   "    _G.refuse_if_foreign_activity(\"rimworld/go_to_main_menu\")\n"
+                   "bridge_concurrency_guard.ConcurrentBridgeClient: refusing rimworld/go_to_main_menu: another bridge client "
+                   "is active -- pid 39752 (rimbridge_client.py) rimbridge/ping 2026-11-06T14:28:10Z 1s ago. Take the bridge\n")
 EXIT1_CASES = [     # (log tail of a real exit-1 row of 2026-11-02..04, outcome, the why's head) LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL
+    (TRIPLET_REFUSED + "TRIPLET_live_load_reload_identical FAIL      {'verdict': 'LOAD_NONDETERMINISTIC'}\n"
+     "triplet: 1 rows, 1 not PASS", "UNMEASURED", L.HARNESS),   # LIVETIER_PREFLIGHT_FIX_TRIPS_OWN_GUARD, the instance
     ("dump s.json: phaseStack=['update'] silentS=60.5 mainStack=NotImplementedException: x tickList=None\n"
      "FAIL s.json does not flag the main thread among 0 threads\nprove_bridge_stall_dump: FAIL (77 s)", "FAIL", "proof exit 1"),
     ("Traceback (most recent call last):\n  File \"x.py\", line 3\n    raise IndeterminateError(\n"
@@ -390,6 +396,21 @@ def t_exit1_that_could_not_ask_is_no_fail():
     row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000)
     check("exit 1: a WSL traceback reruns under python.exe", row["outcome"] == "FAIL" and row.get("rerun")
           == "python.exe probe.py", row)
+
+
+def t_exit0_after_a_refused_step_is_no_pass():
+    """LIVETIER_PREFLIGHT_FIX_TRIPS_OWN_GUARD: `build; judge` with the build refused: the judge's exit 0 read a map nobody
+    prepared. No verify, a harness row, no strike. A clean exit 0 is still a pass."""
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    fx = ScriptFx({"python.exe ": (0, TRIPLET_REFUSED + "TRIPLET_live_load_reload_identical PASS")})
+    row = L.run(fx, root, "ROT_X", "A2", "python.exe a.py; python.exe b.py", "--compose biomes", {}, now=1_800_000_000)
+    check("exit 0 after a refused step is UNMEASURED, harness, no verify",
+          row["outcome"] == "UNMEASURED" and row["why"].startswith(L.HARNESS) and row.get("harness")
+          and not any(c[:2] == ("rimflow", "verify") for c in fx.calls), row)
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    fx = ScriptFx({"python.exe ": (0, "TRIPLET_live_load_reload_identical PASS")})
+    row = L.run(fx, root, "ROT_X", "A2", "python.exe a.py; python.exe b.py", "--compose biomes", {}, now=1_800_000_000)
+    check("exit 0 with no refusal stays a pass", row["outcome"] == "PASS", row)
 
 
 def t_redirected_output_still_says_it_could_not_ask():
@@ -1433,7 +1454,7 @@ def t_rebuilt_assembly_carries():
 
 
 def main():
-    for t in (t_site_line_may_ask_for_more_time, t_exit1_that_could_not_ask_is_no_fail, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_menu_item_exit2_asks_its_own_staging, t_menu_wait_on_two_games_stays_a_restage, t_site_runs_first_and_gates_the_proof, t_wsl_interop_flake_retries_once, t_wsl_proof_reruns_under_windows_python,
+    for t in (t_site_line_may_ask_for_more_time, t_exit1_that_could_not_ask_is_no_fail, t_exit0_after_a_refused_step_is_no_pass, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_menu_item_exit2_asks_its_own_staging, t_menu_wait_on_two_games_stays_a_restage, t_site_runs_first_and_gates_the_proof, t_wsl_interop_flake_retries_once, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_owner_look_is_no_game_clause, t_def_check_judge, t_unloaded_mod,
