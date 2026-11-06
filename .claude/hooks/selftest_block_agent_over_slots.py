@@ -276,11 +276,39 @@ env = dict(os.environ, RM_SPAWN_RESERVE_S="90", RM_SLOT_PROJECTS=str(projects), 
            RM_ACCOUNT_USAGE_DIR=str(au), RM_SLOT_MACHINE="testhost", RM_SLOT_OWNER_LEDGER=str(tmp / "none.jsonl"),
            AGENT_SEAT="BENCH", RM_DISPATCHER_STATE=str(disp), CLAUDE_PROJECT_DIR=str(ROOT), RM_ROLE_UNIT="rm-role-fixture")
 body = json.dumps({"tool_name": "Agent", "cwd": "/x", "tool_input": {"prompt": "p", "model": "sonnet"}})
-procs = [subprocess.Popen([sys.executable, str(HOOK)], stdin=subprocess.PIPE, stdout=subprocess.PIPE, env=env, text=True)
-         for _ in range(6)]
-outs = [p.communicate(body, timeout=60)[0] for p in procs]
-allowed = sum(1 for o in outs if '"deny"' not in o)
-check("six concurrent spawns against the last slot: exactly one passes", allowed == 1, allowed)
+
+
+def race(hook, n=6):
+    """Truly concurrent: every hook gets its stdin (and EOF) before any output is read."""
+    resf.unlink(missing_ok=True)
+    procs = [subprocess.Popen([sys.executable, str(hook)], stdin=subprocess.PIPE, stdout=subprocess.PIPE, env=env,
+                              text=True) for _ in range(n)]
+    for p in procs:
+        p.stdin.write(body)
+        p.stdin.close()
+    outs = [p.stdout.read() for p in procs]
+    for p in procs:
+        p.wait(timeout=60)
+    return sum(1 for o in outs if '"deny"' not in o)
+
+
+# sanity probe: the race instrument can see a race (the 2026-11-06 checker: a sequential version stayed green with
+# the flock taken out). Two copies of the hook hold the critical section open 0.6 s (between read and write), so six spawns surely overlap:
+# without the flock several must pass; with it exactly one, even though each caller's `now` is read before it waited.
+src = HOOK.read_text()
+LOCK, CRIT = "fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)", "        if n is not None and len(running) + len(pend) >= n:"
+assert LOCK in src and CRIT in src
+slow = src.replace(CRIT, "        time.sleep(0.6)  # between reading the reservations and writing ours\n" + CRIT)
+wide, nolock = tmp / "hook_wide.py", tmp / "hook_wide_nolock.py"
+wide.write_text(slow)
+nolock.write_text(slow.replace(LOCK, "pass"))
+raw = [race(nolock) for _ in range(3)]
+check("sanity: without the flock, concurrent spawns pass the last slot together", min(raw) > 1, raw)
+gw = [race(wide) for _ in range(3)]
+check("with the flock and a wide critical section, exactly one of six passes each round", all(a == 1 for a in gw), gw)
+got = [race(HOOK) for _ in range(8)]
+check("six truly concurrent spawns against the last slot (shipped hook), 8 rounds: exactly one passes each round",
+      all(a == 1 for a in got), got)
 resf.unlink(missing_ok=True)
 (streams / "slot_override.json").unlink()
 

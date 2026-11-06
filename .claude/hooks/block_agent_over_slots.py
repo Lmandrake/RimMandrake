@@ -193,8 +193,10 @@ def reserve_s(rules):
 
 
 def _pending(res, starts, now, hold_s):
-    """Reservations not yet matched by a helper transcript that started at or after them (greedy, oldest first)."""
-    live = sorted(float(t) for t in res if 0 <= now - float(t) < hold_s)
+    """Reservations not yet matched by a helper transcript that started at or after them (greedy, oldest first).
+    A reservation stamped AFTER this caller's `now` is live too: `now` is read before the lock, so a spawn that waited
+    on the lock sees the winner's later stamp, and dropping it would let both pass and overwrite the winner's."""
+    live = sorted(float(t) for t in res if abs(now - float(t)) < hold_s)
     left = list(live)
     for st in sorted(starts):
         for i, t in enumerate(left):
@@ -253,7 +255,7 @@ def _gate(seat, rules, now, n, refuse):
             held = running + [{"id": "reserved-" + time.strftime("%H%M%S", time.localtime(t))} for t in pend]
             return refuse(held)
         if hold_s > 0:
-            allr[seat] = pend + [now]
+            allr[seat] = sorted(pend + [max([now] + pend)])
             tmpf = rf.with_name(rf.name + f".{os.getpid()}.tmp")
             tmpf.write_text(json.dumps(allr))
             os.replace(tmpf, rf)
