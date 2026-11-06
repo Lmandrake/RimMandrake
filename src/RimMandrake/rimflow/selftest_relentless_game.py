@@ -784,7 +784,9 @@ def t_tick_reads_windows_tools():
        "game_started runs powershell with the Windows dirs on PATH, whatever the unit's PATH: %s" % seen)
     ok(R.windows_path is L.windows_path, "one windows_path rule for the tick, the round and game_started")
     import inspect
-    ok("windows_path(os.environ" in inspect.getsource(R.tick), "the real tick puts the Windows tools on its own PATH")
+    # the tick's body moved to _tick (RELENTLESS_TICK_MEASURE_OUTLASTS_ITS_NAP): either holds the rule
+    src = inspect.getsource(R.tick) + inspect.getsource(getattr(R, "_tick", R.tick))
+    ok("windows_path(os.environ" in src, "the real tick puts the Windows tools on its own PATH")
 
 
 def t_loading_is_waited_not_restaged():
