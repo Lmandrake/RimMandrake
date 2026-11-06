@@ -1337,3 +1337,4 @@
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: launched","ts":"2026-11-06T19:25:00Z","tsn":1793993101003244573}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: ended without a good result","ts":"2026-11-06T19:26:49Z","tsn":1793993209752695749}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: ended without a good result","ts":"2026-11-06T19:26:53Z","tsn":1793993213077258123}
+{"seat":"DISPATCHER","event":"note","id":"OPS_RELENTLESS_READING_RESTORE_IUUR","text":"dispatcher role_launch BENCH: Operations ops_watch alarm OPS_RELENTLESS_READING_RESTORE_IUUR, band RED, budget 600000 (cap 600000 x 1.0), 4202972 used today, unit rm-role-operations-1793994327, model sonnet, account steven (SWITCH)","ts":"2026-11-06T19:45:33Z","tsn":1793994333177045202}
