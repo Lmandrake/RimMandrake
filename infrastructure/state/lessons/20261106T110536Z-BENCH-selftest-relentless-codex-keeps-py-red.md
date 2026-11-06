@@ -1,0 +1,1 @@
+selftest_relentless_codex_keeps.py is red at 2495ce421f before any STAGE_WAKE_TUNE_NAPS_AFTER_LOAD change: row #4 (a reload fix that rides the staging beside an unfixable cause: routed once, no builder -> acts game_env_fix + game_env_route). Measured with HEAD's relentless.py swapped in, 2026-11-06; codex_five_b #4 fails the same way (lesson 20261106T103403Z).

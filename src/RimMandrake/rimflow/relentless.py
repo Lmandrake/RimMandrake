@@ -6225,12 +6225,14 @@ def mods_held(store, fx, item, states=None):
             for m in fx.item_mods(x)}
 
 
-def lease(store, fx, r, now, acts):
+def lease(store, fx, r, now, acts, wake=None):
     """Fill the free places, top of the queue first. An item the machine cannot run now keeps its place. Afterwards,
-    content the health pause held is timed for the Conductor's alarm (pause_alarm)."""
+    content the health pause held is timed for the Conductor's alarm (pause_alarm). `wake`: the tick's serve_wake, called
+    before each item, so a round or staging that ends while clones are made gets its proof now, not after the lease
+    (STAGE_WAKE_TUNE_NAPS_AFTER_LOAD)."""
     seen = {"known": False, "pause": None, "stopped": []}
     try:
-        return _lease(store, fx, r, now, acts, seen)
+        return _lease(store, fx, r, now, acts, seen, wake)
     finally:
         try:
             pause_alarm(store, fx, seen, now, acts)
@@ -6245,7 +6247,7 @@ def fenced_meanwhile(store, item, st):
     return cur is None or cur["gen"] != st["gen"] or cur["status"] != "running"
 
 
-def _lease(store, fx, r, now, acts, seen):
+def _lease(store, fx, r, now, acts, seen, wake=None):
     cfg = r.get("staffing") or {}
     launched = clones_this_tick(acts, "work")
     per_tick = cfg.get("work_launch_per_tick", cfg.get("launch_per_tick")) if cfg else None
@@ -6266,6 +6268,11 @@ def _lease(store, fx, r, now, acts, seen):
     no_room = None      # make_room's hold, once it said there is no room for a new clone this tick
     incidents = relentless_breakers.load(store)
     for st in queue_order(store.states(), getattr(fx, "plan", None), first):
+        if wake:
+            wake()
+            cur = store.load(st["item"])     # the pass the wake ran may have moved this item since the order was read
+            if not cur or cur["status"] != st["status"] or cur["gen"] != st["gen"]:
+                continue
         inc = relentless_breakers.waits(store, st["item"], incidents)
         if inc:     # one capability incident, one probe: the rest wait for its evidence, not a tick
             acts.append({"do": "incident_wait", "item": st["item"], "key": inc})
@@ -6752,6 +6759,8 @@ GAME_WAKE = "game_wake"             # a round ended: relentless_live_round.wake_
 GAME_NEXT_ON = "game_next.on"       # game_next holds tick.lock: a tick waits for it instead of losing its turn
 GAME_NEXT_WAIT_S = 1200             # the unit's own kill: past it the next tick serves the wake
 TICK_WAITS_GAME_NEXT_S = 180
+GAME_NEXT_FOLLOW_S = 90             # a pass that met a ready staging steps it again until its proof starts, this long
+GAME_NEXT_FOLLOW_POLL_S = 3         # the staging unit exits seconds after its game-ready; the pass waits for it in these
 
 
 def wake_taken(store):
@@ -6776,7 +6785,9 @@ def game_pass(store, fx, r, now, acts, began=None):
         return (g.get("phase") != "proving", not s.get("expedite"), g.get("entered_at") or 0, s["item"])
 
     for s in sorted((x for x in store.states() if x["status"] == relentless_game.GAME), key=rank):
-        if (s.get("game") or {}).get("phase") != "proving":     # every ended round is read before anyone starts
+        # every ended round is read before anyone starts; a staging is the holder itself, so its own step (stop, settle,
+        # release) is never held back by busy: a game-ready's wake would otherwise only reach the next tick
+        if (s.get("game") or {}).get("phase") not in ("proving", "staging"):
             if relentless_game.busy(store, None) or over_budget(r, wall() - began):
                 break
         try:
@@ -6784,6 +6795,27 @@ def game_pass(store, fx, r, now, acts, began=None):
         except Exception as e:  # noqa: BLE001  one bad item never stops the others; the next tick resumes it
             acts.append({"do": "error", "item": s["item"], "why": "%s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": s["item"], "why": str(e)[:300]})
+
+
+def ready_staging(store):
+    """-> the items whose staging said game-ready (or snagged) and wait only for their unit to go down."""
+    return [s["item"] for s in store.states() if s["status"] == relentless_game.GAME
+            and (s.get("game") or {}).get("phase") == "staging" and ((s["game"].get("ready") or s["game"].get("snag")))]
+
+
+def follow_staging(store, fx, r, now, acts, wall, whole):
+    """game-ready wakes this pass from inside the staging unit, so its first step only stops that unit: step again, at
+    most game_next_follow_s, until the unit is down and the bridge released, then once more so the proof starts now and
+    not at the next tick (STAGE_WAKE_TUNE_NAPS_AFTER_LOAD)."""
+    until = wall() + r.get("game_next_follow_s", GAME_NEXT_FOLLOW_S)
+    sleep = getattr(fx, "sleep", time.sleep)
+    while ready_staging(store) and wall() < until:
+        sleep(r.get("game_next_follow_poll_s", GAME_NEXT_FOLLOW_POLL_S))
+        game_pass(store, fx, r, now + int(max(wall() - whole, 0)), acts)
+        if not ready_staging(store):    # released this pass: the round it leads to starts in the next one
+            game_pass(store, fx, r, now + int(max(wall() - whole, 0)), acts)
+            acts.append({"do": "game_follow", "s": int(max(wall() - whole, 0))})
+            return
 
 
 def game_next(store=None, fx=None, r=None, now=None):
@@ -6801,7 +6833,8 @@ def game_next(store=None, fx=None, r=None, now=None):
                 fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
                 break
             except BlockingIOError:
-                if not os.path.exists(store.p(GAME_WAKE)):
+                # a tick that took a game-ready's wake only stops the staging unit: wait it out and follow the staging
+                if not os.path.exists(store.p(GAME_WAKE)) and not ready_staging(store):
                     return [{"do": "skip", "why": "the running tick took the wake"}]
                 if time.time() >= give_up:
                     return [{"do": "skip", "why": "tick.lock busy for %d s: the next tick serves it" % GAME_NEXT_WAIT_S}]
@@ -6821,7 +6854,7 @@ def game_next(store=None, fx=None, r=None, now=None):
 
 def _game_next_held(store, fx, r, now):
     """game_next's body, under tick.lock and its mark."""
-    if not wake_taken(store):
+    if not wake_taken(store) and not ready_staging(store):
         return [{"do": "skip", "why": "no wake"}]
     if fx is None:
         os.environ["PATH"] = windows_path(os.environ.get("PATH", ""))
@@ -6834,6 +6867,7 @@ def _game_next_held(store, fx, r, now):
     wall = getattr(fx, "wall", time.monotonic)
     whole, acts = wall(), []
     game_pass(store, fx, r, now, acts)
+    follow_staging(store, fx, r, now, acts, wall, whole)
     why = fx.flush()        # what the steps wrote to the ledger; the next tick retries a failure
     if why:
         acts.append({"do": "flush_retry", "why": why})
@@ -6996,7 +7030,7 @@ def _tick(store, fx, r, now, prof):
             acts.append({"do": "error", "item": None, "why": "queue_next %s: %s" % (type(e).__name__, e)})
         try:
             launch_proved(store, now)
-            lease(store, fx, r, now, acts)
+            lease(store, fx, r, now, acts, wake=serve_wake)
         except Exception as e:  # noqa: BLE001  a hung rimflow must not lose the tick's flush; a reservation resumes next tick
             acts.append({"do": "error", "item": None, "why": "lease %s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "lease_raised", "why": str(e)[:300]})
@@ -7283,6 +7317,8 @@ def main(argv=None):
                 print(bind_judge(store, a.item, a.judge, a.verdict, a.why))
         elif a.cmd == "game-ready":
             relentless_game.ready(store, a.item, a.gen, a.text)
+            import relentless_live_round     # the round's own wake path: the proof starts now, not at the next tick
+            relentless_live_round.wake_supervisor(store.root)
         elif a.cmd == "reload-needed":
             reload_needed(store, a.item, a.gen, a.text)
         elif a.cmd == "snag":
