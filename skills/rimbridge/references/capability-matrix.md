@@ -25,7 +25,7 @@ returning `success: true`.
 | clear vegetation | lay a **floor rectangle** | interior wiped clean |
 | **damage anything, incl. hostiles** | `Actions\Explosion...\<DamageDef>` + `x`/`z` | `ToolMap`, so no pawn resolution. EMP on a droid gave `stunTicksLeft 1386`, `stunFromEMP True` |
 | resolve an explosion while paused | `step_game_ticks` | advances it **without unpausing** — no raid risk |
-| exact time | `step_game_ticks` | 130 to 190 exactly |
+| exact time | `jawa/safe_advance` via `B.ticks(n)` (many ticks per frame; reports `requested` / `executed` and can stop early on a vitals stop, so read `executed`). Raw `step_game_ticks` is one tick per frame | 130 to 190 exactly (step_game_ticks) |
 | wall-clock time | `play_for` | returned success:false once, unexplained |
 | screenshot | `take_screenshot` | absolute path, readable by the agent |
 | god mode | `set_god_mode` | placement becomes instant |

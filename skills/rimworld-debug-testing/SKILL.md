@@ -54,10 +54,12 @@ is merely late. This has already cost real time, so it is the first thing here:
 
 - **Do NOT retry** — the connection is desynced, not idle.
 - **Do NOT re-issue** — you get a *second* map.
-- **Open a fresh connection**, then poll `jawa/list_pawns` until it stops
-  returning *"No current map"* — two polls, ~30–45 s. ⏱️ Measured **78.5 s** on
-  the 580-mod stack, so plan for well over a minute and poll rather than guessing
-  a sleep.
+- **Open a fresh connection**, then wait for the map with the existing helper
+  `live_site.wait_ready(rb, budget_s=…)` (`src/RimMandrake/Utils/live_site.py`) rather
+  than a new hand-written poll. ⏱️ Measured **78.5 s** on the 580-mod stack, so budget
+  well over a minute rather than guessing a sleep. One shared lifecycle wait is
+  PLANNED (item READYWAITS_UNIFY_ONE_HELPER, `await_lifecycle`). About 57 copied ready
+  loops are already in the tree, so do not add another.
 
 ⚠️ **It needs `rimworld/go_to_main_menu` first** if a game is already loaded —
 from inside a running colony it will not start a fresh one.
@@ -243,6 +245,11 @@ Running a north-star suite live — the bland world (generated or saved), the si
 (`modcheck run --situational`), the live_queue jobs, the companion-reading detectors, the
 interference playbook (naming dialogs, focus theft, late replies, extra maps) and the time ledger of
 a live pass — lives in `skills/northstar-validation/`.
+
+Any proof meant to run unattended (a `live-proof` line, a testq/Lightspeed job) follows
+`skills/live-debugging-proof-harness/references/lightspeed-authoring.md`: exit 0/1/2,
+deterministic rows, no `$`-built commands, `B.ticks` rather than poll loops, a named
+UNMEASURED reason for a bad site, and flyers read as state only.
 
 ## 4a. 🔴 LOOK AT IT. `take_screenshot` and then READ the image.
 

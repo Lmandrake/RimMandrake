@@ -67,6 +67,10 @@ asks a model when to stop.
   `ticksGame` delta, never the requested n; a request over `remaining()` raises `BudgetExceeded`
   **before** the clock moves. A long wait is chunked (`DEFAULT_CHUNK = 600`); a 95 000-tick wait that is
   not chunked is UNMEASURED by budget.
+  `clockgate.step` and `B.ticks` both go through `clockgate.advance_chunk`, which prefers
+  `jawa/safe_advance` (many ticks per frame). Do not add raw `step_game_ticks` or advance-read-repeat
+  loops beside it. A north-star script is written to the Lightspeed contract (exit 0/1/2, deterministic
+  rows, named UNMEASURED reasons): `skills/live-debugging-proof-harness/references/lightspeed-authoring.md`.
 - **Every chunk: full snapshot + detector sweep** (`snapshot.py`, `detectors.sweep`).
 - **The first SURPRISE/FATAL captures evidence before anything else** (`surprise.py`): verified pause
   (never a refresh tick — stepping mutates the evidence), sidecar JSON written atomically first, then one

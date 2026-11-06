@@ -45,17 +45,10 @@ things** — a colony and a 568-mod game respectively.
 
 ## 0b. 🔴 Claim the bridge before you drive it — `rimflow bridge take`/`release`
 
-⛔ **SUPERSEDED 2026-08-27 by redesign #4** (`redesign-4-two-windows` —
-BENCH+FOUNDRY replace the four seats, CHECK/BUILD no longer exist). The
-section below used to say bridge rights belong permanently to a seat called
-CHECK and that everyone else must ask it in chat. That seat is gone. **FOUNDRY
-now owns bridge driving directly**, per its own role file: `rimflow bridge
-take` before driving, `rimflow bridge release` the instant you stop — no
-chat message, no asking, no waiting on another seat's grant. BENCH does not
-drive the bridge as a matter of routine — **except L3 Opus-evaluation
-sittings** (`infrastructure/VALIDATION_LADDER.md`, owner 2026-09-01): an evaluating
-agent stages, screenshots and judges through the bridge itself, take/release as
-above.
+Whoever drives the bridge (a Relentless live round, a Test Pilot, a BENCH sitting
+for an owner live look, an L3 evaluation per `infrastructure/VALIDATION_LADDER.md`)
+runs `rimflow bridge take` before driving and `rimflow bridge release` the instant
+it stops. There is no chat message, no asking and no waiting on another seat's grant.
 
 ```
 python3 src/RimMandrake/rimflow/cli.py bridge take
@@ -321,7 +314,7 @@ Full evidence in `references/capability-matrix.md`.
 | make a **slave** | ⚠️ **spawn into ANOTHER faction first**, then imprison, then `Actions\T: Enslave`. You cannot enslave a pawn already in your faction — the call returns `success: true` and does nothing |
 | build anything | `apply_architect_designator` — rectangles, `dryRun` first |
 | clear ground | `jawa/destroy_batch`, or paint a terrain the plant cannot grow on (§5) |
-| advance time | `step_game_ticks` (exact) or `play_for` (wall-clock). ⚠️ Long runs are risky (owner, 2026-10-13); `jawa/time_set_ticks` simulates nothing but ages every absolute-tick timer; ⚠️ it is REFUSED on a map with a spawned colonist unless you pass `timeException=true` (+ `why="…"`), or set the clock before the colonists exist — both in `references/silent-failures.md` |
+| advance time | `jawa/safe_advance`, via `B.ticks(n)` (`validation_core._BridgeBase.ticks` → `clockgate.advance_chunk`): many ticks per frame. Raw `step_game_ticks` is one tick per frame; keep it for frame-sensitive steps (flyer landing) and legacy callers. Never an advance-read-repeat loop, and never `play_for` / unpaused play inside a proof (`skills/live-debugging-proof-harness/references/lightspeed-authoring.md` §3; `B.until`/`B.watch` PLANNED). ⚠️ Long runs are risky (owner, 2026-10-13); `jawa/time_set_ticks` simulates nothing but ages every absolute-tick timer; ⚠️ it is REFUSED on a map with a spawned colonist unless you pass `timeException=true` (+ `why="…"`), or set the clock before the colonists exist — both in `references/silent-failures.md` |
 | reload edited XML defs, no restart | ⛔ **NOTHING — `jawa/hot_reload_defs` is RETIRED** (owner, 2026-09-03: unstable). It hung a 589-mod game 5 min and left it unable to generate any pawn while reporting healthy. Restart on the 19-mod minimal list instead: 22 s. Canonical entry `skills/rimworld-modding/SKILL.md` §2 |
 | batch-read resolved defs | `jawa/get_defs` — `DefType/defName;…` pairs + reflective `fields`, dozens per call; ⚠️ scalar fields only |
 | see it | `take_screenshot` → absolute path you can read back |

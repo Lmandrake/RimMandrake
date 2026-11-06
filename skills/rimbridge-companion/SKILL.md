@@ -130,7 +130,7 @@ gate `fire_incident` and `send_letter` use.
 
 ---
 
-## 3. The ten design rules, each learned by getting it wrong
+## 3. The eleven design rules, each learned by getting it wrong
 
 1. 🔴 **Report refusals; never `catch {}`.** My own zone builder swallowed `AddCell`
    refusals and a 6×6 stockpile silently took 11 of 36 cells while reporting success —
@@ -167,6 +167,15 @@ gate `fire_incident` and `send_letter` use.
     dereferenced `.IsValid` unguarded and only ever ran while the letter stack was
     non-empty. A read tool that has not been exercised on an empty result has not been
     tested (FOUNDRY 2026-08-30).
+11. **Build a generic primitive, not a test suite in C#.** A new read is a probe, and a new
+    wait is a condition that a stepped advance can stop on, so every proof can reuse it.
+    The verdict stays in Python, and a probe that cannot see returns
+    `gone` / `oob` / `unbound` / `error`, never 0 or false. Spec:
+    `design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md`. A `cond_eval` tool,
+    `cond_watch` and until-on-advance are PLANNED (items CONDCORE_BUILD_THREE_VALUED_TREES,
+    CONDPROBES_WIRE_ENGINE_READS, ADVANCEUNTIL_WIRE_PER_TICK_STOP, CONDWATCH_BUILD_OWNED_RINGS).
+    Batch a read over a rect or a list rather than adding a per-cell call
+    (BATCHREADS_BUILD_ROUND_TRIP_CUT).
 
 ---
 

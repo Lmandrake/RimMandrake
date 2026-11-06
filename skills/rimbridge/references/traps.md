@@ -351,10 +351,16 @@ instinct gets wrong:
 - **A coarse stepper overshoots short states.** `scenelib.run(n)` drives `play_for` and on
   the full list overshoots by ~100+ ticks per call, so a ~50-tick mental state
   (`RM_ParentalEnrage` after the intruder leaves) starts and ends between two polls and
-  reads as a behaviour FAIL. Poll short states with `rimworld/step_game_ticks` (exact).
+  reads as a behaviour FAIL. Step exactly (`B.ticks(n)`, safe_advance), never with
+  `play_for`. Prefer a durable trace that a single read after the window can see (a
+  counter, a log line, a hediff). A stop-on-state is PLANNED (item
+  ADVANCEUNTIL_WIRE_PER_TICK_STOP). Until it lands, a small-step poll belongs in a throwaway
+  diagnostic, not in a committed proof
+  (`skills/live-debugging-proof-harness/references/lightspeed-authoring.md` §3).
 - **Stats do not predict wall pace on the full list.** `Out of Combat ReBoost` walks
   colonists ~2 ticks/cell while `MoveSpeed` still reads 4.6 c/s, so "step K ticks and catch
-  the pawn mid-walk" misses. Poll the walk's own state in small steps.
+  the pawn mid-walk" misses. Read the walk's own state (job, path, position) rather than
+  predicting it from stats.
 
 Detect: a result that flips when you change the step size is a timing artefact, not a verdict.
 

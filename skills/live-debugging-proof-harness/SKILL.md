@@ -121,6 +121,9 @@ site independent of the map, then **reads it back**:
   (`reveal`), not by `set_fog` alone.
 - **Sites must be disjoint**, with margin for the mod's real geometry. For a hose
   this is the ~4.4-cell straight lead-out. Aim at the target's real footprint cell.
+- **Water and sources: footprint plus 2 cells.** Check `jawa/flowworks_excavation_rect`
+  (`includeTerrain`) for `isSource` / water first. A pit beside river sources filled by
+  gravity and spoiled its row. A failed check exits UNMEASURED with a named reason.
 
 Detail, map culling and the fixture recipes: `references/sites-and-timing.md`.
 
@@ -139,6 +142,11 @@ not your mechanism.
   the build measures that gap, so the row records `pumpPoweredAfterTicks`.
 - **Bridge time is ticks, and a step is not the step you asked for.** See
   `skills/rimbridge/references/traps.md` for tick-keyed caches, overshoot and load races.
+- **Advance with `B.ticks(n)`, never with an advance-read-repeat loop.** `B.ticks` goes
+  through `clockgate.advance_chunk` to `jawa/safe_advance`, which runs many ticks per
+  frame. A raw `step_game_ticks` runs one tick per frame, and every poll round trip
+  costs ~53 ms. Stop-on-condition (`B.until`) and sampling (`B.watch`) are PLANNED.
+  Today's rule and the item ids are in `references/lightspeed-authoring.md` §3.
 
 ## Time advances and disturbances
 
@@ -256,8 +264,20 @@ How to tell the classes apart, the 2026-10-11 tally and the modcheck/walk traps:
 🔴 **Never live-test a flyer's flight without the owner present.** He has said it three
 times (repo `CLAUDE.md`, "NEVER live-test a flyer's flight"). A proof row about flight
 reads `Pawn_FlightTracker` state through a debug `[Tool]`. A visual flight bar waits
-for a joint session. Never file a live-flight bar that only an unattended screenshot
-hunt could close.
+for a joint session (item FLYERFRAMES_PROVE_JOINT_SESSION, needs=owner). Never file a
+live-flight bar that only an unattended screenshot hunt could close. The proof-line
+runner refuses flyer words outright.
+
+## Write it so Lightspeed can run it
+
+Lightspeed runs proofs with no LLM (testq, SteveDesktop). 93% of test units qualify,
+but only if the proof is written for it. Exit 0/1/2 means PASS/FAIL/UNMEASURED. Print
+one deterministic row per criterion, with the verdict last. Use no `$`-built commands.
+Keep a criterion ≤160 chars, or put the full text in the prose. Validate the site first
+and give a named UNMEASURED reason. Read flyers as state only. Declare the smallest
+tier. `hot_reload_defs` is not a speed path. `relentless_live.py` refuses proof lines
+that break these rules. The full rules, their reasons, and PLANNED tools with today's
+fallback are in `references/lightspeed-authoring.md`.
 
 ## Writing the plan before the run
 
@@ -277,6 +297,7 @@ see `skills/rimworld-modding/references/validation-plan.md`.
 | `references/perf.md` | any perf row or budget |
 | `references/classifying-and-learning.md` | after a run: MOD/SITE/HARNESS, fragility audits, recording into the script, modcheck/walk traps |
 | `references/validation-plan-and-thresholds.md` | writing the plan and the closing bar for a check |
+| `references/lightspeed-authoring.md` | writing any `live-proof` line or proof script: exit codes, rows, refused commands, advancing time, site checks, PLANNED tools |
 
 ## Helper budget for live proofs — owner, 2026-10-23 (token burn)
 

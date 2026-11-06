@@ -29,6 +29,12 @@ was real and is *why* it is retired rather than gated: a call that behaves on 19
 mods and destroys pawn generation on 589 cannot be trusted by the seat deciding
 which case it is in. Canonical entry: `skills/rimworld-modding/SKILL.md` §2;
 evidence: `infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
+Do not count it as a speed path in any test-time estimate either.
+
+A **proof** never swaps the list or restarts the game itself: the `live-proof` runner
+refuses `modlist_swap`, `modcheck run` and `deploy … --apply`. A proof declares the
+smallest tier that holds its mod (`live-tier: <tier>`), and testq runs it on that list
+(`skills/live-debugging-proof-harness/references/lightspeed-authoring.md` §2, §6).
 
 ```
 python3 src/RimMandrake/Utils/modlist_swap.py --status

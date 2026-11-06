@@ -259,7 +259,9 @@ a few real seconds. A speed that "was set" is not a game that is running.
 ✅ **`rimworld/step_game_ticks` works and is the reliable route.** Same session, immediately after:
 `{ticks: 600}` → `status completed, completedTicks 600`, and `ticksGame` 5696 → **6296**. It is one
 tick per Unity frame, so ~3 000 ticks is a few seconds of wall clock — budget for it, but it actually
-advances the simulation. Any test that needs time to pass should use it, not the speed control.
+advances the simulation. A test that needs time to pass should step rather than use the speed
+control. Today, prefer `jawa/safe_advance` via `B.ticks(n)` (`validation_core._BridgeBase.ticks`),
+which runs many ticks per frame. See `skills/live-debugging-proof-harness/references/lightspeed-authoring.md` §3.
 
 ✅ **`jawa/set_game_speed` actually moves time and is the other reliable route** — ticks +177
 over 3 real seconds at Normal, 0 when Paused (2026-08-30, FOUNDRY). Prefer it over

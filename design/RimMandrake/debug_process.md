@@ -105,8 +105,19 @@ Functional checks belong in the suite.
    costs a bridge minute. A run recorded through `modcheck` is the record (§1 DONE (b)).
 6. **Site prep.** Every scene starts from a cleared, dry, known site (`prepare_site` /
    `ProofResetRect`, a dryness check), so water, plants and clutter cannot decide the result.
+   Check the footprint plus a 2-cell margin for source and water cells
+   (`jawa/flowworks_excavation_rect`, `includeTerrain`). A failed check returns UNMEASURED
+   with a named reason, never PASS or FAIL.
 7. **Control.** Every scene has a case that must fail: the same act without the thing (held
    without ladder, off-switch, wrong material). A scene with no control is not a test.
+8. **Runnable with no LLM (Lightspeed).** Exit 0/1/2 means PASS/FAIL/UNMEASURED. Print one
+   deterministic row per criterion, with the verdict last. Use no `$`-built commands and
+   no game-mutating calls in a `live-proof` line. Keep each criterion ≤160 chars, or put
+   the full text in the prose. Advance with `B.ticks` (safe_advance), never with an
+   advance-read-repeat loop. Read flyers as state only. Declare the smallest tier. The
+   reason: 93% of test units need no model, but only a proof written this way can run
+   in that lane. The rules, their sources, and today's fallback for each PLANNED tool:
+   `skills/live-debugging-proof-harness/references/lightspeed-authoring.md`.
 
 **The `*ArtOverride` family is gone.** All 60 standalone art-override mods were folded into
 the mods that own their creatures (ART_OVERRIDE_FOLD_ALL_1, 2026-10-09): the art sits at a path

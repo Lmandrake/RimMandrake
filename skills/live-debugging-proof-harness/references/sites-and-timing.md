@@ -39,6 +39,12 @@ roof and things. Anything left in the rect gives `UNMEASURED/SITE` and returns F
   needs room for its ~4.4-cell straight lead-out, so prepare 6 extra cells on the
   lead-out side. Aim a hose at the relay's real footprint cell (RL3 aims onto B's SW
   footprint cell), not at a cell beside it.
+- **Water and source margin.** Before staging a pit or any dug site, check the whole
+  footprint plus a 2-cell margin with `jawa/flowworks_excavation_rect` (`includeTerrain`)
+  for `isSource` / water terrain. The 05 PIT_ACCESS deep pit (x106-108 z103-105) had a
+  cell orthogonally beside river sources. It filled by gravity to f=1, which is correct
+  FlowWorks behaviour, but the ladder-refusal row could no longer be attributed. A
+  failed check exits 2 (`UNMEASURED/SITE <reason>`), never a PASS or a FAIL.
 - **Blocks need disjoint sites**, and a block that tears down map-wide (the GSS matrix)
   runs first.
 
@@ -56,7 +62,9 @@ roof and things. Anything left in the rect gives `UNMEASURED/SITE` and returns F
 - **Regenerate Current Map wipes the colonists.** Test on the home map and respawn
   colonists with `src/RimMandrake/bridgetools/spawn_test_colonists.py`.
 - **Load saves from the main menu, once.** A paused site no-ops an `ordered_job`
-  `waitTicks`. `step_game_ticks` needs `timeoutMs`.
+  `waitTicks`. Keep `order_pawn` `waitTicks` ≤600, then reconcile and `pause_game`. A
+  longer wait hits the 30 s client timeout and leaves the game unpaused. Advance with
+  `B.ticks(n)` (safe_advance). A legacy direct `step_game_ticks` needs `timeoutMs`.
 - **Prove a quicktest world reaches Playing:**
   `python.exe src/RimMandrake/bridgetools/prove_quicktest_world.py` (exit 0 = Playing
   with a world).
@@ -75,9 +83,13 @@ roof and things. Anything left in the rect gives `UNMEASURED/SITE` and returns F
   140 / 100 / 170). Vanilla's power net switches it on later, not at spawn. The fix is
   `_powered()`, which waits for the pump, plus a recorded `pumpPoweredAfterTicks`.
   Any machine cycle timed from its build has the same trap.
-- **To trace a mechanism the window says is broken, poll it.** Re-stage by hand on a
-  spare plot and read the machine every 10 ticks. That turned "relay chain carries
-  nothing" into "the pump had no power yet". The chain itself worked.
+- **To trace a mechanism the window says is broken, sample it in a throwaway
+  diagnostic, never in the committed proof.** Re-staging on a spare plot and reading
+  the machine every 10 ticks turned "relay chain carries nothing" into "the pump had no
+  power yet". The chain itself worked. Today, step with `B.ticks(10)` in a scratch
+  script. A per-window sampler is PLANNED (item CONDWATCH_BUILD_OWNED_RINGS, `B.watch`).
+  What the trace teaches goes into the proof as a precondition wait or a bound, not as
+  a poll loop (`lightspeed-authoring.md` §3).
 - Tick-keyed caches, a stepper that overshoots short states, load-call races:
   `skills/rimbridge/references/traps.md`, "Bridge time is TICKS".
 

@@ -76,6 +76,15 @@ of biomes end-to-end: build it, don't hand-crank it. When you catch yourself
 about to issue the same three bridge calls a third time, that is the signal to
 put them behind a flag instead.
 
+**A scene for a mechanism mod comes from the mod's own proof script**, never staged
+by hand: its `prepare_site`, the dry plot and the controls. The reason: a hand-staged
+scene shows something the proof never reproduces, and the owner then judges a scene
+nobody can rebuild. Validate the site in the script first (water/source margin:
+`skills/live-debugging-proof-harness/references/lightspeed-authoring.md` §4). A paused
+barrier that waits for the shot to settle is PLANNED (item SHOTSETTLE_BUILD_PAUSED_BARRIER).
+Today, pause, verify the pause, and read the subject's state back before
+`take_screenshot`.
+
 ## The helper does the whole clean-stage in one call
 
 `src/RimMandrake/Utils/stage_review.py` composes every step below with the
@@ -159,9 +168,11 @@ shows three" comes from: they died or fled in the seconds between calls.
   returns whether ticks actually held.
 - **Unpause only in bounded bursts, for a stated reason**, then re-pause before
   capturing: to let plants grow in, weather settle, or ash drifts accumulate
-  (§4). `step_game_ticks` in ≤2000-tick chunks (a bigger step frame-times out);
-  a timeout is connection-fatal, so open a fresh socket and poll, never retry on
-  the dead one.
+  (§4). Prefer a stepped advance to unpausing: `B.ticks(n)` / `jawa/safe_advance`
+  runs many ticks per frame inside a frame budget. A raw `step_game_ticks` is one
+  tick per frame, so keep it in ≤2000-tick chunks (a bigger step frame-times out).
+  A timeout is connection-fatal: open a fresh socket and read the state back, never
+  retry on the dead one.
 
 ## 3. Keep the map alive — colonists make it a home map
 
