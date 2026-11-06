@@ -169,6 +169,7 @@ FEATURES = [
     ("set", r"^towerCostMultiplier$", "Tower cost", M + "a build-cost multiplier, read from the cost bill, not a look"),
     ("def", r"^ThingDef/RM_LadderSteel$", "Steel fire-escape ladder", "hold_ladder_steel"),
     ("def", r"^(ThingDef/RM_(CrushedIce|IceMelter)|RecipeDef/RM_MeltCrushedIce)$", "Ice melter and crushed ice", "ice_melter"),
+    ("tex", r"Machinery/RM_IceMelter_", "Ice melter art", "ice_melter"),
     ("def", r"^(DesignationDef/RM_OperateLadder|JobDef/RM_OperateLadderJob|WorkGiverDef/RM_OperateLadderWorkGiver)$", "Operate-ladder order (raise from above or below, lower from above)", "hold_ladder_raised"),
     # REVIEW_MAP_COVERAGE_FILL_ABOUT_NINETY_ROWS: raider/climb behaviour is read from state, not a staged scene
     ("def", r"^JobDef/(RM_RaiderFetchFill|RM_RaiderSetLadder|RM_RaiderFillTrench|RM_RaiderTakeLadder|RM_RaiderChopForLadder)$", "Raiders cross a trench with a ladder, fill it, take a standing ladder down, or fell a tree to make one", M + "raider AI jobs; proved by the functional script (RaiderTrenchChecks), no frozen station stages a raid"),
@@ -218,7 +219,7 @@ FEATURES = [
     ("tex", r"Canals/RM_Ladder", "Ladder art, lowered and raised", "hold_ladder_raised"),
     ("set", r"^(superdeepRoomsEnabled|captureDownEnabled|wardenFromLipEnabled|pitRoomMinDepthMetres|pitStuckAlertEnabled)$", "A pit prison run from the lip",
      "hold_prison"),
-    ("def", r"^JobDef/RM_CaptureDown$", "Capture down from the lip", "hold_prison"),
+    ("def", r"^JobDef/RM_CaptureDown(Pinned)?$", "Capture down from the lip (and the pinned prisoner's job)", "hold_prison"),
     ("set", r"^(pitExposureEnabled|pitExposureNarrowing|pitTemperatureCoupling|pitResistanceLossMultiplier)$",
      "Exposure in an open pit", "hold_exposure"),
     ("def", r"^(HediffDef/RM_PitExposure|ThoughtDef/RM_ExposedPrisoner)$", "Exposure and its thought", "hold_exposure"),
