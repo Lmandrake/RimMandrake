@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RSW_PodWorm__GlowWorm_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_PodWorm__GlowWorm",
+  "prompt": "A creature sprite for RimWorld: the hell's lantern. A great, slow, segmented worm-thing the size of a muffalo, with a long, low, heavy serpentine body made of many successive transverse segment rings, its back and flanks studded with large swollen pods that glow a sickly orange in the dusk of the root-maze. The hell's lantern crawls through the Miasma at barely a walking pace, grazing, paying no attention to anything around it. Its mandibles carry a venom that leaves anything bitten sick and weakened. Visible features it must show: a great slow segmented worm the size of a muffalo; swollen pods studding its back and sides, glowing sickly orange; venomous mandibles at the front. Every view shows the same worm: a long, low, thick-bodied worm about three times as long as it is wide, built of many rounded transverse rings of the same girth along the middle, with the same large orange pods in a row along the back at the same size and count. The side view shows the full length of the body in profile: a rounded head with mandibles at the front, then a long run of transverse segment rings crossing the body from back to belly, pods along the spine and upper flank, and a body that tapers to a blunt rounded tail end at the rear. The front view, eyes and mandibles toward the viewer, shows the head with its mandibles above a narrow rounded body, with the first segment rings and a few orange pods on the back, the body clearly narrower than the side view is long. The rear view, seen from behind, shows the same ring-segmented body from the tail end: a blunt rounded terminal segment, concentric transverse rings receding toward the head, narrower than the body is long, with the orange pods on top of the back, the head and mandibles hidden behind the body. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with the creature alone on it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, LUMP, F_INCONSISTENT, LUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1551",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm"
+ },
+ {
+  "id": "arteval_RSW_Runyip__Runyip_j_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Runyip__Runyip_j",
+  "prompt": "A creature sprite for RimWorld: the runyip. A squat forest herbivore from Yavin 4 with branching antlers and a flexible snout. Dark brown stripes cross its pale coat, and its front toes bear claws. Visible features it must show: a squat, low-slung, broad barrel-bodied build on short legs. The shoulders carry a rounded hump that is the highest point of the back, and the topline slopes down from the shoulder hump to a lower, rounded rump. The head hangs low in front of the hump on a short neck, so the downturned snout tip nearly reaches the ground. The snout is a shorter, thicker tapir-like proboscis, a broad flexible downturned pig/tapir snout in a pale muzzle with natural skin folds and a clearly defined, heavy thick lower lip beneath it. Branching antler rack of one fixed size and shape, with the same span and height in every view. Clawed toes on the front feet instead of hooves. Pale coat crossed by bold dark brown stripes, the same stripe pattern in every view. Side view shows the profile with the shoulder hump as the highest point of the back, the rump lower, and the low-hung head. Front view shows the face with the broad pale snout and heavy lower lip, eyes toward the viewer, with the full antler rack and a wide chest. Rear view, seen from behind, shows the broad, heavy, barrel-shaped rump and haunches as wide as the front view's body, the shoulder hump rising above it, the tail toward the viewer, the eyes hidden, and the antler rack at the same width and height as in the front view. One consistent body across all views: the same bulk, the same width and the same antlers. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CANON_MISS, F_INCONSISTENT, CANON_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1551",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Runyip/Runyip"
+ }
+]
