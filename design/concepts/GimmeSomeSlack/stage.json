@@ -109,10 +109,24 @@
     "ref": "run rm-role-designer-1793951586",
     "stage": 4,
     "tokens": 179767
+   },
+   {
+    "at": "2026-11-06T08:12:29Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1793952643",
+    "stage": 5,
+    "tokens": 352293
+   },
+   {
+    "at": "2026-11-06T08:15:08Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793952614",
+    "stage": 5,
+    "tokens": 145749
    }
   ],
   "reserve": 60000,
-  "spent": 4044373
+  "spent": 4542415
  },
  "history": [
   {
@@ -270,11 +284,29 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1793951586: stage 4 done"
+  },
+  {
+   "at": "2026-11-06T08:10:42Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "4044373 of 4000000 spent; run rm-role-designer-1793952614 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T08:10:42Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1793952614, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-06T08:15:08Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1793952614: stage 5 return"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/GimmeSomeSlack",
- "pending_decision": "his flagship pick: which showcase is Gimme Some Slack's face (showcase 1 must be bound to an owner decision with flagship; the root's 'Judged first' line was agent text inside the root he approved, a root approval is not a pick, and the earlier a_flagship ask was struck before the showcase rule existed)",
+ "pending_decision": "Coverage gaps from coverage_verdict.json (judge rm-coverage-judge-1793952643): (1) game_statics_reset is a built capability that ships (impl present). Its only coverage is sc_statics_new_game, which is an exploration scene with no control. An exploration scene never accepts, so this capability is not accepted by any acceptance scene or leaf. The sheet's 'delegated' line still says new-game cleanup is 'checked by their own scenes'. [scenes.json coverage_rest[game_statics_reset] -> sc_statics_new_game (kind exploration); sheet.md ## delegated]; (2) Owner-change wire cutting is built: RM_MapComponent_Aerial.cs:368 is gated by AerialSettings.cutWiresOnOwnerChange, default true. It has no inventory entry, no leaf and no scene that stages an ownership change. sc_settings lists the cutWiresOnOwnerChange flip, but with no owner change staged there is nothing to observe, so the flip proves nothing. [record.json inventory (missing entry); scenes.json sc_settings start/action]; (3) The sc_no_repeat control does not rule out what it claims. Forcing two edges to the same seed reads zero whether the distance is computed on the drawn curve or on the seed. So it cannot catch the leaf's own false_pass (distance computed on seeds, not the drawn curve). A discriminating control needs, for example, distinct seeds with identical drawn curves planted, which must read zero. [scenes.json sc_no_repeat.control; tree.json cords_never_repeat / cord_shape_variation_probe false_pass]; (4) The sc_four_looks control (two runs in the same look read the same) cannot rule out its stated alternative, looks differing only by tint. A tint-only implementation passes both the positive case and this control. The 'captures told apart' expect names no instrument or judge. [scenes.json sc_four_looks.control/expect]; (5) The sc_spans control (the same capture with nothing under the span) is not a rejection or absence case. It is the positive read repeated, so it distinguishes no mechanism. The scene needs a control that fails when the span sits at building or pawn altitude. [scenes.json sc_spans.control]; (6) The sc_gravship control (the read before launch passes) is not a control: it can never fail and rules nothing out. 'With the switch off its stated behaviour holds' names no expected observable. The restore is the boilerplate scene-rect snapshot, which cannot undo a flight that moved the ship to another map or tile. [scenes.json sc_gravship.control/expect/restore]; (7) sc_tap_theft never asserts that other factions' goodwill is unchanged. A drain that hits both the victim and the wrong faction would pass, yet the leaf's red names 'costs a different faction' and an item for exactly this is open (GSS_POWER_THEFT_FIX_WRONG_VICTIM). [scenes.json sc_tap_theft.expect; tree.json tap_steals_and_costs_goodwill.red]; (8) The sc_fallen_span control (an unpowered span cut, both ends dead) tests live/dead by power. It does not rule out its stated alternative, a span hidden on cut. Its rules_out does not match its case. [scenes.json sc_fallen_span.control]; (9) floor.json says the walk establishes memory (heap and texture MB before and after) and save_size (mid-way and end). Neither the sc_walk expect nor the walk_scavenger_base oracle reads them. sc_walk also has no expect for its master off/on step or for the frame-time bar the leaf oracle names. Its restore is the scene-rect snapshot, which does not fit a week-long fresh colony on his full list. [floor.json memory/save_size; scenes.json sc_walk expect/restore; tree.json walk_scavenger_base.oracle_proposed]; (10) Fuel-puddle ignition by a live fallen wire is part of the built fallen_wire_shock capability ('can ignite fuel puddles'; its chemfuel half has passed once). No leaf or scene asserts it. sc_shock only treats a fuel puddle as an alternative to rule out. [record.json inventory fallen_wire_shock; tree.json fallen_wire_shocks_crossers; scenes.json sc_shock]; (11) His words (s_no_plug_in_pipe_slot) are 'favor diagonal approaches sliding underneath'. No leaf or scene tests the slide-under approach itself; only 'no plug in a pipe slot' is asserted, and the slideUnder switch flip in sc_settings names no observable. Separately, the inventory says WaterproofConduit draws transparent, but sc_conduit_invisible stages only a plain run, so WaterproofConduit is never shown. [record.json scope s_no_plug_in_pipe_slot, inventory invisible_conduit; tree.json drawing_true_to_grid, conduit_invisible; scenes.json sc_true_to_grid, sc_conduit_invisible, sc_settings]",
  "recovery": [],
  "results": [
   {
@@ -521,11 +553,36 @@
    "run": "rm-role-designer-1793951586",
    "stage": 4,
    "summary": "Cold Reader exam passed: 22 frozen scenarios (12 Examiner, 10 Challenger), both fresh Readers matched expect on 22/22, accept_where_reject_core 0, no Challenger misses; control with drawing_true_to_grid removed accepted the four cross-net/phantom-cable rejects the real tree caught. exam.json frozen against the current tree and sheet hashes."
+  },
+  {
+   "at": "2026-11-06T08:15:08Z",
+   "decision": "Coverage gaps from coverage_verdict.json (judge rm-coverage-judge-1793952643): (1) game_statics_reset is a built capability that ships (impl present). Its only coverage is sc_statics_new_game, which is an exploration scene with no control. An exploration scene never accepts, so this capability is not accepted by any acceptance scene or leaf. The sheet's 'delegated' line still says new-game cleanup is 'checked by their own scenes'. [scenes.json coverage_rest[game_statics_reset] -> sc_statics_new_game (kind exploration); sheet.md ## delegated]; (2) Owner-change wire cutting is built: RM_MapComponent_Aerial.cs:368 is gated by AerialSettings.cutWiresOnOwnerChange, default true. It has no inventory entry, no leaf and no scene that stages an ownership change. sc_settings lists the cutWiresOnOwnerChange flip, but with no owner change staged there is nothing to observe, so the flip proves nothing. [record.json inventory (missing entry); scenes.json sc_settings start/action]; (3) The sc_no_repeat control does not rule out what it claims. Forcing two edges to the same seed reads zero whether the distance is computed on the drawn curve or on the seed. So it cannot catch the leaf's own false_pass (distance computed on seeds, not the drawn curve). A discriminating control needs, for example, distinct seeds with identical drawn curves planted, which must read zero. [scenes.json sc_no_repeat.control; tree.json cords_never_repeat / cord_shape_variation_probe false_pass]; (4) The sc_four_looks control (two runs in the same look read the same) cannot rule out its stated alternative, looks differing only by tint. A tint-only implementation passes both the positive case and this control. The 'captures told apart' expect names no instrument or judge. [scenes.json sc_four_looks.control/expect]; (5) The sc_spans control (the same capture with nothing under the span) is not a rejection or absence case. It is the positive read repeated, so it distinguishes no mechanism. The scene needs a control that fails when the span sits at building or pawn altitude. [scenes.json sc_spans.control]; (6) The sc_gravship control (the read before launch passes) is not a control: it can never fail and rules nothing out. 'With the switch off its stated behaviour holds' names no expected observable. The restore is the boilerplate scene-rect snapshot, which cannot undo a flight that moved the ship to another map or tile. [scenes.json sc_gravship.control/expect/restore]; (7) sc_tap_theft never asserts that other factions' goodwill is unchanged. A drain that hits both the victim and the wrong faction would pass, yet the leaf's red names 'costs a different faction' and an item for exactly this is open (GSS_POWER_THEFT_FIX_WRONG_VICTIM). [scenes.json sc_tap_theft.expect; tree.json tap_steals_and_costs_goodwill.red]; (8) The sc_fallen_span control (an unpowered span cut, both ends dead) tests live/dead by power. It does not rule out its stated alternative, a span hidden on cut. Its rules_out does not match its case. [scenes.json sc_fallen_span.control]; (9) floor.json says the walk establishes memory (heap and texture MB before and after) and save_size (mid-way and end). Neither the sc_walk expect nor the walk_scavenger_base oracle reads them. sc_walk also has no expect for its master off/on step or for the frame-time bar the leaf oracle names. Its restore is the scene-rect snapshot, which does not fit a week-long fresh colony on his full list. [floor.json memory/save_size; scenes.json sc_walk expect/restore; tree.json walk_scavenger_base.oracle_proposed]; (10) Fuel-puddle ignition by a live fallen wire is part of the built fallen_wire_shock capability ('can ignite fuel puddles'; its chemfuel half has passed once). No leaf or scene asserts it. sc_shock only treats a fuel puddle as an alternative to rule out. [record.json inventory fallen_wire_shock; tree.json fallen_wire_shocks_crossers; scenes.json sc_shock]; (11) His words (s_no_plug_in_pipe_slot) are 'favor diagonal approaches sliding underneath'. No leaf or scene tests the slide-under approach itself; only 'no plug in a pipe slot' is asserted, and the slideUnder switch flip in sc_settings names no observable. Separately, the inventory says WaterproofConduit draws transparent, but sc_conduit_invisible stages only a plain run, so WaterproofConduit is never shown. [record.json scope s_no_plug_in_pipe_slot, inventory invisible_conduit; tree.json drawing_true_to_grid, conduit_invisible; scenes.json sc_true_to_grid, sc_conduit_invisible, sc_settings]",
+   "inputs": {
+    "exam": "21d86d38c761753d1acb087604d149f32dc4db6636bf7397b9c72dc56677d9f5",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "34790104ed4ab329b537e01812fb1b6b67aea600f8825580f62c6626dc2e26aa",
+    "sheet": "d0af3cc3ee371c0cb5b130c2feade1d90c0a9cc796b9b894ef37c8cd8dcef2ce",
+    "tree": "50650ca17d1a83fcf9799d961d3a7733577a575e6f463fd230ba66b1f0206a5f"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_lock.md": "48294670b2e5f64648a7637fd8eaf09092c2ccbe54c496b99c0ff3a0952321ad"
+   },
+   "outcome": "return",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1793952614",
+   "stage": 5,
+   "summary": "Coverage judge rm-coverage-judge-1793952643 returned not_covered with 11 gaps, all return_to 3 (none needs his answer); tree not signed, so the lock cannot proceed.",
+   "to": 3
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 3,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
