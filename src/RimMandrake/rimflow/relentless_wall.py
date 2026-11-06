@@ -334,8 +334,8 @@ def make_box(prof, source, sha, nonce, grants=()):
     (box / "verdict").write_text(VERDICT_SCRIPT, encoding="utf-8")
     os.chmod(box / "verdict", 0o755)
     if ITEM_GRANT in (grants or ()):
-        try:    # the items as of the ledger snapshot's commit, so the two agree; a root commit has only itself
-            grant_items(box, source, parent if parent == sha + "^" else sha)
+        try:    # the candidate's items (item_rev): the rev the reach probe granted, so a passed probe is what the box shows
+            grant_items(box, source, item_rev(sha))
         except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as e:
             shutil.rmtree(tree / ITEMS, ignore_errors=True)
             (box / ITEM_NOTE).unlink(missing_ok=True)
@@ -367,8 +367,11 @@ GIT_NOTE = "gitobj.json"
 # reads the live item glob (NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK's selftest: "UMBRA_TITAN_POPULATE_BURNS_TO_WALK.md ...
 # whole items dir absent in export") classed `other`, whose repair binds HOST paths: it passed its probe and the Judge
 # stayed blind, since no bind puts a file into the exported tree. A passed items repair grants the box that folder from
-# git as of the ledger snapshot's commit (tree_from_parent), read only, like the ledger. It is filers' prose, never a
-# worker's account (the builder's commit cannot touch it: LEDGER_ONLY), and the prompt says to judge by runs, not by it.
+# git at the candidate (item_rev), read only. The prompt calls it filers' prose and says to judge by runs, not by it.
+# CHECKER_REACH_FIX_ITEMS_STILL_DARK: it was granted at the candidate's PARENT while the probe granted at the candidate.
+# A build may edit item prose (LEDGER_ONLY only makes a commit touching nothing else "no work"): WORLD_BEAUTY_VERIFY_
+# OFFLINE_BEAT_THE_GAME's candidate rewrote items/closed/PLANETARY_LOADSCREEN_RENDERS_2.md's verify clause, the probe read
+# the new text, the box held the old, and the Judge stayed blind. One rev, item_rev, serves the box and the probe.
 ITEM_GRANT = "item_prose"
 ITEMS = "infrastructure/state/items"
 ITEM_NOTE = "items.json"
@@ -447,6 +450,11 @@ def grant_git(box, source, sha):
         subprocess.run(["git", "update-index", "-z", "--skip-worktree", "--stdin"], env=env, input=b"\0".join(gone) + b"\0",
                        capture_output=True, timeout=300, check=True)
     (box / GIT_NOTE).write_text(json.dumps({"sha": sha, "binds": binds}), encoding="utf-8")
+
+
+def item_rev(sha):
+    """The rev the item_prose grant reads: the candidate itself, for make_box and the reach probe alike."""
+    return sha
 
 
 def grant_items(box, source, rev):

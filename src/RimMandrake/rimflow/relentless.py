@@ -3312,7 +3312,7 @@ class Effects(relentless_game.GameFx):
             for sub in ("projects", "tmp", "tree"):
                 os.makedirs(os.path.join(box, sub), exist_ok=True)
             try:
-                relentless_wall.grant_items(box, repo, sha)
+                relentless_wall.grant_items(box, repo, relentless_wall.item_rev(sha))
             except (OSError, RuntimeError, subprocess.SubprocessError) as e:
                 return False, "item_prose: the grant could not be made at %s: %s" % (sha[:10], str(e)[-200:])
             # positional only: systemd substitutes $name in the command line (a named shell variable reads empty)
