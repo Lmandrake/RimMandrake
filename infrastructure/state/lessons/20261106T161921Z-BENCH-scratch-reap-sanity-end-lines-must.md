@@ -1,0 +1,1 @@
+scratch_reap sanity END lines must count only what the run LEFT (rows not DELETED/YOUNG), never a whole-population count: session_dirs (2026-11-05) and rm_scratch_clones (2026-11-06, 17 young work-package clones) each alarmed on live young work. Whole counts stay readings; ops_watch OP2 reads rm_scratch_clones. (OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ)
