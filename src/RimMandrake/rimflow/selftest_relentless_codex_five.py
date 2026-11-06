@@ -276,9 +276,12 @@ def t_caps_mod_name_in_title():
 
 def t_saved_patches_skip_textconv():
     src = inspect.getsource(R.Effects)
-    bare = src.count('"diff", "--binary"') - src.count('"diff", "--binary", "--no-textconv", "--no-ext-diff"')
-    ok(src.count('"diff", "--binary"') >= 3 and bare == 0,
-       "#16 every saved patch is the raw bytes (--no-textconv --no-ext-diff): %d without" % bare)
+    argvs = [ln for ln in src.splitlines() if '"diff"' in ln and '"--binary"' in ln]   # every argv that saves a patch
+    bare = [ln.strip() for ln in argvs if '"--no-textconv"' not in ln or '"--no-ext-diff"' not in ln]
+    patches = sum(src.count('write("%s", diff +' % n) for n in ("diff.patch", "index.patch", "real.patch"))
+    ok(argvs and not bare and patches == 3,     # the three patches share one argv list (0f607dfe36), so count writes
+       "#16 every saved patch is the raw bytes (--no-textconv --no-ext-diff): %d argvs, %d without, %d patch writes"
+       % (len(argvs), len(bare), patches))
 
 
 def t_unreadable_tree_is_kept():
