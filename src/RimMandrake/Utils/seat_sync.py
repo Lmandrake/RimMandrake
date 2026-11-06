@@ -253,6 +253,25 @@ def union_delta(ours: bytes, base: bytes, theirs: bytes) -> bytes | None:
     return rest + b"".join(out)
 
 
+def union_merge(ours: bytes, base: bytes, theirs: bytes) -> bytes | None:
+    """The shard as it must read after the move: upstream's bytes in upstream's ORDER, then every line of `ours` that
+    upstream does not hold, in our order (the appends not yet landed). None where union_delta refuses.
+    BENCHSHARD_DIAGNOSE_SAME_EVENTS_NEW_ORDER: appending union_delta after `ours` kept every event but, once landing had
+    put a peer's line BEFORE one of ours upstream, left the shard holding HEAD's lines in another order: dirty for good,
+    blocking restarts and hiding real appends. With this the diff against the target is a pure append."""
+    delta = union_delta(ours, base, theirs)
+    if delta is None:
+        return None
+    left = collections.Counter(theirs.splitlines(True))
+    extra = []
+    for ln in (ours + delta).splitlines(True):
+        if left[ln]:
+            left[ln] -= 1
+        else:
+            extra.append(ln)
+    return theirs + b"".join(extra)
+
+
 def merge3(ours: bytes, base: bytes, theirs: bytes) -> bytes | None:
     """git merge-file on bytes: the clean result, or None on any overlap, binary file or error."""
     with tempfile.TemporaryDirectory() as td:
@@ -359,10 +378,48 @@ def _exchange(a: Path | str, b: Path | str) -> None:
         raise OSError(err, os.strerror(err), str(b))
 
 
+def _write_all(fd: int, blob: bytes) -> None:
+    view = memoryview(blob)
+    while view:
+        view = view[os.write(fd, view):]
+
+
+REORDER_PARK = "reordered"     # a shard's bytes before an in-place rewrite; left behind only by a death mid-write
+
+
+def _overwrite_locked(full: str, fd: int, ours: bytes, merged: bytes, park: Path) -> None:
+    """Rewrite a shard in place to `merged`, the caller holding the append lock on `fd` (a carry whose upstream order
+    differs from ours, or the undo of one). The inode stays (an appender may hold it open). Only bytes past the common
+    prefix are overwritten, and the file is cut only at the end, to its final length, so git, which reads without the
+    lock, never sees it emptied. `ours` is parked and fsynced first and the park file goes only once the write is whole,
+    so a death mid-write leaves it under REORDER_PARK, and the next run refuses until it is merged back by hand."""
+    keep = len(os.path.commonprefix([ours, merged]))
+    dst = park / REORDER_PARK / f"{hashlib.sha1(full.encode()).hexdigest()}.jsonl"
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    with open(dst, "wb") as f:
+        f.write(ours)
+        f.flush()
+        os.fsync(f.fileno())
+    w = os.open(full, os.O_WRONLY)                      # no O_APPEND: pwrite must land at the offset given
+    try:
+        view, off = memoryview(merged)[keep:], keep
+        while view:
+            n = os.pwrite(w, view, off)
+            view, off = view[n:], off + n
+        if len(merged) < len(ours):
+            os.ftruncate(w, len(merged))
+        os.fsync(w)
+    finally:
+        os.close(w)
+    os.lseek(fd, 0, os.SEEK_END)
+    dst.unlink()
+
+
 def _carry(g: Git, it: dict, park: Path) -> None:
-    """Put upstream's change into the working file, keeping whatever is there NOW. Shards: one O_APPEND write under the
-    lock model.append takes on the same file, so a live append can land before or after but never lost; the inode
-    stays, always: an appender may hold it open. Others: an atomic swap, then proof of what the swap displaced, and a
+    """Put upstream's change into the working file, keeping whatever is there NOW. Shards: under the lock model.append takes
+    on the same file, one O_APPEND write, or (when upstream's order differs from ours) an in-place rewrite to
+    union_merge's bytes, so a live append lands before or after but is never lost; the inode stays, always: an appender
+    may hold it open. Others: an atomic swap, then proof of what the swap displaced, and a
     save that slipped in goes back and is merged again. A real overlap raises DirtyConflict before the branch moves."""
     p, full = it["path"], os.path.join(g.repo, it["path"])
     if it["base"] is None:                              # no base means the preview found upstream's bytes already here
@@ -375,12 +432,18 @@ def _carry(g: Git, it: dict, park: Path) -> None:
             ours = b""
             while chunk := os.read(fd, 1 << 20):
                 ours += chunk
-            delta = union_delta(ours, base, theirs)
-            if delta is not None:
-                it["carried"] = (ours, delta)           # what _uncarry takes back out if the move then fails
-                view = memoryview(delta)
-                while view:
-                    view = view[os.write(fd, view):]
+            merged = union_merge(ours, base, theirs)
+            if merged is not None:
+                # what _uncarry puts back if the move then fails: ours, with a torn tail the carry completed kept whole
+                # (cutting the completion out would glue the next append onto half a line)
+                cut = ours.rfind(b"\n") + 1
+                tail = ours[cut:]
+                whole = next((ln for ln in merged.splitlines(True) if tail and ln.startswith(tail)), tail)
+                it["carried"] = (ours[:cut] + whole, merged)
+                if merged.startswith(ours):             # the common case: a plain append
+                    _write_all(fd, merged[len(ours):])
+                else:
+                    _overwrite_locked(full, fd, ours, merged, park)
                 return
         finally:
             os.close(fd)                                # closing releases the flock
@@ -412,27 +475,22 @@ def _carry(g: Git, it: dict, park: Path) -> None:
 def _uncarry(g: Git, it: dict, park: Path) -> bool:
     """Take upstream's change back out of one carried file after the move failed, so the clone does not read as
     holding a peer's edit that is really upstream's (Codex, 2026-11-01). Only when nothing has written the file since
-    the carry; a later write wins and the file is reported (False) instead. Shards: under the append lock, the carried
-    delta is cut out and any later appends kept, inode unchanged. Others: compare-and-swap back to the bytes before."""
+    the carry; a later write wins and the file is reported (False) instead. Shards: under the append lock, the file goes
+    back to its bytes before the carry with any later appends kept, inode unchanged. Others: compare-and-swap back to the bytes before."""
     if "carried" not in it:
         return True
     full = os.path.join(g.repo, it["path"])
     if it["union"]:
-        before, delta = it["carried"]
+        before, written = it["carried"]
         fd = os.open(full, os.O_RDWR)
         try:
             fcntl.flock(fd, fcntl.LOCK_EX)
             now = b""
             while chunk := os.read(fd, 1 << 20):
                 now += chunk
-            if not now.startswith(before + delta):
+            if not now.startswith(written):
                 return False
-            later = now[len(before) + len(delta):]
-            os.ftruncate(fd, len(before))
-            os.lseek(fd, len(before), os.SEEK_SET)
-            view = memoryview(later)
-            while view:
-                view = view[os.write(fd, view):]
+            _overwrite_locked(full, fd, now, before + now[len(written):], park)
         finally:
             os.close(fd)
         del it["carried"]
@@ -474,6 +532,10 @@ def reset_merging(g: Git, head: str, target: str, keep: list[str] | None = None)
         return reset_keep(g, head, target, keep)
     parks = Path(g.run("rev-parse", "--absolute-git-dir").strip()) / PARK_DIR
     left = sorted(d.name for d in parks.iterdir()) if parks.is_dir() else []    # a run that died: its originals stay
+    torn = sorted(str(f) for f in parks.glob(f"*/{REORDER_PARK}/*.jsonl")) if parks.is_dir() else []
+    if torn:    # a shard rewrite died part-way: a line may be gone from the file, its only copy is parked
+        raise Refused(f"a ledger shard rewrite died mid-write; its bytes before it are parked in {', '.join(torn[:3])}: "
+                      f"put back any line the shard lacks (model.append), delete the parked file, then re-run")
     park = parks / f"{time.strftime('%Y%m%d_%H%M%S')}-{os.getpid()}-{os.urandom(3).hex()}"
     for it in items:
         if it["dirty"] and os.path.isfile(os.path.join(g.repo, it["path"])):
@@ -486,7 +548,10 @@ def reset_merging(g: Git, head: str, target: str, keep: list[str] | None = None)
     # which is safe: the next run merges to the same result.
     try:
         for it in items:
-            _carry(g, it, park)
+            try:
+                _carry(g, it, park)
+            except OSError as e:                        # ENOSPC and kin: refuse, so the carries made are taken back
+                raise Refused(f"carrying {it['path']} failed: {e}") from e
         if g.run("rev-parse", "HEAD").strip() != head:
             raise Refused(f"HEAD moved under the merge of {len(items)} dirty file(s); not resetting. Nothing was lost; "
                           f"re-run.")

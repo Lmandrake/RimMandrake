@@ -284,6 +284,60 @@ def main() -> int:
         check(rc == 1 and "NOT on origin/main" in out and "x.txt" in out, "a mode-only local commit is refused: " + out[-160:])
         check(git(seat, "rev-parse", "HEAD") == before and os.stat(Path(seat, "x.txt")).st_mode & 0o100,
               "the mode-only commit and the mode stay")
+
+        # BENCHSHARD_DIAGNOSE_SAME_EVENTS_NEW_ORDER: landing put a peer's line BEFORE ours upstream. Appending the
+        # missing line after ours left the shard holding HEAD's lines in another order: dirty, blocking restarts.
+        run(seat, "--superseded", git(seat, "rev-parse", "--short", "HEAD"))
+        peer_push(peer, {".gitattributes": "infrastructure/state/ledger/events/*.jsonl merge=union\n"}, "union")
+        run(seat)
+        c = Path(seat, shard).read_text()
+        write(seat, shard, c + "ours\n")
+        git(seat, "commit", "-q", "-m", "ours", "--", shard)
+        peer_push(peer, {shard: c + "peer\nours\n"}, "landed after a peer's line")
+        with open(Path(seat, shard), "a") as f:
+            f.write("unlanded\n")
+        torn = Path(seat, ".git", S.PARK_DIR, "dead", S.REORDER_PARK, "x.jsonl")
+        torn.parent.mkdir(parents=True)
+        torn.write_bytes(b"lost\n")
+        rc, out = run(seat)
+        check(rc == 1 and "died mid-write" in out, "a rewrite that died mid-write blocks the next carry: " + out[-120:])
+        torn.unlink()
+        ino = os.stat(Path(seat, shard)).st_ino
+        rc, out = run(seat)
+        check(rc == 0 and Path(seat, shard).read_text() == c + "peer\nours\nunlanded\n",
+              "a shard landed in another order syncs to upstream's order plus the unlanded line: " + out[-160:])
+        diff = git(seat, "diff", "-U0", "HEAD", "--", shard).splitlines()
+        check([d for d in diff if d[:1] in "+-" and d[:3] not in ("+++", "---")] == ["+unlanded"],
+              "the shard differs from HEAD only by the unlanded append: %r" % diff[-4:])
+        check(os.stat(Path(seat, shard)).st_ino == ino, "the reordered shard keeps its inode")
+        check(S.union_merge(b"b\nours\nU\n", b"b\nours\n", b"b\npeer\nours\n") == b"b\npeer\nours\nU\n"
+              and S.union_merge(b"b\nours\nU\n", b"b\nours\n", b"b\nours\npeer\n") == b"b\nours\npeer\nU\n"
+              and S.union_merge(b"b\nou", b"b\n", b"b\npeer\nours\n") == b"b\npeer\nours\n"
+              and S.union_merge(b"x\n", b"b\n", b"b\npeer\n") is None, "union_merge: upstream's order, then our unlanded lines")
+        f = Path(td, "undo.jsonl")
+        f.write_bytes(b"b\nours\npeer\nU\n")      # a reorder carry wrote this; one more append landed after it
+        with open(f, "ab") as fh:
+            fh.write(b"late\n")
+        it = {"path": "undo.jsonl", "union": True, "carried": (b"b\nours\nU\n", b"b\nours\npeer\nU\n")}
+        ok = S._uncarry(type("G", (), {"repo": td})(), it, Path(td))
+        check(ok and f.read_bytes() == b"b\nours\nU\nlate\n", "a rewrite carry is undone with the late append kept: %r" % f.read_bytes())
+        # a torn tail (a carry that died mid-write) completed by a reordering carry, then undone: no glued line
+        f.write_bytes(b"b\nou")
+        ino, blobs, real_blob = os.stat(f).st_ino, {"B": b"b\n", "T": b"b\npeer\nours\n"}, S._blob
+        S._blob = lambda _g, sha: blobs[sha]
+        try:
+            it = {"path": "undo.jsonl", "union": True, "base": "B", "blob": "T"}
+            g = type("G", (), {"repo": td})()
+            Path(td, "park").mkdir()
+            S._carry(g, it, Path(td, "park"))
+            check(f.read_bytes() == b"b\npeer\nours\n" and os.stat(f).st_ino == ino,
+                  "a torn shard is rewritten to upstream's order in place: %r" % f.read_bytes())
+            with open(f, "ab") as fh:
+                fh.write(b"late\n")
+            check(S._uncarry(g, it, Path(td, "park")) and f.read_bytes() == b"b\nours\nlate\n",
+                  "its undo keeps the completed line whole: %r" % f.read_bytes())
+        finally:
+            S._blob = real_blob
     print(f"{'ALL PASS' if not FAILS else f'{len(FAILS)} FAIL'}")
     return 1 if FAILS else 0
 
