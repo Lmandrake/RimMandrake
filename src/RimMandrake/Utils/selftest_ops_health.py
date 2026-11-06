@@ -375,5 +375,17 @@ got = H.system_ids(gw, glob, root)
 ok("rank: an exact not_system id beats a family glob", "SELFTEST_SOURCE_POLISH" not in got and "SELFTEST_RED_NEW" in got, got)
 ok("rank: an exact system_rank id still beats not_system", "BOTH_NAMED" in got, got)
 
+# ISSYSTEM_WORDS_FIX_PIPELINE_READ_AS_CONTENT: the shipped word lists must read real pipeline ids as system and game content as not
+_sc = H.conf(shipped)
+_sm = H.mod_names(root)
+_it = lambda i: types.SimpleNamespace(id=i, kind="task", open=True)
+for _i in ["CLOSE_GATE_ENFORCE_DONE_IS_EARNED", "BENCHSHARD_DIAGNOSE_SAME_EVENTS_NEW_ORDER", "BREAKER_SELFTEST_FIX_ONE_RED_IN_THIRTEEN",
+           "STAGING_REWIRE_PYTHON_NOT_AN_LLM", "ACCOUNT_SWITCH_FIX_HAND_STEP_BEFORE_MONDAY", "RA_S06_GUARD_ENFORCE_SEEN_RED_TWICE",
+           "ART_CHECKS_FIX_OUTLINE_SEVEN_FLAGGED", "TELEMETRY_TAILER_FIX_RAW_CURSOR_EARLY", "WRAPUP_DEBTS_FIX_RELAUNCH_ALREADY_PAID"]:
+    ok("is_system: pipeline id %s reads as system" % _i, H.is_system(_it(_i), _sc, _sm))
+for _i in ["ARTEVAL_INSTALL_DEPLOY_HELD_BIOMES", "SMALL_PUMP_HOSE_FIX_LAYS_UNCONNECTED", "SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS", "WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS",
+           "ARIDSHRUBLAND_TITAN_POPULATE_FORTY_NO_GIANT"]:
+    ok("is_system: content id %s stays content" % _i, not H.is_system(_it(_i), _sc, _sm))
+
 print("selftest_ops_health: " + ("PASS" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS))))
 sys.exit(1 if FAILS else 0)
