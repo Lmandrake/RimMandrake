@@ -1365,6 +1365,29 @@ def t_stage_tries_a_newer_running_game_first():
     x.done()
 
 
+def t_menu_wait_row_restages_never_routes():
+    """GAMEENV_FIX_PROOFSITE_0DB67BE7_ITEMS_WAIT: a live-toggle item's off-side clause reads MENU_WAIT on the staging of
+    the other side; that is its next staging (one per side, stage_tries), never a dud routed as an environment repair."""
+    import relentless_live
+    x = rig(1)
+    to_game(x, "I0")
+    x.tick()
+    x.tick()
+    x.w.started = x.now - 3000.0
+    row = {"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "UNMEASURED",
+           "log": "/l/here.log", "game": relentless_live.iso(x.w.started),
+           "why": "%s: A2: UNMEASURED (rides a later load)" % relentless_live.MENU_WAIT}
+    ok(G.blocked_here({"A2": row}, ["A2"], SHA, x.w.started, x.now) == {}, "MENU_WAIT is not blocked here")
+    ok(G.not_measuring([row] * 5, "I0", SHA, ["A2"], 2) == {}, "MENU_WAIT is never counted as a dud")
+    x.w.rows = [dict(row)]
+    for _ in range(3):
+        x.tick()
+    st = x.st("I0")
+    ok(routed(st) is None and st["status"] == "game", "a MENU_WAIT row is never routed: %s %s"
+       % (st["status"], st.get("wait")))
+    x.done()
+
+
 def t_menu_bound_item_never_tries_a_running_game():
     """GAMEENV_FIX_PROOFSITE_7B433874_ITEMS_WAIT: an item whose proofs carry a live-menu or live-toggle line measures only
     on a load whose staging ran its menu commands, so a game another load started is never tried first (two such tries
@@ -2001,7 +2024,7 @@ def main():
     picked, ran = set(a for a in args if not a.startswith("--")), 0      # no names: every test
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves,
               t_nocode_rebuild_reaches_implemented, t_fail_returns,
-              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_dropped_staging_keeps_bridge, t_rides_ok, t_round_only_item, t_flyer_put_down, t_owner_look_skipped_routes_owner, t_waits_put_down,
+              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_menu_wait_row_restages_never_routes, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_dropped_staging_keeps_bridge, t_rides_ok, t_round_only_item, t_flyer_put_down, t_owner_look_skipped_routes_owner, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged, t_blind_stall_probe_ends_attempt,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_green_sha_is_not_judged_again, t_bounce_from_checking_is_quarantined,

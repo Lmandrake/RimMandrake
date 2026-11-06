@@ -997,6 +997,42 @@ def t_def_check_judge():
             pass
 
 
+def t_menu_item_exit2_asks_its_own_staging():
+    """GAMEENV_FIX_PROOFSITE_0DB67BE7_ITEMS_WAIT: PLANET_ATMOSPHERE_CLOUD_COST_1 (live-menu + live-toggle) said "rides a
+    later load" on a game no staging of its own served, and "the same cause on the game of ... so a reload cannot help"
+    made it a defect routed as an environment repair. With menu=True an exit 2 is MENU_WAIT (a restage), never a defect,
+    even beside an earlier same-cause row on another game or build; without it the old defect still stands."""
+    import relentless_game as RG
+    import relentless_live_round as RR
+    old = {"item": "ROT_X", "criterion": "A2", "sha": "0ldbuild0000", "proof": "python3 probe.py", "outcome": "UNMEASURED",
+           "why": "the proof exited 2: it did not measure: A2: UNMEASURED (rides a later load)", "game": "G0"}
+    rows = {}
+    for menu in (True, False):
+        root = tempfile.mkdtemp(prefix="rl_live_")
+        os.makedirs(os.path.join(root, "live"))
+        with open(os.path.join(root, "live", "runs.jsonl"), "w") as f:
+            f.write(json.dumps(old) + "\n" + json.dumps(dict(old, sha=SHA, game="G1")) + "\n")   # this build, another game
+        fx = ScriptFx({"python3 probe.py": (2, "UNMEASURED: a game was started after the load\n"
+                                               "A2: UNMEASURED (rides a later load)")}, started=2000.0, mtime=1000.0)
+        rows[menu] = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000,
+                           menu=menu)
+    row = rows[True]
+    check("menu: exit 2 is a reload request naming its own staging", row["outcome"] == "UNMEASURED"
+          and row["why"].startswith(L.MENU_WAIT) and "rides a later load" in row["why"] and not row.get("defect"), row)
+    check("menu: the row is no dud to the game phase or the round", not RG.RAN_DUD.search(row["why"])
+          and not RR.SAME_GAME_DUD.search(row["why"]) and not RR.decides(row), row["why"])
+    check("menu: the round skips it on this game and runs it on the next", RR.due(row, row["sha"], 1_800_000_001, 0,
+          row["game"], per_game=False) == "reload needed" and RR.due(row, row["sha"], 1_800_000_001, 0, "G9",
+                                                                     per_game=False) is None, row)
+    check("menu: relentless_game restages on it", any(row["why"].startswith(w) for w in RG.RESTAGE), row["why"])
+    check("menu: a plain item's same cause on another game or build is still a defect", rows[False].get("defect") is True
+          and rows[False]["why"].startswith(L.DEFECT), rows[False])
+    fx = ScriptFx({"python3 probe.py": (1, "A2 FAIL: load 120 s over the bar")}, started=2000.0, mtime=1000.0)
+    row = L.run(fx, tempfile.mkdtemp(prefix="rl_live_"), "ROT_X", "A2", "python3 probe.py", "--compose biomes", {},
+                now=1_800_000_000, menu=True)
+    check("menu: a FAIL stays a FAIL", row["outcome"] == "FAIL", row)
+
+
 def t_reload_line_is_the_why():
     """GENERATOR_MODS_PROVE_INERT_AFTER_CREATION: a proof whose list must LACK two mods ran twice on a game holding them,
     exited 2 with 'the proof exited 2: it did not measure', and went back to a worker; no restage was ever asked. A
@@ -1302,7 +1338,7 @@ def t_rebuilt_assembly_carries():
 
 
 def main():
-    for t in (t_exit1_that_could_not_ask_is_no_fail, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
+    for t in (t_exit1_that_could_not_ask_is_no_fail, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_menu_item_exit2_asks_its_own_staging, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_owner_look_is_no_game_clause, t_def_check_judge, t_unloaded_mod,

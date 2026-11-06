@@ -455,6 +455,25 @@ def t_dead_rows_and_undeployed():
     check("undeployed: the game phase's own round runs it", R.due(und, "s", now, 3600, "G1", per_game=False) is None)
 
 
+def t_menu_proofs_run_with_menu():
+    """GAMEENV_FIX_PROOFSITE_0DB67BE7_ITEMS_WAIT: a proofs file with a live-menu or live-toggle line (or a malformed one)
+    reaches relentless_live.run with menu=True, so its exit 2 asks for its own staging; a plain file never does."""
+    for extra, want in (("", False), ("live-menu: python3 rec.py\n", True), ("live-toggle: a.b\n", True),
+                        ("live-toggle: a.b c.d\n", True)):
+        seen = []
+
+        def run(fx, root, item_id, cid, proof, deploy, r, now=None, needs=(), site=None, trees=(), **kw):
+            seen.append(kw.get("menu", False))
+            return {"item": item_id, "criterion": cid, "outcome": "PASS", "why": "proof exit 0", "sha": "abc123"}
+
+        class Fx(FakeFx):
+            def proofs(self, i):
+                return PROSE + extra
+        with tempfile.TemporaryDirectory() as root:
+            R.run_round(Fx(), root, {"live": {"round_max": 1}}, now=1_800_000_000, run=run)
+        check("menu kw: %r -> %s" % (extra.strip(), want), seen == [want], seen)
+
+
 def t_same_game_same_build_waits():
     """LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: 2026-11-03 17:47-18:16Z, GRAFFITI A2/F1/F2 and GENERATOR A2 re-ran every 15
     min on one game and one build, six UNMEASURED runs that could not differ. A dud or a FINAL_WAIT on (game, build) is
@@ -550,7 +569,7 @@ def t_census_command():
 def main():
     for t in (t_live_site, t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_mods, t_live_tick, t_log_judge, t_log_never,
               t_history_review, t_tick_env, t_cut_refusal_is_terminal, t_dead_rows_and_undeployed,
-              t_same_game_same_build_waits, t_census, t_census_command):
+              t_same_game_same_build_waits, t_menu_proofs_run_with_menu, t_census, t_census_command):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0

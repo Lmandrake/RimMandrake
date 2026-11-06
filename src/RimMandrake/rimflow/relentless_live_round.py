@@ -833,6 +833,11 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         except ValueError as e:
             summary["runs"].append({"item": item_id, "criterion": cid, "outcome": "UNMEASURED", "why": str(e)[:200]})
             continue
+        try:    # GAMEENV_FIX_PROOFSITE_0DB67BE7_ITEMS_WAIT: its exit 2 asks for its own staging (relentless_live.MENU_WAIT)
+            if live_menu(text) or live_toggle(text):
+                comp["menu"] = True
+        except ValueError:      # a malformed line: the game phase holds it (relentless_game.menu_bound); it is bound
+            comp["menu"] = True
         row = run(fx, root, item_id, cid, proof, deploy_args(list(mods) + trees, folded), r, now=time.time(),
                   needs=need, site=proof_lines(text, SITE_LINE).get(cid), trees=trees,
                   **dict(comp, **({"env": env} if nd is not None else {})))

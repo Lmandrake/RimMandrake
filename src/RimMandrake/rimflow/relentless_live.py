@@ -110,6 +110,10 @@ def verdict(row):
         return row["verdict"]
     return row.get("outcome") if row.get("outcome") in ("PASS", "FAIL") else "INFRA"
 RELOAD = "reload needed"        # relentless_game RESTAGE reads this prefix; the round skips it on the same game
+# GAMEENV_FIX_PROOFSITE_0DB67BE7_ITEMS_WAIT: a proof of a live-menu/live-toggle item measures only on a staging of its own
+# (the menu step ran on it, on the side it needs), so its exit 2 is a request for that staging, never a dud or a defect.
+# The words leave out "it did not measure" (relentless_game.RAN_DUD, relentless_live_round.SAME_GAME_DUD count that)
+MENU_WAIT = RELOAD + ": a live-menu/live-toggle proof measures only on a staging of its own (its menu step, its side)"
 STALE = "changed since the built commit"        # terminal for its build: no game can run it (relentless_live_round.due)
 DEFECT = "proof or site defect"     # an UNMEASURED no rerun can change: terminal for its build, back to a worker
 # Every DEFECT why ends "... cannot help: <the cause>", so cause() can read the cause back out of it.
@@ -1649,7 +1653,7 @@ def sli_lines(s):
 
 
 def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None, trees=(), env=None,
-        companion=False):
+        companion=False, menu=False):
     """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED.
     needs: mod folders the proof declares (live_proofs `live-mods:`) beyond the ones the built commit changed; with
     those, each one's About.xml modDependencies must be in the RUNNING load, or the row is UNMEASURED (restage), never
@@ -1659,7 +1663,9 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     worker applies it), never a run; `deploy` must cover them. It says what the folder holds, not when: unlike `files`, no
     per-file stamp proves the running game started after that deploy; the staging's restart is what loads it.
     companion: the proofs file has a `live-companion:` line; a build that touched the companion's sources owes it too
-    (companion_touched). Owed, the game folder's JawaBench DLL must read FRESH against the build (companion_gap)."""
+    (companion_touched). Owed, the game folder's JawaBench DLL must read FRESH against the build (companion_gap).
+    menu: the proofs file has a `live-menu:` or `live-toggle:` line; an exit that is neither PASS nor FAIL is then
+    MENU_WAIT, a restage (bounded by relentless_game.stage_tries, one per side), never a defect for another game."""
     now = time.time() if now is None else now
     lr = live_rules(r)
     row = {"at": iso(now), "item": item_id, "criterion": criterion, "proof": proof, "deploy": deploy}
@@ -1854,6 +1860,11 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     if code not in (PASS, FAIL) or unable:
         why = crashed or said or (asked_reload(log) if code is not None else None) or "the proof %s" % (
             "timed out" if code is None else "exited %d: it did not measure: %s" % (code, exit_reason(log)))
+        # PLANET_ATMOSPHERE_CLOUD_COST_1 A2 said "rides a later load" on a game no staging of its own had served, and
+        # "the same cause on another game" made it a defect routed as an environment repair: its own staging can help
+        waits = bool(menu) and code is not None and not crashed and not unable and not why.startswith(RELOAD)
+        if waits:
+            why = "%s: %s" % (MENU_WAIT, exit_reason(log))
         if why.startswith(FINAL_WAIT):      # the expected state of a final clause on a small game: a row, no ledger note
             # its game: relentless_live_round.due runs it again only on another game (one row per game, not per round)
             return done("UNMEASURED", why, log=log, game=iso(started) if started else game_iso(fx))
@@ -1862,7 +1873,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         rows = read_rows(os.path.join(root, "live", "runs.jsonl"))
         n = 1 + repeats(rows, item_id, criterion, sha, key, game)
         row.update(game=game, repeat=n, cause=key)
-        before = seen_on_other_game(rows, item_id, criterion, sha, key, game) if code is not None else None
+        before = seen_on_other_game(rows, item_id, criterion, sha, key, game) if code is not None and not waits else None
         # a reload request is left out of the two below: a new build always needs its own load
         ran = code is not None and not why.startswith(RELOAD)
         broken = broken_call(log) if ran else None
