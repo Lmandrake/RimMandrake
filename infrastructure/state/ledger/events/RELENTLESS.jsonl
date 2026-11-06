@@ -1119,3 +1119,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:48:42Z","tsn":1793969322622212764}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS A1 (L2), read-only proof","ts":"2026-11-06T12:50:07Z","tsn":1793969407635432956}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:50:17Z","tsn":1793969417718320300}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SAVELOAD_DIAGNOSE_COMES_BACK_CHANGED A1 (L2), read-only proof","ts":"2026-11-06T12:52:40Z","tsn":1793969560198564513}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:52:47Z","tsn":1793969567598757844}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE: deploy and restart for its live proofs","ts":"2026-11-06T12:54:44Z","tsn":1793969684580089621}
