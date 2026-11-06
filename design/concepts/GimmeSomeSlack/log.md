@@ -232,3 +232,7 @@ fixed). Sent in turn_03.md. Five contradictions resolved as agent rulings into s
 Q (turn_03.md): Modern-look 3/4-way junction: built splitter box (A) or the long power strip (B)?
 His words: "The right power strip is better for modern look. Junctions work better for industrial."
 Taken: B for Modern (owed build: PowerStrip at Modern junctions, today drawn only at device piles); Industrial keeps its junction box. Recorded as decision d_modern_junction_strip.
+
+## 2026-11-06, run rm-role-designer-1793931838 (stage 2, returned from stage 3)
+
+Stage 3 returned for his flagship pick. Ask a_flagship_pick (turn_04.md): face = (1) workshop floor or (2) yard of masts; recommended (1). Fresh Opus review (rm-judge aee41281c90f554ec): pass, two wording fixes (strip vs junction box per look; 'Judged first' was agent text). Sent.
