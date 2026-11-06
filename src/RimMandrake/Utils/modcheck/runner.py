@@ -68,6 +68,11 @@ def py_cmd(script, *args):
 PLAYING_PATIENCE_S = 240        # how long ensure_playing_map keeps asking a game that does not answer yet
 
 
+class LaunchGateRefused(RuntimeError):
+    """The launch gate read the RUNNING game's Player.log and refused to start a map on it. That log belongs to whatever
+    list the game loaded, which run() must compare with its own before the refusal counts against this job."""
+
+
 def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None, _patience_s=PLAYING_PATIENCE_S,
                        _sleep=time.sleep):
     """If the bridge reports no Playing map, run the existing quicktest-world starter
@@ -122,7 +127,7 @@ def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None, _
     import launch_gate  # noqa: E402
     gate = _gate() if _gate else launch_gate.check_player_log()
     if not gate["ok"]:
-        raise RuntimeError("launch gate REFUSES to start a map: %s" % "; ".join(gate["problems"]))
+        raise LaunchGateRefused("launch gate REFUSES to start a map: %s" % "; ".join(gate["problems"]))
     starter = _starter or (lambda: subprocess.run([sys.executable, QUICKTEST_STARTER], cwd=ROOT,
                                                   capture_output=True, text=True))
     r = starter()
@@ -1405,9 +1410,21 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                 run_this = targeting.filtered(suite, sel["chains"])
                 print("[modcheck] %s TARGETED: %d of %d chains: %s" % (mod_folder, len(run_this.chains),
                       len(suite.chains), ", ".join(sel["chains"])), file=sys.stderr)
-            ensure_playing_map()
+            # MODCHECK_GATE_FIX_KEPT_GAMES_OLD_LOG: the gate reads the kept game's log, so its refusal is this job's only
+            # when that game runs this job's list. J20261106T093115Z-46384f, -97f464 and -be8939 died in 2 s on Pyrelands'
+            # bad load, the filler braked; a different list goes stale_load below and the worker restarts onto its own.
+            gate_refused = None
+            try:
+                ensure_playing_map()
+            except LaunchGateRefused as e:
+                gate_refused = e
             # a session already Playing may be on the PREVIOUS list (ModsConfig names the next load): never certify it
             stale = verify_loaded_list(package_ids, keep)
+            if gate_refused is not None:
+                if not stale:
+                    raise gate_refused
+                print("[modcheck] %s: no map started; the kept game's log is not this job's list: %s"
+                      % (mod_folder, gate_refused), file=sys.stderr, flush=True)
             if stale:
                 if stale[0].startswith(NOT_INSTALLED):
                     # not stale_load: no restart loads a mod this host lacks, so ModsConfig is restored as always

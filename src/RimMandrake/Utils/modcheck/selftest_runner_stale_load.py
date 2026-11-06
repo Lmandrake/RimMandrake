@@ -39,14 +39,16 @@ def write_config(ids):
 
 
 class FakeBridge:
-    def __init__(self, running):
-        self.running, self.calls = running, []
+    def __init__(self, running, state=None):
+        self.running, self.calls, self.state = running, [], state
 
     def connect(self):
         pass
 
     def call(self, tool, args):
         self.calls.append(tool)
+        if tool == "rimworld/get_ui_state" and self.state:
+            return {"programState": self.state}
         if tool != "jawa/running_mods":
             raise AssertionError("unexpected bridge call " + tool)
         if self.running is None:
@@ -229,6 +231,139 @@ ok(res["ToyMod"].get("unmeasured") == "stale_load", "an empty install scan claim
 ok(runner.not_installed(["a", "member", "ludeon.rimworld.odyssey"], {"composed"}, {"member": "composed"}) == ["a"],
    "not_installed: a folded member is installed through its composed mod; Ludeon ids are always installed")
 ok(runner.not_installed(["a"], None) == [], "not_installed: an unmeasured install set names nothing")
+
+
+# 10. MODCHECK_GATE_FIX_KEPT_GAMES_OLD_LOG (J20261106T093115Z-46384f, -97f464, -be8939): the real launch gate over the kept
+#     game's Player.log, the game at the menu. It refused for the list that load belonged to, so a later job on another
+#     list died on it instead of going stale_load. Only ensure_playing_map's map starter is faked.
+BAD_LOG = "Bridge token: abc\nCould not find a type named RimMandrake.Pyrelands.CompGone\n"
+CLEAN_LOG = "Bridge token: abc\n"
+
+
+def at_menu(running, config_ids, log, keep_composed=True, installed=None):
+    """attempt() with the real ensure_playing_map and launch gate. -> (result, raised, reached suite, map starts, restores,
+    stdout, stderr). `log` is the Player.log text; None leaves no file (the gate reads UNMEASURED)."""
+    cfg = write_config(config_ids)
+    bridge = FakeBridge(running, state="Entry")
+    fd, log_path = tempfile.mkstemp(suffix="_Player.log")
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write(log or "")
+    if log is None:
+        os.unlink(log_path)
+    fake_rb = types.ModuleType("rimbridge_client")
+    fake_rb.resolve_endpoint = lambda *a, **k: ("h", 1, "t")
+    fake_rb.RimBridge = lambda **k: bridge
+    fake_gp = types.ModuleType("game_paths")
+    fake_gp.MODS_CONFIG, fake_gp.PLAYER_LOG = cfg, log_path
+    if installed is not None:
+        fake_gp.LOCAL_MODS = mods_root(installed)
+    fake_status = types.ModuleType("status")
+    fake_status.record_run = lambda *a, **k: None
+    names = ("rimbridge_client", "game_paths", "status", "launch_gate")
+    mods_saved = {n: sys.modules.get(n) for n in names}
+    sys.modules.update(rimbridge_client=fake_rb, game_paths=fake_gp, status=fake_status)
+    sys.modules.pop("launch_gate", None)            # imports PLAYER_LOG by name: this scenario's log, not a cached one
+    starts, restores, sheets = [], [], []
+    real_run = runner.subprocess.run
+
+    def fake_run(cmd, *a, **k):
+        if runner.QUICKTEST_STARTER not in cmd:
+            return real_run(cmd, *a, **k)
+        starts.append(cmd)
+        return types.SimpleNamespace(returncode=0, stdout="", stderr="")
+
+    def reached():
+        raise ReachedSuite()
+
+    stubs = dict(swap_to_test_list=lambda *a, **k: None, restore_full=lambda *a, **k: restores.append(1),
+                 compose_test_list=lambda *a, **k: [], find_mod_dir=lambda m: "/nonexistent/" + m,
+                 composed_into=lambda m: None, mod_dependency_ids=lambda d: ["toy.dep"],
+                 mod_package_id=lambda d: TOY, closure_ids=lambda m, f: [],
+                 load_validation=lambda d: types.SimpleNamespace(chains=[("c1", None)]),
+                 northstar_for=lambda m: ("walk", None), visual_floor=lambda s, ns: {"bar": None},
+                 refusal=lambda fl: None, ensure_test_profile=reached,
+                 write_sheet=lambda m, s: sheets.append(m) or "/tmp/sheet.html")
+    real = {n: getattr(runner, n) for n in stubs}
+    env_names = ("MODCHECK_KEEP_MODLIST", "MODCHECK_SKIP_DEPLOY", "MODCHECK_STALE_KEEP_COMPOSED")
+    env_saved = {k: os.environ.get(k) for k in env_names}
+    os.environ["MODCHECK_SKIP_DEPLOY"] = "1"
+    os.environ.pop("MODCHECK_KEEP_MODLIST", None)
+    os.environ.pop("MODCHECK_STALE_KEEP_COMPOSED", None)
+    if keep_composed:
+        os.environ["MODCHECK_STALE_KEEP_COMPOSED"] = "1"
+    for n, f in stubs.items():
+        setattr(runner, n, f)
+    runner.subprocess.run = fake_run
+    res, raised, hit, out, err = None, None, False, io.StringIO(), io.StringIO()
+    try:
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            res = runner.run([("ToyMod", "X_ITEM")])
+    except ReachedSuite:
+        hit = True
+    except RuntimeError as e:
+        raised = e
+    finally:
+        runner.subprocess.run = real_run
+        for n, f in real.items():
+            setattr(runner, n, f)
+        for n, m in mods_saved.items():
+            if m is None:
+                sys.modules.pop(n, None)
+            else:
+                sys.modules[n] = m
+        for k, v in env_saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        os.unlink(cfg)
+        if os.path.exists(log_path):
+            os.unlink(log_path)
+    return (res or {}).get("ToyMod", {}), raised, hit, starts, restores, out.getvalue(), err.getvalue()
+
+
+ANOTHER_LIST = MINIMAL + ["mandrake.rm.pyrelands"]          # what the refused job left the game on
+
+# the instance: the running list differs from the composed one, the log holds the other job's missing type
+r, raised, hit, starts, restores, out, err = at_menu(ANOTHER_LIST, composed, BAD_LOG)
+ok(raised is None, "kept game on another list: the run does not die on the launch gate", raised)
+ok(r.get("unmeasured") == "stale_load" and r.get("refused", "").startswith("UNMEASURED"),
+   "kept game on another list, bad log: the run ends stale_load", r)
+ok("launch gate REFUSES" not in r.get("refused", ""), "that refusal does not carry the other load's gate fault", r)
+ok(not hit and starts == [], "no map is started on the other load", starts)
+ok(restores == [] and "STALE_LOAD: ToyMod:" in out, "ModsConfig left on the composed list for the restart", (restores, out))
+wre = re.search(r'STALE_LOAD_RE = re\.compile\(r"(.+?)", re\.M\)', src)
+ok(wre and re.search(wre.group(1), err, re.M), "the Steve worker reads that log as stale_load (it restarts on it)", err)
+# the same with a log the gate cannot read as a load at all (no bridge token line)
+r, raised, hit, starts, _, _, _ = at_menu(ANOTHER_LIST, composed, "old log\n")
+ok(raised is None and r.get("unmeasured") == "stale_load" and starts == [],
+   "kept game on another list, unreadable log: stale_load", (r, raised))
+# the composed id with no folder on this host stays its own cause through the gate's route too
+GONE = TOY + ".gone"
+r, raised, _, starts, _, out, _ = at_menu(composed, composed + [GONE], BAD_LOG, installed=on_host)
+ok(raised is None and starts == [] and r.get("unmeasured") == "mod_not_installed" and GONE in r.get("refused", ""),
+   "gate refused, composed id on no folder here: mod_not_installed, names it", (r, raised))
+ok("STALE_LOAD:" not in out, "gate refused, composed id on no folder here: no restart asked", out)
+# a running load nobody can read is not this job's fault either; no map starts and the one restart is the repair
+r, raised, _, starts, _, _, err = at_menu(None, composed, BAD_LOG)
+ok(raised is None and starts == [] and r.get("unmeasured") == "stale_load" and "running_mods raised" in r.get("refused", ""),
+   "gate refused, running load unreadable: stale_load naming the unread load, no map", (r, raised))
+ok("CompGone" in err, "the gate's reading stays in the log for whoever reads that refusal", err)
+
+# criterion 2: the same scenario on this job's OWN list still refuses, with the gate's own reason
+r, raised, hit, starts, restores, out, _ = at_menu(list(reversed(composed)), composed, BAD_LOG)
+ok(isinstance(raised, RuntimeError) and "launch gate REFUSES" in str(raised) and "CompGone" in str(raised),
+   "running list == composed, bad log: the launch gate still refuses", raised)
+ok(not hit and starts == [] and "STALE_LOAD" not in out, "own list, bad log: no map, no suite, no restart asked", (hit, starts))
+ok(restores == [1], "own list, bad log: ModsConfig is restored as on any refusal", restores)
+r, raised, _, starts, _, _, _ = at_menu(composed, composed, "old log\n")
+ok(isinstance(raised, RuntimeError) and "launch gate REFUSES" in str(raised) and starts == [],
+   "running list == composed, log with no bridge token: the launch gate still refuses", raised)
+
+# a clean log on the own list starts the map as before; nothing about the gate's route changes the good path
+r, raised, hit, starts, _, _, _ = at_menu(composed, composed, CLEAN_LOG)
+ok(raised is None and hit and len(starts) == 1, "own list, clean log: the map is started and the suite reached",
+   (raised, hit, starts))
 
 print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
 sys.exit(1 if FAILS else 0)
