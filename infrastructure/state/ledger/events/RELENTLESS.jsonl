@@ -891,3 +891,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A1 (L2), read-only proof","ts":"2026-11-06T04:45:55Z","tsn":1793940355124478848}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T04:51:36Z","tsn":1793940696168019239}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging BUILDBATCH_FIX_REPLACE_LEAVES_OLD_THING: deploy and restart for its live proofs","ts":"2026-11-06T05:04:13Z","tsn":1793941453812878403}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging BUILDBATCH_FIX_REPLACE_LEAVES_OLD_THING (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T05:23:21Z","tsn":1793942601077382324}
