@@ -1,0 +1,1 @@
+A proof running code_review_status.py check reads the code_review shard from the candidate's PARENT in the checker's box (walls.marker.tree_from_parent). Land the mark-clean commit, then finish on a LATER commit that names the item and touches something outside the ledger and code_review; finishing on the mark's own commit reads DIRTY in boxrun though it is CLEAN in the clone.
