@@ -54,7 +54,7 @@ _START = (r"(?:^|&&|\|\||[;|`(]|\$\(|!|\b(?:then|do|if|elif|while|until|else|tim
           r"(?:(?:sudo|env|xargs|nice|command|exec|timeout\s+(?:-[ks]\s+\S+\s+|-\S+\s+)*\S+)\s+|"
           r"(?:bash|sh|zsh)\s+-l?c\s+['\"]|[A-Za-z_][A-Za-z0-9_]*=\S*\s+)*(?:\S*/)?")
 # any git verb: without the history grant every one but these reads a .git the box lacks
-_GIT = re.compile(_START + r"git\s+(?:(?:-C|-c)\s+\S+\s+|--\S+\s+)*([a-z][\w-]*)\b([^\n;&|)]*)", re.M)
+_GIT = re.compile(_START + r"git\s+(?:(?:-C|-c)\s+\S+\s+|--\S+\s+)*([a-z][\w-]*)\b((?:'[^']*'|\"[^\"]*\"|[^\n;&|)])*)", re.M)
 _GIT_LOCAL = frozenset(("init", "version", "help", "hash-object"))
 # git's own subcommands (`git help -a`, git 2.53): "git clones the tree" in prose names none
 _GIT_VERBS = frozenset("""

@@ -175,6 +175,14 @@ def t_review_seven():
     ok(needs('ROOT=/tmp; P=$(pwd) python3 run.py && test -f "$ROOT/x"') == [], "W2 a real assignment before it still persists")
 
 
+def t_review_eight():
+    """GPT's eighth full-file review (2026-11-06): a quoted `|` does not end git's arguments."""
+    git = lambda t: RR.needs(t, PROF, serve=("git_history",))                # noqa: E731
+    ok(git("git log -1 --format='%h | %s' origin/main") != [], "A1 a ref after a quoted `|` is seen")
+    ok(git("git log -1 --format='%h | %s' HEAD") == [], "A1b none without one")
+    ok(git("git log -1 HEAD | grep main") == [], "A2 a real pipe still ends the arguments")
+
+
 def main():
     t_parens()
     t_comments()
@@ -185,6 +193,7 @@ def main():
     t_review_five()
     t_review_six()
     t_review_seven()
+    t_review_eight()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
