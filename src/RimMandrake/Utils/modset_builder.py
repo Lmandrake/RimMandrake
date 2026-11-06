@@ -179,9 +179,9 @@ TIERS = {
         "why": "FW/GSS owed-criteria sitting (Transient/flowworks_gss_owed_20261011.md section 3): the `flowworks` "
                "tier plus CrackedLands and ExplosiveGrowth, so CrackedLands/validation.py runs on the same load "
                "(River Colors, once its own mod here, is part of FlowWorks since 2026-10-16). CrackedLands has NO runtime packageId: it ships "
-               "composed in mandrake.rm.biomes (Biomes.compose.json), so that is what loads, and biomes hard-depends "
-               "on sarg.alphabiomes -- this tier therefore CANNOT carry the flowworks tier's Alpha Biomes forbid, "
-               "and a FlowWorks GREEN-MIN on it records as fw_gss_sitting, never flowworks-minimal. The other "
+               "composed in mandrake.rm.biomes (Biomes.compose.json), so that is what loads; a FlowWorks GREEN-MIN on "
+               "it records as fw_gss_sitting, never flowworks-minimal. Alpha Biomes is not in its forbid because it "
+               "is retired (2026-10-18) and retired_mods.json already keeps it off every list. The other "
                "guards stay (stale pits, ManyWaters, Invisible Conduit Continued for the GSS rows).",
         # VEF core named explicitly: insectoid2 (retired 2026-10-18) used to drag it in, and without it the composed
         # Biomes loses VEF comps/extensions and quicktest map generation NREs (live 2026-10-19, flowworks_hugethings)
@@ -381,7 +381,7 @@ TIERS = {
                "PLANT_GROWTH_MERGE_NEVER_MEANT_APART) with the bridge, and no campaign layer: the RM-tier script must "
                "not depend on one, and a campaign roster's scopeAllBiomes would hide the default biome scope. The "
                "quicktest map's biome is outside that scope, so the suite runs under its test-only every-biome "
-               "override. Biomes brings Alpha Biomes, so several donor tops can run here too. The retired standalone "
+               "override. The retired standalone "
                "ids are forbidden.",
         "want": [BRIDGE, "mandrake.rm.biomes"],
         "forbid": ["mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"],
@@ -557,7 +557,7 @@ TIERS = {
 # BAROQUE_BIOMES_COMPOSE_1 / WAVE2_FOLD_1: the composed 'RimMandrake: Baroque
 # Biomes' (deploy_custom_mods.py --compose biomes) on its own. Closure over
 # the GENERATED About.xml supplies the engines it still hard-depends on
-# (FlowWorks, LuminousPigment, Alpha Biomes...). Covers all 29 folded
+# (FlowWorks, LuminousPigment...; Alpha Biomes is retired). Covers all 29 folded
 # biomes/kits as of wave 2 (2026-09-28), not just wave 0's original 12.
 # ⛔ Never add a folded biome's standalone packageId here: its defs and types
 # would load twice.
@@ -617,8 +617,8 @@ TIERS["pyrelands"] = {
 TIERS["ratchet_pilot"] = {
     "why": "RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP (owner 2026-10-11: the pilot is Pyrelands + FlowWorks + "
            "GimmeSomeSlack loaded TOGETHER): the `pyrelands` tier plus FlowWorks and Gimme Some Slack, with the "
-           "union of both tiers' guards. Alpha Biomes cannot be forbidden (mandrake.rm.biomes hard-depends on it), "
-           "so a FlowWorks run here records as ratchet_pilot, never flowworks-minimal. mandrake.rm.patches was "
+           "union of both tiers' guards (retired Alpha Biomes needs none: retired_mods.json keeps it off every list). "
+           "A FlowWorks run here records as ratchet_pilot, never flowworks-minimal. mandrake.rm.patches was "
            "hand-added as 'ratchet_pilot+patches' in rounds 1-2 and is declared here so `modcheck record` accepts "
            "the set. Star Wars Animal Collection (mlie.starwarsanimalcollection) is FORBIDDEN since 3898fe6212: "
            "SWBestiary no longer depends on it (ported), no pilot mod hard-depends on it, and rm.patches/rut.patches "
@@ -711,7 +711,7 @@ TIERS["weepingstones_solo"] = {
            "dev folder is SOURCE only: the biome ships composed inside "
            "mandrake.rm.biomes (Biomes.compose.json), so the thing to load is the composed "
            "mod and nothing else -- NOT the older `weepingstones` tier, which adds the "
-           "Utinni patch layer, swbestiary and Alpha Animals for the campaign fauna and "
+           "Utinni patch layer and swbestiary for the campaign fauna and "
            "carries a retired packageId (mandrake.rut.rotsporekit). All five DLCs and "
            "Harmony resolve automatically.",
     "want": [BRIDGE, "mandrake.rm.biomes"],
