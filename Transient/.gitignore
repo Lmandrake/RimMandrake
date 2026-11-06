@@ -9,6 +9,7 @@
 !*.decisions.json
 .gatecheck_*/
 # --- PINS (managed by transient_pin.py; edit with it, one pin per line) ---
+!/PUSH_REFUSALS_7DAY_2026-11-06.md
 !/afk_2026-10-17/titanoslime_gates_result.json
 !/art_enact_2026-10-19.md
 !/art_enact_2_2026-10-19.md
