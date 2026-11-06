@@ -1340,3 +1340,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A3 (L2), read-only proof","ts":"2026-11-06T21:01:08Z","tsn":1793998868273634790}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:07:15Z","tsn":1793999235480839160}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A6 (L2), read-only proof","ts":"2026-11-06T21:08:04Z","tsn":1793999284179632992}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:09:05Z","tsn":1793999345183999155}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_GLASSWALK_SPEED_RATIO_1 A1 (L2), read-only proof","ts":"2026-11-06T21:09:17Z","tsn":1793999357586704172}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:11:07Z","tsn":1793999467710882318}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GAMECOMP_STALL_HUNT_SEVEN_SECONDS A2 (L2), read-only proof","ts":"2026-11-06T21:11:26Z","tsn":1793999486927883007}
