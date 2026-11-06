@@ -576,7 +576,7 @@
     <defName>RM_Barbslinger</defName>
     <label>barbslinger</label>
     <!-- BARBSLINGER_FIX_DESC_CALF_SIZE: baseBodySize 2.5 is above a grown cow (2.4, Races_Animal_CowGroup.xml), not a calf. -->
-    <description>A shield-backed scorpion bigger than a cow, plated in heat-cured chitin that the Pyrelands' burns have taught it to wear. It works the cooling ground behind a fire front, turning over the ash with its pincers for whatever cooked in place, and it will take living prey as readily as carrion if the living prey is slow. The barbed tail is not for hunting — it is what the barbslinger does to anything that stands over its find and refuses to move.</description>
+    <description>A shield-backed scorpion bigger than a cow, its domed body plated in heat-cured chitin that the Pyrelands' burns have taught it to wear, with two independent tails, each tipped with a javelin-like needle. It works the cooling ground behind a fire front, turning over the ash with its pincers for whatever cooked in place, and it will take living prey as readily as carrion if the living prey is slow. The twin tails are not for hunting: each slings a venomous needle, and it fires them at anything that stands over its find and refuses to move, then closes with its pincers.</description>
     <statBases>
       <MoveSpeed>4.00</MoveSpeed>
       <ComfyTemperatureMin>-2</ComfyTemperatureMin>

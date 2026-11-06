@@ -5,20 +5,24 @@
  "earth_body_named": true,
  "departures": [
   {
-   "feature": "shield-like plate covering the back",
+   "feature": "two separate tails instead of one",
+   "quote": "two independent tails"
+  },
+  {
+   "feature": "each tail ends in a long javelin-like needle rather than a curved stinger",
+   "quote": "each tipped with a javelin-like needle"
+  },
+  {
+   "feature": "domed, plated body",
+   "quote": "its domed body plated in heat-cured chitin"
+  },
+  {
+   "feature": "shield-like back",
    "quote": "A shield-backed scorpion"
   },
   {
-   "feature": "body larger than a cow",
+   "feature": "larger than a cow",
    "quote": "bigger than a cow"
-  },
-  {
-   "feature": "body plated in heat-cured chitin",
-   "quote": "plated in heat-cured chitin"
-  },
-  {
-   "feature": "barbed tail",
-   "quote": "The barbed tail"
   }
  ],
  "body_plan": "walker",
@@ -30,6 +34,6 @@
   "tag": "departures_brief@v3",
   "sha": "4e4c26e4f103"
  },
- "at": "2026-11-05T05:56:05-08:00",
+ "at": "2026-11-05T18:46:45-08:00",
  "source": "description only (no image)"
 }
