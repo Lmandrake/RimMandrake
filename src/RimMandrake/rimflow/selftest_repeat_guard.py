@@ -90,9 +90,35 @@ def fold():
     check(w.items["A_FIX_B"].state != "done", "the last criterion's pass does not reach done without the guard")
     w = world(AFTER, *DIED, GUARD, crit, cpass)
     check(w.items["A_FIX_B"].state == "done", "and does with it")
-    # `kept` is the sweep's reading, not a close; the census is what sees it
+    # `kept` is the sweep's reading, not a close: it must not walk a guard-owing fix back to done past the gate
+    # (GUARD_SEAM_DECIDE_KEPT_WALKS_OUT_UNGUARDED)
+    seam()
+
+
+def seam():
     w = world(AFTER, *DIED, KEPT)
-    check(w.items["A_FIX_B"].state == "done" and model.guard_owed(w.items["A_FIX_B"]), "kept returns it to done, still owing")
+    it = w.items["A_FIX_B"]
+    check(it.state == "ready" and model.guard_owed(it) and not it.live_broken, "kept ends the outage but leaves a guard-owing fix open")
+    w = world(BEFORE, *DIED, KEPT)
+    check(w.items["A_FIX_B"].state == "done", "a kept before KEPT_GATE_FROM replays as written (back to done)")
+    w = world(AFTER, *DIED, KEPT, GUARD, PASS2, RECLOSE)
+    check(w.items["A_FIX_B"].state == "done" and not model.guard_owed(w.items["A_FIX_B"]), "the guard and a close then reach done")
+    w = world(AFTER, *DIED, GUARD, KEPT)
+    check(w.items["A_FIX_B"].state == "done", "a fix whose guard is on record goes back to done on kept")
+    # a first sighting (the sweep files a LIVE_RESTORE_ broken) is no death: nothing had been fixed to die
+    first = (FILED, BROKEN)
+    it = world(AFTER, *first).items["A_FIX_B"]
+    check(it.live_repeats == 1 and model.deaths(it) == 0 and not model.guard_owed(it), "a first sighting is an outage, not a death")
+    check(not H.owes_guard(it) and not AC.recurring([], {"A_FIX_B": it}), "ops_health and the census agree: it owes nothing")
+    check(world(AFTER, *first, KEPT).items["A_FIX_B"].state == "done", "a blip that clears on its own goes to done, staffing nobody")
+    it = world(BEFORE, *first).items["A_FIX_B"]
+    check(model.deaths(it) == 1 and model.guard_owed(it), "before DEATHS_FROM every outage counted, as written")
+    # once repaired and closed, its next outage is a death and kept keeps it open
+    again = (*first, PASS1, CLOSED, BROKEN)
+    it = world(AFTER, *again).items["A_FIX_B"]
+    check(model.deaths(it) == 1 and it.live_repeats == 2 and model.guard_owed(it), "the outage of a closed fix is a death")
+    check(H.owes_guard(it) and [r["seen"] for r in AC.recurring([], {"A_FIX_B": it})] == [1], "the census counts deaths")
+    check(world(AFTER, *again, KEPT).items["A_FIX_B"].state == "ready", "and kept does not walk it out unguarded")
 
 
 def red():

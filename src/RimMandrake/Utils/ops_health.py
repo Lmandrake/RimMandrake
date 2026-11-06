@@ -217,9 +217,11 @@ def subject_words(iid):
 
 
 def owes_guard(it):
-    n = getattr(it, "live_repeats", 0) or 0
-    g = getattr(it, "guard", None)
-    return n > 0 and (not g or (g.get("outages") or 0) < n)
+    """model.guard_owed: one rule, counted in deaths (a first sighting is none), wherever it is asked."""
+    if RIMFLOW not in sys.path:
+        sys.path.insert(0, RIMFLOW)
+    import model
+    return model.guard_owed(it)
 
 
 def unguarded(world, c):

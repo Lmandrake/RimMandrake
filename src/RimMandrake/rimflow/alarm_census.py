@@ -12,7 +12,7 @@ that shrugs at a form is the blindness this replaced (selftest_incident fails on
 Built names slipped past before: queues.<name>.* and relentless_attention_<key> (ALARM_CENSUS_EXTEND_BUILT_NAMES_SLIP_PAST).
 
 recurring() is the census of what came back: an alarm kind crossed twice or more (ops_watch's alarms_log.jsonl), or an item
-whose fix died (live_repeats), with no class guard test on record (design idea 5, `rimflow guard`).
+whose fix died (model.guard_owed: deaths, a first sighting is none), with no class guard test on record (design idea 5, `rimflow guard`).
 
     python3 src/RimMandrake/rimflow/alarm_census.py recurring     one line per recurring kind with no guard; exit 1 if any
 """
@@ -403,11 +403,10 @@ def recurring(log_rows, items, exempt=(), min_seen=2):
         claimed |= ids
         if n >= min_seen and not any(getattr(items.get(i), "guard", None) for i in ids):
             out.append({"kind": aid, "seen": n, "items": sorted(ids)})
+    import model
     for iid, it in items.items():
-        n = getattr(it, "live_repeats", 0) or 0
-        g = getattr(it, "guard", None)
-        if n and (not g or (g.get("outages") or 0) < n) and getattr(it, "state", None) not in ("dropped", "superseded") and iid not in claimed:
-            out.append({"kind": "live:" + iid, "seen": n, "items": [iid]})
+        if model.guard_owed(it) and getattr(it, "state", None) not in ("dropped", "superseded") and iid not in claimed:
+            out.append({"kind": "live:" + iid, "seen": model.deaths(it), "items": [iid]})
     return sorted(out, key=lambda r: (-r["seen"], r["kind"]))
 
 

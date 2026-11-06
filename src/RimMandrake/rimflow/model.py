@@ -1680,7 +1680,7 @@ class Item(object):
                  "blocked_lift_at", "wait_until", "wait_reason", "started_at",
                  "this_deployment",
                  "created_at", "created_index", "closed_sha", "superseded_by",
-                 "live", "live_broken", "live_repeats", "live_from", "guard",
+                 "live", "live_broken", "live_repeats", "deaths", "live_from", "guard",
                  "runs", "findings", "history", "caused_by", "spawned_by", "claim_ts",
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "built_by", "makers", "criteria", "outstanding",
@@ -1707,6 +1707,7 @@ class Item(object):
                                         # a later note does not move and a reopen-and-reclose does
         self.live = self.live_broken = self.live_from = None   # the promise, why it broke now, the state it broke from
         self.live_repeats = 0           # outages of this promise: the same id counts every return
+        self.deaths = 0                 # the outages that broke a fix (settled when it broke): what owes a guard (`guard_owed`)
         self.guard = None               # the class guard test shown failing here: {test, testHash, redExit, outages, ts, ...}
         self.claim_ts = None            # ts of the claim that holds it (earliest wins)
         self.runs, self.findings, self.history = [], [], []
@@ -2206,18 +2207,26 @@ def _live_promise(ev, item):
     item.live_broken = item.live_from = None
 
 
+def deaths(item):
+    """How often this fix died: outages that broke it while settled (`_apply_live`). Before DEATHS_FROM every outage counted."""
+    n = getattr(item, "deaths", None)
+    return getattr(item, "live_repeats", 0) or 0 if n is None else n
+
+
 def guard_owed(item):
-    """A fix that already died (live_repeats) owes a class guard test, shown failing on the instance. A guard recorded before
-    the newest outage did not stop it, so that outage owes a new look (design idea 5)."""
-    n = getattr(item, "live_repeats", 0) or 0
+    """A fix that already died (`deaths`) owes a class guard test, shown failing on the instance. A guard recorded before
+    the newest death did not stop it, so that death owes a new look (design idea 5). A LIVE_RESTORE_ item's first outage
+    is its first sighting, not a death: the sweep filed it broken, and no fix had yet been made to die
+    (GUARD_SEAM_DECIDE_KEPT_WALKS_OUT_UNGUARDED)."""
+    n = deaths(item)
     g = getattr(item, "guard", None)
-    return n > 0 and (not g or (g.get("outages") or 0) < n)
+    return n > 0 and (not g or (g.get("deaths", g.get("outages")) or 0) < n)
 
 
 def guard_why(item):
-    return ("this fix died %d time(s) (live_repeats), so it closes only with a class guard test shown failing on the instance: "
+    return ("this fix died %d time(s), so it closes only with a class guard test shown failing on the instance: "
             "`rimflow guard %s --test <selftest*.py> [--instance \"<args>\"]` before the fix lands, then commit the test and the "
-            "ledger shard" % (item.live_repeats, item.id))
+            "ledger shard" % (deaths(item), item.id))
 
 
 def _owner_word(ev):
@@ -2232,10 +2241,13 @@ def _guard_holds(ev, item):
 def _apply_guard(ev, item):
     item.guard = {k: ev[k] for k in ("test", "testHash", "redExit", "redTail", "instance", "ts") if k in ev}
     item.guard["outages"] = item.live_repeats
+    item.guard["deaths"] = item.deaths
 
 
 def _apply_live(ev, item):
-    """The sweep's reading. `broken` opens the item, counting the outage once; `kept` puts it back."""
+    """The sweep's reading. `broken` opens the item, counting the outage once (and a death when it broke a settled fix);
+    `kept` puts it back, except a fix that died and owes a guard: from KEPT_GATE_FROM that one stays open, since done
+    reached past the close would never meet the guard gate (GUARD_SEAM_DECIDE_KEPT_WALKS_OUT_UNGUARDED)."""
     if ev["result"] not in ("broken", "kept"):
         raise SchemaError("live: result must be broken or kept, got %r" % ev["result"])
     if ev["result"] == "broken":
@@ -2243,6 +2255,8 @@ def _apply_live(ev, item):
             raise TransitionError("%s is %s: a retired item holds no promise" % (item.id, item.state))
         if not item.live_broken:
             item.live_repeats += 1
+            if str(ev["ts"]) < DEATHS_FROM or item.state in ("done", "built", "validated"):
+                item.deaths += 1
         item.live_broken = ev.get("detail") or "broken"
         if item.state in ("done", "built", "validated"):
             item.live_from, item.state = item.state, "ready"
@@ -2250,6 +2264,8 @@ def _apply_live(ev, item):
     if not item.live_broken:
         raise TransitionError("%s has no outage for `kept` to end" % item.id)
     item.live_broken = None
+    if str(ev["ts"]) >= KEPT_GATE_FROM and guard_owed(item):
+        return                                   # the outage ended, the debt did not: it stays open until a guard closes it
     if item.state in ("ready", "proposed"):      # a repair someone started stays theirs: kept never closes a doing
         item.state, item.live_from = item.live_from or "done", None
 
@@ -2259,6 +2275,8 @@ def _apply_live(ev, item):
 EARNED_FROM = "2026-11-01T17:30:00Z"
 DONE_GATE_FROM = "2026-11-01T18:35:00Z"     # the same, for `implemented`: from here on it reaches done only as `close` does
 GUARD_GATE_FROM = "2026-11-04T03:30:00Z"    # from here a fix that died reaches done only with a guard (`guard_owed`); earlier closes replay as written
+DEATHS_FROM = "2026-11-06T12:30:00Z"        # from here only an outage of a settled fix is a death; earlier ones all count, as written
+KEPT_GATE_FROM = "2026-11-06T12:30:00Z"     # from here `kept` leaves a guard-owing fix open; an earlier kept replays as written
 CLOSE_FOLD_FROM = "2026-11-01T19:15:00Z"    # from here the fold judges a `close` too: a clone's old cli cannot write a done
 
 
