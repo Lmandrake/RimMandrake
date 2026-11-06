@@ -9,9 +9,9 @@ Two callers:
   minutes never freezes the supervisor's tick (redesign_final.md G9).
 - the `boxrun` verb: the builder runs the same box at its HEAD before it lands.
 
-What runs: the shell commands at the head of the contract's proof (extract()), cut where prose starts. Only simple
-python3/python/bash commands joined by `&&` (each may be negated with `!`) are run; anything else, in ANY part (a
-prefix alone is never run), is `unrunnable` and neither passes nor refuses. A contract that names offbox adapters or a reach_ok why measures outside the box: `skipped`.
+What runs: the shell commands of the contract's proof (extract()): split on `&&` first, each part cut where its prose
+starts. Only simple python3/python/bash commands joined by `&&` (each may be negated with `!`) are run; anything else,
+in ANY part, or a command the prose names that would not run (`; python3 b.py`; a prefix alone is never run), is `unrunnable` and neither passes nor refuses. A contract that names offbox adapters or a reach_ok why measures outside the box: `skipped`.
 
 Modes (relentless_boxrun.json `mode`): `off`; `shadow` runs and prints, refuses nothing; `enforce` refuses a red proof
 with the box output on the builder's stdout. Every run (any verdict but off) is an immutable `run` receipt in the item's
@@ -53,7 +53,8 @@ def config(path=None):
 
 # Where a proof's prose starts: a verb about the result, a colon, a parenthesis, a comma, a semicolon, an arrow.
 _CUT = re.compile(r"\s+(?:exits?|exit code|prints?|printing|shows?|showing|reports?|returns?|outputs?|passes|is|are|"
-                  r"must|should|gives?|says?|succeeds?|fails?|with|and then|then|both|all|green|GREEN|red|RED)\b"
+                  r"must|should|gives?|says?|succeeds?|fails?|with|and then|then|both|all|green|GREEN|red|RED)"
+                  r"(?=\s|$|[:,;)])"
                   r"|\s*:(?:\s|$)|\s+\(|,\s|;|\s+(?:->|=>|→|—|–|-)\s|\.\s+[A-Z]|\.$")
 _WORD_OK = re.compile(r"^(?:-.*|.*[/._=0-9].*|[A-Z][A-Z0-9_]*|[a-z][a-z0-9]*_[a-z0-9_]*)$")
 _PLAIN = re.compile(r"^[a-z]+$")
@@ -66,16 +67,64 @@ def _quote_word(w):
     return "%s=%s" % (m.group(1), shlex.quote(m.group(2))) if m else shlex.quote(w)
 
 
-def extract(proof):
-    """-> (shell command, None) or (None, why it is not run). The head of the proof up to where prose starts, split on
-    `&&`; each part one python3/python/bash command whose words read as arguments. A plain lowercase word is an argument
-    only right after the script (a sub-command) or after an option (its value); elsewhere it is prose and ends the part."""
-    text = (proof or "").strip().replace("\n", " ")
+# A command named inside prose that extract() did not keep: any interpreter (a path to one, a version suffix, pytest) and
+# its script; or, after `;`, `&&`, a comma, `then` or a backtick, a `./x` or a script followed by an option or nothing.
+# A script name followed by words (`; selftest_x.py shows ...`) is prose about it, not a command.
+_LATER_CMD = re.compile(
+    r"(?:^|[\s(;&,!`'\"])(?:\S*/)?(?:python[0-9.]*|bash|sh|pytest)\s+(?:-m\s+\S|\S*[/.]\S*)"
+    r"|(?:;|&&|,|`|\bthen)\s*(?:!\s*)?(?:\./\S|\S+\.(?:py|sh)(?=\s+-|\s*$|\s*[;`)]))")
+
+
+def _cut(text):
+    """-> (head, prose tail) of one `&&` segment: the command up to where prose starts."""
     m = _CUT.search(text)
-    head = (text[:m.start()] if m else text).strip()
-    if not head:
+    return (text[:m.start()], text[m.start():]) if m else (text, "")
+
+
+def _command_kind(seg):
+    """-> "run" when this `&&` segment starts with a runner (after an optional `!` and NAME=value words), "other" when it
+    starts like some other command (a `!`, NAME=value, a script path), None when it reads as prose."""
+    words = seg.split()
+    marked = False
+    while words and (words[0] == "!" or re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*=\S*", words[0])):
+        words.pop(0)
+        marked = True
+    if words and words[0] in RUNNERS:
+        return "run"
+    if marked or (words and re.fullmatch(r"\S+\.(?:py|sh)|\./\S+|\S*/\S+\.\w+", words[0])):
+        return "other"
+    return None
+
+
+def extract(proof):
+    """-> (shell command, None) or (None, why it is not run). The proof is split on `&&` FIRST, then each segment is cut
+    where its prose starts; each part one python3/python/bash command whose words read as arguments. A plain lowercase
+    word is an argument only right after the script (a sub-command) or after an option (its value); elsewhere it is prose
+    and ends the part. After prose, a later `&&` segment that starts with a runner is another part and runs too; one
+    that does not is prose. Prose that names a command (`; python3 b.py`, `then bash c.sh`) that would not run makes the
+    whole proof unrunnable: running only the rest would be a green for checks that never ran."""
+    text = re.sub(r"\s*\n\s*", " ; ", (proof or "").strip())     # a new line ends a command, never joins two
+    segs = text.split("&&")
+    parts, tails, prose = [], [], False
+    for n, seg in enumerate(segs):
+        kind = _command_kind(seg)
+        if prose and kind == "other":           # `&& b/y.py prints PASS`, `&& ! grep ...`: a command that cannot run
+            return None, "a later `&&` part is a command but not a %s one: %r" % ("/".join(RUNNERS), seg.strip()[:120])
+        if prose and kind is None:              # prose after prose: the rest of the proof is description
+            tails.append("&&" + "&&".join(segs[n:]))
+            break
+        head, tail = _cut(seg)
+        parts.append(head.strip())
+        tails.append(tail)
+        prose = prose or bool(tail.strip())
+    if not parts[0]:
         return None, "no command at the head of the proof"
-    parts = [p.strip() for p in head.split("&&")]
+    for tail in tails:
+        m = _LATER_CMD.search(tail)
+        if m:
+            return None, ("the proof's prose names a command extract() would not run (%r): running only the rest would "
+                          "be a green for checks that never ran" % tail[max(0, m.start()):m.start() + 80].strip())
+    head = " && ".join(parts)
     out = []
     for n, part in enumerate(parts):
         # Any part after the first that cannot be run makes the whole proof unrunnable: running only the prefix would
@@ -118,6 +167,8 @@ def extract(proof):
                 if n < len(parts) - 1:      # prose inside a part that a later `&&` part follows: what runs is unclear
                     return None, "prose (%r) inside part %d of %d, before a later `&&` part: %r" % (
                         w[:40], n + 1, len(parts), part[:120])
+                if _LATER_CMD.search(" ".join(rest[i:])):   # `x.py foo bar python3 b/y.py`: b would not run
+                    return None, "the proof's prose names a command extract() would not run: %r" % " ".join(rest[i:])[:120]
                 break
             keep.append(w)
             prev = w

@@ -216,6 +216,40 @@ def t_hardening():
         cmd, why = B.extract(proof)
         ok(cmd is None and why, "8a. a later && part that cannot run makes %r unrunnable, never a prefix: %r (%s)"
            % (proof, cmd, why))
+    # blind check 2026-11-06: prose BEFORE a later part used to cut the whole proof, so only the prefix ran
+    for proof in ("python3 a/x.py exits 0 && python3 b/y.py > r.txt",
+                  "python3 a/x.py; python3 b/y.py",
+                  "python3 a/x.py prints PASS; then python3 b/y.py prints PASS",
+                  "python3 a/x.py prints PASS, then bash b/y.sh",
+                  "python3 a/x.py prints PASS && b/y.py prints PASS",
+                  "python3 a/x.py; b/y.sh",
+                  # second review 2026-11-06 (Opus): each returned a prefix
+                  "python3 a/x.py\npython3 b/y.py",
+                  "python3 a/x.py foo bar python3 b/y.py",
+                  "python3 a/x.py x.json and python3 b/y.py",
+                  "python3 a/x.py prints PASS and `python3 b/y.py` prints PASS",
+                  "python3 a/x.py prints PASS, then python3.11 b/y.py",
+                  "python3 a/x.py prints PASS, then /usr/bin/python3 b/y.py",
+                  "python3 a/x.py, then ./b.sh",
+                  "python3 a/x.py prints PASS, then pytest tests/",
+                  "python3 a/x.py prints PASS && ! grep -n x b/y.py",
+                  "python3 a/x.py prints PASS; canon_census.py --lint"):
+        cmd, why = B.extract(proof)
+        ok(cmd is None and why, "8a. a later command after prose makes %r unrunnable, never a prefix: %r (%s)"
+           % (proof, cmd, why))
+    for proof, want in (("python3 a/x.py prints PASS && python3 b/y.py prints PASS", "python3 a/x.py && python3 b/y.py"),
+                        ("python3 a/x.py exits 0 && ! python3 b/y.py --strict exits 1",
+                         "python3 a/x.py && ! python3 b/y.py --strict"),
+                        ("python3 pass.py && python3 fail.py", "python3 pass.py && python3 fail.py"),
+                        ("python3 a/selftest_z.py prints RESULT: PASS, including 8a (a later && part extract() cannot "
+                         "run is unrunnable) and 8b", "python3 a/selftest_z.py"),
+                        # prose ABOUT a script is not a command (stored proofs, 2026-11-06)
+                        ("python3 a/run_selftests.py --only selftest_d.py exits 0; selftest_d.py shows: a harvest",
+                         "python3 a/run_selftests.py --only selftest_d.py"),
+                        ("python3 a/x.py exits 0 (drives ./bridge with a flag, and handoff.py --wake, as subprocesses)",
+                         "python3 a/x.py")):
+        cmd, why = B.extract(proof)
+        ok(cmd == want, "8a. %r runs every command part, prose && is prose: %r (%s)" % (proof, cmd, why))
     cmd, why = B.extract("python3 a/selftest_a.py && python3 b/selftest_b.py --only x exits 0")
     ok(cmd == "python3 a/selftest_a.py && python3 b/selftest_b.py --only x", "8a. two runnable parts still run whole: %r (%s)"
        % (cmd, why))
