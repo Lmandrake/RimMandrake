@@ -1,0 +1,1 @@
+Three selftests are red on main 43c35cd19d before SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY touched anything: selftest_proof_preconditions (1 failing check), FlowWorks/northstar/selftest_preflight_calm (style_readback_proof.py skips site_calm), FlowWorks/selftest_hose_lay_settle (CR2 asks for the carry draw, not a lay). Measured by rerunning them on HEAD's validation_core/scenelib.

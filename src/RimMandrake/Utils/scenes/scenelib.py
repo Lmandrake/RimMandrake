@@ -20,7 +20,7 @@ def rbc():
     global _c
     if _c is None:
         h, p, t = rb.resolve_endpoint()
-        _c = rb.RimBridge(host=h, port=p, token=t, timeout=60.0); _c.connect()
+        _c = rb.RimBridge(host=h, port=p, token=t, timeout=600.0); _c.connect()   # 600 s: a 2500-tick advance chunk may ask timeoutMs 250 s (validation_core.Bridge uses the same)
     return _c
 
 def call(tool, **params):
@@ -41,11 +41,42 @@ def need(r, what):
 def ticks():
     return call("jawa/time_clock").get("ticksGame", 0)
 
-def run(n, speed=4):
-    """Advance ~n game ticks. MEASURED 2026-10-09: step_game_ticks ran ~5-14 ticks/s on the 19-mod tier,
-    play_for at speed 4 (Ultrafast) ~400/s, so use this. Pauses again at the end.
-    Coarse: each play_for lasts at least 200 ms (~80 ticks at speed 4), so run(10) overshoots to ~80. Never time a
-    walk or anything under a few hundred ticks with it; step rimworld/step_game_ticks (SUMP_GLASSWALK_SPEED_RATIO_1)."""
+# What may stop a scene's clock. A scene hurts, starves and kills on purpose and judges the result, so the vitals latch's
+# death/downed/hurt/... kinds must neither stop it nor send it to site_recover (which heals). Only a clock jump, a stuck
+# modal (the old play_for hang: "paused externally"), losing the colony or a cancel stop it, loudly.
+SCENE_STOP_ON = "clock_discontinuity,modal_stuck,colony_loss,cancel"
+
+_B = None
+def _bridge():
+    """validation_core._BridgeBase over this module's socket, so run() advances through clockgate.advance_chunk."""
+    global _B
+    if _B is None:
+        import validation_core as V
+        class _SceneBridge(V._BridgeBase):
+            stop_on = SCENE_STOP_ON
+            def _raw(self, tool, kw): return rbc().call(tool, kw, check=False)
+        _B = _SceneBridge()
+    return _B
+
+def run(n, speed=None):
+    """Advance EXACTLY n game ticks, paused (SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY, tickburst final.md L-f): through
+    validation_core._BridgeBase.ticks -> clockgate.advance_chunk -> jawa/safe_advance (many ticks per frame, the game never
+    unpaused), the legacy rimworld/step_game_ticks only when the companion lacks safe_advance. Returns the ticksGame delta
+    and raises when it is not n. `speed` is ignored (kept so old callers still run). Replaced 2026-11-06: play_for at
+    speed 4, at least 200 ms per call, which overshot short runs (run(10) gave ~80 ticks, the false glasswalk ratio)."""
+    n = int(n)
+    if n <= 0:
+        return 0
+    t0 = ticks()
+    _bridge().ticks(n)
+    d = ticks() - t0
+    if d != n:
+        raise RuntimeError("scenelib.run(%d): ticksGame moved by %d, not %d" % (n, d, n))
+    return d
+
+def _run_play(n, speed=4):
+    """The OLD run(): unpaused play_for at `speed`. Kept ONLY as the reference arm of prove_scenerun_paused.py (verdicts
+    must match it); never call it to pass time in a scene."""
     t0 = ticks(); call("jawa/set_game_speed", speed=speed)
     try:
         while ticks() - t0 < n:

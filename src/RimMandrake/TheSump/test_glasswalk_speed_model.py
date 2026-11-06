@@ -439,9 +439,13 @@ def main():
     check(abs(r98 - 0.65) > 0.08, "law at T=9.8 gives %.3f; the scene's 0.65 (implied pathCost %.1f) is outside the law (instrument suspect; A1 decides)"
           % (r98, 15 - 9.8))
 
-    # The instrument: scenelib.run(n) never plays less than 200 ms at speed 4.
+    # The 2026-10-10 instrument: scenelib.run(n) then played at least 200 ms at speed 4 (~80 ticks), coarse for n=10.
+    # Since SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY it advances exactly n, paused; that old play_for loop survives only as
+    # scenelib._run_play (the reference arm of scenes/prove_scenerun_paused.py).
     lib = open(SCENELIB, encoding="utf-8").read()
-    check("max(200," in lib, "scenelib.run floors each play_for at 200 ms (~80 ticks at speed 4): coarse for n=10")
+    run_src = lib[lib.index("def run("):lib.index("def _run_play(")]
+    check("rimworld/play_for" not in run_src and "_bridge().ticks(n)" in run_src,
+          "scenelib.run no longer plays (play_for); it steps paused through _BridgeBase.ticks")
 
     # The live proof must time with exact steps, not scenelib.run.
     if os.path.exists(PROVE):

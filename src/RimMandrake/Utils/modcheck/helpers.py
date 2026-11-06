@@ -239,7 +239,7 @@ def fast_advance(session, n, margin=400, chunk_ms=8000, rate=400.0, stall_chunks
     polled; no modcheck result (47 files, 2026-10-07) records one successful Ultrafast wait. That tool reports the speed
     it set and leaves the game PAUSED (skills/rimbridge/references/silent-failures.md, MEASURED 2026-08-26).
     rimworld/play_for runs the game for a wall-clock window at a speed and returns (MEASURED ~400 ticks/s at speed 4 =
-    Ultrafast, 2026-10-09, scenes/scenelib.run), so this drives play_for in bounded windows sized from the observed
+    Ultrafast, 2026-10-09, by the old play_for scenes/scenelib.run), so this drives play_for in bounded windows sized from the observed
     rate, reading ticksGame after each, and stops after `stall_chunks` windows in a row that moved nothing."""
     def ticks():
         try:

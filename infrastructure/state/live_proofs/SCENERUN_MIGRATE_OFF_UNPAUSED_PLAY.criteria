@@ -1,0 +1,2 @@
+A1 L2: scenelib.run(600) moves ticksGame by exactly 600 on a quicktest map and the game reads paused before and after
+A2 L2: tank_control scene reads (Glows each read, power net, GlowRadius within 0.5) match between old play_for run and the paused run

@@ -104,6 +104,9 @@ class _BridgeBase(object):
     """call / probe / ticks over a raw transport (`_raw`): the standalone socket or the suite's Session. `probe` talks to
     the static request/result/serial fields of the type named by the subclass's `probe_type`."""
     probe_type = None
+    # safe_advance stopOn for ticks(): "default" is the vitals latch's full list. A caller whose scene hurts or kills on
+    # purpose (scenes/scenelib.run, SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY) narrows it so the latch neither stops nor "heals" it.
+    stop_on = "default"
 
     def _raw(self, tool, kw):
         raise NotImplementedError
@@ -158,7 +161,8 @@ class _BridgeBase(object):
         while left > 0:
             req = min(left, cg.SAFE_CHUNK_MAX)
             try:
-                ex = cg.advance_chunk(self, req)
+                ex = (cg.advance_chunk(self, req) if self.stop_on == "default"
+                      else cg.advance_chunk(self, req, stop_on=self.stop_on))
             except cg.GovernorStop as g:
                 with PRE.quiet():
                     took = site_recover(self, g.result)

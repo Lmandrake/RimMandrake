@@ -348,8 +348,8 @@ instinct gets wrong:
 - **A tick-keyed cache outlives many calls.** A mod that caches an answer for N ticks
   (GSS `CompHoseReel.Port()`, 60) still serves the stale answer to a census 4 ticks after
   the change. Step enough TICKS past the change before reading — not enough seconds.
-- **A coarse stepper overshoots short states.** `scenelib.run(n)` drives `play_for` and on
-  the full list overshoots by ~100+ ticks per call, so a ~50-tick mental state
+- **A coarse stepper overshoots short states.** `rimworld/play_for` (what `scenelib.run` used
+  until 2026-11-06) on the full list overshoots by ~100+ ticks per call, so a ~50-tick mental state
   (`RM_ParentalEnrage` after the intruder leaves) starts and ends between two polls and
   reads as a behaviour FAIL. Step exactly (`B.ticks(n)`, safe_advance), never with
   `play_for`. Prefer a durable trace that a single read after the window can see (a

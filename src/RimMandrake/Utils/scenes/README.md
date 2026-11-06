@@ -8,6 +8,6 @@ root, never WSL python: `python.exe -u src/RimMandrake/Utils/scenes/scenarios.py
 
 - Maps: `S.biome_map(tile, biome[, layer, surface_biome])` makes a map of any biome (a seabed floor needs `surface_biome` too); `S.drop_map(id, tile)` frees it.
 - Build/act/read: `room put grid fuel colonist order power_on heat weather time_of_day` / `glow temp comp inspect find things`; raw `S.call(tool, **p)`.
-- Time: `S.run(n)` (play_for at Ultrafast, ~400 ticks/s). `step_game_ticks` is 5-14 ticks/s here. `S.quiet()` stops raids that pause the game.
+- Time: `S.run(n)` advances exactly n ticks, paused (`validation_core._BridgeBase.ticks` -> `jawa/safe_advance`, many ticks per frame; it raises if ticksGame did not move by n). Bare `step_game_ticks` is 5-14 ticks/s here. `S.quiet()` stops raids that pause the game.
 - Rects/cells are STRINGS "x,z,w,h". Kill pawns with `jawa/damage`, never `destroy_batch`. Pumps/wall items spawned by `spawn_batch` do not join a power net.
 - Traps recorded in `Transient/belt_scenes_progress_20261009.md`; one bridge driver at a time; no flyer visual tests.

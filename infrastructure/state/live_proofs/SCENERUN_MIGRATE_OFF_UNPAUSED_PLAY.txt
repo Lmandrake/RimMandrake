@@ -1,0 +1,4 @@
+# mod list: the minimal list (all five DLC) plus LuminousPigment for A2; any loaded quicktest map with free cells at 40,40 (12x10)
+live-mods: mandrake.rm.luminouspigment
+live-proof A1: python.exe src/RimMandrake/Utils/scenes/prove_scenerun_paused.py exact
+live-proof A2: python.exe src/RimMandrake/Utils/scenes/prove_scenerun_paused.py verdicts
