@@ -168,6 +168,27 @@ def main():
        <= set(rules_cfg["churn_not_fail_ends"]),
        "2c: reach/env bookkeeping ends are no failed attempt under the shipped rules: a repeated bookkeeping row is not churn and "
        "a gen whose last row is game_env_route sent nothing back", (ci, pct.get("x"), rules_cfg["churn_not_fail_ends"]))
+    # 2d: a wait whose blocker ended (relentless_attrib.resume writes end=released) is no failed attempt
+    # (OPS_CHURN_DIAGNOSE_PLANET_VBIW_HJEC): PLANET_ATMOSPHERE_CLOUD_COST_1, 6 returns all > 12 h old, rang
+    # 'bouncing: 6 returns' off a 13:30Z released row alone. A real failure in the window still speaks.
+    s = TMP / "s1d"
+    t0, t1 = NOW - 50 * HOUR, NOW - 1 * HOUR
+    item(s, "R_ITEM", 6, [{"gen": 1, "at": iso(t0), "start": marker("R_ITEM", 1)},
+                          {"gen": 1, "at": iso(t0 + 60), "end": "proof_weak"},
+                          {"gen": 3, "at": iso(t0 + 120), "end": "game_proof_unmeasured"},
+                          {"gen": 3, "at": iso(t1), "end": "released"},
+                          {"gen": 3, "at": iso(t1 + 60), "end": "game_env_route"},
+                          {"gen": 3, "at": iso(t1 + 120), "end": "released"}])
+    p = OW.rl_churn(s, NOW, rules_cfg)
+    ok(p["relentless.churn_items"].get("v") == 0 and "released" in rules_cfg["churn_not_fail_ends"],
+       "2d: a released wait-resume row is no failed attempt: old returns stay spent", (p["relentless.churn_items"],
+                                                                                      rules_cfg["churn_not_fail_ends"]))
+    s = TMP / "s1e"
+    item(s, "R_ITEM", 6, [{"gen": 1, "at": iso(t0), "start": marker("R_ITEM", 1)},
+                          {"gen": 3, "at": iso(t1), "end": "released"},
+                          {"gen": 5, "at": iso(t1 + 60), "end": "blind_fail"}])
+    p = OW.rl_churn(s, NOW, rules_cfg)
+    ok(p["relentless.churn_items"].get("v") == 1, "2d: a real failure after a release still bounces", p["relentless.churn_items"])
     # 3
     s = store_fixture(TMP / "s2", unmapped=5000)
     p = OW.rl_churn(s, NOW, CFG)

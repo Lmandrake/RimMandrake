@@ -1817,7 +1817,7 @@ def collect_marks(env, p):
     bands = rl.get("item_bands")
     if not isinstance(bands, dict):
         raise Unmeasured("ops_watch_rules.json has no relentless.item_bands")
-    ok_ends = set(rl.get("churn_not_fail_ends") or ("finish", "done", "unhold", "blocked", "hold", "conductor_hold"))
+    ok_ends = set(rl.get("churn_not_fail_ends") or ("finish", "done", "unhold", "blocked", "hold", "conductor_hold", "released"))
     states = {s.get("item"): s for v in it["by_status"].values() for s in v}
     unread_all = []
     try:

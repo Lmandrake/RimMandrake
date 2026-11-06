@@ -2636,7 +2636,9 @@ def rl_churn(store, now, cfg):
     win_h, toks_h = float(cfg.get("churn_window_h", 12)), float(cfg.get("tokens_window_h", 24))
     ok_ends = set(cfg.get("churn_not_fail_ends") or ("finish", "done", "unhold", "blocked", "hold", "conductor_hold",
                                                     "reach_adopted", "reach_repaired", "reach_waiter_released",
-                                                    "reach_held", "game_env_route"))
+                                                    "reach_held", "game_env_route", "released"))
+    # released: relentless_attrib.resume, a wait whose blocker ended put back; time, not work. Counted, it woke
+    # PLANET_ATMOSPHERE_CLOUD_COST_1's old 6 returns as 'bouncing' (OPS_CHURN_DIAGNOSE_PLANET_VBIW_HJEC)
     tlo = now - toks_h * HOUR
     try:
         names = sorted(os.listdir(store / "items"))
