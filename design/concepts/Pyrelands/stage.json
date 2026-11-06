@@ -256,10 +256,24 @@
     "ref": "run rm-role-designer-1793978694",
     "stage": 4,
     "tokens": 409248
+   },
+   {
+    "at": "2026-11-06T16:07:20Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1793981105",
+    "stage": 5,
+    "tokens": 419514
+   },
+   {
+    "at": "2026-11-06T16:18:06Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793980998",
+    "stage": 5,
+    "tokens": 195843
    }
   ],
   "reserve": 60000,
-  "spent": 7602965
+  "spent": 8218322
  },
  "history": [
   {
@@ -543,11 +557,29 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1793978694: stage 4 done"
+  },
+  {
+   "at": "2026-11-06T16:05:05Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "7602965 of 4000000 spent; run rm-role-designer-1793980998 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T16:05:05Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1793980998, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-06T16:18:07Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793980998: stage 5 return"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/Pyrelands",
- "pending_decision": "root firebreak clause: his approved root (OWNER:1793895899845199295) still says 'a sprayed firebreak line and a firefoam sprayer let a colony defend its fields', but d_firebreak_cut removed the firebreak floor (vanilla paving holds the line); only his word can change root text. Coverage judge (coverage_verdict.json, not_covered) also returned 8 stage-3 gaps: furnace-beast bed ignition/thermal charge/heat immunity unscened; firefoam sprayer, sand shovel, fire-rite hook only exploration-grade (sprayer has no leaf); sc_paved_strip skips the smoulder relight and lacks a clear-weather start assertion; sc_three_skies misses cinderfall lightning, black-rain ash wash and a black-rain-vs-vanilla-rain control; sc_ash_watered control does not separate the watered lift from richer soil; restoration is boilerplate (sc_walk needs a pre-walk save, sc_no_rain cannot be pad-restored, sc_ash_watered/sc_furnace name no entry_point_item); giant furnace-beast herd migration unscened; 'genetically engineered' has no leaf or text check.",
+ "pending_decision": "worldgen placement switch: inv_biome_self_contained ships biomeGenerationEnabled (default on, labelled WORLDGEN-AFFECTING in RM_PyrelandsMod.cs:60) that places the Pyrelands on newly generated worlds, while sheet.md 'does not' says 'No worldgen of any kind' and the standing ruling (owner 2026-08-15) says there is no worldgen feature in any version. Which one the sheet and floor describe needs his word. Stage 3 then also owes the five coverage gaps in coverage_verdict.json (at 2026-11-06T16:05:05Z).",
  "recovery": [],
  "results": [
   {
@@ -826,11 +858,37 @@
    "run": "rm-role-designer-1793978694",
    "stage": 4,
    "summary": "Cold Reader exam re-run against the current tree and sheet (stage-3 output of rm-role-designer-1793952905, which the rejected run 1793953617 had left uncommitted and untouched). 20 frozen scenarios (Examiner 14, Challenger 6, newer leaves covered: firefoam sprayer, furnace-beast bank/bed, sand shovel, rite hook, engineered text, paved strip, black-rain compound, scorch-fruit timing). Both Readers 20/20, accept_where_reject_core 0, no Challenger misses. Control with furnacebeast_banks_heat_and_smoulders_bed removed accepted e4 and c2, which the real tree rejects. exam.json replaces the stale 2026-11-05 exam."
+  },
+  {
+   "at": "2026-11-06T16:18:07Z",
+   "decision": "worldgen placement switch: inv_biome_self_contained ships biomeGenerationEnabled (default on, labelled WORLDGEN-AFFECTING in RM_PyrelandsMod.cs:60) that places the Pyrelands on newly generated worlds, while sheet.md 'does not' says 'No worldgen of any kind' and the standing ruling (owner 2026-08-15) says there is no worldgen feature in any version. Which one the sheet and floor describe needs his word. Stage 3 then also owes the five coverage gaps in coverage_verdict.json (at 2026-11-06T16:05:05Z).",
+   "inputs": {
+    "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+    "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
+    "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
+    "tree": "881db40073f1ed0448c4b25a010461045c6544610062f5f011ce2670d561a9c9"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_lock.md": "48294670b2e5f64648a7637fd8eaf09092c2ccbe54c496b99c0ff3a0952321ad"
+   },
+   "outcome": "return",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "question": "Players get the one shipped Ash'karr save, so the Pyrelands reach them through that world. The mod also has a Mod Settings switch, on by default and labelled world-generation-affecting, that lets the biome appear when someone generates a brand-new world. Your sheet says 'No worldgen of any kind'. Picture someone who starts a new world instead of your save: is the Pyrelands showing up there part of what this mod does (then the sheet names that switch and we check it), or is it outside what the Pyrelands promise, so the sheet says the mod makes no promise about worlds other than yours? Correct either wording.",
+   "run": "rm-role-designer-1793980998",
+   "stage": 5,
+   "summary": "Coverage judge rm-coverage-judge-1793981105 returned not_covered with 6 gaps (the root firebreak clause is already settled by d_root_ending, OWNER:1793950669508519029). One needs his ruling (worldgen placement switch); five are stage-3 fixes: flamefang venom bite unscened; fire-tick ash dusting (RM_FE_Filth_LooseAsh, ashDustingEnabled control) unscened; showcase exercises lists wrong (fire_cast over-claims inv_animal_roster and the giant leg, burn_line omits inv_animal_roster though it holds sc_populations); furnace-beast giant size has no oracle; ashwallow dome stance has no control of its own and sheet lines for ashwallow/three_skies omit what the tree tests.",
+   "to": 2
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 2,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }

@@ -1,0 +1,9 @@
+{
+ "run": "rm-role-designer-1793980998",
+ "stage": 5,
+ "outcome": "return",
+ "to": 2,
+ "summary": "Coverage judge rm-coverage-judge-1793981105 returned not_covered with 6 gaps (the root firebreak clause is already settled by d_root_ending, OWNER:1793950669508519029). One needs his ruling (worldgen placement switch); five are stage-3 fixes: flamefang venom bite unscened; fire-tick ash dusting (RM_FE_Filth_LooseAsh, ashDustingEnabled control) unscened; showcase exercises lists wrong (fire_cast over-claims inv_animal_roster and the giant leg, burn_line omits inv_animal_roster though it holds sc_populations); furnace-beast giant size has no oracle; ashwallow dome stance has no control of its own and sheet lines for ashwallow/three_skies omit what the tree tests.",
+ "decision": "worldgen placement switch: inv_biome_self_contained ships biomeGenerationEnabled (default on, labelled WORLDGEN-AFFECTING in RM_PyrelandsMod.cs:60) that places the Pyrelands on newly generated worlds, while sheet.md 'does not' says 'No worldgen of any kind' and the standing ruling (owner 2026-08-15) says there is no worldgen feature in any version. Which one the sheet and floor describe needs his word. Stage 3 then also owes the five coverage gaps in coverage_verdict.json (at 2026-11-06T16:05:05Z).",
+ "question": "Players get the one shipped Ash'karr save, so the Pyrelands reach them through that world. The mod also has a Mod Settings switch, on by default and labelled world-generation-affecting, that lets the biome appear when someone generates a brand-new world. Your sheet says 'No worldgen of any kind'. Picture someone who starts a new world instead of your save: is the Pyrelands showing up there part of what this mod does (then the sheet names that switch and we check it), or is it outside what the Pyrelands promise, so the sheet says the mod makes no promise about worlds other than yours? Correct either wording."
+}
