@@ -29,6 +29,7 @@ import datetime as dt
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -40,6 +41,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import cards as C  # noqa: E402
 import policy as P  # noqa: E402
+
+CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 
 ROOT = P.ROOT
 STATE = ROOT / "infrastructure/state/art_eval"
@@ -80,7 +83,7 @@ def now():
 # ------------------------------------------------------------------ transports
 def call_claude(prompt: str, cwd: Path, rung: str = "opus", timeout: int = 420, tools: str = "Read") -> tuple[str, dict]:
     model = model_for(rung)
-    cmd = ["claude", "-p", "--output-format", "json", "--model", model]
+    cmd = [CLAUDE, "-p", "--output-format", "json", "--model", model]
     if tools:
         cmd += ["--allowed-tools", tools]
     t0 = time.time()

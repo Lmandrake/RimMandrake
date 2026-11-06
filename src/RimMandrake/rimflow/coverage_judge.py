@@ -24,6 +24,7 @@ environment variable, so a writer who sets it by hand forges the ledger note too
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -32,6 +33,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import concept_tree as CT  # noqa: E402
 import designer_stage as DS  # noqa: E402
+
+CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 
 VERDICT_FILE = "coverage_verdict.json"
 TIMEOUT_S = 1500        # the judge's own wall bound; the Designer schedule's pre_launch_max_s holds it plus slack
@@ -105,7 +108,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     before = (CT.tree_hash(tree), CT.sheet_hash(d))
     unit = "rm-coverage-judge-%d" % int(now or time.time())
     env = dict(os.environ, RM_ROLE_UNIT=unit)
-    argv = ["claude", "-p", prompt(d, repo), "--model", MODEL, "--name", "COVERAGE JUDGE %s" % unit,
+    argv = [CLAUDE, "-p", prompt(d, repo), "--model", MODEL, "--name", "COVERAGE JUDGE %s" % unit,
             "--output-format", "json", "--json-schema", json.dumps(SCHEMA, separators=(",", ":")),
             "--dangerously-skip-permissions"]
     rec = {"judge": unit, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now or time.time())),

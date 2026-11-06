@@ -43,6 +43,8 @@ from northstar_driver import PASS, FAIL, UNMEASURED                       # noqa
 from northstar_driver import bars as B                                    # noqa: E402
 from northstar_driver.cli import to_wsl                                   # noqa: E402
 
+CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
+
 PROMPT_SHA256 = hashlib.sha256(judge._PROMPT.encode("utf-8")).hexdigest()
 THROTTLE_RE = re.compile(r"rate.?limit|\b429\b|overloaded|usage limit|too many requests|quota", re.I)
 SPLIT = "SPLIT"
@@ -116,7 +118,7 @@ def claude_runner(model, timeout):
         try:
             local = os.path.join(d, "shot" + (os.path.splitext(image)[1] or ".png"))
             shutil.copyfile(image, local)
-            cmd = ["claude", "-p", prompt_for(local), "--output-format", "json",
+            cmd = [CLAUDE, "-p", prompt_for(local), "--output-format", "json",
                    "--model", model, "--allowed-tools", "Read"]
             try:
                 r = harness_run.run(cmd, timeout, cwd=d)  # rm-harness.slice, not the seat

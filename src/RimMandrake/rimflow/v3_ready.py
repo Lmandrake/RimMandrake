@@ -24,6 +24,7 @@ import glob
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -36,6 +37,8 @@ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"   # nor from the child Pythons it ru
 sys.path.insert(0, HERE)
 import session_match as SM  # noqa: E402
 import role_launch as RL  # noqa: E402
+
+CLAUDE_ACCOUNT = shutil.which("claude-account") or os.path.expanduser("~/.local/bin/claude-account")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 
 SCHEDULE_REL = "src/RimMandrake/rimflow/dispatcher_schedule.json"
 GOALS_REL = "infrastructure/state/CONDUCTOR_GOALS.md"
@@ -599,7 +602,7 @@ def hold_rows(ctx):
 
 
 def account_rows(ctx):
-    rc, o = ctx.run(["claude-account", "--json", "status"], timeout=30)
+    rc, o = ctx.run([CLAUDE_ACCOUNT, "--json", "status"], timeout=30)
     d = None
     if rc == 0:
         try:

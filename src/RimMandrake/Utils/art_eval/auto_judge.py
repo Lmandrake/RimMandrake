@@ -33,12 +33,14 @@ import importlib.util
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
 from datetime import datetime
 from pathlib import Path
 
+CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 UTILS = HERE.parent
@@ -163,7 +165,7 @@ def probe() -> tuple:
     """One tiny call on the judge's own model before any judge call (subagent_budget.md: probe quota first)."""
     import runner as RN
     try:
-        r = subprocess.run(["claude", "-p", "--output-format", "json", "--model", RN.model_for("opus")],
+        r = subprocess.run([CLAUDE, "-p", "--output-format", "json", "--model", RN.model_for("opus")],
                            input="Reply with the single word OK.", capture_output=True, text=True, timeout=120,
                            cwd=str(SCRATCH))
     except (subprocess.TimeoutExpired, OSError) as e:

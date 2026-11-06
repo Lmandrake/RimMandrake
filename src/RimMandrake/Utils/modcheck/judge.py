@@ -27,6 +27,7 @@ needed.
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 
@@ -34,6 +35,8 @@ _UTILS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _UTILS not in sys.path:
     sys.path.insert(0, _UTILS)
 import harness_run  # noqa: E402  (Utils/harness_run.py: runs claude -p in rm-harness.slice)
+
+CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 
 YES = "YES"
 NO = "NO"
@@ -156,7 +159,7 @@ def _run_claude(prompt, cwd=None):
     """Returns (ok, text). Never raises on a failed judgement -- a broken judge
     must report itself broken, never fabricate a verdict (global rule: never
     hand-write the output a verifier would have produced)."""
-    cmd = ["claude", "-p", prompt,
+    cmd = [CLAUDE, "-p", prompt,
            "--output-format", "json",
            "--allowed-tools", "Read"]
     try:

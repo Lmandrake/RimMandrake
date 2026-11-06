@@ -39,11 +39,15 @@ Usage:
   python3 facing_set_audit.py --no-llm <...>               # offline: skip viewpoint
 """
 import hashlib
+import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 from PIL import Image
+
+CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 
 SIZE_SPREAD_FLAG = 15.0     # percent, major-axis across facings
 PALETTE_DIST_FLAG = 40.0    # mean-RGB euclidean distance between facings
@@ -93,7 +97,7 @@ def viewpoint_south(path):
     """
     try:
         out = subprocess.run(
-            ["claude", "-p", VIEWPOINT_PROMPT.format(path=path)],
+            [CLAUDE, "-p", VIEWPOINT_PROMPT.format(path=path)],
             capture_output=True, text=True, timeout=VIEWPOINT_TIMEOUT_S)
         word = (out.stdout or "").strip().split()[-1].upper() if out.stdout.strip() else ""
         if word in ("EYELEVEL", "OVERHEAD"):

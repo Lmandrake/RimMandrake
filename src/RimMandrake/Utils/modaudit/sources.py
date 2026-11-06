@@ -25,9 +25,12 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
+
+GH = shutil.which("gh") or os.path.expanduser("~/.local/bin/gh")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -201,7 +204,7 @@ def gh_repo(owner, repo, cache, budget):
         return None
     budget["left"] -= 1
     try:
-        r = subprocess.run(["gh", "api", "repos/%s" % key, "--jq",
+        r = subprocess.run([GH, "api", "repos/%s" % key, "--jq",
                             "{full_name, html_url, license: .license.spdx_id, pushed_at, archived, fork}"],
                            capture_output=True, text=True, timeout=20)
     except (OSError, subprocess.TimeoutExpired) as e:
@@ -226,7 +229,7 @@ def gh_search(name, cache, budget):
     time.sleep(2.1)                      # search API: 30 requests / minute
     q = re.sub(r"[\[\]()\"']", " ", name)[:80]
     try:
-        r = subprocess.run(["gh", "search", "repos", q, "rimworld", "--limit", "3", "--json",
+        r = subprocess.run([GH, "search", "repos", q, "rimworld", "--limit", "3", "--json",
                             "fullName,url,license,pushedAt,isArchived"], capture_output=True, text=True, timeout=30)
     except (OSError, subprocess.TimeoutExpired) as e:
         return {"status": "UNVERIFIED", "error": str(e)[:200]}

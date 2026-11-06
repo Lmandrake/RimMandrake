@@ -12,12 +12,14 @@ Switches only while FROM is the live account. An exhausted account often cannot 
 NEAR of the line that then goes stale or unmeasured counts as past the line. Marker and log: account_handover/ under the
 RimMandrake agent storage. `claude-account use` closes every Claude window here and relaunches the Fleet. No AI.
 """
+import shutil
 import argparse
 import json
 import os
 import subprocess
 import sys
 
+CLAUDE_ACCOUNT = shutil.which("claude-account") or os.path.expanduser("~/.local/bin/claude-account")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = "/mnt/d/ClaudeWork/rimmandrake/account_handover"
 NEAR = 1.0
@@ -66,7 +68,7 @@ def main():
     marker = os.path.join(OUT, "%s_to_%s.done" % (a.frm, a.to))
     if os.path.exists(marker):
         return 0
-    live = json.loads(sh("claude-account", "--json", "status").stdout)["live"]
+    live = json.loads(sh(CLAUDE_ACCOUNT, "--json", "status").stdout)["live"]
     rows = meter()
     row = rows.get(a.frm)
     if live == a.frm and row and row.get("week_pct_left") is not None and row["week_pct_left"] <= a.at + 2 * NEAR and not a.dry_run:
@@ -88,8 +90,8 @@ def main():
     with open("/mnt/d/ClaudeWork/rimmandrake/conductor/log.md", "a", encoding="utf-8") as f:
         f.write("\n- ACCOUNT CHANGE-OVER %s -> %s: %s. Windows relaunch now.\n" % (a.frm, a.to, why))
     host = sh("hostname").stdout.strip().lower()
-    sh("claude-account", "arm", "--confirm", host)
-    r = sh("claude-account", "use", a.to, "--confirm", host, timeout=600)
+    sh(CLAUDE_ACCOUNT, "arm", "--confirm", host)
+    r = sh(CLAUDE_ACCOUNT, "use", a.to, "--confirm", host, timeout=600)
     log({"act": "switched", "rc": r.returncode, "out": (r.stdout + r.stderr)[-400:]})
     if r.returncode:
         return 1        # no marker: the next tick tries again
