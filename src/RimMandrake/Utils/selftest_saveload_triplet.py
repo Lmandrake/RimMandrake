@@ -278,15 +278,38 @@ def gss_wiring():
     class GssFake(FakeGame):
         probe_type = "fake"
 
+        # 8b (live 2026-11-06): GSS lays cords over render frames after a load. lay=(n1, n2) leaves load k with only nk of
+        # the 20 edges laid (a different partial set per load) until the probe's complete "rebuild"; stuck=True is a
+        # rebuild that still leaves edges pending. The live arm (before any load) is fully laid.
+        def __init__(self, lay=None, stuck=False, **kw):
+            FakeGame.__init__(self, **kw)
+            self.lay, self.stuck, self.laid = lay, stuck, 20
+            self.rebuilds = 0
+
+        def _raw(self, tool, kw):
+            r = FakeGame._raw(self, tool, kw)
+            if tool == "rimworld/load_game" and self.lay:
+                self.laid = self.lay[self.loads - 1]
+            return r
+
         def probe(self, cmd, wait_s=20.0):
+            if cmd == "rebuild":
+                self.rebuilds += 1
+                if not self.stuck:
+                    self.laid = 20
+                return {"success": True, "cmd": "rebuild"}
             if cmd != "census":
                 return {"success": True}
-            return {"success": True, "edgeHashes": ["e%d" % self.s["counter"] if self.drop_widget and
-                                                    self.s["widget"] == "off" else "e"], "geometryHash": "g",
+            if self.lay:
+                edges = ["e%02d" % i for i in range(self.laid)]
+            else:
+                edges = ["e%d" % self.s["counter"] if self.drop_widget and self.s["widget"] == "off" else "e"]
+            return {"success": True, "edgeHashes": edges, "geometryHash": "g", "pending": 20 - self.laid,
                     "ticksGame": self.s["tick"], "ends": [], "nodeTypes": {"seed": self.s["seed"]}}
 
     out = {}
-    for label, g in (("identical", GssFake()), ("drops", GssFake(drop_widget=True)), ("nondet", GssFake(nondet_load=True))):
+    for label, g in (("identical", GssFake()), ("drops", GssFake(drop_widget=True)), ("nondet", GssFake(nondet_load=True)),
+                     ("sliced", GssFake(lay=(8, 11))), ("stuck", GssFake(lay=(8, 11), stuck=True))):
         files = {}
         saved = (V._saves_stat, V._wait_saved, V._wait_playing, GV.Bridge, GV.time.sleep)
         try:
@@ -299,6 +322,7 @@ def gss_wiring():
         finally:
             V._saves_stat, V._wait_saved, V._wait_playing, GV.Bridge, GV.time.sleep = saved
         out[label] = (res["triplet"]["verdict"], [r["status"] for r in res["rows"]])
+        out[label + "_rebuilds"] = g.rebuilds
     return out
 
 
@@ -307,6 +331,12 @@ try:
     ok(w["identical"] == (V.TRIPLET_IDENTICAL, ["PASS"]), "GSS --triplet: unchanged cords -> PASS row", w["identical"])
     ok(w["drops"] == (V.TRIPLET_SAVE_DROPS, ["FAIL"]), "GSS --triplet: a save-dropped field -> FAIL row", w["drops"])
     ok(w["nondet"] == (V.TRIPLET_LOAD_NONDET, ["FAIL"]), "GSS --triplet: a per-load re-roll -> FAIL row", w["nondet"])
+    ok(w["sliced"] == (V.TRIPLET_IDENTICAL, ["PASS"]) and w["sliced_rebuilds"] >= 3,
+       "GSS --triplet: a different partial post-load lay per load is completed by a rebuild before census -> PASS row "
+       "(live 2026-11-06 read it as LOAD_NONDETERMINISTIC)", (w["sliced"], w["sliced_rebuilds"]))
+    ok(w["stuck"][0] not in (V.TRIPLET_IDENTICAL, V.TRIPLET_SAVE_DROPS, V.TRIPLET_LOAD_NONDET)
+       and w["stuck"][1] == ["UNMEASURED"],
+       "GSS --triplet: edges still pending after the rebuild -> UNMEASURED, never a verdict", w["stuck"])
 except Exception as ex:  # noqa: BLE001 - an import/wiring crash is a FAIL, never a skip
     ok(False, "GSS --triplet wiring ran", repr(ex))
 

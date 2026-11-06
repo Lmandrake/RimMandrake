@@ -1766,10 +1766,16 @@ def run_triplet(args):
     def read(b):
         # _frame_poll_census without its 2 ticks: the triplet reads AT its target tick (a ticking reader hides when it
         # sampled); every arm has run >= 50 ticks since the save/load, so nets and hookups have long formed
+        # LEARNED live 2026-11-06 (LOAD_NONDETERMINISTIC on a sound save): after a load GSS lays cords over render frames
+        # (FrameBudgetMs, unlaid edges wait), so a bare census sampled a different partial lay per load (B, C strict subsets
+        # of A). The probe's "rebuild" is the complete Rebuild(true); a lay still pending after it is unread, never a verdict.
         b.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1] - 6, width=SITE[2], height=SITE[3] + 6, paddingCells=1)
         time.sleep(1.0)
         b.probe("poll")
+        rb = b.probe("rebuild")
         c = b.probe("census")
+        if not rb.get("success") or str(c.get("pending", "")) != "0":
+            return None
         return _cord_set(c) if c.get("success") and c.get("edgeHashes") else None
 
     name = args.triplet_name or "RM_gss_triplet_%s" % time.strftime("%Y%m%d%H%M%S")

@@ -38,6 +38,12 @@ Not run in a basic checkout and never blocks one; run only when requested (desig
   deployed: a build sha that touched only a proof script made the live round deploy nothing and skip its running-load
   check. HARNESS. Guard: the item's live_proofs file names `live-mods: GimmeSomeSlack`, and
   gss_slice_window_proof.py exits 2 (UNMEASURED) when the GSS probe type is not loaded, so a GSS-less game is never a FAIL.
+- RULED OUT (2026-11-06, PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET): "GSS loads its cords nondeterministically" (the live
+  --triplet read LOAD_NONDETERMINISTIC on 29 fields). Both loaded arms were strict SUBSETS of the live one (1647 strands
+  live, 662 and 709 loaded, no extra edge): the reader sampled the frame-sliced post-load lay (FrameBudgetMs) mid-way, a
+  different amount per load. GSS saves no cord state of its own. HARNESS. Guard: run_triplet's reader calls the probe's
+  complete "rebuild" before census and returns unread when census `pending` != 0; selftest_saveload_triplet.py's
+  sliced/stuck rows go red without either.
 
 ## north star
 state: VALIDATED
