@@ -1089,3 +1089,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR A1 (L2), read-only proof","ts":"2026-11-06T11:43:21Z","tsn":1793965401487827673}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:43:28Z","tsn":1793965408640799083}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing SCRUB_WIND_BUILD_LEAN_ON_PURPOSE: review savegame for the owner's look","ts":"2026-11-06T11:44:39Z","tsn":1793965479823123284}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless showing SCRUB_WIND_BUILD_LEAN_ON_PURPOSE (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T12:05:18Z","tsn":1793966718629564361}
