@@ -1,128 +1,158 @@
 {
- "author": "concept (tree authored_by; stage-3 Designer run)",
- "examiner": "rm-judge Examiner ad83e1d4 (fresh Opus, not the author)",
+ "author": "concept (tree authored_by; stage-3 Designer run rm-role-designer-1793982561)",
+ "examiner": "rm-judge Examiner a11d3c9660858e7ed (fresh Opus, not the author; run rm-role-designer-1793982967)",
  "inputs": {
-  "tree": "05b72bd6b7321aa834664b1593c813955ecd8df261b12a59faba1c8ea8f5a4e4",
-  "sheet": "3eb3b863498fd29a45d22960b4106d660089e5bc9282ef306bfada15e33a861c"
+  "tree": "6aadb4907945b6208129e83aa261b4476509e9f8ce9a78a3799ba10f5ca8bcaa",
+  "sheet": "8c52c66fd037c78d8fd7612b048aa4143f6f0a8a42c291984d189766f8887ad4"
  },
  "scenarios": [
   {
    "id": "e1",
-   "text": "On a fresh Pyrelands map the opening grass fire lights on arrival and burns across part of the map. By the morning of day 3 a full-map fire count reads zero, and it stays zero through day 5. No relight appears anywhere.",
-   "expect": "reject: the line must never be out for long; lighting once and never relighting so the map holds no fire by day three is the leaf's red",
-   "expect_source": "leaf:burn_line_walks"
+   "text": "A flamefang darts in and bites a colonist on the leg. Over the next several in-game hours the colonist's health tab lists only a bite wound that bleeds a little and starts to heal; no venom entry ever appears.",
+   "expect": "reject: the leaf requires the bite to leave flamefang venom on the colonist, worsening over the hours; a bite that leaves only a wound is the leaf's red.",
+   "expect_source": "flamefang_bite_carries_venom"
   },
   {
    "id": "e2",
-   "text": "Two identical crop pads on deep ash are burned the same hour. One gets half a day of black rain. While the rain lasts the per-cell fertility read shows about 140% on the rained-on fresh scar, the same as a nearby wet old-ash pad, and about 90% on the dry fresh scar.",
-   "expect": "reject: black rain must compound the bonus (wet fresh scar about 190%), not wipe it to wet-old-ash level; this is the red, the pre-2026-11-05 behaviour",
-   "expect_source": "leaf:fresh_burn_compounds_with_black_rain"
+   "text": "A fire-hawk flies off holding a burning twig and drops it one cell beyond the edge of the running grass fire. That cell catches; the burn's own spread had already reached the neighbouring cell a moment earlier, and no other spot far from the front ever ignites where a hawk dropped anything.",
+   "expect": "reject: the drop cell may have been lit by the fire's own spread (named false pass), so nothing shows the hawk starting a new fire ahead of the blaze.",
+   "expect_source": "firehawk_lights_ahead"
   },
   {
    "id": "e3",
-   "text": "A grass pad is burned on deep ash. With no replanting by anyone, the tester counts green cells on the burned patch: about 26% on day 3 and about 60% on day 7.",
-   "expect": "accept: meets the card thresholds of at least 25% on day 3 and at least 60% on day 7; nearly-all-green is only advisory tuning",
-   "expect_source": "leaf:grass_carpets_and_regreens"
+   "text": "Grass on a deep-ash pad burns away. Afterwards the burned pad has a dusting of loose ash, but an untouched deep-ash pad beside it, with no fire at all, has banked exactly the same loose ash over the same hours from the drifting ash.",
+   "expect": "reject: the loose ash on the burned pad is ambient drift that would have banked there without any fire (named false pass); the fire leaving loose ash behind it is not shown.",
+   "expect_source": "ash_ground_and_blowing_ash"
   },
   {
    "id": "e4",
-   "text": "Behind the passing front, no scorch-fruit is present while the scar is still smoking. Two days later several scorch-fruit plants have come up on the scar, and none on the unburned pad next to it. They ripen, a colonist picks and eats one, and an unrefrigerated picked stack rots in about four days.",
-   "expect": "reject: scorch-fruit must come up rapidly right behind the front; fruit that appears only days after the front has passed is the red",
-   "expect_source": "leaf:scorchfruit_born_of_fire"
+   "text": "A furnace-beast stands in the colony. The mod's XML file gives it a body size of 6, but the running game's def inspector shows a body size of 2.4, and the beast is no larger on screen than a muffalo.",
+   "expect": "reject: the leaf requires body size 6 in the running game; reading the size from the XML is a named false pass and an ordinary-sized beast is the red.",
+   "expect_source": "furnacebeast_warms"
   },
   {
    "id": "e5",
-   "text": "Over a compressed season on a Pyrelands map, the weather log shows ash fall, cinderfall, clear weather and black rain, plus one ordinary rain day in the second week.",
-   "expect": "reject: ordinary rain must never fall on a Pyrelands map; it being chosen even once is the red",
-   "expect_source": "leaf:no_ordinary_rain"
+   "text": "On a cold night with no fire anywhere near the colony, the running game's inspector shows a furnace-beast's body size as 6 and it looms over the colonists. A colonist standing next to it gains a warmth status that a colonist across the map does not have, and the closed room it shelters in reads well above the temperature of an identical empty room next door.",
+   "expect": "accept: a giant at size 6 in the running game that warms anyone near it and heats its room, with no burn outside to explain the heat.",
+   "expect_source": "furnacebeast_warms"
   },
   {
    "id": "e6",
-   "text": "A colony has surrounded its field with a two-cell-wide strip of vanilla flagstone. The walking front reaches the near side and burns it out; no fire cell appears on the far side. A fire-hawk's ember dropped on the flagstone lights nothing. The architect menu has no firebreak floor, and no chemfuel was used.",
-   "expect": "accept: vanilla paving two cells wide stops front and ember, and the mod's chemfuel firebreak floor is absent",
-   "expect_source": "leaf:paved_strip_holds_the_line"
+   "text": "An ashwallow grazes far from any fire when a heat hit strikes it. It flops onto its side the same way any hurt animal lies down, and its dome sprite shows the whole time, before the hit and after it.",
+   "expect": "reject: the dome sprite drawn all the time, or the animal simply lying down when hurt, are named false passes; nothing shows it curling into its dome because of the heat hit and holding until the hold runs out.",
+   "expect_source": "ashwallow_dives_unharmed"
   },
   {
    "id": "e7",
-   "text": "A fresh Pyrelands map is censused: most cells carry a terrain called deep ash, and the per-cell fertility of those cells matches ordinary soil exactly. Blowing ash particles appear only while ash fall is the active weather; in clear weather the air is empty.",
-   "expect": "reject: a deep-ash label over unchanged soil and blowing ash that shows only during ash fall are both named false passes; no ash blowing in clear weather is the red",
-   "expect_source": "leaf:ash_ground_and_blowing_ash"
+   "text": "On arrival a long grass-fire front lights and crosses the map, leaving a black scorched trail. By the end of day two it has burned out. Through day five no flame or smoulder appears anywhere on the map, open grass included.",
+   "expect": "reject: the burn line lights once and never relights, so the map stays dark, which is the leaf's red.",
+   "expect_source": "burn_line_walks"
   },
   {
    "id": "e8",
-   "text": "In a fresh Pyrelands map's wild census, besides ember grass, quick grass and scorch-fruit, a few cacti from the vanilla desert roster grow, and predators slightly outnumber grazers. The generation log has no errors.",
-   "expect": "reject: a donor plant on the map or big predators outnumbering grazers is the red, whatever the clean log says",
-   "expect_source": "leaf:populations_are_the_biomes_own"
+   "text": "Ten days into a Pyrelands colony, a census of the living map counts boomalopes and wild healroot from another biome alongside the native cast, and the big predators outnumber the small grazers.",
+   "expect": "reject: a donor animal or plant on the map, and big predators outnumbering grazers, are the leaf's red.",
+   "expect_source": "populations_are_the_biomes_own"
   },
   {
    "id": "e9",
-   "text": "A colonist standing next to a furnace-beast in the open shows a warmth status, which goes away after it walks ten cells off. Of two identical closed rooms, the one with the furnace-beast is clearly hotter after a few hours. No burn is anywhere near either room.",
-   "expect": "accept: readable warmth status near the beast, absent away, and the room clearly hotter than its twin",
-   "expect_source": "leaf:furnacebeast_warms"
+   "text": "The grass front reaches a strip of ordinary concrete two cells wide and goes no farther; a smoulder relights in grass right beside the strip and also stops at it. Later a fire-hawk carries an ember and starts a fire six cells past the strip. The architect menu offers no chemfuel firebreak floor.",
+   "expect": "accept: a vanilla paved strip two cells wide stops both the front and a near-side relight, the hawk carrying an ember six cells past it is allowed, and the firebreak floor is gone.",
+   "expect_source": "paved_strip_holds_the_line"
   },
   {
    "id": "e10",
-   "text": "A fire front is driven toward an ashwallow. The fire turns aside two cells short of its cell and the animal stays unhurt. At no point does it show a burrowed status.",
-   "expect": "reject: the fire never reaching the cell is a named false pass, and never showing a burrowed status is the red",
-   "expect_source": "leaf:ashwallow_dives_unharmed"
+   "text": "A patch of ember grass burns black. On day three about a quarter of it shows green shoots; on day seven roughly 60% of it is green again, without any replanting, and the open ground around it is carpeted with grass, not wide bare dirt.",
+   "expect": "accept: ember grass carpets the ground, burns black and is largely green again within about a week, inside his card thresholds (a nearly-all-green week is playtest tuning, not this leaf).",
+   "expect_source": "grass_carpets_and_regreens"
   },
   {
    "id": "e11",
-   "text": "A grass pad has a fire at one end and no fire ahead of it. A fire-hawk's job reads carry-ember, then drop; a fire appears at the drop cell several cells beyond the front before the front reaches it. On the same pad without a hawk, no fire appears at that cell in the same window.",
-   "expect": "accept: carry then drop read as state, a new fire ahead of the blaze, and the control shows it is not ordinary spread",
-   "expect_source": "leaf:firehawk_lights_ahead"
+   "text": "Black rain falls on a scar only hours old. Half a day later the inspector reads that scar's growth rate the same as an old, wet ash patch that never burned.",
+   "expect": "reject: black rain must add to the fresh-burn bonus (a wet fresh scar reads 190%), and still wiping it within half a day is the leaf's red.",
+   "expect_source": "fresh_burn_compounds_with_black_rain"
   },
   {
    "id": "e12",
-   "text": "Ash fall, cinderfall and black rain are each forced at noon on the same map. A blind reader tells ash fall and black rain apart easily, but cannot tell cinderfall captures from ash fall captures; black rain draws dark and the fire count falls under it.",
-   "expect": "reject: cinderfall looking like ash fall is the red; all three must read as their own sky",
-   "expect_source": "leaf:three_skies"
+   "text": "Within hours of the front passing, scorch-fruit sprouts in the black cells just behind it; none comes up on the unburned ash next to the scar. A colonist picks and eats one and their hunger drops. A fruit left on a shelf rots within a short while.",
+   "expect": "accept: scorch-fruit comes up rapidly in the fresh scar right behind the front, not on unburned ground, feeds a colonist and rots fast.",
+   "expect_source": "scorchfruit_born_of_fire"
+  },
+  {
+   "id": "e13",
+   "text": "In daylight three weather captures are compared side by side. Ash fall and cinderfall are clearly different. Black rain draws as the usual blue-grey streaks of ordinary rain.",
+   "expect": "reject: black rain drawing as blue-grey rain is the leaf's red; each sky must read at a glance as its own.",
+   "expect_source": "three_skies"
+  },
+  {
+   "id": "e14",
+   "text": "A full season passes with weather running normally and only black rain ever falls as wet weather. The biome's weather list, opened in dev mode, still has ordinary rain on it at a low commonality.",
+   "expect": "reject: ordinary rain being on the biome's weather list is the leaf's red, even if it was never chosen in that season.",
+   "expect_source": "no_ordinary_rain"
+  },
+  {
+   "id": "e15",
+   "text": "A wild ullai herd that arrived on its own walks across the map to graze the patch that burned about two days earlier, passing over the scar the front left that morning and the unburned grass alike.",
+   "expect": "accept: the herd drifts to graze where it burned about two days ago and not on the fresh scar, and it was not spawned on the scar.",
+   "expect_source": "ullai_graze_old_burns"
+  },
+  {
+   "id": "e16",
+   "text": "A colonist is ordered to shovel a patch of Pyrelands sand. Each dug cell yields five glass sand and turns to gravel; the same cells offer no second dig order. A reachable non-sand cell next to it offers no dig order at all.",
+   "expect": "accept: five glass sand a cell, leaving gravel, so the patch is finite, and other ground yields nothing.",
+   "expect_source": "sand_shovel_yields_glass_sand"
   },
   {
    "id": "c1",
-   "text": "The burn line passes a stretch of ember grass and leaves it black and smoking. Nothing grows on it that day or the next. On the morning of the third day a thick crop of scorch-fruit stands across the scar and none on the unburned grass beside it. A colonist picks it and eats it, and her hunger bar fills. The stockpiled fruit is rotten four days later, and a plant left unpicked withers within a day.",
-   "expect": "reject: scorch-fruit must come up rapidly in the fresh scar right behind the front while the ground is still smoking. Fruit that turns up only days after the fire is named in this leaf's 'must not read as' and in its red.",
-   "expect_source": "leaf:scorchfruit_born_of_fire"
+   "text": "A colonist on a cleared pad is bitten twice by a hostile flamefang; within the hour its health tab lists RM_FlamefangVenom, and the severity climbs each hour for six hours. In the control, the same colonist is bitten by a warg of similar size: the health tab lists the bite wound and also a small RM_FlamefangVenom entry, which climbs more slowly.",
+   "expect": "reject: no other bite may carry the venom; the control bite from a non-venomous predator must leave no RM_FlamefangVenom, and here it does, so any bite applies it",
+   "expect_source": "flamefang_bite_carries_venom"
   },
   {
    "id": "c2",
-   "text": "Three test pads of deep ash sit under the same half-day of black rain. Dry freshly burned ash reads about 90% fertility. Old ash under the rain reads about 140%. The freshly burned pad that was rained on also reads about 140%. Crops on both wet pads grow at the same fast pace and are well ahead of the dry pad. By day 7 the dry fresh pad's extra growth is gone.",
-   "expect": "reject: the wet fresh scar must reach about 190% and out-grow wet old ash. When it reads no better than wet old ash, black rain has wiped the burn bonus, which is this leaf's red.",
-   "expect_source": "leaf:fresh_burn_compounds_with_black_rain"
+   "text": "A grassed deep-ash pad is burned while a light ash fall drifts in, and afterwards the pad holds 38 loose-ash filth. The control, the same pad burned under the same light ash fall with fire ash-dusting switched off, holds 35 loose-ash filth.",
+   "expect": "reject: the loose ash must be left by the fire, not ambient drift; the test should be in clear weather, and the dusting-off control holds about the same count, so the ash is drift that would have banked with no fire",
+   "expect_source": "ash_ground_and_blowing_ash"
   },
   {
    "id": "c3",
-   "text": "To protect a field, a colonist opens the architect menu and builds the mod's own ash firebreak floor in a two-cell strip around it. It costs no chemfuel. The walking front reaches the strip and stops, and an ember a fire-hawk drops on the strip lights nothing. The field survives untouched.",
-   "expect": "reject: the defence must be plain vanilla paving with no mod firebreak floor. If the firebreak floor can still be built (RM_FE_FirebreakLine is still in the defs), that is this leaf's red, even when the fire stops at it.",
-   "expect_source": "leaf:paved_strip_holds_the_line"
+   "text": "On the map the furnace-beast is drawn far larger than every other animal. Its defs file on disk gives body size 6. The live def query in the running game returns body size 3.2; its sprite is scaled up by the graphic's draw size.",
+   "expect": "reject: the giant must be body size 6 in the running game's def, not the XML file; a live 3.2 is the classic muffalo-class beast, only drawn big",
+   "expect_source": "furnacebeast_warms"
   },
   {
    "id": "c4",
-   "text": "On day two the opening front burns out at the map edge. A few hours later a smoulder relights and a new line starts walking with a black trail behind it. The relight cell is open ember grass about three cells from the wall of the colonists' barn.",
-   "expect": "reject: the smoulder must relight in open grass far from buildings. A relight next to the colony's barn breaks the building-margin requirement, and this leaf's 'must not read as' names a front that lights inside the colony.",
-   "expect_source": "leaf:burn_line_walks"
+   "text": "An ashwallow stands on a pad with no ground fire and is struck once by a heat hit that lights nothing. It lies down on the spot at once. About an in-game hour later it is in its dome stance with the burrow job, and later it gets up and walks off. With the dome switch off, the same hit makes it lie down and it never domes.",
+   "expect": "reject: it must dome within a few ticks of the hit; lying down at once and doming an hour later is the 'simply lies down when hurt' false pass, not a dome triggered by the heat hit",
+   "expect_source": "ashwallow_dives_unharmed"
   },
   {
    "id": "c5",
-   "text": "Over a season on a Pyrelands map the sky cycles through ash fall, cinderfall and dark black rain that puts fires out, and each one is easy to tell apart. Late in the season there is one short shower of ordinary clear rain lasting about an hour, then black rain comes back.",
-   "expect": "reject: ordinary rain must never fall on a Pyrelands map and black rain is its only wet weather. One ordinary shower is the leaf's red ('is ever chosen') and its cannot_show.",
-   "expect_source": "leaf:no_ordinary_rain"
+   "text": "On three deep-ash pads under the per-cell fertility probe, the wet fresh scar reads about 190%, the dry fresh scar about 90%, and wet old ash about 140% while the black rain lasts. The dry fresh scar's bonus is gone by day 6. The black rain is held on over the wet fresh scar, and on day 9 that pad still reads about 190%.",
+   "expect": "reject: the burn bonus must fall to zero by day 6 to 7 on its own clock, rain or no rain; on the wet pad the rain is keeping it alive (a bonus that does not fade)",
+   "expect_source": "fresh_burn_compounds_with_black_rain"
+  },
+  {
+   "id": "c6",
+   "text": "Map-wide scorch-fruit count is zero at the start. The burn line crosses a deep-ash pad and scorch-fruit comes up on burning and smoking cells right behind the front. The unburned control pad, laid on a patch of ordinary soil set down for the test beside the field, has none. A colonist picks the ripe fruit and a hungry colonist eats it; an unpicked plant withers within a day and the stack rots in about four days.",
+   "expect": "reject: the unburned control must be the same Pyrelands ground and age; a control on non-Pyrelands soil refuses scorch-fruit for another reason, so 'never on unburned ground' is not shown",
+   "expect_source": "scorchfruit_born_of_fire"
   }
  ],
- "scenarios_hash": "ccdfc9977ecbe4057f9be4073647fd7dd5a9c2af3f0b6d58518c8fed63d6d7a2",
+ "scenarios_hash": "15db81c26b996ff9fe1afc90feadea7cff7caa2e9612e194e46c403e96963844",
  "readers": [
-  "rm-judge Reader A a981323c (Opus, sheet+tree+scenario text only)",
-  "rm-judge Reader B aafd082f (Opus, sheet+tree+scenario text only)"
+  "rm-judge Reader A a4776bd56de1d8d4c (fresh Opus; sheet, tree, scenario text only)",
+  "rm-judge Reader B a5794ebcb078bebf2 (fresh Opus; sheet, tree, scenario text only)"
  ],
- "challenger": "rm-judge Challenger a4029b33 (fresh Opus; c1-c5 joined before the freeze)",
+ "challenger": "rm-judge Challenger a20ed9560c753cffa (fresh Opus; c1-c6 joined before the freeze)",
  "control": {
-  "broken_leaf": "scorchfruit_born_of_fire",
+  "broken_leaf": "flamefang_bite_carries_venom",
   "missed": true,
-  "note": "Control 1 removed the leaf and its sheet line only, and still rejected e4/c1 from the sheet's ## his words quote ('scorchfruit are rapid after the fire'), so it did not discriminate. Control 2 also removed that his-words line: it accepted e4 and c1 (citing walk_season_on_the_pyre), which both real Readers reject. The scenarios discriminate; the rule is held twice in the real sheet (leaf + his words)."
+  "note": "Control reader got the tree with the leaf removed and its sheet lines dropped; it accepted e1 and c1 (a bite with no venom; a control bite that also leaves venom), which both real Readers reject, so the scenarios discriminate."
  },
  "score": {
-  "right": 17,
-  "total": 17
+  "right": 22,
+  "total": 22
  },
  "accept_where_reject_core": 0,
  "challenger_misses": [],
@@ -131,416 +161,402 @@
    {
     "id": "e1",
     "verdict": "reject",
-    "leaf": "burn_line_walks",
-    "why": "Fire stays out days 3-5 with no relight; the line must never be out for long."
+    "leaf": "flamefang_bite_carries_venom",
+    "why": "A flamefang bite leaving only a wound with no venom on the health tab is the leaf's red."
    },
    {
     "id": "e2",
     "verdict": "reject",
-    "leaf": "fresh_burn_compounds_with_black_rain",
-    "why": "Wet fresh scar reads 140% like old ash; black rain must compound it to about 190%."
+    "leaf": "firehawk_lights_ahead",
+    "why": "The drop cell sits next to a cell the front had already reached, so it matches the false pass of the cell being lit by the fire's own spread rather than a new fire ahead of the blaze."
    },
    {
     "id": "e3",
-    "verdict": "accept",
-    "leaf": "grass_carpets_and_regreens",
-    "why": "26% day 3 and 60% day 7 meet the 25/60 card thresholds without replanting."
+    "verdict": "reject",
+    "leaf": "ash_ground_and_blowing_ash",
+    "why": "The burned pad's loose ash equals what the unburned pad banked from drift, which is the false pass of ambient drift that would have banked there without any fire."
    },
    {
     "id": "e4",
     "verdict": "reject",
-    "leaf": "scorchfruit_born_of_fire",
-    "why": "Fruit appears two days later, not rapidly in the still-smoking scar; owner ruled not in two days."
+    "leaf": "furnacebeast_warms",
+    "why": "The running game's def shows body size 2.4 and the beast is muffalo-sized, so it fails the live size 6 bar; the false pass says size must not be read from the XML."
    },
    {
     "id": "e5",
-    "verdict": "reject",
-    "leaf": "no_ordinary_rain",
-    "why": "An ordinary rain day was chosen; only black rain may be wet weather."
+    "verdict": "accept",
+    "leaf": "furnacebeast_warms",
+    "why": "Live body size 6, a warmth status next to the beast and absent far away, and a sheltered room hotter than its twin with no fire nearby meet the oracle."
    },
    {
     "id": "e6",
-    "verdict": "accept",
-    "leaf": "paved_strip_holds_the_line",
-    "why": "Two-cell vanilla flagstone stops front and ember, no firebreak floor, no chemfuel."
+    "verdict": "reject",
+    "leaf": "ashwallow_dives_unharmed",
+    "why": "Lying down like any hurt animal with the dome sprite drawn all the time are both listed false passes."
    },
    {
     "id": "e7",
     "verdict": "reject",
-    "leaf": "ash_ground_and_blowing_ash",
-    "why": "Deep ash is just an unchanged-fertility soil label and ash blows only during ash fall, not in any weather."
+    "leaf": "burn_line_walks",
+    "why": "The front burns out and nothing relights through day five, which is the leaf's red."
    },
    {
     "id": "e8",
     "verdict": "reject",
     "leaf": "populations_are_the_biomes_own",
-    "why": "Donor desert cacti grow and predators outnumber grazers."
+    "why": "Donor animals and plants on the map, with big predators outnumbering grazers, is the leaf's red."
    },
    {
     "id": "e9",
     "verdict": "accept",
-    "leaf": "furnacebeast_warms",
-    "why": "Warmth status near the beast, gone at ten cells, and its room clearly hotter with no burn nearby."
+    "leaf": "paved_strip_holds_the_line",
+    "why": "A two-cell vanilla strip stops the front and a near-side relight, a hawk ember lights six cells past it, and there is no chemfuel firebreak floor, all as the leaf promises."
    },
    {
     "id": "e10",
-    "verdict": "reject",
-    "leaf": "ashwallow_dives_unharmed",
-    "why": "Fire never reached its cell and no burrowed status ever showed."
+    "verdict": "accept",
+    "leaf": "grass_carpets_and_regreens",
+    "why": "About 25% green on day 3 and 60% on day 7 without replanting, with open ground carpeted, meets the card thresholds."
    },
    {
     "id": "e11",
-    "verdict": "accept",
-    "leaf": "firehawk_lights_ahead",
-    "why": "Carry/drop states read and fire lights ahead of the front, absent in the no-hawk control."
+    "verdict": "reject",
+    "leaf": "fresh_burn_compounds_with_black_rain",
+    "why": "A rained-on fresh scar reading no better than wet old ash is the leaf's red (black rain wiping the bonus)."
    },
    {
     "id": "e12",
+    "verdict": "accept",
+    "leaf": "scorchfruit_born_of_fire",
+    "why": "Scorch-fruit comes up in the fresh scar right behind the front and not on unburned ash, feeds a colonist and rots fast."
+   },
+   {
+    "id": "e13",
     "verdict": "reject",
     "leaf": "three_skies",
-    "why": "Cinderfall cannot be told apart from ash fall."
+    "why": "Black rain drawing as blue-grey ordinary rain is the leaf's red."
+   },
+   {
+    "id": "e14",
+    "verdict": "reject",
+    "leaf": "no_ordinary_rain",
+    "why": "Ordinary rain still on the biome's weather list, even at low commonality, is the leaf's red."
+   },
+   {
+    "id": "e15",
+    "verdict": "accept",
+    "leaf": "ullai_graze_old_burns",
+    "why": "A herd that arrived on its own drifts to the two-day-old burn and passes over both the fresh scar and the unburned grass, as the leaf requires."
+   },
+   {
+    "id": "e16",
+    "verdict": "accept",
+    "leaf": "sand_shovel_yields_glass_sand",
+    "why": "Five glass sand per cell, gravel left behind, no second dig, and a reachable non-sand cell that refuses the order meet the oracle."
    },
    {
     "id": "c1",
     "verdict": "reject",
-    "leaf": "scorchfruit_born_of_fire",
-    "why": "Scorch-fruit appears only on day three, not rapidly behind the front while still smoking."
+    "leaf": "flamefang_bite_carries_venom",
+    "why": "The warg control also shows RM_FlamefangVenom, which is the false pass of any bite applying the venom."
    },
    {
     "id": "c2",
     "verdict": "reject",
-    "leaf": "fresh_burn_compounds_with_black_rain",
-    "why": "Rained-on fresh pad reads 140%, same as old ash; it should compound to about 190%."
+    "leaf": "ash_ground_and_blowing_ash",
+    "why": "The scenario calls for clear weather, but this burn ran under ash fall, and the burned pad holds only 3 more loose ash than the ash-dusting-off control, so almost all of it is ambient drift."
    },
    {
     "id": "c3",
     "verdict": "reject",
-    "leaf": "paved_strip_holds_the_line",
-    "why": "The mod's own firebreak floor is supposed to be cut, yet it is in the architect menu."
+    "leaf": "furnacebeast_warms",
+    "why": "The live def reads body size 3.2, the classic value rather than 6, and the drawn size alone does not count; the size must come from the running game's def."
    },
    {
     "id": "c4",
     "verdict": "reject",
-    "leaf": "burn_line_walks",
-    "why": "Smoulder relights three cells from a barn; relights must be far from buildings."
+    "leaf": "ashwallow_dives_unharmed",
+    "why": "The oracle wants the dome with the burrow job within a few ticks of the hit, not lying down at once and doming an hour later (the false pass of simply lying down when hurt)."
    },
    {
     "id": "c5",
     "verdict": "reject",
-    "leaf": "no_ordinary_rain",
-    "why": "An ordinary rain shower falls; it must never fall on a Pyrelands map."
+    "leaf": "fresh_burn_compounds_with_black_rain",
+    "why": "The bonus must fade by day 6 to 7 rain or no rain, but the wet fresh scar still reads 190% on day 9, so it reads as a bonus that never fades."
+   },
+   {
+    "id": "c6",
+    "verdict": "reject",
+    "leaf": "scorchfruit_born_of_fire",
+    "why": "The unburned control sits on ordinary soil rather than the same ground, which is the listed false pass of a control that refuses the fruit for another reason."
    }
   ],
   "readerB": [
    {
     "id": "e1",
     "verdict": "reject",
-    "leaf": "burn_line_walks",
-    "why": "Fire never relights; the map holds no fire by day 3, which is the stated red."
+    "leaf": "flamefang_bite_carries_venom",
+    "why": "A flamefang bite leaving only a wound and no venom entry is the leaf's red."
    },
    {
     "id": "e2",
     "verdict": "reject",
-    "leaf": "fresh_burn_compounds_with_black_rain",
-    "why": "Wet fresh scar reads 140%, the same as wet old ash, instead of 190%: black rain still wipes the bonus."
+    "leaf": "firehawk_lights_ahead",
+    "why": "The front's spread had already reached the next cell, so the drop cell may have been lit by the fire's own spread, which is a listed false pass, and it was not lit ahead of the front."
    },
    {
     "id": "e3",
-    "verdict": "accept",
-    "leaf": "grass_carpets_and_regreens",
-    "why": "26% on day 3 and 60% on day 7 meet the at-least-25% and at-least-60% thresholds."
+    "verdict": "reject",
+    "leaf": "ash_ground_and_blowing_ash",
+    "why": "The burned pad's loose ash matches the unburned pad's, so it is ambient drift that would have banked there without any fire, a listed false pass."
    },
    {
     "id": "e4",
+    "verdict": "reject",
+    "leaf": "furnacebeast_warms",
+    "why": "The running game's def reads 2.4 and the beast is muffalo-sized; the size must come from the live def, and an ordinary-sized beast is the red."
+   },
+   {
+    "id": "e5",
+    "verdict": "accept",
+    "leaf": "furnacebeast_warms",
+    "why": "The live body size is 6 and the beast is drawn as a giant; with no fire nearby, warmth shows beside it and not away from it, and its room is hotter than its twin."
+   },
+   {
+    "id": "e6",
+    "verdict": "reject",
+    "leaf": "ashwallow_dives_unharmed",
+    "why": "An animal that simply lies down when hurt, with the dome sprite drawn the whole time, matches both of the leaf's false passes."
+   },
+   {
+    "id": "e7",
+    "verdict": "reject",
+    "leaf": "burn_line_walks",
+    "why": "The front burns once and the map stays without fire through day five, which is the leaf's red."
+   },
+   {
+    "id": "e8",
+    "verdict": "reject",
+    "leaf": "populations_are_the_biomes_own",
+    "why": "Donor animals and plants are on the map and predators outnumber grazers, which is the red."
+   },
+   {
+    "id": "e9",
+    "verdict": "accept",
+    "leaf": "paved_strip_holds_the_line",
+    "why": "The two-cell paved strip stops both the front and a near-side relight, the hawk's ember six cells past is allowed, and the firebreak floor is gone."
+   },
+   {
+    "id": "e10",
+    "verdict": "accept",
+    "leaf": "grass_carpets_and_regreens",
+    "why": "About 25% green on day 3 and 60% on day 7 without replanting meets the card thresholds, and the ground is carpeted with no bare dirt."
+   },
+   {
+    "id": "e11",
+    "verdict": "reject",
+    "leaf": "fresh_burn_compounds_with_black_rain",
+    "why": "The rained-on fresh scar reads no better than wet old ash, which is the red: black rain wiped the bonus."
+   },
+   {
+    "id": "e12",
+    "verdict": "accept",
+    "leaf": "scorchfruit_born_of_fire",
+    "why": "The fruit comes up within hours behind the front and none on unburned ash; it feeds a colonist and rots fast."
+   },
+   {
+    "id": "e13",
+    "verdict": "reject",
+    "leaf": "three_skies",
+    "why": "Black rain drawn as blue-grey ordinary rain is the leaf's red."
+   },
+   {
+    "id": "e14",
+    "verdict": "reject",
+    "leaf": "no_ordinary_rain",
+    "why": "Ordinary rain on the biome's weather list is the red, even if it was never chosen."
+   },
+   {
+    "id": "e15",
+    "verdict": "accept",
+    "leaf": "ullai_graze_old_burns",
+    "why": "The herd arrived on its own and went to the two-day-old burn, passing the fresh scar and the unburned grass alike."
+   },
+   {
+    "id": "e16",
+    "verdict": "accept",
+    "leaf": "sand_shovel_yields_glass_sand",
+    "why": "Five glass sand per cell, the cell turns to gravel, there is no second dig, and a reachable non-sand control refuses the order."
+   },
+   {
+    "id": "c1",
+    "verdict": "reject",
+    "leaf": "flamefang_bite_carries_venom",
+    "why": "The warg control's bite also applies RM_FlamefangVenom, so any bite applies the venom, a listed false pass."
+   },
+   {
+    "id": "c2",
+    "verdict": "reject",
+    "leaf": "ash_ground_and_blowing_ash",
+    "why": "With ash-dusting off the pad still holds 35 of the 38 loose ash, so nearly all of it is ambient drift and not ash the fire left."
+   },
+   {
+    "id": "c3",
+    "verdict": "reject",
+    "leaf": "furnacebeast_warms",
+    "why": "The live def reads 3.2, the classic size and not 6; the giant look comes from draw size, and only the XML says 6, a listed false pass."
+   },
+   {
+    "id": "c4",
+    "verdict": "reject",
+    "leaf": "ashwallow_dives_unharmed",
+    "why": "The ashwallow lay down at once and only domed about an hour later, but the oracle requires the dome within a few ticks; lying down when hurt is a false pass."
+   },
+   {
+    "id": "c5",
+    "verdict": "reject",
+    "leaf": "fresh_burn_compounds_with_black_rain",
+    "why": "The wet fresh scar still reads 190% on day 9, so the bonus never fades on its six-day clock rain or no rain, which the leaf disallows."
+   },
+   {
+    "id": "c6",
     "verdict": "reject",
     "leaf": "scorchfruit_born_of_fire",
-    "why": "Fruit appears only two days after the front instead of rapidly while the scar is still smoking."
+    "why": "The unburned control is on ordinary soil, not Pyrelands ground, which is a listed false pass."
+   }
+  ],
+  "control": [
+   {
+    "id": "e1",
+    "verdict": "accept",
+    "leaf": "none",
+    "why": "No leaf or sheet line mentions a flamefang or venom, so the concept makes no promise this breaks."
+   },
+   {
+    "id": "e2",
+    "verdict": "reject",
+    "leaf": "firehawk_lights_ahead",
+    "why": "The drop cell sat beside a cell the spread had already reached, which is the false pass 'the drop cell lit by the fire's own spread'."
+   },
+   {
+    "id": "e3",
+    "verdict": "reject",
+    "leaf": "ash_ground_and_blowing_ash",
+    "why": "The burned pad's loose ash equals the drift on the unburned pad, which is the false pass 'ambient drift that would have banked there without any fire'."
+   },
+   {
+    "id": "e4",
+    "verdict": "reject",
+    "leaf": "furnacebeast_warms",
+    "why": "The leaf requires body size 6 in the running game and must not read as a muffalo-sized beast, but the live def shows 2.4."
    },
    {
     "id": "e5",
-    "verdict": "reject",
-    "leaf": "no_ordinary_rain",
-    "why": "An ordinary rain day was chosen; ordinary rain must never fall."
+    "verdict": "accept",
+    "leaf": "furnacebeast_warms",
+    "why": "Live body size 6, a warmth status only near it, and a hotter sheltered room with no fire nearby all meet the leaf."
    },
    {
     "id": "e6",
-    "verdict": "accept",
-    "leaf": "paved_strip_holds_the_line",
-    "why": "A two-cell vanilla strip stops the front and the ember, there is no firebreak floor and no chemfuel was used."
+    "verdict": "reject",
+    "leaf": "ashwallow_dives_unharmed",
+    "why": "The dome showing all the time and the animal just lying down when hurt are both listed false passes."
    },
    {
     "id": "e7",
     "verdict": "reject",
-    "leaf": "ash_ground_and_blowing_ash",
-    "why": "No ash blows in clear weather (stated red); its fertility is also plain soil, not ash."
+    "leaf": "burn_line_walks",
+    "why": "No relight anywhere through day five matches the red: it burns once and the map holds no fire by day three."
    },
    {
     "id": "e8",
     "verdict": "reject",
     "leaf": "populations_are_the_biomes_own",
-    "why": "Donor desert cacti grow there and predators outnumber grazers."
+    "why": "Donor plants and animals on the map, and predators outnumbering grazers, are the leaf's red."
    },
    {
     "id": "e9",
     "verdict": "accept",
-    "leaf": "furnacebeast_warms",
-    "why": "The warmth status shows near the beast and goes away at a distance, and its room is clearly hotter."
+    "leaf": "paved_strip_holds_the_line",
+    "why": "A two-cell vanilla strip stops the front and the smoulder, the hawk ember six cells past is allowed, and there is no firebreak floor, all as the leaf says."
    },
    {
     "id": "e10",
-    "verdict": "reject",
-    "leaf": "ashwallow_dives_unharmed",
-    "why": "It never shows a burrowed status; it reads as an animal the fire simply missed."
+    "verdict": "accept",
+    "leaf": "grass_carpets_and_regreens",
+    "why": "About 25% green on day 3 and 60% on day 7 without replanting, on ground carpeted with grass, meets the card thresholds."
    },
    {
     "id": "e11",
-    "verdict": "accept",
-    "leaf": "firehawk_lights_ahead",
-    "why": "Carry then drop starts a fire ahead of the front, and the control has no fire."
+    "verdict": "reject",
+    "leaf": "fresh_burn_compounds_with_black_rain",
+    "why": "The rained-on fresh scar reading no better than wet old ash is the leaf's red."
    },
    {
     "id": "e12",
+    "verdict": "accept",
+    "leaf": "scorchfruit_born_of_fire",
+    "why": "The fruit comes up within hours behind the front and never on unburned ash, it feeds a colonist, and it rots fast."
+   },
+   {
+    "id": "e13",
     "verdict": "reject",
     "leaf": "three_skies",
-    "why": "Cinderfall cannot be told apart from ash fall, which is the stated red."
+    "why": "Black rain drawn as blue-grey rain is the leaf's red."
+   },
+   {
+    "id": "e14",
+    "verdict": "reject",
+    "leaf": "no_ordinary_rain",
+    "why": "Ordinary rain still on the biome's weather list is the red, even if it never got picked."
+   },
+   {
+    "id": "e15",
+    "verdict": "accept",
+    "leaf": "ullai_graze_old_burns",
+    "why": "A herd that arrived on its own drifts to the two-day-old burn and passes over both the fresh scar and the old grass, as the leaf says."
+   },
+   {
+    "id": "e16",
+    "verdict": "accept",
+    "leaf": "sand_shovel_yields_glass_sand",
+    "why": "Five glass sand a cell, the cell turns to gravel, there is no second dig, and a reachable non-sand cell refuses the order."
    },
    {
     "id": "c1",
+    "verdict": "accept",
+    "leaf": "none",
+    "why": "No leaf or sheet line constrains flamefang venom, so the concept makes no promise this breaks."
+   },
+   {
+    "id": "c2",
+    "verdict": "reject",
+    "leaf": "ash_ground_and_blowing_ash",
+    "why": "Almost all of the 38 is drift that also banks with dusting off (35), the false pass, and the burn ran under ash fall instead of the clear weather the scenario requires."
+   },
+   {
+    "id": "c3",
+    "verdict": "reject",
+    "leaf": "furnacebeast_warms",
+    "why": "The live def reads 3.2, not 6; a sprite drawn bigger does not meet 'body size 6 in the running game'."
+   },
+   {
+    "id": "c4",
+    "verdict": "reject",
+    "leaf": "ashwallow_dives_unharmed",
+    "why": "It lies down at once and domes only an hour later, not within a few ticks, which is the false pass 'simply lies down when hurt'."
+   },
+   {
+    "id": "c5",
+    "verdict": "reject",
+    "leaf": "fresh_burn_compounds_with_black_rain",
+    "why": "The wet fresh scar still reads 190% on day 9, but the bonus must fade by day 6 to 7, rain or no rain."
+   },
+   {
+    "id": "c6",
     "verdict": "reject",
     "leaf": "scorchfruit_born_of_fire",
-    "why": "Nothing grows until day 3; fruit must come up rapidly behind the front, not days later."
-   },
-   {
-    "id": "c2",
-    "verdict": "reject",
-    "leaf": "fresh_burn_compounds_with_black_rain",
-    "why": "The rained-on fresh scar reads 140%, no better than wet old ash, instead of 190%."
-   },
-   {
-    "id": "c3",
-    "verdict": "reject",
-    "leaf": "paved_strip_holds_the_line",
-    "why": "The mod's firebreak floor is still buildable; it must be cut."
-   },
-   {
-    "id": "c4",
-    "verdict": "reject",
-    "leaf": "burn_line_walks",
-    "why": "The smoulder relights three cells from a barn; it must relight far from buildings."
-   },
-   {
-    "id": "c5",
-    "verdict": "reject",
-    "leaf": "no_ordinary_rain",
-    "why": "A short ordinary rain shower fell; ordinary rain must never fall."
-   }
-  ],
-  "control1": [
-   {
-    "id": "e1",
-    "verdict": "reject",
-    "leaf": "burn_line_walks",
-    "why": "Fire goes out for days with no relight; it must never be out for long."
-   },
-   {
-    "id": "e2",
-    "verdict": "reject",
-    "leaf": "fresh_burn_compounds_with_black_rain",
-    "why": "Wet fresh scar reads 140% like wet old ash; it must compound to about 190%."
-   },
-   {
-    "id": "e3",
-    "verdict": "accept",
-    "leaf": "grass_carpets_and_regreens",
-    "why": "26% by day 3 and 60% by day 7 meet the card thresholds."
-   },
-   {
-    "id": "e4",
-    "verdict": "reject",
-    "leaf": "walk_season_on_the_pyre",
-    "why": "Owner: scorch-fruit come up rapidly after the fire, not in two days."
-   },
-   {
-    "id": "e5",
-    "verdict": "reject",
-    "leaf": "no_ordinary_rain",
-    "why": "An ordinary rain day fell; only black rain is allowed."
-   },
-   {
-    "id": "e6",
-    "verdict": "accept",
-    "leaf": "paved_strip_holds_the_line",
-    "why": "Two-cell vanilla strip stops front and ember; no mod floor and no chemfuel."
-   },
-   {
-    "id": "e7",
-    "verdict": "reject",
-    "leaf": "ash_ground_and_blowing_ash",
-    "why": "Blowing ash must show in any weather; fertility equal to plain soil also breaks the watered-ash leaf."
-   },
-   {
-    "id": "e8",
-    "verdict": "reject",
-    "leaf": "populations_are_the_biomes_own",
-    "why": "Vanilla desert cacti present and predators outnumber grazers."
-   },
-   {
-    "id": "e9",
-    "verdict": "accept",
-    "leaf": "furnacebeast_warms",
-    "why": "Warmth status near it, gone when away; its room is clearly hotter."
-   },
-   {
-    "id": "e10",
-    "verdict": "reject",
-    "leaf": "ashwallow_dives_unharmed",
-    "why": "Fire missed it and no burrowed status; it must read as diving, not a miss."
-   },
-   {
-    "id": "e11",
-    "verdict": "accept",
-    "leaf": "firehawk_lights_ahead",
-    "why": "Carry then drop, fire ahead of the front, and the control stays unlit."
-   },
-   {
-    "id": "e12",
-    "verdict": "reject",
-    "leaf": "three_skies",
-    "why": "Cinderfall cannot be told apart from ash fall."
-   },
-   {
-    "id": "c1",
-    "verdict": "reject",
-    "leaf": "walk_season_on_the_pyre",
-    "why": "Scorch-fruit only on day three; owner says rapid after the fire, not in two days."
-   },
-   {
-    "id": "c2",
-    "verdict": "reject",
-    "leaf": "fresh_burn_compounds_with_black_rain",
-    "why": "Rained fresh pad equals wet old ash at 140%; it should reach 190%."
-   },
-   {
-    "id": "c3",
-    "verdict": "reject",
-    "leaf": "paved_strip_holds_the_line",
-    "why": "The mod's own firebreak floor is cut and must not exist."
-   },
-   {
-    "id": "c4",
-    "verdict": "reject",
-    "leaf": "burn_line_walks",
-    "why": "Relight three cells from a barn; it must relight far from buildings."
-   },
-   {
-    "id": "c5",
-    "verdict": "reject",
-    "leaf": "no_ordinary_rain",
-    "why": "An ordinary rain shower fell; that must never happen."
-   }
-  ],
-  "control2": [
-   {
-    "id": "e1",
-    "verdict": "reject",
-    "leaf": "burn_line_walks",
-    "why": "Fire goes out by day 3 and never relights; the line must never be out for long."
-   },
-   {
-    "id": "e2",
-    "verdict": "reject",
-    "leaf": "fresh_burn_compounds_with_black_rain",
-    "why": "Wet fresh scar reads 140% like old wet ash; it must compound to about 190%."
-   },
-   {
-    "id": "e3",
-    "verdict": "accept",
-    "leaf": "grass_carpets_and_regreens",
-    "why": "26% on day 3 and 60% on day 7 meet the 25%/60% thresholds."
-   },
-   {
-    "id": "e4",
-    "verdict": "accept",
-    "leaf": "walk_season_on_the_pyre",
-    "why": "Scorch-fruit comes up on the scar only, is picked and eaten; nothing in the spec is violated."
-   },
-   {
-    "id": "e5",
-    "verdict": "reject",
-    "leaf": "no_ordinary_rain",
-    "why": "An ordinary rain day fell; the only wet weather allowed is black rain."
-   },
-   {
-    "id": "e6",
-    "verdict": "accept",
-    "leaf": "paved_strip_holds_the_line",
-    "why": "Two-cell vanilla flagstone holds the front and the ember; no firebreak floor and no chemfuel."
-   },
-   {
-    "id": "e7",
-    "verdict": "reject",
-    "leaf": "ash_ground_and_blowing_ash",
-    "why": "Ash must blow in any weather, not only during ash fall; ash reading as plain soil also fails."
-   },
-   {
-    "id": "e8",
-    "verdict": "reject",
-    "leaf": "populations_are_the_biomes_own",
-    "why": "Vanilla desert cacti grow, and predators outnumber grazers."
-   },
-   {
-    "id": "e9",
-    "verdict": "accept",
-    "leaf": "furnacebeast_warms",
-    "why": "The warmth status shows beside the beast and goes away off it, and its room is clearly hotter."
-   },
-   {
-    "id": "e10",
-    "verdict": "reject",
-    "leaf": "ashwallow_dives_unharmed",
-    "why": "It never shows burrowed and the front never reaches it; it must dive as the front arrives."
-   },
-   {
-    "id": "e11",
-    "verdict": "accept",
-    "leaf": "firehawk_lights_ahead",
-    "why": "Carry-ember then drop lights a fire ahead of the front; the control stays unlit."
-   },
-   {
-    "id": "e12",
-    "verdict": "reject",
-    "leaf": "three_skies",
-    "why": "Cinderfall cannot be told from ash fall; each sky must read as its own."
-   },
-   {
-    "id": "c1",
-    "verdict": "accept",
-    "leaf": "walk_season_on_the_pyre",
-    "why": "Fruit grows from the scar after the burn and is picked and eaten; no spec line is broken."
-   },
-   {
-    "id": "c2",
-    "verdict": "reject",
-    "leaf": "fresh_burn_compounds_with_black_rain",
-    "why": "The rained-on fresh scar reads 140%, not the compounded 190%."
-   },
-   {
-    "id": "c3",
-    "verdict": "reject",
-    "leaf": "paved_strip_holds_the_line",
-    "why": "The mod's own firebreak floor is cut; only vanilla paving should exist."
-   },
-   {
-    "id": "c4",
-    "verdict": "reject",
-    "leaf": "burn_line_walks",
-    "why": "The smoulder relit three cells from a barn; it must relight far from buildings."
-   },
-   {
-    "id": "c5",
-    "verdict": "reject",
-    "leaf": "no_ordinary_rain",
-    "why": "There is a shower of ordinary rain; the Pyrelands' only rain is black rain."
+    "why": "The unburned control is on ordinary soil, not Pyrelands ground, which is a listed false pass."
    }
   ]
  }
