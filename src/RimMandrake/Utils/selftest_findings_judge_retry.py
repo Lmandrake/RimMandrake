@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from datetime import datetime, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -78,15 +79,33 @@ def run(result, rc, retry=False):
     return p.returncode, calls, retries, pulse, last
 
 
+def due_matches_verdict(call, retries):
+    """The armed due time, read back as UTC, sits the verdict's seconds after the retries.jsonl stamp."""
+    if "--on-calendar=" not in call or not retries:
+        return False
+    text = call.split("--on-calendar=")[1].split(" --")[0]
+    if not text.endswith(" UTC"):
+        return False
+    due = datetime.strptime(text, "%Y-%m-%d %H:%M:%S UTC").replace(tzinfo=timezone.utc).timestamp()
+    rec = json.loads(retries[0])
+    at = datetime.strptime(rec["at"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc).timestamp()
+    wait = int(rec["verdict"].split()[1])
+    return wait >= 60 and abs(due - at - wait) <= 5
+
+
 def test_script():
     rc, calls, retries, pulse, last = run(OUTAGE, 1)
     check("an account death schedules exactly one retry", len(calls) == 1 and len(retries) == 1)
     c = calls[0] if calls else ""
     check("the retry is a user timer running the same script, marked as the retry",
-          "--user" in c and "--on-active=" in c and "FINDINGS_JUDGE_RETRY=1" in c and c.endswith("findings_judge.sh"))
+          "--user" in c and "FINDINGS_JUDGE_RETRY=1" in c and c.endswith("findings_judge.sh"))
+    # every daemon-reload restarts an OnActiveSec count (FINDINGS_RETRY_FIX_RELOAD_RESETS_THE_WAIT), so the wait is a due time
+    check("the retry is armed at a wall-clock due time, never a count a reload restarts",
+          "--on-calendar=" in c and "--on-active" not in c)
     check("one fixed unit name, so systemd refuses a second pending retry", "--unit rm-findings-judge-retry " in c)
     check("the elapsed timer unloads, so the next outage's retry is not refused", "RemainAfterElapse=no" in c)
-    check("its wait is the decided one", calls and int(c.split("--on-active=")[1].split("s")[0]) > 60)
+    check("a one-shot due time fires when due, not on the calendar default's minute", "AccuracySec=1s" in c)
+    check("its wait is the decided one", due_matches_verdict(c, retries))
     check("the run still reads failed, the retry said", rc == 1 and not last["ok"] and "one retry" in pulse
           and "failed" in pulse)
     rc, calls, retries, _, _ = run(OUTAGE, 1, retry=True)

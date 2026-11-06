@@ -9,7 +9,8 @@ hand rerun at ~22:20Z instead of the 24 h timer.
       role_launch.RESUME_WAIT_S when it names none); prints `NO <why>` and exits 1 otherwise.
 
 findings_judge.sh calls it only on a run that is not itself the retry (FINDINGS_JUDGE_RETRY unset), so one death
-earns one retry: a transient `systemd-run --user --on-active` timer that runs the same script again.
+earns one retry: a transient `systemd-run --user --on-calendar` timer, due that many seconds on, that runs the same
+script again. A due time, not --on-active: every daemon-reload restarts an OnActiveSec count.
 """
 import json
 import os

@@ -46,8 +46,10 @@ if [ "$rc" != 0 ] && [ -z "${FINDINGS_JUDGE_RETRY:-}" ] && \
    verdict="$(python3 src/RimMandrake/Utils/findings_judge_retry.py decide "$OUT/run.json")"; then
   wait_s="$(echo "$verdict" | awk '{print $2}')"
   unit=rm-findings-judge-retry     # one name: systemd-run refuses a second retry while one is pending
-  "${FINDINGS_JUDGE_SYSTEMD_RUN:-systemd-run}" --user --quiet --collect --unit "$unit" --on-active="${wait_s}s" \
-    --timer-property=RemainAfterElapse=no \
+  # a wall-clock due time, never --on-active: every daemon-reload restarts an OnActiveSec count
+  due="$(date -u -d "@$(($(date +%s) + wait_s))" '+%Y-%m-%d %H:%M:%S UTC')"
+  "${FINDINGS_JUDGE_SYSTEMD_RUN:-systemd-run}" --user --quiet --collect --unit "$unit" --on-calendar="$due" \
+    --timer-property=AccuracySec=1s --timer-property=RemainAfterElapse=no \
     --working-directory "$ROOT" --setenv FINDINGS_JUDGE_RETRY=1 --setenv "PATH=$PATH" \
     --setenv "FINDINGS_JUDGE_OUT=$OUT" --setenv "FINDINGS_JUDGE_MODEL=$MODEL" \
     -- "$ROOT/src/RimMandrake/Utils/findings_judge.sh" >"$OUT/retry.last" 2>&1
