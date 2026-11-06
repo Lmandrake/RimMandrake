@@ -1,5 +1,5 @@
 """selftest_audit_prescreen.py - python3 src/RimMandrake/rimflow/selftest_audit_prescreen.py"""
-import json, os, sys, tempfile
+import contextlib, io, json, os, sys, tempfile
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from rimflow import audit_prescreen as ap                          # noqa: E402
 
@@ -76,15 +76,29 @@ ok("calibration deterministic", d["calibration_picks"], ap.build(ap.score(many5,
 
 # unreadable ledger => exit non-zero, nothing written
 out = os.path.join(tempfile.mkdtemp(), "p.json")
-ok("empty ledger -> exit 2", ap.main(["--out", out], events=[]), 2)
+def quiet_main(argv, events):
+    """Run ap.main on a case that MUST be UNMEASURED; return (rc, stderr) so its deliberate UNMEASURED line is
+    asserted here instead of leaking to the log a triage reads as this test being red."""
+    buf = io.StringIO()
+    with contextlib.redirect_stderr(buf), contextlib.redirect_stdout(buf):
+        rc = ap.main(argv, events=events)
+    return rc, buf.getvalue()
+
+
+rc, msg = quiet_main(["--out", out], [])
+ok("empty ledger -> exit 2", rc, 2)
+ok("empty ledger says UNMEASURED", msg.startswith("UNMEASURED: ledger unreadable"), True)
 ok("no file on unmeasured", os.path.exists(out), False)
 pa = out + ".audits.jsonl"
-ok("missing past audits -> exit 2 (UNMEASURED, not 'no past failures')",
-   ap.main(["--out", out, "--past-audits", pa], events=good + bad), 2)
+rc, msg = quiet_main(["--out", out, "--past-audits", pa], good + bad)
+ok("missing past audits -> exit 2 (UNMEASURED, not 'no past failures')", rc, 2)
+ok("missing past audits names the file", "UNMEASURED: past audits unreadable" in msg and pa in msg, True)
 ok("no file when past audits missing", os.path.exists(out), False)
 with open(pa, "w") as f:
     f.write('{"item": "X", "verdict": "DEFECT"}\n{"item": "Y", "verd')
-ok("torn past-audit line -> exit 2", ap.main(["--out", out, "--past-audits", pa], events=good + bad), 2)
+rc, msg = quiet_main(["--out", out, "--past-audits", pa], good + bad)
+ok("torn past-audit line -> exit 2", rc, 2)
+ok("torn line names the schema", "breaks audits.schema.json" in msg, True)
 open(pa, "w").close()
 ok("good ledger -> exit 0", ap.main(["--out", out, "--now", "2026-10-27T00:00:00Z", "--past-audits", pa],
                                     events=good + bad), 0)
