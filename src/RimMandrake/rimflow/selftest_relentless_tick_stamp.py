@@ -507,18 +507,23 @@ def t_round_wires_the_wake():
         json.dump({"seat": "BENCH"}, f)
     keep = LR.RoundFx, LR.run_round, LR.wake_supervisor, dict(os.environ)
     woke = []
+    summary = [{"why": "done", "runs": 1}]
 
     def spy(root):
         with open(os.path.join(root, "live", "round.lock"), "w") as lk:
             fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)      # raises if the round still held it
         woke.append(root)
-    LR.RoundFx, LR.run_round, LR.wake_supervisor = (lambda seat=None: None), (lambda *a, **k: {"why": "done"}), spy
+    LR.RoundFx, LR.run_round, LR.wake_supervisor = (lambda seat=None: None), (lambda *a, **k: summary[0]), spy
     os.environ.update(RELENTLESS_ROOT=tmp, RELENTLESS_RULES=rules)
     out = io.StringIO()
     try:
         with contextlib.redirect_stdout(out):
             LR.main(["round", "--item", "I0"])
         ok(woke == [tmp], "a round's end wakes the supervisor, round.lock already free: %s" % woke)
+        summary[0] = {"why": "nothing due", "runs": 0}
+        with contextlib.redirect_stdout(out):
+            LR.main(["round", "--item", "I0"])
+        ok(woke == [tmp], "a round that ran nothing wakes nobody: no empty-round loop: %s" % woke)
         with open(os.path.join(tmp, "live", "round.lock"), "w") as held:
             fcntl.flock(held, fcntl.LOCK_EX)
             with contextlib.redirect_stdout(out):

@@ -6765,14 +6765,14 @@ def mods_held(store, fx, item, states=None):
             for m in fx.item_mods(x)}
 
 
-def lease(store, fx, r, now, acts, wake=None):
+def lease(store, fx, r, now, acts, wake=None, late=None):
     """Fill the free places, top of the queue first. An item the machine cannot run now keeps its place. Afterwards,
     content the health pause held is timed for the Conductor's alarm (pause_alarm). `wake`: the tick's serve_wake, called
     before each item, so a round or staging that ends while clones are made gets its proof now, not after the lease
-    (STAGE_WAKE_TUNE_NAPS_AFTER_LOAD)."""
+    (STAGE_WAKE_TUNE_NAPS_AFTER_LOAD). `late()` true: the tick is past its budget, so no more items this tick."""
     seen = {"known": False, "pause": None, "stopped": []}
     try:
-        return _lease(store, fx, r, now, acts, seen, wake)
+        return _lease(store, fx, r, now, acts, seen, wake, late)
     finally:
         try:
             pause_alarm(store, fx, seen, now, acts)
@@ -6802,7 +6802,7 @@ def start_sync(fx):
     return why
 
 
-def _lease(store, fx, r, now, acts, seen, wake=None):
+def _lease(store, fx, r, now, acts, seen, wake=None, late=None):
     cfg = r.get("staffing") or {}
     launched = clones_this_tick(acts, "work")
     per_tick = cfg.get("work_launch_per_tick", cfg.get("launch_per_tick")) if cfg else None
@@ -6823,6 +6823,9 @@ def _lease(store, fx, r, now, acts, seen, wake=None):
     no_room = None      # make_room's hold, once it said there is no room for a new clone this tick
     incidents = relentless_breakers.load(store)
     for st in queue_order(store.states(), getattr(fx, "plan", None), first):
+        if late and late():         # a clone costs up to a minute, and the next tick is 15 s after this one ends
+            acts.append({"do": "tick_lease_budget"})
+            break
         if wake:
             wake()
             cur = store.load(st["item"])     # the pass the wake ran may have moved this item since the order was read
@@ -7350,6 +7353,37 @@ def over_budget(r, spent):
     return bool(budget) and spent >= budget
 
 
+STEPS_DEFERRED = "steps_deferred.json"      # the items last tick's budgets made wait: served first on the next
+
+
+def steps_order(store):
+    """store.items(), what waited last tick first: a budget that always cut the same tail of the list would starve it."""
+    items = store.items()
+    try:
+        with open(store.p(STEPS_DEFERRED), encoding="utf-8") as f:
+            waited = json.load(f)
+    except (OSError, ValueError):       # none, or torn: the plain order loses nothing but a turn
+        return items
+    first = [i for i in waited if i in items] if isinstance(waited, list) else []
+    return first + [i for i in items if i not in first]
+
+
+def steps_waited(store, waited):
+    if waited:
+        store._write(store.p(STEPS_DEFERRED), json.dumps(waited))
+    else:
+        try:
+            os.remove(store.p(STEPS_DEFERRED))
+        except OSError:
+            pass
+
+
+def tick_past(r, key, wall, whole):
+    """The whole tick has spent the budget `key` names. No rule, no budget, and no clock read."""
+    budget = r.get(key)
+    return bool(budget) and wall() - whole >= budget
+
+
 GAME_WAKE = "game_wake"             # a round ended: relentless_live_round.wake_supervisor writes it, a game pass takes it
 GAME_NEXT_ON = "game_next.on"       # game_next holds tick.lock: a tick waits for it instead of losing its turn
 GAME_NEXT_WAIT_S = 1200             # the unit's own kill: past it the next tick serves the wake
@@ -7604,16 +7638,25 @@ def _tick(store, fx, r, now, prof):
             relentless_game.recarry_returned(store, fx, now, acts)
         except Exception as e:  # noqa: BLE001  a failed git read leaves the item queued, as before
             acts.append({"do": "error", "item": None, "why": "recarry_returned %s: %s" % (type(e).__name__, e)})
-        began, skipped = phase("prelude", whole), 0
+        began, skipped, waited = phase("prelude", whole), 0, []
         budget["began"] = began     # the step loop's game budget: a wake in it spends what is left
+        deferred = 0
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now
-            for item in store.items():
+            for item in store.items() if final else steps_order(store):
                 if final and (store.load(item) or {}).get("status") != "stopping":
                     continue
                 # a game step can plan deploys over the Windows mount for minutes; a tick the unit kills never reaches
                 # lease or flush, so it staffs nothing and says nothing. Game items wait for the next tick instead
                 if over_budget(r, wall() - began) and (store.load(item) or {}).get("status") == "game":
                     skipped += 1
+                    waited.append(item)
+                    continue
+                # reading.json is written when the tick ends, and 572 s of it + the gap outran relentless.tick_age_s's limit
+                # (2026-11-06 06:25Z). Past this budget only a stopping item, which holds a place, still gets its step
+                if not final and tick_past(r, "tick_steps_budget_s", wall, whole) and (
+                        store.load(item) or {}).get("status") != "stopping":
+                    deferred += 1
+                    waited.append(item)
                     continue
                 one = wall()
                 try:
@@ -7628,6 +7671,9 @@ def _tick(store, fx, r, now, prof):
                 serve_wake()
         if skipped:
             acts.append({"do": "tick_budget", "skipped": skipped, "after_s": int(wall() - began)})
+        if deferred:
+            acts.append({"do": "tick_steps_budget", "deferred": deferred, "after_s": int(wall() - whole)})
+        steps_waited(store, waited)
         broker_drain(store, fx, r, now, acts)
         at = phase("steps", began)
         for item in store.items():
@@ -7681,7 +7727,8 @@ def _tick(store, fx, r, now, prof):
             acts.append({"do": "error", "item": None, "why": "queue_next %s: %s" % (type(e).__name__, e)})
         try:
             launch_proved(store, now)
-            lease(store, fx, r, now, acts, wake=serve_wake)
+            lease(store, fx, r, now, acts, wake=serve_wake,
+                  late=lambda: tick_past(r, "tick_lease_budget_s", wall, whole))
         except Exception as e:  # noqa: BLE001  a hung rimflow must not lose the tick's flush; a reservation resumes next tick
             acts.append({"do": "error", "item": None, "why": "lease %s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "lease_raised", "why": str(e)[:300]})
