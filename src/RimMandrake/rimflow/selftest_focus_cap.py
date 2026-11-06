@@ -7,6 +7,7 @@ The planted fault runs on the real path: cli.py as a subprocess on a throwaway l
 dispatcher_schedule.json so the number under test is the shipped one. N+1 ready items and N started: `next` offers no new
 item; a dated wait frees one place; a third wait is refused; an expired wait counts again. The cap is also reached the way
 workers reach it, by non-peek `next` reservations of filed items. Relentless reads the same key on its live staffing path.
+A bare `claim <ID>` with no token from `next` is held to the same cap (CLAIM_CAP_ENFORCE_DIRECT_DOOR_LEFT_AJAR).
 """
 import json
 import os
@@ -202,6 +203,48 @@ def reservations_hold_the_cap():
     check(focus_count(x) == n, "no sequence of workers took focus past the cap")
 
 
+def direct_claim_held():
+    """The direct door (CLAIM_CAP_ENFORCE_DIRECT_DOOR_LEFT_AJAR): a worker that names an item to `claim`, with no token
+    from `next`, is held to the same cap `next` holds."""
+    x = Sandbox()
+    n = x.cap["per_seat"]
+    for k in range(n - 1):
+        x.item("DIRECT%s_FIX_STILL_OPEN" % "ABCDEFGHIJ"[k], start=True)
+    for k in range(3):
+        x.item("NAMED%s_FIX_NOT_STARTED" % "ABC"[k])
+    mine, tok, _ = reserve(x)
+    check(mine is not None and focus_count(x) == n, "direct claim: a reservation fills the last place (%s)" % mine)
+    other = next(i for i in ("NAMEDA_FIX_NOT_STARTED", "NAMEDB_FIX_NOT_STARTED") if i != mine)
+    before = len(model_read(x))
+    bad = x.run("claim", other)
+    check(bad.returncode != 0 and "FOCUS CAP" in bad.stdout + bad.stderr,
+          "direct claim: at %d focus items a bare `claim` of a fresh item is refused" % n)
+    check(len(model_read(x)) == before, "direct claim: the refused claim wrote no event")
+    w = model.replay(model_read(x))
+    check(w.items[other].state == "proposed" and model.lease_status(w.items[other], model.epoch_now()) != "live",
+          "direct claim: the refused item is untouched")
+    x.ok("claim", mine, "--token", tok)
+    check(focus_count(x) == n, "direct claim: the claim of the seat's own reservation lands, still one place")
+    x.ok("wait", "DIRECTA_FIX_STILL_OPEN", "--until", "2099-01-01", "--reason", "slow external")
+    x.ok("claim", other)
+    check(focus_count(x) == n, "direct claim: a wait frees the place and the claim then lands (%d of %d)" % (focus_count(x), n))
+    bad = x.run("claim", "NAMEDC_FIX_NOT_STARTED")
+    check(bad.returncode != 0 and "claim refused" in bad.stdout + bad.stderr, "direct claim: and the cap holds again after it")
+    x.ok("wait", "DIRECTB_FIX_STILL_OPEN", "--until", "2099-01-01", "--reason", "slow external")
+    again, _tok, _ = reserve(x)
+    check(again == "NAMEDC_FIX_NOT_STARTED" and focus_count(x) == n, "direct claim: a second reservation fills the freed place")
+    bare = x.run("claim", again)
+    check("FOCUS CAP" not in bare.stdout + bare.stderr,
+          "direct claim: the cap never refuses the seat's own reservation claimed WITHOUT --token (the lease rule decides)")
+    bare = x.run("claim", "DIRECTC_FIX_STILL_OPEN")
+    check("FOCUS CAP" not in bare.stdout + bare.stderr and focus_count(x) == n,
+          "direct claim: an item already started is never refused by the cap at the cap (its lease decides)")
+    y = Sandbox(seats=["RUNNER"], per_seat=1)
+    y.item("UNCAPPEDA_FIX_STILL_OPEN", start=True)
+    y.item("UNCAPPEDB_FIX_NOT_STARTED")
+    check(y.run("claim", "UNCAPPEDB_FIX_NOT_STARTED").returncode == 0, "direct claim: a seat not listed is not capped")
+
+
 def relentless_reads_the_same_number():
     x = Sandbox()
     os.environ["RIMFLOW_SCHEDULE"] = x.sched
@@ -246,6 +289,7 @@ def main():
     expired_wait_and_history()
     unlisted_seat_and_damage()
     reservations_hold_the_cap()
+    direct_claim_held()
     relentless_reads_the_same_number()
     print("FAILS: %d" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0

@@ -1896,6 +1896,23 @@ def _move_prose_to_closed(iid):
     return (os.path.relpath(live, model.ROOT), os.path.relpath(closed, model.ROOT))
 
 
+def _claim_cap_check(w, it, seat, now):
+    """The WIP cap on the direct door (CLAIM_CAP_ENFORCE_DIRECT_DOOR_LEFT_AJAR). `next` holds a seat to focus_cap, but a
+    worker naming an item to `claim` walked past it. A claim makes the item `seat`'s focus, so: an item that is not
+    already a focus item of `seat` is refused while `seat` holds per_seat of them. A reservation `next` made (live lease,
+    token or not) and work already started are focus already, so they pass; called inside the dispatch lock."""
+    cap = _focus_cap(seat)
+    if not cap:
+        return
+    if it.owner == seat and priority.is_focus(it, now, cap["since"]):
+        return
+    fo = priority.focus_items(w, seat, now, cap["since"])
+    if len(fo) >= cap["per_seat"]:
+        die("claim refused: FOCUS CAP: %s holds %d focus items (cap %d, schedule focus_cap): %s. Finish one, or "
+            "`rimflow wait <ID> --until <date> --reason ...` frees a place." % (
+                seat, len(fo), cap["per_seat"], ", ".join(sorted(i.id for i in fo))))
+
+
 def cmd_claim(args, seat):
     """`claim` — take the item AND a lease on it, and START it (rimflow redesign step 3).
 
@@ -1919,6 +1936,8 @@ def cmd_claim(args, seat):
         w = _replay_now()
         it = w.items.get(args.id)
         now = model.epoch_now()
+        if it is not None and it.state in ("proposed", "ready", "doing"):
+            _claim_cap_check(w, it, seat, now)
         rel = priority.release_reason(w, it, now) if it is not None else None
         if rel:     # the block ended by its own rule: the claim writes that down, so the books stop calling it blocked
             _write_one({"seat": seat, "event": "unblock", "id": args.id, "reason": "auto: " + rel})
