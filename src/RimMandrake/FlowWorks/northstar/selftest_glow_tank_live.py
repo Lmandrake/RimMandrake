@@ -209,6 +209,13 @@ def main():
           G.grown_fraction(["12% grown", "Growth rate: 71%", "Growth: 30%"]) == [0.12])
     import argparse  # noqa: F401
     check("default window is a whole day", "default=60000" in open(G.__file__, encoding="utf-8").read())
+    # GLOWTANK_PROOF_FIX_GROWTH_PARSER_BLIND: the giants go before the site prep (prepare_site does it for every caller)
+    import inspect as _insp
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Utils"))
+    import validation_core as _VC
+    swept = _insp.getsource(_VC._prepare_site_swept)
+    check("prepare_site clears huge plants before the site prep",
+          "clear_huge_plants(B)" in swept and swept.index("clear_huge_plants(B)") < swept.index("return _prepare_site("))
     x, z, w, h = G.room_rect(60, 152)
     inner = (w - 2) * (h - 2)
     check("4 open of the room's interior stays under Room.UsesOutdoorTemperature's 25%", 4 < -(-inner // 4), inner)
