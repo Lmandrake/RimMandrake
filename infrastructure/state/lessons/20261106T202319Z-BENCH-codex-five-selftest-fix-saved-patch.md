@@ -1,0 +1,1 @@
+CODEX_FIVE_SELFTEST_FIX_SAVED_PATCH_RED: a selftest-red item may already be fixed by a sibling item filed for the same red (here 0c3e2fd71d, SELFTEST_FIX_RELENTLESS_CODEX_FIVE_AZEU, fixed row #16). Rerun the selftest at HEAD before editing; finish then needs a non-ledger commit naming the item, since the checker reads a ledger-only candidate from its parent.
