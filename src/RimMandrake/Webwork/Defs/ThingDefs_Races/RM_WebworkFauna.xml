@@ -52,10 +52,8 @@
   this row is explicitly named as that consumer (roster doc row 1). Vennick's
   RM_JobGiver_RunToEggs ("the living treasure map") is the doc's own "owed" —
   NOT built here; until it exists vennick is a content-complete ordinary prey
-  animal with no bespoke pathing. Sivvern's prey preference for vennick and
-  its flight animation flip-book are likewise not built — vanilla predator
-  behaviour covers the former, and GetBestFlyAnimation returns null with no
-  frames set, which is correct and never blocks flight.
+  animal with no bespoke pathing. Sivvern's prey preference for vennick is
+  likewise not built — vanilla predator behaviour covers it.
 
   Flight (RM_Sivvern only): real flight per the standing rule (owner,
   2026-09-19) — MaxFlightTime/FlightCooldown are the CORE stat pair
@@ -590,10 +588,15 @@
     <canArriveManhunter>false</canArriveManhunter>
     <wildGroupSize>1~1</wildGroupSize>
     <ecoSystemWeight>0.15</ecoSystemWeight>
-    <!-- No flyingAnimationFramePathPrefix/-FrameCount: the flip-book frame
-         set is OWED later (roster doc's own art row). GetBestFlyAnimation
-         returns null with none set and it flies plainly — never block
-         flight waiting on frames. -->
+    <!-- 4-frame wing-beat flip-book cut out of his kept static by flyer_cutout.py (body pixel-identical in every frame;
+         config src/RimMandrake/Utils/art/flyer_cutout_sets/Sivvern.json). Frames are 320 px: the 256 px static padded 32 px a side,
+         so 1.25 x the life stage drawSize keeps the body at its grounded scale. FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/RM_Sivvern/RM_Sivvern_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>6</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>

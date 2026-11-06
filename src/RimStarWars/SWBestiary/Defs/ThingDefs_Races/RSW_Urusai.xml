@@ -171,8 +171,11 @@
     <flyingAnimationFramePathPrefix>swanimals/Urusai/Urusai_Flying_</flyingAnimationFramePathPrefix>
     <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
-    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <!-- 4-frame flip-book cut out of his kept static Urusai_<facing>.png by flyer_cutout.py (body pixel-identical in every
+         frame; config src/RimMandrake/Utils/art/flyer_cutout_sets/Urusai.json). Frames are 320 px: the 256 px static padded
+         32 px a side, so 1.25 x the life stage drawSize keeps the body at its grounded scale. FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS. -->
+    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
     <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>

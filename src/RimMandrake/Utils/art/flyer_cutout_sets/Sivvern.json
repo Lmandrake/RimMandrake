@@ -1,0 +1,371 @@
+{
+ "set": "Sivvern",
+ "folder": "src/RimMandrake/Webwork/Textures/Things/Pawn/Animal/RM_Sivvern",
+ "prefix": "RM_Sivvern_Flying_",
+ "note": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS. Masters are his kept static RM_Sivvern_<facing>.png padded 32 px to 320 (seed dir, build --src). 4 frames, ping-pong. East: far (upper) and near (lower) wing squash toward the body together. The static's body interior is alpha 252-254 (a resample): the master is made opaque at alpha >= 250 so the body is solid and the wings never show through it.",
+ "facings": {
+  "north": {
+   "order": "under",
+   "protect": [
+    [
+     [
+      146,
+      47
+     ],
+     [
+      174,
+      47
+     ],
+     [
+      180,
+      162
+     ],
+     [
+      174,
+      272
+     ],
+     [
+      146,
+      272
+     ],
+     [
+      140,
+      162
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       32,
+       87
+      ],
+      [
+       150,
+       87
+      ],
+      [
+       150,
+       247
+      ],
+      [
+       32,
+       247
+      ]
+     ],
+     "hinge": [
+      148,
+      124
+     ],
+     "sign": -1,
+     "poses": [
+      [
+       14,
+       0.96
+      ],
+      [
+       0,
+       0.98
+      ],
+      [
+       -14,
+       0.96
+      ],
+      [
+       0,
+       0.98
+      ]
+     ]
+    },
+    {
+     "poly": [
+      [
+       170,
+       87
+      ],
+      [
+       288,
+       87
+      ],
+      [
+       288,
+       247
+      ],
+      [
+       170,
+       247
+      ]
+     ],
+     "hinge": [
+      172,
+      124
+     ],
+     "sign": 1,
+     "poses": [
+      [
+       14,
+       0.96
+      ],
+      [
+       0,
+       0.98
+      ],
+      [
+       -14,
+       0.96
+      ],
+      [
+       0,
+       0.98
+      ]
+     ]
+    }
+   ],
+   "master": 1
+  },
+  "south": {
+   "order": "under",
+   "protect": [
+    [
+     [
+      138,
+      154
+     ],
+     [
+      182,
+      154
+     ],
+     [
+      186,
+      207
+     ],
+     [
+      186,
+      272
+     ],
+     [
+      134,
+      272
+     ],
+     [
+      134,
+      207
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       32,
+       92
+      ],
+      [
+       138,
+       92
+      ],
+      [
+       138,
+       262
+      ],
+      [
+       32,
+       262
+      ]
+     ],
+     "hinge": [
+      136,
+      222
+     ],
+     "sign": -1,
+     "poses": [
+      [
+       12,
+       0.96
+      ],
+      [
+       0,
+       0.98
+      ],
+      [
+       -12,
+       0.96
+      ],
+      [
+       0,
+       0.98
+      ]
+     ]
+    },
+    {
+     "poly": [
+      [
+       182,
+       92
+      ],
+      [
+       288,
+       92
+      ],
+      [
+       288,
+       262
+      ],
+      [
+       182,
+       262
+      ]
+     ],
+     "hinge": [
+      184,
+      222
+     ],
+     "sign": 1,
+     "poses": [
+      [
+       12,
+       0.96
+      ],
+      [
+       0,
+       0.98
+      ],
+      [
+       -12,
+       0.96
+      ],
+      [
+       0,
+       0.98
+      ]
+     ]
+    }
+   ],
+   "master": 1
+  },
+  "east": {
+   "order": "under",
+   "falloff": 0,
+   "protect": [
+    [
+     [
+      32,
+      152
+     ],
+     [
+      288,
+      144
+     ],
+     [
+      288,
+      192
+     ],
+     [
+      32,
+      192
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       47,
+       32
+      ],
+      [
+       242,
+       32
+      ],
+      [
+       242,
+       144
+      ],
+      [
+       47,
+       156
+      ]
+     ],
+     "hinge": [
+      182,
+      156
+     ],
+     "sign": 1,
+     "order": "under",
+     "poses": [
+      [
+       0,
+       1.0,
+       1.0
+      ],
+      [
+       0,
+       1.0,
+       0.7
+      ],
+      [
+       0,
+       1.0,
+       0.45
+      ],
+      [
+       0,
+       1.0,
+       0.7
+      ]
+     ]
+    },
+    {
+     "poly": [
+      [
+       47,
+       192
+      ],
+      [
+       242,
+       192
+      ],
+      [
+       242,
+       288
+      ],
+      [
+       47,
+       288
+      ]
+     ],
+     "hinge": [
+      182,
+      184
+     ],
+     "sign": 1,
+     "order": "over",
+     "poses": [
+      [
+       0,
+       1.0,
+       1.0
+      ],
+      [
+       0,
+       1.0,
+       0.7
+      ],
+      [
+       0,
+       1.0,
+       0.45
+      ],
+      [
+       0,
+       1.0,
+       0.7
+      ]
+     ]
+    }
+   ],
+   "master": 1
+  }
+ }
+}

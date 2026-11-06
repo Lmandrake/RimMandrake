@@ -2,7 +2,7 @@
  "set": "Shyrack",
  "folder": "src/RimStarWars/SWBestiary/Textures/swanimals/Shyrack",
  "prefix": "Shyrack_Flying_",
- "note": "masters: north 2, east 1, south 2 (north 3 was a flat donor cartoon, east 3 a re-posed body). 3 frames: odd-N phase.",
+ "note": "masters: north 2, east 1, south 2 (his painted frames; frame 4 was a flat donor cartoon and is rebuilt from the master). 4 frames: ping-pong. South protects the tail, which curls over the right wing's box. FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS.",
  "facings": {
   "north": {
    "master": 2,
@@ -74,6 +74,10 @@
        0.95
       ],
       [
+       0,
+       0.97
+      ],
+      [
        -19,
        0.95
       ],
@@ -111,6 +115,10 @@
       [
        19,
        0.95
+      ],
+      [
+       0,
+       0.97
       ],
       [
        -19,
@@ -156,24 +164,16 @@
        0
       ],
       [
-       245,
+       176,
        0
       ],
       [
-       245,
-       125
-      ],
-      [
-       215,
-       135
-      ],
-      [
-       200,
-       125
-      ],
-      [
        180,
-       130
+       116
+      ],
+      [
+       172,
+       126
       ],
       [
        165,
@@ -201,6 +201,7 @@
       148
      ],
      "sign": 1,
+     "order": "over",
      "poses": [
       [
        0,
@@ -210,12 +211,69 @@
       [
        0,
        1.0,
-       0.35
+       0.75
       ],
       [
-       4,
+       0,
        1.0,
-       -0.3
+       0.55
+      ],
+      [
+       0,
+       1.0,
+       0.75
+      ]
+     ]
+    },
+    {
+     "poly": [
+      [
+       176,
+       0
+      ],
+      [
+       250,
+       0
+      ],
+      [
+       250,
+       121
+      ],
+      [
+       200,
+       121
+      ],
+      [
+       180,
+       116
+      ]
+     ],
+     "hinge": [
+      192,
+      121
+     ],
+     "sign": 1,
+     "order": "under",
+     "poses": [
+      [
+       0,
+       1.0,
+       1.0
+      ],
+      [
+       0,
+       1.0,
+       0.75
+      ],
+      [
+       0,
+       1.0,
+       0.55
+      ],
+      [
+       0,
+       1.0,
+       0.75
       ]
      ]
     }
@@ -258,6 +316,32 @@
       118,
       105
      ]
+    ],
+    [
+     [
+      138,
+      52
+     ],
+     [
+      172,
+      52
+     ],
+     [
+      170,
+      96
+     ],
+     [
+      160,
+      104
+     ],
+     [
+      150,
+      104
+     ],
+     [
+      140,
+      90
+     ]
     ]
    ],
    "wings": [
@@ -288,15 +372,19 @@
      "poses": [
       [
        19,
+       0.93
+      ],
+      [
+       0,
        0.95
       ],
       [
        -19,
-       0.95
+       0.93
       ],
       [
        0,
-       0.97
+       0.95
       ]
      ]
     },
@@ -327,15 +415,19 @@
      "poses": [
       [
        19,
+       0.93
+      ],
+      [
+       0,
        0.95
       ],
       [
        -19,
-       0.95
+       0.93
       ],
       [
        0,
-       0.97
+       0.95
       ]
      ]
     }
