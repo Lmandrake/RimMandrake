@@ -4292,3 +4292,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU","result":"kept","detail":"sweep: running again","ts":"2026-11-06T01:48:12Z","tsn":1793929692842002693}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"kept","detail":"sweep: running again","ts":"2026-11-06T01:48:15Z","tsn":1793929695964872769}
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-06T01:48:19Z","tsn":1793929699126065900}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","result":"broken","detail":"Ops alarm CHURN_OR_BLIND: infra_share 27.5 (line < 40) -- health.incident_slis = 1 incident SLIs reading bad now (MEASURED), line > 0","ts":"2026-11-06T01:52:18Z","tsn":1793929938064753246}
+{"seat":"RUNNER","event":"raise","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T01:52:21Z","tsn":1793929941154098511}
