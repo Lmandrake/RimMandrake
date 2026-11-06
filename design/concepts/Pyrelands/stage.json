@@ -284,10 +284,17 @@
     "ref": "run rm-role-designer-1793981883",
     "stage": 2,
     "tokens": 465578
+   },
+   {
+    "at": "2026-11-06T16:36:10Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793982561",
+    "stage": 3,
+    "tokens": 622144
    }
   ],
   "reserve": 60000,
-  "spent": 8716359
+  "spent": 9338503
  },
  "history": [
   {
@@ -607,6 +614,24 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1793981883: stage 2 done"
+  },
+  {
+   "at": "2026-11-06T16:29:51Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "8716359 of 4000000 spent; run rm-role-designer-1793982561 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T16:29:51Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1793982561, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-06T16:36:11Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1793982561: stage 3 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -939,11 +964,35 @@
    "run": "rm-role-designer-1793981883",
    "stage": 2,
    "summary": "Worldgen switch settled without asking him: draft a_worldgen_switch struck by fresh review because his 2026-08-15 ruling already decides it. Recorded d_worldgen_outside_promise (the built new-world placement switch stays, outside the promise, unchecked; sheet floor:worldgen to read 'no worldgen of our own'). Default-on question filed as PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT, non-blocking. No ask sent; no core contradiction open. Stage 3 owes the worldgen rewording plus the five coverage gaps in coverage_verdict.json (2026-11-06T16:05:05Z)."
+  },
+  {
+   "at": "2026-11-06T16:36:11Z",
+   "inputs": {
+    "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+    "scenes": "d40c63d076cecf9baf3fd3dc186b96bdab2c0e242a6f422150ccfc2d830e2273",
+    "sheet": "8c52c66fd037c78d8fd7612b048aa4143f6f0a8a42c291984d189766f8887ad4",
+    "tree": "6aadb4907945b6208129e83aa261b4476509e9f8ce9a78a3799ba10f5ca8bcaa"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793982561",
+   "stage": 3,
+   "summary": "Worldgen carried per d_worldgen_outside_promise: sheet floor:worldgen now reads 'No worldgen of our own; the vanilla new-world placement switch is outside the promise and unchecked', floor.json worldgen stays applicable, a delegated line names the switch and PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT (coverage_rest cannot carry it: the program refuses a capability a showcase already exercises). Five judge gaps (rm-coverage-judge-1793981105) closed: new leaf flamefang_bite_carries_venom + sc_flamefang_venom (control non-venomous bite); ash_ground_and_blowing_ash gains fire-left loose ash + sc_fire_dusts_ash (control ashDustingEnabled off vs unburned twin); furnacebeast_warms gains the giant (live bs 6) + sc_furnace_giant (control classic restore 3.2); sc_heat_dome split out with the dome switch off as its own control; sheet lines for ashwallow and three_skies say what the tree tests. Showcases corrected: burn_line adds inv_animal_roster, fire_cast drops it and gains sc_heat_dome and sc_furnace_giant; showcase set accepted. Filed PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME (Relentless, game-up)."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
