@@ -1,0 +1,1 @@
+relentless_boxrun.extract ends a proof command at a hyphenated lowercase argument (e.g. --case abort-mid-chain): _WORD_OK/_PLAIN match neither, so the box runs '--case' bare and argparse exits 2. Spell proof arguments with underscores (or include . / = digits) until extract accepts hyphens. Seen on PITPRISON_CHAIN_FIX_LEFTOVERS_PICK_FIGHTS 2026-11-06.
