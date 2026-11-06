@@ -20,7 +20,9 @@ hash, 4 of 5 of them ancestors of the game's clean a9e5d1f6a3 build; FW_PROOF_TO
 HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK's load, and ./sync for riders moves the stager's clone off the lead's hash):
   * cover: a DLL that is a clean build (embedded == srchash at its stamp) of a descendant of the built sha reads FRESH
     (covered_by); a sibling, an unknown stamp, a dirty build, or cover off read STALE; the real Fx covers;
-  * the game phase owes the companion for every rider of the load, not the lead alone (game_companion_owed);
+  * the game phase owes the companion for every rider of the load, not the lead alone (game_companion_owed), and
+    relentless_game.step()'s staging wires the riders in: a load where only a rider owes it stages a plan and prompt
+    naming that rider's sha (t_step_rider_owes; red when step() calls game_companion_owed for the lead alone);
   * the stager accepts a clean, published HEAD holding every owed sha and refuses a dirty tree, an unpublished HEAD,
     or a HEAD lacking one.
 """
@@ -357,8 +359,59 @@ def t_stager_covers():
         check("stager covers: a published HEAD behind a stale origin/main ref is fetched, then accepted", why is None, why)
 
 
+def t_step_rider_owes():
+    """relentless_game.step() itself, not game_companion_owed alone: I0 leads a staging carrying rider I1, and only I1
+    owes the companion. The stage plan and prompt must name I1's sha (the blind check's mutant: step() passing
+    [(item, built)] only stayed green)."""
+    import selftest_relentless as SR
+    import selftest_relentless_game as TG
+    rider = "b" * 40
+    seen = []
+
+    class W(TG.GW):
+        def game_companion(self, item, sha):
+            seen.append(item)
+            return rider if item == "I1" else None
+
+        def launch(self, st, run, prompt, agent, clone, max_s, env):
+            self.plans = getattr(self, "plans", []) + [(st["item"], dict(st.get("_stage_plan") or {}), prompt)]
+            return TG.GW.launch(self, st, run, prompt, agent, clone, max_s, env)
+
+    x = TG.rig(2, share=1.0, max_workers=2)
+    w = W(2)
+    w.__dict__.update(x.w.__dict__)
+    x.w = w
+    before = len(SR.FAILS)
+    try:
+        TG.two_in_prove(x)
+        G.step(x.s, x.w, x.r, "I1", x.now, [], SR.R)      # I1 tried on the running game too, so I0 stages now
+        with x.s.lock():
+            st = x.s.load("I1")
+            st["game"].update(phase="prove", waits_reload=x.now)
+            x.s.save(st)
+        x.w.rows.append({"at": TG.iso_(x.now - 5), "item": "I1", "criterion": "A2", "sha": TG.SHA,
+                         "outcome": "UNMEASURED", "why": "not deployed: RM_Y"})
+        x.now += 30
+        acts = []
+        G.step(x.s, x.w, x.r, "I0", x.now, acts, SR.R)
+        st = x.st("I0")
+        plans = [p for p in getattr(x.w, "plans", []) if p[0] == "I0"]
+        check("step rider: the lead stages a load carrying the rider",
+              st["game"]["phase"] == "staging" and st["game"].get("batch") == ["I1"] and plans, (acts, st["game"]))
+        if plans:
+            _, plan, prompt = plans[-1]
+            check("step rider: the stage plan owes the rider's companion though the lead owes none",
+                  plan.get("companion") == [rider], plan)
+            check("step rider: the stage prompt names the rider's sha", rider[:12] in prompt
+                  and "COMPANION: not owed" not in prompt, prompt[-600:])
+        check("step rider: step() asked the rider, not the lead alone", "I1" in seen and "I0" in seen, seen)
+        check("step rider: the game rig raised no red of its own", len(SR.FAILS) == before, SR.FAILS[before:])
+    finally:
+        x.done()
+
+
 def main():
-    for t in (t_line, t_touched, t_gate, t_real_fx, t_round, t_stage, t_cover, t_batch, t_stager_covers):
+    for t in (t_line, t_touched, t_gate, t_real_fx, t_round, t_stage, t_cover, t_batch, t_step_rider_owes, t_stager_covers):
         try:
             t()
         except Exception as e:      # noqa: BLE001  a crash is a red, named
