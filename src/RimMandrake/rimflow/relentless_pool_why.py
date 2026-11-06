@@ -13,8 +13,9 @@ reads Operations' fresh verdict instead. Nothing is filed: the first-touch pass 
   relentless_pool_why.py [--strict] [--items] [--verdict]
   relentless_pool_why.py --leases    every open pool-seat item holding a LAPSED lease (expired, never released); exit 1 if any
 
-LAPSED_LEASES_REPAIR_GHOSTS_HOLD_THE_KEYS (2026-11-06): six BENCH items held leases that expired days earlier and were never
-released. Only a live lease keeps an item out now (relentless.lease_live); `--leases` lists the ghosts that remain, and the
+LAPSED_LEASES_REPAIR_GHOSTS_HOLD_THE_KEYS (2026-11-06): eleven open BENCH items (six of them system items) held leases that expired days
+earlier and were never released. Only a live lease keeps an item out now (relentless.lease_live); `--leases` lists the
+ghosts that remain in the ledger of the tree it lives in, and the
 owning seat repairs each (`rimflow reclaim` for doing, `rimflow release --token` for the rest).
 """
 import argparse
@@ -132,11 +133,22 @@ def ghosts(w, r, now):
             and model.lease_status(it, int(now)) == "lapsed"]
 
 
-def leases_cli(r=None, now=None):
+def tree_ledger(repo=None):
+    """-> the frozen events.jsonl of the tree `repo` (this script's own tree by default). model.read() with no path
+    reads $CLAUDE_PROJECT_DIR's ledger, so a session whose project dir is ANOTHER clone measured that clone's ledger, not
+    the tree under test: a blind check of 49ac7ca0 counted 11 ghosts its own tree had already released (twice)."""
+    return os.path.join(repo or REPO, "infrastructure", "state", "ledger", "events.jsonl")
+
+
+def leases_cli(r=None, now=None, repo=None):
     model = R.pkg("model")
     r = r or R.rules()
-    w = model.replay(model.read())
+    head = tree_ledger(repo)
+    files = model.ledger_files(head)
+    w = model.replay(model.read_clone(head))
     gs = ghosts(w, r, time.time() if now is None else now)
+    print("ledger read: %s (%d files; the tree this script lives in, never $CLAUDE_PROJECT_DIR)"
+          % (os.path.dirname(head), len(files)))
     print("lapsed leases on open %s items: %d" % ("/".join(r["pool_seats"]), len(gs)))
     for i, st, ls in gs:
         print("  %s state=%s token=%s expired %s" % (i, st, ls.get("token"), ls.get("expires")))

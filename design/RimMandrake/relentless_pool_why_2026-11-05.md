@@ -33,6 +33,8 @@ Notes, measured with the tool:
   ledger, a store state); the probe excluded those, the tool tallies them as `state=doing`.
 - Only a LIVE lease keeps an item out (`relentless.lease_live`, fixed 2026-11-06 by `LAPSED_LEASES_REPAIR_GHOSTS_HOLD_THE_KEYS`;
   before it a lapsed or released lease held `FLEETWATCH_REFRESH_BUILD_OUTLIVES_ITS_WINDOW`, a `ready` item, out). The 11 BENCH
-  ghosts then on the ledger were released or reclaimed; `relentless_pool_why.py --leases` lists any that remain.
+  ghosts then on the ledger were released or reclaimed; `relentless_pool_why.py --leases` lists any that remain. The repair is 5 `lease release` and 6 `reclaim` events in the
+  BENCH ledger shard (each `why`/`reason` names this item); `--leases` reads the ledger of the tree it lives in and prints
+  that path, because `model.read()` follows `$CLAUDE_PROJECT_DIR` to whatever clone a session names.
 - Operations' classifier counts owner-parked items as system work. That inflates "system items waiting" readings
   (the probe's 74) but orders nothing: `pool_order` drops them first.

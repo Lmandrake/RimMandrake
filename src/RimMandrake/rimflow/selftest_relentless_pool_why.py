@@ -70,6 +70,49 @@ GW = NS(items={i.id: i for i in (item("G_LAPSED_DOING", state="doing", lease=LAP
 ok([g[0] for g in P.ghosts(GW, RULES, NOW)] == ["G_LAPSED_DOING"],
    "--leases names an open pool-seat item with a lapsed lease, and nothing live, released, closed or another seat's",
    P.ghosts(GW, RULES, NOW))
+# --leases measures the ledger of the tree it runs in, even when $CLAUDE_PROJECT_DIR names another clone holding a ghost
+import contextlib, io, json, shutil, tempfile  # noqa: E401,E402
+SEAT = RULES["pool_seats"][0]
+
+
+def plant(root, ghost):
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    os.makedirs(d)
+    evs = [{"seat": SEAT, "event": "file", "id": "G_TREE", "for": SEAT, "kind": "task", "needs": "offline",
+            "title": "planted", "ts": M.stamp(NOW, -7200)}]
+    if ghost:
+        evs += [{"seat": SEAT, "event": "start", "id": "G_TREE", "ts": M.stamp(NOW, -7100)},
+                {"seat": SEAT, "event": "lease", "id": "G_TREE", "action": "take", "token": SEAT + ".pid1.g",
+                 "expires": M.stamp(NOW, -3600), "ts": M.stamp(NOW, -7000)}]
+    with open(os.path.join(d, SEAT + ".jsonl"), "w", encoding="utf-8") as f:
+        f.writelines(json.dumps(e) + "\n" for e in evs)
+    return os.path.dirname(d)
+
+
+def leases(repo):
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = P.leases_cli(RULES, NOW, repo=repo)
+    return rc, buf.getvalue()
+
+
+CLEAN, STALE = tempfile.mkdtemp(prefix="pool_why_clean_"), tempfile.mkdtemp(prefix="pool_why_stale_")
+old_env = os.environ.get("CLAUDE_PROJECT_DIR")
+try:
+    clean_ledger, stale_ledger = plant(CLEAN, False), plant(STALE, True)
+    rc, out = leases(STALE)
+    ok(rc == 1 and "G_TREE state=doing" in out, "--leases sees a planted lapsed lease (the instrument can see)", out)
+    os.environ["CLAUDE_PROJECT_DIR"] = STALE        # the session's project dir is another clone, ghost and all
+    rc, out = leases(CLEAN)
+    ok(rc == 0 and ("ledger read: %s (1 files" % clean_ledger) in out,
+       "--leases reads the tree under test and names it, never $CLAUDE_PROJECT_DIR's", out)
+finally:
+    if old_env is None:
+        os.environ.pop("CLAUDE_PROJECT_DIR", None)
+    else:
+        os.environ["CLAUDE_PROJECT_DIR"] = old_env
+    shutil.rmtree(CLEAN, ignore_errors=True)
+    shutil.rmtree(STALE, ignore_errors=True)
 ok(P.reasons(item(target="v2"), W, RULES, NOW) == ["target=v2"], "another target is out")
 ok(P.reasons(item(needs="harvest"), W, RULES, NOW) == ["needs=harvest"], "a need outside pool_needs is out")
 ok(P.reasons(item("SYS_PARKED_LIST_ID"), W, dict(RULES, pool_ids_exclude=["SYS_PARKED_LIST_ID"]), NOW) == ["pool_excluded"],
