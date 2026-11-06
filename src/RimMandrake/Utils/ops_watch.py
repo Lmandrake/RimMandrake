@@ -1845,7 +1845,49 @@ def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
         names.append(it.id)
     if not ages:
         return M(0.0, "min the oldest unclaimed steward incident has waited", why="no unclaimed steward incident")
-    return M(round(max(ages), 1), "min the oldest unclaimed steward incident has waited", first=names[:3])
+    old = sorted(zip(ages, names), key=lambda an: (-an[0], an[1]))[:3]     # oldest first: the ones the alarm hands over
+    return M(round(old[0][0], 1), "min the oldest unclaimed steward incident has waited", first=[n for _, n in old],
+             ages={n: round(a, 1) for a, n in old})
+
+
+STEVE_EXPEDITE_RENEW_S = 3.5 * 3600     # under relentless_expedite's 4 h life: a still-unclaimed incident is set again
+STEVE_EXPEDITE_FILE = "steve_incident_expedited.json"
+
+
+def steve_incident_early(point, rules, now, expediter=None):
+    """Operations hands a steward incident to Relentless BEFORE the alarm: every one the reading names unclaimed for
+    rules steve_incident.expedite_after_min is expedited (`relentless.py expedite set --by Operations`, past every enrol
+    cap), once per STEVE_EXPEDITE_RENEW_S (ops_dir()/STEVE_EXPEDITE_FILE). Without it the incident waited for an enrol
+    slot: Relentless takes enrol_per_tick (2) a tick, ticks ~5 min apart, and on 2026-11-06 5CB3 (spawned 11:56:22Z)
+    was enrolled at 12:22:59Z and rang the 30-min alarm (OPS_STEVE_UNSTICK_UNCLAIMED_ETBS). `expediter(ids, why)` ->
+    {id: None | refusal}. -> flags: a refusal is said and retried next pass, never raised."""
+    after = ((rules.get("steve_incident") or {}).get("expedite_after_min"))
+    if not is_num(after) or not isinstance(point, dict) or point.get("m") != "MEASURED":
+        return []
+    ages = (point.get("x") or {}).get("ages") or {}
+    path = ops_dir() / STEVE_EXPEDITE_FILE
+    done = {k: v for k, v in _obj(read_json(path)).items() if is_num(v) and now - v < STEVE_EXPEDITE_RENEW_S}
+    due = sorted(i for i, a in ages.items() if is_num(a) and a >= after and i not in done)
+    if not due:
+        return []
+    if expediter is None:
+        conf = alarm_conf(rules)
+        expediter = lambda ids, why: expedite_owner(ids, conf, why)     # noqa: E731
+    got = expediter(due, "steward incident unclaimed >= %s min: Operations hands it to Relentless before the "
+                         "STEVE_INCIDENT_UNCLAIMED alarm" % fmt(after))
+    flags = []
+    for i in due:
+        if (got or {}).get(i, "no answer") is None:
+            done[i] = now
+        else:
+            flags.append({"rule": "steve_expedite", "key": "steve.incident_unclaimed_min", "value": ages.get(i),
+                          "window": "now", "detail": "expedite of %s refused: %s" % (i, str((got or {}).get(i, "no answer"))[:200])})
+    try:
+        atomic_json(path, done)
+    except OSError as e:
+        flags.append({"rule": "steve_expedite", "key": "steve.incident_unclaimed_min", "value": None, "window": "now",
+                      "detail": "%s not written: %s" % (STEVE_EXPEDITE_FILE, str(e)[:160])})
+    return flags
 
 
 def c_process(now, rules, ctx):
@@ -5076,6 +5118,15 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         points = dict(carried, **points)        # this pass's own readings win
     if release is not None:
         sick += steve_release_finish(release)
+    if filer is real_filer and "steve.incident_unclaimed_min" in points and not observed_at(points["steve.incident_unclaimed_min"]):
+        try:        # this pass's own reading, never a carried one (ETBS: before the alarm, not at it)
+            fence("the steve incident expedite")
+            sick += steve_incident_early(points["steve.incident_unclaimed_min"], rules, now)
+        except Fenced:
+            raise
+        except Exception as e:  # noqa: BLE001  the pass outlives its early hand, and says so
+            sick.append({"rule": "steve_expedite", "key": "steve.incident_unclaimed_min", "value": None, "window": "now",
+                         "detail": "early expedite failed: %s: %s" % (type(e).__name__, str(e)[:160])})
     for fam, key in (("relentless", "relentless.blind"), ("seats", "seats.blind"), ("plan", "plan.blind"),
                      ("disk", "disk.scratch_outside_blind")):
         if (whole or fam in families) and not counts_as_measured(points.get(key)):
