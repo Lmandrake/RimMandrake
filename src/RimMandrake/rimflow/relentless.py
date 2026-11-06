@@ -555,6 +555,17 @@ def unmeasured(store, st, said, blind, r, now):
         # applied by the supervisor and the same sha checked once (relentless_reachfix.py). No clock re-check.
         st["_blind_check"] = chk
         try:
+            owed = relentless_reachfix.worker_owes(r, st, blind)
+            if owed:
+                # the Judge is blind on evidence nobody made yet (a GPT review): no box repair can reach it, the worker
+                # owes it, so it goes back like a WEAK proof with the blind text as its finding
+                what = st["blind"]["what"]
+                st["blind"] = None
+                fail(store, st, "evidence_owed", "the Judge could not see evidence the worker owes (%s): produce it and "
+                     "name its path under D:\\ClaudeWork in the finish evidence, which the box binds read only: %s"
+                     % (owed["class"], what), r, now)
+                return ("blind check at %s: UNMEASURED (Marker said %s) on evidence the worker owes (%s), not a reach the "
+                        "box can repair: back to its worker: %s" % (sha, said, owed["class"], what[:300]))
             said_line = relentless_reachfix.on_blind(store, st, r, now, said, blind)
         finally:
             st.pop("_blind_check", None)

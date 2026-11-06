@@ -302,6 +302,16 @@ def paths(st):
     return list((rp.get("proposal") or {}).get("paths") or []) if rp.get("status") == "applied" else []
 
 
+def worker_owes(r, st, blind):
+    """-> the reach_classes row when the blind gap is evidence the WORKER owes (`worker_owes`, e.g. gpt_review: a review it
+    never wrote, which no adapter or read path can make), else None. Such a gap opens no repair: it goes back to the worker
+    (CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK gen 7, FOUNDRY_BACKSTOP_REPAIR_CURSOR_HIDES_INPUT)."""
+    chk = st.get("_blind_check") or {}
+    what = (st.get("blind") or {}).get("what") or blind or ""
+    cls = classify(r, [what] + list(chk.get("unreached") or []))
+    return cls if cls.get("worker_owes") else None
+
+
 def _wait(st, kind_on, cls, now, detail, ledger_on=None):
     st["status"] = "blocked"
     st["blocked_at"] = now

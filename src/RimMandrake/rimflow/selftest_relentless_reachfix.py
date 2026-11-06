@@ -690,6 +690,44 @@ def t_live_round_seed():
        "(9) a usable Judge proposal is kept as said: %s" % prop)
 
 
+GPT_BLIND = ("blind GPT review of the fix: no review output is reachable (/mnt/d/ClaudeWork/rimmandrake/scratch missing), "
+             "and codex.exe cannot start here (gpt_consult.py -> 'codex.exe: Invalid argument')")
+
+
+def t_gpt_review_back_to_worker():
+    """CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK gen 7 (the instance: FOUNDRY_BACKSTOP_REPAIR_CURSOR_HIDES_INPUT at
+    34d410be8e). Its Judge was blind on the item's own 'then blind GPT review' step: no review output named anywhere, and
+    codex.exe cannot start in the box. '.exe' and 'Invalid argument' made windows_build catch it; that class's seed builds
+    the companion, which passed its probe and left the Judge blind, so this item reopened and FOUNDRY_BACKSTOP waited on it.
+    No adapter can make a review the worker never wrote: the worker owes it (run it, name its output path in the finish
+    evidence, and the box binds that path read only). Now the gap is classed gpt_review and goes back to the worker."""
+    import json
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    cls = RF.classify(r, [GPT_BLIND, GPT_BLIND])
+    ok(cls["class"] == "gpt_review" and cls.get("worker_owes"),
+       "(10) a GPT-review gap is classed gpt_review (worker owes it), not windows_build: %s" % cls["class"])
+    ok(RF.classify(r, ["dotnet.exe on \\\\wsl.localhost: Invalid argument"])["class"] == "windows_build",
+       "(10) a real Windows build gap still classes windows_build")
+    x = rig()
+    B.to_check(x, "I0")
+    n0 = len(checks(x))
+    returns0 = x.st("I0")["returns"]
+    st = blind(x, "I0", proposals=["jawabench_build_candidate"], what=GPT_BLIND)
+    ok(st["status"] != "blocked" and (st.get("wait") or {}).get("kind") != RF.WAIT and not st.get("reach"),
+       "(10) no reach repair, no wait: %s wait=%s reach=%s" % (st["status"], st.get("wait"), st.get("reach")))
+    ok(st["returns"] == returns0 + 1 and any(a.get("end") == "evidence_owed" for a in x.s.attempts("I0")),
+       "(10) the item goes back to its worker as evidence_owed: returns %d -> %d" % (returns0, st["returns"]))
+    ok("GPT review" in x.s.learned("I0"),
+       "(10) the worker is told what it owes (the blind text is on its record)")
+    for _ in range(10):
+        x.tick(120)
+    ok(not x.w.tickets and not x.w.probes, "(10) no ticket filed, nothing probed: %s %s" % (x.w.tickets, x.w.probes))
+    ok("gpt_review" not in RF.load(x.s) and "windows_build" not in RF.load(x.s),
+       "(10) the reach book holds no repair for it: %s" % sorted(RF.load(x.s)))
+    ok(len(checks(x)) == n0, "(10) the same sha is not checked again: %d" % (len(checks(x)) - n0))
+    x.done()
+
+
 KUQY_STILL_BLIND = ("git commits behind the pre-existing fixed.sha values in jam_classes.json (no .git in export; "
                     "/mnt/d/Luke/dev/RimMandrake/.git Permission denied; /home/mandrake/rm/bench empty); live relentless "
                     "journal showing relentless.jam_unnamed = 0 after the fix (ls /home/mandrake/rm/relentless/store: "
@@ -763,7 +801,7 @@ def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
               t_windows_build_nothing_to_probe, t_windows_build_seed_probes, t_every_waiter_released, t_legacy_off, t_clones_seed, t_store_seed,
               t_closed_ticket_reseeds, t_seat_tmp_reach, t_clones_scratch_instance, t_live_round_seed,
-              t_store_waiter_kuqy, t_clones_judge_gap_filled, t_store_dark_second):
+              t_store_waiter_kuqy, t_clones_judge_gap_filled, t_store_dark_second, t_gpt_review_back_to_worker):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
