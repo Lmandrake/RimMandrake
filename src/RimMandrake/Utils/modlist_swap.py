@@ -14,10 +14,14 @@ that hardcoded it (583, 578, 585) was wrong within days of being written.
     modlist_swap.py --minimal --apply
     modlist_swap.py --restore --apply
     modlist_swap.py --enable Graffiti UtinniPatches --apply   # add mods (and their deps) to the live list
+    modlist_swap.py --disable oblitus.mylittleplanet --apply  # take mods (and the active mods needing them) off it
 
 --enable is how Relentless's game phase makes the NEXT load hold an item's mods before it spends a game slot
 (LIVE_MODLIST_ENFORCE_BEFORE_SLOT: 6 of 28 live runs read "not enabled in ModsConfig" / "not in the running load").
 Owner 2026-10-24: the mod list is ours to change. Exit 2 names every mod or dependency it cannot resolve.
+--disable is its inverse for a proof that must run on a load LACKING a mod (`live-without:`, a live-toggle's without
+side; STAGING_REMOVAL_FIX_ONLY_KNOWS_ADDITION: with only --enable, GENERATOR_MODS_PROVE_INERT_AFTER_CREATION A2 read
+UNMEASURED four times on whatever list was up). Core and the DLC never leave (every DLC is assumed).
 """
 import argparse, hashlib, os, sys, datetime
 import xml.etree.ElementTree as ET
@@ -286,20 +290,105 @@ def enable(names, apply_it):
     if not apply_it:
         print("\nplan only. re-run with --apply")
         return 0
+    arch = write_live(new, "enable")
+    print("  archived live -> %s" % arch)
+    print("  WROTE live (%d active, +%d)" % (len(new), len(gained)))
+    return 0
+
+
+def write_live(ids, tag):
+    """Replace the live list's activeMods with `ids`, atomically, after a snapshot -> the snapshot path."""
     tree = ET.parse(LIVE)
     am = tree.getroot().find("activeMods")
     if am is None:
         am = ET.SubElement(tree.getroot(), "activeMods")
     for li in list(am):
         am.remove(li)
-    for m in new:
+    for m in ids:
         ET.SubElement(am, "li").text = m
     arch = snapshot()
-    tmp = LIVE + ".enable.tmp"
+    tmp = LIVE + ".%s.tmp" % tag
     tree.write(tmp, encoding="utf-8", xml_declaration=True)
     os.replace(tmp, LIVE)
+    return arch
+
+
+def without(live_ids, off, deps_of):
+    """live_ids minus every id in `off` and every active id that needs one of them, transitively (a mod whose
+    modDependencies are not loaded is broken, so a load without X is a load without what hangs on X). Pure.
+    deps_of: lower-case packageId -> its lower-case dependency packageIds ([] when unknown).
+    -> (kept ids in live order and spelling, [(removed id, the id that took it off or None when named)])."""
+    gone = {}
+    for m in live_ids:
+        if m.lower() in off:
+            gone[m.lower()] = None
+    for m in off:
+        gone.setdefault(m, None)
+    grew = True
+    while grew:
+        grew = False
+        for m in live_ids:
+            low = m.lower()
+            if low in gone:
+                continue
+            hit = [d for d in deps_of(low) if d in gone]
+            if hit:
+                gone[low] = hit[0]
+                grew = True
+    kept = [m for m in live_ids if m.lower() not in gone]
+    removed = [(m, gone[m.lower()]) for m in live_ids if m.lower() in gone]
+    return kept, removed
+
+
+def disable(names, apply_it, installed=None):
+    """Take mod folders (or packageIds) off the live list, with every active mod that depends on one of them. -> exit
+    code: 0 written or nothing to take off, 2 refused (nothing written): a name that resolves nowhere, Core or a DLC,
+    or a named mod the list would still hold (the zoom guard puts its mod back). installed: modset_builder.scan() result
+    (injectable for the selftest); read only when the list holds a mod to take off."""
+    live_ids = mods(LIVE)
+    if live_ids is None:
+        print("REFUSING: the live list cannot be read: %s" % LIVE)
+        return 2
+    pkgs, folders = split_names(names)
+    off, lost = set(pkgs), []
+    for n in folders:
+        got = about(n)
+        if got is None:
+            lost.append("%s (no About.xml with a packageId in the game folder or the repo)" % n)
+        else:
+            off.add(got[0])
+    core = sorted(m for m in off if m.startswith("ludeon.rimworld"))
+    if core:
+        lost.append("%s (Core and every DLC stay on: every DLC is assumed)" % ", ".join(core))
+    if lost:
+        print("REFUSING: cannot disable %s" % "; ".join(lost))
+        return 2
+    live_low = {m.lower() for m in live_ids}
+    if not off & live_low:
+        print("  live now : %d active" % len(live_ids))
+        print("  disable  : nothing: none of %s is active" % ", ".join(sorted(off)))
+        return 0
+    if installed is None:
+        import modset_builder
+        installed = modset_builder.scan()
+    kept, removed = without(live_ids, off, lambda p: (installed.get(p) or {}).get("deps") or [])
+    hung = sorted(m for m, r in removed if m.lower().startswith("ludeon.rimworld"))
+    if hung:
+        print("REFUSING: disabling %s would take Core or a DLC off: %s" % (", ".join(sorted(off)), ", ".join(hung)))
+        return 2
+    new = zoom_guard.with_zoom(kept)
+    still = sorted(m for m in new if m.lower() in off)
+    if still:
+        print("REFUSING: %s would stay on the list (every list carries a zoom mod)" % ", ".join(still))
+        return 2
+    print("  live now : %d active" % len(live_ids))
+    print("  disable  : %s" % ", ".join(m if r is None else "%s (needs %s)" % (m, r) for m, r in removed))
+    if not apply_it:
+        print("\nplan only. re-run with --apply")
+        return 0
+    arch = write_live(new, "disable")
     print("  archived live -> %s" % arch)
-    print("  WROTE live (%d active, +%d)" % (len(new), len(gained)))
+    print("  WROTE live (%d active, -%d)" % (len(new), len(removed)))
     return 0
 
 
@@ -379,6 +468,8 @@ def main():
     g.add_argument("--capture-full", action="store_true",
                    help="adopt the live list as FULL.LATEST, after a deliberate mod change")
     g.add_argument("--enable", nargs="+", metavar="MOD", help="add mod folders/packageIds (and deps) to the live list")
+    g.add_argument("--disable", nargs="+", metavar="MOD",
+                   help="take mod folders/packageIds (and the active mods needing them) off the live list")
     ap.add_argument("--apply", action="store_true", help="actually write; default is plan only")
     a = ap.parse_args()
 
@@ -387,6 +478,9 @@ def main():
     if a.enable:
         print("ENABLE ON THE LIVE LIST")
         sys.exit(enable(a.enable, a.apply))
+    if a.disable:
+        print("DISABLE ON THE LIVE LIST")
+        sys.exit(disable(a.disable, a.apply))
     if a.apply and not (a.minimal or a.restore or a.capture_full):
         sys.exit("REFUSING: --apply on its own has nothing to apply. Say which:\n"
                  "  --minimal --apply       swap to the minimal test list\n"

@@ -650,7 +650,8 @@ def batch_gap(fx, builds):
     A staging needs only the union (enable_set, dll_mods); planned per item, 17 riders took 17 sequential plans of
     about 140 s over the Windows mount before the tick's 20-minute kill (TICK_SPEED_FIX_GAME_IDLES_WAITING). A build whose
     mods cannot be read rides without them and says so in `error`; the others still plan."""
-    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None, "refused": [], "split": [], "inferred": {}}
+    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None, "refused": [], "split": [], "inferred": {},
+           "without": []}
     mods, without = set(), {}      # without: {mod: the item that is live-without it}
     for pos, b in enumerate(builds):
         sha, text, item = (tuple(b) + (None,))[:3]
@@ -683,6 +684,7 @@ def batch_gap(fx, builds):
         if nd is not None and nd["add"]:
             out["inferred"][item or str(pos)] = inferred_rows(nd)
     out["mods"] = sorted(mods)
+    out["without"] = sorted(without)    # the load must LACK these: the staging takes them off (modlist_swap --disable)
     if mods:
         _plan_into(fx, out["mods"], out)
     return out

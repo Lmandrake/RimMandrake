@@ -8,7 +8,7 @@ The supervisor (relentless_game, phase "stage") writes a plan beside the run's o
 staging unit's body, in the same unit shape as a worker, so alive/stop/settle and the bridge hold are unchanged:
 
     deploy plan (stop on a hand-edited game copy: another seat's file) -> game down -> apply (the stale DLL copy rides
-    the shutdown window, and the JawaBench companion when the plan owes it: bridgetools/build.py --gm --apply) -> modlist_swap.py (restore FULL.LATEST for a final; --enable <mods>, its About.xml dependency
+    the shutdown window, and the JawaBench companion when the plan owes it: bridgetools/build.py --gm --apply) -> modlist_swap.py (restore FULL.LATEST for a final; --enable <mods>, then --disable <the without mods>, its About.xml dependency
     closure) -> a live-toggle side's list check -> launch through Steam -> wait for `Bridge token:` bounded by
     load_policy -> the proofs' live-menu commands, at the main menu before any game -> lane-fix producers ->
     `relentless.py game-ready` (or `snag --class game_stage` on a known stop)
@@ -334,6 +334,9 @@ def run(plan, ops, clock=None):
         if plan.get("enable"):
             _ok(*ops.sh([sys.executable, SWAP, "--enable"] + list(plan["enable"]) + ["--apply"], timeout=180),
                 what="modlist_swap --enable")
+        if plan.get("without"):     # a load that must LACK mods: taken off after the swap and the enable, with
+            _ok(*ops.sh([sys.executable, SWAP, "--disable"] + list(plan["without"]) + ["--apply"], timeout=180),
+                what="modlist_swap --disable")      # the active mods that need them (STAGING_REMOVAL_FIX_ONLY_KNOWS_ADDITION)
         log.append("list: %s%s" % ("FULL.LATEST" if plan.get("full") else "MINIMAL",
                                    " + %s and their dependencies" % ", ".join(plan["enable"]) if plan.get("enable") else ""))
         tog = plan.get("toggle")

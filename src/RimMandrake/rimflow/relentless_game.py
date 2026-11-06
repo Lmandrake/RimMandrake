@@ -726,7 +726,8 @@ def game_companion_owed(fx, builds):
     return owed or None
 
 
-def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None, companion=None, menu=None):
+def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None, companion=None, menu=None,
+               without=()):
     """What relentless_stage.py does for this staging (STAGING_REWIRE_PYTHON_NOT_AN_LLM), the stage prompt's steps as
     data. deploy: deploy_custom_mods.py argument strings, the build's mod folders (never a packageId: those are enabled,
     not deployed) with the stale-DLL ones and the lane fix's, then the `live-deploy:` trees. deploy_args: folders -> one
@@ -741,18 +742,23 @@ def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None
     return {"item": st["item"], "gen": st["gen"], "sha": sha, "full": bool((st.get("game") or {}).get("full")),
             "enable": sorted(enable), "deploy": deploy, "riders": [o["item"] for o in others],
             "remedy_cmds": list((remedy or {}).get("cmds") or []), "max_s": c["stage_max_s"],
-            **({"companion": list(companion)} if companion else {}), **menu_plan(menu)}
+            **({"companion": list(companion)} if companion else {}), **menu_plan(menu, without)}
 
 
-def menu_plan(menu):
-    """staging_menu() -> the stage plan's keys for it: menu_cmds (run at the main menu, before any game), and for a
-    live-toggle item `toggle` {"mod", "side"} plus `without` (the mods the load must lack). {} when there is none."""
+def menu_plan(menu, without=()):
+    """staging_menu() -> the stage plan's keys for it: menu_cmds (run at the main menu, before any game), for a
+    live-toggle item `toggle` {"mod", "side"}, and `without`: the mods the load must lack (the toggle's without side and
+    `without`, the batch's live-without mods: without_set), which the stager takes off with modlist_swap.py --disable.
+    {} when there is none."""
     menu = menu or {}
     out = {"menu_cmds": list(menu["cmds"])} if menu.get("cmds") else {}
+    off = set(without or ())
     if menu.get("toggle"):
         out["toggle"] = {"mod": menu["toggle"], "side": menu["side"]}
         if menu["side"] == "without":
-            out["without"] = [menu["toggle"]]
+            off.add(menu["toggle"])
+    if off:
+        out["without"] = sorted(off)
     return out
 
 
@@ -811,12 +817,14 @@ def toggles(fx, o):
         return True
 
 
-def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None, companion=None, menu=None):
+def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None, companion=None, menu=None,
+                 without=()):
     """trees: `live-deploy:` mods riding this load -> (folders, deploy_custom_mods.py args covering them), or None.
     remedy: the lane's own fix of an environment cause (_env_fix): {"mods": to deploy and load, "cmds": producers}."""
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     en = "python3 src/RimMandrake/Utils/modlist_swap.py --enable %s --apply" % " ".join(enable)
+    dis = "python3 src/RimMandrake/Utils/modlist_swap.py --disable %s --apply" % " ".join(without)
     return "\n".join([
         "You are Relentless's STAGING worker for item %s, generation %d. The supervisor holds the game bridge for you as "
         "seat %s and releases it the moment you exit. Your one job: the running game must run the build at %s, so the "
@@ -847,6 +855,11 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
          "five DLC stay on). The supervisor already ran `%s`; after any list swap, and again with the game down right "
          "before the launch, run it once more: a swap drops them, and a load without them measures nothing."
          % (", ".join(enable), en)) if enable else "   MOD LIST: no mod of these builds needs enabling.",
+        ("   MOD LIST WITHOUT: the next load must LACK %s (a live-without line or a live-toggle's without side; "
+         "STAGING_REMOVAL_FIX_ONLY_KNOWS_ADDITION). The supervisor already ran `%s`; run it again after every list swap "
+         "and every --enable, and once more with the game down right before the launch (it takes off the active mods "
+         "that need them too), then parse the live ModsConfig.xml: snag if any of them is still active."
+         % (", ".join(without), dis)) if without else "   MOD LIST WITHOUT: no mod must be kept off this load.",
         ("   SHUTDOWN WINDOW: with the game DOWN and before the launch, deploy %s (`deploy_custom_mods.py --mod <Mod> "
          "--apply`): the game folder holds a stale DLL for each, and a DLL cannot be written while the game runs."
          % ", ".join(dlls)) if dlls else "   SHUTDOWN WINDOW: no stale DLL in the game folder for these mods.",
@@ -981,6 +994,16 @@ def enable_set(gaps):
     """Every mod folder the next load must hold: [relentless_live_round.mod_gap] -> sorted folders (the build's mods and
     its live-mods of each item riding the load)."""
     return sorted({m for g in gaps for m in (g or {}).get("mods") or []})
+
+
+def without_set(gaps, menu=None):
+    """Every mod the next load must LACK: the live-without mods of each item riding it, plus a live-toggle's without
+    side (STAGING_REMOVAL_FIX_ONLY_KNOWS_ADDITION: staging used to only enable, so a without-proof ran on whatever list
+    was up)."""
+    off = {m for g in gaps for m in (g or {}).get("without") or []}
+    if (menu or {}).get("toggle") and menu.get("side") == "without":
+        off.add(menu["toggle"])
+    return sorted(off)
 
 
 def dll_mods(gaps):
@@ -1306,6 +1329,14 @@ class GameFx(object):
         """modlist_swap.py --enable <mods> --apply on the live ModsConfig.xml -> None, or why it could not."""
         self._round = self._game_read = None
         r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/modlist_swap.py"), "--enable",
+                            *mods, "--apply"], cwd=self.books, capture_output=True, text=True, timeout=180,
+                           stdin=subprocess.DEVNULL)
+        return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-400:]
+
+    def modlist_disable(self, mods):
+        """modlist_swap.py --disable <mods> --apply on the live ModsConfig.xml -> None, or why it could not."""
+        self._round = self._game_read = None
+        r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/modlist_swap.py"), "--disable",
                             *mods, "--apply"], cwd=self.books, capture_output=True, text=True, timeout=180,
                            stdin=subprocess.DEVNULL)
         return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-400:]
@@ -2363,6 +2394,16 @@ def step(store, fx, r, item, now, acts, sup):
                 return _hold(store, fx, item, "game phase: modlist_swap.py --enable %s refused: %s"
                              % (" ".join(want), why), now, acts)
             acts.append({"do": "game_modlist_enable", "item": item, "mods": want})
+        off = without_set(gaps, menu)
+        if off and not g.get("full") and hasattr(fx, "modlist_disable"):
+            # STAGING_REMOVAL_FIX_ONLY_KNOWS_ADDITION: a load that must LACK a mod is made, never hoped for (the
+            # stager takes them off again after its own swap: the plan's `without`)
+            why = fx.modlist_disable(off)
+            if why:
+                fx.ledger_note(item, "relentless game phase: held, the next load cannot lack %s: %s" % (", ".join(off), why))
+                return _hold(store, fx, item, "game phase: modlist_swap.py --disable %s refused: %s"
+                             % (" ".join(off), why), now, acts)
+            acts.append({"do": "game_modlist_disable", "item": item, "mods": off})
         gap = fx.clone_gap(st["clone"])     # checked again at the launch: QUICKTEST_POLICY_NRE_FULLLIST_1 launched without
         if gap:                             # claude_bounded.sh; the bridge is never taken for a stage that cannot start
             return _waits(store, fx, item, "clone: %s lacks %s; the next prepare makes it again" % (st["clone"], gap),
@@ -2398,8 +2439,10 @@ def step(store, fx, r, item, now, acts, sup):
         if c.get("stage_python", True):     # the prompt rides as the python stager's fallback brief only
             agent = STAGE_AGENT
             st["_stage_plan"] = stage_plan(st, c, sha, others, want, dll_mods(gaps), trees, remedy,
-                                           getattr(fx, "game_deploy_args", None), companion=comp, menu=menu)
-        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy, comp, menu), agent,
+                                           getattr(fx, "game_deploy_args", None), companion=comp, menu=menu,
+                                           without=off)
+        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy, comp, menu,
+                                               without=off), agent,
                         st["clone"], c["stage_max_s"], {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()
