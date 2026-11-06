@@ -1383,3 +1383,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:32:26Z","tsn":1794007946497300879}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSTILE_FLORA_FIRST_SCRIPT_1 A2 (L2), read-only proof","ts":"2026-11-06T23:32:53Z","tsn":1794007973850676666}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:34:17Z","tsn":1794008057093967375}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SEABED_DESCENT_ASCENT_1 A2 (L2), read-only proof","ts":"2026-11-06T23:38:03Z","tsn":1794008283470020248}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:38:26Z","tsn":1794008306895224540}
