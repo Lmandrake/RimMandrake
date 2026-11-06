@@ -1,0 +1,19 @@
+# rm-relentless-job@<kind>: one detached Relentless job (src/RimMandrake/rimflow/relentless_jobs.py), started by the
+# supervisor tick with `systemctl --user start --no-block rm-relentless-job@<kind>.service` so the tick no longer waits on
+# slow read-only work (RELENTLESS_SHRINK_TICK_SLOW_PHASES_DETACHED). Kinds: mods_fp (the showing stage's walk of the
+# game's deployed Mods). systemd refuses a second instance of an active unit; the job's flock refuses any other start;
+# a job killed mid-run is found lost by the next tick (reconcile) and started again. No timer: only the tick starts it.
+# Runs from the Relentless books clone, like rm-relentless.service. Off switch: relentless_jobs.json "<kind>": "off".
+# Install:  cp src/RimMandrake/Utils/systemd/rm-relentless-job@.service ~/.config/systemd/user/
+#           systemctl --user daemon-reload
+[Unit]
+Description=RimFlow relentless detached job %i (RELENTLESS_SHRINK_TICK_SLOW_PHASES_DETACHED)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/relentless/books
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/python3 /home/mandrake/rm/relentless/books/src/RimMandrake/rimflow/relentless_jobs.py run %i
+Nice=10
+MemoryMax=2G
+TimeoutStartSec=900

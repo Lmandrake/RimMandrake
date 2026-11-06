@@ -7138,6 +7138,11 @@ def _tick(store, fx, r, now, prof):
         reclaim_dead(store, fx, r, now, acts)
         release_parked(store, fx, r, now, acts)
         run_tmp_sweep(store, fx, now, acts, "start")
+        try:        # a detached job killed mid-run is marked lost and launched again (RELENTLESS_SHRINK_TICK_SLOW_PHASES_DETACHED)
+            import relentless_jobs
+            relentless_jobs.reconcile(store, acts, relentless_jobs.launcher(store, "mods_fp"))
+        except Exception as e:  # noqa: BLE001  a torn job table costs a fresh answer, never the tick
+            acts.append({"do": "error", "item": None, "why": "jobs reconcile %s: %s" % (type(e).__name__, e)})
         try:        # a holder that no longer uses the game frees it before anyone asks for it this tick
             relentless_game.lapse_holds(store, fx, r, now, acts)
         except Exception as e:  # noqa: BLE001  a failed read keeps the holds as they are; the steps still run

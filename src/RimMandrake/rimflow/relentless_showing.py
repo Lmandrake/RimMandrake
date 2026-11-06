@@ -393,6 +393,8 @@ def tick(store, fx, r, now, acts, sup):
     lr = relentless_live.live_rules(r)
     enrolled = fx.showing_items()
     live = {x[0] for x in enrolled}
+    import relentless_jobs      # the Mods walk is a detached job's (RELENTLESS_SHRINK_TICK_SLOW_PHASES_DETACHED)
+    fpr = relentless_jobs.ModsFp(store, getattr(fx, "mods_root", None), relentless_jobs.launcher(store, "mods_fp"))
     for iid in [k for k in rows if k not in live]:
         row = rows[iid]     # no longer waiting on his look: its run stops, its bridge goes back, its row goes
         if fx.alive(row.get("run")):
@@ -449,7 +451,7 @@ def tick(store, fx, r, now, acts, sup):
         if man is not None:
             man["_dir"] = d
         jd = read_json(os.path.join(d, JUDGE))
-        fp = mods_fp(man["mods"], fx.mods_root) if man and isinstance(man.get("mods"), list) and man["mods"] else None
+        fp = fpr(man["mods"]) if man and isinstance(man.get("mods"), list) and man["mods"] else None
         sha_now = item_sha(it) or (row.get("built_sha") is None and (man or {}).get("sha")) or None
         state, swhy = status(man, jd, sha_now, fp, row.get("judged"), getattr(fx, "saves_root", None), iid)  # no ledger sha: the HEAD it was built at stands
         if state == READY and row.get("judge_digest") and row["judge_digest"] != digest(d, man, getattr(fx, "saves_root", None)):
@@ -480,6 +482,13 @@ def tick(store, fx, r, now, acts, sup):
                       "sheet": (man or {}).get("sheet"), "minutes": minutes(man) if man else None,
                       "stations": len(stations(man)), "route": rt}
     s["items"] = items
+    try:
+        why = fpr.close()
+    except Exception as e:  # noqa: BLE001  no fresh answer asked for: the next pass walks inline what the cache lacks
+        why = "%s: %s" % (type(e).__name__, e)
+    if why:
+        acts.append({"do": "error", "item": None, "why": "mods_fp job: %s" % str(why)[:200]})
+    s["mods_fp"] = {"hits": fpr.hits, "inline": fpr.inline}
     _start(store, fx, r, c, s, enrolled, now, acts, sup)
     s["at"] = now
     save_state(store, s)
