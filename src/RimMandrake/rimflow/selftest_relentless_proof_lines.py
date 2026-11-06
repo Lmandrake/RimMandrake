@@ -158,6 +158,19 @@ def t_starved_by_build_line():
     old = P.enrol(x.s, x.w, x.r, x.now, R.new_state, R.iso, set(), 5 + 1)    # the shape before: the build line's count
     ok(old == [], "starve control: fed the build line's count (the old call) the lane enrols nothing")
     x.done()
+    # the call site: the supervisor's own R.enrol must hand the lines lane its own count, never the build line's
+    x, _, _ = rig(6, proof_lines_per_tick=1, max_workers=0, max_queued=2, enrol_per_tick=0, proof_lines_max_queued=3)
+    for k in range(5):
+        x.s.save(R.new_state("Q%d" % k, x.now, "build"))
+    ok(sum(1 for s in x.s.states() if R.in_line(s)) >= 5, "starve control: R.enrol rig holds 5 in-turn build items")
+    counts = []
+    for t in range(5):
+        R.enrol(x.s, x.w, x.r, x.now + t)
+        counts.append(len([i for i in x.s.items() if P.is_job(x.st(i))]))
+    ok(counts[0] == 1, "starve: R.enrol (the real call site) enrols a lines job past a full build line (%r)" % counts)
+    ok(counts[:3] == [1, 2, 3], "starve: one lines job per tick through R.enrol (%r)" % counts)
+    ok(counts[3:] == [3, 3], "starve: R.enrol holds the lines lane at proof_lines_max_queued 3 (%r)" % counts)
+    x.done()
     shipped = R.rules()
     ok(isinstance(shipped.get("proof_lines_max_queued"), int) and shipped["proof_lines_max_queued"] > 0,
        "starve: the shipped rules give the lines lane its own positive queue cap (%r)" % shipped.get("proof_lines_max_queued"))
