@@ -107,9 +107,10 @@ PLOTS = {"A": (0, 0), "B": (1, 0), "C": (2, 0), "D": (0, 1), "E": (1, 1), "F": (
          "G": (0, 2), "H": (1, 2), "T": (2, 2)}
 PLOT_BUFFER = 8                            # _prep_plot clears and resets this many cells around every plot
 EDGE_BAND = 10                             # GenGrid.NoBuildEdgeWidth: a dug square this close to an edge is a SINK
-# PROPANE_POUR_DIAGNOSE_DRAINS_TO_NOWHERE: safe_anchor (runner, situational) kept only 20 cells from the edges, so a
-# plot could land in the map-edge sink band (RM_MapComponent_Excavation.IsSinkCell) and drain whatever a row poured.
-# The margin keeps every buffered plot of the grid out of that band: the farthest reach from the anchor, plus the band.
+# The plot grid's reach from the anchor plus the band: under --situational, helpers.safe_anchor's default margin 20 can
+# pick (50, 200) on a 250 map, which puts plots G/H/T (z0 = 236) in the north sink band (RM_MapComponent_Excavation.
+# IsSinkCell). It does not cover a map too SMALL for the grid (a non-situational run anchors at the centre whatever the
+# size): _prep_plot's map-fit refusal does (PROPANE_POUR_DIAGNOSE_DRAINS_TO_NOWHERE).
 ANCHOR_MARGIN = EDGE_BAND + max(
     [PITCH + PLOT_BUFFER]                                                         # west / south: gx or gz = 0
     + [gx * PITCH - PITCH + PW + PLOT_BUFFER for gx, _ in PLOTS.values()]         # east
@@ -130,10 +131,45 @@ def _rect(x0, z0, w=PW, h=PH):
     return "%d,%d,%d,%d" % (x0, z0, w, h)
 
 
+def _map_size(t):
+    """(sizeX, sizeZ) of the current map from jawa/map_info, read once per chain context; None when it does not say."""
+    if not hasattr(t, "_fw_map_size"):
+        mi = t.bridge_call("jawa/map_info") or {}
+        try:
+            t._fw_map_size = (int(mi["sizeX"]), int(mi["sizeZ"]))
+        except (KeyError, TypeError, ValueError):
+            t._fw_map_size = None
+    return t._fw_map_size
+
+
+def _refuse_plot_off_map(t, key, x0, z0):
+    """UNMEASURED when plot `key`'s buffered rect leaves the map interior, i.e. reaches the EDGE_BAND strip where every
+    dug square is a sink (or falls off the map). PROPANE_POUR_DIAGNOSE_DRAINS_TO_NOWHERE (run-2 on SteveDesktop,
+    2026-11-05): a non-situational run anchors at the map centre, which was (50, 200) on a map 100 wide (measured from
+    the sink pattern: dug x=89 read isSinkCell=false, x=90 and 91 true, so x >= sizeX - 10 starts at 90). Plot F
+    (x0 = 86) put its channel's east squares in the east sink band; the pour drained there (sinkTransferredTotal 2.25,
+    a map-wide total) and the row FAILed against the mod. The 250x250 runs before and after anchor at (125, 125) and
+    PASS. A map whose size is not reported is not refused here (_refuse_sink_cells still guards the pour row)."""
+    size = _map_size(t)
+    if size is None or not t._guard():
+        return
+    n, m = size
+    b, e = PLOT_BUFFER, EDGE_BAND
+    lo_x, lo_z, hi_x, hi_z = x0 - b, z0 - b, x0 + PW + b - 1, z0 + PH + b - 1
+    if lo_x < e or lo_z < e or hi_x >= n - e or hi_z >= m - e:
+        raise ExpectationFailed("UNMEASURED: plot %s (cells %d..%d x %d..%d with its %d-cell buffer, anchor %r) does not fit "
+                                "inside the %d-cell edge-sink band of this %dx%d map: liquid there leaves the map, so the "
+                                "plot would measure the site, not the mod; rerun on a map at least %d x %d"
+                                % (key, lo_x, hi_x, lo_z, hi_z, b, getattr(t, "anchor", None), e, n, m,
+                                   ANCHOR_MARGIN * 2, ANCHOR_MARGIN * 2))
+
+
 def _prep_plot(t, key, terrain="Soil"):
-    """Clear the plot + its buffer, repaint Soil, pin Clear weather, clear the UI. Fixture writes only."""
-    _sweep_earlier_chains(t)
+    """Clear the plot + its buffer, repaint Soil, pin Clear weather, clear the UI. Fixture writes only. Refuses
+    UNMEASURED first when the plot does not fit inside the map's edge-sink band (_refuse_plot_off_map)."""
     x0, z0 = _plot(t, key)
+    _refuse_plot_off_map(t, key, x0, z0)
+    _sweep_earlier_chains(t)
     b = PLOT_BUFFER
     r = _rect(x0 - b, z0 - b, PW + 2 * b, PH + 2 * b)
     # Excavation is ENGINE state, not a Thing or terrain: destroy_batch + Soil leave an earlier chain's (or an earlier
@@ -163,7 +199,8 @@ def _refuse_sink_cells(t, cells, what):
     answer, setter-drained edges included): liquid reaching a sink leaves the map by design, so a row measuring liquid
     there measures the site, not the mod. PROPANE_POUR_DIAGNOSE_DRAINS_TO_NOWHERE (run-2 on SteveDesktop, 2026-11-05):
     the pump poured 3 levels into plot F's channel, two of its three squares read isSinkCell=true and the engine's
-    sinkTransferredTotal stood at 2.25 levels, so the row FAILed 'put no propane in the dry channel' against the mod."""
+    sinkTransferredTotal stood at 2.25 levels, so the row FAILed 'put no propane in the dry channel' against the mod.
+    The cause was the map, 100 wide (see _refuse_plot_off_map); this row guard also covers a setter-drained edge."""
     if not t._guard():
         return
     sinks, total = [], None
@@ -174,8 +211,8 @@ def _refuse_sink_cells(t, cells, what):
             total = r.get("sinkTransferredTotal")
     if sinks:
         raise ExpectationFailed("UNMEASURED: %s sits in the map-edge sink band (sink squares %s, %s levels sent off-map so "
-                                "far): the anchor %r put the plot within %d of an edge; rerun on a map or anchor that keeps "
-                                "it inside" % (what, sinks, total, getattr(t, "anchor", None), EDGE_BAND))
+                                "far): the anchor %r put the plot within %d of a sink edge; rerun on a map or anchor that "
+                                "keeps it inside" % (what, sinks, total, getattr(t, "anchor", None), EDGE_BAND))
 
 
 def _stage(t, tool, **kw):

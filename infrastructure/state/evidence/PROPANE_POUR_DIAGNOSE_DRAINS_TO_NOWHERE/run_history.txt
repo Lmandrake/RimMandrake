@@ -1,0 +1,10 @@
+# SteveDesktop /home/mandrake/rm/runner/Transient/modcheck/FlowWorks_2026110*.json, read 2026-11-06 by probe5.sh
+# stamp | max x/z seen | propane_tank_pours_into_channel (verdict, [(x,z,isSinkCell,sinkTransferredTotal)] of the 3 channel squares, detail)
+20261101T173916 x 250 z 250 [('PASS', [(164, 126, False, 3.0), (165, 126, False, 3.0), (166, 126, False, 3.0)], '')]
+20261101T231107 x 250 z 250 [('PASS', [(164, 126, False, 0.0), (165, 126, False, 0.0), (166, 126, False, 0.0)], '')]
+20261104T052434 x 250 z 250 [('PASS', [(164, 126, False, 6.0), (165, 126, False, 6.0), (166, 126, False, 6.0)], '')]
+20261105T065153 x 94 z 243 [('FAIL', [(89, 201, False, 2.25), (90, 201, True, 2.25), (91, 201, True, 2.25)], "ExpectationFailed: pour mode put no propane in the dry channel: [(0, 'RM_Fill_Propane_Trac"), ('FAIL', [], "ExpectationFailed: pour mode put no propane in the dry channel: [(0, 'RM_Fill_Propane_Trac")]
+20261105T104409 x 250 z 250 [('PASS', [(164, 126, False, 0.0), (165, 126, False, 0.0), (166, 126, False, 0.0)], '')]
+20261106T011621 x 250 z 250 [('PASS', [(164, 126, False, 0.0), (165, 126, False, 0.0), (166, 126, False, 0.0)], '')]
+20261106T040918 x 250 z 250 [('PASS', [(164, 126, False, 0.0), (165, 126, False, 0.0), (166, 126, False, 0.0)], '')]
+# run-2 summary (fail.json): acceptance notes envelope_off (non-situational: runner anchor = _default_anchor = map centre); canary 'spawn_batch Steel at 50,200', '19 live colonists'

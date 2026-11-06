@@ -403,7 +403,7 @@ def _tiny_png():
     return _PNG[0]
 
 
-def _ext_run(EXT, chain, handler, keep=None, settings=None):
+def _ext_run(EXT, chain, handler, keep=None, settings=None, anchor=None):
     """Run one extension chain against a scripted fake game: `handler(tool, params)` answers every bridge call.
     `settings` (a dict, optional) records every Mod Settings flip and restore as {field: value} so the handler can answer
     by the live setting. Returns {component name: verdict}."""
@@ -434,6 +434,8 @@ def _ext_run(EXT, chain, handler, keep=None, settings=None):
             return _tiny_png()
 
     t = _T(_Sess())
+    if anchor is not None:                      # the runner's anchor (default: TestContext's)
+        t.anchor = anchor
     fn = dict(EXT.suite.chains)[chain]
     try:
         fn(t)
