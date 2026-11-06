@@ -16,8 +16,11 @@ REFUSED and NOT_ADMITTED read UNMEASURED with their outcome kept), and the wall 
   proving_s  bridge held, the proof command running (both runs when a WSL traceback reran it)
   idle_s     bridge held and neither: taking, release, the checks between
   held_s     taken -> released (= staging + proving + idle)
-and tokens: LLM tokens this run spent, or None when the writer cannot know (a scripted proof's own `claude -p` calls and
-the staging worker's are not seen from here). Every seconds field is None when the run never reached that part (a
+and tokens: LLM tokens the item's staging worker spent for this run (staging_tokens): every
+`rm-relentless-stage-<short>-g<gen>-s<n>` unit booked in <root>/store/spend-*.json for the item and not yet carried by an
+earlier row of the same item, so each staging run is charged once, to the first proof row after it (a later clause of the
+same batch reads a measured 0). `tokens_units` names them; `tokens_estimated` is the part booked at the run reserve, not
+read from usage. None (UNMEASURED) when no spend record can be read. A scripted proof's own `claude -p` calls are not seen. Every seconds field is None when the run never reached that part (a
 NOT_ADMITTED row holds no bridge: held_s 0.0, not None, because it measured that it held nothing).
 
 THE REPORT (`throughput`, and one line of `relentless.py reading`) over a window [since, until):
@@ -85,6 +88,44 @@ def split(marks):
     if held is not None and staging is not None:
         idle = round(max(0.0, held - staging - (proving or 0.0)), 3)
     return {"queue_s": _secs(origin, taken), "staging_s": staging, "proving_s": proving, "idle_s": idle, "held_s": held}
+
+
+STAGE_UNIT = "rm-relentless-stage-%s-g"
+
+
+def _short(item):
+    import hashlib
+    return hashlib.sha1(item.encode()).hexdigest()[:10]       # relentless.short: the hash in a unit name
+
+
+def staging_tokens(root, item, rows=None):
+    """-> {"tokens", "tokens_units", "tokens_estimated"}: the item's staging-worker spend not yet carried by an earlier row
+    (rows: the ledger as read; None reads it). tokens None when no spend-*.json under <root>/store reads, or the item is
+    unnamed: an unreadable record is never a zero."""
+    import glob
+    if not item:
+        return {"tokens": None}
+    files = sorted(glob.glob(os.path.join(root, "store", "spend-*.json")))
+    if not files:
+        return {"tokens": None}
+    pre = STAGE_UNIT % _short(item)
+    runs, basis = {}, {}
+    try:
+        for p in files:
+            with open(p, encoding="utf-8") as f:
+                d = json.load(f)
+            for u, v in (d.get("runs") or {}).items():
+                if u.startswith(pre) and isinstance(v, (int, float)) and not isinstance(v, bool):
+                    runs[u] = runs.get(u, 0) + v
+            basis.update(d.get("basis") or {})
+    except (OSError, ValueError, AttributeError, TypeError):
+        return {"tokens": None}
+    if rows is None:
+        rows = read(os.path.join(root, LEDGER))
+    seen = {u for r in rows if r.get("item") == item for u in (r.get("tokens_units") or [])}
+    new = sorted(u for u in runs if u not in seen)
+    return {"tokens": int(sum(runs[u] for u in new)), "tokens_units": new,
+            "tokens_estimated": int(sum(runs[u] for u in new if basis.get(u) == "estimated"))}
 
 
 def make_row(source, item, clause, sha, tier, outcome, marks, tokens=None, why=None, **extra):

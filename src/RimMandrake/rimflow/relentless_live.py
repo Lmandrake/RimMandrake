@@ -1663,7 +1663,8 @@ def cost(root, row, marks, environ=None):
     """The run's proof cost row (proof_cost.py), written as the run ends: never reconstructed later, and never able to
     cost the run its verdict (proof_cost.record does not raise). Source: `broker` when the broker's job launched the round
     (RELENTLESS_PROOF_SOURCE, relentless_broker._round), its queue wait counted from the item's queued_at; else `round`.
-    tokens None: a scripted proof's own LLM calls are not seen from here."""
+    tokens: the item's staging-worker spend since its last row (proof_cost.staging_tokens); a scripted proof's own LLM
+    calls are not seen from here."""
     import proof_cost
     env = os.environ if environ is None else environ
     src = "broker" if env.get("RELENTLESS_PROOF_SOURCE") == "broker" else "round"
@@ -1679,8 +1680,13 @@ def cost(root, row, marks, environ=None):
                 m["queued"] = max([float(q)] + [t for t in prev if t is not None and t >= q])
         except (OSError, ValueError, AttributeError, TypeError):
             pass
+    try:
+        tok = proof_cost.staging_tokens(root, row.get("item"))
+    except Exception:       # noqa: BLE001  an unread spend record is an UNMEASURED cost, never the run's failure
+        tok = {"tokens": None}
+    tokens = tok.pop("tokens", None)
     got = proof_cost.record(root, src, row.get("item"), row.get("criterion"), row.get("sha"), row.get("tier"),
-                            row.get("outcome"), m, tokens=None, why=row.get("why"))
+                            row.get("outcome"), m, tokens=tokens, why=row.get("why"), **tok)
     if "unwritten" in got:
         row["cost_unwritten"] = got["unwritten"]
     return got

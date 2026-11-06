@@ -266,7 +266,7 @@ def m_cost(snap):
             "per_accepted_item_all_in": round(sum(snap["spend"].values()) / len(acc)) if acc else None,
             "unfinished_spend": sum(groups["unfinished"]), "dropped_spend": sum(groups["dropped"]),
             "by_role": role, "unmapped_spend": sum(v for u, v in snap["spend"].items() if u not in mapped),
-            "estimated_part": est, "unpriced_generations": unpriced, "accepted_items_with_unpriced_generations": unpriced_acc, "live_cost": UNMEASURED + ": live rounds keep no token or wall-clock spend record"}
+            "estimated_part": est, "unpriced_generations": unpriced, "accepted_items_with_unpriced_generations": unpriced_acc, "live_cost": "not summed here: live proof runs carry their wall clock and staging-worker tokens in <RELENTLESS_ROOT>/live/proof_cost.jsonl (proof_cost.py throughput)"}
 
 
 def m_rebuild_waste(snap):

@@ -593,8 +593,13 @@ def steve_cost(root, jb, rec, item, sha, tier, judged, dud, now):
     out = []
     for k in sorted((set(judged) | set(dud)) - done):
         outcome = judged[k]["outcome"] if k in judged else "UNMEASURED"
-        out.append(proof_cost.record(root, "testq", item, k, sha, tier, outcome, marks, tokens=None,
-                                     why=dud.get(k), job=jid))
+        try:
+            tok = proof_cost.staging_tokens(root, item)
+        except Exception:   # noqa: BLE001  an unread spend record is an UNMEASURED cost
+            tok = {"tokens": None}
+        tokens = tok.pop("tokens", None)
+        out.append(proof_cost.record(root, "testq", item, k, sha, tier, outcome, marks, tokens=tokens,
+                                     why=dud.get(k), job=jid, **tok))
     return out
 
 

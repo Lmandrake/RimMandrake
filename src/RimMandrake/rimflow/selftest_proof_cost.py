@@ -189,7 +189,36 @@ def t_live_run_writes_its_row():
         check("live run: staging = the 20 s health check", c.get("staging_s") == 20.0, c)
         check("live run: proving = the 30 s proof", c.get("proving_s") == 30.0, c)
         check("live run: held = 20 + 30 + the 3 s release, idle 3", c.get("held_s") == 53.0 and c.get("idle_s") == 3.0, c)
-        check("live run: tokens unattributed (None), never a made-up 0", c.get("tokens") is None, c)
+        check("live run: no spend record -> tokens None (UNMEASURED), never a made-up 0", c.get("tokens") is None, c)
+        # the staging worker's spend is charged to the first row after it, once
+        root = tempfile.mkdtemp(prefix="pc_live_")
+        os.makedirs(os.path.join(root, "store"))
+        h = P._short("ROT_X")
+        with open(os.path.join(root, "store", "spend-20261106.json"), "w") as f:
+            json.dump({"spent": 0, "runs": {"rm-relentless-stage-%s-g3-s1" % h: 700000,
+                                            "rm-relentless-work-%s-g3" % h: 900000,
+                                            "rm-relentless-stage-%s-g1-s1" % P._short("OTHER"): 5}}, f)
+        with open(os.path.join(root, "store", "spend-20261107.json"), "w") as f:
+            json.dump({"spent": 0, "runs": {"rm-relentless-stage-%s-g3-s2" % h: 1200000},
+                       "basis": {"rm-relentless-stage-%s-g3-s2" % h: "estimated"}}, f)
+        fx = TimedFx(clock, {"python3 ": (0, "PASS")})
+        L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=clock.t)
+        L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=clock.t)
+        rows = _ledger(root)
+        t1, t2 = (rows + [{}, {}])[:2]
+        check("live run: tokens = this item's staging units only (700000 + 1200000), work units and other items out",
+              t1.get("tokens") == 1900000 and len(t1.get("tokens_units") or []) == 2, t1)
+        check("live run: the reserve-booked part is named estimated", t1.get("tokens_estimated") == 1200000, t1)
+        check("live run: a later run of the batch reads a measured 0, the staging not charged twice",
+              t2.get("tokens") == 0 and t2.get("tokens_units") == [], t2)
+        rep = P.throughput(rows, P.epoch(t1["at"]) - 1, P.epoch(t2["ended"]) + 1)
+        check("report: tokens per measured row from real rows (1900000 / 2)", rep["tokens_per_measured_row"] == 950000.0, rep)
+        # a damaged spend record reads UNMEASURED, never 0
+        with open(os.path.join(root, "store", "spend-20261108.json"), "w") as f:
+            f.write("{not json")
+        L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=clock.t)
+        t3 = (_ledger(root) + [{}, {}, {}])[2]
+        check("live run: an unreadable spend record -> tokens None", t3.get("tokens") is None and t3.get("verdict") == "PASS", t3)
         # NOT_ADMITTED: the running load cannot serve it, no bridge
         root = tempfile.mkdtemp(prefix="pc_live_")
         fx = TimedFx(clock, {"python3 ": (0, "PASS")}, gap="the running load lacks TheRot")
@@ -257,6 +286,13 @@ def t_steve_cost():
     check("testq: source, tier, verdicts", a1.get("source") == "testq" and a1.get("tier") == "ratchet_pilot"
           and a1.get("verdict") == "PASS" and a2.get("verdict") == "UNMEASURED", rows)
     check("testq: queue = submitted -> read, held unknown", a1.get("queue_s") == 900.0 and a1.get("held_s") is None, a1)
+    root = tempfile.mkdtemp(prefix="pc_steve_")
+    os.makedirs(os.path.join(root, "store"))
+    with open(os.path.join(root, "store", "spend-20261106.json"), "w") as f:
+        json.dump({"spent": 0, "runs": {"rm-relentless-stage-%s-g2-s1" % P._short("X"): 400000}}, f)
+    G.steve_cost(root, jb, rec, "X", "s", "ratchet_pilot", judged, dud, T0 + 900)
+    toks = sorted(r.get("tokens") for r in _ledger(root))
+    check("testq: the staging spend rides on one clause's row, the other reads 0", toks == [0, 400000], toks)
 
 
 def main():
