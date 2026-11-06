@@ -51,6 +51,8 @@ try:
     import scratch_reap as R
     R.pool_measures = lambda: {}
     R.CTIME_COUNTS = False
+    # Only this test's own process: a box shows pids it may not inspect, and the reaper rightly refuses on those.
+    R.proc_entries = lambda: [str(os.getpid())]
     seat = td / "rmscratch" / "SEAT"
     for n in ("enact_old_1", "enact_young_2", "enact_repo_3"):
         (seat / n).mkdir(parents=True)
