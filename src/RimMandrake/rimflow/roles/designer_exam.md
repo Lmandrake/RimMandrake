@@ -17,7 +17,8 @@ Injected with `designer.md` whenever the concept is at stage 4, resumed or not. 
 4. **Two Readers**: fresh agents that see only `sheet.md`, `tree.json` and the scenario text, never `expect`,
    `record.json`, `log.md` or your notes. Each says accept or reject per scenario, with the leaf it relied on.
 5. **Control**: one Reader run on a deliberately broken copy of the tree (a core leaf removed); it must miss what the
-   real tree catches, or the scenarios do not discriminate.
+   real tree catches, or the scenarios do not discriminate. `designer_stage.py check` refuses an exam whose
+   `control` is absent, whose `broken_leaf` is not a leaf of the tree, or whose `missed` is not true.
 6. **Score**: a scenario is right when both Readers match `expect`. `accept_where_reject_core` counts any Reader accepting
    where a core line rejects. Pass: right ≥ 9/10 of the total, `accept_where_reject_core` = 0, every Challenger miss
    accounted for (the leaf fixed, or the miss shown not to be the tree's).

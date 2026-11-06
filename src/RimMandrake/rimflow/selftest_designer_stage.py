@@ -393,7 +393,8 @@ def main():
                 for i in range(10)]
         exam = {"author": "designer", "examiner": "examiner-1", "inputs": {"tree": "0" * 64, "sheet": cur["sheet"]},
                 "scenarios": scen, "scenarios_hash": CT.sha(scen), "score": {"right": 10, "total": 10},
-                "accept_where_reject_core": 0, "challenger_misses": []}
+                "accept_where_reject_core": 0, "challenger_misses": [],
+                "control": {"broken_leaf": "climb_out", "missed": True}}
         put(d, "exam.json", exam)
         result(d, "done")
         ok, errs = DS.close_run(d, "run13", 1000, repo=repo.root)
@@ -795,6 +796,13 @@ def refusals_exam(tmp, d, repo, exam):
     refuses("exam: an accept where the core rejects is refused", ex(accept_where_reject_core=1), "must be 0")
     refuses("exam: an examiner who is the author is refused", ex(examiner="designer"), "examiner is not the tree's author")
     refuses("exam: an unaccounted challenger miss is refused", ex(challenger_misses=[{"id": "m1"}]), "accounted for")
+    refuses("exam: an exam with no control is refused", ex(control=None), "control needs broken_leaf")
+    refuses("exam: a control naming no broken leaf is refused", ex(control={"missed": True}), "control needs broken_leaf")
+    refuses("exam: a control that did not miss is refused", ex(control={"broken_leaf": "climb_out", "missed": False}),
+            "did not miss")
+    refuses("exam: a control with no missed field is refused", ex(control={"broken_leaf": "climb_out"}), "did not miss")
+    refuses("exam: a control breaking a leaf the tree lacks is refused",
+            ex(control={"broken_leaf": "no_such_leaf", "missed": True}), "not a leaf of the tree")
     dw = os.path.join(tmp, "waived")
     os.makedirs(dw)
     put(dw, "tree.json", {"subject": "W", "exam_waived": {"ref": "OWNER:1", "words": "skip the exam"}})

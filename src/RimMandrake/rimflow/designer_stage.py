@@ -844,6 +844,19 @@ def exam_errors(ex, d, st, repo=REPO):
     for m in lst(ex.get("challenger_misses")):
         if not isinstance(m, dict) or not CT.txt(m.get("accounted")):
             errs.append("exam: every challenger miss is accounted for")
+    # designer_exam.md step 5: a Reader on a copy with a core leaf removed must MISS, or the scenarios do not
+    # discriminate (EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED: four controls never missed and the gate still passed)
+    ctl = ex.get("control")
+    if not isinstance(ctl, dict) or not CT.txt(ctl.get("broken_leaf")):
+        errs.append("exam: control needs broken_leaf, the core leaf removed for the control Reader")
+    else:
+        ids = {x.get("id") for x in lst((tree or {}).get("leaves") if isinstance(tree, dict) else None)
+               if isinstance(x, dict)}
+        if ids and ctl.get("broken_leaf") not in ids:
+            errs.append("exam: control broken_leaf %r is not a leaf of the tree" % ctl.get("broken_leaf"))
+        if ctl.get("missed") is not True:
+            errs.append("exam: the control Reader did not miss (missed must be true): the scenarios do not "
+                        "discriminate; write scenarios the broken tree gets wrong and refreeze")
     return errs
 
 
