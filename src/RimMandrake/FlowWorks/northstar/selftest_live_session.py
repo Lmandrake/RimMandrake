@@ -826,6 +826,33 @@ check("B2_b2_tank_tall_interrupted" in ids and not any(i.startswith("B2_tank") f
       and st["chunks"][3].get("killed"),
       "chunks: a unit a killed chunk left running is voided UNMEASURED/HARNESS and never rerun")
 check(isinstance(L.rel("/nonexistent/x"), str) and L.rel("/nonexistent/x"), "rel: a path off the repo still renders")
+# LIVE_SESSION_FIX_OUTDIR_OFF_REPO_CRASH: python.exe with REPO on \\wsl.localhost and --out-dir on D: makes relpath raise
+# ValueError (different drives); posix never raises, so force it and prove the session ending still writes its lines.
+import tempfile as _tf, types as _types
+_real_relpath = os.path.relpath
+def _cross_drive(*a, **k):
+    raise ValueError("path is on mount 'D:', start on mount '\\\\wsl.localhost'")
+_od = _tf.mkdtemp(prefix="ls_xdrive_")
+os.path.relpath = _cross_drive
+try:
+    try:
+        _vp, _vn = L.write_verify_lines(_types.SimpleNamespace(out_dir=_od, env={"config": "C1"}, rows=[{"id": "X1_probe", "item": "PROBE_ITEM", "criterion": "A1", "cls": "MOD", "status": "PASS"}]))
+        _xerr = None
+    except ValueError as _e:
+        _vp, _vn, _xerr = None, 0, _e
+finally:
+    os.path.relpath = _real_relpath
+check(_xerr is None and _vp and os.path.isfile(_vp),
+      "cross-drive: write_verify_lines survives relpath ValueError (out-dir on another drive) and writes verify_lines.txt")
+_ev = os.path.abspath(os.path.join(_od, "session.json"))
+check(_vn == 1 and ("--evidence %s " % _ev) in open(_vp, encoding="utf-8").read(),
+      "cross-drive: rel falls back to the absolute evidence path")
+os.path.relpath = _cross_drive
+try:
+    _rv = L.rel(_ev)
+finally:
+    os.path.relpath = _real_relpath
+check(_rv == _ev, "cross-drive: rel() returns the absolute path when relpath raises")
 half = [x for x in st["rows"] if x["id"] == "B2_half_unit_probe"]
 check(half and half[0]["status"] == "UNMEASURED" and half[0]["detail"].get("statusIfWhole") == "PASS"
       and ("PROBE_ITEM", "A1") not in L.verdicts(st["rows"]),
