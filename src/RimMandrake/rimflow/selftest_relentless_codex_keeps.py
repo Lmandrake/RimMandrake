@@ -103,7 +103,9 @@ def t_riding_fix_does_not_swallow_a_route():
             "A3": SE.row(SE.WHYS["proof_call"], x.now, criterion="A3", defect=True)}
     acted = G._env(x.s, x.w, x.r, "I0", rows, 0, x.now, acts)
     st = x.st("I0")
-    ok(acted and st["status"] == "held" and st["gen"] == gen and not st.get("last_fail"),
+    # since ENV_HOLDS_FIX_ROUTE_TO_BUILDERS a routed env cause blocks the item on its repair item, never a hold
+    ok(acted and st["status"] == "blocked" and not st.get("hold") and (st.get("wait") or {}).get("on")
+       and st["gen"] == gen and not st.get("last_fail"),
        "#4 a reload fix that rides the staging, beside an unfixable cause: routed once, no builder: %s %s"
        % (acted, [a["do"] for a in acts]))
     ok((st["game"].get("remedy") or {}).get("mods") == ["7f.alienworlds", "mandrake.rm.generators"],
