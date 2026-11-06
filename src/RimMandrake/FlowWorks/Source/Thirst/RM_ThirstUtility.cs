@@ -144,6 +144,27 @@ namespace RimMandrake.FlowWorks.Thirst
 			return null;
 		}
 
+		/// <summary>NATIVES_DRINK_OWN_WATER_AUDIT_EVERY_BIOME: is this terrain home water for this pawn? True for an animal
+		/// native to the map's biome (<see cref="NativeHere"/>) at a terrain whose RM_DrinkableTerrainExtension says
+		/// nativeWater. Never a humanlike.</summary>
+		public static bool HomeWater(Pawn pawn, TerrainDef terrain)
+		{
+			return terrain != null && terrain.GetModExtension<RM_DrinkableTerrainExtension>() is RM_DrinkableTerrainExtension ext
+				&& ext.nativeWater && ext.liquid != null && NativeHere(pawn);
+		}
+
+		/// <summary>The liquid <paramref name="pawn"/> drinks at <paramref name="terrain"/>: <see cref="DrinkLiquidAt(TerrainDef)"/>,
+		/// or, at its biome's own water (<see cref="HomeWater"/>) that is otherwise no drink, that water's row.</summary>
+		public static LiquidDef DrinkLiquidAt(TerrainDef terrain, Pawn pawn)
+		{
+			LiquidDef l = DrinkLiquidAt(terrain);
+			if (l != null || !HomeWater(pawn, terrain))
+			{
+				return l;
+			}
+			return RM_LiquidBottleUtility.LiquidAt(terrain) ?? terrain.GetModExtension<RM_DrinkableTerrainExtension>().liquid;
+		}
+
 		/// <summary>Every drinkable bottle: a BOTTLE-sized ThingDef with an ingestible block holding a liquid that has a
 		/// thirstQuality, drunk whole through vanilla Ingest. Buckets and barrels are drawn from 1.5 L at a time instead
 		/// (RM_ThirstContainerUtility, RM_DrinkFromContainer).</summary>
@@ -453,12 +474,14 @@ namespace RimMandrake.FlowWorks.Thirst
 				{
 					continue;
 				}
-				LiquidDef l = DrinkLiquidAt(map.terrainGrid.TerrainAt(c));
-				if (l == null || !MayDrink(pawn, l, level, only))
+				TerrainDef t = map.terrainGrid.TerrainAt(c);
+				bool home = !only.HasValue && HomeWater(pawn, t);   // the break's salt search is never widened
+				LiquidDef l = home ? DrinkLiquidAt(t, pawn) : DrinkLiquidAt(t);
+				if (l == null || !(home || MayDrink(pawn, l, level, only)))
 				{
 					continue;
 				}
-				RM_DrinkUse u = UseOf(l);
+				RM_DrinkUse u = home && UseOf(l) == RM_DrinkUse.Never ? RM_DrinkUse.LastResort : UseOf(l);   // ranks below potable
 				RM_WaterQuality q = Effective(l);
 				if (found && !RM_ThirstMath.Better(u, q, 1f, use, quality, 0f))   // same class and quality further out never wins
 				{

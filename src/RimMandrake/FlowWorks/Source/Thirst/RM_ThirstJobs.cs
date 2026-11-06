@@ -198,7 +198,7 @@ namespace RimMandrake.FlowWorks.Thirst
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
-			this.FailOn(() => RM_ThirstUtility.DrinkLiquidAt(Map.terrainGrid.TerrainAt(job.targetA.Cell)) == null);
+			this.FailOn(() => RM_ThirstUtility.DrinkLiquidAt(Map.terrainGrid.TerrainAt(job.targetA.Cell), pawn) == null);
 			yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
 			Toil drink = Toils_General.Wait(RM_ThirstMath.TerrainDrinkTicks).WithProgressBarToilDelay(TargetIndex.A);
 			drink.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
@@ -208,7 +208,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			finish.initAction = delegate
 			{
 				IntVec3 c = job.targetA.Cell;
-				LiquidDef liquid = RM_ThirstUtility.DrinkLiquidAt(Map.terrainGrid.TerrainAt(c));
+				LiquidDef liquid = RM_ThirstUtility.DrinkLiquidAt(Map.terrainGrid.TerrainAt(c), pawn);   // a native's home water too
 				if (liquid == null || !RM_LiquidBottleUtility.TryDebitTerrain(Map, c, RM_Volume.Units(RM_ThirstMath.TerrainDrinkLitres)))
 				{
 					return;

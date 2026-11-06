@@ -253,6 +253,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     public class RM_DrinkableTerrainExtension : DefModExtension
     {
         public LiquidDef liquid;
+
+        /// <summary>NATIVES_DRINK_OWN_WATER_AUDIT_EVERY_BIOME (owner 2026-11-01, "natives should drink their own
+        /// environmental water. That's a ruling for all Baroque Biomes, period"): this terrain is a biome's own water, so an
+        /// animal native to the map's biome (RM_ThirstUtility.NativeHere) drinks it even where <see cref="liquid"/> is no
+        /// drink at all (the Scald's boil, use class Never). People are unaffected.</summary>
+        public bool nativeWater;
     }
 
     /// <summary>Shallow/deep/chest-deep TerrainDef refs for one liquid's
