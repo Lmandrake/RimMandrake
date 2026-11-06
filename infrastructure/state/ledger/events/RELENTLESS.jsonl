@@ -1139,3 +1139,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SAVELOAD_DIAGNOSE_COMES_BACK_CHANGED A1 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T13:57:41Z","tsn":1793973461931670223}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:00:19Z","tsn":1793973619484677900}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A2 (L2), read-only proof","ts":"2026-11-06T14:02:58Z","tsn":1793973778859319976}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:07:52Z","tsn":1793974072500826151}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A2 (L2), read-only proof","ts":"2026-11-06T14:08:13Z","tsn":1793974093634985635}
