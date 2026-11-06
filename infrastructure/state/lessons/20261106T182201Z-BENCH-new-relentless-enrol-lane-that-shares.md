@@ -1,0 +1,1 @@
+A new Relentless enrol lane that shares max_queued with the build line never fires: the build line ran 25 in turn vs cap 8 (room -17) on 2026-11-06, so PROOFLESS_WIRE_ENROL's lane enrolled 0 for an hour after landing. Give a side lane its own queue cap counting only its own jobs, and after landing a lane, grep the store journal for its first enrol.
