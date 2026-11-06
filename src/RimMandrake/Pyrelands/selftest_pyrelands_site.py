@@ -1297,11 +1297,15 @@ def test_plan_offline():
 
 def test_menu_guard_refuses_foreign_client():
     """MAP_DROP_DIAGNOSE_MENU_MIDRUN_GHOST: no go_to_main_menu while another pid is mid-run."""
-    import json as _j, tempfile as _t, time
+    import json as _j, subprocess as _sp, tempfile as _t, time
     d = _t.mkdtemp(); lg = os.path.join(d, "c.jsonl")
     old = os.environ.get("RIMBRIDGE_EVIDENCE_LOG"); os.environ["RIMBRIDGE_EVIDENCE_LOG"] = lg
+    allow = os.environ.pop("RM_ALLOW_CONCURRENT_BRIDGE", None)
+    # the foreign writer must be a LIVE pid: the guard ignores an unended call whose writer is gone (1e41aa3f91),
+    # so a made-up getpid()+1 reads as dead and nothing is refused
+    child = _sp.Popen([sys.executable, "-c", "import time; time.sleep(120)"])
     try:
-        row = {"ev": "start", "cid": "z", "pid": os.getpid() + 1, "tool": "rimworld/step_game_ticks", "script": "cli.py",
+        row = {"ev": "start", "cid": "z", "pid": child.pid, "tool": "rimworld/step_game_ticks", "script": "cli.py",
                "t": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
         open(lg, "w").write(_j.dumps(row) + "\n")
         g = FakeGame(MANIFEST, {}, {}); g.state = "Playing"
@@ -1314,6 +1318,8 @@ def test_menu_guard_refuses_foreign_client():
             check("%s refuses with a foreign client mid-run" % fn.__name__, err is not None and "another bridge client" in str(err))
         check("no go_to_main_menu was sent", not [c for c in getattr(g, "calls", []) if "go_to_main_menu" in str(c)])
     finally:
+        child.kill(); child.wait()
+        if allow is not None: os.environ["RM_ALLOW_CONCURRENT_BRIDGE"] = allow
         if old is None: os.environ.pop("RIMBRIDGE_EVIDENCE_LOG", None)
         else: os.environ["RIMBRIDGE_EVIDENCE_LOG"] = old
 
