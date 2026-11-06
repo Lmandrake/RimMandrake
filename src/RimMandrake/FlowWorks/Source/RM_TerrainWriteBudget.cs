@@ -193,4 +193,112 @@ namespace RimMandrake.FlowWorks
 			return n;
 		}
 	}
+	/// <summary>SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE (live r18, sheet overflow ON, pocket-rain deluge: PocketRain 2.2 -> 9.3 ms and
+	/// ContinuePulse 5.0 -> 14.0 ms). A pocket's rain that had no room ran over its lip as a sheet offer INSIDE the kernel's walk,
+	/// and one offer is a lip walk through the pocket (up to 4,096 squares) plus a resolve, so a slice paid every pocket's offer.
+	/// The walk now only queues the offer here (one entry per lip square and liquid: a pocket that brims again before its
+	/// offer is made adds to it, so the queue is bounded by the lips, never by the pulses); the component makes at most
+	/// <see cref="PerTick"/> offers a tick on the ticks that follow, oldest first, and a save makes them all first. Rain is
+	/// external input: what the sheet refuses is simply not added, so making the offer later loses and doubles nothing.
+	/// Verse-free so the selftest drives the production queue.</summary>
+	public sealed class RM_RainOfferQueue
+	{
+		/// <summary>Offers made in one tick. One offer is a lip walk of at most 4,096 squares and a resolve (a few ms on Mono at
+		/// worst), so two keep a tick well under the 20 ms bar; a pulse's pockets drain in the quiet ticks before the next.</summary>
+		public const int PerTick = 2;
+
+		private readonly List<int> cells = new List<int>();
+		private readonly List<object> fluids = new List<object>();
+		private readonly List<long> amounts = new List<long>();
+		private readonly Dictionary<(int, object), int> index = new Dictionary<(int, object), int>();
+		private int next;
+
+		/// <summary>Offers waiting.</summary>
+		public int Count => cells.Count - next;
+
+		/// <summary>Decilitres waiting, summed over every offer.</summary>
+		public long OwedDl
+		{
+			get { long s = 0; for (int i = next; i < amounts.Count; i++) s += amounts[i]; return s; }
+		}
+
+		/// <summary>Queue <paramref name="dl"/> of <paramref name="fluid"/> to run over the lip at <paramref name="cell"/>; an
+		/// offer already waiting at that lip for that liquid grows instead (its place in the order is kept).</summary>
+		public void Add(int cell, long dl, object fluid)
+		{
+			if (dl <= 0)
+			{
+				return;
+			}
+			if (index.TryGetValue((cell, fluid), out int at))
+			{
+				amounts[at] += dl;
+				return;
+			}
+			index[(cell, fluid)] = cells.Count;
+			cells.Add(cell);
+			fluids.Add(fluid);
+			amounts.Add(dl);
+		}
+
+		/// <summary>Make at most <paramref name="max"/> offers, oldest first, through <paramref name="offer"/> (lip square, dL,
+		/// liquid) -> dL accepted. Returns the dL accepted in all.</summary>
+		public long Drain(int max, Func<int, long, object, long> offer)
+		{
+			long got = 0;
+			for (int n = 0; n < max && next < cells.Count; n++)
+			{
+				// taken off the queue BEFORE it is offered: an offer that throws is dropped (rain never added), never retried
+				// every tick with its key gone (which would also let the same lip queue duplicates behind it)
+				int cell = cells[next];
+				object fluid = fluids[next];
+				long dl = amounts[next];
+				index.Remove((cell, fluid));
+				next++;
+				got += offer(cell, dl, fluid);
+			}
+			if (next == cells.Count)
+			{
+				cells.Clear();
+				fluids.Clear();
+				amounts.Clear();
+				next = 0;
+			}
+			else if (next >= CompactAfter && next * 2 >= cells.Count)
+			{
+				Compact();
+			}
+			return got;
+		}
+
+		/// <summary>Drained offers kept at the head before the lists are compacted (a queue that never quite empties, more lips
+		/// a pulse than the ticks drain, must not grow by its drained head; what waits is bounded by the lips).</summary>
+		public const int CompactAfter = 64;
+
+		/// <summary>Capacity the lists hold (drained head included): the selftest's bound.</summary>
+		public int Held => cells.Count;
+
+		private void Compact()
+		{
+			cells.RemoveRange(0, next);
+			fluids.RemoveRange(0, next);
+			amounts.RemoveRange(0, next);
+			next = 0;
+			index.Clear();
+			for (int i = 0; i < cells.Count; i++)
+			{
+				index[(cells[i], fluids[i])] = i;
+			}
+		}
+
+		/// <summary>Drop every waiting offer (the map is going; rain never added is not water lost).</summary>
+		public void Clear()
+		{
+			cells.Clear();
+			fluids.Clear();
+			amounts.Clear();
+			index.Clear();
+			next = 0;
+		}
+	}
 }

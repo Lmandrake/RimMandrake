@@ -1,0 +1,1 @@
+live-proof A1: python.exe src/RimMandrake/Utils/perf/sheetrain_deluge_window.py --ticks 2000 --warm 1500 --load BENCH_r17_midrain --out 'D:\ClaudeWork\rimmandrake\sheetrain_deluge_window' < /dev/null

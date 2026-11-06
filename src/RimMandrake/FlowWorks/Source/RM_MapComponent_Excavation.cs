@@ -1038,6 +1038,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Collections.Look(ref fluidPalette, "RM_excavationFluidPalette", LookMode.Def);
 			Scribe_Defs.Look(ref activeFluid, "RM_activeFluid");
 			Scribe_Values.Look(ref nextPulseTick, "RM_nextPulseTick", -1);
+			Scribe_Values.Look(ref sheetPulsedFor, "RM_sheetPulsedFor", int.MinValue);
 			Scribe_Values.Look(ref pulseCount, "RM_pulseCount", 0L);
 			Scribe_Values.Look(ref overflowDestroyedTotal, "RM_overflowDestroyedTotal", 0f);
 			Scribe_Values.Look(ref releaseLostDl, "RM_releaseLostDl", 0L);
@@ -2910,6 +2911,16 @@ namespace RimMandrake.FlowWorks
 			}
 			if (now < nextPulseTick)
 			{
+				// SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE (live r18, sheet ON: DoPulse 30.8 ms, its sliced flow at most 14.0): the
+				// sheet's own pulse is not sliced, so it no longer shares the pulse-due tick. It runs once a pulse, on the first
+				// quiet tick (no pulse in flight) of the SheetPulseLeadTicks before the pulse is due, and that tick does nothing
+				// else. It still comes before the channel solve, so water it runs back is levelled by the very next pulse.
+				if (sheetPulsedFor != nextPulseTick && !PulseInFlight && now >= nextPulseTick - SheetPulseLeadTicks)
+				{
+					sheetPulsedFor = nextPulseTick;
+					map.GetComponent<Sheet.RM_MapComponent_Sheet>()?.EnginePulse();
+					return;
+				}
 				if (PulseInFlight)
 				{
 					ContinuePulse(PulseSliceCells);
@@ -2918,6 +2929,7 @@ namespace RimMandrake.FlowWorks
 				{
 					StepRainAhead(now);   // EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: the next pulse's rain, a slice a tick
 				}
+				DrainRainOffers(RM_RainOfferQueue.PerTick);
 				return;
 			}
 			// A pulse still in slices when the next is due (a huge dug area) ends first, whole: pulses never overlap.
@@ -2961,7 +2973,14 @@ namespace RimMandrake.FlowWorks
 			}
 			// CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 1: spilled sheet water moves, runs back (credited through the
 			// pour / return leg, so the solve below levels it this pulse), soaks and dries. Nothing when no sheet stands.
-			map.GetComponent<Sheet.RM_MapComponent_Sheet>()?.EnginePulse();
+			// SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE: it normally ran already, on its own quiet tick just before this one
+			// (MapComponentTick, SheetPulseLeadTicks); here only when that tick never came (a pulse in flight held the whole
+			// window, the first pulse after a load, an old save).
+			if (sheetPulsedFor != pulseDueTick)
+			{
+				sheetPulsedFor = pulseDueTick;
+				map.GetComponent<Sheet.RM_MapComponent_Sheet>()?.EnginePulse();
+			}
 			if (excavatedCells.Count == 0)
 			{
 				return;
@@ -3023,8 +3042,9 @@ namespace RimMandrake.FlowWorks
 			flowKernel.rainNotches = pocketRainNotches;
 			flowKernel.rainFluid = pocketRainFluid;
 			flowKernel.rainCatches = rainCatchesPred ??= idx => !map.roofGrid.Roofed(idx);
-			flowKernel.rainOverflow = rainOverflowCb ??= (idx, dl, fl) => pocketRainAcceptedDl +=
-				Sheet.RM_MapComponent_Sheet.RainOverflowDl(map, map.cellIndices.IndexToCell(idx), dl, fl as FluidDef);
+			// SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE: the walk only QUEUES a pocket's overflow; the sheet offer (a lip walk and a
+			// resolve) is made on the ticks that follow, a few a tick (DrainRainOffers), never inside the slice.
+			flowKernel.rainOverflow = rainOverflowCb ??= (idx, dl, fl) => rainOffersOwed.Add(idx, dl, fl);
 			pocketRainNotches = 0;
 			flowKernel.BeginPulse(pulseSeeds, pulseCount);
 			ContinuePulse(PulseSliceCells);
@@ -3055,9 +3075,23 @@ namespace RimMandrake.FlowWorks
 			// EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: rain decided ahead of the next pulse and not landed yet lands now (a save
 			// scribes the grids, never the pass), so the loaded game holds exactly the water the unsaved one does.
 			LandRainOwed();
+			// SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE: the queue is not scribed, so every pocket overflow still waiting is offered now.
+			DrainRainOffers(int.MaxValue);
 			// Before a save (the terrain grid is written) every waiting picture is drawn (the pulse-due path no longer calls
 			// this: there the backlog keeps draining at its budget).
 			DrainTerrainWrites(true);
+		}
+
+		/// <summary>Offers at most <paramref name="max"/> of the queued pocket overflows to the sheet, oldest first; what it takes
+		/// is counted as accepted rain (the rest of an offer was never added).</summary>
+		private void DrainRainOffers(int max)
+		{
+			if (rainOffersOwed.Count == 0)
+			{
+				return;
+			}
+			pocketRainAcceptedDl += rainOffersOwed.Drain(max, rainOfferCb ??= (idx, dl, fl) =>
+				Sheet.RM_MapComponent_Sheet.RainOverflowDl(map, map.cellIndices.IndexToCell(idx), dl, fl as FluidDef));
 		}
 
 		/// <summary>One slice of the pulse in flight; after the last, the steps that follow the flow.</summary>
@@ -3422,6 +3456,18 @@ namespace RimMandrake.FlowWorks
 		private long pocketRainLandedDl, pocketRainRunOverDl, pocketRainPockets;
 		// RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (LOW9): of the dL offered over a pocket's lip, what the sheet took (session)
 		private long pocketRainAcceptedDl;
+
+		/// <summary>SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE: pocket overflows the kernel's walk queued for the sheet (not scribed: a
+		/// save makes every offer first, see FinishPulse).</summary>
+		private readonly RM_RainOfferQueue rainOffersOwed = new RM_RainOfferQueue();
+		private System.Func<int, long, object, long> rainOfferCb;
+
+		/// <summary>SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE: the ticks before a pulse is due in which the sheet's own pulse runs, on
+		/// the first of them with no pulse in flight.</summary>
+		public const int SheetPulseLeadTicks = 10;
+
+		/// <summary>The due tick of the pulse whose sheet pulse has run (scribed: a save taken after it must not run it twice).</summary>
+		private int sheetPulsedFor = int.MinValue;
 
 		/// <summary>The quiet ticks before a pulse (no pulse in flight): from <see cref="RM_RainPass.LeadTicks"/> before it is due,
 		/// decide its rain once and land at most <see cref="RM_RainPass.CellsPerTick"/> squares a tick.</summary>

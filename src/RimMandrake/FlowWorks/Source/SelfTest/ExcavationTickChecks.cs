@@ -1430,9 +1430,59 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(ex, @"double total = bodiesU \+ canalsU \+ tanksU \+ hoseU \+ sheetU;", "the total holds the sheet");
                 RiverSwitchFlipChecks.Has(ex, @"sheetU = \(Sheet\.RM_MapComponent_Sheet\.Of\(map\)\?\.StandingDl \?\? 0\) \* \(RM_Volume\.UnitsPerLevel / \(double\)RM_LevelSolve\.U\);", "sheet standing in tank units");
                 RiverSwitchFlipChecks.Has(ex, @"\+ "" \| rain\(session, dL\): landed="" \+ pocketRainLandedDl \+ "" offered="" \+ pocketRainRunOverDl \+ "" sheetAccepted="" \+ pocketRainAcceptedDl", "rain landed/offered/accepted");
-                RiverSwitchFlipChecks.Has(ex, @"flowKernel\.rainOverflow = rainOverflowCb \?\?= \(idx, dl, fl\) => pocketRainAcceptedDl \+= Sheet\.RM_MapComponent_Sheet\.RainOverflowDl\(", "accepted rain is what the sheet took");
+                // SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE: the walk queues the overflow; the drain offers it and counts what the sheet took
+                RiverSwitchFlipChecks.Has(ex, @"flowKernel\.rainOverflow = rainOverflowCb \?\?= \(idx, dl, fl\) => rainOffersOwed\.Add\(idx, dl, fl\);", "the walk queues a pocket's overflow");
+                RiverSwitchFlipChecks.Has(ex, @"pocketRainAcceptedDl \+= rainOffersOwed\.Drain\(max, rainOfferCb \?\?= \(idx, dl, fl\) =>\s+Sheet\.RM_MapComponent_Sheet\.RainOverflowDl\(", "accepted rain is what the sheet took");
                 string sh = Src("Sheet", "RM_MapComponent_Sheet.cs");
                 RiverSwitchFlipChecks.Has(sh, @"public long StandingDl => state\?\.Standing \?\? 0;", "the sheet reports its standing dL");
+            });
+
+            // SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE: the production queue the walk fills and the quiet ticks drain.
+            Case("Sheetrain_offer_queue_coalesces_orders_and_budgets", () =>
+            {
+                var q = new RM_RainOfferQueue();
+                object w = "water", f = "fuel";
+                q.Add(7, 100, w); q.Add(3, 50, w); q.Add(7, 25, w); q.Add(7, 10, f); q.Add(9, 0, w);
+                Assert(q.Count == 3 && q.OwedDl == 185, $"three offers (7 water grown, 3 water, 7 fuel), 185 dL owed: {q.Count}/{q.OwedDl}");
+                var made = new List<string>();
+                long got = q.Drain(2, (c, dl, fl) => { made.Add(c + ":" + dl + ":" + fl); return dl / 2; });
+                Assert(string.Join(",", made) == "7:125:water,3:50:water", "oldest first, at most the budget: " + string.Join(",", made));
+                Assert(got == 62 + 25 && q.Count == 1 && q.OwedDl == 10, $"accepted {got}, left {q.Count}/{q.OwedDl}");
+                q.Add(7, 5, w);   // a lip already offered starts a new offer, behind the one still waiting
+                made.Clear();
+                q.Drain(int.MaxValue, (c, dl, fl) => { made.Add(c + ":" + dl + ":" + fl); return 0; });
+                Assert(string.Join(",", made) == "7:10:fuel,7:5:water" && q.Count == 0 && q.OwedDl == 0, "a save drains all: " + string.Join(",", made));
+                Assert(q.Drain(2, (c, dl, fl) => throw new Exception("an empty queue offers nothing")) == 0, "empty drain");
+                // more lips a pulse than the ticks drain: what waits stays bounded by the lips, and the drained head is compacted
+                var b = new RM_RainOfferQueue();
+                for (int pulse = 0; pulse < 200; pulse++)
+                {
+                    for (int lip = 0; lip < 300; lip++) b.Add(lip, 10, w);
+                    for (int t = 0; t < 50; t++) b.Drain(RM_RainOfferQueue.PerTick, (c, dl, fl) => dl);
+                }
+                Assert(b.Count <= 300 && b.Held <= 2 * 300 + RM_RainOfferQueue.CompactAfter, $"bounded: waiting {b.Count}, held {b.Held}");
+                long owed = b.OwedDl, drained = b.Drain(int.MaxValue, (c, dl, fl) => dl);
+                Assert(drained == owed && b.Count == 0, "the backlog drains whole and every waiting dL is offered once");
+                // an offer that throws is dropped, the queue moves on, and the same lip queues anew (never a duplicate behind a stuck head)
+                var x = new RM_RainOfferQueue();
+                x.Add(1, 5, w); x.Add(2, 6, w);
+                try { x.Drain(1, (c, dl, fl) => throw new InvalidOperationException("boom")); } catch (InvalidOperationException) { }
+                x.Add(1, 7, w);
+                made.Clear();
+                x.Drain(int.MaxValue, (c, dl, fl) => { made.Add(c + ":" + dl); return 0; });
+                Assert(string.Join(",", made) == "2:6,1:7", "a throwing offer is not retried: " + string.Join(",", made));
+            });
+
+            // SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE: no sheet offer inside the kernel walk, the sheet's pulse on its own quiet tick
+            // (once a pulse, DoPulse only as the fallback, scribed), a few offers a tick, and a save makes them all.
+            Case("Sheetrain_sheet_work_leaves_the_pulse_tick", () =>
+            {
+                string ex = Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"if \(sheetPulsedFor != nextPulseTick && !PulseInFlight && now >= nextPulseTick - SheetPulseLeadTicks\)\s*\{\s*sheetPulsedFor = nextPulseTick;\s*map\.GetComponent<Sheet\.RM_MapComponent_Sheet>\(\)\?\.EnginePulse\(\);\s*return;", "the sheet pulse has a tick of its own");
+                RiverSwitchFlipChecks.Has(ex, @"if \(sheetPulsedFor != pulseDueTick\)\s*\{\s*sheetPulsedFor = pulseDueTick;\s*map\.GetComponent<Sheet\.RM_MapComponent_Sheet>\(\)\?\.EnginePulse\(\);", "DoPulse runs it only when its tick never came");
+                RiverSwitchFlipChecks.Has(ex, @"Scribe_Values\.Look\(ref sheetPulsedFor, ""RM_sheetPulsedFor"", int\.MinValue\);", "scribed");
+                RiverSwitchFlipChecks.Has(ex, @"DrainRainOffers\(RM_RainOfferQueue\.PerTick\);\s*return;", "a few offers a quiet tick");
+                RiverSwitchFlipChecks.Has(ex, @"DrainRainOffers\(int\.MaxValue\);", "a save makes every offer");
             });
         }
 
