@@ -734,6 +734,31 @@ def wsl_rerun(proof, log_text):
     return None
 
 
+# GAMEENV_FIX_HARNESS_678B1B18_ITEMS_WAIT: WSL interop timed out launching the Windows process (HOSE_END A1 site,
+# 2026-11-06T16:20Z: the site log held only "<3>WSL (870506 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110"), so
+# nothing ran and nothing touched the game. Such a log (the "$ cmd" header and WSL's own error lines, nothing else) is
+# safe to run again once; a log holding any line of the command's own output is never retried.
+WSL_INTEROP_LINE = re.compile(r"^<\d+>WSL \(\d+ - [^)]*\) ERROR: UtilAcceptVsock:\d+: accept4 failed \d+$")
+INTEROP_TRIES = 2
+
+
+def interop_never_started(log_text):
+    """-> True when a log shows only WSL interop failing to launch the command: no line of its own output."""
+    lines = [x.strip() for x in (log_text or "").splitlines() if x.strip()]
+    body = lines[1:] if lines and lines[0].startswith("$ ") else lines
+    return bool(body) and all(WSL_INTEROP_LINE.match(x) for x in body)
+
+
+def run_launched(fx, cmd, log, timeout):
+    """fx.run_proof, run again (up to INTEROP_TRIES in all) while WSL interop never started the process."""
+    code = None
+    for _ in range(INTEROP_TRIES):
+        code = fx.run_proof(cmd, log, timeout)
+        if code == 0 or not interop_never_started(read_text(log)):
+            break
+    return code
+
+
 def last_line(path):
     """The last non-blank line of a log, cut to 200, or "" when it cannot be read."""
     lines = [x.strip() for x in read_text(path).splitlines() if x.strip()]
@@ -1835,7 +1860,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
             if crashed is None and code is None and site:
                 slog = log[:-len(".log")] + "-site.log"
                 row["site_log"] = slog
-                sc = fx.run_proof(site, slog, lr["site_max_s"])
+                sc = run_launched(fx, site, slog, lr["site_max_s"])
                 if sc != 0:
                     crashed = asked_reload(slog) or "site not prepared: %s" % (
                         last_line(slog) or ("timed out" if sc is None else "exit %d" % sc))
@@ -1843,7 +1868,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 row["proof_exit"] = None        # the proof starts: from here every outcome is the mod's (verdict)
                 marks["proof_start"] = time.time()
                 try:
-                    code = fx.run_proof(proof, log, proof_budget(proof, lr["proof_max_s"]))
+                    code = run_launched(fx, proof, log, proof_budget(proof, lr["proof_max_s"]))
                 finally:        # a proof that raised still spent its time proving
                     marks["proof_s"] = time.time() - marks["proof_start"]
                 row["proof_exit"] = code

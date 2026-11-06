@@ -180,6 +180,53 @@ def t_site_runs_first_and_gates_the_proof():
               (row, fx.verbs()))
 
 
+VSOCK = "<3>WSL (870506 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110"
+
+
+class FlakeFx(ScriptFx):
+    """The first `flakes` launches of a command prefix die in WSL interop (the log holds only the vsock line)."""
+    def __init__(self, codes, flakes, **kw):
+        ScriptFx.__init__(self, codes, **kw)
+        self.flakes = dict(flakes)
+
+    def run_proof(self, proof, log, timeout):
+        k = next((k for k in self.flakes if proof.startswith(k)), None)
+        if k and self.flakes[k] > 0:
+            self.flakes[k] -= 1
+            self.calls.append(("proof", proof))
+            with open(log, "w") as f:
+                f.write("$ %s\n%s\n" % (proof, VSOCK))
+            return 1
+        return ScriptFx.run_proof(self, proof, log, timeout)
+
+
+def t_wsl_interop_flake_retries_once():
+    """GAMEENV_FIX_HARNESS_678B1B18_ITEMS_WAIT: HOSE_END A1's site log held only WSL's accept4 timeout (python.exe never
+    started) and the live proof stopped as 'site not prepared'. Such a launch is run once more; real output never is."""
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    site = "python.exe src/RimMandrake/Utils/live_site.py"
+    fx = FlakeFx({site: (0, "READY: menu dwell done")}, {site: 1})
+    row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000, site=SITE)
+    proofs = [c[1] for c in fx.calls if c[0] == "proof"]
+    check("interop: a site whose launch never started runs again and the proof runs", row["outcome"] == "PASS"
+          and proofs == [SITE, SITE, "python3 probe.py"], (row, proofs))
+    fx = FlakeFx({site: (0, "READY")}, {site: 5})
+    row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_001, site=SITE)
+    proofs = [c[1] for c in fx.calls if c[0] == "proof"]
+    check("interop: two dead launches stop as 'site not prepared', no proof", proofs == [SITE, SITE]
+          and row["why"] == "site not prepared: " + VSOCK and "release" in fx.verbs(), (row, proofs))
+    fx = FlakeFx({"python.exe x.py": (0, "PASS")}, {"python.exe x.py": 1})
+    row = L.run(fx, root, "ROT_X", "A2", "python.exe x.py", "--compose biomes", {}, now=1_800_000_002)
+    check("interop: a proof whose launch never started runs again", row["outcome"] == "PASS"
+          and [c[1] for c in fx.calls if c[0] == "proof"] == ["python.exe x.py"] * 2, row)
+    fx = ScriptFx({site: (2, "NOT READY: something\n" + VSOCK)})
+    row = L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_003, site=SITE)
+    check("interop: a site that printed its own output is never rerun", [c[1] for c in fx.calls if c[0] == "proof"]
+          == [SITE], row)
+    check("interop: the reader", L.interop_never_started("$ a\n" + VSOCK) and not L.interop_never_started("$ a\n")
+          and not L.interop_never_started("$ a\nREADY\n" + VSOCK), "")
+
+
 def t_wsl_proof_reruns_under_windows_python():
     """WORLD_NULLTEX_FLOOD_HUNT: a python3 proof cannot reach the bridge (Windows loopback); it reruns once as python.exe."""
     root = tempfile.mkdtemp(prefix="rl_live_")
@@ -1365,7 +1412,7 @@ def t_rebuilt_assembly_carries():
 
 
 def main():
-    for t in (t_exit1_that_could_not_ask_is_no_fail, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_menu_item_exit2_asks_its_own_staging, t_menu_wait_on_two_games_stays_a_restage, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
+    for t in (t_exit1_that_could_not_ask_is_no_fail, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_menu_item_exit2_asks_its_own_staging, t_menu_wait_on_two_games_stays_a_restage, t_site_runs_first_and_gates_the_proof, t_wsl_interop_flake_retries_once, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_owner_look_is_no_game_clause, t_def_check_judge, t_unloaded_mod,
