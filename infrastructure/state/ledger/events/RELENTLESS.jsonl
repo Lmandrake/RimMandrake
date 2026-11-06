@@ -1320,3 +1320,11 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR A1 (L2), read-only proof","ts":"2026-11-06T20:01:23Z","tsn":1793995283691289297}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:02:03Z","tsn":1793995323524611943}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW A1 (L2), read-only proof","ts":"2026-11-06T20:02:54Z","tsn":1793995374448830520}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:49:54Z","tsn":1793998194289163052}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-06T20:50:33Z","tsn":1793998233731307781}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:50:45Z","tsn":1793998245290333400}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MODERN_FITTINGS_PROBE_FAUCET_NEVER_SEEN A1 (L2), read-only proof","ts":"2026-11-06T20:51:41Z","tsn":1793998301924272847}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:52:39Z","tsn":1793998359967243796}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A1 (L1), read-only proof","ts":"2026-11-06T20:53:35Z","tsn":1793998415618357588}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:53:50Z","tsn":1793998430582571537}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A3 (L1), read-only proof","ts":"2026-11-06T20:54:03Z","tsn":1793998444004705016}
