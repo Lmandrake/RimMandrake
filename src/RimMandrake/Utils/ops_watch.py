@@ -4003,6 +4003,9 @@ def real_filer(todo, conf):
             try:    # one alarm the spawn cannot carry (a NUL in an argument) costs itself, not the alarms behind it
                 if a.get("note_only"):
                     rc, out = ing.rimflow("note", a["item"], "--text", a["text"])
+                elif a.get("block_only"):   # a duplicate waits on its cause's repair; the block lifts when it closes (WP-04)
+                    rc, out = ing.rimflow("block", a["item"], "--kind", "item", "--on", a["on"], "--until", "done",
+                                          "--reason", a["reason"][:300])
                 elif a.get("reopen"):     # a repeat: the same item goes back to work and the outage is counted
                     rc, out = ing.rimflow("live", a["name"], "--result", "broken", "--detail", a["title"][:300])
                     if rc != 0 and "retired item holds no promise" in (out or ""):
@@ -4015,7 +4018,13 @@ def real_filer(todo, conf):
                                                   "--name", new, "--title", a["title"],
                                                   "--why", "ops_watch alarm (deterministic, no AI): %s; %s was retired" % (a["aid"], a["name"]))
                             if rc != 0 and already_filed(out, new):
-                                continue
+                                # an earlier pass spawned this twist and died before saving it (the arena fan-out,
+                                # 2026-11-06 05:01-05:06Z: 5 successors, one per killed beat). It is this alarm's
+                                # successor: adopt it, and take the next twist only when it is retired too
+                                rc, out = ing.rimflow("live", new, "--result", "broken", "--detail", a["title"][:300])
+                                if rc != 0 and "retired item holds no promise" in (out or ""):
+                                    rc, out = 1, "%s already filed" % new
+                                    continue
                             break
                         if rc != 0 and already_filed(out, new):
                             # all five twists exist: the last was filed by an earlier pass whose ledger read lags, so the
@@ -4199,13 +4208,16 @@ def stale_for_close(point, closes):
     return bool(t and last and t <= last)
 
 
-def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=None):
+def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=None, cause_tree=None):
     """Edge-triggered: file once on a NEW crossing, keep it while it holds, re-arm when it clears. A target with note_field
     also says what is new while it stays crossed: a note on its open item, or, the item closed (open_ids), a reopen. So
     does an alarm that got worse (ALARM_REPEAT_FIX_BREAK_ON_WORSE: its severity rose, or its value passed the target's
     stated `worse` step), which also gives the Conductor a line and, through worse_n, Operations a fresh alarm run.
     closed_at ({item: [close epoch, ...]}, the flow collector's ctx["closes"]): a closed item is not reopened on a
-    reading whose `night` predates its last close (NIGHTLY_COP_FIX_RED_ENVEHB_GOEW): that night ran before the fix."""
+    reading whose `night` predates its last close (NIGHTLY_COP_FIX_RED_ENVEHB_GOEW): that night ran before the fix.
+    cause_tree: the clone whose committed tree says which test paths are gone (jam_classes.cause_key), or that
+    exists(path) callable itself (a replay's recorded tree); None judges
+    none gone, and every alarm is its own cause (its id), as before the cause book."""
     p = ops_dir() / "alarms.json"
     state = read_json(p) if p.exists() else {}
     if not isinstance(state, dict):
@@ -4220,6 +4232,36 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
     conf = alarm_conf(rules)
     todo = []
     said_causes = set()     # this pass's Conductor lines, one per cause (conductor_line_owed)
+    # OPSWATCH_BUILD_ALARMS_KEYED_BY_CAUSE: one repair item per cause. The book is read before any step; a book that
+    # cannot be read holds no alarm (each files on its own id, as before the book) and is said aloud
+    cb, jc = cause_mods()
+    exists = (cause_tree if callable(cause_tree) else jc.tree_exists(cause_tree)) if cause_tree else None
+    bp = ops_dir() / "causes.json"
+    try:
+        book = cb.load(bp)
+    except (ValueError, OSError) as e:
+        book = None
+        log.append({"ts": iso(now), "event": "cause_book_unreadable", "error": str(e)[:200]})
+    if book is not None:
+        for r in cb.reconcile(book, known_ids, open_ids, state, now):
+            log.append(dict(r, ts=iso(now)))
+        # alarms already OPEN on items of their own, filed before the book knew their cause: the first holds the
+        # cause, the others are blocked on it (cause_book dependents), and their notes go on as before
+        for aid in sorted(state, key=lambda a: str((state[a] or {}).get("filed") or "") if isinstance(state[a], dict) else ""):
+            cur = state[aid]
+            if not (isinstance(cur, dict) and cur.get("state") == "OPEN" and isinstance(cur.get("item"), str)
+                    and ts.get(aid) and open_ids is not None and cur["item"] in open_ids
+                    and not is_token_key(aid.split(":", 1)[-1])):
+                continue
+            ck = cur.get("cause") or jc.cause_key(aid, points.get(aid.split(":", 1)[1]), exists)
+            cur["cause"] = ck
+            rec = cb.live(book, ck)
+            if rec is None:
+                cb.begin(book, ck, aid, cur["item"], now)
+                cb.filed(book, ck, cur["item"], now)
+            elif rec["item"] != cur["item"] and cb.attach(book, ck, aid, cur.get("title"), now, own_item=cur["item"], open_ids=open_ids):
+                log.append({"ts": iso(now), "event": "cause_duplicate", "aid": aid, "item": cur["item"], "cause": ck,
+                            "repair": rec["item"]})
     try:
         clear_passes = max(1, int(conf.get("clear_passes", 1)))
     except (TypeError, ValueError, OverflowError):     # a bad value reads as the safest: never an alarm cleared early, never a dead pass
@@ -4349,7 +4391,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                 # real, so keep retrying the filing under the name and title it got when it crossed
                 todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "reopen": bool(cur.get("reopen")),
                              "conductor_log": cur.get("conductor_log"), "key": aid.split(":", 1)[1],
-                             "expedite": cur.get("expedite") or []})
+                             "expedite": cur.get("expedite") or [], "cause": cur.get("cause")})
             return
         key = aid.split(":", 1)[1]
         tag = aid.split(":", 1)[0]
@@ -4368,6 +4410,24 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                        **{"for": "Operations"})
             log.append({"ts": iso(now), "event": "opened_for_operations", "aid": aid})
             return
+        ck = None
+        if book is not None:
+            ck = jc.cause_key(aid, pt, exists)
+            rec = cb.live(book, ck)
+            if rec is not None and (rec.get("aids") or [None])[0] != aid:
+                # another alarm of this cause holds its repair item: this one attaches to it and files nothing
+                own = cur.get("item") or cur.get("name")
+                said = (pt.get("x") or {}).get("said") or pt.get("v")
+                cb.attach(book, ck, aid, said, now, own_item=own, open_ids=open_ids)
+                cur.update(state="OPEN", item=rec["item"], name=rec["item"], cause=ck, error=None, reopen=False,
+                           filed=cur.get("filed") or iso(now), title=cur.get("title") or "attached to %s" % rec["item"])
+                log.append({"ts": iso(now), "event": "attached", "aid": aid, "item": rec["item"], "cause": ck,
+                            "record": rec["state"]})
+                if rec["state"] == "open":
+                    todo.append({"note_only": True, "item": rec["item"], "name": "note:" + aid, "aid": aid,
+                                 "text": "ops_watch: %s attached at %s (same cause %s): %s" % (
+                                     aid, iso(now), ck[:160], str(said)[:300])})
+                return
         if not cur.get("name"):  # mint once; a retry keeps the saved name
             taken = set(known_ids) | {a["name"] for a in state.values() if isinstance(a, dict) and isinstance(a.get("name"), str)}
             try:
@@ -4378,6 +4438,10 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                 cur.update(error=str(e)[:200], tries=_tries(cur) + 1)
                 log.append({"ts": iso(now), "event": "mint_failed", "aid": aid})
                 return
+        if ck is not None:
+            if cb.live(book, ck) is None:
+                cb.begin(book, ck, aid, cur["name"], now)     # saved with alarms.json before the spawn
+            cur["cause"] = ck
         title = "Ops alarm %s: %s = %s %s(%s), line %s %g" % (tag, key, pt.get("v"), (pt.get("unit") or "") + " ",
                                                             pt.get("m"), tg["op"], tg["value"])
         said = (pt.get("x") or {}).get(tg["title_field"]) if tg.get("title_field") else None   # what crossed, first
@@ -4392,7 +4456,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
         cur["expedite"] = owners
         cur["conductor_log"] = tg.get("conductor_log")     # a retry that files later still owes the Conductor its line
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log"),
-                     "key": key, "reopen": bool(cur.get("reopen")), "expedite": owners})
+                     "key": key, "reopen": bool(cur.get("reopen")), "expedite": owners, "cause": cur.get("cause")})
     for aid in sorted(set(ts) | set(state)):
         try:
             one(aid)
@@ -4402,11 +4466,15 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
             cur = cur if isinstance(cur, dict) else state.setdefault(aid, {"state": "PENDING", "since": iso(now), "tries": 0})
             cur["error"] = why
             log.append({"ts": iso(now), "event": "step_failed", "aid": aid, "error": why})
+    if book is not None:
+        todo.extend(cause_block_todo(k, d, r) for k, d, r in cb.queued_blocks(book))
     if todo and filer and beat_deadline() is not None:
         # a beat files what fits and defers the rest: the longest-untried go first, so no alarm starves behind a slow one
         todo.sort(key=lambda a: str((state.get(a.get("aid")) or {}).get("last_try") or ""))
     if todo and filer:
         atomic_json(p, state)   # the name is on disk before the spawn: a pass that dies mid-filing retries it, not a new one
+        if book is not None:
+            cb.save(bp, book)   # and its cause record: a restart completes it (cause_book.reconcile), never a second
     if todo:
         if filer:
             try:
@@ -4417,8 +4485,10 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                 res = {a["name"]: "filer raised %s: %s" % (type(e).__name__, str(e)[:200]) for a in todo}
         else:
             res = {a["name"]: "filing off (run without --file-alarms)" for a in todo}
-        settle_filing(state, todo, res, filer, now, log, said_causes)
+        settle_filing(state, todo, res, filer, now, log, said_causes, book)
     atomic_json(p, state)
+    if book is not None:
+        cb.save(bp, book)
     if log:
         with open(ops_dir() / "alarms_log.jsonl", "a", encoding="utf-8") as f:
             for r in log:
@@ -4426,10 +4496,19 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
     return state
 
 
-def settle_filing(state, todo, res, filer, now, log, said_causes):
+def settle_filing(state, todo, res, filer, now, log, said_causes, book=None):
     """Each todo alarm's filing result into its alarms.json entry and the alarm log: OPEN on its item, the error kept,
     or a deferral counted (no try). Shared by the alarm pass (run_alarms) and a light beat's held filing (file_held)."""
+    cb = cause_mods()[0] if book is not None else None
     for a in todo:
+        if a.get("block_only"):     # a duplicate's item blocked on its cause's repair; a failure stays queued, retried
+            err = res.get(a["name"])
+            if err is None and cb:
+                cb.blocked(book, a["cause"], a["item"])
+                log.append({"ts": iso(now), "event": "cause_blocked", "item": a["item"], "repair": a["on"], "cause": a["cause"]})
+            elif filer and err != FILING_DEFERRED:
+                log.append({"ts": iso(now), "event": "cause_block_failed", "item": a["item"], "error": str(err)[:200]})
+            continue
         if a.get("note_only"):
             cur = state.get(a.get("aid"))
             if res.get(a["name"]) is None and isinstance(cur, dict):    # unsaid on a failed note: the next pass says it again
@@ -4454,6 +4533,12 @@ def settle_filing(state, todo, res, filer, now, log, said_causes):
             cur.pop("deferred_at", None)        # a real try: from here the alarm pass retries it, as before
             if err is None:
                 cur.update(state="OPEN", item=a["name"], name=a["name"], error=None, filed=iso(now))   # name: a successor stays the alarm's item
+                if cb and a.get("cause"):
+                    old = cb.filed(book, a["cause"], a["name"], now)
+                    for other in (book.get(a["cause"]) or {}).get("aids") or ():   # attached under the old name
+                        o = state.get(other)
+                        if other != a["aid"] and isinstance(o, dict) and o.get("item") == old and old != a["name"]:
+                            o.update(item=a["name"], name=a["name"])
                 # the item is in the RUNNER shard whatever _publish says: a publish that failed is retried by the
                 # next testq ingest (testq/ingest.py _publish keeps the lines), so OPEN is right either way
                 log.append({"ts": iso(now), "event": "found_filed" if a["name"] in (res.get("_already") or []) else "filed",
@@ -4492,9 +4577,15 @@ def file_held(filer, rules, now):
             continue
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": cur.get("conductor_log"),
                      "key": aid.split(":", 1)[-1], "reopen": bool(cur.get("reopen")),
-                     "expedite": cur.get("expedite") or []})
+                     "expedite": cur.get("expedite") or [], "cause": cur.get("cause")})
     if not todo:
         return state
+    cb = cause_mods()[0]
+    bp = ops_dir() / "causes.json"
+    try:
+        book = cb.load(bp)
+    except (ValueError, OSError):
+        book = None     # the alarm pass says it aloud; a held filing still lands on its own id
     log = []
     try:
         res = filer(todo, alarm_conf(rules))
@@ -4502,14 +4593,31 @@ def file_held(filer, rules, now):
         raise
     except Exception as e:  # noqa: BLE001  a filing that raises stays PENDING; the pass still reports
         res = {a["name"]: "filer raised %s: %s" % (type(e).__name__, str(e)[:200]) for a in todo}
-    settle_filing(state, todo, res, filer, now, log, set())
+    settle_filing(state, todo, res, filer, now, log, set(), book)
     for r in log:
         r["held"] = True        # which beat filed it: the light one
     atomic_json(p, state)
+    if book is not None:
+        cb.save(bp, book)
     with open(ops_dir() / "alarms_log.jsonl", "a", encoding="utf-8") as f:
         for r in log:
             f.write(json.dumps(r, sort_keys=True) + "\n")
     return state
+
+
+def cause_mods():
+    """(cause_book, jam_classes): the alarm cause book and its key (OPSWATCH_BUILD_ALARMS_KEYED_BY_CAUSE)."""
+    rf = str(Path(__file__).resolve().parent.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import cause_book
+    import jam_classes
+    return cause_book, jam_classes
+
+
+def cause_block_todo(key, dep, repair):
+    return {"block_only": True, "name": "block:" + dep, "item": dep, "on": repair, "cause": key,
+            "reason": "ops_watch: one repair per cause (%s): %s is a duplicate of %s" % (key[:120], dep, repair)}
 
 
 def conductor_guard():
@@ -5215,7 +5323,7 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
                         fence("filing")
                         return _f(todo, conf)
             alarms = run_alarms(apts, rules, now, ctx.get("known_ids") or set(), afiler, ctx.get("open_ids"),
-                                ctx.get("closes"))
+                                ctx.get("closes"), cause_tree=alarm_conf(rules).get("clone") if afiler else None)
             if compose:
                 atomic_json(ap, {"t": now, "at": iso(now)})
     except Fenced:

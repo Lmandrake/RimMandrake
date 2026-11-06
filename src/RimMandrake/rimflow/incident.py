@@ -336,6 +336,19 @@ def item_acted(events, items, since):
     return None
 
 
+REPAIRED = ("close", "implemented")     # a drop or supersede is not a repair: the incident waits on its readings
+
+
+def repaired(events, items, since):
+    """Every named item closed (close / implemented) at or after iso `since` -> {item: event ts}, else None.
+    OPSWATCH_BUILD_ALARMS_KEYED_BY_CAUSE: an incident row closes with its repair."""
+    done = {}
+    for e in events or ():
+        if e.get("id") in items and e.get("event") in REPAIRED and str(e.get("ts") or "") >= since:
+            done.setdefault(e["id"], e.get("ts"))
+    return done if items and set(items) <= set(done) else None
+
+
 def ack_since(inc):
     """-> iso time from which an item action can auto-ack: the latest of told_at, the last revisit and the last ack
     cleared by an escalation. An action already read before the ack was cleared is old news and acks nothing again."""
@@ -463,6 +476,12 @@ def step(table, rows, status, now, cursor=0, events=None, standing=None):
             if hit:
                 emit("acked", inc, acked_t=now, ack_by=hit[1], plan="%s on %s" % (hit[2], hit[0]), auto_ack=True,
                      recover_by_t=now + pol["recover_min"] * 60, recover_by=iso(now + pol["recover_min"] * 60))
+        if inc["items"] and events is not None and not any(m in bad or m in fired for m in inc["metrics"]):
+            # its repair item(s) closed and no metric reads bad now: closed with the repair, not after sustain_min
+            done = repaired(events(), inc["items"], inc["told_at"])
+            if done:
+                emit("closed", inc, state="closed", closed_t=now, closed_by="repair", repaired=done)
+                continue
         states, quiet = [], False
         for m, v in inc["metrics"].items():
             sr = standing_of(standing, m, now, pol["status_max_age_min"] * 60) if v.get("event") else None

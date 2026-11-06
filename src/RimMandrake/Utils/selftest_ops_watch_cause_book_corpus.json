@@ -1,0 +1,244 @@
+{
+ "about": "OPSWATCH_BUILD_ALARMS_KEYED_BY_CAUSE replay corpus, from the RUNNER ledger's ops_watch alarm spawns (why: 'ops_watch alarm (deterministic, no AI): <aid>'). collapse: the 9 items spawned 2026-11-06 04:57-05:10Z on the arena tests removed by 1f0e666566 (3 alarm ids, 5+2 successor twists from killed held-filing passes). distinct: the 12:04-12:55Z batch of build-cop reds on tests that exist (SELFTEST_FIX_RIMPLACE_JLWJ left out: its spawn row names no resolvable test). present: the committed tree the replay reads (every distinct test; the arena subtree absent, as at 1f0e666566).",
+ "collapse": [
+  {
+   "ts": "2026-11-06T04:57:00Z",
+   "item": "OPS_RED_OVERDUE_CHASE_AEUZ_TUEF",
+   "aid": "NIGHTLY_RED_OVERDUE:testing.nightly_reds_overdue",
+   "tests": [
+    "src/RimMandrake/Utils/arena/selftest_arena_judge.py",
+    "src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py"
+   ]
+  },
+  {
+   "ts": "2026-11-06T04:58:00Z",
+   "item": "OPS_RED_OVERDUE_CHASE_AEUZ_PHBA",
+   "aid": "NIGHTLY_RED_OVERDUE:testing.nightly_reds_overdue",
+   "tests": [
+    "src/RimMandrake/Utils/arena/selftest_arena_judge.py",
+    "src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py"
+   ]
+  },
+  {
+   "ts": "2026-11-06T05:01:00Z",
+   "item": "NIGHTLY_COP_FIX_RED_WARIWE_XVFM_WYEK",
+   "aid": "NIGHTLY_RED:testing.red_wariwe",
+   "tests": [
+    "src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py"
+   ]
+  },
+  {
+   "ts": "2026-11-06T05:02:00Z",
+   "item": "NIGHTLY_COP_FIX_RED_WARIWE_XVFM_KTXP",
+   "aid": "NIGHTLY_RED:testing.red_wariwe",
+   "tests": [
+    "src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py"
+   ]
+  },
+  {
+   "ts": "2026-11-06T05:04:00Z",
+   "item": "NIGHTLY_COP_FIX_RED_WARIWE_XVFM_WMBJ",
+   "aid": "NIGHTLY_RED:testing.red_wariwe",
+   "tests": [
+    "src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py"
+   ]
+  },
+  {
+   "ts": "2026-11-06T05:05:00Z",
+   "item": "NIGHTLY_COP_FIX_RED_WARIWE_XVFM_LVPK",
+   "aid": "NIGHTLY_RED:testing.red_wariwe",
+   "tests": [
+    "src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py"
+   ]
+  },
+  {
+   "ts": "2026-11-06T05:06:00Z",
+   "item": "NIGHTLY_COP_FIX_RED_WARIWE_XVFM_NJSM",
+   "aid": "NIGHTLY_RED:testing.red_wariwe",
+   "tests": [
+    "src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py"
+   ]
+  },
+  {
+   "ts": "2026-11-06T05:09:00Z",
+   "item": "NIGHTLY_COP_FIX_RED_ZHIYUZ_VVZU_WJSB",
+   "aid": "NIGHTLY_RED:testing.red_zhiyuz",
+   "tests": [
+    "src/RimMandrake/Utils/arena/selftest_arena_judge.py"
+   ]
+  },
+  {
+   "ts": "2026-11-06T05:10:00Z",
+   "item": "NIGHTLY_COP_FIX_RED_ZHIYUZ_VVZU_QJMI",
+   "aid": "NIGHTLY_RED:testing.red_zhiyuz",
+   "tests": [
+    "src/RimMandrake/Utils/arena/selftest_arena_judge.py"
+   ]
+  }
+ ],
+ "distinct": [
+  {
+   "ts": "2026-11-06T12:04:40Z",
+   "item": "SELFTEST_FIX_FAKEWORLD_PARITY_OTNC",
+   "aid": "NIGHTLY_RED:testing.red_blhmcq",
+   "test": "src/RimMandrake/rimflow/selftest_fakeworld_parity.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL every unguarded fx.<method> the real Effects has exists on a bare Fak"
+  },
+  {
+   "ts": "2026-11-06T12:07:09Z",
+   "item": "SELFTEST_FIX_SCENARIOS_MAP_JJBZ",
+   "aid": "NIGHTLY_RED:testing.red_chbxun",
+   "test": "src/RimMandrake/FlowWorks/northstar/selftest_scenarios_map.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL: # FAIL (selftest_scenarios_map.py) -- testing.red_chbxun = 1 nightly"
+  },
+  {
+   "ts": "2026-11-06T12:12:03Z",
+   "item": "SELFTEST_FIX_SWBESTIARY_PACK_OVERLAYS_MKLQ",
+   "aid": "NIGHTLY_RED:testing.red_cpkczb",
+   "test": "src/RimStarWars/SWBestiary/selftest_swbestiary_pack_overlays.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL swanimalsCorellianHound east is the shared quadruped overlay fitted t"
+  },
+  {
+   "ts": "2026-11-06T12:21:38Z",
+   "item": "SELFTEST_FIX_RELENTLESS_CODEX_KEEPS_IAAY",
+   "aid": "NIGHTLY_RED:testing.red_dtmqmz",
+   "test": "src/RimMandrake/rimflow/selftest_relentless_codex_keeps.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL ## a reload fix that rides the staging, beside an unfixable cause: ro"
+  },
+  {
+   "ts": "2026-11-06T12:25:16Z",
+   "item": "SELFTEST_FIX_STATIC_CALL_EMPTY_ARG_TEGC",
+   "aid": "NIGHTLY_RED:testing.red_eotjgo",
+   "test": "src/RimMandrake/FlowWorks/northstar/selftest_static_call_empty_arg.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL: <test>: FAIL (selftest_static_call_empty_arg.py) -- testing.red_eotj"
+  },
+  {
+   "ts": "2026-11-06T12:26:33Z",
+   "item": "SELFTEST_FIX_FUELSNOWS_NAME_CULL_AAEJ",
+   "aid": "NIGHTLY_RED:testing.red_epmsve",
+   "test": "src/RimMandrake/Utils/selftest_fuelsnows_name_cull.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL: live file names RUT_FuelSnows: infrastructureBENCH.md (selftest_fuel"
+  },
+  {
+   "ts": "2026-11-06T12:27:46Z",
+   "item": "SELFTEST_FIX_RELENTLESS_CODEX_FIVE_B_HXGH",
+   "aid": "NIGHTLY_RED:testing.red_eubwoy",
+   "test": "src/RimMandrake/rimflow/selftest_relentless_codex_five_b.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL ## the same row at since: it routes: True (selftest_relentless_codex_"
+  },
+  {
+   "ts": "2026-11-06T12:29:06Z",
+   "item": "SELFTEST_FIX_TESTQ_FAULT_MONITOR_BOJF",
+   "aid": "NIGHTLY_RED:testing.red_frfsxq",
+   "test": "src/RimMandrake/Utils/testq/selftest_testq_fault_monitor.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL heat blind: the newest cycle says heat=UNMEASURED(sampler_hung) (self"
+  },
+  {
+   "ts": "2026-11-06T12:30:20Z",
+   "item": "SELFTEST_FIX_SLIME_SUITE_YTWW",
+   "aid": "NIGHTLY_RED:testing.red_gcmcnn",
+   "test": "src/RimMandrake/GelatinousSlime/selftest_slime_suite.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL clean run: # components, non-pass {'dwommo_flight_def': 'FAIL', 'dryi"
+  },
+  {
+   "ts": "2026-11-06T12:31:34Z",
+   "item": "SELFTEST_FIX_FALSEPASS_LATE_IPFP",
+   "aid": "NIGHTLY_RED:testing.red_gprfij",
+   "test": "src/RimMandrake/FlowWorks/northstar/selftest_falsepass_late.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL t_review_map ran KeyError: 'size' (selftest_falsepass_late.py) -- tes"
+  },
+  {
+   "ts": "2026-11-06T12:32:52Z",
+   "item": "SELFTEST_FIX_ALARM_REPEAT_WORSE_WQKI",
+   "aid": "NIGHTLY_RED:testing.red_gumfae",
+   "test": "src/RimMandrake/Utils/selftest_alarm_repeat_worse.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL every rule that states a step still states it (lost: ['arena.push_ref"
+  },
+  {
+   "ts": "2026-11-06T12:34:12Z",
+   "item": "SELFTEST_FIX_RELENTLESS_CAUSE_KGEG",
+   "aid": "NIGHTLY_RED:testing.red_hcjvyr",
+   "test": "src/RimMandrake/rimflow/selftest_relentless_cause.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL C# not_measuring: routed once to one fixer, no strike, no return, no "
+  },
+  {
+   "ts": "2026-11-06T12:46:24Z",
+   "item": "SELFTEST_FIX_STUN_SCALING_NNVH",
+   "aid": "NIGHTLY_RED:testing.red_hmghdi",
+   "test": "src/RimMandrake/Utils/selftest_stun_scaling.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: timeout: exceeded #s (selftest_stun_scaling.py) -- testing.red_hmghdi = 1 "
+  },
+  {
+   "ts": "2026-11-06T12:47:40Z",
+   "item": "SELFTEST_FIX_RELENTLESS_CODEX_FIVE_AZEU",
+   "aid": "NIGHTLY_RED:testing.red_ijobkr",
+   "test": "src/RimMandrake/rimflow/selftest_relentless_codex_five.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL ## every saved patch is the raw bytes (--no-textconv --no-ext-diff): "
+  },
+  {
+   "ts": "2026-11-06T12:48:57Z",
+   "item": "SELFTEST_FIX_BIOME_GROUP_SIZES_IMZR",
+   "aid": "NIGHTLY_RED:testing.red_jmmpuh",
+   "test": "src/RimMandrake/Utils/selftest_biome_group_sizes.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL check: ('RM_TwilightSea', 'RSW_ColoClawFish'): on the roster but no r"
+  },
+  {
+   "ts": "2026-11-06T12:50:15Z",
+   "item": "SELFTEST_FIX_HOSE_LAY_SETTLE_ITXN",
+   "aid": "NIGHTLY_RED:testing.red_khzjtl",
+   "test": "src/RimMandrake/FlowWorks/selftest_hose_lay_settle.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL CR# asks for the carry draw, not a lay (selftest_hose_lay_settle.py) "
+  },
+  {
+   "ts": "2026-11-06T12:51:38Z",
+   "item": "SELFTEST_FIX_PROOF_PRECONDITIONS_QLXL",
+   "aid": "NIGHTLY_RED:testing.red_llnmzv",
+   "test": "src/RimMandrake/Utils/selftest_proof_preconditions.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: <test>: # checks, FAIL (# failing) (selftest_proof_preconditions.py) -- te"
+  },
+  {
+   "ts": "2026-11-06T12:52:50Z",
+   "item": "SELFTEST_FIX_DISPATCHER_MUT_YCJR",
+   "aid": "NIGHTLY_RED:testing.red_myxmhd",
+   "test": "src/RimMandrake/rimflow/selftest_dispatcher_mut.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: TypeError: test_main.<locals>.<lambda>() got an unexpected keyword argumen"
+  },
+  {
+   "ts": "2026-11-06T12:54:06Z",
+   "item": "SELFTEST_FIX_STATUS_BOARD_NHHC",
+   "aid": "NIGHTLY_RED:testing.red_mzrymu",
+   "test": "src/RimMandrake/Utils/selftest_status_board.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL live: no cryptic slug in the visible text ['None'] (selftest_status_b"
+  },
+  {
+   "ts": "2026-11-06T12:55:20Z",
+   "item": "SELFTEST_FIX_TIMER_PRUNE_UPBP",
+   "aid": "NIGHTLY_RED:testing.red_nflnla",
+   "test": "src/RimMandrake/Utils/selftest_timer_prune.py",
+   "said": "1 red since 2026-11-06, due 2026-11-09T11:00: FAIL live: account-plan.timer is uninstalled -- loaded (selftest_timer_pru"
+  }
+ ],
+ "present": [
+  "src/RimMandrake/FlowWorks/northstar/selftest_falsepass_late.py",
+  "src/RimMandrake/FlowWorks/northstar/selftest_scenarios_map.py",
+  "src/RimMandrake/FlowWorks/northstar/selftest_static_call_empty_arg.py",
+  "src/RimMandrake/FlowWorks/selftest_hose_lay_settle.py",
+  "src/RimMandrake/GelatinousSlime/selftest_slime_suite.py",
+  "src/RimMandrake/Utils/ops_watch.py",
+  "src/RimMandrake/Utils/selftest_alarm_repeat_worse.py",
+  "src/RimMandrake/Utils/selftest_biome_group_sizes.py",
+  "src/RimMandrake/Utils/selftest_fuelsnows_name_cull.py",
+  "src/RimMandrake/Utils/selftest_proof_preconditions.py",
+  "src/RimMandrake/Utils/selftest_status_board.py",
+  "src/RimMandrake/Utils/selftest_stun_scaling.py",
+  "src/RimMandrake/Utils/selftest_timer_prune.py",
+  "src/RimMandrake/Utils/testq/selftest_testq_fault_monitor.py",
+  "src/RimMandrake/rimflow/selftest_dispatcher_mut.py",
+  "src/RimMandrake/rimflow/selftest_fakeworld_parity.py",
+  "src/RimMandrake/rimflow/selftest_relentless_cause.py",
+  "src/RimMandrake/rimflow/selftest_relentless_codex_five.py",
+  "src/RimMandrake/rimflow/selftest_relentless_codex_five_b.py",
+  "src/RimMandrake/rimflow/selftest_relentless_codex_keeps.py",
+  "src/RimStarWars/SWBestiary/selftest_swbestiary_pack_overlays.py"
+ ]
+}

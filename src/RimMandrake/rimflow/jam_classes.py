@@ -175,6 +175,66 @@ def lint(reg, targets, repo=REPO, check_sha=True):
     return bad
 
 
+# OPSWATCH_BUILD_ALARMS_KEYED_BY_CAUSE (owner 2026-11-06: "Merging duplicate alarms just seems like common sense"):
+# an ops_watch alarm's CAUSE, the key its one repair item is filed under (rimflow/cause_book.py). Arena's removal
+# (1f0e666566) left three alarms reading red on tests that no longer exist, and they filed 9 items in 13 minutes.
+TEST_PATH = re.compile(r"(?<![\w./-])((?:[\w.-]+/)+[\w.-]+\.(?:py|cs|sh))(?![\w])")
+
+
+def alarm_paths(pt):
+    """The test/source paths an alarm's reading names (x.news, x.said, x.subject): repo-relative, sorted, unique."""
+    x = (pt or {}).get("x") if isinstance((pt or {}).get("x"), dict) else (pt or {})
+    bits = []
+    for f in ("news", "said", "subject"):
+        v = x.get(f) if isinstance(x, dict) else None
+        bits.extend(v if isinstance(v, list) else [v] if v else [])
+    return sorted({m.group(1) for b in bits for m in TEST_PATH.finditer(str(b))})
+
+
+def gone_root(path, exists):
+    """The topmost ancestor of `path` that no longer exists (the subtree removed), else the path itself."""
+    parts = path.split("/")
+    for i in range(1, len(parts) + 1):
+        head = "/".join(parts[:i])
+        if not exists(head):
+            return head
+    return path
+
+
+def tree_exists(clone):
+    """-> exists(path) over the COMMITTED tree at `clone`'s HEAD (git cat-file: a sparse checkout is not a deletion).
+    A clone git cannot read judges nothing gone (every path exists), so no alarm merges on a blind tree."""
+    def git(*a):
+        return subprocess.run(["git", "-C", str(clone)] + list(a), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                              timeout=20).returncode
+    try:
+        if not clone or git("rev-parse", "--verify", "-q", "HEAD") != 0:
+            return lambda p: True
+    except (OSError, subprocess.SubprocessError):
+        return lambda p: True
+    seen = {}
+
+    def exists(p):
+        if p not in seen:
+            try:
+                seen[p] = git("cat-file", "-e", "HEAD:" + p) == 0
+            except (OSError, subprocess.SubprocessError):
+                seen[p] = True
+        return seen[p]
+    return exists
+
+
+def cause_key(aid, pt=None, exists=None):
+    """-> the alarm's cause key. Every path its reading names is gone from the tree `exists` reads (tree_exists):
+    "gone|<removed root(s)>", one cause however many alarms (groups, overdue chases) read the removed subtree.
+    Anything else is its exact signature, the alarm id: two faults with different first error lines stay two items,
+    and so does an alarm with no reading, or any alarm when no tree is given (exists None: nothing is judged gone)."""
+    paths = alarm_paths(pt) if exists else []
+    if paths and not any(exists(p) for p in paths):
+        return "gone|" + ",".join(sorted({gone_root(p, exists) for p in paths}))
+    return aid
+
+
 def jam_rows(journal, kinds, since):
     """-> (rows, None) or (None, why): the journal's jam alarms at or after `since`, one per (at, reason)."""
     out, keys = [], set()
