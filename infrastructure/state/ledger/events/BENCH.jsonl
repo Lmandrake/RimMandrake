@@ -18468,3 +18468,5 @@
 {"seat":"RELENTLESS","event":"start","id":"ARCHMAGI_BACKFILL_WIRE_UNIT_RUNNER_WANTED","why":"relentless supervisor takes the item","ts":"2026-11-06T19:20:16Z","tsn":1793992816358106872}
 {"seat":"RELENTLESS","event":"start","id":"LIVE_MODS_MEASURE_WEEK_AFTER_ROLL_CALL","why":"relentless supervisor takes the item","ts":"2026-11-06T19:20:26Z","tsn":1793992826360485593}
 {"seat":"RELENTLESS","event":"start","id":"MINIDUMP_PROVE_SPIKE_BEFORE_THE_KILL","why":"relentless supervisor takes the item","ts":"2026-11-06T19:20:34Z","tsn":1793992834285067953}
+{"seat":"RELENTLESS","event":"start","id":"WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF","why":"relentless supervisor takes the item","ts":"2026-11-06T19:22:10Z","tsn":1793992930303452613}
+{"seat":"RELENTLESS","event":"start","id":"WRAPUP_DEBTS_FIX_RELAUNCH_ALREADY_PAID","why":"relentless supervisor takes the item","ts":"2026-11-06T19:22:33Z","tsn":1793992953615814326}
