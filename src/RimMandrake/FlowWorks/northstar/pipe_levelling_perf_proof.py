@@ -380,7 +380,7 @@ def main(argv=None):
         sk1 = (B.call("jawa/mod_settings_field", typeName=FWSET, action="get", field="edgeSinksEnabled", _answer=True) or {}).get("value")
         # the kernel's gate is setting || AnyDrainEdge (a drain-edge setter on the map): ProofDrainGate reads it whole; an older
         # deploy without it falls back to the setting alone, and an unread one counts as open (drain_free)
-        gtxt = static("ProofDrainGate", "")[1]
+        gtxt = static("ProofDrainGate", "-")[1]   # placeholder: an empty args reads as 0 params
         g = parse(gtxt) if gtxt.startswith("DRAINGATE") else {}
         sinks_on = {"true": True, "false": False}.get(str(g.get("gate", sk1)).strip().lower())
         no_drain = drain_free(res["layout"]["bandSquares"], sinks_on)
