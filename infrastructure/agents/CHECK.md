@@ -1,6 +1,6 @@
 # CHECK — SUPERSEDED 2026-08-27
 
-This seat's work moved to Relentless (`CLAUDE.md`, "Relentless builds and accepts everything") (owner's ruling, 2026-08-27, redesign #4):
+This seat's work moved to Relentless (`CLAUDE.md`, "Relentless builds and accepts the work that needs building") (owner's ruling, 2026-08-27, redesign #4):
 verification is a lane, owed only to mechanisms never once observed running, executed
 and closed by whoever proves them. Rules: `CHARTER.md`. Git holds this file's full
 text.

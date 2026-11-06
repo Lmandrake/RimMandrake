@@ -60,9 +60,9 @@ its first script. Process: `design/RimMandrake/debug_process.md`.
 
 Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
-## 🔴 Relentless builds and accepts everything, FlowWorks and GSS included; FOUNDRY is retired — owner, by card 2026-11-02
+## 🔴 Relentless builds and accepts the work that needs building, FlowWorks and GSS included; FOUNDRY is retired — owner, by card 2026-11-02
 
-*"What should happen to FOUNDRY?"* → **Retire it.** One builder: Relentless builds, proves (its game_prove lane, `relentless_live_round.py`, is the acceptance sweep for every mod) and closes; the Conductor talks with him and keeps only items that need him live (needs=owner, an L4 look, flyer live tests). Design still to be argued out goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`); ops alarms to Operations. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to the Conductor/Relentless shared key (`RETIRED_SEATS` in `cli.py`), as does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`). Supersedes the 2026-10-28 FOUNDRY-owns-FlowWorks ruling.
+*"What should happen to FOUNDRY?"* → **Retire it.** One builder: Relentless builds, proves (its game_prove lane, `relentless_live_round.py`, is the acceptance sweep for every mod) and closes; the Conductor talks with him and keeps only items that need him live (needs=owner, an L4 look, flyer live tests). Design still to be argued out goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`); ops alarms to Operations. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to the Conductor/Relentless shared key (`RETIRED_SEATS` in `cli.py`), as does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`). Supersedes the 2026-10-28 FOUNDRY-owns-FlowWorks ruling. Narrowed by the owner, 2026-11-06: *"It's a builder/test-builder/judge pipeline, not an everything pipeline...."* Relentless is for work that needs building, a built test and a judge; approved art, deploys, one-off commands and readings are done directly by the Conductor or a helper.
 
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)
 
