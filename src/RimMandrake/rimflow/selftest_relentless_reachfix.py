@@ -817,6 +817,9 @@ def t_seed_bank_dark():
     no successor, and the waiter takes the class repair over and is released on its own passing probe."""
     import json
     r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    # CHECKER_REACH_FIX_SEEDS_STILL_DARK since shipped relentless_seed_compare, whose covers name this seed bank: the rows
+    # are about withheld scratch NO adapter covers, so they run on the rules as they stood when the instance happened.
+    r["offbox_adapters"] = {k: v for k, v in r["offbox_adapters"].items() if k != "relentless_seed_compare"}
     dark = getattr(RF, "dark", None)
     seeds = "/mnt/d/ClaudeWork/rimmandrake/relentless_agent/seeds"
     got = dark(r, [RA_S03_BLIND]) if dark else None
