@@ -144,10 +144,17 @@
     "ref": "run rm-role-designer-1793953900",
     "stage": 4,
     "tokens": 690881
+   },
+   {
+    "at": "2026-11-06T09:01:04Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793955500",
+    "stage": 3,
+    "tokens": 290952
    }
   ],
   "reserve": 60000,
-  "spent": 5890698
+  "spent": 6181650
  },
  "history": [
   {
@@ -359,6 +366,24 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1793953900: stage 4 return"
+  },
+  {
+   "at": "2026-11-06T08:58:47Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "5890698 of 4000000 spent; run rm-role-designer-1793955500 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T08:58:47Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1793955500, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-06T09:01:05Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1793955500: stage 3 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -684,11 +709,35 @@
    "stage": 4,
    "summary": "Cold Reader exam rerun against the stage-3 tree (old exam void). 26 frozen scenarios (16 Examiner, 10 Challenger), 25/26 right but accept_where_reject_core = 1: both Readers accepted e10, a cut where both loose ends spark. The control (drawing_true_to_grid removed) still caught its rejects through his 2026-10-23 words and walk_scavenger_base, so it did not discriminate. exam.json records the failed run.",
    "to": 3
+  },
+  {
+   "at": "2026-11-06T09:01:04Z",
+   "inputs": {
+    "exam": "44498b806a6e19139563e87cdf1c36b3a5ffee5d39e674dd865650cb5a5a0f52",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "6a7bbc0942d82fcd0533cd14fa3b5fa76c4d293c732b737f00bd5345eeef88dd",
+    "sheet": "61d7152331b1d4c80ff698b03d2acea82b00d305bc028759d96ff4fd4f786051",
+    "tree": "a1e533020bd1b5d950d0740ca061a80179f7c8b96f3f0de54cba7c54d6c8048b"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1793955500",
+   "stage": 3,
+   "summary": "Rewrote leaf cut_live_and_dead_ends to match the root: an end sparks exactly when it still reaches a power source (both spark if each side has its own); red is now an unpowered end sparking, a powered end drawn dead, or a cord across the gap; nearer-generator false_pass kept, plus a single-source-only false_pass. Sheet line states the reject plainly. sc_cut_ends gains a far-side battery run. plan.md records that the next exam's control removes statics_clear_between_games or cut_live_and_dead_ends, not drawing_true_to_grid. Lint, showcases pass."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
