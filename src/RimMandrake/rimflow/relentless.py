@@ -4341,7 +4341,7 @@ def pool_rows(store, fx, r):
         status = st["status"] if st else None
         if st is None:
             rank = 0 if fx.clone_idle_s(c) >= POOL_ORPHAN_IDLE_S else 2
-        elif kind == "quarantine" or (run_of(st, "run" if kind == "work" else kind) or {"charged": 0}).get("charged") is None:
+        elif kind == "quarantine" or uncharged_alive(fx, run_of(st, "run" if kind == "work" else kind)):
             rank = 2
         elif kind == "help":
             rank = 2 if help_pending(st) else 0
@@ -4355,6 +4355,29 @@ def pool_rows(store, fx, r):
             rank = 1 if status in ("queued", "held", "blocked", "candidate") else 2
         rows.append({"clone": c, "item": st["item"] if st else clone_item(c), "kind": kind, "status": status, "rank": rank})
     return rows
+
+
+def uncharged_alive(fx, run):
+    """An uncharged run pins its clone only while its unit is up. A worker that finishes or snags while its unit still runs
+    moves its item to candidate or held, branches that never settle the run: 2026-11-06 the pool read "15 clones, cap 16,
+    nothing to release" with five units up (OPS_JAM_CLASS_FIX_AGAIN_HJWN). A failed look keeps it (Effects.alive)."""
+    return bool(run) and run.get("charged") is None and getattr(fx, "alive", lambda _r: True)(run)
+
+
+def charge_dead_runs(store, fx, r, now, acts):
+    """Charge the dead worker run of an item whose own branch does not settle it (candidate, held, blocked, the game
+    lane, queued, ended): its tokens count and its clone is no longer taken for live. A live unit is left to its branch."""
+    for st in store.states():
+        run = st.get("run")
+        if st["status"] in ("running", "stopping", "retiring") or not run or run.get("charged") is not None:
+            continue
+        try:
+            if fx.alive(run):
+                continue
+            settle(store, fx, r, st["item"], "run", st.get("started_at") or now, now, acts)
+            acts.append({"do": "dead_run_charged", "item": st["item"], "unit": run.get("unit")})
+        except Exception as e:  # noqa: BLE001  bookkeeping never stops the belt
+            acts.append({"do": "error", "item": st["item"], "why": "charge_dead_runs %s: %s" % (type(e).__name__, e)})
 
 
 def evict(store, fx, row, now, acts, why, before=None):
@@ -6605,6 +6628,7 @@ def tick(store=None, fx=None, r=None, now=None):
         except Exception as e:  # noqa: BLE001  the watch never stops the belt
             acts.append({"do": "error", "item": None, "why": "circling %s: %s" % (type(e).__name__, e)})
         reap_quarantined(store, fx, r, now, acts)
+        charge_dead_runs(store, fx, r, now, acts)
         try:
             relentless_disk.reap_boxes(store, r, now, getattr(fx, "box_in_use", lambda b: True), acts)
         except Exception as e:  # noqa: BLE001  disk housekeeping never stops the belt
