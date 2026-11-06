@@ -1195,3 +1195,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A1 (L2), read-only proof","ts":"2026-11-06T15:41:14Z","tsn":1793979674102066370}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:41:30Z","tsn":1793979690171145013}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A2 (L2), read-only proof","ts":"2026-11-06T15:41:46Z","tsn":1793979706799252521}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:42:07Z","tsn":1793979727200011268}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A3 (L2), read-only proof","ts":"2026-11-06T15:42:26Z","tsn":1793979746019056616}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:42:45Z","tsn":1793979765429824327}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ACC_BIOMES_FIXES_LIVE_RERUN_1 A2 (L2), read-only proof","ts":"2026-11-06T15:44:00Z","tsn":1793979840066191049}
