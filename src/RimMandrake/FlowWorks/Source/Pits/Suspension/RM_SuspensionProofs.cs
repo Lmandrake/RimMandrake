@@ -417,7 +417,7 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL: "pawnId;x,z": reachability and A* side by side for that pawn to x,z,
 		/// each through production. veto = RM_SuperdeepTrap.RelativeVeto for the pawn; reach = Reachability.CanReach with the
 		/// pawn's TraverseParms (the CanReach postfix included); reachPawnless = the pawnless PassDoors CanReach vanilla
-		/// Pawn_PathFollower.StartPath asks before every walk; found/cells = pathFinder.FindPathNow; onDeck = path squares that
+		/// Pawn_PathFollower.StartPath asks before every walk, with the walker registered as StartPath's prefix does; found/cells = pathFinder.FindPathNow; onDeck = path squares that
 		/// carry a deck; under = path squares a passing deck covers; view = the view the path swap plans this pawn on; agree =
 		/// reach == found. The reach cache is cleared first so the read is of the scene as staged, not an earlier one.
 		/// → "REACH veto=b reach=b reachPawnless=b found=b cells=N onDeck=N under=N view=floor|deck agree=b"</summary>
@@ -433,8 +433,10 @@ namespace RimMandrake.FlowWorks.Pits
 			map.reachability.ClearCache();
 			bool veto = RM_SuperdeepTrap.RelativeVeto(map, p.Position, dest, PathEndMode.OnCell, p);
 			bool reach = map.reachability.CanReach(p.Position, dest, PathEndMode.OnCell, TraverseParms.For(p));
-			bool reachPawnless = map.reachability.CanReach(p.Position, dest, PathEndMode.OnCell,
-				TraverseParms.For(TraverseMode.PassDoors));
+			// PROOFREACH_FIX_PAWNLESS_READ_HAS_NO_WALKER: StartPath's Harmony prefix registers the walker before this
+			// pawnless read; without it the Superdeep veto judges the default (deck) grid and a floor pawn reads False.
+			bool reachPawnless = RM_Patch_PathFollower_ReachWalker.As(p, () => map.reachability.CanReach(p.Position, dest,
+				PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors)));
 			string view = RM_SuspensionUnderpass.UsesFloorView(p) ? "floor" : "deck";
 			bool found = false;
 			int cells = 0, onDeck = 0, under = 0;
