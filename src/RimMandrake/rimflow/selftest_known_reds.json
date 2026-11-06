@@ -37,13 +37,6 @@
    "why": "seeded from the 2026-11-01 nightly; red 3 nights"
   },
   {
-   "added": "2026-11-01T16:05:28Z",
-   "expires": "2026-11-15T16:05:28Z",
-   "item": "ARENA_JUDGE_ENV_FIX_CODEX_OPENAI_PASSTHROUGH",
-   "test": "src/RimMandrake/Utils/arena/selftest_arena_judge.py",
-   "why": "seeded from the 2026-11-01 nightly; red 3 nights"
-  },
-  {
    "added": "2026-11-01T16:05:29Z",
    "expires": "2026-11-15T16:05:29Z",
    "item": "STOCK_SELFTEST_WIDEN_RUNNER_TIMEOUT",
