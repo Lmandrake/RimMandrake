@@ -105,7 +105,6 @@ them pack animals / beasts of burden. No roster edited, no beast moved.
 | RUT_Desert | yes | RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Jamel, RSW_Falumpaset | RSW_Bantha, RSW_Jamel, RSW_Ronto, RSW_Ossik, RSW_Eopie, RSW_Skalder, RSW_Uvak, RSW_Varactyl, RSW_Falumpaset, RSW_Nerf, RSW_Shaak, RSW_TeeMuss, RSW_Bolotaur, RSW_Runyip, RSW_Thurra | has list (owned); opened by VanillaBeastExcision_Carriers.xml |
 | RUT_ExtremeDesert | yes | RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Jamel, RSW_Falumpaset | - | has list (owned); opened by VanillaBeastExcision_Carriers.xml |
 | RUT_FeverWood | yes | - | Gelagrub, Fambaa | sitting: only DONOR pack beasts (Gelagrub, Fambaa) - needs an owned port or a new creature |
-| RUT_FuelSnows | yes | - | - | sitting: no pack beast at all - a NEW creature |
 | RUT_Greentide | yes | - | Falumpaset, Gelagrub, Fambaa, Dalgo | sitting: only DONOR pack beasts (Falumpaset, Gelagrub, Fambaa, Dalgo) - needs an owned port or a new creature |
 | RUT_GreySea | no (impassable/no base) | - | - | N/A - no home map, no land caravan |
 | RUT_Jawa_BackgroundWater | no (impassable/no base) | - | - | N/A - no home map, no land caravan |

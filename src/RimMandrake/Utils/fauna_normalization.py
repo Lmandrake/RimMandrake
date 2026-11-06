@@ -291,8 +291,6 @@ def envelopes():
         if b in constant:                 # a pocket map's BiomeDef fixes its temperature
             return (constant[b], constant[b], "constantOutdoorTemperature")
         src = b if b in temps else painted_of.get(b)
-        if b == "RUT_FuelSnows":          # renamed from RUT_Umbra, content unchanged (§2b note)
-            src = "RUT_Umbra"
         if not src or src not in temps:
             return None
         xs = temps[src]

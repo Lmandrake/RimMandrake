@@ -371,9 +371,9 @@ is not an Alpha Animals def at all and is excluded from the table and count.
 | `AA_DuskProwler` | ThingDef+PawnKindDef | RUT_Abyss 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_DuskRat` | ThingDef+PawnKindDef | RUT_Abyss 1.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_Eyeling` | ThingDef+PawnKindDef | RUT_Wastes 0.6, RUT_WeepingStones 0.1 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
-| `AA_FrostboundBehemoth` | ThingDef+PawnKindDef | RUT_FuelSnows 0.126, RUT_Umbra 0.126 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
+| `AA_FrostboundBehemoth` | ThingDef+PawnKindDef | RUT_Umbra 0.126 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_Frostling` | ThingDef+PawnKindDef | RUT_Abyss 0.05 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
-| `AA_Frostmite` | ThingDef+PawnKindDef | RUT_FuelSnows 0.35, RUT_Umbra 0.35 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_DigWhenHungry |
+| `AA_Frostmite` | ThingDef+PawnKindDef | RUT_Umbra 0.35 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_DigWhenHungry |
 | `AA_GiantCrownedSilkie` | ThingDef+PawnKindDef | RUT_Cauldron 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_GreenGoo` | ThingDef+PawnKindDef+PawnRenderTreeDef | RUT_Slime 2.0 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_AcidExplosion; AlphaBehavioursAndEvents.PawnRenderNodeProperties_SpasticScaled |
 | `AA_Helixien` | ThingDef+PawnKindDef | RUT_Contagion 0.1, RUT_Miasma 0.1, RUT_Cauldron 0.1, RUT_Scarlands 0.08, RUT_Slime 0.075 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_CorpseDecayer; CompProperties_ThoughtEffecter |
@@ -400,12 +400,12 @@ is not an Alpha Animals def at all and is excluded from the table and count.
 | `AA_ShadowCharger` | ThingDef+PawnKindDef | RUT_Abyss 0.09 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_ShockGoat` | ThingDef+PawnKindDef | RUT_SleepingIce 0.03 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_Skyeel` | ThingDef+PawnKindDef | RUT_PropaneLake 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Floating; CompProperties_Regeneration |
-| `AA_Slurrypede` | ThingDef+PawnKindDef | RUT_FuelSnows 0.02, RUT_Miasma 0.1, RUT_SleepingIce 0.002, RUT_Umbra 0.02 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct |
+| `AA_Slurrypede` | ThingDef+PawnKindDef | RUT_Miasma 0.1, RUT_SleepingIce 0.002, RUT_Umbra 0.02 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_AnimalProduct |
 | `AA_SpinedGow` | ThingDef+PawnKindDef | RUT_Scarlands 0.15 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_SummitCrab` | ThingDef+PawnKindDef | RUT_SleepingIce 0.004 | MEDIUM | VEF.AnimalBehaviours only: CompProperties_Untameable |
 | `AA_Swarmling` | ThingDef+PawnKindDef | RUT_Contagion 0.1, RM_TheRot 0.3 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension |
 | `AA_TarGuzzler` | ThingDef+PawnKindDef | RUT_Sump 0.5 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood |
-| `AA_Terramorph` | ThingDef+PawnKindDef | RUT_FuelSnows 0.1, RUT_SleepingIce 0.003, RUT_Umbra 0.1, RUT_Wastes 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood; CompProperties_NearbyEffecter |
+| `AA_Terramorph` | ThingDef+PawnKindDef | RUT_SleepingIce 0.003, RUT_Umbra 0.1, RUT_Wastes 0.2 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_EatWeirdFood; CompProperties_NearbyEffecter |
 | `AA_TetraSlug` | ThingDef+PawnKindDef | RUT_SleepingIce 0.002 | MEDIUM | VEF.AnimalBehaviours only: AnimalStatExtension; CompProperties_Electrified; CompProperties_InitialAbility |
 | `AA_Thermadon` | ThingDef+PawnKindDef | RUT_Miasma 0.1 | HIGH | private-assembly class: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher |
 | `AA_Thunderbeast` | ThingDef+PawnKindDef | RUT_Slime 0.005 | HIGH | private-assembly class: AlphaBehavioursAndEvents.DeathActionWorker_SummonFlashstorm |
