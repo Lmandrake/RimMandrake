@@ -1329,3 +1329,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:53:50Z","tsn":1793998430582571537}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A3 (L1), read-only proof","ts":"2026-11-06T20:54:03Z","tsn":1793998444004705016}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:54:14Z","tsn":1793998454508526378}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_NORTHSTAR_GREEN_FULL_1 F1 (GREEN-FULL), read-only proof","ts":"2026-11-06T20:56:26Z","tsn":1793998586862411509}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:56:39Z","tsn":1793998599256933750}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_NORTHSTAR_GREEN_FULL_1 F2 (GREEN-FULL), read-only proof","ts":"2026-11-06T20:56:57Z","tsn":1793998617731437174}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:57:49Z","tsn":1793998669597169374}
