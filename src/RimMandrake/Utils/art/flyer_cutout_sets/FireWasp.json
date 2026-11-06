@@ -1,0 +1,341 @@
+{
+ "set": "FireWasp",
+ "folder": "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireWasp",
+ "prefix": "FireWasp_Flying_",
+ "note": "FIREWASP_FLIGHT_BUILD_AFTER_BROWN_REGEN. Masters are the static brown FireWasp_<facing>.png (owner kept, sheet column B), copied into frame 1..8 of a seed dir; build --src <seed>. 8 frames, even N: ping-pong cycle. Each facing's wing pair is one layer per side (fore and hind wing move together). Canvas 320: each 256 master is padded 32 px on every side (centre unchanged) so the turned wings have room; the def's flyingAnimationDrawSize is 1.25 as a multiplier, so the body draws at the grounded scale.",
+ "facings": {
+  "south": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      130,
+      76
+     ],
+     [
+      190,
+      76
+     ],
+     [
+      198,
+      128
+     ],
+     [
+      208,
+      156
+     ],
+     [
+      112,
+      156
+     ],
+     [
+      122,
+      128
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       0,
+       0
+      ],
+      [
+       138,
+       0
+      ],
+      [
+       132,
+       82
+      ],
+      [
+       128,
+       132
+      ],
+      [
+       124,
+       144
+      ],
+      [
+       92,
+       151
+      ],
+      [
+       0,
+       151
+      ]
+     ],
+     "hinge": [
+      132,
+      132
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 14,
+      "bias": 6,
+      "scale_amp": 0.04
+     }
+    },
+    {
+     "poly": [
+      [
+       320,
+       0
+      ],
+      [
+       182,
+       0
+      ],
+      [
+       188,
+       82
+      ],
+      [
+       192,
+       132
+      ],
+      [
+       196,
+       144
+      ],
+      [
+       228,
+       151
+      ],
+      [
+       320,
+       151
+      ]
+     ],
+     "hinge": [
+      188,
+      132
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 14,
+      "bias": 6,
+      "scale_amp": 0.04
+     }
+    }
+   ],
+   "eyes": [
+    [
+     138,
+     168
+    ],
+    [
+     182,
+     168
+    ]
+   ]
+  },
+  "east": {
+   "master": 1,
+   "order": "over",
+   "falloff": 0,
+   "protect": [
+    [
+     [
+      192,
+      132
+     ],
+     [
+      320,
+      132
+     ],
+     [
+      320,
+      320
+     ],
+     [
+      182,
+      320
+     ],
+     [
+      182,
+      154
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       0,
+       0
+      ],
+      [
+       218,
+       0
+      ],
+      [
+       218,
+       130
+      ],
+      [
+       200,
+       144
+      ],
+      [
+       182,
+       156
+      ],
+      [
+       144,
+       160
+      ],
+      [
+       128,
+       160
+      ],
+      [
+       112,
+       163
+      ],
+      [
+       96,
+       166
+      ],
+      [
+       80,
+       170
+      ],
+      [
+       62,
+       168
+      ],
+      [
+       42,
+       156
+      ],
+      [
+       0,
+       144
+      ]
+     ],
+     "hinge": [
+      198,
+      144
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 14,
+      "bias": 0,
+      "scale_amp": 0.03
+     }
+    }
+   ],
+   "eyes": [
+    [
+     248,
+     172
+    ]
+   ]
+  },
+  "north": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      136,
+      72
+     ],
+     [
+      184,
+      72
+     ],
+     [
+      184,
+      242
+     ],
+     [
+      136,
+      242
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       0,
+       0
+      ],
+      [
+       144,
+       0
+      ],
+      [
+       144,
+       132
+      ],
+      [
+       128,
+       144
+      ],
+      [
+       104,
+       161
+      ],
+      [
+       0,
+       161
+      ]
+     ],
+     "hinge": [
+      142,
+      128
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 14,
+      "bias": 6,
+      "scale_amp": 0.04
+     }
+    },
+    {
+     "poly": [
+      [
+       320,
+       0
+      ],
+      [
+       176,
+       0
+      ],
+      [
+       176,
+       132
+      ],
+      [
+       192,
+       144
+      ],
+      [
+       216,
+       161
+      ],
+      [
+       320,
+       161
+      ]
+     ],
+     "hinge": [
+      178,
+      128
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 14,
+      "bias": 6,
+      "scale_amp": 0.04
+     }
+    }
+   ]
+  }
+ }
+}

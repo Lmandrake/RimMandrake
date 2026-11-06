@@ -759,6 +759,10 @@
       <ArmorRating_Heat>1</ArmorRating_Heat>
       <Flammability>0</Flammability>
       <Wildness>0.7</Wildness>
+      <!-- Flight, per the owner's standing rule 2026-09-19. Vanilla-Core mechanism;
+           MaxFlightTime>0 is what Pawn_FlightTracker.CanEverFly actually tests. -->
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
     </statBases>
     <tools>
       <li>
@@ -831,6 +835,9 @@
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
       <soundEating>Insectoid_Eat</soundEating>
+      <flightStartChanceOnJobStart>0.1</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
     </race>
     <tradeTags>
       <li>AnimalUncommon</li>
@@ -889,6 +896,16 @@
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
+    <!-- 8-frame wing-beat flip-book baked from the brown static art by flyer_cutout.py (still torso: the body is
+         pixel-identical in every frame; config src/RimMandrake/Utils/art/flyer_cutout_sets/FireWasp.json).
+         Frames are 320 px: the 256 px master padded 32 px a side, so 1.25 x the life stage drawSize keeps the
+         body at its grounded scale. FIREWASP_FLIGHT_BUILD_AFTER_BROWN_REGEN. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
   </PawnKindDef>
 
 </Defs>
