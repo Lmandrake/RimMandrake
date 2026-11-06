@@ -142,7 +142,9 @@ def main():
     homes = {"land_liquids", "land_liquids_2", "land_liquids_3", "many_waters", "land_shores", "land_settings",
              # review-map-only stations (97397b0071): no composite scenario stages these defs yet; each is shown as its
              # own review-map station (hold_ladder_steel: a 5x5 pit with two steel ladders; ice_melter: bench + crushed ice)
-             "hold_ladder_steel", "ice_melter"}
+             "hold_ladder_steel", "ice_melter",
+             # pipe_long_run (3769d6d262): a 26-cell straight Scrapper pipe, the redraw's dash-rhythm look; review-map only
+             "pipe_long_run"}
     check("every old station lands in a scenario or its stated home (design §4.1)", stations - ex <= homes,
           sorted(stations - ex - homes))
     design = open(os.path.join(M.REPO, "design", "RimMandrake", "flowworks_composite_review_scenarios_2026-10-21.md"),
