@@ -1209,12 +1209,19 @@ class Fx(object):
         return self._folded
 
     def companion(self, sha):
-        """companion_identity.verdict of the game folder's JawaBench DLL against the companion sources at `sha`, plus
-        the DLL's "mtime" (None when absent). The game root is the Mods folder's parent (build.py DEPLOY_DIR)."""
+        """companion_identity.verdict (cover: a clean build of a descendant holds it) of the game folder's JawaBench DLL
+        against the companion sources at `sha`, plus the DLL's "mtime" (None when absent). The game root is the Mods
+        folder's parent (build.py DEPLOY_DIR)."""
         _bridgetools()
         import companion_identity as CI
         dll = os.path.join(os.path.dirname(os.path.normpath(self.mods_dir)), "BridgeTools", "JawaBench", CI.DLL_NAME)
-        v = CI.verdict(dll, self.books, sha)
+        v = CI.verdict(dll, self.books, sha, cover=True)    # a clean later build holds it (COMPANION_DEPLOY_LIVE_ROUND_FORGETS)
+        bc = v.get("build_commit")
+        if v.get("state") == "STALE" and bc and not CI.known(self.books, bc):
+            # the stager builds at a freshly synced origin/main the books clone may not have fetched yet: fetch once,
+            # or a just-deployed covering build reads STALE and the game phase restages forever
+            subprocess.run(["git", "-C", self.books, "fetch", "-q", "origin", "main"], capture_output=True, timeout=120)
+            v = CI.verdict(dll, self.books, sha, cover=True)
         v["mtime"] = os.path.getmtime(dll) if os.path.isfile(dll) else None
         return v
 
@@ -1669,6 +1676,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
             return admit("%s's identity could not be read (no companion reader)" % COMPANION)
         v = fx.companion(sha) or {}
         row["companion"] = {k: (v.get(k) or "")[:12] if k != "state" else v.get(k) for k in ("state", "embedded", "want")}
+        if v.get("covered_by"):
+            row["companion"]["covered_by"] = v["covered_by"][:12]
         cg = companion_gap(v, fx.game_started() if v.get("state") == "FRESH" else None)
         if cg:
             return admit(cg[0], **({} if cg[1] else {"game": None}))

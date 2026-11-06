@@ -680,13 +680,28 @@ def steve_sync(store, fx, r, item, g, sha, now, acts):
 STAGE_AGENT = "python_stager"   # relentless.Effects.launch runs relentless_stage.py in the unit for this agent
 
 
+def game_companion_owed(fx, builds):
+    """[(item, sha)] riding one load -> the shas whose JawaBench companion the game folder does not hold (fx
+    .game_companion), in order, or None. Every rider counts, not the lead alone (COMPANION_DEPLOY_LIVE_ROUND_FORGETS:
+    FW_PROOF_TOOLS_HARDEN_READ_GAPS rode HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK's load and read STALE)."""
+    if not hasattr(fx, "game_companion"):
+        return None
+    owed = []
+    for item, sha in builds:
+        got = fx.game_companion(item, sha)
+        if got and got not in owed:
+            owed.append(got)
+    return owed or None
+
+
 def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None, companion=None, menu=None):
     """What relentless_stage.py does for this staging (STAGING_REWIRE_PYTHON_NOT_AN_LLM), the stage prompt's steps as
     data. deploy: deploy_custom_mods.py argument strings, the build's mod folders (never a packageId: those are enabled,
     not deployed) with the stale-DLL ones and the lane fix's, then the `live-deploy:` trees. deploy_args: folders -> one
     argument string (GameFx.game_deploy_args: a folded biome folder plans through --compose biomes).
-    companion: the companion source hash the build owes the game folder (GameFx.game_companion), or None: the stager
-    builds and deploys JawaBench in the shutdown window (LIVEROUND_COMPANION_DEPLOY_OLD_DLL_BLAMED)."""
+    companion: the built shas whose JawaBench companion the game folder lacks (game_companion_owed), or None: the
+    stager builds and deploys one JawaBench holding them all in the shutdown window (LIVEROUND_COMPANION_DEPLOY_OLD_DLL_
+    BLAMED; COMPANION_DEPLOY_LIVE_ROUND_FORGETS)."""
     import relentless_live_round as R
     folders = sorted({m for m in enable if not R.is_package(m)} | set(dlls) | set((remedy or {}).get("mods") or []))
     args = (deploy_args or (lambda ms: " ".join("--mod %s" % m for m in ms)))
@@ -694,7 +709,7 @@ def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None
     return {"item": st["item"], "gen": st["gen"], "sha": sha, "full": bool((st.get("game") or {}).get("full")),
             "enable": sorted(enable), "deploy": deploy, "riders": [o["item"] for o in others],
             "remedy_cmds": list((remedy or {}).get("cmds") or []), "max_s": c["stage_max_s"],
-            **({"companion": companion} if companion else {}), **menu_plan(menu)}
+            **({"companion": list(companion)} if companion else {}), **menu_plan(menu)}
 
 
 def menu_plan(menu):
@@ -791,8 +806,9 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
          "--apply`): the game folder holds a stale DLL for each, and a DLL cannot be written while the game runs."
          % ", ".join(dlls)) if dlls else "   SHUTDOWN WINDOW: no stale DLL in the game folder for these mods.",
         ("   COMPANION: in the same shutdown window run `python3 src/RimMandrake/bridgetools/build.py --gm --apply` from a "
-         "clone whose companion sources are %s's (source hash %s): the proofs call JawaBench tools and the game folder's "
-         "DLL is not the build's." % (sha, companion[:12])) if companion else "   COMPANION: not owed.",
+         "clean clone whose HEAD is on origin/main and holds %s (./sync levels it): the proofs call JawaBench tools and "
+         "the game folder's DLL does not hold those builds." % ", ".join(c[:12] for c in companion))
+        if companion else "   COMPANION: not owed.",
         ("   ONE LOAD FOR ALL: these game items wait for a reload too; deploy each one's build as well (rimworld-deploy) and "
          "choose the smallest list that holds the most of their mods; level your clone to origin/main first (./sync) so "
          "each build is in the tree: %s." % "; ".join(
@@ -1092,8 +1108,10 @@ class GameFx(object):
         return R.deploy_args(folders, self._round_fx().folded())
 
     def game_companion(self, item, sha):
-        """The companion source hash at `sha` when the item owes the game its JawaBench DLL (a `live-companion:` line, or
-        a build touching the companion's sources) and the game folder's copy is not FRESH against it; else None."""
+        """`sha` when the item owes the game its JawaBench DLL (a `live-companion:` line, or a build touching the
+        companion's sources) and the game folder's copy does not hold it (FRESH, or a clean build of a descendant:
+        companion_identity cover); else None. The stager builds one companion holding every owed sha
+        (COMPANION_DEPLOY_LIVE_ROUND_FORGETS: an exact source hash per built sha cannot be met by a batch)."""
         import relentless_live as L
         import relentless_live_round as R
         fx = self._round_fx()
@@ -1104,7 +1122,7 @@ class GameFx(object):
         if not owes:
             return None
         v = fx.companion(sha) or {}
-        return v.get("want") if v.get("want") and v.get("state") != "FRESH" else None
+        return sha if v.get("want") and v.get("state") != "FRESH" else None
 
     def game_trees(self, builds):
         """Every `live-deploy:` mod of [(item, sha)] riding one load -> (folders, deploy_custom_mods.py args), or None."""
@@ -2323,7 +2341,8 @@ def step(store, fx, r, item, now, acts, sup):
         st["_proofs_text"] = fx.proofs_at(item, sha)
         trees = fx.game_trees([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                  if (o.get("game") or {}).get("sha")])
-        comp = fx.game_companion(item, built) if hasattr(fx, "game_companion") else None
+        comp = game_companion_owed(fx, [(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
+                                                          if (o.get("game") or {}).get("sha")])
         agent = r["pilot_agent"]
         if c.get("stage_python", True):     # the prompt rides as the python stager's fallback brief only
             agent = STAGE_AGENT

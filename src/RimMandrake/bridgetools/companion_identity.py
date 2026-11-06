@@ -130,11 +130,30 @@ def write_fixture(dll, src_hash):
     return dll
 
 
-def verdict(dll, repo_root, rev, want=None):
-    """-> {"state", "dll", "dll_sha256", "embedded", "want", "build_commit"}.
+def descends(repo_root, ancestor, rev):
+    """True when `ancestor` is `rev` or one of its ancestors in repo_root's history; False when it is not, or either
+    commit is unknown there (fail closed)."""
+    r = subprocess.run(["git", "-C", repo_root, "merge-base", "--is-ancestor", ancestor, rev],
+                       capture_output=True, timeout=120)
+    return r.returncode == 0
+
+
+def known(repo_root, rev):
+    """True when `rev` names a commit repo_root's object store holds."""
+    r = subprocess.run(["git", "-C", repo_root, "cat-file", "-e", "%s^{commit}" % rev], capture_output=True, timeout=60)
+    return r.returncode == 0
+
+
+def verdict(dll, repo_root, rev, want=None, cover=False):
+    """-> {"state", "dll", "dll_sha256", "embedded", "want", "build_commit"} (+ "covered_by").
 
     state: FRESH (embedded == want) | STALE (embedded, different) | UNSTAMPED (no embedded hash: built before
-    the stamp, unprovable) | MISSING (no file) | UNMEASURED (the job's tree could not be hashed)."""
+    the stamp, unprovable) | MISSING (no file) | UNMEASURED (the job's tree could not be hashed).
+    cover (COMPANION_DEPLOY_LIVE_ROUND_FORGETS): a DLL that is a CLEAN build of a later commit also holds `rev`'s
+    companion: its stamped build commit descends from `rev` and its embedded hash is that commit's companion sources.
+    It reads FRESH with "covered_by" set. Without it every rider of a batch, and every build older than the one
+    deployed, read STALE against a DLL that held its tools (runs.jsonl 2026-11-06: 4 of 5 built shas were ancestors of
+    the game's clean a9e5d1f6a3 build). A stamp git cannot see, or a dirty build, stays STALE (fail closed)."""
     out = {"dll": dll, "dll_sha256": None, "embedded": None, "want": want, "build_commit": None}
     if out["want"] is None:
         out["want"] = srchash_at(repo_root, rev)
@@ -147,14 +166,20 @@ def verdict(dll, repo_root, rev, want=None):
         return dict(out, state="UNMEASURED")
     if out["embedded"] is None:
         return dict(out, state="UNSTAMPED")
-    return dict(out, state="FRESH" if out["embedded"] == out["want"] else "STALE")
+    if out["embedded"] == out["want"]:
+        return dict(out, state="FRESH")
+    bc = out["build_commit"]
+    if cover and rev and bc and descends(repo_root, rev, bc) and srchash_at(repo_root, bc) == out["embedded"]:
+        return dict(out, state="FRESH", covered_by=bc)
+    return dict(out, state="STALE")
 
 
 def describe(v):
     """One line for a result note."""
-    return "%s %s (embedded source hash %s, build commit %s; the job's companion sources hash %s)" % (
+    return "%s %s (embedded source hash %s, build commit %s; the job's companion sources hash %s)%s" % (
         v["state"], v["dll"], (v["embedded"] or "none")[:12], (v["build_commit"] or "none")[:12],
-        (v["want"] or "unreadable")[:12])
+        (v["want"] or "unreadable")[:12],
+        " held by the clean build of descendant %s" % v["covered_by"][:12] if v.get("covered_by") else "")
 
 
 def main(argv=None):

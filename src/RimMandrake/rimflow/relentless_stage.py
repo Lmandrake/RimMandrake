@@ -111,13 +111,29 @@ class Ops(object):
         got = modlist_swap.mods(modlist_swap.LIVE)
         return None if got is None else [m.lower() for m in got]
 
-    def companion_hash(self):
-        """The companion source hash of this clone's working tree (what build.py compiles), or None."""
+    def companion_covers(self, shas):
+        """None when build.py here would deploy a companion holding every built sha in `shas`, else why not: the
+        working tree's companion sources must be HEAD's (a clean build: its stamp names HEAD honestly), HEAD must be
+        on origin/main (the gate reads the stamp in the books clone) and hold each sha (companion_identity cover)."""
         d = os.path.join(self.cwd, "src", "RimMandrake", "bridgetools")
         if d not in sys.path:
             sys.path.insert(0, d)
-        import companion_identity
-        return companion_identity.srchash_worktree(self.cwd)
+        import companion_identity as CI
+        head = subprocess.run(["git", "-C", self.cwd, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=60)
+        head = head.stdout.strip() if head.returncode == 0 else None
+        if not head:
+            return "cannot read this clone's HEAD"
+        wt, at = CI.srchash_worktree(self.cwd), CI.srchash_at(self.cwd, head)
+        if not wt or wt != at:
+            return ("this clone's companion sources (hash %s) are not its HEAD %s's (%s): uncommitted companion work"
+                    % ((wt or "unreadable")[:12], head[:12], (at or "unreadable")[:12]))
+        self.sh(["git", "-C", self.cwd, "fetch", "-q", "origin", "main"], timeout=120)  # a lead alone never ./syncs
+        if not CI.descends(self.cwd, head, "origin/main"):
+            return "HEAD %s is not on origin/main: the DLL's stamp would name a commit the gate cannot read" % head[:12]
+        lacks = [s for s in shas if not CI.descends(self.cwd, s, head)]
+        if lacks:
+            return "HEAD %s does not hold build %s" % (head[:12], ", ".join(s[:12] for s in lacks))
+        return None
 
     def companion_build(self):
         """build.py --gm --apply from this clone: builds, verifies and writes BridgeTools/JawaBench (the game is down)."""
@@ -192,19 +208,23 @@ def run(plan, ops):
                 raise Stop("deploy %s: %s" % (args, why))
             if rc not in (0, 1):
                 raise Stop("deploy plan %s exit %d: %s" % (args, rc, out.strip()[-300:]))
-        want = plan.get("companion")   # the companion source hash the build owes BridgeTools/JawaBench, or None
+        want = plan.get("companion")   # the built shas whose companion BridgeTools/JawaBench lacks, or None
+        if isinstance(want, str):   # a plan written before COMPANION_DEPLOY_LIVE_ROUND_FORGETS: a source hash, no sha
+            raise Stop("the plan's companion is a source hash (%s), not the built shas: a plan from older code; "
+                       "restage" % want[:12])
         if want:                    # LIVEROUND_COMPANION_DEPLOY_OLD_DLL_BLAMED: checked before anything is written
-            have = ops.companion_hash()
-            if have != want:
-                raise Stop("the companion sources in this clone (hash %s) are not the build's (%s): build.py would "
-                           "deploy another companion" % ((have or "unreadable")[:12], want[:12]))
+            why = ops.companion_covers(want)    # after ./sync: one build must hold every rider's (..._ROUND_FORGETS)
+            if why:
+                raise Stop("build.py here would not deploy a companion holding %s: %s"
+                           % (", ".join(w[:12] for w in want), why))
         game_down(ops, log)         # 2. down: a DLL cannot be written while the game runs
         for args in groups:         # 3. apply in the shutdown window: the stale DLLs go with the rest
             _ok(*ops.sh([sys.executable, DEPLOY] + args.split() + ["--apply"], timeout=480), what="deploy --apply " + args)
         if want:                    # the companion too: no mod deploy writes BridgeTools/JawaBench
             _ok(*ops.companion_build(), what="bridgetools/build.py --gm --apply")
         log.append("deployed %s%s" % ("; ".join(groups) or "nothing",
-                                      "; companion JawaBench %s" % want[:12] if want else ""))
+                                      "; companion JawaBench holding %s" % ", ".join(w[:12] for w in want)
+                                      if want else ""))
         if plan.get("full"):        # 4. the list: the owner's whole one for a final, then the mods on top
             _ok(*ops.sh([sys.executable, SWAP, "--restore", "--apply"], timeout=180), what="modlist_swap --restore")
         else:                       # the smallest list that proves it: the minimal one (all five DLC), the mods on top
