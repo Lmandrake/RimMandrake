@@ -1748,11 +1748,11 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
         added = list(w.buf)           # the keep releases above and the ban, on disk before the bytes go
         w.flush()
         _absorb(added)
-    removed = False
+    # the purge event is on disk BEFORE the bytes go (ART_PURGE_FIX_BYTES_GONE_BEFORE_RECEIPT): a crash between the
+    # two must leave a recorded purge with its bytes still in the store (a rerun dedups the event by id and finishes
+    # the unlink), never a deleted picture with no purge record. bytes_removed says the store held them at purge time.
     p = store_path(sha)
-    if p.is_file():
-        p.unlink()
-        removed = True
+    removed = p.is_file()
     pev = {"type": "purge", "id": det_id("purge", sha), "sha": sha, "by": "owner",
            **auth, "via": via, "bytes_removed": removed}
     if bid:
@@ -1762,6 +1762,8 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
         pev.update(id=det_id("purge", sha, un["id"]), follows=un["id"])
     w.add(pev)
     w.flush()
+    if removed:
+        p.unlink(missing_ok=True)
     return {"sha": sha, "bytes_removed": removed}
 
 
