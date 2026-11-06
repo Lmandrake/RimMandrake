@@ -1068,3 +1068,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:25:32Z","tsn":1793964332982078162}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: FW_PROOF_TOOLS_HARDEN_READ_GAPS A1 (L1), read-only proof","ts":"2026-11-06T11:26:07Z","tsn":1793964367642800773}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:26:15Z","tsn":1793964375330012541}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MINIMALLIST_FIX_OUTERRIMCORE_CTOR_NRE A1 (L1), read-only proof","ts":"2026-11-06T11:28:53Z","tsn":1793964533343918837}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:28:59Z","tsn":1793964539987949807}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL A1 (L2), read-only proof","ts":"2026-11-06T11:30:44Z","tsn":1793964644483205943}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:31:09Z","tsn":1793964669861505700}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL A2 (L2), read-only proof","ts":"2026-11-06T11:31:29Z","tsn":1793964689323786954}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:31:59Z","tsn":1793964719339731961}
