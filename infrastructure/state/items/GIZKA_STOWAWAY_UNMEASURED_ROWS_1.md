@@ -39,3 +39,5 @@ REAL entry points with the dice forced (a chance of 0 still delivers nothing).
 Offline proof: `python3 src/RimStarWars/GizkaStowaway/validation.py` (STATIC PASS), `selftest_gizkastowaway.py`,
 `selftest_gizka_validation_chains.py` (a toy mod: every new row PASSes right, FAILs on a planted defect, reads
 UNMEASURED with no creature). A2 is live: `infrastructure/state/live_proofs/GIZKA_STOWAWAY_UNMEASURED_ROWS_1.txt`.
+
+Gen 8 (2026-11-05): no code change; rebuilt on current origin/main because 576c7659a1 (GOLD_PANNING) changed `modcheck/required_checks.json` after the gen-6 build, which the live preflight refuses as stale. Offline proof re-run green at b1a54262e4.
