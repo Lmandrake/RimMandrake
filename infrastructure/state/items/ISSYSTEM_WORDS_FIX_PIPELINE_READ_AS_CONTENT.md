@@ -29,3 +29,9 @@ The reverse direction (system read for content) showed no clear misfile in 13 mo
 Done when: the subject words are added where they are unambiguous (`selftest`, `hook` and `gate` probably go to
 `system_words_lead`), each id above reads `is_system` true, and no content item flips. Add one selftest row per word
 added. ops_watch_rules.json is an Operations rules file, so the close needs `--live`.
+
+Live, first owner-pause tick (23:07 PST 2026-11-05): the pause refused these, all read as content the same way
+(no mod word, no content word, subject not a system word): STAGING_REWIRE_PYTHON_NOT_AN_LLM (staging),
+KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES, ARTEVAL_FLIGHT_HARDEN_REROLLS_SKIP_BODY_LOCK (arteval),
+CLEANER_SANITY_REVIEW_FINISH_FULL_FILES, L1_DONOR_SELFTEST_FIX_READS_A_GHOST. They are at least borderline pipeline.
+Record: `/home/mandrake/rm/relentless/store/content_pause.json` "stopped".
