@@ -1061,3 +1061,10 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A3 (L2), read-only proof","ts":"2026-11-06T11:19:44Z","tsn":1793963984362932194}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:20:43Z","tsn":1793964043313472409}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A4 (L2), read-only proof","ts":"2026-11-06T11:21:07Z","tsn":1793964067509273059}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:21:54Z","tsn":1793964114244597797}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A5 (L2), read-only proof","ts":"2026-11-06T11:22:22Z","tsn":1793964142545207964}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:23:22Z","tsn":1793964202789767433}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS A1 (L2), read-only proof","ts":"2026-11-06T11:25:02Z","tsn":1793964302182404427}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:25:32Z","tsn":1793964332982078162}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: FW_PROOF_TOOLS_HARDEN_READ_GAPS A1 (L1), read-only proof","ts":"2026-11-06T11:26:07Z","tsn":1793964367642800773}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:26:15Z","tsn":1793964375330012541}
