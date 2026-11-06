@@ -6,8 +6,9 @@ its places is a Relentless-style Builder/Judge from MandrakeWorkflows (relentles
 agents named by worker_agent and checker_agent in relentless_rules.json. Swapping workers leaves the pipeline's design.
 
 Design: design/RimMandrake/relentless_owner_design_2026-10-31.md. Limits: relentless_rules.json (data). A program, no AI.
-`tick` runs from rm-relentless.timer, out of the supervisor's own clone (<root>/books), which it fast-forwards itself,
-so a push to main deploys it and nothing here depends on the FOUNDRY tree.
+`tick` runs from rm-relentless.timer, out of one pinned release (<root>/release/current, relentless_release.py), and reads
+its data from the supervisor's own clone (<root>/books), which it fast-forwards itself: a push to main moves the data, not
+this code. Nothing here depends on the FOUNDRY tree.
 
 Threat model: a worker is honest but may be STALE (a process that outlived its lease, or a resumed session). Fencing
 stops such a process from completing, reporting or pushing by accident. It is not a sandbox against a hostile agent.
@@ -2443,7 +2444,7 @@ class Effects(relentless_game.GameFx):
         env = dict(os.environ, RIMFLOW_SEAT=seat or self.r["seat"], AGENT_SEAT=seat or self.r["seat"],
                    RIMFLOW_BRIDGE_SEAT=BRIDGE_HOLDER,
                    RELENTLESS_SUPERVISOR="1", CLAUDE_PROJECT_DIR=self.books)
-        return subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/cli.py"), *args],
+        return subprocess.run(["python3", os.path.join(HERE, "cli.py"), *args],
                               cwd=self.books, env=env, capture_output=True, text=True, timeout=timeout,
                               stdin=subprocess.DEVNULL)
 
@@ -4239,14 +4240,18 @@ class Effects(relentless_game.GameFx):
                 argv = f.read().split(b"\0")
         except (OSError, ValueError):
             return False
-        script = os.path.join(self.books, "src/RimMandrake/rimflow/relentless_live_round.py").encode()
-        return len(argv) >= 3 and argv[1] == script and argv[2] == b"round"
+        script = b"/src/RimMandrake/rimflow/relentless_live_round.py"
+        if len(argv) < 3 or not argv[1].endswith(script) or argv[2] != b"round":
+            return False
+        # ours from books or any release tree (a round outlives the tick that started it); never another checkout's
+        tree = argv[1][:-len(script)].decode(errors="replace")
+        return tree == self.books or os.path.dirname(tree) == os.path.join(self.base, "release")
 
     def live_round_launch(self):
         """Start one live round detached (its own session: the oneshot tick ends long before it). -> pid."""
         os.makedirs(os.path.join(self.base, "live"), exist_ok=True)
         with open(os.path.join(self.base, "live", "round.out"), "a", encoding="utf-8") as out:
-            p = subprocess.Popen(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/relentless_live_round.py"),
+            p = subprocess.Popen(["python3", os.path.join(HERE, "relentless_live_round.py"),
                                   "round"], cwd=self.books, env=dict(os.environ, RELENTLESS_ROOT=self.base, PATH=windows_path(os.environ.get("PATH", ""))),
                                  stdout=out, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
         return p.pid

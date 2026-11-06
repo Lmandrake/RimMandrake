@@ -1,0 +1,14 @@
+# One pinned daily release of Relentless's own code (RELENTLESS_BUILD_DAILY_RELEASE_WITH_ROLLBACK). Runs the release tool from
+# books, not from the release: a fix to the tool itself must not wait for the release it makes. A failed cut leaves the
+# tick on its release and this unit failed; the log then ages past the deadman's max_age.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-relentless-release.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-relentless-release.timer
+[Unit]
+Description=RimFlow relentless: cut today's pinned release (RELENTLESS_BUILD_DAILY_RELEASE_WITH_ROLLBACK)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/relentless/books
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/python3 /home/mandrake/rm/relentless/books/src/RimMandrake/rimflow/relentless_release.py cut --daily
+TimeoutStartSec=900

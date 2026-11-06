@@ -13,7 +13,8 @@ Description=RimFlow relentless detached job %i (RELENTLESS_SHRINK_TICK_SLOW_PHAS
 Type=oneshot
 WorkingDirectory=/home/mandrake/rm/relentless/books
 Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
-ExecStart=/usr/bin/python3 /home/mandrake/rm/relentless/books/src/RimMandrake/rimflow/relentless_jobs.py run %i
+# readlink here, once: this run and every child it starts stay in one release when `current` moves (relentless_release.py)
+ExecStart=/bin/sh -c 'exec /usr/bin/python3 "$$(readlink -f /home/mandrake/rm/relentless/release/current)"/src/RimMandrake/rimflow/relentless_jobs.py run %i'
 Nice=10
 MemoryMax=2G
 TimeoutStartSec=900

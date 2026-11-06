@@ -64,7 +64,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-BOOKS = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+BOOKS = os.path.dirname(os.path.realpath(os.path.join(HERE, "..", "..", "..", ".git")))     # a release tree's .git links to books
 RULES = os.path.join(HERE, "relentless_rules.json")
 GAME_MODS = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
 LIVE_LEVELS = ("L1", "L2", "GREEN-MIN", "GREEN-FULL")       # model.LEVEL_NEEDS says bridge; L3 is a judge, L4 a human
@@ -1496,7 +1496,7 @@ class Fx(object):
     def rimflow(self, *args, timeout=120):
         env = dict(os.environ, RIMFLOW_SEAT=self.seat, AGENT_SEAT=self.seat, CLAUDE_PROJECT_DIR=self.books,
                    **{model.BRIDGE_SEAT_ENV: model.RELENTLESS_HOLDER})
-        return subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/cli.py"), *args],
+        return subprocess.run(["python3", os.path.join(HERE, "cli.py"), *args],
                               cwd=self.books, env=env, capture_output=True, text=True, timeout=timeout,
                               stdin=subprocess.DEVNULL)
 

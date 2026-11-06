@@ -14,4 +14,5 @@ WorkingDirectory=/home/mandrake/rm/relentless/books
 Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
 Nice=15
 TimeoutStartSec=10min
-ExecStart=/usr/bin/python3 /home/mandrake/rm/relentless/books/src/RimMandrake/rimflow/relentless_block.py diff --by rm-store-ledger-diff.timer
+# readlink here, once: this run and every child it starts stay in one release when `current` moves (relentless_release.py)
+ExecStart=/bin/sh -c 'exec /usr/bin/python3 "$$(readlink -f /home/mandrake/rm/relentless/release/current)"/src/RimMandrake/rimflow/relentless_block.py diff --by rm-store-ledger-diff.timer'

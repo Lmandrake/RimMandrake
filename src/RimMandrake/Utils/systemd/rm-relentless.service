@@ -5,7 +5,8 @@ Description=RimFlow relentless supervisor tick (RELENTLESS_OWNER_DESIGN_NEVER_LE
 Type=oneshot
 WorkingDirectory=/home/mandrake/rm/relentless/books
 Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
-ExecStart=/usr/bin/python3 /home/mandrake/rm/relentless/books/src/RimMandrake/rimflow/relentless.py tick
+# readlink here, once: this run and every child it starts stay in one release when `current` moves (relentless_release.py)
+ExecStart=/bin/sh -c 'exec /usr/bin/python3 "$$(readlink -f /home/mandrake/rm/relentless/release/current)"/src/RimMandrake/rimflow/relentless.py tick'
 # a tick may make two clones (400 s each) and publish; a hung one is ended and the next resumes from the store
 TimeoutStartSec=1200
 KillMode=process

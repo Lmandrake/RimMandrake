@@ -344,7 +344,7 @@ def _bridge_why(root):
     import relentless
     with open(os.environ.get("RELENTLESS_RULES") or relentless.RULES, encoding="utf-8") as f:
         seat = json.load(f).get("seat") or "BENCH"
-    books = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+    books = os.path.dirname(os.path.realpath(os.path.join(HERE, "..", "..", "..", ".git")))     # a release tree's .git links to books
     env = dict(os.environ, RIMFLOW_SEAT=seat, AGENT_SEAT=seat, RIMFLOW_BRIDGE_SEAT=relentless.BRIDGE_HOLDER,
                RELENTLESS_SUPERVISOR="1", CLAUDE_PROJECT_DIR=books)
     try:
@@ -375,7 +375,7 @@ def _round(root, item, timeout):
     """One prove round for one item, as GameFx.prove_launch ran it. -> (exit code, stdout)."""
     try:
         r = subprocess.run(["python3", os.path.join(HERE, "relentless_live_round.py"), "round", "--item", item],
-                           cwd=os.path.abspath(os.path.join(HERE, "..", "..", "..")), capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
+                           cwd=os.path.dirname(os.path.realpath(os.path.join(HERE, "..", "..", "..", ".git"))), capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
                            env=dict(os.environ, RELENTLESS_ROOT=root, RELENTLESS_PROOF_SOURCE="broker"))
         return r.returncode, (r.stdout or "") + (r.stderr or "")
     except subprocess.TimeoutExpired as e:

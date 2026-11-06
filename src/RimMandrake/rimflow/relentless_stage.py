@@ -37,7 +37,7 @@ import time
 import traceback
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+REPO = os.path.dirname(os.path.realpath(os.path.join(HERE, "..", "..", "..", ".git")))     # a release tree's .git links to books
 UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 DEPLOY = os.path.join(UTILS, "deploy_custom_mods.py")
 SWAP = os.path.join(UTILS, "modlist_swap.py")

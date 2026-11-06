@@ -1,0 +1,12 @@
+[Unit]
+Description=RimFlow relentless: one pinned release a day (RELENTLESS_BUILD_DAILY_RELEASE_WITH_ROLLBACK)
+
+# after the nightly selftests (03:00); Persistent: a machine down at this hour cuts on the way up. A second run the same
+# date does nothing, so a catch-up cannot release twice.
+[Timer]
+OnCalendar=*-*-* 04:30:00
+Persistent=true
+Unit=rm-relentless-release.service
+
+[Install]
+WantedBy=timers.target

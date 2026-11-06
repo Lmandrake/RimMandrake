@@ -1,0 +1,1 @@
+selftest_relentless_live_round 'proofs' is red on origin/main because 5decaf8a54 (HARNESS_REPAIR_CAUSE_B338C64C) committed infrastructure/state/live_proofs/HARNESS_REPAIR_CAUSE_B338C64C.rerun_job; that test allows only .txt/.criteria/.py/.json there. Not caused by RELENTLESS_BUILD_DAILY_RELEASE_WITH_ROLLBACK; either move the job name out of live_proofs or widen the test's list.

@@ -279,7 +279,7 @@ def def_names():
         def fail(e):
             raise RegistryUnavailable("def registry unreadable: %s" % type(e).__name__) from e
 
-        for dp, _dns, fns in os.walk(DEF_ROOT, onerror=fail):
+        for dp, _dns, fns in os.walk(DEF_ROOT, onerror=fail, followlinks=True):     # in a release tree a mod is a symlink to books
             for fn in fns:
                 if fn.endswith(".xml"):
                     try:

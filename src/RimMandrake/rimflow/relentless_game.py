@@ -1352,7 +1352,7 @@ class GameFx(object):
         import relentless
         os.makedirs(os.path.join(self.base, "live"), exist_ok=True)
         with open(os.path.join(self.base, "live", "round.out"), "a", encoding="utf-8") as out:
-            p = subprocess.Popen(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/relentless_live_round.py"),
+            p = subprocess.Popen(["python3", os.path.join(HERE, "relentless_live_round.py"),
                                   "round", "--item", item], cwd=self.books,
                                  env=dict(model.bridge_holder.process_env(), RELENTLESS_ROOT=self.base,
                                           PATH=relentless.windows_path(os.environ.get("PATH", ""))),
@@ -1368,7 +1368,7 @@ class GameFx(object):
         import relentless
         os.makedirs(os.path.join(self.base, "live"), exist_ok=True)
         with open(os.path.join(self.base, "live", "broker.out"), "a", encoding="utf-8") as out:
-            subprocess.Popen(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/relentless_broker.py"), "job"],
+            subprocess.Popen(["python3", os.path.join(HERE, "relentless_broker.py"), "job"],
                              cwd=self.books, env=dict(model.bridge_holder.process_env(), RELENTLESS_ROOT=self.base,
                                                       PATH=relentless.windows_path(os.environ.get("PATH", ""))),
                              stdout=out, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)

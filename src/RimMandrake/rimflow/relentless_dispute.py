@@ -192,10 +192,9 @@ def unit_name(item, job):
 
 
 def kick(store, item, job, cfg=None, runner=subprocess.run):
-    """Start the job's worker, detached (systemd-run --user), from the supervisor's books code. -> None or why not."""
+    """Start the job's worker, detached (systemd-run --user), from the supervisor's released code. -> None or why not."""
     cfg = config() if cfg is None else cfg
-    books = os.path.join(store.root, "books", "src", "RimMandrake", "rimflow", "relentless_dispute.py")
-    tool = books if os.path.exists(books) else os.path.abspath(__file__)
+    tool = os.path.abspath(__file__)     # this release's own code, as the tick that starts it
     d = jobs_dir(store, item)
     os.makedirs(d, exist_ok=True)
     argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit_name(item, job),

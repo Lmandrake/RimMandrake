@@ -35,7 +35,7 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-BOOKS = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+BOOKS = os.path.dirname(os.path.realpath(os.path.join(HERE, "..", "..", "..", ".git")))     # a release tree's .git links to books
 UTILS = os.path.join(os.path.dirname(HERE), "Utils")
 PROOFS_DIR = "infrastructure/state/live_proofs"
 

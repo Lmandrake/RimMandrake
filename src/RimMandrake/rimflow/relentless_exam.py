@@ -29,7 +29,7 @@ writes the exam against the item's base sha, and the supervisor VALIDATEs it mec
 Hold-outs are not written here (G4): the Marker writes them at mark time, so they never exist during the build.
 
 SHADOW (this landing). relentless.contract() calls on_contract() when the FIRST contract of an item is set (the moment
-before the builder edits): an exam is owed and one detached unit (`relentless_exam.py run ID`, the supervisor's own books
+before the builder edits): an exam is owed and one detached unit (`relentless_exam.py run ID`, the supervisor's own released
 code) runs SET -> VALIDATE -> one resumed Setter turn on a refusal -> (second refusal: `arbiter_owed`, the arbiter is
 WP-08's). Nothing here gates a close. The same unit then runs `catch`: for each candidate a Marker returned
 (blind_fail/proof_weak) the validated exam is run at that sha; an assertion red is a return the exam WOULD have caught.
@@ -177,10 +177,9 @@ def unit_name(item):
 
 def kick(store, item, cfg=None, runner=subprocess.run):
     """Start the item's exam unit, detached (systemd-run --user): the builder's contract call never waits on a Setter.
-    The unit runs the supervisor's books code, not the worker's clone (that may be reaped first). -> None or why not."""
+    The unit runs the supervisor's released code, not the worker's clone (that may be reaped first). -> None or why not."""
     cfg = config() if cfg is None else cfg
-    books = os.path.join(store.root, "books", "src", "RimMandrake", "rimflow", "relentless_exam.py")
-    tool = books if os.path.exists(books) else os.path.abspath(__file__)
+    tool = os.path.abspath(__file__)     # this release's own code, as the tick that starts it
     d = item_dir(store, item)
     os.makedirs(d, exist_ok=True)
     max_s = int(cfg.get("unit_max_s", 3600))
