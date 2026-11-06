@@ -1,0 +1,15 @@
+# TICKBURST_PROVE_MANY_TICKS_ONE_FRAME live clauses. Design: design/RimMandrake/tickburst_2026-11-06/final.md.
+# Game: the minimal list plus FlowWorks, GimmeSomeSlack and LuminousPigment (all five DLC), a Playing colony; the site save
+# RM_TestSite_calm_v2 (test_site_saves.py `calm`) is the fixture A2/A6/A7 reload per trial (no restart, no list swap).
+# Companion: JawaBench built from this item's sha (python3 src/RimMandrake/bridgetools/build.py --gm --apply, game closed);
+# every clause exits 2 "companion predates TICKBURST" on an older DLL. Order: A8, A1, A2, A6, A7 (A6/A7 are resumable:
+# a round that runs out of --max-seconds exits 2 "trials still owed" and the next round continues from state.json).
+# Evidence: D:\ClaudeWork\rimmandrake\tickburst\ (minimal\throughput_*.json, equiv\state.json, sweep\state.json).
+# Not here: the full-list JSON (acceptance 3) rides an already-scheduled full-list load and is OWED until one happens;
+# the fresh-process trial per arm needs a restart a proof may not do (A6 prints it OWED).
+live-mods: FlowWorks, GimmeSomeSlack, LuminousPigment
+live-proof A8: python3 src/RimMandrake/Utils/tickburst_bench.py readback --no-reload < /dev/null
+live-proof A1: python3 src/RimMandrake/Utils/tickburst_bench.py sanity --no-reload < /dev/null
+live-proof A2: python3 src/RimMandrake/Utils/tickburst_bench.py throughput --list minimal --max-seconds 3600 < /dev/null
+live-proof A6: python3 src/RimMandrake/Utils/tickburst_bench.py equiv --max-seconds 3600 < /dev/null
+live-proof A7: python3 src/RimMandrake/Utils/tickburst_bench.py sweep --max-seconds 3000 < /dev/null

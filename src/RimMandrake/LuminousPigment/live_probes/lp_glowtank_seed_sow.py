@@ -4,15 +4,23 @@ sow (fuel 1 -> 0), sets `established`, and glows; an UNSEEDED twin with a crop f
 The sow is tried the real way first (a colonist with Plants 12 and Growing on, the sow research finished,
 defaultPlantToGrow) and, if no colonist sows within the budget, the
 crop is placed with spawn_batch and the result says route=spawned. python.exe, bridge held, any quicktest map.
-argv: "X,Z" site origin (default 90,130). Exit 0 = PASS."""
+argv: "X,Z" site origin (default 90,130); --step play|step|safe [--step-budget-ms X] [--step-cap N] picks the clock arm
+(TICKBURST_PROVE_MANY_TICKS_ONE_FRAME, tickburst_step.py; default step = today's step_game_ticks); --out PATH writes the
+state rows, verdict and clock records as JSON. Exit 0 = PASS."""
 import sys, os, json
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Utils"))
 import rimbridge_client as rb
+import tickburst_step as TS
+ARGV, STEP_OPTS = TS.take_args(sys.argv[1:])
+OUT = None
+if "--out" in ARGV:
+    i = ARGV.index("--out"); OUT = ARGV[i + 1]; del ARGV[i:i + 2]
 h, p, t = rb.resolve_endpoint(); S = rb.RimBridge(host=h, port=p, token=t, timeout=180.0); S.connect()
 def call(tool, **kw):
     r = S.call(tool, kw) or {}
     return json.loads(r["content"][0]["text"]) if isinstance(r, dict) and r.get("content") else r
-X, Z = (int(v) for v in (sys.argv[1] if len(sys.argv) > 1 else "90,130").split(","))
+X, Z = (int(v) for v in (ARGV[0] if ARGV else "90,130").split(","))
+STEP = TS.Stepper.from_opts(call, STEP_OPTS, label="glowtank")
 R = lambda x, z, w, h: "%d,%d,%d,%d" % (x, z, w, h)
 call("jawa/clear_area", rect=R(X - 2, Z - 2, 22, 12), dryRun=False)
 call("jawa/set_fog", action="unfog", rect=R(X - 2, Z - 2, 22, 12))
@@ -47,7 +55,7 @@ if grower:
 rows["grower"] = grower
 sown = False
 for _ in range(12):
-    call("rimworld/step_game_ticks", ticks=500, pauseFirst=True, timeoutMs=120000)
+    STEP.advance(500, timeout_ms=120000, why="sow_wait")
     pl = call("jawa/list_things", defName="RM_CrowncarpetCultured", rect=R(X, Z, 6, 6)).get("things") or []
     if pl:
         sown = True
@@ -56,7 +64,7 @@ if not sown:
     route = "spawned"
     call("jawa/spawn_batch", ops="RM_CrowncarpetCultured:%d,%d" % (X + 2, Z + 2))
 call("jawa/spawn_batch", ops="RM_CrowncarpetCultured:%d,%d" % (X + 12, Z + 2))   # the unseeded control's crop
-call("rimworld/step_game_ticks", ticks=600, pauseFirst=True, timeoutMs=120000)
+STEP.advance(600, timeout_ms=120000, why="establish")
 rows["after"] = state(seeded)
 rows["control"] = state(bare)
 for k in ("start", "seeded", "after", "control"):
@@ -76,5 +84,12 @@ if a["glow"] != "True":
 if c["established"] != "False":
     fails.append("control: the UNSEEDED tank established anyway (%s)" % c["established"])
 call("jawa/clear_area", rect=R(X - 2, Z - 2, 22, 12), dryRun=False)
+if any(not r["ok"] for r in STEP.records):
+    fails.append("UNMEASURED: clock did not move as asked (%s)" % [r.get("unmeasured") for r in STEP.records if not r["ok"]][:2])
+if OUT:
+    with open(OUT, "w", encoding="utf-8") as f:
+        json.dump({"proof": "lp_glowtank_seed_sow", "arm": STEP.arm(), "origin": [X, Z], "route": route,
+                   "rows": {k: rows[k] for k in ("start", "seeded", "after", "control")}, "fails": fails,
+                   "verdict": "PASS" if not fails else "FAIL", "clock": STEP.records}, f, indent=1, default=str)
 print("route=%s" % route, "PASS" if not fails else "FAIL: " + "; ".join(fails))
 sys.exit(1 if fails else 0)

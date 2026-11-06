@@ -90,6 +90,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import level_water  # noqa: E402  (the exact-level reference, WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES)
 import gravel_stage  # noqa: E402  (V2_FILLIN_SCENE_STAGE_FILL_MATERIAL: fill costs spoil, so the fill-in scenes need gravel on the ground)
 import shovel_stage  # noqa: E402  (SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: the E7/E8 job pawns carry one)
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Utils"))
+import tickburst_step as TS  # noqa: E402  (TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: the --step arm switch)
 
 
 def _wrapup():
@@ -2900,7 +2902,7 @@ def phase_J(L, args):
         # the OFF window must STRADDLE the scheduled tick, or an engine that ignores the toggle
         # would pass too (it would simply not be due yet). The jobs progress meanwhile: free.
         off_ticks = max(0, n0 - eo.get("ticksGame")) + PULSE_PIN
-        st_off = B.call("rimworld/step_game_ticks", ticks=off_ticks, pauseFirst=True, timeoutMs=300000)
+        st_off = _direct_step(B, off_ticks, 300000, "E4_engine_off")
         e1 = L.eng()
         snap1 = _snapshot(L)
         moved = sorted(c for c in snap0 if snap0[c] != snap1.get(c))
@@ -2928,7 +2930,7 @@ def phase_J(L, args):
         # symptom, E4_off above) spun it forever. Bounded by chunk count, and 3 chunks in a row with no tick end it.
         max_chunks, stalled, last_t = args.max_job_ticks // PULSE_PIN + 10, 0, t_start
         while chunks < max_chunks and stalled < 3:
-            B.call("rimworld/step_game_ticks", ticks=PULSE_PIN, pauseFirst=True, timeoutMs=120000)
+            _direct_step(B, PULSE_PIN, 120000, "J_jobs_pulse")
             chunks += 1
             e = L.eng()
             hist.append((e.get("ticksGame"), e.get("nextPulseTick")))
@@ -3700,7 +3702,7 @@ def _x8b_cover_occupant(L, c, occ):
         L.row("X8b_cover_occupant_stays_below", False, "HARNESS", "spawn colonist in the pit: %r" % (str(occ)[:200],),
               status="UNMEASURED")
         return
-    B.call("rimworld/step_game_ticks", ticks=300, pauseFirst=True, timeoutMs=60000)
+    _direct_step(B, 300, 60000, "X8b_cover_occupant")
     ok, kv, txt = _proof(B, "ProofBeneath", "%d,%d" % c)
     okc, kc, _ = _proof(B, "ProofCover", "%d,%d" % c)
     if not ok or "beneath" not in kv:
@@ -3810,9 +3812,9 @@ def _x10_canal_fire(L):
             return
         # pass 2 (2026-10-19): 850 of 1000 ran with the bridge default timeout; every other step here passes one
         tk0 = L.eng().get("ticksGame")
-        B.call("rimworld/step_game_ticks", ticks=750, pauseFirst=True, timeoutMs=120000)
+        _direct_step(B, 750, 120000, "X10_canal_fire")
         burn1 = _things_at(B, FLAME, run)
-        B.call("rimworld/step_game_ticks", ticks=250, pauseFirst=True, timeoutMs=120000)
+        _direct_step(B, 250, 120000, "X10_canal_fire")
         burn2 = _things_at(B, FLAME, run)
         tk_burn = (L.eng().get("ticksGame") or 0) - (tk0 or 0)
         if tk_burn < 900:                  # the day-3 symptom: steps that report success and run 0 ticks
@@ -3827,7 +3829,7 @@ def _x10_canal_fire(L):
         # (a sheet) still burns. Spent = F 0, 0 L in every square (ProofReadout) and no flame, or the 6,000-tick cap.
         lit = []
         for _ in range(6):
-            B.call("rimworld/step_game_ticks", ticks=1000, pauseFirst=True, timeoutMs=120000)
+            _direct_step(B, 1000, 120000, "X10_canal_fire")
             e = B.call("jawa/flowworks_engine_state")
             _, fr, _ = _fluid_row(L, run)
             fv = [fr.get(c, {}).get("f") for c in run]
@@ -4880,6 +4882,20 @@ def run_identity_module():
         return None
 
 
+# TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: the direct clock steps (J_jobs_scheduler, X8b, X10; NOT the flyer landing step,
+# FLYER_LAND_TICKS, which stays on step_game_ticks by standing ruling) go through one switchable stepper. --step play|step|safe
+# (tickburst_step.py); the default `step` is today's path, so this switch adopts nothing on its own.
+STEP_OPTS = {"mode": "step", "budget_ms": 40.0, "cap": 0}
+_STEPPERS = {}
+
+
+def _direct_step(B, n, timeout_ms, why):
+    st = _STEPPERS.get(id(B))
+    if st is None:
+        st = _STEPPERS[id(B)] = TS.Stepper.from_opts(lambda tool, **kw: B.call(tool, **kw), STEP_OPTS, label="validation_v2")
+    return st.advance(n, timeout_ms=timeout_ms, why=why)
+
+
 def run_live(args, B=None, identity=None):
     """`identity`: the run_identity module. Default: the real one live, none under --mock (a mock tests no deployed code)."""
     B = B or (MockBridge(args.fault or []) if args.mock else RealBridge())
@@ -5106,6 +5122,8 @@ def main(argv=None):
     ap.add_argument("--progress", default=None, help="append per-step progress here")
     ap.add_argument("--out", default=None, help="result JSON (default: beside this script)")
     ap.add_argument("--compare", nargs=2, metavar="RESULT_JSON", help="determinism across runs: diff the 0-tick rows")
+    argv, step_opts = TS.take_args(sys.argv[1:] if argv is None else argv)
+    STEP_OPTS.update(step_opts)
     a = ap.parse_args(argv)
     if a.compare:
         ok, msg = compare_runs(*a.compare)

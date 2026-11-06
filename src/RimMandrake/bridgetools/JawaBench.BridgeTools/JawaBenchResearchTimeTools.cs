@@ -665,6 +665,19 @@ namespace JawaBench.BridgeTools
             });
         }
 
+        // TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: every throughput arm reads UltraSpeedBoost back (1.6 TickManager.cs:13,
+        // `private static bool UltraSpeedBoost`), since rimworld/set_time_speed's own reply is not a reading.
+        private static bool? UltraSpeedBoostRead()
+        {
+            try
+            {
+                var f = typeof(TickManager).GetField("UltraSpeedBoost",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                return f == null ? (bool?)null : (bool)f.GetValue(null);
+            }
+            catch { return null; }
+        }
+
         [Tool(
             "jawa/time_perf",
             Description =
@@ -673,7 +686,8 @@ namespace JawaBench.BridgeTools
                 "answers 'is the game actually keeping up with the selected speed'. Changes " +
                 "nothing.",
             ResultDescription =
-                "success, meanTickTime, ticksThisFrame, tickRateMultiplier, curTimeSpeed (string).")]
+                "success, meanTickTime, ticksThisFrame, tickRateMultiplier, curTimeSpeed (string), paused, ultraSpeedBoost " +
+                "(TickManager's private static flag read by reflection; null when 1.6 renamed it).")]
         public static async Task<object> TimePerf(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken)
@@ -689,6 +703,8 @@ namespace JawaBench.BridgeTools
                     ticksThisFrame = tm.TicksThisFrame,
                     tickRateMultiplier = tm.TickRateMultiplier,
                     curTimeSpeed = tm.CurTimeSpeed.ToString(),
+                    paused = tm.Paused,
+                    ultraSpeedBoost = UltraSpeedBoostRead(),
                 };
             });
         }

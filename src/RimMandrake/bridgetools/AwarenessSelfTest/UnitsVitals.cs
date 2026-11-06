@@ -96,6 +96,40 @@ namespace JawaBench.BridgeTools
             check(V.AdvanceFrameStop(false, 61, 60, true) != null && V.AdvanceFrameStop(false, 61, 60, true).Contains("wall"), "advance_frame_wall_timeout_aborts");
             check(V.AdvanceFrameStop(false, 1, 60, true) == null, "advance_frame_armed_in_time_goes_on");
 
+            // --- per-frame tick cap (TICKBURST_PROVE_MANY_TICKS_ONE_FRAME): 0 = unlimited, a cap cuts the chunk, never overshoots
+            check(V.NextChunk(60, 1000, 0, 0) == 60 && V.NextChunk(60, 1000, 0, 600) == 60, "nextchunk_cap0_unlimited");
+            check(V.NextChunk(60, 25, 0, 0) == 25, "nextchunk_remaining_cuts");
+            check(V.NextChunk(60, 1000, 1, 0) == 1 && V.NextChunk(60, 1000, 1, 1) == 0, "nextchunk_cap1_one_per_frame");
+            check(V.NextChunk(60, 1000, 61, 60) == 1 && V.NextChunk(60, 1000, 61, 61) == 0, "nextchunk_cap61_cuts_second_chunk");
+            check(V.NextChunk(60, 1000, 30, 0) == 30, "nextchunk_cap_below_chunk");
+            check(V.NextChunk(0, 1000, 0, 0) == 0 && V.NextChunk(60, 0, 0, 0) == 0, "nextchunk_degenerate_zero");
+            {   // sweep: for every (chunk, cap, remaining) a simulated frame loop steps exactly min(remaining, cap or inf) per frame
+                bool okSweep = true; string bad = "";
+                foreach (int ch in new[] { 1, 7, 30, 60 })
+                    foreach (int cap in new[] { 0, 1, 30, 59, 60, 61, 125 })
+                        foreach (long rem0 in new long[] { 1, 59, 60, 61, 600, 1001 })
+                        {
+                            long rem = rem0; int frames = 0;
+                            while (rem > 0 && frames < 100000)
+                            {
+                                int done = 0, n, chunks = 0;
+                                while ((n = V.NextChunk(ch, rem, cap, done)) > 0 && chunks < 3) { done += n; rem -= n; chunks++; }
+                                frames++;
+                                if (cap > 0 && done > cap) { okSweep = false; bad = ch + "/" + cap + "/" + rem0; }
+                                if (done == 0) { okSweep = false; bad = "stall " + ch + "/" + cap + "/" + rem0; break; }
+                            }
+                            if (rem != 0) { okSweep = false; bad = "left " + ch + "/" + cap + "/" + rem0; }
+                        }
+                check(okSweep, "nextchunk_sweep_exact_total_never_over_cap", bad);
+            }
+            check(V.Percentile(new List<double> { 5, 1, 3, 2, 4 }, 50) == 3 && V.Percentile(new List<double> { 5, 1, 3, 2, 4 }, 100) == 5,
+                  "percentile_nearest_rank");
+            check(double.IsNaN(V.Percentile(new List<double>(), 99)), "percentile_empty_nan");
+            {
+                var h = V.FrameTickHistogram(new List<int> { 60, 61, 60, 1 });
+                check(h.Count == 3 && h[60] == 2 && h[61] == 1 && h[1] == 1, "frame_tick_histogram_exact");
+            }
+
             // --- game-identity gate (SAFE_ADVANCE_MENU_DIAGNOSE_LUCKY_NULLREF): menu / load / new game / lost map end the run
             // with a NAMED reason before anything can NRE; the same game on its start map goes on.
             check(V.AdvanceGameGate(true, false, false, false, 0)?.StartsWith("game_changed") == true, "advance_gate_menu_is_game_changed");

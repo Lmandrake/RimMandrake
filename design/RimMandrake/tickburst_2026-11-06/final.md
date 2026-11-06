@@ -64,8 +64,10 @@ The speed setter for R, U and U+ is named at build time from its source, never g
 
 Each proof gets one `--step {play,step,safe}` switch in its own step helper, so the same rows run under R, A and B/C.
 
-1. **FlowWorks v2 `P_pits`** (`src/RimMandrake/FlowWorks/northstar/validation_v2.py:3122`, direct calls at :2903,
-   :2931): fluid and pit occupancy. Throughput-bound in run4 (8,607 ticks, 143 s). `X_promoted` rides the same pass.
+1. **FlowWorks v2 `P_pits`** (`src/RimMandrake/FlowWorks/northstar/validation_v2.py`, step `P_pits`): fluid and pit
+   occupancy. `P_pits` itself advances time through `jawa/order_pawn` waits; v2's direct `step_game_ticks` calls sit in
+   `J_jobs_scheduler` (E4 off window, E1b pulse loop) and in the X rows (`_x8b_cover_occupant`, `_x10_canal_fire`), and
+   all of them go through the `--step` switch (`_direct_step`). Throughput-bound in run4 (8,607 ticks, 143 s). `X_promoted` rides the same pass.
    The `P_forced` / `ProofForcedFlyer` landing step (:3247, `FLYER_LAND_TICKS`) is **excluded** and stays on
    `step_game_ticks`. Flyers stay out (standing ruling), although build_spec §4 had listed it for migration.
 2. **LINES** (`src/RimMandrake/FlowWorks/northstar/lines_proof.py`, step helper :225): pipe poles and GSS power cord,

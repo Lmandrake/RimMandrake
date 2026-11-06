@@ -335,6 +335,39 @@ namespace JawaBench.BridgeTools
             return null;
         }
 
+        internal const int MaxFrameSamples = 20000;       // per-run (ticks, ms) frame samples kept for the histogram / p99
+
+        /// <summary>The next chunk the stepper runs inside this frame (TICKBURST_PROVE_MANY_TICKS_ONE_FRAME): the smallest of
+        /// `chunk`, the ticks still `remaining` and, when `perFrameTickCap` &gt; 0, what the cap leaves after `doneThisFrame`
+        /// ticks already stepped this frame. 0 = this frame steps no more. perFrameTickCap 0 means unlimited (only the wall
+        /// budget, read between chunks, ends the frame). With a cap, a frame never steps more than the cap: a chunk is cut
+        /// short rather than overshooting it.</summary>
+        internal static int NextChunk(int chunk, long remaining, int perFrameTickCap, int doneThisFrame)
+        {
+            if (chunk < 1 || remaining <= 0) return 0;
+            long n = Math.Min(chunk, remaining);
+            if (perFrameTickCap > 0) n = Math.Min(n, (long)perFrameTickCap - doneThisFrame);
+            return n > 0 ? (int)n : 0;
+        }
+
+        /// <summary>Nearest-rank percentile (0 &lt; p &lt;= 100) of `xs`; NaN on an empty list. Does not reorder `xs`.</summary>
+        internal static double Percentile(IList<double> xs, double p)
+        {
+            if (xs == null || xs.Count == 0) return double.NaN;
+            var s = new List<double>(xs); s.Sort();
+            int rank = (int)Math.Ceiling(p / 100.0 * s.Count);
+            return s[Math.Max(0, Math.Min(s.Count - 1, rank - 1))];
+        }
+
+        /// <summary>Exact histogram of ticks stepped per frame: "ticks" -&gt; frames, keys sorted numerically.</summary>
+        internal static SortedDictionary<int, int> FrameTickHistogram(IList<int> frameTicks)
+        {
+            var h = new SortedDictionary<int, int>();
+            if (frameTicks == null) return h;
+            foreach (int t in frameTicks) h[t] = h.TryGetValue(t, out int c) ? c + 1 : 1;
+            return h;
+        }
+
         /// <summary>The stepper's per-frame end conditions, checked BEFORE the game-readiness gate: "cancelled", "aborted: ..."
         /// or null to go on. A run must end on a cancel, a wall timeout or a lost monitor even while no game is ready - a run
         /// left "running" refuses every later safe_advance (night review 2026-10-13).</summary>

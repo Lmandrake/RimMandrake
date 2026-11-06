@@ -144,7 +144,27 @@ namespace JawaBench.BridgeTools
             state = r.State, requested = r.Requested, executed = r.Executed, tickFrom = r.StartTick, tickTo = r.EndTick,
             stopBy = Json(r.StopBy), abortWhy = r.AbortWhy, timeException = r.TimeException, frames = r.Frames,
             wallS = Math.Round((r.State == "running" ? VT.Mono : r.EndMono) - r.StartMono, 2),
+            chunk = r.Chunk, frameBudgetMs = r.FrameBudgetMs, perFrameTickCap = r.PerFrameTickCap,
+            stepMs = Math.Round(r.StepMs, 3), maxFrameMs = Math.Round(r.MaxFrameMs, 3),
         };
+
+        // TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: the per-frame samples behind the throughput histogram and p99 (frameSamples=true).
+        private static object FrameStats(SA.Run r, bool raw) => r == null ? null : new
+        {
+            sampled = r.FrameTicks.Count, capped = r.FrameTicks.Count >= V.MaxFrameSamples,
+            ticksPerFrame = HistJson(V.FrameTickHistogram(r.FrameTicks)),
+            p50Ms = Round3(V.Percentile(r.FrameMs, 50)), p99Ms = Round3(V.Percentile(r.FrameMs, 99)), maxFrameMs = Math.Round(r.MaxFrameMs, 3),
+            frameTicks = raw ? r.FrameTicks.ToArray() : null, frameMs = raw ? r.FrameMs.ToArray() : null,
+        };
+
+        private static Dictionary<string, int> HistJson(SortedDictionary<int, int> h)
+        {
+            var d = new Dictionary<string, int>();
+            foreach (var kv in h) d[kv.Key.ToString(System.Globalization.CultureInfo.InvariantCulture)] = kv.Value;
+            return d;
+        }
+
+        private static double? Round3(double x) => double.IsNaN(x) ? (double?)null : Math.Round(x, 3);
 
         [Tool(
             "jawa/safe_advance",
@@ -160,7 +180,8 @@ namespace JawaBench.BridgeTools
                 "Find.Maps ends it with 'map_gone: ...'; tickTo is then the last tick the run stepped.",
             ResultDescription =
                 "success, state (done | stopped | cancelled | aborted | refused | running), requested, executed, tickFrom, tickTo, " +
-                "stopBy{kind, severity, detail}, triggers[] since start, refused (reason), wallS.")]
+                "stopBy{kind, severity, detail}, triggers[] since start, refused (reason), wallS, chunk, frameBudgetMs, perFrameTickCap, " +
+                "stepMs (summed in-frame stepping ms), maxFrameMs, frameStats (with frameSamples=true).")]
         public static async Task<object> SafeAdvance(
             IRimBridgeContext ctx, CancellationToken cancellationToken,
             [ToolParameter(Description = "start | cancel | status", DefaultValue = "start")] string action = "start",
@@ -170,6 +191,9 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "comma list of trigger kinds that stop the advance, or 'default'", DefaultValue = "default")] string stopOn = "default",
             [ToolParameter(Description = "ticks per chunk (1..60)", DefaultValue = 60)] int chunk = 60,
             [ToolParameter(Description = "main-thread ms per frame spent stepping", DefaultValue = 40.0)] double frameBudgetMs = 40,
+            [ToolParameter(Description = "most ticks stepped in one frame (0 = unlimited: only frameBudgetMs ends a frame); a chunk is cut short, never overshoots", DefaultValue = 0)] int perFrameTickCap = 0,
+            [ToolParameter(Description = "include per-frame stats (ticks-per-frame histogram, p50/p99/max frame ms); raw=true adds every sample", DefaultValue = false)] bool frameSamples = false,
+            [ToolParameter(Description = "with frameSamples: the raw per-frame tick and ms arrays too (at most 20000 frames)", DefaultValue = false)] bool raw = false,
             [ToolParameter(Description = "start: ms to wait for completion before returning state=running", DefaultValue = 300000)] int timeoutMs = 300000)
         {
             string a = (action ?? "start").Trim().ToLowerInvariant();
@@ -178,7 +202,8 @@ namespace JawaBench.BridgeTools
             {
                 if (a == "cancel") await Task.Delay(200, cancellationToken).ConfigureAwait(false);
                 string act = a;     // captured on purpose: a NON-capturing lambda lands in the partial class's shared <>c, which fails to load when an optional mod's types (GSS) are absent
-                return await ctx.MainThread.InvokeAsync<object>(() => new { success = act != null, advance = AdvanceJson(SA.Cur), ticksGame = TicksGameSafe() });
+                bool fs = frameSamples, rw = raw;     // captured on purpose (see above)
+                return await ctx.MainThread.InvokeAsync<object>(() => new { success = act != null, advance = AdvanceJson(SA.Cur), frameStats = fs ? FrameStats(SA.Cur, rw) : null, ticksGame = TicksGameSafe() });
             }
             if (a != "start") return Fail("action must be start, cancel or status");
             if (timeoutMs < 0) return Fail("timeoutMs must be >= 0 (0 = start and return at once; poll action=status)");
@@ -187,6 +212,7 @@ namespace JawaBench.BridgeTools
                 if (Current.Game == null || Find.TickManager == null || Find.CurrentMap == null) return Fail("No game/map loaded.");
                 if (SA.Cur != null && SA.Cur.State == "running") return Fail("an advance is already running (action=status / cancel)");
                 if (chunk < 1 || chunk > V.MaxChunk) return Fail("chunk must be 1.." + V.MaxChunk);
+                if (perFrameTickCap < 0) return Fail("perFrameTickCap must be >= 0 (0 = unlimited)");
                 var kinds = V.ParseKinds(stopOn, out var badK);
                 if (badK != null) return Fail("stopOn: unknown kind '" + badK + "'", new { kinds = V.DefaultStopKinds });
                 bool pop = VT.Populated();
@@ -205,7 +231,7 @@ namespace JawaBench.BridgeTools
                 var tm = Find.TickManager;
                 SA.Cur = new SA.Run
                 {
-                    Requested = ticks, Chunk = chunk, FrameBudgetMs = Math.Max(5, Math.Min(200, frameBudgetMs)), Stop = kinds,
+                    Requested = ticks, Chunk = chunk, FrameBudgetMs = Math.Max(5, Math.Min(200, frameBudgetMs)), Stop = kinds, PerFrameTickCap = perFrameTickCap,
                     StartSeq = VT.Latch.Seq, StartTick = tm.TicksGame, EndTick = tm.TicksGame, StartMono = VT.Mono, MaxWallS = Math.Max(60, timeoutMs / 1000.0 * 4),
                     TimeException = exc, PrevSpeed = tm.CurTimeSpeed,
                     Game = Current.Game, Map = Find.CurrentMap, MapId = Find.CurrentMap.uniqueID,
@@ -220,6 +246,7 @@ namespace JawaBench.BridgeTools
             while (SA.Cur.State == "running" && sw.ElapsedMilliseconds < timeoutMs)
                 await Task.Delay(100, cancellationToken).ConfigureAwait(false);
             int waited = timeoutMs;     // captured on purpose (see above)
+            bool wantFs = frameSamples, wantRaw = raw;
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 var r = SA.Cur;
@@ -231,6 +258,9 @@ namespace JawaBench.BridgeTools
                     tickTo = r.State == "running" ? TicksGameSafe() : r.EndTick, stopBy = Json(r.StopBy), abortWhy = r.AbortWhy,
                     triggers = TrigList(trig, 0, Math.Min(40, trig.Count)), triggersTotal = trig.Count,
                     wallS = Math.Round((r.State == "running" ? VT.Mono : r.EndMono) - r.StartMono, 2), frames = r.Frames,
+                    chunk = r.Chunk, frameBudgetMs = r.FrameBudgetMs, perFrameTickCap = r.PerFrameTickCap,
+                    stepMs = Math.Round(r.StepMs, 3), maxFrameMs = Math.Round(r.MaxFrameMs, 3),
+                    frameStats = wantFs ? FrameStats(r, wantRaw) : null,
                     note = r.State == "running" ? "still running after timeoutMs: poll action=status or cancel" : null,
                     ticksGame = TicksGameSafe(),
                 };

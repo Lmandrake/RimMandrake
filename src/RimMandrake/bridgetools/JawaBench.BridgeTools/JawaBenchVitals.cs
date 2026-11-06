@@ -688,6 +688,10 @@ namespace JawaBench.BridgeTools
             internal TimeSpeed PrevSpeed;
             internal int SettledFrames;
             internal long Frames;
+            internal int PerFrameTickCap;  // 0 = unlimited (TICKBURST_PROVE_MANY_TICKS_ONE_FRAME)
+            internal double StepMs, MaxFrameMs; // summed in-frame stepping ms, and the worst frame's
+            internal readonly List<int> FrameTicks = new List<int>();      // per stepping frame, at most V.MaxFrameSamples
+            internal readonly List<double> FrameMs = new List<double>();
             internal Game Game;            // identity at start: a different Current.Game ends the run (game_changed)
             internal Map Map;              // the start map: gone from Find.Maps ends the run (map_gone)
             internal int MapId;
@@ -718,20 +722,34 @@ namespace JawaBench.BridgeTools
                 r.Frames++;
                 if (tm.CurTimeSpeed != TimeSpeed.Paused) tm.CurTimeSpeed = TimeSpeed.Paused;
                 var sw = Stopwatch.StartNew();
-                while (r.Executed < r.Requested)
+                int doneThisFrame = 0;
+                try
                 {
-                    var st = V.FirstStop(JawaBenchVitals.Latch.Since(r.StartSeq), r.Stop);
-                    if (st != null) { Finish(r, "stopped", st); return; }
-                    if (sw.Elapsed.TotalMilliseconds >= r.FrameBudgetMs) return;
-                    int n = (int)Math.Min(r.Chunk, r.Requested - r.Executed);
-                    for (int i = 0; i < n; i++) tm.DoSingleTick();
-                    r.Executed += n;
-                    r.EndTick = tm.TicksGame;      // last good tick: an end that cannot read the clock keeps this, not the start tick
+                    while (r.Executed < r.Requested)
+                    {
+                        var st = V.FirstStop(JawaBenchVitals.Latch.Since(r.StartSeq), r.Stop);
+                        if (st != null) { Finish(r, "stopped", st); return; }
+                        if (sw.Elapsed.TotalMilliseconds >= r.FrameBudgetMs) return;
+                        int n = V.NextChunk(r.Chunk, r.Requested - r.Executed, r.PerFrameTickCap, doneThisFrame);
+                        if (n <= 0) return;            // the per-frame tick cap is spent: the rest waits for the next frame
+                        for (int i = 0; i < n; i++) tm.DoSingleTick();
+                        r.Executed += n; doneThisFrame += n;
+                        r.EndTick = tm.TicksGame;      // last good tick: an end that cannot read the clock keeps this, not the start tick
+                    }
                 }
+                finally { RecordFrame(r, doneThisFrame, sw.Elapsed.TotalMilliseconds); }
                 var last = V.FirstStop(JawaBenchVitals.Latch.Since(r.StartSeq), r.Stop);
                 Finish(r, last != null ? "stopped" : "done", last);
             }
             catch (Exception e) { Finish(r, "aborted", null, "stepper exception: " + e.GetType().Name + ": " + e.Message); }
+        }
+
+        // One stepping frame's ticks and wall ms (stepMs is the sum, the same clock the frame budget reads).
+        private static void RecordFrame(Run r, int ticks, double ms)
+        {
+            r.StepMs += ms;
+            if (ms > r.MaxFrameMs) r.MaxFrameMs = ms;
+            if (r.FrameTicks.Count < V.MaxFrameSamples) { r.FrameTicks.Add(ticks); r.FrameMs.Add(ms); }
         }
 
         internal static void Finish(Run r, string state, V.Trigger by, string why = null)

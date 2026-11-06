@@ -72,6 +72,7 @@ UTILS = os.path.abspath(os.path.join(HERE, "..", "..", "Utils"))
 if UTILS not in sys.path:
     sys.path.insert(0, UTILS)
 import validation_core as V  # noqa: E402  (preconditions: scope / require / guard; pure python, no bridge at import)
+import tickburst_step as TS  # noqa: E402  (TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: the --step arm switch)
 
 LPROOF = "RimMandrake.FlowWorks.Machinery.RM_LineProofs"       # C#: contracts in OWED_PROOFS
 SPROOF = "RimMandrake.FlowWorks.Pits.RM_SuspensionProofs"
@@ -140,6 +141,7 @@ def main(argv=None):
     ap.add_argument("--drain-ticks", type=int, default=1500)
     ap.add_argument("--mock", action="store_true", help="run every path against FakeBridge; rows are SKIP (mock verdict kept)")
     ap.add_argument("--mock-faults", default="", help="comma list of FakeBridge faults: " + ",".join(FakeBridge.FAULTS))
+    argv, step_opts = TS.take_args(sys.argv[1:] if argv is None else argv)
     a = ap.parse_args(argv)
     only = [x.strip().upper() for x in a.only.split(",") if x.strip()] or list(ROW_IDS)
     if set(only) - set(ROW_IDS):
@@ -221,10 +223,13 @@ def main(argv=None):
         ops = [o for o in ops if o]
         return B.call("jawa/build_batch", ops=";".join(ops), faction="player", wipeExisting=False) or {}
 
+    # TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: the arm (--step play|step|safe) is chosen once; default step = today's path
+    stepper = TS.Stepper.from_opts(lambda tool, **kw: B.call(tool, **kw), step_opts, label="lines")
+
     def ticks(n):
-        r = B.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=max(60000, n * 40)) or {}
-        V.require(r.get("success") is not False, "the clock moved %d ticks" % n, r, cls="HARNESS")
-        return r.get("success") is not False
+        r = stepper.advance(n, timeout_ms=max(60000, n * 40), why="lines")
+        V.require(r["ok"], "the clock moved %d ticks" % n, r, cls="HARNESS")
+        return r["ok"]
 
     def poll(fn, bound, step=10):
         """Tick in steps until fn() is truthy; (value, ticks waited)."""

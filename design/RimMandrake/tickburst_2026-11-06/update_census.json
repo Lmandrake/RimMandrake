@@ -1,0 +1,215 @@
+{
+ "roots": [
+  {
+   "label": "rw16",
+   "path": "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all",
+   "cs_files": 9217,
+   "hits": 11
+  },
+  {
+   "label": "src",
+   "path": "src",
+   "cs_files": 2883,
+   "hits": 17
+  }
+ ],
+ "count": 28,
+ "hits": [
+  {
+   "root": "rw16",
+   "file": "RimWorld/CompDissolutionEffect_Goodwill.cs",
+   "line": 71,
+   "class": "CompDissolutionEffect_Goodwill",
+   "method": "WorldUpdate"
+  },
+  {
+   "root": "rw16",
+   "file": "RimWorld/CompDissolutionEffect_Pollution.cs",
+   "line": 51,
+   "class": "CompDissolutionEffect_Pollution",
+   "method": "WorldUpdate"
+  },
+  {
+   "root": "rw16",
+   "file": "RimWorld.Planet/World.cs",
+   "line": 236,
+   "class": "World",
+   "method": "WorldUpdate"
+  },
+  {
+   "root": "rw16",
+   "file": "RimWorld.Planet/WorldComponent.cs",
+   "line": 14,
+   "class": "WorldComponent",
+   "method": "WorldComponentUpdate"
+  },
+  {
+   "root": "rw16",
+   "file": "RimWorld.Planet/WorldComponentUtility.cs",
+   "line": 9,
+   "class": "WorldComponentUtility",
+   "method": "WorldComponentUpdate"
+  },
+  {
+   "root": "rw16",
+   "file": "Verse/GameComponent.cs",
+   "line": 7,
+   "class": "GameComponent",
+   "method": "GameComponentUpdate"
+  },
+  {
+   "root": "rw16",
+   "file": "Verse/GameComponentUtility.cs",
+   "line": 8,
+   "class": "GameComponentUtility",
+   "method": "GameComponentUpdate"
+  },
+  {
+   "root": "rw16",
+   "file": "Verse/GameComponent_DebugTools.cs",
+   "line": 14,
+   "class": "GameComponent_DebugTools",
+   "method": "GameComponentUpdate"
+  },
+  {
+   "root": "rw16",
+   "file": "Verse/MapComponent.cs",
+   "line": 12,
+   "class": "MapComponent",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "rw16",
+   "file": "Verse/MapComponentUtility.cs",
+   "line": 8,
+   "class": "MapComponentUtility",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "rw16",
+   "file": "Verse/WorldComponent_GravshipController.cs",
+   "line": 399,
+   "class": "WorldComponent_GravshipController",
+   "method": "WorldComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/AcousticScanner/Source/RM_MapComponent_AcousticReading.cs",
+   "line": 42,
+   "class": "RM_MapComponent_AcousticReading",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs",
+   "line": 241,
+   "class": "RM_MapComponent_AtmosphericBase",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/ExplosiveGrowth/Source/RM_MapComponent_ExplosiveGrowth.cs",
+   "line": 404,
+   "class": "RM_MapComponent_ExplosiveGrowth",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/FlowWorks/Source/RM_LiquidSurface.cs",
+   "line": 241,
+   "class": "RM_LiquidSurface",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+   "line": 2828,
+   "class": "RM_MapComponent_Excavation",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs",
+   "line": 1564,
+   "class": "RM_MapComponent_Hoses",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/FlowWorks/Source/Pits/Suspension/RM_MapComponent_SuspensionBridges.cs",
+   "line": 898,
+   "class": "RM_MapComponent_SuspensionBridges",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/FlowWorks/Source/Superdeep/RM_PitLipOcclusion.cs",
+   "line": 318,
+   "class": "RM_PitLipOcclusion",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs",
+   "line": 1011,
+   "class": "RM_MapComponent_CordGraph",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs",
+   "line": 537,
+   "class": "RM_MapComponent_Aerial",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_ConduitRuns.cs",
+   "line": 54,
+   "class": "RM_MapComponent_ConduitRuns",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/RustCathedral/Source/Hum/RM_HullBolts.cs",
+   "line": 960,
+   "class": "RM_MapComponent_HullBoltMarks",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/RustCathedral/Source/Hum/RM_MapComponent_BiomeAttitude.cs",
+   "line": 95,
+   "class": "RM_MapComponent_BiomeAttitude",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/SolarMirrors/Source/RM_MapComponent_MirrorLight.cs",
+   "line": 709,
+   "class": "RM_MapComponent_MirrorLight",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/Stillsand/Source/RM_StillsandWater.cs",
+   "line": 358,
+   "class": "RM_MapComponent_WetSand",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs",
+   "line": 266,
+   "class": "RM_MapComponent_SkyPastures",
+   "method": "MapComponentUpdate"
+  },
+  {
+   "root": "src",
+   "file": "RimUtinni/EmpirePursuit/Source/EmpireLadder.cs",
+   "line": 631,
+   "class": "MapComponent_EmpireSearch",
+   "method": "MapComponentUpdate"
+  }
+ ]
+}
