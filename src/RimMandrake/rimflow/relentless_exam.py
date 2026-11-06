@@ -35,6 +35,7 @@ Files (store-only in shadow: the builder's clone never holds them): <root>/store
   catch.jsonl, setter.out/.err. Format: infrastructure/state/exams/README.md.
 """
 import argparse
+import fcntl
 import hashlib
 import json
 import os
@@ -365,6 +366,32 @@ def lint(exam, item_text, prose=""):
 
 
 # ------------------------------------------------------------------------------------------------------ runs and reds
+_TB_FRAME = re.compile(r'^\s*File "([^"]+)", line \d+', re.M)
+_EXC_LINE = re.compile(r"^([A-Za-z_][\w.]*)(?::.*)?$")
+
+
+def own_exception(out):
+    """-> the exception name when `out` ends in an uncaught non-assertion exception raised in the test's own code (its
+    innermost frame is a file under EXAM_DIR), else None. Such a red is a test-writer fault, not the clause failing:
+    COMPANION_DEPLOY_LIVE_ROUND_FORGETS c1 (a TypeError in its own print) and c2 (its own raise) passed VALIDATE as reds."""
+    frames = list(_TB_FRAME.finditer(out or ""))
+    if not frames:
+        return None
+    last = frames[-1]
+    path = last.group(1).replace("\\", "/")
+    if not ("/%s/" % EXAM_DIR in path or path.startswith(EXAM_DIR + "/")):
+        return None
+    for ln in out[last.end():].splitlines()[1:]:
+        if not ln or ln[0].isspace():
+            continue                                    # the frame's source line, its ~~~^^^ markers, blank lines
+        m = _EXC_LINE.match(ln)
+        if not m:
+            return None
+        name = m.group(1)
+        return None if name.rsplit(".", 1)[-1] == "AssertionError" else name
+    return None
+
+
 def red_kind(clause, exit_code, out, timed_out=False):
     """-> "green" | "assert" | "infra:<why>". An infra red is not evidence the check can fail (G3 (1))."""
     if timed_out:
@@ -379,6 +406,9 @@ def red_kind(clause, exit_code, out, timed_out=False):
     for name, rx in NOT_ASSERTION:
         if rx.search(out or ""):
             return "infra:" + name
+    own = own_exception(out)
+    if own:
+        return "infra:uncaught %s in the test's own code" % own
     if exit_code not in (red.get("exit") or [1]):
         return "infra:exit %d is not a declared assertion exit" % exit_code
     marker = red.get("marker")
@@ -634,8 +664,10 @@ def run_item(store, item, rules, cfg=None, now=None, setter=run_setter, boxer=bo
 
 
 # ------------------------------------------------------------------------------------------------- shadow: would-catch
-def returns(attempts):
-    """-> ([(sha, end, at)] each Marker return with the candidate sha it returned, done sha or None)."""
+def returns(attempts, descends=None):
+    """-> ([(sha, end, at)] each Marker return with the candidate sha it returned, done sha or None). `descends(sha)`
+    -> bool restricts the done sha to one built on the exam's base: a done from an earlier round (CHECKER_REACH_FIX_
+    STORE_STILL_DARK done at 0d7517539, exam base 5148369a5) is older code than the exam judges."""
     out, last, done = [], None, None
     for a in attempts:
         if a.get("end") == "finish" and a.get("sha"):
@@ -643,9 +675,48 @@ def returns(attempts):
         elif a.get("end") in REJECTS and last:
             out.append((last, a["end"], a.get("at")))
             last = None
-        elif a.get("end") == "done" and a.get("sha"):
+        elif a.get("end") == "done" and a.get("sha") and (descends is None or descends(a["sha"])):
             done = a["sha"]
     return out, done
+
+
+def exam_base(store, item, exam=None):
+    exam = _read(os.path.join(item_dir(store, item), "exam.json")) if exam is None else exam
+    return (exam or {}).get("base_sha") or (status(store, item) or {}).get("base")
+
+
+def descender(repo, base, runner=subprocess.run):
+    """-> descends(sha): True when `base` is an ancestor of (or is) `sha` in `repo` (git merge-base --is-ancestor). No
+    base -> None (no restriction). An unknown sha, or git failing, reads False: it is not shown to descend."""
+    if not base:
+        return None
+    memo = {}
+
+    def descends(sha):
+        if sha not in memo:
+            try:
+                p = runner(["git", "-C", repo, "merge-base", "--is-ancestor", base, sha], capture_output=True, timeout=60)
+                memo[sha] = p.returncode == 0
+            except (OSError, subprocess.SubprocessError):
+                memo[sha] = False
+        return memo[sha]
+    return descends
+
+
+class _Lock:
+    """flock on <item>/catch.lock: two exam units catching one item serialise, so a sha is checked and written once."""
+    def __init__(self, d):
+        os.makedirs(d, exist_ok=True)
+        self.path = os.path.join(d, "catch.lock")
+
+    def __enter__(self):
+        self.f = open(self.path, "a")
+        fcntl.flock(self.f, fcntl.LOCK_EX)
+        return self
+
+    def __exit__(self, *a):
+        fcntl.flock(self.f, fcntl.LOCK_UN)
+        self.f.close()
 
 
 def run_exam(exam, run):
@@ -659,40 +730,44 @@ def run_exam(exam, run):
     return rows
 
 
-def catch(store, item, rules, boxer=box_runner):
-    """Run the validated exam at each candidate a Marker returned (and at the done sha) not yet run. -> rows written."""
+def catch(store, item, rules, boxer=box_runner, repo=None):
+    """Run the validated exam at each candidate a Marker returned (and at the done sha, if it descends from the exam's
+    base) not yet run. Idempotent per (item, sha, role): each sha is re-checked against catch.jsonl and run under the
+    item's lock, so two concurrent units never both write it (7 duplicate rows, 2026-11-06). -> rows written."""
     d = item_dir(store, item)
     exam = _read(os.path.join(d, "exam.json"))
     if not exam:
         return []
-    seen = {(r.get("sha"), r.get("role")) for r in _lines(os.path.join(d, "catch.jsonl"))}
-    rets, done = returns(store.attempts(item))
+    source = os.path.join(store.root, "books")
+    rets, done = returns(store.attempts(item), descender(repo or source, exam_base(store, item, exam)))
     todo = [(s, "return", end) for s, end, _ in rets] + ([(done, "done", "done")] if done else [])
     wrote = []
-    source = os.path.join(store.root, "books")
+    path = os.path.join(d, "catch.jsonl")
     for sha, role, end in todo:
-        if (sha, role) in seen:
-            continue
-        try:
-            run, _, close = boxer(rules, source, sha, os.path.join(d, "files"), item=item)
-        except Exception as e:  # noqa: BLE001 - an unexportable sha is recorded, not retried for ever
-            row = {"sha": sha, "role": role, "end": end, "error": "%s: %s" % (type(e).__name__, str(e)[:200]), "at": iso(time.time())}
-            _append(os.path.join(d, "catch.jsonl"), row)
+        with _Lock(d):
+            if (sha, role) in {(r.get("sha"), r.get("role")) for r in _lines(path)}:
+                continue
+            try:
+                run, _, close = boxer(rules, source, sha, os.path.join(d, "files"), item=item)
+            except Exception as e:  # noqa: BLE001 - an unexportable sha is recorded, not retried for ever
+                row = {"sha": sha, "role": role, "end": end, "error": "%s: %s" % (type(e).__name__, str(e)[:200]),
+                       "at": iso(time.time())}
+                _append(path, row)
+                wrote.append(row)
+                continue
+            try:
+                rows = run_exam(exam, run)
+            finally:
+                close()
+            reds = [r["clause"] for r in rows if r["kind"] == "assert"]
+            row = {"sha": sha, "role": role, "end": end, "exam_hash": exam.get("exam_hash"), "rows": rows, "at": iso(time.time()),
+                   # a return the exam would have caught: some clause is an assertion red at the returned candidate
+                   "caught": bool(reds) if role == "return" else None,
+                   # at the done sha the exam should be green; red there is a Setter-wrong (or false-close) signal
+                   "green_at_done": (not reds and all(r["kind"] == "green" for r in rows)) if role == "done" else None,
+                   "red_clauses": reds}
+            _append(path, row)
             wrote.append(row)
-            continue
-        try:
-            rows = run_exam(exam, run)
-        finally:
-            close()
-        reds = [r["clause"] for r in rows if r["kind"] == "assert"]
-        row = {"sha": sha, "role": role, "end": end, "exam_hash": exam.get("exam_hash"), "rows": rows, "at": iso(time.time()),
-               # a return the exam would have caught: some clause is an assertion red at the returned candidate
-               "caught": bool(reds) if role == "return" else None,
-               # at the done sha the exam should be green; red there is a Setter-wrong (or false-close) signal
-               "green_at_done": (not reds and all(r["kind"] == "green" for r in rows)) if role == "done" else None,
-               "red_clauses": reds}
-        _append(os.path.join(d, "catch.jsonl"), row)
-        wrote.append(row)
     return wrote
 
 
@@ -724,14 +799,23 @@ def catch_some(store, rules, limit=3, boxer=box_runner):
     return n
 
 
-def summary(store, cfg=None):
-    """The `exam_shadow` block of relentless.py reading: how far the shadow sample is, and what the exam would have caught."""
+def _reds(row):
+    """The row's assertion reds, re-read: a stored "assert" whose output shows the test's own uncaught exception (rows
+    written before red_kind knew that) is not a red."""
+    return [r["clause"] for r in row.get("rows") or [] if r.get("kind") == "assert" and not own_exception(r.get("out"))]
+
+
+def summary(store, cfg=None, repo=None):
+    """The `exam_shadow` block of relentless.py reading: how far the shadow sample is, and what the exam would have caught.
+    Counts distinct (item, sha) per role, first row kept (concurrent units once wrote duplicates); a done sha that does
+    not descend from the exam's base is not counted (`done_off_base`); reds are re-read through _reds."""
     cfg = config() if cfg is None else cfg
     root = exam_root(store)
     items = sorted(os.listdir(root)) if os.path.isdir(root) else []
     states, codes = {}, {}
-    rets = caught = done_runs = done_green = verdicts = 0
-    caught_items = []
+    rets = caught = done_runs = done_green = done_red = verdicts = dupes = off_base = 0
+    caught_items, red_items = [], []
+    source = repo or os.path.join(store.root, "books")
     for item in items:
         s = status(store, item) or {}
         states[s.get("state", "?")] = states.get(s.get("state", "?"), 0) + 1
@@ -741,19 +825,39 @@ def summary(store, cfg=None):
         rows = _lines(os.path.join(item_dir(store, item), "catch.jsonl"))
         if rows:
             verdicts += 1
+        seen, descends = set(), None
         for r in rows:
-            if r.get("role") == "return" and r.get("caught") is not None:
+            key = (r.get("sha"), r.get("role"))
+            if key in seen:
+                dupes += 1
+                continue
+            seen.add(key)
+            if r.get("error") or not isinstance(r.get("rows"), list):
+                continue
+            reds = _reds(r)
+            if r.get("role") == "return":
                 rets += 1
-                caught += bool(r["caught"])
-                if r["caught"]:
+                caught += bool(reds)
+                if reds:
                     caught_items.append(item)
-            elif r.get("role") == "done" and r.get("green_at_done") is not None:
+            elif r.get("role") == "done":
+                if descends is None:
+                    descends = descender(source, exam_base(store, item)) or (lambda sha: True)
+                if not descends(r.get("sha")):
+                    off_base += 1
+                    continue
                 done_runs += 1
-                done_green += bool(r["green_at_done"])
+                if reds:
+                    done_red += 1
+                    red_items.append(item)
+                elif all(x.get("kind") == "green" for x in r["rows"]):
+                    done_green += 1
     return {"mode": cfg.get("mode"), "items": len(items), "states": states, "refusal_codes": codes,
             "with_marker_verdict": verdicts, "target": int(cfg.get("shadow_target", 30)),
             "returns_run": rets, "returns_caught": caught, "caught_items": sorted(set(caught_items))[:20],
-            "done_runs": done_runs, "done_green": done_green}
+            "done_runs": done_runs, "done_green": done_green, "done_red": done_red,
+            "done_unclear": done_runs - done_green - done_red, "done_red_items": sorted(set(red_items))[:20],
+            "done_off_base": off_base, "duplicate_rows": dupes}
 
 
 # --------------------------------------------------------------------------------------------------------------- CLI

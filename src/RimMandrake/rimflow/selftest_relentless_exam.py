@@ -20,6 +20,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -257,15 +258,15 @@ def t_shadow(tmp):
     for rec in ({"end": "finish", "sha": wrong, "gen": 1}, {"end": "blind_fail", "detail": "double(3)=3"},
                 {"end": "finish", "sha": right, "gen": 2}, {"end": "done", "sha": right}):
         store.attempt(item, rec)
-    rets, done = E.returns(store.attempts(item))
+    rets, done = E.returns(store.attempts(item), E.descender(repo, base))
     ok([r[0] for r in rets] == [wrong] and done == right, "S1 returns() pairs each Marker return with the sha it returned")
-    rows = E.catch(store, item, None, boxer=local_boxer(repo, tmp))
+    rows = E.catch(store, item, None, boxer=local_boxer(repo, tmp), repo=repo)
     by = {r["role"]: r for r in rows}
     ok(by.get("return", {}).get("caught") is True and by["return"]["red_clauses"] == ["c1"],
        "S2 the exam would have caught the returned candidate (c1 assertion red at it)")
     ok(by.get("done", {}).get("green_at_done") is True, "S3 the exam is green at the done sha")
-    ok(E.catch(store, item, None, boxer=local_boxer(repo, tmp)) == [], "S4 a sha already run is not rerun")
-    s = E.summary(store, CFG)
+    ok(E.catch(store, item, None, boxer=local_boxer(repo, tmp), repo=repo) == [], "S4 a sha already run is not rerun")
+    s = E.summary(store, CFG, repo=repo)
     ok(s["returns_run"] == 1 and s["returns_caught"] == 1 and s["done_green"] == 1 and s["with_marker_verdict"] == 1
        and s["target"] == 30 and s["caught_items"] == [item], "S5 summary counts returns caught toward the 30-item target %s" % s)
     src = open(os.path.join(HERE, "relentless.py"), encoding="utf-8").read()
@@ -344,6 +345,68 @@ def t_run_item(tmp):
     ok(len(E._lines(os.path.join(E.item_dir(store, it), "validation.jsonl"))) == 2, "R5 both VALIDATE verdicts are kept")
 
 
+def t_echoes(tmp):
+    """EXAM_SHADOW_FIX_COUNTS_OWN_ECHOES: (a) concurrent catch writes a sha once and summary counts distinct (item, sha);
+    (b) a done sha older than the exam's base is neither run nor counted; (c) an uncaught exception in the test's own
+    code is not a red."""
+    import threading
+    repo, first, base, right = make_repo(tmp)          # the exam's base is the middle commit; `first` predates it
+    store = R.Store(os.path.join(tmp, "echo"))
+    item = "FOO_DOUBLE_ECHOES_TWICE"
+    d = E.item_dir(store, item)
+    os.makedirs(d)
+    shutil.copytree(files_dir(tmp), os.path.join(d, "files"))
+    E._write(os.path.join(d, "exam.json"), dict(GOOD, item=item, exam_hash="h", base_sha=base))
+    E.set_status(store, item, state="validated", base=base)
+    os.makedirs(store.item_dir(item), exist_ok=True)
+    for rec in ({"end": "done", "sha": first}, {"end": "finish", "sha": base, "gen": 1}, {"end": "blind_fail"},
+                {"end": "finish", "sha": right, "gen": 2}, {"end": "done", "sha": right}):
+        store.attempt(item, rec)
+    old = [{"end": "done", "sha": first}]
+    ok(E.returns(old, E.descender(repo, base))[1] is None and E.returns(old)[1] == first,
+       "E1 returns() drops a done sha that does not descend from the exam's base")
+    inner, gate, entered = local_boxer(repo, tmp), threading.Event(), threading.Event()
+
+    def slow(rules, source, sha, files, item=None, nonce=None):
+        entered.set()
+        gate.wait(10)
+        return inner(rules, source, sha, files, item=item)
+    out = {}
+    ta = threading.Thread(target=lambda: out.setdefault("a", E.catch(store, item, None, boxer=slow, repo=repo)))
+    ta.start()
+    entered.wait(10)
+    tb = threading.Thread(target=lambda: out.setdefault("b", E.catch(store, item, None, boxer=inner, repo=repo)))
+    tb.start()
+    time.sleep(0.3)
+    gate.set()
+    ta.join(60)
+    tb.join(60)
+    rows = E._lines(os.path.join(d, "catch.jsonl"))
+    keys = [(r["sha"], r["role"]) for r in rows]
+    ok(sorted(keys) == sorted({(base, "return"), (right, "done")}) and len(out.get("a", [])) + len(out.get("b", [])) == 2,
+       "E2 two concurrent catches write each (sha, role) once, and never the off-base done %s" % keys)
+    for r in list(rows) + [dict(rows[-1], at="later")] * 3 + [{"sha": first, "role": "done", "rows": [], "green_at_done": True}]:
+        E._append(os.path.join(d, "catch.jsonl"), r)                     # echoes as the old harness wrote them
+    s = E.summary(store, CFG, repo=repo)
+    ok(s["returns_run"] == 1 and s["returns_caught"] == 1 and s["done_runs"] == 1 and s["done_green"] == 1
+       and s["duplicate_rows"] == 5 and s["done_off_base"] == 1,
+       "E3 summary counts distinct (item, sha) and skips a done sha off the exam's base %s" % s)
+    own = ('Traceback (most recent call last):\n  File "/w/tree/.exam/t.py", line 9, in <module>\n    print("%s" % (1, 2))\n'
+           '          ~~~~^~~~~~~~\nTypeError: not all arguments converted during string formatting\n')
+    raised = own.replace("TypeError: not all", "rimbridge_client.RimBridgeError: tools/call failed: Tool x not")
+    product = own.replace("/w/tree/.exam/t.py", "/w/tree/src/foo.py")
+    asserted = own.replace("TypeError: not all arguments converted during string formatting", "AssertionError: FAIL 3 != 6")
+    c = clause("c1", ["python3", ".exam/t.py"], red={"exit": [1]})
+    ok(E.red_kind(c, 1, own).startswith("infra:") and E.red_kind(c, 1, raised).startswith("infra:"),
+       "E4 an uncaught exception in the test's own code (its TypeError, its own raise) is not an assertion red")
+    ok(E.red_kind(c, 1, asserted) == "assert" and E.red_kind(c, 1, product) == "assert" and E.red_kind(c, 1, "FAIL x") == "assert",
+       "E5 an AssertionError, a product-code exception and a plain FAIL exit stay reds")
+    v = E.validate(with_clause(c), lambda argv, patch, t: (1, own, False), ITEM_TEXT)
+    ok(codes(v) == ["RED_NOT_ASSERTION"], "E6 VALIDATE refuses a base red that is the test's own exception %s" % codes(v))
+    bad = {"sha": "x", "role": "done", "rows": [{"clause": "c1", "kind": "assert", "exit": 1, "out": own[-400:]}]}
+    ok(E._reds(bad) == [], "E7 summary re-reads an old 'assert' row that was the test's own exception")
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="selftest_exam_")
     try:
@@ -352,6 +415,7 @@ def main():
         t_maps()
         t_review_fixes()
         t_shadow(tmp)
+        t_echoes(tmp)
         t_on_contract(tmp)
         t_run_item(tmp)
     finally:
