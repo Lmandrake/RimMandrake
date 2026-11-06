@@ -1,0 +1,7 @@
+# mod list: the owner's FULL list (infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml), all five DLC; the proof refuses (exit 2, restage) any smaller running load
+# save: the canonical start ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3 (loaded read-only, never saved). No flyers: the world view draws no pawns.
+# output: D:\ClaudeWork\rimmandrake\art\world_beauty_2026-10-31\live\<view>.png beside the offline set, plus live.json
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --save ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3
+live-site A2: python.exe src/RimMandrake/Utils/live_site.py --save ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3
+live-proof A1: python3 src/RimMandrake/Utils/art/world_beauty_live.py live --clause views < /dev/null
+live-proof A2: python3 src/RimMandrake/Utils/art/world_beauty_live.py live --clause chill < /dev/null

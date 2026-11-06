@@ -20,8 +20,12 @@ to realistic imagery I fear."* ⇒ Gate = `BIOME_PAINT_ONCE_AT_THE_END_1` +
 ## spec (executes after both gates)
 
 1. Inputs: the post-repaint set `D:\ClaudeWork\rimmandrake\art\world_beauty_2026-10-31\`
-   (offline renders with the real faces; no ring, so the ring comes from the prompt), and
-   live captures when `WORLD_BEAUTY_VERIFY_OFFLINE_BEAT_THE_GAME` lands.
+   (offline renders with the real faces; no ring, so the ring comes from the prompt), and the live captures of
+   the same seven views on the real globe (ring, rivers, icons, sea films), made by
+   `WORLD_BEAUTY_VERIFY_OFFLINE_BEAT_THE_GAME` (`src/RimMandrake/Utils/art/world_beauty_live.py live`) beside them in
+   `D:\ClaudeWork\rimmandrake\art\world_beauty_2026-10-31\live\`: `dayside.png`, `terminator_east.png`,
+   `terminator_west.png`, `cap_north.png`, `cap_south.png`, `seas.png`, `chill_flatlight.png` (plus `chill_close.png`
+   and `live.json` with The Chill's measured value). Prefer the live frames for the ring and the seas' real films.
 2. A color→reality mapping table: every worldmap tile color in the seeds mapped
    to what that biome really looks like from orbit, written from the frozen
    sheets (post-repaint this is nearly 1:1 because the biomes will wear their
