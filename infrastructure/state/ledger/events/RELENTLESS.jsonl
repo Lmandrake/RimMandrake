@@ -1212,3 +1212,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:10:30Z","tsn":1793981430406407037}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SEABED_DESCENT_ASCENT_1 A3 (L2), read-only proof","ts":"2026-11-06T16:10:50Z","tsn":1793981450325446356}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:11:05Z","tsn":1793981465891580406}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SLUICE_BOX_PROVE_THE_DAILY_WASH A2 (L2), read-only proof","ts":"2026-11-06T16:13:14Z","tsn":1793981594681334945}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:13:54Z","tsn":1793981634851956055}
