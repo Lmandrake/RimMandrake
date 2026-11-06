@@ -1,0 +1,1 @@
+A JSON registry a proof run writes in the engine's books clone cannot be published by ./publish while books is behind: publish replays the whole file as text and two runs of neighbouring mods conflict, stranding a commit level_books refuses. Merge by key (relentless_books_left.merge_registry) and publish only from level books. BOOKS_REGISTRY_UNSTICK_MOVED_FILE
