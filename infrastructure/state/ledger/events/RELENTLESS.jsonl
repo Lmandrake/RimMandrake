@@ -1020,3 +1020,12 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:25:20Z","tsn":1793960720437470729}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SITTING_GAPS_FIX_READS_BLANK_GRAPHIC_PATHS A1 (L2), read-only proof","ts":"2026-11-06T10:26:29Z","tsn":1793960789620493068}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:29:08Z","tsn":1793960948771291580}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A2 (L2), read-only proof","ts":"2026-11-06T10:31:32Z","tsn":1793961092967370611}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:31:51Z","tsn":1793961111685046881}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A3 (L2), read-only proof","ts":"2026-11-06T10:32:03Z","tsn":1793961123506683494}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:32:22Z","tsn":1793961142591032139}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A4 (L2), read-only proof","ts":"2026-11-06T10:32:34Z","tsn":1793961154771706190}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:32:54Z","tsn":1793961174070452689}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A5 (L2), read-only proof","ts":"2026-11-06T10:33:07Z","tsn":1793961187277652060}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:33:23Z","tsn":1793961203884429387}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A6 (L2), read-only proof","ts":"2026-11-06T10:33:32Z","tsn":1793961212461318762}
