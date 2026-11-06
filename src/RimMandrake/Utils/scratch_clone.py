@@ -814,6 +814,12 @@ def pool_reuse(dest: Path, fetch: bool = False) -> Path | None:
             # a help-* consult clone was gagged (pushurl=read-only-consult, relentless.help_checkout); a worker must push
             # to origin, or its ./publish dies "read-only-consult does not appear to be a git repository"
             git("config", "--unset-all", "remote.origin.pushurl", cwd=dest, check=False)
+            # a clone that last served a relentless lease keeps its fence marker; the new owner's pre-push hook would refuse
+            # every push in that stranger's name (HELPERCLONE_FIX_STALE_FENCE_OF_A_STRANGER). A relentless lease writes its own.
+            try:
+                (dest / ".git" / "relentless.json").unlink()
+            except FileNotFoundError:
+                pass
             try:
                 refresh()
             except Exception:
