@@ -187,7 +187,12 @@ def run(store, kind, fn=None):
                 _write(_path(store, kind, ".json"), t)
                 os.close(fd)        # released under the table lock: a request now sees it free and launches
                 held = False
-                return "done"
+            try:            # the tick that wants this answer reads it now, not at its next heartbeat
+                import relentless_wake
+                relentless_wake.poke("job_" + kind, "gen %d" % gen, root=os.path.dirname(os.path.normpath(store.p(""))))
+            except Exception:  # noqa: BLE001  a wake is a courtesy
+                pass
+            return "done"
     finally:
         if held:
             os.close(fd)

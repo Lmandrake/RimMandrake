@@ -1,0 +1,79 @@
+{
+ "_doc": "relentless_wake.py (RELENTLESS_WIRE_WAKE_ON_STATE_CHANGE). mode live|off. Each cap is a rate cap against a trigger loop on the live tick unit, not a pause: a capped wake is served by rm-relentless.timer's heartbeat (15 s after a tick).",
+ "mode": "live",
+ "_fire_min_gap_s": "Floor between two tick starts the wake makes. Measured 2026-11-06: a tick that does work takes 240-600 s (journal wall_s), so a real tick never meets this floor; only a tick that exits at once (disabled, integrity gate, crash) could restart in a loop, and 10 s bounds that to the heartbeat's own pace (15 s) or better.",
+ "fire_min_gap_s": 10,
+ "_fire_max_per_hour": "Ceiling on wake-made tick starts an hour. Measured 2026-11-06: importing relentless.py costs 0.25-0.34 s (3 runs) and `relentless_wake.py status` 0.02-0.05 s (5 runs); a tick that crashes at once under a poke storm thus costs at most 60 starts x ~0.3 s an hour, then the heartbeat alone runs it.",
+ "fire_max_per_hour": 60,
+ "_serve_min_gap_s": "Floor between two in-tick serves. A serve costs a books sync (measured 1.5 s, py_calls relentless:sync) plus an enrol with a fresh ledger read (measured 11.2 s, relentless:enrol): 20 s keeps a burst of landings to at most ~40% of a tick's time while a close still enrols its dependents within ~35 s.",
+ "serve_min_gap_s": 20,
+ "_serve_max_per_tick": "Ceiling on in-tick serves, from the measured serve cost above: 6 x ~13 s = ~80 s, bounded inside the 1200 s unit timeout even on a tick already slow.",
+ "serve_max_per_tick": 6,
+ "_clock_keys": "Every relentless_rules.json key that is still a clock after RELENTLESS_WIRE_WAKE_ON_STATE_CHANGE, with the measured reason it stays one. Kept here, not in relentless_rules.json, because that file is edited only by each key's owning package. selftest_relentless_wake checks every name resolves to a live key. kind: ceiling (bounds a process or worker that emits no event), throttle (cost or attention), window (a measurement span), backoff_owed (should wake on its cause closing: RELENTLESS_REWIRE_BACKOFFS_ON_CAUSE_CLOSE), wp11 (game lane, owned by RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES).",
+ "clock_keys": {
+  "stale_s": {
+   "kind": "ceiling",
+   "why": "Deadman for a worker that has gone silent: silence emits no event to wake on. Measured journal 2026-10-31..11-06 (6.6 days, 751 ticks): 0 worker_stale ends; worker_lost 5 and checker_lost 17 were caught by the pid check, which is event-like already."
+  },
+  "stop_quarantine_s": {
+   "kind": "ceiling",
+   "why": "Already event-driven: each tick's fx.alive check releases the item the moment its process is gone. 600 s only bounds a process that will not die. Measured journal 2026-10-31..11-06 (6.6 days, 751 ticks): 8 quarantine alarms."
+  },
+  "pool_parked_release_s": {
+   "kind": "ceiling",
+   "why": "Clone retention, not a wait for work: a put-down row is released at 0 s already, so no item waits on this clock; it only keeps a parked clone warm for its own item's return. Nothing to wake on."
+  },
+  "breaker_ack_min": {
+   "kind": "throttle",
+   "why": "Attention throttle on the owner-facing breaker alarm. Measured journal 2026-10-31..11-06 (6.6 days, 751 ticks): 15 breaker_emergency alarms; breaker.json opens {} at measurement time."
+  },
+  "circling.help_cool_h": {
+   "kind": "throttle",
+   "why": "Cost throttle on paid fresh-eyes consults per item. Measured journal 2026-10-31..11-06 (6.6 days, 751 ticks): 64 help waits; the cool-down bounds repeat spend on one stuck item."
+  },
+  "circling.help_wait_s": {
+   "kind": "ceiling",
+   "why": "Upper bound on waiting for a helper's reply; the reply itself ends the wait (event). Measured journal 2026-10-31..11-06 (6.6 days, 751 ticks): 64 help waits."
+  },
+  "staffing.hold_s": {
+   "kind": "window",
+   "why": "Length of the clean reading a staffing step needs before rising: a measurement span, not a pause before work."
+  },
+  "unmeasured_recheck_s": {
+   "kind": "backoff_owed",
+   "why": "Measured journal 2026-10-31..11-06 (6.6 days, 751 ticks): 109 unmeasured ends. Should re-run when the cause (instrument, harness item) closes; owed to RELENTLESS_REWIRE_BACKOFFS_ON_CAUSE_CLOSE."
+  },
+  "breaker_cool_s": {
+   "kind": "backoff_owed",
+   "why": "Breaker opens measured journal 2026-10-31..11-06 (6.6 days, 751 ticks) were caused by 'clone already exists' and 'publickey': both clear on an event (clone freed, key restored). Owed to RELENTLESS_REWIRE_BACKOFFS_ON_CAUSE_CLOSE."
+  },
+  "breaker_cool_max_s": {
+   "kind": "backoff_owed",
+   "why": "Cap of breaker_cool_s; same measurement and owed conversion."
+  },
+  "snag_again_wait_h": {
+   "kind": "backoff_owed",
+   "why": "Repeat-snag backoff; a snag's cause closing should end it. Owed to RELENTLESS_REWIRE_BACKOFFS_ON_CAUSE_CLOSE."
+  },
+  "live.round_every_s": {
+   "kind": "wp11",
+   "why": "Game lane, owned by WP-11 (RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES, relentless_game.py broker): its event conversion and measured reason are that package's, not this one's."
+  },
+  "live.unmeasured_retry_s": {
+   "kind": "wp11",
+   "why": "Game lane, owned by WP-11 (RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES, relentless_game.py broker): its event conversion and measured reason are that package's, not this one's."
+  },
+  "game.prove_every_s": {
+   "kind": "wp11",
+   "why": "Game lane, owned by WP-11 (RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES, relentless_game.py broker): its event conversion and measured reason are that package's, not this one's."
+  },
+  "game.renew_s": {
+   "kind": "wp11",
+   "why": "Game lane, owned by WP-11 (RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES, relentless_game.py broker): its event conversion and measured reason are that package's, not this one's."
+  },
+  "tick_game_budget_s": {
+   "kind": "wp11",
+   "why": "Game lane, owned by WP-11 (RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES, relentless_game.py broker): its event conversion and measured reason are that package's, not this one's."
+  }
+ }
+}

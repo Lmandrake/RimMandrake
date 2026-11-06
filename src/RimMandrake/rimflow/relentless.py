@@ -56,6 +56,7 @@ import relentless_dispute  # noqa: E402
 import relentless_breakers  # noqa: E402
 import relentless_incident  # noqa: E402
 import relentless_strikes  # noqa: E402
+import relentless_wake  # noqa: E402
 import relentless_answer  # noqa: E402
 import relentless_attrib  # noqa: E402
 import relentless_explain  # noqa: E402
@@ -7126,16 +7127,34 @@ def _tick(store, fx, r, now, prof):
             except Exception as e:  # noqa: BLE001  the next tick steps every game item anyway
                 acts.append({"do": "error", "item": None, "why": "game_pass %s: %s" % (type(e).__name__, e)})
 
+        synced, woke = [time.time()], {}
+
+        def wake_enrol():
+            """A state change poked this tick (relentless_wake): the dependents of a close enrol now, not at the end."""
+            t = time.time()
+            why = fx.sync()
+            if why:         # the tick's own sync stands: books_alarm says a frozen books at the next tick
+                return {"why": why}
+            synced[0] = t
+            relentless_block.sweep(store, fx, clock(), acts, iso)
+            got = enrol(store, fx, r, now)
+            acts.extend({"do": "enrol", "item": i, "wake": True} for i in got)
+            return got
+
+        def serve_poke():
+            relentless_wake.serve(store.dir, clock(), wake_enrol, acts, woke, wall=wall)
+
         def phase(name, since, wake=True):
             """Seconds this phase took, into the tick's journal row: the next slow tick names its own step. No wake is
             served after the final flush: its writes would go unflushed; game_next or the next tick takes it (r5 #21)."""
             if wake:
+                serve_poke()
                 serve_wake()
             at = wall()
             phases[name] = round(at - since, 1)
             return at
 
-        books_alarm(store, fx, fx.sync(), now, acts, r)
+        books_alarm(store, fx, fx.sync(), now, acts, r)     # `synced` above: pokes before this are read by this tick
         hand_back(store, fx, r, now, acts)       # before any check or launch of this tick: a hand check is never run
         retire(store, fx, store.states(), now, acts, r)
         relentless_block.sweep(store, fx, now, acts, iso)
@@ -7177,6 +7196,7 @@ def _tick(store, fx, r, now, prof):
                                    "why": str(e)[:300]})
                 if wall() - one >= SLOW_STEP_S:
                     slow.append({"item": item, "s": round(wall() - one, 1)})
+                serve_poke()
                 serve_wake()
         if skipped:
             acts.append({"do": "tick_budget", "skipped": skipped, "after_s": int(wall() - began)})
@@ -7210,6 +7230,7 @@ def _tick(store, fx, r, now, prof):
             store.journal({"at": iso(now), "do": "alarm", "kind": "expedite_raised", "why": str(e)[:300]})
         enrol_acts = enrol(store, fx, r, now)
         acts += [{"do": "enrol", "item": i} for i in enrol_acts]
+        relentless_wake.mark_served_through(store.dir, synced[0])     # this enrol read every poke before the last sync
         h = getattr(fx, "_health", None)
         if h:       # what Relentless obeyed this tick; a missing or stale verdict is said here (Operations raises it)
             acts.append({"do": "health", "fresh": h["fresh"], "degraded": h["degraded"], "first": len(h["first"]),

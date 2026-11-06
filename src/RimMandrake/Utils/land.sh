@@ -84,4 +84,7 @@ git update-ref "refs/remotes/$REM/$BR" "$N" 2>/dev/null || true
 if [ "${LAND_SYNC:-1}" != 0 ] && [ "$REM" = origin ] && [ "$BR" = main ] && [ -f "$HERE/seat_sync.py" ]; then
   python3 "$HERE/seat_sync.py" --no-fetch --repo "$REPO" >&2 || echo "land.sh: clone left as is (see above); ./sync once it is safe" >&2
 fi
+# a landed commit may close a blocker: wake Relentless now, not at its next heartbeat (RELENTLESS_WIRE_WAKE_ON_STATE_CHANGE)
+W="$REPO/src/RimMandrake/rimflow/relentless_wake.py"
+[ "$REM" = origin ] && [ "$BR" = main ] && [ -f "$W" ] && { python3 "$W" poke land "$N" >/dev/null 2>&1 || true; }
 echo "PUBLISHED $N"

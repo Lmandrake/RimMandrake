@@ -1,0 +1,12 @@
+# rm-relentless-wake.service: started by rm-relentless-wake.path only. `fire` decides in well under a second:
+# started (tick idle, start it now) | absorbed (a tick runs; it serves the poke itself) | capped (rate cap; the
+# heartbeat timer serves it) | idle (nothing unserved). Decisions that start or cap land in store/wake_fires.jsonl.
+[Unit]
+Description=RimFlow relentless wake: start or hand a poke to the tick (RELENTLESS_WIRE_WAKE_ON_STATE_CHANGE)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/relentless/books
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/python3 /home/mandrake/rm/relentless/books/src/RimMandrake/rimflow/relentless_wake.py fire
+TimeoutStartSec=60

@@ -586,8 +586,23 @@ def _publish(top, paths, msg, cwd=None):
     if label == BRANCH and is_ancestor(top, head, track):
         raise Refuse("nothing to publish: HEAD is already on origin/main")
     sha = land(top)
+    if label == BRANCH:
+        wake_relentless(top, sha)
     print("PUBLISHED %s%s" % (sha, "" if label == BRANCH else "  (on %s)" % label))
     return sha
+
+
+def wake_relentless(top, sha):
+    """A landed commit may close a blocker: Relentless acts on it now, not at its next heartbeat
+    (rimflow/relentless_wake.py, RELENTLESS_WIRE_WAKE_ON_STATE_CHANGE). Only a RimMandrake clone pokes (a test repo has
+    no relentless_wake.py and wakes nobody). Never fails the publish."""
+    w = os.path.join(top, "src", "RimMandrake", "rimflow", "relentless_wake.py")
+    if not os.path.isfile(w):
+        return
+    try:
+        subprocess.run([sys.executable, w, "poke", "publish", sha], capture_output=True, timeout=20)
+    except (OSError, subprocess.SubprocessError):
+        pass
 
 
 def main(argv=None):

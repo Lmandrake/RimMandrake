@@ -1,0 +1,20 @@
+# rm-relentless-wake.path: a state change wakes Relentless in seconds (RELENTLESS_WIRE_WAKE_ON_STATE_CHANGE).
+# Watches the Relentless store's wake/ directory, where publish.py and land.sh (after every PUBLISHED) and
+# relentless_jobs.py (after a detached job ends) drop one small poke file each (rimflow/relentless_wake.py poke).
+# A poke starts rm-relentless-wake.service, which starts the tick unit when idle or leaves the poke for the running
+# tick to serve at its next phase/step boundary. rm-relentless.timer stays as the heartbeat for anything missed.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-relentless-wake.{path,service} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-relentless-wake.path
+[Unit]
+Description=RimFlow relentless wake on a state change (RELENTLESS_WIRE_WAKE_ON_STATE_CHANGE)
+
+[Path]
+PathChanged=/home/mandrake/rm/relentless/store/wake
+MakeDirectory=yes
+Unit=rm-relentless-wake.service
+# systemd's own guard against a trigger storm; relentless_wake.json caps tick starts far below it
+TriggerLimitIntervalSec=10s
+TriggerLimitBurst=50
+
+[Install]
+WantedBy=paths.target
