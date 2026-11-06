@@ -1,0 +1,12 @@
+{
+ "run_id": "audit_auto_20261106_1351",
+ "test": false,
+ "started": "2026-11-06T13:51:31-08:00",
+ "subjects": [
+  "RSW_Maguana",
+  "RSW_Maligoat__MaligoatMale",
+  "RSW_Manka",
+  "RSW_Nerf__Nerf_f"
+ ],
+ "versions_key": "departures_brief@v3#4e4c26+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v3#2337d2+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
+}

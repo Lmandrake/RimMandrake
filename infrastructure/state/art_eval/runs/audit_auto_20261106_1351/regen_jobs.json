@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RSW_Manka_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Manka",
+  "prompt": "A creature sprite for RimWorld: the manka. Manka (or 'manka cats') were a large predatory feline species native to the planets Tython and Alderaan. Fur-covered quad-tusked quadrupeds, 'manka cats' were considered dangerous by most sentients who encountered them and were often hunted for safety reasons as well as for resources (their tusks were known to have unusual curative properties). Manka cat populations were present on numerous worlds in the Outer Rim Territories (including Kashyyyk) and some tribes have been observed domesticating these creatures as fearsome attack beasts. Visible features it must show: the canon manka cat (see canon entry manka); four tusks; a fur-covered large feline predator. Build and proportions: one heavy, broad-chested, thick-necked cat with a full ruff of fur around the neck and shoulders, wide shoulder mass and sturdy, widely spread forelegs. This same bulk appears in every view. Rear view, seen from behind: the haunches, tail and back are shown, eyes hidden, with the ruff and shoulder mass spreading just as broad as in the front view and the outer forelegs showing at the same wide span, so the rear reads as the same heavy cat as the front. Front and rear views stand at the same height and the same body width. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, keeping the palette and fur colouring of the previous render. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1351",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Manka/Manka"
+ },
+ {
+  "id": "arteval_RSW_Nerf__Nerf_f_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Nerf__Nerf_f",
+  "prompt": "A creature sprite for RimWorld: the nerf, an alien herd livestock animal raised for milk, meat and hide. Build the body from this description. Long, low, barrel-shaped heavy body with a soft rounded back and only a gentle rise at the shoulders, thick short hoofed legs, and a loose-skinned sagging chest and neck. The head is broad and flat-faced, carried low and forward: a wide, low, squared dark muzzle with a flattened snout and widely spaced nostrils, small side-set eyes beneath a heavy sloped brow ridge. Four large curving horns, two stacked pairs, one pair above the other on each side of the skull, each pair sweeping outward and forward at its own angle, the dominant feature of the head and clearly visible at normal zoom. Every horn is dark grey, deep charcoal to slate grey, on every facing: the upper pair and the lower pair share the same dark grey surface, with restrained lighter grey highlights tracing the curvature and the ridged ribbing, and shaded dark bases where the horns meet the skull. The coat is a coarse, patchy, shaggy blanket of hair in mottled warm tan and dull brown with paler flanks, long drooping fringe along the belly and flanks, short sparse hair on the face, shoulders and legs. The tail is a long, bare, hairless rope-like cord ending in a small tuft. Front view: eyes toward the viewer, dark grey horns on both sides of the skull. Side view: the full profile showing the long body, four dark grey horns and rope tail. Rear view, seen from behind: back, haunches and tail, eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1351",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/Nerf/Nerf_m"
+ }
+]
