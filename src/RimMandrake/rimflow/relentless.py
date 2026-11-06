@@ -6735,7 +6735,8 @@ def _game_next_held(store, fx, r, now):
 
 def tick(store=None, fx=None, r=None, now=None):
     """One supervisor pass. Every child process it waits on is tallied into its journal row (relentless_tickprof)."""
-    with relentless_tickprof.Tally() as prof:
+    with relentless_tickprof.Tally() as prof, relentless_tickprof.Sampler() as samp:
+        prof.samp = samp
         return _tick(store, fx, r, now, prof)
 
 
@@ -6924,9 +6925,15 @@ def _tick(store, fx, r, now, prof):
         if acts:
             store.journal({"at": iso(now), "do": "tick", "wall_s": int(wall() - whole), "phases": phases,
                            "slow_steps": sorted(slow, key=lambda x: -x["s"])[:5], "proc_s": prof.total(),
-                           "proc": prof.top(), "acts": acts})
+                           "proc": prof.top(), "py_calls": _samp_top(prof, "calls"),
+                           "py_leaves": _samp_top(prof, "leaves"), "acts": acts})
         relentless_integrity.mark_clean(store, fx, now)
         return acts
+
+
+def _samp_top(prof, which):
+    samp = getattr(prof, "samp", None)
+    return samp.top(which) if samp else []
 
 
 def stats(store, fx=None):

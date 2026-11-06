@@ -10,6 +10,7 @@ add up, so the total may exceed the tick's wall time.
 """
 import os
 import subprocess
+import sys
 import threading
 import time
 
@@ -90,3 +91,74 @@ class Tally:
     def __exit__(self, *exc):
         subprocess.Popen.__init__, subprocess.Popen.wait = _BASE
         return False
+
+
+class Sampler:
+    """Where the tick's own Python spends its wall clock: a thread looks at the ticking thread's stack every `every` s.
+
+    The child-process tally saw 101 of a 288 s tick (2026-11-06 08:04Z); the rest is in-process and only a stack can
+    name it (py-spy cannot attach: ptrace is closed to the unit's user). Two tallies, in seconds:
+      `calls`: the frame just below `root` (the tick function): which call of the tick costs what;
+      `leaves`: the innermost frame in a rimflow/Utils file (and its caller), with `[child]` appended while it waits on a process.
+    """
+
+    def __init__(self, root="_tick", every=0.25, clock=time.monotonic):
+        self.root, self.every, self.clock = root, every, clock
+        self.calls, self.leaves = {}, {}
+        self.n = 0
+        self._stop = threading.Event()
+        self._ident = None
+        self._t = None
+
+    def _sample(self):
+        f = sys._current_frames().get(self._ident)
+        if f is None:
+            return
+        stack = []
+        while f is not None:
+            stack.append(f)
+            f = f.f_back
+        stack.reverse()                 # outermost first
+        names = [fr.f_code.co_name for fr in stack]
+        if self.root not in names:
+            return
+        i = names.index(self.root)
+        mine = [fr for fr in stack[i:] if _ours(fr.f_code.co_filename)]
+        call = _where(stack[i + 1]) if i + 1 < len(stack) else _where(stack[i])
+        leaf = " < ".join(_where(fr) for fr in reversed(mine[-2:])) if mine else call     # with its caller
+        if any(os.path.basename(fr.f_code.co_filename) == "subprocess.py" for fr in stack[i:]):
+            leaf += " [child]"
+        self.n += 1
+        self.calls[call] = self.calls.get(call, 0) + 1
+        self.leaves[leaf] = self.leaves.get(leaf, 0) + 1
+
+    def _run(self):
+        while not self._stop.wait(self.every):
+            try:
+                self._sample()
+            except Exception:  # noqa: BLE001  a profiler never costs the tick
+                pass
+
+    def top(self, which, k=TOP):
+        rows = sorted(getattr(self, which).items(), key=lambda x: -x[1])[:k]
+        return [{"at": a, "s": round(c * self.every, 1)} for a, c in rows]
+
+    def __enter__(self):
+        self._ident = threading.get_ident()
+        self._t = threading.Thread(target=self._run, name="tickprof-sampler", daemon=True)
+        self._t.start()
+        return self
+
+    def __exit__(self, *exc):
+        self._stop.set()
+        if self._t is not None:
+            self._t.join(timeout=2)
+        return False
+
+
+def _ours(path):
+    return "/rimflow/" in path or "/Utils/" in path
+
+
+def _where(fr):
+    return "%s:%s" % (os.path.basename(fr.f_code.co_filename).replace(".py", ""), fr.f_code.co_name)

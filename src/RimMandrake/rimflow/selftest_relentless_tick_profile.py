@@ -85,10 +85,35 @@ def t_tick_row():
     ok(isinstance(row.get("proc_s"), float) and row["proc_s"] >= cmds.get("git version", {}).get("s", 0),
        "and the total of child seconds: %s" % row.get("proc_s"))
     ok((subprocess.Popen.__init__, subprocess.Popen.wait) == P._BASE, "the tick leaves subprocess unpatched")
+    ok(isinstance(row.get("py_calls"), list) and isinstance(row.get("py_leaves"), list),
+       "the row carries the in-process tallies too")
+
+
+def t_sampler():
+    """The in-process half: a tick's Python time is named by the call of the tick that spent it."""
+    import time as _t
+
+    def hot_call():
+        end = _t.monotonic() + 0.6
+        while _t.monotonic() < end:
+            pass
+
+    def _tick():
+        hot_call()
+        subprocess.run(["sleep", "0.3"])
+
+    with P.Sampler(every=0.02) as s:
+        _tick()
+    calls = {r["at"]: r["s"] for r in s.top("calls")}
+    leaves = {r["at"]: r["s"] for r in s.top("leaves")}
+    ok(calls.get("selftest_relentless_tick_profile:hot_call", 0) >= 0.3,
+       "the sampler names the tick's hot call: %s" % calls)
+    ok(any(k.endswith("[child]") and "_tick" in k for k in leaves), "and marks time spent waiting on a child: %s" % leaves)
+    ok(not s._t.is_alive(), "the sampler thread ends with the tick")
 
 
 def main():
-    for t in (t_label, t_tally, t_tick_row):
+    for t in (t_label, t_tally, t_tick_row, t_sampler):
         t()
     print("selftest_relentless_tick_profile: %s" % ("OK" if not FAILS else "FAILED %d" % len(FAILS)))
     return 1 if FAILS else 0
