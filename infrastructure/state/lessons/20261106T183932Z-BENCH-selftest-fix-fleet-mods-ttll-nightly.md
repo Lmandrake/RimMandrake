@@ -1,0 +1,1 @@
+SELFTEST_FIX_FLEET_MODS_TTLL: a nightly-red ops alarm item can be spawned after a drain batch already fixed it (26236a8ac9 fixed selftest_live_retired naming rm-fleetwatch.timer at 06:19; the alarm item filed 13:47). Rerun the test at HEAD and git log -S the flagged name before editing anything.
