@@ -256,6 +256,46 @@ _saves, _gp.SAVES = _gp.SAVES, _dir
 check("RETIRED: save_mod_ids reads a header, lowercased", L.save_mod_ids("S") == ["ludeon.rimworld", "mlie.advancedbiomes"])
 check("RETIRED: save_mod_ids of no file is None", L.save_mod_ids("NoSuchSave") is None)
 _gp.SAVES = _saves
+# --stage-with (GAMEENV_FIX_PROOFSITE_DFFDAFCB_ITEMS_WAIT): the mod's stager builds its scene in the running game, nothing saved
+scenes = []
+real_scene = L.run_scene_stager
+
+
+def _scene(rc, line="READY: scene"):
+    def go(path, max_ticks, timeout_s):
+        scenes.append((path, max_ticks, timeout_s))
+        return rc, line
+    return go
+
+
+L.run_scene_stager = _scene(0)
+buf = io.StringIO()
+with contextlib.redirect_stdout(buf):
+    rc, log = run(["--needs", "7f.alienworlds", "--without", "oblitus.mylittleplanet", "--game", "--stage-with", "FlowWorks", "--max-seconds", "2100"])
+check("--stage-with: runs FlowWorks' stager with its limit and READY (%s)" % scenes,
+      rc == L.READY and len(scenes) == 1 and scenes[0][2] == 2100
+      and scenes[0][0].endswith(os.path.join("FlowWorks", "stage_proof_site.py")))
+scenes.clear()
+L.run_scene_stager = _scene(2, "NOT READY: the staged scene reads links=3 < 100")
+buf = io.StringIO()
+with contextlib.redirect_stdout(buf):
+    rc, log = run(["--game", "--stage-with", "FlowWorks"])
+check("--stage-with: a stager that fails -> NOT READY, its reason in the LAST line (the row's why)",
+      rc == L.NOT_READY and "links=3 < 100" in buf.getvalue().strip().splitlines()[-1])
+scenes.clear()
+L.run_scene_stager = _scene(0)
+with contextlib.redirect_stdout(io.StringIO()):
+    rc, log = run(["--needs", "no.such.mod", "--game", "--stage-with", "FlowWorks"])
+check("--stage-with: a load that fails its --needs stages nothing", rc == L.NOT_READY and not scenes)
+for bad in (["--game", "--stage-with", "NoSuchMod"], ["--menu-dwell", "5", "--stage-with", "FlowWorks"]):
+    try:
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            L.main(bad)
+        refused = False
+    except SystemExit as e:
+        refused = e.code == 2
+    check("--stage-with refuses %s" % bad, refused)
+L.run_scene_stager = real_scene
 
 # --restage-with (ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP): a refused fixture is re-made on the running list, then loaded
 staged = []

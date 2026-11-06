@@ -8,7 +8,8 @@ bars are re-measured with no off-map drain. pipe_levelling_perf_proof.py now bui
 and refuses a verdict on a draining one; a fresh 200-rig interior scene costs ~1 h of serial hose lays, over a live proof's
 limit, so this clause takes the other branch the item allows: edge sinks OFF, on the saved 325 scene.
 
-Site: the saved BENCH_r17_midrain (current map map1, 325x325, the 100 hose rigs), loaded by the item's live-site line.
+Site: the fresh 325x325 scene (100 rigs, hose maxLength held at 80), staged in the running game by the item's live-site line
+(src/RimMandrake/FlowWorks/stage_proof_site.py). Not the save BENCH_r17_midrain: every reading on it peaks at links=50.
 Bridge calls, in order:
   1. jawa/map_info                                        the current map must be 325x325 (else exit 2, SITE);
   2. RM_NorthstarProofs.ProofDrainGate                    before: the gate must read True here (shipped setting on) -- the
@@ -20,7 +21,7 @@ Bridge calls, in order:
                                                           (the kernel sinks nothing with it closed); ProofLevelPerf runs
                                                           RM_Levelling.Tick, not the excavation pulse, so `sunk` not above
                                                           s0 is corroboration only (it catches a pulse that ran open);
-  7. (finally) edgeSinksEnabled put back to the value read before step 3.
+  7. (finally) edgeSinksEnabled put back to the value read before step 3, hose maxLength back to the shipped 40.
 ProofLevelPerf runs real RM_Levelling.Tick cycles (water moves); nothing is saved.
 
 Holds when (the A3 bars of pipe_levelling_perf_proof.py, PROVISIONAL, no owner number): msAvg <= 16 ms a cycle, msPerTick
@@ -98,6 +99,13 @@ def _map_size(info):
     return PLA._map_size(info)
 
 
+def put_back_length(s):
+    """Hose maxLength -> shipped, which the site left at 80 (prove_level_alloc's)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import prove_level_alloc as PLA  # noqa: E402
+    PLA.put_back(s)
+
+
 def run(s):
     """The bridge sequence on a connected client `s` (call(tool, params) -> dict). -> (exit code, line). The setting is put
     back in a finally whatever happens after it was set."""
@@ -111,23 +119,26 @@ def run(s):
             p["value"] = value
         return s.call("jawa/mod_settings_field", p) or {}
 
-    size = _map_size(s.call("jawa/map_info", {}) or {})
-    if size != (MAP_SIDE, MAP_SIDE):
-        return judge("", size, "", "", "")
-    before = static("ProofDrainGate")
-    v0 = field("get").get("value")
-    if v0 is None:
-        return 2, "INSTRUMENT ERROR: jawa/mod_settings_field could not read edgeSinksEnabled"
     try:
-        field("set", "False")
-        during = static("ProofDrainGate")
-        warm = static("ProofLevelPerf", str(WARMUP))
-        perf = static("ProofLevelPerf", str(CALLS))
-        after = static("ProofDrainGate")
+        size = _map_size(s.call("jawa/map_info", {}) or {})
+        if size != (MAP_SIDE, MAP_SIDE):
+            return judge("", size, "", "", "")
+        before = static("ProofDrainGate")
+        v0 = field("get").get("value")
+        if v0 is None:
+            return 2, "INSTRUMENT ERROR: jawa/mod_settings_field could not read edgeSinksEnabled"
+        try:
+            field("set", "False")
+            during = static("ProofDrainGate")
+            warm = static("ProofLevelPerf", str(WARMUP))
+            perf = static("ProofLevelPerf", str(CALLS))
+            after = static("ProofDrainGate")
+        finally:
+            back = field("set", str(v0)).get("success") is not False
     finally:
-        field("set", str(v0))
+        put_back_length(s)
     rc, line = judge(perf, size, before, during, after)
-    return rc, line + " | warm-up: " + warm.strip()[:160] + " | setting put back to " + str(v0)
+    return rc, line + " | warm-up: " + warm.strip()[:160] + (" | setting put back to " if back else " | SETTING NOT PUT BACK, it was ") + str(v0)
 
 
 def main() -> int:

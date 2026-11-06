@@ -48,8 +48,45 @@ CASES = [
 ]
 
 
+class Rec:
+    """A client recording its calls; `boom` raises on every call."""
+    def __init__(self, boom=False):
+        self.calls, self.boom = [], boom
+
+    def call(self, tool, params=None):
+        self.calls.append((tool, params))
+        if self.boom:
+            raise RuntimeError("bridge gone")
+        return {}
+
+
+def site_cases():
+    """-> [(name, ok)]: the proof line stands on the staged scene, not the save, and the proof puts maxLength back."""
+    out = []
+    r = Rec()
+    P.put_back(r)
+    out.append(("put_back sets hose maxLength to the shipped 40",
+                r.calls == [("jawa/mod_settings_field", {"typeName": P.HOSE_SETTINGS, "action": "set", "field": "maxLength", "value": "40"})]))
+    P.put_back(None)
+    out.append(("put_back with no client does not raise (reaching this line is the check)", True))
+    P.put_back(Rec(boom=True))
+    out.append(("put_back on a dead bridge does not raise over the reading (reaching this line is the check)", True))
+    for item in ("LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR", "PERF_SCENE_REMEASURE_BASINS_OFF_EDGE"):
+        text = (ROOT / "infrastructure/state/live_proofs" / (item + ".txt")).read_text(encoding="utf-8")
+        site = [ln for ln in text.splitlines() if ln.startswith("live-site A1:")]
+        out.append((f"{item}: the site stages the scene, with the time it needs",
+                    len(site) == 1 and "--game --stage-with FlowWorks --max-seconds" in site[0]))
+        out.append((f"{item}: the site loads no r17 (it peaks at links=50)", len(site) == 1 and "--save" not in site[0]))
+    src = (HERE / "prove_level_alloc.py").read_text(encoding="utf-8")
+    out.append(("the links gate and the bar stand", P.MIN_LINKS == 100 and P.BAR_KB == 1024.0 and "finally:\n        put_back(s)" in src))
+    return out
+
+
 def main() -> int:
     bad = 0
+    for name, ok in site_cases():
+        bad += not ok
+        print(f"{'ok ' if ok else 'BAD'} {name}")
     for name, text, size, want in CASES:
         rc, line = P.judge(text, size)
         ok = rc == want

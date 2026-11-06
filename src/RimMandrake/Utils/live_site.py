@@ -8,6 +8,7 @@
     python.exe src/RimMandrake/Utils/live_site.py --game
     python.exe src/RimMandrake/Utils/live_site.py --without oblitus.mylittleplanet --needs 7f.alienworlds --save NAME --ignore-missing-mods
     python.exe src/RimMandrake/Utils/live_site.py --save rm_proof_atmosphere --restage-with AtmosphericBase
+    python.exe src/RimMandrake/Utils/live_site.py --needs mandrake.rm.flowworks --game --stage-with FlowWorks --max-seconds 2100
 
 --powered (GAMEENV_FIX_PROOFSITE_28883863_ITEMS_WAIT): after the site is made, the map holds at least one building of the
 PowerTrader group. BATCHREADS_BUILD_ROUND_TRIP_CUT's power clause read the first 300 BuildingArtificial of a quicktest map
@@ -63,6 +64,12 @@ A plain --save refused save.missing_mods is retried with ignoreModCompatibility 
 save's header, on neither the running load nor ModsConfig.FULL.LATEST.xml (GAMEENV_FIX_HARNESS_A412C1DF_ITEMS_WAIT: the
 canonical start records 11 mods retired after it was saved, so no list could ever load it). A missing mod still on the
 full list means the running load is short: that stays NOT READY, as does anything unread.
+
+--stage-with MOD (GAMEENV_FIX_PROOFSITE_DFFDAFCB_ITEMS_WAIT; with a site that leaves a map): after the site is up,
+src/RimMandrake/<MOD>/stage_proof_site.py builds its scene in the running game and saves nothing, for a scene a save cannot
+carry (BENCH_r17_midrain reads at most 50 levelling links after a load; the 100 of record were never reloaded). Its last line
+is the reason when it fails. --max-seconds N is its limit (default 900); relentless_live gives the whole site N + 120 s
+(proof_budget), so a site line that needs more than site_max_s says so in the line.
 
 Exit 0 the scene is up (read back), 2 it could not be made (UNMEASURED; never 1: a site is not a verdict).
 Runs under Windows Python: RimBridge binds Windows loopback.
@@ -237,6 +244,19 @@ def run_stager(path, save):
     r = subprocess.run([sys.executable, path, "--save", save], capture_output=True, text=True, timeout=900)
     print(((r.stdout or "") + (r.stderr or "")).strip()[-800:])
     return r.returncode
+
+
+def run_scene_stager(path, max_ticks, timeout_s):
+    """--stage-with: the mod's stager builds its scene in the running game -> (exit code, its last line)."""
+    import subprocess
+    try:
+        # it stops itself at timeout_s; the 60 s (inside the 120 relentless_live adds) is for its last calls, never a kill's
+        r = subprocess.run([sys.executable, path, "--max-ticks", str(max_ticks), "--max-seconds", str(timeout_s)],
+                           capture_output=True, text=True, timeout=timeout_s + 60, stdin=subprocess.DEVNULL)
+    except subprocess.TimeoutExpired:
+        return NOT_READY, "ran past --max-seconds %d" % timeout_s
+    print(((r.stderr or "") + (r.stdout or "")).strip()[-800:])
+    return r.returncode, ((r.stdout or "").strip().splitlines() or [(r.stderr or "").strip()[-200:]])[-1][:200]
 
 
 def load_save(a):
@@ -543,7 +563,14 @@ def main(argv=None):
     ap.add_argument("--restage-with", metavar="MOD",
                     help="--save of a %s* fixture: when the load is refused, re-make the save on the running list with "
                          "src/RimMandrake/<MOD>/stage_proof_site.py, then load it" % RESTAGE_PREFIX)
+    ap.add_argument("--stage-with", metavar="MOD",
+                    help="then src/RimMandrake/<MOD>/stage_proof_site.py builds its scene in the running game; nothing is saved")
+    ap.add_argument("--max-seconds", type=int, default=900, help="--stage-with: the stager's limit (relentless_live adds 120 s)")
     a = ap.parse_args(argv)
+    if a.stage_with and not stager_path(a.stage_with):
+        ap.error("--stage-with %s: no src/RimMandrake/%s/stage_proof_site.py" % (a.stage_with, a.stage_with))
+    if a.stage_with and a.menu_dwell is not None:
+        ap.error("--stage-with needs a map: not with --menu-dwell")
     if (a.ignore_missing_mods or a.restage_with) and not a.save:
         ap.error("--ignore-missing-mods and --restage-with need --save")
     if a.restage_with and not a.save.startswith(RESTAGE_PREFIX):
@@ -569,6 +596,11 @@ def main(argv=None):
         if rc == READY and a.powered:
             with connect(60) as rb:
                 rc = ensure_powered(rb)
+        if rc == READY and a.stage_with:
+            rc, line = run_scene_stager(stager_path(a.stage_with), a.max_ticks, a.max_seconds)
+            if rc != 0:
+                print("NOT READY: the %s stager could not make its scene (exit %s): %s" % (a.stage_with, rc, line))
+                return NOT_READY
         return rc
     except Exception as e:      # noqa: BLE001  any bridge failure is a site not made, never a verdict
         print("NOT READY: %s: %s" % (type(e).__name__, str(e)[:300]))

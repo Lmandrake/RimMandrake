@@ -1,5 +1,6 @@
-# site: the saved r17 scene; its current map is map1 (325x325, 100 hose rigs). It was saved on the full list (321 mods):
-# --ignore-missing-mods lets a smaller FlowWorks list load it; a scene that lost rigs reads links < 100 = UNMEASURED/SITE.
+# site: the fresh 325x325 scene (100 rigs) round5 measured, staged in the running game and read without a reload: a save cannot
+# carry it (BENCH_r17_midrain peaks at links=50 on every list, GAMEENV_FIX_PROOFSITE_DFFDAFCB_ITEMS_WAIT). --max-seconds: the
+# staging runs longer than the default site limit.
 live-mods: FlowWorks
-live-site A1: python.exe src/RimMandrake/Utils/live_site.py --needs mandrake.rm.flowworks --save BENCH_r17_midrain --ignore-missing-mods
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --needs mandrake.rm.flowworks --game --stage-with FlowWorks --max-seconds 2100
 live-proof A1: python.exe src/RimMandrake/bridgetools/prove_level_alloc.py < /dev/null

@@ -6,14 +6,15 @@ against the 1024 KB bar. Done when (item note 2026-10-29) LEVEL_PERF_ALLOC passe
 the current build; round5 (2026-10-26, FlowWorks fa833277f8) read 428.4 KB at 100 rigs
 (infrastructure/state/evidence/LEVEL_STAGING_DIAGNOSE_FREEZE_ON_BIG_MAP/perf_L0_timed.txt).
 
-Site: the saved BENCH_r17_midrain (its current map is map1, 325x325, the 100 hose rigs), loaded by the item's live-site
-line. This script then makes these bridge calls:
+Site: the scene round5 measured, re-made in the running game by the item's live-site line (src/RimMandrake/FlowWorks/
+stage_proof_site.py: a fresh 325x325 map, 100 rigs, hose maxLength held at 80). Not the save BENCH_r17_midrain: every reading
+on it peaks at links=50 (GAMEENV_FIX_PROOFSITE_DFFDAFCB_ITEMS_WAIT). This script then makes these bridge calls:
   1. jawa/map_info                              the current map must be 325x325 (else the site is wrong: exit 2);
   2. RM_NorthstarProofs.ProofLevelPerf("4")     warm-up cycles, not judged (the first cycle after a load rebuilds hose
                                                 links and components, a one-off cost that is not per-cycle steady state);
   3. RM_NorthstarProofs.ProofLevelPerf("20")    the measured run, the same instrument and call count as round5.
 ProofLevelPerf runs real RM_Levelling.Tick cycles on the current map (water moves, as the game would move it 20 cycles
-later); it writes no save and changes no setting.
+later); it writes no save. Last, whatever happened, it puts hose maxLength back to the shipped 40 the site left at 80.
 
 Holds when: allocKBAvg <= 1024 (the LEVEL_PERF_ALLOC bar, pipe_levelling_perf_proof.py), measured over >= 10 calls with
 no GC inside them (allocCalls; GC.GetTotalMemory is a lower bound, meaningful only in a GC-free call), and links >= 100
@@ -35,12 +36,14 @@ MIN_LINKS = 100
 MIN_ALLOC_CALLS = 10
 MAP_SIDE = 325
 CALLS, WARMUP = 20, 4
+HOSE_SETTINGS = "RimMandrake.FlowWorks.Hose.RM_HoseSettings"
+SHIPPED_MAX_LENGTH = "40"   # HoseMath.DefaultMaxLength; the site holds 80 so a hose reaches the far lip
 
 
 def judge(perf_text: str, map_size=None) -> tuple[int, str]:
     """(ProofLevelPerf("20") text, (x, z) of the current map) -> (exit code, verdict line). Pure, testable offline."""
     if map_size is None or tuple(map_size) != (MAP_SIDE, MAP_SIDE):
-        return 2, f"SITE: current map is {map_size}, need {MAP_SIDE}x{MAP_SIDE} (load BENCH_r17_midrain, map1)"
+        return 2, f"SITE: current map is {map_size}, need {MAP_SIDE}x{MAP_SIDE} (the site line stages it: FlowWorks/stage_proof_site.py)"
     m = PERF.search(perf_text or "")
     if not m:
         return 2, f"INSTRUMENT ERROR: no LEVELPERF line in {perf_text!r:.300}"
@@ -77,8 +80,24 @@ def _map_size(info: dict):
     return None
 
 
+def put_back(session) -> None:
+    """Hose maxLength -> shipped. Never changes the verdict: the reading is already taken, and a game that cannot answer here
+    is restarted by the lane anyway. None: the bridge never opened, so nothing can be asked."""
+    if session is None:
+        return
+    try:
+        # restore-check: ok this IS the restore of the 80 the live-site line left; both proofs call it in a finally
+        r = session.call("jawa/mod_settings_field", {"typeName": HOSE_SETTINGS, "action": "set", "field": "maxLength",
+                                                     "value": SHIPPED_MAX_LENGTH})
+        if isinstance(r, dict) and r.get("success") is False:
+            print(f"note: hose maxLength not put back: {str(r)[:160]}")
+    except Exception as e:  # noqa: BLE001
+        print(f"note: hose maxLength not put back: {type(e).__name__}: {e}")
+
+
 def main() -> int:
     sys.path.insert(0, str(ROOT / "src/RimMandrake/Utils"))
+    s = None
     try:
         import rimbridge_client as rb  # noqa: E402
         host, port, token = rb.resolve_endpoint()
@@ -96,6 +115,8 @@ def main() -> int:
     except Exception as e:  # noqa: BLE001 - any bridge failure is an instrument error, never a verdict
         print(f"INSTRUMENT ERROR: {type(e).__name__}: {e}")
         return 2
+    finally:
+        put_back(s)
     rc, line = judge(texts[1], size)
     print(line + " | warm-up: " + texts[0].strip()[:200])
     return rc

@@ -2068,7 +2068,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
             if crashed is None and code is None and site:
                 slog = log[:-len(".log")] + "-site.log"
                 row["site_log"] = slog
-                sc = run_launched(fx, site, slog, lr["site_max_s"])
+                sc = run_launched(fx, site, slog, proof_budget(site, lr["site_max_s"]))
                 if sc != 0:
                     crashed = asked_reload(slog) or "site not prepared: %s" % (
                         last_line(slog) or ("timed out" if sc is None else "exit %d" % sc))

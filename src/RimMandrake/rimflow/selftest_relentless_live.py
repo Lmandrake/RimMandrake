@@ -157,6 +157,27 @@ class ScriptFx(FakeFx):
         return code
 
 
+def t_site_line_may_ask_for_more_time():
+    """GAMEENV_FIX_PROOFSITE_DFFDAFCB_ITEMS_WAIT: staging the 100-rig scene runs past the 480 s site limit, so a site line may say
+    how long it needs (--max-seconds, as a proof line may); a plain line keeps the limit, and the real site line passes the gate."""
+    class Timed(ScriptFx):
+        def __init__(self, codes):
+            ScriptFx.__init__(self, codes)
+            self.limits = {}
+
+        def run_proof(self, proof, log, timeout):
+            self.limits[proof] = timeout
+            return ScriptFx.run_proof(self, proof, log, timeout)
+
+    long_site = "python.exe src/RimMandrake/Utils/live_site.py --needs mandrake.rm.flowworks --game --stage-with FlowWorks --max-seconds 2100"
+    check("site: the staged scene's line passes the site gate", L.refused_site(long_site) is None, long_site)
+    for site, want in ((long_site, 2220), (SITE, L.DEFAULTS["site_max_s"])):
+        root = tempfile.mkdtemp(prefix="rl_live_")
+        fx = Timed({"python.exe src/RimMandrake/Utils/live_site.py": (0, "READY: scene")})
+        L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000, site=site)
+        check("site: limit %s for %s" % (want, site[-30:]), fx.limits.get(site) == want, fx.limits)
+
+
 def t_site_runs_first_and_gates_the_proof():
     """RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED: HORIZON_CARAVAN's Stillsand probe ran on a Leaning Scrub map; the
     item's live-site line now makes the map first, bridge held, and a site not made is UNMEASURED with no proof run."""
@@ -1412,7 +1433,7 @@ def t_rebuilt_assembly_carries():
 
 
 def main():
-    for t in (t_exit1_that_could_not_ask_is_no_fail, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_menu_item_exit2_asks_its_own_staging, t_menu_wait_on_two_games_stays_a_restage, t_site_runs_first_and_gates_the_proof, t_wsl_interop_flake_retries_once, t_wsl_proof_reruns_under_windows_python,
+    for t in (t_site_line_may_ask_for_more_time, t_exit1_that_could_not_ask_is_no_fail, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_menu_item_exit2_asks_its_own_staging, t_menu_wait_on_two_games_stays_a_restage, t_site_runs_first_and_gates_the_proof, t_wsl_interop_flake_retries_once, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_owner_look_is_no_game_clause, t_def_check_judge, t_unloaded_mod,

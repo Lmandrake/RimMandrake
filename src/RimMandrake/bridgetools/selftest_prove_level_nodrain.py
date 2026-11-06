@@ -56,11 +56,15 @@ check("old deploy (no DRAINGATE) -> INSTRUMENT", P.judge(perf(), S, "REFUSED: Me
 class Fake:
     def __init__(self, fail_at=None, v0=True):
         self.setting, self.sets, self.fail_at, self.sunk = v0, [], fail_at, 2102.9
+        self.lengths = []       # hose maxLength writes, apart from the edge-sink setting's
 
     def call(self, tool, p):
         if tool == "jawa/map_info":
             return {"sizeX": 325, "sizeZ": 325}
         if tool == "jawa/mod_settings_field":
+            if p["field"] == "maxLength":
+                self.lengths.append(p["value"])
+                return {"success": True}
             if p["action"] == "set":
                 self.sets.append(p["value"])
                 self.setting = p["value"] == "True"
@@ -81,6 +85,7 @@ class Fake:
 f = Fake()
 rc, line = P.run(f)
 check("run: sets False then puts True back, PASS", rc == 0 and f.sets == ["False", "True"] and "PASS A1" in line)
+check("run: hose maxLength goes back to the shipped 40 (the site left 80)", f.lengths == ["40"])
 f = Fake(fail_at="ProofLevelPerf")
 try:
     P.run(f)
@@ -88,6 +93,7 @@ try:
 except RuntimeError:
     raised = True
 check("run: a bridge failure mid-timing still puts the setting back", raised and f.sets == ["False", "True"])
+check("run: a bridge failure mid-timing still puts hose maxLength back", f.lengths == ["40"])
 
 
 class NoSet(Fake):
