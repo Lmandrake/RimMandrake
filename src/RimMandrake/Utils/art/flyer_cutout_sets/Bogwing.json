@@ -2,7 +2,7 @@
  "set": "Bogwing",
  "folder": "src/RimStarWars/SWBestiary/Textures/swanimals/Bogwing",
  "prefix": "Bogwing_Flying_",
- "note": "masters: north 4, east 4, south 4 (wings raised; north 2 was a flat donor cartoon). Downstroke half-folds (scale 0.68) to stay on the canvas.",
+ "note": "masters: north 4, east 4, south 4 (wings raised; north 2 was a flat donor cartoon). Downstroke half-folds (scale 0.68) to stay on the canvas. East: near and far wing are separate layers (far wing under the plate, its own hinge at the neck), so the downstroke no longer slices the far wing on the protect edge.",
  "facings": {
   "north": {
    "master": 4,
@@ -139,7 +139,7 @@
    "protect": [
     [
      [
-      196,
+      210,
       124
      ],
      [
@@ -148,11 +148,11 @@
      ],
      [
       256,
-      160
+      170
      ],
      [
-      196,
-      160
+      210,
+      170
      ]
     ]
    ],
@@ -164,23 +164,23 @@
        0
       ],
       [
-       256,
+       180,
        0
       ],
       [
-       256,
+       192,
+       60
+      ],
+      [
+       190,
        118
       ],
       [
-       212,
-       125
-      ],
-      [
-       198,
+       192,
        140
       ],
       [
-       192,
+       188,
        162
       ],
       [
@@ -220,6 +220,71 @@
        4,
        1.0,
        -0.35
+      ],
+      [
+       0,
+       1.0,
+       0.5
+      ]
+     ],
+     "order": "over"
+    },
+    {
+     "poly": [
+      [
+       180,
+       0
+      ],
+      [
+       256,
+       0
+      ],
+      [
+       256,
+       118
+      ],
+      [
+       216,
+       124
+      ],
+      [
+       206,
+       134
+      ],
+      [
+       194,
+       140
+      ],
+      [
+       192,
+       118
+      ],
+      [
+       194,
+       60
+      ]
+     ],
+     "hinge": [
+      204,
+      132
+     ],
+     "sign": 1,
+     "order": "under",
+     "poses": [
+      [
+       0,
+       1.0,
+       1.0
+      ],
+      [
+       0,
+       1.0,
+       0.5
+      ],
+      [
+       0,
+       1.0,
+       -0.2
       ],
       [
        0,
