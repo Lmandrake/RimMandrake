@@ -62,3 +62,12 @@ a_flagship_pick, a_bar_reword.
 ## 2026-11-05 run rm-role-designer-1793909059 (stage 2, apply turn_04 answers)
 - a_flagship_pick, his words (OWNER:1793908883805179759): "The first. But the scorchfruit are rapid after the fire not in two days." -> d_flagship_burn_line (flagship: burn_line), d_scorchfruit_rapid (built already spawns fruit on the fire tick; showcase wording owed at stage 3).
 - a_bar_reword, by card (OWNER:1793908887025855333): "Yes, re-validate" -> d_bar_reworded; walk already carries the new words.
+
+## Sitting 8, 2026-11-05 (run rm-role-designer-1793932378). Stage 2, returned from lock for the root ending
+
+Lock's coverage judge found the approved root still names the cut firebreak. Turn: `turn_05.md`, one ask
+`a_root_ending`, which also carries the Judged-first fruit timing (d_scorchfruit_rapid), since both need his word on
+root text. Fresh-Opus review (rm-judge ab71cb2e083e42a33) round 1 struck the wording: "a two-cell strip holds the
+fire" is false (fire-hawk drops its ember 6 cells out, no home-area check; smoulder relight can start beyond a strip),
+and the sprayer is a short-range splash for reaching the fruit (def text), not field defence. Fixed per its wording.
+The 8 stage-3 coverage gaps (result.rm-role-designer-1793932102.json) are writing work for the next stage-3 run, not asks.
