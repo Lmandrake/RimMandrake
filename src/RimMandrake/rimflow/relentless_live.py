@@ -128,8 +128,12 @@ NO_REASON = re.compile(r"^(?:\$ .*|(?:(?:VERDICT|LIVE|RESULT)\s*:?\s*)?UNMEASURE
 # The readers above read the WHOLE log (live_observe.whole): an 8 KB tail dropped decisive rows above it (GPT 2026-11-04)
 UNDEPLOYED = ("not deployed", "not in the running load")    # retried on another game only (relentless_live_round.due)
 SITE_CMD = re.compile(r"^python\.exe src/RimMandrake/Utils/live_site\.py(?: --[a-z][a-z-]*(?: [A-Za-z0-9_.\-]+)?)+$")
-# rimbridge_client.resolve_endpoint's refusal under WSL python3: the proof never reached the game
-WSL_BRIDGE = ("cannot reach the bridge from WSL", "Re-run under Windows Python")
+# rimbridge_client.resolve_endpoint's refusal under WSL python3: the proof never reached the game. A proof that catches
+# the RimBridgeError and prints only its own "bridge unreachable" line (tickburst_bench 2026-11-06: "UNMEASURED: bridge
+# unreachable (RimBridgeError)" on five clauses, routed as a proof/site defect, GAMEENV_FIX_PROOFSITE_9BC0E9EE_ITEMS_WAIT)
+# is the same refusal: under WSL python3 the Windows-loopback bridge is never reachable, so its python.exe rerun is owed
+WSL_BRIDGE = ("cannot reach the bridge from WSL", "Re-run under Windows Python", "bridge unreachable",
+              "cannot reach the bridge")
 # LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL (owner 2026-11-03: "the checker was unable to measure something, and interpreted
 # that as a wrong value rather than an inability that should have been reported up"). Exit 1 is a FAIL only when the
 # proof asked and the answer missed the bar. A Python traceback also exits 1, and so did proofs that printed their own

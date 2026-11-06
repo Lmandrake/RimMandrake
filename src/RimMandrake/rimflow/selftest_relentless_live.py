@@ -191,6 +191,13 @@ def t_wsl_proof_reruns_under_windows_python():
     check("wsl: rerun under python.exe gives the real verdict", row["outcome"] == "FAIL"
           and proofs == ["python3 src/x/nulltex_probe.py --live A1", "python.exe src/x/nulltex_probe.py --live A1"]
           and row.get("rerun") == proofs[1] and os.path.exists(row["log"][:-4] + "-wsl.log"), (row, proofs))
+    # GAMEENV_FIX_PROOFSITE_9BC0E9EE_ITEMS_WAIT: the real TICKBURST A1 log line, the refusal text swallowed by the proof
+    fx = ScriptFx({"python3 ": (2, "UNMEASURED: bridge unreachable (RimBridgeError)"), "python.exe ": (0, "PASS")})
+    row = L.run(fx, root, "ROT_X", "A2", "python3 src/RimMandrake/Utils/tickburst_bench.py sanity --no-reload < /dev/null",
+                "--compose biomes", {}, now=1_800_000_003)
+    proofs = [c[1] for c in fx.calls if c[0] == "proof"]
+    check("wsl: a swallowed 'bridge unreachable' reruns under python.exe", row["outcome"] == "PASS"
+          and proofs[-1] == "python.exe src/RimMandrake/Utils/tickburst_bench.py sanity --no-reload < /dev/null", (row, proofs))
     fx = ScriptFx({"python3 ": (2, "UNMEASURED: no save loaded")})
     L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_001)
     check("wsl: another exit 2 is not rerun", len([c for c in fx.calls if c[0] == "proof"]) == 1, fx.calls)

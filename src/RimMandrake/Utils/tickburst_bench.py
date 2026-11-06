@@ -1044,7 +1044,7 @@ def main(argv=None):
     try:
         call = real_call()
     except Exception as e:  # noqa: BLE001
-        print("UNMEASURED: bridge unreachable (%s)" % type(e).__name__)
+        print("UNMEASURED: bridge unreachable (%s: %s)" % (type(e).__name__, " ".join(str(e).split())[:300]))
         return 2
     perf = call("jawa/time_perf") or {}
     if "ultraSpeedBoost" not in perf:
