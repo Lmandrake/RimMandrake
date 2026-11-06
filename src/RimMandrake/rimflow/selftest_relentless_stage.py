@@ -38,6 +38,10 @@ PRUNED = ("Armoury          mandrake.rm.armoury\n    -  Defs/Old.xml   (in game,
           "prunes it)\n\nDrift found. Re-run with --apply to deploy.\n")
 
 
+DIED = ("Mono path[0] = ...\nLoading game\nCould not find type named RimMandrake.Armoury.CompFoo from node <li>\n"
+        "Exception in BuildDefs: NullReferenceException\n")
+
+
 class Cursor(object):
     def __init__(self, ops):
         self.ops = ops
@@ -60,8 +64,8 @@ class Cursor(object):
 
 
 class FakeOps(object):
-    def __init__(self, up=True, plan_out=CLEAN, token="ok", bound=400, stubborn=0, fail=None, blind=False):
-        self.up, self.plan_out, self.token, self.bound = up, plan_out, token, bound
+    def __init__(self, up=True, plan_out=CLEAN, token="ok", bound=400, stubborn=0, fail=None, blind=False, log=DIED):
+        self.up, self.plan_out, self.token, self.bound, self.log, self.records = up, plan_out, token, bound, log, []
         self.stubborn, self.fail, self.blind = stubborn, fail or {}, blind
         self.calls, self.t, self.reports = [], 1000.0, []
 
@@ -105,6 +109,12 @@ class FakeOps(object):
 
     def load_bound(self):
         return self.bound
+
+    def log_text(self):
+        return self.log
+
+    def record(self, rec):
+        self.records.append(rec)
 
     def report(self, verb, text, klass=None):
         self.reports.append((verb, text, klass))
@@ -164,7 +174,8 @@ def t_stops():
     ok(v == "snag" and "cannot resolve Foo" in text and "launch" not in tags(ops), "an unresolvable list stops it")
     ops = FakeOps(token="gone")
     v, text = S.run(PLAN, ops)
-    ok(v == "snag" and "died during the load" in text, "a game that dies loading is a snag")
+    ok(v == "snag" and "died during the load" in text and "missing or stale type" in text and "CompFoo" in text,
+       "a game that dies loading on a first exception a rule names is a snag naming it, no LLM: %s" % text[:160])
     ops = FakeOps(stubborn=1)
     v, _ = S.run(PLAN, ops)
     ok(v == "ready" and ("kill", True) in ops.calls, "a game that ignores taskkill is forced after the grace")
@@ -225,7 +236,7 @@ def t_main_run():
             S.main_run(pf, ops, execv=execs)
         except SystemExit:
             pass
-        ok(got and got[0][-1] == "STAGING prompt" and not ops.reports,
+        ok(got and got[0][-1].endswith("STAGING prompt") and "unhandled exception" in got[0][-1] and not ops.reports,
            "an unhandled exception (a blind tasklist) execs the LLM stager, and reports nothing itself")
         ops = FakeOps(blind=True)
 

@@ -13,10 +13,17 @@ staging unit's body, in the same unit shape as a worker, so alive/stop/settle an
     load_policy -> the proofs' live-menu commands, at the main menu before any game -> lane-fix producers ->
     `relentless.py game-ready` (or `snag --class game_stage` on a known stop)
 
-An unhandled exception, and only that, execs the old LLM staging worker (the plan's `fallback` argv, the stage prompt).
+An LLM is launched only for a state the machine has no rule for (LIVE_STAGING_BUILD_STAGEHAND_WITHOUT_TOKENS): an
+unhandled exception, or a game that died loading with a first Player.log exception no rule in KNOWN_DEATHS names (or
+none at all). It execs the plan's `fallback` argv with the stage prompt led by that state and the log's tail. A death a
+rule names is a game_stage snag carrying the first exception: the build's defect, back to its builder, no tokens.
+
+Every step's seconds are recorded, one line per staging, in <RELENTLESS_ROOT>/store/stage_timings.jsonl (stage, total,
+verdict, llm) for PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES; `round` reads the latest for an item (live proof).
 
     relentless_stage.py run --plan <run>.stage.json
     relentless_stage.py holds [--journal <store>/journal.jsonl] [--since ISO] [--json]   staging hold census
+    relentless_stage.py round --item <ID> [--timings F] [--journal F]   0: its last staging ran LLM-free, hold measured
 """
 import argparse
 import calendar
@@ -50,6 +57,49 @@ PLAN_END = re.compile(r"^(Drift found|Everything in sync|Gate:|Nothing to do|Dep
 
 class Stop(Exception):
     """A known reason the staging cannot finish: told as a game_stage snag, never handed to an LLM."""
+
+
+class Unknown(Exception):
+    """A state the machine has no rule for: the one road (with an unhandled exception) to the LLM stager, briefed with
+    the state and the log tail."""
+
+    def __init__(self, state, detail, tail=""):
+        Exception.__init__(self, "%s: %s" % (state, detail))
+        self.state, self.detail, self.tail = state, detail, tail
+
+
+# a load death whose first Player.log exception one of these names is the build's own defect: a snag naming it, no LLM
+KNOWN_DEATHS = (
+    ("a missing or stale type (a DLL not rebuilt, or not deployed)",
+     re.compile(r"Could not find type named|TypeLoadException|MissingMethodException|MissingFieldException|"
+                r"ReflectionTypeLoadException|Could not load file or assembly")),
+    ("a def or XML error", re.compile(r"Config error in|XmlException|XML error|Exception reading .*\.xml")),
+    ("an unresolved def cross-reference", re.compile(r"Could not resolve cross-reference")),
+    ("a patch operation that threw", re.compile(r"PatchOperation.*(Exception|failed)")),
+)
+FIRST_EXC = re.compile(r"Exception|Could not find type named|Config error in|Could not resolve cross-reference|"
+                       r"XML error")
+TAIL_LINES = 60
+
+
+def first_exception(text):
+    """Player.log text -> its first exception-like line (stripped, <=300 chars), or None."""
+    for ln in (text or "").splitlines():
+        if FIRST_EXC.search(ln):
+            return ln.strip()[:300]
+    return None
+
+
+def death_rule(first):
+    """A first exception -> the KNOWN_DEATHS label naming it, or None (no rule: the LLM's)."""
+    for label, rx in KNOWN_DEATHS:
+        if first and rx.search(first):
+            return label
+    return None
+
+
+def tail(text, n=TAIL_LINES):
+    return "\n".join((text or "").splitlines()[-n:])[-6000:]
 
 
 # ---------------------------------------------------------------- the world it acts on (faked in the selftest)
@@ -140,6 +190,27 @@ class Ops(object):
         return self.sh([sys.executable, os.path.join(self.cwd, "src", "RimMandrake", "bridgetools", "build.py"), "--gm",
                         "--apply"], timeout=480)
 
+    def log_text(self):
+        """The Player.log of the session just launched (the launch rewrites it), or "" when unreadable."""
+        if UTILS not in sys.path:
+            sys.path.insert(0, UTILS)
+        from game_paths import PLAYER_LOG
+        try:
+            with open(PLAYER_LOG, encoding="utf-8", errors="replace") as f:
+                return f.read()
+        except OSError:
+            return ""
+
+    def record(self, rec):
+        """One staging's timings line, appended to <RELENTLESS_ROOT>/store/stage_timings.jsonl (relentless.Store's root)."""
+        path = self.plan.get("timings") or timings_path()
+        try:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(rec, sort_keys=True) + "\n")
+        except OSError as e:
+            print("relentless_stage: timings not recorded (%s): %s" % (path, e), file=sys.stderr, flush=True)
+
     def report(self, verb, text, klass=None):
         argv = [sys.executable, os.path.join(self.cwd, "src", "RimMandrake", "rimflow", "relentless.py"), verb,
                 "--item", self.plan["item"], "--gen", str(self.plan["gen"])]
@@ -162,6 +233,29 @@ def plan_hazards(out):
     if not PLAN_END.search(out):
         return "the deploy plan did not finish (no closing line): %s" % out.strip()[-300:]
     return None
+
+
+def timings_path():
+    return os.path.join(os.environ.get("RELENTLESS_ROOT") or os.path.expanduser("~/rm/relentless"), "store",
+                        "stage_timings.jsonl")
+
+
+class Clock(object):
+    """Each step's seconds, in order: lap(name) closes the step begun at the last lap."""
+
+    def __init__(self, ops):
+        self.ops, self.t0, self.last, self.stages = ops, ops.now(), ops.now(), []
+
+    def lap(self, name):
+        t = self.ops.now()
+        self.stages.append([name, int(round(t - self.last))])
+        self.last = t
+
+    def total(self):
+        return int(round(self.ops.now() - self.t0))
+
+    def line(self):
+        return "stages(s): %s" % " ".join(["%s=%d" % (n, s) for n, s in self.stages] + ["total=%d" % self.total()])
 
 
 def _ok(rc, out, what):
@@ -193,14 +287,17 @@ def game_down(ops, log):
     ops.stamp("down")
 
 
-def run(plan, ops):
-    """-> ("ready"|"snag", text). Raises only on what no step handles (the caller's LLM fallback)."""
+def run(plan, ops, clock=None):
+    """-> ("ready"|"snag", text). Raises Unknown on a state no rule names, and anything else only on what no step
+    handles (the caller's LLM fallback, either way). clock: a Clock the caller reads after (each step's seconds)."""
+    clock = clock or Clock(ops)
     t0, log = ops.now(), []
     deadline = t0 + int(plan.get("max_s") or 3600) - MARGIN_S
     groups = [g for g in plan.get("deploy") or [] if g]
     try:
         if plan.get("riders"):      # each rider's build must be in this tree (stage_prompt's ./sync)
             _ok(*ops.sh(["./sync"], timeout=300), what="./sync for the riders' builds")
+            clock.lap("sync")
         for args in groups:         # 1. the plan, read before anything is written
             rc, out = ops.sh([sys.executable, DEPLOY] + args.split(), timeout=480)
             why = plan_hazards(out)
@@ -208,6 +305,7 @@ def run(plan, ops):
                 raise Stop("deploy %s: %s" % (args, why))
             if rc not in (0, 1):
                 raise Stop("deploy plan %s exit %d: %s" % (args, rc, out.strip()[-300:]))
+        clock.lap("deploy_plan")
         want = plan.get("companion")   # the built shas whose companion BridgeTools/JawaBench lacks, or None
         if isinstance(want, str):   # a plan written before COMPANION_DEPLOY_LIVE_ROUND_FORGETS: a source hash, no sha
             raise Stop("the plan's companion is a source hash (%s), not the built shas: a plan from older code; "
@@ -217,11 +315,15 @@ def run(plan, ops):
             if why:
                 raise Stop("build.py here would not deploy a companion holding %s: %s"
                            % (", ".join(w[:12] for w in want), why))
+            clock.lap("companion_check")
         game_down(ops, log)         # 2. down: a DLL cannot be written while the game runs
+        clock.lap("game_down")
         for args in groups:         # 3. apply in the shutdown window: the stale DLLs go with the rest
             _ok(*ops.sh([sys.executable, DEPLOY] + args.split() + ["--apply"], timeout=480), what="deploy --apply " + args)
+        clock.lap("deploy_apply")
         if want:                    # the companion too: no mod deploy writes BridgeTools/JawaBench
             _ok(*ops.companion_build(), what="bridgetools/build.py --gm --apply")
+            clock.lap("companion_build")
         log.append("deployed %s%s" % ("; ".join(groups) or "nothing",
                                       "; companion JawaBench holding %s" % ", ".join(w[:12] for w in want)
                                       if want else ""))
@@ -248,6 +350,7 @@ def run(plan, ops):
             if tog and tog.get("side") == "with" and "." in tog["mod"] and tog["mod"].lower() not in have:
                 raise Stop("the list lacks %s after --enable: the with side of its live-toggle cannot load" % tog["mod"])
             log.append("toggle: %s %s" % (tog["side"], tog["mod"]) if tog else "without %s" % ", ".join(plan["without"]))
+        clock.lap("modlist")
         ops.stamp("loading")        # 5. up, through Steam, waited on the bridge token written after the launch
         cur = ops.cursor()
         _ok(*ops.launch(), what="Steam launch")
@@ -268,9 +371,17 @@ def run(plan, ops):
             return "game process gone"
         got = cur.wait("Bridge token:", budget, abort=abort)
         took = int(ops.now() - t0)
+        clock.lap("load")
         if not got.get("ok"):
-            if gone:
-                raise Stop("the game died during the load (%s); %s" % (got.get("why"), "; ".join(log)))
+            if gone:                # the first exception decides: a rule's is the build's defect, none is the LLM's
+                text = ops.log_text()
+                first = first_exception(text)
+                rule = death_rule(first)
+                if rule:
+                    raise Stop("the game died during the load: %s, first exception: %s; %s"
+                               % (rule, first, "; ".join(log)))
+                raise Unknown("game died loading", "first Player.log exception %s; %s"
+                              % (repr(first) if first else "none", "; ".join(log)), tail(text))
             # still loading at the bound this run can spend: the supervisor waits the load out itself (_load_gate)
             if plan.get("menu_cmds"):   # its proofs would read a launch the main-menu step never sampled
                 raise Stop("still loading after %d s, so the main-menu step never ran (%s)"
@@ -286,6 +397,8 @@ def run(plan, ops):
                 continue
             rc, out = ops.sh(["bash", "-c", cmd], timeout=min(MENU_MAX_S, left))
             log.append("menu `%s` exit %d: %s" % (cmd[:120], rc, " / ".join(out.strip().splitlines()[-3:])[:300]))
+        if plan.get("menu_cmds"):
+            clock.lap("menu")
         for cmd in (plan.get("remedy_cmds") or []):     # 6. the lane fix's producers, once, with the game up
             left = int(REMEDY_TOTAL_S - (ops.now() - t_rem))
             if left < 30:
@@ -293,29 +406,66 @@ def run(plan, ops):
                 continue
             rc, out = ops.sh(["bash", "-c", cmd], timeout=min(REMEDY_MAX_S, left))
             log.append("remedy `%s` exit %d: %s" % (cmd[:120], rc, " / ".join(out.strip().splitlines()[-3:])[:300]))
+        if plan.get("remedy_cmds"):
+            clock.lap("remedy")
         return "ready", "python stager: " + "; ".join(log)
     except Stop as e:
+        clock.lap("stopped")        # the seconds spent in the step that stopped it: the laps still add to the total
         return "snag", "python stager stopped: %s (done so far: %s)" % (e, "; ".join(log) or "nothing")
+
+
+def brief(fallback, state, detail, tail_text, clock_line):
+    """The fallback argv with its stage prompt (the argument after -p) led by the state no rule names and the log tail:
+    the LLM starts from where the machine stopped, the stage prompt's guards still binding it."""
+    fb = list(fallback)
+    lead = ("THE PYTHON STAGER STOPPED ON A STATE IT HAS NO RULE FOR. State: %s. Detail: %s. %s\nStart from here: what "
+            "it already did is listed; do not redo it unless the state needs it.\n--- Player.log tail ---\n%s\n--- end "
+            "of tail ---\n\n" % (state, detail[:1500], clock_line, tail_text or "(empty or unreadable)"))
+    if "-p" in fb and fb.index("-p") + 1 < len(fb):
+        i = fb.index("-p") + 1
+        fb[i] = lead + fb[i]
+    return fb
+
+
+def _record(ops, plan, clock, verdict, llm=None, text=""):
+    ops.record({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(ops.now())), "item": plan.get("item"),
+                "gen": plan.get("gen"), "sha": plan.get("sha"), "verdict": verdict, "llm": llm,
+                "loaded": verdict == "ready" and "STILL LOADING" not in text,
+                "stages": dict(clock.stages), "order": [n for n, _ in clock.stages], "total_s": clock.total()})
 
 
 def main_run(path, ops=None, execv=os.execvp):
     with open(path, encoding="utf-8") as f:
         plan = json.load(f)
     ops = ops or Ops(plan)
+    clock = Clock(ops)
     try:
-        verdict, text = run(plan, ops)
-    except Exception:           # noqa: BLE001  the one road to an LLM: what no step handles
-        tb = traceback.format_exc()
-        print("relentless_stage: unhandled, handing to the LLM stager:\n%s" % tb, file=sys.stderr, flush=True)
+        verdict, text = run(plan, ops, clock)
+    except Exception as e:      # noqa: BLE001  the one road to an LLM: a state no rule names, or what no step handles
+        if isinstance(e, Unknown):
+            state, detail, tl = e.state, e.detail, e.tail
+            last = "%s: %s" % (state, detail[:500])
+        else:
+            tb = traceback.format_exc()
+            state, detail, last = "unhandled exception", tb[-2500:], tb.strip().splitlines()[-1][:600]
+            try:
+                tl = tail(ops.log_text())
+            except Exception:   # noqa: BLE001  a blind log is no reason not to hand over
+                tl = ""
+        print("relentless_stage: %s, handing to the LLM stager:\n%s" % (state, detail), file=sys.stderr, flush=True)
         fb = plan.get("fallback")
+        _record(ops, plan, clock, "llm", llm=state if fb else None)
         try:
             if fb:
+                fb = brief(fb, state, detail, tl, clock.line())
                 execv(fb[0], fb)
             why = "no LLM fallback in the plan"
-        except OSError as e:
-            why = "the LLM fallback would not start: %s" % e
-        ops.report("snag", "python stager crashed and %s: %s" % (why, tb.strip().splitlines()[-1][:600]), "game_stage")
+        except OSError as e2:
+            why = "the LLM fallback would not start: %s" % e2
+        ops.report("snag", "python stager stopped (%s) and %s: %s" % (state, why, last), "game_stage")
         return 1
+    text = clock.line() + "; " + text
+    _record(ops, plan, clock, verdict, text=text)
     rc, out = ops.report("game-ready" if verdict == "ready" else "snag", text,
                          None if verdict == "ready" else "game_stage")
     print("relentless_stage: %s: %s\n%s" % (verdict, text, out.strip()[-300:]), flush=True)
@@ -373,6 +523,38 @@ def holds_report(rows, since=None):
                                                                            min(s), max(s))
 
 
+def last_timing(lines, item):
+    """stage_timings.jsonl lines -> the item's latest record, or None."""
+    got = None
+    for ln in lines:
+        try:
+            d = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(d, dict) and d.get("item") == item:
+            got = d
+    return got
+
+
+def round_verdict(rec, pairs):
+    """An item's latest staging record and its journal hold rows -> (exit, line). 0: it loaded, ready, with no LLM, and
+    its bridge hold is measured (a game_stage..game_staged pair spanning the record); 1: it reached an LLM, snagged or
+    never loaded; 2: UNMEASURED (no record, or no hold pair yet)."""
+    if not rec:
+        return 2, "UNMEASURED: no staging of this item in stage_timings.jsonl"
+    at = _epoch(rec.get("at"))
+    stages = " ".join("%s=%s" % (n, rec.get("stages", {}).get(n)) for n in rec.get("order") or [])
+    if rec.get("llm") or rec.get("verdict") != "ready" or not rec.get("loaded"):
+        return 1, "staging at %s: verdict=%s llm=%s loaded=%s; %s" % (rec.get("at"), rec.get("verdict"), rec.get("llm"),
+                                                                       rec.get("loaded"), stages)
+    hold = [p for p in pairs if at is not None and p["start"] - 60 <= at <= p["end"] + 60]
+    if not hold:
+        return 2, "UNMEASURED: the staging at %s ran LLM-free (%s) but no journal hold pair spans it yet" % (rec["at"], stages)
+    h = hold[-1]["s"]
+    return 0, "staging at %s ran LLM-free; stager %ss (%s); bridge hold %ds (%.1f min; was 9-20 min)" % (
+        rec["at"], rec.get("total_s"), stages, h, h / 60.0)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -383,9 +565,26 @@ def main(argv=None):
                                                      or os.path.expanduser("~/rm/relentless"), "store", "journal.jsonl"))
     p.add_argument("--since", help="ISO time, e.g. the landing of the python stager")
     p.add_argument("--json", action="store_true")
+    p = sub.add_parser("round", help="live proof: the item's last staging ran without an LLM, its hold measured")
+    p.add_argument("--item", required=True)
+    p.add_argument("--timings", default=timings_path())
+    p.add_argument("--journal", default=os.path.join(os.environ.get("RELENTLESS_ROOT")
+                                                     or os.path.expanduser("~/rm/relentless"), "store", "journal.jsonl"))
     a = ap.parse_args(argv)
     if a.cmd == "run":
         return main_run(a.plan)
+    if a.cmd == "round":
+        try:
+            with open(a.timings, encoding="utf-8", errors="replace") as f:
+                rec = last_timing(f, a.item)
+            with open(a.journal, encoding="utf-8", errors="replace") as f:
+                pairs = [p for p in holds(f) if p["item"] == a.item]
+        except OSError as e:
+            print("UNMEASURED: %s" % e)
+            return 2
+        code, line = round_verdict(rec, pairs)
+        print(line)
+        return code
     since = _epoch(a.since) if a.since else None
     with open(a.journal, encoding="utf-8", errors="replace") as f:
         rows = holds(f, since)
