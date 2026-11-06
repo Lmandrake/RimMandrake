@@ -5222,3 +5222,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T18:27:23Z","tsn":1793989643646159336}
 {"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"broken","detail":"Ops alarm QUEUE_STALLED: queues.designer.stalled_min = 86.9 min pending > 0 with no claim, finish or heartbeat (MEASURED), line > 60","ts":"2026-11-06T18:29:42Z","tsn":1793989782836310520}
 {"seat":"RUNNER","event":"raise","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T18:29:46Z","tsn":1793989786019524324}
+{"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"kept","detail":"sweep: running again","ts":"2026-11-06T18:33:07Z","tsn":1793989987023188711}
