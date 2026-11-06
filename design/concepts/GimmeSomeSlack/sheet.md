@@ -21,7 +21,7 @@
 - [leaf:dense_block_tangle] A dense block of conduit reads as one tangled heap of wires and strips
 - [leaf:cords_never_repeat] Cords of the same length do not repeat one shape across a room. OWNER:1793596860187785113
 - [leaf:drawing_true_to_grid] The cords tell the truth about the grid: no cord joins two nets, no phantom second cable at an adjacent-fed pump, no plug in a pipe slot; a cord reaches a building with a pipe port on a diagonal, sliding under it. OWNER:1793895896496551063, OWNER:1792764476096951152
-- [leaf:cut_live_and_dead_ends] A cut leaves two ends and no cord across the gap: the live end sparks, the dead end lies limp
+- [leaf:cut_live_and_dead_ends] A cut leaves two ends and no cord across the gap; an end sparks only while it still reaches a power source, so both spark if each side has its own. An end cut off from all power that sparks is wrong, and so is a powered end drawn limp. OWNER:1793895896496551063
 - [leaf:no_stall_on_rewire] Placing, cutting or digging past a wire, or a mast falling, costs at most 20 ms a frame on a 2000-cell base. OWNER:1792999698321800383
 - [leaf:spans_above_everything] Sagging overhead lines between masts draw above pawns and buildings. OWNER:1793590546413059482
 - [leaf:fallen_span_on_ground] A killed mast or a cut span leaves the wire lying on the ground, live end and dead end distinct

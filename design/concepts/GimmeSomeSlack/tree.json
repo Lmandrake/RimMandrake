@@ -229,7 +229,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "after the cut: no edge spans the gap; two terminal ends; the powered-net end flagged live, the other dead; after switch-off, live flag clears within 250 ticks; captures",
+   "oracle_proposed": "after the cut: no edge spans the gap; two terminal ends; each end flagged live exactly when its PowerNet has a powered source (generator output or stored battery energy), dead otherwise; with a second source on the far side both ends live; after switch-off, an end whose net lost its last source clears within 250 ticks; captures",
    "tier_reason": "destroying a cell and reading PowerNet state needs the running game",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -238,13 +238,14 @@
     "break_live_and_dead_ends_differ"
    ],
    "leaf_kind": "experience",
-   "experience": "The player, at normal zoom after a conduit cell in a powered line is destroyed, sees two loose ends and no cord across the gap: the end still on power sparks, the far end lies limp and dead; switching the source off makes the live end dead within a few seconds. It must not read as an unbroken cord, both ends sparking, or both dead.",
-   "scenario": "A generator, a run of conduit and a lamp; destroy a middle cell; read both terminal ends' state; switch the generator off and wait one 250-tick poll; capture before and after.",
+   "experience": "The player, at normal zoom after a conduit cell in a powered line is destroyed, sees two loose ends and no cord across the gap. Each end sparks only if it still has a path to some power source: in a line fed from one side, the fed end sparks and the far end lies limp and dead; if the far side has its own generator or battery, both ends spark, and that is right. Switching a source off makes an end that loses its last source dead within a few seconds. It must not read as an unbroken cord, as an end cut off from all power that still sparks, or as an end that still has power drawn limp and dead.",
+   "scenario": "A generator, a run of conduit and a lamp; destroy a middle cell; read both terminal ends' state; switch the generator off and wait one 250-tick poll; capture before and after. Second case: a battery on the far side too; cut; both ends read live; switch only the generator off; the near end reads dead, the far end stays live.",
    "false_pass": [
     "the ends drawn but the live/dead state taken from which side is nearer the generator rather than from power",
-    "a line that was never powered reading dead, passing for the switched-off case"
+    "a line that was never powered reading dead, passing for the switched-off case",
+    "only the single-source line tested, so a far side with its own battery reads dead and nobody sees it"
    ],
-   "red": "a cut leaves both ends sparking, or the cord is still drawn across the gap",
+   "red": "a cut leaves an end that has no path to any power source sparking, or an end that still has power drawn dead, or the cord still drawn across the gap",
    "tier_proposed": "quicktest",
    "owner_part": "yes: one cut, a sparking live end and a dead end",
    "by": "concept",

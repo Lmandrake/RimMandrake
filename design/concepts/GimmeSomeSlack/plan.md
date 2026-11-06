@@ -54,3 +54,12 @@ work, nothing new.
 
 `workshop_floor` (6 new) and `yard_of_masts` (5 new), overlap 0; the rest by their own scenes (`coverage_rest`). Showcase 1
 is the workshop floor, his pick by card 2026-11-05 (`d_flagship`, OWNER:1793950666234031543).
+
+## Exam notes
+
+- Stage 4 return (run rm-role-designer-1793953900): both Readers accepted a cut with an unpowered end sparking, because the
+  old red rejected "both ends sparking", which his root allows when each side has its own source.
+  `cut_live_and_dead_ends` now rejects an end cut off from all power that sparks, or a powered end drawn dead, and
+  `sc_cut_ends` adds a far-side battery run. The next exam's control removes a leaf nothing else backs up
+  (`statics_clear_between_games` or `cut_live_and_dead_ends`), not `drawing_true_to_grid`, which his 2026-10-23 words and
+  the walk's red also cover.

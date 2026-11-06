@@ -171,14 +171,15 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_cut_ends",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "quicktest colony, a generator, a conduit run and a lamp, powered and lit (asserted)"
+    "quicktest colony, a generator, a conduit run and a lamp, powered and lit (asserted)",
+    "a second run: generator, conduit, lamp and a charged battery on the far side, both lit (asserted)"
    ],
-   "action": "destroy a middle conduit cell; read both ends; switch the generator off and wait 250 ticks; read again; capture",
-   "expect": "no edge across the gap, the net side live, the far side dead; after switch-off both dead within one poll",
+   "action": "destroy a middle conduit cell of each run; read all four ends; switch both generators off and wait 250 ticks; read again; capture",
+   "expect": "no edge across either gap; run one: the generator side live, the far side dead, and after switch-off both dead within one poll; run two: both ends live after the cut, and after switch-off the generator side dead within one poll while the battery side stays live",
    "control": {
     "case": "a run that was never powered, cut the same way",
-    "expect": "both ends read dead from the start",
-    "rules_out": "ends judged live or dead by distance from the generator rather than by power"
+    "expect": "both ends read dead from the start and never spark",
+    "rules_out": "sparks drawn on every cut end as decoration, whatever the power; together with run two's battery end staying live, it rules out live/dead chosen by distance from the generator"
    },
    "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
    "hold": "immediate"
