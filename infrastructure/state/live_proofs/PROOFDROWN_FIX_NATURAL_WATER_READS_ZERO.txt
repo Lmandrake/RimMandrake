@@ -1,0 +1,5 @@
+# The staged shallows cell JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS failed on (JS3: ProofDrown water=0.00 while ProofSwim read
+# 2.00 on the same cell). After the fix ProofDrown reads RM_SwimWater.WaterMetresAt, so JS3 reads water > 0.45 and under=True.
+# Exit 0 only when JS1-JS4 all PASS; 2 with UNMEASURED when the game is not Playing or the spawn is refused.
+live-mods: FlowWorks, StarWarsRaces, UtinniPatches
+live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/jawa_shallows_proof.py D:/ClaudeWork/rimmandrake/relentless/proofdrown_natural_live.json --fresh-map --cell 120,120 < /dev/null

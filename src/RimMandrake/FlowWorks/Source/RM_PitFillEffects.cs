@@ -131,7 +131,9 @@ namespace RimMandrake.FlowWorks
 			{
 				if (t is Pawn p)
 				{
-					float w = ex.WaterMetresAt(c);
+					// PROOFDROWN_FIX_NATURAL_WATER_READS_ZERO: the natural-aware reader RM_Swim.Tick uses, so a natural brine square
+					// reads its band/solver water here too (ex.WaterMetresAt sees dug cells only and read 0.00 on natural water)
+					float w = Swimming.RM_SwimWater.WaterMetresAt(map, ex, c);
 					return "DROWN " + p.ThingID + " H=" + RM_Drowning.HeightOf(p).ToString("0.00") + " lying=" + RM_Drowning.Lying(p)
 						+ " water=" + w.ToString("0.00") + " under=" + RM_Drowning.HeadUnder(p, w) + " headUp=" + RM_Drowning.KeepsHeadUp(p, c, w)
 						+ " exit=" + RM_Drowning.ExitInReach(map, ex, p, c) + " perCheck=" + RM_Drowning.PerCheck(map, ex, p, c, w).ToString("0.0000");

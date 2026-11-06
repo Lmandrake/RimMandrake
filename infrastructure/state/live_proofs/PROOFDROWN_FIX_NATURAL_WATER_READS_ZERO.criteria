@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map, RM_PitFillEffects.ProofDrown on a standing Jawa mid-pool in natural RM_WaterBrineShallow at 120,120 reads water > 0.45 m (the same water RM_Swim.ProofSwim reads, not 0.00) with under=True (jawa_shallows_proof JS3), and JS1-JS4 all PASS.
