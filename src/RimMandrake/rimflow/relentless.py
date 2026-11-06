@@ -7191,6 +7191,7 @@ def _tick(store, fx, r, now, prof):
         hand_back(store, fx, r, now, acts)       # before any check or launch of this tick: a hand check is never run
         retire(store, fx, store.states(), now, acts, r)
         relentless_block.sweep(store, fx, now, acts, iso)
+        serve_poke()    # a poke waiting at tick start enrols now: live 2026-11-06 the prelude's end came 66 s later
         relentless_reachfix.sweep(store, fx, r, now, acts, iso)     # a blind Judge's repair: probe, apply, or ticket
         reclaim_dead(store, fx, r, now, acts)
         release_parked(store, fx, r, now, acts)

@@ -199,7 +199,17 @@ def t_tick_serves():
             x.w.items["DEP"] = "proposed"
     x.w.sync = sync
     W.poke("publish", "close of BLOCKER", root=x.d, now=x.now)
-    acts = x.tick()
+    seen, real_sweep = [], R.relentless_reachfix.sweep
+
+    def sweep(store, fx, r, now, acts, iso):    # the prelude's first step after the start sync and block sweep
+        seen.append(any(a.get("do") == "wake_serve" for a in acts))
+        return real_sweep(store, fx, r, now, acts, iso)
+    R.relentless_reachfix.sweep = sweep
+    try:
+        acts = x.tick()
+    finally:
+        R.relentless_reachfix.sweep = real_sweep
+    ok(seen == [True], "tick: a poke waiting at tick start is served right after the start sync, not at the prelude's end")
     serve = [a for a in acts if a.get("do") == "wake_serve"]
     ok(len(serve) == 1 and serve[0].get("enrolled") == ["DEP"],
        "tick: a running tick serves the poke and enrols the dependent before its own enrol: %s" % serve)
