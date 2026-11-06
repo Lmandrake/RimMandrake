@@ -255,7 +255,7 @@ def rank_of(iid, c):
 # repairs that unjam the pipeline. Evidence comes first now, words last:
 #   a cause record's repair  an environment-cause repair id (relentless_game.REPAIR_FMT, keyed by the cause's fingerprint),
 #                            or the item a supervisor block of a cause class names ("relentless snag <class>: ..."),
-#                            or an id the caller knows to be one (`repairs`: the store's instrument incidents)
+#                            or the store's instrument incidents (incident_repairs reads instrument_incidents.json; `repairs` adds more)
 #   caused_by a cause        its caused_by chain reaches a cause repair or an alarm item; a caused_by naming a content
 #                            parent (496 open content items on 2026-11-06) or a system item by words only keeps it content
 #   a pipeline kind          kind in pipeline_kinds
@@ -371,14 +371,37 @@ def is_system(item, c, mods, world=None, repairs=None):
     return bool(subject) and (subject[0] in strong | lead or bool(words_of("_".join(subject), "") & (strong - lead)))
 
 
+INCIDENTS_FILE = "instrument_incidents.json"     # relentless_incident.FILE, in the Relentless store
+INCIDENT_LIVE = ("open", "fixture_refused")      # relentless_incident.OPEN, REFUSED: the repair still holds its parents
+
+
+def incidents_path():
+    """The Relentless store's instrument incident book: RM_INSTRUMENT_INCIDENTS, else <RELENTLESS_ROOT>/store/<file>."""
+    return Path(os.environ.get("RM_INSTRUMENT_INCIDENTS") or os.path.join(
+        os.environ.get("RELENTLESS_ROOT") or "/home/mandrake/rm/relentless", "store", INCIDENTS_FILE))
+
+
+def incident_repairs(path=None):
+    """Repair ids of the store's instrument incidents not yet released (OPS_HEALTH_WIRE_INSTRUMENT_INCIDENTS: read here, so
+    no caller has to pass them). A missing book is none; an unreadable one is none too, said nowhere but never raised:
+    the ledger's own cause evidence (cause_repairs) still classes most repairs."""
+    try:
+        incs = json.loads(Path(path or incidents_path()).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return set()
+    if not isinstance(incs, dict):
+        return set()
+    return {k for k, v in incs.items() if isinstance(k, str) and (not isinstance(v, dict) or v.get("status", "open") in INCIDENT_LIVE)}
+
+
 def system_items(world, rules, root, now=None, repairs=None):
     """Open system items, best first: most transitive dependents waiting on it (fan_in weight: dependents weighted by their
     age), then Operations' hand order (system_rank), then a fix that already died once (live_repeats: the class came back,
-    it owes a guard test), then alarm items (system_prefixes), raised, then oldest. `repairs`: cause-repair ids the caller
-    knows beyond the ledger's (cause_repairs)."""
+    it owes a guard test), then alarm items (system_prefixes), raised, then oldest. Cause repairs: the ledger's
+    (cause_repairs), the store's instrument incidents (incident_repairs, read here) and any `repairs` the caller adds."""
     c = conf(rules)
     mods = mod_names(root)
-    rep = cause_repairs(world, c) | set(repairs or ())
+    rep = cause_repairs(world, c) | incident_repairs() | set(repairs or ())
     items = [it for it in world.items.values() if getattr(it, "open", False) and is_system(it, c, mods, world, rep)]
     fan = fan_in(world, now)
     last = len(c["system_rank"])
