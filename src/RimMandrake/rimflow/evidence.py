@@ -27,7 +27,9 @@ Kinds (one schema version, V):
             structured defect lines), session, nonce, reasons_sha256
 
 Only the supervisor writes here (finish's box run, the Marker's verdict, later the live broker). Read with read() /
-verify(); `python3 evidence.py verify|show|marker|harvest`.
+verify(); `python3 evidence.py verify|show|marker|harvest|repair-index`. Every Relentless tick harvests (back-fills a
+Marker verdict whose receipt was not written); `repair-index` removes the unparseable index lines one torn write leaves,
+which otherwise refuse every append after them (dry run by default; --apply backs up first).
 """
 import argparse
 import contextlib
@@ -85,7 +87,7 @@ def sha256_text(text):
 def _lines(path):
     """-> [(lineno, entry or None for an unparseable line)]; [] when the file is not there."""
     try:
-        with open(path, encoding="utf-8") as f:
+        with open(path, encoding="utf-8", errors="replace") as f:     # bytes that are not text: an edited line
             raw = f.read()
     except FileNotFoundError:
         return []
@@ -535,21 +537,35 @@ def _harvest_nonce(chk):
     return "harvest-" + sha256_text(raw)[:24]
 
 
+def _has_nonce(store_dir, item, sha, nonce):
+    """A lock-free pre-filter for harvest: the record already holds this nonce. Only a skip is decided here; an append
+    re-checks the nonce under the lock, so a record changing under this read costs nothing but one locked look."""
+    try:
+        return any(e and e.get("nonce") == nonce for _, e in _lines(record_path(store_dir, item, sha)))
+    except (OSError, ValueError):
+        return False
+
+
 def harvest(store, failures=None):
     """Append every Marker verdict a store item holds now (check.verdict on its candidate's sha) that its record does
     not have yet. -> [(item, sha, verdict)] appended; each one that failed is added to `failures` as (item, reason)
     (the CLI exits 1 when any did: "nothing new" and "every receipt failed" must not look alike). relentless.verdict()
     writes each verdict as it is given (relentless.marker_receipt, the same nonce); this back-fills one whose receipt
-    failed or that predates that wiring."""
+    failed or that predates that wiring. Every Relentless tick runs it (relentless.harvest_receipts), so it must stay
+    cheap when nothing is new: a verdict its record already holds is skipped on one read of that small record, never
+    the index."""
     got = []
     for st in store.states():
         chk, cand = st.get("check") or {}, st.get("candidate") or {}
         if not chk.get("verdict") or not _SHA.match(str(cand.get("sha") or "")):
             continue
+        nonce = chk.get("nonce") or _harvest_nonce(chk)
+        if _ID.match(str(st.get("item") or "")) and _has_nonce(store.dir, st["item"], cand["sha"], nonce):
+            continue
         try:
             e = append_marker(store.dir, st["item"], cand["sha"], chk["verdict"], defects=chk.get("defects") or [],
                               session=chk.get("session"), reasons=chk.get("reasons") or "",
-                              nonce=chk.get("nonce") or _harvest_nonce(chk))
+                              nonce=nonce)
         except (ValueError, OSError) as ex:
             print("evidence: harvest %s: %s" % (st.get("item"), ex), file=sys.stderr)
             if failures is not None:
@@ -558,6 +574,89 @@ def harvest(store, failures=None):
         if e:
             got.append((st["item"], cand["sha"], e["verdict"]))
     return got
+
+
+# ---------------------------------------------------------------- repairing the index
+
+REPAIR_MAX_BAD = 25     # more unparseable index lines than this is damage, not a torn write: refused, a person looks
+
+
+def repair_backup_dir(store_dir):
+    """Beside evidence/, never inside it (records() would read a backup folder as an item)."""
+    return os.environ.get("RM_EVIDENCE_REPAIR_BACKUP_DIR") or os.path.join(store_dir, "evidence_repair")
+
+
+def repair_index(store_dir, apply=False, cap=REPAIR_MAX_BAD, now=None):
+    """One unparseable line in index.jsonl makes every append refuse (its chain breaks at that line), so one torn or
+    stray write stopped every new receipt. This removes ONLY the index lines that are not a JSON object, and only when
+    the index left behind verifies (its chain and its HEAD seal): a parseable line, edited or not, is never touched,
+    and a removal that would not restore the index is refused, never written (that is tampering, not a tear).
+    Dry run unless apply; apply backs the whole index up first (repair_backup_dir) and writes it atomically, 0444.
+    The append lock is held throughout and an interrupted append is completed first (a torn tail that IS a pending
+    append is rolled forward, not removed).
+    -> {"bad": [lineno], "would_verify": bool, "problems_after": [..], "applied": bool, "backup": path|None,
+        "refused": reason|None}"""
+    out = {"bad": [], "would_verify": False, "problems_after": [], "applied": False, "backup": None, "refused": None}
+    if not os.path.isdir(base(store_dir)):
+        out["refused"] = "no evidence store at %s" % base(store_dir)
+        return out
+    ipath = os.path.join(base(store_dir), INDEX)
+    with _locked(store_dir):
+        try:
+            _recover(store_dir)
+        except (TamperError, OSError) as e:
+            out["refused"] = "an interrupted append could not be completed first: %s" % e
+            return out
+        try:
+            with open(ipath, "rb") as f:
+                raw = f.read()
+        except FileNotFoundError:
+            out["refused"] = "no index at %s" % ipath
+            return out
+        kept, bad = [], []
+        for n, chunk in enumerate(raw.split(b"\n")):
+            if not chunk.strip():
+                continue
+            try:
+                line = chunk.decode("utf-8")
+                e = json.loads(line)
+            except ValueError:      # UnicodeDecodeError is a ValueError: bytes that are not text are not a row
+                e = None
+            if not isinstance(e, dict):
+                bad.append(n + 1)
+                continue
+            kept.append(line)       # a whole row with its newline lost (the last line) is kept and terminated
+        out["torn_tail_terminated"] = bool(raw) and not raw.endswith(b"\n") and (len(raw.split(b"\n")) not in bad)
+        out["bad"] = bad
+        rows = [(i + 1, json.loads(x)) for i, x in enumerate(kept)]
+        out["problems_after"] = _index_problems(store_dir, rows)
+        out["would_verify"] = not out["problems_after"]
+        if not bad and not out["torn_tail_terminated"]:
+            out["refused"] = "nothing to repair: every index line parses"
+            return out
+        if len(bad) > cap:
+            out["refused"] = "%d unparseable index lines is more than the cap of %d: damage, not a torn write" % (len(bad), cap)
+            return out
+        if not out["would_verify"]:
+            out["refused"] = "removing the unparseable lines would not make the index verify: %s" % "; ".join(
+                out["problems_after"][:3])
+            return out
+        if not apply:
+            return out
+        stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(now))
+        bdir = os.path.join(repair_backup_dir(store_dir), stamp)
+        _makedirs(bdir)
+        bpath = os.path.join(bdir, INDEX)
+        with open(bpath, "wb") as f:
+            f.write(raw)
+            f.flush()
+            os.fsync(f.fileno())
+        _fsync_dir(bdir)
+        out["backup"] = bpath
+        _replace(ipath, "".join(x + "\n" for x in kept))
+        os.chmod(ipath, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+        out["applied"] = True
+    return out
 
 
 def index_rows(store_dir, since=None):
@@ -593,6 +692,9 @@ def main(argv=None):
     m.add_argument("--nonce")
     m.add_argument("--reasons", default="")
     sub.add_parser("harvest", help="append the Marker verdicts store items hold now")
+    ri = sub.add_parser("repair-index", help="remove unparseable index lines (dry run; --apply backs up and writes)")
+    ri.add_argument("--apply", action="store_true", help="write the repair (a backup of the whole index first)")
+    ri.add_argument("--cap", type=int, default=REPAIR_MAX_BAD, help="refuse above this many unparseable lines")
     a = ap.parse_args(argv)
     d = _store_dir(a)
     if a.cmd == "verify":
@@ -620,6 +722,17 @@ def main(argv=None):
         got = harvest(relentless.Store(os.path.dirname(d)), failed)
         print("evidence: harvested %d Marker verdict(s)%s" % (len(got), ", %d FAILED" % len(failed) if failed else ""))
         return 1 if failed else 0
+    if a.cmd == "repair-index":
+        r = repair_index(d, apply=a.apply, cap=a.cap)
+        print("evidence: repair-index: unparseable lines %s%s; after removal the index %s" % (
+            r["bad"] or "none", " (torn last line terminated)" if r.get("torn_tail_terminated") else "",
+            "verifies" if r["would_verify"] else "does NOT verify: " + "; ".join(r["problems_after"][:3])))
+        if r["refused"]:
+            print("evidence: repair-index REFUSED: %s" % r["refused"])
+            return 0 if r["refused"].startswith("nothing to repair") else 1
+        print("evidence: repair-index %s" % ("APPLIED, backup %s" % r["backup"] if r["applied"]
+                                              else "dry run: nothing written (--apply writes)"))
+        return 0
     return 2
 
 

@@ -1806,6 +1806,23 @@ def marker_receipt(store, item, sha, word, nonce, reasons, defects, session=None
                                                                                       str(ex)[:200]), file=sys.stderr)
 
 
+def harvest_receipts(store, now, acts):
+    """The tick's call site for evidence.harvest (RELENTLESS_WIRE_MARKER_VERDICT_AND_REPAIR): a Marker verdict whose
+    receipt marker_receipt could not write (a busy or torn index, a crash between the verdict and the receipt) is
+    appended on the next tick, with no manual `evidence.py harvest`. The same nonce: never a second entry. A failure is
+    one act and one journal alarm (a torn index stops every receipt until `evidence.py repair-index`), never the tick."""
+    failed = []
+    got = evidence.harvest(store, failed)
+    if got:
+        acts.append({"do": "evidence_harvest", "n": len(got), "items": sorted({i for i, _, _ in got})[:20]})
+    if failed:
+        why = "; ".join("%s: %s" % (i, w[:160]) for i, w in failed[:3])
+        acts.append({"do": "evidence_harvest_failed", "n": len(failed), "why": why[:300]})
+        store.journal({"at": iso(now), "do": "alarm", "kind": "evidence_harvest_failed", "n": len(failed),
+                       "why": why[:300]})
+    return got
+
+
 def shadow_tally(store, rule=None):
     """-> counts of shadowed verdicts under one shadow rule: agree, differ, untagged, and the differing rows."""
     rule = rule or relentless_wall.SHADOW
@@ -7418,6 +7435,10 @@ def _tick(store, fx, r, now, prof):
         except Exception as e:  # noqa: BLE001  disk housekeeping never stops the belt
             acts.append({"do": "error", "item": None, "why": "reap_bundles %s: %s" % (type(e).__name__, e)})
         spend_holds(store, fx, r, now, acts)
+        try:        # after the steps, which give this tick's verdicts: a receipt not written is back-filled here
+            harvest_receipts(store, now, acts)
+        except Exception as e:  # noqa: BLE001  a receipt never costs the tick
+            acts.append({"do": "error", "item": None, "why": "evidence harvest %s: %s" % (type(e).__name__, e)})
         at = phase("after_steps", at)
         try:        # before the order is read; a broken log costs the lane, never the tick
             relentless_expedite.sync(store, fx, now, acts)
