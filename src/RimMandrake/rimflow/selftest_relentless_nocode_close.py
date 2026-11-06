@@ -128,7 +128,10 @@ def case_empty_diff_blind_pass():
     check(len(c) == 1 and c[0]["sha"] == full(WORK_SHA) and not c[0].get("noCode"),
           "one close, at the work commit: %s" % [(e["sha"][:12], e.get("noCode")) for e in c])
     runs = world().items[ITEM].runs
-    check([(r.config, r.sha) for r in runs] == [("marker:blind-check", full(WORK_SHA))], "the marker run is on the work sha")
+    # on the candidate, where it ran, and on the work, where it closes (a guard committed after the work is found on the
+    # candidate: CLOSE_SHA_FIX_REWINDS_PAST_GUARD)
+    check([(r.config, r.sha) for r in runs] == [("marker:blind-check", full(LEDGER_SHA)), ("marker:blind-check", full(WORK_SHA))],
+          "the marker run is on the candidate and the work sha: %s" % [(r.config, r.sha[:12]) for r in runs])
     check(WORK_SHA in (c[0].get("reason") or "") if c else False, "the reason says where the work is")
 
 

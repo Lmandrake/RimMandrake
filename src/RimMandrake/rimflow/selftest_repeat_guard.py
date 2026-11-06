@@ -239,6 +239,40 @@ def gate():
     r = rf("close", "ITEM_FIX_CHARLIE", "--sha", restored, "--owner-said", "close it")
     check(r.returncode == 0, "his word on the close lifts it " + r.stderr[-200:])
 
+    # CLOSE_SHA_FIX_REWINDS_PAST_GUARD: the guard re-shown red is committed after the work, by another item's commit; the
+    # blind PASS ran at a ledger-only candidate on top, and relentless closes at the work. The candidate's tree holds the guard.
+    check(rf("file", "ITEM_FIX_DELTA", "--for", "BENCH", "--title", "t").returncode == 0, "file ITEM_FIX_DELTA")
+    verified("ITEM_FIX_DELTA", restored)
+    check(rf("close", "ITEM_FIX_DELTA", "--sha", restored, "--live", "hook=wired_one.py").returncode == 0, "delta first close")
+    check(run_as("RUNNER", "live", "ITEM_FIX_DELTA", "--result", "broken", "--detail", "gone").returncode == 0, "delta reopens")
+    work = commit("src/delta_fix.py", "ITEM_FIX_DELTA: the fix")
+    guard_v2 = guard_src + "# v2, rewritten by another item\n"
+    open(flag, "w").close()
+    open(full, "w").write(guard_v2)
+    check(rf("guard", "ITEM_FIX_DELTA", "--test", test).returncode == 0, "delta's guard shown red on the rewritten test")
+    os.remove(flag)
+    other = commit(test, "OTHER_ITEM_FIX: rewrites the shared guard", guard_v2)
+    cand = commit("infrastructure/state/ledger/x.jsonl", "ledger: delta")
+    r = rf("close", "ITEM_FIX_DELTA", "--sha", work, "--why", "x")
+    check(r.returncode and "not the test shown failing" in r.stderr, "no pass on top of the work yet: the guard is not found")
+    verified("ITEM_FIX_DELTA", cand)
+    verified("ITEM_FIX_DELTA", work)
+    r = rf("close", "ITEM_FIX_DELTA", "--sha", work, "--why", "x")
+    check(r.returncode == 0, "the guard at the passing candidate on top of the work closes it " + r.stderr[-300:])
+    # and a pass on a commit under the close (not on top of it) lends nothing: a guard edited after its red still refuses
+    check(rf("file", "ITEM_FIX_ECHO", "--for", "BENCH", "--title", "t").returncode == 0, "file ITEM_FIX_ECHO")
+    verified("ITEM_FIX_ECHO", other)
+    check(rf("close", "ITEM_FIX_ECHO", "--sha", other, "--live", "hook=wired_one.py").returncode == 0, "echo first close")
+    check(run_as("RUNNER", "live", "ITEM_FIX_ECHO", "--result", "broken", "--detail", "gone").returncode == 0, "echo reopens")
+    open(flag, "w").close()
+    check(rf("guard", "ITEM_FIX_ECHO", "--test", test).returncode == 0, "echo's guard shown red")
+    os.remove(flag)
+    verified("ITEM_FIX_ECHO", cand)
+    vacuous = commit(test, "ITEM_FIX_ECHO: guard made vacuous", "print('ok')\n")
+    verified("ITEM_FIX_ECHO", vacuous)
+    r = rf("close", "ITEM_FIX_ECHO", "--sha", vacuous, "--why", "x")
+    check(r.returncode and "not the test shown failing" in r.stderr, "a pass under the close does not lend its guard " + r.stderr[-200:])
+
 
 def census():
     it = lambda **k: types.SimpleNamespace(**dict({"state": "done", "live_repeats": 0, "guard": None}, **k))   # noqa: E731

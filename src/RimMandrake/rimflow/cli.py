@@ -2286,13 +2286,37 @@ def _carried_work(it, sha):
     return work, None
 
 
+def _guard_commit(it, sha):
+    """-> the commit that holds the guard test exactly as shown red: `sha` itself, else a commit on top of `sha` where a
+    level-tagged pass on this item was recorded after the red (the blind check's candidate); None when neither does.
+    A ledger-only candidate closes at its work commit (relentless work_sha), and the guard re-shown red there may have been
+    committed after the work, by another item's commit (CLOSE_SHA_FIX_REWINDS_PAST_GUARD: CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS
+    closes at 8a244abc92, its guard hash b2090c42 is the file at the passing candidate 26e9ec8797, committed by cacd4b457d)."""
+    import repeat_guard as RG
+    test, want = it.guard["test"], it.guard["testHash"]
+    if RG.committed_hash(model.ROOT, sha, test) == want:
+        return sha
+    since = str(it.guard.get("ts") or "")
+    for r in reversed(it.runs):
+        if r.result != "pass" or not r.level or not r.sha or str(r.ts) < since or model.same_sha(r.sha, sha):
+            continue
+        if RG.committed_hash(model.ROOT, r.sha, test) != want:
+            continue
+        anc = subprocess.run(["git", "merge-base", "--is-ancestor", str(sha), str(r.sha)], cwd=model.ROOT,
+                             capture_output=True, timeout=60, stdin=subprocess.DEVNULL)
+        if anc.returncode == 0:
+            return r.sha
+    return None
+
+
 def _guard_refusals(it, sha):
-    """-> [("guard", why)]: the guard on record is the test shown red, committed at the close's sha, and it passes now."""
+    """-> [("guard", why)]: the guard on record is the test shown red, committed at the close's sha (or at a passing
+    candidate on top of it, `_guard_commit`), and it passes now."""
     import repeat_guard as RG
     test = it.guard["test"]
-    if RG.committed_hash(model.ROOT, sha, test) != it.guard["testHash"]:
-        return [("guard", "%s at %s is not the test shown failing (or is not committed there): show the new one red with `rimflow "
-                          "guard %s`" % (test, str(sha)[:12], it.id))]
+    if _guard_commit(it, sha) is None:
+        return [("guard", "%s at %s is not the test shown failing (or is not committed there, nor at a pass recorded on top "
+                          "of it since the red): show the new one red with `rimflow guard %s`" % (test, str(sha)[:12], it.id))]
     rc, out = RG.run(model.ROOT, test)
     return [("guard", "%s still fails (exit %d): %s" % (test, rc, out[-200:]))] if rc else []
 

@@ -2678,13 +2678,17 @@ class Effects(relentless_game.GameFx):
             mark = work
             if work != sha:
                 reason = "%s (work at %s)" % (reason, work[:12])
-        # the blind PASS on that sha is the check `close` asks for; RUNNER may record it on any seat's item
-        if (item, mark) not in self.marked:
-            r = self.rimflow("verify", item, "--sha", mark, "--result", "pass", "--level", "L0",
+        # the blind PASS on that sha is the check `close` asks for; RUNNER may record it on any seat's item. Rewound to the
+        # work, it is recorded on the candidate too, where it ran: a guard committed after the work (re-shown red, or written
+        # by another item's commit) is found there (cli._guard_commit, CLOSE_SHA_FIX_REWINDS_PAST_GUARD)
+        for at in ((sha, mark) if mark != sha else (mark,)):
+            if (item, at) in self.marked:
+                continue
+            r = self.rimflow("verify", item, "--sha", at, "--result", "pass", "--level", "L0",
                              "--config", "marker:blind-check", "--evidence", reason[:300], seat="RUNNER")
             if r.returncode != 0:
                 return (r.stderr or r.stdout)[-400:]
-            self.marked.add((item, mark))
+            self.marked.add((item, at))
         r = self.rimflow("close", item, *close_at, "--reason", reason, "--why", "relentless: blind check passed",
                          *(("--live", live) if live else ()),      # the sweep keeps checking what the contract promised
                          timeout=300)       # a recurring item's guard test reruns inside the close (repeat_guard.TIMEOUT_S)
