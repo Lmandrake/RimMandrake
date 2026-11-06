@@ -855,3 +855,10 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T02:45:08Z","tsn":1793933108079223171}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WATER_DEPTH_RESKIN_HE_LOOKS_FIRST L4 (L2), read-only proof","ts":"2026-11-06T02:45:22Z","tsn":1793933122702709142}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T02:45:32Z","tsn":1793933132525641813}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TITANIC_BODYSIZE_TEST_RACE_1 A2 (L2), read-only proof","ts":"2026-11-06T02:48:40Z","tsn":1793933320552094355}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T02:49:23Z","tsn":1793933363270045268}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ASHKARR_WEATHER_INSTALL_THE_SLEEPING_STORMS A2 (L1), read-only proof","ts":"2026-11-06T02:50:08Z","tsn":1793933408317929895}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T02:50:34Z","tsn":1793933434349609650}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: OWN_PRESET_WIDEN_PYRELANDS_JOINS_IN A1 (L1), read-only proof","ts":"2026-11-06T02:52:24Z","tsn":1793933544130550441}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T02:53:14Z","tsn":1793933594055100968}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","ts":"2026-11-06T02:55:09Z","tsn":1793933709093346331}
