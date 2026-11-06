@@ -10,6 +10,18 @@ sys.path.insert(0, HERE)
 import live_site as L  # noqa: E402
 
 FAILS = []
+# GAMEENV_FIX_HARNESS_47EE6093_ITEMS_WAIT: the real Player.log lines of BENCH_r17_midrain's dead load, 2026-11-06 ~15:17Z
+# (save XML elided); the site waited 300 s for a map after this and was filed as a harness fault
+DEATH = """Loading game from file BENCH_r17_midrain with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+</tileRiverDistancesDeflate><tileMutatorTiles></tileMutatorTiles><tileMutatorDefs></tileMutatorDefs></li></values></layers></grid>
+Exception from asynchronous event: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 3625251D]
+  at RimWorld.Planet.WorldGrid.CreateRequiredLayers () [0x00109] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGrid.GenerateFreshWorld () [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.World.ExposeData () [0x0005a] in <61e4173561894da49d210260257b5097>:0 
+"""
 
 
 def check(label, ok):
@@ -40,14 +52,20 @@ class FakeRB:
         if tool == "rimworld/start_debug_game_ready":
             FakeRB.shared["programState"] = "Playing"
         if tool == "rimworld/get_ui_state":
-            return {"programState": FakeRB.shared["programState"]}
+            ps = FakeRB.shared["programState"]
+            if ps == "MapInitializing" and FakeRB.shared.pop("loading", False):     # a load_game reads MapInitializing
+                FakeRB.shared["programState"] = "Entry" if FakeRB.dies else "Playing"
+                if FakeRB.dies and FakeRB.death_log:
+                    with open(FakeRB.death_log, "a", encoding="utf-8") as f:
+                        f.write(DEATH)
+            return {"programState": ps}
         if tool == "jawa/running_mods":
             return {"packageIds": list(FakeRB.running)}
         if tool == "rimworld/load_game":
             FakeRB.loads.append(dict(params or {}))
             if FakeRB.missing and not (params or {}).get("ignoreModCompatibility"):
                 return {"success": False, "code": "save.missing_mods", "message": "6 mod(s) not active"}
-            FakeRB.shared["programState"] = "Playing"
+            FakeRB.shared.update(programState="MapInitializing", loading=True)
             return {"success": True}
         if tool == "rimworld/get_game_info":     # await_lifecycle's map check (READYWAITS_MIGRATE_REMAINING_52_COPIES)
             return {"mapCount": 1 if FakeRB.shared["programState"] == "Playing" else 0}
@@ -63,6 +81,8 @@ def run(argv, running=("ludeon.rimworld", "7f.alienworlds"), **kw):
     FakeRB.shared = {"programState": kw.pop("state", "Playing")}
     FakeRB.missing = kw.pop("missing", False)
     FakeRB.loads = []
+    FakeRB.dies = kw.pop("dies", False)
+    FakeRB.death_log = kw.pop("death_log", None)
     L.connect = lambda timeout: FakeRB(log, **kw)
     clock = [0.0]       # a fake clock: every sleep advances it, so a wait that never succeeds ends at once
     L.time = types.SimpleNamespace(time=lambda: clock[0], sleep=lambda s: clock.__setitem__(0, clock[0] + s))
@@ -166,6 +186,41 @@ with contextlib.redirect_stdout(io.StringIO()):
     rc, log = run(["--save", "rm_proof_atmosphere", "--restage-with", "AtmosphericBase"], missing=True)
 check("--restage-with: a stager that cannot make the site -> NOT READY, no second load",
       rc == L.NOT_READY and len(FakeRB.loads) == 1)
+
+# a load that DIES (GAMEENV_FIX_HARNESS_47EE6093_ITEMS_WAIT): BENCH_r17_midrain went back to the menu with an NRE
+import tempfile  # noqa: E402
+tmp = tempfile.mkdtemp()
+plog = os.path.join(tmp, "Player.log")
+with open(plog, "w", encoding="utf-8") as f:     # an exception BEFORE the load line is the old game's, never the load's
+    f.write("Exception from asynchronous event: System.Exception: an earlier game's\n")
+L.player_log_path = lambda: plog
+out = io.StringIO()
+with contextlib.redirect_stdout(out):
+    rc, log = run(["--needs", "7f.alienworlds", "--save", "BENCH_r17_midrain", "--ignore-missing-mods"],
+                  dies=True, death_log=plog)
+said = out.getvalue()
+polls = log.count("rimworld/get_ui_state")
+check("a dead load -> NOT READY at once, naming the exception and its top frame, as a site defect (%d polls): %s"
+      % (polls, said.strip().splitlines()[-1][:160] if said.strip() else "-"),
+      rc == L.NOT_READY and polls < 10
+      and "site defect: the save BENCH_r17_midrain does not load on the running list" in said
+      and "NullReferenceException" in said and "WorldGrid.CreateRequiredLayers" in said and "an earlier game" not in said)
+L.player_log_path = lambda: None     # no readable log: the menu holding MENU_DEAD_S after the load ends it
+out = io.StringIO()
+with contextlib.redirect_stdout(out):
+    rc, log = run(["--save", "BENCH_r17_midrain"], dies=True)
+polls = log.count("rimworld/get_ui_state")
+check("a dead load with no Player.log -> NOT READY after the menu dwell, not the 300 s budget (%d polls)" % polls,
+      rc == L.NOT_READY and "does not load on the running list" in out.getvalue()
+      and polls <= 2 + L.MENU_DEAD_S // 5 + 2)
+check("the dead-load line is a site defect to relentless_envcause, never a harness fault",
+      all(w not in out.getvalue() for w in ("did not reach Playing", "harness fault")))
+out = io.StringIO()
+with contextlib.redirect_stdout(out):
+    rc, log = run(["--save", "S"], state="Playing")
+i = log.index("rimworld/load_game")
+check("a game already on a map: after load_game the wait first sees it leave Playing, then READY",
+      rc == L.READY and "READY: S loaded" in out.getvalue() and log[i + 1:].count("rimworld/get_ui_state") >= 2)
 
 # argument exclusivity
 for argv in (["--save", "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3", "--restage-with", "AtmosphericBase"],

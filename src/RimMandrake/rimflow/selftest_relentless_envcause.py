@@ -42,6 +42,12 @@ WHYS = {
     # GAMEENV_FIX_HARNESS_86430B0B_ITEMS_WAIT: LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR A1's site log, 2026-11-06
     "restart": "site not prepared: NOT READY: IndeterminateError: refusing rimworld/load_game: 1 earlier mutating call(s) "
                "have an UNKNOWN outcome (6aa06241e8f843b2 jawa/prioritized_work). A retry could apply it twice.",
+    # GAMEENV_FIX_HARNESS_47EE6093_ITEMS_WAIT: the same site, 2026-11-06 15:17Z: a dead load waited out blind is the harness's
+    "harness3": "site not prepared: NOT READY: BENCH_r17_midrain did not reach Playing with a map in 300s",
+    # ... and live_site's line for it now, naming Player.log's exception, is the save's (or the proof's choice of it)
+    "proof_or_site2": "site not prepared: NOT READY: site defect: the save BENCH_r17_midrain does not load on the running "
+                      "list: the load died after 5s; Player.log: Exception from asynchronous event: System."
+                      "NullReferenceException: Object reference not set | at RimWorld.Planet.WorldGrid.CreateRequiredLayers",
 }
 
 

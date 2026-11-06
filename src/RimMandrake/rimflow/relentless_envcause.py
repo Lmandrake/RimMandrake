@@ -49,6 +49,10 @@ PROOF_CALL = ("the proof's own call is broken", "the proof crashed")
 HARNESS = ("harness fault", "site not prepared", "the proof timed out", "bridge call failed",
            "the running load's mod list could not be read")
 DEFECT = "proof or site defect"     # relentless_live.DEFECT
+# live_site.NO_LOAD (GAMEENV_FIX_HARNESS_47EE6093_ITEMS_WAIT): the site's save died loading on the running list (Player.log
+# names the exception). Before HARNESS: it reaches here as "site not prepared: NOT READY: site defect: ...", and the
+# harness did its job; the save or the proof's choice of it is what must change.
+SITE_DEAD = re.compile(r"site defect: the save \S+ does not load on the running list")
 PKG = re.compile(r"\(([\w.]+)\)")
 DOTTED = re.compile(r"(?<![\w.])\w+(?:\.\w+)+(?!\w)")    # a packageId anywhere: `pkg (why)` as well as `Name (pkg)`
 PRODUCER = "python.exe src/RimMandrake/Utils/modcheck/cli.py run %s --gate off --purpose fix --item %s"
@@ -112,6 +116,8 @@ def classify(row, item=None, needs=()):
         return _env("restart", row)
     if any(w in why for w in PROOF_CALL):
         return _env("proof_call", row)
+    if SITE_DEAD.search(why):
+        return _env("proof_or_site", row)
     if any(why.startswith(w) or (": %s" % w) in why for w in HARNESS):
         return _env("harness", row)
     if why.startswith(DEFECT) or row.get("defect"):

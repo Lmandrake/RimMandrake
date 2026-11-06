@@ -22,7 +22,14 @@ The quicktest world is scaffolding (CLAUDE.md worldgen ban: nothing here makes a
 past --max-ticks (default two in-game days) is refused: that is someone's colony, not a test map.
 
 --save: rimworld/load_game, then wait for Playing with a map (validation_core._wait_playing's rule). Canonical saves
-(infrastructure/state/canon.yml) load read-only by definition: this tool never saves.
+(infrastructure/state/canon.yml) load read-only by definition: this tool never saves. A game already on a map is first
+seen to LEAVE Playing, since right after load_game the old map still reads Playing (skills/rimbridge/references/traps.md).
+A load that DIES ends the wait at once (GAMEENV_FIX_HARNESS_47EE6093_ITEMS_WAIT: BENCH_r17_midrain threw
+`Exception from asynchronous event: NullReferenceException` in WorldGrid.CreateRequiredLayers under World.ExposeData,
+the game went back to the menu, and the site waited 300 s blind for a map that could never come, filed as a harness
+fault): Player.log holding a long-event exception after its `Loading game from file <save>` line, or the menu holding
+MENU_DEAD_S after the load answered. That ends on `NOT READY: site defect: the save X does not load on the running list:
+...` naming the exception and its top frame, which relentless_envcause routes as a proof/site defect, not the harness's.
 
 --menu-dwell N (WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR): for a proof of what the MAIN MENU draws, which a game staged
 on a map never shows. One jawa/ call first (the companion installs its probes on first contact, JawaBenchInit), then
@@ -56,6 +63,10 @@ import sys
 import time
 
 READY, NOT_READY = 0, 2
+MENU_DEAD_S = 60        # the menu this long after load_game answered: the load never began, or it died and went back
+LOAD_LINE = "Loading game from file %s with mods:"      # Verse.SavedGameLoaderNow, Player.log
+DIED = ("Exception from asynchronous event:", "Exception from long event:")     # Verse.LongEventHandler
+NO_LOAD = "site defect: the save %s does not load on the running list: %s"      # relentless_envcause.SITE_DEAD
 REGEN = "Actions\\Regenerate Current Map"
 
 
@@ -225,7 +236,83 @@ def load_save(a):
         return rb.call("rimworld/load_game", params)
 
 
+def player_log_path():
+    """-> RimWorld's Player.log, or None when this interpreter cannot see it (game_paths knows both spellings)."""
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from game_paths import PLAYER_LOG
+        return PLAYER_LOG if os.path.isfile(PLAYER_LOG) else None
+    except Exception:  # noqa: BLE001  no log is no evidence: the bridge phases still decide
+        return None
+
+
+def log_size():
+    p = player_log_path()
+    try:
+        return os.path.getsize(p) if p else None
+    except OSError:
+        return None
+
+
+def load_death(save, offset):
+    """Player.log from byte `offset` (its size before load_game) -> 'Exception ... | <top frame>' when the load of `save`
+    died there, else None. Only an exception AFTER that save's own load line counts: a game that was already up may
+    have logged one of its own."""
+    p = player_log_path()
+    if p is None or offset is None:
+        return None
+    try:
+        with open(p, "rb") as f:
+            f.seek(offset)
+            text = f.read().decode("utf-8", "replace")
+    except OSError:
+        return None
+    i = text.find(LOAD_LINE % save)
+    if i < 0:
+        return None
+    lines = text[i:].splitlines()
+    for n, ln in enumerate(lines):
+        if ln.startswith(DIED):
+            frame = next((x.strip() for x in lines[n + 1:n + 6] if x.strip().startswith("at ")), "")
+            return (ln.strip() + (" | " + frame if frame else ""))[:400]
+    return None
+
+
+def wait_loaded(rb, save, offset, budget_s, step_s=5):
+    """-> (ok, why). Poll for a settled map (await_lifecycle.phase_of, settle=True), ending at once when the load died."""
+    from await_lifecycle import phase_of
+    t0, menu_from, phase, ui = time.time(), None, None, {}
+    while True:
+        time.sleep(step_s)
+        phase, ui = phase_of(_lc_call(rb), settle=True)
+        if phase == "map_ready":
+            return True, "map_ready"
+        waited = time.time() - t0
+        died = load_death(save, offset)
+        if died:
+            return False, NO_LOAD % (save, "the load died after %.0fs; Player.log: %s" % (waited, died))
+        if phase == "menu":
+            menu_from = waited if menu_from is None else menu_from
+            if waited - menu_from >= MENU_DEAD_S:
+                return False, NO_LOAD % (save, "the game sat at the main menu %.0fs after load_game answered (read "
+                                         "Player.log's FIRST exception after its load line)" % (waited - menu_from))
+        else:
+            menu_from = None
+        if waited >= budget_s:
+            return False, "%s did not reach Playing with a map in %ds (last phase %s: %s)" % (
+                save, budget_s, phase, json.dumps(ui, default=str)[:200])
+
+
+def on_a_map(rb):
+    """True when a game is Playing with a map: then load_game's first Playing polls are the OLD map."""
+    from await_lifecycle import phase_of
+    return phase_of(_lc_call(rb))[0] == "map_ready"
+
+
 def save_site(a):
+    with connect(60) as rb:
+        was_up = on_a_map(rb)
+    offset = log_size()
     r = load_save(a)
     if (not isinstance(r, dict) or r.get("success") is False) and a.restage_with:
         # ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP: the fixture save recorded 6 mods the current list lacks
@@ -242,8 +329,16 @@ def save_site(a):
         print("NOT READY: load_game %s refused: %s" % (a.save, str(r)[:300]))
         return NOT_READY
     with connect(60) as rb:
-        if not wait_ready(rb, a.budget):
-            print("NOT READY: %s did not reach Playing with a map in %ds" % (a.save, a.budget))
+        if was_up:
+            from await_lifecycle import await_leaving
+            if not await_leaving(_lc_call(rb), "playing", deadline_s=MENU_DEAD_S, poll_s=1.0,
+                                 clock=_lc_clock, sleep=_lc_sleep):
+                print("NOT READY: load_game %s answered, but the old game never left Playing in %ds"
+                      % (a.save, MENU_DEAD_S))
+                return NOT_READY
+        ok, why = wait_loaded(rb, a.save, offset, a.budget)
+        if not ok:
+            print("NOT READY: " + why)
             return NOT_READY
         info = rb.call("jawa/map_info", {})
         print("READY: %s loaded, map %s tick %s" % (a.save, info.get("mapBiome"), info.get("ticksGame")))
