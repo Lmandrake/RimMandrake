@@ -962,3 +962,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:12:52Z","tsn":1793956372978427160}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TICKBURST_PROVE_MANY_TICKS_ONE_FRAME A7 (L2), read-only proof","ts":"2026-11-06T09:13:05Z","tsn":1793956385102733792}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:13:12Z","tsn":1793956392167403818}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TICKBURST_PROVE_MANY_TICKS_ONE_FRAME A8 (L1), read-only proof","ts":"2026-11-06T09:13:24Z","tsn":1793956404302946397}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:13:31Z","tsn":1793956411433403754}
