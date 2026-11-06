@@ -1,0 +1,1 @@
+selftest_relentless_codex_five.py #16 fails at 69b39e78d4 independent of any change: it counts '"diff", "--binary"' in inspect.getsource(R.Effects) and wants >=3, but Effects now holds 1 (the saved-patch calls moved out of Effects). The bar is stale, not the code; found by CANDIDATE_SHA_REPAIR_LANDED_UNDER_NEW_HASH 2026-11-06.

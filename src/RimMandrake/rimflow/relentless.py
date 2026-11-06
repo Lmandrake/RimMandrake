@@ -1128,6 +1128,91 @@ def canonical_commit(name):
     return out
 
 
+LANDED_DEPTH = 5000      # origin/main commits searched for a candidate that landed under another hash
+
+
+def _run_git(cwd, *args, timeout=60, stdin=None):
+    try:
+        return subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, timeout=timeout,
+                              input=stdin, stdin=None if stdin is not None else subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+
+def _patch_ids(cwd, *log_args, timeout=120):
+    """-> {patch-id: [commit, ...]} newest first, for `git log -p <log_args>` (merges and empty commits carry none)."""
+    r = _run_git(cwd, "log", "-p", "--no-color", "--no-textconv", "--no-ext-diff", "--format=commit %H", *log_args, timeout=timeout)
+    if not r or r.returncode:
+        return {}
+    p = _run_git(cwd, "patch-id", "--stable", stdin=r.stdout, timeout=timeout)
+    out = {}
+    for line in (p.stdout.splitlines() if p and p.returncode == 0 else []):
+        f = line.split()
+        if len(f) == 2:
+            out.setdefault(f[0], []).append(f[1])
+    return out
+
+
+def landing_key(cwd, sha):
+    """What survives a rebase of `sha`: its patch-id, subject and author stamp. None when `sha` is not readable here.
+    CANDIDATE_SHA_REPAIR_LANDED_UNDER_NEW_HASH: a landing rebases a worker's commit, so its hash dies with the clone."""
+    r = _run_git(cwd, "show", "-s", "--format=%s%x00%an <%ae> %at", sha + "^{commit}")
+    if not r or r.returncode or "\0" not in r.stdout:
+        return None
+    subject, author = r.stdout.rstrip("\n").split("\0", 1)
+    ids = _patch_ids(cwd, "-1", sha)
+    return {"patch_id": next(iter(ids), None), "subject": subject, "author": author}
+
+
+def find_landed(cwd, key, item, base=None, until=None, since=None, ref="origin/main"):
+    """-> (commit, how) on `ref` holding the work of a commit `ref` does not hold, or (None, why). In order: the
+    newest commit with the key's subject, author stamp and patch-id; the newest with its patch-id alone (a reworded
+    landing); the newest with subject and author when the commit carries no patch (empty); with no key at all (the
+    object and its clone are gone), the newest commit since `base` whose subject names `item`, authored between
+    `since` (the finishing run's start) and `until` (the finish): a rebase keeps the author date, so this is the tip
+    that run had when it finished, never an earlier run's landed half."""
+    span = ["%s..%s" % (base, ref)] if base and _ok(_run_git(cwd, "cat-file", "-e", base + "^{commit}")) else [ref]
+    span += ["-n", str(LANDED_DEPTH)]       # origin/main took 419 commits in six hours, 2026-11-06
+    r = _run_git(cwd, "log", "--format=%H%x00%s%x00%an <%ae> %at", *span)
+    rows = [x.split("\0") for x in (r.stdout.splitlines() if _ok(r) else []) if x.count("\0") == 2]
+    if key:
+        same = [h for h, subject, author in rows if subject == key.get("subject") and author == key.get("author")]
+        pid = key.get("patch_id")
+        for h in same:
+            if not pid or pid in _patch_ids(cwd, "-1", h):
+                return h, "patch-id %s" % pid[:12] if pid else "subject and author stamp"
+        hit = _patch_ids(cwd, *span).get(pid) if pid else None
+        if hit:
+            return hit[0], "patch-id %s" % pid[:12]
+        return None, "no commit on %s carries its patch-id or its subject and author stamp" % ref
+    for h, subject, author in rows:
+        try:
+            at = int(author.rsplit(" ", 1)[1])
+        except (IndexError, ValueError):
+            continue
+        if re.search(r"(^|[^A-Z0-9_])%s([^A-Z0-9_]|$)" % re.escape(item), subject) and (until is None or at <= until) \
+                and (since is None or at >= since):
+            return h, "newest commit naming %s authored by the finish" % item
+    return None, "no commit on %s since the base names %s" % (ref, item)
+
+
+def _ok(r):
+    return bool(r) and r.returncode == 0
+
+
+def landed_commit(sha, cwd=None):
+    """-> (sha to record, note or None). The worker's sha when origin/main holds it (or origin cannot be asked);
+    the landed commit when a landing rebased it onto origin/main under another hash."""
+    if not _ok(_run_git(cwd, "fetch", "--quiet", "origin", "main", timeout=180)):
+        return sha, None
+    if _ok(_run_git(cwd, "merge-base", "--is-ancestor", sha, "origin/main")):
+        return sha, None
+    found, how = find_landed(cwd, landing_key(cwd, sha), None)
+    if not found:
+        return sha, None
+    return found, "%s is not on origin/main; it landed as %s (%s): recording %s" % (sha[:10], found[:10], how, found[:10])
+
+
 def ledger_only_refusal(sha, prof, cwd=None):
     """-> the refusal text when `sha` changes ONLY paths the Marker's box replays from the candidate's parent
     (walls.marker.tree_from_parent: the ledger, code_review), else None. Such a commit's change is invisible to the
@@ -1176,6 +1261,9 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
             raise ValueError("sha must be one commit id, not a ref or revision expression that can move: %r" % (sha,))
         rec = {"item": item, "gen": gen, "sha": sha, "evidence": evidence, "at": iso(now), "contract": st["contract"],
                "hash": hashlib.sha256(json.dumps(st["contract"], sort_keys=True).encode()).hexdigest()}
+        key = landing_key(root or os.getcwd(), sha)
+        if key:     # lets the supervisor find this work if a later landing rebases it (..._LANDED_UNDER_NEW_HASH)
+            rec["key"] = key
         store._write(store.receipt_path(item, gen), json.dumps(rec, indent=1, sort_keys=True))
         pilot_sat(st, "finish")
         _take_receipt(store, st, rec, now)
@@ -1183,6 +1271,8 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
 
 def _take_receipt(store, st, rec, now):
     st["candidate"] = {"sha": rec["sha"], "gen": rec["gen"], "evidence": rec["evidence"], "at": now}
+    if rec.get("key"):
+        st["candidate"]["key"] = rec["key"]
     words = relentless_packet.report(rec)
     if words:       # report-only: the packet lint reads the evidence prose and changes nothing (RA_S02)
         store.journal({"at": iso(now), "do": "packet_report", "item": st["item"], "gen": rec["gen"], "words": words})
@@ -3402,7 +3492,27 @@ class Effects(relentless_game.GameFx):
         if self.git(self.books, "fetch", "--quiet", "origin", "main").returncode != 0:
             return None
         rc = self.git(self.books, "merge-base", "--is-ancestor", sha, "origin/main").returncode
-        return True if rc == 0 else False if rc == 1 else None      # 128 is git failing, not the sha being absent
+        if rc == 128 and self.git(self.books, "cat-file", "-e", sha + "^{commit}").returncode:
+            return False    # origin/main was just fetched whole and holds no such object: absent, not unknown
+        return True if rc == 0 else False if rc == 1 else None      # 128 otherwise is git failing
+
+    def relanded(self, st):
+        """-> (commit, how) when the candidate's sha is no object here but origin/main holds its work under another
+        hash (a landing rebased it after the worker named it), else None. CANDIDATE_SHA_REPAIR_LANDED_UNDER_NEW_HASH:
+        four built items waited 10 h on publish_unknown, 2026-11-06."""
+        c = st["candidate"]
+        readable = lambda: self.git(self.books, "cat-file", "-e", c["sha"] + "^{commit}").returncode == 0  # noqa: E731
+        if readable() or self.git(self.books, "fetch", "--quiet", "origin", "main").returncode != 0 or readable():
+            return None     # readable (published() answers for it), or origin cannot be asked
+        key = c.get("key")
+        clone = st.get("clone")
+        if not key and clone and os.path.isdir(os.path.join(clone, ".git")):
+            key = landing_key(clone, c["sha"])
+        until, since = c.get("at"), st.get("started_at")
+        num = lambda v, d: int(v) + d if isinstance(v, (int, float)) else None    # noqa: E731
+        found, how = find_landed(self.books, key, st["item"], base=st.get("base"), until=num(until, 1),
+                                 since=num(since, -1))
+        return (found, how) if found else None
 
     def head(self):
         return self.git(self.books, "rev-parse", "origin/main").stdout.strip() or None
@@ -5075,6 +5185,19 @@ def step(store, fx, r, item, now, acts):
         if reach:
             acts.append({"do": "reach_held", "item": item, "why": reach})
             return
+        moved = fx.relanded(st)
+        if moved:
+            with store.lock():
+                st = store.load(item)
+                if st["status"] != "candidate" or st["candidate"]["sha"] != c["sha"]:
+                    return
+                st["candidate"].update({"sha": moved[0], "landed_from": c["sha"]})
+                st["last_sha"] = moved[0]
+                store.attempt(item, {"at": iso(now), "gen": st["candidate"].get("gen"), "routed": "relanded",
+                                     "sha": moved[0], "from": c["sha"], "detail": moved[1]})
+                store.save(st)
+            acts.append({"do": "sha_relanded", "item": item, "sha": moved[0], "from": c["sha"], "why": moved[1]})
+            c = st["candidate"]
         why = None
         pub = fx.published(c["sha"])
         if pub is None:
@@ -6960,6 +7083,9 @@ def main(argv=None):
             snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section, wait_hours=a.wait_hours, on=a.on, blocker=a.blocker)
         elif a.cmd == "finish":
             sha = canonical_commit(a.sha)
+            sha, moved = landed_commit(sha)
+            if moved:
+                print("relentless: " + moved, file=sys.stderr)
             hidden = ledger_only_refusal(sha, rules().get("walls", {}).get("marker", {}))
             if hidden:
                 raise ValueError(hidden)

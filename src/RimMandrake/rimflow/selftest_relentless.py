@@ -201,6 +201,7 @@ class FakeWorld:
             self.pool[c] = {"busy": False}
         return c, None
     def published(self, sha): return self.is_pub
+    def relanded(self, st): return None
     def changed(self, base, sha, item):
         self.changed_calls.append((base, sha, item))
         return self.touched
@@ -4442,7 +4443,9 @@ def t_review_wrong_verdicts_two():
         def git(self, d, *a):
             return types.SimpleNamespace(returncode=self.rcs[a[0]], stdout="", stderr="")
     ok(G({"fetch": 0, "merge-base": 1}).published("s") is False, "exit 1 is not an ancestor")
-    ok(G({"fetch": 0, "merge-base": 128}).published("s") is None, "exit 128 is unknown")
+    ok(G({"fetch": 0, "merge-base": 128, "cat-file": 0}).published("s") is None, "exit 128 on a readable sha is unknown")
+    ok(G({"fetch": 0, "merge-base": 128, "cat-file": 1}).published("s") is False,
+       "exit 128 on a sha the fetched books never held is absent (CANDIDATE_SHA_REPAIR_LANDED_UNDER_NEW_HASH)")
     ok(G({"fetch": 1, "merge-base": 0}).published("s") is None, "a failed fetch is unknown")
     ok(G({"fetch": 0, "merge-base": 0}).published("s") is True, "exit 0 is published")
     # a verdict is single-assignment
