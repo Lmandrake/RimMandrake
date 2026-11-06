@@ -87,6 +87,20 @@ def _run_play(n, speed=4):
 
 step = run   # old name
 
+# Bridge conditions (CONDSDSL_WIRE_PYTHON_BUILDERS): the same B.until / B.watch / B.cond_eval over this module's socket,
+# with the scene's stopOn. Builders: `from conds import cell, fw, pawn, game, edge, stays, ...`.
+def until(cond, max_ticks, **kw):
+    """Advance until `cond` holds or max_ticks pass -> conds.CondResult (validation_core._BridgeBase.until)."""
+    return _bridge().until(cond, max_ticks, **kw)
+
+def watch(name_or_map, cond=None, owner="scene", ttl_min=30):
+    """Persistent watcher(s), a context manager -> conds_dsl.WatchHandle."""
+    return _bridge().watch(name_or_map, cond, owner=owner, ttl_min=ttl_min)
+
+def cond_eval(cond, map_id=None):
+    """One evaluation now, no tick (jawa/cond_eval)."""
+    return _bridge().cond_eval(cond, map_id=map_id)
+
 import contextlib
 @contextlib.contextmanager
 def setting(typeName, **kv):

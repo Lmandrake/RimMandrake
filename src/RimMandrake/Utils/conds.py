@@ -1180,6 +1180,14 @@ def run_vectors_text(text):
     return "".join(lines)
 
 
+# ---------------------------------------------------------------------------------------------- builders (T4)
+# Python only, no C# twin: the builders, CondResult and the B.until / B.watch engine live in conds_dsl.py
+# (CONDSDSL_WIRE_PYTHON_BUILDERS); re-exported here so callers write `from conds import cell, fw, ...`.
+from conds_dsl import (Cond, Expr, CondResult, CondRefused, WatchEvent, WatchHandle, alarm, all_,  # noqa: E402,F401
+                       any_, cell, changed, check_wire_names, edge, fw, game, map_, not_, pawn, precheck, ring,
+                       run_spec, run_until, stays, thing, to_tree)
+
+
 if __name__ == "__main__":
     with open(sys.argv[1], encoding="utf-8") as fh:
         sys.stdout.write(run_vectors_text(fh.read()))

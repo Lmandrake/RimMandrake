@@ -147,6 +147,53 @@ class _BridgeBase(object):
             return {"success": False, "error": "no probe_type on this bridge class"}
         return self.probe_of(self.probe_type, cmd, wait_s)
 
+    # -- bridge conditions (CONDSDSL_WIRE_PYTHON_BUILDERS, build_spec §1.9); the engine is conds_dsl.py
+    def _watches(self):
+        w = self.__dict__.get("_cond_watches")
+        if w is None:
+            w = self.__dict__["_cond_watches"] = []
+        return w
+
+    def _note_mutation(self, mut):
+        """A mutation the wrapper made while game time ran (site_recover): every armed watch records it and restarts
+        its stateful baselines (conds_dsl.WatchHandle.on_mutation)."""
+        for w in list(self._watches()):
+            w.on_mutation(mut)
+
+    def _cond_recover(self, r):
+        """conds_dsl.run_until's recover hook: site_recover, as ticks() uses it -> a mutation dict or None."""
+        n = len(SITE_NOTES)
+        with PRE.quiet():
+            took = site_recover(self, r)
+        if took is None:
+            return None
+        notes = SITE_NOTES[n:]
+        return {"kind": "site_recover", "stopBy": r.get("stopBy"), "executed": took,
+                "notes": [x.get("detail") for x in notes]}
+
+    def until(self, cond, max_ticks, **kw):
+        """Advance until `cond` holds or max_ticks pass (jawa/safe_advance + until) -> conds.CondResult. Re-attaches
+        by runKey under the 540 s limit; a resumable or site_recover-able stop resumes (mutations[], gaps[]); any
+        other stop raises clockgate.GovernorStop. kw: every, on_unknown, map_id, watch, sample, snapshot_on_hit,
+        run_key, timeout_ms, progress."""
+        import conds_dsl
+        if self.stop_on != "default":
+            kw.setdefault("stop_on", self.stop_on)
+        return conds_dsl.run_until(self.call, cond, max_ticks, recover=self._cond_recover,
+                                   on_mutation=self._note_mutation, **kw)
+
+    def watch(self, name_or_map, cond=None, owner="py", ttl_min=30):
+        """Persistent watcher(s) as a context manager: watch("dry", edge(...), owner=RUN), or watch({name: cond}).
+        -> conds_dsl.WatchHandle (events(), gaps, mutations)."""
+        import conds_dsl
+        items = name_or_map if cond is None else {name_or_map: cond}
+        return conds_dsl.WatchHandle(self.call, owner, items, ttl_min=ttl_min, registry=self._watches())
+
+    def cond_eval(self, cond, map_id=None):
+        """Evaluate a condition now, no tick (jawa/cond_eval); a dry run that returns refusals instead of raising."""
+        import conds_dsl
+        return conds_dsl.cond_eval(self.call, cond, map_id=map_id)
+
     def ticks(self, n):
         """Game time in governed chunks (WATCH_WAIT_WIRE_SMALL_STEPS): jawa/safe_advance when present, stopped by the
         vitals latch (raises clockgate.GovernorStop); the legacy rimworld/step_game_ticks otherwise.
@@ -168,6 +215,9 @@ class _BridgeBase(object):
                     took = site_recover(self, g.result)
                 if took is None:
                     raise
+                if self._watches():
+                    self._note_mutation({"kind": "site_recover", "stopBy": g.result.get("stopBy"), "executed": took,
+                                         "atTick": (g.result.get("stopBy") or {}).get("tick")})
                 ex = min(req, took)
                 left -= ex
                 done += ex

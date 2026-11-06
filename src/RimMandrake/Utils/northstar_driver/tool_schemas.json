@@ -471,6 +471,31 @@
    "required": [],
    "source": "csharp"
   },
+  "jawa/cond_eval": {
+   "parameters": [
+    "mapId",
+    "tree"
+   ],
+   "required": [
+    "tree"
+   ],
+   "source": "spec: bridge_conditions build_spec \u00a71.5 (CONDSDSL_WIRE_PYTHON_BUILDERS, conds_dsl.WIRE_PARAMS); C# owed by CONDPROBES/ADVANCEUNTIL/CONDWATCH"
+  },
+  "jawa/cond_watch": {
+   "parameters": [
+    "action",
+    "names",
+    "owner",
+    "since_seq",
+    "ttlMin",
+    "watch"
+   ],
+   "required": [
+    "action",
+    "owner"
+   ],
+   "source": "spec: bridge_conditions build_spec \u00a71.5 (CONDSDSL_WIRE_PYTHON_BUILDERS, conds_dsl.WIRE_PARAMS); C# owed by CONDPROBES/ADVANCEUNTIL/CONDWATCH"
+  },
   "jawa/configure_bill": {
    "parameters": [
     "billIndex",
@@ -2536,11 +2561,19 @@
     "action",
     "budgetTicks",
     "chunk",
+    "every",
     "frameBudgetMs",
+    "mapId",
+    "on_unknown",
+    "runKey",
+    "sample",
+    "snapshot_on_hit",
     "stopOn",
     "ticks",
     "timeException",
-    "timeoutMs"
+    "timeoutMs",
+    "until",
+    "watch"
    ],
    "required": [],
    "source": "csharp"
