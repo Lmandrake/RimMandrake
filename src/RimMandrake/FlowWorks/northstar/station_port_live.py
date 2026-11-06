@@ -29,8 +29,20 @@ def main(argv=None):
     ap.add_argument("--z0", type=int, default=None, help="station z (default: map centre)")
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
-    B = J._bridge()
+    try:
+        # J._bridge() only BUILDS the client: called bare, its first call raises "bridge connection is closed", and call()
+        # below swallowed that into "map size unreadable" (GAMEENV_FIX_PROOFSITE_6C84B4B3_ITEMS_WAIT: the script's first live run).
+        B = J._bridge().connect()
+    except Exception as e:  # noqa: BLE001
+        print("UNMEASURED: the bridge never answered: %s" % " ".join(str(e).split())[:200])
+        return 2
+    try:
+        return run(B, a)
+    finally:
+        B.close()
 
+
+def run(B, a):
     def call(n, **kw):
         try:
             return B.call(n, kw) or {}

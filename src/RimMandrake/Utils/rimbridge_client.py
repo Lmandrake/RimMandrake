@@ -783,6 +783,7 @@ class RimBridge:
         self.events = []          # unsolicited event envelopes seen while reading
         self._session_started = None
         self._session_calls = 0
+        self._had_socket = False  # set when close() drops a socket: None before it = never opened, after it = closed
 
     # -- lifecycle ---------------------------------------------------------
 
@@ -820,6 +821,7 @@ class RimBridge:
             _log_session(self._session_started, self._session_calls, self.client_name)
             self._session_started = None
         if self.sock is not None:
+            self._had_socket = True
             try:
                 self.sock.shutdown(socket.SHUT_RDWR)
             except OSError:
@@ -852,6 +854,11 @@ class RimBridge:
 
     def _send(self, envelope):
         if self.sock is None:
+            if not self._had_socket:
+                # a harness bug, not a bridge state: read as a dead connection it was routed as a game-lane environment
+                # cause (GAMEENV_FIX_PROOFSITE_6C84B4B3_ITEMS_WAIT)
+                raise RimBridgeError("bridge never connected: this RimBridge was built but never opened; call connect() "
+                                     "or use `with`")
             raise RimBridgeError("bridge connection is closed (an earlier malformed frame or EOF); reconnect")
         body = json.dumps(envelope, separators=(",", ":")).encode("utf-8")
         head = ("Content-Length: %d\r\nContent-Type: application/json\r\n\r\n"
