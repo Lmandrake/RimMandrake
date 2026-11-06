@@ -1395,3 +1395,10 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:41:49Z","tsn":1794008509622407491}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A10 (L2), read-only proof","ts":"2026-11-06T23:42:09Z","tsn":1794008529510662551}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:42:45Z","tsn":1794008565283259748}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A11 (L2), read-only proof","ts":"2026-11-06T23:43:02Z","tsn":1794008582252571684}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:43:26Z","tsn":1794008606058516842}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A1 (L1), read-only proof","ts":"2026-11-06T23:43:38Z","tsn":1794008618073323638}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:43:52Z","tsn":1794008632142756852}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A3 (L1), read-only proof","ts":"2026-11-06T23:44:04Z","tsn":1794008644253541449}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:44:13Z","tsn":1794008653113429933}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_GLASSWALK_SPEED_RATIO_1 A1 (L2), read-only proof","ts":"2026-11-06T23:44:27Z","tsn":1794008667811440693}
