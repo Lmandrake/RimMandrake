@@ -751,6 +751,19 @@ def menu_ok(fx, o):
         return False
 
 
+def menu_bound(fx, item, sha):
+    """True when the item's proofs carry a live-menu or live-toggle line: they measure only on a load whose staging ran
+    those menu commands (on this item's side), so a game another load started can never serve them
+    (GAMEENV_FIX_PROOFSITE_7B433874_ITEMS_WAIT: PLANET_ATMOSPHERE_CLOUD_COST_1 tried two full-list games, said "rides a
+    later load" on both, and was routed as a proof-or-site defect). A malformed line is bound too: its staging holds it."""
+    import relentless_live_round as LR
+    text = fx.proofs_at(item, sha) or ""
+    try:
+        return bool(LR.live_menu(text) or LR.live_toggle(text))
+    except ValueError:
+        return True
+
+
 def stage_tries(c, g):
     """The stagings an item gets before it is a harness failure: a live-toggle item's pair needs one load per side, so
     it gets stage_tries per side."""
@@ -2198,7 +2211,8 @@ def step(store, fx, r, item, now, acts, sup):
         rd = fx.game_reading()
         if busy(store, item) is not None:
             return      # one live user at a time; waiting here holds nothing
-        if rd.get("state") == "UP" and rd.get("started") and rd["started"] != g.get("final_game"):
+        if (rd.get("state") == "UP" and rd.get("started") and rd["started"] != g.get("final_game")
+                and not menu_bound(fx, item, sha)):     # a menu-time proof needs its own staging
             # a newer game may be the full list already (another item's load, or the owner's): one try, no load
             _save(store, item, lambda s: s["game"].update(phase="prove", staged_at=now, waits_reload=None))
             acts.append({"do": "game_final_try_running", "item": item, "started": rd["started"]})
@@ -2247,7 +2261,8 @@ def step(store, fx, r, item, now, acts, sup):
             built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
             seen = [v for v in outcomes(fx.game_rows(), item, built, g["clauses"]).values() if row_at(v) >= rd["started"]]
             if not seen and busy(store, item) is None and (g.get("mod_gap") or {}).get("game") != rd["started"] \
-                    and not g.get("remedy"):      # a lane fix needs its staging: the running game says the same
+                    and not g.get("remedy") and not menu_bound(fx, item, sha):
+                # a lane fix, or a live-menu/live-toggle proof, needs its own staging: the running game says the same
                 _save(store, item, lambda s: s["game"].update(phase="prove", staged_at=rd["started"], waits_reload=None))
                 acts.append({"do": "game_try_running", "item": item, "started": rd["started"]})
                 return

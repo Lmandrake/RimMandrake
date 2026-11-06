@@ -1365,6 +1365,39 @@ def t_stage_tries_a_newer_running_game_first():
     x.done()
 
 
+def t_menu_bound_item_never_tries_a_running_game():
+    """GAMEENV_FIX_PROOFSITE_7B433874_ITEMS_WAIT: an item whose proofs carry a live-menu or live-toggle line measures only
+    on a load whose staging ran its menu commands, so a game another load started is never tried first (two such tries
+    said "rides a later load" and routed PLANET_ATMOSPHERE_CLOUD_COST_1 as a proof-or-site defect); a plain item still
+    tries it, and menu_bound reads both lines and a malformed one."""
+    for extra in ("live-menu: python3 src/RimMandrake/Utils/planet_atmosphere_cost.py record\n",
+                  "live-toggle: rwnodetree.rwplanetatmosphere\n"):
+        x = rig(1)
+        to_game(x, "I0")
+        x.w.proofs[("I0", ".txt")] = PROOF + extra
+        with x.s.lock():
+            st = x.s.load("I0")
+            st["game"].update(phase="stage", staged_at=x.now - 400, entered_at=x.now - 500, proved_at=x.now - 450)
+            x.s.save(st)
+        x.w.started = x.now - 60
+        x.w.rows = []
+        acts = []
+        G.step(x.s, x.w, x.r, "I0", x.now, acts, R)
+        ok(not any(a["do"] == "game_try_running" for a in acts) and x.st("I0")["game"].get("staged_at") != x.w.started,
+           "%s: no try of the running game, it stages its own load: %s" % (extra.split(":")[0], acts))
+        x.done()
+
+    class Fx:
+        def __init__(self, text):
+            self.text = text
+
+        def proofs_at(self, item, sha, ext=".txt"):
+            return self.text
+    ok(not G.menu_bound(Fx(PROOF), "I0", SHA), "a plain proofs file is not menu-bound")
+    ok(G.menu_bound(Fx(PROOF + "live-menu: echo a\n"), "I0", SHA), "a live-menu line binds")
+    ok(G.menu_bound(Fx(PROOF + "live-toggle: a.b c.d\n"), "I0", SHA), "a malformed live-toggle binds (its staging holds)")
+
+
 FINAL_GAME = {"clauses": ["A1", "F1"], "why": "A1 on the smallest list; F1 is the full-list final verification"}
 FINAL_PROOF = ("live-proof A1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py needs-mods --mod Graffiti\n"
                "live-proof F1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py running-list\n")
@@ -1975,6 +2008,7 @@ def main():
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
               t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline, t_fail_on_a_restarted_game_is_offline,
               t_stage_tries_a_newer_running_game_first,
+              t_menu_bound_item_never_tries_a_running_game,
               t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses, t_met_clause_is_not_missing,
               t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_retiered_rerecorded_every_phase, t_stale_build_caught_before_a_slot,
               t_rebuilt_assembly_carries_the_build, t_stale_row_carries_the_build, t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_clock_restarts_at_lease,
