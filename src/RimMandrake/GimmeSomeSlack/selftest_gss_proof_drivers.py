@@ -13,6 +13,8 @@ GSS_SWITCHES_PROVE_LAST_FOUR_STANDING (the last four switches' pure verdicts):
   M12  validation.plug_tip / slide_under_verdict: slideUnder's plug fraction 0.18/0.82 ON, 0.25/0.5/0.75 OFF
   M21a/b validation_aerial.owner_change_verdict: cutWiresOnOwnerChange kept OFF / gone ON, no span is UNMEASURED
   M21c/d validation_aerial.drip_expected_points / drip_verdict: dripLoops point counts against a port of the C# loops
+GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT (FW): the census's live fallen wires are read per anchor, and a theft scene re-strings the
+  Cut spans an earlier block left before it plays (proof_all's save_load cut M2-M3 and the theft day was downed by its half)
 Run: python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py
 """
 import os
@@ -180,7 +182,49 @@ def t_m21():
             check("M21 row id %s is in the aerial source" % rid, rid in open(A.__file__, encoding="utf-8").read())
 
 
-for t in (t_91, t_92_93_98, t_94_95, t_97, t_m12, t_m21):
+def t_fw():
+    import validation_aerial as A
+    if not (has(A, "live_fallen_wires") and has(A, "restring_plan") and has(A, "clear_live_fallen")):
+        return
+    # the census shape AerialProbe.Census emits: links/fallen live per anchor; the 2026-10-29 map after proof_all
+    half = {"toward": [116, 185], "cutPartner": 26577, "tip": [107.2, 184.6]}
+    c = {"anchors": [
+        {"id": 26560, "def": "RM_AerialMast", "x": 92, "z": 185, "fallenLive": None, "links": [{"other": 26585, "state": "Up"}], "fallen": []},
+        {"id": 26585, "def": "RM_AerialMast", "x": 104, "z": 185, "fallenLive": True,
+         "links": [{"other": 26560, "state": "Up"}, {"other": 26577, "state": "Cut"}], "fallen": [half]},
+        {"id": 26577, "def": "RM_AerialMast", "x": 116, "z": 185, "fallenLive": False,
+         "links": [{"other": 26585, "state": "Cut"}], "fallen": [dict(half, cutPartner=26585)]}], "fallenCords": 2}
+    check("FW the old probe's read is blind (no top-level fallen key)", len(c.get("fallen") or []) == 0)
+    lf = A.live_fallen_wires(c)
+    check("FW the live cut half at (104,185) is seen", [w["at"] for w in lf] == [[104, 185]], lf)
+    check("FW a dead half (fallenLive false) is not live", all(w["id"] != 26577 for w in lf))
+    check("FW an unpolled anchor with a cord counts as maybe live",
+          len(A.live_fallen_wires({"anchors": [dict(c["anchors"][1], fallenLive=None)]})) == 1)
+    check("FW the cut span is re-strung once", A.restring_plan(c) == [(26577, 26585)], A.restring_plan(c))
+    check("FW a cut to an anchor no longer on the map is not planned",
+          A.restring_plan({"anchors": [c["anchors"][1]]}) == [])
+
+    class FakeB:
+        def __init__(self):
+            self.sent, self.c = [], c
+
+        def ap(self, cmd):
+            self.sent.append(cmd)
+            if cmd.startswith("restring:"):
+                self.c = {"anchors": [dict(a, fallen=[], links=[dict(l, state="Up") for l in a["links"]]) for a in c["anchors"]]}
+                return {"done": True}
+            return self.c if cmd == "census" else {"success": True}
+    fb = FakeB()
+    r = A.clear_live_fallen(fb)
+    check("FW clear re-strings, polls and reads after", fb.sent == ["census", "restring:26577,26585", "poll", "census"], fb.sent)
+    check("FW clear reports before/after", len(r["before"]) == 1 and r["after"] == [] and r["restrung"] == [[26577, 26585]], r)
+    src = open(A.__file__, encoding="utf-8").read()
+    check("FW theft_catch clears before it builds", 'res["liveWiresClearedFirst"] = clear_live_fallen(B)' in src)
+    check("FW every play phase clears before it advances", 'st.setdefault("liveWiresCleared", []).append(clear_live_fallen(B))' in src)
+    check("FW a downing records the live wires", 'ev["liveFallen"] = live_fallen_wires(B.ap("census"))' in src)
+
+
+for t in (t_91, t_92_93_98, t_94_95, t_97, t_m12, t_m21, t_fw):
     try:
         t()
     except Exception as e:      # noqa: BLE001 - an import failure is a red test

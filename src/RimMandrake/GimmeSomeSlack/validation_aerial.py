@@ -109,6 +109,43 @@ def anchors_by_pos(c):
     return {(a["x"], a["z"]): a for a in c.get("anchors") or []}
 
 
+def live_fallen_wires(c):
+    """Every anchor in an AerialProbe census holding a fallen cord that may be live (fallenLive true, or null = not polled
+    yet). The census has NO top-level "links"/"fallen" keys: they are per anchor under "anchors" (total "fallenCords").
+    GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT: a probe reading c.get("fallen") saw 0 beside a live cut half that downed 3 colonists."""
+    out = []
+    for a in (c or {}).get("anchors") or []:
+        fl = a.get("fallen") or []
+        if fl and a.get("fallenLive") is not False:
+            out.append({"id": a.get("id"), "def": a.get("def"), "at": [a.get("x"), a.get("z")], "fallenLive": a.get("fallenLive"),
+                        "cords": len(fl), "tips": [f.get("tip") for f in fl], "cutPartners": [f.get("cutPartner") for f in fl]})
+    return out
+
+
+def restring_plan(c):
+    """Each Cut span in a census once, as (lower id, higher id), both anchors on the map: what `restring:a,b` re-joins."""
+    ids = {a.get("id") for a in (c or {}).get("anchors") or []}
+    pairs = set()
+    for a in (c or {}).get("anchors") or []:
+        for l in a.get("links") or []:
+            o = l.get("other", -1)
+            if l.get("state") == "Cut" and o in ids and o != a.get("id"):
+                pairs.add((min(a["id"], o), max(a["id"], o)))
+    return sorted(pairs)
+
+
+def clear_live_fallen(B):
+    """Re-string every Cut span an earlier block left (proof_all's save_load cuts M2-M3 before its save and keeps it), so a
+    scene played on the same map is not downed by a wire it never built. A live cord with no partner left cannot be
+    re-strung: it is reported in "after", never hidden."""
+    c0 = B.ap("census")
+    before, plan = live_fallen_wires(c0), restring_plan(c0)
+    done = [list(p) for p in plan if B.ap("restring:%d,%d" % p).get("done")]
+    if plan:
+        B.ap("poll")
+    return {"before": before, "restrung": done, "after": live_fallen_wires(B.ap("census")) if plan else before}
+
+
 def net_at(B, cell):
     return B.ap("net:%d,%d" % cell)
 
@@ -959,6 +996,7 @@ def theft_catch(B, rows, res):
     for t in old:
         B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t["x"], t["z"]), categories="All")
     res["clampsRemovedFirst"] = [t.get("id") for t in old]
+    res["liveWiresClearedFirst"] = clear_live_fallen(B)     # GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT: proof_all's cut M2-M3 half
     r = "%d,%d,%d,%d" % S["rect"]
     B.call("jawa/destroy_batch", rects=r, categories="All")
     B.call("jawa/set_terrain_batch", ops="Soil:" + r)
@@ -1101,6 +1139,7 @@ def _pt_play(B, res, key, target, since_tick):
     cg = V.VC._clockgate()
     st = res.setdefault(key, {"since": since_tick, "chargeShot": None, "siteEvents": []})
     st.pop("halted", None)
+    st.setdefault("liveWiresCleared", []).append(clear_live_fallen(B))
     _pt_calm(B)
     w0 = time.time()
     st["played"] = _pt_tick(B) - since_tick
@@ -1114,7 +1153,10 @@ def _pt_play(B, res, key, target, since_tick):
             r = g.result if isinstance(g.result, dict) else {}
             by = r.get("stopBy") or {}
             det, who = str(by.get("detail") or r), by.get("subjectId")
-            st["siteEvents"].append({"tick": _pt_tick(B), "detail": det[:200], "subject": who})
+            ev = {"tick": _pt_tick(B), "detail": det[:200], "subject": who}
+            if det.startswith("downed"):          # a fallen-wire downing names the wires that could have done it
+                ev["liveFallen"] = live_fallen_wires(B.ap("census"))
+            st["siteEvents"].append(ev)
             if (det.startswith("mental") or det.startswith("food")) and who:
                 B.call("jawa/pawn_mental", pawn=who, action="end")
                 _pt_calm(B)
