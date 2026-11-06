@@ -1554,7 +1554,9 @@ def replay_batch():
 # RELAPSE_ROLES_FIX_DIED_TWICE: a role_launch alarm kind not on this list and not routed by its own row fails below, so
 # a new doorbell or self-retrying state cannot fall into cause roles unseen and reopen it as a "dead fix".
 ROLE_INCIDENT_SUFFIXES = {"supervise", "unit", "overtime", "stop_failed", "stage_rejected", "stage_close", "stage_land", "failed",
-                          "after", "schedule", "ops", "stage_refused"}
+                          "after", "schedule", "ops", "stage_refused",
+                          # the Designer chain (e24689bad0, 42647172c7): unreadable stage.json, a looping chain, a blind sweep
+                          "chain", "chain_cap", "chain_sweep"}
 
 
 def test_role_relapse_kinds_do_not_reopen():
@@ -1603,6 +1605,48 @@ def test_role_relapse_kinds_do_not_reopen():
           "opened" in evs and "reopened" in evs, evs)
 
 
+
+def test_seat_relapse_kinds_do_not_reopen():
+    """RELAPSE_SEATS_FIX_DIED_TWICE: seats-20261105083326 opened, then reopened twice and was tamed, every time on
+    restart:BENCH:hard_no_boundary (a working Conductor window over its hard limit, which seat_restart ends itself at
+    the next boundary; every ack read nothing to do). That tier routes program; hard_stuck still reaches Operations."""
+    table = IN.load_table()
+    r = IN.route_of(table, "restart:BENCH:hard_no_boundary")
+    check("restart:*:hard_no_boundary routes program", r is not None and r.get("route") == "program", r)
+    for kind in ("restart:BENCH:hard_stuck", "restart:BENCH:orphan", "restart:BENCH:clone_unlanded"):
+        r = IN.route_of(table, kind)
+        check("%s still reaches a seats incident" % kind, r is not None and r.get("route") == "role"
+              and r.get("cause") == "seats", r)
+    src = open(os.path.join(HERE, "seat_restart.py"), encoding="utf-8").read()
+    check("seat_restart emits both tiers (sanity: the kinds this test routes exist)",
+          'kind="restart:%s:hard_no_boundary"' in src and 'kind="restart:%s:hard_stuck"' in src)
+    pol = table["policy"]
+    q = pol["event_quiet_min"] * M
+    rows, cur = [], [0]
+
+    def tick(now, *metrics):
+        rows.extend({"metric": m, "class": "distressed", "at": IN.iso(now), "t": now} for m in metrics)
+        res = IN.step(table, rows, {"t": now, "points": {}, "alarms": {}}, now, cur[0])
+        rows.extend(res["rows"])
+        cur[0] = len(rows)
+
+    def episode(t, *metrics):
+        tick(t, *metrics)
+        tick(t + M)
+        tick(t + M + q + M)
+        return t + M + q + M + H
+
+    t = T0
+    for _ in range(3):                             # the instance: 08:33Z, 18:28Z, 04:09Z, each inside relapse_h
+        t = episode(t, "restart:BENCH:hard_no_boundary")
+    evs = [r["ev"] for r in rows if "ev" in r]
+    check("instance: hard_no_boundary opens, reopens and tames nothing", not evs, evs)
+    t = episode(t, "restart:BENCH:hard_stuck")     # control: a stuck window back inside relapse_h still reopens
+    episode(t, "restart:BENCH:hard_stuck")
+    evs = [r["ev"] for r in rows if "ev" in r]
+    check("control: restart:BENCH:hard_stuck back inside relapse_h reopens its incident (the check can fail)",
+          "opened" in evs and "reopened" in evs, evs)
+
 if "--replay-batch" in sys.argv:
     sys.exit(replay_batch())
 for t in (test_standing_source_holds_incident_open, test_silent_reader, test_chain_dedupe, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
@@ -1610,7 +1654,8 @@ for t in (test_standing_source_holds_incident_open, test_silent_reader, test_cha
           test_owner_rung_revisited, test_revisits_batched, test_revisit_quiet, test_quiet_on_the_real_path,
           test_escalation_clear_through_step, test_chains_through_step, test_each_field_of_a_reading, test_signal_through_step, test_news_each_state_event, test_batch_text_and_quiet_pulls_nothing,
           test_incidents_verb_says_the_news, test_replay_recorded, test_relapse_tamed, test_tamed_filer_waits_and_retries,
-          test_disjoint_reopen_is_new_incident, test_role_relapse_kinds_do_not_reopen):
+          test_disjoint_reopen_is_new_incident, test_role_relapse_kinds_do_not_reopen,
+          test_seat_relapse_kinds_do_not_reopen):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)

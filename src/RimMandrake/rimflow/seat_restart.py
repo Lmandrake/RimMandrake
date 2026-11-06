@@ -19,7 +19,8 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              ready restarts at the next ended turn at any size. Only a goodbye or a handoff outranks hold.
              Busy windows (backstop_busy): past backstop_ctx_tokens the seat is told once through its
              doorbell (restart_tell); past backstop_hard_tokens a restart goes pending whatever the window does, killed
-             at the next ended turn with nothing held; no such boundary in backstop_hard_alarm_s alarms the Conductor.
+             at the next ended turn with nothing held; no such boundary in backstop_hard_alarm_s alarms the Conductor
+             (his log; routes program), and in backstop_hard_stuck_s raises restart:<seat>:hard_stuck for Operations.
   pending    grace (grace_s; FOUNDRY 20 s); cancelled by new HUMAN input in the window's transcript after the request
              (never by the Dispatcher's ring, a task notification or a seat's cross-session message: _is_human_input;
              a Conductor's goodbye restart cannot be cancelled by text at all: _goodbye),
@@ -83,6 +84,8 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 0,
             # SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO: off unless a seat keys them (_busy_on)
             "backstop_busy": False, "backstop_hard_tokens": 0, "backstop_hard_alarm_s": 3600,
+            # RELAPSE_SEATS_FIX_DIED_TWICE: hard_no_boundary is the Conductor log's; this long over hard is Operations'
+            "backstop_hard_stuck_s": 14400,
             # RESTART_NOW_BUILD_WINDOW_SAYS_READY: `request --now` vouches for its boundary, so a short ended-turn
             # check stands in for grace + quiet_s; now_hold_s bounds how long rm-restart-now ticks before the timer
             "now_quiet_s": 3, "now_hold_s": 240,
@@ -1400,7 +1403,10 @@ def _tell_once(seat, cfg, st, ro, cur, tx, now, apply, act):
 
 def _no_boundary(seat, cfg, sc, now, act, why):
     """The hard limit has stood backstop_hard_alarm_s with no safe boundary: the Conductor hears it, in the ledger and
-    his log, and it names what holds. Nothing is killed for it."""
+    his log, and it names what holds. Nothing is killed for it. That tier routes program: a window still working is a
+    wait this module ends at its next boundary, not a fix that can die (RELAPSE_SEATS_FIX_DIED_TWICE). Past
+    backstop_hard_stuck_s what holds may be stuck (a hung robocopy, 2026-11-03), and restart:<seat>:hard_stuck is an
+    Operations incident."""
     since = sc.get("hard_since")
     if since is None or now - since < cfg["backstop_hard_alarm_s"]:
         return
@@ -1408,6 +1414,12 @@ def _no_boundary(seat, cfg, sc, now, act, why):
         raise_first="%s is over its hard context limit with no safe boundary." % seat,
         why="%s has been over backstop_hard_tokens %d for %d s and never reached a safe boundary (no kill, it stays "
             "pending): %s" % (seat, cfg["backstop_hard_tokens"], now - since, why))
+    stuck = cfg.get("backstop_hard_stuck_s")
+    if stuck and now - since >= stuck:
+        act(do="alarm", kind="restart:%s:hard_stuck" % seat, seat=seat, note=True, conductor_log=True,
+            raise_first="%s has been over its hard context limit for %d h with no safe boundary." % (seat, (now - since) // 3600),
+            why="%s over backstop_hard_tokens %d for %d s, past backstop_hard_stuck_s %d: what holds may be stuck "
+                "(no kill, it stays pending): %s" % (seat, cfg["backstop_hard_tokens"], now - since, stuck, why))
 
 
 def _hard_pending(seat, cfg, R, st, ro, cur, tx, now, act):

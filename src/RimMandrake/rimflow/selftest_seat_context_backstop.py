@@ -311,6 +311,26 @@ def test_every_hold_holds_and_no_boundary_alarms():
           "the alarm names what holds it (%s)" % [x.get("why") for x in a])
 
 
+
+def test_hard_stuck_tier():
+    """RELAPSE_SEATS_FIX_DIED_TWICE: hard_no_boundary (the Conductor log's) comes at backstop_hard_alarm_s;
+    restart:<seat>:hard_stuck (an Operations incident) only past backstop_hard_stuck_s, and it kills nothing."""
+    stuck = SR.DEFAULTS["backstop_hard_stuck_s"]
+    check(stuck > 3600, "the stuck tier lies past the hard alarm (%s)" % stuck)
+    sch, st = limits(), fresh()
+    run(sch, st, busy(HARD), T0)
+    a = run(sch, st, busy(HARD), T0 + 3700)
+    kinds = [x.get("kind") for x in a if x["do"] == "alarm"]
+    check("restart:FOUNDRY:hard_no_boundary" in kinds and "restart:FOUNDRY:hard_stuck" not in kinds,
+          "past the hard alarm, before stuck: hard_no_boundary only (%s)" % kinds)
+    a = run(sch, st, busy(HARD), T0 + stuck - 60)
+    check("restart:FOUNDRY:hard_stuck" not in [x.get("kind") for x in a if x["do"] == "alarm"], "a minute short: no stuck")
+    a = run(sch, st, busy(HARD), T0 + stuck + 60)
+    al = [x for x in a if x["do"] == "alarm" and x.get("kind") == "restart:FOUNDRY:hard_stuck"]
+    check(len(al) == 1 and al[0].get("note") is True and al[0].get("conductor_log") is True and "no boundary" in al[0]["why"],
+          "past backstop_hard_stuck_s: one hard_stuck alarm naming what holds (%s)" % al)
+    check("restart_kill" not in dos(a) and state(st) == "pending", "the stuck alarm kills nothing and leaves it pending")
+
 def test_the_pending_input_holds():
     sch, st = limits(), fresh()
     run(sch, st, busy(HARD), T0)

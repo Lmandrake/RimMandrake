@@ -49,9 +49,11 @@ hard 200k). Told: nobody on success; a `restart_verified` line. Test: a stub sea
 verified. Exists: FOUNDRY, and BENCH with the same limits since 2026-11-01 (by card, `_why_backstop`), once review 3's F2 and F3
 closed. Tentative plan §8 question closed by his words.
 
-**CK2 No seat outruns the hard limit.** [Dispatcher measures; Operations reads] A seat over `hard` with no boundary for `hard_alarm_s` raises an acked alarm.
-Signal: `hard_no_boundary`. Threshold: same file. Told: the seat's reader by OP3. Test: stub seat over hard, no boundary;
-alarm in told ledger; unacked escalates. Exists: the log line (00:06Z). Missing: delivery.
+**CK2 No seat outruns the hard limit.** [Dispatcher measures; Operations reads] A seat over `hard` with no boundary for `hard_alarm_s` is told to the Conductor log; past `backstop_hard_stuck_s` (4 h) it raises an acked alarm.
+Signal: `hard_no_boundary` (routes program: a window still working is a wait seat_restart ends at its next boundary;
+seats-20261105083326 reopened twice on it and every ack read nothing to do, RELAPSE_SEATS_FIX_DIED_TWICE), then
+`hard_stuck`. Threshold: same file, `seat_restart.DEFAULTS`. Told: `hard_stuck` to the seat's reader by OP3. Test:
+`selftest_seat_context_backstop.test_hard_stuck_tier`, `selftest_incident.test_seat_relapse_kinds_do_not_reopen`.
 
 **CK3 Every restart request ends.** [Dispatcher measures; Operations reads] Any goodbye or restart request ends in `restart_verified` or a told alarm, read from
 outside the code path that might have dropped it. Signal: requests joined to `restart_verified` by seat. Threshold:

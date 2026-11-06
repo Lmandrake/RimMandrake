@@ -89,6 +89,7 @@
     {"match": "idle_bringback:*", "route": "role", "reader": "Operations", "cause": "seats", "_why": "DI1, CK4: the one restart was spent and the fresh window took nothing"},
     {"match": "decide:*", "route": "role", "reader": "Operations", "cause": "dispatcher"},
     {"match": "restart:*:held", "route": "program"},
+    {"match": "restart:*:hard_no_boundary", "route": "program", "_why": "RELAPSE_SEATS_FIX_DIED_TWICE: a window over its hard limit and still working is a wait seat_restart ends itself at the next boundary (seats-20261105083326 reopened twice on it, every ack read nothing to do). The Conductor log and ledger note still carry it; past backstop_hard_stuck_s it becomes restart:<seat>:hard_stuck, which reaches Operations under restart:*"},
     {"match": "restart:*", "route": "role", "reader": "Operations", "cause": "seats"},
     {"match": "long_helper:*", "route": "role", "reader": "Operations", "cause": "helpers"},
     {"match": "helper_lost:*", "route": "role", "reader": "Operations", "cause": "helpers"},
