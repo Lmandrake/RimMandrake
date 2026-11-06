@@ -613,7 +613,10 @@
    "tier": 1,
    "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
    "flipbook": "unannotated",
-   "sets": [],
+   "sets": [
+    "Beldon",
+    "BeldonC"
+   ],
    "tex": "swanimals/Beldon/Beldon",
    "static": {
     "g1": 0.738,
@@ -799,9 +802,9 @@
    "sets": [],
    "tex": "swanimals/Neebray/Neebray",
    "static": {
-    "g1": 0.903,
-    "g2": 0.504,
-    "g4": 0.699
+    "g1": 0.843,
+    "g2": 1.008,
+    "g4": 0.84
    },
    "static_fails": [],
    "provenance": "donor-copy (cartoon)",
@@ -847,9 +850,9 @@
    "sets": [],
    "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
    "static": {
-    "g1": 0.954,
-    "g2": 0.47,
-    "g4": 0.43
+    "g1": 0.971,
+    "g2": 0.585,
+    "g4": 0.578
    },
    "static_fails": [],
    "provenance": "generated/ours",

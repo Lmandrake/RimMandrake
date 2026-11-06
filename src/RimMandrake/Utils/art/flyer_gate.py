@@ -53,7 +53,7 @@ DEF_SETS = {"RSW_Sketto": ["Sketto"], "RSW_PekoPeko": ["PekoPeko_f", "PekoPeko_m
             "RSW_Hawkbat": ["Hawkbat", "Hawkbat_j"], "RSW_Bogwing": ["Bogwing"], "RM_Krizzak": ["Krizzak"],
             "RSW_Shyrack": ["Shyrack"], "RSW_Urusai": ["Urusai"], "RSW_Whisperbird": ["Whisperbird"],
             "RSW_Mynock": ["Mynock"], "RM_FireWasp": ["FireWasp"], "RSW_ScrapNestBird": ["ScrapNestBird"],
-            "RSW_Dactillion": ["Dactillion"]}
+            "RSW_Dactillion": ["Dactillion"], "RSW_Beldon": ["Beldon", "BeldonC"]}
 # def -> a body-plan word (study 3.3), for the defs the study assigned one
 PLANS = ("bird", "bat", "insect", "ray", "floater", "swarm", "large")
 TIERS = {
