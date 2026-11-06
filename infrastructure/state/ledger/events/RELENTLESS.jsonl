@@ -1355,3 +1355,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:54:42Z","tsn":1794002082796424614}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK A2 (L2), read-only proof","ts":"2026-11-06T21:55:02Z","tsn":1794002102742976749}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:05:16Z","tsn":1794002716168135592}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLAYER_HOVER_PROBE_TOOLTIP_DRAWN A1 (L2), read-only proof","ts":"2026-11-06T22:07:45Z","tsn":1794002865841986397}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:08:12Z","tsn":1794002892056293264}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLAYER_HOVER_PROBE_TOOLTIP_DRAWN A2 (L2), read-only proof","ts":"2026-11-06T22:08:28Z","tsn":1794002908051757901}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:09:03Z","tsn":1794002943848218860}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging PLANET_ATMOSPHERE_CLOUD_COST_1: deploy and restart for its live proofs","ts":"2026-11-06T22:09:08Z","tsn":1794002948940885169}
