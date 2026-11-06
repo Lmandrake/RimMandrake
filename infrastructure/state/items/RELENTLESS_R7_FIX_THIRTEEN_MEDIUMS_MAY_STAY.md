@@ -1,0 +1,22 @@
+## spec
+Medium findings from the graded Codex reviews r7 and r8 of relentless.py. Under the owner's bar (card 2026-11-06, standing_rulings.md §Code review) they do not block CLEAN; they are filed so nothing is lost. Unverified unless marked; verify each before fixing, and note that any edit here makes relentless.py DIRTY again.
+
+Raw reviews: `D:\ClaudeWork\rimmandrake\relentless\RELENTLESS_VET_FULL_FILE_BEFORE_CLEAN\r7\rev_part*.txt`, `...\r7\adjudicate.txt`, `...\r8\rev_whole.txt`. Line numbers are r7's, at c16d068cd3.
+
+1. `capped_copy` (184-192): the timeout is not enforced while blocked in `stdout.read`, so a silent stalled child holds the tick.
+2. `landing_key`/`_patch_ids` (1266-1304): a failed patch-id calculation reads as an empty commit, and the subject-and-author fallback can then match the wrong commit.
+3. `proof_gate` (1953-1974): calls `weak_reads_pass(st)` without the store, losing its historical-verdict fallback; an old `proof_only` record can stall on `proof_unchanged`.
+4. `work_sha`/`ledger_close` (3103-3155): the blind PASS on a ledger-only candidate is also recorded at the older work commit, which never ran the check. Adjudicated MEDIUM: the proof did pass on the candidate; this is wrong close provenance, not an unproven close.
+5. `_carry_late` (2688-2733): a writer already waiting on the original inode can append after the suffix read, leaving that event only in the backup.
+6. `worker_changed` (4039-4054): a commit a worker cherry-picks by hand keeps its old author time and drops out of proof_gate's rework count. The supervisor's own `restore_commits` case was fixed at 35fbf75bb7; commit time cannot be used, since `selftest_relentless_proof_gate_mend.py` row 3 requires a mend re-committed inside a run to stay out.
+7. Mod reservation (5192-5197): `taken |= mods` runs before `enrol_put` succeeds, so a refused item can stall another item on the same mod.
+8. `marker_fail_record` (5676-5678): `step` ignores a False return and continues before the owed FAIL is recorded.
+9. Owner-pause rule (5275-5289): non-object JSON in the pause file raises AttributeError in every affected tick. Check this one first: a hand-written `true` could halt ticks.
+10. `help_retry` (6335-6376): a retry keeps the old room-wait timestamp, so time spent running can use up the next attempt's admission wait.
+11. `check_resume` (r8 #1): a resumed checker keeps its original deadline, so `verdict()` rejects its answer as late. The sibling's e8c7158e6f stops a late verdict wedging the check; this waste remains.
+12. `retire` (r8 #2): any recorded ledger lease retires a queued item, including an expired or released one, while `eligible` uses `lease_live`.
+13. `help_step` (r8 #3): consult launch ignores a quarantine or manual hold.
+
+Done when: each is fixed with a red-without-fix selftest row, or rejected in writing with its reason; then relentless.py gets its own review again, because the edits dirty it.
+
+Source: RELENTLESS_VET_FULL_FILE_BEFORE_CLEAN.
