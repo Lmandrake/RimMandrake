@@ -1,0 +1,31 @@
+{
+  "item": "SKERREL_REDRAW_BESPOKE_SHARED_FIREWASP_ART",
+  "class": "delegated: art judgement",
+  "judge": "naive Opus judge (not the maker), 2026-11-05",
+  "judge_model": "claude-opus-5-5",
+  "subject": "RM_Skerrel",
+  "brief": {
+    "paths": ["design/RimMandrake/art_judge_brief.md@297aface52", "design/RimMandrake/delegation_policy.md section 4"],
+    "clauses_applied": ["A (n/a: invented RM_ creature, no canon entry)", "B1", "B1a", "B2", "B3 (no sibling keeps; lifestages share one texture)", "C1", "C2", "C4", "C5 (stills only)", "D1", "D2", "D3", "D4", "E1", "E2", "E3 (not owner-kept art)", "E4 (no owner note found)"]
+  },
+  "evidence": [
+    "/mnt/d/ClaudeWork/rimmandrake/relentless/SKERREL/judge_composite.png",
+    "src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Skerrel/RM_Skerrel_south.png",
+    "src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Skerrel/RM_Skerrel_east.png",
+    "src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Skerrel/RM_Skerrel_north.png",
+    "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_east.png (contrast)"
+  ],
+  "measurements": "all three 256x256 RGBA; alpha bbox south (17,17,239,238), east (8,50,248,206), north (10,12,245,243); zero alpha on every border pixel; ~1.4-1.7k semi-transparent edge pixels each (antialias, no visible halo in composite). Canvas 256 px vs drawSize 0.6 x 128 = 77 px: generous (D2).",
+  "verdicts": [
+    {"candidate": "src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Skerrel/RM_Skerrel_south.png", "facing": "south", "verdict": "KEEP",
+     "notes": "C1: faces the viewer - head at the bottom with two orange compound eyes and mandibles toward camera, thorax then striped abdomen receding upward; a separate drawing, not the north rotated. Perspective is steep (abdomen shown near full length), acceptable for a 0.4-0.6 cell flyer. C2: same palette (leaf-green thorax, yellow/dark-green bands, glassy veined wings, dark brown legs) and span as north. D4: clean alpha, no backdrop/shadow/fragments. B2: at 32 px reads as a small yellow-striped wasp, clearly apart from ground. B1a: thin dark edge shading on legs only, no heavy keyline."},
+    {"candidate": "src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Skerrel/RM_Skerrel_east.png", "facing": "east", "verdict": "KEEP",
+     "notes": "C1/C2: clean right-facing profile - head, eye and antennae at right, stinger at left; proportions and palette match south/north. Mirrored west (composite) reads correctly as left-facing, no asymmetric detail that breaks on mirror. D3/D4: widest facing but inside canvas, zero border alpha, no halo. E1/E2 + goal: plainly distinct from the Fire Wasp (that is a brown armour-scaled, amber-winged bulky insect; this is a slim green/yellow-banded wasp) - bespoke, not donor or script-drawn. Reads at 77 px and 32 px."},
+    {"candidate": "src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Skerrel/RM_Skerrel_north.png", "facing": "north", "verdict": "KEEP",
+     "notes": "C1: rear view - head at top seen from behind with antennae, no eyes or mandibles visible; abdomen and stinger toward the viewer. C2: size, wing span and palette agree with south. D4: clean alpha. Reads at 32 px."}
+  ],
+  "overall": "KEEP",
+  "proposals": [
+    "C1 could say what a small flyer's south/north perspective should be: both facings here are near-dorsal (abdomen shown near full length) and differ only by head end; I kept them because C1 only bans a rotated top-down view and these are separate drawings, but the brief does not decide how steep is too steep for flyers."
+  ]
+}

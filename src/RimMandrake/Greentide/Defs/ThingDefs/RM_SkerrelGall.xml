@@ -28,10 +28,9 @@
      ThingDef). No designationCategory: wild-spawned only, never
      player-buildable.
 
-     Placeholder texPath (RM_FireWasp's own leathery insect-nest silhouette
-     does not exist as a separate asset; reusing RM_RegenerantVeil's shipped
-     plant-tissue texture as the nearest "organic growth" placeholder already
-     in the mod set). Bespoke gall art is owed to the art pipeline. -->
+     Bespoke gall art: RotSporeKit/Things/Plant/RM_SkerrelGall, made by the
+     artpipe job texregen_RM_SkerrelGall_v1; it shares no texture with
+     RM_FireWasp or RM_RegenerantVeil. -->
 <Defs>
 
   <ThingDef>

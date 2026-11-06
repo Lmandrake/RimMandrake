@@ -14,12 +14,11 @@
      for a 1-cell subject spawned by the dozen) — never block flight waiting
      on frames.
 
-     Placeholder texPath only, same posture as RM_RotSporeKit_GuardianGroves.xml's
-     own header note: reused from RM_FireWasp's already-shipped art (closest
-     existing insect silhouette in the mod set) rather than left pointing at
-     nothing. Checked infrastructure/artpipe this pass — no RM_Skerrel job
-     exists yet, queued or done; bespoke art is owed to the pipeline, not
-     this item. -->
+     Bespoke art (SKERREL_REDRAW_BESPOKE_SHARED_FIREWASP_ART): Greentide's own
+     Textures/Things/Pawn/Animal/RM_Skerrel/RM_Skerrel_{south,east,north}.png,
+     256 px (west mirrors east). It replaced a placeholder that borrowed
+     Pyrelands' FireWasp texture, so the Fire Wasp's art swap no longer moves
+     this creature and Greentide no longer leans on another mod's texture. -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
@@ -123,21 +122,21 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <texPath>Things/Pawn/Animal/RM_Skerrel/RM_Skerrel</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.4</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <texPath>Things/Pawn/Animal/RM_Skerrel/RM_Skerrel</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <texPath>Things/Pawn/Animal/RM_Skerrel/RM_Skerrel</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.6</drawSize>
         </bodyGraphicData>
