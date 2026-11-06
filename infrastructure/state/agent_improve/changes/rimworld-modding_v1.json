@@ -39,6 +39,58 @@
     "old": "agent/rimworld-modding/v1^",
     "new": "agent/rimworld-modding/v1"
    }
+  },
+  {
+   "at": "2026-11-06T20:35:28Z",
+   "verdict": "no_signal",
+   "keep": null,
+   "held_out": {
+    "win": 2,
+    "loss": 3,
+    "tie": 1,
+    "error": 0
+   },
+   "source": {
+    "win": 0,
+    "loss": 0,
+    "tie": 0,
+    "error": 0
+   },
+   "null_held_out": {
+    "win": 3,
+    "loss": 0,
+    "tie": 3,
+    "error": 0
+   },
+   "null_source": {
+    "win": 0,
+    "loss": 0,
+    "tie": 0,
+    "error": 0
+   },
+   "signal": {
+    "held_out": {
+     "net": -1,
+     "margin": 3,
+     "sign_p": 0.5,
+     "alpha": 0.05,
+     "call": null
+    },
+    "source": {
+     "net": 0,
+     "margin": 0,
+     "sign_p": 1.0,
+     "alpha": 0.05,
+     "call": null
+    }
+   },
+   "rule": "noise_floor_v1: harm/gain need |net| > |null net| + null errors and a one-sided sign test at p <= 0.05",
+   "seed": 3984378047,
+   "evidence": "infrastructure/state/agent_improve/general/rimworld-modding_v1_20261106T203528Z_3984378047.json",
+   "refs": {
+    "old": "agent/rimworld-modding/v1^",
+    "new": "agent/rimworld-modding/v1"
+   }
   }
  ]
 }

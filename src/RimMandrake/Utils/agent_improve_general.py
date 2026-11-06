@@ -13,11 +13,18 @@ item's spec, one with the old text of the target and one with the new, and each 
 blind judge sees the spec, what actually closed the item, and the two answers as A and B in a random order (never which
 is old or new) and picks the better or calls a tie.
 
-Verdict (Conductor ruling 2026-11-02): harm is held-out losses > wins, gain is wins > losses on either sample.
-    harm                              -> overfit  (revert)
-    gain on held-out, no harm         -> general  (keep)
-    gain on the source kind only      -> narrow   (keep, flagged)
-    no gain anywhere                  -> no_gain  (revert)
+Null control: on every judged pair the old text runs a second time and the same kind of blind judge compares the two old
+answers, so each check measures, on its own sample, how far this judge drifts when there is nothing to find. Each pair
+record holds it under `null`; the result holds its tallies beside the real ones (null_held_out, null_source).
+
+Verdict (the Conductor's 2026-11-02 rule with a noise floor, AGENT_IMPROVE_HARDEN_NOISE_CALLED_OVERFIT). A sample shows
+harm or gain only past BOTH bars: |wins - losses| exceeds the null's |wins - losses| plus its failed null pairs (each one
+could have gone either way), and an exact one-sided sign test on the win/loss pairs gives p <= SIGN_ALPHA. At 6 pairs
+that means 5-0 or 6-0.
+    harm on held-out                  -> overfit   (revert)
+    gain on held-out, no harm         -> general   (keep)
+    gain on the source kind only      -> narrow    (keep, flagged)
+    neither past the bars             -> no_signal (keep None: neither reverts nor keeps as general)
     no held-out pair judged           -> unmeasured (source pairs alone never keep a change)
 Every run writes its pairs to infrastructure/state/agent_improve/general/<target>_v<N>_<stamp>.json and appends a
 summary to the change record's `generalization` list (never rewritten). A revert verdict is recorded, not enacted.
@@ -30,6 +37,7 @@ import fcntl
 import glob
 import hashlib
 import json
+import math
 import os
 import random
 import re
@@ -44,12 +52,14 @@ import model  # noqa: E402  (agent_improve put rimflow on the path)
 EVENTS = os.path.join(A.REPO, "infrastructure", "state", "ledger", "events")
 ITEMS = os.path.join(A.REPO, "infrastructure", "state", "items")
 GENERAL = os.path.join(A.REPO, "infrastructure", "state", "agent_improve", "general")
-DAYS, HELD_OUT, SOURCE = 14, 6, 2
+DAYS, HELD_OUT, SOURCE = 14, 6, 6   # 5 pairs is the fewest that can pass the sign test: fewer source pairs make narrow dead
 RUN_MODEL, JUDGE_MODEL = "sonnet", "opus"
 WORKERS = 8   # pairs run side by side: 8 sequential pairs of three model calls overrun a 540 s foreground budget
 SPEC_CHARS, ANSWER_CHARS = 3000, 4000
-VERDICTS = ("overfit", "general", "narrow", "no_gain", "unmeasured")
-KEEP = {"general": True, "narrow": True, "overfit": False, "no_gain": False, "unmeasured": None}
+SIGN_ALPHA = 0.05
+RULE = "noise_floor_v1: harm/gain need |net| > |null net| + null errors and a one-sided sign test at p <= %s" % SIGN_ALPHA
+VERDICTS = ("overfit", "general", "narrow", "no_signal", "unmeasured")
+KEEP = {"general": True, "narrow": True, "overfit": False, "no_signal": None, "unmeasured": None}
 
 
 def item_kind(iid):
@@ -155,8 +165,33 @@ ONE JSON object and nothing else: {"better": "A" | "B" | "tie", "why": "one or t
 """
 
 
-def run_pair(it, spec, old_text, new_text, what, new_is_a, runner, judge):
-    """One item: two runs, one blind judgment -> a pair record; outcome is win/loss/tie for the NEW text, or error."""
+def judge_two(spec, close, first, second, first_is_a, judge):
+    """One blind judgment of two answers -> (outcome for `first`: win/loss/tie, the judge's reply, a, b).
+    A failure raises; a reply with no usable pick raises ValueError."""
+    a, b = (first, second) if first_is_a else (second, first)
+    jv = A.parse_json_reply(judge(JUDGE_PROMPT % (spec, close[:1500], a, b)))
+    better = str(jv.get("better") or "").strip().upper()
+    if better not in ("A", "B", "TIE"):
+        raise ValueError("better=%r" % jv.get("better"))
+    return ("tie" if better == "TIE" else ("win" if (better == "A") == first_is_a else "loss")), better, jv, a, b
+
+
+def null_pair(ans_old, rerun, spec, close, rerun_is_a, judge):
+    """The null control for one item: ans_old against a second run of the same old text. outcome is win/loss/tie for
+    the rerun (it stands where the new text stands in the real pair), or error; it never harms the real pair."""
+    rec = {"rerun_is_a": rerun_is_a}
+    try:
+        outcome, better, jv, a, b = judge_two(spec, close, rerun(), ans_old, rerun_is_a, judge)
+    except Exception as e:
+        rec.update(outcome="error", error=str(e)[:300])
+        return rec
+    rec.update(outcome=outcome, better=better, why=str(jv.get("why") or "")[:500], a=a, b=b)
+    return rec
+
+
+def run_pair(it, spec, old_text, new_text, what, new_is_a, runner, judge, rerun_is_a=False):
+    """One item: two runs, one blind judgment -> a pair record; outcome is win/loss/tie for the NEW text, or error.
+    A judged pair also carries its null control under `null`, so null pairs and judged pairs correspond one to one."""
     rec = {"id": it["id"], "kind": it["kind"], "ledger_kind": it.get("ledger_kind"), "closed_at": it.get("closed_at")}
     try:
         ans_old = str(runner(RUN_PROMPT % (what, old_text, spec)))[:ANSWER_CHARS]
@@ -164,21 +199,18 @@ def run_pair(it, spec, old_text, new_text, what, new_is_a, runner, judge):
     except Exception as e:   # any failure is this pair's error, never the whole check's crash
         rec.update(outcome="error", error="run: %s" % str(e)[:300])
         return rec
-    a, b = (ans_new, ans_old) if new_is_a else (ans_old, ans_new)
     close = it.get("close_text") or "(no close reason recorded)"
     if it.get("sha"):
         close += "\nclosing commit: %s" % it["sha"]
     try:
-        jv = A.parse_json_reply(judge(JUDGE_PROMPT % (spec, close[:1500], a, b)))
+        outcome, better, jv, a, b = judge_two(spec, close, ans_new, ans_old, new_is_a, judge)
     except Exception as e:
+        a, b = (ans_new, ans_old) if new_is_a else (ans_old, ans_new)
         rec.update(outcome="error", error="judge: %s" % str(e)[:300], new_is_a=new_is_a, a=a, b=b)
         return rec
-    better = str(jv.get("better") or "").strip().upper()
-    if better not in ("A", "B", "TIE"):
-        rec.update(outcome="error", error="judge: better=%r" % jv.get("better"), new_is_a=new_is_a, a=a, b=b)
-        return rec
-    outcome = "tie" if better == "TIE" else ("win" if (better == "A") == new_is_a else "loss")
     rec.update(outcome=outcome, better=better, new_is_a=new_is_a, why=str(jv.get("why") or "")[:500], a=a, b=b)
+    rerun = lambda: str(runner(RUN_PROMPT % (what, old_text, spec)))[:ANSWER_CHARS]   # noqa: E731
+    rec["null"] = null_pair(ans_old, rerun, spec, close, rerun_is_a, judge)
     return rec
 
 
@@ -190,17 +222,47 @@ def tally(pairs, side):
     return t
 
 
-def verdict(held, src):
-    """held, src: tallies -> one of VERDICTS (the design's rule; see the module docstring)."""
+def null_tally(pairs, side):
+    t = {"win": 0, "loss": 0, "tie": 0, "error": 0}
+    for p in pairs:
+        if p["side"] == side and p.get("null"):
+            t[p["null"]["outcome"]] += 1
+    return t
+
+
+def sign_p(wins, losses):
+    """Exact one-sided sign test: the chance of at least max(wins, losses) of the win/loss pairs falling one way when
+    each is a fair coin. No pairs -> 1.0."""
+    n = wins + losses
+    return sum(math.comb(n, i) for i in range(max(wins, losses), n + 1)) / 2 ** n if n else 1.0
+
+
+def noise_margin(null):
+    """The net the null control reached on this sample; a failed null pair counts as one that went the far way."""
+    return abs(null["win"] - null["loss"]) + null["error"]
+
+
+def signal(t, null):
+    """One sample against its null -> {net, margin, sign_p, alpha, call}; call is gain, harm or None."""
+    net, margin, p = t["win"] - t["loss"], noise_margin(null), sign_p(t["win"], t["loss"])
+    call = None
+    if abs(net) > margin and p <= SIGN_ALPHA:
+        call = "gain" if net > 0 else "harm"
+    return {"net": net, "margin": margin, "sign_p": round(p, 4), "alpha": SIGN_ALPHA, "call": call}
+
+
+def verdict(held, src, null_held, null_src):
+    """held, src: tallies; null_held, null_src: their null tallies -> one of VERDICTS (see the module docstring)."""
     if held["win"] + held["loss"] + held["tie"] == 0:   # "held out, no harm" needs held-out evidence
         return "unmeasured"
-    if held["loss"] > held["win"]:
+    call = signal(held, null_held)["call"]
+    if call == "harm":
         return "overfit"
-    if held["win"] > held["loss"]:
+    if call == "gain":
         return "general"
-    if src["win"] > src["loss"]:
+    if signal(src, null_src)["call"] == "gain":   # source losses alone are not harm: the rule judges held-out kinds
         return "narrow"
-    return "no_gain"
+    return "no_signal"
 
 
 def view(res, text):
@@ -227,17 +289,21 @@ def check(t, old_text, new_text, source_kinds, now=None, seed=None, runner=None,
         return len(specs[it["id"]]) >= 40
     held, src = sample(items, source_kinds, rng, need_spec=has_spec)
     old_v, new_v = view(res, old_text), view(res, new_text)
-    jobs = [(side, it, rng.random() < 0.5) for side, group in (("held_out", held), ("source", src)) for it in group]
+    jobs = [(side, it, rng.random() < 0.5, rng.random() < 0.5) for side, group in (("held_out", held), ("source", src))
+            for it in group]
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
-        futs = [ex.submit(run_pair, it, specs[it["id"]], old_v, new_v, res["what"], nia, runner, judge)
-                for _, it, nia in jobs]
-        pairs = [dict(f.result(), side=side) for f, (side, _, _) in zip(futs, jobs)]
+        futs = [ex.submit(run_pair, it, specs[it["id"]], old_v, new_v, res["what"], nia, runner, judge, ria)
+                for _, it, nia, ria in jobs]
+        pairs = [dict(f.result(), side=job[0]) for f, job in zip(futs, jobs)]
     th, ts = tally(pairs, "held_out"), tally(pairs, "source")
-    v = verdict(th, ts)
+    nh, ns = null_tally(pairs, "held_out"), null_tally(pairs, "source")
+    v = verdict(th, ts, nh, ns)
     return {"target": t, "path": res["path"], "seed": seed, "days": days,
             "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "source_kinds": sorted(source_kinds or ()),
             "pool": {"closed_items": len(items), "kinds": sorted({i["kind"] for i in items.values()})},
-            "held_out": th, "source": ts, "verdict": v, "keep": KEEP[v], "pairs": pairs,
+            "held_out": th, "source": ts, "null_held_out": nh, "null_source": ns, "rule": RULE,
+            "signal": {"held_out": signal(th, nh), "source": signal(ts, ns)}, "verdict": v, "keep": KEEP[v],
+            "pairs": pairs,
             "old_sha256": hashlib.sha256(old_v.encode()).hexdigest()[:16],
             "new_sha256": hashlib.sha256(new_v.encode()).hexdigest()[:16]}
 
@@ -275,7 +341,9 @@ def write_evidence(result, name, general_dir=None, repo=None, **extra):
 
 def summary(result, evidence, refs):
     return {"at": result["at"], "verdict": result["verdict"], "keep": result["keep"], "held_out": result["held_out"],
-            "source": result["source"], "seed": result["seed"], "evidence": evidence, "refs": refs or {}}
+            "source": result["source"], "null_held_out": result.get("null_held_out"),
+            "null_source": result.get("null_source"), "signal": result.get("signal"), "rule": result.get("rule"),
+            "seed": result["seed"], "evidence": evidence, "refs": refs or {}}
 
 
 def record(result, t, n, changes_dir=None, general_dir=None, repo=None, refs=None):
@@ -329,9 +397,9 @@ def show(t, version, changes_dir=None, repo=None):
             body = json.load(open(ep, encoding="utf-8"))
             judged = sum(1 for p in body.get("pairs", []) if p.get("outcome") in ("win", "loss", "tie"))
         good += 1 if judged else 0
-        lines.append("%s %s keep=%s held_out=%s source=%s judged=%s evidence=%s" % (
-            g.get("at"), g.get("verdict"), g.get("keep"), g.get("held_out"), g.get("source"), judged,
-            g.get("evidence")))
+        lines.append("%s %s keep=%s held_out=%s null_held_out=%s source=%s null_source=%s judged=%s evidence=%s" % (
+            g.get("at"), g.get("verdict"), g.get("keep"), g.get("held_out"), g.get("null_held_out"), g.get("source"),
+            g.get("null_source"), judged, g.get("evidence")))
     if not gens:
         lines.append("%s: no generalization entry" % cpath)
     return (0 if good else 1), lines

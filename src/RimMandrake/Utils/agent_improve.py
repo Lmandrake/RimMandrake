@@ -1076,7 +1076,7 @@ def main(argv=None):
             print("\n".join(lines))
             return rc
         res, (epath, cpath) = G.run_for_version(a.target, a.version, seed=a.seed, days=a.days)
-        print(json.dumps({k: res[k] for k in ("verdict", "keep", "held_out", "source", "seed")}))
+        print(json.dumps({k: res[k] for k in ("verdict", "keep", "held_out", "null_held_out", "source", "null_source", "seed")}))
         print("WROTE %s; appended to %s" % (epath, cpath))
         return 0
     if a.cmd == "ramp":

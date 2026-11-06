@@ -122,28 +122,38 @@ id (`model.INTENT_WORDS`: BUILD, REPAIR, AUDIT, ...) plus its ledger `kind`. Eac
 kinds of the items its evidence pieces came from). At L1 for every fifth change, at L2 for every change, and weekly for
 the newest version of each target:
 
-- Sample fresh from the last 14 days of the ledger: 6 closed items whose kind is NOT a source kind (held out), and 2
-  items of a source kind. Fresh each time, because the task mix keeps changing.
+- Sample fresh from the last 14 days of the ledger: 6 closed items whose kind is NOT a source kind (held out), and 6
+  items of a source kind. Fresh each time, because the task mix keeps changing. Six, because 5 pairs is the fewest that
+  can pass the sign test below; a target whose source kinds closed fewer than 5 items cannot be called narrow.
 - For each item, two fresh agents get the item's spec: one with the old version, one with the new, both in scratch
   clones; each writes its plan and first step. A blind judge (sees neither version nor which is new) picks the better
   of each pair or calls a tie, against what actually closed the item.
-- Verdict (Conductor ruling 2026-11-02, refining the first draft's rule): **harm** is held-out losses > wins;
-  **gain** is wins > losses on either sample. Harm on held-out kinds: reverted as **overfit**. No gain anywhere:
-  reverted. Gain on held-out kinds without harm: kept as **general**. Gain on the source kind only, held-out no harm:
-  kept and flagged **narrow** in its change record, so a pile-up of narrow changes on one target is visible (the
-  digest line counts a target's narrow changes).
-- Cost bound: 16 short runs plus 8 judge calls per check, under 300k tokens; it runs only at L1 and L2.
+- Null control, on the same sample and recorded beside each check: the old version runs a second time on each judged
+  item, and a blind judge compares the two old answers. What it reaches is how far this judge drifts on nothing.
+- Verdict (the Conductor's 2026-11-02 rule, given a noise floor by `AGENT_IMPROVE_HARDEN_NOISE_CALLED_OVERFIT`, because
+  the first real run called a one-line path fix overfit at 2-3-1 while the judge's reasons said the plans were nearly
+  equivalent). A sample shows **harm** or **gain** only past both bars: |wins - losses| exceeds the null's
+  |wins - losses| plus its failed null pairs, and an exact one-sided sign test on the win/loss pairs gives p <= 0.05
+  (at 6 pairs, 5-0 or 6-0). Harm on held-out kinds: reverted as **overfit**. Gain on held-out kinds without harm: kept
+  as **general**. Gain on the source kind only, held-out no harm: kept and flagged **narrow** in its change record, so
+  a pile-up of narrow changes on one target is visible (the digest line counts a target's narrow changes). Anything
+  else is **no_signal**: it neither reverts nor keeps as general, and at L2 the change is not applied, because the gate
+  applies only a proven keep.
+- Power of the sign bar alone, computed for 20% ties (the null margin can only lower it): at 6 pairs a change that truly
+  wins 80% of its decided pairs is called general about 20% of the time (12 pairs: 46%); a change with no effect, about
+  2%. Reading no_signal is the common result at this size, not a finding about the change. The first measurement, on
+  rimworld-modding v1 2026-11-06: real 2-3-1, null 3-0-3, so the judge moved further on identical text than on the change. `AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER` holds the L2 question.
+- Cost bound: up to 36 short runs plus 24 judge calls per check (12 pairs, three runs and two judgments each), not yet
+  measured against a token budget; it runs only at L1 and L2.
 - Built (`AGENT_IMPROVE_BUILD_GENERALIZATION_CHECK`): `src/RimMandrake/Utils/agent_improve_general.py`, run as
   `agent_improve.py general <target> v<N>` and as the L2 pre-apply gate. The two agents are tool-less `claude -p` runs
   with the target text inlined, not scratch clones. Evidence: `infrastructure/state/agent_improve/general/`. A revert
-  verdict is recorded, not enacted. Owed: a noise floor (`AGENT_IMPROVE_HARDEN_NOISE_CALLED_OVERFIT`; the first real
-  run called a one-line path fix overfit at 2-3-1) and the cadence and revert enactment
-  (`AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY`).
+  verdict is recorded, not enacted. Owed: the cadence and revert enactment (`AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY`).
 
 **4.4 The evidence travels with the change.** Each applied change commits
 `infrastructure/state/agent_improve/changes/<target>_v<N>.json`: the packet pieces that motivated it (paths and first
 lines), their source kinds, the diff, the Judge verdict path, the recheck, and later every generalization verdict
-with its flag, general, narrow or overfit (appended, never rewritten). The digest line links it.
+with its flag, general, narrow, overfit or no_signal, and its null control (appended, never rewritten). The digest line links it.
 
 ## 5. Built now, and owed
 
