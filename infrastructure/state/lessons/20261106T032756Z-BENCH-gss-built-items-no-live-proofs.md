@@ -1,0 +1,2 @@
+Five built GSS items that need the bridge (CORD_SWAY, POWER_THEFT, RESTRING, WATER_STUB, SWITCHES) have no infrastructure/state/live_proofs line, so the Relentless live round can never pick them. GSS is also missing from testq wired_mods.json, and the last proof_all ran 2026-10-16, with 70 GSS commits since. This is a large part of why GSS cannot close. Also the jev_triage shadow log (Transient/modcheck/jev_shadow.jsonl) does not exist anywhere, so the shadow layer has collected 0 labels.
+home: design/RimMandrake/fast_testing_2026-11-05/ideas_inside.md
