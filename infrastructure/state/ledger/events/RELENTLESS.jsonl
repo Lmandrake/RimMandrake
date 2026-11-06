@@ -1158,3 +1158,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:26:43Z","tsn":1793975203577538921}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLAYER_HOVER_PROBE_TOOLTIP_DRAWN A2 (L2), read-only proof","ts":"2026-11-06T14:26:54Z","tsn":1793975214463989403}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:27:02Z","tsn":1793975222297047760}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLAYER_HOVER_PROBE_TOOLTIP_DRAWN A3 (L2), read-only proof","ts":"2026-11-06T14:27:13Z","tsn":1793975233184738675}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:27:21Z","tsn":1793975241048640001}
