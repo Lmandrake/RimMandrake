@@ -810,20 +810,39 @@ def floor_errors(fl, tree=None, floor=None, owner_ev=None):
     return errs
 
 
-# An agent named in exam.json is free text ("rm-judge a9c647383a06be32f (sonnet)"), so an annotation must not make the
-# same agent read as two: compare the ids a string names, helper ids before run ids, and the words when it names none.
+# An agent named in exam.json is free text ("rm-judge a9c647383a06be32f (sonnet)"), so an annotation must not change who a
+# string names: compare the ids it names, helper ids before run ids. Where one side names no id, compare the bare words
+# both ways, since "designer (self-read)" and "the designer" both name the author "designer".
 _HELPER_ID = re.compile(r"(?<![\w-])a[0-9a-f]{16}(?![\w-])")
 _RUN_ID = re.compile(r"(?<![\w-])rm-role-[a-z-]+-\d+(?![\w-])")
 
 
+def agent_ids(who):
+    """The agent a Reader string names: its helper id, or its run id when it names no helper."""
+    w = who.casefold()
+    return _HELPER_ID.findall(w) or _RUN_ID.findall(w)
+
+
+def bare_name(who):
+    """The words left once the ids, the (annotations) and a leading article are gone."""
+    w = re.sub(r"\([^)]*\)", " ", who.casefold())
+    w = " ".join(_RUN_ID.sub(" ", _HELPER_ID.sub(" ", w)).split())
+    return re.sub(r"^(the|a|an) ", "", w)
+
+
+def _names_words(words, text):
+    return bool(words) and bool(re.search(r"(?<![\w-])%s(?![\w-])" % re.escape(words), text))
+
+
 def same_agent(reader, other):
     """Does the Reader string name an agent the other string also names? `other` may name several."""
-    r, o = reader.casefold(), other.casefold()
-    mine = _HELPER_ID.findall(r) or _RUN_ID.findall(r)
-    if mine:
-        return bool(set(mine) & set(_HELPER_ID.findall(o) + _RUN_ID.findall(o)))
-    words = " ".join(r.split())
-    return bool(re.search(r"(?<![\w-])%s(?![\w-])" % re.escape(words), " ".join(o.split())))
+    mine = agent_ids(reader)
+    o = other.casefold()
+    theirs = _HELPER_ID.findall(o) + _RUN_ID.findall(o)
+    if mine and theirs:
+        return bool(set(mine) & set(theirs))
+    r_bare, o_bare = bare_name(reader), bare_name(other)
+    return _names_words(r_bare, o_bare) or _names_words(o_bare, r_bare)
 
 
 def reader_errors(ex, st):
@@ -841,6 +860,8 @@ def reader_errors(ex, st):
     seen = [("author", ex.get("author")), ("examiner", ex.get("examiner")), ("challenger", ex.get("challenger")),
             ("open run", running.get("run"))]
     for r in named:
+        if not agent_ids(r):
+            errs.append("exam: reader %r names no agent id, so nothing shows it is a fresh agent" % r)
         for role, who in seen:
             if CT.txt(who) and same_agent(r, who):
                 errs.append("exam: reader %r is the %s; a Reader is fresh and never sees expect" % (r, role))

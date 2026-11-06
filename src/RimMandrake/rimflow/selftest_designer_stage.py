@@ -392,7 +392,8 @@ def main():
         scen = [{"id": "s%d" % i, "text": "t", "expect": "reject: wall", "expect_source": "climb_out"}
                 for i in range(10)]
         exam = {"author": "designer", "examiner": "examiner-1", "inputs": {"tree": "0" * 64, "sheet": cur["sheet"]},
-                "scenarios": scen, "scenarios_hash": CT.sha(scen), "readers": ["reader-a", "reader-b"],
+                "scenarios": scen, "scenarios_hash": CT.sha(scen),
+                "readers": ["agent:a973694af5dc4757a", "agent:acddc523961c33401"],
                 "score": {"right": 10, "total": 10},
                 "accept_where_reject_core": 0, "challenger_misses": [],
                 "control": {"broken_leaf": "climb_out", "missed": True}}
@@ -834,6 +835,32 @@ def refusals_exam(tmp, d, repo, exam):
             DS.exam_errors(dict(copy.deepcopy(exam), readers=["rm-role-designer-55", "reader-b"]), d,
                            dict(st, running={"run": "rm-role-designer-55"}), repo.root), "is the open run")
     refuses("exam: with no author a self-read cannot be ruled out, so it is refused", ex(author=""), "author is needed")
+    # the blind check's spellings: a Reader naming the author or examiner in words with an annotation and no id passed
+    second = "agent:%s" % a2
+    for spelled in ("designer (self-read)", "designer (fresh)", "the designer", "The Designer", "DESIGNER  (again)"):
+        refuses("exam: reader %r names the author in words and is refused" % spelled,
+                ex(readers=[spelled, second]), "is the author")
+    for spelled in ("examiner-1 (fresh)", "the examiner-1"):
+        refuses("exam: reader %r names the examiner in words and is refused" % spelled,
+                ex(readers=[spelled, second]), "is the examiner")
+    refuses("exam: a reader naming the challenger in words is refused",
+            ex(challenger="challenger-1", readers=["challenger-1 (fresh)", second]), "is the challenger")
+    refuses("exam: a reader naming the open run in words is refused",
+            DS.exam_errors(dict(copy.deepcopy(exam), readers=["designer-run (fresh)", second]), d,
+                           dict(st, running={"run": "designer-run"}), repo.root), "is the open run")
+    refuses("exam: an annotated author field still catches the bare reader",
+            ex(author="designer (stage 3)", readers=["designer", second]), "is the author")
+    refuses("exam: an annotated author field still catches an annotated reader",
+            ex(author="the Designer (tree last written)", readers=["designer (self-read)", second]), "is the author")
+    refuses("exam: an id on the reader does not hide the author's name when the author names no id",
+            ex(readers=["designer agent:%s (self-read)" % a1, second]), "is the author")
+    refuses("exam: a reader that names no agent id is refused", ex(readers=["reader-a", second]), "names no agent id")
+    refuses("exam: a reader that only says fresh names no agent id", ex(readers=["fresh reader (fresh)", second]),
+            "names no agent id")
+    refuses("exam: one reader in words, annotated, is the same agent", ex(readers=["reader-a", "reader-a (fresh)"]),
+            "same agent")
+    check("exam: a reader run id is an agent id and passes", ex(readers=["rm-role-judge-77", second]) == [],
+          ex(readers=["rm-role-judge-77", second]))
     # the four real exams' own spelling must still pass; a helper launched by the author's run is not the author
     for label, reader_pair, author, examiner in [
             ("FlowWorks", ["agent:%s" % a1, "agent:%s" % a2], "rm-role-designer-1793863469", "agent:%s (rm-judge, fresh)" % a3),
