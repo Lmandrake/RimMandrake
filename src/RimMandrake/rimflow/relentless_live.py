@@ -397,11 +397,24 @@ def cause(why):
     return re.sub(r"\s+", " ", w).strip()[:120]
 
 
+def voids(row, item_id, sha):
+    """True when `row` is a void row (relentless_game.void_rows) for `item_id` on `sha` (None: on any sha). The rows
+    before it were read through an instrument or site since repaired, so no look-back counts them
+    (GAMEENV_FIX_PROOFSITE_18CF717D_ITEMS_WAIT: the void of 2026-11-06T13:30:05Z was read past, and
+    PLANET_ATMOSPHERE_CLOUD_COST_1's A1-A3 cited the game of 2026-11-03T12:50:51Z as "the same cause on two games")."""
+    if not row.get("void") or row.get("item") != item_id:
+        return False
+    other = row.get("sha") or ""
+    return sha is None or (bool(other) and bool(sha) and (other.startswith(sha) or sha.startswith(other)))
+
+
 def repeats(rows, item_id, criterion, sha, key, game):
     """runs.jsonl rows -> how many of the newest rows for (item, criterion, sha), running back, are UNMEASURED on `key`
     on the same game. Any other outcome, cause or game ends the run."""
     n = 0
     for row in reversed(rows):
+        if voids(row, item_id, sha):
+            break
         if (row.get("item"), row.get("criterion"), row.get("sha")) != (item_id, criterion, sha):
             continue
         if row.get("outcome") != "UNMEASURED" or row.get("game") != game or (row.get("cause") or cause(row.get("why"))) != key:
@@ -413,8 +426,11 @@ def repeats(rows, item_id, criterion, sha, key, game):
 def seen_on_other_game(rows, item_id, criterion, sha, key, game):
     """-> the earlier game on which (item, criterion, sha) was already UNMEASURED on `key`, or None. A cause that outlives
     a reload is the proof's or the site's, not a stale game's (LIVE_EXIT2_FIX_DEFECT_AFTER_TWO_GAMES: 74 of 76
-    `exited 2` rows were five criteria rerun every 17 min and reloaded every third run on one unchanging cause)."""
+    `exited 2` rows were five criteria rerun every 17 min and reloaded every third run on one unchanging cause). A void
+    row ends the look-back (voids)."""
     for row in reversed(rows):
+        if voids(row, item_id, sha):
+            return None
         if ((row.get("item"), row.get("criterion"), row.get("sha")) == (item_id, criterion, sha)
                 and row.get("outcome") == "UNMEASURED" and row.get("game") and game and row["game"] != game
                 and (row.get("cause") or cause(row.get("why"))) == key):
@@ -425,8 +441,11 @@ def seen_on_other_game(rows, item_id, criterion, sha, key, game):
 def seen_on_other_build(rows, item_id, criterion, sha, key, proof):
     """-> the earlier build on which this same proof line of (item, criterion) ended UNMEASURED on `key`, or None. A new
     build earns one run, and the same line saying the same again means the build did not reach what stopped it
-    (PLANET_ATMOSPHERE_CLOUD_COST_1 said "rides a later load" on three builds running)."""
+    (PLANET_ATMOSPHERE_CLOUD_COST_1 said "rides a later load" on three builds running). A void row of the item, on any
+    build, ends the look-back: what stopped the earlier build was repaired since (voids)."""
     for row in reversed(rows):
+        if voids(row, item_id, None):
+            return None
         other = row.get("sha") or ""
         if ((row.get("item"), row.get("criterion"), row.get("proof")) == (item_id, criterion, proof)
                 and other and not other.startswith(sha) and not sha.startswith(other)

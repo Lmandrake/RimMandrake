@@ -488,6 +488,24 @@ def t_cap_on_a_proof_that_cannot_measure():
     row, _ = one(root, "A2: UNMEASURED (rides a later load)")
     check("cap: another proof line, clause or cause is not the same again", not row.get("defect"), row)
 
+    # GAMEENV_FIX_PROOFSITE_18CF717D_ITEMS_WAIT: a void row (the item's instrument or site repaired) ends every look-back,
+    # so a row read before it is never "the same cause on another game / build" (the 2026-11-06 void was read past)
+    base, _ = one(tempfile.mkdtemp(prefix="rl_live_"), "A2: UNMEASURED (rides a later load)")
+    for label, prior in (("another game", dict(base, game="G-before")),
+                         ("another build", dict(old, sha="0ldbuild0000"))):
+        for voided in (False, True):
+            root = tempfile.mkdtemp(prefix="rl_live_")
+            os.makedirs(os.path.join(root, "live"))
+            lines = [json.dumps(prior)]
+            if voided:
+                lines.append(json.dumps({"item": "ROT_X", "sha": base["sha"], "void": True, "why": "routed: x"}))
+            with open(os.path.join(root, "live", "runs.jsonl"), "w") as f:
+                f.write("\n".join(lines) + "\n")
+            row, _ = one(root, "A2: UNMEASURED (rides a later load)")
+            check("void: %s, %s: %s" % (label, "voided since" if voided else "not voided",
+                                        "no defect" if voided else "a defect"),
+                  bool(row.get("defect")) is (not voided), row)
+
     # the exit reason
     root = tempfile.mkdtemp(prefix="rl_live_")
     row, _ = one(root, "UNMEASURED GeneDef/RSW_TunnelBorn: does not resolve\n\nVERDICT UNMEASURED")
