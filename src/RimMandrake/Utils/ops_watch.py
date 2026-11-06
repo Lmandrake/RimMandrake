@@ -1077,11 +1077,13 @@ def rerun_at_main(tests, timeout, root=None):
     """NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING: one plain rerun (run_selftests --only, no LLM) of a red group's tests in
     this checkout, brought to origin/main first by a fast-forward pull (as testq-tick/testq-sweep already do to the
     dispatch clone ops_watch runs from; it trails origin/main by minutes). -> (verdict, said, sha): verdict green
-    (every test ran and passed), red, or unmeasured (could not rerun at origin/main: the group files as before)."""
+    (every test ran and passed), red, gone (every test was deleted at origin/main: nothing left to be red, files
+    nothing) or unmeasured (could not rerun at origin/main: the group files as before).
+    Existence is judged AFTER the pull, at origin/main, and "gone" needs git to show the deletion: a path the history
+    never held (a parse bug) stays unmeasured. A group partly deleted reruns what is left (NIGHTLY_COP_FIX_RED_WARIWE_XVFM_WYEK:
+    the arena trial's selftest_arena_prompt_rewrites.py, deleted by owner card, refiled because the old check ran
+    before the pull and read the missing file as unmeasured)."""
     root = Path(root) if root else rerun_root()
-    gone = [t for t in tests if not (root / t).is_file()]
-    if gone:
-        return "unmeasured", "not in this checkout: %s" % ", ".join(gone[:3]), None
     try:
         _git(root, "pull", "-q", "--ff-only", "origin", "main", timeout=90)
         head, main = _git(root, "rev-parse", "HEAD"), _git(root, "rev-parse", "origin/main")
@@ -1089,6 +1091,20 @@ def rerun_at_main(tests, timeout, root=None):
         return "unmeasured", "git: %s" % str(e)[:160], None
     if head != main:
         return "unmeasured", "checkout at %s, origin/main at %s" % (head[:10], main[:10]), None
+    missing = [t for t in tests if not (root / t).is_file()]
+    deleted = {}
+    for t in missing:
+        try:
+            at = _git(root, "log", "-1", "--format=%h", "--diff-filter=D", head, "--", t)
+        except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
+            return "unmeasured", "git log %s: %s" % (t, str(e)[:120]), head
+        if not at:
+            return "unmeasured", "not at origin/main and never deleted there: %s" % t, head
+        deleted[t] = at
+    tests = [t for t in tests if t not in deleted]
+    if not tests:
+        return "gone", "deleted at origin/main: %s" % ", ".join(
+            "%s (%s)" % (Path(t).name, c) for t, c in sorted(deleted.items())[:3]), head
     argv = [sys.executable, str(root / "src/RimMandrake/Utils/run_selftests.py"), "--only", *tests]
     try:
         r = subprocess.run(argv, cwd=str(root), capture_output=True, text=True, timeout=max(1, int(timeout)))
@@ -1109,7 +1125,7 @@ def rerun_at_main(tests, timeout, root=None):
 
 class RerunGate:
     """Each new group of a night is rerun once (the verdict kept in nightly_rerun.json for that night), within the
-    pass's budget. verdict(g): green (files nothing), red / unmeasured (files as before), later (budget spent)."""
+    pass's budget. verdict(g): green / gone (files nothing), red / unmeasured (files as before), later (budget spent)."""
 
     def __init__(self, night, run, budget, clock=time.monotonic):
         self.night, self.run, self.clock = night, run, clock
@@ -1136,7 +1152,8 @@ class RerunGate:
         return v
 
     def green(self):
-        return sorted((k, e) for k, e in self.st["groups"].items() if e.get("verdict") == "green")
+        """Groups that filed nothing because origin/main has no red to fix: green on the rerun, or every test gone."""
+        return sorted((k, e) for k, e in self.st["groups"].items() if e.get("verdict") in ("green", "gone"))
 
     def save(self):
         if self.dirty:
@@ -1179,7 +1196,7 @@ def red_groups(c, night, state=None, rerun="default", budget=None):
         if g["key"] not in held:
             if fresh >= cap:
                 continue
-            if gate is not None and gate.verdict(g) in ("green", "later"):
+            if gate is not None and gate.verdict(g) in ("green", "gone", "later"):
                 continue
             fresh += 1
         out[g["key"]] = M(len(g["tests"]), "nightly reds with one first error line, no entry parking them", night=night,
@@ -1192,7 +1209,7 @@ def red_groups(c, night, state=None, rerun="default", budget=None):
         gate.save()
         gr = gate.green()
         out["testing.nightly_reds_rerun_green"] = M(
-            len(gr), "nightly red groups green on one rerun at origin/main: flaky or a launch drop, filed nothing",
+            len(gr), "nightly red groups green on one rerun at origin/main (flaky or a launch drop) or deleted there, filed nothing",
             night=night, said="; ".join("%s (%s)" % (", ".join(Path(t).name for t in e["tests"][:3]), (e.get("sha") or "")[:10])
                                         for _, e in gr[:3]),
             news=["%s at %s: %s" % (t, (e.get("sha") or "")[:10], e.get("said", "")) for _, e in gr for t in e["tests"]][:30])

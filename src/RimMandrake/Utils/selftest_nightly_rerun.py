@@ -3,7 +3,7 @@
 tests rerun once at origin/main with no LLM; a group green on that rerun files nothing and is counted as a flake.
 Covers the gate in red_groups (green / red / unmeasured / budget spent / once per night / held groups untouched), its
 wiring through nightly_news, and rerun_at_main against a real throwaway git origin (green, red, behind origin/main,
-missing test, a green that did not run its check, a rerun past its budget)."""
+missing test, a test deleted at origin/main, a green that did not run its check, a rerun past its budget)."""
 import os
 import subprocess
 import sys
@@ -153,7 +153,25 @@ check("rerun_at_main: a green whose test did not run its check is unmeasured, no
 v, said, _ = OW.rerun_at_main([U_ + "selftest_slow.py"], 2, root=wc)
 check("rerun_at_main: a rerun past its budget is unmeasured", v == "unmeasured" and "budget" in said, (v, said))
 v, said, _ = OW.rerun_at_main([U_ + "selftest_gone.py"], 20, root=wc)
-check("rerun_at_main: a test this checkout lacks is unmeasured", v == "unmeasured", (v, said))
+check("rerun_at_main: a test origin/main never held (a parse bug) is unmeasured, not gone", v == "unmeasured"
+      and "never deleted" in said, (v, said))
+# NIGHTLY_COP_FIX_RED_WARIWE_XVFM_WYEK: a test deleted on origin/main AFTER the night ran, while this checkout still
+# holds it (the dispatch clone trails main): existence must be judged after the pull, and the deletion reads "gone"
+dl = TMP / "deleter"
+sh("git", "clone", "-q", str(org), str(dl))
+for a in (("rm", "-q", U_ + "selftest_red.py"), ("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "drop"),
+          ("push", "-q", "origin", "main")):
+    sh("git", *a, cwd=dl)
+check("setup: the stale checkout still holds the deleted test", (wc / U_ / "selftest_red.py").is_file())
+v, said, _ = OW.rerun_at_main([U_ + "selftest_red.py"], 20, root=wc)
+check("rerun_at_main: a test deleted at origin/main is gone", v == "gone" and "selftest_red.py" in said, (v, said))
+v, said, _ = OW.rerun_at_main([U_ + "selftest_red.py", U_ + "selftest_ok.py"], 20, root=wc)
+check("rerun_at_main: a group partly deleted reruns what is left", v == "green", (v, said))
+fg = Fake({"src/x/selftest_deleted.py": "gone"})
+outg = OW.red_groups({"detail_read": True, "groups": [grp("gone", "src/x/selftest_deleted.py")]}, "2026-11-12T11:00:00Z",
+                     state={}, rerun=fg)
+check("a group whose tests origin/main deleted files nothing, and is counted", "testing.red_gone" not in outg
+      and outg.get("testing.nightly_reds_rerun_green", {}).get("v") == 1, outg)
 other = TMP / "other"
 sh("git", "clone", "-q", str(org), str(other))
 (other / "f.txt").write_text("x")
