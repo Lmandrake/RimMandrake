@@ -232,6 +232,11 @@
 
   <ThingDef ParentName="RM_WM_EmanatorBase">
     <defName>RM_WM_PsychicEmanator_Wrecked</defName>
+    <building>
+      <buildingTags>
+        <li>RM_RuinDrawsConduit</li>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it stays comp-less -->
+      </buildingTags>
+    </building>
     <label>wrecked psychic emanator</label>
     <description>An ancient psychic emanator, long dead. The field coil is fused and the casing is pitted through. Whatever it once did to the minds around it, it does nothing now.\n\nStudy it to learn how to restore it, then build a better grade over it.</description>
     <graphicData>

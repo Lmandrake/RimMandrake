@@ -25,6 +25,12 @@
 
         <ThingDef ParentName="BuildingBase">
           <defName>RM_WM_Distillation_Wrecked</defName>
+          <building>
+            <buildingTags>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it stays comp-less -->
+              <li>RM_RuinDrawsPipes</li>
+              <li>RM_RuinDrawsConduit</li>
+            </buildingTags>
+          </building>
           <label>wrecked distillation module</label>
           <description>The ship's water distillation module, torn off its mounts in the crash. The boiler is cracked and the condenser coil crushed flat. For now it is rubble: clear it, or build a kludged module over it.</description>
           <thingClass>Building</thingClass>

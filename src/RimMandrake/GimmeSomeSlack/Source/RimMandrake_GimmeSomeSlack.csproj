@@ -62,6 +62,7 @@
     <Compile Include="GimmeSomeSlackMod.cs" />
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="ConduitVisuals.cs" />
+    <Compile Include="RuinHookupProof.cs" />
     <Compile Include="CordMaterials.cs" />
     <Compile Include="StyleProbe.cs" />
     <Compile Include="CordWorldAdapter.cs" />

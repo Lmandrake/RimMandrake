@@ -52,5 +52,40 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             return null;
         }
+
+        /// <summary>WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES (owner 2026-11-06: "they should ALL draw in the piping and conduit
+        /// the same way"): the hookup cells of a wrecked machine, which has no power comp, no connectParent and no net. Only a
+        /// conduit under or beside its footprint draws in, one cord per conduit run: the run's first END touching the ruin (so no
+        /// free end sparks in the gap), else its first touching cell. Null when no conduit touches it.</summary>
+        internal static List<Cell> PickRuin(CordWorld w, MachineInfo m)
+        {
+            List<Cell> touching = Touching(m);
+            List<Cell> res = null;
+            var seen = new HashSet<Cell>();
+            foreach (Cell c in touching)
+            {
+                if (!w.IsConduit(c) || seen.Contains(c)) continue;
+                var run = new HashSet<Cell> { c };
+                var open = new Stack<Cell>();
+                open.Push(c);
+                while (open.Count > 0)
+                {
+                    Cell q = open.Pop();
+                    foreach (Cell d in Cell.Dirs4)
+                    {
+                        Cell n = q + d;
+                        if (w.IsConduit(n) && (w.LinkAllowed == null || w.LinkAllowed(q, n)) && run.Add(n)) open.Push(n);
+                    }
+                }
+                seen.UnionWith(run);
+                Cell pick = c;
+                foreach (Cell t in touching)
+                {
+                    if (run.Contains(t) && Degree(w, t) <= 1) { pick = t; break; }
+                }
+                (res ??= new List<Cell>()).Add(pick);
+            }
+            return res;
+        }
     }
 }

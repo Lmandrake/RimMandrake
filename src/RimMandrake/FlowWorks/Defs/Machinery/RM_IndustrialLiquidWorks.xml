@@ -39,6 +39,11 @@
     <building>
       <claimable>true</claimable>
       <deconstructible>true</deconstructible>
+      <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: pipes and conduit draw in as on the repaired tiers; draw only, no net sees a ruin -->
+      <buildingTags>
+        <li>RM_RuinDrawsPipes</li>
+        <li>RM_RuinDrawsConduit</li>
+      </buildingTags>
     </building>
   </ThingDef>
 

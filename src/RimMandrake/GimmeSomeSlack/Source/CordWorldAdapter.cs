@@ -71,7 +71,7 @@ namespace RimMandrake.GimmeSomeSlack
                 // GSS_WATER_STUB_FIX_PASSED_LAST_WEEK: deep water is Water even when a swim mod (FlowWorks R12) makes the path grid walkable
                 TerrainDef t = map.terrainGrid.TerrainAt(idx);
                 BlockKind? k = SnapshotBlock.Of(pg.WalkableFast(idx), ed != null,
-                    ed?.def.building != null && ed.def.building.isNaturalRock, ed != null && ed.TryGetComp<CompPower>() != null,
+                    ed?.def.building != null && ed.def.building.isNaturalRock, ed != null && (ed.TryGetComp<CompPower>() != null || ConduitVisuals.IsConduitRuin(ed.def)),
                     t != null && t.IsWater, t != null && t.passability == Traversability.Impassable);
                 if (k.HasValue) world.SetBlocked(cell, k.Value);
             }
@@ -96,7 +96,7 @@ namespace RimMandrake.GimmeSomeSlack
                 door = ed is Building_Door;
                 TerrainDef t = map.terrainGrid.TerrainAt(idx);
                 k = SnapshotBlock.Of(map.pathing.Normal.pathGrid.WalkableFast(idx), ed != null,
-                    ed?.def.building != null && ed.def.building.isNaturalRock, ed != null && ed.TryGetComp<CompPower>() != null,
+                    ed?.def.building != null && ed.def.building.isNaturalRock, ed != null && (ed.TryGetComp<CompPower>() != null || ConduitVisuals.IsConduitRuin(ed.def)),
                     t != null && t.IsWater, t != null && t.passability == Traversability.Impassable);
             }
             bool tree = false, linear = false;
@@ -210,12 +210,35 @@ namespace RimMandrake.GimmeSomeSlack
                 }
                 else if (transmitterMachines.TryGetValue(pt, out MachineInfo tm)) CordWorldLinks.LinkToMachine(world, m, tm);
             }
+            AddRuinHookups(map, world, fog);
             AddTapNodes(map, world);
             // round 2: machines in id order, not power-net list order, so a net rebuilt in another order (a hypothesis for the
             // live far-dig re-reduce) leaves CordBuilder's graph inputs, and so the graph, unchanged. OrderBy is stable.
             List<MachineInfo> byId = world.Machines.OrderBy(m => m.Id, StringComparer.Ordinal).ToList();
             world.Machines.Clear();
             world.Machines.AddRange(byId);
+        }
+
+        /// <summary>WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: a wrecked machine draws in the conduit touching it as its repaired
+        /// tier does. The node exists only in this cord snapshot: the ruin has no CompPower and no power net is touched.</summary>
+        private static void AddRuinHookups(Map map, CordWorld world, FogGrid fog)
+        {
+            foreach (ThingDef d in ConduitVisuals.ConduitRuinDefs)
+            {
+                foreach (Thing th in map.listerThings.ThingsOfDef(d))
+                {
+                    if (!th.Spawned || fog.IsFogged(th.Position)) continue;
+                    var m = new MachineInfo { Id = "r" + th.thingIDNumber, Kind = MachineKind.Consumer };
+                    CellRect r = th.OccupiedRect();
+                    m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
+                    ArtInsets(th.def, m);
+                    SetWallHome(th, m);
+                    List<Cell> near = HookupPick.PickRuin(world, m);
+                    if (near == null) continue;
+                    m.Hookups.AddRange(near);
+                    world.Machines.Add(m);
+                }
+            }
         }
 
         /// <summary>CORD_LOOP_UNTANGLE_LASSOED_A_PIPE: every walkable, unfogged cell holding a drawn linear building (any linked

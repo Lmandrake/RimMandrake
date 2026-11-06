@@ -155,8 +155,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // a reel state, port, coupling or free-end role change: the link signature (backstop) bumps
                 RiverSwitchFlipChecks.Has(net, @"return RM_HoseSettings\.enabled && r\?\.parent != null && r\.parent\.Spawned && r\.carry == HoseCarryState\.Laid && r\.lay != null;",
                     "eligibility (carry state, lay) is read by the signature");
-                RiverSwitchFlipChecks.Has(net, @"h = RM_LiquidNetKernel\.SigStep\(h, r\.parent\.thingIDNumber, IdOf\(inlet\), IdOf\(far\)\);", "each live reel's inlet and far identity are in the signature");
-                RiverSwitchFlipChecks.Has(net, @"if \(built && h == sig\) \{ return reels\?\.Count \?\? 0; \} sig = h; bool first = !built;.*?RM_NetLinkDiff\.Relink\(all, ends, first \? null : RM_LiquidNet\.LinkDelta\(map\), v => v is Thing\);.*?if \(first\) \{ RM_LiquidNet\.Bump\(map\); \} else \{ RM_LiquidNet\.BumpLinks\(map\); \} return reels\?\.Count \?\? 0; \}",
+                RiverSwitchFlipChecks.Has(net, @"h = RM_LiquidNetKernel\.SigStep\(h, scratch\[i\]\.parent\.thingIDNumber, cache\.InletId\(i\), cache\.FarId\(i\)\);", "each live reel's inlet and far identity are in the signature");
+                RiverSwitchFlipChecks.Has(net, @"if \(built && h == sig\) \{ return scratch\.Count; \} sig = h; bool first = !built;.*?RM_NetLinkDiff\.Relink\(all, ends, first \? null : RM_LiquidNet\.LinkDelta\(map\), v => v is Thing\);.*?if \(first\) \{ RM_LiquidNet\.Bump\(map\); \} else \{ RM_LiquidNet\.BumpLinks\(map\); \}",
                     "a changed signature relinks (recording the changed links in the net's delta) and bumps; a first build bumps fully");
                 RiverSwitchFlipChecks.Has(net, @"public static void Bump\(Map map\) \{.*?s\.revision\+\+; s\.outsideOrigins\.Clear\(\); s\.pending\.Full = true;", "an unspecified Bump rebuilds everything");
                 RiverSwitchFlipChecks.Has(net, @"bool local = last != null && !d\.Full && bits == lastBits && g\.SpanEdges\.SameAs\(lastEdges\);", "a revision keeps components only under the same switches and span edges");

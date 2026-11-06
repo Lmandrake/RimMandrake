@@ -127,6 +127,7 @@
       <isInert>true</isInert>
       <buildingTags>
         <li>Production</li>
+        <li>RM_RuinDrawsConduit</li>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it stays comp-less -->
       </buildingTags>
     </building>
     <modExtensions>

@@ -94,6 +94,18 @@ namespace RimMandrake.GimmeSomeSlack
             return pc != null && pc.TransmitsPowerNow ? HookupDraw.MachineLink : HookupDraw.PatchCable;
         }
 
+        /// <summary>WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: a building tag (plain XML, so no mod needs another's DLL) on a
+        /// wrecked machine whose repaired tier takes power. A touching conduit draws in (HookupPick.PickRuin); the ruin still has
+        /// no CompPower, so no net sees it and it carries nothing.</summary>
+        public const string RuinConduitTag = "RM_RuinDrawsConduit";
+
+        public static bool IsConduitRuin(ThingDef d) => d?.building?.buildingTags != null && d.building.buildingTags.Contains(RuinConduitTag);
+
+        private static List<ThingDef> conduitRuinDefs;
+
+        /// <summary>Every def carrying the tag, read once: the defs never change after load.</summary>
+        internal static List<ThingDef> ConduitRuinDefs => conduitRuinDefs ??= DefDatabase<ThingDef>.AllDefsListForReading.FindAll(IsConduitRuin);
+
         /// <summary>Hidden or untagged conduit: carries connectivity, never drawn.</summary>
         public static bool IsOtherConduit(ThingDef d) =>
             d != null && d.building != null && d.building.isPowerConduit && !targets.Contains(d);

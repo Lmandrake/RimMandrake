@@ -1,0 +1,1 @@
+A timeout around selftest_flowworks_stock.py kills only the WSL parent: dotnet.exe keeps running and holds the staged apphost, so the next staged build fails MSB3027 until it ends. Wait on the pid, do not rebuild.

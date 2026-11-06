@@ -107,7 +107,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (!loc.InBounds(map)) return false;
             List<Thing> things = map.thingGrid.ThingsListAtFast(loc);
             for (int i = 0; i < things.Count; i++)
-                if (things[i] is ThingWithComps tw && (tw.GetComp<CompPower>() != null || tw.GetComp<Aerial.CompPowerTap>() != null)) return true;
+                if (ConduitVisuals.IsConduitRuin(things[i].def) || (things[i] is ThingWithComps tw && (tw.GetComp<CompPower>() != null || tw.GetComp<Aerial.CompPowerTap>() != null))) return true;
             return false;
         }
 

@@ -64,6 +64,27 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             w5.SetConduit(new Cell(9, 9));
             List<Cell> pk5 = HookupPick.Pick(w5, p5, new Cell(9, 9), c => true);
             Check(pk5 != null && pk5.Count == 2 && pk5.Contains(new Cell(9, 9)), "a far parent end stays hooked beside the adopted end");
+
+            // WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: a ruin has no net, so sameNet is not asked; one cord per run touching it
+            CordWorld r1 = Scene(out MachineInfo rp1, out _);
+            List<Cell> rk1 = HookupPick.PickRuin(r1, rp1);
+            Check(rk1 != null && rk1.Count == 1 && rk1[0] == new Cell(5, 3), "a conduit end beside a ruin hooks into it");
+            CordWorld r2 = Scene(out MachineInfo rp2, out _);
+            r2.SetConduit(new Cell(4, 3)); r2.SetConduit(new Cell(6, 3));
+            List<Cell> rk2 = HookupPick.PickRuin(r2, rp2);
+            Check(rk2 != null && rk2.Count == 1 && rk2[0] == new Cell(5, 3), "a run passing beside a ruin (no end there) still draws one cord");
+            var far = new CordWorld(12, 12);
+            far.SetConduit(new Cell(9, 9));
+            Check(HookupPick.PickRuin(far, new MachineInfo { Id = "r", X0 = 2, Z0 = 2, W = 3, H = 2 }) == null, "can-fail: a conduit not touching the ruin draws nothing");
+            var two = new CordWorld(12, 12);
+            var wide = new MachineInfo { Id = "r", X0 = 4, Z0 = 4, W = 3, H = 2 };
+            two.SetConduit(new Cell(3, 4)); two.SetConduit(new Cell(2, 4)); two.SetConduit(new Cell(7, 4)); two.SetConduit(new Cell(8, 4));
+            List<Cell> rk3 = HookupPick.PickRuin(two, wide);
+            Check(rk3 != null && rk3.Count == 2 && rk3.Contains(new Cell(3, 4)) && rk3.Contains(new Cell(7, 4)), "two separate runs ending at a ruin each draw in");
+            var both = new CordWorld(12, 12);
+            for (int x = 4; x <= 6; x++) both.SetConduit(new Cell(x, 6));
+            List<Cell> rk4 = HookupPick.PickRuin(both, wide);
+            Check(rk4 != null && rk4.Count == 1, "a run along a ruin's whole edge is one cord, not one per cell");
         }
     }
 }

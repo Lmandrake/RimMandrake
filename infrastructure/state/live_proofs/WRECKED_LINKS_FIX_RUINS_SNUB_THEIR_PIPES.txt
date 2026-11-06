@@ -1,0 +1,3 @@
+live-mods: FlowWorks, GimmeSomeSlack
+live-proof A1: python.exe "$(wslpath -w src/RimMandrake/FlowWorks/prove_wrecked_links.py)" pipes < /dev/null
+live-proof A2: python.exe "$(wslpath -w src/RimMandrake/FlowWorks/prove_wrecked_links.py)" conduit < /dev/null

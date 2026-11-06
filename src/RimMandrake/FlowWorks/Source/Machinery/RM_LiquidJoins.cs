@@ -56,8 +56,7 @@ namespace RimMandrake.FlowWorks.Machinery
             List<Thing> l = c.GetThingList(map);
             for (int i = 0; i < l.Count; i++)
             {
-                RM_NetRole r = RM_LiquidNet.RoleOfKind(l[i]);
-                if (r != RM_NetRole.Tank && r != RM_NetRole.Machine) continue;
+                if (!IsPartner(l[i])) continue;
                 if (!LiquidJoinRule.JoinsAsPartner(IsOnPipeFixture(l[i]), RM_LiquidNet.HasPipe(c, map))) continue;
                 return l[i];
             }
@@ -281,10 +280,17 @@ namespace RimMandrake.FlowWorks.Machinery
 
         public static bool IsHoseReel(Thing t) => t is ThingWithComps tw && tw.GetComp<Hose.CompHoseReel>() != null;
 
+        /// <summary>WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES (owner 2026-11-06: "For wrecked machines, they should ALL draw in the
+        /// piping and conduit the same way, not only at a certain value of fixedness."): a building tag on a wrecked machine whose
+        /// repaired tier takes pipes. Draw only: RM_LiquidNet.RoleOfKind never reads it, so a ruin joins no liquid net.</summary>
+        public const string RuinPipeTag = "RM_RuinDrawsPipes";
+
+        public static bool IsPipeRuin(Thing t) => t?.def?.building?.buildingTags != null && t.def.building.buildingTags.Contains(RuinPipeTag);
+
         public static bool IsPartner(Thing t)
         {
             RM_NetRole r = RM_LiquidNet.RoleOfKind(t);
-            return r == RM_NetRole.Tank || r == RM_NetRole.Machine;
+            return r == RM_NetRole.Tank || r == RM_NetRole.Machine || IsPipeRuin(t);
         }
 
         /// <summary>The look a join on this thing draws in: a pipe's or tank's picked look, else the pipes' default.</summary>
