@@ -1,10 +1,11 @@
 {
-  "_doc": "Operations clocks and the ONE deploy they run code from (OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY; design/RimMandrake/operations_metronome_strategy_2026-11-02.md §8 step 0). Checked by src/RimMandrake/Utils/ops_clocks.py check. The deploy is the dispatch clone: nobody edits code there, it only fast-forwards to origin/main, and the ledger-writing clocks (dispatcher, restart, deadman) find their repo from their own file path, so their code and their data clone must be the same tree. Every rm-*, testq-*, timer-guard and account-plan unit systemd has loaded is either a clock here or named in outside with its reason; an unclassified one fails the check. A clock's trigger must exist; whether it is enabled is not judged here (account-plan.timer is off on the owner's order, 2026-10-29; timers_guard watches enabled timers).",
+  "_doc": "Operations clocks and the ONE deploy they run code from (OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY; design/RimMandrake/operations_metronome_strategy_2026-11-02.md §8 step 0). Checked by src/RimMandrake/Utils/ops_clocks.py check. The deploy is the dispatch clone: nobody edits code there, it only fast-forwards to origin/main, and the ledger-writing clocks (dispatcher, restart, deadman) find their repo from their own file path, so their code and their data clone must be the same tree. Every rm-*, testq-*, timer-guard and account-plan unit systemd has loaded is either a clock here or named in outside with its reason; an unclassified one fails the check. A clock's trigger must exist; whether it is enabled is not judged here (account-plan.timer was off on the owner's order 2026-10-29, removed here 2026-11-04 by TIMERS_PRUNE_AUDIT_FINALLY_READ, and running again since 2026-11-06 06:52Z with his week's switching plan, switching_plan_week_2026-11-05.json; timers_guard watches enabled timers).",
   "deploy": "/home/mandrake/rm/dispatch",
   "clocks": {
     "rm-ops-watch": "rm-ops-watch.timer",
     "timer-guard": "timer-guard.timer",
     "rm-account-usage": "rm-account-usage.timer",
+    "account-plan": "account-plan.timer",
     "rm-dispatcher": "rm-dispatcher.timer",
     "rm-deadman": "rm-deadman.timer",
     "rm-restart-reconcile": "rm-restart-reconcile.timer",
