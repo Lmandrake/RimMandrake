@@ -105,7 +105,7 @@ RM = Path("/home/mandrake/rm")
 # /tmp is a root so a clone or a save there gets the full clone judgment (24 h, bundle unique first); its loose files and
 # dirs are sweep_tmp's (TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP).
 DEFAULT_ROOTS = [RM / "scratch", HOME / ".seat-tmp", Path("/tmp")]
-DEFAULT_CORPUS = [RM / "bench", RM / "foundry"]
+DEFAULT_CORPUS = [RM / "bench"]  # foundry is the retired seat (owner card 2026-11-02); its clone was emptied 2026-11-05
 DEFAULT_SCAN = [HOME, Path("/tmp"), Path("/mnt/d/ClaudeWork/rimmandrake/pulse-deploy")]
 PROTECTED = [RM / n for n in ("bench", "foundry", "dispatch", "anchor", "arena", "arena-vet", "store.git", "mirror.git",
                               "new.git", "retired-trees", "scratch_wallreach_slice")] + [Path("/mnt/d/Luke/dev/RimMandrake")]
