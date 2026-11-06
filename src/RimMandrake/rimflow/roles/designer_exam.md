@@ -17,8 +17,9 @@ Injected with `designer.md` whenever the concept is at stage 4, resumed or not. 
 4. **Two Readers**: fresh agents that see only `sheet.md`, `tree.json` and the scenario text, never `expect`,
    `record.json`, `log.md` or your notes. Each says accept or reject per scenario, with the leaf it relied on.
    `designer_stage.py check` refuses an exam whose `readers` names fewer than two agents, one agent twice, a
-   Reader with no agent id, or the author, examiner, challenger or open run; name each by its agent id, which is what
-   it compares.
+   Reader with no agent id, a Designer run, a Reader whose own words declare a self-read or a role, or the author,
+   examiner, challenger or open run; name everyone by agent id, author, examiner and challenger included, since the id
+   is what it compares and an exam whose author, examiner or challenger names none is refused.
 5. **Control**: one Reader run on a deliberately broken copy of the tree (a core leaf removed); it must miss what the
    real tree catches, or the scenarios do not discriminate. `designer_stage.py check` refuses an exam whose
    `control` is absent, whose `broken_leaf` is not a leaf of the tree, or whose `missed` is not true.

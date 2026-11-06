@@ -6,6 +6,7 @@ correction during examination, a resumed Stage 4 run, interrupted teardown, an e
 applicable visual floor lines; plus the result protocol, provenance, and the launcher wiring (role_launch run-now,
 decide preview, dispatcher commit, supervise close). Runs in a temp dir; touches no real concept, ledger or state."""
 import copy
+import glob
 import json
 import os
 import shutil
@@ -391,7 +392,7 @@ def main():
         cur = DS.inputs(d, DS.load_state(d), repo.root)
         scen = [{"id": "s%d" % i, "text": "t", "expect": "reject: wall", "expect_source": "climb_out"}
                 for i in range(10)]
-        exam = {"author": "designer", "examiner": "examiner-1", "inputs": {"tree": "0" * 64, "sheet": cur["sheet"]},
+        exam = {"author": "rm-role-designer-1", "examiner": "agent:ade4a89b3cdad9f61", "inputs": {"tree": "0" * 64, "sheet": cur["sheet"]},
                 "scenarios": scen, "scenarios_hash": CT.sha(scen),
                 "readers": ["agent:a973694af5dc4757a", "agent:acddc523961c33401"],
                 "score": {"right": 10, "total": 10},
@@ -807,7 +808,7 @@ def refusals_exam(tmp, d, repo, exam):
     refuses("exam: right one under the bar is refused", ex(score={"right": 8, "total": 10}), "is under 90%")
     refuses("exam: an accept where the core rejects is refused", ex(accept_where_reject_core=1), "must be 0")
     refuses("exam: a boolean accept_where_reject_core is refused", ex(accept_where_reject_core=False), "must be 0")
-    refuses("exam: an examiner who is the author is refused", ex(examiner="designer"), "examiner is not the tree's author")
+    refuses("exam: an examiner who is the author is refused", ex(examiner="rm-role-designer-1"), "examiner is not the tree's author")
     # EXAM_READERS_ENFORCE_TWO_NEVER_COUNTED: a one-Reader or self-read exam passed; designer_exam.md step 4 wants two
     refuses("exam: no readers field is refused", DS.exam_errors({k: v for k, v in exam.items() if k != "readers"}, d, st,
                                                                 repo.root), "readers needs two")
@@ -819,12 +820,14 @@ def refusals_exam(tmp, d, repo, exam):
     a1, a2, a3 = "a973694af5dc4757a", "acddc523961c33401", "ade4a89b3cdad9f61"
     refuses("exam: one reader twice under different annotations is refused",
             ex(readers=["rm-judge %s (sonnet)" % a1, "agent:%s" % a1]), "same agent")
-    refuses("exam: the author as a reader is a self-read and is refused", ex(readers=["designer", "reader-b"]),
-            "reader 'designer' is the author")
+    second = "agent:%s" % a2
+    refuses("exam: the author as a reader is a self-read and is refused", ex(readers=["rm-role-designer-1", second]),
+            "reader 'rm-role-designer-1' is the author")
     refuses("exam: an annotated author as a reader is refused",
-            ex(author="stage-3 run rm-role-designer-1793982561", readers=["rm-role-designer-1793982561 (again)", "reader-b"]),
+            ex(author="stage-3 run rm-role-designer-1793982561", readers=["rm-role-designer-1793982561 (again)", second]),
             "is the author")
-    refuses("exam: the examiner as a reader is refused, it wrote expect", ex(readers=["examiner-1", "reader-b"]),
+    refuses("exam: the examiner as a reader is refused, it wrote expect", ex(examiner="agent:%s (fresh)" % a3,
+                                                                             readers=["rm-judge %s" % a3, second]),
             "is the examiner")
     refuses("exam: the challenger as a reader is refused", ex(challenger="rm-judge %s (fresh)" % a3,
                                                                readers=["agent:%s" % a3, "agent:%s" % a1]), "is the challenger")
@@ -832,35 +835,46 @@ def refusals_exam(tmp, d, repo, exam):
             ex(examiner="rm-judge %s (fresh), challenger rm-judge %s" % (a2, a3), readers=["agent:%s" % a3, "agent:%s" % a1]),
             "is the examiner")
     refuses("exam: the open Designer run as a reader is refused",
-            DS.exam_errors(dict(copy.deepcopy(exam), readers=["rm-role-designer-55", "reader-b"]), d,
+            DS.exam_errors(dict(copy.deepcopy(exam), readers=["rm-role-designer-55", second]), d,
                            dict(st, running={"run": "rm-role-designer-55"}), repo.root), "is the open run")
-    refuses("exam: with no author a self-read cannot be ruled out, so it is refused", ex(author=""), "author is needed")
-    # the blind check's spellings: a Reader naming the author or examiner in words with an annotation and no id passed
-    second = "agent:%s" % a2
-    for spelled in ("designer (self-read)", "designer (fresh)", "the designer", "The Designer", "DESIGNER  (again)"):
-        refuses("exam: reader %r names the author in words and is refused" % spelled,
-                ex(readers=[spelled, second]), "is the author")
-    for spelled in ("examiner-1 (fresh)", "the examiner-1"):
-        refuses("exam: reader %r names the examiner in words and is refused" % spelled,
-                ex(readers=[spelled, second]), "is the examiner")
-    refuses("exam: a reader naming the challenger in words is refused",
-            ex(challenger="challenger-1", readers=["challenger-1 (fresh)", second]), "is the challenger")
-    refuses("exam: a reader naming the open run in words is refused",
-            DS.exam_errors(dict(copy.deepcopy(exam), readers=["designer-run (fresh)", second]), d,
+    refuses("exam: an open run under a plain name, named in a reader's annotation, is refused",
+            DS.exam_errors(dict(copy.deepcopy(exam), readers=["agent:%s (designer-run)" % a1, second]), d,
                            dict(st, running={"run": "designer-run"}), repo.root), "is the open run")
-    refuses("exam: an annotated author field still catches the bare reader",
-            ex(author="designer (stage 3)", readers=["designer", second]), "is the author")
-    refuses("exam: an annotated author field still catches an annotated reader",
-            ex(author="the Designer (tree last written)", readers=["designer (self-read)", second]), "is the author")
-    refuses("exam: an id on the reader does not hide the author's name when the author names no id",
-            ex(readers=["designer agent:%s (self-read)" % a1, second]), "is the author")
+    refuses("exam: with no author a self-read cannot be ruled out, so it is refused", ex(author=""), "author is needed")
+    # the blind checks' spellings: a free-text author can never be told from a labelled Reader, so ids are required of all
+    for who in ("designer", "the Designer", "the Designer (tree last written)"):
+        refuses("exam: author %r names no agent id and is refused" % who, ex(author=who), "author %r names no agent id" % who)
+    refuses("exam: an examiner that names no agent id is refused", ex(examiner="examiner-1"), "examiner 'examiner-1' names no")
+    refuses("exam: a challenger that names no agent id is refused", ex(challenger="challenger-1"), "challenger 'challenger-1' names no")
+    for labelled in ("agent:%s (the designer, self-read)" % a1, "rm-role-judge-4 (self-read)", "agent:%s (self read)" % a1,
+                     "agent:%s (SELF-READ)" % a1, "agent:%s (self-reading)" % a1):
+        refuses("exam: reader %r declares a self-read and is refused" % labelled, ex(readers=[labelled, second]), "declares itself")
+    for labelled in ("agent:%s (the author)" % a1, "agent:%s (examiner)" % a1, "rm-judge Challenger %s" % a1):
+        refuses("exam: reader %r declares a role that saw expect and is refused" % labelled,
+                ex(readers=[labelled, second]), "declares itself")
+    # the FlowWorks hole the blind check found, with both spellings, under a words-only author
+    for labelled in ("agent:%s (the designer, self-read)" % a1, "rm-role-designer-4 (self-read)"):
+        refuses("exam: %r under a words-only author is refused" % labelled,
+                ex(author="the Designer", readers=[labelled, second]), "names no agent id")
+    refuses("exam: another Designer run as a reader is refused, not fresh", ex(readers=["rm-role-designer-4", second]),
+            "is a Designer run")
+    check("exam: a reader that denies the role is not declaring it",
+          ex(readers=["agent:%s (fresh, not the author)" % a1, second]) == [],
+          ex(readers=["agent:%s (fresh, not the author)" % a1, second]))
     refuses("exam: a reader that names no agent id is refused", ex(readers=["reader-a", second]), "names no agent id")
     refuses("exam: a reader that only says fresh names no agent id", ex(readers=["fresh reader (fresh)", second]),
             "names no agent id")
     refuses("exam: one reader in words, annotated, is the same agent", ex(readers=["reader-a", "reader-a (fresh)"]),
             "same agent")
+    refuses("exam: a blank third reader is refused", ex(readers=["agent:%s" % a1, second, " "]), "readers needs two")
     check("exam: a reader run id is an agent id and passes", ex(readers=["rm-role-judge-77", second]) == [],
           ex(readers=["rm-role-judge-77", second]))
+    real = glob.glob(os.path.join(DS.REPO, "design", "concepts", "*", "exam.json"))
+    check("exam: the instrument sees the real concept exams on disk", bool(real), DS.REPO)
+    for path in real:
+        with open(path, encoding="utf-8") as f:
+            got = DS.reader_errors(json.load(f), {})
+        check("exam: real %s passes the reader check as filed" % os.path.basename(os.path.dirname(path)), got == [], got)
     # the four real exams' own spelling must still pass; a helper launched by the author's run is not the author
     for label, reader_pair, author, examiner in [
             ("FlowWorks", ["agent:%s" % a1, "agent:%s" % a2], "rm-role-designer-1793863469", "agent:%s (rm-judge, fresh)" % a3),

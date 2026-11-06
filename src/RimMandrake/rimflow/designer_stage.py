@@ -810,11 +810,13 @@ def floor_errors(fl, tree=None, floor=None, owner_ev=None):
     return errs
 
 
-# An agent named in exam.json is free text ("rm-judge a9c647383a06be32f (sonnet)"), so an annotation must not change who a
-# string names: compare the ids it names, helper ids before run ids. Where one side names no id, compare the bare words
-# both ways, since "designer (self-read)" and "the designer" both name the author "designer".
+# An agent named in exam.json is free text ("rm-judge a9c647383a06be32f (sonnet)"), so identity is the id a string names,
+# never its words: a free-text author cannot be told from a labelled Reader, so everyone in the exam must name an id.
 _HELPER_ID = re.compile(r"(?<![\w-])a[0-9a-f]{16}(?![\w-])")
 _RUN_ID = re.compile(r"(?<![\w-])rm-role-[a-z-]+-\d+(?![\w-])")
+_ROLE = r"self[- ]?read\w*|designer|author|examiner|challenger"
+_DENIED_ROLE = re.compile(r"(?<![\w-])not (?:a |an |the )?(?:%s)(?![\w-])" % _ROLE)
+_DECLARED_ROLE = re.compile(r"(?<![\w-])(?:%s)(?![\w-])" % _ROLE)
 
 
 def agent_ids(who):
@@ -823,10 +825,13 @@ def agent_ids(who):
     return _HELPER_ID.findall(w) or _RUN_ID.findall(w)
 
 
+def _no_ids(who):
+    return " ".join(_RUN_ID.sub(" ", _HELPER_ID.sub(" ", who.casefold())).split())
+
+
 def bare_name(who):
-    """The words left once the ids, the (annotations) and a leading article are gone."""
-    w = re.sub(r"\([^)]*\)", " ", who.casefold())
-    w = " ".join(_RUN_ID.sub(" ", _HELPER_ID.sub(" ", w)).split())
+    """The words left once the ids, the (annotations), an agent: tag and a leading article are gone."""
+    w = " ".join(re.sub(r"\([^)]*\)", " ", _no_ids(who)).replace("agent:", " ").split())
     return re.sub(r"^(the|a|an) ", "", w)
 
 
@@ -835,14 +840,20 @@ def _names_words(words, text):
 
 
 def same_agent(reader, other):
-    """Does the Reader string name an agent the other string also names? `other` may name several."""
+    """Does the Reader string name an agent the other string also names? `other` may name several.
+    Words decide only where a side names no id: two unnamed Readers, or an open run under a plain name."""
     mine = agent_ids(reader)
     o = other.casefold()
     theirs = _HELPER_ID.findall(o) + _RUN_ID.findall(o)
     if mine and theirs:
         return bool(set(mine) & set(theirs))
-    r_bare, o_bare = bare_name(reader), bare_name(other)
-    return _names_words(r_bare, o_bare) or _names_words(o_bare, r_bare)
+    return _names_words(bare_name(other), _no_ids(reader)) or _names_words(bare_name(reader), _no_ids(other))
+
+
+def declared_role(reader):
+    """The role a Reader's own words give it ("agent:a... (the designer, self-read)"), a denial ("not the author") aside."""
+    m = _DECLARED_ROLE.search(_DENIED_ROLE.sub(" ", _no_ids(reader)))
+    return m.group(0) if m else None
 
 
 def reader_errors(ex, st):
@@ -856,12 +867,22 @@ def reader_errors(ex, st):
         errs.append("exam: two readers are the same agent; a scenario is right only when two Readers agree")
     if not CT.txt(ex.get("author")):
         errs.append("exam: author is needed to show no reader is the tree's author")
+    for role in ("author", "examiner", "challenger"):
+        who = ex.get(role)
+        if CT.txt(who) and not (_HELPER_ID.search(who.casefold()) or _RUN_ID.search(who.casefold())):
+            errs.append("exam: %s %r names no agent id, so nothing shows no reader is the %s" % (role, who, role))
     running = st.get("running") if isinstance(st, dict) and isinstance(st.get("running"), dict) else {}
     seen = [("author", ex.get("author")), ("examiner", ex.get("examiner")), ("challenger", ex.get("challenger")),
             ("open run", running.get("run"))]
     for r in named:
-        if not agent_ids(r):
+        ids = agent_ids(r)
+        if not ids:
             errs.append("exam: reader %r names no agent id, so nothing shows it is a fresh agent" % r)
+        elif ids[0].startswith("rm-role-designer-"):
+            errs.append("exam: reader %r is a Designer run; a Designer has seen the log and the record" % r)
+        role = declared_role(r)
+        if role:
+            errs.append("exam: reader %r declares itself %s; a Reader is fresh and never sees expect" % (r, role))
         for role, who in seen:
             if CT.txt(who) and same_agent(r, who):
                 errs.append("exam: reader %r is the %s; a Reader is fresh and never sees expect" % (r, role))
