@@ -65,7 +65,8 @@ try:
     check("enact_old_1" in rows and rows["enact_old_1"][0] == "fixture", "the cleaner sees an enact_* dir")
     check("enact_repo_3" not in rows or rows["enact_repo_3"][0] != "fixture", "a dir holding a repo is not a fixture")
     ctx = R.Ctx(time.time())
-    check(R.judge_fixture(seat / "enact_old_1", ctx)["verdict"] == "DELETE", "an old fixture is DELETE")
+    v = R.judge_fixture(seat / "enact_old_1", ctx)
+    check(v["verdict"] == "DELETE", f"an old fixture is DELETE: {v}")
     check(R.judge_fixture(seat / "enact_young_2", ctx)["verdict"] == "YOUNG", "a young fixture is YOUNG")
 finally:
     subprocess.run(["rm", "-rf", str(td)])
