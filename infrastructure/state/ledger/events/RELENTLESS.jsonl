@@ -1006,3 +1006,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:01:02Z","tsn":1793959262824961924}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY A3 (L2), read-only proof","ts":"2026-11-06T10:01:48Z","tsn":1793959309004095384}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:02:02Z","tsn":1793959322014634325}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A1 (L1), read-only proof","ts":"2026-11-06T10:05:17Z","tsn":1793959517975123145}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:06:31Z","tsn":1793959591714419862}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR A1 (L2), read-only proof","ts":"2026-11-06T10:09:41Z","tsn":1793959781159740369}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:09:54Z","tsn":1793959794901846078}
