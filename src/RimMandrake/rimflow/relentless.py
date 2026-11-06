@@ -3777,6 +3777,11 @@ class Effects(relentless_game.GameFx):
             return False    # origin/main was just fetched whole and holds no such object: absent, not unknown
         return True if rc == 0 else False if rc == 1 else None      # 128 otherwise is git failing
 
+    def contains(self, sha, fix):
+        """True when commit `sha` holds `fix`, False when it does not, None when the books cannot say (an absent object)."""
+        rc = self.git(self.books, "merge-base", "--is-ancestor", fix, sha).returncode
+        return True if rc == 0 else False if rc == 1 else None
+
     def relanded(self, st):
         """-> (commit, how) when the candidate's sha is no object here but origin/main holds its work under another
         hash (a landing rebased it after the worker named it), else None. CANDIDATE_SHA_REPAIR_LANDED_UNDER_NEW_HASH:

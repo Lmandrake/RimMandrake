@@ -134,7 +134,8 @@ class FakeWorld:
         st = self.items.get(item)
         return None if st is None else {"state": st, "lease": None, "needs": "offline",
                                         "owner": self.owners.get(item, "BENCH"),
-                                        "guard_owed": item in getattr(self, "guard_owed", ())}
+                                        "guard_owed": item in getattr(self, "guard_owed", ()),
+                                        "closed_sha": getattr(self, "closed", {}).get(item)}
 
     def item_text(self, item): return "text of " + item
     def ledger_start(self, item):

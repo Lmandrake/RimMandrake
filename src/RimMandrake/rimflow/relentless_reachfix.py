@@ -443,6 +443,24 @@ def on_blind(store, st, r, now, said, blind):
                                   "; refused %s" % prop["refused"] if prop["refused"] else "", what[:300]))
 
 
+def stale(fx, r, name, ent, sha):
+    """-> the class ticket's closed sha when the candidate `sha` does not hold it, else None. A Judge blind at a sha cut
+    before the fix that gives it eyes is blind by its base, not by the box: no repair or reopen helps, a rebase does
+    (REAPER_SELFTEST_FIX_BLIND_IN_EVERY_BOX: OPS_TMP_DRAIN_RESTORE_JVCO's 65315ab8e7 predated 21832017e8 and reopened
+    it, 2026-11-06). An unanswered ancestry (None) proves nothing: the old road stands."""
+    contains = getattr(fx, "contains", None)
+    if not sha or contains is None:
+        return None
+    fix = (fx.item_state(ent.get("ticket") or _ticket_of(r, name)) or {}).get("closed_sha")
+    return fix if fix and contains(sha, fix) is False else None
+
+
+def stale_why(name, ticket, fix, sha):
+    return ("the Judge was blind at %s, a candidate cut before %s's fix %s, which is what gives it eyes on the %s reach: "
+            "rebase onto origin/main (it holds %s), rerun the proof, and finish on the new sha; no reach repair or reopen "
+            "is owed" % ((sha or "?")[:10], ticket, fix[:10], name, fix[:10]))
+
+
 def _ticket_of(r, name):
     for c in classes(r):
         if c["class"] == name and c.get("ticket"):
@@ -506,6 +524,25 @@ def sweep(store, fx, r, now, acts, iso, back=None):
             save(store, book)
             store.journal({"at": iso(now), "do": "reach_back", "item": owner, "class": name, "dark": gone[:6]})
             acts.append({"do": "reach_back", "item": owner, "class": name, "dark": gone[:6]})
+            continue
+        fix = stale(fx, r, name, ent, rp.get("sha") or (st.get("candidate") or {}).get("sha"))
+        if fix and back is not None:
+            why = stale_why(name, ent.get("ticket") or _ticket_of(r, name), fix, rp.get("sha"))
+            with store.lock():
+                cur = store.load(owner)
+                if not cur or cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
+                    continue
+                cur.pop("wait", None)
+                cur.pop("block_pending", None)
+                cur["reach"] = dict(cur.get("reach") or {}, status="stale", at=now, fix=fix)
+                back(store, cur, why, r, now)
+            if status == "ticket":
+                fx.ledger_unblock(owner, "reach repair %s: the candidate predates the fix %s; back to its builder"
+                                  % (name, fix[:10]))
+            _hand_over(store, fx, book, name, owner, now, acts)
+            save(store, book)
+            store.journal({"at": iso(now), "do": "reach_stale", "item": owner, "class": name, "fix": fix})
+            acts.append({"do": "reach_stale", "item": owner, "class": name, "fix": fix})
             continue
         prop = refreshed(r, st)
         if status == "ticket":
