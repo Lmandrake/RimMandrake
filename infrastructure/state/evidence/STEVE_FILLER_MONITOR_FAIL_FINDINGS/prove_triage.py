@@ -4,13 +4,13 @@
 The set is every finding event whose `from` is STEVE_FILLER_MONITOR_FAIL_FINDINGS/run-N@..., by name. Each passes only
 if (a) its LATEST finding event (by tsn) has a type other than UNTRIAGED, so a re-open to UNTRIAGED goes red, and
 (b) a TRACKED finding names, in its reason, an item that a spawn/file event on the ledger created from a finding of
-this host, so TRACKED-into-nothing goes red. Sanity floor: at least MIN findings (runs 1-4 hold 14), so a blind
+this host, so TRACKED-into-nothing goes red. Sanity floor: at least MIN findings (runs 1-5 hold 16), so a blind
 instrument cannot pass on an empty set. Exit 0 = all hold, 1 = not.
 Usage: prove_triage.py [ledger_events_dir]   (default infrastructure/state/ledger/events)
 """
 import glob, json, os, sys
 
-HOST, MIN = "STEVE_FILLER_MONITOR_FAIL_FINDINGS/run-", 14
+HOST, MIN = "STEVE_FILLER_MONITOR_FAIL_FINDINGS/run-", 16
 d = sys.argv[1] if len(sys.argv) > 1 else "infrastructure/state/ledger/events"
 files = glob.glob(os.path.join(d, "*.jsonl"))
 if not files:
