@@ -238,6 +238,21 @@ class FakeWorld:
     def live_check(self, line, nb):
         self.live_nb.append(nb)
         return self.live_broken
+    # SteveDesktop/testq seams (relentless_game): neutral defaults, recorded; GW and rigs override them
+    def _steve(self, *a):
+        self.__dict__.setdefault("steve_calls", []).append(a)
+    def sha_infers(self, sha): return False
+    def steve_deploy(self, item, sha): return []
+    def steve_fell_back(self, item, sha): return []
+    def steve_fallback(self, item, sha, clauses, why): self._steve("fallback", item, sha, tuple(clauses))
+    def testq_submit(self, item, sha, tier, clauses, deploy):
+        self._steve("submit", item, sha, tier, tuple(clauses))
+        return None, "fake world: no testq"
+    def testq_job(self, job): return {"state": None, "rec": None, "gate": None}
+    def steve_verify(self, item, criterion, level, sha, result, evidence, config):
+        self._steve("verify", item, criterion, sha, result)
+        return None
+    def game_row_append(self, row): self._steve("row", row)
 
 
 class Rig:
