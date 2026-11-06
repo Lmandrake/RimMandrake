@@ -705,6 +705,18 @@ TIERS["flowworks_vepipe"] = {
     "dlc": True,
 }
 
+TIERS["cameraplus_nozoom"] = {
+    "why": "CAMERAPLUS_TIER_BUILD_EVERY_LIST_ADDS_RIVAL: the one load where ART_RESOLUTION_MEASURE_AT_MAX_ZOOM A1's "
+           "precondition holds -- Camera+ (brrainz.cameraplus) at its defaults and SimpleCameraSetting ABSENT, so "
+           "set_camera_zoom settles at Camera+'s own floor. `no_zoom` stops resolve_tier adding the rival zoom mod "
+           "(it adds it to every other tier), and `forbid` refuses the tier if a dependency drags it back. Plus the "
+           "bridge and Gimme Some Slack (JawaBench's companion tools TypeLoad-fail without it).",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "brrainz.cameraplus"],
+    "forbid": [ZOOM],
+    "no_zoom": True,
+    "dlc": True,
+}
+
 TIERS["weepingstones_solo"] = {
     "why": "WEEPING_STONES_FIRST_SCRIPT_1: the north-star script for WeepingStones "
            "(src/RimMandrake/WeepingStones, packageId mandrake.rm.weepingstones). That "
