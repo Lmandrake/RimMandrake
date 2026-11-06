@@ -59,6 +59,15 @@ check("room no bed built", W.v_room(r0, r0, None)[0], "UNMEASURED")
 check("capture ok", W.v_capture("VERDICT Allowed held=True", {"prisoner": "True"}, (1, 1), (5, 5, 3, 3))[0], "PASS")
 check("capture warden in pit", W.v_capture("VERDICT Allowed", {"prisoner": "True"}, (6, 6), (5, 5, 3, 3))[0], "FAIL")
 check("capture unread", W.v_capture("", {}, (1, 1), (5, 5, 3, 3))[0], "UNMEASURED")
+# PIT_WALK_FIX_CAPTURE_ORDER_AFTER_WANDER: a failed capture with the held pawn on the 3x3 centre (no lip within 1.5)
+# could not be asked (UNMEASURED, a why -> SITE); on the edge ring it is still the mod's FAIL
+check("lip touches the edge", W.lip_touchable((5, 5, 3, 3), (5, 6)), True)
+check("no lip touches the centre", W.lip_touchable((5, 5, 3, 3), (6, 6)), False)
+check("lip position unread", W.lip_touchable((5, 5, 3, 3), (None, None)), None)
+check("capture centre unmeasured", W.v_capture("VERDICT Allowed", {"prisoner": "False"}, (1, 1), (5, 5, 3, 3), (6, 6))[0],
+      "UNMEASURED")
+check("capture edge fail", W.v_capture("VERDICT Allowed", {"prisoner": "False"}, (1, 1), (5, 5, 3, 3), (5, 6))[0], "FAIL")
+check("capture centre ok", W.v_capture("VERDICT Allowed", {"prisoner": "True"}, (1, 1), (5, 5, 3, 3), (6, 6))[0], "PASS")
 check("convert ok", W.v_convert({"serve": "True", "kind": "Interact", "lipInPit": "False", "dist": "1.4"})[0], "PASS")
 check("convert far", W.v_convert({"serve": "True", "kind": "Interact", "lipInPit": "False", "dist": "9"})[0], "FAIL")
 # doors
@@ -125,6 +134,16 @@ with tempfile.TemporaryDirectory() as tmp:
         check("fault %s -> %s" % (fault, rid), st.get(rid), "FAIL")
         check("fault %s exit" % fault, rc, 1)
         check("fault %s only its row" % fault, sorted(k for k, v in st.items() if v != "PASS"), [rid])
+    # PIT_WALK_FIX_CAPTURE_ORDER_AFTER_WANDER: a held pirate left uncaptured steps to the 3x3 centre, where the job quits
+    # (success:false). Ordered before any tick wait, the walk still passes; one already at the centre reads SITE
+    rc, st, res, _ = mock_run(tmp, "capture_wanders")
+    check("capture_wanders all PASS", sorted(k for k, v in st.items() if v != "PASS"), [])
+    rc, st, res, _ = mock_run(tmp, "capture_centre")
+    by = {r["id"]: r for r in res["rows"]}
+    check("capture_centre only its row", sorted(k for k, v in st.items() if v != "PASS"), ["PSW_capture_down_from_lip"])
+    check("capture_centre unmeasured", st.get("PSW_capture_down_from_lip"), "UNMEASURED")
+    check("capture_centre class", by["PSW_capture_down_from_lip"]["class"], "SITE")
+    check("capture_centre order kept", by["PSW_capture_down_from_lip"]["detail"].get("orderedJob", {}).get("success"), False)
     # PITWALK_FIX_FIVE_ROWS_NEVER_MEASURE: the round-4 harness (fixtures undeclared, so the governor's whole-map
     # remove_intruders ate them) reproduced: exactly the four fixture rows lose their pawns, and each says WHY it could
     # not ask (couldNotAsk, class HARNESS) -- the clean run above passes the same sweep only because spawn() keeps them

@@ -50,7 +50,9 @@ Stations and rows (PROVE / EXPECT / LIES):
  S7 capture / convert down from the lip:
   PSW_capture_down_from_lip     an unarmed held pirate in the prison pit: ProofCaptureDown "VERDICT Allowed"; a drafted
                                 colonist's RM_CaptureDown job (lip as targetB) -> prisoner True after 900 ticks and the warden
-                                never ends in the pit.
+                                never ends in the pit. The order goes out BEFORE any tick wait (a held pawn left waiting
+                                wanders, and from the 3x3 centre no lip touches him); a capture that ends with him on a
+                                cell no lip touches (LipKind.Touch, radius 1.5) is UNMEASURED SITE, not a MOD fail.
   PSW_convert_down_from_lip     ProofLip <warden>;<pit centre>;PrisonerConvert -> serve True kind Interact lipInPit False
                                 dist <= 6.
  S8 sluice / grate (SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS; flowDoorsSealedFromPitEnabled):
@@ -93,6 +95,10 @@ recruit session from the lip, flight of any flyer (standing rule).
   - RULED OUT: "a near-brim pit gives no exit" (MOD) -- ProofDrown's exit is cardinal-neighbour-only by design
     (RM_Drowning.ExitInReach); ProofClimb, the pocket-wide rule, said not trapped. The control stood in the 3x3 centre;
     it now stands on the edge (BRIM_CTL), and the mock's ProofDrown is cardinal-only so a centre control reads FAIL.
+  - RULED OUT: "RM_CaptureDown is broken" (MOD) for run 20261029T081059 -- a B.ticks(60) before the order let the held
+    pirate wander from the west edge to the pit centre, which no lip touches; JobDriver_CaptureDown ended Incompletable
+    on its first toil (ordered_job success:false). Ordered with no pre-wait it captured in <=300 ticks
+    (PIT_WALK_FIX_CAPTURE_ORDER_AFTER_WANDER; mock faults capture_wanders / capture_centre).
 """
 import argparse
 import json
@@ -280,12 +286,27 @@ def v_room(before, after, bed_id):
     return ("PASS" if ok else "FAIL"), {"before": before, "after": after}
 
 
-def v_capture(v0, v1, warden_pos, pit_rect):
-    """S7a: allowed before the job; a prisoner after it; the warden never ends in the pit."""
+def lip_touchable(pit_rect, xz):
+    """True when some cell outside the pit lies within LipKind.Touch's 1.5 of xz: on a rectangular pit, its border ring.
+    The 3x3's centre is the one cell no lip touches."""
+    if xz is None or xz[0] is None:
+        return None
+    if not in_rect(pit_rect, xz):
+        return True
+    return any(not in_rect(pit_rect, (xz[0] + dx, xz[1] + dz)) for dx in (-1, 0, 1) for dz in (-1, 0, 1))
+
+
+def v_capture(v0, v1, warden_pos, pit_rect, held_pos=None):
+    """S7a: allowed before the job; a prisoner after it; the warden never ends in the pit. A capture that did not happen
+    while the held pawn stands where no lip touches him is the staging's fault (SITE), not the mod's."""
     if not str(v0).startswith("VERDICT") or "prisoner" not in v1:
         return "UNMEASURED", {"why": "ProofCaptureDown unread", "v0": v0, "v1": v1}
     if warden_pos is None or warden_pos[0] is None:
         return "UNMEASURED", {"why": "warden position unread"}
+    if v1.get("prisoner") != "True" and lip_touchable(pit_rect, held_pos) is False:
+        return "UNMEASURED", {"why": "the held pawn stands at %s, a cell no lip touches (radius 1.5): the capture could "
+                                     "not be asked" % (held_pos,), "v0": v0, "prisoner": v1.get("prisoner"),
+                              "warden": warden_pos}
     ok = str(v0).startswith("VERDICT Allowed") and v1.get("prisoner") == "True" and not in_rect(pit_rect, warden_pos)
     return ("PASS" if ok else "FAIL"), {"v0": v0, "prisoner": v1.get("prisoner"), "warden": warden_pos}
 
@@ -540,6 +561,20 @@ class FakePit(object):
                 "rebuilds=1" % (self.K.get(p["kind"], 2), t, t, p["cell"][0], p["cell"][1], self.K.get(p["kind"], 2), t,
                                 self._d(p["cell"])))
 
+    def _wander(self):
+        """`capture_wanders`: a held hostile nobody is capturing yet steps east once, deeper into a dug pit (the round-6
+        pirate went from the 3x3's west edge to its centre during the old 60-tick pre-wait)."""
+        busy = {t for _, t in self.capture.values()}
+        for pid, p in self.pawns.items():
+            x, z = p["cell"]
+            if (p.get("faction") == "hostile" and pid not in busy and not p.get("wandered") and not p.get("prisoner")
+                    and self._d((x, z)) > 0 and self._d((x + 1, z)) > 0):
+                p["cell"], p["wandered"] = (x + 1, z), True
+
+    def _untouchable(self, c):
+        """No undug cell within 1.5: no lip touches it (LipKind.Touch)."""
+        return all(self._d((c[0] + dx, c[1] + dz)) > 0 for dx in (-1, 0, 1) for dz in (-1, 0, 1))
+
     def _at(self, c):
         for pid, p in self.pawns.items():
             if tuple(p["cell"]) == tuple(c):
@@ -578,6 +613,8 @@ class FakePit(object):
                 self.covers[c] = True
                 self.descents += 1
                 self.pawns[pid]["descent"] = True
+        if "capture_wanders" in self.faults:
+            self._wander()
         for pid, (tick_due, target) in list(self.capture.items()):
             if self.tick >= tick_due and target in self.pawns:
                 self.pawns[target]["prisoner"] = True
@@ -654,6 +691,13 @@ class FakePit(object):
             self.prison_bed = kw.get("ownerType") == "Prisoner"
             return {"success": True}
         if tool == "jawa/ordered_job":
+            tgt = self.pawns.get(kw.get("targetAId"))
+            if tgt and "capture_centre" in self.faults:        # he already stood where no lip touches when ordered
+                x, z = tgt["cell"]
+                if self._d((x + 1, z)) > 0:
+                    tgt["cell"] = (x + 1, z)
+            if tgt and self._untouchable(tgt["cell"]):           # JobDriver_CaptureDown: Incompletable on its first toil
+                return {"success": False, "accepted": True, "afterJobDef": "Wait_Combat"}
             self.capture[kw["pawnId"]] = (self.tick + 300, kw.get("targetAId"))
             return {"success": True}
         if tool == "jawa/pawn_set_guest_status":
@@ -1146,7 +1190,8 @@ def main(argv=None):
             if hid:
                 B.call("jawa/pawn_gear", pawn=hid, action="clear")      # unarmed: nothing shoots the warden
             col = spawn("Colonist", far)
-            B.ticks(60)
+            # PIT_WALK_FIX_CAPTURE_ORDER_AFTER_WANDER (HARNESS): no tick wait before the order -- a B.ticks(60) here let
+            # the held pirate wander to the 3x3 centre, which no lip touches, and the job quit on its first toil
             v0 = sc(NSP, "ProofCaptureDown", hid or "") or ""
             B.call("jawa/set_draft", pawnId=col, drafted=True)
             oj = B.call("jawa/ordered_job", pawnId=col, jobDef="RM_CaptureDown", targetAId=hid, targetBX=lip[0],
@@ -1172,7 +1217,8 @@ def main(argv=None):
                          "trail": ctrail, "governorStop": stop}
             v1 = kv(sc(NSP, "ProofCaptureDown", hid or "") or "")
             pg = ((B.call("jawa/pawn_get", pawn=col) or {}).get("pawns") or [{}])[0].get("position") or {}
-            st, det = v_capture(v0, v1, (pg.get("x"), pg.get("z")), prison_rect)
+            hg = ((B.call("jawa/pawn_get", pawn=hid) or {}).get("pawns") or [{}])[0].get("position") or {}
+            st, det = v_capture(v0, v1, (pg.get("x"), pg.get("z")), prison_rect, (hg.get("x"), hg.get("z")))
             if stop:                                # a disturbance stopped the clock: the row could not finish asking
                 st, det = "UNMEASURED", dict(det, why="governor stop during the capture: " + stop)
             if st != "PASS":
