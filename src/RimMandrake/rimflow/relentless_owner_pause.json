@@ -1,9 +1,13 @@
 {
   "_doc": "The owner's pipeline-only switch, read once a tick by relentless.py (owner_pause_rule -> owner_pause). pipeline_only true: content_pause reads a global owner pause whatever Operations' verdict or holding, and pause_stops lets start only a pipeline item: one of Operations' system items (ops_health.is_system, the verdict's system_items, fx.first) or an id starting with a pipeline_prefixes entry. An expedite, the priority list, a fresh ruling or a live iteration does not pass content. Running work, checks and the game phase finish; the line walks past held content to the pipeline items behind it; no 6 h pause alarm; staffing does not count held content as ready. Set pipeline_only false (or delete this file) when he lifts it. A file that cannot be read reads as on.",
-  "pipeline_only": true,
-  "pipeline_prefixes": ["LIGHTSPEED_"],
+  "pipeline_only": false,
+  "pipeline_prefixes": [
+    "LIGHTSPEED_"
+  ],
   "_pipeline_prefixes": "Lightspeed items (LIGHTSPEED_*) count as pipeline: Conductor brief 2026-11-05, per CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM.",
   "set_at": "2026-11-05T22:55:00-08:00",
   "owner_said": "I'd like to pause content work for now on Archmagi and work entirely on the pipeline working on pipeline items.",
-  "relayed_by": "Conductor, per CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+  "relayed_by": "Conductor, per CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM",
+  "lifted_at": "2026-11-06T07:15:00-08:00",
+  "lifted_owner_said": "Yes content is ok."
 }
