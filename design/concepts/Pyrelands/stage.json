@@ -200,10 +200,17 @@
     "ref": "run rm-role-designer-1793952321",
     "stage": 2,
     "tokens": 200341
+   },
+   {
+    "at": "2026-11-06T08:22:06Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793952905",
+    "stage": 3,
+    "tokens": 839688
    }
   ],
   "reserve": 60000,
-  "spent": 5570514
+  "spent": 6410202
  },
  "history": [
   {
@@ -433,6 +440,24 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1793952321: stage 2 done"
+  },
+  {
+   "at": "2026-11-06T08:15:41Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "5570514 of 4000000 spent; run rm-role-designer-1793952905 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T08:15:41Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1793952905, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-06T08:22:06Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1793952905: stage 3 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -660,11 +685,35 @@
    "run": "rm-role-designer-1793952321",
    "stage": 2,
    "summary": "The returned root-firebreak decision is already settled: his card OWNER:1793950669508519029 ('Use the proposed ending', turn_05.md) approved the current root text (no firebreak floor; a paved strip >=2 cells stops ground fire; a fire-hawk ember can carry 6 cells past it; the firefoam sprayer reaches the fruit; scorch-fruit right behind the front). No ask is sent and no core contradiction is open, so nothing new goes to him. Stage 3 owes the new root text in sheet/tree plus the 8 coverage gaps in coverage_verdict.json. Budget: 5.37M of the 4.0M cap spent (advisory over_budget); raising the cap is the Conductor's call."
+  },
+  {
+   "at": "2026-11-06T08:22:06Z",
+   "inputs": {
+    "exam": "781c20ccfee15020138fa10bbaf550d91d696225760749d8aa010662d17d8d38",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+    "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
+    "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
+    "tree": "881db40073f1ed0448c4b25a010461045c6544610062f5f011ce2670d561a9c9"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793952905",
+   "stage": 3,
+   "summary": "Root ending (OWNER:1793950669508519029) carried into sheet/tree: paved_strip_holds_the_line now reads front and near-side smoulder stopped, ember on paving lights nothing, hawk can carry 6 cells past; new leaf firefoam_sprayer_reaches_the_fruit. Coverage gaps: new leaf+scene furnacebeast_banks_heat_and_smoulders_bed/sc_furnace_bed (control furnace thermal off, ullai in same fire); sprayer, sand shovel, rite hook promoted to acceptance with leaves and controls; sc_paved_strip asserts clear weather and fire burning at the strip, drives a near-side relight; sc_three_skies reads cinderfall lightning, black-rain ash wash, clear-sky and vanilla-rain fire pads; sc_ash_watered control is the watered strip with the lift switch off; per-scene restore (sc_no_rain disposable map, sc_walk pre-walk save); offline leaf biome_text_says_engineered. The herd-migration gap was stale: the world leg was cut by his card 2026-10-23 (84cc81013d), so the inventory is corrected and no scene added; About.xml/race text still promising it is owed. Items filed: PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS, PYRELANDS_TEXT_FIX_ENGINEERED_NEVER_SAID."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
