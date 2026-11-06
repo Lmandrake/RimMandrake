@@ -460,8 +460,16 @@ def defs_static(t):
             _fail("shipped RM_Dwommo MaxFlightTime must be > 0 (CanEverFly reads the stat); got %r" % mft)
         if th.find("statBases/FlightCooldown") is None or not float(th.findtext("race/flightSpeedFactor") or 0) > 0:
             _fail("RM_Dwommo needs FlightCooldown and race flightSpeedFactor")
-        if "Spastic" in ET.tostring(x, encoding="unicode") or x.find(".//flyingAnimationFramePathPrefix") is not None:
-            _fail("RM_Dwommo must carry no Spastic wing node and no flip-book prefix until real frames exist")
+        if "Spastic" in ET.tostring(x, encoding="unicode"):
+            _fail("RM_Dwommo must carry no Spastic wing node (flight art is a whole-body flip-book)")
+        # FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY gave it a flip-book: a named prefix must have every frame on disk.
+        pre = x.findtext(".//flyingAnimationFramePathPrefix")
+        if pre:
+            n = int(x.findtext(".//flyingAnimationFrameCount") or 0)
+            missing = [f"{pre}{i}_{fc}.png" for i in range(1, n + 1) for fc in ("north", "south", "east")
+                       if not os.path.isfile(os.path.join(HERE, "Textures", f"{pre}{i}_{fc}.png"))]
+            if n < 1 or missing:
+                _fail("RM_Dwommo flip-book %r count %d missing frames %s" % (pre, n, missing[:4]))
         # Live: the loaded def's stat. With the switch on it must be > 0. Needs the running game, not a map.
         if t._guard():
             rows, nf = _defs(t, ["ThingDef/RM_Dwommo"], fields="statBases", deep=True)
