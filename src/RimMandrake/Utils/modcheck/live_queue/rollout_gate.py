@@ -9,9 +9,8 @@ Exit 0 when the LATEST live `situational_rerun` record (that job always runs --p
   * it is MEASURED PASS (its own judge: no suite crashed, every chain bland, every surprise has its evidence, ...);
   * it ran on a commit that already holds the newest change to the situational envelope (ENVELOPE files), so a pass
     on an older envelope does not license the flip;
-  * its digests cover EVERY modcheck suite on disk (src/Rim*/<Mod>/validation.py with a module-level `suite =`),
-    because situational_rerun's own list, jobs.suite_mods(), is only the status registry: on 2026-11-02 that was
-    57 live keys, 3 dead ones (renamed or cut mods) and 48 on-disk suites it had never heard of;
+  * its digests cover EVERY modcheck suite on disk that composes onto the minimal list (suite_set.py; on 2026-11-02
+    the status registry situational_rerun then read offered 57 suites of 105 on disk);
   * the registry holds no key whose mod folder is gone (a dead key makes every pass fail "no suite raised").
 Exit 1 otherwise, printing every reason; exit 2 when there is no record at all (nothing was measured).
 """
@@ -37,16 +36,10 @@ SUITE_RE = re.compile(r"^suite\s*=", re.M)
 
 
 def disk_suites(root=ROOT):
-    """Every mod folder under src/Rim*/ whose validation.py declares a module-level `suite` (what runner loads)."""
-    out = set()
-    for p in glob.glob(os.path.join(root, "src", "Rim*", "*", "validation.py")):
-        try:
-            with open(p, encoding="utf-8") as f:
-                if SUITE_RE.search(f.read()):
-                    out.add(os.path.basename(os.path.dirname(p)))
-        except OSError:
-            out.add(os.path.basename(os.path.dirname(p)))   # unreadable: still a suite the pass owes
-    return out
+    """The suites the pass owes: suite_set.py's disk-derived set (a suite whose walk doc says `list: full`, or whose
+    closure needs a donor the minimal list lacks, runs on its own list, not in the shared minimal session)."""
+    import suite_set
+    return set(suite_set.situational_suites(root))
 
 
 def dead_keys(registry_keys, root=ROOT):
@@ -98,7 +91,7 @@ def evaluate(rec, suites, registry_keys, dead, env_sha, ancestor):
         unreg = [m for m in missing if m not in registry_keys]
         probs.append("%d suite(s) never ran in the pass: %s%s" % (
             len(missing), ", ".join(missing),
-            (" (%d of them absent from modcheck_status.json, so jobs.suite_mods() never offers them)" % len(unreg))
+            (" (%d of them never recorded in the status registry)" % len(unreg))
             if unreg else ""))
     if dead:
         probs.append("dead registry key(s) (no mod folder): %s -- modcheck cli.py rename-key/forget-key" % ", ".join(dead))

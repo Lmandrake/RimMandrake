@@ -290,7 +290,7 @@ def main():
         check("job ids are unique and every job file exists",
               len({j["id"] for j in jobs.JOBS}) == len(jobs.JOBS) and
               all(os.path.isfile(os.path.join(_HERE, j["file"])) for j in jobs.JOBS))
-        check("suite_mods() derives a non-empty list from the status registry", len(jobs.suite_mods()) >= 1)
+        check("suite_mods() derives a non-empty list from disk (suite_set.py)", len(jobs.suite_mods()) >= 1)
     finally:
         sys.argv = old_argv
         import shutil

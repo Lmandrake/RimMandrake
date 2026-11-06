@@ -49,17 +49,19 @@ def body(s, job):
         return
     import runner
     from jobs import suite_mods
+    import suite_set
     want = {}
     for m in suite_mods():
         try:
-            want[m] = runner.mod_package_id(runner.find_mod_dir(m))
+            want[m] = suite_set.closure(m)      # what prep_wsl composed: deps through our mods, the mod, its tier
         except Exception as e:                                  # noqa: BLE001
             want[m] = "UNRESOLVED (%s)" % e
     try:
         live = active_package_ids()
     except Exception as e:                                      # noqa: BLE001
         raise Unmeasurable("cannot parse the live ModsConfig: %s" % e)
-    absent = {m: p for m, p in want.items() if p not in live}
+    absent = {m: (p if isinstance(p, str) else [i for i in p if i not in live]) for m, p in want.items()
+              if isinstance(p, str) or any(i not in live for i in p)}
     job.note("active_count", len(live))
     job.check("every situational_rerun suite mod is active in ModsConfig (prep_wsl.py composed them)", not absent, absent)
 

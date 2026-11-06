@@ -40,7 +40,7 @@ def main():
     check("a record without a sha is a problem", any("no git sha" in p for p in ev(rec(sha=None))))
     p = ev(rec(mods=("A",)), suites=("A", "B", "C"), keys=("A", "B"))
     check("suites that never ran are named", any("B, C" in x for x in p))
-    check("an unregistered missing suite is called out", any("1 of them absent" in x for x in p))
+    check("an unregistered missing suite is called out", any("1 of them never recorded" in x for x in p))
     check("a dead registry key is a problem", any("dead registry key" in x for x in ev(rec(), dead=("Gone",))))
     check("extra digests beyond the disk set do not fail", ev(rec(mods=("A", "B", "X"))) == [])
     # latest_rerun: last live rerun wins; dry runs and other jobs are ignored
@@ -55,6 +55,9 @@ def main():
             os.makedirs(os.path.join(t, "src", tier, mod))
             with open(os.path.join(t, "src", tier, mod, "validation.py"), "w") as f:
                 f.write(body)
+        os.makedirs(os.path.join(t, "infrastructure", "state", "modlists"))
+        with open(os.path.join(t, "infrastructure", "state", "modlists", "ModsConfig.MINIMAL.xml"), "w") as f:
+            f.write("<ModsConfigData><activeMods><li>ludeon.rimworld</li></activeMods></ModsConfigData>")
         check("disk_suites finds module-level suites in every tier and nothing else",
               G.disk_suites(t) == {"Alpha", "Beta"})
         check("dead_keys names keys with no folder in any tier", G.dead_keys({"Alpha", "Script", "Gone"}, t) == ["Gone"])

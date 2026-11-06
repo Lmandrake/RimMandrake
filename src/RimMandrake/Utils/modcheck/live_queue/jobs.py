@@ -45,26 +45,12 @@ def canonical_id(job_id):
     return OLD_IDS.get(job_id, job_id)
 
 
-SUITE_REGISTRY = os.path.join(ROOT, "infrastructure", "state", "modcheck_status.json")
-
-
 def suite_mods():
-    """The suites situational_rerun re-runs: every mod in the modcheck status registry (13 on 2026-10-01). Derived, never listed."""
-    with open(SUITE_REGISTRY, encoding="utf-8") as f:
-        d = json.load(f)
-    mods = sorted(d.get("mods", d))
-    import re
-    import runner
-    out = []
-    for m in mods:      # a standalone script with no `suite =` is not a modcheck suite (MessyConduit has one since 2026-10-03)
-        try:
-            src = open(os.path.join(runner.find_mod_dir(m), "validation.py"), encoding="utf-8").read()
-        except Exception:                                       # noqa: BLE001
-            out.append(m)       # unreadable: keep it, so situational_rerun reports the load error instead of hiding it
-            continue
-        if re.search(r"^suite\s*=", src, re.M):
-            out.append(m)
-    return out
+    """The suites situational_rerun re-runs: every disk suite that composes onto the minimal list (suite_set.py).
+    Derived from disk, never listed; until 2026-11-06 this read the modcheck status registry, which only knows a mod
+    someone already ran (57 of 105 disk suites on 2026-11-02)."""
+    import suite_set
+    return suite_set.situational_suites()
 
 
 def latest(dry_run=False, path=None):
