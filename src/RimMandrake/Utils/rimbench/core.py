@@ -205,7 +205,19 @@ class Session(_RimdriveSession):
         self._shots += 1
         return "%s_%03d" % (name, self._shots)
 
-    def look(self, x, z, name="rimbench", zoom=None, clear_ui=True):
+    def _shoot(self, name, settle):
+        """take_screenshot, or with settle=True the paused tween barrier
+        (shotsettle.settled_shot: pawns drawn where they are, ticksGame proved
+        unchanged across the capture). Use settle after bulk tick stepping; it
+        leaves the game paused."""
+        if settle:
+            from rimbench.shotsettle import settled_shot
+            return settled_shot(self.call, self._shot_name(name), clear_ui=False)["path"]
+        r = self.call("rimworld/take_screenshot", fileName=self._shot_name(name),
+                      suppressMessage=True)
+        return r.get("path")
+
+    def look(self, x, z, name="rimbench", zoom=None, clear_ui=True, settle=False):
         """Point the camera and take a screenshot. Returns the file path.
 
         `zoom` is a rootSize NUMBER (11-15 is the safe band), not a zoom name.
@@ -235,11 +247,9 @@ class Session(_RimdriveSession):
             # ⚠️ rootSize below ~11 breaks the world mesh render (flat red);
             # 11-15 are clean, and the extension must be enabled for >23.
             self.call("rimworld/set_camera_zoom", rootSize=float(zoom))
-        r = self.call("rimworld/take_screenshot", fileName=self._shot_name(name),
-                      suppressMessage=True)
-        return r.get("path")
+        return self._shoot(name, settle)
 
-    def frame(self, x, z, w, h, name="rimbench", clear_ui=True):
+    def frame(self, x, z, w, h, name="rimbench", clear_ui=True, settle=False):
         """Frame a rect and shoot it, so the whole thing is in view.
 
         Same debug-log occlusion as `look` — see its docstring."""
@@ -249,9 +259,7 @@ class Session(_RimdriveSession):
             self.call("rimworld/frame_cell_rect", x=x, z=z, width=w, height=h)
         except Exception:
             self.call("rimworld/jump_camera_to_cell", x=x + w // 2, z=z + h // 2)
-        r = self.call("rimworld/take_screenshot", fileName=self._shot_name(name),
-                      suppressMessage=True)
-        return r.get("path")
+        return self._shoot(name, settle)
 
     def save(self):
         """Save and return the path. NOTE: the bridge ignores any fileName."""
