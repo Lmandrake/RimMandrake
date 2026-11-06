@@ -137,6 +137,25 @@
    "provenance": "generated/ours",
    "frames": "5"
   },
+  "RM_FireWasp": {
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "FireWasp"
+   ],
+   "tex": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+   "static": {
+    "g1": 0.752,
+    "g2": 1.045,
+    "g4": 0.891
+   },
+   "static_fails": [
+    "G4 body width 0.89 > 0.85"
+   ],
+   "provenance": "generated/ours",
+   "frames": "8"
+  },
   "RM_FleetFlier": {
    "tier": 4,
    "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
@@ -379,14 +398,14 @@
    "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
    "flipbook": "none",
    "sets": [],
-   "tex": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+   "tex": "Things/Pawn/Animal/RM_Skerrel/RM_Skerrel",
    "static": {
-    "g1": 0.752,
-    "g2": 1.045,
-    "g4": 0.891
+    "g1": 0.459,
+    "g2": 0.929,
+    "g4": 0.773
    },
    "static_fails": [
-    "G4 body width 0.89 > 0.85"
+    "G1 body share 0.46 < 0.5"
    ],
    "provenance": "no flip-book",
    "frames": ""
@@ -680,38 +699,6 @@
    "provenance": "donor-copy (cartoon)",
    "frames": "4"
   },
-  "RSW_ColonyPustuleHornet": {
-   "tier": 4,
-   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
-   "flipbook": "unannotated",
-   "sets": [],
-   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/PustuleHornet/PustuleHornet",
-   "static": {
-    "g1": 0.801,
-    "g2": 1.069,
-    "g4": 0.672
-   },
-   "static_fails": [],
-   "provenance": "generated/ours",
-   "frames": "1"
-  },
-  "RSW_ColonyPustuleHornetQueen": {
-   "tier": 4,
-   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
-   "flipbook": "unannotated",
-   "sets": [],
-   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/PustuleHornetQueen/PustuleHornetQueen",
-   "static": {
-    "g1": 0.791,
-    "g2": 1.012,
-    "g4": 0.945
-   },
-   "static_fails": [
-    "G4 body width 0.94 > 0.85"
-   ],
-   "provenance": "generated/ours",
-   "frames": "1"
-  },
   "RSW_Convor": {
    "tier": 1,
    "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
@@ -756,23 +743,6 @@
    "static_fails": [],
    "provenance": "generated/ours",
    "frames": "4"
-  },
-  "RSW_FacetMoth": {
-   "tier": 1,
-   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
-   "flipbook": "none",
-   "sets": [],
-   "tex": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/FacetMoth",
-   "static": {
-    "g1": 0.896,
-    "g2": 1.428,
-    "g4": 0.977
-   },
-   "static_fails": [
-    "G4 body width 0.98 > 0.85"
-   ],
-   "provenance": "no flip-book",
-   "frames": ""
   },
   "RSW_Hawkbat": {
    "tier": 0,
@@ -872,53 +842,6 @@
    "provenance": "donor-copy (cartoon)",
    "frames": "4"
   },
-  "RSW_PustuleHornet": {
-   "tier": 4,
-   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
-   "flipbook": "unannotated",
-   "sets": [],
-   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/PustuleHornet/PustuleHornet",
-   "static": {
-    "g1": 0.801,
-    "g2": 1.069,
-    "g4": 0.672
-   },
-   "static_fails": [],
-   "provenance": "generated/ours",
-   "frames": "1"
-  },
-  "RSW_PustuleHornetQueen": {
-   "tier": 4,
-   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
-   "flipbook": "unannotated",
-   "sets": [],
-   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/PustuleHornetQueen/PustuleHornetQueen",
-   "static": {
-    "g1": 0.791,
-    "g2": 1.012,
-    "g4": 0.945
-   },
-   "static_fails": [
-    "G4 body width 0.94 > 0.85"
-   ],
-   "provenance": "generated/ours",
-   "frames": "1"
-  },
-  "RSW_PustuleHornetSpawned": {
-   "tier": 4,
-   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
-   "flipbook": "unannotated",
-   "sets": [],
-   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/PustuleHornet/PustuleHornet",
-   "static": {
-    "g1": 0.801,
-    "g2": 1.069,
-    "g4": 0.672
-   },
-   "static_fails": [],
-   "provenance": "generated/ours",
-   "frames": "1"
-  },
   "RSW_Sacapillar": {
    "tier": 4,
    "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
@@ -999,23 +922,6 @@
    ],
    "provenance": "generated/ours",
    "frames": "4"
-  },
-  "RSW_SmogMoth": {
-   "tier": 4,
-   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
-   "flipbook": "unannotated",
-   "sets": [],
-   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SmogMoth/SmogMoth",
-   "static": {
-    "g1": 0.89,
-    "g2": 1.514,
-    "g4": 0.855
-   },
-   "static_fails": [
-    "G4 body width 0.85 > 0.85"
-   ],
-   "provenance": "generated/ours",
-   "frames": "1"
   },
   "RSW_Strill": {
    "tier": 2,
