@@ -1317,3 +1317,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:56:28Z","tsn":1793994988639723694}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_END_FIX_CELL_SHORT_OF_PORT A1 (L2), read-only proof","ts":"2026-11-06T19:57:08Z","tsn":1793995028792850305}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:58:19Z","tsn":1793995099578544682}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR A1 (L2), read-only proof","ts":"2026-11-06T20:01:23Z","tsn":1793995283691289297}
