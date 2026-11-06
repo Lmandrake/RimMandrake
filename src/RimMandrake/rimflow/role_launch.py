@@ -1261,6 +1261,9 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
     roles = decide_order([r for r in sch.get("roles") or [] if isinstance(r, dict)])
     def one(role):
         name = role.get("name", "?")
+        if role.get("chain_stages") is True:
+            chain_sweep(name, rst.setdefault(name, {}), dict(ROLE_DEFAULTS, **role), now, act,
+                        obs.get("stage_concepts") or stage_concepts)
         if isinstance(rst.get(name), dict):
             chain_pop(rst[name], now)
         req = (rst.get(name) or {}).get("run_now") if isinstance(rst.get(name), dict) else None
@@ -1956,16 +1959,30 @@ def chain_next(name, rs, cfg, run, now, act, status):
         return None
     if not isinstance(st, dict) or st.get("status") != "ready":
         return None
+    return chain_ask(name, rs, cfg, concept, st.get("stage"), now, act, run["unit"], run.get("item"),
+                     run.get("mode") or "run", "%s run %s closed" % (name, run["unit"]),
+                     "after run %s" % run["unit"])
+
+
+def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode, cause, after):
+    """Ask (or queue behind the taken slot) one run-now for `concept`, under the per-concept daily cap. -> the request
+    or None. Shared by the harvest's chain_next and the decide tick's chain_sweep."""
     day = day_of(now)
     counts = {k: v for k, v in (rs.get("chain_day") or {}).items() if k.startswith(day + " ")}
     key = "%s %s" % (day, concept)
     cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)
     if counts.get(key, 0) >= cap:
-        act(do="alarm", kind="role:%s:chain_cap" % name, ticket=run.get("item"), note=True, conductor_log=True,
+        said = [k for k in rs.get("chain_cap_said") or [] if str(k).startswith(day + " ")]
+        rs["chain_day"] = counts
+        if key in said:
+            rs["chain_cap_said"] = said
+            return None                           # said once today; the sweep re-meets it every tick
+        rs["chain_cap_said"] = said + [key]
+        act(do="alarm", kind="role:%s:chain_cap" % name, ticket=item, note=True, conductor_log=True,
             raise_first="%s chained %s %d times today: it is looping; look at its stage history." % (
                 name, os.path.basename(os.path.normpath(concept)), counts[key]),
-            why="%s run %s on %s: stage %s ready but NOT chained, %d chained runs today (chain_max_per_day %d)" % (
-                name, run["unit"], concept, st.get("stage"), counts[key], cap))
+            why="%s on %s: stage %s ready but NOT chained (%s), %d chained runs today (chain_max_per_day %d)" % (
+                name, concept, stage, cause, counts[key], cap))
         rs["chain_day"] = counts
         return None
     rs["chain_day"] = counts
@@ -1973,9 +1990,8 @@ def chain_next(name, rs, cfg, run, now, act, status):
     if isinstance(pending, dict) and pending.get("concept") == concept:
         return None                               # already asked for: the pending request runs this stage
     counts[key] = counts.get(key, 0) + 1
-    req = {"at": now, "by": "Dispatcher", "mode": run.get("mode") or "run", "concept": concept,
-           "chained_from": run["unit"],
-           "why": "chain: %s run %s closed, stage %s ready" % (name, run["unit"], st.get("stage"))}
+    req = {"at": now, "by": "Dispatcher", "mode": mode, "concept": concept, "chained_from": chained_from,
+           "why": "chain: %s, stage %s ready" % (cause, stage)}
     if isinstance(pending, dict):
         queue = [q for q in rs.get("run_now_queue") or [] if isinstance(q, dict) and q.get("concept") != concept]
         rs["run_now_queue"] = queue + [req]
@@ -1983,10 +1999,80 @@ def chain_next(name, rs, cfg, run, now, act, status):
     else:
         rs["run_now"] = req
         how = "run-now asked"
-    act(do="role_hold", role=name, ticket=run.get("item"), note=True,
-        why="%s: %s stage %s ready after run %s: next stage chained (%s)" % (
-            name, os.path.basename(os.path.normpath(concept)), st.get("stage"), run["unit"], how))
+    act(do="role_hold", role=name, ticket=item, note=True,
+        why="%s: %s stage %s ready %s: next stage chained (%s)" % (
+            name, os.path.basename(os.path.normpath(concept)), stage, after, how))
     return req
+
+
+# OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV (3rd recurrence): chain_next fires only when a run's close is harvested,
+# so a concept left ready any other way (closed before chain_stages existed, a hand close, a run the harvest never saw,
+# a waiting_owner he has answered) sat until queues.designer.stalled_min rang: GimmeSomeSlack and Pyrelands, 4 h+.
+# Each decide tick of a chain_stages role now sweeps every concept the stall alarm counts as pending (the same rule:
+# designer_stage's ready, or waiting_owner answered) and asks its run once it has waited CHAIN_SWEEP_GRACE_S, through
+# chain_ask's cap and slot. Skipped: an open run, a last result REJECTED (its alarm stands; no unwatched retry loop),
+# a concept already holding the slot or a queue place, and one a running run of this role works on.
+CHAIN_SWEEP_GRACE_S = 600    # a harvest chains at once; the sweep is for what no harvest will ever see
+
+
+def stage_concepts(repo=None):
+    """-> [(concept dir, stage.json, pending-since epoch or None)] over designer_stage.concepts_root(), pending as
+    ops_watch's queues.designer reader counts it: ready -> the later of its last history row and its open run's start;
+    waiting_owner -> his answer (designer_stage.owner_answered_at), None while he has not answered; else None. An
+    unreadable dir, stage.json or OWNER shard raises (the sweep alarms; never a calm nothing)."""
+    import glob
+    import designer_stage as DS
+    root = DS.concepts_root()
+    if not os.path.isdir(root):
+        raise OSError("concepts dir missing: %s" % root)
+    out = []
+    for f in sorted(glob.glob(os.path.join(root, "*", "stage.json"))):
+        d = os.path.dirname(f)
+        st = DS.load_state(d)
+        run_at = DS.epoch((st.get("running") or {}).get("at")) if isinstance(st.get("running"), dict) else None
+        since = None
+        if st.get("status") == "waiting_owner":
+            since = DS.owner_answered_at(st, d, repo or DS.REPO)
+        elif st.get("status") == "ready":
+            hs = [h for h in (st.get("history") or []) if isinstance(h, dict)]
+            ts = [t for t in ((DS.epoch(hs[-1].get("at")) if hs else None), run_at) if t is not None]
+            since = max(ts) if ts else None
+        out.append((d, st, since))
+    return out
+
+
+def chain_sweep(name, rs, cfg, now, act, concepts):
+    """Ask a run for every orphaned pending concept (see CHAIN_SWEEP_GRACE_S). -> the requests asked."""
+    if cfg.get("chain_stages") is not True:
+        return []
+    try:
+        rows = list(concepts())
+    except Exception as e:  # noqa: BLE001 - said once per outage; the harvest chain and a hand run-now still work
+        if not rs.get("sweep_blind"):
+            act(do="alarm", kind="role:%s:chain_sweep" % name, ticket=cfg.get("ledger_item"), note=True,
+                why="%s: orphaned ready concepts NOT swept, the concepts cannot be read: %s; alarmed once per outage"
+                % (name, str(e)[:200]))
+        rs["sweep_blind"] = str(e)[:200]
+        return []
+    rs.pop("sweep_blind", None)
+    grace = cfg.get("chain_sweep_grace_s", CHAIN_SWEEP_GRACE_S)
+    held = {q.get("concept") for q in [rs.get("run_now")] + list(rs.get("run_now_queue") or []) if isinstance(q, dict)}
+    held |= {r.get("concept") for r in rs.get("runs") or [] if isinstance(r, dict) and r.get("state") == "running"}
+    asked = []
+    for concept, st, since in rows:
+        if since is None or not isinstance(st, dict) or st.get("running") or concept in held or now - since < grace:
+            continue
+        res = [r for r in st.get("results") or [] if isinstance(r, dict)]
+        if res and res[-1].get("outcome") == "rejected":
+            continue
+        mins = int((now - since) // 60)
+        req = chain_ask(name, rs, cfg, concept, st.get("stage"), now, act, "orphan-sweep", cfg.get("ledger_item"),
+                        "run", "orphan sweep, %s %d min with nothing chained" % (st.get("status"), mins),
+                        "for %d min with no run chained (orphan sweep)" % mins)
+        if req:
+            held.add(concept)
+            asked.append(req)
+    return asked
 
 
 def chain_pop(rs, now):

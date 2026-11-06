@@ -132,8 +132,78 @@ def test_daily_cap():
           "the cap is per concept")
 
 
+def sweep_decide(rows, roles_state=None, cfg_over=None, now=None):
+    """One Dispatcher decide over a Designer-shaped role (disabled, chain_stages) whose concepts reader returns rows
+    (concept, stage.json, pending-since epoch or None). -> (state, acts, opened concepts)."""
+    st = SD.fresh()
+    st["roles"] = roles_state if roles_state is not None else {}
+    opened = []
+    ro = SD.lrobs(SD.ops_status(T), lambda: None)
+    ro["stage_open"] = lambda c, u, b: (opened.append(c), ("PACKET", b))[1]
+    ro["coverage_pre"] = lambda c: None
+    ro["stage_concepts"] = rows if callable(rows) else (lambda: rows)
+    role = SD.arbiter(enabled=False)
+    role.update(dict({"chain_stages": True, "stage_machine": "designer_stage"}, **(cfg_over or {})))
+    acts = SD.role_acts(SD.rdecide([role], st, ro, now if now is not None else T + 60))
+    return st, acts, opened
+
+
+def test_orphan_sweep():
+    """OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV, 3rd recurrence: GimmeSomeSlack and Pyrelands closed ready before
+    chain_stages existed, so no harvest ever chained them and the stall alarm rang for hours. The decide tick sweeps
+    every concept the stall alarm counts as pending (ready, or waiting_owner he has answered) and asks its run."""
+    old = T - 4 * 3600
+    st, acts, opened = sweep_decide([(C1, {"stage": 2, "status": "ready", "results": [{"outcome": "return"}]}, old)])
+    check(opened == [C1] and any(a["do"] == "role_launch" and "orphan" in a.get("why", "") for a in acts),
+          "a ready concept nobody chained (closed before the chain, 4 h ago) is launched by the next decide: %r %r"
+          % (opened, [(a["do"], a.get("why", "")[:80]) for a in acts]))
+    st, acts, opened = sweep_decide([(C2, {"stage": 3, "status": "waiting_owner"}, old)])
+    check(opened == [C2], "a waiting_owner concept he has answered (pending since his answer) is launched too")
+    for why, row in (("rejected last result", (C1, {"stage": 3, "status": "ready",
+                                                    "results": [{"outcome": "rejected"}]}, old)),
+                     ("still waiting on him", (C1, {"stage": 3, "status": "waiting_owner"}, None)),
+                     ("blocked", (C1, {"stage": 3, "status": "blocked"}, None)),
+                     ("running", (C1, {"stage": 3, "status": "ready", "running": {"run": "u"}}, old)),
+                     ("under the grace", (C1, {"stage": 3, "status": "ready"}, T - 60))):
+        st, acts, opened = sweep_decide([row])
+        check(opened == [] and not st["roles"].get("Arbiter", {}).get("run_now"), "%s: nothing swept" % why)
+    # a pending run-now on another concept keeps its slot; the orphan waits behind it, once, across ticks
+    hand = {"at": T - 30, "by": "BENCH", "why": "start ModTwo", "mode": "run", "concept": C2}
+    rows = [(C1, {"stage": 2, "status": "ready"}, old)]
+    rs = {"done": {}, "runs": [], "run_now": dict(hand)}
+    st, acts, opened = sweep_decide(rows, {"Arbiter": rs})
+    q = st["roles"]["Arbiter"].get("run_now_queue") or []
+    check(opened == [C2] and [x["concept"] for x in q] == [C1], "behind a pending run-now the orphan queues: %r" % q)
+    n = dict(st["roles"]["Arbiter"].get("chain_day") or {})
+    st["roles"]["Arbiter"]["run_now"] = dict(hand, concept="/tmp/concepts/ModThree")   # the slot is still taken
+    st, acts, opened = sweep_decide(rows, st["roles"], now=T + 120)
+    check(len(st["roles"]["Arbiter"].get("run_now_queue") or []) == 1
+          and dict(st["roles"]["Arbiter"].get("chain_day") or {}) == n,
+          "a queued orphan is not asked again on the next tick (no double count)")
+    # the cap holds: a concept chained chain_max_per_day times today is not swept
+    capped = {"done": {}, "runs": [], "chain_day": {"%s %s" % (RL.day_of(T + 60), C1): 2}}
+    st, acts, opened = sweep_decide(rows, {"Arbiter": capped}, {"chain_max_per_day": 2})
+    check(opened == [] and any(a.get("kind") == "role:Arbiter:chain_cap" for a in acts),
+          "past chain_max_per_day the sweep stops with the chain_cap alarm")
+    st, acts, opened = sweep_decide(rows, st["roles"], {"chain_max_per_day": 2}, now=T + 120)
+    check(opened == [] and not any(a.get("kind") == "role:Arbiter:chain_cap" for a in acts),
+          "the cap alarm is said once a day, not every tick")
+    # no chain_stages: no sweep; an unreadable concepts dir alarms and launches nothing
+    st, acts, opened = sweep_decide(rows, cfg_over={"chain_stages": False})
+    check(opened == [], "a row without chain_stages sweeps nothing")
+
+    def boom():
+        raise OSError("concepts dir missing")
+    st, acts, opened = sweep_decide(boom)
+    check(opened == [] and any(a.get("kind") == "role:Arbiter:chain_sweep" for a in acts),
+          "an unreadable concepts dir alarms (role:<name>:chain_sweep) and sweeps nothing")
+    st, acts, opened = sweep_decide(boom, st["roles"], now=T + 120)
+    check(not any(a.get("kind") == "role:Arbiter:chain_sweep" for a in acts), "the blind alarm is said once per outage")
+
+
 def main():
-    for t in (test_row, test_done_chains, test_no_chain_states, test_queue_behind_pending, test_daily_cap):
+    for t in (test_row, test_done_chains, test_no_chain_states, test_queue_behind_pending, test_daily_cap,
+              test_orphan_sweep):
         t()
     print("selftest_designer_chain: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
