@@ -1183,3 +1183,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK A2 (L2), read-only proof","ts":"2026-11-06T15:07:35Z","tsn":1793977655258962437}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:16:45Z","tsn":1793978205178990000}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR A1 (L2), read-only proof","ts":"2026-11-06T15:17:29Z","tsn":1793978249814672419}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:22:45Z","tsn":1793978565370548875}
