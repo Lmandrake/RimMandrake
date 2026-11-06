@@ -1,0 +1,4 @@
+# The probe forces the debug flag logRaidInfo (nothing in the game's outcome reads it) through the bridge door, owes a
+# planned debt for it exactly as a killed SettingsTransaction now leaves one, runs wrapup.restore (which also pays every
+# other setting the register owes), and reads the game back: exit 0 restored and paid, 1 not, 2 UNMEASURED.
+live-proof A1: python.exe src/RimMandrake/rimflow/wrapup.py restore --probe < /dev/null

@@ -1,0 +1,1 @@
+A1 L1: on the running game, wrapup.py restore --probe forces logRaidInfo, restore writes the pre-run value back through jawa/debug_settings, the game reads it back, and the probe's debt is off the register (exit 0)

@@ -42,6 +42,7 @@ line to <dir>/runs.jsonl, an error included: the wrap-up itself never fails sile
     wrapup.py owe --kind setting|scene --what TEXT [--undo TEXT] [--owner KEY]    -> prints the token
     wrapup.py paid TOKEN
     wrapup.py list | sweep | resolve KEY --why TEXT
+    wrapup.py restore [--probe]     (python.exe, bridge held) replay every owed setting's `plan`, then sweep
 
 State dir: RM_WRAPUP_DIR (default D:\\ClaudeWork\\rimmandrake\\wrapup). Names no host or account.
 """
@@ -188,6 +189,27 @@ def paid(token):
         except OSError:
             pass
     return hit
+
+
+def amend(token, extra):
+    """Update an open debt's fields (a SettingsTransaction's plan grows with every value it forces). -> True when found."""
+    for where in (_p("debts"), _p("debts", "filed")):
+        f = os.path.join(where, safe_key(token or "") + ".json")
+        d = _read_json(f) if token else None
+        if isinstance(d, dict):
+            d.update(extra or {})
+            try:
+                _write_json(f, d)
+                return True
+            except OSError as e:
+                sys.stderr.write("wrapup: could not amend debt %s: %s\n" % (token, e))
+    return False
+
+
+def _held(row):
+    """A filed debt row whose debt stays on the register (debts/filed/) until something pays it: the door's keyed
+    debts, and any debt with a restore plan (wrapup.restore replays it). The rest stand until resolved."""
+    return bool(row.get("token") and (row.get("keyed") or row.get("plan")))
 
 
 def debts_keyed(key):
@@ -357,7 +379,8 @@ def census(world, ctx):
     for d in debts_of(ctx["owner"]):
         rows.append({"kind": "debt", "what": "%s: %s" % (d.get("kind"), d.get("what")), "act": "filed",
                      "why": "still owed at the agent's end; undo: %s" % (d.get("undo") or "none recorded"),
-                     "token": d.get("token"), "keyed": bool(d.get("key")), "at": d.get("at")})
+                     "token": d.get("token"), "keyed": bool(d.get("key")), "plan": bool(d.get("plan")),
+                     "at": d.get("at")})
     for c in ctx["clones"]:
         rows.append(check_clone(world, c, ctx.get("carried", False)))
     if ctx["kind"] == "session" and ctx.get("seat"):
@@ -394,7 +417,7 @@ def run(world, ctx):
             _write_json(_p("open", safe_key("%s-%s" % (ctx["kind"], ctx["key"])) + ".json"),
                         dict(rec, ctx={k: v for k, v in ctx.items() if k != "clones"}))
             for r in filed:                     # a filed debt moves off the register: the open file now holds it
-                if r.get("token") and r.get("keyed"):
+                if _held(r):
                     # the bridge door's debt stays findable by key (debts/filed/), so a later write back to the
                     # original pays it and the row stops standing; a restore must never owe the reverse change
                     n = safe_key(r["token"]) + ".json"
@@ -442,7 +465,7 @@ def row_standing(world, row, rec):
             return any(i == row["what"] for i, _ in world.doing_claims(rec.get("seat"), 0, sess))
         except Exception:  # noqa: BLE001  unreadable: still standing (never clear on ignorance)
             return True
-    if k == "debt" and row.get("keyed"):        # a door debt: until a write puts the setting back (paid())
+    if k == "debt" and _held(row):             # a door or planned debt: until a write puts it back (paid(), restore)
         return os.path.exists(_p("debts", "filed", safe_key(row.get("token")) + ".json"))
     return True                                 # other debts, wrapup error: until someone resolves it
 
@@ -528,9 +551,118 @@ def _resolve(path, why):
     rec["resolved"] = {"at": _iso(_now()), "why": why}
     _write_json(_p("resolved", os.path.basename(path)), rec)
     for r in rec.get("rows") or []:             # a resolved door debt leaves debts/filed/: the door forgets the key
-        if r.get("keyed") and r.get("token"):
+        if _held(r):
             paid(r["token"])
     os.remove(path)
+
+
+# ---------------------------------------------------------------- restore: replay what is owed, at a bridge hold
+
+def _door():
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+    import wrapup_debt
+    return wrapup_debt
+
+
+def restore(call, world=None):
+    """WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF: put back every setting the register still owes to the RUNNING game, then
+    sweep. Run by Relentless with the bridge held (relentless_live.run, after the proof, before the release), so the
+    debts that outlived their owners (a killed proof, a script that calmed the site and never restored it) are paid by
+    construction instead of waiting for a relaunch or a hand. `call(tool, params) -> reply dict`.
+    Newest debt first: two transactions stacked on one field restore the oldest one's pre-run value last.
+    A void debt (owed to an exited game) is never replayed: sweep pays it. A debt with no plan is left, named.
+    -> {"restored": [token], "failed": [(token, why)], "left": [(token, why)], "void": n, "swept": [cleared, open]}"""
+    world = world or World()
+    D = _door()
+    out = {"restored": [], "failed": [], "left": [], "void": 0}
+    debts = []
+    for f in glob.glob(_p("debts", "*.json")) + glob.glob(_p("debts", "filed", "*.json")):
+        d = _read_json(f)
+        if isinstance(d, dict) and d.get("kind") == "setting" and d.get("token"):
+            debts.append(d)
+    # exact plans first, newest first; then the plans that CHECK a forced value is gone (a legacy debt kept no
+    # pre-value), so every exact write has run before a check is asked
+    debts.sort(key=lambda d: d["token"], reverse=True)
+    debts.sort(key=lambda d: any(st.get("not") for st in D.plan_of(d)))
+    D.RESTORING[0] += 1                         # the door pays what these writes put back and owes nothing
+    try:
+        for d in debts:
+            if void_debt(world, d.get("at")):
+                out["void"] += 1
+                continue
+            plan = D.plan_of(d)
+            if not plan:
+                out["left"].append((d["token"], "no restore plan: %s" % (d.get("undo") or "no undo")))
+                continue
+            why = None
+            for st in plan:
+                try:
+                    why = D.step_ok(st, call(st["tool"], dict(st.get("params") or {})))
+                except Exception as e:  # noqa: BLE001  one debt's failure never stops the rest
+                    why = "%s raised %s: %s" % (st.get("tool"), type(e).__name__, str(e)[:160])
+                if why:
+                    break
+            if why:
+                out["failed"].append((d["token"], why))
+            elif d.get("unplanned"):                # its values are back, but a cleanup no step undoes still owes
+                out["left"].append((d["token"], "replayed, but no step undoes %s" % ", ".join(d["unplanned"])))
+            else:
+                paid(d["token"])
+                out["restored"].append(d["token"])
+    finally:
+        D.RESTORING[0] -= 1
+    out["swept"] = list(sweep(world))
+    _append(_p("runs.jsonl"), {"at": _iso(_now()), "kind": "restore", "key": owner_key(),
+                               "restored": out["restored"], "failed": out["failed"], "left": out["left"],
+                               "void": out["void"], "swept": out["swept"]})
+    return out
+
+
+def _bridge_call():
+    """A call(tool, params) through the one Python door (rimbridge_client.RimBridge; python.exe on this host)."""
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+    import rimbridge_client as RC
+    host, port, token = RC.resolve_endpoint()
+    if not token:
+        raise RuntimeError("no bridge token found (env GABP_TOKEN or Player.log)")
+    rb = RC.RimBridge(host, port, token, timeout=60)
+    rb.connect()
+    return rb
+
+
+PROBE_FIELD = "logRaidInfo"     # a debug flag nothing in the game's outcome reads: a proof may flip it freely
+
+
+def probe(call, world=None):
+    """The live proof of restore: force PROBE_FIELD through the door, owe a planned debt for it (as a killed
+    SettingsTransaction would leave), run restore(), and read the game back. -> (exit, line): 0 restored and paid,
+    1 not, 2 unmeasured."""
+    try:
+        r = call("jawa/debug_settings", {"action": "list"})
+        was = dict((x["name"], x["value"]) for x in r["fields"]).get(PROBE_FIELD)
+    except Exception as e:  # noqa: BLE001
+        return 2, "UNMEASURED: debug_settings list failed: %s: %s" % (type(e).__name__, str(e)[:160])
+    if not isinstance(was, bool):
+        return 2, "UNMEASURED: %s is not a readable bool debug field (%r)" % (PROBE_FIELD, was)
+    D = _door()
+    tok = owe("setting", "restore probe forced debug %s=%s" % (PROBE_FIELD, not was),
+              "set it back (the probe)", extra={"plan": [D.step("jawa/debug_settings", action="set",
+                                                                 field=PROBE_FIELD, value=was)]})
+    if not tok:
+        return 2, "UNMEASURED: the register could not be written"
+    w = call("jawa/debug_settings", {"action": "set", "field": PROBE_FIELD, "value": not was})
+    if D.step_ok(D.step("jawa/debug_settings", field=PROBE_FIELD, value=not was), w):
+        paid(tok)
+        return 2, "UNMEASURED: the probe could not force %s: %s" % (PROBE_FIELD, str(w)[:160])
+    res = restore(call, world)
+    now = dict((x["name"], x["value"]) for x in call("jawa/debug_settings", {"action": "list"})["fields"]).get(
+        PROBE_FIELD)
+    left = os.path.exists(_p("debts", safe_key(tok) + ".json"))
+    if tok in res["restored"] and now == was and not left:
+        return 0, "restore wrote %s back to %s and paid its debt (%d restored, %d failed, %d left)" % (
+            PROBE_FIELD, was, len(res["restored"]), len(res["failed"]), len(res["left"]))
+    return 1, "restore did not put %s back: now %r, was %r, debt on register %s, failed %s" % (
+        PROBE_FIELD, now, was, left, res["failed"][:3])
 
 
 # ---------------------------------------------------------------- entry points
@@ -560,6 +692,8 @@ def main(argv=None):
     p.add_argument("token")
     sub.add_parser("list")
     sub.add_parser("sweep")
+    rs = sub.add_parser("restore", help="replay every owed setting's plan through the bridge (python.exe), then sweep")
+    rs.add_argument("--probe", action="store_true", help="the live proof: force a debug flag, owe it, restore it")
     r = sub.add_parser("resolve")
     r.add_argument("key")
     r.add_argument("--why", required=True)
@@ -581,6 +715,28 @@ def main(argv=None):
             for row in rows:
                 print("%s  %s  %s  %s" % (os.path.basename(f)[:-5], row["kind"], row["what"], row.get("why", "")))
         return 0
+    if a.cmd == "restore":
+        try:
+            rb = _bridge_call()
+        except Exception as e:  # noqa: BLE001
+            print("UNMEASURED: no bridge: %s: %s" % (type(e).__name__, str(e)[:200]))
+            return 2
+        try:
+            if a.probe:
+                code, line = probe(rb.call)
+                print(line)
+                return code
+            res = restore(rb.call)
+        finally:
+            try:
+                rb.close()
+            except Exception:  # noqa: BLE001
+                pass
+        print("wrapup restore: %d restored, %d failed, %d without a plan, %d void; sweep %d cleared, %d open" % (
+            len(res["restored"]), len(res["failed"]), len(res["left"]), res["void"], res["swept"][0], res["swept"][1]))
+        for tok, why in res["failed"]:
+            print("  failed %s: %s" % (tok, why))
+        return 1 if res["failed"] else 0
     if a.cmd == "sweep":
         c, left = sweep()
         print("wrapup sweep: %d cleared, %d still open" % (c, left))

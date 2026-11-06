@@ -9,7 +9,9 @@ AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED.
 Best effort for the caller: no register (an import or write failure) returns None and never stops a stage or a proof.
 Runs under python.exe too (wrapup.state_dir picks the Windows path).
 """
+import ast
 import os
+import re
 import sys
 
 _W = []
@@ -26,13 +28,24 @@ def _wrapup():
     return _W[0]
 
 
-def owe(kind, what, undo=None):
-    """kind: setting | scene | other. -> token for paid(), or None when there is no register."""
+def owe(kind, what, undo=None, extra=None):
+    """kind: setting | scene | other. `extra` adds fields (a restore `plan`). -> token for paid(), or None when there
+    is no register."""
     w = _wrapup()
     try:
-        return w.owe(kind, what, undo) if w else None
+        return w.owe(kind, what, undo, extra=extra) if w else None
     except Exception:  # noqa: BLE001
         return None
+
+
+def amend(token, extra):
+    """Update an owed debt's fields (a SettingsTransaction's plan grows with every value it forces). -> True when
+    found."""
+    w = _wrapup()
+    try:
+        return bool(w and token and w.amend(token, extra))
+    except Exception:  # noqa: BLE001
+        return False
 
 
 def paid(token):
@@ -58,6 +71,10 @@ def paid(token):
 # killed inside one files that row too, beside the door's exact per-field rows.
 
 SETTING_TOOLS = ("jawa/mod_settings_field", "jawa/debug_settings", "jawa/difficulty_tune")
+# >0 while wrapup.restore replays plans in this process: its writes still PAY what they put back, but never OWE the
+# reverse change (a legacy plan's difficulty write, with no keyed debt left open, would otherwise owe the forced value
+# back and the next restore would force it again)
+RESTORING = [0]
 
 
 def _norm(v):
@@ -114,11 +131,108 @@ def settings_write(tool, params, out):
                         w.paid(d.get("token"))
                     acts.append(("paid", key))
                 continue
-            if not same_value(before, after) and w:
+            if not same_value(before, after) and w and not RESTORING[0]:
                 tok = w.owe("setting", "%s=%s (was %s)" % (key, after, before), undo,
-                            extra={"key": key, "orig": before, "door": "rimbridge_client"})
+                            extra={"key": key, "orig": before, "door": "rimbridge_client",
+                                   "plan": key_plan(key, before)})
                 if tok:
                     acts.append(("owed", key))
     except Exception as e:  # noqa: BLE001  the register never breaks a bridge call
         sys.stderr.write("wrapup_debt: settings register skipped for %s: %s\n" % (tool, e))
     return acts
+
+
+# ---------------------------------------------------------------- the restore plan: an undo a machine can replay
+# WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF: an undo written as prose ("set it back to its pre-run value") waits for a
+# human; 11 rows stood on that. A setting debt carries `plan` = [{"tool", "params"}], the exact bridge writes that put
+# the game back, and wrapup.restore() replays it at Relentless's next bridge hold, checking each reply (step_ok).
+
+def step(tool, expect=None, **params):
+    """One bridge write of a plan. `expect` = {reply field: value} the reply must carry (a tool with no valueAfter)."""
+    st = {"tool": tool, "params": params}
+    if expect:
+        st["expect"] = expect
+    return st
+
+
+def check_not(field, forced):
+    """A read step: the debug field must no longer read the value a run forced (a legacy debt kept no pre-value)."""
+    return {"tool": "jawa/debug_settings", "params": {"action": "list"}, "not": {"field": field, "value": forced}}
+
+
+_LEGACY = re.compile(r"^SettingsTransaction forced debug (\w+)=(\S+)$")
+_LEGACY_DIFF = re.compile(r"difficulty was (\{[^}]*\})")
+
+
+def legacy_plan(debt):
+    """A SettingsTransaction debt owed before plans (its undo is prose): its pre-run difficulty is exact in the undo
+    text (repr of pre_difficulty), so that is written back; the debug field it names kept no pre-value, so the plan
+    only CHECKS it no longer reads the forced value (the door's keyed debt for it, replayed first, holds the exact
+    one). -> [] when the debt is not one."""
+    m = _LEGACY.match(str(debt.get("what") or ""))
+    if not m:
+        return []
+    plan = []
+    d = _LEGACY_DIFF.search(str(debt.get("undo") or ""))
+    try:
+        pre = ast.literal_eval(d.group(1)) if d else {}
+    except (ValueError, SyntaxError):
+        pre = {}
+    if isinstance(pre, dict) and pre:
+        plan.append(step("jawa/difficulty_tune", **pre))
+    forced = {"true": True, "false": False}.get(m.group(2).lower(), m.group(2))
+    plan.append(check_not(m.group(1), forced))
+    return plan
+
+
+def key_plan(key, orig):
+    """The door's key + the value it had -> the plan that writes it back ([] when there is nothing to write)."""
+    if orig is None or not key or ":" not in key:
+        return []
+    kind, name = key.split(":", 1)
+    if kind == "debug_settings":
+        return [step("jawa/debug_settings", action="set", field=name, value=orig)]
+    if kind == "difficulty_tune":
+        return [step("jawa/difficulty_tune", **{name: orig})]
+    if kind == "mod_settings_field" and "." in name:
+        t, f = name.rsplit(".", 1)          # the type name is dotted (its namespace); a field name never is
+        return [step("jawa/mod_settings_field", typeName=t, action="set", field=f, value=orig)]
+    return []
+
+
+def plan_of(debt):
+    """A debt's restore plan: its own, else (a door debt written before plans) derived from key + orig."""
+    plan = debt.get("plan")
+    if isinstance(plan, list) and plan:
+        return plan
+    if debt.get("key"):
+        return key_plan(debt.get("key"), debt.get("orig"))
+    return legacy_plan(debt)
+
+
+def step_ok(st, out):
+    """Did this answered write put the value back? -> None when it did, else why not."""
+    if not isinstance(out, dict) or out.get("success") is not True:
+        return "%s did not succeed: %s" % (st["tool"], str(out)[:160])
+    prm = st.get("params") or {}
+    if st.get("not"):                                   # a read: the forced value must be gone
+        f, v = st["not"].get("field"), st["not"].get("value")
+        vals = dict((x.get("name"), x.get("value")) for x in out.get("fields") or [] if isinstance(x, dict))
+        if f not in vals:
+            return "debug field %s not in the list" % f
+        return "debug %s still reads the forced %r" % (f, v) if same_value(vals[f], v) else None
+    if st.get("expect"):
+        bad = [k for k, v in st["expect"].items() if not same_value(out.get(k), v)]
+        return "%s read back %s, wanted %s" % (st["tool"], dict((k, out.get(k)) for k in bad),
+                                               dict((k, st["expect"][k]) for k in bad)) if bad else None
+    if st["tool"] == "jawa/difficulty_tune":
+        after = out.get("after")
+        if not isinstance(after, dict):
+            return "difficulty_tune gave no `after`"
+        bad = [k for k, v in prm.items() if not same_value(after.get(k), v)]
+        return "difficulty %s read back %s" % (bad, [after.get(k) for k in bad]) if bad else None
+    if "valueAfter" not in out:
+        return "%s gave no valueAfter" % st["tool"]
+    if not same_value(out.get("valueAfter"), prm.get("value")):
+        return "%s %s read back %r, wanted %r" % (st["tool"], prm.get("field"), out.get("valueAfter"), prm.get("value"))
+    return None

@@ -362,7 +362,10 @@ def t_proofs_file():
     ev = os.path.join(books, "ledger", "events")
     for shard in (os.listdir(ev) if os.path.isdir(ev) else []):
         with open(os.path.join(ev, shard), encoding="utf-8") as f:
-            ids.update(m.group(1) for m in re.finditer(r'"id": ?"([^"]+)"', f.read()))
+            text = f.read()
+        ids.update(m.group(1) for m in re.finditer(r'"id": ?"([^"]+)"', text))
+        # a spawned item (no items/<ID>.md yet) is named by its spawn event's `name`, never an `id`
+        ids.update(m.group(1) for m in re.finditer(r'"event": ?"spawn"[^\n]*?"name": ?"([^"]+)"', text))
     stems = {n.split(".")[0] for n in names}
     orphans = sorted(s for s in stems if not any(s == i or s.startswith(i + "_") for i in ids if s.startswith(i)))
     check("proofs: every real live_proofs file names a ledger item (no orphan strays)",

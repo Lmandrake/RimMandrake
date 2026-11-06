@@ -1493,6 +1493,21 @@ class Fx(object):
                 out["unhashed"] += 1
         return out
 
+    def wrapup_restore(self, timeout=None):
+        """WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF: replay every setting the wrap-up register still owes (a killed
+        proof's forced storyteller, threat scale, mod field) through the bridge this run holds, then sweep.
+        python.exe: the one interpreter here that reaches the bridge. -> (exit or None on timeout, last line)."""
+        script, timeout = os.path.join(HERE, "wrapup.py"), timeout or WRAPUP_RESTORE_S
+        try:
+            path = subprocess.run(["wslpath", "-w", script], capture_output=True, text=True, timeout=20).stdout.strip()
+            r = subprocess.run(["python.exe", path or script, "restore"], capture_output=True, text=True,
+                               timeout=timeout, stdin=subprocess.DEVNULL, cwd=self.books,
+                               env=dict(model.bridge_holder.process_env(),
+                                        PATH=windows_path(os.environ.get("PATH", ""))))
+        except subprocess.TimeoutExpired:
+            return None, "timed out after %ds" % timeout
+        return r.returncode, last_text(r.stdout or r.stderr)
+
     def run_proof(self, proof, log, timeout):
         """-> the proof's exit code, or None when it outran `timeout`. Output goes to `log`."""
         with open(log, "w", encoding="utf-8") as f:
@@ -1763,6 +1778,28 @@ def cost(root, row, marks, environ=None):
     return got
 
 
+WRAPUP_RESTORE_S = 180
+
+
+def last_text(text):
+    lines = [x for x in (text or "").strip().splitlines() if x.strip()]
+    return lines[-1][:300] if lines else ""
+
+
+def wrapup_restore(fx):
+    """The settings the wrap-up register still owes go back before the bridge is released
+    (WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF). Never a verdict: its outcome is recorded on the row and nothing else.
+    A fake fx without the hook records that it was not asked. -> {"exit", "line"}"""
+    hook = getattr(fx, "wrapup_restore", None)
+    if hook is None:
+        return {"exit": None, "line": "not asked: this fx has no wrapup_restore"}
+    try:
+        code, line = hook()
+    except Exception as e:  # noqa: BLE001  the restore never stops the release
+        code, line = None, "%s: %s" % (type(e).__name__, str(e)[:200])
+    return {"exit": code, "line": line}
+
+
 def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None, trees=(), env=None,
         companion=False, menu=False):
     """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED.
@@ -1948,6 +1985,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
             if "proof_exit" in row and not exited:
                 row.pop("proof_exit")   # a launch that raised gave no exit: the harness's (INFRA), never a FAIL verdict
         finally:
+            if (row.get("health") or {}).get("ok"):     # a game that answered: pay what the register owes it first
+                row["wrapup_restore"] = wrapup_restore(fx)
             try:
                 gave = fx.rimflow("bridge", "release", "--mine")
                 row["released"], gave_why = gave.returncode == 0, (gave.stderr or gave.stdout).strip()[-200:]

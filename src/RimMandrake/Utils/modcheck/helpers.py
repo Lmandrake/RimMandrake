@@ -118,12 +118,30 @@ class SettingsTransaction(object):
         self.cleanups = []
         self.debt = None
 
+    def plan(self):
+        """The bridge writes restore() would make, as data (WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF): a kill between a
+        change and restore() leaves the debt on the register, and wrapup.restore replays this at the next bridge hold.
+        Without it the debt's undo was prose and nothing could pay it once filed. A cleanup with no step is named in
+        the debt's `unplanned`, so the replay never pays what it could not undo."""
+        steps = [st for _, _, st in reversed(self.cleanups) if st]
+        steps += [wrapup_debt.step("jawa/debug_settings", action="set", field=f, value=self.pre_debug[f])
+                  for f in dict.fromkeys(self.touched_debug)]
+        if self.touched_difficulty:
+            steps.append(wrapup_debt.step("jawa/difficulty_tune", **dict(
+                (k, self.pre_difficulty[k]) for k in dict.fromkeys(self.touched_difficulty))))
+        return steps
+
     def _owe(self, what):
         # owed from the first change until restore() reads every value back: a kill between them leaves it filed
         if self.debt is None:
             self.debt = wrapup_debt.owe("setting", "SettingsTransaction forced %s" % what,
                                         "set it back to its pre-run value (debug_settings / difficulty_tune; "
                                         "difficulty was %r)" % (self.pre_difficulty,))
+
+    def _replan(self):
+        # after each change is recorded (touched_* / cleanups), so the plan covers it before the write is sent
+        wrapup_debt.amend(self.debt, {"plan": self.plan(),
+                                      "unplanned": [label for label, _, st in self.cleanups if not st]})
 
     def __enter__(self):
         self.pre_debug = read_settings(self.session)
@@ -137,6 +155,7 @@ class SettingsTransaction(object):
             raise HelperUnverified("debug field %r not present in debug_settings list" % field)
         self._owe("debug %s=%r" % (field, value))
         self.touched_debug.append(field)
+        self._replan()
         r = self.session.call("jawa/debug_settings", action="set", field=field, value=value)
         now = read_settings(self.session).get(field)
         if now != value:
@@ -149,19 +168,22 @@ class SettingsTransaction(object):
                 raise HelperUnverified("difficulty key %r not readable" % k)
         self._owe("difficulty %r" % (kw,))
         self.touched_difficulty.extend(kw)
+        self._replan()
         r = self.session.call("jawa/difficulty_tune", **kw)
         after = r.get("after") or {}
         for k, v in kw.items():
             if after.get(k) != v:
                 raise HelperUnverified("difficulty_tune %s: asked %r, read back %r" % (k, v, after.get(k)))
 
-    def on_restore(self, label, fn):
+    def on_restore(self, label, fn, step=None):
+        """`step` (wrapup_debt.step) is the same undo as a bridge write, for the replay after a kill."""
         self._owe(label)
-        self.cleanups.append((label, fn))
+        self.cleanups.append((label, fn, step))
+        self._replan()
 
     def restore(self):
         problems = []
-        for label, fn in reversed(self.cleanups):
+        for label, fn, _ in reversed(self.cleanups):
             try:
                 if fn() is False:
                     problems.append("%s not undone" % label)
@@ -323,7 +345,8 @@ def quiet_world(session, tx, wild_spawner=True, log_raids=True):
             ev["wildSpawner"] = "unavailable: %s" % err
         else:
             tx.on_restore("wild_spawner_block", lambda: bool((_try_call(session, "jawa/wild_spawner_block",
-                                                                        action="release")[0] or {}).get("blocked") is False))
+                                                                        action="release")[0] or {}).get("blocked") is False),
+                          step=wrapup_debt.step("jawa/wild_spawner_block", expect={"blocked": False}, action="release"))
             g, gerr = _try_call(session, "jawa/wild_spawner_block", action="get")
             ev["wildSpawner"] = ("blocked (read back)" if g and g.get("blocked") is True
                                  else "UNVERIFIED: asked to block, read back %r" % ((g or {}).get("blocked") if g else gerr))
