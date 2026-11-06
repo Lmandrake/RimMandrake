@@ -557,6 +557,14 @@ def t_harden(tmp):
     ex = with_clause(clause("c1", ["python3", "test_acceptance.py"]))
     h = [E.validate(ex, lambda *a: (1, "FAIL", False), ITEM_TEXT, read_file=lambda p, b=b: b)["exam_hash"] for b in (b"one", b"two")]
     ok(h[0] != h[1], "H5b changing a root-level test file moves exam_hash")
+    ok(E.named_files(["./run.sh", "--fast"]) == ["run.sh"] and E.named_files([".exam/t.sh", "x"]) == [".exam/t.sh"]
+       and E.named_files(["bash", "-c", ".exam/t.sh --go && echo ok"]) == [".exam/t.sh"],
+       "H5c argv[0] followed by arguments is still named (./run.sh --fast, .exam/t.sh x, bash -c '.exam/t.sh --go')")
+    ex = with_clause(clause("c1", ["./run.sh", "--fast"]))
+    seen = []
+    h = [E.validate(ex, lambda *a: (1, "FAIL", False), ITEM_TEXT, read_file=lambda p, b=b: (seen.append(p), b)[1])["exam_hash"]
+         for b in (b"one", b"two")]
+    ok(h[0] != h[1] and "run.sh" in seen, "H5d swapping the bytes of an argv[0] test file with arguments moves exam_hash")
     # H6 a failed kick stays re-owable: the next contract or start retries the unit; a good kick clears it
     store = R.Store(os.path.join(tmp, "h6"))
     roots, kicks = [store.root], []
