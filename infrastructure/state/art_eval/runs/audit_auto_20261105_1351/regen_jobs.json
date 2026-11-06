@@ -1,0 +1,24 @@
+[
+ {
+  "id": "arteval_RSW_PekoPeko__PekoPeko_m_ns_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_PekoPeko__PekoPeko_m_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same blue-and-gold colours and markings, same size on the canvas, seen from the view this job asks for. A creature sprite for RimWorld: the Peko-peko, a large colourful reptavian native to the swamps of Naboo, with scaly reptile skin, a strong heavy beak with a downward hook at the tip, and a dark charcoal crest sweeping back from the rear of the skull. Copy the reference's rendering exactly so this view and the east view read as one sprite set: flat cel-style colour shapes with sharply bounded edges, two or three flat tones per colour area, a few large crisp scale-pattern marks, and the same heavy, uniform dark outline around the whole silhouette and around the beak, wings, legs and feet. Hold the wings as the reference does: each wing hangs half-lowered and drooping from the shoulder, feather tips pointing down and slightly outward, drawn as bold outlined shapes. The front view (eyes toward the viewer) shows the head facing the camera, the beak closed or only slightly parted so the heavy hooked beak reads clearly, the dark crest framing the top and sides of the head, the pale blue and gold on the chest, the half-lowered wings at both sides of the body, and the legs and feet below. The rear view (seen from behind) shows the back, the half-lowered wings, the tail and the haunches, with the dark crest at the back of the skull and the eyes hidden. Exactly ONE creature, centred, the whole body visible with nothing cut off. Vanilla RimWorld sprite style with the reference's bold outline and flat cel shading. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261105_1351",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.5,
+  "module": "flyer"
+ }
+]

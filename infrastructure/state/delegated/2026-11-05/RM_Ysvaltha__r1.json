@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Ysvaltha",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [2.5, 2.5]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4b7b72e6b02ba57736844120b58491bc74895e59f1b065e8b7f4df13fb6d501d",
+  "east.png": "65fe4df4c2f60a22b48b90e6a9755f8de97030c82245d84c7ec6a31fa8f52e49",
+  "north.png": "426a87547e0316365d02474ef0d334aa51757af81f8efd8d8dc52e04cb1ae668",
+  "scale.png": "78751c6e154de9ff6af48dc69d1321bc019cd2b746d2e5c80f950f42a815a34f",
+  "facings.png": "382b062a8cbc5916eae90d070b95c77f4c0c86a93900a53a2a5e30e909a46110"
+ }
+}

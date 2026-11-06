@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_SparkleechGrub_s1r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SparkleechGrub",
+  "prompt": "A single sparkleech grub, a small realistic larva drawn in painterly vanilla RimWorld style with a clean dark outline, on a fully transparent background. The body is a plump, pale cream-grey segmented grub with 7 to 8 rounded body rings, lying low and flat against the ground on tiny stubby feet, tapering to a blunt tail at the rear. The front end of the body is a socket-shaped mouth: a round, ringed, hollow opening set in a thick rim of pale flesh, open and empty, the most prominent feature of the front view. The grub is the only object in the image, isolated, with clear transparent space all around its body. Front view: the grub is seen head-on, eyes absent, the ringed socket mouth facing the viewer at the center of the head end, body rings receding behind it. Side view: the grub in profile, long segmented body low to the ground, the socket mouth open at the leading end, the tapered tail at the other end. Rear view, seen from behind: the segmented back and tapered tail end of the grub fill the view, the head and mouth hidden on the far side of the body, and the back shows only rings and soft skin. Soft top lighting, muted pale palette, small creature, simple readable silhouette that stays clear at small size.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ALPHA_HALO, F_NORTH_FACE, DESC_MISS, ALPHA_HALO, F_NORTH_FACE, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261105_1351",
+  "drawsize": 0.32,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub"
+ }
+]
