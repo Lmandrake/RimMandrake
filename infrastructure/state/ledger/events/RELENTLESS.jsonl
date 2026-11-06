@@ -968,3 +968,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:17:43Z","tsn":1793956663967879672}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: BATCHREADS_BUILD_ROUND_TRIP_CUT A2 (L2), read-only proof","ts":"2026-11-06T09:17:56Z","tsn":1793956676017094227}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:18:06Z","tsn":1793956686899738916}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY A1 (L2), read-only proof","ts":"2026-11-06T09:26:13Z","tsn":1793957173850356246}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:26:23Z","tsn":1793957183533018585}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY A2 (L2), read-only proof","ts":"2026-11-06T09:26:34Z","tsn":1793957194133703491}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:28:48Z","tsn":1793957328235448562}
