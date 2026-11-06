@@ -164,7 +164,8 @@ def _log_session(started, calls, client):
 # stays as INDETERMINATE and every later mutating call - the retry included - raises IndeterminateError until
 # `python rimbridge_client.py --reconcile` records what actually happened (read the game with read-only calls
 # first). Before refusing, call() runs reconcile_auto(), which settles as "moot" only what cannot matter (the game
-# process is gone; a dead writer's repeat-safe tool). If the intent row cannot be written, the mutation is refused; a
+# process is gone; a dead writer's repeat-safe tool), then reconcile_read(), which asks the bridge's operation journal
+# about a dead writer's call on the game still up. If the intent row cannot be written, the mutation is refused; a
 # read only warns.
 # Default on Windows only: the bridge is reachable only from python.exe (WSL2 is NAT-mode, so a WSL call dies at
 # connect, before any tools/call), and a WSL selftest faking a lost reply must never leave a REAL marker behind.
@@ -532,6 +533,128 @@ def reconcile_auto(starts=None):
         print("[rimbridge_client] auto-reconciled %s %s as moot: %s" % (rec.get("cid"), rec.get("tool"), why),
               file=sys.stderr)
         settled.append(dict(rec, moot=why))
+    return settled, left
+
+
+# BRIDGE_RECONCILE_WIRE_CLOSED_NOT_CURED: reconcile_auto() reads no game, so a dead writer's non-repeat-safe call on the
+# game still up stayed UNKNOWN until the next game restart: 9 of 40 Relentless live runs died so on 2026-11-06 (b14b956722714bdc
+# rimworld/step_game_ticks, glow_tank_live.py, refused every proof from 12:27Z until a restart settled it at 13:12Z).
+# reconcile_read() asks the game: rimbridge/list_operations is the bridge's own journal of what it ran (Immediate, so it
+# answers while the main thread is busy; per game process; newest first; 1000 operations). Only a marker whose writer is
+# dead is read for: nobody is left to retry it, the later caller is a new proof that reads the state it finds. A live
+# writer may still retry, so it refuses, and so does anything the read cannot prove:
+#   an operation begun since the call is still running -> refuse: it may yet apply
+#   the call's operation ended                          -> record what the bridge says (journal_verdict)
+#   nothing begun since the call runs, and no row for it -> "moot": it never arrived, or ended long before the ring rolled
+#   no answer, or a reply this code cannot parse         -> refuse (--journal-probe proves the parser on the live bridge)
+JOURNAL_TOOL = "rimbridge/list_operations"
+JOURNAL_LIMIT = 1000                           # the journal's own size: a smaller read could miss a running operation
+JOURNAL_READ_TIMEOUT_S = 10.0
+JOURNAL_SKIP = ("rimbridge.core/diagnostics/",)    # journal reads and status pings, this one among them, run all the time
+OP_LIVE = ("Pending", "Running")
+OP_ENDED = ("Completed", "Failed", "TimedOut", "Cancelled")
+_ISO_EXACT = re.compile(r"^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)(\.\d+)?(Z|[+-]\d\d:\d\d)$")
+
+
+def _iso_exact(t):
+    """Epoch seconds of a DateTimeOffset as the bridge writes it, None when it is anything else."""
+    m = _ISO_EXACT.match(t) if isinstance(t, str) else None
+    base = _iso_epoch(m.group(1) + "Z") if m else None
+    if base is None:
+        return None
+    zone = m.group(3)
+    off = 0 if zone == "Z" else (1 if zone[0] == "+" else -1) * (int(zone[1:3]) * 3600 + int(zone[4:6]) * 60)
+    return base + float(m.group(2) or 0) - off
+
+
+def _journal_op(row):
+    """One journal row, or None when it is not the shape this code reads."""
+    if not isinstance(row, dict):
+        return None
+    status, started = row.get("Status"), _iso_exact(row.get("StartedAtUtc"))
+    capability = row.get("CapabilityId")
+    if status not in OP_LIVE + OP_ENDED or started is None or not isinstance(capability, str) or not capability:
+        return None
+    return {"id": row.get("OperationId"), "capability": capability, "status": status,
+            "success": row.get("Success") is True, "started": started}
+
+
+def journal_read(client):
+    """The bridge's operation journal as parsed rows, newest first. Read-only. ValueError when the reply is not readable
+    (one unreadable row spoils it: a row skipped here could be the one still running)."""
+    full = client.timeout
+    client._set_call_timeout(min(full, JOURNAL_READ_TIMEOUT_S))
+    try:
+        out = client.call(JOURNAL_TOOL, {"limit": JOURNAL_LIMIT, "includeResults": False}, check=False)
+    finally:
+        client._set_call_timeout(full)
+    d = _reply_dict(out)[0]
+    rows = d.get("operations") if isinstance(d, dict) else None
+    if not isinstance(rows, list):
+        raise ValueError("%s reply has no operations list: %s" % (JOURNAL_TOOL, str(out)[:200]))
+    ops = [_journal_op(r) for r in rows]
+    if None in ops:
+        raise ValueError("%s row not readable: %s" % (JOURNAL_TOOL, str(rows[ops.index(None)])[:200]))
+    return ops
+
+
+def journal_verdict(op):
+    """What an ended operation's row says about the call: its reconcile verdict."""
+    if op["status"] == "Completed":
+        return "applied" if op["success"] else "not-applied"
+    # TimedOut: the bridge stopped waiting, not the work; Failed and Cancelled may have stopped partway
+    return "partial"
+
+
+def _journal_settle(rec, ops):
+    """(verdict, note) for one marker against the journal, or (None, why it still refuses)."""
+    if rec.get("cid") in _ACTIVE or rec.get("cid") in _UNRESOLVED or rec.get("status") == "UNREADABLE marker":
+        return None, "this process holds it or its marker is unreadable"
+    if rec.get("os") not in (None, os.name) or _pid_alive(rec.get("pid") or 0, rec.get("pid_start")):
+        return None, "its writer (pid %s, %s) is alive or on another OS and could still retry it" % (
+            rec.get("pid"), rec.get("script"))
+    t = _iso_epoch(rec.get("t"))
+    if t is None:
+        return None, "its marker has no readable time"
+    since = [o for o in ops if o["started"] >= t - GAME_START_SLACK_S and not o["capability"].startswith(JOURNAL_SKIP)]
+    running = [o for o in since if o["status"] in OP_LIVE]
+    if running:
+        return None, "the game is still running %s (%s), begun since the call" % (running[0]["capability"], running[0]["status"])
+    leaf = "/" + str(rec.get("tool")).rsplit("/", 1)[-1].replace("_", "-")
+    mine = [o for o in since if o["capability"].endswith(leaf)]
+    if mine:
+        op = min(mine, key=lambda o: o["started"])       # later mutations were refused, so the first one since is this call
+        return journal_verdict(op), "journal read (%s %s): operation %s %s %s, success=%s, writer pid %s (%s) gone" % (
+            rec.get("tool"), rec.get("t"), op["id"], op["capability"], op["status"], op["success"], rec.get("pid"), rec.get("script"))
+    return "moot", "journal read (%s %s): no operation of it among %d rows and none running since the call, writer pid %s (%s) gone" % (
+        rec.get("tool"), rec.get("t"), len(ops), rec.get("pid"), rec.get("script"))
+
+
+def reconcile_read(client):
+    """Settle every outstanding marker the game's own journal can answer for; return (settled, left), each marker in
+    left carrying `left_why`. Reads the game, writes nothing to it. Fails closed: no answer settles nothing."""
+    pend = outstanding_indeterminate()
+    if not pend:
+        return [], []
+    try:
+        ops = journal_read(client)
+    except Exception as ex:  # noqa: BLE001 - any failure of this read must end in the refusal it could have lifted, never a new crash
+        why = "the bridge journal could not be read (%s: %s)" % (type(ex).__name__, str(ex)[:160])
+        print("[rimbridge_client] reconcile: %s" % why, file=sys.stderr)
+        return [], [dict(r, left_why=why) for r in pend]
+    settled, left = [], []
+    for rec in pend:
+        verdict, note = _journal_settle(rec, ops)
+        if verdict is None:
+            left.append(dict(rec, left_why=note))
+            continue
+        try:
+            reconcile_resolve(rec["cid"], verdict, note)
+        except OSError as ex:
+            left.append(dict(rec, left_why="the verdict could not be recorded (%s)" % ex))
+            continue
+        print("[rimbridge_client] reconciled %s %s as %s: %s" % (rec.get("cid"), rec.get("tool"), verdict, note), file=sys.stderr)
+        settled.append(dict(rec, verdict=verdict, note=note))
     return settled, left
 
 
@@ -1131,11 +1254,14 @@ class RimBridge:
             if pending:
                 pending = reconcile_auto()[1]
             if pending:
+                pending = reconcile_read(self)[1]
+            if pending:
                 raise IndeterminateError(
                     "refusing %s: %d earlier mutating call(s) have an UNKNOWN outcome (%s). A retry could apply it "
                     "twice. Read the game with read-only calls, then record the answer:\n  python "
                     "rimbridge_client.py --reconcile [--resolve CID --as applied|not-applied|partial --note \"...\"]"
-                    % (tool, len(pending), ", ".join("%s %s" % (p.get("cid"), p.get("tool")) for p in pending[:3])))
+                    % (tool, len(pending), ", ".join("%s %s: %s" % (p.get("cid"), p.get("tool"), p.get("left_why"))
+                                                     for p in pending[:3])))
         cid = uuid.uuid4().hex[:16]
         start = {"ev": "start", "cid": cid, "run": _RUN_ID, "t": _ev_now(), "tool": tool,
                  "args_sha256": _args_sha(params), "mutating": mutating, "pid": os.getpid(), "os": os.name,
@@ -1269,6 +1395,40 @@ class RimBridge:
 # CLI
 # --------------------------------------------------------------------------
 
+def _journal_probe(args):
+    """Can reconcile_read see the running bridge? Read-only. 0: rows parsed; 1: the reply is not what it parses, so every
+    poisoned call would silently stay refused; 2: UNMEASURED, nothing answered."""
+    try:
+        host, port, token = resolve_endpoint(args.host, args.port, args.token, args.log_path)
+        if not token:
+            print("UNMEASURED: no bridge token found (no game up?)")
+            return 2
+        rb = RimBridge(host, port, token, timeout=args.timeout)
+        rb.connect()
+    except (RimBridgeError, OSError) as ex:
+        print("UNMEASURED: bridge not reachable: %s" % str(ex).replace("\n", " ")[:200])
+        return 2
+    try:
+        ops = journal_read(rb)
+    except ValueError as ex:
+        print("journal reply not readable: %s" % str(ex).replace("\n", " ")[:300])
+        return 1
+    except (RimBridgeError, OSError) as ex:
+        print("UNMEASURED: journal read got no answer: %s" % str(ex).replace("\n", " ")[:200])
+        return 2
+    finally:
+        rb.close()
+    if not ops:     # this very read goes in the journal, so an empty list cannot be the truth
+        print("journal reply parsed to 0 rows, and this read itself should be one")
+        return 1
+    own = [o for o in ops if o["capability"].endswith("/list-operations") and not o["capability"].startswith(JOURNAL_SKIP)]
+    if own:         # the read would count itself as "still running" and refuse every time
+        print("this read's own row is not skipped: %s" % own[0]["capability"])
+        return 1
+    print("journal readable: %d rows, newest %s %s" % (len(ops), ops[0]["capability"], ops[0]["status"]))
+    return 0
+
+
 def _main(argv=None):
     ap = argparse.ArgumentParser(
         description="Query a live RimWorld through the RimBridgeServer GABP bridge.")
@@ -1286,6 +1446,8 @@ def _main(argv=None):
                     help="required to call a tool that fails the read-only heuristic")
     ap.add_argument("--read-only-static", action="store_true",
                     help="declare a jawa/static_call a read; accepted only for READ_ONLY_STATIC_CALLS")
+    ap.add_argument("--journal-probe", action="store_true",
+                    help="read-only: does the running bridge's operation journal parse as the reconcile reads it")
     ap.add_argument("--reconcile", action="store_true",
                     help="list mutating calls with an UNKNOWN outcome (touches no game); with --resolve, record one")
     ap.add_argument("--auto", action="store_true",
@@ -1295,6 +1457,9 @@ def _main(argv=None):
     ap.add_argument("--as", dest="verdict", choices=("applied", "not-applied", "partial", "moot"))
     ap.add_argument("--note", default="")
     args = ap.parse_args(argv)
+
+    if args.journal_probe:
+        return _journal_probe(args)
 
     if args.reconcile:
         if args.resolve:
@@ -1307,6 +1472,14 @@ def _main(argv=None):
         if args.auto:
             for p in reconcile_auto()[0]:
                 print("  settled %s  %s  moot: %s" % (p.get("cid"), p.get("tool"), p.get("moot")))
+            if outstanding_indeterminate():
+                try:
+                    host, port, token = resolve_endpoint(args.host, args.port, args.token, args.log_path)
+                    with RimBridge(host, port, token, timeout=args.timeout) as rb:
+                        for p in reconcile_read(rb)[0]:
+                            print("  settled %s  %s  %s: %s" % (p.get("cid"), p.get("tool"), p.get("verdict"), p.get("note")))
+                except (RimBridgeError, OSError) as ex:
+                    print("  the bridge journal was not read: %s" % ex)
         pend = outstanding_indeterminate()
         print("evidence log %s; %d mutating call(s) with UNKNOWN outcome" % (EVIDENCE_LOG, len(pend)))
         for p in pend:
