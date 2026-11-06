@@ -1,0 +1,3 @@
+A1 L2: on a paused quicktest map, cond_eval reads equal glow_at, get_terrain_layers, flowworks_excavation_rect and pawn_get on the same cells and pawns, all ok
+A2 L2: cond_eval refuses by name: a defName that does not exist (bind), an off-map cell (cell_oob), an unknown pawn (bind), a field path with a call
+A3 L2: on a list without FlowWorks, fw.fill, fw.depth and fw.source read status unbound naming FlowWorks, the tree is UNKNOWN, and cell.glow reads ok

@@ -1,0 +1,9 @@
+# Bridge conditions T2 (design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 T2). A paused quicktest map, all five DLC. Read-only except A1, which digs and fills ONE FlowWorks cell (excavation_drive) when the map has none.
+# The companion (RimWorld\BridgeTools\JawaBench) must be built at or after this item (it adds jawa/cond_eval): python3 src/RimMandrake/bridgetools/build.py --gm --apply with the game closed. An older companion reads UNMEASURED (cond_eval absent), never a false pass.
+# A1/A2 need FlowWorks on the list; A3 needs a list WITHOUT FlowWorks (tier bridge), and reads UNMEASURED if FlowWorks is loaded.
+live-tier A1: flowworks
+live-tier A2: flowworks
+live-tier A3: bridge
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_cond_probes.py --clause A1 < /dev/null
+live-proof A2: python.exe src/RimMandrake/bridgetools/prove_cond_probes.py --clause A2 < /dev/null
+live-proof A3: python.exe src/RimMandrake/bridgetools/prove_cond_probes.py --clause A3 < /dev/null

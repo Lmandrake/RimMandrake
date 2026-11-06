@@ -35,9 +35,11 @@ namespace JawaBench.BridgeTools
     {
         int CurrentMap();
         bool MapSize(int mapId, out int x, out int z);
-        /// <summary>null when the probe binds, else the reason it cannot (a defName that does not resolve...).</summary>
-        string Refuse(string key);
-        CondRead Read(string key);
+        /// <summary>null when the probe binds, else the reason it cannot (a defName that does not resolve...).
+        /// The key is the probe's identity; p carries its parsed args and pinned MapId (the key holds no map).</summary>
+        string Refuse(string key, JawaBenchCondCore.Probe p);
+        /// <summary>One reading. x, z is the cell for a spatial probe (each cell of a rect in turn), else -1, -1.</summary>
+        CondRead Read(string key, JawaBenchCondCore.Probe p, int x, int z);
     }
 
     internal sealed class CondRefused : Exception
@@ -859,7 +861,7 @@ namespace JawaBench.BridgeTools
                 if (p.Cell != null) key.Append(" cell=").Append(KeyVal(p.Cell));
                 if (p.Rect != null) key.Append(" rect=").Append(KeyVal(p.Rect));
                 p.Key = key.ToString();
-                string why = _src.Refuse(p.Key);
+                string why = _src.Refuse(p.Key, p);
                 if (!string.IsNullOrEmpty(why)) throw Refuse("bind", at, why);
                 return p;
             }
@@ -915,10 +917,10 @@ namespace JawaBench.BridgeTools
 
             public Evaluator(IProbeSource src) { _src = src; }
 
-            CondRead Raw(string key, string ptype)
+            CondRead Raw(string key, Probe p, int x, int z, string ptype)
             {
                 Reads++;
-                CondRead g = _src.Read(key);
+                CondRead g = _src.Read(key, p, x, z);
                 if (!In(Statuses, g.Status)) return new CondRead(null, "error", "bad status " + (g.Status ?? "None"));
                 if (g.Status != "ok") return new CondRead(null, g.Status, g.Detail);
                 string t = JType(g.V);
@@ -933,7 +935,7 @@ namespace JawaBench.BridgeTools
             public void ArmRings(List<Probe> probes)
             {
                 foreach (var p in probes)
-                    if (p.Name == "ring.count" && !_ringBase.ContainsKey(p.Key)) _ringBase[p.Key] = Raw(p.Key, "num");
+                    if (p.Name == "ring.count" && !_ringBase.ContainsKey(p.Key)) _ringBase[p.Key] = Raw(p.Key, p, -1, -1, "num");
             }
 
             public CondRead ReadProbe(Probe p)
@@ -947,7 +949,7 @@ namespace JawaBench.BridgeTools
                     for (int z = z0; z < z0 + h; z++)
                         for (int x = x0; x < x0 + w; x++)
                         {
-                            var r = Raw(p.CellKey(x, z), p.PType);
+                            var r = Raw(p.CellKey(x, z), p, x, z, p.PType);
                             if (r.Status != "ok" && !bad) { bad = true; first = r; }
                             vals.Add(r.V);
                         }
@@ -964,7 +966,7 @@ namespace JawaBench.BridgeTools
                     if (p.Reduce == "all") return new CondRead(hits == vals.Count, "ok", "");
                     return new CondRead((double)hits, "ok", "");
                 }
-                var rr = Raw(p.Key, p.VType());
+                var rr = Raw(p.Key, p, p.Cell != null ? p.Cell[0] : -1, p.Cell != null ? p.Cell[1] : -1, p.VType());
                 if (p.Name == "ring.count" && rr.Status == "ok")
                 {
                     CondRead b;
@@ -1514,7 +1516,7 @@ namespace JawaBench.BridgeTools
                 x = _sx; z = _sz;
                 return _sized && mapId == _curMap;
             }
-            public string Refuse(string key) { object v; return _refusals.TryGetValue(key, out v) ? v as string : null; }
+            public string Refuse(string key, Probe p) { object v; return _refusals.TryGetValue(key, out v) ? v as string : null; }
 
             public void Goto(int i)
             {
@@ -1528,7 +1530,7 @@ namespace JawaBench.BridgeTools
                 }
             }
 
-            public CondRead Read(string key)
+            public CondRead Read(string key, Probe p, int x, int z)
             {
                 object v;
                 if (!_state.TryGetValue(key, out v) || v == null) return new CondRead(null, "error", "no series value for " + key);
