@@ -43,8 +43,10 @@ TYPE_NOT_FOUND = re.compile(r"Type not found: (?P<type>[\w.+`]+)")
 # env_verify_check.py: no fresh `modcheck run <Mod>` verdict in infrastructure/state/modcheck_status.json
 NO_VERDICT = re.compile(r"UNMEASURED (?P<mod>\w+): (?:no modcheck_status entry|entry hash \S+ is not the mod's current|"
                         r"entry \(ts [^)]*\) does not postdate)")
-# rimbridge_client.call's refusal (and live_site's `NOT READY: IndeterminateError: ...` line carrying it)
-STRANDED = re.compile(r"IndeterminateError|mutating call\(s\) have an UNKNOWN outcome")
+# rimbridge_client.call's refusal (and live_site's `NOT READY: IndeterminateError: ...` line carrying it). A row's
+# `why` is often only the refusal's LAST line, cut short (`site not prepared: python rimbridge_client.py --reconcile
+# [--resolve C...`), so its `--reconcile` instruction counts too (HARNESS_ROWS_FIX_PATTERN_MISSES_CUT_TAILS).
+STRANDED = re.compile(r"IndeterminateError|mutating call\(s\) have an UNKNOWN outcome|rimbridge_client\.py --reconcile")
 PROOF_CALL = ("the proof's own call is broken", "the proof crashed")
 HARNESS = ("harness fault", "site not prepared", "the proof timed out", "bridge call failed",
            "the running load's mod list could not be read")

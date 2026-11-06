@@ -257,6 +257,21 @@ def t_stranded_marker_restarts_once_then_routed():
     x.done()
 
 
+def t_stranded_cut_tail():
+    """HARNESS_ROWS_FIX_PATTERN_MISSES_CUT_TAILS: a real row carries only the refusal's last line, truncated; it is the
+    same lane-fixable restart through classify() and dud(), and other harness causes stay routed."""
+    tails = ["site not prepared: python rimbridge_client.py --reconcile [--resolve CID --as applied|not-applied|partial",
+             "site not prepared: python rimbridge_client.py --reconcile [--resolve C", WHYS["restart"]]
+    for why in tails:
+        for fn in (E.classify, E.dud):
+            e = fn(row(why))
+            ok(e is not None and e.kind == "restart" and e.fix, "%s(%r) is a restart: %s" % (fn.__name__, why[:60], e))
+    for why in ("site not prepared: timed out", "site not prepared: exit 2", "harness fault: the driver crashed",
+                "the proof timed out"):
+        e = E.classify(row(why))
+        ok(e is not None and e.kind in E.ROUTE_KINDS and not e.fix, "%r stays routed: %s" % (why, e))
+
+
 def t_unclassified_keeps_its_road():
     x = in_prove()
     ok(not G._env(x.s, x.w, x.r, "I0", {"A2": row("changed since the built commit, so the game cannot run sha1: a (b)",
@@ -271,7 +286,7 @@ def main():
     ran = 0
     for t in (t_classify, t_producer_fixed_once_then_routed, t_reload_rides_the_lanes_restage, t_route_kinds_routed_at_once,
               t_same_cause_after_unhold, t_type_not_found_classified, t_type_not_found_fixed_once_then_held,
-              t_stranded_marker_restarts_once_then_routed, t_unclassified_keeps_its_road):
+              t_stranded_marker_restarts_once_then_routed, t_stranded_cut_tail, t_unclassified_keeps_its_road):
         if picked and t.__name__ not in picked:
             continue
         ran += 1
