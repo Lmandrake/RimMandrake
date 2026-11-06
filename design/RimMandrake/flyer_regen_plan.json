@@ -648,9 +648,9 @@
    "frames": "1"
   },
   "RSW_Bogwing": {
-   "tier": 1,
-   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
-   "flipbook": "unannotated",
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
    "sets": [
     "Bogwing"
    ],
