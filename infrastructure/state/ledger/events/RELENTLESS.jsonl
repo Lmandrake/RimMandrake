@@ -834,3 +834,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:03:38Z","tsn":1793927018505329614}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: COLDSTART_PROVE_NTDLL_CRASH_NO_FOLDER A1 (L1), read-only proof","ts":"2026-11-06T01:03:45Z","tsn":1793927025476390908}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:03:52Z","tsn":1793927032970470652}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SL4_FIX_CARRY_NEVER_STAGED A1 (L2), read-only proof","ts":"2026-11-06T01:25:14Z","tsn":1793928314308130249}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:27:36Z","tsn":1793928456436782233}
