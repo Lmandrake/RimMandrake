@@ -1333,3 +1333,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:56:39Z","tsn":1793998599256933750}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_NORTHSTAR_GREEN_FULL_1 F2 (GREEN-FULL), read-only proof","ts":"2026-11-06T20:56:57Z","tsn":1793998617731437174}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:57:49Z","tsn":1793998669597169374}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SEABED_DESCENT_ASCENT_1 A2 (L2), read-only proof","ts":"2026-11-06T21:00:12Z","tsn":1793998812227696172}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:00:24Z","tsn":1793998824907879066}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SEABED_DESCENT_ASCENT_1 A3 (L2), read-only proof","ts":"2026-11-06T21:00:38Z","tsn":1793998838951404145}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:00:54Z","tsn":1793998854136163966}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A3 (L2), read-only proof","ts":"2026-11-06T21:01:08Z","tsn":1793998868273634790}
