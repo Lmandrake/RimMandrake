@@ -4907,3 +4907,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"kept","detail":"sweep: running again","ts":"2026-11-06T13:18:10Z","tsn":1793971090080539572}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"kept","detail":"sweep: running again","ts":"2026-11-06T13:18:14Z","tsn":1793971094167200379}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","result":"kept","detail":"sweep: running again","ts":"2026-11-06T13:18:18Z","tsn":1793971098209170421}
+{"seat":"RUNNER","event":"verify","id":"STEVE_LANE_UNSTICK_BRAKED_UNOWNED_5CB3","result":"partial","config":"steve-targeted","evidence":"stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/Graffiti_20261106T131604Z.html (testq J20261106T124537Z-ff306a.a2)","sha":"b7d7dd55b04fc60e56a9a30fad28428c329239f3","ts":"2026-11-06T13:19:40Z","tsn":1793971180763210781}
