@@ -109,13 +109,34 @@ class Probe:
         return row
 
 
+HUD_WAIT_S = 25   # jawa/clear_ui's own lease is 20 s of realtime by default
+
+
+def clear_ui(p, **kw):
+    """jawa/clear_ui with the HUD left ON. clear_ui defaults hideHud=true (vanilla screenshot mode under a 20 s
+    lease), and screenshot mode stops RimWorld drawing the gizmo grid, the inspect tabs and every tooltip: the
+    2026-11-06 A1 run read an Inspect surface with 0 elements and no GizmoGridDrawer
+    (GAMEENV_FIX_PROOFSITE_E94045E9_ITEMS_WAIT).
+    hideHud=false never switches off a lease someone else took, so wait it out; still hidden -> no verdict."""
+    kw["hideHud"] = False
+    r = p.call("jawa/clear_ui", kw)
+    end = time.time() + HUD_WAIT_S
+    while r.get("hudHidden") and time.time() < end:
+        time.sleep(1.0)
+        r = p.call("jawa/clear_ui", {"devWindows": False, "clearSelection": False, "hideHud": False})
+    if r.get("hudHidden"):
+        raise NoVerdict("HUD still hidden (screenshot mode) after %d s: no gizmo, tab or tooltip is drawn: %s"
+                        % (HUD_WAIT_S, str(r)[:200]))
+    return r
+
+
 def ensure_map(p):
     mi = p.call("jawa/map_info")
     sx, sz = int(mi.get("sizeX") or 0), int(mi.get("sizeZ") or mi.get("sizeY") or 0)
     if sx <= 20 or sz <= 20:
         raise NoVerdict("no Playing map: %s" % str(mi)[:200])
     p.call("rimworld/pause_game", {"pause": True})
-    p.call("jawa/clear_ui", {"all": True, "devWindows": True})
+    clear_ui(p, all=True, devWindows=True)
     return sx, sz
 
 
@@ -186,13 +207,13 @@ def clause_bill(p, sx, sz):
 
 def clause_mapthing(p, sx, sz):
     _, cx, cz = stage_spot(p, sx, sz)
-    p.call("jawa/clear_ui", {"all": True, "clearSelection": True})
+    clear_ui(p, all=True, clearSelection=True)
     p.call("rimworld/jump_camera_to_cell", {"x": cx, "z": cz})
     rows = [p.pair("spotcell", {"x": cx, "z": cz})]
     pawn = colonist(p)
     pid = pawn.get("pawnId") or pawn.get("id")
     p.call("rimworld/jump_camera_to_pawn", {"pawnId": pid})
-    p.call("jawa/clear_ui", {"all": True, "clearSelection": True})
+    clear_ui(p, all=True, clearSelection=True)
     rows.append(p.pair("pawn", {"pawnId": pid}))
     return rows
 
