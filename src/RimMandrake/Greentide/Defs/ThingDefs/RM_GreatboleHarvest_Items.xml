@@ -197,7 +197,10 @@
            a scald-clock figure of 0.60. Scald protection folded into
            ArmorRating_Heat (SCALD_FOLD_INTO_HEAT_1, decision taken by
            question card 2026-10-08), so the coat carries the larger
-           figure, the same rule RM_ScaldGear.xml applies. -->
+           figure, the same rule RM_ScaldGear.xml applies. Kept below 1 on
+           purpose: the coat slows the steam clock (0.4x) and never stops it
+           (Ban 3; RINDCOAT_SCALD_TUNE_STILL_SLOWLY_POACHED, spec section 5a). The
+           owner's "immune to heat and cold" is the insulation below. -->
       <ArmorRating_Heat>0.60</ArmorRating_Heat>
       <Insulation_Heat>35</Insulation_Heat>
       <Insulation_Cold>35</Insulation_Cold>

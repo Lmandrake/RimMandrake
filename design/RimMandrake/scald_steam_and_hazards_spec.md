@@ -301,6 +301,12 @@ by the Greentide build (`greatbole_harvest_spec.md` §9 items 4–5), not by thi
 - **Rind stacks with the other rungs** under the same clamp and 8% floor; rind + vacsuit helmet
   and rind + boil-suit both clamp at 1.0. Ban 3 holds: it is a fight to get and never zeroes
   the clock.
+- **Decided 2026-11-06 (`RINDCOAT_SCALD_TUNE_STILL_SLOWLY_POACHED`): the coat does not stop the
+  steam clock.** The live proof read exposure 0.47 after two steam days in the coat (clock 0.4x, so
+  ~4 days of unbroken outdoor steam to the lethal stage). That is the intended rung: the 2026-09-25
+  ruling is about temperature, which `Insulation_Heat`/`Insulation_Cold` answer, and Ban 3 forbids
+  any gear from zeroing the clock. A roof stops it, and a still day unwinds it. Guard:
+  `src/RimMandrake/Utils/selftest_rindcoat_scald_clock.py`.
 
 Rind protects the steam clock as well as the wading burn, and its garments are Neolithic — both
 ruled (§9 rulings 7–8).
