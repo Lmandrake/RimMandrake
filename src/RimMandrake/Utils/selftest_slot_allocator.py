@@ -43,7 +43,7 @@ def inp(**kw):
 R = SA.load_rules()
 # This file pins the v2 share split it was written against (kept as the rollback rule); the live v3 split
 # (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER) has its own test, selftest_slot_allocator_v3.py.
-R["split"] = {"rule": "share", "FOUNDRY_share": 0.25}
+R["split"] = {"rule": "share", "builder_share": 0.25}
 # ... and the PACED seats: token pacing is advisory by default since owner 2026-11-02 (slot_rules.json advisory);
 # this file tests the pace math itself, so it turns the advisory pass off. The advisory pass has its own cases in
 # selftest_slot_allocator_v3.py.
@@ -60,14 +60,14 @@ def d(state=None, **kw):
 
 
 # ---- token dial and the total
-seats = lambda r: (r["seats"]["BENCH"], r["seats"]["FOUNDRY"])  # noqa: E731
+seats = lambda r: (r["seats"]["BENCH"], r["seats"]["RELENTLESS"])  # noqa: E731
 r = d()
 check("P from the meter: 40% left, 2.0 d -> 1.40", abs(r["inputs"]["P"] - 1.4) < 0.01, r["inputs"].get("P"))
-check("P 1.40, no burn rate measured -> CRUISE step 6 total: BENCH 5, FOUNDRY 1",
+check("P 1.40, no burn rate measured -> CRUISE step 6 total: BENCH 5, RELENTLESS 1",
       r["token_mode"] == "CRUISE" and seats(r) == (5, 1) and "no burn rate" in r["why"], (r["token_mode"], r["seats"], r["why"]))
 check("no fixed cap of 5 anywhere", "cap 5" not in r["why"] and r["n_total"] == 6, r["why"])
 r = d(rate_pct_per_h=1.2, mean_helpers=6.0)
-check("13:05 hand baseline: 1.2%/h with 6 helpers, 40% over 48 h -> 4 total: BENCH 3, FOUNDRY 1",
+check("13:05 hand baseline: 1.2%/h with 6 helpers, 40% over 48 h -> 4 total: BENCH 3, RELENTLESS 1",
       seats(r) == (3, 1) and "projected" in r["why"] and "69% of the rate" in r["why"], (r["seats"], r["why"]))
 r = d(rate_pct_per_h=1.2, mean_helpers=6.0, rate_src="meter slope, 5 readings over 2.0 h")
 check("why names where the rate came from", "meter slope" in r["why"], r["why"])
@@ -80,11 +80,11 @@ check("a fit over the mode's ceiling stops at CRUISE 6", r["n_total"] == 6 and "
 r = d(rate_pct_per_h=1.2, mean_helpers=0.2)
 check("too few helpers on average to fit a rate -> CRUISE step instead", r["n_total"] == 6 and "no burn rate" in r["why"], r["why"])
 r = d(week_pct_left=10.0, week_pct_used=90.0, rate_pct_per_h=1.2, mean_helpers=6.0)
-check("P 0.29 -> ALMOST_OUT, total 1: BENCH 1, FOUNDRY 0", r["token_mode"] == "ALMOST_OUT" and seats(r) == (1, 0), (r["token_mode"], r["seats"]))
+check("P 0.29 -> ALMOST_OUT, total 1: BENCH 1, RELENTLESS 0", r["token_mode"] == "ALMOST_OUT" and seats(r) == (1, 0), (r["token_mode"], r["seats"]))
 r = d(week_pct_left=1.0, week_pct_used=99.0)
 check("99% used -> DARK, 0 everywhere", r["token_mode"] == "DARK" and seats(r) == (0, 0), (r["token_mode"], r["seats"]))
 r = d(week_pct_left=40.0, hours_to_week_reset=70.0)
-check("CRUISE steps down with P when no rate: 0.96 -> 3 total (BENCH 3, FOUNDRY 0)", seats(r) == (3, 0), (r["inputs"]["P"], r["seats"]))
+check("CRUISE steps down with P when no rate: 0.96 -> 3 total (BENCH 3, RELENTLESS 0)", seats(r) == (3, 0), (r["inputs"]["P"], r["seats"]))
 r = d(week_pct_left=40.0, hours_to_week_reset=115.0)
 check("CRUISE steps down with P when no rate: 0.58 -> 2", r["n_total"] == 2, (r["inputs"]["P"], r["n_total"]))
 # ---- hysteresis
@@ -140,12 +140,12 @@ check("unmeasured queues fire nothing", r["queue_mode"] == "UNMEASURED", r["queu
 ov = lambda **k: dict({"ownerSaid": "go to seven", "until": SA.iso_local(NOW + H)}, **k)  # noqa: E731
 r = d(override=ov(n=7))
 check("owner's word N 7 sets BENCH 7", r["seats"]["BENCH"] == 7 and "go to seven" in r["why"], (r["seats"], r["why"]))
-r = d(override=ov(seats={"FOUNDRY": 2}))
-check("owner's word per seat: FOUNDRY 2, BENCH as computed", seats(r) == (5, 2), r["seats"])
+r = d(override=ov(seats={"RELENTLESS": 2}))
+check("owner's word per seat: RELENTLESS 2, BENCH as computed", seats(r) == (5, 2), r["seats"])
 r = d(override=ov(n=7, until=SA.iso_local(NOW - 60)))
 check("an expired owner word is ignored", seats(r) == (5, 1), r["seats"])
 r = d(override=ov(mode="ALMOST_OUT"))
-check("owner names ALMOST_OUT -> BENCH 1, FOUNDRY 0", seats(r) == (1, 0) and r["mode"].startswith("ALMOST_OUT"), (r["mode"], r["seats"]))
+check("owner names ALMOST_OUT -> BENCH 1, RELENTLESS 0", seats(r) == (1, 0) and r["mode"].startswith("ALMOST_OUT"), (r["mode"], r["seats"]))
 r = d(override=ov(n=7), session_pct_used=95.0)
 check("the 5-hour brake binds even over the owner's word", seats(r) == (0, 0), r["seats"])
 # ---- lent account: steven (owner 13:10). The REAL rules file carries his numbers as data.
@@ -188,7 +188,7 @@ check("CLI has a plan check for a lent account", p.returncode == 0 and "--draw" 
 
 # ---- line
 ln = SA.line(d())
-check("one line: mode, N per seat, why", ln.startswith("CRUISE") and " N=5 BENCH, FOUNDRY 1 " in ln and "P 1.40" in ln
+check("one line: mode, N per seat, why", ln.startswith("CRUISE") and " N=5 BENCH, RELENTLESS 1 " in ln and "P 1.40" in ln
       and "\n" not in ln, ln)
 
 # ---- instruments on fixtures
@@ -228,45 +228,45 @@ for extra in ("ended_with_tool", "ended_then_noise"):  # keep the mean-helpers f
 
 # ---- overage and payback
 OV = {"ownerSaid": "go to 8", "until": SA.iso_local(NOW + 5 * H), "seats": {"BENCH": 8}}
-r = d({"token_mode": "CRUISE", "since": NOW - 5 * H, "overage_t": NOW - H}, helpers_running={"BENCH": 8, "FOUNDRY": 1}, override=OV)
+r = d({"token_mode": "CRUISE", "since": NOW - 5 * H, "overage_t": NOW - H}, helpers_running={"BENCH": 8, "RELENTLESS": 1}, override=OV)
 check("overage: 8 BENCH running over a computed 5 for 1 h under his word -> 3 helper-h owed, no payback while it holds",
       abs(r["overage"]["owed_h"] - 3.0) < 1e-6 and not r["overage"]["paying"] and seats(r)[0] == 8, (r["overage"], r["seats"]))
-r2 = d(r["state"], helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=300.0)
+r2 = d(r["state"], helpers_running={"BENCH": 5, "RELENTLESS": 1}, owner_window_min=300.0)
 check("overage: no lower N applies just because he is present (window 4 min, no debt -> BENCH 5)",
       seats(d(owner_window_min=4.0)) == (5, 1))
 st = dict(r["state"], overage_t=NOW - 0.25 * H)
-r2 = d(st, helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=300.0, hours_to_week_reset=26.0)
+r2 = d(st, helpers_running={"BENCH": 5, "RELENTLESS": 1}, owner_window_min=300.0, hours_to_week_reset=26.0)
 check("payback: word lapsed, he is away -> N lowered by ceil(owed / (hours to reset - margin)) = ceil(3/20) = 1: BENCH 4",
       r2["overage"]["paying"] and r2["overage"]["cut"] == 1 and seats(r2)[0] == 4 and "lowered by 1" in r2["why"], (r2["overage"], r2["seats"]))
 check("payback: the deadline is before the reset", r2["overage"]["deadline_h"] < 26.0, r2["overage"])
-r3 = d(st, helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=300.0, hours_to_week_reset=8.0)
+r3 = d(st, helpers_running={"BENCH": 5, "RELENTLESS": 1}, owner_window_min=300.0, hours_to_week_reset=8.0)
 check("payback: near the reset N is cut harder (ceil(3/2) = 2: BENCH 3)", seats(r3)[0] == 3 and r3["overage"]["cut"] == 2, (r3["overage"], r3["seats"]))
 st9 = dict(r["state"], overage_h=40.0, overage_t=NOW)
-r4 = d(st9, helpers_running={"BENCH": 1, "FOUNDRY": 0}, owner_window_min=300.0, hours_to_week_reset=8.0)
+r4 = d(st9, helpers_running={"BENCH": 1, "RELENTLESS": 0}, owner_window_min=300.0, hours_to_week_reset=8.0)
 check("payback: never below N=1 for BENCH, and says the rest is forgiven at the reset",
       seats(r4)[0] >= 1 and "forgiven at the reset" in r4["overage"]["plan"], (r4["overage"], r4["seats"]))
-r5 = d(dict(r["state"], overage_paying=True, overage_t=NOW - H), helpers_running={"BENCH": 2, "FOUNDRY": 0}, owner_window_min=300.0)
+r5 = d(dict(r["state"], overage_paying=True, overage_t=NOW - H), helpers_running={"BENCH": 2, "RELENTLESS": 0}, owner_window_min=300.0)
 check("payback: unused helper-hours are credited and the debt falls (3 owed, 3 under for 1 h -> 0)",
       r5["overage"]["owed_h"] == 0 and r5["overage"]["credited_h"] == 3.0, r5["overage"])
-r6 = d(dict(r["state"], overage_t=NOW - H), helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=3.0)
+r6 = d(dict(r["state"], overage_t=NOW - H), helpers_running={"BENCH": 5, "RELENTLESS": 1}, owner_window_min=3.0)
 check("payback waits while he is in a window", not r6["overage"]["paying"] and seats(r6)[0] == 5 and r6["overage"]["owed_h"] == 3.0, (r6["overage"], r6["seats"]))
-r7 = d(dict(r["state"], reset_at="2026-10-26T01:00-07:00", overage_t=NOW), helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=300.0)
+r7 = d(dict(r["state"], reset_at="2026-10-26T01:00-07:00", overage_t=NOW), helpers_running={"BENCH": 5, "RELENTLESS": 1}, owner_window_min=300.0)
 check("a weekly reset forgives the remaining debt", r7["overage"]["owed_h"] == 0 and r7["overage"]["forgiven_h"] == 3.0, r7["overage"])
 check("interactive work above N is recorded without any override",
-      abs(d({"overage_t": NOW - 0.5 * H}, helpers_running={"BENCH": 7, "FOUNDRY": 1}, owner_window_min=2.0)["overage"]["owed_h"] - 1.0) < 1e-6)
+      abs(d({"overage_t": NOW - 0.5 * H}, helpers_running={"BENCH": 7, "RELENTLESS": 1}, owner_window_min=2.0)["overage"]["owed_h"] - 1.0) < 1e-6)
 
 # helper-minutes from span edges: a batch that started and ended between checks is charged; one that ended before the check
 # does not credit the whole interval
-_ov = {"overage_t": NOW - 0.5 * H, "overage_base": {"BENCH": 1, "FOUNDRY": 0}}
-_sp = {"BENCH": [[NOW - 0.4 * H, NOW - 0.2 * H]] * 4, "FOUNDRY": []}
-r = d(_ov, helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans=_sp, owner_window_min=2.0)
+_ov = {"overage_t": NOW - 0.5 * H, "overage_base": {"BENCH": 1, "RELENTLESS": 0}}
+_sp = {"BENCH": [[NOW - 0.4 * H, NOW - 0.2 * H]] * 4, "RELENTLESS": []}
+r = d(_ov, helpers_running={"BENCH": 0, "RELENTLESS": 0}, helper_spans=_sp, owner_window_min=2.0)
 check("overage: 4 helpers that ran 12 min between checks and are gone at the check are charged (3 over x 0.2 h = 0.6)",
       abs(r["overage"]["accrued_h"] - 0.6) < 1e-6, r["overage"])
-r = d(dict(_ov, overage_h=2.0), helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans={"BENCH": [[NOW - 0.5 * H, NOW - 0.4 * H]] * 5, "FOUNDRY": []},
+r = d(dict(_ov, overage_h=2.0), helpers_running={"BENCH": 0, "RELENTLESS": 0}, helper_spans={"BENCH": [[NOW - 0.5 * H, NOW - 0.4 * H]] * 5, "RELENTLESS": []},
       owner_window_min=300.0)
 check("overage: helpers that finished early do not credit the whole interval as unused (allowance 1 idle 0.4 h -> credit 0.4, not 0.5)",
       abs(r["overage"]["credited_h"] - 0.4) < 1e-6, r["overage"])
-r = d(_ov, helpers_running={"BENCH": 3, "FOUNDRY": 0}, helper_spans=None, owner_window_min=2.0)
+r = d(_ov, helpers_running={"BENCH": 3, "RELENTLESS": 0}, helper_spans=None, owner_window_min=2.0)
 check("overage: no spans measured -> falls back to the snapshot (2 over x 0.5 h = 1.0)", abs(r["overage"]["accrued_h"] - 1.0) < 1e-6, r["overage"])
 check("span_excess_h integrates edges", SA.span_excess_h([[0, 1800], [900, 3600]], 0, 3600, 1) == (0.25, 0.0),
       SA.span_excess_h([[0, 1800], [900, 3600]], 0, 3600, 1))
@@ -288,21 +288,21 @@ check("R3 helper_spans: a 2600 s idle gap splits a resumed transcript into two r
 _gs2 = SA.helper_spans([_g.parent.parent], real_now, H, 600, R)
 check("R3 helper_spans: a helper whose last record is not a clean end runs to now (tail kept for the next check)",
       len(_gs2) == 2 and abs(_gs2[1][1] - real_now) < 2, _gs2)
-r = d({"overage_t": NOW - H, "overage_h": 5.0}, helpers_running={"BENCH": 1, "FOUNDRY": 0}, helper_spans={"BENCH": [[0]], "FOUNDRY": []})
+r = d({"overage_t": NOW - H, "overage_h": 5.0}, helpers_running={"BENCH": 1, "RELENTLESS": 0}, helper_spans={"BENCH": [[0]], "RELENTLESS": []})
 check("R3 overage: a failing accounting step carries the persisted debt, never forgives it",
       r["overage"]["owed_h"] == 5.0 and r["state"]["overage_h"] == 5.0, r["overage"])
 # R3: idle earlier in the interval is not credited against excess later
-_st = {"overage_t": NOW - H, "overage_base": {"BENCH": 1, "FOUNDRY": 0}, "overage_h": 0.0}
-r = d(_st, helpers_running={"BENCH": 0, "FOUNDRY": 0}, owner_window_min=300.0,
-      helper_spans={"BENCH": [[NOW - 0.5 * H, NOW]] * 3, "FOUNDRY": []})
+_st = {"overage_t": NOW - H, "overage_base": {"BENCH": 1, "RELENTLESS": 0}, "overage_h": 0.0}
+r = d(_st, helpers_running={"BENCH": 0, "RELENTLESS": 0}, owner_window_min=300.0,
+      helper_spans={"BENCH": [[NOW - 0.5 * H, NOW]] * 3, "RELENTLESS": []})
 check("R3 overage: idle first half then 2 over in the second half -> 1.0 h owed, none credited back",
       abs(r["overage"]["owed_h"] - 1.0) < 1e-6 and r["overage"]["credited_h"] == 0, r["overage"])
-r = d(dict(_st, overage_h=1.0), helpers_running={"BENCH": 0, "FOUNDRY": 0}, owner_window_min=300.0,
-      helper_spans={"BENCH": [], "FOUNDRY": []})
+r = d(dict(_st, overage_h=1.0), helpers_running={"BENCH": 0, "RELENTLESS": 0}, owner_window_min=300.0,
+      helper_spans={"BENCH": [], "RELENTLESS": []})
 check("R3 overage: prior debt is still credited by idle time", r["overage"]["credited_h"] == 1.0 and r["overage"]["owed_h"] == 0, r["overage"])
 # R3: payback needs the previous check to have been payback time too
-r = d(dict(_st, overage_h=1.0, overage_paying=False), helpers_running={"BENCH": 0, "FOUNDRY": 0}, owner_window_min=300.0,
-      helper_spans={"BENCH": [], "FOUNDRY": []})
+r = d(dict(_st, overage_h=1.0, overage_paying=False), helpers_running={"BENCH": 0, "RELENTLESS": 0}, owner_window_min=300.0,
+      helper_spans={"BENCH": [], "RELENTLESS": []})
 check("R3 overage: his word was live at the last check -> no credit for the interval", r["overage"]["credited_h"] == 0 and r["overage"]["owed_h"] == 1.0, r["overage"])
 check("R3 overage: state carries overage_paying", r["state"]["overage_paying"] is True, r["state"])
 
@@ -371,17 +371,19 @@ check("CLI now --json runs", p.returncode == 0 and j, p.stderr[-400:])
 ji = j.get("inputs") or {}
 check("burn account auto = this machine's live login (system, not the 93% one)", ji.get("account") == "system", ji)
 check("gather reads A1/D1 from the streams record", ji.get("A1") == 80 and ji.get("D1") == 32, ji)
-check("gather counts the fixture's 4 running helpers on BENCH, 0 on FOUNDRY",
-      ji.get("helpers_running") == {"BENCH": 4, "FOUNDRY": 0}, ji.get("helpers_running"))
+# RELENTLESS has no head window (its places are the supervisor's, counted by relentless.py), so no transcript count:
+# a missing key reads as unmeasured there, never as a measured 0 from the retired FOUNDRY window's folder
+check("gather counts the fixture's 4 running helpers on BENCH and names no transcript count for RELENTLESS",
+      ji.get("helpers_running") == {"BENCH": 4}, ji.get("helpers_running"))
 check("one meter reading -> rate from this machine's message count", "4 messages" in (ji.get("rate_src") or ""), ji.get("rate_src"))
 check("presence: window 50 min, card 20 min -> PHONE", j.get("presence") == "PHONE", (j.get("presence"), ji))
 p = subprocess.run(cli + ["now"], env=env, capture_output=True, text=True, timeout=60)
 out = p.stdout.strip()
 check("CLI now prints exactly one line naming mode and N", p.returncode == 0 and len(out.splitlines()) == 1
-      and out.startswith("CRUISE") and "N=5 BENCH, FOUNDRY 1" in out, out)
+      and out.startswith("CRUISE") and "N=5 BENCH, RELENTLESS 1" in out, out)
 p = subprocess.run(cli + ["now", "--write"], env=env, capture_output=True, text=True, timeout=60)
 al = json.loads((streams / "allocation.json").read_text()) if (streams / "allocation.json").exists() else {}
-check("--write records allocation.json with mode, N per seat and state", al.get("seats") == {"BENCH": 5, "FOUNDRY": 1}
+check("--write records allocation.json with mode, N per seat and state", al.get("seats") == {"BENCH": 5, "RELENTLESS": 1}
       and al.get("state", {}).get("token_mode") == "CRUISE",
       al)
 p = subprocess.run(cli + ["set", "--n", "2", "--owner-said", "two for now"], env=env, capture_output=True, text=True, timeout=60)
@@ -511,10 +513,10 @@ r = d({"token_mode": "CRUISE", "since": NOW - 5 * H, "queue_mode": "CLEAR"}, A1=
 check("both queue counts unmeasured from CLEAR stays UNMEASURED", r["queue_mode"] == "UNMEASURED", r["queue_mode"])
 
 ST = {"token_mode": "CRUISE", "since": NOW - 5 * H, "overage_h": 4.0, "overage_t": NOW - H, "total": 6}
-r = d(ST, helpers_running={"BENCH": None, "FOUNDRY": None}, presence_unused=True)
+r = d(ST, helpers_running={"BENCH": None, "RELENTLESS": None}, presence_unused=True)
 check("unavailable helper counts do not credit overage debt", r["overage"]["owed_h"] == 4.0
       and r["overage"]["credited_h"] == 0 and "unavailable" in r["why"], (r["overage"], r["why"]))
-r = d(ST, helpers_running={"BENCH": 0, "FOUNDRY": 0})
+r = d(ST, helpers_running={"BENCH": 0, "RELENTLESS": 0})
 check("measured zero helpers still credits (control)", r["overage"]["credited_h"] > 0, r["overage"])
 with tempfile.TemporaryDirectory() as td:
     missing = Path(td) / "nope"
@@ -525,8 +527,8 @@ with tempfile.TemporaryDirectory() as td:
     check("a missing transcript dir reads None, not 0", hr == {"BENCH": None}, hr)
 
 r = d(override=ov(mode="BURN", n=None, seats=None))
-check("a mode-only override splits the mode total by the FOUNDRY share, not all to BENCH",
-      r["seats"]["FOUNDRY"] == int(R["token"]["BURN"]["n"] * R["split"]["FOUNDRY_share"]) and r["n_total"] == R["token"]["BURN"]["n"],
+check("a mode-only override splits the mode total by the RELENTLESS share, not all to BENCH",
+      r["seats"]["RELENTLESS"] == int(R["token"]["BURN"]["n"] * R["split"]["builder_share"]) and r["n_total"] == R["token"]["BURN"]["n"],
       (r["seats"], r["mode"]))
 
 u, e = SA.override_until(None, None, None, NOW)
@@ -627,7 +629,7 @@ check("cap: no cap configured -> no cap line", "session cap" not in r["why"], r[
 r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 600, week_pct_left=20.0, override=ov(n=4, seats=None, mode=None))
 check("cap: his word stands over the cap", r["seats"]["BENCH"] == 4, r["seats"])
 r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 600, week_pct_left=33.0, week_pct_used=67.0)
-check("cap: FOUNDRY is not touched by BENCH's sitting cap", r["seats"]["FOUNDRY"] >= 0 and r["seats"]["BENCH"] == 0)
+check("cap: RELENTLESS is not touched by BENCH's sitting cap", r["seats"]["RELENTLESS"] >= 0 and r["seats"]["BENCH"] == 0)
 check("cap: the shipped schedule has no session cap (owner 2026-11-04: all token limits rescinded)",
       SA.session_cap_pct() is None, SA.session_cap_pct())
 _sch = tempfile.NamedTemporaryFile("w", suffix=".json", delete=False)
@@ -725,11 +727,11 @@ finally:
     SA.meter_now, SA.load_rules = _mn, _lr
 check("P1: the plan CLI passes the reading's source on (a STALE meter is refused, rc 2)", rc == 2, rc)
 
-# S4: an override naming only FOUNDRY leaves BENCH's sitting cap in force
+# S4: an override naming only RELENTLESS leaves BENCH's sitting cap in force
 r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 0.5 * H, week_pct_left=33.0, week_pct_used=67.0,
-      override=ov(n=2, seats={"FOUNDRY": 2}, mode=None))
-check("S4: a FOUNDRY-only override keeps BENCH's session cap (BENCH 0, FOUNDRY 2)",
-      r["seats"]["BENCH"] == 0 and r["seats"]["FOUNDRY"] == 2 and "session cap reached" in r["why"], (r["seats"], r["why"]))
+      override=ov(n=2, seats={"RELENTLESS": 2}, mode=None))
+check("S4: a RELENTLESS-only override keeps BENCH's session cap (BENCH 0, RELENTLESS 2)",
+      r["seats"]["BENCH"] == 0 and r["seats"]["RELENTLESS"] == 2 and "session cap reached" in r["why"], (r["seats"], r["why"]))
 r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 0.5 * H, week_pct_left=33.0, week_pct_used=67.0,
       override=ov(n=3, seats={"bench": 3}, mode=None))
 check("S4 control: an override naming BENCH stands over the cap", r["seats"]["BENCH"] == 3, r["seats"])
@@ -827,13 +829,13 @@ with tempfile.TemporaryDirectory() as _td:
           and seen == ["locked", "locked"], (err, seen))
 
 # S11: helpers that ran within the allowance in force over the elapsed interval owe nothing when the new base drops
-r = d({"overage_t": NOW - 0.25 * H, "overage_base": {"BENCH": 5, "FOUNDRY": 1}, "token_mode": "ALMOST_OUT",
+r = d({"overage_t": NOW - 0.25 * H, "overage_base": {"BENCH": 5, "RELENTLESS": 1}, "token_mode": "ALMOST_OUT",
        "since": NOW - 5 * H, "reset_at": "2026-10-28T13:00-07:00"},
-      week_pct_left=10.0, week_pct_used=90.0, helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=2.0)
-check("S11: a drop of the base to ALMOST_OUT charges no overage for the interval run under BENCH 5 / FOUNDRY 1",
+      week_pct_left=10.0, week_pct_used=90.0, helpers_running={"BENCH": 5, "RELENTLESS": 1}, owner_window_min=2.0)
+check("S11: a drop of the base to ALMOST_OUT charges no overage for the interval run under BENCH 5 / RELENTLESS 1",
       r["overage"]["accrued_h"] == 0 and isinstance(r["state"].get("overage_base"), dict)
       and r["state"]["overage_base"].get("BENCH", 0) <= 1, (r["overage"], r["state"].get("overage_base")))
-r = d({"overage_t": NOW - 0.25 * H, "overage_base": {"BENCH": 1, "FOUNDRY": 0}}, helpers_running={"BENCH": 5, "FOUNDRY": 1},
+r = d({"overage_t": NOW - 0.25 * H, "overage_base": {"BENCH": 1, "RELENTLESS": 0}}, helpers_running={"BENCH": 5, "RELENTLESS": 1},
       owner_window_min=2.0)
 check("S11 control: above the interval's allowance is charged (5 helper over 1/0 x 0.25 h = 1.25)",
       abs(r["overage"]["accrued_h"] - 1.25) < 1e-6, r["overage"])
@@ -859,21 +861,21 @@ with tempfile.TemporaryDirectory() as _td:
 
 # S13: across a weekly reset only the new week's part of the interval is charged (the old week's debt is forgiven)
 _rs = NOW - 60
-r = d({"overage_t": NOW - 0.25 * H, "overage_h": 3.0, "overage_base": {"BENCH": 1, "FOUNDRY": 0},
+r = d({"overage_t": NOW - 0.25 * H, "overage_h": 3.0, "overage_base": {"BENCH": 1, "RELENTLESS": 0},
        "reset_at": SA.iso_local(_rs)}, week_resets_at=SA.iso_local(_rs + 168 * H), hours_to_week_reset=168.0,
-      week_pct_left=100.0, week_pct_used=0.0, helpers_running={"BENCH": 8, "FOUNDRY": 0}, owner_window_min=2.0)
+      week_pct_left=100.0, week_pct_used=0.0, helpers_running={"BENCH": 8, "RELENTLESS": 0}, owner_window_min=2.0)
 check("S13: a 15-min interval straddling the reset by 1 min charges 7 x 1/60 h, and forgives the 3",
       abs(r["overage"]["accrued_h"] - 7 / 60) < 0.01 and r["overage"]["forgiven_h"] == 3.0, r["overage"])
 
 # S14: debt run up after the reset while the meter was blind survives the meter's recovery; only old-week debt is forgiven
 _rs = NOW - 0.5 * H
 r1 = SA.decide(inp(source="UNMEASURED", week_resets_at=None, week_pct_left=None, week_pct_used=None,
-                   hours_to_week_reset=None, helpers_running={"BENCH": 8, "FOUNDRY": 0}, owner_window_min=2.0),
-               {"overage_t": NOW - 1 * H, "overage_h": 3.0, "overage_base": {"BENCH": 1, "FOUNDRY": 0},
+                   hours_to_week_reset=None, helpers_running={"BENCH": 8, "RELENTLESS": 0}, owner_window_min=2.0),
+               {"overage_t": NOW - 1 * H, "overage_h": 3.0, "overage_base": {"BENCH": 1, "RELENTLESS": 0},
                 "reset_at": SA.iso_local(_rs)}, R, NOW)
-r1["state"]["overage_base"] = {"BENCH": 1, "FOUNDRY": 0}
+r1["state"]["overage_base"] = {"BENCH": 1, "RELENTLESS": 0}
 r2 = SA.decide(inp(week_resets_at=SA.iso_local(_rs + 168 * H), hours_to_week_reset=167.0, week_pct_left=99.0,
-                   week_pct_used=1.0, helpers_running={"BENCH": 8, "FOUNDRY": 0}, owner_window_min=2.0),
+                   week_pct_used=1.0, helpers_running={"BENCH": 8, "RELENTLESS": 0}, owner_window_min=2.0),
                r1["state"], R, NOW + 0.25 * H)
 check("S14: recovery after a blind reset forgives the 3 + 3.5 old-week h, keeps the 3.5 post-reset h, adds 1.75",
       abs(r2["overage"]["forgiven_h"] - 6.5) < 0.01 and abs(r2["overage"]["owed_h"] - 5.25) < 0.01,
@@ -881,16 +883,16 @@ check("S14: recovery after a blind reset forgives the 3 + 3.5 old-week h, keeps 
 
 # S15: a reset that lands a little before the persisted time still rolls the debt over (the meter's 15:59 vs 16:00)
 _rs = NOW + 30
-r = d({"overage_t": NOW - 0.25 * H, "overage_h": 12.0, "overage_base": {"BENCH": 1, "FOUNDRY": 0},
+r = d({"overage_t": NOW - 0.25 * H, "overage_h": 12.0, "overage_base": {"BENCH": 1, "RELENTLESS": 0},
        "reset_at": SA.iso_local(_rs)}, week_resets_at=SA.iso_local(_rs + 168 * H), hours_to_week_reset=168.0,
-      week_pct_left=100.0, week_pct_used=0.0, helpers_running={"BENCH": 1, "FOUNDRY": 0}, owner_window_min=2.0)
+      week_pct_left=100.0, week_pct_used=0.0, helpers_running={"BENCH": 1, "RELENTLESS": 0}, owner_window_min=2.0)
 check("S15: a measured next-week reset 30 s before the persisted reset forgives the 12 h", r["overage"]["forgiven_h"] == 12.0
       and r["overage"]["owed_h"] == 0, r["overage"])
 # S16: a STALE reading that names the new week is not a reset: it forgives nothing and does not clear overage_post_h
 _rs = NOW - 0.5 * H
-r = d({"overage_t": NOW - 0.25 * H, "overage_h": 4.0, "overage_post_h": 4.0, "overage_base": {"BENCH": 1, "FOUNDRY": 0},
+r = d({"overage_t": NOW - 0.25 * H, "overage_h": 4.0, "overage_post_h": 4.0, "overage_base": {"BENCH": 1, "RELENTLESS": 0},
        "reset_at": SA.iso_local(_rs)}, source="STALE", week_resets_at=SA.iso_local(_rs + 168 * H), hours_to_week_reset=167.0,
-      helpers_running={"BENCH": 8, "FOUNDRY": 0}, owner_window_min=2.0)
+      helpers_running={"BENCH": 8, "RELENTLESS": 0}, owner_window_min=2.0)
 check("S16: a STALE next-week reset forgives nothing; owed 4 + 1.75 kept as post-reset debt",
       r["overage"]["forgiven_h"] == 0 and abs(r["overage"]["owed_h"] - 5.75) < 0.01
       and abs(r["state"].get("overage_post_h", 0) - 5.75) < 0.01, (r["overage"], r["state"].get("overage_post_h")))
@@ -898,8 +900,8 @@ check("S16: a STALE next-week reset forgives nothing; owed 4 + 1.75 kept as post
 # R1: accounting garbage must never stop the owner's N being published (a crash leaves seats on a stale allocation)
 _ov = {"ownerSaid": "burn", "until": SA.iso_local(NOW + H), "n": 16}
 try:
-    r = SA.decide(inp(override=_ov, helpers_running={"BENCH": 2, "FOUNDRY": 0}, helper_spans={"BENCH": [[0]], "FOUNDRY": []}),
-                  {"overage_t": NOW - 0.25 * H, "overage_h": "bad", "overage_base": {"BENCH": "x", "FOUNDRY": 0}}, R, NOW)
+    r = SA.decide(inp(override=_ov, helpers_running={"BENCH": 2, "RELENTLESS": 0}, helper_spans={"BENCH": [[0]], "RELENTLESS": []}),
+                  {"overage_t": NOW - 0.25 * H, "overage_h": "bad", "overage_base": {"BENCH": "x", "RELENTLESS": 0}}, R, NOW)
     check("R1: bad overage state / malformed span still publishes his N 16", r["seats"]["BENCH"] == 16, r["seats"])
 except Exception as e:  # noqa: BLE001
     check("R1: bad overage state / malformed span still publishes his N 16", False, repr(e))
@@ -909,8 +911,8 @@ try:
 except Exception as e:  # noqa: BLE001
     check("R1b: a non-numeric override n does not crash decide", False, repr(e))
 # R2: a clock that stepped back must not re-charge the same interval next check
-r = d({"overage_t": NOW + 0.25 * H, "overage_h": 1.0, "overage_base": {"BENCH": 1, "FOUNDRY": 0}},
-      helpers_running={"BENCH": 1, "FOUNDRY": 0}, owner_window_min=2.0)
+r = d({"overage_t": NOW + 0.25 * H, "overage_h": 1.0, "overage_base": {"BENCH": 1, "RELENTLESS": 0}},
+      helpers_running={"BENCH": 1, "RELENTLESS": 0}, owner_window_min=2.0)
 check("R2: overage_t never moves backward", r["state"]["overage_t"] >= NOW + 0.25 * H, r["state"]["overage_t"])
 # R3: set refuses a negative n and a non-finite or negative --hours
 _env = dict(os.environ, RM_STREAMS_DIR=tempfile.mkdtemp())
@@ -938,17 +940,17 @@ check("burn account: a long claude-account answer is parsed whole (no tail trunc
 os.environ["RM_CLAUDE_ACCOUNT"] = "/nonexistent/claude-account"
 check("burn account: missing claude-account -> None, no crash", SA.live_login_name() is None)
 os.environ.pop("RM_CLAUDE_ACCOUNT")
-_ov = {"overage_t": NOW - 0.5 * H, "overage_base": {"BENCH": 1, "FOUNDRY": 0}}
-_sp = {"BENCH": [[NOW - 0.4 * H, NOW - 0.2 * H]] * 4, "FOUNDRY": []}
+_ov = {"overage_t": NOW - 0.5 * H, "overage_base": {"BENCH": 1, "RELENTLESS": 0}}
+_sp = {"BENCH": [[NOW - 0.4 * H, NOW - 0.2 * H]] * 4, "RELENTLESS": []}
 # round 3: one seat with unreadable spans no longer disables span integration for the others
-r = d(_ov, helpers_running={"BENCH": 0, "FOUNDRY": 2}, helper_spans={"BENCH": _sp["BENCH"], "FOUNDRY": None}, owner_window_min=2.0)
-check("overage: FOUNDRY spans unreadable -> BENCH still integrated (0.6) + FOUNDRY snapshot (2 x 0.5 = 1.0)",
+r = d(_ov, helpers_running={"BENCH": 0, "RELENTLESS": 2}, helper_spans={"BENCH": _sp["BENCH"], "RELENTLESS": None}, owner_window_min=2.0)
+check("overage: RELENTLESS spans unreadable -> BENCH still integrated (0.6) + RELENTLESS snapshot (2 x 0.5 = 1.0)",
       abs(r["overage"]["accrued_h"] - 1.6) < 1e-6, r["overage"])
 # round 3: post-reset debt is what ran after the reset, not a time-share of the interval
 _pr = dict(_ov, reset_at=SA.iso_local(NOW - 0.25 * H))
-r = d(_pr, helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans={"BENCH": [[NOW - 0.5 * H, NOW - 0.4 * H]] * 4, "FOUNDRY": []}, owner_window_min=2.0, week_resets_at=None)
+r = d(_pr, helpers_running={"BENCH": 0, "RELENTLESS": 0}, helper_spans={"BENCH": [[NOW - 0.5 * H, NOW - 0.4 * H]] * 4, "RELENTLESS": []}, owner_window_min=2.0, week_resets_at=None)
 check("overage: excess that ran wholly BEFORE the passed reset is not post-reset debt", r["state"].get("overage_post_h", 0) == 0, r["state"])
-r = d(_pr, helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans={"BENCH": [[NOW - 0.2 * H, NOW - 0.1 * H]] * 4, "FOUNDRY": []}, owner_window_min=2.0, week_resets_at=None)
+r = d(_pr, helpers_running={"BENCH": 0, "RELENTLESS": 0}, helper_spans={"BENCH": [[NOW - 0.2 * H, NOW - 0.1 * H]] * 4, "RELENTLESS": []}, owner_window_min=2.0, week_resets_at=None)
 check("overage: excess that ran AFTER the passed reset is all post-reset debt (3 x 0.1 = 0.3)",
       abs(r["state"].get("overage_post_h", 0) - 0.3) < 1e-6, r["state"])
 

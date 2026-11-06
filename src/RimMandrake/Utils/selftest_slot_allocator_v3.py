@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """selftest for slot_allocator.py's v3 split (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER).
 
-v3 has no BENCH seat (design/RimMandrake/rimflow_v3_2026-10-26.md §2): FOUNDRY, the one autonomous builder, gets the
+v3 has no BENCH seat (design/RimMandrake/rimflow_v3_2026-10-26.md §2): RELENTLESS, the one autonomous builder, gets the
 machine's whole helper budget (the pace fit, unchanged); the Conductor (the owner's window, the allocator's internal
-key "BENCH") gets helpers only while he is present, and every helper-hour it runs is owed and paid back from FOUNDRY
+key "BENCH") gets helpers only while he is present, and every helper-hour it runs is owed and paid back from RELENTLESS
 after he leaves (his rule in slot_rules.json presence._doc). His word (the override) still stands over both.
 
     python3 src/RimMandrake/Utils/selftest_slot_allocator_v3.py
@@ -48,7 +48,7 @@ def d(state=None, rules=None, **kw):
 
 
 def seats(r):
-    return r["seats"]["BENCH"], r["seats"]["FOUNDRY"]
+    return r["seats"]["BENCH"], r["seats"]["RELENTLESS"]
 
 
 def ov(**kw):
@@ -61,23 +61,23 @@ def ov(**kw):
 # ---- the live rules file is v3
 live = SA.load_rules()
 check("slot_rules.json ships the v3 split (no 25% share)", (live.get("split") or {}).get("rule") == "v3"
-      and "FOUNDRY_share" not in (live.get("split") or {}), live.get("split"))
+      and "builder_share" not in (live.get("split") or {}), live.get("split"))
 check("slot_rules.json sets the Conductor's session n", isinstance((live.get("split") or {}).get("conductor_session_n"), int),
       live.get("split"))
 
-# ---- absent: the whole machine budget is FOUNDRY's
+# ---- absent: the whole machine budget is RELENTLESS's
 r = d(owner_window_min=300.0)
-check("absent, CRUISE step 6 total -> CONDUCTOR 0, FOUNDRY 6", seats(r) == (0, 6) and r["n_total"] == 6, (r["seats"], r["why"]))
+check("absent, CRUISE step 6 total -> CONDUCTOR 0, RELENTLESS 6", seats(r) == (0, 6) and r["n_total"] == 6, (r["seats"], r["why"]))
 check("why says the Conductor is session-only", "session-only" in r["why"], r["why"])
 check("why no longer speaks of a 25% share", "25%" not in r["why"], r["why"])
 r = d(owner_window_min=300.0, rate_pct_per_h=1.2, mean_helpers=6.0)
-check("absent, 13:05 baseline fit 4 -> FOUNDRY gets all 4 (v2 gave it 1)", seats(r) == (0, 4), (r["seats"], r["why"]))
+check("absent, 13:05 baseline fit 4 -> RELENTLESS gets all 4 (v2 gave it 1)", seats(r) == (0, 4), (r["seats"], r["why"]))
 
 # ---- present: Conductor session helpers on top, capped by the fit
 r = d(owner_window_min=2.0)
-check("present (he wrote 2 min ago), total 6 -> CONDUCTOR 3 (session n), FOUNDRY 6", seats(r) == (3, 6), (r["seats"], r["why"]))
+check("present (he wrote 2 min ago), total 6 -> CONDUCTOR 3 (session n), RELENTLESS 6", seats(r) == (3, 6), (r["seats"], r["why"]))
 r = d(owner_window_min=2.0, rate_pct_per_h=1.2, mean_helpers=6.0, week_pct_left=10.0, hours_to_week_reset=48.0)
-tot = r["seats"]["FOUNDRY"]
+tot = r["seats"]["RELENTLESS"]
 check("present, a small fit -> CONDUCTOR never above the fit total", r["seats"]["BENCH"] == min(3, tot), (r["seats"], r["why"]))
 r = d(owner_window_min=45.0, owner_card_min=5.0)
 check("PHONE (window 45 min ago, card 5 min ago) is not a session -> CONDUCTOR 0", r["seats"]["BENCH"] == 0, (r["seats"], r["presence"]))
@@ -86,38 +86,38 @@ check("DARK -> nobody gets helpers, present or not", seats(r) == (0, 0), (r["sea
 
 # ---- his word
 r = d(owner_window_min=300.0, override=ov(seats={"BENCH": 6}))
-check("his word BENCH 6 while absent -> CONDUCTOR 6 (his word stands over session-only), FOUNDRY keeps 6", seats(r) == (6, 6), (r["seats"], r["why"]))
+check("his word BENCH 6 while absent -> CONDUCTOR 6 (his word stands over session-only), RELENTLESS keeps 6", seats(r) == (6, 6), (r["seats"], r["why"]))
 check("his words quoted in why", "up to 6 subagents" in r["why"], r["why"])
 r = d(owner_window_min=300.0, override=ov(seats={"CONDUCTOR": 4}))
 check("override keyed CONDUCTOR folds to the Conductor seat", seats(r) == (4, 6), r["seats"])
 r = d(owner_window_min=300.0, override=ov(n=5))
 check("override n (no seats) speaks for the Conductor", seats(r) == (5, 6), r["seats"])
-r = d(owner_window_min=300.0, override=ov(seats={"FOUNDRY": 2}))
-check("override FOUNDRY 2 -> FOUNDRY 2, CONDUCTOR still session-only 0", seats(r) == (0, 2), r["seats"])
+r = d(owner_window_min=300.0, override=ov(seats={"RELENTLESS": 2}))
+check("override RELENTLESS 2 -> RELENTLESS 2, CONDUCTOR still session-only 0", seats(r) == (0, 2), r["seats"])
 
 # ---- review r2 (Codex 2026-10-28): the Conductor's session is HIS window, not any window
 r = d(owner_window_min=2.0, owner_window_t=NOW - 5 * H)
-check("r2#2 a message 2 min ago in FOUNDRY's window (Conductor window quiet 5 h) -> CONDUCTOR 0, FOUNDRY 6",
+check("r2#2 a message 2 min ago in RELENTLESS's window (Conductor window quiet 5 h) -> CONDUCTOR 0, RELENTLESS 6",
       seats(r) == (0, 6), (r["seats"], r["why"]))
 r = d(owner_window_min=2.0, owner_window_t=None)
 check("r2#2 no Conductor-window message at all -> CONDUCTOR 0", r["seats"]["BENCH"] == 0, r["seats"])
 
 # ---- review r1 (Codex 2026-10-28)
 r = d(owner_window_min=2.0)
-check("r1#1 the remembered machine total is the fit (FOUNDRY 6), not FOUNDRY + the Conductor's session helpers (9)",
+check("r1#1 the remembered machine total is the fit (RELENTLESS 6), not RELENTLESS + the Conductor's session helpers (9)",
       r["state"]["total"] == 6, r["state"].get("total"))
 r = d(owner_window_min=2.0, week_pct_used=99.0, week_pct_left=1.0, override=ov(mode="CRUISE"))
 check("r1#3 his word lifting DARK to CRUISE while he is present gives the Conductor its session helpers too",
-      r["seats"]["BENCH"] == 3 and r["seats"]["FOUNDRY"] == 6, (r["seats"], r["mode"]))
+      r["seats"]["BENCH"] == 3 and r["seats"]["RELENTLESS"] == 6, (r["seats"], r["mode"]))
 
-# ---- overage: the Conductor's helpers are owed, paid back from FOUNDRY after he leaves
-r = d({"overage_t": NOW - H}, owner_window_min=2.0, helpers_running={"BENCH": 2, "FOUNDRY": 0},
+# ---- overage: the Conductor's helpers are owed, paid back from RELENTLESS after he leaves
+r = d({"overage_t": NOW - H}, owner_window_min=2.0, helpers_running={"BENCH": 2, "RELENTLESS": 0},
       helper_spans=None)
 check("present, CONDUCTOR ran 2 helpers for 1 h -> 2 helper-h owed (its base is 0)",
       abs(r["overage"]["owed_h"] - 2.0) < 1e-6 and r["state"]["overage_base"].get("BENCH") == 0, (r["overage"], r["state"].get("overage_base")))
-r = d({"overage_t": NOW, "overage_h": 40.0, "overage_base": {"BENCH": 0, "FOUNDRY": 6}}, owner_window_min=300.0,
-      helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans=None)
-check("absent, 40 helper-h owed, 42 h window -> FOUNDRY lowered by 1, CONDUCTOR stays 0",
+r = d({"overage_t": NOW, "overage_h": 40.0, "overage_base": {"BENCH": 0, "RELENTLESS": 6}}, owner_window_min=300.0,
+      helpers_running={"BENCH": 0, "RELENTLESS": 0}, helper_spans=None)
+check("absent, 40 helper-h owed, 42 h window -> RELENTLESS lowered by 1, CONDUCTOR stays 0",
       seats(r) == (0, 5) and r["overage"]["cut"] == 1, (r["seats"], r["overage"]))
 
 # ---- token pacing is ADVISORY (owner 2026-11-02, TOKEN_LIMITS_TAME_BARK_NO_BITE): it never lowers the placed seats
@@ -129,38 +129,38 @@ RA = copy.deepcopy(R)
 RA["advisory"] = {"enabled": True, "n_total": 6}
 r = d(rules=RA, owner_window_min=2.0, week_pct_used=99.0, week_pct_left=1.0)
 check("advisory: DARK still places the floor and the Conductor's session (paced 0/0 kept as advice)",
-      seats(r) == (3, 6) and r["advice"]["paced_seats"] == {"BENCH": 0, "FOUNDRY": 0} and r["token_mode"] == "DARK"
-      and r["advice"]["short"] == {"BENCH": 3, "FOUNDRY": 6} and r["why"].startswith("ADVISORY"), (r["seats"], r.get("advice")))
+      seats(r) == (3, 6) and r["advice"]["paced_seats"] == {"BENCH": 0, "RELENTLESS": 0} and r["token_mode"] == "DARK"
+      and r["advice"]["short"] == {"BENCH": 3, "RELENTLESS": 6} and r["why"].startswith("ADVISORY"), (r["seats"], r.get("advice")))
 r = d(rules=RA, owner_window_min=300.0, rate_pct_per_h=1.2, mean_helpers=6.0)
 check("advisory: a pace fit of 4 is raised to the floor 6; advice says 4", seats(r) == (0, 6)
-      and r["advice"]["paced_seats"]["FOUNDRY"] == 4, (r["seats"], r.get("advice")))
-r = d({"overage_t": NOW, "overage_h": 40.0, "overage_base": {"BENCH": 0, "FOUNDRY": 6}}, rules=RA, owner_window_min=300.0,
-      helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans=None)
-check("advisory: the payback cut is owed and advised, not taken (FOUNDRY 6, paced 5, debt carried)",
-      seats(r) == (0, 6) and r["advice"]["paced_seats"]["FOUNDRY"] == 5 and r["overage"]["cut"] == 1
+      and r["advice"]["paced_seats"]["RELENTLESS"] == 4, (r["seats"], r.get("advice")))
+r = d({"overage_t": NOW, "overage_h": 40.0, "overage_base": {"BENCH": 0, "RELENTLESS": 6}}, rules=RA, owner_window_min=300.0,
+      helpers_running={"BENCH": 0, "RELENTLESS": 0}, helper_spans=None)
+check("advisory: the payback cut is owed and advised, not taken (RELENTLESS 6, paced 5, debt carried)",
+      seats(r) == (0, 6) and r["advice"]["paced_seats"]["RELENTLESS"] == 5 and r["overage"]["cut"] == 1
       and r["state"]["overage_h"] > 0, (r["seats"], r.get("advice"), r["overage"]))
 r = d(rules=RA, owner_window_min=2.0, session_pct_used=95.0)
 check("advisory: the 5-hour session brake advises only", seats(r) == (3, 6)
-      and r["advice"]["paced_seats"] == {"BENCH": 0, "FOUNDRY": 0}, (r["seats"], r.get("advice")))
+      and r["advice"]["paced_seats"] == {"BENCH": 0, "RELENTLESS": 0}, (r["seats"], r.get("advice")))
 r = d(rules=RA, owner_window_min=2.0)
 check("advisory: when pacing places the same, no ADVISORY line and no shortfall", seats(r) == (3, 6)
       and "short" not in r["advice"] and not r["why"].startswith("ADVISORY"), (r["seats"], r["why"][:80]))
 r = d(rules=RA, owner_window_min=300.0, week_pct_used=99.0, week_pct_left=1.0,
-      override=ov(seats={"FOUNDRY": 1}))
-check("advisory: his word still binds (FOUNDRY 1 by override)", seats(r)[1] == 1, (r["seats"], r["why"][:120]))
+      override=ov(seats={"RELENTLESS": 1}))
+check("advisory: his word still binds (RELENTLESS 1 by override)", seats(r)[1] == 1, (r["seats"], r["why"][:120]))
 r0 = d(owner_window_min=2.0, week_pct_used=99.0, week_pct_left=1.0)
 check("advisory off restores the paced decision exactly (no advice key)", "advice" not in r0 and seats(r0) == (0, 0), r0["seats"])
 
 # ---- the legacy rule still works when named (rollback = set split.rule "share")
 L = copy.deepcopy(R)
-L["split"] = {"rule": "share", "FOUNDRY_share": 0.25}
+L["split"] = {"rule": "share", "builder_share": 0.25}
 r = d(rules=L)
-check("legacy share rule: total 6 -> BENCH 5, FOUNDRY 1", seats(r) == (5, 1), r["seats"])
+check("legacy share rule: total 6 -> BENCH 5, RELENTLESS 1", seats(r) == (5, 1), r["seats"])
 
 # ---- the published names
-check("seat_label maps the allocator key to v3 names", SA.seat_label("BENCH") == "CONDUCTOR" and SA.seat_label("FOUNDRY") == "FOUNDRY")
+check("seat_label maps the allocator key to v3 names", SA.seat_label("BENCH") == "CONDUCTOR" and SA.seat_label("RELENTLESS") == "RELENTLESS")
 check("seat_key maps v3 names and the old window name to the allocator key",
-      SA.seat_key("CONDUCTOR") == "BENCH" and SA.seat_key("bench") == "BENCH" and SA.seat_key("FOUNDRY") == "FOUNDRY")
+      SA.seat_key("CONDUCTOR") == "BENCH" and SA.seat_key("bench") == "BENCH" and SA.seat_key("RELENTLESS") == "RELENTLESS")
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

@@ -6,13 +6,14 @@ mechanically. Every tick it computes the per-seat helper budget with slot_alloca
 measured pace, his word, the payback, the brakes; its rules in src/RimMandrake/Utils/slot_rules.json, split.rule "v3")
 and publishes it as `<dispatcher state>/helper_budget.json` under the v3 seat names:
 
-  FOUNDRY    the machine's whole helper budget (the pace fit), less any payback owed;
+  RELENTLESS the machine's whole helper budget (the pace fit), less any payback owed;
   CONDUCTOR  helpers only while the owner is in its window (session-only), unless his word (slot_override.json) says
-             otherwise; every Conductor helper-hour is owed and paid back from FOUNDRY after he leaves.
+             otherwise; every Conductor helper-hour is owed and paid back from RELENTLESS after he leaves.
 
 Owner, 2026-10-29: the interactive Conductor window (AGENT_SEAT BENCH, no RM_ROLE_UNIT) is unlimited only within 20 min
 of his last typed message, then two helpers (slot_rules.json conductor_window); the numbers here govern scheduled and
-Dispatcher-launched runs and FOUNDRY only.
+Dispatcher-launched runs and RELENTLESS only (relentless_rules.json staffing.seat reads it;
+the key was FOUNDRY until that seat retired, FOUNDRY_LITERALS_EXCISE_FROM_CODE).
 
 The spawn hook (.claude/hooks/block_agent_over_slots.py) reads this file first. It computes for itself only when the
 file is missing, older than MAX_AGE_S, or older than his last word (slot_override.json), so a new word acts at once.

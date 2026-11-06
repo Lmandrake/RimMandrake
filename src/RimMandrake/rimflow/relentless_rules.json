@@ -190,7 +190,7 @@
     "help_vendor_from_round": 2
   },
   "staffing": {
-    "seat": "FOUNDRY",
+    "seat": "RELENTLESS",
     "stages": [8],
     "hold_s": 3600,
     "min_verdicts": 3,

@@ -36,7 +36,6 @@ tmp = Path(tempfile.mkdtemp(prefix="slothook_"))
 projects = tmp / "projects"
 sub = projects / "-home-mandrake-rm-bench" / "s1" / "subagents"
 sub.mkdir(parents=True)
-(projects / "-home-mandrake-rm-foundry").mkdir()
 A = lambda stop: {"type": "assistant", "timestamp": SA.iso_z(now - 600),  # noqa: E731
                   "message": {"role": "assistant", "stop_reason": stop, "content": [{"type": "text", "text": "x"}]}}
 U = {"type": "user", "timestamp": SA.iso_z(now - 700), "message": {"role": "user", "content": "go"}}
@@ -84,7 +83,7 @@ def run(seat="BENCH", stdin=None, cwd=None, session=False, reserve="0"):
     return p.returncode, h.get("permissionDecision"), h.get("permissionDecisionReason") or ""
 
 
-alloc({"BENCH": 3, "FOUNDRY": 1})
+alloc({"BENCH": 3, "RELENTLESS": 1})
 rc, dec, why = run()
 check("3 running (one between calls, one not yet answered) against N=3 -> deny", dec == "deny", (rc, dec, why[:200]))
 check("the refusal names N, the mode and the why", "N=3" in why and "CRUISE" in why and "fits 4.1" in why, why[:400])
@@ -124,33 +123,31 @@ rc, dec, why = sess_run(str(tmp / "nonexistent.jsonl"))
 check("unreadable transcript -> capped at 2 (fail closed)", dec == "deny" and "N=2" in why, (dec, why[:200]))
 rc, dec, why = run(session=True)
 check("no transcript_path in the payload -> capped (fail closed)", dec == "deny", (dec, why[:200]))
-alloc({"BENCH": 3, "FOUNDRY": 0})
-rc, dec, why = run("FOUNDRY", session=True)
-check("... the exemption is the Conductor window only: FOUNDRY (N=0) is still gated", dec == "deny", (dec, why[:200]))
-alloc({"BENCH": 3, "FOUNDRY": 1})
-alloc({"BENCH": 4, "FOUNDRY": 1})
+alloc({"BENCH": 0, "RELENTLESS": 3})
+rc, dec, why = run("BENCH")
+check("... the exemption is the Conductor window only: a role run on BENCH (N=0) is still gated",
+      dec == "deny" and "N=0" in why, (dec, why[:200]))
+alloc({"BENCH": 3, "RELENTLESS": 1})
+alloc({"BENCH": 4, "RELENTLESS": 1})
 rc, dec, why = run()
 check("3 running against N=4 -> allow", dec is None and rc == 0, (dec, why[:200]))
-alloc({"BENCH": 3, "FOUNDRY": 1})
-rc, dec, why = run("FOUNDRY")
-check("FOUNDRY counts its own seat: 0 running against N=1 -> allow", dec is None, (dec, why[:200]))
-alloc({"BENCH": 3, "FOUNDRY": 0})
-rc, dec, why = run("FOUNDRY")
-check("FOUNDRY N=0 (ALMOST_OUT) refuses even the first helper", dec == "deny" and "N=0" in why, (dec, why[:200]))
-alloc({"BENCH": 3, "FOUNDRY": 1})
+alloc({"BENCH": 3, "RELENTLESS": 0})
+rc, dec, why = run("RELENTLESS")
+check("the builder key RELENTLESS has no head window (no transcript project), so the hook does not gate it even at "
+      "N=0: its places are the supervisor's (relentless_rules staffing)", dec is None and "RELENTLESS" not in SA.SEAT_PROJECT,
+      (dec, why[:200]))
+alloc({"BENCH": 3, "RELENTLESS": 1})
 rc, dec, why = run("STEVE")
 check("a seat outside enforce_seats is not gated", dec is None, dec)
 rc, dec, why = run("", cwd="/home/mandrake/rm/bench")
 check("no AGENT_SEAT: the seat comes from the cwd (rm/bench -> BENCH, denied)", dec == "deny", (dec, why[:200]))
 rc, dec, why = run(stdin="not json")
 check("broken input fails open", rc == 0 and dec is None, (rc, dec))
-alloc({"BENCH": 3, "FOUNDRY": 1}, age=3 * H)
+alloc({"BENCH": 3, "RELENTLESS": 1}, age=3 * H)
 rc, dec, why = run()
 check("a stale allocation.json is recomputed live (v3: he is absent -> CONDUCTOR 0, 3 running -> deny)",
       dec == "deny" and "N=0" in why and "computed now" in why, (dec, why[:300]))
-rc, dec, why = run("FOUNDRY")
-check("... and FOUNDRY, computed live, gets the machine total (CRUISE 6 -> allow)", dec is None, (dec, why[:300]))
-alloc({"BENCH": 3, "FOUNDRY": 1})
+alloc({"BENCH": 3, "RELENTLESS": 1})
 time.sleep(0.05)
 (streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "run nine", "until": iso(now + H), "n": 9}))
 rc, dec, why = run()
@@ -161,7 +158,7 @@ check("his word can lower it too (N 2 -> deny, quoting him)", dec == "deny" and 
 
 # ---- v3: the Dispatcher's published budget comes first (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER)
 (streams / "slot_override.json").unlink()
-alloc({"BENCH": 3, "FOUNDRY": 1})
+alloc({"BENCH": 3, "RELENTLESS": 1})
 
 
 def budget(seats, age=30):
@@ -169,21 +166,23 @@ def budget(seats, age=30):
                                                          "seats": seats, "mode": "CRUISE", "why": "budget why: v3"}))
 
 
-budget({"CONDUCTOR": 5, "FOUNDRY": 0})
+budget({"CONDUCTOR": 5, "RELENTLESS": 0})
 rc, dec, why = run()
 check("a fresh Dispatcher budget beats allocation.json (CONDUCTOR 5, 3 running -> allow)", dec is None, (dec, why[:300]))
-rc, dec, why = run("FOUNDRY")
-check("FOUNDRY reads its budget under its own name (FOUNDRY 0 -> deny, citing the Dispatcher)",
+alloc({"BENCH": 3, "RELENTLESS": 1})
+budget({"CONDUCTOR": 0, "RELENTLESS": 5})
+rc, dec, why = run()
+check("BENCH reads its budget under CONDUCTOR, never the builder's RELENTLESS (CONDUCTOR 0 -> deny, citing the Dispatcher)",
       dec == "deny" and "N=0" in why and "Dispatcher budget" in why and "budget why" in why, (dec, why[:300]))
-budget({"CONDUCTOR": 2, "FOUNDRY": 4})
+budget({"CONDUCTOR": 2, "RELENTLESS": 4})
 rc, dec, why = run()
 check("the window seat BENCH reads the CONDUCTOR budget and is refused under the Conductor's name",
       dec == "deny" and "N=2" in why and "CONDUCTOR" in why, (dec, why[:300]))
-budget({"CONDUCTOR": 9, "FOUNDRY": 4}, age=3 * H)
+budget({"CONDUCTOR": 9, "RELENTLESS": 4}, age=3 * H)
 rc, dec, why = run()
 check("a stale Dispatcher budget is ignored (falls back to allocation.json N=3 -> deny)",
       dec == "deny" and "allocation.json" in why, (dec, why[:300]))
-budget({"CONDUCTOR": 9, "FOUNDRY": 4})
+budget({"CONDUCTOR": 9, "RELENTLESS": 4})
 time.sleep(0.05)
 (streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "just one", "until": iso(now + H), "n": 1}))
 rc, dec, why = run()
@@ -207,9 +206,9 @@ check("his window with the owner silent stays capped at two (3 running -> deny)"
 rc, dec, why = run(session=True)
 check("his word for BENCH lifts the window cap", dec is None, (dec, why[:300]))
 (streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "run nine", "until": iso(time.time() + H),
-                                                        "seats": {"FOUNDRY": 9}}))
+                                                        "seats": {"RELENTLESS": 9}}))
 rc, dec, why = run(session=True)
-check("his word for FOUNDRY alone leaves the window cap on", dec == "deny", (dec, why[:300]))
+check("his word for RELENTLESS alone leaves the window cap on", dec == "deny", (dec, why[:300]))
 (streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "run nine", "until": iso(time.time() - H),
                                                         "seats": {"BENCH": 9}}))
 rc, dec, why = run(session=True)

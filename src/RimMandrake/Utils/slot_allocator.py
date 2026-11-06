@@ -22,7 +22,7 @@ HOW N IS SET, in order (each step can only lower what the previous one allowed, 
   2. Total fit (R8): mean helpers running over the last window_h x sustainable %/h / measured %/h. The measured %/h is
      the slope of account_usage's series when it has slope_min_points over slope_min_span_h; otherwise messages sent from
      THIS machine over the window / msgs_per_pct (the 13:05 hand calibration). Raised by at most raise_step per check.
-  3. Split: FOUNDRY floor(total x share), BENCH the rest. No lower N applies because he is present (owner, 2026-10-26:
+  3. Split: the builder (RELENTLESS) floor(total x share), BENCH the rest. No lower N applies because he is present (owner, 2026-10-26:
      "No, just adjust later to make up for any additional spend I incur").
   4. Overage: helper-hours run above that N (his `set` word, or interactive work) are recorded as owed in the state.
      Once his word has lapsed and he is not in a window, the allocator lowers N by ceil(owed / hours left before the
@@ -72,7 +72,10 @@ if str(HERE) not in sys.path:
 RULES = Path(os.environ.get("RM_SLOT_RULES", HERE / "slot_rules.json"))
 TZ = ZoneInfo("America/Los_Angeles")
 HOUR = 3600.0
-SEAT_PROJECT = {"BENCH": "-home-mandrake-rm-bench", "FOUNDRY": "-home-mandrake-rm-foundry"}
+# the autonomous builder's budget key: Relentless (FOUNDRY retired, owner by card 2026-11-02). It has no head window, so
+# no transcript project: its helpers are the supervisor's places, counted by relentless.py, never here.
+BUILDER = "RELENTLESS"
+SEAT_PROJECT = {"BENCH": "-home-mandrake-rm-bench"}
 CHUNK = 1 << 20
 
 
@@ -968,7 +971,7 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why, blind=False):
         return rec
     want = int(math.ceil(owed / window))
     cut = 0
-    for seat, floor in (("BENCH", cfg["bench_floor"]), ("FOUNDRY", 0)):
+    for seat, floor in (("BENCH", cfg["bench_floor"]), (BUILDER, 0)):
         if seat in per and cut < want:
             take = min(want - cut, max(0, per[seat] - floor))
             per[seat] -= take
@@ -1145,7 +1148,7 @@ def _decide_core(inp, state, rules, now, advisory=False):
     total, ops_advice = _ops(inp, rules, total, why)
     # split per seat
     presence, pwhy = _presence(inp, rules)
-    # v3: the Conductor's session is HIS window (the BENCH transcripts), not any window: FOUNDRY's tile, where the
+    # v3: the Conductor's session is HIS window (the BENCH transcripts), not any window: the builder's tile, where the
     # Dispatcher's rings land, must never grant the Conductor helpers (review r2 #2). owner_window_t is the last
     # owner message in the BENCH window only; presence stays machine-wide for payback and the sitting.
     cpres = presence
@@ -1157,19 +1160,19 @@ def _decide_core(inp, state, rules, now, advisory=False):
     split = lambda t, m=smode: split_seats(t, seats, rules, cpres, m)  # noqa: E731
     per = split(total)
     if rules["split"].get("rule") == "v3":
-        why.append(f"v3: machine total {total} -> FOUNDRY {per.get('FOUNDRY', 0)}; CONDUCTOR "
-                   + (f"{per['BENCH']} while he is in its window ({pwhy}; owed, paid back from FOUNDRY after he leaves)"
+        why.append(f"v3: machine total {total} -> {BUILDER} {per.get(BUILDER, 0)}; CONDUCTOR "
+                   + (f"{per['BENCH']} while he is in its window ({pwhy}; owed, paid back from {BUILDER} after he leaves)"
                       if cpres == "BENCH" else f"0 (session-only: he is not in its window; {pwhy})"))
-    elif "FOUNDRY" in per:
-        why.append(f"total {total} split BENCH {per['BENCH']} / FOUNDRY {per['FOUNDRY']} "
-                   f"(FOUNDRY {rules['split']['FOUNDRY_share']:.0%}, rounded down)")
+    elif BUILDER in per:
+        why.append(f"total {total} split BENCH {per['BENCH']} / {BUILDER} {per[BUILDER]} "
+                   f"({BUILDER} {rules['split']['builder_share']:.0%}, rounded down)")
     queue_mode, qwhy = _queue(inp, state, rules)
     if queue_mode == "PAYDOWN":
         why.append(f"PAYDOWN ({qwhy}): no new art or owner-facing design, half the slots enact and close")
     label = mode
     base = dict(per)
     if rules["split"].get("rule") == "v3" and "BENCH" in base:
-        base["BENCH"] = 0  # the machine budget is FOUNDRY's: every Conductor helper-hour is owed (his rule, presence._doc)
+        base["BENCH"] = 0  # the machine budget is the builder's: every Conductor helper-hour is owed (his rule, presence._doc)
     ov = _override_live(inp.get("override"), now)
     if ov:
         if isinstance(ov.get("mode"), str) and isinstance(tk.get(ov["mode"]), dict) and "n" in tk[ov["mode"]]:
@@ -1188,9 +1191,9 @@ def _decide_core(inp, state, rules, now, advisory=False):
         why.insert(0, f"his word: \"{ov['ownerSaid']}\"" + (f" until {ov['until']}" if ov.get("until") else ""))
         if ops_advice["disk"] == "BRAKE":
             why.append("his word stands over the disk brake")
-    # the remembered machine total (the next check's raise_step base): under v3 FOUNDRY's share IS the machine fit; the
+    # the remembered machine total (the next check's raise_step base): under v3 the builder's share IS the machine fit; the
     # Conductor's session helpers are on top of it and owed, never part of it (review r1 #1)
-    pre_cut_total = per.get("FOUNDRY", 0) if rules["split"].get("rule") == "v3" else sum(per.values())
+    pre_cut_total = per.get(BUILDER, 0) if rules["split"].get("rule") == "v3" else sum(per.values())
     per_before = dict(per)
     try:
         overage = _overage(inp, state, rules, now, base, per, ov, presence, why, blind=blind)
@@ -1223,7 +1226,7 @@ def _decide_core(inp, state, rules, now, advisory=False):
     sit, live, drop, _m = sitting_step(inp, state, now)
     cap = inp.get("session_cap_pct")
     held_n = state.get("bench_n")
-    # his word stands over the cap only where it speaks for BENCH: a FOUNDRY-only override leaves BENCH's cap in force
+    # his word stands over the cap only where it speaks for BENCH: a builder-only override leaves BENCH's cap in force
     ov_bench = bool(ov) and not (isinstance(ov.get("seats"), dict) and ov["seats"]
                                  and "BENCH" not in {seat_key(k) for k in ov["seats"]})
     if cap is not None and live and "BENCH" in per and not ov_bench and not advisory:
@@ -1260,7 +1263,7 @@ def _decide_core(inp, state, rules, now, advisory=False):
             "overage": overage, "override": ov, "ops": ops_advice, "state": new_state}
 
 
-SEAT_NAMES = {"BENCH": "CONDUCTOR", "FOUNDRY": "FOUNDRY"}  # allocator key -> v3 seat name (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER)
+SEAT_NAMES = {"BENCH": "CONDUCTOR", BUILDER: BUILDER}  # allocator key -> v3 seat name (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER)
 
 
 def seat_label(key):
@@ -1276,25 +1279,25 @@ def seat_key(name):
 
 def split_seats(total, seats, rules, presence, mode):
     """Total helpers -> per seat by rules["split"]["rule"].
-    v3: FOUNDRY, the one autonomous builder, gets the whole machine total; the Conductor ("BENCH") gets
+    v3: BUILDER (Relentless), the one autonomous builder, gets the whole machine total; the Conductor ("BENCH") gets
     conductor_session_n, never above the total, only while he is in the window (presence BENCH), and nothing in DARK.
-    share (v2, kept for rollback): FOUNDRY floor(total x FOUNDRY_share), BENCH the rest."""
+    share (v2, kept for rollback): BUILDER floor(total x builder_share), BENCH the rest."""
     sp = rules["split"]
     if sp.get("rule") != "v3":
-        return split_total(total, seats, sp["FOUNDRY_share"])
+        return split_total(total, seats, sp["builder_share"])
     per = {s: 0 for s in seats}
-    if "FOUNDRY" in per:
-        per["FOUNDRY"] = total
+    if BUILDER in per:
+        per[BUILDER] = total
     if "BENCH" in per and presence == "BENCH" and mode != "DARK":
         per["BENCH"] = max(0, min(_count(sp.get("conductor_session_n"), 0), total))
     return per
 
 
 def split_total(total, seats, share):
-    """Total helpers -> per seat: FOUNDRY gets floor(total * share), BENCH the rest."""
+    """Total helpers -> per seat: BUILDER gets floor(total * share), BENCH the rest."""
     per = {s: 0 for s in seats}
-    if "FOUNDRY" in per:
-        per["FOUNDRY"] = int(math.floor(total * share))
+    if BUILDER in per:
+        per[BUILDER] = int(math.floor(total * share))
     per["BENCH"] = total - sum(v for k, v in per.items() if k != "BENCH")
     return per
 

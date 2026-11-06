@@ -7,7 +7,7 @@ guess." Then at 13:05: "...please use it to determine the number of Foundry and 
 
 So N is not fixed here. v3 (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER): the Dispatcher is the source. It publishes the
 per-seat budget every tick (src/RimMandrake/rimflow/helper_budget.py -> <dispatcher state>/helper_budget.json, seats
-CONDUCTOR and FOUNDRY); the window seat AGENT_SEAT=BENCH reads the CONDUCTOR budget. When that file is missing, stale
+CONDUCTOR and RELENTLESS); the window seat AGENT_SEAT=BENCH reads the CONDUCTOR budget. When that file is missing, stale
 (10 min) or older than his last word, the hook falls back to the allocator's per-seat N
 (src/RimMandrake/Utils/slot_allocator.py, rules in slot_rules.json): allocation.json when that is under 40 min old
 and newer than his last word, computed live otherwise, and the rules file's fallback_n if neither works. Running helpers are counted from this seat's
@@ -93,7 +93,7 @@ def draining(seat, payload, now):
 def session_exempt(seat, payload, rules, now):
     """True when the helper cap does not apply: the interactive Conductor window (seat BENCH, no RM_ROLE_UNIT: a
     scheduled or Dispatcher role run always carries it) while the owner typed within conductor_window.open_min.
-    FOUNDRY and every role run keep the allocator's limits."""
+    RELENTLESS and every role run keep the allocator's limits."""
     if seat != "BENCH" or (os.environ.get("RM_ROLE_UNIT") or "").strip():
         return False
     open_min, _ = conductor_window(rules)

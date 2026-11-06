@@ -179,7 +179,7 @@ check("panel: per-stream split absent draws hollow, not zero slots", "No per-str
 check("panel: no pacing record draws the Pacing tile hollow with its reason", "<h2>Pacing</h2>" in page
       and "No pacing recorded" in page, page[page.find("Pacing"):][:300])
 pac = {"at": S.iso(NOW - 120), "mode": "CRUISE", "token_mode": "CRUISE", "queue_mode": "PAYDOWN", "presence": "BENCH",
-       "seats": {"BENCH": 3, "FOUNDRY": 1}, "n_total": 4, "running": {"BENCH": 2, "FOUNDRY": 1},
+       "seats": {"BENCH": 3, "RELENTLESS": 1}, "n_total": 4, "running": {"BENCH": 2, "RELENTLESS": 1},
        "overage": {"owed_h": 3.2, "paying": True, "cut": 1, "plan": "owes 3.2 helper-h: N lowered by 1 (wanted 1) for about 3 h, due within 20 h"},
        "why": "system 40% left, 1.99 d to reset -> P 1.40; fits 4.1",
        "accounts": [{"name": "system", "pct_left": 40.0, "hours_to_reset": 48.0, "source": "MEASURED", "burn": True},
@@ -188,7 +188,7 @@ pac = {"at": S.iso(NOW - 120), "mode": "CRUISE", "token_mode": "CRUISE", "queue_
                     {"name": "lukas", "pct_left": None, "hours_to_reset": None, "source": "UNMEASURED", "burn": False}]}
 pg = S.render([dict(live, pacing=pac)], NOW)
 tile = pg[pg.index("<h2>Pacing</h2>"):pg.index("<h2>Builder slots</h2>")]
-check("pacing tile: mode and N per seat", "CRUISE" in tile and "BENCH <b>3</b>" in tile and "FOUNDRY <b>1</b>" in tile
+check("pacing tile: mode and N per seat", "CRUISE" in tile and "BENCH <b>3</b>" in tile and "RELENTLESS <b>1</b>" in tile
       and "2 running" in tile, tile[:600])
 check("pacing tile: the overage owed and the payback plan", "overage owed" in tile and "3.2 helper-h" in tile
       and "lowered by 1" in tile, tile[:900])
@@ -247,7 +247,7 @@ check("pacing(): reads the frozen rules fixture, not the live slot_rules.json", 
 _adv = SA.load_rules().get("advisory") or {}   # the fixture's advisory: the placed total is the floor (owner 2026-11-02/04)
 _want = max(6, _adv.get("n_total", 0)) if _adv.get("enabled") is True else 6   # 6 = CRUISE's pace on this fixture
 check("pacing(): runs the allocator and writes allocation.json for the hook", al.get("seats") == pc_.get("seats")
-      and pc_.get("seats") == {"BENCH": 0, "FOUNDRY": _want}, (pc_, al.get("seats"), _want))
+      and pc_.get("seats") == {"BENCH": 0, "RELENTLESS": _want}, (pc_, al.get("seats"), _want))
 check("pacing(): carries the accounts with % left and hours to reset", any(a["name"] == "system" and a["burn"]
       and a["pct_left"] == 40.0 for a in pc_.get("accounts") or []), pc_.get("accounts"))
 check("collect() records pacing every 15 min", "pacing" in S.collect.__code__.co_names or "pacing(" in
