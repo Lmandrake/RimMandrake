@@ -8,10 +8,12 @@ obstacles get routed around. So most of the cases below are ALLOW cases.
 
     python3 .claude/hooks/selftest_block_blind_scan.py
 """
+import importlib.util
 import json
 import os
 import subprocess
 import sys
+import tempfile
 
 HOOK = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                     "block_blind_scan.py")
@@ -201,6 +203,61 @@ def t_a_bare_filename_with_no_directory_is_still_the_artifact():
     # …but a bare name with no registered extension is still nobody's business
     allowed("wc -l notes.txt")
     allowed("grep -c TODO README.md")
+
+
+# --------------------------------------------------------------------------
+# HOOKS_BLINDSCAN_TUNE_DRIVE_D_IMPORT_TOLL: the skill import costs ~90 ms, so
+# only a command naming a scanner or reader may pay it.
+# --------------------------------------------------------------------------
+
+def _imports_skill(cmd):
+    """Run the hook against a fake skill that records being imported, then dies."""
+    with tempfile.TemporaryDirectory() as home:
+        pkg = os.path.join(home, "scripts", "measure")
+        os.makedirs(pkg)
+        marker = os.path.join(home, "imported")
+        with open(os.path.join(pkg, "__init__.py"), "w") as f:
+            f.write("open(%r, 'w').close()\nraise ImportError('fake')\n" % marker)
+        assert run(cmd, env={"MEASURE_SKILL_HOME": home}) is None, cmd
+        return os.path.exists(marker)
+
+
+def t_a_command_with_no_scanner_never_imports_the_skill():
+    for cmd in ("ls -la src", "git status", "echo grep", "cd /tmp && ls",
+                "python3 x.py grep cat", "cp '/x/Saves/Ash.rws' /backup/",
+                "echo 'unbalanced"):
+        assert not _imports_skill(cmd), "imported for: %s" % cmd
+
+
+def t_a_scanner_or_reader_in_any_position_imports_the_skill():
+    """The positive half: the marker can see an import, so no-import means something."""
+    for cmd in ("grep x y", "cat y", "ls; wc -l y", "ls | sed s/a/b/",
+                "FOO=1 grep x y", "/usr/bin/grep x y", "xargs grep x",
+                "env rg x", 'bash -c "tail y"'):
+        assert _imports_skill(cmd), "no import for: %s" % cmd
+
+
+def t_a_failing_skill_import_fails_open():
+    """_imports_skill's fake raises, and run() asserts the hook still allowed it."""
+    assert _imports_skill("grep -c Desert '/x/Saves/Ash.rws'")
+
+
+def t_an_absent_skill_fails_open():
+    with tempfile.TemporaryDirectory() as home:
+        out = run("grep -c Desert '/x/Saves/Ash.rws'",
+                  env={"MEASURE_SKILL_HOME": home, "HOME": home})
+    assert out is None, out
+
+
+def t_the_tool_list_covers_everything_the_skill_gates_on():
+    """A tool the skill adds and this list lacks would silently go unguarded."""
+    spec = importlib.util.spec_from_file_location("block_blind_scan", HOOK)
+    hook = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(hook)
+    art = hook.load_artifacts()
+    assert art is not None, "the skill did not load, so this cannot be checked"
+    lost = (set(art.BLIND_SCANNERS) | set(art.READERS)) - hook.SCAN_TOOLS
+    assert not lost, "add to SCAN_TOOLS: %s" % sorted(lost)
 
 
 if __name__ == "__main__":

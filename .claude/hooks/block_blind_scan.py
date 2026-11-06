@@ -80,14 +80,35 @@ def _measure_scripts():
     return None
 
 
-_S = _measure_scripts()
-if _S:
-    sys.path.insert(0, _S)
+#: Set by load_artifacts(), and only for a command that names a tool below.
+artifacts = None
 
-try:
-    from measure import artifacts
-except Exception:                                   # fail open, always
-    artifacts = None
+#: Every tool offence() can act on: `artifacts.BLIND_SCANNERS | artifacts.READERS`,
+#: spelled out here because that import is what must not run for other commands.
+#: It reads a skill folder on the D: mount, 116 ms against 23 ms without it, and
+#: this hook sets the wall time of the Bash hook phase. Missing a name here would
+#: silently stop the guard for that tool, so the selftest pins it to the skill.
+SCAN_TOOLS = frozenset((
+    "grep", "egrep", "fgrep", "zgrep", "bzgrep", "xzgrep",
+    "rg", "ag", "ack", "strings", "wc", "awk", "sed",
+    "cat", "zcat", "bzcat", "xzcat", "head", "tail", "type",
+))
+
+
+def load_artifacts():
+    """Import the skill's classifier; None, never an exception, if it cannot."""
+    global artifacts
+    if artifacts is None:
+        try:
+            scripts = _measure_scripts()
+            if scripts:
+                sys.path.insert(0, scripts)
+            from measure import artifacts as loaded
+            artifacts = loaded
+        except Exception:                           # fail open, always
+            artifacts = None
+    return artifacts
+
 
 #: Real instruments. If one of these appears anywhere on the command line the
 #: whole segment is allowed — they are ALLOWED to name the artifact, that is
@@ -181,9 +202,25 @@ def _paths_in(args, tool, cwd):
     return hits
 
 
+def names_scan_tool(cmd):
+    """Does any segment run a tool offence() could act on? Reads no skill file.
+
+    Walks the same segments and tokens as offence(), so it cannot say no to a
+    command offence() would have refused.
+    """
+    for segment in segments(cmd):
+        try:
+            tok = shlex.split(segment)
+        except ValueError:
+            continue
+        if _tool_and_args(tok)[0] in SCAN_TOOLS:
+            return True
+    return False
+
+
 def offence(cmd, cwd=None):
     """(artifact, tool, path) if this command blind-scans a structured file."""
-    if artifacts is None:
+    if not names_scan_tool(cmd) or load_artifacts() is None:
         return None
 
     reader_hits = []          # artifacts opened by cat/head/... earlier in a pipe

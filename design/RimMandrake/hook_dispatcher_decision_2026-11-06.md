@@ -44,7 +44,8 @@ Entry count is not an outcome, as G19 says: 17 entries cost 121 ms of wall time.
 `measure` package at startup, from a skill folder on the D: mount, on every Bash call, although few commands name a
 scanner. With the skill folder absent the same hook reads 23 ms against 116 ms, so the import is the cost. Importing it
 only when the command names a scanner is a small change, and removes most of what a merge would not.
-That work is filed separately as `HOOKS_BLINDSCAN_TUNE_DRIVE_D_IMPORT_TOLL`.
+That work is filed separately as `HOOKS_BLINDSCAN_TUNE_DRIVE_D_IMPORT_TOLL`. Done: `ls -la src` now reads 21-24 ms in this hook
+against 95-100 ms for a command that names a scanner, and the `bash_common` phase went from 117-125 ms to 63 ms.
 
 ## Same refusals, same allowed operations
 
