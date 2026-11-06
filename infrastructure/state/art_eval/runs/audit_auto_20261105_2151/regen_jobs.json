@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RM_Chellow_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Chellow",
+  "prompt": "A creature sprite for RimWorld: the chellow, an alien squat flying animal shaped like a near-spherical ball of dense, short, downy plumage in cool slate-blue and dusky teal with pale silvery feather edging. The neck is very short and the head sits low, nestled into the shoulder feathers. Two very short, thin legs with two toes are set far under the round body, so the body rests low to the ground. A pair of small wings is folded neatly against its sides, symmetric and clearly readable, the feather tips reaching toward a tiny tucked tail. The head is entirely bare: wrinkled pink skin with no feathers at all, with a smooth, rounded, blunt facial contour. The face ends flat: below the eyes is a short, broad, soft membrane of wrinkled skin stretched across the mouth area like a drum-skin, continuous with the skin of the head. The mouth is a broad, flexible, lipless flap of skin lying flat against that blunt face, softly rippled as it vibrates to whistle. Below the head hangs a wide, thin, translucent throat-fan it inflates to carry the call, veined and lit faintly from behind, spreading over the chest and joined to the head and chest as part of one body. Front view: eyes toward the viewer, the flat drum-skin face, the throat-fan hanging below the chin, both folded wings visible at the sides. Side view: one folded wing along the flank, the bare head in profile with a smooth rounded blunt face and the skin flap lying flat against it, the throat-fan hanging below, the tail behind. Rear view, seen from behind: the folded wings, the plumage of the back and tail, and the bare wrinkled head from behind with the eyes hidden. Painterly vanilla RimWorld sprite style, realistic, with a clean dark outline and soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, STYLE_EARTHLY, DEPARTURE_MISSING, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261105_2151",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.65,
+  "module": "flyer",
+  "target_texpath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
+ },
+ {
+  "id": "arteval_RM_Dakkra_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dakkra",
+  "prompt": "A creature sprite for RimWorld: the dakkra, an alien low ambusher that waits in shade, then makes a short, fast rush at exposed prey. Reference: none; build the body from this description. Body plan, identical in every view: a compact, deep-chested, low-slung wedge torso held close to the ground, with an arched, plated back and heavy, full haunches; the hips are as wide as the shoulders. Four short limbs with unusual joints, each with an extra bend so elbows and knees fold in opposite directions to a lizard's sprawl, are held tucked under the body and end in narrow pads. The head is short and broad, a heat-venting head with vented plates and narrow jaws and forward-set eyes, sitting on a short thick neck. The dorsal fins are upright longitudinal plates standing in the body's own plane, forming a lengthwise row along the spine from the shoulders to the tail root; they spread in shade and fold flat when it runs. The tail ends in one smaller fan of fin rays standing upright in the same longitudinal plane as the dorsal row. Side view: the compact wedge torso in profile, the lengthwise row of upright dorsal plates along the spine, the upright tail fan broad at the rear, the short broad vented head at the front. Front view, eyes toward the viewer: the short broad head in front, and the dorsal fins seen end-on as a narrow vertical ridge of stacked fin tips rising above the spine behind the head, no wider than the neck, overlapping into narrow edges along the receding spine. Rear view, seen from behind: the full-width haunches and flanks, the dorsal ridge as a narrow vertical stack of fin tips above the spine, and the tail fan seen edge-on as a narrow vertical blade of fin rays centred under the dorsal ridge, the tail pointing toward the viewer, with the eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT, STYLE_EARTHLY, F_INCONSISTENT, F_INCONSISTENT, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261105_2151",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
+ }
+]

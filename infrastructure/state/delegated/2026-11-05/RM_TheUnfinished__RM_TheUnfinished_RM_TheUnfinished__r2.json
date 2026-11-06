@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.363328
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 47.6
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_TheUnfinished__RM_TheUnfinished_RM_TheUnfinished",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['DEPARTURE_MISSING', 'DESC_MISS', 'DEPARTURE_MISSING']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "603506e3c6e5a96c74d6a757c619c41b45e4979d259a36b0519b0669550763fb",
+  "east.png": "0d0d1094ba6f6e52736c3c0f305ee83f996ac847f05286eff3f83486c0bfa4d4",
+  "north.png": "6b5511057e3f98dbe30f00c58d36f784197c7081704f2f79bb29f78ee16b003e",
+  "scale.png": "61941a0713aa417bb03ec012f7b30e81fae678e45a6d1185f6fd68e0b441dd2a",
+  "facings.png": "0d70eede2b8c0357af6ca18d17df48695fc616aeba3c8b6fdb712485a997d67e"
+ }
+}
