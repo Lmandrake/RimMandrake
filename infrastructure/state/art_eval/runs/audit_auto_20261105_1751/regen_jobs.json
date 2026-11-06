@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RM_Chellow_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Chellow",
+  "prompt": "A creature sprite for RimWorld: the chellow, a small flying bird-like creature seen at rest on the ground. Squat and round feathered body, like a plump ball of plumage, standing on exactly two thin legs, with a short tail tuft. Two wings are folded neatly and symmetrically against its sides, wing tips resting over the lower back, clearly visible as wings. The body is feathered everywhere except the head. The head is entirely featherless: bare wrinkled skin from crown to neck. There is no beak; in place of a mouth is a lipless flap of skin that vibrates to whistle. Below the head hangs a translucent throat-fan, a distinct lobed membrane that it inflates to carry its call, crossed by fine veins and lit faintly from behind. The silhouette is a compact alien orb of feathers with the bare head and the glowing fan hanging at the front. In the rear view, seen from behind, the folded wings, back and tail tuft show, and the bare head is turned away with the throat-fan hidden. In the front view, eyes toward the viewer, the bare face, flap mouth and full throat-fan show. In the side view the near folded wing and one leg show in profile. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, DESC_MISS, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261105_1751",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.65,
+  "module": "flyer",
+  "target_texpath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
+ }
+]

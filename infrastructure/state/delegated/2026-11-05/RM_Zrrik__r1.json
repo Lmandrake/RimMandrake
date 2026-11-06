@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Zrrik",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [3.4, 3.4]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3e363e1a91a489343a7972c94b10493aeaeb23f4ca176a4d7ce3505d4130b4b6",
+  "east.png": "00d1e4dde5e0747275ec0ac01ac74eb3025963341084e1283c9bfd09603622d3",
+  "north.png": "7768c0e2a96b7d4b1a445dfdd6c7e7bc67df1209768e4e3e220e1092821707b0",
+  "scale.png": "1460c015e6778c1e02cf988d09f3748ce9789b94647a1d8eb56a3de69d8c0f07",
+  "facings.png": "fbb8d7bf289bbed626edd0cc48de8f2a7cb5c7f8b46481e059ff3aa071651acf"
+ }
+}
