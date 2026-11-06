@@ -589,7 +589,9 @@
    "meaning": "A reloaded run must match the never-saved run in totals and end state; small differences on the way are fine."
   },
   "S5": {
-   "verdict": "AWAITING_OWNER: redrawn 2026-10-17, approve again"
+   "verdict": "APPROVE (owner, session 2026-11-03; ledger OWNER.jsonl note on WATER_SCENES_S5_JUDGE_THIRD_DRAFT ts 2026-11-03T20:19:04Z)",
+   "owner_said": "For item G, is the pond supposed to be connected to the canal? Or are they separate and the pump is moving water from the pond to the canal? If the later, then that looks great.",
+   "meaning": "Conditional on the pump moving the water, which the sealed scene states for G (canal at least 2 undug cells from the pond; only the pump moves water). Recorded outside the seal; the seal is unchanged."
   }
  },
  "revisions": [
