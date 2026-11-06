@@ -997,6 +997,33 @@ def t_def_check_judge():
             pass
 
 
+def t_menu_wait_on_two_games_stays_a_restage():
+    """GAMEENV_FIX_PROOFSITE_0DB67BE7_ITEMS_WAIT, the blind check's gap: a live-toggle item's clause waits on BOTH sides'
+    stagings, so its MENU_WAIT repeats on a second game with the very same cause key. That repeat must stay a restage,
+    never "the same cause on the game of ... so a reload cannot help" (the 'and not waits' guard on seen_on_other_game).
+    The rows here are written by L.run itself, so the cause keys are the real ones."""
+    root = tempfile.mkdtemp(prefix="rl_live_")
+    os.makedirs(os.path.join(root, "live"))
+    out = (2, "UNMEASURED: a game was started after the load\nA2: UNMEASURED (rides a later load)")
+    rows = []
+    for started in (2000.0, 9000.0):     # two games: the on side's staging, then the off side's
+        fx = ScriptFx({"python3 probe.py": out}, started=started, mtime=1000.0)
+        rows.append(L.run(fx, root, "ROT_X", "A2", "python3 probe.py", "--compose biomes", {}, now=1_800_000_000,
+                          menu=True))
+    first, second = rows
+    check("menu twice: the two rows are on two games", first.get("game") and second.get("game")
+          and first["game"] != second["game"], (first.get("game"), second.get("game")))
+    check("menu twice: both rows share one cause key (the guard is reached)", first.get("cause")
+          and first.get("cause") == second.get("cause"), (first.get("cause"), second.get("cause")))
+    with open(os.path.join(root, "live", "runs.jsonl")) as f:
+        on_disk = [json.loads(x) for x in f if x.strip()]
+    check("menu twice: the first game's MENU_WAIT row is on disk before the second run", any(
+        r.get("game") == first["game"] and str(r.get("why", "")).startswith(L.MENU_WAIT) for r in on_disk), on_disk)
+    for name, row in (("first", first), ("second", second)):
+        check("menu twice: the %s game's exit 2 is a MENU_WAIT restage, no defect" % name, not row.get("defect")
+              and row["why"].startswith(L.MENU_WAIT) and "cannot help" not in row["why"], row)
+
+
 def t_menu_item_exit2_asks_its_own_staging():
     """GAMEENV_FIX_PROOFSITE_0DB67BE7_ITEMS_WAIT: PLANET_ATMOSPHERE_CLOUD_COST_1 (live-menu + live-toggle) said "rides a
     later load" on a game no staging of its own served, and "the same cause on the game of ... so a reload cannot help"
@@ -1338,7 +1365,7 @@ def t_rebuilt_assembly_carries():
 
 
 def main():
-    for t in (t_exit1_that_could_not_ask_is_no_fail, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_menu_item_exit2_asks_its_own_staging, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
+    for t in (t_exit1_that_could_not_ask_is_no_fail, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_menu_item_exit2_asks_its_own_staging, t_menu_wait_on_two_games_stays_a_restage, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_owner_look_is_no_game_clause, t_def_check_judge, t_unloaded_mod,
