@@ -3,8 +3,8 @@
   "default_grants": ["git_history"],
   "_default_grants": "Every box gets a read-only git history at the candidate (relentless_wall.grant_git): HEAD detached at the sha, no refs, the shared object stores bound read only. Before this a box got it only after a passed reach repair of its class, so history-dependent proofs (git rev-parse HEAD, git show <rev>:path, code-commit checks) went blind first and were repaired one class at a time.",
   "path_prepend": ["~/.local/venvs/checkbox/bin"],
-  "_path_prepend": "Put ahead of the unit's PATH when the folder exists: a venv over the system python3 (--system-site-packages) that adds opencv-python-headless, so `python3 -c 'import cv2, numpy'` runs in the box. Remake it with venv_fix.",
-  "venv_fix": "uv venv --system-site-packages -p /usr/bin/python3 ~/.local/venvs/checkbox && echo numpy==$(/usr/bin/python3 -c 'import numpy; print(numpy.__version__)') > /tmp/checkbox_c.txt && uv pip install --python ~/.local/venvs/checkbox/bin/python -c /tmp/checkbox_c.txt opencv-python-headless",
+  "_path_prepend": "Put ahead of the unit's PATH when the folder exists: a venv over the system python3 (--system-site-packages) that adds opencv-python-headless, so `python3 -c 'import cv2, numpy'` runs in the box. Make or confirm it on any host with venv_fix.",
+  "venv_fix": "python3 src/RimMandrake/Utils/provision_checkbox_venv.py (idempotent: uv, or python3 -m venv + pip; numpy pinned to the system's; --check reads only)",
   "toolchain": [
     {"name": "git", "cmd": "git --version && git rev-parse HEAD", "why": "the default git_history grant: history-dependent proofs run in the box"},
     {"name": "python_cv2", "cmd": "python3 -c 'import cv2, numpy; print(cv2.__version__, numpy.__version__)'", "why": "art and image proofs import cv2/numpy"},

@@ -150,7 +150,9 @@ DOTNET_LANE = {"selftest_atmosphericbase_kernel.py", "selftest_flowworks_kernel_
                "selftest_swim_shore_reach.py", "selftest_track_grid.py", "selftest_wasterun_kernel.py",
                # SELFTEST_FIX_SIX_TIMEOUTS_AT_240S: 4 s / 122 s / 22 s alone, CRASH [timeout] beside the lane
                # (coldstorage and spire build C#; vexxith runs flowworks_stock and the Cauldron fuzz).
-               "selftest_coldstorage.py", "selftest_vexxith_uses.py", "selftest_spire_one_building.py"}
+               "selftest_coldstorage.py", "selftest_vexxith_uses.py", "selftest_spire_one_building.py",
+               # RELENTLESS_FIX_CHECKBOX_TEST_SERIAL_LANE: its E4 row builds ColdStorage with winbuild.py (dotnet.exe)
+               "selftest_relentless_checkbox.py"}
 
 
 def _lane_of(path: Path):

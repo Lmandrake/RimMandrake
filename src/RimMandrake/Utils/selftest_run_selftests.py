@@ -229,6 +229,7 @@ eq(sorted(rs.DOTNET_LANE - _tracked), [], "every DOTNET_LANE name is a tracked s
 eq(rs._lane_of(Path("selftest_sun_heat.py")), "dotnet", "sun_heat is in the dotnet lane")
 eq(rs._lane_of(Path("selftest_mandrakepatches.py")), "heavy", "memory-heavy lane unchanged")
 eq(rs._lane_of(Path("selftest_ledger_lint.py")), None, "an ordinary test has no lane")
+eq(rs._lane_of(Path("selftest_relentless_checkbox.py")), "dotnet", "the checkbox test (E4 winbuild) runs in the dotnet lane")
 # SELFTEST_FIX_SIX_TIMEOUTS_AT_240S: these drive dotnet.exe and CRASHed [timeout] at 240 s beside the lane
 # in the 2026-11-02 nightly; alone they pass, so only lane membership keeps them out of the contention.
 for _n in ("selftest_atmosphericbase_kernel.py", "selftest_wasterun_kernel.py", "selftest_coldstorage.py",
