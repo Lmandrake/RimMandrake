@@ -3185,6 +3185,13 @@
    "size": "1",
    "reason": "Separate dormant burrowers have no stated social grouping.",
    "batch": 2
+  },
+  {
+   "subject": "RSW_ColoClawFish",
+   "verdict": "SET",
+   "size": "1",
+   "reason": "Not GPT-judged: cast on RM_TwilightSea after the walk (COLOCLAW_DECIDE_APEX_ALIVE_OR_CORPSE_ONLY); the canon solitary ruling (CANON_HERD_LORE_ARBITRATION_1) fixes the size, added by SELFTEST_FIX_BIOME_GROUP_SIZES_IMZR.",
+   "batch": "canon"
   }
  ],
  "class": "design"

@@ -109,7 +109,7 @@
     <label>colo claw fish</label>
     <race>RSW_ColoClawFish</race>
     <combatPower>280</combatPower>
-    <wildGroupSize>1~2</wildGroupSize>
+    <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.8</ecoSystemWeight>
     <moveSpeedFactorByTerrainTag>
       <li>
