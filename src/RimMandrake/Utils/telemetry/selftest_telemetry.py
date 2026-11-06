@@ -862,6 +862,35 @@ def main(argv) -> int:
         check("[retention] a full archive disk is reported, keeps the hot file, and the pass still prunes rows",
               "error" in rep_f and rep_f["moved"] == 0 and os.path.exists(third) and "bridge_rows" in rep_f, rep_f)
 
+        # [exc-dedupe] exc_seen went at raw_days_hot while exc_sigs.n kept the counts: a 100-day-old sample replayed
+        # (rebuild --since 1y over a producer file) after retention counted twice
+        E = ingest.Emit(con, sink, latest)
+        sess_x = "dedupe0123456789"
+
+        def exc_row(age_d):
+            return {"v": 2, "session": sess_x, "utc": iso(now - age_d * 86400), "kind": "sample", "state": "run",
+                    "dTicks": 60, "tps": 60, "tickMs": 5, "mult": 1,
+                    "exc": {"n": 4, "sup": 0, "e": 4, "w": 0, "m": 0, "rep": 0, "over": 0, "top": [["E:dedupe", 4]]}}
+
+        def n_x():
+            r = con.execute("SELECT n FROM exc_sigs WHERE session=?", (sess_x,)).fetchone()
+            return r[0] if r else 0
+        ingest.parse_tps(exc_row(100), E, "tps:dedupe:0:h100")
+        analysis.retention(con, now)
+        ingest.parse_tps(exc_row(100), E, "tps:dedupe:0:h100")
+        check("[exc-dedupe] a sample replayed after retention passed raw_days_hot is not counted twice",
+              n_x() == 4 and con.execute("SELECT 1 FROM exc_seen WHERE src_ref='tps:dedupe:0:h100'").fetchone(), n_x())
+        hz = c.get("exc_dedupe_days") or analysis.cfg()["exc_dedupe_days"]
+        ingest.parse_tps(exc_row(hz + 1), E, "tps:dedupe:1:hold")
+        analysis.retention(con, now)
+        ingest.parse_tps(exc_row(hz + 1), E, "tps:dedupe:1:hold")
+        check("[exc-dedupe] a sample older than the dedupe horizon (no dedupe row can be kept) is never counted",
+              n_x() == 4 and not con.execute("SELECT 1 FROM exc_seen WHERE src_ref='tps:dedupe:1:hold'").fetchone(), n_x())
+        con.execute("INSERT INTO exc_seen(src_ref,ts) VALUES('tps:dedupe:2:hgone', ?)", (now - (hz + 1) * 86400,))
+        analysis.retention(con, now)
+        check("[exc-dedupe] retention still prunes dedupe rows past the horizon",
+              not con.execute("SELECT 1 FROM exc_seen WHERE src_ref='tps:dedupe:2:hgone'").fetchone())
+
         # ---------------------------------------------------------------- RimPulse integration
         sys.path.insert(0, os.path.join(os.path.dirname(HERE), "pulse"))
         import pulse_core as pc

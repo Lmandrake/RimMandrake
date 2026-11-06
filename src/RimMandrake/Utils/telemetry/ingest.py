@@ -158,8 +158,10 @@ def parse_tps(r: dict, E: Emit, ref: str) -> bool | None:
             for lv in ("e", "w", "m", "rep", "over"):
                 if lv in exc:
                     E.point("rm_game_exc_by_level", {**lab, "level": lv}, exc[lv], ts)
-            # counts add up per sample row, so a row is counted once: a rebuild re-reads it (exc_seen)
-            first = E.con.execute("INSERT OR IGNORE INTO exc_seen(src_ref,ts) VALUES(?,?)", (ref, ts)).rowcount > 0
+            # counts add up per sample row, so a row is counted once: a rebuild re-reads it (exc_seen). exc_seen is
+            # pruned past exc_dedupe_days, so a sample that old is not counted at all (it would have no dedupe row)
+            first = ts >= time.time() - cfg()["exc_dedupe_days"] * 86400 and E.con.execute(
+                "INSERT OR IGNORE INTO exc_seen(src_ref,ts) VALUES(?,?)", (ref, ts)).rowcount > 0
             for sig_n in (exc.get("top") or []) if first else []:
                 if isinstance(sig_n, list) and len(sig_n) >= 2:
                     E.con.execute(

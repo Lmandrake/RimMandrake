@@ -300,7 +300,8 @@ def retention(con, now: float) -> dict:
     prune_archive()
     cur = con.execute("DELETE FROM bridge_calls WHERE ts < ?", (now - c["bridge_rows_days"] * 86400,))
     rep["bridge_rows"] = cur.rowcount
-    con.execute("DELETE FROM exc_seen WHERE ts < ?", (now - c["raw_days_hot"] * 86400,))
+    # the dedupe row lives as long as ingest will count its sample (exc_dedupe_days), not as long as the raw copy
+    con.execute("DELETE FROM exc_seen WHERE ts < ?", (now - c["exc_dedupe_days"] * 86400,))
     con.commit()
     logs = c["logs"]
     for p in glob.glob(os.path.join(logs, "*.log")):

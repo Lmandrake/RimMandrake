@@ -72,6 +72,9 @@ def _defaults() -> dict:
         "raw_cap_gb": 200,          # E: raw copies; oldest day moved to F: first when exceeded
         "archive_cap_gb": 2000,     # F: archive; oldest day deleted when exceeded
         "bridge_rows_days": 30,     # per-call SQLite rows (aggregates live 2 y in VM)
+        # exc_seen (the per-sample dedupe behind exc_sigs.n) lives this long, and a sample older than it is never
+        # counted: pruning it sooner (it went at raw_days_hot) let a replayed old sample add to n twice
+        "exc_dedupe_days": 730,
         "vm_retention": "2y",
         "poll_fast_s": 1.0,         # test tier armed
         "poll_slow_s": 15.0,
