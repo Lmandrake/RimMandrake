@@ -23,6 +23,14 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
   exact page title returns MISSING for real subjects constantly, which is not evidence a subject
   is non-canon. ⚠️ `timeout` does not exist on macOS and its failure **resets the shell's cwd**;
   use `curl --max-time`.
+- 🔴 **The SteveDesktop runner's Python has no third-party packages unless someone installed
+  them** — a proof row that imports one fails there as a FAIL that is a machine fact, not a mod
+  defect (MEASURED in the findings fold: `No module named 'PIL'` on four FlowWorks diptych rows,
+  job J20261026T004751Z-6e5292; `No module named 'lxml'` on Cuisine
+  `rotting_bed_grows_marsh_fungus/offline_patch_shape`, 2026-11-06). Before judging such a row,
+  read the import: a `ModuleNotFoundError` row is a runner-environment finding (Operations), and
+  a validation script should import optional packages inside the row and report UNMEASURED, never
+  FAIL, when they are absent.
 
 ## Tools with surprising side effects
 - 🔴 **When a new game or world won't start, read the FIRST exception in `Player.log`, not the
