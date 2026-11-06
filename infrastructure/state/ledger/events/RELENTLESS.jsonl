@@ -954,3 +954,11 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:03:03Z","tsn":1793955783797247069}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ACC_BIOMES_FIXES_LIVE_RERUN_1 A2 (L2), read-only proof","ts":"2026-11-06T09:03:18Z","tsn":1793955798814529616}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:03:29Z","tsn":1793955809959287016}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TICKBURST_PROVE_MANY_TICKS_ONE_FRAME A1 (L1), read-only proof","ts":"2026-11-06T09:12:01Z","tsn":1793956321596486432}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:12:08Z","tsn":1793956328541722106}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TICKBURST_PROVE_MANY_TICKS_ONE_FRAME A2 (L2), read-only proof","ts":"2026-11-06T09:12:23Z","tsn":1793956343964221866}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:12:31Z","tsn":1793956351149368889}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TICKBURST_PROVE_MANY_TICKS_ONE_FRAME A6 (L2), read-only proof","ts":"2026-11-06T09:12:46Z","tsn":1793956366268256164}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:12:52Z","tsn":1793956372978427160}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: TICKBURST_PROVE_MANY_TICKS_ONE_FRAME A7 (L2), read-only proof","ts":"2026-11-06T09:13:05Z","tsn":1793956385102733792}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:13:12Z","tsn":1793956392167403818}
