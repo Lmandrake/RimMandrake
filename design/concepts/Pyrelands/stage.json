@@ -144,10 +144,24 @@
     "ref": "run rm-role-designer-1793918145",
     "stage": 4,
     "tokens": 163188
+   },
+   {
+    "at": "2026-11-06T02:30:55Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1793932124",
+    "stage": 5,
+    "tokens": 351868
+   },
+   {
+    "at": "2026-11-06T02:33:05Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793932102",
+    "stage": 5,
+    "tokens": 187200
    }
   ],
   "reserve": 60000,
-  "spent": 3878745
+  "spent": 4417813
  },
  "history": [
   {
@@ -287,11 +301,23 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1793918145: stage 4 done"
+  },
+  {
+   "at": "2026-11-06T02:28:44Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1793932102, stage 5, budget 61255"
+  },
+  {
+   "at": "2026-11-06T02:33:06Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793932102: stage 5 return"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/Pyrelands",
- "pending_decision": "his flagship pick: which showcase is the Pyrelands' face when he first lands (showcase 1 must be bound to an owner decision with flagship; the root's 'Judged first' line was agent text inside the root he approved, and a root approval is not a pick)",
+ "pending_decision": "root firebreak clause: his approved root (OWNER:1793895899845199295) still says 'a sprayed firebreak line and a firefoam sprayer let a colony defend its fields', but d_firebreak_cut removed the firebreak floor (vanilla paving holds the line); only his word can change root text. Coverage judge (coverage_verdict.json, not_covered) also returned 8 stage-3 gaps: furnace-beast bed ignition/thermal charge/heat immunity unscened; firefoam sprayer, sand shovel, fire-rite hook only exploration-grade (sprayer has no leaf); sc_paved_strip skips the smoulder relight and lacks a clear-weather start assertion; sc_three_skies misses cinderfall lightning, black-rain ash wash and a black-rain-vs-vanilla-rain control; sc_ash_watered control does not separate the watered lift from richer soil; restoration is boilerplate (sc_walk needs a pre-walk save, sc_no_rain cannot be pad-restored, sc_ash_watered/sc_furnace name no entry_point_item); giant furnace-beast herd migration unscened; 'genetically engineered' has no leaf or text check.",
  "recovery": [],
  "results": [
   {
@@ -529,11 +555,37 @@
    "run": "rm-role-designer-1793918145",
    "stage": 4,
    "summary": "Cold Reader exam passed: 17 frozen scenarios (12 Examiner, 5 Challenger; 13 reject cases), both Readers 17/17, accept_where_reject_core 0, no Challenger miss. Control on a copy without scorchfruit_born_of_fire missed e4/c1 once its his-words quote was also removed (first control still caught them from that quote). exam.json frozen against the current tree and sheet hashes. Helpers charged 240k."
+  },
+  {
+   "at": "2026-11-06T02:33:05Z",
+   "decision": "root firebreak clause: his approved root (OWNER:1793895899845199295) still says 'a sprayed firebreak line and a firefoam sprayer let a colony defend its fields', but d_firebreak_cut removed the firebreak floor (vanilla paving holds the line); only his word can change root text. Coverage judge (coverage_verdict.json, not_covered) also returned 8 stage-3 gaps: furnace-beast bed ignition/thermal charge/heat immunity unscened; firefoam sprayer, sand shovel, fire-rite hook only exploration-grade (sprayer has no leaf); sc_paved_strip skips the smoulder relight and lacks a clear-weather start assertion; sc_three_skies misses cinderfall lightning, black-rain ash wash and a black-rain-vs-vanilla-rain control; sc_ash_watered control does not separate the watered lift from richer soil; restoration is boilerplate (sc_walk needs a pre-walk save, sc_no_rain cannot be pad-restored, sc_ash_watered/sc_furnace name no entry_point_item); giant furnace-beast herd migration unscened; 'genetically engineered' has no leaf or text check.",
+   "inputs": {
+    "exam": "781c20ccfee15020138fa10bbaf550d91d696225760749d8aa010662d17d8d38",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "9674f15396a05e2f45f136626976c1c2bdb1d7438a056b0cb53c085932ade71d",
+    "scenes": "81ce4462b7430c2abd1412a6a29c57affcf0d15d93441c22f5bf6acee3565cee",
+    "sheet": "3eb3b863498fd29a45d22960b4106d660089e5bc9282ef306bfada15e33a861c",
+    "tree": "05b72bd6b7321aa834664b1593c813955ecd8df261b12a59faba1c8ea8f5a4e4"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_lock.md": "48294670b2e5f64648a7637fd8eaf09092c2ccbe54c496b99c0ff3a0952321ad"
+   },
+   "outcome": "return",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "question": "Your Pyrelands paragraph still ends 'a sprayed firebreak line and a firefoam sprayer let a colony defend its fields'. The firebreak floor was cut at your request (any paved strip two cells wide stops the fire the same way, no chemfuel). Should that sentence now read 'a paved strip two cells wide and a firefoam sprayer let a colony defend its fields', or say it your own way?",
+   "run": "rm-role-designer-1793932102",
+   "stage": 5,
+   "summary": "Lock refused: coverage judge rm-coverage-judge-1793932124 returned not_covered (9 gaps, unsigned). One needs his word (root still names the cut firebreak), so return to stage 2 to ask; the 8 stage-3 gaps ride the decision for the next stage-3 run. Budget warning: 3.88M of the 4.0M cap is spent with a 60k reserve, so the launcher will refuse the next run until the cap is raised; that is the Conductor's call, not a waiver.",
+   "to": 2
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 2,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
