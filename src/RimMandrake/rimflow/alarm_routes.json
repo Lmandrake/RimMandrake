@@ -114,6 +114,8 @@
     {"match": "dependency_refused", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "as instrument_fixture_*: the dependency an item waits on ended but its check refuses the release"},
     {"match": "bundle_failed", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "remove_failed", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "evidence_harvest_failed", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless.harvest_receipts: a Marker receipt the tick could not append (a torn evidence index stops every receipt until `evidence.py repair-index`)"},
+    {"match": "broker_fault", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless_broker.fault: the broker fell back to the old lane; fault.json holds the last one"},
     {"match": "breaker_emergency", "route": "program"},
     {"match": "publish:*", "route": "role", "reader": "Operations", "cause": "publish"},
     {"match": "budget:*", "route": "role", "reader": "Operations", "cause": "helpers"},
