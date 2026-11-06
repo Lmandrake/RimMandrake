@@ -360,7 +360,7 @@ Testing every biome in turn, the reset rule is simple (owner, 2026-09-17):
 All four returned something that looked like progress. Written down because each
 one wasted a staging pass.
 
-- 🔴 **There is no `jawa/get_cell_info`.** It is **`rimworld/get_cell_info`**, and
+- 🔴 **There is no `get_cell_info` under `jawa/`.** It is **`rimworld/get_cell_info`**, and
   **`rimworld/get_cells_info`** takes a rect of up to 1024 cells in ONE call. Calling
   the non-existent name made every cell read as blocked, so the grid placed nobody
   and reported a tidy list of "NO CELL" rows.
@@ -379,7 +379,7 @@ Two more from the same family, 2026-09-18: `rimworld/take_screenshot` silently
 **ignores** `x`/`z`/`zoom` — they are recorded, not refused, so three shots
 requested at different framings can come out identical; frame with a camera
 tool (`frame_cell_rect`) first, never trust the screenshot call's own framing
-args. And `jawa/clear_log` empties the debug log but does **not** close the
+args. And emptying the debug log does **not** close the
 window — `jawa/window_list_close typeName=EditWindow_Log` does. Look at the
 PNG before sending it; a "cleared" log window can still be sitting over your
 frame.

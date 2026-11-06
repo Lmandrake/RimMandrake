@@ -206,7 +206,7 @@ such scan against a known true-positive AND a known true-negative, in both direc
 `tool_surface()` (the tool-count census) is deliberately looser and IS an upper bound —
 it matches a name quoted in prose too — so a `==`-count check against it fails forever;
 subtract a named `PHANTOMS` set instead of widening the tolerance
-(`prove_stat_and_room.py`'s `PHANTOMS = {"jawa/revoke", "jawa/anomaly_"}`).
+(`prove_stat_and_room.py`'s `PHANTOMS` set: two `jawa/` names quoted only in prose, `revoke` and `anomaly_`).
 
 ---
 

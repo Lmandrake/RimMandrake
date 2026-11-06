@@ -378,7 +378,7 @@ the UI speed control, not a freeze on everything with a `Tick()`. Spawn anything
 with autonomous movement well clear of anything precious, and re-check its
 position before assuming it is still where you left it.
 
-## 🔴 `jawa/step_game_ticks` silently truncates well below the ticks you asked for
+## 🔴 `rimworld/step_game_ticks` silently truncates well below the ticks you asked for
 
 Measured twice, two different numbers: **~2,800 ticks per ~10 s call** on one session
 (2026-09-12) and **~600 ticks per call** on another (2026-09-21) — the cap is not a fixed
@@ -517,7 +517,7 @@ inert. Read `row['health']['hediffs']` (2026-09-21).
 Measured 2026-09-24, four separate pawns, four separate death letters, same exact
 tick as the add. `{"pawn": p, "action":"add", "hediff":"WoundInfection", "severity": 1}`
 returns `success:true, didWhat:"added WoundInfection to ..."` — and the pawn is
-simply gone from every subsequent `jawa/list_pawns` census, `jawa/list_colonists`,
+simply gone from every subsequent `jawa/list_pawns` census, `rimworld/list_colonists`,
 and `jawa/pawn_get`, with **zero ticks elapsed** (`ticksGame` identical before and
 after). No `dead:true` is ever observed on the subject because it never comes back
 in a query at all. The tell is `jawa/letter_list`: each loss is preceded by a
