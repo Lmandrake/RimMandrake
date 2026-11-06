@@ -320,7 +320,8 @@ def expand_vars(t, env):
         if not text:
             return
         piped = prev[0] == "|" or op == "|"
-        got = _assign(text, envs[-1], persist=not piped, maybe=prev[0] in ("&&", "||"))
+        # `bash -c "X=1; cat $X"`: the OUTER shell expands a double-quoted script before the inner one runs, so X keeps its old value
+        got = _assign(text, envs[-1], persist=not piped and ctx[-1][0] != '"script', maybe=prev[0] in ("&&", "||"))
         out.append(got[0])
         extra.extend(got[1:])
 

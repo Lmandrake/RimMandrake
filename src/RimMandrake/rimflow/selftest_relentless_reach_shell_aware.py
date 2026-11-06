@@ -139,6 +139,14 @@ def t_review_four():
     ok(needs('echo "run dotnet.exe later"') == [], "F3b an .exe named inside an echo is no program")
 
 
+def t_review_five():
+    """GPT's fifth full-file review (2026-11-06): the outer shell expands a double-quoted script before it runs."""
+    dq = needs('bash -c "ROOT=/tmp; cat $ROOT/x"')
+    ok(dq == ["hidden path: /secret/x"], "V1 a double-quoted script's $VAR is the outer value", dq)
+    sq = needs("bash -c 'ROOT=/tmp; cat $ROOT/x'")
+    ok(sq == [], "V1b a single-quoted script's $VAR is the inner value", sq)
+
+
 def main():
     t_parens()
     t_comments()
@@ -146,6 +154,7 @@ def main():
     t_review_two()
     t_review_three()
     t_review_four()
+    t_review_five()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
