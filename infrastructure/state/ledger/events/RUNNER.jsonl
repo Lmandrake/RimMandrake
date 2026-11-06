@@ -4456,3 +4456,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_UNSTICK_XARX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T05:14:30Z","tsn":1793942070732571481}
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"kept","detail":"sweep: running again","ts":"2026-11-06T05:18:08Z","tsn":1793942288992255186}
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-06T05:18:13Z","tsn":1793942293928019095}
+{"seat":"RUNNER","event":"note","id":"OPS_RED_OVERDUE_CHASE_AEUZ_PHBA","text":"ops_watch: new at 2026-11-06T05:19:10Z: src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py red since 2026-11-01T11:00:00Z, due 2026-11-04T11:00:00Z","ts":"2026-11-06T05:19:15Z","tsn":1793942355873522661}
+{"seat":"RUNNER","event":"note","id":"NIGHTLY_COP_FIX_RED_WARIWE_XVFM_NJSM","text":"ops_watch: new at 2026-11-06T05:19:10Z: src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py (due 2026-11-04T11:00:00Z)","ts":"2026-11-06T05:19:19Z","tsn":1793942359044010074}
