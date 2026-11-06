@@ -298,6 +298,13 @@ WSLPATH = re.compile(r"(?:(?<![^\s=])|(?<=^\")|(?<=[\s=]\"))\$\(\s*wslpath\s+-w\
                      r"(?=[\s;|&<>]|$|\"(?:[\s;|&<>]|$))")
 
 
+# What every live proof runs under. The lane deployed and launched before the proof, so a prover that calls `modcheck
+# run` must neither re-deploy (a DLL the running game holds fails the write: Errno 22, then 'modcheck wrote NO RESULTS',
+# 4 runs of STILLSAND_DUNE_GALE_LIVE_1, LIVEPROOF_DOLLAR_FIX_REFUSED_AT_FILING) nor swap or compose ModsConfig, which
+# names only the next load (modcheck runner: MODCHECK_SKIP_DEPLOY, keep_modlist).
+PROOF_ENV = {"MODCHECK_SKIP_DEPLOY": "1", "MODCHECK_KEEP_MODLIST": "1"}
+
+
 def unquoted(text):
     """`text` with the inside of every single-quoted span dropped: bash expands nothing there (`'{"a":1,"b":2}'` is no
     brace expansion, `'$x'` no variable). A `'` inside double quotes or after a backslash opens nothing. An unclosed
@@ -1284,7 +1291,7 @@ class Fx(object):
             f.flush()
             p = subprocess.Popen(proof, shell=True, cwd=self.books, stdout=f, stderr=subprocess.STDOUT,
                                  stdin=subprocess.DEVNULL, executable="/bin/bash", start_new_session=True,
-                                 env=dict(model.bridge_holder.process_env(),
+                                 env=dict(model.bridge_holder.process_env(), **PROOF_ENV,
                                           **{live_observe.RUN_ENV: live_observe.run_id_of(log)}))
             try:
                 return p.wait(timeout=timeout)

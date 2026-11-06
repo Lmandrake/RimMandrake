@@ -1261,7 +1261,8 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
             raise ValueError(owed)
         if not isinstance(sha, str) or REV_EXPR.search(sha) or sha.upper().startswith(("HEAD", "FETCH_HEAD")) or sha in ("main", "master"):
             raise ValueError("sha must be one commit id, not a ref or revision expression that can move: %r" % (sha,))
-        owed = live_owed(root or os.getcwd(), st, item, sha) or unlanded_owed(root or os.getcwd())
+        owed = (live_owed(root or os.getcwd(), st, item, sha) or proof_text_owed(root or os.getcwd(), item, sha)
+                or unlanded_owed(root or os.getcwd()))
         if owed:
             raise ValueError(owed)
         rec = {"item": item, "gen": gen, "sha": sha, "evidence": evidence, "at": iso(now), "contract": st["contract"],
@@ -1335,6 +1336,39 @@ def live_owed(cwd, st, item, sha):
     return ("%s needs a live line in the contract (%s), so the check would return it: add one first with "
             "`relentless.py contract --item %s --gen %s --proof <the same proof> --live \"<live line>\" --why ...`, then "
             "finish again" % (sha, (need or ["alarm item"])[0], item, st.get("gen")))
+
+
+def proof_refusals(text, r=None):
+    """-> ["<cid>: why"] for every `live-proof` line of a live_proofs text the live lane would refuse to run
+    (relentless_live.refused_proof: a `$` or backtick expansion, eval, a brace list, a load or a mutation). A flyer's
+    line is the lane's to put down, and a line reading his ledger (OWNER.jsonl) is his look, which the game lane skips
+    (owner_looks), so neither is the worker's to rewrite or named here. Pure but for the rules read."""
+    import relentless_game
+    import relentless_live
+    lr = relentless_live.live_rules(rules() if r is None else r)
+    out = []
+    for cid, proof in sorted(relentless_game.proof_lines(text or "").items()):
+        why = relentless_live.refused_proof(lr, "", "", proof)
+        if why and not why.startswith(("flyer:", "owner act:")):
+            out.append("%s: %s" % (cid, why))
+    return out
+
+
+def proof_text_owed(cwd, item, sha, r=None):
+    """-> why `finish` refuses, or None. LIVEPROOF_DOLLAR_FIX_REFUSED_AT_FILING: 9 of 17 live runs that measured nothing
+    in one window were a proof line the live gate refuses (`$`, backtick), caught only at game_implemented, after a blind
+    check was paid for, or on the live lane itself. The line is read at the finished sha, the bytes the lane will run;
+    an unreadable tree or no file refuses nothing (the game phase still gates it)."""
+    path = "infrastructure/state/live_proofs/%s.txt" % item
+    g = _run_git(cwd, "show", "%s:%s" % (sha, path))
+    if not g or g.returncode:
+        return None
+    bad = proof_refusals(g.stdout, r)
+    if not bad:
+        return None
+    return ("%s at %s holds live-proof lines the live lane will refuse: %s. Write each as a literal command (no `$`, "
+            "backtick, eval or brace list; put any computed value inside the proof script), commit, and finish again"
+            % (path, sha[:10], "; ".join(bad)))
 
 
 def _take_receipt(store, st, rec, now):
