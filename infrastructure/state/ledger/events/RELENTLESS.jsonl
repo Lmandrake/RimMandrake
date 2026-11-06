@@ -1208,3 +1208,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:04:29Z","tsn":1793981069051348996}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SEABED_DESCENT_ASCENT_1 A1 (L2), read-only proof","ts":"2026-11-06T16:08:31Z","tsn":1793981311359666581}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:09:48Z","tsn":1793981388697009629}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SEABED_DESCENT_ASCENT_1 A2 (L2), read-only proof","ts":"2026-11-06T16:10:14Z","tsn":1793981414101880538}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:10:30Z","tsn":1793981430406407037}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SEABED_DESCENT_ASCENT_1 A3 (L2), read-only proof","ts":"2026-11-06T16:10:50Z","tsn":1793981450325446356}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:11:05Z","tsn":1793981465891580406}
