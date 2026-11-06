@@ -2158,37 +2158,43 @@ def test_backstop_cursor_from_eligibility_snapshot():
     LATE = "1970-01-12T09:00:05Z"   # arrives at 13:46 but stamped 4.7 h back: past the 4 h gate, after 09:00
     over = {"ctx_tokens": 150_000, "last_kind": "assistant_end", "last_at": T0 - 4000,
             "last_user_at": SR._ts("1970-01-12T09:00:00Z")}
-    for label, late, hi0 in (("backdated", _hu(LATE, "wait, one more thing"), False),
-                             ("no timestamp", dict(_hu(LATE, "wait, one more thing"), timestamp=None),
-                              True),
-                             ("queued mid-read", {"type": "attachment", "timestamp": LATE,
-                                                  "attachment": {"type": "queued_command", "commandMode": "prompt",
-                                                                 "prompt": "wait, one more thing",
-                                                                 "origin": {"kind": "human"}}}, True)):
-        p, ends = _bt("sid-old", [_hu("1970-01-12T09:00:00Z", "last thing he said"), _ha("1970-01-12T09:00:10Z"),
-                                  note("1970-01-12T09:30:00Z"), _ha("1970-01-12T09:30:10Z")])
-        tx = SR.tx_summary(p, peers=[])
-        check(tx and tx.get("size") == os.path.getsize(p) == ends[-1],
-              "P0-2 %s: tx_summary records where its read ended (%s vs %d)" % (label, (tx or {}).get("size"), ends[-1]))
-        end = ends[-1]                                # the bytes that reading judged
-        with open(p, "a", encoding="utf-8") as f:     # he types between the size reading and the last_human read
-            f.write(json.dumps(late) + "\n")
-        lh = SR.last_human(p, [])
-        check(lh and lh[2] == os.path.getsize(p), "P0-2 %s fixture: last_human sees the late message (%s)" % (label, lh))
-        sch, st = _conductor_like_foundry(), fresh()
-        if hi0:   # a seat with no human-idle gate (FOUNDRY's doorbell line): only the cursor can catch it
-            sch["seat_restart"]["seats"]["BENCH"]["backstop_human_idle_s"] = 0
-        o = obs(sessions=[bsess()], tx=dict(over, size=end), last_human=lh)
-        o["seat_restart"]["cursor"] = lambda seat, s_, rs, p=p: SR.cursor_scan(p, rs.get("tx_offset"), [])
-        a = []
-        for k in range(12):
-            a += run(sch, st, o, T0 + 25 * k)
-        rs = st["seat_restart"].get("BENCH") or {}
-        check("restart_kill" not in dos(a),
-              "P0-2 %s: his message after the size reading is never killed over (%s %s cursor=%s)" % (
-                  label, bstate(st), dos(a), rs.get("tx_offset")))
-        check(rs.get("tx_offset") is None or rs["tx_offset"] <= end,
-              "P0-2 %s: no cursor past the bytes the backstop judged (%s > %s)" % (label, rs.get("tx_offset"), end))
+    # both backstop paths: the soft one (150k) and the hard context limit (>= backstop_hard_tokens, 200k), whose
+    # _hard_pending binds its own cursor; the checker's mutant (hard cursor back to lh[3]) killed over his message
+    hard = int(_conductor_like_foundry()["seat_restart"]["seats"]["BENCH"].get("backstop_hard_tokens") or 0)
+    check(0 < hard < 250_000, "P0-2 fixture: the hard limit is armed below 250k (%s)" % hard)
+    for ctx in (150_000, 250_000):
+        at = dict(over, ctx_tokens=ctx)
+        for label, late, hi0 in (("backdated", _hu(LATE, "wait, one more thing"), False),
+                                 ("no timestamp", dict(_hu(LATE, "wait, one more thing"), timestamp=None),
+                                  True),
+                                 ("queued mid-read", {"type": "attachment", "timestamp": LATE,
+                                                      "attachment": {"type": "queued_command", "commandMode": "prompt",
+                                                                     "prompt": "wait, one more thing",
+                                                                     "origin": {"kind": "human"}}}, True)):
+            p, ends = _bt("sid-old", [_hu("1970-01-12T09:00:00Z", "last thing he said"), _ha("1970-01-12T09:00:10Z"),
+                                      note("1970-01-12T09:30:00Z"), _ha("1970-01-12T09:30:10Z")])
+            tx = SR.tx_summary(p, peers=[])
+            check(tx and tx.get("size") == os.path.getsize(p) == ends[-1],
+                  "P0-2 ctx=%d %s: tx_summary records where its read ended (%s vs %d)" % (ctx, label, (tx or {}).get("size"), ends[-1]))
+            end = ends[-1]                                # the bytes that reading judged
+            with open(p, "a", encoding="utf-8") as f:     # he types between the size reading and the last_human read
+                f.write(json.dumps(late) + "\n")
+            lh = SR.last_human(p, [])
+            check(lh and lh[2] == os.path.getsize(p), "P0-2 ctx=%d %s fixture: last_human sees the late message (%s)" % (ctx, label, lh))
+            sch, st = _conductor_like_foundry(), fresh()
+            if hi0:   # a seat with no human-idle gate (FOUNDRY's doorbell line): only the cursor can catch it
+                sch["seat_restart"]["seats"]["BENCH"]["backstop_human_idle_s"] = 0
+            o = obs(sessions=[bsess()], tx=dict(at, size=end), last_human=lh)
+            o["seat_restart"]["cursor"] = lambda seat, s_, rs, p=p: SR.cursor_scan(p, rs.get("tx_offset"), [])
+            a = []
+            for k in range(12):
+                a += run(sch, st, o, T0 + 25 * k)
+            rs = st["seat_restart"].get("BENCH") or {}
+            check("restart_kill" not in dos(a),
+                  "P0-2 ctx=%d %s: his message after the size reading is never killed over (%s %s cursor=%s)" % (
+                      ctx, label, bstate(st), dos(a), rs.get("tx_offset")))
+            check(rs.get("tx_offset") is None or rs["tx_offset"] <= end,
+                  "P0-2 ctx=%d %s: no cursor past the bytes the backstop judged (%s > %s)" % (ctx, label, rs.get("tx_offset"), end))
     # an input that is not his, landing between the reads, sits AFTER the cursor and a Conductor restart cancels on it
     p, ends = _bt("sid-old", [_hu("1970-01-12T09:00:00Z", "last thing he said"), _ha("1970-01-12T09:00:10Z")])
     end = ends[-1]
