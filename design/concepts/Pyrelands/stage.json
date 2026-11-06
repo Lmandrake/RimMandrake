@@ -207,10 +207,17 @@
     "ref": "run rm-role-designer-1793952905",
     "stage": 3,
     "tokens": 839688
+   },
+   {
+    "at": "2026-11-06T08:31:42Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793953617",
+    "stage": 4,
+    "tokens": 594413
    }
   ],
   "reserve": 60000,
-  "spent": 6410202
+  "spent": 7004615
  },
  "history": [
   {
@@ -458,6 +465,24 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1793952905: stage 3 done"
+  },
+  {
+   "at": "2026-11-06T08:27:23Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "6410202 of 4000000 spent; run rm-role-designer-1793953617 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T08:27:24Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1793953617, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-06T08:31:42Z",
+   "stage": 4,
+   "what": "retry",
+   "why": "run rm-role-designer-1793953617 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -709,6 +734,15 @@
    "run": "rm-role-designer-1793952905",
    "stage": 3,
    "summary": "Root ending (OWNER:1793950669508519029) carried into sheet/tree: paved_strip_holds_the_line now reads front and near-side smoulder stopped, ember on paving lights nothing, hawk can carry 6 cells past; new leaf firefoam_sprayer_reaches_the_fruit. Coverage gaps: new leaf+scene furnacebeast_banks_heat_and_smoulders_bed/sc_furnace_bed (control furnace thermal off, ullai in same fire); sprayer, sand shovel, rite hook promoted to acceptance with leaves and controls; sc_paved_strip asserts clear weather and fire burning at the strip, drives a near-side relight; sc_three_skies reads cinderfall lightning, black-rain ash wash, clear-sky and vanilla-rain fire pads; sc_ash_watered control is the watered strip with the lift switch off; per-scene restore (sc_no_rain disposable map, sc_walk pre-walk save); offline leaf biome_text_says_engineered. The herd-migration gap was stale: the world leg was cut by his card 2026-10-23 (84cc81013d), so the inventory is corrected and no scene added; About.xml/race text still promising it is owed. Items filed: PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS, PYRELANDS_TEXT_FIX_ENGINEERED_NEVER_SAID."
+  },
+  {
+   "at": "2026-11-06T08:31:42Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1793953617",
+   "stage": 4,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "running": null,
