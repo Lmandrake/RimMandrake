@@ -3547,7 +3547,7 @@ def _q_designer(q, now, pcache, cpath):
         if st.get("status") != "ready":
             continue
         if DS.rejection_parked(st, repo):
-            continue      # the sweep's own rule: a retry cannot help; its stage_rejected alarm owns it
+            continue      # the sweep's own rule: a retry cannot help; role_launch.parked_record says so
         hs = [h for h in (st.get("history") or []) if isinstance(h, dict)]
         last = _iso_epoch(hs[-1].get("at")) if hs else None
         if last is None and run_at is None:

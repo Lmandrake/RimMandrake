@@ -259,6 +259,45 @@ def test_rejected_sweep():
         shutil.rmtree(repo, ignore_errors=True)
 
 
+def test_parked_record():
+    """DESIGNER_RECHAIN_FIX_REJECTS_WAIT_FOREVER: the sweep's parked branch was a silent skip and the stall reader skips
+    the same concepts, so a parked concept had no line of its own. Each parking is now said once a day: ledger and the
+    Conductor's log, naming the concept, the rule's reason and the rejection."""
+    old = T - 6 * 3600
+    rej = {"at": "2026-11-06T10:13:06Z", "outcome": "rejected", "run": "rm-role-designer-2", "stage": 4,
+           "why": ["no result.json"]}
+    two = {"stage": 4, "status": "ready", "results": [dict(rej, run="rm-role-designer-1"), rej]}
+    parked_alarms = lambda acts: [a for a in acts if ":parked:" in str(a.get("kind"))]  # noqa: E731
+    st, acts, opened = sweep_decide([(C1, two, old)])
+    said = parked_alarms(acts)
+    check(opened == [] and len(said) == 1, "the arbiter's identical rejection: nothing re-chained, one parked record: %r"
+          % [a.get("kind") for a in acts])
+    a = said[0] if said else {}
+    check(a.get("do") == "alarm" and a.get("note") and a.get("conductor_log"), "the record reaches ledger and Conductor")
+    check("rejected twice" in a.get("why", "") and "no result.json" in a.get("why", "")
+          and os.path.basename(C1) in a.get("why", ""), "it names the concept, the rule's reason and the rejection: %r"
+          % a.get("why"))
+    st, acts, opened = sweep_decide([(C1, two, old)], st["roles"], now=T + 120)
+    check(not parked_alarms(acts), "the next tick says nothing new")
+    st, acts, opened = sweep_decide([(C1, two, old)], st["roles"], now=T + 86400 + 60)
+    check(len(parked_alarms(acts)) == 1, "still parked a day later: said again, it has not gone away")
+    other = {"stage": 4, "status": "ready", "results": [dict(rej, why=["x"]), dict(rej, why=["x"])]}
+    st, acts, opened = sweep_decide([(C1, other, old), (C2, two, old)], st["roles"], now=T + 86400 + 120)
+    kinds = [x["kind"] for x in parked_alarms(acts)]
+    check(len(set(kinds)) == 2, "a new reason and another concept each get their own kind, past the repeat limit: %r"
+          % kinds)
+    st, acts, opened = sweep_decide([(C2, two, old)], st["roles"], now=T + 86400 + 180)
+    check(C1 not in (st["roles"]["Arbiter"].get("parked_said") or {}), "unparked or gone: its mark leaves the book")
+    miss = {"stage": 2, "status": "ready", "results": [
+        {"at": rej["at"], "outcome": "rejected", "run": "r", "stage": 2, "why": ["source path no/such.json does not exist"]}]}
+    st, acts, opened = sweep_decide([(C1, miss, old)])
+    check(opened == [] and any("still missing" in x["why"] for x in parked_alarms(acts)),
+          "a cited path still missing is parked with a record too")
+    ok = {"stage": 2, "status": "ready", "results": [{"at": rej["at"], "outcome": "done", "stage": 1}]}
+    st, acts, opened = sweep_decide([(C1, ok, old)])
+    check(opened == [C1] and not parked_alarms(acts), "a concept not rejected is swept as before, no parked record")
+
+
 def sweep_with(fn, rows, extra):
     """sweep_decide with extra obs (the parked rule pointed at a temp repo)."""
     real = SD.lrobs
@@ -276,7 +315,7 @@ def sweep_with(fn, rows, extra):
 
 def main():
     for t in (test_row, test_done_chains, test_no_chain_states, test_queue_behind_pending, test_daily_cap,
-              test_orphan_sweep, test_rejected_sweep):
+              test_orphan_sweep, test_rejected_sweep, test_parked_record):
         t()
     print("selftest_designer_chain: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0

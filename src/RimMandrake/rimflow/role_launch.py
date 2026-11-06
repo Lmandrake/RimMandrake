@@ -96,6 +96,7 @@ Every launch, refusal, finish and stop is a dispatcher action: journaled, and no
 Names no host, account or model id.
 """
 import calendar
+import hashlib
 import json
 import math
 import os
@@ -2117,7 +2118,7 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
 # Each decide tick of a chain_stages role now sweeps every concept the stall alarm counts as pending (the same rule:
 # designer_stage's ready, or waiting_owner answered) and asks its run once it has waited CHAIN_SWEEP_GRACE_S, through
 # chain_ask's cap and slot. Skipped: an open run, a last result REJECTED and PARKED (designer_stage.rejection_parked:
-# a retry cannot help, its stage_rejected alarm stands; ops_watch's stall reader skips it by the same rule), a concept
+# a retry cannot help; parked_record says so, ops_watch's stall reader skips it by the same rule), a concept
 # already holding the slot or a queue place, and one a running run of this role works on. A rejected concept that is
 # not parked (the path its rejection cited has landed since, or an unlabelled rejection not yet met twice) is
 # re-chained with the rejection's reasons (RELAPSE_QUEUES_FIX_DIED_TWICE: GSS sat 6 h after its missing file landed).
@@ -2169,6 +2170,7 @@ def chain_sweep(name, rs, cfg, now, act, concepts, parked=None):
     held = {q.get("concept") for q in [rs.get("run_now")] + list(rs.get("run_now_queue") or []) if isinstance(q, dict)}
     held |= {r.get("concept") for r in rs.get("runs") or [] if isinstance(r, dict) and r.get("state") == "running"}
     asked = []
+    still_parked = set()
     for concept, st, since in rows:
         if since is None or not isinstance(st, dict) or st.get("running") or concept in held or now - since < grace:
             continue
@@ -2183,6 +2185,8 @@ def chain_sweep(name, rs, cfg, now, act, concepts, parked=None):
             except Exception as e:  # noqa: BLE001 - an unreadable cause is parked (no blind retry); the stall reader
                 why = "parked rule raised: %s" % str(e)[:120]   # meets the same raise and reports itself blind
             if why:
+                parked_record(name, rs, cfg, concept, st, res[-1], why, now, act)
+                still_parked.add(concept)
                 continue
             reasons = [str(w) for w in res[-1].get("why") or []]
         mins = int((now - since) // 60)
@@ -2193,7 +2197,32 @@ def chain_sweep(name, rs, cfg, now, act, concepts, parked=None):
         if req:
             held.add(concept)
             asked.append(req)
+    said = {c: v for c, v in (rs.get("parked_said") or {}).items() if c in still_parked}
+    if said:
+        rs["parked_said"] = said                  # one no longer parked leaves: a later parking is said afresh
+    else:
+        rs.pop("parked_said", None)
     return asked
+
+
+def parked_record(name, rs, cfg, concept, st, last, why, now, act):
+    """A concept the sweep parks leaves a record: an alarm on the ledger and in the Conductor's log, once per day and
+    per distinct parking (DESIGNER_RECHAIN_FIX_REJECTS_WAIT_FOREVER). The stall reader skips a parked concept by the
+    same rule and the stage_rejected alarm is one kind shared by every concept, rate-limited, so without this a
+    concept could wait for good with no line anywhere saying so. The kind carries a hash of stage and masked reasons:
+    another concept's parking, or this one's for a new reason, is never swallowed by the repeat limit."""
+    sig = "%s|%s" % (st.get("stage"), " ; ".join(sorted(_RUN_RX.sub("#", str(w)) for w in last.get("why") or [])))
+    mark = "%s %s" % (day_of(now), hashlib.sha256(sig.encode("utf-8")).hexdigest()[:10])
+    book = rs.setdefault("parked_said", {})
+    if book.get(concept) == mark:
+        return
+    book[concept] = mark
+    mod = os.path.basename(os.path.normpath(concept))
+    act(do="alarm", kind="role:%s:parked:%s:%s" % (name, mod, mark.split()[1]),
+        ticket=st.get("item") or cfg.get("ledger_item"), note=True, conductor_log=True,
+        why="%s: %s stage %s is PARKED, the orphan sweep will not re-chain it: %s. Rejected run %s at %s: %s" % (
+            name, mod, st.get("stage"), why, last.get("run"), last.get("at"),
+            "; ".join(str(w) for w in (last.get("why") or [])[:4])[:400]))
 
 
 def chain_pop(rs, now):
