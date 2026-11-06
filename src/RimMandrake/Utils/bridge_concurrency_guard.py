@@ -5,7 +5,10 @@ MAP_DROP_DIAGNOSE_MENU_MIDRUN_GHOST: a site build's go_to_main_menu dropped the 
 step_game_ticks was in flight (two clients, one game). The evidence is the bridge call log written by
 rimbridge_client (`start`/`end` rows with pid, cid, t). Refuse when a foreign pid has a call with no end row yet
 (young enough to be plausible) or one that ended within WINDOW_S (10 s). Override: env
-RM_ALLOW_CONCURRENT_BRIDGE=1. Log missing/unreadable => allow (WSL has no log; never block on blindness)."""
+RM_ALLOW_CONCURRENT_BRIDGE=1. Log missing/unreadable => allow (WSL has no log; never block on blindness).
+BRIDGEGUARD_FIX_DEAD_PID_STILL_BLOCKS: an unended start whose writer process is provably gone (pid dead, or pid
+reused: its recorded pid_start differs) is a crashed client, not a live call, and no longer refuses. A writer this
+process cannot check (another OS, no pid) stays presumed alive."""
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
@@ -34,13 +37,26 @@ def _ts(s):
     return calendar.timegm(time.strptime(s, "%Y-%m-%dT%H:%M:%SZ"))
 
 
-def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S):
+def writer_alive(row):
+    """False only when the start row's writer is provably gone; True when alive or not checkable from here."""
+    pid = row.get("pid")
+    if pid is None or row.get("os", os.name) != os.name:
+        return True                                    # a Windows pid means nothing to WSL, and the reverse
+    try:
+        import rimbridge_client
+        return bool(rimbridge_client._pid_alive(int(pid), row.get("pid_start")))
+    except Exception:                                  # noqa: BLE001 -- a broken probe must not unblock a live call
+        return True
+
+
+def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S, alive=None):
     """Return a description of recent foreign-pid activity, or None."""
     log = default_log() if log is None else log
     if not log or not os.path.exists(log):
         return None
     now = time.time() if now is None else now
     own_pid = os.getpid() if own_pid is None else own_pid
+    alive = writer_alive if alive is None else alive
     try:
         with open(log, "rb") as fh:
             fh.seek(0, 2)
@@ -71,7 +87,7 @@ def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S):
             continue
         # active = a call with no end row yet, or one that ended within window_s (TESTENV_GUARD_UNSTICK_BLOCKS_ITS_OWN_SEQUEL:
         # a finished client's start time is no evidence it is still driving the game)
-        if (cid not in ended and age <= UNENDED_S) or (cid in ended and now - ended[cid] <= window_s):
+        if (cid not in ended and age <= UNENDED_S and alive(r)) or (cid in ended and now - ended[cid] <= window_s):
             return "pid %s (%s) %s %s %ds ago%s" % (r.get("pid"), r.get("script"), r.get("tool"), r.get("t"),
                                                     age, "" if cid in ended else " [no end row: still running]")
     return None
