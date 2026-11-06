@@ -179,6 +179,60 @@ def main(argv) -> int:
             n_raw = sum(1 for _ in f)
         check("[rebuild] re-reading a file does not re-append its raw copy", n_raw == 8, n_raw)
 
+        # [truncate] a file that shrank under its cursor (same inode) is re-read from 0: its new rows sit at old
+        # offsets, so a ref of source:basename:offset alone made every INSERT OR IGNORE drop them
+        ino = os.stat(tps).st_ino
+        ev0 = con.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+        resets0 = T.stats["tps"]["resets"]
+        with open(tps, "rb") as fh:     # where the old exception sample and incident rows sat
+            old = fh.read().split(b"\n")
+        offs, pos = {}, 0
+        for ln in old:
+            offs[json.loads(ln).get("seq") if ln.startswith(b'{"') and b'"seq"' in ln else None] = (pos, len(ln))
+            pos += len(ln) + 1
+        (x_off, x_len), (i_off, _) = offs[3], offs[4]
+
+        def padded(row, n):     # a row exactly n bytes long, so the next one lands on the old offset too
+            t = json.dumps({**row, "pad": ""})
+            return json.dumps({**row, "pad": "p" * (n - len(t))})
+        new_rows = [padded({"seq": 19, "utc": iso(t0 + 19), "kind": "filler"}, x_off - 1),
+                    padded({**base, "seq": 20, "utc": iso(t0 + 20), "kind": "sample", "state": "run", "dTicks": 60,
+                            "tps": 60, "tickMs": 5, "mult": 1,
+                            "exc": {"n": 3, "sup": 0, "e": 3, "w": 0, "m": 0, "rep": 0, "over": 0,
+                                    "top": [["E:NRE at #", 3]]}}, i_off - x_off - 1),
+                    json.dumps({**base, "seq": 21, "utc": iso(t0 + 21), "kind": "incident", "type": "stall", "gapS": 12})]
+        with open(tps, "w") as fh:  # truncate in place: the new rows sit exactly on the old rows' offsets
+            fh.write("\n".join(new_rows) + "\n")
+        check("[truncate] fixture: new rows on the old offsets, file shorter than the cursor",
+              os.path.getsize(tps) < pos and len(new_rows[0]) == x_off - 1 and len(new_rows[1]) == i_off - x_off - 1,
+              (os.path.getsize(tps), pos))
+        T.pass_source(S["tps"])
+        check("[truncate] the shrunk file kept its inode and was counted as a reset",
+              os.stat(tps).st_ino == ino and T.stats["tps"]["resets"] == resets0 + 1, T.stats["tps"])
+        n_exc = con.execute("SELECT n FROM exc_sigs").fetchone()[0]
+        check("[truncate] an exception count written after the reset is counted, not deduped on an old ref",
+              n_exc == 8, n_exc)
+        ev1 = con.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+        check("[truncate] an event written after the reset lands, not INSERT-OR-IGNOREd on an old ref",
+              ev1 > ev0 and con.execute("SELECT COUNT(*) FROM events WHERE kind='incident' AND ts>=?",
+                                        (t0 + 20,)).fetchone()[0] == 1, (ev0, ev1))
+        cli.main(["rebuild", "--since", "7d"])
+        T.pass_source(S["tps"])
+        check("[truncate] a rebuild of the new generation stays idempotent",
+              con.execute("SELECT n FROM exc_sigs").fetchone()[0] == 8
+              and con.execute("SELECT COUNT(*) FROM events").fetchone()[0] == ev1,
+              con.execute("SELECT n FROM exc_sigs").fetchone()[0])
+        # [replace] a new file under the same name (offset 0 again; Linux may hand back the same inode) is the same trap
+        os.remove(tps)
+        w(tps, [{**base, "seq": 30, "utc": iso(t0 + 30), "kind": "incident", "type": "stall", "gapS": 13}])
+        T.pass_source(S["tps"])
+        check("[truncate] a file replaced under the same name lands its rows too",
+              con.execute("SELECT COUNT(*) FROM events").fetchone()[0] == ev1 + 1,
+              con.execute("SELECT COUNT(*) FROM events").fetchone()[0])
+        check("[truncate] row_ref names the row: same place + same bytes = same ref, other bytes = other ref",
+              ingest.row_ref("tps", "a.jsonl", 0, b'{"a":1}') == ingest.row_ref("tps", "a.jsonl", 0, b'{"a":1}')
+              != ingest.row_ref("tps", "a.jsonl", 0, b'{"a":2}'))
+
         # bridge: rotation by rename, buckets
         bc = c["bridge_calls"]
         tb = int(t0 // 10) * 10 + 100

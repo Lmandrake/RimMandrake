@@ -8,11 +8,19 @@ the skill's sources reference are generated from the same list and cannot drift.
 Cursor identity is the file id (st_ino; NTFS file index on Windows), so a rename-rotation
 (bridge_calls.jsonl -> .1) is followed, not re-read. A file that shrank under its cursor is
 re-read from 0 and counted in `resets`. Only complete lines ("\\n"-terminated) are consumed.
+
+A row's src_ref is `source:basename:offset:linehash`. The offset alone is not an identity: after a
+truncation reset (same inode, shrank under its cursor) or a file replaced under the same name, new
+rows sit at old offsets, and every INSERT OR IGNORE / exc_seen keyed on the ref would drop them.
+The hash of the row's own bytes makes the ref name the row, so a re-read of the same bytes (rebuild,
+crash re-read) still dedups. Refs stored before the hash was added (2026-11-06) carry no hash: a
+`telemetry rebuild` over those files re-adds their rows once.
 """
 from __future__ import annotations
 
 import glob
 import gzip
+import hashlib
 import json
 import math
 import os
@@ -547,6 +555,11 @@ def make_sources() -> list[Source]:
 
 # ================================================================== tailing
 
+def row_ref(src: str, base: str, pos: int, line: bytes) -> str:
+    """Identity of one row: where it sits AND what it says (module docstring: truncation resets reuse offsets)."""
+    return f"{src}:{base}:{pos}:{hashlib.blake2b(line, digest_size=6).hexdigest()}"
+
+
 class Tailer:
     def __init__(self, con, vm, latest):
         self.con, self.vm, self.latest = con, vm, latest
@@ -620,10 +633,10 @@ class Tailer:
             base = os.path.basename(path)
             pos = start
             for i, line in enumerate(chunk.split(b"\n")[:-1]):
-                ref = f"{src.name}:{base}:{pos}"
-                pos += len(line) + 1
+                at, pos = pos, pos + len(line) + 1
                 if (i == 0 and mid_row) or pos <= off or not line.strip():   # pos <= off: ingested before the
                     continue                                                  # crash, copied only
+                ref = row_ref(src.name, base, at, line)
                 r = loads(line)
                 if not isinstance(r, dict):
                     stt["bad"] += 1
