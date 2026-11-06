@@ -1,0 +1,50 @@
+{
+ "schema": 1,
+ "about": "Wing designs for flyers whose static draws no wing (flyer_gate.NO_WINGS_DRAWN, gate G3). A design is what a body master and its wing layers are prompted from (study design/RimMandrake/flyer_stable_body_study.md 3.3 and 3.4); `flyer_gate.py wingprompt DEF FACING master|up|level|down` renders the prompt. The redraw itself is owed by the flyer's tier item. Item THOZZIK_REDRAW_WINGS_FLIES_WITHOUT_THEM.",
+ "designs": {
+  "RM_Thozzik": {
+   "label": "thozzik",
+   "defs": ["RM_Thozzik", "RM_ThozzikColony"],
+   "tex": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+   "plan": "insect",
+   "look": "an armoured hive insect of the Rot: glossy oxblood-red segmented carapace, six jointed legs, a pair of serrated pincer forelimbs, its back crowded with cream fungal toxin sacs and small orange mushroom caps",
+   "why_wings": "MaxFlightTime 30: short hive-to-prey hops. The family's wings are the queen's (RM_ThozzikQueen draws them in every facing), smaller on the worker so they never hide the fungal back the description is about",
+   "wings": "four short membranous wings in two pairs, forewing longer than hindwing, translucent dusky amber with dark red veins and a ragged, spore-pitted trailing edge, matching the Thozzik queen's wings",
+   "roots": "both pairs rise from the hard shoulder plate just behind the head, in front of the fungal mass, so every root is visible and nothing grows over it",
+   "folded": "folded flat and narrow along each flank, below the line of the fungal sacs and above the legs, tips reaching the rear of the abdomen; the fungal back, the pincers and all six legs stay fully visible",
+   "facings": {
+    "east": "side view; the near forewing lies along the flank, the hindwing a sliver beneath it",
+    "south": "front view; the folded wings show only as two thin amber edges at the shoulders beside the head",
+    "north": "back view; the folded wings show as two thin amber strips along each side of the fungal back"
+   },
+   "poses": {
+    "up": "both pairs raised in a V above the fungal back, tips above the highest mushroom cap",
+    "level": "both pairs spread straight out sideways at shoulder height, forewing ahead of hindwing",
+    "down": "both pairs swept down below the belly line, tips beside the middle legs"
+   },
+   "blur": "a translucent amber blur disc variant of the level pose (insect plan, study 3.3)"
+  },
+  "RSW_Strill": {
+   "label": "strill",
+   "defs": ["RSW_Strill"],
+   "tex": "swanimals/Strill/Strill",
+   "plan": "glider",
+   "look": "a one-metre six-legged predator from Mandalore: thick gold to gray-tan fur, loose folds of leathery skin draped along flanks, back and haunches, four ears, gold eyes, an enormous fanged maw, a thin whip-like tail",
+   "why_wings": "No wings in canon. Legends: skin folds 'form wing membranes between their six strong legs' to glide and 'even fly short distances by flapping their legs in unison'. Owner 2026-10-17 (canon entry Must show): 'Note the whip-like tail. Enormously toothy maw. Four ears. Six legs.  Gliding flyers.'",
+   "wings": "glide membranes of loose leathery skin, a tan-brown patagium spanning foreleg to middle leg to hind leg on each side and running back to the base of the whip tail; fur-edged, thin enough to show the leg bones as ribs",
+   "roots": "each membrane is the flank skin itself, joined along the whole side of the body from shoulder to hip; the six leg joints are its anchor points and stay visible",
+   "folded": "on the ground the membranes hang slack as the loose pleated skin folds along each flank between the six legs; all six legs stand clear and are each visible as a separate leg",
+   "facings": {
+    "east": "side view; six legs, three per side visible (near three in front, far three partly behind), slack skin pleats sagging between them",
+    "south": "front view; the head with four ears and the fanged maw, the two front legs and the middle legs splayed a little, skin folds visible at the flanks",
+    "north": "back view; the furred back, the whip tail, the hind legs, slack skin folds at both flanks; never a sliver, the body at least a third as wide as the side view is long"
+   },
+   "poses": {
+    "up": "all six legs raised together above the back line, membranes stretched upward in a shallow V",
+    "level": "all six legs splayed straight out sideways, membranes taut and flat like a flying squirrel's",
+    "down": "all six legs swept down together below the belly, membranes cupped beneath the body"
+   },
+   "layer_note": "The membrane moves with the legs, so in the glider plan a wing layer is the six legs with their membranes; the body plate pinned across frames is torso, head and tail. The flight body is a separate master from the ground static (legs splayed), the same individual and markings."
+  }
+ }
+}

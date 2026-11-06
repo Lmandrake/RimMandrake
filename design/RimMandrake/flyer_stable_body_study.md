@@ -126,7 +126,7 @@ The numbers are alpha-only, measured per facing by `flyer_gate.static_metrics`.
 |---|---|---|---|---|---|
 | G1 folded | body share of opaque area, S/N | 0.54–0.97 | 0.14–0.94 | at least 0.50 | catches Sketto 0.14, Vrisk 0.48 only. **It does not separate the classes**: a spread wing that is solid survives the opening as body |
 | G2 true facings | N/S width over E width | 0.35–0.97 | 0.30–1.01 | at least 0.33 | catches slivers (Strill 0.30). Cannot see a dorsal "east" |
-| G3 wings present | by hand, `NO_WINGS_DRAWN` | | | | Thozzik family, Strill |
+| G3 wings present | by hand, `NO_WINGS_DRAWN` | | | | Thozzik worker (and `RM_ThozzikColony`), Strill; each owes a design in `design/RimMandrake/flyer_wing_designs.json` (`flyer_gate.py wingprompt`). The queens draw wings |
 | G4 headroom | body width over canvas, S/N | 0.40–0.80 | 0.16–0.82 | at most 0.85 | catches a body filling the canvas. The study's guessed 55 % width and 25 % top margin rejected 6 and 7 of the 9 convertibles and are gone |
 | G5 flat light | by eye | | | | no automatic test |
 

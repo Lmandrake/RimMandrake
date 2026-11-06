@@ -543,9 +543,7 @@
     "g2": 0.819,
     "g4": 0.727
    },
-   "static_fails": [
-    "G3 no wings drawn"
-   ],
+   "static_fails": [],
    "provenance": "no flip-book",
    "frames": ""
   },
@@ -560,9 +558,7 @@
     "g2": 0.819,
     "g4": 0.727
    },
-   "static_fails": [
-    "G3 no wings drawn"
-   ],
+   "static_fails": [],
    "provenance": "no flip-book",
    "frames": ""
   },

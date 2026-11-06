@@ -12,6 +12,7 @@ Verbs:
   static TEXPATH       G1/G2/G4 of a static, exit 1 on a refuted static
   flipbook SET...      the body-lock test of flyer_cutout_sets/<SET>.json; exit 0 only if every facing passes
   refresh              rerun census, statics and flip-book gates; rewrite design/RimMandrake/flyer_regen_plan.json
+  wingprompt DEF FACING master|up|level|down   the body-master or wing-layer prompt from DEF's wing design (G3)
   audit [--strict]     does the plan cover the live census, is the study reconciled, does an open item own the rest
 """
 from __future__ import annotations
@@ -41,9 +42,12 @@ FACINGS = ("east", "south", "north")
 G1_MIN_SHARE = 0.50   # body share of the opaque area, S/N: lowest by-eye convertible 0.54
 G2_MIN_WIDTH = 0.33   # N/S width over E width: lowest by-eye convertible 0.349; Strill 0.30, a sliver
 G4_MAX_BODY = 0.85    # body bbox over canvas width, S/N: highest by-eye convertible 0.80
-NO_WINGS_DRAWN = {"RM_Thozzik": "G3 no wings drawn", "RM_ThozzikQueen": "G3 no wings drawn",
-                  "RM_ThozzikColony": "G3 no wings drawn", "RM_ThozzikColonyQueen": "G3 no wings drawn",
+# G3, by hand: the static draws no wing. Each one owes a design in WING_DESIGNS before any flip-book. The Thozzik queens
+# are not here: their static draws four veined wings in every facing (looked, 2026-11-06).
+NO_WINGS_DRAWN = {"RM_Thozzik": "G3 no wings drawn", "RM_ThozzikColony": "G3 no wings drawn",
                   "RSW_Strill": "G3 no wings drawn"}
+WING_DESIGNS = REPO / "design/RimMandrake/flyer_wing_designs.json"
+WING_POSES = ("up", "level", "down")
 # def -> the cut-out configs that must all pass for that def's flip-book to count as locked
 DEF_SETS = {"RSW_Sketto": ["Sketto"], "RSW_PekoPeko": ["PekoPeko_f", "PekoPeko_m"], "RM_FireHawk": ["FireHawk"], "RSW_Uvak": ["Uvak"],
             "RSW_Hawkbat": ["Hawkbat", "Hawkbat_j"], "RSW_Bogwing": ["Bogwing"], "RM_Krizzak": ["Krizzak"],
@@ -268,11 +272,60 @@ def audit(strict: bool) -> int:
         st = states.setdefault(it, item_state(it))
         if st not in ITEM_LIVE:
             bad.append(f"{d}: owned by {it}, which is {st}")
+    bad += wing_design_gaps()
     n = sum(1 for r in plan.values() if r["flipbook"] == "locked")
     print(f"{len(plan)} flyers, {n} body-locked, {len(plan) - n} owed under {sorted(states)}: {states}")
     for b in bad:
         print("BAD", b)
     return 1 if bad and strict else 0
+
+
+def wing_designs() -> dict:
+    """def -> its design (a design names every def that shares its texture). A missing file raises."""
+    out = {}
+    for key, d in json.loads(WING_DESIGNS.read_text())["designs"].items():
+        for n in d.get("defs") or [key]:
+            out[n] = d
+    return out
+
+
+WING_FIELDS = ("tex", "plan", "look", "wings", "roots", "folded", "facings", "poses")
+
+
+def wing_design_gaps(designs: dict | None = None, no_wings=None) -> list[str]:
+    """Every G3 def owes a complete design: each field, every facing, every pose, non-empty."""
+    designs = wing_designs() if designs is None else designs
+    gaps = []
+    for name in sorted(NO_WINGS_DRAWN if no_wings is None else no_wings):
+        d = designs.get(name)
+        if d is None:
+            gaps.append(f"{name}: G3 and no wing design")
+            continue
+        gaps += [f"{name}: design lacks {f}" for f in WING_FIELDS if not d.get(f)]
+        gaps += [f"{name}: design lacks facing {f}" for f in FACINGS if not (d.get("facings") or {}).get(f)]
+        gaps += [f"{name}: design lacks pose {w}" for w in WING_POSES if not (d.get("poses") or {}).get(w)]
+    return gaps
+
+
+def wing_prompt(name: str, facing: str, what: str) -> str:
+    """The study 3.3 body-master prompt (what='master') or a 3.4 wing-layer prompt (what=up|level|down)."""
+    d = wing_designs().get(name)
+    if d is None:
+        raise SystemExit(f"{name}: no wing design in {WING_DESIGNS.relative_to(REPO)}")
+    if facing not in FACINGS or what not in ("master",) + WING_POSES:
+        raise SystemExit(f"facing one of {FACINGS}, what one of master {' '.join(WING_POSES)}")
+    label = d.get("label") or name.split("_", 1)[1].lower()   # RM_ThozzikColony is prompted as the thozzik it is
+    view = {"east": "Side (east) view", "south": "Front (south) view", "north": "Back (north) view"}[facing]
+    if what == "master":
+        return (f"RimWorld creature sprite, painterly, the {label}: {d['look']}. {view}: {d['facings'][facing]}. "
+                f"Even flat lighting, no cast shadow, no motion blur. Centred, the body uses at most half the canvas "
+                f"width, generous empty transparent margin all round. Wings: {d['wings']}, {d['folded']}. "
+                f"Wing roots clearly visible: {d['roots']}. Torso, head and legs fully visible and unbroken.")
+    return (f"Attached: the accepted body master of the {label}, {facing} view. Draw ONLY its wings ({d['wings']}), "
+            f"in the {what} position of a wingbeat: {d['poses'][what]}. Attached exactly at the visible wing roots of "
+            f"the attached body ({d['roots']}), at the same scale, palette, edge treatment and light. Output the wings "
+            f"alone on a fully transparent canvas the same size as the attached image: do not redraw, move or include "
+            f"any part of the body." + (f" {d['layer_note']}" if d.get("layer_note") else ""))
 
 
 def main(argv=None) -> int:
@@ -283,7 +336,14 @@ def main(argv=None) -> int:
     sub.add_parser("flipbook").add_argument("sets", nargs="+")
     sub.add_parser("refresh")
     sub.add_parser("audit").add_argument("--strict", action="store_true")
+    wp = sub.add_parser("wingprompt")
+    wp.add_argument("defname")
+    wp.add_argument("facing", choices=FACINGS)
+    wp.add_argument("what", choices=("master",) + WING_POSES)
     a = ap.parse_args(argv)
+    if a.verb == "wingprompt":
+        print(wing_prompt(a.defname, a.facing, a.what))
+        return 0
     if a.verb == "cell":
         for d in a.defs:
             print(d, cell_for([d]) or "(not a flyer)")
