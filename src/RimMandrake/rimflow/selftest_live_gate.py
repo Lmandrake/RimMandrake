@@ -64,6 +64,15 @@ def lines():
     check("is-enabled" in L.check(u, now=NOW, runner=sysd(enabled="disabled")), "disabled is broken")
     check("no last firing" in L.check(u, now=NOW, runner=sysd(last="0")), "never fired is broken")
     check("predates" in L.check(u, now=NOW + 60, not_before=NOW + 30, runner=sysd()), "a firing before the commit proves nothing")
+    # LIVECHECK_FIX_JUMPS_THE_GUN: a reading older than a commit that is younger than one cadence is a wait, not broken
+    w = L.check(u, now=NOW + 60, not_before=NOW + 30, runner=sysd())
+    check(L.not_yet(w) and "not yet" in w, "a firing before a fresh commit is not yet")
+    w = L.check(u, now=NOW + 7200, not_before=NOW + 7000, runner=sysd())
+    check(L.not_yet(w), "a stale firing under a commit younger than max_age is still a wait")
+    w = L.check(u, now=NOW + 3700, not_before=NOW + 30, runner=sysd())
+    check("predates" in w and not L.not_yet(w), "no firing in one cadence after the commit is broken")
+    check(not L.not_yet(L.check(u, now=NOW + 7200, runner=sysd())), "an old reading with no commit stays broken")
+    check(not L.not_yet(None) and not L.not_yet("x"), "not_yet reads only a NotYet")
     r = os.path.join(TMP, "reading")
     open(r, "w").close()
     os.utime(r, (NOW, NOW))
@@ -123,6 +132,10 @@ def lines():
     check(L._role_last("R", st) == t9, "a run on record dates the launch exactly")
     check("predates" in L.check("role=R max_age=1d", now=t15 + 60, not_before=t15, state_path=st),
           "a launch earlier the same day does not prove a later commit")
+    check(L.not_yet(L.check("role=R max_age=1d", now=t15 + 60, not_before=t15, state_path=st)),
+          "a role launch before a fresh commit is not yet")
+    check(not L.not_yet(L.check("role=R max_age=1h", now=t15 + 7200, not_before=t15, state_path=st)),
+          "no role launch in one cadence after the commit is broken")
     check(L.check("role=R max_age=1d", now=t15 + 60, not_before=t9 - 60, state_path=st) is None,
           "a launch after the commit proves it")
     check("last launched" in L.check("role=R max_age=1d", now=t9 + 86400 + 60, state_path=st),

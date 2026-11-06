@@ -1,0 +1,1 @@
+selftest_relentless_codex_five is RED on origin/main 32012c430e independent of LIVECHECK_FIX_JUMPS_THE_GUN: rows '#16 every saved patch is the raw bytes (--no-textconv --no-ext-diff): 0 without' and '#4 the same row at since: it routes: True' (codex_five_b) fail with live_line.py/relentless.py at HEAD too (measured 2026-11-06 by restoring HEAD copies).

@@ -448,6 +448,7 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
             store.save(st)
             return attributed
     st.pop("live_iter", None)       # a live iteration ends with its worker; the game phase sets a new one on its FAIL
+    st.pop("live_wait_since", None)     # a wait on the live line belongs to the candidate this ending puts down
     pilot_sat(st, klass)
     st["gen"] += 1
     st["status"] = "stopping"
@@ -5694,6 +5695,8 @@ def step(store, fx, r, item, now, acts):
             return
         live = (st["contract"] or {}).get("live")
         broken = fx.live_check(live, fx.commit_time(c["sha"])) if live else None
+        if live_wait(store, fx, item, broken, now, acts, st):
+            return
         pub = None if broken else fx.published(c["sha"])
         if pub is None and not broken:
             acts.append({"do": "publish_unknown", "item": item})
@@ -5704,6 +5707,7 @@ def step(store, fx, r, item, now, acts):
             st = store.load(item)
             if st["status"] != "checking":
                 return
+            st.pop("live_wait_since", None)
             if broken:
                 fail(store, st, "live_broken", broken, r, now)
                 acts.append({"do": "live_broken", "item": item, "after_check": True})   # a checker PASSed: ends ops_watch's run of dead checkers
@@ -5745,6 +5749,8 @@ def step(store, fx, r, item, now, acts):
         if retry:       # a retry is a new decision: what authorized the first try is asked again
             live = (st["contract"] or {}).get("live")
             broken = fx.live_check(live, fx.commit_time(c["sha"])) if live else None
+            if live_wait(store, fx, item, broken, now, acts, st):
+                return          # close_retry stays set: the next tick asks the live line again
             pub = None if broken else fx.published(c["sha"])
             if pub is None and not broken:
                 acts.append({"do": "publish_unknown", "item": item})
@@ -6090,6 +6096,26 @@ def help_step(store, fx, r, item, now, acts):
 
 def helps_running(store):
     return sum(1 for x in store.states() if (x.get("help") or {}).get("status") == "running")
+
+
+def live_wait(store, fx, item, why, now, acts, st):
+    """True when the live line is NOT YET (live_line.NotYet: its reading predates a commit still inside one cadence):
+    the item keeps its status and the next tick reads the line again; never live_broken (LIVECHECK_FIX_JUMPS_THE_GUN).
+    The first wait frees the checker's clone (a PASS needs it no more; the wait may run to max_age) and says so once."""
+    import live_line
+    if not live_line.not_yet(why):
+        return False
+    if st.get("live_wait_since") is None:
+        with store.lock():
+            cur = store.load(item)
+            if cur["status"] != st["status"] or cur.get("live_wait_since") is not None:
+                return True
+            cur["live_wait_since"] = now
+            store.save(cur)
+        if cur["status"] == "checking":
+            remove_check_clone(fx, cur)
+        acts.append({"do": "live_waiting", "item": item, "why": str(why)[:200]})
+    return True
 
 
 def remove_check_clone(fx, st):

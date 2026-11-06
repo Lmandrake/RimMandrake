@@ -858,6 +858,24 @@ def t_done_path():
        and x.w.closes == [] and st["status"] not in ("closing", "done"),
        "a broken live line holds the item for attribution, no strike, it does not close: %s" % st["status"])
     x.done()
+    # LIVECHECK_FIX_JUMPS_THE_GUN: a reading that predates a commit still inside its cadence is a wait, never live_broken
+    import live_line
+    x = Rig(n=1, share=1.0)
+    x.w.live_broken = live_line.NotYet("reading r predates the commit it should prove; not yet")
+    full_pass(x, "I0")
+    st = x.st("I0")
+    ok(st["status"] == "checking" and not st["failures"].get("live_broken") and not st.get("wait")
+       and st.get("live_wait_since") is not None and x.w.closes == [],
+       "a not-yet live line waits in checking, no strike, no close: %s" % st["status"])
+    acts = x.tick() or []
+    ok(x.st("I0")["status"] == "checking" and not any(a.get("do") == "live_waiting" for a in acts),
+       "the wait holds on the next tick and is said once")
+    x.w.live_broken = None
+    x.tick()
+    x.tick()
+    ok(x.st("I0")["status"] == "done" and x.w.closes, "a reading after the commit ends the wait and closes: %s"
+       % x.st("I0")["status"])
+    x.done()
     # an unpublished sha never reaches a checker
     x = Rig(n=1, share=1.0)
     x.w.is_pub = False

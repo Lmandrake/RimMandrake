@@ -11,6 +11,11 @@
 parse() and needs_line() are pure. check() asks systemd and the disk; a reading must be younger than max_age AND newer
 than the commit it proves (`not_before`), or an old reading would prove a new commit. Shared by relentless.py and by
 LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING's `close --live`.
+
+A reading older than the commit while the commit itself is younger than max_age is NOT YET, not broken: the unit has
+not had its cadence to run since (LIVECHECK_FIX_JUMPS_THE_GUN; fourteen fixes ended live_broken minutes after landing).
+check() still returns a reason (the close gate refuses), but as a NotYet, which not_yet() tells apart so a caller waits.
+Once the commit is older than max_age with no newer reading, the unit missed its cadence: that is broken.
 """
 import json
 import os
@@ -210,6 +215,22 @@ def _role_last(role, state_path=None):
     return max(got) if got else None
 
 
+class NotYet(str):
+    """A reason that is a wait, not a failure: the reading predates the commit, and the unit's cadence since has not run out."""
+
+
+def not_yet(why):
+    return isinstance(why, NotYet)
+
+
+def _predates(name, now, not_before, max_age_s):
+    """-> the reason a reading older than the commit fails: NotYet while the commit is within one cadence (max_age)."""
+    if now - not_before <= max_age_s:
+        return NotYet("%s predates the commit it should prove; not yet: its next run is due within %d s of the commit"
+                      % (name, max_age_s))
+    return "%s predates the commit it should prove, and nothing newer came in the %d s since" % (name, max_age_s)
+
+
 def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, state_path=None, phases=None):
     """-> None when the line holds, else why not. `settings` is one settings.json to look in, instead of the two
     defaults. A timer a metronome phase owns (`phases`, default the real table) is judged as rm-metronome.timer."""
@@ -226,9 +247,11 @@ def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, st
         t = _role_last(p["role"], state_path)
         if t is None:
             return "role %s has no recorded launch" % p["role"]
+        if t < not_before:
+            return _predates("role %s's last launch" % p["role"], now, not_before, p["max_age_s"])
         if now - t > p["max_age_s"]:
             return "role %s last launched %d s ago (max %d)" % (p["role"], now - t, p["max_age_s"])
-        return "role %s's last launch predates the commit it should prove" % p["role"] if t < not_before else None
+        return None
     unit, owner = p["unit"], metronome_owner(p["unit"], phases)
     if owner:          # disabled on purpose at cutover; the metronome runs its work now
         unit = METRONOME_TIMER
@@ -252,10 +275,10 @@ def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, st
         name = "last firing of %s" % unit
     if mt - now > 300:
         return "%s is dated %d s in the future" % (name, mt - now)
+    if mt < not_before:        # before the age test: a stale reading under a fresh commit is still a wait
+        return _predates(name, now, not_before, p["max_age_s"])
     if now - mt > p["max_age_s"]:
         return "%s is %d s old (max %d)" % (name, now - mt, p["max_age_s"])
-    if mt < not_before:
-        return "%s predates the commit it should prove" % name
     return None
 
 
