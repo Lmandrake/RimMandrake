@@ -79,6 +79,12 @@ def refusal(tool, kw, r):
     """Why this reply means the call did not happen or did not take, as (class, why); None when it did."""
     if not isinstance(r, dict):
         return "HARNESS", "no reply (%s)" % str(r)[:120]
+    if tool == "jawa/safe_advance" and r.get("state") == "stopped" and not r.get("refused"):
+        # GAMEENV_FIX_PROOFSITE_73C8F2D0_ITEMS_WAIT: the vitals latch STOPPING a chunk (success False, state 'stopped')
+        # is not a refused call. clockgate.advance_chunk judges it: it resumes past a declared/benign/fixture stop and
+        # raises GovernorStop (component UNMEASURED) on any other. Scoring it here withheld the coalescence PASS
+        # although the stop was the row's own declared manhunter emission and the chunk was resumed.
+        return None
     if r.get("success") is False:
         return "HARNESS", "refused: %s" % str(r.get("error") or r.get("message") or r.get("raw") or r)[:200]
     chk = NOOP_CHECKS.get(tool)
