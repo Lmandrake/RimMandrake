@@ -86,6 +86,9 @@ def main():
     (td / "archive").mkdir()
     R.pool_measures = lambda: dict(POOL)
     R.free_gb = lambda path="/": 500.0
+    # judge_all and apply_rows are stubbed below, so the live /proc snapshot decides nothing here; read on a busy host it
+    # cost ~4 s a run locally and pushed the walled box past its 240 s timeout (2026-11-06)
+    R.proc_entries = lambda: []
     real_start, real_end, real_ctx = R.sanity_start, R.sanity_end, R.Ctx
 
     # dirty start, and the run then dies: the alarm is on disk already
