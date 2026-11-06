@@ -274,13 +274,30 @@ def excused(line, runner=subprocess.run):
     return False
 
 
-def real_check(line):
+def just_restarted(line, runner=subprocess.run):
+    """A reading that predates its timer's last start, the start within one max_age: a wait for the first run after a
+    stop, in live_line's own words (not_yet), not a death. One max_age, not silence (TIMERSTOP_MEASURE_SWITCH_READS_AS_OUTAGE)."""
     import live_line
     try:
-        pardon = excused(line)
+        p = live_line.parse(line)
+        if p["kind"] != "unit" or not p["unit"].endswith(".timer") or p["max_age_s"] is None:
+            return False
+        began = float(live_line._systemctl_show(p["unit"], "ActiveEnterTimestamp", runner))
+        return finite(began) and live_line.not_yet(live_line.check(line, not_before=began, runner=runner))
+    except Exception:  # noqa: BLE001   could not ask: an outage stays an outage
+        return False
+
+
+def real_check(line, runner=subprocess.run):
+    import live_line
+    try:
+        pardon = excused(line, runner)
     except Exception:  # noqa: BLE001   a line that does not parse, an unread schedule: no excuse; check() says what is wrong
         pardon = False
-    return EXCUSED if pardon else live_line.check(line)
+    if pardon:
+        return EXCUSED
+    why = live_line.check(line, runner=runner)
+    return EXCUSED if why and just_restarted(line, runner) else why
 
 
 def read_items():

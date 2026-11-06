@@ -2230,6 +2230,31 @@ def rl_root(cfg) -> Path:
     return Path(os.environ.get("RELENTLESS_ROOT") or cfg.get("root") or "/home/mandrake/rm/relentless")
 
 
+RL_UNIT = "rm-relentless.timer"      # what writes the store at cfg["root"]; a store elsewhere has no timer to ask
+RL_SYSTEMD = subprocess.run          # a selftest's double
+
+
+def rl_timer_clock(cfg, now, limit):
+    """-> (excuse, began). A source stamped before `excuse` is frozen by a stop, not by a fault: TIMERSTOP_MEASURE_SWITCH_READS_AS_OUTAGE,
+    2026-11-06 19:22-19:36Z, RELENTLESS_BLIND at 19:44Z for an account switch already over. No second mark: the one
+    deadman_check reads (timers_guard pause, or a hand-armed restart) excuses all of it, inf; a timer started within
+    `limit` excuses what predates that start, as deadman_check.arm_clocks does for an arm; a stop with no restart armed,
+    a first tick late past `limit` and an unread systemd excuse nothing. `began` is the timer's start, or None."""
+    if Path(cfg.get("root") or "") != rl_root(cfg):
+        return None, None
+    import deadman_check
+    import live_line
+    try:
+        if deadman_check.excused("unit=%s max_age=1h" % RL_UNIT, RL_SYSTEMD):
+            return math.inf, None
+        began = float(live_line._systemctl_show(RL_UNIT, "ActiveEnterTimestamp", RL_SYSTEMD))
+    except Exception:  # noqa: BLE001   could not ask: an outage stays an outage
+        return None, None
+    if not finite(began) or began > now:
+        return None, None
+    return (began if now - began <= limit * 60 else None), began
+
+
 def tail_json_lines(p, chunk=1 << 21):
     """-> the parsed objects at the end of a JSONL file, oldest first. A torn line is skipped; a missing file raises."""
     with open(p, "rb") as f:
@@ -2992,6 +3017,7 @@ def c_relentless(now, rules, ctx):
         pts[k] = U(why)
         bad.append(why)
 
+    excuse, began = rl_timer_clock(cfg, now, limit)
     rec = read_json(store / "staffing.json")
     t = rec.get("t") if isinstance(rec, dict) else None
     why = None
@@ -3002,6 +3028,9 @@ def c_relentless(now, rules, ctx):
     elif now - t > limit * 60:
         why = "staffing.json frozen: last stamped %s, %.0f min ago, limit %g" % (iso(t), (now - t) / 60.0, limit)
     fresh = why is None
+    planned = why is not None and "frozen" in why and excuse is not None and t < excuse
+    if planned:
+        why += " (a planned stop: its restart is armed, or it has only just restarted)"
     if is_num(t) and finite(t) and t <= now + 300:
         pts["relentless.tick_age_s"] = M(round(max(now - t, 0)), "s", max_age_min=limit)
     else:
@@ -3020,23 +3049,25 @@ def c_relentless(now, rules, ctx):
     if not fresh:
         for k in RL_STAFFING:
             pts[k] = U(why)
-        bad.append(why)
+        if not planned:
+            bad.append(why)
     rd = read_json(store / "reading.json")
     rd_t = epoch(rd.get("at")) if isinstance(rd, dict) else None
     if rd_t is None:
         bad.append("reading.json missing or torn in %s" % store)
     elif rd_t > now + 300:      # a stamp ahead would read fresh until the clock caught up with it
         bad.append("reading.json is dated %d s ahead of the clock" % (rd_t - now))
-    elif now - rd_t > limit * 60:
+    elif now - rd_t > limit * 60 and not (excuse is not None and rd_t < excuse):
         bad.append("reading.json frozen: last stamped %s" % iso(rd_t))
     try:
         rows = tail_json_lines(store / "staffing.jsonl")
         newest = max((r["t"] for r in rows if is_num(r.get("t")) and finite(r["t"]) and r["t"] <= now), default=None)
         rows_why = "staffing.jsonl has no reading" if newest is None else (
             "staffing.jsonl frozen: last row %s" % iso(newest) if now - newest > rows_limit * 60 else None)
+        rows_planned = newest is not None and excuse is not None and newest < excuse
     except OSError as e:
-        rows, rows_why = [], "staffing.jsonl unreadable: %s" % e
-    if rows_why:
+        rows, rows_why, rows_planned = [], "staffing.jsonl unreadable: %s" % e, False
+    if rows_why and not rows_planned:
         bad.append(rows_why)
     br = read_json(store / "breaker.json")
     breaker_min = None
@@ -3056,6 +3087,8 @@ def c_relentless(now, rules, ctx):
     except OSError as e:
         last = None
         missing("relentless.progress_age_min", "journal.jsonl unreadable: %s" % e)
+    if last is not None and began is not None and last < began:      # a stopped belt moves nothing: its clock starts at the restart
+        last = began
     progress_min = None if last is None else round((now - last) / 60.0, 1)
     if "relentless.progress_age_min" not in pts:
         if last is None:
