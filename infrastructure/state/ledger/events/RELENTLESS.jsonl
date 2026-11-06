@@ -1293,3 +1293,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:44:45Z","tsn":1793990685777387628}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T18:45:32Z","tsn":1793990732392433037}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:56:43Z","tsn":1793991403278043621}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T19:01:44Z","tsn":1793991704665385810}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:01:59Z","tsn":1793991719978950162}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES T1 (L2), read-only proof","ts":"2026-11-06T19:02:31Z","tsn":1793991751555289827}
