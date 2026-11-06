@@ -158,10 +158,31 @@
     "ref": "run rm-role-designer-1793932102",
     "stage": 5,
     "tokens": 187200
+   },
+   {
+    "at": "2026-11-06T02:35:26Z",
+    "kind": "review",
+    "ref": "rm-judge ab71cb2e083e42a33 a_root_ending round 1",
+    "stage": 2,
+    "tokens": 30499
+   },
+   {
+    "at": "2026-11-06T02:35:45Z",
+    "kind": "review",
+    "ref": "rm-judge ab71cb2e083e42a33 a_root_ending round 2",
+    "stage": 2,
+    "tokens": 32514
+   },
+   {
+    "at": "2026-11-06T02:41:50Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793932378",
+    "stage": 2,
+    "tokens": 449974
    }
   ],
   "reserve": 60000,
-  "spent": 4417813
+  "spent": 4930800
  },
  "history": [
   {
@@ -313,6 +334,24 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1793932102: stage 5 return"
+  },
+  {
+   "at": "2026-11-06T02:33:31Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "4417813 of 4000000 spent; run rm-role-designer-1793932378 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T02:33:32Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793932378, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-06T02:41:50Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793932378: stage 2 waiting_owner"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -581,11 +620,34 @@
    "stage": 5,
    "summary": "Lock refused: coverage judge rm-coverage-judge-1793932124 returned not_covered (9 gaps, unsigned). One needs his word (root still names the cut firebreak), so return to stage 2 to ask; the 8 stage-3 gaps ride the decision for the next stage-3 run. Budget warning: 3.88M of the 4.0M cap is spent with a 60k reserve, so the launcher will refuse the next run until the cap is raised; that is the Conductor's call, not a waiver.",
    "to": 2
+  },
+  {
+   "at": "2026-11-06T02:41:50Z",
+   "inputs": {
+    "exam": "781c20ccfee15020138fa10bbaf550d91d696225760749d8aa010662d17d8d38",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "9674f15396a05e2f45f136626976c1c2bdb1d7438a056b0cb53c085932ade71d",
+    "scenes": "81ce4462b7430c2abd1412a6a29c57affcf0d15d93441c22f5bf6acee3565cee",
+    "sheet": "3eb3b863498fd29a45d22960b4106d660089e5bc9282ef306bfada15e33a861c",
+    "tree": "05b72bd6b7321aa834664b1593c813955ecd8df261b12a59faba1c8ea8f5a4e4"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793932378",
+   "stage": 2,
+   "summary": "Sent a_root_ending (turn_05.md): replace the approved root's last two sentences, dropping the cut firebreak (paving stops ground fire, hawk ember can jump it, sprayer is for reaching fruit) and moving scorch-fruit to right behind the front. Fresh-Opus review struck round 1 (false 'strip holds the fire'), passed round 2. The 8 stage-3 coverage gaps stay with the next stage-3 run."
   }
  ],
  "running": null,
  "schema": 1,
  "stage": 2,
- "status": "ready",
+ "status": "waiting_owner",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
