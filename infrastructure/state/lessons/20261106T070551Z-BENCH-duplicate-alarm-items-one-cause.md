@@ -1,0 +1,2 @@
+Relentless enrol, 2026-11-06: one deleted arena selftest (Utils/arena, 1f0e666566) spawned 9 items (NIGHTLY_COP_FIX_RED_WARIWE_XVFM_{WYEK,KTXP,LVPK,WMBJ,NJSM}, NIGHTLY_COP_FIX_RED_ZHIYUZ_VVZU_{WJSB,QJMI}, OPS_RED_OVERDUE_CHASE_AEUZ_{PHBA,TUEF}), about 3.9M builder plus 1.3M check tokens (state.json spent / check.run.charged). Several of them committed only a lesson. Alarm-born items need deduplicating by cause (same test file or same alarm key) before enrol.
+home: NONE
