@@ -1,0 +1,8 @@
+# Does rimworld/set_hover_target make RimWorld draw a tooltip a screenshot can read? Any throwaway Playing map (a dev
+# quicktest on the minimal list, all five DLC) is enough; no mod of ours is involved and no flyer. The probe pauses the
+# game, takes an unhovered and a hovered frame per target and looks for a new dark box holding light text
+# (tooltip_detect.py). Frames, tooltip crops and result_<clause>.json land in D:\ClaudeWork\rimmandrake\scratch\hover_probe\<stamp>\.
+# Exit 0 = drawn, 1 = not drawn (the answer "no"), 2 = no verdict.
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_hover_tooltip.py --clause A1 < /dev/null
+live-proof A2: python.exe src/RimMandrake/bridgetools/prove_hover_tooltip.py --clause A2 < /dev/null
+live-proof A3: python.exe src/RimMandrake/bridgetools/prove_hover_tooltip.py --clause A3 < /dev/null

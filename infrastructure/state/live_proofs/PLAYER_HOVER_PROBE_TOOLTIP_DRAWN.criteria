@@ -1,0 +1,3 @@
+A1 L2: hovering a selected colonist's gizmo with set_hover_target draws a tooltip box with text in the bridge screenshot
+A2 L2: hovering a control on a ButcherSpot's Bills tab with set_hover_target draws a tooltip box with text in the bridge screenshot
+A3 L2: hovering a map thing (the ButcherSpot cell, a colonist) with set_hover_target draws a tooltip box or changes the bottom-left mouse-over readout in the bridge screenshot
