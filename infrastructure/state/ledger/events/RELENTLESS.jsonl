@@ -1351,3 +1351,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:51:33Z","tsn":1794001893023791119}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_END_FIX_CELL_SHORT_OF_PORT A1 (L2), read-only proof","ts":"2026-11-06T21:52:45Z","tsn":1794001965029859250}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:53:40Z","tsn":1794002020549554437}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK A1 (L1), read-only proof","ts":"2026-11-06T21:54:30Z","tsn":1794002070676841298}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:54:42Z","tsn":1794002082796424614}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK A2 (L2), read-only proof","ts":"2026-11-06T21:55:02Z","tsn":1794002102742976749}
