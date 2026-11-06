@@ -50,18 +50,22 @@ CREATE TABLE IF NOT EXISTS mapcomp(
   ticks INTEGER, src_ref TEXT UNIQUE);
 -- cursors.done = bytes of this file already copied to raw/ (a rebuild re-reads from 0, never re-copies)
 -- cursors.gen = truncation resets seen under this file id; it is part of every row's src_ref (ingest.row_ref)
+-- cursors.head = fingerprint of the file's first line (ingest.head_print); a difference means a new file generation
 CREATE TABLE IF NOT EXISTS cursors(
   src TEXT, key TEXT, ino TEXT, offset INTEGER, size INTEGER, mtime REAL, done INTEGER DEFAULT 0,
-  gen INTEGER DEFAULT 0, PRIMARY KEY(src, key));
+  gen INTEGER DEFAULT 0, head TEXT, PRIMARY KEY(src, key));
 CREATE TABLE IF NOT EXISTS kv(k TEXT PRIMARY KEY, v TEXT);
 """
 
 
 def migrate(con) -> None:
     """Columns added after a store was created (CREATE TABLE IF NOT EXISTS never alters an existing table)."""
-    if "gen" not in {r[1] for r in con.execute("PRAGMA table_info(cursors)")}:
+    have = {r[1] for r in con.execute("PRAGMA table_info(cursors)")}
+    for col, decl in (("gen", "INTEGER DEFAULT 0"), ("head", "TEXT")):
+        if col in have:
+            continue
         try:
-            con.execute("ALTER TABLE cursors ADD COLUMN gen INTEGER DEFAULT 0")
+            con.execute(f"ALTER TABLE cursors ADD COLUMN {col} {decl}")
             con.commit()
         except sqlite3.OperationalError as e:   # telemetryd and a CLI call migrating at once: the other one won
             if "duplicate column" not in str(e):

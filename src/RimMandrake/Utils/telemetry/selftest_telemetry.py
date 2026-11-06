@@ -269,6 +269,13 @@ def main(argv) -> int:
                                   (f"ino:{os.stat(tps).st_ino}",)).fetchone()[0]
             finally:
                 ro.close()
+        def committed_head():
+            ro = store.connect(c["db"], readonly=True)
+            try:
+                return ro.execute("SELECT head FROM cursors WHERE src='tps' AND key=?",
+                                  (f"ino:{os.stat(tps).st_ino}",)).fetchone()[0]
+            finally:
+                ro.close()
         check("[twins] the emptied pass committed its reset (no row, event or point to carry a commit)",
               committed_gen() == gen0 + 2)   # read before the refill pass, whose rows would commit it anyway
         put([twin])         # refilled to exactly the old length with the same bytes
@@ -313,7 +320,106 @@ def main(argv) -> int:
         o = store.connect(old_db)
         check("[twins] an existing store gains cursors.gen on connect",
               "gen" in {r[1] for r in o.execute("PRAGMA table_info(cursors)")})
+        check("[twins] an existing store gains cursors.head on connect",
+              "head" in {r[1] for r in o.execute("PRAGMA table_info(cursors)")})
         o.close()
+
+        # [regrown] the size check sees nothing when a file comes back at least as long as the cursor between passes:
+        # every row before the old offset was skipped. The head fingerprint (cursors.head) is what tells them apart.
+        stall = {**base, "kind": "incident", "type": "stall"}
+
+        def row(seq):
+            return {**stall, "seq": seq, "utc": iso(t0 + seq), "gapS": seq}
+
+        def landed(*seqs):      # each fixture row has its own ts
+            return [con.execute("SELECT COUNT(*) FROM events WHERE kind='incident' AND ts=?",
+                                (float(int(t0 + q)),)).fetchone()[0] for q in seqs]
+
+        def tps_cur():
+            return con.execute("SELECT offset,gen,head FROM cursors WHERE src='tps' AND key=?",
+                               (f"ino:{os.stat(tps).st_ino}",)).fetchone()
+        put([row(40)])
+        T.pass_source(S["tps"])
+        ino, cur0, resets0 = os.stat(tps).st_ino, tps_cur(), T.stats["tps"]["resets"]
+        put([row(41), row(42), row(43)])    # same inode, past the old cursor, no pass saw it short
+        check("[regrown] fixture: same inode, longer than the cursor",
+              os.stat(tps).st_ino == ino and os.path.getsize(tps) > cur0["offset"], (os.path.getsize(tps), tuple(cur0)))
+        T.pass_source(S["tps"])
+        check("[regrown] a same-inode file regrown past its cursor lands the rows before the old offset",
+              landed(41, 42, 43) == [1, 1, 1], landed(41, 42, 43))
+        check("[regrown] it was counted as a reset and took a new generation",
+              T.stats["tps"]["resets"] == resets0 + 1 and tps_cur()["gen"] == cur0["gen"] + 1, tuple(tps_cur()))
+        T.pass_source(S["tps"])
+        check("[regrown] the new head is recorded: the next pass is no second reset",
+              T.stats["tps"]["resets"] == resets0 + 1 and landed(41, 42, 43) == [1, 1, 1], T.stats["tps"])
+        w(tps, [row(44)])
+        T.pass_source(S["tps"])
+        check("[regrown] plain appends after it are appends: read once, no reset",
+              landed(41, 42, 43, 44) == [1, 1, 1, 1] and T.stats["tps"]["resets"] == resets0 + 1, landed(41, 42, 43, 44))
+        size_eq = os.path.getsize(tps)
+        put([row(45), row(46), row(47), row(48)])   # back to exactly the cursor's length: the early "nothing new" exit
+        check("[regrown] fixture: exactly the old length", os.path.getsize(tps) == size_eq, (os.path.getsize(tps), size_eq))
+        T.pass_source(S["tps"])
+        check("[regrown] a file regrown to exactly its old length lands its rows",
+              landed(45, 46, 47, 48) == [1, 1, 1, 1], landed(45, 46, 47, 48))
+        # a new file on a dead file's inode. ext4 hands the inode back only sometimes, so the key is pinned: to the
+        # tailer that is all an inode is
+        fk0, T._file_key = T._file_key, lambda st, path: "ino:recycled"
+        try:
+            put([row(50)])
+            T.pass_source(S["tps"])
+            with open(tps + ".new", "w") as fh:
+                fh.write("".join(json.dumps(row(q)) + "\n" for q in (51, 52, 53)))
+            os.replace(tps + ".new", tps)
+            T.pass_source(S["tps"])
+            check("[regrown] a new file reusing a deleted file's inode lands its rows",
+                  landed(50, 51, 52, 53) == [1, 1, 1, 1], landed(50, 51, 52, 53))
+            # a new file on the same inode caught mid-write of its first row: no whole line to fingerprint yet
+            with open(tps + ".new", "w") as fh:
+                fh.write(json.dumps(row(54)) + " " * 2000)   # past the old cursor, short of HEAD_BYTES
+            os.replace(tps + ".new", tps)
+            T.pass_source(S["tps"])
+            with open(tps, "a") as fh:
+                fh.write("\n" + json.dumps(row(55)) + "\n")
+            T.pass_source(S["tps"])
+            check("[regrown] a new head caught mid-line resets, then lands its rows once it is whole",
+                  landed(54, 55) == [1, 1], landed(54, 55))
+        finally:
+            T._file_key = fk0
+        # a same-inode rebuild keeps the fingerprint and must not read as a new file
+        put([row(60), row(61)])
+        T.pass_source(S["tps"])
+        ev_rb, resets_rb = con.execute("SELECT COUNT(*) FROM events").fetchone()[0], T.stats["tps"]["resets"]
+        cli.main(["rebuild", "--since", "7d"])
+        T.pass_source(S["tps"])
+        check("[regrown] a rebuild of an unchanged file is no reset and adds no rows",
+              T.stats["tps"]["resets"] == resets_rb and con.execute("SELECT COUNT(*) FROM events").fetchone()[0] == ev_rb,
+              (resets_rb, T.stats["tps"]["resets"], ev_rb))
+        # a cursor from before cursors.head, on a file with nothing new: its first pass must record the head by
+        # itself, or a later regrowth has nothing to differ from (the pass reads no row, so nothing else commits)
+        con.execute("UPDATE cursors SET head=NULL WHERE src='tps' AND key=?", (f"ino:{os.stat(tps).st_ino}",))
+        con.commit()
+        resets_up = T.stats["tps"]["resets"]
+        T.pass_source(S["tps"])
+        check("[regrown] an old cursor takes the head as it stands: no reset, committed by a pass that read nothing",
+              T.stats["tps"]["resets"] == resets_up and committed_head() is not None, committed_head())
+        put([row(62), row(63), row(64)])
+        T.pass_source(S["tps"])
+        check("[regrown] a cursor upgraded from before cursors.head catches the next regrowth",
+              landed(62, 63, 64) == [1, 1, 1], landed(62, 63, 64))
+        hp = ingest.head_print
+        check("[regrown] head_print: None until a whole line or HEAD_BYTES; appends never change a value once set",
+              hp(b"") is None and hp(b"abc") is None and hp(b"abc\n") == hp(b"abc\nmore")
+              and hp(b"x" * ingest.HEAD_BYTES) == hp(b"x" * ingest.HEAD_BYTES + b"tail\n")
+              and hp(b"abc\n") != hp(b"abd\n"))
+        raw_big = b"y" * (ingest.HEAD_BYTES + 50) + b"\nz\n"
+        seen = [hp(raw_big[:k][:ingest.HEAD_BYTES]) for k in range(len(raw_big) + 1)]
+        check("[regrown] head_print is stable for every split of an oversized first row",
+              len({v for v in seen if v is not None}) == 1, len(set(seen)))
+        small = b'{"a":1}\n{"b":2}\n'
+        seen = [hp(small[:k]) for k in range(len(small) + 1)]
+        check("[regrown] head_print is stable for every split of an ordinary file",
+              len({v for v in seen if v is not None}) == 1 and seen[:7] == [None] * 7, seen)
 
         # bridge: rotation by rename, buckets
         bc = c["bridge_calls"]
@@ -369,8 +475,8 @@ def main(argv) -> int:
 
         # [order] a rotated .1 holding a backlog past MAX_READ: the starts sit in .1's unread tail, the ends in the live
         # file. Reading the live file in the same pass delivered each end first (tool '?', then an unfinished call).
-        # The old .1 stays open until the new live file exists: ext4 would hand the freed inode to the new file and it
-        # would inherit the dead file's cursor (a fixture artifact; NTFS file ids carry a reuse sequence number).
+        # The old .1 stays open until the new live file exists: ext4 would hand the freed inode to the new file and
+        # this would become a test of the recycled-inode reset ([regrown]) instead of order.
         with open(bc + ".1", "rb"):
             os.replace(bc, bc + ".1")
             w(bc + ".1", [{"ev": "start", "cid": f"o{i}", "tool": "jawa/o", "t": iso(tb + 80),

@@ -6,8 +6,10 @@ VictoriaMetrics and rows to SQLite. Sources are a registry (SOURCES) so `telemet
 the skill's sources reference are generated from the same list and cannot drift.
 
 Cursor identity is the file id (st_ino; NTFS file index on Windows), so a rename-rotation
-(bridge_calls.jsonl -> .1) is followed, not re-read. A file that shrank under its cursor is
-re-read from 0 and counted in `resets`. Only complete lines ("\\n"-terminated) are consumed.
+(bridge_calls.jsonl -> .1) is followed, not re-read. A file that shrank under its cursor, or whose head
+fingerprint (cursors.head, see head_print) no longer matches, is re-read from 0 and counted in `resets`: the
+fingerprint catches a file truncated and regrown past the cursor between passes, and a new file under a
+recycled inode. Only complete lines ("\\n"-terminated) are consumed.
 
 A row's src_ref is `source:basename:gen:offset:linehash`, gen = `<file id>.<resets>`. The offset alone
 is not an identity: after a truncation reset (same inode, shrank under its cursor) or a file replaced
@@ -16,8 +18,9 @@ ref would drop them. The line hash makes the ref name the row's bytes; the gener
 the cursor's reset count, cursors.gen) separates a new row from a byte-identical twin the old file
 held at the same offset. A re-read of the same file generation (rebuild, crash re-read) yields the
 same refs and still dedups; `telemetry rebuild` keeps cursors.gen. Refs stored before 2026-11-06
-carry no gen or hash: a rebuild over those files re-adds their rows once. Not covered: a file
-replaced by one at least as long under a recycled inode is indistinguishable from appends.
+carry no gen or hash: a rebuild over those files re-adds their rows once. Not covered: a file regrown past
+its cursor with a byte-identical first line reads as appends, and a cursor made before cursors.head takes the
+file's head as it stands at its first pass (nothing older to compare with).
 """
 from __future__ import annotations
 
@@ -36,6 +39,7 @@ from tcommon import bridge_failed, cfg, loads, parse_ts, utc_day
 MAX_READ = 8 << 20          # per file per pass; a backlog drains over several passes
 RAW_FLUSH_S = 60.0
 RAW_FLUSH_BYTES = 1 << 20
+HEAD_BYTES = 4096           # a first line longer than this is fingerprinted by its first HEAD_BYTES
 
 
 # ================================================================== emit context
@@ -597,6 +601,15 @@ def row_ref(src: str, base: str, pos: int, line: bytes, gen: str = "0.0") -> str
     return f"{src}:{base}:{gen}:{pos}:{hashlib.blake2b(line, digest_size=6).hexdigest()}"
 
 
+def head_print(data: bytes) -> str | None:
+    """Fingerprint of a file's first line, from its first HEAD_BYTES. None until there is a whole line or HEAD_BYTES
+    to hash. Appending can never change a value once it is not None, so a difference means the head was rewritten."""
+    nl = data.find(b"\n", 0, HEAD_BYTES)
+    if nl < 0 and len(data) < HEAD_BYTES:
+        return None
+    return hashlib.blake2b(data[:nl] if nl >= 0 else data[:HEAD_BYTES], digest_size=8).hexdigest()
+
+
 class Tailer:
     def __init__(self, con, vm, latest):
         self.con, self.vm, self.latest = con, vm, latest
@@ -625,20 +638,22 @@ class Tailer:
             return 0
         stt["files"] = len(files)
         backlog = False     # a file read only up to MAX_READ this pass: its bridge buckets are not complete yet
-        any_reset = False   # a reset's cursor row must be committed even by a pass that read no rows
+        cursor_moved = False    # a reset or a first fingerprint must be committed even by a pass that read no rows
         for path in files:
             try:    # identity from the open handle: a rotation between stat and open must not read the new file
                 with open(path, "rb") as f:     # under the old file's cursor
                     st = os.fstat(f.fileno())
                     key = self._file_key(st, path)
-                    cur = self.con.execute("SELECT offset,size,done,gen FROM cursors WHERE src=? AND key=?",
+                    cur = self.con.execute("SELECT offset,size,done,gen,head FROM cursors WHERE src=? AND key=?",
                                            (src.name, key)).fetchone()
                     off = cur["offset"] if cur else 0
                     resets = (cur["gen"] or 0) if cur else 0
                     db_done = (cur["done"] or 0) if cur else 0   # bytes on disk in the raw copy (rebuild never re-copies)
                     # bytes buffered in raw_buf but not yet on disk count as copied for this process only
                     done = max(db_done, self.raw_pending.get((src.name, key), 0))
-                    if st.st_size < off or st.st_size < done:
+                    head = head_print(f.read(HEAD_BYTES))
+                    known = cur["head"] if cur else None
+                    if st.st_size < off or st.st_size < done or (known is not None and head != known):
                         stt["resets"] += 1
                         resets += 1     # a new generation: its rows' refs differ from the old file's twins
                         off = done = db_done = 0
@@ -646,10 +661,15 @@ class Tailer:
                         # record the generation now: a pass that reads no whole row (emptied, or truncated to a
                         # partial line) would otherwise leave the old cursor, and a refill to the old length is
                         # then read under the old offset and generation and skipped whole. Committed below.
-                        self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done,gen) "
-                                         "VALUES(?,?,?,0,?,?,0,?)", (src.name, key, path, st.st_size, st.st_mtime,
-                                                                     resets))
-                        any_reset = True
+                        self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done,gen,head) "
+                                         "VALUES(?,?,?,0,?,?,0,?,?)", (src.name, key, path, st.st_size, st.st_mtime,
+                                                                       resets, head))
+                        cursor_moved = True
+                    elif cur and known is None and head is not None:
+                        # first sight of this head; a file with nothing new to read must still record it, or a later
+                        # regrowth has nothing to differ from
+                        self.con.execute("UPDATE cursors SET head=? WHERE src=? AND key=?", (head, src.name, key))
+                        cursor_moved = True
                     # a crash after the cursor moved but before flush_raw left [done, off) out of raw/: re-read
                     # from `done` for the copy only (those rows were already ingested, so the parser skips them)
                     start = min(off, done) if src.archive else off
@@ -712,17 +732,17 @@ class Tailer:
                 if new_done > db_done:
                     self.raw_pending[(src.name, key)] = new_done
                 new_done = db_done
-            self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done,gen) "
-                             "VALUES(?,?,?,?,?,?,?,?)",
+            self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done,gen,head) "
+                             "VALUES(?,?,?,?,?,?,?,?,?)",
                              (src.name, key, path, max(off, start + len(chunk)), st.st_size, st.st_mtime, new_done,
-                              resets))
+                              resets, head))
             if partial and src.ordered:     # an older file still has a backlog: newer files wait for the next pass,
                 break                       # or a call's end (live file) lands before its start (the .1 tail)
         if src.name == "bridge" and not backlog:    # a pass with nothing new: the calls stopped, close what the
             flush_bridge_buckets(E, now=time.time() if n == 0 else None)    # clock left. A backlog flushes once drained
         stt["rows"] += n
         stt["last_pass"] = time.time()
-        if n or E.events or E.points or any_reset:
+        if n or E.events or E.points or cursor_moved:
             self.commit_durable()
         return n
 
