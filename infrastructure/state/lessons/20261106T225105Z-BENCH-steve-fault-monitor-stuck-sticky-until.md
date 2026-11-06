@@ -1,0 +1,1 @@
+Steve fault monitor STUCK is sticky until a new boot and only alarms when its pause expires: the lane sits idle for up to 6 h with jobs queued. Check steve.state reason and the rm-steve-fault journal when Steve reads PAUSED.
