@@ -88,10 +88,17 @@
     "ref": "run rm-role-designer-1793951281",
     "stage": 2,
     "tokens": 194929
+   },
+   {
+    "at": "2026-11-06T07:53:13Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793951433",
+    "stage": 3,
+    "tokens": 206580
    }
   ],
   "reserve": 60000,
-  "spent": 3487175
+  "spent": 3693755
  },
  "history": [
   {
@@ -231,6 +238,12 @@
    "stage": 3,
    "what": "open",
    "why": "run rm-role-designer-1793951433, stage 3, budget 452825"
+  },
+  {
+   "at": "2026-11-06T07:53:13Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1793951433: stage 3 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -435,33 +448,35 @@
    "run": "rm-role-designer-1793951281",
    "stage": 2,
    "summary": "a_flagship_pick answered by card (OWNER:1793950666234031543): the workshop floor is GSS's face, showcase 1; yard of masts is showcase 2. Recorded as decision d_flagship (flagship: workshop_floor) and bound to scenes.json showcase 1. No ask is sent; all core contradictions resolved."
+  },
+  {
+   "at": "2026-11-06T07:53:13Z",
+   "inputs": {
+    "exam": null,
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "34790104ed4ab329b537e01812fb1b6b67aea600f8825580f62c6626dc2e26aa",
+    "sheet": "d0af3cc3ee371c0cb5b130c2feade1d90c0a9cc796b9b894ef37c8cd8dcef2ce",
+    "tree": "50650ca17d1a83fcf9799d961d3a7733577a575e6f463fd230ba66b1f0206a5f"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1793951433",
+   "stage": 3,
+   "summary": "Stage 3 files (written by run rm-role-designer-1793914690) now complete: showcase 1 workshop_floor bound to d_flagship (OWNER:1793950666234031543), showcase 2 yard_of_masts, overlap 0, coverage complete; sheet and plan updated to record his pick. Lint PASS, showcase set accepted. Build items already filed: GSS_SCENES_BUILD_EVERY_CORD_A_FOIL, GSS_SHAPE_PROBE_MEASURE_NO_TWO_ALIKE, GSS_MODERN_STRIP_BUILD_PLUGS_AT_LAST."
   }
  ],
- "running": {
-  "at": "2026-11-06T07:50:57Z",
-  "inputs": {
-   "exam": null,
-   "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
-   "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
-   "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
-   "scenes": "34790104ed4ab329b537e01812fb1b6b67aea600f8825580f62c6626dc2e26aa",
-   "sheet": "f2a754b2ec83016f7b02dbaa5e7093922bc1d5c946a8bfdf487a460b2dafe8d9",
-   "tree": "50650ca17d1a83fcf9799d961d3a7733577a575e6f463fd230ba66b1f0206a5f"
-  },
-  "manifest": {
-   "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
-   "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-   "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
-  },
-  "owner_uncited": [
-   "1793766796952956687"
-  ],
-  "reserved": 452825,
-  "run": "rm-role-designer-1793951433",
-  "stage": 3
- },
+ "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
