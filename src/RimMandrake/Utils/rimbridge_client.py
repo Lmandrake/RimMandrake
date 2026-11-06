@@ -563,8 +563,12 @@ READ_ONLY_PREFIXES = ("list_", "get_", "search_", "find_", "compile_", "ping")
 # UNMEASURED (exit 3, 2026-11-03) and no live proof could read the map without --yes-i-know-this-is-live.
 # texture_memory only walks Resources.FindObjectsOfTypeAll<Texture>() and the running mods' content lists ("Read only"
 # in JawaBenchTextureMemoryTools); refused here, HEAVY_TEXTURES_MEASURE_REAL_VRAM's A1/A2 read UNMEASURED (exit 3, 2026-11-04).
+# pawn_get, flowworks_excavation_report and flowworks_excavation_rect only read (PawnSnapshot; the excavation component's
+# getters; "Never mutates anything" in JawaBenchFlowWorksPulseTools): BATCHREADS_BUILD_ROUND_TRIP_CUT's live proof compares
+# them with their batch twins, which must not be refused as mutations when an earlier call is INDETERMINATE.
 READ_ONLY_TOOLS = ("jawa/companion_handshake", "jawa/running_mods", "jawa/map_info", "jawa/thing_graphic",
-                   "jawa/thing_explain", "jawa/texture_memory")
+                   "jawa/thing_explain", "jawa/texture_memory", "jawa/pawn_get", "jawa/flowworks_excavation_report",
+                   "jawa/flowworks_excavation_rect")
 # jawa/static_call runs ANY static method, so it is mutating by default. These (type, method) pairs are reviewed getters:
 # a caller that declares its call read-only (CLI --read-only-static, live_def_check._bridge(read_only_static=True)) passes
 # the guard for these and only these. TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING's readback was refused as not read-only on
@@ -579,6 +583,7 @@ READ_ONLY_STATIC_CALLS = frozenset((
     ("RimMandrake.Pyrelands.PyrelandsMechanicsGate", "get_ShellPresent"),   # a null test on a cached delegate
     ("RimMandrake.Pyrelands.PyrelandsMechanicsGate", "get_ShellOn"),        # the delegate above, i.e. Enabled
     ("RimMandrake.Pyrelands.PyrelandsMechanicsGate", "get_On"),             # pure RM_FireEcoKernel.MechanicsOn
+    ("RimMandrake.FlowWorks.Machinery.RM_LineProofs", "ProofPitWater"),     # sums WaterDlAt over a rect; EngineOf only caches
 ))
 
 

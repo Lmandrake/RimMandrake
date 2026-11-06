@@ -247,6 +247,23 @@ namespace JawaBench.BridgeTools
             }).ConfigureAwait(false);
         }
 
+        /// <summary>jawa/power_net's `net` block; null when unconnected. Shared with
+        /// get_power_nets_batch so the two reads cannot disagree (BATCHREADS_BUILD_ROUND_TRIP_CUT).</summary>
+        private static object PowerNetBlock(PowerNet net)
+        {
+            if (net == null) return null;
+            return new
+            {
+                currentEnergyGainRate = net.CurrentEnergyGainRate(),
+                currentStoredEnergy = net.CurrentStoredEnergy(),
+                hasPowerSource = net.hasPowerSource,
+                connectorsCount = net.connectors.Count,
+                transmittersCount = net.transmitters.Count,
+                powerCompsCount = net.powerComps.Count,
+                batteryCompsCount = net.batteryComps.Count
+            };
+        }
+
         // ================================================================
         //  jawa/power_net
         // ================================================================
@@ -313,16 +330,7 @@ namespace JawaBench.BridgeTools
                         : t.ThingID + "'s net: gain " + net.CurrentEnergyGainRate() + " W/tick-day, stored " + net.CurrentStoredEnergy() + ".",
                     thing = new { id = t.ThingID, defName = t.def != null ? t.def.defName : null },
                     connected = net != null,
-                    net = net == null ? null : (object)new
-                    {
-                        currentEnergyGainRate = net.CurrentEnergyGainRate(),
-                        currentStoredEnergy = net.CurrentStoredEnergy(),
-                        hasPowerSource = net.hasPowerSource,
-                        connectorsCount = net.connectors.Count,
-                        transmittersCount = net.transmitters.Count,
-                        powerCompsCount = net.powerComps.Count,
-                        batteryCompsCount = net.batteryComps.Count
-                    },
+                    net = PowerNetBlock(net),
                     isPowerTrader = trader != null,
                     powerOnBefore = before,
                     powerOnAfter = after,

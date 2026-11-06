@@ -5540,6 +5540,36 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
         }
 
+        /// <summary>One list_things row. Shared with list_things_batch so the batch
+        /// read and the single-call read cannot disagree about a thing's fields
+        /// (BATCHREADS_BUILD_ROUND_TRIP_CUT).</summary>
+        private static object ThingListRow(Thing thing, IntVec3 pos)
+        {
+            QualityCategory q;
+            string quality = thing.TryGetQuality(out q) ? q.ToString() : null;
+            return new
+            {
+                id = thing.ThingID,
+                def = thing.def.defName,
+                label = thing.LabelCap.ToString(),
+                x = pos.x,
+                z = pos.z,
+                spawned = thing.Spawned,
+                rot = thing.Rotation.AsInt,
+                stackCount = thing.stackCount,
+                hitPoints = thing.def.useHitPoints ? thing.HitPoints : -1,
+                maxHitPoints = thing.def.useHitPoints ? thing.MaxHitPoints : -1,
+                faction = thing.Faction?.def?.defName,
+                // factionName added 2026-09-09: list_pawns exposes both, list_things
+                // exposed only the defName-shaped `faction`, so a caller reading
+                // `factionName` (as list_pawns teaches) saw null and read a
+                // player-owned building as factionless — a confirmed incident.
+                factionName = thing.Faction?.Name,
+                stuff = thing.Stuff?.defName,
+                quality
+            };
+        }
+
         // The read half of spawn_batch/destroy_batch, and the missing half of
         // list_pawns. Every tool that acts on a specific object takes a ThingID
         // (`jawa/damage thingId=`, `jawa/order_pawn targetId=`) and until now
@@ -5668,30 +5698,7 @@ namespace JawaBench.BridgeTools
 
                     if (rows.Count >= limit) { truncated++; continue; }
 
-                    QualityCategory q;
-                    string quality = thing.TryGetQuality(out q) ? q.ToString() : null;
-
-                    rows.Add(new
-                    {
-                        id = thing.ThingID,
-                        def = thing.def.defName,
-                        label = thing.LabelCap.ToString(),
-                        x = pos.x,
-                        z = pos.z,
-                        spawned = thing.Spawned,
-                        rot = thing.Rotation.AsInt,
-                        stackCount = thing.stackCount,
-                        hitPoints = thing.def.useHitPoints ? thing.HitPoints : -1,
-                        maxHitPoints = thing.def.useHitPoints ? thing.MaxHitPoints : -1,
-                        faction = thing.Faction?.def?.defName,
-                        // factionName added 2026-09-09: list_pawns exposes both, list_things
-                        // exposed only the defName-shaped `faction`, so a caller reading
-                        // `factionName` (as list_pawns teaches) saw null and read a
-                        // player-owned building as factionless — a confirmed incident.
-                        factionName = thing.Faction?.Name,
-                        stuff = thing.Stuff?.defName,
-                        quality
-                    });
+                    rows.Add(ThingListRow(thing, pos));
                 }
 
                 return new

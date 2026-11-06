@@ -204,7 +204,12 @@ def _refuse_sink_cells(t, cells, what):
     if not t._guard():
         return
     sinks, total = [], None
-    for x, z in cells:
+    batch = _cells_batch(t, cells)
+    if batch is not None:
+        by, counters = batch
+        sinks = [(x, z) for x, z in cells if by[(x, z)].get("isSink") is True]
+        total = counters["sinkTransferredTotal"] if sinks else None
+    for x, z in (cells if batch is None else ()):
         r = _rep(t, x, z)
         if r.get("isSinkCell") is True:
             sinks.append((x, z))
@@ -224,6 +229,45 @@ def _stage(t, tool, **kw):
         raise ExpectationFailed("UNMEASURED: staging %s was refused, so the plot under test does not exist: %r"
                                 % (tool, str(r)[:200]))
     return r
+
+
+CELLS_BATCH = "jawa/flowworks_excavation_rect"
+CELLS_BATCH_MAX = 10000                     # FwMaxRectCells: the tool refuses a larger rect
+
+
+def _cells_batch(t, cells):
+    """BATCHREADS_BUILD_ROUND_TRIP_CUT: ONE jawa/flowworks_excavation_rect call over the cells' bounding rect answers every
+    cell's D/F (dEff/fEff: the DepthAt/FillAt getters flowworks_excavation_report reads), sink flag and exact water (dl:
+    WaterDlAt, the number ProofPitWater sums over a 1x1 rect), where the per-cell path pays one round trip (~53 ms) per
+    cell per read. Returns ({(x, z): row}, counters) or None, and None always means "read per cell" -- never a value: a
+    companion without the tool (a reply with no row list: cached for this run, `t._cells_batch_absent`), a refused rect
+    (off the map, no FlowWorks), a rect over the cap, or any requested cell missing from the rows all fall back, so the
+    single-cell tools still raise their own named failure."""
+    if not cells or not t._guard() or getattr(t, "_cells_batch_absent", False):
+        return None
+    xs, zs = [c[0] for c in cells], [c[1] for c in cells]
+    x0, z0 = min(xs), min(zs)
+    w, h = max(xs) - x0 + 1, max(zs) - z0 + 1
+    if w * h > CELLS_BATCH_MAX:
+        return None
+    r = t.bridge_call(CELLS_BATCH, x=x0, z=z0, w=w, h=h, onlyNonZero=False, includeTerrain=False) or {}
+    rows = r.get("rows")
+    if not isinstance(rows, list):
+        if "success" not in r or r.get("success") is True:      # an answer with no rows: the tool is not on this bridge
+            t._cells_batch_absent = True
+        return None
+    if r.get("success") is not True:
+        return None
+    by = {}
+    for row in rows:
+        if isinstance(row, dict):
+            by[(row.get("x"), row.get("z"))] = row
+    for c in cells:
+        row = by.get(tuple(c))
+        if row is None or not isinstance(row.get("dl"), int) or isinstance(row.get("dl"), bool) \
+                or row.get("dEff") is None or row.get("fEff") is None:
+            return None
+    return by, {"sinkTransferredTotal": r.get("sinkTransferredTotal")}
 
 
 def _rep(t, x, z):
@@ -328,6 +372,9 @@ def _def_field(r, field):
 
 def _state(t, cells):
     """[(depth, fill)] for each cell, via the engine's own getters."""
+    batch = _cells_batch(t, cells)
+    if batch is not None:
+        return [(batch[0][(x, z)]["dEff"], batch[0][(x, z)]["fEff"]) for x, z in cells]
     out = []
     for x, z in cells:
         r = _rep(t, x, z)
@@ -347,6 +394,9 @@ def _water(t, cells):
     Offline: zeros. A reply that is not a PITWATER reading is UNMEASURED, never dry."""
     if not t._guard():
         return [0.0] * len(cells)
+    batch = _cells_batch(t, cells)
+    if batch is not None:
+        return [batch[0][(x, z)]["dl"] / float(UNITS_PER_LEVEL) for x, z in cells]
     out = []
     for x, z in cells:
         r = t.bridge_call("jawa/static_call", type=LPROOF, method="ProofPitWater", args="%d,%d,1,1" % (x, z))

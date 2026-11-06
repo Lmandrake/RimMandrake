@@ -1,0 +1,2 @@
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_batch_reads.py --clause A1
+live-proof A2: python.exe src/RimMandrake/bridgetools/prove_batch_reads.py --clause A2
