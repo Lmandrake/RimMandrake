@@ -5866,7 +5866,11 @@ def step(store, fx, r, item, now, acts):
                 return
         reason = "relentless: blind PASS at %s after %d return(s): %s" % (c["sha"], st["returns"],
                                                                          (st["check"].get("reasons") or "")[:220])
-        why = fx.ledger_close(item, c["sha"], reason, (st["contract"] or {}).get("live"))
+        # the candidate's .criteria may re-tier a criterion the ledger still holds at the old level: `close` reads the
+        # ledger manifest and would refuse for ever, so it is recorded again first (CLOSE_RETIER_FIX_LEDGER_STILL_OWES_L1)
+        why = relentless_game.close_rerecord(store, fx, item, c["sha"], acts)
+        if not why:
+            why = fx.ledger_close(item, c["sha"], reason, (st["contract"] or {}).get("live"))
         if why and "has not earned its close" in why:    # a refusal is no transient: a retry would refuse for ever
             with store.lock():
                 st = store.load(item)

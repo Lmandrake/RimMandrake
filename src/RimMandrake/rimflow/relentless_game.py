@@ -1676,6 +1676,52 @@ def _rerecord(store, fx, item, sha, acts):
     return again
 
 
+
+def _criteria_lines(text):
+    """-> {cid: (level, text cut as the ledger keeps it)} of the criterion lines in a .criteria file. Pure."""
+    import model
+    got = {}
+    for line in (text or "").splitlines():
+        m = model.CRITERION_LINE_RE.match(line)
+        if m:
+            got[m.group("cid")] = (m.group("level"), m.group("text").strip()[:model.CRITERION_TEXT_MAX])
+    return got
+
+
+def criteria_moved(text, ledger):
+    """-> the ids both the `.criteria` file (`text`) and the ledger manifest (`ledger`: {id: {level, text}}) hold, whose
+    level or wording the file now says otherwise (re-tiered). The ledger keeps a text's first CRITERION_TEXT_MAX chars,
+    as model does. A line only one side holds is not a re-tier and moves nothing. Pure."""
+    lines, ledger = _criteria_lines(text), ledger or {}
+    return [cid for cid, (level, words) in sorted(lines.items()) if cid in ledger
+            and (ledger[cid].get("level") != level or (ledger[cid].get("text") or "").strip() != words)]
+
+
+def close_rerecord(store, fx, item, sha, acts):
+    """The closing step's twin of _preflight's re-record (CLOSE_RETIER_FIX_LEDGER_STILL_OWES_L1): a non-game item whose
+    candidate re-tiers a criterion in live_proofs/<ID>.criteria (L1 -> L0) left the ledger owing the old level, and
+    `close` refused it for ever ('still owes A2 L1'). When the file at `sha` re-tiers a ledger criterion, the manifest is
+    recorded again from the file, each ledger criterion the file does not name carried over as it stands (a manifest
+    replaces the last, and a closing step drops no clause). -> None when nothing moved or the re-record landed, else
+    rimflow's refusal."""
+    led = fx.game_ledger(item)
+    if led is None:
+        return None
+    text = fx.proofs_at(item, sha, ".criteria")
+    ledger = led.get("criteria") or {}
+    moved = criteria_moved(text, ledger)
+    if not moved:
+        return None
+    named = _criteria_lines(text)
+    kept = ["%s %s: %s" % (cid, c.get("level"), (c.get("text") or "").strip())
+            for cid, c in sorted(ledger.items()) if cid not in named]
+    again = fx.game_implement(item, sha, text.rstrip("\n") + "\n" + "".join(k + "\n" for k in kept),
+                              (store.load(item).get("contract") or {}).get("live"),
+                              why="relentless: blind PASS; the candidate's .criteria re-tiers %s, recorded again "
+                                  "before the close" % ", ".join(moved))
+    acts.append({"do": "close_rerecorded", "item": item, "moved": moved, "why": (again or "ok")[:200]})
+    return again
+
 CARRY_MAX = 8      # carries per game entry: a build carried this often is waiting on something else, and goes back
 
 

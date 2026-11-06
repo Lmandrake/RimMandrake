@@ -97,6 +97,12 @@ class FakeWorld:
     def run_offbox(self, name, adapter, timeout):
         return {"cmd": name, "exit": 1, "out": "fake world: no offbox adapter runs", "at": self.__dict__.get("now", 0)}
 
+    # the closing step's re-record (relentless_game.close_rerecord) reads these: no ledger manifest, no .criteria file
+    def game_ledger(self, item): return None
+    def proofs_at(self, item, sha, ext=".txt"): return ""
+    def game_implement(self, item, sha, criteria_text, live=None, why=None, no_code=None):
+        self.__dict__.setdefault("impl", []).append((item, sha, criteria_text))
+
     def budget(self): return self.budget_v
     def head_helpers(self): return self.helpers
     def burn(self): return self.burn_v
