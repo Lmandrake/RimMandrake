@@ -1,0 +1,1 @@
+Replaying hook payloads is not read-only: an allowed Agent call makes block_agent_over_slots.py reserve a real helper slot for 90 s (spawn_reservations.json). Any tool feeding hooks synthetic Agent calls must set RM_SPAWN_RESERVE_S=0, as hook_latency.py does.
