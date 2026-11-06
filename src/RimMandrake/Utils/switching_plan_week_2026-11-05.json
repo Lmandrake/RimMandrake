@@ -4,9 +4,10 @@
  "_owner": "[O] 2026-10-28 10:15 PDT: 'Use up both lukas.mandrake and mandrake.system of course down to ~2% for safety. Make sure not to overshoot and get stuck even if there is a surprise long-running subagent. then go idle until 1pm when you switch over to system.mandrake. Once steven.lewis resets, switch over to it and use it until 50%. Then use up system.mandrake to 2%, then lukas.mandrake to 2%. That's our first \"standard switching plan.\"'",
  "order": [
   "system",
-  "steven"
+  "steven",
+  "lukas"
  ],
- "_week_2026-11-05": "[O] 2026-11-05 ~22:50 PST, to the Conductor: 'When this account goes to 1%, please switch to Steven's account and use up to 50% lower than where it is now.' This week's plan, read by account-plan.service through RM_SWITCH_PLAN (drop-in week.conf): system to 1% left, then steven to 30% left (80% read 22:44 PST, minus 50). lukas left out: he named no further account. The standard plan switching_plan.json is untouched; at steven's reset (~2026-11-11 13:59 PST) remove the drop-in (ACCOUNTS_RESTORE_STEVE_LINE_AFTER_BIG_WEEK).",
+ "_week_2026-11-05": "[O] 2026-11-05 ~22:50 PST, to the Conductor: 'When this account goes to 1%, please switch to Steven's account and use up to 50% lower than where it is now.' This week's plan, read by account-plan.service through RM_SWITCH_PLAN (drop-in week.conf): system to 1% left, then steven to 30% left (80% read 22:44 PST, minus 50). Owner 2026-11-05 ~23:05 PST: 'Lukas comes after Steven.' so lukas follows, to the 2% wait floor. The standard plan switching_plan.json is untouched; at steven's reset (~2026-11-11 13:59 PST) remove the drop-in (ACCOUNTS_RESTORE_STEVE_LINE_AFTER_BIG_WEEK).",
  "_order": "[O] 2026-10-28 10:15 (see _owner): 'Once steven.lewis resets, switch over to it and use it until 50%. Then use up system.mandrake to 2%, then lukas.mandrake to 2%.' A fixed priority: the engine burns the FIRST account in this list that is eligible (measured, fresh, inside its window, above its line). steven is eligible only inside his window after his reset, down to leave_pct_left. When system resets, the machine goes to system even if lukas still has budget; a lower account's budget that expires first is given up (the owner 2026-10-28, on being left on lukas at 13:00: 'awkward').",
  "accounts": {
   "steven": {
