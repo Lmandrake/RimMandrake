@@ -1362,3 +1362,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging PLANET_ATMOSPHERE_CLOUD_COST_1: deploy and restart for its live proofs","ts":"2026-11-06T22:09:08Z","tsn":1794002948940885169}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:15:34Z","tsn":1794003334351166342}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T22:15:46Z","tsn":1794003346147736846}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:15:57Z","tsn":1794003357916085326}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A1 (L1), read-only proof","ts":"2026-11-06T22:17:52Z","tsn":1794003472328089118}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:18:02Z","tsn":1794003482326946385}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A3 (L1), read-only proof","ts":"2026-11-06T22:18:13Z","tsn":1794003493209440662}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:18:20Z","tsn":1794003500694532806}
