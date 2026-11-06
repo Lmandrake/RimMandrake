@@ -522,7 +522,7 @@ def main(argv=None):
     p.add_argument("--per-ruling", help="a standing ruling of his, cited by item id or ledger event")
     p.add_argument("--why", help="the acting agent's own reason; grants no owner authority")
     p.add_argument("--dry-run", action="store_true")
-    sp.add_parser("card-said")
+    sp.add_parser("card-said", aliases=["card_said"])   # the underscore spelling: relentless_boxrun reads a hyphenated subcommand as prose
     p = sp.add_parser("correct-provenance"); p.add_argument("ruling_ids", nargs="+")
     p.add_argument("--by-card"); p.add_argument("--per-ruling"); p.add_argument("--owner-said")
     p.add_argument("--why", required=True); p.add_argument("--dry-run", action="store_true")
@@ -570,7 +570,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "card-said": cmd_card_said, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "unban": cmd_unban, "bans": cmd_bans, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "card-said": cmd_card_said, "card_said": cmd_card_said, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "unban": cmd_unban, "bans": cmd_bans, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 

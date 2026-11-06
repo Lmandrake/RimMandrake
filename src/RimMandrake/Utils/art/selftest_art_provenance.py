@@ -189,6 +189,7 @@ def main():
     swz = L.store_put_bytes(wz)
     L.purge(swz, owner_said="but in the four art styles")
     check(art.main(["card-said"]) == 0, "his recorded words matching a card label are not flagged")
+    check(art.main(["card_said"]) == 0, "the underscore alias card_said runs the same audit")
 
     # CLI end to end
     out = subprocess.run([sys.executable, str(HERE / "art.py"), "install", mod, "Things/Tank/Cli.png", sc,
