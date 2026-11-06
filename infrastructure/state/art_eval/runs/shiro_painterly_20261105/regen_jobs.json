@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RSW_Shiro__painterly_v1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Shiro",
+  "prompt": "A Shiro, a hard-shelled, benign, slow-moving reptile native to Naboo, drawn as a RimWorld creature sprite in a painterly vanilla RimWorld style, realistic, with a clean dark outline on a transparent background. The body is a heavy domed shell on four thick columnar legs, with a blunt reptilian head on a short neck, a short tail, and calm, placid eyes. Rows of sharp, pale tan spines rise from the shell, all of the same number and size. The shell is olive-brown with darker plate seams, and the skin is muted green-grey. The shell dome stands about 60% of the creature's full height, and the four legs are equal in length and thickness, with all four feet planted on one shared ground line. The torso is long and heavy, wider than it is tall, with two thick weight-bearing legs beneath the shell on each flank, and the creature is a single animal drawn at one consistent scale.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "shiro_painterly_20261105",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "RimStarWars/SWBestiary/Shiro/Shiro"
+ }
+]

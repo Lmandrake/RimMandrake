@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RSW_Shiro__painterly_v1_rescaled_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Shiro",
+  "prompt": "RimWorld sprite of a shiro, a benign, slow-moving, hard-shelled reptile from Naboo, drawn on a transparent background in painterly vanilla RimWorld style, realistic, with a clean dark outline. Body: a stout reptile with a low, heavy, domed shell covered in short, sharp spines, thick stubby legs, a short tail, and a long neck ending in a flat duckbill-shaped snout. Two raised eye bumps with red eyes sit on top of the head. Front view, eyes toward the viewer: the face, duckbill and both red eyes are clearly visible below and in front of the shell. Side views: profile of the head with the duckbill and one visible red eye, shell spines along the back, legs and tail in profile. Rear view, seen from behind: the shell with its spines dominates the image, with the tail and haunches below it; the back of the head and neck shows above the shell as wrinkled reptile skin, the eye bumps appearing as plain wrinkled skin in the same tone as the neck, with both red eye surfaces fully hidden from view and the duckbill hidden on the far side of the head. Keep the same shell shape, spine pattern, skin palette and proportions in every view.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_NORTH_FACE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "shiro_painterly_20261105b",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "RimStarWars/SWBestiary/Shiro/Shiro"
+ }
+]
