@@ -875,3 +875,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing SILT_TRAP_STYLES_REDRAW_HALF_RES_FLAT: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T03:51:05Z","tsn":1793937065150587166}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T04:05:28Z","tsn":1793937928171598362}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing SILT_TRAP_STYLES_REDRAW_HALF_RES_FLAT: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T04:05:55Z","tsn":1793937955157372057}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T04:20:10Z","tsn":1793938810464930950}
