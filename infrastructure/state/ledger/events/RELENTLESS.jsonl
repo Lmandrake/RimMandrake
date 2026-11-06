@@ -1153,3 +1153,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GSS_PLAN_FIX_SECOND_PER_FULL_BUILD A1 (L2), read-only proof","ts":"2026-11-06T14:22:40Z","tsn":1793974960521566079}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:23:49Z","tsn":1793975029264093141}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS A1 (L2), read-only proof","ts":"2026-11-06T14:25:24Z","tsn":1793975124333433020}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:26:10Z","tsn":1793975170399506687}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLAYER_HOVER_PROBE_TOOLTIP_DRAWN A1 (L2), read-only proof","ts":"2026-11-06T14:26:36Z","tsn":1793975196079651097}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:26:43Z","tsn":1793975203577538921}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLAYER_HOVER_PROBE_TOOLTIP_DRAWN A2 (L2), read-only proof","ts":"2026-11-06T14:26:54Z","tsn":1793975214463989403}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:27:02Z","tsn":1793975222297047760}
