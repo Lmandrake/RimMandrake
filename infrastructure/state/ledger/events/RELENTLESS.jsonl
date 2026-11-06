@@ -1203,3 +1203,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: FW_PROOF_TOOLS_HARDEN_READ_GAPS A1 (L1), read-only proof","ts":"2026-11-06T15:45:41Z","tsn":1793979941832092391}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:45:51Z","tsn":1793979951692948904}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP A2 (L2), read-only proof","ts":"2026-11-06T15:46:26Z","tsn":1793979986741370759}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:02:06Z","tsn":1793980926565465185}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: QUARRY_DIG_FIX_VALIDATED_BUT_NEVER_FINISHES A1 (L2), read-only proof","ts":"2026-11-06T16:03:39Z","tsn":1793981019800834976}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:04:29Z","tsn":1793981069051348996}
