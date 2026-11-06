@@ -811,7 +811,10 @@ def floor_errors(fl, tree=None, floor=None, owner_ev=None):
 
 
 def exam_errors(ex, d, st, repo=REPO):
-    tree = CT.load(d) if os.path.isfile(os.path.join(d, "tree.json")) else None
+    try:
+        tree = CT.load(d)
+    except (FileNotFoundError, ValueError):
+        tree = None
     if isinstance(tree, dict) and isinstance(tree.get("exam_waived"), dict) and tree["exam_waived"]:
         return []        # his words, checked by the gate (concept_tree.gate)
     if not isinstance(ex, dict):
@@ -850,9 +853,10 @@ def exam_errors(ex, d, st, repo=REPO):
     if not isinstance(ctl, dict) or not CT.txt(ctl.get("broken_leaf")):
         errs.append("exam: control needs broken_leaf, the core leaf removed for the control Reader")
     else:
-        ids = {x.get("id") for x in lst((tree or {}).get("leaves") if isinstance(tree, dict) else None)
-               if isinstance(x, dict)}
-        if ids and ctl.get("broken_leaf") not in ids:
+        leaves = tree.get("leaves") if isinstance(tree, dict) else None
+        ids = {x["id"] for x in (leaves if isinstance(leaves, list) else [])
+               if isinstance(x, dict) and isinstance(x.get("id"), str)}
+        if ctl.get("broken_leaf") not in ids:
             errs.append("exam: control broken_leaf %r is not a leaf of the tree" % ctl.get("broken_leaf"))
         if ctl.get("missed") is not True:
             errs.append("exam: the control Reader did not miss (missed must be true): the scenarios do not "

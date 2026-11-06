@@ -803,6 +803,17 @@ def refusals_exam(tmp, d, repo, exam):
     refuses("exam: a control with no missed field is refused", ex(control={"broken_leaf": "climb_out"}), "did not miss")
     refuses("exam: a control breaking a leaf the tree lacks is refused",
             ex(control={"broken_leaf": "no_such_leaf", "missed": True}), "not a leaf of the tree")
+    dn = os.path.join(tmp, "notree")
+    os.makedirs(dn)
+    refuses("exam: a control cannot be checked against a missing tree.json, so it is refused",
+            DS.exam_errors(copy.deepcopy(exam), dn, st, repo.root), "not a leaf of the tree")
+    put(dn, "tree.json", {"subject": "N", "leaves": [{"id": ["climb_out"]}, {"id": "x"}]})
+    refuses("exam: a leaf whose id is not a string neither crashes nor counts",
+            DS.exam_errors(copy.deepcopy(exam), dn, st, repo.root), "not a leaf of the tree")
+    with open(os.path.join(dn, "tree.json"), "w") as f:
+        f.write("{not json")
+    refuses("exam: a tree.json that does not parse is refused, not a crash",
+            DS.exam_errors(copy.deepcopy(exam), dn, st, repo.root), "not a leaf of the tree")
     dw = os.path.join(tmp, "waived")
     os.makedirs(dw)
     put(dw, "tree.json", {"subject": "W", "exam_waived": {"ref": "OWNER:1", "words": "skip the exam"}})
