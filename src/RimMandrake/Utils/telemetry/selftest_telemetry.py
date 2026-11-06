@@ -486,6 +486,33 @@ def main(argv) -> int:
         st_ow = T.stats["ops_watch"]
         check("[freshness] a row its parser rejected (points null) does not advance freshness",
               abs(st_ow["last_row_ts"] - (now - 900)) < 1 and st_ow.get("skipped", 0) >= 1, st_ow)
+        # [raw-crash] the raw-copy cursor (`done`) is committed only after flush_raw writes the bytes
+        T.flush_raw(force=True)
+        cp = os.path.join(c["ops_watch_series"], "crash.jsonl")
+        w(cp, [{"t": now - 60 + k, "family": "crash", "points": {"crash.n": {"v": k, "m": "MEASURED"}}} for k in range(3)])
+        T.pass_source(S["ops_watch"])      # read and buffered; the daemon dies here, before flush_raw
+
+        def crash_cur():
+            return con.execute("SELECT offset,done FROM cursors WHERE src='ops_watch' AND ino=?", (cp,)).fetchone()
+        cc = crash_cur()
+        check("[raw-crash] a pass does not commit `done` for bytes still only in the raw buffer",
+              cc["offset"] == os.path.getsize(cp) and cc["done"] == 0, dict(cc))
+        T2 = ingest.Tailer(con, sink, latest)      # the restarted daemon: T's buffer is gone
+        T2.pass_source(S["ops_watch"])
+        T2.flush_raw(force=True)
+        T2.pass_source(S["ops_watch"])
+        T2.flush_raw(force=True)
+
+        def crash_raw():
+            got = []
+            for g in __import__("glob").glob(os.path.join(c["raw"], "ops_watch", "*.gz")):
+                with gzip.open(g, "rt") as f:
+                    got += [json.loads(x) for x in f if '"crash"' in x]
+            return sorted(r["points"]["crash.n"]["v"] for r in got)
+        cc = crash_cur()
+        check("[raw-crash] after a crash before flush_raw, the restart copies the lost bytes to raw/ exactly once, "
+              "without re-ingesting their rows", crash_raw() == [0, 1, 2] and cc["done"] == cc["offset"]
+              and T2.stats["ops_watch"]["rows"] == 0, (crash_raw(), dict(cc), T2.stats["ops_watch"]))
         inf_post = []
         inf_sink = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_inf"),
                                 post=lambda b: inf_post.append(b))

@@ -463,7 +463,8 @@ def cmd_rebuild(a) -> int:
     since = time.time() - dur(a.since)
     # rewind, not forget: `done` keeps how much of each file is already in raw/, so the re-read is not re-copied
     n = con.execute("DELETE FROM cursors WHERE src IN ('proof')").rowcount
-    n += con.execute("UPDATE cursors SET done=MAX(COALESCE(done,0),offset), offset=0 WHERE mtime>=? AND src!='proof'",
+    # (done < offset is a crash before flush_raw: keep it, so the re-read copies what raw/ never got)
+    n += con.execute("UPDATE cursors SET done=COALESCE(done,offset), offset=0 WHERE mtime>=? AND src!='proof'",
                      (since,)).rowcount
     con.commit()
     print(f"rewound {n} cursors newer than {a.since}; telemetryd re-reads those files on its next pass "

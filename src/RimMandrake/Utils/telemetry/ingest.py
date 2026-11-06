@@ -552,6 +552,9 @@ class Tailer:
         self.con, self.vm, self.latest = con, vm, latest
         self.raw_buf: dict[str, list[bytes]] = {}
         self.raw_bytes: dict[str, int] = {}
+        # (src, key) -> cursors.done owed once raw_buf reaches disk. `done` is committed only by flush_raw, after
+        # the bytes are written: a crash in between re-copies them (at-least-once), never loses them.
+        self.raw_pending: dict[tuple[str, str], int] = {}
         self.raw_last_flush = time.time()
         self.stats: dict[str, dict] = {}
 
@@ -579,15 +582,21 @@ class Tailer:
                     cur = self.con.execute("SELECT offset,size,done FROM cursors WHERE src=? AND key=?",
                                            (src.name, key)).fetchone()
                     off = cur["offset"] if cur else 0
-                    done = (cur["done"] or 0) if cur else 0   # bytes already in the raw copy (rebuild never re-copies)
+                    db_done = (cur["done"] or 0) if cur else 0   # bytes on disk in the raw copy (rebuild never re-copies)
+                    # bytes buffered in raw_buf but not yet on disk count as copied for this process only
+                    done = max(db_done, self.raw_pending.get((src.name, key), 0))
                     if st.st_size < off or st.st_size < done:
                         stt["resets"] += 1
-                        off = done = 0
-                    if st.st_size == off:
+                        off = done = db_done = 0
+                        self.raw_pending.pop((src.name, key), None)
+                    # a crash after the cursor moved but before flush_raw left [done, off) out of raw/: re-read
+                    # from `done` for the copy only (those rows were already ingested, so the parser skips them)
+                    start = min(off, done) if src.archive else off
+                    if st.st_size == start:
                         continue
-                    f.seek(off)
-                    chunk = f.read(min(MAX_READ, st.st_size - off))
-                    partial = st.st_size - off > MAX_READ
+                    f.seek(start)
+                    chunk = f.read(min(MAX_READ, st.st_size - start))
+                    partial = st.st_size - start > MAX_READ
                     backlog = backlog or partial
             except FileNotFoundError:
                 continue
@@ -602,11 +611,11 @@ class Tailer:
                 stt["bad"] += 1         # the file (its tail parses as one more bad fragment next pass)
             chunk = chunk[:end + 1]
             base = os.path.basename(path)
-            pos = off
+            pos = start
             for line in chunk.split(b"\n")[:-1]:
                 ref = f"{src.name}:{base}:{pos}"
                 pos += len(line) + 1
-                if not line.strip():
+                if pos <= off or not line.strip():    # pos <= off: ingested before the crash, copied only
                     continue
                 r = loads(line)
                 if not isinstance(r, dict):
@@ -625,13 +634,17 @@ class Tailer:
                 t = parse_ts(r.get("utc") or r.get("t") or r.get("ts") or r.get("at"))
                 if plausible_ts(t):     # inf / 1e308 / far future would pin freshness and break alerts.json
                     stt["last_row_ts"] = max(stt["last_row_ts"] or 0, t)
-            new = chunk[max(0, done - off):]
-            if src.archive and new:
-                self.raw_buf.setdefault(src.name, []).append(new)
-                self.raw_bytes[src.name] = self.raw_bytes.get(src.name, 0) + len(new)
+            new = chunk[max(0, done - start):]
+            new_done = max(done, start + len(chunk))
+            if src.archive:     # `done` advances only when flush_raw has written these bytes
+                if new:
+                    self.raw_buf.setdefault(src.name, []).append(new)
+                    self.raw_bytes[src.name] = self.raw_bytes.get(src.name, 0) + len(new)
+                if new_done > db_done:
+                    self.raw_pending[(src.name, key)] = new_done
+                new_done = db_done
             self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done) VALUES(?,?,?,?,?,?,?)",
-                             (src.name, key, path, off + len(chunk), st.st_size, st.st_mtime,
-                              max(done, off + len(chunk))))
+                             (src.name, key, path, max(off, start + len(chunk)), st.st_size, st.st_mtime, new_done))
             if partial and src.ordered:     # an older file still has a backlog: newer files wait for the next pass,
                 break                       # or a call's end (live file) lands before its start (the .1 tail)
         if src.name == "bridge" and not backlog:    # a pass with nothing new: the calls stopped, close what the
@@ -643,7 +656,7 @@ class Tailer:
         return n
 
     def flush_raw(self, force=False) -> None:
-        if not self.raw_buf:
+        if not self.raw_buf and not self.raw_pending:
             return
         if not force and time.time() - self.raw_last_flush < RAW_FLUSH_S and \
                 sum(self.raw_bytes.values()) < RAW_FLUSH_BYTES:
@@ -657,6 +670,10 @@ class Tailer:
                     g.write(ch)
         self.raw_buf.clear()
         self.raw_bytes.clear()
+        for (name, key), d in self.raw_pending.items():     # the bytes are on disk: only now may `done` say so
+            self.con.execute("UPDATE cursors SET done=MAX(COALESCE(done,0),?) WHERE src=? AND key=?", (d, name, key))
+        self.raw_pending.clear()
+        self.con.commit()
         self.raw_last_flush = time.time()
 
 
