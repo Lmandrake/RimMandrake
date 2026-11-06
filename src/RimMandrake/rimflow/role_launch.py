@@ -924,7 +924,10 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 if t:
                     escalate_turn(name, run, t, act)
                 if ok:
+                    forget_rejections(rs, run["concept"])
                     chain_next(name, rs, cfg, run, now, act, obs.get("stage_status") or stage_status)
+                else:
+                    route_rejection(name, rs, cfg, run, res, list(errs or []), now, act, obs)
             except Exception as e:  # noqa: BLE001 - said, never lost: the next open charges its reservation
                 act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
                     why="%s run %s on %s: designer_stage close failed: %s" % (name, run["unit"], run["concept"],
@@ -2136,6 +2139,168 @@ def stage_turn(concept):
     """-> the concept's turn that waits on him (designer_stage.pending_turn), or None."""
     import designer_stage as DS
     return DS.pending_turn(concept, repo=DS.REPO)
+
+
+# ROLES_FIX_REJECTED_STAGE_ROUTES_BY_CAUSE (WP-15, redesign_final.md §2 G21, §5 row 15). A REJECTED stage close chained
+# nothing whatever its cause (its alarm stood until a person re-pressed the same role), so a defect in the CHECK or the
+# ENVIRONMENT came back to the role that could not fix it. Now the rejection's cause class routes it:
+#   module       -> builder: the same role re-chained once, its run told the full reasons (chain_ask, under its cap)
+#   check | bar  -> Setter: the exam author resits the exam (relentless_exam's exam for the run's item); with no exam
+#                   for that item the alarm stands for the checker's owner
+#   environment  -> the cause book: attached to the live cause record (cause_book.attach), never a new item and never
+#                   a re-chain; with no live record the alarm stands and Operations' incident files it once
+#   unknown / mixed -> builder, with the full reasons (the owner of the work reads them first)
+# and a rejection IDENTICAL to the concept's previous one (same stage, class and reasons, run names masked) goes to the
+# arbiter (WP-08 relentless_dispute) instead of a second loop. The class is the Marker's when one labelled the reasons
+# (a "[cause:<class>]" tag, evidence.py marker `classes`); unlabelled, it is read off the run: an account death, an
+# is_error result or a stopped run is environment; a run that finished and was refused by the program check is module;
+# a failed run with nothing more said is unknown.
+CAUSE_CLASSES = ("module", "check", "bar", "environment")
+CAUSE_ROUTE = {"module": "builder", "check": "setter", "bar": "setter", "environment": "cause_book",
+               "unknown": "builder", "mixed": "builder"}
+CAUSE_TAG_RX = re.compile(r"\[cause:([a-z]+)\]")
+REJECTION_KEEP = 4            # signatures remembered per concept (only the last decides "identical")
+_RUN_RX = re.compile(r"rm-role-[a-z]+-\d+|\b\d{6,}\b")
+
+
+def rejection_cause(errs, run=None, res=None, classes=None):
+    """Pure. -> (class, why). class is one of CAUSE_CLASSES, 'mixed' (two or more labelled classes) or 'unknown'."""
+    labels = {str(c).lower() for c in (classes or [])}
+    labels |= {m.group(1) for e in errs or [] for m in CAUSE_TAG_RX.finditer(str(e))}
+    known = labels & set(CAUSE_CLASSES)
+    if len(known) > 1:
+        return "mixed", "labelled %s" % "+".join(sorted(known))
+    if known:
+        return next(iter(known)), "labelled %s" % next(iter(known))
+    run = run or {}
+    acct = account_death(res)
+    if acct:
+        return "environment", "account death %s" % acct
+    if isinstance(res, dict) and res.get("is_error"):
+        return "environment", "is_error result (%s)" % (res.get("terminal_reason") or res.get("subtype") or "?")
+    if run.get("stop_tries"):
+        return "environment", "run stopped after run_max_s (%d stop(s))" % run["stop_tries"]
+    if run.get("state") == "done":
+        return "module", "the run finished and the program check refused its result"
+    return "unknown", "run %s with no result and no environment signal" % (run.get("state") or "?")
+
+
+def rejection_sig(stage, cls, errs):
+    """Pure. Two rejections are identical when stage, class and reasons agree with run names and long ids masked."""
+    return "%s|%s|%s" % (stage, cls, " ; ".join(sorted(_RUN_RX.sub("#", str(e)) for e in errs or [])))
+
+
+def remember_rejection(rs, concept, sig, unit, now):
+    """-> True when `sig` repeats the concept's previous rejection. Records it either way (rs["rejections"])."""
+    book = rs.setdefault("rejections", {})
+    rows = [r for r in book.get(concept) or [] if isinstance(r, dict)]
+    again = bool(rows) and rows[-1].get("sig") == sig
+    book[concept] = (rows + [{"sig": sig, "unit": unit, "at": now}])[-REJECTION_KEEP:]
+    return again
+
+
+def forget_rejections(rs, concept):
+    """An accepted close ends the concept's rejection run: the next rejection is a first again."""
+    if concept in (rs.get("rejections") or {}):
+        rs["rejections"].pop(concept)
+        if not rs["rejections"]:
+            rs.pop("rejections")
+
+
+def to_setter(item, reasons, now, store=None, kicker=None):
+    """The Setter seam: resit the run item's exam (relentless_exam, WP-03) with the check/bar reasons. -> what happened,
+    or None when the item has no exam (nothing to resit; the alarm stands for the checker's owner)."""
+    import relentless
+    import relentless_exam as RE
+    store = store or relentless.Store()
+    if not item or not RE.status(store, item):
+        return None
+    RE.set_status(store, item, state="owed", resit_why="; ".join(reasons)[:600], resit_at=iso(now))
+    why = (kicker or RE.kick)(store, item)
+    return "exam resit owed; " + ("unit did not start: " + why if why else "Setter unit " + RE.unit_name(item))
+
+
+def to_cause_book(key, said, now):
+    """The cause-book seam (WP-05 cause_book.py, ops_watch's causes.json): attach to the live record of `key`. -> True
+    attached, False no live record (nothing filed here: the alarm stands and Operations files it once)."""
+    import cause_book as CB
+    utils = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils")
+    if utils not in sys.path:
+        sys.path.append(utils)
+    import ops_watch
+    path = ops_watch.ops_dir() / "causes.json"
+    book = CB.load(path)        # load-attach-save within one call; ops_watch writes the same book atomically (a
+    # concurrent pass can drop this one reading, never corrupt the book or file an item)
+    if CB.live(book, key) is None:
+        return False
+    CB.attach(book, key, "role-stage", said, now)
+    CB.save(path, book)
+    return True
+
+
+def to_arbiter(role, concept, item, sig, reasons):
+    """The arbiter seam (WP-08 relentless_dispute). -> what happened, or None while WP-08 has not landed a role-stage
+    entry point: then today's arbiter-less behaviour holds (the alarm stands, nothing re-chains)."""
+    try:
+        import relentless_dispute as RD
+    except ImportError:
+        return None
+    fn = getattr(RD, "role_stage_dispute", None)
+    if not callable(fn):
+        return None
+    return fn(role=role, concept=concept, item=item, sig=sig, reasons=list(reasons))
+
+
+def env_cause_key(name, cls_why):
+    """Pure. The cause-book key of an environment rejection: one per role and environment signal."""
+    return "role-env|%s|%s" % (name, _RUN_RX.sub("#", cls_why))
+
+
+def route_rejection(name, rs, cfg, run, res, errs, now, act, obs, classes=None):
+    """A rejected stage close -> its route (see CAUSE_ROUTE). Says the route on the ledger; -> the route taken, one of
+    builder / setter / cause_book / arbiter / alarm (the seam had nowhere to send it: the stage_rejected alarm stands)."""
+    concept, item = run["concept"], run.get("item")
+    cls, cls_why = rejection_cause(errs, run, res, classes)
+    status = obs.get("stage_status") or stage_status
+    try:
+        stage = (status(concept) or {}).get("stage")
+    except Exception:  # noqa: BLE001 - the stage is only part of the signature here
+        stage = None
+    sig = rejection_sig(stage, cls, errs)
+    again = remember_rejection(rs, concept, sig, run["unit"], now)
+    route = "arbiter" if again else CAUSE_ROUTE[cls]
+    head = "%s run %s on %s: rejection cause %s (%s)" % (name, run["unit"], os.path.basename(
+        os.path.normpath(concept)), cls, cls_why)
+    said, taken = None, route
+    try:
+        if route == "arbiter":
+            said = (obs.get("arbiter") or to_arbiter)(name, concept, item, sig, errs)
+            if said is None:
+                said = "a 2nd identical rejection; the arbiter (WP-08 relentless_dispute) is not landed: alarm stands"
+                taken = "alarm"
+        elif route == "setter":
+            said = (obs.get("setter") or to_setter)(item, errs, now)
+            if said is None:
+                said, taken = "no Setter exam for %s: the checker's owner owes the fix; alarm stands" % item, "alarm"
+        elif route == "cause_book":
+            key = env_cause_key(name, cls_why)
+            if (obs.get("cause_book") or to_cause_book)(key, head, now):
+                said = "attached to cause %s (no new item)" % key
+            else:
+                said, taken = "no live cause record %s: alarm stands for Operations to file once" % key, "alarm"
+        else:
+            req = None
+            if cfg.get("chain_stages") is True:
+                req = chain_ask(name, rs, cfg, concept, stage, now, act, run["unit"], item, run.get("mode") or "run",
+                                "%s run %s rejected (%s): %s" % (name, run["unit"], cls, "; ".join(errs[:4])[:400]),
+                                "after its rejected run %s" % run["unit"])
+            said = "re-chained to %s with the reasons" % name if req else "builder route; not chained (no " \
+                "chain_stages, cap reached or already asked): alarm stands"
+            taken = "builder" if req else "alarm"
+    except Exception as e:  # noqa: BLE001 - said; the stage_rejected alarm already stands
+        said, taken = "route %s failed: %s: %s" % (route, type(e).__name__, str(e)[:200]), "alarm"
+    act(do="role_hold", role=name, ticket=item, note=True, why="%s -> %s: %s" % (head, route, said))
+    return taken
 
 
 def escalate_turn(name, run, t, act):

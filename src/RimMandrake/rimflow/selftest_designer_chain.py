@@ -79,7 +79,14 @@ def test_no_chain_states():
         check("run_now" not in rs and not rs.get("run_now_queue"), "status %s chains nothing" % status["status"])
     rs = {}
     harvest(rs, {"stage": 3, "status": "ready"}, ok=False)
-    check("run_now" not in rs, "a REJECTED result chains nothing (its alarm stands)")
+    # ROLES_FIX_REJECTED_STAGE_ROUTES_BY_CAUSE (WP-15): a module rejection goes back to the builder once, with its
+    # reasons; the identical second one goes to the arbiter, never a second loop (selftest_role_launch_reject_routes)
+    check("bad result" in str((rs.get("run_now") or {}).get("why")),
+          "a REJECTED (module) result re-chains its role once with the reasons: %r" % rs.get("run_now"))
+    rs.pop("run_now", None)
+    harvest(rs, {"stage": 3, "status": "ready"}, ok=False, unit="rm-role-designer-2",
+            cfg=dict(RL.ROLE_DEFAULTS, **dict(designer_row())))
+    check("run_now" not in rs, "an identical 2nd REJECTED result chains nothing (the arbiter's, its alarm stands)")
     rs = {}
     harvest(rs, {"stage": 3, "status": "ready"}, cfg=dict(RL.ROLE_DEFAULTS, **dict(designer_row(), chain_stages=False)))
     check("run_now" not in rs, "a row without chain_stages chains nothing")
