@@ -1,0 +1,5 @@
+# Duplicate of GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE (same live batch finding); same live row, own output path.
+# validation_aerial --flips stages its own small site (FSITE), so other sites' debris never enters it; the line exits 0 only
+# when row M20e_shock_cells_die_with_wire reads PASS in that run's JSON (written this minute).
+live-mods: GimmeSomeSlack
+live-proof A1: python.exe src/RimMandrake/GimmeSomeSlack/validation_aerial.py --flips --out D:/ClaudeWork/rimmandrake/scratch/gss_shock_still_bites/flips.json < /dev/null; python3 -c "import json,sys,os,time; p='/mnt/d/ClaudeWork/rimmandrake/scratch/gss_shock_still_bites/flips.json'; ok=os.path.exists(p) and time.time()-os.path.getmtime(p)<1800; r=[x for x in (json.load(open(p))['rows'] if ok else []) if x.get('id')=='M20e_shock_cells_die_with_wire']; print(r[0] if r else 'M20e row missing'); sys.exit(0 if r and r[0].get('status')=='PASS' else 1)"
