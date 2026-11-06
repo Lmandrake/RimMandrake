@@ -553,6 +553,10 @@ JOURNAL_READ_TIMEOUT_S = 10.0
 JOURNAL_SKIP = ("rimbridge.core/diagnostics/",)    # journal reads and status pings, this one among them, run all the time
 OP_LIVE = ("Pending", "Running")
 OP_ENDED = ("Completed", "Failed", "TimedOut", "Cancelled")
+# The live journal writes Status as this enum's number (RimBridgeServer.Contracts.OperationStatus, read from the DLL 2026-11-06:
+# Pending=0 Running=1 Completed=2 Failed=3 TimedOut=4 Cancelled=5). The first wiring read names only, so every real reply
+# was "not readable" and the reconcile settled nothing (--journal-probe exit 1). A number off this list still refuses.
+OP_STATUS_ENUM = OP_LIVE + OP_ENDED
 _ISO_EXACT = re.compile(r"^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)(\.\d+)?(Z|[+-]\d\d:\d\d)$")
 
 
@@ -567,16 +571,36 @@ def _iso_exact(t):
     return base + float(m.group(2) or 0) - off
 
 
+def _op_status(status):
+    """The status name for the bridge's enum number or name, None for anything else."""
+    if type(status) is int:                     # not bool, whose True would read as Running
+        return OP_STATUS_ENUM[status] if 0 <= status < len(OP_STATUS_ENUM) else None
+    return status if isinstance(status, str) and status in OP_STATUS_ENUM else None
+
+
 def _journal_op(row):
     """One journal row, or None when it is not the shape this code reads."""
     if not isinstance(row, dict):
         return None
-    status, started = row.get("Status"), _iso_exact(row.get("StartedAtUtc"))
+    status, started = _op_status(row.get("Status")), _iso_exact(row.get("StartedAtUtc"))
     capability = row.get("CapabilityId")
-    if status not in OP_LIVE + OP_ENDED or started is None or not isinstance(capability, str) or not capability:
+    if status is None or started is None or not isinstance(capability, str) or not capability:
         return None
+    meta = row.get("Metadata")
+    requested = meta.get("requestedId") if isinstance(meta, dict) else None
     return {"id": row.get("OperationId"), "capability": capability, "status": status,
-            "success": row.get("Success") is True, "started": started}
+            "success": row.get("Success") is True, "started": started,
+            "requested": requested if isinstance(requested, str) and requested else None}
+
+
+def _journal_is_call(op, tool):
+    """Is this row a run of `tool`? The row's requestedId is the tool name the client sent. The capability's last segment
+    is only a stand-in for a row without one: the bridge renames some (jawa/flowworks_excavation_drive runs as
+    .../flow-works-excavation-drive, jawa/debug_settings as .../debug-settings-tool), and a miss here would call a call
+    that ran "moot"."""
+    if op["requested"]:
+        return op["requested"] == tool
+    return op["capability"].endswith("/" + str(tool).rsplit("/", 1)[-1].replace("_", "-"))
 
 
 def journal_read(client):
@@ -620,8 +644,7 @@ def _journal_settle(rec, ops):
     running = [o for o in since if o["status"] in OP_LIVE]
     if running:
         return None, "the game is still running %s (%s), begun since the call" % (running[0]["capability"], running[0]["status"])
-    leaf = "/" + str(rec.get("tool")).rsplit("/", 1)[-1].replace("_", "-")
-    mine = [o for o in since if o["capability"].endswith(leaf)]
+    mine = [o for o in since if _journal_is_call(o, rec.get("tool"))]
     if mine:
         op = min(mine, key=lambda o: o["started"])       # later mutations were refused, so the first one since is this call
         return journal_verdict(op), "journal read (%s %s): operation %s %s %s, success=%s, writer pid %s (%s) gone" % (
@@ -1395,9 +1418,19 @@ class RimBridge:
 # CLI
 # --------------------------------------------------------------------------
 
+_DEAD_PID_PROBE = 2 ** 22 + 12345      # no process holds it, on either OS's pid range in use here
+
+
+def _ev_stamp(epoch):
+    """A marker's whole-second time for this epoch, as _ev_now writes it."""
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(epoch))
+
+
 def _journal_probe(args):
-    """Can reconcile_read see the running bridge? Read-only. 0: rows parsed; 1: the reply is not what it parses, so every
-    poisoned call would silently stay refused; 2: UNMEASURED, nothing answered."""
+    """Can reconcile_read see the running bridge? Read-only. 0: rows parsed, and a dead writer's marker made from a real
+    ended row settles from them, naming that row's tool; 1: the reply is not what it parses or does not settle, so every
+    poisoned call would silently stay refused or read moot; 2: UNMEASURED, nothing answered, or nothing to settle against
+    (nothing has ended, or something is running right now)."""
     try:
         host, port, token = resolve_endpoint(args.host, args.port, args.token, args.log_path)
         if not token:
@@ -1425,7 +1458,22 @@ def _journal_probe(args):
     if own:         # the read would count itself as "still running" and refuse every time
         print("this read's own row is not skipped: %s" % own[0]["capability"])
         return 1
-    print("journal readable: %d rows, newest %s %s" % (len(ops), ops[0]["capability"], ops[0]["status"]))
+    ended = [o for o in ops if o["status"] in OP_ENDED and o["requested"] and not o["capability"].startswith(JOURNAL_SKIP)]
+    if not ended:
+        print("UNMEASURED: %d rows parsed, but none is an ended call with a requested tool to settle against" % len(ops))
+        return 2
+    row = ended[0]
+    marker = {"cid": "journal-probe", "tool": row["requested"], "pid": _DEAD_PID_PROBE, "os": os.name, "script": "journal-probe",
+              "t": _ev_stamp(row["started"])}
+    verdict, note = _journal_settle(marker, ops)   # pure: writes no marker, no verdict, nothing to the game
+    if verdict is None:
+        print("UNMEASURED: %d rows parsed, settle not asked: %s" % (len(ops), note))
+        return 2
+    if verdict == "moot":
+        print("journal rows do not answer for their own call: %s" % note)
+        return 1
+    print("journal readable: %d rows, newest %s %s; a dead writer's %s settles as %s" % (
+        len(ops), ops[0]["capability"], ops[0]["status"], row["requested"], verdict))
     return 0
 
 

@@ -3,8 +3,8 @@
 reconcile_auto() reads no game, so a dead writer's rimworld/step_game_ticks or jawa/prioritized_work on the game still up
 refused every proof until the next restart (9 of 40 live runs, 2026-11-06). call() now asks the bridge's own journal
 (rimbridge/list_operations) before refusing. The replays below use the real markers; each other case holds one side of
-what the journal may settle and what must still refuse. The journal rows have the shape of RimBridgeServer's
-OperationEnvelope; `--journal-probe` is the live clause proving the installed bridge really answers that way.
+what the journal may settle and what must still refuse. The journal rows are copied from the real bridge's reply (Status
+an int, the tool name in Metadata.requestedId); `--journal-probe` is the live clause proving it still answers that way.
 """
 import atexit
 import json
@@ -61,14 +61,27 @@ def marker(cid, tool, pid=DEAD_PID, status="in-flight", script="glow_tank_live.p
     return rec
 
 
+STATUS_NUMBER = {"Pending": 0, "Running": 1, "Completed": 2, "Failed": 3, "TimedOut": 4, "Cancelled": 5}
+REQUESTED = {}      # capability -> the tool name the client sent, as the live rows' Metadata.requestedId carries it
+
+
 def op(cap, status, started=T_CALL.replace("Z", ".4821733+00:00"), success=None):
-    return {"OperationId": "op_" + cap.rsplit("/", 1)[-1], "CapabilityId": cap, "Status": status,
-            "Success": status == "Completed" if success is None else success, "StartedAtUtc": started, "DurationMs": 39}
+    """A row as the live bridge writes it (read 2026-11-06, 1000 of 1000 rows): Status is the enum's NUMBER."""
+    ended_ok = status == "Completed" if success is None else success
+    return {"OperationId": "op_" + cap.rsplit("/", 1)[-1], "CapabilityId": cap, "Status": STATUS_NUMBER.get(status, status),
+            "Success": ended_ok, "StartedAtUtc": started, "HasResult": False, "ResultWasTruncated": False, "Warnings": [],
+            "Metadata": {"requestedId": REQUESTED.get(cap, "unset/" + cap.rsplit("/", 1)[-1]),
+                         "providerId": cap.rsplit("/", 1)[0], "arguments": {}}}
 
 
-SELF = op("rimbridge.core/diagnostics/list-operations", "Running", "2026-11-06T12:40:00.1+00:00")
+JAWA = "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/"
+LISTOPS = "rimbridge.core/diagnostics/list-operations"
 STEP = "rimbridge.core/time/step-game-ticks"
-WORK = "jawa.bench/prioritized-work"
+WORK = JAWA + "prioritized-work"
+EXCAVATE = JAWA + "flow-works-excavation-drive"
+REQUESTED.update({LISTOPS: "rimbridge/list_operations", STEP: "rimworld/step_game_ticks", WORK: "jawa/prioritized_work",
+                  EXCAVATE: "jawa/flowworks_excavation_drive"})
+SELF = op(LISTOPS, "Running", "2026-11-06T12:40:00.1+00:00")
 
 
 class Fake:
@@ -138,6 +151,45 @@ for status, success, want in (("TimedOut", False, "partial"), ("Failed", False, 
     case("%s success=%s settles as %s" % (status, success, want), err is None and last_reconciled().get("as") == want,
          (err, last_reconciled()))
 
+# 2b the bridge's real numbers against its enum, and the same names as words: both spell one status
+for name, number in STATUS_NUMBER.items():
+    case("Status %d reads as %s, and so does the word" % (number, name),
+         C._journal_op(op(STEP, name))["status"] == name and C._journal_op(dict(op(STEP, name), Status=name))["status"] == name)
+clear()
+marker("real1", "rimworld/step_game_ticks")
+real_row = {"OperationId": "op_0321e73ce26142309a852cf82c1968d9", "CapabilityId": "rimbridge.core/time/step-game-ticks", "Status": 2,
+            "Success": True, "StartedAtUtc": "2026-11-06T12:27:50.9526528+00:00", "HasResult": False, "ResultWasTruncated": False,
+            "Warnings": [], "Metadata": {"requestedId": "rimworld/step_game_ticks", "providerId": "rimbridge.core/time",
+                                         "category": "time", "arguments": {"limit": 1000, "includeResults": False}}}
+err = Fake([real_row]).attempt()
+case("a row typed as the live bridge wrote it settles the marker (the first wiring refused this)",
+     err is None and last_reconciled().get("as") == "applied", (err, last_reconciled()))
+
+# 2c the row is matched on the tool the client sent, because the bridge renames some capabilities
+clear()
+marker("ren1", "jawa/flowworks_excavation_drive")
+err = Fake([op(EXCAVATE, "Completed")]).attempt()
+case("a tool whose capability has another name (flow-works-excavation-drive) is found, not called moot",
+     err is None and last_reconciled().get("as") == "applied", (err, last_reconciled()))
+clear()
+marker("ren2", "jawa/debug_settings")
+REQUESTED[JAWA + "debug-settings-tool"] = "jawa/debug_settings"
+err = Fake([op(JAWA + "debug-settings-tool", "Failed", success=False)]).attempt()
+case("... so is one whose capability carries a suffix (debug-settings-tool)",
+     err is None and last_reconciled().get("as") == "partial", (err, last_reconciled()))
+clear()
+marker("ren3", "jawa/step_game_ticks")
+err = Fake([op(STEP, "Completed")]).attempt()
+case("a same-named capability of another tool is not this call", err is None
+     and last_reconciled().get("as") == "moot", (err, last_reconciled()))
+clear()
+marker("ren4", "rimworld/step_game_ticks")
+no_id = op(STEP, "Completed")
+del no_id["Metadata"]["requestedId"]
+err = Fake([no_id]).attempt()
+case("a row with no requestedId falls back on the capability's last segment", err is None
+     and last_reconciled().get("as") == "applied", (err, last_reconciled()))
+
 # 3 not in the journal
 clear()
 marker("m1", "rimworld/step_game_ticks")
@@ -173,7 +225,11 @@ for name, reply in (("no answer", C.RimBridgeError("timed out: deadline exceeded
                     ("one row unreadable", [op(STEP, "Completed"), {"OperationId": "x"}]),
                     ("an unknown status", [op(STEP, "Sideways")]),
                     ("a timestamp with no zone", [op(STEP, "Completed", "2026-11-06T12:27:50")]),
-                    ("a numeric status", [op(STEP, 2)])):
+                    ("a status number off the enum", [op(STEP, 6)]),
+                    ("a negative status number", [op(STEP, -1)]),
+                    ("a status that is a boolean", [op(STEP, True)]),
+                    ("a status that is a float", [op(STEP, 2.0)]),
+                    ("a status that is a numeral string", [op(STEP, "2")])):
     clear()
     marker("c1", "rimworld/step_game_ticks")
     f = Fake(reply)
@@ -304,10 +360,22 @@ def probe(reply=None, refuse=None):
         C.RimBridge = REAL_BRIDGE
 
 
-case("--journal-probe: rows parsed, this read's row skipped -> 0", probe([SELF, op(STEP, "Completed")]) == 0)
+case("--journal-probe: rows parsed, this read's row skipped, a real row settles -> 0", probe([SELF, op(STEP, "Completed")]) == 0)
+case("--journal-probe: leaves no marker and no verdict behind",
+     not C.outstanding_indeterminate() and not [r for r in rows() if r.get("cid") == "journal-probe"])
+case("--journal-probe: a real-typed row with Status as the enum number -> 0", probe([dict(SELF, Status=1), real_row]) == 0)
+case("--journal-probe: a Status number off the enum -> 1", probe([SELF, op(STEP, 9)]) == 1)
+case("--journal-probe: only its own row, nothing ended to settle -> 2 UNMEASURED", probe([SELF]) == 2)
+case("--journal-probe: something running since the row it settles against -> 2 UNMEASURED",
+     probe([SELF, op(WORK, "Running", "2026-11-06T12:39:00.0+00:00"), op(STEP, "Completed")]) == 2)
+real_settle = C._journal_settle
+C._journal_settle = lambda rec, ops: ("moot", "pretend the row was not found")
+case("--journal-probe: a row that does not answer for its own call -> 1", probe([SELF, op(STEP, "Completed")]) == 1)
+C._journal_settle = real_settle
 case("--journal-probe: a reply it cannot parse -> 1", probe({"operations": [{"id": 1}]}) == 1)
 case("--journal-probe: no operations list -> 1", probe({"success": True}) == 1)
 case("--journal-probe: an empty journal cannot be the truth -> 1", probe([]) == 1)
+REQUESTED["rimbridge.core/other/list-operations"] = "rimbridge/list_operations"
 case("--journal-probe: this read's own row is not skipped, so it would block itself -> 1",
      probe([op("rimbridge.core/other/list-operations", "Running")]) == 1)
 case("--journal-probe: no connection -> 2 UNMEASURED", probe(refuse=C.RimBridgeError("connection refused")) == 2)
