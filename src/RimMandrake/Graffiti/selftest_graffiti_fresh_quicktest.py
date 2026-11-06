@@ -75,9 +75,14 @@ def run_script(start, map_count, ticks=1, menu_works=True, at_menu=False):
                                           "state": PLAYING}}
     state = dict(PLAYING, menu_works=menu_works) if not at_menu else {"programState": "Entry", "hasCurrentGame": False}
     log, out = [], io.StringIO()
-    saved_mod, saved_sleep = sys.modules.get("rimbridge_client"), __import__("time").sleep
+    tm = __import__("time")
+    saved_mod, saved_sleep, saved_mono = sys.modules.get("rimbridge_client"), tm.sleep, tm.monotonic
     sys.modules["rimbridge_client"] = _fake_rb(answers, log, state)
-    __import__("time").sleep = lambda s: None
+    # a fake clock that sleep advances: a real monotonic with a no-op sleep busy-spun every await deadline in real time
+    # (S6 alone spun 120 s), so the guard took minutes (QUICKTEST_FRESH_FIX_OLD_GAME_PASSES)
+    now = [tm.monotonic()]
+    tm.sleep = lambda s: now.__setitem__(0, now[0] + max(float(s), 0.01))
+    tm.monotonic = lambda: now[0]
     code = 0
     try:
         with contextlib.redirect_stdout(out):
@@ -85,7 +90,7 @@ def run_script(start, map_count, ticks=1, menu_works=True, at_menu=False):
     except SystemExit as e:
         code = e.code if isinstance(e.code, int) else (0 if e.code is None else 1)
     finally:
-        __import__("time").sleep = saved_sleep
+        tm.sleep, tm.monotonic = saved_sleep, saved_mono
         if saved_mod is None:
             sys.modules.pop("rimbridge_client", None)
         else:
