@@ -28,6 +28,7 @@ DETACH = {
     "relentless:_detached_clone < relentless:clean_checkout [child]": "CLEANCHECKOUT_REWIRE_OFF_TICK_CLONE_INLINE",
     "relentless:prepare < relentless:_lease [child]": "LEASEPREP_REWIRE_OFF_TICK_SIX_MINUTES",
     "relentless:rimflow < relentless:ledger_close [child]": "LEDGERCLOSE_REWIRE_OFF_TICK_ONE_PROC_EACH",
+    "relentless_showing:mods_fp < relentless_jobs:__call__": "MODSFP_REWIRE_OFF_TICK_MISS_WALKS_INLINE",
 }
 
 
@@ -122,10 +123,12 @@ def check(path):
     if not re.search(r"^budget ", txt, re.M):
         bad.append("no budget block")
     over = re.findall(r"^  over +[\d.]+ s/tick (.+) -> (\S+)$", txt, re.M)
-    for leaf, _ in over:
+    for leaf, named in over:
         i = DETACH.get(leaf)
         if not i:
             bad.append("over budget, no detach mapped: %s" % leaf)
+        elif named != i:
+            bad.append("report says %s, the map says %s (stale report, write it again): %s" % (named, i, leaf))
         elif not item_on_disk(i):
             bad.append("over budget, item %s not on disk: %s" % (i, leaf))
     for b in bad:
