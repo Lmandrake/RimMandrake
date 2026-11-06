@@ -19,6 +19,10 @@ writes the exam against the item's base sha, and the supervisor VALIDATEs it mec
   * a planted break must change behaviour, not delete the file the check names or only delete files: BREAK_DELETES.
   * every clause is mapped from a sentence quoted out of the item's text, and every `## Done when` bullet of the item's
     prose is mapped: MAP_UNKNOWN_SENTENCE, MAP_UNMAPPED_CLAUSE, MAP_DONE_WHEN.
+  * outcome, not mechanism (EXAM_SETTER_FIX_DEMANDS_ITS_OWN_MECHANISM; 16 of the first 18 shadow reds were the exam's):
+    a behaviour clause's `says` names no code the item does not (MECHANISM_PINNED); when the item quotes its incident,
+    some .exam file carries 24+ chars of it verbatim (INCIDENT_NOT_REPLAYED); output is matched by containment, never
+    by its last line or ending (POSITIONAL_MATCH).
   * `exam_hash` = sha256 over the clauses + maps JSON, the item text, and the sha256 of EVERY file a check argv names
     (repo files at the base sha, and the Setter's own test files): a named test file that changes moves the hash.
 
@@ -435,6 +439,106 @@ def lint(exam, item_text, prose=""):
     return bad
 
 
+# ------------------------------------------------------------------------- outcome, not mechanism (EXAM_SETTER_FIX_...)
+# Judged 2026-11-06, 18 shadow reds on done items: REAL 2, EXAM_WRONG 16. The Setter pinned a mechanism of its own choosing
+# (usually "relentless_envcause classifies it lane-fixable") where the item asked only that X stop stopping live proofs;
+# read a trailing wrapper line after 'RESULT PASS' as red; built fixtures that were not the recorded incident.
+_CODE_NAME = re.compile(r"\b[A-Za-z_]\w*\.py\b"                       # a file of code
+                        r"|\b[a-z_][a-z0-9_]*\.[a-z_][a-z0-9_]*\s*\("    # mod.func(
+                        r"|\b[a-z_][a-z0-9_]*\(\)"                        # func()
+                        r"|\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b")             # snake_case identifier
+
+
+def pinned_names(says, item_text):
+    """-> the code names (files, functions, snake_case identifiers) a clause's `says` carries that the item's own text
+    does not: a clause states the item's outcome; a mechanism is pinned only where the item itself names it."""
+    if not isinstance(says, str):
+        return []
+    low = (item_text or "").lower()
+    fold = low.replace("-", "_")
+
+    def named(w):
+        def word(x, hay):
+            return bool(re.search(r"(?<![\w])" + re.escape(x) + r"(?![\w])", hay))
+        return word(w, fold) or ("_" in w and word(w.replace("_", " "), low))
+    out = []
+    for m in _CODE_NAME.finditer(says):
+        w = m.group(0).rstrip("( )")
+        lw = w.lower()
+        if not (named(lw) or (lw.endswith(".py") and named(lw[:-3]))):
+            out.append(w)
+    return list(dict.fromkeys(out))
+
+
+_QUOTED = re.compile(r"(?<!\w)'([^'\n]{16,}?)'(?!\w)|(?<!\w)\"([^\"\n]{16,}?)\"(?!\w)")
+_RECORD_CHARS = re.compile(r"[0-9:/_()=\[\]<>]")    # a log line or store row, not an owner's quoted sentence
+INCIDENT_RUN = 24          # chars of the recorded incident a fixture must carry verbatim (whitespace folded)
+
+
+def incident_texts(item_text):
+    """-> the recorded incident's own words in the item text: quoted spans of 16+ chars, and the text after the title's
+    'stops live proofs:' (the supervisor's env-cause titles carry the incident there unquoted)."""
+    out = [q for q in (next(g for g in m.groups() if g) for m in _QUOTED.finditer(item_text or ""))
+           if _RECORD_CHARS.search(q)]
+    for m in re.finditer(r"stops live proofs:\s*(.{%d,})" % INCIDENT_RUN, item_text or ""):
+        out.append(m.group(1).strip())
+    return [t for t in dict.fromkeys(_norm(x) for x in out) if len(t) >= INCIDENT_RUN]
+
+
+def replays_incident(item_text, exam_files):
+    """-> None when the item records no incident or some exam file carries INCIDENT_RUN chars of it verbatim, else the
+    incident texts it should have replayed."""
+    inc = incident_texts(item_text)
+    if not inc:
+        return None
+    blob = _norm(" ".join(exam_files.values()))
+    for t in inc:
+        if any(t[i:i + INCIDENT_RUN] in blob for i in range(0, max(1, len(t) - INCIDENT_RUN + 1))):
+            return None
+    return inc
+
+
+_POSITIONAL = re.compile(r"\.splitlines\(\)\s*\[\s*-1\s*\]|\.split\(\s*['\"]\\n['\"]\s*\)\s*\[\s*-1\s*\]"
+                         r"|\b(?:out|output|stdout|stderr|reading)\w*(?:\.(?:strip|rstrip)\(\))?"
+                         r"\.endswith\(\s*(?:f|r)?['\"][^'\"\n]{8,}['\"]")
+
+
+def positional_matches(exam_files):
+    """-> [(file, snippet)]: an output matched by position (its last line, what it ends with) instead of containment; a
+    wrapper's trailing line (SEEDS_STILL_DARK: 'seed compare exit=0 at <sha>' after 'RESULT PASS') reddens it."""
+    out = []
+    for name, body in sorted(exam_files.items()):
+        if not name.endswith((".py", ".sh")):
+            continue                    # fixtures are data; only the Setter's code matches output
+        for m in _POSITIONAL.finditer(body or ""):
+            out.append((name, m.group(0)))
+    return out
+
+
+def outcome_lint(exam, item_text, exam_files=None):
+    """-> refusals for a mechanism the item never asked for (MECHANISM_PINNED), a fixture that is not the recorded
+    incident (INCIDENT_NOT_REPLAYED) and a positional output match (POSITIONAL_MATCH). Pure."""
+    bad = []
+    for c in exam.get("clauses") or [] if isinstance(exam, dict) else []:
+        if not isinstance(c, dict) or c.get("kind", "behaviour") != "behaviour":
+            continue
+        names = pinned_names(c.get("says"), item_text)
+        if names:
+            bad.append({"clause": c.get("id"), "code": "MECHANISM_PINNED",
+                        "why": "says names %s, which the item does not: state the item's outcome and accept any "
+                               "mechanism that delivers it" % ", ".join(names[:5])})
+    if exam_files is not None:
+        missed = replays_incident(item_text, exam_files)
+        if missed:
+            bad.append({"clause": None, "code": "INCIDENT_NOT_REPLAYED",
+                        "why": "no exam file carries the recorded incident (%d+ chars verbatim of: %s)"
+                               % (INCIDENT_RUN, "; ".join(repr(t[:80]) for t in missed[:3]))})
+        for name, snip in positional_matches(exam_files)[:5]:
+            bad.append({"clause": None, "code": "POSITIONAL_MATCH",
+                        "why": "%s matches output by position (%s); match by containment" % (name, snip)})
+    return bad
+
+
 # ------------------------------------------------------------------------------------------------------ runs and reds
 _TB_FRAME = re.compile(r'^\s*File "([^"]+)", line \d+', re.M)
 _EXC_LINE = re.compile(r"^([A-Za-z_][\w.]*)(?::.*)?$")
@@ -503,11 +607,12 @@ def all_named(exam):
     return sorted({p for c in exam.get("clauses") or [] if isinstance(c, dict) for p in named_files((c.get("check") or {}).get("argv") or [])})
 
 
-def validate(exam, run, item_text, prose="", read_file=None):
+def validate(exam, run, item_text, prose="", read_file=None, exam_files=None):
     """VALIDATE (supervisor, no agent). run(argv, patch, timeout) -> (exit, out, timed_out) at the base sha, with `patch`
     applied first when not None (its own failure: exit None, out "PATCH_FAILED: ..."). read_file(path) -> bytes|None at
-    the base sha (for exam_hash). -> {"ok", "refusals", "rows", "exam_hash"}."""
-    refusals = lint(exam, item_text, prose)
+    the base sha (for exam_hash). exam_files {name: text} = the Setter's .exam/ files (outcome_lint reads them; None
+    skips the file lints). -> {"ok", "refusals", "rows", "exam_hash"}."""
+    refusals = lint(exam, item_text, prose) + outcome_lint(exam, item_text, exam_files)
     rows = []
     linted = {r["clause"] for r in refusals if r["code"] in ("SCHEMA", "BREAK_KIND", "BREAK_DELETES", "EXISTENCE_ONLY",
                                                              "BREAK_UNSAFE_PATH")}
@@ -654,6 +759,20 @@ Format: {{"item": "{item}", "clauses": [{{"id": "c1", "says": "<the clause, quot
 
 Rules the supervisor enforces mechanically (a refusal comes back to you once, then goes to an arbiter):
 - Observable OUTCOMES only (what must be true when done), never HOW. The builder sees this exam and may not edit it.
+- Test the item's STATED OUTCOME at the place the item says it shows, and ACCEPT ANY MECHANISM that delivers it. Of the
+  first 18 exam reds on done items, 16 were the exam's fault: the item said "cause X stops live proofs", the builder fixed
+  it upstream so X never happens, and the exam demanded one mechanism it had picked (e.g. that a classifier mark X
+  lane-fixable) and tested code the fix never touched. Before writing a clause, name two different fixes that would both
+  deliver the outcome; your check must pass for either. Pin a function, module or file only where the item's own text
+  names it: a behaviour clause whose `says` names code the item does not is refused (MECHANISM_PINNED).
+- Fixtures REPLAY THE RECORDED INCIDENT, not one you imagine. Read its record (the log line, store row, ledger reason or
+  file the item cites) and copy its facts: its exact text, and its state (if the incident's process had exited, your
+  fixture's has too; if it was a dead load, not a slow one, so is yours). When the item quotes the incident (or a title
+  says 'stops live proofs: <text>'), at least one .exam file must carry 24+ characters of that text verbatim
+  (INCIDENT_NOT_REPLAYED).
+- Match output by CONTAINMENT, never position: a wrapper may print lines after the verdict ('RESULT PASS: 0 failed'
+  followed by 'seed compare exit=0 at <sha>' is a pass). `out.splitlines()[-1]`, `lines[-1]`, `out.endswith(...)` on
+  output are refused (POSITIONAL_MATCH).
 - Every check must be able to fail, proven now: `base_red` = it FAILS on this base sha (new behaviour); `patch` = it PASSES
   on this base and FAILS once your planted patch (a behavioural change to the code under test; never deleting a file the
   check names, never editing .exam/) is applied.
@@ -695,6 +814,21 @@ def run_setter(cwd, prompt, cfg, out, session=None, resume=None, runner=subproce
         except (OSError, subprocess.SubprocessError) as e:
             f.write("\n[setter failed %s: %s]\n" % (type(e).__name__, e))
     return sid
+
+
+def read_exam_files(files_dir):
+    """-> {relative name: text} of the Setter's files (binary decoded with replacement; files over 2 MiB skipped)."""
+    out = {}
+    for dp, _dn, fns in os.walk(files_dir or ""):
+        for fn in fns:
+            p = os.path.join(dp, fn)
+            try:
+                if os.path.getsize(p) <= 2 << 20:
+                    with open(p, "rb") as f:
+                        out[os.path.relpath(p, files_dir)] = f.read().decode("utf-8", "replace")
+            except OSError:
+                pass
+    return out
 
 
 def _item_text(item):
@@ -794,7 +928,7 @@ def _run_item(store, item, rules, cfg, now, setter, boxer, text_of):
                 shutil.copytree(wfiles, files)
                 run, read_file, close = boxer(rules, source, base, files, item=item)
                 try:
-                    verdict = validate(exam, run, text, prose, read_file)
+                    verdict = validate(exam, run, text, prose, read_file, exam_files=read_exam_files(files))
                 finally:
                     close()
             _append(os.path.join(d, "validation.jsonl"), dict(verdict, attempt=attempt, at=iso(time.time())))
