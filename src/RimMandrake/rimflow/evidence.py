@@ -312,6 +312,13 @@ def append_marker(store_dir, item, sha, verdict, classes=None, session=None, non
                                                     "reasons_sha256": sha256_text(reasons)})
 
 
+def _harvest_nonce(chk):
+    """A verdict held without a nonce still dedupes: the same held check (verdict, session, reasons) is one entry."""
+    raw = json.dumps([str(chk.get("verdict")), chk.get("session"), chk.get("reasons") or "", chk.get("defects") or []],
+                     sort_keys=True, default=str)
+    return "harvest-" + sha256_text(raw)[:24]
+
+
 def harvest(store):
     """Append every Marker verdict a store item holds now (check.verdict on its candidate's sha) that its record does
     not have yet. -> [(item, sha, verdict)] appended. The tick's call site is not wired yet (WP-09a edits no relentless.py):
@@ -323,7 +330,8 @@ def harvest(store):
             continue
         try:
             e = append_marker(store.dir, st["item"], cand["sha"], chk["verdict"], defects=chk.get("defects") or [],
-                              session=chk.get("session"), nonce=chk.get("nonce"), reasons=chk.get("reasons") or "")
+                              session=chk.get("session"), reasons=chk.get("reasons") or "",
+                              nonce=chk.get("nonce") or _harvest_nonce(chk))
         except (ValueError, OSError) as ex:
             print("evidence: harvest %s: %s" % (st.get("item"), ex), file=sys.stderr)
             continue

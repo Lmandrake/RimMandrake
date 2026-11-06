@@ -349,7 +349,7 @@ def lint(exam, item_text, prose=""):
     text = _norm(item_text)
     mapped = set()
     for sentence, cids in maps.items():
-        if _norm(sentence) not in text:
+        if not _norm(sentence) or _norm(sentence) not in text:      # "" is a substring of everything
             no(None, "MAP_UNKNOWN_SENTENCE", "not the item's words: %r" % sentence[:120])
         for cid in cids or []:
             if cid not in ids:
@@ -357,7 +357,7 @@ def lint(exam, item_text, prose=""):
             mapped.add(cid)
     for cid in sorted(ids - mapped):
         no(cid, "MAP_UNMAPPED_CLAUSE", "no item sentence maps to this clause")
-    keys = [_norm(k) for k in maps]
+    keys = [_norm(k) for k in maps if _norm(k)]
     for b in done_when(prose):
         if not any(_norm(b) in k or k in _norm(b) for k in keys):
             no(None, "MAP_DONE_WHEN", "done-when not mapped: %r" % b[:120])
@@ -400,7 +400,7 @@ def exam_hash(exam, files, item_text):
 
 
 def all_named(exam):
-    return sorted({p for c in exam.get("clauses") or [] for p in named_files((c.get("check") or {}).get("argv") or [])})
+    return sorted({p for c in exam.get("clauses") or [] if isinstance(c, dict) for p in named_files((c.get("check") or {}).get("argv") or [])})
 
 
 def validate(exam, run, item_text, prose="", read_file=None):
@@ -411,8 +411,10 @@ def validate(exam, run, item_text, prose="", read_file=None):
     rows = []
     linted = {r["clause"] for r in refusals if r["code"] in ("SCHEMA", "BREAK_KIND", "BREAK_DELETES", "EXISTENCE_ONLY")}
     for c in exam.get("clauses") or []:
+        if not isinstance(c, dict):
+            continue
         cid = c.get("id")
-        if not isinstance(c, dict) or cid in linted or c.get("kind") in ("live", "owner"):
+        if cid in linted or c.get("kind") in ("live", "owner"):
             continue
         chk, brk = c["check"], c["break"]
         t = int(chk.get("timeout_s", 300))
@@ -650,7 +652,7 @@ def run_exam(exam, run):
     """-> [{"clause", "exit", "kind"}] for every offline clause at the runner's sha."""
     rows = []
     for c in exam.get("clauses") or []:
-        if c.get("kind") in ("live", "owner"):
+        if not isinstance(c, dict) or c.get("kind") in ("live", "owner"):
             continue
         e, out, to = run(c["check"]["argv"], None, int(c["check"].get("timeout_s", 300)))
         rows.append({"clause": c["id"], "exit": e, "kind": red_kind(c, e, out, to), "out": (out or "")[-400:]})

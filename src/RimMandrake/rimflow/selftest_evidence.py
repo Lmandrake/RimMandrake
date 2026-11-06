@@ -133,6 +133,16 @@ def t_marker_append():
     es = E.read(x.s.dir, "I0", SHA2)
     ok(got == [("I0", SHA2, "WEAK")] and got2 == [] and len(es) == 1 and es[0]["defects"] == ["c1"],
        "3. harvest appends a held verdict once: %r %r" % (got, got2))
+    # REVIEW 2026-11-06: a held verdict with no nonce is still appended once
+    st = x.st("I0")
+    st["candidate"] = {"sha": SHA2}
+    st["check"] = {"verdict": "FAIL", "reasons": "r2", "defects": []}
+    with x.s.lock():
+        x.s.save(st)
+    n0 = len(E.read(x.s.dir, "I0", SHA2))
+    E.harvest(x.s)
+    E.harvest(x.s)
+    ok(len(E.read(x.s.dir, "I0", SHA2)) == n0 + 1, "3b. a nonce-less held verdict is appended once, not every harvest")
     shutil.rmtree(d, ignore_errors=True)
 
 

@@ -192,6 +192,18 @@ def t_green_and_gate():
        "4. the re-fence hash is relentless.contract_hash")
 
 
+def t_review_fixes():
+    # REVIEW 2026-11-06: an env assignment stays an assignment; non-UTF-8 output is a red, not a box_error
+    cmd, why = B.extract("LABEL=a!b python3 tools/check.py --strict")
+    ok(cmd is not None and cmd.startswith("LABEL=") and "'LABEL" not in cmd, "6a. env assignment stays unquoted at the name: %r (%s)" % (cmd, why))
+    import subprocess
+    p = subprocess.run(["python3", "-c", "import sys; sys.stdout.buffer.write(b'\\xff'); sys.exit(1)"], capture_output=True,
+                       encoding="utf-8", errors="replace")
+    ok(p.returncode == 1 and "\ufffd" in p.stdout, "6b. the decode setting the box uses survives a non-UTF-8 byte")
+    import inspect
+    ok('errors="replace"' in inspect.getsource(B.run_in_box), "6c. run_in_box decodes with errors=replace")
+
+
 def t_extract():
     cases = [
         ("python3 src/RimMandrake/Utils/run_selftests.py --only selftest_a selftest_b exits 0 and prints PASS",

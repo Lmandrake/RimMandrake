@@ -60,6 +60,12 @@ _PLAIN = re.compile(r"^[a-z]+$")
 _SHELL_META = re.compile(r"[|<>`$*?{}\[\]~#]|\|\||\s&\s|&$")
 
 
+def _quote_word(w):
+    """shlex.quote, but a leading NAME=value stays an assignment (only the value is quoted)."""
+    m = re.fullmatch(r"([A-Za-z_][A-Za-z0-9_]*)=(.*)", w, re.S)
+    return "%s=%s" % (m.group(1), shlex.quote(m.group(2))) if m else shlex.quote(w)
+
+
 def extract(proof):
     """-> (shell command, None) or (None, why it is not run). The head of the proof up to where prose starts, split on
     `&&`; each part one python3/python/bash command whose words read as arguments. A plain lowercase word is an argument
@@ -115,7 +121,7 @@ def extract(proof):
                 break
             keep.append(w)
             prev = w
-        out.append(("! " if neg else "") + " ".join(shlex.quote(w) for w in keep))
+        out.append(("! " if neg else "") + " ".join(_quote_word(w) for w in keep))
     return " && ".join(out), None
 
 
@@ -169,7 +175,8 @@ def run_in_box(cmd, sha, source, store_root, rules, timeout_s, nonce=None, base=
                 + sum((["--setenv", "%s=%s" % kv] for kv in relentless_wall.unit_env(prof, box).items()), [])
                 + ["--", "/bin/bash", script])
         try:
-            p = subprocess.run(argv, capture_output=True, text=True, timeout=timeout_s + 30, stdin=subprocess.DEVNULL)
+            p = subprocess.run(argv, capture_output=True, encoding="utf-8", errors="replace", timeout=timeout_s + 30,
+                           stdin=subprocess.DEVNULL)
         except subprocess.TimeoutExpired as e:
             subprocess.run(["systemctl", "--user", "stop", unit], capture_output=True, timeout=60)
             out = (e.stdout or b"") if isinstance(e.stdout, bytes) else (e.stdout or "").encode()

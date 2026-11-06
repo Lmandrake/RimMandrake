@@ -231,6 +231,18 @@ def t_maps():
     ok("SCHEMA" in c, "M4 declaring a timeout exit (124) as an assertion red is refused")
 
 
+def t_review_fixes():
+    # REVIEW 2026-11-06: an empty item sentence is a substring of everything and must not satisfy the mapping
+    bad = E.lint({"clauses": GOOD["clauses"], "maps": {"": ["c1"]}}, ITEM_TEXT)
+    ok("MAP_UNKNOWN_SENTENCE" in [x["code"] for x in bad], "R1 an empty mapping sentence is refused %s" % bad)
+    # a null clause is a refusal, not a crash out of validate
+    try:
+        v = E.validate({"clauses": [None], "maps": {}}, lambda *a, **k: (0, "", False), ITEM_TEXT, "", lambda p: None)
+        ok(not v["ok"], "R2 a null clause refuses, no crash")
+    except Exception as e:
+        ok(False, "R2 a null clause crashed validate: %r" % e)
+
+
 def t_shadow(tmp):
     repo, base, wrong, right = make_repo(tmp)
     root = os.path.join(tmp, "relroot")
@@ -338,6 +350,7 @@ def main():
         t_validate(tmp)
         t_hash(tmp)
         t_maps()
+        t_review_fixes()
         t_shadow(tmp)
         t_on_contract(tmp)
         t_run_item(tmp)
