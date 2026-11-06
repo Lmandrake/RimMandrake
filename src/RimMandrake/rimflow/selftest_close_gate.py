@@ -315,6 +315,15 @@ def s7_marker_fail(a, b):
     out = ok("close", i, "--sha", a)
     check(item(i).state == "done" and "marker" in out and "Marker" in out,
           "off, a hand close goes through and prints the Marker's FAIL")
+    # A wrong FAIL (§9 step 2: 1 of 9 good controls failed) must not reopen closed work before the lock is on: a fail
+    # on an open item moves nothing anyway, so this is the one probe that sees the _earned_run guard.
+    before = (item(i).state, item(i).closed_sha, list(item(i).passed), list(item(i).outstanding))
+    check(before[0] == "done", "the probe starts from a closed item: %s" % before[0])
+    fx.ledger_marker_fail(i, a, "a wrong FAIL after the close")
+    after = item(i)
+    check((after.state, after.closed_sha, list(after.passed), list(after.outstanding)) == before,
+          "off, a Marker FAIL on a closed item's sha leaves it done, its passes and owed criteria unchanged: %s"
+          % ((after.state, after.closed_sha),))
 
     j = new("MARKERAPPEAL")
     passed(j, a)
