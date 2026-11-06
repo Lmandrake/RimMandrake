@@ -1,0 +1,71 @@
+[
+ {
+  "id": "arteval_RSW_HarvesterBeetle__HarvesterBeetle_j_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_HarvesterBeetle__HarvesterBeetle_j",
+  "prompt": "A creature sprite for RimWorld: the harvester beetle, a large domesticated herbivorous insectoid beast of burden, the size of a large pack animal, with a broad swept-back carrying shell, sturdy jointed legs and a calm, docile bearing. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with only the creature present.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1151",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "swanimals/HarvesterBeetle/HarvesterBeetle"
+ },
+ {
+  "id": "arteval_RSW_IridonianReek__Reek_j_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_IridonianReek__Reek_j",
+  "prompt": "The iridonian reek: a massive, territorial herbivore with thick, knobbly brown hide, a tall central horn rising from the brow and two forward-curving cheek horns. Its head and shoulders are red, marking the meat-fed arena form whose handlers deliberately encouraged aggression, while the knobbly brown hide covers the rest of the body, including the massive haunches and flanks. It is a broad, heavy, wide-bodied animal with a long, deep torso, a deep chest, and thick, widely planted legs, with the same bulk and breadth throughout. In every facing the body fills the same width and height: the rear view, seen from behind, shows a broad, wide-hipped rump whose haunches swell out to the full width of the front view's chest and shoulders, a substantial deep torso, and four thick columnar legs planted wide apart in the same stance as the front view, the hind legs as far apart as the forelegs. The rear silhouette carries the same heavy mass as the front and side silhouettes at the same height. The expression is fierce and watchful. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1151",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "swanimals/IridonianReek/IridonianReek"
+ },
+ {
+  "id": "arteval_RSW_Klorslug__Klorslug_j_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Klorslug__Klorslug_j",
+  "prompt": "A creature sprite for RimWorld: the k'lor'slug, a poisonous vermiform native to the swamps of Noe'ha'on, an aggressive and deadly species that lurks in the darkest spots of starships (the holomonster of the dejarik game). Body plan and volume, identical in every facing: a long, thick, segmented worm body with a heavy girth. The front section is reared high in a broad hunched arch, and the trunk is as wide as it is tall, about two-thirds of the figure's height. The reared section carries a thick head tube ending in a toothed circular sucker maw ringed with mandibles. Substantial clawed limbs project outward from both sides of the trunk and run down the reared front section; the lower body and the tail trail along the ground behind. Front view, seen from the front with the eyes and maw toward the viewer: the maw is held high at the top of the figure, the broad hunched front curves toward the camera, the wide clawed limbs splay out beneath it, and the tail lies on the ground behind and below, seen under the angled game camera. Rear view, seen from behind: the same thick head tube, bulky raised trunk and substantial widely projecting clawed limbs as the front view, at exactly the same width, height and mass. The back of the hunched arch, the segmented dorsal ridge and the trailing tail are shown, the eyes and maw are hidden on the far side of the head, and the limbs show their outer surfaces. Side view: the same heavy girth and the same reared posture in profile. Keep the same colouring, skin texture and palette in every view. Realistic painterly vanilla RimWorld sprite style, soft painted edges and a clean dark outline in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with no ground, water, shadow, text or border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1151",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Klorslug/Klorslug"
+ }
+]
