@@ -1,0 +1,1 @@
+A walled checker that reads item prose must see items/ at the CANDIDATE sha: a build may edit item prose, and a parent-rev snapshot makes the Judge blind while the reach probe passes (WORLD_BEAUTY_VERIFY_OFFLINE_BEAT_THE_GAME churn, fixed in CHECKER_REACH_FIX_ITEMS_STILL_DARK; diagnosed in OPS_CHURN_DIAGNOSE_WORLD_OVZC_UVPA).
