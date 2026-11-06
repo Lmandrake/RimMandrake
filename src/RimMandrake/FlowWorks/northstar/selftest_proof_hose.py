@@ -450,6 +450,51 @@ def main():
     check("sl3_verdict: the re-lay never settled -> UNMEASURED HARNESS, never PASS", (st, cl) == ("UNMEASURED", "HARNESS"), dt)
     check("sl3_verdict: no hose before the save -> UNMEASURED SITE", s3({"hoses": []}, ca, ca)[:2] == ("UNMEASURED", "SITE"))
 
+    # GAP:DIFF (blind check of afdff4e): drive Proof.save_load itself, not just the pure verdict. Right after the reload the
+    # census hashes a null lay (layKeyed false); later reads have re-laid. SL3 must judge geometryHash on the SETTLED re-read.
+    import validation_core as Vc
+    class RelayBridge(FakeBridge):
+        settled_hash = None          # None: the re-lay reproduces the pre-save hash
+        def __init__(self, *a, **kw):
+            FakeBridge.__init__(self, *a, **kw)
+            self.loaded, self.post_reads = False, 0
+        def call(self, tool, **kw):
+            if tool == "rimworld/load_game":
+                self.loaded = True
+            return FakeBridge.call(self, tool, **kw)
+        def hp(self, cmd, wait_s=20.0):
+            if cmd != "census":
+                return FakeBridge.hp(self, cmd, wait_s)
+            hs = [hz((1, 1), layKeyed=True, layRunning=False), hz((2, 1), layKeyed=True, layRunning=False)]
+            if self.loaded:
+                self.post_reads += 1
+                if self.post_reads == 1:
+                    hs = [dict(h, geometryHash="0000000000000000", layKeyed=False, layRunning=True) for h in hs]
+                elif self.settled_hash:
+                    hs = [dict(h, geometryHash=self.settled_hash) if h["reel"] == [2, 1] else h for h in hs]
+            return {"success": True, "tick": self.tick, "hoses": hs}
+    class RelayBadBridge(RelayBridge):
+        settled_hash = "ffff"
+    saved_wp = Vc._wait_playing
+    Vc._wait_playing = lambda B, *a, **kw: (True, 5)
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            _, resr = run_fake(args_only=["save_load"], bridge_cls=RelayBridge)
+            _, resrb = run_fake(args_only=["save_load"], bridge_cls=RelayBadBridge)
+    finally:
+        Vc._wait_playing = saved_wp
+    r3 = ([r for r in resr["rows"] if r["id"] == "SL3_hoses_and_reel_styles_survive"] or [{}])[0]
+    d3 = r3.get("detail") if isinstance(r3.get("detail"), dict) else {}
+    check("Proof.save_load SL3: null geometryHash right after load, re-laid on a settled re-read -> PASS, runtimeBeforeRelay named",
+          r3.get("status") == "PASS" and d3.get("runtimeBeforeRelay") == {"geometryHash": 2} and (d3.get("settled") or {}).get("firstDiff") is None
+          and d3.get("hosesEqual") is False, r3)
+    r3b = ([r for r in resrb["rows"] if r["id"] == "SL3_hoses_and_reel_styles_survive"] or [{}])[0]
+    d3b = r3b.get("detail") if isinstance(r3b.get("detail"), dict) else {}
+    fb = (d3b.get("settled") or {}).get("firstDiff") or {}
+    check("Proof.save_load SL3: the settled re-read's geometry differs -> FAIL MOD naming geometryHash, after = the settled hash",
+          (r3b.get("status"), r3b.get("class")) == ("FAIL", "MOD") and fb.get("key") == "geometryHash" and fb.get("reel") == [2, 1]
+          and fb.get("after") == "ffff", r3b)
+
     class NoHoseBridge(FakeBridge):
         def hp(self, cmd, wait_s=20.0):
             if cmd == "census":
