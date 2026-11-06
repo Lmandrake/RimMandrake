@@ -536,6 +536,7 @@ namespace RimMandrake.FlowWorks.Quarry
 		{
 			this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 			this.FailOn(() => !RM_QuarrySettings.PanningActive);
+			AddFinishAction(cond => RM_PanWatch.Ended(job, cond));
 			yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
 			int ticks = RM_PlacerMath.PanTicks(pawn.GetStatValue(StatDefOf.MiningSpeed));
 			Toil pan = Toils_General.Wait(ticks).WithProgressBarToilDelay(TargetIndex.A);
@@ -548,15 +549,94 @@ namespace RimMandrake.FlowWorks.Quarry
 					pawn.rotationTracker.FaceCell(w);
 				}
 				pawn.skills?.Learn(SkillDefOf.Mining, XpPerTick);
+				RM_PanWatch.PanTick(job, pawn);
 			};
 			yield return pan;
 			Toil finish = ToilMaker.MakeToil("PanForPlacerFinish");
 			finish.initAction = delegate
 			{
-				RM_PlacerPanning.Session(pawn);
+				// the watch reads the stock book across exactly this session (the 2500-tick regrow cannot land inside it)
+				RM_MapComponent_PlacerStock st = RM_MapComponent_PlacerStock.Of(Map);
+				float s0 = st?.Stock ?? 0f;
+				int p0 = st?.PanUnits ?? 0;
+				string res = RM_PlacerPanning.Session(pawn);
+				RM_PanWatch.Finished(job, res, st == null ? float.NaN : s0 - st.Stock, st == null ? -1 : st.PanUnits - p0);
 			};
 			finish.defaultCompleteMode = ToilCompleteMode.Instant;
 			yield return finish;
+		}
+	}
+
+	/// <summary>GOLD_PANNING_PROVE_THE_COLONIST_STAYS: what ONE armed pan job did, tick by tick, so the placer chain can read
+	/// that a colonist the WorkGiver sent stood on the bank cell for the whole session, finished it once, and what landed.
+	/// Unarmed (JobId -1, the shipped state) every hook is one int compare.</summary>
+	public static class RM_PanWatch
+	{
+		public static int JobId = -1;
+		public static int PanTicks;
+		public static int OnSpot;
+		public static int OffSpot;
+		public static int Sessions;
+		public static string Result = "none";
+		public static float Fell = float.NaN;
+		public static int BookPanned = -1;
+		public static readonly List<string> Ends = new List<string>();
+
+		public static void Arm(Job job)
+		{
+			JobId = job.loadID;
+			PanTicks = OnSpot = OffSpot = Sessions = 0;
+			Result = "none";
+			Fell = float.NaN;
+			BookPanned = -1;
+			Ends.Clear();
+		}
+
+		public static void Disarm()
+		{
+			JobId = -1;
+		}
+
+		public static void PanTick(Job job, Pawn pawn)
+		{
+			if (job.loadID != JobId)
+			{
+				return;
+			}
+			PanTicks++;
+			if (pawn.Position == job.targetA.Cell)
+			{
+				OnSpot++;
+			}
+			else
+			{
+				OffSpot++;
+			}
+		}
+
+		public static void Finished(Job job, string result, float fell, int bookPanned)
+		{
+			if (job.loadID == JobId)
+			{
+				Sessions++;
+				Result = result;
+				Fell = fell;
+				BookPanned = bookPanned;
+			}
+		}
+
+		public static void Ended(Job job, JobCondition cond)
+		{
+			if (job.loadID == JobId)
+			{
+				Ends.Add(cond.ToString());
+			}
+		}
+
+		public static string Report()
+		{
+			return "panTicks=" + PanTicks + " onSpot=" + OnSpot + " offSpot=" + OffSpot + " sessions=" + Sessions
+				+ " result=" + Result + " fell=" + Fell.ToString("F2") + " bookPanned=" + BookPanned + " ends=" + (Ends.Count == 0 ? "-" : string.Join(",", Ends));
 		}
 	}
 
@@ -608,7 +688,8 @@ namespace RimMandrake.FlowWorks.Quarry
 	}
 
 	/// <summary>static_call surface. "" reports the stock; "wash" forces every sluice's daily wash; "refill" refills
-	/// the stock as a flood would; "drain" empties it; "pan" runs one finished session for the first colonist on a spot.</summary>
+	/// the stock as a flood would; "drain" empties it; "pan" runs one finished session for the first colonist on a spot;
+	/// "jobstart" / "jobread" / "jobclean" stage, read and remove one REAL pan job (the WorkGiver's offer, walked and waited).</summary>
 	public static class RM_PlacerProof
 	{
 		public static string ProofReport(string arg)
@@ -637,6 +718,12 @@ namespace RimMandrake.FlowWorks.Quarry
 					break;
 				case "selfcheck":
 					return SelfCheck(map, stock);
+				case "jobstart":
+					return JobStart(map, stock);
+				case "jobread":
+					return JobRead(map, stock);
+				case "jobclean":
+					return JobClean(map, stock);
 				case "refill":
 					stock.Refill();
 					break;
@@ -663,6 +750,150 @@ namespace RimMandrake.FlowWorks.Quarry
 					break;
 			}
 			return sb + stock.Report();
+		}
+
+		private static Pawn jobPawn;
+		private static Thing jobSpot;
+		private static int jobPriorityWas;
+		private static HashSet<Thing> jobAlready;
+
+		/// <summary>"jobstart": the live pan job (GOLD_PANNING_PROVE_THE_COLONIST_STAYS). Picks the nearest legal bank
+		/// cell to a free colonist who can mine, builds a panning spot there, refills the stock, gives the colonist
+		/// Mining priority 1 and full needs (so hunger or sleep does not pull them off mid-test), asks the REAL
+		/// WorkGiver (ShouldSkip / HasJobOnThing / JobOnThing) and starts the job it offers, armed in RM_PanWatch.
+		/// The caller then advances ticks and reads "jobread"; "jobclean" removes the spot and what was panned.</summary>
+		private static string JobStart(Map map, RM_MapComponent_PlacerStock stock)
+		{
+			if (jobSpot != null)
+			{
+				JobClean(map, stock);
+			}
+			ThingDef def = RM_QuarryDefOf.RM_PanningSpot;
+			WorkGiverDef wgd = DefDatabase<WorkGiverDef>.GetNamedSilentFail("RM_PanForPlacer");
+			RM_WorkGiver_PanForPlacer wg = wgd?.Worker as RM_WorkGiver_PanForPlacer;
+			if (wg == null)
+			{
+				return "REFUSED: WorkGiverDef RM_PanForPlacer has no RM_WorkGiver_PanForPlacer worker";
+			}
+			Pawn pawn = null;
+			IntVec3 site = IntVec3.Invalid;
+			int best = int.MaxValue;
+			foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
+			{
+				if (p.Downed || p.Drafted || p.InMentalState || p.WorkTypeIsDisabled(WorkTypeDefOf.Mining) || p.workSettings == null)
+				{
+					continue;
+				}
+				foreach (IntVec3 c in map.AllCells)
+				{
+					int d = (c - p.Position).LengthHorizontalSquared;
+					if (d >= best || !c.Standable(map) || c.Fogged(map)
+						|| !new RM_PlaceWorker_PanningSpot().AllowsPlacing(def, c, Rot4.North, map).Accepted
+						|| !GenConstruct.CanPlaceBlueprintAt(def, c, Rot4.North, map, false, null, null, null).Accepted
+						|| !p.CanReach(c, PathEndMode.OnCell, Danger.Some))
+					{
+						continue;
+					}
+					best = d;
+					site = c;
+					pawn = p;
+				}
+				if (pawn != null)
+				{
+					break;
+				}
+			}
+			if (pawn == null)
+			{
+				return "UNMEASURED: no free colonist able to mine reaches a legal panning bank cell | " + stock.Report();
+			}
+			jobAlready = new HashSet<Thing>(map.listerThings.AllThings);
+			Thing spot = ThingMaker.MakeThing(def, GenStuff.DefaultStuffFor(def));
+			spot.SetFaction(Faction.OfPlayer);
+			jobSpot = GenSpawn.Spawn(spot, site, map, Rot4.North);
+			jobPawn = pawn;
+			stock.Refill();
+			jobPriorityWas = pawn.workSettings.GetPriority(WorkTypeDefOf.Mining);
+			pawn.workSettings.SetPriority(WorkTypeDefOf.Mining, 1);
+			if (pawn.needs != null)
+			{
+				foreach (Need n in pawn.needs.AllNeeds)
+				{
+					if (n is Need_Food || n is Need_Rest || n is Need_Joy)
+					{
+						n.CurLevelPercentage = 1f;
+					}
+				}
+			}
+			bool skip = wg.ShouldSkip(pawn, false);
+			bool has = !skip && wg.HasJobOnThing(pawn, jobSpot, false);
+			string head = "jobstart pawn=" + pawn.LabelShort.Replace(' ', '_') + " spot=" + site.x + "," + site.z
+				+ " dist=" + Mathf.Sqrt(best).ToString("F1") + " mining=" + (pawn.skills?.GetSkill(SkillDefOf.Mining)?.Level ?? 0)
+				+ " ticksWanted=" + RM_PlacerMath.PanTicks(pawn.GetStatValue(StatDefOf.MiningSpeed))
+				+ " shouldSkip=" + skip + " hasJob=" + has;
+			if (!has)
+			{
+				return head + " started=False | " + stock.Report();
+			}
+			Job job = wg.JobOnThing(pawn, jobSpot, false);
+			job.workGiverDef = wgd;
+			RM_PanWatch.Arm(job);
+			pawn.jobs.StartJob(job, JobCondition.InterruptForced, null, false, true);
+			bool started = pawn.CurJob == job;
+			return head + " started=" + started + " | " + stock.Report();
+		}
+
+		/// <summary>"jobread": the armed job's watch plus where the colonist is and what they are doing now.</summary>
+		private static string JobRead(Map map, RM_MapComponent_PlacerStock stock)
+		{
+			if (jobPawn == null || jobSpot == null || !jobSpot.Spawned || jobSpot.Map != map)
+			{
+				return "UNMEASURED: no pan job staged on this map (call jobstart first) | " + stock.Report();
+			}
+			return "jobread curJob=" + (jobPawn.CurJobDef?.defName ?? "none") + " onSpotNow=" + (jobPawn.Position == jobSpot.Position)
+				+ " " + RM_PanWatch.Report() + " | " + stock.Report();
+		}
+
+		/// <summary>"jobclean": end the job if it still runs, restore the Mining priority, remove the spot and the items
+		/// that appeared since jobstart, disarm the watch.</summary>
+		private static string JobClean(Map map, RM_MapComponent_PlacerStock stock)
+		{
+			string watch = RM_PanWatch.Report();
+			RM_PanWatch.Disarm();
+			int removed = 0;
+			// statics outlive a game load: touch only what is still spawned on THIS map
+			if (jobPawn != null && jobPawn.Spawned && jobPawn.Map == map)
+			{
+				if (jobPawn.CurJobDef == RM_QuarryDefOf.RM_PanForPlacerJob)
+				{
+					jobPawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
+				}
+				jobPawn.workSettings?.SetPriority(WorkTypeDefOf.Mining, jobPriorityWas);
+			}
+			if (jobAlready != null && jobSpot != null && jobSpot.Spawned && jobSpot.Map == map)
+			{
+				List<Thing> made = new List<Thing>();
+				foreach (Thing t in map.listerThings.AllThings)
+				{
+					if (!jobAlready.Contains(t) && t.def.category == ThingCategory.Item)
+					{
+						made.Add(t);
+					}
+				}
+				foreach (Thing t in made)
+				{
+					t.Destroy();
+					removed++;
+				}
+			}
+			if (jobSpot != null && jobSpot.Spawned && jobSpot.Map == map)
+			{
+				jobSpot.Destroy();
+			}
+			jobPawn = null;
+			jobSpot = null;
+			jobAlready = null;
+			return "jobclean removed=" + removed + " " + watch + " | " + stock.Report();
 		}
 
 		/// <summary>The first script's one probe: find a legal bank-edge site on the map's own river, spawn a sluice box

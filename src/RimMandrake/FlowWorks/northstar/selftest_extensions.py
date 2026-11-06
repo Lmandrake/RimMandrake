@@ -1723,6 +1723,67 @@ def _new_probes(EXT, RIV, base):
         got, st = placer(pans, **kw)
         if got.get("panning_draws_stock") != want:
             out.append("panning_draws_stock on %s %s: %s, want %s" % (pans, kw, got.get("panning_draws_stock"), want))
+    # panning_job_colonist_stays (GOLD_PANNING_PROVE_THE_COLONIST_STAYS): the REAL job via jobstart / jobread / jobclean.
+    # `job` overrides the scripted watch; `finish_at` = the read (1000-tick chunks) on which the session has ended.
+    def pan_job(job=None, start=None, finish_at=6, unmeasured_start=None):
+        st = {"reads": 0, "cleaned": 0, "panned": 0, "sets": {"panningYieldMultiplier": "1", "placerStockPercent": "2"}}
+        sv = {"pawn": "Ana", "spot": "10,12", "dist": "4.0", "mining": "6", "ticksWanted": "5000",
+              "shouldSkip": "False", "hasJob": "True", "started": "True"}
+        sv.update(start or {})
+        done = {"curJob": "RM_PanForPlacerJob", "onSpotNow": "True", "panTicks": "5000", "onSpot": "5000",
+                "offSpot": "0", "sessions": "1", "result": "pan=RM_Goldx2", "fell": "2.00", "bookPanned": "2",
+                "ends": "Succeeded"}
+        done.update(job or {})
+        going = dict(done, sessions="0", result="none", fell="NaN", bookPanned="-1", ends="-",
+                     panTicks="1000", onSpot="1000")
+
+        def h(tl, p):
+            if tl == "jawa/mod_settings_field":
+                return {"success": True, "value": st["sets"].get(p.get("field"))}
+            a = p.get("args")
+            tail = " | PLACER stock=56.0 cap=56.0 sluiced=0 panned=0 refills=1 pool=Jade:3,"
+            if a == "jobstart":
+                if unmeasured_start:
+                    return {"success": True, "result": unmeasured_start}
+                return {"success": True, "result": "jobstart " + " ".join("%s=%s" % kv for kv in sv.items()) + tail}
+            if a == "jobread":
+                st["reads"] += 1
+                w = done if st["reads"] >= finish_at else going
+                return {"success": True, "result": "jobread " + " ".join("%s=%s" % kv for kv in w.items()) + tail}
+            if a == "jobclean":
+                st["cleaned"] += 1
+                return {"success": True, "result": "jobclean removed=1" + tail}
+            if a == "selfcheck":                # a passing forced pan, so this row is not read as downstream of a FAIL
+                st["panned"] += 3
+                return {"success": True, "result": "site=1,1 rot=0 poolCount=3 lane=1 before=60.0 after=%.1f got=3 "
+                        "drawMatches=True inPool=True off=sluice=off pan=pan=RM_Goldx3 washes=" % (53.0 - st["panned"])}
+            return {"success": True, "result": "PLACER stock=%.1f cap=56.0 sluiced=0 panned=%d refills=1 pool=Jade:3,"
+                    % (50.0 - st["panned"], st["panned"])}
+        keep = []
+        got = _ext_run(RIV, "placer", h, keep=keep).get("panning_job_colonist_stays")
+        st["why"] = [(c.name, c.verdict, c.detail) for c in keep if c.verdict != "PASS"]
+        return got, st
+    for kw, want, cleaned in (({}, "PASS", 1),
+                              ({"job": {"result": "pan=nothing", "fell": "0.00", "bookPanned": "0"}}, "PASS", 1),
+                              ({"finish_at": 99}, "FAIL", 1),                                  # never finished
+                              ({"job": {"ends": "InterruptForced", "sessions": "0", "panTicks": "2100",
+                                        "onSpot": "2100"}}, "FAIL", 1),                        # pulled away mid-session
+                              ({"job": {"ends": "Succeeded,Incompletable"}}, "FAIL", 1),      # ended twice
+                              ({"job": {"offSpot": "40", "onSpot": "4960"}}, "FAIL", 1),       # stepped off the bank
+                              ({"job": {"panTicks": "1200", "onSpot": "1200"}}, "FAIL", 1),    # session cut short
+                              ({"job": {"sessions": "2"}}, "FAIL", 1),
+                              ({"job": {"bookPanned": "0"}}, "FAIL", 1),                       # book disagrees
+                              ({"job": {"fell": "0.00"}}, "FAIL", 1),                          # stock did not fall
+                              ({"job": {"fell": "NaN"}}, "UNMEASURED", 1),                     # no book: never a pass
+                              ({"job": {"result": "pan=off"}}, "FAIL", 1),
+                              ({"job": {"result": "pan=stockspent"}}, "UNMEASURED", 1),
+                              ({"start": {"hasJob": "False", "started": "False"}}, "FAIL", 1),  # WorkGiver offered none
+                              ({"start": {"started": "False"}}, "FAIL", 1),
+                              ({"unmeasured_start": "UNMEASURED: no free colonist able to mine"}, "UNMEASURED", 0)):
+        got, st = pan_job(**kw)
+        if got != want or st["cleaned"] != cleaned:
+            out.append("panning_job_colonist_stays on %s: %s (cleaned %d), want %s (cleaned %d): %s"
+                       % (kw, got, st["cleaned"], want, cleaned, st["why"]))
     got, st = placer(["pan=RM_Goldx3"])
     if got.get("flood_refill") != "UNMEASURED":
         out.append("flood_refill (forced refill ignores the setting) must be owed: %s" % got)

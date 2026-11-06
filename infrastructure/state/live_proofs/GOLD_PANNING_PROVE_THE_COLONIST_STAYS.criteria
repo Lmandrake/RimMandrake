@@ -1,0 +1,2 @@
+A2 L2: placer chain row panning_draws_stock PASSes at the new FlowWorks DLL (a forced pan at yield x10 draws N units and the stock book moves by N)
+A4 L2: placer chain row panning_job_colonist_stays PASSes: the WorkGiver offers RM_PanForPlacerJob to a free miner beside a fresh RM_PanningSpot, the colonist stands on the bank cell every tick of the PanTicks session, the job ends once in Succeeded after one session, and the stock book moves by exactly what landed (nothing = 0)

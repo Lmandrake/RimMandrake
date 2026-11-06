@@ -504,6 +504,11 @@ PAN_STOCK_PERCENT = 10   # default 2: a cap five washes cannot drain below one u
 PAN_TRIES = 8            # all-nothing at >= 50% a try is 0.4%: then it is a reading, not bad luck
 # RM_PlacerPanning.Session answers that are no reading of the draw (nothing = roll 0; the others the site)
 PAN_NO_READING = ("pan=nothing", "pan=stockspent", "pan=noroom", "pan=nocolonist")
+# GOLD_PANNING_PROVE_THE_COLONIST_STAYS: the live pan job. The session is PanTicks = 5000 / MiningSpeed; the walk to the
+# spot and a slow colonist get a margin on top; the clock advances in chunks so a finished job is read early.
+PAN_JOB_WALK_TICKS = 3000
+PAN_JOB_CHUNK = 1000
+PAN_JOB_SITE_SPENT = ("pan=stockspent", "pan=noroom")    # the session ran, but the site gave it nothing to place
 
 
 def _setting_get(t, type_name, field):
@@ -575,6 +580,79 @@ def placer(t):
             if panned != n or abs(fell - n) > 0.05:
                 raise ExpectationFailed("pan took %d but the book says panned +%d, stock fell %.2f: %r / %r"
                                         % (n, panned, fell, rep0, rep1))
+    with t.component("panning_job_colonist_stays", toggle="panningEnabled"):
+        if t._guard():
+            # GOLD_PANNING_PROVE_THE_COLONIST_STAYS (A4): panning_draws_stock forces Session(); this row runs the REAL job.
+            # RM_PlacerProof "jobstart" builds a spot on the nearest legal bank cell to a free miner, refills the stock,
+            # sets Mining priority 1 and full needs, asks the WorkGiver and starts the job it offers, watched tick by tick
+            # (RM_PanWatch). Then: the colonist stood on the spot every tick of the pan toil, the job ended once and
+            # Succeeded, one session finished, and the stock book moved by exactly what landed (nothing = 0).
+            orig = {f: _setting_get(t, QUARRY, f) for f in PAN_FIELDS}
+            if any(v is None for v in orig.values()):
+                raise ExpectationFailed("UNMEASURED: could not read %s settings %r" % (QUARRY, orig))
+            start, rd, clean, waited = {}, {}, "", 0
+            try:
+                t.set_setting(QUARRY, {"panningYieldMultiplier": PAN_MULT,
+                                       "placerStockPercent": max(PAN_STOCK_PERCENT, float(orig["placerStockPercent"]))})
+                start = _kv(_placer("jobstart"))
+                _note(t, "jobstart", start)
+                if start.get("shouldSkip") != "False" or start.get("hasJob") != "True":
+                    raise ExpectationFailed("the WorkGiver offered no pan job to a free miner beside a fresh spot: %r" % start)
+                if start.get("started") != "True":
+                    raise ExpectationFailed("the offered pan job did not become the colonist's job: %r" % start)
+                try:
+                    want = int(start["ticksWanted"])
+                except (KeyError, ValueError):
+                    raise ExpectationFailed("UNMEASURED: jobstart gave no session length: %r" % start)
+                budget = want + PAN_JOB_WALK_TICKS
+                while waited < budget:
+                    t.wait_ticks(PAN_JOB_CHUNK)
+                    waited += PAN_JOB_CHUNK
+                    rd = _kv(_placer("jobread"))
+                    if rd.get("sessions", "0") != "0" or rd.get("ends", "-") != "-":
+                        break
+            finally:
+                if "spot" in start:                 # jobstart built a spot (and maybe started a job): remove both
+                    clean = _placer("jobclean")
+                t.set_setting(QUARRY, orig)
+            _note(t, "jobread after %d ticks (session %s)" % (waited, start.get("ticksWanted")), rd)
+            if clean:
+                _note(t, "jobclean", clean)
+            try:
+                pan_ticks, on_spot, off_spot = int(rd["panTicks"]), int(rd["onSpot"]), int(rd["offSpot"])
+                sessions = int(rd["sessions"])
+            except (KeyError, ValueError):
+                raise ExpectationFailed("UNMEASURED: the pan watch was unreadable: %r" % rd)
+            ends, res = rd.get("ends", "-"), rd.get("result", "none")
+            if ends == "-" and sessions == 0:
+                raise ExpectationFailed("the colonist had not finished the session %d ticks after starting (session %d): %r"
+                                        % (waited, want, rd))
+            if ends != "Succeeded":
+                raise ExpectationFailed("the pan job did not end once in success (ends=%s): the colonist was pulled away: %r"
+                                        % (ends, rd))
+            if off_spot or on_spot != pan_ticks or pan_ticks < want - 1:
+                raise ExpectationFailed("the colonist did not stay on the bank cell for the session: %d pan ticks of %d, %d on"
+                                        " the spot, %d off: %r" % (pan_ticks, want, on_spot, off_spot, rd))
+            if sessions != 1:
+                raise ExpectationFailed("one pan job finished %d sessions: %r" % (sessions, rd))
+            if res in PAN_JOB_SITE_SPENT:
+                raise ExpectationFailed("UNMEASURED: the session ran but the site gave it nothing to place (%s): %r" % (res, rd))
+            m = re.match(r"pan=(\w+)x(\d+)$", res)
+            if res == "pan=nothing":
+                n = 0
+            elif m and int(m.group(2)) > 0:
+                n = int(m.group(2))
+            else:
+                raise ExpectationFailed("the finished session drew nothing readable from the river (%s): %r" % (res, rd))
+            try:
+                book, fell = int(rd["bookPanned"]), float(rd["fell"])
+            except (KeyError, ValueError):
+                raise ExpectationFailed("UNMEASURED: the stock book was unreadable across the session: %r" % rd)
+            if fell != fell or book < 0:                # NaN / -1: the watch saw no stock component at the finish
+                raise ExpectationFailed("UNMEASURED: no stock book at the session's finish: %r" % rd)
+            if book != n or abs(fell - n) > 0.05:
+                raise ExpectationFailed("the session landed %d but the book says panned +%d, stock fell %.2f: %r"
+                                        % (n, book, fell, rd))
     # Owed (review 2026-10-11): "refill" calls RM_MapComponent_PlacerStock.Refill(), which sets stock = cap whatever
     # placerFloodRefill says (the setting is read only by the flood-edge detector), so drain + refill could not fail.
     # A real pair raises a flood edge with the setting on and off; placerFloodRefill is in validation.RIVER_TOGGLES_OWED.
