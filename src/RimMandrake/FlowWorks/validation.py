@@ -38,6 +38,7 @@ import extensions as EXT  # noqa: E402
 
 suite = Suite("FlowWorks")
 suite.toggles = list(EXT.suite.toggles)
+suite.anchor_margin = EXT.ANCHOR_MARGIN   # the extension plot grid stays out of the edge-sink band (PROPANE_POUR_DIAGNOSE_DRAINS_TO_NOWHERE)
 
 # v2's live rows (selftest_extensions asserts this equals a clean --mock run's row ids, in order)
 CORE_LIVE_IDS = [

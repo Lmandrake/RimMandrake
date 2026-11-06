@@ -105,6 +105,16 @@ JOINT_PADS = ((2, 2), (4, 2), (8, 2), (8, 1), (8, 4))   # depth_and_fill_jointly
 LADDER_NOTCHES = (0, 1, 2, 3, 4, 8, 16)    # pit_depth_ladder_legible / pawn_height_ladder_legible: 0.5 m a notch, to 8 m
 PLOTS = {"A": (0, 0), "B": (1, 0), "C": (2, 0), "D": (0, 1), "E": (1, 1), "F": (2, 1),
          "G": (0, 2), "H": (1, 2), "T": (2, 2)}
+PLOT_BUFFER = 8                            # _prep_plot clears and resets this many cells around every plot
+EDGE_BAND = 10                             # GenGrid.NoBuildEdgeWidth: a dug square this close to an edge is a SINK
+# PROPANE_POUR_DIAGNOSE_DRAINS_TO_NOWHERE: safe_anchor (runner, situational) kept only 20 cells from the edges, so a
+# plot could land in the map-edge sink band (RM_MapComponent_Excavation.IsSinkCell) and drain whatever a row poured.
+# The margin keeps every buffered plot of the grid out of that band: the farthest reach from the anchor, plus the band.
+ANCHOR_MARGIN = EDGE_BAND + max(
+    [PITCH + PLOT_BUFFER]                                                         # west / south: gx or gz = 0
+    + [gx * PITCH - PITCH + PW + PLOT_BUFFER for gx, _ in PLOTS.values()]         # east
+    + [gz * PITCH - PITCH + PH + PLOT_BUFFER for _, gz in PLOTS.values()])        # north
+suite.anchor_margin = ANCHOR_MARGIN               # read by runner.run_suite -> helpers.safe_anchor
 
 
 # ------------------------------------------------------------------ helpers
@@ -124,7 +134,7 @@ def _prep_plot(t, key, terrain="Soil"):
     """Clear the plot + its buffer, repaint Soil, pin Clear weather, clear the UI. Fixture writes only."""
     _sweep_earlier_chains(t)
     x0, z0 = _plot(t, key)
-    b = 8
+    b = PLOT_BUFFER
     r = _rect(x0 - b, z0 - b, PW + 2 * b, PH + 2 * b)
     # Excavation is ENGINE state, not a Thing or terrain: destroy_batch + Soil leave an earlier chain's (or an earlier
     # run's, on the same map) cuts in place (MEASURED 2026-10-06: three chains FAILed on a re-used map). Fill them in.
@@ -146,6 +156,26 @@ def _prep_plot(t, key, terrain="Soil"):
     t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
     t.bridge_call("jawa/clear_ui")
     return x0, z0
+
+
+def _refuse_sink_cells(t, cells, what):
+    """UNMEASURED when any of `cells` is a map-edge sink (jawa/flowworks_excavation_report isSinkCell, the engine's own
+    answer, setter-drained edges included): liquid reaching a sink leaves the map by design, so a row measuring liquid
+    there measures the site, not the mod. PROPANE_POUR_DIAGNOSE_DRAINS_TO_NOWHERE (run-2 on SteveDesktop, 2026-11-05):
+    the pump poured 3 levels into plot F's channel, two of its three squares read isSinkCell=true and the engine's
+    sinkTransferredTotal stood at 2.25 levels, so the row FAILed 'put no propane in the dry channel' against the mod."""
+    if not t._guard():
+        return
+    sinks, total = [], None
+    for x, z in cells:
+        r = _rep(t, x, z)
+        if r.get("isSinkCell") is True:
+            sinks.append((x, z))
+            total = r.get("sinkTransferredTotal")
+    if sinks:
+        raise ExpectationFailed("UNMEASURED: %s sits in the map-edge sink band (sink squares %s, %s levels sent off-map so "
+                                "far): the anchor %r put the plot within %d of an edge; rerun on a map or anchor that keeps "
+                                "it inside" % (what, sinks, total, getattr(t, "anchor", None), EDGE_BAND))
 
 
 def _stage(t, tool, **kw):
@@ -3080,6 +3110,7 @@ def fuel_moat_propane(t):
     with t.component("propane_tank_pours_into_channel", beyond_toggle=True):
         # Dump, not Store: the pump's POUR drains only a tank marked Dump (Building_LiquidPump summary). L1 2026-10-21
         # (HARNESS): a Store tank gave "running=True moved=0 tank=RM_Liquid_Propane:30000" for 1000 ticks.
+        _refuse_sink_cells(t, ch, "the dry propane channel")
         staged = _tank_set(t, tank, "Dump", PROPANE_LIQUID, 3 * UNITS_PER_LEVEL)
         _stage(t, "jawa/build_batch", ops="Battery:%d,%d" % batt, faction="player")
         bat = ((t.bridge_call("jawa/list_things", defName="Battery", rect=_rect(batt[0], batt[1], 1, 2), limit=2) or {})

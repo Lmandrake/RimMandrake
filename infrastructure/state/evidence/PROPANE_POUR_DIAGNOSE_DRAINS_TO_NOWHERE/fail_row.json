@@ -1,0 +1,142 @@
+{
+ "source": "stevedesktop:/home/mandrake/rm/runner/Transient/modcheck/FlowWorks_20261105T065153Z.json (testq J20261105T064712Z-4a6549.a1, sha 8f86e7a1d4)",
+ "chain": "fuel_moat_propane",
+ "component": "propane_tank_pours_into_channel",
+ "verdict": "FAIL",
+ "detail": "ExpectationFailed: pour mode put no propane in the dry channel: [(0, 'RM_Fill_Propane_Trace'), (0, 'RM_Fill_Propane_Trace'), (0, 'RM_Channel_Mid')] pump {'running': 'True', 'moved': '3', 'pour': 'True', 'tank': 'empty:0'}",
+ "evidence": [
+  {
+   "call": "bridge_call jawa/static_call",
+   "result": {
+    "result": "TANK mode=Dump effective=Dump liquid=RM_Liquid_Propane units=30000",
+    "ticksGame": 22318
+   }
+  },
+  {
+   "call": "bridge_call jawa/build_batch",
+   "result": {
+    "ticksGame": 22318
+   }
+  },
+  {
+   "call": "bridge_call jawa/list_things",
+   "result": {
+    "ticksGame": 22318
+   }
+  },
+  {
+   "call": "bridge_call jawa/battery_set",
+   "result": {
+    "ticksGame": 22318
+   }
+  },
+  {
+   "call": "bridge_call jawa/static_call",
+   "result": {
+    "result": "PUMP running=False moved=0 pour=True tank=RM_Liquid_Propane:30000",
+    "ticksGame": 22318
+   }
+  },
+  {
+   "call": "wait_ticks(1000) -> 1000 real tick(s) over 1 call(s)",
+   "result": {}
+  },
+  {
+   "call": "bridge_call jawa/static_call",
+   "result": {
+    "result": "PUMP running=True moved=3 pour=True tank=empty:0",
+    "ticksGame": 23318
+   }
+  },
+  {
+   "call": "bridge_call jawa/flowworks_excavation_report",
+   "result": {
+    "cell": {
+     "x": 89,
+     "z": 201
+    },
+    "depth": 2,
+    "fill": 0,
+    "isExcavated": true,
+    "isSourceCell": false,
+    "isSinkCell": false,
+    "sinkTransferredTotal": 2.25,
+    "overflowDestroyedTotal": 0.0,
+    "excavatedCellCount": 278,
+    "ticksGame": 23318
+   }
+  },
+  {
+   "call": "bridge_call rimworld/get_cell_info",
+   "result": {
+    "cell": {
+     "x": 89,
+     "z": 201,
+     "terrainDefName": "RM_Fill_Propane_Trace"
+    }
+   }
+  },
+  {
+   "call": "bridge_call jawa/flowworks_excavation_report",
+   "result": {
+    "cell": {
+     "x": 90,
+     "z": 201
+    },
+    "depth": 2,
+    "fill": 0,
+    "isExcavated": true,
+    "isSourceCell": false,
+    "isSinkCell": true,
+    "sinkTransferredTotal": 2.25,
+    "overflowDestroyedTotal": 0.0,
+    "excavatedCellCount": 278,
+    "ticksGame": 23318
+   }
+  },
+  {
+   "call": "bridge_call rimworld/get_cell_info",
+   "result": {
+    "cell": {
+     "x": 90,
+     "z": 201,
+     "terrainDefName": "RM_Fill_Propane_Trace"
+    }
+   }
+  },
+  {
+   "call": "bridge_call jawa/flowworks_excavation_report",
+   "result": {
+    "cell": {
+     "x": 91,
+     "z": 201
+    },
+    "depth": 2,
+    "fill": 0,
+    "isExcavated": true,
+    "isSourceCell": false,
+    "isSinkCell": true,
+    "sinkTransferredTotal": 2.25,
+    "overflowDestroyedTotal": 0.0,
+    "excavatedCellCount": 278,
+    "ticksGame": 23318
+   }
+  },
+  {
+   "call": "bridge_call rimworld/get_cell_info",
+   "result": {
+    "cell": {
+     "x": 91,
+     "z": 201,
+     "terrainDefName": "RM_Channel_Mid"
+    }
+   }
+  },
+  {
+   "call": "bridge_call jawa/list_things",
+   "result": {
+    "ticksGame": 23318
+   }
+  }
+ ]
+}
