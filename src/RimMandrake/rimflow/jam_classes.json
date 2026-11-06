@@ -95,6 +95,24 @@
    "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::content_paused", "what": "a system item the concept gate refuses (it waits on a Designer pass, not a place) no longer keeps content paused; a repeat means another kind of unstartable system item holds the pause"},
    "fixed": {"item": "OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND_KUQY", "at": "2026-11-04T22:47:00Z"},
    "examples": ["health degraded: content paused while system items wait"]
+  },
+  {
+   "id": "check_line_full",
+   "plain": "Builders were paused because too many finished items waited for a check, though the ones waiting were only sitting out a timer and no checker was busy.",
+   "match": ["^check_backlog$"],
+   "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: nothing live while work waits reads distressed, its cause the check_backlog wait"},
+   "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::check_line", "what": "the check_backlog pause counts only candidates a Judge can take this tick; one waiting out an UNMEASURED recheck (recheck_at) is not in the line. A repeat means the checkers really are the bottleneck: raise check_backlog_max or the check places"},
+   "fixed": {"item": "OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND_KUQY", "at": "2026-11-06T15:48:07Z"},
+   "examples": ["check_backlog"]
+  },
+  {
+   "id": "books_unlanded_ledger",
+   "plain": "The belt's own copy of the code held ledger lines it had written but not yet published, so it refused to take new code until they landed.",
+   "match": ["lines of \\S+ not landed$"],
+   "detector": {"target": "OPS_RELENTLESS_BOOKS_UNSTICK", "how": "relentless.books_behind_min: minutes the books clone has stood behind origin"},
+   "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::start_sync", "what": "the tick-start sync and every mid-tick serve flush (publish) the belt's own ledger shards first, then level; a repeat means the flush itself is failing (its why is what books_alarm then reports)"},
+   "fixed": {"item": "OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND_KUQY", "at": "2026-11-06T15:48:07Z"},
+   "examples": ["books 4 behind: 1 lines of infrastructure/state/ledger/events/BENCH.jsonl not landed"]
   }
  ]
 }

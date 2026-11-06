@@ -6462,6 +6462,21 @@ def fenced_meanwhile(store, item, st):
     return cur is None or cur["gen"] != st["gen"] or cur["status"] != "running"
 
 
+def check_line(states, now):
+    """The candidates a Judge could take this tick (jam class check_line_full). One waiting out an UNMEASURED recheck is
+    not in the line: counted, six such paused every builder with no checker busy (live 2026-11-04T23:09:31Z)."""
+    return [x for x in states if x["status"] == "candidate" and now >= (x.get("recheck_at") or 0)]
+
+
+def start_sync(fx):
+    """Level the books; the belt's own unlanded ledger lines are landed first (jam class books_unlanded_ledger: sync refuses
+    them by name, and at tick start that froze the books 5 min, live 2026-11-05T05:40:19Z). Any other why stands."""
+    why = fx.sync()
+    if why and "not landed" in why:
+        why = fx.flush() or fx.sync()
+    return why
+
+
 def _lease(store, fx, r, now, acts, seen, wake=None):
     cfg = r.get("staffing") or {}
     launched = clones_this_tick(acts, "work")
@@ -6470,7 +6485,7 @@ def _lease(store, fx, r, now, acts, seen, wake=None):
         acts.append({"do": "wait", "why": "share 0"})
         return
     if cfg:
-        waiting = sum(1 for x in store.states() if x["status"] == "candidate")
+        waiting = len(check_line(store.states(), now))
         if waiting > cfg["check_backlog_max"]:          # more builders would only lengthen the line at the checkers
             acts.append({"do": "wait", "why": "check_backlog"})
             return
@@ -7188,9 +7203,7 @@ def _tick(store, fx, r, now, prof):
         def wake_enrol():
             """A state change poked this tick (relentless_wake): the dependents of a close enrol now, not at the end."""
             t = time.time()
-            why = fx.sync()
-            if why and "not landed" in why:     # this tick's own ledger lines (measured live 2026-11-06: every serve
-                why = fx.flush() or fx.sync()   # refused so): land them (flush p50 10 s), then level
+            why = start_sync(fx)    # this tick's own ledger lines (measured live 2026-11-06: every serve refused so)
             if why:         # the tick's own sync stands: books_alarm says a frozen books at the next tick
                 return {"why": why}
             synced[0] = t
@@ -7212,7 +7225,7 @@ def _tick(store, fx, r, now, prof):
             phases[name] = round(at - since, 1)
             return at
 
-        books_alarm(store, fx, fx.sync(), now, acts, r)     # `synced` above: pokes before this are read by this tick
+        books_alarm(store, fx, start_sync(fx), now, acts, r)     # `synced` above: pokes before this are read by this tick
         hand_back(store, fx, r, now, acts)       # before any check or launch of this tick: a hand check is never run
         retire(store, fx, store.states(), now, acts, r)
         relentless_block.sweep(store, fx, now, acts, iso)

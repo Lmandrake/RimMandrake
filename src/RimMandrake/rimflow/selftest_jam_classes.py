@@ -49,6 +49,8 @@ REAL = [
     ("breaker open until 2026-11-04T20:06:50Z: rm-relentless-work-2f7d7ad7e9-g24 died at once with no usage",
      "launch_died_unpaid"),
     ("health degraded: content paused while system items wait", "content_paused_idle"),
+    ("check_backlog", "check_line_full"),       # 2026-11-04T23:09:31Z: six UNMEASURED candidates waiting out recheck_at
+    ("books 4 behind: 1 lines of infrastructure/state/ledger/events/BENCH.jsonl not landed", "books_unlanded_ledger"),
 ]
 
 
@@ -223,6 +225,43 @@ def ops(rows, now):
           "ops_watch: an unreadable journal is UNMEASURED, never a quiet 0")
 
 
+def check_line_refix():
+    """check_line_full: candidates waiting out an UNMEASURED recheck are not in the Judge's line, so they never
+    pause builders (live 2026-11-04T23:09:31Z: 6 such, check_backlog_max 4, nothing live)."""
+    import relentless as R
+    now = 1000.0
+    states = [{"status": "candidate", "recheck_at": now + 1800} for _ in range(6)]
+    states += [{"status": "candidate"}, {"status": "candidate", "recheck_at": now - 1}, {"status": "running"}]
+    if not hasattr(R, "check_line"):
+        return check(False, "relentless.check_line exists (jam class check_line_full's remedy)")
+    check(len(R.check_line(states, now)) == 2, "check_line counts only candidates a Judge can take now (jam class check_line_full)")
+
+
+def books_unlanded_refix():
+    """books_unlanded_ledger: the tick-start sync lands the belt's own unlanded ledger lines, then levels."""
+    import relentless as R
+    calls = []
+
+    class Fx:
+        def __init__(self, whys):
+            self.whys = list(whys)
+
+        def sync(self):
+            calls.append("sync")
+            return self.whys.pop(0)
+
+        def flush(self):
+            calls.append("flush")
+            return None
+    if not hasattr(R, "start_sync"):
+        return check(False, "relentless.start_sync exists (jam class books_unlanded_ledger's remedy)")
+    got = R.start_sync(Fx(["books 4 behind: 1 lines of infrastructure/state/ledger/events/BENCH.jsonl not landed", None]))
+    check(got is None and calls == ["sync", "flush", "sync"], "start_sync flushes unlanded ledger lines, then syncs: %s" % calls)
+    del calls[:]
+    got = R.start_sync(Fx(["books 2 behind: dirty outside the ledger: x"]))
+    check(got and "dirty" in got and calls == ["sync"], "start_sync leaves any other stale books to books_alarm")
+
+
 def help_folder():
     import relentless as R
     base = Path(TMP) / "belt"
@@ -247,6 +286,8 @@ if __name__ == "__main__":
         books_dirty_refix()
         pool_full_refix()
         help_folder()
+        check_line_refix()
+        books_unlanded_refix()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
     print("selftest_jam_classes: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

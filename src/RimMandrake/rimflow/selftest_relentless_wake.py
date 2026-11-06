@@ -201,9 +201,9 @@ def t_tick_serves():
     W.poke("publish", "close of BLOCKER", root=x.d, now=x.now)
     seen, real_sweep = [], R.relentless_reachfix.sweep
 
-    def sweep(store, fx, r, now, acts, iso):    # the prelude's first step after the start sync and block sweep
+    def sweep(store, fx, r, now, acts, iso, back=None):    # the prelude's first step after the start sync and block sweep
         seen.append(any(a.get("do") == "wake_serve" for a in acts))
-        return real_sweep(store, fx, r, now, acts, iso)
+        return real_sweep(store, fx, r, now, acts, iso, back=back)
     R.relentless_reachfix.sweep = sweep
     try:
         acts = x.tick()
