@@ -1122,3 +1122,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SAVELOAD_DIAGNOSE_COMES_BACK_CHANGED A1 (L2), read-only proof","ts":"2026-11-06T12:52:40Z","tsn":1793969560198564513}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:52:47Z","tsn":1793969567598757844}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE: deploy and restart for its live proofs","ts":"2026-11-06T12:54:44Z","tsn":1793969684580089621}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T13:10:20Z","tsn":1793970620640963045}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T13:11:47Z","tsn":1793970707796146052}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T13:12:00Z","tsn":1793970720448348279}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A5 (L2), read-only proof","ts":"2026-11-06T13:12:23Z","tsn":1793970743032137601}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T13:12:36Z","tsn":1793970756640372525}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: review savegame for the owner's look","ts":"2026-11-06T13:13:08Z","tsn":1793970788538728124}
