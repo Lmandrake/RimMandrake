@@ -22,3 +22,8 @@ Overlap: RELENTLESS_REVIEW_FIX_R7_MEDIUMS_MAY_STAY holds 11-13 above (its 1-3) p
 Done when: each is fixed with a red-without-fix selftest row, or rejected in writing with its reason; then relentless.py gets its own review again, because the edits dirty it.
 
 Source: RELENTLESS_VET_FULL_FILE_BEFORE_CLEAN.
+
+## outcome (the Done-when clauses, gen 3)
+- Findings: 1-4 and 7-13 fixed with rows in `src/RimMandrake/rimflow/selftest_relentless_r7_thirteen.py` (run by `selftest_relentless_r7_mediums.py`); 5 and 6 rejected with reasons in that selftest's docstring.
+- The review again: on `relentless.py` at 80e7d60318, its last edit (sha256 1c406d67...), the final bytes. r1 (full file, high effort): two HIGH, one MEDIUM; r1's first HIGH is this item's finding 4, adjudicated MEDIUM earlier and fixed; the other two fixed with rows 14-16. r2 (full file, the same prompt, `--lockdown --effort medium` after two high-effort tries timed out at 510 s, the setting of the r8 review whose answer found three mediums): `VERDICT: NO-HIGH`, `none`, job consult-20261106-151251-150189-db5061. Text: `D:\ClaudeWork\rimmandrake\relentless\RELENTLESS_R7_FIX_THIRTEEN_MEDIUMS_MAY_STAY\r2\rev_whole.txt`.
+- Clean under the owner's bar for this file (card 2026-11-06, `design/RimMandrake/standing_rulings.md`, Code review): mark at 06a1bcde8f, one commit after the sha the first blind check tested, so that check rightly read DIRTY there. `python3 src/RimMandrake/Utils/code_review_status.py check src/RimMandrake/rimflow/relentless.py` reads CLEAN from that commit on, until the next edit.
