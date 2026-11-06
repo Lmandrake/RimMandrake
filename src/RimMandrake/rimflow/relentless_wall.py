@@ -484,7 +484,13 @@ ITEM_GRANT = "item_prose"
 ITEMS = "infrastructure/state/items"
 ITEM_NOTE = "items.json"
 GRANTS = (GIT_GRANT, ITEM_GRANT)
-GIT_COPY_MAX = 2 << 30      # a borrower's own objects past this are no --shared check clone: no grant, the plain box
+GIT_COPY_MAX = 2 << 30      # a borrower's own objects COPIED past this: no grant, the plain box
+# CHECKER_REACH_FIX_GH_DARK_SECOND: ~/rm/relentless/books borrows store.git yet holds 2.2 GB of its own LOOSE objects
+# (22915 of them, 28 MB packed), so every copy was refused and every git/gh/proc reach probe failed. The box root and the
+# clones share one filesystem: the own objects are HARDLINKED in (no bytes, no cap); only a file that cannot link (another
+# filesystem) is copied, and the cap counts those bytes. git never writes an existing object (packs and loose are 0444),
+# so a link exposes books to nothing a copy did not, short of a deliberate chmod - the wall stops accident (module doc).
+_link = os.link
 
 
 def _object_chain(source):
@@ -509,19 +515,29 @@ def _object_chain(source):
 
 
 def _copy_objects(src, dst):
-    """A borrower's own objects (packs and loose), never its info/: its alternates name paths the box hides."""
-    total = 0
+    """A borrower's own objects (packs and loose), never its info/: its alternates name paths the box hides. Each file is
+    hardlinked; one that cannot link is copied, and copied bytes past GIT_COPY_MAX refuse the grant."""
+    copied = 0
     for dp, dn, fn in os.walk(src):
         rel = os.path.relpath(dp, src)
         if rel == "info" or rel.startswith("info" + os.sep):
             dn[:] = []
             continue
+        out = os.path.normpath(os.path.join(dst, rel))
+        os.makedirs(out, exist_ok=True)
         for n in fn:
-            total += os.path.getsize(os.path.join(dp, n))
-    if total > GIT_COPY_MAX:
-        raise RuntimeError("git grant: %s holds %d bytes of its own objects (cap %d)" % (src, total, GIT_COPY_MAX))
-    shutil.copytree(src, dst, ignore=lambda d, names: ["info"] if os.path.realpath(d) == os.path.realpath(src) else [],
-                    dirs_exist_ok=True)
+            s, d = os.path.join(dp, n), os.path.join(out, n)
+            if os.path.lexists(d):
+                continue
+            try:
+                _link(s, d)
+            except OSError:
+                copied += os.path.getsize(s)
+                if copied > GIT_COPY_MAX:
+                    raise RuntimeError("git grant: %s: over %d bytes of its own objects would be copied (cap %d)"
+                                       % (src, copied, GIT_COPY_MAX))
+                shutil.copy2(s, d)
+    return copied
 
 
 def grant_git(box, source, sha):

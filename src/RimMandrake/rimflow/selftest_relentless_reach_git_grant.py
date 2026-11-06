@@ -114,11 +114,32 @@ def test_box(root):
     txt = W.marker_prompt({"candidate": {"sha": sha, "evidence": "e"}, "contract": {"proof": "x"}}, "ITEM", plain)
     check("(3) no grant, the prompt still says no git history", "no git history" in txt)
     check("(3) no grant, no git bind", not any("gitobj" in x for x in W.props(p, plain, [])))
-    cap, W.GIT_COPY_MAX = getattr(W, "GIT_COPY_MAX", 0), 1     # the clone's own objects past the cap: no grant
+    # CHECKER_REACH_FIX_GH_DARK_SECOND: books held 2.2 GB of its own loose objects, past the copy cap, so no grant was
+    # ever made; on one filesystem the own objects are linked, and the cap counts only bytes that had to be copied
+    cap, W.GIT_COPY_MAX = getattr(W, "GIT_COPY_MAX", 0), 1
+    try:
+        big = W.make_box(p, str(clone), sha, "g4", grants=[GRANT])
+    finally:
+        W.GIT_COPY_MAX = cap
+    own = Path(big, "tree/.git/objects", sha[:2], sha[2:])
+    src = Path(clone, ".git/objects", sha[:2], sha[2:])
+    check("(6) a clone whose own objects pass the copy cap still gets the grant, linked not copied",
+          Path(big, "tree/.git").exists() and not Path(big, "git_grant_failed").exists() and own.exists()
+          and src.exists() and os.path.samefile(own, src),
+          (Path(big, "git_grant_failed").read_text() if Path(big, "git_grant_failed").exists() else "", own.exists()))
+    W.remove_box(big)
+    check("(6) removing the box leaves the clone's objects", src.exists() and git(clone, "cat-file", "-e", sha).returncode == 0)
+    cap, W.GIT_COPY_MAX = getattr(W, "GIT_COPY_MAX", 0), 1     # objects that must be COPIED past the cap: no grant
+    link = getattr(W, "_link", None)
+
+    def nolink(s, d):
+        raise OSError(18, "Invalid cross-device link")
+    W._link = nolink
     try:
         bad = W.make_box(p, str(clone), sha, "g3", grants=[GRANT])
     finally:
         W.GIT_COPY_MAX = cap
+        W._link = link
     check("(3) a grant that cannot be made leaves the plain box, never a crash", not Path(bad, "tree/.git").exists()
           and Path(bad, "git_grant_failed").exists() and W.git_reads(bad) == [])
     W.remove_box(bad)
