@@ -3344,6 +3344,12 @@ def wall_faces(t):
             _expect(v2.get("visible") == "False" if t._guard() else None, "wall faces still visible OFF: %s" % v2)
 
 
+# The wait for one hand cut, and the labour the dig_finds rows run under (selftest_dig_finds_budget proves the price fits).
+DIG_WAIT_TICKS = 16000       # polled every 500: a cut that lands returns at once; rock ground (x4 work) still fits
+DIG_FINDS_LABOUR = 0.25      # RM_DigDepthMath.MinLabourMultiplier: the cheapest cut the mod allows
+SHIPPED_LABOUR = 4.0         # RM_DigDepthMath.DefaultLabourMultiplier
+
+
 def _dig_by_hand(t, pid, c):
     """One real canal cut by a colonist's RM_DigCanalJob (the only caller of RM_DigDiscoveryState.OnCut). Done means
     the cell's DEPTH rose (live 19:38: a designation query reading 'gone' proved nothing -- no cut had happened)."""
@@ -3351,7 +3357,7 @@ def _dig_by_hand(t, pid, c):
     d0 = _rep(t, *c).get("depth") or 0
     _stage(t, "jawa/designate_batch", action="add", designation="RM_DigCanal", rect=_rect(c[0], c[1], 1, 1))
     t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="RM_DigCanalJob", targetAX=c[0], targetAZ=c[1])
-    for _ in range(16):
+    for _ in range(DIG_WAIT_TICKS // 500):
         t.wait_ticks(500)
         if (_rep(t, *c).get("depth") or 0) > d0:
             return True
@@ -3392,57 +3398,62 @@ def dig_finds(t):
         ls = (t.bridge_call("jawa/letter_list") or {}).get("letters") or []
         return sum(1 for x in ls if "Found while digging" in str((x.get("label") or {}).get("RawText", x.get("label"))))
 
-    with t.component("finds_off_none", toggle="digFindsEnabled"):
-        with _setting(t, "digFindsEnabled", False):
-            n0 = _finds(t).get("finds")
-            _sc(t, DIG_PROOF, "ProofReport", "force")
-            done = _dig_by_hand(t, pid, c)
-            n1 = _finds(t).get("finds")
-            if t._guard():
-                _expect(done, "the dig job never finished")
-                _expect(n0 is not None and n0 == n1, "a find with digFindsEnabled OFF (None = no finds count): %s -> %s" % (n0, n1))
-    with t.component("cut_turns_up_local_find", toggle="digFindsLocalOnly"):
-        with _setting(t, "digFindLetterEnabled", False):
+    # QUARRY_DIG_FIX_VALIDATED_BUT_NEVER_FINISHES: these rows are about FINDS, not labour. At the shipped x4 labour
+    # (DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK, card 2026-10-25) the three cuts cost 12,800 / 25,600 / 38,400 work, ~6,300 /
+    # 12,500 / 18,800 ticks for a Mining-10 colonist, against _dig_by_hand's 8,000-tick wait: 'the dig job never finished'
+    # on every run since. Same trap droid_dig_live.py fixed (J20261029T221052Z-6cdd1a).
+    with _setting_in(t, S_FW, "digLabourMultiplier", DIG_FINDS_LABOUR, default=SHIPPED_LABOUR):
+        with t.component("finds_off_none", toggle="digFindsEnabled"):
+            with _setting(t, "digFindsEnabled", False):
+                n0 = _finds(t).get("finds")
+                _sc(t, DIG_PROOF, "ProofReport", "force")
+                done = _dig_by_hand(t, pid, c)
+                n1 = _finds(t).get("finds")
+                if t._guard():
+                    _expect(done, "the dig job never finished")
+                    _expect(n0 is not None and n0 == n1, "a find with digFindsEnabled OFF (None = no finds count): %s -> %s" % (n0, n1))
+        with t.component("cut_turns_up_local_find", toggle="digFindsLocalOnly"):
+            with _setting(t, "digFindLetterEnabled", False):
+                l0, n0 = letters(), _finds(t).get("finds")
+                _sc(t, DIG_PROOF, "ProofReport", "force")
+                done = _dig_by_hand(t, pid, c)
+                rep = _sc(t, DIG_PROOF, "ProofReport", " ")
+                n1, l1 = _finds(t).get("finds"), letters()
+                if t._guard():
+                    _expect_cut_found(done, n0, n1, rep)
+                    _expect(not any(m in rep for m in ("ComponentIndustrial", "ComponentSpacer", "Plasteel")),
+                            "a made thing came out of the ground: %s" % rep)
+                    _expect(l1 == l0, "a letter with digFindLetterEnabled OFF (%d -> %d)" % (l0, l1))
+        with t.component("first_find_sends_letter", toggle="digFindLetterEnabled"):
             l0, n0 = letters(), _finds(t).get("finds")
-            _sc(t, DIG_PROOF, "ProofReport", "force")
+            armed = _sc(t, DIG_PROOF, "ProofReport", "force")
             done = _dig_by_hand(t, pid, c)
             rep = _sc(t, DIG_PROOF, "ProofReport", " ")
-            n1, l1 = _finds(t).get("finds"), letters()
+            l1, n1 = letters(), _finds(t).get("finds")
             if t._guard():
                 _expect_cut_found(done, n0, n1, rep)
-                _expect(not any(m in rep for m in ("ComponentIndustrial", "ComponentSpacer", "Plasteel")),
-                        "a made thing came out of the ground: %s" % rep)
-                _expect(l1 == l0, "a letter with digFindLetterEnabled OFF (%d -> %d)" % (l0, l1))
-    with t.component("first_find_sends_letter", toggle="digFindLetterEnabled"):
-        l0, n0 = letters(), _finds(t).get("finds")
-        armed = _sc(t, DIG_PROOF, "ProofReport", "force")
-        done = _dig_by_hand(t, pid, c)
-        rep = _sc(t, DIG_PROOF, "ProofReport", " ")
-        l1, n1 = letters(), _finds(t).get("finds")
-        if t._guard():
-            _expect_cut_found(done, n0, n1, rep)
-            if "Chunk" in rep.split("last", 1)[-1]:
-                t.upstream_reason = "UNMEASURED: the find was a rock chunk (no letter by design): %s" % rep
-                t.upstream_failed = True
-                return
-            if l1 == l0 + 1:
-                return
-            # No letter. It is owed only for a FIRST find of a material (RM_DigDiscovery: the Scribed found-list),
-            # and the found-list is recorded in the SAME condition that sends the letter, so its growth cannot judge
-            # the letter (review 2026-10-11). The one first-ness read that does not depend on the letter: a MAP with
-            # NOTHING found yet (first-found 0 when armed; the list is per map) makes every non-chunk find a first
-            # find -> FAIL. With earlier finds on this map the material may be a repeat (no letter is right) -> UNMEASURED.
-            part = armed.split("first-found", 1)
-            try:
-                f0 = int(part[1].split("|", 1)[0]) if len(part) == 2 else None
-            except ValueError:
-                f0 = None
-            if f0 is None:
-                raise ExpectationFailed("UNMEASURED: no letter, and ProofReport gave no first-found count: %r" % armed)
-            if f0 > 0:
-                raise ExpectationFailed("UNMEASURED: no letter, but this map already holds %d first finds, so the "
-                                        "material may be a repeat: %s" % (f0, rep))
-            _expect(False, "no letter for a first find on a map with nothing found yet (%d -> %d): %s" % (l0, l1, rep))
+                if "Chunk" in rep.split("last", 1)[-1]:
+                    t.upstream_reason = "UNMEASURED: the find was a rock chunk (no letter by design): %s" % rep
+                    t.upstream_failed = True
+                    return
+                if l1 == l0 + 1:
+                    return
+                # No letter. It is owed only for a FIRST find of a material (RM_DigDiscovery: the Scribed found-list),
+                # and the found-list is recorded in the SAME condition that sends the letter, so its growth cannot judge
+                # the letter (review 2026-10-11). The one first-ness read that does not depend on the letter: a MAP with
+                # NOTHING found yet (first-found 0 when armed; the list is per map) makes every non-chunk find a first
+                # find -> FAIL. With earlier finds on this map the material may be a repeat (no letter is right) -> UNMEASURED.
+                part = armed.split("first-found", 1)
+                try:
+                    f0 = int(part[1].split("|", 1)[0]) if len(part) == 2 else None
+                except ValueError:
+                    f0 = None
+                if f0 is None:
+                    raise ExpectationFailed("UNMEASURED: no letter, and ProofReport gave no first-found count: %r" % armed)
+                if f0 > 0:
+                    raise ExpectationFailed("UNMEASURED: no letter, but this map already holds %d first finds, so the "
+                                            "material may be a repeat: %s" % (f0, rep))
+                _expect(False, "no letter for a first find on a map with nothing found yet (%d -> %d): %s" % (l0, l1, rep))
 
 
 # =============================================================== LIQUID MACHINERY (3e473f37c)

@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map the dig_finds rows finds_off_none and cut_turns_up_local_find PASS: each hand cut by a colonist lands (the cell's depth rises) within the wait, so 'the dig job never finished' no longer fires
