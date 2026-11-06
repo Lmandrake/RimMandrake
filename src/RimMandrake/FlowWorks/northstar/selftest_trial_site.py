@@ -269,6 +269,22 @@ def sec7_pe4(d):
     check("P-E4 --fix: a pawn on the map still FAILs (the roster is not fixed)", r.status == FAIL, r.evidence)
 
 
+def sec8_live_tier():
+    """GAMEENV_FIX_PROOFSITE_1CD219EC_ITEMS_WAIT: gate passes only on the exact S.TIER list, so every live clause of the
+    item's proof file must name that tier (an exact tier runs on SteveDesktop through testq). Without the line,
+    Archmagi's round ran A1/A2 on a 23-mod list and read WRONG GAME, which no lane step could fix."""
+    root = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
+    sys.path.insert(0, os.path.join(root, "src", "RimMandrake", "rimflow"))
+    import relentless_live_round as R
+    with open(os.path.join(root, "infrastructure", "state", "live_proofs",
+                           "TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS.txt"), encoding="utf-8") as fh:
+        text = fh.read()
+    cids = [ln.split(":", 1)[0].split()[-1] for ln in text.splitlines() if ln.startswith("live-proof ")]
+    got = {k: R.clause_tier(text, k) for k in cids}
+    check("live proofs: every clause runs on tier %s (%s)" % (S.TIER, ",".join(cids)),
+          bool(cids) and all(v == S.TIER for v in got.values()), got)
+
+
 def main():
     d = tempfile.mkdtemp(prefix="selftest_trial_site_")
     try:
@@ -279,6 +295,7 @@ def main():
         sec5_prove(d)
         sec6_pe8(d)
         sec7_pe4(d)
+        sec8_live_tier()
     finally:
         for root, dirs, files in os.walk(d):
             for f in files:

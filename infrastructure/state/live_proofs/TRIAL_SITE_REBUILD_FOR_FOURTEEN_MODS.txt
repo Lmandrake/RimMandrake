@@ -1,3 +1,5 @@
+# trial_site.py gate passes only on the exact 14-mod fw_gss_sitting list: an exact tier runs on SteveDesktop via testq (GAMEENV_FIX_PROOFSITE_1CD219EC_ITEMS_WAIT).
+live-tier: fw_gss_sitting
 live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/trial_site.py gate < /dev/null && python.exe src/RimMandrake/FlowWorks/northstar/trial_site.py ensure < /dev/null
 live-proof A2: python.exe src/RimMandrake/FlowWorks/northstar/trial_site.py gate < /dev/null && python.exe src/RimMandrake/FlowWorks/northstar/trial_site.py prove < /dev/null
 live-mods: FlowWorks, GimmeSomeSlack, RimMandrake.Biomes
