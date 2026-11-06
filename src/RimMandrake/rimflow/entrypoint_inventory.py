@@ -16,9 +16,9 @@ prose are skipped on purpose.
 
     python3 src/RimMandrake/rimflow/entrypoint_inventory.py show NAME...      every entry point of these modules
     python3 src/RimMandrake/rimflow/entrypoint_inventory.py zero              rimflow modules no entry point reaches
-    python3 src/RimMandrake/rimflow/entrypoint_inventory.py check-retired     exit 0 each RETIRED module is gone and unreached,
+    python3 src/RimMandrake/rimflow/entrypoint_inventory.py retired           exit 0 each RETIRED module is gone and unreached,
                                                                               1 not so, 2 the instrument cannot see
-    python3 src/RimMandrake/rimflow/entrypoint_inventory.py check-revert --bundle P   exit 0 the bundle holds a commit undoing
+    python3 src/RimMandrake/rimflow/entrypoint_inventory.py revert --bundle P   exit 0 the bundle holds a commit undoing
                                                                               the retirement byte for byte, 1 not so
 """
 import argparse
@@ -320,8 +320,8 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="verb", required=True)
     sub.add_parser("show").add_argument("names", nargs="+")
     sub.add_parser("zero")
-    sub.add_parser("check-retired")
-    sub.add_parser("check-revert").add_argument("--bundle", required=True)
+    sub.add_parser("retired")
+    sub.add_parser("revert").add_argument("--bundle", required=True)
     a = ap.parse_args(argv)
     if a.verb == "show":
         inv, unread = inventory(ROOT, a.names)
@@ -336,7 +336,7 @@ def main(argv=None):
         for m, how in zero():
             print("%-34s %s" % (m, how))
         return 0
-    code, lines = check_retired() if a.verb == "check-retired" else check_revert(a.bundle)
+    code, lines = check_retired() if a.verb == "retired" else check_revert(a.bundle)
     print("\n".join(lines))
     return code
 
