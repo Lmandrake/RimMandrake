@@ -1189,3 +1189,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED A1 (L2), read-only proof","ts":"2026-11-06T15:25:00Z","tsn":1793978700018884122}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:29:55Z","tsn":1793978995750128408}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MODERN_FITTINGS_PROBE_FAUCET_NEVER_SEEN A1 (L2), read-only proof","ts":"2026-11-06T15:33:43Z","tsn":1793979223858640775}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:38:12Z","tsn":1793979492021045556}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-06T15:38:41Z","tsn":1793979521984945197}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:38:55Z","tsn":1793979535423300501}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A1 (L2), read-only proof","ts":"2026-11-06T15:41:14Z","tsn":1793979674102066370}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:41:30Z","tsn":1793979690171145013}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A2 (L2), read-only proof","ts":"2026-11-06T15:41:46Z","tsn":1793979706799252521}
