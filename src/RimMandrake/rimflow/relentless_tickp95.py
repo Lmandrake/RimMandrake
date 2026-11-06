@@ -6,6 +6,8 @@ relentless_tickprof fills, and prints the report (the WP-10a prof.py format, plu
 `check <report.txt>` exits 0 only when the report covers >= MIN_TICKS ticks, names wall p50/p95 and the phases, and
 every leaf in its budget block maps to an item with a `file` event in the ledger. A leaf the map does
 not name, or whose item is missing, exits 1 and names it: file the detach, then add it to DETACH.
+The checker's box holds the ledger as of the candidate's PARENT (relentless_wall tree_from_parent), so commit a new `file`
+event at least one commit before the sha that `finish` names, or this check cannot see it there.
 
 Budget: a py_leaf costing >= BUDGET_S seconds per tick on mean (~3% of a ~310 s tick) is over budget.
 """
