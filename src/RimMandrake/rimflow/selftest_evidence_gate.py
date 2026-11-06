@@ -382,6 +382,21 @@ def cli_end_to_end():
     rc, out = cli("close", "NOROOT_3_PROBE_FIXTURE", "--sha", b, relentless=False)
     check(rc == 0 and not os.path.exists(os.path.join(sd, G.SHADOW)) and "evidence shadow" not in out,
           "cli: a throwaway ledger without RELENTLESS_ROOT writes no shadow row")
+    # the instance: selftest_relentless_nocode_close.py under a worker, whose env holds the REAL root, closed a fixture named
+    # after the real DEPLOY_GUARD_FIX_EXCLUDE_DIR_MISMATCH and logged 18 closes that never happened. DEFAULT_ROOT moved onto
+    # the temp root, so this run can write nothing real.
+    held = "HELD_REALLY_PROBE_FIXTURE"
+    hold(sd, held, b)
+    probe = ("import sys, types; sys.path.insert(0, %r); import evidence_gate as G; G.DEFAULT_ROOT = %r; import cli; "
+             "cli._evidence_shadow(types.SimpleNamespace(id=%r, seat_is_owner=False), %r, '', [], None)"
+             % (HERE, root, held, b))
+    env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT")}
+    env.update(RIMFLOW_LEDGER=ledger, RIMFLOW_ITEMS=items, RIMFLOW_SEAT="BENCH", AGENT_SEAT="BENCH", RELENTLESS_ROOT=root)
+    r = subprocess.run([sys.executable, "-c", probe], cwd=REPO, env=env, capture_output=True, text=True, timeout=120)
+    check(r.returncode == 0 and not os.path.exists(os.path.join(sd, G.SHADOW)),
+          "cli: a throwaway ledger under the real RELENTLESS_ROOT writes no shadow row (rc %d %s)" % (r.returncode, r.stderr[-200:]))
+    check(G.own_root(root + "2") and not G.own_root("") and not G.own_root(None) and not G.own_root(G.DEFAULT_ROOT),
+          "own_root: only a root that is set and not the real one")
 
 
 def wiring():

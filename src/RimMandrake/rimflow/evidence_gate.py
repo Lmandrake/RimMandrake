@@ -94,6 +94,13 @@ def store_dir():
     return os.path.join(os.environ.get("RELENTLESS_ROOT") or DEFAULT_ROOT, "store")
 
 
+def own_root(root):
+    """Pure but for realpath. May a close on a throwaway ledger log to this RELENTLESS_ROOT? Only a root of its own: a
+    worker's env holds the real one, and a selftest under it that closed a fixture named after a real item wrote that
+    fixture's close into the real log (DEPLOY_GUARD_FIX_EXCLUDE_DIR_MISMATCH's rows, EVIDENCE_GATE_FIX_WORK_COMMIT_HIDES_PASS)."""
+    return bool(root) and os.path.realpath(root) != os.path.realpath(DEFAULT_ROOT)
+
+
 def exam_of(contract):
     """-> the exam as the predicate reads it: {hash, live, no_code}. hash is relentless_boxrun.contract_hash."""
     c = contract or {}
