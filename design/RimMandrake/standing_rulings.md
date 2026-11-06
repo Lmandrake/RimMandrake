@@ -285,6 +285,10 @@ python3 src/RimMandrake/Utils/code_review_status.py list               every rec
 
 - **Fixing a finding does not clean a file.** Only a full-file review returning
   zero significant findings does, recorded with `mark-clean`.
+  - **Scope exception, `relentless.py` and `relentless_game.py` ONLY (owner card, 2026-11-06):** a file is clean
+    when a full review finds no high-severity issue; smaller bugs can stay (filed, not blocking). Authority: *"What
+    should clean mean for relentless.py and relentless_game.py? → Only serious ones count: a file is clean when a full
+    review finds no high-severity issue; smaller bugs can stay"*. Every other file keeps the rule above.
 - **Diff-scoped (incremental) review is only valid once a file is CLEAN.** Before
   that first clean mark, review the whole file — never just the diff.
 - A single edit after `mark-clean` makes the file DIRTY again — `check` will say

@@ -107,6 +107,10 @@ planet:
     vanilla's "The Utinni landing site"); the three ferry-hop
     AbandonedSettlement markers (tiles 16869, 9926, 1596) removed before the
     save. Ancestor: FLIGHT_hop1_seas_cleaned_2026-09-12.rws (pre-jump).
+    RECORD ONLY since 2026-11-06 (owner card: "What should happen to the 25 twin
+    biomes? -> Delete, save is record only: the 2026-09-12 file stays untouched
+    on disk and is no longer expected to load correctly"): the file stays as the
+    owner's record; it is not expected to load once the 25 RUT_ twins are gone.
   start_tile: 17007
   start_tile_src: >
     PLAYER_START_SITE_1 ruling (owner card 2026-09-08: Zeddo's Yard, tile 17007,

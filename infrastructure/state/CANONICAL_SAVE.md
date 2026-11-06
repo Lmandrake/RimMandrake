@@ -95,6 +95,11 @@ Evidence, in order:
   `planet.start_savegame`, read through `src/RimMandrake/Utils/canon_save.py`.
 - Saves written after 10-21 (Autosave-*, `RM_fw_hose_proof_*`, `rm_proof_*`) are test sites, not world saves.
 
+**Record only, 2026-11-06 (owner card: "What should happen to the 25 twin biomes? → Delete, save is record only: the
+2026-09-12 file stays untouched on disk and is no longer expected to load correctly").** The 25 `RUT_` twin BiomeDefs
+are deleted (`BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN`); the 09-12 file stays on disk untouched as the owner's record,
+and nothing may rely on it loading. The frozen block above no longer promises a loadable save.
+
 **`CANONICAL_ASHKARR_START_2026-09-12.rws` (the frozen file above)** stays as the record the owner froze. It is
 not usable as a planet on today's list: 616-mod set, fingerprint MISMATCH, 1,903 tiles on 3 hashes no current def
 has (repaint plan §1a).
