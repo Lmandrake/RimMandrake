@@ -1,0 +1,6 @@
+{
+ "run": "rm-role-designer-1793955657",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "The Cold Reader exam on the rewritten tree passes. The 26 frozen scenarios (16 Examiner, 10 Challenger) were all right for both Readers, and there were 0 accepts where a core line rejects. The rewritten cut_live_and_dead_ends now holds both the far-side-battery case and the no-source case. The control (statics_clear_between_games removed, with its delegated clause) missed e7, e8 and c6."
+}
