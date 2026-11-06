@@ -318,11 +318,19 @@ def unquoted(text):
     return "".join(out)
 
 
+# a live proof that reads the owner's own ledger shard measures his act (a look, a keep), which no game can show
+OWNER_LEDGER = re.compile(r"\bOWNER\.jsonl\b")
+
+
 def refused_proof(lr, title, text, proof):
     """-> why this run may not happen on the live game, or None."""
     hit = flyer_word(lr, title, ("criterion", text), ("proof", proof))
     if hit:
         return "flyer: the %s names %r; a flyer's flight is never live-tested (standing ruling)" % hit
+    if OWNER_LEDGER.search(proof or ""):
+        return ("owner act: the proof reads his ledger (OWNER.jsonl), not the running game, so every live round fails "
+                "it until he acts (OPS_CHURN_DIAGNOSE_WATER_PPCC_FKGE); take the clause out of the game clauses "
+                "(rebind) and wait on him: snag --class blocked_by_predecessor --blocker owner")
     gone = WSLPATH.sub(" ", proof or "")
     # unquoted() knows no comment or heredoc, either of which can end a quote on another line: such a proof is read raw
     scan = gone if ("\n" in gone or "<<" in gone) else unquoted(gone)

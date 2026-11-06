@@ -821,6 +821,23 @@ def t_plan_reading():
           == [("TheRot", "Defs/Fauna/RM_Chittik.xml")])
 
 
+def t_owner_look_is_no_game_clause():
+    """OPS_CHURN_DIAGNOSE_WATER_PPCC_FKGE: WATER_DEPTH_RESKIN_HE_LOOKS_FIRST bound L4 ("the owner has looked at the one
+    review and kept it") as a game clause; its proof reads OWNER.jsonl, so every live round failed it as game_fail
+    until he looks. A proof that reads his ledger measures his act, not the game: refused before any slot is spent."""
+    lr = L.live_rules({})
+    l4 = ("python3 -c \"import json,re,sys; ev=[json.loads(l) for l in open('infrastructure/state/ledger/events/OWNER.jsonl')"
+          " if 'WATER_DEPTH_RESKIN_HE_LOOKS_FIRST' in l]; sys.exit(0 if ev else 1)\"")
+    why = L.refused_proof(lr, "Water depth reskin", "the owner has looked at the one review and kept it", l4)
+    check("an OWNER.jsonl proof is refused", why is not None and why.startswith("owner act:"), why)
+    for proof in ("grep -q keep infrastructure/state/ledger/events/OWNER.jsonl",
+                  "python3 src/RimMandrake/rimflow/cli.py show X | grep -q OWNER.jsonl"):
+        check("owner ledger read refused %r" % proof, (L.refused_proof(lr, "t", "c", proof) or "").startswith("owner act:"))
+    for proof in ("python.exe src/RimMandrake/FlowWorks/northstar/water_looks_proof.py --only A1_FIVE_METRES_NAVY",
+                  "python3 x.py --owner-seat RELENTLESS", "grep -q x infrastructure/state/ledger/events/RELENTLESS.jsonl"):
+        check("game proof not owner act %r" % proof, L.refused_proof(lr, "t", "c", proof) is None, proof)
+
+
 def t_flyer_words():
     lr = L.live_rules({})
     for s in ("a flyer lands", "Flight test", "wings fold", "it takes off", "airborne"):
@@ -1191,7 +1208,7 @@ def main():
     for t in (t_exit1_that_could_not_ask_is_no_fail, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
-              t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_def_check_judge, t_unloaded_mod,
+              t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_owner_look_is_no_game_clause, t_def_check_judge, t_unloaded_mod,
               t_load_condition, t_running_load_gap_is_unmeasured, t_tiers_small_first_final_last,
               t_refusal_row_has_its_sha, t_composed_mod_reads_its_parent_about, t_folded_source_goes_by_its_compose_key,
               t_preflight_before_a_slot, t_undeployed_row_carries_its_game, t_rebuilt_assembly_carries):
