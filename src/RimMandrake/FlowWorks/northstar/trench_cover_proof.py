@@ -3,7 +3,8 @@ step 7, the debug_process rule: the proof script ships with the build and grows 
 
   python.exe src/RimMandrake/FlowWorks/northstar/trench_cover_proof.py [out.json] [--origin X,Z] [--fresh-map]
 
-Run from the repo root with python.exe; the bridge must be held. Exit 0 = every MEASURED row PASS (owed rows are UNMEASURED
+Run from the repo root with python.exe; the bridge must be held. The run LEAVES A LIVE COLONIST on every exit path
+(res["colony_left"]; TRENCH_COVER_PROVE_COLONY_SURVIVES_UNSEEN): modcheck's vanilla canary runs after the drivers. Exit 0 = every MEASURED row PASS (owed rows are UNMEASURED
 and say why). NOT RUN BY THE BUILD ITEM: written offline 2026-10-18.
 
 Owner rulings this proves (2026-10-18, design §11): Q1 "This updates/replaces the old ruling that digging does not change
@@ -114,6 +115,28 @@ def filled_to(reply, f):
     return reply.get("success") is True and reply.get("fillSet") is True and isinstance(reply.get("fill"), int) and reply["fill"] >= f
 
 
+def live_colonists(B):
+    """The canary's own rule (modcheck/helpers.is_colonist): a humanlike player pawn, not dead."""
+    return [p.get("id") for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []
+            if p.get("isPlayer") and p.get("intelligence") == "Humanlike" and not p.get("dead")]
+
+
+def leave_a_colonist(B, c):
+    """The session invariant every driver owes the next one (STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED): at least one live
+    colonist on the map. prepare_site's destroy_batch (categories All) may take pawns standing in the 30 x 16 plot, and the early
+    returns (site, settings, dig) come before the target Colonist is spawned, so a run that stops there could hand back a map
+    whose colony stood in the plot with nobody on it (TRENCH_COVER_PROVE_COLONY_SURVIVES_UNSEEN)."""
+    try:
+        alive = live_colonists(B)
+        if alive:
+            return {"live": len(alive), "spawned": None}
+        r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=c[0], z=c[1], faction="player", count=1) or {}
+        got = ((r.get("pawns") or [{}])[0]).get("id")
+        return {"live": len(live_colonists(B)), "spawned": got, "reply": None if got else str(r)[:160]}
+    except Exception as ex:      # noqa: BLE001 - recorded; modcheck's after-driver ensure_live_colony still sees the map
+        return {"error": "%s: %s" % (type(ex).__name__, ex)}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("out", nargs="?", default=None)
@@ -121,13 +144,18 @@ def main():
     ap.add_argument("--fresh-map", action="store_true")
     a = ap.parse_args()
     import proof_hose as PH           # noqa: E402  (bridge-side imports only on a live run)
-    V = PH.V
-    B = PH.PB()
     out = a.out or os.path.join(HERE, "trench_cover_proof_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
+    return run(PH.PB(), PH.V, a, out)
+
+
+def run(B, V, a, out, stamp=None):
+    """The live run against bridge B and validation_core V; `stamp` replaces driver_stamp.stamp (offline selftest)."""
     rows = []
     res = {"script": "trench_cover_proof.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "args": vars(a)}
-    import driver_stamp
-    driver_stamp.stamp(res, B.call)         # validation.py reads a result only at the current mod hash AND deployed DLL
+    if stamp is None:
+        import driver_stamp
+        stamp = driver_stamp.stamp
+    stamp(res, B.call)         # validation.py reads a result only at the current mod hash AND deployed DLL
 
     def save():
         with open(out + ".tmp", "w", encoding="utf-8") as f:
@@ -159,16 +187,17 @@ def main():
 
     ox, oz = (int(v) for v in a.origin.split(","))
     P = lambda dx, dz: (ox + dx, oz + dz)                        # noqa: E731
-    if a.fresh_map:
-        B.call("rimworld/go_to_main_menu")
-        B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
-    ok, _ = V._wait_playing(B, leave_s=0)
-    if ok:
-        res["site_calm"] = V.site_calm(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: map-gen hostiles/hives stop safe_advance at arm
     FIELDS = ("trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap")
-    before = {f: sget(f) for f in FIELDS}
-    res["settings_before"] = before
-    try:
+    before = {}
+    try:                       # from the map start on: whatever raises, the finally restores settings and leaves a colonist
+        if a.fresh_map:
+            B.call("rimworld/go_to_main_menu")
+            B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
+        ok, _ = V._wait_playing(B, leave_s=0)
+        if ok:
+            res["site_calm"] = V.site_calm(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: map-gen hostiles/hives stop safe_advance
+        before.update({f: sget(f) for f in FIELDS})
+        res["settings_before"] = before
         if not ok or not V.prepare_site(B, (ox, oz, 30, 16), rows, "TRENCH_site_ready"):
             row("TRENCH_site", "UNMEASURED", "SITE", {"why": "site not ready / not playing"})
             return 2
@@ -214,10 +243,14 @@ def main():
         for rid, why in OWED.items():
             row(rid, "UNMEASURED", "OWED", {"why": why})
     finally:
-        for f, v in before.items():
-            if v is not None:
-                sset(f, v)
-        res["settings_restored"] = {f: sget(f) for f in FIELDS}
+        try:                   # a dropped bridge raising here must not skip the colony guard below
+            for f, v in before.items():
+                if v is not None:
+                    sset(f, v)
+            res["settings_restored"] = {f: sget(f) for f in FIELDS}
+        except Exception as ex:      # noqa: BLE001 - recorded; the exception the try raised still propagates
+            res["settings_restored"] = {"error": "%s: %s" % (type(ex).__name__, ex)}
+        res["colony_left"] = leave_a_colonist(B, P(0, -3))     # just south of the plot, outside the cleared rect
         save()
     measured = [r for r in rows if r["class"] != "OWED" and r["id"] != "TRENCH_site_ready"]
     return 0 if measured and all(r["status"] == "PASS" for r in measured) else 1
