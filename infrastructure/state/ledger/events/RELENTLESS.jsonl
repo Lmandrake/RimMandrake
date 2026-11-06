@@ -1029,3 +1029,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A5 (L2), read-only proof","ts":"2026-11-06T10:33:07Z","tsn":1793961187277652060}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:33:23Z","tsn":1793961203884429387}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A6 (L2), read-only proof","ts":"2026-11-06T10:33:32Z","tsn":1793961212461318762}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:33:48Z","tsn":1793961228424736720}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A7 (L2), read-only proof","ts":"2026-11-06T10:34:01Z","tsn":1793961241074427695}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:34:21Z","tsn":1793961261856010821}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG: deploy and restart for its live proofs","ts":"2026-11-06T10:36:53Z","tsn":1793961413175244686}
