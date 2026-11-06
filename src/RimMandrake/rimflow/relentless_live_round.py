@@ -132,6 +132,61 @@ LIVE_DEPLOY = re.compile(r"^\s*(?:[-*]\s+)?`?live-deploy\s*:\s*(?P<mods>[^`]*)`?
 LIVE_COMPANION = re.compile(r"^\s*(?:[-*]\s+)?`?live-companion\s*:\s*(?P<what>[^`#]*?)`?\s*(?:#.*)?$")
 # the mods a proof intends to run WITHOUT (LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT): never loaded by it, never inferred
 LIVE_WITHOUT = re.compile(r"^\s*(?:[-*]\s+)?`?live-without\s*:\s*(?P<mods>[^`]*)`?\s*$")
+# STAGING_MENU_FIX_ALWAYS_PARKS_ON_MAPS: `live-menu: <cmd>` is run by the staging once the load reaches the main menu
+# (the bridge token) and BEFORE any game starts: a sample a map would spoil (VRAM, private bytes). `{toggle}` in it is
+# this staging's live-toggle side. `live-toggle: <mod>` asks for a pair of loads, one with the mod and one without it:
+# the item's stagings alternate sides (toggle_side), it stages alone, and the without side refuses a list holding the mod.
+LIVE_MENU = re.compile(r"^\s*(?:[-*]\s+)?(?:`live-menu\s*:\s*(?P<cmd1>[^`\s][^`]*?)`|live-menu\s*:\s*(?P<cmd2>\S.*?))\s*$")
+LIVE_TOGGLE = re.compile(r"^\s*(?:[-*]\s+)?`?live-toggle\s*:\s*(?P<mods>[^`#]*?)`?\s*(?:#.*)?$")
+TOGGLE_SIDES = ("with", "without")
+TOGGLE_MARK = "{toggle}"
+
+
+def live_menu(text):
+    """A live_proofs file -> the commands of its `live-menu:` lines (in order, no repeats), templates unfilled."""
+    out = []
+    for line in (text or "").splitlines():
+        m = LIVE_MENU.match(line)
+        if m:
+            cmd = (m.group("cmd1") or m.group("cmd2") or "").strip()
+            if cmd and cmd not in out:
+                out.append(cmd)
+    return out
+
+
+def live_toggle(text):
+    """A live_proofs file -> the one mod its `live-toggle:` lines name, or None. ValueError on a line naming more or
+    less than one mod, or two lines naming different mods: one pair of loads differs by one mod."""
+    got = None
+    for line in (text or "").splitlines():
+        m = LIVE_TOGGLE.match(line)
+        if not m:
+            continue
+        words = m.group("mods").replace(",", " ").split()
+        if len(words) != 1:
+            raise ValueError("a live-toggle line names exactly one mod, not %r" % m.group("mods"))
+        if got and got.lower() != words[0].lower():
+            raise ValueError("live-toggle names two mods (%s, %s): a pair of loads differs by one mod" % (got, words[0]))
+        got = words[0]
+    return got
+
+
+def toggle_side(stages):
+    """The side of the next staging of a live-toggle item that has staged `stages` times: with, without, with, ..."""
+    return TOGGLE_SIDES[int(stages or 0) % 2]
+
+
+def menu_cmds(text, side=None):
+    """live_menu with `{toggle}` filled by `side`. ValueError when a command asks for the side and the file names no
+    live-toggle (or the caller has no side): it would run with a literal {toggle}."""
+    out = []
+    for cmd in live_menu(text):
+        if TOGGLE_MARK in cmd:
+            if side not in TOGGLE_SIDES:
+                raise ValueError("live-menu %r asks for {toggle} but this staging has no live-toggle side" % cmd[:120])
+            cmd = cmd.replace(TOGGLE_MARK, side)
+        out.append(cmd)
+    return out
 
 
 LIVE_TIER = re.compile(r"^\s*(?:[-*]\s+)?`?live-tier(?P<cids>(?:\s+[A-Za-z][A-Za-z0-9_]*,?)*)\s*:\s*(?P<tier>[^`#]*?)`?\s*"
@@ -202,13 +257,14 @@ def mods_tier(pids):
 
 def inferable(text, cid, level, tiers=None):
     """True when clause `cid` of this live_proofs file goes to SteveDesktop on an inferred tier (the block comment
-    above): no tier of its own, not GREEN-FULL, no live-site or live-without line in the file. ValueError as live_tiers."""
+    above): no tier of its own, not GREEN-FULL, no live-site, live-without, live-menu or live-toggle line in the file.
+    ValueError as live_tiers."""
     if level == L.FINAL:
         return False
     if clause_tier(text, cid, tiers):
         return False
-    for line in (text or "").splitlines():
-        if SITE_LINE.match(line) or LIVE_WITHOUT.match(line):
+    for line in (text or "").splitlines():     # a menu step or a with/without pair is a staging only Archmagi runs
+        if SITE_LINE.match(line) or LIVE_WITHOUT.match(line) or LIVE_MENU.match(line) or LIVE_TOGGLE.match(line):
             return False
     return True
 

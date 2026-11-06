@@ -678,7 +678,7 @@ def steve_sync(store, fx, r, item, g, sha, now, acts):
 STAGE_AGENT = "python_stager"   # relentless.Effects.launch runs relentless_stage.py in the unit for this agent
 
 
-def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None, companion=None):
+def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None, companion=None, menu=None):
     """What relentless_stage.py does for this staging (STAGING_REWIRE_PYTHON_NOT_AN_LLM), the stage prompt's steps as
     data. deploy: deploy_custom_mods.py argument strings, the build's mod folders (never a packageId: those are enabled,
     not deployed) with the stale-DLL ones and the lane fix's, then the `live-deploy:` trees. deploy_args: folders -> one
@@ -692,10 +692,64 @@ def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None
     return {"item": st["item"], "gen": st["gen"], "sha": sha, "full": bool((st.get("game") or {}).get("full")),
             "enable": sorted(enable), "deploy": deploy, "riders": [o["item"] for o in others],
             "remedy_cmds": list((remedy or {}).get("cmds") or []), "max_s": c["stage_max_s"],
-            **({"companion": companion} if companion else {})}
+            **({"companion": companion} if companion else {}), **menu_plan(menu)}
 
 
-def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None, companion=None):
+def menu_plan(menu):
+    """staging_menu() -> the stage plan's keys for it: menu_cmds (run at the main menu, before any game), and for a
+    live-toggle item `toggle` {"mod", "side"} plus `without` (the mods the load must lack). {} when there is none."""
+    menu = menu or {}
+    out = {"menu_cmds": list(menu["cmds"])} if menu.get("cmds") else {}
+    if menu.get("toggle"):
+        out["toggle"] = {"mod": menu["toggle"], "side": menu["side"]}
+        if menu["side"] == "without":
+            out["without"] = [menu["toggle"]]
+    return out
+
+
+def staging_menu(fx, item, sha, stages, others=()):
+    """-> {"cmds": [live-menu commands of the item and its riders, {toggle} filled], "toggle": mod or None, "side":
+    with|without or None}, or raises ValueError (a malformed live-toggle, or {toggle} with no side). The side is the
+    item's own: its stagings alternate, so a pair of loads comes from two stagings (STAGING_MENU_FIX_ALWAYS_PARKS_ON_MAPS)."""
+    import relentless_live_round as LR
+    text = fx.proofs_at(item, sha) or ""
+    mod = LR.live_toggle(text)
+    side = LR.toggle_side(stages) if mod else None
+    cmds = LR.menu_cmds(text, side)
+    for o in others:
+        for cmd in LR.menu_cmds(fx.proofs_at(o["item"], (o.get("game") or {}).get("sha")) or ""):
+            if cmd not in cmds:
+                cmds.append(cmd)
+    return {"cmds": cmds, "toggle": mod, "side": side}
+
+
+def menu_ok(fx, o):
+    """False when rider `o`'s live-menu lines cannot be filled (a {toggle} with no side): the rider's defect never holds
+    the item it would ride with; it stages alone and its own staging holds it."""
+    import relentless_live_round as LR
+    try:
+        LR.menu_cmds(fx.proofs_at(o["item"], (o.get("game") or {}).get("sha")) or "")
+        return True
+    except ValueError:
+        return False
+
+
+def stage_tries(c, g):
+    """The stagings an item gets before it is a harness failure: a live-toggle item's pair needs one load per side, so
+    it gets stage_tries per side."""
+    return c["stage_tries"] * (2 if g.get("toggle") else 1)
+
+
+def toggles(fx, o):
+    """True when rider `o`'s proofs ask for a with/without pair: it never rides another item's load (its side is its own)."""
+    import relentless_live_round as LR
+    try:
+        return bool(LR.live_toggle(fx.proofs_at(o["item"], (o.get("game") or {}).get("sha")) or ""))
+    except ValueError:
+        return True
+
+
+def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None, companion=None, menu=None):
     """trees: `live-deploy:` mods riding this load -> (folders, deploy_custom_mods.py args covering them), or None.
     remedy: the lane's own fix of an environment cause (_env_fix): {"mods": to deploy and load, "cmds": producers}."""
     i, g = st["item"], st["gen"]
@@ -748,9 +802,18 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
                                             "lines for game-ready: %s" % " ; ".join("`%s`" % c for c in remedy["cmds"])
                                             if remedy.get("cmds") else "")) if remedy else
         "   LANE FIX: none.",
-        "3. When the game is up on a map the proofs can read: `%s game-ready --item %s --gen %d \"what you deployed and "
-        "which list\"`, then exit. Stopped: `%s snag --item %s --gen %d --class game_stage \"what stopped you\"`, exit."
-        % (rc, i, g, rc, i, g),
+        ("   TOGGLE: this staging is the %s side of a with/without pair on %s: the list must %s it (check the live "
+         "ModsConfig.xml after every swap; snag if it %s)." % (menu["side"], menu["toggle"],
+                                                               "hold" if menu["side"] == "with" else "lack",
+                                                               "lacks it" if menu["side"] == "with" else "holds it"))
+        if (menu or {}).get("toggle") else "   TOGGLE: none.",
+        ("   MAIN MENU STEP: the moment the load reaches the main menu and BEFORE you start or load any game, run each "
+         "of these once and keep its exit and last lines for game-ready (a non-zero exit is the proof's business, not "
+         "a stop): %s" % " ; ".join("`%s`" % x for x in menu["cmds"])) if (menu or {}).get("cmds") else
+        "   MAIN MENU STEP: none.",
+        "3. When the game is up and the main menu step (if any) has run: `%s game-ready --item %s --gen %d \"what you "
+        "deployed and which list\"`, then exit. Stopped: `%s snag --item %s --gen %d --class game_stage \"what stopped "
+        "you\"`, exit." % (rc, i, g, rc, i, g),
         "Never fullscreen or focus the game. Never a flyer's flight. Never touch a canonical world save "
         "(infrastructure/state/CANONICAL_SAVE.md). Never `rimflow bridge take/release` or any ledger write on this "
         "item: the supervisor owns both. Foreground commands, timeouts under 540 s, no subagents.",
@@ -1800,7 +1863,7 @@ def _reload(store, fx, r, item, rd, why, now, acts):
         _save(store, item, lambda s: (s.update(put_down={"on": w[:200], "at": now}),
                                       s["game"].update(waits_reload=first, mod_gap=mark)))
         return
-    if g["stages"] >= c["stage_tries"]:
+    if g["stages"] >= stage_tries(c, g):
         _save(store, item, lambda s: s["game"].update(mod_gap=mark))
         return _harness(store, fx, r, item, "%d staging(s) and the game still cannot serve it: %s" % (g["stages"], why),
                         now, acts)
@@ -2016,7 +2079,7 @@ def step(store, fx, r, item, now, acts, sup):
                 acts.append({"do": "game_batch_wait", "item": item, "why": why[:200]})
                 return
         if stale or state == "DOWN":
-            if g["stages"] >= c["stage_tries"]:
+            if g["stages"] >= stage_tries(c, g):
                 return _harness(store, fx, r, item, "%d staging(s) and the build still is not running: %s"
                                 % (g["stages"], (stale[0].get("why") if stale else rd.get("evidence") or "no game")),
                                 now, acts)
@@ -2109,6 +2172,14 @@ def step(store, fx, r, item, now, acts, sup):
             return _waits(store, fx, item, "clone: " + why, now, acts)
         st = store.load(item)
         others = [o for o in batch(store.states(), item, now, full=bool(g.get("full"))) if _rides_ok(fx, r, o)]
+        try:        # STAGING_MENU_FIX_ALWAYS_PARKS_ON_MAPS: a with/without item stages alone, and never rides
+            mine = toggles(fx, {"item": item, "game": {"sha": sha}})
+            others = [] if mine else [o for o in others if not toggles(fx, o) and menu_ok(fx, o)]
+            if mine and g.get("full"):  # the full list holds the mod: its without side can never load
+                raise ValueError("a live-toggle pair cannot stage on the full list (final verification)")
+            menu = staging_menu(fx, item, sha, g["stages"], others)
+        except ValueError as e:     # a malformed live-toggle or a {toggle} with no side: no load can serve it
+            return _hold(store, fx, item, "game phase: the live_proofs file's live-menu/live-toggle: %s" % e, now, acts)
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
         gaps = [fx.game_batch_gap([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                      if (o.get("game") or {}).get("sha")])]
@@ -2126,6 +2197,10 @@ def step(store, fx, r, item, now, acts, sup):
         # identical environment failure as a failed fix and hold (Codex, ..._TEN_MORE #9)
         remedy = merged_remedy([g.get("remedy")] + [(o.get("game") or {}).get("remedy") for o in others]) or {}
         want = sorted(set(enable_set(gaps)) | set(remedy.get("mods") or []))
+        if menu["toggle"]:      # the pair's side: the mod on top of the list, or kept off it (the stager checks)
+            low = menu["toggle"].lower()
+            want = sorted(set(w for w in want if w.lower() != low) | ({menu["toggle"]} if menu["side"] == "with" else set()))
+            acts.append({"do": "game_toggle_side", "item": item, "mod": menu["toggle"], "side": menu["side"]})
         if want and not g.get("full"):      # the full list's own staging restores FULL.LATEST, then enables on top
             why = fx.modlist_enable(want)
             if why and others:
@@ -2135,6 +2210,7 @@ def step(store, fx, r, item, now, acts, sup):
                 gaps = [fx.game_batch_gap([(item, built)])]
                 remedy = merged_remedy([g.get("remedy")]) or {}
                 alone = sorted(set(enable_set(gaps)) | set(remedy.get("mods") or []))
+                menu = staging_menu(fx, item, sha, g["stages"])     # its riders' menu steps leave with them
                 acts.append({"do": "game_modlist_riders_dropped", "item": item, "riders": [o["item"] for o in others],
                              "why": why[:200]})
                 others = []
@@ -2161,6 +2237,7 @@ def step(store, fx, r, item, now, acts, sup):
         def f(s):
             s.pop("put_down", None)
             s["run"] = desc
+            s["game"].update(toggle=menu["toggle"], side=menu["side"])     # stage_tries reads it; show says the side
             s["game"].update(phase="staging", staged_at=now, taken_at=now, up_seen=None, stages=s["game"]["stages"] + 1,
                              ready=None, snag=None, waits_reload=None, batch=[o["item"] for o in others])
             # this staging carries the remedy; it is spent only when the staging confirms game-ready (settle below),
@@ -2180,8 +2257,8 @@ def step(store, fx, r, item, now, acts, sup):
         if c.get("stage_python", True):     # the prompt rides as the python stager's fallback brief only
             agent = STAGE_AGENT
             st["_stage_plan"] = stage_plan(st, c, sha, others, want, dll_mods(gaps), trees, remedy,
-                                           getattr(fx, "game_deploy_args", None), companion=comp)
-        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy, comp), agent,
+                                           getattr(fx, "game_deploy_args", None), companion=comp, menu=menu)
+        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy, comp, menu), agent,
                         st["clone"], c["stage_max_s"], {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()

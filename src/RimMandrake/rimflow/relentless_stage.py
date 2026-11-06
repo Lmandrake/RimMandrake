@@ -9,7 +9,8 @@ staging unit's body, in the same unit shape as a worker, so alive/stop/settle an
 
     deploy plan (stop on a hand-edited game copy: another seat's file) -> game down -> apply (the stale DLL copy rides
     the shutdown window, and the JawaBench companion when the plan owes it: bridgetools/build.py --gm --apply) -> modlist_swap.py (restore FULL.LATEST for a final; --enable <mods>, its About.xml dependency
-    closure) -> launch through Steam -> wait for `Bridge token:` bounded by load_policy -> lane-fix producers ->
+    closure) -> a live-toggle side's list check -> launch through Steam -> wait for `Bridge token:` bounded by
+    load_policy -> the proofs' live-menu commands, at the main menu before any game -> lane-fix producers ->
     `relentless.py game-ready` (or `snag --class game_stage` on a known stop)
 
 An unhandled exception, and only that, execs the old LLM staging worker (the plan's `fallback` argv, the stage prompt).
@@ -37,6 +38,7 @@ STOP_GRACE_S = 90           # live_session.stop_game's graceful wait, then /F
 LAUNCH_SETTLE_S = 20        # live_session.launch_and_wait: Steam's own hand-off before the log is read
 MARGIN_S = 120              # left of stage_max_s for game-ready and the remedies' own bound
 REMEDY_MAX_S = 480
+MENU_MAX_S = 300            # one live-menu command (STAGING_MENU_FIX_ALWAYS_PARKS_ON_MAPS), inside REMEDY_TOTAL_S
 REMEDY_TOTAL_S = 420        # all producers together, inside the supervisor's stage_idle_s (600) after the game is UP
 START_GRACE_S = 180         # a cold Steam (closed, updating) may not have the game process yet: no "died" before this
 # a deploy plan's `-` line that is not a repo delete: a file present only in the game copy, hand-edited there, maybe by
@@ -100,6 +102,14 @@ class Ops(object):
             sys.path.insert(0, UTILS)
         import load_policy
         return int(load_policy.profile_for(load_policy.active_count_from_modsconfig())["process_to_bridge_deadline_s"])
+
+    def live_mods(self):
+        """The active mod ids of the live ModsConfig.xml (the next load), lower-cased, or None when unreadable."""
+        if UTILS not in sys.path:
+            sys.path.insert(0, UTILS)
+        import modlist_swap
+        got = modlist_swap.mods(modlist_swap.LIVE)
+        return None if got is None else [m.lower() for m in got]
 
     def companion_hash(self):
         """The companion source hash of this clone's working tree (what build.py compiles), or None."""
@@ -204,6 +214,20 @@ def run(plan, ops):
                 what="modlist_swap --enable")
         log.append("list: %s%s" % ("FULL.LATEST" if plan.get("full") else "MINIMAL",
                                    " + %s and their dependencies" % ", ".join(plan["enable"]) if plan.get("enable") else ""))
+        tog = plan.get("toggle")
+        if tog or plan.get("without"):   # a with/without pair: the list this load reads must be the side it claims
+            have = ops.live_mods()
+            if have is None:
+                raise Stop("the live ModsConfig.xml is unreadable, so the %s side of %s cannot be checked"
+                           % ((tog or {}).get("side", "without"), (tog or {}).get("mod", plan.get("without"))))
+            # ModsConfig holds packageIds: a folder name (no dot) is not checkable here, and says so in the log
+            held = [m for m in plan.get("without") or [] if "." in m and m.lower() in have]
+            if held:
+                raise Stop("the list holds %s, which this staging must load without (live-toggle side without)"
+                           % ", ".join(held))
+            if tog and tog.get("side") == "with" and "." in tog["mod"] and tog["mod"].lower() not in have:
+                raise Stop("the list lacks %s after --enable: the with side of its live-toggle cannot load" % tog["mod"])
+            log.append("toggle: %s %s" % (tog["side"], tog["mod"]) if tog else "without %s" % ", ".join(plan["without"]))
         ops.stamp("loading")        # 5. up, through Steam, waited on the bridge token written after the launch
         cur = ops.cursor()
         _ok(*ops.launch(), what="Steam launch")
@@ -228,10 +252,20 @@ def run(plan, ops):
             if gone:
                 raise Stop("the game died during the load (%s); %s" % (got.get("why"), "; ".join(log)))
             # still loading at the bound this run can spend: the supervisor waits the load out itself (_load_gate)
+            if plan.get("menu_cmds"):   # its proofs would read a launch the main-menu step never sampled
+                raise Stop("still loading after %d s, so the main-menu step never ran (%s)"
+                           % (took, " ; ".join(c[:80] for c in plan["menu_cmds"])))
             return "ready", "STILL LOADING after %d s (no Bridge token yet: %s); %s" % (took, got.get("why"), "; ".join(log))
         ops.stamp("up")
         log.append("bridge up %d s after the staging began" % took)
-        t_rem = ops.now()
+        t_rem = ops.now()       # menu step and producers share one budget inside the supervisor's stage_idle_s
+        for cmd in (plan.get("menu_cmds") or []):       # 6a. at the main menu, before anything starts a game
+            left = int(REMEDY_TOTAL_S - (ops.now() - t_rem))
+            if left < 30:
+                log.append("menu `%s` NOT RUN: the %d s budget after the load is spent" % (cmd[:120], REMEDY_TOTAL_S))
+                continue
+            rc, out = ops.sh(["bash", "-c", cmd], timeout=min(MENU_MAX_S, left))
+            log.append("menu `%s` exit %d: %s" % (cmd[:120], rc, " / ".join(out.strip().splitlines()[-3:])[:300]))
         for cmd in (plan.get("remedy_cmds") or []):     # 6. the lane fix's producers, once, with the game up
             left = int(REMEDY_TOTAL_S - (ops.now() - t_rem))
             if left < 30:

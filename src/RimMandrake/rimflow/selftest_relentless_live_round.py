@@ -344,7 +344,10 @@ def t_proofs_file():
                                                                              or R.LIVE_MODS.match(line.rstrip("\n"))
                                                                              or R.SITE_LINE.match(line.rstrip("\n"))
                                                                              or R.LIVE_TIER.match(line.rstrip("\n"))
-                                                                             or R.LIVE_WITHOUT.match(line.rstrip("\n")))
+                                                                             or R.LIVE_WITHOUT.match(line.rstrip("\n"))
+                                                                             or R.LIVE_COMPANION.match(line.rstrip("\n"))
+                                                                             or R.LIVE_MENU.match(line.rstrip("\n"))
+                                                                             or R.LIVE_TOGGLE.match(line.rstrip("\n")))
                 if line.strip() and not line.startswith("#") and not ok:
                     bad.append("%s: %s" % (n, line[:60]))
     check("proofs: every real live_proofs file is .txt/.criteria (or a proof's .py/.json) and every line parses", names and all(
