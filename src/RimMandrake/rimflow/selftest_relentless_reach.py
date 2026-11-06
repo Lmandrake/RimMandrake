@@ -71,8 +71,8 @@ SEEN = {
 
 
 def t_needs():
-    for k, proof in BLIND.items():
-        ok(RR.needs(proof, PROF), "the live walls profile hides %s: %s" % (k, RR.needs(proof, PROF)[:1]))
+    for k, proof in BLIND.items():      # serve=(): a box with nothing served (before CHECKBOX_BUILD_BUILDER_TOOLCHAIN)
+        ok(RR.needs(proof, PROF, serve=()), "the live walls profile hides %s: %s" % (k, RR.needs(proof, PROF, serve=())[:1]))
     for k, proof in SEEN.items():
         ok(not RR.needs(proof, PROF), "a box runs %s: %s" % (k, RR.needs(proof, PROF)))
     ok(RR.needs("grep -c x#y /mnt/d/ClaudeWork/rimmandrake/arena/z", PROF), "a # inside a word is no comment")
@@ -94,7 +94,7 @@ def t_contract_refuses():
     x = T.Rig(n=1, share=1.0)
     x.run_one("I0")
     g = x.st("I0")["gen"]
-    for k in ("a worker folder", "git history", "winbuild"):
+    for k in ("a worker folder", "an exe", "ssh"):
         try:
             R.contract(x.s, "I0", g, BLIND[k], r=REAL)
             ok(False, "(1) contract refuses a proof needing %s" % k)
@@ -125,7 +125,7 @@ def t_contract_refuses():
         st["approach"] = "redesign"
         x.s.save(st)
     try:
-        R.contract(x.s, "I0", g, BLIND["git history"], why="a new proof", r=REAL)
+        R.contract(x.s, "I0", g, BLIND["an exe"], why="a new proof", r=REAL)
         ok(False, "(1) a redesign's new proof does not inherit the old reach-ok why")
     except ValueError:
         ok(True, "(1) a redesign's new proof does not inherit the old reach-ok why")

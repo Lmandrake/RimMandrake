@@ -285,10 +285,85 @@ def tmp_env(box):
     return {"TMPDIR": UNIT_TMP, "TMP": UNIT_TMP, "TEMP": UNIT_TMP}
 
 
-def unit_env(prof, box):
+def unit_env(prof, box, cfg=None):
     """A walled unit's environment: its TMPDIR, and the profile's `env`. Lodestar's helper is behind the wall, so without
-    RM_DATA_ROOT named here anything importing rmpaths crashes before its first check (207 Markers met that and worked round it)."""
-    return dict(tmp_env(box), **prof.get("env", {}))
+    RM_DATA_ROOT named here anything importing rmpaths crashes before its first check (207 Markers met that and worked round it).
+    PATH: relentless_box.json path_prepend (the checkbox venv: python3 with cv2/numpy) ahead of the supervisor's own."""
+    env = dict(tmp_env(box), **prof.get("env", {}))
+    pre = box_path_prepend(cfg)
+    if pre and "PATH" not in prof.get("env", {}):
+        env["PATH"] = ":".join(pre + [p for p in os.environ.get("PATH", "/usr/bin:/bin").split(":") if p and p not in pre])
+    return env
+
+
+# CHECKBOX_BUILD_BUILDER_TOOLCHAIN (owner 2026-11-06, redesign_final.md WP-02): every box carries the builder's toolchain -
+# git history at the candidate, python3 with cv2/numpy, the Windows build stage - as data in relentless_box.json.
+BOX_CONFIG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_box.json")
+
+
+def box_config(path=None):
+    """-> relentless_box.json as a dict; {} when it is missing or unreadable (a box then is what it was before WP-02)."""
+    try:
+        with open(path or BOX_CONFIG, encoding="utf-8") as f:
+            got = json.load(f)
+        return got if isinstance(got, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def default_grants(cfg=None):
+    """-> the grants every box gets (relentless_box.json default_grants), known GRANTS only, in order."""
+    cfg = box_config() if cfg is None else cfg
+    return [g for g in dict.fromkeys(cfg.get("default_grants") or []) if g in GRANTS]
+
+
+def box_path_prepend(cfg=None):
+    """-> the path_prepend folders that exist, ~ expanded and _SAFE (a word with a space or colon would split PATH)."""
+    cfg = box_config() if cfg is None else cfg
+    out = []
+    for p in cfg.get("path_prepend") or []:
+        q = os.path.expanduser(str(p))
+        if _SAFE.match(q) and os.path.isdir(q) and q not in out:
+            out.append(q)
+    return out
+
+
+def toolchain(cfg=None):
+    """-> [(name, shell command, why)] from relentless_box.json toolchain."""
+    cfg = box_config() if cfg is None else cfg
+    return [(str(t["name"]), str(t["cmd"]), str(t.get("why") or "")) for t in cfg.get("toolchain") or []
+            if isinstance(t, dict) and t.get("name") and t.get("cmd")]
+
+
+def toolchain_lines(cfg=None):
+    """The Marker's words about what its box can run (only the tools relentless_box.json names)."""
+    names = [n for n, _, _ in toolchain(cfg)]
+    if not names:
+        return []
+    out = ["Your box carries the builder's toolchain: run the proof as written."]
+    if "python_cv2" in names:
+        out.append("  python3 imports cv2 and numpy.")
+    if "windows_build" in names:
+        out.append("  The Windows build stage works here: `python3 src/RimMandrake/Utils/winbuild.py <Mod or csproj>` builds "
+                   "this tree's C# with dotnet.exe (WSL interop; call a Windows program by its /mnt/c path, it is not on PATH).")
+    return out
+
+
+def toolchain_probe(prof, box, extra=(), cfg=None, timeout=300):
+    """-> [{name, exit, out}]: each toolchain command run from the box's tree in one throwaway unit carrying the Marker's
+    own systemd properties and environment, as at a launch. A check that cannot start is exit -1 with the reason."""
+    rows = []
+    for name, cmd, _ in toolchain(cfg):
+        argv = (["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet",
+                 "-p", "WorkingDirectory=" + os.path.join(str(box), "tree")] + props(prof, box, extra)
+                + sum((["--setenv", "%s=%s" % kv] for kv in unit_env(prof, box, cfg).items()), [])
+                + ["--", "/bin/bash", "-c", cmd])
+        try:
+            p = subprocess.run(argv, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
+            rows.append({"name": name, "exit": p.returncode, "out": ((p.stdout or "") + (p.stderr or "")).strip()[-600:]})
+        except (OSError, subprocess.SubprocessError) as e:
+            rows.append({"name": name, "exit": -1, "out": "%s: %s" % (type(e).__name__, e)})
+    return rows
 
 
 def excludes(prof):
@@ -325,10 +400,12 @@ def change_range(source, parent, sha, base, item):
     return base, [":(literal)" + p for p in paths]
 
 
-def make_box(prof, source, sha, nonce, grants=(), base=None, item=None):
-    """-> the box's path. Tree at sha with no .git and none of tree_exclude, the diff (change_range), the verdict script.
-    `grants` (a passed reach repair's, relentless_reachfix.grants): GIT_GRANT adds a read-only git history at sha (grant_git).
+def make_box(prof, source, sha, nonce, grants=(), base=None, item=None, cfg=None):
+    """-> the box's path. Tree at sha with none of tree_exclude, the diff (change_range), the verdict script.
+    `grants` (a passed reach repair's, relentless_reachfix.grants) plus relentless_box.json default_grants (git_history
+    since CHECKBOX_BUILD_BUILDER_TOOLCHAIN): GIT_GRANT adds a read-only git history at sha (grant_git).
     `base`/`item`: the item's base and id, so work landed before a later report commit is in change.diff."""
+    grants = list(dict.fromkeys(default_grants(cfg) + list(grants or ())))
     if any(c.isspace() for c in str(prof["box_root"]) + nonce):
         raise RuntimeError("box root with whitespace: systemd splits BindPaths on it")
     box = Path(os.path.abspath(Path(prof["box_root"], nonce)))      # git runs in the source: a relative path would move
@@ -585,10 +662,11 @@ def marker_prompt(st, text, box, adapter_names=()):
         "You are a blind checker. You did not do this work and you have no record of how it went. Your cwd is a clean "
         "export of commit %s, with no git history." % c["sha"] if not git_reads(box) else
         "You are a blind checker. You did not do this work and you have no record of how it went. Your cwd is a clean "
-        "export of commit %s with a read-only git history at it (a reach repair granted it): HEAD is that commit, "
+        "export of commit %s with a read-only git history at it: HEAD is that commit, "
         "there is no branch or remote, and every ancestor reads. Commit messages, and the excluded folders git can still "
         "show, are workers' words, not evidence: judge by your own runs." % c["sha"],
         *RULE,
+        *toolchain_lines(),
         *(["%s/ is in your tree as of %s (a reach repair granted it), read only: it is the filers' item prose, not "
            "evidence the work was done." % (ITEMS, str(item_reads(box)["rev"])[:12])] if item_reads(box) else []),
         "Then run exactly one of:",

@@ -31,6 +31,7 @@ proof, the verdict logic or the product sha.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -39,6 +40,10 @@ import time
 import relentless_wall
 
 BOOK = "reach_gaps.json"
+# CHECKBOX_BUILD_BUILDER_TOOLCHAIN (redesign_final.md WP-02): a class whose ticket closed while its probe still fails gets a
+# SUCCESSOR ticket, never a note and a wait forever (six classes held 23 items behind done tickets on 2026-11-06). Named by
+# ordinal: rimflow namecheck refuses a trailing number. Past the last ordinal the last name is reused: reach_ticket reopens it.
+SUCCESSOR_WORDS = ("SECOND", "THIRD", "FOURTH", "FIFTH", "SIXTH", "SEVENTH", "EIGHTH", "NINTH", "TENTH", "ELEVENTH", "TWELFTH")
 WAIT = "reach"          # st["wait"]["kind"]: relentless_attrib.release leaves it alone; this module moves it
 PROPOSE_MAX = 8
 
@@ -363,9 +368,16 @@ def sweep(store, fx, r, now, acts, iso):
         if status == "ticket":
             led = fx.item_state(ent["ticket"]) or {}
             event = "%s:%s:%s" % (led.get("state"), led.get("closed_sha"), led.get("event"))
-            if led.get("state") != "done" or ent.get("probed_event") == event:
+            if led.get("state") != "done":
                 continue
-            ent["probed_event"] = event
+            fp = box_fingerprint()
+            if ent.get("probed_event") == event and ent.get("probed_box") == fp:
+                # probed at this close, on this box, and it failed: the done ticket is no repair, so a successor is
+                file_successor(store, fx, r, book, name, owner, ent.get("why") or "its probe failed after the close",
+                               now, acts, iso)
+                continue
+            ent["probed_event"] = event     # a new close, or the box itself changed since (relentless_box.json): probe once
+            ent["probed_box"] = fp
             prop = reseed(r, name, prop)
         if status == "failed":
             file_ticket(store, fx, r, book, name, owner, ent.get("why"), now, acts, iso)
@@ -406,27 +418,60 @@ def sweep(store, fx, r, now, acts, iso):
             store.journal({"at": iso(now), "do": "reach_repaired", "item": owner, "class": name, "waiters": waiters})
             acts.append({"do": "reach_repaired", "item": owner, "class": name, "waiters": waiters})
             continue
-        if status == "ticket":      # the ticket closed and the probe still fails: it keeps waiting, said once per close
-            fx.ledger_note(ent["ticket"], "relentless: %s closed, but the %s reach probe still fails, so %s and %d "
-                           "waiter(s) stay blocked: %s" % (ent["ticket"], name, owner, len(ent.get("waiters") or []), why))
-            save(store, book)
+        if status == "ticket":      # the ticket closed and the probe still fails: a successor, never a wait on a done ticket
+            file_successor(store, fx, r, book, name, owner, why, now, acts, iso)
             continue
         file_ticket(store, fx, r, book, name, owner, why, now, acts, iso)
     orphans(store, fx, book, now, acts, iso, r)
 
 
-def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso):
-    """The fallback, and only after the item's own repair failed its probe: one ticket per class; owner and waiters block
-    on it in the ledger."""
+def box_fingerprint(cfg=None):
+    """-> a short hash of relentless_box.json: what every box carries. A change re-probes a class parked on a done ticket."""
+    cfg = relentless_wall.box_config() if cfg is None else cfg
+    return hashlib.sha256(json.dumps(cfg, sort_keys=True, default=str).encode("utf-8")).hexdigest()[:16]
+
+
+def successor_id(name, ent):
+    """-> the class's next ticket: CHECKER_REACH_FIX_<CLASS>_DARK_<ORDINAL>, one ordinal per successor already filed."""
+    n = len(ent.get("successors") or [])
+    word = SUCCESSOR_WORDS[min(n, len(SUCCESSOR_WORDS) - 1)]
+    return "CHECKER_REACH_FIX_%s_DARK_%s" % (re.sub(r"[^A-Z0-9]+", "_", str(name).upper()).strip("_") or "OTHER", word)
+
+
+def file_successor(store, fx, r, book, name, owner, why, now, acts, iso):
+    """The class's ticket is done and its probe still fails: file the successor, note the predecessor once, and move the
+    owner's and waiters' blocks onto it. -> the successor id, or None when it did not land (the next sweep retries)."""
     ent = book[name]
-    ticket = _ticket_of(r, name)
-    bad = fx.reach_ticket(ticket, "Relentless could not repair its own %s reach: the Judge's proposal for %s failed its "
+    old = ent.get("ticket") or _ticket_of(r, name)
+    new = successor_id(name, ent)
+    text = ("Successor of %s, which closed while the %s reach probe still fails for %s and %d waiter(s): %s. Give the "
+            "Marker a way to read it (relentless_box.json for what every box carries, an offbox adapter, or a read path "
+            "the wall may bind); closing this re-probes and releases the waiting items."
+            % (old, name, owner, len(ent.get("waiters") or []), (why or "")[:300]))
+    if not file_ticket(store, fx, r, book, name, owner, why, now, acts, iso, ticket=new, text=text):
+        return None
+    ent = book[name]
+    ent.setdefault("successors", []).append({"ticket": new, "after": old, "at": now})
+    ent.pop("probed_event", None)
+    save(store, book)
+    if new != old:
+        fx.ledger_note(old, "relentless: %s closed, but the %s reach probe still fails; successor filed: %s" % (old, name, new))
+    acts.append({"do": "reach_successor", "item": owner, "class": name, "ticket": new, "after": old})
+    return new
+
+
+def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso, ticket=None, text=None):
+    """The fallback, and only after the item's own repair failed its probe: one ticket per class; owner and waiters block
+    on it in the ledger. `ticket`/`text`: a successor's (file_successor). -> True when it landed."""
+    ent = book[name]
+    ticket = ticket or _ticket_of(r, name)
+    bad = fx.reach_ticket(ticket, text or "Relentless could not repair its own %s reach: the Judge's proposal for %s failed its "
                           "probe from inside the wall (%s). Give the Marker a way to read it (an offbox adapter in "
                           "relentless_rules.json or a read path the wall may bind); closing this re-probes and releases "
                           "the waiting items." % (name, owner, (why or "")[:300]))
     if bad:
         acts.append({"do": "reach_ticket_failed", "item": owner, "why": bad})
-        return
+        return False
     ent.update(status="ticket", ticket=ticket, ticket_at=now, why=(why or "")[:300])
     save(store, book)
     for it in [owner] + list(ent.get("waiters") or []):
@@ -442,6 +487,7 @@ def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso):
             store.save(cur)
     store.journal({"at": iso(now), "do": "reach_ticket", "item": owner, "class": name, "ticket": ticket})
     acts.append({"do": "reach_ticket", "item": owner, "class": name, "ticket": ticket, "why": (why or "")[:200]})
+    return True
 
 
 def release_waiter(store, fx, item, name, now, iso, prop=None, owner=None, r=None):

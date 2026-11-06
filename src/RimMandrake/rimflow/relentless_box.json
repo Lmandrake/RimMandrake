@@ -1,0 +1,15 @@
+{
+  "_doc": "CHECKBOX_BUILD_BUILDER_TOOLCHAIN (owner 2026-11-06: the checker box with git + dotnet + cv2 is top priority; redesign_final.md WP-02). What every walled Marker box carries so it can run what the builder ran: relentless_wall.box_config reads this file; make_box, unit_env, marker_prompt and toolchain_probe act on it; relentless_reach.needs stops calling these 'unreachable'.",
+  "default_grants": ["git_history"],
+  "_default_grants": "Every box gets a read-only git history at the candidate (relentless_wall.grant_git): HEAD detached at the sha, no refs, the shared object stores bound read only. Before this a box got it only after a passed reach repair of its class, so history-dependent proofs (git rev-parse HEAD, git show <rev>:path, code-commit checks) went blind first and were repaired one class at a time.",
+  "path_prepend": ["~/.local/venvs/checkbox/bin"],
+  "_path_prepend": "Put ahead of the unit's PATH when the folder exists: a venv over the system python3 (--system-site-packages) that adds opencv-python-headless, so `python3 -c 'import cv2, numpy'` runs in the box. Remake it with venv_fix.",
+  "venv_fix": "uv venv --system-site-packages -p /usr/bin/python3 ~/.local/venvs/checkbox && echo numpy==$(/usr/bin/python3 -c 'import numpy; print(numpy.__version__)') > /tmp/checkbox_c.txt && uv pip install --python ~/.local/venvs/checkbox/bin/python -c /tmp/checkbox_c.txt opencv-python-headless",
+  "toolchain": [
+    {"name": "git", "cmd": "git --version && git rev-parse HEAD", "why": "the default git_history grant: history-dependent proofs run in the box"},
+    {"name": "python_cv2", "cmd": "python3 -c 'import cv2, numpy; print(cv2.__version__, numpy.__version__)'", "why": "art and image proofs import cv2/numpy"},
+    {"name": "windows_build", "cmd": "/mnt/c/Windows/System32/cmd.exe /c ver && test -w /mnt/d/ClaudeWork/rimmandrake/build && python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/ColdStorage/Source/ColdStorage.csproj --dry-run", "why": "the Windows build stage: walls.marker.write_through binds it read-write as drvfs and WSL interop starts dotnet.exe, so winbuild.py builds the candidate's C# from the box's tree"}
+  ],
+  "reach_served": ["git_history", "windows_build"],
+  "_reach_served": "relentless_reach.needs no longer counts these as out of the box's reach: plain git history verbs over the candidate's ancestry (not fetch/pull/branch/for-each-ref/reflog, which need refs or a remote) and winbuild.py. Other .exe, powershell and wslpath stay needs."
+}

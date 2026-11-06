@@ -130,17 +130,15 @@ def t_dedupe_and_probe_gate():
     x.tick()
     ok(len(x.w.probes) == probes + 1 and x.st("I0")["status"] == "blocked",
        "(4) the ticket closed but the probe still fails: re-probed once, still blocked")
+    # CHECKBOX_BUILD_BUILDER_TOOLCHAIN: a done ticket with a failing probe gets a successor, never a wait on the done one
+    succ = "CHECKER_REACH_FIX_GIT_DARK_SECOND"
+    ok(x.w.tickets[-1] == succ and x.st("I0")["wait"]["on"] == succ and x.st("I1")["wait"]["on"] == succ,
+       "(4) the failed re-probe files the successor and both block on it: %s %s" % (x.w.tickets, x.st("I0")["wait"]))
     x.tick()
-    ok(len(x.w.probes) == probes + 1, "(4) the same close is probed once, not every tick")
+    ok(len(x.w.probes) == probes + 1, "(4) the open successor is waited on, not probed every tick")
     n0 = len(checks(x))
     x.w.probe_says = (True, "git_log_candidate exit 0, 900 chars")
-    x.w.items["CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS"] = "proposed"
-    x.tick()
-    x.w.items["CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS"] = "done"     # a new close event
-    x.s.save(dict(x.st("I0")))
-    book = RF.load(x.s)
-    book["git"]["probed_event"] = "stale"
-    RF.save(x.s, book)
+    x.w.items[succ] = "done"     # the successor closes
     for _ in range(6):
         x.tick()
     st = x.st("I0")

@@ -86,7 +86,7 @@ def test_box():
     root = tempfile.mkdtemp(prefix="wallbox")
     p = prof(root)
     src, sha = repo()
-    box = W.make_box(p, src, sha, "n1")
+    box = W.make_box(p, src, sha, "n1", cfg={})     # cfg={}: no relentless_box.json default grants (the pre-WP-02 box)
     tree = Path(box, "tree")
     check("tree at the commit", (tree / "a.py").read_text(encoding="utf-8") == "two\n")
     check("no git in the box", not (tree / ".git").exists())
@@ -117,7 +117,7 @@ def test_box():
     check("a sha256 root commit's diff is all of it", "+one" in Path(box3, "change.diff").read_text(encoding="utf-8"))
     W.remove_box(box3)
     src2, sha2 = repo(attr=True)
-    box2 = W.make_box(p, src2, sha2, "n2")
+    box2 = W.make_box(p, src2, sha2, "n2", cfg={})
     check("export-ignore does not drop a tracked proof", Path(box2, "tree/tests/proof.py").exists() and not Path(box2, "tree/.git").exists()
           and not Path(box2, "export.index").exists())
     W.remove_box(box2)
@@ -328,7 +328,7 @@ def test_unit_env():
     check("the walled unit's TMPDIR is the short /tmp its box's tmp is bound over", env["TMPDIR"] == W.UNIT_TMP == "/tmp"
           and "BindPaths=/b/ox/tmp:/tmp" in W.props(real, "/b/ox"), env)
     check("the walled unit's data root is a tmpfs inside the wall", env.get("RM_DATA_ROOT") in real["tmpfs"], env)
-    check("a profile with no env names only the temp", set(W.unit_env({}, "/b")) == {"TMPDIR", "TMP", "TEMP"})
+    check("a profile with no env names only the temp", set(W.unit_env({}, "/b", cfg={})) == {"TMPDIR", "TMP", "TEMP"})
 
 
 def test_through():

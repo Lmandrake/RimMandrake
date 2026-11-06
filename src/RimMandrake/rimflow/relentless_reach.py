@@ -129,13 +129,28 @@ def _names(path, t):
     return re.search(r"(?<![\w./-])(?:\S*/)?%s(?![\w.-])" % re.escape(os.path.basename(path)), t)
 
 
-def needs(text, prof, carved=(), host_only=(), git_tools=()):
+# CHECKBOX_BUILD_BUILDER_TOOLCHAIN: what every box now carries (relentless_box.json reach_served) is no need. History verbs
+# read the candidate's ancestry in the default git_history grant; these need refs or a remote, which no box has.
+_GIT_REFS = ("fetch", "pull", "branch", "for-each-ref", "reflog")
+
+
+def served(cfg=None):
+    """-> the reach kinds every box carries (relentless_box.json reach_served), so needs() leaves them out."""
+    cfg = relentless_wall.box_config() if cfg is None else cfg
+    got = set(cfg.get("reach_served") or [])
+    if relentless_wall.GIT_GRANT in got and relentless_wall.GIT_GRANT not in relentless_wall.default_grants(cfg):
+        got.discard(relentless_wall.GIT_GRANT)      # history is served only when every box is granted it
+    return got
+
+
+def needs(text, prof, carved=(), host_only=(), git_tools=(), serve=None):
     """-> ["kind: what", ...] the box cannot reach that `text` (a proof) names, once each, in order. Pure.
     `git_tools`: (path, why) rows; a proof naming one runs git inside the tool (code_review_since.py's merge-base), which
     no regex over the proof's own verbs sees: RELENTLESS_REVIEW_FINISH_TOO_BIG_TO_SKIM's gate passed one, five returns.
     `host_only`: (path, why) rows; a proof naming one (NIGHTLY_COP_REACH_FIX_ARENA_STAYS_DARK: the arena sandbox pair read
     bwrap, retired-trees git refs and the host's own DENY layout, which no read-only bind makes honest) is a need too."""
     out = []
+    serve = served() if serve is None else set(serve)
 
     def add(x):
         if x not in out:
@@ -153,10 +168,16 @@ def needs(text, prof, carved=(), host_only=(), git_tools=()):
         if len(w) > 1 and hidden(w, prof, carved):
             add("hidden path: %s" % w.rstrip(".,;:)'\""))
     for m in _GIT.finditer(t):
-        add("git history: `git %s` (the box is an export with no .git)" % m.group(1))
+        if relentless_wall.GIT_GRANT in serve and m.group(1) not in _GIT_REFS:
+            continue
+        add("git history: `git %s` (the box is an export with no .git)" % m.group(1)
+            if relentless_wall.GIT_GRANT not in serve else
+            "git refs: `git %s` (the box's history has HEAD at the candidate and no ref or remote)" % m.group(1))
     for m in _REMOTE.finditer(t):
         add("another machine: `%s` (the box has no ssh keys)" % m.group(1))
     for m in _WINDOWS.finditer(t):
+        if "windows_build" in serve and os.path.basename(m.group(1)).lower() == "winbuild.py":
+            continue
         add("a Windows program: `%s` (no Windows interop in the box)" % m.group(1))
     for path, why in git_tools:
         if _names(path, t):
