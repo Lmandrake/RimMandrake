@@ -500,6 +500,10 @@ def stuck_of(it, rs, evs=None, known=None, asks=None):
     status = rs.get("status")
     if owner_queue.is_his(it, rs, evs):
         return {"waits": "you", "plan": "the Conductor brings you a question card (it is in Needs you)"}
+    if owner_queue.routed(it) and not owner_queue.answered(it, evs) and owner_queue.tooling_hold(rs) is None \
+            and owner_queue.awaiting_designer(it):
+        return {"waits": "the Designer", "plan": "its first-touch pass comes first; it joins Needs you when there is a "
+                                                 "result or a turn to certify"}
     h = owner_queue.tooling_hold(rs)
     if h is not None:
         who, plan = HOLD_PLANS.get(h.get("kind"), ("the Conductor", "the Conductor reads why Relentless stopped and "

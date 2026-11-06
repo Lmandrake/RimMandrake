@@ -144,5 +144,79 @@ n = Q.needs_you(items2, {}, {"DRAW_A": "Look?", "DRAW_B": "Press?"}, evs)
 check("answered items are named, not counted", n["count"] == 3 and [a["item"] for a in n["answered"]] == ["DRAW_C"])
 check("a shared leading word folds to one row", [t["topic"] for t in n["topics"]] == ["DRAW", "K"] and n["topics"][0]["items"] == ["DRAW_A", "DRAW_B"] and n["topics"][0]["others"] == ["Press?"])
 
+# OWNER_QUEUE_FIX_FIRST_TOUCH_NEEDS_PASS: a first-touch row is his once its Designer pass exists, and stays open before that
+def ftit(iid, needs="owner"):
+    x = it(needs, title="pass on " + iid)
+    x.id = iid
+    return x
+
+
+with tempfile.TemporaryDirectory() as root:
+    def concept(name, files, stage=None):
+        d = os.path.join(root, name)
+        os.makedirs(d)
+        for f in files:
+            open(os.path.join(d, f), "w").close()
+        if stage is not None:
+            with open(os.path.join(d, "stage.json"), "w") as f:
+                f.write(stage)
+    concept("Done", ["result.run-1.json"])
+    concept("Rejected", ["result.run-1.rejected.json"])
+    concept("Unclosed", ["result.json"])
+    concept("Empty", [])
+    concept("Odd_Name", ["result.run-2.json"], '{"item": "HANDFILED_DESIGN_FIRST_TOUCH"}')
+    concept("Garbled", ["result.run-3.json"], "{not json")
+    concept("_dry_walk", ["result.run-4.json"])
+    passes = Q.read_designer_passes(root)
+    check("an accepted result is a pass; rejected, unclosed, empty and _dry_walk are not",
+          passes == {"DONE_DESIGN_FIRST_TOUCH", "ODDNAME_DESIGN_FIRST_TOUCH", "HANDFILED_DESIGN_FIRST_TOUCH", "GARBLED_DESIGN_FIRST_TOUCH"})
+    check("an unreadable concepts root answers None, never an empty set", Q.read_designer_passes(os.path.join(root, "no_such")) is None)
+    check("designer_passes reads the root it is given", Q.designer_passes(root) == passes)
+    concept("Late", ["result.run-5.json"])
+    check("the memo holds inside its window", "LATE_DESIGN_FIRST_TOUCH" not in Q.designer_passes(root))
+    at, got = Q._passes_memo[root]
+    Q._passes_memo[root] = (at - Q.PASSES_TTL - 1, got)
+    check("a long-lived board sees a new result after the window", "LATE_DESIGN_FIRST_TOUCH" in Q.designer_passes(root))
+
+ft = {i: ftit(i) for i in ("BARE_DESIGN_FIRST_TOUCH", "DONE_DESIGN_FIRST_TOUCH", "TURN_DESIGN_FIRST_TOUCH", "HELD_DESIGN_FIRST_TOUCH", "SAID_DESIGN_FIRST_TOUCH")}
+ft["OFFLINE_DESIGN_FIRST_TOUCH"] = ftit("OFFLINE_DESIGN_FIRST_TOUCH", "offline")
+ft["PLAIN_OWNER_ASK"] = ftit("PLAIN_OWNER_ASK")
+ft["BARE_DESIGN_FIRST_TOUCH"].history = [0]
+ft["SAID_DESIGN_FIRST_TOUCH"].history = [0, 2]
+ftrel = {"HELD_DESIGN_FIRST_TOUCH": held("proof_weak", "weak")}
+ftpass = {"DONE_DESIGN_FIRST_TOUCH"}
+ftturn = {"TURN_DESIGN_FIRST_TOUCH": "Turn waits on you"}
+n = Q.needs_you(ft, ftrel, {}, evs, ftturn, passes=ftpass)
+check("listed: a row with a result, a row with a waiting turn, and any non-first-touch ask, and no bare row",
+      [x["item"] for x in n["lines"]] == ["DONE_DESIGN_FIRST_TOUCH", "PLAIN_OWNER_ASK", "TURN_DESIGN_FIRST_TOUCH"])
+check("the waiting turn's line is its question", {x["item"]: x["q"] for x in n["lines"]}["TURN_DESIGN_FIRST_TOUCH"] == "Turn waits on you")
+check("a passless row is named, not lost; his answered row and a tooling hold are not on that list",
+      [x["item"] for x in n["awaiting_designer"]] == ["BARE_DESIGN_FIRST_TOUCH"] and [x["item"] for x in n["answered"]] == ["SAID_DESIGN_FIRST_TOUCH"])
+check("the row stays open: needs_you changes no item", ft["BARE_DESIGN_FIRST_TOUCH"].open and ft["BARE_DESIGN_FIRST_TOUCH"].needs == "owner")
+saved = Q.designer_passes
+Q.designer_passes = lambda root=None: None
+try:
+    check("a concepts root that cannot be read leaves the row on his list, never hides it", Q.is_his(ftit("X_DESIGN_FIRST_TOUCH"), None) and not Q.awaiting_designer(ftit("X_DESIGN_FIRST_TOUCH")))
+    Q.designer_passes = lambda root=None: {"DONE_DESIGN_FIRST_TOUCH"}
+    # the page's tags read the same test with no passes passed: they must agree with the header on the same answer
+    check("waits_on and is_his agree with no passes passed", M.waits_on(ft["BARE_DESIGN_FIRST_TOUCH"], None, []) == "" and M.waits_on(ft["DONE_DESIGN_FIRST_TOUCH"], None, []) == "you")
+    check("the mods' stuck line says who it waits on", (M.stuck_of(ft["BARE_DESIGN_FIRST_TOUCH"], None, [])["waits"] == "the Designer"
+                                                        and M.stuck_of(ft["DONE_DESIGN_FIRST_TOUCH"], None, [])["waits"] == "you"))
+    check("a non-first-touch row never asks the Designer's folder", not Q.awaiting_designer(ft["PLAIN_OWNER_ASK"]))
+finally:
+    Q.designer_passes = saved
+
+# the real books: every first-touch row routed to him is on exactly one list, and a listed one has its pass or its turn
+real_evs, real_w = M.ledger()
+real_turns, real_passes = Q.designer_turns(), Q.read_designer_passes(os.path.join(Q.REPO, "design", "concepts"))  # this tree, whichever clone runs it
+n = Q.needs_you(real_w.items, {}, {}, real_evs, real_turns, passes=real_passes)
+first_touch_suffix = Q.first_touch.SUFFIX
+listed = {x["item"] for x in n["lines"] if x["item"].endswith(first_touch_suffix)}
+real_routed = {i for i, x in real_w.items.items() if i.endswith(first_touch_suffix) and Q.routed(x)}
+check("real books: the concepts root reads", real_passes is not None)
+check("real books: no listed first-touch row lacks a pass or a turn", all(i in real_passes or i in real_turns for i in listed))
+check("real books: every routed first-touch row is on a list", real_routed <= listed | {x["item"] for x in n["awaiting_designer"]} | {x["item"] for x in n["answered"]})
+print("real books: %d first touches listed, %d awaiting their Designer pass" % (len(listed), len(n["awaiting_designer"])))
+
 print("RESULT %s (%d fail)" % ("GREEN" if not FAILS else "RED", len(FAILS)))
 sys.exit(1 if FAILS else 0)
