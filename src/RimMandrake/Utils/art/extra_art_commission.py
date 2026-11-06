@@ -35,6 +35,7 @@ as drawn by their def and must still be confirmed NONE):
 Wiring each slot into its def once all three facings exist is the follow-on item EXTRA_ART_WIRE_LANDED_LOOKS.
 
     python3 src/RimMandrake/Utils/art/extra_art_commission.py plan            # rewrite commission.csv from the defs
+                                                                             # (a filed biome's rows are kept as filed)
     python3 src/RimMandrake/Utils/art/extra_art_commission.py check           # plan == commission.csv; filed biomes queued
     python3 src/RimMandrake/Utils/art/extra_art_commission.py submit --next [--dry-run]   # file the next biome's jobs
     python3 src/RimMandrake/Utils/art/extra_art_commission.py submit --biome RM_X [--dry-run]
@@ -266,7 +267,45 @@ def owed(c: dict, g: dict) -> list[tuple[str, str, str, str]]:
     return out
 
 
-def plan(defs: Defs | None = None, groups: Path = GROUPS) -> list[dict]:
+def plan(defs: Defs | None = None, groups: Path = GROUPS, table: list[dict] | None = None,
+         state: dict | None = None) -> list[dict]:
+    """derive() with every row of a filed biome replaced by the row as filed.
+
+    A filed job cannot be refiled under its id (fill_queue refuses a duplicate), so once a biome is filed its rows are a
+    record, not a forecast: a later redraw that resizes or moves a reference sprite must not make commission.csv stale.
+    The table's rows stand only while they still match the biome's rows_sha in the state; otherwise the derived rows
+    stand and check() shows the mismatch. Owed rows added or dropped since filing still show as missing / extra."""
+    rows = derive(defs, groups)
+    filed = filed_rows(read_table() if table is None else table, read_state() if state is None else state)
+    return [filed.get((r["biome"], r["race"], r["slot"], r["job_id"]), r) for r in rows]
+
+
+def filed_rows(table: list[dict], state: dict) -> dict[tuple, dict]:
+    """(biome, race, slot, job_id) -> table row, for every biome whose table rows still digest to its filed rows_sha."""
+    by_b = defaultdict(list)
+    for r in table:
+        by_b[r["biome"]].append(r)
+    out = {}
+    for b, rec in state.get("biomes", {}).items():
+        if by_b.get(b) and rec.get("rows_sha") == rows_digest(by_b[b]):
+            out.update({(b, r["race"], r["slot"], r["job_id"]): r for r in by_b[b]})
+    return out
+
+
+def drift(defs: Defs | None = None, table: list[dict] | None = None, state: dict | None = None) -> list[str]:
+    """Fields where today's defs and art would now derive something other than the row filed (informational)."""
+    filed = filed_rows(read_table() if table is None else table, read_state() if state is None else state)
+    notes = []
+    for r in derive(defs):
+        f = filed.get((r["biome"], r["race"], r["slot"], r["job_id"]))
+        if f:
+            notes += [f"{r['job_id']}: {k} filed {f.get(k)!r}, today derives {r[k]!r}"
+                      for k in COLUMNS if str(f.get(k, "")) != str(r.get(k, ""))]
+    return notes
+
+
+def derive(defs: Defs | None = None, groups: Path = GROUPS) -> list[dict]:
+    """The commission rows today's defs, art and walk derive, ignoring what was filed."""
     defs = defs or Defs()
     walk = list(csv.DictReader(open(groups, newline="")))
     per_biome = defaultdict(list)
@@ -578,6 +617,8 @@ def main(argv=None) -> int:
         receipt, root = read_receipt(), (None if a.no_queue else live_root())
         errs = unread_hits(defs) + check(plan(defs), read_table(), read_state(), None if a.no_queue else set(receipt))
         errs += receipt_errors(receipt, root)
+        for n in drift(defs):
+            print("NOTE filed row kept:", n)
         for e in errs:
             print("FAIL", e)
         print(f"live registry: {'checked ' + str(root) if root else 'UNMEASURED (unreachable); receipt only'}")
