@@ -35,6 +35,8 @@ work, nothing new.
   keepWiresOnGravship also in `sc_gravship` (`GSS_SWITCHES_PROVE_LAST_FOUR_STANDING`).
 - `no_repeat_unmeasured`: the instrument above plus a judge agent predicting his eye.
 
+- Coverage-judge pass (rm-coverage-judge-1793952643, 2026-11-06): new acceptance scenes `sc_owner_change`, `sc_fuel_ignition`; `sc_statics_new_game` is now acceptance with a filled-state control; controls rebuilt for `sc_no_repeat` (planted identical curves on distinct seeds), `sc_four_looks` (grayscale judge plus a hue-shifted copy), `sc_spans` (redrawn at Pawn altitude), `sc_fallen_span` (draw suppressed), `sc_gravship` (pre-flight cords fed to the landed read, throwaway save restore); `sc_walk` reads memory, save size, frame time and master off/on. All entry points ride `GSS_SCENES_BUILD_EVERY_CORD_A_FOIL`.
+
 ## Reuse
 
 `validation.py` SITE prep and OFF_SITE_RECTS, `validation_aerial.py` four_switches_block, theft_catch and flips_block,

@@ -14,23 +14,26 @@
 - 2026-11-05, on Modern junctions: "The right power strip is better for modern look. Junctions work better for industrial."
 
 ## does
-- [leaf:conduit_invisible] Conduit draws no pipe; only the loose cords show where power goes, and the power overlay still works. OWNER:1793590546413059482
+- [leaf:conduit_invisible] Conduit, plain or waterproof, draws no pipe; only the loose cords show where power goes, and the power overlay still works. OWNER:1793590546413059482
 - [leaf:cords_lie_slack] Every cord lies in broad slack loops and coils, much longer than its straight line, never taut. OWNER:1793596860187785113
 - [leaf:cords_meet_walls_at_face] Cords pile against walls and end at the wall face, never drawn across a wall or rock. OWNER:1793596860187785113
 - [leaf:strip_at_every_junction] Every 3- or 4-way junction has a joining piece with every cord plugged in: Modern draws the long power strip, Industrial the junction box, the other two their connectors. OWNER:1793909100631838579, owed
 - [leaf:dense_block_tangle] A dense block of conduit reads as one tangled heap of wires and strips
 - [leaf:cords_never_repeat] Cords of the same length do not repeat one shape across a room. OWNER:1793596860187785113
-- [leaf:drawing_true_to_grid] The cords tell the truth about the grid: no cord joins two nets, no phantom second cable at an adjacent-fed pump, no plug in a pipe slot. OWNER:1793895896496551063
+- [leaf:drawing_true_to_grid] The cords tell the truth about the grid: no cord joins two nets, no phantom second cable at an adjacent-fed pump, no plug in a pipe slot; a cord reaches a building with a pipe port on a diagonal, sliding under it. OWNER:1793895896496551063, OWNER:1792764476096951152
 - [leaf:cut_live_and_dead_ends] A cut leaves two ends and no cord across the gap: the live end sparks, the dead end lies limp
 - [leaf:no_stall_on_rewire] Placing, cutting or digging past a wire, or a mast falling, costs at most 20 ms a frame on a 2000-cell base. OWNER:1792999698321800383
 - [leaf:spans_above_everything] Sagging overhead lines between masts draw above pawns and buildings. OWNER:1793590546413059482
 - [leaf:fallen_span_on_ground] A killed mast or a cut span leaves the wire lying on the ground, live end and dead end distinct
 - [leaf:fallen_wire_shocks_crossers] A live fallen wire shocks anyone crossing it on another job; the colonist coming to re-string it is safe. OWNER:1793895896496551063
+- [leaf:live_wire_lights_fuel] Spilled fuel under a live sparking end catches fire; under a dead wire it does not
 - [leaf:restring_cut_span] A Wire down alert points at the cut, and a colonist re-strings it as a job. OWNER:1792080489684076824
 - [leaf:tap_steals_and_costs_goodwill] A tap clamped on a neighbour's line steals their power; if they see it, goodwill drains steadily. OWNER:1791668362056240097
 - [leaf:four_looks_one_run] Four looks told apart by eye, one look per connected run. OWNER:1793590546413059482
 - [leaf:settings_switch_cleanly] Every switch really switches, master off restores vanilla art without a restart, and pipe poles have their own switch. OWNER:1792636779179768957
 - [leaf:gravship_keeps_connections] After a gravship lands, its cords still explain its real connections. OWNER:1793597165476278817
+- [leaf:owner_change_coils_wires] A pole claimed by another faction has its wires to our poles taken down and coiled, with a message; it has its own switch
+- [leaf:statics_clear_between_games] Nothing of one game, no tap and no style pick, carries into the next game started in the same session
 - [leaf:no_hose_in_gss] No hose, reel or pipe is drawn by this mod. OWNER:1791668361069985398
 - [leaf:cord_shape_variation_probe] A shape-distance read between cords, so no-repeat can be measured
 - [leaf:walk_scavenger_base] A week of play on the full list with a cut, a re-string, a mid-way reload, a repeat and a second order
@@ -51,7 +54,7 @@
 
 ## delegated
 - No-repeat is judged by a shape-distance number with a judge agent predicting your eye, since only your eye had judged it
-- Showcase 2 is the yard of masts, the most new ground after the workshop floor; theft, the four looks, Mod Settings, the gravship and new-game cleanup are checked by their own scenes
+- Showcase 2 is the yard of masts, the most new ground after the workshop floor; theft, the four looks, Mod Settings, the gravship, owner-change wire cutting and new-game cleanup are each checked by their own acceptance scene with a control
 - The lone-rebuild bar is 20 ms a frame, the floor's own tick ceiling
 
 ## pruning
@@ -72,5 +75,8 @@
 - four_looks_one_run: advisory by his words OWNER:1793590546413059482, would not reject it alone
 - settings_switch_cleanly: standing ruling, superb Mod Settings; his words OWNER:1792636779179768957
 - gravship_keeps_connections: his words OWNER:1793597165476278817
+- live_wire_lights_fuel: built part of the shock he opened, OWNER:1793895896496551063; its chemfuel half passed once
+- owner_change_coils_wires: built and shipping with its own switch; standing ruling, superb Mod Settings
+- statics_clear_between_games: built fix GSS_STATICS_FIX_OUTLIVE_THE_SAVE; an old game's tap draining a new game's goodwill would be a lie
 - no_hose_in_gss: his words OWNER:1791668361069985398
 - walk_scavenger_base: the mod's one walk leaf, required of every mod

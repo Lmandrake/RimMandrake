@@ -38,8 +38,8 @@
     "conduit_reads_invisible"
    ],
    "leaf_kind": "experience",
-   "experience": "The player, at play zoom over a powered room in each of the four looks, sees no vanilla conduit pipe anywhere: only loose cords show where power goes, while the power overlay still draws its connector lines. It must not read as vanilla conduit reskinned, or as a run with neither pipe nor cord.",
-   "scenario": "Lay a conduit run with a battery, a generator and two consumers in each look; capture at play zoom with the overlay off and on; then lay a vanilla HiddenConduit run beside it.",
+   "experience": "The player, at play zoom over a powered room in each of the four looks, sees no vanilla conduit pipe anywhere: only loose cords show where power goes, while the power overlay still draws its connector lines. It must not read as vanilla conduit reskinned, or as a run with neither pipe nor cord. This holds for WaterproofConduit as for plain conduit.",
+   "scenario": "Lay a conduit run with a battery, a generator and two consumers in each look; capture at play zoom with the overlay off and on; then lay a vanilla HiddenConduit run beside it. Include a WaterproofConduit run laid on shallow water beside the plain run.",
    "false_pass": [
     "the conduit def's graphic swapped for a cord texture laid on the conduit cell, so a pipe-shaped cord follows the grid exactly",
     "the conduit hidden and no cord drawn, so the room reads clean because nothing is drawn"
@@ -203,7 +203,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "for every drawn cord: both ends in one PowerNet; each device has exactly one cord end per power connection; no cord end on a pipe slot; the adjacent-feed pump case named",
+   "oracle_proposed": "for every drawn cord: both ends in one PowerNet; each device has exactly one cord end per power connection; no cord end on a pipe slot; the adjacent-feed pump case named; every cord reaching a building with a pipe port enters its footprint on a diagonal segment and ends under it (slideUnder on)",
    "tier_reason": "PowerNets and drawn cords both exist only in the running game",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -212,11 +212,12 @@
     "conduit_reads_invisible"
    ],
    "leaf_kind": "experience",
-   "experience": "The player, reading a base's power only from its cords (the conduit is invisible), is told the truth: every cord joins two things on one power net, every device on a net has a cord reaching it, no device shows a second phantom cable, and no plug goes into a pipe slot. The route may be circuitous. It must not read as a cord joining two separate grids, a device fed by adjacent conduit wearing a second disconnected cable, or a plug in a pipe port.",
+   "experience": "The player, reading a base's power only from its cords (the conduit is invisible), is told the truth: every cord joins two things on one power net, every device on a net has a cord reaching it, no device shows a second phantom cable, and no plug goes into a pipe slot. The route may be circuitous. It must not read as a cord joining two separate grids, a device fed by adjacent conduit wearing a second disconnected cable, or a plug in a pipe port. Where a cord reaches a building that has a pipe or hose port, it approaches on a diagonal and slides underneath the building, never straight into the port.",
    "scenario": "Stage two separate nets side by side, one cell apart; a pump fed by adjacent conduit that does not pass under it; a device with both power and pipe ports; read every cord edge's two ends against PowerNet membership and port kind.",
    "false_pass": [
     "the check reads the conduit graph instead of the drawn cords, so a drawn cross-net cord passes",
-    "the adjacent-feed pump left out of the test"
+    "the adjacent-feed pump left out of the test",
+    "the slide-under check run only on buildings without a pipe port, where a straight approach is never tempted into the port"
    ],
    "red": "a cord bridges two separate power nets, or the adjacent-fed pump draws a second disconnected cable",
    "tier_proposed": "quicktest",
@@ -376,7 +377,31 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "tap net draws from the victim's net only; goodwill of the victim faction falls each day after sighting and stops after removal; no drain without a witness",
+   "oracle_proposed": "a fire on the puddle cell within the poll window with fallenWireIgnites on and the wire live; none with the switch off; none with the wire dead",
+   "tier_reason": "fire and filth are live state",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "leaf_kind": "experience",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change",
+   "tier_proposed": "quicktest",
+   "id": "live_wire_lights_fuel",
+   "root": [
+    "downed_span_lies_on_ground"
+   ],
+   "experience": "The player sees spilled fuel lying under the sparking end of a live fallen wire catch fire; under a dead wire it does not. It must not read as fuel that a live wire never lights, or a fire that starts with no wire there.",
+   "scenario": "A live fallen wire with a chemfuel puddle on its sparking-end cell; wait; then the same with fallenWireIgnites off, and with the wire's source switched off.",
+   "false_pass": [
+    "the fire comes from something else on the cell (heat, a lamp, a burning pawn), so a wire that never ignites passes"
+   ],
+   "red": "a fuel puddle under a live sparking end never catches fire, or a dead wire lights it"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "tap net draws from the victim's net only; goodwill of the victim faction falls each day after sighting and stops after removal; no drain without a witness; every other faction's goodwill unchanged across the same window",
    "tier_reason": "factions, goodwill and sight are live",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -389,7 +414,8 @@
    "scenario": "A neighbour settlement's powered line on the map; clamp a tap; read power flow; walk one of their pawns into sight; read goodwill over two days; remove the clamp; read again. Control: the clamp with no witness.",
    "false_pass": [
     "the goodwill change from another cause (a gift, a raid) in the same window",
-    "power read flowing both ways"
+    "power read flowing both ways",
+    "only the victim's goodwill is read, so a drain that also hits a third faction passes"
    ],
    "red": "a caught tap costs no goodwill, or costs a different faction",
    "tier_proposed": "quicktest",
@@ -474,6 +500,55 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
+   "oracle_proposed": "after the claim: no link between the claimed mast and either mast of ours, the OwnerMismatchSweep cut count equals the cut links, the message shown; with the switch off the links stay",
+   "tier_reason": "factions and anchor links are live state",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "leaf_kind": "experience",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change",
+   "tier_proposed": "quicktest",
+   "id": "owner_change_coils_wires",
+   "root": [
+    "overhead_span_above_everything"
+   ],
+   "experience": "The player whose pole is claimed or captured by another faction sees every wire between that pole and a pole of a different owner taken down and coiled, with a message saying so; wires between poles of one owner stay up. It must not read as our power still feeding a pole someone else now owns, or wires that vanish with no sign.",
+   "scenario": "Two powered masts of ours joined by a span, plus a third mast of ours joined to the second; hand the second mast to another faction; read its links and power; repeat with cutWiresOnOwnerChange off.",
+   "false_pass": [
+    "the link drops because the faction change itself destroys the anchor, not because the owner sweep cut it",
+    "only the setting value is read, never a claimed pole"
+   ],
+   "red": "after a pole changes owner its wire to our pole stays strung and our net still powers it, or wires drop with no message"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "in game 1 the tap registry lists the tap and the style picks list both runs; in game 2, at start, both are empty",
+   "tier_reason": "static state across two games exists only in a running session",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "leaf_kind": "experience",
+   "owner_part": "no",
+   "by": "concept",
+   "clause_kind": "change",
+   "tier_proposed": "quicktest",
+   "id": "statics_clear_between_games",
+   "root": [
+    "overhead_span_above_everything"
+   ],
+   "experience": "The player who quits one game and starts or loads another in the same session sees nothing of the first carried over: no tap from the old game is still registered and draining goodwill, and runs take fresh looks rather than the old game's picks. It must not read as an old game's theft or styles haunting a new one.",
+   "scenario": "A quicktest colony with a clamped tap and two styled runs; read the tap registry and style picks; start a second quicktest in the same session and read them again.",
+   "false_pass": [
+    "the read in the second game looks at a fresh instance the mod never fills, so it is empty whether or not the old state was cleared"
+   ],
+   "red": "a tap from the first game is still in the registry in the second game, or the second game's runs reuse the first game's style picks"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
    "oracle_proposed": "offline scan: no ThingDef, texture or class for hoses or reels under src/RimMandrake/GimmeSomeSlack",
    "tier_reason": null,
    "cannot_show": null,
@@ -498,7 +573,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "after reload the connectivity and live/dead reads match before save; the repeat and the second order pass the same reads; log clean; frame time under the rewire bar",
+   "oracle_proposed": "after reload the connectivity and live/dead reads match before save; the repeat and the second order pass the same reads; log clean; frame time on each rewire under the 20 ms bar; with the master off vanilla conduit art draws and no cord, and with it back on the cords return and the true-to-grid read passes; heap and texture MB recorded before and after the week, save size recorded on the mid-way save and at the end",
    "tier_reason": "breadth failures show only on his full list in ordinary play with a mid-way reload",
    "cannot_show": null,
    "wall_expect_h": 3,

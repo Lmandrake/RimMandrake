@@ -12,10 +12,10 @@
    "start": [
     "dev quicktest colony, minimal list plus GSS, all DLC (asserted)",
     "a cleared 20x12 rect, GSS master on (asserted)",
-    "a powered run with battery, generator and two consumers per look"
+    "a powered run with battery, generator and two consumers per look, plus a WaterproofConduit run on shallow water (def asserted)"
    ],
    "action": "capture at play zoom with the power overlay off and on; lay a vanilla HiddenConduit run beside it",
-   "expect": "no pipe drawn on any conduit cell, a cord per edge, overlay connector lines present; the HiddenConduit run owns no cord",
+   "expect": "no pipe drawn on any PowerConduit or WaterproofConduit cell, a cord per edge on both runs, overlay connector lines present; the HiddenConduit run owns no cord",
    "control": {
     "case": "the same run with the GSS master switch off",
     "expect": "the vanilla conduit pipe draws on every cell",
@@ -130,9 +130,9 @@
    "action": "read the shape distance table; capture for a judge agent",
    "expect": "every pair above the minimum shape distance; the judge sees no repeated stamp",
    "control": {
-    "case": "two edges forced to the same seed",
-    "expect": "their distance reads zero and fails",
-    "rules_out": "a distance taken on colour or seed rather than on the drawn curve"
+    "case": "two edges with distinct seeds onto which the probe plants the same drawn vertex list",
+    "expect": "their distance reads zero and the scene fails by name",
+    "rules_out": "a distance computed on seeds or colour rather than on the drawn curve"
    },
    "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
    "hold": "immediate"
@@ -149,10 +149,10 @@
    "start": [
     "quicktest colony, two powered nets one cell apart (asserted two PowerNets)",
     "a pump fed by adjacent conduit that does not pass under it (asserted)",
-    "a device with both power and pipe ports"
+    "a device with both power and pipe ports, fed from a conduit run that reaches it straight along an axis (asserted)"
    ],
    "action": "read every drawn cord's two ends against PowerNet membership and port kind",
-   "expect": "every cord's ends on one net, one cord end per power connection, no second cable at the pump, no plug on a pipe slot",
+   "expect": "every cord's ends on one net, one cord end per power connection, no second cable at the pump, no plug on a pipe slot; the cord reaching the dual-port device enters its footprint on a diagonal segment and ends under it",
    "control": {
     "case": "a planted cross-net cord added by the probe to the drawn set",
     "expect": "the read fails on it by name",
@@ -220,11 +220,11 @@
     "a colonist ordered to walk under the span"
    ],
    "action": "capture with the colonist under; attempt an out-of-range, a hostile and a non-anchor link",
-   "expect": "span drawn above pawns and buildings with sag above zero; the three bad links refused with their reasons",
+   "expect": "the span's draw altitude reads above both the Pawn and Building altitude layers, sag above zero; the three bad links refused with their reasons",
    "control": {
-    "case": "the same capture with nothing under the span",
-    "expect": "layer still above pawns, read from altitude, not from the picture",
-    "rules_out": "a span that looks above only because nothing stands under it"
+    "case": "a span the probe redraws at Pawn altitude under the same colonist (debug layer override)",
+    "expect": "the altitude read fails it by name",
+    "rules_out": "a span that looks above only in the picture while drawn at building or pawn altitude"
    },
    "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
    "hold": "immediate"
@@ -239,13 +239,14 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_fallen_span",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "quicktest colony, two powered spans between masts (asserted)"
+    "quicktest colony, two powered spans between masts (asserted)",
+    "a third span between two unpowered masts (asserted dead)"
    ],
-   "action": "kill one mast; explode a charge under the second span; read each fallen wire's layer and ends; capture",
-   "expect": "each fallen wire at ground layer below pawns, live end sparking and dead end limp per net",
+   "action": "kill one mast; explode a charge under the second span; cut the third; read each fallen wire's drawn cells, layer and ends; capture",
+   "expect": "each fallen wire draws cells on the ground between its anchors, at ground layer below pawns; live end sparking and dead end limp per net; the unpowered span's wire lies with both ends dead",
    "control": {
-    "case": "a span between two unpowered masts, cut",
-    "expect": "the fallen wire lies with both ends dead",
+    "case": "the second span cut with its fallen draw suppressed by a debug flag",
+    "expect": "the read finds no drawn fallen cells and fails it by name",
     "rules_out": "a span hidden on cut passing for one lying on the ground"
    },
    "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
@@ -306,10 +307,10 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_tap_theft",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "quicktest colony with a neighbour settlement's powered line on the map, goodwill recorded (asserted)"
+    "quicktest colony with a neighbour settlement's powered line on the map; every faction's goodwill recorded (asserted)"
    ],
    "action": "clamp a tap; read power flow; bring one of their pawns into sight; read goodwill daily for two days; remove the clamp; read again",
-   "expect": "power flows from their net into ours only; their goodwill falls each day after sighting and stops after removal",
+   "expect": "power flows from their net into ours only; their goodwill falls each day after sighting and stops after removal; every other faction's goodwill unchanged",
    "control": {
     "case": "the same clamp with no witness",
     "expect": "no goodwill change",
@@ -331,10 +332,10 @@
     "quicktest colony, four separate runs side by side, one per look, each with a mast and a lamp (style per run asserted)"
    ],
    "action": "capture; then join two runs and read the merged run's look",
-   "expect": "each run's members report one style and the captures are told apart; the merged run reports one style, its lamp included",
+   "expect": "each run's members report one style, and the four runs' cord texture paths and junction defs all differ; a judge agent given the four captures in grayscale (art_judge_brief.md) names each look; the merged run reports one style, its lamp included",
    "control": {
-    "case": "two runs in the same look",
-    "expect": "they read the same",
+    "case": "a probe-made copy of one look's capture, hue-shifted to another look's tint, shown in grayscale beside its source",
+    "expect": "the judge calls the pair one look and the scene marks the copy not distinct",
     "rules_out": "looks differing only by tint"
    },
    "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
@@ -354,7 +355,7 @@
     "every GSS setting at its default (asserted)"
    ],
    "action": "for the master and each feature switch, including keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops and slideUnder: read, flip, read, flip back; flip the pipe-pole switch with the GSS master on and off",
-   "expect": "each feature's observable state changes with its switch and returns on flip-back, no restart; pipe poles follow only their own switch",
+   "expect": "each feature's observable state changes with its switch and returns on flip-back, no restart: drip loops drawn or not at a mast; slideUnder off makes the dual-port device's cord reach it straight along the axis, on puts it back on the diagonal under it; cutWiresOnOwnerChange and keepWiresOnGravship are observed in sc_owner_change and sc_gravship; pipe poles follow only their own switch",
    "control": {
     "case": "flipping a setting whose patch is unregistered by a debug flag",
     "expect": "the value changes but the feature does not, and the scene fails",
@@ -373,16 +374,17 @@
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_gravship",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
-    "live minimal list, all DLC, a gravship with conduit, a battery and two consumers (asserted one net aboard)"
+    "live minimal list, all DLC, a gravship with conduit, a battery and two consumers (asserted one net aboard)",
+    "two wall-bracket anchors aboard joined by a span (asserted linked)"
    ],
-   "action": "launch and land; run the true-to-grid read on the landed ship; repeat with keepWiresOnGravship off",
-   "expect": "the read passes on the landed ship; with the switch off its stated behaviour holds",
+   "action": "launch and land; read the span link and run the true-to-grid read on the landed ship; repeat the flight with keepWiresOnGravship off",
+   "expect": "switch on: the aboard span is still linked after landing and the true-to-grid read passes; switch off: the aboard span is down after landing (no link between the two anchors) and the true-to-grid read still passes",
    "control": {
-    "case": "the same read on the ship before launch",
-    "expect": "it passes, so the scene must also read after landing",
-    "rules_out": "a read taken before the flight passing for after"
+    "case": "the probe feeds the pre-launch cord set to the true-to-grid read against the landed map",
+    "expect": "the read fails by name: cord ends on cells outside the landed net",
+    "rules_out": "a read that passes by checking the drawing made before the flight"
    },
-   "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
+   "restore": "the flight moves the ship to another map: the scene runs on a throwaway save written at scene-begin, which is reloaded at scene-end; every poked setting put back",
    "hold": "immediate"
   },
   {
@@ -396,16 +398,17 @@
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
    "start": [
     "his full list, a fresh colony (asserted mod list fingerprint)",
-    "colony vitals and pending incidents recorded"
+    "colony vitals and pending incidents recorded",
+    "heap and texture MB recorded at start"
    ],
    "action": "play a week: wire a workshop, string to a mast, cut a floor cell and kill a mast, re-string, save with a wire down, reload, rewire a second room, then string overhead first and floor after; master off and on mid-game",
-   "expect": "after reload the true-to-grid and live/dead reads match before save; repeat and second order pass the same reads; log clean",
+   "expect": "after reload the true-to-grid and live/dead reads match before save; repeat and second order pass the same reads; each rewire's frame time under the 20 ms bar; master off: vanilla conduit art and no cord, master on: cords back and the true-to-grid read passes; heap and texture MB recorded at the end and save size on the mid-way and end saves; log clean",
    "control": {
     "case": "a reload from a save made before any cut",
     "expect": "the comparison is refused as not mid-way",
     "rules_out": "a reload with nothing cut passing for one with a wire down"
    },
-   "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
+   "restore": "nothing restores in place: the walk is a fresh colony on its own saves, abandoned at scene-end with its saves kept as evidence; the mod list is left as it is (owner 2026-10-24)",
    "hold": "immediate"
   },
   {
@@ -432,18 +435,69 @@
    "hold": "immediate"
   },
   {
+   "id": "sc_owner_change",
+   "kind": "acceptance",
+   "requirement": [
+    "owner_change_coils_wires"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_owner_change",
+   "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
+   "start": [
+    "quicktest colony, three masts of ours in a line, both spans powered (asserted one PowerNet, cutWiresOnOwnerChange on)"
+   ],
+   "action": "hand the middle mast to another faction; read every link and the net; then put it back, re-string, switch cutWiresOnOwnerChange off and hand it over again",
+   "expect": "switch on: no link from the middle mast to either mast of ours, the sweep's cut count equals the links cut, the message shown, the middle mast unpowered by our net; switch off: both spans stay linked",
+   "control": {
+    "case": "the switch-off handover",
+    "expect": "the links stay and no message",
+    "rules_out": "a link dropped by the faction change itself rather than by the owner sweep"
+   },
+   "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_fuel_ignition",
+   "kind": "acceptance",
+   "requirement": [
+    "live_wire_lights_fuel"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_fuel_ignition",
+   "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
+   "start": [
+    "quicktest colony, a live fallen wire whose sparking-end cell holds a chemfuel puddle, nothing else burning or hot within 5 cells (asserted)"
+   ],
+   "action": "wait two live/dead polls; read fire on the puddle cell; repeat with fallenWireIgnites off and with the wire's source switched off",
+   "expect": "live and switch on: fire on the puddle cell; switch off: no fire; wire dead: no fire",
+   "control": {
+    "case": "the switch-off run on the same cell",
+    "expect": "no fire",
+    "rules_out": "fire from another source on the cell passing for the wire lighting it"
+   },
+   "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
+   "hold": "immediate"
+  },
+  {
    "id": "sc_statics_new_game",
-   "kind": "exploration",
+   "kind": "acceptance",
+   "requirement": [
+    "statics_clear_between_games"
+   ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/GimmeSomeSlack/validation.py::scene_statics_new_game",
    "entry_point_item": "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL",
-   "question": "does per-game static state (tap registry, style picks, printed statics) clear when a second game starts in the same session",
    "start": [
-    "a quicktest colony with a tap, two styled runs, then a second quicktest started in the same session"
+    "a quicktest colony with a clamped tap and two styled runs (asserted)"
    ],
-   "action": "read the tap registry and style picks in the second game",
-   "expect": "both empty at start",
-   "restore": "restore terrain, walls, conduit, masts and things on the scene rect from the snapshot recorded at scene-begin; put power, factions, goodwill and every poked setting back to its prior value",
+   "action": "read the tap registry and style picks; start a second quicktest in the same session; read them again",
+   "expect": "game 1 lists the tap and both picks; game 2 starts with both empty",
+   "control": {
+    "case": "the same read in game 1 before the second game starts",
+    "expect": "the registry lists the tap and both picks, so the instrument sees filled state",
+    "rules_out": "a read that is empty because it looks at state the mod never fills"
+   },
+   "restore": "nothing to restore: both games are throwaway quicktests, abandoned at scene-end",
    "hold": "immediate"
   },
   {
@@ -494,7 +548,8 @@
     "sc_fallen_span",
     "sc_shock",
     "sc_restring",
-    "sc_shock_restring"
+    "sc_shock_restring",
+    "sc_fuel_ignition"
    ],
    "exercises": [
     "overhead_spans",
@@ -548,9 +603,10 @@
   {
    "capability": "game_statics_reset",
    "by": [
-    "sc_statics_new_game"
+    "sc_statics_new_game",
+    "statics_clear_between_games"
    ],
-   "why": "a state read across two games, nothing to look at"
+   "why": "a state read across two games with a filled-state control, nothing to look at"
   },
   {
    "capability": "uninstall_clean",
@@ -565,6 +621,14 @@
     "no_hose_in_gss"
    ],
    "why": "an offline def and source scan"
+  },
+  {
+   "capability": "owner_change_cut",
+   "by": [
+    "sc_owner_change",
+    "owner_change_coils_wires"
+   ],
+   "why": "one faction handover with a switch-off control; no play moment to build a face round"
   }
  ]
 }

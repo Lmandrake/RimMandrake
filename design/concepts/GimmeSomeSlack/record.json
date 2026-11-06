@@ -573,6 +573,21 @@
    "note": "his 2026-11-02 words: precise drawing need not survive reloads or flights, only connectivity. Switch keepWiresOnGravship is the M20d row still owed (GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED close note)."
   },
   {
+   "id": "owner_change_cut",
+   "what": "When a pole is claimed or captured, every wire between it and a pole of a different owner is taken down and coiled, with a message; its own switch cutWiresOnOwnerChange, default on",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs:368",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs:63"
+   ],
+   "proof": "missing",
+   "scope": "not_opened",
+   "source": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_MapComponent_Aerial.cs:368"
+   ],
+   "note": "found by the coverage judge rm-coverage-judge-1793952643; covered by sc_owner_change"
+  },
+  {
    "id": "game_statics_reset",
    "what": "Per-game static state (tap registry, style picks, printed statics) is cleared between games, so nothing carries into a new game",
    "impl": "present",
