@@ -1,0 +1,1 @@
+artpiped 'FAIL worker_error 0s' rows next to a 'sandbox not ready' warning are not sandbox casualties: read the failed manifest's worker_stderr_tail first. On 2026-11-03 they were 'Input image does not exist' (xart_* jobs pointing into a deleted relentless clone), found under CODEX_SANDBOX_FIX_FORGETS_ITS_PASSWORD_DATE.

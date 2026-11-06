@@ -66,6 +66,9 @@ def _scenario(td: Path, job_id: str, fail: list[int], fail_from: int | None, wai
     env.update({"ARTPIPE_LEGIBILITY_THRESHOLDS": "", "ARTPIPE_MOCK_CONTROL": str(q.root / "control.json"),
                 "CODEX_SANDBOX_SEED": str(q.codex_sandbox_template),
                 "CODEX_SANDBOX_NET_EXE": str(fake), "FAKE_NET_STATE": str(state),
+                # single-shot reads: these scenarios pin the DAEMON's re-preflight, not codex_image's in-call
+                # retry (selftest_codex_pwset_retry covers that)
+                "CODEX_SANDBOX_NET_TRIES": "1",
                 "ARTPIPE_HOUSEKEEPING_S": "0.5", "ARTPIPE_PREFLIGHT_RECHECK_S": "0.5"})
     log = q.root / "daemon.out"
     with open(log, "w") as fh:

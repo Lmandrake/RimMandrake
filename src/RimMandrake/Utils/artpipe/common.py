@@ -464,7 +464,7 @@ def sandbox_check_report(codex_home_root: Path, workers: int,
         return False, [f"FAIL base home: {exc}"]
     pw = ci.machine_sandbox_password_set()
     lines.append(f"machine sandbox users last provisioned: "
-                 f"{pw.strftime('%Y-%m-%dT%H:%M:%SZ') if pw else 'UNREADABLE'}")
+                 f"{pw.strftime('%Y-%m-%dT%H:%M:%SZ') if pw else 'UNREADABLE (' + ci.LAST_PWSET_FAILURE + ')'}")
     ok_pre, msg = codex_sandbox_preflight(base)
     lines.append(f"{'ok  ' if ok_pre else 'FAIL'} shared home {base}: {msg}")
     for i in range(workers):

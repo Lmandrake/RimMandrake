@@ -243,31 +243,66 @@ def sandbox_marker_created(root: Path) -> datetime | None:
     return datetime.strptime(m.group(1), "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
 
 
+# CODEX_SANDBOX_FIX_FORGETS_ITS_PASSWORD_DATE: on 2026-11-03 one-off `net.exe user` read failures flapped artpiped's
+# codex channel 37 times in 12 h; 200 parallel reads on 2026-11-06 all passed, so the failure is transient. A read
+# is retried in-call (NET_READ_TRIES attempts, NET_READ_BACKOFF_S between) before it reports unreadable, and the
+# last failure's cause (exit code, stderr, exception) is kept in LAST_PWSET_FAILURE for the refusal message.
+NET_READ_TRIES_ENV = "CODEX_SANDBOX_NET_TRIES"  # tests only: 1 restores single-shot reads
+NET_READ_TRIES = 3
+NET_READ_BACKOFF_S = (1.0, 3.0)
+LAST_PWSET_FAILURE = ""
+
+
+def _net_user_pwset(net: Path, user: str) -> tuple[datetime | None, str]:
+    """One `net.exe user <user>` read: (UTC stamp, "") or (None, why it failed)."""
+    try:
+        proc = subprocess.run([str(net), "user", user], capture_output=True, text=True,
+                              timeout=30, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return None, f"{user}: {type(exc).__name__}: {exc}"
+    out = proc.stdout or ""
+    m = re.search(r"Password last set\s+(\d+/\d+/\d{4} \d+:\d\d:\d\d(?: [AP]M)?)", out)
+    if not m:
+        err = " ".join((proc.stderr or "").split())[:200]
+        return None, (f"{user}: exit {proc.returncode}, no 'Password last set' line"
+                      + (f", stderr: {err}" if err else f", stdout: {' '.join(out.split())[:120]!r}"))
+    txt = m.group(1)
+    fmt = "%m/%d/%Y %I:%M:%S %p" if txt.endswith("M") else "%m/%d/%Y %H:%M:%S"
+    # net.exe prints the stamp at TODAY's UTC offset, not the offset of its own date, so a
+    # stamp from before a DST change must not be read at its date's offset (a false 1 h gap).
+    return datetime.strptime(txt, fmt).replace(tzinfo=datetime.now().astimezone().tzinfo).astimezone(timezone.utc), ""
+
+
 def machine_sandbox_password_set() -> datetime | None:
     """Windows' "Password last set" for the codex sandbox users (UTC, the
-    newer of the two), read with net.exe - never codex. None = unreadable."""
+    newer of the two), read with net.exe - never codex. None = unreadable
+    after NET_READ_TRIES attempts per user (cause in LAST_PWSET_FAILURE)."""
+    global LAST_PWSET_FAILURE
+    LAST_PWSET_FAILURE = ""
     pinned = os.environ.get(MACHINE_PWSET_ENV)
     if pinned is not None:
         if pinned.lower() == "none":
+            LAST_PWSET_FAILURE = f"pinned unreadable by ${MACHINE_PWSET_ENV}"
             return None
         return datetime.fromisoformat(pinned.replace("Z", "+00:00")).astimezone(timezone.utc)
     net = Path(os.environ.get(NET_EXE_ENV) or
                ("/mnt/c/Windows/System32/net.exe" if in_wsl() else "net"))
+    try:
+        tries = max(1, int(os.environ.get(NET_READ_TRIES_ENV) or NET_READ_TRIES))
+    except ValueError:
+        tries = NET_READ_TRIES
     newest = None
     for user in SANDBOX_USER_NAMES:
-        try:
-            out = subprocess.run([str(net), "user", user], capture_output=True, text=True,
-                                 timeout=30, stdin=subprocess.DEVNULL).stdout
-        except (OSError, subprocess.TimeoutExpired):
+        when, why = None, ""
+        for attempt in range(tries):
+            if attempt:
+                time.sleep(NET_READ_BACKOFF_S[min(attempt - 1, len(NET_READ_BACKOFF_S) - 1)])
+            when, why = _net_user_pwset(net, user)
+            if when is not None:
+                break
+        if when is None:
+            LAST_PWSET_FAILURE = f"{why} ({tries} attempt{'s' if tries != 1 else ''})"
             return None
-        m = re.search(r"Password last set\s+(\d+/\d+/\d{4} \d+:\d\d:\d\d(?: [AP]M)?)", out or "")
-        if not m:
-            return None
-        txt = m.group(1)
-        fmt = "%m/%d/%Y %I:%M:%S %p" if txt.endswith("M") else "%m/%d/%Y %H:%M:%S"
-        # net.exe prints the stamp at TODAY's UTC offset, not the offset of its own date, so a
-        # stamp from before a DST change must not be read at its date's offset (a false 1 h gap).
-        when = datetime.strptime(txt, fmt).replace(tzinfo=datetime.now().astimezone().tzinfo).astimezone(timezone.utc)
         newest = when if newest is None or when > newest else newest
     return newest
 
@@ -283,7 +318,8 @@ def sandbox_state_current(root: Path) -> tuple[bool | None, str]:
         return False, f"{root}/{SANDBOX_STATE_FILES[0]} has no readable created_at"
     pwset = machine_sandbox_password_set()
     if pwset is None:
-        return None, "cannot read 'Password last set' for the codex sandbox users (net.exe user)"
+        return None, ("cannot read 'Password last set' for the codex sandbox users (net.exe user)"
+                      + (f": {LAST_PWSET_FAILURE}" if LAST_PWSET_FAILURE else ""))
     gap = abs((created - pwset).total_seconds())
     if gap <= SANDBOX_PWSET_TOLERANCE_S:
         return True, f"marker {created:%Y-%m-%dT%H:%M:%SZ} matches machine provisioning {pwset:%Y-%m-%dT%H:%M:%SZ}"
