@@ -1,0 +1,1 @@
+live-proof A7: python.exe src/RimMandrake/EnvironmentalHazards/prove_shade_lessons.py --clause A7 < /dev/null

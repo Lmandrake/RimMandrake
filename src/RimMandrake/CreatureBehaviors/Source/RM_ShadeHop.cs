@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
@@ -39,6 +40,29 @@ namespace RimMandrake.CreatureBehaviors
     // ════════════════════════════════════════════════════════════════════
     public static class RM_ShadeHop
     {
+        // SHADE_LESSONS_BUILD_WATCH_THE_HERD_CROSS: one RM_ShadeDash reaching
+        // its landing cell (a "herd crossing"). EnvironmentalHazards subscribes
+        // (its shade lessons): that assembly references this one, never the
+        // reverse, so the seam is an event raised here.
+        public static event Action<Pawn, IntVec3> CrossingLanded;
+
+        public static void RaiseCrossingLanded(Pawn pawn, IntVec3 landing)
+        {
+            Action<Pawn, IntVec3> handler = CrossingLanded;
+            if (handler == null)
+            {
+                return;
+            }
+            try
+            {
+                handler(pawn, landing);
+            }
+            catch (Exception e)
+            {
+                Log.ErrorOnce("[RM CreatureBehaviors] a CrossingLanded subscriber threw: " + e, 0x5A4D1A);
+            }
+        }
+
         private const float SprintFactor = 0.75f; // Pawn_PathFollower.CostToMoveIntoCell
         private const float JogFactor = 1f;
         private static readonly Pawn[] EmptyPawns = new Pawn[0];
@@ -409,6 +433,19 @@ namespace RimMandrake.CreatureBehaviors
             Toil sprint = Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
             sprint.AddPreInitAction(() => job.locomotionUrgency = LocomotionUrgency.Sprint);
             yield return sprint;
+
+            // The crossing has landed only if the sprint ended ON the landing
+            // cell (a failed or interrupted dash never reaches this toil).
+            Toil land = ToilMaker.MakeToil("RM_ShadeDash_Land");
+            land.initAction = () =>
+            {
+                if (pawn.Spawned && pawn.Position == job.targetB.Cell)
+                {
+                    RM_ShadeHop.RaiseCrossingLanded(pawn, job.targetB.Cell);
+                }
+            };
+            land.defaultCompleteMode = ToilCompleteMode.Instant;
+            yield return land;
         }
     }
 

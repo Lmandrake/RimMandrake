@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SHADE_LESSONS_BUILD_WATCH_THE_HERD_CROSS. Design: design/RimMandrake/shadecraft_lessons_design_2026-10-31.md.
+  Code: Source/RM_ShadeLessons.cs. Sources: Patches/RM_ShadeLessons_Sources.xml.
+
+  Two gear projects, always visible: the plain route (owner card 2026-10-03, "plain research always unlocks").
+  Three idea projects, hidden until studied (RM_FoundTechStudy, the Forge spunstone pattern). Each piece needs two
+  ideas (card 2026-10-09): parasol = portable shade + deep cloth, tent = portable shade + dew off. Whichever idea of
+  a pair finishes second raises that piece's gear project to 75% (RM_ResearchMod_RaiseProject lists both ideas, so
+  one idea alone buys nothing). All costs and the 75% are PROVISIONAL (design §2).
+-->
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RM_Research_Parasol</defName>
+    <label>parasols</label>
+    <description>A canopy of stretched cloth or hide on thin ribs, carried open overhead: shade that walks with you. Tailored at a tailoring bench or a crafting spot.</description>
+    <baseCost>400</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>1.00</researchViewX>
+    <researchViewY>12.00</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RM_Research_ShadeTent</defName>
+    <label>shade tents</label>
+    <description>A low, open-sided awning on four poles that packs up and travels to wherever the work is. Any roof gives the same shade; this one is a roof you can carry.</description>
+    <baseCost>400</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>1.00</researchViewX>
+    <researchViewY>13.00</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RM_ShadeIdea_DewOff</defName>
+    <label>keeping dew off</label>
+    <description>How a surface can shed the water that settles on it instead of soaking through, so that what lies under it stays dry and cool. With portable shade, it takes most of the work out of shade tents.</description>
+    <baseCost>100</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>0.00</researchViewX>
+    <researchViewY>13.00</researchViewY>
+    <researchMods>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_ResearchMod_RaiseProject">
+        <project>RM_Research_ShadeTent</project>
+        <requires>
+          <li>RM_ShadeIdea_PortableShade</li>
+          <li>RM_ShadeIdea_DewOff</li>
+        </requires>
+        <fraction>0.75</fraction>
+      </li>
+    </researchMods>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RM_ShadeIdea_PortableShade</defName>
+    <label>portable shade</label>
+    <description>Watching animals dash from one patch of shade to the next teaches the plain idea behind it: shade is something you can bring with you. It takes much of the work out of both parasols and shade tents, paired with a second idea.</description>
+    <baseCost>100</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>0.00</researchViewX>
+    <researchViewY>12.50</researchViewY>
+    <researchMods>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_ResearchMod_RaiseProject">
+        <project>RM_Research_Parasol</project>
+        <requires>
+          <li>RM_ShadeIdea_PortableShade</li>
+          <li>RM_ShadeIdea_DeepCloth</li>
+        </requires>
+        <fraction>0.75</fraction>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_ResearchMod_RaiseProject">
+        <project>RM_Research_ShadeTent</project>
+        <requires>
+          <li>RM_ShadeIdea_PortableShade</li>
+          <li>RM_ShadeIdea_DewOff</li>
+        </requires>
+        <fraction>0.75</fraction>
+      </li>
+    </researchMods>
+    <modExtensions>
+      <!-- No ThingDef carries this project (crossings reveal it), so it registers itself as found-tech here. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_FoundTechProjectExtension">
+        <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+        <!-- PROVISIONAL: 12 crossings seen (design §2). -->
+        <knowledgeToReveal>12</knowledgeToReveal>
+        <letterLabel>Portable shade</letterLabel>
+        <letterText>{STUDIER} has watched the animals cross the open sun enough times to see what they are doing: never walking, always running from one shade to the next. Shade is not a place. It can be carried.</letterText>
+      </li>
+    </modExtensions>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RM_ShadeIdea_DeepCloth</defName>
+    <label>deeper shade cloth</label>
+    <description>How a canopy can be made to stop more of the sun than plain cloth does: thicker, layered, or turned to throw its shadow where it counts. With portable shade, it takes most of the work out of parasols.</description>
+    <baseCost>100</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>0.00</researchViewX>
+    <researchViewY>12.00</researchViewY>
+    <researchMods>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_ResearchMod_RaiseProject">
+        <project>RM_Research_Parasol</project>
+        <requires>
+          <li>RM_ShadeIdea_PortableShade</li>
+          <li>RM_ShadeIdea_DeepCloth</li>
+        </requires>
+        <fraction>0.75</fraction>
+      </li>
+    </researchMods>
+  </ResearchProjectDef>
+
+</Defs>

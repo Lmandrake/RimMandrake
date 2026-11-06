@@ -265,6 +265,14 @@ namespace RimMandrake.EnvironmentalHazards
 
         public void Add(ResearchProjectDef project, float amount, Pawn studier, CompProperties_FoundTechStudy props)
         {
+            Add(project, amount, studier, props != null ? props.knowledgeToReveal : 12f, props?.letterLabel, props?.letterText);
+        }
+
+        // The same credit for a project with no studiable thing (a herd
+        // crossing watched, SHADE_LESSONS_BUILD_WATCH_THE_HERD_CROSS): its
+        // threshold and letter come from RM_FoundTechProjectExtension.
+        public void Add(ResearchProjectDef project, float amount, Pawn studier, float knowledgeToReveal, string letterLabel, string letterText)
+        {
             RM_FoundTechRecord r = Find(project, true);
             if (r == null || r.revealed)
             {
@@ -275,13 +283,18 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 r.studiers.Add(studier.LabelShort);
             }
-            if (r.points >= props.knowledgeToReveal)
+            if (r.points >= knowledgeToReveal)
             {
-                Reveal(project, studier, props);
+                Reveal(project, studier, letterLabel, letterText);
             }
         }
 
         public void Reveal(ResearchProjectDef project, Pawn studier, CompProperties_FoundTechStudy props)
+        {
+            Reveal(project, studier, props?.letterLabel, props?.letterText);
+        }
+
+        public void Reveal(ResearchProjectDef project, Pawn studier, string letterLabel, string letterText)
         {
             RM_FoundTechRecord r = Find(project, true);
             if (r == null || r.revealed)
@@ -291,16 +304,16 @@ namespace RimMandrake.EnvironmentalHazards
             r.revealed = true;
             string who = studier != null ? studier.LabelShort : "your researcher";
             StringBuilder sb = new StringBuilder();
-            if (props != null && !props.letterText.NullOrEmpty())
+            if (!letterText.NullOrEmpty())
             {
-                sb.Append(props.letterText.Replace("{STUDIER}", who)).Append("\n\n");
+                sb.Append(letterText.Replace("{STUDIER}", who)).Append("\n\n");
             }
             sb.Append("A new research project is open: ").Append(project.LabelCap).Append('.');
             if (r.studiers.Count > 0)
             {
                 sb.Append("\n\nThe samples were studied by: ").Append(string.Join(", ", r.studiers)).Append('.');
             }
-            string label = props != null && !props.letterLabel.NullOrEmpty() ? props.letterLabel : project.LabelCap.ToString();
+            string label = !letterLabel.NullOrEmpty() ? letterLabel : project.LabelCap.ToString();
             Verse.Find.LetterStack.ReceiveLetter(label, sb.ToString(), LetterDefOf.PositiveEvent);
         }
 
@@ -356,8 +369,10 @@ namespace RimMandrake.EnvironmentalHazards
     }
 
     // Projects revealed by found-tech study, with the gate each answers to.
-    // Built once from every ThingDef's comps (all defs are loaded before any
-    // game can ask IsHidden).
+    // Built once from every ThingDef's comps, plus every ResearchProjectDef
+    // carrying RM_FoundTechProjectExtension (a project with no studiable
+    // thing, e.g. RM_ShadeIdea_PortableShade), since all defs are loaded
+    // before any game can ask IsHidden.
     public static class RM_FoundTechRegistry
     {
         private static Dictionary<ResearchProjectDef, string> projects;
@@ -386,6 +401,14 @@ namespace RimMandrake.EnvironmentalHazards
                     {
                         projects.Add(p.project, p.gateKey);
                     }
+                }
+            }
+            foreach (ResearchProjectDef proj in DefDatabase<ResearchProjectDef>.AllDefsListForReading)
+            {
+                RM_FoundTechProjectExtension ext = proj.GetModExtension<RM_FoundTechProjectExtension>();
+                if (ext != null && !projects.ContainsKey(proj))
+                {
+                    projects.Add(proj, ext.gateKey);
                 }
             }
         }

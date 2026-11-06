@@ -355,6 +355,11 @@ namespace RimMandrake.EnvironmentalHazards
     //      ArmorRating, so it starts choosing hazard gear on its own. Never
     //      changes what the gear actually does once worn — only whether the
     //      AI notices it is worth wearing.
+    //  59. shadeLessonsEnabled — RM_ShadeLessons.cs (SHADE_LESSONS_BUILD_WATCH_
+    //      THE_HERD_CROSS), gate EnvironmentalHazards.ShadeLessons. Off: shade
+    //      sources are not studiable, herd crossings add nothing, and the three
+    //      RM_ShadeIdea_* projects show as ordinary research (their 75% credit
+    //      to a gear project still works). The gear projects never change.
     //  58. launchHeldColonistWarningEnabled — RM_Patch_LaunchHeldColonistWarning
     //      (LAUNCH_HELD_COLONIST_WARNING_1). On: the gravship launch
     //      confirmation names every colonist or colony prisoner held inside
@@ -455,6 +460,8 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool gradientSurgeEnabled = true;
         public static bool grazingSuppressionHookEnabled = true;
         public static bool hazardApparelAIAwarenessEnabled = true;
+        // SHADE_LESSONS_BUILD_WATCH_THE_HERD_CROSS (RM_ShadeLessons.cs): gate EnvironmentalHazards.ShadeLessons.
+        public static bool shadeLessonsEnabled = true;
         // SUMP_TAR_LIVING_SYSTEMS_1 part 1: living-map responders after a tar rewrite. Pace is PROVISIONAL (1.0 = the
         // first-guess delays in RM_MapComponent_SumpLivingMap; owner ruling 2026-10-03, tuned live later).
         public static bool sumpLivingMapEnabled = true;
@@ -611,6 +618,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref gradientSurgeEnabled, "gradientSurgeEnabled", true);
             Scribe_Values.Look(ref grazingSuppressionHookEnabled, "grazingSuppressionHookEnabled", true);
             Scribe_Values.Look(ref hazardApparelAIAwarenessEnabled, "hazardApparelAIAwarenessEnabled", true);
+            Scribe_Values.Look(ref shadeLessonsEnabled, "shadeLessonsEnabled", true);
             Scribe_Values.Look(ref sumpLivingMapEnabled, "sumpLivingMapEnabled", true);
             Scribe_Values.Look(ref sumpLivingMapPace, "sumpLivingMapPace", 1f);
             Scribe_Values.Look(ref waterLockedRecoveryWalk, "waterLockedRecoveryWalk", true);
@@ -949,7 +957,7 @@ namespace RimMandrake.EnvironmentalHazards
                   + "stops felling them, and a creature built to gnaw one down stops seeking a trunk to chew.");
                 list.GapLine();
             }
-            if (Group(list, "Gear, letters and notices", RimMandrake.Shared.SettingScope.Now, new[] { "launchHeldColonistWarningEnabled", "livePrepStrictViability", "treasureConscienceEnabled", "hazardApparelAIAwarenessEnabled", "biomeArrivalLettersEnabled", "grazingSuppressionHookEnabled" }))
+            if (Group(list, "Gear, letters and notices", RimMandrake.Shared.SettingScope.Now, new[] { "launchHeldColonistWarningEnabled", "livePrepStrictViability", "treasureConscienceEnabled", "hazardApparelAIAwarenessEnabled", "biomeArrivalLettersEnabled", "grazingSuppressionHookEnabled", "shadeLessonsEnabled" }))
             {
                 list.CheckboxLabeled("Warn at gravship launch about held colonists", ref launchHeldColonistWarningEnabled,
                     "The launch confirmation names any colonist or prisoner held inside something (a brine jacket, "
@@ -974,6 +982,12 @@ namespace RimMandrake.EnvironmentalHazards
                     "A plant-eating pawn's bite stops being recorded as encroachment suppression. Has no "
                   + "visible effect yet on any install — the hook is armed but the suppression system it "
                   + "feeds hasn't shipped.");
+                list.CheckboxLabeled("Shade gear is learned by study", ref shadeLessonsEnabled,
+                    "On: a biome's own plants and hides can be studied for shade ideas, and a colonist who watches "
+                  + "an animal dash between shades learns portable shade. The idea projects stay hidden until "
+                  + "studied, and two ideas take a parasol or shade tent project to 75%. Off: nothing is studiable "
+                  + "for them, crossings teach nothing, and the idea projects are ordinary research from the start, "
+                  + "still with their discount. The parasol and tent projects are the same either way.");
                 list.GapLine();
             }
             list.End();
@@ -989,6 +1003,7 @@ namespace RimMandrake.EnvironmentalHazards
         public RM_EnvironmentalHazardsMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_EnvironmentalHazardsSettings>();
+            RM_MechanicGates.Register(RM_ShadeLessons.GateKey, () => RM_EnvironmentalHazardsSettings.shadeLessonsEnabled);
         }
 
         public override string SettingsCategory()

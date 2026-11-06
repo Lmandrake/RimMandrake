@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SHADE_LESSONS_BUILD_WATCH_THE_HERD_CROSS: one local shade lesson per hot biome (design §4,
+  design/RimMandrake/shadecraft_lessons_design_2026-10-31.md). Each source gets a found-tech study comp for its idea.
+  The picks are delegated agent taste, each from the thing's own description; any can be swapped.
+
+  PatchOperationConditional on the def's own xpath, never PatchOperationFindMod: these mods are composed into
+  mandrake.rm.biomes, so a member's own packageId never loads (design §5). A def that is absent matches nothing and
+  the row is skipped. The comp is added to the def's own <comps>, or a <comps> is made (inheritance merges it with a
+  parent's list).
+
+  RUT_ twin rows: added only where the twin's cast holds no source above (measured from the twins' wildPlants,
+  2026-11-05). RUT_TheScald and RUT_RustCathedral have no plant cast and get no row; crossings still teach portable
+  shade there. frequencyTicks 15000 and knowledgeToReveal 12 are PROVISIONAL, the Stellock/Spunstone scale.
+-->
+<Patch>
+
+  <!-- Long Shade: RM_Dewfringe teaches keeping dew off -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Dewfringe"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Dewfringe"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has turned dewfringe fronds over at dawn: the dew beads and runs off their waxed tips instead of soaking in, and the ground under them stays dry.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Dewfringe"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Dewfringe"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has turned dewfringe fronds over at dawn: the dew beads and runs off their waxed tips instead of soaking in, and the ground under them stays dry.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Long Shade: RM_Leather_Mirrak teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Leather_Mirrak"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Leather_Mirrak"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has held mirrak hide up against the sun and seen how little comes through it. A canopy can be made to stop far more light than plain cloth.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Leather_Mirrak"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Leather_Mirrak"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has held mirrak hide up against the sun and seen how little comes through it. A canopy can be made to stop far more light than plain cloth.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Stillsand: RM_Ollim teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Ollim"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Ollim"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has stood under an ollim: its bone-white shield on a flat-topped trunk throws a shadow far darker than its size suggests.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Ollim"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Ollim"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has stood under an ollim: its bone-white shield on a flat-topped trunk throws a shadow far darker than its size suggests.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Cracked Lands: RM_Nabbuq teaches keeping dew off -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Nabbuq"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Nabbuq"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has cut into nabbuq bladders on the shade line and found them full: their skins keep water in and keep the wet of the air out.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Nabbuq"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Nabbuq"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has cut into nabbuq bladders on the shade line and found them full: their skins keep water in and keep the wet of the air out.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Weeping Stones: RM_Dripfringe teaches keeping dew off -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Dripfringe"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Dripfringe"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has watched dripfringe shed its water from a curtain of drip-tips, every drop led off the edge, nothing left on the leaf.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Dripfringe"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Dripfringe"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has watched dripfringe shed its water from a curtain of drip-tips, every drop led off the edge, nothing left on the leaf.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Contagion: RM_Bleedleaf teaches keeping dew off -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Bleedleaf"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Bleedleaf"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has followed the fluid bleedleaf sheds: it runs to the leaf tips and falls clear, and the leaf stays dry behind it.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Bleedleaf"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Bleedleaf"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has followed the fluid bleedleaf sheds: it runs to the leaf tips and falls clear, and the leaf stays dry behind it.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Pyrelands: RM_FE_Plant_ScorchFruit teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_FE_Plant_ScorchFruit"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_FE_Plant_ScorchFruit"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has studied a scorch fruit casing: a skin sealed so tight against heat that only fire cracks it. A canopy can be layered the same way.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_FE_Plant_ScorchFruit"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_FE_Plant_ScorchFruit"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has studied a scorch fruit casing: a skin sealed so tight against heat that only fire cracks it. A canopy can be layered the same way.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Webwork: RM_Dulloth teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Dulloth"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Dulloth"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has walked under dulloth leaves that meet pane to pane, a ceiling with no gap for the sun.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Dulloth"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Dulloth"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has walked under dulloth leaves that meet pane to pane, a ceiling with no gap for the sun.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Rust Cathedral: RM_CathedralRoachShell teaches keeping dew off -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_CathedralRoachShell"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_CathedralRoachShell"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has turned a cathedral roach shell over: a curved plate that lets water run straight off it and keeps the underside dry.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_CathedralRoachShell"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_CathedralRoachShell"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has turned a cathedral roach shell over: a curved plate that lets water run straight off it and keeps the underside dry.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- The Forge: RM_HeatsinkFungus teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_HeatsinkFungus"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_HeatsinkFungus"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has felt heatsink fungus take heat in. A shade cloth can be made to soak up the sun instead of passing it through.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_HeatsinkFungus"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_HeatsinkFungus"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has felt heatsink fungus take heat in. A shade cloth can be made to soak up the sun instead of passing it through.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- The Scald: RM_Seepcandle teaches keeping dew off -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Seepcandle"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Seepcandle"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has watched seepcandle melt run off its waxy skin and leave the skin itself dry.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Seepcandle"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Seepcandle"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has watched seepcandle melt run off its waxy skin and leave the skin itself dry.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Fever Wood: RM_GiantLeaf teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_GiantLeaf"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_GiantLeaf"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has sheltered under one giant leaf, a roof a grown man can stand beneath, and seen how deep its shade is.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_GiantLeaf"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_GiantLeaf"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has sheltered under one giant leaf, a roof a grown man can stand beneath, and seen how deep its shade is.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Greentide: RM_Veluthar teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Veluthar"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Veluthar"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has stood under a veluthar: one tier of paddle leaves, opened out like an umbrella, the shade beneath it unbroken.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Veluthar"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Veluthar"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has stood under a veluthar: one tier of paddle leaves, opened out like an umbrella, the shade beneath it unbroken.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Scarlands: RM_Glower teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Glower"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Glower"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has studied the glower varnish that eats the hot ground's glare. A canopy can be dressed to stop more than light.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Glower"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Glower"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has studied the glower varnish that eats the hot ground's glare. A canopy can be dressed to stop more than light.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- Miasma: RM_Vellamine teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Vellamine"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Vellamine"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has looked up through vellamine: broad leaves laid over one another with no gap, the shadow under them close to night.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Vellamine"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Vellamine"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has looked up through vellamine: broad leaves laid over one another with no gap, the shadow under them close to night.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RUT_CrackedLands: RM_GargantuanLithops teaches keeping dew off -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_GargantuanLithops"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_GargantuanLithops"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has studied a gargantuan lithops, a living stone that keeps its water sealed in under a dry, hard skin.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_GargantuanLithops"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_GargantuanLithops"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has studied a gargantuan lithops, a living stone that keeps its water sealed in under a dry, hard skin.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RUT_Contagion: RM_GlobularPlant teaches keeping dew off -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_GlobularPlant"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_GlobularPlant"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has watched the sap that drips from a globular aberration: it runs off the wood and falls clear, and nothing settles on it.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_GlobularPlant"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_GlobularPlant"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DewOff</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Keeping dew off</letterLabel>
+              <letterText>{STUDIER} has watched the sap that drips from a globular aberration: it runs off the wood and falls clear, and nothing settles on it.</letterText>
+              <inspectLabel>Dew-off study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RUT_WeepingStones: RM_Shadefern teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Shadefern"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Shadefern"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has studied shadefern, which grows only in the deepest stone shade, and learned how dark that shade has to be.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Shadefern"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Shadefern"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has studied shadefern, which grows only in the deepest stone shade, and learned how dark that shade has to be.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RUT_Miasma: RM_MangrovePalm teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_MangrovePalm"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_MangrovePalm"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has stood under a mangrove palm and counted how its fronds overlap into one dense canopy.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_MangrovePalm"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_MangrovePalm"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has stood under a mangrove palm and counted how its fronds overlap into one dense canopy.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RUT_Webwork: RM_Aaklac teaches deeper shade cloth -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Aaklac"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_Aaklac"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has studied the huge aaklac flower, its broad petals cupped into a shade of their own.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ThingDef[defName="RM_Aaklac"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_Aaklac"]</xpath>
+        <value>
+          <comps>
+            <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+              <project>RM_ShadeIdea_DeepCloth</project>
+              <gateKey>EnvironmentalHazards.ShadeLessons</gateKey>
+              <frequencyTicks>15000</frequencyTicks>
+              <knowledgeToReveal>12</knowledgeToReveal>
+              <letterLabel>Deeper shade cloth</letterLabel>
+              <letterText>{STUDIER} has studied the huge aaklac flower, its broad petals cupped into a shade of their own.</letterText>
+              <inspectLabel>Shade cloth study (colony)</inspectLabel>
+            </li>
+          </comps>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+</Patch>
