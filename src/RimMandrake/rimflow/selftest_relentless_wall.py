@@ -373,6 +373,21 @@ def test_through():
           real["read_through"][0] == "/mnt/d/ClaudeWork/rimmandrake"
           and "/mnt/d/ClaudeWork/rimmandrake/relentless_agent" in real["never_through"]
           and not W.through_reachable("/mnt/d/ClaudeWork/rimmandrake/relentless/X_progress.md", real), real.get("never_through"))
+    # MARKER_WALL_FIX_HOST_LOG_BEHIND_GLASS: SELFTEST_ALARM_FIX_ESCAPES_INTO_REAL_LOG failed blind 3 times because its clause
+    # ('no fixture line left in conductor/log.md') read an empty tmpfs. The named host file binds read only; nothing
+    # outside the allowlist does, however it is spelled.
+    log = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
+    pr = W.props(real, "/nonexistent-box", through_paths=[log])
+    refused = ["/home/mandrake/.ssh/id_ed25519", "/mnt/d/Luke/dev/RimMandrake/CLAUDE.md", "/mnt/d/ClaudeWork/rimmandrake",
+               "/mnt/d/ClaudeWork/rimmandrake/conductor/handoff.md", "/mnt/d/ClaudeWork/rimmandrake/x/w_progress.md",
+               "/mnt/d/ClaudeWork/rimmandrake/relentless_agent/a/out.txt", "/mnt/d/ClaudeWork/rimmandrake/../../Luke/x",
+               "/mnt/d/ClaudeWork/other/log.md"]
+    check("the Marker reads the named conductor log read only, refused outside the allowlist",
+          W.through_reachable(log, real) and W.through_reachable("D:\\ClaudeWork\\rimmandrake\\conductor\\log.md", real)
+          and "BindReadOnlyPaths=-" + log in pr and not any(log in q for q in pr if q.startswith("BindPaths="))
+          and "TemporaryFileSystem=/mnt/d/ClaudeWork/rimmandrake" in pr
+          and not any(W.through_reachable(x, real) for x in refused),
+          [x for x in refused if W.through_reachable(x, real)])
 
 
 def main():
