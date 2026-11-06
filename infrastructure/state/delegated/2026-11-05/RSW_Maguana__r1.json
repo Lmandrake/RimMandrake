@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Maguana",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [2.5, 2.5]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "2acaed25f54087fd0cd8a7747c3dfc7fb8b5139b6a02e7c83a23489dc7b2a80d",
+  "east.png": "3762c5a461bcd891136fd67a78f6125b626d008122eadf5e774ccdda8e920082",
+  "north.png": "ea86244cdee499bbec845950069e025400e3e9e50540ac9bdccdf015e5bd638f",
+  "scale.png": "8e8ada90128c4c8cb0788862d45de998573928c22c746eb4a7a3116a9d11f2ff",
+  "facings.png": "7270da11de303e0af5f6317a9fa37e08623f373bd3ae70e9a116e36c1d0a9e6a"
+ }
+}

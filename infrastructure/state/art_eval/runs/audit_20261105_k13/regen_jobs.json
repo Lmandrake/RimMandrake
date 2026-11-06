@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RSW_ShiroTrap__ShiroTrap_i_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_ShiroTrap__ShiroTrap_i",
+  "prompt": "A creature sprite for RimWorld: the shiro-trap. A slow, squat, armoured reptile from Naboo carrying a Tooke-trap plant between the ridges of its shell. The plant conceals its host, while the Shiro carries the traps from place to place. The pairing feeds readily on Tooke. The host is an unfamiliar alien reptile: a low, flat-topped shell with several deep, parallel raised ridges running front to back and a serrated rim of bony plates, mottled slate-green and ochre. Its head is a broad, flat, wedge-shaped reptilian head with a ridge of small bony plates running from the brow down the neck, echoing the shell ridges, a short blunt snout with slit nostrils, and large dark eyes set high and wide. Its limbs are short, splayed, low-slung angular legs with broad webbed feet, each ending in three heavy blunt claws, with bony plate ridges along the forearms. Growing from the grooves between the shell ridges is a broad rosette of leaves that covers most of the back and hides much of the host, with tall maroon jawed traps rising from it. Front view, eyes toward the viewer, head and forelegs visible beneath the leaves. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k13",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.2,
+  "module": "walker",
+  "target_texpath": "swanimals/ShiroTrap/ShiroTrap"
+ }
+]

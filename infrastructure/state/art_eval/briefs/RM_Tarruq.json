@@ -1,22 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Tarruq",
  "nearest_earth_animal": "gibbon",
  "earth_body_named": false,
  "departures": [
-  "lean, very long limbs built for vertical climbing",
-  "grip-padded feet",
-  "a deep resonating throat-chamber swelling under the head",
-  "no fur coat or primate face"
+  {
+   "feature": "grip-padded feet",
+   "quote": "grip-padded feet"
+  },
+  {
+   "feature": "a deep resonating throat-chamber",
+   "quote": "a deep resonating throat-chamber"
+  }
  ],
- "body_plan": "walker",
+ "body_plan": "wall_clinger",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:15:33-08:00",
  "source": "description only (no image)"
 }

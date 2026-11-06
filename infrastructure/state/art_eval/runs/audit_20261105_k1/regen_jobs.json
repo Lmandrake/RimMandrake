@@ -1,0 +1,47 @@
+[
+ {
+  "id": "arteval_RSW_PekoPeko__PekoPeko_m_ns_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_PekoPeko__PekoPeko_m_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same blue-and-gold colours and markings, and the same body bulk and size on the canvas, seen from the view this job asks for. A creature sprite for RimWorld: the Peko-peko, a large colourful reptavian native to the swamps of Naboo, with scaly reptile skin, a strong heavy beak with a downward hook at the tip, and a dark charcoal crest sweeping back from the rear of the skull. Match the reference's rendering treatment exactly: flat colour regions with simple cel-style shading in two or three distinct tones per colour area, a thick, even, dark outline around the whole silhouette and around the major wing, feather and scale shapes, the same contour weight as the east view, and a few large bold scale-pattern marks. Feather and scale detail uses the same large, flat, layered shapes as the east view, so the east, south and north views read as one sprite set. Scale: the head, torso and folded wings form one large mass about 90 px across, as big as the east bird's, filling the canvas in the same way, centred with the whole body visible and nothing cut off. The front view (eyes toward the viewer) shows the head facing the camera with the beak closed or only slightly parted so the heavy hooked beak reads clearly, the dark crest framing the top and sides of the head, the pale blue and gold on the chest and wings, a broad chest and shoulder mass equal to the east bird's, and the legs and feet below. The rear view (seen from behind) shows the broad back, folded wings, tail and haunches, with the dark crest at the back of the skull and the eyes hidden; the tail extends in foreshortening, and the back and wing mass is as large as the east bird's. Exactly ONE creature, centred. Painterly vanilla RimWorld sprite style, realistic proportions, with the east view's flat colour regions and heavy dark outline. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_INCONSISTENT, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.5,
+  "module": "flyer"
+ },
+ {
+  "id": "arteval_RM_SparkleechGrub_s1r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SparkleechGrub",
+  "prompt": "A creature sprite for RimWorld: the sparkleech grub, a single free-standing grub seen alone. A wingless, plump, segmented grub body lying low and stretched out lengthwise, ground-hugging and not curled into a C, with soft pale-cream segments, fine ridges between them, and short stubby legs along the underside. Its head is its own small rounded capsule, and the head ends in a round, socket-shaped mouth opening, open and fully visible on the front face, ringed by a soft pale lip, as the dominant feature. Instead of chewing jaws, the mouth reads as a smooth round socket. The grub's own body, head and mouth make up the entire silhouette; every facing shows the grub alone. The south view shows the head and socket mouth toward the viewer. The east view shows the grub in side profile with the mouth at the front end. The north view shows the rear: the back, tail segments and hind end, with the mouth hidden. Realistic painterly vanilla RimWorld sprite style with a clean dark outline and soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: the grub alone, with no ground, no plants, no roots, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: ALPHA_HALO, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.32,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub"
+ }
+]

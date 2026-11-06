@@ -1,21 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_IridonianReek",
- "nearest_earth_animal": "rhino",
+ "nearest_earth_animal": "rhinoceros",
  "earth_body_named": false,
  "departures": [
-  "the canon reek (see canon entry iridonianreek)",
-  "a tall central horn and two forward-curving cheek horns",
-  "red head and shoulders over knobbly brown hide"
+  {
+   "feature": "two cheek horns that curve forward, in addition to the main horn",
+   "quote": "two forward-curving cheek horns"
+  },
+  {
+   "feature": "one tall horn in the middle of the head",
+   "quote": "a tall central horn"
+  },
+  {
+   "feature": "thick brown hide covered in knobs, not smooth or plated",
+   "quote": "thick, knobbly brown hide"
+  },
+  {
+   "feature": "red head and shoulders against the brown body",
+   "quote": "The red head and shoulders"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:11:10-08:00",
  "source": "description only (no image)"
 }

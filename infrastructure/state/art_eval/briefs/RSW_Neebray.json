@@ -1,21 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_Neebray",
  "nearest_earth_animal": "manta ray",
  "earth_body_named": false,
  "departures": [
-  "the canon juvenile neebray (see canon entry neebray)",
-  "a limbless body with six eyes",
-  "two translucent wings and a smaller pair of tail fins"
+  {
+   "feature": "six eyes",
+   "quote": "six eyes"
+  },
+  {
+   "feature": "two translucent wings instead of opaque pectoral fins",
+   "quote": "two translucent wings"
+  },
+  {
+   "feature": "a second, smaller pair of tail fins rather than a single whip tail",
+   "quote": "a smaller pair of tail fins"
+  }
  ],
  "body_plan": "flyer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:17:27-08:00",
  "source": "description only (no image)"
 }

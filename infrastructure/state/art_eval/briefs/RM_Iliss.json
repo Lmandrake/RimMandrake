@@ -1,21 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Iliss",
  "nearest_earth_animal": "eel",
  "earth_body_named": true,
  "departures": [
-  "a wire-thin black eel the length of a forearm",
-  "a glinting spine of conductive mineral along its back",
-  "a sharp biting mouth"
+  {
+   "feature": "wire-thin body, far thinner than an Earth eel",
+   "quote": "A wire-thin eel"
+  },
+  {
+   "feature": "a visible spine made of mineral",
+   "quote": "a spine of conductive mineral"
+  }
  ],
  "body_plan": "swimmer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:13:39-08:00",
  "source": "description only (no image)"
 }

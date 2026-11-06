@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Maalraas",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [3.0, 3.0]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "144604a65d9ffda5206776da0938ca0974ad32396d5f38dc1f0ac400a3f5a76a",
+  "east.png": "6f25c62b2ab89a407baade5935b0dee25a03214ba12b4516f92679d3d5e6d812",
+  "north.png": "a1d8e75cb0200328d7bbfe0c3b213a07d50ec9f6bb683cea9c0c980779c60ef6",
+  "scale.png": "55721cffe9d1aed614327056d6293eef5f9f85f3697067935886ccf582796643",
+  "facings.png": "bb08d04fb3f010f5d06c7382a6feb7b44e77f1a6c4815d5a93c50748e2ab2526"
+ }
+}

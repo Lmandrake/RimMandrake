@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Falumpaset",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [4.0, 4.0]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c963c7825d1dca5ac14318d851a902a2448dd295f0f8e912bbd861b2bcb19681",
+  "east.png": "54a6f7f652fc7cdb3f1efa191fe089d106d8dc023a52477f25833f0c082520a1",
+  "north.png": "b5f1222d4bef4a00c5028ad666c538352fee1d6ff3c0e95026902746c42814f8",
+  "scale.png": "0a3b639f348f95f26a7a6b5aebe60187f7f0bb1b2e676f9e26cdfeb7da372b1c",
+  "facings.png": "d44f73c2954653aeff7b2af0398cf69e36c0babaa321b1e54d2a2a9cfaa0239f"
+ }
+}

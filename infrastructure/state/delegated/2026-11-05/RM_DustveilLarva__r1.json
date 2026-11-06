@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 31.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3388136
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 23.0
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_DustveilLarva",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['DESC_MISS']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e48a8608fa6e9d3edbb35eb190cb2c21d3cbe2dc64ec797c1136f0c56a9c7aea",
+  "east.png": "91351a28d72d0225e2f9d382f3e97b3d91fc15abfa3ea1f7a3d5e32921aac7f1",
+  "north.png": "9f6ea4e82877be673af33b24101b7110ec7513a77d3571716eaafd3ae0974e6a",
+  "scale.png": "bd789f6cf6b1db741e01f1968b7ec6548f4a2746e3ab4e8606013ddbd9aab80e",
+  "facings.png": "48627d5d2f82aaf0c1518a498ed5a75f06c57e3c6368c7e414a17ac711f35a28"
+ }
+}

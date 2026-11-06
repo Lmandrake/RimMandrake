@@ -1,21 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_Sacapillar",
  "nearest_earth_animal": "caterpillar",
- "earth_body_named": false,
+ "earth_body_named": true,
  "departures": [
-  "a larva-like bug with a huge balloon-like thorax swollen with gas",
-  "small legs that barely touch the ground beneath the floating thorax",
-  "a pack-animal-sized body in polluted, sickly colours"
+  {
+   "feature": "oversized, gas-swollen thorax that dominates the body",
+   "quote": "has a large thorax filled with putrescent gasses"
+  },
+  {
+   "feature": "body held up so it barely touches the ground",
+   "quote": "barely touching the ground"
+  }
  ],
- "body_plan": "flyer",
+ "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:16:41-08:00",
  "source": "description only (no image)"
 }

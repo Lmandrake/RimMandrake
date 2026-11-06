@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Qorrax",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [3.8, 3.8]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "5a418ef661f378c194ab2848c393229b98c2eb6b0a6f3e30ce853744ef41daa7",
+  "east.png": "716447f3b0866bd793f5e9677704076bd289745525b9aaf81d9963efdda7d544",
+  "north.png": "5b71a24e99d36e7b3be6f6c115a916c8dcaf3f4c44757413145da9c5976e49f0",
+  "scale.png": "a51965a019b517976d996d6bde8cb95a894d52bcc32bd921a78150bff38cf9dd",
+  "facings.png": "12e4a77d92883e51a92c8e503f62943f28f59dee5b7f8913bdc82e215bee9808"
+ }
+}

@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RSW_Neebray_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Neebray",
+  "prompt": "A creature sprite for RimWorld: the neebray. A bird-sized juvenile neebray, with a limbless body, six eyes, two translucent wings and a smaller pair of tail fins. Young neebrays inhabit worlds such as Tatooine, Rugosa and Rishi Moon; the gigantic adults migrate through space and feed on stellar gases. Visible features it must show: the canon juvenile neebray (see canon entry neebray); a limbless body with six eyes; two translucent wings and a smaller pair of tail fins. Front view, eyes toward the viewer, with natural amphibian facial anatomy: six eyes integrated into a heavy brow ridge, set at uneven sizes and spacing, each eye wet, dark and slightly irregular with a subtle specular highlight; broad skin folds along the cheeks; a large toothed mouth held in a neutral, predatory, slightly open gape. Moist, mottled, textured skin with painterly shading. Keep the body shape, colour palette, translucent wings and tail fins of the previous render unchanged. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_CARTOON, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k11",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.75,
+  "module": "flyer",
+  "target_texpath": "swanimals/Neebray/Neebray"
+ }
+]

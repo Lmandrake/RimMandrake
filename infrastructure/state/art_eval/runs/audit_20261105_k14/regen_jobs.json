@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RSW_WompRat_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_WompRat",
+  "prompt": "A creature sprite for RimWorld: the womp rat. Womp rats were large, omnivorous rodents native to Tatooine that were widely considered to be pests. While womp rats were opportunists and fond of carrion, they were also predators. Visible features it must show: the canon Tatooine womp rat (see canon entry womprat); a large, heavy-bodied rodent with a thick broad torso; a predator-scavenger's teeth. Body mass is the same in every facing: the front view's broad shoulders and chest, the side view's substantial rump, and the rear view's wide hunched haunches, thick rump and substantial dark paws planted wide all carry equal bulk and fill the same width at the same height. The rear view is seen from behind, showing back, tail and haunches, with eyes hidden. Keep the palette, fur colouring and body plan identical to the previous render. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k14",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/WompRat/WompRat"
+ },
+ {
+  "id": "arteval_RM_Bladderboil_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Bladderboil",
+  "prompt": "A creature sprite for RimWorld: the bladderboil in its RESTING state. A leathery golden sac the size of a head, drifted into a quiet margin pool and sighed out through its crater-mouths. It lies slumped and deflated as a low, wide, deeply wrinkled bag: a limp, creased dome of loose golden leathery skin, wider than it is tall, with heavy sagging folds and soft pleats running across the whole surface. The lower third droops and pools flat, giving a half-sunk, resting silhouette that sits low to the ground. The body holds no firm shape, and it has no fins, tail, scales or limbs. Two or three crater-like mouths are visible on the slumped skin at different places, each puckered shut into a small ringed rim with fine radiating wrinkles. The skin is warm golden leather with darker amber creases and a soft highlight on the upper folds. It reads as a harmless, sagging, empty-looking bag. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of golden brown. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k14",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.8,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil"
+ }
+]

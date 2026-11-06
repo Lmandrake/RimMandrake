@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RM_Dakkra_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dakkra",
+  "prompt": "A creature sprite for RimWorld: the dakkra. A low ambusher that waits in shade, then makes a short, fast rush at exposed prey. It spreads a row of dorsal fins and a smaller tail fan to shed heat in shade, and folds both flat when it runs. Body plan, identical in every view: a long, flat, low-slung wedge-shaped torso held close to the ground, with four short limbs tucked close beneath it, ending in narrow pads. The head is a slender wedge with narrow jaws and forward-set eyes. It sits at the end of a tapering neck. The torso is substantial, with full, heavy haunches, and the hips are as wide as the shoulders. The dorsal fin blades form a separate ridged crest rising along the spine behind the head, from the shoulders to the tail root. Its width is the same in every view. The tail ends in one broad fan of blades spreading evenly to both sides. Front view: eyes toward the viewer, the slender wedge head in front, the ridged crest rising behind it. Side view: the long flat torso, the crest along the spine, the broad tail fan at the rear. Rear view, seen from behind: the full-width haunches and flanks, the crest spanning the same width as in the front view, and the broad tail fan spreading left and right from the tail root, with the eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, F_INCONSISTENT, STYLE_EARTHLY, F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
+ }
+]

@@ -1,0 +1,58 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 36.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.353446
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_CorellianHound",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['SCALE_WRONG', 'LEGIB_32']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "8ef7a68974eaffaed49da803deb2d649032bf8d80a98b4f8a76aade2b3de927c",
+  "east.png": "bf6f12189511b434411de0c1b1475c353b9a0967258f88ed7e92f24504beaa63",
+  "north.png": "d2180bd0d13ef5a21a794bb6f8e3639346bab37be423973257b46ac990ff682b",
+  "scale.png": "b49df59e87a3660fdd7d4315de27d5e9e80ebd234fd7abbf49c28aa9c81f8bf6",
+  "facings.png": "b914b0d792cf5271a01fb7a85547f6029a32314cbb0e94e0887bfaf76d165c08"
+ }
+}

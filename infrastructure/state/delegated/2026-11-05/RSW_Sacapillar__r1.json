@@ -1,0 +1,70 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3519992
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 10.6,
+    "error": "eval pipeline: a WEAK Opus pass goes to the GPT targeted second look (owner 2026-10-23)\n[consult] 15691 chars, 0 file(s), 5 image(s), model gpt-6.1-sol, round -, job D:\\ClaudeWork\\rimmandrake\\scratch\\codex\\consult-20261105-194505-853779-9fcbd9\n[consult] receipt job consult-20261105-194505-853779-9fcbd9\nERROR: no answer (exit 1 after 10s). Job kept: /mnt/d/ClaudeWork/rimmandrake/scratch/codex/consult-20261105-194505-853779-9fcbd9\n<3>WSL (853788 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110\n\n"
+   },
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 23.7
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Sacapillar",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING']; polish ['SCALE_WRONG', 'LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "905b8c48dd865139781086493409daf9de46fe959317fa6626e5e6070aace478",
+  "east.png": "60f09b8bf9dcfd5afe2b4eed5540ba1c6798308a031d067b62bf17216f5b31a5",
+  "north.png": "3d9008348f76cb743f73b81702e85f722c2908754ff440ab754eee5a41cc05ef",
+  "scale.png": "d61080547d5a13761e2468f4789daa2427fe92602b2dcee9bcc4a2e90deea537",
+  "facings.png": "c4151578937b1778e0270c90e9d208f044556f98d8f102928aca4a6bd8b93990"
+ }
+}

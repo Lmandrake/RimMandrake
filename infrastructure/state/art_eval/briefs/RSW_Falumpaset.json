@@ -1,21 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_Falumpaset",
- "nearest_earth_animal": "hippopotamus",
+ "nearest_earth_animal": "elephant",
  "earth_body_named": false,
  "departures": [
-  "the canon Naboo falumpaset (see canon entry falumpaset)",
-  "very long legs under a heavy rump",
-  "wrinkled spotted hide and a low-hung head"
+  {
+   "feature": "long legs",
+   "quote": "long-legged"
+  },
+  {
+   "feature": "heavy rump",
+   "quote": "with a heavy rump"
+  },
+  {
+   "feature": "wrinkled hide with spots",
+   "quote": "wrinkled spotted hide"
+  },
+  {
+   "feature": "head held low",
+   "quote": "a low-hung head"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:10:16-08:00",
  "source": "description only (no image)"
 }

@@ -1,0 +1,45 @@
+[
+ {
+  "id": "arteval_RSW_Gorg__GorgV_N_n_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gorg__GorgV_N_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same purple spotted skin, same pale underside, same size on the canvas, now seen in rear view, seen from behind. A creature sprite for RimWorld: the gorg. Gorgs are small amphibians, known as chubas in Huttese and used as food by many species. Visible features: a small, chubby amphibian with short legs and a wide mouth. In this rear view the creature shows its back, rump and haunches: the plain spotted purple back and rump are one continuous patterned surface, the same purple skin and spots as the flank in the side view; the rounded haunches sit over the short hind legs folded at each side, with the pale underside just visible below; the head is a rounded purple dome with the eyes hidden. The red tongue stays inside the mouth, out of sight from behind, so the whole rear surface is purple and patterned. The rear anatomy matches the accepted side silhouette, a tailless, rounded body. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k19",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.5,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Gorg/Gorg"
+ },
+ {
+  "id": "arteval_RM_Mirrik__dessicated_ns_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mirrik__dessicated_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same size on the canvas, seen from behind (rear view, the back and abdomen toward the viewer, head and eyes hidden). A creature sprite for RimWorld: the mirrik. Thumb-sized insects with water-combing mesh wings that mist-dance over the pools at dusk, with a slim misty body that reads as smoke at distance. The rear view shows the same two flat, pale grey-beige mesh wings as the accepted east and south views, rising in a V above the abdomen. Each wing is a broad lace panel perforated with large oval openings, with swept ribs and hooked panel contours, foreshortened as seen from behind. The wings are one uniform pale grey-beige, the colour of the accepted views. The body is slim, misty and pale, matching the accepted views. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k19",
+  "drawsize": 0.35,
+  "module": "flyer",
+  "target_texpath": "Things/Pawn/Animal/RM_Mirrik/RM_Mirrik"
+ }
+]

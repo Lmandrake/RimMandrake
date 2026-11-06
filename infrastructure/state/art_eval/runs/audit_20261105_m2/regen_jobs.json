@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RSW_Blixus__Blixus_Swimming_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Blixus__Blixus_Swimming",
+  "prompt": "A creature sprite for RimWorld: the blixus. Blixus were rare, half-shelled crustapod creatures native to the planet Sljee. These semi-aquatic predators were deadly in the swamps and lagoons they inhabit. They periodically shed their exoskeleton when it is broken or damaged, and the shed shell is harvested for useful chitin. Visible features it must show: the canon Sljee blixus (see canon entry blixus); half-shelled crustapod, with the shell covering only part of the body, the rest soft and armoured with plates. Five very long feeler tentacles emerge from the upper front of the body, just ahead of the shell. They rise and arc upward and forward, then sweep back and trail in varied curves. The five differ in length and bend, and each makes a clearly visible returning loop where it doubles back on itself. Each ends in a distinct flattened paddle tip. The tentacles keep this one 3D pose in every view, foreshortened to suit the view. Front view, eyes toward the viewer: the arcs rise above the shell and lean toward the viewer. Rear view, seen from behind: the back, tail and haunches face the viewer with the eyes hidden, and the same arcs rise from the far side of the shell. Side view: the arcs are seen in profile, rising and sweeping forward, then curving back in loops. Keep the palette, body plan and shell shape of the previous render. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with only the creature on it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_m2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_BunkerBug_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_BunkerBug",
+  "prompt": "A creature sprite for RimWorld: the bunker bug, drawn in the rear view, seen from behind. Whether it is engineered or mutated from a wild animal is unknown, but this massive insect-like creature can use its powerful claws to rend its way through steel almost as easily as flesh and bone. It does not breed in captivity. Visible features it must show: a massive insect-like creature; powerful claws able to rend steel; heavy armoured carapace. The rear view shows the back of the shell as broad and massive as the front view's body: the bunker-shell plates spread wide over the legs and haunches, the central armored mass has the same breadth, thickness and bulk as the front view, and the creature fills the same width in the frame as the front view does at the same camera distance and scale, with the powerful claws flanking the shell at the same spread. The head and eyes are hidden behind the shell. Keep the colour palette, plate pattern and carapace shade of the reference render. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_m2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "walker",
+  "target_texpath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BunkerBug/BunkerBug"
+ },
+ {
+  "id": "arteval_RUT_SealedSleeper__RUT_SealedSleeper_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RUT_SealedSleeper__RUT_SealedSleeper",
+  "prompt": "A creature sprite for RimWorld: the tammuq, a squat, armour-clad burrower that spends almost its whole life motionless under cracked clay, sealed in a wax-lined burrow. Its body is a broad, flat, wider-than-long burrowing wedge. The low carapace is built of cracked-clay plates separated by seams of pale wax, like a dried clay pan, with a thick scalloped armour rim all around its edge. The head is sunk fully into the armour rim, leaving only a blunt armoured snout-plate and two small dull eye-slits showing. The forelimbs are broad spade-like digging blades, flattened and fanned, folded against the rim. The hind limbs are short, thick paddles that splay outward to the same stance width as the spade forelimbs, while the tail-end plates and haunches fill the full width of the body. Pale wax forms a glossy, drooping collar and crust around the rim and the limb joints. The carapace has one consistent breadth, rim width, body mass, body height and stance width throughout. The palette is clay browns and ochres with pale cream wax. Realistic painterly vanilla RimWorld sprite style, with soft painted edges in a deeper shade of the local colour and a clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, F_SIZE_JUMP, STYLE_EARTHLY, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_m2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.7,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper"
+ }
+]

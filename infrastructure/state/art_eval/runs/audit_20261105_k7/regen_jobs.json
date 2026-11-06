@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RSW_Fanback__FanbackV_C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Fanback__FanbackV_C",
+  "prompt": "A creature sprite for RimWorld: the fanback, a cold-blooded predatory amphibian from the swamps of Naboo that hunts fish and other small free-swimming prey. Keep the body, palette and skin colouring of the previous render: a sleek, swamp-built amphibian body with a long sensitive snout. Head: a broad, heavy predator jaw on a long, thick-based snout with a blunt, sensory-pitted tip. Two long pale lower fangs rise past the upper lip and stay clearly visible in front and side views, and the teeth are few and large. Dorsal spine: one tall, thin, longitudinal sail along the centreline of the back, from shoulders to hips, as the creature's one large spine. Side view (east): the sail shows its full tall profile above the back, the broad jaw shows in profile, and the lower fangs rise past the upper lip. Front view (south): the sail is seen nearly edge-on as a narrow upright blade rising from the middle of the back behind the head, the broad jaw spans the head width, and both lower fangs show. Rear view (north): the back, tail and haunches show, the eyes are hidden, and the sail is the same narrow edge-on blade as in the front view. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with no ground, no water, no shadow, no text and no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, F_INCONSISTENT, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k7",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.5,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Fanback/Fanback"
+ }
+]

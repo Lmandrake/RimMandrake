@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Manka",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [3.0, 3.0]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e88db9f7a3f279e9b549e6fe70e14d8c383747b7ba176d6ff9839f1354f20840",
+  "east.png": "a6919a6dad238947700f76ef04e2adffffe675565473b08c460723fd578f7e31",
+  "north.png": "5d59d97ca03b48720f47f757132321a1887fe069a6731113d4d2ab45ba69fce9",
+  "scale.png": "a94d58a5d59406d465cd82c710eca48ad2fc2ae8ad7a18afa28657d5586ce60d",
+  "facings.png": "052ac14efa0d139b19385f077d0fc3a0c4be57c166aaac699a00a6d6654fbca6"
+ }
+}

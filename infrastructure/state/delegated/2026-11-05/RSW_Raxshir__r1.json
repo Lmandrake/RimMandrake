@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Raxshir",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [3.0, 3.0]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e3b6f5e8564b3fe76f2876bbe9b25ecfa32e9bf52f1aaa1fdce8dbf451e70ea7",
+  "east.png": "6a655cb1686ab020b1b16f28365778219a437d7ebf8671faf969fd9d7a92f831",
+  "north.png": "cc249bfea06f21ecac8fb9a966f0dd3a82fef5080594b7f13a1f28ff78f11dfb",
+  "scale.png": "3ba624cb8534cd8d0c88d9118e8fdce16b3329eb16a900d3ff879416798c31ef",
+  "facings.png": "01d53ed7c2498f3f3178e7e69d6e9280962c9c63ed4d11864e00168c29fe2afe"
+ }
+}

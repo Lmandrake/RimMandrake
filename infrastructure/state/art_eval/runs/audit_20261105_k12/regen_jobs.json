@@ -1,0 +1,71 @@
+[
+ {
+  "id": "arteval_RSW_Nerf__Nerf_f_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Nerf__Nerf_f",
+  "prompt": "A creature sprite for RimWorld: the nerf, an alien herd livestock animal raised for milk, meat and hide. Build the body from this description. Long, low, barrel-shaped heavy body with a soft rounded back and only a gentle rise at the shoulders, thick short hoofed legs, and a loose-skinned sagging chest and neck. The head is broad and flat-faced, carried low and forward: a wide, low, squared dark muzzle with a flattened snout and widely spaced nostrils, small side-set eyes beneath a heavy sloped brow ridge. Four large curving grey horns, two stacked pairs, one pair above the other on each side of the skull, each pair sweeping outward and forward at its own angle, the dominant feature of the head and clearly visible at normal zoom. The coat is a coarse, patchy, shaggy blanket of hair in mottled warm tan and dull brown with paler flanks, long drooping fringe along the belly and flanks, short sparse hair on the face, shoulders and legs. The tail is a long, bare, hairless rope-like cord ending in a small tuft. Front view: eyes toward the viewer. Side view: the full profile showing the long body, four horns and rope tail. Rear view, seen from behind: back, haunches and tail, eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k12",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/Nerf/Nerf_m"
+ },
+ {
+  "id": "arteval_RSW_PodWorm__GlowWorm_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_PodWorm__GlowWorm",
+  "prompt": "A creature sprite for RimWorld: the hell's lantern. A great, slow, segmented worm-thing the size of a muffalo, with a fat, broad, rounded, heavily ribbed body, its back and flanks studded with large swollen pods that glow a sickly orange in the dusk of the root-maze. The hell's lantern crawls through the Miasma at barely a walking pace, grazing, paying no attention to anything around it. Its mandibles carry a venom that leaves anything bitten sick and weakened. Visible features it must show: a great slow segmented worm the size of a muffalo; swollen pods studding its back and sides, glowing sickly orange; venomous mandibles at the front. Every view shows the same fat worm of the same girth: a broad, rounded, ribbed body almost as wide as it is long, with the same large orange pods heaped across the back at the same size and count. The front view, eyes and mandibles toward the viewer, shows the broad dome of the body with the pod cluster. The side view shows the long segmented body with pods along the back and flank. The rear view, seen from behind, shows a rounded ribbed rear end as broad as the front body, with the large orange pods heaped across the back, the head and mandibles hidden behind the body; the rear tapers only gently at the very tip, behind the full-width middle. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with the creature alone on it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k12",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm"
+ },
+ {
+  "id": "arteval_RSW_Runyip__Runyip_j_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Runyip__Runyip_j",
+  "prompt": "A creature sprite for RimWorld: the runyip. A squat forest herbivore from Yavin 4 with branching antlers and a flexible snout. Dark brown stripes cross its pale coat, and its front toes bear claws. Visible features it must show: squat, low-slung body on short legs with a rounded hump of shoulders rising above the rump; the head hangs low on a short neck, so the downturned snout tip nearly reaches the ground; the snout is a shorter, thicker tapir-like proboscis, a broad flexible downturned pig/tapir snout in a pale muzzle with natural skin folds and a clearly defined, heavy thick lower lip beneath it; branching antlers; clawed toes on the front feet instead of hooves; pale coat crossed by bold dark brown stripes. Side view shows the profile with the shoulder hump and the low-hung head; front view shows the face with the broad pale snout and heavy lower lip, eyes toward the viewer. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS, CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k12",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Runyip/Runyip"
+ }
+]

@@ -1,21 +1,18 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_MegaphoridLarva",
  "nearest_earth_animal": "maggot",
  "earth_body_named": true,
- "departures": [
-  "a large ravenous maggot",
-  "a pale soft segmented body",
-  "a gaping feeding mouth at the front"
- ],
- "body_plan": "walker",
+ "departures": [],
+ "body_plan": "serpentine",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:12:19-08:00",
  "source": "description only (no image)"
 }

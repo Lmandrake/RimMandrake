@@ -1,22 +1,39 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Borehulk",
- "nearest_earth_animal": "bulldozer",
- "earth_body_named": false,
+ "nearest_earth_animal": "tank",
+ "earth_body_named": true,
  "departures": [
-  "a colossal mining machine on two broad tracks, a digging tank not an animal",
-  "slabs of riveted armour bolted over everything",
-  "a heavy boom ending in a drill and a bucket scoop slung beneath",
-  "a tiny sensor head almost lost on top"
+  {
+   "feature": "heavy boom arm ending in a drill",
+   "quote": "a heavy boom ending in a drill"
+  },
+  {
+   "feature": "bucket scoop slung beneath the hull",
+   "quote": "a bucket scoop slung beneath"
+  },
+  {
+   "feature": "tiny sensor head on top, almost lost",
+   "quote": "a tiny sensor head almost lost on top"
+  },
+  {
+   "feature": "riveted armour slabs bolted over everything",
+   "quote": "slabs of riveted armour bolted over everything"
+  },
+  {
+   "feature": "long low hull",
+   "quote": "a long low hull"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:09:17-08:00",
  "source": "description only (no image)"
 }

@@ -1,0 +1,78 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.35944919999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 10.8,
+    "error": "eval pipeline: a WEAK Opus pass goes to the GPT targeted second look (owner 2026-10-23)\n[consult] 16379 chars, 0 file(s), 5 image(s), model gpt-6.1-sol, round -, job D:\\ClaudeWork\\rimmandrake\\scratch\\codex\\consult-20261105-194433-851568-8b9852\n[consult] receipt job consult-20261105-194433-851568-8b9852\nERROR: no answer (exit 1 after 10s). Job kept: /mnt/d/ClaudeWork/rimmandrake/scratch/codex/consult-20261105-194433-851568-8b9852\n<3>WSL (851580 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110\n\n"
+   },
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 41.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.12039820000000001
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Candler_n",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'F_SIZE_JUMP', 'OWNER_NOTE_IGNORED', 'DEPARTURE_MISSING']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['F_SIZE_JUMP', 'STYLE_OFF']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "dbfb11c458a7ee63ea13db99d299ea5898a8665108fc6170383466047222041a",
+  "east.png": "b17e19080c769330e5bd20f533361cc15d15b00a5cc7b8fae12747deaa077b98",
+  "north.png": "9c6523c1ac21d1eabb39b39856a0016c3079aecbfdde25ffb2e3961db236a54a",
+  "scale.png": "e5e2527386a42c865dc3fd39ee2b39538cbd315a8219c573c6d2cedafc4cb951",
+  "facings.png": "9c78fe394d925b37ac169252bded6106f1489118994752e3903e117c7e9c0b12"
+ }
+}

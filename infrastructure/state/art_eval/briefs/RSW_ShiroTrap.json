@@ -1,21 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_ShiroTrap",
  "nearest_earth_animal": "tortoise",
  "earth_body_named": false,
  "departures": [
-  "the canon shiro-trap (see canon entry shirotrap)",
-  "a slow armoured reptile with a ridged shell",
-  "a Tooke-trap plant growing between the ridges of its shell"
+  {
+   "feature": "a trap plant growing from the back, rooted between the shell ridges",
+   "quote": "carrying a Tooke-trap plant between the ridges of its shell"
+  },
+  {
+   "feature": "the plant covers enough of the reptile to hide it",
+   "quote": "The plant conceals its host"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:18:28-08:00",
  "source": "description only (no image)"
 }

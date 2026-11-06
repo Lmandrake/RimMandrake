@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gloomcast",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [13.2, 13.2]: east 512x512 != 1024x1024; north 512x512 != 1024x1024; south 512x512 != 1024x1024"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ba119b42e70940cee37b507331e18fa7ec59b8a9b1d6f1d6640cd9f9e58b1b18",
+  "east.png": "60770f08106819d88db78bd41ad871f9684f34814bf13b2c2f68ed4e95a4e45a",
+  "north.png": "9e62ec992743c44cf39053f7cf61f1726b888066c2e0cf25b1a6034b24c01b30",
+  "scale.png": "024ad6f89ab28e17eee6c0a4b0e9b049f5348ea75c12604159f068daba26b8a6",
+  "facings.png": "a7065927cad6f433cc30dfcc1964a37c80adbaca3734769abbb066c27e33af28"
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.36873979999999995
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 47.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1163562
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_BunkerBug",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'F_TOPDOWN']; polish ['STYLE_EARTHLY']",
+  "gpt regen: unsettled ['K1'], own blocking ['F_SIZE_JUMP']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert",
+  "same picture already REGEN in run audit_20261105_k5 as round 1: round not advanced"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "b969dc0e81dafbaafc5659a293b44853197247ec11beb194dfc0d4f2654d3e9c",
+  "east.png": "c4c42e1bc70c09ba2ea80e506c88a13a2b4aa3a754c49f2270a0d3e84bcc2d04",
+  "north.png": "31583861b46307f5cb6a3fff05464bed184a0ef1d6610c86c9c47b125bf31e0c",
+  "scale.png": "4a6c86b9543baf474b4324dd7e377a513a58978b6ebd3d07cadd46bc3e6565cc",
+  "facings.png": "0024cbe037b6e11339ac47d5191625c100923759aa92bdb0c4c529c260c17040"
+ }
+}

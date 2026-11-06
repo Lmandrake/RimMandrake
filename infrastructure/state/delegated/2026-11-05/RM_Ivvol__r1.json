@@ -1,0 +1,58 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 34.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3471628
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Ivvol",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32', 'SCALE_WRONG', 'RES_LOW']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "b3283ca081f0f99a435a75b06eb685e1c0fc97e6710f39e812e7e58225f6de06",
+  "east.png": "9c134ddf331f618467adcf7a825b3f3ead51e0f23bbc8f35c750bfc06d6937ae",
+  "north.png": "b54ad61dac3c896e5f7dc028710062eee6e2a3a71d3bc741a0be0827c28b15d3",
+  "scale.png": "1071e07303ae7591f7504ad0dc0e4b0c3f93564bd34d474c5a46479c9e57473a",
+  "facings.png": "2e169c4834e6367c7dbdb769ed914712c8ce8b7126ccfc70ce846dbddff5b6cf"
+ }
+}

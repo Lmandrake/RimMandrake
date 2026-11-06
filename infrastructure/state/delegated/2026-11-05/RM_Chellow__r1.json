@@ -3,35 +3,36 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 43.1,
+    "seconds": 44.4,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.3655568
+    "cost_usd": 0.3683622
    }
   ],
   "gpt": [
    {
     "model_reported": "UNMEASURED",
-    "seconds": 30.0
+    "seconds": 26.2
    }
   ],
   "regen": {
    "model_requested": "sonnet",
-   "seconds": 10.1,
+   "seconds": 10.9,
    "models_reported": [
     "claude-sonnet-5-5"
    ],
-   "cost_usd": 0.1182602
+   "cost_usd": 0.1191382
   }
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Chellow",
  "decision": "REGEN",
  "reasons": [
-  "opus band WEAK (model said weak); blocking ['DESC_MISS']; polish ['FLYER_WINGS_GROUNDED', 'LEGIB_32']",
-  "gpt regen: unsettled ['K1'], own blocking ['DESC_MISS', 'STYLE_EARTHLY']",
-  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+  "opus band WEAK (model said really_bad); blocking ['DESC_MISS', 'STYLE_EARTHLY']; polish ['FLYER_WINGS_GROUNDED', 'LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['DESC_MISS', 'STYLE_EARTHLY']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert",
+  "same picture already REGEN in run audit_auto_20261105_1751 as round 1: round not advanced"
  ],
  "prompt_versions": {
   "preamble": {

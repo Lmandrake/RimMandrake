@@ -1,0 +1,74 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 39.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.35470799999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 20.3
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1170802
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Vennick",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['STYLE_EARTHLY', 'DEPARTURE_MISSING']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['STYLE_EARTHLY']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert",
+  "same picture already REGEN in run audit_20261105_k16 as round 1: round not advanced"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "166bce064e44990a23e4ad8ca7fa845aabe13e5d4b1fb8f66f6f379552b1abe8",
+  "east.png": "b3d95353095f829310450bd7a5540e63388fe0d1a979b4611f242df045f69b69",
+  "north.png": "5e34c7d39f1e1062b541fca84622fcd27edb7895f7d55bed98fd1497b63c99ca",
+  "scale.png": "c8b569b5936f7d650856f2e1da3a7bdd3803b8d38513fcfbc339d6d3804cbfa1",
+  "facings.png": "91d97882a669c42aefc460f453a45798a2e74fdf258a98c65fce73aa74ddec9f"
+ }
+}

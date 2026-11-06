@@ -1,23 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_Clodhopper",
- "nearest_earth_animal": "turkey",
+ "nearest_earth_animal": "frog",
  "earth_body_named": false,
  "departures": [
-  "four limbs and no wings at all; it stands on four legs, not upright on two like a bird",
-  "large, powerful clawed forelegs, bigger and heavier than any bird's limbs",
-  "tough, bare brown skin over the whole body, with no feathers or plumage",
-  "crimson skin on the neck, not a wattle or feathered ruff",
-  "a pale beak on a head carried low and forward on a four-legged body"
+  {
+   "feature": "a pale beak instead of a wide amphibian mouth",
+   "quote": "a pale beak"
+  },
+  {
+   "feature": "a crimson neck against the brown body",
+   "quote": "a crimson neck"
+  },
+  {
+   "feature": "powerful clawed forelegs",
+   "quote": "powerful clawed forelegs"
+  },
+  {
+   "feature": "tough brown skin rather than smooth moist amphibian skin",
+   "quote": "tough brown skin"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-24T01:42:06-07:00",
+ "at": "2026-11-05T19:09:57-08:00",
  "source": "description only (no image)"
 }

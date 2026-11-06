@@ -1,21 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Bladderboil",
  "nearest_earth_animal": "pufferfish",
  "earth_body_named": false,
  "departures": [
-  "a leathery golden sac the size of a head",
-  "crater-mouths on its surface",
-  "swells taut and floats, no limbs"
+  {
+   "feature": "body is a plain leathery golden sac, with no fins, tail or scales",
+   "quote": "A leathery golden sac"
+  },
+  {
+   "feature": "several crater-like mouths on the sac",
+   "quote": "its crater-mouths"
+  },
+  {
+   "feature": "when resting it collapses into a wrinkled, half-sunk bag rather than keeping a firm body shape",
+   "quote": "slumps to a wrinkled bag, half-sunk"
+  }
  ],
  "body_plan": "swimmer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:13:27-08:00",
  "source": "description only (no image)"
 }

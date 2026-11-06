@@ -1,22 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Candler",
  "nearest_earth_animal": "slug",
- "earth_body_named": true,
+ "earth_body_named": false,
  "departures": [
-  "a slow legless slab of pale blue",
-  "a single broad foot along the whole underside",
-  "a swollen dorsal sac of the brightest yellow running down its spine",
-  "eye-stalks at the front"
+  {
+   "feature": "pale blue body",
+   "quote": "A slow slab of pale blue"
+  },
+  {
+   "feature": "flat, slab-shaped body mass rather than a tapering slug body",
+   "quote": "slow slab"
+  },
+  {
+   "feature": "swollen dorsal sac of bright yellow running along the spine",
+   "quote": "a swollen dorsal sac of the brightest yellow in the Deep running down its spine"
+  }
  ],
- "body_plan": "walker",
+ "body_plan": null,
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:15:55-08:00",
  "source": "description only (no image)"
 }

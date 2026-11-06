@@ -1,0 +1,71 @@
+[
+ {
+  "id": "arteval_RM_Iliss_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Iliss",
+  "prompt": "A creature sprite for RimWorld: the iliss. A wire-thin eel the length of a forearm, far thinner than an Earth eel, with matte black skin. Its spine is made of conductive mineral: a continuous row of glinting blue-white crystalline vertebrae runs the full length of the back, each one a distinct angular faceted mineral block with hard visible facet edges and its own dark outline, reading as stone or metal against the smooth matte black skin beside it. The mineral ridge looks the same in every facing. In front view, eyes toward the viewer, the head faces the camera with two small pale eyes and an open jaw showing small sharp teeth, the faceted mineral ridge rising along the top of the head, and the black body curling back behind the head so the body reads clearly as a long thin eel rather than a point. In side view the full length of the body shows the whole row of mineral vertebrae along the back. In rear view, seen from behind, the tail tapers away with the mineral ridge running down its centre and the eyes hidden. The sharp biting mouth is clearly visible. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, F_SOUTH_NOT_FRONT, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k15",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.55,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Iliss/RM_Iliss"
+ },
+ {
+  "id": "arteval_RM_Niim_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Niim",
+  "prompt": "A creature sprite for RimWorld: the niim, the lit shoal of the light columns. A small shoal of several hand-long alien light-swimmers schooling close together, drawn as one centred group with every body fully visible and nothing cut off. Each swimmer is a pale, near-translucent blue-white body, long, narrow and tapering, with a smooth wedge-shaped head with no gill cover, a single soft ribbon-like tail veil, and two slender trailing filament-fins in place of ordinary fins. Along each flank runs one dotted line of cold light, the dots glowing brighter and whiter than the body. Front view: eyes toward the viewer, the shoal shown at the game's oblique three-quarter camera angle. Rear view, seen from behind: the same slim swimmers just as wide a group as the front view, foreshortened, tail veils nearest the viewer, bodies receding away toward their hidden heads, backs a narrow strip, the flank dot-lines faintly visible at the edges of each body. Side view: the slim swimmers in profile, the dotted flank lines clearly lit. The palette stays blue-white with cold-light dots throughout. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, STYLE_EARTHLY, F_TOPDOWN, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k15",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.4,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Niim/RM_Niim"
+ },
+ {
+  "id": "arteval_RM_Noolim_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Noolim",
+  "prompt": "A creature sprite for RimWorld: the noolim, a darting shoal of dull silver slivers from the dark floor of the Twilight, seen as a shoal and never as one individual. The shoal is a loose, open cloud of about twenty separate short slivers. Each sliver is a small, slim, slightly tapered shape of dull silver, with a smooth edge and a clean dark outline of its own. It has no fin, no tail and no head. The slivers sit at different angles and depths, with clear gaps of transparent background between neighbours, and three or four strays drift just outside the main spread. The cloud keeps the same compact oval envelope and the same sliver shapes in every facing. Front view (south): seen head-on, the slivers' pointed leading tips converge toward the viewer, with their bodies foreshortened behind them. Rear view (north): seen from behind, the slivers' blunt trailing ends recede away from the viewer, in the same oval envelope and at the same width as the front view. Side views (east and west): the slivers lie side-on in a loose layer of single slivers with open space showing through the centre, all pointing the same way along the direction of travel. Colouring is dull, unlit silver with soft painted edges in a deeper shade of the local colour. Realistic painterly vanilla RimWorld sprite style. Exactly ONE shoal, centred, the whole cloud visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, STYLE_CARTOON, F_INCONSISTENT, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k15",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.45,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Noolim/RM_Noolim"
+ }
+]

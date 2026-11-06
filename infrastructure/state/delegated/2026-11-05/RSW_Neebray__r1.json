@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 38.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3580078
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 36.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 9.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1160962
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Neebray",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['STYLE_CARTOON']; polish ['SCALE_WRONG', 'FLYER_WINGS_GROUNDED']",
+  "gpt regen: unsettled ['K1'], own blocking ['STYLE_CARTOON']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c29a217aecc8595716635489a197085c00da395ccf5d00ce63fd5083db58bca8",
+  "east.png": "3a288771b7ed7a2132b60f1138cf2621f2ad37c3321fc824515cd3592372dce1",
+  "north.png": "8bd8ef140887df455590f1115c34fda74aef1d8872151075e393af0ec8fd2229",
+  "scale.png": "c771e6fb23f9a60bbe34579613f9ef354067507e27278a98502840e5139ea2de",
+  "facings.png": "a56dc95b612d1e7637bc8913cfed5ec2ec0c31eeef5e54cb26bdc033c2edc9bc"
+ }
+}

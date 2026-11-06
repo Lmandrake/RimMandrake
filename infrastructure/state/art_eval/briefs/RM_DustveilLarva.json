@@ -1,21 +1,23 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_DustveilLarva",
  "nearest_earth_animal": "caterpillar",
  "earth_body_named": true,
  "departures": [
-  "a soft pale caterpillar",
-  "fungal threads woven through its body",
-  "a timid, harmless grub"
+  {
+   "feature": "body threaded through with fungus strands",
+   "quote": "threaded through with the same fungus that will one day become its wings"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:14:15-08:00",
  "source": "description only (no image)"
 }

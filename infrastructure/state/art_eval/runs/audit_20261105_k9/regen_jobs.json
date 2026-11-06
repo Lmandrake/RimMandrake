@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RSW_Klorslug__Klorslug_j_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Klorslug__Klorslug_j",
+  "prompt": "A creature sprite for RimWorld: the k'lor'slug, a poisonous vermiform native to the swamps of Noe'ha'on, an aggressive and deadly species that lurks in the darkest spots of starships (the holomonster of the dejarik game). Body plan, the same in every facing: a long, thick, segmented worm body whose front section is reared high in a hunched arch, carrying a toothed circular sucker maw ringed with mandibles at its tip; clawed limbs run down the reared front section below the maw; the lower body and the tail trail along the ground behind. In the front view, seen from the front with the eyes and maw toward the viewer, the reared posture is the same as in the side view: the toothed maw is held high at the top of the figure, the hunched front curves toward the camera, the clawed limbs run down the body beneath it, and the tail lies on the ground behind and below, seen under the angled game camera. Keep the same colouring, skin texture and palette as the side view. Realistic painterly vanilla RimWorld sprite style, soft painted edges and a clean dark outline in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with no ground, water, shadow, text or border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k9",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Klorslug/Klorslug"
+ }
+]

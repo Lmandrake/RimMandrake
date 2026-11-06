@@ -1,21 +1,23 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_CorellianHound",
  "nearest_earth_animal": "dog",
- "earth_body_named": false,
+ "earth_body_named": true,
  "departures": [
-  "the canon Corellian hound (see canon entry corellianhound)",
-  "stout, quick canine",
-  "a broad, heavy-jawed head"
+  {
+   "feature": "stout, heavy-set canine build",
+   "quote": "stout canidae"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:10:06-08:00",
  "source": "description only (no image)"
 }

@@ -1,22 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_Runyip",
  "nearest_earth_animal": "deer",
  "earth_body_named": false,
  "departures": [
-  "squat, low-slung body on short legs, not a tall long-legged deer frame",
-  "long flexible trunk-like snout extending from the face, not a short deer muzzle",
-  "clawed toes on the front feet instead of hooves",
-  "pale coat crossed by bold dark brown stripes, not a plain or spotted deer coat"
+  {
+   "feature": "flexible snout",
+   "quote": "a flexible snout"
+  },
+  {
+   "feature": "clawed front toes instead of hooves",
+   "quote": "its front toes bear claws"
+  },
+  {
+   "feature": "dark brown stripes across a pale coat",
+   "quote": "Dark brown stripes cross its pale coat"
+  },
+  {
+   "feature": "squat body",
+   "quote": "A squat forest herbivore"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-25T22:54:35-07:00",
+ "at": "2026-11-05T19:18:07-08:00",
  "source": "description only (no image)"
 }

@@ -1,21 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_FeralGrazer",
  "nearest_earth_animal": "cow",
  "earth_body_named": false,
  "departures": [
-  "the canon Alderaanian grazer (see canon entry grazer)",
-  "spotted leathery hide with small scutes along the spine",
-  "a horned face on a lean wild body"
+  {
+   "feature": "small scutes running along the spine",
+   "quote": "small scutes along its spine"
+  },
+  {
+   "feature": "spotted, leathery hide rather than a hair coat",
+   "quote": "spotted leathery hide"
+  },
+  {
+   "feature": "horns set on the face",
+   "quote": "a horned face"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:10:41-08:00",
  "source": "description only (no image)"
 }

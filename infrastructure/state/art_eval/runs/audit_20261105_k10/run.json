@@ -1,0 +1,12 @@
+{
+ "run_id": "audit_20261105_k10",
+ "test": false,
+ "started": "2026-11-05T19:30:38-08:00",
+ "subjects": [
+  "RSW_Maligoat__MaligoatFemale",
+  "RSW_Maligoat__MaligoatMale",
+  "RSW_Manka",
+  "RSW_Mastmot__Mastmot_f"
+ ],
+ "versions_key": "departures_brief@v3#4e4c26+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v3#2337d2+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
+}

@@ -1,21 +1,23 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_Maguana",
  "nearest_earth_animal": "iguana",
  "earth_body_named": true,
  "departures": [
-  "skin patterned like cooled black magma cracked by glowing hot lava",
-  "an iguana-like cave lizard",
-  "fire-proof, rocky texture"
+  {
+   "feature": "skin patterning that looks like both cooled and hot magma",
+   "quote": "The patterning on the skin of this relative of the surface iguana resembles both cooled and hot magma"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:11:35-08:00",
  "source": "description only (no image)"
 }

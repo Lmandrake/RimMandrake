@@ -1,21 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_PodWorm",
- "nearest_earth_animal": "caterpillar",
- "earth_body_named": false,
+ "nearest_earth_animal": "earthworm",
+ "earth_body_named": true,
  "departures": [
-  "a great slow segmented worm the size of a muffalo",
-  "swollen pods studding its back, glowing sickly orange",
-  "venomous mandibles at the front"
+  {
+   "feature": "muffalo-sized body, far larger than any Earth worm",
+   "quote": "the size of a muffalo"
+  },
+  {
+   "feature": "back covered in swollen pods glowing sickly orange",
+   "quote": "its back studded with swollen pods that glow a sickly orange"
+  },
+  {
+   "feature": "visible mandibles at the head",
+   "quote": "Its mandibles"
+  }
  ],
- "body_plan": "walker",
+ "body_plan": "serpentine",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:17:48-08:00",
  "source": "description only (no image)"
 }

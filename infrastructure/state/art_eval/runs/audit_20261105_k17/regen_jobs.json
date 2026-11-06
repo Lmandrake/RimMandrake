@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RM_Ssurr_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ssurr",
+  "prompt": "A creature sprite for RimWorld: the ssurr, a hound-sized alien reptile with one enormous half-circle crest-fan. The fan is thin skin stretched over fine radiating rays and flushes with colour toward its rim; its edge carries fine comb-like tines (the dew-comb), so the rim is toothed and bristle-fringed. Closed, it is a straight blade; open, it is a wheel. Even-tempered, curious, tamable. Body: slim, long-limbed, hound-proportioned and lean. A long flat wedge-shaped head with a narrow snout, a heavy bony brow shelf and two forward-set pale eyes. Smooth skin of finely ridged, overlapping scale rows with a faint iridescent sheen. Long digitigrade legs with elongated three-toed feet, and a long whip-thin tail. The back is bare and smooth, and the fan is the only structure rising from it. The fan stands upright across the nape as one transverse half-circle wheel, in a plane at right angles to the spine, rising far above and beyond the head. It has one fixed orientation in every view. Side view (east): the fan is a tall, thin, edge-on blade rising from behind the head, its toothed rim a fine curved line, the slim body in profile beneath it. Front view (south, eyes toward the viewer): the fan is a full wheel rising behind and above the head, wider than the shoulders, with the same slim body and narrow snout seen head-on. Rear view (north, seen from behind): the fan's back face fills the upper body, with the haunches and tail below it and the eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k17",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.1,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr"
+ },
+ {
+  "id": "arteval_RM_Aveluthia_n_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Aveluthia_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view) and consistent with the accepted front view: same anatomy, same proportions, same charcoal-black colours, same size on the canvas, seen from behind. A creature sprite for RimWorld: the aveluthia. A tall, ponderous pack beast hung in thick wrinkled folds of black flesh, on four pillar legs with broad splayed toes for loose obsidian scree. Rear view, seen from behind: the back, the broad rump and haunches, and the tail end, with the head carried low and forward beyond the shoulders so its eyes are hidden from the viewer. The body is as massive from behind as from the front: the folded shoulders and haunches span the full breadth of the front view's shoulders, the two rear pillar legs are thick and heavy, and the broad splayed toes show at the feet. The whole body fills the canvas at the same scale as the accepted side and front views. Thick wrinkled folds of black flesh hang from the whole body in sharply articulated painterly creases, with high contrast between deep fold shadows and lit ridges, in the charcoal palette of the accepted side view. A faint cool blue-violet rim edge runs around the whole silhouette, over a clean dark outline. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k17",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia"
+ }
+]

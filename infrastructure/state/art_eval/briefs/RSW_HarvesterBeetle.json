@@ -1,21 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_HarvesterBeetle",
  "nearest_earth_animal": "beetle",
  "earth_body_named": true,
  "departures": [
-  "the canon Neimoidian harvester beetle (see canon entry harvesterbeetle)",
-  "a large insect with a swept-back carrying back",
-  "domesticated beast of burden proportions"
+  {
+   "feature": "beetle body at the size of a large pack animal, not an insect-sized beetle",
+   "quote": "a large domesticated insectoid"
+  },
+  {
+   "feature": "swept-back shell profile",
+   "quote": "swept backs"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:11:00-08:00",
  "source": "description only (no image)"
 }

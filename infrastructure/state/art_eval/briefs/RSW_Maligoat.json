@@ -1,22 +1,39 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_Maligoat",
  "nearest_earth_animal": "goat",
  "earth_body_named": false,
  "departures": [
-  "six short thick legs (three pairs) under a broad low barrel body",
-  "overlapping hide plates instead of fur",
-  "a blunt insectile face with small mandible-like mouthparts",
-  "a pair of thick backward-curling horns"
+  {
+   "feature": "six legs in three pairs",
+   "quote": "three pairs of short thick legs"
+  },
+  {
+   "feature": "hide of overlapping tough plates instead of fur",
+   "quote": "hide overlapping in tough plates rather than fur"
+  },
+  {
+   "feature": "blunt insect-like face",
+   "quote": "blunt insectile face"
+  },
+  {
+   "feature": "small mandible-like mouthparts",
+   "quote": "small mandible-like mouthparts"
+  },
+  {
+   "feature": "broad, low-slung barrel body",
+   "quote": "broad, low-slung barrel body"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:11:45-08:00",
  "source": "description only (no image)"
 }

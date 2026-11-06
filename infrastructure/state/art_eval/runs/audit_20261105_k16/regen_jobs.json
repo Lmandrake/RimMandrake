@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RM_IllothLarvae__Smogapillar_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_IllothLarvae__Smogapillar",
+  "prompt": "A creature sprite for RimWorld: the illoth larva, the larval form of the illoth. To deter predators it wears the toxic warning colours of the fungus it hosts. It has a broad, low, domed, soft segmented body with rounded lateral body folds along both flanks, and a row of small, short, rounded legs in matching pairs along the lower flanks. The body is coloured in the vivid toxic warning colours of its hosted fungus, with fungal patches spread over the segments, and the smooth rounded folds, the colours and the small legs are consistent along the whole body, which keeps one broad dome width and one set of silhouette proportions throughout. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k16",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.4,
+  "module": "walker",
+  "target_texpath": "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar"
+ },
+ {
+  "id": "arteval_RM_Vennick_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vennick",
+  "prompt": "A creature sprite for RimWorld: the vennick, an alien silk-runner. A fist-sized, fast-moving creature that looks like part of a flowing current of its kind rather than a lone animal. Body: a long, low, narrow spindle with a smooth, bare, plated bone-white back that catches the gloom, a faint ridged spine along it, and a pale grey underside and flanks. The head is a smooth wedge at the front, with a ring of four tiny dark eyes and one long, thin sensing filament curving forward. Eight wiry, fast, thin stilt legs bend sharply outward and up at the knee, then down to the ground, so the body rides low between them in a wide, spidery stride. Two paired silk spools sit at the rear of the body, each trailing a taut, shimmering silk filament that streams behind it and shows in every view. The bone-white back and pale grey body stay the same in every facing. In the rear view, seen from behind, the two silk spools and their filaments are the centre of the image and the eyes are hidden. In the front view, the eyes and forward filament face the viewer. In the side view, the full spindle length, the high-kneed leg arch and the trailing silk are all readable. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k16",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.35,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Vennick/RM_Vennick"
+ }
+]

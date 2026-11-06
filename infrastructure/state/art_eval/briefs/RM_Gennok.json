@@ -1,21 +1,23 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Gennok",
- "nearest_earth_animal": "rhino",
+ "nearest_earth_animal": "rhinoceros",
  "earth_body_named": false,
  "departures": [
-  "heavy thick-hided body",
-  "broad parasol-like growths spreading over its back like shade canopies",
-  "plodding, endurance build"
+  {
+   "feature": "broad parasol-shaped growths rising from its back",
+   "quote": "carrying broad, parasol-like growths on its back"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:08:52-08:00",
  "source": "description only (no image)"
 }

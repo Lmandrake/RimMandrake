@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RM_Gennok_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gennok",
+  "prompt": "A creature sprite for RimWorld: the gennok. A heavy, thick-hided animal carrying broad, parasol-like growths on its back. Bred for endurance, it plods between patches of shade long after faster animals have stopped to cool. Anatomy: a long, low barrel-shaped torso on four thick columnar limbs, each with a double knee joint and a wide, splayed, padded two-lobed foot. The head is a broad, low wedge with a wide flat muzzle ending in a ridged beak-like plate, with two small eyes set high on the sides of the head. The hide is thick, smooth and leathery, covered in fine overlapping scale-like ridges. Three parasol growths stand on stalks along the centre line of the back: one very broad central cap over the mid-back, a smaller cap over the shoulders toward the head end, and a smaller cap over the rump toward the tail end. The stalks rise from raised, thickened mounds of the creature's own hide with ridged roots spreading over the back, so the parasols are living parts of the animal; the cap undersides show pale gill-like ribbing. The arrangement is the same in every view: side view shows the three caps in a row, shoulder cap, big central cap, rump cap; front view, eyes toward the viewer, shows the big cap at the top centre, the shoulder cap in front overlapping its lower centre just above the head, and the rump cap peeking out behind its top edge; rear view, seen from behind, shows the rump cap in front overlapping the big cap's lower centre above the haunches and the shoulder cap peeking out behind its top edge. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, STYLE_EARTHLY, F_INCONSISTENT, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k4",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.9,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Gennok/RM_Gennok"
+ }
+]

@@ -1,0 +1,71 @@
+[
+ {
+  "id": "arteval_RM_Borehulk_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Borehulk",
+  "prompt": "A creature sprite for RimWorld: the borehulk. A colossal old mining machine, more a digging tank than a robot: a long low hull on two broad tracks, slabs of riveted armour bolted over everything, a heavy boom ending in a drill, a bucket scoop slung beneath, and a tiny sensor head almost lost on top. It trundles the deck plate slowly and harms nothing. Its plating is thicker than anything else that walks. Visible features it must show: a colossal mining machine on two broad tracks, a digging tank not an animal; slabs of riveted armour bolted over everything; a heavy boom ending in a drill and a bucket scoop slung beneath; a tiny sensor head almost lost on top. Chassis proportions are identical in every facing: a broad, long, low hull carried on two wide tracks with a generous gap of hull between them, the track gauge and overall hull width the same whether the machine is seen from the front or from behind. The rear view, seen from behind, shows the back of the hull at the same overall width as the front view, both tracks as far apart as in the front view, with the rear armour slabs spanning the full width between and over the tracks, the tiny sensor head small on top, and the boom and bucket seen from their back side. The side view shows the same long hull with the same track width. All views share one scale. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_m3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 5.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Borehulk/RM_Borehulk"
+ },
+ {
+  "id": "arteval_RSW_Torton__Torton_f_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Torton__Torton_f",
+  "prompt": "A creature sprite for RimWorld: the torton, a huge, bulky, predatory tortoise-like estudine. Its body is wide and heavy, covered by one broad, low, spreading domed shell of tough interlocking plates that flares wide over thick, pillar-like legs set in a wide, planted stance. Heavy hooked jaws on a thick neck. Slow, cumbersome and massive. Every facing shows this same animal at the same proportions: the shell is equally broad, the plate contours and colours match, and the legs stand equally far apart. The south view shows the front, eyes and jaws toward the viewer. The east and west views show the side profile of the broad shell and heavy body. The north view shows the rear of the same broad, bulky animal, seen from behind: the wide-flared shell, the back, the short tail and the haunches, with the head and eyes hidden behind the shell, and the shell breadth and leg spacing matching the south view. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_m3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.5,
+  "module": "walker",
+  "target_texpath": "swanimals/Torton/Torton"
+ },
+ {
+  "id": "arteval_RM_Moravatha_n_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Moravatha_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same size on the canvas, now seen from behind in rear view. A creature sprite for RimWorld: the moravatha. A huge, slow, many-legged grazer under a broad, low domed carapace of overlapping blood-dark plates as long as a cart. The rear view shows the back of the carapace as wide and low as the front view, the dome flat-spreading with its overlapping plates sweeping gently down to both sides and a plate skirt projecting over the haunches. The body fills the same width on the canvas as in the side and front views. Many legs (more than four) splay outward to both sides in a wide stance, with a lateral foot span equal to the carapace width, so the animal keeps one footprint as it turns. The head and its four glowing yellow eyes are hidden behind the dome; the view shows the rear: back, haunches and legs. Huge, slow grazing bulk far larger than any tortoise. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_m3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.1,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha"
+ }
+]

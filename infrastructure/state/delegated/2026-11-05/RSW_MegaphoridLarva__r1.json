@@ -1,0 +1,58 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 33.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3403894
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_MegaphoridLarva",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "6c24291b5e0afb1ba26c0d7c0a4c0e38d62f243a53bc8a617167164805a7658c",
+  "east.png": "0cc7648dd8d337b06d5316a5eb8f28ec0d2b2834389083ad1effc24747e32538",
+  "north.png": "84c5273723c26bcea08821c67b260bc28298ee4e4d2d7bd62881e0ae64d6d63d",
+  "scale.png": "3e17b68785d13e2a953e51125e12e7e9259c607e4748567859a23654ba2cdc52",
+  "facings.png": "de215a0467c74649e60df961109f982e4913cdb90b8da33bb97fb03dd37cce60"
+ }
+}

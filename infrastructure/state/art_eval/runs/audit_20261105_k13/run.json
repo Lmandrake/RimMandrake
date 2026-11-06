@@ -1,0 +1,12 @@
+{
+ "run_id": "audit_20261105_k13",
+ "test": false,
+ "started": "2026-11-05T19:34:47-08:00",
+ "subjects": [
+  "RSW_Scavrat",
+  "RSW_ShiroTrap__ShiroTrap_i",
+  "RSW_Torton__Torton_f",
+  "RSW_TunnelSnake"
+ ],
+ "versions_key": "departures_brief@v3#4e4c26+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v3#2337d2+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
+}

@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_FeralGrazer",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [3.0, 3.0]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c2568a0a3271221ad85a97df6b0c836a248a5f11034e979964b8158369b5e506",
+  "east.png": "0fa649861a7c8c7d551e16a2cd09037a9d0a9b083e8c0e59c88da7749b67e419",
+  "north.png": "f655acebc6d6d372f8fb43183f4657f580b25d40af239dc4af01848ec55a965a",
+  "scale.png": "f0a6fa2b84196de3fdef94af615793aec8ab55321bba6847bc0e8009bce6e6da",
+  "facings.png": "34909fa173875d0bb06a5c52ef7ac61abea2e1e9c018bb037c4391741ef32cb4"
+ }
+}

@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Vozzik",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [4.1, 4.1]: east 512x512 != 1024x1024; north 512x512 != 1024x1024; south 512x512 != 1024x1024"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9793f88ffbd3b45ae62694b352b502e67efdddd87483abb9b5b911ad2a750882",
+  "east.png": "dbc260b4893833ad70fef136339058e9a5900d7b83b0debb181c714337bf6434",
+  "north.png": "0699fd260fdb0a9a862914178d0ef2c26d6f8992ef1d431991baf8c9302b2b1f",
+  "scale.png": "586f40787edd324ff7f3214e40a167a0830c978b03e3cbe0fbaa065515121f73",
+  "facings.png": "e443513e18ca7122bbb554d6dff472fe548d74addcfe2f7f0f6b381be6eab7ce"
+ }
+}

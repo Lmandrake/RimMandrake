@@ -1,0 +1,47 @@
+[
+ {
+  "id": "arteval_RSW_Blixus__Blixus_Swimming_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Blixus__Blixus_Swimming",
+  "prompt": "A creature sprite for RimWorld: the blixus. Blixus were rare, half-shelled crustapod creatures native to the planet Sljee. These semi-aquatic predators were known to be deadly in the swamps and lagoons they inhabit. They periodically shed their exoskeleton if broken or damaged, which can be harvested for useful chitin. Visible features it must show: the canon Sljee blixus (see canon entry blixus); half-shelled crustapod: the shell covers only part of the body, the rest is soft flesh; five long feeler tentacles, each with a thick fleshy shaft and a broad oval paddle-pad at the tip. The same tentacle design appears in every facing. Every tentacle has the same shaft thickness, the same broad oval paddle-pad size and the same pink-tan colour in the front, side and rear views. In the rear view, seen from behind, the viewer sees the back of the shell, the tail and the haunches with the eyes hidden. The five thick tentacles rise behind the shell with full-width shafts and broad paddle-pads, and perspective shortens their lengths only. Keep the palette, shell colour, flesh colour and body proportions identical to the previously approved front and side views. Realistic painterly vanilla RimWorld sprite style, soft painted edges and a clean dark outline in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with everything inside the frame. Fully transparent background with the creature alone on it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k5",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_BunkerBug_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_BunkerBug",
+  "prompt": "A creature sprite for RimWorld: the bunker bug. Whether it is engineered or mutated from a wild animal is unknown, but this massive insect-like creature can use its powerful claws to rend its way through steel almost as easily as flesh and bone. It does not breed in captivity. Visible features it must show: a massive insect-like creature; powerful claws able to rend steel; a broad, bulky armoured carapace like a bunker shell. The body has one fixed envelope in every view: a wide shoulder span, a heavy domed shell, and the same body height. In the front view, eyes toward the viewer, the shell spans the full broad width of the shoulders. In the side view, the shell shows the same bulk and height. In the rear view, seen from behind, the back, rear plates and haunches are shown, eyes hidden, and the rear carapace plates span the same full width as the front shoulders, as broad and bulky as the front view. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with no ground, water, shadow, text or border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k5",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "walker",
+  "target_texpath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BunkerBug/BunkerBug"
+ }
+]

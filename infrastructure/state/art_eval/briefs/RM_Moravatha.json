@@ -1,22 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Moravatha",
  "nearest_earth_animal": "tortoise",
  "earth_body_named": false,
  "departures": [
-  "many legs (more than four) under the shell",
-  "a domed carapace of overlapping blood-dark plates, as long as a cart",
-  "four glowing yellow eyes set in a blunt head",
-  "huge, slow grazing bulk far larger than any tortoise"
+  {
+   "feature": "many legs rather than four",
+   "quote": "many-legged"
+  },
+  {
+   "feature": "four glowing yellow eyes on the head",
+   "quote": "four glowing yellow eyes set in its blunt head"
+  },
+  {
+   "feature": "domed carapace made of overlapping blood-dark plates, not a fused shell",
+   "quote": "a domed carapace of overlapping blood-dark plates"
+  },
+  {
+   "feature": "carapace plates each as long as a cart",
+   "quote": "plates as long as a cart"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T19:15:21-08:00",
  "source": "description only (no image)"
 }

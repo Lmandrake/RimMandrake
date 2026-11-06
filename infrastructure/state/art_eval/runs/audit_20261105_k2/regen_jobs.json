@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RM_TheUnfinished__RM_TheUnfinished_RM_TheUnfinished_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_TheUnfinished__RM_TheUnfinished_RM_TheUnfinished",
+  "prompt": "A creature sprite for RimWorld: the Unfinished. A chimera budded by the Contagion's red goo, one part finished and the rest abandoned mid-thought \u2014 three good legs and a stump, a useless half-formed wing, a jaw on a thing that cannot eat. It will not last the week. Visible features it must show: an asymmetric chimera body with three good legs and one stump; exactly one useless half-formed wing growing from the creature's own right shoulder; a jaw on a body that cannot eat, parts that do not match; raw red flesh from the Contagion's goo showing where it is unfinished; a red flesh sac on the creature's own left flank, opposite the wing. The wing and the sac stay fixed to the same sides of the body in every facing, turning with the body: in the front view (seen from the front, eyes toward the viewer) the wing appears on the viewer's left and the sac on the viewer's right; in the rear view (seen from behind, back and haunches toward the viewer) the wing appears on the viewer's right and the sac on the viewer's left; in a side view, the wing or the sac shows on whichever side faces the viewer. Keep the body plan, palette, proportions and silhouette identical to the previous render. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.85,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_TheUnfinished/RM_TheUnfinished"
+ },
+ {
+  "id": "arteval_RM_Chellow_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Chellow",
+  "prompt": "A creature sprite for RimWorld: the chellow, a squat, round, feathered flying animal standing upright on two slender legs. Its plump round body is covered in soft layered feathers, and a pair of wings is folded neatly against its sides, symmetric and clearly readable, with the feather tips reaching toward a small tucked tail. The rounded bird-like silhouette sits on slender two-toed legs. The head is small and entirely bare: wrinkled pink skin with no feathers at all, no beak, and in place of a mouth a lipless flap of skin that vibrates to whistle. Below the head hangs a translucent throat-fan it inflates to carry the call, veined and lit faintly from behind, resting over the chest. Front view: eyes toward the viewer, throat-fan hanging below the chin, both folded wings visible at the sides. Side view: one folded wing along the flank, the bare head and mouth-flap in profile, the throat-fan hanging below, the tail behind. Rear view, seen from behind: the folded wings and feathered back and tail, with the bare wrinkled head from behind and the eyes hidden. Painterly vanilla RimWorld sprite style, realistic, with a clean dark outline and soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, STYLE_EARTHLY, DESC_MISS, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.65,
+  "module": "flyer",
+  "target_texpath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
+ }
+]

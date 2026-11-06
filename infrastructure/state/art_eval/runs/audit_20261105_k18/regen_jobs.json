@@ -1,0 +1,68 @@
+[
+ {
+  "id": "arteval_RM_Tarruq__dessicated_n_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tarruq__dessicated_n",
+  "prompt": "Draw the SAME dead specimen as the attached reference image (its accepted east view): same anatomy, same proportions, same colours and markings, same limb thickness, same foot-pad size, same overall body mass, seen from behind. A catch item sprite for RimWorld: the dessicated carcass of a tarruq, a lean, long-limbed climber of the Cracked Lands crack network. The carcass lies flat on the ground, limp, with dull closed eyes, its desiccated body collapsed and flattened. The rear view, seen from behind: the tail and haunches are nearest the viewer, the spine runs away from the viewer, and the back of the crested skull is farthest away with the eyes hidden. The long, very thin limbs lie folded and splayed out wide to the left and right, so the sprawled body spans nearly the full canvas width, as wide as the side and front views. The large grip-padded feet sit at the ends of the limbs at the same size as in the reference, and the bone thickness matches the reference. The deep resonating throat-chamber is hidden under the head, which is turned away from the viewer. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE carcass, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_SIZE_JUMP, OWNER_NOTE_IGNORED, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k18",
+  "drawsize": 1.3,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq"
+ },
+ {
+  "id": "arteval_RM_Candler_n_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Candler_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same outline weight, same size on the canvas, now seen in the rear view, from behind. A creature sprite for RimWorld: the candler. A slow slab of pale blue, legless, moving on a single broad foot, with a swollen dorsal sac of the brightest yellow in the Deep running down its spine. It stores its energy as wax. It can be milked for that cold wax, which burns like chemfuel and needs no refinery - and which will not stay inert anywhere warm. The rear view shows the rear of the exact body in the reference: a low, broad, flat slab, as wide and massive as the front view, filling the same footprint on the canvas. Visible features it must show: a wide lumpy pale blue skirt of body spreading out to both sides; a broad foot spreading wide along the base; a rounded swollen yellow dorsal sac sitting over the middle of the slab, seen end-on from behind; the eye-stalks hidden behind the sac or barely visible at the far end, lower than the top of the sac. A clean dark outer contour in a deeper shade of the local colour wraps the whole silhouette, with the same weight and crisp painterly edge definition as the reference. Realistic painterly vanilla RimWorld sprite style. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_SIZE_JUMP, OWNER_NOTE_IGNORED, F_SIZE_JUMP, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k18",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.8,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/Hydrocarbon/Candler/Candler"
+ },
+ {
+  "id": "arteval_RSW_Eopie_n_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Eopie_n",
+  "prompt": "Draw the SAME individual animal as the attached reference images (its accepted side and front views): same anatomy, same proportions, same colours and markings, same size on the canvas, the same loaded pack gear, now seen in REAR view, from behind. A creature sprite for RimWorld: the eopie, a loaded pack animal. A pale, leathery desert herbivore from Tatooine, with thin legs and a long, drooping snout. Eopies carry heavy loads and pick their way over rocky ground on broad, splayed feet. They are easily domesticated, though stubborn. Visible features it must show: the canon Tatooine eopie (see canon entry eopie); pale leathery hide; thin legs with broad splayed feet. In this rear view the animal shows its rump, tail and haunches, with the thin hind legs and broad splayed rear feet toward the viewer. The head is turned away, with the long drooping snout hidden or only slightly visible past the neck. It carries the same load as on the side and front views. A tall stack of bulky brown packs and a rolled bedroll rises above the back to the same height as on the accepted views, giving the tall pack hump in the silhouette. A bulky brown pannier hangs over each flank. Harness straps and bridle cords follow the rear perspective across the back, flanks and haunches. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body and load visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k18",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.25,
+  "module": "walker",
+  "target_texpath": "swanimals/Eopie/Eopie"
+ }
+]

@@ -3,35 +3,36 @@
   "opus": [
    {
     "model_requested": "opus",
-    "seconds": 55.9,
+    "seconds": 51.3,
     "models_reported": [
      "claude-opus-5-5"
     ],
-    "cost_usd": 0.40490099999999996
+    "cost_usd": 0.3744858
    }
   ],
   "gpt": [
    {
-    "model_reported": "gpt-6.1-sol",
-    "seconds": 35.6
+    "model_reported": "UNMEASURED",
+    "seconds": 30.2
    }
   ],
   "regen": {
    "model_requested": "sonnet",
-   "seconds": 11.4,
+   "seconds": 14.7,
    "models_reported": [
     "claude-sonnet-5-5"
    ],
-   "cost_usd": 0.1178462
+   "cost_usd": 0.1280082
   }
  },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RSW_PekoPeko__PekoPeko_m_ns",
  "decision": "REGEN",
  "reasons": [
-  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'F_SIZE_JUMP']; polish ['LEGIB_32']",
-  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']",
-  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+  "opus band WEAK (model said weak); blocking ['F_SIZE_JUMP', 'F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_SIZE_JUMP', 'F_INCONSISTENT']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert",
+  "same picture already REGEN in run audit_auto_20261105_1351 as round 3: round not advanced"
  ],
  "prompt_versions": {
   "preamble": {

@@ -1,0 +1,94 @@
+[
+ {
+  "id": "arteval_RSW_FrilledGorg__FrilledGorgV_J_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_FrilledGorg__FrilledGorgV_J",
+  "prompt": "A creature sprite for RimWorld, side view with the head toward the viewer's right: the frilled gorg. A small, aggressive amphibian. Body plan: a compact, barrel-chested body on a short thick trunk, with a broad wedge-shaped head wider than the neck, set low and forward. Four short, stout limbs tucked beneath the body in a crouched, ready-to-lunge posture, ending in broad splayed paddle-like digits with webbing. The tail is short, deep and flattened from side to side like a paddle. Frills: a continuous row of orange fan-shaped frill spines runs from the crown of the head down the back and along the whole tail, and a pair of swept-back frill spines flares from each cheek behind the jaw like small fins. Face: large eyes set high and wide, with horizontal slit pupils inside a pale ring; the mouth is open in an aggressive gape. Skin: bold pale spots edged in dark along the flanks, with a lighter belly. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border. reference: none",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k8",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "swimmer",
+  "target_texpath": "swanimals/FrilledGorg/FrilledGorg"
+ },
+ {
+  "id": "arteval_RSW_FrilledGorg__FrilledGorg_j_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_FrilledGorg__FrilledGorg_j",
+  "prompt": "A creature sprite for RimWorld: the frilled gorg. A small amphibian with frills along its back and tail and a more aggressive disposition than other gorgs. Visible features it must show: a small chubby amphibian with a broad, squat toad-like body; frills running along its back and tail; an aggressive gape-mouthed stance in the front and side views. The body keeps the same broad, squat width in every facing: the torso is as wide as it is tall, and the silhouette width is equal in front, side and rear views. In the rear view, seen from behind, the creature shows its back, frilled tail and haunches with the eyes hidden; the haunches are broad and squat, spread as wide as the front legs, with both hind legs bent outward and the hind feet planted wide apart to either side of the tail base. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k8",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.75,
+  "module": "swimmer",
+  "target_texpath": "swanimals/FrilledGorg/FrilledGorg"
+ },
+ {
+  "id": "arteval_RSW_HarvesterBeetle__HarvesterBeetle_j_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_HarvesterBeetle__HarvesterBeetle_j",
+  "prompt": "A creature sprite for RimWorld: the harvester beetle, a large domesticated herbivorous insectoid beast of burden, the size of a large pack animal, with broad swept-back carrying shell, sturdy jointed legs and a calm, docile bearing. The head is a flat armored insect head capsule: paired articulated serrated cutting mandibles close sideways on either side of a small recessed mouth, and compound eyes sit naturally integrated into the chitin of the head with a smooth neutral brow ridge. The front view shows these paired mandibles, and the side view shows the same paired mandibles as jointed pincers, drawn as realistic insect anatomy in the same muted painterly shading as the rest of the body. Keep the body shape, swept-back shell profile and colour palette of the previous render. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with only the creature present.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_CARTOON, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k8",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "swanimals/HarvesterBeetle/HarvesterBeetle"
+ },
+ {
+  "id": "arteval_RSW_IridonianReek__Reek_j_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_IridonianReek__Reek_j",
+  "prompt": "The iridonian reek: a massive, territorial herbivore with thick, knobbly brown hide, a tall central horn rising from the brow and two forward-curving cheek horns. Its head and shoulders are red, marking the meat-fed arena form whose handlers deliberately encouraged aggression, while the knobbly brown hide covers the rest of the body, including the massive haunches and flanks. It is a broad, heavy, wide-bodied animal with a long, deep torso, a deep chest, and thick, widely planted legs, with the same bulk and breadth throughout. The expression is fierce and watchful. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_k8",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "swanimals/IridonianReek/IridonianReek"
+ }
+]

@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gembug__Yellow_Jewelbug",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [1.5, 1.5]: east 512x512 != 256x256; north 512x512 != 256x256; south 512x512 != 256x256"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "7513f9080c2b574375304f7dd1c331aa6efa06251d29d0264beac216d28aa0b7",
+  "east.png": "d5fda776a22a2293f5684fa8401cbe8dcb37f2ac7867903328ec3462d9f1e786",
+  "north.png": "57d0df38c2b5ea403520def0dc252a109932c61c7f6056ce67b053cd0190791b",
+  "scale.png": "545ff6fa25882afc8f54cc48f7f753fe63295cba2bd64897cf30f1c8225e2d66",
+  "facings.png": "a719f09885431dda807e7218ef1ffd55e3b4cde1f7d8b404078bcde2e11a377c"
+ }
+}

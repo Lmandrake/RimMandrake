@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RM_IllothLarvae__Smogapillar_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_IllothLarvae__Smogapillar",
+  "prompt": "A creature sprite for RimWorld: the illoth larva, a plump segmented caterpillar-like larva. The larval form of the illoth. To deter predators it wears the toxic colours of the fungus it hosts: the whole body is painted in the vivid toxic warning colours of its hosted fungus, with fungal patches on the back segments. The body is one broad rounded dome of soft segments with smooth, rounded left and right sides and the same girth in every view; the smooth lateral contours carry no spines, legs or prolegs. Front view: the head with eyes toward the viewer, full body width. Side view: the head to one side, the broad segmented body in profile. Rear view, seen from behind: the last segments and tail end, head and eyes hidden, as wide as the front view at the same body height, with the same lateral contours. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_m1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.4,
+  "module": "walker",
+  "target_texpath": "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar"
+ },
+ {
+  "id": "arteval_RM_Vennick_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vennick",
+  "prompt": "A creature sprite for RimWorld: the vennick, an alien silk-runner. Fist-sized, with a sleek, low, elongated body, much longer than tall. A streamlined wedge-shaped head is fused into the body line, with a pair of small dark eyes on the sides of the head and a short pair of forward-pointing silk-feeler palps. The back is covered by one smooth, glossy bone-white dorsal plate like polished shell, running from head to rump and catching the gloom. The flanks and underside are smooth pale grey with fine painted shading. The abdomen tapers to a visible pair of spinnerets at the tail end. Six long, thin, fast legs are set low along the flanks, sweeping backward in a running stride, each ending in a small hooked claw that grips a silk line; the hooked feet are visible on every facing. Front view: eyes toward the viewer, palps forward. Rear view, seen from behind: the dorsal plate, tapering abdomen and spinnerets, eyes hidden. Side view: the full long low profile with all legs and the spinnerets. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_m1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.35,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Vennick/RM_Vennick"
+ }
+]

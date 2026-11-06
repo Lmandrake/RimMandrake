@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_TunnelSnake",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [2.7, 2.7]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "5a5700a720d815b1d55f49a129e67a2eaa89e4ae65e17648a330a535cc331674",
+  "east.png": "a89ed7d4403fc52d1bef0e15a1f6267a27d9f125480a68a9311fd01d83f2d288",
+  "north.png": "4b3bad9ddd7b7c8af257503539d6b123176c8133d4692bf25135cf62fcacd38d",
+  "scale.png": "534ae34d7e4ae954cb4d7cb62968c947055db5e968461f40f5042e845892000a",
+  "facings.png": "83722d27ddf8c1547a3286e38957f89fd864a0149fb2943fc6007ee2ed78f001"
+ }
+}
