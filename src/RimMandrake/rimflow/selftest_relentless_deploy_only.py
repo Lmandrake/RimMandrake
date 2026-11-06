@@ -3,7 +3,7 @@
 
 A worker may not --apply; only a staging worker may, and it deployed what a commit changed. WAVE1_FIXES_DEPLOY_BEFORE_THE_CUT
 changes nothing, so it was taken and blocked with nobody to act. This walks that shape end to end with no game, no bridge
-and no ledger: a build that touches no mod file names `live-deploy:` trees; a drifting tree reads UNMEASURED "not deployed"
+and no ledger: a build that touches no mod file names `live-deploy:` trees; a drifting tree reads no verdict (NOT_ADMITTED since ab77ccbdd6) "not deployed"
 (no bridge, no proof, no FAIL); the game phase stages; the staging prompt names those mods to apply; in sync, the proof runs.
 
     python3 src/RimMandrake/rimflow/selftest_relentless_deploy_only.py
@@ -74,7 +74,7 @@ def t_run():
                     needs=["Armoury", "Doctrine"], trees=["Armoury", "Doctrine"])
         return row, fx.verbs()
     row, verbs = go(TEXTURE_DRIFT)
-    ok(row["outcome"] == "UNMEASURED" and row["why"].startswith("not deployed"), "a drifting tree is UNMEASURED not deployed", row)
+    ok(row["outcome"] in L.NO_VERDICT and row["why"].startswith("not deployed"), "a drifting tree is UNMEASURED not deployed", row)
     ok(any(row["why"].startswith(w) for w in G.RESTAGE), "and that is a word the game phase restages on", row)
     ok("take" not in verbs and "proof" not in verbs, "no bridge and no proof spent on it", verbs)
     row, verbs = go(SYNCED)
@@ -95,7 +95,7 @@ def t_round_covers_the_trees():
     with tempfile.TemporaryDirectory() as root:
         s = RR.run_round(fx, root, {}, now=1_800_000_000)
     ok(("plan", "--mod Armoury --mod Doctrine") in fx.calls, "the round's plan covers the trees though the build has no mod", fx.calls)
-    ok([x["outcome"] for x in s["runs"]] == ["UNMEASURED"] and s["runs"][0]["why"].startswith("not deployed"),
+    ok(len(s["runs"]) == 1 and s["runs"][0]["outcome"] in L.NO_VERDICT and s["runs"][0]["why"].startswith("not deployed"),
        "and the row says not deployed", s)
 
 
@@ -319,7 +319,7 @@ def t_staged_rig_walks_to_a_pass():
         fx = Fx(touched=["infrastructure/state/live_proofs/%s.txt" % ITEM], started=now - 600)
         fx.it = SL.item(id=ITEM, built_sha=SG.SHA, outstanding=["A2"])
         s, x.w.rows = round_rows(fx, root, now + 5)
-        ok([r["outcome"] for r in x.w.rows] == ["UNMEASURED"] and x.w.rows[0]["why"].startswith("not deployed"),
+        ok(len(x.w.rows) == 1 and x.w.rows[0]["outcome"] in L.NO_VERDICT and x.w.rows[0]["why"].startswith("not deployed"),
            "before staging the real plan reads not deployed, never FAIL", x.w.rows)
         ok("take" not in fx.verbs() and "proof" not in fx.verbs(), "no bridge and no proof spent on it", fx.verbs())
         ok(RR.deployed(fx, ITEM, TEXT)[0] == 1, "the item's proof is red before the deploy")
@@ -354,7 +354,7 @@ def t_staged_rig_walks_to_a_pass():
 
         fx.calls[:] = []
         s, x.w.rows = round_rows(fx, root, restarted + 5)
-        ok([r["outcome"] for r in x.w.rows] == ["UNMEASURED", "PASS"], "the same round tool, the same folder: now the proof PASSes", x.w.rows)
+        ok([r["outcome"] in L.NO_VERDICT for r in x.w.rows] == [True, False] and x.w.rows[1]["outcome"] == "PASS", "the same round tool, the same folder: now the proof PASSes", x.w.rows)
         ok(("proof", PROOF) in fx.calls and "take" in fx.verbs(), "the proof ran, the bridge held", fx.calls)
         x.w.palive = set()
         x.tick()

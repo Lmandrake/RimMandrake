@@ -730,7 +730,7 @@ class RoundFx(L.Fx):
     def folded(self):
         sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
         import deploy_custom_mods
-        return deploy_custom_mods.folded()
+        return L.with_shell(deploy_custom_mods.folded(), L.compose_shells(deploy_custom_mods.SRC_ROOT))
 
     def has_mod(self, mod):
         """A mod folder the repo ships, by the deploy tool's own discovery (a folded mod counts: `--compose` plans it)."""

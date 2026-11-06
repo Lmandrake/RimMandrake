@@ -967,12 +967,40 @@ def is_package(name, folder=None):
     return not _FOLDER_SEEN[name]
 
 
+def with_shell(folded, shells):
+    """deploy_custom_mods.folded() plus each compose manifest's settings-shell source as (target, target): the shell's
+    files (BiomesShell/Assemblies/*.dll) land at Mods/<target>/<rel>, and the plan reports them under the target's own
+    section (GAMEENV_FIX_DEPLOY_590E0C49_ITEMS_WAIT: a build touching only the shell DLL read 'the deploy plan does not
+    cover BiomesShell' forever, deploy_args never composed it and no game copy was found). shells: {source: target}."""
+    out = dict(folded or {})
+    for src, target in (shells or {}).items():
+        out.setdefault(src, (target, target))
+    return out
+
+
+def compose_shells(src_root):
+    """{settings-shell source folder: composed target} from the compose manifest; {} when it is absent or unreadable
+    (deploy_custom_mods.folded's rule: a broken manifest hides nothing it did not already hide)."""
+    utils = os.path.join(os.path.dirname(HERE), "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    try:
+        import biomes_compose
+        m = biomes_compose.load_manifest(src_root)
+    except Exception:
+        return {}
+    src = ((m or {}).get("shell") or {}).get("source")
+    return {src: m["target"]} if src and m.get("target") else {}
+
+
 def folded_dirs(mods_dir, mod, folded=None):
     """The game-folder dirs a folded source loads from: Mods/<target>/Biomes/<key> or Mods/<target>/Biomes/_Kits/<key>
     (biomes_compose.dest_rel); [] when the manifest does not fold it."""
     if mod not in (folded or {}):
         return []
     target, key = folded[mod]
+    if key == target:       # a settings shell (with_shell): its files sit at the composed mod's root
+        return [os.path.join(mods_dir, target)]
     return [os.path.join(mods_dir, target, "Biomes", key), os.path.join(mods_dir, target, "Biomes", "_Kits", key)]
 
 
@@ -1177,7 +1205,7 @@ class Fx(object):
             sys.path.insert(0, utils)
         import deploy_custom_mods
         if getattr(self, "_folded", None) is None:      # one manifest read per run, not one per file
-            self._folded = deploy_custom_mods.folded()
+            self._folded = with_shell(deploy_custom_mods.folded(), compose_shells(deploy_custom_mods.SRC_ROOT))
         return self._folded
 
     def companion(self, sha):
