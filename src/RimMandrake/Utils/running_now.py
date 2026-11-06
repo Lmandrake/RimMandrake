@@ -690,9 +690,10 @@ def collect_items(env):
     states = env.item_states()
     for s in states:        # a checking item's Judge may be done, its verdict waiting for the next tick to read it
         out = ((s.get("check") or {}).get("run") or {}).get("out") if s.get("status") == "checking" else None
-        if out:
-            try:
-                s["_judge_out"] = env.mtime(out)
+        if out:     # systemd opens StandardOutput=file: at launch, so the file EXISTS, empty, for a live Judge:
+            try:    # only content is a verdict (claude writes its JSON at exit; RUNNING_BOARD_FIX_FINISHED_JUDGES_CRY_WOLF)
+                if env.read_tail(out, 256)[0].strip():
+                    s["_judge_out"] = env.mtime(out)
             except OSError:
                 pass
     counts = collections.Counter(s.get("status") for s in states)

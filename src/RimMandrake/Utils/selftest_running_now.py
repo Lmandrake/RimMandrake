@@ -238,6 +238,12 @@ env_j = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running"},
 env_j.files = dict(getattr(env_j, "files", {}) or {}, **{"/r/judged.json": "{}"})
 check("a checking item whose Judge wrote its result is no ghost: the tick reads it (PASS3_FLOOD board)",
       R.ghost_places(R.gather(env_j, {})) == [])
+env_l = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running"},
+                                      {"item": "SOME_ITEM_JUDGING", "status": "checking", "check": {"run": {"out": "/r/judging.json"}}}])
+env_l.files = dict(getattr(env_l, "files", {}) or {}, **{"/r/judging.json": ""})
+st_l = R.collect_items(env_l)["by_status"]["checking"][0]
+check("a Judge's out file that systemd opened empty at launch is no verdict: a dead one is still a ghost (RUNNING_BOARD_FIX_FINISHED_JUDGES_CRY_WOLF)",
+      "_judge_out" not in st_l and [(g if isinstance(g, str) else g.get("item")) for g in R.ghost_places(R.gather(env_l, {}))] == ["SOME_ITEM_JUDGING"])
 
 # 6. a Dispatcher far behind leads the strip
 page = page_of(Fake(files={DISPATCH_STATE: {"last_tick": "2026-11-03T20:00:00Z"}}))
