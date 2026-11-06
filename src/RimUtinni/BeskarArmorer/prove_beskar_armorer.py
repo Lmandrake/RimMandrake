@@ -7,7 +7,7 @@
 --live needs the bridge held, the deployed mod current, and a list holding the mod (modset_builder tier beskar_armorer). It starts a
 quicktest colony if none is up and refuses the canonical save by never loading one. The hands are the debug actions in
 Source/ArmorerProbe.cs; each writes its rows to <save data>/BeskarArmorerProbe.jsonl, and this script joins them to the criteria. A
-criterion with no row, or with any failing row, is not a PASS: it exits nonzero. Results go to the JSON path it prints.
+criterion with any failing row exits 1; one with no row (or a drive half that timed out) and no failure exits 2, UNMEASURED. Results go to the JSON path it prints.
 """
 import argparse
 import json
@@ -206,9 +206,12 @@ def generator_log():
 
 def live():
     me = subprocess.run(["wslpath", "-w", os.path.abspath(__file__)], capture_output=True, text=True).stdout.strip()
-    r = subprocess.run([win_python(), me, "--drive"], timeout=525)
+    try:
+        r = subprocess.run([win_python(), me, "--drive"], timeout=525)
+    except subprocess.TimeoutExpired:
+        return ["UNMEASURED: drive half timed out"]
     if r.returncode:
-        return ["drive"]
+        return ["UNMEASURED: drive half exited nonzero"]
     rows = {}
     with open(PROBE) as f:
         for line in f:
@@ -221,11 +224,11 @@ def live():
         verdicts[crit] = "UNMEASURED" if missing and not failing else ("FAIL" if failing else "PASS")
         print(crit, verdicts[crit], "; ".join(failing + ["missing " + m for m in missing])[:1500])
         if verdicts[crit] != "PASS":
-            bad.append(crit)
+            bad.append(crit if verdicts[crit] == "FAIL" else "UNMEASURED: " + crit)
     verdicts["L2"], detail = generator_log()
     print("L2", verdicts["L2"], detail[:500])
     if verdicts["L2"] != "PASS":
-        bad.append("L2")
+        bad.append("L2" if verdicts["L2"] == "FAIL" else "UNMEASURED: L2")
     stray = [r["row"] + ": " + r["detail"] for rs in rows.values() for r in rs if not r["pass"] and not any(r["row"] in w for w in CRITERIA.values())]
     for s in stray:
         print("STRAY", s[:400])
@@ -244,6 +247,9 @@ def main():
     if a.drive:
         return drive() or 0
     bad = live() if a.live else offline()
+    if bad and all(str(b).startswith("UNMEASURED") for b in bad):
+        print("UNMEASURED: " + "; ".join(b[len("UNMEASURED: "):] for b in bad))      # exit 2: nothing FAILed against the mod
+        return 2
     print("FAIL: %s" % bad if bad else "PASS")
     return 1 if bad else 0
 

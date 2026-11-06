@@ -25,10 +25,40 @@ namespace RimMandrake.Utinni.BeskarArmorer
             File.AppendAllText(FilePath, "{\"row\":\"" + row + "\",\"pass\":" + (pass ? "true" : "false") + ",\"detail\":\"" + esc + "\"}\n");
         }
 
+        // Every setting or def poke registers how to put back the value it found (BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET):
+        //   restore      - pokes one action owns; run when that action ends, however it ends (Guarded's finally).
+        //   restoreSpan  - pokes that must outlive their action (L5 setup -> L5 read: the forge's work amounts while she
+        //                  works between calls; L9 failure paths -> L9 timeout read: the earliest day while the second
+        //                  offer fires). Run by the action that closes the span, by ANY action that throws, and by Reset,
+        //                  so a run the driver abandoned mid-span does not leave the next run's game poisoned.
+        private static Action restore, restoreSpan;
+
+        private static void RunRestore() { Drain(ref restore); }
+        private static void RunRestoreSpan() { Drain(ref restoreSpan); }
+
+        /// <summary>Newest first, each undo on its own, so one undo that throws cannot strand the rest.</summary>
+        private static void Drain(ref Action slot)
+        {
+            Action all = slot;
+            slot = null;
+            if (all == null) return;
+            Delegate[] undo = all.GetInvocationList();
+            for (int i = undo.Length - 1; i >= 0; i--)
+            {
+                try { ((Action)undo[i])(); }
+                catch (Exception e) { Log.Error("[BeskarArmorer] probe restore failed: " + e); }
+            }
+        }
+
         private static void Guarded(string row, Action a)
         {
             try { a(); }
-            catch (Exception e) { Row(row, false, "EXCEPTION " + e.GetType().Name + ": " + e.Message + " @ " + (e.StackTrace ?? "").Split('\n').FirstOrDefault()); }
+            catch (Exception e)
+            {
+                RunRestoreSpan();
+                Row(row, false, "EXCEPTION " + e.GetType().Name + ": " + e.Message + " @ " + (e.StackTrace ?? "").Split('\n').FirstOrDefault());
+            }
+            finally { RunRestore(); }
         }
 
         private static Map Home { get { return Find.Maps.FirstOrDefault(m => m.IsPlayerHome) ?? Find.AnyPlayerHomeMap ?? Find.CurrentMap; } }
@@ -42,6 +72,7 @@ namespace RimMandrake.Utinni.BeskarArmorer
         {
             Guarded("reset", () =>
             {
+                RunRestoreSpan();      // a previous run the driver abandoned mid-span (no throw) still holds its pokes
                 File.WriteAllText(FilePath, "");
                 firstCast = null;      // statics outlive a run: a second proof in one game session must not compare against the last run's cast
                 visits = 0;
@@ -181,7 +212,6 @@ namespace RimMandrake.Utinni.BeskarArmorer
             });
         }
 
-        private static readonly float[] savedWork = new float[2];
         private static Bill_Production meltBill, reforgeBill;
         private static int meltMass;
 
@@ -204,9 +234,10 @@ namespace RimMandrake.Utinni.BeskarArmorer
                 IntVec3 at = forge.InteractionCell;
                 GenPlace.TryPlaceThing(a, at, m, ThingPlaceMode.Near);
                 GenPlace.TryPlaceThing(b, at, m, ThingPlaceMode.Near);
-                savedWork[0] = ArmorerDefOf.RM_Recipe_ArmorerMeltBeskar.workAmount;
-                savedWork[1] = reforge.workAmount;
-                ArmorerDefOf.RM_Recipe_ArmorerMeltBeskar.workAmount = 60f;
+                float priorMelt = ArmorerDefOf.RM_Recipe_ArmorerMeltBeskar.workAmount, priorReforge = reforge.workAmount;
+                restoreSpan += () => ArmorerDefOf.RM_Recipe_ArmorerMeltBeskar.workAmount = priorMelt;
+                restoreSpan += () => reforge.workAmount = priorReforge;
+                ArmorerDefOf.RM_Recipe_ArmorerMeltBeskar.workAmount = 60f;      // fast bills; L5 read (or any throw) puts them back
                 reforge.workAmount = 60f;
                 meltBill = (Bill_Production)ArmorerDefOf.RM_Recipe_ArmorerMeltBeskar.MakeNewBill();
                 meltBill.repeatMode = BillRepeatModeDefOf.RepeatCount;
@@ -254,8 +285,7 @@ namespace RimMandrake.Utinni.BeskarArmorer
                 Job try_ = (ArmorerDefOf.RM_DoBillsArmorerForge.Worker as WorkGiver_DoBill)?.JobOnThing(her, forgeT, forced: true);
                 Row("L5.reforged", made && product != null, "product=" + product?.LabelCap + " billLeft=" + reforgeBill.repeatCount + " herJob=" + her.CurJobDef?.defName + " meltLeft=" + meltBill.repeatCount
                     + " stackBills=" + ((Building_WorkTable)forgeT).BillStack.Count + " wouldStart=" + try_?.bill?.recipe?.defName + " why=" + JobFailReason.Reason + " shouldDo=" + reforgeBill.ShouldDoNow() + " spawned=" + her.Spawned + " downed=" + her.Downed + " lord=" + her.GetLord()?.CurLordToil);
-                ArmorerDefOf.RM_Recipe_ArmorerMeltBeskar.workAmount = savedWork[0];
-                DefDatabase<RecipeDef>.GetNamed("RM_Reforge_guy762_MandoHelmet_supercom").workAmount = savedWork[1];
+                RunRestoreSpan();      // closes the L5 setup span: both work amounts back to what setup found
             });
         }
 
@@ -445,10 +475,11 @@ namespace RimMandrake.Utinni.BeskarArmorer
                 Pawn hunter = SpawnPrisoner("RUT_Jawa_Blackstar_Heavy");
                 GenGuest.PrisonerRelease(hunter);
                 Row("L8.route1_refused_after_loss", RouteQuests(ArmorerDefOf.RM_Quest_ArmorerDebt).Count == debt, "no quest");
+                int priorDay = BeskarArmorerSettings.prisonBreakEarliestDay;
+                restore += () => BeskarArmorerSettings.prisonBreakEarliestDay = priorDay;
                 BeskarArmorerSettings.prisonBreakEarliestDay = 0;
                 IncidentParms parms = new IncidentParms { target = Find.World };
                 Row("L8.route2_refused_after_loss", !ArmorerDefOf.RM_BlackstarPrisonBreakOffer.Worker.CanFireNow(parms), "CanFireNow false");
-                BeskarArmorerSettings.prisonBreakEarliestDay = 30;
             });
         }
 
@@ -516,6 +547,8 @@ namespace RimMandrake.Utinni.BeskarArmorer
                 IncidentWorker w = ArmorerDefOf.RM_BlackstarPrisonBreakOffer.Worker;
                 IncidentParms parms = new IncidentParms { target = Find.World, points = 500f };
                 Row("L9.not_before_day_30", !ArmorerKernel.RouteTwoOffers(true, 29.9f, BeskarArmorerSettings.prisonBreakEarliestDay, false, false, false) && !(GenDate.DaysPassedSinceSettleFloat < 30f && w.CanFireNow(parms)), "day " + GenDate.DaysPassedSinceSettleFloat + " earliest " + BeskarArmorerSettings.prisonBreakEarliestDay);
+                int priorDay = BeskarArmorerSettings.prisonBreakEarliestDay;
+                restore += () => BeskarArmorerSettings.prisonBreakEarliestDay = priorDay;
                 BeskarArmorerSettings.prisonBreakEarliestDay = 0;
                 RM_ArmorerState s = RM_ArmorerState.Get;
                 s.revealed = true;
@@ -526,7 +559,7 @@ namespace RimMandrake.Utinni.BeskarArmorer
                 bool fired = w.TryExecute(parms);
                 breakQuest = RouteQuests(ArmorerDefOf.RM_Quest_ImperialPrisonBreak).LastOrDefault();
                 Row("L9.offered", fired && breakQuest != null, breakQuest == null ? "no quest" : breakQuest.name + " : " + breakQuest.description);
-                BeskarArmorerSettings.prisonBreakEarliestDay = 30;
+                RunRestore();          // the earliest day goes back before the rest of the leg, as it did before
                 if (breakQuest == null) return;
                 breakQuest.Accept(null);
                 Site site = BreakSite(breakQuest);
@@ -590,7 +623,9 @@ namespace RimMandrake.Utinni.BeskarArmorer
             {
                 SoftReset();
                 foreach (Quest old in RouteQuests(ArmorerDefOf.RM_Quest_ImperialPrisonBreak).ToList()) Find.QuestManager.Remove(old);
-                BeskarArmorerSettings.prisonBreakEarliestDay = 0;
+                int priorDay = BeskarArmorerSettings.prisonBreakEarliestDay;
+                restoreSpan += () => BeskarArmorerSettings.prisonBreakEarliestDay = priorDay;
+                BeskarArmorerSettings.prisonBreakEarliestDay = 0;      // held through L9 death read's second offer; L9 timeout read puts it back
                 IncidentParms parms = new IncidentParms { target = Find.World, points = 500f };
                 ArmorerDefOf.RM_BlackstarPrisonBreakOffer.Worker.TryExecute(parms);
                 breakQuest = RouteQuests(ArmorerDefOf.RM_Quest_ImperialPrisonBreak).Last();
@@ -626,7 +661,7 @@ namespace RimMandrake.Utinni.BeskarArmorer
             Guarded("L9.timeout", () =>
             {
                 Row("L9.timeout_fails", breakQuest.State == QuestState.EndedFailed, "state=" + breakQuest.State);
-                BeskarArmorerSettings.prisonBreakEarliestDay = 30;
+                RunRestoreSpan();      // closes the L9 failure-paths span
             });
         }
 
@@ -638,18 +673,26 @@ namespace RimMandrake.Utinni.BeskarArmorer
             {
                 SoftReset();
                 foreach (Quest old in RouteQuests(ArmorerDefOf.RM_Quest_ArmorerDebt).Concat(RouteQuests(ArmorerDefOf.RM_Quest_ImperialPrisonBreak)).ToList()) Find.QuestManager.Remove(old);
+                bool priorRouteOne = BeskarArmorerSettings.routeOneEnabled, priorRouteTwo = BeskarArmorerSettings.routeTwoEnabled;
+                bool priorHarm = BeskarArmorerSettings.harmRaidEnabled, priorMod = BeskarArmorerSettings.modEnabled;
+                int priorDay = BeskarArmorerSettings.prisonBreakEarliestDay;
+                restore += () => BeskarArmorerSettings.routeOneEnabled = priorRouteOne;
+                restore += () => BeskarArmorerSettings.routeTwoEnabled = priorRouteTwo;
+                restore += () => BeskarArmorerSettings.harmRaidEnabled = priorHarm;
+                restore += () => BeskarArmorerSettings.modEnabled = priorMod;
+                restore += () => BeskarArmorerSettings.prisonBreakEarliestDay = priorDay;
                 BeskarArmorerSettings.routeOneEnabled = false;
                 Pawn h1 = SpawnPrisoner("RUT_Jawa_Blackstar_Heavy");
                 GenGuest.PrisonerRelease(h1);
                 Row("L10.route1_off", RouteQuests(ArmorerDefOf.RM_Quest_ArmorerDebt).Count == 0, "no quest");
-                BeskarArmorerSettings.routeOneEnabled = true;
+                BeskarArmorerSettings.routeOneEnabled = priorRouteOne;
 
                 BeskarArmorerSettings.prisonBreakEarliestDay = 0;
                 BeskarArmorerSettings.routeTwoEnabled = false;
                 IncidentParms parms = new IncidentParms { target = Find.World, points = 500f };
                 Row("L10.route2_off", !ArmorerDefOf.RM_BlackstarPrisonBreakOffer.Worker.CanFireNow(parms), "CanFireNow false");
-                BeskarArmorerSettings.routeTwoEnabled = true;
-                BeskarArmorerSettings.prisonBreakEarliestDay = 30;
+                BeskarArmorerSettings.routeTwoEnabled = priorRouteTwo;
+                BeskarArmorerSettings.prisonBreakEarliestDay = priorDay;
 
                 BeskarArmorerSettings.harmRaidEnabled = false;
                 RM_ArmorerCovert c = RM_ArmorerState.Get.Reveal(out string _);
@@ -657,7 +700,7 @@ namespace RimMandrake.Utinni.BeskarArmorer
                 int before = RaidersOn(Home, pirate);
                 c.cast[1].TakeDamage(new DamageInfo(DamageDefOf.Blunt, 3f, instigator: Colonist(Home)));
                 Row("L10.harm_raid_off", RaidersOn(Home, pirate) == before && RM_ArmorerState.Get.lost, "lost, raiders " + before + " -> " + RaidersOn(Home, pirate));
-                BeskarArmorerSettings.harmRaidEnabled = true;
+                BeskarArmorerSettings.harmRaidEnabled = priorHarm;
                 SoftReset();
 
                 Thing mando = ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed("guy762_MandoArmor_supercom"));
@@ -671,7 +714,7 @@ namespace RimMandrake.Utinni.BeskarArmorer
                 GenGuest.PrisonerRelease(h2);
                 Row("L10.mod_off_no_quest", RouteQuests(ArmorerDefOf.RM_Quest_ArmorerDebt).Count == 0, "no quest");
                 Row("L10.mod_off_smelt_is_not_ours", on != off, "on=" + on + " off=" + off);
-                BeskarArmorerSettings.modEnabled = true;
+                BeskarArmorerSettings.modEnabled = priorMod;
             });
         }
     }

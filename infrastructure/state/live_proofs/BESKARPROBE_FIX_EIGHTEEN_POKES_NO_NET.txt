@@ -1,0 +1,5 @@
+# ArmorerProbe.cs now undoes every setting/def poke on every exit (restore per action, restoreSpan across L5 setup->read
+# and L9 failure paths->timeout read). A1 reruns the whole Beskar proof on a quicktest colony: every criterion still PASSes.
+# The driver exits 0 PASS, 1 FAIL, 2 UNMEASURED (drive half timed out or a criterion has no row).
+live-tier: beskar_armorer
+live-proof A1: python3 src/RimUtinni/BeskarArmorer/prove_beskar_armorer.py --live < /dev/null
