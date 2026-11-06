@@ -129,6 +129,7 @@ def per_test_timeout(path: Path) -> int:
 # It is a convention the children already follow verbatim — grep it before
 # changing this string.
 UNMEASURED_PHRASE = "UNMEASURED, not a pass or a fail"
+_FAIL_WORD = re.compile(r"(?<![A-Za-z0-9_])FAIL")
 SEQUENTIAL_ISOLATED = {"selftest_render.py"}
 # Tests that load the large def dump: each passes alone but several at once (plus the
 # 16-worker pool) get SIGKILLed by the OOM killer with no output (SELFTEST_RUNNER_SILENT_OOM_1).
@@ -558,7 +559,9 @@ def classify(rc: int, out: str, rep=None, cap: int = 0) -> tuple[str, str]:
     # rc != 0: the old guard, unchanged — any FAIL in the output means the non-zero exit
     # may be a real failure, so the phrase may not launder it. rc == 0: nothing claimed a
     # failure, so the phrase alone decides.
-    if UNMEASURED_PHRASE in out and (rc == 0 or "FAIL" not in out):
+    # FAIL as a word start, never inside an identifier: a path such as
+    # .../NIGHTLY_REDS_FIX_REMAINING_REAL_FAILS/... once turned an UNMEASURED test into FAIL.
+    if UNMEASURED_PHRASE in out and (rc == 0 or not _FAIL_WORD.search(out)):
         # Exit code is NOT consulted: a test that prints the phrase and exits 0 skipped
         # the very check it exists for, so it is not a pass (selftest_deployed_biome_refs.py
         # did exactly that). The FAIL guard keeps an unmeasured sub-check from masking a

@@ -84,6 +84,8 @@ eq(C(0, "ok")[0], "PASS", "rc 0, plain output")
 eq(C(0, "x", {"oom_kill": 1, "peak": 1, "cap": 2})[0], "CRASH", "a cap kill at rc 0 is CRASH")
 eq(C(137, "")[0], "CRASH", "rc 137 is a signal CRASH")
 eq(C(1, UNMEASURED_PHRASE + "\nFAILED 2")[0], "FAIL", "rc 1 + phrase + FAIL text stays FAIL")
+eq(C(2, "/clones/NIGHTLY_REDS_FIX_REMAINING_REAL_FAILS/x.dll absent\n" + UNMEASURED_PHRASE)[0], "UNMEASURED",
+   "rc 2 + phrase + FAIL only inside a path identifier is UNMEASURED")
 eq(C(0, UNMEASURED_PHRASE + "\nFAIL x")[0], "UNMEASURED", "rc 0 + phrase is UNMEASURED whatever else printed")
 eq(C(1, "Traceback (most recent call last):\n  File x\nAssertionError: no")[0], "FAIL", "AssertionError is FAIL")
 eq(C(1, "Traceback (most recent call last):\n  File x\nmodule.SomeError: no")[0], "CRASH", "other exception is CRASH")

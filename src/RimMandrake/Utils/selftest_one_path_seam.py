@@ -45,6 +45,9 @@ EXEMPT = {
         "and rewriting its locators would change what the committed proof says it executed.",
     "src/RimMandrake/Utils/game_paths.py":
         "IS the seam. The literals live here by definition.",
+    "src/RimMandrake/rimflow/wrapup.py":
+        "a role unit's stop-post hook: it needs only Player-prev.log's mtime and must not pay game_paths' import, "
+        "which scans the def-dump root (newest_capture) on every unit stop; the two literals mirror PREV_LOG.",
     ".claude/hooks/block_blind_scan.py":
         "a PreToolUse hook that must FAIL OPEN, always. It runs as its own "
         "process before any tool call; importing from src/ would give a guard a "

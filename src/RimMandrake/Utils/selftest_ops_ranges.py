@@ -191,8 +191,9 @@ for fam, drop in (("relentless", "staffing.jsonl"), ("seats", "state.json")):
     check("%s.blind's distressed line is its target's" % fam, tg["op"] == ">" and tg["value"] + 1 == limit, tg)
     filled += 2
 # plan.* takes its fixtures from src/RimMandrake/rimflow/selftest_priority_list.py, on a data clone this rig has not got;
-# roles.* from selftest_role_use.py, on a fixture ledger; queues.* from selftest_ops_watch_queues.py; disk.scratch_outside_* from selftest_ops_watch_scratch_outside.py
-every = sum(len(m["classes"]) for k, m in OW.ranges_of(RULES).items() if not k.startswith(("plan.", "roles.", "queues.", "disk.scratch_outside"))) + len(RULES["ranges"]["relentless.why"]["classes"]["idle"]["in"]) - 1
+# roles.* from selftest_role_use.py, on a fixture ledger; queues.* from selftest_ops_watch_queues.py; disk.scratch_outside_* from selftest_ops_watch_scratch_outside.py;
+# disk.root_fall_* from selftest_ops_watch_root_grower.py (planted disk_grower captures this rig does not stage)
+every = sum(len(m["classes"]) for k, m in OW.ranges_of(RULES).items() if not k.startswith(("plan.", "roles.", "queues.", "disk.scratch_outside", "disk.root_fall"))) + len(RULES["ranges"]["relentless.why"]["classes"]["idle"]["in"]) - 1
 check("every filled class of every metric had its fixture", filled == every, (filled, every))
 
 # idle_if: the class a stop gives, on the metrics that name it

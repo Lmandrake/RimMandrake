@@ -39,8 +39,7 @@ import tickburst_step as TS  # noqa: E402
 
 BOUNDS = os.path.join(REPO, "design", "RimMandrake", "tickburst_2026-11-06", "bounds.json")
 GAME = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld"
-MODSCONFIG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml")
-SAVES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"
+from game_paths import MODS_CONFIG as MODSCONFIG, SAVES  # noqa: E402  the one path seam
 DLLS = ("BridgeTools/JawaBench/JawaBench.BridgeTools.dll", "Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll")
 WARMUP, MEASURE, REPEATS = 600, 20000, 3
 SWEEP_CAPS = (1, 30, 60, 61, 0)          # 0 = max (no cap, 200 ms budget)

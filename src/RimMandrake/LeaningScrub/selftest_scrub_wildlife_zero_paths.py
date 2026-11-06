@@ -291,7 +291,8 @@ check("Z4 patches", not patch_hits, patch_hits)
 # sha256 of the WHOLE file (a guard a few lines below the match decides behaviour), except the WINDOWED files: big
 # multi-purpose bridge/dump sources where only the lines matching CODE_RX +- WINDOW are pinned. Any change turns Z5 red
 # until someone re-reads the file and records the new value (`--fingerprints` prints them). Reviewed 2026-11-02, this item; Warscar and
-# TheRot re-read 2026-11-03 (NIGHTLY_COP_FIX_RED_NZZZPC_NAFD: hospice settings and a label; their roster code untouched).
+# TheRot re-read 2026-11-03 (NIGHTLY_COP_FIX_RED_NZZZPC_NAFD: hospice settings and a label; their roster code untouched); both re-read 2026-11-06 (NIGHTLY_REDS_FIX_REMAINING_REAL_FAILS:
+# TETCHIK_GLOWER_THRESHOLD_MEASURE_SPARSE changed only MinMapGlower 10 -> 1 and comments; no roster or density write).
 # STATED LIMIT: a WINDOWED file's change outside its windows is not seen (GPT round 4); those four are bridge-tool and
 # dump sources that act only when a tool is called, and the live A1 census is the arbiter of a real map in any case.
 REVIEWED = {
@@ -306,10 +307,10 @@ REVIEWED = {
     "RimMandrake/Greentide/Source/RM_GreentideMod.cs": ("cfe46921dad09e0e", "RM_Greentide only, removes RM_Krannock"),
     "RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs": ("a243636a2b2fc529", "RM_Pyrelands only"),
     "RimMandrake/RimDefDump/Source/DefDumper.cs": ("2e01cc23efd3d815", "reads rosters for the dump; writes none"),
-    "RimMandrake/Scarlands/Source/Kernel/RM_TetchikGateKernel.cs": ("8fece90db54fd50a", "pure gate arithmetic, comment names the "
+    "RimMandrake/Scarlands/Source/Kernel/RM_TetchikGateKernel.cs": ("df50a6657a995224", "pure gate arithmetic, comment names the "
         "method"),
     "RimMandrake/Scarlands/Source/RM_WarscarMod.cs": ("04432e3fd8a690cf", "RM_Warscar only, settings-off species"),
-    "RimMandrake/Scarlands/Source/RM_WarscarPatches.cs": ("e6a09668741b753e", "CommonalityOfAnimalNow postfix returns at once unless "
+    "RimMandrake/Scarlands/Source/RM_WarscarPatches.cs": ("b7e7cfb45db31290", "CommonalityOfAnimalNow postfix returns at once unless "
         "def is RM_Tetchik"),
     "RimMandrake/TheRot/Source/RM_TheRotMod.cs": ("b4be10c77fcee8f0", "RM_TheRot only, removes RM_Hwelgrue"),
     "RimMandrake/TheSump/Source/RM_KethrelStartup.cs": ("4ad9eba0dbfbf322", "RM_TheSump only, RM_Kethrel rows"),
