@@ -108,6 +108,8 @@ def main():
     if not ok:
         row("SR0_site_ready", "UNMEASURED", {"why": "game not Playing"})
         return exit_code(rows)
+    if a.fresh_map:
+        res["site_calm"] = V.site_calm(B)   # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: map-gen hostiles/hives stop safe_advance at arm
     site = (x0 - 1, z0 - 1, 2 * len(STAGED) + 1, 3)
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % site, categories="All")
     B.call("jawa/set_terrain", x=site[0], z=site[1], terrainDef="Soil", width=site[2], height=site[3])
