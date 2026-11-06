@@ -123,10 +123,17 @@
     "ref": "run rm-role-designer-1793952614",
     "stage": 5,
     "tokens": 145749
+   },
+   {
+    "at": "2026-11-06T08:27:00Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793953324",
+    "stage": 3,
+    "tokens": 477817
    }
   ],
   "reserve": 60000,
-  "spent": 4542415
+  "spent": 5020232
  },
  "history": [
   {
@@ -302,6 +309,24 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1793952614: stage 5 return"
+  },
+  {
+   "at": "2026-11-06T08:22:33Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "4542415 of 4000000 spent; run rm-role-designer-1793953324 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T08:22:33Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1793953324, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-06T08:27:00Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1793953324: stage 3 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -578,11 +603,35 @@
    "stage": 5,
    "summary": "Coverage judge rm-coverage-judge-1793952643 returned not_covered with 11 gaps, all return_to 3 (none needs his answer); tree not signed, so the lock cannot proceed.",
    "to": 3
+  },
+  {
+   "at": "2026-11-06T08:27:00Z",
+   "inputs": {
+    "exam": "21d86d38c761753d1acb087604d149f32dc4db6636bf7397b9c72dc56677d9f5",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "75f81273986b7af084c1688f5f5c1cf3b9c2dffdfbd170a13fe0a2426a58ba27",
+    "sheet": "a664cccb99ac615abadf52d70b3c4a3204cd37055b5a73287459f9c8efb886f0",
+    "tree": "54e26bb557b63563274771360b646a97f7bc470218de681032512a6cc83329d7"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1793953324",
+   "stage": 3,
+   "summary": "All 11 coverage-judge gaps (rm-coverage-judge-1793952643) answered: 3 new leaves (statics_clear_between_games, owner_change_coils_wires, live_wire_lights_fuel), inventory entry owner_change_cut, new acceptance scenes sc_owner_change and sc_fuel_ignition, sc_statics_new_game made acceptance with a filled-state control; discriminating controls for sc_no_repeat, sc_four_looks, sc_spans, sc_fallen_span, sc_gravship; other-faction goodwill in sc_tap_theft; sc_walk and its oracle read memory, save size, frame time and master off/on with a throwaway-save restore; slide-under and WaterproofConduit asserted. Lint PASS, showcase set accepted. Exam must rerun: tree and sheet changed."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
