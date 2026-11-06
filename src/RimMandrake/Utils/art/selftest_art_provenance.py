@@ -161,6 +161,35 @@ def main():
     for words in ("Accept Option A, B, C as all live variants. Drop the donor.", "x->y is the pipe", "a card table"):
         check(not L.card_text_in_said(words), f"card text detection passes his words {words!r}")
 
+    # CARD_PARAPHRASE_AUDIT_SAID_IN_DISGUISE: a said holding ONLY the option label of a recorded card pick has no
+    # marker; card-said finds it by matching the labels the ledgers record with their question (art by_card, rimflow
+    # byCard). A short generic label, or one he is also recorded as typing (ownerSaid), is never matched.
+    rf = tmp / "rimflow"
+    rf.mkdir()
+    (rf / "OWNER.jsonl").write_text("\n".join(json.dumps(e) for e in (
+        {"event": "file", "byCard": "Mountains → Peaks lit toward the sun"},
+        {"event": "note", "byCard": "Delete this? → Delete it"},
+        {"event": "note", "byCard": "Weir style? → but in the four art styles", "ownerSaid": "but in the four art styles"},
+    )) + "\n", encoding="utf-8")
+    os.environ["ART_CARD_LEDGERS"] = os.pathsep.join([str(L.ledger_dir()), str(rf)])
+    labels = L.card_option_labels()
+    check("peaks lit toward the sun" in labels, "a rimflow byCard option label is collected")
+    check("delete it" not in labels, "a short generic option label is not collected")
+    check("but in the four art styles" not in labels, "a label he is also recorded typing is not collected")
+    check("delete now" not in labels, "an art by_card option under the length floor is not collected")
+    lz = noisy(11)
+    slz = L.store_put_bytes(lz)
+    L.purge(slz, owner_said="Peaks lit toward the sun")
+    lev = L.Index().purged[slz]
+    check(any(e["id"] == lev["id"] for e in L.card_said_events()), "card-said flags a bare card option label in said")
+    check(art.main(["correct-provenance", lev["id"], "--by-card", "Mountains → Peaks lit toward the sun",
+                    "--why", "bare option label"]) == 0 and art.main(["card-said"]) == 0,
+          "after the fix card-said reads 0 again")
+    wz = noisy(12)
+    swz = L.store_put_bytes(wz)
+    L.purge(swz, owner_said="but in the four art styles")
+    check(art.main(["card-said"]) == 0, "his recorded words matching a card label are not flagged")
+
     # CLI end to end
     out = subprocess.run([sys.executable, str(HERE / "art.py"), "install", mod, "Things/Tank/Cli.png", sc,
                           "--by-card", "Q → B", "--dry-run"], capture_output=True, text=True, env=os.environ)

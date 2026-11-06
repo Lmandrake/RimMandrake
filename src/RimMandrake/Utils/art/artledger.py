@@ -1100,10 +1100,61 @@ _CARD_TEXT_RE = re.compile(r"\s->\s|\bquestion[ -]card\b|\bby[ -]card\b|\(card\s
 
 
 def card_said_events(idx=None) -> list:
-    """Owner rulings/purges/unpurges/bans whose EFFECTIVE `said` (after provenance fixes) is card text."""
+    """Owner rulings/purges/unpurges/bans whose EFFECTIVE `said` (after provenance fixes) is card text: a marker
+    (card_text_in_said) or, with no marker at all, the bare option label of a recorded card pick (card_option_labels)."""
     idx = idx or Index()
+    labels = card_option_labels()
     return [e for e in idx.events if e.get("type") in CORRECTABLE_TYPES and e.get("by") == "owner"
-            and card_text_in_said(idx.authority(e).get("said"))]
+            and (card_text_in_said(s := idx.authority(e).get("said")) or _norm_said(s) in labels)]
+
+
+def _norm_said(s: str | None) -> str:
+    return " ".join((s or "").split()).strip("'\"").casefold()
+
+
+CARD_LABEL_MIN = 12      # a shorter option ("Yes", "Delete", "Accept all") is too generic to tell from his own words
+
+
+def card_option_labels(dirs=None) -> dict:
+    """{normalised option label: the card text it came from} for every card pick recorded with its question
+    (`… → <option>`) in the art ledger (`by_card`) and the rimflow ledger (`byCard`/`by_card`). An agent who filed
+    the pick under `said` often kept only the option ("Release the keep, purge F", "Peaks lit toward the sun"):
+    no marker, so card_text_in_said cannot see it (CARD_PARAPHRASE_AUDIT_SAID_IN_DISGUISE, 20 events). A label the
+    rimflow ledger also records as his words (`ownerSaid`) is dropped: he may have typed it. ART_CARD_LEDGERS
+    (os.pathsep-separated dirs of *.jsonl) overrides the two default dirs."""
+    if dirs is None:
+        env = os.environ.get("ART_CARD_LEDGERS")
+        dirs = env.split(os.pathsep) if env else [ledger_dir(), REPO_ROOT / "infrastructure" / "state" / "ledger"]
+    labels, words = {}, set()
+    for d in dirs:
+        for f in sorted(Path(d).rglob("*.jsonl")):
+            try:
+                lines = f.read_text(encoding="utf-8", errors="replace").splitlines()
+            except OSError:
+                continue
+            for line in lines:
+                if "card" not in line.casefold() and "said" not in line.casefold():
+                    continue
+                try:
+                    e = json.loads(line)
+                except ValueError:
+                    continue
+                if not isinstance(e, dict):
+                    continue
+                for k in ("ownerSaid", "owner_said"):
+                    if isinstance(e.get(k), str):
+                        words.add(_norm_said(e[k]))
+                for k in ("by_card", "byCard"):
+                    bc = e.get(k)
+                    if not isinstance(bc, str):
+                        continue
+                    for sep in ("→", " -> "):
+                        if sep in bc:
+                            opt = _norm_said(bc.rsplit(sep, 1)[1])
+                            if len(opt) >= CARD_LABEL_MIN:
+                                labels.setdefault(opt, bc)
+                            break
+    return {k: v for k, v in labels.items() if k not in words}
 
 
 def correct_provenance(ruling_id: str, *, why: str, owner_said: str | None = None, by_card: str | None = None,
