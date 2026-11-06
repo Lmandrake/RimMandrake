@@ -330,6 +330,71 @@ def gate():
     check(red_c != cure_c, "the census commits differ")
 
 
+def grown():
+    """GUARD_GATE_FIX_NESTED_RETURN_LOOKS_EARLY: repeat_guard.grown_from on a red test grown by added lines. A return inside an added
+    nested def cannot end the test (OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND_KUQY, refused at dc28f8dfe848 over `return past_gate, acts`);
+    a return the test itself runs still can."""
+    repo = os.path.join(TMP, "grown")
+    os.makedirs(os.path.join(repo, "src"))
+    test = "src/selftest_grown.py"
+    env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
+
+    def g(*a):
+        return SP.run(["git"] + list(a), cwd=repo, env=env, capture_output=True, text=True, check=True).stdout.strip()
+
+    def commit(body):
+        with open(os.path.join(repo, test), "w") as f:
+            f.write(body)
+        g("add", test)
+        g("commit", "-q", "--allow-empty", "-m", "c")
+        return g("rev-parse", "HEAD")
+
+    g("init", "-q", "-b", "main")
+    red = ("import sys\n\ndef old():\n    def inner():\n        print('kept')\n    inner()\n    print('a check')\n\n"
+           "old()\n--1\nsys.exit(1)\n")
+    commit(red)
+    red_hash = RG.digest(red.encode())
+    tail = "old()\n"
+
+    def grows(body):
+        return RG.grown_from(repo, commit(body), test, red_hash)
+
+    def refused_over(body, words, msg):
+        why = grows(body)
+        check(why is not None and words in why, msg + " -> %r" % (why,))
+
+    # what must pass
+    check(grows(red) is None, "the red version is grown from itself")
+    why = grows(red.replace(tail, "def fresh():\n    def run(x):\n        y = x\n        return y, x\n    print(run(1))\n\n" + tail))
+    check(why is None, "a return in a nested def added with a new test function passes -> %r" % (why,))
+    why = grows(red.replace("    inner()\n", "    def helper():\n        return 1\n    inner()\n"))
+    check(why is None, "a return in a nested def added to the red version's own function passes -> %r" % (why,))
+    why = grows(red.replace(tail, "def fresh():\n    class Fake:\n        def sync(self):\n            return None\n    Fake().sync()\n\n" + tail))
+    check(why is None, "a return in a method of a class nested in the new test function passes -> %r" % (why,))
+    why = grows(red.replace(tail, "def fresh():\n    def run():\n        def past():\n            return 1\n        return past()\n    run()\n\n" + tail))
+    check(why is None, "returns two defs deep pass -> %r" % (why,))
+    why = grows(red.replace(tail, "HELP = '''\nreturn is a word\n'''\n" + tail))
+    check(why is None, "the word at a line's start inside a string is no return -> %r" % (why,))
+
+    # what must stay refused
+    early = "ends the test early"
+    refused_over(red.replace("    inner()\n", "    return\n    inner()\n"), early, "a return at the red function's own level is refused")
+    refused_over(red.replace("    inner()\n", "    if len(sys.argv) < 9: return\n    inner()\n"), early,
+                 "a return behind an inline `if` at the function's own level is refused")
+    refused_over(red.replace(tail, "def fresh():\n    print(1)\n    return\n\n" + tail), early,
+                 "a return at a new test function's own level is refused")
+    refused_over(red.replace("import sys\n", "import sys\nreturn\n"), early, "a return at module level is refused")
+    refused_over(red.replace("        print('kept')\n", "        return\n        print('kept')\n"), early,
+                 "a return added to a nested def the red version already had is refused: it can skip a red check")
+    refused_over(red.replace("    inner()\n", "    def helper():\n        sys.exit(0)\n    inner()\n"), early,
+                 "a nested def changes nothing for an exit call: it still ends the run")
+    refused_over(red.replace("import sys\n", "import sys\n++sys.exit(0)\n"), early, "an exit line that diffs as +++ is no file header")
+    refused_over(red.replace("    inner()\n", "    x = '\x0c'\n    def helper():\n        return 1\n    return\n    inner()\n"), early,
+                 "a form feed in an added line does not throw off which line a return is on")
+    refused_over(red.replace("--1\n", ""), "removes or changes", "a removed line that diffs as --- is no file header")
+    refused_over(red.replace(tail, "def broken(:\n" + tail), "cannot parse", "a grown test that does not parse is refused")
+
+
 def census():
     it = lambda **k: types.SimpleNamespace(**dict({"state": "done", "live_repeats": 0, "guard": None}, **k))   # noqa: E731
     guard = {"test": "t", "outages": 1}
@@ -391,6 +456,7 @@ if __name__ == "__main__":
         fold()
         red()
         gate()
+        grown()
         census()
         words()
     finally:

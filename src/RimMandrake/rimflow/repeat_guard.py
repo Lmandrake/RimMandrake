@@ -8,6 +8,7 @@ test here and records the red; `rimflow close` reruns it green. The state half (
 A guard is a selftest*.py under the suite's roots, so the nightly sweep keeps running it: a test nothing runs guards nothing.
 A crash is not a red: a test that cannot import shows nothing about the instance.
 """
+import ast
 import hashlib
 import os
 import re
@@ -47,7 +48,26 @@ def committed_hash(root, sha, test):
 
 
 # an added line that ends the test early would make any test green: a cure row never needs one
-_EXIT = re.compile(r"\b(?:sys\.exit|os\._exit|exit|quit)\s*\(|\braise\s+SystemExit\b|^\s*return\b")
+_EXIT = re.compile(r"\b(?:sys\.exit|os\._exit|exit|quit)\s*\(|\braise\s+SystemExit\b")
+_HUNK = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@")
+
+
+def early_returns(source, added):
+    """-> the added line numbers holding a `return` that can end the test early. GUARD_GATE_FIX_NESTED_RETURN_LOOKS_EARLY: the one
+    harmless return is in a helper added whole and nested in a function: it ends that helper, not the test. A return at a
+    function's own level (or module level) can skip every check below it, and one added to a def the red version already had
+    can skip a check that def holds. Raises SyntaxError or ValueError when `source` does not parse."""
+    found = set()
+
+    def walk(node, funcs):
+        for child in ast.iter_child_nodes(node):
+            if isinstance(child, ast.Return) and child.lineno in added:
+                helper = funcs[-1] if len(funcs) > 1 else None
+                if helper is None or not added.issuperset(range(helper.lineno, helper.end_lineno + 1)):
+                    found.add(child.lineno)
+            walk(child, funcs + [child] if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)) else funcs)
+    walk(ast.parse(source), [])
+    return found
 
 
 def grown_from(root, sha, test, red_hash):
@@ -71,16 +91,27 @@ def grown_from(root, sha, test, red_hash):
     d = git("diff", "--no-color", "-U0", "%s:%s" % (red, test), "%s:%s" % (sha, test))
     if d.returncode not in (0, 1):
         return "git diff failed: %s" % d.stderr.decode(errors="replace")[-200:]
-    added = []
-    for line in d.stdout.decode(errors="replace").splitlines():
-        if line.startswith(("---", "+++")):
+    added = {}
+    at = None   # the next line number in the test at `sha`; None is still the file header, whose ---/+++ are no content
+    for line in d.stdout.decode(errors="replace").split("\n"):   # not splitlines: a form feed in a line would throw the count off
+        hunk = _HUNK.match(line)
+        if hunk:
+            at = int(hunk.group(1))
+        elif at is None:
             continue
-        if line.startswith("-"):
+        elif line.startswith("-"):
             return "%s at %s removes or changes a line of the red version %s: %r" % (test, str(sha)[:12], red[:12], line[1:80])
-        if line.startswith("+"):
-            added.append(line[1:])
-    for line in added:
-        if _EXIT.search(line):
+        elif line.startswith("+"):
+            added[at] = line[1:]
+            at += 1
+    if not added:
+        return None
+    try:
+        early = early_returns(now.stdout.decode(errors="replace"), set(added))
+    except (SyntaxError, ValueError) as e:
+        return "%s at %s cannot parse, so its added lines cannot be read: %s" % (test, str(sha)[:12], e)
+    for n, line in sorted(added.items()):
+        if n in early or _EXIT.search(line):
             return "%s at %s adds a line that ends the test early: %r" % (test, str(sha)[:12], line[:80])
     return None
 
