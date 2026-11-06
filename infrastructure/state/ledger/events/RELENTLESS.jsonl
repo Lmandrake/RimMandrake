@@ -1303,3 +1303,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:38:21Z","tsn":1793993901834527533}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing LOG_BOUND_DECIDE_COLD_LOAD_ALWAYS_GUILTY: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T19:39:47Z","tsn":1793993987939997345}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:43:46Z","tsn":1793994226744443579}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T19:45:29Z","tsn":1793994329880624480}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:45:45Z","tsn":1793994345621975072}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES T3 (GREEN-FULL), read-only proof","ts":"2026-11-06T19:46:11Z","tsn":1793994371190528052}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:49:36Z","tsn":1793994576175936356}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES T4 (GREEN-FULL), read-only proof","ts":"2026-11-06T19:49:51Z","tsn":1793994591365178636}
