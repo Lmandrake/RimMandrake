@@ -254,8 +254,17 @@ def excused(line, runner=subprocess.run):
     p = live_line.parse(line)
     if p["kind"] == "unit":
         import timers_guard
-        return any(p["unit"] in (units or []) and live_line._systemctl("is-active", resume, runner) == "active"
-                   for resume, units in timers_guard.load_pauses().items())   # an old record excuses nothing
+        if any(p["unit"] in (units or []) and live_line._systemctl("is-active", resume, runner) == "active"
+               for resume, units in timers_guard.load_pauses().items()):   # an old record excuses nothing
+            return True
+        if live_line._systemctl("is-active", p["unit"], runner) == "active":
+            return False                       # every pass asks of every promise: a running timer needs no second look
+        try:
+            t = runner(["systemctl", "--user", "list-timers", "--no-legend", "--no-pager"], capture_output=True, text=True,
+                       timeout=60, stdin=subprocess.DEVNULL)
+        except Exception:  # noqa: BLE001   could not ask: an outage stays an outage
+            return False
+        return not t.returncode and p["unit"] in timers_guard.hand_armed(t.stdout, runner)
     if p["kind"] == "role":
         sched = json.loads((HERE.parent / "rimflow" / "dispatcher_schedule.json").read_text(encoding="utf-8"))
         return not any(r.get("name") == p["role"] and r.get("enabled") for r in sched.get("roles", []))

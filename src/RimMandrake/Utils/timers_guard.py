@@ -74,9 +74,41 @@ def enabled_from_listing(text):
     return sorted(out)
 
 
+def started_by(exec_start):
+    """Pure. A unit's ExecStart property -> the timers it runs `systemctl [flags] start|restart` on. A command that only
+    mentions one (an echo, a shell line) starts nothing we can vouch for."""
+    out = set()
+    for argv in re.findall(r"argv\[\]=(.*?) ; ignore_errors=", exec_start or ""):
+        words = argv.split()
+        if not words or os.path.basename(words[0]) != "systemctl":
+            continue
+        rest = [w for w in words[1:] if not w.startswith("-")]
+        if rest and rest[0] in ("start", "restart"):
+            out |= {w for w in rest[1:] if w.endswith(".timer")}
+    return out
+
+
+def hand_armed(listing, runner=subprocess.run):
+    """`list-timers` text -> the timers a pending TRANSIENT timer will start: a restart armed without pause() (2026-11-06:
+    rm-relentless-resume-after-switch), which is a pause all the same. A shipped service proves no one meant a stop, so
+    only systemd-run's count. Unreadable -> nothing: an outage stays an outage (PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS)."""
+    services = sorted({p[-1] for p in (ln.split() for ln in (listing or "").splitlines())
+                       if len(p) >= 2 and p[-2].endswith(".timer") and p[-1].endswith(".service")})
+    if not services:
+        return set()
+    r = _sc(["show", "-p", "Transient", "-p", "ExecStart"] + services, runner)
+    if r.returncode:
+        return set()
+    out = set()
+    for block in (r.stdout or "").split("\n\n"):
+        if "Transient=yes" in block.splitlines():
+            out |= {t for ln in block.splitlines() if ln.startswith("ExecStart=") for t in started_by(ln)}
+    return out
+
+
 def read_states(runner=subprocess.run):
-    """-> ({timer: ActiveState}, covered). covered = timers whose pause still has a PENDING restart (pause() recorded it).
-    Raises RuntimeError when systemctl cannot be read (never 'all fine')."""
+    """-> ({timer: ActiveState}, covered). covered = timers with a PENDING restart: a pause() recorded it, or a transient
+    timer will start them (hand_armed). Raises RuntimeError when systemctl cannot be read (never 'all fine')."""
     r = _sc(["list-unit-files", "--type=timer", "--no-legend", "--no-pager"], runner)
     if r.returncode:
         raise RuntimeError("list-unit-files failed: %s" % (r.stderr or "")[:200])
@@ -87,13 +119,13 @@ def read_states(runner=subprocess.run):
         states[n] = (s.stdout or "").strip()
         if not states[n]:
             raise RuntimeError("is-active %s gave no answer (exit %s): %s" % (n, s.returncode, (s.stderr or "")[:120]))
-    t = _sc(["list-timers", "--no-legend", "--no-pager", RESUME_PREFIX + "*"], runner)  # no --all: only timers that still elapse
+    t = _sc(["list-timers", "--no-legend", "--no-pager"], runner)  # no --all: only timers that still elapse
     if t.returncode:
         raise RuntimeError("list-timers failed: %s" % (t.stderr or "")[:200])
     pending = {w for ln in (t.stdout or "").splitlines() for w in ln.split() if w.startswith(RESUME_PREFIX) and w.endswith(".timer")}
     rec = load_pauses()
     covered = {n for u in pending for n in rec.get(u, [])}
-    return states, covered
+    return states, covered | hand_armed(t.stdout, runner)
 
 
 def judge(states, covered=()):
