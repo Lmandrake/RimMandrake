@@ -5,7 +5,6 @@ the null control and the noise floor (harm or gain only past the null margin and
 verdicts overfit, general, narrow, no_signal and unmeasured, the evidence file and the append-only change record, `show`,
 and the L2 gate in agent_improve.apply_change. Agents are stubs; no model runs. The real ledger is only read, to prove
 the rule change is recorded."""
-import glob
 import json
 import os
 import random
@@ -302,13 +301,16 @@ with tempfile.TemporaryDirectory() as tmp:
 # the change to the Conductor's verdict rule is on the ledger, with its reason
 ITEM = "AGENT_IMPROVE_HARDEN_NOISE_CALLED_OVERFIT"
 notes = []
-for path in glob.glob(os.path.join(G.EVENTS, "*.jsonl")):
-    with open(path, encoding="utf-8", errors="replace") as f:
-        for ln in f:
-            if ITEM in ln and "noise_floor_v1" in ln:
-                e = json.loads(ln)
-                if e.get("id") == ITEM and e.get("event") == "note":
-                    notes.append(e)
+# Read from git at HEAD, never the folder: the walled checker's tree leaves the ledger out but has the history, and a
+# record that counts is a committed one.
+git = lambda *c: subprocess.run(["git"] + list(c), cwd=A.REPO, capture_output=True, text=True, errors="replace",  # noqa: E731
+                                check=True).stdout
+for path in git("ls-tree", "--name-only", "HEAD", os.path.relpath(G.EVENTS, A.REPO) + "/").splitlines():
+    for ln in git("show", "HEAD:" + path).splitlines():
+        if ITEM in ln and "noise_floor_v1" in ln:
+            e = json.loads(ln)
+            if e.get("id") == ITEM and e.get("event") == "note":
+                notes.append(e)
 check("the ledger records the rule change and why", notes and "2026-11-02" in json.dumps(notes[-1])
       and "2-3-1" in json.dumps(notes[-1]), notes)
 
