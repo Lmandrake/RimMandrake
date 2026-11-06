@@ -479,9 +479,9 @@ def incident_texts(item_text):
     """-> the recorded incident's own words in the item text: quoted spans of 16+ chars, and the text after the title's
     'stops live proofs:' (the supervisor's env-cause titles carry the incident there unquoted)."""
     out = [q for q in (next(g for g in m.groups() if g) for m in _QUOTED.finditer(item_text or ""))
-           if _RECORD_CHARS.search(q)]
+           if _RECORD_CHARS.search(q) and not re.search(r"(?:^|\s)--\w", q)]    # a quoted command is not an incident
     for m in re.finditer(r"stops live proofs:\s*(.{%d,})" % INCIDENT_RUN, item_text or ""):
-        out.append(m.group(1).strip())
+        out.append(re.split(r"\s+tsn=\d|\s+\|\s", m.group(1))[0].strip())    # a ledger history row runs on past the title
     return [t for t in dict.fromkeys(_norm(x) for x in out) if len(t) >= INCIDENT_RUN]
 
 
@@ -500,7 +500,11 @@ def replays_incident(item_text, exam_files):
 
 _POSITIONAL = re.compile(r"\.splitlines\(\)\s*\[\s*-1\s*\]|\.split\(\s*['\"]\\n['\"]\s*\)\s*\[\s*-1\s*\]"
                          r"|\b(?:out|output|stdout|stderr|reading)\w*(?:\.(?:strip|rstrip)\(\))?"
-                         r"\.endswith\(\s*(?:f|r)?['\"][^'\"\n]{8,}['\"]")
+                         r"\.endswith\(\s*(?:f|r)?['\"][^'\"\n]{8,}['\"]"
+                         # the rows split out first, then the last one held to a verdict literal (the frozen SEEDS exam)
+                         r"|\b\w+\[\s*-1\s*\]\s*(?:==|!=)\s*(?:f|r)?['\"][^'\"\n]{8,}['\"]"
+                         r"|\b\w+\[\s*-1\s*\]\.(?:startswith|endswith)\(\s*(?:f|r)?['\"][^'\"\n]{8,}['\"]"
+                         r"|['\"][^'\"\n]{8,}['\"]\s+(?:not\s+)?in\s+\w+\[\s*-1\s*\]")
 
 
 def positional_matches(exam_files):

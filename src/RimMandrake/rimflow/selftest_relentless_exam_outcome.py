@@ -91,6 +91,23 @@ check(not E.positional_matches({"t.py": "if path.endswith('.py') or text.endswit
       "a path's or helper's .endswith is not an output match")
 check(not E.positional_matches({"fx.json": "out.splitlines()[-1]"}), "a fixture (data, not code) is not scanned for position")
 check(E.positional_matches({"t.py": "last = out.strip().split('\\n')[-1]"}), "split('\\n')[-1] is a positional match too")
+# The recorded lines, verbatim from the frozen exams: the output was split into a list first, then its last row compared.
+REAL_SEEDS = """if not ls or ls[-1] != "RESULT PASS: 0 failed": fail("reading does not end 'RESULT PASS: 0 failed': %r" % ls[-3:])\n"""
+REAL_PIT = """if lines[-1] != "FIXTURE_VERDICT: PASS":\n"""
+check(E.positional_matches({"test_seed_compare_adapter.py": REAL_SEEDS}), "the frozen SEEDS exam's own line is POSITIONAL_MATCH")
+check(E.positional_matches({"check_fixture_script.py": REAL_PIT}), "a last row compared to a verdict literal is POSITIONAL_MATCH")
+for body, what in (("if lines[-1].startswith('RESULT PASS'):\n", "a last row's prefix"), ("if 'RESULT PASS' not in ls[-1]:\n", "a verdict sought only in the last row")):
+    check(E.positional_matches({"t.py": body}), "%s is POSITIONAL_MATCH" % what)
+for body, what in (("rec = json.loads(lines[-1])\n", "a last row parsed, not compared to a verdict"), ("if parts[-1] != 'x':\n", "a short literal"),
+                   ("if 'RESULT PASS: 0 failed' not in ls:\n", "containment over the rows")):
+    check(not E.positional_matches({"t.py": body}), "%s is not POSITIONAL_MATCH" % what)
+
+# incident_texts: what is not the incident stays out of it
+_short = "X  stops live proofs: the proof timed out tsn=1793968086378236492 | agent's reason: relentless supervisor"
+check(not E.incident_texts(_short), "a history row's tsn and reason are not the incident's words (the incident is under 24 chars)")
+_long = "X  stops live proofs: site not prepared: not ready at the main menu tsn=179 | agent's reason: relentless"
+check(E.incident_texts(_long) == ["site not prepared: not ready at the main menu"], "the incident ends where the history row's tsn begins: %r" % E.incident_texts(_long))
+check(not E.incident_texts("Done when: 'run_selftests.py --only selftest_ops_churn' is green"), "a quoted command is not an incident")
 
 # (3) INCIDENT_NOT_REPLAYED: 09849AF1 fixture must carry the recorded incident text
 c0984 = clause("c1", "A foreign client's call that ended 6s ago ('idge client is active -- pid 42468') no longer stops live proofs")
