@@ -224,10 +224,16 @@ real_pkg = R.pkg
 # the real ledger_has on a real spawn-event row: the child's id is in `name`, and it has no later event
 R.pkg = lambda n: types.SimpleNamespace(read=lambda: [
     {"seat": "BENCH", "event": "spawn", "name": "BORN_BY_SPAWN_ONLY", "from": "PARENT_X", "for": "BENCH"},
-    {"seat": "BENCH", "event": "note", "id": "PARENT_X"}])
+    {"seat": "BENCH", "event": "note", "id": "PARENT_X"}], REPO="")
 ok(R.ledger_has("BORN_BY_SPAWN_ONLY"), "ledger_has: an item whose only event is its spawn is filed")
 ok(R.ledger_has("PARENT_X"), "ledger_has: an item with an id event is filed")
 ok(not R.ledger_has("NEVER_FILED_XYZ"), "ledger_has: a name no event carries is not filed")
+# end to end, ledger_has NOT stubbed: `expedite set` on a spawn-only item enrols it
+real_cr, R.concept_refused = R.concept_refused, (lambda *x: None)
+a.item = "BORN_BY_SPAWN_ONLY"
+ok(R.expedite_cli(a, s, 100.0, RULES, {}) == 0 and (s.load("BORN_BY_SPAWN_ONLY") or {}).get("status") == "queued",
+   "cli: expedite set on an item whose only event is its spawn succeeds")
+R.concept_refused = real_cr
 R.pkg = real_pkg
 real = R.ledger_has, R.concept_refused
 R.ledger_has, R.concept_refused = (lambda i: True), (lambda *x: None)
