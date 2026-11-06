@@ -823,3 +823,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A5 (L2), read-only proof","ts":"2026-11-06T00:05:25Z","tsn":1793923525415610457}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T00:13:14Z","tsn":1793923994594886797}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PUMP_STATION_REDRAW_PLUMBED_FOR_GIANTS: review savegame for the owner's look","ts":"2026-11-06T00:20:59Z","tsn":1793924459417837957}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T00:34:37Z","tsn":1793925277244279646}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T00:35:04Z","tsn":1793925304420207150}
