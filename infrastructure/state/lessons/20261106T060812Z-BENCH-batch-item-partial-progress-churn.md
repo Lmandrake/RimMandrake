@@ -1,0 +1,2 @@
+A Relentless batch item that drains rows and returns partial_progress each gen reads as churn ('partial_progress failed it N times') and climbs the approach ladder; when the remaining rows wait on a dependency (here new art under slot_allocator PAYDOWN), the worker must snag blocked_by_predecessor --blocker external instead, and a relentless hold needs Conductor/owner authority (--per-ruling with the Conductor's text), so an Operations diagnosis cannot park it alone (OPS_CHURN_DIAGNOSE_FLYER_YVXA_VLPY, FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST).
+home: skills/rimflow-operations
