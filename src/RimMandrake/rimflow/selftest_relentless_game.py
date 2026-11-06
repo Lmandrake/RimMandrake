@@ -1421,6 +1421,35 @@ def t_menu_bound_item_never_tries_a_running_game():
     ok(G.menu_bound(Fx(PROOF + "live-toggle: a.b c.d\n"), "I0", SHA), "a malformed live-toggle binds (its staging holds)")
 
 
+def t_menu_bound_final_never_tries_a_running_game():
+    """GAMEENV_FIX_PROOFSITE_7B433874_ITEMS_WAIT, the final half (the item's own incident): an item waiting in phase
+    final for its full-list verification whose proofs carry a live-menu or live-toggle line never tries a newer game
+    another load started (that try said "rides a later load" twice and routed PLANET_ATMOSPHERE_CLOUD_COST_1 as a
+    proof-or-site defect); the same rig with a plain proofs file still tries it, so the rig can see a try."""
+    for extra in ("", "live-menu: echo a\n", "live-toggle: rwnodetree.rwplanetatmosphere\n",
+                  "live-menu: echo a\nlive-toggle: rwnodetree.rwplanetatmosphere\n"):
+        x = rig(2, share=1.0, max_workers=2)
+        two_final(x)
+        x.w.proofs[("I1", ".txt")] = FINAL_PROOF + extra
+        for i in ("I0", "I1"):
+            with x.s.lock():
+                st = x.s.load(i)
+                st["game"].update(phase="final", final_game=x.w.started, entered_at=x.now - 500 + (i == "I1"))
+                x.s.save(st)
+        x.w.started = x.now + 100       # a newer game another load started
+        acts = []
+        G.step(x.s, x.w, x.r, "I1", x.now + 200, acts, R)
+        tried = any(a["do"] == "game_final_try_running" for a in acts)
+        if not extra:
+            ok(tried and x.st("I1")["game"]["phase"] == "prove",
+               "control: a plain final item tries the newer game once: %s" % acts)
+        else:
+            ok(not tried and x.st("I1")["game"]["phase"] == "final",
+               "%s: a menu-bound final never tries the newer game, it stays final: %s %s"
+               % (extra.split(":")[0], acts, x.st("I1")["game"]["phase"]))
+        x.done()
+
+
 FINAL_GAME = {"clauses": ["A1", "F1"], "why": "A1 on the smallest list; F1 is the full-list final verification"}
 FINAL_PROOF = ("live-proof A1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py needs-mods --mod Graffiti\n"
                "live-proof F1: python.exe src/RimMandrake/Utils/northstar_driver/cli.py running-list\n")
@@ -2032,6 +2061,7 @@ def main():
               t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline, t_fail_on_a_restarted_game_is_offline,
               t_stage_tries_a_newer_running_game_first,
               t_menu_bound_item_never_tries_a_running_game,
+              t_menu_bound_final_never_tries_a_running_game,
               t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses, t_met_clause_is_not_missing,
               t_refusal_returns_once_then_holds, t_retiered_criteria_are_rerecorded, t_retiered_rerecorded_every_phase, t_stale_build_caught_before_a_slot,
               t_rebuilt_assembly_carries_the_build, t_stale_row_carries_the_build, t_dead_rows_go_back, t_idle_live_hold_lapses, t_live_hold_clock_restarts_at_lease,
