@@ -1,0 +1,71 @@
+[
+ {
+  "id": "arteval_RSW_Falumpaset_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Falumpaset",
+  "prompt": "A creature sprite for RimWorld: the falumpaset. A huge, long-legged herbivore from Naboo, with a heavy rump, wrinkled spotted hide and a low-hung head. Gungans and Naboo domesticate falumpasets to pull carts and haul heavy loads. They are strong swimmers. Visible features it must show: the canon Naboo falumpaset (see canon entry falumpaset); very long legs under a heavy rump; wrinkled spotted hide and a low-hung head. Tail: one short tufted tail attached high on the hindquarters, ending against the upper hind legs beside the heavy rump; the same short tail, at the same height and with the same tuft, in every view. Front view, eyes toward the viewer: the low-hung head, the broad chest and the two front legs, with the belly line closing cleanly beneath the chest and open space between the front legs; the tail is hidden behind the body. Side and rear views show the short tail against the upper hind legs, with the rear view showing the back, haunches and tail with the eyes hidden. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0751",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Falumpaset/Falumpaset"
+ },
+ {
+  "id": "arteval_RSW_Falumpaset__FalumpasetE_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Falumpaset__FalumpasetE",
+  "prompt": "A creature sprite for RimWorld: the falumpaset. A huge, long-legged herbivore from Naboo, with a heavy rump, wrinkled spotted hide and a low-hung head. Gungans and Naboo domesticate falumpasets to pull carts and haul heavy loads. They are strong swimmers. Visible features it must show: the canon Naboo falumpaset (see canon entry falumpaset); very long legs under a heavy rump; wrinkled spotted hide and a low-hung head with a drooping muzzle. The legs grade from the body colour to a darker grey-brown from the lower joint down to the feet. The tail is short and thin, ending in a small tuft at about hock height, identical in length and tuft height in every facing. The south view shows the front of the head, eyes toward the viewer, with a continuous drooping muzzle, a clean pendulous lip, a clean chin and throat, and open empty space between the front legs; the tail is hidden behind the body. The north view shows the rear, seen from behind: heavy rump, haunches, and the short thin tail with its small tuft at hock height, head hidden. The east view shows the same short tail in profile. Keep the palette, body plan, spotted wrinkled hide and low-hung head exactly as in the previous render. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, CANON_MISS, F_INCONSISTENT, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0751",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Falumpaset/Falumpaset"
+ },
+ {
+  "id": "arteval_RSW_Fambaa_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Fambaa",
+  "prompt": "A creature sprite for RimWorld: the fambaa. Fambaas were large herbivorous amphibians most often found in swamps. Fambaas were technically amphibians but had the scaly hide of reptiles. The creature's size and usefulness when domesticated meant they were exported to many worlds as beasts of burden. Body: a huge, broad, low-slung, iguana-like quadruped with reptile-scaled hide and a wide flat back built for hauling loads. The short, thick neck juts forward at shoulder height, and the heavy head is carried low in front of the chest. The head is broad and blunt with heavy brows, a wide lipless mouth, small upper front fangs, a short upward tusk on each side of the lower jaw, and a yellow-amber eye. Colour: the back and flanks are olive-khaki to greenish-tan with darker olive mottling; the underside, throat and inner legs are pale grey-cream. Feet: each leg ends in a broad, round, elephant-like foot with short, blunt, dark claws along the front edge. Crest: a low dorsal ridge runs along the back of the neck and head, with the same 3D shape on every facing; it reads as a narrow edge in front and rear views and as a ridge line along the neck in side view. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, DESC_MISS, CANON_MISS, CANON_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0751",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 8.0,
+  "module": "swimmer",
+  "target_texpath": "RimStarWars/SWBestiary/Fambaa/Fambaa"
+ }
+]
