@@ -2379,10 +2379,20 @@ def _do_tell(a, st, seat, apply, now, fx):
 def background_commands(pid, proc="/proc"):
     """-> pids of the window's Bash-tool children still running, [] if none, None if the process table cannot be read.
     MEASURED 2026-10-31: a Bash-tool child sources the window's shell snapshot (a marker no hook carries), and an idle
-    window has none, so one alive past an ended turn is a background command a restart would kill."""
+    window has none, so one alive past an ended turn is a background command a restart would kill.
+    A command that execs (`exec python3 x.py`, or a shell's own last-command exec) replaces that cmdline, so the
+    environment is the second marker: MEASURED 2026-11-06, a Bash-tool shell carries CLAUDE_CODE_SHELL in its environ
+    and a hook, an MCP server and the window itself do not; environ survives exec. A window that itself inherited the
+    variable (launched from another window's Bash) cannot tell by it, and keeps the cmdline marker alone."""
     out = []
     try:
         names = os.listdir(proc)
+    except OSError:
+        return None
+    try:
+        by_env = not _has_env_mark(os.path.join(proc, str(pid), "environ"))
+    except FileNotFoundError:            # the window itself is gone: nothing of its can be cut off
+        return []
     except OSError:
         return None
     for name in names:
@@ -2395,15 +2405,25 @@ def background_commands(pid, proc="/proc"):
                 continue
             with open(os.path.join(proc, name, "cmdline"), "rb") as f:
                 cmd = f.read()
+            mine = b"shell-snapshots/" in cmd or (by_env and _has_env_mark(os.path.join(proc, name, "environ")))
         except FileNotFoundError:        # it ended between the listing and the read
             continue
         except ProcessLookupError:
             continue
         except (OSError, ValueError, IndexError):
             return None
-        if b"shell-snapshots/" in cmd:
+        if mine:
             out.append(int(name))
     return sorted(out)
+
+
+BASH_TOOL_ENV_MARK = b"CLAUDE_CODE_SHELL="
+
+
+def _has_env_mark(path):
+    """-> True when the process's initial environment holds the Bash tool's variable. Raises OSError unread."""
+    with open(path, "rb") as f:
+        return any(v.startswith(BASH_TOOL_ENV_MARK) for v in f.read().split(b"\0"))
 
 
 def background_holds(pid):

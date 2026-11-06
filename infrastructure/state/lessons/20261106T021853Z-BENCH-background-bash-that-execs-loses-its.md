@@ -1,0 +1,1 @@
+A background Bash that execs loses its shell-snapshots cmdline; /proc/<pid>/environ keeps CLAUDE_CODE_SHELL, which Bash-tool shells carry and hooks, MCP servers and the window itself do not (measured 2026-11-06). Match a Bash-tool child by environ too (seat_restart.background_commands).

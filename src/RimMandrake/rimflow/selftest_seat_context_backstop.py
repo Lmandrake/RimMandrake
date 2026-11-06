@@ -381,19 +381,38 @@ def test_model_every_window_state():
 def test_background_commands_hold_a_window():
     root = os.path.join(T.TMP, "proc")
 
-    def proc(pid, ppid, cmd):
+    shell = "HOME=/home/x\0CLAUDECODE=1\0CLAUDE_CODE_SHELL=/bin/bash\0"
+
+    def proc(pid, ppid, cmd, env="HOME=/home/x\0CLAUDECODE=1\0"):
         d = os.path.join(root, str(pid))
         os.makedirs(d, exist_ok=True)
         with open(os.path.join(d, "stat"), "w") as f:
             f.write("%d (x y) S %d 0 0\n" % (pid, ppid))
         with open(os.path.join(d, "cmdline"), "wb") as f:
             f.write(cmd.replace(" ", "\0").encode())
-    proc(100, 1, "claude")
+        with open(os.path.join(d, "environ"), "wb") as f:
+            f.write(env.encode())
+    proc(100, 1, "claude", env="HOME=/home/x\0")
     proc(101, 100, "sh -c python3 doorbell.py")
     proc(102, 100, "node mcp-server")
     check(SR.background_commands(100, root) == [], "a doorbell hook and an MCP server are no background command")
-    proc(103, 100, "/usr/bin/zsh -c source /home/x/.claude/shell-snapshots/snapshot-zsh-1.sh && eval sleep")
+    proc(103, 100, "/usr/bin/zsh -c source /home/x/.claude/shell-snapshots/snapshot-zsh-1.sh && eval sleep", env=shell)
     check(SR.background_commands(100, root) == [103], "a Bash-tool child of the window is (%s)" % SR.background_commands(100, root))
+    # BACKGROUND_FENCE_FIX_EXEC_ESCAPES_SNAPSHOT: `exec python3 serve.py` replaces the cmdline, not the environ
+    proc(104, 100, "python3 serve.py", env=shell)
+    check(SR.background_commands(100, root) == [103, 104], "a Bash-tool child that exec'd away its snapshot cmdline is still"
+          " found by its environ (%s)" % SR.background_commands(100, root))
+    proc(105, 999, "python3 other.py", env=shell)
+    check(SR.background_commands(100, root) == [103, 104], "another window's Bash child is not this window's")
+    proc(100, 1, "claude", env=shell)            # a window launched from another window's Bash: the env mark says nothing
+    check(SR.background_commands(100, root) == [103], "a window holding the mark itself keeps the cmdline marker alone"
+          " (%s)" % SR.background_commands(100, root))
+    os.remove(os.path.join(root, "104", "environ"))
+    proc(100, 1, "claude", env="HOME=/home/x\0")
+    os.makedirs(os.path.join(root, "104", "environ"))    # an environ that cannot be read is no reading: UNMEASURED
+    check(SR.background_commands(100, root) is None, "an unreadable child environ is UNMEASURED, which holds")
+    os.rmdir(os.path.join(root, "104", "environ"))
+    proc(104, 100, "python3 serve.py")
     check(SR.background_commands(100, root + "-gone") is None, "no /proc reading: UNMEASURED, which holds")
 
 
