@@ -1375,3 +1375,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:39:39Z","tsn":1794004779285461731}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SHOTSETTLE_BUILD_PAUSED_BARRIER A1 (L2), read-only proof","ts":"2026-11-06T22:40:39Z","tsn":1794004839257918404}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:40:48Z","tsn":1794004848047996333}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-06T23:16:21Z","tsn":1794006981822554919}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:16:35Z","tsn":1794006995775392482}
