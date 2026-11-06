@@ -77,6 +77,7 @@ DEFAULT_ROOT = "/home/mandrake/rm/relentless"
 # 2026-11-02); the brief points at it instead (TRANSFER_AUDIT, BENCH)
 MEMORY_INDEX = os.path.expanduser("~/.claude/projects/-home-mandrake-rm-bench/memory/MEMORY.md")
 FENCED = 3
+RESTORE_EMAIL = "relentless@localhost"     # the committer of every commit restore_commits carries back into a clone
 LEASED = ("running", "stopping", "candidate", "checking", "closing", "retiring", relentless_game.GAME)   # a worker or the supervisor owns the item
 OPEN = ("queued",) + LEASED + ("held",)
 MAX_WAIT_HOURS = 6     # a worker's word cannot park an item for longer
@@ -1288,13 +1289,33 @@ def landing_key(cwd, sha):
     return {"patch_id": next(iter(ids), None), "subject": subject, "author": author}
 
 
+def reverted_on(cwd, commit, ref="origin/main"):
+    """True when `ref`, after `commit`, holds the exact reverse of its patch and no later re-landing of it: the patch
+    equivalence that says "already landed" is history, not the tip. Unreadable -> False: nothing is refused on what cannot
+    be read (Codex r7 part1 #1, upheld by RELENTLESS_VET_FULL_FILE_BEFORE_CLEAN's adjudication)."""
+    names = _run_git(cwd, "diff-tree", "--no-commit-id", "--name-only", "--no-renames", "-r", commit)
+    d = _run_git(cwd, "diff", "--no-color", "--no-textconv", "--no-ext-diff", "--no-renames", commit, commit + "^")
+    paths = names.stdout.split("\n") if _ok(names) else []
+    if not _ok(d) or not d.stdout or not any(paths):
+        return False
+    p = _run_git(cwd, "patch-id", "--stable", stdin=d.stdout)
+    back = p.stdout.split()[0] if _ok(p) and p.stdout.split() else None
+    fwd = next(iter(_patch_ids(cwd, "-1", commit)), None)
+    later = _patch_ids(cwd, "-n", str(LANDED_DEPTH), "%s..%s" % (commit, ref), "--", *[x for x in paths if x])
+    undone = later.get(back) if back else None
+    if not undone:
+        return False
+    again = later.get(fwd) if fwd else None     # newest first: re-landed after the revert means it is back
+    return not (again and _ok(_run_git(cwd, "merge-base", "--is-ancestor", undone[0], again[0])))
+
+
 def find_landed(cwd, key, item, base=None, until=None, since=None, ref="origin/main"):
     """-> (commit, how) on `ref` holding the work of a commit `ref` does not hold, or (None, why). In order: the
     newest commit with the key's subject, author stamp and patch-id; the newest with its patch-id alone (a reworded
     landing); the newest with subject and author when the commit carries no patch (empty); with no key at all (the
     object and its clone are gone), the newest commit since `base` whose subject names `item`, authored between
     `since` (the finishing run's start) and `until` (the finish): a rebase keeps the author date, so this is the tip
-    that run had when it finished, never an earlier run's landed half."""
+    that run had when it finished, never an earlier run's landed half. A patch `ref` has since reverted is no landing."""
     span = ["%s..%s" % (base, ref)] if base and _ok(_run_git(cwd, "cat-file", "-e", base + "^{commit}")) else [ref]
     span += ["-n", str(LANDED_DEPTH)]       # origin/main took 419 commits in six hours, 2026-11-06
     r = _run_git(cwd, "log", "--format=%H%x00%s%x00%an <%ae> %at", *span)
@@ -1304,10 +1325,13 @@ def find_landed(cwd, key, item, base=None, until=None, since=None, ref="origin/m
         pid = key.get("patch_id")
         for h in same:
             if not pid or pid in _patch_ids(cwd, "-1", h):
+                if pid and reverted_on(cwd, h, ref):
+                    continue
                 return h, "patch-id %s" % pid[:12] if pid else "subject and author stamp"
         hit = _patch_ids(cwd, *span).get(pid) if pid else None
-        if hit:
-            return hit[0], "patch-id %s" % pid[:12]
+        for h in hit or ():
+            if not reverted_on(cwd, h, ref):
+                return h, "patch-id %s" % pid[:12]
         return None, "no commit on %s carries its patch-id or its subject and author stamp" % ref
     for h, subject, author in rows:
         try:
@@ -1469,6 +1493,14 @@ def unlanded(cwd):
     if not r or r.returncode:
         return None
     left = r.stdout.split()
+    # --cherry-pick matches a patch origin/main once held, reverted or not: a commit whose only twin was reverted is unlanded
+    twins = _run_git(cwd, "rev-list", "--left-only", "--cherry-mark", "--no-merges", "origin/main...HEAD")
+    gone = {next(iter(_patch_ids(cwd, "-1", x[1:])), None) for x in (twins.stdout.split() if _ok(twins) else [])
+            if x.startswith("=") and reverted_on(cwd, x[1:])} - {None}
+    if gone:
+        mine = _run_git(cwd, "rev-list", "--right-only", "--cherry-mark", "--no-merges", "origin/main...HEAD")
+        left += [x[1:] for x in (mine.stdout.split() if _ok(mine) else [])
+                 if x.startswith("=") and next(iter(_patch_ids(cwd, "-1", x[1:])), None) in gone]
     # a merge has no patch-id, so --cherry-pick cannot match it: one that carries a resolution (content in neither
     # parent, which `diff-tree --cc` shows) is work origin/main lacks; a clean merge adds nothing (Codex r6 #4)
     m = _run_git(cwd, "rev-list", "--merges", "origin/main..HEAD")
@@ -3601,7 +3633,7 @@ class Effects(relentless_game.GameFx):
         shas = self.git(c, "rev-list", "--reverse", "--first-parent", tip, "--not", "--remotes", timeout=300).stdout.split() if tip else []
         for sha in shas:
             merge = len(self.git(c, "rev-list", "--parents", "-n1", sha, timeout=60).stdout.split()) > 2
-            r = self.git(c, "-c", "user.name=relentless", "-c", "user.email=relentless@localhost", "cherry-pick", "--allow-empty",
+            r = self.git(c, "-c", "user.name=relentless", "-c", "user.email=" + RESTORE_EMAIL, "cherry-pick", "--allow-empty",
                          *(("-m", "1") if merge else ()), sha, timeout=300)
             if not r.returncode:
                 picked += 1
@@ -4037,12 +4069,13 @@ class Effects(relentless_game.GameFx):
 
     def worker_changed(self, base, sha, item, since):
         """changed(), but a commit naming the item counts only when it was authored inside one of the item's runs since
-        `since` (author time survives publish's rebase and a cherry-pick). The final commit always counts. Nothing
-        readable -> changed() whole."""
+        `since` (author time survives publish's rebase, so a mend re-committed inside a run stays out), or the supervisor's
+        restore_commits carried it back: that keeps an old author time but stamps its committer (Codex r7 part4 #1).
+        The final commit always counts. Nothing readable -> changed() whole."""
         wins = item_run_windows(self.store.attempts(item), since)
         if not wins or not base:
             return self.changed(base, sha, item)
-        r = self.git(self.books, "log", "--format=%x01%at", "--name-only", "--no-renames", "--diff-merges=first-parent", "--grep=" + item,
+        r = self.git(self.books, "log", "--format=%x01%at %ce", "--name-only", "--no-renames", "--diff-merges=first-parent", "--grep=" + item,
                      "%s..%s" % (base, sha))
         if r.returncode:
             return self.changed(base, sha, item)
@@ -4050,10 +4083,11 @@ class Effects(relentless_game.GameFx):
         for block in r.stdout.split("\x01")[1:]:
             lines = [x for x in block.splitlines() if x.strip()]
             try:
-                at = int(lines[0])
+                at, who = lines[0].split(" ", 1)
+                at = int(at)
             except (IndexError, ValueError):
                 return self.changed(base, sha, item)
-            if any(s <= at and (e is None or at <= e) for s, e in wins):
+            if who == RESTORE_EMAIL or any(s <= at and (e is None or at <= e) for s, e in wins):
                 got |= set(lines[1:])
         r = self.git(self.books, "show", "--format=", "--name-only", "--no-renames", "--diff-merges=first-parent", sha)
         got |= set(x for x in r.stdout.splitlines() if x.strip()) if r.returncode == 0 else set()
