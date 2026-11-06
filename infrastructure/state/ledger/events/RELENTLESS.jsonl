@@ -1184,3 +1184,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:16:45Z","tsn":1793978205178990000}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR A1 (L2), read-only proof","ts":"2026-11-06T15:17:29Z","tsn":1793978249814672419}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:22:45Z","tsn":1793978565370548875}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW A1 (L2), read-only proof","ts":"2026-11-06T15:23:42Z","tsn":1793978622931413996}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:23:53Z","tsn":1793978633039315278}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED A1 (L2), read-only proof","ts":"2026-11-06T15:25:00Z","tsn":1793978700018884122}
