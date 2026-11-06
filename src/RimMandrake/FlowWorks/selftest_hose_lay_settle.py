@@ -134,8 +134,12 @@ def body(text, header, stop=r"\n    def |\ndef |\nclass "):
 vh = src(os.path.join(F, "validation_hose.py"))
 check("validation_hose H.hose settles", "V.settle_hose(read)" in body(vh, "    def hose(self, reel"))
 check("validation_hose save/load census settles", vh.count('V.settle_census(lambda: B.hp("census"), lambda h: True)') >= 2)
-cr2 = vh[vh.find('"CR2_trail_follows_walk"') - 600: vh.find('"CR2_trail_follows_walk"') + 400]
-check("CR2 asks for the carry draw, not a lay", 'carry_drawn' in cr2 and 'b.get("layOk")' not in cr2)
+# CR2's verdict lives in cr2_ok since e011a2e5fa (HOSE_CARRY_DIAGNOSE_LAYOK_HIDES_IN_DETAIL): check the verdict function, and
+# that the row calls it. The detail dict may record layOk; only the verdict must not ask for it.
+cr2v = body(vh, "def cr2_ok(a, b):")
+cr2v_code = re.sub(r'"""[\s\S]*?"""', "", cr2v)
+check("CR2 asks for the carry draw, not a lay",
+      '"PASS" if cr2_ok(a, b)' in vh and '.get("mode") == "carry"' in cr2v_code and "layOk" not in cr2v_code, cr2v)
 vsh = src(os.path.join(F, "validation_style_hose.py"))
 check("validation_style_hose: no bare census read", 'c = H.hp("census")\n' not in vsh and "V.settle_census" in vsh)
 ph = src(os.path.join(N, "proof_hose.py"))
