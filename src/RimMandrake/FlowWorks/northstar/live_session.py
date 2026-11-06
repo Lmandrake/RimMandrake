@@ -56,6 +56,7 @@ import argparse
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -1486,6 +1487,7 @@ def b4_shared(s):
     gens = {n: f(s) for n, f in SHARED_GENS}
     gens["ride"] = g_dehydration_ride(s)
     done = {}
+    s.b4_rows = {}
     res, spent = run_shared_with_stop(s, gens, done)
     s.timing["B4_ticks"] = spent
     # B7 compares access/digdepth/covers: a session (or chunk state) without them staged compares bare ground
@@ -1493,6 +1495,24 @@ def b4_shared(s):
     for name, state in res.items():
         if state != "done":
             s.row("B4_block_%s" % name, "-", "-", "UNMEASURED", "HARNESS", dict(state=state), "B4")
+            # the PASS rows a block wrote before it crashed or stalled would fold into a 'pass' for a criterion whose later
+            # rows never ran (run_sub voids a crashed script's criteria the same way): void every criterion it owns
+            for it, cid in gen_criteria(name, s.b4_rows.get(name)):
+                s.row("B4_%s:CRASHED:%s" % (name, cid), it, cid, "UNMEASURED", "HARNESS",
+                      dict(state=state, why="the block did not finish: rows after it stopped never ran"), "B4")
+
+
+# the catalog's "native <name>" source for each shared block: the criteria a block owns even if it died before its first row
+GEN_NATIVE = dict(covers="cover_tiers", access="pit_access", digdepth="dig_depth", reservoir="dug_reservoir",
+                  grenade="grenade", raillip="rail_lip", ride="dehydration_ride")
+
+
+def gen_criteria(name, seen=None):
+    """(item, criterion) pairs a B4 block owns: the catalog's for its native source, plus any it wrote a row for."""
+    tag = "native %s" % GEN_NATIVE.get(name, name)
+    out = {(c["item"], c["crit"]) for c in C if c["block"] == "B4" and re.match(re.escape(tag) + r"\b", c["source"])}
+    out |= {(it, cid) for it, cid in (seen or ()) if it not in ("-", None)}
+    return sorted(out)
 
 
 def run_shared_with_stop(s, gens, done):
@@ -1503,9 +1523,17 @@ def run_shared_with_stop(s, gens, done):
         s.advance(n)
 
     def wrap(name, g):
+        seen = s.b4_rows.setdefault(name, set())
         try:
-            for w in g:
+            while True:
+                n = len(s.rows)
+                try:
+                    w = next(g)
+                finally:
+                    seen.update((r["item"], r["criterion"]) for r in s.rows[n:])
                 yield w
+        except StopIteration:
+            return
         finally:
             # a crashed block is finished too: otherwise the ride runs its whole 40 x 500 ticks on the shared clock
             done[name] = True
@@ -2328,7 +2356,7 @@ def write_verify_lines(s):
     for (item, cid), (res, ids) in sorted(verdicts(s.rows).items()):
         c = (" --criterion %s" % cid) if cid and cid[0] in "AT" and cid[1:].isdigit() else ""
         lines.append('python3 src/RimMandrake/rimflow/cli.py verify %s%s --result %s --config %s --level L2 --evidence %s '
-                     '--why "live_session rows %s"' % (item, c, res, s.env.get("config", "UNMEASURED"), ev, ",".join(ids)[:200]))
+                     '--why "live_session rows %s"' % (item, c, res, s.env.get("config", "UNMEASURED"), shlex.quote(ev), ",".join(ids)[:200]))
     with open(p, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
     return p, len(lines)

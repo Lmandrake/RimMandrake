@@ -891,6 +891,75 @@ alive = os.path.exists("/proc/%d" % gpid) and "zombie" not in open("/proc/%d/sta
     if os.name != "nt" else None
 check(pp.poll() is not None and alive in (False, None), "kill_tree: the chunk AND its script (grandchild) are gone")
 
+# 8b. LIVE_SESSION_FIX_REVIEW_LEFTOVERS_STILL_WARM: a B4 block that crashes after writing PASS rows voids its criteria
+class FakeB4Session(object):
+    def __init__(self):
+        self.rows, self.env, self.site_bad, self.timing, self.tick = [], {}, {}, {}, 0
+
+    def row(self, rid, item, cid, status, cls, detail, block, eyes=False):
+        self.rows.append(dict(id=rid, item=item, criterion=cid, status=status, cls=cls, detail=detail, block=block))
+
+    def advance(self, n):
+        self.tick += n
+
+    def now(self):
+        return self.tick
+
+    def say(self, *_a):
+        pass
+
+
+def _g_covers_crash(s):
+    s.row("B4_cover_tier1", "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT", "A3", "PASS", "MOD", {}, "B4")
+    yield L.Wait(10)
+    raise RuntimeError("bridge dropped mid-block")
+
+
+def _g_access_crash_early(s):
+    raise RuntimeError("died before its first row")
+    yield  # noqa: unreachable - makes it a generator
+
+
+def _g_ok(s):
+    yield L.Wait(5)
+    s.row("B4_grenade_x", "TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A4", "PASS", "MOD", {}, "B4")
+
+
+def _g_ride(s):
+    s.row("B4_dehydration_rate", "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY", "T6", "PASS", "MOD", {}, "B4")
+    yield L.Wait(1)
+
+
+_saved = (L.SHARED_GENS, L.g_dehydration_ride, L.clear_zone)
+L.SHARED_GENS = (("covers", _g_covers_crash), ("access", _g_access_crash_early), ("grenade", _g_ok))
+L.g_dehydration_ride, L.clear_zone = _g_ride, (lambda *_a, **_k: None)
+try:
+    _b4 = FakeB4Session()
+    L.b4_shared(_b4)
+finally:
+    L.SHARED_GENS, L.g_dehydration_ride, L.clear_zone = _saved
+_v = L.verdicts(_b4.rows)
+check(_v.get(("SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT", "A3"), ("?",))[0] == "partial",
+      "b4: a block that crashed after a PASS row leaves its criterion partial, never pass (got %s)"
+      % (_v.get(("SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT", "A3")),))
+check(any(r["id"] == "B4_covers:CRASHED:A3" and r["status"] == "UNMEASURED" for r in _b4.rows),
+      "b4: the crashed block writes a CRASHED UNMEASURED row on its criterion")
+_acc = [r for r in _b4.rows if r["item"] == "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS"]
+check(sorted(r["criterion"] for r in _acc) == ["A1", "A2", "A3", "A4"] and all(r["status"] == "UNMEASURED" for r in _acc),
+      "b4: a block that died before its first row still voids every criterion the catalog gives it")
+check(_v.get(("TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT", "A4"), ("?",))[0] == "pass"
+      and _v.get(("THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY", "T6"), ("?",))[0] == "pass",
+      "b4: blocks that finished keep their pass")
+# write_verify_lines quotes an evidence path with spaces so the line parses as one --evidence argument
+import shlex as _shlex
+_sp = tempfile.mkdtemp(prefix="ls out dir ")
+_spp, _spn = L.write_verify_lines(_types.SimpleNamespace(out_dir=_sp, env={"config": "C1"}, rows=[
+    {"id": "X1_probe", "item": "PROBE_ITEM", "criterion": "A1", "cls": "MOD", "status": "PASS"}]))
+_argv = _shlex.split([ln for ln in open(_spp, encoding="utf-8").read().splitlines() if ln.startswith("python3")][0])
+_ei = _argv.index("--evidence")
+check(_spn == 1 and _argv[_ei + 1] == L.rel(os.path.join(_sp, "session.json")) and _argv[_ei + 2] == "--why",
+      "verify lines: an out dir with spaces still yields one --evidence argument")
+
 # 9. --dry-run and --mock exit 0 offline
 for flag in ("--dry-run", "--mock"):
     d = tempfile.mkdtemp(prefix="ls_selftest_")
