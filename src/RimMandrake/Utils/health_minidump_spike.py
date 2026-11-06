@@ -251,8 +251,11 @@ def verify(out):
         and cp.endswith(".partial")
         and os.path.exists(_local(out, cp)) and os.path.exists(_local(out, cp[:-len(".partial")] + ".json"))
         and cases["cancel"].get("heartbeatMovesAfter") is True, {"status": cr.get("status"), "reason": cr.get("reason")})
-    with open(os.path.join(out, "verify.json"), "w") as f:
-        json.dump(rows, f, indent=1)
+    try:
+        with open(os.path.join(out, "verify.json"), "w") as f:
+            json.dump(rows, f, indent=1)
+    except OSError:
+        pass                      # a read-only mount (the checker's box): the printed rows are the verdict
     for r in rows:
         print("%-5s %s  %s" % ({True: "PASS", False: "FAIL", None: "INFO"}[r["pass"]], r["check"], json.dumps(r["detail"])[:220]))
     print("VERIFY %s (%d checks)" % ("PASS" if ok else "FAIL", sum(1 for r in rows if r["pass"] is not None)))
