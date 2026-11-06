@@ -4,6 +4,9 @@
 # Companion: JawaBench built from this item's sha (python3 src/RimMandrake/bridgetools/build.py --gm --apply, game closed);
 # every clause exits 2 "companion predates TICKBURST" on an older DLL. Order: A8, A1, A2, A6, A7 (A6/A7 are resumable:
 # a round that runs out of --max-seconds exits 2 "trials still owed" and the next round continues from state.json).
+# A6 also carries acceptance 9 (the contract's clause list was fixed at gen 1): once every trial is in it writes
+# equiv\adoption.json, files a lesson per divergent proof under infrastructure/state/lessons/ (first divergent checkpoint,
+# both digests, G#; the belt carries that trailing lesson commit) and runs each proof's own selftest under its new default.
 # Evidence: D:\ClaudeWork\rimmandrake\tickburst\ (minimal\throughput_*.json, equiv\state.json, sweep\state.json).
 # Not here: the full-list JSON (acceptance 3) rides an already-scheduled full-list load and is OWED until one happens;
 # the fresh-process trial per arm needs a restart a proof may not do (A6 prints it OWED).

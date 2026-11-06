@@ -4883,8 +4883,9 @@ def run_identity_module():
 
 
 # TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: the direct clock steps (J_jobs_scheduler, X8b, X10; NOT the flyer landing step,
-# FLYER_LAND_TICKS, which stays on step_game_ticks by standing ruling) go through one switchable stepper. --step play|step|safe
-# (tickburst_step.py); the default `step` is today's path, so this switch adopts nothing on its own.
+# FLYER_LAND_TICKS, which stays on step_game_ticks by standing ruling) go through one switchable stepper. --step
+# play|step|safe|gate (tickburst_step.py); main() resolves the default from the adoption record: gate
+# (clockgate.advance_chunk) once tickburst_bench equiv saw B and C match R in every trial, else step (today's path).
 STEP_OPTS = {"mode": "step", "budget_ms": 40.0, "cap": 0}
 _STEPPERS = {}
 
@@ -5122,7 +5123,7 @@ def main(argv=None):
     ap.add_argument("--progress", default=None, help="append per-step progress here")
     ap.add_argument("--out", default=None, help="result JSON (default: beside this script)")
     ap.add_argument("--compare", nargs=2, metavar="RESULT_JSON", help="determinism across runs: diff the 0-tick rows")
-    argv, step_opts = TS.take_args(sys.argv[1:] if argv is None else argv)
+    argv, step_opts = TS.take_args(sys.argv[1:] if argv is None else argv, proof="v2")
     STEP_OPTS.update(step_opts)
     a = ap.parse_args(argv)
     if a.compare:

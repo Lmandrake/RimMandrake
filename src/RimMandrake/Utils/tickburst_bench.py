@@ -8,7 +8,11 @@ Subcommands (each prints one row per criterion, the verdict LAST; exit 0 PASS, 1
   throughput A2  ticks/s for A, B40, B100, C, U, U+ (3 repeats, balanced random order, 600-tick warm-up), per-frame tick
                  histogram, p99 / worst frame ms, round trips, UltraSpeedBoost read back -> <out>/<list>/throughput_*.json
   equiv      A6  each proof config under R, A, B, C, `--trials` fixture reloads per arm; resumable (state file in <out>),
-                 so a live round that runs out of time exits 2 "trials still owed" and the next round continues
+                 so a live round that runs out of time exits 2 "trials still owed" and the next round continues;
+                 once every trial is in it ADOPTS (acceptance 9): a proof whose B and C matched R in every trial
+                 defaults to `gate` (clockgate.advance_chunk) through <out>/equiv/adoption.json, one that did not keeps
+                 `step` and gets a filed lesson (first divergent checkpoint, both digests, guard G#); each proof's own
+                 selftest is run under its new default. A divergence is the finding (exit 0); a failed adoption exits 1
   sweep      A7  LINES and glowtank-at-dusk at perFrameTickCap {1, 30, 60, 61, max}
   readback   A8  safe_advance reports perFrameTickCap and stepMs, and a cap of 7 is never exceeded in any frame
   --mock         the selftest: every subcommand against an in-memory game (no bridge), plus the pure comparators
@@ -330,6 +334,8 @@ class MockGame:
 
     def t_jawa_safe_advance(self, action="start", ticks=0, chunk=60, frameBudgetMs=40.0, perFrameTickCap=0, timeoutMs=0,
                             frameSamples=False, raw=False, **kw):
+        if action == "status":
+            return {"success": True, "state": "idle", "ticksGame": self.t}
         if action != "start":
             return {"success": True}
         cap = 0 if "cap_overshoot" in self.f else int(perFrameTickCap)
@@ -571,7 +577,8 @@ def run_trial(call, config, arm, trial, out_dir, reload=None, mock_runner=None, 
     return rec
 
 
-def cmd_equiv(call, out_dir, configs, trials, max_s, mock_runner=None, reload=None, bounds=None):
+def cmd_equiv(call, out_dir, configs, trials, max_s, mock_runner=None, reload=None, bounds=None, lesson_dir=None,
+              selftest_runner=None):
     bounds = bounds or load_bounds()
     sp = os.path.join(out_dir, "equiv", "state.json")
     os.makedirs(os.path.dirname(sp), exist_ok=True)
@@ -598,15 +605,166 @@ def cmd_equiv(call, out_dir, configs, trials, max_s, mock_runner=None, reload=No
         json.dump(state, f, indent=1, default=str)
     code, vrows = equiv_verdict(state["runs"], configs, EQUIV_ARMS, trials)
     rows = [{"id": "A6_%s_%s" % (v["config"], v["arm"]), "verdict": v["verdict"], "trials": v["trials"]} for v in vrows]
-    first = [{"run": "%s/%s/t%d" % (r["config"], r["arm"], r["trial"]), "first": r["compare"]["first"],
-              "digest": r.get("digest"), "refDigest": r.get("refDigest")}
-             for r in state["runs"] if r.get("compare") and not r["compare"]["same"]]
+    first = []
+    for r in state["runs"]:
+        if r.get("compare") and not r["compare"]["same"]:
+            a_run = by.get((r["config"], "A", r["trial"])) or {}
+            a_div = r["arm"] != "A" and bool(a_run.get("compare")) and not a_run["compare"]["same"]
+            g, basis = guard_for(r["config"], (r["compare"]["first"] or {}).get("key"), a_div)
+            first.append({"run": "%s/%s/t%d" % (r["config"], r["arm"], r["trial"]), "first": r["compare"]["first"],
+                          "digest": r.get("digest"), "refDigest": r.get("refDigest"), "guard": g, "guardBasis": basis})
     rows.append({"id": "A6_first_divergences", "verdict": "PASS" if not first else "DIFF", "first": first[:6]})
     rows.append({"id": "A6_fresh_process", "verdict": "OWED", "why": "a fresh-process trial per arm needs a game restart, "
                  "which a live proof may not do (lightspeed-authoring §2); the supervisor's own restart makes trial 0 of a round "
                  "the only fresh-process one"})
     rows.append({"id": "A6_state", "verdict": "PASS", "path": sp, "boundsHash": state["boundsHash"]})
-    return rows, code
+    if code == 2:
+        rows.append({"id": "A6_adopt", "verdict": "UNMEASURED", "why": "trials still owed: adoption waits for every trial"})
+        return rows, 2
+    # acceptance 9: a divergence is the experiment's FINDING, not a failed clause; A6 fails only when the adoption did
+    # not take (a matched proof not defaulting to gate, a selftest red, a divergent proof with no filed record)
+    arows = cmd_adopt(state, vrows, configs, out_dir, lesson_dir, selftest_runner)
+    rows.extend(arows)
+    return rows, (1 if any(r["verdict"] == "FAIL" for r in arows) else 0)
+
+
+# --- adoption (acceptance 9): matched proofs default to the governed path, the rest keep step and get a filed record
+PROOF_CONFIGS = {"v2": ("v2",), "lines": ("lines",), "glow": ("glow_mid", "glow_dusk")}
+PROOF_SELFTEST = {"v2": ["src/RimMandrake/FlowWorks/northstar/validation_v2.py", "--mock"],
+                  "lines": ["src/RimMandrake/FlowWorks/northstar/lines_proof.py", "--mock"],
+                  "glow": ["src/RimMandrake/Utils/selftest_tickburst_stepswitch.py"]}   # the probe has no mock of its own
+GUARDS = {"G1": "power-net registration per frame", "G2": "region/room rebuild per frame", "G3": "glow grid recompute per frame",
+          "G4": "sky glow set per frame", "G5": "world/map component Update", "G6": "path jobs", "G7": "job-loop guard",
+          "G8": "Paused true while ticking", "G9": "camera-pinned tick interval rates", "G10": "autosave/long events",
+          "G11": "tweener/draw/sound"}
+GUARD_KEYS = (("G1", r"power|net|conn|link|cord|hose"), ("G2", r"room|region|roof|pit"), ("G3", r"glow|light|lamp|grow"),
+              ("G4", r"sky|sun|dusk|solar|dark"), ("G5", r"goodwill|pollution|dissolution"), ("G7", r"job"),
+              ("G10", r"autosave|save|longevent"), ("G11", r"pos|draw|tween|sound"))
+CONFIG_GUARD = {"v2": "G2", "lines": "G1", "glow_mid": "G3", "glow_dusk": "G4"}
+GUARD_AUDIT = "design/RimMandrake/tickburst_2026-11-06/guard_audit.md"
+
+
+def guard_for(config, first_key, a_also_diverged):
+    """-> (G#, basis). A divergence A shares is paused stepping itself (G8, final.md: filed against the harness); else the
+    first divergent key names the guard; else the guard the config was chosen to exercise (final.md §2.4 checks)."""
+    if a_also_diverged:
+        return "G8", "arm A diverged from R in the same trial: paused stepping, not the burst"
+    k = (first_key or "").lower()
+    for g, rx in GUARD_KEYS:
+        if re.search(rx, k):
+            return g, "first divergent key %r matches %s" % (first_key, rx)
+    return CONFIG_GUARD.get(config, "G8"), "config %s exercises it (guard_audit.md check column)" % config
+
+
+def _lesson_marker(proof, rec):
+    return "TICKBURST_ADOPT %s %s/%s" % (proof, rec["digest"], rec["refDigest"])
+
+
+def _find_lesson(lesson_dir, marker):
+    try:
+        names = sorted(os.listdir(lesson_dir))
+    except OSError:
+        return None
+    for n in names:
+        fp = os.path.join(lesson_dir, n)
+        try:
+            with open(fp, encoding="utf-8") as f:
+                if marker in f.read():
+                    return fp
+        except OSError:
+            continue
+    return None
+
+
+def _file_lesson(proof, rec, lesson_dir):
+    """One lesson per divergent proof (idempotent on its marker): first divergent checkpoint, both digests, G#."""
+    marker = _lesson_marker(proof, rec)
+    hit = _find_lesson(lesson_dir, marker)
+    if hit:
+        return hit
+    sys.path.insert(0, HERE)
+    import lessons as L  # noqa: E402
+    f = rec["first"] or {}
+    text = ("TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: proof %s did NOT match unpaused play under safe_advance, so it keeps "
+            "rimworld/step_game_ticks (final.md §2.3 adoption rule). First divergent checkpoint: %s in run %s (R=%r, %s=%r). "
+            "Digests: R %s, %s %s. Implicates %s (%s): %s. Evidence: %s. [%s]"
+            % (proof, f.get("key"), rec["run"], f.get("ref"), rec["arm"], f.get("got"), rec["refDigest"], rec["arm"],
+               rec["digest"], rec["guard"], GUARDS.get(rec["guard"], "?"), rec["guardBasis"], rec.get("state"), marker))
+    old = L.DIR
+    try:
+        L.DIR = lesson_dir
+        return L.add(text, seat="RELENTLESS", slug="tickburst adopt %s diverges %s" % (proof, rec["guard"]), home=GUARD_AUDIT)
+    finally:
+        L.DIR = old
+
+
+def _run_selftest(proof, adoption_file):
+    argv = [sys.executable] + list(PROOF_SELFTEST[proof])
+    env = dict(os.environ, TICKBURST_ADOPTION=adoption_file, TICKBURST_STEP="")
+    try:
+        p = subprocess.run(argv, cwd=REPO, env=env, capture_output=True, text=True, timeout=450, stdin=subprocess.DEVNULL)
+        return p.returncode, (p.stdout[-400:] + p.stderr[-400:]).replace("\n", " | ")
+    except subprocess.TimeoutExpired:
+        return None, "timeout"
+
+
+def cmd_adopt(state, vrows, configs, out_dir, lesson_dir=None, selftest_runner=None):
+    """A6 tail, run only when every trial is in. Per proof: adopt iff all its configs' B and C rows PASS. Writes
+    <out>/equiv/adoption.json, files the divergence lesson, then checks the record took: the proof's default resolves to
+    gate (adopted) or step (not), and its own selftest passes under that default. -> rows."""
+    lesson_dir = lesson_dir or os.path.join(REPO, "infrastructure", "state", "lessons")
+    selftest_runner = selftest_runner or _run_selftest
+    path = os.path.join(out_dir, "equiv", "adoption.json")
+    sp = os.path.join(out_dir, "equiv", "state.json")
+    verdict = {(v["config"], v["arm"]): v["verdict"] for v in vrows}
+    by = {(r["config"], r["arm"], r["trial"]): r for r in state["runs"]}
+    rec = {"item": "TICKBURST_PROVE_MANY_TICKS_ONE_FRAME", "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+           "state": sp, "boundsHash": state.get("boundsHash"), "proofs": {}}
+    for proof, cfgs in PROOF_CONFIGS.items():
+        if not all(c in configs for c in cfgs):
+            continue
+        vs = [verdict.get((c, a)) for c in cfgs for a in ("B", "C")]
+        p = {"configs": list(cfgs), "rows": dict(("%s_%s" % (c, a), verdict.get((c, a))) for c in cfgs for a in ("B", "C"))}
+        p["adopt"] = all(v == "PASS" for v in vs)
+        if not p["adopt"]:
+            div = sorted((r for r in state["runs"] if r["config"] in cfgs and r["arm"] in ("B", "C") and r.get("compare")
+                          and not r["compare"]["same"]), key=lambda r: (r["trial"], cfgs.index(r["config"]), r["arm"]))
+            if div:
+                r = div[0]
+                a_run = by.get((r["config"], "A", r["trial"])) or {}
+                a_div = bool(a_run.get("compare")) and not a_run["compare"]["same"]
+                g, basis = guard_for(r["config"], (r["compare"]["first"] or {}).get("key"), a_div)
+                d = {"run": "%s/%s/t%d" % (r["config"], r["arm"], r["trial"]), "arm": r["arm"], "first": r["compare"]["first"],
+                     "digest": r.get("digest"), "refDigest": r.get("refDigest"), "guard": g, "guardBasis": basis,
+                     "aAlsoDiverged": a_div, "state": sp}
+                d["lesson"] = _file_lesson(proof, d, lesson_dir)
+                p["divergence"] = d
+            else:
+                p["divergence"] = None          # a non-PASS with no compared divergence: nothing to file, checked below
+        rec["proofs"][proof] = p
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(rec, f, indent=1, default=str)
+    rows = []
+    for proof, p in rec["proofs"].items():
+        mode, src = TS.adopted_mode(proof, path)
+        want = "gate" if p["adopt"] else "step"
+        code, tail = selftest_runner(proof, path)
+        row = {"id": "A6_adopt_%s" % proof, "adopt": p["adopt"], "defaultMode": mode, "modeSource": src,
+               "selftestExit": code, "selftest": " ".join(PROOF_SELFTEST[proof])}
+        ok = mode == want and code == 0
+        if not p["adopt"]:
+            d = p.get("divergence") or {}
+            row.update(first=d.get("first"), digest=d.get("digest"), refDigest=d.get("refDigest"), guard=d.get("guard"),
+                       lesson=d.get("lesson"))
+            ok = ok and bool(d.get("lesson")) and os.path.exists(d["lesson"]) and d.get("guard") in GUARDS \
+                and d.get("digest") and d.get("refDigest") and d.get("first")
+        if not ok and code != 0:
+            row["selftestTail"] = tail
+        row["verdict"] = "PASS" if ok else "FAIL"
+        rows.append(row)
+    rows.append({"id": "A6_adoption_record", "verdict": "PASS", "path": path})
+    return rows
 
 
 def cmd_sweep(call, out_dir, trials, max_s, mock_runner=None, reload=None, bounds=None):
@@ -758,7 +916,7 @@ def selftest():
     check(okc, "nextchunk_mirror_sweep")
     # step switch argv
     rest, op = TS.take_args(["x", "--step", "safe", "--step-budget-ms=200", "--step-cap", "61", "--origin", "1,2"])
-    check(rest == ["x", "--origin", "1,2"] and op == {"mode": "safe", "budget_ms": 200.0, "cap": 61}, "take_args_strips", str(op))
+    check(rest == ["x", "--origin", "1,2"] and op == {"mode": "safe", "modeSource": "--step", "budget_ms": 200.0, "cap": 61}, "take_args_strips", str(op))
     for bad in (["--step", "fast"], ["--step-budget-ms", "500"], ["--step-cap", "-1"], ["--step"]):
         try:
             TS.take_args(bad)
@@ -804,19 +962,57 @@ def selftest():
     def runner_bdiff(config, mode, budget, cap):
         est = "False" if (mode == "safe" and budget < 200) else "True"
         return {"verdict": "PASS" if est == "True" else "FAIL", "rows": {"after": {"established": est}}}, 0
+    ran = []
+
+    def st_ok(proof, adoption_file):
+        ran.append((proof, TS.adopted_mode(proof, adoption_file)[0]))
+        return 0, "mock selftest ok"
+    les = os.path.join(tmp, "lessons")
+    os.makedirs(les)
     e1 = os.path.join(tmp, "e1")
-    rows, code = cmd_equiv(MockGame(), e1, ["glow_mid"], 2, 1e9, mock_runner=runner_same, bounds=b)
-    check(code == 0 and all(r["verdict"] in ("PASS", "OWED") for r in rows), "equiv_same_passes", str(code))
-    e2 = os.path.join(tmp, "e2")
-    rows, code = cmd_equiv(MockGame(), e2, ["glow_mid"], 2, 1e9, mock_runner=runner_bdiff, bounds=b)
+    rows, code = cmd_equiv(MockGame(), e1, ["lines", "glow_mid", "glow_dusk"], 2, 1e9, mock_runner=runner_same, bounds=b,
+                           lesson_dir=les, selftest_runner=st_ok)
     v = {r["id"]: r for r in rows}
-    check(code == 1 and v["A6_glow_mid_B"]["verdict"] == "DIFF" and v["A6_glow_mid_C"]["verdict"] == "PASS"
-          and v["A6_first_divergences"]["first"][0]["first"]["key"] in ("rows.after.established", "verdict"),
-          "equiv_b_divergence_found", str(v.get("A6_first_divergences")))
+    check(code == 0 and all(r["verdict"] in ("PASS", "OWED") for r in rows), "equiv_same_passes", str(code))
+    check(v["A6_adopt_lines"]["adopt"] and v["A6_adopt_lines"]["defaultMode"] == "gate" and v["A6_adopt_glow"]["defaultMode"] == "gate"
+          and ("lines", "gate") in ran and not os.listdir(les), "adopt_matched_proofs_default_to_gate", str(ran))
+    os.environ[TS.ENV_ADOPTION] = os.path.join(e1, "equiv", "adoption.json")
+    try:
+        check(TS.take_args([], proof="lines")[1]["mode"] == "gate" and TS.take_args([], proof="v2")[1]["mode"] == "step"
+              and TS.take_args(["--step", "step"], proof="lines")[1]["mode"] == "step", "take_args_resolves_adoption")
+    finally:
+        os.environ.pop(TS.ENV_ADOPTION, None)
+    e2 = os.path.join(tmp, "e2")
+    ran[:] = []
+    rows, code = cmd_equiv(MockGame(), e2, ["glow_mid", "glow_dusk"], 2, 1e9, mock_runner=runner_bdiff, bounds=b,
+                           lesson_dir=les, selftest_runner=st_ok)
+    v = {r["id"]: r for r in rows}
+    check(code == 0 and v["A6_glow_mid_B"]["verdict"] == "DIFF" and v["A6_glow_mid_C"]["verdict"] == "PASS"
+          and v["A6_first_divergences"]["first"][0]["first"]["key"] in ("rows.after.established", "verdict")
+          and v["A6_first_divergences"]["first"][0]["guard"] in GUARDS, "equiv_b_divergence_found", str(v.get("A6_first_divergences")))
+    ag = v["A6_adopt_glow"]
+    lf = os.listdir(les)
+    body = open(os.path.join(les, lf[0])).read() if len(lf) == 1 else ""
+    check(ag["verdict"] == "PASS" and not ag["adopt"] and ag["defaultMode"] == "step" and ag["guard"] in GUARDS
+          and ag["digest"] and ag["refDigest"] and ag["first"] and len(lf) == 1
+          and ag["digest"] in body and ag["refDigest"] in body and ag["guard"] in body and str(ag["first"]["key"]) in body,
+          "adopt_divergent_proof_keeps_step_and_files_record", str(ag))
+    rows, code = cmd_equiv(MockGame(), e2, ["glow_mid", "glow_dusk"], 2, 1e9, mock_runner=runner_bdiff, bounds=b,
+                           lesson_dir=les, selftest_runner=st_ok)
+    check(len(os.listdir(les)) == 1, "adopt_lesson_filed_once", str(os.listdir(les)))
+    rows, code = cmd_equiv(MockGame(), e2, ["glow_mid", "glow_dusk"], 2, 1e9, mock_runner=runner_bdiff, bounds=b,
+                           lesson_dir=les, selftest_runner=lambda p, f: (1, "red"))
+    check(code == 1 and {r["id"]: r for r in rows}["A6_adopt_glow"]["verdict"] == "FAIL", "adopt_red_selftest_fails_a6")
+    check(guard_for("lines", "rows.L3.powerNet", False)[0] == "G1" and guard_for("glow_dusk", "verdict", False)[0] == "G4"
+          and guard_for("v2", "rows.P1.sky", True)[0] == "G8", "guard_for_maps_keys_config_and_paused")
+    r = TS.Stepper(MockGame(), "gate", log_path="").advance(3000)
+    check(r["ok"] and r["moved"] == 3000 and r["reply"]["path"] == "safe_advance" and r["arm"] == "G", "stepper_gate_via_clockgate",
+          str(r.get("reply")))
     e3 = os.path.join(tmp, "e3")
     rows, code = cmd_equiv(MockGame(), e3, ["glow_mid"], 2, -1, mock_runner=runner_same, bounds=b)
     check(code == 2, "equiv_out_of_time_is_unmeasured")
-    rows, code = cmd_equiv(MockGame(), e3, ["glow_mid"], 2, 1e9, mock_runner=runner_same, bounds=b)
+    rows, code = cmd_equiv(MockGame(), e3, ["glow_mid"], 2, 1e9, mock_runner=runner_same, bounds=b, lesson_dir=les,
+                           selftest_runner=st_ok)
     st = json.load(open(os.path.join(e3, "equiv", "state.json")))
     check(code == 0 and len(st["runs"]) == 8, "equiv_resumes_without_rerunning", str(len(st["runs"])))
     check(all(all(k in r["provenance"] for k in pv) for r in st["runs"]), "equiv_runs_carry_provenance")

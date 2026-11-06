@@ -141,7 +141,7 @@ def main(argv=None):
     ap.add_argument("--drain-ticks", type=int, default=1500)
     ap.add_argument("--mock", action="store_true", help="run every path against FakeBridge; rows are SKIP (mock verdict kept)")
     ap.add_argument("--mock-faults", default="", help="comma list of FakeBridge faults: " + ",".join(FakeBridge.FAULTS))
-    argv, step_opts = TS.take_args(sys.argv[1:] if argv is None else argv)
+    argv, step_opts = TS.take_args(sys.argv[1:] if argv is None else argv, proof="lines")
     a = ap.parse_args(argv)
     only = [x.strip().upper() for x in a.only.split(",") if x.strip()] or list(ROW_IDS)
     if set(only) - set(ROW_IDS):
@@ -223,7 +223,8 @@ def main(argv=None):
         ops = [o for o in ops if o]
         return B.call("jawa/build_batch", ops=";".join(ops), faction="player", wipeExisting=False) or {}
 
-    # TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: the arm (--step play|step|safe) is chosen once; default step = today's path
+    # TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: the arm (--step play|step|safe|gate) is chosen once; default from the adoption
+    # record (tickburst_step.adopted_mode): gate (clockgate.advance_chunk) once B matched R in every trial, else step
     stepper = TS.Stepper.from_opts(lambda tool, **kw: B.call(tool, **kw), step_opts, label="lines")
 
     def ticks(n):

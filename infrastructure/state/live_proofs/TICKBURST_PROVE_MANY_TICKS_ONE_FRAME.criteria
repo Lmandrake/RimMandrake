@@ -1,5 +1,5 @@
 A1 L1: 60 requested ticks move ticksGame by exactly 60 under step_game_ticks, safe_advance 40 ms and 200 ms; unpaused Normal is seen to reach its target tick
 A2 L2: minimal-list throughput JSON: ticks/s for A, B40, B100, C, U, U+ x3, ticks-per-frame histogram, p99/worst frame ms, round trips, UltraSpeedBoost read
-A6 L2: v2, LINES, glowtank midday and dusk under R, A, B, C x5 reloads: per-row verdicts, discrete exact, continuous in bounds.json, NaN 0; first divergence kept
+A6 L2: v2, LINES, glowtank midday and dusk under R, A, B, C x5 reloads: per-row verdicts, discrete exact, continuous in bounds.json, NaN 0; first divergence kept with its guard G#; acceptance 9 once every trial is in: a proof whose B and C matched R in every trial defaults to gate (clockgate.advance_chunk) via equiv/adoption.json and its own selftest passes, a proof that did not keeps step and has a filed lesson with first divergent checkpoint, both digests and G#
 A7 L2: LINES and glowtank-at-dusk at perFrameTickCap 1, 30, 60, 61 and max are recorded and compared with cap 1; an N-dependent result is filed, not hidden
 A8 L1: live safe_advance reports perFrameTickCap and stepMs, and with a cap of 7 no frame steps more than 7 ticks while 70 ticks land exactly

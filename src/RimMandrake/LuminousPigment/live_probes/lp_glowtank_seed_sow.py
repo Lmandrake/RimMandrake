@@ -4,14 +4,15 @@ sow (fuel 1 -> 0), sets `established`, and glows; an UNSEEDED twin with a crop f
 The sow is tried the real way first (a colonist with Plants 12 and Growing on, the sow research finished,
 defaultPlantToGrow) and, if no colonist sows within the budget, the
 crop is placed with spawn_batch and the result says route=spawned. python.exe, bridge held, any quicktest map.
-argv: "X,Z" site origin (default 90,130); --step play|step|safe [--step-budget-ms X] [--step-cap N] picks the clock arm
-(TICKBURST_PROVE_MANY_TICKS_ONE_FRAME, tickburst_step.py; default step = today's step_game_ticks); --out PATH writes the
+argv: "X,Z" site origin (default 90,130); --step play|step|safe|gate [--step-budget-ms X] [--step-cap N] picks the clock
+arm (TICKBURST_PROVE_MANY_TICKS_ONE_FRAME, tickburst_step.py; default from the adoption record: gate once adopted, else
+step = today's step_game_ticks); --out PATH writes the
 state rows, verdict and clock records as JSON. Exit 0 = PASS."""
 import sys, os, json
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Utils"))
 import rimbridge_client as rb
 import tickburst_step as TS
-ARGV, STEP_OPTS = TS.take_args(sys.argv[1:])
+ARGV, STEP_OPTS = TS.take_args(sys.argv[1:], proof="glow")
 OUT = None
 if "--out" in ARGV:
     i = ARGV.index("--out"); OUT = ARGV[i + 1]; del ARGV[i:i + 2]
