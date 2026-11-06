@@ -528,11 +528,11 @@
   "keys": ["accounts.*.runway", "codex.runway", "testing.nothing_h_7d", "process.share_7d", "flow.untriaged_findings", "flow.lapsed_leases", "production.P1", "production.P2", "production.P4", "production.V0", "production.D1", "production.A1", "production.G3", "production.G7", "production.O3", "tps.ratio_median", "disk.root_free_gb", "disk.scratch_total_gb", "tokentalk.*.share"]
  },
  "silent": {
-  "_doc": "a series that was MEASURED within the baseline and has not been MEASURED for its hours: the instrument went blind.",
+  "_doc": "a series that was MEASURED within the baseline and has not been MEASURED for its hours: the instrument went blind. A tokentalk.<group>.share whose group token_talk no longer lists (seats, roles) is retired, never silent (ops_watch.tt_retired).",
   "default_h": 2,
   "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3, "tokentalk.*": 6, "relentless.*": 1, "seats.*": 1},
   "keys": ["*"],
-  "skip": ["*._collector", "roles.*", "tokentalk.BENCH.share", "tokentalk.commits.BENCH.share", "tokentalk.role.conductor.share"]
+  "skip": ["*._collector", "roles.*"]
  },
  "targets": [
  {

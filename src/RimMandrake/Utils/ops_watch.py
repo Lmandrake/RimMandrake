@@ -1782,15 +1782,27 @@ def tt_point(group, items, rx, cfg):
              top=top)
 
 
+def tt_groups(rules):
+    """-> the groups token_talk measures now: each seat, its commits, each role."""
+    cfg = rules.get("token_talk") or {}
+    seats = cfg.get("seats") or ["FOUNDRY"]
+    return list(seats) + ["commits." + s for s in seats] + ["role." + r for r in (cfg.get("roles") or
+            ["producer", "auditor", "innovator"])]
+
+
+def tt_retired(k, rules):
+    """A tokentalk.<group>.share key whose group token_talk no longer measures (a seat or role that left on purpose,
+    or was deleted): its silence is the retirement, not an outage (TOKENTALK_SILENT_RETIRE_GHOST_SERIES)."""
+    m = re.fullmatch(r"tokentalk\.(.+)\.share", k)
+    return bool(m) and m.group(1) not in tt_groups(rules)
+
+
 def c_tokentalk(now, rules, ctx):
     cfg = rules.get("token_talk") or {}
     rx = tt_regex(rules)
     texts, bad = tt_texts(now, rules, ctx)
     out = {}
-    seats = cfg.get("seats") or ["FOUNDRY"]
-    groups = list(seats) + ["commits." + s for s in seats] + ["role." + r for r in (cfg.get("roles") or
-              ["producer", "auditor", "innovator"])]
-    for g in groups:
+    for g in tt_groups(rules):
         why = bad.get(g) or bad.get("role._all") if g.startswith("role.") else bad.get(g)
         if why:
             out["tokentalk." + g + ".share"] = U(why, "% of reports")
@@ -3476,7 +3488,8 @@ def andon(points, hist, last_measured, rules, now):
                                           "rising" if diffs[0] > 0 else "falling", n, tail[0], tail[-1])})
         def silent():
             # silence is "no MEASURED reading", the same test last_measured keeps: a MEASURED state string is not silent
-            if not counts_as_measured(p) and matches(k, sl["keys"]) and not matches(k, sl["skip"]):
+            if (not counts_as_measured(p) and matches(k, sl["keys"]) and not matches(k, sl["skip"])
+                    and not tt_retired(k, rules)):
                 lm = last_measured.get(k)
                 lim = next((h for pat, h in sl["per_key"].items() if fnmatch.fnmatchcase(k, pat)), sl["default_h"])
                 if lm is not None and now - lm > lim * HOUR:
