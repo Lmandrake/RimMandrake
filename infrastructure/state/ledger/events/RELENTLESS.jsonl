@@ -1278,3 +1278,10 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:02:53Z","tsn":1793988173978365422}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: BATCHREADS_BUILD_ROUND_TRIP_CUT A1 (L2), read-only proof","ts":"2026-11-06T18:03:51Z","tsn":1793988231846820832}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:04:05Z","tsn":1793988245755896186}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A1 (L2), read-only proof","ts":"2026-11-06T18:06:31Z","tsn":1793988391972231286}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:07:05Z","tsn":1793988425086155001}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A2 (L2), read-only proof","ts":"2026-11-06T18:07:29Z","tsn":1793988449431848783}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:08:05Z","tsn":1793988485421353551}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A3 (L2), read-only proof","ts":"2026-11-06T18:08:29Z","tsn":1793988509863581666}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:09:00Z","tsn":1793988540662490282}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","ts":"2026-11-06T18:12:08Z","tsn":1793988728984535625}
