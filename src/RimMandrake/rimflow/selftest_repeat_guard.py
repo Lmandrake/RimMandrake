@@ -299,6 +299,36 @@ def gate():
     r = rf("close", "ITEM_FIX_ECHO", "--sha", vacuous, "--why", "x")
     check(r.returncode and "not the test shown failing" in r.stderr, "a pass under the close does not lend its guard " + r.stderr[-200:])
 
+    # GUARD_GATE_FIX_CURE_IN_THE_TEST: a census guard whose cure IS a row in the test itself (selftest_conductor_authority.py's
+    # OWNER_ONLY at 7493667ebf) never holds its red hash at the fix. The red version grown by added lines only closes; one that
+    # removes a line, or adds a line that ends the run early, does not.
+    census_t = "src/selftest_census_y.py"
+    census_red = ("import os,sys\nALLOW = {\n    'a',\n}\nbad = [f for f in ('a', 'b') if f not in ALLOW]\n"
+                  "sys.exit(1 if bad else 0)\n")
+    cured = census_red.replace("    'a',\n", "    'a',\n    'b',\n")
+    for iid in ("ITEM_FIX_FOXTROT", "ITEM_FIX_GOLF"):
+        check(rf("file", iid, "--for", "BENCH", "--title", "t").returncode == 0, "file " + iid)
+        verified(iid, vacuous)
+        check(rf("close", iid, "--sha", vacuous, "--live", "hook=wired_one.py").returncode == 0, iid + " first close")
+        check(run_as("RUNNER", "live", iid, "--result", "broken", "--detail", "gone").returncode == 0, iid + " reopens")
+    red_c = commit(census_t, "census guard, red", census_red)
+    check(rf("guard", "ITEM_FIX_FOXTROT", "--test", census_t).returncode == 0, "the census guard is shown red")
+    check(rf("guard", "ITEM_FIX_GOLF", "--test", census_t).returncode == 0, "and red for golf")
+    cure_c = commit(census_t, "ITEM_FIX_FOXTROT: the cure is a census row", cured)
+    verified("ITEM_FIX_FOXTROT", cure_c)
+    r = rf("close", "ITEM_FIX_FOXTROT", "--sha", cure_c, "--why", "x")
+    check(r.returncode == 0, "a cure that is a row added inside the guard closes " + r.stderr[-300:])
+    cheat = commit(census_t, "ITEM_FIX_GOLF: an early exit", census_red.replace("import os,sys\n", "import os,sys\nsys.exit(0)\n"))
+    verified("ITEM_FIX_GOLF", cheat)
+    r = rf("close", "ITEM_FIX_GOLF", "--sha", cheat, "--why", "x")
+    check(r.returncode and "not the test shown failing" in r.stderr, "an added early exit is no cure " + r.stderr[-200:])
+    shrunk = commit(census_t, "ITEM_FIX_GOLF: a row removed", cured.replace("bad = [f for f in ('a', 'b') if f not in ALLOW]",
+                                                                             "bad = []"))
+    verified("ITEM_FIX_GOLF", shrunk)
+    r = rf("close", "ITEM_FIX_GOLF", "--sha", shrunk, "--why", "x")
+    check(r.returncode and "not the test shown failing" in r.stderr, "a changed line is no cure " + r.stderr[-200:])
+    check(red_c != cure_c, "the census commits differ")
+
 
 def census():
     it = lambda **k: types.SimpleNamespace(**dict({"state": "done", "live_repeats": 0, "guard": None}, **k))   # noqa: E731

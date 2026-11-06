@@ -46,6 +46,45 @@ def committed_hash(root, sha, test):
     return digest(r.stdout) if r.returncode == 0 else None
 
 
+# an added line that ends the test early would make any test green: a cure row never needs one
+_EXIT = re.compile(r"\b(?:sys\.exit|os\._exit|exit|quit)\s*\(|\braise\s+SystemExit\b|^\s*return\b")
+
+
+def grown_from(root, sha, test, red_hash):
+    """-> None when the test at `sha` is the red version grown by added lines only, else why not.
+    GUARD_GATE_FIX_CURE_IN_THE_TEST: a census guard whose cure IS a row in the test itself (an allowlist entry) can never
+    be committed with the hash it had when shown red. The red version must be committed in `sha`'s own history (found by
+    hash), and the test at `sha` may only add lines to it: none removed or changed, none that ends the run early."""
+    def git(*a):
+        return subprocess.run(["git", *a], cwd=root, capture_output=True, timeout=60, stdin=subprocess.DEVNULL)
+    now = git("show", "%s:%s" % (sha, test))
+    if now.returncode:
+        return "%s is not committed at %s" % (test, str(sha)[:12])
+    log = git("log", "--format=%H", sha, "--", test)
+    red = None
+    for c in log.stdout.decode().split() if log.returncode == 0 else ():
+        if committed_hash(root, c, test) == red_hash:
+            red = c
+            break
+    if red is None:
+        return "the red version (%s) of %s is committed nowhere in %s's history" % (red_hash, test, str(sha)[:12])
+    d = git("diff", "--no-color", "-U0", "%s:%s" % (red, test), "%s:%s" % (sha, test))
+    if d.returncode not in (0, 1):
+        return "git diff failed: %s" % d.stderr.decode(errors="replace")[-200:]
+    added = []
+    for line in d.stdout.decode(errors="replace").splitlines():
+        if line.startswith(("---", "+++")):
+            continue
+        if line.startswith("-"):
+            return "%s at %s removes or changes a line of the red version %s: %r" % (test, str(sha)[:12], red[:12], line[1:80])
+        if line.startswith("+"):
+            added.append(line[1:])
+    for line in added:
+        if _EXIT.search(line):
+            return "%s at %s adds a line that ends the test early: %r" % (test, str(sha)[:12], line[:80])
+    return None
+
+
 def run(root, test, instance="", timeout=TIMEOUT_S):
     """-> (exit code, its output's tail). 124 when it ran out of time."""
     try:
