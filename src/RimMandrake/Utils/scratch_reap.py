@@ -41,7 +41,8 @@ Verdicts:
            * borrowed: objects/info/alternates or a worktree `.git` file elsewhere points into it. An alternates
              file we cannot read holds EVERYTHING;
            * unreadable: any error walking it; git cannot read it; rebase/merge in progress; linked worktree;
-             submodule; a nested repo; an assume-unchanged file; over the preserve caps; bundle or restore test failed;
+             submodule; a nested repo; an assume-unchanged file; over the preserve caps (except a /tmp copy's dirty files,
+             tmp_overcap); bundle or restore test failed;
            * a canonical save inside whose exact bytes the mirror does not hold;
            * named by an open item or, within 7 days, by a ledger event, closed item, handoff; or by a systemd unit.
 
@@ -130,7 +131,7 @@ BROKEN_CAP = DIRTY_CAP      # a .git no bundle can read is tarred whole, up to t
 RESIDUE_CAP = 512 * 1024 ** 2   # a session's loose files
 BUNDLE_CAP = 5 * 1024 ** 3
 MENTION_DAYS = 7
-SELF_ITEMS = ("REAPER_", "SCRATCH_", "OPS_SCRATCH_")     # the cleaner's own ledger items: their mentions never pin
+SELF_ITEMS = ("REAPER_", "SCRATCH_", "OPS_SCRATCH_", "TMP_SCRATCH_", "TMPREAP_")     # the cleaner's own ledger items: their mentions never pin
 BLIND_RETRIES = 5
 PRESSURE_GB = 420.0         # ops_watch_rules' DISK_TWO_DAYS line
 TMP_IDLE_H = 6.0            # owner-authority brief 2026-11-03: a /tmp entry nothing inside was touched in 6 h may go
@@ -1146,9 +1147,82 @@ def gitlink_files(c: Path) -> list[str]:
     return out
 
 
+_PROVED: set[str] | None = None
+
+
+def tmp_overcap(c: Path, paths: list[str]) -> dict | None:
+    """What a /tmp clone over DIRTY_CAP still owes the archive (TMPREAP_PRUNE_OVERCAP_COPY_STUCK_40_HOURS). /tmp is a tmpfs
+    lost at every reboot, so refusing such a copy for its size protected nothing and held the space for good (/tmp/jpre:
+    2.2 GB, 40 h of hourly refusals). A file whose exact bytes main or a tag holds is not work and is not kept; of the rest
+    the smallest go in first, up to the cap, and what does not fit goes, named in the row. Reaching here already means a
+    day idle and no holds (judge_clone). None keeps the refusal: no mirror to vouch for anything, or tracked changes that
+    alone pass the cap (a patch of those is not this function's to cut)."""
+    global _PROVED
+    tr = tmp_root()
+    if tr is None or tr not in c.parents:
+        return None
+    if _PROVED is None:
+        _PROVED = proved_objects()      # 10.8 s for 416,687 objects (2026-11-06); a stale set only vouches for less
+    if not _PROVED:
+        return None
+    r = git(c, "ls-files", "-z")
+    if r.returncode:
+        return None
+    index, kept, spare, loose = set(r.stdout.split("\0")), [], DIRTY_CAP, []
+    on_main = on_main_bytes = 0
+
+    def judge(path: str):
+        nonlocal on_main, on_main_bytes
+        full, st = c / path, os.lstat(c / path)
+        h = None
+        if stat.S_ISREG(st.st_mode):
+            try:
+                h = hashlib.sha1(b"blob %d\0" % st.st_size)
+                with open(full, "rb") as f:
+                    while chunk := f.read(1 << 20):
+                        h.update(chunk)
+            except OSError:
+                h = None                # unread is unproved: it is kept, and a tar that cannot read it refuses
+        if h is not None and h.hexdigest() in _PROVED:
+            on_main += 1
+            on_main_bytes += st.st_size
+        else:
+            loose.append((st.st_size, path))
+
+    try:
+        for x in paths:
+            if x in index:
+                kept.append(x)
+                spare -= os.lstat(c / x).st_size
+            elif os.path.isdir(c / x) and not os.path.islink(c / x):
+                for dp, dns, fns in os.walk(c / x, onerror=_raise):
+                    for n in fns + [d for d in dns if os.path.islink(os.path.join(dp, d))]:
+                        judge(os.path.relpath(os.path.join(dp, n), c))
+            else:
+                judge(x)
+    except OSError:
+        return None
+    if spare < 0:
+        return None
+    dropped, untracked = [], 0
+    for size, path in sorted(loose):
+        if size <= spare:
+            spare -= size
+            kept.append(path)
+            untracked += 1
+        else:
+            dropped.append((size, path))
+    notes = [f"{c}: /tmp copy over the {human(DIRTY_CAP)} preserve cap: {on_main} file(s), {human(on_main_bytes)}, are blobs main holds"]
+    if dropped:
+        big = ", ".join(f"{p} ({human(n)})" for n, p in dropped[-5:])
+        notes.append(f"{c}: {len(dropped)} file(s) on no mirror did not fit the cap and go unkept: {big}")
+    return {"dirty": kept, "untracked": untracked, "notes": notes, "dropped": [p for _, p in dropped]}
+
+
 def clone_state(c: Path) -> dict:
     """{hard: reasons to skip, soft: reasons to bundle, tips, unique, dirty}."""
-    out = {"hard": [], "soft": [], "tips": [], "unique": 0, "dirty": [], "changed": [], "tracked": 0, "corrupt": []}
+    out = {"hard": [], "soft": [], "tips": [], "unique": 0, "dirty": [], "changed": [], "tracked": 0, "corrupt": [],
+           "notes": [], "dropped": []}
     hard, soft = out["hard"], out["soft"]
     dotgit = c / ".git"
     if dotgit.is_file() or dotgit.is_symlink():
@@ -1208,12 +1282,16 @@ def clone_state(c: Path) -> dict:
         hard.append(f"{c}: {err}")
         out["corrupt"].append(hard[-1])
     else:
+        cut = tmp_overcap(c, paths) if size > DIRTY_CAP else None
+        if cut:
+            paths, untracked = cut["dirty"], cut["untracked"]
+            out["notes"], out["dropped"] = cut["notes"], cut["dropped"]
         out["dirty"], out["tracked"] = paths, tracked
         if tracked:
             soft.append(f"{c}: {tracked} tracked file(s) changed")
         if untracked:
             soft.append(f"{c}: {untracked} untracked file(s)")
-        if size > DIRTY_CAP:
+        if size > DIRTY_CAP and not cut:
             hard.append(f"{c}: {human(size)} of dirty files, over the {human(DIRTY_CAP)} preserve cap")
     return out
 
@@ -1461,6 +1539,9 @@ def judge_clone(p: Path, ctx: Ctx) -> dict:
     if st["soft"]:
         row.update(verdict="ARCHIVE", why=st["soft"], tips=st["tips"], unique=st["unique"], dirty=st["dirty"],
                    changed=st["changed"], tracked=st["tracked"], dead_refs=st.get("dead_refs", []))
+    row["why"] = row["why"] + st["notes"]
+    if st["dropped"]:
+        row["dropped"] = st["dropped"]
     return row
 
 
@@ -1843,6 +1924,7 @@ def preserve(row: dict) -> str:
             "path": row["path"], "kind": row["kind"], "bytes": row["bytes"], "age_h": row["age_h"], "why": row["why"],
             "tips": row.get("tips", []), "unique_commits": row.get("unique", 0), "dirty_paths": row.get("dirty", []),
             "rewritten_commits": row.get("changed", []), "files": files, "residual": row.get("residual"),
+            "dropped_paths": row.get("dropped", []),
             "broken": row.get("broken"),
             "restore": "git clone --shared /home/mandrake/rm/store.git r && git -C r fetch clone.bundle "
                        "'refs/rm/*:refs/heads/rescued/*'; check out status.txt's base; tar -xzf staged.tar.gz -C blobs; "
