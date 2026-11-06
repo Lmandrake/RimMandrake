@@ -48,6 +48,7 @@ import relentless_reach  # noqa: E402
 import relentless_reachfix  # noqa: E402
 import relentless_game  # noqa: E402
 import relentless_expedite  # noqa: E402
+import relentless_repair_slot  # noqa: E402
 import relentless_binding  # noqa: E402
 import relentless_block  # noqa: E402
 import relentless_breakers  # noqa: E402
@@ -4832,24 +4833,34 @@ def enrol(store, fx, r, now):
             if mods & taken:
                 continue
             taken |= mods
-        with store.lock():
-            cur = store.load(i)
-            if cur is None:
-                st = new_state(i, now, "share %.2f of %d" % (share, pool))
-                st["pilot_wanted"] = i in getattr(fx, "bounce", ())
-                store.save(st)
-                store.journal({"at": iso(now), "do": "enrol", "item": i})
-            elif cur["status"] == "done":
-                try:
-                    reenrol(store, i, "reopened on the ledger after done", now, locked=True)
-                except ValueError:      # an unsettled run of the old life: the next tick asks again
-                    continue
-            else:
-                continue
-            took.append(i)
-            room -= 1
-            sys_room -= i in first
+        if not enrol_put(store, fx, i, "share %.2f of %d" % (share, pool), now):
+            continue
+        took.append(i)
+        room -= 1
+        sys_room -= i in first
+    slot = relentless_repair_slot.pick(fx, r, live, ours | set(took), now, order)     # one place past the caps (WP-06)
+    if slot and enrol_put(store, fx, slot[0], "reserved repair slot: %d items wait on it" % slot[1], now, slot="repair"):
+        took.append(slot[0])
     return took
+
+
+def enrol_put(store, fx, i, why, now, slot=None):
+    """enrol's write for one item: a new state, or a new life for one done in the store. -> True when it enrolled."""
+    with store.lock():
+        cur = store.load(i)
+        if cur is None:
+            st = new_state(i, now, why)
+            st["pilot_wanted"] = i in getattr(fx, "bounce", ())
+            store.save(st)
+            store.journal(dict({"at": iso(now), "do": "enrol", "item": i}, **({"slot": slot} if slot else {})))
+        elif cur["status"] == "done":
+            try:
+                reenrol(store, i, "reopened on the ledger after done", now, locked=True)
+            except ValueError:      # an unsettled run of the old life: the next tick asks again
+                return False
+        else:
+            return False
+    return True
 
 
 def owner_hold(r, item, first, st=None):

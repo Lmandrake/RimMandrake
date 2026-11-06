@@ -35,17 +35,20 @@ ops_watch.run() calls publish() every pass; it writes $RM_OPS_WATCH_DIR/health.j
            `rimflow guard` records one (model.guard_owed; `rimflow close` refuses without it). recurring_unguarded: every alarm
            kind that came back with no guard, open or closed (alarm_census.recurring).
   SYSTEM   open items that are about the system itself (Relentless, Operations, Conductor, Designer, Dispatcher, timers,
-           tests, tools), not game content: a word of its SUBJECT from system_words, or an id prefix from system_prefixes,
-           and no game mod or content_words word in its id. The subject is the part before the intent word (a twist is a joke
-           about how it went, and names tools in passing); a system_words_lead word counts only as the subject's first word
-           (HOSE_NET_SELFTEST is a mod's test, SELFTEST_CLOCK is the suite's). Order: alarm items (system_prefixes) first,
-           raised, then oldest.
+           tests, tools), not game content. Evidence first (RELENTLESS_REWIRE_ENROL_BY_FAN_IN): a cause record's repair, a
+           caused_by chain reaching one or an alarm, a pipeline kind (is_system). Words last: a word of its SUBJECT from
+           system_words, or an id prefix from system_prefixes, and no game mod or content_words word in its id. The subject is
+           the part before the intent word (a twist is a joke about how it went, and names tools in passing); a
+           system_words_lead word counts only as the subject's first word (HOSE_NET_SELFTEST is a mod's test, SELFTEST_CLOCK
+           is the suite's). Order: most transitive dependents (fan_in), the hand order, a died-once fix, alarm items, raised,
+           then oldest.
 
 Relentless never computes any of this: it calls read_verdict(); with no fresh verdict it asks system_ids() (this file,
 Operations' classifier) for the open system items and puts them first at once, and says so in its reading.
 
     python3 src/RimMandrake/Utils/ops_health.py show          the published verdict, and whether it is fresh
 """
+import calendar
 import hashlib
 import json
 import os
@@ -76,6 +79,9 @@ DEFAULTS = {
     "content_words": [],
     "system_rank": [],      # Operations' hand order, best first; always system, wherever the words put it
     "not_system": [],       # the classifier's known false friends (a mod's "pool", "ledger", "budget")
+    "pipeline_kinds": ["system", "ops"],    # a ledger kind that names the pipeline itself (is_system)
+    # supervisor block classes that attribute a failure to a cause record's repair (relentless_block.resolve)
+    "cause_block_classes": ["instrument", "game_env"],
 }
 OPS = {"<": lambda a, b: a < b, "<=": lambda a, b: a <= b, ">": lambda a, b: a > b, ">=": lambda a, b: a >= b}
 WORD = re.compile(r"[^A-Za-z0-9]+")
@@ -244,8 +250,100 @@ def rank_of(iid, c):
     return None
 
 
-def is_system(item, c, mods):
-    """Operations' classifier: an open item about the system itself, never one that names a game mod."""
+# RELENTLESS_REWIRE_ENROL_BY_FAN_IN (redesign_final G8, owner-ordered pipeline redesign 2026-11-06): the word classifier
+# called GAMEENV_FIX_PROOFSITE_* and PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED content, so his pipeline-only pause starved the
+# repairs that unjam the pipeline. Evidence comes first now, words last:
+#   a cause record's repair  an environment-cause repair id (relentless_game.REPAIR_FMT, keyed by the cause's fingerprint),
+#                            or the item a supervisor block of a cause class names ("relentless snag <class>: ..."),
+#                            or an id the caller knows to be one (`repairs`: the store's instrument incidents)
+#   caused_by a cause        its caused_by chain reaches a cause repair or an alarm item; a caused_by naming a content
+#                            parent (496 open content items on 2026-11-06) or a system item by words only keeps it content
+#   a pipeline kind          kind in pipeline_kinds
+# "Blocks >= 1 item" is NOT evidence (G8): a content dependency would walk past his pause.
+CAUSE_REPAIR_ID = re.compile(r"^GAMEENV_FIX_[A-Z]+_[0-9A-F]{8}_ITEMS_WAIT$")     # relentless_game.REPAIR_FMT % (kind, fp[:8])
+SNAG = re.compile(r"^relentless snag (\S+):")       # relentless_block.resolve's reason
+
+
+def block_ons(it):
+    """Every item id an item's block waits on, --on first (priority.block_ons, without the package import)."""
+    on = getattr(it, "blocked_on", None)
+    return ((on,) if on else ()) + tuple(getattr(it, "blocked_also", ()) or ())
+
+
+def item_edge(it):
+    """True for an open item whose block waits on items (kind item, or no kind and an --on)."""
+    if not (getattr(it, "open", False) and getattr(it, "blocked", False)):
+        return False
+    return (getattr(it, "blocked_kind", None) or ("item" if getattr(it, "blocked_on", None) else "other")) == "item"
+
+
+def cause_repairs(world, c):
+    """Ids the ledger shows to be a cause record's repair: an environment-cause repair id, or an item a supervisor block of a
+    cause class (cause_block_classes) waits on."""
+    out = {i for i in world.items if CAUSE_REPAIR_ID.match(i)}
+    classes = set(c["cause_block_classes"])
+    for it in world.items.values():
+        m = SNAG.match(getattr(it, "blocked_reason", None) or "") if item_edge(it) else None
+        if m and m.group(1) in classes:
+            out.update(block_ons(it))
+    return out
+
+
+def age_days(it, now):
+    t = ts_epoch(getattr(it, "created_at", None))
+    return max(0.0, (now - t) / 86400.0) if t is not None and now is not None else 0.0
+
+
+def ts_epoch(ts):
+    try:
+        return calendar.timegm(time.strptime(str(ts)[:19], "%Y-%m-%dT%H:%M:%S"))
+    except (TypeError, ValueError):
+        return None
+
+
+def fan_in(world, now=None):
+    """-> {id: (dependents, weight)} for every item some open item waits on: its transitive dependents through item blocks
+    (each counted once however many paths reach it; a cycle ends where it closes; the item itself never counts), weight
+    the sum over them of 1 + age in days, so an old jam outranks a fresh one of the same size. Pure."""
+    now = time.time() if now is None else now
+    up = {}
+    for it in world.items.values():
+        if item_edge(it):
+            for on in block_ons(it):
+                if on != it.id:
+                    up.setdefault(on, set()).add(it.id)
+    out = {}
+    for head in up:
+        seen, todo = set(), list(up[head])
+        while todo:
+            x = todo.pop()
+            if x in seen or x == head:
+                continue
+            seen.add(x)
+            todo.extend(up.get(x, ()))
+        out[head] = (len(seen), round(sum(1.0 + age_days(world.items[x], now) for x in seen if x in world.items), 3))
+    return out
+
+
+def caused_by_cause(item, c, world=None, repairs=None):
+    """True when the item's caused_by chain reaches a cause: a cause record's repair or an alarm item (system_prefixes),
+    through items that are themselves caused by one (a successor repair `caused_by` the closed ticket, redesign 3.4).
+    A cause that is system only by its words does not pass: content found by system work (PIT_SUPERDEEP_COLLAPSE_1, caused
+    by DETERMINISTIC_CHECKER_WAVE_1) stays content. Cycle-safe."""
+    seen, cur = {getattr(item, "id", None)}, getattr(item, "caused_by", None)
+    while cur and cur not in seen:
+        if CAUSE_REPAIR_ID.match(cur) or cur in (repairs or ()) or any(cur.startswith(p) for p in c["system_prefixes"]):
+            return True
+        seen.add(cur)
+        nxt = world.items.get(cur) if world is not None else None
+        cur = getattr(nxt, "caused_by", None) if nxt is not None else None
+    return False
+
+
+def is_system(item, c, mods, world=None, repairs=None):
+    """Operations' classifier: an open item about the system itself, never one that names a game mod. Order: the hand
+    lists (system_rank, not_system), a cause record's repair (`repairs`, cause_repairs), content kinds and mod words, a
+    caused_by chain that reaches a cause (caused_by_cause), a pipeline kind, then the words."""
     iid = getattr(item, "id", "") or ""
     if iid in c["system_rank"]:         # named by hand, exactly, beats everything below
         return True
@@ -253,11 +351,18 @@ def is_system(item, c, mods):
         return False
     if rank_of(iid, c) is not None:     # a family glob beats every word below, either way
         return True
-    if (getattr(item, "kind", None) or "") in c["content_kinds"]:
+    if CAUSE_REPAIR_ID.match(iid) or iid in (repairs or ()):    # a cause record's repair: evidence, not words
+        return True
+    kind = getattr(item, "kind", None) or ""
+    if kind in c["content_kinds"]:
         return False
     words = words_of(iid, "")       # the id, never the title: titles of content items name tools in passing
     if words & mods or words & {w.lower() for w in c["content_words"]}:
         return False
+    if caused_by_cause(item, c, world, repairs):
+        return True
+    if kind in c["pipeline_kinds"]:
+        return True
     if any(iid.startswith(p) for p in c["system_prefixes"]):
         return True
     subject = subject_words(iid)
@@ -266,20 +371,24 @@ def is_system(item, c, mods):
     return bool(subject) and (subject[0] in strong | lead or bool(words_of("_".join(subject), "") & (strong - lead)))
 
 
-def system_items(world, rules, root):
-    """Open system items, best first: Operations' hand order (system_rank), then a fix that already died once (live_repeats:
-    the class came back, it owes a guard test), then alarm items (system_prefixes), raised, then oldest."""
+def system_items(world, rules, root, now=None, repairs=None):
+    """Open system items, best first: most transitive dependents waiting on it (fan_in weight: dependents weighted by their
+    age), then Operations' hand order (system_rank), then a fix that already died once (live_repeats: the class came back,
+    it owes a guard test), then alarm items (system_prefixes), raised, then oldest. `repairs`: cause-repair ids the caller
+    knows beyond the ledger's (cause_repairs)."""
     c = conf(rules)
     mods = mod_names(root)
-    items = [it for it in world.items.values() if getattr(it, "open", False) and is_system(it, c, mods)]
+    rep = cause_repairs(world, c) | set(repairs or ())
+    items = [it for it in world.items.values() if getattr(it, "open", False) and is_system(it, c, mods, world, rep)]
+    fan = fan_in(world, now)
     last = len(c["system_rank"])
-    items.sort(key=lambda it: (last if rank_of(it.id, c) is None else rank_of(it.id, c), not (getattr(it, "live_repeats", 0) or 0), not any(it.id.startswith(p) for p in c["system_prefixes"]),
+    items.sort(key=lambda it: (-fan.get(it.id, (0, 0.0))[1], last if rank_of(it.id, c) is None else rank_of(it.id, c), not (getattr(it, "live_repeats", 0) or 0), not any(it.id.startswith(p) for p in c["system_prefixes"]),
                                not getattr(it, "raised", None), getattr(it, "created_at", None) or "", it.id))
     return items
 
 
-def system_ids(world, rules, root):
-    return [it.id for it in system_items(world, rules, root)]
+def system_ids(world, rules, root, now=None, repairs=None):
+    return [it.id for it in system_items(world, rules, root, now, repairs)]
 
 
 def incident(b, c):
@@ -330,7 +439,7 @@ def verdict(points, history, world, rules, root, now, stamp=None):
     inputs = {"rules_sha256": rules_sha256(rules),
               "collector_sha": stamp["collector_sha"] if "collector_sha" in stamp else collector_sha(),
               "ledger": stamp.get("ledger")}
-    items = system_items(world, rules, root) if world is not None else None
+    items = system_items(world, rules, root, now) if world is not None else None
     ids = [it.id for it in items] if items is not None else None
     # design idea 5: a twice-seen alarm closes only with a class fix, a guard test that fails on the whole class
     recurring = [{"id": it.id, "outages": it.live_repeats, "owes": "a guard test for the class, shown failing on this instance"}
