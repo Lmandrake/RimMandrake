@@ -94,6 +94,56 @@ check("harmless static_call not banned", ("jawa/static_call", "BANNED_ROUTE") no
 check("safe list_debug_action_children not banned",
       ("rimworld/list_debug_action_children", "BANNED_ROUTE") not in kinds('s.call("rimworld/list_debug_action_children", path="x")', tools))
 
+# --- READY_LOOP warning (READYWAITS_UNIFY_ONE_HELPER): a new copy of the ready-wait loop is warned; the helper is not
+OLD_READY = '''
+def main():
+    if s.call("rimworld/get_ui_state").get("programState") != "Playing":
+        s.call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
+        for _ in range(120):
+            if s.call("rimworld/get_ui_state").get("programState") == "Playing":
+                break
+            time.sleep(1)
+'''
+check("the copied ready loop is warned at its line", L.ready_loops(OLD_READY, "x.py") == [5],
+      str(L.ready_loops(OLD_READY, "x.py")))
+BRIDGE_READY = '''
+while time.time() - t0 < budget_s:
+    time.sleep(step_s)
+    st = rb.call("rimbridge/get_bridge_status", {})
+'''
+check("a get_bridge_status ready loop is warned", L.ready_loops(BRIDGE_READY, "x.py") == [2])
+NESTED = "for a in b:\n    x = 1\n" + "\n".join(OLD_READY.strip().splitlines()[1:]) + "\n"
+check("only the innermost loop of a nest is warned", len(L.ready_loops(NESTED, "x.py")) == 1,
+      str(L.ready_loops(NESTED, "x.py")))
+NEW_READY = '''
+lc = await_lifecycle(s.call, "map_ready", deadline_s=400, start=True)
+if not lc.ok:
+    print("UNMEASURED: %s" % lc.reason)
+'''
+check("the await_lifecycle form is not warned", L.ready_loops(NEW_READY, "x.py") == [])
+check("a sleep loop with no lifecycle read is not warned",
+      L.ready_loops("for i in r:\n    s.call('jawa/map_info')\n    time.sleep(1)\n", "x.py") == [])
+check("a lifecycle read with no sleep is not warned",
+      L.ready_loops("for i in r:\n    s.call('rimworld/get_ui_state')\n", "x.py") == [])
+_helper = os.path.join(os.path.dirname(HERE), "await_lifecycle.py")
+with open(_helper, encoding="utf-8") as _fh:
+    check("await_lifecycle.py itself is not a ready-loop copy", L.ready_loops(_fh.read(), _helper) == [])
+_ud = os.path.dirname(os.path.dirname(HERE))
+for _m in ("BlueDesert/prove_carbon_garden.py", "BlueDesert/prove_vhaulk_departs.py",
+           "BlueDesert/prove_ablation_stages.py", "LongShade/prove_stampede.py",
+           "EnvironmentalHazards/prove_shade_lessons.py"):
+    with open(os.path.join(_ud, _m), encoding="utf-8") as _fh:
+        check("migrated %s holds no ready-loop copy" % _m, L.ready_loops(_fh.read(), _m) == [])
+import subprocess as _sp
+import tempfile as _tf
+with _tf.TemporaryDirectory() as _d:
+    _p = os.path.join(_d, "validation.py")
+    with open(_p, "w") as _fh:
+        _fh.write(OLD_READY)
+    _r = _sp.run([sys.executable, os.path.join(HERE, "lint_calls.py"), _d], capture_output=True, text=True)
+    check("the CLI prints WARN READY_LOOP for a new copy", "WARN READY_LOOP" in _r.stdout, _r.stdout[-300:])
+    check("a warning alone leaves the exit code 0", _r.returncode == 0, "exit %d" % _r.returncode)
+
 # --- the snapshot is not stale against the companion source (26 tools were missing on 2026-10-10)
 import glob as _glob
 _cs = {}

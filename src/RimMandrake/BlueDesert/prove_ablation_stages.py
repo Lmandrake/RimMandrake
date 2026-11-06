@@ -19,7 +19,6 @@ disposable map).
 import json
 import os
 import sys
-import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 UTILS = os.path.join(os.path.dirname(HERE), "Utils")
@@ -27,6 +26,7 @@ sys.path.insert(0, UTILS)
 sys.path.insert(0, os.path.join(UTILS, "modcheck"))
 import rimbridge_client as rb       # noqa: E402
 import bland_world as BW            # noqa: E402
+from await_lifecycle import await_lifecycle  # noqa: E402
 
 SETTINGS = "RimMandrake.BlueDesert.RM_BlueDesertSettings"
 INCIDENT = "RM_AblationSalvage_Wreckage"
@@ -143,12 +143,10 @@ def scavenger_ids(s):
 
 def main():
     s = Session()
-    if s.call("rimworld/get_ui_state").get("programState") != "Playing":
-        s.call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
-        for _ in range(120):
-            if s.call("rimworld/get_ui_state").get("programState") == "Playing":
-                break
-            time.sleep(1)
+    lc = await_lifecycle(s.call, "map_ready", deadline_s=400, start=True)
+    if not lc.ok:
+        print("UNMEASURED: no playing map: %s" % lc.reason)
+        return 2
     info = s.call("jawa/map_info")
     if info.get("sizeX") is None or info.get("tile") is None:
         print("UNMEASURED: no playing map: %r" % (info,))

@@ -15,6 +15,10 @@ Output: `file:line  tool  KIND  detail`, KIND in
 Anything the lint cannot see through (**kwargs, non-literal tool name, non-literal
 params dict, dict with non-literal keys) is UNCHECKED, never silently passed.
 Exit 0 only if there are no problems of ANY kind (UNCHECKED counts: it is unproven).
+WARN READY_LOOP (READYWAITS_UNIFY_ONE_HELPER): the innermost for/while loop that sleeps and reads
+rimworld/get_ui_state or rimbridge/get_bridge_status is a copy of the ready-wait loop; use
+Utils/await_lifecycle.py `await_lifecycle(call, "map_ready", deadline_s, start=True)`. A warning is
+printed and counted but never changes the exit code.
 `check=` is the transport's own flag and is not treated as a tool parameter unless the
 tool declares one. Does not touch the bridge.
 """
@@ -173,6 +177,43 @@ def gather(paths):
     return sorted(files)
 
 
+READY_TOOLS = ("rimworld/get_ui_state", "rimbridge/get_bridge_status")
+READY_HINT = "copy-pasted ready-wait loop: use await_lifecycle(call, \"map_ready\", deadline_s, start=True)"
+
+
+def _ready_loop(node):
+    """True when this loop's own subtree sleeps and names a lifecycle read tool."""
+    sleeps = reads = False
+    for n in ast.walk(node):
+        if isinstance(n, ast.Call):
+            f = n.func
+            name = f.attr if isinstance(f, ast.Attribute) else (f.id if isinstance(f, ast.Name) else None)
+            sleeps = sleeps or name == "sleep"
+        elif isinstance(n, ast.Constant) and n.value in READY_TOOLS:
+            reads = True
+    return sleeps and reads
+
+
+def ready_loops(src, fname):
+    """-> sorted line numbers of innermost ready-wait loops (a loop holding a smaller one is not reported)."""
+    try:
+        tree = ast.parse(src, fname)
+    except SyntaxError:
+        return []
+    hits = [n for n in ast.walk(tree) if isinstance(n, (ast.For, ast.While)) and _ready_loop(n)]
+    inner = [n for n in hits if not any(m is not n and any(m is k for k in ast.walk(n)) for m in hits)]
+    return sorted(n.lineno for n in inner)
+
+
+def warn_paths(paths):
+    rows = []
+    for f in gather(paths):
+        with open(f, encoding="utf-8", errors="replace") as fh:
+            src = fh.read()
+        rows.extend((f, line) for line in ready_loops(src, f))
+    return rows
+
+
 def lint_paths(paths, tools):
     rows = []
     for f in gather(paths):
@@ -200,13 +241,18 @@ def main(argv):
         print(__doc__)
         return 2
     rows = lint_paths(args, load_tools(snap))
+    warns = warn_paths(args)
     for f, line, tool, kind, detail in rows:
         print("%s:%d  %s  %s  %s" % (f, line, tool, kind, detail))
+    for f, line in warns:
+        print("%s:%d  -  WARN READY_LOOP  %s" % (f, line, READY_HINT))
     counts = {}
     for r in rows:
         counts[r[3]] = counts.get(r[3], 0) + 1
     if summary or rows:
         print("TOTAL %d problems over %d literal-named calls: %s" % (len(rows), STATS["calls"], counts))
+    if warns:
+        print("WARN %d ready-wait loop copies (exit code unaffected)" % len(warns))
     return 1 if rows else 0
 
 
