@@ -11,6 +11,9 @@ READY requires ALL of, in order:
   2. the old Player.log MOVED to an archive (so no old line can be read again)           else LOG_NOT_ROTATED
   3. exactly one new process whose start time is after the launch                       else LAUNCH_NO_PROCESS /
                                                                                               DUPLICATE_PROCESS
+     (a closed Steam is NOT a no-process case: steam:// revives it and the game starts; LAUNCH_NO_PROCESS means
+     nothing came in launch_to_process_s, and a game arriving in late_arrival_watch_s after that is killed by PID
+     so the verdict stays true, else LATE_PROCESS_ALIVE)
   4. a 'Bridge token:' line in a Player.log written after the launch, while that process
      stays alive                                                                         else PROCESS_EXITED /
                                                                                               DEADLINE_ALIVE
@@ -138,8 +141,7 @@ def _run(env, pol, kill_existing, log, r):
             proc = new[0]
             break
         if env.now() - t0 > pol["launch_to_process_s"]:
-            return done("LAUNCH_NO_PROCESS", "no RimWorldWin64 started within %ds of the Steam launch "
-                        "(Steam closed, update, dialog, or launch rejected)" % pol["launch_to_process_s"])
+            return _no_process(env, pol, t0, r, done, step)
         env.sleep(POLL_S)
     r["pid"], r["proc_start"] = proc["pid"], proc["start"]
     step("process %s" % proc["pid"])
@@ -208,6 +210,42 @@ def _run(env, pol, kill_existing, log, r):
     return done("READY", "pid %s, port %s, %s active mods, %ds from launch%s" % (
         proc["pid"], r["port"], r["active_count"], env.now() - t0,
         "; first exception: %s" % r["first_exception"][:120] if r["first_exception"] else ""))
+
+
+def _no_process(env, pol, t0, r, done, step):
+    """LAUNCH_NO_PROCESS, made true and kept true (LAUNCHREADY_FIX_CRITERION_STEAM_REVIVES).
+
+    The Steam launch was sent and no game came up in launch_to_process_s. The URL may still deliver one later (a
+    steam:// launch REVIVES a closed Steam, which then starts the game; an update or a dialog delays it). A game
+    arriving after the verdict is ours and orphaned: the caller was told there is none. So keep watching for
+    late_arrival_watch_s and kill by PID any game started after the launch; the verdict stays LAUNCH_NO_PROCESS with
+    the pids in late_pids_killed. One that survives kill_existing_grace_s is LATE_PROCESS_ALIVE (exit 1). A game
+    arriving after the watch is beyond this launcher; the receipt says how long it watched."""
+    why = ("no RimWorldWin64 started within %ds of the Steam launch (update, dialog, or launch rejected)"
+           % pol["launch_to_process_s"])
+    r["late_pids_killed"] = []
+    r["late_watch_s"] = pol["late_arrival_watch_s"]
+    t_w = env.now()
+    while env.now() - t_w <= pol["late_arrival_watch_s"]:
+        late = [p for p in env.list_game_procs() if p["start"] >= t0 - SLACK_S]
+        if late:
+            for p in late:
+                env.kill_pid(p["pid"])
+            pids = [p["pid"] for p in late]
+            r["late_pids_killed"] += [x for x in pids if x not in r["late_pids_killed"]]
+            step("late game %s killed" % pids)
+            t_k = env.now()
+            while [p for p in env.list_game_procs() if p["pid"] in pids]:
+                if env.now() - t_k > pol["kill_existing_grace_s"]:
+                    return done("LATE_PROCESS_ALIVE", "%s; then game pid(s) %s arrived late, were sent a kill %ds after the launch and "
+                                "survived kill for %ds - a game IS running" % (
+                                    why, [p["pid"] for p in env.list_game_procs() if p["pid"] in pids],
+                                    t_k - t0, pol["kill_existing_grace_s"]))
+                env.sleep(POLL_S)
+        env.sleep(POLL_S)
+    if r["late_pids_killed"]:
+        why += "; late game pid(s) %s killed (arrived after the window)" % r["late_pids_killed"]
+    return done("LAUNCH_NO_PROCESS", why + "; watched %ds more for a late arrival" % pol["late_arrival_watch_s"])
 
 
 # ---------------------------------------------------------------------------------------------- the real world

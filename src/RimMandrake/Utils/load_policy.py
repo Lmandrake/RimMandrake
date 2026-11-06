@@ -23,7 +23,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(HERE, "load_policy.json")
 KEYS = ("launch_to_process_s", "process_to_bridge_warn_s", "process_to_bridge_deadline_s",
-        "bridge_to_dispatcher_s", "kill_existing_grace_s")
+        "bridge_to_dispatcher_s", "kill_existing_grace_s", "late_arrival_watch_s")
 
 
 VERSION = 2

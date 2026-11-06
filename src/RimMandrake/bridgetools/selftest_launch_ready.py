@@ -15,7 +15,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
 import launch_ready as L  # noqa: E402
 
 POL = {"launch_to_process_s": 60, "process_to_bridge_warn_s": 100, "process_to_bridge_deadline_s": 300,
-       "bridge_to_dispatcher_s": 30, "kill_existing_grace_s": 30, "name": "test"}
+       "bridge_to_dispatcher_s": 30, "kill_existing_grace_s": 30, "late_arrival_watch_s": 40,
+       "name": "test"}
 TOKEN_LOG = ("Mono path[0]\n[RimBridge] GABP server running standalone on port 5174\n"
              "[RimBridge] Bridge token: abc123\n")
 OLD_LOG = "old run\n[RimBridge] GABP server running standalone on port 5174\n[RimBridge] Bridge token: OLD999\n"
@@ -37,6 +38,7 @@ class Fake:
         self.launched = None
         self.archived = []
         self.killed = []
+        self.dead_new = False         # the launched game was killed (kill_works decides, as for old games)
 
     def now(self):
         return self.t
@@ -51,7 +53,7 @@ class Fake:
         out = list(self.old)
         if self.launched is not None and self.spawn_at is not None:
             el = self.t - self.launched
-            if el >= self.spawn_at and (self.exit_at is None or el < self.exit_at):
+            if el >= self.spawn_at and (self.exit_at is None or el < self.exit_at) and not self.dead_new:
                 out.append({"pid": 4242, "start": self.launched + self.spawn_at})
             if self.dup_at is not None and el >= self.dup_at:
                 out.append({"pid": 4343, "start": self.launched + self.dup_at})
@@ -61,6 +63,7 @@ class Fake:
         self.killed.append(pid)
         if self.kill_works:
             self.old = [p for p in self.old if p["pid"] != pid]
+            self.dead_new = self.dead_new or pid == 4242
 
     def archive_log(self):
         if self.log is None:
@@ -108,6 +111,25 @@ def main():
     f, r = run(spawn_at=None, token_at=None)
     good.append(case("Steam never starts the game -> LAUNCH_NO_PROCESS, nonzero",
                      r["verdict"] == "LAUNCH_NO_PROCESS" and L.exit_code(r) != 0, r["verdict"]))
+
+    # LAUNCHREADY_FIX_CRITERION_STEAM_REVIVES: with Steam closed, steam:// revives Steam and the game starts (9 s,
+    # measured 2026-10-31): that is READY with the NEW pid, and the old token is never what it read
+    f, r = run(spawn_at=9.0, old_log=OLD_LOG)
+    good.append(case("Steam closed, revived by the URL -> READY with the new pid, not the old token",
+                     r["verdict"] == "READY" and r["pid"] == 4242 and r["token_seen"] == "abc123", r["verdict"]))
+    good.append(case("no game ever -> no late kill, receipt says how long it watched",
+                     run(spawn_at=None, token_at=None)[1].get("late_pids_killed") == []
+                     and run(spawn_at=None, token_at=None)[1].get("late_watch_s") == 40))
+    f, r = run(spawn_at=70.0, token_at=None)
+    good.append(case("game arriving after the window -> killed by pid, verdict stays LAUNCH_NO_PROCESS",
+                     r["verdict"] == "LAUNCH_NO_PROCESS" and f.killed == [4242] and r["late_pids_killed"] == [4242]
+                     and f.list_game_procs() == [] and L.exit_code(r) == 1, (r["verdict"], f.killed)))
+    f, r = run(spawn_at=70.0, token_at=None, kill_works=False)
+    good.append(case("late game that survives the kill -> LATE_PROCESS_ALIVE, exit 1",
+                     r["verdict"] == "LATE_PROCESS_ALIVE" and L.exit_code(r) == 1, r["verdict"]))
+    f, r = run(spawn_at=200.0, token_at=None)
+    good.append(case("game arriving after the late watch too is not touched (beyond the launcher)",
+                     r["verdict"] == "LAUNCH_NO_PROCESS" and f.killed == [], (r["verdict"], f.killed)))
 
     # the old bug: an old token line in the log and no process at all
     f, r = run(spawn_at=None, token_at=None, old_log=OLD_LOG)
