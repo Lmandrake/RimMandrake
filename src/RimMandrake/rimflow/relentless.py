@@ -29,6 +29,7 @@ import os
 import re
 import shutil
 import signal
+import stat
 import subprocess
 import sys
 import time
@@ -117,6 +118,19 @@ BUNDLE_PATCH_MAX = 500 * 10**6
 BUNDLE_MAX = POOL_IGNORED_MAX + 2 * BUNDLE_PATCH_MAX
 
 
+def _worktree_blob(c, p):
+    """-> the blob id git would store for `p` in clone `c`. A symlink's blob is its link text: `hash-object <path>` reads
+    the target's bytes, so an unchanged tracked symlink never matched and its deletion was refused (Codex r6 #2)."""
+    full = os.path.join(c, p)
+    if os.path.islink(full):
+        r = subprocess.run(["git", "-C", c, "hash-object", "--stdin"], input=os.fsencode(os.readlink(full)),
+                           capture_output=True, timeout=120)
+        return r.stdout.decode().strip() if r.returncode == 0 else None
+    r = subprocess.run(["git", "-C", c, "hash-object", "--", p], capture_output=True, text=True, timeout=120,
+                       stdin=subprocess.DEVNULL)
+    return r.stdout.strip() if r.returncode == 0 else None
+
+
 def restore_deleted(bundle, c):
     """A bundle's `deleted` paths go from the fresh clone `c`, each only while upstream still holds the very blob the worker
     removed (and the file is that blob). -> what was not removed, named."""
@@ -136,11 +150,53 @@ def restore_deleted(bundle, c):
         if not os.path.lexists(os.path.join(c, p)):
             continue
         was, now = (out("rev-parse", "--verify", "-q", "%s:%s" % (rev, p)) for rev in (head, "HEAD"))
-        if was and was == now and out("hash-object", "--", p) == now:
+        if was and was == now and _worktree_blob(c, p) == now:
             os.unlink(os.path.join(c, p))
         else:
             bad.append("deleted %s kept: upstream changed it since" % p)
     return bad
+
+
+def tree_bytes(p):
+    """-> bytes at `p` (a file, a symlink's own size, or a folder walked without following links); 0 when gone."""
+    try:
+        st = os.lstat(p)
+    except OSError:
+        return 0
+    if not stat.S_ISDIR(st.st_mode):
+        return st.st_size
+    n = 0
+    for dp, _dirs, files in os.walk(p):
+        for x in files:
+            try:
+                n += os.lstat(os.path.join(dp, x)).st_size
+            except OSError:
+                pass
+    return n
+
+
+def capped_copy(argv, f, cap, name, timeout=300):
+    """Run `argv`, its stdout copied into `f`, killed the moment it passes `cap` bytes: a runaway diff never fills the
+    disk before the size is checked (Codex r6 #10). Raises on a nonzero exit or the cap."""
+    p = subprocess.Popen(argv, stdout=subprocess.PIPE, stdin=subprocess.DEVNULL)
+    n, end = 0, time.monotonic() + timeout
+    try:
+        for chunk in iter(lambda: p.stdout.read(1 << 20), b""):
+            n += len(chunk)
+            if n > cap:
+                raise RuntimeError("%s passed %d bytes, over the bundle cap %d: read this clone before it goes"
+                                   % (name, n, cap))
+            if time.monotonic() > end:
+                raise subprocess.TimeoutExpired(argv, timeout)
+            f.write(chunk)
+        rc = p.wait(timeout=max(1, end - time.monotonic()))
+        if rc:
+            raise subprocess.CalledProcessError(rc, argv)
+    finally:
+        if p.poll() is None:
+            p.kill()
+            p.wait()
+        p.stdout.close()
 
 
 def bundle_bytes(d):
@@ -685,7 +741,26 @@ class SpendUnreadable(ValueError):
     """charge() met a damaged day record: nothing was booked and nothing on the item moved."""
 
 
-def charge(store, st, tokens, now, r, unit, basis=None):
+CHARGE_LOOKBACK_DAYS = 14      # a run is looked for in every day file from its launch to now, at most this far back
+
+
+def _booked(store, unit, now, since):
+    """-> what a day file already booked for `unit`, or None. Every day from the run's launch (`since`; yesterday when
+    unknown) to today: a crash before the item's own marker, recovered two days later, must not book the run twice
+    (Codex r6 #1). A damaged day file raises, as _day does."""
+    lo = max(min(since if since is not None else now - 86400, now - 86400), now - CHARGE_LOOKBACK_DAYS * 86400)
+    days, t = [], now
+    while day_key(t) >= day_key(lo):
+        days.append(t)
+        t -= 86400
+    for t in days:
+        runs = _day(store, t)["runs"]
+        if unit in runs:
+            return runs[unit]
+    return None
+
+
+def charge(store, st, tokens, now, r, unit, basis=None, since=None):
     """Under the lock. A run with no measured usage (no tokens, basis absent or "estimated") is charged the reserve,
     never less; a measured zero (basis "result", RELENTLESS_SPEND_FIX_ZERO_USAGE_RESERVE) is charged 0. The day file
     is keyed by run, so a crash before the item's own marker is saved cannot count a run twice."""
@@ -694,7 +769,8 @@ def charge(store, st, tokens, now, r, unit, basis=None):
     n = int(tokens) if measured else r["run_reserve"]
     try:
         d = _day(store, now)
-        new = unit not in d["runs"] and unit not in _day(store, now - 86400)["runs"]
+        booked = _booked(store, unit, now, since)
+        new = booked is None
     except (OSError, ValueError, TypeError, KeyError, AttributeError) as e:
         # never replace a damaged day file with a partial history, and never raise st["spent"] past a run the day did
         # not book: the item's step raises before it saves, keeps the run uncharged, and charges it on the first tick
@@ -703,7 +779,6 @@ def charge(store, st, tokens, now, r, unit, basis=None):
         raise SpendUnreadable("spend record unreadable (%s: %s): run %s stays uncharged until it is repaired"
                               % (type(e).__name__, e, unit)) from e
     if not new:     # a replay after a crash: the item takes what the day booked, never a second figure (r5 part0 #2)
-        booked = d["runs"].get(unit, _day(store, now - 86400)["runs"].get(unit))
         n = int(booked) if isinstance(booked, (int, float)) else n
     if new:
         d["runs"][unit] = n
@@ -1253,7 +1328,10 @@ def landed_commit(sha, cwd=None):
         return sha, None
     if _ok(_run_git(cwd, "merge-base", "--is-ancestor", sha, "origin/main")):
         return sha, None
-    found, how = find_landed(cwd, landing_key(cwd, sha), None)
+    key = landing_key(cwd, sha)
+    if not key:     # the worker's sha is unreadable here: nothing to match on, and find_landed's item search needs an
+        return sha, None    # item id (re.escape(None) raised, Codex r6 #5)
+    found, how = find_landed(cwd, key, None)
     if not found:
         return sha, None
     return found, "%s is not on origin/main; it landed as %s (%s): recording %s" % (sha[:10], found[:10], how, found[:10])
@@ -1387,7 +1465,19 @@ def unlanded(cwd):
     r = _run_git(cwd, "rev-list", "--right-only", "--cherry-pick", "--no-merges", "origin/main...HEAD")
     if not r or r.returncode:
         return None
-    return r.stdout.split()
+    left = r.stdout.split()
+    # a merge has no patch-id, so --cherry-pick cannot match it: one that carries a resolution (content in neither
+    # parent, which `diff-tree --cc` shows) is work origin/main lacks; a clean merge adds nothing (Codex r6 #4)
+    m = _run_git(cwd, "rev-list", "--merges", "origin/main..HEAD")
+    if not m or m.returncode:
+        return None
+    for sha in m.stdout.split():
+        cc = _run_git(cwd, "diff-tree", "--cc", "--no-commit-id", "-p", sha)
+        if not cc or cc.returncode:
+            return None
+        if cc.stdout.strip():
+            left.append(sha)
+    return left
 
 
 def unlanded_owed(cwd):
@@ -1404,7 +1494,8 @@ def unlanded_owed(cwd):
 def state_only_push(toplevel):
     """True when every commit HEAD holds beyond the remotes touches only records (POOL_STATE lessons, POOL_NOISE ledger
     shards, code review, transcripts). A finished worker may still land those: they change no code under check."""
-    r = _run_git(toplevel, "rev-list", "HEAD", "--not", "--remotes")
+    # beyond origin/main, never beyond every remote ref: a commit an origin/topic holds is still pushed to main (r6 #3)
+    r = _run_git(toplevel, "rev-list", "HEAD", "--not", "refs/remotes/origin/main")
     if not r or r.returncode:
         return False
     for sha in r.stdout.split():
@@ -1627,6 +1718,10 @@ def gpt_consult(prompt_file, out, timeout):
     """The Consult port's live adapter: src/RimMandrake/Utils/gpt_consult.py beside this file's tree. `timeout` bounds
     the whole call: codex gets 30 s less, so gpt_consult ends it and writes its job before this kill would."""
     tool = os.path.join(HERE, "..", "Utils", "gpt_consult.py")
+    try:        # an answer left by an earlier call is never read as this one's (Codex r6 #6)
+        os.unlink(out)
+    except FileNotFoundError:
+        pass
     try:
         res = subprocess.run([sys.executable, tool, "--prompt-file", prompt_file, "--out", out,
                               "--timeout", str(max(30, timeout - 30))],
@@ -2482,6 +2577,8 @@ class Effects(relentless_game.GameFx):
         moved_out = {}      # untracked shards renamed into `keep`: a late event there is carried back after the reset
         restored = {}       # tracked shards cut back to HEAD: {path: HEAD's bytes}, put back if the reset never lands
         levelled = False
+        head = lambda: self.git(self.books, "rev-parse", "HEAD").stdout.strip()     # noqa: E731  never raises
+        head0 = head()
         try:
             with relentless_books_left.registry_locked(self.books):     # no run records while its file is set aside
                 held = {}
@@ -2498,7 +2595,9 @@ class Effects(relentless_game.GameFx):
                         relentless_books_left.put_back(self.books, held)
             return why
         finally:
-            if not levelled:
+            # by whether HEAD moved, as hand_back is: a raise after the reset landed (its journal line) must not write
+            # books' old shard over origin's and drop origin's later events (Codex r6 #8)
+            if not levelled and head() == head0:
                 self._unlevel(read, moved_out, restored)
             self._carry_late(read, moved_out)
 
@@ -2605,6 +2704,8 @@ class Effects(relentless_game.GameFx):
                 os.remove(src)
             else:
                 os.makedirs(os.path.dirname(src), exist_ok=True)
+                if os.path.islink(src):     # open() would follow it and overwrite its target (Codex r6 #7)
+                    os.unlink(src)
                 with open(src, "wb") as f:
                     f.write(subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True, check=True, timeout=60).stdout)
         self.git(self.books, "update-index", "-q", "--refresh")   # same bytes, new stat: reset --keep reads that as dirt
@@ -2663,7 +2764,9 @@ class Effects(relentless_game.GameFx):
                         ITEMS_DIR).stdout.split("\0")
         rows = [(x[:2], x[3:]) for x in rows if x]
         gone = {p[len(ITEMS_DIR):] for s, p in rows if "D" in s and "/" not in p[len(ITEMS_DIR):]}
-        new = {p[len(ITEMS_DIR) + len("closed/"):] for s, p in rows if s == "??" and p.startswith(ITEMS_DIR + "closed/")}
+        # a destination untracked (`??`) or staged by a `git mv` (`A `): both are the close's move (Codex r6 #11)
+        new = {p[len(ITEMS_DIR) + len("closed/"):] for s, p in rows if (s == "??" or s[0] == "A")
+               and p.startswith(ITEMS_DIR + "closed/")}
         return [p for n in sorted(gone & new) for p in (ITEMS_DIR + n, ITEMS_DIR + "closed/" + n)]
 
     def ledger_items(self):
@@ -2824,7 +2927,12 @@ class Effects(relentless_game.GameFx):
             # one touches; a lone capitalised word may BE the mod (FOOMOD), so it stays (Codex r5 part2 #3)
             title = re.sub(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b", " ", getattr(it, "title", "") or "")
             words = [x.lower() for x in re.split(r"[^A-Za-z0-9]+", "%s %s" % (item, title)) if x]
-            names = set(words) | {a + b for a, b in zip(words, words[1:])}
+            # a folder named Foo_Bar is known as foo_bar: runs of two and three words are tried joined bare and by `_`
+            # (Codex r6 #9)
+            names = set(words)
+            for k in (2, 3):
+                for run in zip(*(words[i:] for i in range(k))):
+                    names |= {"".join(run), "_".join(run)}
             try:
                 with open(os.path.join(self.books, "infrastructure", "state", "items", item + ".md"), encoding="utf-8") as f:
                     prose = f.read()
@@ -3395,7 +3503,7 @@ class Effects(relentless_game.GameFx):
             path = os.path.join(out, name)
             with open(path, "wb") as f:
                 if argv:
-                    subprocess.run(argv, stdout=f, check=True, timeout=300)
+                    capped_copy(argv, f, cap, name)
             if os.path.getsize(path) > cap:
                 raise RuntimeError("%s is %d bytes, over the bundle cap %d: read this clone before it goes"
                                    % (name, os.path.getsize(path), cap))
@@ -3417,7 +3525,11 @@ class Effects(relentless_game.GameFx):
                 f.write("\0".join(real_deleted))
         for name, want in (("untracked.tar", untracked), ("ignored.tar", ignored),
                            ("real_untracked.tar", [p for p in untracked if not p.startswith(POOL_NOISE)])):
-            if want:
+            if want:    # sized before tar writes a byte: the cap is a limit, never a post-mortem (Codex r6 #10)
+                est = bundle_bytes(out) + sum(tree_bytes(os.path.join(c, p)) for p in want)
+                if est > BUNDLE_MAX:
+                    raise RuntimeError("%s would be %d bytes, over the bundle cap %d: read this clone before it goes"
+                                       % (name, est, BUNDLE_MAX))
                 subprocess.run(["tar", "-C", c, "--null", "-T", "-", "-cf", os.path.join(out, name)],
                                input="\0".join(want).encode(), check=True, timeout=300)
         for i, sha in enumerate(stash):   # refs/stash names only the newest; the rest live in a reflog no bundle carries
@@ -3856,8 +3968,9 @@ class Effects(relentless_game.GameFx):
     def help_checkout(self, st, sha):
         """The consult's clean tree. Not the item's clone: its uncommitted work is the story being withheld."""
         d, why = self._detached_clone(self.help_path(st), sha, "help", st["item"])
-        if d:
-            self.git(d, "remote", "set-url", "--push", "origin", "read-only-consult")
+        if d and self.git(d, "remote", "set-url", "--push", "origin", "read-only-consult").returncode:
+            shutil.rmtree(d, ignore_errors=True)    # a consult clone that can still push is no consult clone (Codex r6 #14)
+            return None, "help clone %s: could not disable its push url" % d
         return d, why
 
     def published(self, sha):
@@ -3904,11 +4017,18 @@ class Effects(relentless_game.GameFx):
     def changed(self, base, sha, item):
         """Files of the final commit plus every commit since the item's base that names the item (the brief makes
         workers name it), so a hook change followed by a doc commit does not escape its live line."""
-        r = self.git(self.books, "show", "--format=", "--name-only", "--diff-merges=first-parent", sha)   # Codex #4
+        # --no-renames: a rename names its source too, so a moved hook still needs its live line (Codex r6 #13)
+        r = self.git(self.books, "show", "--format=", "--name-only", "--no-renames", "--diff-merges=first-parent", sha)   # Codex #4
         got = set(x for x in r.stdout.splitlines() if x.strip()) if r.returncode == 0 else set()
+        if base and self.git(self.books, "cat-file", "-e", base + "^{commit}").returncode:
+            base = None     # a base this tree cannot read is no base, as before: the final commit alone
         if base:
-            r = self.git(self.books, "log", "--format=", "--name-only", "--diff-merges=first-parent", "--grep=" + item,
-                         "%s..%s" % (base, sha))
+            r = self.git(self.books, "log", "--format=", "--name-only", "--no-renames", "--diff-merges=first-parent",
+                         "--grep=" + item, "%s..%s" % (base, sha))
+            if r.returncode:    # an unread log is no short list: the whole range instead, a superset (Codex r6 #12)
+                r = self.git(self.books, "diff", "--name-only", "--no-renames", base, sha)
+            if r.returncode:
+                raise RuntimeError("changed(%s..%s): git cannot list the range: %s" % (base, sha, (r.stderr or "")[-200:]))
             got |= set(x for x in r.stdout.splitlines() if x.strip())
         return sorted(got)
 
@@ -3919,7 +4039,7 @@ class Effects(relentless_game.GameFx):
         wins = item_run_windows(self.store.attempts(item), since)
         if not wins or not base:
             return self.changed(base, sha, item)
-        r = self.git(self.books, "log", "--format=%x01%at", "--name-only", "--diff-merges=first-parent", "--grep=" + item,
+        r = self.git(self.books, "log", "--format=%x01%at", "--name-only", "--no-renames", "--diff-merges=first-parent", "--grep=" + item,
                      "%s..%s" % (base, sha))
         if r.returncode:
             return self.changed(base, sha, item)
@@ -3932,7 +4052,7 @@ class Effects(relentless_game.GameFx):
                 return self.changed(base, sha, item)
             if any(s <= at and (e is None or at <= e) for s, e in wins):
                 got |= set(lines[1:])
-        r = self.git(self.books, "show", "--format=", "--name-only", "--diff-merges=first-parent", sha)
+        r = self.git(self.books, "show", "--format=", "--name-only", "--no-renames", "--diff-merges=first-parent", sha)
         got |= set(x for x in r.stdout.splitlines() if x.strip()) if r.returncode == 0 else set()
         return sorted(got)
 
@@ -5168,7 +5288,10 @@ def owner_pause(fx, states=()):
     rule = getattr(fx, "owner_pause_rule", None) or {}
     if not rule.get("pipeline_only"):
         return None
-    pre = list(rule.get("pipeline_prefixes") or ())
+    pre = rule.get("pipeline_prefixes") or ()
+    # a bare string is one prefix, never its letters; a non-string or empty entry would let every item through (r6 #15)
+    pre = [pre] if isinstance(pre, str) else list(pre) if isinstance(pre, (list, tuple)) else []
+    pre = [p for p in pre if isinstance(p, str) and p]
     first = getattr(fx, "first", None) or {}
     held = [s["item"] for s in states if s["status"] == "queued"
             and (s["item"] in first or any(s["item"].startswith(p) for p in pre))]
@@ -5479,7 +5602,7 @@ def settle(store, fx, r, item, key, since, now, acts):
         cur = store.load(item)
         live = run_of(cur, key)
         if live and live.get("charged") is None:
-            live["charged"] = charge(store, cur, tok, now, r, live["unit"], basis)
+            live["charged"] = charge(store, cur, tok, now, r, live["unit"], basis, since=live.get("at"))
             live["measured"] = tok
             live["basis"] = basis
             store.save(cur)
@@ -5499,7 +5622,7 @@ def reap_quarantined(store, fx, r, now, acts):
                 cur = store.load(st["item"])
                 if not cur["quarantined"][i].get("reaped"):
                     cur["quarantined"][i]["reaped"] = True
-                    charge(store, cur, tok, now, r, q["run"]["unit"], basis)
+                    charge(store, cur, tok, now, r, q["run"]["unit"], basis, since=q["run"].get("at"))
                     store.save(cur)
             fx.remove_clone({"clone": q.get("clone")})
             acts.append({"do": "reaped", "item": st["item"], "unit": q["run"]["unit"]})
@@ -5519,9 +5642,40 @@ def overdue(st, activity, now, r):
     return None
 
 
+def close_uncount(store, item, tries):
+    """A closing tick that only waited (the live line, origin unreadable) made no attempt: its count is taken back, so a
+    long wait never reads as close_stuck (Codex r6 #18)."""
+    with store.lock():
+        cur = store.load(item)
+        if cur["status"] == "closing" and cur.get("close_tries") == tries:
+            cur["close_tries"] = tries - 1
+            store.save(cur)
+
+
+def marker_fail_record(store, fx, item, acts):
+    """The blind FAIL owed to the ledger (st["marker_fail_owed"]): written, then the debt cleared under the lock; a
+    failed write leaves it owed for the next step. -> True when nothing is owed any more."""
+    owe = store.load(item).get("marker_fail_owed")
+    if not owe:
+        return True
+    err = fx.ledger_marker_fail(item, owe[0], owe[1])
+    if err:
+        acts.append({"do": "marker_fail_unrecorded", "item": item, "why": err[:200]})
+        return False
+    with store.lock():
+        cur = store.load(item)
+        if cur.get("marker_fail_owed") == owe:
+            cur.pop("marker_fail_owed")
+            store.save(cur)
+    return True
+
+
 def step(store, fx, r, item, now, acts):
     """One item, one transition. Crash anywhere and the next tick resumes from the persisted status."""
     st = store.load(item)
+    if st.get("marker_fail_owed"):      # a blind FAIL the ledger has not heard: before anything else moves (r6 #17)
+        marker_fail_record(store, fx, item, acts)
+        st = store.load(item)
     s = st["status"]
     if s == "queued" and st.get("needs_back"):      # his hold lifted: the ledger still says owner
         back = fx.needs_after_hold(item)
@@ -5936,6 +6090,9 @@ def step(store, fx, r, item, now, acts):
                         store.save(st)          # a real verdict ends the run of blind ones
                     if acted == "FAIL":     # an observed defect is a FAIL whatever word it came under
                         failed = (c["sha"], st["check"].get("reasons"))
+                        # owed in the state before the item moves: a ledger write that fails is retried by step() until
+                        # it lands, never lost with the move (Codex r6 #17)
+                        st["marker_fail_owed"] = list(failed)
                         if st["check"].get("defects"):      # structured: routed on its causes, a builder only for PRODUCT
                             routed = cause_fail(store, st, r, now)
                             acts.append({"do": "blind_fail", "item": item, "cause": routed})
@@ -5960,9 +6117,7 @@ def step(store, fx, r, item, now, acts):
                     attention(store, fx, "quarantine:%s" % item, t, now, level=(QUARANTINE_RETURNS, returns0))
                     acts.append({"do": "quarantined", "item": item, "why": t[:200]})
         if failed:          # the verdict the Close gate reads, out of the store's lock (MARKER_FAIL_WIRE_INTO_CLOSE_LOCK)
-            err = fx.ledger_marker_fail(item, *failed)
-            if err:
-                acts.append({"do": "marker_fail_unrecorded", "item": item, "why": err[:200]})
+            marker_fail_record(store, fx, item, acts)
             return
         if said:            # the ledger's own write and the clone's removal, out of the store's lock
             remove_check_clone(fx, gone)
@@ -5990,6 +6145,8 @@ def step(store, fx, r, item, now, acts):
                 fail(store, st, "live_broken", broken, r, now)
                 acts.append({"do": "live_broken", "item": item, "after_check": True})   # a checker PASSed: ends ops_watch's run of dead checkers
                 return
+            if bind_moved(st):  # rule 6.1 again, under the lock that consumes the PASS: the sha, gen or contract moved
+                return          # while the live line and origin were read unlocked; the next tick rebinds it (Codex r6 #16)
             cur = st["check"] or {}     # read as above: a WEAK the live rule reads as PASS closes too (GPT pass 12)
             if not cur.get("verdict") or relentless_wall.read_as(cur["verdict"], cur.get("reasons"), cur.get("defects"),
                                                                  cur.get("unreached"))[0] != "PASS":
@@ -6040,9 +6197,11 @@ def step(store, fx, r, item, now, acts):
             live = (st["contract"] or {}).get("live")
             broken = fx.live_check(live, fx.commit_time(c["sha"])) if live else None
             if live_wait(store, fx, item, broken, now, acts, st):
+                close_uncount(store, item, tries)
                 return          # close_retry stays set: the next tick asks the live line again
             pub = None if broken else fx.published(c["sha"])
             if pub is None and not broken:
+                close_uncount(store, item, tries)       # a tick spent waiting on origin is no closing attempt (r6 #18)
                 acts.append({"do": "publish_unknown", "item": item})
                 return
             if broken or not pub:
@@ -6295,7 +6454,9 @@ def help_resume(store, fx, r, item, now, acts):
         desc = run_desc(store, r, unit_name("help", item, st["gen"]) + "-h%d" % n, now)
         desc["resume"] = h.pop("resume")["session"]
         st["help_count"] = n
-        h.update(status="running", run=desc, started_at=now, tries=h["tries"] + 1, expired=False, resumed=desc["resume"])
+        # a fresh deadline with the fresh start: the old one had already passed at resume (Codex r6 #20)
+        h.update(status="running", run=desc, started_at=now, tries=h["tries"] + 1, expired=False, resumed=desc["resume"],
+                 deadline=now + r["circling"]["help_max_s"] + r["launch_grace_s"])
         store.save(st)
     env = {"RELENTLESS_ROOT": store.root}
     why = fx.launch(st, desc, resume_prompt(st, "help"), h["agent"], h["clone"], r["circling"]["help_max_s"], env)
@@ -6529,14 +6690,17 @@ def clones_this_tick(acts, by=None):
     return sum(1 for a in acts if a.get("do") == "clone_try" and (by is None or a.get("by", "check") == by))
 
 
-def give_back(store, item, why, to="retired", reserved=None):
+def give_back(store, item, why, to="retired", reserved=None, expect=None):
     """`retired`: the other seat's after all, never ours. `queued`: the ledger already says ours, so it must stay in
     the line: retired, nothing would ever pick it up again. `reserved`: the reserve_foreign token; the item moves only
     while that very reservation still stands (running, the same `reserving`), so a hold or fence that landed meanwhile
-    is never overwritten (Codex r4 part4 #1). -> True when it moved."""
+    is never overwritten (Codex r4 part4 #1). `expect`: with no reservation, the status it was read in; it moves only
+    from that one, so an owner's `held` written meanwhile stands (Codex r6 #19). -> True when it moved."""
     with store.lock():
         cur = store.load(item)
         if reserved is not None and not still_reserved(cur, reserved):
+            moved = False
+        elif expect is not None and (not cur or cur["status"] != expect):
             moved = False
         else:
             cur.pop("reserving", None)
@@ -6747,7 +6911,7 @@ def _lease(store, fx, r, now, acts, seen, wake=None):
         if cfg and (theirs or st.get("foreign")):
             # also on the way back in line: the guard does not cover `queued`, so its seat may have reached it
             if theirs and not fx.foreign_fits(item):
-                give_back(store, item, "no longer a kind of item the filler may take")
+                give_back(store, item, "no longer a kind of item the filler may take", expect=st["status"])
                 acts.append({"do": "give_back", "item": item})
                 continue
             reserved = reserve_foreign(store, fx, r, item, now, acts)
@@ -6874,8 +7038,11 @@ def action_fired(store, row):
     if not end or not row.get("item"):
         return None
     at = row.get("at") or ""
-    return any(a.get("end") == end and (a.get("sha") or row.get("sha")) == row.get("sha") and (a.get("at") or "") >= at
-               for a in store.attempts(row["item"]))
+    runs = [a for a in store.attempts(row["item"]) if a.get("end") == end and (a.get("at") or "") >= at]
+    if any(row.get("sha") and a.get("sha") == row.get("sha") for a in runs):
+        return True
+    # an execution with no sha on record, or a row naming none, cannot say which build ran: unread, never a match (r6 #21)
+    return None if any(not a.get("sha") for a in runs) or (runs and not row.get("sha")) else False
 
 
 def live_slis(store, now):
@@ -7219,7 +7386,8 @@ def game_pass(store, fx, r, now, acts, began=None, between=None):
         # release) is never held back by busy: a game-ready's wake would otherwise only reach the next tick
         if (s.get("game") or {}).get("phase") not in ("proving", "staging"):
             if relentless_game.busy(store, None) or over_budget(r, wall() - began):
-                break
+                continue    # never break: a staging holder ranked behind a waiting expedited item must still step
+                            # to release the game (Codex r6 #22)
         try:
             step(store, fx, r, s["item"], now, acts)
         except Exception as e:  # noqa: BLE001  one bad item never stops the others; the next tick resumes it
