@@ -24,7 +24,7 @@
   "judge_honours": true
  },
  "trial_exclusions": {
-  "path": "/home/mandrake/rm/foundry/src/RimMandrake/Utils/arena/trial_exclusions.json",
+  "path": "/home/mandrake/rm/bench/src/RimMandrake/Utils/arena/trial_exclusions.json",
   "excluded": [
    "RP_CATHEDRALPASS_FIX_REVOKE_MESSAGE_REGISTER",
    "RP_DONOR_REGEN_HARDEN_BLIND_JOURNAL",

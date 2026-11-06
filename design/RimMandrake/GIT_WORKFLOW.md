@@ -7,7 +7,7 @@ Rationale and measurements: `git_workflow_plan_2026-10-01.md` (plan) and the dat
 
 | place | what it is |
 |---|---|
-| `/home/mandrake/rm/bench`, `/home/mandrake/rm/foundry` | the seat clones — ext4, plain git, **one writer each** (the seat's own window). Every seat launches from its clone. |
+| `/home/mandrake/rm/bench` | the seat clone — ext4, plain git, **one writer** (the seat's own window). The seat launches from its clone. (FOUNDRY is retired and its clone is deleted.) |
 | `D:\Luke\dev\RimMandrake` (`/mnt/d/Luke/dev/RimMandrake`) | **read-only mirror** of origin/main, refreshed every 5 min by `rm-mirror.timer` (`./mirror sync`). No `.git`. Never write it; Windows tools (the game deploy, Explorer, python.exe) read it. `MIRROR_HEAD` names its commit; `MIRROR_STALE` appears if a refresh failed. |
 | `/home/mandrake/rm/mirror.git` | the mirror's bare fetch-only repo |
 | `D:\ClaudeWork\rimmandrake\artpipe\` | artpipe queue/state (not in git): `pending/ active/ done/ failed/ _artsrc/ registry.jsonl` |
@@ -56,7 +56,7 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
 |---|---|
 | ledger | `infrastructure/state/ledger/events/<SEAT>.jsonl`, append-only, `merge=union`; `events.jsonl` is frozen. `ledger_lint.py` (and the pre-push hook `block_ledger_lint.py`) refuses an edited or reordered line. `model.read()` orders by content, so file order does not matter. Never resolve a shard with `checkout --ours/--theirs`. Events stranded in a seat clone that cannot push: `ledger_sync.py --seat <SEAT>` (dry run; `--apply` appends the missing lines and pushes from a throwaway clone under `/home/mandrake/rm/scratch/<SEAT>/` that is deleted when the run ends; `--clone <dir>` keeps a reusable one). |
 
-**Pre-push guards run as a git-native hook** (`infrastructure/githooks/pre-push`, DLL/source-stamp + ledger lint; also the Claude PreToolUse hooks) via `core.hooksPath`, which is **set per clone**: `git config core.hooksPath infrastructure/githooks` (done in `~/rm/bench` and `~/rm/foundry`; a fresh clone must set it). Selftest: `python3 infrastructure/githooks/selftest_pre_push.py`.
+**Pre-push guards run as a git-native hook** (`infrastructure/githooks/pre-push`, DLL/source-stamp + ledger lint; also the Claude PreToolUse hooks) via `core.hooksPath`, which is **set per clone**: `git config core.hooksPath infrastructure/githooks` (done in `~/rm/bench`; a fresh clone must set it). Selftest: `python3 infrastructure/githooks/selftest_pre_push.py`.
 | queue views | rendered on read, untracked: `python3 src/RimMandrake/rimflow/cli.py queue <SEAT>`. `queue/HUMAN.md` is the owner's hand-written inbox and stays tracked. |
 | lessons | one file each in `infrastructure/state/lessons/` (`python3 src/RimMandrake/Utils/lessons.py add "…"`); `lessons.py render` makes the untracked `LESSONS_INBOX.md` view |
 | code review status | append-only records `infrastructure/state/code_review/<SEAT>.jsonl` (`merge=union`), written only by `code_review_status.py`; review waves are one file each under `code_review/waves/` |

@@ -21,7 +21,7 @@ Profiles do all of it, before the shell even starts.
 
 WHAT IT WRITES
 ==============
-One profile per window — `AGENT BENCH`, `AGENT FOUNDRY`, the non-seat Claude
+One profile per window — `AGENT BENCH`, the non-seat Claude
 windows `HESTIA` and `EMERGENCY`, and the two non-Claude tiles `Artist` (artpipe
 daemon) and `Server` (the standalone Remote Control server) — each with
 
@@ -62,7 +62,7 @@ USAGE
 =====
     python3 src/RimMandrake/Utils/install_wt_seat_profiles.py            # show the diff, write nothing
     python3 src/RimMandrake/Utils/install_wt_seat_profiles.py --apply    # back up, then write
-    python3 src/RimMandrake/Utils/install_wt_seat_profiles.py --only BENCH,FOUNDRY --apply   # touch only those tiles
+    python3 src/RimMandrake/Utils/install_wt_seat_profiles.py --only BENCH,ARTIST --apply   # touch only those tiles
 
 A live profile can drift from this file (2026-10-28: the live Artist tile had no `cd` and a D:\\ startingDirectory),
 and a bare --apply rewrites every tile to match. Use --only to change just the tiles you mean to.
@@ -95,14 +95,13 @@ SETTINGS = ("/mnt/c/Users/Mandrake/AppData/Local/Packages/"
 # `cd` inside the commandline is what actually sets the cwd).
 SEAT_CLONES = {
     "BENCH":   ("/home/mandrake/rm/bench",   r"\\wsl.localhost\Ubuntu\home\mandrake\rm\bench"),
-    "FOUNDRY": ("/home/mandrake/rm/foundry", r"\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry"),
 }
 BOUNDED = "{home}/src/RimMandrake/Utils/claude_bounded.sh"
 SHARED_BOUNDED = BOUNDED.format(home=SEAT_CLONES["BENCH"][0])
-# The artpipe daemon runs FOUNDRY's clone's code; its queue state lives outside git in
+# The artpipe daemon runs BENCH's clone's code; its queue state lives outside git in
 # ARTIST_STATE (Phase 5, design/RimMandrake/git_migration_phase5_artpipe_2026-10-02.md).
-# It writes nothing into the clone, so sharing FOUNDRY's tree dirties nothing.
-ARTIST_HOME = SEAT_CLONES["FOUNDRY"]
+# It writes nothing into the clone, so sharing BENCH's tree dirties nothing.
+ARTIST_HOME = SEAT_CLONES["BENCH"]
 ARTIST_STATE = rm_str("artpipe")
 DISTRO = "Ubuntu"
 
@@ -168,10 +167,6 @@ WAKE_PROMPT = {
               "src/RimMandrake/Utils/handoff.py --wake, then python3 src/RimMandrake/rimflow/cli.py seat ready, "
               "then the last 40 lines of the Conductor log. Then report in a few lines what is open, what needs "
               "the owner and what the last quick check found, and wait for the owner."),
-    "FOUNDRY": ("wake. Fresh AGENT FOUNDRY window from a fleet launch, boot or account switch: nobody typed this. "
-                "Do the Start of turn in infrastructure/agents/FOUNDRY.md: python3 src/RimMandrake/Utils/handoff.py "
-                "--wake, then python3 src/RimMandrake/rimflow/cli.py seat ready, then python3 "
-                "src/RimMandrake/rimflow/cli.py next --seat FOUNDRY, and work the item it gives you."),
 }
 # With seat_restart on, seat_loop.sh's FIRST launch follows the fresh-window ritual (FOUNDRY.md, "A fresh window per
 # ticket"): the wake read, then end the turn so the Stop hook arms the doorbell and the Dispatcher hands the ticket.
@@ -217,7 +212,6 @@ SERVER_CMD = ("MEM_MAX=16G " + SHARED_BOUNDED + " "
 # LAUNCH. `{label}` is interpolated. The model field is ignored for those.
 SEATS = {
     "BENCH":   ("#7BC96F", "opus", "green — with the owner, permanent bench", None, None),
-    "FOUNDRY": ("#E5A03C", "sonnet", "amber — the autonomous queue window", None, None),
     # ⭐ ARTIST IS NOT A CLAUDE SEAT. The override routes build() to the daemon
     # commandline: the tile is the artpipe daemon's live console
     # (ART_PIPELINE_DAEMON_1: "dumb local Python daemon, no LLM"), so it gets no
@@ -393,7 +387,7 @@ def main():
                          "settled on after trying 6 and 18. Use 0 to leave the "
                          "font untouched.")
     ap.add_argument("--only", default="",
-                    help="comma-separated SEATS keys (e.g. BENCH,FOUNDRY): update only those profiles and "
+                    help="comma-separated SEATS keys (e.g. BENCH,ARTIST): update only those profiles and "
                          "schemes, leaving every other tile exactly as it is live. Default: all.")
     args = ap.parse_args()
     only = [x.strip().upper() for x in args.only.split(",") if x.strip()]

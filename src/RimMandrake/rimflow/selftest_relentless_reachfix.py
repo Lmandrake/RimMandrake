@@ -312,8 +312,8 @@ def t_clones_seed():
         with open(os.path.join(b, "BENCH.jsonl"), "w") as f:
             f.write("SHARD_CONTENT")
         out = subprocess.run(argv or ["false"], env=env, cwd=home, capture_output=True, text=True, timeout=120).stdout
-    ok("bench " in out and "dirty=1" in out and "BENCH.jsonl" in out and "foundry" in out and "NO_CLONE" in out,
-       "(6) the reading names each clone's state and its dirty files: %r" % out[:400])
+    ok("bench " in out and "dirty=1" in out and "BENCH.jsonl" in out and "foundry" not in out,
+       "(6) the reading names the seat clone state and its dirty files: %r" % out[:400])
     ok("secret_talk" not in out and "SECRET_WORDS" not in out and "SHARD_CONTENT" not in out,
        "(6) no conversation name and no file content crosses: %r" % out[:400])
 

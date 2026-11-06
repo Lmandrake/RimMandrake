@@ -42,7 +42,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SHARD_DIR = "infrastructure/state/ledger/events"
 LINT = os.path.join(HERE, "ledger_lint.py")
 SCRATCH_ROOT = os.environ.get("LEDGER_SYNC_SCRATCH", "/home/mandrake/rm/scratch")
-SEAT_CLONES = {"FOUNDRY": "/home/mandrake/rm/foundry", "BENCH": "/home/mandrake/rm/bench"}
+SEAT_CLONES = {"BENCH": "/home/mandrake/rm/bench"}
 
 
 def git(root, *args, check=True):

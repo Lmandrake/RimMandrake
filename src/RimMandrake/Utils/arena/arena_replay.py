@@ -111,7 +111,7 @@ def sandbox_masks(source=DEFAULT_SOURCE) -> list[str]:
     arm_sandbox.deny_paths() is the full list it enforces (this + every sibling under RM_ROOT + $HOME leaks).
     Item ARENA_SANDBOX_HARDEN_RETIRED_TREES_VISIBLE."""
     import arena_tasks as T                      # arena_tasks does not import arena_replay: no cycle
-    out = [str(Path(source)), str(private_dir()), "/home/mandrake/rm/bench", "/home/mandrake/rm/foundry",
+    out = [str(Path(source)), str(private_dir()), "/home/mandrake/rm/bench",
            "/home/mandrake/rm/store.git", "/home/mandrake/rm/mirror.git", "/mnt/d/Luke/dev/RimMandrake",
            RETIRED_TREES, CLAUDEWORK_ROOT]
     env_old = [e.strip() for e in os.environ.get("ARENA_OLD_HISTORY", "").split(os.pathsep) if e.strip()]

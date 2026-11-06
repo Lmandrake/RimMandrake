@@ -32,8 +32,8 @@ this module only mints tokens and holds the lock.
 =========================================================
 The lock is an `fcntl.flock` on a file inside THIS clone's git dir. It serialises every
 `next`/`claim`/`renew`/`release` run from the same checkout — a window and all of its
-subagents — and nothing else. BENCH (`/home/mandrake/rm/bench`) and FOUNDRY
-(`/home/mandrake/rm/foundry`) are separate clones with separate git dirs, so each has its
+subagents — and nothing else. Any two clones (BENCH is `/home/mandrake/rm/bench`; the FOUNDRY clone
+is deleted, the seat retired) are separate clones with separate git dirs, so each has its
 own lock, and each appends lease events to its OWN shard; the two only meet after a push
 and a `merge=union` pull. Two clones can therefore both take a lease on one item, and both
 events survive the merge. Today that is mostly harmless because `rank()` filters by owner

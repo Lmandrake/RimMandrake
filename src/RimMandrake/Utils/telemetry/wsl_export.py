@@ -32,7 +32,7 @@ from tcommon import cfg, read_json, utc_day, write_json_atomic  # noqa: E402
 HOME = os.path.expanduser("~")
 STATE = os.environ.get("RM_TELEMETRY_EXPORT_STATE", os.path.join(HOME, ".local", "state", "rm-telemetry",
                                                                   "export_state.json"))
-CLONES = ["/home/mandrake/rm/bench", "/home/mandrake/rm/foundry"]
+CLONES = ["/home/mandrake/rm/bench"]
 MAX_READ = 4 << 20
 
 

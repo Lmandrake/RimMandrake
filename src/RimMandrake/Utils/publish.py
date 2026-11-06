@@ -132,7 +132,7 @@ def guard_mnt(top):
         raise Refuse(
             "%s is on the Windows drive. That tree is becoming a read-only mirror of origin/main and "
             "nothing publishes from it any more. Work in your seat clone — /home/mandrake/rm/bench "
-            "or /home/mandrake/rm/foundry (i.e. /home/mandrake/rm/<seat>) — or make an ext4 clone: "
+            "(i.e. /home/mandrake/rm/<seat>) — or make an ext4 clone: "
             "git clone git@github.com:Lmandrake/RimMandrake.git /home/mandrake/rm/<seat>" % real)
 
 

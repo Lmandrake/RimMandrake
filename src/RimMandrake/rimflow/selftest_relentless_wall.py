@@ -155,7 +155,7 @@ def test_skills_and_snapshot():
           and "/home/mandrake/.claude/history.jsonl" in live["deny"])
     # MARKER_WALL_FIX_HIDES_ONLY_THE_DIARY: seat-tmp and the seat clones are dark but for named paths, never their transcripts
     check("seat-tmp and the seat clones read through, not denied", all(r in live["read_through"] and r in live["tmpfs"]
-          and r not in live["deny"] for r in ("/home/mandrake/.seat-tmp", "/home/mandrake/rm/bench", "/home/mandrake/rm/foundry")))
+          and r not in live["deny"] for r in ("/home/mandrake/.seat-tmp", "/home/mandrake/rm/bench")))
     check("a subagent transcript and a conversation never bind", not W.through_reachable(
           "/home/mandrake/.seat-tmp/BENCH/claude-1000/x/tasks/a1.output", live) and not W.through_reachable(
           "/home/mandrake/rm/bench/conversations/2026-11-04-x.md", live) and W.through_reachable(

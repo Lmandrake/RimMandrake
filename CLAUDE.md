@@ -266,7 +266,7 @@ at. He gets the survivors plus one line of what was caught. Sheet tools refuse w
 ## Git
 
 **Operating doc: `design/RimMandrake/GIT_WORKFLOW.md`** — read it before touching git.
-Work in your seat clone (`/home/mandrake/rm/bench` or `/home/mandrake/rm/foundry`);
+Work in your seat clone (`/home/mandrake/rm/bench`);
 `D:\Luke\dev\RimMandrake` is a read-only mirror. Commit explicit paths (never `git add -A`/`.`/`-a`,
 never `--force`, never a file over ~50 MB), push at once (`./publish` prints `PUBLISHED <sha>`),
 and keep file writes and commits in separate Bash calls (hooks refuse a compound command whole).

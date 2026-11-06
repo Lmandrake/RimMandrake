@@ -45,7 +45,6 @@ MX = TM.MX
 SCHEMA = "rm.streams/1"
 DIR = Path(os.environ.get("RM_STREAMS_DIR", "/mnt/d/ClaudeWork/rimmandrake/streams"))
 BENCH = Path(os.environ.get("RM_STREAMS_BENCH", "/home/mandrake/rm/bench"))   # the data clone (the deploy is sparse)
-FOUNDRY = Path("/home/mandrake/rm/foundry")
 NIGHTLY = BENCH / "Transient" / "selftests_nightly.last"
 ART_OUT = BENCH / "Transient" / "biome_ffar"
 STALE_S = 45 * 60          # §7: no Level 1 record for 45 min greys the panel
@@ -267,11 +266,11 @@ def modcheck_today(now):
 
 
 # ---------------------------------------------------------------------------------------------- art (A)
-def _art_events(clones=(BENCH, FOUNDRY)):
+def _art_events(clones=(BENCH,)):
     """The art ledger, each seat's shard from its own clone (freshest there)."""
     out = []
     for c in clones:
-        seat = "BENCH" if c == BENCH else "FOUNDRY"
+        seat = "BENCH"
         p = c / "infrastructure/state/art/events" / f"{seat}.jsonl"
         try:
             with open(p, encoding="utf-8") as f:

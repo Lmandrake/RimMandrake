@@ -73,7 +73,7 @@ resolved-def audit inside the running game. Those need a bridge call or a compan
 ```
 python.exe src/RimMandrake/Utils/effective_def_lint.py infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml
 python3    src/RimMandrake/Utils/effective_def_lint.py --src-only
-... 'mandrake.rsw.armoury=\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimStarWars\Armoury'   # prove an undeployed fix
+... 'mandrake.rsw.armoury=\\wsl.localhost\Ubuntu\home\mandrake\rm\bench\src\RimStarWars\Armoury'   # prove an undeployed fix
 ```
 
 It builds the effective def tree the way the engine does (Defs, LoadFolders, patches in load order,

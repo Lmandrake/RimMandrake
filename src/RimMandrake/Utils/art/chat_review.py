@@ -73,7 +73,7 @@ def _src_size(defname: str):
         for td in tree.getroot().iter("ThingDef"):
             if (td.findtext("defName") or "").strip() != defname:
                 continue
-            rel = h.split("/rm/foundry/")[-1]
+            rel = str(Path(h).relative_to(root))
             ds = vec(td.findtext("graphicData/drawSize"))
             if td.find("race") is not None:
                 for kd in tree.getroot().iter("PawnKindDef"):

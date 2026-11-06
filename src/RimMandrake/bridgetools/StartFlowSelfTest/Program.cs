@@ -55,7 +55,7 @@ namespace JawaBench.BridgeTools
             U("rid.forward_slashes_and_case", r == @"D:\Luke\dev\x\The Salvation.RID", r + "|" + e);
             r = C.ResolveRidPath("/mnt/d/Luke/dev/RimMandrake/src/Jawa/ideoligion/The Salvation.rid", Ideos, out e);
             U("rid.wsl_drvfs", r == @"D:\Luke\dev\RimMandrake\src\Jawa\ideoligion\The Salvation.rid", r + "|" + e);
-            r = C.ResolveRidPath("/home/mandrake/rm/foundry/src/Jawa/ideoligion/The Salvation.rid", Ideos, out e);
+            r = C.ResolveRidPath("/home/mandrake/rm/bench/src/Jawa/ideoligion/The Salvation.rid", Ideos, out e);
             U("rid.linux_only_refused", r == null && e.Contains("Linux-only"), r + "|" + e);
             r = C.ResolveRidPath("The Salvation", Ideos, out e);
             U("rid.bare_name", r == Ideos("The Salvation"), r + "|" + e);

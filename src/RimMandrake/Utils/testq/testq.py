@@ -585,7 +585,7 @@ def runner_problem(path):
             not os.path.exists(os.path.join(path, ".git")):
         return "no runner clone at %s (git clone the repo there; TESTQ_ARCHMAGI_RUNNER names another)" % path
     if os.environ.get("TESTQ_SKIP_PULL") != "1":        # tests run the worker in place with nothing pulled or pinned
-        shared = {os.path.realpath(os.path.expanduser(c)) for c in ("~/rm/bench", "~/rm/foundry", DISPATCH)}
+        shared = {os.path.realpath(os.path.expanduser(c)) for c in ("~/rm/bench", DISPATCH)}
         shared.add(os.path.realpath(REPO))
         if os.path.realpath(path) in shared:
             return "%s is an agent's or the dispatch clone; the archmagi runner needs its own" % path

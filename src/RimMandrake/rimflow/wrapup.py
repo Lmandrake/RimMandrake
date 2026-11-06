@@ -65,7 +65,7 @@ DEFAULT_DIR_WINDOWS = "D:\\ClaudeWork\\rimmandrake\\wrapup"     # a python.exe h
 #  - a SEAT clone is shared by every window of its seat and lives on; its dirt is the seat's work in flight, carried;
 #  - an item the Relentless supervisor started (relentless.py ledger_start writes this why, under the BENCH key it
 #    shares with the Conductor) is carried by the supervisor, whichever window's session happened to span it.
-SEAT_CLONES_DEFAULT = "/home/mandrake/rm/bench" + os.pathsep + "/home/mandrake/rm/foundry"     # = mirror.SEAT_CLONES
+SEAT_CLONES_DEFAULT = "/home/mandrake/rm/bench"     # = mirror.SEAT_CLONES
 RELENTLESS_START_WHY = "relentless supervisor takes the item"                                # = relentless.ledger_start
 DEBT_AGE_S = 6 * 3600       # a debt older than this stands whoever owes it: an owner no wrap-up can name still shows
 

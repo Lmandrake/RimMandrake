@@ -2,12 +2,12 @@
 """selftest_install_wt_seat_profiles.py — the WT seat profiles start the wake ritual unattended.
 
 Owner, 2026-10-28 14:13 PDT: "Why did we not start up bench or foundry upon wake? The agents reappered but static.
-... Then let's fix the wake ritual to start the agent." Every launch of the AGENT BENCH / AGENT FOUNDRY tiles (cold
+... Then let's fix the wake ritual to start the agent." Every launch of the AGENT BENCH tile (cold
 boot via the fleet shortcut, `claude-account use` relaunch, seat_loop.sh's first launch) must carry a first prompt, so
 the seat begins work without anyone typing. Covered, on build() only (nothing is read or written outside memory):
   plain path     seat_restart off: the commandline is LAUNCH + one single-quoted first prompt, then `exec $SHELL -l`
   wrapped path   seat_restart on: seat_loop.sh's FIRST launch carries a first prompt that runs `seat_restart.py wake`
-  wording        BENCH's prompt runs handoff.py --wake + seat ready and reports; FOUNDRY's also runs `rimflow next`
+  wording        BENCH's prompt runs handoff.py --wake + seat ready and reports
   quoting        the prompt sits inside `bash -lc "..."` in a JSON string: no quote, $, backtick, backslash or !
   untouched      HESTIA, EMERGENCY, SERVER and ARTIST get no first prompt; LAUNCH itself is unchanged (seat_restart
                  and the dispatcher's recover argv compare against it)
@@ -59,7 +59,7 @@ SAFE = re.compile(r"[A-Za-z0-9 .,:/_\-]+")
 
 
 def test_plain_path_has_first_prompt():
-    for seat in ("BENCH", "FOUNDRY"):
+    for seat in ("BENCH",):
         cl = build_with((), seat)
         inner = inner_of(cl)
         check(inner is not None and inner.endswith(W.SHELL_TAIL), f"{seat} plain: still drops to a login shell")
@@ -79,25 +79,22 @@ def test_plain_path_has_first_prompt():
         check(argv[:-1] == shlex.split(W.LAUNCH.format(script=W.BOUNDED.format(home=W.SEAT_CLONES[seat][0]),
                                                         label=want, model=W.SEATS[seat][1])),
               f"{seat} plain: the argv is LAUNCH unchanged + the prompt")
-    check("rimflow/cli.py next --seat FOUNDRY" in launch_argv(inner_of(build_with((), "FOUNDRY")), False)[-1],
-          "FOUNDRY plain: the prompt pulls the queue (rimflow next --seat FOUNDRY)")
     b = launch_argv(inner_of(build_with((), "BENCH")), False)[-1]
     check("next --seat" not in b and "report" in b.lower(), "BENCH plain: wakes and reports, does not pull the queue")
 
 
 def test_wrapped_path_has_first_prompt():
-    cl = build_with({"FOUNDRY"}, "FOUNDRY")
+    cl = build_with({"BENCH"}, "BENCH")
     inner = inner_of(cl)
-    check(inner is not None and "seat_loop.sh FOUNDRY " in inner, "FOUNDRY wrapped: seat_loop.sh still wraps it")
+    check(inner is not None and "seat_loop.sh BENCH " in inner, "BENCH wrapped: seat_loop.sh still wraps it")
     argv = launch_argv(inner, wrapped=True)
     rc = argv.index("--remote-control")
-    check(argv[rc + 1] == "AGENT FOUNDRY" and len(argv) == rc + 3,
-          f"FOUNDRY wrapped: label then exactly one first prompt ({argv[rc:]})")
+    check(argv[rc + 1] == "CONDUCTOR" and len(argv) == rc + 3,
+          f"BENCH wrapped: label then exactly one first prompt ({argv[rc:]})")
     prompt = argv[-1]
-    check(prompt.lower().startswith("wake") and "seat_restart.py wake --seat FOUNDRY" in prompt,
-          f"FOUNDRY wrapped: the first launch runs seat_restart.py wake ({prompt[:80]})")
-    check("seat ready" in prompt, "FOUNDRY wrapped: the first launch also marks the seat ready")
-    check(SAFE.fullmatch(prompt) is not None, f"FOUNDRY wrapped: the prompt is shell/JSON-safe ({prompt!r})")
+    check(prompt.lower().startswith("wake") and prompt == W.WAKE_PROMPT["BENCH"],
+          f"BENCH wrapped: the Conductor keeps its own wake prompt under seat_loop.sh ({prompt[:80]})")
+    check(SAFE.fullmatch(prompt) is not None, f"BENCH wrapped: the prompt is shell/JSON-safe ({prompt!r})")
 
 
 def test_others_untouched():

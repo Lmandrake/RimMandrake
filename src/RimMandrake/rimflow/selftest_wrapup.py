@@ -545,8 +545,8 @@ try:
     wrapup.sweep(Fake())
     check(not os.path.isfile(w17f), "W17 a filed seat-clone row stops standing and sweep resolves it")
     del os.environ["RM_WRAPUP_SEAT_CLONES"]
-    check(wrapup.is_seat_clone("/home/mandrake/rm/bench") and wrapup.is_seat_clone("/home/mandrake/rm/foundry/"),
-          "W17 the default seat clones are bench and foundry")
+    check(wrapup.is_seat_clone("/home/mandrake/rm/bench") and not wrapup.is_seat_clone("/home/mandrake/rm/foundry/"),
+          "W17 the default seat clone is bench alone (the foundry clone is deleted)")
     W = wrapup.RELENTLESS_START_WHY
     evs = [{"seat": "BENCH", "event": "start", "id": "SUP", "why": W, "ts": "2026-11-04T01:00:00Z"},
            {"seat": "BENCH", "event": "claim", "id": "MINE", "why": "x", "ts": "2026-11-04T01:00:00Z"},
