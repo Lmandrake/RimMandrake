@@ -90,9 +90,27 @@ def iso(t):
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
 
 
-def unit_name(seat, item, now):
+def unit_name(seat, item, now, n=1):
     slug = re.sub(r"[^a-z0-9]+", "-", item.lower()).strip("-")[:40].strip("-")
-    return "rm-detached-%s-%s-%d" % (seat.lower(), slug, int(now))
+    return "rm-detached-%s-%s-%d%s" % (seat.lower(), slug, int(now), "" if n == 1 else "-%d" % n)
+
+
+def reserve_record(rec, root=None, tries=100):
+    """Claim a unit name no other run holds: create its record with O_EXCL, bumping a -N suffix on a clash.
+    Two launches of one item in the same second used to share a name, so the second one's systemd-run failed and
+    its launch_failed record overwrote the RUNNING helper's (DETACHED_LAUNCH_FIX_SAME_SECOND_CLOBBER)."""
+    for n in range(1, tries + 1):
+        unit = unit_name(rec["seat"], rec["item"], rec["at"], n)
+        try:
+            fd = os.open(record_path(unit, root), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+        except FileExistsError:
+            continue
+        d = runs_dir(root)
+        rec.update(unit=unit, out=os.path.join(d, unit + ".out.json"), err=os.path.join(d, unit + ".err"))
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump(rec, f, indent=1)
+        return unit
+    raise RuntimeError("no free unit name for %s after %d tries" % (rec["item"], tries))
 
 
 def pool_root():
@@ -173,16 +191,14 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
             clone, how = take_clone(item, runner=runner)
         except Exception as e:  # noqa: BLE001
             return 1, "clone failed: %s" % e
-    unit = unit_name(seat, item, now)
     root = state_dir()
-    d = runs_dir(root)
-    rec = {"unit": unit, "seat": seat, "item": item, "clone": clone, "model": model, "max_s": max_s,
-           "budget_usd": float(budget), "at": now, "state": root, "out": os.path.join(d, unit + ".out.json"),
-           "err": os.path.join(d, unit + ".err"), "status": "launching", "clone_how": how}
+    rec = {"seat": seat, "item": item, "clone": clone, "model": model, "max_s": max_s,
+           "budget_usd": float(budget), "at": now, "state": root, "status": "launching", "clone_how": how}
+    unit = reserve_record(rec, root)    # a name no other run's record holds; never overwrites one
     msg = brief.rstrip() + FOOTER.format(clone=clone, item=item, seat=seat, max_s=max_s, budget="%g" % budget)
     if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
         rec["tmp"] = run_tmp.prepare(unit)
-    write_record(rec, root)
+        write_record(rec, root)
     r = runner(launch_argv(rec, msg, claude_bin()), capture_output=True, text=True, timeout=60,
                stdin=subprocess.DEVNULL)
     if r.returncode:

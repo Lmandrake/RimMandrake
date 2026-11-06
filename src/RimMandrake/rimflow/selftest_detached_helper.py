@@ -6,6 +6,8 @@ All in a temp state dir with a faked runner: no systemd unit, no claude, no clon
   argv       role_launch's shape: systemd-run --user, claude_bounded.sh -p, the model, RuntimeMaxSec and the scope
              bound, --max-budget-usd, ExecStopPost=finish, RM_DISPATCHER_STATE for the finish step, the brief footer
   record     a launch records the run; a systemd-run refusal marks it launch_failed
+  same-second  a second launch of one item in the same second gets its own unit name; its failure never
+             overwrites the first (running) run's record (DETACHED_LAUNCH_FIX_SAME_SECOND_CLOBBER)
   finish     a note on the item, the shard published from the clone, one Conductor log line, tokens read; once only
   killed     a run killed at its bound (no result JSON) still finishes, with the stderr tail
   guard      the real Conductor log is refused from a test process
@@ -128,6 +130,26 @@ def test_killed_and_failed_launch():
     check(rc == 1 and DH.read_record(unit)["status"] == "launch_failed", "record: a refused systemd-run is launch_failed")
 
 
+def test_same_second():
+    calls, run = recorder()
+    rc, _ = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "b", "opus", 600, 5, now=T0 + 50, runner=run, known=KNOWN,
+                      clone=CLONE)
+    first = calls[0][0][calls[0][0].index("--unit") + 1]
+    before = DH.read_record(first)
+    fcalls, frun = recorder(rc=1, out="Failed to start transient service unit: Unit already exists")
+    rc2, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "b", "sonnet", 600, 5, now=T0 + 50, runner=frun,
+                          known=KNOWN, clone=CLONE + "-other")
+    second = fcalls[0][0][fcalls[0][0].index("--unit") + 1]
+    check(rc == 0 and second != first, "same-second: the second launch gets its own unit name (%s vs %s)" % (second, first))
+    after = DH.read_record(first)
+    check(after == before and after["status"] == "running" and after["model"] == "opus" and after["clone"] == CLONE,
+          "same-second: the running run's record is untouched (status, model, clone)")
+    check(rc2 == 1 and DH.read_record(second)["status"] == "launch_failed", "same-second: the failure lands on its own record")
+    third = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "b", "sonnet", 600, 5, now=T0 + 50, runner=run, known=KNOWN,
+                      clone=CLONE)[1].split()[1]
+    check(third not in (first, second), "same-second: a third gets a third name (%s)" % third)
+
+
 def test_guard():
     try:
         DH.conductor_line("x", T0, path=DH.REAL_LOG)
@@ -148,6 +170,7 @@ def main():
     test_refuse()
     test_launch_and_finish()
     test_killed_and_failed_launch()
+    test_same_second()
     test_guard()
     test_hook_points_here()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
