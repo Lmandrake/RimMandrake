@@ -373,6 +373,7 @@ def main(argv=None):
         res["edgeSinks"] = {"before": sk0}
         if a.sinks_off:
             sinks_hold[0] = "True" if sk0 is None else sk0     # unread: put back the shipped value, never leave sinks off
+            # restore-check: ok the prior is held in sinks_hold on the line above; main()'s finally writes it back
             sr = B.call("jawa/mod_settings_field", typeName=FWSET, action="set", field="edgeSinksEnabled", value="False",
                         _answer=True) or {}
             res["edgeSinks"]["setOff"] = sr.get("success")

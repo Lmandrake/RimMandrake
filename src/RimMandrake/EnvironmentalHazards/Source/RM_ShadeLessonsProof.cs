@@ -47,6 +47,7 @@ namespace RimMandrake.EnvironmentalHazards
             string v = (arg ?? "").Trim().ToLowerInvariant();
             if (v != "true" && v != "false") return "REFUSED: want true|false";
             bool was = RM_EnvironmentalHazardsSettings.shadeLessonsEnabled;
+            // restore-check: ok a setter tool: prove_shade_lessons.py reads `was` from this call and its finally Toggles it back
             RM_EnvironmentalHazardsSettings.shadeLessonsEnabled = v == "true";
             return "TOGGLE was=" + was + " now=" + RM_EnvironmentalHazardsSettings.shadeLessonsEnabled;
         }
