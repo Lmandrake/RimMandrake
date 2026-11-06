@@ -229,11 +229,24 @@ def main():
             fails += 1
             print("        exit=%s\n        %s"
                   % (code, out.strip().replace("\n", "\n        ")[:600]))
+        # ⭐ CANON_START_TILE_DEDUPE_NULL_WINS_QUIETLY: a repeated key in one
+        # mapping (PyYAML keeps the last, silently) must stop the tool, naming both lines.
+        name = "a repeated canon.yml key is refused (exit 2), not silently last-wins"
+        with open(os.path.join(frozen_root, "infrastructure", "state", "canon.yml"),
+                  "a", encoding="utf-8") as fh:
+            fh.write("dup_probe:\n  start_tile: 17007\n  start_tile: null\n")
+        code, out = run("Nothing to see.", project_dir=frozen_root)
+        ok = code == 2 and "'start_tile'" in out and "again at line" in out
+        print("%-5s %s" % ("ok" if ok else "FAIL", name))
+        if not ok:
+            fails += 1
+            print("        exit=%s\n        %s"
+                  % (code, out.strip().replace("\n", "\n        ")[:600]))
     finally:
         shutil.rmtree(frozen_root, ignore_errors=True)
         shutil.rmtree(remaking_root, ignore_errors=True)
 
-    total = len(CASES) + 1
+    total = len(CASES) + 2
     print("\n%d/%d passed" % (total - fails, total))
     return 1 if fails else 0
 

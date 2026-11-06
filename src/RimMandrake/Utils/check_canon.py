@@ -300,6 +300,32 @@ def scan(paths, rs):
     return hits
 
 
+def duplicate_keys(yaml, text):
+    """Every repeated key in any one mapping of `text`: (key, first line, repeat line)."""
+    dups = []
+
+    class Strict(yaml.SafeLoader):
+        pass
+
+    def mapping(loader, node):
+        seen = {}
+        for knode, _v in node.value:
+            key = loader.construct_object(knode, deep=True)
+            line = knode.start_mark.line + 1
+            try:
+                if key in seen:
+                    dups.append((key, seen[key], line))
+                else:
+                    seen[key] = line
+            except TypeError:       # an unhashable key; safe_load refuses it anyway
+                pass
+        return yaml.SafeLoader.construct_mapping(loader, node, deep=True)
+
+    Strict.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, mapping)
+    yaml.load(text, Loader=Strict)
+    return dups
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("paths", nargs="*", help="files to check (default: all of design/)")
@@ -315,7 +341,19 @@ def main():
               file=sys.stderr)
         return 2
     with open(CANON, encoding="utf-8") as fh:
-        canon = yaml.safe_load(fh)
+        text = fh.read()
+    dups = duplicate_keys(yaml, text)
+    if dups:
+        # PyYAML keeps the LAST of two equal keys without a word, so a struck
+        # `start_tile: null` below the real one read as None
+        # (CANON_START_TILE_DEDUPE_NULL_WINS_QUIETLY). Canon is unreadable until fixed.
+        print("check_canon: canon.yml repeats a mapping key; the last one silently wins.",
+              file=sys.stderr)
+        for key, first, again in dups:
+            print("  %r at line %d and again at line %d" % (key, first, again), file=sys.stderr)
+        print("  ⚠️ UNMEASURED is not PASSED — delete the wrong copy.", file=sys.stderr)
+        return 2
+    canon = yaml.safe_load(text)
     rs = rules(canon)
     rs, suspend_note = suspend_planet_rules(rs, canon)
 
