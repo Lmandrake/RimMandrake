@@ -47,22 +47,15 @@ from contracts import compat as CC, jsonl as CJ  # noqa: E402
 from contracts.fixtures import make_fixtures as FX  # noqa: E402
 
 A, R, S, C = "accept", "refuse", "skip", "crash"
-FAMILIES = ("close_evidence", "audits", "verdicts", "tiers_history", "ledger_events", "sessions", "testq_results",
-            "testq_orphans")
+FAMILIES = ("close_evidence", "audits", "ledger_events", "sessions", "testq_results", "testq_orphans")
 #: what a tree holds: every python file under src/RimMandrake plus the json the readers load at import
 PATHSPECS = (":(glob)src/RimMandrake/**/*.py", ":(glob)src/RimMandrake/rimflow/*.json",
              ":(glob)src/RimMandrake/Utils/testq/*.json")
 #: worker module name -> repo path (the header check)
 READERS = {"close_evidence": "src/RimMandrake/Utils/close_evidence.py", "audits": "src/RimMandrake/rimflow/audits.py",
-           "arbiter_pending": "src/RimMandrake/rimflow/arbiter_pending.py",
            "dispatcher": "src/RimMandrake/rimflow/dispatcher.py", "testq": "src/RimMandrake/Utils/testq/testq.py"}
 STORES = {"evidence": "/mnt/d/ClaudeWork/rimmandrake/evidence",
           "audits": "/mnt/d/ClaudeWork/rimmandrake/auditor/audits.jsonl",
-          "verdicts": "/mnt/d/ClaudeWork/rimmandrake/arbiter/verdicts.jsonl",
-          "cutoff": "/mnt/d/ClaudeWork/rimmandrake/arbiter/cutoff.json",
-          "tiers_history": "/mnt/d/ClaudeWork/rimmandrake/arbiter_tiers/tiers_history.jsonl",
-          # arbiter_tiers has not run here yet; this is the real history it wrote during review_v3_Y
-          "tiers_history_copy": "/mnt/d/ClaudeWork/rimmandrake/review_v3_Y/remeasure_data/tiers_history.jsonl",
           "shards": os.path.join(REPO, "infrastructure", "state", "ledger", "events"),
           "testq": os.environ.get("TESTQ_QUEUE", "/mnt/d/ClaudeWork/rimmandrake/testq"),
           "sessions": "/mnt/d/ClaudeWork/rimmandrake/contracts/agents_capture_2026-10-27.json"}
@@ -254,8 +247,7 @@ def strict(family, raw):
     if family == "close_evidence":
         kind, e = CM.close_evidence_kind(v)
         return (R, "; ".join(e[:2])) if kind == "fault" else (A, kind)
-    model = {"audits": CM.AuditRecord, "verdicts": CM.ArbiterVerdict, "tiers_history": CM.TiersHistoryRow,
-             "ledger_events": CM.LedgerEventMin, "testq_results": CM.TestqResult,
+    model = {"audits": CM.AuditRecord, "ledger_events": CM.LedgerEventMin, "testq_results": CM.TestqResult,
              "testq_orphans": CM.TestqResult}.get(family)
     if family == "sessions":
         e = CM.sessions_problems(v)
@@ -319,13 +311,9 @@ def snapshot(dest):
     if os.path.isdir(STORES["evidence"]):
         shutil.copytree(STORES["evidence"], ev, ignore=shutil.ignore_patterns("*.lock"))
         snap["evidence"] = ev
-    for k in ("audits", "verdicts", "cutoff"):
+    for k in ("audits",):
         if os.path.isfile(STORES[k]):
             snap[k] = shutil.copyfile(STORES[k], os.path.join(dest, os.path.basename(STORES[k])))
-    th = STORES["tiers_history"] if os.path.isfile(STORES["tiers_history"]) else STORES["tiers_history_copy"]
-    if os.path.isfile(th):
-        snap["tiers_history"] = shutil.copyfile(th, os.path.join(dest, "tiers_history.jsonl"))
-        snap["tiers_history_source"] = th
     clone = os.path.join(dest, "clone")
     sh = os.path.join(clone, "infrastructure", "state", "ledger", "events")
     shutil.copytree(STORES["shards"], sh, ignore=lambda d, fs: [f for f in fs if not f.endswith(".jsonl")])
@@ -360,10 +348,9 @@ def real_records(snap):
                 for b in lines_of(os.path.join(snap["evidence"], fn)):
                     recs.append(("close_evidence", b, {}))
                 src["close_evidence"].append(fn)
-    for fam, key in (("audits", "audits"), ("verdicts", "verdicts"), ("tiers_history", "tiers_history")):
-        if key in snap:
-            recs += [(fam, b, {}) for b in lines_of(snap[key])]
-            src[fam].append(snap.get(key + "_source", STORES[key]))
+    if "audits" in snap:
+        recs += [("audits", b, {}) for b in lines_of(snap["audits"])]
+        src["audits"].append(STORES["audits"])
     sh = os.path.join(snap["clone"], "infrastructure", "state", "ledger", "events")
     for fn in sorted(os.listdir(sh)):
         recs += [("ledger_events", b, {"seat": fn[:-6]}) for b in lines_of(os.path.join(sh, fn))]
@@ -388,13 +375,7 @@ def real_records(snap):
 
 
 def whole_jobs(snap):
-    w = [("close_evidence_read_all", snap.get("evidence")), ("audits_read", snap.get("audits")),
-         ("tiers_read_jsonl", snap.get("tiers_history"))]
-    if "verdicts" in snap:
-        w.append(("verdicts_read_stores", [snap["verdicts"], snap.get("tiers_history", "/nonexistent"),
-                                           snap.get("cutoff", "/nonexistent")]))
-    else:
-        w.append(("verdicts_read_stores", None))
+    w = [("close_evidence_read_all", snap.get("evidence")), ("audits_read", snap.get("audits"))]
     sh = os.path.join(snap["clone"], "infrastructure", "state", "ledger", "events")
     for fn in sorted(os.listdir(sh)):
         w.append(("seat_events_since", [snap["clone"], fn[:-6], ""]))
@@ -501,9 +482,6 @@ def commission_pool():
     for fn in sorted(os.listdir(ev)) if os.path.isdir(ev) else []:
         if fn.endswith(".jsonl"):
             pool["close_evidence"] += [b for b in lines_of(os.path.join(ev, fn)) if b.strip()]
-    th = STORES["tiers_history_copy"]
-    if os.path.isfile(th):
-        pool["tiers_history"] += lines_of(th)[:400]
     sh = os.path.join(STORES["shards"], "BENCH.jsonl")
     if os.path.isfile(sh):
         pool["ledger_events"] += lines_of(sh)[-400:]

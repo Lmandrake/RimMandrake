@@ -1,9 +1,9 @@
-"""contracts.models -- the Pydantic v2 wire contracts for five record families (pinned: contracts/requirements.lock).
+"""contracts.models -- the Pydantic v2 wire contracts for the record families (pinned: contracts/requirements.lock).
 
 Two levels per record, on purpose:
   * the COMPAT check a program is wired to: it reproduces that program's acceptance rule exactly, so wiring changes no
-    decision. audits.problems() uses AuditRecord here; every reader the dispatcher tick imports (arbiter_pending via
-    role_launch, the dispatcher itself, testq's tick, close_evidence) uses the stdlib twins in contracts.compat and
+    decision. audits.problems() uses AuditRecord here; every reader the dispatcher tick imports (the dispatcher
+    itself, testq's tick, close_evidence) uses the stdlib twins in contracts.compat and
     contracts.jsonl, so the 2-minute tick never pays for pydantic;
   * the STRICT model (extra=forbid, closed enums, typed): the intended contract, run in shadow by contracts.replay,
     which lists every line where the two levels disagree.
@@ -18,10 +18,7 @@ from typing import Annotated, Any, Literal, Optional, Union
 from pydantic import AfterValidator, BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
 
 HEX7_40 = r"^[0-9a-f]{7,40}$"
-ISO_UTC_Z = r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?Z$"
 ISO_OFFSET = r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(Z|[+-]\d\d:\d\d)$"
-#: an absolute Windows path: a drive root (D:\...) or a UNC share (\\host\share\...)
-WIN_ABS = r"^(?:[A-Za-z]:\\|\\\\[^\\/]+\\)"
 
 
 def _real_instant(v):
@@ -40,7 +37,6 @@ def _real_instant(v):
 
 #: ISO strings that are also real instants. The pattern stays in the exported JSON Schema; the calendar check is the
 #: Python side (JSON Schema has no calendar).
-IsoZ = Annotated[str, Field(pattern=ISO_UTC_Z), AfterValidator(_real_instant)]
 IsoOffset = Annotated[str, Field(pattern=ISO_OFFSET), AfterValidator(_real_instant)]
 
 
@@ -256,35 +252,7 @@ def audits_problems(d):
     return errors(AuditRecord, d)
 
 
-# ------------------------------------------------------------------ 4. Arbiter verdicts (rimflow/arbiter_pending.py)
-
-class ArbiterVerdict(Strict):
-    """One Arbiter verdict: returned in its run's structured output (roles/arbiter.md 'Every verdict is
-    RETURNED'), checked here by role_launch.harvest and appended as one line of arbiter/verdicts.jsonl. Exported as
-    JSON Schema (contracts/schemas/, contracts/export.py) for `claude -p --json-schema`."""
-    item: str = Field(min_length=1, description="ledger item id")
-    sha: str = Field(pattern=HEX7_40, description="the judged commit, at least 7 hex characters")
-    disposition: Literal["PASS", "CONDITIONAL-PASS", "FAIL-module", "FAIL-check", "RESTART-environment",
-                         "BAR-defect", "UNRESOLVED"]
-    causes: list[Literal["module", "check", "environment", "bar"]] = Field(
-        description="coexisting cause tags beside the disposition")
-    interim: Optional[str] = Field(description="the interim reviewer's verdict, null when there was none")
-    evidence: list[Annotated[str, Field(min_length=1, pattern=WIN_ABS)]] = Field(
-        min_length=1, description="absolute Windows paths of the evidence")
-    ts: IsoZ = Field(description="UTC ISO-8601, Z suffix")
-
-
-class TiersHistoryRow(Strict):
-    """One line of arbiter_tiers' tiers_history.jsonl."""
-    generated: IsoZ
-    item: str = Field(min_length=1)
-    sha: str = Field(pattern=HEX7_40)
-    tier: Literal["T0_BOUNCE", "T0_PASS", "T1_PASS", "T2_NOEVIDENCE", "T2_RISK", "T2_UNMEASURED"]
-    calibration: bool
-    decision: Literal["BOUNCE", "AI", "PASS"]
-
-
-# ------------------------------------------------------------------ 5. dispatcher observations (rimflow/dispatcher.py)
+# ------------------------------------------------------------------ 4. dispatcher observations (rimflow/dispatcher.py)
 
 class AgentSession(Open):
     """One entry of `claude agents --json` (captured 2026-10-27): interactive windows carry pid/status, background

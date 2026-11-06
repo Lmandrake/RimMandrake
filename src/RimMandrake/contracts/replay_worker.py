@@ -69,9 +69,8 @@ class Side:
             sys.path.insert(0, d)
         os.environ["TESTQ_QUEUE"] = os.path.join(tmp, "testq_import")
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-            import close_evidence, audits, arbiter_pending, dispatcher, testq   # noqa: E401
-        self.m = {"close_evidence": close_evidence, "audits": audits, "arbiter_pending": arbiter_pending,
-                  "dispatcher": dispatcher, "testq": testq}
+            import close_evidence, audits, dispatcher, testq   # noqa: E401
+        self.m = {"close_evidence": close_evidence, "audits": audits, "dispatcher": dispatcher, "testq": testq}
         for k, mod in self.m.items():       # the isolation proof: every reader was loaded from TREE
             if not os.path.realpath(mod.__file__).startswith(os.path.realpath(tree) + os.sep):
                 raise SystemExit("isolation broken: %s from %s" % (k, mod.__file__))
@@ -108,17 +107,6 @@ class Side:
         except ValueError as e:
             return R, None, str(e)[:120]
         return (A if got else S), got, ""
-
-    def verdicts(self, raw):
-        ap = self.m["arbiter_pending"]
-        d, got, why = self._jsonl(raw, lambda p: ap.read_stores(
-            verdicts=p, history=os.path.join(self.tmp, "absent_history.jsonl"),
-            cutoff=os.path.join(self.tmp, "absent_cutoff.json")))
-        return (d if d != A or got["verdicts"] else S), got, why
-
-    def tiers_history(self, raw):
-        ap = self.m["arbiter_pending"]
-        return self._jsonl(raw, lambda p: ap.read_jsonl(p, ("item", "sha", "decision")))
 
     def ledger_events(self, raw, seat="BENCH"):
         clone = self.fresh("clone")
@@ -192,12 +180,6 @@ class Side:
         if w == "audits_read":
             rows = self.m["audits"].read(arg)
             return A, rows, "%d rows" % len(rows)
-        if w == "tiers_read_jsonl":
-            rows = self.m["arbiter_pending"].read_jsonl(arg, ("item", "sha", "decision"))
-            return A, rows, "%d rows" % len(rows)
-        if w == "verdicts_read_stores":
-            got = self.m["arbiter_pending"].read_stores(verdicts=arg[0], history=arg[1], cutoff=arg[2])
-            return A, got, "%d verdicts" % len(got["verdicts"])
         if w == "seat_events_since":
             got = self.m["dispatcher"].seat_events_since(arg[0], arg[1], arg[2])
             return A, got, "%d events" % len(got)
@@ -209,8 +191,7 @@ class Side:
         raise KeyError(w)
 
 
-FAMILIES = ("close_evidence", "audits", "verdicts", "tiers_history", "ledger_events", "sessions", "testq_results",
-            "testq_orphans")
+FAMILIES = ("close_evidence", "audits", "ledger_events", "sessions", "testq_results", "testq_orphans")
 
 
 def main(argv=None):

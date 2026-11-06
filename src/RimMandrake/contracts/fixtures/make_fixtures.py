@@ -11,7 +11,7 @@ it is, where that class was found, and the decision of three readers:
   allow   -- where old and new differ: the id of the one entry in allowances.json that names that difference
 contracts.replay runs old and new in two isolated processes (replay_worker.py) and checks every row of this table;
 a difference with no `allow`, or one that does not match its allowance exactly, fails the replay.
-Families: close_evidence, audits, verdicts, tiers_history, ledger_events, sessions (whole documents),
+Families: close_evidence, audits, ledger_events, sessions (whole documents),
 testq_results (testq.reconcile's collect path) and testq_orphans (testq.drain_outbox's orphan path; same lines).
 close_evidence lines are sealed with ce_fixture.key (a fixture key, not a secret: it guards nothing real).
 """
@@ -163,70 +163,6 @@ def audits_lines():
     return out
 
 
-def verdict_lines():
-    V = {"item": "X_Y_Z", "sha": "abcdef1", "disposition": "PASS", "causes": [], "interim": None,
-         "evidence": ["D:\\ClaudeWork\\rimmandrake\\arbiter\\x.md"], "ts": "2026-10-27T00:00:00Z"}
-    out = []
-
-    def add(d, cls, where, old, new, strict, why="", raw=None, allow=""):
-        out.append({"line": raw if raw is not None else json.dumps(d), "class": cls, "where": where, "old": old,
-                    "new": new, "strict": strict, "why": why, "allow": allow})
-
-    add(V, "valid", "arbiter.md fields", A, A, A)
-    add(dict(V, disposition="FAIL-module", causes=["check"]), "valid_fail_tagged", "arbiter.md", A, A, A)
-    add(dict(V, disposition="Pass"), "misspelt_disposition", "read_stores", R, R, R)
-    add(dict(V, item=""), "empty_item", "read_jsonl truthy rule", R, R, R)
-    add(dict(V, sha="HEAD"), "sha_head", "tiers_history writes sha HEAD", A, A, R,
-        "compat only needs a truthy sha; strict needs 7-40 hex: 'HEAD' cannot be joined to a commit")
-    add({k: v for k, v in V.items() if k != "causes"}, "missing_causes", "arbiter.md", A, A, R,
-        "compat reads item/sha/disposition only; strict needs every arbiter.md field")
-    add(dict(V, sha=1234567), "sha_int", "type confusion", A, A, R, "truthy int passes compat; strict refuses")
-    add(dict(V, ts="yesterday"), "bad_ts", "digest review #8 (invalid ts)", A, A, R,
-        "compat ignores ts; strict needs ISO UTC Z")
-    add(dict(V, surplus=1), "extra_field", "closed type", A, A, R, "strict is extra=forbid")
-    add(dict(V, evidence=[""]), "evidence_empty_path", "review contracts #13", A, A, R, "an empty evidence path")
-    add(dict(V, evidence=["relative.txt"]), "evidence_relative", "review contracts #13", A, A, R,
-        "evidence must be absolute Windows paths")
-    add(dict(V, ts="2026-99-99T99:99:99Z"), "impossible_ts", "review contracts #12", A, A, R,
-        "the ISO pattern matched an impossible date")
-    add(None, "dup_disposition", "review contracts #5", A, A, R,
-        raw=json.dumps(dict(V, disposition="FAIL-check"))[:-1] + ', "disposition": "PASS"}',
-        why="json.loads keeps the LAST disposition (PASS); strict JSON refuses the duplicate key before the model")
-    add(None, "null_list", "dispatcher_full #5 class", R, R, R, raw="[null]")
-    add(None, "torn", "review AA8 class", R, R, R, raw=json.dumps(V)[:30])
-    add(None, "too_deep", "absurd nesting", C, R, R, raw=DEEP, allow="VERDICTS_TOO_DEEP",
-        why="DISAGREEMENT (intended): RecursionError used to escape read_jsonl (a crash, not 'unreadable')")
-    add(None, "blank", "blank line", "skip", "skip", "skip", raw="")
-    return out
-
-
-def tiers_lines():
-    """arbiter_tiers' tiers_history.jsonl through arbiter_pending.read_jsonl(path, item/sha/decision)."""
-    T = {"generated": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1", "tier": "T0_PASS",
-         "calibration": False, "decision": "PASS"}
-    out = []
-
-    def add(d, cls, where, old, new, strict, why="", raw=None, allow=""):
-        out.append({"line": raw if raw is not None else json.dumps(d), "class": cls, "where": where, "old": old,
-                    "new": new, "strict": strict, "why": why, "allow": allow})
-
-    add(T, "valid", "arbiter_tiers fields", A, A, A)
-    add(dict(T, sha="HEAD"), "sha_head", "TIERS_HISTORY_FIX_SYMBOLIC_HEAD_SHA (4 real rows)", A, A, R,
-        "compat needs a truthy sha; strict needs hex")
-    add(dict(T, decision=""), "empty_decision", "read_jsonl truthy rule", R, R, R)
-    add({k: v for k, v in T.items() if k != "generated"}, "missing_generated", "strict field", A, A, R,
-        "compat reads item/sha/decision only")
-    add(dict(T, generated="2026-99-99T99:99:99Z"), "impossible_ts", "review contracts #12", A, A, R,
-        "the ISO pattern matched an impossible date")
-    add(dict(T, tier="T9"), "unknown_tier", "closed enum", A, A, R, "compat ignores tier")
-    add(None, "null_list", "non-object JSON", R, R, R, raw="[null]")
-    add(None, "torn", "review AA8 class", R, R, R, raw=json.dumps(T)[:30])
-    add(None, "too_deep", "absurd nesting", C, R, R, raw=DEEP, allow="TIERS_TOO_DEEP",
-        why="DISAGREEMENT (intended): RecursionError used to escape read_jsonl (a crash, not 'unreadable')")
-    add(None, "blank", "blank line", "skip", "skip", "skip", raw="")
-    return out
-
-
 def ledger_event_lines():
     E = {"ts": "2026-10-27T12:00:01Z", "seat": "BENCH", "event": "note", "id": "X"}
     # seat_events_since has no refusal: a line is returned (accept), passed over (skip) or kills the tick (crash).
@@ -332,8 +268,8 @@ def main():
     orph = [dict(r, old=r["orphans"]["old"], new=r["orphans"]["new"], allow=r["orphans"]["allow"]) for r in tq]
     for r in tq + orph:
         r.pop("orphans", None)
-    fams = {"close_evidence": close_evidence_lines(CE), "audits": audits_lines(), "verdicts": verdict_lines(),
-            "tiers_history": tiers_lines(), "ledger_events": ledger_event_lines(), "sessions": session_obs(),
+    fams = {"close_evidence": close_evidence_lines(CE), "audits": audits_lines(), "ledger_events": ledger_event_lines(),
+            "sessions": session_obs(),
             "testq_results": tq, "testq_orphans": orph}
     expected = {}
     for fam, rows in fams.items():

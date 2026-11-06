@@ -9,17 +9,16 @@ stdlib (always run):
   C9  jsonl exact outcomes (review #6, #7, #8, #14): nested overflow / NaN, duplicate keys, bad bytes inside a string,
       distinct byte fingerprints, BOM, CRLF, huge integers, a text stream that raises, scan_bytes accounting
   C10 compat.ledger_ts is the dispatcher's operand; falsey ts values are passed over without a crash (review #9)
-  C6  the stdlib layers and the hot readers (close_evidence, dispatcher, arbiter_pending, testq) import nothing outside
+  C6  the stdlib layers and the hot readers (close_evidence, dispatcher, testq) import nothing outside
       the standard library and src/RimMandrake (no pydantic). A module living in the interpreter's own stdlib dir is
       stdlib even when sys.stdlib_module_names omits it: dispatcher -> login_watch -> zoneinfo -> zoneinfo._tzpath ->
       sysconfig -> _sysconfigdata__linux_x86_64-linux-gnu (login_watch's `import zoneinfo`, 2814d1d50e, 2026-10-31)
       tripped C6 on every interpreter until 972734f20e (CONTRACTS_IMPORT_DIAGNOSE_SYSCONFIG_TRIPWIRE)
 needs pydantic:
   C3  AuditRecord == audits.schema.json: required, properties, enums, pattern, and every property's JSON type
-  C5  the exported Arbiter schema files are current (export.py --check)
   C7  close_evidence_kind on a v4 line never mutates the dict (the mac is over the raw dict)
-  C11 model rules (review #10-#13): legacy version types, attempt ids, impossible timestamps, evidence paths
-  C12 strict replay works on BYTES: a duplicate disposition and bytes that are not UTF-8 are refused (review #5)
+  C11 model rules (review #10-#12): legacy version types, attempt ids, impossible timestamps
+  C12 strict replay works on BYTES: a duplicate key and bytes that are not UTF-8 are refused (review #5)
 needs pydantic and the base commit (old readers come from git):
   C2  replay fixtures: two isolated trees, every expectation in expected.json holds, every old/new difference is
       exactly its allowances.json entry
@@ -204,7 +203,6 @@ def c10(CC):
 def c6():
     for code in ("from contracts import jsonl, compat, blind_core",
                  "import sys; sys.path.insert(0, 'Utils'); import close_evidence",
-                 "import sys; sys.path.insert(0, 'rimflow'); import arbiter_pending",
                  "import sys; sys.path.insert(0, 'rimflow'); import dispatcher",
                  "import sys; sys.path.insert(0, 'Utils/testq'); import testq"):
         ok, bad = foreign_imports(code)
@@ -288,28 +286,18 @@ def c11(CM, FX, v4):
                     (job + ".a1\n", False)):
         e = CM.errors(CM.TestqResult, dict(tq, attempt=att))
         check("C11 attempt %r" % att[len(job):] if att.startswith(job) else "C11 attempt %r" % att, (not e) == ok, e[:1])
-    ver = json.loads(FX.load_bytes("verdicts")[0][0])
     for ts, ok in (("2026-10-27T12:00:00Z", True), ("2026-99-99T99:99:99Z", False), ("2026-02-30T00:00:00Z", False),
-                   ("2026-10-27T24:00:00Z", False), ("2026-10-27T12:00:60Z", False)):
-        check("C11 verdict ts %s" % ts, (not CM.errors(CM.ArbiterVerdict, dict(ver, ts=ts))) == ok)
-    for ts, ok in (("2026-10-27T12:00:00Z", True), ("2026-13-01T00:00:00Z", False)):
+                   ("2026-10-27T24:00:00Z", False), ("2026-10-27T12:00:60Z", False), ("2026-13-01T00:00:00Z", False)):
         check("C11 ledger ts %s" % ts, (not CM.errors(CM.LedgerEventMin, {"ts": ts, "seat": "B", "event": "e"})) == ok)
-        th = json.loads(FX.load_bytes("tiers_history")[0][0])
-        check("C11 tiers generated %s" % ts, (not CM.errors(CM.TiersHistoryRow, dict(th, generated=ts))) == ok)
     for off, ok in (("+00:00", True), ("+05:30", True), ("Z", True), ("+25:00", False), ("+05:99", False)):
         e = CM.errors(CM.LedgerEventMin, {"ts": "2026-09-01T00:00:00" + off})
         check("C11 ledger ts offset %s" % off, (not e) == ok, e[:1])
-    for ev, ok in ((["D:\\ClaudeWork\\x.md"], True), (["\\\\host\\share\\x"], True), ([""], False),
-                   (["relative.txt"], False), (["/mnt/d/x"], False), (["D:relative"], False), ([], False),
-                   (["D:\\ok", ""], False)):
-        check("C11 evidence %r" % (ev,), (not CM.errors(CM.ArbiterVerdict, dict(ver, evidence=ev))) == ok)
 
 
 def c12(RP):
-    ver = '{"item": "X_Y_Z", "sha": "abcdef1", "disposition": "FAIL-check", "causes": ["check"], "interim": null, ' \
-          '"evidence": ["D:\\\\a\\\\b.md"], "ts": "2026-10-27T12:00:00Z", "disposition": "PASS"}'
-    st, why = RP.strict("verdicts", ver.encode())
-    check("C12 duplicate disposition refused on the bytes", (st, why) == ("refuse", "dup_key"), (st, why))
+    dup = b'{"ts": "2026-10-27T12:00:00Z", "seat": "BENCH", "event": "close", "event": "note"}'
+    st, why = RP.strict("ledger_events", dup)
+    check("C12 duplicate key refused on the bytes", (st, why) == ("refuse", "dup_key"), (st, why))
     st, why = RP.strict("ledger_events", b'{"ts": "2026-10-27T12:00:00Z", "seat": "\xff", "event": "e"}')
     check("C12 bytes that are not UTF-8 refused", (st, why) == ("refuse", "not_utf8"), (st, why))
     check("C12 input class not_utf8", RP.input_class("ledger_events", b'{"a": "\xff"}') == "not_utf8")
@@ -324,7 +312,9 @@ def c2(RP, tmp):
     work = os.path.join(tmp, "c2", "work")
     os.makedirs(work)
     rep = RP.run_fixtures(trees, work, allow)
-    check("C2 fixture lines", rep["lines"] >= 100, rep["lines"])
+    with open(os.path.join(HERE, "fixtures", "expected.json"), encoding="utf-8") as f:
+        want = sum(len(rows) for rows in json.load(f).values())
+    check("C2 fixture lines: every expected.json row replayed", want >= 50 and rep["lines"] == want, (rep["lines"], want))
     check("C2 every family present", sorted(rep["families"]) == sorted(RP.FAMILIES), rep["families"])
     check("C2 expectations", not rep["expectation_misses"], rep["expectation_misses"][:3])
     check("C2 no unexplained diff", not rep["unexplained"], [(d["family"], d["class"]) for d in rep["unexplained"]])
@@ -444,8 +434,7 @@ def guard(name, fn, *a):
 def main():
     from contracts import jsonl as CJ, compat as CC
     from contracts.fixtures import make_fixtures as FX
-    families = ("close_evidence", "audits", "verdicts", "tiers_history", "ledger_events", "sessions",
-                "testq_results", "testq_orphans")
+    families = ("close_evidence", "audits", "ledger_events", "sessions", "testq_results", "testq_orphans")
     guard('C1', c1, CJ, FX, families)
     guard('C9', c9, CJ)
     guard('C10', c10, CC)
@@ -453,14 +442,11 @@ def main():
     try:
         import pydantic  # noqa: F401
     except ImportError:
-        for c in ("C2", "C3", "C4", "C5", "C7", "C8", "C11", "C12"):
+        for c in ("C2", "C3", "C4", "C7", "C8", "C11", "C12"):
             skip(c, "pydantic missing (pip install --user -r src/RimMandrake/contracts/requirements.lock)")
         return finish()
-    from contracts import models as CM, replay as RP, export as EX
+    from contracts import models as CM, replay as RP
     guard('C3', c3, CM)
-    with contextlib.redirect_stdout(io.StringIO()):
-        rc = EX.main(["--check"])
-    check("C5 exported schemas current", rc == 0)
     v4 = guard('C7', c7, CM, FX) or []
     if v4:
         guard('C11', c11, CM, FX, v4)

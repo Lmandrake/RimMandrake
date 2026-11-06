@@ -1,34 +1,12 @@
-"""contracts.compat -- the COMPAT acceptance rules, STDLIB ONLY (the dispatcher tick imports these through
-arbiter_pending/role_launch; the testq tick runs every 60 s). Each reproduces, exactly, the rule its reader applied
-before contracts existed, so wiring changes no decision. The strict contracts are in contracts.models (pydantic);
+"""contracts.compat -- the COMPAT acceptance rules, STDLIB ONLY (the dispatcher tick imports these; the testq tick
+runs every 60 s). Each reproduces, exactly, the rule its reader applied before contracts existed, so wiring changes no
+decision. The strict contracts are in contracts.models (pydantic);
 contracts.replay runs both over real stores and lists every disagreement.
 """
 import datetime
 import re
 
-DISPOSITIONS = ("PASS", "CONDITIONAL-PASS", "FAIL-module", "FAIL-check", "RESTART-environment", "BAR-defect",
-                "UNRESOLVED")
 TESTQ_RESULT_SCHEMA = "testq.result/1"
-
-
-def truthy_problems(d, need):
-    """arbiter_pending.read_jsonl's rule: a JSON object whose every `need` field is truthy."""
-    if not isinstance(d, dict):
-        return ["not a JSON object"]
-    return ["%s missing or empty" % k for k in need if not d.get(k)]
-
-
-def verdict_row_problems(d):
-    """arbiter_pending.read_stores' verdict rule: item/sha/disposition truthy, disposition one of DISPOSITIONS."""
-    p = truthy_problems(d, ("item", "sha", "disposition"))
-    if not p and d["disposition"] not in DISPOSITIONS:
-        p.append("disposition %r is not one of %s" % (d["disposition"], "/".join(DISPOSITIONS)))
-    return p
-
-
-def tiers_row_problems(d):
-    """arbiter_pending's tiers_history rule: item/sha/decision truthy."""
-    return truthy_problems(d, ("item", "sha", "decision"))
 
 
 def testq_result_readable(res):
