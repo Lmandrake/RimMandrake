@@ -1015,3 +1015,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW A1 (L2), read-only proof","ts":"2026-11-06T10:14:57Z","tsn":1793960097806805159}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:15:14Z","tsn":1793960114018547688}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DDRIVE_NVME_REPAIR_RESEAT_NEXT_SITTING: review savegame for the owner's look","ts":"2026-11-06T10:17:13Z","tsn":1793960233857702495}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:22:56Z","tsn":1793960576422376326}
