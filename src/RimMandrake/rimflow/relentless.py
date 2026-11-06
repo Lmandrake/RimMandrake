@@ -54,6 +54,7 @@ import relentless_repair_slot  # noqa: E402
 import relentless_binding  # noqa: E402
 import relentless_block  # noqa: E402
 import relentless_boxrun  # noqa: E402
+import evidence  # noqa: E402
 import relentless_dispute  # noqa: E402
 import relentless_breakers  # noqa: E402
 import relentless_incident  # noqa: E402
@@ -1785,6 +1786,24 @@ def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached
         store._append(store.p("shadow.jsonl"), json.dumps({      # shadow: recorded beside the verdict, read by nothing that acts
             "rule": relentless_wall.SHADOW, "item": item, "nonce": nonce, "at": now, "word": word,
             "shadow": relentless_wall.narrow_word(word, reasons)}, sort_keys=True))
+        sha = str((st.get("candidate") or {}).get("sha") or "")
+    marker_receipt(store, item, sha, word, nonce, chk.get("reasons"), chk.get("defects"), chk.get("session"))
+
+
+def marker_receipt(store, item, sha, word, nonce, reasons, defects, session=None):
+    """The Marker's verdict as an evidence-record entry on the candidate's sha (evidence.append_marker), written out of the
+    store's lock. Without it no record ever held a `marker` entry and the shadow close predicate rejected every close
+    'no marker' (EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE). Never raises: a receipt not written is one stderr line, and
+    `evidence.py harvest` writes it later from check.verdict (the same nonce: one entry). A candidate with no full commit
+    id has no record to hold it, and is skipped as harvest skips it."""
+    if not evidence._SHA.match(str(sha or "")):
+        return
+    try:
+        evidence.append_marker(store.dir, item, sha, word, defects=defects, session=session, nonce=nonce,
+                               reasons=reasons or "")
+    except Exception as ex:      # noqa: BLE001 - a receipt never costs the verdict
+        print("relentless: %s: the Marker's evidence receipt was NOT written (%s: %s)" % (item, type(ex).__name__,
+                                                                                      str(ex)[:200]), file=sys.stderr)
 
 
 def shadow_tally(store, rule=None):

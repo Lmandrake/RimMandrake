@@ -11,7 +11,10 @@ redesign_final.md WP-09).
 5. the report: one close per (item, sha), the last attempt stands, disagreement classes, the 30-close sample;
 6. cli.py end to end on a throwaway ledger + temp store: a close the record rejects still closes (shadow logs the
    disagreement), a refused close is logged as refuse, an unwritable shadow log never stops a close, and a throwaway
-   ledger without RELENTLESS_ROOT writes nothing.
+   ledger without RELENTLESS_ROOT writes nothing;
+7. the wiring that made it reject every close (EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE): relentless.verdict() writes the
+   Marker's entry, an offbox `skipped` run is not red, a pre-evidence candidate is the pre_record cohort, a pre-seal
+   writer's unsealed index tail no longer refuses every append after it.
 
     python3 src/RimMandrake/rimflow/selftest_evidence_gate.py
 """
@@ -363,8 +366,101 @@ def cli_end_to_end():
           "cli: a throwaway ledger without RELENTLESS_ROOT writes no shadow row")
 
 
+def wiring():
+    """EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE: the predicate rejected all 70 shadow closes. Each cause, red-then-green."""
+    import relentless as R
+    sha = "c" * 40
+    # W1. the Marker's verdict reaches the record: relentless.verdict() writes the `marker` entry (no harvest run)
+    root = os.path.join(TMP, "wire_root")
+    st_ = R.Store(root)
+    st_.save({"item": "WIRE_A", "status": "checking", "gen": 1, "candidate": {"sha": sha, "at": 1.0},
+              "check": {"nonce": "nW", "at": 1.0}, "contract": CONTRACT})
+    E.append(st_.dir, "WIRE_A", sha, "run", {"verdict": "green", "exit": 0, "exam_hash": EXAM["hash"]})
+    R.verdict(st_, "WIRE_A", "nW", "PASS", "ran it, green", defects=[], unreached=[])
+    marks = [e for e in E.read(st_.dir, "WIRE_A", sha) if e["kind"] == "marker"]
+    check(len(marks) == 1 and marks[0]["verdict"] == "PASS" and marks[0]["nonce"] == "nW",
+          "W1. relentless.verdict() appends the Marker's PASS to the candidate's record (%r)" % [m["verdict"] for m in marks])
+    j = G.judge(st_.dir, "WIRE_A", sha, False, None, REPO)
+    check(j["accepted"], "W1. so the predicate accepts that close (%s)" % j["reasons"])
+    got, _ = quiet(E.harvest, st_)
+    check(got == [], "W1. a later harvest adds nothing: the same nonce is one entry (%r)" % got)
+    # W1b. a receipt that cannot be written never costs the verdict
+    st_.save({"item": "WIRE_B", "status": "checking", "gen": 1, "candidate": {"sha": "d" * 40},
+              "check": {"nonce": "nB", "at": 1.0}, "contract": CONTRACT})
+    real_append = E.append_marker
+    E.append_marker = lambda *a, **k: (_ for _ in ()).throw(OSError("disk full"))
+    try:
+        (_, err) = quiet(R.verdict, st_, "WIRE_B", "nB", "PASS", "ok", defects=[], unreached=[])
+    finally:
+        E.append_marker = real_append
+    check(st_.load("WIRE_B")["check"]["verdict"] == "PASS" and "NOT written" in err,
+          "W1. an unwritable receipt is one stderr line and the verdict still stands")
+    # W2. an offbox contract's box run is `skipped`: not red, the Marker decides
+    sd = store("wire_skip")
+    hold(sd, "SKIP", sha)
+    E.append(sd, "SKIP", sha, "run", {"verdict": "skipped", "exit": None, "exam_hash": EXAM["hash"]})
+    E.append_marker(sd, "SKIP", sha, "PASS", nonce="s1")
+    check(G.judge(sd, "SKIP", sha, False, None, REPO)["accepted"], "W2. a skipped (offbox) box run + Marker PASS accepts")
+    hold(sd, "UNRUN", sha)
+    E.append(sd, "UNRUN", sha, "run", {"verdict": "unrunnable", "exit": None, "exam_hash": EXAM["hash"]})
+    E.append_marker(sd, "UNRUN", sha, "PASS", nonce="u1")
+    check(not G.judge(sd, "UNRUN", sha, False, None, REPO)["accepted"], "W2. an unrunnable box run still rejects")
+    E.append_marker(sd, "SKIP", sha, "WEAK", nonce="s2")
+    check(not G.judge(sd, "SKIP", sha, False, None, REPO)["accepted"], "W2. a skipped run + Marker WEAK rejects")
+    # W3. a candidate finished before any evidence row is the pre_record cohort; the report does not count it
+    sd = store("wire_pre")
+    E.append(sd, "OTHER", sha, "run", {"verdict": "green", "exit": 0, "exam_hash": EXAM["hash"]},
+             at="2026-11-06T13:39:24Z")
+    for item, at in (("OLD", 1793750400.0), ("NEW", 1793990000.0)):     # 2026-11-04 / 2026-11-06T18:33Z
+        os.makedirs(os.path.join(sd, "items", item))
+        with open(os.path.join(sd, "items", item, "state.json"), "w") as f:
+            json.dump({"item": item, "status": "done", "candidate": {"sha": sha, "at": at}, "contract": CONTRACT}, f)
+    jo, jn = G.judge(sd, "OLD", sha, False, None, REPO), G.judge(sd, "NEW", sha, False, None, REPO)
+    check(jo.get("cohort") == G.PRE_RECORD and not jo["accepted"] and "cohort" not in jn,
+          "W3. a candidate older than every evidence row is pre_record (still rejected); a newer one is not (%r / %r)"
+          % (jo.get("cohort"), jn.get("cohort")))
+    s = G.summary([{"item": "OLD", "sha": sha, "gate": "accept", "predicate": "reject", "disagree": True,
+                    "cohort": G.PRE_RECORD, "reasons": jo["reasons"]},
+                   {"item": "NEW", "sha": sha, "gate": "accept", "predicate": "reject", "disagree": True,
+                    "reasons": jn["reasons"]}])
+    check(s["disagree"] == 1 and s["pre_record"] == 1 and s["agree"] == 0,
+          "W3. the report counts pre_record apart from real disagreements (%r)" % {k: s[k] for k in ("disagree", "pre_record")})
+    # W4. a pre-seal writer's unsealed row past HEAD no longer reads as tampering (selftest_evidence_recovery R8 has the
+    # cuts); the record stays judgeable and the next append seals it
+    sd = store("wire_seal")
+    hold(sd, "SEAL", sha)
+    record(sd, "SEAL", sha, "PASS")
+    _old_writer_append(sd, "SEAL2", sha)
+    hold(sd, "SEAL2", sha)
+    check(G.judge(sd, "SEAL", sha, False, None, REPO)["accepted"],
+          "W4. a pre-seal writer's tail past HEAD: the record still verifies and accepts")
+    E.append_marker(sd, "SEAL2", sha, "PASS", nonce="z")
+    check(E.verify_index(sd) == [] and E._head(sd)[0]["n"] == len(E.index_rows(sd)),
+          "W4. and the next append is not refused: it seals the whole index")
+
+
+def _old_writer_append(sd, item, sha):
+    """evidence.append as it was before the seal (3e1d97efb4): record + chained index row, no `sealed`, no HEAD."""
+    rows = [e for _, e in E._lines(E.record_path(sd, item, sha)) if e]
+    last = [e for _, e in E._index(sd) if e]
+    entry = {"verdict": "green", "exit": 0, "exam_hash": EXAM["hash"], "v": E.V, "kind": "run", "item": item, "sha": sha,
+             "n": len(rows), "prev": rows[-1]["hash"] if rows else E.ZERO, "at": "2026-11-06T17:16:37Z"}
+    entry["hash"] = E.entry_hash(entry)
+    ix = {"v": E.V, "n": len(last), "prev": last[-1]["hash"] if last else E.ZERO, "item": item, "sha": sha,
+          "entry_n": entry["n"], "entry": entry["hash"], "kind": "run", "at": entry["at"]}
+    ix["hash"] = E.entry_hash(ix)
+    path = E.record_path(sd, item, sha)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    for pth, e in ((path, entry), (os.path.join(E.base(sd), E.INDEX), ix)):
+        if os.path.exists(pth):
+            os.chmod(pth, 0o644)
+        with open(pth, "a") as f:
+            f.write(json.dumps(e, sort_keys=True, separators=(",", ":")) + "\n")
+
+
 def main():
     try:
+        wiring()
         corpus_and_breaks()
         rules()
         shadow()

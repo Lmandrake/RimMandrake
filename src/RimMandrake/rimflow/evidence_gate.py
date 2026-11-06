@@ -6,7 +6,8 @@ The question redesign.md section 2.2 says a Relentless close should ask: is ther
 sha whose exam is the frozen exam? `green()` answers it from one record (evidence.py, 09a). Green, as far as today's
 record can carry it (section 2.1; breaks, hunks and holdouts have no entry kind yet, so they are not judged here):
     - the record verifies (an edited, cut or forged record is no evidence)
-    - its newest box run (kind `run`) is green, exit 0, against the frozen exam (exam_hash = the contract's hash)
+    - its newest box run (kind `run`) is green, exit 0, against the frozen exam (exam_hash = the contract's hash); a
+      `skipped` run (an offbox / reach_ok contract the box cannot run by design) is not red: the Marker decides
     - its newest Marker verdict is PASS: WEAK, FAIL and UNMEASURED do not close ("a WEAK verdict cannot close"), and
       a WEAK the live narrow rule reads as PASS (relentless_wall.acted_weak) is still WEAK here
     - an empty-diff close (--no-code) closes only on a `no_code` exam (G15: empty-diff Judge closes are false closes)
@@ -20,6 +21,8 @@ appends one row per close to <store>/evidence_shadow.jsonl - the gate's word, th
 here decides anything.
 
     python3 src/RimMandrake/rimflow/evidence_gate.py report [--json]      the disagreement count toward the sample
+    python3 src/RimMandrake/rimflow/evidence_gate.py rescore --snapshot DIR  replay a frozen store's shadow rows, exit 1 on
+                                                                            any disagreement no cohort explains
     python3 src/RimMandrake/rimflow/evidence_gate.py corpus check          the false/valid close corpus, exit 1 on a miss
     python3 src/RimMandrake/rimflow/evidence_gate.py corpus build          rebuild it from the ledger + store (writes)
 
@@ -51,6 +54,8 @@ GIT_TIMEOUT_S = 5
 CORPUS = os.path.join(HERE, "evidence_gate_corpus.json")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 AUDITS = os.path.join(REPO, "infrastructure", "state", "close_audits.jsonl")
+PRE_RECORD = "pre_record"   # a judge() cohort: the candidate predates every evidence row (see _pre_record)
+SKIPPED = "skipped"         # relentless_boxrun: the contract measures outside the box (offbox adapters, reach_ok)
 BOOKKEEPING = ("infrastructure/state/ledger/", "infrastructure/state/items/", "infrastructure/state/queue/",
                "infrastructure/state/code_review/")      # relentless.BOOKKEEPING, not imported (cli.py stays light)
 WORK_DEPTH = 60             # commits naming the item read under the candidate (relentless.WORK_SHA_DEPTH)
@@ -83,7 +88,9 @@ def green(entries, exam, no_code=False, live=None, tampered=()):
         why.append("no run: no box run on record")
     else:
         r = runs[-1]
-        if r.get("verdict") != "green" or r.get("exit") != 0:
+        if r.get("verdict") == SKIPPED:
+            pass        # an offbox / reach_ok contract: the box cannot run it by design, the Marker's adapters do
+        elif r.get("verdict") != "green" or r.get("exit") != 0:
             why.append("run not green: newest box run is %s, exit %s" % (r.get("verdict"), r.get("exit")))
         if exam and r.get("exam_hash") != exam.get("hash"):
             why.append("exam drift: the run's exam %s is not the frozen exam %s"
@@ -168,7 +175,32 @@ def judge(sd, item, sha, no_code, live=None, cwd=None):
     if rec:     # one snapshot: the entries judged are the very lines that were verified
         entries, bad = evidence.read_verified(sd, item, rec)
     ok, why = green(entries, exam_of(st.get("contract")), bool(no_code), live, bad)
-    return {"record": rec, "accepted": ok, "reasons": why}
+    out = {"record": rec, "accepted": ok, "reasons": why}
+    if not any(e.get("kind") == "run" for e in entries) and _pre_record(sd, st):
+        out["cohort"] = PRE_RECORD      # keyed on the run, not the record: the Marker's receipt may stand alone
+    return out
+
+
+def _first_index_at(sd):
+    try:
+        rows = evidence.index_rows(sd)
+    except (OSError, ValueError):
+        return None
+    return min((str(e.get("at") or "") for e in rows), default=None) or None
+
+
+def _iso(t):
+    try:
+        return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(float(t)))
+    except (TypeError, ValueError):
+        return None
+
+
+def _pre_record(sd, st):
+    """The candidate finished before the store held any evidence row: no writer existed to record its box run, so its
+    missing run says nothing about the predicate (the shadow's first day closed items finished days earlier)."""
+    first, at = _first_index_at(sd), _iso((st.get("candidate") or {}).get("at"))
+    return bool(first and at and at < first)
 
 
 def shadow(item, sha, no_code, gate_found, live=None, cwd=None, sd=None, out=None):
@@ -188,6 +220,8 @@ def shadow(item, sha, no_code, gate_found, live=None, cwd=None, sd=None, out=Non
                "no_code": bool(no_code), "record": j["record"], "gate": "accept" if gate_ok else "refuse",
                "gate_reasons": sorted({str(k) for k, _ in gate_found}), "predicate": "accept" if j["accepted"] else "reject",
                "reasons": j["reasons"], "disagree": gate_ok != j["accepted"], "ms": int((time.time() - t0) * 1000)}
+        if j.get("cohort"):
+            row["cohort"] = j["cohort"]
         _append_row(os.path.join(sd, SHADOW), json.dumps(row, sort_keys=True))
         if row["disagree"]:
             print("close: %s: evidence shadow DISAGREES (gate %s, record %s: %s). Shadow only: this changes nothing."
@@ -238,26 +272,132 @@ def summary(rs):
     for r in rs:
         last[(r.get("item"), r.get("sha"))] = r
     closes = list(last.values())
-    dis = [r for r in closes if r.get("disagree")]
+    pre = [r for r in closes if r.get("disagree") and r.get("cohort") == PRE_RECORD]
+    dis = [r for r in closes if r.get("disagree") and r.get("cohort") != PRE_RECORD]
     by = {}
     for r in dis:
         for c in sorted({reason_class(x) for x in r.get("reasons") or []}) or ["green"]:
             k = "gate %s / record %s: %s" % (r.get("gate"), r.get("predicate"), c)
             by[k] = by.get(k, 0) + 1
-    return {"closes": len(closes), "attempts": len(rs), "agree": len(closes) - len(dis), "disagree": len(dis),
+    return {"closes": len(closes), "attempts": len(rs), "agree": len(closes) - len(dis) - len(pre), "disagree": len(dis),
+            "pre_record": len(pre),
             "gate_accept_record_reject": sum(r.get("gate") == "accept" and r.get("predicate") == "reject" for r in dis),
             "gate_refuse_record_accept": sum(r.get("gate") == "refuse" and r.get("predicate") == "accept" for r in dis),
             "by_class": dict(sorted(by.items(), key=lambda kv: -kv[1])), "sample": SAMPLE,
-            "sample_met": len(closes) >= SAMPLE, "items": sorted({r.get("item") for r in dis})[:20]}
+            "sample_met": len(closes) - len(pre) >= SAMPLE, "items": sorted({r.get("item") for r in dis})[:20]}
 
 
 def report_lines(s):
-    out = ["evidence shadow: %d closes (%d attempts), %d agree, %d DISAGREE - %s"
-           % (s["closes"], s["attempts"], s["agree"], s["disagree"],
-              "sample met (%d >= %d)" % (s["closes"], s["sample"]) if s["sample_met"]
-              else "UNDER SAMPLE: %d of %d closes" % (s["closes"], s["sample"]))]
+    out = ["evidence shadow: %d closes (%d attempts), %d agree, %d DISAGREE, %d pre-record (finished before any "
+           "evidence writer; not counted as disagreements) - %s"
+           % (s["closes"], s["attempts"], s["agree"], s["disagree"], s.get("pre_record", 0),
+              "sample met (%d judged >= %d)" % (s["closes"] - s.get("pre_record", 0), s["sample"]) if s["sample_met"]
+              else "UNDER SAMPLE: %d of %d judged closes" % (s["closes"] - s.get("pre_record", 0), s["sample"]))]
     out += ["  %4d  %s" % (n, k) for k, n in s["by_class"].items()]
     return out
+
+
+# ---------------------------------------------------------------- the rescore
+
+WEDGE = "wedge"     # a rescore cohort: the run receipt was refused while a pre-seal writer's tail read as tampering
+VERDICT_GONE = "verdict_gone"   # the snapshot's state no longer holds the Marker word (retired/redone): nothing to replay
+STATE_MOVED = "state_moved"     # the snapshot's candidate is newer than the close and no evidence row predates the close:
+                                # the closed candidate cannot be rebuilt from the snapshot
+NOT_JUDGED = {"guard"}          # gate refusals with no record entry kind yet (module doc: breaks/holdouts not judged)
+
+
+def _state(sd, item):
+    try:
+        with open(os.path.join(sd, "items", item, "state.json"), encoding="utf-8") as f:
+            return json.load(f) or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _wedge_from(sd):
+    """-> the `at` of the first index row past HEAD that a pre-seal writer left (unsealed), or None. From then on the
+    unfixed evidence.py refused every append, so a finish after it has no record through no fault of its own."""
+    h, _ = evidence._head(sd)
+    if not h or not isinstance(h.get("n"), int):
+        return None
+    ents = [e for _, e in evidence._index(sd) if e]
+    tail = [e for e in ents[h["n"]:] if not e.get("sealed")]
+    return min((str(e.get("at") or "") for e in tail), default=None) or None
+
+
+def rescore(snapshot, cwd=None):
+    """Replay a frozen store's shadow rows with today's writers and predicate, on a COPY (the snapshot is never written):
+    every Marker verdict the store held (check.verdict on its candidate) is appended as relentless.marker_receipt now
+    does at verdict time, then each row is judged again. -> (report dict, [unexplained disagreement]). A disagreement
+    is explained only by a cohort the record cannot help: pre_record (finished before any evidence row) or wedge (its
+    receipt was refused by the HEAD-lag bug)."""
+    import shutil
+    import tempfile
+    src = os.path.join(snapshot, "store")
+    shadow_rows = rows(src)
+    wedge = _wedge_from(src)
+    tmp = tempfile.mkdtemp(prefix="evidence_rescore_")
+    try:
+        sd = os.path.join(tmp, "store")
+        shutil.copytree(src, sd)
+        for root, dirs, files in os.walk(sd):          # the copy keeps the snapshot's 0444: an append needs to write
+            for n in dirs + files:
+                os.chmod(os.path.join(root, n), 0o755 if n in dirs else 0o644)
+        markers, failed = 0, []
+        for iid in sorted(os.listdir(os.path.join(sd, "items"))):
+            try:
+                with open(os.path.join(sd, "items", iid, "state.json"), encoding="utf-8") as f:
+                    st = json.load(f)
+            except (OSError, ValueError):
+                continue
+            chk, cand = st.get("check") or {}, str((st.get("candidate") or {}).get("sha") or "")
+            if not chk.get("verdict") or not evidence._SHA.match(cand):
+                continue
+            try:
+                if evidence.append_marker(sd, iid, cand, chk["verdict"], defects=chk.get("defects") or [],
+                                          session=chk.get("session"), reasons=chk.get("reasons") or "",
+                                          nonce=chk.get("nonce") or evidence._harvest_nonce(chk)):
+                    markers += 1
+            except (OSError, ValueError) as ex:
+                failed.append("%s: %s" % (iid, str(ex)[:160]))
+        before, after, unexplained, cohorts = {}, {}, [], {}
+        for r in shadow_rows:
+            live = None if any(str(x).startswith("live owed") for x in r.get("reasons") or []) else "replayed"
+            j = judge(sd, r["item"], r["sha"], r.get("no_code"), live, cwd or HERE)
+            if j is None:
+                unexplained.append("%s@%s: the snapshot does not hold the item" % (r["item"], str(r["sha"])[:10]))
+                continue
+            for c in sorted({reason_class(x) for x in r.get("reasons") or []}) or ["green"]:
+                before[c] = before.get(c, 0) + 1
+            for c in sorted({reason_class(x) for x in j["reasons"]}) or ["green"]:
+                after[c] = after.get(c, 0) + 1
+            if (r.get("gate") == "accept") == j["accepted"]:
+                cohorts["agree"] = cohorts.get("agree", 0) + 1
+                continue
+            cohort = j.get("cohort")
+            norun = any(str(x).startswith("no run") for x in j["reasons"])
+            st = _state(sd, r["item"])
+            if not cohort and norun and wedge and str(r.get("at") or "") >= wedge:
+                cohort = WEDGE
+            elif not cohort and any(str(x).startswith("no marker") for x in j["reasons"]) and not (st.get("check") or {}):
+                cohort = VERDICT_GONE
+            elif not cohort and norun and (_iso((st.get("candidate") or {}).get("at")) or "") > str(r.get("at") or "") \
+                    and not any(e.get("item") == r["item"] and str(e.get("at") or "") <= str(r.get("at") or "")
+                                for e in evidence.index_rows(src)):
+                cohort = STATE_MOVED
+            elif not cohort and j["accepted"] and r.get("gate_reasons") and set(r["gate_reasons"]) <= NOT_JUDGED:
+                cohort = "not_judged:" + ",".join(r["gate_reasons"])
+            if cohort:
+                cohorts[cohort] = cohorts.get(cohort, 0) + 1
+            else:
+                unexplained.append("%s@%s gate %s, predicate %s: %s" % (r["item"], str(r["sha"])[:10], r.get("gate"),
+                                   "accept" if j["accepted"] else "reject", "; ".join(j["reasons"])[:240]))
+        rep = {"rows": len(shadow_rows), "rows_are": "every attempt (report counts the last per item+sha)", "markers_appended": markers, "marker_failures": failed, "wedge_from": wedge,
+               "reasons_before": before, "reasons_after": after, "outcome": cohorts, "unexplained": len(unexplained),
+               "index_verifies": evidence.verify_index(sd) == []}
+        return rep, unexplained + ["marker receipt failed: " + x for x in failed]
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 # ---------------------------------------------------------------- the corpus
@@ -366,6 +506,9 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("report", help="the shadow's disagreement count toward the sample")
     r.add_argument("--json", action="store_true")
+    rs = sub.add_parser("rescore", help="replay a frozen store snapshot's shadow rows with today's writers + predicate")
+    rs.add_argument("--snapshot", required=True, help="a dir holding store/ (evidence/, items/*/state.json, %s)" % SHADOW)
+    rs.add_argument("--min-rows", type=int, default=70, help="fewer rows than this is an instrument that cannot see")
     c = sub.add_parser("corpus", help="check (default) or rebuild the false/valid close corpus")
     c.add_argument("what", nargs="?", choices=("check", "build"), default="check")
     c.add_argument("--path", default=CORPUS)
@@ -375,6 +518,15 @@ def main(argv=None):
         s = summary(rows(sd))
         print(json.dumps(s, indent=1, sort_keys=True) if a.json else "\n".join(report_lines(s)))
         return 0
+    if a.cmd == "rescore":
+        rep, bad = rescore(a.snapshot)
+        print(json.dumps(rep, indent=1, sort_keys=True))
+        for b in bad[:40]:
+            print("UNEXPLAINED " + b)
+        blind = rep["rows"] < a.min_rows
+        print("evidence rescore: %d rows; %s" % (rep["rows"], "BLIND: under %d rows" % a.min_rows if blind else
+              "%d unexplained disagreement(s)" % len(bad) if bad else "every disagreement explained"))
+        return 1 if bad or blind or not rep["index_verifies"] else 0
     if a.what == "build":
         sys.path.insert(0, os.path.dirname(HERE))
         from rimflow import model

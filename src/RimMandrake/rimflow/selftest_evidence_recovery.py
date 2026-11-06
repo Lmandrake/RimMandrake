@@ -12,6 +12,8 @@
   R5 a tail cut from the record AND the index together (two valid prefixes) is caught by HEAD; HEAD deleted from a
      sealed store is caught; a store from before HEAD verifies, and is sealed by its next append
   R6 a short write is completed, a zero-byte write is an error - never a silently truncated line
+  R8 a pre-seal writer's unsealed tail past HEAD verifies and is sealed by the next append; a sealed row past HEAD or a
+     cut under the stale tail is still caught
   R7 harvest reports every failure, and `evidence.py harvest` exits 1 when any receipt failed
 
 Temp stores only.
@@ -289,6 +291,52 @@ def t_tail_cut():
     shutil.rmtree(d, ignore_errors=True)
 
 
+def _stale_writer(d, item="I2", kind="run"):
+    """An append by evidence.py from before the seal (a worker clone at an older sha): chained, unsealed, no HEAD."""
+    last = [e for _, e in E._index(d) if e]
+    entry = {"exit": 0, "v": E.V, "kind": kind, "item": item, "sha": SHA, "n": 0, "prev": E.ZERO, "at": "2026-11-06T17:16:37Z"}
+    entry["hash"] = E.entry_hash(entry)
+    ix = {"v": E.V, "n": len(last), "prev": last[-1]["hash"], "item": item, "sha": SHA, "entry_n": 0, "entry": entry["hash"],
+          "kind": kind, "at": entry["at"]}
+    ix["hash"] = E.entry_hash(ix)
+    path = E.record_path(d, item, SHA)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as f:
+        f.write(json.dumps(entry, sort_keys=True, separators=(",", ":")) + "\n")
+    rewrite(os.path.join(d, "evidence", E.INDEX), lambda ls: ls + [json.dumps(ix, sort_keys=True, separators=(",", ":")) + "\n"])
+
+
+def t_stale_writer():
+    """R8 (EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE): a pre-seal writer's unsealed row past HEAD is not a tail cut. Read as
+    one, it refused every append after it (2026-11-06 17:16Z on: 2 shadow closes 'tampered', every receipt after lost)."""
+    d = fresh(2)
+    _stale_writer(d)
+    ok(E.verify_all(d) == {"index": []}, "R8. an unsealed row past HEAD verifies: %r" % E.verify_all(d))
+    ok(not refuses(d), "R8. and the next append is not refused")
+    ok(E._head(d)[0]["n"] == len(E.index_rows(d)), "R8. that append seals the whole index")
+    shutil.rmtree(d, ignore_errors=True)
+
+    d = fresh(2)     # a SEALED row past HEAD is still a rewritten HEAD
+    hp = os.path.join(d, "evidence", E.HEAD)
+    rows = E.index_rows(d)
+    os.chmod(hp, 0o644)
+    with open(hp, "w") as f:
+        json.dump({"v": E.V, "n": 1, "hash": rows[0]["hash"]}, f)
+    ok(bool(E.verify_all(d)["index"]) and refuses(d), "R8. a sealed row past HEAD is still caught (HEAD rolled back)")
+    shutil.rmtree(d, ignore_errors=True)
+
+    d = fresh(2)     # only a box run is excused: a Marker verdict past HEAD is never taken unsealed
+    _stale_writer(d, kind="marker")
+    ok(bool(E.verify_all(d)["index"]) and refuses(d), "R8. an unsealed MARKER row past HEAD is still caught")
+    shutil.rmtree(d, ignore_errors=True)
+
+    d = fresh(2)     # the stale tail does not excuse a cut under it: the row HEAD names must carry its hash
+    _stale_writer(d)
+    rewrite(os.path.join(d, "evidence", E.INDEX), lambda ls: ls[:1] + ls[2:])
+    ok(bool(E.verify_all(d)["index"]) and refuses(d), "R8. a sealed row cut under a stale tail is still caught")
+    shutil.rmtree(d, ignore_errors=True)
+
+
 def t_short_write():
     d = fresh(1)
 
@@ -339,7 +387,7 @@ def t_harvest_exit():
 
 
 if __name__ == "__main__":
-    for t in (t_crash_recovery, t_strict_read_index_chain, t_nonce_under_lock, t_dir_fsync, t_tail_cut, t_short_write,
+    for t in (t_crash_recovery, t_strict_read_index_chain, t_nonce_under_lock, t_dir_fsync, t_tail_cut, t_stale_writer, t_short_write,
               t_harvest_exit):
         try:
             t()

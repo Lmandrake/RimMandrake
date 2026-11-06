@@ -137,6 +137,22 @@ def _head(store_dir):
     return (h, None) if isinstance(h, dict) else (None, "HEAD is not a JSON object")
 
 
+def _head_seals(h, ents):
+    """HEAD seals the index when it names its exact length and last hash - or names a prefix of it whose every later
+    row is UNSEALED: a writer on evidence.py from before the seal (a worker clone at an older sha runs its own copy at
+    finish) appends a chained row and never writes HEAD. Read as a tail cut, that one stale writer refused every
+    append after it (EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE: 2026-11-06 17:16Z on). A cut still shows: the index is
+    shorter than HEAD, or the row HEAD names no longer carries its hash, or a sealed row sits past HEAD. Only a `run` is
+    excused there: the stale writers are finish's box runs, and a Marker verdict past HEAD (the word that closes) is
+    never taken on an unsealed row."""
+    n = h.get("n")
+    if not isinstance(n, int) or n < 0 or n > len(ents):
+        return False
+    if h.get("hash") != (ents[n - 1].get("hash") if n else ZERO):
+        return False
+    return not any(e.get("sealed") or e.get("kind") != "run" for e in ents[n:])
+
+
 def _index_problems(store_dir, rows):
     """The index's own chain plus the HEAD seal: a tail cut from the index (with or without its record lines) leaves a
     valid prefix chain, and only HEAD, written after every append, still names the true length and last hash."""
@@ -148,7 +164,7 @@ def _index_problems(store_dir, rows):
     elif h is None:
         if any(e.get("sealed") for e in ents):
             bad.append("HEAD is missing but the index was sealed (HEAD deleted)")
-    elif h.get("n") != len(ents) or h.get("hash") != (ents[-1]["hash"] if ents else ZERO):
+    elif not _head_seals(h, ents):
         bad.append("HEAD names %s index rows ending %s, the index has %d ending %s (a tail cut, or HEAD rewritten)" % (
             h.get("n"), str(h.get("hash"))[:10], len(ents), (ents[-1].get("hash") if ents else ZERO)[:10]))
     return bad
@@ -522,8 +538,9 @@ def _harvest_nonce(chk):
 def harvest(store, failures=None):
     """Append every Marker verdict a store item holds now (check.verdict on its candidate's sha) that its record does
     not have yet. -> [(item, sha, verdict)] appended; each one that failed is added to `failures` as (item, reason)
-    (the CLI exits 1 when any did: "nothing new" and "every receipt failed" must not look alike). The tick's call site is not wired yet (WP-09a edits no relentless.py):
-    run `evidence.py harvest` until it is."""
+    (the CLI exits 1 when any did: "nothing new" and "every receipt failed" must not look alike). relentless.verdict()
+    writes each verdict as it is given (relentless.marker_receipt, the same nonce); this back-fills one whose receipt
+    failed or that predates that wiring."""
     got = []
     for st in store.states():
         chk, cand = st.get("check") or {}, st.get("candidate") or {}
