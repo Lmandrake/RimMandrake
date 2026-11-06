@@ -2305,6 +2305,8 @@ def _earned_run(item, cid, level, run, ev):
     stale = bool(current) and not same_sha(run.sha, current) and not ev.get("afterClose")
     if stale:
         return
+    if _marker_fail(run) and not MARKER_FAIL_LOCKS:
+        return      # on the record, read by the close gate (marker_lock); it moves no state until the lock is on
     if run.result == "fail":
         was_done = item.state == "done"
         _reowe(item, cid, level)
@@ -2321,17 +2323,46 @@ def _earned_run(item, cid, level, run, ev):
             _finish(item, run.sha or item.built_sha)
 
 
+# 🔑 A Relentless Marker FAIL is on the ledger (MARKER_FAIL_WIRE_INTO_CLOSE_LOCK): the supervisor records the blind
+# checker's FAIL verdict as a `verify --result fail --config marker:blind-check` run on the candidate sha, so the Close gate
+# sees it. It LOCKS only once MARKER_FAIL_LOCKS is on: design/RimMandrake/operations_design_2026-11-01.md §9 step 2 puts the
+# verdict on the ledger "not yet locking"; step 6 turns the lock on once a `trust` rerun meets his bar (§6: 1 of 9 good controls
+# failed, so a wrong FAIL would block). Until then a Marker FAIL changes no state and the close gate names it (`marker_lock`).
+# Lifted as any fail is: a newer pass on that sha (the one appeal), a new build's pass, or his word on the close.
+MARKER_CONFIG = "marker:blind-check"
+MARKER_FAIL_LOCKS = False
+
+
+def _marker_fail(run):
+    return run.result == "fail" and run.config == MARKER_CONFIG
+
+
+def _newest_deciding(item, sha, no_code, marker):
+    # a pass on another sha says nothing about this one, so it cannot hide a fail
+    return next((r for r in reversed(item.runs) if (marker or not _marker_fail(r)) and (r.result == "fail" or (
+        r.result == "pass" and (no_code or same_sha(r.sha, sha))))), None)
+
+
 def run_refusals(item, sha, no_code=False):
     """-> [(kind, why)], the half of `close_refusals` that reads only the run record, the part every way to done shares."""
     out = []
     if not no_code and not any(r.result == "pass" and r.level and same_sha(r.sha, sha) for r in item.runs):
         out.append(("unchecked", "no level-tagged pass is recorded on %s" % str(sha)[:12]))
-    # a pass on another sha says nothing about this one, so it cannot hide a fail
-    newest = next((r for r in reversed(item.runs) if r.result == "fail" or (
-        r.result == "pass" and (no_code or same_sha(r.sha, sha)))), None)
+    newest = _newest_deciding(item, sha, no_code, MARKER_FAIL_LOCKS)
     if newest is not None and newest.result == "fail":
         out.append(("fail", "its newest run %s failed at %s" % (newest.name, str(newest.sha)[:12])))
     return out
+
+
+def marker_lock(item, sha, no_code=False):
+    """-> why the Marker's FAIL would hold a close of `item` at `sha` with the lock on, or None: no Marker FAIL stands
+    (a newer deciding run, a pass on that sha or another fail, came after it). With MARKER_FAIL_LOCKS on it is also a `fail`
+    refusal; off, the close gate prints it and lets the close through."""
+    newest = _newest_deciding(item, sha, no_code, True)
+    if newest is None or not _marker_fail(newest):
+        return None
+    return "the Marker (blind check) failed it at %s, run %s%s" % (
+        str(newest.sha)[:12], newest.name, (": " + str(newest.evidence)[:200]) if newest.evidence else "")
 
 
 def close_refusals(item, sha, no_code=False, owner=False):

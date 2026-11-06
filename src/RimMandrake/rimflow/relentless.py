@@ -2759,6 +2759,14 @@ class Effects(relentless_game.GameFx):
         st = self.item_state(item)
         return bool(st and st["state"] == "done")
 
+    def ledger_marker_fail(self, item, sha, reasons):
+        """The Marker's FAIL verdict on the ledger, as the run the Close gate reads (MARKER_FAIL_WIRE_INTO_CLOSE_LOCK;
+        operations_design_2026-11-01.md §6): a `verify` fail on the candidate sha, RUNNER's like the PASS in ledger_close.
+        It locks a close only once model.MARKER_FAIL_LOCKS is on; a later blind PASS on a sha is newer and clears it."""
+        r = self.rimflow("verify", item, "--sha", sha, "--result", "fail", "--level", "L0", "--config", "marker:blind-check",
+                         "--evidence", ("blind check FAIL: %s" % (reasons or "no reasons given"))[:300], seat="RUNNER")
+        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+
     def ledger_note(self, item, text):
         r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor")
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
@@ -5464,6 +5472,7 @@ def step(store, fx, r, item, now, acts):
         c = st["candidate"]
         drop = []      # a checker clone a retry lets go: removed out of the lock, or it sits an hour as an orphan
         told = []      # a quarantine's Conductor line, written out of the lock
+        failed = None  # the Marker's FAIL (sha, reasons), written to the ledger out of the lock
         try:
             with store.lock():
                 st = store.load(item)
@@ -5538,6 +5547,7 @@ def step(store, fx, r, item, now, acts):
                         st.pop("recheck_at", None)
                         store.save(st)          # a real verdict ends the run of blind ones
                     if acted == "FAIL":     # an observed defect is a FAIL whatever word it came under
+                        failed = (c["sha"], st["check"].get("reasons"))
                         if st["check"].get("defects"):      # structured: routed on its causes, a builder only for PRODUCT
                             routed = cause_fail(store, st, r, now)
                             acts.append({"do": "blind_fail", "item": item, "cause": routed})
@@ -5546,7 +5556,6 @@ def step(store, fx, r, item, now, acts):
                             acts.append({"do": "blind_fail", "item": item})
                         if due:
                             told.append(quarantine(store, st, word, returns0, spent0, now))
-                        return
                 weak = None
                 if acted == "WEAK":     # read_as decides: a word it reads as UNMEASURED was handled above
                     reasons = st["check"].get("reasons")
@@ -5562,6 +5571,11 @@ def step(store, fx, r, item, now, acts):
                 if t:       # one line per quarantine: the key is the item and its pass, never re-told on a timer
                     attention(store, fx, "quarantine:%s" % item, t, now, level=(QUARANTINE_RETURNS, returns0))
                     acts.append({"do": "quarantined", "item": item, "why": t[:200]})
+        if failed:          # the verdict the Close gate reads, out of the store's lock (MARKER_FAIL_WIRE_INTO_CLOSE_LOCK)
+            err = fx.ledger_marker_fail(item, *failed)
+            if err:
+                acts.append({"do": "marker_fail_unrecorded", "item": item, "why": err[:200]})
+            return
         if said:            # the ledger's own write and the clone's removal, out of the store's lock
             remove_check_clone(fx, gone)
             fx.ledger_note(item, said)

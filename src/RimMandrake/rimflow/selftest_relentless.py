@@ -146,6 +146,8 @@ class FakeWorld:
             return why
         self.items[item] = "ready"
     def ledger_note(self, item, text): self.notes.append(text)
+    def ledger_marker_fail(self, item, sha, reasons):
+        self.marker_fails = getattr(self, "marker_fails", []) + [(item, sha)]
     def ledger_needs_owner(self, item, why): self.needs.append(item)
     def ledger_hold_to_seat(self, item, hold): self.seat_holds.append(item)
     def ledger_answer(self, qid):
@@ -828,6 +830,8 @@ def t_done_path():
     st = x.st("I0")
     ok(st["failures"].get("blind_fail") == 1 and st["last_fail"]["detail"].startswith("ran it"),
        "FAIL returns with its reasons")
+    ok([i for i, _ in getattr(x.w, "marker_fails", [])] == ["I0"],
+       "the Marker's FAIL is written to the ledger once, for the Close gate (MARKER_FAIL_WIRE_INTO_CLOSE_LOCK)")
     x.run_one("I0")
     ok("ran it" in x.w.launches[-1][2], "the reasons reach the next worker")
     x.done()

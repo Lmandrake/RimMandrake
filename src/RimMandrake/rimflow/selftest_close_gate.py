@@ -274,6 +274,63 @@ def s4_relentless(a):
     check([r.config for r in item(i).runs] == ["marker:blind-check"], "and the run says who judged it")
 
 
+def s7_marker_fail(a, b):
+    print("-- a Marker FAIL is on the ledger, seen by the Close gate, locking once MARKER_FAIL_LOCKS is on")
+    import relentless as RE
+
+    class Books(RE.Effects):
+        def __init__(self):
+            self.marked = set()
+            self.books = REPO
+
+        def rimflow(self, *args, timeout=60, seat=None):
+            rc, out = cli(*args, seat=seat or "BENCH")
+            return subprocess.CompletedProcess(args, rc, out, out)
+
+    fx = Books()
+
+    def locked(iid, sha, owner=False):
+        keep = model.MARKER_FAIL_LOCKS
+        model.MARKER_FAIL_LOCKS = True      # in-process only: the replay and the gate as they will read once it is on
+        try:
+            it = world().items[iid]
+            return [k for k, _ in model.close_refusals(it, sha, owner=owner)], it.state
+        finally:
+            model.MARKER_FAIL_LOCKS = keep
+
+    check(model.MARKER_FAIL_LOCKS is False, "the lock ships off (operations_design_2026-11-01 §9 step 2: not yet locking)")
+    i = new("MARKERFAIL")
+    passed(i, a)
+    check(fx.ledger_marker_fail(i, a, "the proof read red") is None, "the supervisor's FAIL write is accepted from RUNNER")
+    runs = item(i).runs
+    check([(r.config, r.result, r.sha[:12]) for r in runs][-1:] == [("marker:blind-check", "fail", a[:12])],
+          "the ledger holds the Marker's FAIL on the candidate sha")
+    check(item(i).state == "doing", "off, it moves no state")
+    why = model.marker_lock(item(i), a)
+    check(bool(why) and "Marker" in why and "proof read red" in why, "the Close gate sees it: %s" % why)
+    check(model.close_refusals(item(i), a) == [], "off, it refuses nothing")
+    kinds, _ = locked(i, a)
+    check(kinds == ["fail"], "on, it is the fail the lock holds: %s" % kinds)
+    check(locked(i, a, owner=True)[0] == [], "on, his word on the close lifts it")
+    out = ok("close", i, "--sha", a)
+    check(item(i).state == "done" and "marker" in out and "Marker" in out,
+          "off, a hand close goes through and prints the Marker's FAIL")
+
+    j = new("MARKERAPPEAL")
+    passed(j, a)
+    fx.ledger_marker_fail(j, a, "a false fail")
+    ok("verify", j, "--sha", a, "--level", "L0", "--result", "pass", "--config", "marker:blind-check",
+        "--evidence", "the appeal's blind PASS", seat="RUNNER")
+    check(model.marker_lock(item(j), a) is None and locked(j, a)[0] == [], "a pass on that sha after it (the appeal) lifts it")
+
+    k = new("MARKERNEWBUILD")
+    passed(k, a)
+    fx.ledger_marker_fail(k, a, "broken build")
+    check(sorted(locked(k, b)[0]) == ["fail", "unchecked"], "on, it holds a new build with no pass: %s" % locked(k, b)[0])
+    passed(k, b)
+    check(model.marker_lock(item(k), b) is None and locked(k, b)[0] == [], "a new build that passes lifts it")
+
+
 def s5_replay():
     print("-- history replays unchanged: nothing before EARNED_FROM moves")
     old = "2026-10-01T00:00:%02dZ"
@@ -408,6 +465,7 @@ def main():
         s4(old_c, new_c)
         s4_relentless(old_c)
         s5_replay()
+        s7_marker_fail(old_c, new_c)
         s6_every_way_to_done(old_c, new_c, led)
         before = len(events())
         check(before > 40, "the instrument saw the fixture ledger (%d events)" % before)

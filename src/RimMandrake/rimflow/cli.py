@@ -2380,6 +2380,11 @@ def _close_gate(args, it, sha, no_code):
             "guard. "
             "Nothing changed: the item is as it was."
             % (args.id, sha, "\n".join("  %-9s %s" % f for f in found), args.id, args.id, sha))
+    marker = None if model.MARKER_FAIL_LOCKS else model.marker_lock(it, sha, no_code)
+    if marker:      # MARKER_FAIL_WIRE_INTO_CLOSE_LOCK: seen, not yet locking (operations_design_2026-11-01 §9 step 2)
+        print("close: %s: marker  %s. The lock is off until a trust rerun meets the owner's bar (operations_design_2026-11-01 "
+              "§9 step 6), so this close goes through; a pass on that sha after the FAIL clears this line."
+              % (args.id, marker), file=sys.stderr)
 
 
 def cmd_close(args, seat):
