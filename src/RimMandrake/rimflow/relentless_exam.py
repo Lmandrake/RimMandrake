@@ -10,7 +10,9 @@ writes the exam against the item's base sha, and the supervisor VALIDATEs it mec
     (`break.kind: base_red`, new behaviour) or GREEN on base and RED under the Setter's planted break (`patch`, preserved
     behaviour). A red counts only as an ASSERTION failure: an exit code the clause declares (default 1), its declared
     marker if any, and none of the not-a-measurement signatures (ImportError, missing file/tool, SyntaxError, timeout,
-    exit 2/124/126/127/signal). `refusal codes: RED_NOT_ASSERTION, STAYS_GREEN, BASE_NOT_GREEN, PATCH_FAILED`.
+    exit 2/124/126/127/signal). `refusal codes: RED_NOT_ASSERTION, STAYS_GREEN, BASE_NOT_GREEN, PATCH_FAILED`. Every run
+    is in a fresh tree (a sentinel left by the base run cannot redden the break run), and red_kind reads the whole output.
+  * a planted break names only paths inside the tree (BREAK_UNSAFE_PATH) and is applied without --unsafe-paths.
   * a behavioural clause (`kind: behaviour`, the default) refuses an existence/grep-only check, linted by argv shape
     (test/ls/stat/grep/find/cat/wc..., or a shell/python -c body made only of those): EXISTENCE_ONLY. `kind: artifact` is
     allowed only where the item's own words ask for an artifact (a file, report, finding...): ARTIFACT_NOT_ASKED.
@@ -141,14 +143,28 @@ def owe(store, item, base, now, cfg=None, clone=None, origin="first_contract"):
     cfg = config() if cfg is None else cfg
     if cfg.get("mode") not in ("shadow", "live") or not base:
         return False
-    if status(store, item):
-        return False
+    prior = status(store, item)
+    if prior:
+        tries = int(prior.get("kick_tries") or 1)
+        if not unstarted(prior) or tries >= int(cfg.get("kick_max_tries", 5)):
+            return False
+        # a unit that never started (systemd-run failed, or the hook faulted): owed again, so this call retries the kick.
+        # A record the hook wrote before owe() finished may lack base/mode/clone: this call fills them.
+        set_status(store, item, state="owed", base=prior.get("base") or base, mode=prior.get("mode") or cfg["mode"],
+                   clone=prior.get("clone") or clone, origin=prior.get("origin") or origin, at=prior.get("at") or iso(now),
+                   retry_at=iso(now), kick_tries=tries + 1)
+        return True
     root = exam_root(store)
     have = [d for d in (os.listdir(root) if os.path.isdir(root) else []) if os.path.isdir(os.path.join(root, d))]
     if len(have) >= int(cfg.get("max_items", 60)):
         return False
     set_status(store, item, state="owed", base=base, at=iso(now), mode=cfg["mode"], clone=clone, origin=origin)
     return True
+
+
+def unstarted(rec):
+    """-> True when an owed exam's unit never started (kick_failed / hook_error recorded): owe() may owe it again."""
+    return bool(rec) and rec.get("state") == "owed" and bool(rec.get("kick_failed") or rec.get("hook_error"))
 
 
 def unit_name(item):
@@ -195,8 +211,11 @@ def on_contract(store, item, base, now=None, clone=None, cfg=None, kicker=None, 
             return None
         why = (kicker or kick)(store, item, cfg)
         if why:
+            if (status(store, item) or {}).get("state") != "owed":
+                return "exam unit reported %s but has already moved the exam on" % why[:200]   # a slow start that did start
             set_status(store, item, state="owed", kick_failed=why[:300])
             return "exam owed; unit did not start: " + why
+        set_status(store, item, kick_failed=None, hook_error=None)
         return "exam owed; Setter unit " + unit_name(item)
     except Exception as e:  # noqa: BLE001 - shadow: a fault here is recorded, never the builder's
         try:
@@ -214,7 +233,7 @@ def on_start(store, st, now=None, cfg=None, kicker=None, roots=None):
     if not st or not st.get("contract"):
         return None
     try:
-        if status(store, st["item"]):
+        if status(store, st["item"]) and not unstarted(status(store, st["item"])):
             return None
     except Exception:  # noqa: BLE001 - an unreadable owed.json is on_contract's to record
         pass
@@ -273,17 +292,45 @@ def existence_only(argv):
     return None
 
 
+_FILE_EXT = r"\.(py|sh|json|xml|md|cs|txt|yml|yaml|toml|js|ps1|bat|cfg|ini|csv)$"
+
+
 def named_files(argv):
-    """-> repo-relative paths (or .exam/<name>) a check argv names: words that look like a file path."""
+    """-> repo-relative paths (or .exam/<name>) a check argv names: words that look like a file path, the command word
+    included (`./run.sh`, `.exam/t.sh`) and a root-level file (`python3 test_acceptance.py`): each is hashed."""
     out = []
     for c in _words(argv):
-        for w in c[1:] if len(c) > 1 else c:
-            if w.startswith("-") or "://" in w:
+        for w in c:
+            if w.startswith("-") or "://" in w or "=" in w:
+                continue
+            w = w[2:] if w.startswith("./") else w
+            if ".." in w.split("/"):
                 continue
             if re.match(r"^(\.exam/|src/|infrastructure/|design/|tools/|\.claude/)[\w./@+-]+$", w) or \
-                    re.match(r"^[\w.@+-]+(/[\w.@+-]+)+\.(py|sh|json|xml|md|cs|txt|yml|yaml|toml)$", w):
+                    re.match(r"^[\w.@+-]+(/[\w.@+-]+)*" + _FILE_EXT, w):
                 out.append(w)
     return list(dict.fromkeys(out))
+
+
+_PATCH_NAME_LINES = re.compile(r"^(?:diff --git (\S+) (\S+)|(?:rename|copy) (?:from|to) (.+)|(?:---|\+\+\+) (\S+))", re.M)
+
+
+def unsafe_patch_paths(patch):
+    """-> the paths of a diff that would land outside the tree: absolute, `..`, `~`, a backslash or a NUL. Every header that
+    names a path is read (diff --git, ---/+++, rename/copy from/to), not only the ones _patch_paths uses."""
+    bad = []
+    for m in _PATCH_NAME_LINES.finditer(patch or ""):
+        for p in m.groups():
+            if not p or p == "/dev/null":
+                continue
+            q = p.strip()
+            if q.startswith('"') and q.endswith('"') and len(q) > 1:      # git's C-quoted name: \ooo bytes, \t, \", \\
+                q = re.sub(r"\\([0-7]{3}|.)", lambda m: chr(int(m.group(1), 8)) if len(m.group(1)) == 3 else
+                           {"t": "\t", "n": "\n", '"': '"', "\\": "/\\"}.get(m.group(1), "\\" + m.group(1)), q[1:-1])
+            q = q[2:] if re.match(r"^[ab]/", q) else q
+            if q.startswith(("/", "~")) or "\\" in q or "\0" in q or ".." in q.split("/") or re.match(r"^[A-Za-z]:", q):
+                bad.append(p)
+    return list(dict.fromkeys(bad))
 
 
 def _patch_paths(patch):
@@ -354,6 +401,9 @@ def lint(exam, item_text, prose=""):
                 no(cid, "BREAK_DELETES", "the break only deletes files; it must change behaviour")
             elif names & set(deleted):
                 no(cid, "BREAK_DELETES", "the break deletes %s, which the check names" % ", ".join(sorted(names & set(deleted))))
+            unsafe = unsafe_patch_paths(patch)
+            if unsafe:
+                no(cid, "BREAK_UNSAFE_PATH", "the break names a path outside the tree: %s" % ", ".join(unsafe[:5]))
             if any(p.startswith(EXAM_DIR + "/") for p in touched):
                 no(cid, "BREAK_KIND", "the break edits the exam's own test, not the code under test")
         red = chk.get("red") or {}
@@ -456,7 +506,8 @@ def validate(exam, run, item_text, prose="", read_file=None):
     the base sha (for exam_hash). -> {"ok", "refusals", "rows", "exam_hash"}."""
     refusals = lint(exam, item_text, prose)
     rows = []
-    linted = {r["clause"] for r in refusals if r["code"] in ("SCHEMA", "BREAK_KIND", "BREAK_DELETES", "EXISTENCE_ONLY")}
+    linted = {r["clause"] for r in refusals if r["code"] in ("SCHEMA", "BREAK_KIND", "BREAK_DELETES", "EXISTENCE_ONLY",
+                                                             "BREAK_UNSAFE_PATH")}
     for c in exam.get("clauses") or []:
         if not isinstance(c, dict):
             continue
@@ -497,39 +548,73 @@ def validate(exam, run, item_text, prose="", read_file=None):
 
 
 # --------------------------------------------------------------------------------------------------------- the box
+OUT_CAP = 4 << 20       # a check's whole output reaches red_kind (a signature mid-dump still disqualifies); 4 MiB a side
+
+
+def _cap(out):
+    return out if len(out) <= 2 * OUT_CAP else out[:OUT_CAP] + "\n[... %d chars cut ...]\n" % (len(out) - 2 * OUT_CAP) + out[-OUT_CAP:]
+
+
+def apply_patch(patch, tree, runner=subprocess.run):
+    """Apply a Setter's planted break inside `tree` only. -> None or why not. A path outside the tree is refused before git
+    sees it, git runs WITHOUT --unsafe-paths (it then refuses ../ and absolute paths itself, and writes through no
+    symlink), and GIT_CEILING_DIRECTORIES stops it adopting a repository above the tree."""
+    unsafe = unsafe_patch_paths(patch)
+    if unsafe:
+        return "unsafe path(s) outside the tree: %s" % ", ".join(unsafe[:5])
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    env["GIT_CEILING_DIRECTORIES"] = os.path.dirname(os.path.abspath(tree))
+    p = runner(["git", "apply", "-"], cwd=tree, input=patch, capture_output=True, text=True, timeout=60, env=env)
+    return (p.stderr or p.stdout or "git apply exit %d" % p.returncode)[-300:] if p.returncode else None
+
+
 def box_runner(rules, source, sha, files_dir, item=None, nonce=None, runner=subprocess.run):
-    """-> (run, read_file, close): checks run in a fresh Marker box at `sha` (relentless_wall.make_box with the WP-02
-    toolchain: git history, cv2 venv) under the Marker's own systemd properties; the Setter's files at tree/.exam/."""
+    """-> (run, read_file, close): checks run in a Marker box at `sha` (relentless_wall.make_box with the WP-02
+    toolchain: git history, cv2 venv) under the Marker's own systemd properties; the Setter's files at tree/.exam/.
+    Every run() gets a FRESH box: a check that leaves state behind (a sentinel, a cache, a half-reverted break) cannot
+    colour the next run, and a break is never reverted, only thrown away with its tree. read_file and the Setter's cwd
+    (read_file.tree) use the first box."""
     import relentless_wall
     prof = relentless_wall.profile(rules, "marker")
     if not prof:
         raise RuntimeError("no marker wall profile in the rules")
     nonce = nonce or "exam-%s" % uuid.uuid4().hex[:12]
-    box = relentless_wall.make_box(prof, source, sha, nonce, base=None, item=item)
-    tree = os.path.join(box, "tree")
-    if files_dir and os.path.isdir(files_dir):
-        shutil.copytree(files_dir, os.path.join(tree, EXAM_DIR), dirs_exist_ok=True)
+
+    def fresh(n):
+        bx = relentless_wall.make_box(prof, source, sha, n, base=None, item=item)
+        tr = os.path.join(bx, "tree")
+        try:
+            if files_dir and os.path.isdir(files_dir):
+                shutil.copytree(files_dir, os.path.join(tr, EXAM_DIR), dirs_exist_ok=True)
+        except BaseException:
+            relentless_wall.remove_box(bx)
+            raise
+        return bx, tr
+
+    box, tree = fresh(nonce)
+    runs = [0]
 
     def run(argv, patch, timeout):
-        if patch:
-            p = runner(["git", "apply", "--unsafe-paths", "-"], cwd=tree, input=patch,
-                       capture_output=True, text=True, timeout=60)
-            if p.returncode:
-                return None, "PATCH_FAILED: " + (p.stderr or p.stdout)[-300:], False
-        unit = ["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet", "-p", "WorkingDirectory=" + tree,
-                "-p", "RuntimeMaxSec=%d" % (timeout + 30)] + relentless_wall.props(prof, box) \
-            + sum((["--setenv", "%s=%s" % kv] for kv in dict(relentless_wall.unit_env(prof, box), **RUN_ENV).items()), []) \
-            + ["--"] + list(argv)
+        runs[0] += 1
+        rbox = None
         try:
-            q = runner(unit, capture_output=True, text=True, timeout=timeout + 60, stdin=subprocess.DEVNULL)
-            res = (q.returncode, ((q.stdout or "") + (q.stderr or ""))[-6000:], False)
-        except subprocess.TimeoutExpired as e:
-            res = (None, str(e)[-300:], True)
-        finally:
+            rbox, rtree = fresh("%s-r%d" % (nonce, runs[0]))
             if patch:
-                runner(["git", "apply", "-R", "--unsafe-paths", "-"], cwd=tree, input=patch,
-                       capture_output=True, text=True, timeout=60)
-        return res
+                why = apply_patch(patch, rtree, runner)
+                if why:
+                    return None, "PATCH_FAILED: " + why, False
+            unit = ["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet", "-p", "WorkingDirectory=" + rtree,
+                    "-p", "RuntimeMaxSec=%d" % (timeout + 30)] + relentless_wall.props(prof, rbox) \
+                + sum((["--setenv", "%s=%s" % kv] for kv in dict(relentless_wall.unit_env(prof, rbox), **RUN_ENV).items()), []) \
+                + ["--"] + list(argv)
+            try:
+                q = runner(unit, capture_output=True, text=True, timeout=timeout + 60, stdin=subprocess.DEVNULL)
+                return q.returncode, _cap((q.stdout or "") + (q.stderr or "")), False
+            except subprocess.TimeoutExpired as e:
+                return None, str(e)[-300:], True
+        finally:
+            if rbox:
+                relentless_wall.remove_box(rbox)
 
     def read_file(path):
         try:
@@ -627,8 +712,54 @@ def _prose(source, sha, item):
         return ""
 
 
+class _RunLock:
+    """Non-blocking flocks on <item>/run.lock and <item>/setter.lock (relentless_dispute.session_lock's, held over an
+    amend) for the whole of run_item: a second unit, a CLI run or a dispute amend for the same item finds one held and
+    run_item leaves, so two Setters never share setter/ nor replace each other's files/ under one exam_hash. The locks
+    die with their process, so a crashed run's `setting` state is resumable by the next."""
+    NAMES = ("run.lock", "setter.lock")
+
+    def __init__(self, d):
+        self.d, self.fs = d, []
+
+    def __enter__(self):
+        os.makedirs(self.d, exist_ok=True)
+        for n in self.NAMES:
+            f = open(os.path.join(self.d, n), "a")
+            try:
+                fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except OSError:
+                f.close()
+                self._release()
+                break
+            self.fs.append(f)
+        return self
+
+    def held(self):
+        return len(self.fs) == len(self.NAMES)
+
+    def _release(self):
+        for f in self.fs:
+            fcntl.flock(f, fcntl.LOCK_UN)
+            f.close()
+        self.fs = []
+
+    def __exit__(self, *a):
+        self._release()
+
+
 def run_item(store, item, rules, cfg=None, now=None, setter=run_setter, boxer=box_runner, text_of=_item_text):
-    """The exam unit's body: SET -> VALIDATE -> one resumed retry -> frozen exam or arbiter_owed. -> final state."""
+    """The exam unit's body: SET -> VALIDATE -> one resumed retry -> frozen exam or arbiter_owed. -> final state, or
+    "busy" when another run holds the item's run lock (it is left alone)."""
+    if not os.path.isdir(item_dir(store, item)):
+        return None                                     # never owed: no directory made (it would count to max_items)
+    with _RunLock(item_dir(store, item)) as lk:
+        if not lk.held():
+            return "busy"
+        return _run_item(store, item, rules, cfg, now, setter, boxer, text_of)
+
+
+def _run_item(store, item, rules, cfg, now, setter, boxer, text_of):
     cfg = config() if cfg is None else cfg
     st = status(store, item) or {}
     base = st.get("base")

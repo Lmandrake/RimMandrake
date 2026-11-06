@@ -86,25 +86,29 @@ def files_dir(tmp, double=T_DOUBLE, name=T_NAME):
 def local_boxer(repo, tmp):
     """box_runner's contract on a local export: (run, read_file, close), read_file.tree."""
     def boxer(rules, source, sha, files, item=None, nonce=None):
-        tree = tempfile.mkdtemp(dir=tmp, prefix="tree")
-        subprocess.run("git -C %s archive %s | tar -x -C %s" % (repo, sha, tree), shell=True, check=True)
-        if files and os.path.isdir(files):
-            shutil.copytree(files, os.path.join(tree, E.EXAM_DIR), dirs_exist_ok=True)
+        def fresh():
+            t = tempfile.mkdtemp(dir=tmp, prefix="tree")
+            subprocess.run("git -C %s archive %s | tar -x -C %s" % (repo, sha, t), shell=True, check=True)
+            if files and os.path.isdir(files):
+                shutil.copytree(files, os.path.join(t, E.EXAM_DIR), dirs_exist_ok=True)
+            return t
+        tree = fresh()
 
         def run(argv, patch, timeout):
-            if patch:
-                p = subprocess.run(["git", "apply", "--unsafe-paths", "-"], cwd=tree, input=patch, capture_output=True, text=True)
-                if p.returncode:
-                    return None, "PATCH_FAILED: " + p.stderr, False
+            rt = fresh()                                # as box_runner: every run in its own tree
             try:
-                q = subprocess.run(argv, cwd=tree, capture_output=True, text=True, timeout=timeout,
-                                   env=dict(os.environ, **E.RUN_ENV))
-                res = (q.returncode, q.stdout + q.stderr, False)
-            except subprocess.TimeoutExpired:
-                res = (None, "timeout", True)
-            if patch:
-                subprocess.run(["git", "apply", "-R", "--unsafe-paths", "-"], cwd=tree, input=patch, capture_output=True, text=True)
-            return res
+                if patch:
+                    why = E.apply_patch(patch, rt)
+                    if why:
+                        return None, "PATCH_FAILED: " + why, False
+                try:
+                    q = subprocess.run(argv, cwd=rt, capture_output=True, text=True, timeout=timeout,
+                                       env=dict(os.environ, **E.RUN_ENV))
+                    return q.returncode, q.stdout + q.stderr, False
+                except subprocess.TimeoutExpired:
+                    return None, "timeout", True
+            finally:
+                shutil.rmtree(rt, ignore_errors=True)
 
         def read_file(path):
             try:
@@ -448,6 +452,148 @@ def t_echoes(tmp):
     ok(E._reds(bad) == [], "E7 summary re-reads an old 'assert' row that was the test's own exception")
 
 
+class FakeWall:
+    """relentless_wall stand-in for box_runner: make_box exports `repo` at sha into <root>/<nonce>/tree; the unit runner
+    runs the argv after `--` in WorkingDirectory=, so box_runner's own code (fresh trees, apply_patch, output) is tested."""
+    def __init__(self, repo, root):
+        self.repo, self.root, self.boxes, self.removed = repo, root, [], []
+
+    def install(self):
+        import relentless_wall as W
+        self.saved = {k: getattr(W, k) for k in ("profile", "make_box", "props", "unit_env", "remove_box")}
+        W.profile = lambda rules, role: {"box_root": self.root}
+        W.make_box = self.make_box
+        W.props = lambda prof, box: []
+        W.unit_env = lambda prof, box: {}
+        W.remove_box = lambda box: (self.removed.append(box), shutil.rmtree(box, ignore_errors=True))
+        return self
+
+    def restore(self):
+        import relentless_wall as W
+        for k, v in self.saved.items():
+            setattr(W, k, v)
+
+    def make_box(self, prof, source, sha, nonce, base=None, item=None):
+        box = os.path.join(self.root, nonce)
+        os.makedirs(os.path.join(box, "tree"))
+        subprocess.run("git -C %s archive %s | tar -x -C %s" % (self.repo, sha, os.path.join(box, "tree")), shell=True, check=True)
+        self.boxes.append(box)
+        return box
+
+    def runner(self, argv, **k):
+        if argv[0] != "systemd-run":
+            return subprocess.run(argv, **k)
+        cwd = [a.split("=", 1)[1] for a in argv if a.startswith("WorkingDirectory=")][0]
+        k.pop("stdin", None)
+        return subprocess.run(argv[argv.index("--") + 1:], cwd=cwd, env=dict(os.environ, **E.RUN_ENV), **k)
+
+
+def t_harden(tmp):
+    """RELENTLESS_EXAM_HARDEN_SANDBOX_AND_STATE (Codex review 2026-11-06): six defects, one row each."""
+    repo, base, wrong, right = make_repo(tmp)
+    # H1 a planted break outside the tree is refused by lint and never applied; no --unsafe-paths anywhere
+    esc = "--- a/../escaped.txt\n+++ b/../escaped.txt\n@@ -0,0 +1 @@\n+pwned\n"
+    absp = "--- /dev/null\n+++ b/%s\n@@ -0,0 +1 @@\n+pwned\n" % os.path.join(tmp, "abs_escaped.txt").lstrip("/")
+    absp = absp.replace("+++ b/", "+++ /")
+    c = clause("c1", ["python3", ".exam/t_name.py"], brk={"kind": "patch", "patch": esc})
+    ok("BREAK_UNSAFE_PATH" in codes(E.validate(with_clause(c), lambda *a: (0, "", False), ITEM_TEXT)),
+       "H1a lint refuses a break whose path climbs out of the tree (../)")
+    ok(E.unsafe_patch_paths(absp) and E.unsafe_patch_paths("diff --git a/x b/x\nrename from x\nrename to ../../y\n")
+       and not E.unsafe_patch_paths(BREAK_NAME), "H1b absolute and rename-to ../ paths are unsafe; an in-tree diff is not")
+    tree = tempfile.mkdtemp(dir=tmp, prefix="h1tree")
+    ok(E.apply_patch(esc, tree) and E.apply_patch(absp, tree) and not os.path.exists(os.path.join(os.path.dirname(tree), "escaped.txt"))
+       and not os.path.exists(os.path.join(tmp, "abs_escaped.txt")), "H1c apply_patch refuses both and writes nothing outside")
+    src = open(os.path.join(HERE, "relentless_exam.py"), encoding="utf-8").read()
+    ok("--unsafe-paths\"" not in src.replace("WITHOUT --unsafe-paths", ""), "H1d no git apply --unsafe-paths in relentless_exam.py")
+    # H2 every run gets a fresh tree: a sentinel the base run leaves cannot redden the break run
+    files = os.path.join(tmp, "h2files")
+    os.makedirs(files)
+    with open(os.path.join(files, "t_once.py"), "w") as f:
+        f.write("import os, sys\nif os.path.exists('sentinel'):\n    print('FAIL sentinel'); sys.exit(1)\n"
+                "open('sentinel', 'w').write('x')\nprint('ok')\n")
+    with open(os.path.join(repo, "README.md"), "w") as f:
+        f.write("readme\n")
+    git(repo, "add", "README.md")
+    git(repo, "commit", "-qm", "readme")
+    sha = git(repo, "rev-parse", "HEAD")
+    noop = "--- a/README.md\n+++ b/README.md\n@@ -1 +1 @@\n-readme\n+readme changed\n"
+    fw = FakeWall(repo, tempfile.mkdtemp(dir=tmp, prefix="boxes")).install()
+    try:
+        run, read_file, close = E.box_runner({}, repo, sha, files, runner=fw.runner)
+        c = clause("c1", ["python3", ".exam/t_once.py"], brk={"kind": "patch", "patch": noop})
+        v = E.validate(with_clause(c), run, ITEM_TEXT, read_file=read_file)
+        ok(codes(v) == ["STAYS_GREEN"] and len(fw.boxes) == 3 and len(set(fw.removed)) == 2,
+           "H2 each run is a fresh box (a no-op break with a sentinel test stays green, not a false red) %s %d" % (codes(v), len(fw.boxes)))
+        ok(not os.path.exists(os.path.join(read_file.tree, "sentinel")), "H2b the first box (read_file, Setter cwd) is never run in")
+        # H4 the whole output reaches red_kind through box_runner
+        e, out, to = run(["python3", "-c", "import sys; print('ImportError: no x'); print('.' * 20000); print('FAIL'); sys.exit(1)"], None, 60)
+        ok(len(out) > 20000 and E.red_kind(clause("c9", ["x"]), e, out, to).startswith("infra:ImportError"),
+           "H4 an ImportError before a 20000-char dump still disqualifies the red (len %d)" % len(out))
+        e, out, to = run(["python3", "-c", "print(1)"], esc, 60)
+        ok(e is None and out.startswith("PATCH_FAILED") and "unsafe" in out, "H1e box_runner's run refuses the escaping break")
+        close()
+    finally:
+        fw.restore()
+    # H3 a second run on the same item while the first holds the lock: busy, nothing touched
+    store = R.Store(os.path.join(tmp, "h3"))
+    it = "FOO_DOUBLE_RUNS_TWICE"
+    E.set_status(store, it, state="setting", base=base)
+    called = []
+    with E._RunLock(E.item_dir(store, it)) as lk:
+        st = E.run_item(store, it, None, CFG, setter=lambda *a, **k: called.append(1), boxer=local_boxer(repo, tmp),
+                        text_of=lambda i: ITEM_TEXT)
+        ok(lk.held() and st == "busy" and not called and E.status(store, it)["state"] == "setting",
+           "H3 a concurrent run_item on one item returns busy and leaves the first run alone")
+    import relentless_dispute as D
+    with D.session_lock(store, it):
+        ok(E.run_item(store, it, None, CFG, setter=lambda *a, **k: called.append(1), boxer=local_boxer(repo, tmp),
+                      text_of=lambda i: ITEM_TEXT) == "busy" and not called, "H3b a dispute amend holding setter.lock makes run_item busy")
+    ok(E.run_item(store, "NEVER_OWED_ITEM", None, CFG, setter=lambda *a, **k: called.append(1)) is None
+       and not os.path.exists(E.item_dir(store, "NEVER_OWED_ITEM")), "H3c run_item on a never-owed item makes no exam directory")
+    # H5 argv[0] and root-level test files are named, and their contents move the hash
+    ok(E.named_files(["python3", "test_acceptance.py"]) == ["test_acceptance.py"] and E.named_files(["./run.sh"]) == ["run.sh"]
+       and ".exam/t.sh" in E.named_files(["bash", "-c", ".exam/t.sh && echo ok"]) and E.named_files(["python3", "../x.py"]) == [],
+       "H5a argv[0], ./x.sh and root-level files are named; ../ is not")
+    ex = with_clause(clause("c1", ["python3", "test_acceptance.py"]))
+    h = [E.validate(ex, lambda *a: (1, "FAIL", False), ITEM_TEXT, read_file=lambda p, b=b: b)["exam_hash"] for b in (b"one", b"two")]
+    ok(h[0] != h[1], "H5b changing a root-level test file moves exam_hash")
+    # H6 a failed kick stays re-owable: the next contract or start retries the unit; a good kick clears it
+    store = R.Store(os.path.join(tmp, "h6"))
+    roots, kicks = [store.root], []
+
+    def kicker(res):
+        return lambda s, i, c: (kicks.append(i), res)[1]
+    E.on_contract(store, "K_I_CK", "abc", cfg=CFG, kicker=kicker("no systemd"), roots=roots)
+    m = E.on_contract(store, "K_I_CK", "abc", cfg=CFG, kicker=kicker(None), roots=roots)
+    rec = E.status(store, "K_I_CK")
+    ok(len(kicks) == 2 and "Setter unit" in (m or "") and not rec.get("kick_failed") and rec.get("kick_tries") == 2,
+       "H6a a contract after a failed kick retries the unit %s" % rec)
+    ok(E.on_contract(store, "K_I_CK", "abc", cfg=CFG, kicker=kicker(None), roots=roots) is None and len(kicks) == 2,
+       "H6b once started, never kicked again")
+    E.on_contract(store, "K_I_CK2", "abc", cfg=CFG, kicker=kicker("down"), roots=roots)
+    E.on_start(store, {"item": "K_I_CK2", "contract": {"proof": "x"}, "base": "abc"}, cfg=CFG, kicker=kicker(None), roots=roots)
+    ok(kicks[-1] == "K_I_CK2" and len(kicks) == 4 and not E.status(store, "K_I_CK2").get("kick_failed"),
+       "H6c an item start after a failed kick retries it too")
+    E.set_status(store, "K_I_CK3", state="owed", hook_error="OSError: x")          # the hook faulted before owe() wrote base
+    E.on_contract(store, "K_I_CK3", "base3", cfg=CFG, kicker=kicker(None), roots=roots)
+    rec = E.status(store, "K_I_CK3")
+    ok(rec.get("base") == "base3" and rec.get("mode") == "shadow" and not rec.get("hook_error"),
+       "H6d a re-owe after a hook fault fills the missing base %s" % rec)
+    n = len(kicks)
+    for _ in range(8):
+        E.on_contract(store, "K_I_CK4", "abc", cfg=dict(CFG, kick_max_tries=3), kicker=kicker("down"), roots=roots)
+    ok(len(kicks) - n == 3 and E.status(store, "K_I_CK4")["kick_tries"] == 3, "H6e kick retries stop at kick_max_tries")
+
+    def slow_start(s_, i, c):
+        E.set_status(s_, i, state="setting")                                       # the unit started, then systemd-run timed out
+        return "TimeoutExpired: systemd-run"
+    E.on_contract(store, "K_I_CK5", "abc", cfg=CFG, kicker=slow_start, roots=roots)
+    rec = E.status(store, "K_I_CK5")
+    ok(rec["state"] == "setting" and not rec.get("kick_failed"), "H6f a slow start that did start is not overwritten to owed %s" % rec)
+    ok(not E.unsafe_patch_paths('--- "a/caf\\303\\251.py"\n+++ "b/caf\\303\\251.py"\n')
+       and E.unsafe_patch_paths('--- "a/\\056\\056/q"\n+++ "b/\\056\\056/q"\n'), "H1f a quoted non-ASCII name is safe; a quoted \\056\\056 is not")
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="selftest_exam_")
     try:
@@ -460,6 +606,7 @@ def main():
         t_on_contract(tmp)
         t_backfill()
         t_run_item(tmp)
+        t_harden(tmp)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("RESULT %s (%d failed)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
