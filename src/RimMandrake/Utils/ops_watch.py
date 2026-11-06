@@ -2449,8 +2449,9 @@ def in_churn(st, fails, now, cfg, waits=0, resumed=None):
     return bool(churn_why(st, fails, now, cfg, waits, resumed))
 
 
-CHURN_ENV_ENDS = ("game_stale_build", "game_env_fix")  # game-phase endings (proof of a blind PASS) that blame another
-# commit or the environment, not the work (churn_why; game_env_fix: OPS_CHURN_DIAGNOSE_WEEPINGSTONE_BENK_YIMV)
+CHURN_ENV_ENDS = ("game_stale_build", "game_env_fix", "game_stage")  # game-phase endings (proof of a blind PASS) that
+# blame another commit or the environment, not the work (churn_why; game_env_fix: OPS_CHURN_DIAGNOSE_WEEPINGSTONE_BENK_YIMV;
+# game_stage, the stager stopping before any proof ran: OPS_CHURN_DIAGNOSE_HEAVY_ZWWY_NYJN)
 
 
 def churn_why(st, fails, now, cfg, waits=0, resumed=None):

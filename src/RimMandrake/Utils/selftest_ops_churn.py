@@ -334,6 +334,27 @@ def main():
        "8w: the lane fixing it twice inside the window still speaks", OW.churn_why(ws, ws_f2, NOW, ship, 0, ws_r))
     ok(OW.churn_why(ws, ws_f + [(NOW - 60, "game_fail")], NOW, ship, 0, ws_r)[:1] == ["3 returns"],
        "8w: a real game_fail after the lane fix bounces with its history", OW.churn_why(ws, ws_f + [(NOW - 60, "game_fail")], NOW, ship, 0, ws_r))
+    # 8h OPS_CHURN_DIAGNOSE_HEAVY_ZWWY_NYJN: HEAVY_TEXTURES_MEASURE_REAL_VRAM, returns 3 (gen 1 game_unmeasured 11-03, gen 3
+    # unmeasured + game_stale_build 11-05 23:49Z), unhold 11-05 20:29Z, gen 5 blind PASS 11-06 00:14Z, then ONE game_stage
+    # 13:55Z (the stager's companion exact-hash gate, fixed by 4ca2cfb99d at 14:27Z): it rang 'bouncing: 3 returns' at
+    # 14:16Z. A stager stop is a game-phase ending (entered only through a blind PASS) that blames the stager, not the work.
+    hv_rows = [{"gen": 1, "at": iso(NOW - 66 * HOUR), "end": "game_unmeasured"}, {"gen": 3, "at": iso(NOW - 37 * HOUR), "end": "unmeasured"},
+               {"gen": 3, "at": iso(NOW - 34.5 * HOUR), "end": "game_env_route"}, {"at": iso(NOW - 20.6 * HOUR), "end": "unhold", "to": "game"},
+               {"gen": 3, "at": iso(NOW - 17.2 * HOUR), "end": "game_stale_build"}, {"gen": 5, "at": iso(NOW - 17 * HOUR), "end": "finish"},
+               {"gen": 5, "at": iso(NOW - 0.35 * HOUR), "end": "game_stage"}]
+    hv_f = [f for f in (OW.attempt_failed(r, ok_ends) for r in hv_rows) if f]
+    hv = {"returns": 3, "status": "queued", "check": {"verdict": "PASS", "verdict_at": NOW - 16.8 * HOUR}}
+    hv_r = OW.attempts_resumed(hv_rows)
+    ok(len(hv_f) == 4 and OW.churn_why(hv, hv_f, NOW, ship, 0, hv_r) == [],
+       "8h: one stager stop after a blind PASS spends three old returns (HEAVY_TEXTURES_MEASURE_REAL_VRAM)",
+       (hv_f, OW.churn_why(hv, hv_f, NOW, ship, 0, hv_r)))
+    ok("game_stage" in ship["churn_env_ends"] and "game_stage" in OW.CHURN_ENV_ENDS, "8h: game_stage is a shipped churn env end")
+    hv_f2 = hv_f + [(NOW - 60, "game_stage")]
+    ok(OW.churn_why(hv, hv_f2, NOW, ship, 0, hv_r) == ["game_stage failed it 2 times"],
+       "8h: the stager stopping twice inside the window still speaks", OW.churn_why(hv, hv_f2, NOW, ship, 0, hv_r))
+    ok(OW.churn_why(hv, hv_f + [(NOW - 60, "game_fail")], NOW, ship, 0, hv_r)[:1] == ["3 returns"],
+       "8h: a real game_fail after the stager stop bounces with its history",
+       OW.churn_why(hv, hv_f + [(NOW - 60, "game_fail")], NOW, ship, 0, hv_r))
     # 8s OPS_CHURN_DIAGNOSE_WORLD_AVST_JRDU: WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE, blind PASS on gen 7 (10:55Z), then at
     # 18:11Z a game_stale_build (WORLD_WATER_REDRAW_SEAS_THAT_READ_DEEP rebuilt the shared DLL and edited RM_WorldLook.cs),
     # re-finished on HEAD at 18:21Z; at 18:29:49Z, its gen-9 check in flight (state.json's check now that one, the gen-7
