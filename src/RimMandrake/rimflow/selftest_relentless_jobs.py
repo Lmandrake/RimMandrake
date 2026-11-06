@@ -191,10 +191,87 @@ def t_unchanged_answer_does_not_poke_the_tick():
         relentless_wake.poke = real
 
 
+def t_request_in_the_exit_window_is_run_by_the_same_job():
+    """RELENTLESS_JOBS_HARDEN_EXIT_WINDOW_RERUN: a request after the job's last finished gen (here: during its poke,
+    the old exit window) is seen as a running job and picked up by the same process, not a no-op systemctl start."""
+    import relentless_wake
+    real, st, la = relentless_wake.poke, store(), Launch()
+    seen, during = [], []
+
+    def poke(*a, **k):
+        during.append(J.running(st, "mods_fp"))
+        if len(during) == 1:
+            J.request(st, "mods_fp", {"n": 2}, la)
+    relentless_wake.poke = poke
+    try:
+        J.request(st, "mods_fp", {"n": 1}, la)
+        got = J.run(st, "mods_fp", lambda w: seen.append(w["n"]) or {"n": w["n"]})
+    finally:
+        relentless_wake.poke = real
+    t, res = J.table(st, "mods_fp"), J.result(st, "mods_fp")
+    ok(during and all(during), "the kind lock is still held while the job pokes (%s)" % during)
+    ok(got == "done" and seen == [1, 2] and la.n == 1 and res["gen"] == t["gen"] == 2 and t["state"] == "done",
+       "a request landing after the gen finished is run by the same job, no relaunch (computed %s, launches %d, gen %s)"
+       % (seen, la.n, t["gen"]))
+    # on_release fires with the table lock still held and the kind lock free: the unit exits there
+    J.request(st, "mods_fp", {"n": 3}, la)
+    probe = []
+
+    def on_release(verdict):
+        fd = os.open(J._path(st, "mods_fp", ".table.lock"), os.O_CREAT | os.O_RDWR, 0o644)
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            probe.append("table free")
+        except BlockingIOError:
+            probe.append("table held")
+        finally:
+            os.close(fd)
+        probe.append("kind held" if J.running(st, "mods_fp") else "kind free")
+        probe.append(verdict)
+    J.run(st, "mods_fp", lambda w: {"n": w["n"]}, on_release=on_release)
+    ok(probe == ["table held", "kind free", "done"],
+       "on_release runs once the kind lock is free but before the table lock is (%s)" % probe)
+    # the unit's own process: exits at release, printing its verdict
+    J.request(st, "mods_fp", {"n": 4}, la)
+    child = ("import sys; sys.path.insert(0, %r); import relentless as R, relentless_jobs as J; "
+             "J.run(R.Store(%r), 'mods_fp', lambda w: {'n': w['n']}, on_release=J._exit_now); print('NOT EXITED')"
+             % (HERE, st.root))
+    r = subprocess.run([sys.executable, "-c", child], capture_output=True, text=True, timeout=60)
+    t = J.table(st, "mods_fp")
+    ok(r.returncode == 0 and r.stdout.strip() == "done" and t["done_gen"] == t["gen"] == 4,
+       "the unit's process exits at release, printing done (rc %s, out %r)" % (r.returncode, r.stdout.strip()))
+
+
+def t_late_duplicate_does_not_recompute_a_done_gen():
+    """RELENTLESS_JOBS_HARDEN_EXIT_WINDOW_RERUN: a duplicate that wins the lock after the first job finished finds its
+    gen done and leaves: no recompute, no result rewrite, no runs bump, no poke."""
+    import relentless_wake
+    pokes, real = [], relentless_wake.poke
+    relentless_wake.poke = lambda *a, **k: pokes.append(a)
+    try:
+        st, la = store(), Launch()
+        J.request(st, "mods_fp", {"n": 1}, la)
+        J.run(st, "mods_fp", lambda w: {"v": "first"})
+        before_t, before_r, n_pokes = J.table(st, "mods_fp"), J.result(st, "mods_fp"), len(pokes)
+        calls = []
+        got = J.run(st, "mods_fp", lambda w: calls.append(w) or {"v": "again"})
+        t = J.table(st, "mods_fp")
+        ok(got == "idle" and not calls, "a late duplicate on a done gen computes nothing (%s, %d calls)" % (got, len(calls)))
+        ok(J.result(st, "mods_fp") == before_r and t == before_t and len(pokes) == n_pokes,
+           "and leaves result, table (runs %s) and the tick alone (pokes %d -> %d)" % (t.get("runs"), n_pokes, len(pokes)))
+        ok(not J.running(st, "mods_fp"), "and lets go of the lock")
+        J.request(st, "mods_fp", {"n": 2}, la)
+        got = J.run(st, "mods_fp", lambda w: calls.append(w) or {"v": "second"})
+        ok(got == "done" and calls == [{"n": 2}], "a newer gen still runs (%s, %s)" % (got, calls))
+    finally:
+        relentless_wake.poke = real
+
+
 def main():
     for t in (t_request_launches_once_and_coalesces, t_duplicate_start_touches_nothing,
               t_kill_mid_job_reconciles_on_restart, t_showing_reads_the_job_answer,
-              t_unchanged_answer_does_not_poke_the_tick):
+              t_unchanged_answer_does_not_poke_the_tick, t_request_in_the_exit_window_is_run_by_the_same_job,
+              t_late_duplicate_does_not_recompute_a_done_gen):
         t()
     print("selftest_relentless_jobs: %s" % ("OK" if not FAILS else "FAILED %d" % len(FAILS)))
     return 1 if FAILS else 0

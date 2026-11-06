@@ -17,9 +17,10 @@ job's lock is released by the kernel. So
   kill mid-job     -> the table still says running but nobody holds the lock: reconcile() (every tick's prelude) marks
                       it lost and launches again; the result file is written by atomic replace, so the last good answer
                       survives the kill.
-The job releases its lock while holding the table lock, and a request checks liveness under the same table lock: a
-request either lands before the job's last gen check (the job loops) or finds no job running (it launches). No wakeup
-is lost between them.
+The job releases its lock only at its gen check, holding the table lock, and the unit's process exits there before
+letting go of the table lock; a request checks liveness under the same table lock: a request either lands before the
+job's last gen check (the job loops) or finds no job and no live process (it launches, and systemd starts the unit).
+No wakeup is lost between them. done_gen fences the other side: a gen already finished is never computed again.
 
 Launch: `systemctl --user start --no-block rm-relentless-job@<kind>.service` (systemd also refuses a second instance of
 an active unit). Only the live store launches, only when the unit is installed and relentless_jobs.json says "live";
@@ -150,8 +151,16 @@ def reconcile(store, acts, launch, kinds=None):
             _write(_path(store, kind, ".json"), t)
 
 
-def run(store, kind, fn=None):
-    """The job itself (the unit's ExecStart). -> "duplicate" | "idle" | "done"."""
+def run(store, kind, fn=None, on_release=None):
+    """The job itself (the unit's ExecStart). -> "duplicate" | "idle" | "done".
+
+    The kind lock is let go at ONE place only, the top-of-loop gen check, under the table lock: everything after a
+    finished gen (the result, the done row, the poke) happens with the lock still held, so a request in that time sees
+    a job running, bumps gen and is picked up by the same job's next check (RELENTLESS_JOBS_HARDEN_EXIT_WINDOW_RERUN:
+    released early, a request between release and the unit's exit got a no-op `systemctl start` and waited a tick).
+    `on_release` runs right there, table lock still held; the unit passes one that exits the process, so a request is
+    blocked until the process is gone and its `systemctl start` finds the unit inactive. A gen already finished
+    (done_gen) is not computed again: a duplicate that wins the lock after the first job ended returns idle."""
     fn = fn or KINDS[kind]
     fd = os.open(_path(store, kind, ".lock"), os.O_CREAT | os.O_RDWR, 0o644)
     for i in range(DUP_TRIES):      # a running() probe holds the lock for microseconds; a running job holds it throughout
@@ -163,18 +172,21 @@ def run(store, kind, fn=None):
                 os.close(fd)
                 return "duplicate"
             time.sleep(0.05)
-    held = True
+    held, verdict = True, "idle"
     try:
         while True:
             with _table(store, kind):
                 t = table(store, kind)
                 gen, want = int(t.get("gen") or 0), t.get("want")
-                if want is None:
-                    t["state"] = "done"
-                    _write(_path(store, kind, ".json"), t)
-                    os.close(fd)
+                if want is None or t.get("done_gen") == gen:
+                    if t.get("state") != "done":
+                        t["state"] = "done"
+                        _write(_path(store, kind, ".json"), t)
+                    os.close(fd)    # released under the table lock: a request now sees it free and launches
                     held = False
-                    return "idle"
+                    if on_release:
+                        on_release(verdict)
+                    return verdict
                 t.update(state="running", pid=os.getpid(), started=time.time(), run_gen=gen)
                 _write(_path(store, kind, ".json"), t)
             out = fn(want)
@@ -184,21 +196,27 @@ def run(store, kind, fn=None):
                 t = table(store, kind)
                 if int(t.get("gen") or 0) != gen:
                     continue        # asked again while it ran: once more, on the newest want
-                t.update(state="done", ended=time.time(), runs=int(t.get("runs") or 0) + 1)
+                t.update(state="done", ended=time.time(), runs=int(t.get("runs") or 0) + 1, done_gen=gen)
                 _write(_path(store, kind, ".json"), t)
-                os.close(fd)        # released under the table lock: a request now sees it free and launches
-                held = False
+            verdict = "done"
             if prev is not None and prev == out:
-                return "done"       # same answer as before: nobody waits on it, and a poke would sustain tick -> job -> tick
+                continue            # same answer as before: nobody waits on it, and a poke would sustain tick -> job -> tick
             try:            # the tick that wants this answer reads it now, not at its next heartbeat
                 import relentless_wake
                 relentless_wake.poke("job_" + kind, "gen %d" % gen, root=os.path.dirname(os.path.normpath(store.p(""))))
             except Exception:  # noqa: BLE001  a wake is a courtesy
                 pass
-            return "done"
     finally:
         if held:
             os.close(fd)
+
+
+def _exit_now(verdict):
+    """The unit's on_release: print and leave while the table lock is held, so no request falls between the lock's
+    release and the process's end (the kernel drops both flocks at exit)."""
+    print(verdict)
+    sys.stdout.flush()
+    os._exit(0)
 
 
 # ---------------------------------------------------------------- launching
@@ -281,7 +299,7 @@ def main(argv=None):
     import relentless
     store = relentless.Store()
     if a.cmd == "run":
-        print(run(store, a.kind))
+        print(run(store, a.kind, on_release=_exit_now))   # _exit_now leaves; a "duplicate" returns here
         return 0
     t = table(store, a.kind)
     t["running"] = running(store, a.kind)
