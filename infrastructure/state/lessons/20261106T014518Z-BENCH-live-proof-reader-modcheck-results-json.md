@@ -1,0 +1,1 @@
+A live-proof reader of a modcheck results JSON must check summary.refused first: a refused run (e.g. stale_load, game up on another mod list) has chains [], and reading only summary.chains scores it FAIL 'chain not in the run' instead of UNMEASURED (exit 2). Cost SCARLANDS_CHATRAK_LIVE_RERUN_1 a game_fail and a churn alarm (OPS_CHURN_DIAGNOSE_SCARLANDS_WYBF_YVLI).
