@@ -262,6 +262,90 @@ def books_unlanded_refix():
     check(got and "dirty" in got and calls == ["sync"], "start_sync leaves any other stale books to books_alarm")
 
 
+class _Past(Exception):
+    """Raised by a stub to stop the code under test the moment it is past the step a wiring test watches."""
+
+
+def lease_uses_check_line():
+    """check_line_full wiring: the real relentless._lease counts its check_backlog line with check_line, so six
+    candidates waiting out an UNMEASURED recheck never pause the builders (a helper alone being right proves nothing)."""
+    import relentless as R
+    now = 1000.0
+    r = {"share": 1, "staffing": {"check_backlog_max": 4}}
+
+    def run(states):
+        store = types.SimpleNamespace(states=lambda: [dict(x) for x in states])
+        acts = []
+        keep = R.refusal_memo
+
+        def past(fx):
+            raise _Past()
+        R.refusal_memo = past      # the first call after the check_backlog gate: reaching it means the gate let us by
+        try:
+            R._lease(store, types.SimpleNamespace(), r, now, acts, {})
+            past_gate = False
+        except _Past:
+            past_gate = True
+        finally:
+            R.refusal_memo = keep
+        return past_gate, acts
+    held = [{"item": "HELD_%d" % i, "status": "candidate", "recheck_at": now + 1800} for i in range(6)]
+    past_gate, acts = run(held)
+    check(past_gate and {"do": "wait", "why": "check_backlog"} not in acts,
+          "_lease: 6 candidates waiting out recheck_at do not trip check_backlog (max 4): %s" % acts)
+    ready = [{"item": "READY_%d" % i, "status": "candidate"} for i in range(6)]
+    past_gate, acts = run(ready)
+    check(not past_gate and acts == [{"do": "wait", "why": "check_backlog"}],
+          "_lease: 6 candidates a Judge can take now do wait on check_backlog (max 4): %s" % acts)
+
+
+def tick_start_flushes():
+    """books_unlanded_ledger wiring: the real relentless._tick's prelude flushes the tick's own unlanded ledger lines
+    before books_alarm reads the sync, so a 'not landed' first sync never reaches books_alarm as a frozen books."""
+    import relentless as R
+    calls = []
+
+    class Fx:
+        def __init__(self, whys):
+            self.whys = list(whys)
+
+        def sync(self):
+            calls.append("sync")
+            return self.whys.pop(0) if self.whys else None
+
+        def flush(self):
+            calls.append("flush")
+            return None
+
+    def run(whys):
+        d = Path(TMP) / ("tickstore_%d" % len(os.listdir(TMP)))
+        store = types.SimpleNamespace(dir=str(d), p=lambda *a: os.path.join(str(d), *a))
+        keep = (R.relentless_integrity.gate, R.books_alarm)
+        seen = []
+
+        def alarm(store_, fx_, why, now_, acts_, r_):
+            seen.append(why)
+            calls.append("books_alarm")
+            raise _Past()
+        R.relentless_integrity.gate = lambda *a, **k: True
+        R.books_alarm = alarm
+        del calls[:]
+        try:
+            R._tick(store, Fx(whys), {"enabled": True}, 1000.0, None)
+        except _Past:
+            pass
+        finally:
+            R.relentless_integrity.gate, R.books_alarm = keep
+        return seen, list(calls)
+    seen, order = run(["books 4 behind: 1 lines of infrastructure/state/ledger/events/BENCH.jsonl not landed", None])
+    check(seen == [None] and order == ["sync", "flush", "sync", "books_alarm"],
+          "_tick: a 'not landed' tick-start sync is flushed before books_alarm reads it: books_alarm saw %s, order %s"
+          % (seen, order))
+    seen, order = run(["books 2 behind: dirty outside the ledger: x"])
+    check(seen == ["books 2 behind: dirty outside the ledger: x"] and order == ["sync", "books_alarm"],
+          "_tick: any other stale books still reaches books_alarm unflushed: saw %s, order %s" % (seen, order))
+
+
 def help_folder():
     import relentless as R
     base = Path(TMP) / "belt"
@@ -288,6 +372,8 @@ if __name__ == "__main__":
         help_folder()
         check_line_refix()
         books_unlanded_refix()
+        lease_uses_check_line()
+        tick_start_flushes()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
     print("selftest_jam_classes: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
