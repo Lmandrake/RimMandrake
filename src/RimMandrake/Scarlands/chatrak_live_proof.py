@@ -8,6 +8,9 @@ this script only READS the run's results JSON (Transient/modcheck/Scarlands_<sta
 Exit 0 only when the newest Scarlands run, no older than --max-age-min, holds chain chatrak_snap with row
 snap_stage_0_2 PASS and no FAIL row anywhere in that chain (no false FAIL from a missing colonist). Exit 1 otherwise:
 a FAIL, an UNMEASURED row 0_2, a missing chain/row, no run, or a stale run all fail -- UNMEASURED is never a pass.
+Exit 2 UNMEASURED when modcheck REFUSED the run (summary.refused, e.g. stale_load: the game is up on another mod list):
+nothing ran, so it is neither PASS nor FAIL (OPS_CHURN_DIAGNOSE_SCARLANDS_WYBF_YVLI: a refusal read as "chain not in
+the run" was scored FAIL on the item).
 
 --biome RM_Warscar: the criterion is "PASS on RM_Warscar", and every stage proof runs on the CURRENT map without
 reporting its biome, so the reader also reads the bridge's jawa/map_info `mapBiome` (one read-only call; Windows Python,
@@ -32,6 +35,12 @@ ROW = "snap_stage_0_2"
 
 def _verdict(c):
     return str(c.get("verdict") or "").split("(")[0].strip().upper()
+
+
+def refused(data):
+    """modcheck's own refusal of the run ('' when it ran): summary.refused (its kind, e.g. stale_load, is summary.unmeasured)."""
+    summ = data.get("summary") or {}
+    return str(summ.get("refused") or "").strip()
 
 
 def judge(data):
@@ -89,7 +98,12 @@ def check(sheet_dir, max_age_min, biome=None, map_info=None):
     if age > max_age_min:
         return 1, "newest run %s is %.0f min old (> %d): rerun the live half" % (path, age, max_age_min)
     with open(path, encoding="utf-8") as f:
-        ok, line = judge(json.load(f))
+        data = json.load(f)
+    why = refused(data)
+    if why:
+        return 2, "UNMEASURED  modcheck refused the run (%s): %s  [%s]" % (
+            (data.get("summary") or {}).get("unmeasured") or "refused", why[:300], path)
+    ok, line = judge(data)
     if ok and biome:
         ok, bline = judge_biome((map_info or bridge_map_info)(), biome)
         line = "%s; %s" % (line, bline)
@@ -124,6 +138,13 @@ def selftest():
         if check(td, 60)[0] != 1:
             bad.append("stale run")
         os.utime(p, None)
+        with open(p, "w", encoding="utf-8") as f:     # stale_load refusal (2026-11-05T23:44 run): UNMEASURED, not FAIL
+            json.dump({"summary": {"chains": [], "refused": "UNMEASURED: the running load is not the composed list",
+                                   "unmeasured": "stale_load"}}, f)
+        if check(td, 60, "RM_Warscar", lambda: {"mapBiome": "RM_Warscar"})[0] != 2:
+            bad.append("refused run is not UNMEASURED")
+        with open(p, "w", encoding="utf-8") as f:
+            json.dump(run(good), f)
         for name, info, want in [
                 ("warscar map", {"mapBiome": "RM_Warscar", "tile": 7}, 0),
                 ("non-Warscar map", {"mapBiome": "AridShrubland", "tile": 7}, 1),
