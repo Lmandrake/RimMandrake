@@ -109,7 +109,7 @@ define under `src/`, not the 42 shipped by Outer Rim – Galactic Diversity, not
 reviewed in the art audit, and not the 79 mechanically distinct Star Wars species
 available across all installed mods. Those are five different populations — see
 `species.denominators` in
-`D:\Luke\dev\Rimworld\infrastructure\state\canon.yml`, which forbids reconciling
+`D:\Luke\dev\RimMandrake\infrastructure\state\canon.yml`, which forbids reconciling
 them. Always write the denominator beside the number._
 _
 **Full findings in the commit; the load-bearing conclusions are here.**_

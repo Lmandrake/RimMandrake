@@ -80,7 +80,7 @@ none known
 - `wookieepedia_legends_2.webp` — LEGENDS painted Wildlife of Star Wars field-guide plate, blurrg with young beside an Ewok for size (illustration, Legends only); file `Blurrg2-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/6/69/Blurrg2-woswfg.jpg/revision/latest?cb=20070112142710
 
 No donor sprite available (donor art is AssetBundle-only). Native drop-in folder
-`D:\Luke\dev\Rimworld\src\RimStarWars\SWBestiary\Textures\Things\Pawn\Animal\RSW_Blurrg\`.
+`D:\Luke\dev\RimMandrake\src\RimStarWars\SWBestiary\Textures\Things\Pawn\Animal\RSW_Blurrg\`.
 - `bloggathehutt_mandalorian_trailer.jpg` — FAN BLOG bloggathehutt (not canon text; image taken from the post) — https://bloggathehutt.wordpress.com/wp-content/uploads/2019/08/medium_oh-blurrg-15666307261473803206.jpg
 
 ## ruling

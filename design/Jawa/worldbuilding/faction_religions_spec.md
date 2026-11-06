@@ -18,11 +18,11 @@
 > table; author from here, never from there.
 
 _A retired seat, 2026-08-14. **These are decisions, not recommendations.** The fiction
-lives in `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions.md`;
+lives in `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_religions.md`;
 this file is what BUILD authors from. Every defName below was read out of the
 **live def dump** (`<LocalLow>\DefDump\`, captured 2026-08-14) — not from a
 workshop folder, not from memory. The full legal vocabulary is
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\data\ideology_palette.md`._
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\data\ideology_palette.md`._
 
 🔴 **The Jawa faith is NOT here and must not be added here.** The owner is
 building it. Section 12 is its slot, with the same headings and nothing in them.

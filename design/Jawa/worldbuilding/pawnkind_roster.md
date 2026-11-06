@@ -13,7 +13,7 @@ BUILD builds from this; nothing here should require a decision from them._
 ⚠️ **Name the denominator: the twelve are the factions that HOLD SETTLEMENTS on the
 painted map**, which is also the twelve that carry dossiers in `faction_roster_v2.md`.
 **The full roster is THIRTEEN** (`factions.count` in
-`D:\Luke\dev\Rimworld\infrastructure\state\canon.yml`): the thirteenth is the
+`D:\Luke\dev\RimMandrake\infrastructure\state\canon.yml`): the thirteenth is the
 Forgotten Arsenal (vanilla `Mechanoid`), which holds no settlement by design, gets a
 label patch rather than a dossier, and therefore gets **no kinds here**. So 12 is right
 in this arithmetic and 13 is right for the roster; they are different questions.

@@ -89,7 +89,7 @@ Processes with cwd/fd under `/mnt/d/Luke/dev/RimMandrake` at 08:02Z (`/proc/*/cw
 - `systemctl --user enable --now rm-mirror.timer` at 08:10:16Z; its first run: `already at 7f4eaffc6b16`, 1 s.
 - `git -C /mnt/d/Luke/dev/RimMandrake rev-parse` → `not a git repository`. `find -name .git` finds only nested
   untracked clones/caches (`Transient/triposr_prototype/*/.git`, `_artsrc/*/.uv-cache/sdists-v9/.git`), none at
-  the root. `~/dev` → `/mnt/d/Luke/dev` and `/mnt/d/Luke/dev/Rimworld` → `RimMandrake` both still resolve
+  the root. `~/dev` → `/mnt/d/Luke/dev` and `/mnt/d/Luke/dev/RimMandrake` → `RimMandrake` both still resolve
   (`Rimworld/src/RimMandrake/Utils/claude_bounded.sh`, which the EMERGENCY window was launched through, is present).
 - Consequences: the linked worktrees outside the tree (`/home/mandrake/wt_p3`, `D:\Luke\dev\RimMandrake-wt-handoff`,
   `-wt-livedeploy`, `D:\Luke\dev\wt_live2`, the `/tmp` pushwt) now point at a gitdir that moved and no longer work as

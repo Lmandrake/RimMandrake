@@ -63,7 +63,7 @@
 
 ## What "realistic" means here — read off the owner's reference images
 
-All in `D:\Luke\dev\Rimworld\research\Jawa\`.
+All in `D:\Luke\dev\RimMandrake\research\Jawa\`.
 
 | reference | what it is binding for |
 |---|---|

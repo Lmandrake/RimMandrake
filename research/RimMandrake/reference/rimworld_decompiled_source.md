@@ -64,7 +64,7 @@ The file *sets* were identical, which is what confirms both came from the curren
 
 ## What this tree is NOT
 
-- **Not the mods.** Mod C# source lives at `D:\Luke\dev\Rimworld\vendor\mod_sources`
+- **Not the mods.** Mod C# source lives at `D:\Luke\dev\RimMandrake\vendor\mod_sources`
   (6,280 `.cs`: VanillaExpandedFramework, VehicleFramework, VanillaGravshipExpanded, …).
 - **Not Ludeon's shipped samples.** `…\common\RimWorld\Source` holds 43 reference `.cs`
   files, 488 KB — examples, not the game.

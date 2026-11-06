@@ -2,7 +2,7 @@
 
 ## 1. Active mod list check
 
-`/mnt/d/Luke/dev/Rimworld/infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (written
+`/mnt/d/Luke/dev/RimMandrake/infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (written
 2026-09-01 21:29) lists **both** candidate packageIds active, back to back in load order:
 
 ```

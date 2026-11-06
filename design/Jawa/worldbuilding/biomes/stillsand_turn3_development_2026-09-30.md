@@ -62,8 +62,8 @@ were found by their item ids inside other mods' descriptions.
 
 #### The moving dune mod: `mandrake.rm.movingdunes`
 
-- **Source:** `D:\Luke\dev\Rimworld\src\RimMandrake\MovingDunes\`. Spec:
-  `D:\Luke\dev\Rimworld\design\MOVING_DUNES_DESIGN.md` (v2). Open item: `MOVING_DUNES_BUILD_1`.
+- **Source:** `D:\Luke\dev\RimMandrake\src\RimMandrake\MovingDunes\`. Spec:
+  `D:\Luke\dev\RimMandrake\design\MOVING_DUNES_DESIGN.md` (v2). Open item: `MOVING_DUNES_BUILD_1`.
 - **Installed:** not as its own folder. It ships inside the unified biome mod, at
   `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimMandrake.Biomes\Biomes\MovingDunes`.
   That mod's `LoadFolders.xml` lists `Biomes/MovingDunes` beside `Biomes/Stillsand` and

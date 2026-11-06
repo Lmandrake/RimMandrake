@@ -2,7 +2,7 @@
 
 **Built 2026-09-09** by
 `design/Jawa/worldbuilding/review/gen_flora_distribution_portfolio.py`
-(`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\gen_flora_distribution_portfolio.py`).
+(`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review\gen_flora_distribution_portfolio.py`).
 Companion to `PORTFOLIO_creature_distribution.md` (figs 4–8, fauna economy/lethality/
 law) and to figs 9–11 in `gen_biome_assignment_portfolio.py` (fauna mass, size ladder,
 biome matrix). **The fauna portfolios never look at plants; this one only looks at

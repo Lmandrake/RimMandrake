@@ -1,7 +1,7 @@
 # Bust portrait prompts — provenance
 
-Spec: `/mnt/d/Luke/dev/Rimworld/design/Jawa/art/gods/god_render_prompt_spec.md`
-Reference (`--edit-image`, all nine): `/mnt/d/Luke/dev/Rimworld/design/Jawa/art/gods/references/jawa_canon_hands_eyes_rope.jpg`
+Spec: `/mnt/d/Luke/dev/RimMandrake/design/Jawa/art/gods/god_render_prompt_spec.md`
+Reference (`--edit-image`, all nine): `/mnt/d/Luke/dev/RimMandrake/design/Jawa/art/gods/references/jawa_canon_hands_eyes_rope.jpg`
 Generator: `skills/generating-images/scripts/make_sprite.py` (Codex `$imagegen` edit + rembg tight cutout).
 
 ## Gap — first six busts, no prompt log
@@ -20,10 +20,10 @@ themselves, not this doc, as the record of what they look like.
 
 Command pattern for all three:
 ```
-python3 /mnt/d/Luke/dev/Rimworld/skills/generating-images/scripts/make_sprite.py \
-  --edit-image /mnt/d/Luke/dev/Rimworld/design/Jawa/art/gods/references/jawa_canon_hands_eyes_rope.jpg \
+python3 /mnt/d/Luke/dev/RimMandrake/skills/generating-images/scripts/make_sprite.py \
+  --edit-image /mnt/d/Luke/dev/RimMandrake/design/Jawa/art/gods/references/jawa_canon_hands_eyes_rope.jpg \
   --prompt "<below>" \
-  --out /mnt/d/Luke/dev/Rimworld/design/Jawa/art/gods/busts/<name>_bust.png --tight
+  --out /mnt/d/Luke/dev/RimMandrake/design/Jawa/art/gods/busts/<name>_bust.png --tight
 ```
 
 ### Zizzik the Spark-Maker (`zizzik_bust.png`)

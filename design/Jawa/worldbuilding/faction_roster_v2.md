@@ -12,11 +12,11 @@
 > **(1) the faction roster is THIRTEEN, not fourteen** — the Unbound Hive was cut
 > 2026-08-14 and the cut landed on disk (§Purpose and the vanilla-mapping table);
 > **(2) the twelve Belief-system NAMES in the dossiers were superseded** by
-> `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions.md` and its
+> `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_religions.md` and its
 > encoding layer `faction_religions_spec.md`, which produced the twelve `<ideoName>`
 > values that actually ship. **Eight of the twelve names below exist nowhere on disk.**
 > The mapping is the table "The faith layer is SUPERSEDED", just above dossier 1.
-> Contested numbers live in `D:\Luke\dev\Rimworld\infrastructure\state\canon.yml`.
+> Contested numbers live in `D:\Luke\dev\RimMandrake\infrastructure\state\canon.yml`.
 
 > ## 🔴 RULED 2026-08-20 — FORCE POWERS ARE v2 IN THEIR ENTIRETY (`FORCE_POWERS_ARE_V2_1`)
 > Owner, verbatim: *"Vanilla Psycasts Expanded should entirely be about v2 at this point, completely
@@ -103,7 +103,7 @@ So the thirteenth is **the Forgotten Arsenal** (vanilla `Mechanoid`) alone — n
 leader, no settlements, no diplomacy, inheriting vanilla's `pawnGroupMakers`
 wholesale. It costs **one label patch, not a dossier** (`faction_world_spec.md` §2).
 **12 dossiers + the Forgotten Arsenal = 13**, which is `factions.count` in
-`D:\Luke\dev\Rimworld\infrastructure\state\canon.yml`. Authoring load is twelve,
+`D:\Luke\dev\RimMandrake\infrastructure\state\canon.yml`. Authoring load is twelve,
 and the counts agree.
 
 > Factions **11 (Jawa Trade Moot)** and **12 (the Junkers)** were added
@@ -248,7 +248,7 @@ incoherent without it: the **Wildsteam Clan** (devastating at home,
 near-useless expeditionary) and the **Deepwater Compact** (wardens dehydrate before
 they can reach anyone, which is why their raids are suppressed at all).
 **Elevated is not a penalty, it is a leash.** Full rulings and the audit that
-forced them: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\water_doctrine.md`.
+forced them: `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\water_doctrine.md`.
 
 ---
 
@@ -482,7 +482,7 @@ in the game, we patch Empire."* `infrastructure/state/OWNER_DECISIONS.md`.
 **Superseded 2026-08-14; recorded here 2026-08-20 (`CANON_RECONCILE_C4_1`), because
 nobody told this file.** Every dossier below carries a **Belief system** heading with
 a faith name. Those twelve names were a design that was **replaced**:
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions.md` (the
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_religions.md` (the
 fiction) and `faction_religions_spec.md` (the encoding layer, carrying the XML)
 produced the twelve `<ideoName>` values that are on disk today.
 

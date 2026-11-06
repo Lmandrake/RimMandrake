@@ -63,7 +63,7 @@ let's go with these dumps and do some real normalization and later v1 freezing."
   it, so a patch onto a live def is checked correctly; but the dump still describes defs
   from a mod that **no longer loads**, so an xpath onto one of those **validates clean and
   silently no-ops in game**. `refresh.py`'s STALE verdict is right and should be believed.
-  Live instance: `D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\JawaWorld_BiomeMix.xml:140`
+  Live instance: `D:\Luke\dev\RimMandrake\src\Jawa\Jawa_Patches\Patches\JawaWorld_BiomeMix.xml:140`
   carries `<RG_BoilingForest>` — the only BOTR reference left in `Jawa_Patches`.
   ⇒ **"The dump is from today" is not the same claim as "the dump matches what loads."**
   I asserted the second from the first on 2026-08-15 and it was wrong; REP caught it.
@@ -227,7 +227,7 @@ Nobody needs a live game to re-derive these; they need `ilspycmd`.
   `<knownExpansions>` entries — `grep -c '<li>'` over that file is wrong by exactly 5. Use
   `activeMods` only. So the `mandrake.jawaseashaper` removal was **579 → 578**.
   Version `1.6.4871 rev590`. Full list backed up at
-  `D:\Luke\dev\Rimworld\infrastructure\state\modlists\ModsConfig.FULL.LATEST.xml`.
+  `D:\Luke\dev\RimMandrake\infrastructure\state\modlists\ModsConfig.FULL.LATEST.xml`.
 - **Scale 7 / coverage 100% is a PRESET FILE, not a mod of ours** —
   `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3626210061\Worldbuilder\TidallyLocked\Preset.xml`
   carries `<myLittlePlanetSubcount>7</myLittlePlanetSubcount>` and `<planetCoverage>1</planetCoverage>`.

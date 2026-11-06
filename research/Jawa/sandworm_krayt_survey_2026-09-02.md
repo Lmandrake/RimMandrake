@@ -39,15 +39,15 @@ itself.
 
 - Both `KraytDragon` and `GreaterKraytDragon` trace to **`mlie.starwarsanimalcollection`**
   ("Star Wars Animal Collection (Continued)"), confirmed active in
-  `/mnt/d/Luke/dev/Rimworld/infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`.
+  `/mnt/d/Luke/dev/RimMandrake/infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`.
 - GitHub mirror `emipa606/StarWarsAnimalCollection` — **MIT-licensed, open source**,
   1.6-compatible, maintained by emipa606 (mlie), continuing Beasstmann's original
   with "the excellent work of Delta" adding creatures. Krayt Dragon and Greater
   Krayt Dragon both confirmed present in the animal roster.
 - Both are in our own fauna cast at SUPER tier, flagged `ours`:
-  `/mnt/d/Luke/dev/Rimworld/design/Jawa/fauna/animal_census.csv:484` (KraytDragon)
+  `/mnt/d/Luke/dev/RimMandrake/design/Jawa/fauna/animal_census.csv:484` (KraytDragon)
   and `:535` (GreaterKraytDragon); allocated into
-  `/mnt/d/Luke/dev/Rimworld/design/Jawa/fauna/BiomeCast_Ashkarr.xml:522,607` at
+  `/mnt/d/Luke/dev/RimMandrake/design/Jawa/fauna/BiomeCast_Ashkarr.xml:522,607` at
   0.2/0.008 commonality into desert-family biomes.
 - **This is an ordinary `Animal` ThingDef/PawnKindDef** (has a `<race>`, appears
   in normal wildlife-spawn tables) — nothing like the VAST/terrain-object

@@ -76,7 +76,7 @@ Sources: rimworldwiki.com/wiki/Modding_Tutorials, rimworldmodding.wiki.gg, RW-De
 - **SOS2's thruster/starfield/breach effect classes** are UNCONFIRMED — known to exist, mechanism not located.
 - **Whether a vanilla "Dust Storm"/ash weather overlay class exists at all in 1.6** was not conclusively ruled in or out (search for "Vanilla Weather Expanded" specifically came back empty — likely a misremembered mod name, not confirmation of absence). Worth one direct check against the live def dump before assuming ember/ash weather needs a from-scratch `WeatherEvent`.
 
-File: `/mnt/d/Luke/dev/Rimworld/research/Jawa/animation_techniques_survey_2026-09-02.md`
+File: `/mnt/d/Luke/dev/RimMandrake/research/Jawa/animation_techniques_survey_2026-09-02.md`
 
 ## UNKNOWN resolved (BENCH, 2026-09-02, MEASURED against shipped Data XML)
 

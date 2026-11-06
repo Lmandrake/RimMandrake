@@ -167,9 +167,9 @@ was driven ad hoc. Drive it as a library, never `--json` on the command line
 
 ```python
 import sys, json
-sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils")
+sys.path.insert(0, "/mnt/d/Luke/dev/RimMandrake/src/RimMandrake/Utils")
 from rimbridge_client import RimBridge, resolve_endpoint
-P = json.load(open("/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/ship_build/ship_bridge.json"))
+P = json.load(open("/mnt/d/Luke/dev/RimMandrake/design/Jawa/worldbuilding/ship_build/ship_bridge.json"))
 host, port, token = resolve_endpoint()
 rb = RimBridge(host, port, token); rb.connect()
 ```
@@ -435,7 +435,7 @@ C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Con
                                                                                                   \<defName>.png
 ```
 (path from `GravshipExporter.cs:73`, `:83-84`.) Copy both into the repo under
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\ship_build\exported\` and commit with
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\ship_build\exported\` and commit with
 an explicit pathspec, same hour. `CLAUDE.md` §"Commit AND PUSH": unreproducible +
 value persists = **commit it**.
 

@@ -49,7 +49,7 @@ import sys
 
 WT = r"C:\Users\Mandrake\AppData\Local\Microsoft\WindowsApps\wt.exe"
 PS = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-# The real folder, not the `D:\Luke\dev\Rimworld` alias (a junction kept from the 2026-09-30 rename).
+# The real folder; the old 2026-09-30 rename alias junction was removed (REPO_RENAME_SYMLINK_RETIRE_1).
 # launch_fleet.ps1 is Windows-side and only opens WT profiles by name, so the D:\ tree
 # (the exported mirror of origin/main after GIT_WORKFLOW_MIGRATION_1) is the right home.
 SCRIPT = r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\launch_fleet.ps1"

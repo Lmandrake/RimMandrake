@@ -1,6 +1,6 @@
 # `observed/` — evidence captured from a running game
 
-🔑 **There is ONE `observed/`, and it is this one: `/mnt/d/Luke/dev/Rimworld/observed/`.**
+🔑 **There is ONE `observed/`, and it is this one: `/mnt/d/Luke/dev/RimMandrake/observed/`.**
 The former second root at `infrastructure/state/observed/` was merged into it on
 2026-08-23; a bare `observed/…` path anywhere — a `rimflow` evidence string, a queue item,
 a commit — resolves here and nowhere else.

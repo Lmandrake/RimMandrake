@@ -23,7 +23,7 @@ existing fragments it stitches, **no new places / factions / mechanisms unless a
 asks and says why the existing pieces cannot carry the stitch**, batched 4–6 by act,
 with a running "the arc so far" shown between batches.
 
-`D:\Luke\dev\Rimworld\design\Jawa\campaign\CAMPAIGN_ARC_GATHER.md`
+`D:\Luke\dev\RimMandrake\design\Jawa\campaign\CAMPAIGN_ARC_GATHER.md`
 
 ---
 
@@ -31,7 +31,7 @@ with a running "the arc so far" shown between batches.
 
 | item | the decision |
 |---|---|
-| `BIOME_MOD_SPLIT_EXECUTION_1` | **4 biome names**, each with 4–5 candidates + a recommendation. Unblocks the 26-mod biome split. Drafts: `D:\Luke\dev\Rimworld\Transient\biome_name_drafts_2026-09-21.md` |
+| `BIOME_MOD_SPLIT_EXECUTION_1` | **4 biome names**, each with 4–5 candidates + a recommendation. Unblocks the 26-mod biome split. Drafts: `D:\Luke\dev\RimMandrake\Transient\biome_name_drafts_2026-09-21.md` |
 | `ARIDSHRUBLAND_SHIPPING_NAMES_1` | 5 names shipped live under working names: the fuzz, the giant, the tunnel snake, venomvine, the Stall/the Gale |
 | `STAGGERSEED_SHIPPING_NAME_1` | 1 name; the plant is built and blocked only on this |
 

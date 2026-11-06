@@ -406,9 +406,9 @@ are ~580 active here (~580 as of 2026-08-13, when this was written; the live lis
 
 | file | what it is |
 |---|---|
-| `D:\Luke\dev\Rimworld\design\Jawa\art\salvage_filter.py` | the filter — streams the live merged def state |
-| `D:\Luke\dev\Rimworld\design\Jawa\art\SALVAGE_PALETTE.md` | **the deliverable**: the excluded list, the usable list with yields, the sprite-scale section |
-| `D:\Luke\dev\Rimworld\design\Jawa\art\salvage_palette.tsv` | the same data, machine-readable, one row per def |
+| `D:\Luke\dev\RimMandrake\design\Jawa\art\salvage_filter.py` | the filter — streams the live merged def state |
+| `D:\Luke\dev\RimMandrake\design\Jawa\art\SALVAGE_PALETTE.md` | **the deliverable**: the excluded list, the usable list with yields, the sprite-scale section |
+| `D:\Luke\dev\RimMandrake\design\Jawa\art\salvage_palette.tsv` | the same data, machine-readable, one row per def |
 
 🔴 **Re-run it after any modstack change:** `python3 design/Jawa/art/salvage_filter.py`
 
@@ -856,13 +856,13 @@ These are places where I would be inventing lore if I proceeded, so I have stopp
 - Live merged def state: `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\ThingDef.json` (849 MB) and `TerrainDef.json`, dumped 2026-08-13 17:45.
 - Shipped XML: `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Odyssey\Defs\` and `...\Data\Core\Defs\`.
 - Workshop mods: `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\` — `3254370945` (KotOR Resources and Materials), `3609835606` (Vanilla Gravship Expanded Ch.1), `3578515873` (Gravship Crashes), `2919553599` (Outer Rim Furniture & Decor). All four verified ACTIVE against `ModsConfig.xml` by packageId.
-- Scripts, committed: `D:\Luke\dev\Rimworld\design\Jawa\art\scan_graphics.py`, `D:\Luke\dev\Rimworld\design\Jawa\art\preview_gravship_rust.py`.
+- Scripts, committed: `D:\Luke\dev\RimMandrake\design\Jawa\art\scan_graphics.py`, `D:\Luke\dev\RimMandrake\design\Jawa\art\preview_gravship_rust.py`.
 - Terrain/wreckage census (fan-out subagent, 2026-08-13): swept Core + 5 DLCs + all 1,242 workshop mods. Key negatives established there: **zero** `TerrainDef` subclasses anywhere, `TerrainDef` has no `graphicClass`/`graphicData`/`drawSize` field, and **zero** `Ancient*` defs carry a `designationCategory`.
-- Salvage census: `D:\Luke\dev\Rimworld\design\Jawa\art\salvage_filter.py` -> `salvage_palette.tsv` (1,104 wreck defs, 73 non-deconstructible). Derived + expiring, so gitignored; regenerate with `python3 design/Jawa/art/salvage_filter.py`.
+- Salvage census: `D:\Luke\dev\RimMandrake\design\Jawa\art\salvage_filter.py` -> `salvage_palette.tsv` (1,104 wreck defs, 73 non-deconstructible). Derived + expiring, so gitignored; regenerate with `python3 design/Jawa/art/salvage_filter.py`.
 - `BrokenSubstructure` read from source: `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3578515873\1.6\Defs\Terrain\Terrain_Foundation.xml` lines 4-35 (`Arcjc007.GravshipCrashes`, ACTIVE).
-- Fiction followed, not invented: `design/Jawa/divine_satiation_engine.md` §2.0b/§2.0c/§2.0d, `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\ship_distinctive_features.md` §1/§3/§4/§5/§6/§7.
-- Method precedent: `D:\Luke\dev\Rimworld\src\Jawa\DesertVehicleReskin\Source\preview_tint.py` and `...\Patches\DogSledTint_Brown.xml`.
-- Scale discipline: as per the trap file (`D:\Luke\dev\Rimworld\skills\rimworld-modding\references\traps-art.md`).
+- Fiction followed, not invented: `design/Jawa/divine_satiation_engine.md` §2.0b/§2.0c/§2.0d, `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\ship_distinctive_features.md` §1/§3/§4/§5/§6/§7.
+- Method precedent: `D:\Luke\dev\RimMandrake\src\Jawa\DesertVehicleReskin\Source\preview_tint.py` and `...\Patches\DogSledTint_Brown.xml`.
+- Scale discipline: as per the trap file (`D:\Luke\dev\RimMandrake\skills\rimworld-modding\references\traps-art.md`).
 
 **Values caveat, per CLAUDE.md:** the dump is authoritative for *structure* (does this def
 declare a shader, a colour, a stuff category). Where a specific RGB matters, it has been

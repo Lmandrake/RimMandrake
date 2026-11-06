@@ -21,7 +21,7 @@ hardcoded mechanoid pursuit be pointed at another faction?") is unaffected by
 ⚠️ **What it DOES change for whoever builds it:** the pursuit's pawns must come
 from the Galactic Empire's `pawnGroupMakers`, so the Sith/stormtrooper roster is
 now on the pursuit's critical path rather than beside it. Spec:
-`D:\Luke\dev\Rimworld\design\Jawa\force_users_build_spec.md`.
+`D:\Luke\dev\RimMandrake\design\Jawa\force_users_build_spec.md`.
 
 **Answered 2026-08-13 by a retired seat, from the live def dump (573 mods) and the game
 assembly. Measured, not inferred.** The question blocked the Empire-as-pursuer

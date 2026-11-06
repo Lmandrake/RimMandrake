@@ -224,7 +224,7 @@ inference to read over a network filesystem. Never put weights on `G:\`.
 | `D:\dev\ollama\models\` | **The blob store.** Set via `OLLAMA_MODELS`. Tens of GB. |
 | `D:\dev\ollama\` | Ollama app data / any local scratch. |
 | `D:\dev\ollama\styles\` | StyleExpand `.txt` corpora staged before copying into the mod folder. |
-| `D:\Luke\dev\Rimworld\design\RimMandrake\ollama.md` | **This runbook** — versioned, synced, tiny. |
+| `D:\Luke\dev\RimMandrake\design\RimMandrake\ollama.md` | **This runbook** — versioned, synced, tiny. |
 | `G:\My Drive\Personal\Ollama\` *(optional)* | Modelfiles, prompt files, eval notes — text only, Drive-synced on purpose. |
 
 The split: **text and decisions on Drive, bulk artefacts local.**

@@ -115,7 +115,7 @@ verify:   the chosen category has non-empty `thingDefStyles` in the live dump; `
 criteria: EMPTY
 
 ## B14 Build the eleven `FactionDef` ideoligion blocks — entries 1 and 2 first
-spec:     `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`. Pattern is the Horax cult, `Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml`: `fixedIdeo` · `ideoName` · `ideoDescription` · `forcedMemes` (structure first, complete set) · `requiredPreceptsOnly` · `deityPresets` · `disallowedPrecepts` · `styles` — NOT the Empire's `requiredMemes` + `structureMemeWeights`. Entry 1 (Galactic Empire — The Rising Order) lands on vanilla `Empire`, replacing that family. Entries 1 (two deities), 2 (one) and 3 (one) need `deityPresets`; the corrected `deityCount` table is at the foot of the spec. Take `ideoName`, `ideoDescription` and every `deityPresets` name/type VERBATIM — they are the only text the engine renders. Never set `hiddenIdeo`. Section 12 (Jawa) is a deliberate empty slot — the owner is building it. Legal vocabulary: `design\Jawa\worldbuilding\data\ideology_palette.md` (136 memes, 685 precepts, 41 styles, 92 ritual patterns). Three engine constraints: charity has no negative precept · `PreferredXenotypes` cannot be aimed at a xenotype from XML · `Apostasy_Abhorrent` hard-conflicts with the `Guilty` meme. Meme ceiling is a COUNT (`MemeCountRangeAbsolute` 1–4 normal memes), not an impact budget — never pass `--impact-budget`.
+spec:     `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_religions_spec.md`. Pattern is the Horax cult, `Data\Anomaly\Defs\FactionDefs\Factions_Misc.xml`: `fixedIdeo` · `ideoName` · `ideoDescription` · `forcedMemes` (structure first, complete set) · `requiredPreceptsOnly` · `deityPresets` · `disallowedPrecepts` · `styles` — NOT the Empire's `requiredMemes` + `structureMemeWeights`. Entry 1 (Galactic Empire — The Rising Order) lands on vanilla `Empire`, replacing that family. Entries 1 (two deities), 2 (one) and 3 (one) need `deityPresets`; the corrected `deityCount` table is at the foot of the spec. Take `ideoName`, `ideoDescription` and every `deityPresets` name/type VERBATIM — they are the only text the engine renders. Never set `hiddenIdeo`. Section 12 (Jawa) is a deliberate empty slot — the owner is building it. Legal vocabulary: `design\Jawa\worldbuilding\data\ideology_palette.md` (136 memes, 685 precepts, 41 styles, 92 ritual patterns). Three engine constraints: charity has no negative precept · `PreferredXenotypes` cannot be aimed at a xenotype from XML · `Apostasy_Abhorrent` hard-conflicts with the `Guilty` meme. Meme ceiling is a COUNT (`MemeCountRangeAbsolute` 1–4 normal memes), not an impact budget — never pass `--impact-budget`.
 verify:   `python3 src/RimMandrake/Utils/validate_ideoligion.py <xml>` VALID, then eyeball EVERY `<li>` for its `MayRequire` by hand — the validator does NOT check `MayRequire` (`def/needs-mayrequire` is only an INFO), and an unwrapped defName from a disabled mod is a silent no-op. packageIds: `VME_`/`VFEA_` -> `vanillaexpanded.vmemese`, `AM_` -> `sarg.alphamemes`, plus `VQE_`, `GR_`, `llunak.moreprecepts`, the Ludeon DLC ids. VALID is not GOOD — 4 inert precepts still WARN across the set.
 criteria: read the eleven back with `jawa/ideo_of` and diff against the spec.
 
@@ -155,7 +155,7 @@ verify:   builds with `--gm`; the tool name appears in the census.
 criteria: a layout XML imports onto a live map and the terrain replay lands. Closes the design loop: author XML -> import -> look -> iterate, with no worldgen and no 25-min load per turn.
 
 ## B29 Space Tower `[v2]` — enable and wire the retaliation
-spec:     `hailuan.spacetower` is the only absent piece: `hailuan.customquestframework` is already active at 108 of 575 and `hailuan.customquestframeworkai` at 431. Owner's frame: the towers are Imperial infrastructure, the Hutts pay you to cut them, the Empire's retaliation is the cost. Take the Empire-goodwill patch (`ensureHostile: false`, cumulative not one-shot) as PRE-WIRING, not as the cost — the real cost is raid pressure. Design: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\orbital_towers_and_the_sky_ladder.md`. Two riders: the mod ships NO licence file (default all-rights-reserved — we may subscribe and patch, we may not ship its maps); `rootSelectionWeight` is declared TWICE in `ST_Quest_SpaceTower.xml` (`0.25` then `0.1`), last wins, effective **0.1**, and that is the dial to tune.
+spec:     `hailuan.spacetower` is the only absent piece: `hailuan.customquestframework` is already active at 108 of 575 and `hailuan.customquestframeworkai` at 431. Owner's frame: the towers are Imperial infrastructure, the Hutts pay you to cut them, the Empire's retaliation is the cost. Take the Empire-goodwill patch (`ensureHostile: false`, cumulative not one-shot) as PRE-WIRING, not as the cost — the real cost is raid pressure. Design: `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\orbital_towers_and_the_sky_ladder.md`. Two riders: the mod ships NO licence file (default all-rights-reserved — we may subscribe and patch, we may not ship its maps); `rootSelectionWeight` is declared TWICE in `ST_Quest_SpaceTower.xml` (`0.25` then `0.1`), last wins, effective **0.1**, and that is the dial to tune.
 verify:   patch validates; `rootSelectionWeight` declared once.
 criteria: the quest offers to a gravship colony — `autoAccept=True` on `ST_Quest_SpaceTower` suppresses the space gate entirely and its `everAcceptableInSpace=False` is inert.
 
@@ -275,7 +275,7 @@ verify:   EMPTY
 criteria: each fix renders in the facing it targets. Judge at DISPLAY size and render the tint — art can be correct at source and broken at render. Observation only.
 
 ## C23 Run `TEST_PLAN.md` with its nine pre-flight corrections
-spec:     `D:\Luke\dev\Rimworld\infrastructure\state\TEST_PLAN.md` — eight art-fix mods, v1 row 3's `Jawa_ClaimRumour`, row 4's terrain plus the 619-cell ground hulk. Part 3 needs a FRESHLY GENERATED Desert / ExtremeDesert / AridShrubland map; a quicktest counts. The nine pre-flight corrections are now **inside that file**, in its PRE-FLIGHT table — read them before typing at a live console. The terrain part is closed and art is observation-only; check `V1_CHAIN.md` before spending a load on any of it.
+spec:     `D:\Luke\dev\RimMandrake\infrastructure\state\TEST_PLAN.md` — eight art-fix mods, v1 row 3's `Jawa_ClaimRumour`, row 4's terrain plus the 619-cell ground hulk. Part 3 needs a FRESHLY GENERATED Desert / ExtremeDesert / AridShrubland map; a quicktest counts. The nine pre-flight corrections are now **inside that file**, in its PRE-FLIGHT table — read them before typing at a live console. The terrain part is closed and art is observation-only; check `V1_CHAIN.md` before spending a load on any of it.
 verify:   EMPTY
 criteria: a screenshot is the evidence, a def query is not — every failure mode in the plan is silent.
 
@@ -479,7 +479,7 @@ are human-powered; Balloon is `Air`; Row boat and Outrigger Canoe are `Sea`. Not
 to reskin.
 
 📏 **The measurement is already done and committed:**
-`D:\Luke\dev\Rimworld\src\Jawa\DesertVehicleReskin\Source\GEOMETRY.md` — per-vehicle
+`D:\Luke\dev\RimMandrake\src\Jawa\DesertVehicleReskin\Source\GEOMETRY.md` — per-vehicle
 animal bounding boxes, hitch bands, the dilate-by-8px mask rule and the 512×512
 canvas facts. **Do not re-measure.**
 
@@ -507,7 +507,7 @@ from it, never paste it.
 deferred to v2 — *"the energy-density explosion model — large,
 self-contained, pure v2."*
 
-📄 **The spec now lives at `D:\Luke\dev\Rimworld\design\Jawa\explosion_energy_model.md`**
+📄 **The spec now lives at `D:\Luke\dev\RimMandrake\design\Jawa\explosion_energy_model.md`**
 — the vanilla turret ladder, the shield-belt stat findings, the `PostDestroy` IL read,
 the `DestroyMode` table (⚠️ `explodeOnKilled`, **never** `explodeOnDestroyed`), the
 `tickerType` ConfigError, the `Turret_FoamTurret` template, the corpse/salvage IL
@@ -701,7 +701,7 @@ text of a Suppress entry has never been seen** — every hovered line came back
 rules, `Suppress` sits in `logRulesInitiator` gated `INITIATOR_kind==OuterRim_Jawa` /
 `OuterRim_JawaTribal` at `priority=250`, and the `ReduceWill` InteractionDef/
 PrisonerInteractionModeDef disambiguation is clean (24 rules vs 0). Source:
-`D:\Luke\dev\Rimworld\src\Jawa\JawaVoice\Patches\JawaVoice_Ideology.xml`
+`D:\Luke\dev\RimMandrake\src\Jawa\JawaVoice\Patches\JawaVoice_Ideology.xml`
 
 ### 🔴 The gloss is NOT a discriminator — disproven on screen
 

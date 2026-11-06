@@ -362,7 +362,7 @@ for any version."* The species has no def and no successor after the consolidati
 `mandrake.starwarsraces`; **there is no replacement race and this is not a v2 item.** Both rows still
 sum to 100 because the freed share was folded into the row above it — human 20 → **21** in the
 Homestead, Arkanian 26 → **28** in the Helix. That is arithmetic, not a re-casting of the role.
-See `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_roster_v2.md` for the full closure.
+See `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_roster_v2.md` for the full closure.
 
 ⚠️ **Thirst is differential and it is set by species, not faction.** Jawa, Tusken,
 Desert alien, Geonosian, Nikto, Kaleesh and Iktotchi drink **less**; droids drink

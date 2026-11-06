@@ -1,6 +1,6 @@
 
-  sheet      D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\homeless_disposition_register.html
-  decisions  D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\homeless_disposition_register.decisions.json
+  sheet      D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review\homeless_disposition_register.html
+  decisions  D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review\homeless_disposition_register.decisions.json
              125 rows · 125 decided · NEVER reviewed (pre-fill only)
   serving    http://localhost:42841/?t=qbuzjkBhpckm6ZfGzO9yLQ
              (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;

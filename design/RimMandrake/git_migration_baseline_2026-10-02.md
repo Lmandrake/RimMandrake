@@ -28,7 +28,7 @@ only) versus **`/home/mandrake/rm/bench` 0.06 s** (ext4). Phase 2's bar (<0.5 s)
 
 Search: `git grep` for `/mnt/d/Luke/dev/{RimMandrake,Rimworld}`, `D:\Luke\dev\{RimMandrake,Rimworld}`
 and the `D:/` form in `src/ skills/ .claude/ infrastructure/ game bridge publish`.
-`/mnt/d/Luke/dev/Rimworld` is a symlink to `RimMandrake` (made 2026-09-30), so the old spelling still
+`/mnt/d/Luke/dev/RimMandrake` is a symlink to `RimMandrake` (made 2026-09-30), so the old spelling still
 resolves but always lands in the shared D:\ tree, never the caller's clone.
 
 **3,901 hits.** By class:
@@ -61,7 +61,7 @@ Behaviour change by design: a script run from a clone now reads and writes that 
 | `src/RimMandrake/Utils/rimbench/render_terrain.py` | 390 | Concatenated string literal the AST fixer skips; derive from `__file__` by hand. |
 | `src/RimStarWars/StarWarsPatches/Source/BlastDoorFrameAsyncFix/{build,render,verify}_*.py` | 8,124 / 27 / 32 | Output dir is a path that does not exist in the tree (`src/RimStarWars/BlastDoorFrameAsyncFix`), so the scripts are already stale; dead-file candidates, not worth a mechanical edit. |
 | docstring usage lines (`python.exe D:\\...`, `cd /mnt/d/... &&`) | ~10 | Examples in docstrings/messages (`bridge_latency_bench.py`, `bridgetools/build.py`, `check_map_biomes_live.py`, `prove_*`); `build.py:102` is an error message telling a human where to run it. Cosmetic; replace with "from the repo root". |
-| `VERSION ... Project: D:/Luke/dev/Rimworld/...` headers | 20 | Docstring headers, inert. |
+| `VERSION ... Project: D:/Luke/dev/RimMandrake/...` headers | 20 | Docstring headers, inert. |
 | `.claude/hooks/selftest_block_blanket_git_stage.py:32` | 1 | Test input string naming the guarded path on purpose. |
 | `.claude/hooks/block_shared_tree_merge.py` | docstring | Intentional: names the guarded D:\ roots. |
 
@@ -92,7 +92,7 @@ the generic machine description. Remaining D:\ strings in `~/.claude` are logs/b
 ## Phase 1 — D:\ guard
 
 `.claude/hooks/block_shared_tree_merge.py` now, when the target tree (cwd, `cd X &&`, `git -C X`) resolves
-to `/mnt/d/Luke/dev/RimMandrake` or `/mnt/d/Luke/dev/Rimworld`, also refuses `git checkout <ref> -- <path>`
+to `/mnt/d/Luke/dev/RimMandrake` or `/mnt/d/Luke/dev/RimMandrake`, also refuses `git checkout <ref> -- <path>`
 and `git restore --source/-s`, applies every whole-tree refusal **by path** (no longer dependent on the
 `.git` being readable), and refuses `git worktree add <path under /mnt/d>` from any cwd. The message names
 `/home/mandrake/rm/<seat>`. ext4 clones and `/home/mandrake/wt/*` are unaffected. Selftest

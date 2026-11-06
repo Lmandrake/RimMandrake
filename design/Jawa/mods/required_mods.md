@@ -854,7 +854,7 @@ Galactic Empire sidesteps the mech-cluster leak, because nothing is pretending t
 a mechanoid.
 
 **Full mechanism, all four routes, and the decompiled proof:**
-`file:///D:/Luke/dev/Rimworld/design/Jawa/worldbuilding/gravship_pursuer_mechanism.md`
+`file:///D:/Luke/dev/RimMandrake/design/Jawa/worldbuilding/gravship_pursuer_mechanism.md`
 
 ### ⭐ ARC PACING & PURSUIT-TUNING LAYER (2026-08-05, autonomy review — supports the defined 3-act arc)
 _These two mods are the mechanical governors for the Imperial Heat / 3-act escalation (`context.md` 2026-08-05). They make Act-II/III raid density a tuned, qualitative curve rather than point-inflation (§19.5 no-arms-race). Both from emipa606's maintained "Continued" line._

@@ -33,7 +33,7 @@
 
 ## Part 1: In-Use Mutators (88 confirmed from world CSV)
 
-Source: `/mnt/d/Luke/dev/Rimworld/world/ASHKARR_WORLDMAP_mutators.csv` (verified 2026-09-06)  
+Source: `/mnt/d/Luke/dev/RimMandrake/world/ASHKARR_WORLDMAP_mutators.csv` (verified 2026-09-06)  
 Total tiles with mutators: **6,710**
 
 | defName | Tile Count | Category/Prefix | Status |
@@ -293,9 +293,9 @@ don't affect the 88-name in-use SET, which is correct).
 
 ## Files & References
 
-- **In-use source:** `/mnt/d/Luke/dev/Rimworld/world/ASHKARR_WORLDMAP_mutators.csv`
+- **In-use source:** `/mnt/d/Luke/dev/RimMandrake/world/ASHKARR_WORLDMAP_mutators.csv`
 - **GL mod config (live):** `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_2773943594_GeologicalLandformsMod.xml`
-- **GL mod config (repo copy):** `/mnt/d/Luke/dev/Rimworld/deployed/config/v1_freeze/Mod_2773943594_GeologicalLandformsMod.xml`
+- **GL mod config (repo copy):** `/mnt/d/Luke/dev/RimMandrake/deployed/config/v1_freeze/Mod_2773943594_GeologicalLandformsMod.xml`
 - **Queue item:** `UNUSED_MUTATORS_WORLD_ASSIGNMENT_1` (steps 1 of 5, this document completes step 1)
 
 ---

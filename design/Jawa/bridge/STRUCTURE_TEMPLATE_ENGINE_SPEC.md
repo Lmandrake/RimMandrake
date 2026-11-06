@@ -568,7 +568,7 @@ Built the same day, driven by Lua files, **no game involved at any point.**
 
 ```bash
 python3 -m venv ~/.local/venvs/rimlua && ~/.local/venvs/rimlua/bin/pip install lupa
-cd /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils
+cd /mnt/d/Luke/dev/RimMandrake/src/RimMandrake/Utils
 ~/.local/venvs/rimlua/bin/python -m rimplace render dwelling --rect 0,0,18,10 --rooms 3
 ```
 

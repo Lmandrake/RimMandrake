@@ -270,7 +270,7 @@ of the vanilla part interacts with **VGE Chapter 1's transpiler patch** on
 will no longer run. From `required_mods.md`, still unchecked.
 
 Mechanism and the decompiled proof:
-`file:///D:/Luke/dev/Rimworld/design/Jawa/worldbuilding/gravship_pursuer_mechanism.md`
+`file:///D:/Luke/dev/RimMandrake/design/Jawa/worldbuilding/gravship_pursuer_mechanism.md`
 
 ---
 
@@ -328,7 +328,7 @@ Neither droid flesh type is `Mechanoid`, so `IsMechanoid` is false for both and
 Both mods ship their flesh type without declaring `isOrganic`, which would default
 to `true` (`FleshTypeDef::.ctor` does `ldc.i4.1; stfld isOrganic`). **We patch it
 to false**, in
-`file:///D:/Luke/dev/Rimworld/src/Jawa/Jawa_Doctrine/Patches/DroidsAreMachines.xml`.
+`file:///D:/Luke/dev/RimMandrake/src/Jawa/Jawa_Doctrine/Patches/DroidsAreMachines.xml`.
 
 Confirmed live in the def dump regenerated 2026-08-12 16:14:
 
@@ -363,7 +363,7 @@ measured state of all three tiers.
 
 ### 🔴 Ion does NOT down a droid today (historical — see the note above)
 
-`file:///D:/Luke/dev/Rimworld/src/Jawa/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs`
+`file:///D:/Luke/dev/RimMandrake/src/Jawa/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs`
 
 ```csharp
 if (pawn.RaceProps == null || !pawn.RaceProps.IsFlesh) return;   // line 63
@@ -679,10 +679,10 @@ content in front of you belongs to that class is a separate question, and in a
 
 | claim | source |
 |---|---|
-| `IsMechanoid` / `IsFlesh` / `isOrganic` default | `file:///D:/Luke/dev/Rimworld/src/RimMandrake/Utils/ilprobe/` — `python3 il.py RaceProperties get_IsFlesh` |
+| `IsMechanoid` / `IsFlesh` / `isOrganic` default | `file:///D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/ilprobe/` — `python3 il.py RaceProperties get_IsFlesh` |
 | shields break only on vanilla EMP | `il.py CompShield PostPreApplyDamage`, `IL_001a ldsfld DamageDefOf::EMP` |
 | `explodeOnKilled` fires only on `KillFinalize` | `il.py CompExplosive PostDestroy` |
-| ion buildup mechanics | `file:///D:/Luke/dev/Rimworld/src/Jawa/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs` |
+| ion buildup mechanics | `file:///D:/Luke/dev/RimMandrake/src/Jawa/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs` |
 | data spike / restraint bolt / reactivation | Droid Depot `1.6/Defs/` and `1.6/Source/OuterRimDroids/` under `file:///C:/Program%20Files%20(x86)/Steam/steamapps/workshop/content/294100/3096501398/` |
 | droid flesh type | `.../3096501398/1.6/Defs/ThingDefs_Automatons/Humanlike/Droid__BaseHumanoidDroid.xml` |
 | JDS droids are true mechanoids | `.../3276499495/1.6/Defs/ThingDefs_Race.xml` |
@@ -698,7 +698,7 @@ what blocks the design in §1.
 
 ### Why it is right
 
-`file:///D:/Luke/dev/Rimworld/src/Jawa/Jawa_Doctrine/Patches/DroidsAreMachines.xml`
+`file:///D:/Luke/dev/RimMandrake/src/Jawa/Jawa_Doctrine/Patches/DroidsAreMachines.xml`
 sets `isOrganic: false` on `Asimov_Automaton` and `ABF_FleshType_Synstruct_Base`.
 
 Its central claim is **verified**. `StunHandler::CanBeStunnedByDamage`:

@@ -11,7 +11,7 @@
 **V27** (`WORLDMAP_V27_cs_icons_scoped_2026-09-09`), canon CSV drift zero. Every claim
 below is tagged **MEASURED** (a number from tonight's live exports or an in-engine
 audit), **SEEN** (a named screenshot), or **JUDGED** (Fable's call on evidence shown).
-Evidence root: `D:\Luke\dev\Rimworld\Transient\final_review\` — exports, four audit
+Evidence root: `D:\Luke\dev\RimMandrake\Transient\final_review\` — exports, four audit
 lanes' findings files, and 30 screenshots.*
 
 ---

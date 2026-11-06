@@ -3,13 +3,13 @@
 
 _Analysis only. **The spec is not edited by this file** — every design call below is
 the requesting seat's to make. Produced 2026-08-14 against
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`._
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_religions_spec.md`._
 
 **Gate as run:**
 
 ```
-python3 /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/validate_ideoligion.py --md \
-  /mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/faction_religions_spec.md
+python3 /mnt/d/Luke/dev/RimMandrake/src/RimMandrake/Utils/validate_ideoligion.py --md \
+  /mnt/d/Luke/dev/RimMandrake/design/Jawa/worldbuilding/faction_religions_spec.md
 → 2/11 VALID. INVALID: 1, 2, 3, 4, 5, 8, 9, 10, 11
    136 memes · 685 precepts · 41 styles · 585 active mods
    dump 2026-08-14T08:20:26Z, game 1.6.4871 rev591
@@ -28,7 +28,7 @@ Every claim below was re-read out of
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\`
 (`MemeDef.json`, `PreceptDef.json`, `StyleCategoryDef.json`) today. Vocabulary
 legality checked against
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\data\ideology_palette.md`.
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\data\ideology_palette.md`.
 
 ---
 

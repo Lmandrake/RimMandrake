@@ -537,7 +537,7 @@ bundle it.
 
 ## R-A10 · Where the file goes
 
-`D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\AncientsAreRakata.xml` —
+`D:\Luke\dev\RimMandrake\src\Jawa\Jawa_Patches\Patches\AncientsAreRakata.xml` —
 one new file, alongside the other 29 patches in that folder. **Do not edit an
 existing patch file**; a self-contained file is one `git rm` from a clean revert
 if the owner changes the ruling.

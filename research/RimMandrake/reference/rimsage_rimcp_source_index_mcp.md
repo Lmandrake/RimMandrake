@@ -147,7 +147,7 @@ command and the currency check live in
 
 **For contrast, what is NOT usable:** Ludeon's shipped `RimWorld\Source` folder holds only 43
 `.cs` reference examples, 488 KB. And the 6,280 `.cs` under
-`D:\Luke\dev\Rimworld\vendor\mod_sources` are *mod* sources, not the game.
+`D:\Luke\dev\RimMandrake\vendor\mod_sources` are *mod* sources, not the game.
 
 ## 8. Recommendation
 

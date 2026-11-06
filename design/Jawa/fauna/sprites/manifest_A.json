@@ -2473,7 +2473,7 @@
   },
   "ColossusToad": {
     "file": "ColossusToad.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/pawn/animal/colossustoad/colossustoad_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/pawn/animal/colossustoad/colossustoad_east.png",
     "source": "bundle",
     "texPath": "Things/Pawn/Animal/ColossusToad/ColossusToad",
     "variant": "side_east"
@@ -3934,7 +3934,7 @@
   },
   "LavaSnail": {
     "file": "LavaSnail.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/pawn/animal/lavasnail/lavasnail_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/pawn/animal/lavasnail/lavasnail_east.png",
     "source": "bundle",
     "texPath": "Things/Pawn/Animal/LavaSnail/LavaSnail",
     "variant": "side_east"
@@ -3976,126 +3976,126 @@
   },
   "RSW_AbyssalColo": {
     "file": "RSW_AbyssalColo.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/AbyssalColo/AbyssalColo",
     "variant": "side_east"
   },
   "RSW_ColoClawFish": {
     "file": "RSW_ColoClawFish.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/ColoClawFish/ColoClawFish_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/ColoClawFish/ColoClawFish_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/ColoClawFish/ColoClawFish",
     "variant": "side_east"
   },
   "RSW_CrimsonOpee": {
     "file": "RSW_CrimsonOpee.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee",
     "variant": "side_east"
   },
   "RSW_ElderSando": {
     "file": "RSW_ElderSando.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando",
     "variant": "side_east"
   },
   "RSW_Faa": {
     "file": "RSW_Faa.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Faa/Faa_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Faa/Faa_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/Faa/Faa",
     "variant": "side_east"
   },
   "RSW_Laa": {
     "file": "RSW_Laa.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Laa/Laa_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Laa/Laa_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/Laa/Laa",
     "variant": "side_east"
   },
   "RSW_Lanternwhale": {
     "file": "RSW_Lanternwhale.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale",
     "variant": "side_east"
   },
   "RSW_Mee": {
     "file": "RSW_Mee.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Mee/Mee_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Mee/Mee_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
     "variant": "side_east"
   },
   "RSW_OpeeSeaKiller": {
     "file": "RSW_OpeeSeaKiller.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
     "variant": "side_east"
   },
   "RSW_Reefback": {
     "file": "RSW_Reefback.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Reefback/Reefback_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Reefback/Reefback_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
     "variant": "side_east"
   },
   "RSW_RustNipper": {
     "file": "RSW_RustNipper.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper",
     "variant": "side_east"
   },
   "RSW_SandoAquaMonster": {
     "file": "RSW_SandoAquaMonster.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster",
     "variant": "side_east"
   },
   "RSW_ShaleGorger": {
     "file": "RSW_ShaleGorger.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger",
     "variant": "side_east"
   },
   "RSW_SiltLamprey": {
     "file": "RSW_SiltLamprey.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
     "variant": "side_east"
   },
   "RSW_Starmaw": {
     "file": "RSW_Starmaw.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw",
     "variant": "side_east"
   },
   "RSW_StormSando": {
     "file": "RSW_StormSando.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/StormSando/StormSando_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/StormSando/StormSando_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/StormSando/StormSando",
     "variant": "side_east"
   },
   "RSW_ThornbackColo": {
     "file": "RSW_ThornbackColo.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo",
     "variant": "side_east"
   },
   "RSW_Yobshrimp": {
     "file": "RSW_Yobshrimp.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp_east.png",
     "source": "loose",
     "texPath": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
     "variant": "side_east"
@@ -4137,7 +4137,7 @@
   },
   "StoneCrab": {
     "file": "StoneCrab.png",
-    "from": "/mnt/d/Luke/dev/Rimworld/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/pawn/animal/stonecrab/stonecrab_east.png",
+    "from": "/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.odyssey/textures/things/pawn/animal/stonecrab/stonecrab_east.png",
     "source": "bundle",
     "texPath": "Things/Pawn/Animal/StoneCrab/StoneCrab",
     "variant": "side_east"

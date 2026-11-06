@@ -36,10 +36,10 @@ own bounded scope. Measured: build 0.33 GB peak, live App scope 0.96 GB peak.
 # build/rebuild the dataset from the register (destructive: drops and re-adds)
 systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=1G -p OOMPolicy=continue -- \
   /home/mandrake/.venvs/fiftyone/bin/python \
-  /mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/review/fiftyone/build_dataset.py
+  /mnt/d/Luke/dev/RimMandrake/design/Jawa/worldbuilding/review/fiftyone/build_dataset.py
 
 # serve the App (WSL2 forwards localhost -> open from Windows)
-/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/review/fiftyone/launch_app.sh 5151
+/mnt/d/Luke/dev/RimMandrake/design/Jawa/worldbuilding/review/fiftyone/launch_app.sh 5151
 #   http://127.0.0.1:5151
 
 # decisions in and out

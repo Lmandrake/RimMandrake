@@ -269,12 +269,12 @@ decided what the sky means. The Junkers have never looked up.
 
 ## ✅ All three blockers are answered — the buildable layer is next door
 
-**`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`**
+**`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_religions_spec.md`**
 carries the encoding: exact `MemeDef`, `PreceptDef` and `StyleCategoryDef` names
 per faction, eight precept positions each, deity blocks, and the `FactionDef`
 pattern to copy. Every defName in it was read from the **live def dump**, so it
 names nothing that is not installed. The full vocabulary is
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\data\ideology_palette.md`.
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\data\ideology_palette.md`.
 
 1. ~~**Meme availability check.**~~ ✅ Done against the dump: 136 memes loaded.
    `NaturePrimacy`, `Transhumanist`, `Tunneler`, `Loyalist` all exist. ⚠️ **The

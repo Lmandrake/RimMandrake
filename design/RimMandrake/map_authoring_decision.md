@@ -241,7 +241,7 @@ and it came back better than baseline. **Verdict holds. Build the generator.**
 Proof for save-editing: map grids are base64 + raw DEFLATE arrays of 2-byte def
 shortHashes. Lossless roundtrip on all 62,500 cells, 76 cells painted through
 `scatter.radial_field`, written, reopened, verified. See
-file:///D:/Luke/dev/Rimworld/src/RimMandrake/Utils/rimbench/savemap.py
+file:///D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/rimbench/savemap.py
 
 ## The decisive advantage nobody measured: reversibility
 
@@ -261,8 +261,8 @@ and reversibility is a real advantage that save-editing cannot match.
 RimBridgeServer 2.x has a documented, first-class companion-DLL extension point,
 and we used it:
 
-* file:///D:/Luke/dev/Rimworld/vendor/mod_sources/RimBridgeServer-main/skills/rimbridge-companion-tools/SKILL.md
-* file:///D:/Luke/dev/Rimworld/vendor/mod_sources/RimBridgeServer-main/skills/rimbridge-companion-tools/references/companion-dll-guide.md
+* file:///D:/Luke/dev/RimMandrake/vendor/mod_sources/RimBridgeServer-main/skills/rimbridge-companion-tools/SKILL.md
+* file:///D:/Luke/dev/RimMandrake/vendor/mod_sources/RimBridgeServer-main/skills/rimbridge-companion-tools/references/companion-dll-guide.md
 
 ```csharp
 [Tool("jawa/set_terrain")]        ✅ shipped, proven live, 16.7 ms on both tiers

@@ -14,8 +14,8 @@ touched; every change takes effect on the next launch.
 | WT profile `Server` | same | cwd + script on D:\ | cwd and script in `/home/mandrake/rm/bench` |
 | WT profiles `HESTIA`, `EMERGENCY` | same | D:\ tree's script | script `/home/mandrake/rm/bench/src/RimMandrake/Utils/claude_bounded.sh`; cwd unchanged |
 | WT profile `Artist` (artpipe daemon) | same | D:\ tree | **unchanged on purpose** — its queue state is tracked in the D:\ tree until Phase 5 moves it out (plan §2.3); repoint it then |
-| `Start Agent Fleet.lnk` (Desktop + Startup) | `C:\Users\Mandrake\OneDrive\Desktop\`, `…\Start Menu\Programs\Startup\` | `D:\Luke\dev\Rimworld\…\launch_fleet.ps1` (junction alias) | `D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\launch_fleet.ps1` (real folder; Windows-side script, opens WT profiles by name, so the mirror is its right home) |
-| `rc rescue` / `rc server` (`~/.local/bin/rc`, `rescue`) | `D:\Luke\dev\claude-remote-control\scripts\rc` | `/mnt/d/Luke/dev/Rimworld` | `/home/mandrake/rm/bench` |
+| `Start Agent Fleet.lnk` (Desktop + Startup) | `C:\Users\Mandrake\OneDrive\Desktop\`, `…\Start Menu\Programs\Startup\` | `D:\Luke\dev\RimMandrake\…\launch_fleet.ps1` (junction alias) | `D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\launch_fleet.ps1` (real folder; Windows-side script, opens WT profiles by name, so the mirror is its right home) |
+| `rc rescue` / `rc server` (`~/.local/bin/rc`, `rescue`) | `D:\Luke\dev\claude-remote-control\scripts\rc` | `/mnt/d/Luke/dev/RimMandrake` | `/home/mandrake/rm/bench` |
 | Scheduled tasks | `schtasks` | only `\WSL Keepalive` (`sleep infinity`, no repo cwd) | nothing to change |
 | systemd user units | `~/.config/systemd/user/` | `claude-seats.slice`, `hestia.service` (Hestia tree) — no RimMandrake cwd; `lodestar-sync.timer` runs from `/home/mandrake` | nothing to change |
 | Lodestar sweep target | `D:\Luke\dev\Lodestar\sync\registry.md` | `~/dev/RimMandrake` (Send off, Receive on) | Machine-paths override `RimMandrake | home | ~/rm/bench` — otherwise the gitless mirror would read as absent and `clone_step` would try to clone into it |
@@ -29,7 +29,7 @@ touched; every change takes effect on the next launch.
   its own clone's `claude_bounded.sh`, non-seat Claude tiles run BENCH's; re-run `--apply` reproduces the
   live profiles exactly (0 field diffs measured after apply).
 - `src/RimMandrake/Utils/claude_bounded.sh` — `SLICE_SRC` was already derived from its own location upstream (`f610d7eac`, was
-  hardcoded `/mnt/d/Luke/dev/Rimworld/…`).
+  hardcoded `/mnt/d/Luke/dev/RimMandrake/…`).
 - `src/RimMandrake/Utils/set_agent_window.sh` — repo-root walk tests `-e .git` (a worktree slot's `.git` is
   a file); it already derived its root from its own location.
 - `src/RimMandrake/Utils/install_fleet_shortcut.py` — points at the real `D:\Luke\dev\RimMandrake` folder.

@@ -266,7 +266,7 @@ true figure is lower; the re-run measures it. 13.6% is Phase 5's bar.
   `/home/mandrake/rm/bench` gets a *new, empty* memory dir; it must be symlinked to the old one before
   the first launch. `settings.local.json`, `CLAUDE_PROJECT_DIR`-relative hooks, Waypoint/Lodestar
   registry entries and the `~/dev` symlink point at D:\ and need the new path.
-- **Hooks:** `block_shared_tree_merge.py` (path-matches the main worktree, still names `/mnt/d/Luke/dev/Rimworld`) → rewritten;
+- **Hooks:** `block_shared_tree_merge.py` (path-matches the main worktree, still names `/mnt/d/Luke/dev/RimMandrake`) → rewritten;
   `block_blanket_git_stage.py` and `queue_lint.py` (shared-index assumptions, `is_generated`) → keep,
   update generated list; `block_dll_source_mismatch.py` → keep, adds the FOUNDRY-only rule;
   `warn_unclosed_queue_item.py`/`warn_close_live_proof_owed.py` match `git` text → unaffected.

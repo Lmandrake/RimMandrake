@@ -865,7 +865,7 @@ before either, and re-verify U8 first.
 | L28 | Repaired = *"Full function"* — accurate for the **1.0 rung** and wrong for the Refurbished grade at 0.75. The line does not get deleted; it moves to whichever def becomes 1.0, and Refurbished gets language for three-quarters |
 | L43–69 §1 | the parallel-def / duplicate-machine question is live but no longer knows which layer owns it (§9.2-I) |
 | L457, L481 | *"~25 minutes into a load"* — superseded by the measured ~15 min |
-| L152–157 | candidate art path `file:///D:/Luke/dev/Rimworld/src/Jawa/art_bench/smelter/` — a pre-migration `D:` path. Verify before trusting the "do not delete" instruction that depends on it |
+| L152–157 | candidate art path `file:///D:/Luke/dev/RimMandrake/src/Jawa/art_bench/smelter/` — a pre-migration `D:` path. Verify before trusting the "do not delete" instruction that depends on it |
 | L562 | lists the three defNames — rename |
 | L577–590 §6 | the provisional cost table's rung labels "→ kludged / → repaired" |
 
