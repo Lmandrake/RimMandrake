@@ -28,12 +28,13 @@ def check(ok, what):
 
 
 POOL = {"pool_clones": 1, "pool_clones_cap": 10, "pool_gb": 1.0, "pool_gb_cap": 40.0}
-LOOSE = dict.fromkeys(("rm_scratch_clones", "rm_scratch_gb", "selftest_stale", "session_dirs", "session_stale", "refused", "refused_gb",
+LOOSE = dict.fromkeys(("rm_scratch_clones", "rm_scratch_left", "rm_scratch_gb", "selftest_stale", "session_dirs", "session_stale", "refused", "refused_gb",
                        "oldest_h", "root_disk_pct"), 1e9)
 
 
 def limits(path: Path, **start):
-    path.write_text(json.dumps({"_why": "test", "start": {**LOOSE, **start}, "end": {**LOOSE, **start}}))
+    begin = {k: v for k, v in {**LOOSE, **start}.items() if k != "rm_scratch_left"}   # only a judged run knows what it left
+    path.write_text(json.dumps({"_why": "test", "start": begin, "end": {**LOOSE, **start}}))
 
 
 def stale_fixture(root: Path, name="selftest_a"):
@@ -153,6 +154,30 @@ def main():
           % endrec["problems"])
     check(endrec["measures"]["session_dirs"] == 467, "the session dirs are seen (the instrument can see): %s" % endrec["measures"]["session_dirs"])
     shutil.rmtree(root / "W")
+
+    # the 2026-11-06 14:01Z live end, under the SHIPPED limits: 17 clones in rm/scratch/BENCH, every one a YOUNG row (a
+    # live session's work packages, hours old). Young work is what a run may honestly leave, so the end is quiet; the
+    # count stays a reading (ops_watch's clones-outside-the-pool rule reads it). A clone the run LEFT still alarms.
+    names = [f"wp{i:02d}" for i in range(1, 16)] + ["review2", "wpdisp"]
+    for n in names:
+        (td / "rm_scratch" / "BENCH" / n / ".git" / "objects").mkdir(parents=True)
+    young_clones = [{"verdict": "YOUNG", "bytes": 3 * 10 ** 8, "age_h": 3.0, "why": [], "kind": "clone",
+                     "path": str(td / "rm_scratch" / "BENCH" / n)} for n in names]
+    R.judge_all = lambda ctx: [dict(r) for r in young_clones]
+    run_heard()
+    endrec = json.loads((sd / "sanity.json").read_text())["end"]
+    check(endrec["problems"] == [], "the live 14:01Z end (17 young rm/scratch clones) is not dirt under the shipped limits: %s"
+          % endrec["problems"])
+    check(endrec["measures"]["rm_scratch_clones"] == 17,
+          "the rm/scratch clones are still read at the end (the instrument can see): %s" % endrec["measures"].get("rm_scratch_clones"))
+    left = dict(young_clones[0], verdict="REFUSE", why=["/x: a rebase-merge is in progress"])
+    R.judge_all = lambda ctx: [left] + [dict(r) for r in young_clones[1:]]
+    limits(lim, rm_scratch_left=0)
+    run_heard()
+    endrec = json.loads((sd / "sanity.json").read_text())["end"]
+    check(endrec["problems"] == ["rm_scratch_left 1 over 0"],
+          "a clone the run left in rm/scratch is still dirt at the end: %s" % endrec["problems"])
+    shutil.rmtree(td / "rm_scratch")
 
     # clean at both ends: silent
     R.judge_all = lambda ctx: []

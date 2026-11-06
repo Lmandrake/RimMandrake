@@ -2357,7 +2357,13 @@ def measure(now: float, rows: list[dict] | None, prev: dict) -> dict:
     else:
         left = [r for r in rows if r["verdict"] not in ("DELETED", "YOUNG")]
         bad = [r for r in rows if r["verdict"] == "REFUSE"]
+        # rm/scratch clones the run LEFT: young work is a reading, never dirt at the end (2026-11-06, 17 young clones of
+        # a live session read "rm_scratch_clones 17 over 8"; OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ). The count stays a
+        # reading for ops_watch's clones-outside-the-pool rule.
+        top = str(scratch.resolve()) + os.sep
         m.update(refused=len(bad), refused_gb=round(sum(r["bytes"] or 0 for r in bad) / 1e9, 2),
+                 rm_scratch_left=sum(1 for r in left if r.get("kind") == "clone" and r.get("path")
+                                     and (str(Path(r["path"]).resolve()) + os.sep).startswith(top)),
                  oldest_h=round(max([r["age_h"] or 0.0 for r in left] + fx_ages, default=0.0), 1))
     return m
 
