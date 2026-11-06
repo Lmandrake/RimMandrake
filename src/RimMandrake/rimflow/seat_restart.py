@@ -277,14 +277,18 @@ def _parse_line(raw):
     return r
 
 
-def _tail_records(path, nbytes):
+def _tail_records(path, nbytes, info=None):
     """-> the records in the last nbytes of path. Raises Malformed on a bad line or a torn last record (callers turn it
-    into UNMEASURED; OSError likewise)."""
+    into UNMEASURED; OSError likewise). info, a dict, gets "end": the byte offset just past the last byte parsed (the
+    file may have grown after the seek; this is where THIS read stopped)."""
     with open(path, "rb") as f:
         f.seek(0, os.SEEK_END)
         size = f.tell()
-        f.seek(max(0, size - nbytes))
+        start = max(0, size - nbytes)
+        f.seek(start)
         data = f.read()
+    if info is not None:
+        info["end"] = start + len(data)
     lines = data.split(b"\n")
     if lines and lines[-1].strip():
         raise Torn("torn last record (no newline at EOF)")
@@ -436,14 +440,17 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
     an API error's synthetic reply, not a size: the last true reading stands. A compact_boundary ends the old reading:
     None until the next call, so a size the window no longer has can start nothing. last_user_at: the last HUMAN input
     only (_is_human_input; peers default to every scheduled seat's names) — that is what cancels a restart. open_tool:
-    the tool the last record asked for, None once its result is in."""
+    the tool the last record asked for, None once its result is in. size: the byte offset where this read ended, so a
+    restart this reading starts can bind its cursor to the very bytes it judged (_snapshot_cursor)."""
     if peers is None:
         peers = peer_names()
+    info = {}
     try:
-        recs = _tail_records(path, tail_bytes)
+        recs = _tail_records(path, tail_bytes, info)
     except (OSError, Malformed):          # fail closed: an unreadable or torn tail is no reading at all
         return None
-    s = {"last_kind": None, "last_at": None, "last_user_at": None, "ctx_tokens": None, "open_tool": None}
+    s = {"last_kind": None, "last_at": None, "last_user_at": None, "ctx_tokens": None, "open_tool": None,
+         "size": info.get("end")}
     for r in recs:
         q = _queued_as_user(r)
         if q is not None:                # typed mid-turn: counts as his input, does not change the turn's state
@@ -692,6 +699,22 @@ def last_human(path, peers=None):
     except (OSError, Malformed):
         return None
     return best + (size,)
+
+
+def _snapshot_cursor(tx, lh):
+    """-> (cursor, None) or (None, why not). A backstop is judged on the tx reading (size, idle, ended turn) and its
+    cursor must be that SAME reading's end, never the end of a later last_human read (blind review 3 P0-2, item
+    FOUNDRY_BACKSTOP_REPAIR_CURSOR_HIDES_INPUT): a message landing between the two reads would sit before the cursor,
+    and no scan could ever see it. Byte positions only, never a timestamp (a missing or backdated clock hides nothing).
+    His last input ending past the snapshot -> no backstop; the file shorter than the snapshot -> no backstop."""
+    end = (tx or {}).get("size")
+    if end is None:
+        return None, "the size reading has no byte end (cannot bind the cursor to it)"
+    if lh is None or lh[3] is None or lh[3] < end:
+        return None, "the transcript is unreadable or shorter than the size reading"
+    if lh[2] is not None and lh[2] > end:
+        return None, "his input arrived after the size reading (byte %d > %d)" % (lh[2], end)
+    return end, None
 
 
 def last_goodbye(path, is_bye, peers=None):
@@ -1401,11 +1424,15 @@ def _hard_pending(seat, cfg, R, st, ro, cur, tx, now, act):
     if lh is None:
         _no_boundary(seat, cfg, sc, now, act, "the transcript cannot be read for his last input")
         return None
+    cursor, why = _snapshot_cursor(tx, lh)
+    if cursor is None:
+        _no_boundary(seat, cfg, sc, now, act, why)
+        return None
     rs = R[seat] = {"source": "backstop_hard", "hard": True, "ts": now, "session_id": cur.get("sessionId"),
                     "pid": cur.get("pid"), "start": born, "ticket": None, "ctx_tokens": tx["ctx_tokens"],
                     "reason": "hard context limit: %d tokens >= %d" % (tx["ctx_tokens"], cfg["backstop_hard_tokens"]),
                     "busy": 0, "cooldown_s": cfg["cooldown_s"], "state": "pending",
-                    "cancel_after": lh[0] or tx.get("last_user_at") or now, "tx_offset": lh[3] or 0,
+                    "cancel_after": lh[0] or tx.get("last_user_at") or now, "tx_offset": cursor,
                     "tx_path": transcript_for(cur, cfg)}
     act(do="restart_request", seat=seat, session_id=rs["session_id"], synthetic=True, why=rs["reason"])
     return rs
@@ -1575,11 +1602,14 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                 return
             if tx.get("last_kind") != "assistant_end" or now - (tx.get("last_at") or now) < cfg["backstop_idle_s"]:
                 return
-            # bind the cursor to EOF of the one read that found his LAST input (blind review 3 F2, F3): nothing before
-            # it can be a later human message, so a notification since then cannot cancel and nothing lands behind it
+            # the cursor is the END of the tx reading this backstop was judged on (blind review 3 P0-2, P1-3): an input
+            # that predates it cannot cancel, and one that lands after it, even before the last_human read, always does
             lh = ro["last_human"](seat, cur) if callable(ro.get("last_human")) else None
             if lh is None:
                 return                           # unreadable or malformed transcript: no backstop (fail closed)
+            cursor, _why = _snapshot_cursor(tx, lh)
+            if cursor is None:
+                return                           # fail closed: no restart is created, so none is cancelled each tick
             # a window the owner talks to (the Conductor) is backstopped only after he has typed nothing for
             # backstop_human_idle_s, by that same read; no readable human message -> no backstop (never kill a conversation)
             hi = cfg.get("backstop_human_idle_s") or 0
@@ -1597,7 +1627,7 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                                 tx["ctx_tokens"], cfg["backstop_ctx_tokens"], now - tx["last_at"]),
                             "busy": 0, "cooldown_s": cfg["cooldown_s"], "state": "pending",
                             # the whole transcript is scanned for a human input after the last one this read saw
-                            "cancel_after": lh[0] or tx.get("last_user_at") or now, "tx_offset": lh[3] or 0,
+                            "cancel_after": lh[0] or tx.get("last_user_at") or now, "tx_offset": cursor,
                             "tx_path": transcript_for(cur, cfg)}
             act(do="restart_request", seat=seat, session_id=rs["session_id"], synthetic=True, why=rs["reason"])
         else:

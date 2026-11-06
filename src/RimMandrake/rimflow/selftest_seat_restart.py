@@ -72,6 +72,8 @@ def obs(sessions=None, request=None, tx=None, helpers=(), bridge=None, game=None
     """One tick's reading. Defaults: the window idle and quiet (ended its turn long ago), nothing held."""
     tx = dict({"last_kind": "assistant_end", "last_at": T0 - 600, "last_user_at": T0 - 900, "ctx_tokens": 50_000},
               **(tx or {}))
+    if "size" not in tx and last_human:  # the size reading ends where the last_human read did unless a test says not
+        tx["size"] = last_human[3]
     return {"paused": paused,
             "owner": _no_presence,      # owner 2026-10-30: never read; calling it fails the tick
             "agents": {"state": "MEASURED", "sessions": [sess()] if sessions is None else sessions},
@@ -2143,6 +2145,69 @@ def test_conductor_backstop_cursor_is_eof_of_its_read():
     sc = SR.cursor_scan(p, lh[3], [])
     verdict = SR.cursor_verdict({"kind": "conductor"}, {"source": "backstop", "tx_offset": lh[3], "ts": T0}, sc, T0)
     check(verdict[0] == "cancel", "CB cursor: his message after the bind cancels (%s)" % (verdict,))
+
+
+def test_backstop_cursor_from_eligibility_snapshot():
+    # blind review 3 P0-2 (item FOUNDRY_BACKSTOP_REPAIR_CURSOR_HIDES_INPUT): the backstop is judged on one tx reading;
+    # a message that lands after that reading but before the last_human read must never sit behind the cursor. Real
+    # files, real tx_summary / last_human / cursor_scan; his message is backdated or has no timestamp at all.
+    def note(ts):
+        return {"type": "user", "timestamp": ts, "origin": {"kind": "task-notification"},
+                "message": {"role": "user", "content": "<task-notification>done</task-notification>"}}
+    # last_user_at as the size reading saw it (his 09:00 message), so a backdated late one passes the timestamp check
+    LATE = "1970-01-12T09:00:05Z"   # arrives at 13:46 but stamped 4.7 h back: past the 4 h gate, after 09:00
+    over = {"ctx_tokens": 150_000, "last_kind": "assistant_end", "last_at": T0 - 4000,
+            "last_user_at": SR._ts("1970-01-12T09:00:00Z")}
+    for label, late, hi0 in (("backdated", _hu(LATE, "wait, one more thing"), False),
+                             ("no timestamp", dict(_hu(LATE, "wait, one more thing"), timestamp=None),
+                              True),
+                             ("queued mid-read", {"type": "attachment", "timestamp": LATE,
+                                                  "attachment": {"type": "queued_command", "commandMode": "prompt",
+                                                                 "prompt": "wait, one more thing",
+                                                                 "origin": {"kind": "human"}}}, True)):
+        p, ends = _bt("sid-old", [_hu("1970-01-12T09:00:00Z", "last thing he said"), _ha("1970-01-12T09:00:10Z"),
+                                  note("1970-01-12T09:30:00Z"), _ha("1970-01-12T09:30:10Z")])
+        tx = SR.tx_summary(p, peers=[])
+        check(tx and tx.get("size") == os.path.getsize(p) == ends[-1],
+              "P0-2 %s: tx_summary records where its read ended (%s vs %d)" % (label, (tx or {}).get("size"), ends[-1]))
+        end = ends[-1]                                # the bytes that reading judged
+        with open(p, "a", encoding="utf-8") as f:     # he types between the size reading and the last_human read
+            f.write(json.dumps(late) + "\n")
+        lh = SR.last_human(p, [])
+        check(lh and lh[2] == os.path.getsize(p), "P0-2 %s fixture: last_human sees the late message (%s)" % (label, lh))
+        sch, st = _conductor_like_foundry(), fresh()
+        if hi0:   # a seat with no human-idle gate (FOUNDRY's doorbell line): only the cursor can catch it
+            sch["seat_restart"]["seats"]["BENCH"]["backstop_human_idle_s"] = 0
+        o = obs(sessions=[bsess()], tx=dict(over, size=end), last_human=lh)
+        o["seat_restart"]["cursor"] = lambda seat, s_, rs, p=p: SR.cursor_scan(p, rs.get("tx_offset"), [])
+        a = []
+        for k in range(12):
+            a += run(sch, st, o, T0 + 25 * k)
+        rs = st["seat_restart"].get("BENCH") or {}
+        check("restart_kill" not in dos(a),
+              "P0-2 %s: his message after the size reading is never killed over (%s %s cursor=%s)" % (
+                  label, bstate(st), dos(a), rs.get("tx_offset")))
+        check(rs.get("tx_offset") is None or rs["tx_offset"] <= end,
+              "P0-2 %s: no cursor past the bytes the backstop judged (%s > %s)" % (label, rs.get("tx_offset"), end))
+    # an input that is not his, landing between the reads, sits AFTER the cursor and a Conductor restart cancels on it
+    p, ends = _bt("sid-old", [_hu("1970-01-12T09:00:00Z", "last thing he said"), _ha("1970-01-12T09:00:10Z")])
+    end = ends[-1]
+    with open(p, "a", encoding="utf-8") as f:
+        f.write(json.dumps(note("1970-01-12T05:00:00Z")) + "\n")
+    lh = SR.last_human(p, [])
+    sch, st = _conductor_like_foundry(), fresh()
+    o = obs(sessions=[bsess()], tx=dict(over, size=end), last_human=lh)
+    o["seat_restart"]["cursor"] = lambda seat, s_, rs: SR.cursor_scan(p, rs.get("tx_offset"), [])
+    a = run(sch, st, o, T0) + run(sch, st, o, T0 + 25)
+    rs = st["seat_restart"].get("BENCH") or {}
+    check(rs.get("tx_offset") == end and "restart_cancel" in dos(a) and "restart_kill" not in dos(a),
+          "P0-2 control: bound at the size reading's end, the notification between the reads cancels (%s %s)" % (
+              rs.get("tx_offset"), dos(a)))
+    # the snapshot rule in isolation: no byte end, a shrunk file, his input past the end -> no cursor
+    check(SR._snapshot_cursor({"size": None}, (None, None, None, 10))[0] is None, "P0-2: no size reading -> no cursor")
+    check(SR._snapshot_cursor({"size": 50}, (None, None, None, 40))[0] is None, "P0-2: file shorter than the read -> none")
+    check(SR._snapshot_cursor({"size": 50}, (1.0, {}, 60, 60))[0] is None, "P0-2: his input past the read -> none")
+    check(SR._snapshot_cursor({"size": 50}, (1.0, {}, 40, 70)) == (50, None), "P0-2: else the read's own end")
 
 
 def test_k1_goodbye_kill_on_backstop_off():
