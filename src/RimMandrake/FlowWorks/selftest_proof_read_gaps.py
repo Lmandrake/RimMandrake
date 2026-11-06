@@ -218,6 +218,23 @@ def gcs():
           "A1 live proof FAILS rows from an old bridge (no dl/fluid)")
     check(PF.judge({"success": True, "rows": [{"x": 1, "z": 1, "dl": 0, "fluid": None}]})[0] == 0, "A1 live proof passes new rows")
     check(PF.judge({"success": False})[0] == 2, "A1 live proof is NO VERDICT on a failed call")
+    # The live round's rows (2026-11-06): the transport drops null members, so a dry cell has neither fluid nor terrain.
+    live = {"success": True, "rows": [{"x": 125, "z": 125, "d": 0, "f": 0, "dEff": 0, "fEff": 0, "dl": 0,
+                                       "isExcavated": False, "isSource": False, "isSink": False}]}
+    ctl = {"success": True, "rows": [{"x": 125, "z": 125, "d": 0, "f": 0, "dl": 0, "terrain": "Sand"}]}
+    check(PF.judge(live, ctl)[0] == 0, "A1 passes a null-dropped fluid when terrain is dropped too and the control carries it")
+    check(PF.judge(live)[0] == 2, "A1 is NO VERDICT on a null-dropped fluid with no control")
+    no_dl = {"success": True, "rows": [{k: v for k, v in live["rows"][0].items() if k != "dl"}]}
+    check(PF.judge(no_dl, ctl)[0] == 1, "mutant: a row without dl FAILS even with a good control")
+    kept_nulls = {"success": True, "rows": [dict(live["rows"][0], terrain=None)]}
+    check(PF.judge(kept_nulls, ctl)[0] == 1, "mutant: fluid absent while nulls survive transport (terrain: null) FAILS")
+    ctl_no_terrain = {"success": True, "rows": [{"x": 125, "z": 125, "dl": 0}]}
+    check(PF.judge(live, ctl_no_terrain)[0] == 1, "mutant: literal lost its nullable members (control has no terrain) FAILS")
+    ctl_no_dl = {"success": True, "rows": [{"x": 125, "z": 125, "terrain": "Sand"}]}
+    check(PF.judge(live, ctl_no_dl)[0] == 1, "mutant: control row without dl FAILS")
+    check(PF.judge({"success": True, "rows": [{"x": 1, "z": 1, "dl": 3, "fluid": 7}]})[0] == 1, "mutant: non-string fluid FAILS")
+    check(PF.judge({"success": True, "rows": [{"x": 1, "z": 1, "dl": -1, "fluid": None}]})[0] == 1, "mutant: negative dl FAILS")
+    check(PF.judge({"success": True, "rows": [{"x": 1, "z": 1, "dl": 40, "fluid": "RM_Water"}]})[0] == 0, "A1 passes a wet row")
 
 
 def main():
