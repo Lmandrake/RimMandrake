@@ -8,7 +8,11 @@ rimbridge_client (`start`/`end` rows with pid, cid, t). Refuse when a foreign pi
 RM_ALLOW_CONCURRENT_BRIDGE=1. Log missing/unreadable => allow (WSL has no log; never block on blindness).
 BRIDGEGUARD_FIX_DEAD_PID_STILL_BLOCKS: an unended start whose writer process is provably gone (pid dead, or pid
 reused: its recorded pid_start differs) is a crashed client, not a live call, and no longer refuses. A writer this
-process cannot check (another OS, no pid) stays presumed alive."""
+process cannot check (another OS, no pid) stays presumed alive.
+GAMEENV_FIX_HARNESS_09849AF1_ITEMS_WAIT: one driver that runs its calls as a SEQUENCE of processes (Relentless's live
+lane: a one-shot jawa/running_mods health read, then live_site.py) is not two clients. Its process exports LINEAGE_ENV
+(export_lineage, carried to python.exe children through WSLENV); rimbridge_client writes it on each start row, and a
+row carrying the caller's own non-empty lineage is the caller's own, like its own pid."""
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
@@ -20,6 +24,7 @@ import time
 WINDOW_S = 10           # a foreign call that ENDED within this many seconds still counts as active
 UNENDED_S = 900          # an unended start older than this is a dead client, not a live call
 TAIL_BYTES = 400000
+LINEAGE_ENV = "RM_BRIDGE_LINEAGE"   # one sequential driver's token, shared by every process it starts
 
 
 class ConcurrentBridgeClient(RuntimeError):
@@ -31,6 +36,19 @@ def default_log():
     if p is not None:
         return p
     return rm_win("scratch", "bridge_calls.jsonl") if os.name == "nt" else ""
+
+
+def export_lineage(token=None, env=None):
+    """Make this process and every child (a python.exe one too, via WSLENV) one driver lineage; keeps an existing
+    token, so a nested driver stays in its parent's lineage. -> the token."""
+    env = os.environ if env is None else env
+    if not env.get(LINEAGE_ENV):
+        import uuid
+        env[LINEAGE_ENV] = token or uuid.uuid4().hex[:12]
+    names = [n for n in (env.get("WSLENV") or "").split(":") if n]
+    if not any(n.split("/")[0] == LINEAGE_ENV for n in names):
+        env["WSLENV"] = ":".join(names + [LINEAGE_ENV])
+    return env[LINEAGE_ENV]
 
 
 def _ts(s):
@@ -49,14 +67,16 @@ def writer_alive(row):
         return True
 
 
-def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S, alive=None):
-    """Return a description of recent foreign-pid activity, or None."""
+def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S, alive=None, lineage=None):
+    """Return a description of recent foreign-pid activity, or None. lineage: the caller's driver token (default
+    LINEAGE_ENV); a row carrying the same non-empty token is the caller's own."""
     log = default_log() if log is None else log
     if not log or not os.path.exists(log):
         return None
     now = time.time() if now is None else now
     own_pid = os.getpid() if own_pid is None else own_pid
     alive = writer_alive if alive is None else alive
+    lineage = os.environ.get(LINEAGE_ENV, "") if lineage is None else lineage
     try:
         with open(log, "rb") as fh:
             fh.seek(0, 2)
@@ -79,7 +99,7 @@ def foreign_activity(log=None, now=None, own_pid=None, window_s=WINDOW_S, alive=
             except (KeyError, ValueError):
                 ended[r.get("cid")] = now
     for cid, r in starts.items():
-        if r.get("pid") in (None, own_pid):
+        if r.get("pid") in (None, own_pid) or (lineage and r.get("lineage") == lineage):
             continue
         try:
             age = now - _ts(r["t"])

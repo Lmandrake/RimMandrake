@@ -49,6 +49,30 @@ check("empty log path allows", G.foreign_activity("", now, 222) is None)
 write([st("a", 111, 20)])
 try: G.refuse_if_foreign_activity("go_to_main_menu", log=p, now=now, own_pid=222, alive=LIVE); check("raises", False)
 except G.ConcurrentBridgeClient: check("raises ConcurrentBridgeClient", True)
+# GAMEENV_FIX_HARNESS_09849AF1_ITEMS_WAIT: the instance. relentless_live's health read (a one-shot python.exe
+# jawa/running_mods client, pid 42468) ended 6 s before live_site.py (pid 33880) asked for go_to_main_menu: one driver
+# running a sequence of processes, refused as a concurrent client. A shared lineage token makes them one driver.
+os.environ.pop(G.LINEAGE_ENV, None)
+rm = lambda lin: dict(st("i", 42468, 6, "jawa/running_mods"), script="rimbridge_client.py", **({"lineage": lin} if lin else {}))
+write([rm(None), en("i")]); check("instance: no lineage, health read 6 s before refuses (the old behaviour)", G.foreign_activity(p, now, 33880, alive=lambda r: False) is not None)
+write([rm("L1"), en("i")]); check("instance: same lineage proceeds", G.foreign_activity(p, now, 33880, alive=lambda r: False, lineage="L1") is None)
+write([rm("L1"), en("i")]); check("other lineage still refuses", G.foreign_activity(p, now, 33880, alive=LIVE, lineage="L2") is not None)
+write([rm("L1"), en("i")]); check("caller with no lineage still refuses a lineage row", G.foreign_activity(p, now, 33880, alive=LIVE, lineage="") is not None)
+write([rm(None), en("i")]); check("empty lineages never match", G.foreign_activity(p, now, 33880, alive=LIVE, lineage="") is not None)
+write([dict(rm("L1"), cid="j"), rm("L1"), en("i")]); check("same-lineage unended call is own too", G.foreign_activity(p, now, 33880, alive=LIVE, lineage="L1") is None)
+e = {"WSLENV": "A/p"}; tok = G.export_lineage(env=e)
+check("export_lineage sets a token and carries it to python.exe via WSLENV", tok and e[G.LINEAGE_ENV] == tok and e["WSLENV"] == "A/p:" + G.LINEAGE_ENV)
+check("export_lineage keeps an existing token (nested driver stays in its parent's lineage)", G.export_lineage(env=e) == tok and e["WSLENV"].count(G.LINEAGE_ENV) == 1)
+src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "rimbridge_client.py"), encoding="utf-8").read()
+check("rimbridge_client writes the lineage on each start row", '"lineage": os.environ.get("%s")' % G.LINEAGE_ENV in src)
+import subprocess as _sp
+rl = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "rimflow")
+out = _sp.run([sys.executable, "-c", "import sys, os; sys.path.insert(0, %r); os.environ.pop(%r, None); import relentless_live as L; "
+               "L.Fx(); print(os.environ.get(%r, ''), os.environ.get('WSLENV', ''))" % (rl, G.LINEAGE_ENV, G.LINEAGE_ENV)],
+              capture_output=True, text=True, timeout=120)
+w = (out.stdout.strip().split("\n") or [""])[-1].split(" ")
+check("relentless_live.Fx exports a lineage for its children (%s)" % (out.stderr.strip()[-200:] or "ok"),
+      out.returncode == 0 and len(w) == 2 and w[0] and G.LINEAGE_ENV in w[1].split(":"))
 os.environ["RM_ALLOW_CONCURRENT_BRIDGE"] = "1"
 G.refuse_if_foreign_activity("go_to_main_menu", log=p, now=now, own_pid=222, alive=LIVE); check("env override allows", True)
 print("FAIL" if F else "PASS", len(F), "failure(s)")

@@ -1090,6 +1090,13 @@ class Fx(object):
 
     def __init__(self, books=BOOKS, seat="BENCH", mods_dir=GAME_MODS):
         self.books, self.seat, self.mods_dir = books, seat, mods_dir
+        # GAMEENV_FIX_HARNESS_09849AF1_ITEMS_WAIT: the health read and live_site.py are this one driver's processes,
+        # not a concurrent client: one lineage for all of them (bridge_concurrency_guard.export_lineage)
+        utils = os.path.join(os.path.dirname(HERE), "Utils")
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        import bridge_concurrency_guard
+        bridge_concurrency_guard.export_lineage()
 
     def item(self, item_id):
         sys.path.insert(0, HERE)

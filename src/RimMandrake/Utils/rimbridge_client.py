@@ -1134,6 +1134,7 @@ class RimBridge:
                  "args_sha256": _args_sha(params), "mutating": mutating, "pid": os.getpid(), "os": os.name,
                  "pid_start": _proc_start(os.getpid()),
                  "seat": os.environ.get("RIMFLOW_SEAT") or os.environ.get("AGENT_SEAT"),
+                 "lineage": os.environ.get("RM_BRIDGE_LINEAGE") or None,   # bridge_concurrency_guard.LINEAGE_ENV
                  "script": os.path.basename(sys.argv[0]) if sys.argv else "", "client": self.client_name,
                  "endpoint": "%s:%s" % (self.host, self.port)}
         if crossed:
