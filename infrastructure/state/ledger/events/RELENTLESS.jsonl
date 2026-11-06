@@ -846,3 +846,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:50:22Z","tsn":1793929822672980479}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ASHKARR_WEATHER_INSTALL_THE_SLEEPING_STORMS: deploy and restart for its live proofs","ts":"2026-11-06T01:54:15Z","tsn":1793930055367034926}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless staging ASHKARR_WEATHER_INSTALL_THE_SLEEPING_STORMS (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T02:14:54Z","tsn":1793931294895366879}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T02:37:46Z","tsn":1793932666510262417}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T02:38:23Z","tsn":1793932703308095288}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T02:38:34Z","tsn":1793932714345662473}
