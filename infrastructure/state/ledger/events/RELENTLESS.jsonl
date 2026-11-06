@@ -1261,3 +1261,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","ts":"2026-11-06T16:48:04Z","tsn":1793983684071745962}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:52:59Z","tsn":1793983979331958304}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T16:53:21Z","tsn":1793984001253686751}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:57:47Z","tsn":1793984267862846867}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T16:57:56Z","tsn":1793984276711300794}
