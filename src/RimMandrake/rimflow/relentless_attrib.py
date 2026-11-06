@@ -100,7 +100,7 @@ def withhold(store, st, klass, detail, r, now, sup, diagnose=True):
     st["wait"] = {"kind": WAIT_ATTRIB, "class": klass, "detail": (detail or "")[:2000], "since": now,
                   "sha": st["candidate"]["sha"], "resume": resume}
     st["last_fail"] = {"class": klass, "detail": (detail or "")[:2000], "at": now}
-    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"], "end": klass, "detail": (detail or "")[:600],
+    store.attempt_once(st["item"], {"at": iso(now), "gen": st["gen"], "end": klass, "detail": (detail or "")[:600],
                                "gated": WAIT_ATTRIB, "sha": st["candidate"]["sha"]})
     store.learn(st["item"], "- %s gen %d %s withheld: no strike until it is attributed: %s"
                 % (iso(now), st["gen"], klass, (detail or "")[:600]))

@@ -373,6 +373,13 @@ class Store:
     def attempt(self, item, rec):
         self._append(os.path.join(self.item_dir(item), "attempts.jsonl"), json.dumps(rec, sort_keys=True))
 
+    def attempt_once(self, item, rec):
+        """An ending's row, unless the last row is this same row: the one a tick wrote before it was killed short of the save
+        that consumes the ending, so the next tick reaches here again (RELENTLESS_PROVE_CLOSE_CRASH_EACH_STEP)."""
+        rows = self.attempts(item)
+        if not rows or {k: v for k, v in rows[-1].items() if k != "at"} != {k: v for k, v in rec.items() if k != "at"}:
+            self.attempt(item, rec)
+
     def learn(self, item, text):
         self._append(os.path.join(self.item_dir(item), "learned.md"), text)
 
@@ -549,8 +556,8 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
         n = sum(st["failures"].get(k, 0) for k in PROOF_ENDS)
         if n >= limit:
             relentless_strikes.hold(st, "%d returns and the proof still reads weak" % n, "proof_weak", now)
-        store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600],
-                                   "sha": (st.get("candidate") or {}).get("sha")})
+        store.attempt_once(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600],
+                                         "sha": (st.get("candidate") or {}).get("sha")})
         store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")[:600]))
         store.save(st)
         return
@@ -577,7 +584,7 @@ def fail(store, st, klass, detail, r, now, time_not_work=False, attributed=None)
     rec = {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600], "approach_next": st["approach"]}
     if time_not_work:
         rec["wait"] = True
-    store.attempt(st["item"], rec)
+    store.attempt_once(st["item"], rec)
     store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")[:600]))
     # loop breakers that redirect (CHURN_BREAKER_BUILD_RETRY_NEEDS_A_WARRANT): the next worker owes a retry warrant; one
     # capability failing many items is one incident; the same signature on three builds suspends rebuilding
@@ -609,8 +616,8 @@ def unmeasured(store, st, said, blind, r, now):
     st["blind"] = {"n": n, "sha": sha, "at": now, "said": said, "what": (blind or reasons)[:600],
                    "box": relentless_reach.fingerprint(r, st.get("contract"))}     # what a repair of the box would change
     st["check"] = None
-    store.attempt(st["item"], {"at": iso(now), "gen": st["gen"], "end": "unmeasured", "said": said,
-                               "detail": reasons[:600], "sha": sha})
+    store.attempt_once(st["item"], {"at": iso(now), "gen": st["gen"], "end": "unmeasured", "said": said, "nonce": chk.get("nonce"),
+                                     "detail": reasons[:600], "sha": sha})
     if relentless_reachfix.on(r):
         # BLIND_JUDGE_BUILD_FIXES_OWN_EYES: the first blind check ends the checking; the Judge's proposal is probed,
         # applied by the supervisor and the same sha checked once (relentless_reachfix.py). No clock re-check.
@@ -622,14 +629,18 @@ def unmeasured(store, st, said, blind, r, now):
                 # owes it, so it goes back like a WEAK proof with the blind text as its finding
                 what = st["blind"]["what"]
                 st["blind"] = None
+                line = ("blind check at %s: UNMEASURED (Marker said %s) on evidence the worker owes (%s), not a reach the "
+                        "box can repair: back to its worker: %s" % (sha, said, owed["class"], what[:300]))
+                st["ledger_note_owed"] = line
                 fail(store, st, "evidence_owed", "the Judge could not see evidence the worker owes (%s): produce it and "
                      "name its path under D:\\ClaudeWork in the finish evidence, which the box binds read only: %s"
                      % (owed["class"], what), r, now)
-                return ("blind check at %s: UNMEASURED (Marker said %s) on evidence the worker owes (%s), not a reach the "
-                        "box can repair: back to its worker: %s" % (sha, said, owed["class"], what[:300]))
+                return line
             said_line = relentless_reachfix.on_blind(store, st, r, now, said, blind)
         finally:
             st.pop("_blind_check", None)
+        if said_line:
+            st["ledger_note_owed"] = said_line
         gone = st.pop("_reach_back", None)
         if gone:
             reach_back(store, st, gone, r, now)
@@ -648,10 +659,12 @@ def unmeasured(store, st, said, blind, r, now):
         st["status"] = "candidate"
         st["recheck_at"] = now + r.get("unmeasured_recheck_s", 1800)
         relentless_cause.record(st, "recheck_cause", relentless_cause.of(blind or reasons, st["item"]), now)
-    store.save(st)
-    return ("blind check at %s: UNMEASURED (Marker said %s), the checker could not reach the evidence; no work goes back, "
+    line = ("blind check at %s: UNMEASURED (Marker said %s), the checker could not reach the evidence; no work goes back, "
             "%s: %s" % (sha, said, "held for repair of the box" if n >= limit else "checked again in %d s"
                         % r.get("unmeasured_recheck_s", 1800), (blind or reasons)[:400]))
+    st["ledger_note_owed"] = line
+    store.save(st)
+    return line
 
 
 def reach_back(store, st, why, r, now):
@@ -1615,7 +1628,7 @@ def _take_receipt(store, st, rec, now):
         store.journal({"at": iso(now), "do": "packet_report", "item": st["item"], "gen": rec["gen"], "words": words})
     st["status"] = "candidate"
     st["last_sha"] = rec["sha"]
-    store.attempt(st["item"], {"at": iso(now), "gen": rec["gen"], "end": "finish", "sha": rec["sha"]})
+    store.attempt_once(st["item"], {"at": iso(now), "gen": rec["gen"], "end": "finish", "sha": rec["sha"]})
     relentless_breakers.probe_passed(store, st["item"], now)
     store.save(st)
 
@@ -3133,6 +3146,7 @@ class Effects(relentless_game.GameFx):
         # writes nothing more. The doubled close lines of 2026-11-02 were not this: they are byte-identical lines that
         # git's merge=union writes twice on a rebase, and the reader collapses them (model.canonical_order).
         if self.closed(item):
+            self.settle_prose(item)
             return None
         # A blind PASS on a ledger-only candidate (a guard re-recorded, a filing) names no work: `close --sha` refuses it
         # for ever (RELENTLESS_CLOSE_FIX_EMPTY_DIFF_SAYS_NOTHING). Close at the commit that did the work, or say there is none.
@@ -3150,10 +3164,10 @@ class Effects(relentless_game.GameFx):
         # work, it is recorded on the candidate too, where it ran: a guard committed after the work (re-shown red, or written
         # by another item's commit) is found there (cli._guard_commit, CLOSE_SHA_FIX_REWINDS_PAST_GUARD)
         for at in ((sha, mark) if mark != sha else (mark,)):
-            if (item, at) in self.marked:
+            if (item, at) in self.marked or self.marker_said(item, at) == "pass":     # a kill after the verify: memory is gone
                 continue
             r = self.rimflow("verify", item, "--sha", at, "--result", "pass", "--level", "L0",
-                             "--config", "marker:blind-check", "--evidence", reason[:300], seat="RUNNER")
+                             "--config", pkg("model").MARKER_CONFIG, "--evidence", reason[:300], seat="RUNNER")
             if r.returncode != 0:
                 return (r.stderr or r.stdout)[-400:]
             self.marked.add((item, at))
@@ -3163,9 +3177,29 @@ class Effects(relentless_game.GameFx):
         if r.returncode == 0:
             return None
         if self.closed(item):
+            self.settle_prose(item)
             return None
         out = r.stderr or r.stdout
         return close_why(out)
+
+    def marker_said(self, item, sha):
+        """The last blind result the ledger holds for `item` on `sha` ("pass"/"fail"), or None. Read fresh, so a recovery
+        re-records nothing a killed tick already wrote (RELENTLESS_PROVE_CLOSE_CRASH_EACH_STEP)."""
+        said = None
+        for e in pkg("model").read():
+            if e.get("id") == item and e.get("event") == "verify" and e.get("sha") == sha and e.get("config") == pkg("model").MARKER_CONFIG:
+                said = e.get("result")
+        return said
+
+    def settle_prose(self, item):
+        """`rimflow close` writes its event, then moves the prose. A kill between them leaves a done item in the live glob
+        and every later close a no-op, so the no-op finishes the move; flush lands the pair (prose_moves). Like the verb's
+        own move: never over a file already in closed/."""
+        live = os.path.join(self.books, ITEMS_DIR, item + ".md")
+        kept = os.path.join(self.books, ITEMS_DIR, "closed", item + ".md")
+        if os.path.isfile(live) and not os.path.exists(kept):
+            os.makedirs(os.path.dirname(kept), exist_ok=True)
+            os.replace(live, kept)
 
     def touched(self, sha):
         """-> the paths `sha` changes, in books; None when git cannot read it."""
@@ -3199,14 +3233,24 @@ class Effects(relentless_game.GameFx):
     def ledger_marker_fail(self, item, sha, reasons):
         """The Marker's FAIL verdict on the ledger, as the run the Close gate reads (MARKER_FAIL_WIRE_INTO_CLOSE_LOCK;
         operations_design_2026-11-01.md §6): a `verify` fail on the candidate sha, RUNNER's like the PASS in ledger_close.
-        It locks a close only once model.MARKER_FAIL_LOCKS is on; a later blind PASS on a sha is newer and clears it."""
-        r = self.rimflow("verify", item, "--sha", sha, "--result", "fail", "--level", "L0", "--config", "marker:blind-check",
+        It locks a close only once model.MARKER_FAIL_LOCKS is on; a later blind PASS on a sha is newer and clears it.
+        Already the ledger's last word on this sha: a kill before the debt was cleared, nothing more to write."""
+        if self.marker_said(item, sha) == "fail":
+            return None
+        r = self.rimflow("verify", item, "--sha", sha, "--result", "fail", "--level", "L0", "--config", pkg("model").MARKER_CONFIG,
                          "--evidence", ("blind check FAIL: %s" % (reasons or "no reasons given"))[:300], seat="RUNNER")
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
     def ledger_note(self, item, text):
         r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor")
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+
+    def ledger_note_once(self, item, text):
+        """ledger_note, unless the ledger already holds this line: the one a tick killed before clearing its debt wrote."""
+        for e in pkg("model").read():
+            if e.get("id") == item and e.get("event") == "note" and e.get("text") == text[:NOTE_MAX]:
+                return None
+        return self.ledger_note(item, text)
 
     def run_fixture(self, cmd, timeout=180):
         """An incident's release fixture (relentless_incident.check), in the books tree. -> (exit, tail); exit None when it
@@ -5713,11 +5757,31 @@ def marker_fail_record(store, fx, item, acts):
     return True
 
 
+def ledger_note_record(store, fx, item, acts):
+    """A WEAK or UNMEASURED verdict's line owed to the ledger (st["ledger_note_owed"]), as marker_fail_record: written once,
+    then the debt cleared; a kill or a failed write leaves it owed, and the rewrite finds its own line first."""
+    owe = store.load(item).get("ledger_note_owed")
+    if not owe:
+        return
+    err = fx.ledger_note_once(item, owe)
+    if err:
+        acts.append({"do": "ledger_note_unrecorded", "item": item, "why": err[:200]})
+        return
+    with store.lock():
+        cur = store.load(item)
+        if cur.get("ledger_note_owed") == owe:
+            cur.pop("ledger_note_owed")
+            store.save(cur)
+
+
 def step(store, fx, r, item, now, acts):
     """One item, one transition. Crash anywhere and the next tick resumes from the persisted status."""
     st = store.load(item)
     if st.get("marker_fail_owed"):      # a blind FAIL the ledger has not heard: before anything else moves (r6 #17)
         marker_fail_record(store, fx, item, acts)
+        st = store.load(item)
+    if st.get("ledger_note_owed"):
+        ledger_note_record(store, fx, item, acts)
         st = store.load(item)
     s = st["status"]
     if s == "queued" and st.get("needs_back"):      # his hold lifted: the ledger still says owner
@@ -6053,6 +6117,10 @@ def step(store, fx, r, item, now, acts):
         died = fx.death_note(chk.get("run")) if word is None and not lost and \
             (chk.get("lost_seen") or now) - chk["at"] < r["check_max_s"] else None     # judged at first sighting (Codex r3)
         c = st["candidate"]
+        if word:       # a kill between verdict() and its receipt: taken here, as consuming the verdict may clear the check that
+            # harvest_receipts reads (the same nonce: never a second entry)
+            marker_receipt(store, item, str(c.get("sha") or ""), word, chk.get("nonce"), chk.get("reasons"), chk.get("defects"),
+                           chk.get("session"))
         drop = []      # a checker clone a retry lets go: removed out of the lock, or it sits an hour as an orphan
         told = []      # a quarantine's Conductor line, written out of the lock
         failed = None  # the Marker's FAIL (sha, reasons), written to the ledger out of the lock
@@ -6156,8 +6224,9 @@ def step(store, fx, r, item, now, acts):
                 weak = None
                 if acted == "WEAK":     # read_as decides: a word it reads as UNMEASURED was handled above
                     reasons = st["check"].get("reasons")
-                    fail(store, st, "proof_weak", reasons, r, now)
                     weak = "blind check at %s: WEAK, the proof has holes and the work is unproven; item stays open: %s" % (c["sha"], reasons or "")
+                    st["ledger_note_owed"] = weak       # as the FAIL's debt: in the state before the item moves
+                    fail(store, st, "proof_weak", reasons, r, now)
                     acts.append({"do": "proof_weak", "item": item})
                     if due:
                         told.append(quarantine(store, st, word, returns0, spent0, now))
@@ -6173,10 +6242,10 @@ def step(store, fx, r, item, now, acts):
             return
         if said:            # the ledger's own write and the clone's removal, out of the store's lock
             remove_check_clone(fx, gone)
-            fx.ledger_note(item, said)
+            ledger_note_record(store, fx, item, acts)
             return
         if weak:        # the ledger's own write, out of the store's lock
-            fx.ledger_note(item, weak)
+            ledger_note_record(store, fx, item, acts)
             return
         live = (st["contract"] or {}).get("live")
         broken = fx.live_check(live, fx.commit_time(c["sha"])) if live else None
@@ -6296,7 +6365,8 @@ def step(store, fx, r, item, now, acts):
             with store.lock():
                 st = store.load(item)
                 st["tomb_since"] = now
-                store.attempt(item, {"at": iso(now), "end": "done", "sha": c["sha"]})
+                if done_rows_owed(store, item, c["sha"], st["returns"])[0]:
+                    store.attempt(item, {"at": iso(now), "end": "done", "sha": c["sha"]})
                 store.save(st)
             remove_check_clone(fx, st)
             fx.remove_clone(st)
@@ -6637,13 +6707,40 @@ def remove_check_clone(fx, st):
         fx.remove_clone({"clone": c})
 
 
+def done_rows_owed(store, item, sha, returns):
+    """(attempt row owed, journal row owed) before a done save. A kill between these writes re-enters finished() from
+    `closing`, so what it finds here it does not write twice (RELENTLESS_PROVE_CLOSE_CRASH_EACH_STEP). The journal is read
+    only when an attempt row says this close was begun before: a recovery, or the tomb's road, never the plain close."""
+    rows = store.attempts(item)
+    begun = bool(rows) and rows[-1].get("end") == "done" and rows[-1].get("sha") == sha
+    if not begun:
+        return True, True
+    try:
+        with open(store.p("journal.jsonl"), encoding="utf-8") as f:
+            for ln in f:
+                if item not in ln:
+                    continue
+                try:
+                    j = json.loads(ln)
+                except ValueError:      # a torn row is no row
+                    continue
+                if j.get("do") == "done" and j.get("item") == item and j.get("sha") == sha and j.get("returns") == returns:
+                    return False, False
+    except OSError:
+        pass
+    return False, True
+
+
 def finished(store, fx, item, c, now, acts, attempt=False):
     with store.lock():
         st = store.load(item)
+        row, line = done_rows_owed(store, item, c["sha"], st["returns"])
+        if attempt and row:
+            store.attempt(item, {"at": iso(now), "end": "done", "sha": c["sha"]})
+        if line:    # before the save that ends the item: a done item is never stepped again, so nothing could write it after
+            store.journal({"at": iso(now), "do": "done", "item": item, "sha": c["sha"], "returns": st["returns"]})
         st["status"] = "done"
         st["done_at"] = now
-        if attempt:
-            store.attempt(item, {"at": iso(now), "end": "done", "sha": c["sha"]})
         store.save(st)
     remove_check_clone(fx, st)
     fx.remove_clone(st)
@@ -6651,7 +6748,6 @@ def finished(store, fx, item, c, now, acts, attempt=False):
         getattr(fx, "drop_run_tmp", lambda run: None)(st.get("run"))
     except Exception:  # noqa: BLE001
         pass
-    store.journal({"at": iso(now), "do": "done", "item": item, "sha": c["sha"], "returns": st["returns"]})
     acts.append({"do": "done", "item": item})
 
 

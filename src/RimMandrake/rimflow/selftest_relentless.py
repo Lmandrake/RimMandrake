@@ -156,6 +156,7 @@ class FakeWorld:
             return why
         self.items[item] = "ready"
     def ledger_note(self, item, text): self.notes.append(text)
+    def ledger_note_once(self, item, text): self.notes.append(text)
     def ledger_marker_fail(self, item, sha, reasons):
         self.marker_fails = getattr(self, "marker_fails", []) + [(item, sha)]
     def ledger_needs_owner(self, item, why): self.needs.append(item)
@@ -2751,6 +2752,8 @@ def t_close_idempotent():
     fx.rimflow = lambda *a, **k: calls.append(a) or subprocess.CompletedProcess(a, 0, "", "")
     fx.work_sha = lambda item, sha: sha      # the candidate did the work (selftest_relentless_nocode_close.py: when not)
     fx.closed = lambda item: True
+    fx.settle_prose = lambda item: None     # selftest_relentless_close_crash.py: the real one, killed mid-close
+    fx.marker_said = lambda item, sha: None
     ok(fx.ledger_close("I0", "abc", "blind PASS") is None and not calls, "an item already done: no verify, no close")
     fx.closed = lambda item: False
     ok(fx.ledger_close("I0", "abc", "blind PASS") is None and [c[0] for c in calls] == ["verify", "close"],
