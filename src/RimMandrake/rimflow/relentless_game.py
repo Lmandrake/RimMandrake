@@ -97,8 +97,9 @@ BRIEF = [
     "quicktest map). The supervisor leases the bridge, deploys and restarts only when your offline proof is green on the "
     "same sha, then reruns the live proofs blind. Never a flyer's flight; never fullscreen or focus the game; the minimal "
     "mod list (all five DLC) when it is enough. A proof that measures one EXACT list (a tier-makeup bar, a perf toll) "
-    "adds `live-tier: <tier>` (a src/RimMandrake/Utils/modset_builder.py tier, `--list`): the staging loads that tier as "
-    "the whole list, alone, and Relentless restores the list after.",
+    "adds `live-tier: <tier>` (every clause) or `live-tier A1: <tier>` (a src/RimMandrake/Utils/modset_builder.py tier, "
+    "`--list`): that clause runs on SteveDesktop through testq, which loads the tier as the whole list and records what "
+    "ran (owner by card 2026-11-05: SteveDesktop is the exact-tier host); Archmagi's list is never swapped for it.",
     "An item that IS a deploy (nothing to change, only trees to put in the game folder): you never --apply and need no "
     "game. Commit that .txt with `live-deploy: ModA, ModB` and `live-proof A1: python3 "
     "src/RimMandrake/rimflow/relentless_live_round.py deployed --item <ID>`, the .criteria line `A1 L1: the game folder "
@@ -477,19 +478,160 @@ def blocked_here(rows, clauses, sha, started, now):
     return out
 
 
-TIER_OWNER = "relentless"      # modset_builder.py --by/--restore-own: the swap Relentless wrote is the one it undoes
+# ---- exact-tier clauses: SteveDesktop through testq (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD) -------------------------------
+# Owner by card 2026-11-05, "What should SteveDesktop spend its time on now? -> Exact-mod-list tests": a clause whose proof
+# needs an exact list runs on SteveDesktop, never on Archmagi's game, which keeps its own list. One testq job per
+# (item, tier) on the built sha; Steve's admission keeps a tier's train, so riders batch only within a tier.
+TESTQ_PY = "src/RimMandrake/Utils/testq/testq.py"
+STEVE_BY = "RELENTLESS"
+STEVE = "testq"     # runs.jsonl row["source"] of a SteveDesktop verdict
+STEVE_WAIT, STEVE_FAIL = "wait", "fail"     # steve_sync's answers: stop here / a FAIL row, the prove phase returns it
+STEVE_HEAD = re.compile(r"^(?:exit -?\d+|timed out after \d+ s): ")   # worker.run_proofs's head on a proof row
 
 
-def tier_cmd(item, tier):
-    """The one command that loads a `live-tier:` as the whole next list, an owned swap the supervisor restores."""
-    return ("python3 src/RimMandrake/Utils/modset_builder.py --tier %s --apply --by %s --not-my-bridge "
-            "\"relentless staging %s: the supervisor holds the bridge as RELENTLESS\"" % (tier, TIER_OWNER, item))
+def tier_clauses(text, clauses, owed=None):
+    """-> {tier: [clause]} for the clauses a `live-tier:` line sends to SteveDesktop. ValueError on a malformed line.
+    owed: {clause: level}; a GREEN-FULL clause is the full list's final check on Archmagi, never a tier's."""
+    import relentless_live_round as LR
+    tiers = LR.live_tiers(text)
+    out = {}
+    for k in clauses:
+        t = None if (owed or {}).get(k) == FINAL_LEVEL else LR.clause_tier(text, k, tiers)
+        if t:
+            out.setdefault(t, []).append(k)
+    return out
 
 
-def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None, tier=None):
+def steve_unmeasured(detail):
+    """A proof exit 1 that is an inability, not a miss (relentless_live's EXIT1_HARNESS / EXIT1_RELOAD, read over the
+    log tail the row carries): the reason, or None for a real FAIL."""
+    import relentless_live as L
+    # the worker's row is "exit 1: <the log's tail>": the head is the worker's, the lines are the proof's
+    for line in STEVE_HEAD.sub("", detail or "", count=1).splitlines():
+        if L.EXIT1_HARNESS.search(line) or L.EXIT1_RELOAD.search(line.strip()):
+            return line.strip()[:200]
+    return None
+
+
+def steve_rows(job, res, item, sha, clauses, now):
+    """A counted testq result -> ({clause: runs.jsonl row} for each clause it judged PASS or FAIL, {clause: why} for
+    the rest). A result whose load was not the tier judges nothing (tier_load.py: exact false)."""
+    tier = res.get("tier") or {}
+    byid = {r.get("row"): r for r in res.get("rows") or [] if r.get("chain") == "proofs"}
+    rows, unmeasured = {}, {}
+    for k in clauses:
+        v = byid.get(k)
+        if res.get("outcome") != "DONE" or not tier.get("exact"):
+            unmeasured[k] = (tier.get("why") or "%s/%s: %s" % (res.get("outcome"), res.get("cause"), res.get("note") or ""))
+            continue
+        if not v or v.get("verdict") not in ("PASS", "FAIL"):
+            unmeasured[k] = (v or {}).get("detail") or "no row for %s in %s" % (k, res.get("attempt"))
+            continue
+        inability = v["verdict"] == "FAIL" and steve_unmeasured(v.get("detail"))
+        if inability:
+            unmeasured[k] = inability
+            continue
+        rows[k] = {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "item": item, "criterion": k,
+                   "sha": sha, "outcome": v["verdict"], "verdict": v["verdict"], "source": STEVE, "job": job["id"],
+                   "attempt": res.get("attempt"), "tier": job_tier(job), "running": len(res.get("running") or []),
+                   "proof_exit": 0 if v["verdict"] == "PASS" else 1,
+                   "why": ("SteveDesktop %s, tier %s exact (%d running mods): %s"
+                           % (res.get("attempt"), job_tier(job), len(res.get("running") or []),
+                              (v.get("detail") or "")[-300:]))}
+    return rows, unmeasured
+
+
+def job_tier(job):
+    p = job.get("profile") or ""
+    return p.split(":", 1)[1] if p.startswith("tier:") else None
+
+
+def steve_sync(store, fx, r, item, g, sha, now, acts):
+    """The game phase's exact-tier half, every tick of prove and stage: submit each tier's open clauses as one testq job,
+    read the finished job through fault_monitor.gate (quarantine or hold: no verdict, it waits or resubmits), verify each
+    PASS/FAIL per criterion and write its runs.jsonl row; a result that measured nothing resubmits, up to steve_tries,
+    then holds. -> True when the step must stop here: every clause still open is a tier clause (nothing for Archmagi's
+    game to do), the item was held, or the lane refused: STEVE_WAIT; FAIL when a clause's row is a FAIL (the prove
+    phase returns the item); else None (Archmagi serves the rest, the round skips these)."""
+    c = cfg(r)
+    led = fx.game_ledger(item) or {}
+    try:
+        tiers = tier_clauses(fx.proofs_at(item, sha), g["clauses"], led.get("owed"))
+    except ValueError as e:
+        _hold(store, fx, item, "game phase: live-tier: %s" % e, now, acts)
+        return STEVE_WAIT
+    if not tiers:
+        return None
+    import relentless_live_round
+    rows = outcomes(fx.game_rows(), item, sha, g["clauses"])
+    jobs = dict(g.get("testq") or {})
+    for tier in sorted(tiers):
+        open_ = [k for k in tiers[tier] if not relentless_live_round.decides(rows.get(k))]
+        jb = dict(jobs.get(tier) or {})
+        if not open_:
+            continue
+        if jb.get("sha") and jb["sha"] != sha and not same_sha(jb["sha"], sha):
+            jb = {}     # a job for an older build says nothing of this one; its tries were that build's
+        got = fx.testq_job(jb["job"]) if jb.get("job") else {"state": None}
+        state, verdict = got["state"], (got.get("gate") or (None, None))
+        if state in ("pending", "running") or (state == "done" and verdict[0] == "hold"):
+            acts.append({"do": "game_steve_wait", "item": item, "tier": tier, "job": jb["job"], "state": state})
+            continue
+        if state == "done" and verdict[0] == "count":
+            rec = got["rec"]
+            judged, dud = steve_rows(rec["job"], rec["result"], item, sha, open_, now)
+            for k, row in sorted(judged.items()):
+                level = (led.get("owed") or {}).get(k) or "L1"
+                why = fx.steve_verify(item, k, level, sha, row["outcome"].lower(), "testq %s on SteveDesktop" % row["attempt"],
+                                      "relentless-steve: tier %s, %s" % (tier, rec["job"]["id"]))
+                if why:
+                    dud[k] = "the verdict %s did not land: %s" % (row["outcome"], why)
+                    continue
+                fx.game_row_append(row)
+            acts.append({"do": "game_steve_result", "item": item, "tier": tier, "job": jb["job"],
+                         "judged": sorted(judged), "unmeasured": sorted(dud)})
+            if not dud:
+                jobs[tier] = dict(jb, finished=now)
+                continue
+            jb["last_why"] = "; ".join("%s: %s" % (k, w[:160]) for k, w in sorted(dud.items()))[:400]
+            open_ = sorted(dud)
+        elif state == "quarantined" or (state == "done" and verdict[0] == "quarantine"):
+            jb["last_why"] = "testq %s ran inside a SteveDesktop fault window: quarantined, never counted" % jb["job"]
+            jb["tries"] = max(0, (jb.get("tries") or 1) - 1)    # the host's fault, not the clause's: not a try
+            jb["quarantined"] = (jb.get("quarantined") or 0) + 1
+            if jb["quarantined"] > c.get("steve_quarantines", 4):    # a host that keeps faulting: a person looks
+                jobs[tier] = jb
+                _save(store, item, lambda s: s["game"].update(testq=jobs))
+                _hold(store, fx, item, "game phase: SteveDesktop faulted under %d jobs for %s on tier %s (fault_monitor "
+                      "quarantine): %s" % (jb["quarantined"], ",".join(open_), tier, jb["last_why"]), now, acts)
+                return STEVE_WAIT
+        elif state == "cancelled":
+            jb["last_why"] = "testq %s was cancelled" % jb["job"]
+        if (jb.get("tries") or 0) >= c.get("steve_tries", 3):
+            jobs[tier] = jb
+            _save(store, item, lambda s: s["game"].update(testq=jobs))
+            _hold(store, fx, item, "game phase: SteveDesktop measured nothing for %s on tier %s in %d jobs: %s"
+                  % (",".join(open_), tier, jb["tries"], jb.get("last_why") or "?"), now, acts)
+            return STEVE_WAIT
+        job, why = fx.testq_submit(item, sha, tier, open_, fx.steve_deploy(item, sha))
+        if why:
+            _save(store, item, lambda s: s["game"].update(testq=jobs))
+            _waits(store, fx, item, "testq: submit of tier %s refused: %s" % (tier, why), now, acts)
+            return STEVE_WAIT
+        jobs[tier] = dict(jb, job=job, sha=sha, clauses=open_, tries=(jb.get("tries") or 0) + 1, submitted=now)
+        acts.append({"do": "game_steve_submit", "item": item, "tier": tier, "job": job, "clauses": open_})
+    _save(store, item, lambda s: s["game"].update(testq=jobs))
+    rows = outcomes(fx.game_rows(), item, sha, g["clauses"])
+    steve = {k for ks in tiers.values() for k in ks}
+    open_all = [k for k in g["clauses"] if not relentless_live_round.decides(rows.get(k))]
+    if any(v.get("outcome") == "FAIL" for v in rows.values()):
+        return STEVE_FAIL
+    return STEVE_WAIT if open_all and all(k in steve for k in open_all) else None
+
+
+def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None):
     """trees: `live-deploy:` mods riding this load -> (folders, deploy_custom_mods.py args covering them), or None.
-    remedy: the lane's own fix of an environment cause (_env_fix): {"mods": to deploy and load, "cmds": producers}.
-    tier: the item's `live-tier:` (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD): the next load is that modset tier, whole."""
+    remedy: the lane's own fix of an environment cause (_env_fix): {"mods": to deploy and load, "cmds": producers}."""
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     en = "python3 src/RimMandrake/Utils/modlist_swap.py --enable %s --apply" % " ".join(enable)
@@ -508,13 +650,6 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
          "(infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml; `rimworld-load-round`: modlist_swap.py restores it), "
          "never a smaller tier: this one load verifies every item's GREEN-FULL clauses at once. Stamp each change with "
          "`./game --idle-ok --why \"relentless final staging %s\" down|loading|up`." % i) if (st.get("game") or {}).get("full") else
-        ("2. EXACT TIER: the game must start after the deploy on the `%s` modset tier as the WHOLE mod list (its proofs "
-         "measure that exact set; a mod more or less reads WRONG_TIER). With the game DOWN, right before the launch, run "
-         "`%s` (it resolves the tier's dependency closure, all five DLC, and keeps the list it replaced for the "
-         "supervisor to restore). Never `modlist_swap.py --enable`, --minimal or --restore on top of it, and never a "
-         "smaller or larger list. If it refuses, snag with its output: no other list can serve this item. Stamp each "
-         "change with `./game --idle-ok --why \"relentless staging %s\" down|loading|up`." % (tier, tier_cmd(i, tier), i))
-        if tier else
         "2. The game must start after the deploy: restart it on the smallest mod list that holds those mods and every "
         "mod a `live-mods:` line in the proofs below names, with their About.xml dependencies "
         "(`rimworld-load-round`: modlist_swap.py; all five DLC always). An entry with a dot is a packageId, a workshop "
@@ -529,9 +664,7 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
         ("   MOD LIST: the next load must hold %s and their dependencies (owner 2026-10-24: the list is ours to change; all "
          "five DLC stay on). The supervisor already ran `%s`; after any list swap, and again with the game down right "
          "before the launch, run it once more: a swap drops them, and a load without them measures nothing."
-         % (", ".join(enable), en)) if enable and not tier else
-        ("   MOD LIST: the `%s` tier above IS the list; enable nothing." % tier) if tier else
-        "   MOD LIST: no mod of these builds needs enabling.",
+         % (", ".join(enable), en)) if enable else "   MOD LIST: no mod of these builds needs enabling.",
         ("   SHUTDOWN WINDOW: with the game DOWN and before the launch, deploy %s (`deploy_custom_mods.py --mod <Mod> "
          "--apply`): the game folder holds a stale DLL for each, and a DLL cannot be written while the game runs."
          % ", ".join(dlls)) if dlls else "   SHUTDOWN WINDOW: no stale DLL in the game folder for these mods.",
@@ -825,6 +958,71 @@ class GameFx(object):
         got = sorted({m for i, s in builds for m in R.live_deploy(self._mods_text(i, s))})
         return (got, R.deploy_args(got, self._round_fx().folded())) if got else None
 
+    # exact-tier clauses go to SteveDesktop (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD) -----------------------------------------
+    def _testq(self):
+        d = os.path.join(self.books, "src", "RimMandrake", "Utils", "testq")
+        if d not in sys.path:
+            sys.path.insert(0, d)
+        import fault_monitor
+        import testq
+        return testq, fault_monitor
+
+    def steve_deploy(self, item, sha):
+        """The mods an exact-tier job deploys on SteveDesktop: those the build changed, and its `live-deploy:` trees."""
+        import relentless_live_round as R
+        text = self._mods_text(item, sha)
+        got = sorted(R.item_mods(self._round_fx(), item, sha))
+        return got + [m for m in R.live_deploy(text) if m not in got]
+
+    def testq_submit(self, item, sha, tier, clauses, deploy):
+        """testq.py submit: one exact-tier job on lane stevedesktop -> (job id, None), or (None, why it refused). A
+        same request still pending or running answers with that job (testq.same_request), so a resubmit never doubles."""
+        argv = ["python3", os.path.join(self.books, TESTQ_PY), "submit", item, "--proofs", ",".join(clauses),
+                "--profile", "tier:" + tier, "--lane", "stevedesktop", "--purpose", "fix", "--by", STEVE_BY,
+                "--sha", sha, "--for-item", item]
+        for m in deploy:
+            argv += ["--deploy", m]
+        try:
+            r = subprocess.run(argv, cwd=self.books, capture_output=True, text=True, timeout=240,
+                               stdin=subprocess.DEVNULL)
+        except subprocess.TimeoutExpired:
+            return None, "testq.py submit timed out"
+        for line in reversed((r.stdout or "").strip().splitlines()):
+            try:
+                o = json.loads(line)
+            except ValueError:
+                continue
+            if isinstance(o, dict) and o.get("job"):
+                return o["job"], None
+        return None, ((r.stdout or "") + (r.stderr or "")).strip()[-400:] or "exit %d, no job" % r.returncode
+
+    def testq_job(self, job):
+        """-> {"state": pending|running|done|quarantined|cancelled|None, "rec": the record or None, "gate":
+        fault_monitor.gate's (verdict, why) for a done record}. Only a gate of `count` lets a result decide anything."""
+        T, FM = self._testq()
+        state = T.where(job)
+        if state is None and os.path.exists(T.q("quarantined", job + ".json")):
+            state = "quarantined"
+        rec = T.read_json(T.q(state, job + ".json")) if state else None
+        gate = None
+        if state == "done" and rec:
+            windows, fstate = FM.load()
+            gate = FM.gate(rec, windows, fstate)
+        return {"state": state, "rec": rec, "gate": gate}
+
+    def steve_verify(self, item, criterion, level, sha, result, evidence, config):
+        """rimflow verify for one clause SteveDesktop measured -> None, or why it did not land."""
+        v = self.rimflow("verify", item, "--criterion", criterion, "--level", level, "--sha", sha, "--result", result,
+                         "--config", config[:300], "--evidence", evidence[:300],
+                         "--why", "relentless exact tier: SteveDesktop through testq, the tier loaded whole and checked")
+        return None if v.returncode == 0 else ((v.stderr or v.stdout) or "")[-300:]
+
+    def game_row_append(self, row):
+        p = os.path.join(self.base, "live", "runs.jsonl")
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "a", encoding="utf-8") as f:
+            f.write(json.dumps(row, sort_keys=True) + "\n")
+
     def _round_fx(self):
         """One per Effects, so per tick: the same plan is read once a tick. modlist_enable forgets it, the plan reads
         ModsConfig."""
@@ -832,26 +1030,6 @@ class GameFx(object):
             import relentless_live_round
             self._round = relentless_live_round.RoundFx(books=self.books, seat=self.r["seat"])
         return self._round
-
-    def game_tier(self, item, sha):
-        """The item's `live-tier:` as a live run reads it (_mods_text), or None; ValueError on a malformed line."""
-        import relentless_live_round
-        return relentless_live_round.live_tier(self._mods_text(item, sha))
-
-    def _modset(self, args, timeout=240):
-        r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/modset_builder.py")] + args,
-                           cwd=self.books, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
-        return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-400:]
-
-    def modlist_tier_plan(self, tier):
-        """modset_builder.py --tier <tier> as a plan (writes nothing) -> None when the tier resolves here, or why not."""
-        return self._modset(["--tier", tier])
-
-    def modlist_restore_own(self):
-        """modset_builder.py --restore-own relentless: put back the list Relentless's tier swap replaced -> None, or
-        why it could not. Nothing active is None too."""
-        self._round = self._game_read = None
-        return self._modset(["--restore-own", TIER_OWNER, "--not-my-bridge", "relentless supervisor: its own tier swap"])
 
     def modlist_enable(self, mods):
         """modlist_swap.py --enable <mods> --apply on the live ModsConfig.xml -> None, or why it could not."""
@@ -1463,9 +1641,6 @@ def step(store, fx, r, item, now, acts, sup):
         return
     if led["state"] == "done" and g["phase"] != "staging":
         _save(store, item, lambda s: s["game"].update(passed_sha=sha, phase="passed"))
-        if g.get("tier"):       # restoring after: the exact tier served its proofs; the next load is not its business
-            why = fx.modlist_restore_own()
-            acts.append({"do": "game_tier_restored", "item": item, "tier": g["tier"], **({"why": why[:200]} if why else {})})
         sup.finished(store, fx, item, st["candidate"], now, acts, attempt=True)
         return
 
@@ -1540,6 +1715,9 @@ def step(store, fx, r, item, now, acts, sup):
                 owner_clauses=sorted(set(s["game"].get("owner_clauses") or []) | set(his))))
             g = store.load(item)["game"]
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
+        if steve_sync(store, fx, r, item, g, built, now, acts) == STEVE_WAIT:
+            return      # what is still open runs on SteveDesktop through testq: Archmagi's game has nothing to do
+        g = store.load(item)["game"]
         rows = outcomes(fx.game_rows(), item, built, g["clauses"])
         import relentless_live
         # LIVE_VERDICT_BUILD_INFRA_NOT_FAIL: only a FAIL verdict (the proof ran after a healthy check) is a strike
@@ -1697,10 +1875,14 @@ def step(store, fx, r, item, now, acts, sup):
     if g["phase"] == "stage":
         if (g.get("retry_at") or 0) > now:
             return      # put down on a harness failure until its retry: it holds no place, the bridge is free
-        try:        # an exact-tier proof (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD); the final full-list staging never loads it
-            tier = None if g.get("full") else fx.game_tier(item, sha)
-        except ValueError as e:
-            return _hold(store, fx, item, "game phase: live-tier: %s" % e, now, acts)
+        built0 = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
+        if not g.get("full") and steve_sync(store, fx, r, item, g, built0, now, acts) in (STEVE_WAIT, STEVE_FAIL):
+            # every open clause is an exact tier: SteveDesktop's, so no Archmagi staging, no list swap (owner by card
+            # 2026-11-05); the item waits in prove for testq. A Steve FAIL stages nothing either: prove returns it
+            if store.load(item)["status"] == "game":
+                _save(store, item, lambda s: s["game"].update(phase="prove"))
+            return
+        g = store.load(item)["game"]
         rd = fx.game_reading()
         spare = g.get("spare_load")
         if spare is not None and rd.get("state") == "LOADING" and (spare.get("started") is None
@@ -1718,8 +1900,7 @@ def step(store, fx, r, item, now, acts, sup):
                           % (rd.get("evidence") or "no reading"), now, acts)
         if rd.get("state") == "LOADING" and _load_gate(store, fx, r, item, g, rd, now, acts)[0]:
             return      # every road into a staging meets the load bound and the stall evidence, not only the prove one
-        if rd.get("state") == "UP" and rd.get("started") and not tier:
-            # an exact tier never tries a load it did not stage: another item's list is not its tier, by construction
+        if rd.get("state") == "UP" and rd.get("started"):
             # another item's load may already run this build (owner 2026-11-02, "To save game loads"): an item that has
             # no row from the running game tries it before it stages a load of its own (BIOME_TIER_CLEANUP_1 read DOWN
             # while CONTAGION's staging restarted the game, and would have staged a third load untried)
@@ -1739,21 +1920,8 @@ def step(store, fx, r, item, now, acts, sup):
         if why:
             return _waits(store, fx, item, "clone: " + why, now, acts)
         st = store.load(item)
-        # an exact tier stages alone and rides no other item's smaller load; the full list carries every final
-        others = [] if tier else [o for o in batch(store.states(), item, now, full=bool(g.get("full")))
-                                  if _rides_ok(fx, r, o) and (g.get("full") or not _tier_of(fx, o))]
+        others = [o for o in batch(store.states(), item, now, full=bool(g.get("full"))) if _rides_ok(fx, r, o)]
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
-        if tier:
-            why = fx.modlist_tier_plan(tier)
-            if why:     # a tier this machine cannot resolve: no load can serve the item, held with the reason
-                fx.ledger_note(item, "relentless game phase: held, live-tier %s does not resolve: %s" % (tier, why))
-                return _hold(store, fx, item, "game phase: modset_builder.py --tier %s refused: %s" % (tier, why),
-                             now, acts)
-        # restoring after: the list Relentless's last tier swap replaced goes back before any staging writes a list
-        why = fx.modlist_restore_own()
-        if why:
-            return _waits(store, fx, item, "modlist: modset_builder.py --restore-own %s refused: %s"
-                          % (TIER_OWNER, why), now, acts)
         gaps = [fx.game_batch_gap([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                      if (o.get("game") or {}).get("sha")])]
         bad = sorted({x["item"] for x in gaps[0].get("refused") or [] if x.get("pos")})
@@ -1770,7 +1938,7 @@ def step(store, fx, r, item, now, acts, sup):
         # identical environment failure as a failed fix and hold (Codex, ..._TEN_MORE #9)
         remedy = merged_remedy([g.get("remedy")] + [(o.get("game") or {}).get("remedy") for o in others]) or {}
         want = sorted(set(enable_set(gaps)) | set(remedy.get("mods") or []))
-        if want and not g.get("full") and not tier:  # the full list's own staging restores FULL.LATEST, enables on top
+        if want and not g.get("full"):      # the full list's own staging restores FULL.LATEST, then enables on top
             why = fx.modlist_enable(want)
             if why and others:
                 # a rider's names are the rider's defect, never this item's hold (OPS_CHURN_DIAGNOSE_PLAYER_YGLE_IHKT:
@@ -1806,7 +1974,7 @@ def step(store, fx, r, item, now, acts, sup):
             s.pop("put_down", None)
             s["run"] = desc
             s["game"].update(phase="staging", staged_at=now, taken_at=now, up_seen=None, stages=s["game"]["stages"] + 1,
-                             ready=None, snag=None, waits_reload=None, batch=[o["item"] for o in others], tier=tier)
+                             ready=None, snag=None, waits_reload=None, batch=[o["item"] for o in others])
             # this staging carries the remedy; it is spent only when the staging confirms game-ready (settle below),
             # never at launch: a staging that died before running it would leave the fix unapplied and its next
             # identical row read as "fixed once" (Codex r4 game1 #3)
@@ -1819,7 +1987,7 @@ def step(store, fx, r, item, now, acts, sup):
         st["_proofs_text"] = fx.proofs_at(item, sha)
         trees = fx.game_trees([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                  if (o.get("game") or {}).get("sha")])
-        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy, tier), r["pilot_agent"], st["clone"], c["stage_max_s"],
+        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy), r["pilot_agent"], st["clone"], c["stage_max_s"],
                         {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()
@@ -1913,15 +2081,6 @@ def merged_remedy(rems):
             "cmds": sorted({c for x in rems for c in x.get("cmds") or []}),
             "why": "; ".join(x.get("why") or "" for x in rems if x.get("why"))[:600],
             "at": max(x.get("at") or 0 for x in rems)}
-
-
-def _tier_of(fx, o):
-    """A batched item's `live-tier:` (a malformed one counts as a tier: it rides nothing, its own step holds it)."""
-    og = o.get("game") or {}
-    try:
-        return fx.game_tier(o["item"], og.get("sha")) if og.get("sha") else None
-    except ValueError:
-        return "?"
 
 
 def _rides_ok(fx, r, o):

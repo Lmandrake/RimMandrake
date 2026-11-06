@@ -427,6 +427,20 @@ def steve_running():
     return [r for r in records("running") if host_of(r) == STEVE]
 
 
+TIER_STAY_BONUS = int(os.environ.get("TESTQ_TIER_STAY_BONUS", "35"))
+
+
+def admit_key(job, train):
+    """The admission order: highest priority, then the current train, then oldest. On an exact tier (profile
+    tier:<name>, LANE_TIER_WIRE_A_WHOLE_LIST_LOAD) a job of the running train gains TIER_STAY_BONUS: SteveDesktop stays
+    on a tier while jobs for it wait, because leaving it costs a whole-list swap and a cold load, and coming back costs
+    another."""
+    stay = bool(train and S.TIER_RE.match(train)) and job["profile"] == train
+    # the stay is a priority bonus, not a wall: a job well above the train (a fix at 90 against Relentless's 50) still
+    # goes first, so a tier that keeps getting resubmits cannot starve the lane (review 2026-11-06)
+    return (-(job["priority"] + (TIER_STAY_BONUS if stay else 0)), job["profile"] != train, job["submitted"], job["id"])
+
+
 def admit(status):
     if steve_running() or paused():
         return
@@ -438,7 +452,7 @@ def admit(status):
     cands = [j for j in records("pending") if ready(j, now)]
     if not cands:
         return
-    cands.sort(key=lambda j: (-j["priority"], j["profile"] != train, j["submitted"], j["id"]))
+    cands.sort(key=lambda j: admit_key(j, train))
     job = cands[0]
     why = job.get("requested_by") == FILLER and companion_unready(job)
     if why:     # the filler picks again next tick; a cancel is not counted by the brake (brake_tail)
@@ -642,8 +656,8 @@ def archmagi_candidates(steve_up, steve_busy, now=None):
     for j in records("pending"):
         if j.get("owner_gate") or (j.get("not_before") and S.parse_ts(j["not_before"]) > now):
             continue
-        if j["id"] in skip or j.get("profile") not in profiles:
-            continue
+        if j["id"] in skip or j.get("profile") not in profiles or S.tier_of(j):
+            continue        # an exact tier is SteveDesktop's alone: Archmagi keeps its own list (owner by card 2026-11-05)
         if j.get("lane") == ARCHMAGI or (j.get("lane") == "any" and (not steve_up or steve_busy)):
             out.append(j)
     # S3 Never (section 2): filler, guard and sweep never; a job needing a deploy/load only as part of a train worth
@@ -1156,6 +1170,12 @@ def unknown_chains(why):
     return {c.strip() for c in m.group(1).split(",") if c.strip()} if m else set()
 
 
+def profile_arg(v):
+    if not S.profile_ok(v):
+        raise argparse.ArgumentTypeError("%r: one of %s, or tier:<modset_builder tier>" % (v, ", ".join(S.PROFILES)))
+    return v
+
+
 def cmd_submit(a):
     ensure_dirs()
     sel = {}
@@ -1166,6 +1186,8 @@ def cmd_submit(a):
         sel["item"] = a.item
     if a.full:
         sel["full"] = True
+    if getattr(a, "proofs", None):
+        sel["proofs"] = [x for x in a.proofs.split(",") if x]
     kw = {k: v for k, v in (("item", a.for_item), ("profile", a.profile), ("priority", a.priority),
                             ("not_before", a.not_before), ("supersedes", a.supersedes), ("owner_gate", a.owner_gate),
                             ("lane", a.lane), ("timeout_s", a.timeout), ("gate", getattr(a, "gate", None))) if v is not None}
@@ -1186,12 +1208,19 @@ def cmd_submit(a):
     if why:
         print("REFUSED: --deploy %s; the worker would die INVALID/DEPLOY on a booked slot" % why)
         return 2
-    pv = preview(a.mod, sel)
+    if S.is_proofs(job):        # an exact-tier proofs job: no modcheck plan to preview, no chain verdict to repeat
+        why = tier_problem(S.tier_of(job))
+        if why:
+            print("REFUSED: %s" % why)
+            return 2
+        pv = {"refusal": None, "rows": None, "drivers": [], "chains": []}
+    else:
+        pv = preview(a.mod, sel)
     bad, planned = pv["refusal"], pv["rows"]
     if bad:
         print("REFUSED: %s (checked before queueing: a bad row id would burn a runner slot)" % bad)
         return 2
-    stale = already_tested(a, sel, pv)
+    stale = None if S.is_proofs(job) else already_tested(a, sel, pv)
     if stale:
         print("REFUSED: %s" % stale)
         return 2
@@ -1229,6 +1258,18 @@ def cmd_submit(a):
             out["est_s"] = int(per * len(planned))
     print(json.dumps(out))
     return 0
+
+
+def tier_problem(tier):
+    """-> why modset_builder.py cannot serve `tier` here, or None (checked at submit: an unknown tier would burn a slot)."""
+    try:
+        sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+        import modset_builder
+    except Exception as e:      # noqa: BLE001 - a tree without it cannot judge; the worker's swap refuses loudly
+        return None if isinstance(e, ImportError) else "modset_builder unreadable: %s" % e
+    if tier not in modset_builder.TIERS:
+        return "tier:%s is no modset_builder.py tier (--list names them)" % tier
+    return None
 
 
 def git_head():
@@ -1961,7 +2002,9 @@ def main(argv=None):
     s.add_argument("--row-item", action="append", metavar="ROW_OR_CHAIN=ITEM",
                    help="a row id (or chain name) whose result belongs to ITEM, not --for-item (repeatable); "
                         "ingest then verifies each item from its own rows only")
-    s.add_argument("--profile", choices=S.PROFILES)
+    s.add_argument("--profile", type=profile_arg, help="targeted | full-list | tier:<modset_builder tier>")
+    s.add_argument("--proofs", help="an exact-tier job: the --for-item's live-proof clauses, e.g. A1,A2 (with "
+                                    "--profile tier:<name>)")
     s.add_argument("--priority", type=int)
     s.add_argument("--not-before")
     s.add_argument("--supersedes")

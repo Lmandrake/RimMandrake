@@ -56,6 +56,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import fault_monitor as FM  # noqa: E402
 import retest as R  # noqa: E402
+import schema as S  # noqa: E402
 import testq as T  # noqa: E402
 
 REPO = T.REPO
@@ -352,6 +353,11 @@ def repair(job, res, cause, rec=None):
 
 def ingest_one(rec):
     job, res = rec["job"], rec["result"]
+    if S.is_proofs(job):
+        # an exact-tier job (profile tier:<name>, LANE_TIER_WIRE_A_WHOLE_LIST_LOAD): its rows are an item's live-proof
+        # clauses, which Relentless's game phase reads from done/ through fault_monitor.gate and verifies per criterion
+        # (relentless_game.steve_sync); an item-level RUNNER verify or a finding per FAIL row here would say it twice
+        return {"skipped": "a Relentless exact-tier proofs job: relentless_game reads its verdict"}
     item, att = job.get("item"), res["attempt"]
     lane = lane_finding(job, res)
     if lane and lane.startswith("lane "):  # run or finding not recorded (host item not on origin yet): retried

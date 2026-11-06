@@ -29,13 +29,15 @@ A drifting tree reads UNMEASURED "not deployed", so the game phase stages and it
 --lint` is the offline proof (RELENTLESS_DEPLOY_WIRE_NOBODY_MAY_APPLY).
 
 A proof that needs an EXACT list (a perf toll measured on one tier, a "the running load IS this set" bar) names a
-modset_builder.py tier, which the staging loads as the WHOLE list instead of enabling mods on top of whatever is live
-(LANE_TIER_WIRE_A_WHOLE_LIST_LOAD: VITALS A1 wanted ratchet_pilot's ~23 mods and got 39, WRONG_TIER every run):
+modset_builder.py tier, for every clause of the file or for named ones (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD: VITALS A1 wanted
+ratchet_pilot's ~23 mods and got 39, WRONG_TIER every run):
 
-    live-tier: ratchet_pilot
+    live-tier: gizkastowaway
+    live-tier A1: ratchet_pilot
 
-Such an item stages alone (no rider can share an exact list) and Relentless restores the list it swapped before any
-other staging and when the item passes (modset_builder.py --restore-own relentless).
+Such a clause never runs on Archmagi's game: the owner made SteveDesktop the exact-tier host (by card, 2026-11-05), so the
+game phase sends it to testq as a job of profile tier:<name> (relentless_game.steve_sync), Steve loads that tier as the
+whole list and runs the line, and its verdict comes back as a runs.jsonl row (source testq). This round skips it.
 
 A criterion at level GREEN-FULL is the FINAL verification on the whole full list: it runs only when that tier is up.
 
@@ -116,24 +118,36 @@ LIVE_DEPLOY = re.compile(r"^\s*(?:[-*]\s+)?`?live-deploy\s*:\s*(?P<mods>[^`]*)`?
 LIVE_WITHOUT = re.compile(r"^\s*(?:[-*]\s+)?`?live-without\s*:\s*(?P<mods>[^`]*)`?\s*$")
 
 
-LIVE_TIER = re.compile(r"^\s*(?:[-*]\s+)?`?live-tier\s*:\s*(?P<tier>[^`#]*?)`?\s*(?:#.*)?$")
+LIVE_TIER = re.compile(r"^\s*(?:[-*]\s+)?`?live-tier(?P<cids>(?:\s+[A-Za-z][A-Za-z0-9_]*,?)*)\s*:\s*(?P<tier>[^`#]*?)`?\s*"
+                       r"(?:#.*)?$")
+ALL = "*"       # live_tiers: the tier of every clause no line of its own names
 
 
-def live_tier(text):
-    """A live_proofs file -> the modset_builder.py tier its `live-tier:` line names, or None. Two different tiers, or a
-    line naming more or less than one word, is ValueError: one load cannot be two whole lists."""
-    got = []
+def live_tiers(text):
+    """A live_proofs file -> {clause id or ALL: modset_builder.py tier}. `live-tier: X` is every clause's,
+    `live-tier A1, A2: X` those clauses'. ValueError on a line naming more or less than one tier, or a clause (or the
+    whole file) given two different tiers: one load is one whole list."""
+    got = {}
     for line in (text or "").splitlines():
         m = LIVE_TIER.match(line)
-        if m:
-            words = m.group("tier").replace(",", " ").split()
-            if len(words) != 1:
-                raise ValueError("a live-tier line names exactly one modset_builder tier, not %r" % m.group("tier"))
-            if words[0] not in got:
-                got.append(words[0])
-    if len(got) > 1:
-        raise ValueError("live-tier names %s: one load is one whole list" % ", ".join(got))
-    return got[0] if got else None
+        if not m:
+            continue
+        words = m.group("tier").replace(",", " ").split()
+        if len(words) != 1:
+            raise ValueError("a live-tier line names exactly one modset_builder tier, not %r" % m.group("tier"))
+        for cid in m.group("cids").replace(",", " ").split() or [ALL]:
+            if got.get(cid, words[0]) != words[0]:
+                raise ValueError("live-tier gives %s two tiers (%s, %s): one load is one whole list"
+                                 % ("the file" if cid == ALL else cid, got[cid], words[0]))
+            got[cid] = words[0]
+    return got
+
+
+def clause_tier(text, cid, tiers=None):
+    """The tier clause `cid` must run on, or None (any load holding its mods, on Archmagi). ValueError as live_tiers.
+    A GREEN-FULL clause is the full list's final check: its callers never send it to a tier."""
+    t = live_tiers(text) if tiers is None else tiers
+    return t.get(cid) or t.get(ALL)
 
 
 def live_mods(text, pattern=LIVE_MODS):
@@ -286,6 +300,9 @@ def due(last, sha, now, retry_s, game=None, per_game=True):
     return None
 
 
+EXACT_TIER = "exact tier: SteveDesktop runs it through testq"
+
+
 def candidates(items, proofs_of, hist, now, retry_s, game=None):
     """-> (todo [(item id, criterion, proof, built sha)], counts {why skipped: n}). Pure apart from proofs_of.
     proofs_of(item id) -> the text of its live_proofs file, empty when it has none.
@@ -302,7 +319,12 @@ def candidates(items, proofs_of, hist, now, retry_s, game=None):
         owed = [c for c in it.get("outstanding") or [] if c in crit and crit[c]["level"] in L.LIVE_LEVELS]
         if not owed:
             continue
-        proofs = proof_lines(proofs_of(it["id"]))
+        text = proofs_of(it["id"])
+        proofs = proof_lines(text)
+        try:
+            tiers = live_tiers(text)
+        except ValueError:
+            tiers = {ALL: "?"}      # malformed: it runs nowhere here; the game phase holds the item with the reason
         # a sibling's item-level gate on this build and this game holds every clause, as it would hold the clause itself
         # (due: "not deployed on this game"); a game phase's round (retry 0) has just staged, so it runs again
         gated = bool(retry_s) and game and any(
@@ -314,6 +336,9 @@ def candidates(items, proofs_of, hist, now, retry_s, game=None):
                 continue
             if L.owner_look(crit[cid], proofs[cid]):
                 skip("owner look")      # his act, not the game's: no run can pass it (..._GAME_LANE_OWNER_LOOK_FAILS)
+                continue
+            if crit[cid]["level"] != L.FINAL and clause_tier(text, cid, tiers):
+                skip(EXACT_TIER)    # SteveDesktop's, through testq: never this game, whatever list it runs
                 continue
             last = hist.get((it["id"], cid, it["built_sha"]))
             if last and last.get("cut") and not crit[cid].get("cut"):

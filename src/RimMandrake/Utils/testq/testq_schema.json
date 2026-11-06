@@ -74,9 +74,17 @@
      "type": "integer"
     },
     "profile": {
-     "enum": [
-      "targeted",
-      "full-list"
+     "anyOf": [
+      {
+       "enum": [
+        "targeted",
+        "full-list"
+       ]
+      },
+      {
+       "pattern": "^tier:[a-z0-9_]+$",
+       "type": "string"
+      }
      ]
     },
     "purpose": {
@@ -118,6 +126,13 @@
        "type": "boolean"
       },
       "item": {
+       "items": {
+        "pattern": "^[A-Za-z0-9_.-]+$",
+        "type": "string"
+       },
+       "type": "array"
+      },
+      "proofs": {
        "items": {
         "pattern": "^[A-Za-z0-9_.-]+$",
         "type": "string"
@@ -316,6 +331,15 @@
       "null"
      ]
     },
+    "running": {
+     "items": {
+      "type": "string"
+     },
+     "type": [
+      "array",
+      "null"
+     ]
+    },
     "schema": {
      "const": "testq.result/1"
     },
@@ -324,6 +348,12 @@
     },
     "started": {
      "type": "string"
+    },
+    "tier": {
+     "type": [
+      "object",
+      "null"
+     ]
     }
    },
    "required": [

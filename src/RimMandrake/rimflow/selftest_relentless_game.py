@@ -90,17 +90,30 @@ class GW(S.FakeWorld):
         return {"mods": sorted({m for g in gs for m in g.get("mods") or []}),
                 "dll": sorted({d for g in gs for d in g.get("dll") or []})}
 
-    def game_tier(self, item, sha):
-        import relentless_live_round as R
-        return R.live_tier(self.proofs_at(item, sha))
+    # SteveDesktop through testq (relentless_game.steve_sync): every call recorded, the queue a dict
+    def steve_deploy(self, item, sha):
+        return list(getattr(self, "steve_mods", []))
 
-    def modlist_tier_plan(self, tier):
-        self.events.append("tier_plan:%s" % tier)
-        return (getattr(self, "tier_why", None) or {}).get(tier)
+    def testq_submit(self, item, sha, tier, clauses, deploy):
+        self.events.append("testq_submit:%s:%s:%s" % (item, tier, ",".join(clauses)))
+        if getattr(self, "submit_why", None):
+            return None, self.submit_why
+        self.testq = getattr(self, "testq", {})
+        jid = "J20261106T000000Z-%06x" % (len(self.testq) + 1)
+        self.testq[jid] = {"state": "pending", "rec": None, "gate": None,
+                           "job": {"id": jid, "item": item, "profile": "tier:" + tier, "lane": "stevedesktop",
+                                   "selector": {"proofs": list(clauses)}, "source_sha": sha, "deploy": list(deploy)}}
+        return jid, None
 
-    def modlist_restore_own(self):
-        self.events.append("restore_own")
-        return getattr(self, "restore_why", None)
+    def testq_job(self, job):
+        return dict(getattr(self, "testq", {}).get(job) or {"state": None, "rec": None, "gate": None})
+
+    def steve_verify(self, item, criterion, level, sha, result, evidence, config):
+        self.events.append("verify:%s:%s:%s" % (item, criterion, result))
+        return None
+
+    def game_row_append(self, row):
+        self.rows.append(row)
 
     def modlist_enable(self, mods):
         self.enabled.append(list(mods))

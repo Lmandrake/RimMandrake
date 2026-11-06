@@ -1,5 +1,5 @@
-# A1 measures on one exact list: the staging loads the ratchet_pilot tier whole (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD); A2 (GREEN-FULL) rides the full-list staging, which loads no tier.
-live-tier: ratchet_pilot
+# A1 measures on one exact list, the ratchet_pilot tier: it runs on SteveDesktop through testq, which loads that tier as the whole list (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD; owner by card 2026-11-05). A2 (GREEN-FULL) rides Archmagi's full-list staging.
+live-tier A1: ratchet_pilot
 live-mods: mandrake.rm.biomes, mandrake.rut.patches, mandrake.rsw.swbestiary, mandrake.rut.pyrelandsmechanics, mandrake.rm.flowworks, mandrake.rm.gimmesomeslack, mandrake.rm.patches
 live-proof A1: python.exe src/RimMandrake/Utils/perf/test_vitals_tier_makeup.py < /dev/null && python.exe src/RimMandrake/Utils/perf/vitals_overhead.py --tier minimal --out 'D:\ClaudeWork\rimmandrake\VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL' < /dev/null && python.exe src/RimMandrake/Utils/perf/test_vitals_tier_makeup.py < /dev/null
 live-proof A2: python.exe src/RimMandrake/Utils/perf/vitals_overhead.py --tier full --out 'D:\ClaudeWork\rimmandrake\VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL' < /dev/null

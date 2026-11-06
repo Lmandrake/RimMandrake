@@ -11,8 +11,14 @@ JOB (immutable once submitted; a change is a new job that names the old one in `
   mod           mod folder name, e.g. "FlowWorks"
   selector      {"item": [ids], "chains": [names], "rows": [ids], "full": bool}; at least one of them.
                 Passed to `modcheck run <mod>` as --item/--chains/--rows/--full. "full" only for purpose=sweep.
-  profile       "targeted" (modcheck's own minimal-list swap) or "full-list" (the owner's whole list); the
-                dispatcher groups jobs of one host+profile into a train so a load is shared
+                Or {"proofs": [clause ids]} alone: a Relentless exact-tier job (below), no modcheck.
+  profile       "targeted" (modcheck's own minimal-list swap) or "full-list" (the owner's whole list), or
+                "tier:<modset_builder tier>" (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD; owner by card 2026-11-05, SteveDesktop is
+                the exact-tier host): the worker loads exactly that tier as the whole list (all five DLC), records the
+                running packageIds, and runs the item's `live-proof` lines for the selector's clauses from
+                infrastructure/state/live_proofs/<item>.txt at source_sha. A tier job is lane stevedesktop, names an
+                item, selects proofs and nothing else; `mod` is the item id. The dispatcher groups jobs of one
+                host+profile into a train so a load is shared, and stays on a tier while jobs for it wait
   purpose       fix | guard | sweep | sensitivity | flake | commission.  sweep/sensitivity/flake/commission bypass
                 the known-good gate (modcheck --reuse off); fix/guard use --reuse on
   priority      int, higher runs sooner (default 50)
@@ -62,6 +68,8 @@ RESULT_SCHEMA = "testq.result/1"
 PURPOSES = ("fix", "guard", "sweep", "sensitivity", "flake", "commission")
 GATE_BYPASS = ("sweep", "sensitivity", "flake", "commission")
 PROFILES = ("targeted", "full-list")
+TIER_PREFIX = "tier:"
+TIER_RE = re.compile(r"^tier:[a-z0-9_]+$")     # a modset_builder.py TIERS key
 GATES = ("on", "off", "shadow")  # modcheck run --gate choices; None = modcheck default
 LANES = ("stevedesktop", "archmagi", "any")
 OUTCOMES = ("DONE", "INVALID", "INTERRUPTED", "REFUSED")
@@ -93,6 +101,38 @@ def new_job_id():
     return "J%s-%s" % (datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ"), secrets.token_hex(3))
 
 
+def tier_of(job):
+    """A job's modset_builder tier (profile tier:<name>), or None."""
+    p = (job or {}).get("profile") or ""
+    return p[len(TIER_PREFIX):] if TIER_RE.match(p) else None
+
+
+def profile_ok(p):
+    return p in PROFILES or bool(TIER_RE.match(str(p or "")))
+
+
+def is_proofs(job):
+    """True for a Relentless exact-tier job: the worker runs live-proof lines, not modcheck."""
+    return bool(((job or {}).get("selector") or {}).get("proofs"))
+
+
+# The proof line grammar of rimflow/relentless_live_round.PROOF_LINE (a selftest holds the two to the same parse): the
+# worker reads the item's lines from its pinned clone and imports nothing from rimflow.
+PROOF_LINE = re.compile(r"^\s*(?:[-*]\s+)?(?:`live-proof\s+(?P<cid1>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd1>[^`\s][^`]*?)`"
+                        r"|live-proof\s+(?P<cid2>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd2>\S.*?))\s*$")
+
+
+def proof_lines(text):
+    """A live_proofs file -> {clause id: command}; the first line for a clause wins."""
+    out = {}
+    for line in (text or "").splitlines():
+        m = PROOF_LINE.match(line)
+        if m:
+            cid, cmd = (m.group("cid1"), m.group("cmd1")) if m.group("cid1") else (m.group("cid2"), m.group("cmd2"))
+            out.setdefault(cid, cmd.strip())
+    return out
+
+
 def make_job(mod, selector, purpose, requested_by, source_sha, **kw):
     """A complete, validated job dict. Unknown keyword arguments are refused."""
     unknown = set(kw) - set(DEFAULTS)
@@ -116,15 +156,23 @@ def validate_job(job):
     need(isinstance(job.get("id"), str) and JOB_ID_RE.match(job["id"]), "bad id")
     need(isinstance(job.get("mod"), str) and NAME_RE.match(job["mod"]), "bad mod folder name")
     sel = job.get("selector")
-    need(isinstance(sel, dict) and set(sel) <= {"item", "chains", "rows", "full"}, "selector keys: item/chains/rows/full")
-    for k in ("item", "chains", "rows"):
+    need(isinstance(sel, dict) and set(sel) <= {"item", "chains", "rows", "full", "proofs"},
+         "selector keys: item/chains/rows/full/proofs")
+    for k in ("item", "chains", "rows", "proofs"):
         need(isinstance(sel.get(k, []), list) and all(isinstance(x, str) and NAME_RE.match(x) for x in sel.get(k, [])),
              "selector.%s must be a list of names" % k)
     need(sel.get("full") in (None, True, False), "selector.full must be a boolean")
-    need(any(sel.get(k) for k in ("item", "chains", "rows", "full")), "selector selects nothing (no --full by default)")
+    need(any(sel.get(k) for k in ("item", "chains", "rows", "full", "proofs")),
+         "selector selects nothing (no --full by default)")
     need(job.get("purpose") in PURPOSES, "purpose must be one of %s" % ", ".join(PURPOSES))
     need(not sel.get("full") or job["purpose"] == "sweep", "selector.full is for purpose=sweep only")
-    need(job.get("profile") in PROFILES, "profile must be one of %s" % ", ".join(PROFILES))
+    need(profile_ok(job.get("profile")), "profile must be one of %s or tier:<modset tier>" % ", ".join(PROFILES))
+    if tier_of(job) or sel.get("proofs"):
+        # an exact-tier proof runs on SteveDesktop alone: Archmagi keeps its own list (owner by card 2026-11-05)
+        need(bool(tier_of(job)) and bool(sel.get("proofs")) and set(sel) == {"proofs"},
+             "a tier:<name> profile and a proofs selector go together, and the selector holds nothing else")
+        need(job.get("lane") == "stevedesktop", "a tier job runs on lane stevedesktop only")
+        need(bool(job.get("item")), "a tier job names the item whose live-proof lines it runs")
     need(job.get("gate") in (None,) + GATES, "gate must be one of %s" % ", ".join(GATES))
     need(job.get("lane") in LANES, "lane must be one of %s" % ", ".join(LANES))
     need(isinstance(job.get("priority"), int), "priority must be an int")
@@ -298,8 +346,9 @@ def json_schema():
             "schema": {"const": JOB_SCHEMA}, "id": {"type": "string", "pattern": JOB_ID_RE.pattern},
             "item": {"type": ["string", "null"]}, "mod": name,
             "selector": {"type": "object", "additionalProperties": False, "minProperties": 1,
-                         "properties": {"item": names, "chains": names, "rows": names, "full": {"type": "boolean"}}},
-            "profile": {"enum": list(PROFILES)}, "purpose": {"enum": list(PURPOSES)},
+                         "properties": {"item": names, "chains": names, "rows": names, "full": {"type": "boolean"},
+                                        "proofs": names}},
+            "profile": {"anyOf": [{"enum": list(PROFILES)}, {"type": "string", "pattern": TIER_RE.pattern}]}, "purpose": {"enum": list(PURPOSES)},
             "priority": {"type": "integer"}, "not_before": nullable_ts, "requested_by": name,
             "source_sha": {"type": "string", "pattern": SHA_RE.pattern},
             "supersedes": {"type": ["string", "null"], "pattern": JOB_ID_RE.pattern},
@@ -323,6 +372,7 @@ def json_schema():
             "attempt": {"type": "string"}, "host": {"type": "string"}, "runner_sha": {"type": ["string", "null"]},
             "outcome": {"enum": list(OUTCOMES)}, "cause": {"enum": list(CAUSES)},
             "deployed": {"type": "object"}, "rows": {"type": "array", "items": row},
+            "tier": {"type": ["object", "null"]}, "running": {"type": ["array", "null"], "items": {"type": "string"}},
             "counts": {"type": "object", "additionalProperties": {"type": "integer"}},
             "chain_versions": {"type": "object", "additionalProperties": {"type": "string"}},
             "phase_s": {"type": "object"}, "retries": {"type": "integer"},

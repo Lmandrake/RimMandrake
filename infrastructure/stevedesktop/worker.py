@@ -54,7 +54,8 @@ and runner clone) with src/RimMandrake/Utils/testq/archmagi_phases.py as the pha
 `REFUSED: why` line and fails (drift it may not deploy, no game it may not launch, a game it may not stop) ends the
 attempt REFUSED/DEPLOY or REFUSED/LOAD, or a hang INVALID/HANG with no restart, instead of INVALID.
 
-Tests override the phase commands with TESTQ_CMD_DEPLOY / TESTQ_CMD_LOAD / TESTQ_CMD_DOWN / TESTQ_CMD_RUN (shell
+Tests override the phase commands with TESTQ_CMD_DEPLOY / TESTQ_CMD_LOAD / TESTQ_CMD_DOWN / TESTQ_CMD_RUN, and an exact-tier
+job's TESTQ_CMD_TIERCHECK / TESTQ_CMD_TIERSWAP and its proofs folder TESTQ_PROOFS_DIR (shell
 command strings; RUN gets the modcheck arguments appended) and the bridge client with TESTQ_CMD_BRIDGE, skip the
 pull with TESTQ_SKIP_PULL=1, and may set TESTQ_SHEET_DIR, TESTQ_MODS_DIR, TESTQ_RUN_TIMEOUT_S and TESTQ_NO_SYSTEMD=1.
 """
@@ -489,6 +490,13 @@ RUN_BASE = ("export MODCHECK_SKIP_DEPLOY=1 MODCHECK_STALE_KEEP_COMPOSED=1 "
             # -X faulthandler: 0xC0000005 reaches WSL as "exit 5" with no output (MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET)
             "python.exe -X faulthandler src/RimMandrake/Utils/modcheck/cli.py run --drivers on")
 
+# An exact-tier job (profile tier:<name>, LANE_TIER_WIRE_A_WHOLE_LIST_LOAD; owner by card 2026-11-05: SteveDesktop is the
+# exact-tier host): the tier is loaded as the WHOLE list, the running load is checked against it, then the item's
+# live-proof lines run. Tests override both with TESTQ_CMD_TIERCHECK / TESTQ_CMD_TIERSWAP (the tier is appended).
+TIER_CHECK = "python.exe src/RimMandrake/Utils/testq/tier_load.py check --tier"
+TIER_SWAP = "python3 src/RimMandrake/Utils/modset_builder.py --apply --not-my-bridge %s --tier"
+PROOFS_DIR = os.path.join("infrastructure", "state", "live_proofs")
+
 # a mod with no src folder answers []: deploy_custom_mods.py refuses that name itself, loudly, in the deploy step; a
 # tree with no modcheck runner composes nothing (modcheck run fails there by itself), so it answers [] too
 CLOSURE_PY = ("import glob, json, os, sys; M = 'src/RimMandrake/Utils/modcheck'; "
@@ -614,9 +622,12 @@ class Attempt:
     # phases --------------------------------------------------------------
     def deploy(self):
         override = os.environ.get("TESTQ_CMD_DEPLOY")
-        mods = [self.job["mod"]] + list(self.job.get("deploy") or [])
+        mods = self.deploy_mods()
+        if not mods:        # an exact-tier job whose build changed no mod: the tier's own trees stand as deployed
+            self.say("deploy: the job names no mod to deploy")
+            return self.companion()
         try:
-            extra = deploy_closure(self.job["mod"])
+            extra = [] if S.is_proofs(self.job) else deploy_closure(self.job["mod"])
         except Exception as e:  # noqa: BLE001 - a deploy that cannot name its closure would drop mods silently
             return self.fail("INVALID", "DEPLOY", "deploy closure of %s failed: %s: %s"
                              % (self.job["mod"], type(e).__name__, str(e)[:200]))
@@ -643,6 +654,12 @@ class Attempt:
             return self.fail("INVALID", "DEPLOY", "game down before deploy failed: " + tail)
         rc, tail = self.sh(plan + " --apply", timeout=1200)
         return (rc == 0 or self.fail("INVALID", "DEPLOY", "deploy --apply failed: " + tail)) and self.companion()
+
+    def deploy_mods(self):
+        """The mods this attempt deploys and attests: the job's mod and its --deploy list; an exact-tier job's `mod` is
+        its item id, so only its deploy list (the mods the item's build changed)."""
+        own = [] if S.is_proofs(self.job) else [self.job["mod"]]
+        return own + [m for m in self.job.get("deploy") or [] if m not in own]
 
     def companion_dir(self):
         """The game's BridgeTools/JawaBench: the sibling of the Mods folder attest hashes (TESTQ_COMPANION_DIR overrides)."""
@@ -921,7 +938,7 @@ class Attempt:
         if self.companion_state:
             dep["companion"] = self.companion_state
         _, folded, _c = S.deploy_catalog(os.path.join(RUNNER, "src"))
-        for m in [self.job["mod"]] + list(self.job.get("deploy") or []):
+        for m in self.deploy_mods():
             m = folded.get(m, m)                   # a folded source is deployed as its composed target
             root = os.path.join(mods_dir, m)
             dll, defs, n = hashlib.sha256(), hashlib.sha256(), 0
@@ -938,6 +955,94 @@ class Attempt:
         mc = os.path.join(os.environ.get("RM_GAME_USERDATA", ""), "Config", "ModsConfig.xml")
         dep["modsconfig_sha256_prerun"] = sha256_file(mc) if os.path.isfile(mc) else None
         self.res["deployed"] = dep
+        return True
+
+    # exact-tier jobs -----------------------------------------------------
+    def tier_reading(self, tier):
+        """tier_load.py check -> its JSON reading; a check that printed none is a reading that measured nothing."""
+        cmd = (os.environ.get("TESTQ_CMD_TIERCHECK") or TIER_CHECK) + " " + shlex.quote(tier)
+        rc, tail = self.sh(cmd, log_name="tier_check.log", timeout=180)
+        for line in reversed((tail or "").splitlines()):
+            line = line.strip()
+            if line.startswith("{"):
+                try:
+                    r = json.loads(line)
+                except ValueError:
+                    continue
+                if isinstance(r, dict):
+                    r["exact"] = bool(r.get("exact")) and rc == 0
+                    return r
+        return {"tier": tier, "running": None, "exact": False,
+                "why": "tier check printed no reading (exit %s): %s" % (rc, (tail or "")[-200:])}
+
+    def tier_load(self):
+        """Load the job's tier as the whole list, unless the running game already is it (the train stays on a tier),
+        then read what actually runs. The reading lands in the result whatever it says; run_proofs refuses to judge
+        on a load that is not the tier."""
+        tier = S.tier_of(self.job)
+        r = self.tier_reading(tier)
+        if r.get("exact"):
+            # kept, through load(): its wedged/overgrown/marker restarts still apply to a game already on the tier,
+            # and a restart comes back on the same list (ModsConfig is the tier's)
+            self.say("tier %s: the running game already is the tier, kept" % tier)
+            if not self.load():
+                return False
+            self.res["tier"] = self.tier_reading(tier)
+            return True
+        self.say("tier %s: the running load is not it (%s): whole-list swap" % (tier, (r.get("why") or "")[:160]))
+        rc, tail = self.sh(self.cmd_down(), timeout=300)
+        if rc != 0:
+            return self.fail("INVALID", "LOAD", "game down before the tier swap failed: " + tail)
+        swap = os.environ.get("TESTQ_CMD_TIERSWAP") or TIER_SWAP % shlex.quote(
+            "testq %s on SteveDesktop: the worker holds this machine's game guard" % self.aid)
+        rc, tail = self.sh(swap + " " + shlex.quote(tier), log_name="tier_swap.log", timeout=600)
+        if rc != 0:
+            return self.fail("INVALID", "LOAD", "modset_builder --tier %s --apply failed: %s" % (tier, tail[-300:]))
+        if not self.load():
+            return False
+        self.res["tier"] = self.tier_reading(tier)
+        return True
+
+    def run_proofs(self):
+        """Each selected clause's live-proof line, from the item's proofs file at source_sha: exit 0 PASS, 1 FAIL, else
+        UNMEASURED. On a load that is not the tier nothing runs: every row UNMEASURED, INVALID/LOAD, never a verdict."""
+        clauses = list(self.job["selector"]["proofs"])
+        r = self.res.get("tier") or {}
+        self.res["running"] = r.get("running")
+        if not r.get("exact"):
+            why = r.get("why") or "the tier-exact load check did not read"
+            self.res["rows"] = [{"chain": "proofs", "row": c, "verdict": "UNMEASURED", "detail": why[:S.DETAIL_CAP]}
+                                for c in clauses]
+            self.res["counts"] = S.count_verdicts(self.res["rows"])
+            return self.fail("INVALID", "LOAD", why)
+        rel = os.path.join(PROOFS_DIR, self.job["item"] + ".txt")
+        # TESTQ_PROOFS_DIR: a selftest's proofs folder; the real one is the pinned clone's, at source_sha
+        path = os.path.join(os.environ["TESTQ_PROOFS_DIR"], self.job["item"] + ".txt") if os.environ.get(
+            "TESTQ_PROOFS_DIR") else os.path.join(CLONE, rel)
+        lines = S.proof_lines(read_text(path) or "")
+        budget = int(os.environ.get("TESTQ_RUN_TIMEOUT_S") or self.job.get("timeout_s", 2700))
+        per = max(60, budget // max(1, len(clauses)))
+        rows = []
+        for c in clauses:
+            cmd = lines.get(c)
+            if not cmd:
+                rows.append({"chain": "proofs", "row": c, "verdict": "UNMEASURED",
+                             "detail": "no `live-proof %s:` line in %s at %s" % (c, rel, self.job["source_sha"])})
+                continue
+            log = "proof_%s.log" % c
+            rc, tail = self.sh(cmd, log_name=log, timeout=per)
+            verdict = "PASS" if rc == 0 else "FAIL" if rc == 1 else "UNMEASURED"
+            head = "exit %d" % rc if rc is not None else "timed out after %d s" % per
+            rows.append({"chain": "proofs", "row": c, "verdict": verdict,
+                         "detail": ("%s: %s" % (head, tail))[-S.DETAIL_CAP:]})
+            path = os.path.join(self.d, log)
+            if os.path.isfile(path):
+                self.res["artifacts"].append({"name": log, "path": path, "sha256": sha256_file(path),
+                                              "bytes": os.path.getsize(path)})
+        self.res["rows"] = rows
+        self.res["counts"] = S.count_verdicts(rows)
+        self.res.update(outcome="DONE", cause=None, note="tier %s, %d running mods; %s" % (
+            S.tier_of(self.job), len(r.get("running") or []), S.count_verdicts(rows)))
         return True
 
     def run_modcheck(self):
@@ -1167,10 +1272,11 @@ class Attempt:
                 subprocess.run(os.environ["TESTQ_TEST_BEFORE_ACQUIRE"], shell=True, check=False)
             with host_guard.held(SEAT, "testq " + self.aid):
                 self.say("guard held; runner %s" % self.res["runner_sha"])
+                tier = S.is_proofs(self.job)
                 ok = self.timed("deploy", self.deploy)
-                ok = ok and self.timed("load", self.load)
+                ok = ok and self.timed("load", self.tier_load if tier else self.load)
                 ok = ok and self.timed("attest", self.attest)
-                ok and self.timed("run", self.run_modcheck)
+                ok and self.timed("run", self.run_proofs if tier else self.run_modcheck)
         except Stopped:
             self.kill_child()
             self.fail("INTERRUPTED", "HARNESS", "stopped (SIGTERM) in phase %s" % self.phase)
