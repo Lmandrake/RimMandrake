@@ -134,9 +134,10 @@ def set_status(store, item, **kw):
 
 
 # --------------------------------------------------------------------------------------------------- the contract hook
-def owe(store, item, base, now, cfg=None, clone=None):
-    """-> True when this call made the exam owed. Only the first contract of an item, only in shadow/live mode, only
-    while the shadow sample is short of `max_items`; never twice for one item."""
+def owe(store, item, base, now, cfg=None, clone=None, origin="first_contract"):
+    """-> True when this call made the exam owed. On an item's first contract, or (`origin` start_backfill) at the next
+    start of one contracted before this hook landed; only in shadow/live mode, only while the shadow sample is short of
+    `max_items`; never twice for one item."""
     cfg = config() if cfg is None else cfg
     if cfg.get("mode") not in ("shadow", "live") or not base:
         return False
@@ -146,7 +147,7 @@ def owe(store, item, base, now, cfg=None, clone=None):
     have = [d for d in (os.listdir(root) if os.path.isdir(root) else []) if os.path.isdir(os.path.join(root, d))]
     if len(have) >= int(cfg.get("max_items", 60)):
         return False
-    set_status(store, item, state="owed", base=base, at=iso(now), mode=cfg["mode"], clone=clone)
+    set_status(store, item, state="owed", base=base, at=iso(now), mode=cfg["mode"], clone=clone, origin=origin)
     return True
 
 
@@ -182,7 +183,7 @@ def live_roots():
     return [relentless.DEFAULT_ROOT]
 
 
-def on_contract(store, item, base, now=None, clone=None, cfg=None, kicker=None, roots=None):
+def on_contract(store, item, base, now=None, clone=None, cfg=None, kicker=None, roots=None, origin="first_contract"):
     """relentless.contract()'s call: an item's first contract was just set, before its builder edits. Owe the exam and
     start its unit. Never raises: shadow mode must not cost the builder its contract. -> what happened, in words."""
     try:
@@ -190,7 +191,7 @@ def on_contract(store, item, base, now=None, clone=None, cfg=None, kicker=None, 
             return None
         now = time.time() if now is None else now
         cfg = config() if cfg is None else cfg
-        if not owe(store, item, base, now, cfg, clone):
+        if not owe(store, item, base, now, cfg, clone, origin):
             return None
         why = (kicker or kick)(store, item, cfg)
         if why:
@@ -203,6 +204,22 @@ def on_contract(store, item, base, now=None, clone=None, cfg=None, kicker=None, 
         except Exception:  # noqa: BLE001
             pass
         return None
+
+
+def on_start(store, st, now=None, cfg=None, kicker=None, roots=None):
+    """relentless._lease()'s call when an item starts a worker (EXAM_SHADOW_FILL_ITEMS_OLDER_THAN_EXAMS). An item whose
+    contract was set before on_contract landed (2026-11-06) never had its first-contract moment here, so it would run
+    wholly on the old path: at its next start (from queued, after a block or a game snag alike) it owes an exam against
+    its current base, as a first contract would. No contract yet: its first contract owes it. Never raises."""
+    if not st or not st.get("contract"):
+        return None
+    try:
+        if status(store, st["item"]):
+            return None
+    except Exception:  # noqa: BLE001 - an unreadable owed.json is on_contract's to record
+        pass
+    return on_contract(store, st["item"], st.get("base"), now=now, clone=st.get("clone"), cfg=cfg, kicker=kicker,
+                       roots=roots, origin="start_backfill")
 
 
 # ---------------------------------------------------------------------------------------------------------- the lint

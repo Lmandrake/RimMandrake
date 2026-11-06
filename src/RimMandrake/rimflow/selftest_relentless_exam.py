@@ -306,6 +306,47 @@ def t_on_contract(tmp):
        "O9 contract() calls on_contract on the first contract only")
 
 
+def t_backfill():
+    """EXAM_SHADOW_FILL_ITEMS_OLDER_THAN_EXAMS: an item contracted before the hook owes its exam at its next start,
+    through the real tick/_lease path (selftest_relentless's Rig), at its current base."""
+    import selftest_relentless as SR
+    x = SR.Rig(n=1, share=1.0, max_workers=1)
+    kicked, roots0, kick0, cfg0 = [], E.live_roots, E.kick, E.config
+    try:
+        E.config = lambda path=None: dict(CFG)          # the shipped mode may change; this row is about the hook
+        E.live_roots = lambda: [x.s.root]
+        E.kick = lambda store, item, cfg=None, runner=None: kicked.append(item)
+        x.run_one("I0")
+        ok(E.status(x.s, "I0") is None and not kicked, "B2 a start with no contract owes nothing (its first contract will)")
+        g = x.st("I0")["gen"]
+        E.live_roots = lambda: []                       # the hook not yet landed: the old contract owes nothing
+        R.contract(x.s, "I0", g, "run the test")
+        ok(E.status(x.s, "I0") is None, "B0 the old contract owed nothing")
+        E.live_roots = lambda: [x.s.root]
+        R.snag(x.s, "I0", g, "test", "back to the line", x.r, now=x.now)
+        for _ in range(12):
+            if x.st("I0")["status"] == "running" and x.st("I0")["gen"] > g:
+                break
+            x.tick()
+        st = x.st("I0")
+        rec = E.status(x.s, "I0") or {}
+        ok(st["status"] == "running" and st["gen"] > g and rec.get("state") == "owed" and rec.get("base") == st["base"]
+           and rec.get("origin") == "start_backfill" and kicked == ["I0"],
+           "B1 the next start of an item contracted before the hook owes its exam at its current base %s %s" % (rec, kicked))
+        R.snag(x.s, "I0", st["gen"], "test", "again", x.r, now=x.now)
+        for _ in range(12):
+            if x.st("I0")["status"] == "running" and x.st("I0")["gen"] > st["gen"]:
+                break
+            x.tick()
+        ok(x.st("I0")["gen"] > st["gen"] and kicked == ["I0"], "B3 a second start owes it no second time %s" % kicked)
+        y = R.Store(os.path.join(x.d, "first"))
+        ok(E.on_contract(y, "P_Q_R", "abc", cfg=CFG, kicker=lambda s, i, c: None, roots=[y.root])
+           and E.status(y, "P_Q_R").get("origin") == "first_contract", "B4 a first contract records its origin")
+    finally:
+        E.live_roots, E.kick, E.config = roots0, kick0, cfg0
+        x.done()
+
+
 def t_run_item(tmp):
     repo, base, wrong, right = make_repo(tmp)
     store = R.Store(os.path.join(tmp, "ri"))
@@ -417,6 +458,7 @@ def main():
         t_shadow(tmp)
         t_echoes(tmp)
         t_on_contract(tmp)
+        t_backfill()
         t_run_item(tmp)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

@@ -6665,6 +6665,9 @@ def _lease(store, fx, r, now, acts, seen, wake=None):
             if res and res.get("gen") == st["gen"] - 1 and not piloting(st):     # nothing ran between the cut and now
                 st["run"]["resume"] = res["session"]
             store.save(st)
+        import relentless_exam      # EXAM_SHADOW_FILL_ITEMS_OLDER_THAN_EXAMS: one contracted before the hook owes it now
+        if relentless_exam.on_start(store, st, now=now):
+            acts.append({"do": "exam_backfill", "item": item})
         acts.append({"do": "clone_try", "by": "work"})
         launched += 1       # the limit counts clones tried, as clones_this_tick does: a fence after prepare spent one (Codex r3)
         why = fx.prepare(st)

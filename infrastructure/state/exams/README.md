@@ -7,7 +7,7 @@ The builder sees it and may not edit it. Code: `src/RimMandrake/rimflow/relentle
 
 - **shadow** (now): in the supervisor store, never in a builder's clone:
   `/home/mandrake/rm/relentless/store/exams/<ITEM>/`
-  - `owed.json`: state `owed | setting | validated | arbiter_owed | setter_failed`, base sha, refusals.
+  - `owed.json`: state `owed | setting | validated | arbiter_owed | setter_failed`, base sha, refusals, `origin` (`first_contract`, or `start_backfill`: an item contracted before the hook, owed at its next start).
   - `setter/exam.json`, `setter/files/`: what the Setter wrote. `setter.out`: its run.
   - `validation.jsonl`: one VALIDATE verdict per attempt (refusals and every run's exit and kind).
   - `exam.json` + `files/`: the frozen exam once validated, with `exam_hash`, `base_sha` and the Setter's session.
