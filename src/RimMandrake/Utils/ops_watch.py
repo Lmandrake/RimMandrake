@@ -2255,6 +2255,29 @@ def rl_timer_clock(cfg, now, limit):
     return (began if now - began <= limit * 60 else None), began
 
 
+def rl_stop_span(excuse, began, rows, t, now):
+    """-> (from, to) of the stop rl_timer_clock read, or None: from the belt's last tick before it, to the restart (now, while
+    the restart is still armed). No tick seen before it, no span: nothing is excused on a stop nobody can date."""
+    stamps = [x for x in [r.get("t") for r in rows] + [t] if is_num(x) and finite(x) and x <= now]
+    if excuse == math.inf:
+        to = now
+    elif began is not None:
+        to, stamps = began, [x for x in stamps if x < began]
+    else:
+        return None
+    return (max(stamps), to) if stamps else None
+
+
+def rl_acting_age(age_min, span, now):
+    """-> (age_min less the part of it the belt spent stopped, the minutes taken off). For an age only a tick can end (the books
+    clone levels on a tick, lapse_holds frees on a tick): a stopped belt has no tick. What was already late at the stop stays late,
+    whatever the stop's length; what began during it counts from the restart."""
+    if span is None:
+        return age_min, 0
+    off = max(min(now, span[1]) - max(now - age_min * 60, span[0]), 0) / 60.0
+    return round(max(age_min - off, 0), 1), round(off, 1)
+
+
 def tail_json_lines(p, chunk=1 << 21):
     """-> the parsed objects at the end of a JSONL file, oldest first. A torn line is skipped; a missing file raises."""
     with open(p, "rb") as f:
@@ -3108,18 +3131,23 @@ def c_relentless(now, rules, ctx):
         pts["relentless.cause"] = M(cause)
     else:
         pts["relentless.distressed"] = pts["relentless.cause"] = U(why or "; ".join(bad)[:300])
+    span = rl_stop_span(excuse, began, rows, t, now)
+
+    def acting(age, **x):
+        age, off = rl_acting_age(age, span, now)
+        return M(age, "min", **x, **({"stopped_min": off} if off else {}))
     behind_min, behind_n = rl_books_behind(rl_root(cfg) / "books", now)
     if behind_min is None:
         pts["relentless.books_behind_min"] = U(behind_n, "min")
         bad.append(str(behind_n))       # an unreadable books clone must reach relentless.blind (the MEASURED alarm cannot)
     else:
-        pts["relentless.books_behind_min"] = M(behind_min, "min", behind=behind_n)
+        pts["relentless.books_behind_min"] = acting(behind_min, behind=behind_n)
     held, who = rl_game_hold_idle(store / "items", now)
     if held is None:
         pts["relentless.game_hold_idle_min"] = U(who, "min")
         bad.append(str(who))
     else:
-        pts["relentless.game_hold_idle_min"] = M(held, "min", **who)
+        pts["relentless.game_hold_idle_min"] = acting(held, **who)
     pct, got = rl_live_measured(rl_root(cfg) / "live", now, cfg)
     pts["relentless.live_measured_pct"] = U(got, "%") if pct is None else M(pct, "%", **got)
     if pct is None and "unreadable" in str(got):     # too few runs is idle, not blind; an unreadable file is blind

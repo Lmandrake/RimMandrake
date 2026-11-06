@@ -201,5 +201,86 @@ check(pts["relentless.progress_age_min"]["v"] == 3.0, "a 3 h pause: progress cou
 pts = collect(systemd("active", began=LAST_STAMP - 86400), long_back + 180)
 check(pts["relentless.progress_age_min"]["v"] > 170, "a running timer with no progress still ages: %s min" % pts["relentless.progress_age_min"]["v"])
 
+# ------------------------------------------------------------------ what only a tick can end: books lag and an idle game hold
+# Only the belt's tick levels the books clone and frees a hold; a stopped belt has no tick, and ops_watch still measures both.
+BOOKS, HOLD = "relentless.books_behind_min", "relentless.game_hold_idle_min"
+STALE, IDLE = "RELENTLESS_BOOKS_STALE:" + BOOKS, "RELENTLESS_GAME_HOLD_IDLE:" + HOLD
+g("clone", str(TMP / "belt/origin.git"), str(TMP / "belt/up"))
+PASS_RULES = json.loads(json.dumps(RULES))
+for tg in PASS_RULES["targets"]:      # never the real Conductor log
+    if tg.get("conductor_log"):
+        tg["conductor_log"] = str(TMP / "conductor.md")
+passes = []
+
+
+def whole_pass(sysd, now):
+    """The collector's points, and the alarms of a whole pass over the real rules, in an ops directory of its own."""
+    passes.append(1)
+    os.environ["RM_OPS_WATCH_DIR"] = str(TMP / ("ops_%d" % len(passes)))
+    OW.RL_SYSTEMD = sysd
+    alarms = OW.run(now=now, rules=PASS_RULES, filer=lambda todo, conf: {a["name"]: None for a in todo}, families=["relentless"])["alarms"]
+    return OW.c_relentless(now, PASS_RULES, {}), alarms
+
+
+def land(when):
+    """One commit on origin the books clone lacks, stamped `when`."""
+    date = "%d +0000" % when
+    subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "--allow-empty", "-m", "c"], cwd=TMP / "belt/up", check=True,
+                   capture_output=True, timeout=60, env={**os.environ, "GIT_COMMITTER_DATE": date, "GIT_AUTHOR_DATE": date})
+    g("push", "origin", "HEAD:main", cwd=TMP / "belt/up")
+
+
+def level():
+    g("pull", "--ff-only", "origin", "main", cwd=TMP / "belt/books")
+
+
+put_tick(LAST_STAMP)
+land(STOP + 10 * 60)
+pts, al = whole_pass(BARE, STOP + 60 * 60)
+check(pts[BOOKS]["v"] == 50.0 and STALE in al, "instrument: a commit 50 min behind, belt stopped with no restart armed: the books alarm rings (%s)" % pts[BOOKS]["v"])
+pts, al = whole_pass(HAND_ARMED, STOP + 60 * 60)
+check(pts[BOOKS]["v"] == 0 and pts[BOOKS]["x"]["behind"] == 1 and pts[BOOKS]["x"]["stopped_min"] == 50.0 and STALE not in al,
+      "the checker's case: hand-armed 1 h, commit landed 50 min ago, no books alarm, the lag still shown (%s)" % pts[BOOKS])
+pts, al = whole_pass(HAND_ARMED, STOP + 3 * 3600)
+check(pts[BOOKS]["v"] == 0 and STALE not in al, "the same at 3 h (%s)" % pts[BOOKS])
+pts, al = whole_pass(systemd("active", began=STOP + 3600), STOP + 3600 + 5 * 60)
+check(pts[BOOKS]["v"] == 5.0 and STALE not in al, "restarted 5 min ago: the lag counts from the restart (%s)" % pts[BOOKS])
+pts, al = whole_pass(systemd("active", began=STOP + 3600), STOP + 3600 + 35 * 60)
+check(pts[BOOKS]["v"] == 35.0 and STALE in al, "restarted 35 min ago and still behind: a jam, the alarm rings (%s)" % pts[BOOKS])
+pts, al = whole_pass(systemd("active", began=STOP - 86400), STOP + 60 * 60)
+check(pts[BOOKS]["v"] == 50.0 and "stopped_min" not in pts[BOOKS]["x"] and STALE in al, "a timer running all along: the full age, no stop to take off (%s)" % pts[BOOKS])
+OW.RL_SYSTEMD = HAND_ARMED
+check(OW.c_relentless(STOP + 60 * 60, json.loads((HERE / "ops_watch_rules.json").read_text()), {})[BOOKS]["v"] == 50.0,
+      "a store that is not the timer's: the full age")
+level()
+land(LAST_STAMP - 40 * 60)
+pts, al = whole_pass(HAND_ARMED, STOP + 3 * 3600)
+check(pts[BOOKS]["v"] == 40.0 and STALE in al, "jammed 40 min before the stop: still late, the stop hides nothing (%s)" % pts[BOOKS])
+pts, al = whole_pass(systemd("active", began=STOP + 3600), STOP + 3600 + 60)
+check(pts[BOOKS]["v"] == 41.0 and STALE in al, "and after the restart: 40 before it, 1 since (%s)" % pts[BOOKS])
+level()
+land(LAST_STAMP - 5 * 60)
+pts, al = whole_pass(HAND_ARMED, STOP + 3 * 3600)
+check(pts[BOOKS]["v"] == 5.0 and STALE not in al, "5 min behind at the stop reads 5 however long the stop (%s)" % pts[BOOKS])
+level()
+(STORE / "staffing.jsonl").write_text("")
+(STORE / "staffing.json").write_text("{torn")
+land(STOP + 10 * 60)
+pts, al = whole_pass(HAND_ARMED, STOP + 60 * 60)
+check(pts[BOOKS]["v"] == 50.0 and STALE in al, "no tick readable, so the stop has no date: the full age (%s)" % pts[BOOKS])
+level()
+put_tick(LAST_STAMP)
+
+idle = STORE / "items" / "HOLD_ITEM"
+idle.mkdir()
+(idle / "state.json").write_text(json.dumps({"status": "running", "live_iter": {"at": STOP + 60}}))
+pts, al = whole_pass(BARE, STOP + 60 * 60)
+check(pts[HOLD]["v"] == 59.0 and IDLE in al, "instrument: an idle game hold, stopped with no restart armed: the alarm rings (%s)" % pts[HOLD]["v"])
+pts, al = whole_pass(HAND_ARMED, STOP + 60 * 60)
+check(pts[HOLD]["v"] == 0 and pts[HOLD]["x"]["holder"] == "HOLD_ITEM" and IDLE not in al, "hand-armed: no tick to free it, no alarm, the holder still named (%s)" % pts[HOLD])
+(idle / "state.json").write_text(json.dumps({"status": "running", "live_iter": {"at": LAST_STAMP - 35 * 60}}))
+pts, al = whole_pass(HAND_ARMED, STOP + 60 * 60)
+check(pts[HOLD]["v"] == 35.0 and IDLE in al, "a hold 35 min idle at the stop stays late (%s)" % pts[HOLD])
+
 print("selftest_timerstop_planned_reading: %s" % ("OK" if not FAILS else "FAIL %d" % len(FAILS)))
 sys.exit(1 if FAILS else 0)
