@@ -203,6 +203,55 @@ def t_smoke(w, fourth):
     ok(w.rel.cut("emergency", why="forward again", sha=fifth)["sha"] == fifth, "an emergency names a landed sha with --sha")
 
 
+def t_crash_between_swap_and_row(w):
+    """A kill after the swap and before the row: rollback must still work, and to the right release."""
+    stack = w.rel.stack()
+    prev, top = stack[-2], stack[-1]
+    new = w.push("crash", "c")
+    w.rel.build(new)
+    w.rel._swap(new[:12])       # a cut that died here
+    row = w.rel.rollback(why="during the incident")
+    ok(row["id"] == top and w.rel.pinned_id() == top and w.rel.log()[-2]["kind"] == "repair", "a lost release row: rollback goes to the release before it")
+    w.rel._swap(prev)           # a rollback that died here
+    w.rel._heal()
+    ok(w.rel.stack()[-1] == prev and top not in w.rel.stack() and w.rel.log()[-1]["kind"] == "rollback", "a lost rollback row: the record catches up")
+    w.rel._heal()
+    ok(w.rel.log()[-1]["why"].startswith("current moved") and len([r for r in w.rel.log() if r["why"].startswith("current moved")]) == 2, "healing twice records once")
+    w.now += 86400
+    ok(w.rel.cut("daily")["id"] == new[:12], "and the daily carries on")
+
+
+def t_fetch_and_live_file(w):
+    """A dead tick fetches nothing, so the cut must; and a pause file absent at the cut must still reach the tick when it returns."""
+    git(w.work, "rm", "-q", "src/RimMandrake/rimflow/relentless_owner_pause.json")
+    git(w.work, "commit", "-q", "-m", "pause gone")
+    git(w.work, "push", "-q", "origin", "HEAD:main")
+    sha = git(w.work, "rev-parse", "HEAD")
+    row = w.rel.cut("emergency", why="the tick is dead, books never fetched this")
+    ok(row["sha"] == sha, "a cut fetches for itself: it sees a landing books has not fetched")
+    git(w.books, "pull", "-q", "--ff-only", "origin", "main")
+    p = os.path.join(os.path.realpath(w.rel.current), "src/RimMandrake/rimflow/relentless_owner_pause.json")
+    ok(os.path.islink(p) and not os.path.exists(p), "the pause file absent at the cut: a dangling link, read as off")
+    w.push("back", "b")
+    ok(os.path.exists(p), "the commit that restores it reaches the running tree")
+
+
+def t_rollback_does_not_wait_on_smoke(w):
+    """A cut in its test holds no lock, and a rollback during that test stands for the date."""
+    w.now += 86400
+    w.push("slow", "s")
+    during = {}
+
+    def slow(tree, books):
+        during["row"] = w.rel.rollback(why="while a cut tests")
+        return None
+    w.rel.smoke = slow
+    try:
+        ok(w.rel.cut("daily") is None and during["row"]["kind"] == "rollback", "a rollback goes through during a cut's test, and the daily stands down")
+    finally:
+        w.rel.smoke = lambda tree, books: w.smoke_says
+
+
 def t_swap_never_gap(w):
     """A tick may start at any moment: while `current` swaps back and forth a reader must always find a tree."""
     stop, bad = threading.Event(), []
@@ -234,7 +283,8 @@ def t_prune(w):
     keep = w.rel.stack()[-(R.KEEP + 1):]
     have = [n for n in os.listdir(w.rel.dir) if n != "current" and os.path.isfile(os.path.join(w.rel.dir, n, ".release.json"))]
     ok(pinned in have and set(keep) <= set(have), "pruning keeps the current release and the way back")
-    left = [n for n in have if n not in keep and w.now - os.path.getmtime(os.path.join(w.rel.dir, n)) > R.GONE_AFTER_S]
+    rows = w.rel.log()
+    left = [n for n in have if n not in keep and w.now - R.Release._left_at(rows, n, os.path.join(w.rel.dir, n)) > R.GONE_AFTER_S]
     ok(not left, "older ones go (%s; have %d, keep %d)" % (left, len(have), len(keep)))
 
 
@@ -248,6 +298,9 @@ def t_real_tree():
         rf = os.path.join(tree, R.RIMFLOW)
         for n in ("relentless.py", "relentless_wake.py", "relentless_live_round.py", "relentless_broker.py", "relentless_rules.json", "cli.py", "model.py"):
             ok(os.path.isfile(os.path.join(rf, n)) and not os.path.islink(os.path.join(rf, n)), "the real tree pins " + n)
+        ok(not os.path.islink(os.path.join(tree, "src/RimMandrake/bridgetools/companion_identity.py"))
+           and os.path.islink(os.path.join(tree, "src/RimMandrake/bridgetools", sorted(n for n in os.listdir(os.path.join(tree, "src/RimMandrake/bridgetools")) if n != "companion_identity.py")[0])),
+           "the real tree pins the one bridgetools module the tick imports, and links the rest")
         ok(os.path.islink(os.path.join(rf, "relentless_owner_pause.json")), "the real tree leaves the pause switch live")
         ok(os.path.isfile(os.path.join(tree, "src/RimMandrake/Utils/rmpaths.py")) and os.path.islink(os.path.join(tree, "infrastructure")),
            "the real tree: Utils pinned, infrastructure linked")
@@ -302,6 +355,9 @@ def main():
             third = t_rollback(w, second)
             fourth = t_emergency(w, third)
             t_smoke(w, fourth)
+            t_crash_between_swap_and_row(w)
+            t_fetch_and_live_file(w)
+            t_rollback_does_not_wait_on_smoke(w)
             t_swap_never_gap(w)
             t_prune(w)
         t_units_and_sites()

@@ -21,6 +21,7 @@ The tick is a oneshot, so it needs no stop: one running keeps its own tree to th
 Exit: 0 done, 1 refused (nothing changed), 2 usage.
 """
 import argparse
+import calendar
 import contextlib
 import fcntl
 import json
@@ -35,6 +36,7 @@ import time
 DEFAULT_ROOT = "/home/mandrake/rm/relentless"
 RIMFLOW = "src/RimMandrake/rimflow/"
 PINNED_DIRS = (RIMFLOW, "src/RimMandrake/Utils/", "src/RimMandrake/contracts/")
+PINNED_FILES = ("src/RimMandrake/bridgetools/companion_identity.py",)     # bridgetools is mod tooling, but the tick imports this
 # his pipeline-only pause is a switch he throws by a commit, not a limit: it must reach the tick at once
 LIVE_FILES = (RIMFLOW + "relentless_owner_pause.json",)
 KEEP = 7                # releases kept on the way back, beyond the current one
@@ -49,6 +51,8 @@ class Refused(Exception):
 
 
 def is_pinned(path):
+    if path in PINNED_FILES:
+        return True
     if not path.startswith(PINNED_DIRS) or path in LIVE_FILES:
         return False
     if path.endswith(".py"):
@@ -149,12 +153,37 @@ class Release:
     def _prune(self):
         keep = set(self.stack()[-(KEEP + 1):])
         now = self.clock()
+        rows = self.log()
         for name in os.listdir(self.dir):
             p = os.path.join(self.dir, name)
+            if name.startswith(".build-") and now - os.path.getmtime(p) > GONE_AFTER_S:     # a build a crash left
+                shutil.rmtree(p, ignore_errors=True)
+                continue
             if name in keep or os.path.islink(p) or not os.path.isfile(os.path.join(p, ".release.json")):
                 continue
-            if now - os.path.getmtime(p) > GONE_AFTER_S:
+            if now - self._left_at(rows, name, p) > GONE_AFTER_S:
                 shutil.rmtree(p, ignore_errors=True)
+
+    @staticmethod
+    def _left_at(rows, name, path):
+        """When nothing new could start in this tree any more: the row after its last one. A tree never released (it
+        failed its smoke test) counts from its build."""
+        last = max((i for i, r in enumerate(rows) if r.get("id") == name), default=None)
+        if last is None or last + 1 >= len(rows):
+            return os.path.getmtime(path) if last is None else float("inf")
+        return calendar.timegm(time.strptime(rows[last + 1]["at"], "%Y-%m-%dT%H:%M:%SZ"))
+
+    def _heal(self):
+        """A crash between a swap and its row leaves `current` ahead of the record, and the way back must still work during
+        the incident. `current` is the truth: an id on the way back is a rollback that lost its row, any other a release."""
+        pinned = self.pinned_id()
+        stack = self.stack()
+        if not pinned or (stack and stack[-1] == pinned):
+            return
+        with open(os.path.join(self.dir, pinned, ".release.json"), encoding="utf-8") as f:
+            sha = json.load(f)["sha"]
+        self._record(kind="rollback" if pinned in stack else "repair", sha=sha, id=pinned, by=who(),
+                     why="current moved without a row (crash between swap and record)", **{"from": stack[-1] if stack else None})
 
     def _locked(self):
         os.makedirs(self.dir, exist_ok=True)
@@ -168,46 +197,62 @@ class Release:
         if kind == "emergency" and not (why or "").strip():
             raise Refused("an emergency release names its reason (--why)")
         with self._locked():
-            today = self.day(self.clock())
-            if kind == "daily" and any(r["date"] == today for r in self.log()):
+            self._heal()
+            if kind == "daily" and self._released_today():
                 return None
+            # the tick is what fetches books, and a dead tick is when this is needed most; a failed fetch leaves origin/main
+            git(self.books, "fetch", "--quiet", "origin", check=False)
             head = git(self.books, "rev-parse", "origin/main").stdout.strip()
             sha = git(self.books, "rev-parse", "--verify", (sha or head) + "^{commit}").stdout.strip()
             if git(self.books, "merge-base", "--is-ancestor", sha, head, check=False).returncode:
                 raise Refused("%s is not on origin/main: only landed code is released" % sha[:12])
-            before = self.pinned_id()
             rid = self.build(sha)
+            needs_test = rid != self.pinned_id()
+        # outside the lock: a rollback must never wait on a test
+        why_not = self.smoke(os.path.join(self.dir, rid), self.books) if needs_test else None
+        if why_not:
+            raise Refused("release %s fails its smoke test, the tick stays on %s: %s" % (rid, self.pinned_id(), why_not))
+        with self._locked():
+            self._heal()
+            if kind == "daily" and self._released_today():     # a rollback during the test stands for the date
+                return None
+            before = self.pinned_id()
             if rid != before:
-                why_not = self.smoke(os.path.join(self.dir, rid), self.books)
-                if why_not:
-                    raise Refused("release %s fails its smoke test, the tick stays on %s: %s" % (rid, before, why_not))
                 self._swap(rid)
             row = self._record(kind=kind, sha=sha, id=rid, why=why or kind, by=by or who(), **{"from": before})
             self._prune()
             return row
 
+    def _released_today(self):
+        today = self.day(self.clock())
+        return any(r["date"] == today for r in self.log())
+
     def rollback(self, why=None, dry_run=False, by=None):
         with self._locked():
-            stack = self.stack()
-            pinned = self.pinned_id()
-            if not stack or stack[-1] != pinned:
-                raise Refused("the record says %s but current is %s: read %s" % (stack[-1:] or "nothing", pinned, self.logfile))
-            if len(stack) < 2:
-                raise Refused("no earlier release to go back to (%s is the first)" % pinned)
-            target = stack[-2]
-            dest = os.path.join(self.dir, target)
-            try:
-                with open(os.path.join(dest, ".release.json"), encoding="utf-8") as f:
-                    sha = json.load(f)["sha"]
-            except (OSError, ValueError, KeyError) as e:
-                raise Refused("release %s cannot be read: %s" % (target, e)) from e
-            if dry_run:     # a real rollback runs no test: the way back must not depend on anything that may be what broke
-                why_not = self.smoke(dest, self.books)
-                if why_not:
-                    raise Refused("release %s fails its smoke test: %s" % (target, why_not))
-                return {"dry_run": True, "from": pinned, "id": target, "sha": sha, "smoke": "ok", "way_back_left": len(stack) - 2}
-            self._swap(target)
-            return self._record(kind="rollback", sha=sha, id=target, why=why or "rollback", by=by or who(), **{"from": pinned})
+            if not dry_run:
+                self._heal()
+            target, sha, pinned, left = self._way_back()
+            if not dry_run:     # no test: the way back must not depend on anything that may be what broke
+                self._swap(target)
+                return self._record(kind="rollback", sha=sha, id=target, why=why or "rollback", by=by or who(), **{"from": pinned})
+        why_not = self.smoke(os.path.join(self.dir, target), self.books)
+        if why_not:
+            raise Refused("release %s fails its smoke test: %s" % (target, why_not))
+        return {"dry_run": True, "from": pinned, "id": target, "sha": sha, "smoke": "ok", "way_back_left": left}
+
+    def _way_back(self):
+        stack = self.stack()
+        pinned = self.pinned_id()
+        if not stack:
+            raise Refused("nothing recorded in %s" % self.logfile)
+        if len(stack) < 2:
+            raise Refused("no earlier release to go back to (%s is the first)" % pinned)
+        target = stack[-2]
+        try:
+            with open(os.path.join(self.dir, target, ".release.json"), encoding="utf-8") as f:
+                return target, json.load(f)["sha"], pinned, len(stack) - 2
+        except (OSError, ValueError, KeyError) as e:
+            raise Refused("release %s cannot be read: %s" % (target, e)) from e
 
     def status(self):
         rid = self.pinned_id()
@@ -261,8 +306,12 @@ def write_tree(books, sha, dest):
             pass
         for name in sorted(names - {"__pycache__", ".pytest_cache"}):
             rel = os.path.join(d, name) if d else name
-            if rel in pinned or rel in real_dirs:
+            # a path pinnable but not at this sha (an older --sha, an untracked .py) stays absent, as it was at the sha
+            if rel in pinned or rel in real_dirs or is_pinned(rel):
                 continue
+            os.symlink(os.path.join(books, rel), os.path.join(dest, rel))
+    for rel in LIVE_FILES:      # even absent today (no file means off): a later commit that restores it must still reach the tick
+        if not os.path.lexists(os.path.join(dest, rel)):
             os.symlink(os.path.join(books, rel), os.path.join(dest, rel))
     feed = "".join(b + "\n" for _, _, b in blobs).encode()
     p = subprocess.run(["git", "-C", books, "cat-file", "--batch"], input=feed, capture_output=True, timeout=300)

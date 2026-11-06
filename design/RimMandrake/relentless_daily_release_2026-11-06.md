@@ -14,7 +14,7 @@ Before: `rm-relentless.service` ran `books/src/.../relentless.py`, and the tick 
 it. Now it runs `<root>/release/<sha12>/src/.../relentless.py`, the path `<root>/release/current` names when the unit starts
 (`readlink -f` once in ExecStart, so a run and every child it starts stay in one tree when `current` moves).
 
-A release tree is a farm: every `.py` under `rimflow`, `Utils` and `contracts`, plus `rimflow/relentless*.json`, is a real file at
+A release tree is a farm: every `.py` under `rimflow`, `Utils` and `contracts`, `bridgetools/companion_identity.py` (the one module there the tick imports), plus `rimflow/relentless*.json`, is a real file at
 the sha; everything else is a symlink to the same path in books, `.git` included. So the ~20 places that derive the repo from
 their own `__file__` still read the live ledger, items, mods and design. `BOOKS` in `relentless_live`, `relentless_names`,
 `relentless_stage` and `relentless_broker` is the directory holding the real `.git`, so they hand books, not the farm, to tools.
@@ -49,6 +49,7 @@ Not pinned, on purpose:
 - **Machine tools the tick shells out to from books**: `scratch_clone.py`, `deploy_custom_mods.py`, `modlist_swap.py`, `testq`. They
   walk or manage the real tree, every seat uses them, and they are not Relentless. A push to one of them reaches the tick.
 - **Other data files beside the code** (`Utils/*.json`, `dispatcher_schedule.json`): data, through the symlinks.
+- **Any new file in a real directory** (`rimflow`, `Utils`, `contracts`) after the cut: the tree's list is fixed at build. New code cannot want it before the next release, and `.py` files never leak across, but a new data file a tool writes beside its own code stays on that side (`circling.py replay --write` is the one seen).
 - **Worker verbs** (`beat`, `contract`, `finish`, `boxrun`) run from the worker's clone, as they always did. A worker can
   be up to a day ahead of the tick that launched it, and both read the same store.
 
@@ -59,5 +60,6 @@ emergency release. A fix lands on main and waits for 04:30 unless someone cuts o
 
 - **ext4 can miss one lookup during the swap**: measured 3 misses in about 116k reads under 5,000 renames on this disk, none on
   tmpfs, and a second look finds it. A tick starting in that instant fails and the timer starts the next one 15 s later.
-- A tree is kept for two days after it leaves the way back (`GONE_AFTER_S`), so a live round started from it can finish.
+- A cut fetches for itself, so a dead tick can still be released to. A crash between a swap and its row is healed at the next act: `current` is the truth.
+- A tree is kept for two days after nothing new could start in it (`GONE_AFTER_S`), so a live round started from it can finish. The up-to-eight on the way back are kept regardless.
 - The smoke test is one scratch tick, not a full sweep. It catches what stops a tick from running, not a wrong decision.
