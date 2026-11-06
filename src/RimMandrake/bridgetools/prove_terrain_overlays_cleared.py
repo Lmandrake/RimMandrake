@@ -79,7 +79,14 @@ def main(argv):
         try:
             res = json.load(open(argv[1], encoding="utf-8"))
         except (OSError, ValueError) as ex:
-            print("NO VERDICT: %r" % ex)
+            # GAMEENV_FIX_PROOFSITE_54339AD0_ITEMS_WAIT: proof_hose writes no JSON when its offline gate is red (REFUSED); say
+            # so and quote its run log, so the lane reads the cause, not a bare FileNotFoundError
+            why = "%s: %r" % (argv[1], ex)
+            run = os.path.join(os.path.dirname(argv[1]), "run.txt")
+            if os.path.isfile(run):
+                tail = [ln.strip() for ln in open(run, encoding="utf-8", errors="replace").read().splitlines() if ln.strip()][-3:]
+                why += " -- proof_hose did not write it; %s ends: %s" % (run, " | ".join(tail)[:600])
+            print("NO VERDICT: " + why)
             return 2
         code, why = judge_hose(res)
         print(("PASS: " if code == 0 else "FAIL: " if code == 1 else "NO VERDICT: ") + why)

@@ -708,10 +708,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                                           "TerrainChanged += OnCell", "PathCostRecalculate += OnCell", "CellFogChanged += OnFog", "MapFogged += OnMapFogged" })
                 C(comp.Contains("map.events." + ev), "World() invalidates on " + ev.Split(' ')[0]);
             C(comp.Contains("private void MapChanged() { mapVersion++; Versions().TouchAll(); }") && comp.Contains("private void OnMapFogged() { splitFogged++; MapChanged(); }") && comp.Contains("UnhookMapEvents();"), "map changes (a fogged map too) bump the version; MapRemoved unhooks");
-            // HOSE_TICK_REBUILD_ZERO_ALLOC: a building, tree or changed cell lists its squares for the next read's patch, and
-            // bumps the version (a whole rebuild) only past the list's capacity
-            C(comp.Contains("if (!MarkDirty(r.minX, r.minZ, r.maxX, r.maxZ)) MapChanged();"), "a building spawned or despawned (the paused build) always reaches the snapshot (patched, or rebuilt past capacity)");
-            C(comp.Contains("if (CordSig.CellSig(world, cell) != LiveCellSig(cell) && !MarkDirty(c.x, c.z, c.x, c.z)) MapChanged();"),
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: a building, tree or changed cell lists its squares for the next read's patch;
+            // HOSE_DIRTY_LIST_WIDEN_NO_OVERFLOW_REBUILD: the list holds the whole map, so it never overflows into a rebuild, and
+            // with no current snapshot nothing is listed (the next read rebuilds whole anyway)
+            C(System.Text.RegularExpressions.Regex.IsMatch(comp, @"private void OnBuilding\(Building b\)\s*\{[^}]*MarkDirty\(r\.minX, r\.minZ, r\.maxX, r\.maxZ\);")
+              && System.Text.RegularExpressions.Regex.IsMatch(comp, @"private void MarkDirty\(int x0, int z0, int x1, int z1\)\s*\{\s*if \(world == null \|\| worldVersion != mapVersion\) return;\s*dirty\.Ensure\(world\.Width, world\.Height\);\s*dirty\.MarkRect\(x0, z0, x1, z1\);"),
+              "a building spawned or despawned (the paused build) always reaches the snapshot (patched, or rebuilt when no snapshot is current)");
+            C(comp.Contains("if (CordSig.CellSig(world, cell) != LiveCellSig(cell)) MarkDirty(c.x, c.z, c.x, c.z);"),
               "a per-cell event reaches the snapshot only when the cell reads differently from it (snow/filth path-cost churn does not rebuild per tick)");
             C(comp.Contains("if (world != null && worldVersion == mapVersion && dirty.Count > 0) PatchWorld(now);"), "World() patches the listed cells before it judges freshness");
         }
