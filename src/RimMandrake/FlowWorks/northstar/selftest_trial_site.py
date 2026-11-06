@@ -283,6 +283,9 @@ def sec8_live_tier():
     got = {k: R.clause_tier(text, k) for k in cids}
     check("live proofs: every clause runs on tier %s (%s)" % (S.TIER, ",".join(cids)),
           bool(cids) and all(v == S.TIER for v in got.values()), got)
+    sys.path.insert(0, os.path.join(root, "src", "RimMandrake", "Utils"))
+    import modset_builder as MB
+    check("live proofs: modset_builder knows tier %s (testq can load it)" % S.TIER, S.TIER in MB.TIERS)
 
 
 def main():
