@@ -5,6 +5,7 @@ item's own mod (relentless_game._stage_stop), on the real supervisor with a fake
   a stop naming no own mod: bridge released, restaged after a wait, no strike, no generation, no worker;
   the same stop again (even on another source hash): one repair item, the item waiting on it, still no worker;
   a stop naming the item's own mod: back to the builder, as before;
+  the own mod named by a namespace or packageId that holds no folder name: back to the builder too, on every repo mod;
   the own mod in the stop's `done so far` log or quoted deploy arguments alone is no accusation;
   a failed repair filing restages; a build whose mods cannot be read is the environment; another class still goes back.
 """
@@ -16,6 +17,7 @@ sys.path.insert(0, HERE)
 import relentless as R                      # noqa: E402
 import relentless_envcause as E             # noqa: E402
 import relentless_game as G                 # noqa: E402
+import relentless_names as N                # noqa: E402
 import selftest_relentless_game as SG       # noqa: E402
 import selftest_relentless_stage_machine as SM      # noqa: E402
 
@@ -117,6 +119,77 @@ def t_names_read_the_cause_only():
     x.done()
 
 
+BAZAAR_DEATH = ("python stager stopped: the game died during the load: a missing or stale type, first exception: "
+                "Could not find type named RimMandrake.Bazaar.CompStall (done so far: nothing)")
+
+
+def t_own_mod_by_namespace_goes_back():
+    """The blind check's probe, through the real step: the namespaces hold no folder name."""
+    for mod, text in (("TheBazaar", BAZAAR_DEATH),
+                      ("HugeThings", BAZAAR_DEATH.replace("RimMandrake.Bazaar.CompStall", "RimMandrake.TitanicCreatures.CompX")),
+                      ("RimProperty", BAZAAR_DEATH.replace("RimMandrake.Bazaar.CompStall", "RimMandrake.Property.CompX")),
+                      ("Scarlands", "python stager stopped: mandrake.rm.warscar would not load (done so far: nothing)")):
+        x = SG.rig(1)
+        x.w.own["I0"] = [mod]
+        st = stopped(x, text)
+        now = x.st("I0")
+        ok(now["status"] != "game" and now["gen"] > st["gen"] and now["last_fail"]["class"] == "game_stage",
+           "%s named by its own namespace or packageId goes back: %s %s" % (mod, now["status"], now.get("last_fail")))
+        ok(not getattr(x.w, "repairs", None), "%s: no repair filed for the build's own defect" % mod)
+        x.done()
+
+
+def t_own_names_are_the_mods_alone():
+    own = ["TheBazaar"]
+    for text, want in (
+            ("Could not find type named RimMandrake.Bazaar.CompStall", own),
+            ("mandrake.rm.bazaar would not load", own),
+            ("Could not find type named rimmandrake.bazaar.compstall", own),     # any case, as a folder name
+            ("RimMandrake.Bazaars.Comp is a different namespace", []),
+            ("RimMandrake.FlowWorks.Comp is another mod's", []),
+            ("steam would not start (done so far: enabled mandrake.rm.bazaar)", []),
+            ("deploy plan --mod mandrake.rm.bazaar exit 2: Traceback", []),
+            ("brrainz.harmony would not load; Ludeon.RimWorld too", []),         # its About.xml dependencies, not its names
+            ("Verse.AI.JobDriver threw in RimWorld.Pawn; System.Linq; HarmonyLib.Harmony; UnityEngine.Object", [])):
+        ok(E.stage_names(text, own) == want, "stage_names(%r, TheBazaar) == %s" % (text, want))
+    names = N.own_names("TheBazaar")
+    ok("mandrake.rm.bazaar" in names and "RimMandrake.Bazaar" in names, "the names are read from its source: %s" % names)
+    ok(N.own_names("NoSuchModAnywhere") == [], "an unknown mod has no other names")
+    biomes = N.own_names("RimMandrake.Biomes")
+    ok("mandrake.rm.biomes" in biomes, "a composed mod's names come from its manifest and shell: %s" % biomes)
+    # engine namespaces name no mod even for a mod that declares one (Verse, RimWorld and HarmonyLib all do)
+    engine = [(m, n) for m in repo_mods() for n in N.own_names(m) if n.split(".")[0] in N.ENGINE_NS]
+    ok(not engine, "no mod owns an engine namespace: %s" % engine[:5])
+
+
+def repo_mods():
+    """Every repo mod folder (a dir with About/About.xml), read from this tree as deploy_custom_mods.mod_dirs does."""
+    src = os.path.join(N.BOOKS, "src")
+    return sorted(m for t in os.listdir(src) if os.path.isdir(os.path.join(src, t))
+                  for m in os.listdir(os.path.join(src, t))
+                  if os.path.isfile(os.path.join(src, t, m, "About", "About.xml")))
+
+
+def t_census_every_mod_is_named_by_its_names():
+    """The blind check's census: 8 of 114 C# mods missed by dominant namespace, 13 of 134 by packageId. Now none. The
+    sanity floors say the instrument saw the tree: a missing src reads as 'no misses'."""
+    mods = repo_mods()
+    by_pid = by_ns = 0
+    miss = []
+    for m in mods:
+        for n in N.own_names(m):
+            by_pid += n.startswith("mandrake.")
+            by_ns += not n.startswith("mandrake.")
+            if E.stage_names("the game died: %s.CompX would not load" % n, [m]) != [m]:
+                miss.append((m, n))
+    ok(len(mods) >= 100 and by_pid >= 100 and by_ns >= 100, "the census saw the repo: %d mods, %d packageIds, %d namespaces"
+       % (len(mods), by_pid, by_ns))
+    ok(not miss, "every mod's every name accuses it: %s" % miss[:10])
+    for m in ("TheBazaar", "HugeThings", "RimProperty", "Armoury", "EmpirePursuit", "MandrakePatches", "StarWarsPatches",
+              "StarWarsRaces", "Scarlands"):
+        ok(m in mods and N.own_names(m), "%s, a mod the folder name alone missed, has names: %s" % (m, N.own_names(m)))
+
+
 def t_fp_is_the_cause():
     a, b = E.stage_stop(INCIDENT), E.stage_stop(GATE % ("0123456", "fedcba9876543210"))
     c = E.stage_stop("python stager stopped: Steam launch exit 1: no (done so far: nothing)")
@@ -174,7 +247,8 @@ def t_real_fx_reads_the_build_only():
 
 def main():
     for t in (t_incident_restages_no_worker, t_same_stop_routes_to_one_repair, t_own_mod_goes_back,
-              t_names_read_the_cause_only, t_fp_is_the_cause, t_failed_filing_restages,
+              t_names_read_the_cause_only, t_own_mod_by_namespace_goes_back, t_own_names_are_the_mods_alone,
+              t_census_every_mod_is_named_by_its_names, t_fp_is_the_cause, t_failed_filing_restages,
               t_unreadable_build_is_the_environment, t_other_class_goes_back, t_real_fx_reads_the_build_only):
         print("--", t.__name__)
         t()

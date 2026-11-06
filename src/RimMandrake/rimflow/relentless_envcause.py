@@ -141,10 +141,15 @@ HEX_WORD = re.compile(r"\b[0-9a-f]{7,40}\b")
 
 def stage_names(detail, mods):
     """A staging's stop text -> those of `mods` (the item's own mod folders) it names as its cause, whole words, any case.
+    A mod is named by its folder or by any name relentless_names.own_names reads from its source: TheBazaar dies as
+    `RimMandrake.Bazaar.CompStall` and loads as `mandrake.rm.bazaar`, neither holding the folder's name (8 of 114 C# mods
+    by namespace, 13 of 134 by packageId, measured on this item's blind check).
     What the stop merely carries is no accusation: its `done so far` log and the --mod list of the command it quotes
     name the item's mods on every stop (relentless_live_round.deploy_args). `FlowWorksPipes` is not `FlowWorks`; `RimMandrake.FlowWorks.Comp` is."""
+    import relentless_names
     text = STAGE_ARGS.sub("", STAGE_LOG.sub("", detail or ""))
-    return [m for m in mods if re.search(r"(?<![A-Za-z0-9])%s(?![A-Za-z0-9])" % re.escape(m), text, re.I)]
+    return [m for m in mods if any(re.search(r"(?<![A-Za-z0-9])%s(?![A-Za-z0-9])" % re.escape(n), text, re.I)
+                                   for n in [m] + relentless_names.own_names(m))]
 
 
 def stage_stop(detail):

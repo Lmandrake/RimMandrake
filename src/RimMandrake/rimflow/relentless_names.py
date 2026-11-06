@@ -355,6 +355,47 @@ def _srchashes(mod_dir):
     return out
 
 
+NAMESPACE = re.compile(r"^[ \t]*namespace[ \t]+([A-Za-z_][\w.]*)", re.M)
+ENGINE_NS = ("RimWorld", "Verse", "HarmonyLib", "UnityEngine", "System")     # mods add to these; they name no one mod
+
+
+def own_names(mod, root=BOOKS):
+    """A mod folder's other names, read from its source in this tree (the supervisor's books track origin/main, so they
+    hold any build already in the game lane): its root About.xml packageId, never a dependency's, and the namespaces of
+    its .cs files, none of the engine's. A composed mod has no source folder of its own: its manifest's packageId and its
+    shell's namespaces. Unreadable or unknown -> []: the folder name alone, as a stop's own words still decide."""
+    import xml.etree.ElementTree as ET
+    names, srcs = set(), []
+    tiers = os.path.join(root, "src")
+    try:
+        for tier in os.listdir(tiers):
+            srcs.append(os.path.join(tiers, tier, mod))
+            with_manifest = os.path.join(tiers, tier, "Biomes.compose.json")
+            if os.path.isfile(with_manifest):
+                with open(with_manifest, encoding="utf-8") as f:
+                    m = json.load(f)
+                if m.get("target") == mod:
+                    names.add((m.get("about") or {}).get("packageId") or "")
+                    srcs.append(os.path.join(tiers, tier, (m.get("shell") or {}).get("source") or mod))
+    except (OSError, ValueError):
+        pass
+    for src in srcs:
+        try:
+            names.add((ET.parse(os.path.join(src, "About", "About.xml")).getroot().findtext("packageId") or "").strip())
+        except (OSError, ET.ParseError):
+            pass
+        for base, dnames, files in os.walk(src):
+            dnames[:] = [d for d in dnames if d not in ("bin", "obj", "Textures", "Defs", "Patches", "Languages")]
+            for f in files:
+                if f.endswith(".cs"):
+                    try:
+                        with open(os.path.join(base, f), encoding="utf-8", errors="replace") as fh:
+                            names.update(n for n in NAMESPACE.findall(fh.read()) if n.split(".")[0] not in ENGINE_NS)
+                    except OSError:
+                        pass
+    return sorted(n for n in names if n)
+
+
 def _csprojs(src):
     out = []
     for base, dnames, files in os.walk(src):
