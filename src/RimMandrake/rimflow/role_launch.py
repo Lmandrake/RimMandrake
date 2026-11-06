@@ -158,7 +158,11 @@ ALARM_RUN_GAP_S = 3600                 # at least this long between two alarm ru
 OPS_STALE_S = 45 * 60
 WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")      # time.localtime().tm_wday order
 ACTIVE = ("active", "activating", "deactivating", "reloading")
-TERMINAL = ("inactive", "failed")      # the only states that end a run; anything else ("unknown", a failed query) is busy
+# the only states that end a run; anything else ("unknown", a failed query) is busy. "not-found" is a unit or scope
+# systemd CONFIRMS it has no record of (collected by --collect, or never created because a pre-step failed first):
+# absent, so ended() still needs the scope terminal and the marker scan empty (ROLE_UNITSTATE_FIX_GHOST_RUNS_NEVER_LEAVE)
+TERMINAL = ("inactive", "failed", "not-found")
+NOT_FOUND_RX = re.compile(r"could not be found|not found|not loaded|no such unit", re.I)
 EVENT_LOOKBACK_S = 6 * 3600             # an event ingested this late after its writer stamped it still triggers (N4)
 FUTURE_TOL_S = 300                     # a reading stamped further ahead than this is a clock fault, not fresh
 USAGE_KEYS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
@@ -2375,15 +2379,32 @@ def scope_of(unit, seat, runner=subprocess.run):
 
 
 def unit_state(unit, runner=subprocess.run):
-    """ActiveState, or "unknown" when systemctl fails, times out or says nothing (supervise_roles keeps it busy)."""
+    """ActiveState; "not-found" when systemd CONFIRMS it has no such unit; "unknown" when systemctl fails, times out
+    or says nothing (supervise_roles keeps it busy). A failed show is absence only on positive evidence: its stderr
+    says the unit is not found / not loaded, or a second query reads LoadState=not-found. Anything else (a bus error,
+    a timeout, an invalid name) stays "unknown" (ROLE_UNITSTATE_FIX_GHOST_RUNS_NEVER_LEAVE: a collected unit read
+    "unknown" and its run was kept busy and re-stopped forever)."""
     try:
         r = runner(["systemctl", "--user", "show", "-p", "ActiveState", "--value", unit], capture_output=True,
                    text=True, timeout=30, stdin=subprocess.DEVNULL)
-        if r.returncode:
-            return "unknown"
-        return (r.stdout or "").strip() or "unknown"
+        state = (r.stdout or "").strip() if not r.returncode else ""
+        if state:
+            return state
+        if r.returncode and NOT_FOUND_RX.search(r.stderr or ""):
+            return "not-found"
     except Exception:  # noqa: BLE001
         return "unknown"
+    return "not-found" if load_state(unit, runner) == "not-found" else "unknown"
+
+
+def load_state(unit, runner=subprocess.run):
+    """LoadState ("loaded", "not-found", ...), or None when the query fails, times out or says nothing."""
+    try:
+        r = runner(["systemctl", "--user", "show", "-p", "LoadState", "--value", unit], capture_output=True,
+                   text=True, timeout=30, stdin=subprocess.DEVNULL)
+        return ((r.stdout or "").strip() or None) if not r.returncode else None
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def read_result(run):
