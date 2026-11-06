@@ -221,23 +221,26 @@
   {
    "pattern": "Config error in guy762_bowcaster_ceremonial: verb 2: has incorrect forcedMiss",
    "kind": "configerror",
-   "class": "ours-accepted",
+   "class": "ours-fixed",
    "expectCount": 2,
-   "note": "Absorbed Kotor weapon: scatter on a non-explosive slug is the weapon's design; its IgnoreConfigErrors silencer went with the donor. Advisory only."
+   "note": "Changed 2026-11-06 from ours-accepted (CONFIGERRORS_FIX_THREE_LEFTOVER_CLASSES): the rapid verb lost its forcedMissRadius, the engine allows forced miss on explosive projectiles only; its burst was cut so sustained shots per second stay about 1.2x the weapon's ordinary fire.",
+   "fixedOn": "2026-11-06"
   },
   {
    "pattern": "Config error in guy762_hvyrepeater_massdriver: verb 1: has incorrect forcedMiss",
    "kind": "configerror",
-   "class": "ours-accepted",
+   "class": "ours-fixed",
    "expectCount": 2,
-   "note": "As guy762_bowcaster_ceremonial."
+   "note": "Changed 2026-11-06 from ours-accepted (CONFIGERRORS_FIX_THREE_LEFTOVER_CLASSES): the rapid verb lost its forcedMissRadius, the engine allows forced miss on explosive projectiles only; its burst was cut so sustained shots per second stay about 1.2x the weapon's ordinary fire.",
+   "fixedOn": "2026-11-06"
   },
   {
    "pattern": "Config error in guy762_lgtrepeater_onderon: verb 1: has incorrect forcedMiss",
    "kind": "configerror",
-   "class": "ours-accepted",
+   "class": "ours-fixed",
    "expectCount": 2,
-   "note": "As guy762_bowcaster_ceremonial."
+   "note": "Changed 2026-11-06 from ours-accepted (CONFIGERRORS_FIX_THREE_LEFTOVER_CLASSES): the rapid verb lost its forcedMissRadius, the engine allows forced miss on explosive projectiles only; its burst was cut so sustained shots per second stay about 1.2x the weapon's ordinary fire.",
+   "fixedOn": "2026-11-06"
   },
   {
    "pattern": "has duplicate thingCategory",

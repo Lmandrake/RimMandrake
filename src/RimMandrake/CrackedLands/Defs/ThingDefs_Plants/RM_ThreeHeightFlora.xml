@@ -63,6 +63,9 @@
       <Beauty>1</Beauty>
     </statBases>
     <selectable>true</selectable>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
     <plant>
       <fertilityMin>0</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>

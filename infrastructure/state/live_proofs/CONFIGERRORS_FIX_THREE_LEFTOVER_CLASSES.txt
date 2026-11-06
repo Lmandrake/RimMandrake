@@ -1,0 +1,2 @@
+live-deploy: ColdStorage, Armoury, CrackedLands
+live-proof A1: python3 src/RimMandrake/rimflow/relentless_live_round.py deployed --item CONFIGERRORS_FIX_THREE_LEFTOVER_CLASSES

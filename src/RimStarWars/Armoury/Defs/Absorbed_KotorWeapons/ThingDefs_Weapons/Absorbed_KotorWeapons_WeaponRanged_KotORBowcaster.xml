@@ -392,9 +392,8 @@
         <defaultCooldownTime>4</defaultCooldownTime>
         <range>32</range>
         <ticksBetweenBurstShots>14</ticksBetweenBurstShots>
-        <burstShotCount>12</burstShotCount>
+        <burstShotCount>5</burstShotCount>
         <sprayWidth>0.5</sprayWidth>
-        <forcedMissRadius>2</forcedMissRadius>
         <soundCast>kotorsound_bowcaster1</soundCast>
         <soundCastTail>GunTail_Medium</soundCastTail>
         <muzzleFlashScale>9</muzzleFlashScale>
@@ -429,24 +428,6 @@
         <descriptionMaker>ArtDescription_WeaponMelee</descriptionMaker>
       </li>
     </comps>
-    <modExtensions>
-<!-- IgnoreConfigErrors.Ignore_ForcedMissRadius removed: IgnoreConfigErrors is not
-           in the live mod list (its only copy on disk was bundled inside
-           guy762.mm.kotorcore's own Assemblies/, and kotorcore itself has since
-           been fully retired from ModsConfig - confirmed 2026-09-20, zero
-           guy762.* packageIds anywhere in ModsConfig.FULL.LATEST.xml). This
-           modExtension has no gameplay effect at all - it exists purely to
-           suppress RimWorld's own config-error WARNING about a
-           <forcedMissRadius> value set alongside near-100% accuracy on the
-           "Bowcaster charge shot" verb below; dropping it just lets that
-           (harmless, advisory-only) warning print once at startup instead of
-           being silenced. Safe to drop entirely, same disposition as the
-           sibling SWCP.Core.CompProperties_PositionAttributes fix in
-           KotORHeavyRepeater/KotORLightRepeater (KOTORWEAPONS_ABSORPTION_
-           DANGLING_REFS_1) - see FULL_LOAD_RESIDUE_TRIAGE_1 entry (5).
-      <li Class="IgnoreConfigErrors.Ignore_ForcedMissRadius" />
-    -->
-    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="KotORRangedNoQualityModMake_TwoHand">
