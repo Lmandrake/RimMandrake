@@ -271,12 +271,17 @@ def t_m2_apply_writes_inside_the_lock():
             seen.append((name, state["in"]))
             return ret
         return f
+    game_asked = []
+
+    def game_probe():
+        game_asked.append((state["in"], len(seen)))     # under the lock? before which write?
+        return False
     fake_tel = types.ModuleType("telemetry_emit")
     fake_tel.emit_change = lambda *a, **k: None
     patch = {"config_lock": FakeLock, "bridge_ok": lambda o: True, "scan": lambda: {"ludeon.rimworld": {"name": "Core"}},
              "tier_arg": lambda n: n, "tier_def": lambda n, i: {"why": "probe"},
              "resolve_tier": lambda n, i: (["ludeon.rimworld"], [], []), "full_mod_count": lambda: 0,
-             "game_running": lambda: False, "take_before_copy": rec("take_before_copy", "/tmp/stamp.xml"),
+             "game_running": game_probe, "take_before_copy": rec("take_before_copy", "/tmp/stamp.xml"),
              "write_config": rec("write_config"), "record_tier_written": rec("record_tier_written"),
              "CONFIG": os.path.join(tempfile.mkdtemp(prefix="modset_m2_"), "ModsConfig.xml")}
     keep = {k: getattr(M, k) for k in patch}
@@ -304,6 +309,7 @@ def t_m2_apply_writes_inside_the_lock():
                                                                  "record_tier_written"], (rc, seen))
     check("M2: apply's before-copy, write and stamp all run under config_lock", seen and all(i for _, i in seen),
           seen)
+    check("M2: apply rechecks the game under the lock, before the before-copy", (True, 0) in game_asked, game_asked)
 
 
 def t_m4_tier_md5_is_stamped_before_the_replace():
