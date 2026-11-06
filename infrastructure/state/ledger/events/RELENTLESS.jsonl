@@ -1407,3 +1407,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:50:39Z","tsn":1794009039389971357}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HEAVY_TEXTURES_MEASURE_REAL_VRAM A2 (L1), read-only proof","ts":"2026-11-06T23:50:58Z","tsn":1794009058399131544}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:51:35Z","tsn":1794009095275770509}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES A1 (L2), read-only proof","ts":"2026-11-06T23:53:37Z","tsn":1794009217047627471}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:55:16Z","tsn":1794009316677286071}
