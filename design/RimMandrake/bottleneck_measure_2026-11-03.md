@@ -16,12 +16,13 @@ spends very little of that time running tests.
   items done on 11-03, and 0.2–2.4% for the items that needed the game.
 - **A second game lane** would at most remove all of the game queue. That queue was **14.5%** of all lead time and 30%
   of the lead time of live items.
-- On 11-03 the game was reserved by live rounds for 11.0–11.5 h and restarting or loading for 6.7 h. Proof commands
-  actually ran for **1.58 h**.
+- On 11-03 live rounds ran for 1.93 h and restarting or loading for 6.7 h. Proof commands ran for **1.58 h** of
+  the rounds. The game was busy 36% of the day; for 11.9 h an item waited while it did nothing.
 - Of the 265 clause runs that day, **139 came back UNMEASURED** and 38 REFUSED. Only 82 gave a PASS or FAIL.
 - What does hold items back:
   - **the queue for a worker:** 66% of an offline item's lead time; 749 items ready (median);
-  - **round overhead:** 10.8 h of round time is not proof commands;
+  - **an idle game phase:** 246 of the 450 item-hours of game wait fell while the game was idle (filed as
+    `GAMEPHASE_UNBLOCK_HELD_GAME_SITS_IDLE`); round time outside proof commands was only 0.35 h;
   - **staging:** 6.7 h;
   - **dead runs:** the UNMEASURED and REFUSED clauses above.
 
@@ -43,12 +44,12 @@ spends very little of that time running tests.
 | quantity | hours | source |
 |---|---|---|
 | proof commands running (190 clause logs) | **1.58** | `live/<ITEM>-<CLAUSE>-<start>.log`, start from the name, end from mtime |
-| live rounds holding the game (143 rounds) | 11.01–11.48 | launch = the tick's game_prove/live_round act, bounded by the tick's stamp and wall time; end = `live/round.out` stamp |
-| … of which not a proof command | 10.76 | rounds minus proof logs |
+| live rounds (142 rounds) | 1.93 | `live/round.out`: start = the record's `at`; end = its `ended`, or (records before 2026-11-06) the last live log that started inside the round |
+| … of which not a proof command | 0.35 | rounds minus proof logs |
 | staging (restart + deploy + load) | 6.68 | `game_stage` → `game_staged` acts |
-| game busy (union of the above) | 16.61 (69%) | |
+| game busy (union of the above) | 8.61 (36%) | |
 | some item waiting for the game | 20.37 | ticks with a `game_waits` act |
-| … while the game was doing nothing at all | 4.30 | |
+| … while the game was doing nothing at all | 11.93 | |
 
 Clause outcomes (`round.out`, 142 rounds): PASS 45, FAIL 37, **UNMEASURED 139**, REFUSED 38, SKIPPED 6.
 
@@ -59,8 +60,8 @@ About 20 items were queued at once.
 |---|---|---|
 | running a proof command | 32.1 | **7%** |
 | staging (restart/load) | 165.1 | 37% |
-| inside a round, not running a proof | 119.3 | 27% |
-| nothing | 133.4 | 30% |
+| inside a round, not running a proof | 6.5 | 1% |
+| nothing | 246.2 | **55%** |
 
 **Why they waited:**
 - one item held the game phase: 426.7 item-h;
@@ -89,7 +90,7 @@ Lead time runs from enrol to done.
   - `check_backlog` for 1.5 h.
 
 **11-02, for contrast.** It was a lighter game day:
-- 85 rounds; proof commands 0.15 h; staging 3.4 h; game busy 18%;
+- 85 rounds; proof commands 0.15 h; staging 3.4 h; game busy 15%;
 - item-hours waiting for the game: 29.0, of which 0.4 were behind a running proof;
 - clause outcomes: 12 PASS, 8 FAIL, 77 UNMEASURED, 86 REFUSED.
 
@@ -100,14 +101,16 @@ the item's next verdict). Its cause is UNMEASURED.
 **What would help more than a faster or second game**, largest first:
 - **Workers.** The queue for a worker is the largest share of offline lead time, with 749 items ready. That
   constraint is the LLM: worker slots, budget and the clone pool.
-- **Round overhead and dead runs.** Filed as `LIVEROUND_SHRINK_PROOFS_ARE_THE_SHORT_PART`.
+- **An idle game phase.** Over half the game wait passed with the game idle: `GAMEPHASE_UNBLOCK_HELD_GAME_SITS_IDLE`.
+- **Dead runs.** `LIVEROUND_SHRINK_PROOFS_ARE_THE_SHORT_PART` ends a round at the first bridge-wide dud.
 - **Staging.** It held 37% of the game wait.
 - The tick latency lesson (`infrastructure/state/lessons/20261103T202609Z-BENCH-relentless-tick-live-bottleneck.md`)
-  is part of the "nothing" and "round" rows.
+  is part of the "nothing" row.
 
 **Evidence strength:**
-- **Strong** for the game timeline and the wait split (journal, round.out and log files, to the second). Round
-  length has tick-sized bounds, and both are given.
+- **Strong** for the game timeline and the wait split (journal, round.out and log files, to the second). This report
+  first read round.out's `at` (the round's START) as its end, charging 11 h of idle gaps to rounds; corrected
+  2026-11-06 by `LIVEROUND_SHRINK_PROOFS_ARE_THE_SHORT_PART`.
 - **Medium** for the lead-time split. Attempts and checks are paired from act stamps written at the tick, and a tick
   takes 2–6 min.
 

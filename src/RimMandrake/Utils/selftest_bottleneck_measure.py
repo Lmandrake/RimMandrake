@@ -59,7 +59,8 @@ def store_fixture(d):
         f.write("not json\n")
     os.makedirs(os.path.join(root, "live"))
     with open(os.path.join(root, "live", "round.out"), "w", encoding="utf-8") as f:
-        f.write(json.dumps({"at": Z(1500), "runs": [{"outcome": "PASS"}, {"outcome": "UNMEASURED"}], "why": "done"},
+        f.write(json.dumps({"at": Z(900), "ended": Z(1500), "runs": [{"outcome": "PASS"}, {"outcome": "UNMEASURED"}],
+                            "why": "done"},
                            indent=1) + "\n[\"a list line\"]\n")
     lp = os.path.join(root, "live", "P-A1-%s.log" % stamp(1000))
     open(lp, "w").close()
@@ -96,8 +97,8 @@ def t_game(d):
     assert g["proof_logs"] == 1 and abs(g["proving_h"] * 3600 - 200) < 1, g
     # stage 0..600
     assert abs(g["staging_h"] * 3600 - 600) < 1, g
-    # round: launch tick 900 (no wall_s) -> round.out end 1500
-    assert g["rounds"] == 1 and abs(g["round_h"] * 3600 - 600) < 1, g
+    # round: round.out start 900 (`at`) -> its `ended` 1500
+    assert g["rounds"] == 1 and abs(g["round_h"] * 3600 - 600) < 1 and g["rounds_end_from_logs"] == 0, g
     assert g["outcomes"] == {"rounds": 1, "rounds_with_runs": 1, "criterion_runs": {"PASS": 1, "UNMEASURED": 1}}, g
     # busy = 0..600 + 900..1500 = 1200 s
     assert abs(g["busy_h"] * 3600 - 1200) < 1, g
@@ -126,6 +127,24 @@ def t_game(d):
     # staffing: pool full 0..1800, None 1800..3600 (the last sample runs to the window end)
     assert r["staffing"]["why_s"] == {"pool full: x": 1800, "None": 1800}, r["staffing"]
     assert abs(r["staffing"]["running_ge_target_s"] - 1800) < 1
+
+
+def t_round_spans(d):
+    """LIVEROUND_SHRINK_PROOFS_ARE_THE_SHORT_PART: round.out's `at` is the round's START. A record without `ended` (before
+    2026-11-06) ends at the last live log that started inside it, before the next round; one with no log ends at its
+    start. Reading `at` as the end charged 2026-11-03 with 11.5 h of rounds whose runs spanned 2.2 h."""
+    live = os.path.join(d, "spans")
+    os.makedirs(live)
+    for name, a, b in (("P-A1-%s.log" % stamp(100), 100, 160), ("P-A2-%s.log" % stamp(170), 170, 400),
+                       ("P-A2-%s-site.log" % stamp(165), 165, 170), ("Q-A1-%s.log" % stamp(1000), 1000, 1100)):
+        open(os.path.join(live, name), "w").close()
+        os.utime(os.path.join(live, name), (T0 + b, T0 + b))
+    recs = [{"at": Z(100)}, {"at": Z(700)}, {"at": Z(1000), "ended": Z(1250)}]
+    sp = [(a - T0, b - T0) for a, b, _ in bm.round_spans(recs, live)]
+    assert sp == [(100, 400), (700, 700), (1000, 1250)], sp
+    iv = bm.round_intervals(bm.round_spans(recs, live), T0, T0 + 3600)
+    assert bm.total(iv) == 300 + 0 + 250, iv
+    assert bm.round_intervals(bm.round_spans(recs, live), T0, T0 + 3600, legacy=True) == [(T0 + 100, T0 + 400)]
 
 
 def t_classify():
@@ -176,7 +195,7 @@ def t_publish(d):
     assert sh["2026-11-04"]["classes"] == {"dirty_tree": 1} and sh["2026-11-04"]["unrecovered"] == 1, sh
 
 
-TESTS = [t_intervals, t_game, t_classify, t_publish]
+TESTS = [t_intervals, t_game, t_round_spans, t_classify, t_publish]
 
 
 def main():

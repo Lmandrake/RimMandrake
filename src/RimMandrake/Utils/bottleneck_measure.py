@@ -125,7 +125,10 @@ def proof_intervals(live_dir, lo, hi):
 
 
 def round_records(path):
-    """Every live round record (a dict with 'at', its END stamp) in round.out, a stream of pretty-printed JSON."""
+    """Every live round record (a dict with 'at', its START stamp) in round.out, a stream of pretty-printed JSON.
+    relentless_live_round.run_round stamps `at` when the round starts and, since LIVEROUND_SHRINK_PROOFS_ARE_THE_SHORT_PART,
+    `ended` when it writes the record; until then this file read `at` as the END and so charged every round with the
+    idle gap to the round before it (2026-11-03: "11.5 h of rounds" whose runs spanned 2.2 h)."""
     try:
         txt = open(path, encoding="utf-8", errors="replace").read()
     except OSError:
@@ -147,12 +150,31 @@ def round_records(path):
     return sorted(out, key=lambda o: ts(o["at"]))
 
 
-def round_ends(path):
-    return [ts(o["at"]) for o in round_records(path)]
+def round_spans(recs, live_dir):
+    """[(start, end, record)] per round: start = its `at`; end = its `ended`, or for a record written before `ended`
+    existed, the last live log (proof or site) that started inside the round, before the next round started (a round
+    runs its clauses one after another, each with its own log); a round that ran no proof ends where it started."""
+    logs = []
+    for p in glob.glob(os.path.join(live_dir, "*.log")):
+        m = LIVE_RE.match(os.path.basename(p))
+        if m:
+            logs.append((ts(m.group("ts")), os.path.getmtime(p)))
+    logs.sort()
+    starts = [ts(o["at"]) for o in recs]
+    out = []
+    for k, o in enumerate(recs):
+        a = starts[k]
+        if o.get("ended"):
+            b = ts(o["ended"])
+        else:
+            nxt = starts[k + 1] if k + 1 < len(starts) else float("inf")
+            b = max([a] + [e for s, e in logs[bisect.bisect_left(logs, (a - 1,)):] if s < nxt])
+        out.append((a, max(a, b), o))
+    return out
 
 
 def round_outcomes(recs, lo, hi):
-    """{outcome: n} over every criterion run in rounds that ended in [lo,hi), plus rounds with/without a run."""
+    """{outcome: n} over every criterion run in rounds that started in [lo,hi), plus rounds with/without a run."""
     out, with_runs = {}, 0
     n = 0
     for o in recs:
@@ -167,35 +189,10 @@ def round_outcomes(recs, lo, hi):
     return {"rounds": n, "rounds_with_runs": with_runs, "criterion_runs": dict(sorted(out.items()))}
 
 
-def round_launches(journal):
-    """[(earliest, latest)] launch bounds per live round (a game_prove/live_round act). A tick is stamped at its
-    START and launches the round inside the tick: earliest = the stamp, latest = the stamp + wall_s less the
-    phases that run after the launch (flush, staffing_live), or the stamp + wall_s when phases are absent."""
-    out = []
-    for r in journal:
-        if "at" not in r:
-            continue
-        n = sum(1 for a in (r.get("acts") or []) if a.get("do") in ("game_prove", "live_round"))
-        if not n:
-            continue
-        t = ts(r["at"])
-        ph = r.get("phases") or {}
-        late = t + max(0.0, (r.get("wall_s") or 0) - ph.get("flush", 0) - ph.get("staffing_live", 0))
-        out += [(t, late)] * n
-    return sorted(out)
-
-
-def round_intervals(journal, ends, lo, hi, late=False):
-    """[(launch, end)] per live round: end = the first round.out stamp after the launch. late=False uses the
-    earliest launch bound (an upper bound on the round's length), late=True the latest (a lower bound)."""
-    out, j = [], 0
-    for early, lt in round_launches(journal):
-        while j < len(ends) and ends[j] < early:
-            j += 1
-        if j < len(ends):
-            out.append((min(lt, ends[j]) if late else early, ends[j]))
-            j += 1
-    return clip(out, lo, hi)
+def round_intervals(spans, lo, hi, legacy=None):
+    """[(start, end)] per round from round_spans, clipped to [lo,hi). legacy: True only the records without `ended`
+    (their end read from logs), False only the stamped ones, None all."""
+    return clip([(a, b) for a, b, o in spans if legacy is None or legacy == (not o.get("ended"))], lo, hi)
 
 
 def samples(journal, lo, hi):
@@ -268,10 +265,10 @@ def game_measure(root, lo, hi):
     proofs = proof_intervals(os.path.join(root, "live"), lo, hi)
     prove_u = merge([(a, b) for a, b, _ in proofs])
     stage_u = merge(stage_intervals(journal, lo, hi))
-    rounds = round_intervals(journal, round_ends(os.path.join(root, "live", "round.out")), lo, hi)
+    recs = round_records(os.path.join(root, "live", "round.out"))
+    spans = round_spans(recs, os.path.join(root, "live"))
+    rounds = round_intervals(spans, lo, hi)
     round_u = merge(rounds)
-    round_lo_u = merge(round_intervals(journal, round_ends(os.path.join(root, "live", "round.out")), lo, hi,
-                                       late=True))
     busy_u = merge(prove_u + stage_u + round_u)
     window = hi - lo
     sm = samples(journal, lo, hi)
@@ -381,11 +378,12 @@ def game_measure(root, lo, hi):
                     "items": os.path.join(store, "items"), "staffing": os.path.join(store, "staffing.jsonl")},
         "supervisor_sampled_h": covered / 3600,
         "game": {"proving_h": total(prove_u) / 3600, "staging_h": total(subtract(stage_u, prove_u)) / 3600,
-                 "rounds": len(rounds), "round_h": total(round_u) / 3600, "round_h_lo": total(round_lo_u) / 3600,
+                 "rounds": sum(1 for a, _, _ in spans if lo <= a < hi), "round_h": total(round_u) / 3600,
+                 "rounds_end_from_logs": sum(1 for a, _, o in spans if lo <= a < hi and not o.get("ended")),
                  "round_minus_proof_h": total(subtract(round_u, prove_u)) / 3600,
                  "busy_h": total(busy_u) / 3600, "busy_share": total(busy_u) / window if window else None,
                  "proof_logs": len(proofs),
-                 "outcomes": round_outcomes(round_records(os.path.join(root, "live", "round.out")), lo, hi),
+                 "outcomes": round_outcomes(recs, lo, hi),
                  "demand_h": total(demand_u) / 3600,
                  "demand_and_idle_h": total(subtract(demand_u, busy_u)) / 3600},
         "game_wait_item_h": {k: v / 3600 for k, v in wait.items()},

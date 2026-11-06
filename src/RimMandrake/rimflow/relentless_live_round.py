@@ -88,6 +88,13 @@ SITE_LINE = re.compile(LINE.format(verb="live-site"))
 PROOFS_DIR = "infrastructure/state/live_proofs"
 DEFAULTS = {"round_max": 6, "unmeasured_retry_s": 6 * 3600, "round_every_s": 1800}
 STOP = ("no running game to test", "bridge not taken")
+# LIVEROUND_SHRINK_PROOFS_ARE_THE_SHORT_PART: a cause that is the bridge's or the running game's, not the clause's, holds
+# for every clause after it in the same round, so the round ends at the first one. Every pattern is from a run of
+# 2026-11-05/06 (relentless/live/runs.jsonl): one UNKNOWN-outcome mutating call made rimbridge_client refuse
+# LONGSHADE_SCENE_LIVECHECK_1 A8..A11 in turn ("IndeterminateError ... --reconcile"); five clauses each waited out
+# "the running load's mod list could not be read" (14 min); "bridge unreachable", a health ping with no answer.
+BRIDGE_DUD = re.compile(r"IndeterminateError|rimbridge_client\.py --reconcile|bridge unreachable"
+                        r"|the running load's mod list could not be read|the bridge does not answer")
 # a proof that ran on the game and measured nothing (relentless_game.RAN_DUD's words), or a site that would not prepare:
 # rerun on the same game and build it can only say the same again
 SAME_GAME_DUD = re.compile(r"the proof (exited \d+: it did not measure|timed out)|^site not prepared")
@@ -694,6 +701,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
 
     def done(why):
         summary["why"] = why
+        summary["ended"] = L.iso(max(now, time.time()))     # `at` is the start: bottleneck_measure reads both
         with open(os.path.join(root, "live", "rounds.jsonl"), "a", encoding="utf-8") as f:
             f.write(json.dumps(summary, sort_keys=True) + "\n")
         return summary
@@ -708,7 +716,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
     todo, counts = plan(fx, root, r, now, only, L.iso(started))
     summary.update(eligible=len(todo), skipped=counts, **({"only": only} if only else {}))
     folded, ran, cap, gated = None, 0, lr["round_max"] if max_items is None else max_items, set()
-    for item_id, cid, proof, sha in todo:     # the cap counts runs: a skip never starves the items behind it
+    for k, (item_id, cid, proof, sha) in enumerate(todo):     # the cap counts runs: a skip never starves the items behind it
         if ran >= cap:
             break
         if (item_id, sha) in gated:     # its gate is the build's, not the clause's: one row says it for all
@@ -735,8 +743,10 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         summary["runs"].append({k: row.get(k) for k in ("item", "criterion", "outcome", "why", "sha")})
         if item_gate(row):
             gated.add((item_id, sha))
-        if row["outcome"] == "UNMEASURED" and any(row.get("why", "").startswith(s) for s in STOP):
-            return done("stopped: %s" % row["why"][:200])
+        why = row.get("why") or ""
+        if row["outcome"] == "UNMEASURED" and (any(why.startswith(s) for s in STOP) or BRIDGE_DUD.search(why)):
+            summary["left"] = len(todo) - k - 1     # clauses this round did not run into the same wall: the next round has them
+            return done("stopped: %s" % why[:200])
     return done("done")
 
 

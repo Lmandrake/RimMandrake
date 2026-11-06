@@ -161,6 +161,31 @@ def t_round():
               len(calls) == 1 and not any(x["outcome"] == "SKIPPED" for x in s["runs"]), s)
         rows = R.read_rows(os.path.join(root, "live", "rounds.jsonl"))
         check("round: every sitting is a rounds.jsonl row", len(rows) == 4, len(rows))
+        check("round: a sitting stamps its end beside its start (bottleneck_measure reads both)",
+              all(r.get("ended") and r["ended"] >= r["at"] for r in rows), rows)
+    # LIVEROUND_SHRINK_PROOFS_ARE_THE_SHORT_PART: a cause that is the bridge's, not the clause's, ends the sitting at once
+    # (2026-11-06 LONGSHADE A8..A11 each refused by one IndeterminateError; five waits on an unreadable running list)
+    for why in ("the proof exited 2: it did not measure: UNMEASURED: IndeterminateError('refusing jawa/static_call: 1 "
+                "earlier mutating call(s) have an UNKNOWN outcome",
+                "site not prepared: python rimbridge_client.py --reconcile [--resolve CID --as applied|not-applied|partial",
+                "harness fault: INFRA on 3 games for this build, so no game can judge it until the harness is fixed: site "
+                "not prepared: python rimbridge_client.py --reconcile [--resolve CID",
+                "the proof exited 2: it did not measure: UNMEASURED: bridge unreachable (RimBridgeError)",
+                "the running load's mod list could not be read (jawa/running_mods)",
+                "health check failed: the bridge does not answer rimbridge/ping from python.exe (exit 1)"):
+        with tempfile.TemporaryDirectory() as root:
+            run, calls = fake_run({"EG_A": ("UNMEASURED", why)})
+            s = R.run_round(FakeFx(), root, {}, now=1_800_000_000, run=run)
+            check("round: a bridge-wide dud ends the sitting at the first clause: %s" % why[:50],
+                  len(calls) == 1 and s["why"].startswith("stopped") and s.get("left") == 3, (calls, s))
+    for why in ("the proof exited 2: it did not measure: UNMEASURED: no generated RM_LongShade map had three wild cells",
+                "not in the running load: Graffiti (mandrake.rm.graffiti)",
+                "changed since the built commit, so the game cannot run abc123: src/x.xml"):
+        with tempfile.TemporaryDirectory() as root:
+            run, calls = fake_run({"EG_A": ("UNMEASURED", why)})
+            s = R.run_round(FakeFx(), root, {}, now=1_800_000_000, run=run)
+            check("round: a clause's own dud does not stop the others: %s" % why[:40],
+                  len(calls) == 4 and s["why"] == "done" and "left" not in s, (calls, s))
 
 
 class TickFx(object):
