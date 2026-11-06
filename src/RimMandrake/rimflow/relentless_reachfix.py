@@ -105,6 +105,26 @@ def _paths_of(texts):
     return out
 
 
+def granted(r, grants, p):
+    """-> the box grant (the proposal's, or every box's relentless_box.json default) whose rules grant_covers regex names
+    path p, else None. CHECKER_REACH_FIX_STORE_DARK_SECOND: KUQY's store proposal failed the coverage gate twice on the
+    mirror's .git, though every box already held that history (git_history). Bad rules data covers nothing."""
+    gcov = r.get("grant_covers")
+    if not isinstance(gcov, dict) or not isinstance(p, str):
+        return None
+    held = [g for g in list(grants or []) if isinstance(g, str)] + relentless_wall.default_grants()
+    for g in dict.fromkeys(held):
+        rx = gcov.get(g)
+        if g not in relentless_wall.GRANTS or not isinstance(rx, str):
+            continue
+        try:
+            if re.search(rx, p):
+                return g
+        except re.error:
+            continue
+    return None
+
+
 def refused(p, r, store_root=None):
     """-> why a read path may not be added, or None. Add-only stays add-only: the store, transcripts, memory, credentials
     and the worker run folders stay dark whatever a Judge proposes."""
@@ -130,19 +150,24 @@ def propose(r, cls, proposals, unreached, what, store_root=None):
     grants = [x for x in said if x in relentless_wall.GRANTS and x not in known]
     paths = _paths_of([x for x in said if x not in known and x not in grants])
     by = "judge" if said else "seed"
-    if not said:
-        ads = _union([x for x in cls.get("adapters") or [] if x in known],
-                     adapters_for(r, list(unreached or []) + [what or ""]), relentless_wall.OFFBOX_MAX)
-        paths = _paths_of(list(unreached or []) + [what or ""]) if cls.get("paths") else []
-    elif not ads and not grants and all(refused(p, r, store_root) for p in paths):
-        # CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK gen 3: the Judge named only what no repair opens (the live folder);
-        # proposing nothing filed a ticket at once, so the class seed adapters stand in for the refused proposal
-        ads = [x for x in cls.get("adapters") or [] if x in known]
-        by = "judge+seed" if ads else by
+    asked = list(grants)
     # the classes' grants ride along with what the Judge said: it names what it lacks, not how the box is made
     for g in list(cls.get("grants") or []) + grants_for(r, list(unreached or []) + [what or ""]):
         if g in relentless_wall.GRANTS and g not in grants:
             grants.append(g)
+    if not said:
+        ads = _union([x for x in cls.get("adapters") or [] if x in known],
+                     adapters_for(r, list(unreached or []) + [what or ""]), relentless_wall.OFFBOX_MAX)
+        paths = _paths_of(list(unreached or []) + [what or ""]) if cls.get("paths") else []
+    # a path a held box grant already shows is no bind (a bound mirror .git would carry refs past the candidate)
+    shown = {p: g for p, g in ((p, granted(r, grants, p)) for p in paths) if g}
+    paths = [p for p in paths if p not in shown]
+    if said and not ads and not asked and all(refused(p, r, store_root) for p in paths):
+        # CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK gen 3: the Judge named only what no repair opens (the live folder);
+        # proposing nothing filed a ticket at once, so the class seed adapters stand in for the refused proposal. A path
+        # a box grant shows (STORE_DARK_SECOND) is no repair either: the seed stands in for it too.
+        ads = [x for x in cls.get("adapters") or [] if x in known]
+        by = "judge+seed" if ads else by
     bad = {}
     for p in list(paths):
         why = refused(p, r, store_root)
@@ -151,8 +176,11 @@ def propose(r, cls, proposals, unreached, what, store_root=None):
             paths.remove(p)
     bad.update({x: "not a supervisor offbox adapter" for x in said if x not in known and x not in grants
                 and not _paths_of([x])})
-    return {"adapters": ads[:relentless_wall.OFFBOX_MAX], "paths": paths[:relentless_wall.THROUGH_MAX], "refused": bad,
-            "by": by, "grants": grants}
+    out = {"adapters": ads[:relentless_wall.OFFBOX_MAX], "paths": paths[:relentless_wall.THROUGH_MAX], "refused": bad,
+           "by": by, "grants": grants}
+    if shown:
+        out["granted"] = shown
+    return out
 
 
 def grants(st):
@@ -209,6 +237,8 @@ def uncovered(r, prop, texts):
     out = []
     for p in _paths_of(texts):
         if not any(p == m or p.startswith(m + "/") for m in masks):
+            continue
+        if granted(r, prop.get("grants"), p):
             continue
         if not any(p == c or p.startswith(c + "/") for c in cover) and p not in out:
             out.append(p)
@@ -402,7 +432,7 @@ def sweep(store, fx, r, now, acts, iso):
         if good:
             with store.lock():
                 cur = store.load(owner)
-                if cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
+                if not cur or cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
                     continue
                 _apply(cur, prop, name, now, "probe passed: %s" % (why or "")[:200])
                 store.attempt(owner, {"at": iso(now), "gen": cur["gen"], "end": "reach_repaired", "class": name,
@@ -533,7 +563,7 @@ def orphans(store, fx, book, now, acts, iso, r=None):
             on = ent["ticket"] if ent.get("status") == "ticket" and ent.get("ticket") else ent["owner"]
             with store.lock():
                 cur = store.load(st["item"])
-                if cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
+                if not cur or cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
                     continue
                 cur["wait"] = dict(cur["wait"], on=on, attributed_at=now)
                 cur["reach"] = dict(cur.get("reach") or {}, status="ticket" if on != ent["owner"] else "waiting")

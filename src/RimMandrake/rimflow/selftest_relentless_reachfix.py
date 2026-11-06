@@ -690,11 +690,80 @@ def t_live_round_seed():
        "(9) a usable Judge proposal is kept as said: %s" % prop)
 
 
+KUQY_STILL_BLIND = ("git commits behind the pre-existing fixed.sha values in jam_classes.json (no .git in export; "
+                    "/mnt/d/Luke/dev/RimMandrake/.git Permission denied; /home/mandrake/rm/bench empty); live relentless "
+                    "journal showing relentless.jam_unnamed = 0 after the fix (ls /home/mandrake/rm/relentless/store: "
+                    "Permission denied; the relentless_store_attempts offbox reading carries attempts, not journal reasons)")
+
+
+def t_store_dark_second():
+    """CHECKER_REACH_FIX_STORE_DARK_SECOND (the instance): after STORE_STILL_DARK closed, KUQY's store proposal reseeded and
+    filled to [store_attempts, store_journal, git_log_candidate, seat_clone_state] with the git_history grant, and the
+    coverage gate still filed a successor on /mnt/d/Luke/dev/RimMandrake/.git: no adapter declares a .git in its covers,
+    and the gate never credited the grant, though every box holds that history (relentless_box.json default_grants).
+    Now (a) the instance's proposal leaves nothing uncovered; (b) with no git grant held (the proposal's or the box's),
+    the mirror's .git is still uncovered; (c) a grant covers only what grant_covers names: another repo's .git stays
+    uncovered, and (e) so do a checkout's refs, a ~/rm repo it does not name and the store; (f) a Judge proposal of the
+    granted .git alone binds nothing, records it as granted, and the class seed stands in; (d) through the sweep, the KUQY text probes once with no bind of the granted .git (a bound mirror .git
+    would carry refs past the candidate), files no ticket and re-checks the same sha once."""
+    import json
+    import relentless_wall as W
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    texts = [KUQY_STILL_BLIND, KUQY_STILL_BLIND]
+    stored = {"adapters": ["relentless_store_attempts"], "by": "seed", "paths": [], "refused": {}}
+    st = {"reach": {"class": "store", "proposal": stored, "still_blind": KUQY_STILL_BLIND, "status": "ticket"},
+          "blind": {"what": KUQY_STILL_BLIND}}
+    prop = RF.fill(r, "store", RF.reseed(r, "store", RF.refreshed(r, st)), texts)
+    gaps = RF.uncovered(r, prop, texts)
+    ok("git_history" in (prop.get("grants") or []) and gaps == [],
+       "(10a) KUQY's refilled store proposal covers every masked path it named: %s %s -> %s" % (
+           prop.get("adapters"), prop.get("grants"), gaps))
+    real = W.default_grants
+    try:
+        W.default_grants = lambda cfg=None: []
+        bare = RF.uncovered(r, dict(prop, grants=[]), texts)
+    finally:
+        W.default_grants = real
+    ok("/mnt/d/Luke/dev/RimMandrake/.git" in bare,
+       "(10b) with no git grant held, the mirror's .git is uncovered: %s" % bare)
+    other = RF.uncovered(r, dict(prop, grants=["git_history"]),
+                         ["/mnt/d/Luke/dev/MandrakeWorkflows/.git Permission denied"])
+    ok(other == ["/mnt/d/Luke/dev/MandrakeWorkflows/.git"],
+       "(10c) the git_history grant covers RimMandrake's history only: %s" % other)
+    edge = RF.uncovered(r, {"adapters": ["git_log_candidate"], "paths": [], "grants": ["git_history"]},
+                        ["/mnt/d/Luke/dev/RimMandrake/.git/refs/heads/main Permission denied; "
+                         "/home/mandrake/rm/scratch/otherrepo/.git and /home/mandrake/rm/relentless/store/.git empty"])
+    ok(edge == ["/mnt/d/Luke/dev/RimMandrake/.git/refs/heads/main", "/home/mandrake/rm/scratch/otherrepo/.git",
+                "/home/mandrake/rm/relentless/store/.git"],
+       "(10e) the grant covers a checkout's .git and objects only: no refs (grant_git writes none), no repo it does not "
+       "name, never the store: %s" % edge)
+    cls = RF.classify(r, [KUQY_STILL_BLIND])
+    jp = RF.propose(r, cls, ["/mnt/d/Luke/dev/RimMandrake/.git"], [KUQY_STILL_BLIND], KUQY_STILL_BLIND)
+    ok(jp.get("paths") == [] and (jp.get("granted") or {}).get("/mnt/d/Luke/dev/RimMandrake/.git") == "git_history"
+       and jp.get("by") == "judge+seed" and "relentless_store_attempts" in jp.get("adapters", []),
+       "(10f) a Judge naming only the granted .git binds nothing, says so, and the class seed stands in: %s" % jp)
+    x = rig(probe=(True, "store adapters read non-empty; git history granted"))
+    x.r = dict(x.r, reach_classes=r["reach_classes"], grant_covers=r["grant_covers"],
+               walls={"marker": dict(r["walls"]["marker"], enforce=False)}, offbox_adapters=r["offbox_adapters"])
+    B.to_check(x, "I0")
+    blind(x, "I0", what=KUQY_STILL_BLIND)
+    for _ in range(3):
+        x.tick()
+    book = RF.load(x.s)
+    ent = book.get("store") or {}
+    ok(len(x.w.probes) == 1 and x.w.probes[0][0] == [] and x.w.tickets == [] and ent.get("status") == "ok"
+       and len(checks(x)) == 2,
+       "(10d) the KUQY text probes once, binds no granted .git, files no ticket and re-checks the same sha once: probes %s "
+       "tickets %s %s checks %d"
+       % (x.w.probes, x.w.tickets, ent.get("status"), len(checks(x))))
+    x.done()
+
+
 def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
               t_windows_build_nothing_to_probe, t_windows_build_seed_probes, t_every_waiter_released, t_legacy_off, t_clones_seed, t_store_seed,
               t_closed_ticket_reseeds, t_seat_tmp_reach, t_clones_scratch_instance, t_live_round_seed,
-              t_store_waiter_kuqy, t_clones_judge_gap_filled):
+              t_store_waiter_kuqy, t_clones_judge_gap_filled, t_store_dark_second):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
