@@ -51,7 +51,9 @@ Every step is journalled (dispatcher journal.jsonl); failures alarm and note the
 `seat_restart.enabled` is true (design/RimMandrake/rimflow_v3_golive_wave1.md, "Seat restart: enable steps").
 """
 import argparse
+import contextlib
 import datetime
+import fcntl
 import glob
 import json
 import os
@@ -59,6 +61,7 @@ import re
 import signal
 import subprocess
 import sys
+import threading
 import time
 import uuid
 
@@ -2169,20 +2172,49 @@ def _signal_pinned(pfd, pid, start, wait_s):
     return "survived: pid %s still alive after SIGKILL" % pid
 
 
+_KILLED_HELD = threading.local()
+
+
+@contextlib.contextmanager
+def _killed_lock(seat, root=None):
+    """One writer of a seat's killed record at a time (GPT round 4 (b)): every writer takes it, so a wake's
+    read-then-write in _rewrite_own_killed cannot interleave with a new restart's record. Re-entrant per thread: flock
+    belongs to the open file, so a second open by the holder would wait on itself."""
+    p = killed_path(seat, root) + ".lock"
+    held = getattr(_KILLED_HELD, "paths", None)
+    if held is None:
+        held = _KILLED_HELD.paths = set()
+    if p in held:
+        yield
+        return
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "a") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        held.add(p)
+        try:
+            yield
+        finally:
+            held.discard(p)
+            fcntl.flock(f, fcntl.LOCK_UN)
+
+
 def write_killed(seat, rec, root=None):
-    _write_json(killed_path(seat, root), rec)
+    with _killed_lock(seat, root):
+        _write_json(killed_path(seat, root), rec)
 
 
 def _rewrite_own_killed(seat, rec, root=None):
     """A wake's update of the record it read: written only while the file still holds that restart (GPT round 3: a
-    newer restart's record written meanwhile must not be replaced by an older wake's copy). -> written?"""
-    cur = _read_json(killed_path(seat, root)) or {}
-    if cur.get("gen") and cur.get("gen") != rec.get("gen"):
-        print("\n== the killed record now belongs to restart %s, not %s: this wake leaves it alone." % (
-            cur.get("gen") or "(none)", rec.get("gen") or "(none)"))
-        return False
-    write_killed(seat, rec, root)
-    return True
+    newer restart's record written meanwhile must not be replaced by an older wake's copy). The check and the write
+    are one step under _killed_lock (GPT round 4 (b)). -> written?"""
+    with _killed_lock(seat, root):
+        cur = _read_json(killed_path(seat, root)) or {}
+        if cur.get("gen") and cur.get("gen") != rec.get("gen"):
+            print("\n== the killed record now belongs to restart %s, not %s: this wake leaves it alone." % (
+                cur.get("gen") or "(none)", rec.get("gen") or "(none)"))
+            return False
+        write_killed(seat, rec, root)
+        return True
 
 
 def consume_request(seat, root=None, ts=None):
@@ -2495,8 +2527,11 @@ def pending_holds(seat, pid, path, root=None):
 
 def final_fence(seat, sch, rs, sf, path=None, now=None):
     """-> holds from a full read of the window's transcript from rs's cursor (cursor_verdict without moving the quiet
-    clock: any growth since the claiming tick holds). [] = go. A seat without a cursor and not a Conductor passes (its tail check
-    stands)."""
+    clock: any growth since the claiming tick holds), then the window's queue read again AFTER it. [] = go. A seat without
+    a cursor and not a Conductor passes the cursor read (its tail check stands). The queue read is last because
+    cursor_verdict judges a doorbell seat's queued enqueue as no input, and recheck_at_kill's own queue read comes before
+    this one: a prompt queued between them was killed unread (GPT round 4 (c), blind check 2026-11-06). A goodbye
+    waits for no input, queued included (_goodbye)."""
     cfg = config(sch).get(seat) or dict(DEFAULTS)
     if path is None:
         path = rs.get("tx_path") or transcript_for(sf, cfg)
@@ -2504,7 +2539,9 @@ def final_fence(seat, sch, rs, sf, path=None, now=None):
     verdict, why = cursor_verdict(cfg, rs, sc, time.time() if now is None else now, track=False)
     if verdict != "ok":
         return ["%s at the fence: %s" % (verdict, why)]
-    return []
+    if _goodbye(cfg, rs):
+        return []
+    return ["%s at the fence" % h for h in queue_holds(path)]
 
 
 def paused_now():

@@ -411,6 +411,69 @@ def test_docs_name_now_once():
         check(n == want, "%s (%s) names --now exactly %d time(s) (%d)" % (label, rel, want, n))
 
 
+def test_final_fence_reads_the_queue_last():
+    # GPT round 4 (c), blind check 2026-11-06: recheck_at_kill read the queue BEFORE final_fence, and cursor_verdict
+    # judges a doorbell seat's queue-operation enqueue as no input, so a prompt queued between the two was killed unread
+    def tx(path, recs):
+        ends, n = [], 0
+        with open(path, "w", encoding="utf-8") as f:
+            for r in recs:
+                line = json.dumps(r) + "\n"
+                f.write(line)
+                n += len(line.encode("utf-8"))
+                ends.append(n)
+        return ends
+    enq = {"type": "queue-operation", "operation": "enqueue", "timestamp": "1970-01-12T13:47:31Z", "content": "one more"}
+    deq = {"type": "queue-operation", "operation": "dequeue", "timestamp": "1970-01-12T13:47:32Z"}
+    base = [F._hu("1970-01-12T13:40:00Z", "go"), F._ha("1970-01-12T13:45:10Z")]
+    p = os.path.join(TMPN, "fence_queue.jsonl")
+    for seat, sch, sf, src, extra, held, what in (
+            ("FOUNDRY", F.sched(), F.sess(), "request", [enq], True, "a doorbell seat's enqueue after the cursor"),
+            ("FOUNDRY", F.sched(), F.sess(), "request", [enq, deq], False, "control: enqueued then taken"),
+            ("FOUNDRY", F.sched(), F.sess(), "request", [], False, "control: nothing queued"),
+            ("BENCH", F.bsched(), F.bsess(), "request", [enq], False, "control: a goodbye waits for no queued input"),
+            ("BENCH", F.bsched(), F.bsess(), "backstop_hard", [enq], True, "a Conductor size restart holds on it")):
+        ends = tx(p, base + extra)
+        rs = {"ts": T0, "cancel_after": T0, "source": src, "tx_offset": ends[1], "tx_path": p}
+        f = SR.final_fence(seat, sch, rs, sf, path=p, now=T0 + 5000)
+        check(bool(f) == held and (not held or seat == "BENCH" or any("queued" in h for h in f)),
+              "final fence: %s (%s)" % (what, f))
+    with open(p, "w", encoding="utf-8") as fh:
+        fh.write("{not json\n")
+    f = SR.final_fence("FOUNDRY", F.sched(), {"ts": T0, "source": "request"}, F.sess(), path=p, now=T0 + 5000)
+    check(f and "UNMEASURED" in f[0], "final fence: an unreadable queue holds (%s)" % f)
+
+
+def test_killed_record_rewrite_is_one_step():
+    # GPT round 4 (b), blind check 2026-11-06: a wake's _rewrite_own_killed read the record, then wrote it; a new
+    # restart's record written between the two was replaced by the old wake's copy. The newer record must stand.
+    import threading
+    root = os.path.join(TMPN, "killed_lock")
+    old = {"gen": "g-old", "session_id": "sid-old"}
+    newer = {"gen": "g-new", "session_id": "sid-new"}
+    SR.write_killed("FOUNDRY", old, root)
+    real, th = SR._read_json, []
+
+    def racing_read(path):
+        cur = real(path)
+        if path == SR.killed_path("FOUNDRY", root) and not th:
+            t = threading.Thread(target=SR.write_killed, args=("FOUNDRY", newer, root))
+            th.append(t)
+            t.start()
+            t.join(0.5)                  # with the lock it cannot land until the rewrite is done
+        return cur
+    SR._read_json = racing_read
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            SR._rewrite_own_killed("FOUNDRY", dict(old, woken_at=1), root)
+    finally:
+        SR._read_json = real
+    for t in th:
+        t.join(5)
+    got = (real(SR.killed_path("FOUNDRY", root)) or {}).get("gen")
+    check(th and got == "g-new", "killed record: a restart written during a wake's rewrite stands (%s)" % got)
+
+
 def main():
     SR.UNFILED = lambda t: None
     for name, fn in sorted(globals().items()):
