@@ -1,0 +1,1 @@
+relentless runs.jsonl look-backs (repeats, seen_on_other_game/build, infra_games, harness scan) must stop at the item's void row; read_rows returns voids as plain rows, so any new look-back that skips non-matching rows reads past a repair (GAMEENV_FIX_PROOFSITE_18CF717D_ITEMS_WAIT)
