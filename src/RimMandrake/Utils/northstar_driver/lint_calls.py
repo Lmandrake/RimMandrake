@@ -205,9 +205,23 @@ def ready_loops(src, fname):
     return sorted(n.lineno for n in inner)
 
 
+def gather_py(paths):
+    """Every *.py under a directory: ready-loop copies are written in prove_*.py and the rest,
+    not only in the validation/preflight files gather() keeps for the call lint."""
+    files = []
+    for p in paths:
+        if os.path.isdir(p):
+            for root, dirs, names in os.walk(p):
+                dirs[:] = [d for d in dirs if d not in (".git", "__pycache__", "worktrees")]
+                files.extend(os.path.join(root, n) for n in names if n.endswith(".py"))
+        else:
+            files.append(p)
+    return sorted(files)
+
+
 def warn_paths(paths):
     rows = []
-    for f in gather(paths):
+    for f in gather_py(paths):
         with open(f, encoding="utf-8", errors="replace") as fh:
             src = fh.read()
         rows.extend((f, line) for line in ready_loops(src, f))

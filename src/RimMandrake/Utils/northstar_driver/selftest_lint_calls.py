@@ -143,6 +143,20 @@ with _tf.TemporaryDirectory() as _d:
     _r = _sp.run([sys.executable, os.path.join(HERE, "lint_calls.py"), _d], capture_output=True, text=True)
     check("the CLI prints WARN READY_LOOP for a new copy", "WARN READY_LOOP" in _r.stdout, _r.stdout[-300:])
     check("a warning alone leaves the exit code 0", _r.returncode == 0, "exit %d" % _r.returncode)
+with _tf.TemporaryDirectory() as _d:
+    os.makedirs(os.path.join(_d, "SomeMod"))
+    _p = os.path.join(_d, "SomeMod", "prove_new.py")
+    with open(_p, "w") as _fh:
+        _fh.write(OLD_READY)
+    _r = _sp.run([sys.executable, os.path.join(HERE, "lint_calls.py"), _d], capture_output=True, text=True)
+    check("a directory scan warns a new copy in a prove_*.py (the file kind copies are written in)",
+          (_p + ":5  -  WARN READY_LOOP") in _r.stdout, _r.stdout[-300:])
+    check("the prove_*.py warning leaves the exit code 0", _r.returncode == 0, "exit %d" % _r.returncode)
+_flora = os.path.join(_ud, "BlueDesert", "prove_flora_retile.py")
+_r = _sp.run([sys.executable, os.path.join(HERE, "lint_calls.py"), os.path.join(_ud, "BlueDesert")],
+             capture_output=True, text=True)
+check("a directory scan warns the unmigrated copy in BlueDesert/prove_flora_retile.py",
+      (_flora + ":") in _r.stdout and "WARN READY_LOOP" in _r.stdout, _r.stdout[-300:])
 
 # --- the snapshot is not stale against the companion source (26 tools were missing on 2026-10-10)
 import glob as _glob
