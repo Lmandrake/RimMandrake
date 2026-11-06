@@ -112,3 +112,29 @@ capture.
 **Owed live** (game up on a GSS tier, bridge held, companion deployed with the game DOWN):
 - `python.exe D:\Luke\dev\RimMandrake\src\RimMandrake\GimmeSomeSlack\northstar\gss_playtest_runner.py --recipe full`
 - `python3 -m artboard.live gss_states --origin X,Z`, then `python3 -m artboard.autofix <out> --vision answers.txt`
+
+## Method per bug class — the evidence table (closed 2026-11-05)
+
+Counts are items whose `found-by:` line names the method, counted with `grep -l -m1 '^found-by: <method>'` over
+`infrastructure/state/items/` and `items/closed/` on 2026-11-05 (live + closed; a filed finding, not a proven bug).
+Times come from the rows above; where no clock was kept the cell says UNMEASURED. Streams: **fix loop** = finding
+FlowWorks/GSS behaviour bugs; **pre-review** = screening looks before the owner sees them.
+
+| Bug class | Method | Stream | Bugs found | Time to find |
+|---|---|---|---|---|
+| Logic, arithmetic, determinism (merges, allocation order, hose geometry, cost vs length) | B offline kernel / fuzz | fix loop | 4 on this log (water/tar merge, reload allocation, G2 outlet bend, G6 cost probe) | 1.5–13.6 s per sweep |
+| Code-reading defects: init bugs, caches, toggles left stale, harness hazards, perf hot paths | GPT source read (2026-10-06 GSS read; 2026-10-15 FlowWorks pre-release consult; 2026-10-23 FW+GSS high-depth review) | fix loop | 35 on the GSS read (31 confirmed); 33 items from the 10-15 consult triage; 119 items `found-by: GPT review, verified` (42 closed, 77 live) | 7 + 10 min wall per GSS half; the later reads UNMEASURED |
+| Behaviour only the running game shows (pit ladder exit, save/reload NRE, site/classifier reds, deep/river/ladder rows) | A in-game runner scenes + northstar `validation_v2`/`proof_all` sittings | fix loop | 1 + 1 on this log (pit ladder, `save_reload_b` NRE); 21 items `found-by: BENCH bridge run` from the 2026-10-23 fw_gss sitting (9 closed, 12 live) | 5–7 s per runner scene; northstar 622 s per GSS sweep |
+| Bridge/tool defects | C agent-plays mission | fix loop | 1 (`step_game_ticks` stops early) | 130 s mission, 89 s of it agent thinking |
+| Staging faults in review shots (subject shifted a cell, false holes) | E artboard tier-a checks on one rich screenshot | pre-review | 3 staging + 2 false holes caught on the 13-pawn xenotype grid | seconds on an existing screenshot |
+| Art faults (overlay sizes, junction body wider than cord, strip aspect) | GPT art review of a true-scale art sheet; GPT source read for draw sizes | pre-review | 9 items `found-by: GPT art review` (6 closed, 3 live) + 1 (strip aspect, A19) | UNMEASURED (one sheet pass, 2026-10-23/24) |
+| Appearance defects needing taste | Owner looking at the review map | pre-review | every owner-found GSS defect in review rounds 1–7 | his sitting; the cost the pre-review exists to cut |
+
+**Verdict — the method mix:** every FlowWorks/GSS-class mod keeps **B offline fuzz** for logic, a **GPT source read**
+(plus a GPT read of the validation plan) for code-level defects, the **A in-game runner** scenes for behaviour, and
+**E rich-screenshot pre-review** (artboard checks + GPT art review on a true-scale sheet) before any human look;
+**northstar** stays as the acceptance sweep (Relentless's game_prove lane) rather than a bug-finding method, and the
+**C agent-player** waits, as the owner ruled 2026-10-06, until interface testing becomes too onerous by hand.
+The GPT read filed by far the most findings; the runner is the only one that saw save/reload and site faults;
+the owner's eye is reserved for what E leaves behind. Nothing in this table drops a pathway (owner: *"Do not
+eliminate any pathways yet."*).
