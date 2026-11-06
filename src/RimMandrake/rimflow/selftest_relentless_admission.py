@@ -185,8 +185,9 @@ def t_slis_printed():
     now = t + 3600
     s = L.live_slis(rows, now, built_at=lambda sha: t - 7200 if sha == "s1" else None)
     ok(s["load"] == GAME and s["keys"] == 4, "F: distinct keys on the newest load: %s" % s)
-    ok(s["not_admitted_by_cause"] == {"deploy_gap": {"keys": 1, "action": "deploy", "fired": 1}},
-       "F1: NOT_ADMITTED keys by cause and whether the action fired: %s" % s["not_admitted_by_cause"])
+    ok(s["not_admitted_by_cause"] == {"deploy_gap": {"keys": 1, "action": "deploy", "fired": 0, "unread": 1}},
+       "F1: NOT_ADMITTED keys by cause; with no execution record the action is unread, never fired: %s"
+       % s["not_admitted_by_cause"])
     ok(s["slot_keys"] == 3 and s["slot_unmeasured_share"] == round(1 / 3.0, 3),
        "F2: slot-spending UNMEASURED share per key, not per row: %s" % s)
     ok(s["measured_keys_per_day"] == 2.0 and s["built_to_verdict_s"] == {"p50": 7200, "p95": 7200, "n": 1}, "F3/F4: completions and lag: %s" % s)
@@ -198,8 +199,95 @@ def t_slis_printed():
     ok(L.sli_lines({"unread": "boom"})[0].startswith("live SLIs: COULD NOT READ"), "F: an unread SLI says so")
 
 
+def t_unreadable_full_list_retries():
+    """G1: an unreadable FULL.LATEST is the harness's read (transient, retry), never a full_list hold; a full_list hold
+    keys on FULL.LATEST's content, so a changed, restored or now-unreadable list runs the criterion again."""
+    why = "%s: %s unreadable (FileNotFoundError)" % (L.FINAL_WAIT, os.path.basename(L.FULL_LIST))
+    ok(L.admit_cause(why) == "full_list_unread" and L.ADMIT["full_list_unread"][1],
+       "G1: an unread full list is a transient cause: %s" % L.admit_cause(why))
+    ok(why.startswith(L.FINAL_WAIT), "G1: its why still starts FINAL_WAIT, so prefix readers batch it")
+    gap = "%s: the running game has 13 mods, 5 of FULL.LATEST's 400" % L.FINAL_WAIT
+    ok(L.admit_cause(gap) == "full_list", "G1: a real full-list gap is still full_list")
+    unread = {"admit": "full_list_unread", "key": L.admit_key("s1", GAME, None, "full_list_unread")}
+    ok(L.admit_waits(unread, "s1", GAME) is None, "G1: an unread-list row never holds its key")
+    old = L.FULL_LIST
+    with tempfile.TemporaryDirectory() as d:
+        L.FULL_LIST = os.path.join(d, "ModsConfig.FULL.LATEST.xml")
+        try:
+            with open(L.FULL_LIST, "w") as f:
+                f.write("<ModsConfigData><activeMods><li>a</li></activeMods></ModsConfigData>")
+            held = {"admit": "full_list", "key": L.admit_key("s1", GAME, None, "full_list")}
+            ok(held["key"].get("full") and L.admit_waits(held, "s1", GAME),
+               "G1: a full-list gap on the same list holds: %s" % held["key"])
+            with open(L.FULL_LIST, "a") as f:
+                f.write("\n")
+            ok(L.admit_waits(held, "s1", GAME) is None, "G1: a changed full list runs at once")
+            os.remove(L.FULL_LIST)
+            ok(L.admit_waits(held, "s1", GAME) is None, "G1: an unreadable full list holds nothing")
+            missing = {"admit": "full_list", "key": L.admit_key("s1", GAME, None, "full_list")}
+            ok(missing["key"]["full"] is None, "G1: an unread list keys as None")
+            with open(L.FULL_LIST, "w") as f:
+                f.write("<ModsConfigData/>")
+            ok(L.admit_waits(missing, "s1", GAME) is None, "G1: a restored full list runs at once")
+            legacy = {"admit": "full_list", "key": {k: v for k, v in held["key"].items() if k != "full"}}
+            ok(L.admit_waits(legacy, "s1", GAME) is None, "G1: an old row with no list part runs once")
+        finally:
+            L.FULL_LIST = old
+
+
+def t_pre_bridge_rows_never_hide_admission():
+    """G2: an old pre-bridge UNMEASURED row and a newer NOT_ADMITTED one on the same key: the key is NOT_ADMITTED and
+    spent no slot, never dropped from both counts."""
+    later = "2026-11-06T12:30:00Z"
+    base = {"item": "9", "criterion": "A2", "sha": "s9", "at": later, "game": GAME}
+    rows = [dict(base, outcome="UNMEASURED", slot=False, log=None, why="not in the running load: X (x)"),
+            dict(base, outcome=L.NOT_ADMITTED, admit="running_load", action="wait_load", slot=False, log=None,
+                 why="not in the running load: X (x)")]
+    s = L.live_slis(rows, 2_000_000_000)
+    ok(s["not_admitted_by_cause"].get("running_load", {}).get("keys") == 1 and s["slot_keys"] == 0,
+       "G2: the key counts as NOT_ADMITTED, no slot: %s %s" % (s["not_admitted_by_cause"], s["slot_keys"]))
+
+
+def t_fired_counts_executed_actions():
+    """G3: fired counts only an action the lane's own record says it ran; assigned is not fired."""
+    later = "2026-11-06T12:30:00Z"
+    row = {"item": "I7", "criterion": "A2", "sha": "s7", "at": later, "game": GAME, "outcome": L.NOT_ADMITTED,
+           "admit": "deploy_gap", "action": "deploy", "slot": False, "log": None, "why": GAP}
+    for f, want in ((lambda x: True, (1, 0)), (lambda x: False, (0, 0)), (lambda x: None, (0, 1))):
+        e = L.live_slis([row], 2_000_000_000, fired=f)["not_admitted_by_cause"]["deploy_gap"]
+        ok((e["fired"], e["unread"]) == want and e["keys"] == 1, "G3: fired/unread %s: %s" % (want, e))
+
+    class St:
+        def __init__(self, a):
+            self.a = a
+
+        def attempts(self, item):
+            return self.a
+    ok(R.action_fired(St([]), row) is False, "G3: no attempt: not fired")
+    ok(R.action_fired(St([{"end": "game_env_fix", "sha": "s7", "at": "2026-11-06T12:00:00Z"}]), row) is False,
+       "G3: a fix before the refusal did not fire for it")
+    ok(R.action_fired(St([{"end": "game_env_fix", "sha": "s7", "at": "2026-11-06T12:31:00Z"}]), row) is True,
+       "G3: a fix after the refusal fired")
+    ok(R.action_fired(St([{"end": "game_env_fix", "sha": "s7", "at": "2026-11-06T12:31:00Z"}]),
+                      dict(row, action="wait_load")) is None, "G3: an action with no execution record is unread")
+    lines = L.sli_lines(L.live_slis([row], 2_000_000_000))
+    ok(any("deploy (fired 0, unread 1)" in x for x in lines), "G3: printed as unread: %s" % lines)
+
+
+def t_replay_unreadable_exits_nonzero():
+    """G4: admission-replay on a runs file it cannot read is UNMEASURED (exit 2), never a clean replay of nothing."""
+    with tempfile.TemporaryDirectory() as d:
+        rc = L.main(["admission-replay", os.path.join(d, "absent.jsonl")])
+        ok(rc == 2, "G4: an absent runs file exits 2: %s" % rc)
+        p = os.path.join(d, "runs.jsonl")
+        with open(p, "w") as f:
+            f.write("")
+        ok(L.main(["admission-replay", p]) == 0, "G4: a readable empty file still replays clean")
+
+
 def main():
-    for t in (t_every_pre_bridge_return_is_not_admitted, t_replay_leaves_no_pre_bridge_unmeasured,
+    for t in (t_unreadable_full_list_retries, t_pre_bridge_rows_never_hide_admission, t_fired_counts_executed_actions,
+              t_replay_unreadable_exits_nonzero, t_every_pre_bridge_return_is_not_admitted, t_replay_leaves_no_pre_bridge_unmeasured,
               t_deploy_gap_fires_deploy, t_stale_build_fires_recarry, t_key_reruns_only_on_a_moved_part,
               t_live_check_reader_reads, t_slis_printed):
         try:

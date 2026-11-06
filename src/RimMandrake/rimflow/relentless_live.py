@@ -1512,13 +1512,17 @@ NO_VERDICT = ("UNMEASURED", NOT_ADMITTED)
 ADMIT = {"unreadable_build": ("retry", True), "stale": ("recarry", False), "deploy_plan": ("retry", True),
          "deploy_gap": ("deploy", False), "no_game": ("wait_load", True), "old_build": ("wait_load", False),
          "companion_unread": ("retry", True), "running_load": ("wait_load", False), "load_unread": ("retry", True),
-         "full_list": ("full_list", False), "bridge_busy": ("retry", True)}
+         "full_list": ("full_list", False), "full_list_unread": ("retry", True), "bridge_busy": ("retry", True)}
 ADMIT_PREFIX = (("cannot read the built commit", "unreadable_build"), (STALE, "stale"), ("the build deleted ", "stale"),
                 ("not deployed: the deploy plan failed", "deploy_plan"), ("not in the running load", "running_load"),
                 (UNDEPLOYED[0], "deploy_gap"), ("no running game to test", "no_game"), ("the game started ", "old_build"),
                 ("cannot read whether the build owes", "companion_unread"),
                 ("%s's identity could not be read" % COMPANION, "companion_unread"),
-                ("the running load's mod list could not be read", "load_unread"), (FINAL_WAIT, "full_list"),
+                ("the running load's mod list could not be read", "load_unread"),
+                # before FINAL_WAIT, whose prefix it shares: an unread FULL.LATEST is the harness's read, so it retries
+                # instead of holding its key until a new build (RELENTLESS_LIVE_HARDEN_ADMISSION_READING)
+                ("%s: %s unreadable" % (FINAL_WAIT, os.path.basename(FULL_LIST)), "full_list_unread"),
+                (FINAL_WAIT, "full_list"),
                 ("bridge not taken", "bridge_busy"))
 HARNESS_FILES = ("relentless_live.py", "live_observe.py", "relentless_live_round.py")
 _HARNESS_REV = []
@@ -1559,10 +1563,24 @@ def harness_rev():
     return _HARNESS_REV[0]
 
 
-def admit_key(sha, load, site):
-    """(sha, load fingerprint, site fingerprint, harness rev): a NOT_ADMITTED key runs again the moment one part moves."""
-    return {"sha": sha, "load": load, "site": hashlib.sha1((site or "").encode("utf-8")).hexdigest()[:12],
-            "harness": harness_rev()}
+def full_list_print(path=None):
+    """-> short hash of FULL.LATEST's bytes, or None when it cannot be read: a full_list hold's key part, so a changed
+    (or restored) full list runs the held criterion again."""
+    try:
+        with open(path or FULL_LIST, "rb") as f:
+            return hashlib.sha1(f.read()).hexdigest()[:12]
+    except OSError:
+        return None
+
+
+def admit_key(sha, load, site, cause=None):
+    """(sha, load fingerprint, site fingerprint, harness rev[, full list]): a NOT_ADMITTED key runs again the moment one
+    part moves. A full_list cause also keys on FULL.LATEST's content (full_list_print)."""
+    k = {"sha": sha, "load": load, "site": hashlib.sha1((site or "").encode("utf-8")).hexdigest()[:12],
+         "harness": harness_rev()}
+    if cause == "full_list":
+        k["full"] = full_list_print()
+    return k
 
 
 def admit_waits(last, sha, game, site=None):
@@ -1573,8 +1591,11 @@ def admit_waits(last, sha, game, site=None):
     c = last.get("admit")
     if not k or c not in ADMIT or ADMIT[c][1] or k.get("load") is None:
         return None
-    now = admit_key(sha, game, site)
-    parts = [p for p in ("sha", "load", "harness") + (("site",) if site is not None else ()) if k.get(p) != now[p]]
+    now = admit_key(sha, game, site, c)
+    parts = [p for p in ("sha", "load", "harness") + (("site",) if site is not None else ()) + (
+        ("full",) if c == "full_list" else ()) if k.get(p) != now[p]]
+    if c == "full_list" and now.get("full") is None:
+        return None     # the full list cannot be read now: no proof it still stands; the retry timer applies
     if parts:
         return None
     return "not admitted (%s): waits for a new build, load, site or harness" % c
@@ -1604,9 +1625,12 @@ def _pct(xs, q):
     return xs[min(len(xs) - 1, int(q * len(xs)))] if xs else None
 
 
-def live_slis(rows, now, built_at=None, window_s=86400):
+def live_slis(rows, now, built_at=None, window_s=86400, fired=None):
     """The four live SLIs (redesign_final 3.1) per distinct (item, criterion, sha) key for the newest load, plus the old
-    row-level share. built_at(sha) -> epoch of the build or None. -> dict, printed by `relentless.py reading`."""
+    row-level share. built_at(sha) -> epoch of the build or None. -> dict, printed by `relentless.py reading`.
+    fired(row) -> True when the lane EXECUTED the NOT_ADMITTED row's action after it (its own record says so), False
+    when that record was read and holds none, None when nothing can say: a row's `action` is the action ASSIGNED, never
+    proof it ran, so an unread one counts in `unread`, never in `fired`."""
     rows = [x for x in rows if isinstance(x.get("at"), str)]    # one 2026 row carries an epoch: no load, no day
 
     def at(row):
@@ -1623,13 +1647,17 @@ def live_slis(rows, now, built_at=None, window_s=86400):
     na, slot_keys, slot_unm = {}, 0, 0
     for ks in keys.values():
         adm = [x for x in ks if x.get("outcome") == NOT_ADMITTED]
-        ran = [x for x in ks if x.get("outcome") != NOT_ADMITTED and x.get("outcome") in ("PASS", "FAIL", "UNMEASURED")]
-        if adm and not ran:
+        # an old pre-bridge UNMEASURED row spent no slot either: it never hides the key's NOT_ADMITTED refusal
+        spent = [x for x in ks if x.get("outcome") in ("PASS", "FAIL", "UNMEASURED") and not pre_bridge(x)]
+        if adm and not spent:
             c = adm[-1].get("admit") or "?"
-            e = na.setdefault(c, {"keys": 0, "action": ADMIT.get(c, ("?",))[0], "fired": 0})
+            e = na.setdefault(c, {"keys": 0, "action": ADMIT.get(c, ("?",))[0], "fired": 0, "unread": 0})
             e["keys"] += 1
-            e["fired"] += bool(adm[-1].get("action"))
-        spent = [x for x in ran if not pre_bridge(x)]
+            f = fired(adm[-1]) if fired else None
+            if f is None:
+                e["unread"] += 1
+            elif f:
+                e["fired"] += 1
         if spent:
             slot_keys += 1
             slot_unm += not any(x.get("outcome") in ("PASS", "FAIL") for x in spent)
@@ -1675,8 +1703,9 @@ def sli_lines(s):
     hours = lambda v: "-" if v is None else "%.1f h" % (v / 3600.0)     # noqa: E731
     share = lambda v: "-" if v is None else "%.0f%%" % (100 * v)        # noqa: E731
     return ["live SLIs (load %s, %d distinct keys):" % (s["load"] or "?", s["keys"]),
-            "  1 NOT_ADMITTED keys by cause: %s" % (", ".join("%s %d -> %s (fired %d)" % (c, e["keys"], e["action"],
-                                                    e["fired"]) for c, e in sorted(na.items())) or "none"),
+            "  1 NOT_ADMITTED keys by cause: %s" % (", ".join("%s %d -> %s (fired %d%s)" % (
+                c, e["keys"], e["action"], e["fired"], ", unread %d" % e["unread"] if e.get("unread") else "")
+                for c, e in sorted(na.items())) or "none"),
             "  2 slot-spending UNMEASURED share: %s of %d keys (target <10%%)" % (share(s["slot_unmeasured_share"]),
                                                                                  s["slot_keys"]),
             "  3 measured completions (PASS+FAIL keys) per day: %s" % s["measured_keys_per_day"],
@@ -1757,7 +1786,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         if c in ("deploy_plan", "load_unread"):
             load = None     # the harness's read failed: no load stamp, so the key never holds it (transient)
         kw.setdefault("game", load)
-        return done(NOT_ADMITTED, why, admit=c, action=ADMIT[c][0], slot=False, key=admit_key(sha, load, site), **kw)
+        return done(NOT_ADMITTED, why, admit=c, action=ADMIT[c][0], slot=False, key=admit_key(sha, load, site, c), **kw)
 
     started = None
     try:
@@ -2011,6 +2040,12 @@ def main(argv=None):
     q.add_argument("runs", nargs="?", default="/home/mandrake/rm/relentless/live/runs.jsonl")
     a = ap.parse_args(argv)
     if a.cmd == "admission-replay":
+        try:        # read_rows reads an unreadable file as empty: a replay of nothing is no replay (exit 2)
+            with open(a.runs, encoding="utf-8", errors="replace"):
+                pass
+        except OSError as e:
+            print("UNMEASURED: cannot read %s (%s)" % (a.runs, e))
+            return 2
         out = admission_replay(read_rows(a.runs))
         print(json.dumps(out, indent=1, sort_keys=True))
         print("pre-bridge UNMEASURED rows left: %d of %d pre-bridge (%d rows)" % (

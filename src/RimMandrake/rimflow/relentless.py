@@ -6777,12 +6777,28 @@ def _lease(store, fx, r, now, acts, seen, wake=None):
         acts.append({"do": "lease", "item": item, "gen": st["gen"], "unit": st["run"]["unit"]})
 
 
+# a NOT_ADMITTED action -> the attempts.jsonl `end` that records the lane EXECUTING it (relentless_game._env_fix). An
+# action with no such record (recarry, wait_load, full_list, retry) is unread, never assumed fired.
+ACTION_FIRED_END = {"deploy": "game_env_fix"}
+
+
+def action_fired(store, row):
+    """True when the item's attempts record the row's action run on its build at or after the row; False when they were
+    read and do not; None when no record of that action exists to read (live_slis counts it unread)."""
+    end = ACTION_FIRED_END.get(row.get("action"))
+    if not end or not row.get("item"):
+        return None
+    at = row.get("at") or ""
+    return any(a.get("end") == end and (a.get("sha") or row.get("sha")) == row.get("sha") and (a.get("at") or "") >= at
+               for a in store.attempts(row["item"]))
+
+
 def live_slis(store, now):
     """redesign_final 3.1: the live lane's four SLIs per load and per distinct key (relentless_live.live_slis)."""
     try:
         import relentless_live
         return relentless_live.live_slis(relentless_live.read_rows(os.path.join(store.root, "live", "runs.jsonl")), now,
-                                         relentless_live.commit_time)
+                                         relentless_live.commit_time, fired=lambda row: action_fired(store, row))
     except Exception as e:      # noqa: BLE001  an unread SLI is a reading that failed, never a dead tick
         return {"unread": "%s: %s" % (type(e).__name__, str(e)[:200])}
 
