@@ -44,8 +44,10 @@ class Emit:
         self.con, self.vm, self.latest = con, vm, latest
         self.rows = 0
         self.events = 0
+        self.points = 0
 
     def point(self, name, labels, v, ts):
+        self.points += 1
         self.vm.add(name, labels, v, ts)
 
     def event(self, ts, kind, subject=None, detail=None, src=None, src_ref=None, **kw):
@@ -395,6 +397,36 @@ def flush_bridge_buckets(E: Emit, force: bool = False, now: float | None = None)
             E.point("rm_bridge_errors", lab, err, bts)
 
 
+TAIL_STATE_KEY = "tail_state"
+
+
+def tail_state(vm: store.VMSink, latest: dict) -> dict:
+    """What the committed cursors stand on beyond SQLite: the open and parked bridge buckets (rows already read but
+    not yet a point) and any point neither VM nor the spool took. Written in the cursor's own commit."""
+    return {"open": [[b, t, a] for (b, t), a in _BRIDGE_OPEN.items()],
+            "parked": [[cid, list(v)] for cid, v in _BRIDGE_PARKED.items()],
+            "bridge_last": latest.get("bridge_last"),
+            "points": [list(p) for p in vm.points]}
+
+
+def restore_tail_state(con, vm: store.VMSink, latest: dict) -> bool:
+    """A restart resumes from the committed cursors, so it must resume their in-memory state too, or the rows behind
+    the open buckets are never counted again."""
+    st = store.kv_get(con, TAIL_STATE_KEY)
+    if not isinstance(st, dict):
+        return False
+    _BRIDGE_OPEN.clear()
+    _BRIDGE_OPEN.update({(b, t): list(a) for b, t, a in st.get("open") or []})
+    _BRIDGE_PARKED.clear()
+    _BRIDGE_PARKED.update({cid: tuple(v) for cid, v in st.get("parked") or []})
+    if st.get("bridge_last") is not None:
+        latest["bridge_last"] = max(latest.get("bridge_last") or 0, st["bridge_last"])
+    held = [tuple(p) for p in st.get("points") or []]
+    if held:
+        vm.points[:0] = held
+    return True
+
+
 def parse_artpipe(r: dict, E: Emit, ref: str) -> bool | None:
     ts = parse_ts(r.get("ts"))
     if ts is None:
@@ -570,6 +602,7 @@ class Tailer:
         self.raw_pending: dict[tuple[str, str], int] = {}
         self.raw_last_flush = time.time()
         self.stats: dict[str, dict] = {}
+        restore_tail_state(con, vm, latest)
 
     def _file_key(self, st, path) -> str:
         ino = getattr(st, "st_ino", 0)
@@ -671,9 +704,18 @@ class Tailer:
             flush_bridge_buckets(E, now=time.time() if n == 0 else None)    # clock left. A backlog flushes once drained
         stt["rows"] += n
         stt["last_pass"] = time.time()
-        if n or E.events:
-            self.con.commit()
+        if n or E.events or E.points:
+            self.commit_durable()
         return n
+
+    def commit_durable(self) -> None:
+        """Commit the cursors only once what their rows produced is durable: points posted to VM or spooled first,
+        and the bridge buckets still open (and any point both refused) saved in the same transaction. Committing
+        first lost every point of the pass to a crash before telemetryd's vm.flush() (the restart resumed past it).
+        At-least-once: a crash between the flush and the commit re-reads the rows and re-sends identical points."""
+        self.vm.flush()
+        store.kv_set(self.con, TAIL_STATE_KEY, tail_state(self.vm, self.latest))
+        self.con.commit()
 
     def flush_raw(self, force=False) -> None:
         if not self.raw_buf and not self.raw_pending:

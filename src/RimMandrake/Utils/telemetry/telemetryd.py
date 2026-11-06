@@ -168,7 +168,7 @@ def main(argv=None) -> int:
     if a.once:
         d.step(force=True)
         ingest.flush_bridge_buckets(ingest.Emit(d.con, d.vm, d.latest), force=True)
-        d.vm.flush()
+        d.tailer.commit_durable()   # flushes VM and re-saves tail_state: the next start must not re-send these buckets
         d.tailer.flush_raw(force=True)
         print(f"telemetryd --once: vm sent {d.vm.sent} spooled {d.vm.spooled}; "
               + ", ".join(f"{k} {v['rows']} rows/{v['bad']} bad" for k, v in d.tailer.stats.items()))

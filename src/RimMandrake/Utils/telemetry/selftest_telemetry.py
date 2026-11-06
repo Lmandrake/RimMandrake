@@ -170,7 +170,10 @@ def main(argv) -> int:
         # [rebuild] `telemetry rebuild` forgets cursors and re-reads: counts and raw copies must not double
         T.flush_raw(force=True)
         import cli
+        had_state = store.kv_get(con, ingest.TAIL_STATE_KEY) is not None
         cli.main(["rebuild", "--since", "7d"])
+        check("[vm-crash] rebuild drops the saved open bridge buckets with the cursors (the re-read counts them again)",
+              had_state and store.kv_get(con, ingest.TAIL_STATE_KEY) is None, had_state)
         T.pass_source(S["tps"])
         T.flush_raw(force=True)
         check("[rebuild] re-reading a file does not re-count exception signatures",
@@ -574,6 +577,68 @@ def main(argv) -> int:
         check("[raw-crash] after a crash before flush_raw, the restart copies the lost bytes to raw/ exactly once, "
               "without re-ingesting their rows", crash_raw() == [0, 1, 2] and cc["done"] == cc["offset"]
               and T2.stats["ops_watch"]["rows"] == 0, (crash_raw(), dict(cc), T2.stats["ops_watch"]))
+        # [vm-crash] the cursor commit waits until the pass's VM points are durable and its open bridge buckets
+        # are saved with it: committing first lost them to a crash before telemetryd's vm.flush() (the restart
+        # resumed past their rows) — TELEMETRY_CURSOR_FIX_AFTER_VM_DURABLE
+        cvm = FakeVM()
+        csink = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_vmc"), post=cvm)
+        CT = ingest.Tailer(con, csink, latest)
+        vp = os.path.join(c["ops_watch_series"], "vmcrash.jsonl")
+        w(vp, [{"t": now - 30, "family": "vmcrash", "points": {"vmc.n": {"v": 7, "m": "MEASURED"}}}])
+        CT.pass_source(S["ops_watch"])      # the daemon dies here, before step()'s vm.flush()
+        got = [x for x in cvm.lines if x["metric"].get("fam") == "vmcrash" or "vmcrash" in json.dumps(x)]
+        check("[vm-crash] a pass that commits its cursor has already posted its points to VM",
+              got and not csink.points, (got, csink.points))
+        cvm.down = True
+        w(vp, [{"t": now - 20, "family": "vmcrash", "points": {"vmc.n": {"v": 8, "m": "MEASURED"}}}])
+        CT.pass_source(S["ops_watch"])
+        spooled = [f for f in os.listdir(csink.spool_dir)] if os.path.isdir(csink.spool_dir) else []
+        check("[vm-crash] VM down: the pass's points are spooled to disk before its cursor commits",
+              spooled and not csink.points, (spooled, csink.points))
+        cvm.down = False
+        # VM down and the spool refusing (cap or disk): the held points ride in the cursor's own commit
+        csink._spool = lambda body: False
+        cvm.down = True
+        w(vp, [{"t": now - 10, "family": "vmcrash", "points": {"vmc.n": {"v": 9, "m": "MEASURED"}}}])
+        CT.pass_source(S["ops_watch"])
+        held = len(csink.points)
+        rvm = FakeVM()
+        rsink = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_vmc2"), post=rvm)
+        ingest.Tailer(con, rsink, {})       # the restarted daemon: csink's memory is gone
+        rsink.flush()
+        check("[vm-crash] points neither VM nor the spool took survive a restart (saved with the cursor)",
+              held > 0 and any("vmcrash" in json.dumps(x) for x in rvm.lines), (held, len(rvm.lines)))
+        # an open bridge bucket: its rows are behind the committed cursor, so its counts must survive the restart
+        store.kv_set(con, ingest.TAIL_STATE_KEY, {})
+        con.commit()
+        ingest._BRIDGE_OPEN.clear()
+        ingest._BRIDGE_PARKED.clear()
+        bvm = FakeVM()
+        bsink = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_vmc3"), post=bvm)
+        blat: dict = {}
+        BT = ingest.Tailer(con, bsink, blat)
+        hb2 = int(time.time() // 10) * 10    # a bucket the wall clock is still inside: it stays open after the pass
+        w(c["bridge_calls"], [{"ev": "start", "cid": "vc1", "tool": "jawa/vc", "t": iso(hb2 + 1)},
+                              {"ev": "end", "cid": "vc1", "ms": 6, "success": True, "t": iso(hb2 + 1)},
+                              {"ev": "end", "cid": "vc2", "ms": 2, "success": True, "t": iso(hb2 + 2)}])
+        BT.pass_source(S["bridge"])
+        open_before = dict(ingest._BRIDGE_OPEN)
+        ingest._BRIDGE_OPEN.clear()          # the process dies: module state is gone
+        ingest._BRIDGE_PARKED.clear()
+        b2vm = FakeVM()
+        b2sink = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_vmc4"), post=b2vm)
+        b2lat: dict = {}
+        BT2 = ingest.Tailer(con, b2sink, b2lat)
+        w(c["bridge_calls"], [{"ev": "start", "cid": "vc2", "tool": "jawa/vc", "t": iso(hb2 + 2)}])
+        BT2.pass_source(S["bridge"])         # the parked end's late start lands after the restart
+        ingest.flush_bridge_buckets(ingest.Emit(con, b2sink, b2lat), force=True)
+        b2sink.flush()
+        vc = [x["values"] for x in b2vm.lines + bvm.lines
+              if x["metric"]["__name__"] == "rm_bridge_calls" and x["metric"].get("tool") == "jawa/vc"]
+        n_vc1 = con.execute("SELECT COUNT(*) FROM bridge_calls WHERE cid='vc1'").fetchone()[0]
+        check("[vm-crash] an open bridge bucket and a parked end survive a restart: one point, both calls, "
+              "no row re-read", open_before and vc == [[2.0]] and n_vc1 == 1 and BT2.stats["bridge"]["rows"] == 1,
+              (open_before, vc, BT2.stats.get("bridge")))
         inf_post = []
         inf_sink = store.VMSink(url="http://fake", spool_dir=os.path.join(c["state"], "spool_inf"),
                                 post=lambda b: inf_post.append(b))
