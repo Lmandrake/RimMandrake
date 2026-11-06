@@ -215,6 +215,97 @@ def t_m3_restore_copies_atomically():
     check("M3: a whole copy lands", open(dst).read() == "<before/>" and not os.path.exists(dst + ".modset-tmp"))
 
 
+def _half_copy2(a, b):
+    open(b, "w").write("<bef")
+    raise OSError("killed mid-copy")
+
+
+def t_m3_restores_route_through_atomic_copy():
+    """The real restore_own / restore_before, killed mid-copy, leave the live list whole (not just atomic_copy alone)."""
+    for name, fn in (("restore_own", M.restore_own), ("restore_before", M.restore_before)):
+        d = tempfile.mkdtemp(prefix="modset_m3_%s_" % name)
+        backups, config = os.path.join(d, "backups"), os.path.join(d, "ModsConfig.xml")
+        os.makedirs(backups)
+        before = os.path.join(backups, "ModsConfig.before-tier-x.xml")
+        open(before, "w").write("<before/>")
+        open(config, "w").write("<tier/>")
+        with open(os.path.join(backups, M.SWAP_MARKER), "w") as f:
+            json.dump({"tier": "x", "before": os.path.basename(before), "md5": M._md5(before),
+                       "tier_md5": M._md5(config)}, f)
+        keep = M.shutil.copy2
+        M.shutil.copy2 = _half_copy2
+        died = False
+        try:
+            fn(config, backups)
+        except OSError:
+            died = True
+        finally:
+            M.shutil.copy2 = keep
+        check("M3: %s reached the copy (probe can see)" % name, died)
+        check("M3: %s killed mid-copy leaves the live list whole" % name, open(config).read() == "<tier/>",
+              open(config).read())
+        fn(config, backups)
+        check("M3: %s whole restore lands" % name, open(config).read() == "<before/>", open(config).read())
+
+
+def t_m2_apply_writes_inside_the_lock():
+    """main() --tier --apply: the before-copy, the write and the md5 stamp all run while config_lock is held."""
+    state = {"in": False, "entered": 0}
+    seen = []
+
+    class FakeLock(object):
+        def __init__(self, *a, **k):
+            pass
+
+        def __enter__(self):
+            state["in"] = True
+            state["entered"] += 1
+            return self
+
+        def __exit__(self, *e):
+            state["in"] = False
+            return False
+
+    def rec(name, ret=None):
+        def f(*a, **k):
+            seen.append((name, state["in"]))
+            return ret
+        return f
+    fake_tel = types.ModuleType("telemetry_emit")
+    fake_tel.emit_change = lambda *a, **k: None
+    patch = {"config_lock": FakeLock, "bridge_ok": lambda o: True, "scan": lambda: {"ludeon.rimworld": {"name": "Core"}},
+             "tier_arg": lambda n: n, "tier_def": lambda n, i: {"why": "probe"},
+             "resolve_tier": lambda n, i: (["ludeon.rimworld"], [], []), "full_mod_count": lambda: 0,
+             "game_running": lambda: False, "take_before_copy": rec("take_before_copy", "/tmp/stamp.xml"),
+             "write_config": rec("write_config"), "record_tier_written": rec("record_tier_written"),
+             "CONFIG": os.path.join(tempfile.mkdtemp(prefix="modset_m2_"), "ModsConfig.xml")}
+    keep = {k: getattr(M, k) for k in patch}
+    keep_argv, keep_tel = sys.argv, sys.modules.get("telemetry_emit")
+    try:
+        for k, v in patch.items():
+            setattr(M, k, v)
+        sys.modules["telemetry_emit"] = fake_tel
+        sys.argv = ["modset_builder.py", "--tier", "probe", "--apply", "--by", "selftest"]
+        M.owned_backups, keep_ob = (lambda by: tempfile.mkdtemp(prefix="modset_m2b_")), M.owned_backups
+        try:
+            rc = M.main()
+        finally:
+            M.owned_backups = keep_ob
+    finally:
+        for k, v in keep.items():
+            setattr(M, k, v)
+        sys.argv = keep_argv
+        if keep_tel is None:
+            sys.modules.pop("telemetry_emit", None)
+        else:
+            sys.modules["telemetry_emit"] = keep_tel
+    names = [n for n, _ in seen]
+    check("M2: apply ran (probe can see)", rc == 0 and names == ["take_before_copy", "write_config",
+                                                                 "record_tier_written"], (rc, seen))
+    check("M2: apply's before-copy, write and stamp all run under config_lock", seen and all(i for _, i in seen),
+          seen)
+
+
 def t_m4_tier_md5_is_stamped_before_the_replace():
     d = tempfile.mkdtemp(prefix="modset_write_")
     src = os.path.join(d, "v.xml")
@@ -366,6 +457,7 @@ def main():
               t_l2_drift_plan_keeps_its_game, t_l3_take_that_raises_releases, t_l4_fileless_build_holds_the_game,
               t_l5_launch_that_raised_is_infra, t_l6_violation_is_never_rerun, t_l7_timeout_on_two_games_is_a_defect,
               t_m1_failed_tasklist_reads_live, t_m2_one_writer_at_a_time, t_m3_restore_copies_atomically,
+              t_m3_restores_route_through_atomic_copy, t_m2_apply_writes_inside_the_lock,
               t_m4_tier_md5_is_stamped_before_the_replace, t_m5_cameraplus_tier_never_gets_the_rival_zoom,
               t_r2_carry_keeps_ledger_criteria, t_r2_dropped_item_waits_for_its_live_proof,
               t_r2_verdict_before_bridge_loss_is_never_rerun, t_r2_cameraplus_by_dependency_drops_the_zoom,
