@@ -108,7 +108,10 @@ def protected_set(spec, read):
 
 
 def _git(root, *args):
-    r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True)
+    try:
+        r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, timeout=120)
+    except subprocess.TimeoutExpired:
+        raise Unmeasured(f"git {' '.join(args)}: timed out after 120 s") from None
     if r.returncode:
         raise Unmeasured(f"git {' '.join(args)}: {r.stderr.strip()[:200]}")
     return r.stdout
@@ -119,7 +122,11 @@ def _reader(root, sha):
 
     def read(p):
         if p not in cache:
-            r = subprocess.run(["git", "-C", str(root), "show", f"{sha}:{p}"], capture_output=True, text=True)
+            try:
+                r = subprocess.run(["git", "-C", str(root), "show", f"{sha}:{p}"],
+                                   capture_output=True, text=True, timeout=60)
+            except subprocess.TimeoutExpired:
+                raise Unmeasured(f"git show {sha}:{p}: timed out after 60 s") from None
             cache[p] = r.stdout if r.returncode == 0 else None
         return cache[p]
     return read

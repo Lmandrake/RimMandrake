@@ -838,7 +838,8 @@ def reach(ctx):
                 if d == 0:
                     break
                 gv = [t for t in ((B.call("jawa/list_things", defName="RM_Gravel", limit=50) or {}).get("things") or [])]
-                V.require(gv, "gravel left to fill with", str(gv)[:120], cls="HARNESS")
+                if not V.require(gv, "gravel left to fill with", str(gv)[:120], cls="HARNESS"):
+                    break  # require() records the fault and returns False; it does not raise
                 od = B.call("jawa/ordered_job", pawnId=pid, jobDef="RM_FillInCanalJob", targetAX=mid[0], targetAZ=mid[1],
                             targetBId=gv[0].get("id"), count=1, waitTicks=0) or {}
                 jobs.append(bool(od.get("accepted")))

@@ -32,8 +32,10 @@ def texpaths(path=DEFS):
 def fails(paths):
     bad = []
     for name, tex in paths:
+        # 372cb3feac: the pole art moved into FlowWorks' own Textures; RimWorld resolves a texPath across every mod's Textures
         png = os.path.join(GSS_TEX, *tex.split("/")) + ".png"
-        if not os.path.isfile(png):
+        fw = os.path.join(HERE, "Textures", *tex.split("/")) + ".png"
+        if not os.path.isfile(png) and not os.path.isfile(fw):
             bad.append("%s: %s has no PNG at %s" % (name, tex, png))
     return bad
 

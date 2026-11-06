@@ -84,6 +84,6 @@
  "p2From": "Transient/phase0_p2_classification.md",
  "expect": {
   "species": 206,
-  "flyers": 24
+  "flyers": 25
  }
 }

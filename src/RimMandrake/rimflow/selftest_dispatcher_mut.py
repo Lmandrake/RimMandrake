@@ -1075,7 +1075,7 @@ class TickRig(object):
         self.saved = {k: getattr(D, k) for k in ("state_root", "execute", "unreserve", "live_runs_alarm")}
         D.state_root = lambda apply: self.root
 
-        def ex(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=None):
+        def ex(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=None, act_deadline=None, fence=None):
             self.exec_args.append(dict(actions=actions, deadline=deadline, persist=persist, apply=apply, root=root, now=now))
             if "execute" in self.kw:
                 self.kw["execute"](actions)
@@ -1227,14 +1227,14 @@ def test_main():
     check(sig == D._sigterm_exit, "main tick: SIGTERM raises SystemExit so the state still saves")
     rc, out, _ = run_main(["tick", "--apply", "--schedule", sp], tick=fake_tick)
     check(tick_calls[-1] is True and rc == 0, "main tick --apply: really applies")
-    rc, out, _ = run_main(["tick", "--json", "--schedule", sp], tick=lambda sch, apply: [
+    rc, out, _ = run_main(["tick", "--json", "--schedule", sp], tick=lambda sch, apply, **kw: [
         {"do": "ring", "message": "secret", "at": "A", "seat": "S"}, {"do": "skip", "message": None, "at": "B"}])
     rows = [json.loads(x) for x in out.splitlines()]
     check(rows[0] == {"do": "ring", "message": None, "at": "A", "seat": "S"} and rows[1]["at"] == "B"
           and out.splitlines()[0] == json.dumps(rows[0], sort_keys=True), "main tick --json: sorted JSON, the ring message dropped")
-    rc, out, _ = run_main(["tick", "--schedule", sp], tick=lambda sch, apply: [])
+    rc, out, _ = run_main(["tick", "--schedule", sp], tick=lambda sch, apply, **kw: [])
     check(rc == 0 and out.strip().endswith("nothing to do (dry-run)"), "main tick: empty -> 'nothing to do (dry-run)'")
-    rc, out, _ = run_main(["tick", "--apply", "--schedule", sp], tick=lambda sch, apply: [])
+    rc, out, _ = run_main(["tick", "--apply", "--schedule", sp], tick=lambda sch, apply, **kw: [])
     check(out.strip().endswith("nothing to do (apply)"), "main tick --apply: empty -> 'nothing to do (apply)'")
     # publish: its own child, no signal handler, prints the result
     got = []

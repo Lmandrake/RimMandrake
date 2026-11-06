@@ -247,8 +247,8 @@ def _t_clear_keeps_held(R):
     gallery's held animals and prisoners under signs still describing them. A partial rebuild keeps the part it leaves."""
     if not _has(R.Review, "held_rects", "7.7"):
         return
-    S = [{"n": 1, "placeholder": False, "origin": (200, 200), "setup": {"keep": True}},
-         {"n": 2, "placeholder": False, "origin": (240, 200), "setup": {}}]
+    S = [{"n": 1, "placeholder": False, "origin": (200, 200), "size": (5, 5), "setup": {"keep": True}},
+         {"n": 2, "placeholder": False, "origin": (240, 200), "size": (5, 5), "setup": {}}]
     r = R.Review(None)
     kr = r.held_rects(S, "visuals")
     check("7.7 --only visuals holds the kept station's rect", len(kr) == 1 and kr[0][0] <= 200 < kr[0][0] + kr[0][2], kr)
