@@ -7,6 +7,8 @@ where a line is written: `rimflow file` / `implemented` / `close` print them, `r
 them, `finish` refuses them at the finished sha, and the game phase's preflight refuses them before a slot.
 1. proof_scripts(): names the scripts a line runs (`python3 x.py`, `python.exe -u x.py`, `./x.sh`, `--plan x.py`,
    `--plan=x.py`, after `&&`/`;`/`|`), and not a redirect target, an absolute or Windows path, `-c` code or a VAR=.
+   PROOFLINT_FIX_ARGS_READ_AS_SCRIPTS: only positions that execute are named (a command's data is not, a quoted `;` ends
+   nothing), and `cd` moves the path read or, when it cannot be placed, stops the naming.
 2. missing_scripts(): names only what `has` lacks; None when all are there.
 3. lint_lines(): `$`, backtick, eval, brace list, a load, flyer wording, OWNER.jsonl and a missing script each named;
    a literal line with its scripts present is clean; has=None skips the script check.
@@ -58,6 +60,52 @@ ok(ps('python3 -c "import src.a"') == [] and ps("python3 -m pytest") == [], "1 -
 ok(ps("python.exe D:/x/y.py") == [], "1 a Windows path is another tree's")
 ok(ps("python3 'unclosed") == [], "1 an unsplittable line names none")
 ok(ps("python3 src/a/x.py && python3 src/a/x.py") == ["src/a/x.py"], "1 each script once")
+
+# 1b. PROOFLINT_FIX_ARGS_READ_AS_SCRIPTS: a command's arguments are its data, not scripts it runs
+for line in ("printf tools/deleted.py", "test ! -f src/x.py", "[ -f src/x.py ]", "ls src/a/x.py", "grep -c k src/a/x.py",
+             "echo python3 src/a/x.py", "git log -- src/a/x.py", "python3 -c 'pass' src/a/x.py", "python3 -m m src/a/x.py",
+             "python3 - src/a/x.py", "bash -ec 'true' src/a/x.sh", "command -v src/a/x.py", "printf --plan src/a/x.py",
+             "printf ';' python3 src/a/x.py", "printf 'a\npython3 src/a/x.py'", "true # python3 src/a/x.py",
+             "cat <<EOF\npython3 src/a/x.py\nEOF", "true > src/a/x.py", "python3 /abs/run.py src/a/plan.py"):
+    ok(ps(line) == [], "1b names nothing: %r -> %r" % (line, ps(line)))
+ok(ps("printf tools/deleted.py && python3 src/a/x.py") == ["src/a/x.py"], "1b the item's own line: only the script it runs")
+ok(ps("python3 src/a/x.py src/a/data.py --file=src/a/data2.py") == ["src/a/x.py"], "1b a script's data argument is not a script")
+# ... and every position that executes is still named, the sanity half: the narrowing must not go blind
+for line, want in (("src/a/x.py --k", ["src/a/x.py"]), ("./tools/x.sh", ["tools/x.sh"]), ("bash src/a/x.sh", ["src/a/x.sh"]),
+                   ("sh -eu src/a/x.sh", ["src/a/x.sh"]), ("bash -o pipefail src/a/x.sh", ["src/a/x.sh"]),
+                   ("source src/a/x.sh", ["src/a/x.sh"]), (". src/a/x.sh", ["src/a/x.sh"]),
+                   ("python3 -W ignore src/a/x.py", ["src/a/x.py"]), ("python3 -X utf8 -u src/a/x.py", ["src/a/x.py"]),
+                   ("timeout 30 python3 src/a/x.py", ["src/a/x.py"]), ("timeout -k 5 30s python3 src/a/x.py", ["src/a/x.py"]),
+                   ("env -u X A=1 python3 src/a/x.py", ["src/a/x.py"]), ("nice -n 5 nohup python3 src/a/x.py", ["src/a/x.py"]),
+                   ("if python3 src/a/x.py; then ./src/a/y.sh; fi", ["src/a/x.py", "src/a/y.sh"]),
+                   ("! python3 src/a/x.py", ["src/a/x.py"]), ("(python3 src/a/x.py);python3 src/a/y.py", ["src/a/x.py", "src/a/y.py"]),
+                   ("true\npython3 src/a/x.py", ["src/a/x.py"]), ("true 2>&1;python3 src/a/x.py 2>/dev/null", ["src/a/x.py"]),
+                   ("true # a comment\n'python3' \"src/a/x.py\"", ["src/a/x.py"]), ("python3 tools/../src/a/x.py", ["src/a/x.py"]),
+                   ("python3 /abs/run.py --plan src/c/p.py", ["src/c/p.py"]), ("./src/a/x.sh --plan=src/c/p.py", ["src/a/x.sh", "src/c/p.py"])):
+    ok(ps(line) == want, "1b still named: %r -> %r" % (line, ps(line)))
+
+# 1c. cd: the path is read where the command runs, or not at all
+for line, want in (("cd tools && python3 src/check.py", ["tools/src/check.py"]), ("cd src/a; python3 x.py", ["src/a/x.py"]),
+                   ("cd src\npython3 a/x.py", ["src/a/x.py"]), ("cd src && cd a && python3 x.py", ["src/a/x.py"]),
+                   ("cd src && python3 ../tools/x.py", ["tools/x.py"]), ("cd src/a && cd .. && python3 b/x.py", ["src/b/x.py"]),
+                   ("cd -P src && python3 a/x.py", ["src/a/x.py"]), ("cd src > /dev/null && python3 a/x.py", ["src/a/x.py"]),
+                   ("(cd tools && python3 a.py) && python3 src/b.py", ["tools/a.py", "src/b.py"]),
+                   ("cd tools | python3 src/x.py", ["src/x.py"]), ("true | cd tools; python3 src/x.py", ["src/x.py"]),
+                   ("cd tools & python3 src/x.py", ["src/x.py"]), ("cd src && cd .. && python3 tools/x.py", ["tools/x.py"]),
+                   ("python3 src/x.py && cd /tmp", ["src/x.py"])):
+    ok(ps(line) == want, "1c read at its cd: %r -> %r" % (line, ps(line)))
+for line in ("cd /mnt/d/other && python3 src/x.py", "cd .. && python3 src/x.py", "cd - && python3 src/x.py", "cd && python3 src/x.py",
+             "cd D:/x && python3 src/x.py", "cd tools || python3 src/x.py", "true || cd tools; python3 src/x.py",
+             "if true; then cd tools; fi; python3 src/x.py", "pushd tools && python3 src/x.py", "popd; python3 src/x.py",
+             "env -C tools python3 src/x.py", "cd a b; python3 src/x.py", "cd /tmp && src/x.py"):
+    ok(ps(line) == [], "1c a cd it cannot place names nothing: %r -> %r" % (line, ps(line)))
+ok(ps("cd tools; x.py") == [], "1c a bare command word is PATH's, not the working directory's")
+ok(ps("(cd /tmp && python3 src/a.py); python3 src/b.py") == ["src/b.py"], "1c the unknown directory ends with its subshell")
+got = dict(L.lint_lines(LR, "", {"A1": "printf tools/deleted.py && python3 src/a/x.py", "A2": "test ! -f src/gone.py",
+                                 "A3": "cd tools && python3 src/a/x.py", "A4": "cd src && python3 a/x.py"}, {"src/a/x.py"}.__contains__))
+ok("A1" not in got and "A2" not in got, "1c the item's false refusals are gone: %r" % got)
+ok("tools/src/a/x.py" in got.get("A3", ""), "1c the item's wrong-path pass is refused at the path it runs: %r" % got.get("A3"))
+ok("A4" not in got, "1c a cd to the script's own directory passes")
 
 # 2. missing_scripts
 have = {"src/a/x.py"}

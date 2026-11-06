@@ -56,6 +56,7 @@ import glob
 import hashlib
 import json
 import os
+import posixpath
 import re
 import shlex
 import signal
@@ -392,49 +393,177 @@ def refused_proof(lr, title, text, proof):
 # measured nothing on the game it took: the check is offline, so it is asked where the line is written, not at the round.
 REPO_SCRIPT = re.compile(r"^(?:\./)?(?:src|skills|infrastructure|design|tools)/[^\s*?\[\]{}$`'\"]+\.(?:py|sh)$")
 PYTHONS = re.compile(r"^(?:.*/)?(?:python(?:3(?:\.\d+)?)?|python3?\.exe|py)$")
-SHELL_OPS = {"&&", "||", ";", "|", "(", ")", "&", ";;", "|&"}
-REDIRECTS = re.compile(r"^\d*(?:>>?|<|&>|>&|<<<?)$")
+# Runs the file named after it; `source`/`.` run it in this shell. An interpreter's -c or -m names no script (-ec too).
+SHELLS = re.compile(r"^(?:(?:.*/)?(?:ba|z|da)?sh(?:\.exe)?|source|\.)$")
+INTERP_NO_SCRIPT = re.compile(r"^(?:-|-[A-Za-z]*[cm])$")
+INTERP_VALUED = re.compile(r"^-[A-Za-z]*[oWX]$")        # bash -o pipefail, python -W ignore / -X utf8
+SHELL_OPS = {"&&", "||", ";", "|", "(", ")", "&", ";;", "|&", "\n"}
+REDIRECTS = {">", ">>", "<", "<<", "<<<", "&>", ">&", "<&"}
+OPS_LONGEST_FIRST = sorted(SHELL_OPS | REDIRECTS, key=len, reverse=True)
+PREFIX_WORDS = {"if", "then", "elif", "else", "while", "until", "do", "fi", "done", "esac", "!", "{", "}"}
+CONTROL_WORDS = (PREFIX_WORDS - {"!", "{", "}"}) | {"for", "case", "select"}
+WRAPPERS = {"env": {"-u", "--unset", "-C", "--chdir", "-S"}, "nice": {"-n"}, "nohup": set(), "exec": {"-a"}, "time": set(),
+            "timeout": {"-k", "-s"}, "xargs": {"-I", "-n", "-P", "-L", "-d", "-a", "-s", "-E"}}
+OTHER_TREE = re.compile(r"^(?:/|~|[A-Za-z]:)")
+
+
+def shell_words(text):
+    """-> [(word, is_operator)] as bash reads the line, so a quoted ';' stays an argument and a newline ends a command; a
+    comment is dropped, and a redirect's file-descriptor digit (2>) with it. Raises ValueError on an open quote. Pure."""
+    out, word, i, n = [], None, 0, len(text)
+
+    def flush():
+        nonlocal word
+        if word is not None:
+            out.append((word, False))
+            word = None
+
+    while i < n:
+        c = text[i]
+        if c in " \t\r":
+            flush()
+            i += 1
+        elif c == "#" and word is None:
+            while i < n and text[i] != "\n":
+                i += 1
+        elif c == "'":
+            end = text.find("'", i + 1)
+            if end < 0:
+                raise ValueError("open quote")
+            word = (word or "") + text[i + 1:end]
+            i = end + 1
+        elif c == '"':
+            word, i = word or "", i + 1
+            while i < n and text[i] != '"':
+                if text[i] == "\\" and i + 1 < n and text[i + 1] in '"\\$`\n':
+                    i += 1
+                word += text[i]
+                i += 1
+            if i >= n:
+                raise ValueError("open quote")
+            i += 1
+        elif c == "\\":
+            if i + 1 >= n:
+                raise ValueError("trailing escape")
+            if text[i + 1] != "\n":
+                word = (word or "") + text[i + 1]
+            i += 2
+        else:
+            op = next((o for o in OPS_LONGEST_FIRST if text.startswith(o, i)), None)
+            if op is None:
+                word = (word or "") + c
+                i += 1
+                continue
+            if word is not None and word.isdigit() and op[0] in "<>":
+                word = None                   # 2>&1: the digit is part of the redirect, not an argument
+            flush()
+            out.append((op, True))
+            i += len(op)
+    flush()
+    return out
 
 
 def proof_scripts(proof):
-    """-> the repo-relative scripts a proof line runs or hands to a runner (`python3 <script>`, `./src/.../x.sh`,
-    `--plan src/.../plan.py`), in order, each once. Absolute and Windows paths are another tree's and are not named; a
-    line shlex cannot split names none (refused_proof reads it). Pure."""
+    """-> the repo-relative scripts a proof line executes, in order, each once: a command word with a slash
+    (`./src/.../x.sh`), the file an interpreter is given (`python3 <script>`, `bash <script>`, `source <script>`, past
+    env/timeout/nice/nohup/exec/time/xargs), and a runner's `--plan <script>`. Any other argument is the command's data
+    (`printf tools/gone.py`, `test ! -f src/x.py`, `python3 x.py src/y.py`): PROOFLINT_FIX_ARGS_READ_AS_SCRIPTS.
+    A relative `cd` moves where the path is read (`cd tools && python3 src/x.py` runs tools/src/x.py; a subshell ends at
+    its `)`, a piped or backgrounded cd moves nothing). A cd this cannot place (absolute, out of the tree, `cd -`, after
+    `||`, inside if/for/while, pushd, popd, env -C) names nothing after it, nor does a heredoc's body: never a false
+    refusal. Absolute and Windows paths are another tree's and are not named; a line that cannot be split names none
+    (refused_proof reads it). Pure."""
     try:
-        lex = shlex.shlex(WSLPATH.sub(" ", proof or ""), posix=True, punctuation_chars=True)
-        lex.whitespace_split = True
-        toks = list(lex)
+        toks = shell_words(WSLPATH.sub(" ", proof or ""))
     except ValueError:
         return []
-    out, start, skip, py = [], True, False, False
-    for t in toks:
-        if t in SHELL_OPS:
-            start, skip, py = True, False, False
+    out, stack = [], []
+    cwd, control, prev = "", False, ""        # cwd: repo-relative; None once the line's directory is not known
+    cmd, start, skip, wrap, interp, runner, plan, cd_args = None, True, False, None, False, False, False, None
+
+    def name(arg):
+        if cwd is None or OTHER_TREE.match(arg):
+            return
+        rel = posixpath.normpath(posixpath.join(cwd, arg))
+        if REPO_SCRIPT.match(rel) and rel not in out:
+            out.append(rel)
+
+    def moved(op):
+        """Where this line stands once a finished `cd` (args in cd_args) is followed by op."""
+        if op in ("|", "|&", "&") or prev in ("|", "|&"):
+            return cwd                        # a pipeline member or background job is a subshell
+        args = [a for a in cd_args if a == "-" or not a.startswith("-")]
+        if op == "||" or prev == "||" or control or cwd is None or len(args) != 1 or args[0] == "-" \
+                or OTHER_TREE.match(args[0]) or re.search(r"[$`*?\[]", args[0]):
+            return None
+        rel = posixpath.normpath(posixpath.join(cwd, args[0]))
+        return None if rel == ".." or rel.startswith("../") else ("" if rel == "." else rel)
+
+    for t, is_op in toks:
+        if is_op and t in REDIRECTS:
+            if t == "<<":
+                break                         # what follows is the heredoc's text, not commands
+            skip = True                       # a redirect's target is a file the line writes or reads, not a script
             continue
-        if skip:                              # a redirect's target is a file the line writes or reads, not a script
+        if is_op:
+            if cd_args is not None:
+                cwd = moved(t)
+            if t == "(":
+                stack.append(cwd)
+            elif t == ")" and stack:
+                cwd = stack.pop()
+            if not start or t != "\n":        # `||` then a newline: the next command is still on the right of `||`
+                prev = t
+            cmd, start, skip, wrap, interp, runner, plan, cd_args = None, True, False, None, False, False, False, None
+            continue
+        if skip:
             skip = False
             continue
-        if REDIRECTS.match(t):
-            skip = True
-            continue
-        if start and re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", t):
-            continue                          # VAR=value before the command
-        arg = t.split("=", 1)[1] if t.startswith("--") and "=" in t else t
         if start:
-            start = False
-            if PYTHONS.match(t):
-                py = True
+            if re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", t):
+                continue                      # VAR=value before the command
+            if t in PREFIX_WORDS:
+                control = control or t in CONTROL_WORDS
                 continue
-        elif py and arg.startswith("-"):
-            if arg in ("-m", "-c"):           # a module or inline code: no script path follows
-                py = False
+            if t in WRAPPERS:
+                wrap = WRAPPERS[t]
+                continue
+            if wrap is not None:
+                if t.startswith("-"):
+                    if t in ("-C", "--chdir") or t.startswith("--chdir="):
+                        cwd = None
+                    skip = t in wrap
+                    continue
+                if re.match(r"^\d+(?:\.\d+)?[smhd]?$", t):
+                    continue                  # timeout's duration, nice's old -5 style
+            start, cmd = False, t
+            control = control or t in CONTROL_WORDS
+            if t == "cd":
+                cd_args = []
+            elif t in ("pushd", "popd"):
+                cwd = None
+            elif PYTHONS.match(t) or SHELLS.match(t):
+                interp = runner = True
+            elif "/" in t:                    # no slash: bash looks on PATH, never in the working directory
+                name(t)
+                runner = True
             continue
-        else:
-            py = False
-        if REPO_SCRIPT.match(arg):
-            rel = arg[2:] if arg.startswith("./") else arg
-            if rel not in out:
-                out.append(rel)
+        if cd_args is not None:
+            cd_args.append(t)
+        elif interp:
+            if INTERP_NO_SCRIPT.match(t):
+                interp = False
+            elif INTERP_VALUED.match(t):
+                skip = True
+            elif not t.startswith("-"):
+                interp = False
+                name(t)
+        elif runner:
+            if plan:
+                name(t)
+            elif t.startswith("--plan="):
+                name(t.split("=", 1)[1])
+            plan = t == "--plan"
     return out
 
 
