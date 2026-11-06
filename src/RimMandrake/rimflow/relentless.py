@@ -3441,6 +3441,26 @@ class Effects(relentless_game.GameFx):
         self._ledger = None
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
+    def env_repair(self, item, title, text):
+        """ENV_HOLDS_FIX_ROUTE_TO_BUILDERS: the repair item a game-lane environment cause waits on (relentless_game.
+        repair_id), for this seat and needs offline so a builder takes it: filed once, a note per item it stops while
+        open, reopened by a new live row once closed. -> None, or why it did not land (the next tick routes again)."""
+        st = self.item_state(item)
+        if st is None:
+            r = self.rimflow("file", item, "--for", self.r["seat"], "--kind", "bug", "--needs", "offline",
+                             "--title", title[:200], "--why", "relentless supervisor: a game-lane environment cause "
+                                                            "no lane step can fix")
+            if r.returncode == 0:
+                r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor: env route")
+        elif st["state"] in ("done", "built", "validated"):
+            r = self.rimflow("live", item, "--result", "broken", "--detail", text[:300], seat="RUNNER")
+        elif st["state"] in ("dropped", "superseded"):
+            return "%s is %s: nowhere for the environment cause to land" % (item, st["state"])
+        else:
+            r = self.rimflow("note", item, "--text", text[:NOTE_MAX], "--why", "relentless supervisor: env route")
+        self._ledger = None
+        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+
     def ledger_unblock(self, item, reason):
         r = self.rimflow("unblock", item, "--reason", reason[:NOTE_MAX], "--why", "relentless supervisor: reach repair probe passed")
         self._ledger = None

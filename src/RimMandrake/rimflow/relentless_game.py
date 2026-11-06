@@ -1416,10 +1416,25 @@ def _env_fix(store, item, envs, now, acts):
     return not rides
 
 
+REPAIR_FMT = "GAMEENV_FIX_%s_%s_ITEMS_WAIT"     # rimflow namecheck: subject GAMEENV, intent FIX, <= 44 chars
+
+
+def repair_id(e):
+    """The one repair item for an environment cause: keyed by its kind and fingerprint (relentless_envcause.fp: no paths,
+    numbers or times), so every item the same cause stops waits on the same repair (fix the class, not the instance)."""
+    return REPAIR_FMT % (e.kind.upper().replace("_OR_", "").replace("_", ""), e.fp[:8].upper())   # PROOFSITE: 7 words max
+
+
 def _env_route(store, fx, item, envs, now, acts, head=None):
-    """Routed ONCE to one fixer: a game hold (the tick delivers it to the seat queue, never to the owner; an unhold
-    returns it to the prove phase on the same sha, never to a builder). Its rows are voided, so the re-read after the fix
-    is fresh; the same cause after an unhold holds it again, never a second route or a builder."""
+    """Routed ONCE to one fixer that builds (ENV_HOLDS_FIX_ROUTE_TO_BUILDERS): each cause files, joins or reopens its
+    repair item (repair_id; filed for the supervisor's seat, needs offline, so a Relentless builder takes it), and the item
+    waits `blocked` on it with a dependency wait (relentless_attrib): the ledger block is written by relentless_block.sweep,
+    and when the repair CLOSES the item resumes its game phase on the same sha (relentless_attrib.resume), never a builder.
+    Before: a game hold the tick delivered to the seat queue, where nobody builds (ART_OVERRIDE_FAMILY_SCRIPT_1 sat held
+    overnight on a harness parse bug). Its rows are voided, so the re-read after the fix is fresh; the same cause read
+    again after the release routes to the same repair again (reopened if it closed), never a builder or a new gen.
+    A filing that fails changes nothing: the rows stand and the next tick routes again."""
+    import relentless_attrib
     envs = [e for e in envs if e]
     st = store.load(item)
     if st["status"] != GAME:
@@ -1429,14 +1444,44 @@ def _env_route(store, fx, item, envs, now, acts, head=None):
     detail = "; ".join(relentless_envcause.line(e) for e in envs) or "no row named the cause"
     why = ("game phase: environment, routed once to one fixer, no builder and no new generation%s%s: %s"
            % ("; %s" % head if head else "", "; the same cause again after its route" if seen else "", detail))
-    _save(store, item, lambda s: s.update(env_routed=_keep(s.get("env_routed"), {e.fp: now for e in envs})))
-    void_rows(store.root, item, st["game"]["sha"], "routed: %s" % detail, now)
+    sha = st["game"]["sha"]
+    if not envs:        # nothing names a cause: one repair for the unnamed (a dud with no row)
+        envs = [relentless_envcause.Env(kind="proof_or_site", fp=relentless_envcause._key("proof_or_site", ""),
+                                        criterion=None, why="", mods=[], log=None)]
+    repairs = []
+    for e in envs:
+        rep = repair_id(e)
+        if rep in repairs:
+            continue
+        title = ("Game-lane environment cause (%s) no lane step can fix stops live proofs: %s"
+                 % (e.kind, (e.why or "no row named the cause")[-120:]))
+        text = ("relentless: %s at %s waits on this repair (blocked; it resumes its game phase on the same sha when this "
+                "closes, no builder is sent to it): %s" % (item, sha[:12], relentless_envcause.line(e)))
+        err = fx.env_repair(rep, title, text)
+        if err:
+            store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm",
+                           "kind": "game_env_route_failed", "item": item, "why": ("%s: %s" % (rep, err))[:300]})
+            acts.append({"do": "game_env_route_failed", "item": item, "repair": rep, "why": str(err)[:200]})
+            return
+        repairs.append(rep)
+    why = ("%s | waits on %s" % (why, ", ".join(repairs)))[:900]
+
+    def f(s):
+        s["env_routed"] = _keep(s.get("env_routed"), {e.fp: now for e in envs})
+        s["status"] = "blocked"
+        s["blocked_at"] = now
+        s["wait"] = {"kind": relentless_attrib.WAIT_DEPENDENCY, "class": "game_env", "detail": why[:2000], "since": now,
+                     "sha": sha, "resume": GAME, "on": repairs[0], "incident": None, "attributed_at": now}
+        s["block_pending"] = {"kind": "item", "on": list(repairs), "class": "game_env", "detail": why[:600]}
+        s["put_down"] = {"on": ("waits on %s: %s" % (", ".join(repairs), detail))[:200], "at": now}
+    if _save(store, item, f) is None:
+        return
+    void_rows(store.root, item, sha, "routed: %s" % detail, now)
     store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": st["gen"],
-                         "end": "game_env_route", "detail": detail[:600], "sha": st["game"]["sha"]})
+                         "end": "game_env_route", "detail": detail[:600], "sha": sha, "repairs": repairs})
     store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "alarm", "kind": "game_env",
-                   "item": item, "why": why[:300]})
-    _hold(store, fx, item, why[:900], now, acts)
-    acts[-1]["do"] = "game_env_route"
+                   "item": item, "repairs": repairs, "why": why[:300]})
+    acts.append({"do": "game_env_route", "item": item, "repairs": repairs, "why": why[:200]})
 
 
 def _hold(store, fx, item, why, now, acts):

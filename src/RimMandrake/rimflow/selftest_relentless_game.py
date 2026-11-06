@@ -177,6 +177,15 @@ def to_game(x, i, game=GAME, word="PASS"):
     x.tick()
 
 
+
+def routed(st):
+    """ENV_HOLDS_FIX_ROUTE_TO_BUILDERS: an environment route waits `blocked` on its repair item (resuming the game lane on
+    the same sha), never a seat-queue hold. -> the route's text, or None when the item is not so routed."""
+    w = st.get("wait") or {}
+    if st["status"] == "blocked" and w.get("resume") == "game" and w.get("on") and not st.get("hold"):
+        return w.get("detail") or ""
+    return None
+
 def t_parse_and_brief():
     ok(G.parse_game(None, None, None) is None, "no game words, no game block")
     for bad in (("A2", None, None), ("", "why", None), ("a2;rm", "why", None)):
@@ -339,8 +348,8 @@ def t_unmeasured_twice_returns_offline():
     x.tick()
     st = x.st("I0")
     # UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES: the proof's dud is routed once to one fixer, never a worker
-    ok(st["status"] == "held" and st["hold"]["kind"] == "game" and not st.get("last_fail") and st["gen"] == gen
-       and "A2" in st["hold"]["why"] and "2 times" in st["hold"]["why"] and "Type not found" in st["hold"]["why"],
+    ok(routed(st) is not None and not st.get("last_fail") and st["gen"] == gen
+       and "A2" in routed(st) and "2 times" in routed(st) and "Type not found" in routed(st),
        "the second is routed once to one fixer with the proof's last line, no worker: %s" % st.get("hold"))
     ok(G.not_measuring([dict(dud, why="not deployed: RM_Y")] * 3, "I0", SHA, ["A2"], 2) == {},
        "a staging cause (not deployed) is the restage path, never a proof defect")
@@ -364,8 +373,8 @@ def t_cap_returns_with_the_exit_reason_and_log():
     x.w.rows = [defect("No public static CleanRead with 0 params")]
     x.tick()
     st = x.st("I0")
-    ok(st["status"] == "held" and st["hold"]["kind"] == "game" and not st.get("last_fail")
-       and "proof_call" in st["hold"]["why"] and "CleanRead" in st["hold"]["why"] and "/l/I0-A2.log" in st["hold"]["why"],
+    ok(routed(st) is not None and not st.get("last_fail")
+       and "proof_call" in routed(st) and "CleanRead" in routed(st) and "/l/I0-A2.log" in routed(st),
        "one defect row is routed at once to one fixer, with the reason and the log, no worker: %s" % st.get("hold"))
     first = sorted(st.get("env_routed") or {})
     ok(len(first) == 1, "the route is remembered: %s" % first)
@@ -396,10 +405,10 @@ def t_dud_on_this_game_returns_at_once():
     x.w.rows = [dict(dud, game=relentless_live.iso(x.w.started))]
     x.tick()
     st = x.st("I0")
-    ok(st["status"] == "held" and not st.get("last_fail") and "this game and build" in st["hold"]["why"]
-       and "Type not found" in st["hold"]["why"],
+    ok(routed(st) is not None and not st.get("last_fail") and "this game and build" in routed(st)
+       and "Type not found" in routed(st),
        "one dud on this game and build is routed at once, no worker: %s" % st.get("hold"))
-    ok("/l/here.log" in st["hold"]["why"], "that route names the log too: %s" % st["hold"])
+    ok("/l/here.log" in routed(st), "that route names the log too: %s" % st.get("wait"))
     ok(G.blocked_here({"A2": dict(dud, game=relentless_live.iso(x.w.started), why="bridge not taken: busy")}, ["A2"],
                       SHA, x.w.started, x.now) == {}, "a transient that is not a dud never sends it back")
     x.done()
@@ -414,9 +423,8 @@ def t_long_reason_survives_both_unmeasured_returns():
            "log": "/l/long.log", "why": reason}
 
     def seen(st):
-        d = (st.get("hold") or {})
-        return st["status"] == "held" and "THE_END_OF_THE_REASON" in (d.get("why") or "") \
-            and "/l/long.log" in (d.get("why") or "")
+        d = routed(st) or ""
+        return "THE_END_OF_THE_REASON" in d and "/l/long.log" in d
     x = rig(1)
     to_game(x, "I0")
     x.tick()
@@ -1713,8 +1721,8 @@ def t_dead_rows_go_back():
         if klass == "game_stale_build":
             ok(st["last_fail"] and st["last_fail"]["class"] == klass, "%s row goes back: %s" % (klass, st.get("last_fail")))
         else:   # UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES: the proof's or site's, routed once, never a worker
-            ok(st["status"] == "held" and not st.get("last_fail") and "proof_or_site" in st["hold"]["why"],
-               "a defect row is routed once to one fixer, no worker: %s" % st.get("hold"))
+            ok(routed(st) is not None and not st.get("last_fail") and "proof_or_site" in routed(st),
+               "a defect row is routed once to one fixer, no worker: %s" % st.get("wait"))
         ok(x.w.proves == ["I0"], "no second prove round on it")
         x.done()
 

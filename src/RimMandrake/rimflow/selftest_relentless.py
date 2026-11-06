@@ -84,6 +84,10 @@ class FakeWorld:
         self.__dict__.setdefault("tickets", []).append(item)
         self.items.setdefault(item, "proposed")
 
+    def env_repair(self, item, title, text):
+        self.__dict__.setdefault("repairs", []).append((item, title, text))
+        self.items.setdefault(item, "proposed")
+
     def ledger_block(self, item, kind, ons, reason):
         self.__dict__.setdefault("blocks", []).append((item, kind, list(ons)))
 

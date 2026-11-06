@@ -20,6 +20,7 @@ import relentless_live                   # noqa: E402
 import selftest_relentless_game as SG    # noqa: E402
 
 FAILS = SG.FAILS
+routed = SG.routed
 ok = SG.ok
 SHA = SG.SHA
 
@@ -108,8 +109,8 @@ def t_producer_fixed_once_then_routed():
     acts = []
     acted = G._env(x.s, x.w, x.r, "I0", {"A2": row(WHYS["produce"], x.now + 20)}, 0, x.now + 30, acts)
     st = x.st("I0")
-    ok(acted and st["status"] == "held" and st["hold"]["kind"] == "game" and st["gen"] == gen
-       and "the lane fixed it once" in st["hold"]["why"] and not st.get("last_fail"),
+    ok(acted and routed(st) is not None and st["gen"] == gen
+       and "the lane fixed it once" in routed(st) and not st.get("last_fail"),
        "the same cause after its fix is routed once to one fixer: %s" % st.get("hold"))
     ok([a["do"] for a in acts] == ["game_env_route"], "one route, nothing else: %s" % acts)
     x.done()
@@ -137,8 +138,8 @@ def t_route_kinds_routed_at_once():
         x.w.rows = [row(why, x.now, **extra)]
         x.tick()
         st = x.st("I0")
-        ok(st["status"] == "held" and st["hold"]["kind"] == "game" and st["gen"] == gen and not st.get("last_fail")
-           and "/l/I0-A2.log" in st["hold"]["why"] and len(st.get("env_routed") or {}) == 1,
+        ok(routed(st) is not None and st["gen"] == gen and not st.get("last_fail")
+           and "/l/I0-A2.log" in routed(st) and len(st.get("env_routed") or {}) == 1,
            "%s: routed at once to one fixer with its log, no worker: %s" % (why[:40], st.get("hold")))
         ok(x.w.proves == ["I0"], "no second prove round on it")
         x.done()
@@ -152,14 +153,16 @@ def t_same_cause_after_unhold():
     x = in_prove()
     acts = []
     G._env(x.s, x.w, x.r, "I0", {"A2": row(WHYS["proof_call"], x.now, defect=True)}, 0, x.now, acts)
-    with x.s.lock():        # the fixer lifts the hold: the prove phase on the same sha
+    with x.s.lock():        # the repair closed and released it: the game lane on the same sha
         s = x.s.load("I0")
-        s["status"], s["hold"] = "game", None
+        s["status"] = "game"
+        s.pop("wait", None)
+        s.pop("block_pending", None)
         x.s.save(s)
     G._env(x.s, x.w, x.r, "I0", {"A2": row(WHYS["proof_call"], x.now + 60, defect=True)}, 0, x.now + 60, acts)
     st = x.st("I0")
-    ok(st["status"] == "held" and "the same cause again after its route" in st["hold"]["why"] and not st.get("last_fail"),
-       "the same cause after an unhold holds it again and says so, no worker: %s" % st.get("hold"))
+    ok(routed(st) is not None and "the same cause again after its route" in routed(st) and not st.get("last_fail"),
+       "the same cause after its release routes it again and says so, no worker: %s" % st.get("wait"))
     x.done()
 
 
@@ -201,8 +204,8 @@ def t_type_not_found_fixed_once_then_held():
     acts = []
     G._env(x.s, x.w, x.r, "I0", {"A2": row(TNF, x.now + 20)}, 0, x.now + 30, acts)
     st = x.st("I0")
-    ok(st["status"] == "held" and st["hold"]["kind"] == "game" and st["gen"] == gen and len(x.w.impl) == built
-       and "AlienWorlds.PlanetTypeManager" in st["hold"]["why"] and "7f.alienworlds.tidallylocked" in st["hold"]["why"],
+    ok(routed(st) is not None and st["gen"] == gen and len(x.w.impl) == built
+       and "AlienWorlds.PlanetTypeManager" in routed(st) and "7f.alienworlds.tidallylocked" in routed(st),
        "still lacking after the fix: held naming the type and the mods, never a builder: %s" % st.get("hold"))
     ok([a["do"] for a in acts] == ["game_env_route"], "one route: %s" % acts)
     x.done()
@@ -213,7 +216,7 @@ def t_type_not_found_fixed_once_then_held():
        "no packageId to enable, first read: the lane's own retry (another game may hold it), no builder")
     G._env(x.s, x.w, x.r, "I0", {"A2": row(TNF, x.now + 60, defect=True)}, 0, x.now + 60, [])
     st = x.st("I0")
-    ok(st["status"] == "held" and "no live-mods line names its mod" in st["hold"]["why"] and len(x.w.impl) == built,
+    ok(routed(st) is not None and "no live-mods line names its mod" in routed(st) and len(x.w.impl) == built,
        "the same on a reload: held with what to name, never a builder: %s" % st.get("hold"))
     x.done()
 
