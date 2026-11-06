@@ -114,6 +114,26 @@ def rules(r):
     return out
 
 
+# GAMEENV_FIX_PROOFSITE_FB127191_ITEMS_WAIT: a clause with no `live-site` line of its own gets this one, so no proof meets
+# a game a staging left on the main menu (PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A1-A3 and RINDCOAT's A1 each read "the game
+# is not Playing" and measured nothing; RINDCOAT's own `--game` line fixed only that instance). It leaves a map that is
+# up alone (two bridge reads) and starts a quicktest only when there is none. Not for a file whose proofs want the main
+# menu or a load pair (live-menu, live-toggle) or that is only a deploy (live-deploy): those keep no site.
+DEFAULT_SITE = "python.exe src/RimMandrake/Utils/live_site.py --game"
+
+
+def site_for(text, cid):
+    """-> the `live-site` command a criterion runs before its proof: its own line, else DEFAULT_SITE, else None."""
+    own = proof_lines(text, SITE_LINE).get(cid)
+    if own:
+        return own
+    try:
+        menu = live_menu(text) or live_toggle(text)
+    except ValueError:      # a malformed line is the game phase's to hold (menu_bound); no site is added to it
+        return None
+    return None if menu or live_deploy(text) else DEFAULT_SITE
+
+
 def proof_lines(prose, pattern=PROOF_LINE):
     """An item's prose -> {criterion id: proof command}. A second line for the same criterion is ignored (first wins).
     pattern=SITE_LINE reads the `live-site` lines the same way."""
@@ -566,7 +586,7 @@ def candidates(items, proofs_of, hist, now, retry_s, game=None, steve=None):
                 skip("not deployed on this game")
                 continue
             why = due(last, it["built_sha"], now, retry_s, game, per_game=bool(retry_s),   # a game phase restages
-                      site=proof_lines(text, SITE_LINE).get(cid) or "")
+                      site=site_for(text, cid) or "")
             if why:
                 skip(why)
                 continue
@@ -839,7 +859,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         except ValueError:      # a malformed line: the game phase holds it (relentless_game.menu_bound); it is bound
             comp["menu"] = True
         row = run(fx, root, item_id, cid, proof, deploy_args(list(mods) + trees, folded), r, now=time.time(),
-                  needs=need, site=proof_lines(text, SITE_LINE).get(cid), trees=trees,
+                  needs=need, site=site_for(text, cid), trees=trees,
                   **dict(comp, **({"env": env} if nd is not None else {})))
         summary["runs"].append({k: row.get(k) for k in ("item", "criterion", "outcome", "why", "sha")})
         if item_gate(row):

@@ -387,9 +387,20 @@ def t_live_site():
         R.run_round(fx, root, {"live": {"round_max": 1}}, now=1_800_000_000, run=fake_run({})[0])
         fx.proofs = lambda i: PROSE
         R.run_round(fx, root, {"live": {"round_max": 1}}, now=1_800_000_001, run=fake_run({})[0])
-    check("live-site: the round passes A1 its site, and none when the file has no site line",
+    check("live-site: the round passes A1 its site, and the default --game site when the file has no site line",
           SITES[:2] == [("EG_A", "A1", "python.exe src/RimMandrake/Utils/live_site.py --biome RM_Stillsand"),
-                        ("EG_A", "A1", None)], SITES)
+                        ("EG_A", "A1", R.DEFAULT_SITE)], SITES)
+    # GAMEENV_FIX_PROOFSITE_FB127191_ITEMS_WAIT: the default makes a map when none is up; a menu, toggle or deploy file
+    # keeps no site, and the default is a site relentless_live will run
+    check("live-site: the default is `live_site.py --game`, a command refused_site admits",
+          R.DEFAULT_SITE.endswith("live_site.py --game") and R.L.refused_site(R.DEFAULT_SITE) is None, R.DEFAULT_SITE)
+    check("live-site: an own line wins over the default", R.site_for(text, "A1").endswith("--biome RM_Stillsand"))
+    check("live-site: a clause with no own line in a file with another clause's line still gets the default",
+          R.site_for(text, "A2") == R.DEFAULT_SITE, R.site_for(text, "A2"))
+    for extra in ("live-menu: python.exe src/RimMandrake/Utils/menu_probe.py", "live-toggle: SomeMod",
+                  "live-deploy: FlowWorks"):
+        check("live-site: no default site in a file with `%s`" % extra.split(":")[0],
+              R.site_for(extra + "\n" + PROSE, "A1") is None, R.site_for(extra + "\n" + PROSE, "A1"))
     last = {"sha": "s", "outcome": "UNMEASURED", "why": "reload needed: the same cause 3 times", "game": "G1",
             "at": "2026-11-02T00:00:00Z"}
     check("live-site: a reload request skips the criterion on the game it was made on, even with no retry wait",
