@@ -2408,6 +2408,24 @@ def attempt_failed(r, ok_ends):
     return None
 
 
+BLIND_ENDS = ("unmeasured",)
+
+
+def blind_again(r, seen):
+    """One attempts.jsonl row is a REPEAT BLIND CHECK: an `unmeasured` ending (the Judge could not reach the evidence) at a
+    sha already blind once. A candidate re-checked after a reach repair is one candidate the checker could not see, not
+    work bounced twice: the reach repair has its own item and block (OPS_CHURN_DIAGNOSE_NIGHTLY_ZNGK_SBPI:
+    NIGHTLY_COP_FIX_RED_AQJSGV_CFVH rang 'unmeasured failed it 2 times' off ec3e5f14 checked at 11-05 04:22Z and again at
+    11-06 15:37Z after its reach repair). seen: the (end, sha) pairs so far, updated. A blind check at a NEW sha still counts."""
+    if not isinstance(r, dict) or r.get("end") not in BLIND_ENDS or not isinstance(r.get("sha"), str) or not r["sha"]:
+        return False
+    k = (r["end"], r["sha"])
+    if k in seen:
+        return True
+    seen.add(k)
+    return False
+
+
 def attempt_waited(r):
     """One attempts.jsonl row is a WAIT: a `snag --wait-hours` ending (relentless.fail writes wait=true), time not work.
     relentless.fail already keeps it out of the approach ladder; it is no failed attempt, its return is no bounce and its
@@ -2653,7 +2671,7 @@ def rl_churn(store, now, cfg):
     for n in names:
         by_hash[hashlib.sha1(n.encode()).hexdigest()[:10]] = n
         st = read_json(store / "items" / n / "state.json")
-        fails, cur, waits, rows = [], None, 0, []
+        fails, cur, waits, rows, blind_seen = [], None, 0, [], set()
         try:
             with open(store / "items" / n / "attempts.jsonl", encoding="utf-8") as f:
                 for ln in f:
@@ -2682,7 +2700,7 @@ def rl_churn(store, now, cfg):
                     if r.get("end"):
                         k_ = (n, r["gen"])
                         ended_at[k_] = max(ended_at.get(k_) or 0, epoch(r.get("at")) or 0)
-                    if attempt_failed(r, ok_ends):
+                    if attempt_failed(r, ok_ends) and not blind_again(r, blind_seen):
                         t, end = attempt_failed(r, ok_ends)
                         fails.append((t or 0, end))
         except OSError:

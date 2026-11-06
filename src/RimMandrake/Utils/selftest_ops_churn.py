@@ -683,6 +683,33 @@ def main():
                "9f: a finished gen in its check, past the hot spent band, is no rising spend; the held alarm reads 0", got)
         else:
             ok("spend rising" in said, "9f: the same gen sent back by its check still reads 'spend rising'", got)
+    # 9u OPS_CHURN_DIAGNOSE_NIGHTLY_ZNGK_SBPI: NIGHTLY_COP_FIX_RED_AQJSGV_CFVH rang 'unmeasured failed it 2 times' off ONE
+    # candidate (ec3e5f14) the Judge could not reach, checked blind, reach-repaired, checked blind again, then sent back
+    # (proof_owed). One candidate blind twice is the reach repair's churn, not the item's: it counts once. The same rows
+    # with the second blind check at a NEW sha still count twice (the instrument can see).
+    for same in (True, False):
+        su = TMP / ("s9u_%s" % same)
+        nm = "U9_ITEM"
+        d = su / "items" / nm
+        d.mkdir(parents=True)
+        (d / "state.json").write_text(json.dumps({"status": "queued", "returns": 1, "gen": 1, "spent": 1}))
+        t = NOW - 3 * HOUR
+        a, b = "e" * 40, ("e" if same else "f") * 40
+        rows = [{"gen": 1, "at": iso(t), "start": marker(nm, 1)},
+                {"gen": 1, "at": iso(t + 60), "end": "finish", "sha": a},
+                {"gen": 1, "at": iso(t + 600), "end": "unmeasured", "said": "UNMEASURED", "sha": a},
+                {"gen": 1, "at": iso(t + 3600), "end": "reach_waiter_released", "sha": a},
+                {"gen": 1, "at": iso(t + 4000), "end": "unmeasured", "said": "UNMEASURED", "sha": b},
+                {"gen": 1, "at": iso(t + 7000), "end": "proof_owed", "sha": b}]
+        (d / "attempts.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+        (TMP / "ops" / "alarms.json").write_text("{}")
+        pu = OW.rl_churn(su, NOW, cfg9)
+        said = (pu.get(OW.CHURN_ITEM_PREFIX + nm) or {}).get("x", {}).get("said", "")
+        if same:
+            ok(OW.CHURN_ITEM_PREFIX + nm not in pu and pu["relentless.churn_items"].get("v") == 0,
+               "9u: one candidate checked blind twice (a reach repair between) is one unmeasured, no churn", (sorted(pu), said))
+        else:
+            ok("unmeasured failed it 2 times" in said, "9u: blind checks of two different candidates still count twice", said)
     shutil.rmtree(TMP, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
