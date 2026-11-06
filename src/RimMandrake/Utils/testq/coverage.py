@@ -8,7 +8,10 @@ bridge backlog).
   coverage.py measure [--json]       probe every harnessed mod; print the G5 line, write QHOME/coverage.json
   coverage.py check [--min-wired N]  exit 0 iff at least N mods are wired and EVERY wired mod passes its probe
   coverage.py rank [--top N]         selectable mods not yet wired, by open bridge items naming them (R4's order)
-  coverage.py wired                  the mods the tick's filler walks, one per line (TESTQ_FILL_MODS overrides)
+  coverage.py wired                  the mods the tick's filler walks, one per line (TESTQ_FILL_MODS overrides), rotated
+                                     to start after the mod of the newest filler job (fill_order)
+  coverage.py dated [--json]         each wired mod's newest DONE testq result (date, rows by status); exit 1 names any
+                                     wired mod with none
 
 A HARNESSED mod is a folder src/<tier>/<Mod>/ holding validation.py. Its PROBE is offline (no game, ~0.1 s):
   1. `modcheck run MOD --full --preview` lists its chains (EXPECTED_CHAINS); a mod modcheck cannot load is `load`.
@@ -165,6 +168,46 @@ def fill_mods():
     return read_wired() or ["FlowWorks"]
 
 
+def last_filled_mod():
+    """-> the mod of the newest filler job in any state, or None when testq has none or cannot be read."""
+    try:
+        import testq
+        jobs = testq.filler_jobs()
+    except Exception:  # noqa: BLE001 - an unreadable queue leaves the wired order unrotated
+        return None
+    return jobs[-1].get("mod") if jobs else None
+
+
+def fill_order(mods, last):
+    """-> MODS rotated to start just after LAST (unrotated when LAST is not among them). The tick's fill loop gives
+    Steve's lane to the FIRST mod that picks, so walking a fixed order let FlowWorks, which never runs out of gaps,
+    starve every later wire (FeverWood and EnvironmentalHazards, wired 2026-11-04, had no job a day later;
+    LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED). Rotation gives each wired mod its turn."""
+    if last not in mods:
+        return list(mods)
+    i = mods.index(last) + 1
+    return list(mods[i:]) + list(mods[:i])
+
+
+def dated(wired, recs):
+    """-> ({mod: {"finished", "job", "counts"} of its newest DONE result, or None}, {mod: {outcome: jobs}}). RECS are
+    testq done records; the outcome tally (DONE, INVALID, ...) is the batch brake's other half (a mod whose jobs come
+    back INVALID never reaches a DONE row count)."""
+    out, outcomes = {m: None for m in wired}, {m: {} for m in wired}
+    for r in recs:
+        job, res = r.get("job") or {}, r.get("result") or {}
+        m = job.get("mod")
+        if m not in out:
+            continue
+        oc = res.get("outcome") or "NONE"
+        outcomes[m][oc] = outcomes[m].get(oc, 0) + 1
+        if oc != "DONE" or not res.get("finished"):
+            continue
+        if out[m] is None or res["finished"] > out[m]["finished"]:
+            out[m] = {"finished": res["finished"], "job": job.get("id"), "counts": res.get("counts") or {}}
+    return out, outcomes
+
+
 def bridge_backlog(mods, items=None):
     """-> {mod: count of OPEN items with needs=bridge whose id or title names the mod}, or None when the ledger
     cannot be read. ITEMS (a list of (id, title)) replaces the ledger in a selftest."""
@@ -265,9 +308,32 @@ def cmd_rank(a):
 
 
 def cmd_wired(_a):
-    for m in fill_mods():
+    for m in fill_order(fill_mods(), last_filled_mod()):
         print(m)
     return 0
+
+
+def cmd_dated(a):
+    import testq
+    rec, outcomes = dated(read_wired(), testq.records("done"))
+    if a.json:
+        print(json.dumps({"newest_done": rec, "outcomes": outcomes}, indent=1, sort_keys=True))
+    else:
+        for m, d in rec.items():
+            jobs = " ".join("%s=%d" % kv for kv in sorted(outcomes[m].items())) or "none"
+            if d is None:
+                print("  %-28s NO DONE RESULT  jobs: %s" % (m, jobs))
+                continue
+            c = d["counts"]
+            tot = sum(c.values()) or 1
+            print("  %-28s %s  %-26s rows %-5d INVALID+UNMEASURED %3d%%  %s" % (
+                m, d["finished"], d["job"], sum(c.values()),
+                round(100.0 * (c.get("INVALID", 0) + c.get("UNMEASURED", 0)) / tot),
+                " ".join("%s=%d" % kv for kv in sorted(c.items())) + "  jobs: " + jobs))
+    none = [m for m, d in rec.items() if d is None]
+    print("%d of %d wired mods hold a dated DONE testq result%s" % (
+        len(rec) - len(none), len(rec), "; none for: " + ", ".join(none) if none else ""))
+    return 1 if none or not rec else 0
 
 
 def main(argv=None):
@@ -281,8 +347,11 @@ def main(argv=None):
     s = sp.add_parser("rank")
     s.add_argument("--top", type=int, default=20)
     sp.add_parser("wired")
+    s = sp.add_parser("dated")
+    s.add_argument("--json", action="store_true")
     a = ap.parse_args(argv)
-    return {"measure": cmd_measure, "check": cmd_check, "rank": cmd_rank, "wired": cmd_wired}[a.cmd](a)
+    return {"measure": cmd_measure, "check": cmd_check, "rank": cmd_rank, "wired": cmd_wired,
+            "dated": cmd_dated}[a.cmd](a)
 
 
 if __name__ == "__main__":

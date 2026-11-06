@@ -1,0 +1,1 @@
+testq's tick fill loop (coverage.py wired order) gives Steve's lane to the FIRST wired mod that picks; a mod that never exhausts (FlowWorks) starves every later wire. Wiring a mod is not scheduling it: check it got a job (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED, 2026-11-05).

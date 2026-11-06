@@ -104,6 +104,25 @@ def main():
     bl = C.bridge_backlog(["Stillsand", "FlowWorks", "Abyss"], items)
     check(bl == {"Stillsand": 2, "FlowWorks": 1, "Abyss": 0}, "the backlog counts items naming the mod: %s" % bl)
 
+    # fill order rotates past the newest filler job's mod, so a mod with endless gaps cannot starve later wires
+    check(C.fill_order(["A", "B", "C"], "A") == ["B", "C", "A"], "the walk starts after the last filled mod")
+    check(C.fill_order(["A", "B", "C"], "C") == ["A", "B", "C"], "after the last mod the walk wraps to the first")
+    check(C.fill_order(["A", "B", "C"], None) == ["A", "B", "C"], "no filler history keeps the wired order")
+    check(C.fill_order(["A", "B"], "Gone") == ["A", "B"], "a last mod no longer wired keeps the wired order")
+
+    # dated: each wired mod's newest DONE result, and its job outcomes
+    recs = [{"job": {"mod": "A", "id": "J1"}, "result": {"outcome": "DONE", "finished": "2026-11-01T00:00:00Z",
+                                                          "counts": {"PASS": 2}}},
+            {"job": {"mod": "A", "id": "J2"}, "result": {"outcome": "DONE", "finished": "2026-11-03T00:00:00Z",
+                                                          "counts": {"PASS": 1, "UNMEASURED": 1}}},
+            {"job": {"mod": "B", "id": "J3"}, "result": {"outcome": "INVALID", "finished": "2026-11-04T00:00:00Z"}},
+            {"job": {"mod": "Z", "id": "J4"}, "result": {"outcome": "DONE", "finished": "2026-11-04T00:00:00Z"}}]
+    newest, oc = C.dated(["A", "B"], recs)
+    check(newest["A"]["job"] == "J2" and newest["A"]["counts"] == {"PASS": 1, "UNMEASURED": 1},
+          "dated keeps the newest DONE result: %s" % newest["A"])
+    check(newest["B"] is None and oc["B"] == {"INVALID": 1}, "an INVALID job is no dated result, but is tallied")
+    check("Z" not in newest, "an unwired mod's records are ignored")
+
     # the unit, and the real committed list (the item's done-when: >= 6 wired, each passing its probe)
     unit = open(os.path.join(HERE, "testq.py")).read()
     check("for m in $(/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/coverage.py wired)" in unit,
