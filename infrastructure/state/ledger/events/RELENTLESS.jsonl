@@ -1369,3 +1369,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:18:20Z","tsn":1794003500694532806}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES A1 (L2), read-only proof","ts":"2026-11-06T22:25:40Z","tsn":1794003940078208021}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:26:10Z","tsn":1794003970959826953}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK A2 (L2), read-only proof","ts":"2026-11-06T22:28:03Z","tsn":1794004083553554167}
