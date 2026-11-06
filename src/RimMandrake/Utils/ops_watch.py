@@ -1408,6 +1408,94 @@ def root_growth(sd, now, rules):
     return pts
 
 
+# WHEA (DDRIVE_PCIE_MONITOR_CORRECTED_FOR_NOW): Archmagi's D: NVMe (Kingston SFYRD4000G behind root port 0:6.3) logs
+# WHEA-Logger 17, corrected PCIe AER errors, at a rising rate (6..16 a day, 2026-10-26..11-02). The System event log is
+# readable without admin. Corrected = Level 3 (Warning); severe = Level 1/2 (Critical/Error) or id 18/20 (fatal), or
+# 19, a corrected machine check: corrected, but the CPU, not this drive, so any one is news. Absolute path: a systemd
+# user service has no /mnt/c on PATH (memwatch.py measured it). RM_OPS_WHEA_EVENTS names a file of canned lines (tests).
+POWERSHELL = "/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe"
+WHEA_DAYS = 8
+WHEA_SEVERE_IDS = (18, 19, 20)
+WHEA_PS = ("$ErrorActionPreference='Stop'; try { $e = @(Get-WinEvent -FilterHashtable @{LogName='System'; "
+           "ProviderName='Microsoft-Windows-WHEA-Logger'; StartTime=(Get-Date).AddDays(-%d)}) } catch { "
+           "if ($_.FullyQualifiedErrorId -like 'NoMatchingEventsFound*') { $e = @() } else { 'ERR|' + $_.Exception.Message; exit 3 } }; "
+           "foreach ($x in $e) { 'EV|{0}|{1}|{2}' -f $x.Id, $x.Level, $x.TimeCreated.ToUniversalTime().ToString('o') }; 'END|' + $e.Count")
+
+
+def whea_lines():
+    """-> the collector's raw lines: EV|id|level|iso-utc per event, then END|n. Raises OSError when it cannot ask."""
+    canned = os.environ.get("RM_OPS_WHEA_EVENTS")
+    if canned:
+        return Path(canned).read_text(encoding="utf-8").splitlines()
+    if not os.path.exists(POWERSHELL):
+        raise OSError("no %s on this host (no Windows to ask)" % POWERSHELL)
+    try:
+        r = subprocess.run([POWERSHELL, "-NoProfile", "-NonInteractive", "-Command", WHEA_PS % WHEA_DAYS],
+                           capture_output=True, text=True, timeout=60)
+    except (subprocess.TimeoutExpired, OSError) as e:
+        raise OSError("powershell: %s" % e)
+    out = (r.stdout or "").replace("\r", "").splitlines()
+    if r.returncode != 0:
+        raise OSError("powershell exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[:200]))
+    return out
+
+
+def whea_parse(lines, now):
+    """-> (events [(id, level, epoch)], why-not or None). A run with no END line, an END count that disagrees with the
+    rows, or a row that will not parse is a blind reading: zero is claimed only when Windows said zero."""
+    evs, end = [], None
+    for ln in lines:
+        f = ln.strip().split("|")
+        if f[0] == "ERR":
+            return [], "event log: " + "|".join(f[1:])[:200]
+        if f[0] == "END":
+            end = f[1] if len(f) > 1 else ""
+        elif f[0] == "EV":
+            try:
+                t = epoch(f[3])
+                if t is None:
+                    raise ValueError(f[3])
+                evs.append((int(f[1]), int(f[2]), t))
+            except (IndexError, ValueError):
+                return [], "unreadable event row %r" % ln[:120]
+        elif f[0]:
+            return [], "unexpected line %r" % ln[:120]
+    if end is None:
+        return [], "no END line: the query did not finish"
+    if not end.isdigit() or int(end) != len(evs):
+        return [], "END says %r, %d rows read" % (end, len(evs))
+    return evs, None
+
+
+def whea_reading(now):
+    """disk.whea_corrected_24h, disk.whea_severe_24h (rolling 24 h) and disk.whea_blind, with per-UTC-day counts of the
+    last WHEA_DAYS days on the corrected point, so the daily curve is one read."""
+    try:
+        evs, why = whea_parse(whea_lines(), now)
+    except OSError as e:
+        evs, why = [], str(e)[:240]
+    if why:
+        return {"disk.whea_corrected_24h": U(why, "events"), "disk.whea_severe_24h": U(why, "events"),
+                "disk.whea_blind": M(1, "WHEA sources not seen", cause="WHEA count blind: " + why)}
+    recent = [e for e in evs if now - DAY <= e[2] <= now + 300]
+    severe = [e for e in recent if e[1] in (1, 2) or e[0] in WHEA_SEVERE_IDS]
+    corrected = [e for e in recent if e not in severe]
+    by_day = {}
+    for i, lv, t in evs:
+        if not (i in WHEA_SEVERE_IDS or lv in (1, 2)):
+            d = time.strftime("%Y-%m-%d", time.gmtime(t))
+            by_day[d] = by_day.get(d, 0) + 1
+    ids = sorted({e[0] for e in severe})
+    newest = iso(max(e[2] for e in evs)) if evs else None
+    return {"disk.whea_corrected_24h": M(len(corrected), "corrected WHEA hardware errors in 24 h", by_day_utc=by_day,
+                                         newest=newest, days=WHEA_DAYS,
+                                         cause="%d corrected WHEA errors in 24 h (by UTC day %s)" % (len(corrected), by_day)),
+            "disk.whea_severe_24h": M(len(severe), "fatal or CPU WHEA errors in 24 h", ids=ids,
+                                      cause="%d WHEA event(s) id %s (fatal 18/20, CPU machine check 19, or Level Error) in 24 h"
+                                      % (len(severe), ids)),
+            "disk.whea_blind": M(0, "WHEA sources not seen", cause="none")}
+
+
 def c_disk(now, rules, ctx):
     out = {}
     for name, mnt in disk_mounts().items():
@@ -1487,6 +1575,7 @@ def c_disk(now, rules, ctx):
             out["disk.scratch_dirty_" + end] = M(9999, "sanity problems at the %s of the last run" % end, why="%s: %s" % (san, e))
     out.update(scratch_outside(san, now, rules))
     out.update(root_growth(rec.parent, now, rules))
+    out.update(whea_reading(now))
     # The bounded worker-clone pool (WORKER_CLONES_MONITOR_POOL_NOT_RABBITS): read live each tick, never from a cache.
     # One number alarms: clones over the cap, bytes over the cap, plus every clone holding unpushed work nobody is using,
     # in the pool or anywhere else a helper clones (rm/scratch, session dirs: LIQUIDNET_SURFACEGAP_FIX_UNLANDED_CLONES).
@@ -4437,6 +4526,7 @@ disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb di
 disk.scratch_dirty_end disk.scratch_dirty_start disk.scratch_ok_age_h disk.scratch_outside_blind disk.scratch_outside_cap
 disk.scratch_outside_distressed disk.scratch_refused_gb disk.scratch_total_gb
 disk.pool_breach disk.pool_clones disk.pool_gb disk.pool_oldest_h
+disk.whea_blind disk.whea_corrected_24h disk.whea_severe_24h
 flow.closes_24h flow.lapsed_leases flow.untriaged_findings flow.verify_pass_24h
 process.share_24h process.share_7d
 production.A1 production.A2 production.A3 production.A4 production.A5
