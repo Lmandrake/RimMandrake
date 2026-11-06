@@ -17,6 +17,9 @@ Rejected, with the reason:
   inside a run to stay out. A worker's cherry-pick and publish's rebase of a mend write the same metadata. The cost is low:
   the final commit always counts, and the blind Marker still judges the candidate.
 
+Rows 14-16: the full-file re-review r1 of this item (rev_whole.txt): finish and a ruling on a waiting binding repair, and a
+checker resumed in a clone a quarantined run still holds.
+
 Runs on throwaway git repos and Stores under TMPDIR; no ledger, clone, unit or game is touched.
 """
 import json
@@ -323,11 +326,55 @@ def row13_held_consult_waits():
             ok(h["status"] == "wanted" and h["at"] == NOW, "13 %s: the request waits, its room wait unspent" % kind, h)
 
 
+def row14_review_r1_finish_refuses_a_waiting_repair():
+    for ambiguous in (False, True):
+        s = store()
+        p = {"by": "w", "binding": {"proof": "x"}}
+        if ambiguous:
+            p["ambiguous"] = {"judge": "j", "why": "unsure"}
+        s.save(q("B_ITEM", status="running", gen=1, contract={"proof": "x"}, binding_proposal=p))
+        try:
+            R.finish(s, "B_ITEM", 1, "a" * 40, "ev", now=NOW, root=TMP)
+            got = "finished"
+        except ValueError as e:
+            got = str(e)
+        ok("binding repair waits" in got, "r1 finish refuses a %s binding repair" % ("ambiguous" if ambiguous else "pending"), got)
+
+
+def row15_review_r1_no_ruling_on_an_ended_item():
+    s = store()
+    st = q("B_DONE", status="done", contract={"proof": "x"}, binding_proposal={"by": "w", "binding": {"proof": "y"}})
+    s.save(st)
+    try:
+        R.bind_judge(s, "B_DONE", "conductor", "ambiguous", "unsure", env={}, now=NOW, cwd=TMP)
+        got = "ruled"
+    except ValueError as e:
+        got = str(e)
+    ok("is done" in got, "r1 a ruling does not reach an ended item", got)
+
+
+def row16_review_r1_resume_not_over_a_quarantined_run():
+    s = store()
+    tree = tempfile.mkdtemp(dir=TMP)
+    s.save(q("K_SAT", status="checking", candidate={"sha": "a" * 40, "gen": 1},
+             quarantined=[{"run": {"unit": "old"}, "at": 1.0, "clone": tree, "reaped": False}],
+             check={"nonce": "nn", "unit": "u", "at": 5.0, "clone": tree, "deadline": 6.0, "run": {"unit": "u"},
+                    "resume": {"session": "sess"}}))
+    fx = Fx()
+    R.check_resume(s, fx, RULES, "K_SAT", NOW, [])
+    got = s.load("K_SAT")
+    ok(not fx.launched and got["status"] == "candidate" and got["check"] is None,
+       "r1 a quarantined run's clone is not resumed in: a fresh checker", (fx.launched, got["status"]))
+    ok(os.path.isdir(tree), "r1 sanity: the quarantined run keeps its tree")
+
+
 def main():
     try:
         for row in (row9_owner_pause, row1_capped_copy, row2_landing_key, row3_proof_gate, row4_close_provenance,
                     row5_rejected_waiting_writer, row7_refused_reserves_nothing, row8_unrecorded_fail_stops,
-                    row10_help_retry, row11_check_resume, row12_retire_lease, row13_held_consult_waits):
+                    row10_help_retry, row11_check_resume, row12_retire_lease, row13_held_consult_waits,
+                    row14_review_r1_finish_refuses_a_waiting_repair, row15_review_r1_no_ruling_on_an_ended_item,
+                    row16_review_r1_resume_not_over_a_quarantined_run):
             try:
                 row()
             except Exception as e:      # a raising row is one red row: the rest still report (row 9's bug raises)

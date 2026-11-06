@@ -1186,6 +1186,8 @@ def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd
         p = st.get("binding_proposal")
         if not p:
             raise ValueError("%s has no binding repair waiting" % item)
+        if st["status"] in ENDED:       # nothing reads a ruling now, and it would rewrite an ended item's contract
+            raise ValueError("%s is %s: a binding repair on it is over" % (item, st["status"]))
         if judge.lower() == p["by"].lower():
             raise ValueError("the proposer may not judge its own binding repair")
         here = os.path.realpath(cwd or os.getcwd())
@@ -1517,6 +1519,9 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
             raise Fenced("%s: this run's time is up (%s; run_max_s). Stop now." % (item, late))
         if not st["contract"]:
             raise ValueError("no contract: set it with `contract` before finishing")
+        if st.get("binding_proposal"):      # pending or AMBIGUOUS: ambiguity blocks, and a check would read the old proof
+            raise ValueError("a binding repair waits on a judge: `snag --class binding_repair --blocker judge`; finish once "
+                             "it is ruled")
         if st.get("diagnose_owed"):
             raise ValueError("the last ending (%s) was read off a live proof or a checker and nobody has explained it: "
                              "read its log, then %s before finishing (a CLASSIFY label is not an explanation)"
@@ -6451,6 +6456,8 @@ def check_resume(store, fx, r, item, now, acts):
     box = chk.get("box")
     cwd = os.path.join(box, "tree") if box else chk.get("clone")
     why = None if cwd and tree_present(cwd) else "its tree is gone"
+    if any(q.get("clone") == chk.get("clone") and not q.get("reaped") for q in st["quarantined"]):
+        why = "a quarantined run still sits in its clone"    # the reaper would remove the tree under it (help_step's rule)
     n = (st.get("check_count") or 0) + 1
     unit = unit_name("check", item, st["gen"]) + "-c%d" % n
     desc = run_desc(store, r, unit, now)
