@@ -1,0 +1,15 @@
+{
+ "_doc": "relentless_dispute.py (RELENTLESS_BUILD_LIVE_DISPUTE_LOOP). mode: off | shadow | live. shadow = the loop runs and its who-was-right rows are kept, nothing gates a close (WP-03's posture); live is reserved for when the exam gates (WP-09b). in_call_s: how long the challenge command itself waits for the answer (under the builder's 540 s tool ceiling); a later answer prints at its next boxrun or challenge --status.",
+ "mode": "shadow",
+ "in_call_s": 420,
+ "max_clauses": 3,
+ "answer_tries": 2,
+ "arbiter_tries": 2,
+ "setter_agent": "rm-judge",
+ "setter_model": "opus",
+ "setter_max_s": 1500,
+ "arbiter_agent": "rm-judge",
+ "arbiter_model": "opus",
+ "arbiter_max_s": 1500,
+ "unit_max_s": 3600
+}

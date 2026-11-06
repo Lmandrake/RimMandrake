@@ -779,7 +779,11 @@ def main(argv=None):
     store, rules = _store()
     if a.cmd == "run":
         try:
-            print(run_item(store, a.item, rules))
+            state = run_item(store, a.item, rules)
+            print(state)
+            if state == "arbiter_owed":          # R4: the second refusal's arbiter (relentless_dispute, WP-08)
+                import relentless_dispute
+                print("arbiter: %s" % relentless_dispute.arbitrate_exam(store, a.item))
         except Exception as e:  # noqa: BLE001 - recorded on the item, the unit ends
             set_status(store, a.item, state="setter_failed", error="%s: %s" % (type(e).__name__, str(e)[:300]))
             print("setter_failed: %s" % e)

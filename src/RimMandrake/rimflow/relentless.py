@@ -52,6 +52,7 @@ import relentless_repair_slot  # noqa: E402
 import relentless_binding  # noqa: E402
 import relentless_block  # noqa: E402
 import relentless_boxrun  # noqa: E402
+import relentless_dispute  # noqa: E402
 import relentless_breakers  # noqa: E402
 import relentless_incident  # noqa: E402
 import relentless_strikes  # noqa: E402
@@ -7296,6 +7297,7 @@ def main(argv=None):
     p.add_argument("--gen", type=int)
     p.add_argument("--sha", default="HEAD")
     p.add_argument("--sli", action="store_true", help="print the boxrun verdict counts by kind/mode instead")
+    relentless_dispute.add_parser(sub)
     for name in ("beat", "learn", "contract", "rebind", "snag", "finish"):
         p = sub.add_parser(name)
         p.add_argument("--item", required=True)
@@ -7526,7 +7528,13 @@ def main(argv=None):
             if a.sli or not a.item:
                 print(json.dumps(relentless_boxrun.sli(store), indent=1, sort_keys=True))
                 return 0
+            try:                                    # an answer that landed after the challenge call (WP-08);
+                relentless_dispute.deliver(store, a.item, a.gen)    # never lets a dispute fault stop the box run
+            except Exception as e:  # noqa: BLE001
+                print("relentless challenge: delivery failed (%s); `challenge --status` retries" % e)
             return relentless_boxrun.verb(store, a.item, a.gen, canonical_commit(a.sha), os.getcwd(), rules())
+        elif a.cmd == "challenge":
+            return relentless_dispute.verb(store, a)
         elif a.cmd == "finish":
             sha = canonical_commit(a.sha)
             sha, moved = landed_commit(sha)
