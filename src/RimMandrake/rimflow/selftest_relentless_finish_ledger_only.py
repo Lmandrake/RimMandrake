@@ -17,7 +17,7 @@ and replays it from the candidate's PARENT, so the checker read an empty diff an
    code_review_status; the same mixed commit under a proof reading neither is accepted; main reads the proof from the
    item's contract.
 
-Temp git repos only; no ledger, store, clone or unit is touched.
+Temp git repos and a temp RELENTLESS_ROOT only; no ledger, store, clone or unit is touched.
 
     python3 src/RimMandrake/rimflow/selftest_relentless_finish_ledger_only.py
 """
@@ -155,4 +155,6 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    with tempfile.TemporaryDirectory() as fake_root:     # main() builds a Store: never the real one (a walled box cannot write it)
+        os.environ["RELENTLESS_ROOT"] = fake_root
+        sys.exit(main())
