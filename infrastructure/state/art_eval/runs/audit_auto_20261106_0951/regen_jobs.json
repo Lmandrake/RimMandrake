@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RSW_FeralGrazer_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_FeralGrazer",
+  "prompt": "A creature sprite for RimWorld: the feral grazer, a slow-moving Alderaanian herbivore. Build the body from this description, with no earlier render as a reference. Body: lean and wild, long-legged and narrow-chested, with a high shoulder ridge sloping down to lower haunches and a thin tail. The skin is bare, pebbled, leathery hide in a muted earth tone, marked with irregular darker blotches and mottled patches that merge and break up unevenly across the flanks and back, with no ring or rosette shapes. A row of small, bony scutes runs along the spine from the neck to the base of the tail. Head: a long, low, wedge-shaped skull with a narrow beaked muzzle, a short blunt nose boss, and a pair of horns sweeping back from the brow ridge. The ears are small, flat and set low on the sides of the skull. The same head, horn arrangement, blotched hide and spine scutes appear in every facing. Front view: eyes toward the viewer. Side view: full profile. Rear view: seen from behind, showing the back, scutes, haunches and tail, with the eyes hidden. Realistic painterly vanilla RimWorld sprite style, with soft painted edges and a clean dark outline in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background, showing only the creature itself.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0951",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "swanimals/FeralGrazer/FeralGrazer"
+ },
+ {
+  "id": "arteval_RSW_FrilledGorg__FrilledGorg_j_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_FrilledGorg__FrilledGorg_j",
+  "prompt": "A creature sprite for RimWorld: the frilled gorg. A small, aggressive alien amphibian with a long, low, sleek reptilian trunk, about twice as long as it is tall, tapering into a thick muscular tail. Smooth, glossy olive-green skin with a fine scale-like texture. The head is narrow and wedge-shaped, with a long flat snout, a low brow ridge and two forward-set eyes; in the front and side views the jaws are open in an aggressive gape. Four short, strong legs end in slender clawed digits. A continuous row of tall red frill spines grows directly out of the skin along the whole spine, from the back of the head to the tip of the tail, tallest over the shoulders and hips and tapering toward the tail tip. Front view, eyes toward the viewer: the narrow wedge head, with the long trunk receding behind it and the frill row rising from the centre line of the back. Side view: the long low body, the frill row along the top line, and the tail trailing behind. Rear view, seen from behind: the creature shows its back, the frilled tail and its haunches with the eyes hidden. The hind legs are bent outward and the hind feet planted wide apart to either side of the tail base. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0951",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.75,
+  "module": "swimmer",
+  "target_texpath": "swanimals/FrilledGorg/FrilledGorg"
+ }
+]
