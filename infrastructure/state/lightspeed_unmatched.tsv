@@ -1,0 +1,90 @@
+mod	owed	matched	unmatched	unmatched_by_reason
+(no mod)	197	0	197	lint refuses the row's line=3; names no row=88; no suite=106
+Abyss	7	0	7	names no row=7
+Aftermath	2	0	2	names no row=2
+AftermathRites	2	0	2	names no row=2
+Antiquities	6	0	6	names no row=6
+Armoury	15	1	14	names no row=14
+AshkarrLandmarkArt	2	0	2	names no row=2
+Atlas	4	0	4	names no row=4
+Bacta	5	0	5	names no row=5
+BlueDesert	3	0	3	names no row=3
+CathedralPass	1	0	1	names no row=1
+Cauldron	10	1	9	names no row=9
+ColdStorage	9	0	9	names no row=7; no suite=2
+Contagion	13	2	11	names no row=11
+CreatureBehaviors	50	1	49	lint refuses the row's line=1; names no row=48
+Cuisine	12	0	12	names no row=12
+DeepDrill	7	0	7	names no row=4; suite unreadable=3
+DivingInteraction	19	0	19	names no row=19
+Doctrine	4	0	4	names no row=4
+Droidworks	9	0	9	names no row=9
+EggReckoning	1	0	1	names no row=1
+EmpirePursuit	6	0	6	names no row=6
+EnvironmentalHazards	56	0	56	names no row=56
+ExplosiveGrowth	10	0	10	lint refuses the row's line=2; names no row=8
+ExplosiveKnockback	8	0	8	names no row=8
+FallLineArrivals	1	0	1	names no row=1
+FeverWood	19	0	19	names no row=19
+FlameStatues	2	0	2	names no row=2
+FlowWorks	111	2	109	lint refuses the row's line=1; names no row=108
+GelatinousSlime	5	0	5	names no row=5
+GimmeSomeSlack	8	0	8	names no row=8
+GizkaStowaway	2	0	2	names no row=2
+Graffiti	3	0	3	names no row=3
+GravshipLanding	1	0	1	names no row=1
+Greentide	25	1	24	names no row=24
+HostileFlora	1	1	0	
+HugeThings	26	0	26	names no row=26
+JawaRules	1	0	1	names no row=1
+KeelHoist	3	0	3	names no row=3
+LanternDeeps	7	0	7	names no row=7
+LeaningScrub	8	0	8	lint refuses the row's line=4; names no row=4
+LongShade	17	0	17	lint refuses the row's line=1; names no row=16
+LoreStages	1	1	0	
+LuminousPigment	23	0	23	names no row=23
+MenuShell	2	0	2	names no row=2
+Miasma	7	0	7	names no row=7
+Minerals	16	5	11	lint refuses the row's line=2; names no row=9
+MovingDunes	4	0	4	names no row=4
+PawnFlavor	6	0	6	names no row=6
+Pyrelands	14	0	14	names no row=14
+PyrelandsMechanics	5	0	5	names no row=5
+RaidRedesigner	2	0	2	names no row=2
+RimMandrake.Biomes	1	0	1	names no row=1
+Rites	7	0	7	names no row=7
+RustCathedral	30	1	29	names no row=29
+RustChrome	2	0	2	names no row=2
+SWBestiary	20	0	20	lint refuses the row's line=1; names no row=19
+Scarlands	28	0	28	names no row=28
+ScarlandsLadder	2	0	2	names no row=2
+ShipShields	2	0	2	names no row=2
+ShipVermin	1	0	1	names no row=1
+Shokk	4	0	4	names no row=4
+SithLine	7	1	6	names no row=6
+SleepingIce	2	0	2	names no row=2
+SolarMirrors	9	0	9	names no row=9
+StarWarsPatches	3	0	3	names no row=3
+StarWarsRaces	2	0	2	names no row=2
+Stillsand	49	2	47	names no row=47
+StructureInjections	1	0	1	names no row=1
+StructureInjectionsRUT	14	0	14	names no row=14
+StructureInjectionsSW	5	0	5	names no row=5
+TerminalBiomes	40	1	39	names no row=39
+TheBazaar	1	0	1	names no row=1
+TheForge	23	0	23	names no row=23
+TheRot	23	1	22	lint refuses the row's line=5; names no row=17
+TheSump	25	0	25	names no row=25
+TileFeatures	3	0	3	suite unreadable=3
+TrophyCraft	4	0	4	names no row=4
+UnfinishedLine	8	0	8	names no row=8
+UtinniPatches	105	3	102	lint refuses the row's line=1; names no row=101
+Warcasket	7	0	7	names no row=7
+WasteRun	7	0	7	names no row=7
+Wastes	2	0	2	names no row=2
+WeatherSuite	1	0	1	names no row=1
+Webwork	22	0	22	lint refuses the row's line=2; names no row=20
+WeepingStones	6	1	5	names no row=5
+Wreckage	2	0	2	names no row=2
+WreckedMachines	5	0	5	names no row=5
+TOTAL (criteria, once each)	882	25	857	
