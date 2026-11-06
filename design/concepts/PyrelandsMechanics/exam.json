@@ -1,0 +1,176 @@
+{
+ "author": "concept (tree authored_by; stage-3 runs rm-role-designer-1793900422, rm-role-designer-1793914531)",
+ "examiner": "rm-judge a341313ab1c410415 (fresh, not the author), challenger rm-judge af27af147d3853d74",
+ "run": "rm-role-designer-1793929481",
+ "inputs": {
+  "tree": "8d85249f7028c05470902cc08c2f4a3c7e7daf856bbd461b86c28da750d11f3b",
+  "sheet": "9cf7e207f758b8c0967d3101163bf178297216c080800466e5db3790d58a67c5"
+ },
+ "scenarios": [
+  {
+   "id": "e1",
+   "text": "Over a season the colony deliberately burns several big patches of desert grass to clear land. A few days later a Deep Desert Tribes raid lands, with a letter saying they are punishing the colony for its fires.",
+   "expect": "reject: there is no count of the colony's fires; no raid, goodwill loss or warning may come from them",
+   "expect_source": "leaf:no_arson_tally"
+  },
+  {
+   "id": "e2",
+   "text": "During a rite, the colony's tame muffalo wanders into the burned scar and grazes on scorch-fruit. A Tribes harvester shouts a warning and then attacks the muffalo until it leaves.",
+   "expect": "reject: nothing an animal does counts against the player; the defence must not trigger on a tame animal",
+   "expect_source": "leaf:no_animal_blame"
+  },
+  {
+   "id": "e3",
+   "text": "While a rite party is harvesting its own scar in the east, a colonist picks scorch-fruit in an old burn on the west side of the map. Two Tribes harvesters leave their scar, warn the colonist and attack.",
+   "expect": "reject: only the scar the party is harvesting is defended, not fruit elsewhere on the map",
+   "expect_source": "leaf:fruit_defence_their_scar_only"
+  },
+  {
+   "id": "e4",
+   "text": "A colonist is warned off the Tribes' scar, ignores it, is attacked and walks away. Afterwards the faction screen shows Tribes goodwill dropped by 15.",
+   "expect": "reject: driving a picker off costs no goodwill",
+   "expect_source": "OWNER:1793898835366988441"
+  },
+  {
+   "id": "e5",
+   "text": "A rite harvester spots fruit on the far side of the advancing fire line, paths straight through the burning cells to reach it and catches fire.",
+   "expect": "reject: the party picks in the black behind the front and never steps into the flames",
+   "expect_source": "leaf:rite_harvests_behind_front"
+  },
+  {
+   "id": "e6",
+   "text": "A Tribes harvester attacks a colonist who kept picking in their scar; the colonist punches back before leaving. The whole Tribes faction turns hostile and a raid arrives two days later.",
+   "expect": "reject: the drive-off brings no raid and no war even when the picker fights back; that is self-defence",
+   "expect_source": "leaf:fruit_defence_warns_then_drives"
+  },
+  {
+   "id": "e7",
+   "text": "With a large fire standing on the map, a peaceful Tribes group walks in, stands at the centre of the burn for a while, and leaves the map without picking any scorch-fruit.",
+   "expect": "reject: the visit must pick in the black and carry the fruit off",
+   "expect_source": "leaf:visit_picks_and_leaves"
+  },
+  {
+   "id": "e8",
+   "text": "A rite is announced. The Tribes party walks in at the north edge, but the fire line ignites at a scheduled spot near the south edge, far from where they stand.",
+   "expect": "reject: the grass catches where the party stands",
+   "expect_source": "leaf:rite_party_arrives"
+  },
+  {
+   "id": "e9",
+   "text": "Rite harvesters pick more than they can carry, drop the overflow in a pile in the scar, and walk off the map, leaving the pile behind.",
+   "expect": "reject: the party walks off carrying what it picked, not leaving a pile of fruit",
+   "expect_source": "leaf:rite_leaves_with_fruit"
+  },
+  {
+   "id": "e10",
+   "text": "The player drafts colonists and shoots a Tribes harvester unprovoked in the middle of a rite. The party simply finishes its exit and the Tribes stay friendly with no raids ever following.",
+   "expect": "reject: attacking them openly turns them hostile and they raid you",
+   "expect_source": "leaf:attack_brings_raids"
+  },
+  {
+   "id": "e11",
+   "text": "A small Tribes party walks in off the sand during a scheduled burn, and the grass catches right where they are standing.",
+   "expect": "accept: matches the rite party arriving and lighting the line where they stand",
+   "expect_source": "leaf:rite_party_arrives"
+  },
+  {
+   "id": "e12",
+   "text": "A colonist starts picking scorch-fruit in the scar the rite party is harvesting. A message naming the Tribes appears and a harvester walks over; the colonist keeps picking, is attacked, walks out of the scar, and the harvester goes back to the fruit. Goodwill is unchanged and no raid follows.",
+   "expect": "accept: warned, then attacked until it leaves; no goodwill lost, no raid",
+   "expect_source": "leaf:fruit_defence_warns_then_drives"
+  },
+  {
+   "id": "e13",
+   "text": "The player opens fire on a Tribes party at a rite. The Tribes become hostile and raid the colony a few days later, and again the next season.",
+   "expect": "accept: attacking them openly makes them hostile and they raid, maybe again later",
+   "expect_source": "leaf:attack_brings_raids"
+  },
+  {
+   "id": "e14",
+   "text": "A big wildfire is burning on the map. A peaceful Tribes group walks in, picks scorch-fruit in the burned ground behind the fire, and walks off the map carrying it.",
+   "expect": "accept: matches the visit picking in the black and carrying it off",
+   "expect_source": "leaf:visit_picks_and_leaves"
+  },
+  {
+   "id": "e15",
+   "text": "While a rite party harvests its scar, a colonist picks scorch-fruit from an old burn elsewhere on the map. The Tribes ignore it entirely.",
+   "expect": "accept: only the scar the party is harvesting is defended",
+   "expect_source": "leaf:fruit_defence_their_scar_only"
+  },
+  {
+   "id": "e16",
+   "text": "After harvesting in the black, the rite party gathers up and walks off the map edge, each harvester carrying its scorch-fruit, with none left on the ground.",
+   "expect": "accept: the party walks off the map carrying what it picked",
+   "expect_source": "leaf:rite_leaves_with_fruit"
+  },
+  {
+   "id": "e17",
+   "text": "A fire-hawk drops a burning twig that sets the colony's fields alight right next to a Tribes rite. The Tribes send no warning, lose no goodwill and send no raid.",
+   "expect": "accept: nothing an animal does counts against the player",
+   "expect_source": "OWNER:1793895903357725756"
+  },
+  {
+   "id": "e18",
+   "text": "The colony burns grass many times in a year for farming. No warning, goodwill change or raid from the Tribes ever follows.",
+   "expect": "accept: there is no count of the colony's fires",
+   "expect_source": "leaf:no_arson_tally"
+  },
+  {
+   "id": "c1",
+   "text": "Your colonists have been setting a lot of controlled burns to clear the desert scrub over the past season. When the next Tribes rite party walks in, a message says the Tribes are uneasy about how much of their land your colony has burned, and their goodwill drops by 5 as a warning.",
+   "expect": "reject: there is no count of the colony's fires; burning land never brings a warning, goodwill loss or raid",
+   "expect_source": "leaf:no_arson_tally"
+  },
+  {
+   "id": "c2",
+   "text": "A tamed fire-hawk drops a burning twig at the edge of the Tribes' freshly lit scar and the blaze spreads into land they are harvesting. The harvesters turn on your colony: goodwill falls and a small war party is sent after you.",
+   "expect": "reject: nothing an animal does counts against the player, tamed animals included",
+   "expect_source": "OWNER:1793895903357725756"
+  },
+  {
+   "id": "c3",
+   "text": "During a rite, a colonist picks scorch-fruit in an old burn on the far side of the map, well away from the scar the party is working. One of the harvesters spots this, comes over with a warning and then attacks the colonist to drive it off that old burn.",
+   "expect": "reject: only the scar the party is harvesting is defended; picking anywhere else draws no response",
+   "expect_source": "leaf:fruit_defence_their_scar_only"
+  },
+  {
+   "id": "c4",
+   "text": "A colonist picking in the Tribes' scar is warned and then attacked, so it fights back and wounds a harvester. The defence ends when the colonist leaves the scar, but afterwards the Tribes faction turns hostile and raids arrive over the next few weeks.",
+   "expect": "reject: fighting back during the drive-off is self-defence; it ends with the fight, with no war and no raids",
+   "expect_source": "leaf:fruit_defence_warns_then_drives"
+  },
+  {
+   "id": "c5",
+   "text": "With a big fire standing on the map, a peaceful Tribes group walks in. To reach the ripest scorch-fruit, a harvester briefly steps across a burning cell at the front, picks it, then comes back into the black and leaves with its bundle.",
+   "expect": "reject: the party picks only in the black behind the front and never steps into the flames",
+   "expect_source": "leaf:rite_harvests_behind_front"
+  }
+ ],
+ "scenarios_hash": "f9d8e2935bdce0690e552300387ec6acf9a07620fe8f13d1ac644f6847a4e0d1",
+ "readers": [
+  "rm-judge af588634fcd2ca859",
+  "rm-judge aeb28f8ab3c9a6f8c"
+ ],
+ "control": {
+  "runs": [
+   {
+    "broken_leaf": "fruit_defence_their_scar_only",
+    "reader": "rm-judge ad3291758fb983095",
+    "missed": false
+   },
+   {
+    "broken_leaf": "rite_harvests_behind_front",
+    "reader": "rm-judge aca175183c51be84b",
+    "missed": false
+   }
+  ],
+  "missed": false,
+  "note": "Neither control missed: each removed rule is also stated elsewhere (scar reach inside fruit_defence_warns_then_drives 'in their scar'; flames inside walk_tribes_season 'pick behind the front' and the visit leaf). The scenarios did not discriminate a single-leaf removal; the redundancy is in the tree, not the scenarios. Not waived: whoever accepts stage 4 decides whether this control result is acceptable."
+ },
+ "score": {
+  "right": 23,
+  "total": 23
+ },
+ "accept_where_reject_core": 0,
+ "challenger_misses": []
+}

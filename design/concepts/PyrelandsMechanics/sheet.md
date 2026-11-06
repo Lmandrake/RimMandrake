@@ -4,6 +4,8 @@
 - 2026-11-05, on the root paragraph: "If you try to pick the scorchfruit during one of their events, they issue warnings, then attack to drive you away (not a full blown raid, just defense of the fruit). Actually just remove the count thing... that's a mechanic we don't even need. They can't see you all the time. And never do they react to an animal doing something to blame the player. Attacking them overtly makes them raid you back of course, and they may continue to do so later."
 - 2026-11-05, by card, which scorch-fruit is theirs: "Their scar, no goodwill"
 - 2026-11-05, by card, the visit at the fire: "Pick and carry off"
+- 2026-11-05, by card, the face of the Tribes: "The rite party"
+- 2026-11-05, by card, the north star: "Yes, validate"
 
 ## does
 - [leaf:rite_party_arrives] Now and then a scheduled burn arrives with a small Tribes party walking in off the sand, and the grass catches where they stand. OWNER:1793895903357725756
@@ -27,8 +29,6 @@
 ## waived
 
 ## open
-- Which showcase is the mod's face is not yet your pick; the rite party, with a colonist warned off their scar, is drafted as showcase 1 and waits on it
-- The north star for this mod is new and DRAFT; it needs your word to validate before the mod is handed over
 
 ## delegated
 - Raid-back is vanilla faction hostility; nothing extra is built. You can undo it
