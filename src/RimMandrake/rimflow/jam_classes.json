@@ -10,7 +10,7 @@
    "match": ["^pool (full|at)\\b"],
    "detector": {"target": "OPS_RELENTLESS_UNSTICK", "how": "relentless.distressed: the staffing reading names the pool hold as the cause of nothing live"},
    "remedy": {"auto": "src/RimMandrake/rimflow/relentless.py::make_room", "what": "each tick gives back idle and put-down clones before a lease; a held, blocked or game-waiting item's clone goes back with all its commits"},
-   "fixed": {"sha": "7684d1bcbe", "at": "2026-11-04T02:58:41Z", "item": "POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG"},
+   "fixed": {"sha": "aa7fdebfa2", "at": "2026-11-06T05:00:35Z", "item": "OPS_JAM_CLASS_FIX_AGAIN_HJWN"},
    "examples": ["pool full: 16 clones, cap 16, nothing to release: BIOME_FLORAFAUNA_ART_REVIEW_1 (live), CLIFF_SHOT_FIX_DEPENDS_ON_SHOOTER_END (live)",
                 "pool at 71 GB, cap 70 GB (the revert line)"]
   },

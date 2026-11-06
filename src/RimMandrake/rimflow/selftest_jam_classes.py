@@ -11,6 +11,7 @@ import os
 import shutil
 import sys
 import tempfile
+import time
 import types
 from pathlib import Path
 
@@ -142,10 +143,10 @@ def journal(rows):
 
 
 def census():
-    now = JC.epoch("2026-11-05T00:00:00Z")
     fix = cls(REG, "pool_full")["fixed"]["at"]
-    before = "2026-11-03T17:15:47Z"
-    after = "2026-11-04T20:00:00Z"
+    now = JC.epoch(fix) + 4 * 3600      # the times follow the shipped fix, which moves each time the class is fixed again
+    before = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(JC.epoch(fix) - 3600))
+    after = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(JC.epoch(fix) + 3600))
     assert JC.epoch(before) < JC.epoch(fix) < JC.epoch(after)
     rows = [
         {"at": before, "do": "alarm", "kind": "jam", "why": "pool full: 16 clones, cap 16, nothing to release: A (live)"},
@@ -182,6 +183,21 @@ def books_dirty_refix():
     rows.append({"at": "2026-11-05T13:00:00Z", "do": "alarm", "kind": "jam", "why": why})
     c = JC.census(REG, journal(rows), JC.epoch("2026-11-05T14:00:00Z"))
     check([r["at"] for r in c.get("repeats", [])] == ["2026-11-05T13:00:00Z"], "a jam after the new fix is a repeat: %s" % c)
+
+
+def pool_full_refix():
+    """OPS_JAM_CLASS_FIX_AGAIN_HJWN, 2026-11-06: pool_full fixed again (dead uncharged runs pinned clones live) moves
+    fixed.at past the jam that reopened it (04:23:14Z), so that jam stops counting as a repeat; one after still counts."""
+    fx = cls(REG, "pool_full")["fixed"]
+    check(JC.epoch(fx["at"]) > JC.epoch("2026-11-06T04:49:53Z"), "pool_full.fixed.at is after the reopening jams: %s" % fx)
+    why = "pool full: 15 clones, cap 16 (1 kept for checks), nothing to release: BAROQUE_LIST_PAGE_REDRAW_UMBRA_AS_BIOME (live)"
+    rows = [{"at": "2026-11-06T04:23:14Z", "do": "alarm", "kind": "jam", "why": why}]
+    c = JC.census(REG, journal(rows), JC.epoch("2026-11-06T06:00:00Z"))
+    check(c.get("by_class") == {"pool_full": 1} and c.get("repeats") == [],
+          "the 04:23Z pool_full jam is classed and is no repeat: %s" % c)
+    rows.append({"at": "2026-11-06T07:00:00Z", "do": "alarm", "kind": "jam", "why": why})
+    c = JC.census(REG, journal(rows), JC.epoch("2026-11-06T08:00:00Z"))
+    check([r["at"] for r in c.get("repeats", [])] == ["2026-11-06T07:00:00Z"], "a pool_full jam after the new fix is a repeat: %s" % c)
 
 
 def ops(rows, now):
@@ -229,6 +245,7 @@ if __name__ == "__main__":
         rows, now = census()
         ops(rows, now)
         books_dirty_refix()
+        pool_full_refix()
         help_folder()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
