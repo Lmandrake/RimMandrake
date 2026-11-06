@@ -19,7 +19,8 @@ Kinds (one schema version, V):
     run     a box run of the item's proof at sha (relentless_boxrun.check, finish or the builder's verb): gen, kind_of_run,
             mode, exam_hash (today the contract hash; WP-03 makes it the exam's), argv, exit, out_sha256, secs, verdict,
             why, box {config_hash, tools}
-    marker  a Marker's verdict at sha: verdict (PASS/WEAK/FAIL/UNMEASURED), classes, session, nonce, reasons_sha256
+    marker  a Marker's verdict at sha: verdict (PASS/WEAK/FAIL/UNMEASURED), classes (cause classes), defects (its
+            structured defect lines), session, nonce, reasons_sha256
 
 Only the supervisor writes here (finish's box run, the Marker's verdict, later the live broker). Read with read() /
 verify(); `python3 evidence.py verify|show|marker|harvest`.
@@ -41,7 +42,7 @@ ZERO = "0" * 64
 KINDS = ("run", "marker")
 MARKER_WORDS = ("PASS", "WEAK", "FAIL", "UNMEASURED")
 INDEX = "index.jsonl"
-_ID = re.compile(r"^[A-Za-z0-9_.-]{1,160}$")
+_ID = re.compile(r"^[A-Za-z0-9_][A-Za-z0-9_.-]{0,159}$")     # never "." / ".." / a dotfile: no way out of evidence/
 _SHA = re.compile(r"^[0-9a-f]{40}([0-9a-f]{24})?$")
 
 
@@ -91,7 +92,7 @@ def _lines(path):
             e = None
         out.append((n + 1, e if isinstance(e, dict) else None))
     if raw and not raw.endswith("\n"):
-        out.append((len(out) + 1, None))     # a torn last line: an append that did not finish, or a cut
+        out.append((raw.count("\n") + 1, None))     # a torn last line: an append that did not finish, or a cut
     return out
 
 
@@ -297,7 +298,7 @@ def run_receipt(store_dir, item, sha, rec, exam_hash, argv):
     return append(store_dir, item, sha, "run", body, at=rec.get("at"))
 
 
-def append_marker(store_dir, item, sha, verdict, classes=None, session=None, nonce=None, reasons=""):
+def append_marker(store_dir, item, sha, verdict, classes=None, session=None, nonce=None, reasons="", defects=None):
     """The Marker's verdict on sha, appended (never a rewrite of an earlier verdict). Idempotent on nonce: the same
     check's verdict seen twice is one entry. -> the entry, or None when this nonce is already there."""
     word = str(verdict or "").upper()
@@ -307,7 +308,8 @@ def append_marker(store_dir, item, sha, verdict, classes=None, session=None, non
         if any(e.get("kind") == "marker" and e.get("nonce") == nonce for e in read(store_dir, item, sha)):
             return None
     return append(store_dir, item, sha, "marker", {"verdict": word, "classes": list(classes or []), "session": session,
-                                                    "nonce": nonce, "reasons_sha256": sha256_text(reasons)})
+                                                    "defects": list(defects or []), "nonce": nonce,
+                                                    "reasons_sha256": sha256_text(reasons)})
 
 
 def harvest(store):
@@ -320,7 +322,7 @@ def harvest(store):
         if not chk.get("verdict") or not _SHA.match(str(cand.get("sha") or "")):
             continue
         try:
-            e = append_marker(store.dir, st["item"], cand["sha"], chk["verdict"], classes=chk.get("defects") or [],
+            e = append_marker(store.dir, st["item"], cand["sha"], chk["verdict"], defects=chk.get("defects") or [],
                               session=chk.get("session"), nonce=chk.get("nonce"), reasons=chk.get("reasons") or "")
         except (ValueError, OSError) as ex:
             print("evidence: harvest %s: %s" % (st.get("item"), ex), file=sys.stderr)

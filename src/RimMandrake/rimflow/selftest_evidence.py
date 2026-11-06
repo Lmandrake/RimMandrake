@@ -115,7 +115,7 @@ def t_marker_append():
         ok(False, "3. a non-word verdict is refused")
     except ValueError:
         ok(True, "3. a non-word verdict is refused")
-    for bad in (("I1", "HEAD"), ("I1", SHA[:10]), ("../x", SHA)):
+    for bad in (("I1", "HEAD"), ("I1", SHA[:10]), ("../x", SHA), ("..", SHA), (".hidden", SHA)):
         try:
             E.record_path(d, *bad)
             ok(False, "3. record_path refuses %r" % (bad,))
@@ -131,7 +131,7 @@ def t_marker_append():
     got = E.harvest(x.s)
     got2 = E.harvest(x.s)
     es = E.read(x.s.dir, "I0", SHA2)
-    ok(got == [("I0", SHA2, "WEAK")] and got2 == [] and len(es) == 1 and es[0]["classes"] == ["c1"],
+    ok(got == [("I0", SHA2, "WEAK")] and got2 == [] and len(es) == 1 and es[0]["defects"] == ["c1"],
        "3. harvest appends a held verdict once: %r %r" % (got, got2))
     shutil.rmtree(d, ignore_errors=True)
 
@@ -152,15 +152,27 @@ def _rewrite(path, fn):
         f.writelines(fn(lines))
 
 
+def _dump(e):
+    return json.dumps(e, sort_keys=True, separators=(",", ":")) + "\n"
+
+
 def _rehash(line):
     e = json.loads(line)
     e["exit"] = 0
     e["hash"] = E.entry_hash(e)
-    return json.dumps(e, sort_keys=True, separators=(",", ":")) + "\n"
+    return _dump(e)
+
+
+def _forged_next(ls):
+    """A well-formed next entry: right n, prev and hash - only the index can tell it was not appended."""
+    last = json.loads(ls[-1])
+    e = dict(last, n=last["n"] + 1, prev=last["hash"], exit=0)
+    e["hash"] = E.entry_hash(e)
+    return ls + [_dump(e)]
 
 
 def t_tamper():
-    d = _fresh()
+    d0 = d = _fresh()
     p = E.record_path(d, "I1", SHA)
     ok(E.verify_all(d) == {"index": []}, "4. a clean store verifies: %r" % E.verify_all(d))
     mode = stat.S_IMODE(os.stat(p).st_mode)
@@ -171,7 +183,8 @@ def t_tamper():
         "an edited line re-hashed": (p, lambda ls: [ls[0], _rehash(ls[1]), ls[2]]),
         "a cut tail": (p, lambda ls: ls[:2]),
         "a removed middle line": (p, lambda ls: [ls[0], ls[2]]),
-        "a line written around append()": (p, lambda ls: ls + [ls[2].replace('"n":2', '"n":3')]),
+        "the last line edited and re-hashed": (p, lambda ls: ls[:2] + [_rehash(ls[2])]),
+        "a well-formed line written around append()": (p, _forged_next),
         "a rewritten index (one row dropped)": (os.path.join(d, "evidence", E.INDEX), lambda ls: ls[:1] + ls[2:]),
     }
     for what, (path, fn) in cases.items():
@@ -188,6 +201,7 @@ def t_tamper():
             refused = True
         ok(refused, "4. nothing is appended on top of %s" % what)
         shutil.rmtree(d, ignore_errors=True)
+    shutil.rmtree(d0, ignore_errors=True)
 
     d = _fresh()
     p = E.record_path(d, "I2", SHA)
