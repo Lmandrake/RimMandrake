@@ -37,7 +37,7 @@ one on the moat floor at (30, 3), read through jawa/flowworks_pit_report's canRe
 Reachability.CanReachMapEdge through RM_Patch_Reachability_SuperdeepMapEdge) and three ProofClimb band-2 components;
 moat_verdict), CLIMB_hauler_fetches_ramped_floor (G: a sheer D 4 3x3 at (38..40, 2..4), a D 1 shelf at (41, 3); 10 Jade on
 the floor's middle (39, 3), two squares from every lip; a Colonist with ONLY Hauling (priority 1, every other vanilla work
-type 0) and a Jade-only 2x2 stockpile at (43, 8) left to its own AI: first 600 ticks with NO ramp (the floor must keep the
+type 0; re-spawned up to HAUL_TRIES times until a backstory allows Hauling, rejects drafted, refusals in the row) and a Jade-only 2x2 stockpile at (43, 8) left to its own AI: first 600 ticks with NO ramp (the floor must keep the
 Jade), then a ramp on (40, 3) pointing east and up to 3000 ticks until the Jade lies in the stockpile; haul_verdict).
 CLIMB_maskswap_no_wall_crossing (H, PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH risk 2: the per-request mask swap under 1.6's
 multithreaded pathfinding while masks rebuild): a sheer D 4 3x3 at (16..18, 7..9); a Colonist on its floor (17, 8) ordered
@@ -71,6 +71,7 @@ WAIT_OUT = 900
 SITE_W, SITE_H = 46, 12
 HAUL_SEALED_TICKS = 600
 HAUL_BUDGET = 3000
+HAUL_TRIES = 6            # a random Colonist's backstory may disable Hauling (live 2026-10-29: Human19556); re-roll
 HAUL_ITEM = "Jade"        # vanilla resource ThingDef: a Jade-only stockpile is never fed by anything else on the map
 # vanilla WorkTypeDefs (Core + DLC; a missing or disabled one is refused by set_work_priority and simply skipped)
 OTHER_WORK = ("Firefighter", "Patient", "Doctor", "PatientBedRest", "Childcare", "BasicWorker", "Warden", "Handling",
@@ -291,19 +292,41 @@ def _things(B, rect):
     return [t for t in r.get("things") or [] if t.get("def") == HAUL_ITEM]
 
 
+def pick_hauler(spawn_one, set_hauling, park, tries=HAUL_TRIES):
+    """CLIMB_HAULER_FIX_BACKSTORY_NO_HAULING: spawn Colonists until one takes Hauling at priority 1.
+    spawn_one() -> pawn id or None; set_hauling(pid) -> set_work_priority reply; park(pid) drafts a reject (a drafted
+    pawn takes no work, so it cannot touch the Jade). Returns (pawn id or None, last reply, refusals). Each refusal keeps
+    the bridge's own message and the pawn's disabledWorkTypes, so an UNMEASURED SITE row says WHY. Pure given its callables."""
+    refusals, hp = [], {}
+    for _ in range(tries):
+        pid = spawn_one()
+        if not pid:
+            refusals.append(dict(pawn=None, message="spawn_pawn returned no pawn"))
+            continue
+        hp = set_hauling(pid) or {}
+        if hp.get("success"):
+            return pid, hp, refusals
+        refusals.append(dict(pawn=pid, message=str(hp.get("message") or hp.get("error") or hp)[:200],
+                             disabled=(hp.get("details") or {}).get("disabledWorkTypes")))
+        park(pid)
+    return None, hp, refusals
+
+
 def haul_rows(B, P, row, spawn, climb, rect_G, rect_pile):
     x0, z0 = P(0, 0)
     site = (x0, z0, SITE_W, SITE_H)
-    hauler = spawn("Colonist", P(39, 9), "player")
+    hauler, hp, refusals = pick_hauler(
+        lambda: spawn("Colonist", P(39, 9), "player"),
+        lambda pid: B.call("jawa/set_work_priority", pawnId=pid, workType="Hauling", priority=1),
+        lambda pid: B.call("jawa/set_draft", pawnId=pid, drafted=True))
     prio = {w: (B.call("jawa/set_work_priority", pawnId=hauler, workType=w, priority=0) or {}).get("success")
             for w in OTHER_WORK} if hauler else {}
-    hp = (B.call("jawa/set_work_priority", pawnId=hauler, workType="Hauling", priority=1) or {}) if hauler else {}
     zr = B.call("jawa/map_zones", action="createZone", zoneType="stockpile", rect="%d,%d,%d,%d" % rect_pile) or {}
     label = zr.get("created")
     ss = (B.call("jawa/storage_settings", target=label, disallowAll=True, allow=HAUL_ITEM) or {}) if label else {}
     sp = B.call("jawa/spawn_batch", ops="%s:%d,%d,10" % ((HAUL_ITEM,) + P(39, 3))) or {}
     setup = dict(hauler=hauler, hauling=hp.get("success"), zone=label, filter=ss.get("success"),
-                 placed=sp.get("thingsPlaced"), othersOff=sum(1 for v in prio.values() if v))
+                 placed=sp.get("thingsPlaced"), othersOff=sum(1 for v in prio.values() if v), refusals=refusals)
     if not (hauler and hp.get("success") and label and ss.get("success") and sp.get("thingsPlaced")):
         row("CLIMB_hauler_fetches_ramped_floor", "UNMEASURED", "SITE", dict(why="haul scene not staged", **setup))
         return

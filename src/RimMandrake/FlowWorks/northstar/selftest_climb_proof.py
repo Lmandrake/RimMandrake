@@ -119,5 +119,23 @@ check("--require: named rows all PASS exits 0", C.require_exit(RR, "A") == 0)
 check("can-fail --require: an UNMEASURED or missing row exits 1", C.require_exit(RR, "A,B") == 1 and C.require_exit(RR, "Z") == 1
       and C.require_exit(RR, " , ") == 1)
 
+# CLIMB_HAULER_FIX_BACKSTORY_NO_HAULING: a Hauling-disabled colonist is re-rolled, not reported as an unstaged site
+REFUSE = {"success": False, "message": "SetPriority silently refuses: 'Hauling' is DISABLED for this pawn",
+          "details": {"disabledWorkTypes": ["Hauling", "Cleaning"]}}
+ids, parked = iter(["Human1", "Human2", "Human3"]), []
+replies = {"Human1": REFUSE, "Human2": {"success": True, "priority": 1}}
+pid, hp, ref = C.pick_hauler(lambda: next(ids), replies.get, parked.append)
+check("hauler: a disabled pawn is skipped for the next one", pid == "Human2" and hp.get("success"))
+check("hauler: the reject is drafted out of the job market", parked == ["Human1"])
+check("hauler: the refusal message and disabled list are logged",
+      len(ref) == 1 and "DISABLED" in ref[0]["message"] and ref[0]["disabled"] == ["Hauling", "Cleaning"])
+parked = []
+pid, hp, ref = C.pick_hauler(lambda: "HumanX", lambda p: REFUSE, parked.append, tries=3)
+check("hauler: can-fail: every try refused -> no hauler, every refusal kept", pid is None and len(ref) == 3
+      and len(parked) == 3 and hp.get("success") is False)
+pid, hp, ref = C.pick_hauler(lambda: None, lambda p: {"success": True}, parked.append, tries=2)
+check("hauler: a failed spawn is a logged refusal, never a hauler", pid is None and ref[0]["pawn"] is None
+      and "no pawn" in ref[0]["message"])
+
 print("%s: %d failure(s)" % ("PASS" if not fails else "FAIL", len(fails)))
 sys.exit(1 if fails else 0)
