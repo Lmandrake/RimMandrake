@@ -1,0 +1,1 @@
+OPS_STEVE_UNSTICK_UNCLAIMED_ETBS: rimflow guard binds the red to the test file's hash at that moment; editing the test after guard and before commit makes the close refuse ('not the test shown failing'). Commit the test first (or re-run guard after the last edit); to re-show red later, swap the fixed files to the work commit's parent, run guard, restore.
