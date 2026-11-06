@@ -66,7 +66,7 @@ PIN = os.path.join(HERE, "donor_off_phase0_inputs.json")
 TRACKER = os.path.join(REPO, "design", "RimMandrake", "donor_pack_port_tracker.md")
 P2_CLASSIFICATION = os.path.join(REPO, "Transient", "phase0_p2_classification.md")
 P6_CENSUS = os.path.join(REPO, "Transient", "phase0_p6_save_census.md")
-SARLACC_RENAMES = os.path.join(REPO, "Transient", "phase0_sarlacc_save_renames.md")
+SARLACC_RENAMES = os.path.join(HERE, "donor_off_sarlacc_renames.md")   # tracked: Transient is per-clone
 TRACKER_KEEP = ("PORTED", "DONE_ALREADY_OWNED")
 # W4 handoff (FOUNDRY_HANDOFF_202610151923, DONOR_OFF_LOAD_PROVE_AFTER_BENCH): "generate AridShrubland, TheRot, Webwork".
 # TheRot and Webwork are derived (RM_ rows); AridShrubland has only the frozen twin, named here with its source.
