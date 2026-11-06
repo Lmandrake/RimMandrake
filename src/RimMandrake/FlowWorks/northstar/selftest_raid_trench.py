@@ -114,6 +114,30 @@ chk(R.maskswap_verdict(3, "PASS", [5], [{"def_": "RM_LadderPortable"}], staged_w
 chk(R.maskswap_verdict(3, "PASS", [], [], staged_way=False) == "PASS", "maskswap: no crossing PASS")
 chk(R.maskswap_verdict(1, "PASS", [], [], staged_way=False) == "UNMEASURED", "maskswap: under 2 raiders near UNMEASURED")
 chk(R.maskswap_verdict(3, "FAIL", [], [], staged_way=False) == "UNMEASURED", "maskswap: an unsealed island UNMEASURED")
+# RAID_TRENCH_FIX_OWN_JUMP_PACKS_FAIL (live 2026-10-29, raid_trench_20261029.json + gear_probe.txt): a storyteller raid,
+# no --jump-packs, Human46558 (PirateWaster Scavenger) on the island in its own Apparel_PackJump, no raider ways
+_g29 = {"success": True, "pawns": [{"thingId": "Human46558", "apparel": [
+    {"def": "Apparel_Jacket", "defName": "Apparel_Jacket", "stuff": "Cloth", "hp": 114},
+    {"def": "Apparel_PackJump", "defName": "Apparel_PackJump", "hp": 100}]}]}
+_bare = {"success": True, "pawns": [{"thingId": "Human46566", "apparel": [{"def": "Apparel_Jacket", "defName": "Apparel_Jacket"}]}]}
+chk(R.worn_jump_pack(_g29) is True, "jump pack: the 2026-10-29 pawn_get reply reads a worn Apparel_PackJump")
+chk(R.worn_jump_pack(_bare) is False, "jump pack: apparel read, no pack -> False")
+chk(R.worn_jump_pack({"success": False}) is None and R.worn_jump_pack(None) is None, "jump pack: unread -> None")
+_p29 = {"Human46558": R.worn_jump_pack(_g29), "Human46566": R.worn_jump_pack(_bare)}
+chk(R.maskswap_verdict(5, "PASS", ["Human46558"], [], False, _p29) == "UNMEASURED",
+    "maskswap: the raid's own jump-pack raider on the island is masked, not FAIL (2026-10-29)")
+chk(R.maskswap_verdict(5, "PASS", ["Human46566"], [], False, _p29) == "FAIL",
+    "maskswap: can-fail, a crossed raider whose gear reads no jump pack")
+chk(R.maskswap_verdict(5, "PASS", ["Human46558", "Human46566"], [], False, _p29) == "FAIL",
+    "maskswap: one jumper does not excuse a packless crosser")
+chk(R.maskswap_verdict(5, "PASS", ["HumanX"], [], False, _p29) == "UNMEASURED", "maskswap: an unread crosser is masked")
+chk(R.ladder_breach_verdict(5, "PASS", False, ["Human46558"], False, _p29) == "UNMEASURED",
+    "ladder breach: the raid's own jump-pack crossing is not a ladder FAIL (2026-10-29)")
+chk(R.ladder_breach_verdict(5, "PASS", False, ["Human46566"], False, _p29) == "FAIL",
+    "ladder breach: can-fail, a packless crosser with no ladders")
+chk(R.ladder_breach_verdict(5, "PASS", False, [], False, _p29) == "FAIL", "ladder breach: came near, never crossed: stall FAIL")
+chk(R.ladder_breach_verdict(5, "PASS", True, ["Human46566"], False, _p29) == "PASS", "ladder breach: both walls laddered and used")
+chk(R.ladder_breach_verdict(1, "PASS", True, ["Human46566"], False, _p29) == "UNMEASURED", "ladder breach: under 2 near")
 # OWNER RULING 2026-10-31 (shallow fills only; deep: go around or shoot, never idle at the lip): the lip-idle instrument
 # and the three rule rows
 chk(R.job_of("duty=AssaultColony toil=X job=Wait_Wander giver=JobGiver_WanderAnywhere") == "Wait_Wander" and

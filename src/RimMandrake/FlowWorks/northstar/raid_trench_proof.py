@@ -287,14 +287,52 @@ def tree_verdict(planted, standing_after, chop_seen, came_near):
     return "FAIL", "raiders came near, every oak still stands and no RM_RaiderChopForLadder job was seen"
 
 
-def maskswap_verdict(came_near, sealed, crossed, ways, staged_way):
+JUMP_PACK_DEFS = ("Apparel_PackJump",)
+
+
+def worn_jump_pack(reply):
+    """jawa/pawn_get reply -> True (wears a jump pack), False (apparel read, none), None (apparel unread). Pure.
+    RAID_TRENCH_FIX_OWN_JUMP_PACKS_FAIL (live 2026-10-29): a storyteller raid's vanilla Waster kit carries Apparel_PackJump."""
+    pawns = (reply or {}).get("pawns") or []
+    if not pawns or not isinstance(pawns[0], dict) or not isinstance(pawns[0].get("apparel"), list):
+        return None
+    return any(str(ap.get("defName") or ap.get("def")) in JUMP_PACK_DEFS for ap in pawns[0]["apparel"] if isinstance(ap, dict))
+
+
+def unjumped(crossed, packs):
+    """The crossed raiders that could not have jumped: gear READ and no jump pack. A raider whose gear went unread is not
+    counted (it may have jumped: the question is masked, never a FAIL on an unread instrument). Pure."""
+    return [i_ for i_ in crossed if (packs or {}).get(str(i_)) is False]
+
+
+def maskswap_verdict(came_near, sealed, crossed, ways, staged_way, packs=None):
     """MASKSWAP_no_wall_crossing. ways: raider-faction ladders/planks read back; staged_way: the run itself put a legal way
-    across (jump packs worn, raid ladders or the PLAYER's ladders pre-placed -- the player's are not in `ways`). Pure."""
+    across (jump packs worn, raid ladders or the PLAYER's ladders pre-placed -- the player's are not in `ways`); packs:
+    {raider id: worn_jump_pack()} read per raider, so a raid's OWN jump-pack raider is a legal (masked) crossing. Pure."""
     if came_near < 2 or sealed != "PASS":
         return "UNMEASURED"
     if not crossed:
         return "PASS"
-    return "UNMEASURED" if (ways or staged_way) else "FAIL"
+    if ways or staged_way:
+        return "UNMEASURED"
+    if packs is not None and not unjumped(crossed, packs):
+        return "UNMEASURED"
+    return "FAIL"
+
+
+def ladder_breach_verdict(came_near, sealed, both_walls, crossed, staged_jump, packs=None):
+    """RAIDERS_TRENCH A2 (RAID_LADDER_BREACH). A crossing with no ladders on both walls is a FAIL only when a crossed
+    raider could not have jumped; a run that staged jump packs (or ladders) or whose crossers all wore their own packs
+    is not asked about ladders (jump packs come first in the owner's order). Pure."""
+    if came_near < 2 or sealed != "PASS":
+        return "UNMEASURED"
+    if staged_jump:
+        return "UNMEASURED"
+    if both_walls and crossed:
+        return "PASS"
+    if crossed and packs is not None and not unjumped(crossed, packs):
+        return "UNMEASURED"
+    return "FAIL"
 
 
 TRENCH_SETTINGS = "RimMandrake.FlowWorks.RM_RaiderTrenchSettings"
@@ -697,6 +735,13 @@ def _run(argv, hold):
         # came within NEAR and the row read UNMEASURED on a run that did exactly what the ruling asks. Every live raider's job
         # and giver, early: a Goto from JobGiver_RM_CrossTrench followed by leaving the map alive is the trench rule's
         # give-up (HoldFor Leave), not vanilla's flee.
+        # RAID_TRENCH_FIX_OWN_JUMP_PACKS_FAIL: each raider's worn jump pack, read once when first seen alive
+        for r_ in raiders:
+            if r_.get("spawned") and not r_.get("dead") and str(r_["id"]) not in res.setdefault("jumpPacks", {}):
+                try:
+                    res["jumpPacks"][str(r_["id"])] = worn_jump_pack(B.call("jawa/pawn_get", pawn=r_["id"]))
+                except Exception:  # noqa: BLE001 - an unread pack is None (masked), never a guess
+                    res["jumpPacks"][str(r_["id"])] = None
         if k <= 8:
             for r_ in raiders:
                 if r_.get("spawned") and not r_.get("dead") and r_["id"] not in res.setdefault("ruleLeave", {}):
@@ -779,17 +824,17 @@ def _run(argv, hold):
     det["ringDepth"], det["filledSquares"], det["ringDugShort"] = a.depth, filled, res["ringShort"]
     # HARNESS (shallow3 2026-10-31): a raid that FILLED its way across (the owner's shallow-pit rule) put its own way over:
     # legal, so the filled squares count as a raid way here; read after the ring read-back, not before it.
+    packs = res.get("jumpPacks") or {}
     ms = maskswap_verdict(cameNear, sealed, crossed, ways, bool(a.jump_packs or a.preladder or a.colony_ladders
-                                                            or filled))
+                                                            or filled), packs)
     row("MASKSWAP_no_wall_crossing", ms,
         {"raidersWithin15": cameNear, "islandSealed": sealed, "sampledOnIslandOrTrench": crossed, "churnRebuilds": k,
-         "raiderWays": ways, "caveat": "sampled every %d ticks; never seen, not proven impossible; a crossing over the raid's "
+         "raiderWays": ways, "crossedJumpPacks": {str(i_): packs.get(str(i_)) for i_ in crossed}, "caveat": "sampled every %d ticks; never seen, not proven impossible; a crossing over the raid's "
                                        "own ladder/plank is legal (RAIDERS_TRENCH) and masks the question" % CHUNK})
     walls = sorted({cheb((w["x"], w["z"]), c) for w in ways})
     both = 5 in walls and 6 in walls
     used = bool(det["onIsland"] or det["inTrench"])
-    a2 = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" else
-          "PASS" if (both and used) else "FAIL")
+    a2 = ladder_breach_verdict(cameNear, sealed, both, crossed if used else [], False, packs)
     # OWNER RULING 2026-10-31 (via the Conductor): "Raiders should only be willing to fill relatively shallow pits that are
     # reasonable for their effort. Deep pits they must go around or stand and shoot ... Melee digs, gunners cover." The old
     # A3 bar (RAID_FILL_CAUSEWAY: a 4 m pit filled) asked for what the ruling forbids and is deleted. The fill line is read
@@ -885,7 +930,7 @@ def _run(argv, hold):
     if a.depth <= 6 and not a.no_ladders and not a.no_melee:
         row("RAID_LADDER_BREACH", a2,
             {"onIsland": det["onIsland"], "inTrench": det["inTrench"], "raiderWays": ways, "filledSquares": filled,
-             "wallsLaddered": walls, "outcome": words,
+             "wallsLaddered": walls, "outcome": words, "crossedJumpPacks": {str(i_): packs.get(str(i_)) for i_ in crossed},
              "bar": "raiders within 15 squares; raider-faction ladders/planks on both trench walls and a "
                     "raider used them (in the trench or on the island) -- no stall"})
     save()
