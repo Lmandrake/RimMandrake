@@ -4,5 +4,8 @@
 # A1 runs on any loaded map (it repaints 3 cells near the south-east corner and paints their prior terrain back).
 # A2 makes its own fresh flowworks quicktest map (proof_hose default) and judges the result JSON it writes.
 live-mods: FlowWorks
+# A1's site (GAMEENV_FIX_PROOFSITE_1C77350A_ITEMS_WAIT): the 15:07Z round met a game with no map; --game starts a quicktest
+# only when none is up and leaves a loaded map alone.
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --game
 live-proof A1: python.exe src/RimMandrake/bridgetools/prove_terrain_overlays_cleared.py < /dev/null
 live-proof A2: mkdir -p /mnt/d/ClaudeWork/rimmandrake/scratch/hose_site_fix && rm -f /mnt/d/ClaudeWork/rimmandrake/scratch/hose_site_fix/hose.json && python.exe src/RimMandrake/FlowWorks/northstar/proof_hose.py --live --only style_hose,realflow --out D:/ClaudeWork/rimmandrake/scratch/hose_site_fix/hose.json < /dev/null > /mnt/d/ClaudeWork/rimmandrake/scratch/hose_site_fix/run.txt 2>&1; python3 src/RimMandrake/bridgetools/prove_terrain_overlays_cleared.py --hose-json /mnt/d/ClaudeWork/rimmandrake/scratch/hose_site_fix/hose.json
