@@ -205,7 +205,7 @@ def replay(capdir=None):
 
 
 def _build_suite():
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
     suite = Suite("MineShaft")
     suite.toggles = ["shaftBills", "onlyMapVeins", "stoneBills"]
 
@@ -230,7 +230,7 @@ def _build_suite():
     def defs_resolve(t):
         with t.component("defs_resolve", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             r = _defs(t, DEFS)
             if r.get("notFound") or int(r.get("foundCount", 0)) != len(DEFS):
                 raise ExpectationFailed("shipped defs did not resolve: found %r notFound %r" % (r.get("foundCount"), r.get("notFound")))
@@ -245,14 +245,14 @@ def _build_suite():
     def bills(t):
         with t.component("bills_generated", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             want = ["RecipeDef/%s%s" % (PREFIX, r) for r in MUST_BILL]
             r = _defs(t, want)
             if r.get("notFound") or int(r.get("foundCount", 0)) != len(want):
                 raise ExpectationFailed("generated bills missing: %r" % (r.get("notFound"),))
         with t.component("barred_not_generated", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             want = ["RecipeDef/%s%s" % (PREFIX, r) for r in BARRED_ROCKS]
             r = _defs(t, want)
             if int(r.get("foundCount", 0)) != 0:

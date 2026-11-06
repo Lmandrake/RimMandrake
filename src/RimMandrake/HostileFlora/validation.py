@@ -114,7 +114,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -233,7 +233,7 @@ def _build_suite():
         """Damage one of three adjacent gallowroots; neighbours should swarm; control with the mechanism off."""
         with t.component("neighbours_swarm_when_one_is_hurt", toggle="reactionSourceSpawnEnabled"):
             if not _live(t):
-                return
+                raise RowDone
             t.clear_area(size=24)
             ids = []
             for i in range(3):
@@ -245,16 +245,16 @@ def _build_suite():
                     t.session.track("pawn", rows[0]["id"], x=t.anchor[0] + 2 * i, z=t.anchor[1])
             if len(ids) < 3:
                 _unmeasured(t, "could not spawn three gallowroots (spawn_pawn returned %r)" % (ids,))
-                return
+                raise RowDone
             probe = t.bridge_call("jawa/pawn_get", pawn=ids[1])
             if not _mental(probe)[0]:
                 _unmeasured(t, "jawa/pawn_get exposes no mental-state field for an animal pawn; the swarm cannot be read "
                                "(a mental-state reader tool is owed)")
-                return
+                raise RowDone
             r = t.bridge_call("jawa/damage", thingId=ids[0], amount=1, damageDef="Scratch")
             if isinstance(r, dict) and r.get("success") is False:
                 _unmeasured(t, "jawa/damage refused: %r" % r)
-                return
+                raise RowDone
             t.wait_ticks(120)
             swarming = [i for i in ids[1:] if MENTAL in json.dumps(_mental(t.bridge_call("jawa/pawn_get", pawn=i))[1])]
             if not swarming:

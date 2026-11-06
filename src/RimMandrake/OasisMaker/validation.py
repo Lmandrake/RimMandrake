@@ -107,7 +107,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -266,7 +266,7 @@ def _build_suite():
                 if "ExoticMisc" not in tags:
                     if tags and all(x in ("List`1", "String") or "[" in x for x in tags):
                         _unmeasured(t, "tradeTags returned as a bare type name: %r" % (tags,))
-                        return
+                        raise RowDone
                     raise ExpectationFailed("tradeTags %r lacks ExoticMisc: the machine is not sold" % (tags,))
                 pw = " ".join(_flat(row.get("placeWorkers")))
                 if "RM_PlaceWorker_OasisMaker" not in pw:

@@ -142,7 +142,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -270,7 +270,7 @@ def _build_suite():
             if _live(t):
                 if not isinstance(r, dict) or r.get("success") is not True or r.get("harmonyError"):
                     _unmeasured(t, "harmony_patches could not be asked: %s" % str(r)[:160])
-                    return
+                    raise RowDone
                 owners = [p.get("owner") for m in (r.get("methods") or []) for p in (m.get("postfixes") or [])]
                 if HARMONY_ID not in owners:
                     raise ExpectationFailed("no %s postfix on Tradeable.GetPriceFor (owners: %s)" % (HARMONY_ID, owners))

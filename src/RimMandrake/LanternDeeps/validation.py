@@ -74,7 +74,7 @@ Still not proven / structurally offline-only:
 """
 import re
 
-from modcheck import Suite, ExpectationFailed
+from modcheck import Suite, ExpectationFailed, RowDone
 
 suite = Suite("LanternDeeps")
 suite.toggles = ["lanternDeepsEnabled",
@@ -553,7 +553,7 @@ def creep_cleavers(t):
         with t.component("creep_stalks_and_engulfs", toggle="creepEnabled"):
             res = str((t.bridge_call("jawa/static_call", type=CP, method="ProofCreep", args="10") or {}).get("result", ""))
             if _deep_prereq_missing(t, res):
-                return
+                raise RowDone
             m = re.search(r"before=([\d.]+) after=([\d.]+) engulf=([\d.]+)", res)
             if t._guard() and (not m or float(m.group(2)) >= float(m.group(1)) or float(m.group(3)) <= 0):
                 raise ExpectationFailed("the Creep did not close on and engulf the downed body: %r" % res)
@@ -580,7 +580,7 @@ def aurora_collapse(t):
         with t.component("aurora_brightens_lanternstone", toggle="auroraEnabled"):
             res = str((t.bridge_call("jawa/static_call", type=AP, method="ProofAurora", args="go") or {}).get("result", ""))
             if _deep_prereq_missing(t, res):
-                return
+                raise RowDone
             m = re.search(r"glow=([\d.]+)->([\d.]+)", res)
             if t._guard() and ("active=True" not in res or not m or float(m.group(2)) <= float(m.group(1))):
                 raise ExpectationFailed("aurora did not start or did not brighten lanternstone: %r" % res)
@@ -612,7 +612,7 @@ def hydrocarbon_wave2(t):
         with t.component("slick_lays_fuel", toggle="slickTrailEnabled"):
             res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofSlick", args="go") or {}).get("result", ""))
             if _deep_prereq_missing(t, res):
-                return
+                raise RowDone
             m = re.search(r"moved=(\d+) fuelCells=(\d+)", res)
             if t._guard() and (not m or int(m.group(1)) == 0 or int(m.group(2)) == 0):
                 raise ExpectationFailed("no fuel trail: %r" % res)
@@ -647,20 +647,20 @@ def hydrocarbon_wave3(t):
         with t.component("hush_hides_and_lunges", toggle="hushHidingEnabled"):
             res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofHush", args="go") or {}).get("result", ""))
             if _deep_prereq_missing(t, res):
-                return
+                raise RowDone
             if t._guard() and ("hidden=True" not in res or "second=lunge" not in res):
                 raise ExpectationFailed("hush did not hide and lunge: %r" % res)
         with t.component("sippers_drink_light", toggle="sipperDrinkingEnabled"):
             res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofSipper", args="go") or {}).get("result", ""))
             if _deep_prereq_missing(t, res):
-                return
+                raise RowDone
             m = re.search(r"before=([\d.]+) after=([\d.]+)", res)
             if t._guard() and (not m or float(m.group(2)) >= float(m.group(1))):
                 raise ExpectationFailed("the light did not shrink: %r" % res)
         with t.component("tapper_drains_battery", toggle="tapperEnabled"):
             res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofTapper", args="go") or {}).get("result", ""))
             if _deep_prereq_missing(t, res):
-                return
+                raise RowDone
             m = re.search(r"before=([\d.]+) after=([\d.]+)", res)
             if t._guard() and (not m or float(m.group(2)) >= float(m.group(1))):
                 raise ExpectationFailed("the battery did not drain: %r" % res)

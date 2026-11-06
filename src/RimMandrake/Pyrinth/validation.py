@@ -300,7 +300,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -404,7 +404,7 @@ def _build_suite():
                 f = rows[0].get("fields") or {}
                 if any(f.get(k) is None or "no such field" in str(f.get(k)) for k in ("mineableThing", "mineableYield")):
                     _unmeasured(t, "get_defs returned no mineable fields: %r" % (f,))
-                    return
+                    raise RowDone
                 if str(f.get("mineableThing")) != want[0]:
                     raise ExpectationFailed("mineableThing reads %r, XML says %r" % (f.get("mineableThing"), want[0]))
                 if float(f.get("mineableYield")) != float(want[1]):

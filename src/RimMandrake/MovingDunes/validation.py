@@ -202,7 +202,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -319,7 +319,7 @@ def _build_suite():
             if _live(t):
                 if not isinstance(r, dict) or r.get("success") is not True or r.get("harmonyError"):
                     _unmeasured(t, "harmony_patches could not be asked on the control: %s" % str(r)[:160])
-                    return
+                    raise RowDone
                 if HARMONY_ID in _owners(r):
                     raise ExpectationFailed("control %s.%s reads as patched by %s: the owner check cannot say absent"
                                             % (CONTROL_METHOD + (HARMONY_ID,)))
@@ -330,7 +330,7 @@ def _build_suite():
                     if not isinstance(r, dict) or r.get("success") is not True or r.get("harmonyError"):
                         _unmeasured(t, "harmony_patches could not be asked for %s.%s (Odyssey type missing?): %s"
                                     % (ty, me, str(r)[:160]))
-                        return
+                        raise RowDone
                     if HARMONY_ID not in _owners(r):
                         raise ExpectationFailed("%s.%s carries no patch from %s (owners: %s): rule '%s' is NOT in effect "
                                                 "(the mod logs an error at startup when this happens)"
@@ -348,7 +348,7 @@ def _build_suite():
                     ext = (rows[0].get("fields") or {}).get("modExtensions")
                     if not isinstance(ext, list):
                         _unmeasured(t, "modExtensions of %s unreadable: %r" % (b, ext))
-                        return
+                        raise RowDone
                     flat = " ".join(_flat(ext)).lower()
                     if "dunefieldextension" not in flat and "rm_dunes_sand" not in flat:
                         raise ExpectationFailed("%s has no DuneFieldExtension (the binding patch matched nothing, and a "
@@ -364,11 +364,11 @@ def _build_suite():
                 if "not a dune field" in line or "this map is not a dune field" in line:
                     _unmeasured(t, "the current map's biome carries no DuneFieldExtension (needs a Desert/ExtremeDesert map "
                                    "or featureInOtherBiomes-style binding): %s" % line[:160])
-                    return
+                    raise RowDone
                 flags = dict(re.findall(r"(canHaveSand|decaySuppression|vanillaLayerSuppression)=(True|False)", line))
                 if len(flags) != 3:
                     _unmeasured(t, "report line carries no armed flags: %s" % line[:200])
-                    return
+                    raise RowDone
                 off = [k for k, v in flags.items() if v != "True"]
                 if off:
                     raise ExpectationFailed("rules not armed on a dune map: %s (%s)" % (off, line[:200]))
@@ -379,10 +379,10 @@ def _build_suite():
                 for _ in range(6):
                     ok, _l = _act(t, ACT_SHIFT)
                     if not ok:
-                        return
+                        raise RowDone
                     ok, lines = _act(t, ACT_REPORT)
                     if not ok:
-                        return
+                        raise RowDone
                     seen.add((re.search(r"wind=(\w+)", lines[-1]) or [None, None])[1])
                     if len(seen) > 1:
                         break

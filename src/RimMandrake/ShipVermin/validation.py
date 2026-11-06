@@ -218,7 +218,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -322,7 +322,7 @@ def _build_suite():
         with t.component("breeder_and_pressure_extension_on_the_hull_leech", beyond_toggle=True):
             r = _defs(t, ["ThingDef/%s" % PATCHED_DEF, "ThingDef/Rat"], fields="comps,modExtensions", deep=True)
             if not _live(t):
-                return
+                raise RowDone
             mine, ctl = _row_fields(r, PATCHED_DEF), _row_fields(r, "Rat")
             if mine is None or ctl is None:
                 raise ExpectationFailed("could not read %s / Rat comps+modExtensions: %r" % (PATCHED_DEF, r.get("notFound")))
@@ -333,7 +333,7 @@ def _build_suite():
             blob, cblob = json.dumps(ext, default=str), json.dumps(ctl.get("modExtensions"), default=str)
             if GROUP_TAG in cblob:
                 _unmeasured(t, "the control def (Rat) also reads %s: the probe cannot separate patched from unpatched" % GROUP_TAG)
-                return
+                raise RowDone
             if GROUP_TAG not in blob and "VerminPressureExtension" not in blob:
                 raise ExpectationFailed("%s modExtensions carry neither the %s tag nor the pressure extension: %s"
                                         % (PATCHED_DEF, GROUP_TAG, blob[:300]))
@@ -347,7 +347,7 @@ def _build_suite():
                 sb = (_row_fields(r, PATCHED_DEF) or {}).get("statBases")
                 if not isinstance(sb, list) or not sb or not all(isinstance(x, dict) for x in sb):
                     _unmeasured(t, "statBases not readable as rows (%r): the vacuum stats cannot be asked" % (sb,))
-                    return
+                    raise RowDone
                 blob = json.dumps(sb, default=str)
                 if "VacuumResistance" not in blob:
                     raise ExpectationFailed("%s statBases carry no VacuumResistance (it must live outside a hull): %s"
@@ -404,12 +404,12 @@ def _build_suite():
                 before = _listed(t)
                 if before:
                     _unmeasured(t, "an RM_Alert_ShipVermin is already active on this map (vermin elsewhere): no clean baseline")
-                    return
+                    raise RowDone
                 x, z = t.anchor
                 r = t.bridge_call("jawa/spawn_pawn", kindDef=PATCHED_DEF, x=x, z=z, faction="none", count=2)
                 if not (r or {}).get("pawns"):
                     _unmeasured(t, "could not spawn %s: %r" % (PATCHED_DEF, r))
-                    return
+                    raise RowDone
                 t.wait_ticks(320)      # the population count recomputes every 250 ticks
                 if not _listed(t):
                     raise ExpectationFailed("two hull leeches aboard and no RM_Alert_ShipVermin after 320 ticks")
@@ -464,11 +464,11 @@ def _build_suite():
             if _live(t):
                 if r.get("notFound"):
                     _unmeasured(t, "%s is not loaded (Odyssey DLC / Utinni wiring absent)" % WRECK)
-                    return
+                    raise RowDone
                 comps = (_row_fields(r, WRECK) or {}).get("comps")
                 if not isinstance(comps, list) or not comps:
                     _unmeasured(t, "comps for %s unreadable (%r)" % (WRECK, comps))
-                    return
+                    raise RowDone
                 if all(not isinstance(c, dict) for c in comps):
                     blob = json.dumps(comps, default=str)
                 else:
@@ -476,7 +476,7 @@ def _build_suite():
                 if "VerminNest" not in blob:
                     _unmeasured(t, "%s carries no VerminNest comp in this mod list (the wiring lives in mandrake.rut.patches, "
                                    "which this tier may not load): %s" % (WRECK, blob[:160]))
-                    return
+                    raise RowDone
                 site["ok"] = True
         with t.component("forced_attempt_spawns_a_wild_pawn", beyond_toggle=True):
             if _live(t) and site.get("ok"):

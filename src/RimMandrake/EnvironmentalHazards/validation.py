@@ -218,7 +218,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -319,7 +319,7 @@ def _build_suite():
                     continue
                 if not isinstance(r, dict) or r.get("success") is not True or r.get("harmonyError"):
                     _unmeasured(t, "harmony_patches could not be asked for %s.%s: %s" % (typ, meth, str(r)[:160]))
-                    return
+                    raise RowDone
                 mine = [p for m in (r.get("methods") or []) for p in (m.get(kind) or [])
                         if (p.get("patchMethod") or "").endswith(patch) and p.get("owner") == HARMONY_ID]
                 if not mine:
@@ -349,7 +349,7 @@ def _build_suite():
                 r = t.bridge_call("jawa/static_call", type="RimMandrake.EnvironmentalHazards.RM_SumpLivingMapProof",
                                   method="ProofRewrite", args=mode)
                 if not _live(t):
-                    return
+                    raise RowDone
                 text = str((r or {}).get("result") or (r or {}).get("value") or r)
                 if text.startswith("FAIL"):
                     raise ExpectationFailed("living map proof (%s): %s" % (mode, text[:400]))
@@ -391,7 +391,7 @@ def _build_suite():
                     d = t.bridge_call("jawa/get_defs", defs=";".join(defs), fields="defName", limit=len(defs) + 2)
                     if not isinstance(d, dict) or d.get("success") is False:
                         _unmeasured(t, "get_defs could not be asked for %s: %s" % (defs, str(d)[:160]))
-                        return
+                        raise RowDone
                     if int(d.get("foundCount", 0)) != len(defs) or d.get("notFound"):
                         raise ExpectationFailed("%s: %d of %d wiring defs resolved; notFound=%r"
                                                 % (name, int(d.get("foundCount", 0)), len(defs), d.get("notFound")))

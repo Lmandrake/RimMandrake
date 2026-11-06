@@ -473,7 +473,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -978,7 +978,7 @@ def _build_suite():
                     ad = float(f.get("animalDensity"))
                 except (TypeError, ValueError):
                     _unmeasured(t, "get_defs did not return a numeric animalDensity: %r" % (f,))
-                    return
+                    raise RowDone
                 if not ad > 0:
                     raise ExpectationFailed("animalDensity %s: the whole roster would never spawn" % ad)
         with t.component("roster_fish_and_rock_rows_present", beyond_toggle=True):
@@ -991,7 +991,7 @@ def _build_suite():
                 blob = "|".join(_flat({k: f.get(k) for k in ("wildAnimals", "fishTypes", "forceRockTypes")}))
                 if not f or all(f.get(k) in (None, "") for k in ("wildAnimals", "fishTypes", "forceRockTypes")):
                     _unmeasured(t, "get_defs did not serialise the roster fields: %r" % (list(f)[:6],))
-                    return
+                    raise RowDone
                 # LIVE 2026-10-03: get_defs renders a BiomeAnimalRecord without the animal's name (3 shipped animals read
                 # "missing"); the animals come from jawa/biome_probe, fish and rock rows still from the blob.
                 pr = t.bridge_call("jawa/biome_probe", biomes=BIOME, animals=True, limit=100)
@@ -999,7 +999,7 @@ def _build_suite():
                 names = set(a.get("defName") for a in brows)
                 if not names:
                     _unmeasured(t, "biome_probe returned no roster for %s: %s" % (BIOME, str(pr)[:140]))
-                    return
+                    raise RowDone
                 missing = [n for n in want_animals if n not in names] + [n for n in want_fish + want_rock if n not in blob]
                 if missing:
                     raise ExpectationFailed("biome lacks rows the XML ships: %s" % missing)
@@ -1008,12 +1008,12 @@ def _build_suite():
             if _live(t):
                 if not isinstance(r, dict) or r.get("success") is False:
                     _unmeasured(t, "biome_probe could not be asked: %s" % str(r)[:140])
-                    return
+                    raise RowDone
                 rows = r.get("biomes") or []
                 row = next((x for x in rows if x.get("defName") == BIOME or x.get("biome") == BIOME), rows[0] if len(rows) == 1 else None)
                 if row is None or "plants" not in row:
                     _unmeasured(t, "biome_probe returned no plants list for %s: %s" % (BIOME, str(r)[:140]))
-                    return
+                    raise RowDone
                 if row.get("plants"):
                     raise ExpectationFailed("%s now lists wild plants %r: ruled zero (frozen sheet ban 7)" % (BIOME, row.get("plants")))
         with t.component("wall_scatter_steps_on_map_common_base", beyond_toggle=True):
@@ -1053,7 +1053,7 @@ def _build_suite():
                 if _live(t):
                     if not isinstance(r, dict) or r.get("success") is not True or r.get("harmonyError"):
                         _unmeasured(t, "harmony_patches could not be asked: %s" % str(r)[:160])
-                        return
+                        raise RowDone
                     owners = []
                     for m in (r.get("methods") or []):
                         for kind in ("prefixes", "postfixes", "transpilers", "finalizers"):
@@ -1208,7 +1208,7 @@ def _build_suite():
             text = _hum(t, "ProofWatched", "true")
             if _live(t):
                 if not text.startswith("WATCHED"):
-                    _unmeasured(t, "ProofWatched gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofWatched gave no answer: %r" % text[:160]); raise RowDone
                 if not ("pickup +3.0" in text and "again +0.0" in text and "kill +15.0" in text):
                     raise ExpectationFailed("pickup +3 once, kill +15 expected (RM_WatchedBolts): %s" % text)
             off = _hum(t, "ProofWatched", "false")
@@ -1218,7 +1218,7 @@ def _build_suite():
             text = _hum(t, "ProofLadder", None)
             if _live(t):
                 if not text.startswith("LADDER"):
-                    _unmeasured(t, "ProofLadder gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofLadder gave no answer: %r" % text[:160]); raise RowDone
                 g = float(text.split("standing ")[1].split(" |")[0])
                 w = float(text.split("weight ")[1].split(" |")[0])
                 th, margin, layers = [10.0, 30.0, 55.0, 80.0], 6.0, 3
@@ -1242,7 +1242,7 @@ def _build_suite():
             text = _hum(t, "ProofLadder", None)
             if _live(t):
                 if not text.startswith("LADDER"):
-                    _unmeasured(t, "ProofLadder gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofLadder gave no answer: %r" % text[:160]); raise RowDone
                 g = float(text.split("standing ")[1].split(" |")[0])
                 w = float(text.split("weight ")[1].split(" |")[0])
                 if -g * w >= 10.0:
@@ -1251,7 +1251,7 @@ def _build_suite():
             drain = _hum(t, "ProofDrain", None)
             if _live(t):
                 if not drain.startswith("DRAIN"):
-                    _unmeasured(t, "ProofDrain gave no answer: %r" % drain[:160]); return
+                    _unmeasured(t, "ProofDrain gave no answer: %r" % drain[:160]); raise RowDone
                 a, b = (int(x) for x in drain.split("standing ")[1].split(" |")[0].split(" -> "))
                 d = int(drain.split("expected ")[1])
                 if b - a != max(d, -100 - a):

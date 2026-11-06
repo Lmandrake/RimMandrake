@@ -130,7 +130,7 @@ def art_note():
 # ---------------------------------------------------------------------------------------------- live
 
 def _build_suite():
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
     suite = Suite("AssailantSalvage")
     suite.toggles = []         # the mod ships no Mod Settings
     state = {}
@@ -156,14 +156,14 @@ def _build_suite():
     def defs_resolve(t):
         with t.component("defs_resolve", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             r = _defs_read(t, NAMES)
             if r.get("notFound") or int(r.get("foundCount", 0)) != len(NAMES):
                 raise ExpectationFailed("%d of %d shipped defs resolved; notFound %r"
                                         % (int(r.get("foundCount", 0)), len(NAMES), r.get("notFound")))
         with t.component("probe_can_say_absent", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             r = t.bridge_call("jawa/get_defs", defs=CONTROL_ABSENT, limit=5)
             if not isinstance(r, dict) or r.get("success") is False or int(r.get("foundCount", 0)) != 0 \
                     or CONTROL_ABSENT.split("/")[1] not in " ".join(str(x) for x in (r.get("notFound") or [])):
@@ -217,7 +217,7 @@ def _build_suite():
         cells = {}
         with t.component("every_placeable_prop_spawns", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             t.clear_area(size=44)
             ops = []
             for i, d in enumerate(PLACEABLE):

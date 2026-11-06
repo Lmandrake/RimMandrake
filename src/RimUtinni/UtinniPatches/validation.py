@@ -81,7 +81,7 @@ Still not proven / real gaps:
 import os
 import re
 
-from modcheck import Suite, ExpectationFailed
+from modcheck import Suite, ExpectationFailed, RowDone
 
 suite = Suite("UtinniPatches")
 suite.toggles = ["ambientShrineDoctrineEnabled", "geothermalDensityFieldEnabled",
@@ -468,7 +468,7 @@ def webwork_egg_market(t):
         except ImportError as e:   # lxml is not on every interpreter modcheck runs under
             t.upstream_failed = True
             t.upstream_reason = "UNMEASURED: %s" % e
-            return
+            raise RowDone
         bad = eggm.findings()
         if bad:
             raise ExpectationFailed("; ".join(bad))

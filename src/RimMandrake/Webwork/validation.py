@@ -403,7 +403,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -523,7 +523,7 @@ def _build_suite():
                     ad, pd = float(f.get("animalDensity")), float(f.get("plantDensity"))
                 except (TypeError, ValueError):
                     _unmeasured(t, "get_defs did not return numeric densities: %r" % (f,))
-                    return
+                    raise RowDone
                 if not ad > 0:
                     raise ExpectationFailed("animalDensity %s: the roster would never spawn" % ad)
                 if not pd > 0:
@@ -538,7 +538,7 @@ def _build_suite():
                 names = set(a.get("defName") for a in brows)
                 if not names:
                     _unmeasured(t, "biome_probe returned no roster for %s: %s" % (BIOME, str(r)[:140]))
-                    return
+                    raise RowDone
                 missing = [n for n in want if n not in names]
                 if missing:
                     raise ExpectationFailed("biome lacks roster rows the XML ships: %s (live roster: %s)" % (missing, sorted(names)))
@@ -561,7 +561,7 @@ def _build_suite():
                 if "EggClutchRelay" not in blob:
                     if "comps" not in f or not blob:
                         _unmeasured(t, "get_defs did not serialise comps")
-                        return
+                        raise RowDone
                     raise ExpectationFailed("the nest wall no longer carries RM_CompProperties_EggClutchRelay: %s" % blob[:200])
         with t.component("clutch_mines_to_the_egg", beyond_toggle=True):
             f = _deep(t, "ThingDef/RM_Webwork_EggClutch", "building")
@@ -569,7 +569,7 @@ def _build_suite():
                 blob = "|".join(_flat(f.get("building")))
                 if not blob:
                     _unmeasured(t, "get_defs did not serialise the building block")
-                    return
+                    raise RowDone
                 if "RM_OllathrixEgg" not in blob:
                     raise ExpectationFailed("the egg clutch no longer mines to RM_OllathrixEgg: %s" % blob[:200])
         with t.component("egg_is_inert_contraband_with_no_hatcher", beyond_toggle=True):
@@ -660,7 +660,7 @@ def _build_suite():
             text = _wp(t, "ProofNest", "true")
             if _live(t):
                 if not text.startswith("NEST"):
-                    _unmeasured(t, "ProofNest gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofNest gave no answer: %r" % text[:160]); raise RowDone
                 if "biomeGateRefuses False" in text:
                     raise ExpectationFailed("the nest GenStep placed a nest on a non-Webwork map: %s" % text)
                 walls = text.split("walls ")[1].split(" |")[0].split("->")
@@ -673,7 +673,7 @@ def _build_suite():
             text = _wp(t, "ProofRelay", "true|1")
             if _live(t):
                 if not text.startswith("RELAY"):
-                    _unmeasured(t, "ProofRelay gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofRelay gave no answer: %r" % text[:160]); raise RowDone
                 d = _num(text, "intervalDays")
                 if d is None or not (20.0 <= d <= 30.0):
                     raise ExpectationFailed("relay interval at multiplier 1 is not 20-30 days: %s" % text)
@@ -692,7 +692,7 @@ def _build_suite():
             text = _wp(t, "ProofEmergent", "true|1|1|Vanish")
             if _live(t):
                 if not text.startswith("EMERGENT"):
-                    _unmeasured(t, "ProofEmergent gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofEmergent gave no answer: %r" % text[:160]); raise RowDone
                 if "spawned 1" not in text or "manhunter True" not in text:
                     raise ExpectationFailed("a sure harvest (chance 1) did not spawn one manhunter ollathrix: %s" % text)
             for args, why in (("false|1|1|Vanish", "emergentSpawnEnabled off"), ("true|1|1|KillFinalize", "a combat kill (not a harvest)")):
@@ -713,17 +713,17 @@ def _build_suite():
             text = _wp(t, "ProofHarvest", "true;RM_Webwork_Anchor;34")
             if _live(t):
                 if not text.startswith("HARVEST"):
-                    _unmeasured(t, "ProofHarvest gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofHarvest gave no answer: %r" % text[:160]); raise RowDone
                 if "designatable False" in text and re.search(r"after (\d+) ticks", text) and int(re.search(r"after (\d+) ticks", text).group(1)) >= 250:
                     # Real Fog of War never let the designator see the node within the 250-tick wait: a SITE/HARNESS
                     # miss, not the mod refusing to be cut. Scoring it FAIL read a fog timeout as a mod result.
-                    _unmeasured(t, "HARNESS/SITE: the Deconstruct designator never saw the node within the fog-of-war wait: %s" % text[:200]); return
+                    _unmeasured(t, "HARNESS/SITE: the Deconstruct designator never saw the node within the fog-of-war wait: %s" % text[:200]); raise RowDone
                 if not ("designatable True" in text and "workgiver True" in text and "yield 3" in text
                         and "weaveNear 0->3" in text and "spawned 1" in text):
                     raise ExpectationFailed("cutting an anchor line did not designate/yield 3/spawn: %s" % text)
             text = _wp(t, "ProofHarvest", "true;RM_Webwork_Web;0")
             if _live(t) and "designatable False" in text and re.search(r"after (\d+) ticks", text):
-                _unmeasured(t, "HARNESS/SITE: the sheet-web arm hit the fog-of-war wait: %s" % text[:200]); return
+                _unmeasured(t, "HARNESS/SITE: the sheet-web arm hit the fog-of-war wait: %s" % text[:200]); raise RowDone
             if _live(t) and not ("yield 2" in text and "spawned 0" in text):
                 raise ExpectationFailed("cutting a sheet web did not yield 2 (or spawned at multiplier 0): %s" % text)
             off = _wp(t, "ProofHarvest", "false;RM_Webwork_Anchor;0")
@@ -762,7 +762,7 @@ def _build_suite():
             text = _wp(t, "ProofWebNetwork", "true|true|1")
             if _live(t):
                 if not text.startswith("WEB"):
-                    _unmeasured(t, "ProofWebNetwork gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofWebNetwork gave no answer: %r" % text[:160]); raise RowDone
                 if _field(text, "biomeGateRefuses") == "False":
                     raise ExpectationFailed("the web GenStep laid web on a non-Webwork map: %s" % text)
                 k, st = _arrow(text, "cables"), _arrow(text, "strands")
@@ -795,7 +795,7 @@ def _build_suite():
             text = _wp(t, "ProofWebfall", "true|6")
             if _live(t):
                 if not text.startswith("WEBFALL"):
-                    _unmeasured(t, "ProofWebfall gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofWebfall gave no answer: %r" % text[:160]); raise RowDone
                 if _field(text, "def") != "True" or _field(text, "inBiome") != "6":
                     raise ExpectationFailed("webfall is not in RM_Webwork's weather table at 6: %s" % text)
                 if _field(text, "forcedNow") != "RM_Webfall":
@@ -831,7 +831,7 @@ def _build_suite():
             text = _up(t, "ProofSite", "0")
             if _live(t):
                 if not text.startswith("SITE"):
-                    _unmeasured(t, "ProofSite gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofSite gave no answer: %r" % text[:160]); raise RowDone
                 p = _arrow(text, "pieces")
                 if _field(text, "rolled") != "False" or not p or p[0] != p[1]:
                     raise ExpectationFailed("site chance 0 still placed remains: %s" % text)
@@ -839,9 +839,9 @@ def _build_suite():
             text = _up(t, "ProofSite", "1")
             if _live(t):
                 if not text.startswith("SITE"):
-                    _unmeasured(t, "ProofSite gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofSite gave no answer: %r" % text[:160]); raise RowDone
                 if _field(text, "rolled") == "True" and _field(text, "placed") in ("0", "-1"):
-                    _unmeasured(t, "no open 15x9 ground on this map (SITE skipped, not a mod defect): %s" % text); return
+                    _unmeasured(t, "no open 15x9 ground on this map (SITE skipped, not a mod defect): %s" % text); raise RowDone
                 p, rows = _arrow(text, "pieces"), int(_field(text, "layoutRows") or 0)
                 if _field(text, "rolled") != "True" or not p or p[1] - p[0] != rows or rows < 1:
                     raise ExpectationFailed("site chance 1 did not lay one piece per layout row: %s" % text)
@@ -851,7 +851,7 @@ def _build_suite():
             text = _up(t, "ProofRead", "RM_Urraveth_LimbPile")
             if _live(t):
                 if not text.startswith("READ"):
-                    _unmeasured(t, "ProofRead gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofRead gave no answer: %r" % text[:160]); raise RowDone
                 if _field(text, "wrapped(RM_Urraveth_LimbPile)") != "False" or "pinned" not in (_field(text, "chapters") or ""):
                     raise ExpectationFailed("reading a limb pile did not unwrap it or record 'pinned': %s" % text)
                 if int(_field(text, "thrixweaveNear") or 0) < int(_field(text, "perPieceSetting") or 1):
@@ -861,7 +861,7 @@ def _build_suite():
             text = _up(t, "ProofRead", "final")
             if _live(t):
                 if not text.startswith("READ"):
-                    _unmeasured(t, "ProofRead final gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofRead final gave no answer: %r" % text[:160]); raise RowDone
                 if _field(text, "chapters") != "[pinned,bound,cut,eaten]" or _field(text, "complete") != "True":
                     raise ExpectationFailed("the reading is not complete with the four chapters in order: %s" % text)
                 if not int(_field(text, "outlineCells") or 0) > 0:
@@ -874,7 +874,7 @@ def _build_suite():
             text = _up(t, "ProofLoad", "4|clear")
             if _live(t):
                 if "CLEAR" not in text:
-                    _unmeasured(t, "ProofLoad clear gave no CLEAR answer (mode not reached?): %r" % text[:200]); return
+                    _unmeasured(t, "ProofLoad clear gave no CLEAR answer (mode not reached?): %r" % text[:200]); raise RowDone
                 if _field(text, "creaking") != "True" or _field(text, "ticksLeft") != _field(text, "window"):
                     raise ExpectationFailed("four colonists on a rib did not start a full warning window: %s" % text)
                 if _field(text, "CLEAR creaking") != "False" or _field(text, "ribSpawned") != "True" or _field(text, "anyPawnHurt") != "False":
@@ -939,7 +939,7 @@ def _build_suite():
                     name, rest = part.split(":", 1)
                     rows[name.strip()] = {k: float(v) for k, v in _kv(rest).items()}
                 if "Cloth" not in rows or "Hyperweave" not in rows:
-                    _unmeasured(t, "ProofStuffTable gave no Cloth/Hyperweave rows: %r" % text[:200]); return
+                    _unmeasured(t, "ProofStuffTable gave no Cloth/Hyperweave rows: %r" % text[:200]); raise RowDone
                 c, h = rows["Cloth"], rows["Hyperweave"]
                 if not (c["snap"] > h["snap"] and c["range"] < h["range"]):
                     raise ExpectationFailed("cloth is not snappier and shorter than thrixweave: %r" % rows)
@@ -949,7 +949,7 @@ def _build_suite():
             if kv is not None:
                 if kv.get("foundOn") != "True":
                     _unmeasured(t, "control failed: FindTarget did not pick the downed colonist even with friendly pull ON "
-                                "(a visible hostile in range outranks it?): %r" % kv); return
+                                "(a visible hostile in range outranks it?): %r" % kv); raise RowDone
                 if kv.get("foundOff") != "False" or kv.get("roped") != "False" or kv.get("cellsMoved") != "0":
                     raise ExpectationFailed("friendly pull OFF still picked or dragged a downed colonist: %r" % kv)
         with t.component("ollathrix_pulled_from_shade_into_sun", beyond_toggle=True):
@@ -961,7 +961,7 @@ def _build_suite():
                 if kv.get("startExposed") != "False":
                     raise ExpectationFailed("the roofed (canopy stand-in) start cell did not read shaded to the scald predicate: %r" % kv)
                 if kv.get("sunAtEnd") != "True" or float(kv.get("endShade", "-1")) >= float(kv.get("threshold", "0.5")):
-                    _unmeasured(t, "the lance's end cell is not in open sun (night, roof or cast shade): %r" % kv); return
+                    _unmeasured(t, "the lance's end cell is not in open sun (night, roof or cast shade): %r" % kv); raise RowDone
                 if kv.get("endExposed") != "True":
                     raise ExpectationFailed("an ollathrix reeled onto a sunlit cell does not read exposed to sun-scald: %r" % kv)
 
@@ -995,7 +995,7 @@ def _build_suite():
             off, on = _sp(t, "ProofEligibility", "true|false"), _sp(t, "ProofEligibility", "true|true")
             if _live(t):
                 if not (off.startswith("ELIG") and on.startswith("ELIG")):
-                    _unmeasured(t, "ProofEligibility gave no answer: %r / %r" % (off[:120], on[:120])); return
+                    _unmeasured(t, "ProofEligibility gave no answer: %r / %r" % (off[:120], on[:120])); raise RowDone
                 if _field(off, "reason") != "Disabled" or _field(off, "canFire") != "False":
                     raise ExpectationFailed("siegeEnabled off still lets the siege fire: %s" % off)
                 if _field(on, "reason") != "Eligible" or _field(on, "canFire") != "True":
@@ -1004,16 +1004,16 @@ def _build_suite():
             text = _sp(t, "ProofEligibility", "false|true")
             if _live(t):
                 if not text.startswith("ELIG"):
-                    _unmeasured(t, "ProofEligibility gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofEligibility gave no answer: %r" % text[:160]); raise RowDone
                 if _field(text, "reason") == "Eligible":
-                    _unmeasured(t, "this map really is a shaded Webwork neighbour, so the refusal arm cannot be read here: %s" % text); return
+                    _unmeasured(t, "this map really is a shaded Webwork neighbour, so the refusal arm cannot be read here: %s" % text); raise RowDone
                 if _field(text, "reason") not in ("NotNeighbour", "ShadeUnmeasurable", "NotShaded", "WebworkMapItself") or _field(text, "canFire") != "False":
                     raise ExpectationFailed("hook off on an ineligible map did not refuse with a named reason: %s" % text)
         with t.component("fires_and_spawns_awake_ollathrix", toggle="siegeTestIgnoreMapChecks"):
             text = _sp(t, "ProofFire", "800")
             if _live(t):
                 if not text.startswith("FIRE"):
-                    _unmeasured(t, "ProofFire gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofFire gave no answer: %r" % text[:160]); raise RowDone
                 lords = _arrow(text, "lords")
                 if _field(text, "ok") != "True" or not int(_field(text, "spiders") or 0) > 0 or not lords or lords[1] != lords[0] + 1:
                     raise ExpectationFailed("a forced fire did not arrive as one siege lord with spiders: %s" % text)
@@ -1023,9 +1023,9 @@ def _build_suite():
             text = _sp(t, "ProofSpin", "2500")
             if _live(t):
                 if not text.startswith("SPIN"):
-                    _unmeasured(t, "ProofSpin gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofSpin gave no answer: %r" % text[:160]); raise RowDone
                 if text.startswith("SPIN noCell") or text.startswith("SPIN noSpider") or text.startswith("SPIN noSiege"):
-                    _unmeasured(t, "no spider with an unexposed reachable cell near it (sun on a map the grid does not shade?): %s" % text); return
+                    _unmeasured(t, "no spider with an unexposed reachable cell near it (sun on a map the grid does not shade?): %s" % text); raise RowDone
                 sp = _arrow(text, "spun")
                 if _field(text, "web") != "True" or _field(text, "tagged") != "True" or not sp or sp[1] != sp[0] + 1:
                     raise ExpectationFailed("the spider's spin job did not leave one tagged siege web: %s" % text)
@@ -1035,7 +1035,7 @@ def _build_suite():
             text = _sp(t, "ProofSlick", "-")   # "" = ZERO params to static_call: never reached (GPT deep review 2026-10-22 #8)
             if _live(t):
                 if not text.startswith("SLICK") or _field(text, "after") is None:
-                    _unmeasured(t, "ProofSlick gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofSlick gave no answer: %r" % text[:160]); raise RowDone
                 if not float(_field(text, "after")) > float(_field(text, "before") or 0):
                     raise ExpectationFailed("a colonist standing on siege silk gained no RM_Webwork_Slick: %s" % text)
                 if float(_field(text, "ollathrixAfter") or 0) > 0:
@@ -1044,7 +1044,7 @@ def _build_suite():
             text = _sp(t, "ProofCut", "30")
             if _live(t):
                 if not text.startswith("CUT cap"):
-                    _unmeasured(t, "ProofCut gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofCut gave no answer: %r" % text[:160]); raise RowDone
                 cap, per, cuts = int(_field(text, "cap")), int(_field(text, "perCut")), int(_field(text, "cuts"))
                 want = min(max(cap, 0), cuts * per)
                 if int(_field(text, "total")) != want or int(_field(text, "ledger")) != want:
@@ -1055,7 +1055,7 @@ def _build_suite():
             text = _sp(t, "ProofDoor", "-")   # "" = ZERO params to static_call: never reached (GPT deep review 2026-10-22 #8)
             if _live(t):
                 if not text.startswith("DOOR wrapSpawned"):
-                    _unmeasured(t, "ProofDoor gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofDoor gave no answer: %r" % text[:160]); raise RowDone
                 if _field(text, "wrapSpawned") != "True" or _field(text, "wrappedOpens") != "False" or _field(text, "afterCutOpens") != "True":
                     raise ExpectationFailed("a wrapped door opened, or stayed shut after the wrap was cut: %s" % text)
                 if _field(text, "controlOpens") != "True" or _field(text, "controlAfter") != "True":
@@ -1064,7 +1064,7 @@ def _build_suite():
             text = _sp(t, "ProofCocoon", "rescue")
             if _live(t):
                 if not text.startswith("COCOON made"):
-                    _unmeasured(t, "ProofCocoon gave no answer: %r" % text[:160]); return
+                    _unmeasured(t, "ProofCocoon gave no answer: %r" % text[:160]); raise RowDone
                 if _field(text, "made") != "True" or _field(text, "inside") != "True" or _field(text, "spawned") != "False":
                     raise ExpectationFailed("the downed colonist was not taken into a cocoon: %s" % text)
                 if _field(text, "RESCUE out") != "True" or _field(text, "alive") != "True" or _field(text, "cocoonGone") != "True":
@@ -1073,7 +1073,7 @@ def _build_suite():
             text = _sp(t, "ProofCocoon", "deadline")
             if _live(t):
                 if "DEADLINE" not in text:
-                    _unmeasured(t, "ProofCocoon deadline gave no DEADLINE answer: %r" % text[:200]); return
+                    _unmeasured(t, "ProofCocoon deadline gave no DEADLINE answer: %r" % text[:200]); raise RowDone
                 if _field(text, "DEADLINE deadBefore") != "False" or _field(text, "deadAfter") != "True" or _field(text, "cause") != "True":
                     raise ExpectationFailed("the cocoon did not kill exactly at its deadline with silk suffocation: %s" % text)
         with t.component("half_lost_breaks_the_siege", toggle="siegeMaxDays", beyond_toggle=True):

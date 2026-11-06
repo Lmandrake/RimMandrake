@@ -132,7 +132,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -210,18 +210,18 @@ def _build_suite():
             if _live(t):
                 if not isinstance(r, dict) or r.get("success") is False:
                     _unmeasured(t, "get_defs could not be asked for %s: %r" % (LADDER, r))
-                    return
+                    raise RowDone
                 if int(r.get("foundCount", 0)) == 0:
                     _unmeasured(t, "no consumer ladder in this tier (%s lives in RimUtinni; LoreStages loads and does nothing "
                                    "without one)" % LADDER)
-                    return
+                    raise RowDone
                 rows = r.get("defs") or []
                 f = (rows[0].get("fields") or {}) if rows else {}
                 try:
                     cap = int(float(f.get("maxStage")))
                 except (TypeError, ValueError):
                     _unmeasured(t, "get_defs did not return a numeric maxStage: %r" % (f,))
-                    return
+                    raise RowDone
                 if not str(f.get("ladderId") or "").strip():
                     raise ExpectationFailed("ladder has an empty ladderId (the save would key it by defName)")
                 if cap <= 0:

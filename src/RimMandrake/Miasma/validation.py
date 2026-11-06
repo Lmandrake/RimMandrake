@@ -271,7 +271,7 @@ def static_checks():
 
 
 def _build_suite():
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
     suite = Suite("Miasma")
     suite.toggles = ["decayCellsEnabled", "youngCallEnabled", "attarEnabled", "plantPredationEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled", "mothersPriceEnabled"]
 
@@ -347,7 +347,7 @@ def _build_suite():
     def nursery_young_free_tier(t):
         with t.component("four_young_defs_load", beyond_toggle=True):
             if t.session is None:
-                return
+                raise RowDone
             _loaded(t, ["PawnKindDef/%s" % y for y in ("RM_CrimsonOpeeJuv", "RM_ThornbackColoJuv", "RM_ShaleGorgerJuv", "RM_ReefbackJuv")]
                     + ["ThingDef/%s" % y for y in ("RM_CrimsonOpeeJuv", "RM_ThornbackColoJuv", "RM_ShaleGorgerJuv", "RM_ReefbackJuv")])
         with t.component("young_strand_on_recede", beyond_toggle=True):
@@ -364,11 +364,11 @@ def _build_suite():
         state = {}
         with t.component("output_falls_with_feed_and_stops_empty", toggle="decayCellsEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             text = _proof(t, "ProofDecayCell")
             if text.startswith("UNMEASURED"):
                 _unmeasured(t, text)
-                return
+                raise RowDone
             kv = _kv(text)
             state.update(kv)
             try:
@@ -379,7 +379,7 @@ def _build_suite():
                 raise ExpectationFailed("want full > low > 0 and empty 0: %s" % text[:200])
         with t.component("switch_off_makes_no_power", toggle="decayCellsEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             if state.get("off") != "0":
                 raise ExpectationFailed("decayCellsEnabled off still powers: off=%s" % state.get("off"))
         with t.component("lifetime_feed_turns_cell_into_rotting_bed", toggle="decayCellsEnabled"):
@@ -427,12 +427,12 @@ def _build_suite():
 
         with t.component("returning_a_young_wins_her_tolerance", toggle="mothersPriceEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             text = proof(t, "ProofReturn")
             if text.startswith("ERROR no warden mother and no water cell"):
                 # A site fact (this map has no water for the proof's mother), not a mod failure: UNMEASURED.
                 _unmeasured(t, text)
-                return
+                raise RowDone
             for want in ("taken=1", "youngWild=True", "stillStranded=False", "tolerated=True", "betrayed=False"):
                 if want not in text:
                     raise ExpectationFailed("return proof missing %s: %s" % (want, text[:240]))
@@ -469,7 +469,7 @@ def _build_suite():
     def ambush_frog_free_tier(t):
         with t.component("bozzuga_defs_load", beyond_toggle=True):
             if t.session is None:
-                return
+                raise RowDone
             _loaded(t, ["ThingDef/RM_Bozzuga", "PawnKindDef/RM_Bozzuga"])
         with t.component("bozzuga_hunts", beyond_toggle=True):
             if t.session is None:
@@ -482,7 +482,7 @@ def _build_suite():
     def swarm_composter_free_tier(t):
         with t.component("swarm_karrobel_loam_defs_load", beyond_toggle=True):
             if t.session is None:
-                return
+                raise RowDone
             _loaded(t, ["ThingDef/RM_FeverSwarm", "ThingDef/RM_Karrobel", "ThingDef/RM_DeltaLoam"])
         with t.component("mangal_gated_on_swarm", beyond_toggle=True):
             if t.session is None:
@@ -505,11 +505,11 @@ def _build_suite():
         """MIASMA_COVERAGE_GAPS_1: glaze and balm through RM_MiasmaProof on the current map."""
         with t.component("glaze_adds_beauty_and_only_once", toggle="attarEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             text = _proof(t, "ProofGlaze")
             if text.startswith("UNMEASURED"):
                 _unmeasured(t, text)
-                return
+                raise RowDone
             kv = _kv(text)
             try:
                 before, after, off = float(kv["before"]), float(kv["after"]), float(kv["off"])
@@ -521,11 +521,11 @@ def _build_suite():
                 raise ExpectationFailed("attarEnabled off still applies the glaze: %s" % text[:200])
         with t.component("balm_fades_scar_not_fresh_wound", toggle="attarEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             text = _proof(t, "ProofBalm")
             if text.startswith("UNMEASURED"):
                 _unmeasured(t, text)
-                return
+                raise RowDone
             kv = _kv(text)
             if kv.get("freshStillThere") != "True" or kv.get("freshBefore") != kv.get("freshAfter"):
                 raise ExpectationFailed("balm touched a non-permanent wound: %s" % text[:200])

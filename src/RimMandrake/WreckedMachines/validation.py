@@ -212,12 +212,12 @@ def static_checks():
 
 
 try:
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     _UTILS = os.path.join(HERE, "..", "Utils")
     sys.path.insert(0, _UTILS)
     try:
-        from modcheck import Suite, ExpectationFailed
+        from modcheck import Suite, ExpectationFailed, RowDone
     except ImportError:
         Suite = None
 
@@ -478,11 +478,11 @@ def _make_drive(field, new, defpath, defield, check, mode=None):
             old = _setting(t, "get", field).get("value")
             if old is None:
                 _unmeasured(t, "mod_settings_field could not read %s" % field)
-                return
+                raise RowDone
             before, raw = read(t)
             if before is None:
                 _unmeasured(t, "could not read %s %s: %s" % (defpath, defield, str(raw)[:160]))
-                return
+                raise RowDone
             try:
                 if not _setting(t, "set", field, new).get("success") or not _apply(t):
                     raise ExpectationFailed("could not set %s=%s and re-run Apply" % (field, new))
@@ -525,20 +525,20 @@ def alloy_forge_gated(t):
     RM_WM_PlasteelAlloying, and neither def logged an error."""
     with t.component("forge_needs_alloy_forge_restoration"):
         if t.session is None:
-            return
+            raise RowDone
         v, raw = _def_field(t, "ThingDef/VFEFactory_AutomatedAlloyForge", "researchPrerequisites")
         if v is None:
             _unmeasured(t, "could not read the forge's researchPrerequisites: %s" % str(raw)[:160])
-            return
+            raise RowDone
         if "RM_WM_AlloyForgeRestoration" not in str(v):
             raise ExpectationFailed("forge researchPrerequisites %r lack RM_WM_AlloyForgeRestoration" % v)
     with t.component("plasteel_process_needs_plasteel_alloying"):
         if t.session is None:
-            return
+            raise RowDone
         v, raw = _def_field(t, "PipeSystem.ProcessDef/VFEFactory_AlloyPlasteel", "researchPrerequisites")
         if v is None:
             _unmeasured(t, "get_defs could not read a PipeSystem.ProcessDef: %s" % str(raw)[:160])
-            return
+            raise RowDone
         if "RM_WM_PlasteelAlloying" not in str(v):
             raise ExpectationFailed("VFEFactory_AlloyPlasteel researchPrerequisites %r lack RM_WM_PlasteelAlloying" % v)
     with t.component("alloy_forge_loads_clean"):

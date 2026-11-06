@@ -69,6 +69,14 @@ class StopAfter(BaseException):
     records later rows UNMEASURED and leaves raw calls running. The runner catches it and writes the tail NOT_RUN."""
 
 
+class RowDone(BaseException):
+    """`raise RowDone` ends the CURRENT `with t.component(...)` row early, exactly as if its body had run to the end;
+    the chain goes on to its next row. A `return` there leaves the whole chain function, so every later row is never
+    recorded, live or in the offline probe (VALIDATION_ROWRETURN_AUDIT_CHAINS_CUT_SHORT; row_return_lint.py finds
+    them). A BaseException so a row's own `except Exception` cannot swallow it. It sets no verdict: latch UNMEASURED
+    first (the mod's `_unmeasured`) when the early end means the row could not measure."""
+
+
 class ExpectationFailed(Exception):
     """A `t.expect_*` read-back did not match what the component asserted."""
 
@@ -969,6 +977,10 @@ class _ComponentCtx(object):
 
     def _exit(self, exc_type, exc, tb):
         c = self.component
+        if exc_type is not None and any(k.__name__ == "RowDone" for k in exc_type.__mro__):
+            # an early, normal end of this row: judged as if the body finished. Matched by NAME: `modcheck.suite` and the
+            # bare `suite` that modcheck/__init__ imports are two module objects, so a script's RowDone may be the other's.
+            exc_type = exc = tb = None
         if exc_type is not None and issubclass(exc_type, StopAfter):
             # a NESTED requested row stopped the chain inside this one: this outer row did not finish, so it is not
             # scored (never a FAIL/finding); it records after its inner rows, so the runner writes it NOT_RUN

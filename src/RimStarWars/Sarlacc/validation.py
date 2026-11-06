@@ -134,7 +134,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "..", "RimMandrake", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -290,14 +290,14 @@ def _build_suite():
     def swimmer_reserve(t):
         with t.component("swimmer_reads_a_water_reserve", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             sw = _spawn_swimmer(t)
             r = t.bridge_call("jawa/inspect_string", thingIds=sw[0])
             rows = (r or {}).get("things") or []
             row = next((x for x in rows if x.get("id") == sw[0]), None)
             if row is None or row.get("error"):
                 _unmeasured(t, "inspect_string could not read the spawned swimmer: %s" % str(r)[:200])
-                return
+                raise RowDone
             line = " ".join(str(x) for x in (row.get("inspect") or []))
             if "Water reserve" not in line:
                 raise ExpectationFailed("a spawned swimmer reports no 'Water reserve' line (comp not attached?): %r" % line[:200])
@@ -319,7 +319,7 @@ def _build_suite():
     def rooting(t):
         with t.component("rooting_off_swimmer_stays", toggle="rootingInPlayEnabled"):
             if not _live(t):
-                return
+                raise RowDone
             sw = _spawn_swimmer(t)
             old = _set(t, rootingInPlayEnabled="False", reserveDrainMultiplier="1000000000")
             try:
@@ -363,7 +363,7 @@ def _build_suite():
     def cistern(t):
         with t.component("cistern_spawns_and_reads", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             t.clear_area(size=24)
             cells = t.spawn(CISTERN, count=1, at="point") or [(0, 0)]
             rect = "%d,%d,24,24" % (cells[0][0] - 12, cells[0][1] - 12)

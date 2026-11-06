@@ -20,6 +20,6 @@ _UTILS = os.path.dirname(_HERE)
 if _UTILS not in sys.path:
     sys.path.insert(0, _UTILS)         # rimdrive lives here
 
-from suite import Suite, Component, TestContext, ExpectationFailed, Precondition  # noqa: E402,F401
+from suite import Suite, Component, TestContext, ExpectationFailed, Precondition, RowDone  # noqa: E402,F401
 
-__all__ = ["Suite", "Component", "TestContext", "ExpectationFailed", "Precondition"]
+__all__ = ["Suite", "Component", "TestContext", "ExpectationFailed", "Precondition", "RowDone"]

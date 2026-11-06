@@ -231,7 +231,7 @@ def _parse_state(text):
 
 
 def _build_suite():
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
     suite = Suite("Minerals")
     suite.toggles = list(SETTINGS)
 
@@ -299,7 +299,7 @@ def _build_suite():
     def defs_resolve(t):
         with t.component("registry_loaded", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             s = _call(t, "ProofState", "")
             if int(s.get("rows", 0)) < 20:
                 raise ExpectationFailed("the policy sees %r registry rows (expected >= 20: defs did not load)" % s.get("rows"))
@@ -316,13 +316,13 @@ def _build_suite():
     def zeroing(t):
         with t.component("components_and_plasteel_zeroed", toggle="enabled"):
             if not _live(t):
-                return
+                raise RowDone
             s = _call(t, "ProofState", probe)
             for n in MUST_ZERO:
                 w = _weights(s, n)
                 if w is None:
                     _unmeasured(t, "%s is not loaded on this list" % n)
-                    return
+                    raise RowDone
                 if w[0] != 0.0:
                     raise ExpectationFailed("%s still scatters at %r with the policy on" % (n, w[0]))
         with t.component("unregistered_steel_kept", beyond_toggle=True):
@@ -340,7 +340,7 @@ def _build_suite():
     def toggles(t):
         with t.component("master_off_restores", toggle="enabled"):
             if not _live(t):
-                return
+                raise RowDone
             try:
                 _set(t, "enabled", False)
                 s = _call(t, "ProofApply", "master off")
@@ -348,7 +348,7 @@ def _build_suite():
                     w = _weights(s, n) or _weights(_call(t, "ProofState", n), n)
                     if w is None:
                         _unmeasured(t, "%s is not loaded on this list" % n)
-                        return
+                        raise RowDone
                     if w[0] <= 0.0:
                         raise ExpectationFailed("master off: %s did not get its original scatter back (%r)" % (n, w))
             finally:
@@ -549,7 +549,7 @@ def _build_suite():
                 s, rows = _grids(t)
                 if "KCSG not loaded" in s.get("reason", "") or int(s.get("layouts", 0)) == 0:
                     _unmeasured(t, "no KCSG layout holds plasteel/components cells on this list (Ancient mining industry absent?): %r" % s)
-                    return
+                    raise RowDone
                 if int(s["layouts"]) != GRID_LAYOUTS:
                     raise ExpectationFailed("%s layouts hold scope cells, the dump has %d: %r" % (s["layouts"], GRID_LAYOUTS, sorted(rows)))
                 for k, v in rows.items():

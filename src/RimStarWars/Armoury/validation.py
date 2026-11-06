@@ -149,7 +149,7 @@ Still not proven / likely first-live-run corrections:
      simulate (a `jawa/damage` hit does not run the mining job's own
      completion path); wiring-only.
 """
-from modcheck import Suite, ExpectationFailed
+from modcheck import Suite, ExpectationFailed, RowDone
 
 suite = Suite("Armoury")
 suite.toggles = [
@@ -877,16 +877,16 @@ def ores_and_smelts(t):
                     ("phrikSmeltEnabled", "PipeSystem.ProcessDef/RSW_SmeltPhrik"), ("slagRemeltAboardEnabled", "PipeSystem.ProcessDef/RSW_SmeltPlasteelFromSlag")):
         with t.component("defs_present_" + tog, toggle=tog):
             if t.session is None:
-                return
+                raise RowDone
             r = t.bridge_call("jawa/get_defs", defs=dn)
             if not r or not r.get("success"):
                 t.upstream_reason = "UNMEASURED: get_defs failed: %r" % (r,)
                 t.upstream_failed = True
-                return
+                raise RowDone
             if r.get("foundCount") != 1:
                 t.upstream_reason = "UNMEASURED: %s absent (VFE Factory or the patch not loaded)" % dn
                 t.upstream_failed = True
-                return
+                raise RowDone
 
 
 @suite.chain("durasteel_convert")

@@ -233,7 +233,7 @@ def static_checks():
 # ---------------------------------------------------------------------------------------------- live
 
 def _build_suite():
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
     suite = Suite("AcousticScanner")
     suite.toggles = ["enabled", "requireLandedShip", "pulseEffects"]
     state = {}
@@ -321,21 +321,21 @@ def _build_suite():
     def defs_resolve(t):
         with t.component("defs_resolve", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             r = _defs_read(t, DEFS)
             if r.get("notFound") or int(r.get("foundCount", 0)) != len(DEFS):
                 raise ExpectationFailed("shipped defs did not resolve: found %r notFound %r"
                                         % (r.get("foundCount"), r.get("notFound")))
         with t.component("probe_can_say_absent", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             r = _defs_read(t, [CONTROL_ABSENT])
             if int(r.get("foundCount", 0)) != 0 or CONTROL_ABSENT.split("/")[1] not in " ".join(
                     str(x) for x in (r.get("notFound") or [])):
                 raise ExpectationFailed("control: a def that does not exist did not read absent: %r" % (r,))
         with t.component("classes_loaded", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             for tn in (SETTINGS_TYPE, PAYLOAD_TYPE):
                 r = t.bridge_call("jawa/type_probe", typeName=tn)
                 if not isinstance(r, dict) or r.get("success") is False:
@@ -391,31 +391,31 @@ def _build_suite():
         site = None
         with t.component("unpowered_refuses", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             site = _site(t)
             if site is None:
-                return
+                raise RowDone
             if TXT["nopower"] not in _inspect(t, site[0]):
                 raise ExpectationFailed("an unpowered sounder does not say 'No power': %r" % _inspect(t, site[0]))
         sid = state.get("sid")
         with t.component("off_the_ship_refuses", toggle="requireLandedShip"):
             if not _live(t) or sid is None:
-                return
+                raise RowDone
             pw = t.bridge_call("jawa/power_net", thing=sid, forcePowerOn=True)
             if isinstance(pw, dict) and pw.get("success") is False:
                 _unmeasured(t, "power_net forcePowerOn refused: %r" % (pw,))
-                return
+                raise RowDone
             t.wait_ticks(10)
             txt = _inspect(t, sid)
             if TXT["nopower"] in txt:
                 _unmeasured(t, "forcePowerOn did not power the sounder (still 'No power')")
-                return
+                raise RowDone
             if TXT["notship"] not in txt:
                 raise ExpectationFailed("powered, on substructure, but no grav engine on the map: the sounder "
                                         "should refuse with the not-on-ship line: %r" % txt)
         with t.component("ready_on_landed_ship", beyond_toggle=True):
             if not _live(t) or sid is None:
-                return
+                raise RowDone
             _engine(t, True)
             t.wait_ticks(10)
             if TXT["ready"] not in _inspect(t, sid):
@@ -423,7 +423,7 @@ def _build_suite():
                                         "ready: %r" % _inspect(t, sid))
         with t.component("master_off_refuses", toggle="enabled"):
             if not _live(t) or sid is None:
-                return
+                raise RowDone
             _set(t, "enabled", False)
             try:
                 t.wait_ticks(5)
@@ -456,16 +456,16 @@ def _build_suite():
     def pulse(t):
         with t.component("pulse_starts_cooldown_and_sends_letter", toggle="enabled"):
             if not _live(t):
-                return
+                raise RowDone
             if _site(t) is None:
-                return
+                raise RowDone
             sid = state["sid"]
             t.bridge_call("jawa/power_net", thing=sid, forcePowerOn=True)
             _engine(t, True)
             t.wait_ticks(10)
             if TXT["ready"] not in _inspect(t, sid):
                 _unmeasured(t, "could not stage a ready sounder (inspect: %r)" % _inspect(t, sid))
-                return
+                raise RowDone
             before = (t.bridge_call("jawa/letter_list") or {})
             n0 = len(before.get("letters") or [])
             t.bridge_call("rimworld/set_god_mode", enabled=True)
@@ -477,11 +477,11 @@ def _build_suite():
                 if g is None:
                     _unmeasured(t, "no %r gizmo among the selected thing's gizmos: %r"
                                 % (PULSE_LABEL, [q.get("label") for q in giz]))
-                    return
+                    raise RowDone
                 r = t.bridge_call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
                 if isinstance(r, dict) and r.get("success") is False:
                     _unmeasured(t, "execute_gizmo refused: %r" % (r,))
-                    return
+                    raise RowDone
             finally:
                 t.bridge_call("rimworld/set_god_mode", enabled=False)
                 t.bridge_call("rimworld/clear_selection")
@@ -493,12 +493,12 @@ def _build_suite():
                 raise ExpectationFailed("a pulse fired but no 'Sounding reading' letter arrived: %r" % after[-3:])
         with t.component("banded_overlay_never_exact", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             _unmeasured(t, "the overlay's bands live in a non-saved map component with no bridge reader; the "
                            "band-size floor is proven statically (static_checks), the drawing needs eyes")
         with t.component("biome_payload_reads", beyond_toggle=True):
             if not _live(t):
-                return
+                raise RowDone
             _unmeasured(t, "payload content needs a map whose biome carries RM_AcousticPayloadExtension (%s) with "
                            "its targets placed; an ordinary quicktest map reads 'nothing unusual'. Follow-up: "
                            "ACOUSTIC_SCANNER_BIOME_SITE_1" % ", ".join(PAYLOAD_BIOMES))

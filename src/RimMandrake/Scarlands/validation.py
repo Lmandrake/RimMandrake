@@ -619,7 +619,7 @@ def bileworm_gas_problems():
 
 
 def _build_suite():
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
     suite = Suite("Warscar")
     suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls", "chotrixEnabled", "lacquerCloakEnabled", "settlingEnabled", "liftFrontEnabled", "warDustEnabled", "warDustBlightCureEnabled", "markEnabled", "markFloorEnabled", "markTradeBonusesEnabled", "snapEnabled", "loosenedPanelsEnabled"]
 
@@ -753,7 +753,7 @@ def _build_suite():
         with t.component("totchak_defs_resolve", toggle="totchakEnabled"):
             r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_Totchak", fields="defName", limit=2)
             if t.session is None:
-                return
+                raise RowDone
             if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
                 raise ExpectationFailed("RM_Totchak did not resolve live: %r" % r)
         with t.component("demolition_wake_and_wall_eating_order", toggle="totchakEatsPlayerWalls"):
@@ -768,12 +768,12 @@ def _build_suite():
         with t.component("old_tongue_defs_resolve", toggle="oldTongueEnabled"):
             r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_InscribedPanel_Hospice", fields="defName", limit=2)
             if t.session is None:
-                return
+                raise RowDone
             if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
                 raise ExpectationFailed("panel def did not resolve live: %r" % r)
         with t.component("skill_gate_and_set_unlock", beyond_toggle=True):
             if t.session is None:
-                return
+                raise RowDone
             _unmeasured(t, "Intellectual-8 refusal, set-size unlock and chalk-mark swap need "
                                     "a live Warscar map with pawns of differing skill")
         with t.component("rest_panel_points_and_find", beyond_toggle=True):
@@ -789,7 +789,7 @@ def _build_suite():
             for d in ("ThingDef/RM_HospiceCradle", "ThingDef/RM_KneelingChassis_Intact", "ThingDef/RM_FailedChassis", "PawnKindDef/RM_AncientServitor"):
                 r = t.bridge_call("jawa/get_defs", defs=d, fields="defName", limit=2)
                 if t.session is None:
-                    return
+                    raise RowDone
                 if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
                     raise ExpectationFailed("%s did not resolve live: %r" % (d, r))
         with t.component("five_stage_revival_and_walk_in", beyond_toggle=True):
@@ -805,7 +805,7 @@ def _build_suite():
                       "ThingDef/RM_MedicalCoagulant", "ThingDef/RM_BloomLiquor", "DamageDef/RM_BloomAcid"):
                 r = t.bridge_call("jawa/get_defs", defs=d, fields="defName", limit=2)
                 if t.session is None:
-                    return
+                    raise RowDone
                 if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
                     raise ExpectationFailed("%s did not resolve live: %r" % (d, r))
         with t.component("pool_phase_cycle_draw_and_catalyst", toggle="catalystEnabled"):
@@ -822,12 +822,12 @@ def _build_suite():
                       "ThingDef/RM_CloakLacquer", "ThingDef/RM_Apparel_LacquerCloak"):
                 r = t.bridge_call("jawa/get_defs", defs=d, fields="defName", limit=2)
                 if t.session is None:
-                    return
+                    raise RowDone
                 if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
                     raise ExpectationFailed("%s did not resolve live: %r" % (d, r))
         with t.component("invisible_reveal_on_strike_and_lone_gate", toggle="chotrixEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             _unmeasured(t, "spawn on a quicktest Warscar map, stays invisible, reveals on strike, ignores a group of 2+, "
                            "flees after a hurt bite, and prints on the track grid (blocked on FOOTPRINT_TRACK_GRID_1) "
                            "need a live map")
@@ -845,7 +845,7 @@ def _build_suite():
                       "PawnKindDef/RM_Chatrak", "PawnKindDef/RM_Tetchik"):
                 r = t.bridge_call("jawa/get_defs", defs=d, fields="defName", limit=2)
                 if t.session is None:
-                    return
+                    raise RowDone
                 if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
                     raise ExpectationFailed("%s did not resolve live: %r" % (d, r))
         with t.component("spawn_gates_and_lichen_placement", toggle="enableWreckLichenSeeder"):
@@ -860,33 +860,33 @@ def _build_suite():
         with t.component("settling_defs_resolve", toggle="settlingEnabled"):
             r = t.bridge_call("jawa/get_defs", defs=";".join(SETTLING_DEFS), fields="defName", limit=20)
             if t.session is None:
-                return
+                raise RowDone
             if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
                 raise ExpectationFailed("Settling defs did not resolve live: %r" % r)
             if int(r.get("foundCount", 0)) != len(SETTLING_DEFS):
                 raise ExpectationFailed("expected %d Settling defs, found %r" % (len(SETTLING_DEFS), r.get("foundCount")))
         with t.component("calm_starts_and_wind_ends_the_settling", toggle="settlingEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             _unmeasured(t, "forcing calm on a quicktest Warscar map to start RM_Settling after the configured hours and wind "
                            "to end it needs a live Warscar map with a controllable wind")
         with t.component("film_roofed_and_toxic", toggle="settlingEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             _unmeasured(t, "film only on unroofed cells, a roofed pawn taking no toxic buildup and an unroofed one taking it, "
                            "need a live running Settling")
         with t.component("lift_front_wipes_film_and_tracks", toggle="liftFrontEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             _unmeasured(t, "the lift front crossing the map downwind and clearing film and tracks behind it needs a live "
                            "Settling plus the track grid (CreatureBehaviors); state read of the grid is owed to a live round")
         with t.component("war_dust_sweep", toggle="warDustEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             _unmeasured(t, "a sweep job on a film cell yielding RM_WarDust (more in crater bowls) needs a live film cell and a pawn")
         with t.component("war_dust_cures_blight", toggle="warDustBlightCureEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             _unmeasured(t, "a grower carrying one RM_WarDust to a blighted crop (dev Blight incident on a sown zone) and the "
                            "Blight thing being gone with the plant alive needs a live map and a pawn")
         with t.component("buried_ordnance_revealed_and_defusable", beyond_toggle=True):
@@ -912,19 +912,19 @@ def _build_suite():
         with t.component("mark_defs_resolve", toggle="markEnabled"):
             r = t.bridge_call("jawa/get_defs", defs=";".join(MARK_DEFS), fields="defName", limit=10)
             if t.session is None:
-                return
+                raise RowDone
             if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
                 raise ExpectationFailed("mark defs did not resolve live: %r" % r)
         with t.component("mark_accrues_and_pays", toggle="markTradeBonusesEnabled"):
             txt = _mark_proof(t, 24)       # 24 x 0.0125 = 0.30 -> mild mark, +15% hacking
             if t.session is None:
-                return
+                raise RowDone
             if "stage mild mark" not in txt or "HackingSpeed" not in txt:
                 raise ExpectationFailed("24 hours did not reach a paying mild mark: %s" % txt)
         with t.component("mark_floor_arms", toggle="markFloorEnabled"):
             txt = _mark_proof(t, 24)       # +0.30 more -> 0.60, deepening, floor armed
             if t.session is None:
-                return
+                raise RowDone
             if "floor armed=True" not in txt or "stage deepening mark" not in txt:
                 raise ExpectationFailed("a 0.6 mark did not arm the floor: %s" % txt)
         with t.component("mark_off_accrues_nothing", toggle="markEnabled"):
@@ -950,7 +950,7 @@ def _build_suite():
         with t.component("snap_defs_resolve", toggle="snapEnabled"):
             r = t.bridge_call("jawa/get_defs", defs=";".join(SNAP_DEFS), fields="defName", limit=10)
             if t.session is None:
-                return
+                raise RowDone
             if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
                 raise ExpectationFailed("snap defs did not resolve live: %r" % r)
         stages = [("0.2", "stage incubating", "plates=hidden"), ("0.4", "stage plates lifting", "plates=shown"),
@@ -960,7 +960,7 @@ def _build_suite():
             with t.component("snap_stage_%s" % sev.replace(".", "_"), toggle="snapEnabled"):
                 txt = _snap_proof(t, "ProofStage", "current|" + sev)
                 if t.session is None:
-                    return
+                    raise RowDone
                 # "armed N" is the map-wide Sweep count: earlier proof chatraks stay armed on the map (read 3 live,
                 # 2026-10-08), so >=1 plus the pawn's own stage text is the claim, never exactly 1.
                 armed_n = re.search(r" armed (\d+)", txt)
@@ -969,7 +969,7 @@ def _build_suite():
         with t.component("clean_chatrak_never_armed", toggle="snapEnabled"):
             txt = _snap_proof(t, "ProofClean", "current")
             if t.session is None:
-                return
+                raise RowDone
             if "clean armed=False" not in txt:
                 raise ExpectationFailed("a scaria-free chatrak was armed: %s" % txt)
         with t.component("snap_off_arms_nothing", toggle="snapEnabled"):
@@ -999,7 +999,7 @@ def _build_suite():
         with t.component("below_deepening_is_refused", toggle="loosenedPanelsEnabled"):
             txt = _panel_proof(t, "0.3")
             if t.session is None:
-                return
+                raise RowDone
             if "canWork False" not in txt or "opened False" not in txt or "It won't give" not in txt:
                 raise ExpectationFailed("a mild-marked pawn was not refused with the line: %s" % txt)
         with t.component("deepening_opens_onto_a_sealed_crate", toggle="loosenedPanelsEnabled"):
@@ -1014,14 +1014,14 @@ def _build_suite():
         with t.component("choir_defs_resolve", toggle="choirEnabled"):
             r = t.bridge_call("jawa/get_defs", defs=";".join(CHOIR_DEFS), fields="defName", limit=20)
             if t.session is None:
-                return
+                raise RowDone
             if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
                 raise ExpectationFailed("choir defs did not resolve live: %r" % r)
             if int(r.get("foundCount", 0)) != len(CHOIR_DEFS):
                 raise ExpectationFailed("expected %d choir defs, found %r" % (len(CHOIR_DEFS), r.get("foundCount")))
         with t.component("tick_tempo_follows_glower_density", toggle="choirEnabled"):
             if t.session is None:
-                return
+                raise RowDone
             _unmeasured(t, "standing over thick glower ticking faster than bare slag (RM_MapComponent_GeigerChoir.TickDensity) "
                            "needs a live Warscar map with a camera; no bridge reader for the component yet")
         with t.component("wind_layer_silent_during_settling", toggle="choirWindEnabled"):
@@ -1067,7 +1067,7 @@ def _build_suite():
         for step in RELOAD_STEPS:
             with t.component(step["key"] + "_survives_save_load", beyond_toggle=True):
                 if t.session is None:
-                    return
+                    raise RowDone
                 before, missing = _reads(step)
                 if missing or not before:
                     _unmeasured(t, "%s: could not read the state before the save (%s); arrange %s" % (step["key"], missing, step["arrange"]))

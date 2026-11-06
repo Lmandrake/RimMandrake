@@ -92,7 +92,7 @@ Still not proven / likely first-live-run corrections:
      literal "Config error in mandrake.rut.restrainingbolts" string the
      walk's step 1 names, so this suite does not assert on it either way.
 """
-from modcheck import Suite, ExpectationFailed
+from modcheck import Suite, ExpectationFailed, RowDone
 
 suite = Suite("RestrainingBolts")
 suite.toggles = ["enabled", "penaltyPerBoltedDroid", "goodwillFloor"]
@@ -115,7 +115,7 @@ def goodwill_worker_on_minimal_environment(t):
             # exercised by goodwill_cap_follows_bolted_count/real_worker_caps_the_enclaves. Only a
             # failure for a reason other than a missing FactionDef is a defect.
             if (r or {}).get("success"):
-                return
+                raise RowDone
             err = (r or {}).get("error") or (r or {}).get("message") or ""
             if "No FactionDef" not in err:
                 raise ExpectationFailed(

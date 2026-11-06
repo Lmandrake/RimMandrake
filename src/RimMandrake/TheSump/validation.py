@@ -274,7 +274,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -388,18 +388,18 @@ def _build_suite():
         state = {}
         with t.component("stored_goods_sealed_rot_frozen_forbidden", toggle="tarVaultEnabled"):
             if not _live(t):
-                return
+                raise RowDone
             text = _proof(t, "ProofVault")
             if text.startswith("UNMEASURED"):
                 _unmeasured(t, text)
-                return
+                raise RowDone
             state.update(_kv(text))
             for want in ("sealed=True", "rotFrozen=True", "forbidden=True"):
                 if want not in text:
                     raise ExpectationFailed("vault proof missing %s: %s" % (want, text[:200]))
         with t.component("no_solvent_comes_out_ruined", toggle="tarVaultEnabled"):
             if not _live(t):
-                return
+                raise RowDone
             if state.get("ruinedOut") != "True":
                 raise ExpectationFailed("extracting with no solvent did not leave RM_TarRuinedGoods: %s" % state)
         with t.component("solvent_extracts_clean_and_is_spent", toggle="tarVaultEnabled"):
@@ -417,17 +417,17 @@ def _build_suite():
         state = {}
         with t.component("load_steps_shell_stage", toggle="kethrelShellEnabled"):
             if not _live(t):
-                return
+                raise RowDone
             text = _proof(t, "ProofKethrel")
             if text.startswith("UNMEASURED"):
                 _unmeasured(t, text)
-                return
+                raise RowDone
             state.update(_kv(text))
             if state.get("s0") != "0" or state.get("s1") != "2" or state.get("s2") != "3" or state.get("hediff1", "none") == "none":
                 raise ExpectationFailed("want stage 0 -> 2 at 15 kg (with the shell hediff) -> 3 at 30 kg: %s" % text[:220])
         with t.component("molt_drops_everything", toggle="kethrelMoltLoadKg"):
             if not _live(t):
-                return
+                raise RowDone
             if state.get("sAfter") != "0" or state.get("hediffGone") != "True" or state.get("steelOnMap") != "60":
                 raise ExpectationFailed("a molt must drop all 60 steel and return to stage 0 with no shell hediff: %s" % state)
         with t.component("kethrel_ignores_home_area_unless_allowed", toggle="kethrelTakeColonyProperty"):

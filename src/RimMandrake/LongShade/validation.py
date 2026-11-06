@@ -555,7 +555,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -650,7 +650,7 @@ def _build_suite():
                     ad, pd = float(f.get("animalDensity")), float(f.get("plantDensity"))
                 except (TypeError, ValueError):
                     _unmeasured(t, "get_defs did not return numeric densities: %r" % (f,))
-                    return
+                    raise RowDone
                 if not ad > 0:
                     raise ExpectationFailed("animalDensity %s: the roster would never spawn" % ad)
                 if not pd > 0:
@@ -668,7 +668,7 @@ def _build_suite():
             if _live(t):
                 if not isinstance(r, dict) or r.get("success") is not True or r.get("harmonyError"):
                     _unmeasured(t, "harmony_patches could not be asked: %s" % str(r)[:160])
-                    return
+                    raise RowDone
                 owners = []
                 for m in (r.get("methods") or []):
                     owners.extend(p.get("owner") for p in (m.get("postfixes") or []))

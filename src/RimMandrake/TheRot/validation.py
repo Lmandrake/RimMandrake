@@ -697,7 +697,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -804,7 +804,7 @@ def _build_suite():
                     ad, pd = float(f.get("animalDensity")), float(f.get("plantDensity"))
                 except (TypeError, ValueError):
                     _unmeasured(t, "get_defs did not return numeric densities: %r" % (f,))
-                    return
+                    raise RowDone
                 if not ad > 0:
                     raise ExpectationFailed("animalDensity %s: the roster would never spawn" % ad)
                 if not pd > 0:
@@ -841,7 +841,7 @@ def _build_suite():
                     live = sb.get("MaxFlightTime")
                 if live is None:
                     _unmeasured(t, "statBases not serialised with MaxFlightTime: %s" % str(sb)[:120])
-                    return
+                    raise RowDone
                 if not float(live) > 0:
                     raise ExpectationFailed("RM_Dustveil MaxFlightTime %r live: CanEverFly is false" % live)
         with t.component("silk_defs_live", beyond_toggle=True):

@@ -156,7 +156,7 @@ try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
         sys.path.insert(0, _UTILS)
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, RowDone
 except ImportError:
     Suite = None
 
@@ -249,7 +249,7 @@ def _build_suite():
                     ad, pd = float(f.get("animalDensity")), float(f.get("plantDensity"))
                 except (TypeError, ValueError):
                     _unmeasured(t, "get_defs returned non-numeric densities: %r" % (f,))
-                    return
+                    raise RowDone
                 if not ad > 0:
                     raise ExpectationFailed("animalDensity %s: the six-animal roster would never spawn" % ad)
                 if pd != 0:
@@ -262,7 +262,7 @@ def _build_suite():
                     # The other flags above were read and matched; the worker class is not answerable by this instrument.
                     _unmeasured(t, "get_defs cannot read BiomeDef.workerClass (Type-valued fields read '(no such field)'); "
                                    "the density and flag checks above passed")
-                    return
+                    raise RowDone
                 if facts["workerClass"] not in str(f.get("workerClass")):
                     raise ExpectationFailed("workerClass live %r != %s" % (f.get("workerClass"), facts["workerClass"]))
         with t.component("only_clear_weather_has_weight", beyond_toggle=True):
