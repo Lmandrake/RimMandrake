@@ -839,3 +839,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH A1 (L2), read-only proof","ts":"2026-11-06T01:42:37Z","tsn":1793929357101009459}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:44:42Z","tsn":1793929482682020133}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH A2 (L2), read-only proof","ts":"2026-11-06T01:44:54Z","tsn":1793929494074691084}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:47:00Z","tsn":1793929620544228809}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH A3 (L2), read-only proof","ts":"2026-11-06T01:47:11Z","tsn":1793929631122114902}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:49:24Z","tsn":1793929764408476378}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH A4 (L2), read-only proof","ts":"2026-11-06T01:49:33Z","tsn":1793929773635595010}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:50:22Z","tsn":1793929822672980479}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging ASHKARR_WEATHER_INSTALL_THE_SLEEPING_STORMS: deploy and restart for its live proofs","ts":"2026-11-06T01:54:15Z","tsn":1793930055367034926}
