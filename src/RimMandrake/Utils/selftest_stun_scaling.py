@@ -16,8 +16,8 @@ measured live this session, via an extracted transcription of the transform
 - see that project's own Program.cs header for exactly what is real vs.
 extracted and why).
 
-dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path, so this script
-finds dotnet.exe and converts the repo path to a D-drive-style path first.
+dotnet is WINDOWS-NATIVE and cannot take a /mnt/d or ext4 path, so this script
+finds dotnet.exe and stages the project on D: (selftest_winstage) first.
 
     python3 selftest_stun_scaling.py
 """
@@ -49,16 +49,6 @@ def _find_dotnet():
     return None
 
 
-def _to_windows_path(posix_path):
-    """/mnt/d/Luke/... -> D:\\Luke\\... . dotnet.exe cannot resolve /mnt/*."""
-    p = os.path.abspath(posix_path)
-    if p.startswith("/mnt/") and len(p) > 6 and p[6] == "/":
-        drive = p[5].upper()
-        rest = p[7:].replace("/", "\\")
-        return "%s:\\%s" % (drive, rest)
-    return p.replace("/", "\\")
-
-
 def main():
     if not os.path.isfile(CSPROJ):
         sys.exit("JawaIonWeapons.SelfTest.csproj not found at %s — the SelfTest "
@@ -71,7 +61,9 @@ def main():
             "user-local Windows-side .NET SDK (see CLAUDE.md's C# build "
             "toolchain note); UNMEASURED, not a pass or a fail" % DOTNET_CANDIDATES)
 
-    win_csproj = windows_project_path(CSPROJ)
+    # whole_src=False: Program.cs reads no shipped file, and staging the whole src tree alone ran past the
+    # 240 s cap (SELFTEST_FIX_STUN_SCALING_NNVH, nightly 2026-11-06).
+    win_csproj = windows_project_path(CSPROJ, whole_src=False)
     cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"]
     result = run_interop_captured(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
