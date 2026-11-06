@@ -2991,8 +2991,8 @@ def t_reopened_done_reenrols():
     ok(st["spent"] == 500 and st["check_count"] == 3, "with its old spend and check count")
     ok(not st["ledger_started"], "and it starts the ledger item again like any fresh enrolment")
     ok(x.st("I1")["status"] == "done", "the item still closed stays done")
-    ok(any(j.get("do") == "reenrol" and j.get("item") == "I0" for j in map(json.loads, open(x.s.p("journal.jsonl"), encoding="utf-8"))),
-       "journalled as a reenrol")
+    ok(any(j.get("do") == "reenrol" and j.get("item") == "I0" and j.get("was") == "done" for j in map(json.loads, open(x.s.p("journal.jsonl"), encoding="utf-8"))),
+       "journalled as a reenrol, saying it was done (the board subtracts it from Done's closes)")
     ok(R.enrol(x.s, x.w, x.r, x.now + 2) == [], "and once in line it is not taken twice")
     ok(R.done_still_closed(x.st("I1"), "done") and not R.done_still_closed(x.st("I1"), "ready"),
        "the cli refuses a done item the ledger holds closed, and takes a reopened one")

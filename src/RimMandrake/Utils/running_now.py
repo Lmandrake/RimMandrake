@@ -105,10 +105,11 @@ BELT_WORD = {"queued": "waits for a place", "running": "Builder at work", "candi
 SIDE_WORD = {"game": "needs the live game", "held": "held for the seat or the owner", "blocked": "waits on another item",
              "stopping": "being stopped", "retiring": "being retired", "retired": "dropped for good"}
 # A rough normal for how many items sit in each stage: (top of normal, words). Read off the stages on 2026-11-03; only a
-# count above the top is called out. Done and retired only grow, so no count of theirs is ever high.
+# count above the top is called out. Done and retired have no normal: each grows, and a reenrol takes one back (a done item
+# the ledger reopened leaves done, so Done can stand still while closes land; RUNNING_BOARD_FIX_DONE_COUNT_LAGS_PASSES).
 STAGE_NORMAL = {"queued": (400, "100-400"), "running": (9, "3-9"), "candidate": (6, "0-6"), "checking": (9, "0-9"), "closing": (40, "0-40"),
-                "done": (None, "only grows"), "game": (40, "0-40"), "held": (40, "0-40"), "blocked": (70, "0-70"), "stopping": (3, "0-3"),
-                "retiring": (3, "0-3"), "retired": (None, "only grows")}
+                "done": (None, "any number"), "game": (40, "0-40"), "held": (40, "0-40"), "blocked": (70, "0-70"), "stopping": (3, "0-3"),
+                "retiring": (3, "0-3"), "retired": (None, "any number")}
 # How old the oldest item of a stage normally is: (seconds, words). An old one is the thing to look at, so the top is short.
 STAGE_OLD = {"queued": (2 * 86400, "<2d"), "running": (3 * 3600, "<3h"), "candidate": (3600, "<1h"), "checking": (3600, "<1h"), "closing": (86400, "<1d"),
              "game": (2 * 86400, "<2d"), "held": (7 * 86400, "<7d"), "blocked": (7 * 86400, "<7d"), "stopping": (900, "<15m"), "retiring": (900, "<15m")}
@@ -838,6 +839,10 @@ def collect_throughput(env, now):
             if not isinstance(d, dict):
                 raise ValueError("not a record")
             if "acts" not in d:
+                if d.get("do") == "reenrol" and reopens_done(d):      # journalled outside a tick, so it has no acts
+                    k = int((now - iso_epoch(d["at"])) // 86400)
+                    if 0 <= k <= USUAL_DAYS:
+                        days[k]["reopened"] += 1
                 continue
             at = iso_epoch(d["at"])
         except (ValueError, KeyError, TypeError):
@@ -871,14 +876,14 @@ def collect_throughput(env, now):
     def fold(c):
         return {"closed": c["done"], "pass": c["PASS"], "weak": c["WEAK"], "fail": c["FAIL"] + c["game_fail"],
                 "unmeasured": c["game_unmeasured"] + c["game_proof_unmeasured"], "refused": c["game_refused"] + c["start_refused"] + c["close_refused"],
-                "blind_fail": c["FAIL"], "put_back": c["returned"]}
+                "blind_fail": c["FAIL"], "put_back": c["returned"], "reopened": c["reopened"]}
 
     # a window counts toward "usual" only when the record behind that count reaches back past its start
     out = fold(t)
     from_journal = first if first is not None else now
     from_verdicts = first_verdict if first_verdict is not None else now
     reach = {"closed": from_journal, "unmeasured": from_journal, "refused": from_journal, "pass": from_verdicts, "weak": from_verdicts,
-             "fail": max(from_journal, from_verdicts), "blind_fail": from_verdicts, "put_back": from_journal}
+             "fail": max(from_journal, from_verdicts), "blind_fail": from_verdicts, "put_back": from_journal, "reopened": from_journal}
     usual = {}
     for key, since in reach.items():
         vals = [fold(days[k])[key] for k in range(1, USUAL_DAYS + 1) if now - (k + 1) * 86400 >= since]
@@ -888,6 +893,19 @@ def collect_throughput(env, now):
                 "usual": usual,
                 "short": bool(cut_off and first is not None and first > start)})
     return out
+
+
+def reopens_done(rec):
+    """A reenrol record that took an item out of done. `was` names the old status (journalled since this fix); an older
+    record has only the why enrol() writes for a ledger reopen, and a hand reenrol of that era was of a retired item."""
+    if "was" in rec:
+        return rec["was"] == "done"
+    return "after done" in (rec.get("why") or "")
+
+
+def done_flow(thr):
+    """The Done card's second line: its count is what is done NOW, so a reopen takes one away while closes add."""
+    return "24 h: +%d closed, -%d reopened" % (thr["closed"], thr["reopened"])
 
 
 def merged(rows):
@@ -1194,7 +1212,7 @@ def uptime_note(up):
 
 
 def stage_note(name, n):
-    """A stage's count -> (verdict and normal, colour). Done and retired only grow, so no count of theirs is off."""
+    """A stage's count -> (verdict and normal, colour). Done and retired have no normal, so no count of theirs is off."""
     top, words = STAGE_NORMAL[name]
     bottom = re.match(r"(\d+)-", words)
     if n is not None and top and n > top:
@@ -1531,7 +1549,10 @@ def pipeline_svg(p):
         s.reading_open(name.upper())
         s.text(x + 10, y0 + 19, name.upper(), 11, DIM, "700")
         s.text(x + 10, y0 + 54, "UNMEASURED" if n is None else n, 13 if n is None else 34, WARN if n is None or stage_note(name, n)[0].startswith("high") else (TEXT if n else FAINT), "700", font=MONO)
-        s.text(x + 10, y0 + 70, BELT_WORD[name], 10.5, DIM)
+        if name == "done" and thr:      # the count is what is done NOW: say what moved it, or a flat count reads as no closes
+            s.text(x + 10, y0 + 70, done_flow(thr), 9.5, DIM)
+        else:
+            s.text(x + 10, y0 + 70, BELT_WORD[name], 10.5, DIM)
         verdict, col = stage_note(name, n)
         if n is not None:
             s.text(x + 10, y0 + 83, verdict, 9, col)
@@ -1707,7 +1728,7 @@ def pipeline_text(p):
     gi = p.get("game_idle")
     out.append(game_idle_text(gi) if gi else "GAME idle UNMEASURED (%s)" % p.get("game_idle_why"))
     if thr:
-        out.append("24 h: closed %d, PASS %d, WEAK %d, FAIL %d, game-phase UNMEASURED %d, REFUSED %d" % (thr["closed"], thr["pass"], thr["weak"], thr["fail"], thr["unmeasured"], thr["refused"]))
+        out.append("24 h: closed %d, reopened %d, PASS %d, WEAK %d, FAIL %d, game-phase UNMEASURED %d, REFUSED %d" % (thr["closed"], thr["reopened"], thr["pass"], thr["weak"], thr["fail"], thr["unmeasured"], thr["refused"]))
     title = p["title"]
     olds = [(k, oldest_in(it, k, p["now"])) for k in BELT + SIDE]
     out.append("oldest:")
@@ -2655,7 +2676,7 @@ def phone_copy(p, chips):
     else:
         out.append("stages UNMEASURED")
     if thr:
-        out.append("24 h: closed %d (%s), Judge fails %d" % (thr["closed"], versus(thr["closed"], thr["usual"].get("closed"), False)[0], thr["blind_fail"]))
+        out.append("24 h: closed %d (%s), reopened %d, Judge fails %d" % (thr["closed"], versus(thr["closed"], thr["usual"].get("closed"), False)[0], thr["reopened"], thr["blind_fail"]))
     out += phone_rows(p)
     done_days = full_days(p["tokens"], now) if p["tokens"] else []
     if done_days:

@@ -5378,7 +5378,8 @@ def reenrol(store, item, why, now, locked=False):
                   attempts=old.get("attempts", 0), check_count=old.get("check_count", 0),
                   help_count=old.get("help_count", 0))
         store.save(st)
-        store.journal({"at": iso(now), "do": "reenrol", "item": item, "why": why})
+        # `was` lets a reader tell a reopened close (done shrinks) from a retirement undone (RUNNING_BOARD_FIX_DONE_COUNT_LAGS_PASSES)
+        store.journal({"at": iso(now), "do": "reenrol", "item": item, "why": why, "was": old["status"]})
         return st
 
 

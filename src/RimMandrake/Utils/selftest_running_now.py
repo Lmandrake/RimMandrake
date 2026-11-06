@@ -488,6 +488,19 @@ check("a verdict with several rule rows counts once", t["pass"] == 1)
 check("older than 24 h is out", t["pass"] + t["fail"] == 2)
 check("a put-back is not a check FAIL", t["blind_fail"] == 1 and t["put_back"] == 1)
 check("closed and refused come from the journal", t["closed"] == 1 and t["refused"] == 1)
+# 9b. RUNNING_BOARD_FIX_DONE_COUNT_LAGS_PASSES: Done is what is done NOW; a ledger reopen (a top-level reenrol record, no
+# acts) takes one away, so 5 closes and 3 reopens moved Done by 2 and the owner read the stall as failures
+flow = [{"at": "2026-11-03T20:00:00Z", "acts": [{"do": "check_passed", "item": "D%d" % i}, {"do": "done", "item": "D%d" % i}]} for i in range(5)]
+flow += [{"at": "2026-11-03T20:01:00Z", "do": "reenrol", "item": "R1", "why": "reopened on the ledger after done"},
+         {"at": "2026-11-03T20:01:00Z", "do": "reenrol", "item": "R2", "why": "hand", "was": "done"},
+         {"at": "2026-11-03T20:01:00Z", "do": "reenrol", "item": "R3", "why": "reopened on the ledger after done", "was": "done"},
+         {"at": "2026-11-03T20:01:00Z", "do": "reenrol", "item": "R4", "why": "wrongly retired", "was": "retired"},
+         {"at": "2026-11-03T20:01:00Z", "do": "reenrol", "item": "R5", "why": "wrongly retired"}]
+t = R.collect_throughput(Fake(files={SHADOW: "", JOURNAL: "\n".join(json.dumps(j) for j in flow) + "\n"}), NOW)
+check("a close counts once, not with its check_passed", t["closed"] == 5)
+check("reopens out of done are counted, retirements undone are not", t["reopened"] == 3)
+check("the Done card says both, so a flat count reads as closes less reopens", R.done_flow(t) == "24 h: +5 closed, -3 reopened")
+check("no stage note claims Done only grows", all("only grows" not in w for _, w in R.STAGE_NORMAL.values()))
 
 # 10. history honesty
 hist = [{"t": NOW - 600, "n": 5}, {"t": NOW - 300, "n": 7}, {"t": NOW - 60, "n": 9}]
@@ -1004,6 +1017,9 @@ found = page_problems()
 for x in found:
     print("  " + x)
 check("every instrument on all three panels carries a verdict and a rough normal, tile by tile, in normal and out-of-range states", not found)
+_done = readings_of(panels_of(R.build(fixture_env()[0], {}, fixture_env()[1])[0])["Relentless"]).get("DONE")
+check("the Done card names its 24 h closes and reopens (RUNNING_BOARD_FIX_DONE_COUNT_LAGS_PASSES)",
+      _done is not None and any(re.match(r"24 h: \+\d+ closed, -\d+ reopened$", w) for _, w in _done[1]))
 env, hist = fixture_env()
 pans = panels_of(R.build(env, {}, hist)[0])
 for machine in ("Archmagi", "SteveDesktop"):
