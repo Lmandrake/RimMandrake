@@ -27,6 +27,15 @@ few minutes. Always back up first; --apply does that automatically.
     python src/RimMandrake/Utils/modset_builder.py --tier bridge          # plan only
     python src/RimMandrake/Utils/modset_builder.py --tier bridge --apply  # writes ModsConfig
     python src/RimMandrake/Utils/modset_builder.py --restore              # back to the pre-swap list (before-copy, md5-verified)
+    python src/RimMandrake/Utils/modset_builder.py --tier ratchet_pilot --apply --by relentless   # an OWNED swap
+    python src/RimMandrake/Utils/modset_builder.py --restore-own relentless                     # undo only that one
+
+OWNED SWAPS (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD). `--by NAME` keeps the swap's marker and before-copy in agent storage
+(<agent storage>/modset_swaps/NAME/), not in this clone's deployed/config: Relentless's staging worker writes the tier
+from the item's clone and the supervisor restores it from the books clone, so a per-clone marker would never be seen
+by the one that must undo it. `--restore-own NAME` undoes only NAME's swap and is the only restore that may run with
+the game up: ModsConfig describes the NEXT load, and RimWorld rewrites it only when the list changes in-game (measured
+2026-08-13, below), the same reasoning modlist_swap.py --enable already writes under.
                                                         # --restore-full writes FULL.LATEST explicitly
 """
 import argparse
@@ -1248,6 +1257,53 @@ def take_before_copy(config, backups, tier):
     return stamp
 
 
+def owned_backups(by):
+    """--by NAME -> the shared directory holding NAME's swap marker and before-copy (module docstring, OWNED SWAPS)."""
+    if not by or not all(c.isalnum() or c in "-_" for c in by):
+        raise ValueError("--by names a swap owner in letters, digits, - and _: %r" % by)
+    import rmpaths
+    try:
+        return rmpaths.rm_str("modset_swaps", by)
+    except rmpaths.RmDataRootUnset as e:      # fails by name, never a fallback into the clone (CLAUDE.md agent storage)
+        raise ValueError("agent storage is unset, so no owned swap can be kept: %s" % e)
+
+
+def restore_own(config, backups):
+    """Undo the owned swap whose marker lives in `backups` -> a one-line account; RestoreRefused when it cannot.
+
+    No marker: nothing of this owner's is active. Live == the tier list the swap wrote: the before-copy goes back,
+    md5-verified. Live == the before-copy: already back, the marker is cleared. Live is neither: the list moved on
+    since (the owner, or another tool, wrote it); the swap is over, so its marker is cleared and its before-copy stays
+    on disk, never written over a list this owner did not write. A tier list whose before-copy is missing or changed
+    is RestoreRefused: that is the one case where the owner's list is unrecoverable by this tool."""
+    import json
+    marker = os.path.join(backups, SWAP_MARKER)
+    if not os.path.exists(marker):
+        return "no owned swap is active in %s; nothing written" % backups
+    try:
+        with open(marker) as fh:
+            m = json.load(fh)
+        before, want = os.path.join(backups, m["before"]), m["md5"]
+    except (ValueError, KeyError, TypeError, OSError) as e:
+        raise RestoreRefused("owned swap marker %s unreadable: %s" % (marker, e))
+    live = _md5(config) if os.path.exists(config) else None
+    if live == want:
+        os.remove(marker)
+        return "live ModsConfig already equals %s; owned swap marker cleared, nothing written" % m["before"]
+    if live is None or live != m.get("tier_md5"):
+        os.remove(marker)
+        return ("live ModsConfig is no longer tier %r's list (md5 %s); the list moved on, so the owned swap is over: "
+                "marker cleared, nothing written (before-copy kept at %s)" % (m.get("tier"), (live or "none")[:8], before))
+    if not os.path.exists(before) or _md5(before) != want:
+        raise RestoreRefused("tier %r is live but its before-copy %s is missing or changed; nothing written"
+                             % (m.get("tier"), before))
+    shutil.copy2(before, config)
+    if _md5(config) != want:
+        raise RestoreRefused("wrote %s but its md5 is not the before-copy's %s" % (config, want[:8]))
+    os.remove(marker)
+    return "restored %s (md5 %s, tier %s) -> ModsConfig.xml, verified" % (m["before"], want[:8], m.get("tier"))
+
+
 def record_tier_written(config, backups):
     """After a tier list is written: stamp its md5 into the marker, which is how a LATER swap
     proves the live file is still that tier list and not something the owner restored by hand."""
@@ -1320,9 +1376,29 @@ def main():
     ap.add_argument("--restore", action="store_true")
     ap.add_argument("--restore-full", action="store_true",
                     help="explicitly write FULL.LATEST instead of the swap's before-copy")
+    ap.add_argument("--by", metavar="OWNER",
+                    help="with --tier --apply: an owned swap, marker in agent storage (docstring, OWNED SWAPS)")
+    ap.add_argument("--restore-own", metavar="OWNER",
+                    help="undo only OWNER's swap (--by OWNER); allowed with the game up")
     ap.add_argument("--not-my-bridge", metavar="REASON",
                     help="write anyway although this window does not hold the bridge (recorded on stdout)")
     a = ap.parse_args()
+
+    if a.restore_own:       # needs no mod scan: it reads only the marker, the before-copy and the live list
+        if not bridge_ok(a.not_my_bridge):
+            return 1
+        try:
+            print(restore_own(CONFIG, owned_backups(a.restore_own)))
+        except (RestoreRefused, ValueError) as e:
+            print("REFUSING --restore-own: %s" % e)
+            return 1
+        return 0
+    backups = BACKUPS
+    if a.by:
+        try:
+            backups = owned_backups(a.by)
+        except ValueError as e:
+            ap.error(str(e))
 
     installed = scan()
     print("installed mods discovered: %d" % len(installed))
@@ -1400,13 +1476,13 @@ def main():
         return 1
 
     try:
-        stamp = take_before_copy(CONFIG, BACKUPS, a.tier)
+        stamp = take_before_copy(CONFIG, backups, a.tier)
     except RestoreRefused as e:
         print("\n  REFUSING TO WRITE: %s" % e)
         return 1
     write_config(ordered, CONFIG)
-    record_tier_written(CONFIG, BACKUPS)
-    print("\n  backed up  -> %s" % os.path.relpath(stamp, ROOT))
+    record_tier_written(CONFIG, backups)
+    print("\n  backed up  -> %s" % (stamp if a.by else os.path.relpath(stamp, ROOT)))     # another drive: no relpath
     print("  wrote      -> ModsConfig.xml (%d active)" % len(ordered))
     try:  # telemetry `modlist` event (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED); never fails the write
         sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "telemetry"))
@@ -1414,7 +1490,8 @@ def main():
         emit_change("modlist", "tier:%s" % a.tier, detail={"tier": a.tier, "active": len(ordered)})
     except Exception:  # noqa: BLE001
         pass
-    print("  restore with: python src/RimMandrake/Utils/modset_builder.py --restore")
+    print("  restore with: python src/RimMandrake/Utils/modset_builder.py %s"
+          % ("--restore-own %s" % a.by if a.by else "--restore"))
     return 0
 
 

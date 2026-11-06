@@ -87,6 +87,18 @@ class GW(S.FakeWorld):
         return {"mods": sorted({m for g in gs for m in g.get("mods") or []}),
                 "dll": sorted({d for g in gs for d in g.get("dll") or []})}
 
+    def game_tier(self, item, sha):
+        import relentless_live_round as R
+        return R.live_tier(self.proofs_at(item, sha))
+
+    def modlist_tier_plan(self, tier):
+        self.events.append("tier_plan:%s" % tier)
+        return (getattr(self, "tier_why", None) or {}).get(tier)
+
+    def modlist_restore_own(self):
+        self.events.append("restore_own")
+        return getattr(self, "restore_why", None)
+
     def modlist_enable(self, mods):
         self.enabled.append(list(mods))
         self.events.append("enable")

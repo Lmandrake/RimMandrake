@@ -96,7 +96,9 @@ BRIEF = [
     "infrastructure/state/live_proofs/<ID>.criteria as `A2 L1: what is observed` (L1 minimal-list read, L2 behaviour on a "
     "quicktest map). The supervisor leases the bridge, deploys and restarts only when your offline proof is green on the "
     "same sha, then reruns the live proofs blind. Never a flyer's flight; never fullscreen or focus the game; the minimal "
-    "mod list (all five DLC) when it is enough.",
+    "mod list (all five DLC) when it is enough. A proof that measures one EXACT list (a tier-makeup bar, a perf toll) "
+    "adds `live-tier: <tier>` (a src/RimMandrake/Utils/modset_builder.py tier, `--list`): the staging loads that tier as "
+    "the whole list, alone, and Relentless restores the list after.",
     "An item that IS a deploy (nothing to change, only trees to put in the game folder): you never --apply and need no "
     "game. Commit that .txt with `live-deploy: ModA, ModB` and `live-proof A1: python3 "
     "src/RimMandrake/rimflow/relentless_live_round.py deployed --item <ID>`, the .criteria line `A1 L1: the game folder "
@@ -475,9 +477,19 @@ def blocked_here(rows, clauses, sha, started, now):
     return out
 
 
-def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None):
+TIER_OWNER = "relentless"      # modset_builder.py --by/--restore-own: the swap Relentless wrote is the one it undoes
+
+
+def tier_cmd(item, tier):
+    """The one command that loads a `live-tier:` as the whole next list, an owned swap the supervisor restores."""
+    return ("python3 src/RimMandrake/Utils/modset_builder.py --tier %s --apply --by %s --not-my-bridge "
+            "\"relentless staging %s: the supervisor holds the bridge as RELENTLESS\"" % (tier, TIER_OWNER, item))
+
+
+def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None, tier=None):
     """trees: `live-deploy:` mods riding this load -> (folders, deploy_custom_mods.py args covering them), or None.
-    remedy: the lane's own fix of an environment cause (_env_fix): {"mods": to deploy and load, "cmds": producers}."""
+    remedy: the lane's own fix of an environment cause (_env_fix): {"mods": to deploy and load, "cmds": producers}.
+    tier: the item's `live-tier:` (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD): the next load is that modset tier, whole."""
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     en = "python3 src/RimMandrake/Utils/modlist_swap.py --enable %s --apply" % " ".join(enable)
@@ -496,6 +508,13 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
          "(infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml; `rimworld-load-round`: modlist_swap.py restores it), "
          "never a smaller tier: this one load verifies every item's GREEN-FULL clauses at once. Stamp each change with "
          "`./game --idle-ok --why \"relentless final staging %s\" down|loading|up`." % i) if (st.get("game") or {}).get("full") else
+        ("2. EXACT TIER: the game must start after the deploy on the `%s` modset tier as the WHOLE mod list (its proofs "
+         "measure that exact set; a mod more or less reads WRONG_TIER). With the game DOWN, right before the launch, run "
+         "`%s` (it resolves the tier's dependency closure, all five DLC, and keeps the list it replaced for the "
+         "supervisor to restore). Never `modlist_swap.py --enable`, --minimal or --restore on top of it, and never a "
+         "smaller or larger list. If it refuses, snag with its output: no other list can serve this item. Stamp each "
+         "change with `./game --idle-ok --why \"relentless staging %s\" down|loading|up`." % (tier, tier_cmd(i, tier), i))
+        if tier else
         "2. The game must start after the deploy: restart it on the smallest mod list that holds those mods and every "
         "mod a `live-mods:` line in the proofs below names, with their About.xml dependencies "
         "(`rimworld-load-round`: modlist_swap.py; all five DLC always). An entry with a dot is a packageId, a workshop "
@@ -510,7 +529,9 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
         ("   MOD LIST: the next load must hold %s and their dependencies (owner 2026-10-24: the list is ours to change; all "
          "five DLC stay on). The supervisor already ran `%s`; after any list swap, and again with the game down right "
          "before the launch, run it once more: a swap drops them, and a load without them measures nothing."
-         % (", ".join(enable), en)) if enable else "   MOD LIST: no mod of these builds needs enabling.",
+         % (", ".join(enable), en)) if enable and not tier else
+        ("   MOD LIST: the `%s` tier above IS the list; enable nothing." % tier) if tier else
+        "   MOD LIST: no mod of these builds needs enabling.",
         ("   SHUTDOWN WINDOW: with the game DOWN and before the launch, deploy %s (`deploy_custom_mods.py --mod <Mod> "
          "--apply`): the game folder holds a stale DLL for each, and a DLL cannot be written while the game runs."
          % ", ".join(dlls)) if dlls else "   SHUTDOWN WINDOW: no stale DLL in the game folder for these mods.",
@@ -770,6 +791,26 @@ class GameFx(object):
             import relentless_live_round
             self._round = relentless_live_round.RoundFx(books=self.books, seat=self.r["seat"])
         return self._round
+
+    def game_tier(self, item, sha):
+        """The item's `live-tier:` as a live run reads it (_mods_text), or None; ValueError on a malformed line."""
+        import relentless_live_round
+        return relentless_live_round.live_tier(self._mods_text(item, sha))
+
+    def _modset(self, args, timeout=240):
+        r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/modset_builder.py")] + args,
+                           cwd=self.books, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
+        return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-400:]
+
+    def modlist_tier_plan(self, tier):
+        """modset_builder.py --tier <tier> as a plan (writes nothing) -> None when the tier resolves here, or why not."""
+        return self._modset(["--tier", tier])
+
+    def modlist_restore_own(self):
+        """modset_builder.py --restore-own relentless: put back the list Relentless's tier swap replaced -> None, or
+        why it could not. Nothing active is None too."""
+        self._round = self._game_read = None
+        return self._modset(["--restore-own", TIER_OWNER, "--not-my-bridge", "relentless supervisor: its own tier swap"])
 
     def modlist_enable(self, mods):
         """modlist_swap.py --enable <mods> --apply on the live ModsConfig.xml -> None, or why it could not."""
@@ -1347,6 +1388,9 @@ def step(store, fx, r, item, now, acts, sup):
         return
     if led["state"] == "done" and g["phase"] != "staging":
         _save(store, item, lambda s: s["game"].update(passed_sha=sha, phase="passed"))
+        if g.get("tier"):       # restoring after: the exact tier served its proofs; the next load is not its business
+            why = fx.modlist_restore_own()
+            acts.append({"do": "game_tier_restored", "item": item, "tier": g["tier"], **({"why": why[:200]} if why else {})})
         sup.finished(store, fx, item, st["candidate"], now, acts, attempt=True)
         return
 
@@ -1561,6 +1605,10 @@ def step(store, fx, r, item, now, acts, sup):
     if g["phase"] == "stage":
         if (g.get("retry_at") or 0) > now:
             return      # put down on a harness failure until its retry: it holds no place, the bridge is free
+        try:        # an exact-tier proof (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD); the final full-list staging never loads it
+            tier = None if g.get("full") else fx.game_tier(item, sha)
+        except ValueError as e:
+            return _hold(store, fx, item, "game phase: live-tier: %s" % e, now, acts)
         rd = fx.game_reading()
         spare = g.get("spare_load")
         if spare is not None and rd.get("state") == "LOADING" and (spare.get("started") is None
@@ -1578,7 +1626,8 @@ def step(store, fx, r, item, now, acts, sup):
                           % (rd.get("evidence") or "no reading"), now, acts)
         if rd.get("state") == "LOADING" and _load_gate(store, fx, r, item, g, rd, now, acts)[0]:
             return      # every road into a staging meets the load bound and the stall evidence, not only the prove one
-        if rd.get("state") == "UP" and rd.get("started"):
+        if rd.get("state") == "UP" and rd.get("started") and not tier:
+            # an exact tier never tries a load it did not stage: another item's list is not its tier, by construction
             # another item's load may already run this build (owner 2026-11-02, "To save game loads"): an item that has
             # no row from the running game tries it before it stages a load of its own (BIOME_TIER_CLEANUP_1 read DOWN
             # while CONTAGION's staging restarted the game, and would have staged a third load untried)
@@ -1598,8 +1647,21 @@ def step(store, fx, r, item, now, acts, sup):
         if why:
             return _waits(store, fx, item, "clone: " + why, now, acts)
         st = store.load(item)
-        others = [o for o in batch(store.states(), item, now, full=bool(g.get("full"))) if _rides_ok(fx, r, o)]
+        # an exact tier stages alone and rides no other item's smaller load; the full list carries every final
+        others = [] if tier else [o for o in batch(store.states(), item, now, full=bool(g.get("full")))
+                                  if _rides_ok(fx, r, o) and (g.get("full") or not _tier_of(fx, o))]
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
+        if tier:
+            why = fx.modlist_tier_plan(tier)
+            if why:     # a tier this machine cannot resolve: no load can serve the item, held with the reason
+                fx.ledger_note(item, "relentless game phase: held, live-tier %s does not resolve: %s" % (tier, why))
+                return _hold(store, fx, item, "game phase: modset_builder.py --tier %s refused: %s" % (tier, why),
+                             now, acts)
+        # restoring after: the list Relentless's last tier swap replaced goes back before any staging writes a list
+        why = fx.modlist_restore_own()
+        if why:
+            return _waits(store, fx, item, "modlist: modset_builder.py --restore-own %s refused: %s"
+                          % (TIER_OWNER, why), now, acts)
         gaps = [fx.game_batch_gap([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                      if (o.get("game") or {}).get("sha")])]
         bad = sorted({x["item"] for x in gaps[0].get("refused") or [] if x.get("pos")})
@@ -1611,7 +1673,7 @@ def step(store, fx, r, item, now, acts, sup):
         # identical environment failure as a failed fix and hold (Codex, ..._TEN_MORE #9)
         remedy = merged_remedy([g.get("remedy")] + [(o.get("game") or {}).get("remedy") for o in others]) or {}
         want = sorted(set(enable_set(gaps)) | set(remedy.get("mods") or []))
-        if want and not g.get("full"):      # the full list's own staging restores FULL.LATEST, then enables on top
+        if want and not g.get("full") and not tier:  # the full list's own staging restores FULL.LATEST, enables on top
             why = fx.modlist_enable(want)
             if why and others:
                 # a rider's names are the rider's defect, never this item's hold (OPS_CHURN_DIAGNOSE_PLAYER_YGLE_IHKT:
@@ -1647,7 +1709,7 @@ def step(store, fx, r, item, now, acts, sup):
             s.pop("put_down", None)
             s["run"] = desc
             s["game"].update(phase="staging", staged_at=now, taken_at=now, up_seen=None, stages=s["game"]["stages"] + 1,
-                             ready=None, snag=None, waits_reload=None, batch=[o["item"] for o in others])
+                             ready=None, snag=None, waits_reload=None, batch=[o["item"] for o in others], tier=tier)
             # this staging carries the remedy; it is spent only when the staging confirms game-ready (settle below),
             # never at launch: a staging that died before running it would leave the fix unapplied and its next
             # identical row read as "fixed once" (Codex r4 game1 #3)
@@ -1660,7 +1722,7 @@ def step(store, fx, r, item, now, acts, sup):
         st["_proofs_text"] = fx.proofs_at(item, sha)
         trees = fx.game_trees([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                  if (o.get("game") or {}).get("sha")])
-        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy), r["pilot_agent"], st["clone"], c["stage_max_s"],
+        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy, tier), r["pilot_agent"], st["clone"], c["stage_max_s"],
                         {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()
@@ -1754,6 +1816,15 @@ def merged_remedy(rems):
             "cmds": sorted({c for x in rems for c in x.get("cmds") or []}),
             "why": "; ".join(x.get("why") or "" for x in rems if x.get("why"))[:600],
             "at": max(x.get("at") or 0 for x in rems)}
+
+
+def _tier_of(fx, o):
+    """A batched item's `live-tier:` (a malformed one counts as a tier: it rides nothing, its own step holds it)."""
+    og = o.get("game") or {}
+    try:
+        return fx.game_tier(o["item"], og.get("sha")) if og.get("sha") else None
+    except ValueError:
+        return "?"
 
 
 def _rides_ok(fx, r, o):

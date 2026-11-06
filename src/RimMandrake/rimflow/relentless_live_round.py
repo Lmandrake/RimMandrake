@@ -28,6 +28,15 @@ An item whose whole job is a deploy commits no mod file, so no commit says what 
 A drifting tree reads UNMEASURED "not deployed", so the game phase stages and its staging worker applies them; `deployed
 --lint` is the offline proof (RELENTLESS_DEPLOY_WIRE_NOBODY_MAY_APPLY).
 
+A proof that needs an EXACT list (a perf toll measured on one tier, a "the running load IS this set" bar) names a
+modset_builder.py tier, which the staging loads as the WHOLE list instead of enabling mods on top of whatever is live
+(LANE_TIER_WIRE_A_WHOLE_LIST_LOAD: VITALS A1 wanted ratchet_pilot's ~23 mods and got 39, WRONG_TIER every run):
+
+    live-tier: ratchet_pilot
+
+Such an item stages alone (no rider can share an exact list) and Relentless restores the list it swapped before any
+other staging and when the item passes (modset_builder.py --restore-own relentless).
+
 A criterion at level GREEN-FULL is the FINAL verification on the whole full list: it runs only when that tier is up.
 
 Not the item's prose: the Marker's box leaves infrastructure/state/items out (walls.marker.tree_exclude), so a proof kept
@@ -103,6 +112,26 @@ def proof_lines(prose, pattern=PROOF_LINE):
 
 LIVE_MODS = re.compile(r"^\s*(?:[-*]\s+)?`?live-(?:mods|deploy)\s*:\s*(?P<mods>[^`]*)`?\s*$")
 LIVE_DEPLOY = re.compile(r"^\s*(?:[-*]\s+)?`?live-deploy\s*:\s*(?P<mods>[^`]*)`?\s*$")
+
+
+LIVE_TIER = re.compile(r"^\s*(?:[-*]\s+)?`?live-tier\s*:\s*(?P<tier>[^`#]*?)`?\s*(?:#.*)?$")
+
+
+def live_tier(text):
+    """A live_proofs file -> the modset_builder.py tier its `live-tier:` line names, or None. Two different tiers, or a
+    line naming more or less than one word, is ValueError: one load cannot be two whole lists."""
+    got = []
+    for line in (text or "").splitlines():
+        m = LIVE_TIER.match(line)
+        if m:
+            words = m.group("tier").replace(",", " ").split()
+            if len(words) != 1:
+                raise ValueError("a live-tier line names exactly one modset_builder tier, not %r" % m.group("tier"))
+            if words[0] not in got:
+                got.append(words[0])
+    if len(got) > 1:
+        raise ValueError("live-tier names %s: one load is one whole list" % ", ".join(got))
+    return got[0] if got else None
 
 
 def live_mods(text, pattern=LIVE_MODS):
