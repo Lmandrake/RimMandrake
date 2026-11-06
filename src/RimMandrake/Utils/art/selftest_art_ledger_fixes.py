@@ -52,12 +52,21 @@ def refused(fn, *a, **kw):
     return None
 
 
+def pin_seat():
+    """Make every fixture write land in events/BUILD.jsonl. artledger.seat() ranks RIMFLOW_SEAT
+    ahead of ART_SEAT, so a run from a seat shell (RIMFLOW_SEAT=BENCH) wrote BENCH.jsonl and the
+    `git add .../BUILD.jsonl` below missed (ARTLEDGER_SELFTEST_FIX_FIXTURE_NEVER_WRITES)."""
+    for k in ("RIMFLOW_SEAT", "AGENT_SEAT"):
+        os.environ.pop(k, None)
+    os.environ["ART_SEAT"] = "BUILD"
+
+
 def fixture():
     tmp = Path(tempfile.mkdtemp(prefix="art-ledger-fixes-"))
     os.environ["ARTSTORE"] = str(tmp / "store")
     os.environ["ART_LEDGER_DIR"] = str(tmp / "ledger")
     os.environ["ART_SRC_ROOT"] = str(tmp / "src")
-    os.environ["ART_SEAT"] = "BUILD"
+    pin_seat()
     (tmp / "ledger" / "events").mkdir(parents=True)
     (tmp / "ledger" / "mod_aliases.json").write_text(json.dumps({"aliases": {"SWBestiary": "src/RimStarWars/SWBestiary"}}))
     (tmp / "src" / "RimStarWars" / "SWBestiary" / "Textures").mkdir(parents=True)
@@ -157,6 +166,7 @@ def git(cwd, *a):
 
 
 def git_fixture():
+    pin_seat()
     repo = Path(tempfile.mkdtemp(prefix="art-ledger-drift-"))
     git(repo, "init", "-q", "-b", "main")
     git(repo, "config", "user.email", "t@t")
