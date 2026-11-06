@@ -928,20 +928,18 @@ def _wait_saved(name, budget_s=60):
 def _wait_playing(B, budget_s=240, leave_s=30):
     """After rimworld/load_game: wait for the load to START, then for Playing (load_game answers "queued" and the old map
     stays Playing for ~3-8 s first, measured 2026-10-10 on the 550-mod list)."""
-    st = None
+    from await_lifecycle import await_lifecycle, await_leaving  # noqa: E402  (READYWAITS_MIGRATE_REMAINING_52_COPIES)
+    # every poll is an answer, not a fault: "No current map" while the load finishes is expected (live 2026-10-21 drawbridge
+    # SAVE_MIDRAISE went UNMEASURED/HARNESS on exactly this refusal while every read after the load succeeded)
+    call = lambda tool, **kw: B.call(tool, _answer=True, **kw)  # noqa: E731
     t0 = time.time()
-    while time.time() - t0 < leave_s:
-        if B.call("rimworld/get_ui_state").get("programState") != "Playing":
-            break
-        time.sleep(0.5)
-    while time.time() - t0 < budget_s:
-        st = B.call("rimworld/get_ui_state").get("programState")
-        # a poll: "No current map" while the load finishes is an answer, not a fault (live 2026-10-21 drawbridge SAVE_MIDRAISE
-        # went UNMEASURED/HARNESS on exactly this refusal while every read after the load succeeded)
-        if st == "Playing" and B.call("jawa/map_info", _answer=True).get("success"):
-            return True, int(time.time() - t0)
-        time.sleep(2)
-    return False, st
+    nap = lambda s: time.sleep(s)  # noqa: E731  late-bound, so a selftest's patched V.time.sleep is honoured
+    await_leaving(call, "playing", leave_s, poll_s=0.5, sleep=nap)  # a load that never visibly starts: the map wait judges
+    lc = await_lifecycle(call, "map_ready", max(0.0, budget_s - (time.time() - t0)), poll_s=2.0, sleep=nap)
+    if lc.ok:
+        return True, int(time.time() - t0)
+    print("_wait_playing: %s" % lc.reason)
+    return False, lc.last.get("programState")
 
 
 # ---- saveload_triplet (PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET) ------------------------------------------------------------

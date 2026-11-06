@@ -18,9 +18,11 @@ def call(n, **a):
 tile = call("jawa/map_info").get("tile")
 call("jawa/world_tile_set", tiles=str(tile), biome="RM_Wastes"); call("jawa/world_commit")
 call("rimworld/execute_debug_action", path=r"Actions\Regenerate Current Map"); time.sleep(5)
-for _ in range(100):
-    if call("rimworld/get_ui_state").get("programState") == "Playing": break
-    time.sleep(3)
+import os as _os
+sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'Utils'))
+from await_lifecycle import await_lifecycle  # noqa: E402
+lc = await_lifecycle(call, "map_ready", 300, settle=True)
+if not lc.ok: sys.exit("UNMEASURED: the map was not ready after Regenerate Current Map: %s" % lc.reason)
 print("biome:", call("jawa/map_info").get("mapBiome"))
 since = os.path.getsize(LOG)
 f = call("jawa/fire_incident", incidentDef="RM_MiddenshellArrives")

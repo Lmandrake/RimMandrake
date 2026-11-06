@@ -600,15 +600,12 @@ class Run(object):
             ts = time.time()
             B.call("rimworld/go_to_main_menu")
             r = B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
-            st = None
-            for _ in range(480):
-                st = B.call("rimworld/get_ui_state").get("programState")
-                if st == "Playing" and B.call("jawa/map_info").get("success"):
-                    break
-                time.sleep(0.5)
-            load = {"start": r.get("success"), "programState": st, "wall_s": round(time.time() - ts, 1)}
-            self.row("L0_fresh_map", "PASS" if st == "Playing" else "FAIL", "SITE", load)
-            if st != "Playing":
+            from await_lifecycle import await_lifecycle  # noqa: E402  (READYWAITS_MIGRATE_REMAINING_52_COPIES)
+            lc = await_lifecycle(B.call, "map_ready", 240, poll_s=0.5)
+            st = lc.last.get("programState")
+            load = {"start": r.get("success"), "programState": st, "wall_s": round(time.time() - ts, 1), "wait": lc.reason}
+            self.row("L0_fresh_map", "PASS" if lc.ok else "FAIL", "SITE", load)
+            if not lc.ok:
                 raise RuntimeError("no fresh map")
         self.fresh = load
         mi = B.call("jawa/map_info")

@@ -586,17 +586,15 @@ def _regen(t):
         t.bridge_call("rimworld/execute_debug_action", path="Actions\\Regenerate Current Map")
     except Exception as ex:
         t._record("regen call ended", str(ex)[:200])
-    for _ in range(60):
-        time.sleep(5)
-        try:
-            st = (t.bridge_call("rimbridge/get_bridge_status") or {}).get("state") or {}
-        except Exception:
-            continue
-        # The bridge state has NO `currentMapReady` key (MEASURED 2026-10-07: programState/currentMapId/longEventPending/
-        # automationReady/visualReady/tick); polling for it burned 300 s and made 62 components UNMEASURED.
-        if st.get("currentMapReady") or (st.get("automationReady") and st.get("currentMapId") and not st.get("longEventPending")):
-            return
-    _unmeasured(t, "the map was not ready 300 s after Regenerate Current Map")
+    # the ONE ready-wait (READYWAITS_MIGRATE_REMAINING_52_COPIES): a map up and the bridge settled (automationReady,
+    # no longEventPending); get_bridge_status has NO currentMapReady key (MEASURED 2026-10-07)
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils"))
+    from await_lifecycle import await_lifecycle  # noqa: E402
+    time.sleep(5)
+    lc = await_lifecycle(t.bridge_call, "map_ready", deadline_s=300, poll_s=5, settle=True)
+    if lc.ok:
+        return
+    _unmeasured(t, "the map was not ready 300 s after Regenerate Current Map: %s" % lc.reason)
 
 
 @_chain("site")

@@ -372,12 +372,12 @@ class Session(object):
 
 
 def playing(s):
-    if s.call("rimworld/get_ui_state").get("programState") != "Playing":
-        s.call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
-        for _ in range(120):
-            if s.call("rimworld/get_ui_state").get("programState") == "Playing":
-                break
-            time.sleep(1)
+    sys.path.insert(0, UTILS)
+    from await_lifecycle import await_lifecycle  # noqa: E402
+    lc = await_lifecycle(s.call, "map_ready", deadline_s=400, start=True)
+    if not lc.ok:
+        print("no playing map: %s" % lc.reason)
+        return None
     info = s.call("jawa/map_info")
     return info if info.get("sizeX") is not None else None
 

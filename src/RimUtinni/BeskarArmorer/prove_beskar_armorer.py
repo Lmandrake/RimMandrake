@@ -115,10 +115,11 @@ def drive():
     print("game:", str(st)[:160])
     if st.get("status") != "game_loaded":
         g.call("rimworld/start_debug_game_ready", timeoutMs=250000)
-        for _ in range(60):
-            if g.call("rimworld/get_ui_state").get("programState") == "Playing":
-                break
-            time.sleep(2)
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "RimMandrake", "Utils"))
+        from await_lifecycle import await_lifecycle  # noqa: E402
+        lc = await_lifecycle(lambda t, **p: g.call(t, **p), "map_ready", 120)
+        if not lc.ok:
+            print("UNMEASURED: %s" % lc.reason)
     for s in STEPS:
         if isinstance(s, int):
             g.ticks(s)

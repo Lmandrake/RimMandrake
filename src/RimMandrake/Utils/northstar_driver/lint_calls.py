@@ -16,7 +16,7 @@ Anything the lint cannot see through (**kwargs, non-literal tool name, non-liter
 params dict, dict with non-literal keys) is UNCHECKED, never silently passed.
 Exit 0 only if there are no problems of ANY kind (UNCHECKED counts: it is unproven).
 WARN READY_LOOP (READYWAITS_UNIFY_ONE_HELPER): the innermost for/while loop that sleeps and reads
-rimworld/get_ui_state or rimbridge/get_bridge_status is a copy of the ready-wait loop; use
+rimworld/get_ui_state's programState or rimbridge/get_bridge_status is a copy of the ready-wait loop; use
 Utils/await_lifecycle.py `await_lifecycle(call, "map_ready", deadline_s, start=True)`. A warning is
 printed and counted but never changes the exit code.
 `check=` is the transport's own flag and is not treated as a tool parameter unless the
@@ -182,15 +182,20 @@ READY_HINT = "copy-pasted ready-wait loop: use await_lifecycle(call, \"map_ready
 
 
 def _ready_loop(node):
-    """True when this loop's own subtree sleeps and names a lifecycle read tool."""
-    sleeps = reads = False
+    """True when this loop's own subtree sleeps and reads the lifecycle: rimbridge/get_bridge_status, or
+    rimworld/get_ui_state together with its "programState" key. get_ui_state alone also reports windows: a loop that
+    closes dialogs until windowCount/windowsForcePause clears is not a ready-wait (READYWAITS_MIGRATE_REMAINING_52_COPIES:
+    bridgetools/shoot_planet.py and spawn_test_colonists.py were warned for it)."""
+    sleeps = False
+    consts = set()
     for n in ast.walk(node):
         if isinstance(n, ast.Call):
             f = n.func
             name = f.attr if isinstance(f, ast.Attribute) else (f.id if isinstance(f, ast.Name) else None)
             sleeps = sleeps or name == "sleep"
-        elif isinstance(n, ast.Constant) and n.value in READY_TOOLS:
-            reads = True
+        elif isinstance(n, ast.Constant) and isinstance(n.value, str):
+            consts.add(n.value)
+    reads = READY_TOOLS[1] in consts or (READY_TOOLS[0] in consts and "programState" in consts)
     return sleeps and reads
 
 

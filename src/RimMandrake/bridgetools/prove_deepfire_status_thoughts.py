@@ -128,14 +128,13 @@ def thought(p, name):
 if args.start:
     r = call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
     print("start_debug_game_ready:", json.dumps(r)[:300])
-st = {}
-for _ in range(90):
-    st = call("rimworld/get_ui_state")
-    if st.get("programState") == "Playing":
-        break
-    time.sleep(1)
-if st.get("programState") != "Playing":
-    print("not Playing:", st.get("programState"))
+import os as _os
+sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'Utils'))
+from await_lifecycle import await_lifecycle  # noqa: E402
+lc = await_lifecycle(call, "map_ready", 90)
+st = lc.last or {}
+if not lc.ok:
+    print("not Playing:", st.get("programState"), "UNMEASURED:", lc.reason)
     sys.exit(2)
 
 LOG_BASE = deepfire_log_check.baseline(call)  # errors already in the buffer do not count

@@ -20,6 +20,8 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, ".."))
 import proof_hose as PH  # noqa: E402
+sys.path.insert(0, os.path.join(HERE, "..", "..", "..", "Utils"))
+from await_lifecycle import await_lifecycle  # noqa: E402
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else "."
 os.makedirs(OUT, exist_ok=True)
@@ -124,22 +126,12 @@ res["body_end"] = body()
 res["after_shot"] = shot("headline_after")
 # ---- reload the save, repeat
 call("rimworld/go_to_main_menu")
-for _ in range(60):
-    st = (call("rimworld/get_ui_state") or {}).get("programState")
-    if st == "Entry":
-        break
-    time.sleep(2)
+res["menu_wait"] = await_lifecycle(call, "menu", deadline_s=120, poll_s=2).reason
 try:
     call("rimworld/load_game", saveName=SAVE, ignoreModCompatibility=True)
 except Exception as ex:  # noqa: BLE001
     res["loadRaised"] = type(ex).__name__
-for _ in range(120):
-    try:
-        if (call("rimworld/get_ui_state") or {}).get("programState") == "Playing" and call("jawa/map_info").get("tile") is not None:
-            break
-    except Exception:  # noqa: BLE001
-        pass
-    time.sleep(3)
+res["reload_wait"] = await_lifecycle(call, "map_ready", deadline_s=360, poll_s=3).reason
 mi = call("jawa/map_info")
 res["reload_map"] = {"tile": mi.get("tile"), "mapId": mi.get("mapId")}
 if mi.get("tile") != 3247:

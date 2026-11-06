@@ -128,17 +128,15 @@ def offline():
 def _scene():
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
     from scenes import scenelib as S  # noqa: E402
+    from await_lifecycle import await_lifecycle  # noqa: E402
 
     def static(method, arg=""):
         r = S.call("jawa/static_call", type=PROBE, method=method, args=arg)
         return str((r or {}).get("result", "")) if isinstance(r, dict) else str(r)
 
-    if S.call("rimworld/get_ui_state").get("programState") != "Playing":
-        S.call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
-        for _ in range(120):
-            if S.call("rimworld/get_ui_state").get("programState") == "Playing":
-                break
-            time.sleep(1)
+    lc = await_lifecycle(S.call, "map_ready", deadline_s=400, start=True)
+    if not lc.ok:
+        return {"started": time.time(), "unmeasured": "no playing map: " + lc.reason}
     back = (S.call("jawa/map_info") or {}).get("mapIndex", 0)
     rec = {"started": time.time()}
     probe = static("CanFire")

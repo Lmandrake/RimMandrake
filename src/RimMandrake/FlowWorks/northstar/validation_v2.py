@@ -4344,6 +4344,10 @@ class MockBridge(object):
     def t_jawa_map_info(self):
         return dict(success=True, sizeX=MAP_W, sizeZ=MAP_H, mapBiome="MockDesert")
 
+    def t_rimworld_get_game_info(self):
+        """await_lifecycle's map_ready reads mapCount here (READYWAITS_MIGRATE_REMAINING_52_COPIES)."""
+        return dict(success=True, mapCount=1)
+
     def t_jawa_name_colony(self):
         return dict(success=True)
 
@@ -4929,21 +4933,23 @@ def run_live(args, B=None, identity=None):
         for _roll in range(4):
             m = B.call("rimworld/go_to_main_menu")
             r = B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
-            st = None
-            for _ in range(120):
-                st = B.call("rimworld/get_ui_state").get("programState")
-                if st == "Playing" and B.call("jawa/map_info").get("success"):
-                    break
-                if not args.mock:
-                    time.sleep(2.0)
+            # READYWAITS_MIGRATE_REMAINING_52_COPIES: one helper wait (was 120 x 2 s, silent on a timeout)
+            from await_lifecycle import await_lifecycle  # noqa: E402  (Utils is on sys.path, line ~93)
+            fake = [0.0]
+            lc = await_lifecycle(B.call, "map_ready", 240, poll_s=2.0,
+                                 **(dict(clock=lambda: fake[0], sleep=lambda s: fake.__setitem__(0, fake[0] + s))
+                                    if args.mock else {}))
+            st = lc.last.get("programState")
+            if not lc.ok:
+                L._log("- fresh map wait: %s" % lc.reason)
             biome = B.call("jawa/map_info").get("mapBiome")
             rolls.append(biome)
             if biome not in FROZEN_BIOMES:
                 break
         load = dict(menu=m.get("success"), start=r.get("success"), programState=st, biomes=rolls,
-                    wall_s=round(time.time() - ts, 1))
+                    wall_s=round(time.time() - ts, 1), wait=lc.reason)
         L._log("- fresh quicktest map: %s" % load)
-        if st != "Playing":
+        if st != "Playing" or not lc.ok:
             L.row("L0_fresh_map", False, "SITE", load)
         elif not args.mock:
             # TESTENV_PREFLIGHT_HARDEN_TRISPIKE_AT_ARM: calm the fresh map (hostiles, hives) as proof_hose does

@@ -70,10 +70,13 @@ def fresh_quicktest():
         time.sleep(5)
     call("rimworld/start_debug_game_ready", timeoutMs=280000,
          readiness="mapData", pauseIfNeeded=True)
-    for _ in range(120):
-        if call("rimworld/get_ui_state").get("programState") == "Playing":
-            break
-        time.sleep(1)
+    import os as _os
+    sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'Utils'))
+    from await_lifecycle import await_lifecycle  # noqa: E402
+    lc = await_lifecycle(call, "map_ready", 120)
+    if not lc.ok:
+        print("UNMEASURED: %s" % lc.reason)
+        sys.exit(2)
 
 fresh_quicktest()
 st = call("jawa/gravship_status")

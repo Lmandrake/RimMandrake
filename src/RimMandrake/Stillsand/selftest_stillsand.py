@@ -326,7 +326,15 @@ class Fake(object):
         return {"success": True}
 
     def t_get_bridge_status(self, **k):
-        return {"success": True, "state": {"currentMapReady": True}}
+        # the real keys (it has NO currentMapReady, MEASURED 2026-10-07); await_lifecycle settle=True reads these
+        return {"success": True, "state": {"automationReady": True, "currentMapId": 1, "longEventPending": False,
+                                           "programState": "Playing"}}
+
+    def t_get_ui_state(self, **k):
+        return {"success": True, "programState": "Playing"}
+
+    def t_get_game_info(self, **k):
+        return {"success": True, "mapCount": 1}
 
     def t_execute_debug_action(self, path=None, x=None, z=None, **k):
         if path.endswith("Regenerate Current Map"):

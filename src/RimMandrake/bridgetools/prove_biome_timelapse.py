@@ -49,11 +49,12 @@ if tile is None or tile == -1 or mi0.get("tileValid") is False or id0 is None:
 call("jawa/world_tile_set", tiles=str(tile), biome=BIOME); call("jawa/world_commit")
 call("rimworld/execute_debug_action", path=r"Actions\Regenerate Current Map")
 # programState stays Playing through a regen: only a NEW mapId proves the map was rebuilt (BIOMEPROOFS_FIX_OLD_MAP_AND_CAPS)
-for _ in range(100):
-    time.sleep(3)
-    if call("jawa/map_info").get("mapId") not in (None, id0) and call("rimworld/get_ui_state").get("programState") == "Playing": break
-else:
-    sys.exit("the map was not regenerated (mapId still %s) - a timelapse now would run the OLD map" % id0)
+import os as _os
+sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'Utils'))
+from await_lifecycle import await_lifecycle  # noqa: E402
+_lc = await_lifecycle(call, "map_ready", 300, new_map_of=id0, poll_s=3)
+if not _lc.ok:
+    sys.exit("UNMEASURED: the map was not regenerated (mapId still %s, %s) - a timelapse now would run the OLD map" % (id0, _lc.reason))
 since = os.path.getsize(LOG)
 mi1 = call("jawa/map_info"); PIN[0] = mi1.get("mapId")
 out = {"biome": mi1.get("mapBiome"), "mapId": PIN[0], "samples": []}

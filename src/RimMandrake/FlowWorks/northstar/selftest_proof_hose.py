@@ -56,6 +56,8 @@ class FakeBridge(object):
                 f.write(self.blob)
         if tool == "rimworld/get_ui_state":
             return {"programState": "Playing"}
+        if tool == "rimworld/get_game_info":   # await_lifecycle's map_ready reads mapCount (READYWAITS_MIGRATE_REMAINING_52_COPIES)
+            return {"success": True, "hasCurrentGame": True, "mapCount": 1}
         if tool == "jawa/running_mods":
             return {"success": True, "packageIds": ["mandrake.rm.flowworks"]}
         return {"success": True}

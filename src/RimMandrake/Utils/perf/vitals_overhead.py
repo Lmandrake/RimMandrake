@@ -190,20 +190,15 @@ def _live(a):
 
         # a fresh quicktest map: the run spawns animals and fires arrivals, so it never runs on a loaded save
         c("jawa/vitals", action="disarm", why="vitals_overhead: start off")
+        from await_lifecycle import await_lifecycle  # noqa: E402  (READYWAITS_MIGRATE_REMAINING_52_COPIES; Utils on sys.path)
         c("rimworld/go_to_main_menu")
-        for _ in range(120):
-            if c("rimworld/get_ui_state").get("programState") == "Entry":
-                break
-            time.sleep(1)
-        else:
-            raise SystemExit("BLIND: never reached the main menu; refusing to spawn into a loaded game")
+        lc = await_lifecycle(c, "menu", 120)
+        if not lc.ok:
+            raise SystemExit("BLIND: never reached the main menu; refusing to spawn into a loaded game (%s)" % lc.reason)
         r = c("rimworld/start_debug_game_ready", timeoutMs=900000, readiness="mapData", pauseIfNeeded=True)
-        for _ in range(600):
-            if c("rimworld/get_ui_state").get("programState") == "Playing":
-                break
-            time.sleep(1)
-        else:
-            raise SystemExit("BLIND: quicktest never reached Playing: %s" % json.dumps(r, default=str)[:300])
+        lc = await_lifecycle(c, "map_ready", 600)
+        if not lc.ok:
+            raise SystemExit("BLIND: quicktest never reached Playing: %s (%s)" % (json.dumps(r, default=str)[:300], lc.reason))
         time.sleep(5)
         c("jawa/debug_settings", action="set", field="enableStoryteller", value="false")   # no surprise raid mid-A/B
         mi = c("jawa/map_info")

@@ -790,15 +790,13 @@ def live_battery(B, fresh_map=False, rows=None):
         _G.refuse_if_foreign_activity("rimworld/go_to_main_menu")
         B.call("rimworld/go_to_main_menu")
         r = B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
-        st = None
-        for _ in range(90):
-            st = B.call("rimworld/get_ui_state").get("programState")
-            if st == "Playing" and B.call("jawa/map_info").get("success"):
-                break
-            time.sleep(2)
-        hrow(rows, "L0_fresh_map", "PASS" if st == "Playing" else "FAIL", "SITE", {"start": r.get("success"), "programState": st})
-        if st != "Playing":
-            res["aborted"] = "no fresh map"
+        from await_lifecycle import await_lifecycle  # noqa: E402  (READYWAITS_MIGRATE_REMAINING_52_COPIES)
+        lc = await_lifecycle(B.call, "map_ready", 180, poll_s=2.0)
+        st = lc.last.get("programState")
+        hrow(rows, "L0_fresh_map", "PASS" if lc.ok else "FAIL", "SITE",
+             {"start": r.get("success"), "programState": st, "wait": lc.reason})
+        if not lc.ok:
+            res["aborted"] = "no fresh map: %s" % lc.reason
             return res
     # environment fingerprint for `modcheck record`
     env = {}

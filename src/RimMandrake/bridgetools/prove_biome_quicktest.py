@@ -40,12 +40,13 @@ def log_blind(since):
 def wait_new_map(old_id, limit=300):
     # programState stays Playing through a regen, so only a NEW mapId proves the map was rebuilt
     # (BIOMEPROOFS_FIX_OLD_MAP_AND_CAPS)
-    t0 = time.time()
-    while time.time() - t0 < limit:
-        mi = call("jawa/map_info")
-        if mi.get("mapId") not in (None, old_id) and call("rimworld/get_ui_state").get("programState") == "Playing":
-            return mi
-        time.sleep(3)
+    import os as _os
+    sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'Utils'))
+    from await_lifecycle import await_lifecycle  # noqa: E402
+    lc = await_lifecycle(call, "map_ready", limit, new_map_of=old_id, poll_s=3)
+    if lc.ok:
+        return call("jawa/map_info")
+    print("UNMEASURED: %s" % lc.reason)
     return None
 
 out_path, biomes = sys.argv[1], sys.argv[2:]

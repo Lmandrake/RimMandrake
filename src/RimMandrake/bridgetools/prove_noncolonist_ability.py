@@ -50,13 +50,13 @@ def main():
     print("starting debug game...", flush=True)
     call("rimworld/start_debug_game_ready", timeoutMs=280000,
          readiness="mapData", pauseIfNeeded=True)
-    state = None
-    for _ in range(180):
-        st = call("rimworld/get_ui_state")
-        state = st.get("programState")
-        if state == "Playing":
-            break
-        time.sleep(1)
+    import os as _os
+    sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'Utils'))
+    from await_lifecycle import await_lifecycle  # noqa: E402
+    lc = await_lifecycle(call, "map_ready", 180)
+    state = (lc.last or {}).get("programState")
+    if not lc.ok:
+        print("UNMEASURED: %s" % lc.reason, flush=True)
     print("programState = %s" % state, flush=True)
     if state != "Playing":
         record("game reaches Playing", False, "programState=%r" % state)

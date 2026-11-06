@@ -64,19 +64,26 @@ def need_regen(info, biome, not_biome):
     return "regen", "the current map is %s, %s wanted" % (have, biome)
 
 
+def _lc_call(rb):
+    """rb.call takes a params dict; await_lifecycle calls call(tool, **params)."""
+    return lambda tool, **p: rb.call(tool, p)
+
+
+def _lc_clock():
+    return time.time()          # read at call time: the selftest swaps this module's `time` for a fake clock
+
+
+def _lc_sleep(s):
+    time.sleep(s)
+
+
 def wait_ready(rb, budget_s=300, step_s=5):
-    """Poll the bridge until a map is up: no `currentMapReady` key exists (measured 2026-10-07)."""
-    t0 = time.time()
-    while time.time() - t0 < budget_s:
-        time.sleep(step_s)
-        try:
-            st = (rb.call("rimbridge/get_bridge_status", {}) or {}).get("state") or {}
-        except Exception:      # noqa: BLE001  the call can drop while the map rebuilds: poll, never trust
-            continue
-        if st.get("automationReady") and st.get("currentMapId") and not st.get("longEventPending") \
-                and st.get("programState") == "Playing":
-            return True
-    return False
+    """Poll the bridge until a map is up and the bridge settled (await_lifecycle settle=True: no `currentMapReady`
+    key exists, measured 2026-10-07). The first poll waits step_s: a regen leaves the old map readable at first."""
+    from await_lifecycle import await_lifecycle
+    _lc_sleep(step_s)
+    return await_lifecycle(_lc_call(rb), "map_ready", deadline_s=budget_s, poll_s=step_s, settle=True,
+                           clock=_lc_clock, sleep=_lc_sleep).ok
 
 
 def reply(r):
@@ -237,16 +244,11 @@ def save_site(a):
 
 
 def wait_state(rb, want, budget_s, step_s=2):
-    """Poll get_ui_state until programState == want (Entry for the menu, as perf/vitals_overhead.py reads it)."""
-    t0 = time.time()
-    while time.time() - t0 < budget_s:
-        try:
-            if (rb.call("rimworld/get_ui_state", {}) or {}).get("programState") == want:
-                return True
-        except Exception:      # noqa: BLE001  the call can drop across the scene change: poll, never trust
-            pass
-        time.sleep(step_s)
-    return False
+    """Wait until programState == want: "Entry" (the menu, as perf/vitals_overhead.py reads it) or "Playing"."""
+    from await_lifecycle import await_lifecycle
+    state = {"Entry": "menu", "Playing": "playing"}[want]
+    return await_lifecycle(_lc_call(rb), state, deadline_s=budget_s, poll_s=step_s, clock=_lc_clock,
+                           sleep=_lc_sleep).ok
 
 
 def menu_site(a):

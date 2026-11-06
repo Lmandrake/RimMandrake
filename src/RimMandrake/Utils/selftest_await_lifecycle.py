@@ -130,5 +130,74 @@ try:
 except ValueError:
     check("an unknown state is refused", True)
 
+# settle=True (READYWAITS_MIGRATE_REMAINING_52_COPIES): a map with a long event pending is not ready until it clears
+class Seq(object):
+    """Playing with one map throughout; bridge status and map ids follow scripted per-poll lists (the last repeats)."""
+
+    def __init__(self, status=None, mapids=None, ui=None):
+        self.status, self.mapids, self.ui = status or [{}], mapids or [None], ui or ["Playing"]
+        self.n, self.now, self.calls = 0, 0.0, []
+
+    def _at(self, xs):
+        return xs[min(self.n, len(xs) - 1)]
+
+    def __call__(self, tool, **p):
+        self.calls.append(tool)
+        if tool == "rimworld/get_ui_state":
+            return {"programState": self._at(self.ui)}
+        if tool == "rimworld/get_game_info":
+            return {"mapCount": 1}
+        if tool == "rimbridge/get_bridge_status":
+            return {"state": self._at(self.status)}
+        if tool == "jawa/map_info":
+            return {"mapId": self._at(self.mapids)}
+        raise AssertionError("unexpected tool " + tool)
+
+    def clock(self):
+        return self.now
+
+    def sleep(self, s):
+        self.now += s
+        self.n += 1
+
+
+def run2(f, **kw):
+    kw.setdefault("deadline_s", 10)
+    return A.await_lifecycle(f, "map_ready", poll_s=1.0, clock=f.clock, sleep=f.sleep, **kw)
+
+
+f = Seq(status=[{"automationReady": True, "longEventPending": True}] * 2 + [{"automationReady": True}])
+r = run2(f, settle=True)
+check("settle waits out a pending long event", r.ok and r.polls == 3, repr(r))
+f = Seq(status=[{"automationReady": True, "longEventPending": True}])
+r = run2(f)
+check("without settle the status is never asked", r.ok and "rimbridge/get_bridge_status" not in f.calls, repr(r))
+f = Seq(status=[{"automationReady": False}])
+r = run2(f, settle=True, deadline_s=3)
+check("a never-settled bridge times out as settling", not r.ok and r.phase == "settling", repr(r))
+f = Seq(status=[{"automationReady": False}])
+r = A.await_lifecycle(f, "playing", deadline_s=3, poll_s=1.0, clock=f.clock, sleep=f.sleep, settle=True)
+check("settle does not apply to a playing wait", r.ok, repr(r))
+
+# new_map_of: the old map id (or none) is not ready; a new id is
+f = Seq(mapids=["m1", None, "m1", "m2"])
+r = run2(f, new_map_of="m1")
+check("new_map_of waits for a NEW mapId", r.ok and r.polls == 4, repr(r))
+f = Seq(mapids=["m1"])
+r = run2(f, new_map_of="m1", deadline_s=4)
+check("the old map past the deadline times out as old_map", not r.ok and r.phase == "old_map"
+      and "old one" in r.reason, repr(r))
+
+# await_leaving: after load_game the old map stays Playing for a while
+f = Seq(ui=["Playing", "Playing", "MapInitializing"])
+r = A.await_leaving(f, "playing", deadline_s=10, poll_s=1.0, clock=f.clock, sleep=f.sleep)
+check("await_leaving sees the game leave Playing", r.ok and r.polls == 3 and r.phase == "loading", repr(r))
+f = Seq(ui=["Playing"])
+r = A.await_leaving(f, "playing", deadline_s=3, poll_s=1.0, clock=f.clock, sleep=f.sleep)
+check("await_leaving times out when the game stays", not r.ok and "still" in r.reason, repr(r))
+f = Seq(ui=["Entry"])
+r = A.await_leaving(f, "menu", deadline_s=3, poll_s=1.0, clock=f.clock, sleep=f.sleep)
+check("await_leaving(menu) holds while at the menu", not r.ok and r.phase == "menu", repr(r))
+
 print("RESULT %s (%d failures)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
 sys.exit(1 if FAILS else 0)

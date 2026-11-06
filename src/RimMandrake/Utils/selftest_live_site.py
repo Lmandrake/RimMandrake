@@ -49,6 +49,8 @@ class FakeRB:
                 return {"success": False, "code": "save.missing_mods", "message": "6 mod(s) not active"}
             FakeRB.shared["programState"] = "Playing"
             return {"success": True}
+        if tool == "rimworld/get_game_info":     # await_lifecycle's map check (READYWAITS_MIGRATE_REMAINING_52_COPIES)
+            return {"mapCount": 1 if FakeRB.shared["programState"] == "Playing" else 0}
         if tool == "rimbridge/get_bridge_status":
             return {"state": {"automationReady": True, "currentMapId": 1, "longEventPending": False,
                               "programState": FakeRB.shared["programState"]}}

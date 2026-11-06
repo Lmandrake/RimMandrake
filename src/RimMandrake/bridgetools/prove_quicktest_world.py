@@ -28,20 +28,21 @@ if st0.get("programState") == "Playing":
               % (ticks, MAX_TICKS))
         sys.exit(1)
     call("rimworld/go_to_main_menu")
-    for _ in range(120):
-        if call("rimworld/get_ui_state").get("programState") == "Entry": break
-        time.sleep(1)
-    else:
+    import os as _os
+    sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'Utils'))
+    from await_lifecycle import await_lifecycle  # noqa: E402
+    if not await_lifecycle(call, "menu", 120):
         print("NOT READY: left a Playing test game (tick %s) but never reached the main menu in 120 s" % ticks)
         sys.exit(1)
     print("left a Playing test game (tick %s) for the main menu" % ticks)
 r = call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
 print("start_debug_game_ready:", json.dumps(r)[:400])
-st = {}
-for _ in range(90):
-    st = call("rimworld/get_ui_state")
-    if st.get("programState") == "Playing": break
-    time.sleep(1)
+import os as _os
+sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'Utils'))
+from await_lifecycle import await_lifecycle  # noqa: E402
+lc = await_lifecycle(call, "map_ready", 90)
+st = lc.last or {}
+if not lc.ok: print("UNMEASURED:", lc.reason)
 print("programState:", st.get("programState"), "after %.0fs" % (time.time() - t0))
 gi = call("rimworld/get_game_info")
 print("get_game_info:", json.dumps(gi)[:400])

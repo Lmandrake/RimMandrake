@@ -129,11 +129,10 @@ _helper = os.path.join(os.path.dirname(HERE), "await_lifecycle.py")
 with open(_helper, encoding="utf-8") as _fh:
     check("await_lifecycle.py itself is not a ready-loop copy", L.ready_loops(_fh.read(), _helper) == [])
 _ud = os.path.dirname(os.path.dirname(HERE))
-for _m in ("BlueDesert/prove_carbon_garden.py", "BlueDesert/prove_vhaulk_departs.py",
-           "BlueDesert/prove_ablation_stages.py", "LongShade/prove_stampede.py",
-           "EnvironmentalHazards/prove_shade_lessons.py"):
-    with open(os.path.join(_ud, _m), encoding="utf-8") as _fh:
-        check("migrated %s holds no ready-loop copy" % _m, L.ready_loops(_fh.read(), _m) == [])
+check("a window-clearing loop on get_ui_state (no programState read) is not warned",
+      L.ready_loops("for i in r:\n    call('rimworld/close_window', windowType=w)\n"
+                    "    if not call('rimworld/get_ui_state').get('windowsForcePause'): break\n"
+                    "    time.sleep(1)\n", "x.py") == [])
 import subprocess as _sp
 import tempfile as _tf
 with _tf.TemporaryDirectory() as _d:
@@ -152,11 +151,12 @@ with _tf.TemporaryDirectory() as _d:
     check("a directory scan warns a new copy in a prove_*.py (the file kind copies are written in)",
           (_p + ":5  -  WARN READY_LOOP") in _r.stdout, _r.stdout[-300:])
     check("the prove_*.py warning leaves the exit code 0", _r.returncode == 0, "exit %d" % _r.returncode)
-_flora = os.path.join(_ud, "BlueDesert", "prove_flora_retile.py")
-_r = _sp.run([sys.executable, os.path.join(HERE, "lint_calls.py"), os.path.join(_ud, "BlueDesert")],
-             capture_output=True, text=True)
-check("a directory scan warns the unmigrated copy in BlueDesert/prove_flora_retile.py",
-      (_flora + ":") in _r.stdout and "WARN READY_LOOP" in _r.stdout, _r.stdout[-300:])
+# READYWAITS_MIGRATE_REMAINING_52_COPIES: every copy under src/ was migrated (49 over 42 files on 2026-11-05); the
+# temp-dir rows above prove the same scan can see a copy, so a 0 here is a measured zero, not a blind one
+_src = os.path.dirname(_ud)
+_left = L.warn_paths([_src])
+check("src/ holds no ready-wait loop copy (all migrated onto await_lifecycle)", not _left,
+      "%d left: %s" % (len(_left), ["%s:%d" % (os.path.relpath(f, _src), n) for f, n in _left[:6]]))
 
 # --- the snapshot is not stale against the companion source (26 tools were missing on 2026-10-10)
 import glob as _glob

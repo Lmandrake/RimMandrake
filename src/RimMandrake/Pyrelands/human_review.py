@@ -1032,20 +1032,19 @@ class Review(object):
     def load(self, name, budget_s=600):
         """Load a save from the main menu (loading over a live game NREs, northstar_site.reload_fixture)."""
         B = self.B
+        from await_lifecycle import await_lifecycle  # noqa: E402  (READYWAITS_MIGRATE_REMAINING_52_COPIES; Utils on sys.path)
         B.call("rimworld/go_to_main_menu")
-        for _ in range(120):
-            if B.call("rimworld/get_ui_state").get("programState") == "Entry":
-                break
-            time.sleep(0.5)
+        menu = await_lifecycle(B.call, "menu", 60, poll_s=0.5)
+        if not menu.ok:   # loading over a live game NREs: refuse rather than load blind
+            raise SystemExit("load %s: never reached the main menu: %s" % (name, menu.reason))
         B.call("rimworld/load_game", saveName=name)
         t0 = time.time()
-        time.sleep(5)
-        while time.time() - t0 < budget_s:
-            if B.call("rimworld/get_ui_state").get("programState") == "Playing" and B.call("jawa/map_info").get("success"):
-                time.sleep(3)
-                return True
-            time.sleep(2)
-        raise SystemExit("load %s: not Playing after %ds" % (name, budget_s))
+        time.sleep(5)     # load_game answers "queued"; the old map reads Playing for a few seconds
+        lc = await_lifecycle(B.call, "map_ready", max(0.0, budget_s - (time.time() - t0)), poll_s=2.0)
+        if lc.ok:
+            time.sleep(3)
+            return True
+        raise SystemExit("load %s: not Playing after %ds: %s" % (name, budget_s, lc.reason))
 
     def require_site(self):
         mi = self.B.call("jawa/map_info")

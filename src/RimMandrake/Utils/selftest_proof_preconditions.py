@@ -509,6 +509,9 @@ def part_d():
             if tool == "jawa/map_info":
                 self.mi += 1
                 return {"success": False, "message": "no map yet (selftest)"} if self.mi % 2 == 1 else {"success": True}
+            if tool == "rimworld/get_game_info":   # await_lifecycle's map_ready reads mapCount (READYWAITS_MIGRATE_REMAINING_52_COPIES)
+                self.mi += 1
+                return {"success": False, "message": "no map yet (selftest)"} if self.mi % 2 == 1 else {"success": True, "mapCount": 1}
             return PreFake.call(self, tool, **kw)
     osleep = V.time.sleep
     V.time.sleep = lambda s: None

@@ -1403,11 +1403,11 @@ class Review(object):
         B = self.B
         B.call("rimworld/go_to_main_menu")
         B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
-        for _ in range(480):
-            if B.call("rimworld/get_ui_state").get("programState") == "Playing" and B.call("jawa/map_info").get("success"):
-                return True
-            time.sleep(0.5)
-        raise SystemExit("no fresh map")
+        from await_lifecycle import await_lifecycle  # noqa: E402  (READYWAITS_MIGRATE_REMAINING_52_COPIES; Utils on sys.path)
+        lc = await_lifecycle(B.call, "map_ready", 240, poll_s=0.5)
+        if lc.ok:
+            return True
+        raise SystemExit("no fresh map: %s" % lc.reason)
 
     def calm(self, keep=()):
         """keep: the rects a partial rebuild leaves standing (held_rects), so their held pawns survive the sweep."""

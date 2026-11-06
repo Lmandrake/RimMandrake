@@ -450,17 +450,15 @@ class Proof(object):
             B.call("rimworld/go_to_main_menu")
             r = B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
         t = time.time()
-        for _ in range(480):
-            st = B.call("rimworld/get_ui_state").get("programState")
-            if st == "Playing" and B.call("jawa/map_info").get("success"):
-                break
-            time.sleep(0.5)
+        from await_lifecycle import await_lifecycle  # noqa: E402  (READYWAITS_MIGRATE_REMAINING_52_COPIES; Utils on sys.path)
+        lc = await_lifecycle(B.call, "map_ready", 240, poll_s=0.5)
+        st = lc.last.get("programState")
         mi = B.call("jawa/map_info")
         self.map_info = {k: mi.get(k) for k in ("sizeX", "sizeZ", "mapBiome", "longitude")}
-        ok = st == "Playing" and mi.get("sizeX") == 250 and mi.get("sizeZ") == 250 and (site is None or site.get("verified") is True)
+        ok = lc.ok and st == "Playing" and mi.get("sizeX") == 250 and mi.get("sizeZ") == 250 and (site is None or site.get("verified") is True)
         self.row("preflight", "P1_fresh_map", "PASS" if ok else "FAIL", "SITE",
                  {"fresh": mode == "fresh", "mapMode": mode, "start": r.get("success"), "programState": st, "map": self.map_info,
-                  "wait_s": round(time.time() - t, 1),
+                  "wait_s": round(time.time() - t, 1), "wait": lc.reason,
                   "siteSave": None if site is None else {k: site.get(k) for k in ("save", "load_s", "ready_s", "verified", "problems")}})
         if not ok:
             raise RuntimeError("no 250x250 map")

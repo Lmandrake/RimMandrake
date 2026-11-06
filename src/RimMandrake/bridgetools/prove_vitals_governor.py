@@ -40,13 +40,13 @@ def ticks():
 
 def fresh_map():
     call("rimworld/go_to_main_menu")
-    for _ in range(60):
-        if call("rimworld/get_ui_state").get("programState") == "Entry": break
-        time.sleep(1)
+    import os as _os
+    sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'Utils'))
+    from await_lifecycle import await_lifecycle  # noqa: E402
+    if not await_lifecycle(call, "menu", 60): print("UNMEASURED: main menu not reached")
     call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
-    for _ in range(120):
-        if call("rimworld/get_ui_state").get("programState") == "Playing": break
-        time.sleep(1)
+    lc = await_lifecycle(call, "map_ready", 120)
+    if not lc.ok: raise SystemExit("UNMEASURED: no map after start: %s" % lc.reason)
     time.sleep(3)
     ps = call("jawa/list_pawns", faction="player").get("pawns") or []
     return [p["id"] for p in ps if p.get("def") == "Human" and not p.get("dead")]

@@ -28,11 +28,12 @@ def call(tool, **p):
 print("== starting quicktest ==")
 print(call("rimworld/start_debug_game_ready", timeoutMs=280000,
            readiness="mapData", pauseIfNeeded=True).get("success"))
-for _ in range(120):
-    st = call("rimworld/get_ui_state")
-    if st.get("programState") == "Playing":
-        break
-    time.sleep(1)
+import os as _os
+sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'Utils'))
+from await_lifecycle import await_lifecycle  # noqa: E402
+lc = await_lifecycle(call, "map_ready", 120)
+st = lc.last or {}
+if not lc.ok: print("UNMEASURED:", lc.reason)
 print("state:", st.get("programState"))
 
 cols = call("rimworld/list_colonists", currentMapOnly=True)
