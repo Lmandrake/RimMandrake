@@ -1778,11 +1778,25 @@ def _rerecord(store, fx, item, sha, acts):
     GRAFFITI_NORTHSTAR_GREEN_FULL_1): record the manifest again from that file. Only the supervisor can (`rimflow
     implemented` refuses a worker on an item relentless carries), so a worker sent back for it could change nothing.
     -> None when recorded, else rimflow's refusal."""
-    again = fx.game_implement(item, sha, fx.proofs_at(item, sha, ".criteria"),
+    text = fx.proofs_at(item, sha, ".criteria")
+    led = fx.game_ledger(item) if hasattr(fx, "game_ledger") else None
+    # a manifest replaces the last: each ledger criterion the file does not name is carried over, as close_rerecord
+    # does, so a re-record never drops an owed clause (Codex cd905b re-review)
+    again = fx.game_implement(item, sha, with_kept(text, (led or {}).get("criteria") or {}),
                               (store.load(item).get("contract") or {}).get("live"))
     acts.append({"do": "game_rerecorded", "item": item, "why": (again or "ok")[:200]})
     return again
 
+
+
+def with_kept(text, ledger):
+    """The `.criteria` text plus one line for each ledger criterion ({id: {level, text}}) it does not name. Pure."""
+    named = _criteria_lines(text)
+    kept = ["%s %s: %s" % (cid, c.get("level"), (c.get("text") or "").strip())
+            for cid, c in sorted(ledger.items()) if cid not in named]
+    if not kept:
+        return text
+    return (text or "").rstrip("\n") + "\n" + "".join(k + "\n" for k in kept)
 
 
 def _criteria_lines(text):
@@ -1820,10 +1834,7 @@ def close_rerecord(store, fx, item, sha, acts):
     moved = criteria_moved(text, ledger)
     if not moved:
         return None
-    named = _criteria_lines(text)
-    kept = ["%s %s: %s" % (cid, c.get("level"), (c.get("text") or "").strip())
-            for cid, c in sorted(ledger.items()) if cid not in named]
-    again = fx.game_implement(item, sha, text.rstrip("\n") + "\n" + "".join(k + "\n" for k in kept),
+    again = fx.game_implement(item, sha, with_kept(text, ledger),
                               (store.load(item).get("contract") or {}).get("live"),
                               why="relentless: blind PASS; the candidate's .criteria re-tiers %s, recorded again "
                                   "before the close" % ", ".join(moved))
@@ -2364,6 +2375,13 @@ def step(store, fx, r, item, now, acts, sup):
             acts.append({"do": "game_rider_without_split", "item": item, "riders": split,
                          "why": "; ".join(x["why"] for x in gaps[0]["split"])[:300]})
             others = [o for o in others if o["item"] not in split]
+        if bad or split:    # the dropped riders' mods and menu steps leave with them (Codex cd905b re-review)
+            gaps = [fx.game_batch_gap([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
+                                                         if (o.get("game") or {}).get("sha")])]
+            try:
+                menu = staging_menu(fx, item, sha, g["stages"], others)
+            except ValueError as e:
+                return _hold(store, fx, item, "game phase: the live_proofs file's live-menu/live-toggle: %s" % e, now, acts)
         # every rider's own lane fix rides with it: a passenger marked staged without its remedy run would read its next
         # identical environment failure as a failed fix and hold (Codex, ..._TEN_MORE #9)
         remedy = merged_remedy([g.get("remedy")] + [(o.get("game") or {}).get("remedy") for o in others]) or {}

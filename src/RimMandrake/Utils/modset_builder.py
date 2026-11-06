@@ -969,7 +969,8 @@ def resolve_tier(name, installed):
     else:
         want += [CORE]
     want += [HARMONY]
-    if not t.get("no_zoom") and ZOOM in installed:
+    # a tier that wants Camera+ never gets the rival zoom mod, whether or not it says no_zoom (Codex cd905b re-review)
+    if not t.get("no_zoom") and ZOOM in installed and "brrainz.cameraplus" not in {w.lower() for w in want}:
         want.append(ZOOM)
     pids, missing = close_over(want, installed)
     ordered = order(pids, installed)
@@ -1171,7 +1172,9 @@ def _retired_ids():
         try:
             import biomes_compose
             _RETIRED = dict(biomes_compose.folded_ids(os.path.join(ROOT, "src")))
-        except Exception:      # a broken manifest must not hide the tier's own guards
+        except Exception as e:      # a broken manifest must not hide the tier's own guards; it says so
+            print("  ! the biomes compose manifest could not be read (%s: %s): no folded-package guard this run"
+                  % (type(e).__name__, e), file=sys.stderr)
             _RETIRED = {}
     return _RETIRED
 
@@ -1216,7 +1219,9 @@ def tier_guard(tier, pids):
     return out
 
 
-def write_config(pids, version_from):
+def write_config(pids, version_from, before_replace=None):
+    """Write `pids` as the live list (CONFIG). before_replace(md5) runs with the new file's md5 before it replaces the
+    live one, so a kill between the two never leaves a tier list its swap marker cannot recognise (Codex cd905b)."""
     import zoom_guard
     # the engine's IsActive is case-sensitive on the file's ids (zoom_guard); first spelling of a repeat wins
     pids = list(dict.fromkeys(p.lower() for p in pids))
@@ -1234,9 +1239,13 @@ def write_config(pids, version_from):
     buf = io.BytesIO()
     tree.write(buf, encoding="utf-8", xml_declaration=True)
     # tmp + replace: a kill mid-write must not leave the game's live list half-written
+    import hashlib
+    data = buf.getvalue().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
     tmp = CONFIG + ".modset-tmp"
     with open(tmp, "wb") as fh:
-        fh.write(buf.getvalue().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
+        fh.write(data)
+    if before_replace is not None:
+        before_replace(hashlib.md5(data).hexdigest())
     os.replace(tmp, CONFIG)
 
 
@@ -1281,13 +1290,34 @@ class config_lock(object):
             self.path = os.path.join(tempfile.gettempdir(), os.path.basename(self.path))
         self.wait_s, self.fd = wait_s, None
 
+    @staticmethod
+    def _try(fd):
+        try:
+            import fcntl
+        except ImportError:     # native Windows Python: msvcrt's byte-range lock on the file's first byte
+            import msvcrt
+            os.lseek(fd, 0, os.SEEK_SET)
+            msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+            return
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+    @staticmethod
+    def _untry(fd):
+        try:
+            import fcntl
+        except ImportError:
+            import msvcrt
+            os.lseek(fd, 0, os.SEEK_SET)
+            msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+            return
+        fcntl.flock(fd, fcntl.LOCK_UN)
+
     def __enter__(self):
-        import fcntl
         self.fd = os.open(self.path, os.O_RDWR | os.O_CREAT, 0o644)
         end = time.time() + self.wait_s
         while True:
             try:
-                fcntl.flock(self.fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                self._try(self.fd)
                 return self
             except OSError:
                 if time.time() >= end:
@@ -1297,9 +1327,8 @@ class config_lock(object):
                 time.sleep(0.5)
 
     def __exit__(self, *exc):
-        import fcntl
         if self.fd is not None:
-            fcntl.flock(self.fd, fcntl.LOCK_UN)
+            self._untry(self.fd)
             os.close(self.fd)
             self.fd = None
         return False
@@ -1410,16 +1439,19 @@ def restore_own(config, backups):
     return "restored %s (md5 %s, tier %s) -> ModsConfig.xml, verified" % (m["before"], want[:8], m.get("tier"))
 
 
-def record_tier_written(config, backups):
-    """After a tier list is written: stamp its md5 into the marker, which is how a LATER swap
-    proves the live file is still that tier list and not something the owner restored by hand."""
+def record_tier_written(config, backups, md5=None):
+    """Stamp the tier list's md5 (`md5`, else the live file's) into the marker, which is how a LATER swap
+    proves the live file is still that tier list and not something the owner restored by hand. The marker is
+    replaced whole (tmp + os.replace), never left half-written."""
     import json
     marker = os.path.join(backups, SWAP_MARKER)
     with open(marker) as fh:
         m = json.load(fh)
-    m["tier_md5"] = _md5(config)
-    with open(marker, "w") as f:
+    m["tier_md5"] = md5 or _md5(config)
+    tmp = marker + ".tmp"
+    with open(tmp, "w") as f:
         json.dump(m, f)
+    os.replace(tmp, marker)
 
 
 def clear_swap_marker(backups):
@@ -1534,6 +1566,8 @@ def main():
         # FULL.LATEST is now reachable only by the explicit --restore-full.
         try:
             with config_lock():
+                if game_running():      # it may have started while this waited for the lock
+                    raise RestoreRefused("RimWorld looks live (rechecked under the lock). Exit first.")
                 if a.restore_full:
                     atomic_copy(FULL_BACKUP, CONFIG)
                     if clear_swap_marker(BACKUPS):
@@ -1585,8 +1619,10 @@ def main():
 
     try:
         with config_lock():     # the before-copy, the write and its md5 stamp are one act
+            if game_running():      # it may have started while this waited for the lock
+                raise RestoreRefused("RimWorld looks live (rechecked under the lock). Exit the game, then re-run.")
             stamp = take_before_copy(CONFIG, backups, a.tier)
-            write_config(ordered, CONFIG)
+            write_config(ordered, CONFIG, before_replace=lambda h: record_tier_written(CONFIG, backups, h))
             record_tier_written(CONFIG, backups)
     except RestoreRefused as e:
         print("\n  REFUSING TO WRITE: %s" % e)

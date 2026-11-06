@@ -212,6 +212,39 @@ def t_m3_restore_copies_atomically():
     check("M3: a whole copy lands", open(dst).read() == "<before/>" and not os.path.exists(dst + ".modset-tmp"))
 
 
+def t_m4_tier_md5_is_stamped_before_the_replace():
+    d = tempfile.mkdtemp(prefix="modset_write_")
+    src = os.path.join(d, "v.xml")
+    open(src, "w").write('<?xml version="1.0" encoding="utf-8"?><ModsConfigData><version>1.6</version>'
+                         '<activeMods><li>old</li></activeMods></ModsConfigData>')
+    keep = M.CONFIG
+    M.CONFIG = os.path.join(d, "ModsConfig.xml")
+    seen = []
+    try:
+        M.write_config(["ludeon.rimworld", M.ZOOM], src, before_replace=lambda h: seen.append((h, os.path.exists(M.CONFIG))))
+        check("M4: before_replace ran before the live file existed, with the new file's md5",
+              seen and seen[0][1] is False and seen[0][0] == M._md5(M.CONFIG), (seen, M._md5(M.CONFIG)))
+    finally:
+        M.CONFIG = keep
+
+
+def t_m5_cameraplus_tier_never_gets_the_rival_zoom():
+    names = ("tier_def", "close_over", "order", "tier_guard")
+    keep = {n: getattr(M, n) for n in names}
+    try:
+        M.tier_def = lambda n, i: {"want": ["brrainz.cameraplus"], "dlc": False}
+        M.close_over = lambda w, i: (list(w), [])
+        M.order = lambda p, i: p
+        M.tier_guard = lambda t, o: []
+        got = M.resolve_tier("mods__x", {M.ZOOM: {}})[0]
+        check("M5: Camera+ asked -> no %s" % M.ZOOM, M.ZOOM not in got and "brrainz.cameraplus" in got, got)
+        M.tier_def = lambda n, i: {"want": ["x.y"], "dlc": False}
+        check("M5 sanity: other tiers still get the zoom mod", M.ZOOM in M.resolve_tier("mods__y", {M.ZOOM: {}})[0])
+    finally:
+        for n, f in keep.items():
+            setattr(M, n, f)
+
+
 def t_g2_g3_keeps_still_green():
     p = subprocess.run([sys.executable, os.path.join(HERE, "selftest_relentless_codex_keeps.py")],
                        capture_output=True, text=True, timeout=300)
@@ -224,6 +257,7 @@ def main():
               t_l2_drift_plan_keeps_its_game, t_l3_take_that_raises_releases, t_l4_fileless_build_holds_the_game,
               t_l5_launch_that_raised_is_infra, t_l6_violation_is_never_rerun, t_l7_timeout_on_two_games_is_a_defect,
               t_m1_failed_tasklist_reads_live, t_m2_one_writer_at_a_time, t_m3_restore_copies_atomically,
+              t_m4_tier_md5_is_stamped_before_the_replace, t_m5_cameraplus_tier_never_gets_the_rival_zoom,
               t_g2_g3_keeps_still_green):
         try:
             t()
