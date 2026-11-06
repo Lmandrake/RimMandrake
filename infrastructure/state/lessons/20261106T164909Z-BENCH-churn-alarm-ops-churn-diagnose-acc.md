@@ -1,0 +1,1 @@
+Churn alarm OPS_CHURN_DIAGNOSE_ACC_NLLO_VKNQ (2026-11-06 14:14Z) was a second instance of the released-row miscount fixed in 9aeb8b1b3a (OPS_CHURN_DIAGNOSE_PLANET_VBIW_HJEC): an alarm filed before an instrument fix lands still spawns a diagnosis item; diagnose by replaying churn_why at the alarm's epoch with old vs current churn_not_fail_ends before hunting a new cause.
