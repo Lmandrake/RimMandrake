@@ -1260,7 +1260,7 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
             raise ValueError(owed)
         if not isinstance(sha, str) or REV_EXPR.search(sha) or sha.upper().startswith(("HEAD", "FETCH_HEAD")) or sha in ("main", "master"):
             raise ValueError("sha must be one commit id, not a ref or revision expression that can move: %r" % (sha,))
-        owed = live_owed(root or os.getcwd(), st, item, sha)
+        owed = live_owed(root or os.getcwd(), st, item, sha) or unlanded_owed(root or os.getcwd())
         if owed:
             raise ValueError(owed)
         rec = {"item": item, "gen": gen, "sha": sha, "evidence": evidence, "at": iso(now), "contract": st["contract"],
@@ -1271,6 +1271,43 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
         store._write(store.receipt_path(item, gen), json.dumps(rec, indent=1, sort_keys=True))
         pilot_sat(st, "finish")
         _take_receipt(store, st, rec, now)
+
+
+def unlanded(cwd):
+    """-> [commit] HEAD holds that origin/main has under no hash (a landing that rebased is matched by patch), or None when
+    the clone cannot say (no origin/main, not a git tree): nothing is refused on what cannot be read."""
+    r = _run_git(cwd, "rev-list", "--right-only", "--cherry-pick", "--no-merges", "origin/main...HEAD")
+    if not r or r.returncode:
+        return None
+    return r.stdout.split()
+
+
+def unlanded_owed(cwd):
+    """-> why `finish` refuses, or None. GAMELANE_LAND_FIX_SEVEN_STRANDINGS: once `finish` moves the item on (candidate, then
+    the game lane, held or blocked) the pre-push fence refuses the old lease, so a commit still unlanded here waits in a
+    bundle that only the item's NEXT clone restores, and an item that goes done never gets one: land it first."""
+    left = unlanded(cwd)
+    if left:
+        return ("this clone holds %d commit(s) origin/main does not (%s): land them with ./publish (or drop them) before "
+                "finish; after finish your lease can push lessons and ledger lines only" % (len(left), ", ".join(c[:10] for c in left[:5])))
+    return None
+
+
+def state_only_push(toplevel):
+    """True when every commit HEAD holds beyond the remotes touches only records (POOL_STATE lessons, POOL_NOISE ledger
+    shards, code review, transcripts). A finished worker may still land those: they change no code under check."""
+    r = _run_git(toplevel, "rev-list", "HEAD", "--not", "--remotes")
+    if not r or r.returncode:
+        return False
+    for sha in r.stdout.split():
+        parents = _run_git(toplevel, "rev-list", "--parents", "-n1", sha)
+        files = _run_git(toplevel, "diff-tree", "--no-commit-id", "--name-only", "-r", "--root", sha)
+        if not parents or parents.returncode or len(parents.stdout.split()) > 2 or not files or files.returncode:
+            return False
+        names = [f for f in files.stdout.split("\n") if f]
+        if not names or any(not f.startswith(POOL_STATE + POOL_NOISE) for f in names):
+            return False
+    return True
 
 
 def live_owed(cwd, st, item, sha):
@@ -1706,7 +1743,13 @@ def hook_fence(toplevel, store=None):
         return None
     except (OSError, ValueError, KeyError, TypeError) as e:
         return "fence marker unreadable, no push: %s" % str(e)[:120]
-    return fence_check(store or Store(), item, gen)
+    store = store or Store()
+    why = fence_check(store, item, gen)
+    if why:     # GAMELANE_LAND_FIX_SEVEN_STRANDINGS: the generation that finished may still land its trailing records
+        st = store.load(item)
+        if st is not None and st["gen"] == gen and state_only_push(toplevel):
+            return None
+    return why
 
 
 def _conductor_carried(argv):
