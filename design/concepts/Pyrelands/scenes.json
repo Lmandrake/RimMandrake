@@ -19,7 +19,7 @@
     "expect": "no front walks and no relight comes in the same window",
     "rules_out": "a vanilla wildfire incident or a test-lit fire passing for the burn line"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, restore the burn line switch and weather; the map itself is a disposable quicktest map and is destroyed after",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -41,7 +41,7 @@
     "expect": "no deep ash and no blowing ash",
     "rules_out": "a map-wide overlay or terrain relabel applied whatever the biome"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "destroy the vanilla control map; on the Pyrelands map remove the loose ash laid by the forced ash fall and restore the weather chooser",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -54,18 +54,19 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::ash_fertility_watered",
    "start": [
-    "two deep-ash strips of the same size, one beside a watered channel (asserted by terrain and wet read)",
+    "two deep-ash strips of the same size, one beside a watered channel (asserted: terrain on both strips reads RM_FE_Ash_Deep, wet read on one)",
     "same crop sown on the same tick"
    ],
    "action": "grow five days, reading growth each day",
    "expect": "the watered strip clearly ahead; fertility about 140% watered and about 40% dry",
    "control": {
-    "case": "the dry strip in the same scene",
-    "expect": "grows at the dry-ash rate",
-    "rules_out": "a strip on richer soil passing for watered ash"
+    "case": "the same watered deep-ash strip with the watered-lift switch (ashWaterFertilityEnabled) off, sown on the same tick",
+    "expect": "reads dry-ash fertility (about 40%) and grows at the dry strip's rate",
+    "rules_out": "richer soil by the water passing for watered ash: the lift is the mechanism, not the ground"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
-   "hold": "immediate"
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (both strips and the channel), restore the watered-lift switch",
+   "hold": "immediate",
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
   {
    "id": "sc_burn_compounds",
@@ -85,7 +86,7 @@
     "expect": "the wet fresh scar reads the same as wet old ash",
     "rules_out": "rain watering alone passing for the compound"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (three pads), restore the weather and the burn bonus switch",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -108,7 +109,7 @@
     "expect": "stays black through day 7",
     "rules_out": "the test or the density enforcer re-sowing the patch"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (the patch), restore the regrow switch",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -131,7 +132,7 @@
     "expect": "shows 0 scorch-fruit",
     "rules_out": "scorch-fruit placed by the test or growing as wild flora"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (both pads), remove every scorch-fruit plant and stack, restore the colonists' food need",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -153,7 +154,7 @@
     "expect": "both are reported as intruders",
     "rules_out": "a census that cannot see intruders reporting a clean map"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "despawn the two seeded intruders; nothing else is changed",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -175,7 +176,7 @@
     "expect": "reads clean, on soil",
     "rules_out": "ruin art that is always scorched whatever the biome"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "destroy the vanilla control map; the Pyrelands map is read only",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -198,7 +199,7 @@
     "expect": "no fire at that cell in the same window",
     "rules_out": "ordinary fire spread lighting the drop cell"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, despawn the test hawk",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -221,8 +222,9 @@
     "expect": "stays at the starting temperature",
     "rules_out": "outside heat or the burn line warming the room"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
-   "hold": "immediate"
+   "restore": "despawn the beast and remove the two test rooms from the snapshot; restore the colonist's position and the room temperatures' map",
+   "hold": "immediate",
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
   {
    "id": "sc_ashwallow",
@@ -236,14 +238,14 @@
     "an ashwallow on a grass pad, health recorded",
     "a fire front driven over its cell"
    ],
-   "action": "read status and health before, during and after; strike it with heat for the dome stance",
-   "expect": "burrowed status while the front is on its cell, health unchanged after, dome stance under heat",
+   "action": "read status and health before, during and after the front",
+   "expect": "burrowed status while the front is on its cell, health unchanged after",
    "control": {
     "case": "the same animal and front with the burrow switch off",
     "expect": "takes burn damage",
     "rules_out": "the fire simply missing the animal"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, despawn the ashwallow, restore the burrow switch",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -265,7 +267,7 @@
     "expect": "no drift toward either pad",
     "rules_out": "a herd that wanders at random passing a scar"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (both pads), despawn the herd, clear the test burn history from the burn line record",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -278,18 +280,20 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::cinderfall",
    "start": [
-    "the same map at noon, fires lit on a pad"
+    "the same map at noon, clear weather asserted",
+    "three fire pads lit and burning (asserted)",
+    "a loose-ash patch laid and counted"
    ],
-   "action": "force ash fall, cinderfall and black rain in turn; capture each at play zoom; a blind reader names them",
-   "expect": "three captures told apart and from vanilla rain; fires go out under black rain",
+   "action": "force ash fall, cinderfall and black rain in turn, half a day each, over one fire pad and the ash patch; capture each at play zoom for a blind reader; count lightning strikes under each sky; count fire cells and loose ash each hour; keep one fire pad under clear sky and force vanilla rain over the third",
+   "expect": "the three captures are told apart and from vanilla rain; lightning strikes under cinderfall and none under ash fall; loose ash falls under black rain; fires go out under black rain while the clear-sky pad still burns",
    "control": {
-    "case": "a vanilla rain capture on the same map shown to the reader",
-    "expect": "named as ordinary rain, not black rain",
-    "rules_out": "a reader that names every dark sky black rain"
+    "case": "the clear-sky fire pad and the vanilla-rain fire pad over the same hours, and a vanilla rain capture shown to the blind reader",
+    "expect": "the clear-sky pad keeps burning; the vanilla-rain pad also goes out; the reader names the vanilla capture ordinary rain",
+    "rules_out": "fires dying on their own being read as black rain's doing, and a reader that names every dark sky black rain; fire-out under black rain is vanilla rain's own rule carried by black rain, and the claim is no more than that"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, restore the weather chooser to its prior weather and clear the loose ash the scene laid",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS"
   },
   {
    "id": "sc_no_rain",
@@ -309,7 +313,7 @@
     "expect": "reports ordinary rain chosen",
     "rules_out": "a weather reader that never sees rain at all"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "the compressed season cannot be put back cell by cell: the scene runs on a disposable quicktest map made for it, saved at scene-begin, and destroyed at the end; nothing else is touched",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -322,17 +326,18 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::paved_strip",
    "start": [
+    "clear weather asserted and held for the whole scene (no rain, black rain or cinderfall)",
     "a grass bed both sides of a two-cell flagstone strip (asserted by terrain read)",
     "RM_FE_FirebreakLine absent from the defs"
    ],
-   "action": "drive the front at the strip; drop a hawk ember on the paving",
-   "expect": "no fire on the far side while the near side burns; the ember lights nothing",
+   "action": "drive the front at the strip and keep it burning at the near edge for an hour; let the near side die and relight a smoulder on the near side next to the strip (TryReseedStandingBurn); drop a hawk ember on the paving; then let a hawk carry one six cells past",
+   "expect": "while fire burns at the near edge, no fire on the far side; the near-side relight does not cross; the ember on paving lights nothing; the six-cell carry lights the far side (the sprayer's job, not the strip's)",
    "control": {
-    "case": "the same bed with no strip",
-    "expect": "the far side burns",
-    "rules_out": "weather or the test putting the fire out before it reaches the strip"
+    "case": "the same bed in the same clear weather with no strip",
+    "expect": "the front burns through to the far side",
+    "rules_out": "weather, burn-out or the test putting the fire out before it reached the strip: the start asserts clear weather and fire still burning at the strip edge"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (the bed and the strip), despawn the hawk, restore the weather",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
   },
@@ -355,54 +360,195 @@
     "expect": "the digest differs from the mid-way digest",
     "rules_out": "a reload test that compares two empty states"
    },
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "restore": "a save is made before the walk starts (pre_walk) and every walk save is kept for his review; the walk's colony is disposable and nothing is restored into it; his canonical world saves are never loaded or written",
    "hold": "owner_review",
    "entry_point_item": "PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES"
   },
   {
    "id": "sc_firefoam_sprayer",
-   "kind": "exploration",
+   "kind": "acceptance",
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::firefoam_sprayer",
-   "question": "does the built firefoam sprayer still put out a grass fire it is aimed at",
    "start": [
-    "a colonist with the sprayer, a small grass fire (Firefoam researched)"
+    "clear weather asserted; a live grass burn with ripe scorch-fruit standing in its scar (asserted: fruit count above 0, fire cells on every path to it)",
+    "a colonist carrying the firefoam sprayer, health recorded (Firefoam researched)"
    ],
-   "action": "order the colonist to spray the fire",
-   "expect": "the fire cells go out",
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "action": "order the colonist to harvest the scorch-fruit",
+   "expect": "the colonist foams a path, picks the fruit and walks back out with no burn injury",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, remove the foam filth and fruit stacks, restore the colonist's health record",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
+   "requirement": [
+    "firefoam_sprayer_reaches_the_fruit"
+   ],
+   "control": {
+    "case": "the same burn and fruit with a colonist without the sprayer",
+    "expect": "the colonist refuses to path through fire or comes back burned",
+    "rules_out": "the fire burning out on its own or the fruit being reachable without crossing fire"
+   }
   },
   {
    "id": "sc_sand_shovel",
-   "kind": "exploration",
+   "kind": "acceptance",
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::sand_shovel",
-   "question": "does the built Shovel sand order still yield 5 glass sand and leave gravel",
    "start": [
-    "a colonist holding a shovel, a Pyrelands sand cell and a non-sand cell"
+    "a colonist holding a shovel",
+    "a Pyrelands sand cell and a deep-ash cell, both reachable (asserted by terrain read and path check)"
    ],
-   "action": "designate both cells",
-   "expect": "sand cell yields 5 and turns to gravel; the non-sand cell refuses the order",
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "action": "designate both cells; after the dig, designate the dug cell again",
+   "expect": "the sand cell yields 5 glass sand and turns to gravel; the dug cell no longer takes the order",
+   "restore": "put the dug cell back to sand from the snapshot and remove the glass sand stack",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
+   "requirement": [
+    "sand_shovel_yields_glass_sand"
+   ],
+   "control": {
+    "case": "the deep-ash cell",
+    "expect": "refuses the Shovel sand order",
+    "rules_out": "a dig order that yields glass sand from any ground"
+   }
   },
   {
    "id": "sc_rite_hook_alone",
-   "kind": "exploration",
+   "kind": "acceptance",
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::rite_hook_alone",
-   "question": "does the fire-rite hook stay silent and error-free with no campaign mod listening",
    "start": [
-    "Pyrelands loaded without PyrelandsMechanics, log tap open"
+    "Pyrelands loaded without PyrelandsMechanics (asserted from the active list), log tap open",
+    "a burn under way (asserted: fire clock beat count rising)"
    ],
    "action": "let the fire clock tick through a burn",
-   "expect": "the hook raises with no subscriber and the log stays clean",
-   "restore": "restore terrain, plants, filth and things on the pads from the snapshot recorded at scene-begin; put weather, fire and every poked setting back to its prior value",
+   "expect": "the log holds nothing from the rite hook",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, detach the test listener",
    "hold": "immediate",
-   "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL"
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
+   "requirement": [
+    "fire_rite_hook_silent_alone"
+   ],
+   "control": {
+    "case": "the same burn with a test listener attached to PyrelandsFireRiteHook",
+    "expect": "the listener counts one event per fire clock beat",
+    "rules_out": "a hook that is silent because it never raises"
+   }
+  },
+  {
+   "id": "sc_furnace_bed",
+   "kind": "acceptance",
+   "requirement": [
+    "furnacebeast_banks_heat_and_smoulders_bed"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::furnace_thermal_bed",
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
+   "start": [
+    "a wild furnace-beast at low charge (asserted by its CompFurnaceThermalCharge read) beside a grass pad with a live fire",
+    "an ullai in the same fire, health recorded",
+    "a separate unburned grass pad for its rest, no fire on it (asserted)"
+   ],
+   "action": "read the beast's job, charge and health each hour while it works the burn; move the charged beast to cold ground and read the charge; let it rest on the grass pad and read its bed cells when it wakes",
+   "expect": "it walks into the fire and takes no injury while the ullai is burned; charge rises in the burn and falls on cold ground; once full it leaves the burn; its bed cells are alight when it wakes",
+   "control": {
+    "case": "the same beast and pads with furnace thermal (furnaceThermalEnabled) switched off",
+    "expect": "the charge stays flat, it does not seek the fire, and its bed never lights",
+    "rules_out": "the burn line lighting the bed or ambient heat moving the charge, rather than the beast's own cycle"
+   },
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, despawn the beast and the ullai, restore the furnace thermal switch",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_heat_dome",
+   "kind": "acceptance",
+   "requirement": [
+    "ashwallow_dives_unharmed"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::heat_dome",
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
+   "start": [
+    "an ashwallow on the dome pad, conscious and not burrowed (asserted by ProbeDome before the hit)",
+    "no fire anywhere on the pad (asserted: fire count 0)",
+    "burrow switch and dome switch on"
+   ],
+   "action": "strike the ashwallow once with a Burn hit (heat category, lights nothing); read ProbeDome 5 ticks after, 60 ticks after, and once the hold has run out",
+   "expect": "not domed before; domed (RM_Burrowed, job RM_Burrow) within 5 ticks of the hit; the dome graphic drawn at +60; surfaced again after the hold with no fire near",
+   "control": {
+    "case": "the same animal and the same Burn hit with the dome switch (burrowDomeOnHeatHit) off",
+    "expect": "no RM_Burrowed and no RM_Burrow job after the hit",
+    "rules_out": "a dome sprite drawn all the time, or an ordinary lie-down or flee reaction to being hurt passing for the dome stance"
+   },
+   "restore": "despawn the ashwallow, restore the dome and burrow switches; the pad was never lit",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_fire_dusts_ash",
+   "kind": "acceptance",
+   "requirement": [
+    "ash_ground_and_blowing_ash"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::fire_tick_effects",
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
+   "start": [
+    "a pad painted wholly RM_FE_Ash_Deep (asserted: set_terrain changed or already correct on every cell) and grassed with ember grass",
+    "clear weather (asserted) and no loose-ash filth on the pad (asserted: count 0)"
+   ],
+   "action": "light the pad and let it burn 2600 ticks; count RM_FE_Filth_LooseAsh on the pad",
+   "expect": "at least one loose-ash filth on the burned pad",
+   "control": {
+    "case": "the same pad and burn with fire ash-dusting (ashDustingEnabled) off",
+    "expect": "no loose ash on the pad beyond what a pad left unburned beside it banks in the same window",
+    "rules_out": "ambient blowing ash or ash fall banking loose ash on the pad, rather than the fire leaving it"
+   },
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, restore the ash-dusting switch and weather",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_flamefang_venom",
+   "kind": "acceptance",
+   "requirement": [
+    "flamefang_bite_carries_venom"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::flamefang_venom",
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
+   "start": [
+    "a colonist carrying no venom or toxic buildup hediff (asserted), on a cleared pad",
+    "a hostile RM_Flamefang beside it"
+   ],
+   "action": "let the flamefang land bites until one connects; read the colonist's hediffs at once and each hour for six hours",
+   "expect": "RM_FlamefangVenom present after the bite, its severity rising over the hours",
+   "control": {
+    "case": "a fresh colonist bitten by a non-venomous predator of like size",
+    "expect": "a bite wound and no RM_FlamefangVenom",
+    "rules_out": "the venom coming from any bite or melee damage, rather than the flamefang's own bite tool"
+   },
+   "restore": "despawn the predators, kill or despawn the test colonists, put back the pad from the snapshot taken at scene-begin",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_furnace_giant",
+   "kind": "acceptance",
+   "requirement": [
+    "furnacebeast_warms"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/validation.py::ullai_and_giant",
+   "entry_point_item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
+   "start": [
+    "the giant switch (furnaceBeastGiant) on at load (asserted from the settings read)",
+    "a furnace-beast and an ullai spawned on a cleared pad"
+   ],
+   "action": "read the live RM_FurnaceBeast race body size and each life stage's draw size, and both pawns' body sizes",
+   "expect": "live body size 6 and the giant draw sizes, the beast more than three times the ullai's 1.8",
+   "control": {
+    "case": "RM_PyrelandsGiants' classic restore invoked with the switch off (static call, no reload)",
+    "expect": "live body size back to the classic 3.2 and the classic draw sizes",
+    "rules_out": "a size read that only echoes the XML file, rather than the game's live def that the switch changes"
+   },
+   "restore": "re-run the giant patch with the switch on so the live defs read giant again, despawn both pawns",
+   "hold": "immediate"
   }
  ],
  "showcases": [
@@ -421,7 +567,8 @@
     "inv_scorchfruit",
     "inv_ash_field",
     "inv_plant_roster",
-    "inv_biome_self_contained"
+    "inv_biome_self_contained",
+    "inv_animal_roster"
    ],
    "source": [
     "OWNER:1793908883805179759"
@@ -433,13 +580,14 @@
    "scenes": [
     "sc_firehawk",
     "sc_ashwallow",
-    "sc_ullai"
+    "sc_heat_dome",
+    "sc_ullai",
+    "sc_furnace_giant"
    ],
    "exercises": [
     "inv_firehawk_ember",
     "inv_burrowers_heat_dome",
-    "inv_ullai_herd_giant",
-    "inv_animal_roster"
+    "inv_ullai_herd_giant"
    ]
   },
   {
@@ -447,7 +595,8 @@
    "scenes": [
     "sc_three_skies",
     "sc_furnace",
-    "sc_ruins"
+    "sc_ruins",
+    "sc_furnace_bed"
    ],
    "exercises": [
     "inv_weather",
@@ -468,23 +617,26 @@
   {
    "capability": "inv_firefoam_sprayer",
    "by": [
-    "sc_firefoam_sprayer"
+    "sc_firefoam_sprayer",
+    "firefoam_sprayer_reaches_the_fruit"
    ],
-   "why": "one built weapon, scope not opened; a spray-a-fire scene checks it still works without a showcase built round it"
+   "why": "one built tool; his root names it as the way to the fruit, and a staged harvest through a live burn checks exactly that without a showcase built round it"
   },
   {
    "capability": "inv_sand_shovel",
    "by": [
-    "sc_sand_shovel"
+    "sc_sand_shovel",
+    "sand_shovel_yields_glass_sand"
    ],
    "why": "one dig order on sand, unrelated to the fire; a direct order check is cheaper"
   },
   {
    "capability": "inv_fire_rite_hook",
    "by": [
-    "sc_rite_hook_alone"
+    "sc_rite_hook_alone",
+    "fire_rite_hook_silent_alone"
    ],
-   "why": "an integration seam with nothing to see in play; a silent-alone log check covers it"
+   "why": "an integration seam with nothing to see in play; a log check alone, with a listener control, covers it"
   },
   {
    "capability": "inv_settings_gate",
@@ -497,9 +649,10 @@
    "capability": "inv_art_and_text",
    "by": [
     "sc_populations",
-    "sc_three_skies"
+    "sc_three_skies",
+    "biome_text_says_engineered"
    ],
-   "why": "he approved the art sheet; the floor's art and reads_as lines run on these scenes' captures"
+   "why": "he approved the art sheet; the floor's art and reads_as lines run on these scenes' captures, and the biome text is read offline"
   }
  ]
 }

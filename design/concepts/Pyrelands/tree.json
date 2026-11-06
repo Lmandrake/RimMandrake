@@ -47,7 +47,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "terrain census shows deep ash on most cells with soil and gravel as small pockets and richer ground next to water; captures show blowing ash in clear weather; loose-ash count rises each hour of ash fall and light level drops",
+   "oracle_proposed": "terrain census shows deep ash on most cells with soil and gravel as small pockets and richer ground next to water; captures show blowing ash in clear weather; loose-ash count rises each hour of ash fall and light level drops; loose ash on the burned pad after the fire, none beyond ambient drift with ash-dusting off",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -59,13 +59,14 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player on a fresh Pyrelands map sees almost all the ground as deep ash with small pockets of unburned soil and gravel and richer ground ringing standing water, and in any weather a lot of free-blowing ash blowing across it like snow; during ash fall the map dims and loose-ash drifts keep banking. It must not read as ordinary soil with a grey tint, or as a clear sky with ash only on the ground.",
-   "scenario": "Fresh map: terrain census over the whole map; capture open ground at play zoom in clear weather; force ash fall for half a day and count loose-ash filth and read the light level each hour.",
+   "experience": "The player on a fresh Pyrelands map sees almost all the ground as deep ash with small pockets of unburned soil and gravel and richer ground ringing standing water, and in any weather a lot of free-blowing ash blowing across it like snow; during ash fall the map dims and loose-ash drifts keep banking, and a fire burning across deep ash leaves loose ash lying behind it. It must not read as ordinary soil with a grey tint, or as a clear sky with ash only on the ground.",
+   "scenario": "Fresh map: terrain census over the whole map; capture open ground at play zoom in clear weather; force ash fall for half a day and count loose-ash filth and read the light level each hour. Separately, burn a grassed deep-ash pad in clear weather and count loose-ash filth on it after the fire, against the same burn with fire ash-dusting switched off.",
    "false_pass": [
     "the census counts a deep-ash label laid over soil whose fertility is unchanged",
-    "the blowing ash is a weather overlay that only shows during ash fall"
+    "the blowing ash is a weather overlay that only shows during ash fall",
+    "the loose ash on the burned pad is ambient drift that would have banked there without any fire"
    ],
-   "red": "the map generates mostly soil with a few ash pockets, or no ash blows in clear weather",
+   "red": "the map generates mostly soil with a few ash pockets, or no ash blows in clear weather, or a fire on deep ash leaves the ground clean",
    "tier_proposed": "quicktest",
    "owner_part": "no"
   },
@@ -252,7 +253,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours",
+   "oracle_proposed": "live RM_FurnaceBeast body size 6, against the classic 3.2 when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -264,13 +265,14 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player sees a colonist standing in the open near a furnace-beast show a readable warmth status that goes away when it walks off, and a closed room holding a furnace-beast grow clearly hotter than the same room without one. It must not read as a heater building or as ordinary body heat.",
-   "scenario": "Colonist beside a furnace-beast, then walked ten cells away; two identical closed rooms, one holding a furnace-beast; read status and room temperature each hour.",
+   "experience": "The player sees the furnace-beast as a giant, standing far larger than any other animal on the map; a colonist standing in the open near it shows a readable warmth status that goes away when it walks off, and a closed room holding a furnace-beast grows clearly hotter than the same room without one. It must not read as a heater building, as ordinary body heat, or as a beast the size of a muffalo.",
+   "scenario": "Read the live furnace-beast's body size and drawn size against the other animals; colonist beside a furnace-beast, then walked ten cells away; two identical closed rooms, one holding a furnace-beast; read status and room temperature each hour.",
    "false_pass": [
     "the warmth status is applied by the test",
-    "the hot room is hot because of the burn outside"
+    "the hot room is hot because of the burn outside",
+    "the size is read from the XML file, not the running game's def"
    ],
-   "red": "no warmth status appears near the beast, or its room stays at the other room's temperature",
+   "red": "the beast is ordinary-sized, no warmth status appears near it, or its room stays at the other room's temperature",
    "tier_proposed": "quicktest",
    "owner_part": "no"
   },
@@ -278,7 +280,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "burrowed status read while the front is on its cell, health unchanged after; in the control the same animal takes burn damage",
+   "oracle_proposed": "burrowed status read while the front is on its cell, health unchanged after; in the control the same animal takes burn damage; the heat-hit ashwallow is not domed before the hit, domed with the burrow job within a few ticks of it, surfaced after the hold, and never domed with the dome switch off",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -290,12 +292,13 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "The player sees an ashwallow, as the front reaches it, show a readable burrowed status and dive, and come up unharmed once the fire has passed; struck by heat it curls into its dome stance. It must not read as an animal the fire simply missed.",
-   "scenario": "An ashwallow on a grass pad with a fire front driven over its cell; read its status and health before, during and after; control: the same with the burrow switch off.",
+   "scenario": "An ashwallow on a grass pad with a fire front driven over its cell; read its status and health before, during and after; control: the same with the burrow switch off. Separately, an ashwallow on a pad with no ground fire, struck once by a heat hit that lights nothing: read its dome state before, at once after and when the hold runs out; control: the same hit with the dome switch off.",
    "false_pass": [
     "the fire never reached the animal's cell",
-    "the animal is healed by the test after the fire"
+    "the animal is healed by the test after the fire",
+    "the dome sprite is drawn all the time, or the animal simply lies down when hurt"
    ],
-   "red": "the ashwallow burns like any grazer, or never shows a burrowed status",
+   "red": "the ashwallow burns like any grazer, or never shows a burrowed status, or a heat hit leaves it standing",
    "tier_proposed": "quicktest",
    "owner_part": "no"
   },
@@ -328,7 +331,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "a blind reader told apart the three captures and from vanilla rain; fire count falls under black rain",
+   "oracle_proposed": "a blind reader told apart the three captures and from vanilla rain; lightning strikes counted under cinderfall; fire count falls and loose ash washes away under black rain",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -379,7 +382,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "no fire cell on the far side of the strip while the near side burns; ember on paving lights nothing; in the control the far side burns; RM_FE_FirebreakLine absent from the def database",
+   "oracle_proposed": "no fire cell on the far side while the near side burns at the strip edge, in clear weather throughout; a near-side smoulder relight does not cross; an ember on paving lights nothing; in the no-strip control the far side burns; RM_FE_FirebreakLine absent from the def database",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -390,13 +393,14 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player who paves a strip at least two cells wide of any non-flammable, plant-free vanilla floor round a field sees the walking front, the smoulder relight and a fire-hawk's ember all stop at it; the colony's defence is vanilla, with no mod firebreak floor and no chemfuel. It must not read as the fire jumping a two-cell paved strip, or as a special floor the mod requires.",
-   "scenario": "A grass bed on both sides of a two-cell flagstone strip; drive the front at it; drop a hawk ember on the strip; control: the same bed with no strip burns through.",
+   "experience": "The player who paves a strip at least two cells wide of any non-flammable, plant-free vanilla floor round a field, in clear weather, sees the walking front stop at it and a smoulder relight lit on the near side stop at it too; an ember dropped on the paving lights nothing, though a fire-hawk can carry one up to six cells past the strip and start a fire there, which is the sprayer's job. The colony's defence is vanilla, with no mod firebreak floor and no chemfuel. It must not read as the ground fire jumping a two-cell paved strip, or as a special floor the mod requires.",
+   "scenario": "Clear weather asserted and held; a grass bed on both sides of a two-cell flagstone strip; drive the front at it and keep it burning at the strip edge; let the near side die down and relight a smoulder on the near side next to the strip; drop a hawk ember on the paving; controls: the same bed with no strip burns through, and a hawk ember carried six cells past the strip lights the far side.",
    "false_pass": [
     "the fire was put out by weather before it reached the strip",
-    "the strip is the old RM_FE_FirebreakLine floor"
+    "the strip is the old RM_FE_FirebreakLine floor",
+    "the relight is lit far from the strip so it never tests it"
    ],
-   "red": "the front or an ember crosses a two-cell paved strip, or the firebreak floor is still buildable",
+   "red": "the front or a near-side smoulder relight crosses a two-cell paved strip, or the firebreak floor is still buildable",
    "tier_proposed": "quicktest",
    "owner_part": "no"
   },
@@ -450,6 +454,156 @@
    "red": "after the reload the front is gone, scars read old, or the burn bonus resets",
    "tier_proposed": "live_full",
    "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "thermal charge rises while the beast stands by live fire and falls once it is moved to cold ground; the beast takes no injury standing in fire or struck by flame; after a rest on grass, its bed cells burn; with furnace thermal switched off the charge stays flat and the bed never lights; an ullai in the same fire takes burns",
+   "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "id": "furnacebeast_banks_heat_and_smoulders_bed",
+   "root": [
+    "pyre_furnacebeast_warmth"
+   ],
+   "experience": "The player watching a furnace-beast in the burn sees it walk into the fire, stand there untouched while the grass burns round it and glow brighter as it banks the heat, then leave the burn once it is full; after it has lain down to rest on grass, the ground it lay on is smouldering when it gets up. It must not read as a beast the fire happened to miss, or as a heater that never runs down, or as a bed fire the test lit.",
+   "scenario": "A furnace-beast with low charge beside a grass pad with a live fire, and an ullai in the same fire; read charge, health and job each hour; move the charged beast to cold ground and read the charge falling; let it rest on a grass pad and read fire on its bed cells when it wakes; control: the same with furnace thermal switched off.",
+   "false_pass": [
+    "the charge is set by the test rather than earned by the fire",
+    "the bed cells were lit by the burn line rather than by the beast",
+    "the beast stood beside the fire, never in it"
+   ],
+   "red": "the beast's charge never rises in the burn, it takes burns in fire, or its bed never smoulders",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the sprayed path's fire cells go out and the colonist reaches the fruit, picks it and walks back with no burn injury; in the control without the sprayer the colonist either refuses to path through fire or comes back burned",
+   "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "id": "firefoam_sprayer_reaches_the_fruit",
+   "root": [
+    "pyre_scorchfruit_produces"
+   ],
+   "experience": "The player who sends a colonist carrying the firefoam sprayer into a live burn for scorch-fruit sees the colonist foam a way through the fire, pick the fruit standing in the scar and come back out unburned. It must not read as the fire happening to die on its own, or as a colonist walking through fire unharmed with no sprayer.",
+   "scenario": "A live burn in grass with ripe scorch-fruit in its scar, weather clear and fire still burning (asserted); a colonist with the sprayer ordered to harvest; read fire cells on the path, the colonist's path and health; control: the same with a colonist without the sprayer.",
+   "false_pass": [
+    "the fire burned out before the colonist moved",
+    "the fruit was outside the fire, so no spray was needed"
+   ],
+   "red": "the sprayer does not put the fire out, or the colonist comes back burned",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the sand cell yields 5 glass sand and turns to gravel, and the order is no longer offered on it; the deep-ash cell refuses the order",
+   "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "id": "sand_shovel_yields_glass_sand",
+   "root": [
+    "pyre_ground_deep_ash"
+   ],
+   "experience": "The player who orders a colonist to shovel a patch of Pyrelands sand gets five glass sand per cell, and the cell turns to gravel, so every sand patch is a finite deposit. It must not read as a dig order that works on any ground, or a sand cell that can be dug forever.",
+   "scenario": "A colonist holding a shovel, a Pyrelands sand cell and a deep-ash cell (asserted by terrain read); designate both; read yield and terrain after; designate the dug cell again.",
+   "false_pass": [
+    "the glass sand was spawned by the test",
+    "the non-sand control is a cell the colonist cannot reach"
+   ],
+   "red": "shovelling yields nothing, or the cell stays sand and can be dug again",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "with no campaign mod loaded the log is clean through a burn; a test listener attached to the hook receives one event per burn clock beat",
+   "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "id": "fire_rite_hook_silent_alone",
+   "root": [
+    "pyre_burn_line_present"
+   ],
+   "experience": "The tester running the biome alone sees the fire clock tick through a burn with nothing in the log about the rite hook, and sees a listener attached to the hook hear every beat, so a campaign mod can answer the fire without this mod depending on it. It must not read as a hook that is silent because it never fires.",
+   "scenario": "Pyrelands loaded without PyrelandsMechanics, log tap open; let the fire clock tick through a burn; control: attach a test listener and count its events over the same burn.",
+   "false_pass": [
+    "the hook is silent because the fire clock never ticked",
+    "the listener is counted from a different event"
+   ],
+   "red": "the hook logs errors with no listener, or never raises",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the RM_Pyrelands BiomeDef description, as loaded, says the savanna was genetically engineered",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "tier_proposed": "offline",
+   "owner_part": "no",
+   "id": "biome_text_says_engineered",
+   "root": [
+    "pyre_burn_line_present"
+   ],
+   "experience": "The player who reads the Pyrelands biome description on the world map learns that this grass savanna was genetically engineered and has burned for millennia. It must not read as a natural wildfire grassland.",
+   "scenario": "Read the RM_Pyrelands description in Defs/BiomeDefs/Pyrelands.xml and in the offline def dump.",
+   "false_pass": [
+    "the word appears only in a plant's description, not the biome's"
+   ],
+   "red": "the biome description never says the savanna was engineered",
+   "by": "concept"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "after a flamefang bite the colonist's hediffs hold RM_FlamefangVenom and its severity rises over the next hours; after a bite from a non-venomous predator of like size no RM_FlamefangVenom is present",
+   "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "flamefang_bite_carries_venom",
+   "root": [
+    "pyre_animal_distribution_correct"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player whose colonist is bitten by a flamefang sees flamefang venom appear on that colonist's health tab, smouldering worse over the following hours until treated or thrown off. It must not read as an ordinary bite wound, or as vanilla toxic buildup with a new name.",
+   "scenario": "A colonist and a hostile flamefang on a cleared pad; let the flamefang land bites; read the colonist's hediffs and the venom's severity each hour; control: the same colonist bitten by a non-venomous predator of like size.",
+   "false_pass": [
+    "the venom hediff is added by the test",
+    "any bite or melee hit applies the venom"
+   ],
+   "red": "a flamefang bite leaves only a wound, with no venom on the health tab",
+   "tier_proposed": "quicktest",
+   "owner_part": "no",
+   "by": "concept"
   }
  ]
 }

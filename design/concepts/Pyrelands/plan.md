@@ -14,7 +14,12 @@ built; this plan is the proof work and two owed changes, nothing new.
    `src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs`, its Mod Settings line and About text, and switch the
    fire-hygiene pads in `validation.py` and `human_review.py` (`_firebreak`) to a vanilla floor. Save compatibility: a
    save holding firebreak cells loads them as a missing terrain; state the outcome (`save_compat`). The firefoam sprayer
-   stays (scope not opened). Leaf `paved_strip_holds_the_line`.
+   stays: his root ending (OWNER:1793950669508519029) names it as the way to the scorch-fruit. Leaf
+   `paved_strip_holds_the_line`; a fire-hawk ember carried six cells past the strip is expected and is the sprayer's
+   job (`firefoam_sprayer_reaches_the_fruit`).
+3. **Biome text** (item `PYRELANDS_TEXT_FIX_ENGINEERED_NEVER_SAID`): the RM_Pyrelands description says the savanna was
+   genetically engineered (leaf `biome_text_says_engineered`); About.xml and the furnace-beast description stop
+   promising the world migration his card cut on 2026-10-23 (commit 84cc81013d).
 
 ## Walk text owed (needs his word)
 
@@ -29,7 +34,18 @@ built; this plan is the proof work and two owed changes, nothing new.
 2. The two owed changes above.
 3. Foils and starts on existing scenes (item `PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL`): every acceptance scene in
    `scenes.json` naming that item lacks its control, start assertion, vitals/incident guard or restore snapshot (stage 0
-   script audit); new entry points `paved_strip`, `firefoam_sprayer`, `rite_hook_alone`.
+   script audit); new entry points `paved_strip`, `firefoam_sprayer`, `rite_hook_alone`. Item
+   `PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS` (coverage judge rm-coverage-judge-1793932124): new `furnace_thermal_bed`
+   (charge, heat immunity against an ullai in the same fire, bed smoulder; control furnace thermal off); `cinderfall`
+   gains lightning counts, the black-rain ash wash and clear-sky and vanilla-rain fire pads; `firefoam_sprayer`,
+   `sand_shovel` and `rite_hook_alone` become acceptance scenes with controls. Each scene's `restore` now says what it
+   puts back; `sc_no_rain` runs on a disposable map, `sc_walk` keeps a pre-walk save.
+   Item `PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME` (coverage judge rm-coverage-judge-1793981105): new
+   `flamefang_venom` (bite applies RM_FlamefangVenom, severity rises; control a non-venomous bite of like size);
+   `ullai_and_giant` gains a live body-size read of RM_FurnaceBeast (6) and a classic-restore control (3.2) instead of
+   echoing the XML; `fire_tick_effects` asserts a clean, clear-weather pad and runs the ash-dusting-off control against
+   an unburned twin pad; `heat_dome` asserts no fire on its pad and stands as its own scene (`sc_heat_dome`), with
+   the dome switch off as its control.
 4. The three showcases and the walk (item `PYRELANDS_SHOWCASES_BUILD_THREE_PYRE_FACES`): `walk_season` on his full
    list with a mid-way reload, a second pass and a second order.
 5. Close or re-bucket the stale items: `PYRE_OPENING_FRONT_BUILD_SMOKE_ON_ARRIVAL` (resolved by `sc_burn_line_walks`
@@ -53,6 +69,7 @@ so the snapshot restore for terrain and things is part of step 3.
 ## Showcases
 
 1. `burn_line` (his flagship pick, d_flagship_burn_line): the front walks, scorch-fruit comes up rapidly in the
-   scar right behind it, and the scar greens over the following days. 2. `fire_cast`: hawk, ashwallow, ullai. 3. `sky_and_shelter`: three skies, the furnace-beast, a
+   scar right behind it, and the scar greens over the following days. 2. `fire_cast`: hawk, ashwallow (dive and dome), ullai, the giant furnace-beast's size. 3. `sky_and_shelter`: three skies, the furnace-beast (warmth, heat cycle, bed), a
    blackened ruin. The rest (sand shovel, firefoam sprayer, rite hook, settings, art, the excised firebreak) is in
-   `coverage_rest`.
+   `coverage_rest`. The vanilla new-world placement switch is outside the promise (d_worldgen_outside_promise): no
+   scene, no check; its default is `PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT`.
