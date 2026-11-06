@@ -1054,3 +1054,10 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:11:53Z","tsn":1793963513257994734}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A7 (L2), read-only proof","ts":"2026-11-06T11:12:15Z","tsn":1793963535556450143}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:12:32Z","tsn":1793963552296993919}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A1 (L2), read-only proof","ts":"2026-11-06T11:16:39Z","tsn":1793963799771275005}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:17:42Z","tsn":1793963862961859309}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A2 (L2), read-only proof","ts":"2026-11-06T11:18:05Z","tsn":1793963885968739766}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:19:11Z","tsn":1793963951323010014}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A3 (L2), read-only proof","ts":"2026-11-06T11:19:44Z","tsn":1793963984362932194}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:20:43Z","tsn":1793964043313472409}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PACK_ANIMALS_RESTORE_EMPTY_SADDLES A4 (L2), read-only proof","ts":"2026-11-06T11:21:07Z","tsn":1793964067509273059}
