@@ -87,6 +87,8 @@ eq(C(1, UNMEASURED_PHRASE + "\nFAILED 2")[0], "FAIL", "rc 1 + phrase + FAIL text
 eq(C(0, UNMEASURED_PHRASE + "\nFAIL x")[0], "UNMEASURED", "rc 0 + phrase is UNMEASURED whatever else printed")
 eq(C(1, "Traceback (most recent call last):\n  File x\nAssertionError: no")[0], "FAIL", "AssertionError is FAIL")
 eq(C(1, "Traceback (most recent call last):\n  File x\nmodule.SomeError: no")[0], "CRASH", "other exception is CRASH")
+eq(C(134, UNMEASURED_PHRASE, {"rc": -6})[0], "CRASH", "a SIGABRT the wrapper reports as 134 is CRASH, never UNMEASURED")
+eq(C(134, UNMEASURED_PHRASE)[0], "CRASH", "rc 134 (128+SIGABRT) is a signal CRASH")
 
 # report(): green iff FAIL+CRASH == 0, per-state N/N, UNMEASURED never green-washes a FAIL.
 import contextlib, io
@@ -111,6 +113,20 @@ r = _sp.run([sys.executable, rs.__file__, "--only", "/nonexistent/selftest_nope.
             capture_output=True, text=True, timeout=120,
             env={**os.environ, "RM_SELFTEST_NO_HARNESS": "1", "RM_SELFTEST_NESTED": "1"})
 eq((r.returncode, "no such file" in r.stdout), (1, True), "--only on a missing path is rc 1")
+r = _sp.run([sys.executable, rs.__file__, "--only", ","], capture_output=True, text=True, timeout=120,
+            env={**os.environ, "RM_SELFTEST_NO_HARNESS": "1", "RM_SELFTEST_NESTED": "1"})
+eq((r.returncode, "empty selection" in r.stdout), (1, True), "--only naming nothing is rc 1, never a green 0/0")
+
+# a relative import (`from . import helper`) in a package __init__ is a dependency too
+import tempfile as _tf
+with _tf.TemporaryDirectory() as _d:
+    _root = Path(_d).resolve()
+    (_root / "pkg").mkdir()
+    (_root / "pkg" / "__init__.py").write_text("from . import helper\nfrom .sub import thing\n")
+    (_root / "pkg" / "helper.py").write_text("X = 1\n")
+    (_root / "pkg" / "sub.py").write_text("thing = 1\n")
+    _deps = rs._direct_deps(_root / "pkg" / "__init__.py", _root)
+    eq({p.name for p in _deps} >= {"helper.py", "sub.py"}, True, "relative imports are hashed as deps (%s)" % sorted(p.name for p in _deps))
 
 # A bare stem names the one discovered test; a stem that matches nothing stays a refusal.
 _tests = [Path("/r/a/selftest_one.py"), Path("/r/b/selftest_two.py"), Path("/r/c/selftest_two.py")]

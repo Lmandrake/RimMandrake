@@ -405,7 +405,7 @@ def message(seat, cfg, ticket, ring_id):
     return "\n".join(lines)
 
 
-def incident_step(sch, st, obs, now, act):
+def incident_step(sch, st, obs, now, act, gate=None):
     """OP3: one pass of the told ledger (incident.py). Before PAUSE returns: an outage does not stop climbing the chain
     because the work is paused. Its Operations rung joins the alarm keys the role launcher reads, so an outage's first
     run is the one alarm run, under that path's gap and daily limits."""
@@ -424,7 +424,12 @@ def incident_step(sch, st, obs, now, act):
     cursor = (st.get("incident") or {}).get("cursor", 0)
     res = IN.step(reader["table"](), rows, reader["status"](), now, cursor=cursor if cursor <= len(rows) else 0,
                   events=reader.get("events"), standing=st.get("standing"))
-    act(do="incident", **{k: res[k] for k in ("rows", "rings", "cursor", "snapshot")})
+    hold = None
+    # an incident doorbell is a ring: the login and account gates hold it like the Dispatcher's own (review E #3)
+    if gate and any(r.get("how") == "doorbell" for r in list(res["rings"]) + list((st.get("incident") or {}).get("held") or [])):
+        go, pk = gate("ring")
+        hold = None if go else (pk.get("why") or "held by the ring gate")
+    act(do="incident", ring_hold=hold, **{k: res[k] for k in ("rows", "rings", "cursor", "snapshot")})
     roles = obs.get("roles")
     if roles and res["keys"]:
         base = roles["ops"]
@@ -552,12 +557,18 @@ def denied_runs(sch, st, root, now, do_conductor):
     (OPS_REFUSAL_REWIRE_TO_CONDUCTOR, operations_metronome_strategy_2026-11-02.md section 5: a cap-refused run moved
     plan-20261101164253, a mechanical plan-list cause, straight to his phone)."""
     said = []
+    ist = st.setdefault("incident", {})
+    was = {k: ist[k] for k in ("denied_seen", "denied_seen_conductor") if k in ist}
     ops = _refused_last(st, "Operations", "denied_seen")
     cond = _refused_last(st, "Conductor", "denied_seen_conductor")
     if not (ops or (cond and cond.get("ids"))):
         return None
     rows = IN.read_rows()
     if rows is None:
+        # unread is not handled: give the seen marks back so the next tick reads the refusal again (review E #2)
+        for k in ("denied_seen", "denied_seen_conductor"):
+            ist.pop(k, None)
+        ist.update(was)
         return "denied run not read: told.jsonl torn"
     incs = IN.fold(rows)[0]
     if cond and cond.get("ids"):
@@ -624,6 +635,10 @@ def incident_execute(a, sch, st, root, now, do_ring, do_conductor, do_file=None)
     for r in held + a["rings"]:
         if r["how"] == "doorbell":
             pending = (st.get("seats", {}).get(r["seat"]) or {}).get("ring")
+            if a.get("ring_hold"):
+                ist["held"].append(r)           # the login/account gate holds rings: asked again next pass
+                said.append("%s: doorbell held: %s" % (r["id"], a["ring_hold"]))
+                continue
             if pending and not pending.get("consumed_at"):
                 ist["held"].append(r)           # one inbox file per seat: this ring waits, the Dispatcher's stays
                 continue
@@ -706,7 +721,7 @@ def decide(sch, st, obs, now, apply, out=None):
         act(do="alarm", kind="signal:watch", note=True, conductor_log=True,
             why="signal watch raised %s: %s" % (type(e).__name__, str(e)[:200]))
     try:
-        incident_step(sch, st, obs, now, act)
+        incident_step(sch, st, obs, now, act, gate)
     except Exception as e:  # noqa: BLE001 - never stops the tick, and alarms
         act(do="alarm", kind="incident:step", note=True, conductor_log=True, raise_first="The incident ledger is not running.",
             why="incident step raised %s: %s" % (type(e).__name__, str(e)[:200]))

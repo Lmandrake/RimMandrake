@@ -1781,6 +1781,32 @@ def _ssh_says(out):
 
 check("seats: the probe reads uptime and the seats that answered", _ssh_says("120\nup seat-runner\nprobe-done\n") == (True, 120, {"seat-runner"}))
 check("seats: a probe cut short is no reading, not absent seats", _ssh_says("120\nup seat-runner\n")[0] is False)
+_seen_t = []
+
+
+def _ssh_in_beat(left):
+    """steve_seat_probe with METRONOME_DEADLINE `left` s away -> (result, the ssh timeout it asked for or None)."""
+    _seen_t.clear()
+    _old = os.environ.get("METRONOME_DEADLINE")
+    os.environ["METRONOME_DEADLINE"] = str(time.time() + left)
+    OW.subprocess.run = lambda *a, **k: (_seen_t.append(k.get("timeout")),
+                                         subprocess.CompletedProcess(a, 0, "120\nprobe-done\n", ""))[1]
+    try:
+        return _probe_real(_cfg), (_seen_t or [None])[0]
+    finally:
+        OW.subprocess.run = _run_real
+        if _old is None:
+            os.environ.pop("METRONOME_DEADLINE", None)
+        else:
+            os.environ["METRONOME_DEADLINE"] = _old
+
+
+_r, _t = _ssh_in_beat(15)
+check("seats: inside a beat the ssh ends before the beat's kill, so a hung host still reads unreachable",
+      _t is not None and _t <= 15 - OW.SEAT_PROBE_RESERVE_S + 0.5 and _r[0] is True, (_r, _t))
+_r, _t = _ssh_in_beat(1)
+check("seats: a beat with no room left probes nothing and reads no reading, not an unreachable machine",
+      _r == (None, None, set()) and _t is None, (_r, _t))
 check("seats: both seats are named and the ready text covers both screens",
       set(_cfg["seats"]) == {"seat-server", "seat-runner"} and re.search(_cfg["ready"], "✔ Connected · Capacity: 1/32")
       and re.search(_cfg["ready"], "/remote-control is active"))
@@ -1804,6 +1830,11 @@ check("seats: back up clears", _seats(True, 9000, _both, NOW + 600)["v"] == 0.0 
 _p = _seats(True, 90000, ["seat-server"])
 check("seats: lost long after boot counts from the first look, so a switch of seconds cannot alarm", _p["v"] == 0.0, _p)
 _seats(True, 9000, _both, NOW)
+OW.steve_seat_probe = lambda cfg: (None, None, set())
+try:
+    check("seats: a beat with no room to probe writes no reading", OW.c_steve_seats(NOW, RULES, {}) == {})
+finally:
+    OW.steve_seat_probe = _probe_real
 _p = _seats(False, None, [])
 check("seats: a machine out of reach counts as absent, not silent", _p["m"] == "MEASURED" and _p["x"]["said"] == "unreachable", _p)
 _p = _seats(False, None, [], NOW + 1200)
@@ -1822,6 +1853,34 @@ _st = OW.run_alarms({"steve.seats_absent_min": OW.M(20.0, "min", said="seat-serv
 _a = _st.get("STEVE_SEATS:steve.seats_absent_min") or {}
 check("seats: over the line a ledger item is filed, naming the seat", _a.get("state") == "OPEN" and "seat-server absent" in (_a.get("title") or ""), _a)
 check("seats: and the Conductor log has the line", _clog.exists() and _a.get("item", "?") in _clog.read_text() and "seat-server absent" in _clog.read_text())
+# rerun_at_main: HEAD == origin/main is not enough, a dirty working tree is not the code main holds
+_rg = TMP / "rerun_git"
+_genv = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
+
+
+def _g(*a, cwd=None):
+    subprocess.run(["git", *a], cwd=str(cwd or _rg), env=_genv, check=True, capture_output=True, text=True, timeout=60)
+
+
+_g("init", "-q", "--bare", "-b", "main", str(_rg / "origin.git"), cwd=TMP)
+_g("clone", "-q", str(_rg / "origin.git"), str(_rg / "w"), cwd=TMP)
+_rw = _rg / "w"
+(_rw / "src").mkdir()
+(_rw / "src/t.py").write_text("x = 1\n")
+_g("add", "src/t.py", cwd=_rw)
+_g("commit", "-q", "-m", "t", cwd=_rw)
+_g("push", "-q", "origin", "HEAD:main", cwd=_rw)
+(_rw / "stub.md").write_text("untracked outside src\n")
+_v = OW.rerun_at_main(["src/t.py"], 30, root=_rw)
+check("rerun: a clean tree at origin/main reruns (untracked files outside src do not count)",
+      "working tree" not in _v[1], _v)
+(_rw / "src/t.py").write_text("x = 2\n")
+_v = OW.rerun_at_main(["src/t.py"], 30, root=_rw)
+check("rerun: a tracked edit is not origin/main: unmeasured, never green", _v[0] == "unmeasured" and "src/t.py" in _v[1], _v)
+(_rw / "src/t.py").write_text("x = 1\n")
+(_rw / "src/new.py").write_text("y = 1\n")
+_v = OW.rerun_at_main(["src/t.py"], 30, root=_rw)
+check("rerun: an untracked file under src is not origin/main either", _v[0] == "unmeasured" and "src/new.py" in _v[1], _v)
 # OPS_ALARM_FIX_LOG_LINE_NEVER_RETRIED: the ledger filing succeeds but the Conductor log cannot be written. The alarm is
 # OPEN (signal_watch skips OPEN), so a later pass must retry the line once the log can be written again
 _cdir = TMP / "clog_missing_dir"

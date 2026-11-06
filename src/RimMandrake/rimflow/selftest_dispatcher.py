@@ -3577,6 +3577,53 @@ def test_retired_seat_dead_since_raises_nothing():
           "control: FOUNDRY put back in seats raises dead:FOUNDRY (%s)" % [a.get("kind") or a["do"] for a in got])
 
 
+def test_review_e_incident_gates_and_torn_denied():
+    """Review E #2/#3: a torn told.jsonl does not consume a refusal; an incident doorbell waits on the ring gate."""
+    saved = {k: getattr(D.IN, k) for k in ("read_rows", "write_snapshot", "append", "step")}
+    try:
+        D.IN.write_snapshot = lambda snap: None
+        D.IN.append = lambda rows: None
+        last = {"by": "DISPATCHER", "ids": ["x-1"], "decided": 77.0, "outcome": "refused: daily cap"}
+        st = {"roles": {"Operations": {"run_now_last": dict(last)}}}
+        D.IN.read_rows = lambda: None
+        r = D.denied_runs({}, st, TMP, 100.0, lambda *a: None)
+        check(r == "denied run not read: told.jsonl torn" and "denied_seen" not in st["incident"],
+              "E2: a torn read leaves the refusal unhandled: %r %r" % (r, st["incident"]))
+        D.IN.read_rows = lambda: []
+        told = []
+        r = D.denied_runs({}, st, TMP, 101.0, lambda sc, x, n: told.append(x))
+        check(r and "denied" in r and st["incident"].get("denied_seen") == 77.0 and len(told) == 1,
+              "E2: the repaired ledger reads the same refusal: %r %r" % (r, told))
+        st = {"roles": {}, "seats": {}}
+        ringd = []
+        dr = lambda root, seat, rid, msg: ringd.append(seat)
+        bell = {"how": "doorbell", "seat": "FOUNDRY", "id": "i-1", "text": "t"}
+        a = {"rows": [], "rings": [bell], "cursor": 0, "snapshot": {}, "ring_hold": "login dead"}
+        res = D.incident_execute(a, {}, st, TMP, 100.0, dr, lambda *x: None)
+        check(not ringd and st["incident"]["held"] == [bell] and "held" in res,
+              "E3: a held ring gate holds the incident doorbell: %r %r" % (ringd, res))
+        a = {"rows": [], "rings": [], "cursor": 0, "snapshot": {}, "ring_hold": None}
+        D.incident_execute(a, {}, st, TMP, 101.0, dr, lambda *x: None)
+        check(ringd == ["FOUNDRY"] and not st["incident"]["held"], "E3: released next pass once the gate opens: %r" % ringd)
+        D.IN.read_rows = lambda: []
+        D.IN.step = lambda *a, **k: {"rows": [], "rings": [dict(bell)], "cursor": 0, "snapshot": {}, "keys": []}
+        reader = {"rows": lambda: [], "table": lambda: {}, "status": lambda: {}}
+        sch = {"incident": {"enabled": True}}
+        for go, want in ((False, "login dead"), (True, None)):
+            acts, asked = [], []
+
+            def gate(kind, go=go):
+                asked.append(kind)
+                return go, {"why": "login dead"}
+            D.incident_step(sch, {"roles": {}}, {"incident": reader}, 100.0, lambda **kw: acts.append(kw), gate)
+            inc = [x for x in acts if x.get("do") == "incident"]
+            check(asked == ["ring"] and inc and inc[0].get("ring_hold") == want,
+                  "E3: incident_step asks the ring gate (go=%s): %r %r" % (go, asked, inc))
+    finally:
+        for k, v in saved.items():
+            setattr(D.IN, k, v)
+
+
 def main():
     strict_roles()
     for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_busy_waiting_seat, test_blind_pause_roles_caps, test_verify_retry,
@@ -3596,7 +3643,8 @@ def main():
               test_golive_b3_wave1_config, test_golive_trial_set_from_schedule, test_golive_m4_disabled_parent_holds,
               test_golive_m5_malformed_obs, test_golive_m8_ring_withdraw_and_pause,
               test_golive_m6_weekday_slot_keys, test_long_helper_alarm, test_unring_gives_back_a_backoff_and_bad_roles_are_skipped, test_golive_m7_dst_yesterday, test_review_night_n1,
-              test_schedule_names_no_retired_seat, test_retired_seat_dead_since_raises_nothing):
+              test_schedule_names_no_retired_seat, test_retired_seat_dead_since_raises_nothing,
+              test_review_e_incident_gates_and_torn_denied):
         if ONLY and t.__name__ not in ONLY:
             continue
         try:

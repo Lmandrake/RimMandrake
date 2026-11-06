@@ -786,14 +786,25 @@ def c_steve(now, rules, ctx):
 SEAT_PROBE = """cut -d. -f1 /proc/uptime
 for s in %s; do p=$(tmux capture-pane -p -t "$s" 2>/dev/null); echo "$p" | grep -qE '%s' && echo "up $s"; done
 echo probe-done"""
+SEAT_PROBE_RESERVE_S = 2.0   # inside a beat: room left after the ssh for c_steve_seats to write its reading
+SEAT_PROBE_MIN_S = 2.0       # a probe given less than this would read a slow ssh as an unreachable machine
 
 
 def steve_seat_probe(cfg):
-    """(reachable, uptime_s, {seats up}). Reachable is False unless the whole probe ran to its last line."""
+    """(reachable, uptime_s, {seats up}). Reachable is False unless the whole probe ran to its last line. Inside a
+    metronome beat (15 s) the ssh ends SEAT_PROBE_RESERVE_S before the beat's kill: a 30 s wait on a hung host was
+    killed with the pass every beat, so absent_since was never written and STEVE_SEATS never fired. A beat with no
+    room left for a probe -> (None, None, set()): no reading, not an unreachable machine."""
     cmd = SEAT_PROBE % (" ".join(cfg["seats"]), cfg["ready"])
+    budget = 30.0
+    dl = beat_deadline()
+    if dl is not None:
+        budget = min(budget, dl - time.time() - SEAT_PROBE_RESERVE_S)
+        if budget < SEAT_PROBE_MIN_S:
+            return None, None, set()
     try:
-        r = subprocess.run(["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", cfg["ssh"], cmd],
-                           capture_output=True, text=True, timeout=30)
+        r = subprocess.run(["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=%d" % max(1, min(10, int(budget))),
+                            cfg["ssh"], cmd], capture_output=True, text=True, timeout=budget)
     except (OSError, subprocess.TimeoutExpired):
         return False, None, set()
     lines = r.stdout.split("\n")
@@ -812,6 +823,8 @@ def c_steve_seats(now, rules, ctx):
     if not cfg:
         return {}
     reach, up, seen = steve_seat_probe(cfg)
+    if reach is None:     # the beat had no room to probe: no reading (absent_since stands for the next look)
+        return {}
     missing = sorted(set(cfg["seats"]) - seen)
     p = ops_dir() / "steve_seats.json"
     st = read_json(p) if p.exists() else None
@@ -1091,6 +1104,17 @@ def rerun_at_main(tests, timeout, root=None):
         return "unmeasured", "git: %s" % str(e)[:160], None
     if head != main:
         return "unmeasured", "checkout at %s, origin/main at %s" % (head[:10], main[:10]), None
+    # HEAD == origin/main is not the code that runs: a tracked edit anywhere, or an untracked file under src/ (a test
+    # or module origin/main lacks), reruns the working tree, and a green from it would hide a red main. Untracked
+    # files elsewhere (the ledger's item stubs the dispatch clone always carries) run nothing and do not count.
+    try:
+        dirty = (_git(root, "status", "--porcelain", "--untracked-files=no") + "\n"
+                 + _git(root, "status", "--porcelain", "--untracked-files=all", "--", "src")).split("\n")
+    except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
+        return "unmeasured", "git status: %s" % str(e)[:160], head
+    dirty = sorted({ln.split(None, 1)[-1] for ln in dirty if ln.strip()})    # _git strips the first " M"
+    if dirty:
+        return "unmeasured", "working tree differs from origin/main: %s" % ", ".join(dirty[:3]), head
     missing = [t for t in tests if not (root / t).is_file()]
     deleted = {}
     for t in missing:

@@ -1806,12 +1806,12 @@ def preserve(row: dict) -> str:
                     (work / "clone.bundle").unlink(missing_ok=True)
                     files, row["residual"] = make_residual(p, row["tips"], work, str(e))
                     made += files
-                except Unreadable as e:       # no bundle can read it: the store itself is all there is to keep
-                    size = Tree(p / ".git").size
+                except Unreadable as e:       # no bundle can read it: the store and the worktree are all there is
+                    size = Tree(p).size         # the whole clone: a worktree file may hold the only copy of a lost blob
                     if size > BROKEN_CAP:
-                        raise Unreadable(f"{e}; {human(size)} of .git, over the {human(BROKEN_CAP)} preserve cap") from e
+                        raise Unreadable(f"{e}; {human(size)} of clone, over the {human(BROKEN_CAP)} preserve cap") from e
                     (work / "clone.bundle").unlink(missing_ok=True)
-                    make_tar(p, [".git"], work / "broken_git.tar.gz")
+                    make_tar(p, None, work / "broken_git.tar.gz")
                     made.append(work / "broken_git.tar.gz")
                     row["broken"] = str(e)
             if row.get("dead_refs"):
@@ -1931,8 +1931,9 @@ def act(row: dict, ctx: Ctx, failures: list[str]) -> int:
 
 def pinned_holds(p: Path, pin: Path, row: dict, ctx: Ctx) -> list[str]:
     """The last look, with the path out of reach: anything using it now, or written to it since it was judged."""
-    ctx.refresh()
+    ctx.refresh()                   # rereads a corpus older than CORPUS_REFRESH_S: a reservation filed while it was preserved
     why = ctx.global_holds() + ctx.mounted(pin) + ctx.live.users(pin) + ctx.live.users(p) + ctx.borrows.of(pin) + ctx.borrows.of(p)
+    why += ledger_mentions(p, row["kind"], ctx.now) if row["kind"] in ("clone", "session") else []
     tree = Tree(pin)
     if tree.errors:
         why.append(f"unreadable: {tree.errors[0]}")
@@ -2027,7 +2028,7 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
     """Remove selftest fixtures a day untouched. run_selftests.py cleans its own; this catches a test run by hand or
     killed. Nothing is archived: the commits in a fixture's `c` clone are unpushed by construction. A path anything
     uses, mounts or borrows from, or that cannot be read whole, stays."""
-    out = {"removed": 0, "bytes": 0, "young": 0, "held": 0, "deferred": 0}
+    out = {"removed": 0, "bytes": 0, "young": 0, "held": 0, "deferred": 0, "failed": []}
     for p in fixture_dirs():
         if apply and deadline and time.time() > deadline:
             out["deferred"] += 1
@@ -2055,7 +2056,13 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
                                 or ctx.now - again.newest < FIXTURE_TTL_S:
                             out["held"] += 1
                             continue
-                    shutil.rmtree(p)
+                    try:
+                        shutil.rmtree(p)
+                    except FileNotFoundError:
+                        raise                   # its own test removed it first: held, as before
+                    except OSError as e:
+                        out["failed"].append(f"remove fixture {p}: {e.strerror or e}")    # run() fails the run on these
+                        raise
                 out["removed"] += 1
                 out["bytes"] += tree.size
             except OSError:
@@ -2578,7 +2585,7 @@ def run(a, sd: Path) -> int:
         with open(sd / "tmp_runs.jsonl", "a") as f:
             f.write(json.dumps({"ts": stamp, "apply": a.apply, "summary": tmp, "rows": tmp_rows}) + "\n")
     rows = judge_all(ctx)
-    failures: list[str] = list(tmp.get("failed", []))   # a /tmp entry judged gone that would not go
+    failures: list[str] = list(fixtures.get("failed", [])) + list(tmp.get("failed", []))   # judged gone, would not go
     freed, deferred = 0, 0
     if a.apply:
         freed, deferred = apply_rows(rows, ctx, a.max_seconds, failures, start)

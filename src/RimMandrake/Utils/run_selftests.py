@@ -545,9 +545,13 @@ def classify(rc: int, out: str, rep=None, cap: int = 0) -> tuple[str, str]:
     if rep is not None and rep.get("oom_kill"):
         return "CRASH", (f"memory cap: oom_kill={rep['oom_kill']} in its scope, peak "
                          f"{(rep.get('peak') or 0) / GiB:.2f} GiB, cap {(rep.get('cap') or cap) / GiB:.2f} GiB, rc {rc}")
-    if rc < 0 or rc in (137, 139):
+    wrapped = rep.get("rc") if rep is not None else None     # the test's own rc, as the memory-pen wrapper saw it
+    if isinstance(wrapped, int) and wrapped < 0 and rc >= 0:
+        rc = wrapped                    # the wrapper turned a signal death into 128+N: read the death, not the code
+    if rc < 0 or rc in (132, 134, 135, 136, 137, 139):
         # A signal death is never a verdict — not even when the child had already
         # printed the unmeasured phrase (it used to fall through into UNMEASURED).
+        # 128+N for SIGILL/SIGABRT/SIGBUS/SIGFPE/SIGKILL/SIGSEGV: a shell's report of the same deaths.
         sig = -rc if rc < 0 else rc - 128
         return "CRASH", (f"signal {sig} (rc={rc}) - SIGKILL(9) is almost always the OOM killer; "
                          "rerun this test alone before believing it is a real failure")
@@ -752,15 +756,23 @@ def _direct_deps(f: Path, root: Path) -> set:
     except (OSError, SyntaxError, ValueError):
         _DIRECT[f] = deps
         return deps
-    names = set()
+    names, rel_cands = set(), []
     for n in ast.walk(tree):
         if isinstance(n, ast.Import):
             names |= {a.name for a in n.names}
+        elif isinstance(n, ast.ImportFrom) and n.level:      # `from . import helper`, `from ..pkg import x`
+            base = f.parents[n.level - 1] if n.level - 1 < len(f.parents) else None
+            if base is not None:
+                mod = base.joinpath(*n.module.split(".")) if n.module else base
+                rel_cands.append(mod.with_suffix(".py") if n.module else mod / "__init__.py")
+                rel_cands.append(mod / "__init__.py")
+                for a in n.names:
+                    rel_cands += [mod / (a.name + ".py"), mod / a.name / "__init__.py"]
         elif isinstance(n, ast.ImportFrom) and n.module:
             names.add(n.module)
             names |= {"%s.%s" % (n.module, a.name) for a in n.names}
     dirs = [f.parent, f.parent.parent] + [root / d for d in _IMPORT_DIRS]
-    cands = []
+    cands = list(rel_cands)
     for nm in names:
         rel = Path(*nm.split("."))
         for d in dirs:
@@ -1115,6 +1127,9 @@ def _suite(args) -> int:
 
     if args.only:
         want = {_only_path(o, tests) for o in _only_names(args.only)}
+        if not want:                    # `--only "$empty"` or `--only ,`: naming nothing is not a green 0/0
+            print("--only names no test (an empty selection)")
+            return 1
         absent = sorted(str(w) for w in want if not w.is_file())
         if absent:
             # A typo used to yield a green 0/0 (audit §6): naming nothing is an error.
@@ -1172,7 +1187,7 @@ def _suite(args) -> int:
     _KNOWN = kn = _known_start()
     if kn and (args.no_cache or args.full):
         kn["led"].note_forced(args.because, len(tests), sys.argv[1:])
-    if not args.full:
+    if not (args.full or args.no_cache):        # --no-cache ignores every stored answer, evidence records included
         keep = []
         day = time.strftime("%Y-%m-%d")
         for t in tests:
