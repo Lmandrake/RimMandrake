@@ -1394,3 +1394,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A9 (L2), read-only proof","ts":"2026-11-06T23:41:20Z","tsn":1794008480714536357}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:41:49Z","tsn":1794008509622407491}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A10 (L2), read-only proof","ts":"2026-11-06T23:42:09Z","tsn":1794008529510662551}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:42:45Z","tsn":1794008565283259748}
