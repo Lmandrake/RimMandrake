@@ -132,6 +132,8 @@ the account new work runs on before releasing it; the helper allocator sets how 
 Operations is the role that analyses burn. The Conductor is never paused by the Dispatcher. A scheduled quick run that
 cannot start is refused with an alarm.
 
+**Stopping a timer for a while** (an account switch, a spend stop): `python3 src/RimMandrake/Utils/timers_guard.py pause --hours H rm-foo.timer`, which arms the restart and then stops the timer, so the guard stays quiet until the restart is due. A bare `systemctl stop` with a hand-made `systemd-run` restart looks like an outage and files an alarm (OPS_TIMERS_REVIVE_343F).
+
 **What you do raise.** When Operations' forecast misses the plan, the Producer drafts the replan (a cut list). You
 bring that trade-off to him in plain words ("this is taking more than estimated; drop X from Wednesday's plan?") and
 decide together, then record what he chose as one note on the parent item headed `CUT DECISION <cut list id>`
