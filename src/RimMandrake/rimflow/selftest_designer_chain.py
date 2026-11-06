@@ -166,8 +166,8 @@ def test_orphan_sweep():
           % (opened, [(a["do"], a.get("why", "")[:80]) for a in acts]))
     st, acts, opened = sweep_decide([(C2, {"stage": 3, "status": "waiting_owner"}, old)])
     check(opened == [C2], "a waiting_owner concept he has answered (pending since his answer) is launched too")
-    for why, row in (("rejected last result", (C1, {"stage": 3, "status": "ready",
-                                                    "results": [{"outcome": "rejected"}]}, old)),
+    for why, row in (("rejected last result, parked", (C1, {"stage": 3, "status": "ready", "results": [
+                         {"outcome": "rejected", "why": ["x: source path no/such/file.json does not exist"]}]}, old)),
                      ("still waiting on him", (C1, {"stage": 3, "status": "waiting_owner"}, None)),
                      ("blocked", (C1, {"stage": 3, "status": "blocked"}, None)),
                      ("running", (C1, {"stage": 3, "status": "ready", "running": {"run": "u"}}, old)),
@@ -208,9 +208,75 @@ def test_orphan_sweep():
     check(not any(a.get("kind") == "role:Arbiter:chain_sweep" for a in acts), "the blind alarm is said once per outage")
 
 
+def test_rejected_sweep():
+    """RELAPSE_QUEUES_FIX_DIED_TWICE (incident queues-20261105210826, three acks whose fixes died): the sweep skipped
+    EVERY rejected-last concept, so GSS stage 2, rejected 09:14Z and 10:13Z for a missing coverage_verdict.json, sat
+    6 h after the file landed at 10:12Z while the stall alarm rang. Now the sweep and the stall reader share
+    designer_stage.rejection_parked: parked = a retry cannot help; else the sweep re-chains with the reasons."""
+    import shutil
+    import tempfile
+    import time
+    import designer_stage as DS
+    repo = tempfile.mkdtemp(prefix="selftest_rechain_")
+    try:
+        rel = "design/concepts/GimmeSomeSlack/coverage_verdict.json"
+        at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - 3600))
+        why = ["asks[a_shock_floor_ends]: source path %s does not exist" % rel]
+        gss = {"stage": 2, "status": "ready", "results": [
+            {"at": at, "outcome": "rejected", "run": "rm-role-designer-1793956212", "stage": 2, "why": why},
+            {"at": at, "outcome": "rejected", "run": "rm-role-designer-1793959835", "stage": 2, "why": why}]}
+        old = T - 6 * 3600
+        SD_ro = {"rejection_parked": lambda st: DS.rejection_parked(st, repo)}
+        st, acts, opened = sweep_with(sweep_decide, [(C1, gss, old)], SD_ro)
+        check(opened == [], "GSS before its file lands: parked (the cited path is missing), nothing swept")
+        os.makedirs(os.path.dirname(os.path.join(repo, rel)))
+        open(os.path.join(repo, rel), "w").write("{}")
+        st, acts, opened = sweep_with(sweep_decide, [(C1, gss, old)], SD_ro)
+        rn = (st["roles"].get("Arbiter") or {}).get("run_now_last") or {}
+        check(opened == [C1] and any("cause gone" in a.get("why", "") for a in acts),
+              "GSS after its file landed (two identical rejections before): the sweep re-chains it: %r %r" % (
+                  opened, [(a["do"], a.get("why", "")[:90]) for a in acts]))
+        check(rn.get("reasons") == why or any(why[0] in str(a) for a in acts),
+              "the re-chained run carries the rejection's reasons: %r" % rn)
+        sp = {"results": [{"outcome": "rejected", "why": ["x: source path design/My Notes/a b.json does not exist"]}]}
+        check(bool(DS.rejection_parked(sp, repo)), "a cited path with spaces is read whole (still missing: parked)")
+        os.makedirs(os.path.join(repo, "design/My Notes"))
+        open(os.path.join(repo, "design/My Notes/a b.json"), "w").write("{}")
+        check(DS.rejection_parked(sp, repo) is None, "and once it lands, the rejection is due a retry")
+        one = {"stage": 4, "status": "ready", "results": [
+            {"at": at, "outcome": "rejected", "run": "rm-role-designer-1", "stage": 4, "why": ["no result.json"]}]}
+        st, acts, opened = sweep_with(sweep_decide, [(C1, one, old)], SD_ro)
+        check(opened == [C1], "Pyrelands' shape (one unlabelled 'no result.json' rejection) is re-chained once")
+        two = dict(one, results=one["results"] + [dict(one["results"][0], run="rm-role-designer-2")])
+        st, acts, opened = sweep_with(sweep_decide, [(C1, two, old)], SD_ro)
+        check(opened == [], "the same rejection twice in a row is parked (the arbiter's, not a third run)")
+        env = dict(one, results=[dict(one["results"][0], why=["account died [cause:environment]"])])
+        st, acts, opened = sweep_with(sweep_decide, [(C1, env, old)], SD_ro)
+        check(opened == [], "a rejection labelled [cause:environment] is the cause book's: parked")
+        check(DS.rejection_parked({"results": [{"outcome": "done"}]}, repo) is None
+              and DS.rejection_parked({}, repo) is None, "no rejected last result: never parked")
+    finally:
+        shutil.rmtree(repo, ignore_errors=True)
+
+
+def sweep_with(fn, rows, extra):
+    """sweep_decide with extra obs (the parked rule pointed at a temp repo)."""
+    real = SD.lrobs
+
+    def lrobs(*a, **k):
+        ro = real(*a, **k)
+        ro.update(extra)
+        return ro
+    SD.lrobs = lrobs
+    try:
+        return fn(rows)
+    finally:
+        SD.lrobs = real
+
+
 def main():
     for t in (test_row, test_done_chains, test_no_chain_states, test_queue_behind_pending, test_daily_cap,
-              test_orphan_sweep):
+              test_orphan_sweep, test_rejected_sweep):
         t()
     print("selftest_designer_chain: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0

@@ -109,6 +109,22 @@ SHARD.parent.mkdir(parents=True)
 SHARD.write_text("")
 ITEM = "SELFTEST_FIXTURE_CONCEPT_ZZQ"
 QR = {"queues": [dict(QR["queues"][0], repo=str(CL))]}
+# RELAPSE_QUEUES_FIX_DIED_TWICE: a ready concept whose rejected last result is PARKED (designer_stage.rejection_parked,
+# the rule the orphan sweep retries by) is not pending; once its cause is gone (the cited file landed) it is, so the
+# stall alarm counts exactly what the sweep should have moved (incident queues-20261105210826).
+_GSV = "design/concepts/Gss/coverage_verdict.json"
+concept("Gss", "ready", 300)
+_g = json.loads((ROOT / "Gss" / "stage.json").read_text())
+_g["results"] = [{"at": iso(NOW - 300 * 60), "outcome": "rejected", "run": "rm-role-designer-1", "stage": 2,
+                  "why": ["asks[a]: source path %s does not exist" % _GSV]}]
+(ROOT / "Gss" / "stage.json").write_text(json.dumps(_g))
+check("a rejected concept whose cited file is still missing is parked, not a stall", 119.5 <= stalled()["v"] <= 120.5,
+      stalled())
+(CL / _GSV).parent.mkdir(parents=True, exist_ok=True)
+(CL / _GSV).write_text("{}")
+check("the cited file lands after the rejection: the concept is pending again (~300 min)",
+      299.5 <= stalled()["v"] <= 300.5, stalled())
+shutil.rmtree(ROOT / "Gss")
 
 
 def owner_event(min_ago, ident):

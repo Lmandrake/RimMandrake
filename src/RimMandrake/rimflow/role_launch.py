@@ -1307,7 +1307,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         name = role.get("name", "?")
         if role.get("chain_stages") is True:
             chain_sweep(name, rst.setdefault(name, {}), dict(ROLE_DEFAULTS, **role), now, act,
-                        obs.get("stage_concepts") or stage_concepts)
+                        obs.get("stage_concepts") or stage_concepts, obs.get("rejection_parked"))
         if isinstance(rst.get(name), dict):
             chain_pop(rst[name], now)
         req = (rst.get(name) or {}).get("run_now") if isinstance(rst.get(name), dict) else None
@@ -2116,8 +2116,11 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
 # a waiting_owner he has answered) sat until queues.designer.stalled_min rang: GimmeSomeSlack and Pyrelands, 4 h+.
 # Each decide tick of a chain_stages role now sweeps every concept the stall alarm counts as pending (the same rule:
 # designer_stage's ready, or waiting_owner answered) and asks its run once it has waited CHAIN_SWEEP_GRACE_S, through
-# chain_ask's cap and slot. Skipped: an open run, a last result REJECTED (its alarm stands; no unwatched retry loop),
-# a concept already holding the slot or a queue place, and one a running run of this role works on.
+# chain_ask's cap and slot. Skipped: an open run, a last result REJECTED and PARKED (designer_stage.rejection_parked:
+# a retry cannot help, its stage_rejected alarm stands; ops_watch's stall reader skips it by the same rule), a concept
+# already holding the slot or a queue place, and one a running run of this role works on. A rejected concept that is
+# not parked (the path its rejection cited has landed since, or an unlabelled rejection not yet met twice) is
+# re-chained with the rejection's reasons (RELAPSE_QUEUES_FIX_DIED_TWICE: GSS sat 6 h after its missing file landed).
 CHAIN_SWEEP_GRACE_S = 600    # a harvest chains at once; the sweep is for what no harvest will ever see
 
 
@@ -2147,8 +2150,9 @@ def stage_concepts(repo=None):
     return out
 
 
-def chain_sweep(name, rs, cfg, now, act, concepts):
-    """Ask a run for every orphaned pending concept (see CHAIN_SWEEP_GRACE_S). -> the requests asked."""
+def chain_sweep(name, rs, cfg, now, act, concepts, parked=None):
+    """Ask a run for every orphaned pending concept (see CHAIN_SWEEP_GRACE_S). -> the requests asked. parked(st) ->
+    why a rejected concept is parked, or None (default designer_stage.rejection_parked against designer_stage.REPO)."""
     if cfg.get("chain_stages") is not True:
         return []
     try:
@@ -2169,12 +2173,23 @@ def chain_sweep(name, rs, cfg, now, act, concepts):
         if since is None or not isinstance(st, dict) or st.get("running") or concept in held or now - since < grace:
             continue
         res = [r for r in st.get("results") or [] if isinstance(r, dict)]
+        reasons = None
         if res and res[-1].get("outcome") == "rejected":
-            continue
+            if parked is None:
+                import designer_stage as DS
+                parked = DS.rejection_parked
+            try:
+                why = parked(st)
+            except Exception as e:  # noqa: BLE001 - an unreadable cause is parked (no blind retry); the stall reader
+                why = "parked rule raised: %s" % str(e)[:120]   # meets the same raise and reports itself blind
+            if why:
+                continue
+            reasons = [str(w) for w in res[-1].get("why") or []]
         mins = int((now - since) // 60)
         req = chain_ask(name, rs, cfg, concept, st.get("stage"), now, act, "orphan-sweep", cfg.get("ledger_item"),
-                        "run", "orphan sweep, %s %d min with nothing chained" % (st.get("status"), mins),
-                        "for %d min with no run chained (orphan sweep)" % mins)
+                        "run", "orphan sweep, %s %d min with nothing chained%s" % (
+                            st.get("status"), mins, ", its rejection's cause gone" if reasons is not None else ""),
+                        "for %d min with no run chained (orphan sweep)" % mins, reasons=reasons)
         if req:
             held.add(concept)
             asked.append(req)

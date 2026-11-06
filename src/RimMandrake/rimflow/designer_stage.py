@@ -1095,6 +1095,49 @@ def owner_answered_at(st, d, repo=REPO):
     return min(newer) if newer else began
 
 
+# RELAPSE_QUEUES_FIX_DIED_TWICE: the Dispatcher's orphan sweep (role_launch.chain_sweep) skipped EVERY concept whose
+# last result was rejected while ops_watch's queues.designer stall reader counted every ready concept, so the stall
+# alarm rang (incident queues-20261105210826, three acks whose fixes died) on concepts nothing would ever move: GSS
+# stage 2 sat 6 h after the coverage_verdict.json its rejection cited had landed. One rule now serves both readers:
+# a rejected-last concept is PARKED (no retry helps; the stage_rejected alarm and its route own it) or it is due a
+# retry (the sweep re-chains it with the reasons; the stall alarm counts it until that run opens).
+MISSING_PATH_RX = re.compile(r"source path (.+?) does not exist")
+PARK_CLASSES = ("check", "bar", "environment")   # role_launch.CAUSE_ROUTE sends these to the Setter or the cause book
+_PARK_MASK = re.compile(r"rm-role-[a-z]+-\d+|\b\d{6,}\b")
+
+
+def rejection_parked(st, repo=REPO):
+    """Pure but for os.path.exists. -> why a ready concept whose last result is REJECTED is parked (a retry cannot
+    help), or None when it is not parked (no rejected last result, or the rejection's cause is gone so a retry is due).
+    Parked: a reason labelled [cause:check|bar|environment] (routed to the Setter or the cause book, never to the
+    builder); a cited source path that still does not exist under `repo` (close_run judges against designer_stage.
+    REPO); or, when no path is cited, the last two
+    results are rejections at the same stage with the same reasons, run names masked (a retry already met it: the
+    identical-rejection route goes to the arbiter). Every cited path landed after the rejection = not parked, even
+    after two identical rejections (GSS: rejected 09:14Z and 10:13Z for the file that landed at 10:12Z)."""
+    res = [r for r in (st or {}).get("results") or [] if isinstance(r, dict)]
+    if not res or res[-1].get("outcome") != "rejected":
+        return None
+    why = [str(w) for w in (res[-1].get("why") or [])]
+    tags = {m for w in why for m in re.findall(r"\[cause:([a-z]+)\]", w)} & set(PARK_CLASSES)
+    if tags:
+        return "rejection labelled %s: routed to %s, not to a retry" % (
+            "+".join(sorted(tags)), "the Setter" if tags - {"environment"} else "the cause book")
+    cited = sorted({m.group(1) for w in why for m in MISSING_PATH_RX.finditer(w)})
+    if cited:
+        missing = [c for c in cited if not os.path.exists(os.path.join(repo, c))]
+        if missing:
+            return "the rejection cites %s, still missing" % ", ".join(missing)
+        # close_run judged the same repo and found them missing, so every one has landed since: the cause is gone.
+        # No mtime test (a copy that keeps mtimes would park a fixed concept for good); chain_ask's daily cap bounds it.
+        return None
+    if len(res) >= 2 and res[-2].get("outcome") == "rejected" and res[-2].get("stage") == res[-1].get("stage"):
+        sig = lambda r: sorted(_PARK_MASK.sub("#", str(w)) for w in r.get("why") or [])  # noqa: E731
+        if sig(res[-2]) == sig(res[-1]):
+            return "rejected twice in a row for the same reasons: the arbiter's, not a third run"
+    return None
+
+
 def _epoch(s):
     try:
         return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc).timestamp()

@@ -3473,7 +3473,9 @@ def _q_designer(q, now, pcache, cpath):
     longer than the threshold with no close is a stall too (measured runs take 2 to 11 min). A concept at
     waiting_owner whose owner has ANSWERED (designer_stage.owner_moved; DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY)
     is pending too, since his answer (designer_stage.owner_answered_at): only a run's open moves it back to ready, so
-    it is forgotten the same way. One still waiting on him, blocked or locked is not pending. root: the concepts dir
+    it is forgotten the same way. One still waiting on him, blocked or locked is not pending, nor is a ready concept
+    whose rejected last result is PARKED (designer_stage.rejection_parked, the rule role_launch.chain_sweep retries
+    by; RELAPSE_QUEUES_FIX_DIED_TWICE): the stall alarm counts exactly what the sweep should have moved. root: the concepts dir
     (default designer_stage.concepts_root(), the Designer clone's design/concepts); repo: the clone whose OWNER shard
     is read (default designer_stage.REPO; the concept's own clone is read too); a missing root, a stage.json that does
     not parse, a ready concept with no readable time, or a waiting concept whose OWNER shard is unreadable is blind."""
@@ -3507,6 +3509,8 @@ def _q_designer(q, now, pcache, cpath):
             continue
         if st.get("status") != "ready":
             continue
+        if DS.rejection_parked(st, repo):
+            continue      # the sweep's own rule: a retry cannot help; its stage_rejected alarm owns it
         hs = [h for h in (st.get("history") or []) if isinstance(h, dict)]
         last = _iso_epoch(hs[-1].get("at")) if hs else None
         if last is None and run_at is None:
