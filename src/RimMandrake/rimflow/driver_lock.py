@@ -12,6 +12,10 @@ second, stricter witness the ledger lock now consults:
     is a different holder. Heartbeat age is reported; it decides only when the process cannot be inspected.
   * an UNREADABLE lock is an explicit failure (never read as free); --force breaks it and records why.
   * every take bumps a generation (kept beside the lock), so a stale holder can tell it was superseded.
+  * every change to an EXISTING lock (renew, heartbeat, break, release) runs inside a fence: a short-lived
+    `<lock>.op` file made with O_CREAT|O_EXCL (DRIVER_LOCK_FIX_UNFENCED_WRITES). Without it a holder that read the
+    lock, then lost it to a newer generation, overwrote (heartbeat) or deleted (release) the replacement, and both
+    believed they held it. Creating a lock that is absent needs no fence: O_EXCL already picks one winner.
 
 Release requires the same identity, or force (recorded). Disabled under a redirected RIMFLOW_LEDGER unless
 RIMFLOW_DRIVER_LOCK names a path, so selftests never touch the real lock.
@@ -20,6 +24,7 @@ import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import calendar
+import contextlib
 import json
 import os
 import socket
@@ -30,6 +35,16 @@ import time
 DEFAULT = rm_win("scratch", "DRIVER_LOCK.json") if os.name == "nt" else rm_str("scratch", "DRIVER_LOCK.json")
 STALE_HEARTBEAT_S = 45 * 60          # only consulted when the holder process cannot be inspected
 WRITING_GRACE_S = 3.0
+FENCE_STALE_S = 10.0                 # a fence is held for milliseconds; one this old belongs to a crashed process
+FENCE_WAIT_S = 15.0
+
+
+class FenceBusy(Exception):
+    pass
+
+
+class _Moved(Exception):
+    """The lock changed between the unfenced liveness judgment and the fenced re-read: judge again."""
 
 
 def lock_path():
@@ -104,14 +119,31 @@ def my_identity():
             "host": socket.gethostname()}
 
 
-def _win_start(pid):
+def _win_probe(pid):
+    """-> ("alive", start) | ("gone", None) | ("unknown", None). Only a definite "no such process" is "gone": a
+    timeout, a missing powershell.exe, a refused StartTime or unparseable output is "unknown" (cannot inspect, so the
+    heartbeat decides) - never death (DRIVER_LOCK_FIX_UNFENCED_WRITES: a PowerShell timeout on a LIVE holder read as
+    dead and let an ordinary take break a fresh lock)."""
     try:
-        out = subprocess.run(["powershell.exe", "-NoProfile", "-Command",
-                              "([DateTimeOffset](Get-Process -Id %d -ErrorAction Stop).StartTime)"
-                              ".ToUnixTimeMilliseconds()" % pid], capture_output=True, text=True, timeout=30).stdout
-        return int(out.strip()) / 1000.0
-    except (OSError, ValueError, subprocess.TimeoutExpired):
-        return None
+        r = subprocess.run(["powershell.exe", "-NoProfile", "-Command",
+                            "$p = Get-Process -Id %d -ErrorAction SilentlyContinue; if ($null -eq $p) { 'GONE' } "
+                            "else { ([DateTimeOffset]$p.StartTime).ToUnixTimeMilliseconds() }" % pid],
+                           capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.TimeoutExpired):
+        return "unknown", None
+    out = (r.stdout or "").strip()
+    if r.returncode == 0 and out == "GONE":
+        return "gone", None
+    try:
+        return "alive", int(out) / 1000.0
+    except ValueError:
+        return "unknown", None
+
+
+def _win_start(pid):
+    """Start time of a Windows pid, or None (gone or not inspectable - callers that must tell them apart use
+    _win_probe)."""
+    return _win_probe(pid)[1]
 
 
 def _local_host():
@@ -134,10 +166,12 @@ def process_alive(ident):
         st = _proc_start(int(ident.get("pid") or 0))
         return st is not None and ident.get("start") is not None and abs(st - ident["start"]) < 0.05
     if plat == "nt":
-        st = _win_start(int(ident.get("pid") or 0))
-        if st is None:
+        state, st = _win_probe(int(ident.get("pid") or 0))
+        if state == "gone":
             return False
-        return ident.get("start") is not None and abs(st - ident["start"]) < 1.0
+        if state != "alive" or ident.get("start") is None:
+            return None                       # cannot inspect: the heartbeat decides, never "dead"
+        return abs(st - ident["start"]) < 1.0
     return None
 
 
@@ -191,13 +225,14 @@ def _heartbeat_age(cur):
         return None
 
 
-def owner_held(cur):
+def owner_held(cur, verdict=None):
     """His OWNER lock binds while its process lives, and for 45 min after: his `bridge take` process exits at once, the
-    hold does not. Only a caller that measured his last interaction may pass (host_guard says why)."""
+    hold does not. Only a caller that measured his last interaction may pass (host_guard says why). verdict: an
+    _alive(cur) already measured."""
     if not cur or cur.get("seat") != "OWNER":
         return False
     age = _heartbeat_age(cur)
-    return _alive(cur)[0] or (age is not None and age < STALE_HEARTBEAT_S)
+    return (verdict or _alive(cur))[0] or (age is not None and age < STALE_HEARTBEAT_S)
 
 
 def _alive(cur):
@@ -229,8 +264,74 @@ def _create(path, body):
         pass
 
 
+def _fence_path(path):
+    return path + ".op"
+
+
+@contextlib.contextmanager
+def _fence(path):
+    """Hold `<lock>.op` (O_EXCL) for one read-check-write of the lock. Raises FenceBusy after FENCE_WAIT_S. A fence
+    older than FENCE_STALE_S is a crashed holder's and is broken; ours is removed only while it still holds our nonce,
+    so a fence broken as stale and re-made by another process is never deleted by us."""
+    op = _fence_path(path)
+    nonce = "%d %s %.6f" % (os.getpid(), socket.gethostname(), time.time())
+    deadline = time.time() + FENCE_WAIT_S
+    while True:
+        try:
+            fd = os.open(op, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+        except (FileExistsError, PermissionError):  # Windows: a fence pending delete refuses with access denied
+            try:
+                if time.time() - os.path.getmtime(op) > FENCE_STALE_S:
+                    aside = "%s.stale.%d" % (op, os.getpid())
+                    os.rename(op, aside)
+                    os.remove(aside)
+                    continue
+            except OSError:
+                pass
+            if time.time() > deadline:
+                raise FenceBusy("driver lock fence %s held past %.0f s" % (op, FENCE_WAIT_S))
+            time.sleep(0.05)
+            continue
+        except OSError as e:                          # no lock directory, read-only disk: never act unfenced
+            raise FenceBusy("driver lock fence %s cannot be made (%s)" % (op, e))
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(nonce)
+        break
+    try:
+        yield
+    finally:
+        try:
+            with open(op, encoding="utf-8") as fh:
+                mine = fh.read() == nonce
+            if mine:
+                os.remove(op)
+        except OSError:
+            pass
+
+
 def acquire(path, seat, purpose, identity, force=None, spare_owner=False, owner_heartbeat=None):
     """-> {ok, generation, why, broke, holder}. force: a reason string to break a live or unreadable lock."""
+    # Liveness is judged OUTSIDE the fence (a Windows probe may take 30 s; a fence that old reads as a crashed
+    # holder's), then the fenced pass acts only on the very lock that was judged, and judges again if it moved.
+    for _ in range(20):
+        pre, _p = _read(path)
+        verdict = _alive(pre) if pre is not None else None
+
+        def judge(cur, pre=pre, verdict=verdict):
+            if cur != pre:
+                raise _Moved()
+            return verdict
+        try:
+            with _fence(path):
+                return _acquire(path, seat, purpose, identity, force, spare_owner, owner_heartbeat, judge)
+        except _Moved:
+            continue
+        except FenceBusy as e:
+            return {"ok": False, "why": "driver lock contended: %s" % e}
+    return {"ok": False, "why": "driver lock contended: it kept changing under 20 judgments"}
+
+
+def _acquire(path, seat, purpose, identity, force, spare_owner, owner_heartbeat, judge):
     for _ in range(20):
         cur, problem = _read(path)
         broke = False
@@ -255,8 +356,8 @@ def acquire(path, seat, purpose, identity, force=None, spare_owner=False, owner_
                     and cur.get("heartbeat") != owner_heartbeat:
                 return {"ok": False, "holder": cur, "why": "the OWNER's lock moved after his hold was measured (%s, "
                         "measured %s): measure again" % (cur.get("heartbeat"), owner_heartbeat)}
-            alive, how = _alive(cur)
-            if (alive and not force) or (spare_owner and seat != "OWNER" and owner_held(cur)):
+            alive, how = judge(cur)
+            if (alive and not force) or (spare_owner and seat != "OWNER" and owner_held(cur, (alive, how))):
                 return {"ok": False, "holder": cur, "why": "driver lock held by %s (%s), %s; for: %s" % (
                     cur.get("seat"), _who(cur["identity"]), how, cur.get("purpose"))}
             prev = cur
@@ -267,11 +368,14 @@ def acquire(path, seat, purpose, identity, force=None, spare_owner=False, owner_
             except FileNotFoundError:
                 continue
             took, _p = _read(aside)
-            if prev is not None and ((took or {}).get("generation") != prev.get("generation") or (
+            # the WHOLE lock must be the one judged, not just its generation: a heartbeat renewed between the check
+            # and the rename keeps the generation but was never judged (a writer outside the fence: an older clone)
+            if prev is not None and (took != prev or (
                     owner_heartbeat and prev.get("seat") == "OWNER"
                     and (took or {}).get("heartbeat") != owner_heartbeat)):
-                try:                                  # someone re-took between our read and rename: put it back
-                    _create(path, took)
+                try:                                  # someone re-took or renewed between read and rename: put it back
+                    if took is not None:              # (an unreadable one stays aside: _create(None) wrote "null")
+                        _create(path, took)
                 except (FileExistsError, OSError, TypeError):
                     pass
                 continue
@@ -320,15 +424,32 @@ def _replace(path, body):
 
 
 def heartbeat(path, identity):
-    cur, problem = _read(path)
-    if cur and same_process(cur["identity"], identity):
-        cur["heartbeat"] = _now()
-        _replace(path, cur)
-        return True
-    return False
+    """Renew our own lock -> True, or False when it is not ours (any more) or the fence stayed busy. Fenced: a holder
+    superseded after its read can no longer overwrite the newer generation."""
+    try:
+        with _fence(path):
+            cur, _problem = _read(path)
+            if cur and same_process(cur["identity"], identity):
+                cur["heartbeat"] = _now()
+                _replace(path, cur)
+                return True
+            return False
+    except FenceBusy:
+        return False
 
 
 def release(path, seat, identity, force=None):
+    cur, problem = _read(path)
+    if cur is None and not problem:
+        return {"ok": True, "why": "already free"}      # nothing to fence (and no fence to make if the dir is gone)
+    try:
+        with _fence(path):
+            return _release(path, seat, identity, force)
+    except FenceBusy as e:
+        return {"ok": False, "why": "driver lock contended: %s" % e}
+
+
+def _release(path, seat, identity, force):
     cur, problem = _read(path)
     if cur is None and not problem:
         return {"ok": True, "why": "already free"}
@@ -337,9 +458,33 @@ def release(path, seat, identity, force=None):
     if cur is not None and not same_process(cur["identity"], identity) and not force:
         return {"ok": False, "why": "driver lock is held by %s (%s), not this process; only the holder releases "
                 "it (or force, which is recorded)" % (cur.get("seat"), _who(cur["identity"]))}
+    # remove only the lock that was judged: rename it aside, compare, put back anything else (a writer outside the
+    # fence - an older clone - may have replaced it since the read)
+    aside = "%s.release.%d" % (path, os.getpid())
     try:
-        os.remove(path)
+        os.rename(path, aside)
     except FileNotFoundError:
+        return {"ok": True, "why": "already free"}
+    took, _p = _read(aside)
+    if cur is not None and took != cur:
+        restored = False
+        try:
+            if took is not None:
+                _create(path, took)
+                restored = True
+        except (FileExistsError, OSError, TypeError):
+            pass
+        if restored:                                  # else the aside is the only copy left: keep it as the record
+            try:
+                os.remove(aside)
+            except OSError:
+                pass
+        return {"ok": False, "why": "driver lock changed under the release (now %s generation %s): nothing released%s"
+                % ((took or {}).get("seat"), (took or {}).get("generation"),
+                   "" if restored else "; it could not be put back and is kept at %s" % aside)}
+    try:
+        os.remove(aside)
+    except OSError:
         pass
     return {"ok": True, "why": "released" + (" (forced: %s)" % force if force else "")}
 

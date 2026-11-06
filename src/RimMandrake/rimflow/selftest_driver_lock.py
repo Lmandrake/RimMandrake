@@ -14,6 +14,7 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import driver_lock as D  # noqa: E402
+REAL_PROCESS_ALIVE = D.process_alive
 
 
 def case(name, cond, detail=""):
@@ -106,9 +107,153 @@ def main():
     D.current_boot_id = real_boot
     good.append(case("owner identity finds a real process", D.my_identity()["pid"] > 1, D.my_identity()))
 
+    good += fence_cases()
+    good += win_probe_cases()
     good += cli_cases()
     print("%d/%d" % (sum(good), len(good)))
     return 0 if all(good) else 1
+
+
+def _holder(path):
+    try:
+        with open(path) as fh:
+            d = json.load(fh)
+        return d.get("seat"), d.get("generation")
+    except FileNotFoundError:
+        return None, None
+
+
+def fence_cases():
+    """DRIVER_LOCK_FIX_UNFENCED_WRITES: a holder that read its lock, then lost it to a newer generation, must not
+    overwrite (heartbeat) or delete (release) the replacement; a takeover must judge the whole lock it renames, not
+    just its generation. Failing-first: each race is staged by a hook in the holder's read."""
+    good = []
+    path = os.path.join(tempfile.mkdtemp(), "DRIVER_LOCK.json")
+    real_read, real_boot, real_wait = D._read, D.current_boot_id, D.FENCE_WAIT_S
+    D.current_boot_id = lambda: "boot-1"
+    D.FENCE_WAIT_S = 0.3
+    alive = {}
+    D.process_alive = lambda i: alive.get(i.get("pid"), False)
+    A, B = ident(41), ident(42)
+    try:
+        for verb in ("heartbeat", "release"):
+            if os.path.exists(path):
+                os.remove(path)
+            alive.update({41: True, 42: True})
+            D.acquire(path, "BENCH", "A holds", A)
+            got = {}
+
+            def racing_read(p, _fired=[]):
+                snap = real_read(p)
+                if p == path and not _fired:        # A has read its own lock; now A's process dies and B takes over
+                    _fired.append(1)
+                    alive[41] = False
+                    got["b"] = D.acquire(path, "FOUNDRY", "B takes over", B)
+                return snap
+            D._read = racing_read
+            try:
+                a_ok = D.heartbeat(path, A) if verb == "heartbeat" else D.release(path, "BENCH", A)["ok"]
+            finally:
+                D._read = real_read
+            seat, gen = _holder(path)
+            b_ok = got.get("b", {}).get("ok")
+            # never both: if B was told it holds the lock, the lock on disk must still be B's
+            good.append(case("a superseded holder's %s cannot %s the newer generation's lock" % (
+                verb, "overwrite" if verb == "heartbeat" else "delete"),
+                "b" in got and (not b_ok or (seat == "FOUNDRY" and gen == got["b"]["generation"])),
+                (verb, a_ok, got.get("b"), seat, gen)))
+
+        # a takeover whose rename catches a heartbeat renewed after its check (same generation) puts it back
+        if os.path.exists(path):
+            os.remove(path)
+        alive.update({41: True, 42: True})
+        a_gen = D.acquire(path, "BENCH", "A holds", A)["generation"]
+        alive[41] = False                           # A reads as gone at the check...
+
+        real_rename = os.rename
+
+        def renewing_rename(src, dst, _fired=[]):
+            if src == path and not _fired:          # ...and renews its heartbeat between the check and the rename
+                _fired.append(1)                    # (outside any fence: an older clone), same generation
+                alive[41] = True
+                with open(path) as fh:
+                    d = dict(json.load(fh), heartbeat="2099-01-01T00:00:00Z")
+                with open(path, "w") as fh:
+                    json.dump(d, fh)
+            return real_rename(src, dst)
+        os.rename = renewing_rename
+        try:
+            r = D.acquire(path, "FOUNDRY", "takeover", B)
+        finally:
+            os.rename = real_rename
+        seat, gen = _holder(path)
+        good.append(case("a takeover that renamed a renewed (same-generation) lock puts it back and re-judges",
+                         not r["ok"] and seat == "BENCH" and gen == a_gen, (r, seat, gen)))
+
+        # the liveness probe (a Windows one may take 30 s) never runs while the fence is held
+        seen = []
+        D.process_alive = lambda i: seen.append(os.path.exists(D._fence_path(path))) or False
+        r = D.acquire(path, "FOUNDRY", "probe outside", B)
+        good.append(case("liveness is judged outside the fence (a slow probe cannot age it into 'stale')",
+                         r["ok"] and seen and not any(seen), (r, seen)))
+        D.process_alive = lambda i: alive.get(i.get("pid"), False)
+        D.release(path, "FOUNDRY", B)
+        a_gen = D.acquire(path, "BENCH", "A holds", A)["generation"]
+        # a crashed process's fence is broken after FENCE_STALE_S; a fresh one is waited on
+        with open(D._fence_path(path), "w") as fh:
+            fh.write("crashed")
+        r = D.release(path, "BENCH", A)
+        good.append(case("a live fence makes a release wait, then refuse - never act unfenced",
+                         not r["ok"] and "contended" in r["why"] and os.path.exists(path), r))
+        os.utime(D._fence_path(path), (1, 1))
+        r = D.release(path, "BENCH", A)
+        good.append(case("a stale fence (crashed holder) is broken and the release goes through",
+                         r["ok"] and not os.path.exists(path) and not os.path.exists(D._fence_path(path)), r))
+    finally:
+        D._read, D.current_boot_id, D.FENCE_WAIT_S = real_read, real_boot, real_wait
+    return good
+
+
+def win_probe_cases():
+    """DRIVER_LOCK_FIX_UNFENCED_WRITES: a failed inspection of a Windows holder is 'cannot inspect' (the heartbeat
+    decides), never 'dead'; only a definite no-such-process is dead."""
+    import subprocess
+    good = []
+    real_run, real_host, real_pa = D.subprocess.run, D._local_host, D.process_alive
+    D.process_alive = REAL_PROCESS_ALIVE
+    D._local_host = lambda: "archmagi"
+    w = ident(77, start=123.0, platform="nt")
+
+    def fake(result):
+        def run(*a, **k):
+            if isinstance(result, Exception):
+                raise result
+            return subprocess.CompletedProcess(a[0], result[0], stdout=result[1], stderr="")
+        return run
+    try:
+        for label, res, want in (
+                ("a PowerShell timeout", subprocess.TimeoutExpired("powershell.exe", 30), None),
+                ("no powershell.exe", FileNotFoundError("powershell.exe"), None),
+                ("unparseable output (StartTime refused)", (1, ""), None),
+                ("a definite no-such-process", (0, "GONE\r\n"), False),
+                ("the same start time", (0, "123000\r\n"), True),
+                ("a reused pid (other start time)", (0, "999000\r\n"), False)):
+            D.subprocess.run = fake(res)
+            got = D.process_alive(w)
+            good.append(case("windows holder, %s -> %s" % (label, want), got is want, got))
+        D.subprocess.run = fake(subprocess.TimeoutExpired("powershell.exe", 30))
+        fresh = {"seat": "BENCH", "identity": w, "heartbeat": D._now(), "generation": 3}
+        alive, how = D._alive(fresh)
+        good.append(case("a live-looking Windows holder whose inspection timed out is held on its fresh heartbeat",
+                         alive and "not inspectable" in how, how))
+        path = os.path.join(tempfile.mkdtemp(), "DRIVER_LOCK.json")
+        with open(path, "w") as fh:
+            json.dump(fresh, fh)
+        r = D.acquire(path, "FOUNDRY", "ordinary take", ident(78))
+        good.append(case("an ordinary take does not break it", not r["ok"] and _holder(path)[0] == "BENCH", r))
+    finally:
+        D.subprocess.run, D._local_host, D.process_alive = real_run, real_host, real_pa
+    return good
 
 
 def cli_cases():
