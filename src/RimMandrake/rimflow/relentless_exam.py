@@ -233,7 +233,10 @@ def on_start(store, st, now=None, cfg=None, kicker=None, roots=None):
     if not st or not st.get("contract"):
         return None
     try:
-        if status(store, st["item"]) and not unstarted(status(store, st["item"])):
+        have = status(store, st["item"])
+        if have and not unstarted(have):
+            if have.get("state") in ("arbiter_owed", "arbitrating"):   # its exam arbiter's unit died before ruling:
+                (kicker or kick)(store, st["item"], cfg)                # relaunch it (the arbiter's claim stops a twin)
             return None
     except Exception:  # noqa: BLE001 - an unreadable owed.json is on_contract's to record
         pass
@@ -883,6 +886,9 @@ def catch(store, item, rules, boxer=box_runner, repo=None):
     base) not yet run. Idempotent per (item, sha, role): each sha is re-checked against catch.jsonl and run under the
     item's lock, so two concurrent units never both write it (7 duplicate rows, 2026-11-06). -> rows written."""
     d = item_dir(store, item)
+    if os.path.exists(os.path.join(d, "amend.journal.json")):    # a dispute amend died mid-publish: finish it first, so
+        import relentless_dispute                                # exam.json and files/ agree before anything runs them
+        relentless_dispute.recover_publish(store, item)
     exam = _read(os.path.join(d, "exam.json"))
     if not exam:
         return []
@@ -1035,12 +1041,16 @@ def main(argv=None):
         try:
             state = run_item(store, a.item, rules)
             print(state)
-            if state == "arbiter_owed":          # R4: the second refusal's arbiter (relentless_dispute, WP-08)
-                import relentless_dispute
-                print("arbiter: %s" % relentless_dispute.arbitrate_exam(store, a.item))
         except Exception as e:  # noqa: BLE001 - recorded on the item, the unit ends
+            state = None
             set_status(store, a.item, state="setter_failed", error="%s: %s" % (type(e).__name__, str(e)[:300]))
             print("setter_failed: %s" % e)
+        if state in ("arbiter_owed", "arbitrating"):   # R4: the second refusal's arbiter (relentless_dispute, WP-08);
+            import relentless_dispute                   # `arbitrating` left by a dead arbiter is retried, not stranded
+            try:
+                print("arbiter: %s" % relentless_dispute.arbitrate_exam(store, a.item))
+            except Exception as e:  # noqa: BLE001 - the status stays `arbitrating`: the next run retries it
+                print("arbiter failed: %s: %s" % (type(e).__name__, str(e)[:300]))
         print("catch: %d item(s)" % catch_some(store, rules))
         return 0
     if a.cmd == "catch":

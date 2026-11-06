@@ -80,8 +80,19 @@ def jobs_dir(store, item):
     return os.path.join(E.item_dir(store, item), "disputes")
 
 
+JOB_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$")   # what ask() mints: no separators, no dots, no path parts
+
+
+def job_id(job):
+    """A job id names one file in the item's own disputes dir: anything else (../../B/disputes/J, an absolute path) is
+    refused before it reaches a path. -> the id."""
+    if not isinstance(job, str) or not JOB_ID.match(job):
+        raise ValueError("not a dispute job id: %r (ids look like d20261106T120000-ab12cd)" % (job,))
+    return job
+
+
 def job_path(store, item, job):
-    return os.path.join(jobs_dir(store, item), job + ".json")
+    return os.path.join(jobs_dir(store, item), job_id(job) + ".json")
 
 
 def rows_path(store, item, gen):
@@ -105,6 +116,31 @@ def jobs_lock(store, item):
     return _flock(os.path.join(jobs_dir(store, item), ".lock"))
 
 
+@contextlib.contextmanager
+def _claim(path):
+    """An exclusive, NON-blocking claim: yields True to the one process holding it, False to every other. The kernel
+    drops it when its holder dies, so a claim left by a killed worker is free again (that is what makes a retry safe)."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    fd = os.open(path, os.O_CREAT | os.O_RDWR, 0o644)
+    try:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            yield False
+            return
+        try:
+            yield True
+        finally:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
+
+
+def live_gen(store, item):
+    with store.lock():
+        return (store.load(item) or {}).get("gen")
+
+
 def session_lock(store, item):
     """The Setter session's lock: held for a whole answer turn, so two challenges never interleave in one session."""
     return _flock(os.path.join(E.item_dir(store, item), "setter.lock"))
@@ -120,13 +156,18 @@ def jobs(store, item):
     return sorted([j for j in out if isinstance(j, dict) and j.get("id")], key=lambda j: (j.get("asked_at", ""), j.get("id", "")))
 
 
+def _apply(j, **kw):
+    """Mutate a job held under jobs_lock (no lock of its own: flock is per open file, so nesting would deadlock)."""
+    hist = j.setdefault("history", [])
+    if "state" in kw and kw["state"] != j.get("state"):
+        hist.append({"state": kw["state"], "at": now_iso()})
+    j.update(kw)
+    return j
+
+
 def update(store, item, job, **kw):
     with jobs_lock(store, item):
-        j = load(store, item, job) or {}
-        hist = j.setdefault("history", [])
-        if "state" in kw and kw["state"] != j.get("state"):
-            hist.append({"state": kw["state"], "at": now_iso()})
-        j.update(kw)
+        j = _apply(load(store, item, job) or {}, **kw)
         E._write(job_path(store, item, job), j)
         return j
 
@@ -141,6 +182,7 @@ def row(store, j, winner, arbiter=None, final=True):
 
 
 def exam_of(store, item):
+    recover_publish(store, item)
     return E._read(os.path.join(E.item_dir(store, item), "exam.json"))
 
 
@@ -255,7 +297,7 @@ def reply(store, item, gen, job, text, cfg=None, kicker=None, waiter=wait, say=p
     _gen_check(store, item, gen)
     with jobs_lock(store, item):
         j = load(store, item, job)
-        if not j:
+        if not j or j.get("item") != item or j.get("id") != job:
             raise ValueError("no dispute job %s on %s" % (job, item))
         if j.get("gen") != gen:
             raise ValueError("job %s belongs to gen %s" % (job, j.get("gen")))
@@ -317,17 +359,29 @@ def deliver(store, item, gen=None, say=print, kicker=None, alive=unit_alive, cfg
 
 
 def _restart(store, j, cfg, kicker):
+    """Recover a job whose worker is gone. Every decision is taken on the job as it stands NOW, re-read under jobs_lock:
+    the copy deliver() listed may predate the worker's last write (answering -> answered, then the unit exits)."""
     item, job = j["item"], j["id"]
-    if j.get("state") in ("asked", "answering") and int(j.get("attempts", 0)) >= int(cfg.get("answer_tries", 2)):
-        update(store, item, job, state="replied", answer={"verdict": "no_answer", "why": "the answering worker died %s times"
-                                                          % j.get("attempts")}, route="worker_died")
-    elif j.get("state") in ("replied", "arbitrating") and int(j.get("arb_attempts", 0)) >= int(cfg.get("arbiter_tries", 2)):
-        _void(store, load(store, item, job), "the arbiter's worker died %s times" % j.get("arb_attempts"))
+    voided = None
+    with jobs_lock(store, item):
+        cur = load(store, item, job) or {}
+        st = cur.get("state")
+        if st not in OPEN:
+            return                           # it reached an answer or a ruling since deliver() looked: nothing to recover
+        if st in ("asked", "answering") and int(cur.get("attempts", 0)) >= int(cfg.get("answer_tries", 2)):
+            _apply(cur, state="replied", route="worker_died",
+                   answer={"verdict": "no_answer", "why": "the answering worker died %s times" % cur.get("attempts")})
+        elif st in ("replied", "arbitrating") and int(cur.get("arb_attempts", 0)) >= int(cfg.get("arbiter_tries", 2)):
+            voided = _void_ruling("the arbiter's worker died %s times" % cur.get("arb_attempts"))
+            _apply(cur, state="ruled", ruling=voided)
+        elif st == "answering":
+            _apply(cur, state="asked")
+        elif st == "arbitrating":
+            _apply(cur, state="replied")
+        E._write(job_path(store, item, job), cur)
+    if voided:
+        row(store, cur, "void", voided)
         return
-    elif j.get("state") == "answering":
-        update(store, item, job, state="asked")
-    elif j.get("state") == "arbitrating":
-        update(store, item, job, state="replied")
     why = (kicker or (lambda s, i, k: kick(s, i, k, cfg)))(store, item, job)
     if why:
         update(store, item, job, kick_error=why)
@@ -443,17 +497,34 @@ def work(store, item, job, cfg=None, deps=None):
     cfg = config() if cfg is None else cfg
     deps = deps or Deps()
     j = load(store, item, job)
-    if not j:
+    if not j or j.get("item") != item:
         return None
     if j.get("state") in ("asked", "answering"):
         with session_lock(store, item):
             j = load(store, item, job)
-            if j.get("state") in ("asked", "answering"):
+            if j.get("state") in ("asked", "answering") and not _stale(store, j):
                 _answer(store, j, cfg, deps)
-    j = load(store, item, job)
-    if j.get("state") in ("replied", "arbitrating"):
-        _arbitrate(store, j, cfg, deps)
+    if (load(store, item, job) or {}).get("state") in ("replied", "arbitrating"):
+        with _claim(os.path.join(jobs_dir(store, item), job + ".arbiter.lock")) as mine:
+            if not mine:                     # another worker is arbitrating this job right now: it owns the ruling
+                return (load(store, item, job) or {}).get("state")
+            j = load(store, item, job)       # re-read under the claim: the holder before us may have ruled already
+            if j.get("state") in ("replied", "arbitrating") and not _stale(store, j):
+                _arbitrate(store, j, cfg, deps)
     return (load(store, item, job) or {}).get("state")
+
+
+def _stale(store, j):
+    """An open job of a generation the item has left is void: its worker never answers, amends or arbitrates against
+    the live generation's exam. Called only under the lock that owns the job's next step (the Setter session lock or
+    the arbiter claim), so no live worker of this job can write after the void. -> True when it was voided."""
+    if j.get("state") not in OPEN:
+        return False
+    g = live_gen(store, j["item"])
+    if g == j.get("gen"):
+        return False
+    _void(store, j, "stale generation: the item is at gen %s, this challenge was gen %s" % (g, j.get("gen")), only_open=True)
+    return True
 
 
 def _answer(store, j, cfg, deps):
@@ -461,12 +532,16 @@ def _answer(store, j, cfg, deps):
     j = update(store, item, job, state="answering", attempts=int(j.get("attempts", 0)) + 1, pid=os.getpid())
     exam = exam_of(store, item) or {}
     if exam.get("exam_hash") != j.get("exam_hash"):
-        gone = [c for c in j["clauses"] if c not in {x.get("id") for x in exam.get("clauses") or []}]
-        if gone:        # an earlier challenge's amend removed it: nothing left to dispute
+        have = {x.get("id") for x in exam.get("clauses") or []}
+        gone = [c for c in j["clauses"] if c not in have]
+        left = [c for c in j["clauses"] if c in have]
+        if gone and not left:   # an earlier challenge's amend removed every clause disputed here: nothing left
             update(store, item, job, state="settled", answer={"verdict": "superseded", "why": "clause(s) %s left the exam "
                    "in an amendment since this challenge" % ",".join(gone), "exam_hash": exam.get("exam_hash")})
             row(store, load(store, item, job), "builder")
             return
+        if gone:                # some left, some stand: the job narrows to the clauses still in the exam
+            j = update(store, item, job, clauses=left, clauses_gone=sorted(set(j.get("clauses_gone") or []) | set(gone)))
     sid = (exam.get("setter") or {}).get("session")
     cwd = deps.find(sid)
     if not cwd:
@@ -504,11 +579,16 @@ def _answer(store, j, cfg, deps):
                answer={"verdict": "no_answer", "why": "the resumed Setter wrote no answer in two turns"})
         return
     ans = {"verdict": ans["verdict"], "why": str(ans.get("why", ""))[:3000], "at": now_iso()}
-    if ans["verdict"] == "stand":
-        row(store, update(store, item, job, state="answered", answer=dict(ans, exam_hash=exam.get("exam_hash"))),
-            "setter", final=False)
+    if ans["verdict"] == "stand":         # the clauses it stood on, as defended: the arbiter judges THESE, even if a later
+        defended = [c for c in exam.get("clauses") or [] if c.get("id") in j["clauses"]]   # amend moves the exam on
+        row(store, update(store, item, job, state="answered", answer=dict(ans, exam_hash=exam.get("exam_hash"),
+                                                                        clauses=defended)), "setter", final=False)
         return
-    v = revalidate(store, item, exam, deps)
+    v = revalidate(store, item, exam, deps, gen=j.get("gen"))
+    if v.get("stale"):
+        _void(store, load(store, item, job), "stale generation: the item left gen %s before the amend could publish"
+              % j.get("gen"))
+        return
     if v["ok"]:
         update(store, item, job, state="settled", answer=dict(ans, exam_hash=v["exam_hash"], validated=True))
         row(store, load(store, item, job), "builder")
@@ -517,9 +597,11 @@ def _answer(store, j, cfg, deps):
                answer=dict(ans, verdict="amend_refused", refusals=v["refusals"][:12]))
 
 
-def revalidate(store, item, old, deps):
+def revalidate(store, item, old, deps, gen=None):
     """An amend counts only after VALIDATE: the Setter's rewritten exam, run in a fresh box at the base sha. A pass
-    freezes it (old exam kept in exam_history.jsonl, files replaced, exam_hash moved)."""
+    freezes it (old exam kept in exam_history.jsonl, files replaced, exam_hash moved) through publish(): journaled, so
+    a crash at any step rolls forward to one consistent exam. With `gen`, it publishes only while the item is still at
+    that generation (v["stale"] otherwise)."""
     d = E.item_dir(store, item)
     work_dir = os.path.join(d, "setter")
     new = E._read(os.path.join(work_dir, "exam.json"))
@@ -537,20 +619,94 @@ def revalidate(store, item, old, deps):
         finally:
             close()
         if v["ok"]:
-            E._append(os.path.join(d, "exam_history.jsonl"), dict(old, superseded_at=now_iso()))
-            shutil.rmtree(os.path.join(d, "files"), ignore_errors=True)
-            os.replace(stage, os.path.join(d, "files"))
             frozen = dict(new, item=item, base_sha=base, exam_hash=v["exam_hash"], mode=old.get("mode"),
                           setter=old.get("setter"), validated_at=now_iso(), amended_from=old.get("exam_hash"))
-            E._write(os.path.join(d, "exam.json"), frozen)
-            E.set_status(store, item, exam_hash=v["exam_hash"], amended_at=frozen["validated_at"])
+            if not publish(store, item, old, frozen, stage, gen=gen):
+                shutil.rmtree(stage, ignore_errors=True)
+                v = dict(v, ok=False, stale=True)
         else:
             shutil.rmtree(stage, ignore_errors=True)
     E._append(os.path.join(d, "validation.jsonl"), dict(v, attempt="amend", at=now_iso()))
     return v
 
 
-def _arbiter_run(store, item, base, prompt, ruling_path, out, cfg, deps, winners):
+# ------------------------------------------------------------------------------------- the journaled amend publish
+PUBLISH_STEPS = ("history", "files", "exam", "status")
+
+
+def _publish_paths(d):
+    return {"journal": os.path.join(d, "amend.journal.json"), "lock": os.path.join(d, "publish.lock"),
+            "stage": os.path.join(d, "files.amend"), "files": os.path.join(d, "files")}
+
+
+def files_of(d, exam_hash):
+    """Where a superseded exam's test files are kept (publish moves them there)."""
+    return os.path.join(d, "files.%s" % re.sub(r"[^0-9A-Za-z]", "", str(exam_hash or "none"))[:32])
+
+
+def publish(store, item, old, frozen, stage, gen=None, crash_after=None):
+    """Install a validated amend as ONE act: write a journal naming the new exam, then run the steps (history line,
+    files swap, exam.json, owed.json) and drop the journal. A crash anywhere leaves the journal, and the next reader
+    (recover_publish, via exam_of) finishes it: the exam's files and its exam_hash never disagree for longer than that.
+    `crash_after` (tests) raises after the named step. -> False when the item left `gen` (nothing published)."""
+    d = E.item_dir(store, item)
+    p = _publish_paths(d)
+    with _flock(p["lock"]):
+        _roll_forward(store, item, p)            # finish a predecessor's publish before starting ours
+        if gen is not None and live_gen(store, item) != gen:
+            return False
+        if os.path.abspath(stage) != p["stage"]:
+            shutil.rmtree(p["stage"], ignore_errors=True)
+            os.replace(stage, p["stage"])
+        E._write(p["journal"], {"old": old, "frozen": frozen, "done": [], "at": now_iso()})
+        _roll_forward(store, item, p, crash_after=crash_after)
+    return True
+
+
+def recover_publish(store, item):
+    """Finish an amend publish a dead worker left half-done (its journal is still there). Idempotent; cheap when none."""
+    d = E.item_dir(store, item)
+    p = _publish_paths(d)
+    if not os.path.exists(p["journal"]):
+        return False
+    with _flock(p["lock"]):
+        return _roll_forward(store, item, p)
+
+
+def _roll_forward(store, item, p, crash_after=None):
+    jn = E._read(p["journal"])
+    if not isinstance(jn, dict):
+        return False
+    old, frozen, done = jn.get("old") or {}, jn.get("frozen") or {}, list(jn.get("done") or [])
+    d = E.item_dir(store, item)
+    for step in PUBLISH_STEPS:
+        if step in done:
+            continue
+        if step == "history":
+            hp = os.path.join(d, "exam_history.jsonl")
+            if not any(h.get("exam_hash") == old.get("exam_hash") and h.get("superseded_by") == frozen.get("exam_hash")
+                       for h in (E._lines(hp) if os.path.exists(hp) else [])):     # a crash after the append: once only
+                    E._append(hp, dict(old, superseded_at=jn.get("at") or now_iso(), superseded_by=frozen.get("exam_hash")))
+        elif step == "files":
+            if os.path.isdir(p["stage"]):        # absent: an earlier pass already moved it in (rename is atomic)
+                if os.path.isdir(p["files"]):    # the old exam's files are kept by hash: an arbiter of a dispute the
+                    arch = files_of(d, old.get("exam_hash"))          # Setter defended on that exam judges THEM
+                    shutil.rmtree(arch, ignore_errors=True)
+                    os.replace(p["files"], arch)
+                os.replace(p["stage"], p["files"])
+        elif step == "exam":
+            E._write(os.path.join(d, "exam.json"), frozen)
+        elif step == "status":
+            E.set_status(store, item, exam_hash=frozen.get("exam_hash"), amended_at=frozen.get("validated_at"))
+        done.append(step)
+        E._write(p["journal"], dict(jn, done=done))
+        if crash_after == step:
+            raise RuntimeError("test crash after %s" % step)
+    os.remove(p["journal"])
+    return True
+
+
+def _arbiter_run(store, item, base, prompt, ruling_path, out, cfg, deps, winners, files=None):
     """A fresh arbiter (Marker's Judge-mode agent) in a box at base. -> (ruling dict or None, session)."""
     d = E.item_dir(store, item)
     acfg = {"setter_agent": cfg.get("arbiter_agent", "rm-judge"), "setter_model": cfg.get("arbiter_model", "opus"),
@@ -559,7 +715,8 @@ def _arbiter_run(store, item, base, prompt, ruling_path, out, cfg, deps, winners
         os.remove(ruling_path)
     except OSError:
         pass
-    run, read_file, close = deps.boxer(_rules(deps), os.path.join(store.root, "books"), base, os.path.join(d, "files"), item=item)
+    run, read_file, close = deps.boxer(_rules(deps), os.path.join(store.root, "books"), base, files or os.path.join(d, "files"),
+                                       item=item)
     try:
         sid = deps.setter(getattr(read_file, "tree", d), prompt, acfg, out)
     finally:
@@ -580,6 +737,12 @@ def _arbitrate(store, j, cfg, deps):
     item, job = j["item"], j["id"]
     j = update(store, item, job, state="arbitrating", arb_attempts=int(j.get("arb_attempts", 0)) + 1, pid=os.getpid())
     exam = exam_of(store, item) or {}
+    a = j.get("answer") or {}
+    files = None
+    if a.get("clauses") is not None and a.get("exam_hash") != exam.get("exam_hash"):
+        exam = dict(exam, clauses=a["clauses"])  # the Setter defended an exam since amended: judge what it defended,
+        kept = files_of(E.item_dir(store, item), a.get("exam_hash"))                   # with that exam's own files
+        files = kept if os.path.isdir(kept) else None
     prompt = ARBITER_BRIEF.format(item=item, base=exam.get("base_sha"), text=deps.text_of(item)[:8000],
                                   body=_dispute_body(j, exam), ruling=os.path.join(jobs_dir(store, item), job + ".ruling.json"),
                                   choices=DISPUTE_CHOICES, winners="|".join(WINNERS))
@@ -587,7 +750,8 @@ def _arbitrate(store, j, cfg, deps):
     for _ in range(int(cfg.get("arbiter_tries", 2))):
         ruling, _sid = _arbiter_run(store, item, exam.get("base_sha"), prompt,
                                     os.path.join(jobs_dir(store, item), job + ".ruling.json"),
-                                    os.path.join(jobs_dir(store, item), job + ".arbiter.out"), cfg, deps, WINNERS)
+                                    os.path.join(jobs_dir(store, item), job + ".arbiter.out"), cfg, deps, WINNERS,
+                                    files=files)
         if ruling:
             break
     if not ruling:
@@ -597,10 +761,20 @@ def _arbitrate(store, j, cfg, deps):
     row(store, j, ruling["winner"], ruling)
 
 
-def _void(store, j, why):
-    """Every job ends in an answer or a ruling: an arbiter that never rules leaves a recorded void ruling, not a hang."""
-    ruling = {"winner": "void", "why": why, "session": None, "by": "supervisor", "at": now_iso()}
-    j = update(store, j["item"], j["id"], state="ruled", ruling=ruling)
+def _void_ruling(why):
+    return {"winner": "void", "why": why, "session": None, "by": "supervisor", "at": now_iso()}
+
+
+def _void(store, j, why, only_open=False):
+    """Every job ends in an answer or a ruling: an arbiter that never rules leaves a recorded void ruling, not a hang.
+    `only_open`: a compare-and-set under jobs_lock: a job that reached an answer or a ruling meanwhile is left alone."""
+    ruling = _void_ruling(why)
+    with jobs_lock(store, j["item"]):
+        cur = load(store, j["item"], j["id"]) or {}
+        if only_open and cur.get("state") not in OPEN:
+            return cur
+        j = _apply(cur, state="ruled", ruling=ruling)
+        E._write(job_path(store, j["item"], j["id"]), j)
     row(store, j, "void", ruling)
 
 
@@ -616,10 +790,25 @@ def arbitrate_exam(store, item, cfg=None, deps=None):
     Shadow: the ruling is recorded on the exam's owed.json; nothing is filed. -> the ruling or None."""
     cfg = config() if cfg is None else cfg
     deps = deps or Deps()
+    with _claim(os.path.join(E.item_dir(store, item), "exam_arbiter.lock")) as mine:
+        if not mine:                     # another process is ruling this exam now
+            return None
+        return _arbitrate_exam(store, item, cfg, deps)
+
+
+def _arbitrate_exam(store, item, cfg, deps):
+    """Under the exam's arbiter claim. `arbitrating` with the claim free means its arbiter died: it is retried, and
+    after arbiter_tries dead launches it gets a recorded void ruling instead of hanging."""
     st = E.status(store, item) or {}
-    if st.get("state") != "arbiter_owed" or cfg.get("mode", "off") == "off":
+    if st.get("state") not in ("arbiter_owed", "arbitrating") or cfg.get("mode", "off") == "off":
         return None
-    E.set_status(store, item, state="arbitrating")
+    tries = int(cfg.get("arbiter_tries", 2))
+    n = int(st.get("arb_attempts", 0))
+    if st.get("state") == "arbitrating" and n >= tries:
+        ruling = _void_ruling("the exam's arbiter died %s times" % n)
+        E.set_status(store, item, state="arbiter_ruled", ruling=ruling)
+        return ruling
+    E.set_status(store, item, state="arbitrating", arb_attempts=n + 1)
     refs = "\n".join("- %s %s: %s" % (r.get("code"), r.get("clause") or "", r.get("why")) for r in st.get("refusals") or [])
     d = E.item_dir(store, item)
     ruling_path = os.path.join(d, "exam_ruling.json")
@@ -739,6 +928,12 @@ def main(argv=None):
     p.add_argument("job")
     sub.add_parser("summary")
     a = ap.parse_args(argv)
+    if a.cmd == "work":
+        try:
+            job_id(a.job)
+        except ValueError as e:
+            print("worker refused: %s" % e)
+            return 2
     import relentless
     store = relentless.Store()
     if a.cmd == "work":

@@ -14,6 +14,11 @@ Acceptance, by case:
 (8) every job reaches an answer or a ruling, including a killed answerer (restart, then the arbiter);
 (9) >max_clauses clauses in one run sends the whole exam back once (malformed); WP-03 R4 arbiter (arbitrate_exam);
 (10) the `challenge` verb is registered; the deployed claude CLI still offers --resume (probe, skipped if absent).
+(11) RELENTLESS_DISPUTE_HARDEN_STATE_MACHINE (Codex review 2026-11-06): a --reply job id with path parts or another
+     item's job is refused; an old-generation worker neither answers nor amends the live exam; _restart acts on the job
+     as it stands under the lock; an arbiter holds an exclusive claim and a dead arbiter's `arbitrating` is retried
+     (jobs and WP-03 exams); a removed clause narrows a multi-clause challenge; an amend publish crashed after any step
+     rolls forward to one consistent exam; the arbiter judges the clauses the Setter defended.
 """
 from __future__ import annotations
 
@@ -343,6 +348,161 @@ def t_role_entry(tmp):
     return store
 
 
+NOKICK = (lambda s, i, k: None)
+
+
+def _bump_gen(store, to):
+    store.save({"item": IT, "gen": to, "status": "doing"})
+
+
+def t_hardening(tmp):
+    cfg = dict(CFG, in_call_s=0)
+    # 11a: a --reply job id is a name in THIS item's disputes dir, never a path, never another item's job
+    store, repo, base, ev = setup(tmp, "h_traverse")
+    c, seen = Claude(store, answers=["stand"]), []
+    deps = deps_for(store, repo, tmp, c, seen)
+    j = D.ask(store, IT, GEN, "c1", "wrong", ev, cfg=cfg, kicker=NOKICK, say=lambda s: None)
+    D.work(store, IT, j["id"], cfg, deps)
+    other = D.jobs_dir(store, "B_ITEM")
+    os.makedirs(other, exist_ok=True)
+    E._write(os.path.join(other, "J.json"), dict(D.load(store, IT, j["id"]), item="B_ITEM", id="J"))
+    E._write(D.job_path(store, IT, "Jforeign"), dict(D.load(store, IT, j["id"]), item="B_ITEM", id="Jforeign"))
+    refused = []
+    for jid in ("../../B_ITEM/disputes/J", "/abs/J", "J.x", "Jforeign"):
+        try:
+            D.reply(store, IT, GEN, jid, "mine", cfg=cfg, kicker=NOKICK, say=lambda s: None)
+        except ValueError:
+            refused.append(jid)
+    ok(len(refused) == 4 and "reply" not in (E._read(os.path.join(other, "J.json")) or {}),
+       "11a a --reply job id with path parts, or another item's job, is refused and B's job is untouched (%s)" % refused)
+    ok(D.main(["work", IT, "../../B_ITEM/disputes/J"]) == 2, "11a2 the worker refuses a path for a job id")
+
+    # 11b: a generation-N worker after the item moved to N+1 answers nothing and amends nothing
+    store, repo, base, ev = setup(tmp, "h_stale")
+    d = E.item_dir(store, IT)
+    good = json.loads(json.dumps(X.GOOD))
+    good["clauses"][0]["check"]["timeout_s"] = 62
+    c = Claude(store, answers=["amend"], amend=lambda: E._write(os.path.join(d, "setter", "exam.json"), good))
+    deps = deps_for(store, repo, tmp, c, [])
+    j = D.ask(store, IT, GEN, "c1", "wrong", ev, cfg=cfg, kicker=NOKICK, say=lambda s: None)
+    _bump_gen(store, GEN + 1)
+    exam0, owed0 = E._read(os.path.join(d, "exam.json")), E.status(store, IT)
+    D.work(store, IT, j["id"], cfg, deps)
+    jj = D.load(store, IT, j["id"])
+    ok(not c.calls and jj["state"] == "ruled" and jj["ruling"]["winner"] == "void"
+       and E._read(os.path.join(d, "exam.json")) == exam0 and E.status(store, IT) == owed0,
+       "11b a gen-N worker that starts after gen N+1 began is voided: no Setter turn, exam.json and owed.json unchanged")
+    _bump_gen(store, GEN)
+    j2 = D.ask(store, IT, GEN, "c2", "wrong", ev, cfg=cfg, kicker=NOKICK, say=lambda s: None)
+
+    def amend_then_move():                      # the generation moves WHILE the Setter is rewriting the exam
+        E._write(os.path.join(d, "setter", "exam.json"), good)
+        _bump_gen(store, GEN + 1)
+    c2 = Claude(store, answers=["amend"], amend=amend_then_move)
+    D.work(store, IT, j2["id"], cfg, deps_for(store, repo, tmp, c2, []))
+    jj = D.load(store, IT, j2["id"])
+    ok(len(c2.calls) == 1 and jj["ruling"]["winner"] == "void" and E._read(os.path.join(d, "exam.json")) == exam0
+       and E.status(store, IT)["exam_hash"] == owed0["exam_hash"] and not os.path.exists(os.path.join(d, "files.amend")),
+       "11b2 an amend validated after the generation moved is not published (checked under the publish lock)")
+    _bump_gen(store, GEN)
+
+    # 11c: _restart decides on the job as it stands now, not deliver()'s stale copy
+    store, repo, base, ev = setup(tmp, "h_restart")
+    j = D.ask(store, IT, GEN, "c1", "wrong", ev, cfg=cfg, kicker=NOKICK, say=lambda s: None)
+    stale = D.update(store, IT, j["id"], state="answering", attempts=1)
+    D.update(store, IT, j["id"], state="answered", answer={"verdict": "stand", "why": "w"})   # the worker finished
+    kicks = []
+    D._restart(store, stale, cfg, lambda s, i, k: kicks.append(k))
+    ok(D.load(store, IT, j["id"])["state"] == "answered" and not kicks,
+       "11c _restart re-reads under the lock: an answered job is left alone and not re-kicked")
+    stale2 = D.update(store, IT, j["id"], state="arbitrating", arb_attempts=2)
+    D.update(store, IT, j["id"], state="ruled", ruling={"winner": "setter", "why": "real"})
+    D._restart(store, stale2, cfg, lambda s, i, k: kicks.append(k))
+    ok(D.load(store, IT, j["id"])["ruling"]["winner"] == "setter" and not kicks,
+       "11c2 a real ruling is never overwritten by a void from a stale copy")
+
+    # 11d: the arbiter's claim is exclusive; an `arbitrating` left by a dead arbiter is retried
+    store, repo, base, ev = setup(tmp, "h_claim")
+    c = Claude(store, rulings=["setter", "setter"])
+    deps = deps_for(store, repo, tmp, c, [])
+    j = D.ask(store, IT, GEN, "c1", "wrong", ev, cfg=cfg, kicker=NOKICK, say=lambda s: None)
+    D.update(store, IT, j["id"], state="replied", answer={"verdict": "stand", "why": "w"}, reply={"text": "r"})
+    with D._claim(os.path.join(D.jobs_dir(store, IT), j["id"] + ".arbiter.lock")) as held:
+        D.work(store, IT, j["id"], cfg, deps)
+        mid = D.load(store, IT, j["id"])["state"]
+    ok(held and mid == "replied" and not c.calls, "11d a second arbiter of the same job does not launch while one holds it")
+    D.update(store, IT, j["id"], state="arbitrating", arb_attempts=1)          # its arbiter died, claim released
+    D.work(store, IT, j["id"], cfg, deps)
+    ok(D.load(store, IT, j["id"])["state"] == "ruled" and len(c.calls) == 1, "11d2 a dead arbiter's job is re-arbitrated")
+    ea = Claude(store, rulings=["environment"])
+    edeps = D.Deps(setter=ea, boxer=boxer_rec(repo, tmp, []), text_of=lambda i: X.ITEM_TEXT, rules={})
+    E.set_status(store, "EXAM_B", state="arbiter_owed", base=base, refusals=[{"clause": "c1", "code": "X", "why": "y"}])
+    with D._claim(os.path.join(E.item_dir(store, "EXAM_B"), "exam_arbiter.lock")):
+        r_held = D.arbitrate_exam(store, "EXAM_B", cfg, edeps)
+    E.set_status(store, "EXAM_B", state="arbitrating", arb_attempts=1)        # killed mid-launch
+    r = D.arbitrate_exam(store, "EXAM_B", cfg, edeps)
+    ok(r_held is None and r and r["winner"] == "environment" and E.status(store, "EXAM_B")["state"] == "arbiter_ruled"
+       and len(ea.calls) == 1, "11d3 an exam arbiter is exclusive, and an exam left `arbitrating` is retried")
+    E.set_status(store, "EXAM_C", state="arbitrating", arb_attempts=2, base=base)
+    rv = D.arbitrate_exam(store, "EXAM_C", cfg, edeps)
+    src = open(os.path.join(HERE, "relentless_exam.py")).read()
+    ok(rv and rv["winner"] == "void" and E.status(store, "EXAM_C")["state"] == "arbiter_ruled"
+       and 'state in ("arbiter_owed", "arbitrating")' in src,
+       "11d4 a twice-dead exam arbiter gets a void ruling; the exam unit relaunches on `arbitrating` too")
+
+    # 11e: removing c1 from a c1,c2 challenge narrows it to c2; c2 still gets its answer
+    cl = [X.clause("c%d" % i, ["python3", ".exam/t_double.py"]) for i in (1, 2, 3)]
+    store, repo, base, ev = setup(tmp, "h_narrow", clauses=cl)
+    d = E.item_dir(store, IT)
+    j = D.ask(store, IT, GEN, "c1,c2", "wrong", ev, cfg=cfg, kicker=NOKICK, say=lambda s: None)
+    ex = E._read(os.path.join(d, "exam.json"))
+    E._write(os.path.join(d, "exam.json"), dict(ex, clauses=[x for x in ex["clauses"] if x["id"] != "c1"], exam_hash="h1" * 32))
+    c = Claude(store, answers=["stand"])
+    D.work(store, IT, j["id"], cfg, deps_for(store, repo, tmp, c, []))
+    jj = D.load(store, IT, j["id"])
+    ok(jj["state"] == "answered" and jj["clauses"] == ["c2"] and jj["clauses_gone"] == ["c1"] and len(c.calls) == 1
+       and "clause(s): c2)" in c.calls[0]["prompt"], "11e a removed c1 narrows a c1,c2 challenge to c2, which is answered")
+
+    # 11g: the arbiter judges the clause as the Setter defended it, not as a later amend rewrote it
+    E._write(os.path.join(d, "exam.json"), dict(ex, clauses=[X.clause("c2", ["python3", "AMENDED_LATER.py"])],
+                                                exam_hash="h2" * 32))
+    kept = D.files_of(d, "h1" * 32)
+    shutil.copytree(os.path.join(d, "files"), kept)
+    ca, mounted = Claude(store, rulings=["setter"]), []
+    gdeps = deps_for(store, repo, tmp, ca, [])
+    inner = gdeps.boxer
+    gdeps.boxer = lambda rules, source, sha, files, item=None, nonce=None: (mounted.append(files), inner(
+        rules, source, sha, files, item=item, nonce=nonce))[1]
+    D.reply(store, IT, GEN, j["id"], "disagree", cfg=cfg, kicker=lambda s, i, k: D.work(s, i, k, cfg, gdeps),
+            say=lambda s: None)
+    ok(ca.calls and ".exam/t_double.py" in ca.calls[0]["prompt"] and "AMENDED_LATER" not in ca.calls[0]["prompt"]
+       and mounted == [kept], "11g the arbiter sees the clause the Setter stood on, with that exam's files, after an amend")
+
+    # 11f: an amend publish crashed after any step rolls forward to one consistent exam
+    for step in D.PUBLISH_STEPS:
+        store, repo, base, ev = setup(tmp, "h_pub_" + step)
+        d = E.item_dir(store, IT)
+        old = E._read(os.path.join(d, "exam.json"))
+        stage = os.path.join(d, "files.amend")
+        os.makedirs(stage)
+        with open(os.path.join(stage, "NEW_MARK"), "w") as f:
+            f.write("new")
+        frozen = dict(old, exam_hash="h9" * 32, amended_from=old["exam_hash"], validated_at="now")
+        try:
+            D.publish(store, IT, old, frozen, stage, gen=GEN, crash_after=step)
+            crashed = False
+        except RuntimeError:
+            crashed = True
+        got = D.exam_of(store, IT)
+        ok(crashed and got["exam_hash"] == "h9" * 32 and os.path.exists(os.path.join(d, "files", "NEW_MARK"))
+           and not os.path.exists(os.path.join(d, "files", "t_double.py")) and E.status(store, IT)["exam_hash"] == "h9" * 32
+           and not os.path.exists(os.path.join(d, "amend.journal.json")) and not os.path.exists(stage)
+           and len(E._lines(os.path.join(d, "exam_history.jsonl"))) == 1
+           and os.path.exists(os.path.join(D.files_of(d, old["exam_hash"]), "t_double.py")),
+           "11f a publish crashed after `%s` rolls forward: files, exam.json and owed.json agree on the new hash" % step)
+    return store
+
+
 def t_registration_and_cli(store):
     saved = R.Store
     R.Store = lambda *a, **k: store
@@ -396,7 +556,7 @@ def main():
     subprocess.run, subprocess.Popen = rec_run, RecPopen
     try:
         stores = [t_in_call(tmp), t_after_timeout(tmp), t_serialised(tmp), t_no_session(tmp), t_reply(tmp),
-                  t_amend(tmp), t_killed(tmp), t_malformed_and_exam(tmp), t_role_entry(tmp)]
+                  t_amend(tmp), t_killed(tmp), t_malformed_and_exam(tmp), t_role_entry(tmp), t_hardening(tmp)]
         t_registration_and_cli(stores[0])
         t_no_filing_and_all_reached(stores, tmp)
     finally:
