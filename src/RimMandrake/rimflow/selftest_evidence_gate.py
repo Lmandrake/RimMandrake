@@ -14,7 +14,10 @@ redesign_final.md WP-09).
    ledger without RELENTLESS_ROOT writes nothing;
 7. the wiring that made it reject every close (EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE): relentless.verdict() writes the
    Marker's entry, an offbox `skipped` run is not red, a pre-evidence candidate is the pre_record cohort, a pre-seal
-   writer's unsealed index tail no longer refuses every append after it.
+   writer's unsealed index tail no longer refuses every append after it;
+8. the reading WP-09c cites (EVIDENCE_SHADOW_FIX_REPORT_NEVER_READS_ZERO): a declared window that says what it left out, a
+   row that records who closed, an owner close that is neither agreement nor disagreement and never verdict_gone, the
+   unrunnable ruling, and the no-run rows that are the wedge cohort only when the snapshot holds the receipts.
 
     python3 src/RimMandrake/rimflow/selftest_evidence_gate.py
 """
@@ -352,6 +355,18 @@ def cli_end_to_end():
     check(rc != 0 and "does not hold" in out and len(rows) == n0 + 1 and rows[-1]["gate"] == "refuse"
           and rows[-1]["gate_reasons"] == ["live"] and rows[-1]["item"] == "LIVE_4_PROBE_FIXTURE",
           "cli: a close the live gate refuses is logged refuse (%s)" % (rows[-1:] and rows[-1]["gate"]))
+    # EVIDENCE_SHADOW_FIX_REPORT_NEVER_READS_ZERO: the row records who closed, through the real flags
+    for iid, flags, want in (("BYSUP_5_PROBE_FIXTURE", ("--why", "relentless: blind check passed"), G.RELENTLESS_CLOSE),
+                             ("BYHAND_6_PROBE_FIXTURE", ("--why", "closed on the relentless record"), G.SEAT_CLOSE),
+                             ("BYOWNER_7_PROBE_FIXTURE", ("--owner-said", "close it"), G.OWNER_CLOSE)):
+        item(iid, b, "WEAK")
+        passed(iid, b)
+        rc, out = cli("close", iid, "--sha", b, *flags)
+        last = G.rows(sd)[-1]
+        check(rc == 0 and last["item"] == iid and last["closed_by"] == want and last["disagree"],
+              "cli: close %s records closed_by=%s, raw disagree kept (%s)" % (flags[0], want, last.get("closed_by")))
+        check(("DISAGREES" in out) == (want != G.OWNER_CLOSE),
+              "cli: %s close %s a disagreement on stderr" % (want, "is not called" if want == G.OWNER_CLOSE else "is called"))
     item("UNWRITABLE_2_PROBE_FIXTURE", b, "PASS")
     passed("UNWRITABLE_2_PROBE_FIXTURE", b)
     os.rename(os.path.join(sd, G.SHADOW), os.path.join(sd, "moved.jsonl"))
@@ -492,6 +507,158 @@ def receipt_wedge():
     check(not G._receipt_wedged(sd, "WEDGED", "a" * 7, row_at), "a receipt sha that is not a full commit id matches nothing")
 
 
+def _row(item, at, disagree=False, **kw):
+    r = {"item": item, "sha": "ab" * 20, "at": at, "gate": "accept", "predicate": "reject" if disagree else "accept",
+         "disagree": disagree, "reasons": ["no marker: none"] if disagree else [], "no_code": False}
+    r.update(kw)
+    return r
+
+
+def window():
+    """Clause 1: a declared window, and what it left out, said plainly."""
+    old = [_row("OLD%d" % i, "2026-11-06T13:00:00Z", True) for i in range(70)]
+    new = [_row("NEW%d" % i, "2026-11-06T18:00:00Z") for i in range(30)]
+    rs = old + new
+    whole = G.summary(rs)
+    check(whole["disagree"] == 70 and whole["window"] is None and "none declared" in G.report_lines(whole)[1],
+          "window: with none declared the whole log counts, and the report says so")
+    w = {"since": "2026-11-06T17:52:16Z", "named": "a named fix"}
+    s = G.summary(rs, w)
+    check(s["disagree"] == 0 and s["closes"] == 30 and s["sample_met"], "window: old rows no longer hold the count above 0 (%d)"
+          % s["disagree"])
+    check(s["left_out"]["closes"] == 70 and s["left_out"]["disagree"] == 70
+          and s["left_out"]["by_class"] == {"gate accept / record reject: no marker": 70},
+          "window: what it left out is counted by class (%s)" % s["left_out"])
+    text = "\n".join(G.report_lines(s))
+    check("closes at or after 2026-11-06T17:52:16Z (a named fix)" in text and "left out: 70 closes before the window, 70 of "
+          "them disagreeing: older than the fix" in text, "window: the report names the window, the rows left out and why")
+    s = G.summary(old + [_row("NEW", "2026-11-06T18:00:00Z", True)], w)
+    check(s["disagree"] == 1, "window: a disagreement inside the window still counts")
+    s = G.summary([_row("R", "2026-11-06T13:00:00Z", True), _row("R", "2026-11-06T18:00:00Z")], w)
+    check(s["closes"] == 1 and s["left_out"]["closes"] == 0 and s["disagree"] == 0,
+          "window: a retried close is one close, where its last attempt stands")
+    check(G.resolve_window("2026-11-06T18:00:00Z")["since"] == "2026-11-06T18:00:00Z", "window: an ISO time is itself")
+    fix = G.resolve_window("marker_writer")
+    check(fix["since"] == "2026-11-06T17:52:16Z" and "RELENTLESS_WIRE_MARKER_VERDICT_AND_REPAIR" in fix["named"],
+          "window: the named writer fix is its commit's time, with its subject (%s)" % fix)
+    rp = toy_repo()
+    sha = git_in(rp, "rev-parse", "HEAD")
+    check(G.resolve_window(sha[:10], rp)["named"].startswith(sha[:10] + ": root"), "window: a named sha reads the commit")
+    for bad in ("nonsense", "", "f" * 40, "2026-11-06"):
+        try:
+            G.resolve_window(bad, rp)
+            check(False, "window: %r names nothing and must refuse" % bad)
+        except ValueError:
+            check(True, "window: %r names nothing: refused" % bad)
+    sd = store("window")
+    with open(os.path.join(sd, G.SHADOW), "w") as f:
+        f.write(json.dumps(_row("X", "2026-11-06T18:00:00Z", True, closed_by=G.RELENTLESS_CLOSE)) + "\n")
+    rc, out = quiet(G.main, ["--store-dir", sd, "report", "--since", "nonsense"])
+    check(rc == 2 and out.startswith("UNMEASURED") and "DISAGREE" not in out,
+          "window: a --since that names nothing is UNMEASURED, never the whole log")
+
+
+def scope():
+    """Clause 2: who closed; an owner close is its own line."""
+    check(G.closed_by(False, "relentless: blind check passed") == G.RELENTLESS_CLOSE, "scope: the supervisor's words are a Relentless close")
+    check(G.closed_by(False, "closed as falsified on the relentless record") == G.SEAT_CLOSE,
+          "scope: a hand close that mentions relentless is a seat close (the 2026-11-06 ARTEVAL words)")
+    check(G.closed_by(True, "relentless: blind check passed") == G.OWNER_CLOSE, "scope: his authority wins")
+    check(G.closed_by(False, "") == G.SEAT_CLOSE, "scope: no why is a seat close")
+    closes = G.ledger_closes([
+        {"event": "close", "id": "O", "sha": "ab" * 5, "seat": "OWNER", "ts": "2026-11-06T21:12:06Z", "why": "triage"},
+        {"event": "close", "id": "C", "sha": "ab" * 5, "seat": "BENCH", "ts": "2026-11-06T21:12:06Z", "byCard": "q -> a"},
+        {"event": "close", "id": "S", "sha": "ab" * 5, "seat": "BENCH", "ts": "2026-11-06T21:12:06Z", "why": "hand"},
+        {"event": "close", "id": "R", "sha": "ab" * 5, "seat": "BENCH", "ts": "2026-11-06T21:12:06Z", "why": "relentless: blind check passed"},
+        {"event": "note", "id": "N", "sha": "ab" * 5, "seat": "OWNER", "ts": "2026-11-06T21:12:06Z"}])
+    at = "2026-11-06T21:12:05Z"
+    check([G.closer(_row(i, at), closes) for i in "OCSRN"]
+          == [G.OWNER_CLOSE, G.OWNER_CLOSE, G.SEAT_CLOSE, G.RELENTLESS_CLOSE, G.UNRECORDED],
+          "scope: an older row reads its closer from the ledger, and no close event is unrecorded")
+    check(G.closer(_row("O", "2026-11-06T21:13:00Z"), closes) == G.UNRECORDED, "scope: a close older than the row is not its closer")
+    check(G.closer(_row("O", at, sha="cd" * 20), closes) == G.UNRECORDED, "scope: another sha's close is not its closer")
+    check(G.closer(_row("O", at, closed_by=G.SEAT_CLOSE), closes) == G.SEAT_CLOSE, "scope: the row's own field wins")
+    rs = [_row("A", at, closed_by=G.RELENTLESS_CLOSE), _row("O", at, True, closed_by=G.OWNER_CLOSE), _row("L", at, True),
+          _row("H", at, True, closed_by=G.SEAT_CLOSE), _row("U", at, True)]
+    closes = G.ledger_closes([{"event": "close", "id": "L", "sha": "ab" * 5, "seat": "OWNER", "ts": at}])
+    s = G.summary(rs, None, closes)
+    check((s["closes"], s["agree"], s["disagree"], s["owner"], s["judged"], s["unrecorded"]) == (5, 1, 2, 2, 3, 1),
+          "scope: an owner close is neither agreement nor disagreement nor sample; seat and unrecorded stay judged (%s)"
+          % {k: s[k] for k in ("closes", "agree", "disagree", "owner", "judged", "unrecorded")})
+    text = "\n".join(G.report_lines(s))
+    check("owner-authority: 2 closes out of the predicate's scope, neither agreement nor disagreement: L, O" in text
+          and "closer unrecorded: 1 closes" in text, "scope: the owner closes are their own line, the unrecorded said")
+    check(G._closes_for([_row("A", at, closed_by=G.SEAT_CLOSE)]) is None, "scope: rows that all carry the field read no ledger")
+    check(isinstance(G._closes_for([_row("A", at)]), dict), "scope: an older row reads the ledger")
+
+
+def unrunnable():
+    """Clause 3: RULED, the predicate is right and the row stays a disagreement."""
+    with open(G.__file__, encoding="utf-8") as f:
+        src = f.read()
+    check("`unrunnable` run is not green and rejects (RULED" in src, "unrunnable: the ruling and its reason are in the module doc")
+    run = {"kind": "run", "verdict": "unrunnable", "exit": None, "exam_hash": EXAM["hash"]}
+    mark = {"kind": "marker", "verdict": "PASS"}
+    ok, why = G.green([run, mark], EXAM)
+    check(not ok and [G.reason_class(w) for w in why] == ["run not green"],
+          "unrunnable: a Marker PASS on an unrunnable box run rejects, on the run alone (%s)" % why)
+    check(G.green([dict(run, verdict=G.SKIPPED), mark], EXAM)[0], "unrunnable: the declared route, `skipped`, still accepts")
+    s = G.summary([_row("U", "2026-11-06T19:55:54Z", True, closed_by=G.RELENTLESS_CLOSE, reasons=[why[0]])])
+    check(s["disagree"] == 1 and s["by_class"] == {"gate accept / record reject: run not green": 1},
+          "unrunnable: the gate's accept stays a counted disagreement")
+
+
+def rescore_cohorts():
+    """Clauses 2 and 4: owner rows are not verdict_gone; each row classified or still said to be unexplained."""
+    sd = store("rescore_fixture")
+    snap = os.path.dirname(sd)
+    sha, at = "ab" * 20, "2026-11-06T18:30:00Z"
+
+    def state(item, **kw):
+        os.makedirs(os.path.join(sd, "items", item), exist_ok=True)
+        with open(os.path.join(sd, "items", item, "state.json"), "w") as f:
+            json.dump(dict({"item": item, "status": "retired", "contract": CONTRACT}, **kw), f)
+    passed = {"candidate": {"sha": sha}, "check": {"verdict": "PASS", "nonce": "x"}}
+    for item in ("OWNER_ROW", "OWNER_OLD_ROW", "GONE_ROW"):
+        state(item)
+    state("WEDGED_ROW", status="done", **passed)
+    state("NORUN_ROW", status="done", **passed)
+    state("UNRUN_ROW", status="done", **passed)
+    E.append(sd, "UNRUN_ROW", sha, "run", {"verdict": "unrunnable", "exit": None, "exam_hash": EXAM["hash"]})
+    d = os.path.join(sd, "items", "WEDGED_ROW", "receipts")
+    os.makedirs(d)
+    with open(os.path.join(d, "gen1.json"), "w") as f:
+        json.dump({"item": "WEDGED_ROW", "sha": sha, "gen": 1, "at": "2026-11-06T18:00:00Z",
+                   "boxrun": {"verdict": "green", "evidence_error": "TamperError: does not verify"}}, f)
+    why = ["no marker: none", "no record: none"]
+    with open(os.path.join(sd, G.SHADOW), "w") as f:
+        for r in (_row("OWNER_ROW", at, True, closed_by=G.OWNER_CLOSE, reasons=why),
+                  _row("OWNER_OLD_ROW", at, True, reasons=why),
+                  _row("GONE_ROW", at, True, closed_by=G.RELENTLESS_CLOSE, reasons=why),
+                  _row("WEDGED_ROW", at, True, closed_by=G.RELENTLESS_CLOSE, reasons=["no run: none"]),
+                  _row("NORUN_ROW", at, True, closed_by=G.RELENTLESS_CLOSE, reasons=["no run: none"]),
+                  _row("UNRUN_ROW", at, True, closed_by=G.RELENTLESS_CLOSE, reasons=["run not green: x"])):
+            f.write(json.dumps(r) + "\n")
+    closes = G.ledger_closes([{"event": "close", "id": "OWNER_OLD_ROW", "sha": sha, "seat": "OWNER", "ts": at}])
+    rep, bad = G.rescore(snap, REPO, closes)
+    names = {k: [x.split("@")[0] for x in v] for k, v in rep["cohort_rows"].items()}
+    check(names.get(G.OWNER_CLOSE) == ["OWNER_ROW", "OWNER_OLD_ROW"],
+          "rescore: owner rows, by field and by ledger, are their own cohort (%s)" % names)
+    check(names.get(G.VERDICT_GONE) == ["GONE_ROW"], "rescore: verdict_gone holds only the row that had a verdict to lose")
+    check(names.get(G.WEDGE) == ["WEDGED_ROW"], "rescore: a no-run row whose receipt shows the refusal is the wedge cohort, by name")
+    un = " | ".join(bad)
+    check(len(bad) == 2 and "NORUN_ROW" in un and "UNRUN_ROW" in un and "run not green" in un,
+          "rescore: a no-run row with no receipt and the unrunnable row stay unexplained (%s)" % un[:200])
+    check(rep["receipts_held"] == 1, "rescore: the reading counts the receipts it could read")
+    shutil.rmtree(d)
+    rep, bad = G.rescore(snap, REPO, closes)
+    check(rep["receipts_held"] == 0 and any("WEDGED_ROW" in b and "no run" in b for b in bad),
+          "rescore: without receipts the wedge row is unexplained (the 2026-11-06 reading of 10 no-run rows)")
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap, "--min-rows", "1"])
+    check(rc == 1 and "the snapshot holds no items/*/receipts" in out and "UNEXPLAINED WEDGED_ROW" in out,
+          "rescore: the CLI says the snapshot cannot read the wedge cohort, and exits 1")
+
+
 def main():
     try:
         wiring()
@@ -502,6 +669,10 @@ def main():
         corpus_build()
         cli_end_to_end()
         receipt_wedge()
+        window()
+        scope()
+        unrunnable()
+        rescore_cohorts()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
     print("\n%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))

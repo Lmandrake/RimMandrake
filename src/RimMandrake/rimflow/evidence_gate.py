@@ -7,7 +7,11 @@ sha whose exam is the frozen exam? `green()` answers it from one record (evidenc
 record can carry it (section 2.1; breaks, hunks and holdouts have no entry kind yet, so they are not judged here):
     - the record verifies (an edited, cut or forged record is no evidence)
     - its newest box run (kind `run`) is green, exit 0, against the frozen exam (exam_hash = the contract's hash); a
-      `skipped` run (an offbox / reach_ok contract the box cannot run by design) is not red: the Marker decides
+      `skipped` run (an offbox / reach_ok contract the box cannot run by design) is not red: the Marker decides. An
+      `unrunnable` run is not green and rejects (RULED, EVIDENCE_SHADOW_FIX_REPORT_NEVER_READS_ZERO): `skipped` is a route
+      declared and vetted at contract time; `unrunnable` is a proof nobody could run and nobody declared, so the box
+      measured nothing and the record holds only the Marker's word. The route for it is `relentless.py rebind`. When the
+      gate accepts such a close the gate is the one that is wrong, and the row stays a real disagreement
     - its newest Marker verdict is PASS: WEAK, FAIL and UNMEASURED do not close ("a WEAK verdict cannot close"), and
       a WEAK the live narrow rule reads as PASS (relentless_wall.acted_weak) is still WEAK here
     - an empty-diff close (--no-code) closes only on a `no_code` exam (G15: empty-diff Judge closes are false closes)
@@ -20,7 +24,20 @@ appends one row per close to <store>/evidence_shadow.jsonl - the gate's word, th
 09c deletes the replaced guards one at a time once the corpus and SAMPLE closes of this log agree; until then nothing
 here decides anything.
 
-    python3 src/RimMandrake/rimflow/evidence_gate.py report [--json]      the disagreement count toward the sample
+The reading 09c cites (EVIDENCE_SHADOW_FIX_REPORT_NEVER_READS_ZERO). The log is append-only and its first rows predate the
+working writers, so `report` over the whole log can never read 0 again:
+    - a declared window: `report --since <writer fix | sha | ISO time>` counts the closes at or after it and says how many
+      it left out, and of what. A fix's time is its commit, so a process still on the old code can write after it: a
+      window that starts too early overstates the disagreements and never hides one.
+    - scope: each row records who closed (`closed_by`: relentless, owner, seat). The predicate speaks for a Relentless
+      close; an owner-authority close (--owner-said, --by-card, --per-ruling, seat OWNER) overrides the gate on his word
+      and has no verdict to find, so it is its own line, neither agreement nor disagreement. Rows older than the field
+      read it from the ledger's close event; with no such event it is `unrecorded`, and such a close stays judged. A
+      seat's hand close stays judged too: nothing but his authority takes a close out of scope.
+    - rescore reads the finish receipts: a snapshot without items/*/receipts cannot see the wedge cohort, and its wedge
+      rows read as unexplained `no run` (the 10 such rows of 2026-11-06 were all wedge; `cohort_rows` names each row).
+
+    python3 src/RimMandrake/rimflow/evidence_gate.py report [--since X] [--json]  the disagreement count toward the sample
     python3 src/RimMandrake/rimflow/evidence_gate.py rescore --snapshot DIR  replay a frozen store's shadow rows, exit 1 on
                                                                             any disagreement no cohort explains
     python3 src/RimMandrake/rimflow/evidence_gate.py corpus check          the false/valid close corpus, exit 1 on a miss
@@ -60,6 +77,11 @@ BOOKKEEPING = ("infrastructure/state/ledger/", "infrastructure/state/items/", "i
                "infrastructure/state/code_review/")      # relentless.BOOKKEEPING, not imported (cli.py stays light)
 WORK_DEPTH = 60             # commits naming the item read under the candidate (relentless.WORK_SHA_DEPTH)
 RELENTLESS_WHY = "relentless"       # relentless.py closes with --why "relentless: blind check passed"
+RELENTLESS_CLOSE = "relentless"     # closed_by: the supervisor's close (the words begin "relentless:", see closed_by)
+OWNER_CLOSE = "owner"               # closed_by: his authority; out of the predicate's scope
+SEAT_CLOSE = "seat"                 # closed_by: a seat's hand close, still judged
+UNRECORDED = "unrecorded"           # closed_by: a row older than the field, and the ledger holds no close to read it from
+WRITER_FIXES = {"marker_writer": "8e3e8ef4a5"}  # report --since: the Marker's receipts reach the record (+ 789b5d71a2)
 
 
 def store_dir():
@@ -203,11 +225,43 @@ def _pre_record(sd, st):
     return bool(first and at and at < first)
 
 
-def shadow(item, sha, no_code, gate_found, live=None, cwd=None, sd=None, out=None):
+def closed_by(owner, why):
+    """Pure. owner: the close carries his authority. why: the close's --why. The prefix, never `RELENTLESS_WHY in why`:
+    a hand close may well mention "the relentless record"."""
+    if owner:
+        return OWNER_CLOSE
+    return RELENTLESS_CLOSE if str(why or "").startswith(RELENTLESS_WHY + ":") else SEAT_CLOSE
+
+
+def ledger_closes(events):
+    """events: model.read(). -> {item: [(ts, sha, closed_by)] in ledger order}, for rows older than the `closed_by` field."""
+    out = {}
+    for e in events:
+        if e.get("event") == "close":
+            owner = e.get("seat") == "OWNER" or e.get("ownerSaid") or e.get("byCard") or e.get("perRuling")
+            out.setdefault(e.get("id"), []).append((str(e.get("ts") or ""), str(e.get("sha") or ""),
+                                                    closed_by(owner, e.get("why"))))
+    return out
+
+
+def closer(row, closes=None):
+    """-> who closed this row: its own field, else the first ledger close of item@sha not older than the row (the row is
+    written just before the event, so a refused attempt reads the close that followed it), else UNRECORDED."""
+    if row.get("closed_by"):
+        return row["closed_by"]
+    sha, at = str(row.get("sha") or ""), str(row.get("at") or "")[:19]
+    for ts, s, who in (closes or {}).get(row.get("item")) or ():
+        if sha and s and s[:7] == sha[:7] and ts[:19] >= at:
+            return who
+    return UNRECORDED
+
+
+def shadow(item, sha, no_code, gate_found, live=None, cwd=None, sd=None, out=None, by=None):
     """cli's call, once the close is decided. Logs the predicate beside the gate's own refusals (`gate_found`,
     [(kind, why)] - the live gate's included) and returns the row, or None. `live` is an attestation the live gate has
-    CHECKED, never the raw --live text. NEVER raises and never refuses: any failure is one stderr line and the close
-    goes on."""
+    CHECKED, never the raw --live text. `by` is closed_by()'s word; `disagree` stays the raw gate/predicate comparison and
+    the report takes an owner close out of it. NEVER raises and never refuses: any failure is one stderr line and the
+    close goes on."""
     t0 = time.time()
     out = out or sys.stderr      # resolved per call, so a redirected stderr is honoured
     try:
@@ -220,10 +274,12 @@ def shadow(item, sha, no_code, gate_found, live=None, cwd=None, sd=None, out=Non
                "no_code": bool(no_code), "record": j["record"], "gate": "accept" if gate_ok else "refuse",
                "gate_reasons": sorted({str(k) for k, _ in gate_found}), "predicate": "accept" if j["accepted"] else "reject",
                "reasons": j["reasons"], "disagree": gate_ok != j["accepted"], "ms": int((time.time() - t0) * 1000)}
+        if by:
+            row["closed_by"] = by
         if j.get("cohort"):
             row["cohort"] = j["cohort"]
         _append_row(os.path.join(sd, SHADOW), json.dumps(row, sort_keys=True))
-        if row["disagree"]:
+        if row["disagree"] and by != OWNER_CLOSE:
             print("close: %s: evidence shadow DISAGREES (gate %s, record %s: %s). Shadow only: this changes nothing."
                   % (item, row["gate"], row["predicate"], "; ".join(reason_class(r) for r in j["reasons"]) or "green"),
                   file=out)
@@ -266,33 +322,81 @@ def rows(sd=None):
     return out
 
 
-def summary(rs):
-    """Pure. -> the shadow's count, one close per (item, sha) - the last attempt stands (a refused close retried)."""
-    last = {}
-    for r in rs:
-        last[(r.get("item"), r.get("sha"))] = r
-    closes = list(last.values())
-    pre = [r for r in closes if r.get("disagree") and r.get("cohort") == PRE_RECORD]
-    dis = [r for r in closes if r.get("disagree") and r.get("cohort") != PRE_RECORD]
+def resolve_window(spec, cwd=None):
+    """--since: a WRITER_FIXES name, a commit, or an ISO time. -> {since, named}. ValueError when it names nothing: a
+    window that cannot be read must never quietly become the whole log."""
+    spec = str(spec or "").strip()
+    if re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ", spec):
+        return {"since": spec, "named": spec}
+    sha = WRITER_FIXES.get(spec, spec)
+    if not re.fullmatch(r"[0-9a-f]{7,40}", sha):
+        raise ValueError("%r is no writer fix (%s), commit or YYYY-MM-DDTHH:MM:SSZ" % (spec, ", ".join(sorted(WRITER_FIXES))))
+    try:
+        rc, out = _git(cwd or REPO, "log", "-1", "--format=%ct %s", sha + "^{commit}")
+    except (OSError, subprocess.SubprocessError) as ex:
+        raise ValueError("git could not read commit %s (%s)" % (sha, ex)) from ex
+    if rc or not out:
+        raise ValueError("no commit %s in this clone" % sha)
+    ct, _, subject = out.partition(" ")
+    return {"since": _iso(ct), "named": "%s%s: %s" % (spec + " = " if spec != sha else "", sha, subject[:100])}
+
+
+def _by_class(rs):
     by = {}
-    for r in dis:
+    for r in rs:
         for c in sorted({reason_class(x) for x in r.get("reasons") or []}) or ["green"]:
             k = "gate %s / record %s: %s" % (r.get("gate"), r.get("predicate"), c)
             by[k] = by.get(k, 0) + 1
-    return {"closes": len(closes), "attempts": len(rs), "agree": len(closes) - len(dis) - len(pre), "disagree": len(dis),
-            "pre_record": len(pre),
+    return dict(sorted(by.items(), key=lambda kv: -kv[1]))
+
+
+def summary(rs, window=None, closes=None):
+    """Pure. -> the shadow's count, one close per (item, sha) - the last attempt stands (a refused close retried).
+    window: resolve_window(...) or None (every row). closes: ledger_closes(...), for rows older than `closed_by`."""
+    last = {}
+    for r in rs:
+        last[(r.get("item"), r.get("sha"))] = r
+    since = (window or {}).get("since")
+    before = [r for r in last.values() if since and str(r.get("at") or "") < since]
+    closes_in = [r for r in last.values() if not since or str(r.get("at") or "") >= since]
+    owner = [r for r in closes_in if closer(r, closes) == OWNER_CLOSE]
+    judged = [r for r in closes_in if closer(r, closes) != OWNER_CLOSE]
+    pre = [r for r in judged if r.get("disagree") and r.get("cohort") == PRE_RECORD]
+    dis = [r for r in judged if r.get("disagree") and r.get("cohort") != PRE_RECORD]
+    out_dis = [r for r in before if r.get("disagree") and r.get("cohort") != PRE_RECORD and closer(r, closes) != OWNER_CLOSE]
+    return {"closes": len(closes_in), "attempts": len(rs), "agree": len(judged) - len(dis) - len(pre), "disagree": len(dis),
+            "pre_record": len(pre), "owner": len(owner), "owner_items": sorted({r.get("item") for r in owner})[:20],
+            "unrecorded": sum(closer(r, closes) == UNRECORDED for r in judged),
+            "judged": len(judged) - len(pre), "window": window,
+            "left_out": {"closes": len(before), "disagree": len(out_dis), "by_class": _by_class(out_dis)},
             "gate_accept_record_reject": sum(r.get("gate") == "accept" and r.get("predicate") == "reject" for r in dis),
             "gate_refuse_record_accept": sum(r.get("gate") == "refuse" and r.get("predicate") == "accept" for r in dis),
-            "by_class": dict(sorted(by.items(), key=lambda kv: -kv[1])), "sample": SAMPLE,
-            "sample_met": len(closes) - len(pre) >= SAMPLE, "items": sorted({r.get("item") for r in dis})[:20]}
+            "by_class": _by_class(dis), "sample": SAMPLE,
+            "sample_met": len(judged) - len(pre) >= SAMPLE, "items": sorted({r.get("item") for r in dis})[:20]}
 
 
 def report_lines(s):
+    judged = s["judged"]
     out = ["evidence shadow: %d closes (%d attempts), %d agree, %d DISAGREE, %d pre-record (finished before any "
-           "evidence writer; not counted as disagreements) - %s"
-           % (s["closes"], s["attempts"], s["agree"], s["disagree"], s.get("pre_record", 0),
-              "sample met (%d judged >= %d)" % (s["closes"] - s.get("pre_record", 0), s["sample"]) if s["sample_met"]
-              else "UNDER SAMPLE: %d of %d judged closes" % (s["closes"] - s.get("pre_record", 0), s["sample"]))]
+           "evidence writer; not counted as disagreements), %d owner-authority - %s"
+           % (s["closes"], s["attempts"], s["agree"], s["disagree"], s["pre_record"], s["owner"],
+              "sample met (%d judged >= %d)" % (judged, s["sample"]) if s["sample_met"]
+              else "UNDER SAMPLE: %d of %d judged closes" % (judged, s["sample"]))]
+    w, lo = s.get("window"), s["left_out"]
+    if w:
+        out.append("  window: closes at or after %s (%s)" % (w["since"], w["named"]))
+        out.append("  left out: %d closes before the window, %d of them disagreeing: older than the fix the window names"
+                   % (lo["closes"], lo["disagree"]))
+        out += ["  %4d  left out: %s" % (n, k) for k, n in lo["by_class"].items()]
+    else:
+        out.append("  window: none declared, the whole log counts, rows older than the working writers included "
+                   "(--since names one: %s, a commit, or an ISO time)" % ", ".join(sorted(WRITER_FIXES)))
+    if s["owner"]:
+        out.append("  owner-authority: %d closes out of the predicate's scope, neither agreement nor disagreement: %s"
+                   % (s["owner"], ", ".join(s["owner_items"])))
+    if s["unrecorded"]:
+        out.append("  closer unrecorded: %d closes with no closed_by and no ledger close to read it from; still judged"
+                   % s["unrecorded"])
     out += ["  %4d  %s" % (n, k) for k, n in s["by_class"].items()]
     return out
 
@@ -361,12 +465,14 @@ def _wedge_from(sd):
     return min((str(e.get("at") or "") for e in tail), default=None) or None
 
 
-def rescore(snapshot, cwd=None):
+def rescore(snapshot, cwd=None, closes=None):
     """Replay a frozen store's shadow rows with today's writers and predicate, on a COPY (the snapshot is never written):
     every Marker verdict the store held (check.verdict on its candidate) is appended as relentless.marker_receipt now
     does at verdict time, then each row is judged again. -> (report dict, [unexplained disagreement]). A disagreement
     is explained only by a cohort the record cannot help: pre_record (finished before any evidence row) or wedge (its
-    receipt was refused by the HEAD-lag bug: from the index tail, or from the finish receipt's own evidence_error)."""
+    receipt was refused by the HEAD-lag bug: from the index tail, or from the finish receipt's own evidence_error). An
+    owner-authority row (closer(); closes = ledger_closes(...)) is out of scope, not replayed: its own cohort, never
+    verdict_gone, for no verdict ever existed."""
     import shutil
     import tempfile
     src = os.path.join(snapshot, "store")
@@ -396,8 +502,12 @@ def rescore(snapshot, cwd=None):
                     markers += 1
             except (OSError, ValueError) as ex:
                 failed.append("%s: %s" % (iid, str(ex)[:160]))
-        before, after, unexplained, cohorts = {}, {}, [], {}
+        before, after, unexplained, cohorts, named = {}, {}, [], {}, {}
         for r in shadow_rows:
+            if closer(r, closes) == OWNER_CLOSE:
+                cohorts[OWNER_CLOSE] = cohorts.get(OWNER_CLOSE, 0) + 1
+                named.setdefault(OWNER_CLOSE, []).append("%s@%s" % (r["item"], str(r["sha"])[:10]))
+                continue
             live = None if any(str(x).startswith("live owed") for x in r.get("reasons") or []) else "replayed"
             j = judge(sd, r["item"], r["sha"], r.get("no_code"), live, cwd or HERE)
             if j is None:
@@ -426,11 +536,14 @@ def rescore(snapshot, cwd=None):
                 cohort = "not_judged:" + ",".join(r["gate_reasons"])
             if cohort:
                 cohorts[cohort] = cohorts.get(cohort, 0) + 1
+                named.setdefault(cohort, []).append("%s@%s" % (r["item"], str(r["sha"])[:10]))
             else:
                 unexplained.append("%s@%s gate %s, predicate %s: %s" % (r["item"], str(r["sha"])[:10], r.get("gate"),
                                    "accept" if j["accepted"] else "reject", "; ".join(j["reasons"])[:240]))
         rep = {"rows": len(shadow_rows), "rows_are": "every attempt (report counts the last per item+sha)", "markers_appended": markers, "marker_failures": failed, "wedge_from": wedge,
-               "reasons_before": before, "reasons_after": after, "outcome": cohorts, "unexplained": len(unexplained),
+               "reasons_before": before, "reasons_after": after, "outcome": cohorts, "cohort_rows": named, "unexplained": len(unexplained),
+               "receipts_held": sum(os.path.isdir(os.path.join(src, "items", i, "receipts"))
+                                    for i in os.listdir(os.path.join(src, "items"))),
                "index_verifies": evidence.verify_index(sd) == []}
         return rep, unexplained + ["marker receipt failed: " + x for x in failed]
     finally:
@@ -537,12 +650,23 @@ def write_corpus(path, corpus):
             os.unlink(tmp)
 
 
+def _closes_for(rs):
+    """The ledger's closes, read only when a row is older than `closed_by`. This repo's ledger answers for any snapshot."""
+    if all(r.get("closed_by") for r in rs):
+        return None
+    sys.path.insert(0, os.path.dirname(HERE))
+    from rimflow import model
+    return ledger_closes(model.read())
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--store-dir", help="the Relentless store dir (default: $RELENTLESS_ROOT/store)")
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("report", help="the shadow's disagreement count toward the sample")
     r.add_argument("--json", action="store_true")
+    r.add_argument("--since", help="count closes at or after this: a writer fix (%s), a commit, or an ISO time"
+                                   % ", ".join(sorted(WRITER_FIXES)))
     rs = sub.add_parser("rescore", help="replay a frozen store snapshot's shadow rows with today's writers + predicate")
     rs.add_argument("--snapshot", required=True, help="a dir holding store/ (evidence/, items/*/state.json, %s)" % SHADOW)
     rs.add_argument("--min-rows", type=int, default=70, help="fewer rows than this is an instrument that cannot see")
@@ -552,17 +676,25 @@ def main(argv=None):
     a = ap.parse_args(argv)
     sd = a.store_dir or store_dir()
     if a.cmd == "report":
-        s = summary(rows(sd))
+        try:
+            window = resolve_window(a.since) if a.since is not None else None
+        except ValueError as ex:
+            print("UNMEASURED: --since: %s" % ex)
+            return 2
+        rs = rows(sd)
+        s = summary(rs, window, _closes_for(rs))
         print(json.dumps(s, indent=1, sort_keys=True) if a.json else "\n".join(report_lines(s)))
         return 0
     if a.cmd == "rescore":
-        rep, bad = rescore(a.snapshot)
+        rep, bad = rescore(a.snapshot, closes=_closes_for(rows(os.path.join(a.snapshot, "store"))))
         print(json.dumps(rep, indent=1, sort_keys=True))
         for b in bad[:40]:
             print("UNEXPLAINED " + b)
         blind = rep["rows"] < a.min_rows
         print("evidence rescore: %d rows; %s" % (rep["rows"], "BLIND: under %d rows" % a.min_rows if blind else
               "%d unexplained disagreement(s)" % len(bad) if bad else "every disagreement explained"))
+        if not rep["receipts_held"]:
+            print("evidence rescore: the snapshot holds no items/*/receipts: the wedge cohort cannot be read from it")
         return 1 if bad or blind or not rep["index_verifies"] else 0
     if a.what == "build":
         sys.path.insert(0, os.path.dirname(HERE))

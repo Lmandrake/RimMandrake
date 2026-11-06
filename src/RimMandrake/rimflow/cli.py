@@ -2545,7 +2545,9 @@ def _evidence_shadow(args, sha, no_code, found, live):
         if test_ledger and not os.environ.get("RELENTLESS_ROOT"):
             return
         import evidence_gate
-        evidence_gate.shadow(args.id, sha, no_code, found, live, cwd=os.environ.get("RIMFLOW_GIT_CWD") or _HERE)
+        said = bool(model.OWNER_SAID or model.BY_CARD or model.PER_RULING or args.seat_is_owner)
+        evidence_gate.shadow(args.id, sha, no_code, found, live, cwd=os.environ.get("RIMFLOW_GIT_CWD") or _HERE,
+                             by=evidence_gate.closed_by(said, model.AGENT_WHY))
     except Exception as ex:      # noqa: BLE001
         print("close: %s: evidence shadow failed (%s); the close is unaffected" % (args.id, ex), file=sys.stderr)
 
