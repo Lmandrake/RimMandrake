@@ -252,11 +252,29 @@ def ops_reading(status, account, now, stale_s=OPS_STALE_S):
     return out
 
 
+# how much of the day a band's `slots` lets run, fewest first (slot_blocked's policies): most_cautious_band's order
+SLOT_CAUTION = {"none": 0, "weekly": 1, "quick_one": 2, "first": 3, "last": 3, "quick": 4, "all": 5}
+
+
+def most_cautious_band(bands):
+    """Pure. -> (name, band) of the configured band that lets the least run: fewest slots (SLOT_CAUTION), then the
+    smallest quick_cap_x, then a week_left_pct_lt (FLOOR) band before a runway band, then the lowest runway_ge; the
+    name breaks a full tie so the pick is stable. A degraded reading is judged by this, never by made-up values that
+    would pass a stricter FLOOR line (ROLE_LAUNCH_HARDEN_FLOOR_AND_ODD_NAMES)."""
+    _, _, _, _, name = min((SLOT_CAUTION.get(b.get("slots", "all"), SLOT_CAUTION["all"]),
+                            float(b.get("quick_cap_x", 1.0)), 0 if "week_left_pct_lt" in b else 1,
+                            float(b.get("runway_ge", 0.0)), name) for name, b in bands.items())
+    return name, bands[name]
+
+
 def band(role, reading):
-    """Pure. -> (band name, band dict). No bands -> ("NONE", x1.0, all slots)."""
+    """Pure. -> (band name, band dict). No bands -> ("NONE", x1.0, all slots). A degraded reading (decide_roles'
+    degraded_reading_ok path: runway and week left UNMEASURED) -> the most cautious configured band, FLOOR included."""
     bands = role.get("throttle_bands") or {}
     if not bands:
         return "NONE", {"quick_cap_x": 1.0, "slots": "all"}
+    if reading.get("degraded"):
+        return most_cautious_band(bands)
     for name, b in bands.items():
         if "week_left_pct_lt" in b and reading["week_left"] < b["week_left_pct_lt"]:
             return name, b
@@ -763,20 +781,39 @@ def supervise_roles(sch, st, obs, now, act):
     return busy
 
 
+def role_shape_error(r):
+    """Pure. -> None, or why this roles entry cannot be keyed or ordered: name must be a nonempty string and
+    after_role absent/null or a string. Checked before any map or ordering is built, so a JSON list or object there
+    is skipped with an alarm instead of raising TypeError through every role (ROLE_LAUNCH_HARDEN_FLOOR_AND_ODD_NAMES)."""
+    if not isinstance(r, dict):
+        return "entry is a %s, not a mapping" % type(r).__name__
+    if not (isinstance(r.get("name"), str) and r["name"].strip()):
+        return "name %r is not a nonempty string" % (r.get("name"),)
+    if r.get("after_role") is not None and not isinstance(r["after_role"], str):
+        return "role %s: after_role %r is not a string" % (r["name"], r["after_role"])
+    return None
+
+
+def _named(r):
+    return isinstance(r, dict) and isinstance(r.get("name"), str) and bool(r["name"].strip())
+
+
 def roles_by_name(sch):
-    """{name: role} over the schedule's roles entries that are mappings; anything else is skipped here (decide_roles
-    alarms it), so one malformed entry cannot raise through the tick (review V, V3)."""
-    return {r.get("name"): r for r in sch.get("roles") or [] if isinstance(r, dict)}
+    """{name: role} over the schedule's roles entries that are mappings with a nonempty string name; anything else is
+    skipped here (decide_roles alarms it), so one malformed entry cannot raise through the tick (review V, V3; a list
+    as a name is unhashable: ROLE_LAUNCH_HARDEN_FLOOR_AND_ODD_NAMES)."""
+    return {r["name"]: r for r in sch.get("roles") or [] if _named(r)}
 
 
 def decide_order(roles):
     """Pure. Roles in decide order: each after the role its after_role names (whole chains, not just one level:
-    review night r3), otherwise schedule order. A cycle or a name not in the list ends the chain."""
-    by = {r.get("name"): r for r in roles}
+    review night r3), otherwise schedule order. A cycle or a name not in the list ends the chain; an entry with no
+    usable name or a non-string after_role is depth 0 (decide_roles skips it with an alarm before it gets here)."""
+    by = {r["name"]: r for r in roles if _named(r)}
 
     def depth(r):
         seen, d = set(), 0
-        while r.get("after_role") in by and r.get("name") not in seen:
+        while _named(r) and isinstance(r.get("after_role"), str) and r["after_role"] in by and r["name"] not in seen:
             seen.add(r.get("name"))
             r, d = by[r["after_role"]], d + 1
         return d
@@ -1262,7 +1299,12 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         act(do="alarm", kind="role:schedule", note=True,
             why="%d roles entr(y/ies) in the schedule are not mappings (%s): skipped; the other roles are decided"
             % (len(bad), ", ".join(type(r).__name__ for r in bad)))
-    roles = decide_order([r for r in sch.get("roles") or [] if isinstance(r, dict)])
+    odd = [role_shape_error(r) for r in sch.get("roles") or [] if isinstance(r, dict) and role_shape_error(r)]
+    if odd:
+        act(do="alarm", kind="role:schedule:shape", note=True,
+            why="%d roles entr(y/ies) in the schedule cannot be keyed or ordered (%s): skipped; the other roles are "
+            "decided" % (len(odd), "; ".join(odd)[:400]))
+    roles = decide_order([r for r in sch.get("roles") or [] if role_shape_error(r) is None])
     def one(role):
         name = role.get("name", "?")
         if role.get("chain_stages") is True:
@@ -1481,7 +1523,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
                 why="%s %s LAUNCHED on a degraded ops reading (the most cautious band): %s" % (name, job["trigger"], r["why"]))
             r = {"state": "MEASURED", "degraded": r["why"], "account": None, "at": "UNREADABLE", "runway": 0.0,
-                 "runway_m": "UNMEASURED", "week_left": 100.0, "week_left_m": "UNMEASURED"}
+                 "runway_m": "UNMEASURED", "week_left": 0.0, "week_left_m": "UNMEASURED"}   # band() picks the band
         if r["state"] != "MEASURED":
             refuse_now(rs, "ops reading " + r["state"], now, job)
             act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
