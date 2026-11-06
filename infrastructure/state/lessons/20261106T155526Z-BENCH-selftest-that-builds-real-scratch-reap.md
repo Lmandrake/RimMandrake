@@ -1,0 +1,1 @@
+A selftest that builds a real scratch_reap Ctx reads the host /proc: in the relentless walled box every foreign pid is 'Permission denied', a global hold that masks the reason the test is about. Give fixture cases a sighted Ctx (live.blind and borrows.hold cleared); run relentless.py boxrun before finish (REAPER_SPIKE_FIX_THREE_STRANGERS_AT_DOOR).
