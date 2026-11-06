@@ -9,6 +9,11 @@ sanity.json. Green (exit 0) only when ALL hold:
   2. the runs span the window: the oldest in it is no more than --edge-h (2 h) after the window opens, the newest no
      more than --edge-h before now, and no gap between consecutive runs exceeds --gap-h (3 h);
   3. sanity.json's end reading is fresh (--edge-h) and its measures.refused is at or under the same line.
+A reap run's start drops the last end from sanity.json on purpose, so a start with no end, younger than the unit's own
+time limit, is a run in progress and says nothing about refused: clause 3 then reads last_run.json, the previous
+complete run, to the same line and freshness. The same start older than that limit is a run that died: red. A last
+line of runs.jsonl with no newline is a record still being written and is skipped; if the writer died, the newest-run
+edge goes red instead.
 Any unreadable record, missing field or bad line is red: no reading is never a pass. Exit 1 red, 2 usage.
 """
 from __future__ import annotations
@@ -22,6 +27,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+RUN_MAX_H = 1.5     # rm-scratch-reap.service TimeoutStartSec=5400; the selftest holds the two together
 
 
 def parse_ts(s: str) -> float:
@@ -35,7 +41,9 @@ def fmt(t: float) -> str:
 def load_runs(sd: Path, since: float, bad: list[str]) -> list[tuple[float, bool, int]]:
     """-> (ts, apply, REFUSE count) of every run stamped at or after `since`, oldest first."""
     out = []
-    for name in ("runs.jsonl.1", "runs.jsonl"):
+    # Live file first: a rotation between the two reads then repeats records instead of losing them. The sort below
+    # puts them back in order, and a repeat cannot open a gap.
+    for name in ("runs.jsonl", "runs.jsonl.1"):
         p = sd / name
         if not p.exists():
             if name == "runs.jsonl":
@@ -48,7 +56,7 @@ def load_runs(sd: Path, since: float, bad: list[str]) -> list[tuple[float, bool,
             continue
         with fh:
             for n, line in enumerate(fh, 1):
-                if not line.strip():
+                if not line.strip() or not line.endswith("\n"):
                     continue
                 try:
                     r = json.loads(line)
@@ -66,6 +74,37 @@ def load_runs(sd: Path, since: float, bad: list[str]) -> list[tuple[float, bool,
                                                            and x.get("verdict") == "REFUSE")))
     out.sort()
     return out
+
+
+def check_end(sd: Path, now: float, line: float, edge_h: float, bad: list[str], lines: list[str]) -> None:
+    """Clause 3: the last complete run's refused, from sanity.json's end, or last_run.json while a run is in progress."""
+    def judge(src: str, at: float, ref) -> None:
+        lines.append(f"{src} {fmt(at)}: refused {ref}")
+        if now - at > edge_h * 3600:
+            bad.append(f"{src} is {(now - at) / 3600:.1f} h old (max {edge_h} h)")
+        if not isinstance(ref, (int, float)) or isinstance(ref, bool):
+            bad.append(f"{src} refused has no reading: {ref!r}")
+        elif ref > line:
+            bad.append(f"{src} refused {ref} over {line}")
+
+    try:
+        rec = json.loads((sd / "sanity.json").read_text())
+        if "end" in rec or "start" not in rec:
+            end = rec["end"]
+            judge("sanity.json end", float(end["at"]), end["measures"]["refused"])
+            return
+        began = float(rec["start"]["at"])
+        if now - began > RUN_MAX_H * 3600:
+            bad.append(f"sanity.json has a start at {fmt(began)} and no end, past the run limit of {RUN_MAX_H} h: "
+                       "the run died")
+            return
+        lines.append(f"reap run in progress since {fmt(began)}: sanity.json has no end yet, reading the previous run")
+        last = json.loads((sd / "last_run.json").read_text())
+        # counts holds only the verdicts a run saw, so a run with no REFUSE row has no key; no counts is no reading
+        ref = last["counts"].get("REFUSE", 0)
+        judge("last_run.json", float(last["end_epoch"]), ref)
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as e:
+        bad.append(f"sanity record unreadable: {type(e).__name__}: {e}")
 
 
 def prove(sd: Path, limits: Path, now: float, hours: float, edge_h: float, gap_h: float) -> tuple[bool, list[str]]:
@@ -97,25 +136,14 @@ def prove(sd: Path, limits: Path, now: float, hours: float, edge_h: float, gap_h
         for (a, *_), (b, *_) in zip(runs, runs[1:]):
             if b - a > gap_h * 3600:
                 bad.append(f"gap {fmt(a)} .. {fmt(b)}: {(b - a) / 3600:.1f} h with no run (max {gap_h} h)")
-    try:
-        end = json.loads((sd / "sanity.json").read_text())["end"]
-        at, ref = float(end["at"]), end["measures"]["refused"]
-        lines.append(f"sanity.json end {fmt(at)}: refused {ref}")
-        if now - at > edge_h * 3600:
-            bad.append(f"sanity.json end is {(now - at) / 3600:.1f} h old (max {edge_h} h)")
-        if not isinstance(ref, (int, float)) or isinstance(ref, bool):
-            bad.append(f"sanity.json end refused has no reading: {ref!r}")
-        elif ref > line:
-            bad.append(f"sanity.json end refused {ref} over {line}")
-    except (OSError, ValueError, KeyError, TypeError) as e:
-        bad.append(f"sanity.json end unreadable: {type(e).__name__}: {e}")
+    check_end(sd, now, line, edge_h, bad, lines)
     return not bad, lines + [f"RED {b}" for b in bad]
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--state-dir", default=os.environ.get("SCRATCH_REAP_STATE_DIR")
-                    or str(Path.home() / ".local/state/rm-scratch-reap"))
+    ap.add_argument("--state-dir", default=os.environ.get("SCRATCH_REAP_STATE")     # the reaper's own variable
+                    or str(Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state") / "rm-scratch-reap"))
     ap.add_argument("--limits", default=str(HERE / "scratch_reap_sanity.json"))
     ap.add_argument("--now", help="UTC stamp YYYY-MM-DDTHH:MM:SSZ (default: the clock)")
     ap.add_argument("--hours", type=float, default=24.0)
