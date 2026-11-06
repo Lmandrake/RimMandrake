@@ -214,10 +214,52 @@
     "ref": "run rm-role-designer-1793953617",
     "stage": 4,
     "tokens": 594413
+   },
+   {
+    "at": "2026-11-06T15:30:37Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1793978694:examiner",
+    "stage": 4,
+    "tokens": 43574
+   },
+   {
+    "at": "2026-11-06T15:30:38Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1793978694:challenger",
+    "stage": 4,
+    "tokens": 27509
+   },
+   {
+    "at": "2026-11-06T15:30:38Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1793978694:readerA",
+    "stage": 4,
+    "tokens": 40982
+   },
+   {
+    "at": "2026-11-06T15:30:38Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1793978694:readerB",
+    "stage": 4,
+    "tokens": 38544
+   },
+   {
+    "at": "2026-11-06T15:30:38Z",
+    "kind": "helper",
+    "ref": "rm-role-designer-1793978694:control",
+    "stage": 4,
+    "tokens": 38493
+   },
+   {
+    "at": "2026-11-06T16:03:43Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793978694",
+    "stage": 4,
+    "tokens": 409248
    }
   ],
   "reserve": 60000,
-  "spent": 7004615
+  "spent": 7602965
  },
  "history": [
   {
@@ -483,6 +525,24 @@
    "stage": 4,
    "what": "retry",
    "why": "run rm-role-designer-1793953617 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-06T15:25:55Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "7004615 of 4000000 spent; run rm-role-designer-1793978694 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T15:25:56Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1793978694, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-06T16:03:43Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1793978694: stage 4 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -743,11 +803,34 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-06T16:03:43Z",
+   "inputs": {
+    "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+    "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
+    "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
+    "tree": "881db40073f1ed0448c4b25a010461045c6544610062f5f011ce2670d561a9c9"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_exam.md": "3e3f16a15ed2c45e2851911d42c9369cdc7560758fe1f386dc38012b93534217"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793978694",
+   "stage": 4,
+   "summary": "Cold Reader exam re-run against the current tree and sheet (stage-3 output of rm-role-designer-1793952905, which the rejected run 1793953617 had left uncommitted and untouched). 20 frozen scenarios (Examiner 14, Challenger 6, newer leaves covered: firefoam sprayer, furnace-beast bank/bed, sand shovel, rite hook, engineered text, paved strip, black-rain compound, scorch-fruit timing). Both Readers 20/20, accept_where_reject_core 0, no Challenger misses. Control with furnacebeast_banks_heat_and_smoulders_bed removed accepted e4 and c2, which the real tree rejects. exam.json replaces the stale 2026-11-05 exam."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
