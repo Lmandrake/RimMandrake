@@ -1344,3 +1344,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_GLASSWALK_SPEED_RATIO_1 A1 (L2), read-only proof","ts":"2026-11-06T21:09:17Z","tsn":1793999357586704172}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:11:07Z","tsn":1793999467710882318}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GAMECOMP_STALL_HUNT_SEVEN_SECONDS A2 (L2), read-only proof","ts":"2026-11-06T21:11:26Z","tsn":1793999486927883007}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T21:41:41Z","tsn":1794001301514964699}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL A2 (GREEN-FULL), read-only proof","ts":"2026-11-06T21:42:08Z","tsn":1794001328057325543}
