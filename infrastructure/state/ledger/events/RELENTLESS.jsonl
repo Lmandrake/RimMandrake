@@ -1172,3 +1172,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:57:05Z","tsn":1793977025251814953}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T15:01:14Z","tsn":1793977274341791575}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:01:26Z","tsn":1793977286548196256}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE A1 (L2), read-only proof","ts":"2026-11-06T15:02:47Z","tsn":1793977367996888220}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:03:19Z","tsn":1793977399533975648}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GSS_FALLEN_WIRE_FIX_SHOCK_STILL_BITES A1 (L2), read-only proof","ts":"2026-11-06T15:04:25Z","tsn":1793977465297037796}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:04:54Z","tsn":1793977494038225728}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_END_FIX_CELL_SHORT_OF_PORT A1 (L2), read-only proof","ts":"2026-11-06T15:06:20Z","tsn":1793977580352484734}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:06:28Z","tsn":1793977588116271022}
