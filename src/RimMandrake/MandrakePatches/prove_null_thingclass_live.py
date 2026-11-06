@@ -142,8 +142,9 @@ def read_log():
             text = f.read()
     except OSError as e:
         return UNMEASURED, [str(e)], ""
-    if llc.game_started() != started:
-        return UNMEASURED, ["the running game changed while the log was read"], ""
+    why = llc.same_game(started)
+    if why:
+        return UNMEASURED, [why], ""
     code, lines = llc.judge(text, [], never=NEVER)
     return code, lines, text
 

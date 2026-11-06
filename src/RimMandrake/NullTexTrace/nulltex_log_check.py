@@ -106,7 +106,7 @@ def read_running_log():
     """-> (text, None) or (None, why): the running game's Player.log, only if written since that game started."""
     sys.path.insert(0, UTILS)
     from game_paths import PLAYER_LOG
-    from live_log_check import game_started
+    from live_log_check import game_started, same_game
     started = game_started()
     if started is None:
         return None, "no running game (or two)"
@@ -117,8 +117,9 @@ def read_running_log():
             text = f.read()
     except OSError as e:
         return None, str(e)
-    if game_started() != started:
-        return None, "the running game changed while the log was read"
+    why = same_game(started)
+    if why:
+        return None, why
     return text, None
 
 

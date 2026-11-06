@@ -22,6 +22,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PASS, FAIL, UNMEASURED = 0, 1, 2
@@ -95,6 +96,31 @@ def game_started():
         return None
 
 
+RECHECK_TRIES = 3
+RECHECK_PAUSE = 2.0
+
+
+def same_game(started, probe=None, tries=RECHECK_TRIES, pause=RECHECK_PAUSE, sleep=time.sleep):
+    """-> None when the game that started at `started` still runs, else the reason it cannot be said.
+
+    The post-read recheck. game_started() answers None for an unreadable process list (a powershell.exe hiccup) as
+    well as for no game, so a lone None is re-asked, never taken as a change
+    (GAMEENV_FIX_PROOFSITE_B7C18A7D_ITEMS_WAIT: one such None read as "the running game changed")."""
+    probe = probe or game_started
+    now = None
+    for i in range(max(1, tries)):
+        now = probe()
+        if now is not None:
+            break
+        if i + 1 < tries:
+            sleep(pause)
+    if now is None:
+        return "the running game's start could not be re-read after the log was read (%d tries)" % max(1, tries)
+    if now != started:
+        return "the running game changed while the log was read"
+    return None
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--absent", action="append", default=[], metavar="TOKEN")
@@ -129,9 +155,11 @@ def main(argv=None):
     except OSError as e:
         print("UNMEASURED: %s" % e)
         return UNMEASURED
-    if a.log is None and game_started() != started:
-        print("UNMEASURED: the running game changed while the log was read")
-        return UNMEASURED
+    if a.log is None:
+        why = same_game(started)
+        if why:
+            print("UNMEASURED: " + why)
+            return UNMEASURED
     code, lines = judge(text, tokens, a.warnings, never=never)
     print("\n".join(lines))
     print({PASS: "VERDICT PASS", FAIL: "VERDICT FAIL", UNMEASURED: "VERDICT UNMEASURED"}[code])
