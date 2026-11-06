@@ -100,7 +100,7 @@ class Probe:
         a, b = Image.open(base), Image.open(hov)
         tip = td.find_tooltip(a, b)
         ro = td.readout_changed(a, b)
-        row = {"tag": tag, "hover": hp, "hoverReply": str(h)[:300], "hoverOk": bool(h.get("success", True)),
+        row = {"tag": tag, "hover": hp, "hoverReply": str(h)[:300], "hoverOk": h.get("success") is True,
                "base": base, "hoverFrame": hov, "tooltip": tip, "readout": ro}
         if tip["drawn"]:
             crop = os.path.join(self.outdir, "%s_TOOLTIP.png" % tag)
@@ -174,11 +174,15 @@ def stage_spot(p, sx, sz):
     cx, cz = sx // 2, sz // 2
     p.call("jawa/destroy_batch", {"rects": "%d,%d,5,5" % (cx - 2, cz - 2), "categories": "Plant,Item,Filth,Building"})
     b = p.call("jawa/build_batch", {"ops": "%s:%d,%d,0" % (SPOT, cx, cz), "faction": "player", "readBack": 1})
-    ids = [r.get("thingId") or r.get("id") for r in (b.get("things") or b.get("placed") or b.get("results") or [])
-           if isinstance(r, dict)]
-    ids = [i for i in ids if i]
-    if not ids:
+    # build_batch's read-back (things[]) carries def/x/z but NO ThingID (JawaBenchMapTools.cs BuildBatch), so
+    # the id comes from jawa/list_things at the cell. Read `survived`, not `placed` (the tool's own warning).
+    if not b.get("success") or int(b.get("survived") or 0) < 1:
         raise NoVerdict("could not place a %s: %s" % (SPOT, str(b)[:300]))
+    lt = p.call("jawa/list_things", {"defName": SPOT, "rect": "%d,%d,1,1" % (cx, cz), "limit": 5})
+    ids = [r.get("id") for r in (lt.get("things") or []) if isinstance(r, dict) and r.get("id")]
+    if not ids:
+        raise NoVerdict("placed a %s at %d,%d but jawa/list_things there names no id: %s"
+                        % (SPOT, cx, cz, str(lt)[:300]))
     return ids[0], cx, cz
 
 
@@ -219,7 +223,12 @@ def clause_mapthing(p, sx, sz):
 
 
 def verdict(rows, readout_counts):
+    # A "no" is only an answer if the bridge really set a hover; none accepted = nothing was asked.
+    if rows and not any(r.get("hoverOk") for r in rows):
+        raise NoVerdict("rimworld/set_hover_target succeeded on no target: %s" % rows[0].get("hoverReply"))
     for r in rows:
+        if not r.get("hoverOk"):
+            continue   # a box in a frame no hover was set for is not this hover's tooltip
         if r["tooltip"]["drawn"] or (readout_counts and r["readout"]["changed"]):
             return True
     return False

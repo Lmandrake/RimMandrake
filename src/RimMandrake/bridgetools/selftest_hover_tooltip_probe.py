@@ -75,7 +75,7 @@ def main():
 
     sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
     import prove_hover_tooltip as ph
-    row_ro = {"tooltip": {"drawn": False}, "readout": {"changed": True}}
+    row_ro = {"tooltip": {"drawn": False}, "readout": {"changed": True}, "hoverOk": True}
     expect("readout counts for A3", ph.verdict([row_ro], readout_counts=True), True)
     expect("readout ignored for A1/A2", ph.verdict([row_ro], readout_counts=False), False)
     print("FAIL" if fails else "PASS")

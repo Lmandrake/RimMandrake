@@ -41,8 +41,10 @@ class FakeBridge:
             return {"success": True, "hudHidden": self.hud_hidden}
         if tool == "rimworld/list_colonists":
             return {"success": True, "colonists": [{"pawnId": "Thing_Human1"}]}
-        if tool == "jawa/build_batch":
-            return {"success": True, "things": [{"thingId": "Thing_ButcherSpot9"}]}
+        if tool == "jawa/build_batch":   # the real read-back carries no ThingID (JawaBenchMapTools.cs BuildBatch)
+            return {"success": True, "placed": 1, "survived": 1, "things": [{"def": "ButcherSpot", "x": 125, "z": 125}]}
+        if tool == "jawa/list_things":
+            return {"success": True, "things": [{"id": "Thing_ButcherSpot9", "def": "ButcherSpot"}]}
         if tool == "rimworld/open_inspect_tab":
             return {"success": not self.hud_hidden}
         if tool == "rimworld/get_ui_layout":
