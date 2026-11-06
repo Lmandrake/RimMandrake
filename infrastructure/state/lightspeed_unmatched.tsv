@@ -78,7 +78,7 @@ TheSump	25	0	25	names no row=25
 TileFeatures	3	0	3	suite unreadable=3
 TrophyCraft	4	0	4	names no row=4
 UnfinishedLine	8	0	8	names no row=8
-UtinniPatches	105	3	102	lint refuses the row's line=1; names no row=101
+UtinniPatches	105	2	103	lint refuses the row's line=2; names no row=101
 Warcasket	7	0	7	names no row=7
 WasteRun	7	0	7	names no row=7
 Wastes	2	0	2	names no row=2
@@ -87,4 +87,4 @@ Webwork	22	0	22	lint refuses the row's line=2; names no row=20
 WeepingStones	6	1	5	names no row=5
 Wreckage	2	0	2	names no row=2
 WreckedMachines	5	0	5	names no row=5
-TOTAL (criteria, once each)	882	25	857	
+TOTAL (criteria, once each)	882	24	858	

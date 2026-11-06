@@ -217,8 +217,38 @@ def preview_gap(mod, sel, root=ROOT):
     return "preview printed no plan: %s" % (out.strip().splitlines() or ["(nothing)"])[-1][:200]
 
 
-def lint_line(lr, item, cid, proof, root=ROOT):
-    """-> why this proof line may not be filed for (item, cid), or None. item: RoundFx.items() shape."""
+def criteria_text(item_id, proofs_dir=PROOFS):
+    p = os.path.join(proofs_dir, item_id + ".criteria")
+    if not os.path.isfile(p):
+        return ""
+    with open(p, encoding="utf-8", errors="replace") as f:
+        return f.read()
+
+
+def boxed(item, crit_text):
+    """item as the blind checker's box reads it: infrastructure/state/items is not in the box (relentless_wall
+    tree_exclude), so a criterion cut on the ledger is whole only when live_proofs/<ID>.criteria holds its line.
+    Full-clone RoundFx also reads the item prose; linting that view filed ZERSIUM_FORGE_BIOME_1 L5, whole only in
+    items/ZERSIUM_FORGE_BIOME_1.md, and the checker saw it cut (gen 1 blind_fail). This tool never writes a .criteria
+    file to make one whole: `rimflow implemented --criteria-file` takes that file as the item's WHOLE manifest
+    (cli._manifest), so a one-clause file would drop every other criterion; such a criterion stays unmatched."""
+    out = dict(item)
+    crits = []
+    for c in item.get("criteria") or []:
+        c = {k: v for k, v in c.items() if k not in ("cut", "retiered")}
+        if len(c.get("text") or "") >= L.CUT_AT:
+            c["text"] = c["text"][:L.CUT_AT]
+        crits.append(L.whole_criterion(c, crit_text))
+    out["criteria"] = crits
+    return out
+
+
+def lint_line(lr, item, cid, proof, root=ROOT, crit_text=None):
+    """-> why this proof line may not be filed for (item, cid), or None. item: RoundFx.items() shape. Wholeness is
+    judged as the checker's box sees it (boxed): crit_text is the .criteria file's text, read from root when None."""
+    if crit_text is None:
+        crit_text = criteria_text(item["id"], os.path.join(root, R.PROOFS_DIR))
+    item = boxed(item, crit_text)
     try:
         L.owed(item, cid)
     except ValueError as e:

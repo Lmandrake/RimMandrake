@@ -95,6 +95,18 @@ def main():
     why = W.lint_line(LR, item("pit_digs_deep", level="L3"), "A1", proof)
     check("lint refuses a non-live level", why and "not a live level" in why, why)
 
+    # --- the checker's box has no items/ prose: a criterion whole only there is cut until .criteria holds it
+    long = "pit_digs_deep reads PASS " + "y" * 160
+    full = item(long)       # RoundFx extended it from items/<ID>.md; the ledger holds long[:160]
+    why = W.lint_line(LR, full, "A1", proof, crit_text="")
+    check("lint refuses a criterion whole only in item prose (the box cannot read it)", why and "cut at" in why, why)
+    with tempfile.TemporaryDirectory() as d:
+        os.makedirs(os.path.join(d, W.R.PROOFS_DIR))
+        with open(os.path.join(d, W.R.PROOFS_DIR, "EG_ITEM.criteria"), "w") as f:
+            f.write("A1 L2: %s\n" % long)
+        why = W.lint_line(LR, full, "A1", proof, crit_text=W.criteria_text("EG_ITEM", os.path.join(d, W.R.PROOFS_DIR)))
+        check("the same criterion lints when live_proofs/<ID>.criteria (in the box) holds it whole", why is None, why)
+
     # --- append + per-mod
     with tempfile.TemporaryDirectory() as d:
         e = {"mod": "Pits", "by": ["row collapse.pit_digs_deep named in the criterion"], "proof": proof}
