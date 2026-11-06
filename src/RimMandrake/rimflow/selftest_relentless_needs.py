@@ -40,7 +40,8 @@ def index(**kw):
              deps={"UtinniPatches": ["mandrake.rsw.armoury"], "Armoury": ["neronix17.toolbox"],
                    "neronix17.toolbox": ["ebsg.framework"]})
     d.update(kw)
-    return N.Index(d["folders"], d["folded"], d["game"], d["packages"], d["repo_pids"], d["namespaces"], d["deps"])
+    return N.Index(d["folders"], d["folded"], d["game"], d["packages"], d["repo_pids"], d["namespaces"], d["deps"],
+                   d.get("defs"), d.get("stale"))
 
 
 def t_resolve():
@@ -148,7 +149,9 @@ def t_batch():
     fx = GapFx({"lead": ["KeelHoist"], "good": ["Armoury"], "bad": ["RimProperty"]})
     g = R.batch_gap(fx, [("lead", "live-mods: FlowWorks\n", "L"), ("good", "live-mods: UtinniPatches\n", "V"),
                          ("bad", "live-mods: RimMandrake.FlowWorks\n", "X")])
-    ok(g["mods"] == ["Armoury", "FlowWorks", "KeelHoist", "UtinniPatches"],
+    # ebsg.framework: neronix17.toolbox's hard dependency, two hops below the riders' folders, which the enable alone
+    # would miss; the gate now adds it (LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: a hard closure need is enforced)
+    ok(g["mods"] == ["Armoury", "FlowWorks", "KeelHoist", "UtinniPatches", "ebsg.framework"],
        "leader + valid rider ride; the invalid rider's own mods are left out", g["mods"])
     ok([(x["item"], x["pos"]) for x in g["refused"]] == [("X", 2)] and "nearest: FlowWorks" in g["refused"][0]["why"],
        "the bad rider is named with an actionable reason", g["refused"])
@@ -196,6 +199,16 @@ def t_preflight_names():
     G._names_bad(store, Fx(), "I", "s1", acts2)
     ok(acts2 == [], "the same build is advised once", acts2)
     ok(G._names_bad(store, object(), "I", "s1", []) == [], "a fake without game_names_check checks nothing")
+
+    class Fx3(object):      # LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: (refusal, warnings, inferred additions)
+        def game_names_check(self, item, sha):
+            return ("live-without FlowWorks, but the planned load holds it", [],
+                    [{"mod": "KeelHoist", "src": "script_home", "at": "src/RimMandrake/KeelHoist/p.py:0"}])
+    store, acts = Store(), []
+    bad = G._names_bad(store, Fx3(), "I", "s2", acts)
+    ok(len(bad) == 1 and "live-without" in bad[0]["why"], "a live-without conflict is a preflight refusal", bad)
+    ok(acts and acts[0].get("inferred") == ["KeelHoist (script_home src/RimMandrake/KeelHoist/p.py:0)"],
+       "the gate's additions are journaled with their evidence", acts)
 
 
 def t_one_resolver():
@@ -292,9 +305,180 @@ def t_replay_strict():
     ok(code == 0 and rep["R1_caught"] == "1/1" and rep["R1_hit"] == "1/1", "a warned R1 run passes", rep)
 
 
+# ---------------------------------------------------------------- LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: enforce
+
+DEFS = {"RM_FallRails": ["FlowWorks"], "RUT_PaleMoss": ["UtinniPatches"], "RM_Shared": ["FlowWorks", "KeelHoist"]}
+SAVE = ('<?xml version="1.0"?><savegame><meta><gameVersion>1.6</gameVersion><modIds><li>ludeon.rimworld</li>'
+        '<li>brrainz.harmony</li><li>7f.alienworlds</li><li>mandrake.rsw.armoury</li></modIds></meta><game>')
+
+
+def added(nd):
+    return sorted(a["mod"] for a in nd["add"])
+
+
+def t_each_source():
+    ix = index(defs=DEFS)
+    nd = lambda text, scripts=None, named=(), build=(), saves=None: N.needs(  # noqa: E731
+        text, scripts or {}, list(named), list(build), ix, saves=saves)
+    got = nd("live-proof A1: python3 src/RimMandrake/Utils/p.py --save Saves/fixture_a.rws\n",
+             saves={"Saves/fixture_a.rws": SAVE})
+    ok(set(added(got)) >= {"7f.alienworlds", "mandrake.rsw.armoury"} and
+       all(a["src"] == "fixture" for a in got["add"] if a["mod"] in ("7f.alienworlds", "mandrake.rsw.armoury")),
+       "a fixture save's <modIds> are needs (the base game and Harmony are never advice)", got["add"])
+    ok(N.proof_saves("live-proof A1: x --save Saves/a.rws\n# the b.rws save is absent here\n") == ["Saves/a.rws"],
+       "a save named only on an absence line is no fixture")
+    got = nd("live-proof A1: python3 src/RimMandrake/KeelHoist/p.py\n")
+    ok(added(got) == ["KeelHoist"] and got["add"][0]["src"] == "script_home", "the proof script's own mod", got["add"])
+    got = nd("live-proof A1: python3 src/RimMandrake/Wastes/plan.py\n", build=[])
+    ix2 = index(defs=DEFS, folded={"Wastes": ("RimMandrake.Biomes", "Wastes")})
+    got = N.needs("live-proof A1: python3 src/RimMandrake/Wastes/plan.py\n", {}, [], [], ix2)
+    ok(added(got) == ["RimMandrake.Biomes"], "a folded source's script needs the composed mod", got["add"])
+    got = N.needs("live-proof A1: true\n", {}, [], ["Stillsand"], ix)
+    ok(added(got) == ["RimMandrake.Biomes"] and got["add"][0]["src"] == "folded",
+       "the build's folded source adds the composed mod the load holds", got["add"])
+    got = nd("live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --needs 7f.alienworlds --needs ebsg.framework"
+             " --has ThingDef/X\n")
+    ok(set(added(got)) >= {"7f.alienworlds", "ebsg.framework"} and all(a["src"] == "proof_cli" for a in got["add"]),
+       "every --needs argument of a proof line is a need", got["add"])
+    got = nd("# `modlist_swap.py --enable neku.largepawns ebsg.framework --apply`\nlive-proof A1: true\n")
+    ok(set(added(got)) == {"neku.largepawns", "ebsg.framework"}, "a staging --enable run names every mod", got["add"])
+    got = nd("# Stager: the list ALSO needs Large Pawns (neku.largepawns, workshop 1)\nlive-proof A1: true\n")
+    ok(added(got) == ["neku.largepawns"] and got["add"][0]["src"] == "proof_cue", "a staging-cue line", got["add"])
+    got = nd("live-proof A1: python3 src/RimMandrake/Utils/q.py\n",
+             {"src/RimMandrake/Utils/q.py": 'call("RimMandrake.Property.RM_Verbs.Run")\n'})
+    ok(added(got) == ["RimProperty"] and got["add"][0]["src"] == "script_type",
+       "a C# type in one root namespace names its mod", got["add"])
+    got = nd("live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has ThingDef/RM_FallRails\n")
+    ok(added(got) == ["FlowWorks"] and got["add"][0]["src"] == "proof_defname",
+       "a defName exactly one mod defines names that mod", got["add"])
+    got = nd("live-mods: UtinniPatches\nlive-proof A1: true\n", named=["UtinniPatches"])
+    ok(added(got) == ["ebsg.framework", "neronix17.toolbox"] and all(a["src"] == "closure" for a in got["add"]),
+       "the hard dependencies the enable would miss (below an immediate one) are added", got["add"])
+    got = nd("live-proof A1: python3 src/RimMandrake/Utils/q.py --has ThingDef/RM_Shared\n",
+             {"src/RimMandrake/Utils/q.py": 'X = "UtinniPatches"\n'})
+    ok(added(got) == [] and sorted(a["mod"] for a in got["warn"]) == ["FlowWorks", "KeelHoist", "UtinniPatches"],
+       "a defName two mods define, and a quoted name in a script, only warn", got)
+
+
+def t_absence_gives_nothing():
+    ix = index(defs=DEFS)
+    for text, scripts in (("live-proof A1: python3 src/RimMandrake/Utils/p.py --absent RUT_PaleMoss\n", {}),
+                          ("live-proof A1: python3 src/RimMandrake/Utils/p.py\n",
+                           {"src/RimMandrake/Utils/p.py": 'assert_absent("RUT_PaleMoss")\n'}),
+                          ("live-proof A1: python3 src/RimMandrake/Utils/p.py\n",
+                           {"src/RimMandrake/Utils/p.py": '# RUT_PaleMoss is not present on this tier\n'}),
+                          ("live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --without UtinniPatches "
+                           "--has ThingDef/X\n", {})):
+        got = N.needs(text, scripts, [], [], ix)
+        ok(got["add"] == [] and got["warn"] == [], "an absence assertion gives no need: %s" % (text + str(scripts))[:70],
+           got)
+
+
+def t_live_without():
+    ix = index(defs=DEFS)
+    ok(N.live_without("live-without: UtinniPatches, 7f.alienworlds  # it measures their absence\n") ==
+       ["UtinniPatches", "7f.alienworlds"], "live-without parses like live-mods, # tail a comment")
+    ok(R.live_mods("live-without: UtinniPatches\nlive-mods: FlowWorks\n") == ["FlowWorks"],
+       "a live-without line is never read as mods to load")
+    text = ("live-without: UtinniPatches\nlive-proof A1: python3 src/RimMandrake/Utils/live_def_check.py "
+            "--needs mandrake.rut.utinnipatches --has ThingDef/RUT_PaleMoss\n")
+    got = N.needs(text, {}, [], [], ix)
+    ok(got["add"] == [] and got["without"] == ["UtinniPatches"] and got["conflict"] == [] and
+       N.without_conflict(got) is None, "inference never adds a live-without mod (by folder or packageId)", got)
+    ok(any(a["mod"] in ("UtinniPatches", "mandrake.rut.utinnipatches") and "live-without" in a.get("why", "")
+           for a in got["warn"]), "the blocked need is still shown, as a warning", got["warn"])
+    got = N.needs("live-mods: FlowWorks\nlive-without: FlowWorks\n", {}, ["FlowWorks"], [], ix)
+    ok(got["conflict"] == ["FlowWorks"] and "FlowWorks" in (N.without_conflict(got) or ""),
+       "a planned load holding a live-without mod is refused", got)
+    got = N.needs("live-without: Utinipatches\n", {}, [], ["UtinniPatches"], ix)
+    line = N.without_conflict(got)
+    ok(line and "'Utinipatches'" in line, "an unknown live-without name is refused", line)
+    got = N.needs("live-without: UtinniPatches\nlive-proof A1: true\n", {}, [], ["UtinniPatches"], ix)
+    ok(got["conflict"] == ["UtinniPatches"], "the build's own mod in live-without conflicts", got)
+
+
+def t_gate_enforces():
+    fx = GapFx({"lead": ["KeelHoist"]})
+    fx.names_index = lambda: index(defs=DEFS)
+    g = R.mod_gap(fx, "lead", "live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --needs 7f.alienworlds "
+                              "--has ThingDef/RM_FallRails\n", running=False)
+    ok(g["mods"] == ["7f.alienworlds", "FlowWorks", "KeelHoist"], "mod_gap adds sure needs to the planned load", g["mods"])
+    ok(sorted((x["mod"], x["src"]) for x in g["inferred"]) == [("7f.alienworlds", "proof_cli"),
+                                                              ("FlowWorks", "proof_defname")] and
+       all(x["at"] for x in g["inferred"]), "each addition carries its source and file:line", g["inferred"])
+    ok(fx.plans and "FlowWorks" in str(fx.plans[-1]) and "7f.alienworlds" not in str(fx.plans[-1]),
+       "an inferred folder is planned for deploy; a packageId only loaded", fx.plans)
+    g = R.mod_gap(fx, "lead", "live-without: KeelHoist\n", running=False)
+    ok(g["conflict"] and "KeelHoist" in g["conflict"], "mod_gap reports a live-without conflict before the slot", g)
+    fx2 = GapFx({"lead": ["KeelHoist"]})
+    fx2.names_index = lambda: index(defs=DEFS, stale={"FlowWorks": "its deployed DLL is older than its source"})
+    g = R.mod_gap(fx2, "lead", "live-proof A1: x --has ThingDef/RM_FallRails\n", running=False)
+    ok(g["mods"] == ["KeelHoist"] and g["warn"] == ["FlowWorks"] and not g["conflict"] and not g["unknown"],
+       "a stale index degrades the need to a warning, never a refusal", g)
+
+
+def t_batch_split():
+    fx = GapFx({"lead": ["KeelHoist"], "rider": ["Armoury"], "third": ["FlowWorks"]})
+    fx.names_index = lambda: index(defs=DEFS)
+    g = R.batch_gap(fx, [("lead", "live-mods: UtinniPatches\n", "L"), ("rider", "live-without: UtinniPatches\n", "W"),
+                         ("third", "live-proof A1: true\n", "T")])
+    ok([x["item"] for x in g["split"]] == ["W"] and "UtinniPatches" in g["split"][0]["why"] and
+       "Armoury" not in g["mods"] and "FlowWorks" in g["mods"],
+       "a rider live-without what the leader needs rides another load; the rest still ride", g)
+    g = R.batch_gap(fx, [("rider", "live-without: UtinniPatches\n", "W"), ("lead", "live-mods: UtinniPatches\n", "L")])
+    ok([x["item"] for x in g["split"]] == ["L"] and "UtinniPatches" not in g["mods"],
+       "the reverse: a rider needing what the leader is live-without splits off", g)
+    g = R.batch_gap(fx, [("lead", "live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has ThingDef/"
+                                  "RM_FallRails\n", "L"), ("rider", "live-without: FlowWorks\n", "W")])
+    ok([x["item"] for x in g["split"]] == ["W"], "an INFERRED need splits a live-without rider too", g)
+    ok(g["inferred"].get("L") and g["inferred"]["L"][0]["mod"] == "FlowWorks", "the batch records each rider's additions",
+       g["inferred"])
+
+
+def t_idempotent_and_run_row():
+    ix = index(defs=DEFS)
+    text = "live-proof A1: python3 src/RimMandrake/KeelHoist/p.py --needs 7f.alienworlds\n"
+    a, b = N.needs(text, {}, [], ["Stillsand"], ix), N.needs(text, {}, [], ["Stillsand"], ix)
+    ok(a == b and added(a) == ["7f.alienworlds", "KeelHoist", "RimMandrake.Biomes"], "needs is a pure function", a)
+    named = ["7f.alienworlds", "KeelHoist", "RimMandrake.Biomes"]
+    c = N.needs("live-mods: %s\n" % ", ".join(named) + text, {}, named, ["Stillsand"], ix)
+    ok(c["add"] == [], "a proof naming every addition gets none (the derived list is a fixed point)", c["add"])
+    seen = {}
+
+    class RunFx(GapFx):
+        def items(self):
+            return [{"id": "L", "stage": "game", "built_sha": "lead", "criteria": [{"id": "A1"}]}]
+
+        def proofs(self, item):
+            return text
+
+        def game_started(self):
+            return 1_799_999_000.0
+
+    def run(fx, root, item_id, cid, proof, deploy, r, now=None, needs=(), site=None, trees=(), env=None):
+        seen.update(needs=list(needs), env=env)
+        return {"item": item_id, "criterion": cid, "outcome": "PASS", "why": "", "sha": "lead"}
+    import tempfile
+    fx = RunFx({"lead": ["KeelHoist"]})
+    fx.names_index = lambda: ix
+    fx.folded = lambda: {}
+    orig = R.candidates
+    R.candidates = lambda items, proofs, hist, now, retry, game: ([("L", "A1", "python3 p.py", "lead")], {})
+    try:
+        with tempfile.TemporaryDirectory() as root:
+            R.run_round(fx, root, {}, now=1_800_000_000, run=run)
+    finally:
+        R.candidates = orig
+    env = seen.get("env") or {}
+    ok("7f.alienworlds" in seen.get("needs", []) and "7f.alienworlds" in env.get("mods", []) and
+       {"mod": "7f.alienworlds", "src": "proof_cli"}.items() <= (env.get("inferred") or [{}])[0].items(),
+       "the run row records the effective mod list and each inferred addition with its evidence", seen)
+
+
 def main():
     for t in (t_resolve, t_blind_index, t_check_and_refusal, t_comment, t_advise, t_batch, t_preflight_names,
-              t_one_resolver, t_fixture_roundtrip, t_typed_and_data, t_replay_strict):
+              t_one_resolver, t_fixture_roundtrip, t_typed_and_data, t_replay_strict, t_each_source,
+              t_absence_gives_nothing, t_live_without, t_gate_enforces, t_batch_split, t_idempotent_and_run_row):
         t()
     print('{"ok": %d, "fails": %d}' % (n_ok, len(fails)))
     return 1 if fails else 0

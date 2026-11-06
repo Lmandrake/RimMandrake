@@ -1,6 +1,6 @@
 # Live-mods filing check: a deep design pass (2026-11-05)
 
-Status: DESIGN ONLY. No code has changed. Owner direction (Mandrake, 2026-11-05): add a check, at filing or proof-write time, that a proof names every mod it needs, and auto-infer a missing name when the proof code reaches into a named mod. His words: "Yes. Do a deep design pass in the concept though to make sure it's well reasoned."
+Status: BUILT by LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT (2026-11-06; enforced at the gate, derived, `live-without:` opt-out); its evidence: `design/RimMandrake/live_needs_enforce_evidence_2026-11-06.md`. The text below is the design as amended by that item. Owner direction (Mandrake, 2026-11-05): add a check, at filing or proof-write time, that a proof names every mod it needs, and auto-infer a missing name when the proof code reaches into a named mod. His words: "Yes. Do a deep design pass in the concept though to make sure it's well reasoned."
 
 Review shape: this is an INCOMPLETE 3x2. Pass 1 and the re-measure were done in this seat, and the census numbers were recounted from raw data (runs.jsonl, the item store, and git history). The blind ChatGPT consult and its critique were not run in this sitting, so §9 lists the questions that a second pass should test.
 
@@ -175,7 +175,7 @@ Every name is normalised by one function, `resolve(name)`. It returns `folder | 
 
 ### 5.2 Where it lives
 
-The core is one pure module: `src/RimMandrake/rimflow/relentless_needs.py`. It is called from three places.
+The core is one pure module: `src/RimMandrake/rimflow/relentless_names.py` (`needs()`). It is called from three places.
 
 - **Proof-write and filing time** (`rimflow` file/proof steps, plus a `live_proofs` lint in `run_selftests`). It runs offline with no game and costs well under a second per proof. This is the owner's point (1).
 - **The pre-slot gate** (`mod_gap` and `batch_gap`). It runs the same function over the books' current proof file, the one `_mods_text` reads. That catches proofs edited after filing, and batch riders.
@@ -187,21 +187,21 @@ The core is one pure module: `src/RimMandrake/rimflow/relentless_needs.py`. It i
 |---|---|---|
 | A declared name resolves to UNKNOWN (no folder, no packageId, no folded map) | **refuse** | **refuse this rider only**: drop it from the batch, keep the load for the others (fixes the TITANIC_WYZE whole-load hold) |
 | A declared name is a folded source | **rewrite** to the composed mod, and log it | rewrite |
-| A `sure` need is missing (fixture save, script path, CLI `--mod`, single-owner type or defName) | **auto-write** to the `live-mods` line, with a `# auto: <evidence>` comment, and commit with the proof | auto-write into the books' copy, re-plan the batch, and record a note on the item |
-| A hard `modDependencies` need is missing | auto-write | auto-write |
+| A `sure` need is missing (fixture save, script path, CLI `--mod`/`--needs`/`--enable`, staging line, single-owner type or defName) | **print** it as information; nothing is written into the proof | **add** it to the planned load (derived at every gate, never persisted), and record it with its evidence on the run row (`env`) and the journal |
+| A hard `modDependencies` need is missing | print | add |
 | A `soft` or ambiguous need (multi-owner type, MayRequire only, generic defName) | **warn** in the filing output and on the item | warn; do not block |
-| A need that conflicts with a declared `live-absent:` | refuse | refuse the rider |
+| A need on a mod the proof declares `live-without:` | never added (warn) | never added; a planned load holding it refuses the item before the slot, and a rider needing it splits off a batch with a `live-without` one |
 | The mod is needed but undeployed or stale | (out of scope: the existing deploy gate) | existing gate |
 
-The auto-write rule needs one owner, one source of evidence named in the comment, and a name that resolves. Anything less only warns. The aim is that a false positive costs a warning line and never a held item.
+The add rule needs one owner, one source of evidence (file:line on the run row), and a name that resolves. Anything less only warns. The aim is that a false positive costs a warning line and never a held item.
 
 ### 5.4 Failure modes
 
 | Failure mode | Effect | Mitigation |
 |---|---|---|
 | False negative: a need reached only through dynamic strings (reflection by name, `DefDatabase.GetNamed(var)`) | Unchanged from today: the proof fails live | Post-fail pass A |
-| False positive: a defName defined by several mods (a patch in one mod, the def in another) | Enabling an extra mod only adds load time | It never auto-writes on its own; it warns |
-| A stale index (dll/def dump older than the build) | Wrong owner | Key the index on the deploy fingerprint. If it is stale, auto-write degrades to warn. It must never refuse on the index alone |
+| False positive: a defName defined by several mods (a patch in one mod, the def in another) | Enabling an extra mod only adds load time | It never adds at the gate on its own; it warns |
+| A stale index (dll/def dump older than the build) | Wrong owner | Key the index on the deploy fingerprint. If it is stale, add at the gate degrades to warn. It must never refuse on the index alone |
 | Interference: an inferred extra mod changes the behaviour a proof measures | A wrong PASS or FAIL | A proof that is sensitive to extras declares `live-tier: exact` (§6), and the resolver then never writes; it only refuses or warns |
 | Books and build copies disagree | R3 again | Read the books' copy only, the same source staging reads |
 
@@ -210,9 +210,9 @@ The auto-write rule needs one owner, one source of evidence named in the comment
 "Must include, may include others" is kept as the default. The design adds two optional declarations:
 
 - `live-tier: <name>` (for example `ratchet_pilot`, `full`, `rm`). The list is that tier's modlist, plus the declared and `sure` needs. The resolver then checks that every need is either in the tier or explicitly added. An added need that turns the tier into something else is refused: under `live-tier: exact <name>` no additions are allowed at all. VITALS (WRONG_TIER, 42 running against 20..26) and GENERATOR_MODS (a modlist name written into the mods line) become declarations instead of failures.
-- `live-absent: <mods>`. These mods must not be loaded. Staging already only enables. The staging side of absence belongs to LANE_TIER_WIRE_A_WHOLE_LIST_LOAD, which owns whole-list swaps. Until that work lands, the gate refuses a rider whose `live-absent` holds a mod in the planned load, and holds the rider before the slot instead of after it (STILLSAND_RETURN_REMAINDER_1, which needs Utinni absent).
+- `live-without: <mods>`. The proof intends to run without these mods; inference never adds them. Staging already only enables. The staging side of absence belongs to LANE_TIER_WIRE_A_WHOLE_LIST_LOAD, which owns whole-list swaps. Until that work lands, the gate refuses a rider whose `live-without` holds a mod in the planned load, and holds the rider before the slot instead of after it (STILLSAND_RETURN_REMAINDER_1, which needs Utinni absent).
 
-The resolver never auto-writes into an exact-tier proof. Batching puts exact-tier riders on a load of their own, because they cannot be unioned. `batch_gap` must partition by tier before it unions.
+The resolver never writes into any proof. Batching puts exact-tier riders on a load of their own, because they cannot be unioned. `batch_gap` must partition by tier before it unions.
 
 ## 7 Verification plan
 
@@ -220,7 +220,7 @@ The resolver never auto-writes into an exact-tier proof. Batching puts exact-tie
 
 - Resolve: `FlowWorks` gives a folder, `RimMandrake.Biomes` gives a folder (it is dotted), `mandrake.rm.biomes` gives a packageId, `CreatureBehaviors` and `Stillsand` give RimMandrake.Biomes (folded), and `RimMandrake.FlowWorks` gives UNKNOWN.
 - Source fixtures, one per source. A proof script under `src/RimMandrake/Stillsand/` needs RimMandrake.Biomes. A `.rws` fixture header gives its modIds. A proof calling `AlienWorlds.PlanetTypeManager` resolves to 7f.alienworlds through a stub assembly index.
-- Policy: a `sure` need is auto-written with an evidence comment, an ambiguous one warns, an UNKNOWN refuses, `live-tier: exact` never writes, and a `live-absent` conflict refuses.
+- Policy: a `sure` need is added to the planned load with its evidence (never written into the proof), an ambiguous one warns, an UNKNOWN refuses, and a `live-without` conflict refuses.
 - Batch: an UNKNOWN on one rider drops that rider only, and two tiers split into two loads.
 - Instrument check: on a proof that is already complete, the resolver reports zero missing **and** at least one need found by each source it claims to read. A zero produced by a blind index fails the test.
 
@@ -230,31 +230,31 @@ Check out each item's proof file as it stood **before** its repair commit (from 
 
 | Item | Expected hit | Source | Action |
 |---|---|---|---|
-| TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING | 7f.alienworlds | code type | auto-write |
-| SETTLEMENT_VERBS_WAVE_1 | RimProperty | code type / namespace | auto-write |
-| GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1 | KeelHoist, UtinniPatches | defNames / MayRequire | KeelHoist auto-write, Utinni warn |
-| ART_OVERRIDE_FAMILY_SCRIPT_1 | Webwork, Scarlands, sarg.alphamemes, VE genetics | donor defNames in the override script | auto-write the single-owner ones, warn on the rest |
-| TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO | EnvironmentalHazards, RimMandrake.Biomes | defNames / folded | auto-write |
-| TITANIC_BODYSIZE_TEST_RACE_1 | HugeThingsTestRaces, neku.largepawns | defNames, dependency closure | auto-write |
-| WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR | arandomkiwi.rimthemes, NullTexTrace | closure of MenuShell; script path | auto-write |
-| HEAVY_TEXTURES_MEASURE_REAL_VRAM | its workshop dependencies | closure | auto-write |
-| MODCHECK_DONOR_ENVIRONMENTS_1 | Armoury dependencies, WreckedMachines | closure, `--mod` | auto-write |
-| HORRORS_RAIDING_FACTION_1 | AshkarrWeatherSuite | defName (weather) | auto-write or warn |
-| RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY | FlowWorks | code type RM_FallRails | auto-write |
-| GRAFFITI_NORTHSTAR_GREEN_FULL_1 | Graffiti | scenario JSON / `--mod` | auto-write |
-| PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET, GSS_* | GimmeSomeSlack | script path / CLI | auto-write |
-| STILLSAND_DUNE_GALE, STILLSAND_SAND_SWIM, WASTELAND_LIVE_SUITE, WEEPINGSTONES_HANDLER, SUMP_GLASSWALK | RimMandrake.Biomes | script path + folded map | auto-write |
+| TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING | 7f.alienworlds | code type | add at the gate |
+| SETTLEMENT_VERBS_WAVE_1 | RimProperty | code type / namespace | add at the gate |
+| GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1 | KeelHoist, UtinniPatches | defNames / MayRequire | KeelHoist add at the gate, Utinni warn |
+| ART_OVERRIDE_FAMILY_SCRIPT_1 | Webwork, Scarlands, sarg.alphamemes, VE genetics | donor defNames in the override script | add at the gate the single-owner ones, warn on the rest |
+| TAOZIN_SPLIT_BUILD_ONE_WORM_BECOMES_TWO | EnvironmentalHazards, RimMandrake.Biomes | defNames / folded | add at the gate |
+| TITANIC_BODYSIZE_TEST_RACE_1 | HugeThingsTestRaces, neku.largepawns | defNames, dependency closure | add at the gate |
+| WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR | arandomkiwi.rimthemes, NullTexTrace | closure of MenuShell; script path | add at the gate |
+| HEAVY_TEXTURES_MEASURE_REAL_VRAM | its workshop dependencies | closure | add at the gate |
+| MODCHECK_DONOR_ENVIRONMENTS_1 | Armoury dependencies, WreckedMachines | closure, `--mod` | add at the gate |
+| HORRORS_RAIDING_FACTION_1 | AshkarrWeatherSuite | defName (weather) | add at the gate or warn |
+| RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY | FlowWorks | code type RM_FallRails | add at the gate |
+| GRAFFITI_NORTHSTAR_GREEN_FULL_1 | Graffiti | scenario JSON / `--mod` | add at the gate |
+| PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET, GSS_* | GimmeSomeSlack | script path / CLI | add at the gate |
+| STILLSAND_DUNE_GALE, STILLSAND_SAND_SWIM, WASTELAND_LIVE_SUITE, WEEPINGSTONES_HANDLER, SUMP_GLASSWALK | RimMandrake.Biomes | script path + folded map | add at the gate |
 | OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN | CreatureBehaviors → RimMandrake.Biomes | resolve | rewrite |
 | WATER_DEPTH_RESKIN_HE_LOOKS_FIRST | `RimMandrake.FlowWorks` | resolve | refuse |
 | GENERATOR_MODS_PROVE_INERT_AFTER_CREATION | modlist name in the mods line | resolve, then `live-tier` | refuse, with a message pointing to `live-tier:` |
-| ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP | the save's modIds | fixture | auto-write |
-| VITALS, STILLSAND_RETURN | (no hit) | needs a declaration | refuse until `live-tier` / `live-absent` |
+| ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP | the save's modIds | fixture | add at the gate |
+| VITALS, STILLSAND_RETURN | (no hit) | needs a declaration | refuse until `live-tier` / `live-without` |
 
 Pass bars:
 
 - At least 17 of the 20 R1/R2 items are hit before repair, with the right mod.
 - All 5 R4 items are refused or rewritten.
-- There are zero auto-writes of a wrong mod across the replay.
+- There are zero additions of a wrong mod across the replay.
 - A negative control finds zero `sure` additions across the 25 newer proofs that were complete at creation (`NEW` rows in `slots.txt`), and any warnings are listed.
 
 WARSCAR_HOSPICE_DESERTERS_1 and CANON_MATERIALS_BUILD_1 are deploy-plan or running-load cases. They are replayed against the pre-slot gate, not the filing gate.
@@ -271,8 +271,8 @@ WARSCAR_HOSPICE_DESERTERS_1 and CANON_MATERIALS_BUILD_1 are deploy-plan or runni
 
 ## 9 Open questions
 
-1. Is `live-tier:` / `live-absent:` acceptable as a proof-file declaration, or should the tier live on the rimflow item? This is the boundary with LANE_TIER_WIRE_A_WHOLE_LIST_LOAD, which should own whichever is chosen.
+1. Is `live-tier:` / `live-without:` acceptable as a proof-file declaration, or should the tier live on the rimflow item? This is the boundary with LANE_TIER_WIRE_A_WHOLE_LIST_LOAD, which should own whichever is chosen.
 2. Auto-write at filing commits a change to the proof file. Should the human or agent filing it see a diff first, or is the `# auto:` evidence comment enough? The recommendation is the comment, plus a line in the filing output.
 3. Should the namespace index come from deployed DLLs (current, but needs a deploy) or from the repo's `.csproj`/source (always available, but misses workshop mods)? The recommendation is the deployed DLLs, with workshop folders included.
 4. Should the post-fail write (A) ship in v1 or wait for the replay residue? The recommendation is to wait.
-5. The second-model pass (ChatGPT, blind then critique) was not run in this sitting. It should test whether the namespace-to-mod index is reliable enough to auto-write on (false-positive risk), and whether `live-absent` belongs here or in the tier lane.
+5. The second-model pass (ChatGPT, blind then critique) was not run in this sitting. It should test whether the namespace-to-mod index is reliable enough to add at the gate on (false-positive risk), and whether `live-absent` belongs here or in the tier lane.

@@ -788,7 +788,9 @@ class GameFx(object):
         return relentless_live_round.mod_gap(self._round_fx(), sha, self._mods_text(item, sha), running, item)
 
     def game_names_check(self, item, sha):
-        """relentless_names over the item's live_proofs text (_mods_text) -> (refusal or None, [advice])."""
+        """relentless_names over the item's live_proofs text (_mods_text) -> (refusal or None, [advice: warn only],
+        [inferred: the needs the gate adds to its load]). A live-without the planned load holds (or that names no mod)
+        is a refusal too, before any slot (LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT)."""
         import relentless_live_round
         import relentless_names
         text = self._mods_text(item, sha)
@@ -801,13 +803,15 @@ class GameFx(object):
             except OSError:
                 return ""
         scripts = relentless_names.gather_scripts(text, read)
+        saves = relentless_names.gather_saves(text, lambda p: read(p)[:262144])
+        why = relentless_names.refusal(chk["refused"])
         try:
-            build = set(relentless_live_round.item_mods(self._round_fx(), item, sha))
-            have = set(chk["mods"]) | set(relentless_names.check(sorted(build), index)["mods"])
-            advice = relentless_names.advise(text, scripts, have, index, named=chk["mods"], build=build)
+            build = sorted(relentless_live_round.item_mods(self._round_fx(), item, sha))
+            nd = relentless_names.needs(text, scripts, chk["mods"], build, index, saves=saves)
         except (ValueError, OSError):
-            advice = []
-        return relentless_names.refusal(chk["refused"]), advice
+            return why, [], []
+        clash = relentless_names.without_conflict(nd)
+        return ("; ".join(x for x in (why, clash) if x) or None), nd["warn"], nd["add"]
 
     def game_batch_gap(self, builds):
         """relentless_live_round.batch_gap: every [(item, sha)] riding one load, for one deploy plan."""
@@ -1337,10 +1341,14 @@ def _names_bad(store, fx, item, sha, acts):
     a proof. A fake without game_names_check checks nothing."""
     if not hasattr(fx, "game_names_check"):
         return []
-    why, advice = fx.game_names_check(item, sha)
-    if advice and ((store.load(item) or {}).get("game") or {}).get("advised") != sha:
-        acts.append({"do": "live_mods_advice", "item": item, "sha": sha,
-                     "advice": ["%s (%s)" % (a["mod"], a["at"]) for a in advice][:8]})
+    got = fx.game_names_check(item, sha)
+    why, advice, inferred = got[0], got[1], (got[2] if len(got) > 2 else [])
+    if (advice or inferred) and ((store.load(item) or {}).get("game") or {}).get("advised") != sha:
+        act = {"do": "live_mods_advice", "item": item, "sha": sha,
+               "advice": ["%s (%s)" % (a["mod"], a["at"]) for a in advice][:8]}
+        if inferred:    # LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: added to the load by the gate, never to the proof
+            act["inferred"] = ["%s (%s %s)" % (a["mod"], a["src"], a["at"]) for a in inferred][:8]
+        acts.append(act)
         _save(store, item, lambda s: s.setdefault("game", {}).update(advised=sha))
     if not why:
         return []
@@ -1707,6 +1715,11 @@ def step(store, fx, r, item, now, acts, sup):
             acts.append({"do": "game_rider_names_refused", "item": item, "riders": bad,
                          "why": "; ".join(x["why"] for x in gaps[0]["refused"] if x.get("pos"))[:300]})
             others = [o for o in others if o["item"] not in bad]
+        split = sorted({x["item"] for x in gaps[0].get("split") or []})
+        if split:   # needs X / live-without X: never one load; the rider stages on a load of its own later
+            acts.append({"do": "game_rider_without_split", "item": item, "riders": split,
+                         "why": "; ".join(x["why"] for x in gaps[0]["split"])[:300]})
+            others = [o for o in others if o["item"] not in split]
         # every rider's own lane fix rides with it: a passenger marked staged without its remedy run would read its next
         # identical environment failure as a failed fix and hold (Codex, ..._TEN_MORE #9)
         remedy = merged_remedy([g.get("remedy")] + [(o.get("game") or {}).get("remedy") for o in others]) or {}

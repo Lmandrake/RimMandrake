@@ -112,6 +112,8 @@ def proof_lines(prose, pattern=PROOF_LINE):
 
 LIVE_MODS = re.compile(r"^\s*(?:[-*]\s+)?`?live-(?:mods|deploy)\s*:\s*(?P<mods>[^`]*)`?\s*$")
 LIVE_DEPLOY = re.compile(r"^\s*(?:[-*]\s+)?`?live-deploy\s*:\s*(?P<mods>[^`]*)`?\s*$")
+# the mods a proof intends to run WITHOUT (LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT): never loaded by it, never inferred
+LIVE_WITHOUT = re.compile(r"^\s*(?:[-*]\s+)?`?live-without\s*:\s*(?P<mods>[^`]*)`?\s*$")
 
 
 LIVE_TIER = re.compile(r"^\s*(?:[-*]\s+)?`?live-tier\s*:\s*(?P<tier>[^`#]*?)`?\s*(?:#.*)?$")
@@ -155,6 +157,27 @@ def names_check(fx, names):
         return {"mods": list(names), "refused": [], "normalized": [], "unverified": []}
     import relentless_names
     return relentless_names.check(names, index)
+
+
+def infer(fx, text, named, build):
+    """relentless_names.needs for the gate (LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT): derived at each gate from the books'
+    proofs text and the scripts it runs, never written into the proof. -> the needs dict, or None for a fake without
+    names_index (it infers nothing). fx.read_books / fx.read_head, when present, read the scripts and save headers."""
+    index = fx.names_index() if hasattr(fx, "names_index") else None
+    if index is None:
+        return None
+    import relentless_names as N
+    scripts = N.gather_scripts(text, getattr(fx, "read_books", None) or N.read_books)
+    saves = N.gather_saves(text, getattr(fx, "read_head", None) or N.read_head)
+    nd = N.needs(text, scripts, named, build, index, saves=saves)
+    for a in nd["add"]:     # one of our packageIds plans as its folder: deployed and enabled, as live-mods would have it
+        a["mod"] = index.repo_pids.get(str(a["mod"]).lower(), a["mod"])
+    return nd
+
+
+def inferred_rows(nd):
+    """needs() -> the run row's record of what the gate added and why: [{"mod", "src", "at"}]."""
+    return [{"mod": a["mod"], "src": a["src"], "at": a["at"]} for a in (nd or {}).get("add") or []]
 
 
 def is_package(name):
@@ -330,14 +353,21 @@ def mod_gap(fx, sha, text, running=True, item=None):
     ModsConfig), "dll": [stale or missing DLLs in the game folder], "running": why the RUNNING load lacks them or None,
     "error": why the plan could not be read or None}. running=False skips the bridge read (no game, or a staging).
     item: the item built at `sha`, so a proof-only built commit stands for its item's mods (item_mods)."""
-    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None, "unknown": None}
+    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None, "unknown": None, "inferred": [], "warn": [],
+           "without": [], "conflict": None}
     chk = names_check(fx, live_mods(text))
     out["unknown"] = _refusal(chk["refused"])     # left out of the plan; relentless_game._preflight refuses the item
     try:
-        mods = sorted(set(item_mods(fx, item, sha)) | set(chk["mods"]))
+        build = item_mods(fx, item, sha)
     except ValueError as e:
         out["error"] = str(e)[:200]
         return out
+    nd = infer(fx, text, chk["mods"], build)
+    mods = sorted(set(build) | set(chk["mods"]) | {a["mod"] for a in (nd or {}).get("add") or []})
+    if nd is not None:
+        import relentless_names as N
+        out.update(inferred=inferred_rows(nd), warn=[a["mod"] for a in nd["warn"]], without=nd["without"],
+                   conflict=N.without_conflict(nd))
     out["mods"] = mods
     if not mods:
         return out
@@ -352,8 +382,8 @@ def batch_gap(fx, builds):
     A staging needs only the union (enable_set, dll_mods); planned per item, 17 riders took 17 sequential plans of
     about 140 s over the Windows mount before the tick's 20-minute kill (TICK_SPEED_FIX_GAME_IDLES_WAITING). A build whose
     mods cannot be read rides without them and says so in `error`; the others still plan."""
-    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None, "refused": []}
-    mods = set()
+    out = {"mods": [], "off": {}, "dll": [], "running": None, "error": None, "refused": [], "split": [], "inferred": {}}
+    mods, without = set(), {}      # without: {mod: the item that is live-without it}
     for pos, b in enumerate(builds):
         sha, text, item = (tuple(b) + (None,))[:3]
         # LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_BOARDING: each build's names are resolved BEFORE the union. A rider naming
@@ -365,9 +395,25 @@ def batch_gap(fx, builds):
             if pos:
                 continue
         try:
-            mods |= set(item_mods(fx, item, sha)) | set(chk["mods"])
+            build = item_mods(fx, item, sha)
         except ValueError as e:
             out["error"] = str(e)[:200]
+            continue
+        nd = infer(fx, text, chk["mods"], build)
+        own = set(build) | set(chk["mods"]) | {a["mod"] for a in (nd or {}).get("add") or []}
+        mine = set((nd or {}).get("without") or [])
+        # LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: a rider needing X never rides with one that is live-without X; staging
+        # only enables, so it waits for a load of its own (the leader rides first; its own conflict is its preflight's)
+        clash = sorted((own & set(without)) | (mine & mods)) if pos else []
+        if clash:
+            out["split"].append({"item": item, "pos": pos, "why": "live-without conflict on %s with %s" % (
+                ", ".join(clash), ", ".join(sorted({without.get(m) or "the load's other riders" for m in clash})))})
+            continue
+        mods |= own
+        for m in mine:
+            without.setdefault(m, item)
+        if nd is not None and nd["add"]:
+            out["inferred"][item or str(pos)] = inferred_rows(nd)
     out["mods"] = sorted(mods)
     if mods:
         _plan_into(fx, out["mods"], out)
@@ -524,8 +570,14 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         ran += 1
         text = fx.proofs(item_id)
         trees = live_deploy(text)
+        declared = live_mods(text)
+        nd = infer(fx, text, names_check(fx, declared)["mods"], mods)
+        need = declared + [a["mod"] for a in (nd or {}).get("add") or [] if a["mod"] not in declared]
+        env = {"mods": sorted(set(mods) | set(need)), "inferred": inferred_rows(nd),
+               "without": (nd or {}).get("without") or []}     # what environment produced this verdict
         row = run(fx, root, item_id, cid, proof, deploy_args(list(mods) + trees, folded), r, now=time.time(),
-                  needs=live_mods(text), site=proof_lines(text, SITE_LINE).get(cid), trees=trees)
+                  needs=need, site=proof_lines(text, SITE_LINE).get(cid), trees=trees,
+                  **({"env": env} if nd is not None else {}))
         summary["runs"].append({k: row.get(k) for k in ("item", "criterion", "outcome", "why", "sha")})
         if item_gate(row):
             gated.add((item_id, sha))

@@ -16,9 +16,14 @@ went unseen until a load refused it, and one rider's `RimMandrake.FlowWorks` hel
                 because an instrument that cannot see is no evidence of a wrong name
     unknown     none of these: REFUSED, with what the name looked like and the nearest known names
 
-Need inference (advise) is ADVISORY: a warning with file:line evidence, never written into a proof. A name on an absence
-line (`--absent RUT_PaleMoss`, "not loaded", "forbid") is no evidence of need (the blind review's caution).
-CLI: `check --item ID` (the books' current file), `replay --fixture F` (the census replay), `extract` (builds it).
+Need inference (needs/advise), LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: a need from a SURE source is ADDED to the planned
+load by the pre-slot gate (relentless_live_round.mod_gap/batch_gap), derived every time and never written into a proof;
+the run row records it with its file:line evidence (`env`). Every other need only warns. `live-without: <mods>` is the
+explicit opt-out for a proof that intends a mod's absence: never inferred, a planned load holding one is refused before
+the slot, and batch_gap never puts a rider needing X on a load with one that is live-without X. A name on an absence
+line (`--absent RUT_PaleMoss`, "not loaded", "not present", "forbid") is no evidence of need (the blind review's caution).
+CLI: `check --item ID` (the books' current file), `replay [--enforce] --fixture F` (the census replay), `migrate` (every
+live proof), `extract` (builds the fixture), `baseline` (runs.jsonl's mod-list rows in a window).
 """
 import argparse
 import difflib
@@ -46,7 +51,8 @@ class Index(object):
     game's Mods folder (None: unreadable); packages: installed packageIds, lower-case (None: unreadable), or a callable
     returning them (paid only when a dotted non-folder name is asked); repo_pids: {packageId lower: repo folder}."""
 
-    def __init__(self, folders, folded=None, game=None, packages=None, repo_pids=None, namespaces=None, deps=None):
+    def __init__(self, folders, folded=None, game=None, packages=None, repo_pids=None, namespaces=None, deps=None,
+                 defs=None, stale=None):
         self.folders = set(folders) if folders is not None else None
         self.folded = dict(folded or {})
         self.targets = {t for t, _k in self.folded.values()}
@@ -55,6 +61,27 @@ class Index(object):
         self.repo_pids = {k.lower(): v for k, v in (repo_pids or {}).items()}
         self.namespaces = dict(namespaces or {})     # C# root namespace -> repo mod folder (advice only)
         self._deps = deps                            # mod folder or packageId -> [dependency packageIds]
+        self._defs = defs                            # RM_/RSW_/RUT_ defName -> [mod folders defining it] (or callable)
+        self._stale = stale                          # {mod: why} or callable(mod) -> why or None: its index entry is
+        #                                              older than what the game folder holds (needs() then only warns)
+
+    @property
+    def defs(self):
+        if callable(self._defs):
+            try:
+                self._defs = self._defs()
+            except Exception:
+                self._defs = {}
+        return self._defs or {}
+
+    def stale_for(self, mod):
+        """Why the index's knowledge of `mod` (its namespace, defNames) is older than its deployed copy, or None."""
+        if callable(self._stale):
+            try:
+                return self._stale(mod)
+            except Exception:
+                return None
+        return (self._stale or {}).get(mod)
 
     @property
     def deps(self):
@@ -92,12 +119,15 @@ class Index(object):
                 "packages": sorted(self.packages) if self.packages is not None else None,
                 "repo_pids": dict(sorted(self.repo_pids.items())),
                 "namespaces": dict(sorted(self.namespaces.items())),
-                "deps": {k: v for k, v in sorted(self.deps.items()) if v}}
+                "deps": {k: v for k, v in sorted(self.deps.items()) if v},
+                "defs": {k: list(v) for k, v in sorted(self.defs.items())},
+                "stale": dict(self._stale) if isinstance(self._stale, dict) else {}}
 
     @classmethod
     def from_json(cls, d):
         return cls(d.get("folders"), {k: tuple(v) for k, v in (d.get("folded") or {}).items()}, d.get("game"),
-                   d.get("packages"), d.get("repo_pids"), d.get("namespaces"), d.get("deps"))
+                   d.get("packages"), d.get("repo_pids"), d.get("namespaces"), d.get("deps"), d.get("defs"),
+                   d.get("stale"))
 
 
 def nearest(name, index, n=3):
@@ -227,7 +257,7 @@ def default_index():
             ns = _root_namespace(proj)
             if ns and ns not in namespaces:
                 namespaces[ns] = folder
-    game = None
+    game, GAME_DIR = None, ""
     try:
         from game_paths import GAME_DIR
         mods = os.path.join(GAME_DIR, "Mods")
@@ -258,10 +288,64 @@ def default_index():
         except OSError:
             pass
         return out
-    idx = Index(list(dirs) if dirs is not None else None, folded, game, lambda: list(scan()), pids, namespaces, all_deps)
+    srcs = dict(dirs or {})
+
+    def stale(mod):
+        """A mod whose deployed DLL is older than its newest .cs source: the namespace index (read from the repo) speaks
+        for code the game folder does not hold yet (the deploy gate deploys it; until then a need from it only warns)."""
+        if mod not in srcs or game is None:
+            return None
+        dlls = _newest(os.path.join(GAME_DIR, "Mods", mod), (".dll",), "Assemblies")
+        cs = _newest(srcs[mod], (".cs",))
+        if cs and dlls and dlls < cs:
+            return "%s's deployed DLL is older than its source" % mod
+        return None
+    idx = Index(list(dirs) if dirs is not None else None, folded, game, lambda: list(scan()), pids, namespaces, all_deps,
+                lambda: repo_defs(srcs), stale)
     if not blind:
         _DEFAULT = idx
     return idx
+
+
+DEF_TAG = re.compile(r"<defName>\s*((?:RM|RSW|RUT)_[A-Za-z0-9_]+)\s*</defName>")
+
+
+def repo_defs(srcs):
+    """{repo mod folder: its source dir} -> {RM_/RSW_/RUT_ defName: [folders whose Defs/ define it]}. Our prefixes only:
+    a donor defName needs the def dump, and an unprefixed one is too generic to name an owner."""
+    out = {}
+    for folder, src in sorted(srcs.items()):
+        for dp, dn, fn in os.walk(src):
+            dn[:] = [d for d in dn if d not in (".git", "obj", "bin", "Source", "Textures", "Sounds")]
+            if "Defs" not in dp.replace("\\", "/").split("/"):
+                continue
+            for f in fn:
+                if not f.endswith(".xml"):
+                    continue
+                try:
+                    with open(os.path.join(dp, f), encoding="utf-8", errors="replace") as fh:
+                        body = fh.read()
+                except OSError:
+                    continue
+                for d in DEF_TAG.findall(body):
+                    if folder not in out.setdefault(d, []):
+                        out[d].append(folder)
+    return out
+
+
+def _newest(root, exts, under=None):
+    best = 0.0
+    for dp, dn, fn in os.walk(root):
+        dn[:] = [d for d in dn if d not in (".git", "obj", "bin")]
+        if under and under not in dp.replace("\\", "/").split("/"):
+            continue
+        for f in fn:
+            if f.endswith(exts):
+                try:
+                    best = max(best, os.path.getmtime(os.path.join(dp, f)))
+                except OSError:
+                    pass
+    return best
 
 
 def _csprojs(src):
@@ -283,13 +367,17 @@ def _root_namespace(proj):
 
 # --------------------------------------------------------------------------- advisory need inference
 
-ABSENT = re.compile(r"absent|absence|not\s+loaded|forbid|must\s+not|lacks?\b|without", re.I)
+ABSENT = re.compile(r"absent|absence|not\s+loaded|not\s+present|forbid|must\s+not|lacks?\b|without", re.I)
 # where a script names a mod: a quoted string, a --mod/--with/--enable argument, a src/<tier>/<Mod>/ or Mods/<Mod>/ path,
 # or (anywhere) a dotted token an installed mod carries as its packageId (7f.alienworlds.tidallylocked). A bare word in
 # prose ("[RM Minerals] quarry") is no evidence: it named Minerals for every proof that ran live_log_check.py.
 QUOTED = re.compile(r"[\"']([A-Za-z0-9][\w.\-]*)[\"']")
-FLAG = re.compile(r"--(?:mod|mods|with|enable)[ =]+([\w.\-]+)")
+FLAG = re.compile(r"--(?:mods?|with|enable|needs?|requires?)[ =]+((?:[A-Za-z0-9][\w.\-]*(?:[ ,]+|$))+)")
+DEFNAME = re.compile(r"(?<![\w.])((?:RM|RSW|RUT)_[A-Za-z0-9_]+)\b")
+RWS = re.compile(r"(?<![\w])([\w./\\\-]+\.rws)\b")
 PATHSEG = re.compile(r"(?:src/(?:RimMandrake|RimStarWars|RimUtinni)|Mods)[/\\]([\w.\-]+)")
+# the same path spelled as os.path.join(REPO, "src", "RimUtinni", "AshkarrWeatherSuite", ...) (HORRORS_RAIDING_FACTION_1)
+PATHJOIN = re.compile(r"[\"']src[\"']\s*,\s*[\"'](?:RimMandrake|RimStarWars|RimUtinni)[\"']\s*,\s*[\"']([\w.\-]+)[\"']")
 DOTTED = re.compile(r"(?<![\w.])([A-Za-z0-9][\w\-]*(?:\.[\w\-]+)+)")
 SCRIPT = re.compile(r"(?:^|\s)((?:\./)?src/[^\s'\"]+\.py)\b")
 SRC_MOD = re.compile(r"^src/(?:RimMandrake|RimStarWars|RimUtinni)/([^/]+)/")
@@ -354,7 +442,7 @@ def read_books(path):
 
 
 STRIP_ABSENT = re.compile(r"--(?:without|absent|forbid|lacks?|not-loaded)[ =]+\S+")
-NEED_CUE = re.compile(r"\b(?:active|loaded|enabled|needs?|requires?|depends\s+on)\b", re.I)
+NEED_CUE = re.compile(r"\b(?:active|loaded|enabled|needs?|requires?|depends\s+on|stag(?:e|er|ing))\b", re.I)
 WORD = re.compile(r"(?<![\w.\-/\\])([A-Za-z][\w]*(?:\.[A-Za-z][\w]*)*)(?![\w\-/\\])")
 TYPE_STR = re.compile(r"(?<![\w.])((?:[A-Z][\w]*\.){1,}[A-Z][\w]*)")
 
@@ -367,17 +455,24 @@ def _tokens(line, index, typed=None):
     if ABSENT.search(line):
         return []
     pk = set(index.packages or ()) | set(index.repo_pids)
-    toks = QUOTED.findall(line) + FLAG.findall(line) + PATHSEG.findall(line)
-    toks += [t for t in DOTTED.findall(line) if t.lower() in pk]
-    if NEED_CUE.search(line):       # "with RimThemes + MenuShell active": a bare mod folder on a line that needs it
+    cue = bool(NEED_CUE.search(line))
+    toks = [(t, "quoted") for t in QUOTED.findall(line)]
+    toks += [(t, "cli") for run in FLAG.findall(line) for t in re.split(r"[ ,]+", run) if t]
+    toks += [(t, "path") for t in PATHSEG.findall(line) + PATHJOIN.findall(line)]
+    toks += [(t, "cue" if cue else "package") for t in DOTTED.findall(line) if t.lower() in pk]
+    if cue:       # "with RimThemes + MenuShell active": a bare mod folder on a line that needs it
         names = set(index.folders or ()) | set(index.game or ()) | set(index.folded) | index.targets
-        toks += [t for t in WORD.findall(line) if t in names]
+        toks += [(t, "cue") for t in WORD.findall(line) if t in names]
+    defs = index.defs
+    for t in DEFNAME.findall(line):     # one of our defNames: the mod that defines it, when exactly one does
+        owners = sorted(set(defs.get(t) or ()))
+        toks += [(o, "defname" if len(owners) == 1 else "defname_multi") for o in owners]
     for t in TYPE_STR.findall(line):        # a C# type of ours: its longest root namespace names the mod
         parts = t.split(".")
         for k in range(len(parts) - 1, 0, -1):
             ns = ".".join(parts[:k])
             if ns in index.namespaces:
-                toks.append(index.namespaces[ns])
+                toks.append((index.namespaces[ns], "type"))
                 if typed is not None:
                     typed.add(index.namespaces[ns])
                 break
@@ -407,7 +502,7 @@ def closure_gaps(have, index):
     return out
 
 
-def advise(text, scripts, have, index, named=None, build=None):
+def advise(text, scripts, have, index, named=None, build=None, saves=None, exclude=()):
     """Need inference, ADVISORY ONLY. text: the proofs file; scripts: {repo path: content} of the scripts its proof
     lines run; have: the canonical mods the load will already hold (the build's and the proof's). -> [{"mod", "at"
     ("path:line"), "line"}]: a mod the proof lines or their scripts name (_tokens: a quoted name, a --mod/--needs-style
@@ -422,7 +517,8 @@ def advise(text, scripts, have, index, named=None, build=None):
     plan that composed it)."""
     have = set(have)
     named = set(have if named is None else named)
-    out, seen, memo = [], set(), {}
+    out, seen, memo = [], {}, {}
+    # saves: {path: header text} of the fixture saves (.rws) the proof names: their <modIds> are the load they need
     pid_of = {v: k for k, v in index.repo_pids.items()}
 
     def res(tok):
@@ -430,40 +526,165 @@ def advise(text, scripts, have, index, named=None, build=None):
             memo[tok] = resolve(tok, index, near=False)
         return memo[tok]
 
-    def hit(mod, at, line, need=None):
+    def hit(mod, at, line, src, need=None):
         need = have if need is None else need
         if mod and mod not in need and index.repo_pids.get(mod) not in need and pid_of.get(mod) not in need \
-                and mod not in seen \
                 and not mod.startswith(BASE):
-            seen.add(mod)
-            out.append({"mod": mod, "at": at, "line": line.strip()[:160]})
+            entry = {"mod": mod, "at": at, "line": line.strip()[:160], "src": src}
+            if mod not in seen:
+                seen[mod] = len(out)
+                out.append(entry)
+            elif src in SURE and out[seen[mod]]["src"] not in SURE:     # the strongest evidence speaks for the mod
+                out[seen[mod]] = entry
 
     def scan(path, body):
         for n, line in enumerate((body or "").splitlines(), 1):
-            if path == PROOFS_DIR and re.match(r"^\s*(?:[-*]\s+)?`?live-(?:mods|deploy)\s*:", line):
+            if path == PROOFS_DIR and re.match(r"^\s*(?:[-*]\s+)?`?live-(?:mods|deploy|without)\s*:", line):
                 continue
             typed = set()
-            for tok in _tokens(line, index, typed):
+            for tok, src in _tokens(line, index, typed):
                 r = res(tok)
                 if r["kind"] in RESOLVED:
-                    hit(r["canon"], "%s:%d" % (path, n), line, named if tok in typed else None)
+                    hit(r["canon"], "%s:%d" % (path, n), line, ("proof_" if path == PROOFS_DIR else "script_") + src,
+                        named if src == "type" else None)
     for mod in sorted(build or ()):
         if mod in index.folded:
             hit(index.folded[mod][0], "build: %s" % mod, "the build's %s is folded into %s: the load holds that mod, "
-                "not %s; name it" % (mod, index.folded[mod][0], mod), named)
+                "not %s; name it" % (mod, index.folded[mod][0], mod), "folded", named)
     for path in proof_scripts(text):
         m = SRC_MOD.match(path)
         if m:
             r = resolve(m.group(1), index)
             if r["kind"] in RESOLVED:
-                hit(r["canon"], "%s:0" % path, "the proof script lives in this mod")
+                hit(r["canon"], "%s:0" % path, "the proof script lives in this mod", "script_home")
+    for path, head in sorted((saves or {}).items()):
+        for pid in save_mod_ids(head):
+            r = res(pid)
+            if r["kind"] in RESOLVED:
+                hit(r["canon"], "%s:0" % path, "the fixture save was made with %s loaded" % pid, "fixture")
     scan(PROOFS_DIR, text)
     for path, body in sorted((scripts or {}).items()):
         scan(path, body)
-    for mod, dep, via in closure_gaps(have | seen, index):
+    # exclude: mods the proof is live-without; a closure is never walked from one (it would add what it hangs on)
+    no = {pid_of.get(m, m) for m in exclude} | {index.repo_pids.get(str(m).lower(), m) for m in exclude}
+    sure = {a["mod"] for a in out if a["src"] in SURE and a["mod"] not in no
+            and index.repo_pids.get(str(a["mod"]).lower(), a["mod"]) not in no}
+    for mod, dep, via in closure_gaps(have | sure, index):
         hit(dep, "About.xml of %s" % mod, "%s needs %s through %s; modlist_swap --enable adds only immediate "
-                                         "dependencies of a folder" % (mod, dep, via))
+                                         "dependencies of a folder" % (mod, dep, via), "closure")
     return out
+
+
+MODIDS = re.compile(r"<modIds>(.*?)</modIds>", re.S)
+
+
+def save_mod_ids(head):
+    """A .rws header (its first bytes) -> the packageIds in <meta><modIds>, lower-case, in order."""
+    m = MODIDS.search(head or "")
+    return [x.strip().lower() for x in re.findall(r"<li>([^<]+)</li>", m.group(1))] if m else []
+
+
+def proof_saves(text):
+    """The fixture saves (*.rws) a proofs file's non-absence lines name, in order."""
+    out = []
+    for line in (text or "").splitlines():
+        if ABSENT.search(STRIP_ABSENT.sub(" ", line)):
+            continue
+        for p in RWS.findall(line):
+            if p not in out:
+                out.append(p)
+    return out
+
+
+# A need from one of these is ENFORCED (added to the planned load before the slot): the proof says so itself (a --mod /
+# --needs / --enable argument, a staging-cue line naming an installed mod), the proof script lives in the mod, the build's
+# folded source is that composed mod, a fixture save was made with it, a C# type or one of our defNames has exactly one
+# owner, or a resolved mod hard-depends on it. Everything else (a quoted name, a packageId in prose, a defName several
+# mods define) only warns: a false positive costs a warning line, never an extra mod in someone's load.
+SURE = ("folded", "script_home", "fixture", "proof_cli", "proof_cue", "proof_type", "script_type", "script_path",
+        "proof_defname", "script_defname", "closure")
+INDEXED = ("proof_type", "script_type", "proof_defname", "script_defname", "closure")    # trust the index's age
+def live_without(text):
+    """A live_proofs file -> the names its `live-without:` lines give (every line, in order, no repeats): mods the proof
+    INTENDS to run without (it measures their absence). A `# ...` tail is a comment."""
+    import relentless_live_round as R
+    return R.live_mods(text, R.LIVE_WITHOUT)
+
+
+def _one(index):
+    return lambda m: index.repo_pids.get(str(m).lower(), m)    # a repo packageId and its folder are one mod
+
+
+def needs(text, scripts, named, build, index, saves=None):
+    """LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: what the gate adds to a proof's planned load, derived each time and never
+    written into the proof. text: the proofs file; scripts: gather_scripts; named: check(live_mods(text))["mods"]; build:
+    the build's own mod folders. -> {"planned": the load (named + the build's mods normalised + "add"), "add": [advise
+    dicts with "src" in SURE], "warn": [the rest, with "why" when a sure one was degraded], "without": the canonical mods
+    of `live-without:`, "without_refused": [resolve dicts of names no mod has], "conflict": [planned mods the proof is
+    live-without]}. Idempotent: the same inputs give the same answer, and a proof that names every addition gets none."""
+    one = _one(index)
+    wchk = check(live_without(text), index)
+    without = set(wchk["mods"])
+    without_id = {one(m) for m in without}
+    bchk = check(sorted(build or ()), index)
+    base = []       # what the gate plans already: live-mods and the build's own folders as derived (a folded source too)
+    for m in list(named) + sorted(build or ()):
+        if m not in base:
+            base.append(m)
+    base_id = {one(m) for m in base}
+    adv = advise(text, scripts, set(named) | set(bchk["mods"]), index, named=list(named), build=build, saves=saves,
+                 exclude=without)
+    add, warn = [], []
+    for a in adv:
+        if one(a["mod"]) in base_id:
+            continue        # a type of a build mod, say: planned already, no addition
+        if one(a["mod"]) in without_id:
+            warn.append(dict(a, why="live-without names it: never added"))
+        elif a["src"] not in SURE:
+            warn.append(a)
+        elif a["src"] in INDEXED and index.stale_for(a["mod"]):
+            warn.append(dict(a, why="index stale: %s" % index.stale_for(a["mod"])))
+        else:
+            add.append(a)
+    planned = list(base)
+    for a in add:
+        if a["mod"] not in planned and one(a["mod"]) not in {one(m) for m in planned}:
+            planned.append(a["mod"])
+    conflict = [m for m in planned if one(m) in without_id]
+    return {"planned": planned, "add": add, "warn": warn, "without": sorted(without),
+            "without_refused": wchk["refused"], "conflict": conflict}
+
+
+def read_head(path, n=262144):
+    """The first n bytes of a repo file (a .rws header), as text; "" when unreadable."""
+    try:
+        with open(os.path.join(BOOKS, path), "rb") as f:
+            return f.read(n).decode("utf-8", "replace")
+    except OSError:
+        return ""
+
+
+def gather_saves(text, head=read_head):
+    """{path: header} of the fixture saves a proofs file names, read with head(path) (unreadable ones left out)."""
+    out = {}
+    for p in proof_saves(text):
+        h = head(p)
+        if h:
+            out[p] = h
+    return out
+
+
+def without_conflict(nd):
+    """needs() -> one refusal line when the planned load holds a mod the proof is live-without, or names one no mod
+    has, else None. Refused BEFORE the slot: staging only enables, so the load would hold it."""
+    parts = []
+    if nd["without_refused"]:
+        parts.append("live-without names no mod this machine has: " + "; ".join(
+            "%r %s" % (r["name"], r["why"]) for r in nd["without_refused"]))
+    if nd["conflict"]:
+        parts.append("live-without %s, but the planned load holds it (the build's mods or live-mods); staging only "
+                     "enables, so this load cannot serve the proof" % ", ".join(nd["conflict"]))
+    return "; ".join(parts) or None
 
 
 # --------------------------------------------------------------------------- census replay
@@ -541,6 +762,67 @@ def replay(fx):
         rep[root + "_cases"] = sum(len(v["cases"]) for v in rep[root].values())
     rep["pass_advised"] = sum(1 for c in fx["passes"] if judge_case(c, index)["advice"])
     return (0 if ok else 1), rep
+
+
+# an addition outside the repair's own names is still right when its evidence states the need: a hard About.xml
+# dependency, the composed mod the build's folded source loads as, the proof's own load condition (--needs X, --enable X,
+# "Stager: the list ALSO needs X"), or the mod the proof script lives in
+SELF_EVIDENT = ("closure", "folded", "proof_cli", "proof_cue", "script_home", "fixture")
+
+
+def _case_scripts(case):
+    sc = case.get("scripts") or {}
+    if isinstance(sc, str):     # an older fixture froze the dict's repr
+        import ast
+        sc = ast.literal_eval(sc)
+    return sc
+
+
+def enforce_case(case, index, also=()):
+    """One frozen run -> needs() over it, scored: "miss" the repair-added mods the planned load still lacks, "wrong"
+    additions neither the repair named nor SELF_EVIDENT, "add" every addition as mod@src."""
+    import relentless_live_round as R
+    one = _one(index)
+    text = case.get("text") or ""
+    named = check(R.live_mods(text), index)["mods"]
+    nd = needs(text, _case_scripts(case), named, case.get("build_mods") or [], index)
+    eff = {one(m) for m in nd["planned"]} | {one(m) for m in check(nd["planned"], index)["mods"]}
+    truth = {one(m) for m in list(case.get("added") or []) + list(case.get("added_later") or []) + list(also)}
+    return {"miss": [m for m in case.get("added") or [] if one(m) not in eff],
+            "wrong": ["%s@%s" % (a["mod"], a["at"]) for a in nd["add"]
+                      if one(a["mod"]) not in truth and a["src"] not in SELF_EVIDENT],
+            "add": ["%s@%s" % (a["mod"], a["src"]) for a in nd["add"]], "conflict": nd["conflict"]}
+
+
+def enforce_replay(fx, bar=17):
+    """The enforcement replay (LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT criteria 1-2) -> (exit, report). An R1/R2 item is
+    right when EVERY one of its failed runs, as frozen, would have had each mod its next repair added put in the planned
+    load. Exit 0 only when at least `bar` R1/R2 items are right, no case or PASS proof gets a wrong addition, and no PASS
+    proof is refused by its own live-without."""
+    index = Index.from_json(fx["index"])
+    items, wrong, pass_add, pass_refused = {}, [], [], []
+    for case in fx["cases"]:
+        if case["root"] not in ("R1", "R2"):
+            continue
+        got = enforce_case(case, index)
+        it = items.setdefault(case["item"], {"right": True, "miss": [], "runs": 0})
+        it["runs"] += 1
+        it["right"] = it["right"] and not got["miss"]
+        it["miss"] = sorted(set(it["miss"]) | set(got["miss"]))
+        wrong += ["%s: %s" % (case["item"], w) for w in got["wrong"]]
+    repaired = {}      # a PASS proof's item: what its own repairs named (a sibling clause failed without it)
+    for case in fx["cases"]:
+        repaired.setdefault(case["item"], set()).update((case.get("added") or []) + (case.get("added_later") or []))
+    for case in fx["passes"]:
+        got = enforce_case(case, index, repaired.get(case["item"], ()))
+        wrong += ["PASS %s: %s" % (case["item"], w) for w in got["wrong"]]
+        pass_add += ["%s: %s" % (case["item"], a) for a in got["add"]]
+        if got["conflict"]:
+            pass_refused.append(case["item"])
+    right = sum(1 for v in items.values() if v["right"])
+    rep = {"items": items, "right": "%d/%d" % (right, len(items)), "wrong": wrong, "pass_n": len(fx["passes"]),
+           "pass_additions": pass_add, "pass_refused": pass_refused, "bar": bar}
+    return (0 if right >= bar and not wrong and not pass_refused else 1), rep
 
 
 def _git(args):
@@ -715,15 +997,19 @@ def modlist_census(rows, since="", until="~"):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    p = sub.add_parser("check", help="resolve an item's live-mods names; refusals exit 1, advice is printed")
+    p = sub.add_parser("check", help="resolve an item's live-mods names; refusals exit 1, the gate's additions and "
+                                     "advice are printed")
     p.add_argument("--item", required=True)
     p = sub.add_parser("replay", help="the census replay over a frozen fixture")
     p.add_argument("--fixture", required=True)
+    p.add_argument("--enforce", action="store_true", help="score the enforced needs (criteria 1-2) instead of advice")
     p.add_argument("--report", help="write the whole report here")
     p = sub.add_parser("extract", help="freeze the census and the last PASS proofs into a fixture (needs git)")
     p.add_argument("--census", required=True, help="json: [{item, root[, sha][, text, rider_of]}]")
     p.add_argument("--runs", default="/home/mandrake/rm/relentless/live/runs.jsonl")
     p.add_argument("--out", required=True)
+    p = sub.add_parser("migrate", help="every live_proofs file: what the gate would add, warn and refuse (read only)")
+    p.add_argument("--out", help="write the list (json) here")
     p = sub.add_parser("baseline", help="runs.jsonl: the non-PASS rows whose reason is the mod list, in a window")
     p.add_argument("--runs", default="/home/mandrake/rm/relentless/live/runs.jsonl")
     p.add_argument("--since", default="")
@@ -743,6 +1029,32 @@ def main(argv=None):
                     continue
         print(json.dumps(modlist_census(rows, a.since, a.until), sort_keys=True))
         return 0
+    if a.cmd == "migrate":
+        import relentless_live_round as R
+        index = default_index()
+        d = os.path.join(BOOKS, PROOFS_DIR)
+        rows = []
+        for fn in sorted(os.listdir(d)):
+            if not fn.endswith(".txt"):
+                continue
+            with open(os.path.join(d, fn), encoding="utf-8", errors="replace") as f:
+                text = f.read()
+            chk = check(R.live_mods(text), index)
+            nd = needs(text, gather_scripts(text, read_books), chk["mods"], [], index, saves=gather_saves(text))
+            rows.append({"item": fn[:-4], "named": chk["mods"], "without": nd["without"],
+                         "add": [{k: x[k] for k in ("mod", "src", "at", "line")} for x in nd["add"]],
+                         "warn": len(nd["warn"]), "conflict": without_conflict(nd)})
+            for x in nd["add"]:
+                print("ADD %s %s (%s %s)" % (fn[:-4], x["mod"], x["src"], x["at"]))
+            if rows[-1]["conflict"]:
+                print("CONFLICT %s: %s" % (fn[:-4], rows[-1]["conflict"]))
+        if a.out:
+            with open(a.out, "w", encoding="utf-8") as f:
+                json.dump(rows, f, indent=1, sort_keys=True)
+        print("%d proofs, %d with additions, %d additions, %d conflicts" % (
+            len(rows), sum(1 for r in rows if r["add"]), sum(len(r["add"]) for r in rows),
+            sum(1 for r in rows if r["conflict"])))
+        return 0
     if a.cmd == "check":
         import relentless_live_round as R
         try:
@@ -756,14 +1068,34 @@ def main(argv=None):
         scripts = gather_scripts(text, read_books)
         for r in chk["normalized"] + chk["unverified"]:
             print("NOTE %s -> %s: %s" % (r["name"], r["canon"], r["why"]))
-        for adv in advise(text, scripts, chk["mods"], index, named=chk["mods"]):
-            print("ADVICE (not written anywhere) %s may be needed: %s  %s" % (adv["mod"], adv["at"], adv["line"]))
-        why = refusal(chk["refused"])
+        nd = needs(text, scripts, chk["mods"], [], index, saves=gather_saves(text))
+        for adv in nd["add"]:
+            print("ADDED AT THE GATE (derived, not written into the proof) %s [%s]: %s  %s" % (
+                adv["mod"], adv["src"], adv["at"], adv["line"]))
+        for adv in nd["warn"]:
+            print("ADVICE (not added, not written) %s may be needed%s: %s  %s" % (
+                adv["mod"], (" (%s)" % adv["why"]) if adv.get("why") else "", adv["at"], adv["line"]))
+        why = "; ".join(x for x in (refusal(chk["refused"]), without_conflict(nd)) if x) or None
         print(why or "OK %s names %s" % (a.item, ", ".join(chk["mods"]) or "no mods"))
         return 1 if why else 0
     if a.cmd == "replay":
         with open(a.fixture, encoding="utf-8") as f:
             fx = json.load(f)
+        if a.enforce:
+            code, rep = enforce_replay(fx)
+            if a.report:
+                with open(a.report, "w", encoding="utf-8") as f:
+                    json.dump(rep, f, indent=1, sort_keys=True)
+            print("ENFORCE R1/R2 items right %s (bar %d)  wrong additions %d  PASS proofs %d: additions %d (none "
+                  "wrong unless listed), refused by live-without %d  -> %s" % (
+                rep["right"], rep["bar"], len(rep["wrong"]), rep["pass_n"], len(rep["pass_additions"]),
+                len(rep["pass_refused"]), "OK" if code == 0 else "FAIL"))
+            for item, it in sorted(rep["items"].items()):
+                if not it["right"]:
+                    print("  missed %s: the planned load still lacks %s" % (item, ", ".join(it["miss"])))
+            for w in rep["wrong"]:
+                print("  WRONG addition %s" % w)
+            return code
         code, rep = replay(fx)
         if a.report:
             with open(a.report, "w", encoding="utf-8") as f:

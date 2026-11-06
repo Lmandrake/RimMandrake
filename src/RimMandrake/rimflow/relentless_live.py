@@ -1181,7 +1181,7 @@ class Fx(object):
                     pass
 
 
-def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None, trees=()):
+def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None, trees=(), env=None):
     """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED.
     needs: mod folders the proof declares (live_proofs `live-mods:`) beyond the ones the built commit changed; with
     those, each one's About.xml modDependencies must be in the RUNNING load, or the row is UNMEASURED (restage), never
@@ -1193,6 +1193,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     now = time.time() if now is None else now
     lr = live_rules(r)
     row = {"at": iso(now), "item": item_id, "criterion": criterion, "proof": proof, "deploy": deploy}
+    if env is not None:     # the effective mod list and every inferred addition with its evidence (LIVE_NEEDS_ENFORCE_...)
+        row["env"] = env
     os.makedirs(os.path.join(root, "live"), exist_ok=True)
 
     def done(outcome, why, **kw):
