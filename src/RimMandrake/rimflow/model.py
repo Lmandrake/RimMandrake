@@ -789,8 +789,10 @@ def now():
 # systemd unit of the headless role run that wrote the event, stamped by cli._write_one from
 # RM_ROLE_UNIT. The v3 health trace counts a role's outputs by it; absent = not a role run.
 # `ranBy` (OWNER_CLOCK_FIX_RELAYED_ORDERS_WEAR_HAT): whose hands wrote an event under seat OWNER (cli._stamp_owner_and_override).
+# `hisHands` (OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED): True when he typed a relay-flagged OWNER command at his own
+# terminal, so it still runs his clock (owner_interaction.is_his_act). An older reader strips it: not his act, as before.
 UNIVERSAL_FIELDS = ("ts", "tsn", "seat", "event", "id", "caused_by", "override", "ownerSaid",
-                    "why", "byCard", "perRuling", "role_unit", "ranBy")
+                    "why", "byCard", "perRuling", "role_unit", "ranBy", "hisHands")
 
 
 def _check_verb(ev):

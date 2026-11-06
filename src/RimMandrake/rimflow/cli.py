@@ -229,10 +229,15 @@ def _stamp_owner_and_override(ev):
             % model.OVERRIDE_NOTICES[0])
     # Seat OWNER is his authority; `ranBy` says whose hands were on it, so his clock and any count of what he did can
     # tell (owner_interaction.is_his_act). Absent when he ran it himself.
+    # A relay flag he typed at his own terminal (no agent hands, a controlling terminal) is still his act: `hisHands`
+    # says so (OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED). A headless timer using the same flags has no terminal.
     if ev.get("seat") == "OWNER" or str(ev.get("override") or "").startswith("the OWNER "):
         hands = owner_interaction.agent_hands(_role_file_seat())
         if hands and not ev.get("ranBy"):
             ev["ranBy"] = hands
+        elif (not hands and not ev.get("ranBy") and not ev.get("role_unit")
+              and any(ev.get(f) for f in owner_interaction.RELAY_FIELDS) and owner_interaction.own_terminal()):
+            ev[owner_interaction.HIS_HANDS] = True
     return ev
 
 
@@ -3427,29 +3432,46 @@ def _bridge_other_host_locked(args, seat, w, hk):
 
 
 def _relayed_owner_command():
-    """Seat OWNER, but an agent's hands: a flag relayed his authority, or the shell is an agent's."""
-    return bool(model.OWNER_SAID or model.BY_CARD or model.PER_RULING or model.AGENT_WHY
-                or owner_interaction.agent_hands(_role_file_seat()))
+    """Seat OWNER, but an agent's hands: the shell is an agent's, or a flag relayed his authority from somewhere that is
+    not his own terminal (a flag he typed there himself is his act: OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED)."""
+    if owner_interaction.agent_hands(_role_file_seat()) or os.environ.get("RM_ROLE_UNIT"):
+        return True
+    return bool(model.OWNER_SAID or model.BY_CARD or model.PER_RULING or model.AGENT_WHY) \
+        and not owner_interaction.own_terminal()
 
 
 def _stamp_bare_bridge(w):
     """A bare `./bridge` is one of his deliberate acts and writes no ledger event: stamp it, so his hold's 45-min clock
     restarts (owner, by card 2026-10-30: "45 minutes after my last interaction, ..."). 🔴 A stamp that cannot be written
     must not leave an OLDER readable stamp to tell a seat he was quiet (OWNER_STAMP_FIX_UNWRITABLE_FAILS_OPEN): the act
-    falls back to a ledger event of his, which the clock reads as any other."""
+    falls back to refreshing the existing stamp's mtime (shared by every clone, read by read_stamp) AND to a ledger
+    event of his (this clone's only, until published). Both are tried: the touch alone is what another clone sees, so
+    an unpublished fallback event never leaves it reading the older stamp (OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED).
+    -> 0 when the act was recorded somewhere a seat reads, 1 when nothing could record it (said loudly)."""
     try:
         owner_interaction.write_stamp("./bridge (bridge who)")
-        return
+        return 0
     except OSError as e:
         fail = "%s: %s" % (type(e).__name__, e)
+    touched = owner_interaction.touch_stamp()
     try:
         _emit({"seat": "OWNER", "event": "seat", "state": "ready",
                "note": "./bridge: the stamp could not be written (%s)" % fail}, w, quiet=True)
-        print("⚠️  could not write the ./bridge stamp (%s); recorded in the ledger instead, your hold's clock restarted"
-              % fail)
+        led = None
     except (OSError, SystemExit, model.LedgerError, model.SchemaError) as e:
-        print("⚠️  could not record this ./bridge at all (stamp: %s; ledger: %s). Your hold's clock runs from your last "
-              "other interaction" % (fail, e))
+        led = e
+    if led is None:
+        print("⚠️  could not write the ./bridge stamp (%s); recorded in the ledger instead%s, your hold's clock restarted"
+              % (fail, " and the old stamp's clock refreshed" if touched else
+                 " (other clones see it once this clone publishes its ledger)"))
+        return 0
+    if touched:
+        print("⚠️  could not write the ./bridge stamp (%s) nor the ledger (%s); the old stamp's clock was refreshed, "
+              "your hold's clock restarted" % (fail, led))
+        return 0
+    print("🔴 could not record this ./bridge at all (stamp: %s; stamp refresh failed; ledger: %s). Your hold's clock "
+          "runs from your last other interaction" % (fail, led))
+    return 1
 
 
 def cmd_bridge(args, seat):
@@ -3500,12 +3522,13 @@ def cmd_bridge(args, seat):
             if hk != model.DEFAULT_BRIDGE_HOST:
                 return _bridge_other_host(args, seat, w, hk)
             return _bridge_release(seat, w, holder, expect_token=tok2)
+    unrecorded = 0
     if args.action == "who" and seat == "OWNER" and not _relayed_owner_command():
-        _stamp_bare_bridge(w)
+        unrecorded = _stamp_bare_bridge(w)
     if hk != model.DEFAULT_BRIDGE_HOST:
         return _bridge_other_host(args, seat, w, hk)
     if args.action == "who":
-        return _bridge_who()
+        return _bridge_who() or unrecorded
     if args.action == "give":
         # under the bridge lock on a fresh replay, like take and release: his handover must not interleave with a
         # take's driver-lock acquire + append (GPT review 2026-10-30)

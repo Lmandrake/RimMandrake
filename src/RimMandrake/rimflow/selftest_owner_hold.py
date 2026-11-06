@@ -141,10 +141,11 @@ class World:
                 json.dump(shared, f)
         self.env = {k: v for k, v in os.environ.items()
                     if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDECODE", "RIMFLOW_RAN_BY",
-                                 "RIMFLOW_BRIDGE_SEAT")}   # a Conductor window's takes, even when a Relentless worker runs this
+                                 "RIMFLOW_BRIDGE_SEAT", "RM_ROLE_UNIT")}   # a Conductor window's takes, even when a Relentless worker runs this
         self.env.update(RIMFLOW_LEDGER=self.led, RIMFLOW_ITEMS=os.path.join(self.tmp, "items"),
                         RIMFLOW_SHARED_BRIDGE=self.shared, RIMFLOW_SEAT="BENCH",
                         RIMFLOW_OWNER_CHAT_DIRS=self.chat,
+                        RIMFLOW_OWNER_TERMINAL="0",     # no terminal: the same answer from a shell, a worker or a timer
                         RIMFLOW_OWNER_ACT_STAMP=os.path.join(self.tmp, "OWNER_LAST_ACT.json"),
                         RIMFLOW_DISPATCH_LOCK=os.path.join(self.tmp, "dispatch.lock"),
                         RIMFLOW_BRIDGE_LOCK=os.path.join(self.tmp, "bridge.lock"))
@@ -444,6 +445,8 @@ def test_unwritable_stamp():
     stamp = os.path.join(d, "OWNER_LAST_ACT.json")
     with open(stamp, "w") as f:
         json.dump({"at": iso(7000), "what": "old"}, f)
+    old = time.time() - 7000
+    os.utime(stamp, (old, old))
     w.env["RIMFLOW_OWNER_ACT_STAMP"] = stamp
     os.chmod(stamp, 0o444)
     os.chmod(d, 0o555)
@@ -451,11 +454,166 @@ def test_unwritable_stamp():
         rc, out = w.rf("bridge", "who", seat="OWNER")
         check(rc == 0 and "could not" in out.lower(), "bare ./bridge with an unwritable stamp warns (%s)" % out[:140])
         rc, out = w.rf("bridge", "take", "--for", "x")
-        check(rc != 0 and "OWNER ledger event" in out and not w.taken(),
-              "the act fell back to the ledger: the take refuses (rc=%s %s)" % (rc, out[:180]))
+        check(rc != 0 and "min ago" in out and not w.taken(),
+              "the act fell back to the ledger and a stamp refresh: the take refuses (rc=%s %s)" % (rc, out[:180]))
+        ev = [e for e in w.events() if e.get("seat") == "OWNER" and e.get("event") == "seat"]
+        check(bool(ev), "...and the ledger fallback event was written (%s)" % ev[-1:])
     finally:
         os.chmod(d, 0o755)
         w.close()
+
+
+def test_unwritable_stamp_everywhere():
+    """OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED: (a) the ledger fallback is this clone's only until published, so the
+    stamp shared by every clone must still learn of the act; (b) stamp AND ledger unwritable must not leave the older
+    stamp to say he was quiet; (c) nothing able to record it at all is a nonzero exit, never a quiet 0."""
+    # (a) another clone sees only the shared stamp: after a failed rewrite its clock must have moved
+    w = World([OWNER_HOLD])
+    d = os.path.join(w.tmp, "ro")
+    os.makedirs(d)
+    stamp = os.path.join(d, "OWNER_LAST_ACT.json")
+    with open(stamp, "w") as f:
+        json.dump({"at": iso(7000), "what": "old"}, f)
+    old = time.time() - 7000
+    os.utime(stamp, (old, old))
+    w.env["RIMFLOW_OWNER_ACT_STAMP"] = stamp
+    os.chmod(stamp, 0o444)
+    os.chmod(d, 0o555)
+    try:
+        rc, out = w.rf("bridge", "who", seat="OWNER")
+        check(rc == 0, "a failed rewrite with a working ledger exits 0 (rc=%s %s)" % (rc, out[:140]))
+        other = World([OWNER_HOLD])             # the other clone: its own ledger, the same shared stamp
+        try:
+            other.env["RIMFLOW_OWNER_ACT_STAMP"] = stamp
+            rc, out = other.rf("bridge", "take", "--for", "x")
+            check(rc != 0 and "./bridge" in out and not other.taken(),
+                  "the other clone, without the unpublished fallback event, still refuses (rc=%s %s)" % (rc, out[:180]))
+        finally:
+            other.close()
+    finally:
+        os.chmod(d, 0o755)
+        w.close()
+    # (b) stamp unwritable and ledger unwritable: the refreshed stamp still refuses the take
+    w = World([OWNER_HOLD])
+    d = os.path.join(w.tmp, "ro")
+    os.makedirs(d)
+    stamp = os.path.join(d, "OWNER_LAST_ACT.json")
+    with open(stamp, "w") as f:
+        json.dump({"at": iso(7000), "what": "old"}, f)
+    os.utime(stamp, (old, old))
+    w.env["RIMFLOW_OWNER_ACT_STAMP"] = stamp
+    os.chmod(stamp, 0o444)
+    os.chmod(d, 0o555)
+    os.makedirs(os.path.join(w.tmp, "events"), exist_ok=True)
+    os.chmod(os.path.join(w.tmp, "events"), 0o555)    # the shard dir: no OWNER.jsonl can be made
+    try:
+        rc, out = w.rf("bridge", "who", seat="OWNER")
+        check(rc == 0 and "refreshed" in out, "stamp and ledger unwritable: the old stamp's clock is refreshed (rc=%s %s)"
+              % (rc, out[:200]))
+        os.chmod(os.path.join(w.tmp, "events"), 0o755)
+        rc, out = w.rf("bridge", "take", "--for", "x")
+        check(rc != 0 and "./bridge" in out and not w.taken(),
+              "...so the older stamp does not let a seat in (rc=%s %s)" % (rc, out[:180]))
+    finally:
+        os.chmod(d, 0o755)
+        os.chmod(os.path.join(w.tmp, "events"), 0o755)
+        w.close()
+    # (c) no stamp, no way to make one, no ledger: loud and nonzero
+    w = World([OWNER_HOLD])
+    d = os.path.join(w.tmp, "ro")
+    os.makedirs(d)
+    w.env["RIMFLOW_OWNER_ACT_STAMP"] = os.path.join(d, "OWNER_LAST_ACT.json")
+    os.chmod(d, 0o555)
+    os.makedirs(os.path.join(w.tmp, "events"), exist_ok=True)
+    os.chmod(os.path.join(w.tmp, "events"), 0o555)    # the shard dir: no OWNER.jsonl can be made
+    try:
+        rc, out = w.rf("bridge", "who", seat="OWNER")
+        check(rc != 0 and "at all" in out, "nothing could record the act: nonzero and said (rc=%s %s)" % (rc, out[:200]))
+    finally:
+        os.chmod(d, 0o755)
+        os.chmod(os.path.join(w.tmp, "events"), 0o755)
+        w.close()
+    # the read side: a stamp's mtime counts, and write_stamp's own mtime is its `at`
+    tmp = tempfile.mkdtemp(prefix="rf_stamp_")
+    keep = os.environ.get("RIMFLOW_OWNER_ACT_STAMP")
+    try:
+        os.environ["RIMFLOW_OWNER_ACT_STAMP"] = os.path.join(tmp, "s.json")
+        OI.write_stamp("t", now=time.time() - 5000)
+        t, prob = OI.read_stamp()
+        check(prob is None and abs(t - (time.time() - 5000)) < 5, "an old write_stamp reads as its own at (%s)" % t)
+        check(OI.touch_stamp() and time.time() - OI.read_stamp()[0] < 5, "touch_stamp moves the read clock to now")
+        os.environ["RIMFLOW_OWNER_ACT_STAMP"] = os.path.join(tmp, "none.json")
+        check(not OI.touch_stamp() and OI.read_stamp() == (None, None), "touching no stamp creates none")
+    finally:
+        if keep is None:
+            os.environ.pop("RIMFLOW_OWNER_ACT_STAMP", None)
+        else:
+            os.environ["RIMFLOW_OWNER_ACT_STAMP"] = keep
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_own_terminal_relay_flag():
+    """OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED: a relay flag he types at his own terminal is still his act; the same
+    flag from an agent shell or a terminal-less process (a timer, a unit) is not."""
+    his = OI.is_his_act
+    check(his({"seat": "OWNER", "event": "game", "state": "UP", "why": "testing", "hisHands": True}),
+          "hisHands with a relay flag is his act")
+    for field in ("ranBy", "role_unit"):
+        check(not his({"seat": "OWNER", "event": "game", "why": "x", "hisHands": True, field: "BENCH"}),
+              "hisHands never outvotes %s" % field)
+    w = World([{"seat": "BENCH", "event": "file", "id": "SOME_RULING", "for": "BENCH", "title": "a ruling",
+                "kind": "task", "ts": iso(9000)}, OWNER_HOLD])
+    try:
+        for pin, agent, expect in (("1", None, True), ("0", None, False), ("1", "BENCH", False)):
+            w.env["RIMFLOW_OWNER_TERMINAL"] = pin
+            w.env.pop("AGENT_SEAT", None)
+            if agent:
+                w.env["AGENT_SEAT"] = agent
+            rc, out = w.rf("note", "SOME_RULING", "--text", "t", "--why", "my own reason", seat="OWNER")
+            ev = [e for e in w.events() if e.get("event") == "note"]
+            check(rc == 0 and ev and bool(ev[-1].get("hisHands")) == expect and his(ev[-1]) == expect,
+                  "--why at terminal=%s agent=%s: his act %s (rc=%s %s %s)" % (pin, agent, expect, rc, ev[-1:], out[:100]))
+    finally:
+        w.close()
+    # the clock: a relay-flagged note typed at his terminal 1 min ago keeps his hold; from a timer it does not
+    for pin, expect_taken in (("1", False), ("0", True)):
+        w = World([{"seat": "BENCH", "event": "file", "id": "SOME_RULING", "for": "BENCH", "title": "a ruling",
+                    "kind": "task", "ts": iso(9000)}, OWNER_HOLD])
+        try:
+            w.env["RIMFLOW_OWNER_TERMINAL"] = pin
+            rc, out = w.rf("note", "SOME_RULING", "--text", "t", "--per-ruling", "SOME_RULING", seat="OWNER")
+            w.env["RIMFLOW_OWNER_TERMINAL"] = "0"
+            rc2, out2 = w.rf("bridge", "idle", "--for", "x")
+            check(rc == 0 and out2.startswith("TAKEABLE") == expect_taken,
+                  "--per-ruling at terminal=%s: hold takeable %s (%s | %s)" % (pin, expect_taken, out[:80], out2[:140]))
+        finally:
+            w.close()
+    # bare ./bridge with a relay flag: stamps from his terminal, not from a headless process or a role run
+    for pin, unit, expect in (("1", None, True), ("0", None, False), ("1", "rm-role-x.service", False)):
+        w = World([OWNER_HOLD])
+        try:
+            w.env["RIMFLOW_OWNER_TERMINAL"] = pin
+            if unit:
+                w.env["RM_ROLE_UNIT"] = unit
+            rc, out = w.rf("bridge", "who", "--why", "checking", seat="OWNER")
+            check(rc == 0 and os.path.exists(w.env["RIMFLOW_OWNER_ACT_STAMP"]) == expect,
+                  "./bridge --why at terminal=%s unit=%s stamps: %s (%s)" % (pin, unit, expect, out[:100]))
+        finally:
+            w.close()
+    # the pin is a test-ledger knob only: on the real ledger it is ignored
+    keep = {k: os.environ.get(k) for k in ("RIMFLOW_LEDGER", "RIMFLOW_OWNER_TERMINAL")}
+    try:
+        os.environ.pop("RIMFLOW_LEDGER", None)
+        os.environ["RIMFLOW_OWNER_TERMINAL"] = "1"
+        real = OI.own_terminal()
+        os.environ["RIMFLOW_OWNER_TERMINAL"] = "0"
+        check(OI.own_terminal() == real, "RIMFLOW_OWNER_TERMINAL is ignored off a test ledger")
+    finally:
+        for k, v in keep.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
 
 
 def test_host_owner_hold():
@@ -602,7 +760,8 @@ def test_driver_lock_owner_hold():
 def main():
     for t in (test_pure, test_chat, test_e2e, test_recheck_under_lock, test_release_mine_token,
               test_relayed_orders_are_not_his_acts, test_card_answer_is_his_act, test_per_ruling_must_resolve,
-              test_unwritable_stamp, test_host_owner_hold, test_driver_lock_owner_hold):
+              test_unwritable_stamp, test_unwritable_stamp_everywhere, test_own_terminal_relay_flag,
+              test_host_owner_hold, test_driver_lock_owner_hold):
         try:
             t()
         except Exception as e:  # noqa: BLE001

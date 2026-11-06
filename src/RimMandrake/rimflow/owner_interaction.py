@@ -13,7 +13,10 @@ What counts as an interaction (the Conductor's reading of "interaction", BRIDGE_
            --why`, wears that seat and never resets his clock (OWNER_CLOCK_FIX_RELAYED_ORDERS_WEAR_HAT). Gathered by
            cli.py from the replay.
   hold     the OWNER hold's own events (its `since`; the shared cross-clone lock's `touched`). Gathered by cli.py.
-  bridge   a bare `./bridge` (`bridge who --seat OWNER`, which writes no event): the stamp file written here.
+  bridge   a bare `./bridge` (`bridge who --seat OWNER`, which writes no event): the stamp file written here; its
+           mtime counts too (touch_stamp, when the stamp cannot be rewritten).
+  terminal a relay flag (--why, --owner-said, ...) he types at his own terminal is still his act: with no agent hands
+           and a controlling terminal (own_terminal) the event carries `hisHands`.
   chat     his prompts to ANY seat window: the last HUMAN input (seat_restart._is_human_input — the same signal
            block_agent_over_slots.py uses for its 20-min conductor_window rule, via seat_restart.tx_summary) in every
            main transcript of every scheduled seat's clone, under the Claude config dir; and a question card he
@@ -56,13 +59,18 @@ def iso(t):
 # definition, the agent's own reason; ranBy names the seat whose hands ran it; role_unit is a headless role's run. The
 # fields are on the history already (ranBy only on `game`), so no migration is owed.
 RELAY_FIELDS = ("ownerSaid", "byCard", "perRuling", "why", "ranBy", "role_unit")
+HANDS_FIELDS = ("ranBy", "role_unit")        # an agent's or a headless role's hands: never his, whatever else it says
+HIS_HANDS = "hisHands"                       # True: he typed it at his own terminal, relay flag or not (cli stamps it)
 
 
 def is_his_act(ev):
     """Pure. Did the owner's own hands write this event? The one definition of "his activity" in the ledger: use it,
     not `seat == "OWNER"`, for his clock and for any count of what he did. Seat OWNER says whose AUTHORITY an event
-    carries, which is his under every relay too."""
-    if any(ev.get(f) for f in RELAY_FIELDS):
+    carries, which is his under every relay too. A relay flag he typed himself, at his own terminal, is still his act
+    (OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED): the writer stamps `hisHands` then, and only then."""
+    if any(ev.get(f) for f in HANDS_FIELDS):
+        return False
+    if not ev.get(HIS_HANDS) and any(ev.get(f) for f in RELAY_FIELDS):
         return False
     return ev.get("seat") == "OWNER" or str(ev.get("override") or "").startswith("the OWNER ")
 
@@ -79,6 +87,23 @@ def agent_hands(role_seat=None):
     return "AGENT" if os.environ.get("CLAUDECODE") else ""
 
 
+def own_terminal():
+    """-> True when a person's terminal runs this: the process has a controlling terminal. With no agent hands
+    (agent_hands() == ""), that tells his own shell from a timer, a systemd unit or a script spawned headless, which
+    use the same relay flags with no hands to name (art enact, account_failover, ...). Those must not run his clock: a
+    timer every 30 min would keep his hold forever. Test ledgers only (RIMFLOW_LEDGER redirected) may pin the answer
+    with RIMFLOW_OWNER_TERMINAL=1|0; the real ledger ignores it."""
+    pin = os.environ.get("RIMFLOW_OWNER_TERMINAL")
+    if pin is not None and os.environ.get("RIMFLOW_LEDGER"):
+        return pin.strip() == "1"
+    try:
+        fd = os.open("/dev/tty", os.O_RDONLY)       # ENXIO with no controlling terminal
+    except OSError:
+        return False
+    os.close(fd)
+    return True
+
+
 # ---------------------------------------------------------------------------------------------------------------------
 # bare ./bridge: the stamp
 
@@ -93,22 +118,48 @@ def stamp_path():
 
 
 def write_stamp(what, now=None):
-    """Record one deliberate owner act that writes no ledger event (bare `./bridge`). Atomic replace."""
+    """Record one deliberate owner act that writes no ledger event (bare `./bridge`). Atomic replace; the file's mtime
+    is set to `at`, so read_stamp's max(at, mtime) reads exactly `at` from a stamp written here."""
     p = stamp_path()
     os.makedirs(os.path.dirname(p) or ".", exist_ok=True)
+    at = int(time.time() if now is None else now)
     tmp = "%s.%d.tmp" % (p, os.getpid())
-    with open(tmp, "w", encoding="utf-8") as f:
-        json.dump({"at": iso(time.time() if now is None else now), "what": what}, f)
-    os.replace(tmp, p)
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump({"at": iso(at), "what": what}, f)
+        os.utime(tmp, (at, at))
+        os.replace(tmp, p)
+    except OSError:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+
+
+def touch_stamp(now=None):
+    """The stamp could not be rewritten (a read-only file or dir, a full disk): bump the EXISTING stamp's mtime, which
+    needs no new data block, so read_stamp sees the act. -> True when it landed. The stamp sits beside the shared
+    bridge lock, so this reaches every clone at once, where a fallback ledger event reaches only this clone until it
+    is published (OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED). No stamp at all -> False: nothing older to outvote."""
+    t = time.time() if now is None else now
+    try:
+        os.utime(stamp_path(), (t, t))
+        return True
+    except OSError:
+        return False
 
 
 def read_stamp():
-    """-> (epoch or None, problem or None). Absent = he never did it (measured); unreadable = UNMEASURED."""
+    """-> (epoch or None, problem or None). Absent = he never did it (measured); unreadable = UNMEASURED. The epoch is
+    the later of the recorded `at` and the file's mtime: touch_stamp's refresh of a stamp that could not be rewritten
+    counts (a copy or restore that bumps the mtime errs toward his hold, never against it)."""
     p = stamp_path()
     try:
         with open(p, encoding="utf-8") as f:
             d = json.load(f)
-        return calendar.timegm(time.strptime(d["at"], "%Y-%m-%dT%H:%M:%SZ")), None
+            mt = os.fstat(f.fileno()).st_mtime
+        return max(calendar.timegm(time.strptime(d["at"], "%Y-%m-%dT%H:%M:%SZ")), int(mt)), None
     except FileNotFoundError:
         return None, None
     except (OSError, ValueError, KeyError, TypeError) as e:
