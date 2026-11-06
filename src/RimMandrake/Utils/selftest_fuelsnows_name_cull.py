@@ -26,10 +26,12 @@ HISTORIC_TREES = (
     "Transient/", "conversations/", "infrastructure/state/handoffs/", "infrastructure/state/items/closed/",
     "infrastructure/state/ledger/", "infrastructure/state/code_review/", "infrastructure/state/art/",
     "infrastructure/state/art_rulings/", "infrastructure/dashboards/",
+    "infrastructure/state/queue/",  # projections of the ledger: they quote item titles of their day
 )
 # Files that name RUT_FuelSnows only as the retired name, or are dated snapshots of their day.
 HISTORIC = {
     SELF: "this test",
+    "src/RimMandrake/Utils/selftest_ops_watch_cause_book_corpus.json": "replay corpus of ledger spawn rows",
     "src/RimMandrake/Utils/selftest_baroque_biomes_list_page.py": "asserts the page no longer names it",
     "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml": "rename history comment",
     "src/RimUtinni/UtinniPatches/Defs/Misc/RUT_UmbraRename_Aliases.xml": "the load alias for old saves",
