@@ -19,12 +19,19 @@ of the last time the user typed to conductor. After that it should relax to two 
 Conductor window (seat BENCH without RM_ROLE_UNIT) has no helper limit while the owner's last typed message in THIS
 window is under conductor_window.open_min (slot_rules.json, 20) old; after that it is capped at conductor_window.cap_n
 (2) concurrent helpers. The typed time is seat_restart.tx_summary(...)["last_user_at"] over this session's transcript
-(human origin only); unreadable means capped. See session_exempt().
+(human origin only); unreadable means capped. See session_exempt(). His own word (slot_override.json) is read first
+and caps the window at his N even while he types (SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP).
+
+Count and spawn are serialised: the last check runs under an flock on <streams>/spawn_gate.lock, and each allowed spawn
+writes a reservation (<streams>/spawn_reservations.json) that counts as a running helper until a helper transcript
+started after it appears or helpers.reserve_s (default 90 s) passes, so two concurrent spawns cannot both take the
+last slot.
 
 Fails open: a broken guard must not stop all spawning.
 
     python3 .claude/hooks/selftest_block_agent_over_slots.py
 """
+import glob
 import json
 import os
 import sys
@@ -35,6 +42,9 @@ ROOT = Path(os.environ.get("CLAUDE_PROJECT_DIR") or Path(__file__).resolve().par
 UTILS = ROOT / "src" / "RimMandrake" / "Utils"
 RIMFLOW = ROOT / "src" / "RimMandrake" / "rimflow"
 FRESH_S = 40 * 60
+RESERVE_S = 90          # an allowed spawn holds its slot this long, or until its helper transcript appears
+START_SLACK_S = 2       # a helper transcript may stamp its first record a moment before the hook wrote its reservation
+LOCK_WAIT_S = 5         # past this the gate fails open rather than stall every spawn
 
 
 def seat_of(payload):
@@ -145,11 +155,13 @@ def decide(payload, now=None):
             f"{SA.seat_label(seat)} --item <ID> --brief-file <F> --model sonnet|opus --max-s <s>`. Or file it in the "
             "ledger: the fresh window picks it up. (CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE)"
         )
-    if session_exempt(seat, payload, rules, now):
-        return None
-    n, mode, why, src = allowed_n(SA, rules, seat, now)
     ov = SA._override_live(SA.read_json(SA.streams_dir() / "slot_override.json"), now) or {}
     his_n = (ov.get("seats") or {}).get(seat, ov.get("n"))
+    # SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP: his word is read BEFORE the typing exemption, so an explicit N of his caps
+    # the window even while he types; the open policy only lifts the window's default cap.
+    if his_n is None and session_exempt(seat, payload, rules, now):
+        return _gate(seat, rules, now, None, lambda r: None)
+    n, mode, why, src = allowed_n(SA, rules, seat, now)
     if seat == "BENCH" and his_n is not None:  # his word outranks the window cap, as the refusal text promises
         n, mode, src = int(his_n), "OWNER_WORD", "slot_override.json"
         why = f"his word: \"{ov['ownerSaid']}\""
@@ -158,19 +170,102 @@ def decide(payload, now=None):
         n, mode, src = cap_n, "CONDUCTOR_WINDOW", f"owner silent {open_min:g}+ min or unreadable (slot_rules.json conductor_window)"
         why = "the open policy lapsed (owner, 2026-10-29): two helpers until he types to this window again"
     label = SA.seat_label(seat)
-    running = SA.running_helpers([SA.projects_dir() / SA.SEAT_PROJECT[seat]], now, rules)
-    if len(running) < n:
+
+    def refuse(running):
+        ids = ", ".join(x["id"][:10] for x in running[:8])
+        return (
+            f"Blocked: {label} already has {len(running)} helper(s) running and the allocator allows N={n} now "
+            f"(mode {mode}, {src}).\n\nWhy N={n}: {why}\n\nRunning: {ids}\n\n"
+            "Do not cancel a running helper to make room. Wait for one to finish, then spawn. The Dispatcher republishes the "
+            "budget every tick; `python3 src/RimMandrake/rimflow/helper_budget.py show` shows it.\n"
+            "Only the owner's word raises N (the override flag):\n"
+            f"    python3 src/RimMandrake/Utils/slot_allocator.py set --seat {label} --n <N> --owner-said \"<his exact words>\"\n"
+            "(it holds until the burn account's weekly reset; `slot_allocator.py clear` drops it)."
+            )
+    return _gate(seat, rules, now, n, refuse)
+
+
+def reserve_s(rules):
+    v = os.environ.get("RM_SPAWN_RESERVE_S")
+    if v is not None and v.strip():
+        return float(v)
+    return float((rules.get("helpers") or {}).get("reserve_s", RESERVE_S))
+
+
+def _pending(res, starts, now, hold_s):
+    """Reservations not yet matched by a helper transcript that started at or after them (greedy, oldest first)."""
+    live = sorted(float(t) for t in res if 0 <= now - float(t) < hold_s)
+    left = list(live)
+    for st in sorted(starts):
+        for i, t in enumerate(left):
+            if t <= st + START_SLACK_S:
+                del left[i]
+                break
+    return left
+
+
+def _gate(seat, rules, now, n, refuse):
+    """SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP: count and reserve under one lock, so two concurrent spawns cannot both pass
+    the last slot. An allowed spawn leaves a reservation that counts as a running helper until a helper transcript
+    started after it appears (or reserve_s passes). n None = uncapped (the open policy): reserve only. Fails open when
+    the lock or the reservation file cannot be had (a broken guard must not stop all spawning)."""
+    import slot_allocator as SA
+    hold_s = reserve_s(rules)
+    proj = SA.projects_dir() / SA.SEAT_PROJECT[seat]
+    d = SA.streams_dir()
+    try:
+        import fcntl
+        fd = os.open(str(d / "spawn_gate.lock"), os.O_CREAT | os.O_RDWR, 0o644)
+    except Exception:  # noqa: BLE001
+        fd = None
+    try:
+        if fd is not None:
+            deadline = time.time() + LOCK_WAIT_S
+            while True:
+                try:
+                    fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    break
+                except BlockingIOError:
+                    if time.time() > deadline:
+                        os.close(fd)
+                        fd = None
+                        break
+                    time.sleep(0.05)
+        rf = d / "spawn_reservations.json"
+        allr = SA.read_json(rf)
+        allr = allr if isinstance(allr, dict) else {}
+        mine = [t for t in (allr.get(seat) or []) if isinstance(t, (int, float))]
+        running = SA.running_helpers([proj], now, rules) if n is not None else []
+        starts = []
+        if mine and hold_s > 0:
+            lo = min(mine) - START_SLACK_S
+            for p in glob.glob(os.path.join(str(proj), "*", "subagents", "agent-*.jsonl")):
+                try:
+                    if os.path.getmtime(p) < lo:
+                        continue
+                except OSError:
+                    continue
+                st = SA._first_ts(p)
+                if st is not None and st >= lo:
+                    starts.append(st)
+        pend = _pending(mine, starts, now, hold_s) if hold_s > 0 else []
+        if n is not None and len(running) + len(pend) >= n:
+            held = running + [{"id": "reserved-" + time.strftime("%H%M%S", time.localtime(t))} for t in pend]
+            return refuse(held)
+        if hold_s > 0:
+            allr[seat] = pend + [now]
+            tmpf = rf.with_name(rf.name + f".{os.getpid()}.tmp")
+            tmpf.write_text(json.dumps(allr))
+            os.replace(tmpf, rf)
         return None
-    ids = ", ".join(x["id"][:10] for x in running[:8])
-    return (
-        f"Blocked: {label} already has {len(running)} helper(s) running and the allocator allows N={n} now "
-        f"(mode {mode}, {src}).\n\nWhy N={n}: {why}\n\nRunning: {ids}\n\n"
-        "Do not cancel a running helper to make room. Wait for one to finish, then spawn. The Dispatcher republishes the "
-        "budget every tick; `python3 src/RimMandrake/rimflow/helper_budget.py show` shows it.\n"
-        "Only the owner's word raises N (the override flag):\n"
-        f"    python3 src/RimMandrake/Utils/slot_allocator.py set --seat {label} --n <N> --owner-said \"<his exact words>\"\n"
-        "(it holds until the burn account's weekly reset; `slot_allocator.py clear` drops it)."
-    )
+    except Exception:  # noqa: BLE001  fail open
+        return None
+    finally:
+        if fd is not None:
+            try:
+                os.close(fd)
+            except OSError:
+                pass
 
 
 def main():

@@ -65,8 +65,8 @@ def alloc(seats, age=60, mode="CRUISE"):
     os.utime(streams / "allocation.json", (now - age, now - age))
 
 
-def run(seat="BENCH", stdin=None, cwd=None, session=False):
-    env = dict(os.environ, RM_SLOT_PROJECTS=str(projects), RM_STREAMS_DIR=str(streams), RM_ACCOUNT_USAGE_DIR=str(au),
+def run(seat="BENCH", stdin=None, cwd=None, session=False, reserve="0"):
+    env = dict(os.environ, RM_SPAWN_RESERVE_S=reserve, RM_SLOT_PROJECTS=str(projects), RM_STREAMS_DIR=str(streams), RM_ACCOUNT_USAGE_DIR=str(au),
                RM_SLOT_MACHINE="testhost", RM_SLOT_OWNER_LEDGER=str(tmp / "none.jsonl"), AGENT_SEAT=seat,
                RM_DISPATCHER_STATE=str(disp),
                CLAUDE_PROJECT_DIR=str(ROOT))
@@ -239,6 +239,50 @@ if keep_state is None:
     state_f.unlink()
 else:
     state_f.write_text(keep_state)
+
+# ---- SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP: (a) his explicit N caps the window even while he types
+(streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "just three", "until": iso(time.time() + H),
+                                                        "seats": {"BENCH": 3}}))
+rc, dec, why = sess_run(transcript("t5b", 5))
+check("owner typed 5 min ago but his word says N=3, 3 running -> deny, quoting him",
+      dec == "deny" and "N=3" in why and "just three" in why, (dec, why[:300]))
+(streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "run nine", "until": iso(time.time() + H),
+                                                        "seats": {"BENCH": 9}}))
+rc, dec, why = sess_run(transcript("t5c", 5))
+check("... and his larger N while typing still allows (3 < 9)", dec is None, (dec, why[:300]))
+
+# (b) the last slot: concurrent spawns are serialised, the winner's reservation holds the slot
+(streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "just four", "until": iso(time.time() + H),
+                                                        "seats": {"BENCH": 4}}))
+resf = streams / "spawn_reservations.json"
+if resf.exists():
+    resf.unlink()
+rc, dec, why = run(reserve="90")
+check("one slot left (3 running, N=4): the first spawn is allowed and reserves", dec is None and resf.exists(), (dec, why[:300]))
+rc, dec, why = run(reserve="90")
+check("... a second spawn before its transcript appears is refused (the reservation counts)",
+      dec == "deny" and "reserved-" in why, (dec, why[:300]))
+nt = sub / "agent-newborn.jsonl"
+nt.write_text(json.dumps({"type": "user", "timestamp": SA.iso_z(time.time() + 1), "message": {"role": "user", "content": "go"}})
+              + "\n" + json.dumps({"type": "assistant", "timestamp": SA.iso_z(time.time() + 1),
+                                   "message": {"role": "assistant", "stop_reason": "end_turn",
+                                               "content": [{"type": "text", "text": "done"}]}}) + "\n")
+rc, dec, why = run(reserve="90")
+check("... once the reserved helper's transcript shows (it ended), the reservation is spent: allow",
+      dec is None, (dec, why[:300]))
+nt.unlink()
+resf.unlink(missing_ok=True)
+env = dict(os.environ, RM_SPAWN_RESERVE_S="90", RM_SLOT_PROJECTS=str(projects), RM_STREAMS_DIR=str(streams),
+           RM_ACCOUNT_USAGE_DIR=str(au), RM_SLOT_MACHINE="testhost", RM_SLOT_OWNER_LEDGER=str(tmp / "none.jsonl"),
+           AGENT_SEAT="BENCH", RM_DISPATCHER_STATE=str(disp), CLAUDE_PROJECT_DIR=str(ROOT), RM_ROLE_UNIT="rm-role-fixture")
+body = json.dumps({"tool_name": "Agent", "cwd": "/x", "tool_input": {"prompt": "p", "model": "sonnet"}})
+procs = [subprocess.Popen([sys.executable, str(HOOK)], stdin=subprocess.PIPE, stdout=subprocess.PIPE, env=env, text=True)
+         for _ in range(6)]
+outs = [p.communicate(body, timeout=60)[0] for p in procs]
+allowed = sum(1 for o in outs if '"deny"' not in o)
+check("six concurrent spawns against the last slot: exactly one passes", allowed == 1, allowed)
+resf.unlink(missing_ok=True)
+(streams / "slot_override.json").unlink()
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)
