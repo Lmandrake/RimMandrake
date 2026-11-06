@@ -1,0 +1,2 @@
+relentless finish boxrun (2026-11-06, OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ): close_evidence.py inside the walled box fails with agent_storage.py Permission denied (/home/mandrake/dev/Lodestar/bin/lib unreadable from the checkbox venv), so 'no gate will see this run'; also the selftest reported PASS in 0.3 s against ~90 s when run plainly, worth checking whether the box result was cached rather than run.
+home: NONE
