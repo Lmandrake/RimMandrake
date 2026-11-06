@@ -25,9 +25,10 @@ Each breach also carries an `attribution` (row["attribution"][key], plain senten
 alarm says what the session was doing when the limit fell (OPS_GAME_HEALTH_DEBUG_PXQI, 2026-11-04: an Operations dig
 and a builder dig each re-derived these from raw rows): memory breaches name the largest map the session generated and
 the growth AFTER the last map change (a bigger map is scale, growth on a fixed map set is a leak); an error-count
-breach names the biggest scan-to-scan jump and the save loaded inside it (a save's dead def names log "Could not load
-reference"; no mod change fixes that), and how many were already queued at the first read (the cold load); the lower
-bound says whether the queue was already full at the first read (load messages evicted) and the largest scan-to-scan
+breach names the error classes MEASURED from the archived Player.log (session ee0fbaa8: the save loaded inside the
+biggest jump was once called dead def names by assumption, which sent Operations away from 3476 chunk errors and 3200
+Beer errors that were no such thing), the biggest scan-to-scan jump and the save loaded inside it, and how many were
+already queued at the first read (the cold load); the lower bound says whether the queue was already full at the first read (load messages evicted) and the largest scan-to-scan
 rise of Verse.Log's message count (>= the queue size proves an eviction between two scans). Attribution never
 removes or softens a breach. `explain [--session ID]` re-reads a session from disk and prints it.
 
@@ -54,9 +55,11 @@ $RM_GAME_HEALTH_TPS_DIR overrides where `record` reads the TPS record, $RM_GAME_
 from __future__ import annotations
 
 import argparse
+import collections
 import json
 import math
 import os
+import re
 import sys
 import time
 
@@ -308,6 +311,40 @@ def _hm(t):
     return time.strftime("%H:%MZ", time.gmtime(t))
 
 
+LOG_FRAMES = ("  at ", "    - ", "(wrapper", "[Ref ", " [0x", "Subnode", "<li", "(Filename", "UnityEngine.")
+
+
+def log_census(player_log, top=5):
+    """Sentences counted from a session's archived Player.log: what the errors ARE, never assumed from what was running.
+    The log does not mark which lines are errors, so the repeat list says it holds plain messages too."""
+    if not player_log:
+        return ["no archived log for this session: its error classes are UNMEASURED"]
+    p = str(player_log)
+    if not os.path.exists(p):
+        p = p.replace("\\", "/")
+        if len(p) > 2 and p[1] == ":":
+            p = "/mnt/%s%s" % (p[0].lower(), p[2:])
+    try:
+        with open(p, errors="replace") as fh:
+            lines = [ln.rstrip("\n") for ln in fh]
+    except OSError as e:
+        return ["archived log unreadable, its error classes are UNMEASURED: %s" % e]
+    rep, exc = collections.Counter(), collections.Counter()
+    refs = 0
+    for ln in lines:
+        if not ln.strip() or ln.startswith(LOG_FRAMES):
+            continue
+        k = re.sub(r"\d+", "#", ln[:70])
+        rep[k] += 1
+        refs += ln.startswith("Could not load reference")
+        if "exception" in ln[:60].lower():
+            exc[k] += 1
+    show = lambda c: "; ".join("%dx %s" % (n, k) for k, n in c.most_common(top)) or "none"
+    return ["archived log, most repeated lines (errors and plain messages alike): %s" % show(rep),
+            "archived log, %d 'Could not load reference' lines (dead names in a save); exception lines: %s" % (
+                refs, show(exc))]
+
+
 def attribute(brs, kinds, ctx, t0, m, player_log=None):
     """{breach key: [sentence, ...]} from the record itself; empty when nothing breached. Read-only, no verdict."""
     out = {}
@@ -357,12 +394,13 @@ def attribute(brs, kinds, ctx, t0, m, player_log=None):
             tail = ""
             if loads:
                 sv = loads[-1].get("save")
-                tail = (" while loading save %s (a save's dead def names log 'Could not load reference'; no mod change "
-                        "fixes that)" % sv) if sv else " while a new game started (no save named)"
+                tail = " while loading save %s" % sv if sv else " while a new game started (no save named)"
             s.append("biggest jump +%d between %s and %s%s" % (d, _hm(a["_t"]), _hm(b["_t"]), tail))
         if player_log:
             s.append("full log archived at shutdown: %s" % player_log)
-        out["log.errors"] = s
+        out["log.errors"] = log_census(player_log) + s       # first: ops_watch forwards the first 600 chars of the join
+    if "log.cap_reached" in keys:
+        out["log.cap_reached"] = log_census(player_log) + out["log.cap_reached"]
     if "log.errors_lower_bound" in keys and le:
         s = out["log.errors_lower_bound"]
         if le[0].get("logErrLowerBound") is True:
@@ -638,6 +676,10 @@ def main(argv=None):
             print("  %s" % k)
             for x in v:
                 print("    - %s" % x)
+        still, done = split_breaches(r)
+        print("  open: %s" % (",".join(b["key"] for b in still) or "-"))
+        for k, v in sorted(done.items()):
+            print("  debugged %s: %s" % (k, v))
         return 0
     if args.cmd == "fields":
         pre = companion_preflight()

@@ -251,6 +251,27 @@ with tempfile.TemporaryDirectory() as tmp:
     er = " | ".join(a9.get("log.errors", []))
     check("attribution: the error jump names the save loaded inside it",
           "+391" in er and "BENCH_STALE_SAVE" in er and "127 errors already counted" in er and "Player_9.log" in er, er)
+    # the jump's cause is counted from the archived log, never assumed from the save loaded inside it (session ee0fbaa8:
+    # "dead def names; no mod change fixes that" stood over 3476 chunk errors and 3200 Beer errors)
+    check("attribution: an error jump asserts no cause it did not measure", "no mod change" not in er, er)
+    check("attribution: an archive it cannot read says UNMEASURED, not nothing",
+          "UNMEASURED" in er and "error classes" in er, er)
+    census = getattr(G, "log_census", lambda *_: ["log_census is missing"])    # a failed check, not a crash, on older code
+    with tempfile.TemporaryDirectory() as lg:
+        plog = os.path.join(lg, "Player_c.log")
+        with open(plog, "w") as fh:
+            fh.write("Tried loading non-compressible thing as compressed thing: ChunkMarble\n" * 40
+                     + "Could not load reference to Verse.ResearchProjectDef named Gone\n" * 3
+                     + "Exception ticking RM_Tree123: System.NullReferenceException: x\n[Ref ABC]\n  at Verse.Foo ()\n"
+                     + "Exception ticking RM_Tree456: System.NullReferenceException: x\n[Ref ABC]\n  at Verse.Foo ()\n"
+                     + "Root level exception in Update(): System.NullReferenceException: x\n")
+        cen = " | ".join(census(plog))
+    check("log_census: counts the real classes, dead names apart from the rest, stack frames out",
+          "40x Tried loading non-compressible" in cen and "3 'Could not load reference'" in cen
+          and "2x Exception ticking RM_Tree#" in cen and "1x Root level exception" in cen and "Verse.Foo" not in cen,
+          cen)
+    check("log_census: no log, no claim", "UNMEASURED" in census(None)[0] and "UNMEASURED" in
+          census("C:\\none\\Player.log")[0], census(None))
     lb = " | ".join(a9.get("log.errors_lower_bound", []))
     check("attribution: lower bound says the first read was already full, and no scan interval proves eviction",
           "first queue read" in lb and "under the queue size" in lb, lb)
