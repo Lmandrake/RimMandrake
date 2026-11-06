@@ -1,0 +1,2 @@
+RELENTLESS_REDESIGN_VERDICT_FAIL_CLOSED gen 1: a contract proof that reads the ledger (rimflow show/status of an item) is judged against the candidate's PARENT ledger (walls.marker.tree_from_parent = ledger, code_review). An item filed in the same commit as the work reads 'has never been filed' to the blind checker although the published sha holds it (git archive 206884ba + show proves it). File any follow-up item the proof names in an EARLIER published commit, then land the work (or a lesson like this one) on top and finish on that sha.
+home: skills/clone-landing-commits
