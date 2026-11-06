@@ -1260,15 +1260,12 @@ def t_level_books_leaves_run_output():
     ok(read(books, reg) == "from a proof run\n" and read(books, "Transient/n.json") == "from a proof run\n"
        and read(books, "Transient/new.json") == "untracked\n", "and the run's output is still there, byte for byte")
 
-    advance(reg, "origin moved it\n")
-    try:
-        why = fx.level_books()
-    except RuntimeError as e:
-        why = str(e)
-    ok(why and read(books, reg) == "from a proof run\n", "origin moving a left file refuses, nothing overwritten: %s" % why)
-    g(books, "show", "HEAD:" + reg)     # the refusal is git's own; a run's output is cleared by whoever owns it, not here
-    put(books, reg, "one\n")
-    ok(fx.level_books() is None, "level again once the run's output has gone")
+    advance(reg, "origin moved it\n")     # it used to refuse here and freeze the engine (BOOKS_REGISTRY_UNSTICK_MOVED_FILE)
+    ok(fx.level_books() is None and read(books, reg) == "origin moved it\n",
+       "origin moving a left file levels; books' copy is no JSON, so origin's stands")
+    kept = glob.glob(os.path.join(fx.store.p("books_dirt"), "*", reg))
+    ok(kept and read(os.path.dirname(kept[0]), os.path.basename(reg)) == "from a proof run\n",
+       "and books' copy is kept in books_dirt, byte for byte")
 
     put(books, "code.py", "a hand edit\n")
     advance("other.py", "x\n")
@@ -1371,7 +1368,8 @@ def t_level_books_shard_under_lock():
         held = subprocess.run(probe).returncode
     ok(held == 1 and subprocess.run(probe).returncode == 0, "git's replacement of the shards runs under their flock: %s" % held)
 
-    # a level the reset refuses (origin moved a file left in place) puts the shard's landed events back
+    # a level the reset refuses puts the shard's landed events back, and a set-aside left file (origin moved the registry)
+    # as the run left it. A moved left file no longer refuses by itself (BOOKS_REGISTRY_UNSTICK_MOVED_FILE): git is made to refuse.
     reg = R.BOOKS_LEFT_IN_PLACE[1]
     put(up, reg, "one\n")
     g(up, "add", "--", reg)
@@ -1388,10 +1386,18 @@ def t_level_books_shard_under_lock():
     put(books, shard, "e\n", "a")
     put(books, reg, "local\n")
     before = read(books, shard)
+    real_git = fx.git
+
+    def refusing_git(cwd, *a, **k):     # refuse the reset, as git does on a file it would overwrite
+        if a and a[0] == "reset":
+            return subprocess.CompletedProcess(a, 128, "", "error: Entry '%s' not uptodate. Cannot merge.\n" % reg)
+        return real_git(cwd, *a, **k)
+    fx.git = refusing_git
     try:
         why = fx.level_books()
     except RuntimeError as e:
         why = str(e)
+    fx.git = real_git
     ok(why and read(books, shard) == before and read(books, reg) == "local\n",
        "a refused reset leaves the shard as it was: %s %r" % (why, read(books, shard)))
     shutil.rmtree(d, ignore_errors=True)

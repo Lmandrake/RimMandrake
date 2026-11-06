@@ -37,6 +37,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling  # noqa: E402
 import conductor_log_guard  # noqa: E402
 import relentless_account  # noqa: E402
+import relentless_books_left  # noqa: E402
 import relentless_disk  # noqa: E402
 import relentless_integrity  # noqa: E402
 import relentless_packet  # noqa: E402
@@ -152,9 +153,9 @@ BOOKS_DERIVED = (LEDGER_DIR, ITEMS_DIR)
 APPEND_ONLY_DIRS = ("infrastructure/state/code_review/", "infrastructure/state/art/events/")
 # a live site build run from the books clone rewrites its registry there; the save is on disk, the file is a run artefact
 BOOKS_RUN_ARTEFACTS = ("src/RimMandrake/Utils/modcheck/test_site_saves.json",)
-# a proof run from the books clone also writes these. Not ours to restore (the registry is status.py's output) and not in
-# the way: they stay, and the fast-forward itself refuses if origin moved one. 32 of 70 ticks on 2026-11-03 would not level
-# on them, so the engine ran old code (TICK_SPEED_FIX_GAME_IDLES_WAITING)
+# a proof run from the books clone also writes these. Not in the way: they stay as they are. 32 of 70 ticks on 2026-11-03
+# would not level on them, so the engine ran old code (TICK_SPEED_FIX_GAME_IDLES_WAITING). One origin moved is set aside
+# for the reset and handed back (the registry merged by key, the rest kept in books_dirt): relentless_books_left.py
 # validation_v2 run from the books clone writes its triplet report beside the northstar (OPS_JAM_CLASS_FIX_AGAIN_HJWN)
 BOOKS_LEFT_IN_PLACE = ("Transient/", "infrastructure/state/modcheck_status.json",
                        "src/RimMandrake/GimmeSomeSlack/northstar/validation_triplet_")
@@ -2251,6 +2252,7 @@ class Effects(relentless_game.GameFx):
             return None
         out = self.git_ok(self.books, "status", "--porcelain", "--no-renames", "-z", "--untracked-files=all")
         rows = [(x[:2], x[3:]) for x in out.split("\0") if x]
+        left = relentless_books_left.moved_rows(self.books, rows, BOOKS_LEFT_IN_PLACE)  # origin moved them: set aside
         rows = [(s, p) for s, p in rows if not p.startswith(BOOKS_LEFT_IN_PLACE)]
         rows = self.drop_stray_untracked(rows)
         staged = self.git_ok(self.books, "diff", "--cached", "--name-only").split()
@@ -2278,8 +2280,19 @@ class Effects(relentless_game.GameFx):
         restored = {}       # tracked shards cut back to HEAD: {path: HEAD's bytes}, put back if the reset never lands
         levelled = False
         try:
-            why = self._level_rows(rows, read, keep, moved_out, restored, behind, shuffled)
-            levelled = why is None
+            with relentless_books_left.registry_locked(self.books):     # no run records while its file is set aside
+                held = {}
+                head_before = self.git_ok(self.books, "rev-parse", "HEAD")
+                try:
+                    relentless_books_left.set_aside(self.books, left, keep, held)
+                    why = self._level_rows(rows, read, keep, moved_out, restored, behind, shuffled)
+                    levelled = why is None
+                finally:    # by whether HEAD moved, not by what returned: a raise after the reset landed (its journal
+                    # line, a timeout git outlived) must not write books' old copies over origin's for flush to publish
+                    if held and self.git_ok(self.books, "rev-parse", "HEAD") != head_before:
+                        relentless_books_left.hand_back(self.books, held, keep, self.store.journal)
+                    else:
+                        relentless_books_left.put_back(self.books, held)
             return why
         finally:
             if not levelled:
@@ -2393,7 +2406,9 @@ class Effects(relentless_game.GameFx):
                     f.write(subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True, check=True, timeout=60).stdout)
         self.git(self.books, "update-index", "-q", "--refresh")   # same bytes, new stat: reset --keep reads that as dirt
         with self.shards_locked(extra=sorted(shuffled)):    # no append to a restored shard while git replaces it
-            self.git_ok(self.books, "reset", "--keep", "origin/main")
+            got = self.git(self.books, "reset", "--keep", "origin/main", timeout=300)
+        if got.returncode:      # git names the file it would not overwrite: say so, not just "cannot level"
+            return "books %s behind: reset --keep refused: %s" % (behind, " ".join(got.stderr.split())[-400:])
         if shuffled:    # only now: a level that refuses above restored nothing
             self.store.journal({"at": iso(time.time()), "do": "books_reorder_restored", "paths": sorted(shuffled)})
         return None
@@ -2418,6 +2433,11 @@ class Effects(relentless_game.GameFx):
         """Publish the shard: retried each tick until it lands, so a close never stays local."""
         shards = [SHARD % self.r["seat"], SHARD % "RUNNER",     # RUNNER: the alarm's `live` line
                   SHARD % BRIDGE_HOLDER]                        # its bridge takes and releases
+        # a run recorded in books lands too, but only from level books (BOOKS_REGISTRY_UNSTICK_MOVED_FILE): publish
+        # replays it as text, so books' whole file over an origin that moved it conflicts and strands a registry commit
+        # that level_books refuses by name every tick. Behind, level_books merges it by key first.
+        if self.git(self.books, "rev-list", "--count", "HEAD..origin/main").stdout.strip() == "0":
+            shards.append(relentless_books_left.REGISTRY)
         got = self.git(self.books, "status", "--porcelain", "--", *shards).stdout.strip()
         moved = self.prose_moves()
         ahead = self.git(self.books, "rev-list", "--count", "origin/main..HEAD").stdout.strip()
