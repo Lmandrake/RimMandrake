@@ -1,0 +1,2 @@
+Designer exam control: removing a core leaf from tree.json and its sheet lines is not enough. A '## delegated' or '## pruning' clause that names the same check (GSS 'new-game cleanup') still lets the control Reader reject, so the control does not discriminate. Strip every sheet mention of the removed leaf's rule before the control run. (GSS stage 4, rm-role-designer-1793955657)
+home: src/RimMandrake/rimflow/roles/designer_exam.md
