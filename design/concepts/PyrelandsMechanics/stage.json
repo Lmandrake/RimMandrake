@@ -1,5 +1,6 @@
 {
  "aliases": [],
+ "blocked_on": "EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -142,10 +143,31 @@
     "ref": "run rm-role-designer-1793930137",
     "stage": 3,
     "tokens": 183885
+   },
+   {
+    "at": "2026-11-06T02:01:19Z",
+    "kind": "helper",
+    "ref": "rm-judge a28db010e0dd5b1f6",
+    "stage": 4,
+    "tokens": 31148
+   },
+   {
+    "at": "2026-11-06T02:01:19Z",
+    "kind": "helper",
+    "ref": "rm-judge a950a2dba6d7f7902",
+    "stage": 4,
+    "tokens": 30823
+   },
+   {
+    "at": "2026-11-06T02:02:52Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793930288",
+    "stage": 4,
+    "tokens": 414262
    }
   ],
   "reserve": 60000,
-  "spent": 3717496
+  "spent": 4193729
  },
  "history": [
   {
@@ -297,6 +319,18 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1793930137: stage 3 done"
+  },
+  {
+   "at": "2026-11-06T01:58:30Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1793930288, stage 4, budget 222504"
+  },
+  {
+   "at": "2026-11-06T02:02:53Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1793930288: stage 4 blocked"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
@@ -543,11 +577,33 @@
    "run": "rm-role-designer-1793930137",
    "stage": 3,
    "summary": "Re-accepted the sheet as corrected by stage 4: ## open is empty (flagship pick OWNER:1793908890260302861 and north-star validation OWNER:1793908893473496687 are in ## his words, bound to d_flagship_rite_party and d_north_star_validated). Gate A lint PASS; showcase set accepted (rite_party, 6 new, overlap 0.00, rest in coverage_rest); scenes.json and floor.json unchanged and validate. Tree, scenes and floor not edited this run, so stage 4's exam.json (written against the corrected sheet and current tree hashes) should still stand."
+  },
+  {
+   "at": "2026-11-06T02:02:53Z",
+   "inputs": {
+    "exam": "25cdac6e7fc7041fe113a300f4d7772006fa6ff052fa22169025f79dfa0dc873",
+    "floor": "60ba07bafe2c726553880839556f4d7d94d37be6b414ad4e5c88d279fe8d83b7",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "f8e9e5988a2d1daf5805c000f884646cc598553bbd08aea9202ee82d7f0fb338",
+    "scenes": "ef625cc5e068d07ed85aeed41537c3d9a2faac9a25507165b95643efa4171c21",
+    "sheet": "9cf7e207f758b8c0967d3101163bf178297216c080800466e5db3790d58a67c5",
+    "tree": "8d85249f7028c05470902cc08c2f4a3c7e7daf856bbd461b86c28da750d11f3b"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_exam.md": "3e3f16a15ed2c45e2851911d42c9369cdc7560758fe1f386dc38012b93534217"
+   },
+   "on": "EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED",
+   "outcome": "blocked",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793930288",
+   "stage": 4,
+   "summary": "Exam inputs still match (tree 8d85249f, sheet 9cf7e207; 23/23, accept_where_reject_core 0), but the control requirement fails: two more control Readers this run, each with a core rule stripped from tree AND sheet (scar reach; visit picks), still scored every scenario right, as did the two earlier controls. The scenarios do not discriminate, so the exam is not passed, though designer_stage.py check would accept it (exam_errors never reads control; filed as system item EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED). Unblock: a fresh scenario set built to target rules a Reader cannot infer from neighbouring leaves (e.g. the visit's own reach, goodwill unchanged after drive-off, self-defence ending with the fight), refrozen and re-read. About 150k budget left above the reserve cannot fund Examiner, Challenger, two Readers and a control; the Conductor raises the cap or rules on the control. No tree defect found: the redundancy is between the root and the leaves."
   }
  ],
  "running": null,
  "schema": 1,
  "stage": 4,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

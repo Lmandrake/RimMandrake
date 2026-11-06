@@ -1,0 +1,7 @@
+{
+ "run": "rm-role-designer-1793930288",
+ "stage": 4,
+ "outcome": "blocked",
+ "on": "EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED",
+ "summary": "Exam inputs still match (tree 8d85249f, sheet 9cf7e207; 23/23, accept_where_reject_core 0), but the control requirement fails: two more control Readers this run, each with a core rule stripped from tree AND sheet (scar reach; visit picks), still scored every scenario right, as did the two earlier controls. The scenarios do not discriminate, so the exam is not passed, though designer_stage.py check would accept it (exam_errors never reads control; filed as system item EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED). Unblock: a fresh scenario set built to target rules a Reader cannot infer from neighbouring leaves (e.g. the visit's own reach, goodwill unchanged after drive-off, self-defence ending with the fight), refrozen and re-read. About 150k budget left above the reserve cannot fund Examiner, Challenger, two Readers and a control; the Conductor raises the cap or rules on the control. No tree defect found: the redundancy is between the root and the leaves."
+}
