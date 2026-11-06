@@ -419,6 +419,11 @@ def sweep(store, fx, r, now, acts, iso):
         if gaps:
             # it would read, but nothing in it reaches what the Judge named: the re-check would be blind again
             good, why = False, "the proposal (adapters %s) does not cover %s" % (prop.get("adapters") or "-", gaps[:6])
+            moved, pwhy = split(store, fx, r, book, name, owner, st, prop, gaps, why, now, acts, iso)
+            if moved:
+                continue
+            if pwhy:
+                why += "; and the rest of the repair failed its probe too: " + pwhy[:300]
         elif not prop.get("adapters") and not prop.get("paths") and not prop.get("grants"):
             # nothing to probe: a closed ticket is the repair, and the one re-check is its probe (blind again -> ticket)
             good = status == "ticket"
@@ -441,7 +446,8 @@ def sweep(store, fx, r, now, acts, iso):
             if status == "ticket":
                 fx.ledger_unblock(owner, "reach repair %s: %s closed and the probe passes" % (name, ent["ticket"]))
             waiters = list(ent.get("waiters") or [])
-            book[name] = dict(ent, status="ok", owner=None, waiters=[], ok_at=now, last_owner=owner)
+            book[name] = dict({k: v for k, v in ent.items() if k not in ("ok_prop", "split_owner")}, status="ok",
+                              owner=None, waiters=[], ok_at=now, last_owner=owner)
             save(store, book)
             for w in waiters:
                 release_waiter(store, fx, w, name, now, iso, prop=prop, owner=owner, r=r)
@@ -453,6 +459,81 @@ def sweep(store, fx, r, now, acts, iso):
             continue
         file_ticket(store, fx, r, book, name, owner, why, now, acts, iso)
     orphans(store, fx, book, now, acts, iso, r)
+
+
+def gap_class(r, gaps, visited):
+    """-> the reach_classes row (or the catch-all `other`) whose match finds the uncovered `gaps`, skipping every class in
+    `visited`; None when the only home left is one already visited."""
+    blob = "\n".join(gaps)
+    for c in classes(r):
+        if c["class"] not in visited and c.get("match") and re.search(c["match"], blob, re.I):
+            return c
+    other = classify(r, [])
+    return other if other["class"] not in visited else None
+
+
+def split(store, fx, r, book, name, owner, st, prop, gaps, why, now, acts, iso):
+    """CHECKER_REACH_FIX_GIT_DARK_SECOND: the git class's owner NIGHTLY_COP_FIX_RED_AQJSGV_CFVH also named
+    /home/mandrake/rm/arena (gone from the host with the arena trial) and the D: mirror's bundle_textures. No git repair
+    covers those, so every probe of the git class failed on them and eight items blind on git history alone waited
+    behind two tickets. The gaps are the owner's own: the rest of the repair (adapters, grants, covered paths) is probed
+    without them, only while someone waits; a pass releases the class's waiters with it and moves the owner alone to the class its gaps name
+    (gap_class, never one it was already split from), where it is probed afresh. -> (moved, why the rest failed)."""
+    ent = book[name]
+    if not ent.get("waiters"):      # no one waits behind the owner's gaps: its class ticket is its own (selftest row 8c)
+        return False, None
+    rp = st.get("reach") or {}
+    visited = list(rp.get("split_from") or []) + [name]
+    dest = gap_class(r, gaps, visited)
+    if dest is None:
+        return False, None
+    rest = dict(prop, paths=[p for p in prop.get("paths") or [] if p not in gaps])
+    if not (rest.get("adapters") or rest.get("paths") or rest.get("grants")):
+        return False, None
+    good, pwhy = fx.reach_probe(r, rest.get("paths") or [], rest.get("adapters") or [],
+                                {"sha": rp.get("sha") or "", "repo": fx.books, "item": owner}, store.root,
+                                grants=rest.get("grants") or [])
+    if not good:
+        return False, pwhy
+    dn = dest["class"]
+    with store.lock():
+        cur = store.load(owner)
+        if not cur or cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
+            return False, None
+        dent = book.get(dn) or {}
+        cur["reach"] = dict(cur.get("reach") or {}, **{"class": dn, "split_from": visited, "proposal": prop,
+                                                       "split_why": why[:300]})
+        cur.pop("block_pending", None)
+        if dent.get("owner") and dent["owner"] != owner and dent.get("status") in ("probe", "ticket", "failed"):
+            on = dent["ticket"] if dent.get("status") == "ticket" and dent.get("ticket") else dent["owner"]
+            cur["reach"]["status"] = "ticket" if on != dent["owner"] else "waiting"
+            _wait(cur, on, dn, now, "its uncovered paths %s wait on the %s reach repair owned by %s"
+                  % (gaps[:6], dn, dent["owner"]), ledger_on=on)
+            dent.setdefault("waiters", [])
+            if owner not in dent["waiters"]:
+                dent["waiters"].append(owner)
+            book[dn] = dent
+        else:
+            cur["reach"]["status"] = "probe"
+            _wait(cur, owner, dn, now, "")
+            book[dn] = dict({k: dent[k] for k in ("successors",) if k in dent}, owner=owner, status="probe", since=now,
+                            waiters=[w for w in dent.get("waiters") or [] if w != owner])
+        store.attempt(owner, {"at": iso(now), "gen": cur["gen"], "end": "reach_split", "class": name, "to": dn,
+                              "detail": ("the %s repair passed its probe without %s: %s" % (name, gaps[:6], pwhy))[:600]})
+        store.save(cur)
+    waiters = list(ent.get("waiters") or [])
+    book[name] = dict(ent, status="ok", owner=None, waiters=[], ok_at=now, last_owner=None, ok_prop=rest,
+                      split_owner=owner)
+    save(store, book)
+    if ent.get("status") == "ticket":
+        fx.ledger_unblock(owner, "reach repair %s: %s closed and the probe passes without this item's own gaps %s, "
+                          "which move to the %s class" % (name, ent.get("ticket"), gaps[:6], dn))
+    for w in waiters:
+        release_waiter(store, fx, w, name, now, iso, prop=rest, owner=owner, r=r)
+    store.journal({"at": iso(now), "do": "reach_split", "item": owner, "class": name, "to": dn, "gaps": gaps[:6],
+                   "waiters": waiters})
+    acts.append({"do": "reach_split", "item": owner, "class": name, "to": dn, "waiters": waiters})
+    return True, None
 
 
 def box_fingerprint(cfg=None):
@@ -578,7 +659,7 @@ def orphans(store, fx, book, now, acts, iso, r=None):
         if ent.get("status") != "ok":
             continue
         last = store.load(ent["last_owner"]) if ent.get("last_owner") else None
-        prop = ((last or {}).get("reach") or {}).get("proposal")
+        prop = ent.get("ok_prop") or ((last or {}).get("reach") or {}).get("proposal")    # ok_prop: a split's (split)
         if release_waiter(store, fx, st["item"], w["class"], now, iso, prop=prop, owner=ent.get("last_owner"), r=r):
             moved.append(st["item"])
             acts.append({"do": "reach_orphan_released", "item": st["item"], "class": w["class"]})
