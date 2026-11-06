@@ -921,3 +921,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A1 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T06:07:45Z","tsn":1793945265534045152}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T06:12:49Z","tsn":1793945569572331258}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A3 (L2), read-only proof","ts":"2026-11-06T06:13:05Z","tsn":1793945585769787136}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T06:15:51Z","tsn":1793945751071270413}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A4 (L2), read-only proof","ts":"2026-11-06T06:16:11Z","tsn":1793945771350365629}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T06:18:52Z","tsn":1793945932882530850}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_GLASSWALK_SPEED_RATIO_1 A1 (L2), read-only proof","ts":"2026-11-06T06:21:06Z","tsn":1793946066786790078}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T06:22:32Z","tsn":1793946152858902207}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","ts":"2026-11-06T06:25:34Z","tsn":1793946334076233902}
