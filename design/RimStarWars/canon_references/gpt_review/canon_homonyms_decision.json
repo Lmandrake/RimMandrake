@@ -1,0 +1,33 @@
+{
+  "item": "CANON_HOMONYMS_DECIDE_SAME_WORD_NEW_BIRD",
+  "decided": "2026-11-05",
+  "by": "Relentless builder, delegated: naming (design/RimMandrake/delegation_policy.md; not a section 2 call)",
+  "rule": "biome_mod_architecture.md s7 Q11a: the tier split is by NAME PROVENANCE. An invented name may live in RM_; only a genuine canon name, i.e. one TAKEN from canon, is IP. Q12: an invented-name creature still prefixed RSW_ moves to RM_ per biome, at its sitting, never in a sweep.",
+  "source": "design/RimStarWars/canon_references/gpt_review/census_no_entry.py VERDICT (rows with verdict NAME COLLISION)",
+  "rulings": {
+    "RM_FireHawk": {
+      "ruling": "accept",
+      "why": "Invented for the Pyrelands, not taken from canon; 'fire-hawk' is a plain English compound (and a real-world name for fire-spreading raptors) that also happens to name a minor Tenoo bird. Provenance is invented, so Q11a keeps it in RM_; the label stays."
+    },
+    "RM_FireWasp": {
+      "ruling": "accept",
+      "why": "Invented heatproof swarm scavenger; 'fire wasp' is a generic English compound that matches a Legends-only insect page. Not taken from canon, so not IP under Q11a."
+    },
+    "RM_Kirruk": {
+      "ruling": "accept",
+      "why": "The player-facing label is 'dewglider'; 'kirruk' is only the internal defName, coined with the Weeping Stones -rrik/-rrak/-llak name family (RM_Mirrik, RM_Burrak, RM_Vellak), independently of a Legends reptile of Ossus. Invented provenance, so Q11a allows it. A rename would touch ~270 references (art, flight flip-book, the owner's review-sheet decisions) to change a name no player reads."
+    },
+    "RM_Peeper": {
+      "ruling": "accept",
+      "why": "'peeper' is an ordinary English word (a creature with extra eyes) that also names Legends birds of Belsavis. Invented provenance; not IP under Q11a."
+    },
+    "RSW_Screecher": {
+      "ruling": "retier_at_sitting",
+      "why": "'screecher' is generic English; ours is a Biomes-team-port corvid with no canon basis, so its name is not IP. Its RSW_ prefix is the Q12 class (invented-name creature still in RSW_), which moves to RM_ per biome at that biome's sitting, never by a sweep; nothing to rename for the homonym. It was already cut from the Cauldron patch by the owner's sheet note 2026-10-09."
+    },
+    "RSW_Basilisk": {
+      "ruling": "deleted",
+      "why": "Already deleted from src/ by BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS (owner card 2026-11-04, 'Drop 42'); selftest_biomes_port_prune_42.py holds it absent. Nothing left to decide."
+    }
+  }
+}
