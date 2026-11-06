@@ -918,3 +918,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A5 (L2), read-only proof","ts":"2026-11-06T06:02:49Z","tsn":1793944969813944712}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T06:03:27Z","tsn":1793945007118158272}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","ts":"2026-11-06T06:05:56Z","tsn":1793945156196233039}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A1 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T06:07:45Z","tsn":1793945265534045152}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T06:12:49Z","tsn":1793945569572331258}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A3 (L2), read-only proof","ts":"2026-11-06T06:13:05Z","tsn":1793945585769787136}
