@@ -196,6 +196,17 @@ def t_wsl_proof_reruns_under_windows_python():
     check("wsl: another exit 2 is not rerun", len([c for c in fx.calls if c[0] == "proof"]) == 1, fx.calls)
 
 
+STILLSAND_DEPLOY_CRASH = (     # the real log, its paths cut
+    "EXPECTED_ROWS [\"loomma_sunstruck_open_vs_roofed\"]\nTraceback (most recent call last):\n"
+    "  File \"modcheck/runner.py\", line 1330, in run\n    raise RuntimeError(\n"
+    "RuntimeError: deploy of Stillsand FAILED: ks.dll\n"
+    "  ! FAILED to write Assemblies/RimMandrakeFlowWorks.dll: [Errno 22] Invalid argument: '/mnt/c/x.dll'\n"
+    "  ! 1 file(s) NOT written for this mod (locked by the running game, or permissions). Nothing here is deployed until "
+    "they are.\n    -> STILL DIFFERS: ['Assemblies/RimMandrakeFlowWorks.dll']\n"
+    "NOTHING WAS WRITTEN, and the repo and game still DIFFER - see the refusal(s) above. Fix them and re-run.\n"
+    "FAIL Stillsand\n  newest run Transient/modcheck/Stillsand_20261105T084841Z.json is 337 min old (> 30): rerun the "
+    "live half")
+
 EXIT1_CASES = [     # (log tail of a real exit-1 row of 2026-11-02..04, outcome, the why's head) LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL
     ("dump s.json: phaseStack=['update'] silentS=60.5 mainStack=NotImplementedException: x tickList=None\n"
      "FAIL s.json does not flag the main thread among 0 threads\nprove_bridge_stall_dump: FAIL (77 s)", "FAIL", "proof exit 1"),
@@ -269,6 +280,12 @@ EXIT1_CASES = [     # (log tail of a real exit-1 row of 2026-11-02..04, outcome,
      "the proof exited 1: it did not measure: the proof crashed: ValueError (UNKNOWN"),
     ("FAIL: bill RM_MineShaft_Vacstone exists, but an earlier rock already covers ChunkVacstone\nVERDICT FAIL", "FAIL",
      "proof exit 1"),
+    # PROOF_CRASH_FIX_READ_AS_MOD_FAILURE: STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1 A1 2026-11-05 was booked FAIL: modcheck's
+    # deploy died on a DLL the game holds, and the reader after it judged an older run and printed "FAIL Stillsand"
+    (STILLSAND_DEPLOY_CRASH, "UNMEASURED", L.HARNESS),
+    # HEADS_VERIFY_SHRUNK_TO_FIT_THE_HATS A1: the proof's own import died; a broken call, a defect on its first run
+    ("Traceback (most recent call last):\n  File \"p.py\", line 3, in <module>\n    import numpy\n"
+     "ModuleNotFoundError: No module named 'numpy'", "UNMEASURED", L.DEFECT),
 ]
 
 

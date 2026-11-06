@@ -137,7 +137,11 @@ WSL_BRIDGE = ("cannot reach the bridge from WSL", "Re-run under Windows Python")
 # The box or the instrument failed: no proof or mod change helps (relentless_game._harness: alarm, restage later, no strike)
 EXIT1_HARNESS = re.compile(
     r"cannot reach the bridge from WSL|IndeterminateError|No space left on device|\[Errno 28\]|Wsl/Service/"
-    r"|object has no attribute 'sendall'|UtilAcceptVsock|BrokenPipeError|ConnectionResetError|ConnectionRefusedError|ConnectionAbortedError")
+    r"|object has no attribute 'sendall'|UtilAcceptVsock|BrokenPipeError|ConnectionResetError|ConnectionRefusedError|ConnectionAbortedError"
+    # PROOF_CRASH_FIX_READ_AS_MOD_FAILURE: modcheck's deploy died on a DLL the running game holds (STILLSAND 2026-11-05,
+    # RuntimeError "deploy of Stillsand FAILED" then "NOT written ... locked by the running game"); the reader chained
+    # after it judged an older run and printed "FAIL Stillsand", booked as the mod's FAIL
+    r"|locked by the running game|NOTHING WAS WRITTEN, and the repo and game still DIFFER")
 # The running load is not the one the proof needs (wrong tier, a stale DLL): RELOAD, so the game phase restages
 EXIT1_RELOAD = re.compile(r"^(?:WRONG_TIER|WRONG_LIST)\b|stale deploy|redeployed after launch")
 # The same, as one row of a proof that may also have charged the mod: read only when no `FAIL MOD` row did (TITANIC's

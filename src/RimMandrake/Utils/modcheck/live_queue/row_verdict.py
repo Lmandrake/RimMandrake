@@ -12,9 +12,9 @@ It only READS the newest Transient/modcheck/<Mod>_<stamp>.json (runner.write_she
   --unmeasured-ok RX  an UNMEASURED row whose detail matches RX counts as holding (a site fact the criterion allows).
   --max-age-min N     the newest run must be younger than N minutes (a stale run is not this sitting's evidence).
 
-Exit 0 = every row holds; 1 = a row is missing, FAIL, UNMEASURED (not allowed), NOT_RUN, or the run is stale/absent;
-2 = UNMEASURED: modcheck REFUSED the run (summary.refused, e.g. stale_load with chains []): nothing ran, so it is
-neither PASS nor FAIL (MODCHECK_READERS_FIX_REFUSAL_READ_AS_FAIL).
+Exit 0 = every row holds; 1 = a row is missing, FAIL, UNMEASURED (not allowed) or NOT_RUN;
+2 = UNMEASURED: modcheck REFUSED the run (summary.refused, e.g. stale_load with chains []), or the run is stale/absent
+(PROOF_CRASH_FIX_READ_AS_MOD_FAILURE): nothing ran, so it is neither PASS nor FAIL (MODCHECK_READERS_FIX_REFUSAL_READ_AS_FAIL).
 judge() is pure; `--selftest` exercises it offline.
 """
 import argparse
@@ -80,11 +80,13 @@ def newest(sheet_dir, mod):
 
 def check(sheet_dir, mod, rows, max_age_min, unmeasured_ok=None):
     path = newest(sheet_dir, mod)
+    # PROOF_CRASH_FIX_READ_AS_MOD_FAILURE: no run, or only an old one, means this proof's run never wrote its JSON (a
+    # modcheck crash before it, STILLSAND 2026-11-05): nothing was measured, so UNMEASURED, never the mod's FAIL
     if not path:
-        return 1, ["no %s run JSON in %s" % (mod, sheet_dir)]
+        return 2, ["UNMEASURED  no %s run JSON in %s" % (mod, sheet_dir)]
     age = (time.time() - os.path.getmtime(path)) / 60.0
     if age > max_age_min:
-        return 1, ["newest run %s is %.0f min old (> %d): rerun the live half" % (path, age, max_age_min)]
+        return 2, ["UNMEASURED  newest run %s is %.0f min old (> %d): rerun the live half" % (path, age, max_age_min)]
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
     if data.get("mod") != mod:
@@ -130,7 +132,16 @@ def selftest():
         if code != 2:
             bad += 1
             print("refused run: want exit 2 got %d %s" % (code, lines))
-    print("row_verdict selftest: %s (%d cases)" % ("PASS" if not bad else "FAIL", len(cases) + 1))
+        os.utime(os.path.join(td, "M_20261105T234400Z.json"), (time.time() - 7200, time.time() - 7200))
+        code, lines = check(td, "M", ["a_round_trips"], 60)
+        if code != 2:
+            bad += 1
+            print("stale run: want exit 2 got %d %s" % (code, lines))
+        code, lines = check(td, "Absent", ["a_round_trips"], 60)
+        if code != 2:
+            bad += 1
+            print("absent run: want exit 2 got %d %s" % (code, lines))
+    print("row_verdict selftest: %s (%d cases)" % ("PASS" if not bad else "FAIL", len(cases) + 3))
     return 1 if bad else 0
 
 
