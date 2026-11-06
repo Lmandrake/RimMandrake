@@ -563,15 +563,16 @@ def test_wt_profile_wrap_only_when_enabled():
     check(W.restart_seats(on) == {"FOUNDRY"}, "WT installer: key on -> the listed seat is wrapped")
     real = W.restart_seats
     try:
+        # The FOUNDRY tile was deleted (255013e116, owner card 2026-11-05): BENCH is the one Claude tile left to wrap.
         W.restart_seats = lambda path=None: set()
-        plain = W.build("FOUNDRY")[0]["commandline"]
-        W.restart_seats = lambda path=None: {"FOUNDRY"}
-        wrapped = W.build("FOUNDRY")[0]["commandline"]
+        plain = W.build("BENCH")[0]["commandline"]
+        W.restart_seats = lambda path=None: {"BENCH"}
+        wrapped = W.build("BENCH")[0]["commandline"]
     finally:
         W.restart_seats = real
     check("seat_loop.sh" not in plain and plain.endswith('exec $SHELL -l"') and "-eq 143 ] && exit 0" in plain, "WT: off -> the launch line is unchanged")
-    check("seat_loop.sh FOUNDRY " in wrapped and "--remote-control 'AGENT FOUNDRY'" in wrapped,
-          "WT: on -> seat_loop.sh wraps the same LAUNCH line (%s)" % wrapped[-160:])
+    check("seat_loop.sh BENCH " in wrapped and "--remote-control" in wrapped and not wrapped.endswith('exec $SHELL -l"'),
+          "WT: on -> seat_loop.sh wraps the LAUNCH line (%s)" % wrapped[-160:])
 
 
 def test_rollback_releases_the_seat():
@@ -1191,6 +1192,13 @@ def test_w1_new_work_after_the_request_voids_it():
         f.write(json.dumps(dict(_ev("note", "NO_TS", later), ts="yesterday")) + "\n\n")
     check(SR.work_since(clone, "FOUNDRY", T0 + 0.5) == [], "W1 control: a non-work event's bad time and a blank line read")
     check(SR.work_since(os.path.join(TMP, "w1none"), "FOUNDRY", T0) == [], "W1 no shard yet -> no work (empty)")
+    # NEGATIVE (SEATRESTART_AUDIT_WHOLE_FILE): the Conductor writes its work as seat CONDUCTOR into BENCH.jsonl; it is
+    # BENCH's work. RELENTLESS events in the same shard are another holder's.
+    with open(os.path.join(shard, "BENCH.jsonl"), "w") as f:
+        for e in [dict(_ev("start", "C_WORK", later), seat="CONDUCTOR"), dict(_ev("start", "R_WORK", later), seat="RELENTLESS")]:
+            f.write(json.dumps(e) + "\n")
+    check([e["id"] for e in SR.work_since(clone, "BENCH", T0 + 0.5) or []] == ["C_WORK"],
+          "W1 BENCH's work includes its CONDUCTOR alias, never RELENTLESS (%s)" % SR.work_since(clone, "BENCH", T0 + 0.5))
     # the kill-time re-check reads it again
     holds = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "ticket": "SOME_TICKET_DONE", "session_id": "sid-old"},
                                {"pid": 1, "sessionId": "sid-old", "cwd": CLONE},
@@ -1555,14 +1563,13 @@ def test_g9_wt_bench_keeps_the_conductor_wake_under_seat_loop():
     import install_wt_seat_profiles as W
     real = W.restart_seats
     try:
-        W.restart_seats = lambda path=None: {"BENCH", "FOUNDRY"}
+        W.restart_seats = lambda path=None: {"BENCH"}
         b = W.build("BENCH")[0]["commandline"]
-        f = W.build("FOUNDRY")[0]["commandline"]
     finally:
         W.restart_seats = real
     check("seat_loop.sh BENCH " in b and "Fresh CONDUCTOR window" in b and "doorbell" not in b,
           "G9 WT: BENCH under seat_loop keeps its Conductor wake prompt (%s)" % b[-200:])
-    check("seat_loop.sh FOUNDRY " in f and "doorbell" in f, "G9 WT control: FOUNDRY keeps the doorbell first launch")
+    # The FOUNDRY doorbell control went with its tile (255013e116, owner card 2026-11-05): no doorbell tile is left.
 
 
 # ---------------------------------------------------------------------------------------------------------------------

@@ -48,7 +48,7 @@ NOW = T0 + 5000
 
 def window(ctx, mode=None, mode_at=NOW - 60, human_at=NOW - 300, ended_at=NOW - 100, **kw):
     """The Conductor at this size, its turn ended long enough ago for any quiet, its switch at mode."""
-    a = dict(tx={"ctx_tokens": ctx, "last_kind": "assistant_end", "last_at": ended_at, "last_user_at": human_at},
+    a = dict(tx={"ctx_tokens": ctx, "last_kind": "assistant_end", "last_at": ended_at, "last_user_at": human_at, "size": 0},
              last_human=(human_at, None, None, 0))
     a.update(kw)
     o = obs(**a)
@@ -409,7 +409,7 @@ def test_window_that_died_without_a_record():
         with open(SR.killed_path("BENCH", state), "w") as f:
             json.dump({"tx_path": SR.transcript_path(clone, "aaaaaaaa-older"), "session_id": "aaaaaaaa-older", "killed_at": T0}, f)
         out = run_wake()
-        check("THE REPLY HE WAS READING" in out and "an older window" not in out, "a stale killed record loses to the newer dead window")
+        check("THE REPLY HE WAS READING" in out and "an older window" not in out.split(">>>", 1)[0], "a stale killed record loses to the newer dead window")
         # a record of the restart that killed this very window: same reply, and it names the restart
         with open(SR.killed_path("BENCH", state), "w") as f:
             json.dump({"tx_path": dead, "session_id": sid, "killed_at": T0}, f)
@@ -590,6 +590,26 @@ def test_ready_is_bound_to_its_window_and_never_loops():
         o["seat_restart"].update(patch)
         a = go(s, st, o)
         check(not {"restart_request", "restart_kill"} & set(dos(a)), "ready, %s: nothing armed (%s)" % (label, dos(a)))
+    # NEGATIVE (SEATRESTART_AUDIT_WHOLE_FILE): the cursor is the END of the tx reading, never a later last_human read;
+    # his input ending past that reading, or no byte end to bind to, arms nothing
+    for label, patch in (("his input ended past the size reading",
+                          {"last_human": lambda seat, c: (NOW - 300, None, 900, 1000)}),
+                         ("the size reading has no byte end",
+                          {"tx": lambda seat, c: {"ctx_tokens": 5_000, "last_kind": "assistant_end", "last_at": NOW - 4,
+                                                  "last_user_at": NOW - 300}})):
+        st = fresh()
+        o = window(5_000, RM.READY, ended_at=NOW - 4)
+        o["seat_restart"].update(patch)
+        a = go(s, st, o)
+        check("restart_request" not in dos(a), "ready, %s: nothing armed (%s)" % (label, dos(a)))
+    st = fresh()
+    o = window(5_000, RM.READY, ended_at=NOW - 4)
+    o["seat_restart"]["tx"] = lambda seat, c: {"ctx_tokens": 5_000, "last_kind": "assistant_end", "last_at": NOW - 4,
+                                               "last_user_at": NOW - 300, "size": 700}
+    o["seat_restart"]["last_human"] = lambda seat, c: (NOW - 300, None, 500, 1000)
+    go(s, st, o)
+    check((st["seat_restart"].get("FOUNDRY") or {}).get("tx_offset") == 700,
+          "ready: the cursor is the size reading's end (700), not the later file size (%s)" % st["seat_restart"].get("FOUNDRY"))
     # a ready restart that failed waits out its cooldown: no kill loop on a window that cannot be restarted
     st = fresh()
     st["seat_restart"]["FOUNDRY"] = {"state": "failed", "source": "ready", "ts": NOW - 100, "ended_at": NOW - 10,
@@ -603,7 +623,7 @@ def test_ready_is_bound_to_its_window_and_never_loops():
     st = fresh()
     o = window(5_000, RM.READY, ended_at=NOW - 4, helpers=[{"id": "h1", "alive": True, "desc": "x", "last_at": NOW}])
     o["seat_restart"]["tx"] = lambda seat, c: {"ctx_tokens": 5_000, "last_kind": "assistant_end", "last_at": NOW - 4,
-                                               "last_user_at": NOW - 10}
+                                               "last_user_at": NOW - 10, "size": 0}
     a = go(s, st, o)
     check(st["seat_restart"]["FOUNDRY"].get("cancel_after") == NOW - 300, "the round's cancel window opens at his last message")
     check(st["seat_restart"]["FOUNDRY"]["state"] == "cancelled" and not fires(a),

@@ -852,6 +852,9 @@ def work_since(clone, seat, req_ts):
     the request's second on, [] if the seat has no shard yet, or None (UNMEASURED: the shard cannot be read). The
     ledger stamps whole seconds, so an event in the request's own second counts: a false void never kills anything."""
     p = os.path.join(clone or "", "infrastructure", "state", "ledger", "events", "%s.jsonl" % seat)
+    # the shard's own key and every alias of it: the Conductor writes its work as seat CONDUCTOR into BENCH.jsonl
+    # (SEATRESTART_AUDIT_WHOLE_FILE); RELENTLESS events in the same shard are another holder's, never this window's
+    mine = {seat} | {a for a, k in SEAT_ALIAS.items() if k == seat}
     since = int(req_ts)
     out = []
     try:
@@ -872,7 +875,7 @@ def work_since(clone, seat, req_ts):
             return None
         if not isinstance(ev, dict):
             return None
-        if ev.get("seat") != seat:
+        if ev.get("seat") not in mine:
             continue
         if ev.get("event") not in WORK_EVENTS and not (ev.get("event") == "lease" and ev.get("action") in WORK_LEASE):
             continue
@@ -1500,10 +1503,15 @@ def _ready_pending(seat, cfg, R, ro, cur, tx, now, act):
     lh = ro["last_human"](seat, cur) if callable(ro.get("last_human")) else None
     if born is None or ro["start"](cur.get("pid")) != born or lh is None:
         return None
+    # the cursor is the END of the tx reading, never a later last_human read: input landing between the two would sit
+    # before it, unseen (FOUNDRY_BACKSTOP_REPAIR_CURSOR_HIDES_INPUT; missed here, SEATRESTART_AUDIT_WHOLE_FILE)
+    cursor, _why = _snapshot_cursor(tx, lh)
+    if cursor is None:
+        return None
     rs = R[seat] = {"source": READY, "ts": now, "session_id": cur.get("sessionId"), "pid": cur.get("pid"), "start": born,
                     "ticket": None, "ctx_tokens": (tx or {}).get("ctx_tokens"), "now": True, "busy": 0,
                     "reason": "he set the reset switch to ready", "cooldown_s": cfg["cooldown_s"], "state": "pending",
-                    "cancel_after": lh[0] or (tx or {}).get("last_user_at") or now, "tx_offset": lh[3] or 0,
+                    "cancel_after": lh[0] or (tx or {}).get("last_user_at") or now, "tx_offset": cursor,
                     "tx_path": transcript_for(cur, cfg)}
     act(do="restart_request", seat=seat, session_id=rs["session_id"], synthetic=True, why=rs["reason"])
     return rs
@@ -3345,8 +3353,13 @@ def cmd_wake(args):
         print("\n== the restart that made this window: killed %s at %s after ticket %s" % (
             rec.get("session_id"), _iso(rec.get("killed_at") or 0), rec.get("ticket") or "-"))
     _wake_helpers(rec)
-    import helper_checkpoint as HC
-    lost = HC.wake_lines(rec.get("session_id"))
+    # a malformed checkpoint record must not end the wake before the Conductor's replay (SEATRESTART_AUDIT_WHOLE_FILE)
+    try:
+        import helper_checkpoint as HC
+        lost = HC.wake_lines(rec.get("session_id"))
+    except Exception as e:                                     # noqa: BLE001 - said, never silent
+        lost = ["- the old window's helper checkpoint is UNMEASURED (%s: %s): check its helpers by hand"
+                % (type(e).__name__, e)]
     if lost:
         print("\n== helpers LOST at the old window's checkpoint (each item has a note): pick them up\n" + "\n".join(lost))
     if rec.get("clones") and not rec.get("aborted"):
