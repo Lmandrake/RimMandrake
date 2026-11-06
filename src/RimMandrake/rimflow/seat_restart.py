@@ -3139,6 +3139,8 @@ def _tx_tail(path, tail_bytes=8 << 20):
             r = json.loads(raw)
         except ValueError:
             continue
+        if isinstance(r, dict):
+            r = _queued_as_user(r) or r          # a prompt typed mid-turn exists only as a queued_command attachment
         if isinstance(r, dict) and r.get("type") in ("user", "assistant") and not r.get("isSidechain"):
             yield r
 

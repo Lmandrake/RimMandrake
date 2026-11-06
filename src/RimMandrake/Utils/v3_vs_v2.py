@@ -261,6 +261,11 @@ def transcript_weeks(windows, rules, projects=None):
                             d = json.loads(line)
                         except Exception:
                             continue
+                        a = d.get("attachment") if d.get("type") == "attachment" else None
+                        if isinstance(a, dict) and a.get("type") == "queued_command" and a.get("commandMode") == "prompt":
+                            # typed mid-turn: lands only as this attachment (lesson 20261029T205957Z)
+                            d = {"type": "user", "timestamp": d.get("timestamp"), "origin": a.get("origin"),
+                                 "message": {"content": a.get("prompt")}}
                         if d.get("type") != "user" or (d.get("origin") or {}).get("kind") != "human" or not d.get("timestamp"):
                             continue
                         t = S.ts(d["timestamp"])

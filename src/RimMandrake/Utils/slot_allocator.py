@@ -164,7 +164,9 @@ def helper_state(path, now, rules):
             c = msg.get("content")
             pending_tool = isinstance(c, list) and any(isinstance(x, dict) and x.get("type") == "tool_use" for x in c)
             break
-        if rec.get("type") == "user":
+        a = rec.get("attachment") if rec.get("type") == "attachment" else None
+        if rec.get("type") == "user" or (isinstance(a, dict) and a.get("type") == "queued_command"):
+            # a follow-up delivered after its end exists only as a queued_command attachment, and it runs on it
             user_after = True
     if stop is None:
         return True, "no assistant record yet"
@@ -292,7 +294,24 @@ def messages_in_window(root, now, window_s):
     return len(ids)
 
 
+def _queued_prompt(rec):
+    """A message he typed WHILE a turn ran lands ONLY as {type: attachment, attachment: {type: queued_command,
+    commandMode: prompt, origin, prompt}} (440 of 444 never echoed as a user record, MEASURED 2026-10-29; lesson
+    20261029T205957Z): -> a user-shaped record, or None. Mirrors seat_restart._queued_as_user (this module stays
+    import-free of rimflow)."""
+    a = rec.get("attachment") if rec.get("type") == "attachment" else None
+    if not isinstance(a, dict) or a.get("type") != "queued_command" or a.get("commandMode") != "prompt":
+        return None
+    pr = a.get("prompt")
+    out = {"type": "user", "timestamp": rec.get("timestamp") or a.get("timestamp"), "isSidechain": rec.get("isSidechain"),
+           "message": {"role": "user", "content": pr if isinstance(pr, (str, list)) else ""}, "queued_command": True}
+    if isinstance(a.get("origin"), dict):
+        out["origin"] = a["origin"]
+    return out
+
+
 def _is_owner_text(rec):
+    rec = _queued_prompt(rec) or rec
     if rec.get("type") != "user" or rec.get("isSidechain") or rec.get("isMeta"):
         return False
     origin = rec.get("origin")
