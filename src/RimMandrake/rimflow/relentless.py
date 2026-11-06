@@ -41,6 +41,7 @@ import relentless_books_left  # noqa: E402
 import relentless_disk  # noqa: E402
 import relentless_integrity  # noqa: E402
 import relentless_packet  # noqa: E402
+import relentless_prooflines  # noqa: E402
 import relentless_usage  # noqa: E402
 import relentless_tickprof  # noqa: E402
 import relentless_wall  # noqa: E402
@@ -893,6 +894,8 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
     with store.lock():
         st = store.load(item)
         _fence(st, item, gen)
+        if game and relentless_prooflines.is_job(st):     # its game phase would call `implemented` on a built item
+            raise ValueError("a proof-lines job names no --game clause: the live round runs its lines once they land")
         widens = st["contract"] and live and not st["contract"].get("live") and proof == st["contract"]["proof"]
         # naming game clauses with the proof unchanged also only asks more (relentless_game): one more phase to pass
         widens = widens or (st["contract"] and game and proof == st["contract"]["proof"] and not st["contract"].get("game")
@@ -2641,6 +2644,32 @@ class Effects(relentless_game.GameFx):
         pool.sort(key=lambda i: (i.id not in self.first, self.first.get(i.id, 0)))
         self.plan = {i.id: plist.position(i, orders) for i in pool if plist.position(i, orders) <= plist.MAX_ENTRIES}
         return [i.id for i in pool], w
+
+    def proof_lines_order(self, r):
+        """-> [(item id, [owed criterion ids])]: built/validated items owing a live-proof line, admitted by
+        relentless_prooflines.eligible, oldest first (PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED). Read from the books."""
+        if not r.get("proof_lines_per_tick"):
+            return []
+        import relentless_live_round as LR
+        evs, w = self.ledger_items()
+        now = int(time.time())
+        out = []
+        for it in sorted(w.items.values(), key=lambda i: (i.created_at or "", i.id)):
+            if it.state not in relentless_prooflines.TESTABLE or not it.built_sha or it.owner not in r["pool_seats"]:
+                continue
+            p = os.path.join(self.books, relentless_prooflines.PROOFS_DIR, it.id + ".txt")
+            text = ""
+            if os.path.isfile(p):
+                with open(p, encoding="utf-8", errors="replace") as f:
+                    text = f.read()
+            row = {"state": it.state, "built_sha": it.built_sha, "outstanding": list(it.outstanding or []),
+                   "criteria": [{"id": c["id"], "level": c.get("level")} for c in it.criteria or []]}
+            owed = relentless_prooflines.owed_lines(row, text, LR.proof_lines)
+            if relentless_prooflines.eligible(it, owed, r, blocked=pkg("priority").block_holds(w, it, now),
+                                              excluded=pool_excluded(it.id, r), leased=lease_live(it, now),
+                                              hand=hand_check(it, r)):
+                out.append((it.id, owed))
+        return out
 
     def owner_ruled_at(self, item):
         """The epoch of the newest owner ruling on `item` (an OWNER-seat event carrying his words or his card), or None.
@@ -4409,6 +4438,8 @@ def worker_prompt(st, text, learned, r, history=None, causes=None):
                     "one, or refute each with evidence; record which with `learn` before you edit.")
         head += ["  %d. %s (confirm or kill by: %s)" % (n + 1, o["idea"], o["observe"])
                  for n, o in enumerate(st["help_options"]["options"])]
+    if relentless_prooflines.is_job(st):     # PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED: lines only, the ledger stays built
+        head.append(relentless_prooflines.brief(st))
     return "\n".join(head + ["", "--- item ---", text, "", "--- learned so far ---", learned[-8000:]])
 
 
@@ -4965,6 +4996,8 @@ def enrol(store, fx, r, now):
         took.append(i)
         room -= 1
         sys_room -= i in first
+    # PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED: built items owing a live-proof line, as lines-only jobs, own per-tick cap
+    took += relentless_prooflines.enrol(store, fx, r, now, new_state, iso, ours | set(took), queued + len(took))
     slot = relentless_repair_slot.pick(fx, r, live, ours | set(took), now, order)     # one place past the caps (WP-06)
     if slot and enrol_put(store, fx, slot[0], "reserved repair slot: %d items wait on it" % slot[1], now, slot="repair"):
         took.append(slot[0])
@@ -5937,6 +5970,10 @@ def step(store, fx, r, item, now, acts):
                                                                          (st["check"].get("reasons") or "")[:220])
         # the candidate's .criteria may re-tier a criterion the ledger still holds at the old level: `close` reads the
         # ledger manifest and would refuse for ever, so it is recorded again first (CLOSE_RETIER_FIX_LEDGER_STILL_OWES_L1)
+        if relentless_prooflines.is_job(st):     # lines job: the store is done, the ledger stays built for the live round
+            acts.append({"do": "proof_lines_done", "item": item, "sha": c["sha"]})
+            finished(store, fx, item, c, now, acts, attempt=True)
+            return
         why = relentless_game.close_rerecord(store, fx, item, c["sha"], acts)
         if not why:
             why = fx.ledger_close(item, c["sha"], reason, (st["contract"] or {}).get("live"))
@@ -6367,6 +6404,13 @@ def retire(store, fx, states, now, acts, r=None):
                 cur["stopping_since"] = now
                 store.save(cur)
             acts.append({"do": "retire", "item": st["item"]})
+        elif relentless_prooflines.is_job(st):      # lines job: out once the ledger leaves built or a seat leases it
+            if st["status"] == "queued" and not relentless_prooflines.still_owed(st, led):
+                with store.lock():
+                    cur = store.load(st["item"])
+                    cur["status"] = "retired"
+                    store.save(cur)
+                acts.append({"do": "retire", "item": st["item"], "why": "proof-lines job: ledger no longer built"})
         elif not st["ledger_started"] and st["status"] == "queued" and (
                 led["state"] not in ("proposed", "ready") or led.get("lease")) and (
                 not st.get("start_intent") or led.get("lease")):
@@ -6624,7 +6668,8 @@ def _lease(store, fx, r, now, acts, seen, wake=None):
             reserved = reserve_foreign(store, fx, r, item, now, acts)
             if not reserved:
                 continue
-        if not st["ledger_started"]:
+        job = relentless_prooflines.is_job(st)     # a proof-lines job: the ledger stays built, no `start`
+        if not st["ledger_started"] and not job:
             with store.lock():      # said before the ledger hears it: a crash after `start` must not read as a seat's take
                 cur = store.load(item)
                 if cur["status"] != ("running" if reserved else "queued"):
@@ -6661,7 +6706,7 @@ def _lease(store, fx, r, now, acts, seen, wake=None):
             st.pop("reserving", None)
             st["gen"] += 1
             st["attempts"] += 1
-            st["ledger_started"] = True
+            st["ledger_started"] = not job
             st.pop("start_refusals", None)      # the count is of refusals in a row
             if not st["clone"]:
                 q = len(st["quarantined"])

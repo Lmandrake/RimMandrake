@@ -25,6 +25,7 @@
     "title_rx": ["(?i)\\b(it is built|it exists)\\b.{0,40}\\bverify\\b", "(?i)^(first )?live look\\b", "(?i)\\bfirst live look\\b"]
   },
   "enrol_per_tick": 2,
+  "proof_lines_per_tick": 1,
   "max_queued": 8,
   "max_workers": 8,
   "step_back_mem_gb": 8,
