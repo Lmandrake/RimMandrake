@@ -19,6 +19,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import posixpath
 import re
 import time
 from pathlib import Path
@@ -27,21 +28,50 @@ import relentless_wall
 
 # a path-shaped word: absolute, home-relative, or a Windows drive path
 _PATH = re.compile(r"(?<![\w.~$@+/\\-])(?:[A-Za-z]:[\\/]|~/|\$HOME/|/)[\w.~$@+-]*(?:[/\\][\w.~$@+-]*)*")
-_COMMENT = re.compile(r"(?:^|(?<=\s))#.*$", re.M)
 # a parenthesised aside is the worker's prose about the proof ("(the retry cases prove a dotnet.exe launch ...)"): a census of
-# the store's 603 contracts found it the main false alarm. `$(...)` is a command and stays, and so is a subshell: a group
-# holding a shell operator, `(cd x && git log)`.
-_PROSE = re.compile(r"(?<![$\w])\((?![^()]*(?:&&|\|\||[;|`]|\$\())[^()]*\)")
+# the store's 603 contracts found it the main false alarm. `$(...)` and `<(...)` are commands and stay, and so is a subshell:
+# a group holding a shell operator, `(cd x && git log)`, or one that starts with a program, `(git log -1)`,
+# `(python3 code_review_since.py ...)` (REACH_GATE_HARDEN_PARENS_HIDE_THE_TOOL: deleting those hid the tool from the gate).
+_PROSE = re.compile(r"(?<![$\w<>])\(([^()]*)\)")
+_SHELL_OP = re.compile(r"&&|\|\||[;|`]|\$\(")
+_PROGRAMS = frozenset("""git python python3 bash sh zsh env sudo timeout nice xargs command exec cd cat test grep egrep rg ls
+    find head tail wc jq sed awk echo printf true false ssh scp rsync sftp tailscale powershell pwsh wslpath cmd dotnet make
+    diff cmp stat du df cp mv rm mkdir touch tee sort uniq cut tr curl wget readlink realpath file sha256sum md5sum [
+    rimflow""".split())
+_PROGRAM_FILE = re.compile(r"^(?:\.{0,2}/)?[\w./~$-]*\.(?:py|sh|exe|ps1|bat|cmd)$|^\.{1,2}/\S+$", re.I)
 _VAR = re.compile(r"\$\{(\w+)\}|\$(\w+)")
-_ASSIGN = re.compile(r"(?:^|(?<=[\s;&|(]))([A-Za-z_]\w*)=([^\s;&|)]+)")
+# where a simple command ends (for $VAR scope): an operator, a newline, a subshell or command substitution opening or closing
+_SEP = re.compile(r"\$\(|&&|\|\||[;&|\n()`]")
+_ASSIGN = re.compile(r"([A-Za-z_]\w*)=('[^']*'|\"[^\"]*\"|[^\s;&|()`'\"]*)")
+# what may stand before a persistent assignment: an inner shell's opening quote, a keyword, `export`/`declare`
+_ASSIGN_LEAD = re.compile(r"^\s*(?:(?:bash|sh|zsh)\s+-l?c\s+)?['\"]?\s*(?:(?:then|do|else|!|\{)\s+)*"
+                          r"(?:(?:export|declare|readonly|local|typeset)\s+(?:-\w+\s+)*)?")
 # where a command starts: the line, a shell operator, a subshell, `!`, then any VAR=value and a timeout. Programs named in
 # prose ("git grep shows ..." at a line's start is still a command a Marker would run) are matched only here.
-_START = (r"(?:^|&&|\|\||[;|`(]|\$\(|!|\bthen\b|\bdo\b)\s*(?:(?:sudo|env|xargs|nice|command|exec|timeout\s+\S+)\s+|"
-          r"(?:bash|sh|zsh)\s+-l?c\s+['\"]|[A-Za-z_][A-Za-z0-9_]*=\S*\s+)*")
-_GIT = re.compile(_START + r"git\s+(?:(?:-C|-c)\s+\S+\s+|--\S+\s+)*(log|show|rev-parse|cat-file|diff|blame|rev-list|merge-base|status|"
-                  r"ls-files|ls-tree|describe|branch|for-each-ref|reflog|fetch|pull|grep)\b", re.M)
+_START = (r"(?:^|&&|\|\||[;|`(]|\$\(|!|\b(?:then|do|if|elif|while|until|else|time)\b)\s*"
+          r"(?:(?:sudo|env|xargs|nice|command|exec|timeout\s+\S+)\s+|"
+          r"(?:bash|sh|zsh)\s+-l?c\s+['\"]|[A-Za-z_][A-Za-z0-9_]*=\S*\s+)*(?:\S*/)?")
+# any git verb: without the history grant every one but these reads a .git the box lacks
+_GIT = re.compile(_START + r"git\s+(?:(?:-C|-c)\s+\S+\s+|--\S+\s+)*([a-z][\w-]*)\b([^\n;&|)]*)", re.M)
+_GIT_LOCAL = frozenset(("init", "version", "help", "hash-object"))
+# git's own subcommands (`git help -a`, git 2.53): "git clones the tree" in prose names none
+_GIT_VERBS = frozenset("""
+    add am annotate apply archive backfill bisect blame branch bugreport bundle cat-file check-attr check-ignore
+    check-mailmap check-ref-format checkout checkout-index cherry cherry-pick clean clone column commit 
+    commit-graph commit-tree config count-objects credential crypt daemon describe diagnose diff diff-files diff-index
+    diff-pairs diff-tree difftool fast-export fast-import fetch fetch-pack filter-branch fmt-merge-msg 
+    for-each-ref for-each-repo fsck gc get-tar-commit-id grep hash-object help hook http-backend imap-send index-pack
+    init interpret-trailers last-modified log ls-files ls-remote ls-tree mailinfo mailsplit maintenance merge
+    merge-base merge-file merge-index merge-one-file merge-tree mergetool mktag mktree multi-pack-index mv 
+    name-rev notes pack-objects pack-redundant pack-refs patch-id prune prune-packed pull push range-diff read-tree
+    rebase reflog refs remote repack replace replay repo request-pull rerere reset restore rev-list rev-parse
+    revert rm scalar send-email send-pack shortlog show show-branch show-index show-ref sparse-checkout stash
+    status stripspace submodule switch symbolic-ref tag unpack-file unpack-objects update-index update-ref
+    update-server-info var verify-commit verify-pack verify-tag version whatchanged worktree write-tree""".split())
 _REMOTE = re.compile(_START + r"(ssh|scp|rsync|tailscale|sftp)\s", re.M)
 _WINDOWS = re.compile(_START + r"(?:python3?\s+)?(\S*winbuild\.py|\S+\.exe|powershell|pwsh|wslpath)\b", re.M | re.I)
+# a quote inside a word: `/sec""ret/x` is the shell's /secret/x
+_CONCAT = re.compile(r"(?<=[\w/.~-])['\"]+(?=\S)|(?<=\S)['\"]+(?=[\w/.~-])")
 
 
 def _norm(p):
@@ -54,6 +84,9 @@ def _norm(p):
         p = relentless_wall.HOME + p[1:]
     elif p.startswith("$HOME/"):
         p = relentless_wall.HOME + p[5:]
+    if p.startswith("/"):
+        p = posixpath.normpath(p)       # `/tmp/../secret/x` is /secret/x
+        p = "/" + p.lstrip("/")
     return p.rstrip("/") or "/"
 
 
@@ -108,7 +141,7 @@ def box_grants(contract, rules, root):
     selftest that shells out to dll_source_stamp.py (GRAFFITI_V1_LIVE_PROOF_1: red in every git-less box, five checkers
     git-inited a copy by hand). One level only; a file that cannot be read earns nothing."""
     rows = git_granted_rows(rules)
-    t = _COMMENT.sub("", (contract or {}).get("proof") or "")
+    t = strip_comments((contract or {}).get("proof") or "")
     if not rows or not t:
         return []
     texts = [t]
@@ -130,9 +163,252 @@ def _names(path, t):
     return re.search(r"(?<![\w./-])(?:\S*/)?%s(?![\w.-])" % re.escape(os.path.basename(path)), t)
 
 
+_WORD_START = frozenset(" \t\n;&|()<>")
+
+
+def strip_comments(t):
+    """-> `t` with its shell comments removed, quoting respected (REACH_GATE_HARDEN_PARENS_HIDE_THE_TOOL): `#` opens one
+    only at a word's start outside quotes, so `printf ' # x'; tool` keeps the tool and `true;# tool` drops it. `$(...)`
+    and backticks open a fresh context inside double quotes, as in bash. An unclosed quote keeps the rest: text the gate
+    keeps can only add a need, never hide one."""
+    t = t or ""
+    out, ctx, i, n, start = [], ["top"], 0, len(t), True
+    while i < n:
+        c, top = t[i], ctx[-1]
+        if top == "'":
+            if c == "'":
+                ctx.pop()
+            out.append(c)
+            i, start = i + 1, False
+            continue
+        if c == "\\" and i + 1 < n:
+            out.append(t[i:i + 2])
+            i, start = i + 2, False
+            continue
+        if t.startswith("$(", i):
+            ctx.append("(")
+            out.append("$(")
+            i, start = i + 2, True
+            continue
+        if c == "`":
+            if top == "`":
+                ctx.pop()
+            else:
+                ctx.append("`")
+            out.append(c)
+            i, start = i + 1, top != "`"
+            continue
+        if top == '"':
+            if c == '"':
+                ctx.pop()
+            out.append(c)
+            i, start = i + 1, False
+            continue
+        if c in "'\"":
+            ctx.append(c)
+        elif c == "(":
+            ctx.append("(")
+        elif c == ")" and top == "(":
+            ctx.pop()
+        elif c == "#" and start:
+            j = t.find("\n", i)
+            i = n if j < 0 else j
+            continue
+        start = c in _WORD_START
+        out.append(c)
+        i += 1
+    return "".join(out)
+
+
+def _is_command(body):
+    """True when a parenthesised group's body is a subshell a Marker would run, not prose: it holds a shell operator, or
+    opens with a command environment, a known program, a script or a path, or its second word is a flag (`(tar -cf ...)`)."""
+    if _SHELL_OP.search(body):
+        return True
+    w = [x.strip("'\"") for x in body.split()]
+    i = 0
+    while i < len(w) and re.match(r"^[A-Za-z_]\w*=", w[i]):
+        i += 1                  # `(X=1 tool)`: a command environment, then the program
+    if i == len(w):
+        return i > 0
+    return (i > 0 or "/" in w[i] or os.path.basename(w[i]) in _PROGRAMS or bool(_PROGRAM_FILE.match(w[i]))
+            or (i + 1 < len(w) and re.match(r"^--?[A-Za-z0-9]", w[i + 1]) is not None))
+
+
+def _unprose(t):
+    """-> `t` without its parenthesised prose asides, innermost first; a subshell stays (and so does any group around it)."""
+    while True:
+        u = _PROSE.sub(lambda m: m.group(0) if _is_command(m.group(1)) else " ", t)
+        if u == t:
+            return t
+        t = u
+
+
+def _variants(t, env):
+    """-> [t expanded with each name's first value, then one text per other value a name may hold]. `env`: name -> tuple of
+    the values it may hold at this point (an assignment the shell may skip leaves both)."""
+    def sub(pick):
+        return _VAR.sub(lambda v: pick.get(v.group(1) or v.group(2), env.get(v.group(1) or v.group(2), (v.group(0),))[0]), t)
+    out = [sub({})]
+    for v in dict.fromkeys(m.group(1) or m.group(2) for m in _VAR.finditer(t)):
+        for alt in env.get(v, ())[1:]:
+            x = sub({v: alt})
+            if x not in out:
+                out.append(x)
+    return out
+
+
+def _assign(seg, env, persist, maybe):
+    """-> `seg`'s expansions, applying its assignments to `env` when `persist` and the segment holds nothing but
+    assignments (after `export`): each value is read with the env left by the ones before it (`A=/x B=$A/y`). `X=1 tool $X`
+    is a command environment: bash expands `$X` before X=1 exists and X=1 dies with the tool, so it changes nothing here.
+    `maybe`: the shell may skip it (`false && X=1`), so X keeps its old values beside the new. A value the gate cannot know
+    (`X=$(...)`, empty) leaves X as it was."""
+    lead = _ASSIGN_LEAD.match(seg).end()
+    got, pos = [], lead
+    while True:
+        while pos < len(seg) and seg[pos].isspace():
+            pos += 1
+        m = _ASSIGN.match(seg, pos)
+        if not m:
+            break
+        got.append(m)
+        pos = m.end()
+        if pos < len(seg) and not seg[pos].isspace() and seg[pos] not in "'\"":
+            return _variants(seg, env)  # `X=a$b...` or an odd word: not a plain assignment
+    if not persist or not got or seg[pos:].strip(" \t'\"{}"):
+        return _variants(seg, env)
+    out, last = [seg[:lead]], lead
+    for m in got:               # left to right: `A=/x B=$A/y` sees the new A
+        k, v = m.group(1), m.group(2)
+        vals = (v.strip("'"),) if v.startswith("'") else tuple(_variants(v.strip('"'), env))
+        out.append(seg[last:m.start(2)] + (v if v.startswith("'") else _variants(v, env)[0]))
+        last = m.end()
+        if v and v not in ('""', "''"):
+            env[k] = tuple(dict.fromkeys(vals + (env.get(k, ()) if maybe else ())))
+    out.append(seg[last:])
+    head = "".join(out)
+    return [head] + [x for x in _variants(seg, env)[1:] if x != head]
+
+
+_INNER_SHELL = re.compile(r"(?:^|[\s;&|(])(?:bash|sh|zsh)(?:\s+-\w+)*\s+-\w*c\s*$")
+
+
+def expand_vars(t, env):
+    """-> `t` with each `$VAR` replaced by its value AT THAT POINT (REACH_GATE_HARDEN_PARENS_HIDE_THE_TOOL): the box's env,
+    then the proof's own persistent assignments in order. A later assignment, a command-local `X=1 tool`, a pipeline's
+    and a subshell's (`(X=1)`, `$(...)`, backticks, `bash -c '...'`) never reach back or out; quoted text is no command.
+    A name that may hold two values (an assignment after `&&`/`||`) gives each its own copy of the command, appended on
+    its own line, so no path it may read goes unchecked. An unknown name stays `$NAME`."""
+    t = t or ""
+    env0 = {k: (v,) for k, v in (env or {}).items()}
+    out, extra, seg = [], [], []
+    ctx = [("top", False)]                      # (kind, whether it opened an env scope)
+    envs = [env0]
+    prev = [None]                               # the operator before the current segment
+
+    def flush(op):
+        text = "".join(seg)
+        seg.clear()
+        if not text:
+            return
+        piped = prev[0] == "|" or op == "|"
+        got = _assign(text, envs[-1], persist=not piped, maybe=prev[0] in ("&&", "||"))
+        out.append(got[0])
+        extra.extend(got[1:])
+
+    def boundary(op, kind=None, scope=False, close=False):
+        flush(op)
+        if close:
+            k, sc = ctx.pop()
+            if sc and len(envs) > 1:
+                envs.pop()
+        if kind:
+            ctx.append((kind, scope))
+            if scope:
+                envs.append(dict(envs[-1]))
+        out.append(op)
+        prev[0] = op if op in ("&&", "||", "|") else None
+    i, n = 0, len(t)
+    while i < n:
+        c, top = t[i], ctx[-1][0]
+        quoted = top in ("'", '"')
+        if top == "'" and c != "'":
+            seg.append(c)
+            i += 1
+            continue
+        if c == "\\" and i + 1 < n:
+            seg.append(t[i:i + 2])
+            i += 2
+            continue
+        if top == '"' and c not in '"$`':
+            seg.append(c)
+            i += 1
+            continue
+        if c in "'\"" and c == top:
+            if ctx[-1][1]:
+                boundary(c, close=True)         # an inner shell's script ends
+            else:
+                ctx.pop()
+                seg.append(c)
+            i += 1
+            continue
+        if c in "'\"" and not quoted:
+            if _INNER_SHELL.search("".join(seg)):
+                boundary(c, kind=c + "script", scope=True)
+            else:
+                ctx.append((c, False))
+                seg.append(c)
+            i += 1
+            continue
+        if t.startswith("$(", i):
+            boundary("$(", kind="(", scope=True)
+            i += 2
+            continue
+        if c == "`":
+            if top == "`":
+                boundary(c, close=True)
+            else:
+                boundary(c, kind="`", scope=True)
+            i += 1
+            continue
+        if quoted:
+            seg.append(c)
+            i += 1
+            continue
+        if top.endswith("script") and c == top[0]:
+            boundary(c, close=True)
+            i += 1
+            continue
+        if c == "(":
+            boundary(c, kind="(", scope=True)
+            i += 1
+            continue
+        if c == ")":
+            if top == "(":
+                boundary(c, close=True)
+            else:
+                seg.append(c)
+            i += 1
+            continue
+        op = next((o for o in ("&&", "||") if t.startswith(o, i)), None) or (c if c in ";&|\n" else None)
+        if op:
+            boundary(op)
+            i += len(op)
+            continue
+        seg.append(c)
+        i += 1
+    flush(None)
+    return "".join(out) + "".join("\n" + x for x in extra)
+
+
 # CHECKBOX_BUILD_BUILDER_TOOLCHAIN: what every box now carries (relentless_box.json reach_served) is no need. History verbs
 # read the candidate's ancestry in the default git_history grant; these need refs or a remote, which no box has.
-_GIT_REFS = ("fetch", "pull", "branch", "for-each-ref", "reflog")
+_GIT_REFS = ("fetch", "pull", "push", "branch", "for-each-ref", "reflog", "ls-remote", "remote", "submodule", "clone",
+             "worktree", "tag")
+# an argument that names a ref the history grant does not carry (`git show origin/main`, `git log --all`)
+_REF_ARG = re.compile(r"(?:^|\s)(?:origin|upstream)/\S*|@\{|--(?:all|branches|remotes|tags)\b|\brefs/\S*|"
+                      r"\b(?:FETCH_HEAD|ORIG_HEAD|MERGE_HEAD)\b|(?:^|\s)(?:main|master)(?=\s|$|\.\.|~|\^)")
 
 
 def served(cfg=None):
@@ -156,24 +432,25 @@ def needs(text, prof, carved=(), host_only=(), git_tools=(), serve=None):
     def add(x):
         if x not in out:
             out.append(x)
-    t = _COMMENT.sub("", text or "")     # a shell comment is the worker's prose about the proof, not what it runs
-    env = dict(prof.get("env") or {}, **{k: v.strip("'\"") for k, v in _ASSIGN.findall(t)})   # the box's env, then the proof's own
-    t = _VAR.sub(lambda m: env.get(m.group(1) or m.group(2), m.group(0)), t)   # "$RM_DATA_ROOT/x" is the masked root
-    while True:
-        u = _PROSE.sub(" ", t)
-        if u == t:
-            break
-        t = u
-    for m in _PATH.finditer(t):
+    t = strip_comments(text or "")      # a shell comment is the worker's prose about the proof, not what it runs
+    t = expand_vars(t, prof.get("env") or {})  # "$RM_DATA_ROOT/x" is the masked root, read where it is used
+    t = _unprose(t)
+    for m in _PATH.finditer(_CONCAT.sub("", t)):
         w = m.group(0)
         if len(w) > 1 and hidden(w, prof, carved):
             add("hidden path: %s" % w.rstrip(".,;:)'\""))
     for m in _GIT.finditer(t):
-        if relentless_wall.GIT_GRANT in serve and m.group(1) not in _GIT_REFS:
+        verb, args = m.group(1), m.group(2)
+        if verb not in _GIT_VERBS:
             continue
-        add("git history: `git %s` (the box is an export with no .git)" % m.group(1)
-            if relentless_wall.GIT_GRANT not in serve else
-            "git refs: `git %s` (the box's history has HEAD at the candidate and no ref or remote)" % m.group(1))
+        if relentless_wall.GIT_GRANT not in serve:
+            if verb not in _GIT_LOCAL:
+                add("git history: `git %s` (the box is an export with no .git)" % verb)
+        elif verb in _GIT_REFS:
+            add("git refs: `git %s` (the box's history has HEAD at the candidate and no ref or remote)" % verb)
+        elif _REF_ARG.search(args):
+            add("git refs: `git %s` names a ref (%s) (the box's history has HEAD at the candidate and no ref or remote)"
+                % (verb, _REF_ARG.search(args).group(0).strip()))
     for m in _REMOTE.finditer(t):
         add("another machine: `%s` (the box has no ssh keys)" % m.group(1))
     for m in _WINDOWS.finditer(t):
