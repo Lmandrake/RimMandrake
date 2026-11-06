@@ -97,6 +97,14 @@
     <combatPower>2</combatPower>
     <wildGroupSize>4~10</wildGroupSize>
     <ecoSystemWeight>0.15</ecoSystemWeight>
+    <!-- FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY: 8-frame whole-body flip-book cut from the kept static (the cloud's fringes breathe about a fixed core); flyer_cutout_sets/FeverSwarm.json, gated by flyer_gate.py flipbook. Frames are the 256 static padded to 320,
+         so DrawSize 1.25 as a multiplier keeps the grounded scale. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>3</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>

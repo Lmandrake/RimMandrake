@@ -5,8 +5,8 @@
     GELATINOUSSLIME_DWOMMO_FLIER_1: the dwommo, the Slime's flying aristocracy. A translucent amber
     gas bladder trailing feeding fronds that drifts over the body. All numbers // INVENTED.
     FLIGHT: real flight via the core stat MaxFlightTime (Pawn_FlightTracker.CanEverFly = stat > 0)
-    plus the race flight flags (Locust shape). NO wing render node, and no flip-book frames exist
-    yet, so PawnKindDef carries no flyingAnimation* fields (flying without them is correct).
+    plus the race flight flags (Locust shape). NO wing render node; the PawnKindDef names an 8-frame
+    whole-body flip-book (FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY), tentacles pulsing under a fixed bell.
     Immune to the wading trap by identity (SlimeResistantExtension) and by never standing in it.
     Mod Settings switch SlimeSettings.dwommoFlies (DwommoFlight.cs) zeroes MaxFlightTime when off.
     Not a predator: the fubbum is the Slime's one hunter. One home: wired inline on
@@ -87,6 +87,14 @@
     <race>RM_Dwommo</race>
     <combatPower>30</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
+    <!-- FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY: 8-frame whole-body flip-book cut from the kept static (tentacles pulse under a fixed bell); flyer_cutout_sets/Dwommo.json, gated by flyer_gate.py flipbook. Frames are the 256 static padded to 320,
+         so DrawSize 1.25 as a multiplier keeps the grounded scale. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/Dwommo/RM_Dwommo_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>5</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>

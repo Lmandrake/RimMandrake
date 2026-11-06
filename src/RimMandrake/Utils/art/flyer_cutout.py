@@ -196,7 +196,36 @@ def split(master: np.ndarray, fc: dict) -> tuple[np.ndarray, list[np.ndarray]]:
         keep = FL._dilate(keep)
     keep &= master[..., 3] > 0
     plate = np.where(keep[..., None], master, 0).astype(np.uint8)
+    if fc.get("underfill"):
+        plate = underfill(plate, used & (master[..., 3] > 0) & ~keep & poly_mask(shape, fc["underfill"]))
     return plate, wings
+
+
+def underfill(plate: np.ndarray, hole: np.ndarray, rounds: int = 400) -> np.ndarray:
+    """Opt-in (`"underfill": [[[x, y], ...], ...]` per facing, polygons): paint the body under a cut wing, inside those
+    polygons only, by diffusing the plate's own opaque colours inward, so a lifted wing uncovers smeared body instead of
+    a see-through hole. Annotate the polygons over the body the wing lies ON (a side view), never over wing that hangs
+    clear of it. Every filled pixel is opaque, inside the master's silhouette and the same in every frame."""
+    out = plate.astype(np.float32)
+    have = plate[..., 3] == 255
+    todo = hole & ~have
+    for _ in range(rounds):
+        if not todo.any():
+            break
+        acc = np.zeros(plate.shape[:2] + (3,), np.float32)
+        cnt = np.zeros(plate.shape[:2], np.float32)
+        for dy in (-1, 0, 1):
+            for dx in (-1, 0, 1):
+                if dy or dx:
+                    h = np.roll(np.roll(have, dy, 0), dx, 1)
+                    acc += np.where(h[..., None], np.roll(np.roll(out[..., :3], dy, 0), dx, 1), 0)
+                    cnt += h
+        grow = todo & (cnt > 0)
+        out[grow, :3] = acc[grow] / cnt[grow, None]   # np.roll wraps, harmless: the 1 px canvas border is margin
+        out[grow, 3] = 255
+        have = have | grow
+        todo &= ~grow
+    return np.clip(out + 0.5, 0, 255).astype(np.uint8)
 
 
 def poses_of(wg: dict, n: int) -> list[list[float]]:

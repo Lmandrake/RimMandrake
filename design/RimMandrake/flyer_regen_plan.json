@@ -91,10 +91,12 @@
    "frames": ""
   },
   "RM_Dwommo": {
-   "tier": 3,
-   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Dwommo"
+   ],
    "tex": "Things/Pawn/Animal/Dwommo/RM_Dwommo",
    "static": {
     "g1": 0.575,
@@ -102,14 +104,16 @@
     "g4": 0.508
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "8"
   },
   "RM_FeverSwarm": {
-   "tier": 3,
-   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "FeverSwarm"
+   ],
    "tex": "Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm",
    "static": {
     "g1": 0.791,
@@ -117,8 +121,8 @@
     "g4": 0.797
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "8"
   },
   "RM_FireHawk": {
    "tier": 0,
@@ -381,10 +385,12 @@
    "frames": ""
   },
   "RM_Skellick": {
-   "tier": 3,
-   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Skellick"
+   ],
    "tex": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick",
    "static": {
     "g1": 0.544,
@@ -392,8 +398,8 @@
     "g4": 0.398
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "8"
   },
   "RM_Skerrel": {
    "tier": 4,
@@ -413,10 +419,12 @@
    "frames": ""
   },
   "RM_Skinflap": {
-   "tier": 3,
-   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Skinflap"
+   ],
    "tex": "Things/Pawn/Animal/RM_Skinflap/RM_Skinflap",
    "static": {
     "g1": 0.772,
@@ -424,14 +432,16 @@
     "g4": 0.746
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "8"
   },
   "RM_Skiralim": {
-   "tier": 3,
-   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Skiralim"
+   ],
    "tex": "Things/Pawn/Animal/RM_Skarrok/RM_Skarrok",
    "static": {
     "g1": 0.564,
@@ -439,8 +449,8 @@
     "g4": 0.621
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "8"
   },
   "RM_Skivvik": {
    "tier": 4,

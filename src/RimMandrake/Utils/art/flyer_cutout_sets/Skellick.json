@@ -1,0 +1,415 @@
+{
+ "set": "Skellick",
+ "folder": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds",
+ "prefix": "RM_Skellick_Flying_",
+ "note": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY, def RM_Skellick. Masters are the kept static RM_Skellick_<facing>.png padded 256->320, copied into frames 1..8 of a seed dir; build --src <seed>. 8 frames, ping-pong cycle. Ragged wings lift about the shoulder; legs and head protected; wing polygons reach into empty canvas over the swept envelope. East: the back leg's thigh lies under the wing, so a protect polygon keeps it on the body (judge FIX: the leg started in empty air). North: the back-view static draws only slivers of folded wing (G2 0.348), so its flap is small (flyer_cutout motion 9% of east); a drawn wing layer is owed separately.",
+ "facings": {
+  "east": {
+   "master": 1,
+   "order": "over",
+   "falloff": 0,
+   "protect": [
+    [
+     [
+      120,
+      184
+     ],
+     [
+      250,
+      184
+     ],
+     [
+      250,
+      300
+     ],
+     [
+      120,
+      300
+     ]
+    ],
+    [
+     [
+      180,
+      30
+     ],
+     [
+      300,
+      30
+     ],
+     [
+      300,
+      100
+     ],
+     [
+      180,
+      100
+     ]
+    ],
+    [
+     [
+      106,
+      194
+     ],
+     [
+      126,
+      196
+     ],
+     [
+      162,
+      162
+     ],
+     [
+      152,
+      148
+     ],
+     [
+      140,
+      156
+     ]
+    ]
+   ],
+   "eyes": [
+    [
+     237,
+     77
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       200,
+       87
+      ],
+      [
+       167,
+       97
+      ],
+      [
+       150,
+       60
+      ],
+      [
+       40,
+       50
+      ],
+      [
+       0,
+       120
+      ],
+      [
+       0,
+       215
+      ],
+      [
+       53,
+       222
+      ],
+      [
+       107,
+       200
+      ],
+      [
+       150,
+       180
+      ],
+      [
+       185,
+       150
+      ],
+      [
+       200,
+       113
+      ]
+     ],
+     "hinge": [
+      182,
+      108
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 16,
+      "bias": 10,
+      "scale_amp": 0.03
+     }
+    }
+   ],
+   "underfill": [
+    [
+     [
+      194,
+      104
+     ],
+     [
+      168,
+      108
+     ],
+     [
+      148,
+      122
+     ],
+     [
+      138,
+      145
+     ],
+     [
+      146,
+      168
+     ],
+     [
+      166,
+      176
+     ],
+     [
+      186,
+      166
+     ],
+     [
+      196,
+      140
+     ]
+    ]
+   ]
+  },
+  "south": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      144,
+      30
+     ],
+     [
+      200,
+      30
+     ],
+     [
+      200,
+      300
+     ],
+     [
+      144,
+      300
+     ]
+    ],
+    [
+     [
+      116,
+      40
+     ],
+     [
+      208,
+      40
+     ],
+     [
+      208,
+      126
+     ],
+     [
+      116,
+      126
+     ]
+    ]
+   ],
+   "eyes": [
+    [
+     155,
+     107
+    ],
+    [
+     183,
+     107
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       144,
+       118
+      ],
+      [
+       144,
+       205
+      ],
+      [
+       110,
+       222
+      ],
+      [
+       40,
+       222
+      ],
+      [
+       10,
+       160
+      ],
+      [
+       30,
+       96
+      ],
+      [
+       120,
+       96
+      ]
+     ],
+     "hinge": [
+      146,
+      124
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 22,
+      "bias": 16,
+      "scale_amp": 0.03
+     }
+    },
+    {
+     "poly": [
+      [
+       200,
+       118
+      ],
+      [
+       200,
+       205
+      ],
+      [
+       240,
+       222
+      ],
+      [
+       300,
+       222
+      ],
+      [
+       314,
+       160
+      ],
+      [
+       296,
+       96
+      ],
+      [
+       205,
+       96
+      ]
+     ],
+     "hinge": [
+      198,
+      124
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 22,
+      "bias": 16,
+      "scale_amp": 0.03
+     }
+    }
+   ]
+  },
+  "north": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      152,
+      30
+     ],
+     [
+      188,
+      30
+     ],
+     [
+      188,
+      300
+     ],
+     [
+      152,
+      300
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       152,
+       112
+      ],
+      [
+       152,
+       190
+      ],
+      [
+       120,
+       200
+      ],
+      [
+       50,
+       196
+      ],
+      [
+       40,
+       100
+      ],
+      [
+       120,
+       96
+      ]
+     ],
+     "hinge": [
+      152,
+      118
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 34,
+      "bias": 30,
+      "scale_amp": 0.03
+     }
+    },
+    {
+     "poly": [
+      [
+       188,
+       112
+      ],
+      [
+       188,
+       190
+      ],
+      [
+       220,
+       200
+      ],
+      [
+       290,
+       196
+      ],
+      [
+       300,
+       100
+      ],
+      [
+       220,
+       96
+      ]
+     ],
+     "hinge": [
+      188,
+      118
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 34,
+      "bias": 30,
+      "scale_amp": 0.03
+     }
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,322 @@
+{
+ "set": "Skinflap",
+ "folder": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_Skinflap",
+ "prefix": "RM_Skinflap_Flying_",
+ "note": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY, def RM_Skinflap. Masters are the kept static RM_Skinflap_<facing>.png padded 256->320, copied into frames 1..8 of a seed dir; build --src <seed>. 8 frames, ping-pong cycle. The creature is one membrane: the central trough is the body, the two lobes are the wings, bent (default falloff) so the membrane flexes instead of tearing at the cut.",
+ "facings": {
+  "east": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      136,
+      110
+     ],
+     [
+      172,
+      110
+     ],
+     [
+      172,
+      270
+     ],
+     [
+      136,
+      270
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       136,
+       104
+      ],
+      [
+       134,
+       168
+      ],
+      [
+       90,
+       196
+      ],
+      [
+       0,
+       200
+      ],
+      [
+       0,
+       40
+      ],
+      [
+       110,
+       40
+      ]
+     ],
+     "hinge": [
+      134,
+      128
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 14,
+      "bias": 0,
+      "scale_amp": 0.03
+     }
+    },
+    {
+     "poly": [
+      [
+       172,
+       112
+      ],
+      [
+       176,
+       165
+      ],
+      [
+       220,
+       176
+      ],
+      [
+       318,
+       200
+      ],
+      [
+       318,
+       4
+      ],
+      [
+       200,
+       4
+      ],
+      [
+       176,
+       60
+      ]
+     ],
+     "hinge": [
+      176,
+      140
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 16,
+      "bias": -8,
+      "scale_amp": 0.03
+     }
+    }
+   ]
+  },
+  "south": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      112,
+      110
+     ],
+     [
+      200,
+      110
+     ],
+     [
+      200,
+      280
+     ],
+     [
+      112,
+      280
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       112,
+       96
+      ],
+      [
+       110,
+       168
+      ],
+      [
+       70,
+       190
+      ],
+      [
+       0,
+       196
+      ],
+      [
+       0,
+       30
+      ],
+      [
+       90,
+       30
+      ]
+     ],
+     "hinge": [
+      110,
+      112
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 14,
+      "bias": 0,
+      "scale_amp": 0.03
+     }
+    },
+    {
+     "poly": [
+      [
+       200,
+       112
+      ],
+      [
+       204,
+       165
+      ],
+      [
+       240,
+       176
+      ],
+      [
+       318,
+       200
+      ],
+      [
+       318,
+       4
+      ],
+      [
+       220,
+       4
+      ],
+      [
+       204,
+       60
+      ]
+     ],
+     "hinge": [
+      204,
+      140
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 16,
+      "bias": -8,
+      "scale_amp": 0.03
+     }
+    }
+   ]
+  },
+  "north": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      110,
+      30
+     ],
+     [
+      214,
+      30
+     ],
+     [
+      214,
+      280
+     ],
+     [
+      110,
+      280
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       110,
+       120
+      ],
+      [
+       108,
+       200
+      ],
+      [
+       60,
+       250
+      ],
+      [
+       0,
+       250
+      ],
+      [
+       0,
+       80
+      ],
+      [
+       80,
+       80
+      ]
+     ],
+     "hinge": [
+      108,
+      150
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 14,
+      "bias": 0,
+      "scale_amp": 0.03
+     }
+    },
+    {
+     "poly": [
+      [
+       214,
+       118
+      ],
+      [
+       216,
+       200
+      ],
+      [
+       260,
+       230
+      ],
+      [
+       318,
+       240
+      ],
+      [
+       318,
+       60
+      ],
+      [
+       240,
+       60
+      ]
+     ],
+     "hinge": [
+      216,
+      150
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 14,
+      "bias": 0,
+      "scale_amp": 0.03
+     }
+    }
+   ]
+  }
+ }
+}

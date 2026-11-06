@@ -1,0 +1,399 @@
+{
+ "set": "Porg",
+ "folder": "src/RimStarWars/SWBestiary/Textures/swanimals/Porg",
+ "prefix": "Porg_Flying_",
+ "note": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY. Masters are the kept static Porg_<facing>.png padded 256->320 (32 px each side), copied into frames 1..8 of a seed dir; build --src <seed>. 8 frames, even N: ping-pong cycle. Folded side wings lift outward about the shoulder. Male frames serve both sexes (owner: female frames only if the sexes look very different). underfill: east: the plate under the cut wing, inside the underfill polygon, is diffused body colour, so a lifted wing uncovers body, not a hole.",
+ "facings": {
+  "south": {
+   "master": 1,
+   "order": "under",
+   "wings": [
+    {
+     "poly": [
+      [
+       124,
+       152
+      ],
+      [
+       124,
+       250
+      ],
+      [
+       112,
+       264
+      ],
+      [
+       40,
+       264
+      ],
+      [
+       24,
+       180
+      ],
+      [
+       50,
+       126
+      ],
+      [
+       112,
+       140
+      ]
+     ],
+     "hinge": [
+      118,
+      158
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 18,
+      "bias": 18,
+      "scale_amp": 0.04
+     }
+    },
+    {
+     "poly": [
+      [
+       196,
+       152
+      ],
+      [
+       196,
+       250
+      ],
+      [
+       208,
+       264
+      ],
+      [
+       280,
+       264
+      ],
+      [
+       296,
+       180
+      ],
+      [
+       270,
+       126
+      ],
+      [
+       208,
+       140
+      ]
+     ],
+     "hinge": [
+      202,
+      158
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 18,
+      "bias": 18,
+      "scale_amp": 0.04
+     }
+    }
+   ],
+   "protect": [
+    [
+     [
+      126,
+      96
+     ],
+     [
+      194,
+      96
+     ],
+     [
+      194,
+      280
+     ],
+     [
+      126,
+      280
+     ]
+    ]
+   ],
+   "eyes": [
+    [
+     146,
+     138
+    ],
+    [
+     174,
+     138
+    ]
+   ]
+  },
+  "east": {
+   "master": 1,
+   "order": "over",
+   "falloff": 0,
+   "wings": [
+    {
+     "poly": [
+      [
+       82,
+       200
+      ],
+      [
+       84,
+       150
+      ],
+      [
+       100,
+       118
+      ],
+      [
+       130,
+       104
+      ],
+      [
+       160,
+       110
+      ],
+      [
+       170,
+       135
+      ],
+      [
+       166,
+       175
+      ],
+      [
+       150,
+       205
+      ],
+      [
+       125,
+       224
+      ],
+      [
+       95,
+       228
+      ],
+      [
+       60,
+       236
+      ],
+      [
+       20,
+       200
+      ],
+      [
+       24,
+       120
+      ],
+      [
+       70,
+       110
+      ]
+     ],
+     "hinge": [
+      152,
+      118
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 14,
+      "bias": 8,
+      "scale_amp": 0.03
+     }
+    }
+   ],
+   "underfill": [
+    [
+     [
+      100,
+      120
+     ],
+     [
+      160,
+      108
+     ],
+     [
+      172,
+      140
+     ],
+     [
+      166,
+      180
+     ],
+     [
+      150,
+      210
+     ],
+     [
+      125,
+      228
+     ],
+     [
+      100,
+      228
+     ]
+    ]
+   ],
+   "protect": [
+    [
+     [
+      150,
+      36
+     ],
+     [
+      240,
+      36
+     ],
+     [
+      240,
+      104
+     ],
+     [
+      150,
+      104
+     ]
+    ],
+    [
+     [
+      130,
+      228
+     ],
+     [
+      220,
+      228
+     ],
+     [
+      220,
+      290
+     ],
+     [
+      130,
+      290
+     ]
+    ]
+   ],
+   "eyes": [
+    [
+     210,
+     72
+    ]
+   ]
+  },
+  "north": {
+   "master": 1,
+   "order": "under",
+   "wings": [
+    {
+     "poly": [
+      [
+       120,
+       180
+      ],
+      [
+       114,
+       240
+      ],
+      [
+       92,
+       264
+      ],
+      [
+       24,
+       264
+      ],
+      [
+       14,
+       170
+      ],
+      [
+       36,
+       112
+      ],
+      [
+       96,
+       114
+      ],
+      [
+       114,
+       116
+      ]
+     ],
+     "hinge": [
+      112,
+      124
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 18,
+      "bias": 18,
+      "scale_amp": 0.04
+     }
+    },
+    {
+     "poly": [
+      [
+       200,
+       180
+      ],
+      [
+       206,
+       240
+      ],
+      [
+       228,
+       264
+      ],
+      [
+       296,
+       264
+      ],
+      [
+       306,
+       170
+      ],
+      [
+       284,
+       112
+      ],
+      [
+       224,
+       114
+      ],
+      [
+       206,
+       116
+      ]
+     ],
+     "hinge": [
+      208,
+      124
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 18,
+      "bias": 18,
+      "scale_amp": 0.04
+     }
+    }
+   ],
+   "protect": [
+    [
+     [
+      122,
+      60
+     ],
+     [
+      198,
+      60
+     ],
+     [
+      198,
+      285
+     ],
+     [
+      122,
+      285
+     ]
+    ]
+   ]
+  }
+ }
+}

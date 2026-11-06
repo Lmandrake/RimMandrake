@@ -1,0 +1,358 @@
+{
+ "set": "Dwommo",
+ "folder": "src/RimMandrake/GelatinousSlime/Textures/Things/Pawn/Animal/Dwommo",
+ "prefix": "RM_Dwommo_Flying_",
+ "note": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY, def RM_Dwommo, a floating gas-bell with no wings: the 'wings' are its tentacle groups, which pulse open and closed (south/north) or trail and sway (east) under a fixed bell, bent with the default falloff so the roots stay on the bell. Masters are the kept static RM_Dwommo_<facing>.png padded 256->320, copied into frames 1..8 of a seed dir; build --src <seed>. South/north pivots sit inside the bell (the tentacle groups swing from its centre); the centre tentacle is protected so the left/right split never tears it.",
+ "facings": {
+  "east": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      78,
+      60
+     ],
+     [
+      110,
+      34
+     ],
+     [
+      180,
+      34
+     ],
+     [
+      214,
+      66
+     ],
+     [
+      218,
+      118
+     ],
+     [
+      196,
+      146
+     ],
+     [
+      110,
+      148
+     ],
+     [
+      78,
+      124
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       100,
+       136
+      ],
+      [
+       205,
+       136
+      ],
+      [
+       214,
+       318
+      ],
+      [
+       0,
+       318
+      ],
+      [
+       0,
+       150
+      ]
+     ],
+     "hinge": [
+      150,
+      142
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 9,
+      "bias": 0,
+      "scale_amp": 0.0
+     }
+    },
+    {
+     "poly": [
+      [
+       206,
+       92
+      ],
+      [
+       318,
+       40
+      ],
+      [
+       318,
+       250
+      ],
+      [
+       216,
+       250
+      ],
+      [
+       206,
+       136
+      ]
+     ],
+     "hinge": [
+      212,
+      112
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 12,
+      "bias": 0,
+      "scale_amp": 0.0
+     }
+    }
+   ]
+  },
+  "south": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      88,
+      60
+     ],
+     [
+      120,
+      40
+     ],
+     [
+      200,
+      40
+     ],
+     [
+      232,
+      60
+     ],
+     [
+      234,
+      130
+     ],
+     [
+      210,
+      150
+     ],
+     [
+      110,
+      150
+     ],
+     [
+      86,
+      130
+     ]
+    ],
+    [
+     [
+      150,
+      140
+     ],
+     [
+      172,
+      140
+     ],
+     [
+      172,
+      318
+     ],
+     [
+      150,
+      318
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       160,
+       140
+      ],
+      [
+       160,
+       318
+      ],
+      [
+       0,
+       318
+      ],
+      [
+       0,
+       140
+      ]
+     ],
+     "hinge": [
+      146,
+      104
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 7,
+      "bias": 2,
+      "scale_amp": 0.0
+     }
+    },
+    {
+     "poly": [
+      [
+       160,
+       140
+      ],
+      [
+       320,
+       140
+      ],
+      [
+       320,
+       318
+      ],
+      [
+       160,
+       318
+      ]
+     ],
+     "hinge": [
+      174,
+      104
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 7,
+      "bias": 2,
+      "scale_amp": 0.0
+     }
+    }
+   ]
+  },
+  "north": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      100,
+      60
+     ],
+     [
+      130,
+      42
+     ],
+     [
+      190,
+      42
+     ],
+     [
+      222,
+      60
+     ],
+     [
+      224,
+      130
+     ],
+     [
+      200,
+      150
+     ],
+     [
+      120,
+      150
+     ],
+     [
+      98,
+      130
+     ]
+    ],
+    [
+     [
+      150,
+      140
+     ],
+     [
+      172,
+      140
+     ],
+     [
+      172,
+      318
+     ],
+     [
+      150,
+      318
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       160,
+       140
+      ],
+      [
+       160,
+       318
+      ],
+      [
+       0,
+       318
+      ],
+      [
+       0,
+       140
+      ]
+     ],
+     "hinge": [
+      146,
+      104
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 7,
+      "bias": 2,
+      "scale_amp": 0.0
+     }
+    },
+    {
+     "poly": [
+      [
+       160,
+       140
+      ],
+      [
+       320,
+       140
+      ],
+      [
+       320,
+       318
+      ],
+      [
+       160,
+       318
+      ]
+     ],
+     "hinge": [
+      174,
+      104
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 7,
+      "bias": 2,
+      "scale_amp": 0.0
+     }
+    }
+   ]
+  }
+ }
+}

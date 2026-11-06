@@ -1,0 +1,314 @@
+{
+ "set": "FeverSwarm",
+ "folder": "src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_FeverSwarm",
+ "prefix": "RM_FeverSwarm_Flying_",
+ "note": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY, def RM_FeverSwarm, a cloud of small fliers with no wings of its own: the dense core is the fixed body and the loose upper and lower fringes are the 'wings', which tilt apart and contract toward the core (scale pulse) so the cloud breathes; bent with the default falloff so the fringe stays joined to the core. Masters are the kept static RM_FeverSwarm_<facing>.png padded 256->320, copied into frames 1..8 of a seed dir; build --src <seed>.",
+ "facings": {
+  "east": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      100,
+      130
+     ],
+     [
+      150,
+      112
+     ],
+     [
+      220,
+      120
+     ],
+     [
+      262,
+      160
+     ],
+     [
+      220,
+      200
+     ],
+     [
+      150,
+      210
+     ],
+     [
+      100,
+      195
+     ],
+     [
+      86,
+      160
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       0,
+       0
+      ],
+      [
+       320,
+       0
+      ],
+      [
+       320,
+       160
+      ],
+      [
+       0,
+       160
+      ]
+     ],
+     "hinge": [
+      170,
+      160
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 5,
+      "bias": 0,
+      "scale_amp": 0.09
+     }
+    },
+    {
+     "poly": [
+      [
+       0,
+       160
+      ],
+      [
+       320,
+       160
+      ],
+      [
+       320,
+       320
+      ],
+      [
+       0,
+       320
+      ]
+     ],
+     "hinge": [
+      170,
+      160
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 5,
+      "bias": 0,
+      "scale_amp": 0.09
+     }
+    }
+   ]
+  },
+  "south": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      90,
+      150
+     ],
+     [
+      130,
+      110
+     ],
+     [
+      190,
+      110
+     ],
+     [
+      232,
+      150
+     ],
+     [
+      226,
+      190
+     ],
+     [
+      180,
+      220
+     ],
+     [
+      140,
+      220
+     ],
+     [
+      96,
+      190
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       0,
+       0
+      ],
+      [
+       320,
+       0
+      ],
+      [
+       320,
+       165
+      ],
+      [
+       0,
+       165
+      ]
+     ],
+     "hinge": [
+      160,
+      165
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 5,
+      "bias": 0,
+      "scale_amp": 0.09
+     }
+    },
+    {
+     "poly": [
+      [
+       0,
+       165
+      ],
+      [
+       320,
+       165
+      ],
+      [
+       320,
+       320
+      ],
+      [
+       0,
+       320
+      ]
+     ],
+     "hinge": [
+      160,
+      165
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 5,
+      "bias": 0,
+      "scale_amp": 0.09
+     }
+    }
+   ]
+  },
+  "north": {
+   "master": 1,
+   "order": "under",
+   "protect": [
+    [
+     [
+      110,
+      130
+     ],
+     [
+      140,
+      80
+     ],
+     [
+      180,
+      80
+     ],
+     [
+      210,
+      130
+     ],
+     [
+      222,
+      190
+     ],
+     [
+      200,
+      230
+     ],
+     [
+      120,
+      230
+     ],
+     [
+      98,
+      190
+     ]
+    ]
+   ],
+   "wings": [
+    {
+     "poly": [
+      [
+       0,
+       0
+      ],
+      [
+       320,
+       0
+      ],
+      [
+       320,
+       160
+      ],
+      [
+       0,
+       160
+      ]
+     ],
+     "hinge": [
+      160,
+      160
+     ],
+     "sign": 1,
+     "cycle": {
+      "amp": 5,
+      "bias": 0,
+      "scale_amp": 0.09
+     }
+    },
+    {
+     "poly": [
+      [
+       0,
+       160
+      ],
+      [
+       320,
+       160
+      ],
+      [
+       320,
+       320
+      ],
+      [
+       0,
+       320
+      ]
+     ],
+     "hinge": [
+      160,
+      160
+     ],
+     "sign": -1,
+     "cycle": {
+      "amp": 5,
+      "bias": 0,
+      "scale_amp": 0.09
+     }
+    }
+   ]
+  }
+ }
+}

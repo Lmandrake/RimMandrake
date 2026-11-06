@@ -39,8 +39,9 @@
   flightStartChanceOnJobStart/canFlyIntoMap/canLeaveMapFlying), same shape
   as RM_FleetFlier (TheForge, already shipped) and Core's own Chicken/
   Sparrow (MaxFlightTime/FlightCooldown statBases, verified via RimSage).
-  No flyingAnimationFramePathPrefix — per the standing rule, never block
-  flight waiting on frames; these fly with no wing-beat until frames exist.
+  Per the standing rule, flight never waits on frames: a bird without a
+  flyingAnimationFramePathPrefix flies with no wing-beat. RM_Skellick has an
+  8-frame cut-out flip-book (FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY).
 
   Art: this item's own step 5 (CLAUDE.md "check for existing regenerated
   art before queuing more") found all four birds already have artpipe jobs
@@ -302,6 +303,14 @@
     <combatPower>10</combatPower>
     <canArriveManhunter>false</canArriveManhunter>
     <wildGroupSize>2~4</wildGroupSize>
+    <!-- FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY: 8-frame whole-body flip-book cut from the kept static (ragged wings lift about a fixed body); flyer_cutout_sets/Skellick.json, gated by flyer_gate.py flipbook. Frames are the 256 static padded to 320,
+         so DrawSize 1.25 as a multiplier keeps the grounded scale. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>
