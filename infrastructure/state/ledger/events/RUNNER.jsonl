@@ -4770,3 +4770,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_CHURN_DIAGNOSE_LONGSHADE_TGPN_CUJC","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T11:39:06Z","tsn":1793965146384721616}
 {"seat":"RUNNER","event":"note","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","text":"ops_watch: cleared at 2026-11-06T11:41:21Z (steve.invalid_streak now 0)","ts":"2026-11-06T11:41:27Z","tsn":1793965287024002867}
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_D1A4","reason":"steward: lane unowned 31 min (PAUSED)","ts":"2026-11-06T11:42:14Z","tsn":1793965334011814235}
+{"seat":"RUNNER","event":"note","id":"OPS_TIMER_REPAIR_PRXC","text":"ops_watch: cleared at 2026-11-06T11:43:47Z (timers.failed_units now 0)","ts":"2026-11-06T11:43:51Z","tsn":1793965431921669196}
