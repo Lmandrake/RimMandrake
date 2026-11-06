@@ -151,6 +151,77 @@ def job_render_sha(j: dict) -> str | None:
         return None
 
 
+def after(a, b) -> bool:
+    """Stamp `a` is at or after stamp `b` (aware times; a Z stamp and a -0700 one compare by the instant). No `b`:
+    True. An unparseable side falls back to the old 19-character string compare."""
+    if not b:
+        return True
+    ta, tb = I.ts(str(a or "")), I.ts(str(b))
+    if ta and tb:
+        return ta >= tb
+    return str(a or "") >= str(b)[:19]
+
+
+def job_shas(j: dict, idx: L.Index) -> list[str]:
+    """Every picture a done job is known to have drawn: its _artsrc PNG's bytes while that file exists, plus each
+    sha a ledger `binding` ties to the job id (installers bind before the PNG is cleared away)."""
+    out = []
+    s = job_render_sha(j)
+    if s:
+        out.append(s)
+    jm = getattr(idx, "_job_bound", None)
+    if jm is None:
+        jm = {}
+        for sha, evs in getattr(idx, "bindings", {}).items():
+            for b in evs:
+                if b.get("job"):
+                    jm.setdefault(b["job"], []).append(sha)
+        try:
+            idx._job_bound = jm
+        except AttributeError:
+            pass
+    out += [x for x in jm.get(j.get("id"), []) if x not in out]
+    return out
+
+
+def single_graphic(src, names: set) -> bool:
+    """A def of the row (one of `names`) draws Graphic_Single: one picture, no facings to draw or re-file."""
+    for n in names:
+        for blk in (our_defs_cached(src).get(n) or []):
+            m = re.search(r"<graphicClass>\s*([\w.]+)\s*</graphicClass>", blk.get("text") or "")
+            if m and m.group(1).rsplit(".", 1)[-1] == "Graphic_Single":
+                return True
+    return False
+
+
+def drawn_from_source(row: str, src_row: str, srow: dict, idx: L.Index, since, own_via: str = "") -> str | None:
+    """A catch already carried out: the live picture at the row's own texPath carries a ledger binding naming
+    `src_row` as its source_creature (made after his note), directly or through the pictures it replaced (`prev`),
+    or an owner keep newer than his redo click. Returns that binding/keep id, else None
+    (WEEPINGSTONES_SETTLED_FOLLOWUPS_1 drew six by hand; he kept RM_MurrinCatch's picture on 2026-10-19)."""
+    res = srow.get("res")
+    if not res:
+        return None
+    for (_m, rel), ev in idx.live.items():
+        if not ev.get("sha") or L.parse_texfile(rel)["res"] != res:
+            continue
+        # he kept the live catch picture AFTER his redo click (RM_MurrinCatch, 2026-10-19): the newest mark wins
+        # (a keep this sheet's own click minted is the same mark, not a newer one)
+        own = {k["id"] for k in idx.protected(ev["sha"]) if own_via and own_via in (k.get("via"), k.get("source_file"))}
+        kept = L.newer_keeps(idx, ev["sha"], since, ignore=own) if since else []
+        if kept:
+            return f"{kept[0]['id']} (his keep, newer than the redo)"
+        cur, seen = ev["sha"], set()
+        while cur and cur not in seen:
+            seen.add(cur)
+            for b in idx.bindings.get(cur, []):
+                if b.get("source_creature") == src_row and after(b.get("ts"), since):
+                    return f"binding {b.get('id') or cur}"
+            cur = next((e.get("prev") for e in idx.events if e.get("type") == "live" and e.get("sha") == cur
+                        and e.get("prev")), None)
+    return None
+
+
 def times_refiled(jid: str) -> int:
     d = artpipe_aux()["parked"]
     return len(list(d.glob(f"{jid}.manifest*.json"))) if d.is_dir() else 0
@@ -1032,12 +1103,14 @@ def source_settled(src_row: str, decs: dict, snap: dict, jobs: list[dict], idx: 
     if dec == "cut" or (dec == "hold" and CUT_NOTE.search(I.open_note(sv) or "")):
         return False, None, f"{src_row} is cut from this sheet"
     names = row_names(src_row, sv, census)
-    mine = [j for j in jobs if job_defs(j) & names and str(j.get("created") or "") >= (sv.get("at") or "")[:19]]
+    mine = [j for j in jobs if job_defs(j) & names and after(j.get("created"), sv.get("at"))]
     for j in mine:
         if j["_state"] == "done":
-            sha = job_render_sha(j)
-            if sha and idx.live_anywhere(sha):
-                return True, sha, f"{src_row} render {j['id']} is live"
+            # the render's bytes, or (its _artsrc PNG cleared after install) the picture the ledger binds to the job:
+            # the 2026-10-18 bulk accept installed RM_Huldu's redraw, whose PNG was gone, so the catch stayed blocked
+            for sha in job_shas(j, idx):
+                if idx.live_anywhere(sha):
+                    return True, sha, f"{src_row} render {j['id']} is live"
     states = sorted({j["_state"] for j in mine})
     return False, None, (f"{src_row} is being redrawn ({len(mine)} job(s) {'/'.join(states) or 'not yet filed'}) and "
                          f"no render of it is picked yet")
@@ -1622,6 +1695,15 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             cstate = None
             if src_row:
                 settled, ref_sha, why = source_settled(src_row, decs, snap, jobs, idx, census)
+                drawn = drawn_from_source(row, src_row, srow, idx, v.get("decidedAt") or at,
+                                          I.rel_via(decisions)) if settled else None
+                if drawn:
+                    # already drawn from the settled creature and live: his note is carried out; nothing is withdrawn,
+                    # re-filed or queued again (ENACT_OLDSHEET_FIX_FORTY_FIVE_NEAR_MISSES)
+                    P["done"].append(f"{row}: catch already carried out for settled {src_row} and live ({drawn})")
+                    P["followed"][row] = {"note": v.get("note"), "by": [str(drawn)]}
+                    match = []
+                    cstate = "done"
                 # jobs drawn before the creature was settled (none carries it as reference) are superseded: withdrawn,
                 # never awaiting his pick (bug 2026-10-10: 8 catches rendered from no source at all)
                 # (not named `stale`: that is build_plan's stale-rows argument, read for every later row)
@@ -1636,7 +1718,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 if not settled:
                     P["blocked"].append(f"{row}: not filed — waiting for {src_row} to be settled ({why})")
                     cstate = "blocked"
-                elif not match:
+                elif not match and not drawn:
                     qnote = note or (past[-1] if past else "")
                     P["queue"].append({"row": row, "names": names, "note": qnote, "srow": srow, "v": v,
                                        "ref_shas": [ref_sha] if ref_sha else [], "source": src_row})
@@ -1648,7 +1730,12 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                                            f"check they cover {note[:60]!r}")
             elif match:
                 cj = classify_jobs(match, jobs, idx)
+                one = single_graphic(src, names) and any(j["_state"] == "done" for j in match)
                 for j in cj["refile"]:
+                    if one:     # a Graphic_Single def reads one picture: a failed sibling facing has no file to fill
+                        P["done"].append(f"{row}: {j['id']} not re-filed — {row} is Graphic_Single and a picture of "
+                                         f"it is drawn already")
+                        continue
                     P["refile"].append({"row": row, "job": j})
                 for j in cj["capped"]:
                     P["conflicts"].append(f"{row}: job {j['id']} failed after {REFILE_CAP} re-files — needs its spec "
@@ -1789,7 +1876,10 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 continue
             if idx.is_purged(sha):
                 if x_at:     # purged before bans existed: the ✕ still bans it, or its redraws come back (route c)
-                    P["x_delete"].append({"row": row, "sha": sha, "slots": [],
+                    # nothing is left to delete (no game file, no store bytes): ban-only, and reported as such, never as
+                    # "deleted for ever" (the 10-05 Weeping Stones sheet read "✕ delete 45" for 45 pictures his
+                    # 2026-10-10 purge had already removed; ENACT_OLDSHEET_FIX_FORTY_FIVE_NEAR_MISSES)
+                    P["x_delete"].append({"row": row, "sha": sha, "slots": [], "ban_only": True,
                                           "mark": {"sheet": sheet, "row": row, "at": x_raw,
                                                    "via": I.rel_via(decisions), "kind": "x"}})
                 else:
@@ -2078,6 +2168,8 @@ def job_rows(P: dict) -> list[dict]:
                      if not lane or (srow.get("graphic_of") or {}).get(l) == lane]
         facings = sorted({f for c in lane_cols for f in c if f in ("east", "north", "south")},
                          key=["east", "south", "north"].index)
+        if single_graphic(L.src_root(), set(q.get("names") or {row})):
+            facings = []        # Graphic_Single: one picture, whatever facings the sheet's donor lane had
         if (q.get("ask") or {}).get("faces"):
             facings = [f for f in ("east", "south", "north") if f in q["ask"]["faces"]] or facings
         note = q["note"]
@@ -2167,7 +2259,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     idx = L.Index()
     P = build_plan(decisions, holds, idx, stale=ing.get("stale_rows"))
     R = {"ok": True, "apply": apply, "ingest_new": ing.get("rulings", 0) + ing.get("rejected", 0),
-         "installed": 0, "rebound": 0, "alts_added": 0, "retired": 0, "withdrawn": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "x_deleted": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
+         "installed": 0, "rebound": 0, "alts_added": 0, "retired": 0, "withdrawn": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "x_deleted": 0, "x_banned": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
          "deploy": [], "notes_cleared": [], "conflicts": list(P["conflicts"]), "todo": list(P["todo"]), "plan": P}
     touched_mods: set[str] = set()
     sheet = P["sheet"]
@@ -2388,7 +2480,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
             try:
                 L.x_delete(ar["sha"], ar["mark"], subject=ar["row"])
                 touched_mods.update(m for m, _r in slots)
-                R["x_deleted"] += 1
+                R["x_banned" if ar.get("ban_only") and not slots else "x_deleted"] += 1
             except L.Refused as e:
                 R["conflicts"].append(f"{ar['row']}: ✕ {ar['sha'][:12]} not deleted - {e}")
         # 4 no raw purge: every ✕ went through x_delete above (newest mark wins; ENACT_X_FIX_PURGE_OF_KEPT_ART)
@@ -2524,7 +2616,12 @@ def report(R: dict) -> str:
     L_.append(f"AWAITING OWNER PICK ({len(P['awaiting_pick'])}) — rendered for his note, neither installed nor rejected:")
     L_ += [f"  {a}" for a in P["awaiting_pick"]] or ["  none"]
     L_.append(f"  purge      {R['purged']} picture(s); {P['purged_already']} already purged")
-    L_.append(f"  ✕ delete   {len(P['x_delete'])} picture(s) ✕'d: deleted for ever + banned (newest mark wins; art.py unban --owner-said lifts); {P['x_done_already']} already done")
+    xd = [x for x in P["x_delete"] if not x.get("ban_only")]
+    xb = [x for x in P["x_delete"] if x.get("ban_only")]
+    L_.append(f"  ✕ delete   {len(xd)} picture(s) ✕'d: deleted for ever + banned (newest mark wins; art.py unban --owner-said lifts); {P['x_done_already']} already done")
+    if xb:
+        L_.append(f"  ✕ ban      {len(xb)} picture(s) an earlier purge of his ✕ already deleted: ban only (no game file, "
+                  f"no store bytes, no deploy) - {len({x['row'] for x in xb})} row(s)")
     L_.append(f"  X PENDING  {len(P['x_pending'])} ✕ held until a replacement exists (nothing deleted yet):")
     L_ += [f"     {x}" for x in P["x_pending"]]
     L_.append(f"  cut        {R['cut_rows']} row(s), {R['defs_deleted']} def(s) deleted, {R['textures_retired']} texture(s) retired")
