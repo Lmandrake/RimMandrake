@@ -798,9 +798,13 @@ def flight_layer_rows(r: dict, base: dict, designs: dict | None = None, def_sets
         return [dict(base, id=rid, style_notes=base["style_notes"] + f"; flight reroll held for the layered recipe: "
                      f"{owed}; {accept}")]
     rows = []
+    # a layer has its own lane (fill_queue.wing_layer_slot) and no destination: the base row's body target_texpath
+    # would bind three poses per facing to the body lane on sheets and installers (ARTEVAL_FIX_WING_LAYERS_SQUAT_BODY_LANE)
+    lane = {k: v for k, v in base.items() if k not in ("target_texpath", "install_to", "slot", "ask")}
     for facing in G.FACINGS:
         for pose in G.WING_POSES:
-            rows.append(dict(base, id=f"{base['id']}_flight_{facing}_{pose}", facings=[facing], plan=d["plan"],
+            rows.append(dict(lane, id=f"{base['id']}_flight_{facing}_{pose}", facings=[facing], plan=d["plan"],
+                             slot=f"_wing:{subj}/{facing}/{pose}",
                              derive_from=master, prompt=G.wing_prompt(subj, facing, pose) + f" Fixes: {findings}.",
                              style_notes=base["style_notes"] + f"; layered recipe: {pose} wing layer, {facing}, "
                              f"composited by flyer_lock.py compose; {accept}"))

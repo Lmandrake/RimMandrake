@@ -230,7 +230,7 @@ def bind_subject(row: dict, no_subject: str | None = None, world=None) -> dict:
         import subject  # noqa: E402
         ours, orig = w.identify(target, originals)
         target, originals = ours, list(orig)
-        if not texpath:
+        if not texpath and not is_wing_layer(row):   # a layer's lane is its slot: never infer the body texPath
             tps = sorted(w.tex_by_def.get(target, ()))
             texpath = tps[0] if len(tps) == 1 else None
         c = subject.resolve_canon(target, w, originals)
@@ -301,6 +301,27 @@ FLIGHT_FRAME = re.compile(r"_fly(?:ing)?_?\d|(?:^|[_/])flight(?![a-z])", re.I)
 FLYER_PLANS = ("bird", "bat", "insect", "ray", "floater", "swarm", "large", "glider")
 
 
+# ARTEVAL_FIX_WING_LAYERS_SQUAT_BODY_LANE: a wing layer is an INPUT to `flyer_lock.py compose`, never a texture the
+# game draws. Its lane is the slot `_wing:<DEF>/<facing>/<pose>`; it carries no target_texpath and no install_to, so no
+# installer can bind it (the body's texPath would put three poses per facing over the body). runner.flight_layer_rows
+# makes these rows; bulk_accept_renders refuses any job in this lane.
+WING_LAYER_SLOT = "_wing:"
+
+
+def wing_layer_slot(target_def: str, facing: str, pose: str) -> str:
+    return f"{WING_LAYER_SLOT}{target_def}/{facing}/{pose}"
+
+
+def is_wing_layer(row_or_job: dict) -> bool:
+    return str(row_or_job.get("slot") or "").startswith(WING_LAYER_SLOT)
+
+
+def _refuse_layer_destination(row: dict) -> None:
+    if is_wing_layer(row) and (str(row.get("target_texpath") or "").strip() or str(row.get("install_to") or "").strip()):
+        raise ValueError(f"row {row.get('id')!r} is a wing layer ({row.get('slot')}) that names a destination "
+                         f"(target_texpath/install_to): a layer installs nowhere; flyer_lock.py compose consumes it")
+
+
 def _refuse_unlocked_frames(row: dict) -> None:
     where = " ".join(str(row.get(k) or "") for k in ("id", "target_texpath", "install_to"))
     if not FLIGHT_FRAME.search(where) or (row.get("flipbook_override") or "").strip():
@@ -321,6 +342,7 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
     if missing:
         raise ValueError(f"row {row.get('id', '?')!r} missing {missing}")
     _refuse_unlocked_frames(row)
+    _refuse_layer_destination(row)
     binding = bind_subject(row, no_subject=no_subject, world=world)
     # csv.DictReader keys a row's surplus cells under None; sorting str with None would crash the whole file
     unknown = sorted((str(k) for k in row if k not in KNOWN_ROW_FIELDS and row[k] not in (None, "")))
@@ -669,6 +691,12 @@ def gate_row(row: dict, jobs: list[dict], gate_get, runs_root: Path | None = Non
             return False, {"verdict": "REFUSED_UNCONFIRMED",
                            "reason": "a no_subject row may not install_to a texture slot: name its target_def"}
         return True, {"verdict": "NO_SUBJECT", "reason": "names no def and installs nowhere"}
+    if is_wing_layer(row):
+        if any(j.get("install_to") or j.get("target_texpath") or not is_wing_layer(j) for j in jobs):
+            return False, {"verdict": "REFUSED_UNCONFIRMED",
+                           "reason": "a wing layer may name no install_to or target_texpath: it installs nowhere"}
+        return True, {"verdict": "WING_LAYER", "reason": f"{row.get('slot')}: a flyer_lock.py compose input that "
+                      f"installs nowhere (no texture of {target} is drawn over)"}
     named = str(row.get("target_def") or "").strip()  # the markers name the def as the ROW did (before donor mapping)
     if row.get("owner_ruling") not in (None, ""):
         why = _owner_ruling_ok(row["owner_ruling"], named, row.get("slot"))

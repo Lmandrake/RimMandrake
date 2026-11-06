@@ -379,6 +379,10 @@ def resolve_def(repo: "Repo", j, dn: str):
 
 def resolve_job(repo: Repo, j):
     """-> (dest | None, how, fix | None, bound: bool)."""
+    if str(j.get("slot") or "").startswith("_wing:"):
+        # fill_queue.WING_LAYER_SLOT: a flyer_lock.py compose input; its target_def fallback is the BODY texPath
+        # (ARTEVAL_FIX_WING_LAYERS_SQUAT_BODY_LANE)
+        return None, "wing layer: composited by flyer_lock.py compose, never installed", None, True
     if j.get("install_to"):
         d = j["install_to"].lstrip("/")
         if not d.startswith("src/") or "/Textures/" not in d:

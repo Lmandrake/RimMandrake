@@ -77,8 +77,8 @@ def neutral_prompt(prompt: str) -> tuple[str, str]:
 def bind_texpath(r: dict, texpath_of=None) -> dict:
     """A flyer's def has a body texPath AND flying frames, so fill_queue cannot infer one and refuses the row
     (ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET): name the adult body texPath unless the row already names a target."""
-    if not r.get("target_texpath") and not r.get("install_to"):
-        if texpath_of is None:
+    if not r.get("target_texpath") and not r.get("install_to") and not str(r.get("slot") or "").startswith("_wing:"):
+        if texpath_of is None:   # a wing layer (fill_queue.WING_LAYER_SLOT) installs nowhere: never the body's texPath
             import fauna_spec as FS
             texpath_of = FS.body_texpath
         tp = texpath_of(r["target_def"])

@@ -14,6 +14,11 @@
            every flight row keeps its _flight id, wing prompt, plan and derive_from, and the held rows are still
            refused by fill_queue.row_to_jobs
   BODY     a static body REGEN of the same def is untouched (one row, no plan, no layer)
+  LANE     every wing-layer row has its own lane (fill_queue.wing_layer_slot `_wing:<DEF>/<facing>/<pose>`, nine distinct)
+           and no body target_texpath or install_to, on the row and on every job row_to_jobs files from it; the filing
+           gate passes it as WING_LAYER without asking the eligibility gate; bulk_accept_renders.resolve_job binds no
+           destination for it; a layer row or job naming the body texPath or an install_to is refused
+           (ARTEVAL_FIX_WING_LAYERS_SQUAT_BODY_LANE)
 """
 from __future__ import annotations
 
@@ -108,6 +113,51 @@ def drive_fauna(layered, held_rows):
     check("DRIVE held rows still refused by row_to_jobs", n_held == len(held_rows))
 
 
+def lane_checks(rows, body_tp):
+    """LANE: a wing layer never binds the body's texture lane (ARTEVAL_FIX_WING_LAYERS_SQUAT_BODY_LANE)."""
+    sys.path.insert(0, str(REPO / "src/RimMandrake/Utils/art"))
+    import bulk_accept_renders as BA
+    want = sorted(F.wing_layer_slot("RSW_Strill", f, p) for f in ("east", "south", "north") for p in ("up", "level", "down"))
+    check("LANE nine distinct _wing: slots", sorted(r.get("slot", "") for r in rows) == want)
+    check("LANE slot facing matches the row facing", all(r["slot"].split("/")[1] == r["facings"][0] for r in rows))
+    check("LANE no row names the body texPath or an install_to",
+          all(not r.get("target_texpath") and not r.get("install_to") for r in rows) and body_tp)
+    jobs = []
+    for r in rows:
+        try:
+            jobs += F.row_to_jobs(dict(r, biome_neutral=True), derive_facings=False)
+        except (ValueError, SystemExit) as ex:
+            check(f"LANE row_to_jobs files {r['id']} ({ex})", False)
+    check("LANE every job keeps its slot and names no destination (real World resolver)",
+          len(jobs) == 9 and all(F.is_wing_layer(j) and not j.get("target_texpath") and not j.get("install_to")
+                                 for j in jobs))
+
+    def no_gate():
+        raise AssertionError("the eligibility gate was asked about a wing layer")
+    v = [F.gate_row(r, [j for j in jobs if j["slot"] == r["slot"]], no_gate) for r in rows]
+    check("LANE filing gate passes each as WING_LAYER", all(ok and e["verdict"] == "WING_LAYER" for ok, e in v))
+    bound = [BA.resolve_job(None, j) for j in jobs]
+    check("LANE bulk_accept_renders binds no destination", all(d is None and "wing layer" in how for d, how, _, _ in bound))
+    check("LANE bulk_accept sanity: a body job with target_def still resolves past the layer guard",
+          "wing layer" not in str(_resolve_or_err(BA, {"id": "x", "target_texpath": body_tp})))
+    for bad, what in ((dict(rows[0], target_texpath=body_tp), "body texPath"),
+                      (dict(rows[0], install_to="src/X/Textures/a/b_{facing}.png"), "install_to")):
+        try:
+            F.row_to_jobs(dict(bad, biome_neutral=True), derive_facings=False, world=False)
+            check(f"LANE layer row naming a {what} refused", False)
+        except ValueError as ex:
+            check(f"LANE layer row naming a {what} refused", "installs nowhere" in str(ex))
+    ok, e = F.gate_row(rows[0], [dict(jobs[0], target_texpath=body_tp)], no_gate)
+    check("LANE gate refuses a layer job carrying a texPath", not ok and e["verdict"] == "REFUSED_UNCONFIRMED")
+
+
+def _resolve_or_err(BA, j):
+    try:
+        return BA.resolve_job(None, j)[1]
+    except Exception as ex:                                          # noqa: BLE001 — repo=None reached: past the guard
+        return type(ex).__name__
+
+
 def main() -> int:
     check("runner and fill_queue share one flight pattern", RN.FLIGHT_TOKEN.pattern == F.FLIGHT_FRAME.pattern)
     old = json.loads((RUN / "regen_jobs.json").read_text())[0]
@@ -148,6 +198,7 @@ def main() -> int:
     check("FAUNA_DRIVE keeps flight rows", all(RN.is_flight_row(r) for r in rows + held + rnd))
 
     drive_fauna(rows, held + nomaster + rnd)
+    lane_checks(rows, tp("RSW_Strill"))
 
     body = {k: v for k, v in rec.items() if k not in ("candidate", "artpipe_job", "source_files")}
     b = RN.regen_jobs([dict(body, artpipe_job="RM_Shirrel_east")], "t", texpath_of=tp, neutralize=lambda p: (p, "noop"))
