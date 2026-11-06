@@ -1045,3 +1045,12 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A2 (L2), read-only proof","ts":"2026-11-06T11:08:47Z","tsn":1793963327763501198}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:09:39Z","tsn":1793963379287432659}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A3 (L2), read-only proof","ts":"2026-11-06T11:09:54Z","tsn":1793963394190644722}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:10:12Z","tsn":1793963412829477605}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A4 (L2), read-only proof","ts":"2026-11-06T11:10:32Z","tsn":1793963432769212198}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:10:48Z","tsn":1793963448206028581}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A5 (L2), read-only proof","ts":"2026-11-06T11:11:04Z","tsn":1793963464280650808}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:11:20Z","tsn":1793963480696774808}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A6 (L2), read-only proof","ts":"2026-11-06T11:11:37Z","tsn":1793963497441327277}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:11:53Z","tsn":1793963513257994734}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A7 (L2), read-only proof","ts":"2026-11-06T11:12:15Z","tsn":1793963535556450143}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:12:32Z","tsn":1793963552296993919}
