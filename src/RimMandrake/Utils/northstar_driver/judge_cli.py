@@ -38,6 +38,7 @@ for p in (_UTILS, os.path.join(_UTILS, "modcheck")):
         sys.path.insert(0, p)
 
 import harness_run                                                       # noqa: E402
+import rmpaths                                                            # noqa: E402
 import judge                                                              # noqa: E402
 from northstar_driver import PASS, FAIL, UNMEASURED                       # noqa: E402
 from northstar_driver import bars as B                                    # noqa: E402
@@ -48,6 +49,28 @@ CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # 
 PROMPT_SHA256 = hashlib.sha256(judge._PROMPT.encode("utf-8")).hexdigest()
 THROTTLE_RE = re.compile(r"rate.?limit|\b429\b|overloaded|usage limit|too many requests|quota", re.I)
 SPLIT = "SPLIT"
+# Captures are staged under agent storage, never tempfile's /tmp: on archmagi /tmp is an 18G tmpfs that
+# workers' mutation copies filled to 97%, and every judge call died ENOSPC (NSJUDGE_TMPDIR_FIX_TMPFS_FULL_OF_MUTANTS).
+MIN_FREE_BYTES = 512 << 20
+
+
+def stage_root():
+    """`<rm data root>/scratch/nsjudge`, created on demand; RmDataRootUnset propagates by name."""
+    d = rmpaths.rm_path("scratch", "nsjudge")
+    d.mkdir(parents=True, exist_ok=True)
+    return str(d)
+
+
+def stage_problem(root, image, min_free=MIN_FREE_BYTES):
+    """None when `root` has room for a copy of `image` plus `min_free`; else the refusal text."""
+    try:
+        need = os.path.getsize(image) + min_free
+        free = shutil.disk_usage(root).free
+    except OSError as e:
+        return "stage preflight failed on %s: %s" % (root, e)
+    if free < need:
+        return "ENOSPC preflight: %s has %d MiB free, needs %d MiB" % (root, free >> 20, need >> 20)
+    return None
 _MAGIC = (b"\x89PNG\r\n\x1a\n", b"BM", b"\xff\xd8\xff")
 
 
@@ -111,10 +134,15 @@ def sha256_file(path):
 # ------------------------------------------------------------------ the real judge
 
 def claude_runner(model, timeout):
-    """callable(prompt_for_path, image) -> (ok, raw). The image is copied into a private temp dir
-    used as the subprocess cwd, so the CLI's Read tool reads inside its own working directory."""
+    """callable(prompt_for_path, image) -> (ok, raw). The image is copied into a private dir under
+    stage_root() used as the subprocess cwd, so the CLI's Read tool reads inside its own working
+    directory. A stage without room refuses before copying (ok=False, never a verdict)."""
     def run(prompt_for, image):
-        d = tempfile.mkdtemp(prefix="nsjudge_")
+        root = stage_root()
+        why = stage_problem(root, image)
+        if why:
+            return False, why
+        d = tempfile.mkdtemp(prefix="nsjudge_", dir=root)
         try:
             local = os.path.join(d, "shot" + (os.path.splitext(image)[1] or ".png"))
             shutil.copyfile(image, local)
