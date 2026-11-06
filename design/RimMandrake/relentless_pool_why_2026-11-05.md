@@ -31,8 +31,8 @@ Notes, measured with the tool:
 
 - Most `state=doing` system items in the full list (45 of 161 at writing) are simply Relentless's own line (doing on the
   ledger, a store state); the probe excluded those, the tool tallies them as `state=doing`.
-- `eligible()` excludes on any `it.lease`, including a lapsed one (`model.lease_status` would say `lapsed`). Today every
-  leased item is also out by its state, so this changes nothing yet; a `proposed`/`ready` item with a lapsed lease would
-  be kept out forever. Covered by the lapsed-lease item.
+- Only a LIVE lease keeps an item out (`relentless.lease_live`, fixed 2026-11-06 by `LAPSED_LEASES_REPAIR_GHOSTS_HOLD_THE_KEYS`;
+  before it a lapsed or released lease held `FLEETWATCH_REFRESH_BUILD_OUTLIVES_ITS_WINDOW`, a `ready` item, out). The 11 BENCH
+  ghosts then on the ledger were released or reclaimed; `relentless_pool_why.py --leases` lists any that remain.
 - Operations' classifier counts owner-parked items as system work. That inflates "system items waiting" readings
   (the probe's 74) but orders nothing: `pool_order` drops them first.

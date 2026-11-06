@@ -50,7 +50,26 @@ ok(P.reasons(item(state="built"), W, RULES, NOW) == ["state=built"], "built is o
 ok(P.reasons(item(owner="OWNER"), W, RULES, NOW) == ["owner=OWNER"], "an OWNER item is out by owner")
 ok(P.reasons(item(needs="owner"), W, RULES, NOW) == ["needs=owner"], "needs=owner is out")
 ok(P.reasons(item(kind="design"), W, RULES, NOW) == ["kind=design"], "an excluded kind is out")
-ok(P.reasons(item(lease={"by": "x"}), W, RULES, NOW) == ["lease"], "a held lease is out")
+# LAPSED_LEASES_REPAIR_GHOSTS_HOLD_THE_KEYS: only a LIVE lease holds an item; a lapsed or released one held six ready/doing
+# items out for days. eligible() and reasons() must agree on all three.
+import model as M  # noqa: E402
+LIVE = {"token": "BENCH.pid1.a", "seat": "BENCH", "taken": M.stamp(NOW, -60), "expires": M.stamp(NOW, 600),
+        "renewed": M.stamp(NOW, -60), "released": None}
+LAPSED = dict(LIVE, expires=M.stamp(NOW, -3600))
+RELEASED = dict(LIVE, released=M.stamp(NOW, -30))
+ok(P.reasons(item(lease=LIVE), W, RULES, NOW) == ["lease"], "a live lease is out")
+ok(not R.eligible(item(lease=LIVE), RULES, now=NOW), "eligible refuses a live lease")
+for name, ls in (("lapsed", LAPSED), ("released", RELEASED)):
+    ok(P.reasons(item(lease=ls), W, RULES, NOW) == [], "a %s lease holds nothing (reasons)" % name,
+       P.reasons(item(lease=ls), W, RULES, NOW))
+    ok(R.eligible(item(lease=ls), RULES, now=NOW), "a %s lease holds nothing (eligible)" % name)
+    ok(R.eligible(item(state="ready", lease=ls), RULES, now=NOW), "a ready item with a %s lease enrols" % name)
+GW = NS(items={i.id: i for i in (item("G_LAPSED_DOING", state="doing", lease=LAPSED), item("G_LIVE", lease=LIVE),
+                                  item("G_RELEASED", lease=RELEASED), item("G_DONE", state="done", lease=LAPSED),
+                                  item("G_OWNER", owner="OWNER", lease=LAPSED), item("G_NONE"))})
+ok([g[0] for g in P.ghosts(GW, RULES, NOW)] == ["G_LAPSED_DOING"],
+   "--leases names an open pool-seat item with a lapsed lease, and nothing live, released, closed or another seat's",
+   P.ghosts(GW, RULES, NOW))
 ok(P.reasons(item(target="v2"), W, RULES, NOW) == ["target=v2"], "another target is out")
 ok(P.reasons(item(needs="harvest"), W, RULES, NOW) == ["needs=harvest"], "a need outside pool_needs is out")
 ok(P.reasons(item("SYS_PARKED_LIST_ID"), W, dict(RULES, pool_ids_exclude=["SYS_PARKED_LIST_ID"]), NOW) == ["pool_excluded"],

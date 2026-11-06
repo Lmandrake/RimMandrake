@@ -11,6 +11,11 @@ The system ids are Operations' ledger classifier (ops_health.system_ids), the li
 reads Operations' fresh verdict instead. Nothing is filed: the first-touch pass a held item owes is reported, never filed.
 
   relentless_pool_why.py [--strict] [--items] [--verdict]
+  relentless_pool_why.py --leases    every open pool-seat item holding a LAPSED lease (expired, never released); exit 1 if any
+
+LAPSED_LEASES_REPAIR_GHOSTS_HOLD_THE_KEYS (2026-11-06): six BENCH items held leases that expired days earlier and were never
+released. Only a live lease keeps an item out now (relentless.lease_live); `--leases` lists the ghosts that remain, and the
+owning seat repairs each (`rimflow reclaim` for doing, `rimflow release --token` for the rest).
 """
 import argparse
 import collections
@@ -51,7 +56,7 @@ def reasons(it, w, r, now, refused=None, first_touch=None, words=()):
         out.append("pool_excluded")
     if R.hand_check(it, r):
         out.append("hand_check")
-    if getattr(it, "lease", None):
+    if R.lease_live(it, now):
         out.append("lease")
     if it.owner == R.foreign_seat(r) and not R.foreign_ok(it, r):
         out.append("foreign")
@@ -119,12 +124,34 @@ def _survey(r, verdict, now, fx):
     return rows, fx._health["why"]
 
 
+def ghosts(w, r, now):
+    """-> [(id, state, lease)] for every open item of a pool seat whose lease LAPSED: expired, never released."""
+    model = R.pkg("model")
+    return [(it.id, it.state, it.lease) for it in sorted(w.items.values(), key=lambda x: x.id)
+            if it.owner in r["pool_seats"] and it.state not in model.TERMINAL
+            and model.lease_status(it, int(now)) == "lapsed"]
+
+
+def leases_cli(r=None, now=None):
+    model = R.pkg("model")
+    r = r or R.rules()
+    w = model.replay(model.read())
+    gs = ghosts(w, r, time.time() if now is None else now)
+    print("lapsed leases on open %s items: %d" % ("/".join(r["pool_seats"]), len(gs)))
+    for i, st, ls in gs:
+        print("  %s state=%s token=%s expired %s" % (i, st, ls.get("token"), ls.get("expires")))
+    return 1 if gs else 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.strip().splitlines()[0])
     ap.add_argument("--strict", action="store_true", help="exit 1 when any item is UNEXPLAINED")
     ap.add_argument("--items", action="store_true", help="one line per system item")
     ap.add_argument("--verdict", action="store_true", help="Operations' fresh verdict names the system items")
+    ap.add_argument("--leases", action="store_true", help="list open pool-seat items holding a lapsed lease; exit 1 if any")
     a = ap.parse_args(argv)
+    if a.leases:
+        return leases_cli()
     rows, why = survey(verdict=a.verdict)
     tally = collections.Counter(primary(rs) for _, _, rs, _, _ in rows)
     bad = [x for x in rows if x[4].startswith("UNEXPLAINED")]

@@ -3914,9 +3914,18 @@ def eligible(it, r, world=None, now=None):
     return (it.owner in r["pool_seats"] and it.state in ("proposed", "ready") and not blocked
             and it.needs != "owner" and (it.needs in r["pool_needs"] or it.needs in relentless_game.pool_needs(r))
             and getattr(it, "kind", None) not in r.get("pool_kinds_exclude", [])
-            and not pool_excluded(it.id, r) and not getattr(it, "lease", None)
+            and not pool_excluded(it.id, r) and not lease_live(it, now)
             and not hand_check(it, r)
             and (it.owner != foreign_seat(r) or foreign_ok(it, r)))
+
+
+def lease_live(it, now=None):
+    """Does a LIVE seat lease hold `it`? LAPSED_LEASES_REPAIR_GHOSTS_HOLD_THE_KEYS: a lease that expired or was released
+    holds nothing (model.lease_status, judged from its own `expires`), so it never keeps an item out of the pool; the
+    rank() side (priority.offerable_state) already read it this way."""
+    if not getattr(it, "lease", None):
+        return False
+    return pkg("model").lease_status(it, int(time.time() if now is None else now)) == "live"
 
 
 HAND_CHECK_SAID = ("check by hand, close with evidence")
