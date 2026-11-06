@@ -10,7 +10,10 @@ stdlib (always run):
       distinct byte fingerprints, BOM, CRLF, huge integers, a text stream that raises, scan_bytes accounting
   C10 compat.ledger_ts is the dispatcher's operand; falsey ts values are passed over without a crash (review #9)
   C6  the stdlib layers and the hot readers (close_evidence, dispatcher, arbiter_pending, testq) import nothing outside
-      the standard library and src/RimMandrake (no pydantic)
+      the standard library and src/RimMandrake (no pydantic). A module living in the interpreter's own stdlib dir is
+      stdlib even when sys.stdlib_module_names omits it: dispatcher -> login_watch -> zoneinfo -> zoneinfo._tzpath ->
+      sysconfig -> _sysconfigdata__linux_x86_64-linux-gnu (login_watch's `import zoneinfo`, 2814d1d50e, 2026-10-31)
+      tripped C6 on every interpreter until 972734f20e (CONTRACTS_IMPORT_DIAGNOSE_SYSCONFIG_TRIPWIRE)
 needs pydantic:
   C3  AuditRecord == audits.schema.json: required, properties, enums, pattern, and every property's JSON type
   C5  the exported Arbiter schema files are current (export.py --check)
@@ -206,6 +209,11 @@ def c6():
                  "import sys; sys.path.insert(0, 'Utils/testq'); import testq"):
         ok, bad = foreign_imports(code)
         check("C6 stdlib + RimMandrake only: " + code.split(";")[-1].strip(), ok, bad)
+    ok, bad = foreign_imports("import zoneinfo")
+    name = "C6 a stdlib import that loads _sysconfigdata (zoneinfo) is not foreign"
+    check(name, ok, bad)
+    if ok:
+        print("PASS " + name)
     ok, bad = foreign_imports("from contracts import models")
     check("C6 the instrument sees a foreign import (models -> pydantic)", not ok and "pydantic" in bad, bad)
 
