@@ -1,0 +1,1 @@
+selftest_relentless_live_round row 'every real live_proofs file ... parses' is red on HARNESS_REPAIR_CAUSE_B338C64C.rerun_job, a stray in infrastructure/state/live_proofs/ with a rerun_job line the parser refuses; its owner should remove it or teach the row the suffix (seen by RELENTLESS_R7_FIX_THIRTEEN_MEDIUMS_MAY_STAY, not caused by it)

@@ -2,6 +2,7 @@
 """RELENTLESS_REVIEW_FIX_R7_MEDIUMS_MAY_STAY: the graded r7 review's non-high findings that held, each row red without its
 fix. The two it rejected are reasoned in infrastructure/state/items/RELENTLESS_REVIEW_FIX_R7_MEDIUMS_MAY_STAY.md."""
 import os
+import subprocess
 import sys
 import types
 
@@ -159,6 +160,12 @@ def main():
               t_cut_pilot_never_resumes_as_a_builder):
         print("--", t.__name__)
         t()
+    # the sibling item RELENTLESS_R7_FIX_THIRTEEN_MEDIUMS_MAY_STAY: its rows live in their own file, run from here too
+    print("-- selftest_relentless_r7_thirteen")
+    run = subprocess.run([sys.executable, os.path.join(HERE, "selftest_relentless_r7_thirteen.py")], capture_output=True,
+                         text=True, timeout=120)
+    print(run.stdout[-1500:])
+    ok(run.returncode == 0, "the thirteen mediums' rows pass")
     print("selftest_relentless_r7_mediums: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 
