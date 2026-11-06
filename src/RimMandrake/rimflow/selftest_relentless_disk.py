@@ -213,6 +213,65 @@ def t_reuse_fetch_reaches_origin():
        "a checker's checkout fetches a sha its clone lacks instead of opening the breaker: %s" % why)
     shutil.rmtree(d)
 
+def t_unreadable_tree_remakes_clone():
+    """RELENTLESS_BREAKER_DIAGNOSE_UNREADABLE_TREE: a clone whose object store holds the commit but lost its tree. The
+    origin fetch cannot heal it (negotiation says the commit is had and sends nothing), so the checkout stayed "unable
+    to read tree" (git says "Could not read <tree>" for this shape; the journalled faults of 2026-11-02 were the absent
+    commit's own "unable to read tree (<sha>)", which the fetch now heals); the check/help clone is removed and made again, and the remade one stands on the sha."""
+    d, o, s, fx = rig(warm=2)
+    seed = os.path.join(d, "seed")
+    put(os.path.join(seed, "a.txt"), "published a minute ago\n")
+    git(seed, "commit", "-qam", "fresh")
+    git(seed, "push", "-q", "origin", "HEAD:main")
+    fresh = git(seed, "rev-parse", "HEAD").strip()
+    tree = git(seed, "rev-parse", fresh + "^{tree}").strip()
+    bad = os.path.join(d, "clones", "check-I0-c1")
+    git(d, "init", "-q", "-b", "main", bad)
+    git(bad, "remote", "add", "origin", o)
+    git(bad, "fetch", "-q", "origin", "main")           # a two-commit fetch arrives loose: one object file per object
+    os.remove(os.path.join(bad, ".git", "objects", tree[:2], tree[2:]))
+    fails = lambda c: subprocess.run(["git", "checkout", "-q", "--detach", fresh], cwd=c, capture_output=True, text=True)
+    e = fails(bad)
+    ok(e.returncode and "Could not read " + tree in e.stderr, "the shape of the fault: the commit is had, its tree is not: %s" % e.stderr.strip())
+    made = []
+    real_run = R.subprocess.run
+
+    def fake(a, *k, **kw):
+        if "scratch_clone.py" in " ".join(map(str, a)):
+            made.append(os.path.isdir(bad))
+            if not os.path.isdir(bad):
+                git(d, "clone", "-q", "--no-checkout", o, bad)
+            return subprocess.CompletedProcess(a, 0, "", "")
+        return real_run(a, *k, **kw)
+    R.subprocess.run = fake
+    try:
+        dd, why = fx._detached_clone(bad, fresh, "check", "I0")
+    finally:
+        R.subprocess.run = real_run
+    ok(dd == bad and why is None and git(bad, "rev-parse", "HEAD").strip() == fresh,
+       "the unreadable clone is remade and checks the sha out: %s" % why)
+    ok(made == [True, False], "made twice, the second time from nothing: %s" % made)
+    ok(any(j.get("do") == "clone_remade" and j.get("clone") == "check-I0-c1" for j in journal(s)),
+       "the remake is journalled")
+    ok(not R.load_breaker(s).get("fails"), "no breaker charge")
+    # a remade clone that still cannot read the sha says so once: no remake loop
+    calls = []
+
+    def fake2(a, *k, **kw):
+        if "scratch_clone.py" in " ".join(map(str, a)):
+            calls.append(1)
+            if not os.path.isdir(bad):
+                git(d, "clone", "-q", "--no-checkout", o, bad)
+            return subprocess.CompletedProcess(a, 0, "", "")
+        return real_run(a, *k, **kw)
+    R.subprocess.run = fake2
+    try:
+        dd, why = fx._detached_clone(bad, "f" * 40, "check", "I0")
+    finally:
+        R.subprocess.run = real_run
+    ok(dd is None and why.startswith("checkout ") and len(calls) == 2, "an absent sha is remade once, then reported: %s %s" % (why, calls))
+    shutil.rmtree(d)
+
 def t_clone_fetch_reaches_origin():
     """OPS_RELENTLESS_UNSTICK_XARX, through the door the belt uses: `scratch_clone.py clone ... --fetch` into the pool
     root. The cause was the call site in clone() dropping --fetch on a reuse, so drive clone() itself, not pool_reuse."""
@@ -362,7 +421,7 @@ def t_reap_done_boxes_early():
 
 
 def main():
-    for t in (t_gone_is_removed, t_park, t_damaged_never_parked, t_reuse_warm_now, t_reuse_fetch_reaches_origin, t_clone_fetch_reaches_origin, t_no_bundle_says_why, t_warm_is_room, t_reap_boxes, t_reap_done_boxes_early):
+    for t in (t_gone_is_removed, t_park, t_damaged_never_parked, t_reuse_warm_now, t_reuse_fetch_reaches_origin, t_unreadable_tree_remakes_clone, t_clone_fetch_reaches_origin, t_no_bundle_says_why, t_warm_is_room, t_reap_boxes, t_reap_done_boxes_early):
         print("--", t.__name__)
         t()
     print("selftest_relentless_disk: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

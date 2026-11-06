@@ -3615,7 +3615,7 @@ class Effects(relentless_game.GameFx):
             self.remove_clone({"clone": old, "item": st["item"]})     # a clean checkout: parked warm, or removed
         return self._detached_clone(d, sha, "check", st["item"])
 
-    def _detached_clone(self, d, sha, what, item):
+    def _detached_clone(self, d, sha, what, item, remade=False):
         env = dict(os.environ, RM_SCRATCH_ROOT=os.path.dirname(os.path.dirname(d)), RM_SEAT="clones")
         r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/scratch_clone.py"), "clone",
                             "relentless %s %s" % (what, item), "--name", os.path.basename(d), "--checkout", "--fetch"],
@@ -3628,6 +3628,15 @@ class Effects(relentless_game.GameFx):
             # the sha or its tree is not in the clone yet (a lagging object store): ask origin once before calling it failed
             self.git(d, "fetch", "--quiet", "origin", sha, timeout=400)
             r = self.git(d, "checkout", "--quiet", "--detach", sha)
+        if r.returncode and not remade:
+            # RELENTLESS_BREAKER_DIAGNOSE_UNREADABLE_TREE: still unreadable after origin was asked. A fetch cannot heal an
+            # object store that holds the commit but lost a tree under it (negotiation says "have it" and sends nothing),
+            # so a tracked-files-only check/help tree is removed and made again once, never parked warm for the next taker.
+            gone = relentless_disk.remove_tree(d)
+            self.store.journal({"at": iso(time.time()), "do": "clone_remade", "clone": os.path.basename(d), "item": item,
+                                "missing": "tree of %s" % sha[:12], "why": (r.stderr or "")[-200:], "remove": gone})
+            if gone is None:
+                return self._detached_clone(d, sha, what, item, remade=True)
         return (d, None) if r.returncode == 0 else (None, "checkout %s: %s" % (sha, r.stderr[-200:]))
 
     def help_path(self, st):
