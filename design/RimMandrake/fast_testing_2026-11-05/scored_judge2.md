@@ -37,9 +37,11 @@ How to read the numbers:
 6. **Put GimmeSomeSlack on the no-LLM test queue and give every built item a proof line (C08, C09).** GSS has a 7-minute,
    119-row suite but is not wired into testq (which already produces ~1,700 rows a day), and five built GSS items have no
    proof line so nothing can ever run them; both are small plumbing fixes.
-7. **Reload changed XML into the running game instead of restarting it (O5).** The bridge already has
-   `jawa/hot_reload_defs`, but the live lanes restart for def changes; using it for XML-only builds turns a load into
-   seconds for a large share of items.
+7. **Reload changed XML into the running game instead of restarting it (O5): NOT a speed path today.** `jawa/hot_reload_defs`
+   calls the vanilla `PlayDataLoader.HotReloadDefs()`, which hung the bridge ~5 min on a 589-mod list and then broke every
+   pawn spawn (`infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`); the owner reports it unproven and
+   about as slow as a reload (lesson `20261106T043450Z-BENCH-jawa-hot-reload-defs-game-def.md`). The cold-load route being
+   measured instead is DefLoadCache (`COLDLOAD_PROVE_DEFLOADCACHE_HALF_INSTALLED`).
 8. **Run many proofs side by side on one map (C17, O1, O2).** Fence off small test plots on one quicktest map, each with
    its own scenario and deadline, so one load and one stretch of game time serves twenty proofs instead of one, the way
    Minecraft's GameTest grid does.
@@ -59,7 +61,7 @@ Ranked by hours removed per unit of cost, with risk as tie-break. Rows 1-8 are t
 | 4 | Commit-triggered suite on the warm game; reuse evidence by dependency hash (C07, O34 CI image, G17 Ekstazi selection) | 3 | M | M | partial: testq queue, retest.py exist; no commit trigger into the live lane | O34 container image is the L-cost variant; do the hook first |
 | 5 | Smallest legal mod list per proof; warm list pools; then 2+ instances / both machines (O6, C27, C26, C28, O33) | 3 | M (tiers) / L (multi-instance) | M | partial: load_policy.json, tier_load.py, modset_builder.py, game_paths honours `-savedatafolder`; no second instance | Do tier routing first; multi-instance needs RAM/port/Steam checks |
 | 6 | Wire GSS into testq; auto-generate live_proofs lines for built items (C08, C09) | 1.5 | S | L | no: GSS absent from wired_mods.json; 5 built GSS items lack proof files | Also unblocks the GSS suite-per-build criterion |
-| 7 | Hot-reload defs for XML-only builds (O5) | 1 | S | M | tool built (`jawa/hot_reload_defs`); lanes do not use it | Must declare which def changes are safe to hot-load; restart otherwise |
+| 7 | Hot-reload defs for XML-only builds (O5) | 1 | S | M | tool built but unproven: broke pawn generation on the full list (HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1) | not a speed path until a minimal-list test proves it |
 | 8 | Test plots: many proofs per map, setups pasted as saved blueprints (C17, O1, O2) | 2 | M | M | partial: set_terrain_batch, scenes/scenelib | Isolation between plots must be proved (see row 27) |
 | 9 | TPS benchmark, tick budget per proof, then render-off / uncapped ticking; open-load throughput test (C11, C13, O35, G33, GPT finding that `step_game_ticks` is one tick per frame) | 1 | XS (measure) / M (render-off) | L | no TPS number on file | Instrument first; it decides whether rows 13 and 46 are worth anything |
 | 10 | Bisection bot over commits; delta-debug the mod set (C10, G13) | 0.7 | M | L | no | Hours of LLM diagnosis per regression become ~7 runs |
