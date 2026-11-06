@@ -21,6 +21,8 @@ moves:
     trigger costs one heartbeat, never a stall.
 Off switch: relentless_wake.json "mode": "off" (poke still writes; nothing fires or serves).
 
+A poke file holds the NEWEST poke of its source: a slow writer with an older clock never overwrites a newer one.
+
     python3 relentless_wake.py poke <source> [why]
     python3 relentless_wake.py fire          # the wake unit's ExecStart
     python3 relentless_wake.py status
@@ -38,6 +40,7 @@ CONFIG = os.path.join(HERE, "relentless_wake.json")
 DEFAULT_ROOT = "/home/mandrake/rm/relentless"
 WAKE_DIR = "wake"               # watched by rm-relentless-wake.path: pokes only
 TMP_DIR = "wake_tmp"            # a poke is written here and renamed in: the watch sees one finished file
+POKE_LOCK = "poke.lock"         # in TMP_DIR: serialises same-source writers
 STATE = "wake_state.json"       # fire/serve bookkeeping, deliberately outside WAKE_DIR
 TICK_UNIT = "rm-relentless.service"
 DEFAULTS = {"mode": "live", "fire_min_gap_s": 10, "fire_max_per_hour": 60, "serve_min_gap_s": 20,
@@ -68,12 +71,23 @@ def poke(source, why="", root=None, now=None):
         src = "".join(c if c.isalnum() or c in "-_" else "_" for c in str(source))[:60] or "unknown"
         for sub in (WAKE_DIR, TMP_DIR):
             os.makedirs(os.path.join(d, sub), exist_ok=True)
-        tmp = os.path.join(d, TMP_DIR, "%s.%d" % (src, os.getpid()))
-        with open(tmp, "w", encoding="utf-8") as f:
-            json.dump({"at": time.time() if now is None else now, "source": src, "why": str(why)[:200],
-                       "pid": os.getpid()}, f)
         dst = os.path.join(d, WAKE_DIR, src + ".json")
-        os.replace(tmp, dst)
+        # One file per source, so two writers of the same source race: under one poke lock (in TMP_DIR, never
+        # watched) the clock is read and the newer poke always wins; an older writer never hides a newer one.
+        with open(os.path.join(d, TMP_DIR, POKE_LOCK), "a") as lk:
+            fcntl.flock(lk, fcntl.LOCK_EX)
+            at = time.time() if now is None else float(now)
+            try:
+                with open(dst, encoding="utf-8") as f:
+                    have = float(json.load(f)["at"])
+            except (OSError, ValueError, KeyError, TypeError):
+                have = None
+            if have is not None and have > at:
+                return dst
+            tmp = os.path.join(d, TMP_DIR, "%s.%d" % (src, os.getpid()))
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump({"at": at, "source": src, "why": str(why)[:200], "pid": os.getpid()}, f)
+            os.replace(tmp, dst)
         return dst
     except Exception:  # noqa: BLE001  a wake is a courtesy: the heartbeat still comes
         return None
@@ -129,7 +143,7 @@ def fire(sdir, now=None, active=None, start=None, cfg=None):
     """The wake unit's body. -> {"do": started|absorbed|capped|idle|off, ...}. `active()` -> is a tick running;
     `start()` starts one without waiting."""
     cfg = cfg or config()
-    now = time.time() if now is None else now
+    clock = (lambda: now) if now is not None else time.time
     active = active or tick_active
     start = start or start_tick
     if cfg.get("mode") == "off":
@@ -140,6 +154,7 @@ def fire(sdir, now=None, active=None, start=None, cfg=None):
             return {"do": "idle"}
         if active():        # the running tick serves it at its next boundary
             return {"do": "absorbed", "pokes": len(new)}
+        now = clock()       # read after the lock wait and active() (up to 20 s): a stale clock undercounts the gap
         st["fires"] = [t for t in st["fires"] if now - t < 3600]
         if st["fires"] and now - max(st["fires"]) < float(cfg["fire_min_gap_s"]):
             return {"do": "capped", "why": "last start %.0f s ago < fire_min_gap_s" % (now - max(st["fires"]))}
@@ -154,7 +169,8 @@ def fire(sdir, now=None, active=None, start=None, cfg=None):
 
 def serve(sdir, now, do, acts, tick_state, cfg=None, wall=time.monotonic):
     """Under tick.lock, at a phase or step boundary. `do()` -> the items enrolled (or a dict with "why" on refusal).
-    `tick_state`: a dict the tick keeps for its own lifetime (serve count and last serve time). -> True if it served."""
+    `tick_state`: a dict the tick keeps for its own lifetime (serve count and last serve time). -> True if it served.
+    A failed or refused do() leaves served_at where it was, so a transient sync failure is retried, not swallowed."""
     cfg = cfg or config()
     if cfg.get("mode") == "off":
         return False
@@ -177,13 +193,17 @@ def serve(sdir, now, do, acts, tick_state, cfg=None, wall=time.monotonic):
     except Exception as e:  # noqa: BLE001  a failed serve costs the early enrol, never the tick
         got = {"why": "%s: %s" % (type(e).__name__, e)}
     took = round(wall() - t0, 1)        # poke -> enrolled = lag_s (to the serve's start, +-1 s tick clock) + took_s
+    failed = isinstance(got, dict)     # raised or refused (a books sync that did not run): nothing was enrolled
     with _state(sdir) as st:
-        st["served_at"] = max(float(st["served_at"]), upto)
-        st["last_serve"] = {"at": now, "lag_s": round(now - min(p["at"] for p in new), 1),
-                            "sources": sorted({p.get("source", "?") for p in new})}
+        if failed:      # served_at stays put: the next boundary (or a fire) retries; the per-tick caps bound it
+            st["last_failed_serve"] = {"at": now, "why": str(got.get("why"))[:300]}
+        else:
+            st["served_at"] = max(float(st["served_at"]), upto)
+            st["last_serve"] = {"at": now, "lag_s": round(now - min(p["at"] for p in new), 1),
+                                "sources": sorted({p.get("source", "?") for p in new})}
     row = {"do": "wake_serve", "lag_s": round(now - min(p["at"] for p in new), 1), "took_s": took,
            "sources": sorted({p.get("source", "?") for p in new})}
-    if isinstance(got, dict):
+    if failed:
         row["why"] = str(got.get("why"))[:300]
     else:
         row["enrolled"] = list(got or [])

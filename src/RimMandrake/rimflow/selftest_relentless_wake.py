@@ -54,7 +54,7 @@ def t_poke():
     W.poke("publish", "def456", root=root, now=60.0)
     ok(listing(sdir) == ["publish.json"], "poke: a second poke of the same source overwrites (the dir never grows)")
     ok(W.pokes(sdir)[0]["at"] == 60.0, "poke: the newest poke is what is read")
-    ok(not os.listdir(os.path.join(sdir, W.TMP_DIR)), "poke: written beside and renamed in, no temp file left")
+    ok(not [n for n in os.listdir(os.path.join(sdir, W.TMP_DIR)) if n != W.POKE_LOCK], "poke: written beside and renamed in, no temp file left")
     ok(W.poke("x", root=os.path.join(root, "nowhere")) is None, "poke: no store on this host -> None, no raise")
     W.poke("../../evil name", root=root, now=61.0)
     ok("______evil_name.json" in listing(sdir), "poke: a source cannot leave the wake dir")
@@ -183,6 +183,81 @@ def t_mark():
     with W._state(sdir) as st:
         ok([p["source"] for p in W.unserved(sdir, st["served_at"])] == ["land"],
            "mark: the tick's own enrol serves pokes before its sync, not after")
+    shutil.rmtree(root)
+
+
+def t_failed_serve_retries():
+    """RELENTLESS_WAKE_HARDEN_FAILED_SERVE_ACKS: a refused or raising do() leaves served_at unmoved; the next boundary retries."""
+    root, sdir = rig()
+    clk, acts, ts = Clock(), [], {}
+    W.poke("publish", root=root, now=950.0)
+    ok(W.serve(sdir, 1000.0, lambda: {"why": "books sync refused"}, acts, ts, cfg=CFG, wall=clk)
+       and acts[-1]["why"] == "books sync refused", "failed serve: a refusal is said in the act")
+    with W._state(sdir) as st:
+        ok(float(st["served_at"]) == 0.0 and [p["source"] for p in W.unserved(sdir, st["served_at"])] == ["publish"],
+           "failed serve: a refused do() leaves served_at unmoved (the poke stays unserved)")
+        ok("books sync refused" in st.get("last_failed_serve", {}).get("why", ""), "failed serve: the state names it")
+    ok(W.fire(sdir, now=1001.0, active=lambda: False, start=lambda: None, cfg=CFG)["do"] == "started",
+       "failed serve: a fire still sees the poke as unserved")
+
+    def boom():
+        raise RuntimeError("fetch failed")
+    clk.t += 30
+    ok(W.serve(sdir, 1030.0, boom, acts, ts, cfg=CFG, wall=clk), "failed serve: the next boundary retries")
+    with W._state(sdir) as st:
+        ok(float(st["served_at"]) == 0.0, "failed serve: a raising do() leaves served_at unmoved too")
+    calls = []
+    clk.t += 30
+    ok(W.serve(sdir, 1060.0, lambda: calls.append(1) or ["DEP"], acts, ts, cfg=CFG, wall=clk) and calls == [1],
+       "failed serve: the retry that succeeds enrols")
+    with W._state(sdir) as st:
+        ok(float(st["served_at"]) == 950.0, "failed serve: a success advances served_at to the newest poke read")
+    clk.t += 30
+    ok(not W.serve(sdir, 1090.0, lambda: calls.append(1) or [], acts, ts, cfg=CFG, wall=clk) and calls == [1],
+       "failed serve: the per-tick cap still bounds retries (serve_max_per_tick)")
+    shutil.rmtree(root)
+
+
+def t_poke_newer_wins():
+    """An older writer of the same source never hides a newer poke behind its own older timestamp."""
+    root, sdir = rig()
+    W.poke("publish", why="new", root=root, now=2000.0)
+    W.poke("publish", why="old", root=root, now=1500.0)       # the slow writer renames last
+    got = [p for p in W.pokes(sdir) if p["source"] == "publish"]
+    ok(len(got) == 1 and got[0]["at"] == 2000.0 and got[0]["why"] == "new",
+       "poke: an older same-source poke never overwrites a newer one")
+    W.mark_served_through(sdir, 1800.0)
+    with W._state(sdir) as st:
+        ok([p["source"] for p in W.unserved(sdir, st["served_at"])] == ["publish"],
+           "poke: the newer poke survives a mark between the two")
+    W.poke("publish", why="newest", root=root, now=2500.0)
+    ok([p["at"] for p in W.pokes(sdir)] == [2500.0], "poke: a newer poke still replaces (one file per source)")
+    ok(listing(sdir) == ["publish.json"], "poke: the lock lives outside the watched dir")
+    shutil.rmtree(root)
+
+
+def t_fire_clock_after_active():
+    """fire reads its clock after active(): a slow active() cannot record a start earlier than it was."""
+    root, sdir = rig()
+    real = W.time.time
+    t = [5000.0]
+    W.time.time = lambda: t[0]
+    try:
+        W.poke("publish", root=root, now=4990.0)
+
+        def slow_active():
+            t[0] += 15.0      # systemctl is-active took 15 s
+            return False
+        got = W.fire(sdir, active=slow_active, start=lambda: None, cfg=CFG)
+        with W._state(sdir) as st:
+            ok(got["do"] == "started" and st["fires"] == [5015.0],
+               "fire: the start is stamped after active() returns, not before (gap not undercounted)")
+        W.poke("publish", root=root, now=5016.0)
+        t[0] = 5020.0        # 20 s after the clock read at entry, 5 s after the real start
+        got = W.fire(sdir, active=lambda: False, start=lambda: None, cfg=CFG)
+        ok(got["do"] == "capped", "fire: 5 s after the real start is inside fire_min_gap_s: %s" % got)
+    finally:
+        W.time.time = real
     shutil.rmtree(root)
 
 
@@ -318,7 +393,8 @@ def t_cli_poke():
 
 
 def main():
-    for t in (t_poke, t_no_wake_env, t_fire_coalesce, t_fire_absorbed, t_fire_rate_cap, t_serve, t_mark, t_tick_serves, t_tick_serves_inside_game_pass, t_units,
+    for t in (t_poke, t_no_wake_env, t_fire_coalesce, t_fire_absorbed, t_fire_rate_cap, t_serve, t_failed_serve_retries, t_poke_newer_wins, t_fire_clock_after_active,
+              t_mark, t_tick_serves, t_tick_serves_inside_game_pass, t_units,
               t_config, t_cli_poke):
         t()
     print("FAILED %d" % len(FAILS) if FAILS else "ALL PASS")
