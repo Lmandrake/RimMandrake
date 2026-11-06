@@ -332,14 +332,14 @@
       "burn_natural.skipped#2": "UNMEASURED",
       "burn_natural.skipped#3": "UNMEASURED",
       "burn_natural.skipped#4": "UNMEASURED",
-      "coalescence.burn_collapses_it_into_monstrous_samples": "UNMEASURED",
+      "coalescence.burn_collapses_it_into_monstrous_samples": "PASS",
       "coalescence.coalescence_absorbs_and_grows_a_stage": "PASS",
-      "coalescence.coalescence_emits_manhunters_and_grows_on_its_own": "UNMEASURED",
+      "coalescence.coalescence_emits_manhunters_and_grows_on_its_own": "PASS",
       "coalescence.coalescence_off_absorbs_nothing": "PASS",
       "coalescence.coalescence_site_ready": "PASS",
-      "coalescence.grown_limbs_off_grows_organs": "UNMEASURED",
-      "coalescence.monstrous_fixture": "UNMEASURED",
-      "coalescence.monstrous_gestation_grows_one_limb": "UNMEASURED",
+      "coalescence.grown_limbs_off_grows_organs": "PASS",
+      "coalescence.monstrous_fixture": "PASS",
+      "coalescence.monstrous_gestation_grows_one_limb": "PASS",
       "coalescence.site_is_contagion": "PASS",
       "defs.skipped#0": "UNMEASURED",
       "defs.skipped#1": "UNMEASURED",
@@ -404,15 +404,10 @@
     },
     "components": {
       "counts": {
-        "PASS": 4,
-        "UNMEASURED": 80
+        "PASS": 9,
+        "UNMEASURED": 75
       },
       "not_ok": [
-        "coalescence.coalescence_emits_manhunters_and_grows_on_its_own",
-        "coalescence.burn_collapses_it_into_monstrous_samples",
-        "coalescence.monstrous_fixture",
-        "coalescence.monstrous_gestation_grows_one_limb",
-        "coalescence.grown_limbs_off_grows_organs",
         "defs.skipped#0",
         "defs.skipped#1",
         "defs.skipped#2",
@@ -495,17 +490,17 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Contagion/northstar_driver[current]@Contagion_coalescence_2482829_1793957878850046885.json",
+    "run_id": "Contagion/northstar_driver[current]@Contagion_coalescence_233680_1793975456990486078.json",
     "source": {
       "config": "current",
       "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
       "mode": "live",
-      "result": "D:/ClaudeWork/rimmandrake/scratch/component_proof/Contagion_coalescence_2482829_1793957878850046885.json",
-      "started": "2026-11-06T09:38:01Z",
+      "result": "D:/ClaudeWork/rimmandrake/scratch/component_proof/Contagion_coalescence_233680_1793975456990486078.json",
+      "started": "2026-11-06T14:31:00Z",
       "verb": "northstar_driver run"
     },
     "status": "RED",
-    "ts": 1793957919.738032
+    "ts": 1793975500.3186102
   },
   "CreatureBehaviors": {
     "hash": "a586d2030240e8527689557c20970c24e0a4346bf902a064cf57fdd6ea4b9425",
