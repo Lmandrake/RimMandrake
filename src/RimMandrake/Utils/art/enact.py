@@ -56,7 +56,8 @@ Per-slot picks (`slots`) win over `picks`/`decision`; a ticked variant ships onl
 (`is_pool`), else it is listed as an ignored tick; legacy schema-1 ticks ship only once he says keep in the
 sheet row (until then they only protect their pictures); `pool.remove` takes a picture out of a folder pool; a slot set to
 `redraw` files a job for THAT slot (its texPath, its facings); `asks.more` files one job per render asked for (catch rows
-wait for their creature); every other ask (rename, description, size, move, facings) is a TODO until
+wait for their creature); a redraw/more/facings ask on a `_flip:` flight slot files NO job (a flip-book is built by
+the flyer pipeline) and is a TODO until `--mark-done <row> --ask flipbook`; every other ask (rename, description, size, move, facings) is a TODO until
 `--mark-done <row> --ask <kind>`; `asks.cut` cuts like a `cut` decision.
 
 Idempotent: every step compares against the current state, so a second run after success is a no-op.
@@ -1708,6 +1709,16 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             if isinstance(fa, dict) and fa.get("faces"):
                 want.append({"kind": "facings", "slot": fa.get("slot") or prim, "n": 1, "base": fa.get("from"),
                              "how": "draw the missing facing(s) " + ", ".join(fa["faces"]), "faces": fa["faces"]})
+            # a flight flip-book is never one artpipe sprite: its frames are whole-body flip-book PNGs built against an
+            # accepted body master by the flyer pipeline (design/RimMandrake/flyer_stable_body_study.md section 3.1).
+            # Filed as a job it drew ONE sprite with no facings, an empty note and the retired body as its reference
+            # (enact_e8de0861_firewasp_v1, SHEET_ENACT_FLIPSLOT_REDRAW_FIX_EMPTY_NOTE): it is a TODO instead
+            for g in sorted({w["slot"] for w in want if str(w.get("slot") or "").startswith("_flip:")}):
+                if (sheet, row, flipbook_key(g)) not in done_marks:
+                    P["asks"].append(f"{row}: ask flipbook — redraw the flight flip-book {g[6:]} with the flyer "
+                                     f"pipeline against the row's accepted body (flyer_stable_body_study.md §3.1); "
+                                     f"no artpipe job is filed (`--mark-done {row} --ask flipbook` once done)")
+            want = [w for w in want if not str(w.get("slot") or "").startswith("_flip:")]
             for w in want:
                 if w["kind"] == "slot" and note and (sheet, row, note) in done_marks:
                     # his note on this row was carried out by hand (--mark-done) and it covers the row's slot redraws
@@ -1989,12 +2000,29 @@ def keep_blocks_pick(k: dict, row: str, mine_at, via: str, aliases=()) -> bool:
     return True
 
 
+def flipbook_key(slot: str) -> str:
+    """The enact_done note recording that a flight flip-book redraw (a `_flip:` slot ask) was carried out by hand."""
+    return f"ask:flipbook:{slot}"
+
+
+def flip_ask_slots(v: dict) -> set[str]:
+    """The `_flip:` slots this schema-2 record asks to redraw (a slot set to redraw, or asks.more/facings naming one)."""
+    out = {g for g, st in (v.get("slots") or {}).items()
+           if g.startswith("_flip:") and isinstance(st, dict) and st.get("state") == "redraw"}
+    asks = DV.asks_of(v)
+    for m in (asks.get("more") or []) + [asks.get("facings")]:
+        if isinstance(m, dict) and str(m.get("slot") or "").startswith("_flip:"):
+            out.add(m["slot"])
+    return out
+
+
 def redo_ref_shas(q: dict, idx: L.Index | None = None) -> list[str]:
     """The ONE picture a redraw attaches as anatomy guidance, or none:
       * a catch: its settled creature (q["ref_shas"]);
       * "based on (b)": the column he named;
       * otherwise the row's in-game picture — never when his note rejects the art in front of him ("drop the art",
-        "remove the turtle art", "redo completely"), and never a picture he ✕'d, purged or rejected.
+        "remove the turtle art", "redo completely"), and never a picture he ✕'d, purged, rejected or retired (a
+        `retire` in ANY lane: the retired body is not the anatomy guide; enact_e8de0861_firewasp_v1).
     (bug 2026-10-10: Ambrosia/Loomu/Vizhik redraws carried the very art he dropped; Vellak's "(b)" carried nothing)"""
     idx = idx or L.cached_index()
     if q.get("source"):
@@ -2002,6 +2030,8 @@ def redo_ref_shas(q: dict, idx: L.Index | None = None) -> list[str]:
     srow, v, note = q["srow"], q["v"], q.get("note") or ""
     cols, labels = srow.get("columns") or {}, srow.get("labels") or {}
     bad = set(v.get("purge") or [])
+    for letters_ in DV.lists(v, "retire").values():
+        bad |= {s for lt in letters_ for s in (cols.get(lt) or {}).values() if s}
     base = (q.get("ask") or {}).get("base")
     if base and base in cols:                       # "make N more based on X": X is the reference
         s = first_by_facing(cols[base], bad)
@@ -2145,6 +2175,21 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     # --mark-done is a RECORD that a note was enacted by hand, so it is written even on a dry run
     for row in mark_done:
         v = (doc.get("decisions") or {}).get(row) or {}
+        if ask == "flipbook":
+            fl = sorted(flip_ask_slots(v))
+            if not fl:
+                R["conflicts"].append(f"--mark-done {row} --ask flipbook: that row asks no flight flip-book redraw — "
+                                      f"nothing recorded")
+                continue
+            w = L.Writer({e["id"] for e in idx.events})
+            for g in fl:
+                w.add({"type": "enact_done", "id": L.det_id("enact_done", sheet, row, flipbook_key(g)), "sheet": sheet,
+                       "row": row, "note": flipbook_key(g), "by": "agent", "evidence": done_evidence or "",
+                       "via": I.rel_via(decisions)})
+            w.flush()
+            P["asks"] = [x for x in P["asks"] if not x.startswith(f"{row}: ask flipbook ")]
+            P["done"].append(f"{row}: ask flipbook marked done")
+            continue
         if ask:
             a = DV.asks_of(v).get(ask) if ask != "noncanon" else ("" if v.get("noncanon") == "noncanon" else None)
             if a is None:
@@ -2528,7 +2573,7 @@ def main(argv=None) -> int:
     ap.add_argument("--hold", action="append", default=[], help="skip rows whose key contains this (repeatable)")
     ap.add_argument("--mark-done", action="append", default=[], help="record a row's note as enacted by hand")
     ap.add_argument("--evidence", default="", help="with --mark-done: the commit/file that did it")
-    ap.add_argument("--ask", choices=("rename", "describe", "size", "move", "noncanon"),
+    ap.add_argument("--ask", choices=("rename", "describe", "size", "move", "noncanon", "flipbook"),
                     help="with --mark-done: record that row's schema-2 ask of this kind as done (not its note)")
     ap.add_argument("--no-deploy", action="store_true")
     a = ap.parse_args(argv)
