@@ -1882,7 +1882,11 @@ def proof_gate(fx, r, st, c):
     # a named path is a proof asset only when the weak sha did not hold it: a proof script the proof-only worker wrote.
     # One the product already had is the code under test, and a proof-only worker may re-point the contract at any file
     # (Codex review, RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN #1). An unanswerable existence reads as existed: refused.
-    moved = fx.changed(held["sha"], c["sha"], st["item"])
+    # only the item's own runs since the hold moved what is read here: a Conductor mend naming the item between runs is
+    # not the proof-only worker's rework (PROOF_GATE_FIX_CONDUCTOR_MEND_FRAMED)
+    mine = getattr(fx, "worker_changed", None)
+    moved = (mine(held["sha"], c["sha"], st["item"], held.get("at")) if mine
+             else fx.changed(held["sha"], c["sha"], st["item"]))
     if not moved and "contract" in held and bare(held["contract"]) == bare(st["contract"]) and not held.get("binding"):
         # an empty commit above the weak sha moved no proof and no contract (Codex #2): the same proof, read again
         return "proof_unchanged", "%s moves no file and the contract is the one found weak: no proof moved" % c["sha"]
@@ -1892,6 +1896,22 @@ def proof_gate(fx, r, st, c):
     if rework:
         return "proof_rework", "proof-only worker moved code: %s" % ", ".join(rework[:10])
     return None, None
+
+
+def item_run_windows(attempts, since):
+    """-> [(start, end)] epoch seconds of the item's runs that started at or after `since` (end None while it runs), or
+    None when none can be read: a caller then counts every commit naming the item, as before."""
+    if since is None:
+        return None
+    wins = []
+    for i, a in enumerate(attempts):
+        t = ts_epoch(a.get("at"))
+        if not a.get("start") or t is None or t < since:
+            continue
+        end = next((ts_epoch(b.get("at")) for b in attempts[i + 1:]
+                    if b.get("end") and b.get("gen") == a.get("gen")), None)
+        wins.append((t, end))
+    return wins or None
 
 
 def fence_check(store, item, gen):
@@ -3888,6 +3908,30 @@ class Effects(relentless_game.GameFx):
             r = self.git(self.books, "log", "--format=", "--name-only", "--diff-merges=first-parent", "--grep=" + item,
                          "%s..%s" % (base, sha))
             got |= set(x for x in r.stdout.splitlines() if x.strip())
+        return sorted(got)
+
+    def worker_changed(self, base, sha, item, since):
+        """changed(), but a commit naming the item counts only when it was authored inside one of the item's runs since
+        `since` (author time survives publish's rebase and a cherry-pick). The final commit always counts. Nothing
+        readable -> changed() whole."""
+        wins = item_run_windows(self.store.attempts(item), since)
+        if not wins or not base:
+            return self.changed(base, sha, item)
+        r = self.git(self.books, "log", "--format=%x01%at", "--name-only", "--diff-merges=first-parent", "--grep=" + item,
+                     "%s..%s" % (base, sha))
+        if r.returncode:
+            return self.changed(base, sha, item)
+        got = set()
+        for block in r.stdout.split("\x01")[1:]:
+            lines = [x for x in block.splitlines() if x.strip()]
+            try:
+                at = int(lines[0])
+            except (IndexError, ValueError):
+                return self.changed(base, sha, item)
+            if any(s <= at and (e is None or at <= e) for s, e in wins):
+                got |= set(lines[1:])
+        r = self.git(self.books, "show", "--format=", "--name-only", "--diff-merges=first-parent", sha)
+        got |= set(x for x in r.stdout.splitlines() if x.strip()) if r.returncode == 0 else set()
         return sorted(got)
 
     def commit_time(self, sha):
