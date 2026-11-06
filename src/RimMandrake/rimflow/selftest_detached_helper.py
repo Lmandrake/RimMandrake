@@ -51,6 +51,11 @@ def recorder(rc=0, out=""):
     return calls, run
 
 
+def non_systemctl(calls):
+    """finish's calls past its scope stop (the note, the publish)."""
+    return [c for c in calls if c[0][0] != "systemctl"]
+
+
 def test_refuse():
     calls, run = recorder()
     for args, word in (((("BENCH", "NOT_AN_ITEM", "b", "sonnet", 600, 5)), "not a ledger item"),
@@ -91,8 +96,10 @@ def test_launch_and_finish():
         json.dump({"result": "Built it; sha abc123.", "usage": {"input_tokens": 10, "output_tokens": 5,
                    "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}}, f)
     fcalls, frun = recorder(out="PUBLISHED abcdef1234567")
+    frun_calls = fcalls
     rc, text = DH.finish(unit, now=T0 + 600, env={"SERVICE_RESULT": "success", "EXIT_CODE": "exited",
                                                   "EXIT_STATUS": "0"}, runner=frun)
+    fcalls = non_systemctl(fcalls)
     note = fcalls[0][0]
     check(note[2:4] == ["note", "SOME_ITEM_TO_BUILD"] and "--text" in note and fcalls[0][1].get("cwd") == CLONE,
           "finish: a note on the item, from the clone")
@@ -106,8 +113,9 @@ def test_launch_and_finish():
     rec = DH.read_record(unit)
     check(rec["status"] == "finished" and isinstance(rec["tokens"], int) and "publish abcdef1234" in text,
           "finish: recorded finished with tokens and the publish sha (%s)" % text[-60:])
+    n_before = len(frun_calls)
     rc, text = DH.finish(unit, now=T0 + 700, env={}, runner=frun)
-    check(rc == 0 and "already" in text and len(fcalls) == 2, "finish: a second call changes nothing")
+    check(rc == 0 and "already" in text and len(frun_calls) == n_before, "finish: a second call changes nothing")
 
 
 def test_killed_and_failed_launch():
@@ -120,6 +128,20 @@ def test_killed_and_failed_launch():
     fcalls, frun = recorder()
     rc, text = DH.finish(unit, now=T0 + 800, env={"SERVICE_RESULT": "timeout", "EXIT_CODE": "killed",
                                                   "EXIT_STATUS": "TERM"}, runner=frun)
+    scope = "claude-seat-BENCH-%s.scope" % unit
+    sysc = [c[0] for c in fcalls if c[0][0] == "systemctl"]
+    check(["systemctl", "--user", "kill", "--signal=SIGKILL", scope] in sysc
+          and ["systemctl", "--user", "stop", "--no-block", scope] in sysc,
+          "killed: finish KILLs and stops the run's claude scope, where the orphan lived (%s)" % sysc[:2])
+    first_other = next(i for i, c in enumerate(fcalls) if c[0][0] != "systemctl")
+    check(all(c[0][0] == "systemctl" for c in fcalls[:first_other]) and first_other >= 2,
+          "killed: the scope is stopped BEFORE the note and publish (ExecStopPost has TimeoutStopSec=30)")
+    check(any(scope in s and "now" in s for s in DH.read_record(unit)["steps"]),
+          "killed: the record says what the scope stop did and the scope's state after")
+    margv = calls[0][0]
+    check("CLAUDE_SCOPE_UNIT=claude-seat-BENCH-%s" % unit in margv,
+          "launch and finish name the same scope")
+    fcalls = non_systemctl(fcalls)
     nt = fcalls[0][0][fcalls[0][0].index("--text") + 1]
     check(rc == 0 and "timeout" in nt and "UNMEASURED" in nt and "Terminated" in nt,
           "killed: a run killed at its bound still ends with a note (%s)" % nt[:90])

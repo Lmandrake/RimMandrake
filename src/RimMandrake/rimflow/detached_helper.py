@@ -14,7 +14,9 @@ launch: the item must be on the ledger. It takes a pool clone <pool>/clones/<ITE
 model passed, wall time bounded twice (the unit's RuntimeMaxSec and claude_bounded's scope), spend bounded by
 claude --max-budget-usd. The brief gets a footer: work in the clone, land with ./publish, put state, evidence and one
 imperative NEXT on the item as a rimflow note and publish the shard.
-finish: runs when the unit stops for any reason (done, failed, killed at its bound). It writes the outcome as a note
+finish: runs when the unit stops for any reason (done, failed, killed at its bound). It first KILLs and stops the run's
+claude_bounded scope (claude-seat-<seat>-<unit>.scope): claude lives there, outside the unit, so a stopped unit alone left
+it running and billing (DETACHED_STOP_FIX_ORPHAN_KEEPS_BILLING, 2026-11-03: killed at 15:06:59, ran to ~15:13). It writes the outcome as a note
 on the item, publishes the seat's shard from the clone, and appends one line to the Conductor log. Once per run.
 Records: <RM_DISPATCHER_STATE>/detached/<unit>.json. Use it for anything expected to run over ~20 min; the Agent
 tool stays for short work (CONDUCTOR.md "Checkpoint, so a drain never freezes him").
@@ -138,6 +140,22 @@ def claude_bin():
     return os.environ.get("RM_DISPATCHER_CLAUDE") or shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
 
 
+def scope_name(seat, unit):
+    """The claude_bounded scope this run's claude lives in (named by CLAUDE_SCOPE_UNIT at launch; role_launch's form)."""
+    import role_launch as RL
+    return RL.role_scope(seat, unit)
+
+
+def stop_scope(seat, unit, runner=subprocess.run):
+    """KILL the scope's whole cgroup, queue its stop, read its state. -> one line. Never raises.
+    Not the RM_ROLE_UNIT marker scan: finish itself runs with the unit's environment and would carry the marker."""
+    import role_launch as RL
+    scope = scope_name(seat, unit)
+    said = [RL._stop_call(runner, ["systemctl", "--user", "kill", "--signal=SIGKILL", scope], 20),
+            RL._stop_call(runner, ["systemctl", "--user", "stop", "--no-block", scope], 20)]
+    return "scope %s: %s; now %s" % (scope, "; ".join(said), RL.unit_state(scope, runner=runner))
+
+
 def launch_argv(rec, msg, claude):
     """role_launch.launch_argv's shape, plus ExecStopPost=finish so the outcome is recorded even on a kill."""
     clone, unit, seat = rec["clone"], rec["unit"], rec["seat"]
@@ -157,7 +175,7 @@ def launch_argv(rec, msg, claude):
             "--working-directory", clone,
             "--setenv", "AGENT_SEAT=" + seat, "--setenv", "RIMFLOW_SEAT=" + seat,
             *(sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(rec["tmp"]).items()), []) if rec.get("tmp") else []),
-            "--setenv", "CLAUDE_SCOPE_UNIT=claude-seat-%s-%s" % (seat, unit),
+            "--setenv", "CLAUDE_SCOPE_UNIT=" + scope_name(seat, unit)[:-len(".scope")],
             "--setenv", "RM_ROLE_UNIT=" + unit, "--setenv", "RM_DETACHED_UNIT=" + unit,
             "--setenv", "RM_DISPATCHER_STATE=" + rec["state"],
             "--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound,
@@ -277,7 +295,7 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None):
                rec["out"], rec["clone"]))
     clone, seat, item = rec["clone"], rec["seat"], rec["item"]
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
-    steps = []
+    steps = [stop_scope(seat, unit, runner)]     # first: the unit is gone but claude is not (and TimeoutStopSec=30)
     r = runner(["python3", cli, "note", item, "--text", text, "--seat", seat, "--why", "detached run ended"],
                cwd=clone, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
     steps.append("note exit %d" % r.returncode)
