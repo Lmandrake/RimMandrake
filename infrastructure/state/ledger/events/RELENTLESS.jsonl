@@ -836,3 +836,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:03:52Z","tsn":1793927032970470652}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SL4_FIX_CARRY_NEVER_STAGED A1 (L2), read-only proof","ts":"2026-11-06T01:25:14Z","tsn":1793928314308130249}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:27:36Z","tsn":1793928456436782233}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH A1 (L2), read-only proof","ts":"2026-11-06T01:42:37Z","tsn":1793929357101009459}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T01:44:42Z","tsn":1793929482682020133}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH A2 (L2), read-only proof","ts":"2026-11-06T01:44:54Z","tsn":1793929494074691084}
