@@ -1,0 +1,35 @@
+{
+  "_": "SELFBUILD_DESIGN_STAGE_ZERO_KEEPS_KEYS: the grader parts a self-build candidate may not touch, read by relentless_selfbuild.py. Design: design/RimMandrake/relentless_selfbuild_2026-11-06.md. This file, its program and its selftest are on the list themselves. A change here goes through ordinary review, never through a self-build candidate.",
+  "protected": [
+    {"path": "src/RimMandrake/rimflow/relentless.py", "part": "Judge gate: checker_prompt, verdict intake, finish gate"},
+    {"path": "src/RimMandrake/rimflow/relentless_wall.py", "part": "wall and verdict normaliser"},
+    {"path": "src/RimMandrake/rimflow/relentless_reach.py", "part": "Judge reach"},
+    {"path": "src/RimMandrake/rimflow/relentless_reachfix.py", "part": "Judge reach repair"},
+    {"path": "src/RimMandrake/rimflow/relentless_packet.py", "part": "packet lint"},
+    {"path": "src/RimMandrake/rimflow/relentless_seeds.py", "part": "seeds, E1/E2 split"},
+    {"path": "src/RimMandrake/rimflow/relentless_trust.py", "part": "counting rules in code"},
+    {"path": "design/RimMandrake/relentless_counting_rules_2026-11-01.md", "part": "counting rules"},
+    {"path": ".claude/agents/rm-judge.md", "part": "Marker agent"},
+    {"path": "src/RimMandrake/rimflow/selftest_relentless_wall.py", "part": "check of the wall"},
+    {"path": "src/RimMandrake/rimflow/selftest_relentless_packet.py", "part": "check of the packet lint"},
+    {"path": "src/RimMandrake/rimflow/selftest_relentless_seeds.py", "part": "check of the seeds"},
+    {"path": "src/RimMandrake/rimflow/selftest_relentless_blind.py", "part": "check of the blind verdict"},
+    {"path": "src/RimMandrake/rimflow/relentless_selfbuild.py", "part": "this check"},
+    {"path": "src/RimMandrake/rimflow/relentless_selfbuild.json", "part": "this list"},
+    {"path": "src/RimMandrake/rimflow/selftest_relentless_selfbuild.py", "part": "check of this check"}
+  ],
+  "protected_keys": [
+    {"path": "src/RimMandrake/rimflow/relentless_rules.json", "keys": ["walls", "checker_agent", "check_max_s", "offbox_adapters", "offbox_max_s", "reach_never", "reach_classes", "reach_repair", "hand_check", "unmeasured_limit"], "part": "wall profiles and Judge settings"}
+  ],
+  "import_roots": ["src/RimMandrake/rimflow", "src/RimMandrake/Utils"],
+  "outside": [
+    {"path": "/mnt/d/ClaudeWork/rimmandrake/relentless_agent/seeds", "env": "RM_SEEDS_PRIVATE", "part": "seed keys and the frozen split"},
+    {"path": "/home/mandrake/rm/relentless/store", "part": "verdict history and labels"}
+  ],
+  "external": [
+    {"repo": "Lmandrake/MandrakeWorkflows-dev", "path": "relentless/workers/BUILDER_JUDGE.md", "part": "Builder/Judge worker definition"}
+  ],
+  "build_wall": "builder",
+  "promotion": {"sets": ["E1", "E2"], "min_repeats": 2},
+  "replay": {"token_max": 6, "token_min": 2}
+}
