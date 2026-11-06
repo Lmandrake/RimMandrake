@@ -1113,3 +1113,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:42:30Z","tsn":1793968950098401087}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES A1 (L2), read-only proof","ts":"2026-11-06T12:44:38Z","tsn":1793969078193636200}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:44:47Z","tsn":1793969087951037818}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GSS_FALLEN_WIRE_FIX_SHOCK_STILL_BITES A1 (L2), read-only proof","ts":"2026-11-06T12:47:18Z","tsn":1793969238447812119}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:47:25Z","tsn":1793969245623970885}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_END_FIX_CELL_SHORT_OF_PORT A1 (L2), read-only proof","ts":"2026-11-06T12:48:36Z","tsn":1793969316168922768}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:48:42Z","tsn":1793969322622212764}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS A1 (L2), read-only proof","ts":"2026-11-06T12:50:07Z","tsn":1793969407635432956}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:50:17Z","tsn":1793969417718320300}
