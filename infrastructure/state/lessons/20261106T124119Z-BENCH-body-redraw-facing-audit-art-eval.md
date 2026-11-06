@@ -1,0 +1,1 @@
+A body redraw (FACING_AUDIT, art_eval auto-judge) of a packAnimal leaves its fitted Pack_<facing>.png stale and reddens selftest_swbestiary_pack_overlays nightly; after installing new body art for a pack race run: python3 src/RimStarWars/SWBestiary/art/pack_overlay_fit.py --apply --refit --only <tex>
