@@ -15,7 +15,12 @@ and the committed DLL stamp and requires, for "fuel cost per depth both ways":
      TryGetPathFuelCost refuses a pair with no connection);
   5. RM_DivingInteraction.csproj compiles the patch and the kernel; the fuzz csproj compiles the kernel;
   6. the committed DLL's .srchash records those exact source bytes, and its "# dll:" line is the DLL's own sha256,
-     so the shipped assembly carries this source.
+     so the shipped assembly carries this source;
+  7. the bridge surface the live proof (prove_seabed_descent.py) drives still reaches the floor layer:
+     tool_schemas.json lists 'layer' on jawa/gravship_launch and jawa/gravship_launch_check, the C# tools take
+     `string layer`, jawa/gravship_status reports currentMapLayer/currentMapParent/currentMapTile, and the proof
+     script passes layer= to both and reads currentMapLayer (gen 6: another item's schema edit sent the build back
+     stale; this check is what says the edit left the descent's tools whole).
 
 Then it runs the same checker on mutated copies (one per gap) and requires each to fail, so a green run proves the
 checker can see each gap.
@@ -41,7 +46,10 @@ CSPROJ = os.path.join(SRC, "RM_DivingInteraction.csproj")
 FUZZ_CSPROJ = os.path.join(SRC, "SelfTest", "RimMandrakeDiving.SelfTest.csproj")
 DLL = os.path.join(MOD, "Assemblies", "RimMandrake.DivingInteraction.dll")
 STAMP = DLL + ".srchash"
-FILES = (PATCH, KERNEL, SETTINGS, LAYER, CSPROJ, FUZZ_CSPROJ, DLL, STAMP)
+SCHEMAS = os.path.join("src", "RimMandrake", "Utils", "northstar_driver", "tool_schemas.json")
+GRAV_TOOLS = os.path.join("src", "RimMandrake", "bridgetools", "JawaBench.BridgeTools", "JawaBenchGravshipTools.cs")
+PROVE = os.path.join("src", "RimMandrake", "bridgetools", "prove_seabed_descent.py")
+FILES = (PATCH, KERNEL, SETTINGS, LAYER, CSPROJ, FUZZ_CSPROJ, DLL, STAMP, SCHEMAS, GRAV_TOOLS, PROVE)
 
 
 def _read(root, rel):
@@ -153,6 +161,36 @@ def check(root):
                 name, recorded.get(name), want))
     if not dll_hash or hashlib.sha256(_read(root, DLL)).hexdigest() != dll_hash:
         fails.append("6: the committed DLL's bytes are not the ones its stamp records")
+
+    # 7. the bridge tools the live proof drives can still name the floor layer
+    import json
+    try:
+        tools = json.loads(_txt(root, SCHEMAS)).get("tools") or {}
+    except ValueError as e:
+        tools = {}
+        fails.append("7: tool_schemas.json does not parse: %s" % e)
+    for name in ("jawa/gravship_launch", "jawa/gravship_launch_check", "jawa/gravship_status", "jawa/gravship_land"):
+        if name not in tools:
+            fails.append("7: tool_schemas.json has no %s" % name)
+    for name in ("jawa/gravship_launch", "jawa/gravship_launch_check"):
+        if "layer" not in ((tools.get(name) or {}).get("parameters") or []):
+            fails.append("7: tool_schemas.json: %s takes no 'layer' parameter" % name)
+    cs = _strip_comments(_txt(root, GRAV_TOOLS))
+    for meth in ("GravshipLaunchCheck", "GravshipLaunch"):
+        m = re.search(r"public\s+static\s+async\s+Task<object>\s+%s\s*\((.*?)\)\s*\{" % meth, cs, re.S)
+        if not m or not re.search(r"\bstring\s+layer\b", m.group(1)):
+            fails.append("7: %s takes no `string layer` parameter" % meth)
+    if not re.search(r"\bResolveTargetTile\s*\(\s*\w+\s*,\s*layer\b", cs):
+        fails.append("7: no tool resolves its target through ResolveTargetTile(tile, layer, ...)")
+    for field in ("currentMapLayer", "currentMapParent", "currentMapTile"):
+        if not re.search(r"\b%s\s*=" % field, cs):
+            fails.append("7: jawa/gravship_status does not report %s" % field)
+    prove = _txt(root, PROVE)
+    for name in ("jawa/gravship_launch", "jawa/gravship_launch_check"):
+        if not re.search(r'call\("%s",[^)]*\blayer=' % re.escape(name), prove):
+            fails.append("7: prove_seabed_descent.py never calls %s with layer=" % name)
+    if 'get("currentMapLayer")' not in prove:
+        fails.append("7: prove_seabed_descent.py never reads currentMapLayer")
     return fails
 
 
@@ -170,6 +208,13 @@ MUTANTS = [
     ("climb connection missing", LAYER, "layer.AddConnection(surface, 0f);", ";"),
     ("descent connection missing", LAYER, "surface.AddConnection(layer, 0f);", ";"),
     ("patch not compiled", CSPROJ, '<Compile Include="Patch_SeabedDescentFuel.cs" />', ""),
+    ("schema drops layer from the launch", SCHEMAS, '"expectEngineId",\n    "layer",\n    "quality",', '"expectEngineId",\n    "quality",'),
+    ("schema drops layer from the launch check", SCHEMAS, '"expectEngineId",\n    "layer",\n    "targetTile"', '"expectEngineId",\n    "targetTile"'),
+    ("schema loses gravship_status", SCHEMAS, '"jawa/gravship_status"', '"jawa/gravship_status_gone"'),
+    ("C# launch check drops its layer parameter", GRAV_TOOLS, 'Optional when only one engine exists.")] string expectEngineId = null,\n            [ToolParameter(Description = "SEABED_DESCENT_ASCENT_1: PlanetLayerDef defName of the destination layer (e.g. RM_SeabedLayer, Orbit). Empty = the surface.")] string layer = null)\n        {', 'Optional when only one engine exists.")] string expectEngineId = null)\n        {'),
+    ("status stops reporting the map layer", GRAV_TOOLS, "currentMapLayer = ", "currentMapLayerGone = "),
+    ("status stops reporting the map parent", GRAV_TOOLS, "currentMapParent = ", "currentMapParentGone = "),
+    ("proof launches without a layer", PROVE, 'call("jawa/gravship_launch", targetTile=target, layer=layer,', 'call("jawa/gravship_launch", targetTile=target,'),
     ("fuzz tests a copy, not the kernel", FUZZ_CSPROJ, '<Compile Include="..\\RM_SeabedDescentKernel.cs" />', ""),
 ]
 
