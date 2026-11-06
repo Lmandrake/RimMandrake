@@ -56,6 +56,10 @@ def main():
     ok(all(folded[k] == v for k, v in real.items()), "with_shell keeps every compose entry as it was")
     ok(RR.RoundFx.folded(RR.RoundFx.__new__(RR.RoundFx)).get("BiomesShell") == ("RimMandrake.Biomes",) * 2,
        "RoundFx.folded carries the shell")
+    # plain L.Fx is what relentless_live.run (deploy_gap(..., fx.folded())) and relentless_game preflight/carry use
+    fx_map = L.Fx.__new__(L.Fx).folded()
+    ok(fx_map.get("BiomesShell") == ("RimMandrake.Biomes",) * 2, "Fx.folded carries the shell: %r" % (fx_map.get("BiomesShell"),))
+    ok(L.deploy_gap(FILES, 0, PLAN, (), fx_map) is None, "Fx.folded's map reads the in-sync shell plan as covered")
 
     # 2. the instance: deploy_args composes, the plan covers, drift is seen
     args = RR.deploy_args(["BiomesShell"], folded)
