@@ -415,6 +415,41 @@ def main():
     check("sl4_verdict: reel 2 staged Dropped instead of Carrying -> UNMEASURED",
           v(dict(ok_carry, reel2_staged={"carry": "Dropped"}), d1, dict(d1), c2a, dict(c2a), {}, {}) == "UNMEASURED")
 
+    # HOSE_SAVELOAD_DIAGNOSE_COMES_BACK_CHANGED: SL3 names the first differing key; the unscribed lay hash is judged settled
+    s3 = PH.sl3_verdict
+    def hz(reel, **kw):
+        h = {"reel": list(reel), "far": [reel[0] + 5, reel[1]], "end": "Free", "state": "Flat", "laid": True, "debugFlowing": False,
+             "transitions": 2, "rawStyle": None, "look": "Brass", "reelState": "Idle", "reelTex": "t", "hoseTex": {"a": "x"},
+             "geometryHash": "ab%02d" % reel[0], "carry": "Stored"}
+        h.update(kw)
+        return h
+    ca = {"hoses": [hz((1, 1)), hz((2, 1)), hz((3, 1))]}
+    cb_relay = {"hoses": [dict(h, geometryHash="0000000000000000") for h in ca["hoses"]]}
+    st, cl, dt = s3(ca, cb_relay, {"hoses": [dict(h) for h in ca["hoses"]]})
+    check("sl3_verdict: only geometryHash differs right after load, the settled re-read matches -> PASS",
+          (st, cl) == ("PASS", "MOD") and dt["runtimeBeforeRelay"] == {"geometryHash": 3} and dt["scribed"]["firstDiff"] is None, dt)
+    st, cl, dt = s3(ca, cb_relay, {"hoses": [dict(h, geometryHash="ffff") if h["reel"] == [2, 1] else dict(h) for h in ca["hoses"]]})
+    check("sl3_verdict: the settled geometry still differs -> FAIL MOD naming geometryHash at that reel",
+          (st, cl) == ("FAIL", "MOD") and dt["settled"]["firstDiff"]["key"] == "geometryHash" and dt["settled"]["firstDiff"]["reel"] == [2, 1], dt)
+    cb_lost = {"hoses": [dict(h, transitions=0) if h["reel"] == [3, 1] else dict(h, look="Steel") if h["reel"] == [2, 1] else dict(h)
+                         for h in ca["hoses"]]}
+    st, cl, dt = s3(ca, cb_lost, {"hoses": ca["hoses"]})
+    f = dt["scribed"]["firstDiff"] or {}
+    check("sl3_verdict: a lost scribed field -> FAIL MOD, first differing key by reel order, every key counted",
+          (st, cl) == ("FAIL", "MOD") and f.get("key") == "look" and f.get("reel") == [2, 1] and f.get("before") == "Brass"
+          and f.get("after") == "Steel" and dt["scribed"]["diffKeys"] == {"look": 1, "transitions": 1}, dt)
+    st, cl, dt = s3(ca, {"hoses": ca["hoses"][:2]}, {"hoses": ca["hoses"][:2]})
+    check("sl3_verdict: a hose missing after the reload -> FAIL MOD listing the lost reel",
+          (st, cl) == ("FAIL", "MOD") and dt["scribed"]["lost"] == [[3, 1]], dt)
+    ca_c = {"hoses": ca["hoses"] + [hz((4, 1), carry="Carrying")]}
+    cb_c = {"hoses": ca["hoses"] + [hz((4, 1), carry="Carrying", far=[20, 20], state="Plump")]}
+    st, cl, dt = s3(ca_c, cb_c, cb_c)
+    check("sl3_verdict: a hose being carried moves by design: left to SL4, named, not a FAIL",
+          st == "PASS" and dt["carriedLeftToSL4"] == [[4, 1]], dt)
+    st, cl, dt = s3(ca, cb_relay, {"hoses": [dict(h, layUnsettled=True) for h in ca["hoses"]]})
+    check("sl3_verdict: the re-lay never settled -> UNMEASURED HARNESS, never PASS", (st, cl) == ("UNMEASURED", "HARNESS"), dt)
+    check("sl3_verdict: no hose before the save -> UNMEASURED SITE", s3({"hoses": []}, ca, ca)[:2] == ("UNMEASURED", "SITE"))
+
     class NoHoseBridge(FakeBridge):
         def hp(self, cmd, wait_s=20.0):
             if cmd == "census":

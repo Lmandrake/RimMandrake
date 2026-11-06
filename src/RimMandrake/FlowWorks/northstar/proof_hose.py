@@ -942,9 +942,11 @@ class Proof(object):
         r2b = VH._carry_view(self._hose_by(c_b, reel2))
         sa, sb = VH._hose_set(c_a), VH._hose_set(c_b)
         ra, rb = VSH._snapshot(c_a), VSH._snapshot(c_b)
-        st3 = "PASS" if sa == sb and ra == rb and sa else ("UNMEASURED" if not sa else "FAIL")   # no hose before the save: nothing to survive
-        self.row("save_load", "SL3_hoses_and_reel_styles_survive", st3, "SITE" if st3 == "UNMEASURED" else "MOD",
-                 {"hoses": len(sa), "hosesEqual": sa == sb, "reelStylesEqual": ra == rb, "loadSeconds": waited})
+        # the lay is not scribed: geometryHash is compared once the reloaded hoses have re-laid (sl3_verdict)
+        c_s = V.settle_census(lambda: B.hp("census"), lambda h: True) if c_a.get("hoses") else {}
+        st3, cls3, d3 = sl3_verdict(c_a, c_b, c_s)
+        self.row("save_load", "SL3_hoses_and_reel_styles_survive", st3, cls3,
+                 dict(d3, hosesEqual=sa == sb, reelStylesEqual=ra == rb, loadSeconds=waited))
         carry_a = {tuple(h["reel"]): VH._carry_view(h) for h in c_a.get("hoses") or [] if h.get("carry") in ("Carrying", "Dropped")}
         carry_b = {tuple(h["reel"]): VH._carry_view(h) for h in c_b.get("hoses") or [] if tuple(h["reel"]) in carry_a}
         V.adopt(staged)                    # SL4 is the block's last row: the staging's faults withhold it and nothing else
@@ -1070,6 +1072,68 @@ def walls_verdict(census):
            for h in hoses if h["wallCross"]]
     return ("FAIL" if bad else "PASS"), "MOD", {"laid": len(hoses), "crossing": bad[:12],
                                                 "checked": [h.get("id") for h in hoses][:40]}
+
+
+# HOSE_SAVELOAD_DIAGNOSE_COMES_BACK_CHANGED: SL3 compared VH._hose_set and VSH._snapshot as whole tuples, so a FAIL said only
+# "hosesEqual False" and never which field moved. The fields both read, in a fixed order (the first differing key is reported):
+SL3_KEYS = ("far", "end", "state", "laid", "debugFlowing", "transitions",                    # VH._hose_set
+            "rawStyle", "look", "reelState", "reelTex", "hoseTex",                          # VSH._snapshot
+            "geometryHash")                                                                 # both
+# geometryHash is RUNTIME: it hashes r.lay, and neither the lay nor its layKey is scribed (CompHoseReel.PostExposeData), so a
+# census read right after a reload, before the hose re-lays, hashes a null lay ("0000000000000000"). SL3 compares it on a
+# SETTLED re-read (V.lay_settled); every other key is scribed and is compared before any tick.
+SL3_RUNTIME = ("geometryHash",)
+
+
+def _sl3_view(h):
+    v = {k: h.get(k) for k in SL3_KEYS}
+    v["far"] = list(v["far"]) if v["far"] is not None else None
+    v["hoseTex"] = sorted((v["hoseTex"] or {}).items())
+    return v
+
+
+def sl3_carried(c_a):
+    """Reels whose hose was being CARRIED when SL3's before-read was taken: the carrier walks on until the save, so far/state
+    move by design. SL4 judges them (sl4_verdict, with its own tolerance); SL3 leaves them out and says which."""
+    return {tuple(h["reel"]) for h in (c_a or {}).get("hoses") or [] if h.get("carry") == "Carrying"}
+
+
+def sl3_diff(c_a, c_b, keys=SL3_KEYS):
+    """Field-level diff of two hose censuses keyed by reel: the first differing (reel, key) in reel order then SL3_KEYS order,
+    a count per differing key, and the reels lost or gained by the reload."""
+    moving = sl3_carried(c_a)
+    va = {tuple(h["reel"]): _sl3_view(h) for h in (c_a or {}).get("hoses") or [] if tuple(h["reel"]) not in moving}
+    vb = {tuple(h["reel"]): _sl3_view(h) for h in (c_b or {}).get("hoses") or [] if tuple(h["reel"]) not in moving}
+    first, counts = None, {}
+    for reel in sorted(set(va) & set(vb)):
+        for k in keys:
+            if va[reel][k] != vb[reel][k]:
+                counts[k] = counts.get(k, 0) + 1
+                if first is None:
+                    first = {"reel": list(reel), "key": k, "before": va[reel][k], "after": vb[reel][k]}
+    return {"firstDiff": first, "diffKeys": counts, "lost": [list(r) for r in sorted(set(va) - set(vb))],
+            "gained": [list(r) for r in sorted(set(vb) - set(va))]}
+
+
+def sl3_verdict(c_a, c_b, c_settled):
+    """SL3: every hose comes back with its scribed fields equal (read before any tick) and its lay geometry equal once the
+    reload has re-laid it (c_settled). Returns (status, class, detail). A scribed key or a reel lost/gained is the MOD; a
+    geometryHash that differs only before the re-lay is not a finding; a re-read that never settled is UNMEASURED (HARNESS)."""
+    if not (c_a or {}).get("hoses"):
+        return "UNMEASURED", "SITE", {"why": "no hose before the save: nothing to survive"}
+    scribed = tuple(k for k in SL3_KEYS if k not in SL3_RUNTIME)
+    d = sl3_diff(c_a, c_b, scribed)
+    detail = {"hoses": len(c_a["hoses"]), "carriedLeftToSL4": [list(r) for r in sorted(sl3_carried(c_a))], "scribed": d, "runtimeBeforeRelay": sl3_diff(c_a, c_b, SL3_RUNTIME)["diffKeys"]}
+    if d["firstDiff"] or d["lost"] or d["gained"]:
+        return "FAIL", "MOD", detail
+    unsettled = [h.get("reel") for h in (c_settled or {}).get("hoses") or [] if h.get("layUnsettled")]
+    if not (c_settled or {}).get("hoses") or unsettled:
+        detail["why"] = "the reloaded hoses never settled their lay: geometryHash cannot be compared"
+        detail["unsettled"] = unsettled[:12]
+        return "UNMEASURED", "HARNESS", detail
+    g = sl3_diff(c_a, c_settled, SL3_RUNTIME)
+    detail["settled"] = g
+    return ("FAIL" if g["firstDiff"] or g["lost"] or g["gained"] else "PASS"), "MOD", detail
 
 
 def sl4_verdict(carry, r1a, r1b, r2a, r2b, carry_a, carry_b):
