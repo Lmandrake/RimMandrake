@@ -1,0 +1,1 @@
+A free-text proof parser must treat every shell separator (&&) as starting a command, never guess prose from the next word: a first-word allowlist (runner, script path, '!') let 'python3 a.py prints PASS && make test' run only the prefix, three blind checks in a row (RELENTLESS_BOXRUN_HARDEN_PARTIAL_PROOF). Write proof prose without a literal && or it is refused.
