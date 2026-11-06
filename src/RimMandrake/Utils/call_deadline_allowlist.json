@@ -169,7 +169,6 @@
   "src/RimMandrake/rimflow/relentless.py::main::run": 1,
   "src/RimMandrake/rimflow/relentless_seeds.py::sandbox_run::run": 1,
   "src/RimMandrake/rimflow/relentless_wall.py::make_box::run": 1,
-  "src/RimMandrake/rimflow/testpilot_reload.py::main::call": 1,
-  "src/RimMandrake/rimflow/v3_cutover.py::_git::run": 1
+  "src/RimMandrake/rimflow/testpilot_reload.py::main::call": 1
  }
 }

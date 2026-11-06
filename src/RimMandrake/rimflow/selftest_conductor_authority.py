@@ -222,15 +222,6 @@ r = run(mc, "review", "NoSuchMod", *BARE)
 check(r.returncode != 0 and CA.RULING in r.stderr, "modcheck review refuses a bare reason and names the route")
 check("--per-ruling" in run(mc, "validate", "-h").stdout, "modcheck validate offers the route")
 
-import v3_cutover as V3  # noqa: E402
-_orig = V3.patch_status
-V3.patch_status = lambda paths: (False, "sentinel past the words gate")
-with contextlib.redirect_stderr(io.StringIO()):
-    check(V3.apply(None, None, "my own reason", 0) == 2, "v3_cutover apply refuses a bare reason")
-    check(V3.apply(None, None, "do it", 0, per_ruling="SOME_OTHER_RULING") == 2, "v3_cutover apply refuses another ruling")
-    check(V3.apply(None, None, "do it", 0, per_ruling=CA.RULING) == 3, "v3_cutover apply passes its words gate on the route")
-V3.patch_status = _orig
-check("--per-ruling" in run(ROOT / "src/RimMandrake/rimflow/v3_cutover.py", "apply", "-h").stdout, "v3_cutover apply parses the route")
 check("--per-ruling" in run(ROOT / "src/RimMandrake/rimflow/relentless.py", "unhold", "-h").stdout, "relentless unhold parses the route")
 
 check("CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM" in (ROOT / "src/RimMandrake/rimflow/model.py").read_text(encoding="utf-8"),
