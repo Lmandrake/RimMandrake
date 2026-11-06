@@ -1,0 +1,1 @@
+relentless boxrun: close_evidence.py cannot write inside the wall (agent_storage.py under ~/dev/Lodestar is Permission denied to the checkbox venv), so a boxrun's selftest PASS reaches no close-evidence gate; the proof's result is unaffected. Seen 2026-11-06 on LIVE_STAGING_BUILD_STAGEHAND_WITHOUT_TOKENS.
