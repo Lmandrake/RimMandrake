@@ -461,11 +461,16 @@ def commit_is_state(c: Path, sha: str) -> bool:
     return bool(files) and all(f.startswith(POOL_NOISE + POOL_STATE) for f in files)
 
 
-def cherry_on_origin(c: Path) -> set[str]:
+def cherry_on_origin(c: Path, want: set[str] | None = None) -> set[str]:
     """Local commits whose patch origin/main already holds under another hash (`git cherry` marks them '-'). A merge is
-    never listed, so it stays at risk. No readable origin/main: nothing is covered."""
+    never listed, so it stays at risk. No readable origin/main: nothing is covered. `want` (the commits the caller asks
+    about) skips a ref that reaches none of them beyond the remotes: its cherry could only answer for other commits. One
+    `git cherry` against an old tag cost ~3 s and a pool reuse ran one per tag per candidate clone, inside the supervisor
+    tick (RELENTLESS_TICK_MEASURE_OUTLASTS_ITS_NAP)."""
     out = set()
     for ref in git("for-each-ref", "--format=%(refname)", "refs/heads", "refs/tags", cwd=c, timeout=60).split():
+        if want is not None and not want & set(git("rev-list", ref, "--not", "--remotes", cwd=c, check=False, timeout=120).split()):
+            continue
         r = subprocess.run(["git", "cherry", "refs/remotes/origin/main", ref], cwd=c, capture_output=True, text=True, timeout=300)
         if r.returncode == 0:
             out.update(ln[2:] for ln in r.stdout.splitlines() if ln.startswith("- "))
@@ -492,7 +497,7 @@ def commits_at_risk(c: Path, shas: list[str], strict: bool) -> bool:
     rest = [x for x in shas if strict or not commit_is_state(c, x)]
     if not rest:
         return False
-    cherry = cherry_on_origin(c)
+    cherry = cherry_on_origin(c, set(rest))
     return any(x not in cherry and not commit_content_on_origin(c, x) for x in rest)
 
 

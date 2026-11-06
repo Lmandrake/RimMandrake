@@ -41,6 +41,7 @@ import relentless_disk  # noqa: E402
 import relentless_integrity  # noqa: E402
 import relentless_packet  # noqa: E402
 import relentless_usage  # noqa: E402
+import relentless_tickprof  # noqa: E402
 import relentless_wall  # noqa: E402
 import relentless_reach  # noqa: E402
 import relentless_reachfix  # noqa: E402
@@ -6713,6 +6714,12 @@ def _game_next_held(store, fx, r, now):
 
 
 def tick(store=None, fx=None, r=None, now=None):
+    """One supervisor pass. Every child process it waits on is tallied into its journal row (relentless_tickprof)."""
+    with relentless_tickprof.Tally() as prof:
+        return _tick(store, fx, r, now, prof)
+
+
+def _tick(store, fx, r, now, prof):
     r = r or rules()
     store = store or Store()
     now = time.time() if now is None else now
@@ -6896,7 +6903,8 @@ def tick(store=None, fx=None, r=None, now=None):
         reading(store, r, now, acts, clock, fx)
         if acts:
             store.journal({"at": iso(now), "do": "tick", "wall_s": int(wall() - whole), "phases": phases,
-                           "slow_steps": sorted(slow, key=lambda x: -x["s"])[:5], "acts": acts})
+                           "slow_steps": sorted(slow, key=lambda x: -x["s"])[:5], "proc_s": prof.total(),
+                           "proc": prof.top(), "acts": acts})
         relentless_integrity.mark_clean(store, fx, now)
         return acts
 

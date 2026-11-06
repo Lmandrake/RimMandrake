@@ -285,6 +285,31 @@ def main() -> int:
         sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
         sh("git", "-C", str(h1), "fetch", "-q", str(BASE / "mirror.git"), "+refs/remotes/origin/main:refs/remotes/origin/main")
         check(sc.clone_unpushed(h1) == [], "a landed patch origin has since edited on is covered by git cherry")
+        # 2c. a tag every remote already reaches costs no `git cherry` (RELENTLESS_TICK_MEASURE_OUTLASTS_ITS_NAP: one per tag
+        # per pool-reuse candidate, ~3 s each, inside the supervisor tick), and the answer for the asked commits is unchanged
+        sh("git", "-C", str(h1), "tag", "landed-tag", "refs/remotes/origin/main")
+        sh("git", "-C", str(h1), "tag", "mine-tag", "HEAD")
+        asked = set(sh("git", "-C", str(h1), "rev-list", "--branches", "--tags", "--not", "--remotes").split())
+        cherries = []
+        real_run = sc.subprocess.run
+
+        def counting(argv, *a, **k):
+            if argv[:2] == ["git", "cherry"]:
+                cherries.append(argv[-1])
+            return real_run(argv, *a, **k)
+        sc.subprocess.run = counting
+        try:
+            whole = sc.cherry_on_origin(h1)
+            n_whole = len(cherries)
+            del cherries[:]
+            narrow = sc.cherry_on_origin(h1, asked)
+        finally:
+            sc.subprocess.run = real_run
+        check(asked and narrow & asked == whole & asked, f"the narrowed cherry answers the asked commits alike: {narrow} vs {whole}")
+        check("refs/tags/landed-tag" not in cherries and "refs/tags/mine-tag" in cherries and len(cherries) < n_whole,
+              f"a ref reaching no asked commit is skipped, one reaching one is not: {cherries} of {n_whole}")
+        check(sc.clone_unpushed(h1) == [], "and the clone still reads covered")
+        sh("git", "-C", str(h1), "tag", "-d", "landed-tag", "mine-tag")
         # 3. mixed real + ledger whose patch id differs (origin's ledger grew around it): covered by content, line by line
         led = "infrastructure/state/ledger/events/H.jsonl"
         sh("git", "-C", str(h1), "fetch", "-q", str(BASE / "mirror.git"), "+refs/remotes/origin/main:refs/remotes/origin/main")

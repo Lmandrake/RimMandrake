@@ -1,9 +1,11 @@
 [Unit]
-Description=RimFlow relentless supervisor every 2 min
+Description=RimFlow relentless supervisor, 15 s after each tick ends
 
+# the tick itself is the wait (5-10 min of work, 2026-11-06); a 2 min gap after it only delayed every state change
+# (RELENTLESS_TICK_MEASURE_OUTLASTS_ITS_NAP). tick.lock keeps one tick at a time; game_next serves a round's end at once.
 [Timer]
 OnBootSec=3min
-OnUnitInactiveSec=2min
+OnUnitInactiveSec=15s
 Unit=rm-relentless.service
 
 [Install]
