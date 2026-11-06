@@ -1,0 +1,15 @@
+{
+ "_what": "TICKBURST_PROVE_MANY_TICKS_ONE_FRAME continuous-checkpoint bounds (final.md §2.3), committed before any equivalence result. tickburst_bench.py compare(): a flattened checkpoint key matching a `continuous` rule's regex (first match wins) may differ by max(abs, rel * max(|a|,|b|)); every other key is DISCRETE and must match exactly; a key matching `ignore` is not compared; NaN never matches. A bound is loosened only by a new commit that says why, never mid-trial.",
+ "_why_these": "fluid totals and stored energy integrate many per-tick updates and are read at matched ticks, so R (unpaused, overshoots its target by a few ticks) can drift by a few ticks' worth; 2% / 1 unit covers ~10 ticks of a hose pump at its rated flow and a battery's charge rate. Counts, membership, flags (glowOnInt, established, descentCount, pit occupants, power-net membership, thing counts by def) stay exact.",
+ "continuous": [
+  {"key": "(?i)(fluid|water|litre|liter|decilitre|volume|fill)[A-Za-z]*(total|sum|amount|level)?$", "abs": 1.0, "rel": 0.02},
+  {"key": "(?i)stored[A-Za-z]*energy|energy[A-Za-z]*stored|storedEnergy|battery[A-Za-z]*(charge|energy)", "abs": 1.0, "rel": 0.02},
+  {"key": "(?i)(growth|temperature|temp)$", "abs": 0.05, "rel": 0.02}
+ ],
+ "ignore": [
+  "(?i)(^|\\.)(utc|wall_?s|wallS|elapsed|ms|took|time|stamp|duration)$",
+  "(?i)(^|\\.)(ticksGame|tick|ticks|t0|t1|at_tick|tickFrom|tickTo|calls|id|thingId|pawnId|grower)$",
+  "(?i)(^|\\.)(detail|reason|msg|message|note|path|out)$",
+  "(?i)^raw(\\.|$)"
+ ]
+}
