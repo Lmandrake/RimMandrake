@@ -107,7 +107,11 @@ def item_text(item_id, runner_mod=None, _sleep=None):
     sleep = _sleep or time.sleep
     # rimflow writes UTF-8 (it runs as POSIX python3, via wsl.exe under python.exe); decoding with the locale codec
     # (cp1252 under python.exe) killed the reader thread on byte 0x9d and left stdout None (MODCHECK_FIX_ITEMTEXT_CP1252_CRASH)
-    env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
+    # wsl.exe writes its OWN messages ("Error code: Wsl/Service/...") as UTF-16LE unless WSL_UTF8=1 reaches it
+    # (WSLENV carries it across when the caller is WSL python3); the NUL strip below covers a wsl.exe that ignores it
+    wslenv = [v for v in os.environ.get("WSLENV", "").split(":") if v and v.split("/")[0] != "WSL_UTF8"]
+    env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1", WSL_UTF8="1",
+               WSLENV=":".join(wslenv + ["WSL_UTF8"]))
     tries = []
     for wait in (0,) + tuple(ITEM_TEXT_WAITS_S):
         if wait:
@@ -115,7 +119,9 @@ def item_text(item_id, runner_mod=None, _sleep=None):
         try:
             proc = subprocess.run(r.py_cmd(r.RIMFLOW_CLI, "show", item_id), cwd=r.ROOT, capture_output=True,
                                   text=True, encoding="utf-8", errors="replace", env=env)
-            out, err, code = proc.stdout or "", proc.stderr or "", proc.returncode
+            # UTF-16LE ASCII read as UTF-8 is each letter then a NUL: dropping NULs makes it plain text again
+            out, err = (proc.stdout or "").replace("\x00", ""), (proc.stderr or "").replace("\x00", "")
+            code = proc.returncode
         except OSError as ex:       # wsl.exe itself would not start
             out, err, code = "", "Wsl/launch: %s" % ex, -1
         if code == 0 and out.strip():

@@ -672,6 +672,28 @@ def t_item_text_retries_wsl_hiccup():
         got = str(ex)
     ok("0x8007274c" in got and len(waits) == len(targeting.ITEM_TEXT_WAITS_S),
        "a hiccup that outlasts every retry still refuses, naming the WSL error", (got, waits))
+    # the real wsl.exe writes its own error text as UTF-16LE (blind check of c36d9764: xxd shows 'T.h.e.r.e.')
+    os.remove(counter)
+    flaky16 = ("import os,sys; p=%r; n=int(open(p).read()) if os.path.exists(p) else 0; open(p,'w').write(str(n+1))\n"
+               "if n < 2: sys.stdout.buffer.write('Error code: Wsl/Service/0x8007274c\\r\\n'.encode('utf-16le')); "
+               "sys.exit(1)\nprint('ITEM_X chain_a')" % counter)
+    waits = []
+    text = targeting.item_text("ITEM_X", runner_mod=fake(flaky16), _sleep=waits.append)
+    ok(text.strip() == "ITEM_X chain_a" and waits == list(targeting.ITEM_TEXT_WAITS_S),
+       "a hiccup written as UTF-16LE (as wsl.exe does) is still retried", (text, waits))
+    dead16 = ("import sys; sys.stdout.buffer.write('Error code: Wsl/Service/0x8007274c\\r\\n'.encode('utf-16le')); "
+              "sys.exit(1)")
+    waits = []
+    try:
+        targeting.item_text("ITEM_Z", runner_mod=fake(dead16), _sleep=waits.append)
+        got = "no raise"
+    except targeting.TargetError as ex:
+        got = str(ex)
+    ok("Wsl/Service/0x8007274c" in got and len(waits) == len(targeting.ITEM_TEXT_WAITS_S),
+       "a lasting UTF-16LE hiccup refuses with the WSL error readable", (got, waits))
+    seen = "import os; print(os.environ.get('WSL_UTF8'), 'WSL_UTF8' in os.environ.get('WSLENV', '').split(':'))"
+    got = targeting.item_text("ITEM_W", runner_mod=fake(seen), _sleep=waits.append).strip()
+    ok(got == "1 True", "the wsl.exe callback gets WSL_UTF8=1, carried across by WSLENV", got)
 
 
 def _git_repo():
