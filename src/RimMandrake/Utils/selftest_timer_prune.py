@@ -53,14 +53,15 @@ for rel in ("deadman_check.py", "running_now_families.json", "../rimflow/dispatc
     p = HERE / rel
     check(not names_in(p.read_text(encoding="utf-8")), "%s names no retired timer" % p.name,
           names_in(p.read_text(encoding="utf-8")))
-# ops_clocks.json: its _doc and ops_clocks.UNIT_GLOBS keep "account-plan" on purpose, so a reinstall fails the check
+# ops_clocks.json: its _doc and ops_clocks.UNIT_GLOBS name "account-plan" on purpose (an unclassified unit fails ops_clocks check)
 oc = json.loads((HERE / "systemd/ops_clocks.json").read_text(encoding="utf-8"))
 oc_names = names_in(json.dumps([oc["clocks"], oc["outside"]]))
 check(not oc_names, "ops_clocks.json clocks/outside name no retired timer", oc_names)
 sched = json.loads((HERE.parent / "rimflow/dispatcher_schedule.json").read_text(encoding="utf-8"))
 check(all("v3_vs_v2" != r.get("name") for k in sched if isinstance(sched[k], list) for r in sched[k]
           if isinstance(r, dict)), "dispatcher_schedule has no v3_vs_v2 entry")
-check("account-plan" not in oc["clocks"], "account-plan is no Operations clock")
+# account-plan was reinstalled 2026-11-05 for the owner's week plan and is an Operations clock again (8c8051c883)
+check("account-plan" in oc["clocks"], "account-plan is an Operations clock (reinstalled 2026-11-05)")
 for n in RETIRED:
     for ext in ("service", "timer"):
         check(not (HERE / "systemd" / ("%s.%s" % (n, ext))).exists(), "no shipped %s.%s" % (n, ext))
