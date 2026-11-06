@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import functools
 import json
 import os
 import re
@@ -499,6 +500,7 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
         rounds = RS.apply_to_rounds(rounds, RS.decisions(STATE / "runs"), rs)
         seen_pics = RS.regened_pictures(RS.production_decisions(STATE / "runs" if state_root is None else state_root), rs)
     living = {} if test else history_decisions()
+    flyers = functools.cache(flyer_defs)   # read only when a body ACCEPT could be a master: a plant run never needs it
     specs = sorted(specs, key=lambda s: s.get("module") == "catch")      # living animals first
     recs, done = [], set()
     if (out / "decisions.jsonl").is_file():                               # resume: a run id is appended to, never redone
@@ -534,6 +536,8 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
             rec["decision"] = "HOLD_INPUT"
             rec["reasons"].append("owner_kept not established by the spec (no art-ledger lookup): judged REGEN, "
                                   "NOT filed and no round counted — re-spec with fauna_spec.py")
+        if body_master_job(rec) and rec["subject"] in flyers():
+            rec["master_job"] = body_master_job(rec)   # the wing layers of a later flight reroll derive from it
         living[s["subject"]] = rec["decision"]
         if rec["decision"] == "REGEN" and not test:
             if prev is not None:   # the same picture judged again (two biome batches) spends no new round
@@ -559,7 +563,9 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
                 cur[k] = max(cur.get(k, 0), rounds.get(k, 0))
             rounds_file.write_text(json.dumps(cur, indent=1, sort_keys=True))
     # a resumed REGEN record may predate a stop: a stopped series files nothing (ARTEVAL_RESUME_FIX_FILES_STOPPED)
-    jobs = regen_jobs([r for r in recs if test or not RS.stopped(r["subject"], rs)], run_id, rs=rs)
+    # a flyer body this run ACCEPTed is a master for this run's flight rerolls too; a --test run reads no history
+    masters = latest_masters(recs) if test else accepted_masters(state_root or STATE / "runs", recs)
+    jobs = regen_jobs([r for r in recs if test or not RS.stopped(r["subject"], rs)], run_id, rs=rs, masters=masters)
     if jobs:
         (out / "regen_jobs.json").write_text(json.dumps(jobs, indent=1))
         if file_regens and not test:
@@ -711,6 +717,64 @@ def _flyer_gate():
     return flyer_gate
 
 
+def flyer_defs() -> set:
+    """Every def the flyer pipeline knows: flyer_regen_plan.json's flyers, the cut-out sets, the wing designs."""
+    G = _flyer_gate()
+    return set(G.plan_rows()) | set(G.DEF_SETS) | set(G.wing_designs())
+
+
+def body_master_job(r: dict) -> str:
+    """The artpipe job an ACCEPTED static body was drawn by, which a flight reroll's wing layers derive from: the row's
+    east master (fill_queue derives north/south from `<row>_east`). Only when the judged east picture IS that job's
+    render (source_files east named `<artpipe_job>_east`); art drawn outside the pipeline has no job to derive from,
+    so it yields "" and the flight reroll stays held (ARTEVAL_WIRE_FLYER_MASTER_NOBODY_WRITES_IT)."""
+    if r.get("decision") != "ACCEPT" or is_flight_record(r):
+        return ""
+    job = str(r.get("artpipe_job") or "").strip()
+    east = (r.get("source_files") or {}).get("east")
+    if not job or not east or Path(str(east)).stem != f"{job}_east":
+        return ""
+    return f"{job}_east"
+
+
+# a verdict ON the body picture; a HOLD_* (error, input, kept) judged nothing, so it neither records nor withdraws
+BODY_VERDICTS = ("ACCEPT", "REGEN", "ESCALATE", "REGEN_AFTER_SOURCE")
+
+
+def latest_masters(recs) -> dict:
+    """subject -> master_job when its latest (by `at`) static-body verdict is an ACCEPT that recorded one: a later
+    REGEN/ESCALATE of the body (a compare veto, a reroll) withdraws the master; a HOLD_* is no verdict. Per subject,
+    not per candidate: a rival candidate's later REGEN withdraws it too, which only holds the reroll (fails safe)."""
+    best = {}
+    for r in recs:
+        if is_flight_record(r) or r.get("decision") not in BODY_VERDICTS or not r.get("subject"):
+            continue
+        at = _instant(r.get("at"))
+        if r["subject"] not in best or at >= best[r["subject"]][0]:
+            best[r["subject"]] = (at, r.get("master_job") if r.get("decision") == "ACCEPT" else "")
+    return {k: v[1] for k, v in best.items() if v[1]}
+
+
+def master_finished(job: str, queue: Path | None = None) -> bool:
+    """The master job still holds an ok render in the artpipe queue (what artpiped's derive_from needs): a deleted or
+    failed master is no master."""
+    q = queue or artpipe_queue()
+    m = q / "done" / f"{job}.manifest.json"
+    try:
+        ok = m.is_file() and json.loads(m.read_text()).get("status") == "ok"
+    except (OSError, ValueError):
+        return False
+    return ok and (q / "_artsrc" / job / f"{job}.png").is_file()
+
+
+def accepted_masters(runs: Path, extra=(), job_ok=master_finished) -> dict:
+    """latest_masters over the production runs (round_series.production_decisions: a run with no readable run.json
+    counts as --test and never supplies one) plus `extra` records, keeping only masters `job_ok` still finds."""
+    import round_series as RS
+    m = latest_masters([r for _, r in RS.production_decisions(runs)] + list(extra))
+    return {k: v for k, v in m.items() if job_ok is None or job_ok(v)}
+
+
 def flight_layer_rows(r: dict, base: dict, designs: dict | None = None, def_sets: dict | None = None) -> list:
     """A flight REGEN filed as the layered recipe (flyer_stable_body_study.md 3.1, 3.4): one wing-layer row per facing
     and pose, prompted by flyer_gate.wing_prompt and derived from the accepted body master, accepted only by the
@@ -744,14 +808,15 @@ def flight_layer_rows(r: dict, base: dict, designs: dict | None = None, def_sets
 
 
 def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None, rs: dict | None = None, texpath_of=None,
-               designs: dict | None = None, def_sets: dict | None = None) -> list:
+               designs: dict | None = None, def_sets: dict | None = None, masters: dict | None = None) -> list:
     """fill_queue.py rows (JSON art list) for every REGEN — filed only with --file-regens. A row with facings gets a
     prompt the filing gate accepts (gate_clean_prompt); the row's style_notes say what was done.
     Every row names the texPath it redraws (the judged record's, else TEXPATH_OF(def), default the def's adult body
     texPath from the repo defs): fill_queue infers one only for a def that draws exactly one, and refused flyers
     (body + flight frames) as REFUSED_UNCONFIRMED (ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET). An unresolvable def gets
     no guessed path: its row is refused at filing and file_regen_jobs reports it unfiled.
-    A flight record (is_flight_record) is filed as wing-layer rows, never a whole creature (flight_layer_rows)."""
+    A flight record (is_flight_record) is filed as wing-layer rows, never a whole creature (flight_layer_rows); one
+    that names no master of its own takes `masters[subject]` (accepted_masters: the body ACCEPT that recorded it)."""
     if texpath_of is None:
         def texpath_of(d):
             import fauna_spec as FS
@@ -777,6 +842,8 @@ def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None, rs: dict | N
         if not r.get("canvas_rule"):
             rows[-1]["style_notes"] += "; canvas 1024: the spec has no drawSize"
         if is_flight_record(r):   # its whole-creature prompt is replaced, not cleaned (no rewrite model call)
+            if not (r.get("derive_from") or r.get("master_job")) and (masters or {}).get(r["subject"]):
+                r = dict(r, master_job=masters[r["subject"]])
             rows[-1:] = flight_layer_rows(r, rows[-1], designs, def_sets)
             continue
         if rows[-1]["facings"]:

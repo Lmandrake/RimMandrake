@@ -321,6 +321,7 @@ def veto_record(rec: dict, cmp: dict, base_prompt: str, nreg: int, max_rounds: i
     ESCALATE at the round cap. `nreg` = REGEN rounds the def's series already has."""
     reason = compare_veto(cmp) or "head-to-head compare refused the candidate"
     out = dict(rec, at=now_iso(), reasons=list(rec.get("reasons") or []) + [f"head-to-head compare refused the ACCEPT: {reason}"])
+    out.pop("master_job", None)   # a refused body is no master for wing layers (ARTEVAL_WIRE_FLYER_MASTER_NOBODY_WRITES_IT)
     if nreg + 1 > max_rounds:
         out.update(decision="ESCALATE", round=nreg)
         out["reasons"].append(f"still failing after {nreg} regen rounds - one line to the owner")
@@ -370,7 +371,7 @@ def veto_to_regen(rid: str, rec: dict, cmp: dict, st: dict) -> dict:
         st["follow_ups"].append({"at": now_iso(), "subject": sub, "run": rid,
                                  "owed": "escalate to the owner (round cap) after a compare veto"})
         return v
-    jobs = R.regen_jobs([v], rid)
+    jobs = R.regen_jobs([v], rid, masters=R.accepted_masters(STATE / "runs"))
     jf = run_dir / f"regen_jobs_veto_{sub}_{rec.get('candidate')}.json"
     jf.write_text(json.dumps(jobs, indent=1))
     filing = R.file_regen_jobs(jf)
