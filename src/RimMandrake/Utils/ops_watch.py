@@ -55,6 +55,7 @@ rimflow/dispatcher_schedule.json "measure"):
            Account and runway alarms (TOKEN_FAMILIES) are Operations': kept in alarms.json, never filed as items.
 
     python3 src/RimMandrake/Utils/ops_watch.py run [--file-alarms]   one pass (the timer passes --file-alarms)
+           a --family pass without --compose is a sample: refused on the live store and refused --file-alarms
     python3 src/RimMandrake/Utils/ops_watch.py digest                 print digest.md
     python3 src/RimMandrake/Utils/ops_watch.py backfill               seed production from rm-streams-collect' history
     python3 src/RimMandrake/Utils/ops_watch.py install [--apply]      the systemd user timer (plan unless --apply)
@@ -89,8 +90,27 @@ FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "
             "evidence", "companion", "relentless", "seats", "plan", "roles", "queues", "wrapup")
 
 
+LIVE_OPS_DIR = "/mnt/d/ClaudeWork/rimmandrake/ops_watch"
+
+
 def ops_dir() -> Path:
-    return Path(os.environ.get("RM_OPS_WATCH_DIR", "/mnt/d/ClaudeWork/rimmandrake/ops_watch"))
+    return Path(os.environ.get("RM_OPS_WATCH_DIR", LIVE_OPS_DIR))
+
+
+def live_store() -> bool:
+    """Whether ops_dir() is the store the allocator, the Dispatcher and the alarms read (RM_OPS_WATCH_LIVE_DIR names
+    it, default LIVE_OPS_DIR; a selftest points it at its own dir to prove the refusal)."""
+    live = os.environ.get("RM_OPS_WATCH_LIVE_DIR", LIVE_OPS_DIR)
+    try:
+        return ops_dir().resolve() == Path(live).resolve()
+    except OSError:
+        return True     # cannot tell: treat it as live, so a partial pass refuses rather than eats the slot
+
+
+class PartialPass(RuntimeError):
+    """A limited (--family, no --compose) pass asked to write where the live readers look, or to file real alarms.
+    Its status.json held only its own families, so role_launch refused a scheduled slot, and its fixture readings
+    filed two false scratch alarms (STATUS_FIX_HALF_PASS_ATE_THE_SLOT). Only the metronome's compose pass is whole."""
 
 
 def rules_path() -> Path:
@@ -4810,6 +4830,12 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         if still_owner is not None and not still_owner(what):
             raise Fenced("fenced before %s" % what)
     compose = bool(compose and families)
+    if families and not compose:     # a sample, never the live reading: refused before anything is written or filed
+        if filer is not None and filer is real_filer:
+            raise PartialPass("a --family pass without --compose files no alarms: its readings are not a whole pass's")
+        if live_store():
+            raise PartialPass("a --family pass without --compose writes nothing into the live store %s (status.json, "
+                              "series, alarms): set RM_OPS_WATCH_DIR to a scratch dir" % ops_dir())
     if compose and COMPOSE_ALARM_FAMILY not in families and any(f in families for f in COMPOSE_NEEDS_FLOW):
         families = [COMPOSE_ALARM_FAMILY] + list(families)
     whole = not families or compose
@@ -5110,6 +5136,9 @@ def main(argv=None):
                    help="the one Operations deploy (systemd/ops_clocks.json)")
     a = ap.parse_args(argv)
     if a.cmd == "run":
+        if a.family and not a.compose and a.file_alarms:
+            print("ops_watch: REFUSED: --family without --compose files no alarms (STATUS_FIX_HALF_PASS_ATE_THE_SLOT)")
+            return 2
         import metronome
         if a.metronome_gen is None and a.file_alarms:
             owner = metronome.owner_of(OLD_TIMER)
@@ -5137,6 +5166,9 @@ def main(argv=None):
         except Fenced as e:
             print("ops_watch: %s" % e)
             return EXIT_FENCED
+        except PartialPass as e:
+            print("ops_watch: REFUSED: %s" % e)
+            return 2
         print(dg["headline"])
         return 0
     if a.cmd == "lint":

@@ -1160,9 +1160,9 @@ try:
     OW.run(now=NOW, rules=RULES, filer=None, families=["disk"])
     OW.run(now=NOW, rules=RULES, filer=lambda todo, conf: None, families=["disk"])
     check("steve_release: not on a pass that files nothing, nor a test's filer", _calls == [], _calls)
-    OW.run(now=NOW, rules=RULES, filer=OW.real_filer, families=["disk"])
-    check("steve_release: not on a limited pass without the steve family", _calls == [], _calls)
-    _dg = OW.run(now=NOW, rules=RULES, filer=OW.real_filer, families=["steve"])
+    OW.run(now=NOW, rules=RULES, filer=OW.real_filer, families=["disk"], compose=True)
+    check("steve_release: not on a compose pass without the steve family", _calls == [], _calls)
+    _dg = OW.run(now=NOW, rules=RULES, filer=OW.real_filer, families=["steve"], compose=True)
     check("steve_release: a filing pass runs it, once, and its failure is a flag", _calls == [1] and any(f.get("rule") == "brake_release" for f in _dg.get("flags") or []), _dg.get("flags"))
 finally:
     OW.real_filer, OW.steve_release_start = _rf0, _sr0
