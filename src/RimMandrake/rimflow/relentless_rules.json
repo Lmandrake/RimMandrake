@@ -26,6 +26,7 @@
   },
   "enrol_per_tick": 2,
   "proof_lines_per_tick": 1,
+  "proof_lines_max_queued": 3,
   "max_queued": 8,
   "max_workers": 8,
   "step_back_mem_gb": 8,

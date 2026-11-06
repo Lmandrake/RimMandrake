@@ -120,7 +120,7 @@ def t_a2_retire_when_ledger_moves():
 
 
 def t_a3_cap():
-    x, _, _ = rig(5, proof_lines_per_tick=2, max_workers=0)
+    x, _, _ = rig(5, proof_lines_per_tick=2, max_workers=0, proof_lines_max_queued=9)
     x.tick()
     jobs = [i for i in x.s.items() if P.is_job(x.st(i))]
     ok(len(jobs) == 2, "A3: proof_lines_per_tick 2 enrols 2 of 5 in one tick (%d)" % len(jobs))
@@ -132,17 +132,39 @@ def t_a3_cap():
     x.tick()
     ok(not x.s.items(), "A3: proof_lines_per_tick 0 enrols none")
     x.done()
-    x, _, _ = rig(5, proof_lines_per_tick=9, max_workers=0, max_queued=3)
+    x, _, _ = rig(5, proof_lines_per_tick=9, max_workers=0, proof_lines_max_queued=3)
     x.tick()
-    ok(len(x.s.items()) == 3, "A3: the line cap max_queued still bounds it (%d)" % len(x.s.items()))
+    ok(len(x.s.items()) == 3, "A3: the lane's own cap proof_lines_max_queued bounds it (%d)" % len(x.s.items()))
+    x.tick()
+    ok(len(x.s.items()) == 3, "A3: and holds on the next tick while 3 jobs still wait (%d)" % len(x.s.items()))
     x.done()
     shipped = R.rules().get("proof_lines_per_tick")
     ok(isinstance(shipped, int) and 0 < shipped <= R.rules()["enrol_per_tick"],
        "A3: the shipped rules set a positive proof_lines_per_tick no larger than enrol_per_tick (%r)" % shipped)
 
 
+def t_starved_by_build_line():
+    """LIVE_PROOF_LINES_FILL_FOR_BUILT: measured 2026-11-06, 25 build items in turn against max_queued 8 gave the lines
+    lane room -17, so no built item owing a line was ever enrolled. A full build line must not starve the lines lane."""
+    x, _, _ = rig(2, proof_lines_per_tick=1, max_workers=0, max_queued=2, enrol_per_tick=0)
+    for k in range(5):      # a build line over its own cap: five queued, in-turn build items
+        st = R.new_state("Q%d" % k, x.now, "build")
+        x.s.save(st)
+    inline = sum(1 for s in x.s.states() if R.in_line(s))
+    ok(inline >= 5, "starve control: the build line holds %d in-turn items against max_queued 2" % inline)
+    P.enrol(x.s, x.w, x.r, x.now, R.new_state, R.iso, {s["item"] for s in x.s.states()}, P.queued_jobs(x.s.states()))
+    jobs = [i for i in x.s.items() if P.is_job(x.st(i))]
+    ok(len(jobs) == 1, "starve: a built item owing a line enrols as a lines job past a full build line (%d)" % len(jobs))
+    old = P.enrol(x.s, x.w, x.r, x.now, R.new_state, R.iso, set(), 5 + 1)    # the shape before: the build line's count
+    ok(old == [], "starve control: fed the build line's count (the old call) the lane enrols nothing")
+    x.done()
+    shipped = R.rules()
+    ok(isinstance(shipped.get("proof_lines_max_queued"), int) and shipped["proof_lines_max_queued"] > 0,
+       "starve: the shipped rules give the lines lane its own positive queue cap (%r)" % shipped.get("proof_lines_max_queued"))
+
+
 def main():
-    for t in (t_a1_eligible, t_a2_no_start_no_close, t_a2_retire_when_ledger_moves, t_a3_cap):
+    for t in (t_a1_eligible, t_a2_no_start_no_close, t_a2_retire_when_ledger_moves, t_a3_cap, t_starved_by_build_line):
         print("--", t.__name__)
         t()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))

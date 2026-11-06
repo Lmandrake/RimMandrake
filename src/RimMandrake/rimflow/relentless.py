@@ -5033,7 +5033,9 @@ def enrol(store, fx, r, now):
         room -= 1
         sys_room -= i in first
     # PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED: built items owing a live-proof line, as lines-only jobs, own per-tick cap
-    took += relentless_prooflines.enrol(store, fx, r, now, new_state, iso, ours | set(took), queued + len(took))
+    # its own queue cap, counting only lines jobs: the build line runs over max_queued for hours (LIVE_PROOF_LINES_FILL_FOR_BUILT)
+    took += relentless_prooflines.enrol(store, fx, r, now, new_state, iso, ours | set(took),
+                                        relentless_prooflines.queued_jobs(states))
     slot = relentless_repair_slot.pick(fx, r, live, ours | set(took), now, order)     # one place past the caps (WP-06)
     if slot and enrol_put(store, fx, slot[0], "reserved repair slot: %d items wait on it" % slot[1], now, slot="repair"):
         took.append(slot[0])

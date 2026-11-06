@@ -59,11 +59,19 @@ def eligible(it, owed, r, blocked=False, excluded=False, leased=False, hand=None
         and not blocked and not excluded and not leased and not hand
 
 
+def queued_jobs(states):
+    """How many proof-lines jobs wait in line now (status queued): the only thing the lines lane's own cap counts."""
+    return sum(1 for s in states if s.get("status") == "queued" and is_job(s))
+
+
 def enrol(store, fx, r, now, new_state, iso, ours, queued):
-    """Enrol up to rules `proof_lines_per_tick` stranded items as proof-lines jobs, inside the line's cap `max_queued`.
-    `ours`: items the store already carries (any status but done); `queued`: how many wait in line now. -> [ids]."""
+    """Enrol up to rules `proof_lines_per_tick` stranded items as proof-lines jobs, inside the lane's own cap
+    `proof_lines_max_queued` (max_queued when unset). `ours`: items the store already carries (any status but done);
+    `queued`: how many PROOF-LINES JOBS wait in line now (queued_jobs), never the build line: LIVE_PROOF_LINES_FILL_FOR_BUILT
+    measured 2026-11-06 a build line of 25 in-turn items against max_queued 8, room -17, so a lane that shared the build
+    line's cap enrolled nothing for ever. -> [ids]."""
     cap = int(r.get("proof_lines_per_tick") or 0)
-    room = min(cap, int(r["max_queued"]) - queued)
+    room = min(cap, int(r.get("proof_lines_max_queued") or r["max_queued"]) - queued)
     if room <= 0 or not hasattr(fx, "proof_lines_order"):
         return []
     took = []
