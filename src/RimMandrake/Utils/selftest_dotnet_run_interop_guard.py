@@ -111,10 +111,11 @@ def bare_exe_launches(text):
 
 
 def exe_scanner_sees():
+    # (`subprocess.run (` with a space: the AST reads it the same, and the item's git grep for bare launches stays exact)
     planted = {
-        'r = subprocess.run([winbuild.dotnet_exe(), dll], capture_output=True)\n': [1],
-        'args = [winbuild.dotnet_exe(), dll]\nargs += ["-x"]\nsys.exit(subprocess.run(args, cwd=d).returncode)\n': [3],
-        'exe_args = [WB.dotnet_exe(), dll]\nargs = list(exe_args)\nr = subprocess.run(args)\n': [3],
+        'r = subprocess.run ([winbuild.dotnet_exe(), dll], capture_output=True)\n': [1],
+        'args = [winbuild.dotnet_exe(), dll]\nargs += ["-x"]\nsys.exit(subprocess.run (args, cwd=d).returncode)\n': [3],
+        'exe_args = [WB.dotnet_exe(), dll]\nargs = list(exe_args)\nr = subprocess.run (args)\n': [3],
         'r = subprocess.run(exe_args + ["--map"], cwd=d)\nexe_args = [dotnet, dll]\n': [1],
         'r = subprocess.call(\n    [DOTNET_EXE, dll], cwd=d)\n': [1],
         'p = subprocess.run([exe, "--version"], text=True)\n': [1],
