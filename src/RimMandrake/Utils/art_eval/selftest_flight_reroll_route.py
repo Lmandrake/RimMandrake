@@ -9,12 +9,21 @@
            row_to_jobs files it
   HELD     the real Shirrel record (no wing design, no master) yields one row that keeps no plan and is refused
   ROUND    a round candidate (r2) of a flight record is held with a flight id; fauna_drive leaves such rows alone
+  DRIVE    fauna_drive.cmd_rows run for real on a runs file holding the layered, held and round flight rows plus a body
+           row, with a spec and an owner prompt present: the body row is re-id'd and owner-prompted (the drive ran),
+           every flight row keeps its _flight id, wing prompt, plan and derive_from, and the held rows are still
+           refused by fill_queue.row_to_jobs
   BODY     a static body REGEN of the same def is untouched (one row, no plan, no layer)
 """
 from __future__ import annotations
 
+import argparse
+import copy
+import io
 import json
 import sys
+import tempfile
+from contextlib import redirect_stdout
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -40,6 +49,63 @@ def refused(row) -> bool:
         return False
     except ValueError as ex:
         return "wing layer" in str(ex) and "flyer_gate.py flipbook" in str(ex)
+
+
+def drive_fauna(layered, held_rows):
+    """Run fauna_drive.cmd_rows (not a stand-in) on a temp runs file; only its ledger/state readers are stubbed."""
+    import fauna_drive as FD
+    import round_series as RS
+    body_row = {"id": "arteval_RM_Shirrel_bodyprobe", "target_def": "RM_Shirrel", "prompt": "a shirrel, whole body",
+                "target_texpath": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel", "style_notes": "", "facings": ["east"]}
+    src = copy.deepcopy(layered + held_rows) + [body_row]
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        run = td / "infrastructure/state/art_eval/runs/flightprobe"
+        run.mkdir(parents=True)
+        (run / "regen_jobs.json").write_text(json.dumps(src))
+        specs = td / "specs"
+        specs.mkdir()
+        for d in ("RM_Shirrel", "RSW_Strill"):
+            (specs / f"{d}.spec.json").write_text(json.dumps({"subject": d, "label": d[4:].lower(),
+                                                               "size": {"drawSize": [1.4, 1.4]}}))
+        owner = {d: {"text": "OWNERPROBE a plain sandy creature standing", "source": "selftest"}
+                 for d in ("RM_Shirrel", "RSW_Strill")}
+        saved = (FD.ROOT, RS.resets, RS.regen_counts, RS.owner_prompts, FD.production, FD.bind_texpath)
+        FD.ROOT = td
+        RS.resets = lambda *a, **k: {}
+        RS.regen_counts = lambda *a, **k: {}
+        RS.owner_prompts = lambda *a, **k: owner
+        FD.production = lambda: []
+        FD.bind_texpath = lambda r, texpath_of=None: r
+        out = td / "rows.json"
+        try:
+            with redirect_stdout(io.StringIO()):
+                FD.cmd_rows(argparse.Namespace(runs=["flightprobe"], specs=str(specs), out=str(out), file=False,
+                                               only=None))
+        finally:
+            FD.ROOT, RS.resets, RS.regen_counts, RS.owner_prompts, FD.production, FD.bind_texpath = saved
+        got = json.loads(out.read_text())
+    probe = [r for r in got if r.get("target_texpath") == body_row["target_texpath"] and "OWNERPROBE" in r.get("prompt", "")
+             and "plan" not in r]
+    check("DRIVE sanity: body row re-id'd and owner-prompted by cmd_rows",
+          len(probe) == 1 and probe[0]["id"] != body_row["id"] and probe[0]["id"].startswith("arteval_RM_Shirrel_"))
+    flight = [r for r in got if r is not None and r not in probe]
+    want = layered + held_rows
+    check("DRIVE every flight row written", len(flight) == len(want))
+    check("DRIVE flight ids keep _flight_ and stay distinct",
+          [r["id"] for r in flight] == [r["id"] for r in want] and len({r["id"] for r in flight}) == len(want)
+          and all("flight" in r["id"] for r in flight))
+    check("DRIVE wing prompts not overwritten by owner/neutral prompt",
+          [r["prompt"] for r in flight] == [r["prompt"] for r in want] and not any("OWNERPROBE" in r["prompt"] for r in flight))
+    check("DRIVE plan and derive_from kept",
+          [(r.get("plan"), r.get("derive_from")) for r in flight] == [(r.get("plan"), r.get("derive_from")) for r in want])
+    n_held = 0
+    for r in flight[len(layered):]:
+        try:
+            F.row_to_jobs(dict(r, biome_neutral=True), derive_facings=False, no_subject="selftest fixture")
+        except ValueError as ex:
+            n_held += "wing layer" in str(ex)
+    check("DRIVE held rows still refused by row_to_jobs", n_held == len(held_rows))
 
 
 def main() -> int:
@@ -80,6 +146,8 @@ def main() -> int:
     rnd = RN.regen_jobs([dict(rec, candidate="r2", round=2)], "t", texpath_of=tp, rs={})
     check("HELD round candidate refused", len(rnd) == 1 and "flight" in rnd[0]["id"] and refused(rnd[0]))
     check("FAUNA_DRIVE keeps flight rows", all(RN.is_flight_row(r) for r in rows + held + rnd))
+
+    drive_fauna(rows, held + nomaster + rnd)
 
     body = {k: v for k, v in rec.items() if k not in ("candidate", "artpipe_job", "source_files")}
     b = RN.regen_jobs([dict(body, artpipe_job="RM_Shirrel_east")], "t", texpath_of=tp, neutralize=lambda p: (p, "noop"))
