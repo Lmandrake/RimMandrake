@@ -53,6 +53,7 @@ one change allowed is the site step above, through one reviewed tool that refuse
 import argparse
 import calendar
 import glob
+import hashlib
 import json
 import os
 import re
@@ -1361,6 +1362,191 @@ class Fx(object):
                     pass
 
 
+# ---- admission (LIVELANE_BUILD_PREFLIGHT_REFUSES_UNRUNNABLE, redesign_final 2026-11-06 G1) ------------------------------
+# A run stopped before the bridge is taken spent no slot and measured nothing: it is NOT_ADMITTED with a cause, never
+# UNMEASURED (stage 3 probe: 319 of 592 UNMEASURED rows were these). Its `why` keeps the old words, so every prefix
+# reader (UNDEPLOYED, STALE, FINAL_WAIT, relentless_game.RESTAGE, relentless_envcause) still routes it to its action.
+NOT_ADMITTED = "NOT_ADMITTED"
+NO_VERDICT = ("UNMEASURED", NOT_ADMITTED)
+# cause -> (the action the lane takes on it, transient). The action is relentless_game's prove phase: recarry =
+# _carry or game_stale_build (decides), deploy = relentless_envcause's deploy route or a staging that applies it,
+# wait_load = a restage / the next load, full_list = the full-list tier (BENCH lane), retry = the read again after
+# unmeasured_retry_s. A transient cause never waits on its key: the harness may answer in a minute.
+ADMIT = {"unreadable_build": ("retry", True), "stale": ("recarry", False), "deploy_plan": ("retry", True),
+         "deploy_gap": ("deploy", False), "no_game": ("wait_load", True), "old_build": ("wait_load", False),
+         "companion_unread": ("retry", True), "running_load": ("wait_load", False), "load_unread": ("retry", True),
+         "full_list": ("full_list", False), "bridge_busy": ("retry", True)}
+ADMIT_PREFIX = (("cannot read the built commit", "unreadable_build"), (STALE, "stale"), ("the build deleted ", "stale"),
+                ("not deployed: the deploy plan failed", "deploy_plan"), ("not in the running load", "running_load"),
+                (UNDEPLOYED[0], "deploy_gap"), ("no running game to test", "no_game"), ("the game started ", "old_build"),
+                ("cannot read whether the build owes", "companion_unread"),
+                ("%s's identity could not be read" % COMPANION, "companion_unread"),
+                ("the running load's mod list could not be read", "load_unread"), (FINAL_WAIT, "full_list"),
+                ("bridge not taken", "bridge_busy"))
+HARNESS_FILES = ("relentless_live.py", "live_observe.py", "relentless_live_round.py")
+_HARNESS_REV = []
+
+
+def no_verdict(row):
+    """A runs.jsonl row with no verdict: UNMEASURED (it ran or held the bridge) or NOT_ADMITTED (it never did)."""
+    return bool(row) and row.get("outcome") in NO_VERDICT
+
+
+def admit_cause(why):
+    """A pre-bridge why -> its ADMIT cause, or None. run() and the replay of old rows read the same table."""
+    w = why or ""
+    for head, c in ADMIT_PREFIX:
+        if w.startswith(head):
+            return c
+    return None
+
+
+def pre_bridge(row):
+    """An old UNMEASURED row that never held the bridge: slot False (the running-load / full-list gap), or no release,
+    no health check, no proof and no log. A gap row carries log None, so the log counts only when it names a file."""
+    return (row.get("outcome") == "UNMEASURED" and not row.get("miss") and (row.get("slot") is False or (
+        not row.get("log") and not any(k in row for k in ("released", "health", "proof_exit")))))
+
+
+def harness_rev():
+    """-> short hash of the live harness's own source: a repaired harness is a changed key, so its rows run again."""
+    if not _HARNESS_REV:
+        h = hashlib.sha1()
+        for n in HARNESS_FILES:
+            try:
+                with open(os.path.join(HERE, n), "rb") as f:
+                    h.update(f.read())
+            except OSError:
+                h.update(n.encode())
+        _HARNESS_REV.append(h.hexdigest()[:12])
+    return _HARNESS_REV[0]
+
+
+def admit_key(sha, load, site):
+    """(sha, load fingerprint, site fingerprint, harness rev): a NOT_ADMITTED key runs again the moment one part moves."""
+    return {"sha": sha, "load": load, "site": hashlib.sha1((site or "").encode("utf-8")).hexdigest()[:12],
+            "harness": harness_rev()}
+
+
+def admit_waits(last, sha, game, site=None):
+    """-> why a NOT_ADMITTED `last` still stands on (sha, game, site), or None when it may run now. A transient cause, a
+    row with no key or no load read, or any key part changed: None (the caller's timer still applies to a transient one).
+    site None: the caller did not read it, so only the other parts are compared."""
+    k = last.get("key") or {}
+    c = last.get("admit")
+    if not k or c not in ADMIT or ADMIT[c][1] or k.get("load") is None:
+        return None
+    now = admit_key(sha, game, site)
+    parts = [p for p in ("sha", "load", "harness") + (("site",) if site is not None else ()) if k.get(p) != now[p]]
+    if parts:
+        return None
+    return "not admitted (%s): waits for a new build, load, site or harness" % c
+
+
+def admission_replay(rows):
+    """Old runs.jsonl rows -> {pre_bridge, by_cause, unclassified[...], not_admitted}: what each pre-bridge UNMEASURED row
+    would read now. unclassified must be empty: every pre-bridge return of run() has a cause."""
+    out = {"rows": len(rows), "pre_bridge": 0, "not_admitted": 0, "by_cause": {}, "unclassified": []}
+    for row in rows:
+        if row.get("outcome") == NOT_ADMITTED:
+            out["not_admitted"] += 1
+            continue
+        if not pre_bridge(row):
+            continue
+        out["pre_bridge"] += 1
+        c = admit_cause(row.get("why"))
+        if c is None:
+            out["unclassified"].append((row.get("why") or "")[:160])
+        else:
+            out["by_cause"][c] = out["by_cause"].get(c, 0) + 1
+    return out
+
+
+def _pct(xs, q):
+    xs = sorted(xs)
+    return xs[min(len(xs) - 1, int(q * len(xs)))] if xs else None
+
+
+def live_slis(rows, now, built_at=None, window_s=86400):
+    """The four live SLIs (redesign_final 3.1) per distinct (item, criterion, sha) key for the newest load, plus the old
+    row-level share. built_at(sha) -> epoch of the build or None. -> dict, printed by `relentless.py reading`."""
+    rows = [x for x in rows if isinstance(x.get("at"), str)]    # one 2026 row carries an epoch: no load, no day
+
+    def at(row):
+        try:
+            return calendar.timegm(time.strptime(row["at"], "%Y-%m-%dT%H:%M:%SZ"))
+        except ValueError:
+            return None
+    loads = sorted({x["game"] for x in rows if isinstance(x.get("game"), str)})
+    load = loads[-1] if loads else None
+    mine = [x for x in rows if x.get("item") and (load is None or x["at"] >= load)]
+    keys = {}
+    for x in mine:
+        keys.setdefault((x["item"], x.get("criterion"), x.get("sha")), []).append(x)
+    na, slot_keys, slot_unm = {}, 0, 0
+    for ks in keys.values():
+        adm = [x for x in ks if x.get("outcome") == NOT_ADMITTED]
+        ran = [x for x in ks if x.get("outcome") != NOT_ADMITTED and x.get("outcome") in ("PASS", "FAIL", "UNMEASURED")]
+        if adm and not ran:
+            c = adm[-1].get("admit") or "?"
+            e = na.setdefault(c, {"keys": 0, "action": ADMIT.get(c, ("?",))[0], "fired": 0})
+            e["keys"] += 1
+            e["fired"] += bool(adm[-1].get("action"))
+        spent = [x for x in ran if not pre_bridge(x)]
+        if spent:
+            slot_keys += 1
+            slot_unm += not any(x.get("outcome") in ("PASS", "FAIL") for x in spent)
+    cut = now - window_s
+    first = {}
+    for x in rows:
+        t = at(x)
+        if x.get("outcome") in ("PASS", "FAIL") and t is not None and x.get("item"):
+            k = (x["item"], x.get("criterion"), x.get("sha"))
+            first[k] = min(first.get(k, t), t)
+    done_day = sum(1 for t in first.values() if t >= cut) * 86400.0 / window_s
+    lag, seen = [], {}
+    for k, t in first.items():
+        if built_at and k[2] and t >= cut and k[2] not in seen:
+            seen[k[2]] = built_at(k[2])     # one read per build, however many clauses it has
+        b = seen.get(k[2]) if t >= cut else None
+        if b:
+            lag.append(max(0.0, t - b))
+    unm = sum(1 for x in rows if no_verdict(x))
+    return {"load": load, "keys": len(keys), "not_admitted_by_cause": na,
+            "slot_unmeasured_share": round(slot_unm / slot_keys, 3) if slot_keys else None, "slot_keys": slot_keys,
+            "measured_keys_per_day": round(done_day, 1),
+            "built_to_verdict_s": {"p50": _pct(lag, 0.5), "p95": _pct(lag, 0.95), "n": len(lag)},
+            "rows_incl_repeats_and_admission": round(unm / len(rows), 3) if rows else None}
+
+
+def commit_time(sha, repo=BOOKS):
+    """-> the commit's epoch, or None when git cannot read it (live_slis' built_at)."""
+    try:
+        p = subprocess.run(["git", "-C", repo, "show", "-s", "--format=%ct", sha], capture_output=True, text=True,
+                           timeout=20)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return int(p.stdout.strip()) if p.returncode == 0 and p.stdout.strip().isdigit() else None
+
+
+def sli_lines(s):
+    """live_slis' dict -> the lines `relentless.py reading` prints."""
+    if not s or "unread" in s:
+        return ["live SLIs: COULD NOT READ (%s)" % (s or {}).get("unread", "no reading")]
+    na = s["not_admitted_by_cause"]
+    lag = s["built_to_verdict_s"]
+    hours = lambda v: "-" if v is None else "%.1f h" % (v / 3600.0)     # noqa: E731
+    share = lambda v: "-" if v is None else "%.0f%%" % (100 * v)        # noqa: E731
+    return ["live SLIs (load %s, %d distinct keys):" % (s["load"] or "?", s["keys"]),
+            "  1 NOT_ADMITTED keys by cause: %s" % (", ".join("%s %d -> %s (fired %d)" % (c, e["keys"], e["action"],
+                                                    e["fired"]) for c, e in sorted(na.items())) or "none"),
+            "  2 slot-spending UNMEASURED share: %s of %d keys (target <10%%)" % (share(s["slot_unmeasured_share"]),
+                                                                                 s["slot_keys"]),
+            "  3 measured completions (PASS+FAIL keys) per day: %s" % s["measured_keys_per_day"],
+            "  4 built -> first measured verdict: p50 %s, p95 %s (n %d)" % (hours(lag["p50"]), hours(lag["p95"]), lag["n"]),
+            "  old share, rows incl. repeats and admission: %s" % share(s["rows_incl_repeats_and_admission"])]
+
+
 def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None, trees=(), env=None,
         companion=False):
     """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED.
@@ -1384,12 +1570,22 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         row.update(kw, outcome=outcome, why=why)
         row["verdict"] = ("INFRA" if "proof_exit" not in row else "FAIL" if row.get("observe", {}).get("status") ==
                           "VIOLATED" else "PASS" if row["proof_exit"] == PASS else "FAIL")
-        if outcome == "UNMEASURED" and "game" not in row and why.startswith(UNDEPLOYED):
+        if outcome in NO_VERDICT and "game" not in row and why.startswith(UNDEPLOYED):
             row["game"] = game_iso(fx)      # relentless_live_round.due retries an undeployed build on another game only
         with open(os.path.join(root, "live", "runs.jsonl"), "a", encoding="utf-8") as f:
             f.write(json.dumps(row, sort_keys=True) + "\n")
         return row
 
+    def admit(why, **kw):
+        """A return before the bridge: NOT_ADMITTED, its cause, the action the lane takes and the key it waits on."""
+        c = admit_cause(why) or "bridge_busy"
+        load = kw["game"] if "game" in kw else (iso(started) if started else game_iso(fx))
+        if c in ("deploy_plan", "load_unread"):
+            load = None     # the harness's read failed: no load stamp, so the key never holds it (transient)
+        kw.setdefault("game", load)
+        return done(NOT_ADMITTED, why, admit=c, action=ADMIT[c][0], slot=False, key=admit_key(sha, load, site), **kw)
+
+    started = None
     try:
         item = fx.item(item_id)
         if item and item.get("built_sha"):
@@ -1414,40 +1610,40 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     try:
         why, files = stale_build(fx, sha, item_id)
     except ValueError as e:
-        return done("UNMEASURED", "cannot read the built commit: %s" % e)
+        return admit("cannot read the built commit: %s" % e)
     if why:
-        return done("UNMEASURED", why)
+        return admit(why)
     if files or trees:
         rc, plan = fx.deploy_plan(deploy or "", lr["plan_max_s"])
         why = deploy_gap(files, rc, plan, trees, getattr(fx, "folded", dict)())
         if why:     # a plan that failed or timed out is the harness's: it may pass in a minute, so no game stamp
-            return done("UNMEASURED", "not deployed: %s" % why, **({"game": None} if rc != 0 else {}))
+            return admit("not deployed: %s" % why, **({"game": None} if rc != 0 else {}))
     if files:
         stamps = [fx.mtime(mod, rel) for mod, rel in files]
         if None in stamps:
             lost = [("%s/%s" % f) for f, t in zip(files, stamps) if t is None]
-            return done("UNMEASURED", "not deployed: no game copy of %s" % ", ".join(lost[:5]))
+            return admit("not deployed: no game copy of %s" % ", ".join(lost[:5]))
         started = fx.game_started()
         if started is None:
-            return done("UNMEASURED", "no running game to test")
+            return admit("no running game to test")
         if started <= max(stamps):
-            return done("UNMEASURED", "the game started %s, before the build's files were deployed %s: it runs the old "
-                                      "build" % (iso(started), iso(max(stamps))))
+            return admit("the game started %s, before the build's files were deployed %s: it runs the old "
+                         "build" % (iso(started), iso(max(stamps))))
         row.update(game_started=iso(started), deployed=iso(max(stamps)), files=len(files))
     else:
         stamps, started = [], None
     try:
         owes = companion or companion_touched(fx, sha, item_id)
     except (ValueError, OSError) as e:
-        return done("UNMEASURED", "cannot read whether the build owes %s: %s" % (COMPANION, e))
+        return admit("cannot read whether the build owes %s: %s" % (COMPANION, e))
     if owes:
         if not hasattr(fx, "companion"):
-            return done("UNMEASURED", "%s's identity could not be read (no companion reader)" % COMPANION)
+            return admit("%s's identity could not be read (no companion reader)" % COMPANION)
         v = fx.companion(sha) or {}
         row["companion"] = {k: (v.get(k) or "")[:12] if k != "state" else v.get(k) for k in ("state", "embedded", "want")}
         cg = companion_gap(v, fx.game_started() if v.get("state") == "FRESH" else None)
         if cg:
-            return done("UNMEASURED", cg[0], **({} if cg[1] else {"game": None}))
+            return admit(cg[0], **({} if cg[1] else {"game": None}))
     # The build is deployed and older than the game, but the running list may not load its mod (or a mod it declares,
     # or their dependencies) at all (owner 2026-11-02: a game fits an item by its RUNNING mods, not ModsConfig); a FINAL
     # clause also needs the full-list tier. Read BEFORE the bridge is taken, one read each: a run the running game cannot
@@ -1459,13 +1655,13 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     except Exception as e:                          # noqa: BLE001  an unread list is the harness's, never a verdict
         gap = "the running load's mod list could not be read: %s: %s" % (type(e).__name__, str(e)[:200])
     log, code, crashed = None, None, gap
-    if gap:
-        row["slot"] = False
+    if gap:     # NOT_ADMITTED: no repeat count, no reload, no ledger note; the key holds it until the load moves
+        return admit(gap, **({"game": iso(started)} if started else {}))
     else:
         took = fx.rimflow("bridge", "take", "--idle-ok", "--for",
                           "relentless live test: %s %s (%s), read-only proof" % (item_id, criterion, level))
         if took.returncode != 0:
-            return done("UNMEASURED", "bridge not taken: %s" % (took.stderr or took.stdout).strip()[-300:])
+            return admit("bridge not taken: %s" % (took.stderr or took.stdout).strip()[-300:])
         log, n = None, 0
         while log is None or os.path.exists(log):  # a retry in the same second must not overwrite the last evidence
             log = os.path.join(root, "live", "%s-%s-%s%s.log" % (item_id, criterion, time.strftime(
@@ -1619,13 +1815,22 @@ def main(argv=None):
     p.add_argument("--proof", required=True, help="a shell command run from the repo root; exit 0 PASS, 1 FAIL")
     p.add_argument("--deploy", default="", help="deploy_custom_mods.py plan arguments covering the item's mods")
     p.add_argument("--site", default=None, help="a live_site.py command run, bridge held, before the proof")
+    q = sub.add_parser("admission-replay", help="old runs.jsonl -> what each pre-bridge UNMEASURED row reads now; "
+                                                "exit 0 when every one has an admission cause")
+    q.add_argument("runs", nargs="?", default="/home/mandrake/rm/relentless/live/runs.jsonl")
     a = ap.parse_args(argv)
+    if a.cmd == "admission-replay":
+        out = admission_replay(read_rows(a.runs))
+        print(json.dumps(out, indent=1, sort_keys=True))
+        print("pre-bridge UNMEASURED rows left: %d of %d pre-bridge (%d rows)" % (
+            len(out["unclassified"]), out["pre_bridge"], out["rows"]))
+        return 0 if not out["unclassified"] else 1
     with open(os.environ.get("RELENTLESS_RULES") or RULES, encoding="utf-8") as f:
         r = json.load(f)
     root = os.environ.get("RELENTLESS_ROOT") or "/home/mandrake/rm/relentless"
     row = run(Fx(seat=r.get("seat") or "BENCH"), root, a.item, a.criterion, a.proof, a.deploy, r, site=a.site)
     print(json.dumps(row, indent=1, sort_keys=True))
-    return {"PASS": 0, "FAIL": 1}.get(row["outcome"], 2 if row["outcome"] == "UNMEASURED" else 3)
+    return {"PASS": 0, "FAIL": 1}.get(row["outcome"], 2 if row["outcome"] in NO_VERDICT else 3)
 
 
 if __name__ == "__main__":

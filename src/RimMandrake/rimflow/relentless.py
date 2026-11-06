@@ -3875,9 +3875,11 @@ class Effects(relentless_game.GameFx):
         except Exception:  # noqa: BLE001
             return True         # the owner's pause cannot be read: that is not "not paused"
 
-    def live_check(self, line, not_before):
+    def live_check(self, line, not_before=0, now=None):
+        # relentless_reach.live_reading calls check(line, now=now): without `now` every live line read COULD NOT READ
+        # (LIVECHECK_FIX_TYPEERROR_BLINDS_EVERY_LINE)
         import live_line
-        return live_line.check(line, not_before=not_before)
+        return live_line.check(line, now=now, not_before=not_before)
 
     def live_round_alive(self, pid):
         """A live round still runs as `pid`: its argv is the script run with `round`, so a reused pid (a `tail -f` of the
@@ -6619,6 +6621,16 @@ def _lease(store, fx, r, now, acts, seen, wake=None):
         acts.append({"do": "lease", "item": item, "gen": st["gen"], "unit": st["run"]["unit"]})
 
 
+def live_slis(store, now):
+    """redesign_final 3.1: the live lane's four SLIs per load and per distinct key (relentless_live.live_slis)."""
+    try:
+        import relentless_live
+        return relentless_live.live_slis(relentless_live.read_rows(os.path.join(store.root, "live", "runs.jsonl")), now,
+                                         relentless_live.commit_time)
+    except Exception as e:      # noqa: BLE001  an unread SLI is a reading that failed, never a dead tick
+        return {"unread": "%s: %s" % (type(e).__name__, str(e)[:200])}
+
+
 def reading(store, r, now, acts, clock=None, fx=None):
     """clock() -> the write time: `now` is the tick's start, and a stamp of that aged through the whole tick
     (RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS: files written 14:10:21Z carrying 13:55:04Z)."""
@@ -6637,6 +6649,7 @@ def reading(store, r, now, acts, clock=None, fx=None):
            "places_live": sum(1 for s in states if s["status"] in RUNS_A_PLACE),
            "put_down": [{"item": s["item"], "status": s["status"], "on": put_down_on(s)}
                         for s in states if s["status"] in PUT_DOWN + ("candidate",)]}
+    rec["live_slis"] = live_slis(store, now)
     store._write(store.p("reading.json"), json.dumps(rec, indent=1, sort_keys=True))
     return rec
 
@@ -7429,6 +7442,8 @@ def main(argv=None):
                         pass
         elif a.cmd == "reading":
             print(open(store.p("reading.json"), encoding="utf-8").read())
+            import relentless_live      # the SLIs read now, not at the last tick
+            print("\n".join(relentless_live.sli_lines(live_slis(store, time.time()))))
         elif a.cmd == "stats":
             print(json.dumps(stats(store), indent=1))
         elif a.cmd == "show":

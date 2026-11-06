@@ -66,7 +66,7 @@ def classify(row, item=None, needs=()):
     """A runs.jsonl UNMEASURED row -> Env, or None when its cause is not the environment's (a stale build, a first dud,
     a final wait, no game yet: the lane's old roads). needs: the item's `live-mods:` entries; a type the load lacks is
     a load fix on their packageIds (relentless_live_round.is_package), or with none a missing_mod route."""
-    if not row or row.get("outcome") != "UNMEASURED":
+    if not row or row.get("outcome") not in ("UNMEASURED", "NOT_ADMITTED"):     # relentless_live.NO_VERDICT
         return None
     why = row.get("why") or ""
     m = NO_PKG.search(why)

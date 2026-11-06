@@ -441,7 +441,7 @@ ITEM_GATED = "a sibling clause stopped at the item's deploy or load gate"
 
 def item_gate(row):
     """True when a runs.jsonl row stopped at an ITEM-level gate (relentless_live.UNDEPLOYED): no proof ran."""
-    return bool(row) and row.get("outcome") == "UNMEASURED" and "proof_exit" not in row and (
+    return bool(row) and row.get("outcome") in L.NO_VERDICT and "proof_exit" not in row and (
         row.get("why") or "").startswith(L.UNDEPLOYED)
 
 
@@ -469,14 +469,15 @@ def decides(row):
     (relentless_live.STALE) and a cause that outlived a reload (row `defect`). Rerunning any of them on the same sha can
     only write the same row again (LIVE_REFUSAL_SILENCE_SAME_TEXT_HELD: 18 stale-build rows reran six-hourly)."""
     return bool(row) and (row.get("outcome") in TERMINAL or bool(row.get("defect"))
-                          or (row.get("outcome") == "UNMEASURED" and (row.get("why") or "").startswith(L.STALE)))
+                          or (row.get("outcome") in L.NO_VERDICT and (row.get("why") or "").startswith(L.STALE)))
 
 
-def due(last, sha, now, retry_s, game=None, per_game=True):
+def due(last, sha, now, retry_s, game=None, per_game=True, site=None):
     """-> None when this criterion may run now, else why not. `last` is its deciding runs.jsonl row on `sha`, or None.
     game: the running game's start (relentless_live.iso); a reload request made on it stands until another game runs.
     per_game: an undeployed build waits for another game (the cron round); a game phase's own round passes False, its
-    staging is what deploys it."""
+    staging is what deploys it. site: the clause's `live-site` command, a part of a NOT_ADMITTED row's key
+    (relentless_live.admit_waits); None when the caller did not read it."""
     if not last or last.get("sha") != sha:
         return None
     if last.get("outcome") in TERMINAL:
@@ -491,12 +492,21 @@ def due(last, sha, now, retry_s, game=None, per_game=True):
     # clause read FINAL_WAIT, or a proof that RAN and measured nothing, waits for a new build (a new sha: another `last`)
     # or another game; a game phase's round is no exception (2026-11-03 17:47-18:16Z: GRAFFITI A2/F1/F2 and GENERATOR A2
     # re-ran every 15 min on one game, six UNMEASURED runs that could not differ)
-    if game and last.get("outcome") == "UNMEASURED":
+    if game and last.get("outcome") in L.NO_VERDICT:
         why, on = last.get("why") or "", last.get("game")
         if why.startswith(L.FINAL_WAIT) and (on == game or (not on and last.get("at", "") >= game)):
             return WAITS_TIER       # a row before 2026-11-03 has no game: written after this game started, it is its
         if on == game and SAME_GAME_DUD.search(why):
             return DUD_HERE
+    # redesign_final G1(c): a NOT_ADMITTED row waits on its key (sha, load, site, harness) and runs the moment one part
+    # moves, never later and never never; a transient cause (the harness's read) is the retry timer's below. A game
+    # phase's own round (per_game False) stages a deploy gap itself, so only the other causes hold it there
+    if game and last.get("outcome") == L.NOT_ADMITTED and (per_game or last.get("admit") != "deploy_gap"):
+        held = L.admit_waits(last, sha, game, site)
+        if held:
+            return held
+        if not L.ADMIT.get(last.get("admit"), ("", True))[1]:
+            return None
     try:
         at = calendar.timegm(time.strptime(last.get("at", ""), "%Y-%m-%dT%H:%M:%SZ"))
     except ValueError:
@@ -555,7 +565,8 @@ def candidates(items, proofs_of, hist, now, retry_s, game=None, steve=None):
             if gated and not decides(last):
                 skip("not deployed on this game")
                 continue
-            why = due(last, it["built_sha"], now, retry_s, game, per_game=bool(retry_s))   # a game phase restages
+            why = due(last, it["built_sha"], now, retry_s, game, per_game=bool(retry_s),   # a game phase restages
+                      site=proof_lines(text, SITE_LINE).get(cid) or "")
             if why:
                 skip(why)
                 continue
@@ -829,7 +840,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         if item_gate(row):
             gated.add((item_id, sha))
         why = row.get("why") or ""
-        if row["outcome"] == "UNMEASURED" and (any(why.startswith(s) for s in STOP) or BRIDGE_DUD.search(why)):
+        if row["outcome"] in L.NO_VERDICT and (any(why.startswith(s) for s in STOP) or BRIDGE_DUD.search(why)):
             summary["left"] = len(todo) - k - 1     # clauses this round did not run into the same wall: the next round has them
             return done("stopped: %s" % why[:200])
     return done("done")

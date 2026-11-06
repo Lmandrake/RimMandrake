@@ -517,7 +517,7 @@ def t_review_round_one():
     # GPT round 1 (2026-11-01): each row red under the mutant that removes its guard
     fx = FakeFx(deleted=["src/RimMandrake/TheRot/Defs/Fauna/Old.xml"])
     row = go(fx)
-    check("deleted shipping file is unmeasured", row["outcome"] == "UNMEASURED" and "deleted" in row["why"]
+    check("deleted shipping file is unmeasured", row["outcome"] == L.NOT_ADMITTED and "deleted" in row["why"]
           and not any(v in ("plan", "take", "verify") for v in fx.verbs()), (row, fx.verbs()))
     check("deleted tooling file is fine", go(FakeFx(deleted=["src/RimMandrake/TheRot/validation.py"]))["outcome"] == "PASS")
     fx = FakeFx(release_rc=1)
@@ -640,7 +640,7 @@ def t_review_round_three():
               and "while the proof ran" in row["why"], (row, fx.verbs()))
     fx = FakeFx(touched=["src/RimMandrake/TheRot/Defs/A\nB.xml"], started=None)
     row = go(fx)
-    check("newline in a shipping path is still a game file", row["outcome"] == "UNMEASURED", row)
+    check("newline in a shipping path is still a game file", row["outcome"] == L.NOT_ADMITTED, row)
     d = tempfile.mkdtemp(prefix="rl_glob_")
     os.makedirs(os.path.join(d, "Bundle/Biomes/TheRot/Defs"))
     open(os.path.join(d, "Bundle/Biomes/TheRot/Defs/A[1].xml"), "w").write("x")
@@ -709,7 +709,7 @@ def t_refusals_never_touch_the_bridge():
         if name == "L3":
             continue
         row = go(fx, crit=crit, proof=proof)
-        check("%s stops" % name, row["outcome"] in ("REFUSED", "UNMEASURED"), row)
+        check("%s stops" % name, row["outcome"] in ("REFUSED", L.NOT_ADMITTED), row)
         check("%s: no proof" % name, "proof" not in fx.verbs(), fx.verbs())
         check("%s: no ledger verdict" % name, "verify" not in fx.verbs(), fx.verbs())
         if name != "bridge busy":
@@ -724,7 +724,7 @@ def t_refusals_never_touch_the_bridge():
 def t_later_commit_is_unmeasured():
     fx = FakeFx(later=[("src/RimMandrake/TheRot/Defs/Fauna/RM_Chittik.xml", "ef081426f0")])
     row = go(fx)
-    check("later change: unmeasured", row["outcome"] == "UNMEASURED" and "ef081426f0" in row["why"], row)
+    check("later change: unmeasured", row["outcome"] == L.NOT_ADMITTED and "ef081426f0" in row["why"], row)
     check("later change: no bridge, no verify", not any(v in ("take", "verify", "plan") for v in fx.verbs()),
           fx.verbs())
     fx = FakeFx(later=[("src/RimMandrake/TheRot/validation.py", "ef081426f0")])
@@ -1065,7 +1065,7 @@ def t_running_load_gap_is_unmeasured():
     """owner 2026-11-02: an item fits the game by its RUNNING mods; a build the running list does not load is not run."""
     fx = FakeFx(gap="not in the running load: RM_Biomes (mandrake.rm.biomes)")
     row = go(fx)
-    check("gap row unmeasured, restageable", row["outcome"] == "UNMEASURED" and
+    check("gap row unmeasured, restageable", row["outcome"] == L.NOT_ADMITTED and
           row["why"].startswith("not in the running load"), row)
     check("gap: no proof, no verify", "proof" not in fx.verbs() and "verify" not in fx.verbs(), fx.verbs())
     # LIVE_SLOTS_MEASURE_NOT_REFUSE_IN_SLOT: read before the slot, so a game that cannot serve the run gives it none
@@ -1085,7 +1085,7 @@ def t_tiers_small_first_final_last():
     root = tempfile.mkdtemp(prefix="rl_live_")
     row = L.run(fx, root, "ROT_X", "A2", "python3 x.py", "", {}, now=1_800_000_000, needs=["Graffiti"])
     check("tiers: declared live-mods are gated with no game file touched",
-          ("gap", ("Graffiti",)) in fx.calls and row["outcome"] == "UNMEASURED" and "proof" not in fx.verbs(), fx.calls)
+          ("gap", ("Graffiti",)) in fx.calls and row["outcome"] == L.NOT_ADMITTED and "proof" not in fx.verbs(), fx.calls)
     fx = FakeFx(touched=[])
     row = L.run(fx, root, "ROT_X", "A2", "python3 x.py", "", {}, now=1_800_000_000, needs=["Graffiti"])
     check("tiers: a small game holding the mods runs the L1 proof, never asks for the full list",
@@ -1095,7 +1095,7 @@ def t_tiers_small_first_final_last():
     fx = FakeFx(it=final, touched=[], full_gap="%s: the running game has 23 mods, 21 of FULL.LATEST's 316" % L.FINAL_WAIT)
     row = L.run(fx, root, "ROT_X", "F1", "python3 x.py", "", {}, now=1_800_000_000, needs=["Graffiti"])
     check("tiers: a final clause on a small game is UNMEASURED FINAL_WAIT, the proof never runs",
-          row["outcome"] == "UNMEASURED" and row["why"].startswith(L.FINAL_WAIT) and "proof" not in fx.verbs()
+          row["outcome"] == L.NOT_ADMITTED and row["why"].startswith(L.FINAL_WAIT) and "proof" not in fx.verbs()
           and "take" not in fx.verbs() and row.get("slot") is False, (row, fx.verbs()))
     check("tiers: the FINAL_WAIT row carries its game (one row per game, relentless_live_round.due)",
           row.get("game") == L.iso(2000.0), row)

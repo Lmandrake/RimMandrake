@@ -45,6 +45,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import relentless_expedite  # noqa: E402
 import relentless_envcause  # noqa: E402
+NO_VERDICT = ("UNMEASURED", "NOT_ADMITTED")     # relentless_live.NO_VERDICT: a NOT_ADMITTED row routes as it did before
 
 GAME = "game"
 READING_TTL_S = 30
@@ -267,7 +268,7 @@ def final_split(rows, owed, clauses, started):
     if not finals:
         return finals, False
     small_ok = all((rows.get(k) or {}).get("outcome") == "PASS" for k in clauses if k not in finals)
-    waits = [k for k in finals if (rows.get(k) or {}).get("outcome") == "UNMEASURED"
+    waits = [k for k in finals if (rows.get(k) or {}).get("outcome") in NO_VERDICT
              and (rows[k].get("why") or "").startswith(FINAL_WAIT) and (not started or row_at(rows[k]) >= started)]
     rest_ok = all(k in waits or (rows.get(k) or {}).get("outcome") == "PASS" for k in finals)
     return finals, bool(small_ok and waits and rest_ok)
@@ -2026,7 +2027,7 @@ def step(store, fx, r, item, now, acts, sup):
             v = infra[0]
             return _harness(store, fx, r, item, "%s %s (%s)" % (v.get("criterion"), v.get("why") or "",
                                                                 v.get("log") or ""), now, acts)
-        dead = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and relentless_live_round.decides(v)]
+        dead = [v for v in rows.values() if v.get("outcome") in NO_VERDICT and relentless_live_round.decides(v)]
         if dead:        # a build no game can run, or a cause that outlived a reload: no stage or proof round can help
             v = dead[0]
             if not v.get("defect") and _carry(store, fx, item, sha, now, acts):
@@ -2052,7 +2053,7 @@ def step(store, fx, r, item, now, acts, sup):
                               now, acts, "the proof ran on this game and build and measured nothing; the same game and "
                               "build can only say it again")
         since = max(g.get("staged_at") or 0, g["entered_at"])
-        stale = [v for v in rows.values() if v.get("outcome") == "UNMEASURED" and row_at(v) >= since
+        stale = [v for v in rows.values() if v.get("outcome") in NO_VERDICT and row_at(v) >= since
                  and any((v.get("why") or "").startswith(w) for w in RESTAGE)]
         rd = fx.game_reading()
         state = rd.get("state")
