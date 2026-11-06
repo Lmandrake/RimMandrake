@@ -879,3 +879,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T04:27:10Z","tsn":1793939230454185428}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T04:27:24Z","tsn":1793939244886144810}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A6 (L2), read-only proof","ts":"2026-11-06T04:29:50Z","tsn":1793939390999461198}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T04:30:17Z","tsn":1793939417672950356}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A7 (L2), read-only proof","ts":"2026-11-06T04:30:52Z","tsn":1793939452517804878}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T04:31:48Z","tsn":1793939508379905969}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GRAFFITI_V1_LIVE_PROOF_1 A8 (L1), read-only proof","ts":"2026-11-06T04:32:11Z","tsn":1793939531110482246}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T04:33:22Z","tsn":1793939602657432301}
