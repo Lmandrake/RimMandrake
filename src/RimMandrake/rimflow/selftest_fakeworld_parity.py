@@ -31,7 +31,7 @@ import selftest_relentless as T      # noqa: E402
 # Frozen 2026-11-05: may only shrink. Never add a name here to make this test pass.
 KNOWN_GAPS = frozenset("""
 bridge_idle bridge_release bridge_take bundle_clone clone_gap first_touch_hold
-game_batch_gap game_mod_gap game_preflight game_rows game_trees health
+game_batch_gap game_mod_gap game_preflight game_trees health
 live_round_alive live_round_launch load_stall_evidence modlist_enable prove_alive
 prove_launch refusal_print rimflow run_fixture showing_clone told
 """.split())

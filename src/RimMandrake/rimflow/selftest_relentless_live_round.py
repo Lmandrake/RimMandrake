@@ -236,16 +236,23 @@ def t_tick_env():
     fx = RL.Effects.__new__(RL.Effects)
     with tempfile.TemporaryDirectory() as d:
         procs = []
-        for root in ("ours", "other"):
+        for root in ("ours", "other", "store/release/r1"):
             sp = os.path.join(d, root, "src/RimMandrake/rimflow/relentless_live_round.py")
             os.makedirs(os.path.dirname(sp))
             with open(sp, "w") as f:
                 f.write("import time\ntime.sleep(30)\n")
             procs.append(subprocess.Popen([sys.executable, sp, "round"]))
         try:
-            fx.books = os.path.join(d, "ours")
+            # Popen returns before the child's argv is readable (measured: 8% of fresh spawns read short): an unsettled
+            # read answers False, which would fail the first check and pass the second without judging it.
+            deadline = time.time() + 10
+            for pr in procs:
+                while open("/proc/%d/cmdline" % pr.pid, "rb").read().count(b"\0") < 3 and time.time() < deadline:
+                    time.sleep(0.005)
+            fx.books, fx.base = os.path.join(d, "ours"), os.path.join(d, "store")
             check("tick: our checkout's round is alive", fx.live_round_alive(procs[0].pid))
             check("tick: another checkout's round (pid reuse) is not ours", not fx.live_round_alive(procs[1].pid))
+            check("tick: a round from a release tree is ours", fx.live_round_alive(procs[2].pid))
         finally:
             for pr in procs:
                 pr.kill()
