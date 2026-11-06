@@ -283,9 +283,36 @@ def main():
     ok(art_r is not None and abs(art_r - (NOW - 0.25 * HOUR)) < 2, "8: the latest unhold row is the resume time", art_r)
     ok(why_r(art_f, art_r) == ([], False), "8: an unhold after the last failure is no bounce (ART_OVERRIDE_FAMILY_SCRIPT_1)",
        why_r(art_f, art_r))
-    ok(why_r(art_f + [(NOW - 60, "game_env_fix")], art_r)[0] == ["4 returns", "game_env_fix failed it 3 times"],
-       "8: a failure after the unhold bounces again, with its history", why_r(art_f + [(NOW - 60, "game_env_fix")], art_r))
-    ok(OW.churn_why(art, art_f, NOW, CFG) == ["4 returns", "game_env_fix failed it 2 times"], "8: no unhold, still a bounce", None)
+    # game_env_fix is a churn env end (OPS_CHURN_DIAGNOSE_WEEPINGSTONE_BENK_YIMV): the lane's own fix spends the returns
+    # before it, and only the env class repeating inside the window (after the unhold) speaks
+    ok(why_r(art_f + [(NOW - 60, "game_env_fix")], art_r)[0] == [],
+       "8: one lane fix after the unhold is no bounce", why_r(art_f + [(NOW - 60, "game_env_fix")], art_r))
+    two_after = art_f + [(NOW - 600, "game_env_fix"), (NOW - 60, "game_env_fix")]
+    ok(why_r(two_after, art_r)[0] == ["game_env_fix failed it 2 times"],
+       "8: two lane fixes after the unhold bounce", why_r(two_after, art_r))
+    ok(OW.churn_why(art, art_f, NOW, CFG) == ["game_env_fix failed it 2 times"], "8: no unhold, still a bounce",
+       OW.churn_why(art, art_f, NOW, CFG))
+    # 8w OPS_CHURN_DIAGNOSE_WEEPINGSTONE_BENK_YIMV: WEEPINGSTONES_HANDLER_VANISHES_1, returns 3 (gen 1 blind_fail, gen 3
+    # proof_weak 2026-11-03, gen 5 game_fail 2026-11-04), gen 7 blind PASS, game_env_route 11-05 14:52Z, unhold 20:29Z,
+    # then ONE game_env_fix 11-06 07:17Z (the lane restaging Biomes, not in the running load): it rang 'bouncing: 3
+    # returns'. Read under the SHIPPED rules, as ops_watch reads it.
+    ship = json.loads((Path(OW.__file__).parent / "ops_watch_rules.json").read_text())["relentless"]
+    ws_rows = [{"gen": 1, "at": iso(NOW - 68 * HOUR), "end": "blind_fail"}, {"gen": 3, "at": iso(NOW - 67.5 * HOUR), "end": "proof_weak"},
+               {"gen": 5, "at": iso(NOW - 29 * HOUR), "end": "game_fail"}, {"gen": 7, "at": iso(NOW - 22 * HOUR), "end": "finish"},
+               {"gen": 7, "at": iso(NOW - 16.4 * HOUR), "end": "game_env_route"}, {"at": iso(NOW - 10.8 * HOUR), "end": "unhold", "to": "game"},
+               {"gen": 7, "at": iso(NOW - 0.2 * HOUR), "end": "game_env_fix"}]
+    ok_ends = set(ship["churn_not_fail_ends"])
+    ws_f = [f for f in (OW.attempt_failed(r, ok_ends) for r in ws_rows) if f]
+    ws = {"returns": 3, "status": "game"}
+    ws_r = OW.attempts_resumed(ws_rows)
+    ok(OW.churn_why(ws, ws_f, NOW, ship, 0, ws_r) == [] and not OW.in_churn(ws, ws_f, NOW, ship, 0, ws_r),
+       "8w: one lane env fix in the game phase spends three old returns (WEEPINGSTONES_HANDLER_VANISHES_1)",
+       (ws_f, OW.churn_why(ws, ws_f, NOW, ship, 0, ws_r)))
+    ws_f2 = ws_f + [(NOW - 60, "game_env_fix")]
+    ok(OW.churn_why(ws, ws_f2, NOW, ship, 0, ws_r) == ["game_env_fix failed it 2 times"],
+       "8w: the lane fixing it twice inside the window still speaks", OW.churn_why(ws, ws_f2, NOW, ship, 0, ws_r))
+    ok(OW.churn_why(ws, ws_f + [(NOW - 60, "game_fail")], NOW, ship, 0, ws_r)[:1] == ["3 returns"],
+       "8w: a real game_fail after the lane fix bounces with its history", OW.churn_why(ws, ws_f + [(NOW - 60, "game_fail")], NOW, ship, 0, ws_r))
     # 8s OPS_CHURN_DIAGNOSE_WORLD_AVST_JRDU: WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE, blind PASS on gen 7 (10:55Z), then at
     # 18:11Z a game_stale_build (WORLD_WATER_REDRAW_SEAS_THAT_READ_DEEP rebuilt the shared DLL and edited RM_WorldLook.cs),
     # re-finished on HEAD at 18:21Z; at 18:29:49Z, its gen-9 check in flight (state.json's check now that one, the gen-7

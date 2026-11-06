@@ -2203,7 +2203,8 @@ def in_churn(st, fails, now, cfg, waits=0, resumed=None):
     return bool(churn_why(st, fails, now, cfg, waits, resumed))
 
 
-CHURN_ENV_ENDS = ("game_stale_build",)  # endings that prove a blind PASS and blame another commit (churn_why)
+CHURN_ENV_ENDS = ("game_stale_build", "game_env_fix")  # game-phase endings (proof of a blind PASS) that blame another
+# commit or the environment, not the work (churn_why; game_env_fix: OPS_CHURN_DIAGNOSE_WEEPINGSTONE_BENK_YIMV)
 
 
 def churn_why(st, fails, now, cfg, waits=0, resumed=None):
