@@ -1439,6 +1439,9 @@ def breaker_rig(world_cls=None, **rules):
     """One tick per try, the clock well past each cool. The real Effects where the path is the fault's: launch, told,
     conductor log, the alarm item (its rimflow call stubbed: no selftest writes the real ledger)."""
     d = tempfile.mkdtemp(prefix="rlbrk-")
+    # its own run-tmp root: rigs reuse unit names (gen restarts at g1), so an earlier rig's dir sent prepare() to ask
+    # systemctl about it, and a flaky answer under load split one cause into two keys (BREAKER_SELFTEST_FIX_ONE_RED_IN_THIRTEEN)
+    os.environ["RM_RUN_TMP_ROOT"] = os.path.join(d, "runtmp")
     log, seen = os.path.join(d, "conductor.md"), []
     r = dict(RULES, **dict(dict(share=1.0, launch_breaker=2, breaker_cool_s=900, staffing=dict(STAFF, conductor_log=log)), **rules))
     x = Rig(n=1, share=1.0)
@@ -1468,6 +1471,13 @@ def told_rows(d):
 def t_breaker_di2():
     """DI2, the planted faults: a refusal never charges; a failing launcher opens, reopens, and is told as an emergency."""
     old = os.environ.get("RM_OPS_WATCH_DIR")
+    # planted: systemctl answers flip between "unknown" and the truth, as under load. A rig that met an earlier rig's run
+    # dir would then fail some launches on "still in use", split the cause and never tell (1 red in 13 before)
+    real_states, flip = R.run_tmp.unit_states, [0]
+    def flaky_states(names, runner=None):
+        flip[0] += 1
+        return {n: "unknown" for n in names} if flip[0] % 2 else real_states(names, **({"runner": runner} if runner else {}))
+    R.run_tmp.unit_states = flaky_states
     x, d, log, seen = breaker_rig()
     os.environ["RM_OPS_WATCH_DIR"] = d
     live = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
@@ -1591,6 +1601,7 @@ def t_breaker_di2():
     ok(n and not R.load_breaker(x.s), "a refused start does not charge the breaker")
     ok(len(calls) == n, "and is paced by itself: %s" % calls)
     x.done()
+    R.run_tmp.unit_states = real_states
     if old is None:
         os.environ.pop("RM_OPS_WATCH_DIR", None)
     else:
