@@ -277,10 +277,17 @@
     "ref": "rm-judge a2107a4d8457ab774 a_worldgen_switch review",
     "stage": 2,
     "tokens": 32459
+   },
+   {
+    "at": "2026-11-06T16:29:25Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793981883",
+    "stage": 2,
+    "tokens": 465578
    }
   ],
   "reserve": 60000,
-  "spent": 8250781
+  "spent": 8716359
  },
  "history": [
   {
@@ -594,6 +601,12 @@
    "stage": 2,
    "what": "open",
    "why": "run rm-role-designer-1793981883, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-06T16:29:26Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1793981883: stage 2 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -903,32 +916,34 @@
    "stage": 5,
    "summary": "Coverage judge rm-coverage-judge-1793981105 returned not_covered with 6 gaps (the root firebreak clause is already settled by d_root_ending, OWNER:1793950669508519029). One needs his ruling (worldgen placement switch); five are stage-3 fixes: flamefang venom bite unscened; fire-tick ash dusting (RM_FE_Filth_LooseAsh, ashDustingEnabled control) unscened; showcase exercises lists wrong (fire_cast over-claims inv_animal_roster and the giant leg, burn_line omits inv_animal_roster though it holds sc_populations); furnace-beast giant size has no oracle; ashwallow dome stance has no control of its own and sheet lines for ashwallow/three_skies omit what the tree tests.",
    "to": 2
+  },
+  {
+   "at": "2026-11-06T16:29:26Z",
+   "inputs": {
+    "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+    "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
+    "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
+    "tree": "881db40073f1ed0448c4b25a010461045c6544610062f5f011ce2670d561a9c9"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793981883",
+   "stage": 2,
+   "summary": "Worldgen switch settled without asking him: draft a_worldgen_switch struck by fresh review because his 2026-08-15 ruling already decides it. Recorded d_worldgen_outside_promise (the built new-world placement switch stays, outside the promise, unchecked; sheet floor:worldgen to read 'no worldgen of our own'). Default-on question filed as PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT, non-blocking. No ask sent; no core contradiction open. Stage 3 owes the worldgen rewording plus the five coverage gaps in coverage_verdict.json (2026-11-06T16:05:05Z)."
   }
  ],
- "running": {
-  "at": "2026-11-06T16:18:37Z",
-  "inputs": {
-   "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
-   "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
-   "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-   "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
-   "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
-   "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
-   "tree": "881db40073f1ed0448c4b25a010461045c6544610062f5f011ce2670d561a9c9"
-  },
-  "manifest": {
-   "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
-   "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
-  },
-  "owner_uncited": [
-   "1793766816609436834"
-  ],
-  "reserved": 500000,
-  "run": "rm-role-designer-1793981883",
-  "stage": 2
- },
+ "running": null,
  "schema": 1,
- "stage": 2,
+ "stage": 3,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
