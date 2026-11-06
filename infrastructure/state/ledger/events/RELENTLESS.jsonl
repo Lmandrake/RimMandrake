@@ -821,3 +821,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WARSCAR_HOSPICE_DESERTERS_1 A4 (L2), read-only proof","ts":"2026-11-06T00:01:53Z","tsn":1793923313017879523}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T00:02:44Z","tsn":1793923364634776435}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_SAND_SWIM_REMAINDER_1 A5 (L2), read-only proof","ts":"2026-11-06T00:05:25Z","tsn":1793923525415610457}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T00:13:14Z","tsn":1793923994594886797}
