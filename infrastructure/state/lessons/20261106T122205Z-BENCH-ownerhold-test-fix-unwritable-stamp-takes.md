@@ -1,0 +1,1 @@
+OWNERHOLD_TEST_FIX_UNWRITABLE_STAMP_TAKES: a 'selftest X fails on origin/main' item filed 2026-11-04 was already fixed by f0d209cc53 (OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED, 2026-11-05) under another name. Rerun the named test on today's main before editing anything; a failing-test item can be closed by a sibling fix.
