@@ -1216,3 +1216,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:13:54Z","tsn":1793981634851956055}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR A2 (L2), read-only proof","ts":"2026-11-06T16:15:51Z","tsn":1793981751869007821}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:16:08Z","tsn":1793981768989476725}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE A1 (L1), read-only proof","ts":"2026-11-06T16:19:23Z","tsn":1793981963752394421}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:19:43Z","tsn":1793981983211222044}
