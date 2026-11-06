@@ -3264,6 +3264,80 @@ def pit_prison_room(t):
     Each setting's OFF side is read through the same predicate. Not proven here: a full recruit/convert session
     from the lip, food dropped down (live walk owed), the width rule (C# selftest)."""
     x0, z0 = _prep_plot(t, "G")
+    _clear_prison_strays(t, x0, z0)
+    try:
+        _pit_prison_room_body(t, x0, z0)
+    finally:
+        # PITPRISON_CHAIN_FIX_LEFTOVERS_PICK_FIGHTS: the fixtures are vanished on EVERY exit, not only a clean end
+        # (a surprise abort in capture_down_off, 2026-11-05, left colonist + unarmed hostile brawling on plot G and the
+        # next two runs stopped UNMEASURED on the colonist's hurt/downed).
+        _vanish_own_fixtures(t)
+
+
+def _clear_prison_strays(t, x0, z0):
+    """PITPRISON_CHAIN_FIX_LEFTOVERS_PICK_FIGHTS: at chain start, vanish (no death, no corpse) every living HOSTILE pawn
+    on the map and every living pawn on plot G (+ buffer) that this chain did not spawn: an earlier run's leftovers that
+    _sweep_earlier_chains cannot see (another process's _SPAWNED). Player pawns are vanished only after _keep_colony
+    has made sure the colony outlives them. Declared in the chain record. Upkeep: an unreadable listing is recorded and
+    nothing is removed."""
+    if not t._guard():
+        return []
+    b = PLOT_BUFFER
+    rx, rz, rw, rh = x0 - b, z0 - b, PW + 2 * b, PH + 2 * b
+    mine = set(p for o, p in _SPAWNED if o == _chain_token(t))
+    lp = t.bridge_call("jawa/list_pawns", limit=500)
+    rec = getattr(t, "_record", None)
+    if not isinstance(lp, dict) or not isinstance(lp.get("pawns"), list):
+        if callable(rec):
+            rec("pit_prison_room strays: pawn listing unreadable: %s" % str(lp)[:160], lp)
+        return []
+    doomed, players = [], []
+    for p in lp["pawns"]:
+        if not isinstance(p, dict):
+            continue
+        pid = p.get("id")
+        if not pid or pid in mine or p.get("dead") or p.get("spawned") is False:
+            continue
+        px, pz = p.get("x"), p.get("z")
+        on_plot = (isinstance(px, (int, float)) and isinstance(pz, (int, float))
+                   and rx <= px < rx + rw and rz <= pz < rz + rh)
+        if p.get("hostile") is True or on_plot:
+            doomed.append(pid)
+            if p.get("isPlayer"):
+                players.append(pid)
+    if players:
+        _keep_colony(t, players)
+    for pid in doomed:
+        t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+    if doomed and callable(rec):
+        rec("pit_prison_room strays cleared at chain start (hostile anywhere or on plot G): %s" % doomed, doomed)
+    return doomed
+
+
+def _vanish_own_fixtures(t):
+    """Vanish every pawn THIS chain spawned (its _SPAWNED rows), whatever the guard says; the colony is kept first.
+    Never raises: it runs in a finally and must not mask the exception that ended the chain."""
+    tok = _chain_token(t)
+    own = [p for o, p in _SPAWNED if o == tok and p]
+    if not own:
+        return []
+    try:
+        _keep_colony(t, own)
+    except Exception:                                        # noqa: BLE001 - upkeep inside a finally
+        pass
+    gone = []
+    for pid in own:
+        try:
+            v = t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+            if not (isinstance(v, dict) and v.get("success") is False):
+                gone.append(pid)                             # a refused vanish stays in _SPAWNED: the next sweep retries
+        except Exception:                                    # noqa: BLE001 - one failed vanish never stops the rest
+            pass
+    _SPAWNED[:] = [(o, p) for o, p in _SPAWNED if not (o == tok and p in gone)]
+    return gone
+
+
+def _pit_prison_room_body(t, x0, z0):
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, ROOM_DEPTH)
     centre, west_edge, east_edge = pit[4], pit[1], pit[7]
@@ -3334,10 +3408,7 @@ def pit_prison_room(t):
             _expect(k.get("serve") == "False" if t._guard() else None, "lip service with the setting OFF: %s" % k)
     # Leave nothing behind: the drafted warden stayed on the lip beside the captured prisoner and, MEASURED 2026-10-06,
     # took fist bruises/cracks through the next THREE chains (liquid_pump, dig_finds, machinery_hoses (now machinery_pipes) read UNMEASURED on
-    # colonist_injured_unexpectedly at (82,160)). Vanish: no death, no corpse, no death action.
-    for pid in (hid, col, locals().get("h2")):
-        if pid:
-            t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+    # colonist_injured_unexpectedly at (82,160)). pit_prison_room's finally vanishes them (_vanish_own_fixtures).
 
 
 PUMP_DX = 12   # liquid_pump's channel starts at x0+PUMP_DX on plot D
