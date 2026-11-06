@@ -12,6 +12,7 @@ every call, offline, 0 ticks:
   --case stray-hostiles   the map already holds an earlier run's leftovers: a living hostile far off the plot and a
                           living colonist on plot G must be vanished BEFORE the chain's first spawn; a dead hostile and
                           an off-plot friendly colonist must be left alone.
+  (abort_mid_chain / stray_hostiles are accepted spellings of the hyphenated cases)
   --rev REV               a git revision whose extensions.py to judge (default WORKTREE: the file on disk)
 Prints FIXTURE_VERDICT: PASS (exit 0) | FAIL (exit 1); a source it cannot load prints UNMEASURED (exit 2), no verdict."""
 import argparse
@@ -209,11 +210,13 @@ def case_strays(EXT, drop_vanish=False):
 
 
 CASES = {"abort-mid-chain": case_abort, "clean": case_clean, "stray-hostiles": case_strays}
+# underscore spellings too: relentless_boxrun's proof extractor ends a command at a hyphenated lowercase word
+ALIASES = {k.replace("-", "_"): k for k in CASES if "-" in k}
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--case", choices=sorted(CASES), required=True)
+    ap.add_argument("--case", choices=sorted(CASES) + sorted(ALIASES), required=True)
     ap.add_argument("--rev", default="WORKTREE")
     a = ap.parse_args(argv)
     try:
@@ -221,6 +224,7 @@ def main(argv=None):
     except Exception as e:                                   # noqa: BLE001
         print("UNMEASURED: cannot load extensions.py at %s: %s: %s" % (a.rev, type(e).__name__, e))
         return 2
+    a.case = ALIASES.get(a.case, a.case)
     probs = CASES[a.case](EXT)
     print("fixture_pit_prison_cleanup --case %s --rev %s" % (a.case, a.rev))
     for p in probs:
