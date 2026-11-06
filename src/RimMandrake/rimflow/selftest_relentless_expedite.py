@@ -220,6 +220,15 @@ d, s = fresh()
 a = types.SimpleNamespace(verb="set", item="NEVER_FILED_XYZ", level="interrupt", by="Conductor", why="w")
 ok(R.expedite_cli(a, s, 100.0, RULES, {}) == 2 and not X.read_log(s), "cli: a name never filed is refused")
 sys.stdout.flush()
+real_pkg = R.pkg
+# the real ledger_has on a real spawn-event row: the child's id is in `name`, and it has no later event
+R.pkg = lambda n: types.SimpleNamespace(read=lambda: [
+    {"seat": "BENCH", "event": "spawn", "name": "BORN_BY_SPAWN_ONLY", "from": "PARENT_X", "for": "BENCH"},
+    {"seat": "BENCH", "event": "note", "id": "PARENT_X"}])
+ok(R.ledger_has("BORN_BY_SPAWN_ONLY"), "ledger_has: an item whose only event is its spawn is filed")
+ok(R.ledger_has("PARENT_X"), "ledger_has: an item with an id event is filed")
+ok(not R.ledger_has("NEVER_FILED_XYZ"), "ledger_has: a name no event carries is not filed")
+R.pkg = real_pkg
 real = R.ledger_has, R.concept_refused
 R.ledger_has, R.concept_refused = (lambda i: True), (lambda *x: None)
 real_pkg = R.pkg

@@ -4993,7 +4993,9 @@ def refusal_memo(fx):
 def ledger_has(item):
     """The caller's own ledger, published or not: a typed id that names nothing never enters the line. Unreadable: yes."""
     try:
-        return any(e.get("id") == item for e in pkg("model").read())
+        # a spawn event names its child in `name`, not `id`: an item with only its birth is still filed
+        return any(e.get("id") == item or (e.get("event") == "spawn" and e.get("name") == item)
+                   for e in pkg("model").read())
     except Exception:  # noqa: BLE001
         return True
 
