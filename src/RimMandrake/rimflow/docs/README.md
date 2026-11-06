@@ -187,8 +187,7 @@ is what the verdict is for.
       ├─► render.py     markdown queue views (not tracked in git; regenerated)
       ├─► gitindex.py   which published commits name which item  ─► reconcile
       ├─► lints         ledger_lint (pre-push: append-only, no torn lines),
-      │                 citations_lint (docs citing closed items as live),
-      │                 live_proof_lint (proof debt hidden in commit prose)
+      │                 citations_lint (docs citing closed items as live)
       └─► consumers     RimPulse dashboard, handoff tool, hooks
 ```
 
