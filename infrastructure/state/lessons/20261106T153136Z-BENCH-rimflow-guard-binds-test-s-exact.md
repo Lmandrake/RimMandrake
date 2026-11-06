@@ -1,0 +1,1 @@
+A rimflow guard binds the test's exact bytes: when ./publish conflicts and you resolve the guard test by hand (e.g. both sides added a row to main()), re-show it red on origin/main's pre-fix code (git show origin/main:<code> into place, rimflow guard, restore) before landing, or the close is refused like CHECKER_REACH_FIX_STORE_STILL_DARK gen 3. Done this way at eba7149f84.
