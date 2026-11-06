@@ -201,7 +201,7 @@ def read_text(path):
 
 
 def write_text(path, text):
-    tmp = "%s.tmp.%d" % (path, os.getpid())
+    tmp = "%s.tmp.%d.%d" % (path, os.getpid(), threading.get_ident())
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(text + "\n")
     os.replace(tmp, path)
@@ -607,6 +607,7 @@ class Attempt:
         self.liveness_unknown = None
         self.child = None
         self.stop = threading.Event()
+        self.state_lock = threading.Lock()  # beat(): the main thread and the heartbeat both write state.json
         self.log = open(os.path.join(self.d, "worker.log"), "a", encoding="utf-8")
 
     def say(self, msg):
@@ -614,10 +615,13 @@ class Attempt:
         self.log.flush()
 
     def beat(self):
-        S.dump({"phase": self.phase, "ts": S.utcnow(), "pid": os.getpid(), "runner_sha": self.res["runner_sha"],
-                "retries": self.res["retries"], "phase_s": self.res["phase_s"],
-                "unit": os.environ.get("TESTQ_UNIT")},
-               os.path.join(self.d, "state.json"))
+        # One writer at a time, the record built inside the lock: a phase change landing on a heartbeat tick crashed an
+        # attempt with no verdict, and on drvfs two renames onto one target refuse each other (HARNESS_REPAIR_CAUSE_B338C64C).
+        with self.state_lock:
+            S.dump({"phase": self.phase, "ts": S.utcnow(), "pid": os.getpid(), "runner_sha": self.res["runner_sha"],
+                    "retries": self.res["retries"], "phase_s": dict(self.res["phase_s"]),
+                    "unit": os.environ.get("TESTQ_UNIT")},
+                   os.path.join(self.d, "state.json"))
 
     def heartbeat_loop(self):
         while not self.stop.wait(HEARTBEAT_S):

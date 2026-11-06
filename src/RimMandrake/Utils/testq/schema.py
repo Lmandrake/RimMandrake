@@ -62,6 +62,7 @@ import os
 import re
 import secrets
 import sys
+import threading
 
 JOB_SCHEMA = "testq.job/1"
 RESULT_SCHEMA = "testq.result/1"
@@ -393,8 +394,9 @@ def json_schema():
 
 
 def dump(obj, path):
-    """Write JSON atomically (temp file + rename in the same directory)."""
-    tmp = "%s.tmp.%d" % (path, os.getpid())
+    """Write JSON atomically (temp file + rename in the same directory). The temp name is per thread too: a worker has
+    two threads, and two writers sharing one temp file lose it to each other (HARNESS_REPAIR_CAUSE_B338C64C)."""
+    tmp = "%s.tmp.%d.%d" % (path, os.getpid(), threading.get_ident())
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(obj, f, indent=1, sort_keys=True, default=str)
         f.write("\n")
