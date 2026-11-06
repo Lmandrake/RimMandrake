@@ -34,6 +34,7 @@ import stat
 import subprocess
 import sys
 import time
+import types
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling  # noqa: E402
@@ -6399,7 +6400,8 @@ def check_resume(store, fx, r, item, now, acts):
             if st["status"] != "checking" or (st.get("check") or {}).get("nonce") != chk["nonce"]:
                 return
             st["check_count"] = n
-            st["check"].update(unit=unit, run=desc, at=now, expired=False)
+            st["check"].update(unit=unit, run=desc, at=now, expired=False,
+                               deadline=now + r["check_max_s"] + r["launch_grace_s"])    # or its answer arrives late
             st["check"]["resumed"] = st["check"].pop("resume")["session"]
             st["check"].pop("lost_seen", None)
             store.save(st)
@@ -6640,6 +6642,12 @@ def help_step(store, fx, r, item, now, acts):
     if h["status"] == "wanted":
         if gone:
             help_over(store, fx, item, "dropped", now, acts)
+        elif (st.get("hold") or {}).get("kind") == QUARANTINE:      # no consult starts until a ruling unholds it, and
+            with store.lock():                                      # the wait for room starts over when one does
+                cur = store.load(item)
+                cur["help"]["at"] = now
+                store.save(cur)
+            acts.append({"do": "help_waits", "item": item, "why": "quarantined"})
         else:
             help_start(store, fx, r, item, now, acts)
         return
@@ -6762,6 +6770,8 @@ def retire(store, fx, states, now, acts, r=None):
         if st["status"] not in OPEN or st["status"] in ("closing", "retiring", relentless_game.GAME):     # game: its own step
             continue
         led = fx.item_state(st["item"])
+        if led and led.get("lease") and not lease_live(types.SimpleNamespace(lease=led["lease"]), now):
+            led = dict(led, lease=None)     # an expired or released lease holds nothing here, as at enrolment
         if st.get("awaiting_ledger") and led is not None:       # published: it takes its place in the count again
             with store.lock():
                 cur = store.load(st["item"])
@@ -7120,7 +7130,14 @@ def _lease(store, fx, r, now, acts, seen, wake=None, late=None):
             st["run"] = run_desc(store, r, unit_name("work", item, st["gen"]), now)
             st["run"]["deadline"] = now + r["run_max_s"]       # overdue()'s worker_full line, persisted for finish()
             res = st.pop("resume", None)
-            if res and res.get("gen") == st["gen"] - 1 and not piloting(st):     # nothing ran between the cut and now
+            cut = st.get("pilot_step") or {}
+            if res and cut.get("sat_gen") == res.get("gen"):    # the session the account cut was a pilot step's sitting:
+                if res.get("gen") == st["gen"] - 1:             # it goes on sitting as a pilot, never as a builder
+                    cut["sat_gen"] = st["gen"]
+                else:
+                    cut.pop("sat_gen", None)                    # something ran since: a fresh pilot sits the step
+            if res and res.get("gen") == st["gen"] - 1 and (     # nothing ran between the cut and now
+                    not piloting(st) or cut.get("sat_gen") == st["gen"]):
                 st["run"]["resume"] = res["session"]
             store.save(st)
         import relentless_exam      # EXAM_SHADOW_FILL_ITEMS_OLDER_THAN_EXAMS: one contracted before the hook owes it now
