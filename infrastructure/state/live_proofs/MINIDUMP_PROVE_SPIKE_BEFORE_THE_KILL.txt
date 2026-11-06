@@ -2,4 +2,6 @@
 # alive 2 s later and the dump parses offline with RimWorldWin64.exe in its module list. Writes only under
 # D:\ClaudeWork\rimmandrake\minidump_spike\live (dump, its .json, <incident>.result.json with duration/pause/size).
 # Exit 0 holds, 1 does not, 2 UNMEASURED (no single game process, or python.exe unrunnable).
+# Stand-in baseline to compare against (offline spike, 2026-11-06): snapshot pause 4-58 ms, dump ~105 KB; a snapshot
+# that fails (error 1450 under memory pressure) falls back to direct and the record says fallbackFrom.
 live-proof A1: python3 src/RimMandrake/Utils/health_minidump_spike.py live
