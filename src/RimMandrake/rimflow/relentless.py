@@ -936,6 +936,9 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
         st["last_beat"] = now
         store.attempt(item, {"at": iso(now), "gen": gen, "contract": st["contract"]})
         store.save(st)
+    if not prev:    # the first contract, before the builder edits: a Setter (not this builder) owes the acceptance exam
+        import relentless_exam      # RELENTLESS_BUILD_EXAM_BEFORE_BUILDER, shadow: detached unit, never raises or gates
+        relentless_exam.on_contract(store, item, st.get("base"), now=now, clone=st.get("clone"))
 
 
 def rebind(store, item, gen, binding, comparison, obligation=None, now=None, r=None):
@@ -6664,6 +6667,8 @@ def reading(store, r, now, acts, clock=None, fx=None):
            "put_down": [{"item": s["item"], "status": s["status"], "on": put_down_on(s)}
                         for s in states if s["status"] in PUT_DOWN + ("candidate",)]}
     rec["live_slis"] = live_slis(store, now)
+    import relentless_exam      # the exam shadow (RELENTLESS_BUILD_EXAM_BEFORE_BUILDER): returns the exam would have caught
+    rec["exam_shadow"] = relentless_exam.summary(store)
     store._write(store.p("reading.json"), json.dumps(rec, indent=1, sort_keys=True))
     return rec
 

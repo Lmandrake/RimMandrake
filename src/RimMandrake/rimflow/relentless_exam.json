@@ -1,0 +1,11 @@
+{
+ "_doc": "relentless_exam.py (RELENTLESS_BUILD_EXAM_BEFORE_BUILDER). mode: off | shadow | live. shadow = exam set+validated beside the current flow, never gates a close; ends on shadow_target items with a Marker verdict (G25: a sample count, not days).",
+ "mode": "shadow",
+ "shadow_target": 30,
+ "max_items": 60,
+ "setter_agent": "rm-judge",
+ "setter_model": "opus",
+ "setter_max_s": 1200,
+ "unit_max_s": 3600,
+ "catch_per_unit": 3
+}
