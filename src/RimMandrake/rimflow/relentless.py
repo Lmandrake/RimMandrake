@@ -19,6 +19,7 @@ import calendar
 import contextlib
 import copy
 import fcntl
+import filecmp
 import glob
 import hashlib
 import importlib
@@ -100,6 +101,48 @@ def clone_gap(c):
     """-> the first path a usable clone holds that `c` lacks, or None when it is whole."""
     return next((p for p in CLONE_PROBE if not os.path.exists(os.path.join(c, p))), None)
 POOL_IGNORED_MAX = 2 * 10**9
+# RELENTLESS_BUNDLES_FIX_FOURTEEN_GIG_PATCHES: a bundle holds a worker's WIP, never a tree. Over these it raises (the clone
+# is kept and alarmed, bundle_failed) instead of writing 14 GB, as three bundles did on 2026-11-04/05.
+BUNDLE_PATCH_MAX = 500 * 10**6
+BUNDLE_MAX = POOL_IGNORED_MAX + 2 * BUNDLE_PATCH_MAX
+
+
+def restore_deleted(bundle, c):
+    """A bundle's `deleted` paths go from the fresh clone `c`, each only while upstream still holds the very blob the worker
+    removed (and the file is that blob). -> what was not removed, named."""
+    path = os.path.join(bundle, "deleted")
+    if not os.path.exists(path):
+        return []
+
+    def out(*a):
+        return subprocess.run(["git", "-C", c, *a], capture_output=True, text=True, timeout=120,
+                              stdin=subprocess.DEVNULL).stdout.strip()
+    with open(os.path.join(bundle, "HEAD"), encoding="utf-8") as f:
+        head = f.read().strip()
+    with open(path, encoding="utf-8") as f:
+        names = [x for x in f.read().split("\0") if x]
+    bad = []
+    for p in names:
+        if not os.path.lexists(os.path.join(c, p)):
+            continue
+        was, now = (out("rev-parse", "--verify", "-q", "%s:%s" % (rev, p)) for rev in (head, "HEAD"))
+        if was and was == now and out("hash-object", "--", p) == now:
+            os.unlink(os.path.join(c, p))
+        else:
+            bad.append("deleted %s kept: upstream changed it since" % p)
+    return bad
+
+
+def bundle_bytes(d):
+    """-> bytes under d, each inode once (real.patch is a hard link to diff.patch)."""
+    seen, n = set(), 0
+    for dp, _dirs, files in os.walk(d):
+        for x in files:
+            st = os.lstat(os.path.join(dp, x))
+            if (st.st_dev, st.st_ino) not in seen:
+                seen.add((st.st_dev, st.st_ino))
+                n += st.st_size
+    return n
 LEDGER_DIR = "infrastructure/state/ledger/events/"
 ITEMS_DIR = "infrastructure/state/items/"
 BOOKS_DERIVED = (LEDGER_DIR, ITEMS_DIR)
@@ -2879,11 +2922,26 @@ class Effects(relentless_game.GameFx):
 
     def bundle_clone(self, item, c):
         """Everything no remote has, on the store's disk, before a clone goes. -> the bundle dir, None when there is
-        nothing. Raises when it cannot be sure: the caller then keeps the clone."""
+        nothing. Raises when it cannot be sure: the caller then keeps the clone, and no half-written bundle stays.
+        RELENTLESS_BUNDLES_FIX_FOURTEEN_GIG_PATCHES (2026-11-04): a scratch clone whose fetch failed after its `clone
+        --no-checkout` had a .git, no index and no tree; every tracked file read as deleted, and three --binary patches each
+        carried the whole 3.9 GB tree as preimage (14 GB a bundle, three bundles). So: no index means never checked out
+        (missing files are not deletions); a deletion is a path in `deleted`, never a preimage (git apply refuses an
+        --irreversible-delete patch); index.patch is kept only when it differs from diff.patch; and a bundle over
+        BUNDLE_PATCH_MAX / BUNDLE_MAX raises instead of filling the disk."""
+        unchecked = not os.path.exists(os.path.join(c, ".git", "index"))
+        if unchecked:       # read-tree without -u writes only the index: present files then read as clean or changed
+            self.git_ok(c, "read-tree", "HEAD")
         paths = self.changed_paths(c)
         commits = self.git_ok(c, "rev-list", "HEAD", "--branches", "--tags", "--not", "--remotes").strip()
         stash = self.git_ok(c, "stash", "list", "--format=%H").split()
         ignored = self.ignored_paths(c)
+        deleted = [] if unchecked else [p for p in self.git_ok(c, "diff", "--name-only", "-z", "--no-renames",
+                                                                     "--diff-filter=D", "HEAD").split("\0") if p]
+        if unchecked:       # a file never checked out is not one a worker removed
+            gone = set(p for p in self.git_ok(c, "diff", "--name-only", "-z", "--no-renames", "--diff-filter=D",
+                                                "HEAD").split("\0") if p)
+            paths = [p for p in paths if p not in gone]
         if not paths and not commits and not stash and not ignored:
             return None
         if sum(os.lstat(os.path.join(c, p)).st_size for p in ignored) > POOL_IGNORED_MAX:
@@ -2894,19 +2952,43 @@ class Effects(relentless_game.GameFx):
         while os.path.exists(out):      # named by the second: never let an earlier bundle's files answer for this one
             out, n = os.path.join(home, "bundles", "%s-%s-%d" % (stamp, os.path.basename(c), n)), n + 1
         os.makedirs(out)
+        try:
+            self._bundle_write(c, out, paths, deleted, ignored, commits, stash)
+        except BaseException:
+            shutil.rmtree(out, ignore_errors=True)
+            raise
+        return out
+
+    def _bundle_write(self, c, out, paths, deleted, ignored, commits, stash):
         real = [p for p in paths if not p.startswith(POOL_NOISE)]
         untracked = self.git_ok(c, "ls-files", "-z", "--others", "--exclude-standard").split("\0")
         untracked = [p for p in untracked if p]
+        diff = ["git", "-C", c, "diff", "--binary", "--no-textconv", "--no-ext-diff", "--no-renames", "--diff-filter=d"]
+
+        def write(name, argv, cap=BUNDLE_PATCH_MAX):
+            path = os.path.join(out, name)
+            with open(path, "wb") as f:
+                if argv:
+                    subprocess.run(argv, stdout=f, check=True, timeout=300)
+            if os.path.getsize(path) > cap:
+                raise RuntimeError("%s is %d bytes, over the bundle cap %d: read this clone before it goes"
+                                   % (name, os.path.getsize(path), cap))
+            return path
         with open(os.path.join(out, "HEAD"), "w", encoding="utf-8") as f:
             f.write(self.git_ok(c, "rev-parse", "HEAD"))
-        with open(os.path.join(out, "diff.patch"), "wb") as f:
-            subprocess.run(["git", "-C", c, "diff", "--binary", "--no-textconv", "--no-ext-diff", "HEAD"], stdout=f, check=True, timeout=300)
-        with open(os.path.join(out, "index.patch"), "wb") as f:   # staged content the working file no longer shows
-            subprocess.run(["git", "-C", c, "diff", "--binary", "--no-textconv", "--no-ext-diff", "--cached", "HEAD"], stdout=f, check=True, timeout=300)
-        with open(os.path.join(out, "real.patch"), "wb") as f:
-            if real:    # noise excluded by prefix, never the paths listed: thousands of them overflow argv (E2BIG)
-                subprocess.run(["git", "-C", c, "diff", "--binary", "--no-textconv", "--no-ext-diff", "HEAD", "--", ":(top)"]
-                               + [":(top,exclude)" + p for p in POOL_NOISE], stdout=f, check=True, timeout=300)
+        whole = write("diff.patch", diff + ["HEAD"])
+        index = write("index.patch", diff + ["--cached", "HEAD"])   # staged content the working file no longer shows
+        if filecmp.cmp(index, whole, shallow=False):
+            os.unlink(index)    # a second copy of diff.patch says nothing restore_bundle does not already know
+        noisy = any(p.startswith(POOL_NOISE) for p in paths)
+        if real and not noisy:
+            os.link(whole, os.path.join(out, "real.patch"))     # the same bytes: one copy on disk
+        else:   # noise excluded by prefix, never the paths listed: thousands of them overflow argv (E2BIG)
+            write("real.patch", diff + ["HEAD", "--", ":(top)"] + [":(top,exclude)" + p for p in POOL_NOISE] if real else None)
+        real_deleted = [p for p in deleted if not p.startswith(POOL_NOISE)]
+        if real_deleted:        # a deletion's content is HEAD's: the path is all restore_bundle needs
+            with open(os.path.join(out, "deleted"), "w", encoding="utf-8") as f:
+                f.write("\0".join(real_deleted))
         for name, want in (("untracked.tar", untracked), ("ignored.tar", ignored),
                            ("real_untracked.tar", [p for p in untracked if not p.startswith(POOL_NOISE)])):
             if want:
@@ -2916,11 +2998,12 @@ class Effects(relentless_game.GameFx):
             self.git_ok(c, "update-ref", "refs/rm-stash/%d" % i, sha)
         if commits or stash:
             open(os.path.join(out, "carry"), "w").close()
-        if commits or stash:
             r = self.git(c, "bundle", "create", os.path.join(out, "commits.bundle"), "HEAD", "--all", "--not", "--remotes")
             if r.returncode:
                 raise RuntimeError("git bundle: %s" % r.stderr[-200:])
-        return out
+        size = bundle_bytes(out)
+        if size > BUNDLE_MAX:
+            raise RuntimeError("bundle is %d bytes, over the cap %d: read this clone before it goes" % (size, BUNDLE_MAX))
 
     def restore_bundle(self, item, bundle, c):
         """A fresh clone takes the WIP of the one evicted. What will not apply stays in the bundle and the record says so."""
@@ -2936,6 +3019,7 @@ class Effects(relentless_game.GameFx):
             r = self.git(c, "apply", "--3way", "--whitespace=nowarn", patch, timeout=300)
             if r.returncode:
                 bad.append("patch: %s" % r.stderr[-200:])
+        bad.extend(restore_deleted(bundle, c))
         index, whole = (os.path.join(bundle, x) for x in ("index.patch", "diff.patch"))
         if os.path.exists(index) and os.path.getsize(index):
             with open(index, "rb") as a, open(whole, "rb") as b:
@@ -6525,6 +6609,10 @@ def tick(store=None, fx=None, r=None, now=None):
             relentless_disk.reap_boxes(store, r, now, getattr(fx, "box_in_use", lambda b: True), acts)
         except Exception as e:  # noqa: BLE001  disk housekeeping never stops the belt
             acts.append({"do": "error", "item": None, "why": "reap_boxes %s: %s" % (type(e).__name__, e)})
+        try:
+            relentless_disk.reap_bundles(store, r, now, acts)
+        except Exception as e:  # noqa: BLE001  disk housekeeping never stops the belt
+            acts.append({"do": "error", "item": None, "why": "reap_bundles %s: %s" % (type(e).__name__, e)})
         spend_holds(store, fx, r, now, acts)
         at = phase("after_steps", at)
         try:        # before the order is read; a broken log costs the lane, never the tick

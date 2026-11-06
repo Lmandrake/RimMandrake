@@ -281,6 +281,7 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
     rec = {"ts": now_iso(), "seat": s, "purpose": purpose, "path": str(dest), "mode": mode, "cone": cone,
            "dissociate": dissociate, "fetch": fetch, "ok": False, "error": None}
     t0 = time.time()
+    made = False
     try:
         if dest.exists():
             raise RuntimeError(f"{dest} already exists")
@@ -303,6 +304,7 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
             rec["refresh_error"] = str(e)[:300]
         so = store_objects()
         t1 = time.time()
+        made = True     # from here a failure leaves a dest only this call made: it is removed, never left half-made
         if dissociate:   # independent copy: local clone hard-links packs, no alternates
             git("clone", "-q", "--no-checkout", str(store_path()), str(dest))
         else:
@@ -338,6 +340,11 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
         return 0
     except Exception as e:
         rec["error"] = str(e)[:500]
+        # RELENTLESS_BUNDLES_FIX_FOURTEEN_GIG_PATCHES (2026-11-04): a fetch refused by GitHub left a pool clone with a .git,
+        # no index and no tree; Relentless read its 44k tracked files as deletions and bundled the tree three times (14 GB).
+        if made and dest.exists():
+            shutil.rmtree(dest, ignore_errors=True)
+            rec["removed_half_made"] = not dest.exists()
         print(f"scratch_clone: FAILED: {rec['error']}", file=sys.stderr)
         return 1
     finally:

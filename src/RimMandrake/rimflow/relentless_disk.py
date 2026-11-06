@@ -151,6 +151,41 @@ def reap_boxes(store, r, now, in_use, acts=None):
     return out
 
 
+def reap_bundles(store, r, now, acts=None):
+    """-> [bundle dir] removed. A done item's work is on origin/main, so the WIP copies its clones left (bundles/) go once
+    the newest of them is bundle_done_keep_s old (default 3 days: time to read one that a finish got wrong). Every other
+    status keeps them: a retired item may come back, and a waiting one is restored from its bundle.
+    RELENTLESS_BUNDLES_FIX_FOURTEEN_GIG_PATCHES: nothing reaped them; on 2026-11-05 done items' bundles held ~41 GB with
+    the three runaway ones."""
+    keep = (r.get("disk") or {}).get("bundle_done_keep_s", 3 * 86400)
+    out = []
+    for item in store.items():
+        root = store.p("items", item, "bundles")
+        if not os.path.isdir(root):
+            continue
+        st = store.load(item) or {}
+        if st.get("status") != "done" or st.get("bundle"):     # a bundle still to restore is never reaped
+            continue
+        dirs = [os.path.join(root, d) for d in os.listdir(root)]
+        try:
+            newest = max([os.lstat(d).st_mtime for d in dirs] or [0])
+        except OSError:
+            continue
+        if now - newest < keep:
+            continue
+        for d in sorted(dirs):
+            if remove_tree(d) is None:
+                out.append(d)
+        if not os.listdir(root):
+            os.rmdir(root)
+    if out:
+        store.journal({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "do": "bundles_reaped",
+                       "n": len(out), "bundles": [os.path.relpath(b, store.p("items")) for b in out][:50]})
+        if acts is not None:
+            acts.append({"do": "bundles_reaped", "n": len(out)})
+    return out
+
+
 def estimate(r=None):
     """Bytes written per item, before and after, from the code paths (a dry reading: nothing is cloned). -> dict."""
     import sys
