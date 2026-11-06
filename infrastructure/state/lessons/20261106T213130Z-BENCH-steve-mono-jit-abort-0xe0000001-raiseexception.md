@@ -1,0 +1,1 @@
+A Steve mono JIT abort (0xE0000001, RaiseException under mono_unity_jit_cleanup) can precede the fault monitor's first_bad by 6-7 min, outside the recorded window, so ingest files a HARNESS_REPAIR item for a host fault. mono_profiler_init_etw in the note is only the thread-start tail. Read crash.dmp and first_bad before touching the harness. (2026-11-06)

@@ -26,6 +26,10 @@ A modcheck run that dies "exit 5, no sheet" is python.exe killed by an access vi
 (`ast.parse`), inside a fault window: `J20261103T233438Z-aa0482` in `F20261103T195921Z`. Since the 10-31 reboot, 1 of
 42 in-window jobs crashed and 0 of 57 outside. Census: `infrastructure/state/evidence/MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET.md`.
 
+A cold load can die in the mono JIT (`0xE0000001`, RaiseException under `mono_unity_jit_cleanup`) before the monitor
+reads bad: 11-03 and 11-06, each 6-7 min before first_bad and outside the window as recorded, so ingest files a repair
+item. Table and odds: `infrastructure/state/evidence/HARNESS_REPAIR_CAUSE_4F477502.md`.
+
 ## Hypothesis under test: vendor software holding CPU state
 
 A fault that persists until reboot and spans many cores fits a machine-wide setting that a reboot resets (MSRs,
