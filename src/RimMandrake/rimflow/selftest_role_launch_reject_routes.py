@@ -40,13 +40,16 @@ def harvest(rs, errs, res=GOOD, unit="rm-role-designer-1", seams=None, stage=4, 
         run["stop_tries"] = stop_tries
     rs.setdefault("runs", []).append(run)
     calls = {"setter": [], "cause_book": [], "arbiter": []}
-    s = dict({"setter": "exam resit owed; Setter unit X", "cause_book": True, "arbiter": "dispute opened"}, **(seams or {}))
+    s = dict({"setter": True, "cause_book": True, "arbiter": "dispute opened"}, **(seams or {}))
     acts = []
     obs = {"unit_state": lambda u: "inactive", "result": lambda r: res, "procs": lambda *a, **k: [],
            "stage_close": lambda c, u, t: (not errs, list(errs)), "stage_land": lambda c, u: None,
            "stage_turn": lambda c: None, "stage_status": lambda c: {"stage": stage, "status": "ready"},
-           "setter": lambda item, reasons, now: (calls["setter"].append((item, list(reasons))), s["setter"])[1],
-           "cause_book": lambda key, said, now: (calls["cause_book"].append(key), s["cause_book"])[1],
+           # the seams decide only: an action for the Dispatcher to carry out, or None (no exam / no live cause)
+           "setter": lambda item, reasons, now, role=None: (calls["setter"].append((item, list(reasons))), dict(
+               do="role_setter_resit", role=role, item=item, resit_why="; ".join(reasons)) if s["setter"] else None)[1],
+           "cause_book": lambda key, said, now, role=None: (calls["cause_book"].append(key), dict(
+               do="role_cause_attach", role=role, key=key, said=said, at_s=now) if s["cause_book"] else None)[1],
            "arbiter": lambda role, concept, item, sig, reasons: (calls["arbiter"].append(sig), s["arbiter"])[1]}
     RL._supervise_one("Designer", rs, designer_cfg(), obs, T, lambda **kw: acts.append(kw), set())
     route = [a for a in acts if a.get("do") == "role_hold" and "rejection cause" in a.get("why", "")]
@@ -88,7 +91,9 @@ def test_module_to_builder():
 def test_check_and_bar_to_setter():
     for tag in ("check", "bar"):
         rs = {}
-        _, calls, route = harvest(rs, ["[cause:%s] clause c3 asserts the old schema" % tag])
+        acts, calls, route = harvest(rs, ["[cause:%s] clause c3 asserts the old schema" % tag])
+        check([a.get("item") for a in acts if a.get("do") == "role_setter_resit"] == ["PYRE_ITEM"],
+              "%s -> one role_setter_resit action for the Dispatcher to carry out" % tag)
         check(calls["setter"] == [("PYRE_ITEM", ["[cause:%s] clause c3 asserts the old schema" % tag])]
               and not rechained(rs) and route and "-> setter" in route[0]["why"],
               "%s -> the Setter is handed the item and reasons, nothing re-chained: %r" % (tag, calls))
@@ -101,7 +106,9 @@ def test_check_and_bar_to_setter():
 def test_environment_to_cause_book():
     dead = {"is_error": True, "api_error_status": 429, "usage": {k: 10 for k in RL.USAGE_KEYS}}
     rs = {}
-    _, calls, route = harvest(rs, ["no result.json (a closing message is not a result)"], res=dead)
+    acts, calls, route = harvest(rs, ["no result.json (a closing message is not a result)"], res=dead)
+    check([a.get("key", "")[:17] for a in acts if a.get("do") == "role_cause_attach"] == ["role-env|Designer"],
+          "environment -> one role_cause_attach action for the Dispatcher to carry out")
     check(len(calls["cause_book"]) == 1 and calls["cause_book"][0].startswith("role-env|Designer|")
           and not rechained(rs) and not calls["setter"] and "attached to cause" in route[0]["why"],
           "environment -> attached to the live cause record, no re-chain, no item filed: %r" % calls)
@@ -182,8 +189,9 @@ def test_dispute_fault_falls_back():
 
 
 def test_real_seams():
-    """The real WP-03 / WP-05 calls, on temp stores: the Setter seam resits an existing exam and only that; the cause
-    book seam attaches to a live record and files nothing when there is none."""
+    """The real WP-03 / WP-05 calls, on temp stores: the Setter seam decides a resit only for an existing exam and
+    writes nothing; setter_resit (the Dispatcher's act) resits it. The cause-book seam decides an attach only for a
+    live record; cause_attach writes it under the book lock."""
     import tempfile
     import cause_book as CB
     import relentless
@@ -192,28 +200,34 @@ def test_real_seams():
     store = relentless.Store(os.path.join(tmp, "rel"))
     kicked = []
     kick = lambda st, item: kicked.append(item)  # noqa: E731
-    check(RL.to_setter("NO_EXAM", ["[cause:check] c1"], T, store=store, kicker=kick) is None and not kicked,
+    check(RL.to_setter("NO_EXAM", ["[cause:check] c1"], T, store=store) is None and not kicked,
           "Setter seam: an item with no exam resits nothing")
     RE.set_status(store, "HAS_EXAM", state="validated", base="abc")
-    said = RL.to_setter("HAS_EXAM", ["[cause:check] c1"], T, store=store, kicker=kick)
+    todo = RL.to_setter("HAS_EXAM", ["[cause:check] c1"], T, store=store, role="Designer")
+    check(todo and todo["do"] == "role_setter_resit" and RE.status(store, "HAS_EXAM").get("state") == "validated"
+          and not kicked, "Setter seam: decides the resit and writes nothing: %r" % todo)
+    said = RL.setter_resit(todo["item"], todo["resit_why"], todo["resit_at"], store=store, kicker=kick)
     st = RE.status(store, "HAS_EXAM")
     check(kicked == ["HAS_EXAM"] and st.get("state") == "owed" and "c1" in st.get("resit_why", "") and "resit" in said,
-          "Setter seam: an existing exam is owed again with the reasons and its unit kicked: %r" % st)
+          "setter_resit: an existing exam is owed again with the reasons and its unit kicked: %r" % st)
     old = os.environ.get("RM_OPS_WATCH_DIR")
     os.environ["RM_OPS_WATCH_DIR"] = tmp
     try:
         path = os.path.join(tmp, "causes.json")
-        check(RL.to_cause_book("role-env|Designer|x", "said", T) is False and not os.path.exists(path),
-              "cause book seam: no live record -> False and nothing written (no filing here)")
+        check(RL.to_cause_book("role-env|Designer|x", "said", T) is None and not os.path.exists(path),
+              "cause book seam: no live record -> None and nothing written (no filing here)")
         book = {}
         CB.begin(book, "role-env|Designer|x", "lead", "REPAIR_ITEM", T)
         CB.filed(book, "role-env|Designer|x", "REPAIR_ITEM", T)
         CB.save(path, book)
-        ok = RL.to_cause_book("role-env|Designer|x", "Designer run rejected", T)
+        todo = RL.to_cause_book("role-env|Designer|x", "Designer run rejected", T, role="Designer")
+        check(todo and todo["do"] == "role_cause_attach" and "role-stage" not in CB.load(path)["role-env|Designer|x"]["aids"],
+              "cause book seam: decides the attach and writes nothing")
+        ok = RL.cause_attach(todo["key"], todo["said"], todo["at_s"])
         rec = CB.load(path)["role-env|Designer|x"]
         check(ok is True and "role-stage" in rec["aids"] and rec["item"] == "REPAIR_ITEM"
               and rec["readings"][-1]["said"] == "Designer run rejected",
-              "cause book seam: attached to the live record, its repair item unchanged: %r" % rec)
+              "cause_attach: attached to the live record, its repair item unchanged: %r" % rec)
     finally:
         if old is None:
             os.environ.pop("RM_OPS_WATCH_DIR", None)

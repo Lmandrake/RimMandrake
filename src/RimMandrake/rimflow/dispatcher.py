@@ -1501,6 +1501,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                  else git_lock)
     do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
     do_stamp = fx.get("finish_stamp", RL.AP.write_stamp)
+    do_resit, do_attach = fx.get("setter_resit", RL.setter_resit), fx.get("cause_attach", RL.cause_attach)
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
     do_conductor = fx.get("conductor_log", conductor_log)
     wants_ledger = apply and sch.get("ledger_notes") and any(a.get("note") for a in actions)
@@ -1514,6 +1515,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
     ledger_ok = lk is not None
     notes = 0
     deferred = []
+    book_busy = False       # role_cause_attach: the cause book was busy once this tick
     try:
         for i, a in enumerate(actions):
             if apply and fence is not None and not fence("act %d (%s)" % (i, a.get("do"))):
@@ -1735,6 +1737,50 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 ticket=a.get("ticket"), role=a.get("role"),
                                 why="role %s: finish stamp NOT written to %s: %s; its next pre-screen starts at the "
                                     "previous stamp" % (a.get("role"), a["path"], res)))
+                    elif a["do"] == "role_setter_resit":
+                        # a rejected stage's check/bar route (role_launch.to_setter decided it): only here, so a dry
+                        # run resets no exam and starts no Setter unit (RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK)
+                        try:
+                            res = do_resit(a["item"], a.get("resit_why") or "", a.get("resit_at"))
+                        except Exception as e:  # noqa: BLE001
+                            res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                            actions.append(dict(
+                                do="alarm", kind="role:%s:setter_resit" % a.get("role"), at=iso(now), note=True,
+                                ticket=a.get("ticket"), role=a.get("role"),
+                                why="role %s: the exam resit of %s FAILED: %s; the stage_rejected alarm stands" % (
+                                    a.get("role"), a.get("item"), res)))
+                    elif a["do"] == "role_cause_attach":
+                        # load-attach-save under the book's lock; a busy book keeps the attachment for the next tick.
+                        # One Busy this tick owes the rest at once, and no wait outruns the tick's act/note deadline
+                        left = (act_deadline if beat else deadline) - time.time() - 1.0
+                        wait = min(RL.CAUSE_ATTACH_WAIT_S, left)
+                        try:
+                            if book_busy or wait <= 0:
+                                raise RL.cause_busy()("book busy earlier this tick" if book_busy
+                                                      else "no time left in the tick to wait for the book")
+                            got = do_attach(a["key"], a.get("said"), a.get("at_s") if a.get("at_s") is not None
+                                            else now, wait_s=wait)
+                            RL.settle_cause_owed(st, a)
+                            res = "attached to cause %s" % a["key"] if got else "no live cause record %s" % a["key"]
+                            if not got:
+                                actions.append(dict(
+                                    do="alarm", kind="role:%s:cause_attach" % a.get("role"), at=iso(now), note=True,
+                                    ticket=a.get("ticket"), role=a.get("role"),
+                                    why="role %s: cause %s closed before its attach: alarm stands for Operations to "
+                                        "file once" % (a.get("role"), a["key"])))
+                        except RL.cause_busy() as e:
+                            book_busy = True
+                            dropped = RL.owe_cause_attach(st, a)
+                            res = "deferred: %s; retried next tick%s" % (e, "; the oldest owed attach (%s) dropped"
+                                                                        % dropped.get("key") if dropped else "")
+                        except Exception as e:  # noqa: BLE001 - said and not retried (an unreadable book stays so)
+                            res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                            RL.settle_cause_owed(st, a)
+                            actions.append(dict(
+                                do="alarm", kind="role:%s:cause_attach" % a.get("role"), at=iso(now), note=True,
+                                ticket=a.get("ticket"), role=a.get("role"),
+                                why="role %s: attach to cause %s FAILED, not retried: %s" % (
+                                    a.get("role"), a["key"], res)))
                     elif a["do"] == "role_stop":
                         res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"), unit_gone=a.get("unit_gone", False),
                                       marker=a.get("marker"), force=a.get("force", False), since=a.get("since"))

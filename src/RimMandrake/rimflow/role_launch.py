@@ -727,7 +727,7 @@ def overspend_day(name, rs, item, daily, spent, budget, now, act, did):
                     "never starve it." % (name, daily))
 
 
-def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, unit, rows=None):
+def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, unit, rows=None, reasons=None):
     """The launch message. Every role but those whose schedule entry says `token_aware: true` (Operations; the
     Conductor, owner 2026-10-31) is token-blind (owner 2026-10-27): its message carries no band, runway, week, budget or cap,
     and no order to watch one (review T, F1). Nothing stops a run at its budget mid-run: the real bounds are
@@ -740,6 +740,11 @@ def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, 
         # the alarm rows and the instructions that apply, so the run does not spend turns finding them
         # (OPS_ROLE_SHRINK_RUN_COST; `scope_by_mode` is schedule data)
         lines += ["The alarms this run covers (ops_watch status.json, at launch):"] + list(rows)
+    if reasons:
+        # a re-run of a rejected stage close: every reason in full (RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK; the
+        # trigger above carries at most four, cut to 400 characters)
+        lines += ["Your previous run's result was REJECTED for these %d reason(s); fix every one:" % len(reasons)] + [
+            "- %s" % r for r in reasons]
     if role.get("scope_by_mode", {}).get(mode):
         lines.append(role["scope_by_mode"][mode])
     if role.get("token_aware") is True:
@@ -768,6 +773,13 @@ def supervise_roles(sch, st, obs, now, act):
     rst = st.setdefault("roles", {})
     by_name = roles_by_name(sch)
     busy = set()
+    # cause attaches a busy book refused (owe_cause_attach): asked again each tick. They stay in the state until
+    # execute carries one out (settle_cause_owed), so a tick fenced or killed before it runs loses none
+    for o in st.get("cause_owed") or []:
+        if isinstance(o, dict) and o.get("key"):
+            act(do="role_cause_attach", role=o.get("role"), key=o["key"], said=o.get("said"), at_s=o.get("at_s"),
+                note=False, why="%s rejection: attach to cause %s (retried: the book was busy)" % (
+                    o.get("role") or "role", o["key"]))
     for name, rs in sorted(rst.items()):
         if not isinstance(rs, dict):
             continue
@@ -838,6 +850,14 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
     """One role's persisted runs (supervise_roles' body, guarded per role there)."""
     for run in rs.get("runs") or []:
         if run.get("state") != "running":
+            if run.get("close_owed") and run.get("concept"):
+                # its stage close raised after the run was marked finished: retried every tick until it returns
+                try:
+                    res = obs["result"](run)
+                except Exception:  # noqa: BLE001 - the close needs only the run; the result only shapes a route
+                    res = None
+                close_concept(name, rs, cfg, run, res if isinstance(res, dict) else {}, run.get("tokens"), now, act,
+                              obs)
             continue
         ustate = obs["unit_state"](run["unit"])
         if ustate in ACTIVE and not run.get("scope") and obs.get("scope"):
@@ -905,33 +925,7 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             blind=blind(name, "completed" if run["state"] == "done" else "failed", run.get("mode"), run["unit"]))
         finish_slot_alarms(rs, run)
         if run.get("concept"):
-            # the stage machine charges the task budget and judges result.json; a closing message advances nothing
-            try:
-                ok, errs = (obs.get("stage_close") or stage_close)(run["concept"], run["unit"], tok)
-                act(do="alarm" if not ok else "role_stage", kind="role:%s:stage_rejected" % name,
-                    ticket=run.get("item"), note=True,
-                    why="%s run %s on %s: %s" % (name, run["unit"], run["concept"], "stage result accepted" if ok
-                                                 else "stage result REJECTED: " + "; ".join(errs[:4])))
-                # DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE: the advanced stage.json and renamed result files land on
-                # origin/main now; before, they sat in the Designer's clone until a person committed them
-                try:
-                    (obs.get("stage_land") or stage_land)(run["concept"], run["unit"])
-                except Exception as e:  # noqa: BLE001 - said; the files stay on disk and the next close lands them
-                    act(do="alarm", kind="role:%s:stage_land" % name, ticket=run.get("item"), note=True,
-                        why="%s run %s on %s: its stage state did not land on origin/main: %s" % (
-                            name, run["unit"], run["concept"], str(e)[:300]))
-                t = (obs.get("stage_turn") or stage_turn)(run["concept"]) if ok else None
-                if t:
-                    escalate_turn(name, run, t, act)
-                if ok:
-                    forget_rejections(rs, run["concept"])
-                    chain_next(name, rs, cfg, run, now, act, obs.get("stage_status") or stage_status)
-                else:
-                    route_rejection(name, rs, cfg, run, res, list(errs or []), now, act, obs)
-            except Exception as e:  # noqa: BLE001 - said, never lost: the next open charges its reservation
-                act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
-                    why="%s run %s on %s: designer_stage close failed: %s" % (name, run["unit"], run["concept"],
-                                                                         str(e)[:300]))
+            close_concept(name, rs, cfg, run, res, tok, now, act, obs)
         daily = cfg.get("daily_token_cap")
         if cfg.get("caps_advisory") is True and daily is not None and spent_today(rs, now) > daily:
             overspend_day(name, rs, run.get("item") or cfg.get("ledger_item"), daily, spent_today(rs, now), 0, now,
@@ -994,7 +988,8 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                     name, run["unit"], ("usage UNMEASURED: " if res and tok is None else "")
                     + (text or "no result file")[:160]))
         run.pop("consumed", None)                        # read only just above; runs stay in state for 2 days
-    rs["runs"] = [r for r in rs.get("runs") or [] if r.get("state") == "running" or now - r["at"] < 2 * 86400]
+    rs["runs"] = [r for r in rs.get("runs") or [] if r.get("state") == "running" or r.get("close_owed")
+                  or now - r["at"] < 2 * 86400]
 
 
 def account_death(res):
@@ -1645,7 +1640,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 job = dict(job, pre_launch=pre)
         # built before anything is consumed: a raise here leaves the slot due (review V, V7)
         message = prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"] or 0, factor, spent, unit,
-                         rows=job.get("rows"))
+                         rows=job.get("rows"), reasons=job.get("reasons"))
         if packet:
             message += "\n\n" + packet
         tick_launch[name] = unit
@@ -1881,7 +1876,8 @@ def run_now_job(cfg, req, now):
                                                                     "the open incidents"))
     return {"key": "%s run-now %s" % (day_of(now), iso(req.get("at") or now)),
             "slot": None, "first": False, "mode": req.get("mode") or "run", "cap": cap,
-            "item": cfg["ledger_item"], "trigger": trigger, "manual": req, "pre_launch": None, "incident": incident}
+            "item": cfg["ledger_item"], "trigger": trigger, "manual": req, "pre_launch": None, "incident": incident,
+            "reasons": list(req.get("reasons") or [])}
 
 
 COVER_WINDOW_S = 7200
@@ -1962,6 +1958,64 @@ def coverage_pre(concept):
     return [["python3", "src/RimMandrake/rimflow/coverage_judge.py", "run", concept]]
 
 
+CLOSE_OWED_MAX_S = 2 * 86400     # a stage close still raising after this long is given up, said to the Conductor
+
+
+def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
+    """A finished stage-machine run's close: the stage machine charges the task budget and judges result.json (a
+    closing message advances nothing). run["close_owed"] is set BEFORE designer_stage's close and cleared the moment it
+    returns, so a close that raises (a transient stage.json read) is retried by every later supervision instead of
+    being abandoned behind the run's done/failed state (RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK); a raise after the
+    close returned is only said, since a second close would refuse the already-closed run."""
+    owed = run.get("close_owed") if isinstance(run.get("close_owed"), dict) else {"since": now, "tries": 0}
+    run["close_owed"] = owed
+    try:
+        ok, errs = (obs.get("stage_close") or stage_close)(run["concept"], run["unit"], tok)
+    except Exception as e:  # noqa: BLE001 - said, and owed: the next tick closes it again
+        owed["tries"] = int(owed.get("tries") or 0) + 1
+        owed["why"] = "%s: %s" % (type(e).__name__, str(e)[:200])
+        # designer_stage.Refused (the run is no longer the concept's open run: reopened, or closed another way) is
+        # final, and so is a close still failing after CLOSE_OWED_MAX_S: both are said once and stop retrying
+        final = type(e).__name__ == "Refused" or now - owed["since"] >= CLOSE_OWED_MAX_S
+        if final:
+            run.pop("close_owed", None)
+        act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
+            conductor_log=final or None,
+            why="%s run %s on %s: designer_stage close failed: %s; %s (try %d, owed since %s)" % (
+                name, run["unit"], run["concept"], str(e)[:300],
+                "NOT retried: refused by the stage machine" if type(e).__name__ == "Refused" else
+                "given up after %d h: a person closes it (designer_stage.py)" % (CLOSE_OWED_MAX_S // 3600)
+                if final else "retried next tick", owed["tries"], iso(owed["since"])))
+        return
+    run.pop("close_owed", None)
+    try:
+        act(do="alarm" if not ok else "role_stage", kind="role:%s:stage_rejected" % name,
+            ticket=run.get("item"), note=True,
+            why="%s run %s on %s: %s" % (name, run["unit"], run["concept"], "stage result accepted" if ok
+                                         else "stage result REJECTED: " + "; ".join(errs[:4]) + (
+                                         " (+%d more)" % (len(errs) - 4) if len(errs) > 4 else "")))
+        # DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE: the advanced stage.json and renamed result files land on
+        # origin/main now; before, they sat in the Designer's clone until a person committed them
+        try:
+            (obs.get("stage_land") or stage_land)(run["concept"], run["unit"])
+        except Exception as e:  # noqa: BLE001 - said; the files stay on disk and the next close lands them
+            act(do="alarm", kind="role:%s:stage_land" % name, ticket=run.get("item"), note=True,
+                why="%s run %s on %s: its stage state did not land on origin/main: %s" % (
+                    name, run["unit"], run["concept"], str(e)[:300]))
+        t = (obs.get("stage_turn") or stage_turn)(run["concept"]) if ok else None
+        if t:
+            escalate_turn(name, run, t, act)
+        if ok:
+            forget_rejections(rs, run["concept"])
+            chain_next(name, rs, cfg, run, now, act, obs.get("stage_status") or stage_status)
+        else:
+            route_rejection(name, rs, cfg, run, res, list(errs or []), now, act, obs)
+    except Exception as e:  # noqa: BLE001 - the close itself happened: said, never retried (it would refuse)
+        act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
+            why="%s run %s on %s: after its designer_stage close: %s: %s" % (name, run["unit"], run["concept"],
+                                                                      type(e).__name__, str(e)[:300]))
+
+
 def stage_close(concept, unit, tokens, sync=True):
     """designer_stage.close_run: the run's charge, then its result.json validated -> (accepted, reasons)."""
     import designer_stage as DS
@@ -2013,9 +2067,10 @@ def chain_next(name, rs, cfg, run, now, act, status):
                      "after run %s" % run["unit"])
 
 
-def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode, cause, after):
+def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode, cause, after, reasons=None):
     """Ask (or queue behind the taken slot) one run-now for `concept`, under the per-concept daily cap. -> the request
-    or None. Shared by the harvest's chain_next and the decide tick's chain_sweep."""
+    or None. Shared by the harvest's chain_next and the decide tick's chain_sweep. `reasons` (a rejected close's, every
+    one in full) ride on the request into the launch message (run_now_job, prompt)."""
     day = day_of(now)
     counts = {k: v for k, v in (rs.get("chain_day") or {}).items() if k.startswith(day + " ")}
     key = "%s %s" % (day, concept)
@@ -2041,6 +2096,8 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
     counts[key] = counts.get(key, 0) + 1
     req = {"at": now, "by": "Dispatcher", "mode": mode, "concept": concept, "chained_from": chained_from,
            "why": "chain: %s, stage %s ready" % (cause, stage)}
+    if reasons:
+        req["reasons"] = [str(r) for r in reasons]
     if isinstance(pending, dict):
         queue = [q for q in rs.get("run_now_queue") or [] if isinstance(q, dict) and q.get("concept") != concept]
         rs["run_now_queue"] = queue + [req]
@@ -2207,35 +2264,105 @@ def forget_rejections(rs, concept):
             rs.pop("rejections")
 
 
-def to_setter(item, reasons, now, store=None, kicker=None):
-    """The Setter seam: resit the run item's exam (relentless_exam, WP-03) with the check/bar reasons. -> what happened,
-    or None when the item has no exam (nothing to resit; the alarm stands for the checker's owner)."""
+# RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK: the Setter and cause-book seams DECIDE only. Each returns the action that
+# carries its route out (role_setter_resit, role_cause_attach), which dispatcher.execute performs through setter_resit
+# and cause_attach, so a dry run (and any decision collected without --apply) resets no exam, starts no Setter unit and
+# writes no book. Before, decide called RE.set_status and RE.kick itself, and saved causes.json without a lock.
+CAUSE_ATTACH_WAIT_S = 5.0     # cause_attach's wait for the book lock (an ops_watch pass holds it across its filing)
+CAUSE_OWED_CAP = 50           # attachments kept to retry while the book stays busy (oldest dropped, said)
+
+
+def to_setter(item, reasons, now, store=None, role=None):
+    """The Setter seam: resit the run item's exam (relentless_exam, WP-03) with the check/bar reasons. Reads only.
+    -> the role_setter_resit action that resits it, or None when the item has no exam (nothing to resit; the alarm
+    stands for the checker's owner)."""
     import relentless
     import relentless_exam as RE
     store = store or relentless.Store()
     if not item or not RE.status(store, item):
         return None
-    RE.set_status(store, item, state="owed", resit_why="; ".join(reasons)[:600], resit_at=iso(now))
+    return dict(do="role_setter_resit", role=role, item=item, ticket=item, note=False,
+                resit_why="; ".join(str(r) for r in reasons), resit_at=iso(now),
+                why="%s rejection: resit the exam of %s (%d reason(s))" % (role or "role", item, len(reasons)))
+
+
+def setter_resit(item, resit_why, resit_at, store=None, kicker=None):
+    """dispatcher.execute's role_setter_resit: the exam owed again with the reasons, its Setter unit kicked.
+    -> what happened."""
+    import relentless
+    import relentless_exam as RE
+    store = store or relentless.Store()
+    if not RE.status(store, item):
+        return "no Setter exam for %s any more: nothing resat" % item
+    RE.set_status(store, item, state="owed", resit_why=resit_why, resit_at=resit_at)
     why = (kicker or RE.kick)(store, item)
     return "exam resit owed; " + ("unit did not start: " + why if why else "Setter unit " + RE.unit_name(item))
 
 
-def to_cause_book(key, said, now):
-    """The cause-book seam (WP-05 cause_book.py, ops_watch's causes.json): attach to the live record of `key`. -> True
-    attached, False no live record (nothing filed here: the alarm stands and Operations files it once)."""
-    import cause_book as CB
+def cause_book_path():
     utils = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils")
     if utils not in sys.path:
         sys.path.append(utils)
     import ops_watch
-    path = ops_watch.ops_dir() / "causes.json"
-    book = CB.load(path)        # load-attach-save within one call; ops_watch writes the same book atomically (a
-    # concurrent pass can drop this one reading, never corrupt the book or file an item)
-    if CB.live(book, key) is None:
-        return False
-    CB.attach(book, key, "role-stage", said, now)
-    CB.save(path, book)
+    return ops_watch.ops_dir() / "causes.json"
+
+
+def to_cause_book(key, said, now, role=None, path=None):
+    """The cause-book seam (WP-05 cause_book.py, ops_watch's causes.json). Reads only. -> the role_cause_attach action
+    that attaches to the live record of `key`, or None when there is no live record (nothing filed here: the alarm
+    stands and Operations files it once). An unreadable book raises (the route says so; the alarm stands)."""
+    import cause_book as CB
+    if CB.live(CB.load(path or cause_book_path()), key) is None:
+        return None
+    return dict(do="role_cause_attach", role=role, key=key, said=said, at_s=now, note=False,
+                why="%s rejection: attach to cause %s" % (role or "role", key))
+
+
+def cause_attach(key, said, at_s, path=None, wait_s=CAUSE_ATTACH_WAIT_S):
+    """dispatcher.execute's role_cause_attach: load-attach-save under the book's writer lock (cause_book.locked, which
+    ops_watch holds for its whole pass). -> True attached, False no live record any more. Raises cause_book.Busy when
+    the lock stayed held past wait_s: nothing was written, and the caller keeps the attachment to retry."""
+    import cause_book as CB
+    path = path or cause_book_path()
+    with CB.locked(path, wait_s=wait_s):
+        book = CB.load(path)
+        if CB.live(book, key) is None:
+            return False
+        CB.attach(book, key, "role-stage", said, at_s)
+        CB.save(path, book)
     return True
+
+
+def cause_busy():
+    """The exception class cause_attach raises on a busy book (cause_book.Busy), for dispatcher.execute's except."""
+    import cause_book as CB
+    return CB.Busy
+
+
+def _owed_entry(a):
+    return {k: a.get(k) for k in ("role", "key", "said", "at_s")}
+
+
+def settle_cause_owed(st, a):
+    """A cause attach carried out (attached, or no live record): it leaves the owed list, if it was there."""
+    e = _owed_entry(a)
+    owed = [o for o in st.get("cause_owed") or [] if isinstance(o, dict) and o != e]
+    if owed:
+        st["cause_owed"] = owed
+    else:
+        st.pop("cause_owed", None)
+
+
+def owe_cause_attach(st, a):
+    """A cause attach the busy book refused: kept in the dispatcher state (once), re-emitted by every supervise_roles
+    until carried out. -> the dropped entry when the cap pushed one out, else None."""
+    owed = [o for o in st.get("cause_owed") or [] if isinstance(o, dict)]
+    if _owed_entry(a) in owed:
+        return None
+    owed.append(_owed_entry(a))
+    dropped = owed[0] if len(owed) > CAUSE_OWED_CAP else None
+    st["cause_owed"] = owed[-CAUSE_OWED_CAP:]
+    return dropped
 
 
 def to_arbiter(role, concept, item, sig, reasons):
@@ -2279,21 +2406,29 @@ def route_rejection(name, rs, cfg, run, res, errs, now, act, obs, classes=None):
                 said = "a 2nd identical rejection; the arbiter (WP-08 relentless_dispute) is not landed: alarm stands"
                 taken = "alarm"
         elif route == "setter":
-            said = (obs.get("setter") or to_setter)(item, errs, now)
-            if said is None:
+            todo = (obs.get("setter") or to_setter)(item, errs, now, role=name)
+            if todo is None:
                 said, taken = "no Setter exam for %s: the checker's owner owes the fix; alarm stands" % item, "alarm"
+            else:
+                act(**todo)
+                said = "exam resit of %s handed to the Dispatcher (role_setter_resit) with %d reason(s)" % (
+                    item, len(errs))
         elif route == "cause_book":
             key = env_cause_key(name, cls_why)
-            if (obs.get("cause_book") or to_cause_book)(key, head, now):
-                said = "attached to cause %s (no new item)" % key
+            todo = (obs.get("cause_book") or to_cause_book)(key, head, now, role=name)
+            if todo is not None:
+                act(**todo)
+                said = "attached to cause %s (no new item; role_cause_attach)" % key
             else:
                 said, taken = "no live cause record %s: alarm stands for Operations to file once" % key, "alarm"
         else:
             req = None
             if cfg.get("chain_stages") is True:
                 req = chain_ask(name, rs, cfg, concept, stage, now, act, run["unit"], item, run.get("mode") or "run",
-                                "%s run %s rejected (%s): %s" % (name, run["unit"], cls, "; ".join(errs[:4])[:400]),
-                                "after its rejected run %s" % run["unit"])
+                                "%s run %s rejected (%s): %s%s" % (name, run["unit"], cls, "; ".join(errs[:4])[:400],
+                                                                   " (%d reasons in full in the launch message)"
+                                                                   % len(errs) if len(errs) > 4 else ""),
+                                "after its rejected run %s" % run["unit"], reasons=errs)
             said = "re-chained to %s with the reasons" % name if req else "builder route; not chained (no " \
                 "chain_stages, cap reached or already asked): alarm stands"
             taken = "builder" if req else "alarm"

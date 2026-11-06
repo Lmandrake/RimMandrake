@@ -15,10 +15,18 @@ The book is ops_watch's (ops_dir()/causes.json): {cause key: record}. The key is
               repair (`rimflow block <dep> --kind item --on <repair> --until done`, WP-04's path), which lifts by itself
               when the repair closes.
 Nothing here reads the ledger or spawns: ops_watch.run_alarms passes known_ids / open_ids in and files what it returns.
+
+Every writer holds `locked(path)` from its load to its save (RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK): ops_watch for
+its whole alarm pass, role_launch's cause attach for one load-attach-save. An atomic replace kept the JSON whole but
+not the update: a save from a stale load erased a reading or resurrected a closed record. A writer that cannot get the
+lock in its wait raises Busy and keeps its update to retry; it never writes without the lock.
 """
+import contextlib
+import fcntl
 import json
 import os
 import tempfile
+import time
 from datetime import datetime, timezone
 
 LIVE = ("filing", "open")
@@ -39,6 +47,39 @@ def load(path):
     if not isinstance(book, dict) or not all(isinstance(r, dict) for r in book.values()):
         raise ValueError("%s is not a JSON object of records" % path)
     return book
+
+
+class Busy(Exception):
+    """The book's lock stayed held past the caller's wait: nothing was read or written."""
+
+
+def lock_path(path):
+    return str(path) + ".lock"
+
+
+@contextlib.contextmanager
+def locked(path, wait_s=None, poll_s=0.05):
+    """Hold the book's writer lock (an flock on <path>.lock) for a load..save span. wait_s None waits as long as it
+    takes (ops_watch, the book's owner); a number raises Busy after that many seconds."""
+    d = os.path.dirname(str(path)) or "."
+    os.makedirs(d, exist_ok=True)
+    with open(lock_path(path), "a") as lk:
+        if wait_s is None:
+            fcntl.flock(lk, fcntl.LOCK_EX)
+        else:
+            t0 = time.monotonic()
+            while True:
+                try:
+                    fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    break
+                except BlockingIOError:
+                    if time.monotonic() - t0 >= wait_s:
+                        raise Busy("%s held for %.1f s" % (lock_path(path), wait_s))
+                    time.sleep(poll_s)
+        try:
+            yield
+        finally:
+            fcntl.flock(lk, fcntl.LOCK_UN)
 
 
 def save(path, book):

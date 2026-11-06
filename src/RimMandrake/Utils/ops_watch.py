@@ -4229,6 +4229,19 @@ def stale_for_close(point, closes):
     return bool(t and last and t <= last)
 
 
+def _book_locked(fn):
+    """The cause book's writer lock (cause_book.locked) from the pass's load of causes.json to its save, the filing
+    between them included: role_launch's cause attach (RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK) waits a few seconds
+    for it and retries next tick, so its reading is never erased by this pass's save of an older load."""
+    def wrap(*a, **k):
+        with cause_mods()[0].locked(ops_dir() / "causes.json"):
+            return fn(*a, **k)
+    wrap.__name__ = fn.__name__
+    wrap.__doc__ = fn.__doc__
+    return wrap
+
+
+@_book_locked
 def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=None, cause_tree=None):
     """Edge-triggered: file once on a NEW crossing, keep it while it holds, re-arm when it clears. A target with note_field
     also says what is new while it stays crossed: a note on its open item, or, the item closed (open_ids), a reopen. So
@@ -4578,6 +4591,7 @@ def settle_filing(state, todo, res, filer, now, log, said_causes, book=None):
             log.append({"ts": iso(now), "event": "step_failed", "aid": a["aid"], "error": str(e)[:200]})
 
 
+@_book_locked
 def file_held(filer, rules, now):
     """A light beat's filing (ALARM_FILING_FIX_NO_ROOM_AT_INN). Alarms are composed on the beat that measures
     COMPOSE_ALARM_FAMILY, the heaviest sense pair (8-15 s of 15), so its filer, which starts a filing only when one and
