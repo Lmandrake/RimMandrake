@@ -1133,3 +1133,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: review savegame for the owner's look","ts":"2026-11-06T13:29:37Z","tsn":1793971777580360640}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T13:38:07Z","tsn":1793972287938158077}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T13:40:18Z","tsn":1793972418961837831}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T13:50:44Z","tsn":1793973044795518096}
