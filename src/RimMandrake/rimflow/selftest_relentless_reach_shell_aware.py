@@ -166,6 +166,15 @@ def t_review_six():
         ok(git(ref) != [], "S2b a ref: " + ref, git(ref))
 
 
+def t_review_seven():
+    """GPT's seventh full-file review (2026-11-06): a command-local assignment before a substitution stays command-local."""
+    h = needs('ROOT=/tmp P=$(pwd) python3 run.py && test -f "$ROOT/x"')
+    ok(h == ["hidden path: /secret/x"], "W1 `$(...)` does not make the prefix persist", h)
+    b = needs('ROOT=/tmp P=`pwd` python3 run.py && test -f "$ROOT/x"')
+    ok(b == ["hidden path: /secret/x"], "W1b nor do backticks", b)
+    ok(needs('ROOT=/tmp; P=$(pwd) python3 run.py && test -f "$ROOT/x"') == [], "W2 a real assignment before it still persists")
+
+
 def main():
     t_parens()
     t_comments()
@@ -175,6 +184,7 @@ def main():
     t_review_four()
     t_review_five()
     t_review_six()
+    t_review_seven()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
