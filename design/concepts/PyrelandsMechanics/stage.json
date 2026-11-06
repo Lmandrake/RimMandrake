@@ -135,10 +135,17 @@
     "ref": "run rm-role-designer-1793929481",
     "stage": 4,
     "tokens": 91039
+   },
+   {
+    "at": "2026-11-06T01:58:10Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793930137",
+    "stage": 3,
+    "tokens": 183885
    }
   ],
   "reserve": 60000,
-  "spent": 3533611
+  "spent": 3717496
  },
  "history": [
   {
@@ -278,6 +285,18 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1793929481: stage 4 return"
+  },
+  {
+   "at": "2026-11-06T01:56:00Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1793930137, stage 3, budget 406389"
+  },
+  {
+   "at": "2026-11-06T01:58:11Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1793930137: stage 3 done"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
@@ -502,11 +521,33 @@
    "stage": 4,
    "summary": "The flagship pick this run was returned for was already bound (showcase rite_party -> d_flagship_rite_party). Exam run against the corrected sheet: 23 frozen scenarios (18 Examiner, 5 Challenger, 15 reject), both Readers 23/23, accept_where_reject_core 0, no Challenger misses. exam.json is written against the corrected sheet and current tree hashes, so it stands if stage 3 changes nothing more. Open point for stage 4: neither of the two control runs missed, because each removed core rule is also stated in another leaf (scar reach in fruit_defence_warns_then_drives; flames in walk_tribes_season and the visit leaf). Recorded as missed:false, not waived. Stale packet text: stage.json pending_decision still names the flagship pick.",
    "to": 3
+  },
+  {
+   "at": "2026-11-06T01:58:10Z",
+   "inputs": {
+    "exam": "322fc068d0c4ad38d7d4307e6d39ba4d20f6a636dcca7d2337bef43be02f04a3",
+    "floor": "60ba07bafe2c726553880839556f4d7d94d37be6b414ad4e5c88d279fe8d83b7",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "f8e9e5988a2d1daf5805c000f884646cc598553bbd08aea9202ee82d7f0fb338",
+    "scenes": "ef625cc5e068d07ed85aeed41537c3d9a2faac9a25507165b95643efa4171c21",
+    "sheet": "9cf7e207f758b8c0967d3101163bf178297216c080800466e5db3790d58a67c5",
+    "tree": "8d85249f7028c05470902cc08c2f4a3c7e7daf856bbd461b86c28da750d11f3b"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "2d93c81308fff5f7a37cf5c40cbfae398599cd0aa6a238d1a325a1fabff2e441"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793930137",
+   "stage": 3,
+   "summary": "Re-accepted the sheet as corrected by stage 4: ## open is empty (flagship pick OWNER:1793908890260302861 and north-star validation OWNER:1793908893473496687 are in ## his words, bound to d_flagship_rite_party and d_north_star_validated). Gate A lint PASS; showcase set accepted (rite_party, 6 new, overlap 0.00, rest in coverage_rest); scenes.json and floor.json unchanged and validate. Tree, scenes and floor not edited this run, so stage 4's exam.json (written against the corrected sheet and current tree hashes) should still stand."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
