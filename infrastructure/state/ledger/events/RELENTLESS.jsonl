@@ -944,3 +944,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T08:41:00Z","tsn":1793954460047146696}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: RINDCOAT_TUNE_NEAR_IMMUNE_AFTER_ALL A1 (L2), read-only proof","ts":"2026-11-06T08:43:15Z","tsn":1793954595192934987}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T08:43:26Z","tsn":1793954606632489768}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLAYER_START_SITE_1 A1 (L2), read-only proof","ts":"2026-11-06T08:56:02Z","tsn":1793955362547574250}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T08:56:17Z","tsn":1793955377972555057}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A2 (L2), read-only proof","ts":"2026-11-06T08:56:29Z","tsn":1793955389924098203}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T08:58:31Z","tsn":1793955511244742308}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A3 (L2), read-only proof","ts":"2026-11-06T08:58:46Z","tsn":1793955526537974004}
