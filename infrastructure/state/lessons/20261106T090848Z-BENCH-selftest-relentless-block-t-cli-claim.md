@@ -1,0 +1,1 @@
+selftest_relentless_block t_cli ('claim writes the unblock of an ended block') failed once under run_selftests and passed on the immediate rerun and standalone, 2026-11-06 (OPS_CHURN_DIAGNOSE_RELENTLESS_IPFI_XNYX): flaky, not caused by a rules change; rerun before blaming your diff.

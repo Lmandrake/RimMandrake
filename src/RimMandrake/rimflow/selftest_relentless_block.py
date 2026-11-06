@@ -394,9 +394,28 @@ def t_strikes():
     x.done()
 
 
+def t_scope_snag_blocks():
+    """OPS_CHURN_DIAGNOSE_RELENTLESS_IPFI_XNYX: RELENTLESS_TICK_MEASURE_OUTLASTS_ITS_NAP went back 3 times on `snag --class
+    scope_exceeds_item` naming its two filed follow-ups; the class was no blocker, so each return re-staffed a worker
+    (~1M tokens) to re-find that the rest of the scope lives in those items. The shipped rules make it an item block."""
+    with open(R.RULES) as f:
+        rules = json.load(f)
+    for k in ("scope_exceeds_item", "scope_split", "rescope_needed"):
+        ok(relentless_block.blocker_kind(k, rules) == "item", "shipped rules: snag --class %s is an item block" % k)
+    detail = ("gen7: no retry, nothing changed since gen5. The open clauses are the whole scope of "
+              "TICKSLOW_REWIRE_CLONES_OFF_THE_BELT and RELWAITS_PRUNE_PAUSES_WITH_NO_REASON (both proposed). Supervisor: "
+              "rescope to profile+inventory and close on 48d6789366, or drop RELENTLESS_TICK_MEASURE_OUTLASTS_ITS_NAP")
+    blk = relentless_block.from_snag("scope_exceeds_item", detail, rules)
+    led = {"TICKSLOW_REWIRE_CLONES_OFF_THE_BELT": {"state": "proposed"},
+           "RELWAITS_PRUNE_PAUSES_WITH_NO_REASON": {"state": "proposed"}}
+    k, ons, why = relentless_block.resolve(blk or {"kind": None, "on": []}, "RELENTLESS_TICK_MEASURE_OUTLASTS_ITS_NAP", led.get)
+    ok(k == "item" and ons == ["TICKSLOW_REWIRE_CLONES_OFF_THE_BELT", "RELWAITS_PRUNE_PAUSES_WITH_NO_REASON"],
+       "the instance's gen7 snag waits on its two follow-ups, not back in line")
+
+
 def main():
     for t in (t_fields_and_schema, t_holds_and_lifts, t_relentless_eligible, t_cli, t_snag_blocks,
-              t_ledger_block_leaves_line, t_returned_run_not_restaffed, t_strikes):
+              t_ledger_block_leaves_line, t_returned_run_not_restaffed, t_strikes, t_scope_snag_blocks):
         print("--", t.__name__)
         try:
             t()
