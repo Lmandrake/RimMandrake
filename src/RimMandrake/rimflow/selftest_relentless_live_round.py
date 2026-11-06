@@ -59,7 +59,9 @@ def t_candidates():
     at = lambda t: R.L.iso(t)    # noqa: E731
     for outcome, when, sha, runs in (("FAIL", now - 10 ** 6, "abc123", False), ("PASS", now, "abc123", False),
                                       ("REFUSED", now, "abc123", False), ("FAIL", now, "def456", True),
-                                      ("UNMEASURED", now - 60, "abc123", False),
+                                      # no timer (PACING_PRUNE_LLMS_SLOW_ENOUGH_ALONE): with no game to key on,
+                                      # an UNMEASURED a minute old runs as one two hours old does
+                                      ("UNMEASURED", now - 60, "abc123", True),
                                       ("UNMEASURED", now - 7200, "abc123", True)):
         hist = R.history([{"item": "EG_X", "criterion": "A1", "sha": sha, "outcome": outcome, "at": at(when)}])
         todo, _ = R.candidates([item()], lambda i: PROSE, hist, now, 3600)
@@ -95,7 +97,7 @@ def t_history_review():
         else:
             os.environ["TZ"] = old
         time.tzset()
-    check("history: an UNMEASURED a minute old in daylight time still waits (UTC parse)", why == "unmeasured lately", why)
+    check("history: an UNMEASURED a minute old has no nap, in any time zone", why is None, why)
     check("proof lines: a bare command keeps its own backticks",
           R.proof_lines("live-proof A1: echo `date`") == {"A1": "echo `date`"}, R.proof_lines("live-proof A1: echo `date`"))
     check("proof lines: a wrapped line loses only the wrapping pair",
@@ -148,15 +150,15 @@ def t_round():
         s = R.run_round(FakeFx(game=False), root, {}, now=1_800_000_000, run=run)
         check("round: no running game -> no run at all", calls == [] and s["why"] == "no running game", s)
         run, calls = fake_run({"EG_B": ("FAIL", "proof exit 1")})
-        s = R.run_round(FakeFx(), root, {"live": {"round_max": 3}}, now=1_800_000_000, run=run)
-        check("round: batches up to round_max in one sitting, a FAIL does not stop it",
+        s = R.run_round(FakeFx(), root, {}, max_items=3, now=1_800_000_000, run=run)
+        check("round: batches up to --max in one sitting, a FAIL does not stop it",
               [c[0] for c in calls] == ["EG_A", "EG_B", "EG_C"] and s["eligible"] == 4, (calls, s))
         check("round: deploy args come from the item's own mods", calls[0][2] == "--mod UtinniPatches", calls)
         run, calls = fake_run({"EG_A": ("UNMEASURED", "bridge not taken: held by FOUNDRY")})
         s = R.run_round(FakeFx(), root, {}, now=1_800_000_000, run=run)
         check("round: a busy bridge ends the sitting at once", len(calls) == 1 and s["why"].startswith("stopped"), s)
         run, calls = fake_run({})
-        s = R.run_round(FakeFx(mods={"abc123": ["FlowWorks"]}), root, {"live": {"round_max": 1}}, now=1_800_000_000, run=run)
+        s = R.run_round(FakeFx(mods={"abc123": ["FlowWorks"]}), root, {}, max_items=1, now=1_800_000_000, run=run)
         check("round: a FlowWorks game file runs here too (FOUNDRY retired 2026-11-02)",
               len(calls) == 1 and not any(x["outcome"] == "SKIPPED" for x in s["runs"]), s)
         rows = R.read_rows(os.path.join(root, "live", "rounds.jsonl"))
@@ -218,17 +220,15 @@ def t_live_tick():
         st, fx, acts = TickStore(d), TickFx(), []
         RL.live_tick(st, fx, {"live": {}}, 1000.0, acts)
         check("tick: live.auto off starts nothing", fx.launched == 0 and acts == [])
-        r = {"live": {"auto": True, "round_every_s": 600}}
+        r = {"live": {"auto": True, "round_every_s": 600}}      # a stale rules key: nothing reads it
         RL.live_tick(st, fx, r, 1000.0, acts)
         check("tick: auto on starts one round and records it", fx.launched == 1 and acts[-1]["do"] == "live_round")
-        RL.live_tick(st, fx, r, 1100.0, acts)
-        check("tick: paced, no second round inside round_every_s", fx.launched == 1)
         fx._alive = True
-        RL.live_tick(st, fx, r, 5000.0, acts)
+        RL.live_tick(st, fx, r, 1001.0, acts)
         check("tick: a round still running is never doubled", fx.launched == 1)
         fx._alive = False
-        RL.live_tick(st, fx, r, 5000.0, acts)
-        check("tick: after the pace and the round's end, the next one starts", fx.launched == 2)
+        RL.live_tick(st, fx, r, 1002.0, acts)
+        check("tick: no clock: the round's end lets the next tick start one a second later", fx.launched == 2)
 
 
 def t_tick_env():
@@ -387,9 +387,9 @@ def t_live_site():
     fx = FakeFx()
     fx.proofs = lambda i: text
     with tempfile.TemporaryDirectory() as root:
-        R.run_round(fx, root, {"live": {"round_max": 1}}, now=1_800_000_000, run=fake_run({})[0])
+        R.run_round(fx, root, {}, max_items=1, now=1_800_000_000, run=fake_run({})[0])
         fx.proofs = lambda i: PROSE
-        R.run_round(fx, root, {"live": {"round_max": 1}}, now=1_800_000_001, run=fake_run({})[0])
+        R.run_round(fx, root, {}, max_items=1, now=1_800_000_001, run=fake_run({})[0])
     check("live-site: the round passes A1 its site, and the default --game site when the file has no site line",
           SITES[:2] == [("EG_A", "A1", "python.exe src/RimMandrake/Utils/live_site.py --biome RM_Stillsand"),
                         ("EG_A", "A1", R.DEFAULT_SITE)], SITES)
@@ -423,7 +423,7 @@ def t_live_mods():
     fx = FakeFx()
     fx.proofs = lambda i: "live-mods: Graffiti\n" + PROSE
     with tempfile.TemporaryDirectory() as root:
-        R.run_round(fx, root, {"live": {"round_max": 1}}, now=1_800_000_000, run=fake_run({})[0])
+        R.run_round(fx, root, {}, max_items=1, now=1_800_000_000, run=fake_run({})[0])
     check("live-mods: the round passes them to the gate", NEEDS[:1] == [("EG_A", ("Graffiti",))], NEEDS)
 
 
@@ -484,7 +484,7 @@ def t_menu_proofs_run_with_menu():
             def proofs(self, i):
                 return PROSE + extra
         with tempfile.TemporaryDirectory() as root:
-            R.run_round(Fx(), root, {"live": {"round_max": 1}}, now=1_800_000_000, run=run)
+            R.run_round(Fx(), root, {}, max_items=1, now=1_800_000_000, run=run)
         check("menu kw: %r -> %s" % (extra.strip(), want), seen == [want], seen)
 
 

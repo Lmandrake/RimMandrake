@@ -55,14 +55,6 @@
    "kind": "cause_cap",
    "why": "Repeat-snag backoff. The snag records the open item ids its detail names (not_before_cause); relentless_cause.sweep ends the wait when all of them close. A worker's own --wait-hours is time, kept a clock; a snag naming no open item keeps this clock."
   },
-  "live.round_every_s": {
-   "kind": "wp11",
-   "why": "Game lane, owned by WP-11 (RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES, relentless_game.py broker): its event conversion and measured reason are that package's, not this one's."
-  },
-  "live.unmeasured_retry_s": {
-   "kind": "wp11",
-   "why": "Game lane, owned by WP-11 (RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES, relentless_game.py broker): its event conversion and measured reason are that package's, not this one's."
-  },
   "game.prove_every_s": {
    "kind": "wp11",
    "why": "Game lane, owned by WP-11 (RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES, relentless_game.py broker): its event conversion and measured reason are that package's, not this one's."

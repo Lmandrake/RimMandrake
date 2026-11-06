@@ -160,7 +160,7 @@ def t_round():
         def proofs(self, i):
             return TR.PROSE + ("\nlive-companion: JawaBench\n" if i == "EG_A" else "")
     with tempfile.TemporaryDirectory() as root:
-        R.run_round(Fx(), root, {"live": {"round_max": 2}}, now=1_800_000_000, run=run)
+        R.run_round(Fx(), root, {}, max_items=2, now=1_800_000_000, run=run)
     check("round: the line passes companion=True, its absence nothing",
           dict(seen).get("EG_A") is True and dict(seen).get("EG_B") is None, seen)
 

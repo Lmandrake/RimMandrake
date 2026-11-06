@@ -723,7 +723,7 @@ def t_one_live_user():
         x.tick()
     phases = sorted((x.st(i)["game"] or {}).get("phase") for i in ("I0", "I1") if x.st(i)["status"] == "game")
     ok(phases.count("staging") == 1 and x.w.events.count("take") == 1, "two game items, one bridge user: %s" % phases)
-    x.r = dict(x.r, live=dict(x.r["live"], auto=True, round_every_s=0))
+    x.r = dict(x.r, live=dict(x.r["live"], auto=True))
     x.tick()
     ok("global_round" not in x.w.events, "the global live round waits while a game phase has the game")
     x.done()
@@ -747,7 +747,8 @@ def t_round_only_item():
         def foundry_seat(self, i): return False
     now = 1793613600.0 + 600      # ten minutes after the UNMEASURED rows
     todo, counts = RR.plan(Fx(), root, {}, now)
-    ok(not todo and counts.get("unmeasured lately") == 2, "the global round waits out a recent UNMEASURED")
+    ok(sorted(t[0] for t in todo) == ["I0", "I1"] and "unmeasured lately" not in counts,
+       "the global round has no 6 h nap: 'no running game' was the round's wall, so it runs in the next round")
     todo, _ = RR.plan(Fx(), root, {}, now, only="I1")
     ok([t[0] for t in todo] == ["I1"], "the game phase's round runs its one item at once, after staging")
 

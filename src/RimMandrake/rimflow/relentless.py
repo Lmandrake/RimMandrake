@@ -7133,9 +7133,10 @@ def books_alarm(store, fx, stale, now, acts, r):
 
 
 def live_tick(store, fx, r, now, acts):
-    """RA_S09_LIVE_WIRE_ONE_REAL_LEAF: start one live round when live.auto is on, none runs, and the last one began
-    live.round_every_s ago. Pacing only: the round checks the game, takes the bridge with --idle-ok per proof and
-    releases it at once, and refuses flyers, changed files and cut criteria (relentless_live_round.py)."""
+    """RA_S09_LIVE_WIRE_ONE_REAL_LEAF: start one live round when live.auto is on, none runs, and no other live user has
+    the game. No clock (PACING_PRUNE_LLMS_SLOW_ENOUGH_ALONE: round_every_s 1800 is gone): the round checks the game, takes
+    the bridge with --idle-ok per proof and releases it at once, and refuses flyers, changed files and cut criteria
+    (relentless_live_round.py); a round with nothing eligible ends in a second and wakes nothing."""
     lr = r.get("live") or {}
     if not lr.get("auto"):
         return
@@ -7146,8 +7147,6 @@ def live_tick(store, fx, r, now, acts):
     except (OSError, ValueError):
         last = {}
     if last.get("pid") and fx.live_round_alive(last["pid"]):
-        return
-    if now - (last.get("at_s") or 0) < lr.get("round_every_s", 1800):
         return
     if relentless_game.other_active(getattr(store, "states", list)(), None) or relentless_game.showing_live(store) \
             or relentless_broker.busy(store):     # one live user at a time: a game phase or the broker has the game

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """selftest_liveround_stale_build.py -- LIVEROUND_STALE_BUILD_SILENCE_RETRIES: a build whose game files changed since it
-was built is refused once and stays refused for that sha; it is never retried every unmeasured_retry_s (6 h).
+was built is refused once and stays refused for that sha; it is never retried (the 6 h unmeasured_retry_s is gone: PACING_PRUNE_LLMS_SLOW_ENOUGH_ALONE).
 
 First seen: EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS A2, round 2026-11-02T04:14:51Z, RUT_ExplosiveGrowthRoster.xml changed
 at 5afbec097e. The rule lives in relentless_live_round.decides/due; this file proves only that rule, so an unrelated red
@@ -18,7 +18,8 @@ import relentless_live_round as R      # noqa: E402
 
 FAILS = []
 NOW = 1_800_000_000
-RETRY = R.DEFAULTS["unmeasured_retry_s"]          # the real 6 h retry the item names
+RETRY = 6 * 3600        # the 6 h unmeasured_retry_s the item names, now gone: ages around it still never run a stale row
+CRON = 1                # the supervisor's own round (candidates/due's cron flag); 0 is a game phase's round
 NO_GAME = "no game can measure this build"
 
 
@@ -45,19 +46,18 @@ PROSE = "live-proof A2: python3 live_log_check.py --absent RUT_A\n"
 
 
 def t_instrument_sees():
-    """Sanity probe: an ordinary UNMEASURED row on the same sha DOES come due after the retry, so a refusal below is
-    the stale rule, not an instrument that refuses everything."""
-    plain = dict(stale_row(RETRY + 3600), why="the proof exited 2: x")
-    check("probe: retry is the 6 h the item names", RETRY == 6 * 3600, RETRY)
-    check("probe: an ordinary UNMEASURED comes due after the retry", R.due(plain, plain["sha"], NOW, RETRY) is None,
-          R.due(plain, plain["sha"], NOW, RETRY))
+    """Sanity probe: an ordinary UNMEASURED row on the same sha DOES come due (no game to key on, no timer), so a
+    refusal below is the stale rule, not an instrument that refuses everything."""
+    plain = dict(stale_row(60), why="the proof exited 2: x")
+    check("probe: an ordinary UNMEASURED a minute old comes due (no nap)", R.due(plain, plain["sha"], NOW, CRON) is None,
+          R.due(plain, plain["sha"], NOW, CRON))
     check("probe: an ordinary UNMEASURED does not decide", not R.decides(plain))
 
 
 def t_stale_is_terminal_for_its_sha():
     for age in (0, RETRY - 1, RETRY + 1, 7 * 3600, 30 * 86400):
         row = stale_row(age)
-        got = R.due(row, row["sha"], NOW, RETRY)
+        got = R.due(row, row["sha"], NOW, CRON)
         check("stale: refused at age %ds (never a 6 h retry)" % age, got == NO_GAME, got)
         for game, per_game in (("G1", True), ("G2", False)):
             got = R.due(row, row["sha"], NOW, 0, game, per_game=per_game)
@@ -67,8 +67,8 @@ def t_stale_is_terminal_for_its_sha():
 
 def t_new_sha_runs_again():
     row = stale_row(60)
-    check("stale: a new sha runs again", R.due(row, "0123abcd99", NOW, RETRY) is None,
-          R.due(row, "0123abcd99", NOW, RETRY))
+    check("stale: a new sha runs again", R.due(row, "0123abcd99", NOW, CRON) is None,
+          R.due(row, "0123abcd99", NOW, CRON))
 
 
 def t_history_and_candidates():
@@ -77,10 +77,10 @@ def t_history_and_candidates():
     hist = R.history([old, later])
     check("history: the stale row outlives a later plain row on its sha",
           hist[("EGROSTER_X", "A2", old["sha"])]["why"].startswith(R.L.STALE))
-    todo, counts = R.candidates([item(old["sha"])], lambda i: PROSE, R.history([old]), NOW, RETRY)
+    todo, counts = R.candidates([item(old["sha"])], lambda i: PROSE, R.history([old]), NOW, CRON)
     check("round: the stale build is not a candidate after 7 h", todo == [] and counts.get(NO_GAME) == 1,
           (todo, counts))
-    todo, counts = R.candidates([item("0123abcd99")], lambda i: PROSE, R.history([old]), NOW, RETRY)
+    todo, counts = R.candidates([item("0123abcd99")], lambda i: PROSE, R.history([old]), NOW, CRON)
     check("round: a rebuilt sha is a candidate", len(todo) == 1, (todo, counts))
 
 

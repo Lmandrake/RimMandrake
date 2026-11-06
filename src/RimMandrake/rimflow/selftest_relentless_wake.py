@@ -381,7 +381,9 @@ def t_config():
             node = node.get(part) if isinstance(node, dict) else None
         ok(isinstance(node, (int, float)) and row.get("kind") in kinds and len(row.get("why", "")) > 40,
            "clock key %s is a live rules number with a kind and a reason: %r" % (name, node))
-    ok(len(raw.get("clock_keys", {})) >= 16, "every remaining clock key is listed (%d)" % len(raw.get("clock_keys", {})))
+    ok(len(raw.get("clock_keys", {})) >= 14,     # 16 until PACING_PRUNE_LLMS_SLOW_ENOUGH_ALONE removed live.round_every_s
+                                                # and live.unmeasured_retry_s: those keys no longer exist
+       "every remaining clock key is listed (%d)" % len(raw.get("clock_keys", {})))
 
 
 def t_cli_poke():

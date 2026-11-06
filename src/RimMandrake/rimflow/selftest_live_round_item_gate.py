@@ -78,7 +78,7 @@ def runner(whys):
 def t_one_round():
     with tempfile.TemporaryDirectory() as root:
         run, calls = runner({"TAOZIN": ("UNMEASURED", TAOZIN_WHY)})
-        s = R.run_round(Fx([item("TAOZIN"), item("OTHER")]), root, {"live": {"round_max": 10}}, now=NOW, run=run)
+        s = R.run_round(Fx([item("TAOZIN"), item("OTHER")]), root, {}, max_items=10, now=NOW, run=run)
         check("instance TAOZIN L1-L3: an item-level load gate runs once, not once per clause",
               [c for c in calls if c[0] == "TAOZIN"] == [("TAOZIN", "L1")], calls)
         check("the round goes on to the next item", [c for c in calls if c[0] == "OTHER"] == [
@@ -86,10 +86,10 @@ def t_one_round():
         check("the skipped clauses are counted in the round summary",
               (s.get("skipped") or {}).get(R.ITEM_GATED) == 2, s.get("skipped"))
         run, calls = runner({"WARSCAR": ("UNMEASURED", SCAR_WHY)})
-        R.run_round(Fx([item("WARSCAR")]), root, {"live": {"round_max": 10}}, now=NOW, run=run)
+        R.run_round(Fx([item("WARSCAR")]), root, {}, max_items=10, now=NOW, run=run)
         check("a deploy-plan gate likewise stops the item's other clauses", calls == [("WARSCAR", "L1")], calls)
         run, calls = runner({"DUD": ("UNMEASURED", "the proof exited 2: it did not measure: no river tile")})
-        R.run_round(Fx([item("DUD")]), root, {"live": {"round_max": 10}}, now=NOW, run=run)
+        R.run_round(Fx([item("DUD")]), root, {}, max_items=10, now=NOW, run=run)
         check("a clause-level stop (the proof ran, measured nothing) skips no sibling", len(calls) == 3, calls)
 
 

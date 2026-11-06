@@ -1549,8 +1549,8 @@ NOT_ADMITTED = "NOT_ADMITTED"
 NO_VERDICT = ("UNMEASURED", NOT_ADMITTED)
 # cause -> (the action the lane takes on it, transient). The action is relentless_game's prove phase: recarry =
 # _carry or game_stale_build (decides), deploy = relentless_envcause's deploy route or a staging that applies it,
-# wait_load = a restage / the next load, full_list = the full-list tier (BENCH lane), retry = the read again after
-# unmeasured_retry_s. A transient cause never waits on its key: the harness may answer in a minute.
+# wait_load = a restage / the next load, full_list = the full-list tier (BENCH lane), retry = the read again in
+# the next round (no timer: PACING_PRUNE_LLMS_SLOW_ENOUGH_ALONE). A transient cause never waits on its key.
 ADMIT = {"unreadable_build": ("retry", True), "stale": ("recarry", False), "deploy_plan": ("retry", True),
          "deploy_gap": ("deploy", False), "no_game": ("wait_load", True), "old_build": ("wait_load", False),
          "companion_unread": ("retry", True), "running_load": ("wait_load", False), "load_unread": ("retry", True),

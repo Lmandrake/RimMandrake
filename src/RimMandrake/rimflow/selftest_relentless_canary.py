@@ -158,7 +158,7 @@ def t_round_stops_on_a_sick_canary():
         check(calls == [] and s["why"].startswith("stopped: canary interop") and s["canary"],
               "run_round: sick canaries stop the round before any proof spends a slot")
         run, calls = SR.fake_run({})
-        RR.run_round(Fx(None), root, {"live": {"round_max": 2}}, now=1_800_000_000, run=run)
+        RR.run_round(Fx(None), root, {}, max_items=2, now=1_800_000_000, run=run)
         check(len(calls) == 2, "run_round: healthy canaries let it run")
     check(hasattr(RR.RoundFx, "canary"), "the round's real effects carry the canary (the service context runs it)")
 

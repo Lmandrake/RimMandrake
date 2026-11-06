@@ -3,11 +3,13 @@
 live criterion it owes gets relentless_live.run(), several per sitting (RA_S09_LIVE_WIRE_ONE_REAL_LEAF).
 
     python3 src/RimMandrake/rimflow/relentless_live_round.py eligible        # what a round would try, and why not the rest
-    python3 src/RimMandrake/rimflow/relentless_live_round.py round [--max 6]
+    python3 src/RimMandrake/rimflow/relentless_live_round.py round [--max N]   # default: every eligible proof
     python3 src/RimMandrake/rimflow/relentless_live_round.py census [--last 300]   # runs.jsonl sorted by cause
 
-The supervisor (relentless.py tick, live_tick) starts `round` detached, at most one at a time, every live.round_every_s.
-A round's end wakes the supervisor's game pass (wake_supervisor), so the next proof starts now and not at the next tick.
+The supervisor (relentless.py tick, live_tick) starts `round` detached, at most one at a time, at every tick that finds none
+running and no other live user: no clock and no cap (PACING_PRUNE_LLMS_SLOW_ENOUGH_ALONE, owner 2026-11-06: "of course we
+should drop all this pacing control crap... the LLM's pace things slowly all by themselves"). A round that ran a proof wakes
+the supervisor's game pass (wake_supervisor), so the next proof starts now and not at the next tick.
 
 WHERE A PROOF COMES FROM: a line in infrastructure/state/live_proofs/<ID>.txt, one per criterion:
 
@@ -64,16 +66,16 @@ A round, in order:
      sweeps became this lane);
   3. history (live/runs.jsonl): a criterion already PASS, FAIL or REFUSED on the same built sha is not run again (a FAIL
      stands until a new build; a refusal of a criterion cut on the ledger stands until its prose holds it whole);
-     UNMEASURED retries after live.unmeasured_retry_s, and never on the game and build it ran on when the proof ran and
-     measured nothing or a final clause found the small tier (due: DUD_HERE, WAITS_TIER), and never on its build at all
-     once the row is a `defect` (relentless_live's cap);
+     an UNMEASURED or NOT_ADMITTED row has no timer: it routes by cause (due()). The bridge's or the harness's transient
+     read runs again in the next round; anything else waits for what it names to move: a new build, another game (the
+     load, the deploy, the site a staging makes), a final clause the full-list tier; never on its build at all once the
+     row is a `defect` (relentless_live's cap);
   4. each run is relentless_live.run(): flyer and forbidden-proof refusal, files changed since the build, the deploy plan
      (args derived from the item's own mods, one plan per args per round), the game started after the deploy, the bridge
      taken with --idle-ok and released at once after each proof, the verdict a `rimflow verify` on the built sha;
   5. the round stops early when the game went away or the bridge is held by someone else.
 """
 import argparse
-import calendar
 import fcntl
 import json
 import os
@@ -93,7 +95,9 @@ PROOF_LINE = re.compile(LINE.format(verb="live-proof"))
 # `live-site <CID>: <cmd>`: what makes the map or save the proof reads, run first with the bridge held (relentless_live)
 SITE_LINE = re.compile(LINE.format(verb="live-site"))
 PROOFS_DIR = "infrastructure/state/live_proofs"
-DEFAULTS = {"round_max": 6, "unmeasured_retry_s": 6 * 3600, "round_every_s": 1800}
+# No pacing (PACING_PRUNE_LLMS_SLOW_ENOUGH_ALONE): round_max 6, round_every_s 1800 and unmeasured_retry_s 6 h are gone;
+# nothing reads them from a rules file. `max_items` (round --max) remains a caller's own bound, never a default.
+DEFAULTS = {}
 STOP = ("no running game to test", "bridge not taken")
 # LIVEROUND_SHRINK_PROOFS_ARE_THE_SHORT_PART: a cause that is the bridge's or the running game's, not the clause's, holds
 # for every clause after it in the same round, so the round ends at the first one. Every pattern is from a run of
@@ -106,12 +110,6 @@ BRIDGE_DUD = re.compile(r"IndeterminateError|rimbridge_client\.py --reconcile|br
 # rerun on the same game and build it can only say the same again
 SAME_GAME_DUD = re.compile(r"the proof (exited \d+: it did not measure|timed out)|^site not prepared")
 WAITS_TIER, DUD_HERE = "waits for the full-list tier", "measured nothing on this game"    # due()'s, relentless_game reads
-
-
-def rules(r):
-    out = dict(DEFAULTS)
-    out.update((r or {}).get("live") or {})
-    return out
 
 
 # GAMEENV_FIX_PROOFSITE_FB127191_ITEMS_WAIT: a clause with no `live-site` line of its own gets this one, so no proof meets
@@ -492,8 +490,10 @@ def decides(row):
                           or (row.get("outcome") in L.NO_VERDICT and (row.get("why") or "").startswith(L.STALE)))
 
 
-def due(last, sha, now, retry_s, game=None, per_game=True, site=None):
+def due(last, sha, now, cron=True, game=None, per_game=True, site=None):
     """-> None when this criterion may run now, else why not. `last` is its deciding runs.jsonl row on `sha`, or None.
+    cron: the supervisor's own round (truthy) rather than a game phase's round for one item, which has just staged.
+    `now` is kept for the callers' shape: no wait here is a clock (PACING_PRUNE_LLMS_SLOW_ENOUGH_ALONE).
     game: the running game's start (relentless_live.iso); a reload request made on it stands until another game runs.
     per_game: an undeployed build waits for another game (the cron round); a game phase's own round passes False, its
     staging is what deploys it. site: the clause's `live-site` command, a part of a NOT_ADMITTED row's key
@@ -519,7 +519,7 @@ def due(last, sha, now, retry_s, game=None, per_game=True, site=None):
         if on == game and SAME_GAME_DUD.search(why):
             return DUD_HERE
     # redesign_final G1(c): a NOT_ADMITTED row waits on its key (sha, load, site, harness) and runs the moment one part
-    # moves, never later and never never; a transient cause (the harness's read) is the retry timer's below. A game
+    # moves, never later and never never; a transient cause (the harness's read) runs again at once. A game
     # phase's own round (per_game False) stages a deploy gap itself, so only the other causes hold it there
     if game and last.get("outcome") == L.NOT_ADMITTED and (per_game or last.get("admit") != "deploy_gap"):
         held = L.admit_waits(last, sha, game, site)
@@ -527,20 +527,32 @@ def due(last, sha, now, retry_s, game=None, per_game=True, site=None):
             return held
         if not L.ADMIT.get(last.get("admit"), ("", True))[1]:
             return None
-    try:
-        at = calendar.timegm(time.strptime(last.get("at", ""), "%Y-%m-%dT%H:%M:%SZ"))
-    except ValueError:
+    return route(last, game) if cron and per_game else None     # a game phase's round has just restaged
+
+
+def route(last, game):
+    """The coded route of an UNMEASURED row with no rule above, in place of the 6 h unmeasured_retry_s nap
+    (UNMEASURED_ROUTES_WIRE_NO_SIX_HOUR_NAPS): the bridge's or the round's own wall (STOP, BRIDGE_DUD) is not the
+    clause's, so it runs in the next round; any other cause the proof wrote on this game and this build can only be
+    written again, so it waits for another game (a load, a deploy, a staging) or a new build (another `last`).
+    A row with no `game` (before 2026-11-03) counts as this game's when it was written after this game started."""
+    if last.get("outcome") not in L.NO_VERDICT or not game:
         return None
-    if now - at < retry_s:
-        return "unmeasured lately"
+    why = last.get("why") or ""
+    if any(why.startswith(s) for s in STOP) or BRIDGE_DUD.search(why):
+        return None
+    on = last.get("game")
+    if on == game or (not on and last.get("at", "") >= game):
+        return DUD_HERE
     return None
 
 
 EXACT_TIER = "exact tier: SteveDesktop runs it through testq"
 
 
-def candidates(items, proofs_of, hist, now, retry_s, game=None, steve=None):
+def candidates(items, proofs_of, hist, now, cron=True, game=None, steve=None):
     """-> (todo [(item id, criterion, proof, built sha)], counts {why skipped: n}). Pure apart from proofs_of.
+    cron: truthy for the supervisor's round, falsy (0) for a game phase's round for one item, which has just staged.
     proofs_of(item id) -> the text of its live_proofs file, empty when it has none.
     `items` are ledger items in relentless_live.Fx.item's shape (criteria already whole or marked cut)."""
     todo, counts = [], {}
@@ -562,8 +574,8 @@ def candidates(items, proofs_of, hist, now, retry_s, game=None, steve=None):
         except ValueError:
             tiers = {ALL: "?"}      # malformed: it runs nowhere here; the game phase holds the item with the reason
         # a sibling's item-level gate on this build and this game holds every clause, as it would hold the clause itself
-        # (due: "not deployed on this game"); a game phase's round (retry 0) has just staged, so it runs again
-        gated = bool(retry_s) and game and any(
+        # (due: "not deployed on this game"); a game phase's round (cron 0) has just staged, so it runs again
+        gated = bool(cron) and game and any(
             k[0] == it["id"] and k[2] == it["built_sha"] and item_gate(v) and v.get("game") == game
             for k, v in hist.items())
         for cid in owed:
@@ -585,7 +597,7 @@ def candidates(items, proofs_of, hist, now, retry_s, game=None, steve=None):
             if gated and not decides(last):
                 skip("not deployed on this game")
                 continue
-            why = due(last, it["built_sha"], now, retry_s, game, per_game=bool(retry_s),   # a game phase restages
+            why = due(last, it["built_sha"], now, bool(cron), game, per_game=bool(cron),   # a game phase restages
                       site=site_for(text, cid) or "")
             if why:
                 skip(why)
@@ -795,20 +807,18 @@ def read_rows(path):
 def plan(fx, root, r, now, only=None, game=None):
     """-> (todo, counts) for this moment. Read-only. `only`: one item, the supervisor's game phase for it
     (relentless_game.py): it has just staged the game, so an UNMEASURED row is no reason to wait."""
-    lr = rules(r)
     hist = history(read_rows(os.path.join(root, "live", "runs.jsonl")))
     items = [it for it in fx.items() if only is None or it["id"] == only]
     import relentless_game
     c = relentless_game.cfg(r)
     steve = (steve_routes(fx.books, root, c.get("steve_infer") and c.get("enabled"))
              if getattr(fx, "books", None) else None)
-    return candidates(items, fx.proofs, hist, now, 0 if only else lr["unmeasured_retry_s"], game, steve)
+    return candidates(items, fx.proofs, hist, now, 0 if only else 1, game, steve)
 
 
 def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
     """One sitting. -> the round's summary row (also appended to <root>/live/rounds.jsonl)."""
     now = time.time() if now is None else now
-    lr = rules(r)
     os.makedirs(os.path.join(root, "live"), exist_ok=True)
     summary = {"at": L.iso(now), "runs": []}
 
@@ -828,7 +838,7 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         return done("stopped: %s" % sick[:300])
     todo, counts = plan(fx, root, r, now, only, L.iso(started))
     summary.update(eligible=len(todo), skipped=counts, **({"only": only} if only else {}))
-    folded, ran, cap, gated = None, 0, lr["round_max"] if max_items is None else max_items, set()
+    folded, ran, cap, gated = None, 0, len(todo) if max_items is None else max_items, set()
     for k, (item_id, cid, proof, sha) in enumerate(todo):     # the cap counts runs: a skip never starves the items behind it
         if ran >= cap:
             break
@@ -939,7 +949,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("eligible", help="what a round would try now, and the counts of what it would skip")
-    p = sub.add_parser("round", help="one sitting: run every due criterion that has a proof, up to --max")
+    p = sub.add_parser("round", help="one sitting: run every due criterion that has a proof (--max bounds it)")
     p.add_argument("--max", type=int, default=None)
     p.add_argument("--item", help="this item only, no unmeasured wait: the supervisor's game phase")
     p = sub.add_parser("deployed", help="the proof of a deploy item: exit 0 its live-deploy trees are in the game folder")
@@ -975,8 +985,10 @@ def main(argv=None):
         except BlockingIOError:
             print("a round is running")
             return 0
-        print(json.dumps(run_round(fx, root, r, max_items=a.max, only=a.item), indent=1, sort_keys=True), flush=True)
-    wake_supervisor(root)       # outside round.lock: the proof it starts takes that lock
+        summary = run_round(fx, root, r, max_items=a.max, only=a.item)
+        print(json.dumps(summary, indent=1, sort_keys=True), flush=True)
+    if summary.get("runs"):     # a round that ran nothing held no game: the next tick is its wake (no empty-round loop)
+        wake_supervisor(root)   # outside round.lock: the proof it starts takes that lock
     return 0
 
 
