@@ -1141,3 +1141,10 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_GLASS_CHAIN_REMAINDER_1 A2 (L2), read-only proof","ts":"2026-11-06T14:02:58Z","tsn":1793973778859319976}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:07:52Z","tsn":1793974072500826151}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: STILLSAND_DUNE_GALE_LIVE_1 A2 (L2), read-only proof","ts":"2026-11-06T14:08:13Z","tsn":1793974093634985635}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:15:35Z","tsn":1793974535479128811}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-06T14:16:50Z","tsn":1793974610606204183}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:17:00Z","tsn":1793974620674341254}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A1 (L1), read-only proof","ts":"2026-11-06T14:17:15Z","tsn":1793974635243310657}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:17:27Z","tsn":1793974647183763740}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A2 (L1), read-only proof","ts":"2026-11-06T14:17:37Z","tsn":1793974657620373467}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:17:50Z","tsn":1793974670233053391}
