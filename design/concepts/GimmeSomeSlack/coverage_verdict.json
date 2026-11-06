@@ -1,0 +1,37 @@
+{
+ "at": "2026-11-06T09:06:08Z",
+ "gaps": [
+  {
+   "return_to": 3,
+   "what": "The fixer exemption is never tested against the obvious wrong way to build it: exempting anyone doing a re-string job. His words are 'if they approach intending to fix it', meaning that particular wire, and exam c3 says a colonist re-stringing a different span who crosses this live end must be shocked. sc_shock and sc_shock_restring only use a re-stringer assigned to this wire, and the shock_restring control just reassigns them to hauling. An exemption keyed on the job type (the leaf's oracle reads 'none on the re-stringer while on RM_RestringSpan') would pass every scene. Add a control case: a colonist on RM_RestringSpan for another span crosses this sparking end and is shocked.",
+   "where": "scenes.json sc_shock / sc_shock_restring control; tree.json fallen_wire_shocks_crossers oracle_proposed"
+  },
+  {
+   "return_to": 2,
+   "what": "His root line says 'how a Pawn ever fixes a sparking line ... if they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked'. A floor-conduit cut also leaves a sparking live end: cut_live_and_dead_ends, which is the flagship workshop-floor moment. The tree applies shock (and the fixer-is-safe rule) only to fallen overhead spans. No leaf says whether a sparking floor-cord end shocks a pawn crossing it, or whether a constructor rebuilding the cut conduit is safe. Whether his shock rule covers floor cut ends is a scope question about his own words, so it needs his answer, then a leaf and scene either way.",
+   "where": "record.json root / scope s_shock_fix_safe; tree.json cut_live_and_dead_ends and fallen_wire_shocks_crossers; sheet.md does-list"
+  },
+  {
+   "return_to": 3,
+   "what": "statics_clear_between_games is defined as 'starts or loads another' game in the same session, but sc_statics_new_game only starts a second quicktest. Loading a save goes through a different init path, and that is the path where an old game's tap or style pick could leak. Add a load-a-save case, or a second game reached by loading.",
+   "where": "scenes.json sc_statics_new_game; tree.json statics_clear_between_games experience"
+  },
+  {
+   "return_to": 3,
+   "what": "sc_settings does not assert the parts of settings_switch_cleanly that are specific to this leaf. Nothing checks that the master switch brings back vanilla LAMP art without a restart; sc_conduit_invisible and the walk check conduit art only. Nothing reads 'every Harmony patch maps to one switch'. Nothing checks that the pipe-pole switch 'leaves power poles alone': the expect says only that 'pipe poles follow only their own switch'. Name these three observations in the scene.",
+   "where": "scenes.json sc_settings expect; tree.json settings_switch_cleanly oracle/experience"
+  },
+  {
+   "return_to": 3,
+   "what": "wire_down_alert, as built and in the restring_cut_span leaf, lists anchors with a cut OR grounded wire, jumps to the anchor, and clears on re-string. sc_restring only stages a cut span. It never checks the jump-to, and never checks the grounded case (a killed mast, as in sc_fallen_span). overhead_spans also names lamp masts, and sc_spans stages no lamp mast. These built parts are exercised by no scene.",
+   "where": "scenes.json sc_restring, sc_spans; record.json inventory wire_down_alert, overhead_spans"
+  }
+ ],
+ "judge": "rm-coverage-judge-1793955968",
+ "reasons": "Checked all 20 record.json inventory entries against the showcases and coverage_rest. Every unit is accounted for, and uninstall_clean is scoped out under waiver w1. Every tree leaf has a script-staged acceptance scene with an asserted start, a control and a restore step, except no_hose_in_gss, which is offline and exempt. No leaf rests on an exploration scene, and the sheet's does-list matches the leaves. The gaps are in what the scenes actually test. The fixer exemption can pass if built on the job type, because no control separates 'fixing THIS wire' from 'on any re-string job'; exam c3 already demands that distinction. His shock rule speaks of 'sparking ends' while the tree applies it only to fallen spans, leaving the flagship's sparking floor-cut end silent: that needs his answer. Smaller holes stage 3 can fix: statics tested only on a new game, not a load; the settings scene not naming lamp-art return, the patch-to-switch map, or power poles untouched by the pipe-pole switch; and the alert's grounded case and jump, plus lamp-mast spans, unexercised.",
+ "sheet": "61d7152331b1d4c80ff698b03d2acea82b00d305bc028759d96ff4fd4f786051",
+ "signed": false,
+ "tokens": 337552,
+ "tree": "a1e533020bd1b5d950d0740ca061a80179f7c8b96f3f0de54cba7c54d6c8048b",
+ "verdict": "not_covered"
+}
