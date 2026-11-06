@@ -1,0 +1,1 @@
+Emptying a retired seat clone breaks every tool that lists it as a required root: /home/mandrake/rm/foundry was emptied 2026-11-05 18:58 PST and rm-scratch-reap failed every run on 'ledger corpus missing' (DEFAULT_CORPUS still named foundry). Before retiring a clone, grep src/ for RM / "foundry"-style roots; PROTECTED lists in scratch_reap.py still name it harmlessly.
