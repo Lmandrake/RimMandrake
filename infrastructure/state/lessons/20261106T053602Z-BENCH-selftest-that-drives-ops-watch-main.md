@@ -1,0 +1,1 @@
+A selftest that drives ops_watch.main(['run','--file-alarms']) silently files nothing once the live metronome phase table owns rm-ops-watch.timer (metronome.owner_of reads the real table): stub metronome.owner_of in the fixture, or the WIRE checks go red with empty results (selftest_known_reds, fixed by NIGHTLY_COP_FIX_RED_WARIWE_XVFM_KTXP).
