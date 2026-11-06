@@ -220,7 +220,9 @@ cl = S.claude_spend_by_arm(P2, ["noid"], ROOT)
 check(cl["noid"]["calls"] == 3, "calls with no message id do not collapse to one")
 # builder's owed item: a 1-pass job in a fresh arm clone, simulated (no paid call) by a COPIED real small transcript
 # placed under a temp arena root's project slug
-FX = "/mnt/d/ClaudeWork/rimmandrake/foundry_arena/fixtures/small_real_transcript.jsonl"
+# a real subagent transcript with its content stripped (ids, timestamps, model, usage kept); the D: copy left with
+# the arena dir (1f0e666566), so it lives in the repo
+FX = os.path.join(HERE, "testdata", "small_real_transcript.jsonl")
 check(os.path.isfile(FX), "fixture transcript present (missing => FAIL, never a silent skip): " + FX)
 if os.path.isfile(FX):
     TA = tempfile.mkdtemp(dir=ext_tmp); os.makedirs(os.path.join(TA, "freshclone"))

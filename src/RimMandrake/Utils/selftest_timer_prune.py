@@ -2,7 +2,8 @@
 """selftest_timer_prune: the timer audit of 2026-11-03, as enacted (TIMERS_PRUNE_AUDIT_FINALLY_READ).
 
 Retired (uninstalled 2026-11-04; unit text kept in D:\\ClaudeWork\\rimmandrake\\backups\\timers_retired_2026-11-04):
-rm-arena-anchor, rm-replay-watch, rm-v3-vs-v2, account-plan, claude-account-warm. Slowed: rm-mirror 15 min,
+rm-arena-anchor, rm-replay-watch, rm-v3-vs-v2, claude-account-warm (account-plan was reinstalled 2026-11-05 for
+the owner's week plan, ACCOUNTS_RESTORE_STEVE_LINE_AFTER_BIG_WEEK, so it is no longer retired). Slowed: rm-mirror 15 min,
 rm-telemetry-export 5 min, rm-arteval-autojudge 2 h. Kept as they are, against the audit's text, on a re-read:
 testq-tick stays at 60 s (its slow-down was "while the steward is BRAKED", and it was RUNNING), testq-steward-watch
 stays its own timer (the audit's keep-list names it, and steward.py's STALE_S of 300 s assumes a 60 s tick).
@@ -19,7 +20,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 FAILS = []
-RETIRED = ("rm-arena-anchor", "rm-replay-watch", "rm-v3-vs-v2", "account-plan", "claude-account-warm")
+RETIRED = ("rm-arena-anchor", "rm-replay-watch", "rm-v3-vs-v2", "claude-account-warm")
 SLOWED = {  # unit -> (repo file, timer key, value systemd reports)
     "rm-mirror": (HERE / "systemd/rm-mirror.timer", "OnUnitInactiveSec=15min", "OnUnitInactiveUSec=15min"),
     "rm-telemetry-export": (HERE / "telemetry/systemd/rm-telemetry-export.timer", "OnUnitActiveSec=5min",
