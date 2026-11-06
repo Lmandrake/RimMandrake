@@ -1,0 +1,12 @@
+{
+ "run_id": "audit_auto_20261105_1551",
+ "test": false,
+ "started": "2026-11-05T15:51:59-08:00",
+ "subjects": [
+  "SWPotF_RaceDef_ysalamir__ysalamiri",
+  "RM_Krissek",
+  "RM_OcularJelly__RM_OcularJelly_Bell",
+  "RM_TheUnfinished__RM_TheUnfinished_RM_TheUnfinished"
+ ],
+ "versions_key": "departures_brief@v3#4e4c26+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v3#2337d2+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
+}

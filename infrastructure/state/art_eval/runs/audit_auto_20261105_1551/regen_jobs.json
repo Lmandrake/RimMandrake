@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RM_TheUnfinished__RM_TheUnfinished_RM_TheUnfinished_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_TheUnfinished__RM_TheUnfinished_RM_TheUnfinished",
+  "prompt": "A creature sprite for RimWorld: the Unfinished. A chimera budded by the Contagion's red goo, one part finished and the rest abandoned mid-thought. The creature stands on exactly three whole cloven-hooved legs; its fourth leg (the near hind leg in the east view) ends above the knee in a short raw red goo stump that hangs clear of the ground, shown the same on every facing. The body balances visibly on the three whole legs in a lopsided stance, weight shifted away from the dangling stump, so it reads as crippled and unfinished. A single useless half-formed wing rises from the creature's right shoulder (on the viewer's right in the rear view, seen from behind), with a hanging lump of goo-flesh on the same side. A jaw sits on a body that cannot eat, its parts mismatched. The hindquarters are a patchwork of unformed raw red goo-flesh and mismatched skin of different colours and textures, with no regular coat pattern; odd parts are spread from head to tail, so no part reads as a whole Earth animal. Raw red flesh from the Contagion's goo shows wherever the body is unfinished. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261105_1551",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.85,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_TheUnfinished/RM_TheUnfinished"
+ }
+]
