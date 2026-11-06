@@ -38,12 +38,115 @@ def concept(root, stage=5, status="open"):
     return d
 
 
-def answer(verdict, gaps=(), tokens=True):
-    res = {"structured_output": {"verdict": verdict, "gaps": list(gaps), "reasons": "r"}}
+def answer(verdict, gaps=(), tokens=True, checklist=None):
+    res = {"structured_output": {"verdict": verdict, "gaps": list(gaps), "reasons": "r", "checklist": checklist or []},
+           "session_id": "sess"}
     if tokens:
         res["usage"] = {"input_tokens": 10, "output_tokens": 2, "cache_read_input_tokens": 0,
                         "cache_creation_input_tokens": 0}
     return json.dumps(res)
+
+
+def row(i, ok=True, scene="sc_a"):
+    return {"id": i, "parts": [{"what": "part of %s" % i, "scene": scene, "ok": ok}]}
+
+
+def one_pass(root, calls, runner_of, signed):
+    """DESIGNER_GAPJUDGE_FIX_ONE_BATCH_PER_ROUND: every owed row in the first answer, or a re-ask, or never signed."""
+    d = concept(os.path.join(root, "onepass"))
+    with open(os.path.join(d, "record.json"), "w") as f:
+        json.dump({"inventory": [{"id": "inv_a", "what": "a"}, {"id": "inv_b", "what": "b"}]}, f)
+    with open(os.path.join(d, "tree.json"), "w") as f:
+        json.dump({"kind": "mod", "leaves": [{"id": "leaf_c"}, {"id": "inv_a"}]}, f)
+    del signed[:]
+    check("the owed ids are the inventory then the leaves, once each",
+          CJ.required_ids(d, CT.load(d)) == ["inv_a", "inv_b", "leaf_c"], CJ.required_ids(d, CT.load(d)))
+    full = [row("inv_a"), row("inv_b"), row("leaf_c")]
+
+    n = len(calls)
+    rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("covered", checklist=full)))
+    first = calls[n][0][2]
+    check("the prompt names every owed id and says one pass lists every gap",
+          all(i in first for i in ("inv_a", "inv_b", "leaf_c")) and "EVERY gap" in first, first[-400:])
+    check("a first judge is not told of a previous verdict", "previous judge" not in first, first[-300:])
+    check("the schema refuses an answer with no checklist and a gap with no ids",
+          "checklist" in CJ.SCHEMA["required"]
+          and "ids" in CJ.SCHEMA["properties"]["gaps"]["items"]["required"])
+    check("all rows, none failed -> signed, one call, checklist on file",
+          rec["signed"] and len(calls) == n + 1 and rec["checklist"] == full and "unchecked" not in rec, rec)
+
+    # A missing row is re-asked once, in the same session.
+    os.remove(os.path.join(d, CJ.VERDICT_FILE))
+    answers = [answer("covered", checklist=full[:2]), answer("covered", checklist=full)]
+    argvs = []
+
+    def script(argv, cwd, env, timeout):
+        argvs.append(argv)
+        return 0, answers.pop(0)
+    del signed[:]
+    rec, _ = CJ.run(d, os.path.join(root, "onepass"), script)
+    check("a missing row -> one re-ask, same session, naming only that row",
+          len(argvs) == 2 and argvs[1][argvs[1].index("--resume") + 1] == "sess" and "leaf_c" in argvs[1][2]
+          and "inv_a" not in argvs[1][2] and rec["reasked"] == ["leaf_c"], argvs[1:])
+    check("answered on the re-ask -> signed", rec["signed"] and signed and "unchecked" not in rec, rec)
+    check("both calls are charged", rec["tokens"] == 2 * RL.run_tokens(json.loads(answer("covered"))), rec.get("tokens"))
+
+    # Still missing: a covered verdict never signs; a not_covered one stays actionable.
+    os.remove(os.path.join(d, CJ.VERDICT_FILE))
+    answers[:] = [answer("covered", checklist=full[:2]), answer("covered", checklist=full[:2])]
+    del argvs[:], signed[:]
+    rec, _ = CJ.run(d, os.path.join(root, "onepass"), script)
+    check("covered, still missing a row after one re-ask -> not signed, no third call",
+          not rec["signed"] and not signed and len(argvs) == 2 and rec["unchecked"] == ["leaf_c"] and rec.get("error"), rec)
+    gap = {"what": "w", "where": "x", "return_to": 3, "ids": ["inv_a"]}
+    answers[:] = [answer("not_covered", [gap], checklist=[row("inv_a", False, "")]),
+                  answer("not_covered", [gap], checklist=[row("inv_a", False, "")])]
+    rec, _ = CJ.run(d, os.path.join(root, "onepass"), script)
+    check("not_covered, rows still missing -> gaps stand, the rest on file as unchecked",
+          rec["verdict"] == "not_covered" and rec["gaps"] == [gap] and rec["unchecked"] == ["inv_b", "leaf_c"] and not rec["signed"], rec)
+    answers[:] = [answer("covered", checklist=full[:2]), "not json"]
+    rec, _ = CJ.run(d, os.path.join(root, "onepass"), script)
+    check("a broken re-ask leaves the first answer, not signed",
+          not rec["signed"] and rec["unchecked"] == ["leaf_c"], rec)
+    no_session = json.loads(answer("covered", checklist=full[:2]))
+    del no_session["session_id"]
+    rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(json.dumps(no_session)))
+    check("no session to resume -> no re-ask, not signed", not rec["signed"] and "reasked" not in rec, rec)
+    rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("covered", checklist=[
+        row("inv_a"), row("inv_b"), {"id": "leaf_c", "parts": []}]), None), timeout=CJ.REASK_MIN_S - 1)
+    check("a row naming no part is a missing row; too little time left -> no re-ask",
+          not rec["signed"] and rec["unchecked"] == ["leaf_c"] and "reasked" not in rec, rec)
+
+    # A failed part cannot fall out of the list, and cannot sign.
+    del signed[:]
+    failing = [row("inv_a", False, ""), row("inv_b"), row("leaf_c")]
+    rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("covered", checklist=failing)))
+    check("covered over a failed part -> not_covered, the part is a gap, not signed",
+          rec["verdict"] == "not_covered" and not rec["signed"] and not signed
+          and [g["ids"] for g in rec["gaps"]] == [["inv_a"]], rec)
+    rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
+    check("a failed part its gap already names is not listed twice", rec["gaps"] == [gap], rec)
+    failing[1] = row("inv_b", False, "sc_b")
+    rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
+    check("a failed part no gap names joins the list",
+          len(rec["gaps"]) == 2 and rec["gaps"][1]["ids"] == ["inv_b"] and "sc_b" in rec["gaps"][1]["where"], rec)
+
+    with open(os.path.join(d, "record.json"), "w") as f:
+        f.write("{broken")
+    check("an unreadable record.json does not stop the pre-launch step", CJ.required_ids(d, CT.load(d)) == ["leaf_c", "inv_a"])
+    with open(os.path.join(d, "record.json"), "w") as f:
+        json.dump({"inventory": [{"id": "inv_a", "what": "a"}, {"id": "inv_b", "what": "b"}]}, f)
+
+    # A re-judge carries the last verdict forward; a judge that reached none leaves nothing to carry.
+    n = len(calls)
+    CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
+    again = calls[n][0][2]
+    check("a re-judge is pointed at the previous verdict, and a passed unchanged part needs a quoted defect",
+          "previous judge" in again and CJ.VERDICT_FILE in again and "quote the defect" in again, again[-400:])
+    CJ.run(d, os.path.join(root, "onepass"), runner_of("not json"))
+    n = len(calls)
+    CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
+    check("an errored earlier run is no previous verdict", "previous judge" not in calls[n][0][2], calls[n][0][2][-300:])
 
 
 def main():
@@ -100,6 +203,7 @@ def main():
                     f.write("more\n")
             rec, _ = CJ.run(d, root, runner_of(answer("covered"), edit_sheet))
             check("covered but the sheet changed meanwhile -> not signed", not rec["signed"] and not signed, rec)
+            one_pass(root, calls, runner_of, signed)
             n = len(calls)
             seen["cov"] = None
             check("already signed -> skip, no judge launched",
