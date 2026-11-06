@@ -458,6 +458,40 @@ def _old_writer_append(sd, item, sha):
             f.write(json.dumps(e, sort_keys=True, separators=(",", ":")) + "\n")
 
 
+def receipt_wedge():
+    """RIMFLOW_BUILD_ONE_EVIDENCE_RECORD: a finish whose run receipt append was refused as tampering (the HEAD-lag
+    wedge) is the wedge cohort from its own NEWEST finish receipt, after a seal has repaired the index tail."""
+    sd = store("receipt_wedge")
+    sha = "ab" * 20
+    d = os.path.join(sd, "items", "WEDGED", "receipts")
+    os.makedirs(d)
+    refused = "TamperError: does not verify"
+    def put(gen, boxrun, at_sha=sha, at="2026-11-06T17:30:00Z", raw=None):
+        with open(os.path.join(d, "gen%d.json" % gen), "w") as f:
+            f.write(raw if raw is not None else json.dumps({"item": "WEDGED", "sha": at_sha, "gen": gen, "at": at,
+                                                             "boxrun": boxrun}))
+    row_at = "2026-11-06T17:40:00Z"
+    check(not G._receipt_wedged(sd, "WEDGED", sha, row_at), "no receipt: not wedged")
+    put(1, {"verdict": "green", "evidence_error": None})
+    check(not G._receipt_wedged(sd, "WEDGED", sha, row_at), "a clean green receipt is not the wedge")
+    put(2, {"verdict": "green", "evidence_error": refused})
+    check(G._receipt_wedged(sd, "WEDGED", sha, row_at), "a green run whose receipt was refused as tampering is the wedge")
+    check(G._receipt_wedged(sd, "WEDGED", sha[:10], row_at), "a 10-digit sha matches its receipt")
+    check(not G._receipt_wedged(sd, "WEDGED", sha[:4], row_at), "a sha under 7 digits matches nothing")
+    check(not G._receipt_wedged(sd, "WEDGED", "", row_at), "an empty sha matches nothing")
+    check(not G._receipt_wedged(sd, "WEDGED", sha, "2026-11-06T17:00:00Z"), "a receipt written after the close explains nothing")
+    check(not G._receipt_wedged(sd, "OTHER", sha, row_at), "another item is not wedged")
+    put(10, {"verdict": "red", "evidence_error": refused}, at="2026-11-06T17:35:00Z")
+    check(not G._receipt_wedged(sd, "WEDGED", sha, row_at),
+          "the newest receipt (gen10 after gen2, not name order) is red: a red run is never the wedge")
+    os.remove(os.path.join(d, "gen10.json"))
+    put(11, None, raw="[1, 2]")
+    put(12, "green", at="2026-11-06T17:36:00Z")
+    check(not G._receipt_wedged(sd, "WEDGED", sha, row_at), "a non-object receipt or a non-dict boxrun never crashes")
+    put(13, {"verdict": "green", "evidence_error": refused}, at_sha="a")
+    check(not G._receipt_wedged(sd, "WEDGED", "a" * 7, row_at), "a receipt sha that is not a full commit id matches nothing")
+
+
 def main():
     try:
         wiring()
@@ -467,6 +501,7 @@ def main():
         report()
         corpus_build()
         cli_end_to_end()
+        receipt_wedge()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
     print("\n%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))

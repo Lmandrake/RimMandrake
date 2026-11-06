@@ -314,6 +314,42 @@ def _state(sd, item):
         return {}
 
 
+def _receipt_wedged(sd, item, sha, before=None):
+    """True when the NEWEST finish receipt for item@sha (written at or before `before`, the shadow row's ISO time) says
+    its box run was green but the run receipt's append was refused as tampering (boxrun.evidence_error TamperError):
+    the HEAD-lag wedge, read from the receipt itself. _wedge_from reads the index tail, which a later seal repairs, so
+    after the repair only the receipt still shows the refusal. A receipt sha must be a full commit id; the row's sha a
+    prefix of at least 7 hex digits of it."""
+    sha = str(sha or "").lower()
+    if not re.fullmatch(r"[0-9a-f]{7,40}", sha):
+        return False
+    d = os.path.join(sd, "items", item, "receipts")
+    try:
+        names = os.listdir(d)
+    except OSError:
+        return False
+    best = None
+    for n in names:
+        try:
+            with open(os.path.join(d, n), encoding="utf-8") as f:
+                rec = json.load(f)
+        except (OSError, ValueError):
+            continue
+        if not isinstance(rec, dict):
+            continue
+        rs, at = str(rec.get("sha") or "").lower(), str(rec.get("at") or "")
+        if not re.fullmatch(r"[0-9a-f]{40}", rs) or not rs.startswith(sha) or (before and at and at > str(before)):
+            continue
+        g = rec.get("gen") if isinstance(rec.get("gen"), int) else -1
+        if best is None or (g, at) > best[0]:
+            best = ((g, at), rec)
+    if best is None:
+        return False
+    box = best[1].get("boxrun")
+    return isinstance(box, dict) and box.get("verdict") == "green" \
+        and str(box.get("evidence_error") or "").startswith("TamperError")
+
+
 def _wedge_from(sd):
     """-> the `at` of the first index row past HEAD that a pre-seal writer left (unsealed), or None. From then on the
     unfixed evidence.py refused every append, so a finish after it has no record through no fault of its own."""
@@ -330,7 +366,7 @@ def rescore(snapshot, cwd=None):
     every Marker verdict the store held (check.verdict on its candidate) is appended as relentless.marker_receipt now
     does at verdict time, then each row is judged again. -> (report dict, [unexplained disagreement]). A disagreement
     is explained only by a cohort the record cannot help: pre_record (finished before any evidence row) or wedge (its
-    receipt was refused by the HEAD-lag bug)."""
+    receipt was refused by the HEAD-lag bug: from the index tail, or from the finish receipt's own evidence_error)."""
     import shutil
     import tempfile
     src = os.path.join(snapshot, "store")
@@ -377,7 +413,8 @@ def rescore(snapshot, cwd=None):
             cohort = j.get("cohort")
             norun = any(str(x).startswith("no run") for x in j["reasons"])
             st = _state(sd, r["item"])
-            if not cohort and norun and wedge and str(r.get("at") or "") >= wedge:
+            if not cohort and norun and ((wedge and str(r.get("at") or "") >= wedge)
+                                         or _receipt_wedged(src, r["item"], r["sha"], r.get("at"))):
                 cohort = WEDGE
             elif not cohort and any(str(x).startswith("no marker") for x in j["reasons"]) and not (st.get("check") or {}):
                 cohort = VERDICT_GONE
