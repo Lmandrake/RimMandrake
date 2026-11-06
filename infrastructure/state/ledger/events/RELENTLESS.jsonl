@@ -1250,3 +1250,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:38:56Z","tsn":1793983136979472005}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT: review savegame for the owner's look","ts":"2026-11-06T16:39:02Z","tsn":1793983142455167609}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:39:10Z","tsn":1793983150638731942}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-06T16:42:51Z","tsn":1793983371147951056}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:43:02Z","tsn":1793983382263193146}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A1 (L1), read-only proof","ts":"2026-11-06T16:43:24Z","tsn":1793983404753016360}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:43:34Z","tsn":1793983414858351756}
