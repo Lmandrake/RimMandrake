@@ -59,10 +59,15 @@ def tail(path: str, st: dict, key: str) -> list[dict]:
             st[k] = off
             continue
         with open(p, "rb") as f:
+            if off > 0:     # a cursor off a line start was left by an oversized-row skip: drop that row's tail
+                f.seek(off - 1)
+                midfile = midfile or f.read(1) != b"\n"
             f.seek(off)
             data = f.read(min(MAX_READ, s.st_size - off))
         end = data.rfind(b"\n")
         if end < 0:
+            if len(data) == MAX_READ:   # one row longer than a whole read: move past it, never stall the file
+                st[k] = off + len(data)
             continue
         lines = data[:end + 1].split(b"\n")[:-1]
         if midfile:

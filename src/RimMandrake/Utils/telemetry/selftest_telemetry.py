@@ -292,16 +292,23 @@ def main(argv) -> int:
         check("ledger rows dedupe by line hash", con.execute("SELECT COUNT(*) FROM events WHERE kind='bridge_hold'").fetchone()[0] == 1)
         mr0, ingest.MAX_READ = ingest.MAX_READ, 128
         try:    # a row longer than one whole read must not stall the file; a measured 0 is a point, not None
-            w(os.path.join(c["inbox"], "wsl", "wsl_long.jsonl"), [
-                {"src": "wsl_host", "ts": time.time(), "pad": "x" * 300},
-                {"src": "objstore", "ts": time.time(), "store_bytes": 0, "store_hardlinked_bytes": 7}])
+            # a row over 2x MAX_READ whose bytes from 256 on are a valid objstore row: that fragment is the long
+            # row's tail and must not land as a row of its own (store_bytes 5 would be a phantom point)
+            bad0 = T.stats.get("wsl", {}).get("bad", 0)
+            with open(os.path.join(c["inbox"], "wsl", "wsl_long.jsonl"), "wb") as fh:
+                fh.write(b"x" * 256 + json.dumps({"src": "objstore", "ts": time.time(), "store_bytes": 5}).encode()
+                         + b"\n" + json.dumps({"src": "objstore", "ts": time.time(), "store_bytes": 0,
+                                                "store_hardlinked_bytes": 7}).encode() + b"\n")
             for _ in range(8):
                 T.pass_source(S["wsl"])
         finally:
             ingest.MAX_READ = mr0
         sink.flush()
         ob = [x["values"] for x in vm.of("rm_objstore_bytes")]
-        check("[tail] a row past MAX_READ is skipped, the next row still lands; store_bytes 0 stays 0", ob == [[0.0]], ob)
+        check("[tail] a row past 2x MAX_READ is skipped, its tail is not a row, the next row still lands; "
+              "store_bytes 0 stays 0", ob == [[0.0]], ob)
+        check("[tail] the oversized row counts as one bad row, not one per read", T.stats["wsl"]["bad"] - bad0 == 1,
+              T.stats["wsl"]["bad"] - bad0)
 
         # raw copies
         T.flush_raw(force=True)
@@ -764,6 +771,16 @@ def main(argv) -> int:
         w(f, [{"a": 3}])
         r2 = wsl_export.tail(f, st, "k")
         check("[rotate] exporter tail follows rename", [x["a"] for x in r1] == [1] and sorted(x["a"] for x in r2) == [2, 3], (r1, r2))
+        g = os.path.join(tmp, "mw_long.jsonl")
+        with open(g, "wb") as fh:   # a row over 2x MAX_READ whose tail is a valid row, then a real row
+            fh.write(b"x" * 256 + b'{"a": 5}\n{"a": 6}\n')
+        st2: dict = {"_seen_g": True}
+        mr0, wsl_export.MAX_READ = wsl_export.MAX_READ, 128
+        try:
+            got = [x["a"] for _ in range(6) for x in wsl_export.tail(g, st2, "g")]
+        finally:
+            wsl_export.MAX_READ = mr0
+        check("[tail] exporter moves past a row longer than MAX_READ and drops its tail", got == [6], got)
 
         # dashboards are generated, not hand-edited
         sys.path.insert(0, os.path.join(HERE, "grafana"))

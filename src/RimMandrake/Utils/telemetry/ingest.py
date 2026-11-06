@@ -594,6 +594,12 @@ class Tailer:
                     start = min(off, done) if src.archive else off
                     if st.st_size == start:
                         continue
+                    # a cursor not on a line start was put there by an oversized-row skip (below): the bytes up to
+                    # the next newline are that row's tail, never a row of their own
+                    mid_row = False
+                    if start > 0:
+                        f.seek(start - 1)
+                        mid_row = f.read(1) != b"\n"
                     f.seek(start)
                     chunk = f.read(min(MAX_READ, st.st_size - start))
                     partial = st.st_size - start > MAX_READ
@@ -607,16 +613,17 @@ class Tailer:
             if end < 0:
                 if len(chunk) < MAX_READ:
                     continue
-                end = len(chunk) - 1    # one row longer than a whole read: count it bad and move past, never stall
-                stt["bad"] += 1         # the file (its tail parses as one more bad fragment next pass)
+                end = len(chunk) - 1    # one row longer than a whole read: count it bad once and move past it,
+                if not mid_row:         # never stall the file; the next pass skips the rest of it (mid_row)
+                    stt["bad"] += 1
             chunk = chunk[:end + 1]
             base = os.path.basename(path)
             pos = start
-            for line in chunk.split(b"\n")[:-1]:
+            for i, line in enumerate(chunk.split(b"\n")[:-1]):
                 ref = f"{src.name}:{base}:{pos}"
                 pos += len(line) + 1
-                if pos <= off or not line.strip():    # pos <= off: ingested before the crash, copied only
-                    continue
+                if (i == 0 and mid_row) or pos <= off or not line.strip():   # pos <= off: ingested before the
+                    continue                                                  # crash, copied only
                 r = loads(line)
                 if not isinstance(r, dict):
                     stt["bad"] += 1
