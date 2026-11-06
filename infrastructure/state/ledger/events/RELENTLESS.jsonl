@@ -927,3 +927,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_GLASSWALK_SPEED_RATIO_1 A1 (L2), read-only proof","ts":"2026-11-06T06:21:06Z","tsn":1793946066786790078}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T06:22:32Z","tsn":1793946152858902207}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","ts":"2026-11-06T06:25:34Z","tsn":1793946334076233902}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T06:36:09Z","tsn":1793946969196187836}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PUMP_STATION_REDRAW_PLUMBED_FOR_GIANTS: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T06:37:08Z","tsn":1793947028503973258}
