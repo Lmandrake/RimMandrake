@@ -1,0 +1,4 @@
+T1 L2: minimal list (<= 100 running mods), empty calm site: vanilla Ultrafast ticks/s over 3 reloaded trials, spread <= 50% of the mean, JSON written
+T2 L2: minimal list, calm site + 60 wild Muffalo (each trial gains them): ticks/s over 3 trials, spread <= 50%, JSON written
+T3 GREEN-FULL: full list (>= 300 running mods), empty calm site: ticks/s over 3 reloaded trials, spread <= 50%, JSON written
+T4 GREEN-FULL: full list, calm site + 60 wild Muffalo: ticks/s over 3 trials, spread <= 50%, JSON written

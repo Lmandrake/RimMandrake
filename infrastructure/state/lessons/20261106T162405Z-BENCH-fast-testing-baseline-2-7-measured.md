@@ -1,0 +1,1 @@
+fast-testing baseline 2.7 measured rows/h (design/RimMandrake/fast_testing_2026-11-05/scored.md, ideas_inside.md §1.1) divides 230 PASS+FAIL by 84.6 h, but its own window 2026-11-02T04:14Z..2026-11-06T03:01Z is 94.8 h: the measured baseline is 2.43/h. Reproduced by proof_cost.py throughput --source runs (PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES).

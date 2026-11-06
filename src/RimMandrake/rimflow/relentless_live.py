@@ -1659,6 +1659,33 @@ def sli_lines(s):
             "  old share, rows incl. repeats and admission: %s" % share(s["rows_incl_repeats_and_admission"])]
 
 
+def cost(root, row, marks, environ=None):
+    """The run's proof cost row (proof_cost.py), written as the run ends: never reconstructed later, and never able to
+    cost the run its verdict (proof_cost.record does not raise). Source: `broker` when the broker's job launched the round
+    (RELENTLESS_PROOF_SOURCE, relentless_broker._round), its queue wait counted from the item's queued_at; else `round`.
+    tokens None: a scripted proof's own LLM calls are not seen from here."""
+    import proof_cost
+    env = os.environ if environ is None else environ
+    src = "broker" if env.get("RELENTLESS_PROOF_SOURCE") == "broker" else "round"
+    m = dict(marks, ended=time.time())
+    if src == "broker":
+        try:
+            with open(os.path.join(root, "store", "broker", "queue.json"), encoding="utf-8") as f:
+                q = ((json.load(f).get("items") or {}).get(row.get("item")) or {}).get("queued_at")
+            if isinstance(q, (int, float)):
+                # a later clause of the same batch waited from the previous clause's end, not from the queue entry
+                prev = [proof_cost.epoch(c.get("ended")) for c in proof_cost.read(os.path.join(root, proof_cost.LEDGER))
+                        if c.get("source") == "broker" and c.get("item") == row.get("item")]
+                m["queued"] = max([float(q)] + [t for t in prev if t is not None and t >= q])
+        except (OSError, ValueError, AttributeError, TypeError):
+            pass
+    got = proof_cost.record(root, src, row.get("item"), row.get("criterion"), row.get("sha"), row.get("tier"),
+                            row.get("outcome"), m, tokens=None, why=row.get("why"))
+    if "unwritten" in got:
+        row["cost_unwritten"] = got["unwritten"]
+    return got
+
+
 def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None, trees=(), env=None,
         companion=False, menu=False):
     """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED.
@@ -1679,6 +1706,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     if env is not None:     # the effective mod list and every inferred addition with its evidence (LIVE_NEEDS_ENFORCE_...)
         row["env"] = env
     os.makedirs(os.path.join(root, "live"), exist_ok=True)
+    marks = {"start": now}      # PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES: the wall clock split, written by done()
 
     def done(outcome, why, **kw):
         row.update(kw, outcome=outcome, why=why)
@@ -1686,6 +1714,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                           "VIOLATED" else "PASS" if row["proof_exit"] == PASS else "FAIL")
         if outcome in NO_VERDICT and "game" not in row and why.startswith(UNDEPLOYED):
             row["game"] = game_iso(fx)      # relentless_live_round.due retries an undeployed build on another game only
+        cost(root, row, marks)     # first: a cost row that could not be written says so in the run's own row
         with open(os.path.join(root, "live", "runs.jsonl"), "a", encoding="utf-8") as f:
             f.write(json.dumps(row, sort_keys=True) + "\n")
         return row
@@ -1778,6 +1807,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                           "relentless live test: %s %s (%s), read-only proof" % (item_id, criterion, level))
         if took.returncode != 0:
             return admit("bridge not taken: %s" % (took.stderr or took.stdout).strip()[-300:])
+        marks["taken"] = time.time()
         log, n = None, 0
         while log is None or os.path.exists(log):  # a retry in the same second must not overwrite the last evidence
             log = os.path.join(root, "live", "%s-%s-%s%s.log" % (item_id, criterion, time.strftime(
@@ -1805,13 +1835,21 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                         last_line(slog) or ("timed out" if sc is None else "exit %d" % sc))
             if crashed is None and code is None:
                 row["proof_exit"] = None        # the proof starts: from here every outcome is the mod's (verdict)
-                code = fx.run_proof(proof, log, proof_budget(proof, lr["proof_max_s"]))
+                marks["proof_start"] = time.time()
+                try:
+                    code = fx.run_proof(proof, log, proof_budget(proof, lr["proof_max_s"]))
+                finally:        # a proof that raised still spent its time proving
+                    marks["proof_s"] = time.time() - marks["proof_start"]
                 row["proof_exit"] = code
                 again = wsl_rerun(proof, read_text(log)) if code != PASS else None     # a WSL traceback exits 1
                 if again:
                     os.replace(log, log[:-len(".log")] + "-wsl.log")
                     row["rerun"] = again
-                    code = fx.run_proof(again, log, proof_budget(again, lr["proof_max_s"]))
+                    t_again = time.time()
+                    try:
+                        code = fx.run_proof(again, log, proof_budget(again, lr["proof_max_s"]))
+                    finally:
+                        marks["proof_s"] += time.time() - t_again
                     row["proof_exit"] = code
                 if code in (PASS, FAIL) and files and (started != fx.game_started()
                                                        or stamps != [fx.mtime(m, rel) for m, rel in files]):
@@ -1824,6 +1862,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 row["released"], gave_why = gave.returncode == 0, (gave.stderr or gave.stdout).strip()[-200:]
             except Exception as e:                      # a timed-out release still leaves the row
                 row["released"], gave_why = False, "%s: %s" % (type(e).__name__, str(e)[:150])
+            marks["released"] = time.time()
         if not row["released"]:
             return done("UNMEASURED", "the bridge release failed (%s), so no verdict is written" % gave_why, log=log)
     reading = live_observe.read_log(log, live_observe.run_id_of(log), criterion) if log and not crashed and (

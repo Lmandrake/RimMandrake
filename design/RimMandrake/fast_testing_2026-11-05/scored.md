@@ -11,7 +11,7 @@ of it (5-10%), the deterministic no-LLM lane (testq, SteveDesktop) already makes
 ~65 measured rows/day, and the top three causes of wasted live time are an LLM doing deploy-and-restart, a 30-minute
 6-proof pacing clock, and proof/criterion defects found only at run time. So the best bets are boring: move every
 needs-bridge proof onto a no-LLM lane, make staging a Python state machine, drop the pacing clock, and lint at
-authoring time. Those four are days of work and plausibly lift Relentless from 2.7 to 15-30 measured rows/hour
+authoring time. Those four are days of work and plausibly lift Relentless from 2.4 to 15-30 measured rows/hour
 (INFERRED, not measured: see the plan for the measurement that settles it). The "go faster than real time" family is
 real but has a hard ceiling found in this pass: **our bridge's `step_game_ticks` runs one tick per Unity frame**, so
 exact stepping is frame-bound (measured 60-280 ticks/s); breaking that needs an in-frame tick-burst tool, which the
@@ -22,7 +22,7 @@ value is mostly hype at this project's scale.
 
 | claim (source) | verdict | evidence |
 |---|---|---|
-| Relentless 912 rows, 230 PASS+FAIL in 84.6 h = 2.7/h (inside §1.1) | **CONFIRMED** | `/home/mandrake/rm/relentless/live/runs.jsonl`: UNMEASURED 495, REFUSED 146, PASS 134, FAIL 96, none 41; first 2026-11-02T04:14Z, last 2026-11-06T03:01Z |
+| Relentless 912 rows, 230 PASS+FAIL in 94.8 h = 2.4/h (first-to-last span; 84.6 h was an arithmetic slip, proof_cost.py throughput --source runs) (inside §1.1) | **CONFIRMED** | `/home/mandrake/rm/relentless/live/runs.jsonl`: UNMEASURED 495, REFUSED 146, PASS 134, FAIL 96, none 41; first 2026-11-02T04:14Z, last 2026-11-06T03:01Z |
 | "72 rows refused by the 160-char limit" on proof lines (inside §1.1, concept "Proof lint pre-flight") | **MISREAD — corrected** | The 160-char refusals are about the **criterion text truncated at 160 chars on the ledger** ("A1 is cut at 160 chars on the ledger and no prose holds the rest: a proof cannot be judged against a criterion"), not proof-line length. 97 such rows on 7 items (72 on `GRAFFITI_NORTHSTAR_GREEN_FULL_1`, 9 `SEABED_DESCENT_ASCENT_1`, 5 `FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE`), all between 2026-11-02T13:53Z and 2026-11-03T05:07Z — none since. The helper finding "no 160-char proof-line limit" is consistent: the fix is "every criterion's full text lives in prose", and the gate retried the same item 72 times without learning, which is the real defect. |
 | REFUSED "`$` builds command at run time" 33, flyer refusals 6 (inside) | CONFIRMED (33; flyer 13 across three wordings) | same file |
 | Round pacing `round_max` 6, `round_every_s` 1800, `unmeasured_retry_s` 6 h | **CONFIRMED** | `src/RimMandrake/rimflow/relentless_live_round.py` line 89 `DEFAULTS` |
@@ -187,7 +187,7 @@ Order is chosen so each step's measurement is readable on the instrument the fir
    and after, same verdicts.
 
 Next after these: Test plots, Invariant monitors, Commit-triggered suites. Estimated combined effect of steps 2-6:
-Relentless from 2.7 to 15-30 measured rows/hour (INFERRED from the removed waits; step 1 measures the truth).
+Relentless from 2.4 to 15-30 measured rows/hour (INFERRED from the removed waits; step 1 measures the truth).
 
 ## Hype check
 

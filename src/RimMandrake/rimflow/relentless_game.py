@@ -576,6 +576,28 @@ def steve_rows(job, res, item, sha, clauses, now):
     return rows, unmeasured
 
 
+def steve_cost(root, jb, rec, item, sha, tier, judged, dud, now):
+    """One proof cost row (proof_cost.py) per clause a counted testq job answered, PASS/FAIL or not: its wait is the
+    job's submission to this read of its result (an upper bound by the poll interval); SteveDesktop's bridge time is not
+    seen from here, so held/staging/proving read None. A job read again on a later tick (a dud whose resubmission
+    waits) writes nothing twice: one row per (job, clause). Never raises."""
+    import proof_cost
+    sub = jb.get("submitted")
+    marks = {"start": sub if isinstance(sub, (int, float)) else None, "ended": now, "held_unknown": True}
+    jid = (rec.get("job") or {}).get("id")
+    try:
+        done = {r.get("clause") for r in proof_cost.read(os.path.join(root, proof_cost.LEDGER))
+                if r.get("source") == "testq" and jid and r.get("job") == jid}
+    except Exception:       # noqa: BLE001  an unread ledger writes the row (a duplicate beats a lost one)
+        done = set()
+    out = []
+    for k in sorted((set(judged) | set(dud)) - done):
+        outcome = judged[k]["outcome"] if k in judged else "UNMEASURED"
+        out.append(proof_cost.record(root, "testq", item, k, sha, tier, outcome, marks, tokens=None,
+                                     why=dud.get(k), job=jid))
+    return out
+
+
 def job_tier(job):
     p = job.get("profile") or ""
     return p.split(":", 1)[1] if p.startswith("tier:") else None
@@ -626,6 +648,8 @@ def steve_sync(store, fx, r, item, g, sha, now, acts):
                     dud[k] = "the verdict %s did not land: %s" % (row["outcome"], why)
                     continue
                 fx.game_row_append(row)
+            # after the verify: a verdict that did not land is a dud, never a measured cost row
+            steve_cost(store.root, jb, rec, item, sha, tier, {k: v for k, v in judged.items() if k not in dud}, dud, now)
             acts.append({"do": "game_steve_result", "item": item, "tier": tier, "job": jb["job"],
                          "judged": sorted(judged), "unmeasured": sorted(dud)})
             if not dud:

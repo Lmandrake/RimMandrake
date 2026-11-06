@@ -47,7 +47,7 @@ So utilization has fallen since Relentless took the game.
 | FAIL | 96 | 11% |
 | void (no outcome) | 41 | 4% |
 
-- **Measured rows (PASS+FAIL): 230 in 84.6 h = 2.7 per hour.** Median gap between consecutive measured rows 379 s
+- **Measured rows (PASS+FAIL): 230 in 94.8 h = 2.4 per hour.** Median gap between consecutive measured rows 379 s
   (p25 50 s, p75 1,307 s). 136 items appear; 91 ever got a PASS/FAIL; **45 never got one measured row**.
 - **UNMEASURED by cause** (bucketed from `why`): "the proof exited 2: it did not measure" / proof-or-site defect **231**;
   "not deployed" 85; "changed since the built commit" 47; bridge not taken / bridge trouble 45; "final verification waits
@@ -86,7 +86,7 @@ live_tick:
    4 (full-list verification batches), `harness_retry_s` 1800 up to 14,400, `live_idle_s` 1200.
 
 So the round's PROOFS are already deterministic; what is slow is (a) the pacing clocks (30 min between rounds of 6 is a
-ceiling of 12 proofs/h, measured 2.7/h), (b) an LLM doing the deploy-and-restart, (c) every proof's defect routed through
+ceiling of 12 proofs/h, measured 2.4/h), (b) an LLM doing the deploy-and-restart, (c) every proof's defect routed through
 an LLM worker and a fresh build, and (d) one item's proof run per bridge take, each proof spinning up its own python.exe,
 its own site prep and its own log tap.
 
@@ -245,7 +245,7 @@ Mechanism: minutes of LLM turn time per stage become seconds of Python; the brid
 **C02. Continuous rounds instead of a 30-minute, 6-proof cadence.**
 Drop `round_every_s` 1800 / `round_max` 6. The round runner pulls the next eligible item the moment the last proof
 returns, for as long as the load fits. The eligible backlog (60-112, peak 156) is drained at the bridge's pace.
-Attacks: 1.1 2.7 measured rows per hour; 1.1 backlog vs 6 per round.
+Attacks: 1.1 2.4 measured rows per hour; 1.1 backlog vs 6 per round.
 Mechanism: the round's median proof is minutes; 1,800 s of pacing per 6 is a hard cap of 12/h. Removing it lifts the
 ceiling to whatever proofs cost, the 3.5 s/row GSS proof_all rate at the extreme.
 

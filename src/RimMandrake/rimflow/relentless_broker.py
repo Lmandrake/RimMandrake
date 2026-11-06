@@ -355,7 +355,7 @@ def _round(root, item, timeout):
     try:
         r = subprocess.run(["python3", os.path.join(HERE, "relentless_live_round.py"), "round", "--item", item],
                            cwd=os.path.abspath(os.path.join(HERE, "..", "..", "..")), capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                           env=dict(os.environ, RELENTLESS_ROOT=root))
+                           env=dict(os.environ, RELENTLESS_ROOT=root, RELENTLESS_PROOF_SOURCE="broker"))
         return r.returncode, (r.stdout or "") + (r.stderr or "")
     except subprocess.TimeoutExpired as e:
         return 124, "timeout after %ss: %s" % (timeout, (e.stdout or "")[-400:] if isinstance(e.stdout, str) else "")

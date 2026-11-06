@@ -1,0 +1,9 @@
+# PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES live clauses: the controlled ticks/s matrix (src/RimMandrake/Utils/tickrate_matrix.py).
+# Every cell reloads the `calm` test site save (test_site_saves.py) per trial; busy = that map + 60 wild Muffalo.
+# The cell reads the running list itself: minimal cells need <= 100 running mods, full cells >= 300, else exit 2 WRONG_LIST.
+# T3/T4 are GREEN-FULL (the full list); T1/T2 run on any minimal game. Evidence: D:\ClaudeWork\rimmandrake\tickrate\<cell>_*.json;
+# the matrix: python3 src/RimMandrake/Utils/tickrate_matrix.py report
+live-proof T1: python3 src/RimMandrake/Utils/tickrate_matrix.py run --cell T1 < /dev/null
+live-proof T2: python3 src/RimMandrake/Utils/tickrate_matrix.py run --cell T2 < /dev/null
+live-proof T3: python3 src/RimMandrake/Utils/tickrate_matrix.py run --cell T3 < /dev/null
+live-proof T4: python3 src/RimMandrake/Utils/tickrate_matrix.py run --cell T4 < /dev/null

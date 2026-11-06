@@ -7600,6 +7600,8 @@ def main(argv=None):
             import relentless_broker
             b = broker_slis(store, time.time())
             print(relentless_broker.sli_line(b) if "unread" not in b else "broker: UNREAD %s" % b["unread"])
+            import proof_cost           # PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES: the last 24 h of the proof cost ledger
+            print(proof_cost.reading_line(store.root, time.time()))
         elif a.cmd == "stats":
             print(json.dumps(stats(store), indent=1))
         elif a.cmd == "show":
