@@ -347,10 +347,12 @@
    "frames": "4"
   },
   "RM_Sivvern": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Sivvern"
+   ],
    "tex": "Things/Pawn/Animal/RM_Sivvern/RM_Sivvern",
    "static": {
     "g1": 0.623,
@@ -358,8 +360,8 @@
     "g4": 0.695
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "4"
   },
   "RM_Skellarn": {
    "tier": 4,
@@ -456,7 +458,7 @@
   "RM_Soorrak": {
    "tier": 2,
    "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "none",
+   "flipbook": "unannotated",
    "sets": [],
    "tex": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
    "static": {
@@ -465,14 +467,16 @@
     "g4": 0.685
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "vanilla Core frames (borrowed)",
+   "frames": "4"
   },
   "RM_Sparkleech": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Sparkleech"
+   ],
    "tex": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech",
    "static": {
     "g1": 0.631,
@@ -480,8 +484,8 @@
     "g4": 0.586
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "4"
   },
   "RM_Suush": {
    "tier": 4,
@@ -563,10 +567,12 @@
    "frames": ""
   },
   "RM_Vrisk": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Vrisk"
+   ],
    "tex": "Things/Pawn/Animal/RM_Vrisk/RM_Vrisk",
    "static": {
     "g1": 0.478,
@@ -576,8 +582,8 @@
    "static_fails": [
     "G1 body share 0.48 < 0.5"
    ],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "4"
   },
   "RM_Yammeth": {
    "tier": 4,
@@ -595,10 +601,12 @@
    "frames": ""
   },
   "RM_Zellik": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Zellik"
+   ],
    "tex": "Things/Pawn/Animal/RM_Zellik/RM_Zellik",
    "static": {
     "g1": 0.661,
@@ -606,8 +614,8 @@
     "g4": 0.672
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "4"
   },
   "RSW_Beldon": {
    "tier": 1,
@@ -891,9 +899,9 @@
    "frames": "1"
   },
   "RSW_Shyrack": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "unannotated",
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
    "sets": [
     "Shyrack"
    ],
@@ -976,9 +984,9 @@
    "frames": "4"
   },
   "RSW_Urusai": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "unannotated",
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
    "sets": [
     "Urusai"
    ],
@@ -989,7 +997,7 @@
     "g4": 0.766
    },
    "static_fails": [],
-   "provenance": "donor-copy (cartoon)",
+   "provenance": "generated/ours",
    "frames": "4"
   },
   "RSW_Uvak": {

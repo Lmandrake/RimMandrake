@@ -678,6 +678,15 @@
         <severity>1</severity>
       </li>
     </startingHediffs>
+    <!-- 4-frame wing-beat flip-book cut out of his kept static by flyer_cutout.py (body pixel-identical in every frame;
+         config src/RimMandrake/Utils/art/flyer_cutout_sets/Vrisk.json). Frames are 320 px: the 256 px static padded 32 px a side,
+         so 1.25 x the life stage drawSize keeps the body at its grounded scale. FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/RM_Vrisk/RM_Vrisk_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>6</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>
