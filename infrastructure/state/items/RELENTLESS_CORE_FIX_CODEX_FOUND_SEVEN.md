@@ -29,3 +29,6 @@ design/RimMandrake/relentless_agent_design_2026-11-01.md (stays DIRTY, Codex `re
 8. ~lines 127-134 "Close is checked at close": Codex reads close trusting measured dependencies as contradicting "a
    declared dependency set can be wrong". Judged not a defect (measured reads are not the declared set), but the
    reviewer did not return CLEAN; a reviewer with design standing confirms or rewrites, then marks it clean.
+
+## Outcome (2026-11-06)
+Findings 1-7 fixed with rows (0c7f2fa842, 06e52c3c87); item 8 confirmed and marked (7abe189bce). The review bar became "no high-severity issue" by owner card 2026-11-06. Graded review r7: three HIGH claims held and were fixed (e8c7158e6f, rows in `selftest_relentless_codex_seven.py` t_r7_high_rows), two graded down with reasons; the whole-file rerun on e8c7158e6f said NO-HIGH. Non-high findings: RELENTLESS_REVIEW_FIX_R7_MEDIUMS_MAY_STAY. Triage: `D:\ClaudeWork\rimmandrake\relentless\RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN\review\r7\triage.md`.
