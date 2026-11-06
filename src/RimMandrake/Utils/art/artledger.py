@@ -1736,15 +1736,18 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
             raise Refused(f"{sha[:12]}: no bytes and no stored hash, so a ban could only match this exact file - "
                           f"`art.py put` the picture first")
         bid = det_id("ban", sha, "words")
+        while bid in idx.lifted:      # his words lifted an earlier words-ban: a new ban, after that unban (the old id
+            bid = det_id("ban", sha, "words", idx.lifted[bid].get("id"))   # would dedup to nothing yet be named below)
         bev = {"type": "ban", "id": bid, "sha": sha, "ph": ph, "subject": subject, "by": "owner", **auth, "via": via}
         if data is not None:
             try:
                 bev["ph_mirror"] = mirror_dhash(data)
             except Exception:
                 pass
-        if w.add(bev):
-            w.flush()
-            _absorb([bev])
+        w.add(bev)
+        added = list(w.buf)           # the keep releases above and the ban, on disk before the bytes go
+        w.flush()
+        _absorb(added)
     removed = False
     p = store_path(sha)
     if p.is_file():
@@ -1891,8 +1894,10 @@ def ban_refusal(hit: dict, sha: str | None = None) -> str:
     b = hit["ban"]
     m = b.get("mark") or {}
     what = "is" if hit["how"] == "exact" else f"is a near-duplicate (dHash {hit['d']} bits) of"
-    return (f"{(sha or '')[:12]} {what} picture {b['sha'][:12]} he ✕'d for ever ({b.get('subject') or '?'}; sheet "
-            f"{m.get('sheet')} row {m.get('row')} at {m.get('at')}) — banned; only his words or a Conductor instruction lift it: "
+    how = (f"he ✕'d for ever ({b.get('subject') or '?'}; sheet {m.get('sheet')} row {m.get('row')} at {m.get('at')})" if m
+           else f"he purged and banned on his words ({b.get('subject') or '?'}; {b.get('via') or 'art purge --ban'} "
+                f"{(b.get('ts') or '')[:16]})")       # a purge --ban carries no sheet mark
+    return (f"{(sha or '')[:12]} {what} picture {b['sha'][:12]} {how} — banned; only his words or a Conductor instruction lift it: "
             f"art.py unban {b['sha'][:12]} --owner-said \"…\" | --per-ruling <ruling> --why \"…\"")
 
 
@@ -2023,7 +2028,8 @@ def ban_digest(since: str | None = None, idx: "Index | None" = None) -> list[tup
         if since and (e.get("ts") or "") < since:
             continue
         m = e.get("mark") or {}
-        mk = f"mark: sheet {m.get('sheet')} row {m.get('row')} at {m.get('at')}"
+        mk = (f"mark: sheet {m.get('sheet')} row {m.get('row')} at {m.get('at')}" if m else    # purge --ban: no mark
+              f"no mark: {e.get('via') or 'art purge'} on {(e.get('said') or e.get('by_card') or e.get('per_ruling') or '')[:60]!r}")
         if t == "ban":
             line = (f"art marks | deleted forever + banned (✕) {e['sha'][:12]} ({e.get('subject') or '?'}) | {mk} | "
                     f"event {str(e.get('id'))[:12]} | undo: art.py unban {e['sha'][:12]} --owner-said \"...\"")

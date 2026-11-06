@@ -202,12 +202,30 @@ def main():
         wb = idx.bans.get(word_sha) or {}
         check(res["bytes_removed"] and not L.store_has(word_sha) and idx.is_purged(word_sha) and wb.get("said") == "purge them"
               and bool(wb.get("ph")) and bool(wb.get("ph_mirror")), f"purge --ban deletes the bytes and bans on his words ({wb})")
-        check(L.ban_match(idx, data=near_dup(XB.sprite(211), 60)) is not None, "purge --ban also refuses a near-duplicate")
+        nd = near_dup(XB.sprite(211), 60)
+        hw = L.ban_match(idx, data=nd)
+        check(hw is not None, "purge --ban also refuses a near-duplicate")
+        msg = L.ban_refusal(hw, L.sha256_bytes(nd)) if hw else ""
+        check("on his words" in msg and "sheet None" not in msg, f"a words ban's refusal says words, not 'sheet None' ({msg[:90]})")
+        import art as CLI
+        check(CLI.main(["purge", word_sha[:12], "--owner-said", "x", "--subject", "RM_Word"]) == 2,
+              "art.py purge --subject without --ban refuses (it used to ban nothing, silently)")
         try:
             L.purge("0" * 64, owner_said="purge them", ban=True)
             check(False, "purge --ban refuses a picture with no bytes and no hash")
-        except L.Refused:
-            check(True, "purge --ban refuses a picture with no bytes and no hash")
+        except L.Refused as e:
+            check("no bytes and no stored hash" in str(e), f"purge --ban refuses a picture with no bytes and no hash ({e})")
+        # ── his words lift that ban, then new words purge + ban it again: a NEW ban, not the lifted id deduped away
+        # (ART_LEDGER_VET_PURGE_BAN_REVIEW_OWED: the second purge recorded `ban` on its event but wrote none)
+        L.unban(word_sha[:16], owner_said="bring it back")
+        check(word_sha not in L.Index().bans, "fixture: unban lifted the words ban")
+        L.store_put_bytes(XB.sprite(211))
+        L.purge(word_sha, owner_said="purge them again", ban=True, subject="RM_Word")
+        idx = L.Index()
+        wb2 = idx.bans.get(word_sha) or {}
+        pev2 = idx.purged.get(word_sha) or {}
+        check(wb2.get("said") == "purge them again" and idx.is_purged(word_sha) and pev2.get("ban") == wb2.get("id"),
+              f"purge --ban after an unban bans again, and the purge names that live ban ({wb2.get('id')}, {pev2.get('ban')})")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
     print(f"\n{'ALL PASS' if not FAILS else f'{len(FAILS)} FAILED'}")

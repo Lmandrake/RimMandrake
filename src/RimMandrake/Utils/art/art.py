@@ -332,6 +332,9 @@ def cmd_kept_purged(a):
 
 
 def cmd_purge(a):
+    if bool(a.ban) != bool((a.subject or "").strip()):    # --subject alone banned nothing; a ban needs its def
+        print("REFUSED: --ban and --subject DEF go together (the ban names the def it keeps out)")
+        return 2
     idx = L.Index()
     full = [s for s in idx.variants if s.startswith(a.sha)] or ([a.sha] if len(a.sha) == 64 else [])
     if len(full) != 1:
@@ -423,7 +426,9 @@ def cmd_bans(a):
     idx = L.Index()
     for sha, b in sorted(idx.bans.items(), key=lambda kv: kv[1].get("ts") or ""):
         m = b.get("mark") or {}
-        print(f"{sha[:12]}  {b.get('subject') or '?':28}  sheet {m.get('sheet')} row {m.get('row')} at {m.get('at')}")
+        src = (f"sheet {m.get('sheet')} row {m.get('row')} at {m.get('at')}" if m else    # purge --ban: his words, no mark
+               f"purge --ban {(b.get('ts') or '')[:16]}: {(b.get('said') or b.get('by_card') or b.get('per_ruling') or '')[:60]!r}")
+        print(f"{sha[:12]}  {b.get('subject') or '?':28}  {src}")
     print(f"{len(idx.bans)} banned picture(s); {len(idx.lifted)} ban(s) lifted on his words")
     if a.check:
         data = Path(a.check).read_bytes()
