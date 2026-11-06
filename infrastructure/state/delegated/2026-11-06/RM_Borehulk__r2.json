@@ -1,0 +1,66 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 37.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.44551699999999994
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1506222
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Borehulk",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_NORTH_FACE', 'F_INCONSISTENT']; polish ['SCALE_WRONG']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "dd62d87f0cb9c52b25d863b66119c26da0f0c7b29220dfec849c9faa226c0632",
+  "east.png": "73c908f8703c234494beb5a83ebae26a571a3808d3a79c8acd3f5fcb7d8eab7b",
+  "north.png": "c2cd996286a1e0819a9e9bd18b89fc0597fe895129aaac336d0f092014247dec",
+  "scale.png": "26dcd8d4972f3fa182af7271392e75d46121adc1e76e17e18188f3c9f535b7f8",
+  "facings.png": "6b49351f5c6a57a0eba7ed19423955655269aebea774ff723bc0522b27d4a290"
+ }
+}

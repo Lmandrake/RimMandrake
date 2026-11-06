@@ -1,0 +1,70 @@
+[
+ {
+  "id": "arteval_RM_Gloomcast_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gloomcast",
+  "prompt": "A creature sprite for RimWorld: the gloomcast. A colossal grazer that strains buried vegetation and small animals from the sand during long crossings of the open dayside. It sheds the stored heat fiercely when it reaches shade. Smaller animals travel in its moving shadow; nothing hunts it. Visible features it must show: a colossal walking grazer on thick legs, a land animal; a straining mouth built to sift sand for buried food; a huge body with broad bulk and heat-shedding hide. The spine carries exactly five dorsal plates in one midline row, each attached to the centre line of the back, standing upright and edge-on to the sides. Keep the same five plates at the same spine positions in every facing: in side view they show as five thin plates in a row along the spine in profile; in front view, seen with the eyes toward the viewer, the row is seen end-on, the plates overlapping one behind another in a narrow column rising behind the head, with the shoulders free of plates; in rear view, seen from behind with the eyes hidden, the same row overlaps into the same narrow column above the back and haunches. Only the overlap and the visible plate edges change as the body turns. Colour: one coherent muted palette, dusky grey-brown hide with slightly warmer plate edges, with no saturated red or yellow speckle on plates or feet. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, with a clean dark outline whose edge pixels match the adjacent skin, plate or membrane colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with a clean, decontaminated cut-out edge and no coloured fringe pixels: no ground, no water, no cast shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, ALPHA_HALO, F_INCONSISTENT, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0551",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 13.2,
+  "module": "walker",
+  "target_texpath": "swanimals/Gloomcast/Gloomcast"
+ },
+ {
+  "id": "arteval_RM_Borehulk_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Borehulk",
+  "prompt": "A creature sprite for RimWorld: the borehulk. A colossal old mining machine, more a digging tank than a robot: a long low hull on two broad tracks, slabs of riveted armour bolted over everything, a heavy boom ending in a drill, a bucket scoop slung beneath, and a tiny sensor head almost lost on top. It trundles the deck plate slowly and harms nothing. Its plating is thicker than anything else that walks. Visible features it must show: a colossal mining machine on two broad tracks, a digging tank not an animal; slabs of riveted armour bolted over everything; a heavy boom ending in a conical drill and a bucket scoop slung beneath the front of the hull; a tiny sensor head almost lost on top. One fixed layout in every facing: the working front end carries the boom, drill and bucket; the opposite rear end carries a flat armoured back plate with the engine deck, vents and two exhaust stacks. Chassis proportions are identical in every facing: a broad, long, low hull carried on two wide tracks with a generous gap of hull between them, the track gauge and overall hull width the same whether the machine is seen from the front or from behind. The front view, eyes toward the viewer, shows the working front with the drill and bucket nearest the camera between the tracks. The side view shows the same long hull with the same track width, the boom, drill and bucket projecting from the front end at one side and the exhaust stacks and vents at the rear end at the other. The rear view, seen from behind, shows the rear end of the hull nearest the camera: a flat armoured back plate with the engine deck, vents and the two exhaust stacks, the two tracks at the sides as far apart as in the front view, the rear armour slabs spanning the full width between and over the tracks, and the tiny sensor head small on top. In the rear view the boom, drill and bucket lie on the far side of the hull, pointing away from the viewer and hidden behind the hull, with only the drill tip and the boom elbow peeking over the top edge. The rear view is the side view turned so the exhaust end is nearest the camera. All views share one scale. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_NORTH_FACE, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0551",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 5.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Borehulk/RM_Borehulk"
+ },
+ {
+  "id": "arteval_RSW_Blixus__Blixus_Swimming_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Blixus__Blixus_Swimming",
+  "prompt": "A creature sprite for RimWorld: the blixus. Blixus were rare, half-shelled crustapod creatures native to the planet Sljee. These semi-aquatic predators were deadly in the swamps and lagoons they inhabit. They periodically shed their exoskeleton when it is broken or damaged, and the shed shell is harvested for useful chitin. Visible features it must show: the canon Sljee blixus (see canon entry blixus); half-shelled crustapod, with the shell covering only part of the body, the rest soft and armoured with plates. Exactly five very long feeler tentacles emerge from the upper front of the body, just ahead of the shell, each from its own root. They rise and arc upward and forward, then sweep back and trail in varied curves. The five differ in length and bend, and each makes a clearly visible returning loop where it doubles back on itself. Each ends in a distinct flattened paddle tip, so five paddle tips are visible in total. The tentacles keep this one 3D pose in every view, foreshortened to suit the view, and the count of five holds in every view. Front view, eyes toward the viewer: the five arcs rise above the shell and lean toward the viewer. Rear view, seen from behind: the back, tail and haunches face the viewer with the eyes hidden, and the same five arcs rise from the far side of the shell. Side view: the five arcs are seen in profile, rising and sweeping forward, then curving back in loops; they stay separated from one another, each individually traceable from its root to its paddle tip, five roots, five arcs, five paddle tips. Keep the palette, body plan and shell shape of the previous render. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with only the creature on it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0551",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "swimmer"
+ }
+]

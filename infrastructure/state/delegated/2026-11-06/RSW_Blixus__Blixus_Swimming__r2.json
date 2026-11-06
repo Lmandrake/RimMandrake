@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 40.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.42567659999999996
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 51.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1466442
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Blixus__Blixus_Swimming",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['CANON_MISS', 'CANON_MISS', 'CANON_MISS']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['CANON_MISS']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "eabf055d7f020e6aedf9f01039388fae47264f465516b18ac800e5a335263c0e",
+  "east.png": "ba5107e93cd4af3ac8639215b9936da76bb08d3f27193bbae1d4ff5e4f7c5460",
+  "north.png": "4658cea957106e446058b99c097324cab041b90532b252227afa460b0b71f487",
+  "scale.png": "4a2a55ab5de52c2f4040db948c7db0ccf3fbd9c015cde5015053e84ebe28ec66",
+  "facings.png": "849567e53309eb2f90856cd7fa5c8c4c7620aca50986387cb60408d234361f05"
+ }
+}
