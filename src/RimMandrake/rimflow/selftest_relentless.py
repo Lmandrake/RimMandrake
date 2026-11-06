@@ -97,6 +97,9 @@ class FakeWorld:
     def run_offbox(self, name, adapter, timeout):
         return {"cmd": name, "exit": 1, "out": "fake world: no offbox adapter runs", "at": self.__dict__.get("now", 0)}
 
+    # _stage_stop reads this: a build that changed no mod, so a stager stop names nothing of its own and restages
+    def game_own_mods(self, item, sha): return []
+
     # the closing step's re-record (relentless_game.close_rerecord) reads these: no ledger manifest, no .criteria file
     def game_ledger(self, item): return None
     def proofs_at(self, item, sha, ext=".txt"): return ""
