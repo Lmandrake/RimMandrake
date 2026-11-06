@@ -19,3 +19,8 @@ until the change stops: the cords stay stale (whole, never torn) for the change 
 adopting the job the last change started. `Source/SelfTest/SliceGateChecks.cs` SustainedChange pins it: 120 changing
 frames, 120 jobs, 0 adopted, 120 stale frames; quiet, 0 new jobs, fresh after 2 Builds. Adopting a near-current graph
 would end the starvation but break the equal-inputs guarantee that keeps the frame bit-identical to an unbudgeted Build.
+
+## A wrecked machine's conduit draw-in is drawn by this mod alone
+
+A wrecked machine has no power comp (`RM_RuinDrawsConduit`, `Source/Core/HookupPick.cs` PickRuin), so vanilla prints no wire to it.
+With this mod off, or the conduit def unticked in its settings, a conduit ending at a ruin stops at the footprint.
