@@ -63,6 +63,9 @@ def history():
     root = tempfile.mkdtemp(prefix="cited_mods_")
     git(root, "init", "-q", "-b", "main")
     s = {}
+    # every fixture folder is a mod the game loads (About/About.xml): stale_build counts only those (fx.deployable)
+    for mod in ("Other", "GimmeSomeSlack", "Bystander", "Longer", "Later"):
+        commit(root, "src/RimMandrake/%s/About/About.xml" % mod, "<ModMetaData/>", "FIXTURE: %s is a mod" % mod)
     s["other"] = commit(root, "src/RimMandrake/Other/Defs/O.xml", "<o/>", "OTHER_ITEM: unrelated mod work")
     s["mod"] = commit(root, MOD_FILE, "<slack/>", "%s: slice grows with cords" % ID)
     s["body"] = commit(root, "src/RimMandrake/Bystander/Defs/B.xml", "<b/>",

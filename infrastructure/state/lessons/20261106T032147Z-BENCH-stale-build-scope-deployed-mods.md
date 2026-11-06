@@ -1,0 +1,2 @@
+relentless_live.stale_build counted every src/<tier>/<X>/ path of a build, including folders the game never loads (src/RimMandrake/Utils/): GIZKA_STOWAWAY_UNMEASURED_ROWS_1 gen 6 went game_stale_build when GOLD_PANNING edited Utils/modcheck/required_checks.json, which an earlier commit citing the item had touched. The harness runs from the clone's HEAD, so it cannot be stale against a build. Now only folders with About/About.xml (fx.deployable) count; guard selftest_relentless_stale_nocode.
+home: src/RimMandrake/rimflow/relentless_live.py

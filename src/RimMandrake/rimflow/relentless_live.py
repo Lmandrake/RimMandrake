@@ -436,12 +436,22 @@ def stale_build(fx, sha, item_id=None):
     """-> (why or None, game files of the build). why says the game cannot run `sha`: it deleted a shipped file (a stale
     game copy cannot be told from the build), or a game file it touched changed in a later commit (STALE). Raises
     ValueError when the built commit cannot be read. item_id: a built commit with no game file stands for the game files
-    of every commit citing the item (build_shas); staleness is still judged against `sha`, the build."""
+    of every commit citing the item (build_shas); staleness is still judged against `sha`, the build.
+    Only a folder the game loads counts (fx.deployable: About/About.xml at HEAD; a fake without it counts every src/
+    folder, as before). STALE_BUILD_SCOPE_DEPLOYED_MODS_ONLY: GIZKA_STOWAWAY_UNMEASURED_ROWS_1 gen 6 (e87b8495b8) went
+    back as game_stale_build because GOLD_PANNING (576c7659a1) edited src/RimMandrake/Utils/modcheck/required_checks.json,
+    which an earlier commit citing the item had touched: Utils matches src/<tier>/<Mod>/ but deploys nothing, and the
+    harness runs from the clone's HEAD whatever the build, so no game copy of it could be stale."""
     shas = build_shas(fx, sha, item_id)
-    gone = [p for s in shas for p in fx.deleted(s) if SRC_MOD.match(p) and fx.shippable(SRC_MOD.match(p).group(3))]
+
+    def loads(p):
+        m = SRC_MOD.match(p)
+        return bool(m) and (not hasattr(fx, "deployable") or fx.deployable(m.group(1), m.group(2)))
+    gone = [p for s in shas for p in fx.deleted(s) if SRC_MOD.match(p) and fx.shippable(SRC_MOD.match(p).group(3))
+            and loads(p)]
     if gone:
         return "the build deleted %s: a stale game copy cannot be told from the build" % ", ".join(gone[:5]), []
-    touched = list(dict.fromkeys(p for s in shas for p in fx.touched(s)))
+    touched = [p for p in dict.fromkeys(p for s in shas for p in fx.touched(s)) if loads(p)]
     files = game_files(touched, fx.shippable)
     paths = [p for p in touched if SRC_MOD.match(p) and SRC_MOD.match(p).group(2, 3) in files]
     later = fx.changed_since(sha, paths) if paths else []

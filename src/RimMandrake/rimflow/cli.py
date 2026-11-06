@@ -2246,6 +2246,25 @@ def _sha_refusals(iid, sha, excused):
     return []
 
 
+def _prior_work(iid, sha, depth=200):
+    """-> the full sha of the newest commit at or under `sha` whose subject names `iid` as a whole token and that touches
+    more than the ledger, or None. What `implemented --no-code` carries forward: a rebuild whose warrant says nothing in
+    the work changed (only the environment did) lands a ledger-only commit on today's main, and the build it re-anchors
+    is that earlier work (RELENTLESS_NOCODE_REBUILD_IMPLEMENTED_REFUSED: GIZKA_STOWAWAY_UNMEASURED_ROWS_1 gen 8)."""
+    r = subprocess.run(["git", "log", "--no-merges", "--format=%H%x09%s", "-F", "--grep=" + iid, "-n", str(depth), sha],
+                       cwd=os.environ.get("RIMFLOW_GIT_CWD") or _HERE, capture_output=True, text=True, timeout=60,
+                       stdin=subprocess.DEVNULL)
+    name = re.compile(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(iid))
+    for line in (r.stdout.splitlines() if r.returncode == 0 else ()):
+        h, _, subject = line.partition("\t")
+        if not name.search(subject):
+            continue
+        paths = _sha_paths(h)
+        if paths and [p for p in paths if not p.startswith(_LEDGER_ONLY)]:
+            return h
+    return None
+
+
 def _guard_refusals(it, sha):
     """-> [("guard", why)]: the guard on record is the test shown red, committed at the close's sha, and it passes now."""
     import repeat_guard as RG
@@ -2535,6 +2554,18 @@ def cmd_implemented(args, seat):
     # (a test's RIMFLOW_GITINDEX fixture publishes shas with no object: git has no paths to read. Unset, unreadable refuses)
     bad = not (os.environ.get("RIMFLOW_GITINDEX") and _sha_paths(full) is None) and _sha_refusals(
         args.id, full, model.OWNER_SAID or model.BY_CARD or model.PER_RULING or model.AGENT_WHY)
+    no_code = (getattr(args, "no_code", None) or "").strip()
+    if args.no_code is not None and not no_code:
+        die("implemented: --no-code needs the words: why this rebuild changed nothing in the work.")
+    if bad and no_code and bad[0][1].startswith("%s touches nothing but the ledger" % full):
+        work = _prior_work(args.id, full)
+        if work is None:
+            die("implemented: %s is ledger-only and no commit under it naming %s touches more than the ledger: "
+                "--no-code carries a build forward, it cannot stand for one.\nNothing changed: the item is as it was."
+                % (full, args.id))
+        bad = [b for b in _sha_refusals(args.id, work, True)]       # the carried work must itself be work
+        if not bad:
+            model.AGENT_WHY = ("%s | no-code: %s; the work is %s" % (model.AGENT_WHY, no_code, work[:12])).lstrip(" |")
     if bad:
         die("implemented: %s\nNothing changed: the item is as it was." % bad[0][1])
     owed = [c for c in crit if c["level"] != "L0"]
@@ -3945,6 +3976,9 @@ def build_parser():
                         "the item's `## criteria` section, every bullet level-tagged")
     s.add_argument("--none-owed", dest="none_owed", action="store_true",
                    help="say out loud that nothing beyond L0 is owed (-> done on a level-tagged pass at this sha)")
+    s.add_argument("--no-code", dest="no_code", metavar="\"<what>\"",
+                   help="--sha is a ledger-only rebuild on today's main and nothing in the work changed: say why. "
+                        "Accepted only when a commit under it naming the item did the work (that commit is named in why)")
     s.add_argument("--live", help=LIVE_HELP)
 
     s = add("reconcile", "judge commits that name an item: complete|partial|unrelated. "

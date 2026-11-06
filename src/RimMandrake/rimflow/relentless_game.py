@@ -615,6 +615,40 @@ def mod_gap_why(gap):
     return ("modlist gate: " + "; ".join(parts)) if parts else None
 
 
+LEDGER_ONLY = ("infrastructure/state/ledger/", "infrastructure/state/items/", "infrastructure/state/queue/")  # cli._LEDGER_ONLY
+NO_CODE_RX = re.compile(r"\bnothing (?:in|of) the (?:work|code|product|build|mod)s?\b[^|]{0,40}?\bchanged\b"
+                        r"|\bno (?:code|work|product) change", re.I)
+
+
+def _paths_of(fx, sha):
+    """-> the paths `sha` changes (relentless.Effects.touched), or None when the fx cannot say (a fake without it)."""
+    f = getattr(fx, "touched", None)
+    if not callable(f):
+        return None
+    try:
+        return f(sha)
+    except Exception:       # noqa: BLE001 - an unreadable sha is no rebuild claim: the cli's own gate decides
+        return None
+
+
+def no_code_rebuild(st, sha, touched):
+    """-> the `implemented --no-code` words for a rebuild that changed nothing, or None. All of: the candidate `sha` is the
+    build's (st["candidate"]), it touches only the ledger and item prose (`touched`, its paths), and the warrant recorded
+    for that generation says the work did not change (NO_CODE_RX on its `changed` half). cli then finds the commit that
+    did the work under `sha`, and refuses when there is none, so this carries a build forward and never stands for one.
+    RELENTLESS_NOCODE_REBUILD_IMPLEMENTED_REFUSED: GIZKA_STOWAWAY_UNMEASURED_ROWS_1 gen 8 re-anchored its stale build on
+    today's main with an item note only (ad2549a17d, warrant "nothing in the work changed; the environment did"), and
+    `implemented` refused it as ledger-only, so a finished item went back as proof_owed."""
+    cand, w = st.get("candidate") or {}, st.get("warrant") or {}
+    if not touched or not all(p.startswith(LEDGER_ONLY) for p in touched):
+        return None
+    if not cand.get("sha") or not (cand["sha"].startswith(sha) or sha.startswith(cand["sha"])):
+        return None
+    if w.get("gen") is None or w.get("gen") != cand.get("gen") or not NO_CODE_RX.search(w.get("changed") or ""):
+        return None
+    return ("gen %s rebuild, ledger-only; warrant: %s" % (w["gen"], w["changed"]))[:400]
+
+
 def enable_set(gaps):
     """Every mod folder the next load must hold: [relentless_live_round.mod_gap] -> sorted folders (the build's mods and
     its live-mods of each item riding the load)."""
@@ -634,8 +668,10 @@ class GameFx(object):
                            capture_output=True, text=True, timeout=60)
         return r.stdout if r.returncode == 0 else ""
 
-    def game_implement(self, item, sha, criteria_text, live=None, why=None):
+    def game_implement(self, item, sha, criteria_text, live=None, why=None, no_code=None):
         args = ["implemented", item, "--sha", sha, "--why", why or "relentless: blind offline PASS; the game clauses stay owed"]
+        if no_code:     # a ledger-only rebuild whose warrant says the work did not change (no_code_rebuild)
+            args += ["--no-code", no_code]
         tmp = None
         if criteria_text.strip():
             tmp = os.path.join(self.base, "live", "%s.criteria" % item)
@@ -1399,7 +1435,9 @@ def step(store, fx, r, item, now, acts, sup):
         if recorded:
             why = None
         else:
-            why = fx.game_implement(item, sha, fx.proofs_at(item, sha, ".criteria"), (st["contract"] or {}).get("live"))
+            nc = no_code_rebuild(st, sha, _paths_of(fx, sha))
+            why = fx.game_implement(item, sha, fx.proofs_at(item, sha, ".criteria"), (st["contract"] or {}).get("live"),
+                                    **({"no_code": nc} if nc else {}))
             led = fx.game_ledger(item) if not why else led
         if why:
             return _back(store, fx, sup, r, item, "game_contract", "rimflow implemented refused: %s" % why, now, acts)
