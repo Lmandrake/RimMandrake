@@ -69,6 +69,13 @@
    "speaker": "owner",
    "source": "OWNER:1793895896496551063",
    "quote": "if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked."
+  },
+  {
+   "id": "s_shock_reach",
+   "text": "Every sparking end shocks, floor-cord ends included; a Mod Setting picks None, only downed lines, or all; default all",
+   "speaker": "owner",
+   "source": "OWNER:1793996551266756043",
+   "quote": "Every sparking end shocks, but settable in settings to those three options: None, only downed lines, or all."
   }
  ],
  "decisions": [
@@ -125,6 +132,19 @@
    "flagship": "workshop_floor",
    "card": "Which scene is the one you judge Gimme Some Slack by first? → Workshop floor",
    "text": "The workshop floor (floor cords looping and piling into a strip/junction box, one cut leaving a sparking live end and a limp dead end, drawing true to connectivity) is GSS's face, showcase 1, judged first; the yard of masts is showcase 2"
+  },
+  {
+   "id": "d_shock_reach_setting",
+   "speaker": "owner",
+   "source": "OWNER:1793996551266756043",
+   "text": "Default: every sparking end shocks, floor-cord ends as well as downed overhead wires; the fixer-is-safe rule (s_shock_fix_safe) applies to all of them. One three-valued Mod Setting: None / Only downed lines / All; default All. Replaces the on/off fallenWireShock. The root paragraph is not edited: it stays as he approved it, and this decision widens the 'live fallen wire' clause."
+  },
+  {
+   "id": "d_shock_reach_agent_detail",
+   "speaker": "agent",
+   "source": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+   "author": "rm-role-designer-1793997316",
+   "text": "Agent rulings under his answer, his to undo. (1) 'Every sparking end' is taken literally: any live Terminal end that sparks, also a run the player simply stopped laying, not only a destroyed cell (CordBuilder draws both alike). (2) A floor end's contact is its own cell, 'the sparking end'; the rest of the cord stays harmless. Downed wires keep their present ground contact. (3) Safe = the pawn's construction job (delivering to or building) targets the conduit blueprint or frame that joins THIS end; a constructor on any other job is shocked, like the re-string case in coverage gap 1. (4) 'Only downed lines' = today's contact set, FlowWorks' collapsed-deck cords included; None = no shock from any wire. (5) The fuel-ignition switch is separate and not widened to floor ends; he spoke of shock only. (6) Shock follows the end's live state and never the maxSparkingEnds spark budget; an end shocks only if it is drawn live. Turning the aerial master off must not silence floor ends under All (RebuildContacts returns early on AerialSettings.enabled today)."
   }
  ],
  "asks": [
@@ -250,7 +270,7 @@
   },
   {
    "id": "a_shock_floor_ends",
-   "status": "sent",
+   "status": "answered",
    "text": "Does a sparking floor-cord end (left when a conduit cell is destroyed) shock a colonist who crosses it, with the one rebuilding that conduit safe, or do only fallen overhead wires shock? (1) Overhead only, as built: the severed floor cord sparks but harms nobody until a constructor rebuilds the conduit. (2) Every sparking end: the severed floor cord's live end shocks a colonist crossing it on another job; the constructor sent to rebuild that cell is safe.",
    "decision": "Whether s_shock_fix_safe covers the sparking live end a floor-conduit cut leaves (cut_live_and_dead_ends, the flagship) or only fallen overhead spans; decides a new leaf and scene either way (coverage_verdict.json gap 2).",
    "about": [
@@ -273,7 +293,11 @@
     "design/concepts/GimmeSomeSlack/turn_05.md",
     "design/concepts/GimmeSomeSlack/coverage_verdict.json",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs"
-   ]
+   ],
+   "answer": {
+    "source": "OWNER:1793996551266756043",
+    "quote": "Every sparking end shocks, but settable in settings to those three options: None, only downed lines, or all."
+   }
   }
  ],
  "inventory": [
@@ -663,6 +687,32 @@
     "OWNER:1791668361069985398"
    ],
    "note": "the live walk save holds 0 RM_HoseReel (b805ca93d9). The hose min-bend trace (GIMMESOMESLACK_HOSE_BEND_TRACE_1) is pre-migration work, now FlowWorks'."
+  },
+  {
+   "id": "floor_end_shock",
+   "what": "A live sparking floor-cord end shocks a pawn crossing it; the constructor joining that end is safe",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/GimmeSomeSlack/Source: RM_FallenWireShock.RebuildContacts takes contacts from aerial anchors' fallen cords and registered external sources only; grep for ExternalContacts and live-wire sources found no floor-end source",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1793996551266756043",
+   "source": [
+    "OWNER:1793996551266756043",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs"
+   ]
+  },
+  {
+   "id": "shock_reach_setting",
+   "what": "One Mod Setting for how far shock reaches: None / Only downed lines / All, default All",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs: only the bool fallenWireShock exists; SwitchFlipChecks.cs flips that bool",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1793996551266756043",
+   "source": [
+    "OWNER:1793996551266756043",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs"
+   ]
   }
  ],
  "contradictions": [
@@ -723,6 +773,18 @@
    "resolved": true,
    "resolution": "Agent ruling: proof debt, not a design question; stage 3 gives each of the four switches a flip scene (keepWiresOnGravship rides with gravship_connectivity).",
    "resolved_by": "rm-role-designer-1793896735"
+  },
+  {
+   "id": "coverage_gaps_for_stage_3",
+   "source": [
+    "design/concepts/GimmeSomeSlack/coverage_verdict.json",
+    "OWNER:1793996551266756043"
+   ],
+   "text": "The stage-5 coverage judge left five gaps; gap 2 needed his word and has it. All five are now stage-3 writing.",
+   "core": true,
+   "resolved": true,
+   "resolved_by": "rm-role-designer-1793997316",
+   "resolution": "Stage 3 writes: gap 2, a leaf and scene for floor_end_shock on cut_live_and_dead_ends (crosser on another job shocked, the constructor joining that end safe, a constructor on another job shocked) and shock_reach_setting (all three values, each with a floor end and a downed wire). Gap 1, control: a colonist on RM_RestringSpan for ANOTHER span crosses this sparking end and is shocked. Gap 3, reach a second game by loading a save in sc_statics_new_game. Gap 4, sc_settings names three observations: master off restores vanilla lamp art without a restart, every Harmony patch maps to one switch, the pipe-pole switch leaves power poles alone. Gap 5, sc_restring checks the alert's jump-to and a grounded wire (killed mast); sc_spans stages a lamp mast."
   }
  ],
  "built_reviewed": [

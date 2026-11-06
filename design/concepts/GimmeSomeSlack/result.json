@@ -1,0 +1,6 @@
+{
+ "run": "rm-role-designer-1793997316",
+ "stage": 2,
+ "outcome": "done",
+ "summary": "a_shock_floor_ends answered (OWNER:1793996551266756043): every sparking end shocks, floor ends included, with a Mod Setting None / Only downed lines / All, default All. Recorded as scope, decision and two absent inventory lines; agent rulings under it are in d_shock_reach_agent_detail, notably that any live terminal end counts, not only a destroyed cell. Stage 3 owes the five coverage gaps, listed in contradiction coverage_gaps_for_stage_3."
+}

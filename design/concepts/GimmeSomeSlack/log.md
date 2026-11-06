@@ -240,3 +240,9 @@ Stage 3 returned for his flagship pick. Ask a_flagship_pick (turn_04.md): face =
 ## 2026-11-06, run rm-role-designer-1793956242 (stage 2, returned from stage 5)
 
 Lock's coverage judge (gap 2) returned for his word on whether s_shock_fix_safe covers floor-cut sparking ends. Ask a_shock_floor_ends (turn_05.md): (1) overhead only, as built, or (2) every sparking end, constructor rebuilding the conduit safe; no recommendation. Fresh Opus review (rm-judge a4a9ccd31feede985): pass, two wording fixes (claim is the build, not his meaning; FlowWorks deck-collapse cords also shock). Sent. Gaps 1, 3, 4, 5 are stage-3 scene fixes.
+
+## 2026-11-06 a_shock_floor_ends answered (OWNER:1793996551266756043)
+
+Q (turn_05.md): does a sparking floor-cord end shock crossers, or only fallen overhead wires?
+His words: "Every sparking end shocks, but settable in settings to those three options: None, only downed lines, or all."
+Taken: scope s_shock_reach, decision d_shock_reach_setting; inventory floor_end_shock and shock_reach_setting (both absent, owed build). Agent detail under it: d_shock_reach_agent_detail. No new ask.
