@@ -318,12 +318,30 @@ def _stamp_role_unit(ev):
     ev["role_unit"] = unit
 
 
+SESSION_RE = re.compile(r"[A-Za-z0-9_-]{1,80}")
+SESSION_VERBS = ("claim", "start")
+
+
+def _stamp_session(ev, env=None):
+    """Stamp `session` on a claim/start from CLAUDE_CODE_SESSION_ID (WRAPUP_CLAIMS_FIX_ROBOT_BLAMED_ON_WINDOW): the
+    wrap-up attributes a window's still-doing claims by the session that wrote them, not by the seat key it shares
+    with the Relentless supervisor. Never stamped in a Relentless process (bridge identity RELENTLESS), nor when the
+    id is unset or malformed: an unstamped event falls back to the census's legacy seat rule. -> ev."""
+    env = os.environ if env is None else env
+    sid = (env.get("CLAUDE_CODE_SESSION_ID") or "").strip()
+    if (ev.get("event") in SESSION_VERBS and SESSION_RE.fullmatch(sid) and not ev.get("session")
+            and model.write_name(ev.get("seat"), env) != model.RELENTLESS_HOLDER):
+        ev["session"] = sid
+    return ev
+
+
 def _write_one(ev):
     """check() then append() ONE event, no rendering. `_emit`'s core, split out (step 3)
     so a lease group — `lease` + `claim` + `start` — can land as several checked writes
     under one dispatcher lock and re-render once. -> the event as written."""
     ev = {k: v for k, v in ev.items() if v is not None and v != "" and v is not False}
     _stamp_role_unit(ev)
+    _stamp_session(ev)
     try:
         model.check(ev, _replay_now())
         _stamp_owner_and_override(ev)

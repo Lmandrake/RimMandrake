@@ -25,8 +25,9 @@ WHAT IT CENSUSES (one row each; act = cleaned | filed | carried | covered | ok |
             carried (the next worker of that item continues it; the supervisor and the pool alarm own it after);
             so is a SEAT clone (SEAT_CLONES_DEFAULT, env RM_WRAPUP_SEAT_CLONES): every window of the seat shares it;
             anyone else's is filed.
-  claims    (session) items this window's seat claimed or started during the session that are still `doing`, less
-            those the Relentless supervisor started (it shares the seat key; it carries them).
+  claims    (session) items this session claimed or started (its own `session`-stamped events; an unstamped line
+            falls back to the seat, less the Relentless supervisor's starts) that are still `doing` and last taken by
+            it: the supervisor shares the seat key, so a seat match alone blames the window for the robot's work.
   tmp       (unit) the run's own TMPDIR: covered by run_tmp.sweep (each Relentless tick); a unit is still stopping when
             ExecStopPost runs, so run_tmp refuses to drop it here.
 
@@ -222,13 +223,14 @@ class World(object):
             return False, "%s: %s" % (type(e).__name__, e)
         return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-300:]
 
-    def doing_claims(self, seat, since):
-        """-> [(item, ts)] claimed or started by `seat` at or after `since` and still doing; raises when unreadable."""
+    def doing_claims(self, seat, since, session=None):
+        """-> [(item, ts)] this session's (else `seat`'s) claims/starts at or after `since`, still doing; raises when
+        unreadable. See claims_of."""
         sys.path.insert(0, HERE)
         import model  # noqa: E402  (lazy: the unit path must not pay for the ledger)
         evs = model.read()
         w = model.replay(evs)
-        return claims_of(evs, {i: getattr(it, "state", None) for i, it in w.items.items()}, seat, since)
+        return claims_of(evs, {i: getattr(it, "state", None) for i, it in w.items.items()}, seat, since, session)
 
     def exists(self, path):
         return os.path.isdir(path)
@@ -244,21 +246,32 @@ class World(object):
             return None
 
 
-def claims_of(evs, states, seat, since):
-    """-> [(item, ts)] claimed or started by `seat` at or after `since`, still doing, and not the Relentless
-    supervisor's: an item whose latest claim/start is the supervisor's start is carried by the supervisor."""
+def own_event(e, seat, session=None):
+    """Is this claim/start the ending session's own? (WRAPUP_CLAIMS_FIX_ROBOT_BLAMED_ON_WINDOW) A `session`-stamped
+    event (cli._stamp_session) is its writer's alone: it is ours only when it names this session. An unstamped one (a
+    line from before the stamp, a Relentless process, a role run) is never another Claude window's by its stamp, so it
+    falls back to the legacy rule: our seat, not a role run, not the Relentless supervisor's start."""
+    if session and e.get("session"):
+        return e["session"] == session
+    return (e.get("seat") == seat and not e.get("role_unit")
+            and (e.get("why") or "") != RELENTLESS_START_WHY)
+
+
+def claims_of(evs, states, seat, since, session=None):
+    """-> [(item, ts)] this session's own claims/starts (own_event) at or after `since`, still doing, whose LATEST
+    claim/start is also its own: an item the supervisor (or another window) took after us is carried by its taker."""
     out, last = {}, {}
     for e in evs:
         if e.get("event") not in ("claim", "start") or not e.get("id"):
             continue
         last[e["id"]] = e
-        if e.get("seat") != seat:
+        if not own_event(e, seat, session):
             continue
         ts = e.get("ts") or ""
         if ts >= _iso(since):
             out[e["id"]] = ts
     return sorted((i, t) for i, t in out.items()
-                  if states.get(i) == "doing" and (last[i].get("why") or "") != RELENTLESS_START_WHY)
+                  if states.get(i) == "doing" and own_event(last[i], seat, session))
 
 
 # ---------------------------------------------------------------- the census
@@ -335,7 +348,7 @@ def census(world, ctx):
             rows.append({"kind": "claims", "what": ctx["seat"], "act": "unmeasured", "why": "session start unknown"})
         else:
             try:
-                for item, ts in world.doing_claims(ctx["seat"], ctx["since"]):
+                for item, ts in world.doing_claims(ctx["seat"], ctx["since"], ctx.get("key")):
                     rows.append({"kind": "claims", "what": item, "act": "filed",
                                  "why": "claimed/started %s by %s in this session, still doing" % (ts, ctx["seat"])})
             except Exception as e:  # noqa: BLE001
@@ -408,7 +421,8 @@ def row_standing(world, row, rec):
         return bool(sh) and sh.get("holder") == ctx.get("holder") and sh.get("clone") in (rec.get("clones") or [])
     if k == "claims":
         try:
-            return any(i == row["what"] for i, _ in world.doing_claims(rec.get("seat"), 0))
+            sess = rec.get("key") if rec.get("kind") == "session" else None
+            return any(i == row["what"] for i, _ in world.doing_claims(rec.get("seat"), 0, sess))
         except Exception:  # noqa: BLE001  unreadable: still standing (never clear on ignorance)
             return True
     if k == "debt" and row.get("keyed"):        # a door debt: until a write puts the setting back (paid())

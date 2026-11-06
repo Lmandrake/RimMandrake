@@ -791,8 +791,11 @@ def now():
 # `ranBy` (OWNER_CLOCK_FIX_RELAYED_ORDERS_WEAR_HAT): whose hands wrote an event under seat OWNER (cli._stamp_owner_and_override).
 # `hisHands` (OWNER_RELAY_FIX_OWN_TERMINAL_UNCOUNTED): True when he typed a relay-flagged OWNER command at his own
 # terminal, so it still runs his clock (owner_interaction.is_his_act). An older reader strips it: not his act, as before.
+# `session` (WRAPUP_CLAIMS_FIX_ROBOT_BLAMED_ON_WINDOW): the Claude Code session that wrote a `claim`/`start`, stamped by
+# cli._stamp_session from CLAUDE_CODE_SESSION_ID (never in a Relentless process). The wrap-up's session census counts
+# a window's claims by it, not by seat: the Conductor's windows and the Relentless supervisor share the BENCH key.
 UNIVERSAL_FIELDS = ("ts", "tsn", "seat", "event", "id", "caused_by", "override", "ownerSaid",
-                    "why", "byCard", "perRuling", "role_unit", "ranBy", "hisHands")
+                    "why", "byCard", "perRuling", "role_unit", "ranBy", "hisHands", "session")
 
 
 def _check_verb(ev):

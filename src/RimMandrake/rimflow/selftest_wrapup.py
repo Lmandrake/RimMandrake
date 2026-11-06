@@ -91,7 +91,7 @@ class Fake(wrapup.World):
             self.sh = None
         return self.release_ok, "fake"
 
-    def doing_claims(self, seat, since):
+    def doing_claims(self, seat, since, session=None):
         if self.claims_raise:
             raise ValueError("torn ledger")
         return list(self.claims)
