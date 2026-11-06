@@ -89,6 +89,33 @@ def main() -> int:
         rc, out = run(seat)
         check(rc == 0, "same path syncs once it holds upstream bytes")
 
+        # SEAT_SYNC_FIX_DELETE_MATCHES_UPSTREAM: the Designer's land.sh -m landed result.json's deletion from a temp
+        # index; this clone still holds the delete as a dirty change. Unstaged and staged, it is already upstream.
+        for staged in (False, True):
+            write(seat, "r.json", "r\n"); git(seat, "add", "--", "r.json"); git(seat, "commit", "-qm", "r")
+            git(seat, "push", "-q", "origin", "HEAD:main")
+            git(seat, "rm", "-q", "--", "r.json") if staged else os.remove(Path(seat, "r.json"))
+            git(peer, "pull", "-q", "--ff-only", "origin", "main"); git(peer, "rm", "-q", "--", "r.json")
+            git(peer, "commit", "-qm", "land r.json delete"); git(peer, "push", "-q", "origin", "HEAD:main")
+            rc, out = run(seat)
+            check(rc == 0 and "SYNCED" in out, "a dirty delete upstream also made syncs (staged=%s): %s" % (staged, out))
+            check(git(seat, "rev-parse", "HEAD") == git(seat, "rev-parse", "origin/main"), "HEAD now equals origin/main")
+            check(not Path(seat, "r.json").exists() and "r.json" not in git(seat, "status", "--porcelain"),
+                  "the deleted path is absent and reads clean")
+            check(Path(seat, "b.txt").read_text() == "b-mine\n", "the unrelated dirty file still survives")
+        # a dirty delete of a path upstream MODIFIED is a real overlap: refused, nothing moves
+        write(seat, "r.json", "r\n"); git(seat, "add", "--", "r.json"); git(seat, "commit", "-qm", "r")
+        git(seat, "push", "-q", "origin", "HEAD:main")
+        os.remove(Path(seat, "r.json"))
+        peer_push(peer, {"r.json": "r2\n"}, "r2")
+        before = git(seat, "rev-parse", "HEAD")
+        rc, out = run(seat)
+        check(rc == 1 and "r.json" in out and git(seat, "rev-parse", "HEAD") == before and not Path(seat, "r.json").exists(),
+              "a dirty delete against upstream's edit is refused and changes nothing")
+        write(seat, "r.json", "r2\n")
+        rc, out = run(seat)
+        check(rc == 0, "it syncs once the path holds upstream's bytes")
+
         # a peer's live hunk upstream also moved, away from upstream's lines -> carried in place
         write(seat, "m.txt", "1\n2\n3\n4\n5\n6\n7\n8\n9\n")
         git(seat, "add", "m.txt"); git(seat, "commit", "-qm", "m"); git(seat, "push", "-q", "origin", "HEAD:main")

@@ -19,6 +19,7 @@ Before it runs, every precondition is checked and the whole plan is refused if o
   * every dirty tracked path that upstream also changes either holds upstream's bytes already (it is then
     staged, so --keep accepts it) or merges cleanly with upstream (reset_merging: a peer's live hunks and ledger
     appends stay in the working tree, on top of upstream's); only a real overlap is named and the sync refused;
+  * a dirty DELETE of a path upstream also deleted is already upstream (only the index moves);
   * an untracked file at a path upstream adds is moved aside only when byte-identical to upstream's copy;
   * a file upstream STOPPED TRACKING (deleted from the tree and ignored by upstream's .gitignore files, e.g.
     Transient/ since 2026-10-18) is KEPT on disk with its local bytes: it is renamed aside inside .git,
@@ -328,6 +329,13 @@ def dirty_merges(g: Git, head: str, target: str, keep: list[str]) -> tuple[list[
         if there and wt_sha == there[1] and there[0].startswith("100") and (not here or here[0] == there[0]):
             items.append(it)                            # already upstream's bytes: only the index moves
             continue
+        if p in dirty and here and not there and not os.path.lexists(os.path.join(g.repo, p)):
+            # SEAT_SYNC_FIX_DELETE_MATCHES_UPSTREAM: a dirty DELETE of a path upstream also deleted is already upstream
+            # (land.sh -m landed the Designer's result.json rename from a temp index, leaving this clone's delete
+            # dirty); only the index moves, to absent. Mode "0" and the null sha are update-index's removal record.
+            it.update(mode="0", blob="0" * 40, base=None, deleted=True)
+            items.append(it)
+            continue
         if not here or not there or ours is None or here[0] != there[0] or not here[0].startswith("100"):
             stuck.append(p)                             # added, deleted, symlink, mode change: no merge is defined
             continue
@@ -604,8 +612,14 @@ def apply(g: Git, p: dict, seat: str) -> str:
             (dest / u).parent.mkdir(parents=True, exist_ok=True)
             shutil.move(os.path.join(g.repo, u), dest / u)
         notes.append(f"{len(p['move'])} identical untracked file(s) moved to {dest}")
+    # a staged delete (`git rm`) is absent from index and tree alike: `git add` refuses its pathspec, and there is
+    # nothing left to stage for it (SEAT_SYNC_FIX_DELETE_MATCHES_UPSTREAM)
+    indexed = set()
     for i in range(0, len(p["stage"]), 500):
-        g.run("add", "-A", "--", *p["stage"][i:i + 500])
+        indexed.update(g.lines("ls-files", "-z", "--", *p["stage"][i:i + 500]))
+    stage = [s for s in p["stage"] if s in indexed or os.path.lexists(os.path.join(g.repo, s))]
+    for i in range(0, len(stage), 500):
+        g.run("add", "-A", "--", *stage[i:i + 500])
     try:
         note = reset_merging(g, p["head"], p["up"], p["keep"])
     except Refused as e:   # say what already happened (moved files, backup branch) before the refusal
