@@ -14,8 +14,9 @@ through pulse/phone_push.py, a fixed template with no AI in the path, once per o
 whatever the ledger write did (DEADMAN_WIRE_PHONE_WITHOUT_AI). RM_DEADMAN_PUSH=0 turns the phone off.
 
     ops_watch   $RM_OPS_WATCH_DIR/status.json  key "t" (epoch of the last pass; a metronome beat, ~1 min)  limit 50 min
-    dispatcher  $RM_DISPATCHER_STATE/state.json key "last_ok_tick" (ISO; timer every 2 min)            limit 15 min
-                the state of the mode the rm-dispatcher.service timer RUNS (`--apply` in its ExecStart: live, else
+    dispatcher  $RM_DISPATCHER_STATE/state.json key "last_ok_tick" (ISO; a dispatch beat, ~2 min)          limit 15 min
+                the state of the mode its clock RUNS (`--apply` in the owning metronome phase's argv, or before
+                cutover in rm-dispatcher.service's ExecStart: live, else
                 dry/; $RM_DISPATCHER_MODE live|dry overrides), never the fresher of the two: a dry run must not mask a
                 dead live Dispatcher. Mode unknown -> no stamp (a fault). last_ok_tick is stamped only by a tick that
                 completed and was not blind; last_tick (any attempt) is read only from a state file that has no
@@ -52,7 +53,8 @@ MAX_PER_PASS = 10
 FOLD_AT = 2                 # a second outage means the first fix did not fold
 # ops_watch runs as the metronome's sense phase since 2026-11-05 (OPS_METRONOME_MIGRATE_CLOCKS_FENCED): its clock is
 # rm-metronome.timer, whose pause excuses a stale stamp exactly as the old timer's did.
-ARM_UNITS = {"ops_watch": "rm-metronome.timer", "dispatcher": "rm-dispatcher.timer"}
+# The Dispatcher ticks as the dispatch phase since 2026-11-06 (same item): its clock is rm-metronome.timer too.
+ARM_UNITS = {"ops_watch": "rm-metronome.timer", "dispatcher": "rm-metronome.timer"}
 
 
 def ops_dir():
@@ -86,11 +88,20 @@ def finite(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
 
 
-def dispatcher_mode(runner=subprocess.run):
-    """'live' | 'dry' | None: the mode the rm-dispatcher.service timer runs, read from its ExecStart."""
+def dispatcher_mode(runner=subprocess.run, table_path=None):
+    """'live' | 'dry' | None: the mode the Dispatcher's clock runs. Once a metronome phase owns rm-dispatcher.timer
+    (2026-11-06), that phase's argv decides; before, rm-dispatcher.service's ExecStart."""
     env = os.environ.get("RM_DISPATCHER_MODE")
     if env in ("live", "dry"):
         return env
+    import metronome
+    phase = metronome.owner_of("rm-dispatcher.timer", table_path)
+    if phase:
+        try:
+            argv = metronome.read_json(table_path or metronome.TABLE)["phases"][phase].get("argv") or []
+        except (KeyError, TypeError, AttributeError):
+            return None
+        return "live" if "--apply" in argv else "dry"
     try:
         r = runner(["systemctl", "--user", "show", "-p", "ExecStart", "--value", "rm-dispatcher.service"],
                    capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)

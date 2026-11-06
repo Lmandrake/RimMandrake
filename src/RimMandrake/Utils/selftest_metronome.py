@@ -161,6 +161,10 @@ ok(all(p.get("argv") is None or p.get("owns") or "--apply" not in p["argv"] and 
 ok(sense.get("owns") == ["rm-ops-watch.timer"] and "--file-alarms" in sense["argv"] and "{gen}" in sense["argv"]
    and "RM_OPS_WATCH_DIR" not in (sense.get("env") or {}),
    "shipped table: sense owns rm-ops-watch.timer and files alarms into the real store, fenced by {gen}")
+disp = t["phases"]["dispatch"]
+ok(disp.get("owns") == ["rm-dispatcher.timer"] and "--apply" in disp["argv"] and "{gen}" in disp["argv"]
+   and (disp.get("env") or {}).get("GIT_CONFIG_VALUE_0") == "false",
+   "shipped table: dispatch owns rm-dispatcher.timer, ticks --apply fenced by {gen}, git gc kept in the foreground")
 ok("{state}" not in " ".join(t["phases"]["remember"]["argv"]), "shipped table: remember writes the real memory")
 for bad, why in ((table(budget=2), "reserve over budget"),
                  (table(dispatch={"limit_s": 44}), "a phase that can never fit beside the reserve")):
@@ -174,7 +178,8 @@ ok(t["phases"]["raise"].get("owns") == ["rm-restart-reconcile.timer"]
    and "--metronome-gen" in t["phases"]["raise"]["argv"] and "{gen}" in t["phases"]["raise"]["argv"]
    and "--no-file" not in t["phases"]["raise"]["argv"],
    "shipped table: raise owns rm-restart-reconcile.timer and runs the real pass with its generation")
-ok(m.owner_of("rm-restart-reconcile.timer") == "raise" and m.owner_of("rm-ops-watch.timer") == "sense" and m.owner_of("rm-dispatcher.timer") is None,
+ok(m.owner_of("rm-restart-reconcile.timer") == "raise" and m.owner_of("rm-ops-watch.timer") == "sense"
+   and m.owner_of("rm-dispatcher.timer") == "dispatch" and m.owner_of("rm-scratch-pressure.timer") is None,
    "owner_of names the phase owning a cut-over timer, and none for a clock not cut over")
 for bad, why in (({"owns": "rm-x.timer"}, "owns not a list"),
                  ({"owns": ["rm-x.service"]}, "owns naming a non-timer"),

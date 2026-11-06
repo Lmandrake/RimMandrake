@@ -234,7 +234,7 @@ def main():
     check("no readable" in DM.arm_faults({"ops_watch": NOW, "dispatcher": None}, NOW, began(NOW - 3))["dispatcher"],
           "arm: a missing stamp stays a fault beside a fresh timer")
     check("21 min" in DM.judge(DM.arm_clocks(st, NOW, began(NOW + 9999)), NOW)["dispatcher"], "arm: a future start buys nothing")
-    orig_excused, DM.excused = DM.excused, lambda line, runner=None: "rm-dispatcher.timer" in line
+    orig_excused, DM.excused = DM.excused, lambda line, runner=None: DM.ARM_UNITS["dispatcher"] in line
     check("dispatcher" not in DM.arm_faults(st, NOW, began(NOW - 86400)), "arm: paused with its restart armed is excused")
     DM.excused = orig_excused
 
@@ -250,9 +250,16 @@ def main():
     fake = lambda out, rc=0: (lambda argv, **kw: SP.CompletedProcess(argv, rc, out, ""))
     os.environ.pop("RM_DISPATCHER_MODE", None)
     ex = "{ path=/usr/bin/python3 ; argv[]=/usr/bin/python3 /x/dispatcher.py tick%s ; ignore_errors=no }"
-    check(DM.dispatcher_mode(fake(ex % " --apply")) == "live", "mode: --apply in ExecStart -> live")
-    check(DM.dispatcher_mode(fake(ex % "")) == "dry", "mode: no --apply -> dry")
-    check(DM.dispatcher_mode(fake("", 1)) is None, "mode: systemctl failure -> unknown, not dry")
+    tbl = lambda name, phases: (TMP / name).write_text(json.dumps({"phases": phases})) and (TMP / name)
+    unowned = tbl("t_unowned.json", {"dispatch": {"argv": ["x", "tick", "--json"]}})
+    owned = lambda apply: tbl("t_owned.json", {"dispatch": {"owns": ["rm-dispatcher.timer"],
+                                                             "argv": ["x", "tick"] + (["--apply"] if apply else [])}})
+    check(DM.dispatcher_mode(fake(ex % ""), owned(True)) == "live", "mode: an owning phase with --apply -> live, ExecStart ignored")
+    check(DM.dispatcher_mode(fake(ex % " --apply"), owned(False)) == "dry", "mode: an owning phase without --apply -> dry")
+    check(DM.dispatcher_mode(fake("", 1)) == "live", "mode: the shipped table's dispatch phase ticks --apply -> live")
+    check(DM.dispatcher_mode(fake(ex % " --apply"), unowned) == "live", "mode: --apply in ExecStart -> live")
+    check(DM.dispatcher_mode(fake(ex % ""), unowned) == "dry", "mode: no --apply -> dry")
+    check(DM.dispatcher_mode(fake("", 1), unowned) is None, "mode: systemctl failure -> unknown, not dry")
     # review Q 11: last_ok_tick wins; last_tick only for a state with no last_ok_tick key
     check(DM.dispatcher_stamp({"last_tick": OW.iso(NOW), "last_ok_tick": None}) is None,
           "last_ok_tick null (every tick raised): no stamp, last_tick does not count")

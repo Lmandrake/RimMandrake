@@ -9,6 +9,7 @@ The metronome's dispatch phase kills a tick at METRONOME_DEADLINE (limit_s 20; l
   fence           --metronome-gen: an act is started only while metronome.may_act says the generation is live;
                   Fenced stops the tick (exit 3), gives back what was not started and journals `fenced`, no alarm
   ownership       an --apply tick without a generation acts nothing while the phase table owns rm-dispatcher.timer
+                  and that timer is not measured inactive; with it off, it is an on-demand wake and runs
 Nothing outside a temp dir is touched.
 """
 import json
@@ -207,21 +208,28 @@ def test_tick_fenced_and_beat_end():
 
 
 def test_apply_without_generation_refuses_when_owned():
-    real = D.metronome_owner
+    real, real_state = D.metronome_owner, D.old_timer_state
     called = []
     real_tick = D.tick
     D.tick = lambda *a, **k: called.append(1) or []
+    sched = os.path.join(TMP, "sched.json")
     try:
         D.metronome_owner = lambda timer=D.OLD_TIMER: "dispatch"
-        rc = D.main(["tick", "--apply", "--schedule", os.path.join(TMP, "sched.json")])
-        check(rc == 0 and not called, "an owned clock: --apply without --metronome-gen acts nothing")
-        D.main(["tick", "--schedule", os.path.join(TMP, "sched.json")])
+        for st in ("active", "unmeasured (rc 1)", ""):
+            D.old_timer_state = lambda timer=D.OLD_TIMER, st=st: st
+            rc = D.main(["tick", "--apply", "--schedule", sched])
+            check(rc == 0 and not called, "an owned clock, old timer %r: --apply without --metronome-gen acts nothing" % st)
+        D.main(["tick", "--schedule", sched])
         check(called == [1], "a dry tick still runs while owned")
+        D.old_timer_state = lambda timer=D.OLD_TIMER: "inactive"
+        D.main(["tick", "--apply", "--schedule", sched])
+        check(called == [1, 1], "owned with the old timer measured inactive: an on-demand wake (seat_restart) runs")
         D.metronome_owner = lambda timer=D.OLD_TIMER: None
-        D.main(["tick", "--apply", "--schedule", os.path.join(TMP, "sched.json")])
-        check(called == [1, 1], "before cutover the old timer's --apply tick runs")
+        D.old_timer_state = lambda timer=D.OLD_TIMER: (_ for _ in ()).throw(AssertionError("read only when owned"))
+        D.main(["tick", "--apply", "--schedule", sched])
+        check(called == [1, 1, 1], "before cutover the old timer's --apply tick runs")
     finally:
-        D.metronome_owner, D.tick = real, real_tick
+        D.metronome_owner, D.old_timer_state, D.tick = real, real_state, real_tick
     check(D.metronome_owner() in (None, "dispatch"), "metronome_owner reads the real phase table")
 
 

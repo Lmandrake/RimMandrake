@@ -2305,6 +2305,16 @@ def _metronome():
     return metronome
 
 
+def old_timer_state(timer=OLD_TIMER):
+    """systemctl is-active of the replaced timer: 'inactive' only when measured so; anything else blocks a wake."""
+    try:
+        r = subprocess.run(["systemctl", "--user", "is-active", timer], capture_output=True, text=True, timeout=10,
+                           stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "unmeasured (%s)" % e
+    return (r.stdout or "").strip() or "unmeasured (rc %s)" % r.returncode
+
+
 def metronome_owner(timer=OLD_TIMER):
     """The metronome phase that owns this clock (metronome.owner_of), or None."""
     return _metronome().owner_of(timer)
@@ -2352,10 +2362,14 @@ def main(argv=None):
     still_owner = None
     if a.apply and a.metronome_gen is None:
         owner = metronome_owner()
-        if owner:
-            print("dispatcher: the metronome's %s phase owns %s; an --apply tick without --metronome-gen acts nothing"
-                  % (owner, OLD_TIMER))
+        old = old_timer_state() if owner else None
+        if owner and old != "inactive":
+            # The phase owns the clock but the old timer still runs (cutover not finished, or unmeasured): two clocks.
+            print("dispatcher: the metronome's %s phase owns %s, which is %s; an --apply tick without "
+                  "--metronome-gen acts nothing" % (owner, OLD_TIMER, old))
             return 0
+        # Owned with the old timer off: this is an on-demand wake (seat_restart's now-run and goodbye ticks start
+        # rm-dispatcher.service), not a clock; tick.lock serialises it with the phase's tick.
     if a.metronome_gen is not None:
         metronome = _metronome()
         mdir = metronome.state_dir(os.environ.get("METRONOME_DIR"))

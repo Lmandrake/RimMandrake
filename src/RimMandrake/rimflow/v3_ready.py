@@ -74,6 +74,18 @@ LAUNCHER_ONLY = {R + "selftest_role_launch.py"}
 
 Row = namedtuple("Row", "comp check verdict evidence blocking")
 
+def dispatcher_clock():
+    """The timer that ticks the Dispatcher: rm-metronome.timer once the metronome's phase table gives a phase
+    rm-dispatcher.timer (OPS_METRONOME_MIGRATE_CLOCKS_FENCED, cut over 2026-11-06), else rm-dispatcher.timer."""
+    p = os.path.join(HERE, "..", "Utils", "systemd", "metronome_phases.json")
+    try:
+        phases = json.load(open(p)).get("phases") or {}
+    except (OSError, ValueError):
+        return "rm-dispatcher.timer"
+    owned = any("rm-dispatcher.timer" in (ph.get("owns") or []) for ph in phases.values() if isinstance(ph, dict))
+    return "rm-metronome.timer" if owned else "rm-dispatcher.timer"
+
+
 
 def row(comp, chk, verdict, evidence):
     return Row(comp, chk, verdict, evidence, verdict in ("GO", "NO-GO", "UNMEASURED"))
@@ -220,13 +232,14 @@ def dispatcher_rows(ctx, sch, repo_sch, src, state, state_why):
             out.append(row(C, "ticking", v, "last_ok_tick %s ago (limit %s), apply=%s"
                            % (ago(max(age, 0)) if age >= 0 else "in the future", ago(TICK_STALE_S),
                               state.get("apply"))))
-    rc, o = ctx.run(["systemctl", "--user", "is-active", "rm-dispatcher.timer"], timeout=20)
+    clock = dispatcher_clock()
+    rc, o = ctx.run(["systemctl", "--user", "is-active", clock], timeout=20)
     if rc is None:
         out.append(row(C, "timer active", "UNMEASURED", "systemctl did not run: " + o[:80]))
     else:
         st = o.strip()
         v = "GO" if (rc == 0 and st == "active") else ("NO-GO" if st in ("inactive", "failed") else "UNMEASURED")
-        out.append(row(C, "timer active", v, "rm-dispatcher.timer: " + (st or "?")[:40]))
+        out.append(row(C, "timer active", v, clock + ": " + (st or "?")[:40]))
     p = os.path.join(ctx.S, "PAUSE")
     if os.path.exists(p):
         try:
