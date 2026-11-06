@@ -73,6 +73,33 @@ v = K.judge([entry(item="CLOSED_ITEM")], [{"at": "n", "t": NOW, "reds": {A}, "to
 check("TE1: an entry whose item closed covers nothing", v["news"] == ["red, not listed: " + A] and v["itemless"] == [A], v)
 v = K.judge([entry()], [{"at": "n", "t": NOW, "reds": set(), "total": 9}], OPEN, NOW)
 check("a listed test gone green is no news, and is said as cured", v["news"] == [] and v["cured"] == [A], v)
+# ---- a red whose test file is deleted since (Utils/arena, 2026-11-05: NIGHTLY_COP_FIX_RED_WARIWE_XVFM_KTXP) is no red
+v = K.judge([], [{"at": "n", "t": NOW, "reds": {A, B}, "total": 9}], OPEN, NOW, gone={B, C})
+check("a deleted test's red is no red: not unparked, said as deleted", v["unlisted"] == [A] and v["deleted"] == [B]
+      and K.uncovered(v) == [A] and B not in v["reds"], v)
+c = K.cop(v, [{"at": "n", "t": NOW - 9 * K.DAY, "reds": {A, B}, "total": 9}, {"at": "n2", "t": NOW, "reds": {A, B}, "total": 9}],
+          {}, NOW, 24)
+check("a deleted test owes no build-cop group and is never overdue", all(B not in g["tests"] for g in c["groups"])
+      and not any(o.startswith(B) for o in c["overdue"]) and any(A in g["tests"] for g in c["groups"]), c)
+ROOT = TMP / "clone"
+(ROOT / "src/RimMandrake/Utils").mkdir(parents=True)
+(ROOT / "src/x").mkdir(parents=True)
+check("blind (no clone holding known_reds.py) deletes nothing: every red stands", K.deleted_tests({A, B}, ROOT) == set())
+(ROOT / "src/RimMandrake/Utils/known_reds.py").write_text("", encoding="utf-8")
+check("a sparse checkout (known_reds.py, no nightly log) deletes nothing", K.deleted_tests({A, B}, ROOT) == set())
+(ROOT / "Transient").mkdir()
+(ROOT / "Transient/selftests_nightly.log").write_text("", encoding="utf-8")
+(ROOT / A).write_text("", encoding="utf-8")
+check("a seeing clone names only the test it lacks", K.deleted_tests({A, B}, ROOT) == {B})
+REAL = TMP / "real"                 # this repo's own src/, beside a nightly log, so the probe runs in any clone
+(REAL / "Transient").mkdir(parents=True)
+(REAL / "Transient/selftests_nightly.log").write_text("", encoding="utf-8")
+(REAL / "src").symlink_to(HERE.parent.parent)
+check("the instrument sees the real clone: this test is not deleted, a removed arena test is",
+      K.deleted_tests({"src/RimMandrake/Utils/selftest_known_reds.py",
+                       "src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py"}, REAL)
+      == {"src/RimMandrake/Utils/arena/selftest_arena_prompt_rewrites.py"})
+
 check("TE1: add is refused with no open item", "open item" in (K.add_refusal(A, "CLOSED_ITEM", ns, OPEN, 3) or ""))
 check("add is refused under the threshold", "1 consecutive" in (K.add_refusal(B, "OPEN_ITEM", ns, OPEN, 3) or ""))
 check("add passes at the threshold", K.add_refusal(A, "OPEN_ITEM", ns, OPEN, 3) is None)
@@ -337,6 +364,10 @@ for _fam in list(OW.COLLECTORS):
         OW.COLLECTORS[_fam] = lambda now, rules, ctx: {}
 OW.steve_release_start = lambda: {}
 PC.read_ledger = lambda: list(_events)
+# the live phase table hands rm-ops-watch.timer to the metronome, and a pass without --metronome-gen then files nothing;
+# that fence is selftest_ops_watch_compose's. Here the filing path itself runs, so no phase owns the old clock.
+import metronome  # noqa: E402
+metronome.owner_of = lambda timer, table_path=None: None
 try:
     rc, seen = wire_pass(ARGV)
     spawned = {}

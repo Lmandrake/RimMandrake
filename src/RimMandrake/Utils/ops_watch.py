@@ -1009,7 +1009,7 @@ def nightly_news(now, ctx):
                       said="; ".join(lnews[:3]), news=lnews[:30], reds=len(v["reds"])),
            keys[1]: M(len(v["listed"]), "nightly reds on the known-red list", night=v["night"], cured=v["cured"][:30]),
            keys[2]: M(len(unparked), "nightly reds no known-red entry parks", night=v["night"], groups=len(c["groups"]),
-                      detail_read=c["detail_read"]),
+                      detail_read=c["detail_read"], deleted=v.get("deleted", [])[:30]),
            keys[3]: M(len(c["overdue"]), "nightly reds red past their fix deadline, owned or not", night=v["night"],
                       said=c["overdue_said"], news=c["overdue"][:30])}
     # a compose pass (the metronome's sense beat, 15 s) never reruns: it reads the verdicts `rerun-reds` paid for, and

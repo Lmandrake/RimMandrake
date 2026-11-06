@@ -14,6 +14,8 @@ The nightly was RED 14 of 14 nights, so RED said nothing. Now:
            entries) are ops_watch's testing.nightly_news (tag NIGHTLY_NEWS, one fixed item OPS_NIGHTLY_RED_DIAGNOSE_*).
            Every red no entry parks belongs to the BUILD COP below: an item per root cause and a deadline. A listed red
            is silence.
+  DELETED  a red whose test file the data clone no longer holds (deleted since that night) is no red: no item, no
+           deadline. Blind (no readable data clone) deletes nothing.
 
     python3 src/RimMandrake/Utils/known_reds.py report [--json]
     python3 src/RimMandrake/Utils/known_reds.py add <test path> --item <ID> --why "..."
@@ -122,19 +124,35 @@ def read_list(path=None):
     return good, bad
 
 
-def judge(entries, ns, open_ids, now, problems=()):
-    """Pure. -> {night, reds, listed, unlisted, expired, itemless, cured, news, said}. news is what alarms: every red the
-    list does not cover, then every entry past its age, each with its reason. An entry with no open item covers nothing."""
+def deleted_tests(tests, root=None):
+    """The night's reds whose test file the data clone no longer holds (deleted since that night, as Utils/arena was on
+    2026-11-05): a red with no test left is cured and owed no item. ops_watch runs from a sparse deploy, so this reads
+    the full data clone, and only once it proves it is the clone the nightly ran in (it holds this very file and the
+    nightly's own log; a sparse checkout holds no log); blind, it answers none and every red stands."""
+    root = Path(root or data_clone())
+    if not ((root / "src" / "RimMandrake" / "Utils" / "known_reds.py").is_file()
+            and (root / "Transient" / "selftests_nightly.log").is_file()):
+        return set()
+    return {t for t in tests if not (root / t).exists()}
+
+
+def judge(entries, ns, open_ids, now, problems=(), gone=()):
+    """Pure. -> {night, reds, listed, unlisted, expired, itemless, cured, deleted, news, said}. news is what alarms: every
+    red the list does not cover, then every entry past its age, each with its reason. An entry with no open item covers
+    nothing. gone: the night's reds whose test file is deleted since; they are no red at all (deleted lists them)."""
     last = ns[-1]
+    gone = set(gone) & set(last["reds"])
+    reds = set(last["reds"]) - gone
     by = {e["test"]: e for e in entries}
     itemless = sorted(e["test"] for e in entries if e["item"] not in open_ids)
     expired = sorted(e["test"] for e in entries if epoch(e["expires"]) <= now)
-    listed = sorted(t for t in last["reds"] if t in by and t not in itemless)
-    unlisted = sorted(last["reds"] - set(listed))
+    listed = sorted(t for t in reds if t in by and t not in itemless)
+    unlisted = sorted(reds - set(listed))
     news = ["red, not listed: " + t for t in unlisted] + ["past its age: " + t for t in expired] + ["bad list entry: " + p for p in problems]
     said = "; ".join(news[:3]) + (" and %d more" % (len(news) - 3) if len(news) > 3 else "")
-    return {"night": last["at"], "reds": sorted(last["reds"]), "listed": listed, "unlisted": unlisted, "expired": expired,
-            "itemless": itemless, "cured": sorted(t for t in by if t not in last["reds"]), "news": news, "said": said}
+    return {"night": last["at"], "reds": sorted(reds), "listed": listed, "unlisted": unlisted, "expired": expired,
+            "itemless": itemless, "cured": sorted(t for t in by if t not in reds), "deleted": sorted(gone), "news": news,
+            "said": said}
 
 
 def uncovered(v):
@@ -308,7 +326,7 @@ def measure(open_ids, now, with_cop=False):
     if open_ids is None:
         return {"why": "the ledger was not readable, so which items are open is unknown"}
     entries, bad = read_list()
-    v = judge(entries, ns, open_ids, now, bad)
+    v = judge(entries, ns, open_ids, now, bad, gone=deleted_tests(ns[-1]["reds"]))
     if with_cop:
         det = read_details(ns[-1])
         c = cop(v, ns, det, now, red_deadline_h())
@@ -370,6 +388,8 @@ def main(argv=None):
                 print("  NEWS  " + n)
             for t in v["cured"]:
                 print("  cured (drop it)  " + t)
+            for t in v["deleted"]:
+                print("  deleted since (no red)  " + t)
             for e in read_list()[0]:
                 print("  %-70s %s until %s" % (e["test"], e["item"], e["expires"][:10]))
             c = v["cop"]
