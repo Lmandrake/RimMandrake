@@ -9,7 +9,10 @@ relentless_live: L1 an off mod the build does not ship is no gap; L2 a drift pla
 that raises still releases and leaves a row; L4 a fileless build still holds the game's identity; L5 a launch that
 raised is INFRA, never a FAIL verdict; L6 a log holding a violation is never rerun under python.exe; L7 a proof that
 times out on two games reaches the defect cap.
-modset_builder: M1 a failed tasklist reads live; M2 one ModsConfig writer at a time; M3 restores copy atomically."""
+modset_builder: M1 a failed tasklist reads live; M2 one ModsConfig writer at a time; M3 restores copy atomically;
+M4 the tier md5 is stamped before the replace; M5 a Camera+ tier never gets the rival zoom mod.
+Round 2 (R2): a carry keeps owed ledger criteria; a dropped item retires only after its live proof exits; a verdict
+printed before the bridge was lost is never rerun; Camera+ pulled in by a dependency still drops the zoom mod."""
 import json
 import os
 import subprocess
@@ -245,6 +248,112 @@ def t_m5_cameraplus_tier_never_gets_the_rival_zoom():
             setattr(M, n, f)
 
 
+# ------------------------------------------------------------------ Codex round 2 (re-review of 450fe8307e)
+
+class _Store(object):
+    def __init__(self, st):
+        self.st, self.saved = st, 0
+
+    def load(self, item):
+        return json.loads(json.dumps(self.st))
+
+    def save(self, st):
+        self.st, self.saved = st, self.saved + 1
+
+    def lock(self):
+        import contextlib
+        return contextlib.nullcontext()
+
+
+def t_r2_carry_keeps_ledger_criteria():
+    seen = []
+    fx = types.SimpleNamespace(
+        game_carry=lambda item, origin: ("b" * 40, "only the shared DLL moved"),
+        proofs_at=lambda item, sha, ext: "A2 L1: the new clause\n",
+        game_ledger=lambda item: {"criteria": {"A1": {"level": "L2", "text": "the owed clause"},
+                                               "A2": {"level": "L1", "text": "the new clause"}}},
+        game_implement=lambda item, sha, text, live, **k: seen.append(text) or "stop here")
+    store = _Store({"status": G.GAME, "game": {"sha": "a" * 40}, "contract": {}})
+    G._carry(store, fx, "X", "a" * 40, 0, [])
+    check("R2 carry: the carried manifest keeps the owed A1", seen and "A1 L2: the owed clause" in seen[0]
+          and seen[0].count("A2") == 1, seen)
+
+
+def t_r2_dropped_item_waits_for_its_live_proof():
+    st = {"item": "X", "status": G.GAME, "gen": 1, "candidate": "a" * 40,
+          "game": {"sha": "a" * 40, "phase": "proving", "prove_pid": 4242}}
+    for alive, want in ((True, "retire_waits_proof"), (False, "retire")):
+        store, acts = _Store(dict(st)), []
+        fx = types.SimpleNamespace(game_ledger=lambda item: {"state": "dropped"}, prove_alive=lambda pid: alive)
+        G.step(store, fx, {}, "X", 0, acts, None)
+        check("R2 retire: proof alive=%s -> %s" % (alive, want), [a["do"] for a in acts] == [want]
+              and (store.st["status"] == G.GAME) == alive, (acts, store.st["status"]))
+
+
+def t_r2_verdict_before_bridge_loss_is_never_rerun():
+    p = "python3 proofs/x.py"
+    check("R2 rerun: FAIL then bridge unreachable -> no rerun",
+          L.wsl_rerun(p, "$ python3 proofs/x.py\nA1 FAIL MOD\nUNMEASURED: bridge unreachable\n") is None)
+    check("R2 rerun sanity: a bare WSL refusal still reruns under python.exe",
+          L.wsl_rerun(p, "$ python3 proofs/x.py\nTraceback\ncannot reach the bridge from WSL\n") == "python.exe proofs/x.py")
+
+
+def t_r2_cameraplus_by_dependency_drops_the_zoom():
+    names = ("tier_def", "close_over", "order", "tier_guard")
+    keep = {n: getattr(M, n) for n in names}
+    try:
+        M.tier_def = lambda n, i: {"want": ["x.needscam"], "dlc": False}
+        M.close_over = lambda w, i: (list(w) + (["brrainz.cameraplus"] if "x.needscam" in w else []), [])
+        M.order = lambda p, i: p
+        M.tier_guard = lambda t, o: []
+        got = M.resolve_tier("mods__x", {M.ZOOM: {}})[0]
+        check("R2 M5: Camera+ by dependency -> no %s" % M.ZOOM, M.ZOOM not in got and "brrainz.cameraplus" in got, got)
+    finally:
+        for n, f in keep.items():
+            setattr(M, n, f)
+
+
+def t_r3_failed_replace_restamps_the_live_list():
+    d = tempfile.mkdtemp(prefix="modset_r3_")
+    keep, keep_rep = M.CONFIG, M.os.replace
+    M.CONFIG = os.path.join(d, "ModsConfig.xml")
+    open(M.CONFIG, "w").write('<?xml version="1.0" encoding="utf-8"?><ModsConfigData><version>1.6</version>'
+                              '<activeMods><li>tier.a</li></activeMods></ModsConfigData>')
+    seen = []
+
+    def boom(a, b):
+        raise OSError("replace failed")
+    try:
+        M.os.replace = boom
+        try:
+            M.write_config(["ludeon.rimworld", M.ZOOM], M.CONFIG, before_replace=seen.append)
+        except OSError:
+            pass
+        check("R3 M4: a failed replace re-stamps the still-live list", len(seen) == 2 and seen[-1] == M._md5(M.CONFIG)
+              and seen[0] != seen[-1] and not os.path.exists(M.CONFIG + ".modset-tmp"), seen)
+    finally:
+        M.os.replace, M.CONFIG = keep_rep, keep
+
+
+def t_r3_game_change_voids_any_exit():
+    class Restarts(B.FakeFx):
+        def run_proof(self, proof, log, timeout):
+            self.calls.append(("proof", proof))
+            self.started = 9999.0       # the game restarted under the proof
+            return self.proof
+    viol = types.SimpleNamespace(status="VIOLATED", stage=None, why="A2 violated", summary=lambda: {"status": "VIOLATED"})
+    keep = L.live_observe.read_log
+    try:
+        L.live_observe.read_log = lambda *a, **k: viol
+        for restart, want_fail in ((True, False), (False, True)):
+            fx = Restarts(proof=2) if restart else B.FakeFx(proof=2)
+            row = B.go(fx)
+            check("R3 live: exit 2 + violation, game restarted=%s -> FAIL=%s" % (restart, want_fail),
+                  (row["outcome"] == "FAIL") == want_fail, row)
+    finally:
+        L.live_observe.read_log = keep
+
+
 def t_g2_g3_keeps_still_green():
     p = subprocess.run([sys.executable, os.path.join(HERE, "selftest_relentless_codex_keeps.py")],
                        capture_output=True, text=True, timeout=300)
@@ -258,6 +367,9 @@ def main():
               t_l5_launch_that_raised_is_infra, t_l6_violation_is_never_rerun, t_l7_timeout_on_two_games_is_a_defect,
               t_m1_failed_tasklist_reads_live, t_m2_one_writer_at_a_time, t_m3_restore_copies_atomically,
               t_m4_tier_md5_is_stamped_before_the_replace, t_m5_cameraplus_tier_never_gets_the_rival_zoom,
+              t_r2_carry_keeps_ledger_criteria, t_r2_dropped_item_waits_for_its_live_proof,
+              t_r2_verdict_before_bridge_loss_is_never_rerun, t_r2_cameraplus_by_dependency_drops_the_zoom,
+              t_r3_failed_replace_restamps_the_live_list, t_r3_game_change_voids_any_exit,
               t_g2_g3_keeps_still_green):
         try:
             t()

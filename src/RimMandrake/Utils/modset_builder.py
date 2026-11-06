@@ -969,10 +969,11 @@ def resolve_tier(name, installed):
     else:
         want += [CORE]
     want += [HARMONY]
-    # a tier that wants Camera+ never gets the rival zoom mod, whether or not it says no_zoom (Codex cd905b re-review)
-    if not t.get("no_zoom") and ZOOM in installed and "brrainz.cameraplus" not in {w.lower() for w in want}:
-        want.append(ZOOM)
+    # a tier that wants Camera+, or pulls it in as a dependency, never gets the rival zoom mod, whether or not it says
+    # no_zoom (Codex cd905b re-review): the zoom mod is added only after the closure is known to hold no Camera+
     pids, missing = close_over(want, installed)
+    if not t.get("no_zoom") and ZOOM in installed and "brrainz.cameraplus" not in {p.lower() for p in pids}:
+        pids, missing = close_over(want + [ZOOM], installed)
     ordered = order(pids, installed)
     return ordered, missing, tier_guard(t, ordered)
 
@@ -1246,7 +1247,16 @@ def write_config(pids, version_from, before_replace=None):
         fh.write(data)
     if before_replace is not None:
         before_replace(hashlib.md5(data).hexdigest())
-    os.replace(tmp, CONFIG)
+    try:
+        os.replace(tmp, CONFIG)
+    except BaseException:
+        # the stamp went first; a replace that failed leaves the old list live, so the stamp goes back to it, or a
+        # later restore would read the swap's own list as "moved on" (Codex cd905b round 3)
+        if before_replace is not None and os.path.exists(CONFIG):
+            before_replace(_md5(CONFIG))
+        if os.path.exists(tmp):
+            os.remove(tmp)
+        raise
 
 
 def bridge_ok(override):

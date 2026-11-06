@@ -1880,7 +1880,10 @@ def _carry(store, fx, item, sha, now, acts):
     new, why = got
     if new.startswith(sha) or sha.startswith(new):
         return None
-    if fx.game_implement(item, new, fx.proofs_at(item, new, ".criteria"), (store.load(item).get("contract") or {}).get("live"),
+    led = fx.game_ledger(item) if hasattr(fx, "game_ledger") else None
+    # the carried manifest keeps every ledger criterion the file does not name, as _rerecord does (Codex cd905b round 2)
+    if fx.game_implement(item, new, with_kept(fx.proofs_at(item, new, ".criteria"), (led or {}).get("criteria") or {}),
+                         (store.load(item).get("contract") or {}).get("live"),
                          why="relentless: carried from %s, %s" % (origin[:12], why)[:300]) is not None:
         return None
 
@@ -2046,6 +2049,11 @@ def step(store, fx, r, item, now, acts, sup):
     sha = g["sha"]
     led = fx.game_ledger(item)
     if led is None or led["state"] in ("dropped", "superseded"):
+        if g["phase"] == "proving" and not g.get("broker") and g.get("prove_pid") and fx.prove_alive(g["prove_pid"]):
+            # its detached proof still drives the game: retiring now would end the item's claim on the live user and
+            # let another stage and restart under it (Codex cd905b round 2). It retires once the proof has exited.
+            acts.append({"do": "retire_waits_proof", "item": item, "pid": g["prove_pid"]})
+            return
         with store.lock():
             cur = store.load(item)
             cur["gen"] += 1

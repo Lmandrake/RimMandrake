@@ -738,9 +738,19 @@ def violated(log, criterion):
 
 def wsl_rerun(proof, log_text):
     """-> the proof under python.exe when it is a plain `python3 <script>` that died on the WSL bridge refusal, else None."""
-    if proof.startswith("python3 ") and any(s in (log_text or "") for s in WSL_BRIDGE):
-        return "python.exe " + proof[len("python3 "):]
-    return None
+    if not proof.startswith("python3 "):
+        return None
+    lines = (log_text or "").splitlines()
+    hit = next((i for i, x in enumerate(lines) if any(s in x for s in WSL_BRIDGE)), None)
+    if hit is None:
+        return None
+    # a verdict printed before the bridge was lost is the run's evidence: never replaced by a rerun (Codex cd905b round 2)
+    if any(VERDICT_WORD.search(x) for x in lines[:hit] if not x.startswith("$ ")):
+        return None
+    return "python.exe " + proof[len("python3 "):]
+
+
+VERDICT_WORD = re.compile(r"\b(PASS|FAIL)\b")
 
 
 # GAMEENV_FIX_HARNESS_678B1B18_ITEMS_WAIT: WSL interop timed out launching the Windows process (HOSE_END A1 site,
@@ -1977,7 +1987,9 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                     finally:
                         marks["proof_s"] += time.time() - t_again
                     row["proof_exit"] = code
-                if code in (PASS, FAIL) and (started != fx.game_started()
+                # every exit is checked, not only PASS/FAIL: a later RMOBS violation turns any exit into a FAIL, so a
+                # proof whose game restarted under it must not reach that reading (Codex cd905b round 3)
+                if (started != fx.game_started()
                                              or (files and stamps != [fx.mtime(m, rel) for m, rel in files])):
                     crashed, code = "the game or its deployed files changed while the proof ran", None
         except Exception as e:                          # the proof never ran to an exit code: no verdict, but the row stands
