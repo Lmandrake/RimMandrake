@@ -151,10 +151,59 @@
     "ref": "run rm-role-designer-1793955500",
     "stage": 3,
     "tokens": 290952
+   },
+   {
+    "at": "2026-11-06T09:05:03Z",
+    "kind": "helper",
+    "ref": "rm-judge a458cbef6aa7a4875 exam examiner (run rm-role-designer-1793955657)",
+    "stage": 4,
+    "tokens": 32336
+   },
+   {
+    "at": "2026-11-06T09:05:03Z",
+    "kind": "helper",
+    "ref": "rm-judge a7a98e1384d90d736 exam challenger (run rm-role-designer-1793955657)",
+    "stage": 4,
+    "tokens": 31292
+   },
+   {
+    "at": "2026-11-06T09:05:03Z",
+    "kind": "helper",
+    "ref": "rm-judge a9c647383a06be32f exam reader1 (run rm-role-designer-1793955657)",
+    "stage": 4,
+    "tokens": 34232
+   },
+   {
+    "at": "2026-11-06T09:05:03Z",
+    "kind": "helper",
+    "ref": "rm-judge a73f8e4814d6eb407 exam reader2 (run rm-role-designer-1793955657)",
+    "stage": 4,
+    "tokens": 44474
+   },
+   {
+    "at": "2026-11-06T09:05:04Z",
+    "kind": "helper",
+    "ref": "rm-judge a47295f08c3f90466 exam control-statics-only (run rm-role-designer-1793955657)",
+    "stage": 4,
+    "tokens": 35586
+   },
+   {
+    "at": "2026-11-06T09:05:04Z",
+    "kind": "helper",
+    "ref": "rm-judge a9c71264c0f996120 exam control (run rm-role-designer-1793955657)",
+    "stage": 4,
+    "tokens": 44554
+   },
+   {
+    "at": "2026-11-06T09:05:45Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793955657",
+    "stage": 4,
+    "tokens": 485169
    }
   ],
   "reserve": 60000,
-  "spent": 6181650
+  "spent": 6889293
  },
  "history": [
   {
@@ -384,6 +433,24 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1793955500: stage 3 done"
+  },
+  {
+   "at": "2026-11-06T09:01:27Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "6181650 of 4000000 spent; run rm-role-designer-1793955657 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T09:01:27Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1793955657, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-06T09:05:46Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1793955657: stage 4 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -733,11 +800,34 @@
    "run": "rm-role-designer-1793955500",
    "stage": 3,
    "summary": "Rewrote leaf cut_live_and_dead_ends to match the root: an end sparks exactly when it still reaches a power source (both spark if each side has its own); red is now an unpowered end sparking, a powered end drawn dead, or a cord across the gap; nearer-generator false_pass kept, plus a single-source-only false_pass. Sheet line states the reject plainly. sc_cut_ends gains a far-side battery run. plan.md records that the next exam's control removes statics_clear_between_games or cut_live_and_dead_ends, not drawing_true_to_grid. Lint, showcases pass."
+  },
+  {
+   "at": "2026-11-06T09:05:46Z",
+   "inputs": {
+    "exam": "3f65dad9cfb1f9f0a029aebf9913f3e689e56c82cfa6822dbed8a96745439ba7",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "6a7bbc0942d82fcd0533cd14fa3b5fa76c4d293c732b737f00bd5345eeef88dd",
+    "sheet": "61d7152331b1d4c80ff698b03d2acea82b00d305bc028759d96ff4fd4f786051",
+    "tree": "a1e533020bd1b5d950d0740ca061a80179f7c8b96f3f0de54cba7c54d6c8048b"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_exam.md": "3e3f16a15ed2c45e2851911d42c9369cdc7560758fe1f386dc38012b93534217"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1793955657",
+   "stage": 4,
+   "summary": "The Cold Reader exam on the rewritten tree passes. The 26 frozen scenarios (16 Examiner, 10 Challenger) were all right for both Readers, and there were 0 accepts where a core line rejects. The rewritten cut_live_and_dead_ends now holds both the far-side-battery case and the no-source case. The control (statics_clear_between_games removed, with its delegated clause) missed e7, e8 and c6."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
