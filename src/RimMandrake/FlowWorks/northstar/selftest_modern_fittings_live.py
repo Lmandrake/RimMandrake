@@ -184,6 +184,12 @@ check("overlay About: packageId %s, loadAfter FlowWorks" % M.OVERLAY, "<packageI
 proofs = os.path.join(M.REPO, "infrastructure", "state", "live_proofs", M.ITEM + ".txt")
 lm = [l for l in open(proofs, encoding="utf-8").read().splitlines() if l.startswith("live-mods:")]
 check("live_proofs live-mods loads the overlay", bool(lm) and "ModernFittingsCandidates" in lm[0], lm)
+# GAMEENV_FIX_PROOFSITE_87D091F9_ITEMS_WAIT: the proof met the main menu; its site line stages a quicktest map first
+SITE = "live-site A1: python.exe src/RimMandrake/Utils/live_site.py --game"
+check("live_proofs holds the --game site line", SITE in open(proofs, encoding="utf-8").read().splitlines())
+sys.path.insert(0, os.path.join(M.REPO, "src", "RimMandrake", "rimflow"))
+import relentless_live  # noqa: E402
+check("the lane accepts that site command", relentless_live.refused_site(SITE.split(": ", 1)[1]) is None)
 
 defs = ""
 for root, _, files in os.walk(os.path.join(FW, "Defs")):

@@ -5,4 +5,7 @@
 # (ProofLinkPoles), and photographs scene/heads/span. Exit 0 only when every row PASSES. Captures + captures.json:
 # D:\ClaudeWork\rimmandrake\live\MODERN_FITTINGS_PROBE_FAUCET_NEVER_SEEN\ (the art pipeline judges them afterwards).
 live-mods: FlowWorks, GimmeSomeSlack, ModernFittingsCandidates
+# GAMEENV_FIX_PROOFSITE_87D091F9_ITEMS_WAIT: the 2026-11-06 run met the game at the main menu (no map, exit 2); the site
+# step stages a quicktest map when none is up and leaves one already up alone.
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --game
 live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/modern_fittings_live.py < /dev/null
