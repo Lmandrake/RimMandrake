@@ -938,3 +938,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T07:21:10Z","tsn":1793949670972748435}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","ts":"2026-11-06T08:19:42Z","tsn":1793953182082454234}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T08:19:51Z","tsn":1793953191943033645}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging RINDCOAT_TUNE_NEAR_IMMUNE_AFTER_ALL: deploy and restart for its live proofs","ts":"2026-11-06T08:26:16Z","tsn":1793953576669866487}
