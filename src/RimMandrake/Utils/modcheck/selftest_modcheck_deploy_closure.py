@@ -123,6 +123,11 @@ def main():
     pre = uncovered("TerminalBiomes", ["--compose", "biomes"], have)       # the route before the fix
     ok("mandrake.rm.luminouspigment" in pre,
        "guard fails the pre-fix route on the instance (--compose biomes alone leaves luminouspigment out)", pre)
+    # a closure member's own hard dependency rides too (2026-11-06: Pyrelands deployed UtinniPatches without the
+    # WeatherSuite it hard-depends on; RUT_Umbra's PerpetualAuroraExtension went missing and braked the Steve lane)
+    cl = runner.deploy_closure("Pyrelands")
+    ok("UtinniPatches" in cl and "WeatherSuite" in cl and cl.index("WeatherSuite") < cl.index("UtinniPatches"),
+       "Pyrelands' closure carries UtinniPatches' hard dependency WeatherSuite, before it", cl)
     pre = uncovered("HostileFlora", ["--compose", "biomes"], have)
     ok("HostileFlora" in pre, "guard sees a deploy that drops the mod under test itself", pre)
 

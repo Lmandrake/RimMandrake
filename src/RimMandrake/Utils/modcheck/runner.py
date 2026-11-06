@@ -507,6 +507,33 @@ def composed_ids(mod_folder):
     if own not in out:
         out.append(own)
     out.extend(t for t in closure_ids(mod_folder, folded) if t not in out)
+    return with_own_dependencies(out)
+
+
+def with_own_dependencies(ids):
+    """`ids` with the hard dependencies of every mod of OURS in it inserted before it, transitively. A tier closure
+    member brings its own dependencies: 2026-11-06 a Pyrelands job's closure deployed UtinniPatches without the
+    mandrake.rm.weathersuite it hard-depends on, RUT_Umbra's PerpetualAuroraExtension went missing, the launch gate
+    refused every later job on the kept game and braked the Steve lane (STEVE_LANE_UNSTICK_BRAKED_UNOWNED_D283)."""
+    have = src_mods_by_id()
+    out = []
+
+    def add(pid, seen):
+        if pid in out or pid in seen:
+            return
+        name = have.get(pid)
+        if name:
+            try:
+                deps = mod_dependency_ids(find_mod_dir(name))
+            except (RuntimeError, OSError):   # the compose target has no src folder of its name
+                deps = []
+            for d in deps:
+                add(d, seen | {pid})
+        if pid not in out:
+            out.append(pid)
+
+    for pid in ids:
+        add(pid, set())
     return out
 
 
@@ -1339,6 +1366,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                     package_ids.append(own)
                 # the composed mod's tier closure (patches, bestiary ...), or an ordinary mod's opted-in tier
                 package_ids.extend(t for t in closure_ids(mod_folder, folded) if t not in package_ids)
+            package_ids[:] = with_own_dependencies(package_ids)
             if not keep:
                 compose_test_list(package_ids)
         for mod_folder, item_id in mods:
