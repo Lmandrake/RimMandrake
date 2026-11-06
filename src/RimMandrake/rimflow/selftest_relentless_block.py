@@ -419,12 +419,17 @@ def t_unfiled_wait_refused_at_write():
     kind, ons, why = relentless_block.resolve({"kind": "item", "on": ["NEVER_FILED_FIX_Y", "OPEN_PRED_BUILD_X"],
                                                "class": "blocked_by_predecessor", "detail": "d"},
                                               "ITEM_A_B", known.get)
-    ok(kind == "item" and ons == ["OPEN_PRED_BUILD_X"] and "never filed, not waited on: NEVER_FILED_FIX_Y" in why,
-       "an unfiled --on is dropped, said in the reason: %s %s" % (ons, why[:80]))
+    ok(kind == "external" and ons == [] and "never filed: NEVER_FILED_FIX_Y" in why and "OPEN_PRED_BUILD_X" in why,
+       "RELENTLESS_BLOCK_HARDEN_MIGRATION_GATE: a multi-item wait with an unfiled id never narrows to the filed one "
+       "(its close would resume an item still waiting on the unfiled one): %s %s %s" % (kind, ons, why[:120]))
     kind, ons, why = relentless_block.resolve({"kind": "item", "on": ["NEVER_FILED_FIX_Y"], "class": "blocked_x",
                                                "detail": "nothing named"}, "ITEM_A_B", known.get)
     ok(kind == "external" and ons == [] and "NEVER_FILED_FIX_Y" in why,
        "only an unfiled --on: external, never a wait nothing can close (%s)" % kind)
+    kind, ons, why = relentless_block.resolve({"kind": "judge", "on": ["OPEN_PRED_BUILD_X"], "class": "blocked_x",
+                                               "detail": "d"}, "ITEM_A_B", known.get)
+    ok(kind == "judge" and ons == [] and "OPEN_PRED_BUILD_X" in why,
+       "--blocker judge with --on: no --on reaches `rimflow block --kind judge` (it refuses that pair): %s %s" % (kind, ons))
 
 
 def t_store_ledger_diff_and_three_day_gate():
@@ -446,9 +451,10 @@ def t_store_ledger_diff_and_three_day_gate():
     try:
         log = os.path.join(tmp, "d.jsonl")
 
-        def put(at, n):
+        def put(at, n, **kw):
             with open(log, "a") as f:
-                f.write(json.dumps({"at": at, "count": n}) + "\n")
+                f.write(json.dumps(dict({"at": at, "count": n, "compared": 3, "in_transit": 0, "unreadable": 0},
+                                        **kw)) + "\n")
         ok(not relentless_block.ready_to_delete(log)[0], "no log: not ready")
         put("2026-11-01T03:00:00Z", 0)
         put("2026-11-02T03:00:00Z", 0)
@@ -461,6 +467,57 @@ def t_store_ledger_diff_and_three_day_gate():
         put("2026-11-05T03:00:00Z", 0)
         put("2026-11-06T03:00:00Z", 0)
         ok(relentless_block.ready_to_delete(log)[0], "0 on three distinct days: ready")
+        # RELENTLESS_BLOCK_HARDEN_MIGRATION_GATE: a 0 that saw nothing is not a 0
+        for label, kw in (("an unreadable store row", {"unreadable": 1}),
+                          ("every row in transit, none compared", {"compared": 0, "in_transit": 4}),
+                          ("an older reading with no unreadable count", {"unreadable": None})):
+            os.remove(log)
+            for day in ("2026-11-04", "2026-11-05"):
+                put(day + "T03:00:00Z", 0)
+            put("2026-11-06T03:00:00Z", 0, **kw)
+            if kw.get("unreadable", 0) is None:
+                rows = [json.loads(x) for x in open(log)]
+                rows[-1].pop("unreadable")
+                with open(log, "w") as f:
+                    f.write("".join(json.dumps(r) + "\n" for r in rows))
+            ok(not relentless_block.ready_to_delete(log)[0], "%s on a counted day: not ready" % label)
+        with open(log, "a") as f:
+            f.write("{not json\n")
+        ok(not relentless_block.ready_to_delete(log)[0], "a log line that does not parse: not ready")
+        for line in ("[]", json.dumps({"count": 0, "compared": 3, "unreadable": 0})):
+            os.remove(log)
+            for day in ("2026-11-04", "2026-11-05", "2026-11-06"):
+                put(day + "T03:00:00Z", 0)
+            ok(relentless_block.ready_to_delete(log)[0], "three clean days before the odd line")
+            with open(log, "a") as f:
+                f.write(line + "\n")
+            ok(not relentless_block.ready_to_delete(log)[0], "a line that is not a dated reading (%s): not ready" % line)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def t_diff_cli_counts_unreadable_rows():
+    """RELENTLESS_BLOCK_HARDEN_MIGRATION_GATE: `diff` records an unreadable store row; it never vanishes into a 0."""
+    tmp = tempfile.mkdtemp(prefix="rb_cli_")
+    try:
+        for name, body in (("Q_FREE_A", json.dumps({"item": "Q_FREE_A", "status": "running"})),
+                           ("B_BROKEN_A", "{truncated")):
+            os.makedirs(os.path.join(tmp, "store", "items", name))
+            with open(os.path.join(tmp, "store", "items", name, "state.json"), "w") as f:
+                f.write(body)
+        log = os.path.join(tmp, "d.jsonl")
+        real = relentless_block._live_item_state
+        relentless_block._live_item_state = lambda: (lambda iid: None)
+        try:
+            import io
+            import contextlib
+            with contextlib.redirect_stdout(io.StringIO()):
+                rc = relentless_block.main(["diff", "--root", tmp, "--log", log])
+        finally:
+            relentless_block._live_item_state = real
+        rec = json.loads(open(log).read().splitlines()[-1])
+        ok(rc == 0 and rec["unreadable"] == 1 and rec["rows"] == 2 and rec["count"] == 0
+           and relentless_block.reading_clean(rec), "the broken row is counted and the reading is not clean: %s" % rec)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
@@ -468,7 +525,7 @@ def t_store_ledger_diff_and_three_day_gate():
 def main():
     for t in (t_fields_and_schema, t_holds_and_lifts, t_relentless_eligible, t_cli, t_snag_blocks,
               t_ledger_block_leaves_line, t_returned_run_not_restaffed, t_strikes, t_scope_snag_blocks,
-              t_unfiled_wait_refused_at_write, t_store_ledger_diff_and_three_day_gate):
+              t_unfiled_wait_refused_at_write, t_store_ledger_diff_and_three_day_gate, t_diff_cli_counts_unreadable_rows):
         print("--", t.__name__)
         try:
             t()

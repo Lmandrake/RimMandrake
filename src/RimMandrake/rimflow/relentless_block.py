@@ -23,7 +23,8 @@ The moves, all here so relentless.py carries hooks only:
   - the ledger is the only record of what it waits on: `rimflow show <ID>` prints it.
   - `diff` (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE, step 1 of 2): the store's `blocked` status is a COPY of the ledger block.
     `python3 relentless_block.py diff` appends one reading of where the two disagree; the store field may be deleted
-    only once `ready_to_delete` sees 0 on 3 runs on 3 distinct UTC days. Until then it stays, read-only in spirit.
+    only once `ready_to_delete` sees a measured 0 (rows compared, none unreadable) on 3 distinct UTC days. Until then
+    it stays, read-only in spirit.
 """
 import datetime
 import glob
@@ -71,9 +72,15 @@ def resolve(pending, item, item_state):
     named = [x for x in pending.get("on") or [] if x != item]
     # a wait on an id the ledger has never seen can never be released by a close: refused here, at write
     # (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE; the 285-row incident_refused loop waited on one)
+    # ... and a wait that names one never cannot narrow to the filed rest: the close of `A` would resume an item still
+    # waiting on unfiled `B` (RELENTLESS_BLOCK_HARDEN_MIGRATION_GATE). It goes `external`: a person files B or unblocks.
     unfiled = [x for x in named if item_state(x) is None]
     kind, ons = pending["kind"], [x for x in named if x not in unfiled]
-    if kind == "item" and not ons:
+    if unfiled and kind == "item":
+        kind, ons = "external", []
+    elif kind != "item":
+        ons = []        # `rimflow block --on` is --kind item only: a judge/live/owner wait keeps its ids in the reason
+    elif not ons:
         for x in ID_RX.findall(pending.get("detail") or ""):
             led = item_state(x) if x != item else None
             if led and led.get("state") in LEDGER_OPEN and x not in ons:
@@ -81,10 +88,14 @@ def resolve(pending, item, item_state):
         if not ons:
             kind = "external"
     reason = "relentless snag %s: %s" % (pending.get("class") or "-", pending.get("detail") or "")
-    if pending["kind"] == "item" and kind == "external":
+    if pending["kind"] == "item" and kind == "external" and not unfiled:
         reason = "no open predecessor id found in the snag; name it with `rimflow block --on` or unblock. " + reason
+    if pending["kind"] != "item" and named:
+        reason = "also named: %s. " % ", ".join(named) + reason
     if unfiled:
-        reason = "never filed, not waited on: %s. " % ", ".join(unfiled) + reason
+        filed = [x for x in named if x not in unfiled]
+        reason = "never filed: %s; the wait cannot lift by a close, so a person files it or unblocks%s. " % (
+            ", ".join(unfiled), (" (also named, filed: %s)" % ", ".join(filed)) if filed else "") + reason
     return kind, ons, reason[:600]
 
 
@@ -187,10 +198,11 @@ DIFF_LOG = os.environ.get("RM_STORE_LEDGER_DIFF",
 DIFF_RUNS = 3
 
 
-def diff(states, item_state):
-    """-> {"compared", "in_transit", "disagree": [{item, store, ledger}], "count"}. Compares every queued/blocked store
-    row with the ledger: the store says blocked exactly when the ledger block holds. A block still being written
-    (`block_pending`) is in transit, not a disagreement. Pure."""
+def diff(states, item_state, unreadable=0):
+    """-> {"compared", "in_transit", "unreadable", "disagree": [{item, store, ledger}], "count"}. Compares every
+    queued/blocked store row with the ledger: the store says blocked exactly when the ledger block holds. A block still
+    being written (`block_pending`) is in transit, not a disagreement; `unreadable` store rows are carried so the gate
+    can refuse a reading that could not see them. Pure."""
     out, transit, n = [], 0, 0
     for st in states:
         s = st.get("status")
@@ -206,28 +218,47 @@ def diff(states, item_state):
             out.append({"item": st["item"], "store": s + ("+wait" if st.get("wait") else ""),
                         "ledger": "never filed" if led is None else ("%s, block %s" % (
                             led.get("state"), "holds" if holds else "does not hold"))})
-    return {"compared": n, "in_transit": transit, "disagree": out, "count": len(out)}
+    return {"compared": n, "in_transit": transit, "unreadable": unreadable, "disagree": out, "count": len(out)}
+
+
+def reading_clean(r):
+    """-> None when one diff reading is a measured 0, else why not. A 0 is clean only when it saw something: no
+    unreadable store row (a skipped row may be the disagreeing one), and at least one row compared (every row in
+    transit measures no agreement at all). A reading without the `unreadable` field predates that count: unmeasured."""
+    if r.get("count") != 0:
+        return "count %s" % r.get("count")
+    if r.get("unreadable") is None:
+        return "no unreadable-row count (older reading)"
+    if r.get("unreadable"):
+        return "%s unreadable store row(s)" % r["unreadable"]
+    if not r.get("compared"):
+        return "0 compared (%s in transit)" % r.get("in_transit", 0)
+    return None
 
 
 def ready_to_delete(path=None, runs=DIFF_RUNS):
-    """-> (bool, why). True only when the last `runs` UTC days that have readings exist and every reading on them is 0
-    (one clean reading a day is not enough if a later one that day was not)."""
+    """-> (bool, why). True only when the last `runs` UTC days that have readings exist and every reading on them is a
+    measured 0 (`reading_clean`; one clean reading a day is not enough if a later one that day was not). A line that
+    does not parse is not skipped: it makes the log unreadable."""
     rows = []
     try:
         with open(path or DIFF_LOG, encoding="utf-8") as f:
             rows = [json.loads(ln) for ln in f if ln.strip()]
     except (OSError, ValueError) as e:
         return False, "no readable diff log: %s" % e
+    odd = [r for r in rows if not isinstance(r, dict) or len(str(r.get("at") or "")) < 10]
+    if odd:
+        return False, "%d diff log line(s) are not a dated reading: %s" % (len(odd), str(odd[0])[:80])
     by_day = {}
     for r in rows:
         by_day.setdefault((r.get("at") or "")[:10], []).append(r)
     days = sorted(d for d in by_day if d)[-runs:]
     if len(days) < runs:
         return False, "%d day(s) of readings, %d needed" % (len(days), runs)
-    bad = [(d, r["count"]) for d in days for r in by_day[d] if r.get("count") != 0]
+    bad = [(r.get("at"), why) for d in days for r in by_day[d] for why in [reading_clean(r)] if why]
     if bad:
-        return False, "non-zero readings in the last %d days: %s" % (runs, bad[:5])
-    return True, "0 on every reading of %s" % ", ".join(days)
+        return False, "readings in the last %d days that are not a measured 0: %s" % (runs, bad[:5])
+    return True, "a measured 0 on every reading of %s" % ", ".join(days)
 
 
 def _live_item_state():
@@ -259,22 +290,28 @@ def main(argv):
         okay, why = ready_to_delete(a.log)
         print(("READY: " if okay else "NOT READY: ") + why)
         return 0 if okay else 1
-    states = []
+    states, bad = [], []
     for p in sorted(glob.glob(os.path.join(a.root, "store", "items", "*", "state.json"))):
         try:
             with open(p, encoding="utf-8") as f:
-                states.append(json.load(f))
-        except (OSError, ValueError):
-            continue
-    if not states:
+                row = json.load(f)
+            if not isinstance(row, dict) or "item" not in row:
+                raise ValueError("not a store row")
+            states.append(row)
+        except (OSError, ValueError) as e:
+            bad.append((p, str(e)[:120]))
+    if not states and not bad:
         print("UNMEASURED: no store rows under %s" % a.root)
         return 2
-    rec = dict(diff(states, _live_item_state()), at=datetime.datetime.now(datetime.timezone.utc).strftime(
-        "%Y-%m-%dT%H:%M:%SZ"), rows=len(states), root=a.root)
+    rec = dict(diff(states, _live_item_state(), unreadable=len(bad)),
+               at=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+               rows=len(states) + len(bad), root=a.root, unreadable_rows=[p for p, _ in bad[:20]])
     with open(a.log, "a", encoding="utf-8") as f:
         f.write(json.dumps(rec, sort_keys=True) + "\n")
-    print("store/ledger diff: %d of %d compared (%d in transit, %d store rows) -> %s"
-          % (rec["count"], rec["compared"], rec["in_transit"], rec["rows"], a.log))
+    print("store/ledger diff: %d of %d compared (%d in transit, %d unreadable, %d store rows) -> %s"
+          % (rec["count"], rec["compared"], rec["in_transit"], rec["unreadable"], rec["rows"], a.log))
+    for p, why in bad[:20]:
+        print("  UNREADABLE %s: %s" % (p, why))
     for x in rec["disagree"][:20]:
         print("  %s  store=%s  ledger=%s" % (x["item"], x["store"], x["ledger"]))
     return 0
