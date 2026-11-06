@@ -895,3 +895,16 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T05:39:52Z","tsn":1793943592404081896}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T05:43:03Z","tsn":1793943783572964145}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T05:43:15Z","tsn":1793943795304794827}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A1 (L2), read-only proof","ts":"2026-11-06T05:46:27Z","tsn":1793943987661070340}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T05:46:55Z","tsn":1793944015916326525}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A2 (L2), read-only proof","ts":"2026-11-06T05:47:13Z","tsn":1793944033797409694}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T05:47:41Z","tsn":1793944061737826187}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A3 (L2), read-only proof","ts":"2026-11-06T05:48:00Z","tsn":1793944080182399359}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T05:48:27Z","tsn":1793944107494475570}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A4 (L2), read-only proof","ts":"2026-11-06T05:48:45Z","tsn":1793944125553953012}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T05:49:12Z","tsn":1793944152971730888}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A5 (L2), read-only proof","ts":"2026-11-06T05:49:31Z","tsn":1793944171814913785}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T05:50:09Z","tsn":1793944209830347405}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A6 (L2), read-only proof","ts":"2026-11-06T05:50:27Z","tsn":1793944227225944594}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T05:50:54Z","tsn":1793944254701573081}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS A1 (L2), read-only proof","ts":"2026-11-06T05:53:43Z","tsn":1793944423262854210}
