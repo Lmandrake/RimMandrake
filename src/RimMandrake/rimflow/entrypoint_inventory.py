@@ -43,6 +43,8 @@ RETIRED_BATCHES = ({  # RIMFLOW_RETIRE_DEAD_MODULES
     "v3_ready": "GO/NO-GO table for the 2026-10-28 trial night; it read the disabled Dispatcher",
     "selftest_v3_ready": "tested the table",
     "audit_prescreen_compare": "one-shot before/after of one fix against a pinned sha; its reading is from 2026-11-01",
+}, {  # RIMFLOW_AUDIT_SIX_ZERO_ENTRY_MODULES_LEFT
+    "retro_block_frontier": "read-only retro for RIM-1 on 2026-10-25; its reading stays in design/2026-10-25-rimflow-block-release.md",
 },)
 RETIRED = {name: why for batch in RETIRED_BATCHES for name, why in batch.items()}
 # Named dead by redesign.md, and not: retiring these takes a decision, not a delete.
@@ -53,6 +55,7 @@ KEPT = {
     "audit_hardflag_file": "the Auditor's pre_launch runs it after audit_prescreen; goes with that role, not alone: only switched off",
     "evidence_metrics": "the owner's record of how Relentless does (2026-11-03); by hand, no caller yet: EVIDENCE_METRICS_WIRE_ONE_ROW_EVER",
     "fixture_guard_gate": "by-hand release fixture for cli._guard_refusals, named by evidence_gate_enforce_before_deletes_2026-11-06.md",
+    "replay_unreached_closes": "open CHECKER_WEAK_FIX_UNREACHED_READ_AS_PASS's contract proof runs its --selftest; judge again when that closes",
     "relentless_tickp95": "by-hand tick report and check; RELENTLESS_REMEASURE_TICK_P95_DETACH_NEXT and its detach items are open",
 }
 # (module, kind, a substring of the file): an instrument that cannot see these cannot be believed about a retired module.

@@ -3,8 +3,8 @@
 Ticket: `tickets/RIM-1.md`. Approved direction: proposal C2 in
 `design/2026-10-24-beads-and-rimflow.md` (sections 4 and 5). Every number here was measured on
 2026-10-25 against the ledger as of commit `623a146740` (25,875 events, 4,302 items), replayed
-read-only through `model.read()` + `model.replay()`. The script is
-`src/RimMandrake/rimflow/retro_block_frontier.py`. It never calls `append`, `check` or the CLI.
+read-only through `model.read()` + `model.replay()`. The script was
+`src/RimMandrake/rimflow/retro_block_frontier.py` (retired 2026-11-06: `git log -- <that path>`). It never called `append`, `check` or the CLI.
 
 ## 1. What the code does today (kept)
 
@@ -78,7 +78,7 @@ already run.
 
 ## 4. The retro experiment (read-only)
 
-`python3 src/RimMandrake/rimflow/retro_block_frontier.py --json <out>`, on `623a146740`. It runs
+`python3 src/RimMandrake/rimflow/retro_block_frontier.py --json <out>`, on `623a146740` (since retired). It ran
 the REAL rule (`priority.frontier_entry`) after every replay step and records each entry and
 exit from the frontier with its kind; counts are intervals / distinct items. (Revised
 2026-10-25 after GPT's review: the first version re-derived the rule by hand, hard-coded the
