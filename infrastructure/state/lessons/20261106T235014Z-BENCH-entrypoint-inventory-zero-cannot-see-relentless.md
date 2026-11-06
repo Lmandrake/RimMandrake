@@ -1,0 +1,1 @@
+entrypoint_inventory zero cannot see a Relentless contract: before retiring a module it lists, grep /home/mandrake/rm/relentless/store/items/*/state.json and read the naming item's state. replay_unreached_closes had no entry point, yet open CHECKER_WEAK_FIX_UNREACHED_READ_AS_PASS's contract proof runs it.
