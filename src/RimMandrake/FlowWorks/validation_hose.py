@@ -728,7 +728,19 @@ def _carry_view(h):
     t = h.get("trail") or {}
     return {"carry": h.get("carry"), "carrier": (h.get("carrier") or {}).get("id"), "far": h.get("far"),
             "trailCount": t.get("count"), "trailLast": t.get("last"), "pulled": t.get("pulled"),
-            "pending": h.get("pending"), "pendingAt": h.get("pendingAt"), "wound": h.get("wound"), "state": h.get("state")}
+            "pending": h.get("pending"), "pendingAt": h.get("pendingAt"), "wound": h.get("wound"), "state": h.get("state"),
+            # HOSE_CARRY_DIAGNOSE_LAYOK_HIDES_IN_DETAIL: record the lay and the draw mode, so a failing carry row says which
+            # clause failed (a carried hose reads layOk false by design: PickUp nulls the lay; it draws in mode "carry").
+            "layOk": h.get("layOk"), "drawMode": (h.get("draw") or {}).get("mode")}
+
+
+def cr2_ok(a, b):
+    """CR2 verdict: the carried trail grew, its last cell is at the carrier, and the hose is drawn live along the trail.
+    layOk is NOT a clause: a carried hose has no lay (HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK)."""
+    ta, tb = (a.get("trail") or {}), (b.get("trail") or {})
+    ppos = (b.get("carrier") or {}).get("pos")
+    return bool((tb.get("count") or 0) > (ta.get("count") or 0) and _near(tb.get("last"), ppos)
+                and (b.get("draw") or {}).get("mode") == "carry")
 
 
 def _poll(B, pred, max_ticks, step=30):
@@ -837,14 +849,12 @@ def run_carry(args):
     # ---------------------------------------------------------------- CR2: the trail grows behind him
     a = h
     b, _ = _walk_a_little(B, CREEL)
-    ta, tb = (a.get("trail") or {}), (b.get("trail") or {})
     ppos = (b.get("carrier") or {}).get("pos")
     # HOSE_PROOFS_FIX_STALE_LAYOK_AFTER_PEEK: a CARRIED hose has no lay since fa833277f8 (PickUp nulls it, the census never lays,
     # the tick re-lays laid reels only); it is drawn live along the trail (DrawCarrying, draw mode "carry"). layOk read false
-    # here by design, so the row asks for the carry draw instead.
-    carry_drawn = (b.get("draw") or {}).get("mode") == "carry"
-    V.row(rows, "CR2_trail_follows_walk", "PASS" if (tb.get("count") or 0) > (ta.get("count") or 0) and _near(tb.get("last"), ppos)
-          and carry_drawn else "FAIL", "MOD", {"before": _carry_view(a), "after": _carry_view(b), "pawnPos": ppos, "drawMode": (b.get("draw") or {}).get("mode")})
+    # here by design, so the row asks for the carry draw instead (cr2_ok); the detail still records layOk.
+    V.row(rows, "CR2_trail_follows_walk", "PASS" if cr2_ok(a, b) else "FAIL", "MOD",
+          {"before": _carry_view(a), "after": _carry_view(b), "pawnPos": ppos, "drawMode": (b.get("draw") or {}).get("mode")})
 
     # ---------------------------------------------------------------- CR3: draft him mid-walk -> dropped at his cell, order kept
     dr = B.hp("pawn:%d=draft" % pid)
