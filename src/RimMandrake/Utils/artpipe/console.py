@@ -579,7 +579,7 @@ class Console:
                 else:
                     reason = None
                     if self._codex_channel_disabled:
-                        reason = "codex channel disabled this run"
+                        reason = "codex channel disabled at stop (sandbox re-preflight had not passed)"
                     elif quota is not None and quota.admission_blocked:
                         reason = _blocked_reason(quota)
                     paren = f"work remains — {reason or 'queue not exhausted'}"

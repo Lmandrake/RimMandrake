@@ -3388,7 +3388,7 @@ def main(argv=None) -> int:
     if codex_sandbox_ok:
         console_obj.info(f"codex sandbox ok — {codex_sandbox_msg}")
     else:
-        console_obj.warn(f"codex channel disabled for this run — {codex_sandbox_msg}")
+        console_obj.warn(f"codex channel disabled until a sandbox re-preflight passes — {codex_sandbox_msg}")
         console_obj.mark_codex_channel_disabled()
 
     # ARTPIPE_WORKER_AUTH_STALENESS_1: resync every already-provisioned
@@ -3591,7 +3591,10 @@ def main(argv=None) -> int:
                         result = fut.result()
                         if result.get("worker_status") == SANDBOX_NOT_READY:
                             # Retryable: codex never ran, nothing billed. Back to pending/ and the codex
-                            # channel latches off for the rest of this run (no claim/refuse loop).
+                            # channel goes off until the housekeeping re-preflight (every PREFLIGHT_RECHECK_S
+                            # while codex jobs wait) passes: a one-off net.exe read blip re-enables it, a real
+                            # mismatch keeps failing the preflight and stays off (no claim/refuse loop;
+                            # ARTPIPED_CODEX_LATCH_RETRY_ONE_BLIP_SINKS).
                             dest = args.pending_dir / job_path.name
                             if not dest.exists():
                                 try:
@@ -3603,7 +3606,7 @@ def main(argv=None) -> int:
                             console_obj.job_requeued(job_path.stem)
                             if codex_sandbox_ok:
                                 codex_sandbox_ok = False
-                                console_obj.warn(f"codex channel disabled for this run — {result.get('note')}")
+                                console_obj.warn(f"codex channel disabled until a sandbox re-preflight passes — {result.get('note')}")
                                 console_obj.mark_codex_channel_disabled()
                             continue
                     except Exception as exc:  # never let a worker-thread crash kill the daemon

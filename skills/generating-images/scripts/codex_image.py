@@ -216,6 +216,9 @@ SANDBOX_PWSET_TOLERANCE_S = 15.0
 # Tests (and nothing else) pin the machine reading: an ISO-8601 UTC time, or
 # "none" for "could not read it".
 MACHINE_PWSET_ENV = "CODEX_SANDBOX_MACHINE_PWSET"
+# Tests (and nothing else) swap the net.exe binary for a fake, so a one-off read failure followed by a pass can
+# be staged inside one running daemon (ARTPIPED_CODEX_LATCH_RETRY_ONE_BLIP_SINKS).
+NET_EXE_ENV = "CODEX_SANDBOX_NET_EXE"
 
 
 def sandbox_state_blob(root: Path) -> bytes | None:
@@ -248,7 +251,8 @@ def machine_sandbox_password_set() -> datetime | None:
         if pinned.lower() == "none":
             return None
         return datetime.fromisoformat(pinned.replace("Z", "+00:00")).astimezone(timezone.utc)
-    net = Path("/mnt/c/Windows/System32/net.exe") if in_wsl() else Path("net")
+    net = Path(os.environ.get(NET_EXE_ENV) or
+               ("/mnt/c/Windows/System32/net.exe" if in_wsl() else "net"))
     newest = None
     for user in SANDBOX_USER_NAMES:
         try:
