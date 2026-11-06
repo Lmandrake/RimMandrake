@@ -1,0 +1,5596 @@
+{
+ "_about": "Shared vectors for the bridge condition evaluator (CONDCORE_BUILD_THREE_VALUED_TREES). Run by both src/RimMandrake/Utils/conds.py and JawaBenchCondCore.cs (bridgetools/CondSelfTest); src/RimMandrake/Utils/selftest_conds_vectors.py requires byte-identical outputs and checks each `expect` as a subset of the result. Frame reads carry forward; a key never read is status error. `map` defaults to [250,250], `mapId` to 0.",
+ "vectors": [
+  {
+   "name": "true_at_arm",
+   "tags": [
+    "true_at_arm"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 100
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       2,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1000,
+    "executed": 0,
+    "trueAtArm": true
+   }
+  },
+  {
+   "name": "max_ticks_zero_false_at_arm",
+   "tags": [
+    "max_ticks_0"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 0
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=106,103": [
+       5,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "done",
+    "executed": 0,
+    "hitTick": null,
+    "triggers": [
+     "deadline"
+    ]
+   }
+  },
+  {
+   "name": "max_ticks_zero_true_at_arm",
+   "tags": [
+    "max_ticks_0",
+    "true_at_arm"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 0
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "executed": 0,
+    "trueAtArm": true
+   }
+  },
+  {
+   "name": "hit_exactly_on_deadline",
+   "tags": [
+    "hit_on_deadline"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 3
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001
+    },
+    {
+     "tick": 1002
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1004
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1003,
+    "executed": 3
+   }
+  },
+  {
+   "name": "deadline_no_hit",
+   "tags": [
+    "deadline"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 3
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001
+    },
+    {
+     "tick": 1002
+    },
+    {
+     "tick": 1003
+    },
+    {
+     "tick": 1004,
+     "reads": {
+      "fw.fill cell=106,103": [
+       9,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "done",
+    "executed": 3,
+    "hitTick": null
+   }
+  },
+  {
+   "name": "deadline_tick_evaluated_off_cadence",
+   "tags": [
+    "hit_on_deadline",
+    "every"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 3,
+    "every": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1003,
+    "coverage": {
+     "every": 2,
+     "evals": 3,
+     "resolutionTicks": 2,
+     "gaps": [],
+     "complete": true
+    }
+   }
+  },
+  {
+   "name": "every_skips_off_cadence_true",
+   "tags": [
+    "every"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 10,
+    "every": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1004
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1004
+   }
+  },
+  {
+   "name": "unknown_mid_streak_restarts_stays",
+   "tags": [
+    "unknown_mid_streak",
+    "stays"
+   ],
+   "spec": {
+    "until": {
+     "stays": {
+      "cmp": [
+       {
+        "p": "fw.fill",
+        "cell": [
+         106,
+         103
+        ]
+       },
+       ">=",
+       1
+      ]
+     },
+     "ticks": 3
+    },
+    "max_ticks": 20,
+    "on_unknown": "continue"
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "fw.fill cell=106,103": [
+       "",
+       "gone",
+       "despawned"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1004,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1005,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1006,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1007,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1006,
+    "coverage": {
+     "every": 1,
+     "evals": 7,
+     "resolutionTicks": 1,
+     "gaps": [
+      [
+       1002,
+       1002
+      ]
+     ],
+     "complete": false
+    }
+   }
+  },
+  {
+   "name": "unknown_mid_streak_stops_by_default",
+   "tags": [
+    "unknown_mid_streak",
+    "on_unknown_stop"
+   ],
+   "spec": {
+    "until": {
+     "stays": {
+      "cmp": [
+       {
+        "p": "fw.fill",
+        "cell": [
+         106,
+         103
+        ]
+       },
+       ">=",
+       1
+      ],
+      "id": "fillok"
+     },
+     "ticks": 3
+    },
+    "max_ticks": 20
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "fw.fill cell=106,103": [
+       "",
+       "gone",
+       "despawned"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1004,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1005,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1006,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1007,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "unknown",
+    "executed": 2,
+    "unknown": {
+     "id": "fillok",
+     "status": "gone",
+     "detail": "despawned"
+    },
+    "triggers": [
+     "unknown"
+    ]
+   }
+  },
+  {
+   "name": "unknown_at_arm_stops",
+   "tags": [
+    "on_unknown_stop"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 5
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       null,
+       "unbound",
+       "FlowWorks not loaded"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=106,103": [
+       3,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "unknown",
+    "executed": 0,
+    "unknown": {
+     "id": "n0",
+     "status": "unbound",
+     "detail": "FlowWorks not loaded"
+    }
+   }
+  },
+  {
+   "name": "unknown_gap_before_edge",
+   "tags": [
+    "unknown_gap_before_edge",
+    "edge"
+   ],
+   "spec": {
+    "until": {
+     "edge": {
+      "cmp": [
+       {
+        "p": "cell.is_water",
+        "cell": [
+         110,
+         90
+        ]
+       },
+       "==",
+       false
+      ]
+     },
+     "dir": "rise"
+    },
+    "max_ticks": 20,
+    "on_unknown": "continue"
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "cell.is_water cell=110,90": [
+       true,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "cell.is_water cell=110,90": [
+       null,
+       "error",
+       "terrain read threw"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "cell.is_water cell=110,90": [
+       false,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "cell.is_water cell=110,90": [
+       true,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1004,
+     "reads": {
+      "cell.is_water cell=110,90": [
+       false,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1004,
+    "trueAtArm": false
+   }
+  },
+  {
+   "name": "edge_true_at_arm_is_not_an_edge",
+   "tags": [
+    "edge",
+    "true_at_arm"
+   ],
+   "spec": {
+    "until": {
+     "edge": {
+      "cmp": [
+       {
+        "p": "cell.is_water",
+        "cell": [
+         110,
+         90
+        ]
+       },
+       "==",
+       false
+      ]
+     }
+    },
+    "max_ticks": 3
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "cell.is_water cell=110,90": [
+       false,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "cell.is_water cell=110,90": [
+       true,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "cell.is_water cell=110,90": [
+       false,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1003,
+    "trueAtArm": false
+   }
+  },
+  {
+   "name": "edge_fall",
+   "tags": [
+    "edge"
+   ],
+   "spec": {
+    "until": {
+     "edge": {
+      "cmp": [
+       {
+        "p": "fw.fill",
+        "cell": [
+         106,
+         103
+        ]
+       },
+       ">=",
+       1
+      ]
+     },
+     "dir": "fall"
+    },
+    "max_ticks": 5
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=106,103": [
+       2,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1002
+   }
+  },
+  {
+   "name": "stateful_child_under_any_true",
+   "tags": [
+    "stateful_child_under_any_true",
+    "watch"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "game.tick"
+      },
+      ">=",
+      1005
+     ]
+    },
+    "max_ticks": 10,
+    "watch": [
+     {
+      "name": "w",
+      "tree": {
+       "any": [
+        {
+         "cmp": [
+          {
+           "p": "pawn.state",
+           "pawn": "Human123",
+           "f": "drafted"
+          },
+          "==",
+          true
+         ]
+        },
+        {
+         "edge": {
+          "cmp": [
+           {
+            "p": "fw.fill",
+            "cell": [
+             106,
+             103
+            ]
+           },
+           ">=",
+           1
+          ]
+         },
+         "id": "rise"
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "game.tick": [
+       1000,
+       "ok"
+      ],
+      "pawn.state f=drafted pawn=Human123": [
+       true,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "game.tick": [
+       1001,
+       "ok"
+      ],
+      "pawn.state f=drafted pawn=Human123": [
+       true,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "game.tick": [
+       1002,
+       "ok"
+      ],
+      "pawn.state f=drafted pawn=Human123": [
+       true,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "game.tick": [
+       1003,
+       "ok"
+      ],
+      "pawn.state f=drafted pawn=Human123": [
+       false,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1004,
+     "reads": {
+      "game.tick": [
+       1004,
+       "ok"
+      ],
+      "pawn.state f=drafted pawn=Human123": [
+       false,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1005,
+     "reads": {
+      "game.tick": [
+       1005,
+       "ok"
+      ],
+      "pawn.state f=drafted pawn=Human123": [
+       false,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1005,
+    "watchers": [
+     {
+      "name": "w",
+      "events": 3,
+      "unknowns": 0,
+      "disarmed": null
+     }
+    ]
+   }
+  },
+  {
+   "name": "shared_probe_independent_baselines",
+   "tags": [
+    "shared_probe_independent_baselines",
+    "watch",
+    "changed"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "game.tick"
+      },
+      ">=",
+      1004
+     ]
+    },
+    "max_ticks": 10,
+    "watch": [
+     {
+      "name": "ge1",
+      "tree": {
+       "edge": {
+        "cmp": [
+         {
+          "p": "fw.fill",
+          "cell": [
+           106,
+           103
+          ]
+         },
+         ">=",
+         1
+        ]
+       }
+      }
+     },
+     {
+      "name": "ge2",
+      "tree": {
+       "edge": {
+        "cmp": [
+         {
+          "p": "fw.fill",
+          "cell": [
+           106,
+           103
+          ]
+         },
+         ">=",
+         2
+        ]
+       }
+      }
+     },
+     {
+      "name": "moved",
+      "tree": {
+       "changed": {
+        "p": "fw.fill",
+        "cell": [
+         106,
+         103
+        ]
+       }
+      }
+     }
+    ]
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "game.tick": [
+       1000,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "game.tick": [
+       1001,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "game.tick": [
+       1002,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "game.tick": [
+       1003,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       2,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1004,
+     "reads": {
+      "game.tick": [
+       1004,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       2,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "watchers": [
+     {
+      "name": "ge1",
+      "events": 1,
+      "unknowns": 0,
+      "disarmed": null
+     },
+     {
+      "name": "ge2",
+      "events": 1,
+      "unknowns": 0,
+      "disarmed": null
+     },
+     {
+      "name": "moved",
+      "events": 2,
+      "unknowns": 0,
+      "disarmed": null
+     }
+    ]
+   }
+  },
+  {
+   "name": "epoch_change_under_stays",
+   "tags": [
+    "epoch_change_under_stays",
+    "stays"
+   ],
+   "spec": {
+    "until": {
+     "stays": {
+      "cmp": [
+       {
+        "p": "fw.fill",
+        "cell": [
+         106,
+         103
+        ]
+       },
+       ">=",
+       1
+      ]
+     },
+     "ticks": 5
+    },
+    "max_ticks": 20
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     },
+     "epoch": 7
+    },
+    {
+     "tick": 1001,
+     "epoch": 7
+    },
+    {
+     "tick": 1002,
+     "epoch": 7
+    },
+    {
+     "tick": 1003,
+     "epoch": 8
+    },
+    {
+     "tick": 1004,
+     "epoch": 8
+    }
+   ],
+   "expect": {
+    "state": "epoch",
+    "executed": 3,
+    "epoch": 7,
+    "triggers": [
+     "epoch"
+    ],
+    "hitTick": null
+   }
+  },
+  {
+   "name": "stays_zero_is_level",
+   "tags": [
+    "stays"
+   ],
+   "spec": {
+    "until": {
+     "stays": {
+      "cmp": [
+       {
+        "p": "fw.fill",
+        "cell": [
+         106,
+         103
+        ]
+       },
+       ">=",
+       1
+      ]
+     },
+     "ticks": 0
+    },
+    "max_ticks": 5
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1001
+   }
+  },
+  {
+   "name": "safety_and_hit_same_tick",
+   "tags": [
+    "arbitration"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 10
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     },
+     "stop": "downed"
+    }
+   ],
+   "expect": {
+    "state": "stopped",
+    "hitTick": 1002,
+    "triggers": [
+     "cond",
+     "downed"
+    ]
+   }
+  },
+  {
+   "name": "safety_stop_without_hit",
+   "tags": [
+    "arbitration"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 10
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "stop": "raid"
+    }
+   ],
+   "expect": {
+    "state": "stopped",
+    "hitTick": null,
+    "triggers": [
+     "raid"
+    ],
+    "executed": 1
+   }
+  },
+  {
+   "name": "series_end_is_stopped",
+   "tags": [
+    "arbitration"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 10
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001
+    }
+   ],
+   "expect": {
+    "state": "stopped",
+    "triggers": [
+     "series_end"
+    ]
+   }
+  },
+  {
+   "name": "tick_gap_is_error",
+   "tags": [
+    "arbitration"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 10
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002
+    }
+   ],
+   "expect": {
+    "state": "error",
+    "triggers": [
+     "tick_gap"
+    ]
+   }
+  },
+  {
+   "name": "kleene_all_false_beats_unknown",
+   "tags": [
+    "kleene"
+   ],
+   "spec": {
+    "until": {
+     "not": {
+      "all": [
+       {
+        "cmp": [
+         {
+          "p": "thing.exists",
+          "thing": "Thing_A"
+         },
+         "==",
+         true
+        ]
+       },
+       {
+        "cmp": [
+         {
+          "p": "thing.spawned",
+          "thing": "Thing_B"
+         },
+         "==",
+         true
+        ]
+       }
+      ]
+     }
+    },
+    "max_ticks": 1
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "thing.exists thing=Thing_A": [
+       false,
+       "ok"
+      ],
+      "thing.spawned thing=Thing_B": [
+       null,
+       "gone",
+       "dead"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "executed": 0
+   }
+  },
+  {
+   "name": "kleene_any_true_beats_unknown",
+   "tags": [
+    "kleene"
+   ],
+   "spec": {
+    "until": {
+     "any": [
+      {
+       "cmp": [
+        {
+         "p": "thing.exists",
+         "thing": "Thing_A"
+        },
+        "==",
+        true
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "thing.spawned",
+         "thing": "Thing_B"
+        },
+        "==",
+        true
+       ]
+      }
+     ]
+    },
+    "max_ticks": 1
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "thing.exists thing=Thing_A": [
+       true,
+       "ok"
+      ],
+      "thing.spawned thing=Thing_B": [
+       null,
+       "gone",
+       "dead"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "executed": 0
+   }
+  },
+  {
+   "name": "kleene_all_true_and_unknown_is_unknown",
+   "tags": [
+    "kleene",
+    "on_unknown_stop"
+   ],
+   "spec": {
+    "until": {
+     "all": [
+      {
+       "cmp": [
+        {
+         "p": "thing.exists",
+         "thing": "Thing_A"
+        },
+        "==",
+        true
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "thing.spawned",
+         "thing": "Thing_B"
+        },
+        "==",
+        true
+       ]
+      }
+     ]
+    },
+    "max_ticks": 1
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "thing.exists thing=Thing_A": [
+       true,
+       "ok"
+      ],
+      "thing.spawned thing=Thing_B": [
+       null,
+       "gone",
+       "dead"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "unknown",
+    "unknown": {
+     "id": "n2",
+     "status": "gone",
+     "detail": "dead"
+    }
+   }
+  },
+  {
+   "name": "kleene_not_unknown_is_unknown",
+   "tags": [
+    "kleene"
+   ],
+   "spec": {
+    "until": {
+     "not": {
+      "cmp": [
+       {
+        "p": "thing.spawned",
+        "thing": "Thing_B"
+       },
+       "==",
+       true
+      ]
+     }
+    },
+    "max_ticks": 1,
+    "on_unknown": "continue"
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "thing.spawned thing=Thing_B": [
+       null,
+       "gone",
+       "dead"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "thing.spawned thing=Thing_B": [
+       false,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1001,
+    "coverage": {
+     "every": 1,
+     "evals": 2,
+     "resolutionTicks": 1,
+     "gaps": [
+      [
+       1000,
+       1000
+      ]
+     ],
+     "complete": false
+    }
+   }
+  },
+  {
+   "name": "optional_unknown_reads_false",
+   "tags": [
+    "optional"
+   ],
+   "spec": {
+    "until": {
+     "any": [
+      {
+       "cmp": [
+        {
+         "p": "thing.spawned",
+         "thing": "Thing_B"
+        },
+        "==",
+        true
+       ],
+       "optional": true
+      },
+      {
+       "cmp": [
+        {
+         "p": "thing.exists",
+         "thing": "Thing_A"
+        },
+        "==",
+        true
+       ]
+      }
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "thing.exists thing=Thing_A": [
+       false,
+       "ok"
+      ],
+      "thing.spawned thing=Thing_B": [
+       null,
+       "gone",
+       "dead"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "thing.exists thing=Thing_A": [
+       true,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1001
+   }
+  },
+  {
+   "name": "optional_under_not_reads_true",
+   "tags": [
+    "optional"
+   ],
+   "spec": {
+    "until": {
+     "not": {
+      "cmp": [
+       {
+        "p": "thing.spawned",
+        "thing": "Thing_B"
+       },
+       "==",
+       true
+      ],
+      "optional": true
+     }
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "thing.spawned thing=Thing_B": [
+       null,
+       "gone",
+       "dead"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "executed": 0
+   }
+  },
+  {
+   "name": "hour_in_across_midnight",
+   "tags": [
+    "cmp"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "game.hour"
+      },
+      "hour_in",
+      [
+       22,
+       6
+      ]
+     ]
+    },
+    "max_ticks": 5
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "game.hour": [
+       21.5,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "game.hour": [
+       12,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "game.hour": [
+       23.25,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1002
+   }
+  },
+  {
+   "name": "hour_in_end_exclusive",
+   "tags": [
+    "cmp"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "game.hour"
+      },
+      "hour_in",
+      [
+       5,
+       6
+      ]
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "game.hour": [
+       6,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "game.hour": [
+       4.75,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "game.hour": [
+       5,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1002
+   }
+  },
+  {
+   "name": "in_range_inclusive",
+   "tags": [
+    "cmp"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "cell.temp",
+       "cell": [
+        5,
+        5
+       ]
+      },
+      "in",
+      [
+       10,
+       20
+      ]
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "cell.temp cell=5,5": [
+       9.999,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "cell.temp cell=5,5": [
+       20,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1001
+   }
+  },
+  {
+   "name": "eq_with_tol",
+   "tags": [
+    "cmp"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "cell.temp",
+       "cell": [
+        5,
+        5
+       ]
+      },
+      "==",
+      13.6
+     ],
+     "tol": 0.05
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "cell.temp cell=5,5": [
+       13.7,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "cell.temp cell=5,5": [
+       13.61,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1001
+   }
+  },
+  {
+   "name": "string_eq",
+   "tags": [
+    "cmp"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "cell.terrain",
+       "cell": [
+        1,
+        2
+       ]
+      },
+      "!=",
+      "Sand"
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "cell.terrain cell=1,2": [
+       "Sand",
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "cell.terrain cell=1,2": [
+       "WaterShallow",
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1001
+   }
+  },
+  {
+   "name": "pawn_job_def_string",
+   "tags": [
+    "cmp"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "pawn.job",
+       "pawn": "Human123",
+       "f": "def"
+      },
+      "==",
+      "Goto"
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "pawn.job f=def pawn=Human123": [
+       "Wait",
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "pawn.job f=def pawn=Human123": [
+       "Goto",
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1001
+   }
+  },
+  {
+   "name": "probe_type_mismatch_reads_error",
+   "tags": [
+    "types"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       "lots",
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "unknown",
+    "unknown": {
+     "id": "n0",
+     "status": "error",
+     "detail": "type: want num, got str"
+    }
+   }
+  },
+  {
+   "name": "bad_status_reads_error",
+   "tags": [
+    "types"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "maybe"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "unknown",
+    "unknown": {
+     "id": "n0",
+     "status": "error",
+     "detail": "bad status maybe"
+    }
+   }
+  },
+  {
+   "name": "field_any_type_checked_at_run",
+   "tags": [
+    "types",
+    "field"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "thing.field",
+       "thing": "Sprinkler_7",
+       "path": "comp.pulseTicks"
+      },
+      ">",
+      3
+     ]
+    },
+    "max_ticks": 3,
+    "on_unknown": "continue"
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "thing.field path=comp.pulseTicks thing=Sprinkler_7": [
+       true,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "thing.field path=comp.pulseTicks thing=Sprinkler_7": [
+       2,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "thing.field path=comp.pulseTicks thing=Sprinkler_7": [
+       4,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1002,
+    "coverage": {
+     "every": 1,
+     "evals": 3,
+     "resolutionTicks": 1,
+     "gaps": [
+      [
+       1000,
+       1000
+      ]
+     ],
+     "complete": false
+    }
+   }
+  },
+  {
+   "name": "rect_max",
+   "tags": [
+    "rect"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "rect": [
+        105,
+        102,
+        3,
+        3
+       ],
+       "reduce": "max"
+      },
+      ">=",
+      3
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=105,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,104": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=105,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,104": [
+       3,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1001
+   }
+  },
+  {
+   "name": "rect_count_where",
+   "tags": [
+    "rect"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "rect": [
+        105,
+        102,
+        3,
+        3
+       ],
+       "reduce": "count_where",
+       "where": [
+        ">=",
+        1
+       ]
+      },
+      ">=",
+      2
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=105,102": [
+       1,
+       "ok"
+      ],
+      "fw.fill cell=106,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,104": [
+       0,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=105,102": [
+       1,
+       "ok"
+      ],
+      "fw.fill cell=106,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       2,
+       "ok"
+      ],
+      "fw.fill cell=107,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,104": [
+       0,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1001
+   }
+  },
+  {
+   "name": "rect_all_default_where",
+   "tags": [
+    "rect"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "cell.is_water",
+       "rect": [
+        0,
+        0,
+        2,
+        2
+       ],
+       "reduce": "all"
+      },
+      "==",
+      false
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "cell.is_water cell=0,0": [
+       true,
+       "ok"
+      ],
+      "cell.is_water cell=1,0": [
+       true,
+       "ok"
+      ],
+      "cell.is_water cell=0,1": [
+       true,
+       "ok"
+      ],
+      "cell.is_water cell=1,1": [
+       true,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "cell.is_water cell=0,0": [
+       true,
+       "ok"
+      ],
+      "cell.is_water cell=1,0": [
+       false,
+       "ok"
+      ],
+      "cell.is_water cell=0,1": [
+       true,
+       "ok"
+      ],
+      "cell.is_water cell=1,1": [
+       true,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1001
+   }
+  },
+  {
+   "name": "rect_unknown_cell_is_unknown",
+   "tags": [
+    "rect",
+    "on_unknown_stop"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "cell.is_water",
+       "rect": [
+        0,
+        0,
+        2,
+        2
+       ],
+       "reduce": "any"
+      },
+      "==",
+      true
+     ]
+    },
+    "max_ticks": 2
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "cell.is_water cell=0,0": [
+       false,
+       "ok"
+      ],
+      "cell.is_water cell=1,0": [
+       false,
+       "ok"
+      ],
+      "cell.is_water cell=0,1": [
+       null,
+       "oob",
+       "map shrank"
+      ],
+      "cell.is_water cell=1,1": [
+       true,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "unknown",
+    "unknown": {
+     "id": "n0",
+     "status": "oob",
+     "detail": "map shrank"
+    }
+   }
+  },
+  {
+   "name": "ring_count_since_arm",
+   "tags": [
+    "ring"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "ring.count",
+       "source": "damage_log"
+      },
+      ">=",
+      2
+     ]
+    },
+    "max_ticks": 5
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "ring.count source=damage_log": [
+       40,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "ring.count source=damage_log": [
+       41,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "ring.count source=damage_log": [
+       42,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1002
+   }
+  },
+  {
+   "name": "ring_unarmed_is_unknown",
+   "tags": [
+    "ring"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "ring.count",
+       "source": "damage_log"
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 5,
+    "on_unknown": "continue"
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "ring.count source=damage_log": [
+       null,
+       "unbound",
+       "no ring"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "ring.count source=damage_log": [
+       41,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002
+    }
+   ],
+   "expect": {
+    "state": "stopped",
+    "triggers": [
+     "series_end"
+    ],
+    "coverage": {
+     "every": 1,
+     "evals": 3,
+     "resolutionTicks": 1,
+     "gaps": [
+      [
+       1000,
+       1002
+      ]
+     ],
+     "complete": false
+    }
+   }
+  },
+  {
+   "name": "watch_alarm_fires_once",
+   "tags": [
+    "watch",
+    "alarm"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "game.tick"
+      },
+      ">=",
+      1003
+     ]
+    },
+    "max_ticks": 5,
+    "watch": [
+     {
+      "name": "fire",
+      "tree": {
+       "alarm": {
+        "cmp": [
+         {
+          "p": "cell.fire",
+          "cell": [
+           3,
+           3
+          ]
+         },
+         "==",
+         true
+        ]
+       }
+      }
+     }
+    ]
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "game.tick": [
+       1000,
+       "ok"
+      ],
+      "cell.fire cell=3,3": [
+       false,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "game.tick": [
+       1001,
+       "ok"
+      ],
+      "cell.fire cell=3,3": [
+       true,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "game.tick": [
+       1002,
+       "ok"
+      ],
+      "cell.fire cell=3,3": [
+       true,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "game.tick": [
+       1003,
+       "ok"
+      ],
+      "cell.fire cell=3,3": [
+       true,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "watchers": [
+     {
+      "name": "fire",
+      "events": 1,
+      "unknowns": 0,
+      "disarmed": {
+       "tick": 1001,
+       "why": "alarm"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "name": "watch_disarms_on_probe_error",
+   "tags": [
+    "watch"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "game.tick"
+      },
+      ">=",
+      1003
+     ]
+    },
+    "max_ticks": 5,
+    "watch": [
+     {
+      "name": "wet",
+      "tree": {
+       "edge": {
+        "cmp": [
+         {
+          "p": "cell.is_water",
+          "cell": [
+           110,
+           90
+          ]
+         },
+         "==",
+         true
+        ]
+       }
+      }
+     },
+     {
+      "name": "g",
+      "tree": {
+       "cmp": [
+        {
+         "p": "thing.exists",
+         "thing": "Thing_A"
+        },
+        "==",
+        true
+       ]
+      }
+     }
+    ]
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "game.tick": [
+       1000,
+       "ok"
+      ],
+      "cell.is_water cell=110,90": [
+       false,
+       "ok"
+      ],
+      "thing.exists thing=Thing_A": [
+       null,
+       "gone",
+       "dead"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "game.tick": [
+       1001,
+       "ok"
+      ],
+      "cell.is_water cell=110,90": [
+       null,
+       "error",
+       "NullReferenceException"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "game.tick": [
+       1002,
+       "ok"
+      ],
+      "cell.is_water cell=110,90": [
+       true,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "game.tick": [
+       1003,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "watchers": [
+     {
+      "name": "wet",
+      "events": 0,
+      "unknowns": 0,
+      "disarmed": {
+       "tick": 1001,
+       "why": "error: NullReferenceException"
+      }
+     },
+     {
+      "name": "g",
+      "events": 0,
+      "unknowns": 4,
+      "disarmed": null
+     }
+    ]
+   }
+  },
+  {
+   "name": "sample_on_change_only",
+   "tags": [
+    "sample"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "game.tick"
+      },
+      ">=",
+      1004
+     ]
+    },
+    "max_ticks": 5,
+    "sample": {
+     "every": 1,
+     "on_change_only": true,
+     "probes": {
+      "sky": {
+       "p": "map.sky_glow"
+      }
+     }
+    }
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "game.tick": [
+       1000,
+       "ok"
+      ],
+      "map.sky_glow": [
+       0.5,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "game.tick": [
+       1001,
+       "ok"
+      ],
+      "map.sky_glow": [
+       0.5,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "game.tick": [
+       1002,
+       "ok"
+      ],
+      "map.sky_glow": [
+       0.25,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "game.tick": [
+       1003,
+       "ok"
+      ],
+      "map.sky_glow": [
+       0.25,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1004,
+     "reads": {
+      "game.tick": [
+       1004,
+       "ok"
+      ],
+      "map.sky_glow": [
+       1e-07,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit"
+   }
+  },
+  {
+   "name": "sample_every_and_snapshot",
+   "tags": [
+    "sample",
+    "snapshot"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 9,
+    "sample": {
+     "every": 2,
+     "probes": {
+      "f": {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      "t": {
+       "p": "game.tick"
+      }
+     }
+    },
+    "snapshot_on_hit": {
+     "n8": {
+      "p": "fw.fill",
+      "rect": [
+       105,
+       102,
+       3,
+       3
+      ],
+      "reduce": "max"
+     },
+     "here": {
+      "p": "fw.fill",
+      "cell": [
+       106,
+       103
+      ]
+     }
+    }
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=105,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,104": [
+       0,
+       "ok"
+      ],
+      "game.tick": [
+       1000,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "game.tick": [
+       1001,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "game.tick": [
+       1002,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "fw.fill cell=105,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=107,102": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ],
+      "fw.fill cell=107,103": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=105,104": [
+       0,
+       "ok"
+      ],
+      "fw.fill cell=106,104": [
+       2,
+       "ok"
+      ],
+      "fw.fill cell=107,104": [
+       0,
+       "ok"
+      ],
+      "game.tick": [
+       1003,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "hitTick": 1003,
+    "snapshot": {
+     "here": {
+      "v": 1,
+      "status": "ok"
+     },
+     "n8": {
+      "v": 2,
+      "status": "ok"
+     }
+    }
+   }
+  },
+  {
+   "name": "number_formatting",
+   "tags": [
+    "format",
+    "sample"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "cell.temp",
+       "cell": [
+        5,
+        5
+       ]
+      },
+      "<",
+      -1e+300
+     ]
+    },
+    "max_ticks": 6,
+    "on_unknown": "continue",
+    "sample": {
+     "every": 1,
+     "probes": {
+      "t": {
+       "p": "cell.temp",
+       "cell": [
+        5,
+        5
+       ]
+      }
+     }
+    }
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "cell.temp cell=5,5": [
+       13.6,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "cell.temp cell=5,5": [
+       0.30000000000000004,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "cell.temp cell=5,5": [
+       1e-07,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003,
+     "reads": {
+      "cell.temp cell=5,5": [
+       123456789012345.6,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1004,
+     "reads": {
+      "cell.temp cell=5,5": [
+       1e+21,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1005,
+     "reads": {
+      "cell.temp cell=5,5": [
+       -1e-05,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1006,
+     "reads": {
+      "cell.temp cell=5,5": [
+       2.5,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "done"
+   }
+  },
+  {
+   "name": "canonical_fills_defaults",
+   "tags": [
+    "canonical"
+   ],
+   "spec": {
+    "until": {
+     "all": [
+      {
+       "edge": {
+        "cmp": [
+         {
+          "p": "fw.fill",
+          "cell": [
+           106,
+           103
+          ]
+         },
+         ">=",
+         1
+        ]
+       }
+      },
+      {
+       "not": {
+        "cmp": [
+         {
+          "p": "pawn.state",
+          "pawn": "Human123",
+          "f": "downed"
+         },
+         "==",
+         true
+        ]
+       }
+      }
+     ]
+    },
+    "max_ticks": 1,
+    "runKey": "v2-P3-a1b2"
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       0,
+       "ok"
+      ],
+      "pawn.state f=downed pawn=Human123": [
+       false,
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "fw.fill cell=106,103": [
+       1,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "expect": {
+    "state": "hit",
+    "runKey": "v2-P3-a1b2",
+    "canonical": {
+     "every": 1,
+     "mapId": 0,
+     "max_ticks": 1,
+     "on_unknown": "stop",
+     "runKey": "v2-P3-a1b2",
+     "until": {
+      "id": "n0",
+      "all": [
+       {
+        "id": "n1",
+        "dir": "rise",
+        "edge": {
+         "id": "n2",
+         "cmp": [
+          {
+           "p": "fw.fill",
+           "cell": [
+            106,
+            103
+           ],
+           "mapId": 0
+          },
+          ">=",
+          1
+         ]
+        }
+       },
+       {
+        "id": "n3",
+        "not": {
+         "id": "n4",
+         "cmp": [
+          {
+           "p": "pawn.state",
+           "pawn": "Human123",
+           "f": "downed"
+          },
+          "==",
+          true
+         ]
+        }
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "name": "cond_eval_reports_every_node",
+   "tags": [
+    "eval"
+   ],
+   "spec": {
+    "tree": {
+     "any": [
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ],
+       "id": "wet"
+      },
+      {
+       "changed": {
+        "p": "game.tick"
+       }
+      },
+      {
+       "stays": {
+        "cmp": [
+         {
+          "p": "map.sky_glow"
+         },
+         ">",
+         0.5
+        ]
+       },
+       "ticks": 0
+      }
+     ]
+    }
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       null,
+       "unbound",
+       "FlowWorks not loaded"
+      ],
+      "game.tick": [
+       1000,
+       "ok"
+      ],
+      "map.sky_glow": [
+       0.75,
+       "ok"
+      ]
+     }
+    }
+   ],
+   "mode": "eval",
+   "expect": {
+    "v": true,
+    "status": "ok"
+   }
+  },
+  {
+   "name": "cond_eval_unknown_root",
+   "tags": [
+    "eval"
+   ],
+   "spec": {
+    "tree": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    }
+   },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "fw.fill cell=106,103": [
+       null,
+       "unbound",
+       "FlowWorks not loaded"
+      ]
+     }
+    }
+   ],
+   "mode": "eval",
+   "expect": {
+    "v": null,
+    "status": "unbound"
+   }
+  },
+  {
+   "name": "cond_eval_refuses_run_keys",
+   "tags": [
+    "eval",
+    "refusal"
+   ],
+   "spec": {
+    "tree": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 5
+   },
+   "mode": "eval",
+   "expect": {
+    "refused": "unknown_key",
+    "detail": "max_ticks"
+   }
+  },
+  {
+   "name": "refuse_json",
+   "tags": [
+    "refusal",
+    "refuse:json"
+   ],
+   "spec_text": "{\"until\": {\"cmp\": [",
+   "expect": {
+    "refused": "json"
+   }
+  },
+  {
+   "name": "refuse_json_duplicate_key",
+   "tags": [
+    "refusal",
+    "refuse:json"
+   ],
+   "spec_text": "{\"max_ticks\": 1, \"max_ticks\": 2, \"until\": {}}",
+   "expect": {
+    "refused": "json"
+   }
+  },
+  {
+   "name": "refuse_json_number_out_of_range",
+   "tags": [
+    "refusal",
+    "refuse:json"
+   ],
+   "spec_text": "{\"until\": 1e400, \"max_ticks\": 1}",
+   "expect": {
+    "refused": "json"
+   }
+  },
+  {
+   "name": "refuse_type",
+   "tags": [
+    "refusal",
+    "refuse:type"
+   ],
+   "spec": {
+    "until": 5,
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "type"
+   }
+  },
+  {
+   "name": "refuse_type_bool_is_not_a_number",
+   "tags": [
+    "refusal",
+    "refuse:type"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": true
+   },
+   "expect": {
+    "refused": "type"
+   }
+  },
+  {
+   "name": "refuse_unknown_key",
+   "tags": [
+    "refusal",
+    "refuse:unknown_key"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1,
+    "hold": true
+   },
+   "expect": {
+    "refused": "unknown_key",
+    "detail": "hold"
+   }
+  },
+  {
+   "name": "refuse_unknown_key_on_node",
+   "tags": [
+    "refusal",
+    "refuse:unknown_key"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ],
+     "colour": "red"
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "unknown_key",
+    "detail": "colour"
+   }
+  },
+  {
+   "name": "refuse_unknown_key_on_probe",
+   "tags": [
+    "refusal",
+    "refuse:unknown_key"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        1,
+        1
+       ],
+       "pawn": "x"
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "unknown_key",
+    "detail": "pawn"
+   }
+  },
+  {
+   "name": "refuse_missing_key",
+   "tags": [
+    "refusal",
+    "refuse:missing_key"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    }
+   },
+   "expect": {
+    "refused": "missing_key",
+    "detail": "max_ticks"
+   }
+  },
+  {
+   "name": "refuse_missing_key_until",
+   "tags": [
+    "refusal",
+    "refuse:missing_key"
+   ],
+   "spec": {
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "missing_key",
+    "detail": "until"
+   }
+  },
+  {
+   "name": "refuse_bad_value",
+   "tags": [
+    "refusal",
+    "refuse:bad_value"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1200001
+   },
+   "expect": {
+    "refused": "bad_value"
+   }
+  },
+  {
+   "name": "refuse_bad_value_every",
+   "tags": [
+    "refusal",
+    "refuse:bad_value"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 5,
+    "every": 0
+   },
+   "expect": {
+    "refused": "bad_value"
+   }
+  },
+  {
+   "name": "refuse_bad_value_on_unknown",
+   "tags": [
+    "refusal",
+    "refuse:bad_value"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 5,
+    "on_unknown": "shrug"
+   },
+   "expect": {
+    "refused": "bad_value"
+   }
+  },
+  {
+   "name": "refuse_bad_value_edge_dir",
+   "tags": [
+    "refusal",
+    "refuse:bad_value"
+   ],
+   "spec": {
+    "until": {
+     "edge": {
+      "cmp": [
+       {
+        "p": "fw.fill",
+        "cell": [
+         106,
+         103
+        ]
+       },
+       ">=",
+       1
+      ]
+     },
+     "dir": "up"
+    },
+    "max_ticks": 5
+   },
+   "expect": {
+    "refused": "bad_value"
+   }
+  },
+  {
+   "name": "refuse_bad_value_stays_ticks",
+   "tags": [
+    "refusal",
+    "refuse:bad_value"
+   ],
+   "spec": {
+    "until": {
+     "stays": {
+      "cmp": [
+       {
+        "p": "fw.fill",
+        "cell": [
+         106,
+         103
+        ]
+       },
+       ">=",
+       1
+      ]
+     },
+     "ticks": -1
+    },
+    "max_ticks": 5
+   },
+   "expect": {
+    "refused": "bad_value"
+   }
+  },
+  {
+   "name": "refuse_unknown_node",
+   "tags": [
+    "refusal",
+    "refuse:unknown_node"
+   ],
+   "spec": {
+    "until": {
+     "rate": {
+      "cmp": [
+       {
+        "p": "fw.fill",
+        "cell": [
+         106,
+         103
+        ]
+       },
+       ">=",
+       1
+      ]
+     }
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "unknown_node"
+   }
+  },
+  {
+   "name": "refuse_unknown_node_two_kinds",
+   "tags": [
+    "refusal",
+    "refuse:unknown_node"
+   ],
+   "spec": {
+    "until": {
+     "all": [
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     ],
+     "any": [
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "unknown_node"
+   }
+  },
+  {
+   "name": "refuse_unknown_probe",
+   "tags": [
+    "refusal",
+    "refuse:unknown_probe"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "cell.wetness",
+       "cell": [
+        1,
+        1
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "unknown_probe",
+    "detail": "cell.wetness"
+   }
+  },
+  {
+   "name": "refuse_probe_not_in_v1",
+   "tags": [
+    "refusal",
+    "refuse:probe_not_in_v1"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "pawn.flight.state",
+       "pawn": "Bird1"
+      },
+      "==",
+      "Flying"
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "probe_not_in_v1"
+   }
+  },
+  {
+   "name": "refuse_probe_not_in_v1_static_call",
+   "tags": [
+    "refusal",
+    "refuse:probe_not_in_v1"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "static.call",
+       "m": "Foo.Bar"
+      },
+      "==",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "probe_not_in_v1"
+   }
+  },
+  {
+   "name": "refuse_missing_arg",
+   "tags": [
+    "refusal",
+    "refuse:missing_arg"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "pawn.state",
+       "pawn": "Human123"
+      },
+      "==",
+      true
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "missing_arg",
+    "detail": "f"
+   }
+  },
+  {
+   "name": "refuse_bad_arg",
+   "tags": [
+    "refusal",
+    "refuse:bad_arg"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "pawn.state",
+       "pawn": "Human123",
+       "f": "sleepy"
+      },
+      "==",
+      true
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "bad_arg"
+   }
+  },
+  {
+   "name": "refuse_bad_arg_cell_and_rect",
+   "tags": [
+    "refusal",
+    "refuse:bad_arg"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        1,
+        1
+       ],
+       "rect": [
+        0,
+        0,
+        2,
+        2
+       ],
+       "reduce": "max"
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "bad_arg"
+   }
+  },
+  {
+   "name": "refuse_bad_arg_fractional_cell",
+   "tags": [
+    "refusal",
+    "refuse:bad_arg"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        1.5,
+        1
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "bad_arg"
+   }
+  },
+  {
+   "name": "refuse_map_unknown",
+   "tags": [
+    "refusal",
+    "refuse:map_unknown"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        1,
+        1
+       ],
+       "mapId": 3
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "map_unknown"
+   }
+  },
+  {
+   "name": "refuse_cell_oob",
+   "tags": [
+    "refusal",
+    "refuse:cell_oob"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        250,
+        3
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "cell_oob"
+   }
+  },
+  {
+   "name": "refuse_cell_oob_rect",
+   "tags": [
+    "refusal",
+    "refuse:cell_oob"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "rect": [
+        248,
+        0,
+        3,
+        3
+       ],
+       "reduce": "max"
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "cell_oob"
+   }
+  },
+  {
+   "name": "refuse_rect_empty",
+   "tags": [
+    "refusal",
+    "refuse:rect_empty",
+    "empty_rect_refused"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "cell.is_water",
+       "rect": [
+        10,
+        10,
+        0,
+        4
+       ],
+       "reduce": "all"
+      },
+      "==",
+      true
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "rect_empty",
+    "detail": "0x4"
+   }
+  },
+  {
+   "name": "refuse_cell_oob_rect_int_overflow",
+   "tags": [
+    "refusal",
+    "refuse:cell_oob"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "rect": [
+        2147483000,
+        0,
+        1000,
+        1
+       ],
+       "reduce": "max"
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "cell_oob"
+   }
+  },
+  {
+   "name": "refuse_reduce_bad",
+   "tags": [
+    "refusal",
+    "refuse:reduce_bad"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "rect": [
+        0,
+        0,
+        2,
+        2
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "reduce_bad"
+   }
+  },
+  {
+   "name": "refuse_reduce_bad_any_needs_where",
+   "tags": [
+    "refusal",
+    "refuse:reduce_bad"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "rect": [
+        0,
+        0,
+        2,
+        2
+       ],
+       "reduce": "any"
+      },
+      "==",
+      true
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "reduce_bad"
+   }
+  },
+  {
+   "name": "refuse_reduce_bad_unknown_reducer",
+   "tags": [
+    "refusal",
+    "refuse:reduce_bad"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "rect": [
+        0,
+        0,
+        2,
+        2
+       ],
+       "reduce": "median"
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "reduce_bad"
+   }
+  },
+  {
+   "name": "refuse_cmp_op",
+   "tags": [
+    "refusal",
+    "refuse:cmp_op"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      "~=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "cmp_op",
+    "detail": "~="
+   }
+  },
+  {
+   "name": "refuse_cmp_op_tol_on_ordered",
+   "tags": [
+    "refusal",
+    "refuse:cmp_op"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      "<",
+      1
+     ],
+     "tol": 0.1
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "cmp_op"
+   }
+  },
+  {
+   "name": "refuse_cmp_type",
+   "tags": [
+    "refusal",
+    "refuse:cmp_type"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      "==",
+      true
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "cmp_type"
+   }
+  },
+  {
+   "name": "refuse_cmp_type_ordered_on_bool",
+   "tags": [
+    "refusal",
+    "refuse:cmp_type"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "cell.is_water",
+       "cell": [
+        110,
+        90
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "cmp_type"
+   }
+  },
+  {
+   "name": "refuse_cmp_type_hour_in_on_string",
+   "tags": [
+    "refusal",
+    "refuse:cmp_type"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "cell.terrain",
+       "cell": [
+        1,
+        2
+       ]
+      },
+      "hour_in",
+      [
+       1,
+       2
+      ]
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "cmp_type"
+   }
+  },
+  {
+   "name": "refuse_empty_children",
+   "tags": [
+    "refusal",
+    "refuse:empty_children"
+   ],
+   "spec": {
+    "until": {
+     "any": []
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "empty_children",
+    "detail": "any"
+   }
+  },
+  {
+   "name": "refuse_alarm_not_root",
+   "tags": [
+    "refusal",
+    "refuse:alarm_not_root"
+   ],
+   "spec": {
+    "until": {
+     "alarm": {
+      "cmp": [
+       {
+        "p": "fw.fill",
+        "cell": [
+         106,
+         103
+        ]
+       },
+       ">=",
+       1
+      ]
+     }
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "alarm_not_root"
+   }
+  },
+  {
+   "name": "refuse_alarm_not_root_nested_in_watch",
+   "tags": [
+    "refusal",
+    "refuse:alarm_not_root"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1,
+    "watch": [
+     {
+      "name": "w",
+      "tree": {
+       "not": {
+        "alarm": {
+         "cmp": [
+          {
+           "p": "fw.fill",
+           "cell": [
+            106,
+            103
+           ]
+          },
+          ">=",
+          1
+         ]
+        }
+       }
+      }
+     }
+    ]
+   },
+   "expect": {
+    "refused": "alarm_not_root"
+   }
+  },
+  {
+   "name": "refuse_field_method",
+   "tags": [
+    "refusal",
+    "refuse:field_method"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "thing.field",
+       "thing": "Sprinkler_7",
+       "path": "GetComp().ticks"
+      },
+      ">",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "field_method"
+   }
+  },
+  {
+   "name": "refuse_duplicate_id",
+   "tags": [
+    "refusal",
+    "refuse:duplicate_id"
+   ],
+   "spec": {
+    "until": {
+     "all": [
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ],
+       "id": "a"
+      },
+      {
+       "cmp": [
+        {
+         "p": "cell.is_water",
+         "cell": [
+          110,
+          90
+         ]
+        },
+        "==",
+        true
+       ],
+       "id": "a"
+      }
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "duplicate_id",
+    "detail": "a"
+   }
+  },
+  {
+   "name": "refuse_duplicate_watch",
+   "tags": [
+    "refusal",
+    "refuse:duplicate_watch"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1,
+    "watch": [
+     {
+      "name": "w",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     }
+    ]
+   },
+   "expect": {
+    "refused": "duplicate_watch",
+    "detail": "w"
+   }
+  },
+  {
+   "name": "refuse_cap_nodes",
+   "tags": [
+    "refusal",
+    "refuse:cap_nodes"
+   ],
+   "spec": {
+    "until": {
+     "any": [
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          0,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          1,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          2,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          3,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          4,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          5,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          6,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          7,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          8,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          9,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          10,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          11,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          12,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          13,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          14,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          15,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          16,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          17,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          18,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          19,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          20,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          21,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          22,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          23,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          24,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          25,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          26,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          27,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          28,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          29,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          30,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          31,
+          0
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "cap_nodes",
+    "detail": "65 > 64"
+   }
+  },
+  {
+   "name": "refuse_cap_cells",
+   "tags": [
+    "refusal",
+    "refuse:cap_cells"
+   ],
+   "spec": {
+    "until": {
+     "any": [
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "rect": [
+          0,
+          0,
+          32,
+          32
+         ],
+         "reduce": "max"
+        },
+        ">=",
+        1
+       ]
+      },
+      {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "rect": [
+          40,
+          0,
+          1,
+          1
+         ],
+         "reduce": "max"
+        },
+        ">=",
+        1
+       ]
+      }
+     ]
+    },
+    "max_ticks": 1
+   },
+   "expect": {
+    "refused": "cap_cells",
+    "detail": "1025 > 1024"
+   }
+  },
+  {
+   "name": "refuse_cap_watchers",
+   "tags": [
+    "refusal",
+    "refuse:cap_watchers"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "fw.fill",
+       "cell": [
+        106,
+        103
+       ]
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1,
+    "watch": [
+     {
+      "name": "w0",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w1",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w2",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w3",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w4",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w5",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w6",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w7",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w8",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w9",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w10",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w11",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w12",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w13",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w14",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w15",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     },
+     {
+      "name": "w16",
+      "tree": {
+       "cmp": [
+        {
+         "p": "fw.fill",
+         "cell": [
+          106,
+          103
+         ]
+        },
+        ">=",
+        1
+       ]
+      }
+     }
+    ]
+   },
+   "expect": {
+    "refused": "cap_watchers",
+    "detail": "17 > 16"
+   }
+  },
+  {
+   "name": "refuse_bind",
+   "tags": [
+    "refusal",
+    "refuse:bind"
+   ],
+   "spec": {
+    "until": {
+     "cmp": [
+      {
+       "p": "map.count",
+       "def": "RM_NoSuchThing"
+      },
+      ">=",
+      1
+     ]
+    },
+    "max_ticks": 1
+   },
+   "refuse": {
+    "map.count def=RM_NoSuchThing": "def_unresolved: RM_NoSuchThing"
+   },
+   "expect": {
+    "refused": "bind",
+    "detail": "def_unresolved: RM_NoSuchThing"
+   }
+  }
+ ]
+}
