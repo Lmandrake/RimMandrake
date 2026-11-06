@@ -132,7 +132,13 @@ def test_second_identical_to_arbiter():
     rs = {}
     harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-1")
     rs.pop("run_now", None)
-    _, calls, route = harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-2", seams={"arbiter": None})
+    import relentless_dispute as RD0
+    saved = RD0.role_stage_dispute
+    RD0.role_stage_dispute = None            # hermetic: the real entry would launch an arbiter
+    try:
+        _, calls, route = harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-2", seams={"arbiter": None})
+    finally:
+        RD0.role_stage_dispute = saved
     check(not rechained(rs) and "not landed" in route[0]["why"],
           "arbiter seam absent (WP-08 not landed): today's behaviour holds, the alarm stands and nothing re-chains")
     rs = {}
@@ -154,6 +160,25 @@ def test_arbiter_seam_today():
     if not landed:
         check(RL.to_arbiter("Designer", C1, "X", "sig", ["r"]) is None,
               "the real arbiter seam falls back (None) while relentless_dispute has no role_stage_dispute")
+
+
+def test_dispute_fault_falls_back():
+    """WP-15/08 join: a fault inside the dispute path never breaks role_launch; the alarm stands, nothing re-chains."""
+    import relentless_dispute as RD
+    saved_fn, saved_deps = RD.role_stage_dispute, RD.Deps
+    try:
+        for what, patch in (("entry raises", lambda: setattr(RD, "role_stage_dispute", lambda **k: 1 / 0)),
+                            ("arbiter launch raises", lambda: setattr(RD, "Deps", lambda: 1 / 0))):
+            RD.role_stage_dispute, RD.Deps = saved_fn, saved_deps
+            patch()
+            rs = {}
+            harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-1")
+            rs.pop("run_now", None)
+            _, calls, route = harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-2", seams={"arbiter": None})
+            check(route and not rechained(rs) and ("failed" in route[0]["why"] or "not landed" in route[0]["why"]),
+                  "%s: role_launch falls back (alarm stands, no re-chain)" % what)
+    finally:
+        RD.role_stage_dispute, RD.Deps = saved_fn, saved_deps
 
 
 def test_real_seams():
@@ -197,7 +222,8 @@ def test_real_seams():
 
 
 TESTS = (test_classifier, test_module_to_builder, test_check_and_bar_to_setter, test_environment_to_cause_book,
-         test_unknown_and_mixed_to_builder, test_second_identical_to_arbiter, test_arbiter_seam_today, test_real_seams)
+         test_unknown_and_mixed_to_builder, test_second_identical_to_arbiter, test_arbiter_seam_today, test_dispute_fault_falls_back,
+         test_real_seams)
 
 
 def main():

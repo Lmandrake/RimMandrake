@@ -320,6 +320,29 @@ def t_malformed_and_exam(tmp):
     return store
 
 
+def t_role_entry(tmp):
+    """WP-15/08 join: role_launch's 2nd identical rejection reaches a fresh arbiter's ruling through role_launch.to_arbiter."""
+    import role_launch as RL
+    store, repo, base, ev = setup(tmp, "role_entry")
+    c, seen = Claude(store, rulings=["builder"]), []
+    deps = deps_for(store, repo, tmp, c, seen)
+    saved = (R.Store, D.Deps, D.config)
+    R.Store, D.Deps, D.config = (lambda *a, **k: store), (lambda: deps), (lambda path=None: dict(CFG))
+    try:
+        said = RL.to_arbiter("Designer", "/x/concept_a", IT, "4|module|decisions[d1]", ["decisions[d1]: no event"])
+        off = dict(CFG, mode="off")
+        D.config = lambda path=None: off
+        said_off = RL.to_arbiter("Designer", "/x/concept_a", IT, "sig", ["r"])
+    finally:
+        R.Store, D.Deps, D.config = saved
+    rows = E._lines(os.path.join(E.item_dir(store, IT), "role_dispute.jsonl"))
+    ok(said and "ruled builder" in said and len(c.calls) == 1 and c.calls[0]["agent"] == "rm-judge"
+       and "decisions[d1]: no event" in c.calls[0]["prompt"], "10a to_arbiter -> one fresh arbiter rules: %r" % said)
+    ok(len(rows) == 1 and rows[0]["winner"] == "builder" and rows[0]["final"], "10b the who-was-right row is logged")
+    ok(said_off is None and len(c.calls) == 1, "10c mode off: no arbiter, falls back (None)")
+    return store
+
+
 def t_registration_and_cli(store):
     saved = R.Store
     R.Store = lambda *a, **k: store
@@ -373,7 +396,7 @@ def main():
     subprocess.run, subprocess.Popen = rec_run, RecPopen
     try:
         stores = [t_in_call(tmp), t_after_timeout(tmp), t_serialised(tmp), t_no_session(tmp), t_reply(tmp),
-                  t_amend(tmp), t_killed(tmp), t_malformed_and_exam(tmp)]
+                  t_amend(tmp), t_killed(tmp), t_malformed_and_exam(tmp), t_role_entry(tmp)]
         t_registration_and_cli(stores[0])
         t_no_filing_and_all_reached(stores, tmp)
     finally:

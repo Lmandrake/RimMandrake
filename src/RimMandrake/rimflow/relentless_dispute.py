@@ -41,6 +41,7 @@ import glob
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -634,6 +635,53 @@ def arbitrate_exam(store, item, cfg=None, deps=None):
     ruling = ruling or {"winner": "void", "why": "the arbiter wrote no ruling", "by": "supervisor", "at": now_iso()}
     E.set_status(store, item, state="arbiter_ruled", ruling=ruling)
     return ruling
+
+
+# ------------------------------------------------------------------------------ WP-15: the rejected role stage's arbiter
+ROLE_BODY = """The role {role} ({concept}) had its stage close REJECTED by the supervisor twice with the same signature
+{sig}. The reasons given:
+{reasons}"""
+ROLE_CHOICES = ("Rule ONE of: builder (the role's output is right; the stage check is wrong), setter (the check is right; "
+                "the role must meet it), environment (the check cannot run where it must), bar (the item text is the problem).")
+
+
+def role_stage_dispute(role, concept, item, sig, reasons, store=None, cfg=None, deps=None):
+    """role_launch.to_arbiter's entry (a 2nd identical rejected role stage): one fresh arbiter rules, the who-was-right
+    row is logged under the item's exam dir, nothing is filed. Shadow like the rest: mode off -> None. -> a sentence for
+    the ledger, or None (any fault, no mode, no base: today's behaviour, the alarm stands)."""
+    try:
+        cfg = config() if cfg is None else cfg
+        if cfg.get("mode", "off") == "off":
+            return None
+        import relentless
+        store = store or relentless.Store()
+        deps = deps or Deps()
+        key = item or "ROLE_" + re.sub(r"\W+", "_", os.path.basename(os.path.normpath(concept or "none")))[:60]
+        base = (E.status(store, key) or {}).get("base") or (exam_of(store, key) or {}).get("base_sha")
+        if not base:
+            r = subprocess.run(["git", "-C", HERE, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=60)
+            base = r.stdout.strip()
+        if not base:
+            return None
+        d = E.item_dir(store, key)
+        ruling_path = os.path.join(d, "role_ruling.json")
+        prompt = ARBITER_BRIEF.format(
+            item=key, base=base, text=deps.text_of(item)[:8000] if item else "(no ledger item)",
+            body=ROLE_BODY.format(role=role, concept=concept, sig=sig, reasons="\n".join("- %s" % r for r in reasons)[:6000]),
+            ruling=ruling_path, choices=ROLE_CHOICES, winners="|".join(WINNERS))
+        ruling = None
+        for _ in range(int(cfg.get("arbiter_tries", 2))):
+            ruling, _sid = _arbiter_run(store, key, base, prompt, ruling_path, os.path.join(d, "role_arbiter.out"),
+                                        cfg, deps, WINNERS)
+            if ruling:
+                break
+        ruling = ruling or {"winner": "void", "why": "the arbiter wrote no ruling", "by": "supervisor", "at": now_iso()}
+        E._append(os.path.join(d, "role_dispute.jsonl"), {
+            "role": role, "concept": concept, "sig": sig, "winner": ruling["winner"], "final": True,
+            "arbiter": ruling.get("session"), "at": now_iso()})
+        return "arbiter ruled %s (shadow; %s; nothing filed)" % (ruling["winner"], str(ruling.get("why", ""))[:200])
+    except Exception:  # noqa: BLE001 - the caller's alarm already stands; a fault here must not break the role launch
+        return None
 
 
 # ---------------------------------------------------------------------------------------------------------- reading
