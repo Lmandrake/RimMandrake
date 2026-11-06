@@ -1,1 +1,2 @@
 live-proof A1: python.exe src/RimMandrake/TerminalBiomes/prove_rindcoat_scald_live.py --max-seconds 2400
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --game

@@ -5,6 +5,7 @@
     python.exe src/RimMandrake/Utils/live_site.py --not-biome RM_LeaningScrub --biome RM_BlueDesert
     python.exe src/RimMandrake/Utils/live_site.py --save rm_proof_atmosphere
     python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 20
+    python.exe src/RimMandrake/Utils/live_site.py --game
     python.exe src/RimMandrake/Utils/live_site.py --without oblitus.mylittleplanet --needs 7f.alienworlds --save NAME --ignore-missing-mods
     python.exe src/RimMandrake/Utils/live_site.py --save rm_proof_atmosphere --restage-with AtmosphericBase
 
@@ -27,6 +28,12 @@ past --max-ticks (default two in-game days) is refused: that is someone's colony
 on a map never shows. One jawa/ call first (the companion installs its probes on first contact, JawaBenchInit), then
 rimworld/go_to_main_menu, N seconds in the Entry scene, and rimworld/start_debug_game_ready so the game is back on a
 quicktest map for the proofs after it. Same --max-ticks refusal: the map it drops is a test map, never a colony.
+
+--game (GAMEENV_FIX_PROOFSITE_528224CB_ITEMS_WAIT): a game with a map, whatever its biome, for a proof that stages its
+own map (proof_scald_steam.setup generates a RM_TheScald map beside the home one). RINDCOAT's A1 proof met a game on the
+main menu (get_game_info carries no ticksGame there) and read nothing. A map already up is left alone, so a proof
+resuming a run across rounds keeps its map; only with no map (Entry, or Playing with mapCount 0) is
+rimworld/start_debug_game_ready called. A game still loading is waited out first, never interrupted.
 
 --needs / --without PKG (repeatable; GENERATOR_MODS_PROVE_INERT_AFTER_CREATION): checked first, against the RUNNING
 load (jawa/running_mods, never ModsConfig.xml, which names the NEXT load). A load that lacks a --needs id or holds a
@@ -285,6 +292,35 @@ def menu_site(a):
         return READY
 
 
+def game_site(a):
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from await_lifecycle import phase_of
+    with connect(120) as rb:
+        phase, ui = phase_of(_lc_call(rb))
+        if phase == "loading":          # a load in flight finishes before it is judged: never start a game over it
+            ok = wait_ready(rb, a.budget)
+            phase, ui = phase_of(_lc_call(rb)) if ok else (phase, ui)
+        if phase == "map_ready":
+            print("READY: a game with a map is up (left as it is)")
+            return READY
+        if phase not in ("menu", "missing_map"):
+            print("NOT READY: the game reads %s (%s); no quicktest started" % (phase, str(ui)[:200]))
+            return NOT_READY
+        print("site: no map (%s); starting a quicktest" % phase)
+    with connect(900) as rb:
+        try:
+            rb.call("rimworld/start_debug_game_ready", {"timeoutMs": 900000, "readiness": "mapData", "pauseIfNeeded": True})
+        except Exception as e:      # noqa: BLE001  the connection may drop while the map generates
+            print("quicktest call ended: %s" % str(e)[:200])
+    with connect(60) as rb:
+        if not wait_ready(rb, a.budget):
+            print("NOT READY: the quicktest did not reach Playing with a map in %ds" % a.budget)
+            return NOT_READY
+        info = rb.call("jawa/map_info", {})
+        print("READY: a quicktest map %s" % info.get("mapBiome"))
+        return READY
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--biome", help="BiomeDef the current map must be")
@@ -292,6 +328,7 @@ def main(argv=None):
     ap.add_argument("--temperature", type=float)
     ap.add_argument("--save", help="a save name to load (no .rws)")
     ap.add_argument("--menu-dwell", type=int, help="seconds at the main menu, then a quicktest map back")
+    ap.add_argument("--game", action="store_true", help="a game with any map: start a quicktest only when none is up")
     ap.add_argument("--max-ticks", type=int, default=120000)
     ap.add_argument("--budget", type=int, default=300)
     ap.add_argument("--needs", action="append", default=[], help="a packageId the RUNNING load must hold (repeatable)")
@@ -308,8 +345,8 @@ def main(argv=None):
         ap.error("--restage-with re-makes only a %s* proof fixture, never %s" % (RESTAGE_PREFIX, a.save))
     if a.restage_with and not stager_path(a.restage_with):
         ap.error("--restage-with %s: no src/RimMandrake/%s/stage_proof_site.py" % (a.restage_with, a.restage_with))
-    if sum((bool(a.save), bool(a.biome or a.not_biome), a.menu_dwell is not None)) != 1:
-        ap.error("give one of --save, --biome / --not-biome, --menu-dwell")
+    if sum((bool(a.save), bool(a.biome or a.not_biome), a.menu_dwell is not None, a.game)) != 1:
+        ap.error("give one of --save, --biome / --not-biome, --menu-dwell, --game")
     if a.menu_dwell is not None and not 1 <= a.menu_dwell <= 300:
         ap.error("--menu-dwell is 1..300 seconds")
     try:
@@ -318,6 +355,8 @@ def main(argv=None):
             return gap
         if a.menu_dwell is not None:
             return menu_site(a)
+        if a.game:
+            return game_site(a)
         return save_site(a) if a.save else biome_site(a)
     except Exception as e:      # noqa: BLE001  any bridge failure is a site not made, never a verdict
         print("NOT READY: %s: %s" % (type(e).__name__, str(e)[:300]))

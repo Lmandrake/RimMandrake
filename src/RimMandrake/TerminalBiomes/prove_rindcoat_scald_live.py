@@ -76,6 +76,13 @@ def decide(d, up, down, floor):
     return (0, "PASS: " + line) if RATIO_BAND[0] <= ratio <= RATIO_BAND[1] else (1, "FAIL: " + line)
 
 
+def game_tick(info):
+    """get_game_info reply -> ticksGame, or None with no game loaded: the main menu answers without the key
+    (GAMEENV_FIX_PROOFSITE_528224CB_ITEMS_WAIT, where a bare KeyError read 'UNMEASURED: bridge: 'ticksGame''). Pure."""
+    t = info.get("ticksGame") if isinstance(info, dict) else None
+    return t if isinstance(t, int) and not isinstance(t, bool) else None
+
+
 def main(argv):
     import argparse
     import proof_scald_steam as ps
@@ -85,7 +92,12 @@ def main(argv):
     out = os.path.join(os.environ.get("TEMP", "."), "prove_rindcoat_scald_live.json")
     try:
         c = ps.bridge()
-        now = ps.call(c, "rimworld/get_game_info")["ticksGame"]
+        info = ps.call(c, "rimworld/get_game_info")
+        now = game_tick(info)
+        if now is None:
+            print("UNMEASURED: no game loaded (get_game_info has no ticksGame; status %s); the live-site step "
+                  "`live_site.py --game` stages a quicktest" % (info.get("status") if isinstance(info, dict) else info))
+            return 2
         st = json.load(open(ps.STATE)) if os.path.exists(ps.STATE) and os.path.exists(out) else None
         prior = json.load(open(out)) if st else {}
         stale = st is None or now < st["t0"] or (ps.read(c, st["roster"]["rind"]) is None

@@ -60,7 +60,7 @@ class FakeRB:
 def run(argv, running=("ludeon.rimworld", "7f.alienworlds"), **kw):
     log = []
     FakeRB.running = running
-    FakeRB.shared = {"programState": "Playing"}
+    FakeRB.shared = {"programState": kw.pop("state", "Playing")}
     FakeRB.missing = kw.pop("missing", False)
     FakeRB.loads = []
     L.connect = lambda timeout: FakeRB(log, **kw)
@@ -94,6 +94,17 @@ check("menu-dwell refuses a colony past --max-ticks", rc == L.NOT_READY and "rim
 # a menu that never comes is NOT READY, never READY, and no quicktest is started over a live map
 rc, log = run(["--menu-dwell", "5"], menu_ok=False)
 check("menu never reached -> NOT READY, no quicktest", rc == L.NOT_READY and "rimworld/start_debug_game_ready" not in log)
+
+# --game (GAMEENV_FIX_PROOFSITE_528224CB_ITEMS_WAIT): a map already up is left alone; the menu gets a quicktest
+rc, log = run(["--game"])
+check("--game with a map up -> READY, nothing started", rc == L.READY and "rimworld/start_debug_game_ready" not in log
+      and "rimworld/go_to_main_menu" not in log)
+rc, log = run(["--game"], state="Entry")
+check("--game at the main menu -> a quicktest, READY", rc == L.READY and "rimworld/start_debug_game_ready" in log
+      and "rimworld/go_to_main_menu" not in log)
+rc, log = run(["--game"], state="MapInitializing")
+check("--game over a load that never ends -> NOT READY, no quicktest started over it",
+      rc == L.NOT_READY and "rimworld/start_debug_game_ready" not in log)
 
 # --needs/--without (GENERATOR_MODS_PROVE_INERT_AFTER_CREATION): a wrong RUNNING list ends on `reload needed:`, loads nothing
 import io, contextlib  # noqa: E401,E402
