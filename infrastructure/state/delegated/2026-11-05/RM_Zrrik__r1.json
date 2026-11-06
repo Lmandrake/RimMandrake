@@ -1,10 +1,29 @@
 {
- "judge_model": {},
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 37.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.358633
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 53.7
+   }
+  ]
+ },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Zrrik",
- "decision": "HOLD_CANVAS",
+ "decision": "ACCEPT",
  "reasons": [
-  "canvas not the shipping rule for drawSize [3.4, 3.4]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'STYLE_CARTOON']; polish ['SCALE_WRONG']",
+  "gpt strong_accept: unsettled [], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
  ],
  "prompt_versions": {
   "preamble": {
@@ -37,10 +56,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "3e363e1a91a489343a7972c94b10493aeaeb23f4ca176a4d7ce3505d4130b4b6",
-  "east.png": "00d1e4dde5e0747275ec0ac01ac74eb3025963341084e1283c9bfd09603622d3",
-  "north.png": "7768c0e2a96b7d4b1a445dfdd6c7e7bc67df1209768e4e3e220e1092821707b0",
-  "scale.png": "1460c015e6778c1e02cf988d09f3748ce9789b94647a1d8eb56a3de69d8c0f07",
-  "facings.png": "fbb8d7bf289bbed626edd0cc48de8f2a7cb5c7f8b46481e059ff3aa071651acf"
+  "south.png": "f97b26449770f50313cdc740cc20c5f5a7a1872b0752af3df735428c3061ebfa",
+  "east.png": "008c1db64bb947658dff113b72fd7a1bb66f7401f0ebb6cc7d31f8024a6ea9ca",
+  "north.png": "a244f42d4586404eda2b161cc528d262a285dc53c3936f513f00ceec5d6d8283",
+  "scale.png": "f8dc7de69e6f755e30adc89bcbbe682e6e7c82d6d9556d39455699d8c3500b20",
+  "facings.png": "4db6ab941f30b6d8b14482d9f85ea8aa916df8aea24df09015228afb48ceeeec"
  }
 }

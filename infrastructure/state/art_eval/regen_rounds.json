@@ -143,6 +143,8 @@
  "RM_Vissler": 3,
  "RM_Vizhik_ns": 2,
  "RM_Vurra": 3,
+ "RM_Wuum": 1,
+ "RM_Ysvaltha": 1,
  "RM_Zellik": 2,
  "RM_Zisska": 3,
  "RSW_Blarth__Blarth_Swimming_n": 3,
@@ -194,5 +196,6 @@
  "RSW_WompRat": 1,
  "RSW_Woolamander": 2,
  "RUT_BrineBattery": 3,
- "RUT_SealedSleeper__RUT_SealedSleeper": 1
+ "RUT_SealedSleeper__RUT_SealedSleeper": 1,
+ "SWPotF_RaceDef_ysalamir__ysalamiri": 1
 }

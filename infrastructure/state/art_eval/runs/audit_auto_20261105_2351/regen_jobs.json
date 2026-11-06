@@ -1,0 +1,71 @@
+[
+ {
+  "id": "arteval_RM_Ysvaltha_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ysvaltha",
+  "prompt": "A creature sprite for RimWorld: the ysvaltha. Something bred for killing rather than born to it: a long, low, sinuous body in near-black hide, a whip of a tail fringed with crimson barbs, and a narrow, needle-pointed head set with four glowing yellow eyes. Along its shoulders it carries curved, crimson-edged blades folded back like swept wings. Visible features it must show: a long, low, sinuous body in near-black hide; a narrow needle-pointed head with four glowing yellow eyes; curved crimson-edged blades folded back along the shoulders like swept wings; a whip-like tail fringed with crimson barbs. Tail pose, identical in every view and rotated with the body: the tail sweeps back low from the rump, trails close above the ground in one smooth curve, and ends in a small returning hook at the tip, with the crimson barbs fringing the outer edge of the whole curve. In the front view, eyes toward the viewer, the tail shows as a short low curve of barbs beside and behind the haunches, hooked tip visible. In the side view the full low sweep and the hooked tip are shown in profile. In the rear view, seen from behind, the back, haunches and tail are shown with the eyes hidden, and the tail trails back from the rump along the ground with the same hooked tip. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261105_2351",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha"
+ },
+ {
+  "id": "arteval_SWPotF_RaceDef_ysalamir__ysalamiri_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "SWPotF_RaceDef_ysalamir__ysalamiri",
+  "prompt": "A creature sprite for RimWorld: the ysalamir, the canon ysalamir of Myrkr. A slow, claw-footed tree lizard whose living body nullifies psychic sensitivity in everything near it. One slender, elongated lizard with a long narrow head ending in a tapering pointed snout, a slim neck, a lean body no wider than it is deep, a long thin tail, and claw feet built for gripping a branch; calm, sluggish posture. The same slender lizard, with the same head shape, proportions and palette, appears in every view. Front view (south): the lizard seen head-on at the game's angled camera, eyes toward the viewer, the narrow tapering snout pointing at the camera, the slim neck, and shoulders no wider than the body is deep, claw feet gripping on either side. Side view (east): the full slender profile, pointed snout forward, long body and tail trailing behind. Rear view (north): the lizard seen from behind at the game's slightly raised three-quarter-down camera, low rounded haunches and the two hind legs with gripping claws nearest the viewer, the base of the long tail trailing toward the viewer, the arched back rising away with visible body depth and shading; the head is tucked forward and hidden behind the shoulders, so the rear of the body fills the sprite and the eyes stay out of sight. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_NORTH_FACE, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261105_2351",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "ysalamiri/ysalamiri"
+ },
+ {
+  "id": "arteval_RM_Wuum_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Wuum",
+  "prompt": "A creature sprite for RimWorld: the wuum. Countless small bodies that all belong to one vast, spreading thing \u2014 every wuum you see is a cell of the same superorganism, working toward the same single purpose: grow, and keep growing. A wuum buds off a copy of itself every few days and needs almost nothing to eat. It bursts when it dies, and what bursts out burns like acid. Visible features it must show: a small soft body that looks like one cell of something larger; a bulbous budding outgrowth where it copies itself; acid-bright fluid glowing in chambers under a thin skin; a blob-like cellular form with the limbless, faceless body of a cell. Style: realistic, hand-painted vanilla RimWorld sprite with a thin, dark, painterly rim outline in a deep shade of the body colour running continuously around the whole silhouette and the budding outgrowth, so the shape reads clearly at standard zoom. The membrane is matte and layered with visible brush texture and painted shading; highlights are small and localized to a few spots. The luminous acid-filled chambers glow inside a firmly defined, more opaque membrane edge, so the contour is stronger than the interior glow in every facing. Keep the same palette and body plan as the previous render. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_OFF, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261105_2351",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Wuum/RM_Wuum"
+ }
+]

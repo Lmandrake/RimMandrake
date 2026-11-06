@@ -1,10 +1,37 @@
 {
- "judge_model": {},
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 39.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.36194400000000004
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 46.9
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 9.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1168762
+  }
+ },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Wuum",
- "decision": "HOLD_CANVAS",
+ "decision": "REGEN",
  "reasons": [
-  "canvas not the shipping rule for drawSize [2.5, 2.5]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+  "opus band WEAK (model said good); blocking ['STYLE_OFF', 'DUPLICATE']; polish ['SCALE_WRONG']",
+  "gpt regen: unsettled ['K1'], own blocking ['STYLE_OFF']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
  ],
  "prompt_versions": {
   "preamble": {
@@ -37,10 +64,10 @@
   }
  },
  "image_sha256": {
-  "south.png": "0eeef5d39ebcb6fde148e6f30207cc181e06e56681df28083fa6e73647b75276",
-  "east.png": "5660a8f4d0ffc7e3dba47618f011f9926c9dc533be7c8733f9a745cfdc03a725",
-  "north.png": "ca8f59ece644949fdb0e7eca229d43df883a5eaea90ba50a3dc19e48f66b0819",
-  "scale.png": "709d8595e5e23473c10661e15bd4908afe0f3cb0864cb03a1cd56c380b681c5c",
-  "facings.png": "aad739e8ec9156c9a424466cdf8b66fb81050fbd8730d36abbb01989521b9e49"
+  "south.png": "ab1e2793b99adace626779ed504791fa772f22cc7ed179b749f108cf7dd4d60e",
+  "east.png": "fc2a1cf5410461e08664c9b616c7d93e98c84cb4ec3c64de800e8e12fd5a2960",
+  "north.png": "197c1bb96be78cee8cad1ac858ad658dd090792d7e03567858294d9df44185c4",
+  "scale.png": "68ea75c6291caca445405a041033cdb8e6a951e0f18c58176f9b18fa5d2011c1",
+  "facings.png": "b67f40804eadc9681162f837fac3e5080b7bf84bbfcae383ebff88ebed644978"
  }
 }
