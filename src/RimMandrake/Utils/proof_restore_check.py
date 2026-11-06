@@ -417,7 +417,16 @@ def _resolved_fixed(v, env) -> bool:
     return False
 
 
-def _value_is_literal(call: ast.Call, env=None) -> bool:
+def _value_is_literal(call: ast.Call, env=None, setter_params=None) -> bool:
+    """The value a poke writes is fixed. `setter_params` are a wrapper's parameter names, in order, with the ones
+    that reach a poke's value= marked: `setting(f, True)` passes the value positionally to `def setting(field, value)`."""
+    if setter_params:
+        names, vparams = setter_params
+        vals = [k.value for k in call.keywords if k.arg in vparams]
+        vals += [a for i, a in enumerate(call.args) if i < len(names) and names[i] in vparams
+                 and not isinstance(a, ast.Starred)]
+        if vals:
+            return all(_fixed(x) or _resolved_fixed(x, env) for x in vals)
     v = _kw(call, "value")
     if v is not None:
         return _fixed(v) or _resolved_fixed(v, env)
@@ -490,7 +499,7 @@ def check_py(rel: str, text: str, harness_restores: bool, harness_tracks: bool =
             parents[c] = p
     # one level of wrappers: a function whose body pokes and takes the value as a parameter is a setter; its call
     # sites are the pokes (the write inside it is judged where it is called from)
-    setters = {}
+    setters, setter_params = {}, {}
     for fn in ast.walk(tree):
         if isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
             pk = [c for c in ast.walk(fn) if isinstance(c, ast.Call) and (py_poke_kind(c) or "").startswith("raw")]
@@ -503,6 +512,11 @@ def check_py(rel: str, text: str, harness_restores: bool, harness_tracks: bool =
                        and not re.search(r"restore|teardown|cleanup", fn.name, re.I)) and \
                     (fn.name == "set_setting" or any(uses_param(c) for c in pk)):
                 setters[fn.name] = "raw" if all(py_poke_kind(c) == "raw" for c in pk) else "raw-other"
+                names = [a.arg for a in fn.args.args]
+                vp = {n.id for c in pk for v in [_kw(c, "value")] if v is not None
+                      for n in ast.walk(v) if isinstance(n, ast.Name) and n.id in params}
+                if vp:
+                    setter_params[fn.name] = (names, vp)
     for c in ast.walk(tree):
         if not isinstance(c, ast.Call):
             continue
@@ -531,7 +545,7 @@ def check_py(rel: str, text: str, harness_restores: bool, harness_tracks: bool =
             if kind == "reset" and _remembered_before(c, chain):
                 continue
         if in_finally or in_handler or in_restore_fn:
-            if kind == "reset" or (kind.startswith("raw") and _value_is_literal(c, _locals(fn))) or (kind == "harness" and _value_is_literal(c)):
+            if kind == "reset" or (kind.startswith("raw") and _value_is_literal(c, _locals(fn), setter_params.get(getattr(c.func, "id", None)))) or (kind == "harness" and _value_is_literal(c)):
                 hits.append({"path": rel, "line": line, "kind": "restores-fixed-value", "target": kind, "text": src})
             continue
         guarded = any(isinstance(p, ast.Try) and ch in p.body and p.finalbody and _has_settings_write(p.finalbody, setters)

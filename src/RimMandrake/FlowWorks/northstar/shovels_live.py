@@ -365,6 +365,7 @@ def main():
                 cen = census(pid)
                 t, d1 = wait_depth(dig_off, d0, 6000)
             finally:
+                # restore-check: ok ends the OFF arm at the RUN_SETTINGS value; main()'s finally writes back the prior read into `before`
                 sset(S_FW, "shovelRequired", True)
             det = {"setting": got, "depth0": d0, "probe": wg(p0), "census": cen, "cutAfterTicks": t, "depth": d1}
             if why or str(got).lower() != "false" or d0 != 0:

@@ -159,6 +159,21 @@ check("py: a setter-wrapper poke restored by a setter-wrapper call in the finall
              scenes(b)
              _sset(b, "on", prior)
          ''')]] == [[], [5, 7]])
+POSITIONAL = '''
+         def setting(field, value):
+             b.call("jawa/mod_settings_field", typeName=T, action="set", field=field, value=str(value))
+         def run(b, f, was):
+             try:
+                 setting(f, False)
+                 scenes(b)
+             finally:
+                 setting(f, %s)
+         '''
+check("py: a setter wrapper called in a finally with a POSITIONAL literal restores a fixed value (repro_crown_mob shape)",
+      [(h["line"], h["kind"]) for h in py(POSITIONAL % "True")] == [(9, "restores-fixed-value")])
+check("py: the same finally with a positional captured prior is clean; a keyword literal is still a hit",
+      [py(POSITIONAL % "was"), kinds(py(POSITIONAL.replace("setting(f, %s)", "setting(f, value=True)")))]
+      == [[], ["restores-fixed-value"]])
 check("py: the mailbox field `request` is not a setting",
       py('def run(b):\n    b.call("jawa/mod_settings_field", typeName=T, action="set", field="request", value="x")\n') == [])
 check("py: Settings(\"reset\") outside any guard loses the player's values",

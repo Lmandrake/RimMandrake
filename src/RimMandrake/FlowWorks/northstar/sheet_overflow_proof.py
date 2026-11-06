@@ -556,6 +556,7 @@ def rain_spill(ctx):
         got, waited = _poll(ctx, lambda: (ld(l0, ledger(), "inRain") or 0) > 0, 24)
     finally:
         B.call("jawa/weather_set", weather="Clear", lockWeather=True)
+        # restore-check: ok ends the rain arm; sset kept the prior in TOUCHED and main()'s finally writes it back
         sset(S_FW, "rainFillsExcavationsEnabled", False)     # the fading rain must not reach later rows' pits
     l1 = ledger()
     canal1, _ = ctx["pitwater"](1, 12, 6, 1)
@@ -741,6 +742,7 @@ def setting_off(ctx):
         ctx["pulses"](6)
         l1 = ledger()
     finally:
+        # restore-check: ok ends the OFF arm; sset kept the prior in TOUCHED and main()'s finally writes it back
         sset(S_SHEET, "sheetOverflowEnabled", True)
     exits = sum((ld(l0, l1, k) or 0) for k in ("returned", "soaked", "evaporated"))
     good = (off and acc2 == 0 and ld(l0, l1, "standing") is not None and ld(l0, l1, "standing") < 0 and exits > 0

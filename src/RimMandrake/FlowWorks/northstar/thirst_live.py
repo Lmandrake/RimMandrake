@@ -731,6 +731,7 @@ def main(argv=None, bridge=None):
                 o1 = need(pf)
                 oh1 = hediffs(pf)
             finally:
+                # restore-check: ok ends the OFF arm; the run's finally writes back every prior read into `saved`
                 sset("drinkFromTerrain", True)     # the final restore puts the saved value back
             bad = []
             if t_hit is None:
@@ -1381,6 +1382,7 @@ def main(argv=None, bridge=None):
                 o1 = need(p16b)
                 oh1 = hediffs(p16b)
             finally:
+                # restore-check: ok ends the OFF arm; the run's finally writes back every prior read into `saved`
                 sset("lastResortDrinking", True)
             draft(p16b)
             bad = []
