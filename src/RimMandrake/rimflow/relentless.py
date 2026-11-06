@@ -1260,6 +1260,9 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
             raise ValueError(owed)
         if not isinstance(sha, str) or REV_EXPR.search(sha) or sha.upper().startswith(("HEAD", "FETCH_HEAD")) or sha in ("main", "master"):
             raise ValueError("sha must be one commit id, not a ref or revision expression that can move: %r" % (sha,))
+        owed = live_owed(root or os.getcwd(), st, item, sha)
+        if owed:
+            raise ValueError(owed)
         rec = {"item": item, "gen": gen, "sha": sha, "evidence": evidence, "at": iso(now), "contract": st["contract"],
                "hash": hashlib.sha256(json.dumps(st["contract"], sort_keys=True).encode()).hexdigest()}
         key = landing_key(root or os.getcwd(), sha)
@@ -1268,6 +1271,32 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
         store._write(store.receipt_path(item, gen), json.dumps(rec, indent=1, sort_keys=True))
         pilot_sat(st, "finish")
         _take_receipt(store, st, rec, now)
+
+
+def live_owed(cwd, st, item, sha):
+    """-> why `finish` refuses, or None. The check refuses a sha whose paths need a live line the contract lacks
+    (bad_candidate), and that return costs a whole attempt; CONTRACT_LIVE_FIX_MISSED_FLAG_COSTS_RETURNS: say so here,
+    while the worker can still add the line (contract --live, the same --proof). The same paths the check reads:
+    the commit plus every commit since base naming the item. An unreadable tree refuses nothing (the check still runs)."""
+    if (st.get("contract") or {}).get("live"):
+        return None
+    import live_line
+    r = _run_git(cwd, "show", "--format=", "--name-only", "--diff-merges=first-parent", sha)
+    if not r or r.returncode:
+        return None
+    paths = set(x for x in r.stdout.splitlines() if x.strip())
+    if st.get("base"):
+        r = _run_git(cwd, "log", "--format=", "--name-only", "--diff-merges=first-parent", "--grep=" + item,
+                     "%s..%s" % (st["base"], sha))
+        if r and not r.returncode:
+            paths |= set(x for x in r.stdout.splitlines() if x.strip())
+    paths = sorted(paths)
+    need = live_line.needs_line(paths)
+    if not need and not (item.startswith(ALARM_PREFIXES) and paths and not live_line.prose_only(paths)):
+        return None
+    return ("%s needs a live line in the contract (%s), so the check would return it: add one first with "
+            "`relentless.py contract --item %s --gen %s --proof <the same proof> --live \"<live line>\" --why ...`, then "
+            "finish again" % (sha, (need or ["alarm item"])[0], item, st.get("gen")))
 
 
 def _take_receipt(store, st, rec, now):
