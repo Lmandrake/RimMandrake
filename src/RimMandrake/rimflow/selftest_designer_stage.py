@@ -793,7 +793,18 @@ def refusals_exam(tmp, d, repo, exam):
             "needs expect and expect_source")
     refuses("exam: a total that is not the scenario count is refused", ex(score={"right": 11, "total": 11}),
             "score needs right and total")
+    # EXAM_SCORE_ENFORCE_RIGHT_OVER_TOTAL_PASSES: 999/10 passed the bar, and bool is an int in Python
+    refuses("exam: right above total is refused", ex(score={"right": 999, "total": 10}), "right above total")
+    refuses("exam: right one above total is refused", ex(score={"right": 11, "total": 10}), "right above total")
+    refuses("exam: a negative right is refused", ex(score={"right": -1, "total": 10}), "score needs right and total")
+    refuses("exam: a boolean right is refused", ex(score={"right": True, "total": 10}), "score needs right and total")
+    refuses("exam: a boolean total is refused", ex(score={"right": 10, "total": True}), "score needs right and total")
+    refuses("exam: a float right is refused", ex(score={"right": 10.0, "total": 10}), "score needs right and total")
+    check("exam: right exactly at the 9/10 bar still passes", ex(score={"right": 9, "total": 10}) == [],
+          ex(score={"right": 9, "total": 10}))
+    refuses("exam: right one under the bar is refused", ex(score={"right": 8, "total": 10}), "is under 90%")
     refuses("exam: an accept where the core rejects is refused", ex(accept_where_reject_core=1), "must be 0")
+    refuses("exam: a boolean accept_where_reject_core is refused", ex(accept_where_reject_core=False), "must be 0")
     refuses("exam: an examiner who is the author is refused", ex(examiner="designer"), "examiner is not the tree's author")
     refuses("exam: an unaccounted challenger miss is refused", ex(challenger_misses=[{"id": "m1"}]), "accounted for")
     refuses("exam: an exam with no control is refused", ex(control=None), "control needs broken_leaf")

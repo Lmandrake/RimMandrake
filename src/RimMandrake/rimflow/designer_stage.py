@@ -836,11 +836,14 @@ def exam_errors(ex, d, st, repo=REPO):
             errs.append("exam: run against another %s than the current one; rerun it" % k)
     score = ex.get("score") if isinstance(ex.get("score"), dict) else {}
     right, total = score.get("right"), score.get("total")
-    if not (isinstance(right, int) and isinstance(total, int) and total >= EXAM_MIN and total == len(sc)):
+    if not (type(right) is int and type(total) is int and right >= 0     # type(): bool is an int in Python
+            and total >= EXAM_MIN and total == len(sc)):
         errs.append("exam: score needs right and total, total = the number of scenarios")
+    elif right > total:
+        errs.append("exam: %d/%d has right above total; no exam scores more than it asked" % (right, total))
     elif right < EXAM_PASS * total:
         errs.append("exam: %d/%d is under %d%%" % (right, total, EXAM_PASS * 100))
-    if ex.get("accept_where_reject_core") != 0:
+    if type(ex.get("accept_where_reject_core")) is not int or ex.get("accept_where_reject_core") != 0:
         errs.append("exam: accept_where_reject_core must be 0")
     if not CT.txt(ex.get("examiner")) or ex.get("examiner") == ex.get("author"):
         errs.append("exam: the examiner is not the tree's author")
