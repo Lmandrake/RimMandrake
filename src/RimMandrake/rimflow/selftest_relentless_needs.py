@@ -417,6 +417,18 @@ def t_gate_enforces():
        "a stale index degrades the need to a warning, never a refusal", g)
 
 
+def t_srchash_stale():
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        for side, line in (("repo", "# dll: aaa\n"), ("game", "# dll: bbb\n")):
+            os.makedirs(os.path.join(d, side, "Assemblies"))
+            with open(os.path.join(d, side, "Assemblies", "M.dll.srchash"), "w") as f:
+                f.write("# project: x\n" + line + "123 a.cs\n")
+        ok(N._srchashes(os.path.join(d, "repo")) != N._srchashes(os.path.join(d, "game")),
+           "a deployed DLL stamped with another build reads as a different .srchash (stale index)")
+        ok(N._srchashes(os.path.join(d, "none")) == {}, "a mod with no stamped DLL has no staleness to report")
+
+
 def t_batch_split():
     fx = GapFx({"lead": ["KeelHoist"], "rider": ["Armoury"], "third": ["FlowWorks"]})
     fx.names_index = lambda: index(defs=DEFS)
@@ -478,7 +490,7 @@ def t_idempotent_and_run_row():
 def main():
     for t in (t_resolve, t_blind_index, t_check_and_refusal, t_comment, t_advise, t_batch, t_preflight_names,
               t_one_resolver, t_fixture_roundtrip, t_typed_and_data, t_replay_strict, t_each_source,
-              t_absence_gives_nothing, t_live_without, t_gate_enforces, t_batch_split, t_idempotent_and_run_row):
+              t_absence_gives_nothing, t_live_without, t_gate_enforces, t_srchash_stale, t_batch_split, t_idempotent_and_run_row):
         t()
     print('{"ok": %d, "fails": %d}' % (n_ok, len(fails)))
     return 1 if fails else 0

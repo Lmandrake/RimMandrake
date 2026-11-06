@@ -291,14 +291,19 @@ def default_index():
     srcs = dict(dirs or {})
 
     def stale(mod):
-        """A mod whose deployed DLL is older than its newest .cs source: the namespace index (read from the repo) speaks
-        for code the game folder does not hold yet (the deploy gate deploys it; until then a need from it only warns)."""
+        """A mod whose deployed DLL is not the repo's build (its Assemblies/*.dll.srchash differs from the committed one):
+        the namespace and defName index, read from the repo, speaks for a build the game folder does not hold, so a need
+        from it only warns until the deploy gate puts the build there. (File mtimes cannot say this: a fresh clone's
+        checkout is newer than every deployed DLL.)"""
         if mod not in srcs or game is None:
             return None
-        dlls = _newest(os.path.join(GAME_DIR, "Mods", mod), (".dll",), "Assemblies")
-        cs = _newest(srcs[mod], (".cs",))
-        if cs and dlls and dlls < cs:
-            return "%s's deployed DLL is older than its source" % mod
+        mine = _srchashes(srcs[mod])
+        if not mine:
+            return None
+        theirs = _srchashes(os.path.join(GAME_DIR, "Mods", mod))
+        if theirs != mine:
+            return "%s's deployed DLL is not the repo's build (.srchash %s)" % (
+                mod, "missing" if not theirs else "differs")
         return None
     idx = Index(list(dirs) if dirs is not None else None, folded, game, lambda: list(scan()), pids, namespaces, all_deps,
                 lambda: repo_defs(srcs), stale)
@@ -333,19 +338,21 @@ def repo_defs(srcs):
     return out
 
 
-def _newest(root, exts, under=None):
-    best = 0.0
-    for dp, dn, fn in os.walk(root):
-        dn[:] = [d for d in dn if d not in (".git", "obj", "bin")]
-        if under and under not in dp.replace("\\", "/").split("/"):
-            continue
-        for f in fn:
-            if f.endswith(exts):
-                try:
-                    best = max(best, os.path.getmtime(os.path.join(dp, f)))
-                except OSError:
-                    pass
-    return best
+def _srchashes(mod_dir):
+    """{name: the "# dll:" line} of a mod tree's Assemblies/*.dll.srchash stamps (dll_source_stamp.py), {} if none."""
+    out = {}
+    d = os.path.join(mod_dir, "Assemblies")
+    try:
+        names = [f for f in os.listdir(d) if f.endswith(".dll.srchash")]
+    except OSError:
+        return out
+    for f in names:
+        try:
+            with open(os.path.join(d, f), encoding="utf-8", errors="replace") as fh:
+                out[f] = next((l.strip() for l in fh if l.startswith("# dll:")), "")
+        except OSError:
+            out[f] = ""
+    return out
 
 
 def _csprojs(src):
@@ -1035,7 +1042,7 @@ def main(argv=None):
         d = os.path.join(BOOKS, PROOFS_DIR)
         rows = []
         for fn in sorted(os.listdir(d)):
-            if not fn.endswith(".txt"):
+            if not fn.endswith(".txt") or fn.count(".") > 1:     # <ID>.<kind>.txt is a proof's data, not a proof
                 continue
             with open(os.path.join(d, fn), encoding="utf-8", errors="replace") as f:
                 text = f.read()

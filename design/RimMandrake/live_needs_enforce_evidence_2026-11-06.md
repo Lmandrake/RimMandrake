@@ -25,44 +25,49 @@ changed by the item (enforce, derive at the gate, `live-without:`).
   helper). Each stays a warning: promoting those sources adds wrong mods elsewhere in the replay.
 
 The defName source (`--has XDef/RM_...`, single owner from the repo's Defs) is tested offline but is not in the frozen
-replay index (the fixture predates it).
+replay index (the fixture predates it); the migration below shows its live additions. A stale index (a mod whose deployed
+DLL's `.srchash` is not the repo's) degrades type and defName needs to warnings; file mtimes were tried first and read
+EVERY mod stale in a fresh clone.
 
 ## 2 Migration over every live proof (spec step 5)
 
 `python3 src/RimMandrake/rimflow/relentless_names.py migrate` over `infrastructure/state/live_proofs/*.txt` (proof text
-alone, no build mods; real index of this machine, 2026-11-06):
-**162 proofs, 83 with additions, 133 additions, 0 conflicts.** Every addition was cross-checked against the proof's own
-`--without`/`--absent` arguments. One contradicted the proof's intent: STILLSAND_RETURN_REMAINDER_1 clause A2 runs
-`--without mandrake.rut.patches` (the RM tier with Utinni absent) while A1/A4 `--needs` it; it now carries
-`live-without: mandrake.rut.patches`. MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG's `--absent MineShaft` is a log-string check
-(live_log_check.py), not a mod absence: no change.
+alone, no build mods, so a build's own mod shows here as an addition the gate would not need; real index of this
+machine, 2026-11-06): **163 proofs, 84 with additions, 150 additions, 0 conflicts.** Every addition was cross-checked
+against the proof's own `--without`/`--absent` arguments. One contradicted the proof's intent:
+STILLSAND_RETURN_REMAINDER_1 clause A2 runs `--without mandrake.rut.patches` (the RM tier with Utinni absent) while
+A1/A4 `--needs` it; it now carries `live-without: mandrake.rut.patches`. Two others only looked like it:
+MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG (`--absent MineShaft`) and VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT (`--absent
+SolarMirrors`) pass those names to live_log_check.py, a log-string absence check, beside `--has` asserts that need the
+mod loaded: no change.
 
 | proof | additions (mod, source) |
 |---|---|
 | ART_RESOLUTION_MEASURE_AT_MAX_ZOOM | UtinniPatches (script_path), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
 | ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP | AtmosphericBase (script_home), UtinniPatches (script_path), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
-| BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL | mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
-| BIOME_TIER_CLEANUP_1 | mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
+| BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL | UtinniPatches (script_defname), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
+| BIOME_TIER_CLEANUP_1 | UtinniPatches (proof_defname), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
 | BLUEDESERT_FLORA_PLANT_REFUSAL_1 | RimMandrake.Biomes (script_home) |
 | BLUEDESERT_GPT_ENRICHMENT_1 | RimMandrake.Biomes (script_home) |
 | BONES_LEAN_PORT_BUILD_TREELESS_WORLD | RimMandrake.Biomes (script_home) |
-| BRONZIUM_DROP_1 | neronix17.toolbox (closure) |
+| BRONZIUM_DROP_1 | Armoury (proof_defname), neronix17.toolbox (closure) |
 | CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES | FlowWorks (script_home) |
-| CANON_MATERIALS_BUILD_1 | mandrake.rsw.armoury (proof_cli), neronix17.outerrim.core (proof_cli), neronix17.toolbox (closure) |
-| COLD_STORAGE_PROOF_VERIFY_ROT_RATES_LIVE | ColdStorage (script_home) |
+| CANON_MATERIALS_BUILD_1 | mandrake.rsw.armoury (proof_cli), neronix17.outerrim.core (proof_cli), Armoury (proof_defname), neronix17.toolbox (closure) |
+| COLD_STORAGE_PROOF_VERIFY_ROT_RATES_LIVE | ColdStorage (script_home), Cuisine (script_defname) |
 | CONTAGION_SITE_BUILD_SKY_STAYS_CALM | RimMandrake.Biomes (script_home) |
 | CRACKEDLANDS_THREE_HEIGHT_FLORA_1 | RimMandrake.Biomes (script_home) |
 | CREEP_WEB_HARVEST_LIVE_1 | RimMandrake.Biomes (script_home) |
 | DEEPFIRE_FAMILY_SETTINGS_SAVE_LOAD_1 | LuminousPigment (script_home) |
 | DEEP_LAYER_BELT_HARNESS_1 | RimMandrake.Biomes (script_home) |
-| DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT | FlowWorks (script_home) |
-| EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS | mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
+| DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT | FlowWorks (script_home), HugeThings (script_defname) |
+| EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS | UtinniPatches (proof_defname), SWBestiary (proof_defname), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
 | EGROWTH_SAVELOAD_PROVE_DICT_SCRIBE_SHARE | RimMandrake.Biomes (script_home) |
 | EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY | RimMandrake.Biomes (script_home) |
 | FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE | RimMandrake.Biomes (script_home) |
+| FLAME_STATUES_MOD_BUILD_1 | FlameStatues (proof_defname) |
 | FORGE_SKY_PASTURES_1 | RimMandrake.Biomes (script_home) |
 | GELATINOUSSLIME_KIT_ART_1 | RimMandrake.Biomes (script_home) |
-| GIZKA_STOWAWAY_UNMEASURED_ROWS_1 | GizkaStowaway (script_home), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
+| GIZKA_STOWAWAY_UNMEASURED_ROWS_1 | GizkaStowaway (script_home), SWBestiary (script_defname), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
 | GOLD_PANNING_PROVE_THE_COLONIST_STAYS | FlowWorks (proof_cli) |
 | GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1 | mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
 | HEADS_VERIFY_SHRUNK_TO_FIT_THE_HATS | neronix17.toolbox (closure) |
@@ -77,12 +82,12 @@ alone, no build mods; real index of this machine, 2026-11-06):
 | LONGSHADE_JAWATOW_RECHECK_1 | RimMandrake.Biomes (script_home), UtinniPatches (script_path) |
 | LONGSHADE_SCENE_LIVECHECK_1 | RimMandrake.Biomes (script_home) |
 | LONGSHADE_STAMPEDE_LIVECHECK_1 | RimMandrake.Biomes (script_home) |
-| MAPPRETICK_DIAGNOSE_FULL_LIST_STALL | mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
+| MAPPRETICK_DIAGNOSE_FULL_LIST_STALL | UtinniPatches (script_defname), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
 | MIASMA_WARDEN_MOTHER_ART_1 | RimMandrake.Biomes (script_home) |
-| MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG | MineShaft (script_home), mandrake.rm.mineshaft (proof_cli), mandrake.rsw.armoury (proof_cli), neronix17.toolbox (closure) |
+| MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG | MineShaft (script_home), mandrake.rm.mineshaft (proof_cli), mandrake.rsw.armoury (proof_cli), Armoury (proof_defname), neronix17.toolbox (closure) |
 | MODCHECK_DONOR_ENVIRONMENTS_1 | ebsg.framework (proof_cli), adaptive.storage.framework (proof_cli), vanillaexpanded.vfefactory (proof_cli), oskarpotocki.vanillafactionsexpanded.core (proof_cli), neronix17.toolbox (closure) |
 | PITCAPTURE_DIAGNOSE_PRISONER_FLAG_BACKSLIDES | FlowWorks (script_home) |
-| PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP | FlowWorks (script_home) |
+| PIT_CAPTURE_FIX_WARDEN_HURT_AT_LIP | FlowWorks (script_home), HugeThings (script_defname) |
 | PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH | FlowWorks (script_home) |
 | PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN | FlowWorks (script_home) |
 | PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES | FlowWorks (script_home) |
@@ -95,12 +100,12 @@ alone, no build mods; real index of this machine, 2026-11-06):
 | QUARRYSHARE_FIX_ZEROED_GOVERNED_WEIGHTS | ogliss.thewhitecrayon.quarry (proof_cli), mandrake.rm.minerals (proof_cli), Minerals (proof_cue) |
 | QUARRY_DIG_FIX_VALIDATED_BUT_NEVER_FINISHES | FlowWorks (proof_cli) |
 | QUICKTEST_POLICY_NRE_FULLLIST_1 | MandrakePatches (script_home), mandrake.rm.patches (proof_cue) |
-| RECKONING_HISTORYEVENT_REWIRE_OFF_QUESTEND | mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure), mandrake.rm.weathersuite (closure) |
+| RECKONING_HISTORYEVENT_REWIRE_OFF_QUESTEND | EggReckoning (proof_defname), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure), mandrake.rm.weathersuite (closure) |
 | ROT_FAUNA_KIN_WIRING_1 | mandrake.rut.patches (proof_cli) |
-| ROT_MOSS_VERIFY_UNDER_THE_MUSHROOMS.ground_cover | mandrake.rm.flowworks (closure) |
 | RSW_FACES_VERIFY_IN_GAME_BEFORE_SHIM | nals.facialanimation (proof_cue), neronix17.toolbox (closure), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
 | SCARLANDS_CHATRAK_LIVE_RERUN_1 | RimMandrake.Biomes (script_home) |
 | SCRUB_WILDLIFE_PROVE_NOBODY_CAME | RimMandrake.Biomes (script_home) |
+| SHADE_LESSONS_BUILD_WATCH_THE_HERD_CROSS | RimMandrake.Biomes (script_home) |
 | SOORRAK_INSTANT_JOB_LOOP_1 | RimMandrake.Biomes (script_home) |
 | SPECIES_TRAITS_OVER_APTITUDES_1 | neronix17.toolbox (closure) |
 | STARWARS_JUNK_RESKIN_1 | StarWarsPatches (script_home) |
@@ -114,9 +119,9 @@ alone, no build mods; real index of this machine, 2026-11-06):
 | UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL | FlowWorks (script_home) |
 | UNPROVEN_LIVE_LEGS_TRIAGE_1 | RimMandrake.Biomes (proof_cli) |
 | VCE_CANFISH_FIX_RESKIN_SKIPS_BILL | mandrake.rsw.cuisine (proof_cli), vanillaexpanded.vcooke (proof_cli) |
-| VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT | mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
-| VEE_WORLD_RENAME_ONE_STAMP_AT_END | mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
-| WARCASKET_JUNKER_KINDS_BUILD_1 | mandrake.rm.warcasket (proof_cli), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
+| VEE_SOLAR_REWIRE_GEOMETRY_PAINTS_IT | SolarMirrors (proof_defname), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
+| VEE_WORLD_RENAME_ONE_STAMP_AT_END | SolarMirrors (script_defname), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
+| WARCASKET_JUNKER_KINDS_BUILD_1 | mandrake.rm.warcasket (proof_cli), UtinniPatches (proof_defname), mandrake.rm.flowworks (closure), mandrake.rm.luminouspigment (closure) |
 | WARSCAR_HOSPICE_DESERTERS_1 | RimMandrake.Biomes (script_home) |
 | WAVE1_FIXES_DEPLOY_BEFORE_THE_CUT | Armoury (proof_cli), StarWarsPatches (proof_cli), ResearchRetag (proof_cli), UtinniPatches (proof_cli), Doctrine (proof_cli), LuminousPigment (proof_cli), RimMandrake.Biomes (script_path), neronix17.toolbox (closure) |
 | WEEPINGSTONES_NET_FLEEING_FLIER_1 | RimMandrake.Biomes (script_home) |
