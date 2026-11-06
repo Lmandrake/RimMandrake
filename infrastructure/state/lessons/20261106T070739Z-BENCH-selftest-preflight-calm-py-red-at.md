@@ -1,0 +1,1 @@
+selftest_preflight_calm.py is RED at c639c39017 on a file nobody in TICKBURST touched: 'preflight skips site_calm: [style_readback_proof.py]' (a fresh-map proof that does not call V.site_calm). Pre-existing; fix the proof or its exemption.
