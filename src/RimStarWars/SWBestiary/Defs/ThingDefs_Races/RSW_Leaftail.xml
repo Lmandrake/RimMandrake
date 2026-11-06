@@ -11,6 +11,9 @@
       <ComfyTemperatureMin>-58</ComfyTemperatureMin>
       <Wildness>0.75</Wildness>
       <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <!-- canon "flying omnivores" (LEAFTAIL_WIRE_FLIGHT_WINGED_RODENT_GROUNDED): short tree-to-tree hops; no flip-book yet, flight does not wait on frames -->
+      <MaxFlightTime>20</MaxFlightTime>
+      <FlightCooldown>15</FlightCooldown>
     </statBases>
     <tools>
       <li>
@@ -67,6 +70,8 @@
       <nuzzleMtbHours>24</nuzzleMtbHours>
       <manhunterOnDamageChance>0.10</manhunterOnDamageChance>
       <herdAnimal>true</herdAnimal>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
       <lifeExpectancy>6</lifeExpectancy>
       <gestationPeriodDays>4</gestationPeriodDays>
       <specialTrainables>

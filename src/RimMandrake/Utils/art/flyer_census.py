@@ -318,7 +318,6 @@ for race, info in donor_flyers.items():
 ADJ = {  # defName -> (flies verdict, why). Only rows WITHOUT MaxFlightTime need one; reviewed 2026-10-08.
     "RM_BloodropMoth": ("should-fly", "owner card 2026-10-08: gets flight + stable frames"),
     "RSW_Baseopsis": ("no", "owner card 2026-10-08: the winged giant earwig stays grounded"),
-    "RSW_Leaftail": ("should-fly", "desc 'winged rodent', canon 'flying omnivores'; no MaxFlightTime (found 2026-11-01)"),
     "RSW_Gorg": ("no", "canon mentions a bio-engineered winged 'chubafly' variant, not the gorg"),
 }
 NO = {"RM_Gharrek": "fluttering gill-fans, a crawler", "RM_Ysvaltha": "blades folded 'like wings'",
