@@ -162,10 +162,26 @@
     "broken_leaf": "rite_harvests_behind_front",
     "reader": "rm-judge aca175183c51be84b",
     "missed": false
+   },
+   {
+    "broken_leaf": "fruit_defence_their_scar_only",
+    "stripped": "leaf removed plus every scar-reach restatement in tree and sheet (fruit_defence_warns_then_drives wording, his card line, sheet lines 5/16/36/46)",
+    "reader": "rm-judge a28db010e0dd5b1f6",
+    "run": "rm-role-designer-1793930288",
+    "missed": false,
+    "how": "e3/c3/e15 still right: inferred reach from 'nearby harvesters' and his 'They can't see you all the time'"
+   },
+   {
+    "broken_leaf": "visit_picks_and_leaves",
+    "stripped": "leaf removed plus his visit card line and the visit-reach line in the sheet",
+    "reader": "rm-judge a950a2dba6d7f7902",
+    "run": "rm-role-designer-1793930288",
+    "missed": false,
+    "how": "e7/e14/c5 still right: Reader applied rite_harvests_behind_front to the visit"
    }
   ],
   "missed": false,
-  "note": "Neither control missed: each removed rule is also stated elsewhere (scar reach inside fruit_defence_warns_then_drives 'in their scar'; flames inside walk_tribes_season 'pick behind the front' and the visit leaf). The scenarios did not discriminate a single-leaf removal; the redundancy is in the tree, not the scenarios. Not waived: whoever accepts stage 4 decides whether this control result is acceptable."
+  "note": "Four controls, none missed. Each core rule is recoverable from neighbouring leaves or his quoted root, so these 23 scenarios cannot show a single removed rule. designer_exam.md step 5 is not met; the exam does not pass. Not waived. Gate gap filed: EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED."
  },
  "score": {
   "right": 23,
