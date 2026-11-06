@@ -22,6 +22,7 @@ import collections
 import glob
 import json
 import os
+import re
 import sys
 import time
 from html import escape
@@ -210,6 +211,20 @@ def most_worth_knowing(d):
     return "Most worth knowing: nothing is jammed%s." % ("" if f.get("ok") else ", but no worker is running")
 
 
+UPPER_ID = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
+SNAKE = re.compile(r"\b[a-z]+(?:_[a-z]+)+\b(?![.(/])")
+
+
+def plain(text):
+    """Free ledger text as words for the page: an UPPER_SNAKE id becomes lower-case words (a trailing _1 dropped), a
+    snake_case slug becomes words, a Python None becomes 'none'. The internal name stays in each line's hover title."""
+    t = str(text or "")
+    t = UPPER_ID.sub(lambda m: re.sub(r"_\d{1,2}$", "", m.group(0)).replace("_", " ").lower(), t)
+    t = SNAKE.sub(lambda m: m.group(0).replace("_", " "), t)
+    t = re.sub(r"\bNone\b", "none", t)
+    return t[:1].upper() + t[1:]
+
+
 def li(text, title=None):
     return "<li%s>%s</li>" % (' title="%s"' % escape(title) if title else "", text)
 
@@ -234,9 +249,9 @@ def mod_card(m):
         out.append('<div class="%s"><h4>%s</h4><ul>%s%s</ul></div>' % (cls, head, "".join(rows),
                    "<li class=\"note\">and %d more</li>" % more if more else ""))
     block("fin", "Recently finished",
-          [li(escape(t["title"]) + ("" if t.get("kind") == "pass" else ' <span class="note">(not yet re-checked by an '
+          [li(escape(plain(t["title"])) + ("" if t.get("kind") == "pass" else ' <span class="note">(not yet re-checked by an '
                                     'independent agent)</span>'), t.get("id")) for t in fin[:SHOW]], max(0, len(fin) - SHOW))
-    block("prog", "In progress", [li(escape(t["title"]), t.get("id")) for t in prog[:SHOW]], max(0, len(prog) - SHOW))
+    block("prog", "In progress", [li(escape(plain(t["title"])), t.get("id")) for t in prog[:SHOW]], max(0, len(prog) - SHOW))
     block("stuck", "Stuck", [li(stuck_text(s), s.get("id")) for s in stuck])
     out.append("</div>")
     return "".join(out)
@@ -244,9 +259,9 @@ def mod_card(m):
 
 def stuck_text(s):
     tag = ' <span class="tag">needs you</span>' if s["waits"] == "you" else ""
-    plan = s["plan"][:1].upper() + s["plan"][1:]
+    plan = plain(s["plan"])
     return "%s%s<br><span class=\"note\">Planned: %s. Waits on: <span class=\"who\">%s</span>.</span>" % (
-        escape(s["title"]), tag, escape(plan.rstrip(".")), escape(s["waits"]))
+        escape(plain(s["title"])), tag, escape(plan.rstrip(".")), escape(s["waits"]))
 
 
 def mod_of_items(mods):
@@ -281,7 +296,7 @@ def render(d):
 
     h.append('<h2>Needs you (%d)</h2><div class="box needs">' % len(needs))
     if needs:
-        h.append("<ul>%s</ul>" % "".join(li("%s%s" % (escape(n["q"]), ' <span class="note">(%s)</span>' % escape(where[n["item"]])
+        h.append("<ul>%s</ul>" % "".join(li("%s%s" % (escape(plain(n["q"])), ' <span class="note">(%s)</span>' % escape(where[n["item"]])
                                                  if n["item"] in where else ""), n["item"]) for n in needs))
         h.append('<p class="note">Each comes to you as a question card from the Conductor. A <span class="tag">needs you'
                  '</span> tag below is always one of these.</p>')

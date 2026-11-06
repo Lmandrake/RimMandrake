@@ -106,7 +106,10 @@ check("trends: an empty journal is no record on every day", all(r.get("none") fo
 # ---- render: a synthetic board
 fleet = {"factory": {"ok": True, "running": 3, "target": 8}, "t": now, "good_t": now,
          "needs": {"lines": [{"item": "OWN_ONE", "q": "Look at the bridge: right?"},
-                             {"item": "OWN_TWO", "q": "Pick a colour for the pipes?"}]},
+                             {"item": "OWN_TWO", "q": "Pick a colour for the pipes?"},
+                             # raw ledger text (the 2026-11-06 nightly red): ids, a Python None, a snake_case slug
+                             {"item": "OWN_RAW", "q": "Ratify the sheet that gates MOD_VALIDATION_RETROFIT_1 before "
+                                                      "CANONICAL_ASHKARR_START_2026-09-12 (owner_call)"}]},
          "mods": [{"id": "Bridge", "name": "Bridge Works", "closed": 2, "open": 3, "parked": 1, "tasks": [
                        {"id": "DONE_ONE", "kind": "pass", "title": "Bridges draw right"},
                        {"id": "DONE_TWO", "kind": "done", "title": "Leaves open"},
@@ -115,7 +118,10 @@ fleet = {"factory": {"ok": True, "running": 3, "target": 8}, "t": now, "good_t":
                    "stuck": [M.stuck_of(item("OWN_ONE", needs="owner"), {}, [], known, {}) | {"id": "OWN_ONE",
                                                                                                "title": "Look at the bridge"},
                              M.stuck_of(item("S2"), {"status": "held", "hold": {"kind": "proof_weak"}}, [], known, {}) |
-                             {"id": "S2", "title": "Bridge proof"}]},
+                             {"id": "S2", "title": "Bridge proof"},
+                             M.stuck_of(item("S3"), {"status": "retired"}, [], known, {}) |
+                             {"id": "S3", "title": "Nightly red: ledger ended it ('close', None) for "
+                                                  "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST"}]},
                   {"id": "_infra", "name": "Infrastructure & tooling", "infra": True, "closed": 1, "open": 0,
                    "parked": 0, "tasks": [], "stuck": []}]}
 d = {"now": now, "fleet": fleet, "states": B.collections.Counter(running=3, queued=20, held=2, blocked=4, checking=1),
@@ -203,12 +209,15 @@ def board_checks(page, label):
 
 
 board_checks(page, "synthetic")
-check("synthetic: Needs you (2)", needs_count(page) == 2)
+check("synthetic: Needs you (3)", needs_count(page) == 3)
 check("synthetic: the needs-you tag is on its stuck line", tag_ids(page) == {"OWN_ONE"})
 check("synthetic: tooling work sits in a collapsed section", "<details><summary>Tooling and cross-mod work (1)" in page)
 check("synthetic: a not-yet-checked finish says so", "not yet re-checked" in page)
 check("synthetic: the needs line names its mod", "Look at the bridge: right? <span class=\"note\">(Bridge Works)" in page)
 check("synthetic: no record shown for days before the journal", "no record" in page)
+check("synthetic: raw ids become words, the internal name stays in the hover title",
+      "gates mod validation retrofit before canonical ashkarr start 2026-09-12 (owner call)" in page
+      and 'title="OWN_RAW"' in page and "flyer tier one rebuild redo rows first" in page)
 bad = B.render(dict(d, fleet=dict(fleet, factory={"ok": False, "why": "staffing silent 20m"}), states=None, trends=None))
 check("not working says why, and unreadable sources say UNMEASURED",
       "NOT working right now: staffing silent 20m" in bad and bad.count("UNMEASURED") == 2)
