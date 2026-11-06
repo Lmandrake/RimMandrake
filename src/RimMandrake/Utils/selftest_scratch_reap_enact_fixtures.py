@@ -44,6 +44,10 @@ try:
     # CLEANER
     os.environ["SCRATCH_REAP_ROOTS"] = str(td / "rmscratch")
     os.environ["SCRATCH_REAP_RM_SCRATCH"] = "/nonexistent"
+    # A fixture ledger corpus and state dir: the live seat clone and ~/.local/state are not in a walled box.
+    for x in ("handoffs", "ledger/events", "items/closed"):
+        (td / "corpus/infrastructure/state" / x).mkdir(parents=True)
+    os.environ.update(SCRATCH_REAP_CORPUS=str(td / "corpus"), SCRATCH_REAP_STATE=str(td / "state"))
     import scratch_reap as R
     R.pool_measures = lambda: {}
     R.CTIME_COUNTS = False
