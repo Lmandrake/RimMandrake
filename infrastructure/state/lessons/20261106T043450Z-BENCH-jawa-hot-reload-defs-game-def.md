@@ -1,0 +1,1 @@
+jawa/hot_reload_defs (in-game def reload) is UNPROVEN: the owner reports it crashed the game on a large mod list and expects it to cost about as much as a reload (owner 2026-11-05). Never count it as a speed-up until a minimal-list test proves it.
