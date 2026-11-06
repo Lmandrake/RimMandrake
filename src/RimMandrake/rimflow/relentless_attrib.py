@@ -378,37 +378,88 @@ def _same(cw, w):
 
 
 def _refuse(store, fx, item, w, event, now, why, note, acts, kind=None):
-    if w.get("refused_event") != event:
-        with store.lock():
-            cur = store.load(item)
-            fresh = cur is not None and _same(cur.get("wait") or {}, w)
-            if fresh:
-                cur["wait"]["refused_event"] = event
-                store.save(cur)
+    """Once per evidence event: the alarm, the note AND the acts row. Refusing the same event again every tick is not
+    news (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE: 285 identical incident_refused journal rows on one wait)."""
+    if w.get("refused_event") == event:
+        return False
+    with store.lock():
+        cur = store.load(item)
+        fresh = cur is not None and _same(cur.get("wait") or {}, w)
         if fresh:
-            store.journal({"at": iso(now), "do": "alarm", "item": item, "why": why[:400],
-                           "kind": kind or ("instrument_fixture_refused" if w.get("incident") else "dependency_refused")})
-            fx.ledger_note(item, note)
-            if kind == "instrument_fixture_no_verdict":     # the repair's close owes the line: say so on the repair
-                fx.ledger_note(w["on"], "relentless: this repair closed but its release fixtures printed no "
-                                        "FIXTURE_VERDICT line, so %s keeps waiting: %s" % (item, why[:600]))
-    acts.append({"do": "incident_refused" if w.get("incident") else "dependency_refused", "item": item, "on": w["on"],
-                 "why": why[:200]})
+            cur["wait"]["refused_event"] = event
+            store.save(cur)
+    if fresh:
+        store.journal({"at": iso(now), "do": "alarm", "item": item, "why": why[:400],
+                       "kind": kind or ("instrument_fixture_refused" if w.get("incident") else "dependency_refused")})
+        fx.ledger_note(item, note)
+        if kind == "instrument_fixture_no_verdict":     # the repair's close owes the line: say so on the repair
+            fx.ledger_note(w["on"], "relentless: this repair closed but its release fixtures printed no "
+                                    "FIXTURE_VERDICT line, so %s keeps waiting: %s" % (item, why[:600]))
+        acts.append({"do": "incident_refused" if w.get("incident") else "dependency_refused", "item": item,
+                     "on": w["on"], "why": why[:200]})
     return False
+
+
+def successor(fx, on):
+    """-> the id a wait on the superseded `on` really waits on (its supersession chain's end), or None when the chain
+    cannot end (no successor, an unfiled one, or a cycle). Reads this tick's replay."""
+    try:
+        items = fx.ledger_items()[1].items
+    except AttributeError:
+        return None
+    seen, cur = set(), on
+    while True:
+        it = items.get(cur)
+        if it is None or cur in seen:
+            return None
+        if it.state != "superseded":
+            return cur if cur != on else None
+        seen.add(cur)
+        cur = it.superseded_by
+
+
+def _never_filed(store, fx, st, now, acts):
+    """The wait names an item the ledger has never seen, so no close can ever release it, and the ledger block no
+    longer holds (sweep calls release only then). Resume it, once, saying so; its next failure re-attributes."""
+    import relentless_incident
+    item, w = st["item"], st["wait"]
+    with store.lock():
+        cur = store.load(item)
+        if cur is None or cur["status"] != "blocked" or not _same(cur.get("wait") or {}, w) or cur.get("block_pending"):
+            return False
+        sha = cur["wait"]["sha"]
+        resume(store, cur, now, "released: %s was never filed and the ledger block is lifted" % w["on"])
+        store.save(cur)
+        if w.get("incident"):
+            relentless_incident.released(store, w["incident"], item, now)
+    why = "%s was never filed; the ledger block on %s is lifted, so it resumes" % (w["on"], item)
+    store.journal({"at": iso(now), "do": "released", "item": item, "on": w["on"], "sha": sha, "to": cur["status"],
+                   "why": why})
+    fx.ledger_note(item, "relentless: " + why + "; its next failure is attributed again.")
+    acts.append({"do": "released", "item": item, "on": w["on"], "to": cur["status"], "why": "never filed"})
+    return True
 
 
 def release(store, fx, st, now, acts):
     """From relentless_block.sweep (not under the lock), a `blocked` item with a wait whose ledger block no longer
     holds. -> True when the item moved. Evidence only: the repair or predecessor CLOSED (state done; dropped,
-    superseded or a bare unblock is no evidence), then for an incident its fixtures; no clock releases anything."""
+    superseded or a bare unblock is no evidence), then for an incident its fixtures; no clock releases anything.
+    A superseded repair is followed to its successor's close; a repair never filed can never close, so with the ledger
+    block lifted the item resumes once (_never_filed) instead of being refused every tick."""
     import relentless_incident
     item, w = st["item"], st.get("wait") or {}
     if w.get("kind") not in (WAIT_INSTRUMENT, WAIT_DEPENDENCY):
         return False        # attribution: the diagnostician or the seat moves it
-    led_on = fx.item_state(w["on"]) or {}
+    on = w["on"]
+    led_on = fx.item_state(on)
+    if led_on is None:
+        return _never_filed(store, fx, st, now, acts)
+    if led_on.get("state") == "superseded":     # a superseded repair delivers through its successor's close
+        on = successor(fx, on) or on
+        led_on = fx.item_state(on) or led_on
     # the evidence event is this close: its last ledger event, so a reopen and a new close (even on the same sha) is a
     # new event, and a tick is not
-    event = "%s:%s:%s:%s" % (w["on"], led_on.get("state") or "?", led_on.get("closed_sha") or "-",
+    event = "%s:%s:%s:%s" % (on, led_on.get("state") or "?", led_on.get("closed_sha") or "-",
                              led_on.get("event") if led_on.get("event") is not None else "-")
     if led_on.get("state") != "done":
         return _refuse(store, fx, item, w, event, now,
@@ -426,10 +477,10 @@ def release(store, fx, st, now, acts):
                            kind=relentless_incident.NO_VERDICT if relentless_incident.no_verdict_at(
                                store, w["incident"], event) else None)
     else:
-        why = "%s done" % w["on"]
+        why = "%s done" % on
     # the fixtures took time: the close they judged must still be the close that stands (a reopen meanwhile, even one
     # that leaves this wait untouched, voids them)
-    now_on = fx.item_state(w["on"], fresh=True) or {}
+    now_on = fx.item_state(on, fresh=True) or {}
     if (now_on.get("state"), now_on.get("closed_sha"), now_on.get("event")) != \
             (led_on.get("state"), led_on.get("closed_sha"), led_on.get("event")):
         return False

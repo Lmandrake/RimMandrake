@@ -21,8 +21,16 @@ The moves, all here so relentless.py carries hooks only:
   - `fence_run`, from the sweep: a RUNNING worker whose item becomes blocked is stopped and fenced, never left to
     finish and land (RELENTLESS_FIX_PARKED_RUN_WORKS_ON_ANYWAY). The off switch (share 0) still lets runs finish.
   - the ledger is the only record of what it waits on: `rimflow show <ID>` prints it.
+  - `diff` (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE, step 1 of 2): the store's `blocked` status is a COPY of the ledger block.
+    `python3 relentless_block.py diff` appends one reading of where the two disagree; the store field may be deleted
+    only once `ready_to_delete` sees 0 on 3 runs on 3 distinct UTC days. Until then it stays, read-only in spirit.
 """
+import datetime
+import glob
+import json
+import os
 import re
+import sys
 
 ID_RX = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+)+\b")
 KINDS = ("item", "owner", "judge", "live", "time", "external", "other")
@@ -60,7 +68,11 @@ def from_snag(klass, detail, r, on=None, kind=None):
 def resolve(pending, item, item_state):
     """-> (kind, [on ids], reason) for the ledger. An `item` block with no --on takes the open filed ids its detail
     names; none found and it is `external`, said so in the reason (a person names the predecessor or unblocks)."""
-    kind, ons = pending["kind"], [x for x in pending.get("on") or [] if x != item]
+    named = [x for x in pending.get("on") or [] if x != item]
+    # a wait on an id the ledger has never seen can never be released by a close: refused here, at write
+    # (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE; the 285-row incident_refused loop waited on one)
+    unfiled = [x for x in named if item_state(x) is None]
+    kind, ons = pending["kind"], [x for x in named if x not in unfiled]
     if kind == "item" and not ons:
         for x in ID_RX.findall(pending.get("detail") or ""):
             led = item_state(x) if x != item else None
@@ -71,6 +83,8 @@ def resolve(pending, item, item_state):
     reason = "relentless snag %s: %s" % (pending.get("class") or "-", pending.get("detail") or "")
     if pending["kind"] == "item" and kind == "external":
         reason = "no open predecessor id found in the snag; name it with `rimflow block --on` or unblock. " + reason
+    if unfiled:
+        reason = "never filed, not waited on: %s. " % ", ".join(unfiled) + reason
     return kind, ons, reason[:600]
 
 
@@ -165,3 +179,106 @@ def sweep(store, fx, now, acts, iso):
                 store.save(cur)
             store.journal({"at": iso(now), "do": "unblocked", "item": item})
             acts.append({"do": "unblocked", "item": item})
+
+
+# ---- store/ledger diff (step 1 of the two-step migration) --------------------------------------------------------------
+DIFF_LOG = os.environ.get("RM_STORE_LEDGER_DIFF",
+                          "/mnt/d/ClaudeWork/rimmandrake/relentless_agent/store_ledger_diff.jsonl")
+DIFF_RUNS = 3
+
+
+def diff(states, item_state):
+    """-> {"compared", "in_transit", "disagree": [{item, store, ledger}], "count"}. Compares every queued/blocked store
+    row with the ledger: the store says blocked exactly when the ledger block holds. A block still being written
+    (`block_pending`) is in transit, not a disagreement. Pure."""
+    out, transit, n = [], 0, 0
+    for st in states:
+        s = st.get("status")
+        if s not in ("queued", "blocked"):
+            continue
+        if st.get("block_pending"):
+            transit += 1
+            continue
+        n += 1
+        led = item_state(st["item"])
+        holds = ledger_holds(led)
+        if (s == "blocked") != holds:
+            out.append({"item": st["item"], "store": s + ("+wait" if st.get("wait") else ""),
+                        "ledger": "never filed" if led is None else ("%s, block %s" % (
+                            led.get("state"), "holds" if holds else "does not hold"))})
+    return {"compared": n, "in_transit": transit, "disagree": out, "count": len(out)}
+
+
+def ready_to_delete(path=None, runs=DIFF_RUNS):
+    """-> (bool, why). True only when the last `runs` UTC days that have readings exist and every reading on them is 0
+    (one clean reading a day is not enough if a later one that day was not)."""
+    rows = []
+    try:
+        with open(path or DIFF_LOG, encoding="utf-8") as f:
+            rows = [json.loads(ln) for ln in f if ln.strip()]
+    except (OSError, ValueError) as e:
+        return False, "no readable diff log: %s" % e
+    by_day = {}
+    for r in rows:
+        by_day.setdefault((r.get("at") or "")[:10], []).append(r)
+    days = sorted(d for d in by_day if d)[-runs:]
+    if len(days) < runs:
+        return False, "%d day(s) of readings, %d needed" % (len(days), runs)
+    bad = [(d, r["count"]) for d in days for r in by_day[d] if r.get("count") != 0]
+    if bad:
+        return False, "non-zero readings in the last %d days: %s" % (runs, bad[:5])
+    return True, "0 on every reading of %s" % ", ".join(days)
+
+
+def _live_item_state():
+    here = os.path.dirname(os.path.abspath(__file__))
+    sys.path.insert(0, os.path.dirname(here))
+    from rimflow import model, priority
+    w = model.replay(model.read())
+    now = int(datetime.datetime.now(datetime.timezone.utc).timestamp())
+
+    def item_state(iid):
+        it = w.items.get(iid)
+        if it is None:
+            return None
+        return {"state": it.state, "block_holds": priority.block_holds(w, it, now)}
+    return item_state
+
+
+def main(argv):
+    import argparse
+    ap = argparse.ArgumentParser(description="store/ledger block diff (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE)")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    d = sub.add_parser("diff", help="append one reading")
+    d.add_argument("--root", default=os.environ.get("RELENTLESS_ROOT", os.path.expanduser("~/rm/relentless")))
+    d.add_argument("--log", default=DIFF_LOG)
+    r = sub.add_parser("ready", help="may the store field be deleted? (0 on %d runs, distinct days)" % DIFF_RUNS)
+    r.add_argument("--log", default=DIFF_LOG)
+    a = ap.parse_args(argv)
+    if a.cmd == "ready":
+        okay, why = ready_to_delete(a.log)
+        print(("READY: " if okay else "NOT READY: ") + why)
+        return 0 if okay else 1
+    states = []
+    for p in sorted(glob.glob(os.path.join(a.root, "store", "items", "*", "state.json"))):
+        try:
+            with open(p, encoding="utf-8") as f:
+                states.append(json.load(f))
+        except (OSError, ValueError):
+            continue
+    if not states:
+        print("UNMEASURED: no store rows under %s" % a.root)
+        return 2
+    rec = dict(diff(states, _live_item_state()), at=datetime.datetime.now(datetime.timezone.utc).strftime(
+        "%Y-%m-%dT%H:%M:%SZ"), rows=len(states), root=a.root)
+    with open(a.log, "a", encoding="utf-8") as f:
+        f.write(json.dumps(rec, sort_keys=True) + "\n")
+    print("store/ledger diff: %d of %d compared (%d in transit, %d store rows) -> %s"
+          % (rec["count"], rec["compared"], rec["in_transit"], rec["rows"], a.log))
+    for x in rec["disagree"][:20]:
+        print("  %s  store=%s  ledger=%s" % (x["item"], x["store"], x["ledger"]))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

@@ -18,6 +18,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "cli.py")
@@ -117,11 +118,16 @@ def t_built_level_fires_on_built_and_validated_not_before():
 
 
 def t_dropped_or_superseded_blocker_is_confirm_never_released():
+    """A dropped blocker (no --release-dependents) is `confirm`, never released. A superseded one whose chain cannot end
+    (no successor filed, or a cycle) is `confirm` too (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE: a resolvable successor is
+    followed instead: t_superseded_blocker_follows_its_successor)."""
     blk = ev(seat="FOUNDRY", event="block", id="WAITER_A", reason="r", on="BLOCKER_B",
              until="built")
-    for end in (ev(seat="FOUNDRY", event="drop", id="BLOCKER_B", reason="no"),
-                ev(seat="FOUNDRY", event="supersede", id="BLOCKER_B", by="BLOCKER_C")):
-        w = world(blk, end)
+    for end in ([ev(seat="FOUNDRY", event="drop", id="BLOCKER_B", reason="no")],
+                [ev(seat="FOUNDRY", event="supersede", id="BLOCKER_B", by="NEVER_FILED_X")],
+                [ev(seat="FOUNDRY", event="supersede", id="BLOCKER_B", by="BLOCKER_C"),
+                 ev(seat="FOUNDRY", event="supersede", id="BLOCKER_C", by="BLOCKER_B")]):
+        w = model.replay([filed("WAITER_A"), filed("BLOCKER_B"), filed("BLOCKER_C"), blk] + end, strict=False)
         assert kinds(w) == {("WAITER_A", "confirm")}, kinds(w)
         a = w.items["WAITER_A"]
         assert a.blocked, "a dead blocker released its dependent"
@@ -129,6 +135,67 @@ def t_dropped_or_superseded_blocker_is_confirm_never_released():
         line = priority.frontier_line(*priority.block_frontier(w)[0])
         assert line.startswith("blocker %s, confirm: WAITER_A" % w.items["BLOCKER_B"].state), line
         assert "NOT released" in line, line
+
+
+def claimed(iid):
+    return ev(seat="FOUNDRY", event="claim", id=iid)
+
+
+def t_superseded_blocker_follows_its_successor():
+    """RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE: a superseded blocker's edges follow `superseded_by`. The dependent keeps waiting
+    while the successor is open and is offered at the next read once the successor closes."""
+    base = [claimed("WAITER_A"), ev(seat="FOUNDRY", event="block", id="WAITER_A", reason="r", on="BLOCKER_B"),
+            ev(seat="FOUNDRY", event="supersede", id="BLOCKER_B", by="BLOCKER_C")]
+    w = world(*base)
+    a = w.items["WAITER_A"]
+    assert kinds(w) == set(), kinds(w)
+    assert priority.block_holds(w, a, 0) and a not in priority.rank(w, "FOUNDRY")
+    assert priority.wait_edge(w, a) == "BLOCKER_C", priority.wait_edge(w, a)
+    w = world(*(base + [ev(seat="FOUNDRY", event="close", id="BLOCKER_C", sha="598dec613")]))
+    a = w.items["WAITER_A"]
+    assert not priority.block_holds(w, a, 0), "the successor closed and the block still holds"
+    assert a in priority.rank(w, "FOUNDRY"), "the dependent is not offered after its successor closed"
+    assert "via successor BLOCKER_C done" in priority.release_reason(w, a, 0)
+    assert kinds(w, on="BLOCKER_C") == {("WAITER_A", "satisfied")}, "close of the successor does not announce it"
+
+
+def t_supersession_cycle_and_missing_successor_never_release():
+    for end, word in (([ev(seat="FOUNDRY", event="supersede", id="BLOCKER_B", by="BLOCKER_C"),
+                        ev(seat="FOUNDRY", event="supersede", id="BLOCKER_C", by="BLOCKER_B")], "supersession cycle"),
+                      ([ev(seat="FOUNDRY", event="supersede", id="BLOCKER_B", by="NEVER_FILED_X")], "never been filed")):
+        w = model.replay([filed("WAITER_A"), filed("BLOCKER_B"), filed("BLOCKER_C"),
+                          ev(seat="FOUNDRY", event="block", id="WAITER_A", reason="r", on="BLOCKER_B")] + end,
+                         strict=False)
+        b, why = priority.follow(w, "BLOCKER_B")
+        assert b is None and word in why, (b, why)
+        a = w.items["WAITER_A"]
+        assert priority.block_holds(w, a, 0), "an unending chain released its dependent"
+        d = " ".join(priority.block_diagnostics(w, a))
+        assert word in d, d
+
+
+def t_dropped_with_release_dependents_releases():
+    w = world(claimed("WAITER_A"), ev(seat="FOUNDRY", event="block", id="WAITER_A", reason="r", on="BLOCKER_B"),
+              ev(seat="FOUNDRY", event="drop", id="BLOCKER_B", reason="no", release_dependents=True))
+    a = w.items["WAITER_A"]
+    assert not priority.block_holds(w, a, 0) and a in priority.rank(w, "FOUNDRY")
+    assert kinds(w) == {("WAITER_A", "satisfied")}, kinds(w)
+    assert "dependents released" in priority.frontier_line(*priority.block_frontier(w)[0])
+
+
+def t_close_lifts_only_dependents_with_no_other_open_blocker():
+    """Acceptance (redesign_final §5 row 04): closing a repair makes each dependent with no other open blocker offerable
+    at the next read; one that also waits on a still-open item stays held."""
+    w = model.replay([filed("WAITER_A"), filed("WAITER_D"), filed("BLOCKER_B"), filed("BLOCKER_C"),
+                      claimed("WAITER_A"), claimed("WAITER_D"),
+                      ev(seat="FOUNDRY", event="block", id="WAITER_A", reason="r", on="BLOCKER_B"),
+                      ev(seat="FOUNDRY", event="block", id="WAITER_D", reason="r", on="BLOCKER_B",
+                         also_on=["BLOCKER_C"]),
+                      ev(seat="FOUNDRY", event="close", id="BLOCKER_B", sha="598dec613")], strict=True)
+    assert priority.block_holds(w, w.items["WAITER_D"], 0)
+    ranked = priority.rank(w, "FOUNDRY")
+    assert w.items["WAITER_A"] in ranked, "sole-blocker dependent not offered after its repair closed"
+    assert w.items["WAITER_D"] not in ranked, "a dependent with another open blocker was offered"
 
 
 def t_satisfied_is_announced_never_applied():
@@ -266,21 +333,70 @@ def t_cli_default_block_writes_no_until_field():
     assert blocks[-1].get("until") == "built", blocks[-1]
 
 
+def t_cli_drop_with_dependents_is_refused_until_the_dropper_answers():
+    """Clause (c): a drop while open items wait on it is refused at write, unless --successor or
+    --release-dependents --why says what happens to them. No automatic retry."""
+    n = len(ledger_events())
+    refused("1 open item(s) wait on FRONTIER_BLOCKER_B_PROBE_FIXTURE: FRONTIER_WAITER_A_PROBE_FIXTURE",
+            "drop", "FRONTIER_BLOCKER_B_PROBE_FIXTURE", "--reason", "abandoned")
+    refused("needs --why", "drop", "FRONTIER_BLOCKER_B_PROBE_FIXTURE", "--reason", "abandoned", "--release-dependents")
+    refused("give one", "drop", "FRONTIER_BLOCKER_B_PROBE_FIXTURE", "--reason", "abandoned", "--release-dependents",
+            "--why", "w", "--successor", "FRONTIER_BLOCKER_C_PROBE_FIXTURE")
+    refused("never been filed", "drop", "FRONTIER_BLOCKER_B_PROBE_FIXTURE", "--reason", "abandoned",
+            "--successor", "NOPE_NOT_FILED")
+    assert len(ledger_events()) == n, "a refused drop wrote the ledger"
+    assert model.replay(ledger_events()).items["FRONTIER_BLOCKER_B_PROBE_FIXTURE"].state != "dropped"
+
+
 def t_cli_drop_names_confirm_and_next_repeats_it():
-    out = ok("drop", "FRONTIER_BLOCKER_B_PROBE_FIXTURE", "--reason", "abandoned")
-    assert "blocker dropped, confirm: FRONTIER_WAITER_A_PROBE_FIXTURE" in out, out
+    out = ok("drop", "FRONTIER_BLOCKER_B_PROBE_FIXTURE", "--reason", "abandoned", "--release-dependents",
+             "--why", "A can run without it")
+    assert "blocker dropped, dependents released: FRONTIER_WAITER_A_PROBE_FIXTURE" in out, out
+    assert "released 1 dependent(s): FRONTIER_WAITER_A_PROBE_FIXTURE" in out, out
     nxt = ok("next", "--peek")
-    assert "blocker dropped, confirm: FRONTIER_WAITER_A_PROBE_FIXTURE" in nxt, nxt
+    assert "blocker dropped, dependents released: FRONTIER_WAITER_A_PROBE_FIXTURE" in nxt, nxt
     why = ok("why", "FRONTIER_WAITER_A_PROBE_FIXTURE")
-    assert "blocker dropped, confirm: FRONTIER_WAITER_A_PROBE_FIXTURE" in why, why
-    model.EVENTS = os.path.join(CTX["led"], "events.jsonl")
-    assert model.replay(model.read()).items["FRONTIER_WAITER_A_PROBE_FIXTURE"].blocked, "drop released a dependent"
+    assert "blocker dropped, dependents released: FRONTIER_WAITER_A_PROBE_FIXTURE" in why, why
+    w = model.replay(ledger_events())
+    a = w.items["FRONTIER_WAITER_A_PROBE_FIXTURE"]
+    assert a.blocked and not priority.block_holds(w, a, time.time()), "release must be read-time, not a write on A"
     # a dead target is WARNED and shown as confirm at once, never refused
     rc, out, err = run("block", "FRONTIER_WAITER_A_PROBE_FIXTURE", "--reason", "r2", "--on",
                        "FRONTIER_BLOCKER_B_PROBE_FIXTURE")
     assert rc == 0 and "will never deliver" in err, (rc, out, err)
     assert "replaces the current block: on FRONTIER_BLOCKER_B_PROBE_FIXTURE (until done)" in out, out
-    assert "already ended: blocker dropped, confirm: FRONTIER_WAITER_A_PROBE_FIXTURE" in out, out
+    assert "already ended: blocker dropped, dependents released: FRONTIER_WAITER_A_PROBE_FIXTURE" in out, out
+
+
+def t_cli_drop_successor_repoints_dependents():
+    ok("file", "FRONTIER_OLD_E_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    ok("file", "FRONTIER_NEW_F_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    ok("file", "FRONTIER_WAITER_G_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    ok("block", "FRONTIER_WAITER_G_PROBE_FIXTURE", "--reason", "r", "--on", "FRONTIER_OLD_E_PROBE_FIXTURE")
+    out = ok("drop", "FRONTIER_OLD_E_PROBE_FIXTURE", "--reason", "replaced", "--successor", "FRONTIER_NEW_F_PROBE_FIXTURE")
+    assert "re-pointed to FRONTIER_NEW_F_PROBE_FIXTURE: 1 dependent(s): FRONTIER_WAITER_G_PROBE_FIXTURE" in out, out
+    w = model.replay(ledger_events())
+    assert w.items["FRONTIER_OLD_E_PROBE_FIXTURE"].superseded_by == "FRONTIER_NEW_F_PROBE_FIXTURE"
+    assert priority.block_holds(w, w.items["FRONTIER_WAITER_G_PROBE_FIXTURE"], time.time()), "successor still open: must hold"
+    ok("close", "FRONTIER_NEW_F_PROBE_FIXTURE", "--no-code", "a fixture")
+    w = model.replay(ledger_events())
+    assert not priority.block_holds(w, w.items["FRONTIER_WAITER_G_PROBE_FIXTURE"], time.time()), "successor closed: must lift"
+
+
+def t_cli_supersession_cycle_and_self_are_refused():
+    """Clause (b) at write: supersede/drop --successor/block refuse a chain that can never end."""
+    ok("file", "FRONTIER_CYC_P_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    ok("file", "FRONTIER_CYC_Q_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    refused("cannot supersede itself", "supersede", "FRONTIER_CYC_P_PROBE_FIXTURE", "--by", "FRONTIER_CYC_P_PROBE_FIXTURE")
+    refused("never been filed", "supersede", "FRONTIER_CYC_P_PROBE_FIXTURE", "--by", "NOPE_NOT_FILED")
+    ok("supersede", "FRONTIER_CYC_P_PROBE_FIXTURE", "--by", "FRONTIER_CYC_Q_PROBE_FIXTURE")
+    refused("supersession cycle refused", "supersede", "FRONTIER_CYC_Q_PROBE_FIXTURE", "--by", "FRONTIER_CYC_P_PROBE_FIXTURE")
+    refused("supersession cycle refused", "drop", "FRONTIER_CYC_Q_PROBE_FIXTURE", "--reason", "r",
+            "--successor", "FRONTIER_CYC_P_PROBE_FIXTURE")
+    w = model.replay(ledger_events())
+    assert w.items["FRONTIER_CYC_Q_PROBE_FIXTURE"].state not in ("superseded", "dropped")
+    # a block on P follows to Q; Q waiting on P's chain is a cycle
+    refused("cycle refused", "block", "FRONTIER_CYC_Q_PROBE_FIXTURE", "--reason", "r", "--on", "FRONTIER_CYC_P_PROBE_FIXTURE")
 
 
 def t_cli_close_names_satisfied_and_bench_lists_it():
@@ -288,7 +404,7 @@ def t_cli_close_names_satisfied_and_bench_lists_it():
     assert "blocker reached requested level (built): FRONTIER_WAITER_D_PROBE_FIXTURE" in out, out
     bench = ok("next", "--bench", seat="BENCH")
     assert "BLOCKERS ENDED" in bench and "blocker reached requested level (built): FRONTIER_WAITER_D_PROBE_FIXTURE" in bench, bench
-    assert "blocker dropped, confirm: FRONTIER_WAITER_A_PROBE_FIXTURE" in bench, bench
+    assert "blocker dropped, dependents released: FRONTIER_WAITER_A_PROBE_FIXTURE" in bench, bench
 
 
 def t_cli_already_satisfied_typed_cycle_is_accepted():
@@ -316,7 +432,7 @@ def t_cli_seventh_entry_visible_in_next():
     for i in ids:
         ok("file", i, "--for", "BENCH", "--title", "t", seat="BENCH")
         ok("block", i, "--reason", "r", "--on", dead, seat="BENCH")
-    ok("drop", dead, "--reason", "abandoned", seat="BENCH")
+    ok("drop", dead, "--reason", "abandoned", "--release-dependents", "--why", "fixture", seat="BENCH")
     nxt = ok("next", "--peek", seat="BENCH")
     for i in ids:
         assert i in nxt, "%s hidden from `next`:\n%s" % (i, nxt)
@@ -333,7 +449,10 @@ if __name__ == "__main__":
         setup_cli()
         for fn in (t_cli_refuses_self_cycle_unfiled_and_dead_targets,
                    t_cli_default_block_writes_no_until_field,
+                   t_cli_drop_with_dependents_is_refused_until_the_dropper_answers,
                    t_cli_drop_names_confirm_and_next_repeats_it,
+                   t_cli_drop_successor_repoints_dependents,
+                   t_cli_supersession_cycle_and_self_are_refused,
                    t_cli_close_names_satisfied_and_bench_lists_it,
                    t_cli_already_satisfied_typed_cycle_is_accepted,
                    t_cli_seventh_entry_visible_in_next):

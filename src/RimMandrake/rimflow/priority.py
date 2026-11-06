@@ -235,8 +235,9 @@ def rank(world, seat, target="v1", ctx=None):
 # replay (design/2026-10-25-rimflow-block-release.md) found 21 of 73 named blocks
 # outliving their blocker, six by 7 to 21 days, although `_announce_unblocks` had
 # printed each one once at close time. A one-shot notice is missed; a standing line is not.
-# ⛔ A DROPPED OR SUPERSEDED BLOCKER NEVER SATISFIES. It will not deliver, so its
-# dependents are listed as `confirm` for a human decision, never as released.
+# ⛔ A DROPPED BLOCKER NEVER SATISFIES unless its drop released its dependents (`drop --release-dependents --why`; cli
+# refuses a drop with dependents otherwise, RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE). A SUPERSEDED blocker is followed to its
+# successor (`follow`), so closing the successor lifts the block; a chain that cannot end is `confirm`.
 SATISFIES = {"built": ("built", "validated", "done"),
              "validated": ("validated", "done"),
              "done": ("done",)}
@@ -246,17 +247,49 @@ DEAD = ("dropped", "superseded")
 FRONTIER_FULL = 6
 
 
+def follow(world, iid):
+    """-> (item, None): the item a wait on `iid` is really waiting on, following `superseded_by` (a superseded blocker's
+    edges follow its successor, RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE), or (None, why) when the chain cannot end: never filed,
+    superseded with no successor, a successor never filed, or a supersession CYCLE. Those never release. Pure."""
+    seen, cur = [], iid
+    while True:
+        b = world.items.get(cur)
+        if b is None:
+            return None, ("%s has never been filed" % cur if not seen else
+                          "%s was superseded by %s, which has never been filed" % (seen[-1], cur))
+        if b.state != "superseded":
+            return b, None
+        seen.append(cur)
+        nxt = b.superseded_by
+        if not nxt:
+            return None, "%s was superseded with no successor named" % cur
+        if nxt in seen:
+            return None, "supersession cycle: %s" % " -> ".join(seen + [nxt])
+        cur = nxt
+
+
+def ended_by_drop(b):
+    """A dropped blocker whose drop released its dependents (`drop --release-dependents --why`)."""
+    return b is not None and b.state == "dropped" and bool(getattr(b, "released_dependents", False))
+
+
 def frontier_entry(world, it):
     """-> ("satisfied"|"confirm", blocker) if `it`'s block has ended, else None. THE rule,
     and the only copy of it: `block_frontier` and the retro both call this.
     🔑 CURRENT STATE, not history: a blocker that regresses (built -> doing on a
     re-implementation) withdraws the line. `validated` is the LIFECYCLE state (the first
-    non-L0 criterion passed), not a named criterion."""
+    non-L0 criterion passed), not a named criterion. A superseded blocker is judged by its
+    successor (`follow`); a chain that cannot end (cycle, unfiled successor) is `confirm`."""
     if not (it.open and it.blocked and it.blocked_on) or it.blocked_on == it.id:
         return None
-    b = world.items.get(it.blocked_on)
-    if b is None:
+    b0 = world.items.get(it.blocked_on)
+    if b0 is None:
         return None
+    b, _why = follow(world, it.blocked_on)
+    if b is None:
+        return ("confirm", b0)
+    if ended_by_drop(b):
+        return ("satisfied", b)
     if b.state in DEAD:
         return ("confirm", b)
     if b.state in SATISFIES.get(it.blocked_until or "done", ("done",)):
@@ -272,7 +305,8 @@ def frontier_entry(world, it):
 # claimable list, relentless.eligible) asks THIS, never `it.blocked` alone. 🔑 A predecessor wait (`--on`, kind item)
 # and a dated one (kind time) end at READ time: the item is offered again the moment every --on id reaches its level, or
 # the date passes, with no event (the books keep the block until a claim or a close clears it; `next`/`why` still
-# name it on the frontier). A DEAD blocker never releases (`confirm`). Every other kind holds until `unblock`.
+# name it on the frontier). A superseded blocker is followed to its successor; a dropped one releases only when its drop
+# said `--release-dependents`, else `confirm`. Every other kind holds until `unblock`.
 def block_kind(it):
     return it.blocked_kind or ("item" if it.blocked_on else "other")
 
@@ -295,10 +329,17 @@ def release_reason(world, it, now):
     need = SATISFIES.get(it.blocked_until or "done", ("done",))
     got = []
     for on in block_ons(it):
-        b = world.items.get(on)
-        if on == it.id or b is None or b.state not in need:
+        if on == it.id:
             return None
-        got.append("%s %s" % (on, b.state))
+        b, _why = follow(world, on)
+        if b is None or b.id == it.id:
+            return None
+        if ended_by_drop(b):
+            got.append("%s dropped, dependents released" % b.id)
+            continue
+        if b.state not in need:
+            return None
+        got.append(("%s %s" % (on, b.state)) if b.id == on else ("%s via successor %s %s" % (on, b.id, b.state)))
     return "blocker reached %s: %s" % (it.blocked_until or "done", ", ".join(got))
 
 
@@ -328,7 +369,8 @@ def block_frontier(world, seat=None, on=None):
     never push the other out of the lines printed in full."""
     by = {"confirm": [], "satisfied": []}
     for it in world.items.values():
-        if (seat and it.owner != seat) or (on and it.blocked_on != on):
+        if (seat and it.owner != seat) or (on and it.blocked_on != on and not (
+                it.blocked_on and getattr(follow(world, it.blocked_on)[0], "id", None) == on)):
             continue
         e = frontier_entry(world, it)
         if e:
@@ -355,6 +397,9 @@ def frontier_overflow(entries, shown):
 
 def frontier_line(it, kind, b):
     """The one line `next`, `next --bench` and `why` print for a frontier entry."""
+    if kind == "satisfied" and ended_by_drop(b):
+        return ("blocker dropped, dependents released: %s  (on %s). Offered again; the block lifts at its next claim."
+                % (it.id, b.id))
     if kind == "satisfied":
         lv = it.blocked_until or "done"
         return ("blocker reached requested level (%s): %s  (on %s, now `%s`). Evidence, "
@@ -370,7 +415,10 @@ def wait_edge(world, x):
     """-> the item `x` still waits on (an open, live, not-yet-ended block), else None."""
     if x is None or not (x.open and x.blocked and x.blocked_on):
         return None
-    return None if frontier_entry(world, x) else x.blocked_on
+    if frontier_entry(world, x):
+        return None
+    b, _why = follow(world, x.blocked_on)
+    return b.id if b is not None else x.blocked_on
 
 
 def wait_cycle(world, start, first):
@@ -393,6 +441,9 @@ def block_diagnostics(world, it):
     if it.blocked_on not in world.items:
         out.append("block target %s has never been filed in this ledger: nothing will ever "
                    "report it done (pull, file it, or re-block)." % it.blocked_on)
+    elif follow(world, it.blocked_on)[0] is None:
+        out.append("block target %s cannot deliver: %s. It never releases; block it --on a filed successor, or "
+                   "unblock it." % (it.blocked_on, follow(world, it.blocked_on)[1]))
     elif wait_edge(world, it):
         cyc = wait_cycle(world, it.id, it.blocked_on)
         if cyc:

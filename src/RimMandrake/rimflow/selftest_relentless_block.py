@@ -413,9 +413,62 @@ def t_scope_snag_blocks():
        "the instance's gen7 snag waits on its two follow-ups, not back in line")
 
 
+def t_unfiled_wait_refused_at_write():
+    """RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE: a snag naming an id the ledger has never seen does not wait on it."""
+    known = {"OPEN_PRED_BUILD_X": {"state": "doing"}}
+    kind, ons, why = relentless_block.resolve({"kind": "item", "on": ["NEVER_FILED_FIX_Y", "OPEN_PRED_BUILD_X"],
+                                               "class": "blocked_by_predecessor", "detail": "d"},
+                                              "ITEM_A_B", known.get)
+    ok(kind == "item" and ons == ["OPEN_PRED_BUILD_X"] and "never filed, not waited on: NEVER_FILED_FIX_Y" in why,
+       "an unfiled --on is dropped, said in the reason: %s %s" % (ons, why[:80]))
+    kind, ons, why = relentless_block.resolve({"kind": "item", "on": ["NEVER_FILED_FIX_Y"], "class": "blocked_x",
+                                               "detail": "nothing named"}, "ITEM_A_B", known.get)
+    ok(kind == "external" and ons == [] and "NEVER_FILED_FIX_Y" in why,
+       "only an unfiled --on: external, never a wait nothing can close (%s)" % kind)
+
+
+def t_store_ledger_diff_and_three_day_gate():
+    led = {"Q_HOLDS_A": {"state": "doing", "block_holds": True}, "B_LIFTED_A": {"state": "doing", "block_holds": False},
+           "B_HOLDS_A": {"state": "doing", "block_holds": True}, "Q_FREE_A": {"state": "ready", "block_holds": False},
+           "B_DONE_A": {"state": "done", "block_holds": True}}
+    states = [{"item": "Q_HOLDS_A", "status": "queued"}, {"item": "B_LIFTED_A", "status": "blocked", "wait": {}},
+              {"item": "B_HOLDS_A", "status": "blocked"}, {"item": "Q_FREE_A", "status": "queued"},
+              {"item": "B_DONE_A", "status": "blocked"}, {"item": "P_PENDING_A", "status": "blocked",
+                                                         "block_pending": {"kind": "item"}},
+              {"item": "R_RUN_A", "status": "running"}, {"item": "B_GONE_A", "status": "blocked"}]
+    d = relentless_block.diff(states, led.get)
+    got = sorted(x["item"] for x in d["disagree"])
+    ok(got == ["B_DONE_A", "B_GONE_A", "B_LIFTED_A", "Q_HOLDS_A"] and d["count"] == 4 and d["in_transit"] == 1
+       and d["compared"] == 6, "the diff names each side that disagrees, pending is in transit: %s" % d)
+    ok(relentless_block.diff([{"item": "Q_FREE_A", "status": "queued"}], led.get)["count"] == 0,
+       "an agreeing store reads 0 (the instrument can read 0 and non-0)")
+    tmp = tempfile.mkdtemp(prefix="rb_diff_")
+    try:
+        log = os.path.join(tmp, "d.jsonl")
+
+        def put(at, n):
+            with open(log, "a") as f:
+                f.write(json.dumps({"at": at, "count": n}) + "\n")
+        ok(not relentless_block.ready_to_delete(log)[0], "no log: not ready")
+        put("2026-11-01T03:00:00Z", 0)
+        put("2026-11-02T03:00:00Z", 0)
+        ok(not relentless_block.ready_to_delete(log)[0], "two days: not ready")
+        put("2026-11-03T03:00:00Z", 0)
+        put("2026-11-03T05:00:00Z", 2)
+        ok(not relentless_block.ready_to_delete(log)[0], "a non-zero reading on a counted day: not ready")
+        put("2026-11-04T03:00:00Z", 0)
+        ok(not relentless_block.ready_to_delete(log)[0], "the bad day is still one of the last three")
+        put("2026-11-05T03:00:00Z", 0)
+        put("2026-11-06T03:00:00Z", 0)
+        ok(relentless_block.ready_to_delete(log)[0], "0 on three distinct days: ready")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     for t in (t_fields_and_schema, t_holds_and_lifts, t_relentless_eligible, t_cli, t_snag_blocks,
-              t_ledger_block_leaves_line, t_returned_run_not_restaffed, t_strikes, t_scope_snag_blocks):
+              t_ledger_block_leaves_line, t_returned_run_not_restaffed, t_strikes, t_scope_snag_blocks,
+              t_unfiled_wait_refused_at_write, t_store_ledger_diff_and_three_day_gate):
         print("--", t.__name__)
         try:
             t()

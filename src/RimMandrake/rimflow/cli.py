@@ -2052,6 +2052,19 @@ def cmd_block(args, seat):
             # another clone may have filed it unpulled; the frontier resolves it at read time
             sys.stderr.write("⚠️  %s has never been filed here, so nothing will report it "
                              "done until it is (`git pull`, or file it).\n" % on)
+        elif tgt.superseded_by and "cycle" in (priority.follow(w, on)[1] or ""):
+            die("block refused: %s: it can never deliver. Name the item that will." % priority.follow(w, on)[1])
+        elif tgt.state in priority.DEAD and tgt.superseded_by and priority.follow(w, on)[0] is not None:
+            succ = priority.follow(w, on)[0]
+            sys.stderr.write("%s was superseded; the block follows %s (`%s`) and lifts when it reaches %s%s.\n"
+                             % (on, succ.id, succ.state, until or "done",
+                                "; it is dropped, so it shows as `confirm`" if succ.state == "dropped"
+                                and not priority.ended_by_drop(succ) else ""))
+            cyc = ([args.id, on, args.id] if succ.id == args.id else
+                   None if succ.state in priority.SATISFIES.get(until or "done", ("done",)) else
+                   priority.wait_cycle(w, args.id, succ.id))
+            if cyc:
+                die("cycle refused: %s. Nothing on it could ever finish first." % " -> ".join(cyc))
         elif tgt.state in priority.DEAD:
             sys.stderr.write("⚠️  %s is `%s`; it will never deliver%s. Recorded anyway; it "
                              "shows as `confirm` until you decide.\n"
@@ -2119,6 +2132,87 @@ def _print_frontier(w, seat):
     more = priority.frontier_overflow(ended, priority.FRONTIER_FULL)
     if more:
         print(more)
+
+
+def _dependents(w, target):
+    """-> [Item] open items whose live block waits on `target`, directly or through a supersession chain ending there."""
+    out = []
+    for it in w.items.values():
+        if not (it.open and it.blocked) or it.id == target:
+            continue
+        for on in priority.block_ons(it):
+            if on == target or getattr(priority.follow(w, on)[0], "id", None) == target:
+                out.append(it)
+                break
+    return sorted(out, key=lambda i: i.id)
+
+
+def _successor_refusal(w, iid, by):
+    """-> why `iid` may not be superseded by `by` (unfiled, itself, or a supersession cycle), else None."""
+    if by == iid:
+        return "%s cannot supersede itself." % iid
+    if by not in w.items:
+        return ("%s has never been filed: a successor nothing can close would hold every block on %s for ever. "
+                "File it first." % (by, iid))
+    b, why = priority.follow(w, by)
+    if b is None:
+        return "%s cannot deliver: %s." % (by, why)
+    if b.id == iid:
+        return "supersession cycle refused: %s -> %s -> ... -> %s." % (iid, by, iid)
+    return None
+
+
+def cmd_drop(args, seat):
+    """`drop <ID> --reason R [--successor S | --release-dependents]` (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE, redesign G6).
+    A dropped item never delivers, so a drop while open blocks wait on it is REFUSED at write unless the dropper says
+    what happens to them: `--successor S` records the drop as superseded by S (their blocks follow S and lift when S
+    closes); `--release-dependents` with `--why` releases them (offered again at the next read; their next failure
+    re-attributes). No automatic retry: the dropper decides, once."""
+    _, w = load()
+    succ = getattr(args, "successor", None)
+    rel = bool(getattr(args, "release_dependents", False))
+    if succ and rel:
+        die("drop: --successor and --release-dependents are two answers to one question; give one.")
+    if rel and not (model.AGENT_WHY or model.OWNER_SAID or model.BY_CARD or model.PER_RULING):
+        die("drop --release-dependents needs --why \"<why they may run without it>\" (or owner provenance).")
+    deps = _dependents(w, args.id)
+    if succ:
+        why = _successor_refusal(w, args.id, succ)
+        if why:
+            die("drop refused: " + why)
+        ev = {"seat": seat, "event": "supersede", "id": args.id, "by": succ,
+              "reason": "dropped; successor %s: %s" % (succ, args.reason)}
+    else:
+        if deps and not rel:
+            die("drop refused: %d open item(s) wait on %s: %s.\n"
+                "   It will never deliver. Say what happens to them:\n"
+                "     --successor <ID>                       their blocks follow the item that replaces it\n"
+                "     --release-dependents --why \"<why>\"     they are offered again at the next read"
+                % (len(deps), args.id, ", ".join(i.id for i in deps)))
+        ev = {"seat": seat, "event": "drop", "id": args.id, "reason": args.reason}
+        if rel and deps:
+            ev["release_dependents"] = True
+    _emit(ev, w, quiet=True)
+    it = _replay_now().items.get(args.id)
+    print("drop %s -> %s%s" % (args.id, it.state if it else "?", (" (successor %s)" % succ) if succ else ""))
+    if deps:
+        print("%s %d dependent(s): %s" % ("released" if rel else "re-pointed to %s:" % succ, len(deps),
+                                           ", ".join(i.id for i in deps)))
+    _announce_unblocks(args.id)
+    moved = _move_prose_to_closed(args.id)
+    if moved:
+        print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+    return 0
+
+
+def cmd_supersede(args, seat):
+    """`supersede <ID> --by S`: refused when S is unfiled, is ID, or its own chain leads back to ID (a supersession
+    cycle would hold every block on either for ever: priority.follow)."""
+    _, w = load()
+    why = _successor_refusal(w, args.id, args.by)
+    if why:
+        die("supersede refused: " + why)
+    return _simple("supersede", (("by", "by"), ("reason", "reason")))(args, seat)
 
 
 def _simple(verb, extra=()):
@@ -4249,12 +4343,15 @@ def build_parser():
     s.add_argument("id")
     s.add_argument("--reason")   # optional
 
-    s = add("drop", "this will not be done", _simple("drop", (("reason", "reason"),)))
+    s = add("drop", "this will not be done (refused while open items wait on it, unless --successor or "
+            "--release-dependents --why)", cmd_drop)
     s.add_argument("id")
     s.add_argument("--reason", required=True)
+    s.add_argument("--successor", metavar="ID", help="the item that replaces it: blocks on it follow ID")
+    s.add_argument("--release-dependents", action="store_true",
+                   help="release every block waiting on it (needs --why)")
 
-    s = add("supersede", "a better item replaces it",
-            _simple("supersede", (("by", "by"), ("reason", "reason"))))
+    s = add("supersede", "a better item replaces it", cmd_supersede)
     s.add_argument("id")
     s.add_argument("--by", required=True)
     s.add_argument("--reason")

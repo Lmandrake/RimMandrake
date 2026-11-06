@@ -554,7 +554,9 @@ VERBS = {
     # `guard`: the class guard test a fix that died owes, shown failing on the instance by the cli (repeat_guard.py). State does
     # not move. A reader older than this entry refuses the verb into `world.errors` and leaves the item as it was.
     "guard":     {"who": "any",   "req": ("test", "testHash", "redExit"), "opt": ("redTail", "instance")},
-    "drop":      {"who": "any",   "req": ("reason",), "opt": ()},
+    # `release_dependents` (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE): the dropper releases every block waiting on this item (cli
+    # refuses a drop with dependents without it or `--successor`). A reader older than this field strips it: `confirm`.
+    "drop":      {"who": "any",   "req": ("reason",), "opt": ("release_dependents",)},
     "supersede": {"who": "any",   "req": ("by",), "opt": ("reason",)},
     "note":      {"who": "any",   "req": ("text",), "opt": ()},
     # 🔑 `raise` (2026-10-26, STEVE_STEWARD_BUILD_NO_LLM_OWNER, design §6.4 T+30): puts an
@@ -1688,7 +1690,7 @@ class Item(object):
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "built_by", "makers", "criteria", "outstanding",
                  "passed", "level_reached", "lease", "raised", "raised_tsn",
-                 "held", "done_index", "walks")
+                 "held", "done_index", "walks", "released_dependents")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1732,6 +1734,7 @@ class Item(object):
         # released}. Liveness is a function of the clock: see `lease_status`.
         self.lease = None
         self.raised = None              # ts of the first `raise`, or None
+        self.released_dependents = False    # a `drop --release-dependents`: blocks on it end (priority.follow)
         self.walks = []                 # `walk` events, in ledger order: [{ts, seat, phase, save, found, findings, detail}]
         self.raised_tsn = 0             # tsn of that same first `raise` (0 when absent): `ts` is to the
         #                                 second, so a Producer raising C, A, B in one run needs it for order
@@ -2643,6 +2646,7 @@ def _apply_item_verb(ev, index, item, seat, world):
         item.blocked_also = ()
     elif verb == "drop":
         to("dropped")
+        item.released_dependents = bool(ev.get("release_dependents"))
         # ⚠️ SAME FIX AS `close`, same reason. Leaving `blocked`/`blocked_reason` set
         # on a dropped item rendered "state: dropped (BLOCKED)" with a STALE reason
         # forever — every reader gates display on the flag, so a human reading a

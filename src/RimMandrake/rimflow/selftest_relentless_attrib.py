@@ -445,9 +445,75 @@ def t_gpt_review_fences():
     x.done()
 
 
+def _journal_acts(x, do):
+    rows = []
+    with open(x.s.p("journal.jsonl"), encoding="utf-8") as f:
+        for ln in f:
+            rec = json.loads(ln)
+            rows += [a for a in rec.get("acts") or [] if a.get("do") == do]
+            if rec.get("do") == do:
+                rows.append(rec)
+    return rows
+
+
+def t_refusal_is_one_row_and_a_never_filed_wait_resumes():
+    """RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE (e): the 285-row incident_refused loop. A refusal of the same evidence is one
+    journal row, not one per tick; a wait on an id never filed resumes once the ledger block lifts."""
+    x = rig([REPAINT], [COMB])
+    checked(x, REPAINT, "FAIL", "the holds are missing")
+    operator(x, REPAINT, ["DEPENDENCY"], on=COMB)
+    x.w.items[COMB] = "dropped"
+    for _ in range(6):
+        x.tick(3600)
+    ok(x.st(REPAINT)["status"] == "blocked" and len(_journal_acts(x, "dependency_refused")) == 1,
+       "six ticks on one refused event: one acts row (%d)" % len(_journal_acts(x, "dependency_refused")))
+    x.w.led_events[COMB] = 7            # a new evidence event (dropped again) is news again, once
+    for _ in range(3):
+        x.tick(3600)
+    ok(len(_journal_acts(x, "dependency_refused")) == 2, "a new evidence event refuses once more, then quiet")
+    x.done()
+    x = rig([REPAINT], [COMB])
+    checked(x, REPAINT, "FAIL", "the holds are missing")
+    operator(x, REPAINT, ["DEPENDENCY"], on=COMB)
+    x.tick(3600)                        # the block reaches the ledger while COMB is still known
+    ok(x.w.blocks.get(REPAINT) and not x.st(REPAINT).get("block_pending"), "the dependency block is on the ledger")
+    del x.w.items[COMB]                 # the wait names an id the ledger has never seen
+    x.w.blocks.pop(REPAINT, None)       # and the ledger block was lifted (OWNER unblock)
+    for _ in range(4):
+        x.tick(3600)
+    rel = [a for a in _journal_acts(x, "released") if a.get("why") == "never filed"]   # the tick's acts row
+    ok(x.st(REPAINT)["status"] != "blocked" and not x.st(REPAINT).get("wait") and len(rel) == 1
+       and not _journal_acts(x, "dependency_refused") and kept(x, REPAINT),
+       "a never-filed wait with its block lifted resumes once, refused never: %s" % x.st(REPAINT)["status"])
+    ok(sum("never filed" in n for n in x.w.notes) == 1, "said once on the item")
+    x.done()
+
+
+def t_superseded_repair_follows_its_successor():
+    class It:
+        def __init__(self, state, by=None):
+            self.state, self.superseded_by = state, by
+
+    class W:
+        items = {"OLD": It("superseded", "MID"), "MID": It("superseded", "NEW"), "NEW": It("done"),
+                 "LOOP_A": It("superseded", "LOOP_B"), "LOOP_B": It("superseded", "LOOP_A"),
+                 "GONE": It("superseded", "NEVER"), "OPEN": It("doing")}
+
+    class Fx:
+        def ledger_items(self):
+            return None, W
+
+    ok(A.successor(Fx(), "OLD") == "NEW", "a superseded repair's wait follows the chain to its end")
+    ok(A.successor(Fx(), "LOOP_A") is None and A.successor(Fx(), "GONE") is None,
+       "a supersession cycle or an unfiled successor never delivers")
+    ok(A.successor(Fx(), "OPEN") is None and A.successor(object(), "OLD") is None,
+       "not superseded, or no ledger view: nothing to follow")
+
+
 def main():
     for t in (t_steve_site_checker, t_shared_harness_incident, t_predecessor_not_staffed, t_product_and_failed_diagnosis,
-              t_gpt_review_fences):
+              t_gpt_review_fences, t_refusal_is_one_row_and_a_never_filed_wait_resumes,
+              t_superseded_repair_follows_its_successor):
         t()
     if S.FAILS:
         print("FAIL: %d" % len(S.FAILS))
