@@ -82,7 +82,9 @@ check("the query asks the WHEA-Logger provider for WHEA_DAYS days and survives z
 check("the shell is an absolute path (a systemd unit has no /mnt/c on PATH)", OW.POWERSHELL.startswith("/mnt/c/"), OW.POWERSHELL)
 
 # Sanity probe: a quiet week reads its real count and alarms nothing, so the alarms below are the fault.
-quiet = lines(*[ev(17, age_h=h) for h in (1, 5, 9, 20, 23.5)], *[ev(17, age_h=24 + 3 * i) for i in range(12)])
+# The old twelve sit 24.5 h and up: ev() floors to the second then adds .883 s, and the subprocess reads its own later
+# clock, so an event planted at exactly 24 h fell either side of the window (blind check, 2026-11-06: 5 of 6 runs read 6).
+quiet = lines(*[ev(17, age_h=h) for h in (1, 5, 9, 20, 23.5)], *[ev(17, age_h=24.5 + 3 * i) for i in range(12)])
 k, al = cli_pass("quiet", quiet)
 check("a quiet day reads 5 corrected, MEASURED", k[COR]["m"] == "MEASURED" and k[COR]["v"] == 5, k[COR])
 check("a quiet day: no severe, not blind", k[SEV]["v"] == 0 and k[BLIND]["v"] == 0, (k[SEV], k[BLIND]))
@@ -90,6 +92,14 @@ check("a quiet day alarms nothing", not alarm(al, "disk.whea"), al)
 os.environ["RM_OPS_WHEA_EVENTS"] = str(TMP / "quiet" / "whea.txt")
 pt = OW.whea_reading(NOW)[COR]["x"]
 check("the 8-day curve rides on the reading (17 events by UTC day)", sum(pt["by_day_utc"].values()) == 17, pt)
+del os.environ["RM_OPS_WHEA_EVENTS"]
+
+# The window edge, at one fixed clock (in-process, so no subprocess drift): 23.9 h in, 24.1 h out, a 5-min-future row in.
+(TMP / "edge").mkdir()
+(TMP / "edge" / "whea.txt").write_text("\r\n".join(lines(ev(17, age_h=23.9), ev(17, age_h=24.1), ev(17, age_h=-0.05))) + "\r\n")
+os.environ["RM_OPS_WHEA_EVENTS"] = str(TMP / "edge" / "whea.txt")
+eg = OW.whea_reading(NOW)[COR]
+check("the 24 h edge: 23.9 h and a clock-skewed future row count, 24.1 h does not", eg["v"] == 2, eg)
 del os.environ["RM_OPS_WHEA_EVENTS"]
 
 k, al = cli_pass("none", ["END|0"])
