@@ -1103,3 +1103,9 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:31:28Z","tsn":1793968288893193653}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW A1 (L2), read-only proof","ts":"2026-11-06T12:32:04Z","tsn":1793968324080997840}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:32:11Z","tsn":1793968331387844942}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED A1 (L2), read-only proof","ts":"2026-11-06T12:35:43Z","tsn":1793968543645664167}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:36:15Z","tsn":1793968575366787847}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GSS_PLAN_FIX_SECOND_PER_FULL_BUILD A1 (L2), read-only proof","ts":"2026-11-06T12:37:54Z","tsn":1793968674053188808}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:38:05Z","tsn":1793968685366354546}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_GLASSWALK_SPEED_RATIO_1 A1 (L2), read-only proof","ts":"2026-11-06T12:39:58Z","tsn":1793968798750600127}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:40:05Z","tsn":1793968805765109408}
