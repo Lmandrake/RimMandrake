@@ -108,6 +108,38 @@ DEFAULTS = {"tick_s": 120, "stall_after_s": 240, "verify_s": 300, "handoff_s": 6
             "ledger_notes": True, "publish": True, "tick_budget_s": 420}
 # tick_budget_s: rm-dispatcher.service is a oneshot with TimeoutStartSec=600; past this budget a tick writes no more
 # ledger notes and kills its publish, so systemd never SIGTERMs it mid-tick (review round R, A).
+# Inside a metronome beat (its dispatch phase, OPS_METRONOME_MIGRATE_CLOCKS_FENCED) the tick is killed at
+# METRONOME_DEADLINE, far inside tick_budget_s (live ticks measured p95 21 s, max 97 s against the phase's 20 s): it
+# starts no act once BEAT_ACT_RESERVE_S remain (the acts not started are given back, as a killed tick's are, and the
+# next beat decides them again) and kills its notes and publish BEAT_END_RESERVE_S before the kill, for the state save.
+OLD_TIMER = "rm-dispatcher.timer"        # the clock the metronome's dispatch phase replaces (metronome_phases.json owns)
+PHASE = "dispatch"
+EXIT_FENCED = 3
+BEAT_ACT_RESERVE_S = 6.0
+BEAT_END_RESERVE_S = 2.0
+# Only acts whose give-back is exact are deferred (unreleased/RL.unlaunch); every other kind (alarms whose carry decide()
+# already popped, incidents, seat restarts) still runs, as before, with its notes bounded by the deadline (review gen29 #1)
+BEAT_DEFERRABLE = ("ring", "recover", "withdraw", "login_switch", "login_rescue", "role_launch")
+BEAT_STARVED_AFTER = 5        # beats in a row that deferred: an alarm, and the dead-man's last_ok_tick stops (review #2)
+
+
+class Fenced(Exception):
+    """The metronome generation this tick acts for is no longer the live one: it starts nothing more."""
+
+
+class BeatSpent(Exception):
+    """The metronome beat's deadline is too close to start another act: the rest waits for the next beat."""
+
+
+def beat_deadline():
+    """The metronome's kill time for this tick (METRONOME_DEADLINE, epoch), or None outside a beat."""
+    try:
+        t = float(os.environ.get("METRONOME_DEADLINE") or "nan")
+    except ValueError:
+        return None
+    return t if t == t and t not in (float("inf"), float("-inf")) else None
+
+
 CAP_DEFAULTS = {"wakes_per_seat_hour": 3, "wakes_per_seat_day": 30, "wakes_per_day": 80}
 # Raises of a dead window are bounded by raise_ladder.py (OPS_RAISE_REWIRE_WITH_DEATH_LADDER), not a per-day cap.
 RAISE_OBS_NONE = {"ending": lambda seat, sess, cfg: ("window_gone", "unknown"), "progress": lambda seat, cfg: None,
@@ -1400,7 +1432,7 @@ def publish(n):
     return ingest.publish(n, shard_rel=SHARD_REL, message="ledger: DISPATCHER notes (%d)" % n)
 
 
-def publish_bounded(n, timeout, argv=None):
+def publish_bounded(n, timeout, argv=None, kill_wait=10):
     """publish(n) in a child process (its own process group) killed when it outlives timeout: ingest.publish's git
     calls each wait up to 300 s, and a hung push must not carry the tick past the service's 600 s. A killed
     publish leaves its commit local; the next tick's publish retries it (ingest.unpublished), and a rebase it left
@@ -1413,7 +1445,7 @@ def publish_bounded(n, timeout, argv=None):
     try:
         out, _ = p.communicate(timeout=timeout)
     except subprocess.TimeoutExpired:
-        for sig, wait in ((signal.SIGTERM, 10), (signal.SIGKILL, 10)):   # TERM first: git removes its own locks
+        for sig, wait in ((signal.SIGTERM, kill_wait), (signal.SIGKILL, kill_wait)):   # TERM first: git removes its locks
             try:
                 os.killpg(p.pid, sig)
             except OSError:
@@ -1449,18 +1481,24 @@ def git_lock(wait_s=90):
             time.sleep(2)
 
 
-def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=None):
+def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=None, act_deadline=None,
+            fence=None):
     """Carry the actions out (apply) or only journal them (dry). fx overrides the side effects (selftests).
     persist() saves st durably (tick: an atomic state.json write); it runs around every role launch so a tick killed
     after systemd-run cannot forget the run and launch the role again (review round R, A). deadline (epoch, real
-    clock): past it no more ledger notes, and publish is killed at it."""
+    clock): past it no more ledger notes, and publish is killed at it. act_deadline (a metronome beat): past it no
+    act is started; the rest are given back as a killed tick's are and journalled `deferred`. fence(what) (the
+    metronome's ownership fence) is asked before every act; False raises Fenced."""
     fx = fx or {}
     deadline = deadline if deadline is not None else time.time() + sch.get("tick_budget_s", 420)
+    beat = act_deadline is not None
     do_persist = fx.get("persist") or persist or (lambda: None)
     do_ring, do_withdraw = fx.get("ring", ring), fx.get("withdraw", withdraw)
     do_recover, do_note, do_publish = fx.get("recover", recover), fx.get("note", ledger_note), fx.get(
-        "publish", lambda n: publish_bounded(n, deadline - time.time()))
-    do_lock = fx.get("lock", git_lock)
+        "publish", lambda n: publish_bounded(n, deadline - time.time(), kill_wait=1 if beat else 10))
+    # in a beat the ingest.lock wait ends with the time to start acts: busy is not an alarm, the notes wait a beat
+    do_lock = fx.get("lock") or ((lambda: git_lock(max(0.0, min(5.0, act_deadline - time.time())))) if beat
+                                 else git_lock)
     do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
     do_stamp = fx.get("finish_stamp", RL.AP.write_stamp)
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
@@ -1475,8 +1513,14 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 type(e).__name__, str(e)[:160]), raise_first="Ledger notes are off."))
     ledger_ok = lk is not None
     notes = 0
+    deferred = []
     try:
-        for a in actions:
+        for i, a in enumerate(actions):
+            if apply and fence is not None and not fence("act %d (%s)" % (i, a.get("do"))):
+                raise Fenced("fenced before act %d (%s): the metronome generation moved on" % (i, a.get("do")))
+            if beat and a.get("do") in BEAT_DEFERRABLE and "result" not in a and time.time() >= act_deadline:
+                deferred.append(a)
+                continue
             res = None
             started = []      # role_launch: the run record, once it exists (a raise after that may have started it)
             stamped = False
@@ -1750,6 +1794,17 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 continue        # the snapshot stamp of a quiet tick is not a journal line
             a["result"] = res if apply else ("DRY: " + (res or "would %s" % a["do"]))
             journal(root, dict(a, message=None, pending=None) if a.get("message") or a.get("pending") else a)
+        if deferred:
+            # given back exactly as a killed tick gives back (tick's except): the next beat decides them again
+            back = unreleased(st, deferred, now)
+            for a in deferred:
+                rs = (st.get("roles") or {}).get(a.get("role")) if a.get("do") == "role_launch" else None
+                if isinstance(rs, dict) and RL.unlaunch(rs, a.get("unit")):
+                    back.append(a.get("unit"))
+            rec = {"at": iso(now), "do": "deferred", "why": "beat deadline: %d act(s) not started (%s); given back: %s"
+                   % (len(deferred), ", ".join(sorted({str(x.get("do")) for x in deferred})), ", ".join(back) or "none")}
+            journal(root, rec)
+            actions.append(rec)
         if apply and ledger_ok and sch.get("publish"):
             try:
                 out = do_publish(notes)       # also retries an earlier publish that stopped (ingest.unpublished)
@@ -2155,7 +2210,10 @@ def _stop_runs_locked(sch, root, wait_s, force_after_s, obs, clock, sleep, stopp
     return not left, lines
 
 
-def tick(sch, apply, obs=None, now=None, fx=None):
+def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=None):
+    """One tick. beat_end (epoch; default METRONOME_DEADLINE) bounds it inside a metronome beat; still_owner(what) is
+    the metronome's ownership fence (Fenced when it says no)."""
+    beat_end = beat_deadline() if beat_end is None else beat_end
     root = state_root(apply)
     os.makedirs(root, exist_ok=True)
     with open(os.path.join(root, "tick.lock"), "w") as lk:        # testq.cmd_tick's pattern
@@ -2170,6 +2228,10 @@ def tick(sch, apply, obs=None, now=None, fx=None):
             return supervise_registry(sch, root, apply, now, obs, fx, e)
         acts = []
         deadline = time.time() + sch.get("tick_budget_s", 420)      # real clock: the service timeout is real time
+        act_deadline = None
+        if beat_end is not None:
+            deadline = min(deadline, beat_end - BEAT_END_RESERVE_S)
+            act_deadline = beat_end - BEAT_ACT_RESERVE_S
         st.setdefault("last_ok_tick", None)   # present (null) from the first tick: the dead-man reads it, never last_tick
         try:
             o = obs or default_obs(sch, root, st)
@@ -2178,7 +2240,8 @@ def tick(sch, apply, obs=None, now=None, fx=None):
                 dry = live_runs_alarm(now)
                 if dry:
                     acts.append(dry)
-            execute(acts, sch, st, root, apply, now, fx, persist=lambda: save(st, root), deadline=deadline)
+            execute(acts, sch, st, root, apply, now, fx, persist=lambda: save(st, root), deadline=deadline,
+                    act_deadline=act_deadline, fence=still_owner)
             # the helper budget every seat's spawn hook reads (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER); never raises
             bud = HB.tick_step(sch, st, root, now, journal=lambda rec: (
                 journal(root, rec), apply and signal_alarm(sch, st, rec["kind"], rec["why"], now)),
@@ -2195,8 +2258,28 @@ def tick(sch, apply, obs=None, now=None, fx=None):
                     acts.append(rec)
                     st["alarm_carry_unreserved"] = rec["why"]
             # a tick that WORKED: no raise, and not blind (PAUSE is the owner's choice, a working tick) — review Q 11
-            if o.get("paused") or agents_read(o.get("agents")):
+            starved = None
+            if beat_end is not None and apply:
+                if any(x.get("do") == "deferred" for x in acts):
+                    st["beat_deferred_streak"] = st.get("beat_deferred_streak", 0) + 1
+                else:
+                    st.pop("beat_deferred_streak", None)
+                n = st.get("beat_deferred_streak", 0)
+                if n >= BEAT_STARVED_AFTER:
+                    starved = "%d beats in a row deferred acts at the beat deadline: the tick no longer fits its phase" % n
+                    if now - st["alarms"].get("tick:beat_starved", -1e18) >= sch.get("alarm_every_s", 6 * 3600):
+                        st["alarms"]["tick:beat_starved"] = now
+                        signal_alarm(sch, st, "tick:beat_starved", starved, now)
+                        rec = {"at": iso(now), "do": "alarm", "kind": "tick:beat_starved", "why": starved}
+                        journal(root, rec)
+                        acts.append(rec)
+            if (o.get("paused") or agents_read(o.get("agents"))) and not starved:
                 st["last_ok_tick"] = iso(now)
+        except Fenced as e:
+            # not a fault: the metronome moved on. Give back what was not started; no alarm (the metronome journals it)
+            back = unreserve(st) + unreleased(st, acts, now)
+            journal(root, {"at": iso(now), "do": "fenced", "why": "%s; given back: %s" % (e, ", ".join(back) or "none")})
+            raise
         except BaseException as e:
             # a launch decided but never executed must not stay consumed: give its slot/alarm/event back (a run that
             # reached systemd-run is in `runs` and keeps its mark). Journalled: a raised tick is never silent
@@ -2214,6 +2297,19 @@ def tick(sch, apply, obs=None, now=None, fx=None):
     return acts
 
 
+def _metronome():
+    utils = os.path.join(REPO, "src", "RimMandrake", "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import metronome
+    return metronome
+
+
+def metronome_owner(timer=OLD_TIMER):
+    """The metronome phase that owns this clock (metronome.owner_of), or None."""
+    return _metronome().owner_of(timer)
+
+
 def _sigterm_exit(signum, frame):
     raise SystemExit(128 + signum)
 
@@ -2225,6 +2321,7 @@ def main(argv=None):
     t.add_argument("--apply", action="store_true", help="really ring/recover/record (default: dry-run)")
     t.add_argument("--schedule")
     t.add_argument("--json", action="store_true")
+    t.add_argument("--metronome-gen", type=int, help="the metronome's ownership generation (its dispatch phase)")
     s = sub.add_parser("status")
     s.add_argument("--schedule")
     s.add_argument("--apply", action="store_true", help="show the live state instead of the dry one")
@@ -2252,7 +2349,29 @@ def main(argv=None):
         print("ALL LIVE ROLE RUNS ENDED (verified)" if ok else "NOT ALL ENDED: do not switch to dry-run or disable "
               "the timer; see design/RimMandrake/rimflow_v3_golive_wave1.md section 7")
         return 0 if ok else 1
-    acts = tick(sch, a.apply)
+    still_owner = None
+    if a.apply and a.metronome_gen is None:
+        owner = metronome_owner()
+        if owner:
+            print("dispatcher: the metronome's %s phase owns %s; an --apply tick without --metronome-gen acts nothing"
+                  % (owner, OLD_TIMER))
+            return 0
+    if a.metronome_gen is not None:
+        metronome = _metronome()
+        mdir = metronome.state_dir(os.environ.get("METRONOME_DIR"))
+
+        def still_owner(what):
+            ok, why = metronome.may_act(mdir, PHASE, a.metronome_gen)
+            if not ok:
+                print("dispatcher: fenced before %s: %s" % (what, why))
+            return ok
+        if not still_owner("the tick"):
+            return EXIT_FENCED
+    try:
+        acts = tick(sch, a.apply, still_owner=still_owner)
+    except Fenced as e:
+        print("dispatcher: %s" % e)
+        return EXIT_FENCED
     for x in acts:
         if a.json:
             print(json.dumps(dict(x, message=None) if x.get("message") else x, sort_keys=True))
