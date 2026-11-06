@@ -239,6 +239,45 @@ def t_tick_serves():
     x.done()
 
 
+def t_tick_serves_inside_game_pass():
+    """RELENTLESS_WAKE_PROBE_BOUNDARY_GAP_165S. Live tick 14:37:06Z (2026-11-06): one serve_wake -> game_pass stepped ~13
+    game items in 165 s and a job_broker poke landing as it began waited for all of them. A poke that lands during the
+    wake's game pass is served before the pass's next game step."""
+    import relentless as R
+    import selftest_relentless_game as SG
+    x = SG.rig(2, share=1.0, max_workers=2)
+    SG.to_game(x, "I0")
+    SG.to_game(x, "I1")
+    open(x.s.p(R.GAME_WAKE), "w").close()
+    seen, inside, real_gp, real_step = [], [], R.game_pass, R.step
+
+    def gp(*a, **k):
+        inside.append(1)
+        try:
+            return real_gp(*a, **k)
+        finally:
+            inside.pop()
+
+    def st_(store, fx, r, item, now, acts):
+        if inside:
+            served = sum(1 for a in acts if a.get("do") == "wake_serve")
+            seen.append((item, served))
+            if len(seen) == 1:      # the broker's job ends while the pass's first game step runs
+                W.poke("job_broker", "broker job ended", root=x.d, now=x.now)
+        return real_step(store, fx, r, item, now, acts)
+    R.game_pass, R.step = gp, st_
+    try:
+        acts = x.tick()
+    finally:
+        R.game_pass, R.step = real_gp, real_step
+    ok(len(seen) >= 2, "inside game_pass: the wake's pass stepped both game items: %s" % seen)
+    ok(len(seen) >= 2 and seen[0][1] == 0 and seen[1][1] == 1,
+       "inside game_pass: the poke from the first game step is served before the second, not after the pass: %s" % seen)
+    serve = [a for a in acts if a.get("do") == "wake_serve"]
+    ok(len(serve) == 1 and serve[0].get("sources") == ["job_broker"], "inside game_pass: served once: %s" % serve)
+    x.done()
+
+
 def t_units():
     def read(n):
         with open(os.path.join(UNITS, n), encoding="utf-8") as f:
@@ -279,7 +318,7 @@ def t_cli_poke():
 
 
 def main():
-    for t in (t_poke, t_no_wake_env, t_fire_coalesce, t_fire_absorbed, t_fire_rate_cap, t_serve, t_mark, t_tick_serves, t_units,
+    for t in (t_poke, t_no_wake_env, t_fire_coalesce, t_fire_absorbed, t_fire_rate_cap, t_serve, t_mark, t_tick_serves, t_tick_serves_inside_game_pass, t_units,
               t_config, t_cli_poke):
         t()
     print("FAILED %d" % len(FAILS) if FAILS else "ALL PASS")

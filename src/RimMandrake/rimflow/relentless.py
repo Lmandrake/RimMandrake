@@ -7116,11 +7116,13 @@ def wake_taken(store):
         return False
 
 
-def game_pass(store, fx, r, now, acts, began=None):
+def game_pass(store, fx, r, now, acts, began=None, between=None):
     """The game items' steps and nothing else, ended rounds first, until one holds the game again: what a round's end
     needs, so the next proof starts now and not at the next tick (RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS; the Conductor
     measured a proof row in 16 of 180 minutes with 35 items waiting). The caller holds tick.lock. `began`: the wall time
-    the caller's game budget started at; a tick's wake spends the tick's remaining budget, never a fresh one (r5 #20)."""
+    the caller's game budget started at; a tick's wake spends the tick's remaining budget, never a fresh one (r5 #20).
+    `between()`: run after each game step and before the drain: a tick's wake serves its pokes inside the pass (live
+    2026-11-06 a job_broker poke waited 165 s through one 13-step pass: RELENTLESS_WAKE_PROBE_BOUNDARY_GAP_165S)."""
     wall = getattr(fx, "wall", time.monotonic)
     began = wall() if began is None else began
 
@@ -7139,6 +7141,8 @@ def game_pass(store, fx, r, now, acts, began=None):
         except Exception as e:  # noqa: BLE001  one bad item never stops the others; the next tick resumes it
             acts.append({"do": "error", "item": s["item"], "why": "%s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": s["item"], "why": str(e)[:300]})
+        if between:
+            between()
     broker_drain(store, fx, r, now, acts)
 
 
@@ -7292,7 +7296,7 @@ def _tick(store, fx, r, now, prof):
                 return
             acts.append({"do": "game_wake"})
             try:
-                game_pass(store, fx, r, clock(), acts, budget.get("began"))
+                game_pass(store, fx, r, clock(), acts, budget.get("began"), between=serve_poke)
             except Exception as e:  # noqa: BLE001  the next tick steps every game item anyway
                 acts.append({"do": "error", "item": None, "why": "game_pass %s: %s" % (type(e).__name__, e)})
 

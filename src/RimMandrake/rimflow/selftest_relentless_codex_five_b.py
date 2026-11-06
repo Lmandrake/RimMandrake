@@ -132,7 +132,7 @@ def t_wake_spends_the_tick_budget():
     SG.to_game(x, "I0")
     seen, real_gp, real_step = [], R.game_pass, R.step
 
-    def gp(store, fx, r, now, acts, began=None):
+    def gp(store, fx, r, now, acts, began=None, between=None):
         seen.append(began)
 
     def st_(store, fx, r, item, now, acts):
