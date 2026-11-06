@@ -1308,3 +1308,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES T3 (GREEN-FULL), read-only proof","ts":"2026-11-06T19:46:11Z","tsn":1793994371190528052}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:49:36Z","tsn":1793994576175936356}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES T4 (GREEN-FULL), read-only proof","ts":"2026-11-06T19:49:51Z","tsn":1793994591365178636}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:52:21Z","tsn":1793994741949642193}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE A1 (GREEN-FULL), read-only proof","ts":"2026-11-06T19:54:01Z","tsn":1793994841974891142}
