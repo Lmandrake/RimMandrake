@@ -1139,6 +1139,12 @@ class GameFx(object):
         import relentless_live_round
         return relentless_live_round.mod_gap(self._round_fx(), sha, self._mods_text(item, sha), running, item)
 
+    def game_own_mods(self, item, sha):
+        """The mod folders the build at `sha` itself changed (relentless_live_round.item_mods), no `live-mods:` rider: the
+        mods whose name in a staging's stop makes it the build's defect (_stage_stop). Raises ValueError as item_mods does."""
+        import relentless_live_round
+        return relentless_live_round.item_mods(self._round_fx(), item, sha)
+
     def game_names_check(self, item, sha):
         """relentless_names over the item's live_proofs text (_mods_text) -> (refusal or None, [advice: warn only],
         [inferred: the needs the gate adds to its load]). A live-without the planned load holds (or that names no mod)
@@ -2008,6 +2014,36 @@ def _harness(store, fx, r, item, why, now, acts):
                    % (out["n"], why, out["wait"]))
 
 
+STAGE_STOP = "game_stage"
+
+
+def _stage_stop(store, fx, sup, r, item, detail, now, acts):
+    """STAGER_SNAG_REWIRE_BUILDER_WOKEN_FOR_HARNESS: the stager stopped before any proof ran, and the item entered this
+    lane through a blind PASS. Only a stop naming the item's own mod goes back to a builder (a strike, a new generation).
+    Any other is the environment: restaged (_harness, its growing wait), no worker. The same stop after that restage goes
+    to one repair item (_env_route), the item waiting on it, so a stop nothing here can change never loads the game for
+    ever. Before: HEAVY_TEXTURES_MEASURE_REAL_VRAM gen 5 went back 2026-11-06 13:55Z for a companion exact-hash gate fixed
+    32 minutes later, and the builder could change nothing."""
+    st = store.load(item)
+    try:
+        own = fx.game_own_mods(item, st["game"]["sha"])
+    except ValueError:      # mods_of's refusal: an unreadable build names no mod, and no worker could act on the stop
+        own = []
+    if relentless_envcause.stage_names(detail, own):
+        return _back(store, fx, sup, r, item, STAGE_STOP, detail, now, acts)
+    e = relentless_envcause.stage_stop(detail)
+    _save(store, item, lambda s: s["game"].update(snag=None))
+    if e.fp in (st.get("env_tried") or {}):
+        _env_route(store, fx, item, [e], now, acts, "the lane restaged once and the stager stopped the same way")
+        if store.load(item)["status"] != GAME:
+            return
+        # the repair could not be filed: _env_route's alarm is out, and the restage below retries it on the next stop
+    _save(store, item, lambda s: s.update(env_tried=_keep(s.get("env_tried"), {e.fp: [now, now]})))
+    store.attempt(item, {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "gen": st["gen"], "end": "game_env_fix",
+                         "detail": ("stager stop, restaged: %s" % detail)[:600], "sha": st["game"]["sha"]})
+    _harness(store, fx, r, item, "the stager stopped before any proof ran: %s" % detail, now, acts)
+
+
 def _waits(store, fx, item, why, now, acts):
     """Put down on what it waits for. It holds no place and its clone is parked (relentless.release_parked); a flyer
     waits on the owner himself, so it is held and the ledger asks him: never picked again until he lifts the hold
@@ -2526,7 +2562,9 @@ def step(store, fx, r, item, now, acts, sup):
         acts.append({"do": "game_staged", "item": item, "released": gave is None, "batch": rode})
         if st and st["game"].get("snag"):
             sn = st["game"]["snag"]
-            return _back(store, fx, sup, r, item, sn.get("class") or "game_stage", sn.get("detail") or "", now, acts)
+            if (sn.get("class") or STAGE_STOP) == STAGE_STOP:
+                return _stage_stop(store, fx, sup, r, item, sn.get("detail") or "", now, acts)
+            return _back(store, fx, sup, r, item, sn["class"], sn.get("detail") or "", now, acts)
         return
 
 

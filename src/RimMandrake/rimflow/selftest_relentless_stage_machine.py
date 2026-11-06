@@ -3,7 +3,7 @@
 effects, its verdict fed to the real supervisor (relentless_game.step) on a fake world.
 
   happy path: deploy -> down -> apply -> list -> load -> game-ready, no LLM, every step's seconds recorded;
-  deploy failure: a game_stage snag before the game is touched, no LLM;
+  deploy failure: a game_stage snag before the game is touched, no LLM, restaged with no worker;
   load timeout: handed back STILL LOADING (the supervisor waits the load out), recorded as not loaded;
   an unknown state (a load death whose first exception no rule names, or none) execs the LLM, briefed with the state
   and the Player.log tail, the stage prompt's guards still in it; a death a rule names is a snag, no LLM;
@@ -119,8 +119,8 @@ def t_deploy_failure():
     ok(ops.records and ops.records[-1]["verdict"] == "snag" and ops.records[-1]["llm"] is None, "recorded as a snag")
     end_unit(x, st)
     st2 = x.st("I0")
-    ok("release" in x.w.events and (st2.get("last_fail") or {}).get("class") == "game_stage",
-       "deploy failure: the bridge released, the item goes back with the stop")
+    ok("release" in x.w.events and st2["game"]["phase"] == "stage" and st2["game"]["retry_at"] and not st2.get("last_fail"),
+       "deploy failure: the bridge released, restaged, no worker (the routing itself: selftest_relentless_stage_reroute)")
     x.done()
 
 

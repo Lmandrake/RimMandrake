@@ -133,6 +133,29 @@ def dud(row, item=None):
     return classify(row, item) or (_env("proof_or_site", row) if row and row.get("outcome") == "UNMEASURED" else None)
 
 
+STAGE_LOG = re.compile(r"\s*\(done so far:.*$", re.S)     # relentless_stage.run's record of what it did, not why it stopped
+STAGE_HEAD = re.compile(r"^(?:stages\(s\):[^;]*;\s*)?python stager stopped:\s*")   # relentless_stage.Clock.line, then its word
+STAGE_ARGS = re.compile(r"--(?:mod|with)\s+\S+")    # the deploy command a stop quotes names every mod the staging carries
+HEX_WORD = re.compile(r"\b[0-9a-f]{7,40}\b")
+
+
+def stage_names(detail, mods):
+    """A staging's stop text -> those of `mods` (the item's own mod folders) it names as its cause, whole words, any case.
+    What the stop merely carries is no accusation: its `done so far` log and the --mod list of the command it quotes
+    name the item's mods on every stop (relentless_live_round.deploy_args). `FlowWorksPipes` is not `FlowWorks`; `RimMandrake.FlowWorks.Comp` is."""
+    text = STAGE_ARGS.sub("", STAGE_LOG.sub("", detail or ""))
+    return [m for m in mods if re.search(r"(?<![A-Za-z0-9])%s(?![A-Za-z0-9])" % re.escape(m), text, re.I)]
+
+
+def stage_stop(detail):
+    """A staging stop that names none of the item's own mods, as an Env of kind harness: its fp drops the stager's head,
+    its log and any hash, so the same stop on a later source tree is the same cause (the companion gate's two source
+    hashes differ on every commit)."""
+    why = HEX_WORD.sub("", STAGE_HEAD.sub("", STAGE_LOG.sub("", detail or "")))
+    return Env(kind="harness", fix=False, mods=[], cmd=None, criterion="staging", why=detail or "", log=None,
+               fp=_key("harness", why))
+
+
 def line(e):
     if e.type:      # the hold names what the load lacked: the type, its namespace and the packageIds tried
         return "%s %s (the load lacks the mod that defines %s, namespace %s; %s%s): %s" % (

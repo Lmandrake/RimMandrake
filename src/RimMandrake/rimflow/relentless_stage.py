@@ -16,7 +16,8 @@ staging unit's body, in the same unit shape as a worker, so alive/stop/settle an
 An LLM is launched only for a state the machine has no rule for (LIVE_STAGING_BUILD_STAGEHAND_WITHOUT_TOKENS): an
 unhandled exception, or a game that died loading with a first Player.log exception no rule in KNOWN_DEATHS names (or
 none at all). It execs the plan's `fallback` argv with the stage prompt led by that state and the log's tail. A death a
-rule names is a game_stage snag carrying the first exception: the build's defect, back to its builder, no tokens.
+rule names is a game_stage snag carrying the first exception, no tokens. Every game_stage snag is routed by the supervisor
+(relentless_game._stage_stop): back to the builder only when it names the item's own mod, else restaged with no worker.
 
 Every step's seconds are recorded, one line per staging, in <RELENTLESS_ROOT>/store/stage_timings.jsonl (stage, total,
 verdict, llm) for PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES; `round` reads the latest for an item (live proof).
@@ -381,8 +382,7 @@ def run(plan, ops, clock=None):
                 first = first_exception(text)
                 rule = death_rule(first)
                 if rule:
-                    raise Stop("the game died during the load: %s, first exception: %s; %s"
-                               % (rule, first, "; ".join(log)))
+                    raise Stop("the game died during the load: %s, first exception: %s" % (rule, first))
                 raise Unknown("game died loading", "first Player.log exception %s; %s"
                               % (repr(first) if first else "none", "; ".join(log)), tail(text))
             # still loading at the bound this run can spend: the supervisor waits the load out itself (_load_gate)

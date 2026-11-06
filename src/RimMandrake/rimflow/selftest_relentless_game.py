@@ -34,7 +34,7 @@ class GW(S.FakeWorld):
     def __init__(self, n=2):
         S.FakeWorld.__init__(self, n)
         self.led, self.impl, self.rows, self.events, self.proves = {}, [], [], [], []
-        self.no_code = []
+        self.no_code, self.own = [], {}
         self.running, self.idle, self.take_why, self.palive = True, None, None, set()
         self.proofs = {}
         self.bridge_held = None
@@ -76,6 +76,12 @@ class GW(S.FakeWorld):
         import relentless_live_round as R
         got = sorted({m for i, s in builds for m in R.live_deploy(self.proofs_at(i, s))})
         return (got, R.deploy_args(got, {})) if got else None
+
+    def game_own_mods(self, item, sha):
+        got = self.own.get(item, ["RM_X"])
+        if isinstance(got, Exception):
+            raise got
+        return got
 
     def game_mod_gap(self, item, sha, running=True):
         self.gap_calls.append((item, sha, running))
@@ -535,7 +541,7 @@ def t_stage_snag_releases():
     x.w.running = False
     x.tick()
     st = x.st("I0")
-    R.snag(x.s, "I0", st["gen"], "game_stage", "steam would not start", x.r)
+    R.snag(x.s, "I0", st["gen"], "game_stage", "the game died during the load: RM_X.CompFoo", x.r)
     ok(x.st("I0")["status"] == "game", "a staging snag waits for the supervisor")
     x.w.up[st["run"]["unit"]] = False
     x.tick()
