@@ -20,7 +20,8 @@ check or tool, which it may only PROPOSE (rule 4); a different fresh Judge retur
 Curator's reasoning; with --apply each KEEP is checked (`git apply --check`, validate_skills, the target's selftests),
 published with `Delegated: technical`, tagged agent/<target>/v<N>, and recorded in
 infrastructure/state/agent_improve/changes/<target>_v<N>.json. Verdicts: infrastructure/state/delegated/<D>/. The ramp
-level (design section 4.1) lives in <out>/state.json and sets gather's bar. The generalization check (4.3) is owed.
+level (design section 4.1) lives in <out>/state.json and sets gather's bar. The generalization check (4.3) lives in
+agent_improve_general.py: `general <target> v<N>` runs it on an applied version, and at L2 it gates every apply.
 """
 import argparse
 import ast
@@ -706,16 +707,51 @@ def run_checks(res, repo):
     return probs
 
 
-def apply_change(row, entry, outdir, repo=None, publish=None, changes_dir=None, delegated_dir=None, pk_level=0):
+def source_kinds(row, entry):
+    return sorted({task_kind(entry["pieces"][c]) for c in row.get("cites") or ()} - {None})
+
+
+def general_gate(row, entry, res, outdir, repo, general, changes_dir=None):
+    """L2: the generalization check (4.3) on the HEAD text against the proposed one, before anything is applied.
+    general(t, old_text, new_text, source_kinds) -> result (agent_improve_general.check). Its evidence is written to
+    outdir (a refusal leaves nothing in the repo); _prepare_record copies it beside the change records (changes/../
+    general/) so publish commits it with the change. -> (ok, detail)."""
+    import agent_improve_general as G   # noqa: E402  (it imports this module)
+    if general is None:
+        return False, "this level needs a generalization check before apply; no checker was given"
+    if not row.get("new_text"):
+        return False, "generalization check: the row carries no proposed text"
+    old = open(os.path.join(repo, res["path"]), encoding="utf-8").read()
+    try:
+        g = general(row["target"], old, row["new_text"], source_kinds(row, entry))
+    except Exception as e:   # a crashed check is not a pass
+        return False, "generalization check crashed: %s" % str(e)[:300]
+    refs = {"old": "HEAD", "new": "proposed"}
+    try:
+        gpath, rel = G.write_evidence(g, "%s_proposed" % row["target"], outdir, repo, refs=refs)
+    except Exception as e:
+        return False, "generalization check: evidence not written: %s" % str(e)[:300]
+    row["general"] = G.summary(g, rel, refs)
+    row["general_path"] = gpath
+    if g.get("keep") is not True:
+        return False, "generalization check: %s (%s)" % (g.get("verdict"), gpath)
+    return True, g.get("verdict")
+
+
+def apply_change(row, entry, outdir, repo=None, publish=None, changes_dir=None, delegated_dir=None, pk_level=0,
+                 general=None):
     """KEEP only. Check, apply, test, publish with `Delegated: technical`, tag, record. Any refusal reverses the diff
-    and leaves it in outdir. -> (ok, detail)."""
+    and leaves it in outdir. At a level that needs it, `general` (the 4.3 check) must keep the change first.
+    -> (ok, detail)."""
     repo = repo or REPO
     changes_dir, delegated_dir = changes_dir or CHANGES, delegated_dir or DELEGATED
     t, res = row["target"], resolve_target(row["target"])
-    if LEVELS[pk_level]["need_general"]:
-        return False, "level L%d needs a generalization check before apply; it is not built" % pk_level
     if git("status", "--porcelain", "--", res["path"], cwd=repo).strip():
         return False, "%s has uncommitted edits; refusing to mix" % res["path"]
+    if LEVELS[pk_level]["need_general"]:   # after the clean check, so the gate's "old" text is HEAD's
+        ok, why = general_gate(row, entry, res, outdir, repo, general, changes_dir)
+        if not ok:
+            return False, "level L%d: %s" % (pk_level, why)
     # Apply the diff the Judge saw (row["diff"]), never the outdir copy another run could have rewritten.
     fd, dpath = tempfile.mkstemp(suffix=".diff")
     with os.fdopen(fd, "w", encoding="utf-8") as f:
@@ -743,6 +779,8 @@ def _apply_checked(row, entry, res, t, dpath, repo, publish, changes_dir, delega
         n, tag, vrec, vpath, cpath, msg, paths = _prepare_record(row, entry, res, t, repo, changes_dir, delegated_dir)
     except Exception as e:   # nothing may stay applied or half-written before publish
         git("apply", "-R", dpath, cwd=repo, check=False)
+        if row.get("repo_general_path") and os.path.isfile(row["repo_general_path"]):
+            os.remove(row["repo_general_path"])
         return False, "preparing the change record failed: %s" % str(e)[:300]
     return _publish_and_tag(row, res, dpath, repo, publish, vrec, vpath, cpath, msg, paths, tag, head)
 
@@ -753,11 +791,16 @@ def _prepare_record(row, entry, res, t, repo, changes_dir, delegated_dir):
     vrec = verdict_record(row, entry)
     vpath = row.get("verdict_file") or free_verdict_path(delegated_dir, row["day"], t)
     cpath = os.path.join(changes_dir, "%s_v%d.json" % (t, n))
+    if row.get("general_path"):   # the gate's outdir evidence, copied into the repo only now that it is publishing
+        import agent_improve_general as G   # noqa: E402
+        g = json.load(open(row["general_path"], encoding="utf-8"))
+        gdir = os.path.join(os.path.dirname(os.path.abspath(changes_dir)), "general")
+        row["repo_general_path"], rel = G.write_evidence(g, "%s_v%d_proposed" % (t, n), gdir, repo)
+        row["general"] = dict(row["general"], evidence=rel)
     change = {"target": t, "version": n, "tag": tag, "day": row["day"], "path": res["path"],
-              "pieces": vrec["cites"], "source_kinds": sorted({task_kind(entry["pieces"][c]) for c in row["cites"]}
-                                                             - {None}),
+              "pieces": vrec["cites"], "source_kinds": source_kinds(row, entry),
               "diff": row["diff"], "verdict": os.path.relpath(vpath, repo), "recheck": row["recheck"],
-              "recheck_result": None, "rechecks": [], "generalization": []}
+              "recheck_result": None, "rechecks": [], "generalization": [row["general"]] if row.get("general") else []}
     os.makedirs(os.path.dirname(cpath), exist_ok=True)
     try:
         f = open(cpath, "x", encoding="utf-8")   # never overwrite a record someone left (e.g. an unpublished v<N>)
@@ -773,6 +816,8 @@ def _prepare_record(row, entry, res, t, repo, changes_dir, delegated_dir):
            "Delegated: technical — agent improvement %s\nJudge KEEP: %s\nChange record: %s\n"
            % (t, n, row["day"], t, os.path.relpath(vpath, repo), os.path.relpath(cpath, repo)))
     paths = [res["path"], os.path.relpath(cpath, repo)]
+    if row.get("repo_general_path"):
+        paths.append(os.path.relpath(row["repo_general_path"], repo))   # the gate's evidence travels (design 4.4)
     return n, tag, vrec, vpath, cpath, msg, paths
 
 
@@ -788,6 +833,8 @@ def _publish_and_tag(row, res, dpath, repo, publish, vrec, vpath, cpath, msg, pa
         git("reset", "-q", "--", *paths, cwd=repo, check=False)   # unstage only these paths
         git("apply", "-R", dpath, cwd=repo)
         os.remove(cpath)
+        if row.get("repo_general_path"):
+            os.remove(row["repo_general_path"])
         return False, "publish: %s" % sha
     vrec.update(applied_sha=sha, tag=tag, change=os.path.relpath(cpath, repo))
     write_verdict(vpath, vrec)
@@ -873,7 +920,7 @@ def record_rechecks(rows, changes_dir=None, saved=None):
 # ---------------------------------------------------------------- the pass
 
 def run_pass(day, out, apply=False, only=None, curator=None, judge=None, repo=None, src=None, state_path=None,
-             changes_dir=None, delegated_dir=None, publish=None, force=False):
+             changes_dir=None, delegated_dir=None, publish=None, force=False, general=None):
     state_path = state_path or os.path.join(out, "state.json")
     st = load_state(state_path)
     if not force and not due(st, day):
@@ -896,7 +943,7 @@ def run_pass(day, out, apply=False, only=None, curator=None, judge=None, repo=No
             row["verdict_file"] = vpath
         if apply and row.get("verdict") == "KEEP":
             row["applied"], row["apply_detail"] = apply_change(row, entry, d, repo, publish, changes_dir,
-                                                               delegated_dir, st["level"])
+                                                               delegated_dir, st["level"], general or default_general)
     saved = {}
     head = git("rev-parse", "HEAD", cwd=repo or REPO).strip() if apply else None   # before anything is written
     try:
@@ -984,6 +1031,11 @@ def materialize(t, version, dest, repo=None):
     return os.path.join(dest, path)
 
 
+def default_general(t, old_text, new_text, kinds):
+    import agent_improve_general as G   # noqa: E402  (it imports this module)
+    return G.check(t, old_text, new_text, kinds)
+
+
 def default_src():
     return {"lessons": os.path.join(REPO, "infrastructure", "state", "lessons"), "store": STORE,
             "ops_alarms": OPS_ALARMS, "owner": os.path.join(REPO, "infrastructure", "state", "ledger", "events",
@@ -1008,7 +1060,25 @@ def main(argv=None):
     m.add_argument("target")
     m.add_argument("version")
     m.add_argument("dest")
+    gn = sub.add_parser("general", help="the generalization check (4.3) on agent/<target>/v<N>, recorded")
+    gn.add_argument("target")
+    gn.add_argument("version")
+    gn.add_argument("--days", type=int, default=14)
+    gn.add_argument("--seed", type=int)
+    gs = sub.add_parser("general-show", help="exit 0 when v<N> holds a judged generalization entry")
+    gs.add_argument("target")
+    gs.add_argument("version")
     a = ap.parse_args(argv)
+    if a.cmd in ("general", "general-show"):
+        import agent_improve_general as G   # noqa: E402
+        if a.cmd == "general-show":
+            rc, lines = G.show(a.target, a.version)
+            print("\n".join(lines))
+            return rc
+        res, (epath, cpath) = G.run_for_version(a.target, a.version, seed=a.seed, days=a.days)
+        print(json.dumps({k: res[k] for k in ("verdict", "keep", "held_out", "source", "seed")}))
+        print("WROTE %s; appended to %s" % (epath, cpath))
+        return 0
     if a.cmd == "ramp":
         st = load_state(os.path.join(OUT, "state.json"))
         rd = ramp_reading()

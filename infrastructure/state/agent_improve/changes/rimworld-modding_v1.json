@@ -16,5 +16,29 @@
  "recheck": "No new lesson reports the missing rimworld-decompiled path, and later lessons that cite vanilla C# show it was read via rimsage or ilspycmd.",
  "recheck_result": null,
  "rechecks": [],
- "generalization": []
+ "generalization": [
+  {
+   "at": "2026-11-06T08:58:27Z",
+   "verdict": "overfit",
+   "keep": false,
+   "held_out": {
+    "win": 2,
+    "loss": 3,
+    "tie": 1,
+    "error": 0
+   },
+   "source": {
+    "win": 0,
+    "loss": 0,
+    "tie": 0,
+    "error": 0
+   },
+   "seed": 4140589539,
+   "evidence": "infrastructure/state/agent_improve/general/rimworld-modding_v1_20261106T085827Z.json",
+   "refs": {
+    "old": "agent/rimworld-modding/v1^",
+    "new": "agent/rimworld-modding/v1"
+   }
+  }
+ ]
 }

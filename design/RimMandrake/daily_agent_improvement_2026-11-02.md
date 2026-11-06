@@ -133,6 +133,12 @@ the newest version of each target:
   kept and flagged **narrow** in its change record, so a pile-up of narrow changes on one target is visible (the
   digest line counts a target's narrow changes).
 - Cost bound: 16 short runs plus 8 judge calls per check, under 300k tokens; it runs only at L1 and L2.
+- Built (`AGENT_IMPROVE_BUILD_GENERALIZATION_CHECK`): `src/RimMandrake/Utils/agent_improve_general.py`, run as
+  `agent_improve.py general <target> v<N>` and as the L2 pre-apply gate. The two agents are tool-less `claude -p` runs
+  with the target text inlined, not scratch clones. Evidence: `infrastructure/state/agent_improve/general/`. A revert
+  verdict is recorded, not enacted. Owed: a noise floor (`AGENT_IMPROVE_HARDEN_NOISE_CALLED_OVERFIT`; the first real
+  run called a one-line path fix overfit at 2-3-1) and the cadence and revert enactment
+  (`AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY`).
 
 **4.4 The evidence travels with the change.** Each applied change commits
 `infrastructure/state/agent_improve/changes/<target>_v<N>.json`: the packet pieces that motivated it (paths and first
