@@ -84,6 +84,10 @@ namespace RimMandrake.FlowWorks
 			// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: the job is still reading the kinds (MapState.kinds' read in flight);
 			// its flood begins when the read publishes
 			public bool jobReading;
+			// WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: the map's named swim bumps counted when the job's parts were read
+			// (MapState.swimNamedAtStamp), and the swim-kinds switch its read's first step saw (-1: no step yet)
+			public int jobSwimNamed;
+			public int jobSwimKinds = -1;
 		}
 
 		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 leads b and c): diagnostic counters read through TimingLine. Nothing reads
@@ -136,6 +140,13 @@ namespace RimMandrake.FlowWorks
 			public readonly Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views =
 				new Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)>();
 			public int readsPartsDropped;   // reads dropped because a stamp part other than the walls moved under them
+			// WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: swim version moves that named their squares (NoteSwimCells; under
+			// the swimTouches lock), their count when the stamp was last read, the named squares a read in flight must touch
+			// (overflow: read again), and the reads carried over a swim move instead of dropped
+			public int swimNamed, swimNamedAtStamp;
+			public readonly List<int> swimTouches = new List<int>();
+			public bool swimTouchOverflow;
+			public int readsRebased;
 			public bool builtMidLoad;     // some entry or the kinds were built while loading (Tick's post-load rebuild)
 			public int viewsReused;       // Build took the pocket grid's built view instead of reading the map again
 			public int builds;
@@ -205,7 +216,7 @@ namespace RimMandrake.FlowWorks
 		{
 			kindMap = map;
 			kindPg = map.pathing.Normal.pathGrid;
-			kindSwim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
+			kindSwim = SwimKinds(map);
 			kindEx = RM_SuperdeepTrap.EngineOf(map);
 			return KindAtFn;
 		}
@@ -227,6 +238,78 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			st.deltas.Add(idx);
+		}
+
+		private const int MaxSwimTouches = 4096;
+
+		/// <summary>WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: from RM_SwimPathing.BumpCell / BumpCells, right after the swim
+		/// version moved for a bump that names every square it changed (<paramref name="cells"/>, else the one
+		/// <paramref name="cell"/>). Counted, so a read can tell that every swim move under it was named
+		/// (RM_WallReachMath.ReadPartsDecision); while a read is in flight the squares are queued for its touch
+		/// (FlushSwimTouches). Not judged as connectivity deltas: the swim part already moves the stamp.</summary>
+		internal static void NoteSwimCells(Map map, int cell, IReadOnlyList<int> cells)
+		{
+			if (map == null || !states.TryGetValue(map, out MapState st))
+			{
+				return;
+			}
+			lock (st.swimTouches)
+			{
+				st.swimNamed++;
+				if (!st.kinds.Reading || st.swimTouchOverflow)
+				{
+					return;
+				}
+				int add = cells == null ? 1 : cells.Count;
+				if (st.swimTouches.Count + add > MaxSwimTouches)
+				{
+					st.swimTouchOverflow = true;
+					st.swimTouches.Clear();
+					return;
+				}
+				if (cells == null)
+				{
+					st.swimTouches.Add(cell);
+				}
+				else
+				{
+					for (int i = 0; i < cells.Count; i++)
+					{
+						st.swimTouches.Add(cells[i]);
+					}
+				}
+			}
+		}
+
+		/// <summary>WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: the read in flight reads again every named swim square it
+		/// passed (an overflow reads the whole map again); with no read in flight the queue is simply cleared.</summary>
+		private static void FlushSwimTouches(Map map, MapState st)
+		{
+			lock (st.swimTouches)
+			{
+				if (st.swimTouches.Count == 0 && !st.swimTouchOverflow)
+				{
+					return;
+				}
+				if (st.kinds.Reading)
+				{
+					if (st.swimTouchOverflow)
+					{
+						st.kinds.RestartRead();
+					}
+					else
+					{
+						Func<int, byte> kindAt = KindFn(map);
+						for (int i = 0; i < st.swimTouches.Count; i++)
+						{
+							st.kinds.Touch(st.swimTouches[i], kindAt);
+						}
+						KindFnDone();
+					}
+				}
+				st.swimTouches.Clear();
+				st.swimTouchOverflow = false;
+			}
 		}
 
 		// ── invalidation ────────────────────────────────────────────────────────────
@@ -474,6 +557,10 @@ namespace RimMandrake.FlowWorks
 			p[StampWall] = Volatile.Read(ref st.wallGen);
 			p[StampDoor] = st.doorPrint;
 			p[StampSwim] = SwimVersion(map);
+			lock (st.swimTouches)
+			{
+				st.swimNamedAtStamp = st.swimNamed;
+			}
 			p[StampRamps] = RimMandrakeFlowWorksSettings.pitRampsEnabled ? 1 : 0;
 			return RM_WallReachMath.StampOf(p[StampClimb], p[StampSalt], p[StampWall], p[StampDoor], p[StampSwim], p[StampRamps]);
 		}
@@ -721,6 +808,8 @@ namespace RimMandrake.FlowWorks
 			e.jobGen = gen;
 			e.jobStamp = stamp;
 			System.Array.Copy(st.partsNow, e.jobParts, StampParts);
+			e.jobSwimNamed = st.swimNamedAtStamp;
+			e.jobSwimKinds = -1;
 			e.jobMidLoad = Current.ProgramState != ProgramState.Playing;
 			e.jobMs = 0;
 			if (!st.kinds.CurrentFor(stamp, w, h))
@@ -760,19 +849,40 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
-		/// <summary>WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: did a stamp part other than the walls move since the read of
-		/// <paramref name="e"/>'s job began? Those changes (climb, salt, doors, swim water, ramps) name no square, so the read
-		/// cannot touch them: it is dropped and begun again.</summary>
-		private static bool ReadPartsMoved(MapState st, Entry e)
+		/// <summary>WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: can the read of <paramref name="e"/>'s job go on after the stamp
+		/// parts that moved since it began? The walls name their squares (touched). WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS:
+		/// a swim move whose every bump named its squares (touched by FlushSwimTouches) with the swim-kinds switch unchanged
+		/// rebases the read to the new swim part (RM_WallReachMath.ReadPartsDecision); any other part (climb, salt, doors, ramps:
+		/// no square named), an unnamed swim bump or a switch flip: false, the read is dropped and begun again.</summary>
+		private static bool ReadKeepsUp(Map map, MapState st, Entry e)
 		{
-			for (int i = 0; i < StampParts; i++)
+			bool swimSame = true;
+			if (e.jobParts[StampSwim] != st.partsNow[StampSwim] && e.jobSwimKinds >= 0)
 			{
-				if (i != StampWall && e.jobParts[i] != st.partsNow[i])
-				{
-					return true;
-				}
+				swimSame = (SwimKinds(map) ? 1 : 0) == e.jobSwimKinds;
 			}
-			return false;
+			int d = RM_WallReachMath.ReadPartsDecision(e.jobParts, st.partsNow, StampWall, StampSwim,
+				st.swimNamedAtStamp - e.jobSwimNamed, swimSame);
+			if (d == RM_WallReachMath.ReadDrop)
+			{
+				return false;
+			}
+			if (d == RM_WallReachMath.ReadRebase)
+			{
+				long[] p = e.jobParts;
+				p[StampSwim] = st.partsNow[StampSwim];
+				e.jobSwimNamed = st.swimNamedAtStamp;
+				e.jobStamp = RM_WallReachMath.StampOf(p[StampClimb], p[StampSalt], p[StampWall], p[StampDoor], p[StampSwim], p[StampRamps]);
+				st.kinds.Rebase(e.jobStamp);
+				st.readsRebased++;
+			}
+			return true;
+		}
+
+		/// <summary>The swim-kinds switch KindFn reads: deep water is its own kind only with swimming on and some deep water.</summary>
+		private static bool SwimKinds(Map map)
+		{
+			return Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
 		}
 
 		/// <summary>Drop the sliced kinds read in flight, and the job waiting on it.</summary>
@@ -902,6 +1012,7 @@ namespace RimMandrake.FlowWorks
 			long t0 = System.Diagnostics.Stopwatch.GetTimestamp(), mark = t0;
 			RM_PocketGrid.ReportRefusals();
 			FlushDeltas(map, st);
+			FlushSwimTouches(map, st);
 			TickLap(st, ref mark, TpFlush);
 			if (st.entries.Count == 0)
 			{
@@ -1002,8 +1113,9 @@ namespace RimMandrake.FlowWorks
 				{
 					// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: the job's kinds read, a chunk at a time inside the slice
 					Entry e = st.active;
-					// a read lost (Invalidate after a load: begun while loading) or whose square-less stamp parts moved
-					if (!st.kinds.Reading || ReadPartsMoved(st, e))
+					// a read lost (Invalidate after a load: begun while loading) or whose square-less stamp parts moved (a named
+					// swim move is rebased instead: ReadKeepsUp)
+					if (!st.kinds.Reading || !ReadKeepsUp(map, st, e))
 					{
 						DropJob(st, e);
 						st.readsPartsDropped++;
@@ -1016,6 +1128,10 @@ namespace RimMandrake.FlowWorks
 					{
 						long c0 = System.Diagnostics.Stopwatch.GetTimestamp();
 						bool done = st.kinds.ReadStep(ReadUnits, KindFn(map), out int read);
+						if (e.jobSwimKinds < 0)
+						{
+							e.jobSwimKinds = kindSwim ? 1 : 0;   // the switch the read's squares were read under
+						}
 						KindFnDone();
 						e.jobMs += MsSince(c0);
 						if (done)
@@ -1516,7 +1632,7 @@ namespace RimMandrake.FlowWorks
 				.Append(" maxSliceMs=").Append(st.maxSliceMs.ToString("0.000")).Append(" inFlight=").Append(st.active != null ? 1 : 0)
 				.Append(" reads=").Append(st.kinds.readsBegun).Append('/').Append(st.kinds.readsDone).Append('/')
 				.Append(st.kinds.readRestarts).Append('/').Append(st.kinds.readAborts).Append('/').Append(st.readsPartsDropped)
-				.Append(" readCells=").Append(st.kinds.readCells).Append(" kindsAllocs=").Append(st.kinds.allocs);
+				.Append(" readsRebased=").Append(st.readsRebased).Append(" readCells=").Append(st.kinds.readCells).Append(" kindsAllocs=").Append(st.kinds.allocs);
 			return sb.ToString();
 		}
 

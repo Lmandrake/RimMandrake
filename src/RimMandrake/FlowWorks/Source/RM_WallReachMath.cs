@@ -786,6 +786,41 @@ namespace RimMandrake.FlowWorks
 			return coveredGen == unsafeGenNow;
 		}
 
+		/// <summary>WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: what a sliced kinds read does when stamp parts moved under it
+		/// (RM_WallReach.TickOwned, before each read step). Only the walls and the swim water reach the kinds; the walls name
+		/// their squares (the read touches them), so the wall part never decides. Any other part moved (climb, salt, doors,
+		/// ramps: they name no square): <see cref="ReadDrop"/>. Only the swim part moved: <see cref="ReadRebase"/> when every
+		/// swim version move since the read began named its squares (<paramref name="swimNamedSince"/>, the named bumps counted
+		/// in that time, equals the version's advance: those squares were queued for the read's touch) and the swim-kinds switch
+		/// (swimming on, some deep water) reads as it did when the read began; else <see cref="ReadDrop"/> (an unnamed bump, a
+		/// deep count flip to or from zero, swimming toggled, the grids recreated). Nothing moved: <see cref="ReadKeep"/>.
+		/// (Live RAIN_B2 2026-10-28: 1210 of 1421 reads dropped, the swim part's moves the main cause.)</summary>
+		public const int ReadKeep = 0, ReadRebase = 1, ReadDrop = 2;
+
+		public static int ReadPartsDecision(long[] jobParts, long[] partsNow, int wallPart, int swimPart, long swimNamedSince, bool swimKindsSame)
+		{
+			bool swimMoved = false;
+			for (int i = 0; i < jobParts.Length; i++)
+			{
+				if (i == wallPart || jobParts[i] == partsNow[i])
+				{
+					continue;
+				}
+				if (i != swimPart)
+				{
+					return ReadDrop;
+				}
+				swimMoved = true;
+			}
+			if (!swimMoved)
+			{
+				return ReadKeep;
+			}
+			bool named = jobParts[swimPart] >= 0 && partsNow[swimPart] > jobParts[swimPart]
+				&& partsNow[swimPart] - jobParts[swimPart] == swimNamedSince;
+			return named && swimKindsSame ? ReadRebase : ReadDrop;
+		}
+
 		/// <summary>WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: the map's kinds snapshot, as RM_WallReach.Kinds runs it. The
 		/// published array is never written after it is published (a worker thread reads it: NoteConnectivity); a read whose
 		/// content (and geometry) equals it becomes scratch for the next read, so a labelling built from the published array
@@ -806,7 +841,7 @@ namespace RimMandrake.FlowWorks
 			public Func<byte[], bool> inUse;
 			/// <summary>Arrays allocated by <see cref="Take"/> (diagnostic: zero in steady play).</summary>
 			public int allocs;
-			public int readsBegun, readsDone, readRestarts, readAborts;
+			public int readsBegun, readsDone, readRestarts, readAborts, readRebases;
 			public long readCells;
 			private readonly List<byte[]> retired = new List<byte[]>();
 			private const int MaxRetired = 4;
@@ -937,6 +972,17 @@ namespace RimMandrake.FlowWorks
 				if (reading != null && i >= 0 && i < readCursor)
 				{
 					reading[i] = kindAt(i);
+				}
+			}
+
+			/// <summary>WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: the read in flight will publish at stamp <paramref name="s"/>
+			/// instead (its changed squares are touched: <see cref="ReadPartsDecision"/> said rebase).</summary>
+			public void Rebase(long s)
+			{
+				if (reading != null)
+				{
+					readStamp = s;
+					readRebases++;
 				}
 			}
 

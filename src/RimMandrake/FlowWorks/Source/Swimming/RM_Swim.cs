@@ -850,6 +850,7 @@ namespace RimMandrake.FlowWorks.Swimming
 			{
 				NamedBumps++;
 				g.plan.BumpCell(cell);
+				RM_WallReach.NoteSwimCells(map, cell, null);   // WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: a read in flight touches it
 			}
 		}
 
@@ -861,6 +862,7 @@ namespace RimMandrake.FlowWorks.Swimming
 			{
 				NamedBumps++;
 				g.plan.BumpCells(cells);
+				RM_WallReach.NoteSwimCells(map, -1, cells);    // WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: a read in flight touches them
 			}
 		}
 

@@ -2044,7 +2044,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "Build skips through the LabelSlot (identical kinds, depth, ramps and geometry)");
                 RiverSwitchFlipChecks.Has(wr, @"byte\[\] kinds = st\.kinds\.Take\(n\);", "Kinds reads into the snapshot's scratch");
                 RiverSwitchFlipChecks.Has(wr, @"return st\.kinds\.Publish\(kinds, stamp, w, h\);", "Kinds keeps the old array when nothing moved");
-                RiverSwitchFlipChecks.Has(wr, @"RM_PocketGrid\.ReportRefusals\(\); FlushDeltas\(map, st\); TickLap\(st, ref mark, TpFlush\); if \(st\.entries\.Count == 0\)", "Tick judges the deltas first");
+                RiverSwitchFlipChecks.Has(wr, @"RM_PocketGrid\.ReportRefusals\(\); FlushDeltas\(map, st\); FlushSwimTouches\(map, st\); TickLap\(st, ref mark, TpFlush\); if \(st\.entries\.Count == 0\)", "Tick judges the deltas (and touches the named swim squares) first");
                 RiverSwitchFlipChecks.Has(wr, @"FlushDeltas\(map, st\);.{0,140}bool unthrottled = RM_WallReachMath\.PausedUnthrottled", "a paused write moves the stamp before PausedFrame compares it");
                 RiverSwitchFlipChecks.Has(wr, @"if \(unjudged\) \{ st\.wallGenBy\[WgUnjudged\]\+\+; Interlocked\.Increment\(ref st\.wallGen\); \} int gen = Volatile\.Read\(ref st\.unsafeGen\);.{0,80}Build\(map, st, e, StampOf\(map, st\), gen\);", "a first build never labels from an unjudged snapshot");
                 RiverSwitchFlipChecks.Has(wr, @"if \(deltas == null \|\| deltas\.Count == 0\) \{ return; \}", "an empty gather moves nothing");

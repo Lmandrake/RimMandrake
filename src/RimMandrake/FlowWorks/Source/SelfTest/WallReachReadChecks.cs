@@ -129,6 +129,52 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Replay(false, 300) > 0, "negative control: the replay without touches sees a false NO");
             });
 
+            // WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: the read's decision table (parts: climb, salt, wall, door, swim, ramps)
+            Case("WallReach_read_parts_decision_table", () =>
+            {
+                const int W = 2, S = 4;
+                long[] job = { 5, 1, 10, 3, 7, 1 };
+                Func<long[], long, bool, int> d = (now, named, same) => RM_WallReachMath.ReadPartsDecision(job, now, W, S, named, same);
+                Assert(d(new long[] { 5, 1, 10, 3, 7, 1 }, 0, true) == RM_WallReachMath.ReadKeep, "nothing moved: keep");
+                Assert(d(new long[] { 5, 1, 14, 3, 7, 1 }, 0, true) == RM_WallReachMath.ReadKeep, "walls only (touched): keep");
+                Assert(d(new long[] { 5, 1, 14, 3, 9, 1 }, 2, true) == RM_WallReachMath.ReadRebase, "swim moved twice, both named: rebase");
+                Assert(d(new long[] { 5, 1, 10, 3, 8, 1 }, 1, true) == RM_WallReachMath.ReadRebase, "swim moved once, named: rebase");
+                Assert(d(new long[] { 5, 1, 10, 3, 9, 1 }, 1, true) == RM_WallReachMath.ReadDrop, "one of two swim moves unnamed: drop");
+                Assert(d(new long[] { 5, 1, 10, 3, 9, 1 }, 3, true) == RM_WallReachMath.ReadDrop, "named count past the version (another map's grids recreated): drop");
+                Assert(d(new long[] { 5, 1, 10, 3, 8, 1 }, 1, false) == RM_WallReachMath.ReadDrop, "swim-kinds switch flipped (deep count 0<->n): drop");
+                Assert(d(new long[] { 5, 1, 10, 3, 0, 1 }, 0, true) == RM_WallReachMath.ReadDrop, "swim grids recreated (version back to 0): drop");
+                Assert(d(new long[] { 5, 1, 10, 3, -1, 1 }, 0, true) == RM_WallReachMath.ReadDrop, "swimming switched off: drop");
+                Assert(d(new long[] { 6, 1, 10, 3, 7, 1 }, 0, true) == RM_WallReachMath.ReadDrop, "climb moved: drop");
+                Assert(d(new long[] { 6, 1, 10, 3, 8, 1 }, 1, true) == RM_WallReachMath.ReadDrop, "climb and a named swim move: drop");
+                Assert(d(new long[] { 5, 2, 10, 3, 7, 1 }, 0, true) == RM_WallReachMath.ReadDrop, "salt moved: drop");
+                Assert(d(new long[] { 5, 1, 10, 4, 7, 1 }, 0, true) == RM_WallReachMath.ReadDrop, "doors moved: drop");
+                Assert(d(new long[] { 5, 1, 10, 3, 7, 0 }, 0, true) == RM_WallReachMath.ReadDrop, "ramps toggled: drop");
+                long[] off = { 5, 1, 10, 3, -1, 1 };
+                Assert(RM_WallReachMath.ReadPartsDecision(off, new long[] { 5, 1, 10, 3, 0, 1 }, W, S, 1, true) == RM_WallReachMath.ReadDrop,
+                    "read begun with swimming off: drop when it comes on");
+            });
+
+            // WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: the production KindsSnapshot driven through RM_WallReach's read
+            // protocol under swim churn (named and unnamed bumps, switch flips, climb moves): every published read equals the map
+            // at its stamp, and named swim churn no longer throws reads away. Negative controls: no touches, or rebasing on an
+            // unnamed bump, or ignoring the switch, publish a read that differs from the map.
+            Case("WallReach_read_rebase_named_swim_equals_map", () =>
+            {
+                SwimChurn(SwimMode.Rebase, 300, out int bad, out int rebased, out int dropsNew, out int doneNew);
+                Assert(bad == 0, "rebased reads equal the map at their stamp (" + bad + " differed)");
+                Assert(rebased > 0, "the churn rebased reads (" + rebased + ")");
+                SwimChurn(SwimMode.DropAll, 300, out int badOld, out _, out int dropsOld, out int doneOld);
+                Assert(badOld == 0, "the old drop-on-any-swim rule is also exact");
+                Assert(dropsNew * 2 < dropsOld && doneNew > doneOld,
+                    "named swim churn drops far fewer reads (" + dropsNew + " vs " + dropsOld + ") and finishes more (" + doneNew + " vs " + doneOld + ")");
+                SwimChurn(SwimMode.NoTouch, 300, out int badNoTouch, out _, out _, out _);
+                Assert(badNoTouch > 0, "negative control: a rebase without the touches publishes a read off the map");
+                SwimChurn(SwimMode.IgnoreNamed, 300, out int badUnnamed, out _, out _, out _);
+                Assert(badUnnamed > 0, "negative control: rebasing over an unnamed bump publishes a read off the map");
+                SwimChurn(SwimMode.IgnoreSwitch, 300, out int badSwitch, out _, out _, out _);
+                Assert(badSwitch > 0, "negative control: rebasing over a swim-kinds flip publishes a read off the map");
+            });
+
             Case("WallReach_read_wiring_source_pins", () =>
             {
                 string src = Src("Superdeep", "RM_WallReach.cs");
@@ -140,7 +186,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string tick = Between(src, "private static void TickOwned(Map map, MapState st, bool paused, bool drain)", "private static void CountRebuildCause(");
                 Assert(tick.Contains("st.kinds.ReadStep(ReadUnits, KindFn(map), out int read)"), "the read advances in the slice loop");
                 Assert(!tick.Contains("new Dictionary<RM_PocketGrid"), "the per-tick views dictionary is reused");
-                Assert(tick.Contains("ReadPartsMoved(st, e)"), "a read whose non-wall stamp parts moved is dropped");
+                Assert(tick.Contains("!st.kinds.Reading || !ReadKeepsUp(map, st, e)"), "a read whose non-wall stamp parts moved is dropped unless rebased");
+                // WALLREACH_READ_CHURN_TAME_PARTS_MOVED_DROPS: named swim squares are touched, a named swim move rebases the read
+                Assert(Between(tick, "FlushDeltas(map, st);", "TickLap(").Contains("FlushSwimTouches(map, st);"), "the swim touches are flushed before the stamp");
+                Assert(tick.Contains("e.jobSwimKinds = kindSwim ? 1 : 0;"), "a read records the swim-kinds switch its squares were read under");
+                string keeps = Between(src, "private static bool ReadKeepsUp(Map map, MapState st, Entry e)", "private static bool SwimKinds(Map map)");
+                Assert(keeps.Contains("RM_WallReachMath.ReadPartsDecision(e.jobParts, st.partsNow, StampWall, StampSwim,")
+                    && keeps.Contains("st.swimNamedAtStamp - e.jobSwimNamed, swimSame)"), "the read decision is the proven one, on the named-bump count");
+                Assert(keeps.Contains("st.kinds.Rebase(e.jobStamp);") && keeps.Contains("p[StampSwim] = st.partsNow[StampSwim];")
+                    && keeps.Contains("e.jobStamp = RM_WallReachMath.StampOf("), "a rebase moves the job's swim part, stamp and the read's stamp together");
+                string swimFlush = Between(src, "private static void FlushSwimTouches(Map map, MapState st)", "// ── invalidation");
+                Assert(swimFlush.Contains("st.kinds.Touch(st.swimTouches[i], kindAt);") && swimFlush.Contains("st.kinds.RestartRead();"),
+                    "swim touches are touched; an overflow restarts the read");
+                string stampOf = Between(src, "private static long StampOf(Map map, MapState st)", "return RM_WallReachMath.StampOf(");
+                Assert(stampOf.Contains("st.swimNamedAtStamp = st.swimNamed;"), "the named count is read with the stamp");
+                string begin2 = Between(src, "private static bool BeginJob(", "private static bool StartFlood(");
+                Assert(begin2.Contains("e.jobSwimNamed = st.swimNamedAtStamp;") && begin2.Contains("e.jobSwimKinds = -1;"), "a job records the named count of its parts");
+                string swim = Src("Swimming", "RM_Swim.cs");
+                string bumpCell = Between(swim, "public static void BumpCell(Map map, int cell)", "public static void BumpCells(");
+                string bumpCells = Between(swim, "public static void BumpCells(Map map, IReadOnlyList<int> cells)", "public static void BumpAll()");
+                Func<string, string, string, bool> after = (body, first, then) =>
+                {
+                    int a = body.IndexOf(first, StringComparison.Ordinal);
+                    return a >= 0 && body.IndexOf(then, a, StringComparison.Ordinal) > a;
+                };
+                Assert(after(bumpCell, "g.plan.BumpCell(cell);", "RM_WallReach.NoteSwimCells(map, cell, null);")
+                    && after(bumpCells, "g.plan.BumpCells(cells);", "RM_WallReach.NoteSwimCells(map, -1, cells);"),
+                    "every named swim version move is noted to the reach, after the version moves");
+                string bumpUnnamed = Between(swim, "public static void Bump(Map map)", "public static void BumpCell(");
+                Assert(!bumpUnnamed.Contains("NoteSwimCells") && !Between(swim, "public static void BumpAll()", "public static int FullBuilds").Contains("NoteSwimCells"),
+                    "an unnamed swim bump is never counted as named");
                 string flush = Between(src, "private static void FlushDeltas(Map map, MapState st)", "/// <summary>REACH_WINCH_FIX_GHOST_ROAD_RETURNS");
                 Assert(flush.Contains("st.kinds.Touch(work[i], kindAt);") && flush.Contains("st.kinds.RestartRead();"),
                     "flushed squares are touched; an overflow restarts the read");
@@ -155,6 +230,105 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(kinds.Contains("AbortActiveRead(st);"), "a whole read in a query drops the sliced read in flight");
                 Assert(src.Contains("kinds.inUse = "), "the snapshot knows which arrays labellings hold");
             });
+        }
+
+        private enum SwimMode { Rebase, DropAll, NoTouch, IgnoreNamed, IgnoreSwitch }
+
+        /// <summary>A map whose kinds are wall / open / deep water (deep only while the swim-kinds switch is on: some deep
+        /// square exists, as KindFn reads it). Between read steps: walls move (touched), named swim bumps (version and named
+        /// count move, square queued), unnamed swim bumps (version only), climb moves. Before each step the touches are
+        /// flushed and RM_WallReachMath.ReadPartsDecision decides keep / rebase / drop (a drop begins a fresh read at the
+        /// current stamp). bad: published reads differing from the map, or published at a stamp other than the current one.</summary>
+        private static void SwimChurn(SwimMode mode, int trials, out int bad, out int rebased, out int drops, out int done)
+        {
+            const int W = 2, S = 4;
+            var r = new Random(7203);
+            bad = rebased = drops = done = 0;
+            for (int t = 0; t < trials; t++)
+            {
+                int w = 6 + r.Next(12), h = 6 + r.Next(12), n = w * h;
+                var wall = new bool[n];
+                var deep = new bool[n];
+                for (int i = 0; i < n; i++) { wall[i] = r.Next(5) == 0; deep[i] = r.Next(4) == 0; }
+                // the swim-kinds switch (swimming on and DeepCount > 0, the non-swimmer block's count, not a per-square fact);
+                // some trials start with it off
+                bool swimFlag = t % 3 != 0;
+                bool kindSwim = swimFlag;   // KindFn's switch, read when a step or flush begins
+                Func<int, byte> kindAt = i => wall[i] ? RM_WallReachMath.Wall : kindSwim && deep[i] ? RM_WallReachMath.DeepWater : RM_WallReachMath.Open;
+                long[] parts = { 1, 1, 1, 1, 0, 1 };
+                int named = 0;
+                var queued = new List<int>();
+                Func<long[], long> stampOf = p => RM_WallReachMath.StampOf(p[0], p[1], p[2], p[3], p[4], p[5]);
+                var snap = new RM_WallReachMath.KindsSnapshot();
+                long[] job = (long[])parts.Clone();
+                int jobNamed = named, jobSwitch = -1;
+                snap.BeginRead(stampOf(job), w, h);
+                for (int step = 0; step < 6 * n; step++)
+                {
+                    int ev = r.Next(10);
+                    if (ev < 3)
+                    {   // a wall moves: a connectivity delta, touched at the flush
+                        int c = r.Next(n); wall[c] = !wall[c]; parts[W]++; queued.Add(c);
+                    }
+                    else if (ev < 6)
+                    {   // a named swim bump (BumpCell): version, named count, the square queued
+                        int c = r.Next(n); deep[c] = !deep[c]; parts[S]++; named++;
+                        if (mode != SwimMode.NoTouch) queued.Add(c);
+                    }
+                    else if (ev == 6 && r.Next(3) == 0)
+                    {   // an unnamed swim bump (a deck, a drawbridge): version only, no square named
+                        int c = r.Next(n); deep[c] = !deep[c]; parts[S]++;
+                    }
+                    else if (ev == 7 && r.Next(4) == 0)
+                    {   // a named bump whose grid rebuild flips DeepCount to or from 0: the switch moves for every square
+                        swimFlag = !swimFlag; parts[S]++; named++;
+                    }
+                    else if (ev == 8 && r.Next(6) == 0)
+                    {
+                        parts[0]++;   // a climb move: names no square
+                    }
+                    // the tick: flush (touches read under the switch as it is now), stamp, decide, step
+                    kindSwim = swimFlag;
+                    foreach (int c in queued) snap.Touch(c, kindAt);
+                    queued.Clear();
+                    bool same = jobSwitch < 0 || (kindSwim ? 1 : 0) == jobSwitch || mode == SwimMode.IgnoreSwitch;
+                    int d = mode == SwimMode.DropAll
+                        ? (Differs(job, parts, W) ? RM_WallReachMath.ReadDrop : RM_WallReachMath.ReadKeep)
+                        : RM_WallReachMath.ReadPartsDecision(job, parts, W, S, mode == SwimMode.IgnoreNamed ? parts[S] - job[S] : named - jobNamed, same);
+                    if (d == RM_WallReachMath.ReadDrop)
+                    {
+                        drops++;
+                        job = (long[])parts.Clone(); jobNamed = named; jobSwitch = -1;
+                        snap.BeginRead(stampOf(job), w, h);
+                        continue;
+                    }
+                    if (d == RM_WallReachMath.ReadRebase)
+                    {
+                        rebased++;
+                        job[S] = parts[S]; jobNamed = named;
+                        snap.Rebase(stampOf(job));
+                    }
+                    bool fin = snap.ReadStep(1 + r.Next(Math.Max(1, n / 4)), kindAt, out _);
+                    if (jobSwitch < 0) jobSwitch = kindSwim ? 1 : 0;
+                    if (!fin) continue;
+                    done++;
+                    // published at the job's (rebased) stamp, whose non-wall parts are the map's now (the walls were touched)
+                    if (snap.stamp != stampOf(job) || Differs(job, parts, W)) bad++;
+                    else
+                    {
+                        for (int i = 0; i < n; i++) if (snap.published[i] != kindAt(i)) { bad++; break; }
+                    }
+                    job = (long[])parts.Clone(); jobNamed = named; jobSwitch = -1;
+                    snap.BeginRead(stampOf(job), w, h);
+                }
+                snap.AbortRead();
+            }
+        }
+
+        private static bool Differs(long[] job, long[] now, int skip)
+        {
+            for (int i = 0; i < job.Length; i++) if (i != skip && job[i] != now[i]) return true;
+            return false;
         }
 
         private sealed class SimEntry
