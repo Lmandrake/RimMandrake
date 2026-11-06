@@ -1250,11 +1250,23 @@ def landed_commit(sha, cwd=None):
     return found, "%s is not on origin/main; it landed as %s (%s): recording %s" % (sha[:10], found[:10], how, found[:10])
 
 
-def ledger_only_refusal(sha, prof, cwd=None):
+# A proof that READS a tree_from_parent path: such a proof on a commit that also writes that path measures the parent's
+# copy, never the commit's own events (OPS_CHURN_DIAGNOSE_LAPSED_VYPN_VNGX: LAPSED_LEASES_REPAIR_GHOSTS_HOLD_THE_KEYS
+# blind-failed twice on 49ac7ca0, code plus 11 ledger repair events, under a proof running `relentless_pool_why --leases`).
+SNAPSHOT_READERS = {
+    "infrastructure/state/ledger": re.compile(r"rimflow/cli\.py|(?:^|[\s;&|(])rimflow\s|relentless_pool_why\.py"
+                                              r"|infrastructure/state/ledger|(?<![\w-])ledger(?![\w-])"),
+    "infrastructure/state/code_review": re.compile(r"code_review_status\.py|infrastructure/state/code_review"),
+}
+
+
+def ledger_only_refusal(sha, prof, cwd=None, proof=None):
     """-> the refusal text when `sha` changes ONLY paths the Marker's box replays from the candidate's parent
     (walls.marker.tree_from_parent: the ledger, code_review), else None. Such a commit's change is invisible to the
     checker: change.diff is empty and the ledger reads as before it (OPS_CHURN_DIAGNOSE_STALE_EDEN_EOCX:
-    STALE_BLOCKS_UNBLOCK_GATES_ALREADY_OPEN blind-failed twice on ledger-only a8d05bca). A git error refuses nothing."""
+    STALE_BLOCKS_UNBLOCK_GATES_ALREADY_OPEN blind-failed twice on ledger-only a8d05bca). Also refused: a MIXED commit
+    that writes such a path while the contract `proof` reads it (SNAPSHOT_READERS) - the proof sees the parent's copy.
+    A git error refuses nothing."""
     snap = list(prof.get("tree_from_parent") or ())
     if not snap:
         return None
@@ -1267,8 +1279,17 @@ def ledger_only_refusal(sha, prof, cwd=None):
         return None
     paths = [p for p in r.stdout.splitlines() if p.strip()]
     under = lambda p, s: p == s.rstrip("/") or p.startswith(s.rstrip("/") + "/")    # noqa: E731
-    if not paths or not all(any(under(p, s) for s in snap) for p in paths):
+    if not paths:
         return None
+    if not all(any(under(p, s) for s in snap) for p in paths):
+        read = [s for s in snap if any(under(p, s) for p in paths)
+                and SNAPSHOT_READERS.get(s.rstrip("/")) and SNAPSHOT_READERS[s.rstrip("/")].search(proof or "")]
+        if not read:
+            return None
+        return ("%s writes %s alongside other files, and your proof reads it; the blind checker replays %s from the"
+                " candidate's PARENT (walls.marker.tree_from_parent), so the proof would measure it as before this commit."
+                " Land those writes in an earlier commit, then finish on a LATER commit that names the item and holds the"
+                " code (or anything outside them)." % (sha[:10], ", ".join(read), ", ".join(read)))
     return ("%s changes only %s, which the blind checker reads from the candidate's PARENT (walls.marker.tree_from_parent):"
             " it would see an empty change and the ledger as before your events. Land those events, then finish on a LATER"
             " commit that names the item and changes a file outside them (a lesson, a test, the live_proofs line)."
@@ -7641,7 +7662,11 @@ def main(argv=None):
             sha, moved = landed_commit(sha)
             if moved:
                 print("relentless: " + moved, file=sys.stderr)
-            hidden = ledger_only_refusal(sha, rules().get("walls", {}).get("marker", {}))
+            try:
+                proof = (store.load(a.item).get("contract") or {}).get("proof")
+            except Exception:  # noqa: BLE001 - an unreadable state judges the old ledger-only rule alone
+                proof = None
+            hidden = ledger_only_refusal(sha, rules().get("walls", {}).get("marker", {}), proof=proof)
             if hidden:
                 raise ValueError(hidden)
             finish(store, a.item, a.gen, sha, a.evidence)

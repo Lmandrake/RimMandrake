@@ -10,7 +10,12 @@ and replays it from the candidate's PARENT, so the checker read an empty diff an
 2. the same events plus a file outside them (a lesson) is accepted;
 3. a code-only commit is accepted; a root commit that is ledger-only is refused;
 4. the live rules profile still replays the ledger from the parent (else this guard guards nothing);
-5. main(["finish", ...]) on a ledger-only sha returns 2 and never reaches finish().
+5. main(["finish", ...]) on a ledger-only sha returns 2 and never reaches finish();
+6. a MIXED commit (code + ledger events) is refused when the contract proof reads the ledger
+   (OPS_CHURN_DIAGNOSE_LAPSED_VYPN_VNGX: LAPSED_LEASES_REPAIR_GHOSTS_HOLD_THE_KEYS blind-failed twice on 49ac7ca0,
+   code plus 11 repair events, under `relentless_pool_why.py --leases`), and so is code + code_review under
+   code_review_status; the same mixed commit under a proof reading neither is accepted; main reads the proof from the
+   item's contract.
 
 Temp git repos only; no ledger, store, clone or unit is touched.
 
@@ -101,6 +106,49 @@ def main():
             R.finish, R.canonical_commit, R.rules = saved
         ok(rc == 2 and "PARENT" in err.getvalue() and len(called) == 1 and called[0][3] == mixed,
            "5. main finish refuses the ledger-only sha (rc=%s) and passes the mixed one (calls=%d)" % (rc, len(called)))
+
+    with tempfile.TemporaryDirectory() as repo:
+        git(repo, "init", "-q", "-b", "main")
+        commit(repo, {"src/a.py": "x = 1\n"}, "base")
+        lapsed = commit(repo, {shard: '{"ev": "release"}\n', "src/rimflow/relentless_pool_why.py": "y = 2\n"},
+                        "ITEM: code + repair events")
+        leases = ("python3 src/RimMandrake/Utils/run_selftests.py --only selftest_relentless_pool_why.py && "
+                  "python3 src/RimMandrake/rimflow/relentless_pool_why.py --leases")
+        why = R.ledger_only_refusal(lapsed, PROF, cwd=repo, proof=leases)
+        ok(why is not None and "infrastructure/state/ledger" in why and "PARENT" in why and "code_review" not in why,
+           "6. the LAPSED_LEASES instance: code + ledger events under a --leases proof is refused: %r" % (why or "")[:90])
+        ok(R.ledger_only_refusal(lapsed, PROF, cwd=repo, proof="python3 src/RimMandrake/rimflow/cli.py show X") is not None,
+           "6b. a rimflow cli.py proof reads the ledger too")
+        ok(R.ledger_only_refusal(lapsed, PROF, cwd=repo,
+                                 proof="python3 src/RimMandrake/Utils/run_selftests.py --only selftest_relentless.py") is None,
+           "6c. the same mixed commit under a proof that reads no ledger is accepted")
+        ok(R.ledger_only_refusal(lapsed, PROF, cwd=repo) is None, "6d. no proof given: a mixed commit is accepted as before")
+        ok(R.ledger_only_refusal(lapsed, PROF, cwd=repo, proof="python3 src/RimMandrake/rimflow/selftest_ledger_lint.py") is None,
+           "6e. 'ledger' inside a script name is not a ledger read")
+        rev = commit(repo, {"infrastructure/state/code_review/x.jsonl": "{}\n", "src/b.py": "z = 3\n"}, "ITEM: code + review")
+        why = R.ledger_only_refusal(rev, PROF, cwd=repo, proof="python3 src/RimMandrake/Utils/code_review_status.py check src/b.py")
+        ok(why is not None and "code_review" in why and "state/ledger" not in why,
+           "6f. code + code_review under a code_review_status proof is refused: %r" % (why or "")[:90])
+        ok(R.ledger_only_refusal(rev, PROF, cwd=repo, proof=leases) is None,
+           "6g. a ledger-reading proof on a commit writing only code_review (plus code) is accepted")
+
+        called = []
+        saved = (R.finish, R.canonical_commit, R.rules, R.Store.load)
+        R.finish = lambda *a, **k: called.append(a)
+        R.canonical_commit = lambda name: name
+        R.rules = lambda path=None: {"walls": {"marker": PROF}}
+        R.Store.load = lambda self, item: {"contract": {"proof": leases}}
+        cwd = os.getcwd()
+        err = io.StringIO()
+        try:
+            os.chdir(repo)
+            with contextlib.redirect_stderr(err):
+                rc = R.main(["finish", "--item", "X_Y_Z", "--gen", "1", "--sha", lapsed, "--evidence", "e"])
+        finally:
+            os.chdir(cwd)
+            R.finish, R.canonical_commit, R.rules, R.Store.load = saved
+        ok(rc == 2 and "PARENT" in err.getvalue() and not called,
+           "6h. main finish reads the contract proof and refuses the mixed ledger commit (rc=%s calls=%d)" % (rc, len(called)))
 
     print("FAILED: %d" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
