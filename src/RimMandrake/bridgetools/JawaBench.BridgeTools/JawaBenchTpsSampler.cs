@@ -869,6 +869,12 @@ namespace JawaBench.BridgeTools
             catch { }
             try { JawaBenchArgGuard.Install(); }
             catch { }
+            // LOG_AUTOOPEN_FIX_WAITS_FOR_FIRST_HELLO: the error-log auto-open suppressor (owner 2026-09-02, "Autoopen of
+            // the error log ... False by default") must hold in plain play with no bridge call, so it installs here at
+            // registration, explicitly, rather than only as a side effect of this constructor firing the module
+            // initializer. Install() is idempotent (_attempted gate), so JawaBenchInit's call is then a no-op.
+            try { JawaBenchLogAutoOpenSuppress.Install(); }
+            catch { }
         }
 
 #if JAWA_GM_TOOLS

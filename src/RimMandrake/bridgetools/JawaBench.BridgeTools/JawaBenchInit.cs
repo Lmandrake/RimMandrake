@@ -24,6 +24,11 @@
 // already answered 246 tools, 121 of them jawa/, and they appeared as L10359-10360 the
 // instant a jawa/ tool was called. So this behaves exactly like the static constructor it
 // was chosen over: it waits for the first invocation.
+// 🔑 SINCE 2026-10-10 IT FIRES AT GAME LOAD ANYWAY: JawaBenchTpsTools has a public constructor that
+// RimBridgeServer runs when it registers companions (BRIDGE_TPS_CAPTURE_FIXES_1), and that is code
+// executed in this module. Measured 2026-11-06, Player.log: "[JawaBench] ready" at L323, before
+// "[RimBridge] GABP server running" at L347, i.e. before any client could call. Anything that must
+// hold with no bridge call installs explicitly from that constructor, not from here.
 // ⇒ ABSENCE OF THESE LINES FROM A LOG IS UNMEASURED, NEVER "THE DEPLOY DID NOT TAKE."
 // The reading that settles it, from any seat, game up, no CHECK and no map needed:
 //     python.exe src/RimMandrake/Utils/rimbridge_client.py --list-tools
@@ -125,9 +130,10 @@ namespace JawaBench.BridgeTools
                     catch { }
                 }
 
-                // DEV_LOG_AUTOOPEN_SUPPRESS_1. Same lazy-init reasoning as the arg guard
-                // above: fires on the first jawa/ tool call, by which point Harmony is
-                // certainly loaded. Suppressed by default per the owner's own ask.
+                // DEV_LOG_AUTOOPEN_SUPPRESS_1. Suppressed by default per the owner's own ask.
+                // The startup install is JawaBenchTpsTools' constructor, run when RimBridgeServer
+                // registers companions at game load (LOG_AUTOOPEN_FIX_WAITS_FOR_FIRST_HELLO); this
+                // call is the idempotent backstop if that constructor ever stops running.
                 try { JawaBenchLogAutoOpenSuppress.Install(); }
                 catch (Exception le)
                 {
