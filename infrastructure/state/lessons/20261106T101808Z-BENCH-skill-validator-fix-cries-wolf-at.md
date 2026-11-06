@@ -1,0 +1,1 @@
+SKILL_VALIDATOR_FIX_CRIES_WOLF_AT_PHANTOMS was already fixed by a sibling item (SKILLS_REPAIR_SIX_VALIDATOR_ERRORS, e5e98b5fa0) before a worker reached it: run the item's own symptom command and git log the named files first; when the symptom is gone, land a guard selftest instead of re-fixing. skills/validate_skills.py now has src/RimMandrake/Utils/selftest_validate_skills.py.
