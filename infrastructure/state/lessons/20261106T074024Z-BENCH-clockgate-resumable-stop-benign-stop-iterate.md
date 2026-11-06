@@ -1,0 +1,1 @@
+clockgate.resumable_stop/is_benign_stop iterate result triggers as dicts; a bridge-conditions run adds string triggers ('cond','unknown'), so filter to dict triggers before calling it (conds_dsl.run_until). Condition node ids come from ONE counter across until + every watch tree: read ids from the compiled canonical, never renumber.
