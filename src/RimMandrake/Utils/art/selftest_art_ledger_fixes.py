@@ -188,7 +188,7 @@ def test_a():
     import art_guard as G
     import backfill as BF
     repo = git_fixture()
-    shard = "infrastructure/state/art/events/BUILD.jsonl"
+    shard = f"infrastructure/state/art/events/{L.seat()}.jsonl"   # the shard install() really writes, whatever the seat
     mod, slot = "src/RimMandrake/Fix", "src/RimMandrake/Fix/Textures/T/Beast_south.png"
     red, blue, green = png((255, 0, 0, 255)), png((0, 0, 255, 255)), png((0, 255, 0, 255))
     sred, sblue, sgreen = (L.store_put_bytes(x) for x in (red, blue, green))
