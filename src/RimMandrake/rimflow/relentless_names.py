@@ -390,6 +390,45 @@ SCRIPT = re.compile(r"(?:^|\s)((?:\./)?src/[^\s'\"]+\.py)\b")
 SRC_MOD = re.compile(r"^src/(?:RimMandrake|RimStarWars|RimUtinni)/([^/]+)/")
 
 
+# a proof line that runs modcheck: `modcheck/cli.py run <Mod> [<Mod> ...] --flags`. modcheck composes each mod's own list
+# (runner.composed_ids: hard dependencies, the mod or its composed mod, its tier closure) and refuses the run as
+# stale_load unless the RUNNING load holds every id of it (runner.verify_loaded_list), so the gate must plan them all.
+# GAMEENV_FIX_PROOFSITE_9E77C59D_ITEMS_WAIT: ACC_BIOMES_FIXES_LIVE_RERUN_1 named RimMandrake.Biomes, GimmeSomeSlack and
+# UtinniPatches; LeaningScrub's tier also wants mandrake.rsw.swbestiary, and A2 read "not loaded: mandrake.rsw.swbestiary"
+# twice (2026-11-06 09:03Z, 09:54Z) on a game no lane step could fix.
+MODCHECK_RUN = re.compile(r"modcheck/cli\.py\s+run\s+((?:[A-Za-z][\w.\-]*\s*)+?)(?=\s+-|\s*[;<>|&]|\s*$)")
+
+
+def modcheck_runs(text):
+    """The mod folders a proofs file's `live-proof` lines hand to `modcheck/cli.py run`, in order, no repeats."""
+    out = []
+    for line in (text or "").splitlines():
+        if not re.match(r"^\s*(?:[-*]\s+)?`?live-proof\b", line):
+            continue
+        for m in MODCHECK_RUN.finditer(line):
+            for t in m.group(1).split():
+                if t not in out:
+                    out.append(t)
+    return out
+
+
+_RUNNER = []
+
+
+def modcheck_composed(mod):
+    """runner.composed_ids(mod): the packageIds modcheck composes and checks in the running load for one mod. Loaded by
+    path under a private module name (a bare `import runner` could find another runner on sys.path). Raises what the
+    runner raises (RuntimeError: no src folder of that name)."""
+    if not _RUNNER:
+        import importlib.util
+        path = os.path.join(UTILS, "modcheck", "runner.py")
+        spec = importlib.util.spec_from_file_location("_relentless_modcheck_runner", path)
+        mod_ = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod_)
+        _RUNNER.append(mod_)
+    return list(_RUNNER[0].composed_ids(mod))
+
+
 def proof_scripts(text):
     """The repo scripts a proofs file's `live-proof` lines run (src/....py), in order."""
     out = []
@@ -509,7 +548,7 @@ def closure_gaps(have, index):
     return out
 
 
-def advise(text, scripts, have, index, named=None, build=None, saves=None, exclude=()):
+def advise(text, scripts, have, index, named=None, build=None, saves=None, exclude=(), composer=None):
     """Need inference, ADVISORY ONLY. text: the proofs file; scripts: {repo path: content} of the scripts its proof
     lines run; have: the canonical mods the load will already hold (the build's and the proof's). -> [{"mod", "at"
     ("path:line"), "line"}]: a mod the proof lines or their scripts name (_tokens: a quoted name, a --mod/--needs-style
@@ -521,7 +560,9 @@ def advise(text, scripts, have, index, named=None, build=None, saves=None, exclu
     (SETTLEMENT_VERBS_WAVE_1, fixed by naming RimProperty in c5e1eedf3a).
     build: the build's own mod folders as derived; a folded source among them is noted with the composed mod the load
     really holds unless live-mods names it (WARSCAR_HOSPICE_DESERTERS_1: 'the deploy plan does not cover Scarlands' on a
-    plan that composed it)."""
+    plan that composed it).
+    composer: mod folder -> the packageIds modcheck composes for it (default modcheck_composed); every one a proof's
+    `modcheck/cli.py run <Mod>` would check in the running load is a sure need ("proof_modcheck")."""
     have = set(have)
     named = set(have if named is None else named)
     out, seen, memo = [], {}, {}
@@ -570,6 +611,18 @@ def advise(text, scripts, have, index, named=None, build=None, saves=None, exclu
             if r["kind"] in RESOLVED:
                 hit(r["canon"], "%s:0" % path, "the fixture save was made with %s loaded" % pid, "fixture")
     scan(PROOFS_DIR, text)
+    for mc in modcheck_runs(text):
+        try:
+            ids = (composer or modcheck_composed)(mc)
+        except Exception as ex:  # noqa: BLE001 - an unknown mod or a broken tier speaks as a warning, never a crash
+            hit(mc, "%s: modcheck run %s" % (PROOFS_DIR, mc), "modcheck cannot compose %s: %s: %s"
+                % (mc, type(ex).__name__, ex), "proof_modcheck_unknown")
+            continue
+        for pid in ids:
+            r = res(pid)
+            if r["kind"] in RESOLVED:
+                hit(r["canon"], "%s: modcheck run %s" % (PROOFS_DIR, mc), "modcheck run %s composes %s and refuses "
+                    "the run (stale_load) unless the running load holds it" % (mc, pid), "proof_modcheck")
     for path, body in sorted((scripts or {}).items()):
         scan(path, body)
     # exclude: mods the proof is live-without; a closure is never walked from one (it would add what it hangs on)
@@ -606,10 +659,11 @@ def proof_saves(text):
 # A need from one of these is ENFORCED (added to the planned load before the slot): the proof says so itself (a --mod /
 # --needs / --enable argument, a staging-cue line naming an installed mod), the proof script lives in the mod, the build's
 # folded source is that composed mod, a fixture save was made with it, a C# type or one of our defNames has exactly one
-# owner, or a resolved mod hard-depends on it. Everything else (a quoted name, a packageId in prose, a defName several
-# mods define) only warns: a false positive costs a warning line, never an extra mod in someone's load.
+# owner, a proof line runs `modcheck/cli.py run <Mod>` whose composed list holds it, or a resolved mod hard-depends on
+# it. Everything else (a quoted name, a packageId in prose, a defName several mods define) only warns: a false positive
+# costs a warning line, never an extra mod in someone's load.
 SURE = ("folded", "script_home", "fixture", "proof_cli", "proof_cue", "proof_type", "script_type", "script_path",
-        "proof_defname", "script_defname", "closure")
+        "proof_defname", "script_defname", "closure", "proof_modcheck")
 INDEXED = ("proof_type", "script_type", "proof_defname", "script_defname", "closure")    # trust the index's age
 def live_without(text):
     """A live_proofs file -> the names its `live-without:` lines give (every line, in order, no repeats): mods the proof
@@ -774,7 +828,7 @@ def replay(fx):
 # an addition outside the repair's own names is still right when its evidence states the need: a hard About.xml
 # dependency, the composed mod the build's folded source loads as, the proof's own load condition (--needs X, --enable X,
 # "Stager: the list ALSO needs X"), or the mod the proof script lives in
-SELF_EVIDENT = ("closure", "folded", "proof_cli", "proof_cue", "script_home", "fixture")
+SELF_EVIDENT = ("closure", "folded", "proof_cli", "proof_cue", "script_home", "fixture", "proof_modcheck")
 
 
 def _case_scripts(case):
