@@ -972,3 +972,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:26:23Z","tsn":1793957183533018585}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SCENERUN_MIGRATE_OFF_UNPAUSED_PLAY A2 (L2), read-only proof","ts":"2026-11-06T09:26:34Z","tsn":1793957194133703491}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:28:48Z","tsn":1793957328235448562}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ACC_BIOMES_FIXES_LIVE_RERUN_1 A3 (L2), read-only proof","ts":"2026-11-06T09:31:06Z","tsn":1793957466305758974}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:32:23Z","tsn":1793957543121144194}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WEEPINGSTONES_HANDLER_VANISHES_1 A2 (L2), read-only proof","ts":"2026-11-06T09:33:41Z","tsn":1793957621302976150}
