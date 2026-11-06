@@ -200,10 +200,24 @@
     "ref": "run rm-role-designer-1793955657",
     "stage": 4,
     "tokens": 485169
+   },
+   {
+    "at": "2026-11-06T09:07:49Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1793955968",
+    "stage": 5,
+    "tokens": 337552
+   },
+   {
+    "at": "2026-11-06T09:10:45Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793955943",
+    "stage": 5,
+    "tokens": 193197
    }
   ],
   "reserve": 60000,
-  "spent": 6889293
+  "spent": 7420042
  },
  "history": [
   {
@@ -451,11 +465,29 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1793955657: stage 4 done"
+  },
+  {
+   "at": "2026-11-06T09:06:08Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "6889293 of 4000000 spent; run rm-role-designer-1793955943 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T09:06:08Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1793955943, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-06T09:10:45Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1793955943: stage 5 return"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/GimmeSomeSlack",
- "pending_decision": "Rewrite leaf cut_live_and_dead_ends and its sheet line. (1) Its red, 'a cut leaves both ends sparking', contradicts the root ('sparking where it is live and dead where it is not'): when the far side has its own power source, both ends ARE live. Restate it so the reject is an end with no path to any power source that sparks, or a live end drawn dead. Keep the false_pass about choosing live/dead by which side is nearer the generator. (2) Sheet line 24 only states the positive case. Make it state the reject plainly ('an end cut off from all power that sparks is wrong'), so a Reader of the sheet alone rejects e10. (3) For the next exam, the control should remove a leaf that nothing else backs up (for example statics_clear_between_games or cut_live_and_dead_ends), not drawing_true_to_grid, which his words and the walk's red also cover. No owner answer is needed: his root already decides it.",
+ "pending_decision": "Whether his shock rule (s_shock_fix_safe: a fixer approaching a sparking line is safe, an incidental crosser is shocked) also covers the sparking live end a floor-conduit cut leaves (cut_live_and_dead_ends, the flagship), or only fallen overhead spans. Then stage 3 must fix the coverage gaps from coverage_verdict.json: (1, return_to 3) The fixer exemption is never tested against the obvious wrong way to build it: exempting anyone doing a re-string job. His words are 'if they approach intending to fix it', meaning that particular wire, and exam c3 says a colonist re-stringing a different span who crosses this live end must be shocked. sc_shock and sc_shock_restring only use a re-stringer assigned to this wire, and the shock_restring control just reassigns them to hauling. An exemption keyed on the job type (the leaf's oracle reads 'none on the re-stringer while on RM_RestringSpan') would pass every scene. Add a control case: a colonist on RM_RestringSpan for another span crosses this sparking end and is shocked. [scenes.json sc_shock / sc_shock_restring control; tree.json fallen_wire_shocks_crossers oracle_proposed]; (2, return_to 2) His root line says 'how a Pawn ever fixes a sparking line ... if they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked'. A floor-conduit cut also leaves a sparking live end: cut_live_and_dead_ends, which is the flagship workshop-floor moment. The tree applies shock (and the fixer-is-safe rule) only to fallen overhead spans. No leaf says whether a sparking floor-cord end shocks a pawn crossing it, or whether a constructor rebuilding the cut conduit is safe. Whether his shock rule covers floor cut ends is a scope question about his own words, so it needs his answer, then a leaf and scene either way. [record.json root / scope s_shock_fix_safe; tree.json cut_live_and_dead_ends and fallen_wire_shocks_crossers; sheet.md does-list]; (3, return_to 3) statics_clear_between_games is defined as 'starts or loads another' game in the same session, but sc_statics_new_game only starts a second quicktest. Loading a save goes through a different init path, and that is the path where an old game's tap or style pick could leak. Add a load-a-save case, or a second game reached by loading. [scenes.json sc_statics_new_game; tree.json statics_clear_between_games experience]; (4, return_to 3) sc_settings does not assert the parts of settings_switch_cleanly that are specific to this leaf. Nothing checks that the master switch brings back vanilla LAMP art without a restart; sc_conduit_invisible and the walk check conduit art only. Nothing reads 'every Harmony patch maps to one switch'. Nothing checks that the pipe-pole switch 'leaves power poles alone': the expect says only that 'pipe poles follow only their own switch'. Name these three observations in the scene. [scenes.json sc_settings expect; tree.json settings_switch_cleanly oracle/experience]; (5, return_to 3) wire_down_alert, as built and in the restring_cut_span leaf, lists anchors with a cut OR grounded wire, jumps to the anchor, and clears on re-string. sc_restring only stages a cut span. It never checks the jump-to, and never checks the grounded case (a killed mast, as in sc_fallen_span). overhead_spans also names lamp masts, and sc_spans stages no lamp mast. These built parts are exercised by no scene. [scenes.json sc_restring, sc_spans; record.json inventory wire_down_alert, overhead_spans]",
  "recovery": [],
  "results": [
   {
@@ -823,11 +855,37 @@
    "run": "rm-role-designer-1793955657",
    "stage": 4,
    "summary": "The Cold Reader exam on the rewritten tree passes. The 26 frozen scenarios (16 Examiner, 10 Challenger) were all right for both Readers, and there were 0 accepts where a core line rejects. The rewritten cut_live_and_dead_ends now holds both the far-side-battery case and the no-source case. The control (statics_clear_between_games removed, with its delegated clause) missed e7, e8 and c6."
+  },
+  {
+   "at": "2026-11-06T09:10:45Z",
+   "decision": "Whether his shock rule (s_shock_fix_safe: a fixer approaching a sparking line is safe, an incidental crosser is shocked) also covers the sparking live end a floor-conduit cut leaves (cut_live_and_dead_ends, the flagship), or only fallen overhead spans. Then stage 3 must fix the coverage gaps from coverage_verdict.json: (1, return_to 3) The fixer exemption is never tested against the obvious wrong way to build it: exempting anyone doing a re-string job. His words are 'if they approach intending to fix it', meaning that particular wire, and exam c3 says a colonist re-stringing a different span who crosses this live end must be shocked. sc_shock and sc_shock_restring only use a re-stringer assigned to this wire, and the shock_restring control just reassigns them to hauling. An exemption keyed on the job type (the leaf's oracle reads 'none on the re-stringer while on RM_RestringSpan') would pass every scene. Add a control case: a colonist on RM_RestringSpan for another span crosses this sparking end and is shocked. [scenes.json sc_shock / sc_shock_restring control; tree.json fallen_wire_shocks_crossers oracle_proposed]; (2, return_to 2) His root line says 'how a Pawn ever fixes a sparking line ... if they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked'. A floor-conduit cut also leaves a sparking live end: cut_live_and_dead_ends, which is the flagship workshop-floor moment. The tree applies shock (and the fixer-is-safe rule) only to fallen overhead spans. No leaf says whether a sparking floor-cord end shocks a pawn crossing it, or whether a constructor rebuilding the cut conduit is safe. Whether his shock rule covers floor cut ends is a scope question about his own words, so it needs his answer, then a leaf and scene either way. [record.json root / scope s_shock_fix_safe; tree.json cut_live_and_dead_ends and fallen_wire_shocks_crossers; sheet.md does-list]; (3, return_to 3) statics_clear_between_games is defined as 'starts or loads another' game in the same session, but sc_statics_new_game only starts a second quicktest. Loading a save goes through a different init path, and that is the path where an old game's tap or style pick could leak. Add a load-a-save case, or a second game reached by loading. [scenes.json sc_statics_new_game; tree.json statics_clear_between_games experience]; (4, return_to 3) sc_settings does not assert the parts of settings_switch_cleanly that are specific to this leaf. Nothing checks that the master switch brings back vanilla LAMP art without a restart; sc_conduit_invisible and the walk check conduit art only. Nothing reads 'every Harmony patch maps to one switch'. Nothing checks that the pipe-pole switch 'leaves power poles alone': the expect says only that 'pipe poles follow only their own switch'. Name these three observations in the scene. [scenes.json sc_settings expect; tree.json settings_switch_cleanly oracle/experience]; (5, return_to 3) wire_down_alert, as built and in the restring_cut_span leaf, lists anchors with a cut OR grounded wire, jumps to the anchor, and clears on re-string. sc_restring only stages a cut span. It never checks the jump-to, and never checks the grounded case (a killed mast, as in sc_fallen_span). overhead_spans also names lamp masts, and sc_spans stages no lamp mast. These built parts are exercised by no scene. [scenes.json sc_restring, sc_spans; record.json inventory wire_down_alert, overhead_spans]",
+   "inputs": {
+    "exam": "3f65dad9cfb1f9f0a029aebf9913f3e689e56c82cfa6822dbed8a96745439ba7",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "6a7bbc0942d82fcd0533cd14fa3b5fa76c4d293c732b737f00bd5345eeef88dd",
+    "sheet": "61d7152331b1d4c80ff698b03d2acea82b00d305bc028759d96ff4fd4f786051",
+    "tree": "a1e533020bd1b5d950d0740ca061a80179f7c8b96f3f0de54cba7c54d6c8048b"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_lock.md": "48294670b2e5f64648a7637fd8eaf09092c2ccbe54c496b99c0ff3a0952321ad"
+   },
+   "outcome": "return",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "question": "In the workshop-floor showcase, a cord is cut and its live end lies sparking on the floor. A hauler walks over that end on another job. Should they be shocked, as with a fallen overhead wire, and should the colonist rebuilding that cut conduit be safe, as the re-stringer is? Or is a sparking floor end only a look, harmless to touch? (1) Same rule as fallen wires: crossers shocked, the one fixing it safe. (2) Harmless: the spark is only drawn. Recommended: (1), since your words say 'the sparking end', not 'the fallen wire'.",
+   "run": "rm-role-designer-1793955943",
+   "stage": 5,
+   "summary": "Coverage judge rm-coverage-judge-1793955968 returned not_covered with 5 gaps; gap 2 needs his answer (does his shock rule cover a sparking floor-cut end?), so the lock returns to stage 2; the other four are stage-3 scene fixes carried in the decision. Tree not signed.",
+   "to": 2
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 2,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
