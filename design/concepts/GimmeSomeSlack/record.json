@@ -117,6 +117,14 @@
    "source": "OWNER:1793909100631838579",
    "quote": "The right power strip is better for modern look. Junctions work better for industrial.",
    "text": "Modern-look 3/4-way junctions draw the long PowerStrip art (picture B), every cord plugging in; Industrial (StarWarsJawa) junctions keep the Junction_T/X box art; Scrapper and Futuristic keep their connectors as now"
+  },
+  {
+   "id": "d_flagship",
+   "speaker": "owner",
+   "source": "OWNER:1793950666234031543",
+   "flagship": "workshop_floor",
+   "card": "Which scene is the one you judge Gimme Some Slack by first? → Workshop floor",
+   "text": "The workshop floor (floor cords looping and piling into a strip/junction box, one cut leaving a sparking live end and a limp dead end, drawing true to connectivity) is GSS's face, showcase 1, judged first; the yard of masts is showcase 2"
   }
  ],
  "asks": [
@@ -205,7 +213,7 @@
   },
   {
    "id": "a_flagship_pick",
-   "status": "sent",
+   "status": "answered",
    "text": "Which one is the moment that says 'that is Gimme Some Slack', the one you judge it by first? (1) The workshop floor: one room of over-long cords looping across the floor, piling against the walls and plugging into a power strip (Modern look) or junction box (Industrial) at each 3- or 4-way junction; then one cord is severed, its live end sparks, its dead end lies limp, and the drawing still matches what is connected. (2) The yard of masts: a sagging line strung over a shed to a far mast; the mast is knocked down so the wire lies sparking on the ground; a hauler crossing it on another job is shocked, while the colonist sent to re-string it is safe. Both are built and checked either way; the other becomes showcase 2. Recommended: (1).",
    "decision": "Showcase 1 (the flagship) of scenes.json: workshop_floor or yard_of_masts. designer_scene_contract.md requires it bound to an owner decision with 'flagship'; his root approval is not a pick and the 'Judged first' line in the root was agent text.",
    "about": [
@@ -234,6 +242,10 @@
     "by": "rm-judge aee41281c90f554ec (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "'Both wanted' (1793590546413059482) scopes both scenes but names no first; showcase rule needs an owner flagship decision and gates stage 3; no prior GSS pick in OWNER.jsonl; quote verbatim; no keep/remove. Fixed: strip vs junction box per look (1793909100631838579); 'Judged first' attributed to the agent."
+   },
+   "answer": {
+    "source": "OWNER:1793950666234031543",
+    "by_card": "Workshop floor"
    }
   }
  ],

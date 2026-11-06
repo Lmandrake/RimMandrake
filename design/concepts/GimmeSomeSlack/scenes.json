@@ -482,8 +482,10 @@
     "break_ends_live_dead",
     "rebuild_cost"
    ],
-   "source": [],
-   "decision": "d_flagship_pending"
+   "source": [
+    "OWNER:1793950666234031543"
+   ],
+   "decision": "d_flagship"
   },
   {
    "id": "yard_of_masts",
