@@ -11,7 +11,8 @@ Pins, on the supervisor's own ticks (FakeWorld from selftest_relentless) where t
   * SNAG repeat: a repeat snag naming an open item waits until that item closes, then is back in line at once; one
     naming only a closed item, or a --wait-hours snag, keeps its clock;
   * START refusal: a ledger start refusal waits until any wake poke after it;
-  * RECHECK (legacy unmeasured route): recheck_at ends when the named open item closes;
+  * RECHECK (legacy unmeasured route): recheck_at ends when the named open item closes; and through a real UNMEASURED
+    verdict (R.main, reach_repair false), unmeasured() records the cause and the first tick after the item closes ends it;
   * the wake serve runs the cause sweep, and no clock key is still kind backoff_owed.
 """
 import json
@@ -191,6 +192,54 @@ def t_recheck():
     x.done()
 
 
+def t_recheck_through_verdict():
+    """The real UNMEASURED end (rule reach_repair false): a verdict through R.main whose --unreached names an open item;
+    unmeasured() itself records recheck_cause, and the first tick after that item closes ends recheck_at."""
+    x = SR.Rig(n=1, reach_repair=False, share=1.0, same_failure_limit=2, unmeasured_limit=3, unmeasured_recheck_s=1800)
+    x.w.items["HARNESS_REACH_FIX_OPEN"] = "doing"
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "grep -q free_bytes infrastructure/state/facts/steve_c_drive_fill_2026-11-03.md",
+               live="once: test")
+    R.finish(x.s, "I0", st["gen"], "sha1", "evidence")
+    x.w.up[st["run"]["unit"]] = False
+    for _ in range(4):
+        if x.st("I0")["status"] == "checking":
+            break
+        x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "checking", "the candidate is being checked: %s" % st["status"])
+    os.environ["RELENTLESS_ROOT"] = x.d
+    try:
+        rc = R.main(["verdict", "--item", "I0", "--nonce", st["check"]["nonce"], "UNMEASURED",
+                     "could not read the evidence", "--unreached",
+                     "box cannot reach D:\\x; its repair is HARNESS_REACH_FIX_OPEN"])
+    finally:
+        os.environ.pop("RELENTLESS_ROOT", None)
+    ok(rc in (0, None), "the CLI takes the UNMEASURED verdict: %r" % rc)
+    x.w.up[st["check"]["run"]["unit"]] = False
+    x.tick()
+    x.tick()
+    st = x.st("I0")
+    t0 = x.now
+    cause = st.get("recheck_cause") or {}
+    ok(st["status"] == "candidate" and st.get("recheck_at", 0) > x.now and (st.get("blind") or {}).get("n") == 1,
+       "a real UNMEASURED end waits for a recheck: %s %r" % (st["status"], st.get("recheck_at")))
+    ok("HARNESS_REACH_FIX_OPEN" in json.dumps(cause), "unmeasured() records the open item as the recheck's cause: %r" % cause)
+    for _ in range(3):
+        x.tick(60)
+    ok(x.st("I0").get("recheck_at", 0) > x.now, "the recheck holds while the named item is open")
+    x.w.items["HARNESS_REACH_FIX_OPEN"] = "done"
+    acts = x.tick(30)
+    st = x.st("I0")
+    ok(any(a.get("do") == "backoff_cause_closed" and a.get("key") == "recheck_at" for a in acts)
+       or any(j.get("key") == "recheck_at" for j in journal(x, "backoff_cause_closed")),
+       "the item closed: backoff_cause_closed on recheck_at at the next tick")
+    ok("recheck_at" not in st and "recheck_cause" not in st and x.now - t0 < 1800,
+       "the recheck ended %d s after the verdict, not at unmeasured_recheck_s (1800 s): %s" % (x.now - t0, st["status"]))
+    x.done()
+
+
 def t_wiring():
     with open(os.path.join(HERE, "relentless.py"), encoding="utf-8") as f:
         src = f.read()
@@ -206,7 +255,7 @@ def t_wiring():
 
 def main():
     for t in (t_breaker_clone_exists, t_breaker_publickey, t_breaker_unclassified, t_snag_repeat, t_start_refusal,
-              t_recheck, t_wiring):
+              t_recheck, t_recheck_through_verdict, t_wiring):
         print("--", t.__name__)
         try:
             t()
