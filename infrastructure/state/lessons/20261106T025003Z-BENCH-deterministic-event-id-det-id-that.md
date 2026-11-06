@@ -1,0 +1,1 @@
+A deterministic event id (det_id) that a later event can LIFT (ban->unban) dedups a re-issued act to nothing: art purge --ban after an unban wrote no ban yet its purge named one. Chain the id past the lifting event (as purge does after unpurge). Found in ART_LEDGER_VET_PURGE_BAN_REVIEW_OWED.
