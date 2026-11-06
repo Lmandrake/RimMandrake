@@ -204,7 +204,8 @@ def other_active(states, item):
 def busy(store, item):
     """other_active, or a showing build that holds the game (relentless_showing): the bridge it holds is Relentless's
     own, so a staging or a proof round would take it again and restart the game under the showing being built."""
-    return other_active(store.states(), item) or showing_live(store)
+    import relentless_broker
+    return other_active(store.states(), item) or showing_live(store) or relentless_broker.busy(store)
 
 
 def showing_live(store):
@@ -1261,6 +1262,18 @@ class GameFx(object):
     def prove_alive(self, pid):
         return self.live_round_alive(pid)
 
+    def broker_launch(self):
+        """Start the game broker's job (relentless_broker.job), detached, with prove_launch's environment."""
+        import model
+        import relentless
+        os.makedirs(os.path.join(self.base, "live"), exist_ok=True)
+        with open(os.path.join(self.base, "live", "broker.out"), "a", encoding="utf-8") as out:
+            subprocess.Popen(["python3", os.path.join(self.books, "src/RimMandrake/rimflow/relentless_broker.py"), "job"],
+                             cwd=self.books, env=dict(model.bridge_holder.process_env(), RELENTLESS_ROOT=self.base,
+                                                      PATH=relentless.windows_path(os.environ.get("PATH", ""))),
+                             stdout=out, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
+        return None
+
 
 # ---------------------------------------------------------------- holds that outlived their user
 
@@ -1276,14 +1289,15 @@ def stale_holds(states, now, c, alive, bridge, reading):
     when a holder needs it. RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER: other_active held the game for as long as such a holder
     existed, and only that holder's own step (or its worker's reload-needed) could end it, so one idle holder parked
     every other game item ("one live user at a time") for 47 minutes on 2026-11-03.
-      proving   its prove pid is dead: the round ended (its rows, if any, are on runs.jsonl for its step to read)
+      proving   its prove pid is dead: the round ended (its rows, if any, are on runs.jsonl for its step to read);
+                a broker batch item is not named here: its own step reads the broker job's lock
       live_iter its worker has not held the bridge for this item for live_idle_s, or the game it iterates on is down or
                 is a different game than the one that showed the FAIL"""
     out, br, rd = [], None, None
     for s in states:
         g = s.get("game") or {}
-        if s["status"] == GAME and g.get("phase") == "proving":
-            if not g.get("prove_pid") or not alive(g["prove_pid"]):
+        if s["status"] == GAME and g.get("phase") == "proving" and not g.get("broker"):    # a broker batch's
+            if not g.get("prove_pid") or not alive(g["prove_pid"]):     # liveness is its job's lock (_broker_holds)
                 out.append((s["item"], "proving", "its prove pid %s is not running: the round ended"
                             % g.get("prove_pid")))
         li = s.get("live_iter")
@@ -2000,12 +2014,19 @@ def step(store, fx, r, item, now, acts, sup):
         return
 
     if g["phase"] == "proving":
-        if g.get("prove_pid") and fx.prove_alive(g["prove_pid"]):
+        if g.get("broker") and _broker_holds(store, fx, item, g, now, acts):
+            return      # its lines are in the broker's running batch (relentless_broker)
+        if not g.get("broker") and g.get("prove_pid") and fx.prove_alive(g["prove_pid"]):
             return
-        _save(store, item, lambda s: s["game"].update(phase="prove"))
+        _save(store, item, lambda s: (s["game"].update(phase="prove"), s["game"].pop("broker", None)))
         g = store.load(item)["game"]
 
     if g["phase"] == "prove":
+        if g.get("broker"):
+            if _broker_holds(store, fx, item, g, now, acts):
+                return  # queued for the game broker: put down, holding nothing, until a batch runs its lines
+            _save(store, item, lambda s: s["game"].pop("broker", None))
+            g = store.load(item)["game"]
         his = owner_looks(led, proof_lines(fx.proofs_at(item, sha)), g["clauses"])
         if his:     # a state from before RELENTLESS_FIX_GAME_LANE_OWNER_LOOK_FAILS still names his look as a game clause
             _save(store, item, lambda s: s["game"].update(
@@ -2135,7 +2156,8 @@ def step(store, fx, r, item, now, acts, sup):
         else:
             if (g.get("proved_at") or 0) >= since and now - g["proved_at"] < c["prove_every_s"]:
                 return      # a round ran since the last staging and measured nothing: the bridge was busy, try later
-            why = _lease_why(store, fx, r, item, sha, led)
+            brk = _broker_on(store, fx)     # the broker waits for the idle game, so a queued item asks only the gate
+            why = _gate_why(store, fx, r, item, sha, led) if brk else _lease_why(store, fx, r, item, sha, led)
             if why:
                 return _waits(store, fx, item, why, now, acts)
             if _preflight(store, fx, sup, r, item, _owed_lines(fx, item, sha, g, led), now, acts, sha):
@@ -2145,6 +2167,8 @@ def step(store, fx, r, item, now, acts, sup):
                    else mod_gap_why(fx.game_mod_gap(item, built)))
             if gap:         # the running game lacks the build's mods: no prove round, a reload that enables them
                 return _reload(store, fx, r, item, rd, gap, now, acts)
+            if brk and _broker_offer(store, fx, item, sha, g, rd, now, acts):
+                return      # LIVELANE_BUILD_GAME_BROKER_PROOF_LINES: a broker fault falls through to its own round
             pid = fx.prove_launch(item)
             _save(store, item, lambda s: (s.pop("put_down", None), s["game"].update(phase="proving", prove_pid=pid,
                                                                                      proved_at=now, waits_reload=None)))
@@ -2420,6 +2444,57 @@ def _lease_why(store, fx, r, item, sha, led):
     why = gate(store.load(item), led.get("title"), fx.proofs_at(item, sha), relentless_live.live_rules(r)["flyer_re"],
                other)
     return why or fx.bridge_idle("relentless game phase %s" % item)
+
+
+def _gate_why(store, fx, r, item, sha, led):
+    """_lease_why without the game's other users: what bars the item itself (flyer, no proof line)."""
+    import relentless_live
+    return gate(store.load(item), led.get("title"), fx.proofs_at(item, sha), relentless_live.live_rules(r)["flyer_re"],
+                None)
+
+
+# ---------------------------------------------------------------- the game broker (relentless_broker)
+
+def _broker_on(store, fx):
+    try:
+        import relentless_broker
+        return relentless_broker.active(store, fx)
+    except Exception:  # noqa: BLE001  no broker: the lane as it was
+        return False
+
+
+def _broker_offer(store, fx, item, sha, g, rd, now, acts):
+    """Queue the item's lines and put it down. -> False on a fault (recorded): the caller launches its own round."""
+    import relentless_broker
+    try:
+        at = relentless_broker.offer(store, item, sha, g["clauses"], rd.get("started"), now)
+        why = "queued for the game broker: %d clause(s)" % len(g["clauses"])
+        _save(store, item, lambda s: (s.update(put_down={"on": why, "at": now}), s["game"].update(
+            broker={"queued_at": at, "game": rd.get("started")}, waits_reload=None)))
+        acts.append({"do": "game_broker_queued", "item": item, "clauses": len(g["clauses"])})
+        return True
+    except Exception as e:  # noqa: BLE001  a broker fault falls back to the item's own prove round
+        relentless_broker.fault(store, "offer", e)
+        return False
+
+
+def _broker_holds(store, fx, item, g, now, acts):
+    """True while the broker still owns the item's turn (queued, or in a running batch). False when the turn is over or
+    the broker is off or faulted: the item then walks the tree as before."""
+    import relentless_broker
+    try:
+        if not relentless_broker.active(store, fx):
+            return False
+        if g["phase"] == "proving":
+            relentless_broker.reconcile(store, now, acts)   # an abandoned batch is marked lost (and journalled) first
+        held = (not relentless_broker.over(store, item, g, now) if g["phase"] == "proving"
+                else relentless_broker.waiting(store, item, g))
+        if not held:
+            relentless_broker.forget(store, item)
+        return held
+    except Exception as e:  # noqa: BLE001
+        relentless_broker.fault(store, "settle", e)
+        return False
 
 
 def LIVE_LEVELS():

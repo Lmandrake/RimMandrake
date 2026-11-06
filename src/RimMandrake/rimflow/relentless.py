@@ -47,6 +47,7 @@ import relentless_wall  # noqa: E402
 import relentless_reach  # noqa: E402
 import relentless_reachfix  # noqa: E402
 import relentless_game  # noqa: E402
+import relentless_broker  # noqa: E402
 import relentless_expedite  # noqa: E402
 import relentless_repair_slot  # noqa: E402
 import relentless_binding  # noqa: E402
@@ -4720,7 +4721,8 @@ def pool_rows(store, fx, r):
         elif kind == "check":
             rank = 0 if status in ("queued", "held", "blocked", "candidate") else 2
         elif status == relentless_game.GAME:     # waiting on the game, the bridge or the owner: parked; a stage re-prepares
-            rank = 2 if (st.get("game") or {}).get("phase") in relentless_game.ACTIVE else 1
+            g = st.get("game") or {}    # a broker batch runs in the books checkout: its clone is not in use
+            rank = 2 if g.get("phase") in relentless_game.ACTIVE and not g.get("broker") else 1
         else:
             rank = 1 if status in ("queued", "held", "blocked", "candidate") else 2
         rows.append({"clone": c, "item": st["item"] if st else clone_item(c), "kind": kind, "status": status, "rank": rank})
@@ -6683,6 +6685,7 @@ def reading(store, r, now, acts, clock=None, fx=None):
     rec["live_slis"] = live_slis(store, now)
     import relentless_exam      # the exam shadow (RELENTLESS_BUILD_EXAM_BEFORE_BUILDER): returns the exam would have caught
     rec["exam_shadow"] = relentless_exam.summary(store)
+    rec["broker"] = broker_slis(store, now)     # WP-11: clauses completed/day, oldest queued age
     store._write(store.p("reading.json"), json.dumps(rec, indent=1, sort_keys=True))
     return rec
 
@@ -6924,7 +6927,8 @@ def live_tick(store, fx, r, now, acts):
         return
     if now - (last.get("at_s") or 0) < lr.get("round_every_s", 1800):
         return
-    if relentless_game.other_active(getattr(store, "states", list)(), None) or relentless_game.showing_live(store):     # one live user at a time: a game phase has the game
+    if relentless_game.other_active(getattr(store, "states", list)(), None) or relentless_game.showing_live(store) \
+            or relentless_broker.busy(store):     # one live user at a time: a game phase or the broker has the game
         return
     pid = fx.live_round_launch()
     store._write(path, json.dumps({"pid": pid, "at_s": now, "at": iso(now)}))
@@ -6996,6 +7000,24 @@ def game_pass(store, fx, r, now, acts, began=None):
         except Exception as e:  # noqa: BLE001  one bad item never stops the others; the next tick resumes it
             acts.append({"do": "error", "item": s["item"], "why": "%s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": s["item"], "why": str(e)[:300]})
+    broker_drain(store, fx, r, now, acts)
+
+
+def broker_drain(store, fx, r, now, acts):
+    """LIVELANE_BUILD_GAME_BROKER_PROOF_LINES: run the queued proof lines if the game is idle. A fault turns the broker
+    off (relentless_broker.fault) and every item launches its own round again, as before it."""
+    try:
+        relentless_broker.drain(store, fx, r, now, acts)
+    except Exception as e:  # noqa: BLE001  never the tick's end
+        relentless_broker.fault(store, "drain", e)
+        acts.append({"do": "error", "item": None, "why": "broker %s: %s" % (type(e).__name__, e)})
+
+
+def broker_slis(store, now):
+    try:
+        return relentless_broker.slis(store, now)
+    except Exception as e:  # noqa: BLE001  an unread SLI is a reading that failed, never a dead tick
+        return {"unread": "%s: %s" % (type(e).__name__, str(e)[:200])}
 
 
 def ready_staging(store):
@@ -7208,6 +7230,7 @@ def _tick(store, fx, r, now, prof):
                 serve_wake()
         if skipped:
             acts.append({"do": "tick_budget", "skipped": skipped, "after_s": int(wall() - began)})
+        broker_drain(store, fx, r, now, acts)
         at = phase("steps", began)
         for item in store.items():
             try:
@@ -7508,6 +7531,9 @@ def main(argv=None):
             print(open(store.p("reading.json"), encoding="utf-8").read())
             import relentless_live      # the SLIs read now, not at the last tick
             print("\n".join(relentless_live.sli_lines(live_slis(store, time.time()))))
+            import relentless_broker
+            b = broker_slis(store, time.time())
+            print(relentless_broker.sli_line(b) if "unread" not in b else "broker: UNREAD %s" % b["unread"])
         elif a.cmd == "stats":
             print(json.dumps(stats(store), indent=1))
         elif a.cmd == "show":

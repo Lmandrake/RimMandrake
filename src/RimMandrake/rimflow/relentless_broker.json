@@ -1,0 +1,5 @@
+{
+ "enabled": true,
+ "batch_max": 6,
+ "round_timeout_s": 5400
+}
