@@ -727,6 +727,15 @@ def preflight(fx, lr, item_id, lines, sites=None):
     return out
 
 
+def violated(log, criterion):
+    """True when the proof's log already holds a valid RMOBS violation of `criterion` (live_observe): that run's evidence
+    stands, so it is never replaced by a rerun."""
+    try:
+        return live_observe.read_log(log, live_observe.run_id_of(log), criterion).status == "VIOLATED"
+    except Exception:       # noqa: BLE001  an unreadable log holds no violation
+        return False
+
+
 def wsl_rerun(proof, log_text):
     """-> the proof under python.exe when it is a plain `python3 <script>` that died on the WSL bridge refusal, else None."""
     if proof.startswith("python3 ") and any(s in (log_text or "") for s in WSL_BRIDGE):
@@ -998,6 +1007,15 @@ def folded_key(folded, mod):
     return ((folded or {}).get(mod) or (None, mod))[1]
 
 
+PLAN_DRIFT_TAIL = "Drift found. Re-run with --apply to deploy."
+
+
+def plan_failed(plan_rc, plan_text):
+    """True when the deploy plan itself failed or timed out. A plan exits 1 when ANY mod drifts; that plan is still a
+    reading (the drift that matters is this commit's files), so it is no failure. Pure."""
+    return plan_rc != 0 and not (plan_rc == 1 and (plan_text or "").rstrip().endswith(PLAN_DRIFT_TAIL))
+
+
 def deploy_gap(files, plan_rc, plan_text, trees=(), folded=None):
     """-> why the built commit's game files are not what the game folder holds, or None.
     folded: {source folder: (composed target, key)}; a compose plan prints the KEY, so a folded source is matched by it
@@ -1005,9 +1023,7 @@ def deploy_gap(files, plan_rc, plan_text, trees=(), folded=None):
     trees: mod folders whose WHOLE tree the build owes the game (a `live-deploy:` line: RELENTLESS_DEPLOY_WIRE_NOBODY_MAY_APPLY,
     a deploy item commits no mod file). Any file the deploy would write counts, not only .xml and .dll; a `-` line does not
     (--apply leaves a file the repo lacks alone without --prune, so no staging could ever clear it) nor an H (held on purpose)."""
-    # a plan exits 1 when ANY mod drifts; that plan is still read, the drift that matters is this commit's files
-    drift_only = plan_rc == 1 and plan_text.rstrip().endswith("Drift found. Re-run with --apply to deploy.")
-    if plan_rc != 0 and not drift_only:
+    if plan_failed(plan_rc, plan_text):
         return "the deploy plan failed (exit %s): %s" % (plan_rc, plan_text[-300:])
     if "def guard" in plan_text and "REFUSED" in plan_text:
         return "the deploy plan refused: %s" % plan_text[-300:]
@@ -1015,6 +1031,7 @@ def deploy_gap(files, plan_rc, plan_text, trees=(), folded=None):
     named = {folded_key(folded, m): m for m in [m for m, _ in files] + list(trees)}
     files = [(folded_key(folded, m), rel) for m, rel in files]
     trees = [folded_key(folded, m) for m in trees]
+    off = {m: why for m, why in off.items() if m in named}  # an off mod the build does not ship is not its gap (Codex cd905b)
     if off:
         return "the plan says %s" % "; ".join("%s: %s" % kv for kv in sorted(off.items()))
     missing = sorted(named[m] for m in ({mod for mod, _ in files} | set(trees)) - covered)
@@ -1819,8 +1836,9 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     if files or trees:
         rc, plan = fx.deploy_plan(deploy or "", lr["plan_max_s"])
         why = deploy_gap(files, rc, plan, trees, getattr(fx, "folded", dict)())
-        if why:     # a plan that failed or timed out is the harness's: it may pass in a minute, so no game stamp
-            return admit("not deployed: %s" % why, **({"game": None} if rc != 0 else {}))
+        if why:     # a plan that failed or timed out is the harness's: it may pass in a minute, so no game stamp; a plan
+            # that read drift (exit 1) is a reading of THIS game's folder and keeps its game (Codex cd905b)
+            return admit("not deployed: %s" % why, **({"game": None} if plan_failed(rc, plan) else {}))
     if files:
         stamps = [fx.mtime(mod, rel) for mod, rel in files]
         if None in stamps:
@@ -1833,8 +1851,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
             return admit("the game started %s, before the build's files were deployed %s: it runs the old "
                          "build" % (iso(started), iso(max(stamps))))
         row.update(game_started=iso(started), deployed=iso(max(stamps)), files=len(files))
-    else:
-        stamps, started = [], None
+    else:       # no file stamps to hold, but the game's identity still is: a restart mid-proof is never this game's verdict
+        stamps, started = [], fx.game_started()
     try:
         owes = companion or companion_touched(fx, sha, item_id)
     except (ValueError, OSError) as e:
@@ -1863,19 +1881,26 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     if gap:     # NOT_ADMITTED: no repeat count, no reload, no ledger note; the key holds it until the load moves
         return admit(gap, **({"game": iso(started)} if started else {}))
     else:
-        took = fx.rimflow("bridge", "take", "--idle-ok", "--for",
-                          "relentless live test: %s %s (%s), read-only proof" % (item_id, criterion, level))
+        try:
+            took = fx.rimflow("bridge", "take", "--idle-ok", "--for",
+                              "relentless live test: %s %s (%s), read-only proof" % (item_id, criterion, level))
+        except Exception as e:      # noqa: BLE001  a take that raised (timed out) may still have taken: give it back
+            try:
+                fx.rimflow("bridge", "release", "--mine")
+            except Exception:       # noqa: BLE001  the stale-hold rule frees it in 45 minutes
+                pass
+            return admit("bridge not taken: the take raised %s: %s" % (type(e).__name__, str(e)[:200]))
         if took.returncode != 0:
             return admit("bridge not taken: %s" % (took.stderr or took.stdout).strip()[-300:])
         marks["taken"] = time.time()
-        log, n = None, 0
-        while log is None or os.path.exists(log):  # a retry in the same second must not overwrite the last evidence
-            log = os.path.join(root, "live", "%s-%s-%s%s.log" % (item_id, criterion, time.strftime(
-                "%Y%m%dT%H%M%SZ", time.gmtime(now)), "" if not n else "-%d" % n))
-            n += 1
-        crashed = None
-        try:
-            if files and (started != fx.game_started() or stamps != [fx.mtime(m, rel) for m, rel in files]):
+        crashed, exited = None, False    # exited: the last proof launch returned an exit (or timed out), never raised
+        try:        # from the take on, every path ends in the release below (Codex cd905b: acquisition bypassed it)
+            log, n = None, 0
+            while log is None or os.path.exists(log):  # a retry in the same second must not overwrite the last evidence
+                log = os.path.join(root, "live", "%s-%s-%s%s.log" % (item_id, criterion, time.strftime(
+                    "%Y%m%dT%H%M%SZ", time.gmtime(now)), "" if not n else "-%d" % n))
+                n += 1
+            if started != fx.game_started() or (files and stamps != [fx.mtime(m, rel) for m, rel in files]):
                 crashed = "the game or its deployed files changed while the bridge was being taken"
             if crashed is None:     # bridge held, nothing spent yet: is the game fit to judge the mod at all?
                 try:
@@ -1898,24 +1923,30 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 marks["proof_start"] = time.time()
                 try:
                     code = run_launched(fx, proof, log, proof_budget(proof, lr["proof_max_s"]))
+                    exited = True
                 finally:        # a proof that raised still spent its time proving
                     marks["proof_s"] = time.time() - marks["proof_start"]
                 row["proof_exit"] = code
-                again = wsl_rerun(proof, read_text(log)) if code != PASS else None     # a WSL traceback exits 1
+                # a WSL traceback exits 1; a log whose RMOBS rows already hold a violation is never run again, or the
+                # rerun's log would replace the evidence of it (Codex cd905b)
+                again = wsl_rerun(proof, read_text(log)) if code != PASS and not violated(log, criterion) else None
                 if again:
                     os.replace(log, log[:-len(".log")] + "-wsl.log")
                     row["rerun"] = again
-                    t_again = time.time()
+                    t_again, exited = time.time(), False
                     try:
                         code = fx.run_proof(again, log, proof_budget(again, lr["proof_max_s"]))
+                        exited = True
                     finally:
                         marks["proof_s"] += time.time() - t_again
                     row["proof_exit"] = code
-                if code in (PASS, FAIL) and files and (started != fx.game_started()
-                                                       or stamps != [fx.mtime(m, rel) for m, rel in files]):
+                if code in (PASS, FAIL) and (started != fx.game_started()
+                                             or (files and stamps != [fx.mtime(m, rel) for m, rel in files])):
                     crashed, code = "the game or its deployed files changed while the proof ran", None
         except Exception as e:                          # the proof never ran to an exit code: no verdict, but the row stands
             crashed, code = "the proof could not run: %s: %s" % (type(e).__name__, str(e)[:200]), None
+            if "proof_exit" in row and not exited:
+                row.pop("proof_exit")   # a launch that raised gave no exit: the harness's (INFRA), never a FAIL verdict
         finally:
             try:
                 gave = fx.rimflow("bridge", "release", "--mine")
@@ -1979,7 +2010,11 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         rows = read_rows(os.path.join(root, "live", "runs.jsonl"))
         n = 1 + repeats(rows, item_id, criterion, sha, key, game)
         row.update(game=game, repeat=n, cause=key)
-        before = seen_on_other_game(rows, item_id, criterion, sha, key, game) if code is not None and not waits else None
+        # a proof that TIMED OUT (it ran, no crash) is compared across games too: else one that hangs on every game asks
+        # for a reload on each, never reaching the defect cap (Codex cd905b)
+        timed_out = code is None and not crashed and "proof_exit" in row
+        before = (seen_on_other_game(rows, item_id, criterion, sha, key, game)
+                  if (code is not None or timed_out) and not waits else None)
         # a reload request is left out of the two below: a new build always needs its own load
         ran = code is not None and not why.startswith(RELOAD)
         broken = broken_call(log) if ran else None

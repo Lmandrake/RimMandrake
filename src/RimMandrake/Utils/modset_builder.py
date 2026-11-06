@@ -1126,9 +1126,10 @@ def game_running():
     owner's time: for three minutes after a clean exit it refuses to do work
     that is perfectly safe. A closed game is closed, immediately.
 
-    The mtime check survives only as a fallback for when the process list is
-    unavailable, and it stays deliberately conservative there: if we cannot ask,
-    assume live and refuse.
+    When the process list is unavailable (tasklist missing, timed out, or
+    exiting non-zero) we cannot ask, so we assume live and refuse. The old
+    Player.log mtime fallback read a missing or quiet log as "stopped", so a
+    failed tasklist let a swap write under a running game (Codex cd905b).
     """
     try:
         out = subprocess.run(
@@ -1136,14 +1137,11 @@ def game_running():
             capture_output=True, text=True, timeout=15)
         if out.returncode == 0:
             return "RimWorldWin64" in out.stdout
+        why = "tasklist exited %s: %s" % (out.returncode, (out.stderr or out.stdout or "").strip()[:200])
     except (OSError, subprocess.SubprocessError) as e:
-        print("  ! could not ask the OS (%s: %s) -- falling back to the "
-              "Player.log mtime heuristic" % (type(e).__name__, e), file=sys.stderr)
-
-    # Could not ask the OS. Fall back to the old heuristic.
-    if not os.path.isfile(PLAYERLOG):
-        return False
-    return (time.time() - os.path.getmtime(PLAYERLOG)) < 180
+        why = "%s: %s" % (type(e).__name__, e)
+    print("  ! could not ask the OS whether RimWorld runs (%s) -- assuming it is live" % why, file=sys.stderr)
+    return True
 
 
 def full_mod_count():
@@ -1267,6 +1265,52 @@ class RestoreRefused(Exception):
 
 
 SWAP_MARKER = "ModsConfig.swap-active.json"
+# One writer of the live ModsConfig at a time, across every clone on the machine: two concurrent --apply runs each took
+# a before-copy and a marker of their own, so one restore could hand back the other's tier list (Codex cd905b).
+CONFIG_LOCK = os.environ.get("RM_MODSET_LOCK", "/home/mandrake/rm/.modset-config.lock")
+
+
+class config_lock(object):
+    """with config_lock(): ... holds an exclusive flock on CONFIG_LOCK (its directory missing: the temp dir), waiting up
+    to wait_s, else RestoreRefused naming the lock."""
+
+    def __init__(self, path=None, wait_s=120.0):
+        self.path = path or CONFIG_LOCK
+        if not os.path.isdir(os.path.dirname(self.path) or "."):
+            import tempfile
+            self.path = os.path.join(tempfile.gettempdir(), os.path.basename(self.path))
+        self.wait_s, self.fd = wait_s, None
+
+    def __enter__(self):
+        import fcntl
+        self.fd = os.open(self.path, os.O_RDWR | os.O_CREAT, 0o644)
+        end = time.time() + self.wait_s
+        while True:
+            try:
+                fcntl.flock(self.fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                return self
+            except OSError:
+                if time.time() >= end:
+                    os.close(self.fd)
+                    self.fd = None
+                    raise RestoreRefused("another ModsConfig write holds %s (waited %ds)" % (self.path, self.wait_s))
+                time.sleep(0.5)
+
+    def __exit__(self, *exc):
+        import fcntl
+        if self.fd is not None:
+            fcntl.flock(self.fd, fcntl.LOCK_UN)
+            os.close(self.fd)
+            self.fd = None
+        return False
+
+
+def atomic_copy(src, dst):
+    """Copy src over dst through a temp file and os.replace: a kill mid-copy never leaves the live list half-written
+    (Codex cd905b: restores copied straight over ModsConfig.xml)."""
+    tmp = dst + ".modset-tmp"
+    shutil.copy2(src, tmp)
+    os.replace(tmp, dst)
 
 
 def _md5(path):
@@ -1359,7 +1403,7 @@ def restore_own(config, backups):
     if not os.path.exists(before) or _md5(before) != want:
         raise RestoreRefused("tier %r is live but its before-copy %s is missing or changed; nothing written"
                              % (m.get("tier"), before))
-    shutil.copy2(before, config)
+    atomic_copy(before, config)
     if _md5(config) != want:
         raise RestoreRefused("wrote %s but its md5 is not the before-copy's %s" % (config, want[:8]))
     os.remove(marker)
@@ -1421,7 +1465,7 @@ def restore_before(config, backups):
                              "(%s); it may be a newer owner list. Nothing written. If it really is a tier "
                              "list, copy %s over it by hand, then delete %s."
                              % (live[:8], m.get("tier"), want[:8], before, marker))
-    shutil.copy2(before, config)
+    atomic_copy(before, config)
     got = _md5(config)
     if got != want:
         raise RestoreRefused("wrote %s but live md5 %s != before-copy %s" % (config, got, want))
@@ -1450,7 +1494,8 @@ def main():
         if not bridge_ok(a.not_my_bridge):
             return 1
         try:
-            print(restore_own(CONFIG, owned_backups(a.restore_own)))
+            with config_lock():
+                print(restore_own(CONFIG, owned_backups(a.restore_own)))
         except (RestoreRefused, ValueError) as e:
             print("REFUSING --restore-own: %s" % e)
             return 1
@@ -1488,14 +1533,15 @@ def main():
         # (TESTENV_MODSET_RESTORE_WRONG_FILE: md5 1ab545a0 written, before-copy was ee01dae9).
         # FULL.LATEST is now reachable only by the explicit --restore-full.
         try:
-            if a.restore_full:
-                shutil.copy2(FULL_BACKUP, CONFIG)
-                if clear_swap_marker(BACKUPS):
-                    print("cleared the active-swap marker (the swap is over)")
-                print("restored FULL.LATEST (explicit --restore-full) from %s"
-                      % os.path.relpath(FULL_BACKUP, ROOT))
-            else:
-                print(restore_before(CONFIG, BACKUPS))
+            with config_lock():
+                if a.restore_full:
+                    atomic_copy(FULL_BACKUP, CONFIG)
+                    if clear_swap_marker(BACKUPS):
+                        print("cleared the active-swap marker (the swap is over)")
+                    print("restored FULL.LATEST (explicit --restore-full) from %s"
+                          % os.path.relpath(FULL_BACKUP, ROOT))
+                else:
+                    print(restore_before(CONFIG, BACKUPS))
         except RestoreRefused as e:
             print("REFUSING --restore: %s" % e)
             return 1
@@ -1538,12 +1584,13 @@ def main():
         return 1
 
     try:
-        stamp = take_before_copy(CONFIG, backups, a.tier)
+        with config_lock():     # the before-copy, the write and its md5 stamp are one act
+            stamp = take_before_copy(CONFIG, backups, a.tier)
+            write_config(ordered, CONFIG)
+            record_tier_written(CONFIG, backups)
     except RestoreRefused as e:
         print("\n  REFUSING TO WRITE: %s" % e)
         return 1
-    write_config(ordered, CONFIG)
-    record_tier_written(CONFIG, backups)
     print("\n  backed up  -> %s" % (stamp if a.by else os.path.relpath(stamp, ROOT)))     # another drive: no relpath
     print("  wrote      -> ModsConfig.xml (%d active)" % len(ordered))
     try:  # telemetry `modlist` event (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED); never fails the write

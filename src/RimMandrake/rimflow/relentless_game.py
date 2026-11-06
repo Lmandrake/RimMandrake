@@ -256,9 +256,12 @@ def batch(states, item, now, full=False):
 
 
 def finals_waiting(states):
-    """The game items waiting in phase final, expedited then oldest first: [(final_since, item)]."""
+    """The game items waiting in phase final, expedited (by relentless_expedite.rank) then oldest first:
+    [(final_since, item)]. The expedited order is expedited_ahead's: ordered by age instead, an older expedited final
+    heads the queue while a better-ranked one is ahead of it in busy(), and neither ever stages (Codex cd905b #1)."""
     rows = [s for s in states if s["status"] == GAME and (s.get("game") or {}).get("phase") == "final"]
-    rows.sort(key=lambda s: (not s.get("expedite"), s["game"].get("final_since") or 0, s["item"]))
+    rows.sort(key=lambda s: (not s.get("expedite"), relentless_expedite.rank(s["expedite"]) if s.get("expedite") else (0, 0),
+                             s["game"].get("final_since") or 0, s["item"]))
     return [(s["game"].get("final_since") or 0, s["item"]) for s in rows]
 
 
