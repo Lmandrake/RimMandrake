@@ -634,6 +634,46 @@ def t_item_text_utf8_under_cp1252():
        "item_text decodes rimflow output as UTF-8 under a cp1252 default (byte 0x9d does not crash it)", repr(text))
 
 
+def t_item_text_retries_wsl_hiccup():
+    """MODCHECK_ITEMTEXT_RETRY_WSL_HICCUP_FAILS_RUN: one wsl.exe callback failing with Wsl/Service/0x8007274c refused
+    a whole live run. item_text retries a WSL hiccup, never an unknown item, and still refuses a hiccup that lasts."""
+    import tempfile
+    def fake(script_body):
+        class FakeRunner:
+            ROOT = HERE
+            RIMFLOW_CLI = "unused"
+
+            @staticmethod
+            def py_cmd(script, *args):
+                return [sys.executable, "-c", script_body]
+        return FakeRunner
+    counter = os.path.join(tempfile.mkdtemp(prefix="selftest_itemtext_"), "n")
+    flaky = ("import os,sys; p=%r; n=int(open(p).read()) if os.path.exists(p) else 0; open(p,'w').write(str(n+1))\n"
+             "if n < 2: sys.stderr.write('Error code: Wsl/Service/0x8007274c\\n'); sys.exit(1)\n"
+             "print('ITEM_X chain_a')" % counter)
+    waits = []
+    text = targeting.item_text("ITEM_X", runner_mod=fake(flaky), _sleep=waits.append)
+    ok(text.strip() == "ITEM_X chain_a" and waits == list(targeting.ITEM_TEXT_WAITS_S),
+       "two Wsl/Service/0x8007274c hiccups then an answer: item_text returns the text after retrying", (text, waits))
+    waits = []
+    unknown = "import sys; print('ITEM_Y has never been filed.'); sys.exit(2)"
+    try:
+        targeting.item_text("ITEM_Y", runner_mod=fake(unknown), _sleep=waits.append)
+        got = "no raise"
+    except targeting.TargetError as ex:
+        got = str(ex)
+    ok("never been filed" in got and waits == [], "an unknown item is refused at once, never retried", (got, waits))
+    waits = []
+    dead = "import sys; sys.stderr.write('Error code: Wsl/Service/0x8007274c\\n'); sys.exit(1)"
+    try:
+        targeting.item_text("ITEM_Z", runner_mod=fake(dead), _sleep=waits.append)
+        got = "no raise"
+    except targeting.TargetError as ex:
+        got = str(ex)
+    ok("0x8007274c" in got and len(waits) == len(targeting.ITEM_TEXT_WAITS_S),
+       "a hiccup that outlasts every retry still refuses, naming the WSL error", (got, waits))
+
+
 def _git_repo():
     """A throwaway repo under the system temp dir with a mod folder; -> (root, mod_dir, git)."""
     import tempfile
@@ -716,7 +756,8 @@ def main(argv=None):
     for t in (t_resolve, t_targeted_suite_keeps_site_hold, t_emit_verify_seat, t_run_records_without_seat,
               t_run_targeted, t_cli_refusals, t_scope_and_preview, t_incomplete_catalogue_refused,
               t_offline_chains_out_of_live, t_stop_after_runtime, t_hold_contract_every_run, t_cli_preview,
-              t_nested_evidence_stays_on_outer, t_item_text_utf8_under_cp1252, t_changed_files_every_spec,
+              t_nested_evidence_stays_on_outer, t_item_text_utf8_under_cp1252, t_item_text_retries_wsl_hiccup,
+              t_changed_files_every_spec,
               t_changed_stem_whole_token):
         try:
             t()

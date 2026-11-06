@@ -91,21 +91,40 @@ def names_mod(mod, iid, text):
     return bool(mod) and (mod.lower() in (text or "").lower() or mod.upper() in (iid or "").replace("_", "").upper())
 
 
-def item_text(item_id, runner_mod=None):
+# a wsl.exe callback that died in WSL's plumbing, not in rimflow: "Error code: Wsl/Service/0x8007274c" (a socket
+# timeout) refused a whole live run before it touched the game (MODCHECK_ITEMTEXT_RETRY_WSL_HICCUP_FAILS_RUN)
+WSL_HICCUP = re.compile(r"Wsl/[A-Za-z]+/|0x8007[0-9a-fA-F]{4}")
+ITEM_TEXT_WAITS_S = (2, 5)          # pauses before the 2nd and 3rd try; an unknown item is never retried
+
+
+def item_text(item_id, runner_mod=None, _sleep=None):
     """Everything the ledger says about `item_id` (`rimflow show`): title, notes, prose. Raises TargetError if the
-    item does not exist."""
+    item does not exist, or if the wsl.exe callback still fails with a WSL hiccup after len(ITEM_TEXT_WAITS_S)
+    retries."""
     import runner as _R  # noqa: E402
+    import time
     r = (runner_mod or _R)
+    sleep = _sleep or time.sleep
     # rimflow writes UTF-8 (it runs as POSIX python3, via wsl.exe under python.exe); decoding with the locale codec
     # (cp1252 under python.exe) killed the reader thread on byte 0x9d and left stdout None (MODCHECK_FIX_ITEMTEXT_CP1252_CRASH)
     env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
-    proc = subprocess.run(r.py_cmd(r.RIMFLOW_CLI, "show", item_id), cwd=r.ROOT, capture_output=True, text=True,
-                          encoding="utf-8", errors="replace", env=env)
-    out, err = proc.stdout or "", proc.stderr or ""
-    if proc.returncode != 0 or not out.strip():
-        raise TargetError("--item %s: rimflow show could not read that item (%s)"
-                          % (item_id, (out + err).strip()[-200:]))
-    return out
+    tries = []
+    for wait in (0,) + tuple(ITEM_TEXT_WAITS_S):
+        if wait:
+            sleep(wait)
+        try:
+            proc = subprocess.run(r.py_cmd(r.RIMFLOW_CLI, "show", item_id), cwd=r.ROOT, capture_output=True,
+                                  text=True, encoding="utf-8", errors="replace", env=env)
+            out, err, code = proc.stdout or "", proc.stderr or "", proc.returncode
+        except OSError as ex:       # wsl.exe itself would not start
+            out, err, code = "", "Wsl/launch: %s" % ex, -1
+        if code == 0 and out.strip():
+            return out
+        tries.append((out + err).strip()[-200:])
+        if not WSL_HICCUP.search(out + err):
+            break                   # rimflow answered (unknown item, a real error): retrying cannot change it
+    raise TargetError("--item %s: rimflow show could not read that item after %d tr%s (%s)"
+                      % (item_id, len(tries), "y" if len(tries) == 1 else "ies", tries[-1]))
 
 
 def resolve(suite, chains=(), rows=(), item=None, text=None):
