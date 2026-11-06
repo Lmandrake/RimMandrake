@@ -1,0 +1,2194 @@
+{
+ "by_kind": {
+  "CONTRADICTION": 3,
+  "reopen": 3,
+  "retire": 48,
+  "route": 6
+ },
+ "counts": {
+  "CORRECTION": 2,
+  "HOLDS": 52,
+  "INEXACT": 6
+ },
+ "cutoff": "2026-10-29T20:41:24Z",
+ "notes": [
+  {
+   "claim": "findings_fold S012337b6d8 retire at 2026-10-28T23:43:13Z: 3 passes in a row after the last FAIL (J20261028T171819Z-72dd17, J20261028T201332Z-519759, J20261028T233401Z-bffd54); count 1 (first 2026-10-26T06:27:53Z, last 2026-10-26T06:27:53Z); FlowWorks/core_live_rows/J_workgiver_selection: ExpectationFailed: [MOD] [('E#a_fillin', {'wg': {'def': 'RM_FillInCanalWorkGiver', 'shouldSkip': False, 'cellIn",
+   "inexact": [],
+   "item": "FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:24Z",
+   "note_tsn": 1793306484636038029,
+   "old_findings": [
+    "FLOWWORKS_J_WORKGIVER_SELECTION_FAILS_63C715"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_J_WORKGIVER_SELECTION_FAILS_63C715"
+     ],
+     "first_seen": "2026-10-26T06:26:49Z",
+     "items": [
+      "FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH"
+     ],
+     "last_seen": "2026-10-26T06:26:49Z",
+     "passes_since": 9,
+     "row_latest": "PASS",
+     "sig": "S0a3103f62b27",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S012337b6d8",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S06b632b415 retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 1 (first 2026-10-28T20:27:38Z, last 2026-10-28T20:27:38Z); FlowWorks/core_live_rows/E6n_rain_toggle_off: ExpectationFailed: [MOD] [((#, #), (#, #), (#, #)), ((#, #), (#, #), (#, #)), ((#, #), (#, #), (#, #)), ((#, #), ",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:26Z",
+   "note_tsn": 1793306486629555581,
+   "old_findings": [
+    "FLOWWORKS_E6N_RAIN_TOGGLE_OFF_FAILS_519759"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_E6N_RAIN_TOGGLE_OFF_FAILS_519759"
+     ],
+     "first_seen": "2026-10-28T20:26:14Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T20:26:14Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S3eff10f6bcb8",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S06b632b415",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S07330c6ddc retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-28T05:58:39Z, last 2026-10-28T05:58:39Z); FlowWorks/thirst/T23_fill_tank_is_the_order: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'tank': 'TANK mode=Fill effective=Fill liquid=RM_Liquid_Br",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:28Z",
+   "note_tsn": 1793306488504421774,
+   "old_findings": [
+    "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_3837C0"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_3837C0"
+     ],
+     "first_seen": "2026-10-28T05:57:19Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-28T05:57:19Z",
+     "passes_since": 12,
+     "row_latest": "PASS",
+     "sig": "Sb8f892def11a",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S07330c6ddc",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S161e12fe2f retire at 2026-10-28T11:31:58Z: 3 passes in a row after the last FAIL (J20261028T083004Z-31e045, J20261028T102451Z-ec53f4, J20261028T105907Z-250da4); count 1 (first 2026-10-28T08:22:06Z, last 2026-10-28T08:22:06Z); FlowWorks/thirst/T17_salt_break: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'force': {'started': True, 'breakDef': 'RM_Break_DrinkBrine'}, 'trace'",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:30Z",
+   "note_tsn": 1793306490428260197,
+   "old_findings": [
+    "FLOWWORKS_T17_SALT_BREAK_FAILS_A1A81B"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T17_SALT_BREAK_FAILS_A1A81B"
+     ],
+     "first_seen": "2026-10-28T08:21:03Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-28T08:21:03Z",
+     "passes_since": 11,
+     "row_latest": "PASS",
+     "sig": "Sb67e2d0621dd",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S161e12fe2f",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S1d22aa242e retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 1 (first 2026-10-28T20:27:37Z, last 2026-10-28T20:27:37Z); FlowWorks/core_live_rows/E4_engine_on_scheduled: ExpectationFailed: [MOD] [((#, #), (#, #), (#, #)), ((#, #), (#, #), (#, #)), ((#, #), (#, #), (#, #)), ((#, #",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:32Z",
+   "note_tsn": 1793306492368225891,
+   "old_findings": [
+    "FLOWWORKS_E4_ENGINE_ON_SCHEDULED_FAILS_519759"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_E4_ENGINE_ON_SCHEDULED_FAILS_519759"
+     ],
+     "first_seen": "2026-10-28T20:26:14Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T20:26:14Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "Sfa0f3db15192",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S1d22aa242e",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S230fcb2c08 route through FLOWWORKS_POND_DRAWN_DOWN_FAILS_6E5292: lane or machine health, count 1 (first 2026-10-26T02:18:49Z, last 2026-10-26T02:18:49Z); FlowWorks/plot_D_limited_pond/pond_drawn_down: ExpectationFailed: diptych could not be composed (No module named 'PIL'): 'C:\\\\Users\\\\sjlewis\\\\AppData\\\\LocalLow\\\\Ludeon Studios\\\\RimWorld b",
+   "inexact": [],
+   "item": "STEVE_LANE_MONITOR_PAUSE_FINDINGS",
+   "kind": "route",
+   "note_ts": "2026-10-29T20:41:34Z",
+   "note_tsn": 1793306494632683326,
+   "old_findings": [
+    "FLOWWORKS_POND_DRAWN_DOWN_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_POND_DRAWN_DOWN_FAILS_6E5292"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES"
+     ],
+     "last_seen": "2026-10-26T01:49:46Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S4988cb48e663",
+     "status": "HEALTH"
+    }
+   ],
+   "tag": "S230fcb2c08",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S2b111c216e retire at 2026-10-27T20:59:31Z: 3 passes in a row after the last FAIL (J20261027T191839Z-d4f040, J20261027T200547Z-943d44, J20261027T203128Z-832567); count 1 (first 2026-10-26T21:50:56Z, last 2026-10-26T21:50:56Z); FlowWorks/thirst/T12_no_routine_salt: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'jobsSalt': ['RM_DrinkFromTank', 'GotoWander', 'Wait_Wander', 'Go",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:36Z",
+   "note_tsn": 1793306496852470026,
+   "old_findings": [
+    "FLOWWORKS_T12_NO_ROUTINE_SALT_FAILS_891D79"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T12_NO_ROUTINE_SALT_FAILS_891D79"
+     ],
+     "first_seen": "2026-10-26T21:50:05Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-26T21:50:05Z",
+     "passes_since": 45,
+     "row_latest": "PASS",
+     "sig": "Sd6acc782bcbd",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S2b111c216e",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S2ba9b4817d CONTRADICTION on TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS done: this row still fails (count 1 (first 2026-10-26T07:23:08Z, last 2026-10-26T07:23:08Z), 0 pass(es) on record since); FlowWorks/thirst/T13_desperate_toxic_last: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'jobsAt#': ['GotoWander'], 'jobsAt#': ['RM_DrinkFromTerrain'], 'levelAfter': #, 'hed",
+   "inexact": [
+    "the note says 0 pass(es) on record since; the reviewed fold counts 46 distinct passing run(s) of the row after this failure (another item's runs)"
+   ],
+   "item": "TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS",
+   "kind": "CONTRADICTION",
+   "note_ts": "2026-10-29T20:41:39Z",
+   "note_tsn": 1793306499039861286,
+   "old_findings": [
+    "FLOWWORKS_T13_DESPERATE_TOXIC_LAST_FAILS_09152F"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T13_DESPERATE_TOXIC_LAST_FAILS_09152F"
+     ],
+     "first_seen": "2026-10-26T07:22:54Z",
+     "items": [
+      "TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS"
+     ],
+     "last_seen": "2026-10-26T07:22:54Z",
+     "passes_since": 46,
+     "row_latest": "FAIL",
+     "sig": "S393f6b5eaf90",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S2ba9b4817d",
+   "verdict": "INEXACT"
+  },
+  {
+   "claim": "findings_fold S2d87e85fd5 retire at 2026-10-27T22:49:15Z: 3 passes in a row after the last FAIL (J20261027T210103Z-06ad1f, J20261027T214342Z-d7beb5, J20261027T222445Z-50d93b); count 1 (first 2026-10-27T21:01:06Z, last 2026-10-27T21:01:06Z); FlowWorks/thirst/T20_bucket_drunk_dry: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'pourTankUnreadable': False, 'drinks': #, 'trace': [[True, 'RM_D",
+   "inexact": [],
+   "item": "EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:41Z",
+   "note_tsn": 1793306501166181330,
+   "old_findings": [
+    "FLOWWORKS_T20_BUCKET_DRUNK_DRY_FAILS_832567"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T20_BUCKET_DRUNK_DRY_FAILS_832567"
+     ],
+     "first_seen": "2026-10-27T20:59:31Z",
+     "items": [
+      "EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES"
+     ],
+     "last_seen": "2026-10-27T20:59:31Z",
+     "passes_since": 26,
+     "row_latest": "PASS",
+     "sig": "S3dc4a2969e5b",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S2d87e85fd5",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S30a06ee6a2 retire at 2026-10-27T10:19:26Z: 3 passes in a row after the last FAIL (J20261026T054943Z-4579bc, J20261026T125635Z-336729, J20261027T083004Z-b0e62f); count 1 (first 2026-10-26T02:18:54Z, last 2026-10-26T02:18:54Z); FlowWorks/flow_doors/grate_passes_sluice_seals: ExpectationFailed: closed grate did not pass liquid: DOOR RM_SecurityGrateDoor open=False seals=False | depth #",
+   "inexact": [],
+   "item": "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:43Z",
+   "note_tsn": 1793306503325162853,
+   "old_findings": [
+    "FLOWWORKS_GRATE_PASSES_SLUICE_SEALS_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_GRATE_PASSES_SLUICE_SEALS_FAILS_6E5292"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES"
+     ],
+     "last_seen": "2026-10-26T01:49:46Z",
+     "passes_since": 5,
+     "row_latest": "PASS",
+     "sig": "S396a4316d79f",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S30a06ee6a2",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S3197d1ca08 retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 1 (first 2026-10-28T20:27:32Z, last 2026-10-28T20:27:32Z); FlowWorks/core_live_rows/E5_sinks_back_on: ExpectationFailed: [MOD] sinks ON again: [#, #, #, #, #, #, #, #, #, #], total +#.<hex> (oracle +#.<hex>)",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:45Z",
+   "note_tsn": 1793306505487653478,
+   "old_findings": [
+    "FLOWWORKS_E5_SINKS_BACK_ON_FAILS_519759"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_E5_SINKS_BACK_ON_FAILS_519759"
+     ],
+     "first_seen": "2026-10-28T20:26:14Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T20:26:14Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S9d632439d555",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S3197d1ca08",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S32184f568a retire at 2026-10-27T10:19:26Z: 3 passes in a row after the last FAIL (J20261026T052048Z-4cb74a, J20261026T104439Z-70ba4a, J20261027T083004Z-b0e62f); count 1 (first 2026-10-26T02:18:45Z, last 2026-10-26T02:18:45Z); FlowWorks/flow_map_controls_six/MapControl_six_wiring: ExpectationFailed: MapControl_six_wiring: case missing from the SelfTest output",
+   "inexact": [],
+   "item": "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:47Z",
+   "note_tsn": 1793306507649309283,
+   "old_findings": [
+    "FLOWWORKS_MAPCONTROL_SIX_WIRING_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_MAPCONTROL_SIX_WIRING_FAILS_6E5292"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES"
+     ],
+     "last_seen": "2026-10-26T01:49:46Z",
+     "passes_since": 5,
+     "row_latest": "PASS",
+     "sig": "Sd61864ce551b",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S32184f568a",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S35b132058c retire at 2026-10-28T21:25:15Z: 3 passes in a row after the last FAIL (J20261028T200928Z-fee1da, J20261028T202720Z-d147ec, J20261028T205702Z-ddfd90); count 1 (first 2026-10-28T01:20:33Z, last 2026-10-28T01:20:33Z); FlowWorks/works/place_weir_bank_edge: IndeterminateError: refusing jawa/static_call: # earlier mutating call(s) have an UNKNOWN outcome (<hex> jawa/world_tile_",
+   "inexact": [],
+   "item": "EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:49Z",
+   "note_tsn": 1793306509796071651,
+   "old_findings": [
+    "FLOWWORKS_PLACE_WEIR_BANK_EDGE_FAILS_D9B928"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_PLACE_WEIR_BANK_EDGE_FAILS_D9B928"
+     ],
+     "first_seen": "2026-10-28T00:06:46Z",
+     "items": [
+      "EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES"
+     ],
+     "last_seen": "2026-10-28T00:06:46Z",
+     "passes_since": 28,
+     "row_latest": "PASS",
+     "sig": "S5e3e7a6f035b",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S35b132058c",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S3da9d64afd reopen by FLOWWORKS_T13_DESPERATE_TOXIC_LAST_FAILS_800B9A: a retired row failed again; count 1 (first 2026-10-29T02:24:33Z, last 2026-10-29T02:24:33Z); FlowWorks/thirst/T13_desperate_toxic_last: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'jobsAt#': ['GotoWander'], 'levelAt#': #, 'jobsAt#': ['RM_DrinkFromTerrain'], 'level",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "reopen",
+   "note_ts": "2026-10-29T20:41:51Z",
+   "note_tsn": 1793306511995498139,
+   "old_findings": [
+    "FLOWWORKS_T13_DESPERATE_TOXIC_LAST_FAILS_800B9A"
+   ],
+   "reasons": [
+    "FLOWWORKS_T13_DESPERATE_TOXIC_LAST_FAILS_800B9A is a NEW failure (its exact signature S1fd521b23be9 was never seen before it), not a retired one back"
+   ],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T13_DESPERATE_TOXIC_LAST_FAILS_800B9A"
+     ],
+     "first_seen": "2026-10-29T02:23:01Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-29T02:23:01Z",
+     "passes_since": 0,
+     "row_latest": "FAIL",
+     "sig": "S1fd521b23be9",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S3da9d64afd",
+   "verdict": "CORRECTION"
+  },
+  {
+   "claim": "findings_fold S3e7063c6ca retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-27T01:19:45Z, last 2026-10-27T01:19:45Z); FlowWorks/thirst/T6_dehydration_readable: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'RM_Dehydration': #.<hex>, 'hediffs': {'MissingBodyPart': #, ",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:54Z",
+   "note_tsn": 1793306514168938699,
+   "old_findings": [
+    "FLOWWORKS_T6_DEHYDRATION_READABLE_FAILS_E0DDB3"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T6_DEHYDRATION_READABLE_FAILS_E0DDB3"
+     ],
+     "first_seen": "2026-10-27T01:19:06Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-27T01:19:06Z",
+     "passes_since": 39,
+     "row_latest": "PASS",
+     "sig": "S07089f7acb4d",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S3e7063c6ca",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S3ecf35aa14 retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 2 (first 2026-10-28T07:37:13Z, last 2026-10-28T19:00:58Z); FlowWorks/thirst/T28_sanguophage_blood: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'xenotype': 'Sanguophage', 'applied': True, 'sang': {'levels': ",
+   "inexact": [
+    "inexact merge: the old group's 2 findings are 2 different failures (exact signatures S4e3d0d62f2b3, S91313fb4886a)"
+   ],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:56Z",
+   "note_tsn": 1793306516380948337,
+   "old_findings": [
+    "FLOWWORKS_T28_SANGUOPHAGE_BLOOD_FAILS_183458",
+    "FLOWWORKS_T28_SANGUOPHAGE_BLOOD_FAILS_18E9E8"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T28_SANGUOPHAGE_BLOOD_FAILS_183458"
+     ],
+     "first_seen": "2026-10-28T07:35:32Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-28T07:35:32Z",
+     "passes_since": 11,
+     "row_latest": "PASS",
+     "sig": "S4e3d0d62f2b3",
+     "status": "NEW"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T28_SANGUOPHAGE_BLOOD_FAILS_18E9E8"
+     ],
+     "first_seen": "2026-10-28T19:00:15Z",
+     "items": [
+      "THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE"
+     ],
+     "last_seen": "2026-10-28T19:00:15Z",
+     "passes_since": 6,
+     "row_latest": "PASS",
+     "sig": "S91313fb4886a",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S3ecf35aa14",
+   "verdict": "INEXACT"
+  },
+  {
+   "claim": "findings_fold S3ecf35aa14 retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 2 (first 2026-10-28T07:37:13Z, last 2026-10-28T19:00:58Z); FlowWorks/thirst/T28_sanguophage_blood: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'xenotype': 'Sanguophage', 'applied': True, 'sang': {'levels': ",
+   "inexact": [
+    "inexact merge: the old group's 2 findings are 2 different failures (exact signatures S4e3d0d62f2b3, S91313fb4886a)"
+   ],
+   "item": "THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:41:58Z",
+   "note_tsn": 1793306518535562801,
+   "old_findings": [
+    "FLOWWORKS_T28_SANGUOPHAGE_BLOOD_FAILS_183458",
+    "FLOWWORKS_T28_SANGUOPHAGE_BLOOD_FAILS_18E9E8"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T28_SANGUOPHAGE_BLOOD_FAILS_183458"
+     ],
+     "first_seen": "2026-10-28T07:35:32Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-28T07:35:32Z",
+     "passes_since": 11,
+     "row_latest": "PASS",
+     "sig": "S4e3d0d62f2b3",
+     "status": "NEW"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T28_SANGUOPHAGE_BLOOD_FAILS_18E9E8"
+     ],
+     "first_seen": "2026-10-28T19:00:15Z",
+     "items": [
+      "THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE"
+     ],
+     "last_seen": "2026-10-28T19:00:15Z",
+     "passes_since": 6,
+     "row_latest": "PASS",
+     "sig": "S91313fb4886a",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S3ecf35aa14",
+   "verdict": "INEXACT"
+  },
+  {
+   "claim": "findings_fold S4125fc2abb retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-28T02:51:25Z, last 2026-10-28T02:51:25Z); FlowWorks/thirst/T23_fill_tank_is_the_order: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'tank': 'TANK mode=Fill effective=Fill liquid=RM_Liquid_Br",
+   "inexact": [],
+   "item": "THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:00Z",
+   "note_tsn": 1793306520793481274,
+   "old_findings": [
+    "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_A7105D"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_A7105D"
+     ],
+     "first_seen": "2026-10-28T02:50:24Z",
+     "items": [
+      "THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES"
+     ],
+     "last_seen": "2026-10-28T02:50:24Z",
+     "passes_since": 13,
+     "row_latest": "PASS",
+     "sig": "S34e2ad23a2ae",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S4125fc2abb",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S4180b59156 retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-27T23:55:23Z, last 2026-10-27T23:55:23Z); FlowWorks/thirst/T28_sanguophage_blood: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'xenotype': 'Sanguophage', 'applied': True, 'sang': {'levels': ",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:03Z",
+   "note_tsn": 1793306523034044458,
+   "old_findings": [
+    "FLOWWORKS_T28_SANGUOPHAGE_BLOOD_FAILS_8A80A3"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T28_SANGUOPHAGE_BLOOD_FAILS_8A80A3"
+     ],
+     "first_seen": "2026-10-27T23:54:41Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-27T23:54:41Z",
+     "passes_since": 19,
+     "row_latest": "PASS",
+     "sig": "S60b46ea3a2b8",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S4180b59156",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S438866690c retire at 2026-10-28T09:37:53Z: 3 passes in a row after the last FAIL (J20261026T123553Z-cc61a8, J20261027T083004Z-b0e62f, J20261028T083004Z-31e045); count 2 (first 2026-10-26T02:18:52Z, last 2026-10-26T12:31:16Z); FlowWorks/toggle_fill_in/fill_in_on: ExpectationFailed: filled-in cell cell (#,#): D=# expected #",
+   "inexact": [],
+   "item": "FILLIN_PROOF_FIX_ORDER_NEVER_FILLS",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:05Z",
+   "note_tsn": 1793306525259471181,
+   "old_findings": [
+    "FLOWWORKS_FILL_IN_ON_FAILS_46D3A2",
+    "FLOWWORKS_FILL_IN_ON_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 2,
+     "findings": [
+      "FLOWWORKS_FILL_IN_ON_FAILS_6E5292",
+      "FLOWWORKS_FILL_IN_ON_FAILS_46D3A2"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES",
+      "FILLIN_PROOF_FIX_ORDER_NEVER_FILLS"
+     ],
+     "last_seen": "2026-10-26T12:30:25Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S63f4ab2563fd",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S438866690c",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S438866690c retire at 2026-10-28T09:37:53Z: 3 passes in a row after the last FAIL (J20261026T123553Z-cc61a8, J20261027T083004Z-b0e62f, J20261028T083004Z-31e045); count 2 (first 2026-10-26T02:18:52Z, last 2026-10-26T12:31:16Z); FlowWorks/toggle_fill_in/fill_in_on: ExpectationFailed: filled-in cell cell (#,#): D=# expected #",
+   "inexact": [],
+   "item": "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:07Z",
+   "note_tsn": 1793306527473914378,
+   "old_findings": [
+    "FLOWWORKS_FILL_IN_ON_FAILS_46D3A2",
+    "FLOWWORKS_FILL_IN_ON_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 2,
+     "findings": [
+      "FLOWWORKS_FILL_IN_ON_FAILS_6E5292",
+      "FLOWWORKS_FILL_IN_ON_FAILS_46D3A2"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES",
+      "FILLIN_PROOF_FIX_ORDER_NEVER_FILLS"
+     ],
+     "last_seen": "2026-10-26T12:30:25Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S63f4ab2563fd",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S438866690c",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S44a8772956 retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 1 (first 2026-10-28T17:52:27Z, last 2026-10-28T17:52:27Z); FlowWorks/core_live_rows/E4_engine_on_scheduled: ExpectationFailed: [MOD] [((#, #), (#, #), (#, #)), ((#, #), (#, #), (#, #))]",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:09Z",
+   "note_tsn": 1793306529658619681,
+   "old_findings": [
+    "FLOWWORKS_E4_ENGINE_ON_SCHEDULED_FAILS_72DD17"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_E4_ENGINE_ON_SCHEDULED_FAILS_72DD17"
+     ],
+     "first_seen": "2026-10-28T17:51:29Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T17:51:29Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S703090687d9a",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S44a8772956",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S4706ec63a3 retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 1 (first 2026-10-28T20:27:26Z, last 2026-10-28T20:27:26Z); FlowWorks/core_live_rows/S5_sticky_limitless: ExpectationFailed: [MOD] W# (sticky OFF) limitless=None; twin W# (ON) limitless=True",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:12Z",
+   "note_tsn": 1793306532063887114,
+   "old_findings": [
+    "FLOWWORKS_S5_STICKY_LIMITLESS_FAILS_519759"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_S5_STICKY_LIMITLESS_FAILS_519759"
+     ],
+     "first_seen": "2026-10-28T20:26:14Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T20:26:14Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S3eab7581b6cc",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S4706ec63a3",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S4c97661a1c retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-28T10:59:11Z, last 2026-10-28T10:59:11Z); FlowWorks/thirst/T23_fill_tank_is_the_order: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'tank': 'TANK mode=Fill effective=Fill liquid=RM_Liquid_Br",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:14Z",
+   "note_tsn": 1793306534379367558,
+   "old_findings": [
+    "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_EC53F4"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_EC53F4"
+     ],
+     "first_seen": "2026-10-28T10:58:16Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-28T10:58:16Z",
+     "passes_since": 9,
+     "row_latest": "PASS",
+     "sig": "S6a2c18f0da79",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S4c97661a1c",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S4fa261e2c8 retire at 2026-10-26T23:58:58Z: 3 passes in a row after the last FAIL (J20261026T212513Z-891d79, J20261026T224947Z-962b47, J20261026T233614Z-f8da74); count 1 (first 2026-10-26T07:23:10Z, last 2026-10-26T07:23:10Z); FlowWorks/thirst/T19_awkward_access: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'bottleOrder': {'accepted': True, 'afterJobDef': 'Ingest', 'messag",
+   "inexact": [],
+   "item": "TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:16Z",
+   "note_tsn": 1793306536537083430,
+   "old_findings": [
+    "FLOWWORKS_T19_AWKWARD_ACCESS_FAILS_09152F"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T19_AWKWARD_ACCESS_FAILS_09152F"
+     ],
+     "first_seen": "2026-10-26T07:22:54Z",
+     "items": [
+      "TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS"
+     ],
+     "last_seen": "2026-10-26T07:22:54Z",
+     "passes_since": 49,
+     "row_latest": "PASS",
+     "sig": "S4f8ff2de9554",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S4fa261e2c8",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S542ae480a3 retire at 2026-10-28T21:25:15Z: 3 passes in a row after the last FAIL (J20261028T200928Z-fee1da, J20261028T202720Z-d147ec, J20261028T205702Z-ddfd90); count 1 (first 2026-10-28T16:42:34Z, last 2026-10-28T16:42:34Z); FlowWorks/works/place_weir_bank_edge: IndeterminateError: refusing jawa/static_call: # earlier mutating call(s) have an UNKNOWN outcome (<hex> jawa/window_list",
+   "inexact": [],
+   "item": "RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:18Z",
+   "note_tsn": 1793306538779956431,
+   "old_findings": [
+    "FLOWWORKS_PLACE_WEIR_BANK_EDGE_FAILS_118E8C"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_PLACE_WEIR_BANK_EDGE_FAILS_118E8C"
+     ],
+     "first_seen": "2026-10-28T12:32:20Z",
+     "items": [
+      "RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS"
+     ],
+     "last_seen": "2026-10-28T12:32:20Z",
+     "passes_since": 15,
+     "row_latest": "PASS",
+     "sig": "S56903fda6de6",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S542ae480a3",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S547d1f468e retire at 2026-10-29T00:28:46Z: 3 passes in a row after the last FAIL (J20261028T201332Z-519759, J20261028T233401Z-bffd54, J20261029T001853Z-8aad27); count 1 (first 2026-10-28T17:52:20Z, last 2026-10-28T17:52:20Z); FlowWorks/core_live_rows/E2s_shared_source_both_fill: ExpectationFailed: [MOD] two channels off ONE source cell after # pulses: {'E#s_shared_E#': [#, #, #, #],",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:20Z",
+   "note_tsn": 1793306540924704235,
+   "old_findings": [
+    "FLOWWORKS_E2S_SHARED_SOURCE_BOTH_FILL_FAILS_72DD17"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_E2S_SHARED_SOURCE_BOTH_FILL_FAILS_72DD17"
+     ],
+     "first_seen": "2026-10-28T17:51:29Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T17:51:29Z",
+     "passes_since": 5,
+     "row_latest": "PASS",
+     "sig": "Sc31f220bc7fa",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S547d1f468e",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S58dbbf8a25 retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 1 (first 2026-10-28T17:52:18Z, last 2026-10-28T17:52:18Z); FlowWorks/core_live_rows/S5_sticky_limitless: ExpectationFailed: [MOD] W# (sticky OFF) limitless=False; twin W# (ON) limitless=None",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:23Z",
+   "note_tsn": 1793306543191092468,
+   "old_findings": [
+    "FLOWWORKS_S5_STICKY_LIMITLESS_FAILS_72DD17"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_S5_STICKY_LIMITLESS_FAILS_72DD17"
+     ],
+     "first_seen": "2026-10-28T17:51:29Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T17:51:29Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S635894df5044",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S58dbbf8a25",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S5e03ff9b2f retire at 2026-10-28T03:30:50Z: 3 passes in a row after the last FAIL (J20261028T022616Z-21deaa, J20261028T031539Z-6ed2c3, J20261028T032325Z-bfd6a8); count 1 (first 2026-10-27T23:28:49Z, last 2026-10-27T23:28:49Z); FlowWorks/works/river_flotsam_enters_and_leaves: ExpectationFailed: flotsam did not enter upstream or did not leave at the downstream edge: {'spawned': 'RawFun",
+   "inexact": [],
+   "item": "RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:25Z",
+   "note_tsn": 1793306545565966799,
+   "old_findings": [
+    "FLOWWORKS_RIVER_FLOTSAM_ENTERS_AND_LEAVES_FAILS_FD5561"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_RIVER_FLOTSAM_ENTERS_AND_LEAVES_FAILS_FD5561"
+     ],
+     "first_seen": "2026-10-27T23:28:03Z",
+     "items": [
+      "RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS"
+     ],
+     "last_seen": "2026-10-27T23:28:03Z",
+     "passes_since": 27,
+     "row_latest": "PASS",
+     "sig": "S08a8af5a6188",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S5e03ff9b2f",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S5e06fb8959 retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 1 (first 2026-10-28T20:27:31Z, last 2026-10-28T20:27:31Z); FlowWorks/core_live_rows/E3n_budget_off_supplies: ExpectationFailed: [MOD] (['pulse-# vector != oracle state (out of sync before pulsing)'], '')",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:27Z",
+   "note_tsn": 1793306547888994714,
+   "old_findings": [
+    "FLOWWORKS_E3N_BUDGET_OFF_SUPPLIES_FAILS_519759"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_E3N_BUDGET_OFF_SUPPLIES_FAILS_519759"
+     ],
+     "first_seen": "2026-10-28T20:26:14Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T20:26:14Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S09ab68d66d3e",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S5e06fb8959",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S6b04950bbc retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 2 (first 2026-10-28T17:52:21Z, last 2026-10-28T20:27:29Z); FlowWorks/core_live_rows/E3_budget_exhaustion: ExpectationFailed: [MOD] (['pulse-# vector != oracle state (out of sync before pulsing)'], '')",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:30Z",
+   "note_tsn": 1793306550112698471,
+   "old_findings": [
+    "FLOWWORKS_E3_BUDGET_EXHAUSTION_FAILS_519759",
+    "FLOWWORKS_E3_BUDGET_EXHAUSTION_FAILS_72DD17"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 2,
+     "findings": [
+      "FLOWWORKS_E3_BUDGET_EXHAUSTION_FAILS_72DD17",
+      "FLOWWORKS_E3_BUDGET_EXHAUSTION_FAILS_519759"
+     ],
+     "first_seen": "2026-10-28T17:51:29Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T20:26:14Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "Sc27d16b1e5fe",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S6b04950bbc",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S6fd4370d7f retire at 2026-10-27T10:19:26Z: 3 passes in a row after the last FAIL (J20261026T052048Z-4cb74a, J20261026T104439Z-70ba4a, J20261027T083004Z-b0e62f); count 1 (first 2026-10-26T02:18:44Z, last 2026-10-26T02:18:44Z); FlowWorks/flow_map_controls/MapControl_wiring_and_master_switch: ExpectationFailed: MapControl_wiring_and_master_switch: case missing from the SelfTest output",
+   "inexact": [],
+   "item": "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:32Z",
+   "note_tsn": 1793306552306436930,
+   "old_findings": [
+    "FLOWWORKS_MAPCONTROL_WIRING_AND_MASTER_SWITC_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_MAPCONTROL_WIRING_AND_MASTER_SWITC_FAILS_6E5292"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES"
+     ],
+     "last_seen": "2026-10-26T01:49:46Z",
+     "passes_since": 5,
+     "row_latest": "PASS",
+     "sig": "S885238c2bdfd",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S6fd4370d7f",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S73995370fc reopen by FLOWWORKS_T13_DESPERATE_TOXIC_LAST_FAILS_F99ACC: a retired row failed again; count 1 (first 2026-10-29T14:58:34Z, last 2026-10-29T14:58:34Z); FlowWorks/thirst/T13_desperate_toxic_last: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'jobsAt#': ['GotoWander', 'Wait_Wander'], 'levelAt#': #, 'jobsAt#': ['GotoWander'], ",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "reopen",
+   "note_ts": "2026-10-29T20:42:34Z",
+   "note_tsn": 1793306554524618898,
+   "old_findings": [
+    "FLOWWORKS_T13_DESPERATE_TOXIC_LAST_FAILS_F99ACC"
+   ],
+   "reasons": [
+    "FLOWWORKS_T13_DESPERATE_TOXIC_LAST_FAILS_F99ACC is a NEW failure (its exact signature S8ee28a422f8c was never seen before it), not a retired one back"
+   ],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T13_DESPERATE_TOXIC_LAST_FAILS_F99ACC"
+     ],
+     "first_seen": "2026-10-29T14:57:02Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-29T14:57:02Z",
+     "passes_since": 0,
+     "row_latest": "FAIL",
+     "sig": "S8ee28a422f8c",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S73995370fc",
+   "verdict": "CORRECTION"
+  },
+  {
+   "claim": "findings_fold S73ffd78679 retire at 2026-10-28T03:03:08Z: 3 passes in a row after the last FAIL (J20261027T212716Z-887d56, J20261027T221842Z-954b7d, J20261028T025933Z-bd04b0); count 1 (first 2026-10-27T20:29:27Z, last 2026-10-27T20:29:27Z); FlowWorks/toggle_bottle_loop/bottle_loop_off: ExpectationFailed: bottle filled with bottleLoopEnabled OFF: (empty, filled) = (#, #)",
+   "inexact": [],
+   "item": "FLOWWORKS_CONTAINER_MATERIALS_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:36Z",
+   "note_tsn": 1793306556755718562,
+   "old_findings": [
+    "FLOWWORKS_BOTTLE_LOOP_OFF_FAILS_943D44"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_BOTTLE_LOOP_OFF_FAILS_943D44"
+     ],
+     "first_seen": "2026-10-27T20:28:46Z",
+     "items": [
+      "FLOWWORKS_CONTAINER_MATERIALS_1"
+     ],
+     "last_seen": "2026-10-27T20:28:46Z",
+     "passes_since": 11,
+     "row_latest": "PASS",
+     "sig": "Sf3c929fd4621",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S73ffd78679",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S76731d8544 route through STEVE_LANE_SYNC_REFUSED_75C803: lane or machine health, count 2 (first 2026-10-28T22:28:45Z, last 2026-10-29T13:37:28Z); LANE//SYNC_REFUSED: SteveDesktop lane paused: the runner pull/pin failed (someone wrote in the runner clone?) (testq <job>: runner pull failed: hint: Diverging ",
+   "inexact": [
+    "inexact merge: the old group's 2 findings are 2 different failures (exact signatures S9cd6c0d659dc, Sd692d9ff2728)"
+   ],
+   "item": "STEVE_LANE_MONITOR_PAUSE_FINDINGS",
+   "kind": "route",
+   "note_ts": "2026-10-29T20:42:38Z",
+   "note_tsn": 1793306558969391722,
+   "old_findings": [
+    "STEVE_LANE_SYNC_REFUSED_75C803",
+    "STEVE_LANE_SYNC_REFUSED_7FC22A"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_SYNC_REFUSED_7FC22A"
+     ],
+     "first_seen": "2026-10-28T22:28:45Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-28T22:28:45Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S9cd6c0d659dc",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_SYNC_REFUSED_75C803"
+     ],
+     "first_seen": "2026-10-29T13:37:28Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-29T13:37:28Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "Sd692d9ff2728",
+     "status": "HEALTH"
+    }
+   ],
+   "tag": "S76731d8544",
+   "verdict": "INEXACT"
+  },
+  {
+   "claim": "findings_fold S770ac466ae retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-28T02:05:00Z, last 2026-10-28T02:05:00Z); FlowWorks/thirst/T6_dehydration_readable: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'RM_Dehydration': #.<hex>, 'hediffs': {'RM_Dehydration': #.<h",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:41Z",
+   "note_tsn": 1793306561156326682,
+   "old_findings": [
+    "FLOWWORKS_T6_DEHYDRATION_READABLE_FAILS_DCFB6C"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T6_DEHYDRATION_READABLE_FAILS_DCFB6C"
+     ],
+     "first_seen": "2026-10-28T02:04:48Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-28T02:04:48Z",
+     "passes_since": 18,
+     "row_latest": "PASS",
+     "sig": "Sdcff350309bb",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S770ac466ae",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S8a7c700994 retire at 2026-10-27T20:59:31Z: 3 passes in a row after the last FAIL (J20261027T191839Z-d4f040, J20261027T200547Z-943d44, J20261027T203128Z-832567); count 1 (first 2026-10-27T18:54:51Z, last 2026-10-27T18:54:51Z); FlowWorks/thirst/T12_no_routine_salt: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'jobsSalt': ['GotoWander', 'Wait_Wander', 'GotoWander'], 'jobsAft",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:43Z",
+   "note_tsn": 1793306563494214917,
+   "old_findings": [
+    "FLOWWORKS_T12_NO_ROUTINE_SALT_FAILS_FB9C45"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T12_NO_ROUTINE_SALT_FAILS_FB9C45"
+     ],
+     "first_seen": "2026-10-27T18:53:58Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-27T18:53:58Z",
+     "passes_since": 29,
+     "row_latest": "PASS",
+     "sig": "Sf4d6a55e539f",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S8a7c700994",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S8aa773758d retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-28T04:54:07Z, last 2026-10-28T04:54:07Z); FlowWorks/thirst/T23_fill_tank_is_the_order: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'tank': 'TANK mode=Fill effective=Fill liquid=RM_Liquid_Br",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:45Z",
+   "note_tsn": 1793306565683309445,
+   "old_findings": [
+    "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_A68953"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_A68953"
+     ],
+     "first_seen": "2026-10-28T04:53:27Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-28T04:53:27Z",
+     "passes_since": 12,
+     "row_latest": "PASS",
+     "sig": "S623c156db97f",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S8aa773758d",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S8e0bb4f4eb route through FLOWWORKS_CANAL_FILL_FRONT_FAILS_6E5292: lane or machine health, count 1 (first 2026-10-26T02:18:47Z, last 2026-10-26T02:18:47Z); FlowWorks/plot_C_limitless_canal/canal_fill_front: ExpectationFailed: diptych could not be composed (No module named 'PIL'): 'C:\\\\Users\\\\sjlewis\\\\AppData\\\\LocalLow\\\\Ludeon Studios\\\\RimWorld b",
+   "inexact": [],
+   "item": "STEVE_LANE_MONITOR_PAUSE_FINDINGS",
+   "kind": "route",
+   "note_ts": "2026-10-29T20:42:47Z",
+   "note_tsn": 1793306567875159917,
+   "old_findings": [
+    "FLOWWORKS_CANAL_FILL_FRONT_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_CANAL_FILL_FRONT_FAILS_6E5292"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES"
+     ],
+     "last_seen": "2026-10-26T01:49:46Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S8b61e027c9ba",
+     "status": "HEALTH"
+    }
+   ],
+   "tag": "S8e0bb4f4eb",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S8e2c8c5247 retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-27T17:04:53Z, last 2026-10-27T17:04:53Z); FlowWorks/thirst/T23_fill_tank_is_the_order: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'tank': 'TANK mode=Fill effective=Fill liquid=RM_Liquid_Br",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:50Z",
+   "note_tsn": 1793306570036628892,
+   "old_findings": [
+    "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_99900E"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_99900E"
+     ],
+     "first_seen": "2026-10-27T17:03:28Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-27T17:03:28Z",
+     "passes_since": 24,
+     "row_latest": "PASS",
+     "sig": "Sbcb8e5070a6a",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S8e2c8c5247",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S9226753e21 route through STEVE_LANE_CANARY_RED_6DC94B: lane or machine health, count 12 (first 2026-10-26T11:18:41Z, last 2026-10-29T18:22:05Z); LANE//CANARY_RED: SteveDesktop lane paused: the vanilla canary was red after a load (testq <job>: the vanilla canary was red: no mod row ran); it admits nothi",
+   "inexact": [
+    "inexact merge: the old group's 12 findings are 12 different failures (exact signatures S0bf9f5948ee1, S0c65b6aa99d7, S321ac5a6baed, S3533d943b54a, S647ea894de0b, S694c97d97103, S75069c559b9c, S7560e5bed526, S7b86196ddc5f, S81d99340d108, Sb1678c26186e, Se7a520ba613d)"
+   ],
+   "item": "STEVE_LANE_MONITOR_PAUSE_FINDINGS",
+   "kind": "route",
+   "note_ts": "2026-10-29T20:42:52Z",
+   "note_tsn": 1793306572121721345,
+   "old_findings": [
+    "STEVE_LANE_CANARY_RED_107A99",
+    "STEVE_LANE_CANARY_RED_162505",
+    "STEVE_LANE_CANARY_RED_323412",
+    "STEVE_LANE_CANARY_RED_35527F",
+    "STEVE_LANE_CANARY_RED_4421E9",
+    "STEVE_LANE_CANARY_RED_6DC94B",
+    "STEVE_LANE_CANARY_RED_75E3DD",
+    "STEVE_LANE_CANARY_RED_7AE25F",
+    "STEVE_LANE_CANARY_RED_AC97FA",
+    "STEVE_LANE_CANARY_RED_B815C4",
+    "STEVE_LANE_CANARY_RED_B87A55",
+    "STEVE_LANE_CANARY_RED_BBEF21"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_35527F"
+     ],
+     "first_seen": "2026-10-28T10:24:56Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-28T10:24:56Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S0bf9f5948ee1",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_BBEF21"
+     ],
+     "first_seen": "2026-10-26T15:43:11Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-26T15:43:11Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S0c65b6aa99d7",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_B815C4"
+     ],
+     "first_seen": "2026-10-26T14:22:01Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-26T14:22:01Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S321ac5a6baed",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_107A99"
+     ],
+     "first_seen": "2026-10-27T10:30:10Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-27T10:30:10Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S3533d943b54a",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_6DC94B"
+     ],
+     "first_seen": "2026-10-29T18:22:05Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-29T18:22:05Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S647ea894de0b",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_7AE25F"
+     ],
+     "first_seen": "2026-10-26T11:18:41Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-26T11:18:41Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S694c97d97103",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_4421E9"
+     ],
+     "first_seen": "2026-10-29T02:47:04Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-29T02:47:04Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S75069c559b9c",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_75E3DD"
+     ],
+     "first_seen": "2026-10-29T15:57:45Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-29T15:57:45Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S7560e5bed526",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_AC97FA"
+     ],
+     "first_seen": "2026-10-29T10:29:12Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-29T10:29:12Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S7b86196ddc5f",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_162505"
+     ],
+     "first_seen": "2026-10-27T10:27:51Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-27T10:27:51Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "S81d99340d108",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_B87A55"
+     ],
+     "first_seen": "2026-10-29T02:44:37Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-29T02:44:37Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "Sb1678c26186e",
+     "status": "HEALTH"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "STEVE_LANE_CANARY_RED_323412"
+     ],
+     "first_seen": "2026-10-29T16:00:13Z",
+     "items": [
+      "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
+     ],
+     "last_seen": "2026-10-29T16:00:13Z",
+     "passes_since": 0,
+     "row_latest": null,
+     "sig": "Se7a520ba613d",
+     "status": "HEALTH"
+    }
+   ],
+   "tag": "S9226753e21",
+   "verdict": "INEXACT"
+  },
+  {
+   "claim": "findings_fold S95a84e46b6 route through FLOWWORKS_PAWN_HEIGHT_LADDER_LOOK_FAILS_6E5292: lane or machine health, count 1 (first 2026-10-26T02:18:51Z, last 2026-10-26T02:18:51Z); FlowWorks/plot_H_depth_ladder/pawn_height_ladder_look: ExpectationFailed: diptych could not be composed (No module named 'PIL'): 'C:\\\\Users\\\\sjlewis\\\\AppData\\\\LocalLow\\\\Ludeon Studios\\\\RimWorld b",
+   "inexact": [],
+   "item": "STEVE_LANE_MONITOR_PAUSE_FINDINGS",
+   "kind": "route",
+   "note_ts": "2026-10-29T20:42:54Z",
+   "note_tsn": 1793306574242543285,
+   "old_findings": [
+    "FLOWWORKS_PAWN_HEIGHT_LADDER_LOOK_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_PAWN_HEIGHT_LADDER_LOOK_FAILS_6E5292"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES"
+     ],
+     "last_seen": "2026-10-26T01:49:46Z",
+     "passes_since": 5,
+     "row_latest": "PASS",
+     "sig": "Sbb55103375e1",
+     "status": "HEALTH"
+    }
+   ],
+   "tag": "S95a84e46b6",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold S9626353776 retire at 2026-10-27T10:19:26Z: 3 passes in a row after the last FAIL (J20261026T052111Z-fd31ca, J20261026T105432Z-f0a8de, J20261027T083004Z-b0e62f); count 1 (first 2026-10-26T02:18:42Z, last 2026-10-26T02:18:42Z); FlowWorks/hose_offline/hose_offline_ran: RuntimeError: hose offline rows did not run under WSL python# (rc=#): <file>\", line #, in run_offline ho#_hose_art(row",
+   "inexact": [],
+   "item": "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:42:56Z",
+   "note_tsn": 1793306576371302163,
+   "old_findings": [
+    "FLOWWORKS_HOSE_OFFLINE_RAN_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_HOSE_OFFLINE_RAN_FAILS_6E5292"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES"
+     ],
+     "last_seen": "2026-10-26T01:49:46Z",
+     "passes_since": 5,
+     "row_latest": "PASS",
+     "sig": "S63ed9fdd841a",
+     "status": "NEW"
+    }
+   ],
+   "tag": "S9626353776",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Saa29a38bc6 reopen by FLOWWORKS_FINDS_OFF_NONE_FAILS_8C513E: a retired row failed again; count 4 (first 2026-10-27T21:37:29Z, last 2026-10-29T07:55:51Z); FlowWorks/dig_finds/finds_off_none: ExpectationFailed: the dig job never finished",
+   "inexact": [],
+   "item": "FLOWWORKS_QUARRY_DIGGING_1",
+   "kind": "reopen",
+   "note_ts": "2026-10-29T20:42:58Z",
+   "note_tsn": 1793306578570859191,
+   "old_findings": [
+    "FLOWWORKS_FINDS_OFF_NONE_FAILS_1AA5AF",
+    "FLOWWORKS_FINDS_OFF_NONE_FAILS_5BDB28",
+    "FLOWWORKS_FINDS_OFF_NONE_FAILS_8C513E",
+    "FLOWWORKS_FINDS_OFF_NONE_FAILS_BD04B0"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 4,
+     "findings": [
+      "FLOWWORKS_FINDS_OFF_NONE_FAILS_5BDB28",
+      "FLOWWORKS_FINDS_OFF_NONE_FAILS_BD04B0",
+      "FLOWWORKS_FINDS_OFF_NONE_FAILS_1AA5AF",
+      "FLOWWORKS_FINDS_OFF_NONE_FAILS_8C513E"
+     ],
+     "first_seen": "2026-10-27T21:36:04Z",
+     "items": [
+      "FLOWWORKS_QUARRY_DIGGING_1"
+     ],
+     "last_seen": "2026-10-29T07:55:17Z",
+     "passes_since": 2,
+     "row_latest": "PASS",
+     "sig": "S437e91834356",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Saa29a38bc6",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sba1fcfb312 retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 2 (first 2026-10-28T17:52:24Z, last 2026-10-28T20:27:34Z); FlowWorks/core_live_rows/E2_rerun_determinism: ExpectationFailed: [MOD] E#_east_A (phase A) [[#, #, #, #], [#, #, #, #], [#, #, #, #], [#, #, #, #]] vs E#_reru",
+   "inexact": [
+    "inexact merge: the old group's 2 findings are 2 different failures (exact signatures S014320ebab59, Se79cb597fc96)"
+   ],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:00Z",
+   "note_tsn": 1793306580827217724,
+   "old_findings": [
+    "FLOWWORKS_E2_RERUN_DETERMINISM_FAILS_519759",
+    "FLOWWORKS_E2_RERUN_DETERMINISM_FAILS_72DD17"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_E2_RERUN_DETERMINISM_FAILS_72DD17"
+     ],
+     "first_seen": "2026-10-28T17:51:29Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T17:51:29Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S014320ebab59",
+     "status": "NEW"
+    },
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_E2_RERUN_DETERMINISM_FAILS_519759"
+     ],
+     "first_seen": "2026-10-28T20:26:14Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T20:26:14Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "Se79cb597fc96",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sba1fcfb312",
+   "verdict": "INEXACT"
+  },
+  {
+   "claim": "findings_fold Sbfeb2ce4d1 CONTRADICTION on TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS done: this row still fails (count 1 (first 2026-10-26T07:23:09Z, last 2026-10-26T07:23:09Z), 0 pass(es) on record since); FlowWorks/thirst/T15_slime_effects: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'RM_SlimeRedShallow': {'pawn': 'Human#', 'jobs': ['RM_DrinkFromTerrain', 'GotoWander",
+   "inexact": [],
+   "item": "TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS",
+   "kind": "CONTRADICTION",
+   "note_ts": "2026-10-29T20:43:02Z",
+   "note_tsn": 1793306583006452551,
+   "old_findings": [
+    "FLOWWORKS_T15_SLIME_EFFECTS_FAILS_09152F"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T15_SLIME_EFFECTS_FAILS_09152F"
+     ],
+     "first_seen": "2026-10-26T07:22:54Z",
+     "items": [
+      "TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS"
+     ],
+     "last_seen": "2026-10-26T07:22:54Z",
+     "passes_since": 0,
+     "row_latest": "FAIL",
+     "sig": "S50cfe1cc499e",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sbfeb2ce4d1",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Scc478e315a retire at 2026-10-28T23:43:13Z: 3 passes in a row after the last FAIL (J20261028T171819Z-72dd17, J20261028T201332Z-519759, J20261028T233401Z-bffd54); count 1 (first 2026-10-26T09:06:22Z, last 2026-10-26T09:06:22Z); FlowWorks/core_live_rows/P3f_forced_entry_falls: ExpectationFailed: [MOD] control (walk in: accepted True, # ticks) refused True; flyer #,#->#,# D #; in cell T",
+   "inexact": [],
+   "item": "V2_FILLIN_SCENE_STAGE_FILL_MATERIAL",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:05Z",
+   "note_tsn": 1793306585172826608,
+   "old_findings": [
+    "FLOWWORKS_P3F_FORCED_ENTRY_FALLS_FAILS_410AC4"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_P3F_FORCED_ENTRY_FALLS_FAILS_410AC4"
+     ],
+     "first_seen": "2026-10-26T09:05:14Z",
+     "items": [
+      "V2_FILLIN_SCENE_STAGE_FILL_MATERIAL"
+     ],
+     "last_seen": "2026-10-26T09:05:14Z",
+     "passes_since": 8,
+     "row_latest": "PASS",
+     "sig": "S86827b8cb6ea",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Scc478e315a",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sccd7bf815b retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 1 (first 2026-10-28T17:52:28Z, last 2026-10-28T17:52:28Z); FlowWorks/core_live_rows/E6n_rain_toggle_off: ExpectationFailed: [MOD] [((#, #), (#, #), (#, #)), ((#, #), (#, #), (#, #))]",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:07Z",
+   "note_tsn": 1793306587374910585,
+   "old_findings": [
+    "FLOWWORKS_E6N_RAIN_TOGGLE_OFF_FAILS_72DD17"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_E6N_RAIN_TOGGLE_OFF_FAILS_72DD17"
+     ],
+     "first_seen": "2026-10-28T17:51:29Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T17:51:29Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S7be4a9c78085",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sccd7bf815b",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sd0b242da7e retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 1 (first 2026-10-28T20:27:35Z, last 2026-10-28T20:27:35Z); FlowWorks/core_live_rows/G_every_cell_vs_oracle: ExpectationFailed: [MOD] {'A': {'E#_south': [(#, (#, #), #, #), (#, (#, #), #, #)], 'E#_east_A': [(#, (#, #), ",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:09Z",
+   "note_tsn": 1793306589544410396,
+   "old_findings": [
+    "FLOWWORKS_G_EVERY_CELL_VS_ORACLE_FAILS_519759"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_G_EVERY_CELL_VS_ORACLE_FAILS_519759"
+     ],
+     "first_seen": "2026-10-28T20:26:14Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T20:26:14Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "Se05fdd656797",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sd0b242da7e",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sd4e534e45d route through FLOWWORKS_TAR_FRONT_LAGS_WATER_FAILS_6E5292: lane or machine health, count 1 (first 2026-10-26T02:18:48Z, last 2026-10-26T02:18:48Z); FlowWorks/plot_C2_tar_and_fluids/tar_front_lags_water: ExpectationFailed: diptych could not be composed (No module named 'PIL'): 'C:\\\\Users\\\\sjlewis\\\\AppData\\\\LocalLow\\\\Ludeon Studios\\\\RimWorld b",
+   "inexact": [],
+   "item": "STEVE_LANE_MONITOR_PAUSE_FINDINGS",
+   "kind": "route",
+   "note_ts": "2026-10-29T20:43:11Z",
+   "note_tsn": 1793306591764690191,
+   "old_findings": [
+    "FLOWWORKS_TAR_FRONT_LAGS_WATER_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_TAR_FRONT_LAGS_WATER_FAILS_6E5292"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES"
+     ],
+     "last_seen": "2026-10-26T01:49:46Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "Sb9ffe35d3db1",
+     "status": "HEALTH"
+    }
+   ],
+   "tag": "Sd4e534e45d",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sd7e2f26212 retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-28T01:43:01Z, last 2026-10-28T01:43:01Z); FlowWorks/thirst/T23_fill_tank_is_the_order: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'tank': 'TANK mode=Fill effective=Fill liquid=RM_Liquid_Br",
+   "inexact": [],
+   "item": "THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:13Z",
+   "note_tsn": 1793306593980655168,
+   "old_findings": [
+    "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_1F7EE6"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_1F7EE6"
+     ],
+     "first_seen": "2026-10-28T01:42:13Z",
+     "items": [
+      "THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES"
+     ],
+     "last_seen": "2026-10-28T01:42:13Z",
+     "passes_since": 14,
+     "row_latest": "PASS",
+     "sig": "Sec09063067eb",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sd7e2f26212",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Se0082a10cd retire at 2026-10-27T20:59:31Z: 3 passes in a row after the last FAIL (J20261027T191839Z-d4f040, J20261027T200547Z-943d44, J20261027T203128Z-832567); count 1 (first 2026-10-26T07:23:06Z, last 2026-10-26T07:23:06Z); FlowWorks/thirst/T12_no_routine_salt: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'jobsSalt': ['RM_DrinkFromTerrain'], 'jobsAfterBottle': ['Ingest'",
+   "inexact": [],
+   "item": "TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:16Z",
+   "note_tsn": 1793306596186276470,
+   "old_findings": [
+    "FLOWWORKS_T12_NO_ROUTINE_SALT_FAILS_09152F"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T12_NO_ROUTINE_SALT_FAILS_09152F"
+     ],
+     "first_seen": "2026-10-26T07:22:54Z",
+     "items": [
+      "TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS"
+     ],
+     "last_seen": "2026-10-26T07:22:54Z",
+     "passes_since": 47,
+     "row_latest": "PASS",
+     "sig": "Sbd5d3203e308",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Se0082a10cd",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Se227cb03cc CONTRADICTION on FLOWWORKS_QUARRY_DIGGING_1 validated: this row still fails (count 23 (first 2026-10-26T02:19:00Z, last 2026-10-29T10:52:53Z), 0 pass(es) on record since); FlowWorks/dig_finds/cut_turns_up_local_find: ExpectationFailed: the dig job never finished",
+   "inexact": [],
+   "item": "FLOWWORKS_QUARRY_DIGGING_1",
+   "kind": "CONTRADICTION",
+   "note_ts": "2026-10-29T20:43:18Z",
+   "note_tsn": 1793306598371901239,
+   "old_findings": [
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_100A6C",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_12E15D",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_17A1F5",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_1C556A",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_216E2C",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_5158A5",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_6384A1",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_6E5292",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_891D79",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_954B7D",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_9622DB",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_9A73AC",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_A89C6D",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_B0D6C8",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_B0E7AE",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_B308B8",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_B8A647",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_D7324F",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_D77D50",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_F0F999",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_F29476",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_F6E2C1",
+    "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_FB772E"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 23,
+     "findings": [
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_6E5292",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_B308B8",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_891D79",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_B8A647",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_F29476",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_12E15D",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_F6E2C1",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_6384A1",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_D77D50",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_F0F999",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_A89C6D",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_B0E7AE",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_9A73AC",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_1C556A",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_D7324F",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_954B7D",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_216E2C",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_5158A5",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_100A6C",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_B0D6C8",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_FB772E",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_9622DB",
+      "FLOWWORKS_CUT_TURNS_UP_LOCAL_FIND_FAILS_17A1F5"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES",
+      "FLOWWORKS_QUARRY_DIGGING_1"
+     ],
+     "last_seen": "2026-10-29T10:51:22Z",
+     "passes_since": 0,
+     "row_latest": "FAIL",
+     "sig": "Sa86c1d3c42f5",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Se227cb03cc",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Seaa8ab08d9 retire at 2026-10-29T10:18:41Z: 3 passes in a row after the last FAIL (J20261028T233401Z-bffd54, J20261029T001853Z-8aad27, J20261029T083003Z-4fa873); count 1 (first 2026-10-28T17:52:25Z, last 2026-10-28T17:52:25Z); FlowWorks/core_live_rows/G_every_cell_vs_oracle: ExpectationFailed: [MOD] {'A': {'E#s_shared_E#': [(#, (#, #), #, #), (#, (#, #), #, #)], 'E#s_shared_N#': [(#,",
+   "inexact": [],
+   "item": "FLOWWORKS_CHECKOUT_SCOPE_1",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:20Z",
+   "note_tsn": 1793306600621294412,
+   "old_findings": [
+    "FLOWWORKS_G_EVERY_CELL_VS_ORACLE_FAILS_72DD17"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_G_EVERY_CELL_VS_ORACLE_FAILS_72DD17"
+     ],
+     "first_seen": "2026-10-28T17:51:29Z",
+     "items": [
+      "FLOWWORKS_CHECKOUT_SCOPE_1"
+     ],
+     "last_seen": "2026-10-28T17:51:29Z",
+     "passes_since": 4,
+     "row_latest": "PASS",
+     "sig": "S6eaa9b27e716",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Seaa8ab08d9",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sed6faf967e retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-28T02:26:20Z, last 2026-10-28T02:26:20Z); FlowWorks/thirst/T23_fill_tank_is_the_order: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'tank': 'TANK mode=Fill effective=Fill liquid=RM_Liquid_Br",
+   "inexact": [],
+   "item": "THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:22Z",
+   "note_tsn": 1793306602765239975,
+   "old_findings": [
+    "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_D2E098"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_D2E098"
+     ],
+     "first_seen": "2026-10-28T02:25:39Z",
+     "items": [
+      "THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES"
+     ],
+     "last_seen": "2026-10-28T02:25:39Z",
+     "passes_since": 13,
+     "row_latest": "PASS",
+     "sig": "Seb1ea95dfdb2",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sed6faf967e",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sed72d34f8d retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-27T01:19:46Z, last 2026-10-27T01:19:46Z); FlowWorks/thirst/T23_fill_tank_is_the_order: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'tank': 'TANK mode=Fill effective=Fill liquid=RM_Liquid_Br",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:24Z",
+   "note_tsn": 1793306604970103185,
+   "old_findings": [
+    "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_E0DDB3"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T23_FILL_TANK_IS_THE_ORDER_FAILS_E0DDB3"
+     ],
+     "first_seen": "2026-10-27T01:19:06Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-27T01:19:06Z",
+     "passes_since": 35,
+     "row_latest": "PASS",
+     "sig": "S124860aae334",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sed72d34f8d",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sef3bdf1f93 retire at 2026-10-27T20:59:31Z: 3 passes in a row after the last FAIL (J20261027T191839Z-d4f040, J20261027T200547Z-943d44, J20261027T203128Z-832567); count 1 (first 2026-10-27T06:07:17Z, last 2026-10-27T06:07:17Z); FlowWorks/thirst/T12_no_routine_salt: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'jobsSalt': ['RM_DrinkFromTank', 'GotoWander', 'Wait_Wander'], 'j",
+   "inexact": [],
+   "item": "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:27Z",
+   "note_tsn": 1793306607150533453,
+   "old_findings": [
+    "FLOWWORKS_T12_NO_ROUTINE_SALT_FAILS_08C4C0"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T12_NO_ROUTINE_SALT_FAILS_08C4C0"
+     ],
+     "first_seen": "2026-10-27T06:05:50Z",
+     "items": [
+      "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY"
+     ],
+     "last_seen": "2026-10-27T06:05:50Z",
+     "passes_since": 38,
+     "row_latest": "PASS",
+     "sig": "S6a3a55f3aa84",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sef3bdf1f93",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sf0556cb913 retire at 2026-10-28T23:43:13Z: 3 passes in a row after the last FAIL (J20261028T171819Z-72dd17, J20261028T201332Z-519759, J20261028T233401Z-bffd54); count 1 (first 2026-10-26T09:06:23Z, last 2026-10-26T09:06:23Z); FlowWorks/core_live_rows/P4b_ladder_raised_strands: ExpectationFailed: [MOD] raised True (Portable_ladder:_Reaches_a_wall_up_to_#_m_high.): held False lip #/#,",
+   "inexact": [],
+   "item": "V2_FILLIN_SCENE_STAGE_FILL_MATERIAL",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:29Z",
+   "note_tsn": 1793306609306450395,
+   "old_findings": [
+    "FLOWWORKS_P4B_LADDER_RAISED_STRANDS_FAILS_410AC4"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_P4B_LADDER_RAISED_STRANDS_FAILS_410AC4"
+     ],
+     "first_seen": "2026-10-26T09:05:14Z",
+     "items": [
+      "V2_FILLIN_SCENE_STAGE_FILL_MATERIAL"
+     ],
+     "last_seen": "2026-10-26T09:05:14Z",
+     "passes_since": 8,
+     "row_latest": "PASS",
+     "sig": "Sa4270a4af08a",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sf0556cb913",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sf237cde83f retire at 2026-10-27T10:19:26Z: 3 passes in a row after the last FAIL (J20261026T052048Z-4cb74a, J20261026T104907Z-1f8360, J20261027T083004Z-b0e62f); count 1 (first 2026-10-26T02:18:46Z, last 2026-10-26T02:18:46Z); FlowWorks/hose_switch_flips/tank_feed_refused_add_puts_back: ExpectationFailed: HoseTankFeed_refused_add_puts_back: case missing from the SelfTest output",
+   "inexact": [],
+   "item": "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:31Z",
+   "note_tsn": 1793306611453084277,
+   "old_findings": [
+    "FLOWWORKS_TANK_FEED_REFUSED_ADD_PUTS_BACK_FAILS_6E5292"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_TANK_FEED_REFUSED_ADD_PUTS_BACK_FAILS_6E5292"
+     ],
+     "first_seen": "2026-10-26T01:49:46Z",
+     "items": [
+      "KNOWN_GOOD_AUDIT_MEASURE_SWEEP_MISSES"
+     ],
+     "last_seen": "2026-10-26T01:49:46Z",
+     "passes_since": 5,
+     "row_latest": "PASS",
+     "sig": "Sa5903e3ce52e",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sf237cde83f",
+   "verdict": "HOLDS"
+  },
+  {
+   "claim": "findings_fold Sf91cfa2ef5 retire at 2026-10-29T01:47:20Z: 3 passes in a row after the last FAIL (J20261028T234420Z-67cc80, J20261029T003013Z-9ccc42, J20261029T010304Z-4a5f70); count 1 (first 2026-10-28T01:42:59Z, last 2026-10-28T01:42:59Z); FlowWorks/thirst/T6_dehydration_readable: ExpectationFailed: [MOD] thirst_live_result_<ts>.json: {'RM_Dehydration': #, 'hediffs': {'RM_Dehydration': #}, 'heldA",
+   "inexact": [],
+   "item": "THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES",
+   "kind": "retire",
+   "note_ts": "2026-10-29T20:43:33Z",
+   "note_tsn": 1793306613639502902,
+   "old_findings": [
+    "FLOWWORKS_T6_DEHYDRATION_READABLE_FAILS_1F7EE6"
+   ],
+   "reasons": [],
+   "reviewed": [
+    {
+     "count": 1,
+     "findings": [
+      "FLOWWORKS_T6_DEHYDRATION_READABLE_FAILS_1F7EE6"
+     ],
+     "first_seen": "2026-10-28T01:42:13Z",
+     "items": [
+      "THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES"
+     ],
+     "last_seen": "2026-10-28T01:42:13Z",
+     "passes_since": 18,
+     "row_latest": "PASS",
+     "sig": "S2d92e5c70f96",
+     "status": "NEW"
+    }
+   ],
+   "tag": "Sf91cfa2ef5",
+   "verdict": "HOLDS"
+  }
+ ],
+ "program": "findings_fold.py (reviewed: exact signature, 981787da49 rules and later fixes)",
+ "records": 412,
+ "schema": "findings_fold_vet/1"
+}
