@@ -810,6 +810,43 @@ def floor_errors(fl, tree=None, floor=None, owner_ev=None):
     return errs
 
 
+# An agent named in exam.json is free text ("rm-judge a9c647383a06be32f (sonnet)"), so an annotation must not make the
+# same agent read as two: compare the ids a string names, helper ids before run ids, and the words when it names none.
+_HELPER_ID = re.compile(r"(?<![\w-])a[0-9a-f]{16}(?![\w-])")
+_RUN_ID = re.compile(r"(?<![\w-])rm-role-[a-z-]+-\d+(?![\w-])")
+
+
+def same_agent(reader, other):
+    """Does the Reader string name an agent the other string also names? `other` may name several."""
+    r, o = reader.casefold(), other.casefold()
+    mine = _HELPER_ID.findall(r) or _RUN_ID.findall(r)
+    if mine:
+        return bool(set(mine) & set(_HELPER_ID.findall(o) + _RUN_ID.findall(o)))
+    words = " ".join(r.split())
+    return bool(re.search(r"(?<![\w-])%s(?![\w-])" % re.escape(words), " ".join(o.split())))
+
+
+def reader_errors(ex, st):
+    """designer_exam.md step 4: two fresh Readers, neither the tree's author nor anyone who saw `expect`."""
+    rd = ex.get("readers")
+    named = [r for r in rd if CT.txt(r)] if isinstance(rd, list) else []
+    if len(named) < 2 or len(named) != len(rd):
+        return ["exam: readers needs two named fresh agents (found %d named)" % len(named)]
+    errs = []
+    if any(same_agent(a, b) or same_agent(b, a) for i, a in enumerate(named) for b in named[i + 1:]):
+        errs.append("exam: two readers are the same agent; a scenario is right only when two Readers agree")
+    if not CT.txt(ex.get("author")):
+        errs.append("exam: author is needed to show no reader is the tree's author")
+    running = st.get("running") if isinstance(st, dict) and isinstance(st.get("running"), dict) else {}
+    seen = [("author", ex.get("author")), ("examiner", ex.get("examiner")), ("challenger", ex.get("challenger")),
+            ("open run", running.get("run"))]
+    for r in named:
+        for role, who in seen:
+            if CT.txt(who) and same_agent(r, who):
+                errs.append("exam: reader %r is the %s; a Reader is fresh and never sees expect" % (r, role))
+    return errs
+
+
 def exam_errors(ex, d, st, repo=REPO):
     try:
         tree = CT.load(d)
@@ -847,6 +884,7 @@ def exam_errors(ex, d, st, repo=REPO):
         errs.append("exam: accept_where_reject_core must be 0")
     if not CT.txt(ex.get("examiner")) or ex.get("examiner") == ex.get("author"):
         errs.append("exam: the examiner is not the tree's author")
+    errs += reader_errors(ex, st)
     for m in lst(ex.get("challenger_misses")):
         if not isinstance(m, dict) or not CT.txt(m.get("accounted")):
             errs.append("exam: every challenger miss is accounted for")
