@@ -1042,3 +1042,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:01:22Z","tsn":1793962882985324506}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG A1 (L1), read-only proof","ts":"2026-11-06T11:04:16Z","tsn":1793963056855165226}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:04:40Z","tsn":1793963080068339295}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A2 (L2), read-only proof","ts":"2026-11-06T11:08:47Z","tsn":1793963327763501198}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:09:39Z","tsn":1793963379287432659}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_STAMPEDE_LIVECHECK_1 A3 (L2), read-only proof","ts":"2026-11-06T11:09:54Z","tsn":1793963394190644722}
