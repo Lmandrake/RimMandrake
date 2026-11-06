@@ -1,0 +1,2 @@
+A sparse scratch clone (default dirs: Utils, rimflow, infrastructure, skills, .claude) lacks src/RimMandrake/contracts, so selftest_relentless.py CRASHes (ModuleNotFoundError: contracts, via role_launch.py) though nothing is wrong with the code. Fix in place: git sparse-checkout add src/RimMandrake/contracts. scratch_clone.py's default sparse set should include contracts since rimflow imports it (seen WP-08, 2026-11-06).
+home: src/RimMandrake/Utils/scratch_clone.py
