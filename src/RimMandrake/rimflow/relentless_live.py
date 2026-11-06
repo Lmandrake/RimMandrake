@@ -408,6 +408,14 @@ def voids(row, item_id, sha):
     return sha is None or (bool(other) and bool(sha) and (other.startswith(sha) or sha.startswith(other)))
 
 
+def since_void(rows, item_id, sha):
+    """-> the rows written after the item's last void row on `sha` (all of them when there is none)."""
+    for i in range(len(rows) - 1, -1, -1):
+        if voids(rows[i], item_id, sha):
+            return rows[i + 1:]
+    return rows
+
+
 def repeats(rows, item_id, criterion, sha, key, game):
     """runs.jsonl rows -> how many of the newest rows for (item, criterion, sha), running back, are UNMEASURED on `key`
     on the same game. Any other outcome, cause or game ends the run."""
@@ -458,9 +466,11 @@ def infra_games(rows, item_id, criterion, sha, game):
     """-> how many distinct games (this one included) held the bridge for (item, criterion, sha) and still ended INFRA
     (the health check or the site refused, a row carrying `health`), since its last PASS or FAIL. The design's cap:
     INFRA retries on the next healthy game at most twice, then it is a harness item. A row that took no slot (not in
-    the running load, not deployed) is the game phase's to restage, never counted here."""
+    the running load, not deployed) is the game phase's to restage, never counted here. A void row ends it (voids)."""
     seen = {game} if game else set()
     for row in reversed(rows):
+        if voids(row, item_id, sha):
+            break
         if (row.get("item"), row.get("criterion"), row.get("sha")) != (item_id, criterion, sha):
             continue
         if verdict(row) != "INFRA":
@@ -1861,8 +1871,8 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         box = bool(unable) and unable[0] == "harness"
         if games >= lr["infra_games"] or box:   # INFRA on healthy games, or a box fault: relentless_game._harness, no strike
             row["harness"] = True
-            if any(x.get("harness") for x in rows if (x.get("item"), x.get("criterion"), x.get("sha"))
-                   == (item_id, criterion, sha)):
+            if any(x.get("harness") for x in since_void(rows, item_id, sha)
+                   if (x.get("item"), x.get("criterion"), x.get("sha")) == (item_id, criterion, sha)):
                 return done("UNMEASURED", why, log=log)
             if not box:
                 why = "%s: INFRA on %d games for this build, so no game can judge it until the harness is fixed: %s" % (

@@ -505,6 +505,18 @@ def t_cap_on_a_proof_that_cannot_measure():
             check("void: %s, %s: %s" % (label, "voided since" if voided else "not voided",
                                         "no defect" if voided else "a defect"),
                   bool(row.get("defect")) is (not voided), row)
+    V = {"item": "I", "sha": "abc1234", "void": True}
+    inf = {"item": "I", "criterion": "A1", "sha": "abc1234", "outcome": "UNMEASURED", "health": "x", "game": "G0",
+           "why": "x"}
+    inf_ok = L.verdict(inf) == "INFRA"
+    check("void: infra_games counts an INFRA game before no void", not inf_ok or L.infra_games([inf], "I", "A1", "abc1234", "G1") == 2,
+          L.verdict(inf))
+    check("void: infra_games stops at the void", L.infra_games([inf, V], "I", "A1", "abc1234", "G1") == 1)
+    check("void: repeats stops at the void", L.repeats([dict(inf, cause="k"), V], "I", "A1", "abc1234", "k", "G0") == 0
+          and L.repeats([dict(inf, cause="k")], "I", "A1", "abc1234", "k", "G0") == 1)
+    check("void: a void for another item or build ends nothing on this build",
+          L.since_void([inf, dict(V, item="J"), dict(V, sha="fff9999")], "I", "abc1234") == [inf, dict(V, item="J"),
+                                                                                             dict(V, sha="fff9999")])
 
     # the exit reason
     root = tempfile.mkdtemp(prefix="rl_live_")
