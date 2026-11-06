@@ -18,6 +18,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import relentless_trust as T  # noqa: E402
 
+# Every row crosses the wall (relentless_seed_compare): a row may print a case id or a verdict, never the case's key class.
+
 DOC = HERE.parents[2] / "design" / "RimMandrake" / "relentless_TRUST_2026-11-01.md"
 HEAD = "## Step 3: the evaluation seeds behind the wall"
 fails = []
@@ -106,7 +108,7 @@ def main():
     check(k0 == nn0 == k1 == nn1 and ("%d of %d both times" % (k1, nn1)) in sec, "red proofs caught %d/%d then %d/%d" % (k0, nn0, k1, nn1))
     fl = {i: (c, a, b) for i, c, a, b in x["flips"]}
     check(fl.get("SD_FB1AFAA887FD") == ("hunk_green", "FAIL", "PASS") and "SD_FB1AFAA887FD went from FAIL to PASS" in sec,
-          "flip SD_FB1AFAA887FD %s" % (fl.get("SD_FB1AFAA887FD"),))
+          "flip SD_FB1AFAA887FD %s" % ("%s>%s" % fl["SD_FB1AFAA887FD"][1:] if "SD_FB1AFAA887FD" in fl else None,))
     cb, ca = x["base"]["control"], x["arm"]["control"]
     check(("from %d of %d to %d of %d" % (cb["false_fail"], cb["n"], ca["false_fail"], ca["n"])) in sec,
           "control false fails %d of %d -> %d of %d" % (cb["false_fail"], cb["n"], ca["false_fail"], ca["n"]))
@@ -119,7 +121,7 @@ def main():
     check(wf[0] == wf[1] == [f0[0]], "wall arm ran step 0's Marker %s" % (wf,))
     check(("holds %d of these cases" % w["runs"][1]) in sec, "wall arm holds %d cases" % w["runs"][1])
     check(npair == 9 and "Nine of them can be paired" in sec and "changed none of those 9" in sec and not w["flips"],
-          "wall arm: %d pairs, flips %s" % (npair, w["flips"]))
+          "wall arm: %d pairs, flips %s" % (npair, ["%s %s>%s" % (i, a, b) for i, _c, a, b in w["flips"]]))
     hg = w["pairs"].get("hunk_green", {}); es = w["pairs"].get("escaped", {}); co = w["pairs"].get("control", {})
     check(hg == {"FAIL>FAIL": 4} and es == {"FAIL>FAIL": 1} and co == {"FAIL>FAIL": 2, "PASS>PASS": 2},
           "wall pairs: 4 hunk_green FAIL, 1 escaped FAIL, 2 control FAIL, 2 control PASS (got %s %s %s)" % (hg, es, co))
