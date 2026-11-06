@@ -4,6 +4,7 @@ projection, and `close`/`implemented` refusing a promise that does not hold, on 
 
     python3 src/RimMandrake/rimflow/selftest_live_gate.py
 """
+import calendar
 import json
 import os
 import shutil
@@ -109,9 +110,29 @@ def lines():
     st = os.path.join(TMP, "state.json")
     json.dump({"roles": {"R": {"done": {"2027-01-14 event#1": "launch", "2027-01-15 Tue,Fri 15:00": "daily cap"}}}}, open(st, "w"))
     t = time.mktime((2027, 1, 15, 12, 0, 0, 0, 0, -1))
-    check(L.check("role=R max_age=1d", now=t, state_path=st) is None, "a launch keys by its date, whatever follows it")
+    d14 = time.mktime((2027, 1, 14, 0, 0, 0, 0, 0, -1))
+    check(L._role_last("R", st) == d14, "a launch keys by its date, whatever follows it (start of that day)")
+    check(L.check("role=R max_age=2d", now=t, state_path=st) is None, "a recent date-only launch holds")
     check("last launched" in L.check("role=R max_age=1d", now=t + 3 * 86400, state_path=st), "an idle role is broken")
     check("predates" in L.check("role=R max_age=9d", now=t, not_before=t, state_path=st), "an old launch proves no new commit")
+    # LIVE_ROLE_FIX_END_OF_DAY_ALIBI: the launch was dated at the END of its day, so a 09:00 launch passed a 15:00
+    # commit the same day, and a 1d freshness ran to 48 h. The run's own start time decides.
+    t9, t15 = time.mktime((2027, 1, 15, 9, 0, 0, 0, 0, -1)), time.mktime((2027, 1, 15, 15, 0, 0, 0, 0, -1))
+    json.dump({"roles": {"R": {"done": {"2027-01-15 run-now 2027-01-15T08:59:00Z": "launch"},
+                               "runs": [{"at": t9, "state": "done"}, {"at": "junk"}, {"at": True}]}}}, open(st, "w"))
+    check(L._role_last("R", st) == t9, "a run on record dates the launch exactly")
+    check("predates" in L.check("role=R max_age=1d", now=t15 + 60, not_before=t15, state_path=st),
+          "a launch earlier the same day does not prove a later commit")
+    check(L.check("role=R max_age=1d", now=t15 + 60, not_before=t9 - 60, state_path=st) is None,
+          "a launch after the commit proves it")
+    check("last launched" in L.check("role=R max_age=1d", now=t9 + 86400 + 60, state_path=st),
+          "freshness runs from the launch, not from midnight after it")
+    json.dump({"roles": {"R": {"done": {"2027-01-15 09:00": "launch",
+                                        "2027-01-15 run-now 2027-01-15T10:00:00Z": "launch"}}}}, open(st, "w"))
+    iso = calendar.timegm((2027, 1, 15, 10, 0, 0, 0, 0, 0))
+    check(L._role_last("R", st) == max(t9, iso), "slot HH:MM and run-now UTC keys date no later than the launch")
+    json.dump({"roles": {"R": {"done": {"not-a-date": "launch"}, "runs": "x"}}}, open(st, "w"))
+    check("no recorded" in L.check("role=R max_age=1d", now=t, state_path=st), "unreadable launch records are no launch")
     check("no recorded" in L.check("role=Q max_age=1d", now=t, state_path=st), "an unknown role is broken")
     check(L.can_see(lambda a, **k: SP.CompletedProcess(a, 0, "degraded", "")), "a degraded user manager still sees")
     check(not L.can_see(lambda a, **k: SP.CompletedProcess(a, 1, "", "")), "no bus is blind")

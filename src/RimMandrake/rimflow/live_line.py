@@ -168,17 +168,46 @@ def _systemctl_show(unit, prop, runner):
         return "error %s" % type(e).__name__
 
 
+ISO_Z_RX = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z")
+SLOT_RX = re.compile(r"^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2})$")
+
+
+def _key_floor(key):
+    """-> an epoch no later than the launch a `done` key records | None. A run-now key carries the request's UTC
+    time, a slot key its local HH:MM, both made before the launch; any other key gives only the start of its local
+    day. Never the END of the day: that dated a launch hours late (LIVE_ROLE_FIX_END_OF_DAY_ALIBI)."""
+    m = ISO_Z_RX.search(key)
+    if m:
+        return datetime.strptime(m.group(0) + "+0000", "%Y-%m-%dT%H:%M:%SZ%z").timestamp()
+    m = SLOT_RX.match(key)
+    if m:
+        return datetime.strptime("%s %s" % m.groups(), "%Y-%m-%d %H:%M").timestamp()
+    return datetime.strptime(key[:10], "%Y-%m-%d").timestamp()
+
+
 def _role_last(role, state_path=None):
-    """-> the end of the day of a role's newest launch | None. Slot keys begin YYYY-MM-DD; what follows varies."""
+    """-> the epoch of a role's newest launch | None. A run on record (`runs[].at`, written when it starts; kept two
+    days) is the exact time; an older launch only in `done` is dated no later than it happened (_key_floor), so an
+    early launch never proves a later commit and freshness never runs long."""
     path = state_path or os.path.join(os.environ.get("RM_DISPATCHER_STATE", "/mnt/d/ClaudeWork/rimmandrake/dispatcher"),
                                       "state.json")
     try:
         with open(path, encoding="utf-8") as f:
-            done = json.load(f)["roles"][role]["done"]
-        days = [k[:10] for k, v in done.items() if v == "launch"]
-        return max(datetime.strptime(k, "%Y-%m-%d").timestamp() + 86400 for k in days) if days else None
-    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+            rs = json.load(f)["roles"][role]
+    except (OSError, ValueError, KeyError, TypeError):
         return None
+    got = []
+    for r in (rs.get("runs") if isinstance(rs, dict) else None) or []:
+        if isinstance(r, dict) and isinstance(r.get("at"), (int, float)) and not isinstance(r.get("at"), bool):
+            got.append(float(r["at"]))
+    done = rs.get("done") if isinstance(rs, dict) else None
+    for k, v in (done.items() if isinstance(done, dict) else ()):
+        if v == "launch" and isinstance(k, str):
+            try:
+                got.append(_key_floor(k))
+            except ValueError:
+                continue
+    return max(got) if got else None
 
 
 def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, state_path=None, phases=None):
