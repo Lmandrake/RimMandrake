@@ -209,10 +209,11 @@ def judge(sd, item, sha, no_code, live=None, cwd=None, first_at=READ_INDEX):
 
 
 def _index_rows(sd):
-    """-> the store's index rows, or None when it cannot be read."""
+    """-> the store's index rows, or None when it cannot be read, however that shows (a line nested too deep for json is
+    RecursionError, neither OSError nor ValueError)."""
     try:
         return evidence.index_rows(sd)
-    except (OSError, ValueError):
+    except Exception:            # noqa: BLE001 - an index that will not read is the named reading, never a traceback
         return None
 
 
@@ -763,7 +764,7 @@ def main(argv=None):
                 raise ValueError("no store at %s" % sd)
             rs, unreadable = read_rows(sd)
             s = summary(rs, window, _closes_for(rs))
-        except (OSError, ValueError, subprocess.SubprocessError) as ex:
+        except Exception as ex:  # noqa: BLE001 - whatever a store holds, this instrument says it could not read, by name
             print("UNMEASURED: report: %s: %s" % (type(ex).__name__, ex))
             return 2
         s["unreadable_rows"] = unreadable
@@ -772,7 +773,7 @@ def main(argv=None):
     if a.cmd == "rescore":
         try:
             rep, bad = rescore(a.snapshot, closes=_closes_for(rows(os.path.join(a.snapshot, "store"))))
-        except (OSError, ValueError, subprocess.SubprocessError) as ex:
+        except Exception as ex:  # noqa: BLE001 - whatever a store holds, this instrument says it could not read, by name
             print("UNMEASURED: rescore: %s: %s" % (type(ex).__name__, ex))
             return 2
         print(json.dumps(rep, indent=1, sort_keys=True))

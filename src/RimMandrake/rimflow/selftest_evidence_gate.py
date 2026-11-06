@@ -831,8 +831,47 @@ def malformed():
         rep = json.loads(out[:out.rindex("}") + 1])
         check(rc == 1 and rep["unexplained"] == 5 and not rep["outcome"].get(G.STATE_MOVED) and "index could not be read" in out,
               "rescore: index_rows raising explains nothing: every row stays unexplained, said aloud (%s)" % rep["outcome"])
+        for kind in (ValueError, RuntimeError, RecursionError, AttributeError, TypeError, KeyError):
+            def raises(*a, _kind=kind, **kw):
+                raise _kind("index odd")
+            E.index_rows = raises
+            rc, out = quiet(G.main, ["rescore", "--snapshot", snap6, "--min-rows", "1"])
+            check(rc == 1 and "index could not be read" in out, "rescore: index_rows raising %s is the named reading (rc=%s)" % (kind.__name__, rc))
     finally:
         E.index_rows = real_rows
+    # the real thing, through the real CLI: a line too deep for json makes the real index_rows raise RecursionError
+    snap7 = os.path.join(TMP, "index_too_deep")
+    shutil.copytree(snap6, snap7)
+    deep = os.path.join(snap7, "store", "evidence", "index.jsonl")
+    os.chmod(deep, 0o644)        # the store keeps its evidence 0444
+    with open(deep, "a", encoding="utf-8") as f:
+        f.write("[" * 200000 + "\n")
+    try:
+        E.index_rows(os.path.join(snap7, "store"))
+        check(False, "the planted index line must make the real index_rows raise, or this case proves nothing")
+    except RecursionError:
+        pass
+    run = subprocess.run([sys.executable, G.__file__, "rescore", "--snapshot", snap7, "--min-rows", "1"],
+                         capture_output=True, text=True, timeout=120)
+    check(run.returncode == 1 and "Traceback" not in run.stderr and "index could not be read" in run.stdout,
+          "rescore CLI: an index line too deep for json is the named reading (rc=%s, %s)" % (run.returncode, run.stderr[-200:]))
+    # the backstop: anything else a store provokes is UNMEASURED by name, not a traceback
+    real_rescore, real_read = G.rescore, G.read_rows
+
+    def odd(*a, **kw):
+        raise TypeError("odd store")
+    G.rescore = odd
+    try:
+        rc, out = quiet(G.main, ["rescore", "--snapshot", snap6, "--min-rows", "1"])
+        check(rc == 2 and "UNMEASURED: rescore: TypeError" in out, "rescore: an unforeseen exception is UNMEASURED by name (rc=%s)" % rc)
+    finally:
+        G.rescore = real_rescore
+    G.read_rows = odd
+    try:
+        rc, out = quiet(G.main, ["--store-dir", sd, "report"])
+        check(rc == 2 and "UNMEASURED: report: TypeError" in out, "report: an unforeseen exception is UNMEASURED by name (rc=%s)" % rc)
+    finally:
+        G.read_rows = real_read
     hold(sd, "KEEP_ROW", "f" * 40)
     check(G.judge(sd, "KEEP_ROW", "f" * 40, False, cwd=REPO)["accepted"] is False, "judge: its default still reads the index for itself")
     # an index that holds nothing explains nothing: not state_moved, and not pre_record off the copy's fresh markers
