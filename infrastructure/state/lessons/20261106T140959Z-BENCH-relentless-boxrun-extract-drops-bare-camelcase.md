@@ -1,0 +1,1 @@
+relentless_boxrun.extract drops a bare CamelCase argument (e.g. 'winbuild.py FlowWorks'): _WORD_OK accepts only words with / . _ = digits, ALLCAPS or snake_case, so the box runs the script with the argument cut off. Name a mod by its csproj path in a contract proof. (PROOFDROWN_FIX_NATURAL_WATER_READS_ZERO, 2026-11-06)
