@@ -271,8 +271,8 @@ def seat_guid(seat):
 
 # The tile a human reads (WT profile name + tabTitle) AND, since CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS (owner
 # 2026-10-29: "So it's called bench again instead of conductor."), the session `--name` / `--remote-control` name the
-# Remote Control list shows. Seat BENCH is shown as CONDUCTOR (rimflow/model.py SEAT_DISPLAY). The Dispatcher,
-# seat_restart and v3_ready match dispatcher_schedule seats.BENCH.session_name "CONDUCTOR" plus session_aliases
+# Remote Control list shows. Seat BENCH is shown as CONDUCTOR (rimflow/model.py SEAT_DISPLAY). The Dispatcher
+# and seat_restart match dispatcher_schedule seats.BENCH.session_name "CONDUCTOR" plus session_aliases
 # ["AGENT BENCH"] (a window launched before the rename), rimflow/session_match.names_of. Never "AGENT CONDUCTOR": that
 # is the Conductor role's window_name HOLD. The profile guid derives from the seat KEY, so the rename updates in place.
 # launch_fleet.ps1 $titleFor must name the same string (it opens `-p <name>` and waits for that window title).

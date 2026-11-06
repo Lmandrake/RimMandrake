@@ -19,7 +19,6 @@ import sys
 ROOT = os.environ.get("FOUNDRY_LITERALS_ROOT") or os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__)))))   # the override lets a reviewer point it at an older tree
 PY = ["src/RimMandrake/Utils/ops_watch.py", "src/RimMandrake/Utils/l1_batch_manifest.py",
-      "src/RimMandrake/rimflow/v3_ready.py", "src/RimMandrake/rimflow/v3_cutover.py",
       "src/RimMandrake/Utils/install_wt_seat_profiles.py", "src/RimMandrake/Utils/ledger_sync.py",
       "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/render.py",
       "src/RimMandrake/rimflow/relentless.py", "src/RimMandrake/Utils/slot_allocator.py",

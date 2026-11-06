@@ -1,5 +1,7 @@
 # RimFlow v3 trial night, 2026-10-28: one ordered runbook
 
+**History, not a procedure:** the night is over, and `v3_ready.py` and `v3_cutover.py`, which this runbook calls, are retired (RIMFLOW_RETIRE_DEAD_MODULES); their source is in git history.
+
 **Owner's word (2026-10-28 ~17:20 PDT):** "Please build all the components of the v3 system at this time. This is disturbing. I need to know we can proceed with a real trial tonight."
 
 **Order (his):**

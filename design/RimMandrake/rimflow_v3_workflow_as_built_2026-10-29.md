@@ -601,7 +601,7 @@ Four designs were written on 10-29. By owner card that day (`RIMFLOW_V3_BUILD_WH
 
 ### 2.20 v3 cutover (program, one-shot) [LIVE, applied]
 
-- **What.** `src/RimMandrake/rimflow/v3_cutover.py`; record `infrastructure/state/v3_cutover/record.json` (state `applied`, 2026-10-29T01:32:17Z, item `V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY`).
+- **What.** A one-shot program, retired by RIMFLOW_RETIRE_DEAD_MODULES (its source is in git history); record `infrastructure/state/v3_cutover/record.json` (state `applied`, 2026-10-29T01:32:17Z, item `V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY`).
 - **Owner, verbatim (ownerSaid in the record):** "Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry".
 - **Effect.** 691 BENCH items moved to FOUNDRY; 40 kept (they need the owner or L4); 0 deferred. The FlowWorks/GSS lane seat flipped from BENCH to FOUNDRY, and the docs patch was applied to the workshop identity file (since folded into `infrastructure/agents/CONDUCTOR.md`) and `FOUNDRY.md`. A revert path exists in the program.
 - **Design of record** (quoted in the record): "there is no BENCH seat in v3; the Conductor absorbs Bench and works only in live sessions with him; FOUNDRY is the one autonomous builder."
