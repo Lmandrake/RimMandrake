@@ -278,15 +278,40 @@ with tempfile.TemporaryDirectory() as tmp:
     s8 = G.summarize("8" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in clean], 0, RULES, now=NOW)
     check("attribution: a session with no breach attributes nothing", s8["breaches"] == [] and s8["attribution"] == {},
           (s8["breaches"], s8["attribution"]))
-    # fields verb (the live proof)
+    # fields verb (the live proof); the deployed-DLL preflight is pointed at an absent file so the host's game folder
+    # never decides a selftest
+    os.environ["RM_GAME_HEALTH_COMPANION_DLL"] = os.path.join(tmp, "absent.dll")
     old = G.T.record_dir
     G.T.record_dir = lambda: rec2
     try:
         check("fields: exit 0 on a session carrying the companion fields", G.main(["fields"]) == 0)
     finally:
         G.T.record_dir = old
-    check("fields: exit 1 on an old-companion session",
-          G.main(["fields", "--dir", rec, "--session", "c" * 32]) == 1)
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rcf = G.main(["fields", "--dir", rec, "--session", "c" * 32])
+    check("fields: an old-companion session (no health field at all) is UNMEASURED exit 2, not FAIL",
+          rcf == 2 and buf.getvalue().startswith("UNMEASURED:") and "FAIL" not in buf.getvalue(), (rcf, buf.getvalue()))
+    stale = os.path.join(tmp, "stale.dll")
+    with open(stale, "wb") as f:
+        f.write(b"MZ\x90\x00" + "upS heapMB".encode("utf-16-le"))
+    fresh = os.path.join(tmp, "fresh.dll")
+    with open(fresh, "wb") as f:
+        f.write(b"MZ\x90\x00" + "privateMB".encode("utf-16-le"))
+    old = G.T.record_dir
+    G.T.record_dir = lambda: rec2
+    try:
+        os.environ["RM_GAME_HEALTH_COMPANION_DLL"] = stale
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rcs = G.main(["fields"])
+        check("fields: a deployed DLL without the health literal is UNMEASURED exit 2 even on a good session",
+              rcs == 2 and buf.getvalue().startswith("UNMEASURED:") and "lacks" in buf.getvalue(), (rcs, buf.getvalue()))
+        os.environ["RM_GAME_HEALTH_COMPANION_DLL"] = fresh
+        check("fields: a deployed DLL serving the literal passes the preflight", G.main(["fields"]) == 0)
+    finally:
+        G.T.record_dir = old
+        os.environ.pop("RM_GAME_HEALTH_COMPANION_DLL", None)
     # ops_watch tps family: a breach is a MEASURED count (the alarm target's input)
     os.environ["RM_GAME_HEALTH_DIR"] = os.path.join(tmp, "h")
     import ops_watch as OW

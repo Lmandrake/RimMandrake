@@ -44,7 +44,10 @@ only the open ones. No limit changes: a key not debugged, and every other sessio
                                                                                      record a session's breaches as debugged
     python3 src/RimMandrake/Utils/game_health_check.py fields [--session ID]          live proof: exit 0 when the newest
                                                                                      session's context rows carry the
-                                                                                     companion memory/log fields
+                                                                                     companion memory/log fields;
+                                                                                     exit 2 UNMEASURED when the deployed
+                                                                                     companion (or the session's writer)
+                                                                                     serves none of them
 History (outside git): $RM_GAME_HEALTH_DIR/history.jsonl, default D:\ClaudeWork\rimmandrake\game_health.
 $RM_GAME_HEALTH_TPS_DIR overrides where `record` reads the TPS record, $RM_GAME_HEALTH_ACKS the debugged record (selftests).
 """
@@ -516,6 +519,32 @@ def _record(directory, rules, p, dry_run, now):
             "open": open_, "notFullList": skipped, "known": len(known)}
 
 
+def companion_dll():
+    """The deployed JawaBench companion DLL ($RM_GAME_HEALTH_COMPANION_DLL overrides, selftests)."""
+    env = os.environ.get("RM_GAME_HEALTH_COMPANION_DLL")
+    if env:
+        return env
+    root = ("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld" if os.name != "nt"
+            else r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld")
+    return os.path.join(root, "BridgeTools", "JawaBench", "JawaBench.BridgeTools.dll")
+
+
+def companion_preflight(path=None):
+    """None when the deployed companion serves the health fields (or the DLL cannot be read here: the session
+    check then decides); else the reason the `fields` proof cannot ask. The probe is the UTF-16 string literal
+    'privateMB' that JawaBenchSessionHealth.cs writes (the 2026-11-03 A1 FAIL ran on a DLL without it)."""
+    path = path or companion_dll()
+    try:
+        with open(path, "rb") as f:
+            blob = f.read()
+    except OSError:
+        return None
+    if "privateMB".encode("utf-16-le") in blob:
+        return None
+    return ("deployed companion %s lacks JawaBenchSessionHealth (no 'privateMB' literal): it cannot serve the "
+            "health fields; rebuild and deploy it (bridgetools/build.py --apply, game down)" % path)
+
+
 def fmt(v):
     if isinstance(v, dict):
         return "UNMEASURED"
@@ -611,6 +640,10 @@ def main(argv=None):
                 print("    - %s" % x)
         return 0
     if args.cmd == "fields":
+        pre = companion_preflight()
+        if pre:
+            print("UNMEASURED: %s" % pre)
+            return 2
         sess = sessions_on_disk(args.dir or T.record_dir())
         if not sess:
             print("FAIL: no TPS session on disk")
@@ -622,6 +655,13 @@ def main(argv=None):
             print("FAIL: session %s has no context row yet" % sid[:8])
             return 1
         last = ctx[-1]
+        if not any(num(r.get(f)) is not None for r in ctx for f in LIVE_FIELDS):
+            # no context row carries ANY health field: the companion that wrote this session predates
+            # JawaBenchSessionHealth, so the proof cannot ask (HEALTHCHECK_COMPANION_VERIFY_STALE_DLL)
+            print("UNMEASURED: session %s (context %s) was written by a companion that serves none of %s; "
+                  "rebuild and deploy it (bridgetools/build.py --apply, game down) and play a new session"
+                  % (sid[:8], last.get("utc"), list(LIVE_FIELDS)))
+            return 2
         miss = [f for f in LIVE_FIELDS if num(last.get(f)) is None]
         zero = [f for f in ("privateMB", "unityReservedMB", "upS") if (num(last.get(f)) or 0) <= 0]
         print("session %s context %s: %s" % (sid[:8], last.get("utc"),
