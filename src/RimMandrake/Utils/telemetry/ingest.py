@@ -9,12 +9,15 @@ Cursor identity is the file id (st_ino; NTFS file index on Windows), so a rename
 (bridge_calls.jsonl -> .1) is followed, not re-read. A file that shrank under its cursor is
 re-read from 0 and counted in `resets`. Only complete lines ("\\n"-terminated) are consumed.
 
-A row's src_ref is `source:basename:offset:linehash`. The offset alone is not an identity: after a
-truncation reset (same inode, shrank under its cursor) or a file replaced under the same name, new
-rows sit at old offsets, and every INSERT OR IGNORE / exc_seen keyed on the ref would drop them.
-The hash of the row's own bytes makes the ref name the row, so a re-read of the same bytes (rebuild,
-crash re-read) still dedups. Refs stored before the hash was added (2026-11-06) carry no hash: a
-`telemetry rebuild` over those files re-adds their rows once.
+A row's src_ref is `source:basename:gen:offset:linehash`, gen = `<file id>.<resets>`. The offset alone
+is not an identity: after a truncation reset (same inode, shrank under its cursor) or a file replaced
+under the same name, new rows sit at old offsets, and every INSERT OR IGNORE / exc_seen keyed on the
+ref would drop them. The line hash makes the ref name the row's bytes; the generation (file id plus
+the cursor's reset count, cursors.gen) separates a new row from a byte-identical twin the old file
+held at the same offset. A re-read of the same file generation (rebuild, crash re-read) yields the
+same refs and still dedups; `telemetry rebuild` keeps cursors.gen. Refs stored before 2026-11-06
+carry no gen or hash: a rebuild over those files re-adds their rows once. Not covered: a file
+replaced by one at least as long under a recycled inode is indistinguishable from appends.
 """
 from __future__ import annotations
 
@@ -589,9 +592,9 @@ def make_sources() -> list[Source]:
 
 # ================================================================== tailing
 
-def row_ref(src: str, base: str, pos: int, line: bytes) -> str:
-    """Identity of one row: where it sits AND what it says (module docstring: truncation resets reuse offsets)."""
-    return f"{src}:{base}:{pos}:{hashlib.blake2b(line, digest_size=6).hexdigest()}"
+def row_ref(src: str, base: str, pos: int, line: bytes, gen: str = "0.0") -> str:
+    """Identity of one row: which file generation, where it sits AND what it says (module docstring)."""
+    return f"{src}:{base}:{gen}:{pos}:{hashlib.blake2b(line, digest_size=6).hexdigest()}"
 
 
 class Tailer:
@@ -622,21 +625,31 @@ class Tailer:
             return 0
         stt["files"] = len(files)
         backlog = False     # a file read only up to MAX_READ this pass: its bridge buckets are not complete yet
+        any_reset = False   # a reset's cursor row must be committed even by a pass that read no rows
         for path in files:
             try:    # identity from the open handle: a rotation between stat and open must not read the new file
                 with open(path, "rb") as f:     # under the old file's cursor
                     st = os.fstat(f.fileno())
                     key = self._file_key(st, path)
-                    cur = self.con.execute("SELECT offset,size,done FROM cursors WHERE src=? AND key=?",
+                    cur = self.con.execute("SELECT offset,size,done,gen FROM cursors WHERE src=? AND key=?",
                                            (src.name, key)).fetchone()
                     off = cur["offset"] if cur else 0
+                    resets = (cur["gen"] or 0) if cur else 0
                     db_done = (cur["done"] or 0) if cur else 0   # bytes on disk in the raw copy (rebuild never re-copies)
                     # bytes buffered in raw_buf but not yet on disk count as copied for this process only
                     done = max(db_done, self.raw_pending.get((src.name, key), 0))
                     if st.st_size < off or st.st_size < done:
                         stt["resets"] += 1
+                        resets += 1     # a new generation: its rows' refs differ from the old file's twins
                         off = done = db_done = 0
                         self.raw_pending.pop((src.name, key), None)
+                        # record the generation now: a pass that reads no whole row (emptied, or truncated to a
+                        # partial line) would otherwise leave the old cursor, and a refill to the old length is
+                        # then read under the old offset and generation and skipped whole. Committed below.
+                        self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done,gen) "
+                                         "VALUES(?,?,?,0,?,?,0,?)", (src.name, key, path, st.st_size, st.st_mtime,
+                                                                     resets))
+                        any_reset = True
                     # a crash after the cursor moved but before flush_raw left [done, off) out of raw/: re-read
                     # from `done` for the copy only (those rows were already ingested, so the parser skips them)
                     start = min(off, done) if src.archive else off
@@ -666,12 +679,13 @@ class Tailer:
                     stt["bad"] += 1
             chunk = chunk[:end + 1]
             base = os.path.basename(path)
+            gen = f"{getattr(st, 'st_ino', 0) or 0}.{resets}"
             pos = start
             for i, line in enumerate(chunk.split(b"\n")[:-1]):
                 at, pos = pos, pos + len(line) + 1
                 if (i == 0 and mid_row) or pos <= off or not line.strip():   # pos <= off: ingested before the
                     continue                                                  # crash, copied only
-                ref = row_ref(src.name, base, at, line)
+                ref = row_ref(src.name, base, at, line, gen)
                 r = loads(line)
                 if not isinstance(r, dict):
                     stt["bad"] += 1
@@ -698,15 +712,17 @@ class Tailer:
                 if new_done > db_done:
                     self.raw_pending[(src.name, key)] = new_done
                 new_done = db_done
-            self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done) VALUES(?,?,?,?,?,?,?)",
-                             (src.name, key, path, max(off, start + len(chunk)), st.st_size, st.st_mtime, new_done))
+            self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done,gen) "
+                             "VALUES(?,?,?,?,?,?,?,?)",
+                             (src.name, key, path, max(off, start + len(chunk)), st.st_size, st.st_mtime, new_done,
+                              resets))
             if partial and src.ordered:     # an older file still has a backlog: newer files wait for the next pass,
                 break                       # or a call's end (live file) lands before its start (the .1 tail)
         if src.name == "bridge" and not backlog:    # a pass with nothing new: the calls stopped, close what the
             flush_bridge_buckets(E, now=time.time() if n == 0 else None)    # clock left. A backlog flushes once drained
         stt["rows"] += n
         stt["last_pass"] = time.time()
-        if n or E.events or E.points:
+        if n or E.events or E.points or any_reset:
             self.commit_durable()
         return n
 

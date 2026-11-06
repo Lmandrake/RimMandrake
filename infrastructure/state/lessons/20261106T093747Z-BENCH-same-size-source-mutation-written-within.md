@@ -1,0 +1,1 @@
+A same-size source mutation written within the same second as the original leaves Python's mtime+size .pyc valid: restoring the file then runs the MUTATED bytecode (cost a debug loop on TELEMETRY_SRCREF_DEDUPE_TWINS_LOOK_ALIKE). After a mutation test, delete __pycache__ or run with PYTHONDONTWRITEBYTECODE=1.

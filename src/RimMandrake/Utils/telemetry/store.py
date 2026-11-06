@@ -49,11 +49,23 @@ CREATE TABLE IF NOT EXISTS mapcomp(
   ts REAL, session TEXT, type TEXT, mod TEXT, ms_per_tick REAL, calls INTEGER, max_ms REAL,
   ticks INTEGER, src_ref TEXT UNIQUE);
 -- cursors.done = bytes of this file already copied to raw/ (a rebuild re-reads from 0, never re-copies)
+-- cursors.gen = truncation resets seen under this file id; it is part of every row's src_ref (ingest.row_ref)
 CREATE TABLE IF NOT EXISTS cursors(
   src TEXT, key TEXT, ino TEXT, offset INTEGER, size INTEGER, mtime REAL, done INTEGER DEFAULT 0,
-  PRIMARY KEY(src, key));
+  gen INTEGER DEFAULT 0, PRIMARY KEY(src, key));
 CREATE TABLE IF NOT EXISTS kv(k TEXT PRIMARY KEY, v TEXT);
 """
+
+
+def migrate(con) -> None:
+    """Columns added after a store was created (CREATE TABLE IF NOT EXISTS never alters an existing table)."""
+    if "gen" not in {r[1] for r in con.execute("PRAGMA table_info(cursors)")}:
+        try:
+            con.execute("ALTER TABLE cursors ADD COLUMN gen INTEGER DEFAULT 0")
+            con.commit()
+        except sqlite3.OperationalError as e:   # telemetryd and a CLI call migrating at once: the other one won
+            if "duplicate column" not in str(e):
+                raise
 
 
 def connect(path: str | None = None, readonly: bool = False) -> sqlite3.Connection:
@@ -65,6 +77,7 @@ def connect(path: str | None = None, readonly: bool = False) -> sqlite3.Connecti
             os.makedirs(os.path.dirname(path), exist_ok=True)
         con = sqlite3.connect(path, timeout=30)
         con.executescript(SCHEMA)
+        migrate(con)
         con.execute("PRAGMA synchronous=NORMAL")
     con.row_factory = sqlite3.Row
     return con

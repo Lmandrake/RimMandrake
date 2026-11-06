@@ -27,6 +27,7 @@ import gzip
 import json
 import os
 import shutil
+import sqlite3
 import sys
 import tempfile
 import time
@@ -235,6 +236,84 @@ def main(argv) -> int:
         check("[truncate] row_ref names the row: same place + same bytes = same ref, other bytes = other ref",
               ingest.row_ref("tps", "a.jsonl", 0, b'{"a":1}') == ingest.row_ref("tps", "a.jsonl", 0, b'{"a":1}')
               != ingest.row_ref("tps", "a.jsonl", 0, b'{"a":2}'))
+        # [twins] a new generation's row byte-identical to an old row at the same offset: the line hash alone
+        # matches the old ref, so only the file generation (inode + resets, cursors.gen) keeps the new row
+        twin = {**base, "seq": 30, "utc": iso(t0 + 30), "kind": "incident", "type": "stall", "gapS": 13}
+
+        def put(rows):      # rewrite in place (w() appends): same inode, size = these rows
+            with open(tps, "w") as fh:
+                fh.write("".join(json.dumps(r) + "\n" for r in rows))
+
+        def tps_gen():
+            return con.execute("SELECT gen FROM cursors WHERE src='tps' AND key=?",
+                               (f"ino:{os.stat(tps).st_ino}",)).fetchone()[0]
+        put([twin, {**base, "seq": 31, "utc": iso(t0 + 31), "kind": "incident", "type": "stall", "gapS": 14}])
+        T.pass_source(S["tps"])     # longer than the cursor: an append read; the twin at offset 0 is the row
+        ev2, gen0 = con.execute("SELECT COUNT(*) FROM events").fetchone()[0], tps_gen()     # [replace] ingested
+        check("[twins] fixture: the twin already sits ingested at offset 0 of this file",
+              con.execute("SELECT COUNT(*) FROM events WHERE src_ref LIKE ?",
+                              (f"tps:{os.path.basename(tps)}:%:0:%",)).fetchone()[0] >= 1)
+        put([twin])         # truncated back under the cursor: the same bytes at offset 0, a new generation
+        T.pass_source(S["tps"])
+        check("[twins] a byte-identical row at an old offset after a truncation reset is ingested",
+              con.execute("SELECT COUNT(*) FROM events").fetchone()[0] == ev2 + 1,
+              (ev2, con.execute("SELECT COUNT(*) FROM events").fetchone()[0]))
+        check("[twins] the reset is recorded as the cursor's generation", tps_gen() == gen0 + 1, (gen0, tps_gen()))
+        n_twin = con.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+        put([])             # emptied: nothing to read, but the reset must still be recorded
+        T.pass_source(S["tps"])
+        def committed_gen():    # through a second connection: only what ingest committed
+            ro = store.connect(c["db"], readonly=True)
+            try:
+                return ro.execute("SELECT gen FROM cursors WHERE src='tps' AND key=?",
+                                  (f"ino:{os.stat(tps).st_ino}",)).fetchone()[0]
+            finally:
+                ro.close()
+        check("[twins] the emptied pass committed its reset (no row, event or point to carry a commit)",
+              committed_gen() == gen0 + 2)   # read before the refill pass, whose rows would commit it anyway
+        put([twin])         # refilled to exactly the old length with the same bytes
+        T.pass_source(S["tps"])
+        check("[twins] a file emptied then refilled to its old length lands the twin (the empty pass kept the reset)",
+              con.execute("SELECT COUNT(*) FROM events").fetchone()[0] == n_twin + 1 and tps_gen() == gen0 + 2,
+              (n_twin, con.execute("SELECT COUNT(*) FROM events").fetchone()[0], tps_gen()))
+        put([twin, {**base, "seq": 33, "utc": iso(t0 + 33), "kind": "incident", "type": "stall", "gapS": 16}])
+        T.pass_source(S["tps"])
+        n_frag = con.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+        with open(tps, "w") as fh:  # truncated to a partial line: no whole row to read this pass
+            fh.write(json.dumps(twin)[:40])
+        T.pass_source(S["tps"])
+        check("[twins] the partial-line pass committed its reset", committed_gen() == gen0 + 3, committed_gen())
+        put([twin, {**base, "seq": 33, "utc": iso(t0 + 33), "kind": "incident", "type": "stall", "gapS": 16}])
+        T.pass_source(S["tps"])     # refilled to the old length with the same bytes
+        check("[twins] a file truncated to a partial line then refilled lands both twins",
+              con.execute("SELECT COUNT(*) FROM events").fetchone()[0] == n_frag + 2,
+              (n_frag, con.execute("SELECT COUNT(*) FROM events").fetchone()[0]))
+        with open(tps + ".new", "w") as fh:  # replaced under the same name by a file made while the old one
+            fh.write(json.dumps(twin) + "\n")   # still existed: a distinct inode, a fresh cursor at gen 0
+        os.replace(tps + ".new", tps)
+        T.pass_source(S["tps"])
+        ev3 = con.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+        check("[twins] a same-name replacement holding the twin row lands it, under the new file's inode",
+              ev3 == ev2 + 6 and con.execute("SELECT COUNT(*) FROM events WHERE src_ref LIKE ?",
+                                             (f"tps:%:{os.stat(tps).st_ino}.0:0:%",)).fetchone()[0] == 1, (ev2, ev3))
+        rows0 = T.stats["tps"]["rows"]
+        cli.main(["rebuild", "--since", "7d"])
+        T.pass_source(S["tps"])
+        check("[twins] a rebuild re-reads the current generation and stays idempotent (rebuild keeps cursors.gen)",
+              con.execute("SELECT COUNT(*) FROM events").fetchone()[0] == ev3 and T.stats["tps"]["rows"] > rows0,
+              (ev3, con.execute("SELECT COUNT(*) FROM events").fetchone()[0], T.stats["tps"]["rows"] - rows0))
+        check("[twins] row_ref carries the generation: same bytes + place, other generation = other ref",
+              ingest.row_ref("tps", "a.jsonl", 0, b'{"a":1}', "7.0") != ingest.row_ref("tps", "a.jsonl", 0, b'{"a":1}', "7.1")
+              != ingest.row_ref("tps", "a.jsonl", 0, b'{"a":1}', "8.1"))
+        old_db = os.path.join(os.path.dirname(c["db"]), "old_schema.db")   # a store made before cursors.gen
+        o = sqlite3.connect(old_db)
+        o.execute("CREATE TABLE cursors(src TEXT, key TEXT, ino TEXT, offset INTEGER, size INTEGER, mtime REAL, "
+                  "done INTEGER DEFAULT 0, PRIMARY KEY(src, key))")
+        o.commit(); o.close()
+        o = store.connect(old_db)
+        check("[twins] an existing store gains cursors.gen on connect",
+              "gen" in {r[1] for r in o.execute("PRAGMA table_info(cursors)")})
+        o.close()
 
         # bridge: rotation by rename, buckets
         bc = c["bridge_calls"]
