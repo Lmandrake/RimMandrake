@@ -401,7 +401,7 @@ SHELL_OPS = {"&&", "||", ";", "|", "(", ")", "&", ";;", "|&", "\n"}
 REDIRECTS = {">", ">>", "<", "<<", "<<<", "&>", ">&", "<&"}
 OPS_LONGEST_FIRST = sorted(SHELL_OPS | REDIRECTS, key=len, reverse=True)
 PREFIX_WORDS = {"if", "then", "elif", "else", "while", "until", "do", "fi", "done", "esac", "!", "{", "}"}
-CONTROL_WORDS = (PREFIX_WORDS - {"!", "{", "}"}) | {"for", "case", "select"}
+CONTROL_WORDS = (PREFIX_WORDS - {"!", "}"}) | {"for", "case", "select"}    # `{`: a group may be backgrounded or piped
 WRAPPERS = {"env": {"-u", "--unset", "-C", "--chdir", "-S"}, "nice": {"-n"}, "nohup": set(), "exec": {"-a"}, "time": set(),
             "timeout": {"-k", "-s"}, "xargs": {"-I", "-n", "-P", "-L", "-d", "-a", "-s", "-E"}}
 OTHER_TREE = re.compile(r"^(?:/|~|[A-Za-z]:)")
@@ -469,17 +469,22 @@ def proof_scripts(proof):
     env/timeout/nice/nohup/exec/time/xargs), and a runner's `--plan <script>`. Any other argument is the command's data
     (`printf tools/gone.py`, `test ! -f src/x.py`, `python3 x.py src/y.py`): PROOFLINT_FIX_ARGS_READ_AS_SCRIPTS.
     A relative `cd` moves where the path is read (`cd tools && python3 src/x.py` runs tools/src/x.py; a subshell ends at
-    its `)`, a piped or backgrounded cd moves nothing). A cd this cannot place (absolute, out of the tree, `cd -`, after
-    `||`, inside if/for/while, pushd, popd, env -C) names nothing after it, nor does a heredoc's body: never a false
-    refusal. Absolute and Windows paths are another tree's and are not named; a line that cannot be split names none
-    (refused_proof reads it). Pure."""
+    its `)`, a piped or backgrounded cd moves nothing, `cd d && x & y` leaves y where the list began, `command cd` and
+    `builtin cd` are cd, `env cd` or `timeout 5 cd` moves no shell). Only a `&&` chain proves a cd worked, so a cd holds
+    for the rest of its chain: `cd d; x`, `cd d && y; x` and `false && cd d; x` may each run x where the line began. A cd
+    this cannot place (past its chain, absolute, out of the tree, `cd -`, on either side of `||`, inside if/for/while or
+    `{ }`, pushd, popd, env -C), `eval` or a sourced script names nothing after it, nor does a heredoc's body: never a
+    false refusal. Absolute and Windows paths are another tree's and are not named; a line that cannot be split names
+    none (refused_proof reads it). Pure."""
     try:
         toks = shell_words(WSLPATH.sub(" ", proof or ""))
     except ValueError:
         return []
     out, stack = [], []
     cwd, control, prev = "", False, ""        # cwd: repo-relative; None once the line's directory is not known
+    list_cwd, chain = "", False               # where this and-or list began; whether a cd ran in it
     cmd, start, skip, wrap, interp, runner, plan, cd_args = None, True, False, None, False, False, False, None
+    external, sourced, prefixed = False, False, False   # external: past env/timeout/..., a child, whose cd moves no shell
 
     def name(arg):
         if cwd is None or OTHER_TREE.match(arg):
@@ -490,8 +495,10 @@ def proof_scripts(proof):
 
     def moved(op):
         """Where this line stands once a finished `cd` (args in cd_args) is followed by op."""
+        nonlocal chain
         if op in ("|", "|&", "&") or prev in ("|", "|&"):
             return cwd                        # a pipeline member or background job is a subshell
+        chain = True
         args = [a for a in cd_args if a == "-" or not a.startswith("-")]
         if op == "||" or prev == "||" or control or cwd is None or len(args) != 1 or args[0] == "-" \
                 or OTHER_TREE.match(args[0]) or re.search(r"[$`*?\[]", args[0]):
@@ -506,15 +513,28 @@ def proof_scripts(proof):
             skip = True                       # a redirect's target is a file the line writes or reads, not a script
             continue
         if is_op:
+            if start and t == "\n":
+                continue                      # a blank line, or `&&` then a newline: the same list goes on
             if cd_args is not None:
                 cwd = moved(t)
             if t == "(":
-                stack.append(cwd)
+                stack.append((cwd, list_cwd, chain))
+                list_cwd, chain = cwd, False
             elif t == ")" and stack:
-                cwd = stack.pop()
-            if not start or t != "\n":        # `||` then a newline: the next command is still on the right of `||`
-                prev = t
+                cwd, list_cwd, chain = stack.pop()
+            elif t == "&":
+                cwd, chain = list_cwd, False  # the whole list ran in a subshell
+                list_cwd = cwd
+            elif t == "||" and chain:
+                cwd = None                    # what follows runs when the cd failed, or when what came after it did
+                chain = False
+            elif t in (";", "\n", ";;"):
+                if chain:
+                    cwd = None                # what follows runs whether or not the chain's cd did
+                list_cwd, chain = cwd, False
+            prev = t
             cmd, start, skip, wrap, interp, runner, plan, cd_args = None, True, False, None, False, False, False, None
+            external, sourced, prefixed = False, False, False
             continue
         if skip:
             skip = False
@@ -527,7 +547,13 @@ def proof_scripts(proof):
                 continue
             if t in WRAPPERS:
                 wrap = WRAPPERS[t]
+                external = external or t != "time"      # `time` is a keyword: what it times runs in this shell
                 continue
+            if t in ("command", "builtin") and not external:
+                prefixed = True
+                continue
+            if t == "-p" and prefixed:
+                continue                      # `command -p cd d`; `command -v x` falls through: x is not run
             if wrap is not None:
                 if t.startswith("-"):
                     if t in ("-C", "--chdir") or t.startswith("--chdir="):
@@ -538,10 +564,12 @@ def proof_scripts(proof):
                     continue                  # timeout's duration, nice's old -5 style
             start, cmd = False, t
             control = control or t in CONTROL_WORDS
-            if t == "cd":
+            if t == "cd" and not external:
                 cd_args = []
-            elif t in ("pushd", "popd"):
+            elif t in ("pushd", "popd", "eval") and not external:
                 cwd = None
+            elif t in ("source", ".") and not external:
+                sourced = interp = True
             elif PYTHONS.match(t) or SHELLS.match(t):
                 interp = runner = True
             elif "/" in t:                    # no slash: bash looks on PATH, never in the working directory
@@ -558,6 +586,8 @@ def proof_scripts(proof):
             elif not t.startswith("-"):
                 interp = False
                 name(t)
+                if sourced:
+                    cwd = None                # a sourced script may cd, and this shell stays there
         elif runner:
             if plan:
                 name(t)

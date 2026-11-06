@@ -85,8 +85,8 @@ for line, want in (("src/a/x.py --k", ["src/a/x.py"]), ("./tools/x.sh", ["tools/
     ok(ps(line) == want, "1b still named: %r -> %r" % (line, ps(line)))
 
 # 1c. cd: the path is read where the command runs, or not at all
-for line, want in (("cd tools && python3 src/check.py", ["tools/src/check.py"]), ("cd src/a; python3 x.py", ["src/a/x.py"]),
-                   ("cd src\npython3 a/x.py", ["src/a/x.py"]), ("cd src && cd a && python3 x.py", ["src/a/x.py"]),
+for line, want in (("cd tools && python3 src/check.py", ["tools/src/check.py"]), 
+                    ("cd src && cd a && python3 x.py", ["src/a/x.py"]),
                    ("cd src && python3 ../tools/x.py", ["tools/x.py"]), ("cd src/a && cd .. && python3 b/x.py", ["src/b/x.py"]),
                    ("cd -P src && python3 a/x.py", ["src/a/x.py"]), ("cd src > /dev/null && python3 a/x.py", ["src/a/x.py"]),
                    ("(cd tools && python3 a.py) && python3 src/b.py", ["tools/a.py", "src/b.py"]),
@@ -99,6 +99,51 @@ for line in ("cd /mnt/d/other && python3 src/x.py", "cd .. && python3 src/x.py",
              "if true; then cd tools; fi; python3 src/x.py", "pushd tools && python3 src/x.py", "popd; python3 src/x.py",
              "env -C tools python3 src/x.py", "cd a b; python3 src/x.py", "cd /tmp && src/x.py"):
     ok(ps(line) == [], "1c a cd it cannot place names nothing: %r -> %r" % (line, ps(line)))
+# A cd the line may not have run, or that is behind another word: the checker's shapes, run for real below.
+for line in ("cd src/a; python3 x.py", "cd src\npython3 a/x.py", "cd tools\n\npython3 src/x.py", "true; cd tools; python3 src/x.py",
+             "builtin cd tools; python3 src/x.py", "time cd tools; python3 src/x.py", "command -p cd tools; python3 src/x.py",
+             "cd nosuch; python3 src/x.py", "cd tools && true; python3 src/x.py",
+             "test -d nosuch && cd tools; python3 src/x.py", "false && cd tools\npython3 src/x.py", "true && cd tools; python3 src/x.py",
+             "false &&\ncd tools\npython3 src/x.py", "false && { cd tools; }; python3 src/x.py", "{ cd tools; } & python3 src/x.py",
+             "cd tools && true || python3 src/x.py", "false && cd tools && true; python3 src/x.py", "eval cd tools; python3 src/x.py",
+             "if false; then cd tools; fi\npython3 src/x.py"):
+    ok(ps(line) == [], "1c a cd that may not have run names nothing: %r -> %r" % (line, ps(line)))
+for line, want in (("command cd tools && python3 src/x.py", ["tools/src/x.py"]),
+                   ("command -p cd tools && python3 src/x.py", ["tools/src/x.py"]), ("builtin cd tools && python3 src/x.py", ["tools/src/x.py"]),
+                   ("time cd tools && python3 src/x.py", ["tools/src/x.py"]), ("true; cd tools && python3 src/x.py", ["tools/src/x.py"]),
+                   ("true && cd tools && python3 src/x.py", ["tools/src/x.py"]), ("true &&\ncd tools && python3 src/x.py", ["tools/src/x.py"]),
+                   ("true && (cd tools && python3 src/x.py); python3 src/x.py", ["tools/src/x.py", "src/x.py"]),
+                   ("true && (cd tools; python3 src/x.py); python3 src/x.py", ["src/x.py"]),
+                   ("env cd tools; python3 src/x.py", ["src/x.py"]), ("timeout 5 cd tools; python3 src/x.py", ["src/x.py"]),
+                   ("cd tools && python3 x.py & python3 src/x.py", ["tools/x.py", "src/x.py"]),
+                   ("command -v src/x.py && python3 src/x.py", ["src/x.py"]),
+                   ("command python3 src/x.py", ["src/x.py"]),):
+    ok(ps(line) == want, "1c placed behind its prefix or chain: %r -> %r" % (line, ps(line)))
+ok(ps("source src/env.sh; python3 src/x.py") == ["src/env.sh"], "1c a sourced script may cd: only it is named")
+got = dict(L.lint_lines(LR, "t", {"A1": "test -d nosuch && cd tools; python3 src/a/x.py"}, {"src/a/x.py"}.__contains__))
+ok("A1" not in got, "1c the checker's false refusal is gone: %r" % got)
+# Real bash is the oracle: every script a line names is one bash ran, in a tree holding each candidate path.
+with tempfile.TemporaryDirectory() as tree:
+    for rel in ("src/x.py", "tools/src/x.py", "tools/x.py"):
+        os.makedirs(os.path.dirname(os.path.join(tree, rel)), exist_ok=True)
+        with open(os.path.join(tree, rel), "w", encoding="utf-8") as f:
+            f.write("print(%r)\n" % rel)
+    for line in ("test -d nosuch && cd tools; python3 src/x.py", "false && cd tools\npython3 src/x.py", "true && cd tools; python3 src/x.py",
+                 "false && cd tools; python3 src/x.py", "false &&\ncd tools\npython3 src/x.py", "false && { cd tools; }; python3 src/x.py",
+                 "false && cd tools && true; python3 src/x.py", "cd tools && false || python3 src/x.py", "false || cd tools; python3 src/x.py",
+                 "true || cd tools; python3 src/x.py", "cd nosuch || python3 src/x.py", "cd nosuch && true || python3 src/x.py",
+                 "command cd tools && python3 src/x.py", "builtin cd tools; python3 src/x.py", "command -p cd tools; python3 src/x.py",
+                 "time cd tools; python3 src/x.py", "env cd tools; python3 src/x.py", "timeout 5 cd tools; python3 src/x.py",
+                 "eval cd tools; python3 src/x.py", "cd tools | python3 src/x.py", "cd tools & wait; python3 src/x.py",
+                 "cd tools && true & wait; python3 src/x.py", "{ cd tools; } & wait; python3 src/x.py", "{ cd tools; }; python3 src/x.py",
+                 "(cd tools); python3 src/x.py", "(false && cd tools; python3 src/x.py); python3 src/x.py",
+                 "true && (cd tools; python3 src/x.py); python3 src/x.py", "if true; then cd tools; fi; python3 src/x.py",
+                 "cd tools && python3 src/x.py", "cd tools; python3 src/x.py", "cd tools; cd tools; python3 src/x.py", "cd nosuch; python3 src/x.py",
+                 "true && cd tools && python3 src/x.py"):
+        run = subprocess.run(["bash", "-c", line], cwd=tree, capture_output=True, text=True, timeout=30)
+        ran = run.stdout.split()
+        named = ps(line)
+        ok(ran and set(named) <= set(ran), "1c real bash ran what is named: %r ran=%r named=%r" % (line, ran, named))
 ok(ps("cd tools; x.py") == [], "1c a bare command word is PATH's, not the working directory's")
 ok(ps("(cd /tmp && python3 src/a.py); python3 src/b.py") == ["src/b.py"], "1c the unknown directory ends with its subshell")
 got = dict(L.lint_lines(LR, "", {"A1": "printf tools/deleted.py && python3 src/a/x.py", "A2": "test ! -f src/gone.py",
