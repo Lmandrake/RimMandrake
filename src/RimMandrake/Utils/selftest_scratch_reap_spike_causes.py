@@ -157,20 +157,28 @@ def case_vanish(root: Path):
     shutil.rmtree(d.parent)
 
 
+def sighted_ctx():
+    """A Ctx blind to nothing: in a walled box every foreign pid reads "Permission denied", a global hold that would
+    mask the corrupt-repo reason this case is about (the box's process table is not the fixture)."""
+    ctx = R.Ctx(time.time())
+    ctx.live.blind, ctx.borrows.hold = [], []
+    return ctx
+
+
 def case_corrupt(root: Path):
     s = root / "FOUNDRY" / "claude-1000" / "-home-x" / "5ac3d971-76d6-4b1a-8656-3c6104d96849"
     n = 5
     for i in range(n):
         corrupt_repo(s / "scratchpad" / f"r{i}" / "repo")
     age(s)
-    row, inner = R.judge_session(s, R.Ctx(time.time()))
+    row, inner = R.judge_session(s, sighted_ctx())
     check(row["verdict"] == "REFUSE", f"B1 the session holding corrupt repos is refused ({row['verdict']})")
     check(any(f"{n} inner repo(s) git cannot read" in w for w in row["why"]),
           f"B2 its row names all {n} corrupt repos once ({row['why'][:2]})")
     check(not [r for r in inner if r["verdict"] == "REFUSE"], f"B3 no per-repo REFUSE rows "
           f"({len([r for r in inner if r['verdict'] == 'REFUSE'])} of {n})")
     check(len(row.get("corrupt_inner", [])) == n, "B4 the session row lists every corrupt repo it keeps")
-    alone = R.judge_clone(s / "scratchpad" / "r0" / "repo", R.Ctx(time.time()))
+    alone = R.judge_clone(s / "scratchpad" / "r0" / "repo", sighted_ctx())
     check(alone["verdict"] == "REFUSE" and alone.get("corrupt"), f"B5 a corrupt repo judged alone is still refused "
           f"({alone['verdict']})")
     shutil.rmtree(s.parent.parent.parent)
