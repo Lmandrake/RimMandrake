@@ -15,7 +15,8 @@ History is not an entry point: the ledger, conversations, handoffs, closed items
 prose are skipped on purpose.
 
     python3 src/RimMandrake/rimflow/entrypoint_inventory.py show NAME...      every entry point of these modules
-    python3 src/RimMandrake/rimflow/entrypoint_inventory.py zero              rimflow modules no entry point reaches
+    python3 src/RimMandrake/rimflow/entrypoint_inventory.py zero              rimflow modules no entry point reaches; exit 0
+                                                                              when each is in KEPT, 1 when one is unjudged
     python3 src/RimMandrake/rimflow/entrypoint_inventory.py retired           exit 0 each RETIRED module is gone and unreached,
                                                                               1 not so, 2 the instrument cannot see
     python3 src/RimMandrake/rimflow/entrypoint_inventory.py revert --bundle P   exit 0 the bundle holds a commit undoing
@@ -34,19 +35,25 @@ import tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 RIMFLOW = "src/RimMandrake/rimflow"
 
-# Retired by RIMFLOW_RETIRE_DEAD_MODULES. A name here must stay unreached; bring one back by reverting, not by editing this.
-RETIRED = {
+# One entry per deletion commit, so an older bundle still checks once later retirements join.
+# A name here must stay unreached; bring one back by reverting, not by editing this.
+RETIRED_BATCHES = ({  # RIMFLOW_RETIRE_DEAD_MODULES
     "v3_cutover": "refusing stub of a one-shot run on 2026-10-29; the record stays in infrastructure/state/v3_cutover",
     "selftest_v3_cutover": "tested the stub's refusals",
     "v3_ready": "GO/NO-GO table for the 2026-10-28 trial night; it read the disabled Dispatcher",
     "selftest_v3_ready": "tested the table",
     "audit_prescreen_compare": "one-shot before/after of one fix against a pinned sha; its reading is from 2026-11-01",
-}
+},)
+RETIRED = {name: why for batch in RETIRED_BATCHES for name, why in batch.items()}
 # Named dead by redesign.md, and not: retiring these takes a decision, not a delete.
 KEPT = {
     "close_audit": "redesign_final.md G20: an independent audit is kept while the gate it audits is replaced",
     "audit_prescreen": "role_launch imports it at module top (AP.STAMP); the Auditor's pre_launch runs it; only switched off",
     "relentless_head_age": "a lesson tells agents to run it before calling the pool order a defect; written 2026-11-05",
+    "audit_hardflag_file": "the Auditor's pre_launch runs it after audit_prescreen; goes with that role, not alone: only switched off",
+    "evidence_metrics": "the owner's record of how Relentless does (2026-11-03); by hand, no caller yet: EVIDENCE_METRICS_WIRE_ONE_ROW_EVER",
+    "fixture_guard_gate": "by-hand release fixture for cli._guard_refusals, named by evidence_gate_enforce_before_deletes_2026-11-06.md",
+    "relentless_tickp95": "by-hand tick report and check; RELENTLESS_REMEASURE_TICK_P95_DETACH_NEXT and its detach items are open",
 }
 # (module, kind, a substring of the file): an instrument that cannot see these cannot be believed about a retired module.
 PROBES = (
@@ -54,12 +61,14 @@ PROBES = (
     ("audit_prescreen", "run", "dispatcher_schedule.json"),
     ("relentless", "run", ".service"),
     ("relentless_head_age", "doc", "infrastructure/state/lessons/"),
+    ("regrade", "doc", "findings_judge_prompt.md"),
 )
 
 HISTORY = ("conversations/", "infrastructure/state/ledger/", "infrastructure/state/handoffs/",
            "infrastructure/state/items/", "infrastructure/state/code_review/", "infrastructure/state/queue/",
            "infrastructure/archive/", "Transient/", "vendor/", "research/", "design/", "tickets/", "sync/", "items/",
-           "observed/", "deployed/", "Fable_Review/", "world/")
+           "observed/", "deployed/", "Fable_Review/", "world/",
+           "src/RimMandrake/Utils/hook_latency_corpus.json")    # recorded agent prompts: a mention there starts nothing
 DOC_ROOTS = ("skills/", ".claude/", "infrastructure/agents/","infrastructure/state/lessons/", RIMFLOW + "/roles/", RIMFLOW + "/docs/")
 RUN_EXT = (".service", ".timer", ".path", ".target", ".conf", ".sh", ".ps1", ".bat", ".cmd", ".json", ".yaml", ".yml", ".toml")
 MAX_TEXT = 4_000_000
@@ -87,7 +96,7 @@ def classify(rel):
     base = os.path.basename(rel)
     if rel.endswith(".py"):
         return "py"
-    if rel.startswith(DOC_ROOTS) and rel.endswith(".md") or rel == "CLAUDE.md":
+    if rel.startswith(DOC_ROOTS) and rel.endswith(".md") or rel == "CLAUDE.md" or rel.endswith("Utils/findings_judge_prompt.md"):
         return "doc"
     if rel.endswith(RUN_EXT):
         return "run"
@@ -265,8 +274,10 @@ def _bundle_header(path):
 
 
 def check_revert(bundle, root=ROOT, retired=None):
-    """-> (exit code, lines): the one head R is the child of a deletion commit D in our history, and R's tree is D^'s."""
-    retired = RETIRED if retired is None else retired
+    """-> (exit code, lines): the one head R is the child of a deletion commit D in our history, and R's tree is D^'s.
+    D deletes every module of one batch (retired: one dict, or a tuple of them; default RETIRED_BATCHES)."""
+    retired = RETIRED_BATCHES if retired is None else retired
+    batches = retired if isinstance(retired, tuple) else (retired,)
     if not os.path.isfile(bundle):
         return 1, ["no bundle at %s" % bundle]
     tmp = tempfile.mkdtemp(prefix="entrypoint_revert_")
@@ -289,9 +300,9 @@ def check_revert(bundle, root=ROOT, retired=None):
             return 1, ["revert %s has parents %s, not the deletion commit" % (rev[:10], parents)]
         gone = {l.split("\t", 1)[1] for l in _git(tmp, "diff-tree", "--no-commit-id", "--name-status", "-r", deletion).splitlines()
                 if l.startswith("D\t")}
-        want = {"%s/%s.py" % (RIMFLOW, n) for n in retired}
-        if want - gone:
-            return 1, ["commit %s does not delete %s" % (deletion[:10], sorted(want - gone))]
+        missing = min((sorted("%s/%s.py" % (RIMFLOW, n) for n in b if "%s/%s.py" % (RIMFLOW, n) not in gone) for b in batches), key=len)
+        if missing:
+            return 1, ["commit %s does not delete %s" % (deletion[:10], missing)]
         drift = _git(tmp, "diff", "--name-only", deletion + "^", rev)
         if drift:
             return 1, ["revert %s differs from the tree before the deletion: %s" % (rev[:10], drift.splitlines()[:5])]
@@ -333,9 +344,10 @@ def main(argv=None):
             print("unread: " + ", ".join(unread))
         return 0
     if a.verb == "zero":
-        for m, how in zero():
-            print("%-34s %s" % (m, how))
-        return 0
+        rows = zero()
+        for m, how in rows:
+            print("%-34s %s" % (m, "kept: " + KEPT[m] if m in KEPT else how + ", UNJUDGED"))
+        return 1 if any(m not in KEPT for m, _how in rows) else 0
     code, lines = check_retired() if a.verb == "retired" else check_revert(a.bundle)
     print("\n".join(lines))
     return code
