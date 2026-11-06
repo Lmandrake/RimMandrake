@@ -876,6 +876,31 @@ def t_done_path():
     ok(x.st("I0")["status"] == "done" and x.w.closes, "a reading after the commit ends the wait and closes: %s"
        % x.st("I0")["status"])
     x.done()
+    # the closing half: a close retry that rereads a live line merely predating the commit waits, never live_broken
+    x = Rig(n=1, share=1.0)
+    _lc2 = x.w.ledger_close
+    x.w.ledger_close = lambda item, sha, reason, live=None: "git hiccup"    # fails until restored: sits in closing
+    full_pass(x, "I0")
+    st = x.st("I0")
+    ok(st["status"] == "closing" and st.get("close_retry") and x.w.closes == [],
+       "a failed first close leaves the item in closing with close_retry: %s" % st["status"])
+    x.w.live_broken = live_line.NotYet("reading r predates the commit it should prove; not yet")
+    acts = x.tick() or []
+    st = x.st("I0")
+    ok(st["status"] == "closing" and not st["failures"].get("live_broken") and st.get("live_wait_since") is not None
+       and x.w.closes == [] and [a.get("do") for a in acts].count("live_waiting") == 1
+       and not any(a.get("do") == "live_broken" for a in acts),
+       "a close retry on a not-yet live line waits in closing, said once, no strike: %s %s" % (st["status"], acts))
+    acts = x.tick() or []
+    ok(x.st("I0")["status"] == "closing" and not any(a.get("do") == "live_waiting" for a in acts) and x.w.closes == [],
+       "the closing wait holds on the next tick and is not said again")
+    x.w.live_broken = None
+    x.w.ledger_close = _lc2
+    x.tick()
+    x.tick()
+    ok(x.st("I0")["status"] == "done" and x.w.closes == [("I0", "sha1")],
+       "a reading after the commit ends the closing wait and closes: %s" % x.st("I0")["status"])
+    x.done()
     # an unpublished sha never reaches a checker
     x = Rig(n=1, share=1.0)
     x.w.is_pub = False
