@@ -4986,3 +4986,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU","result":"kept","detail":"sweep: running again","ts":"2026-11-06T14:03:05Z","tsn":1793973785548704801}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"kept","detail":"sweep: running again","ts":"2026-11-06T14:03:09Z","tsn":1793973789100802178}
 {"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"kept","detail":"sweep: running again","ts":"2026-11-06T14:03:12Z","tsn":1793973792360750664}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_START: disk.scratch_dirty_start = 1 sanity problems at the start of the last run (MEASURED), line > 0","ts":"2026-11-06T14:03:43Z","tsn":1793973823089627043}
+{"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T14:03:46Z","tsn":1793973826463031927}
