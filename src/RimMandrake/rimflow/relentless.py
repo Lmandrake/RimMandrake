@@ -1140,6 +1140,9 @@ def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd
         rec = {"at": iso(now), "end": "rebind_" + verdict, "judge": judge, "why": why[:1200],
                "proposal": p, "before": relentless_binding.split(st["contract"], item)}
         if verdict == "approve":
+            if st["status"] == "closing":   # no check will read the repair: the close would stand on a PASS of the old binding
+                raise ValueError("%s is closing on its blind PASS: it can no longer take a binding repair (Codex r7 whole #1)"
+                                 % item)
             stale = []
             if relentless_binding.obligation_hash(st["contract"], item) != p["obligation_hash"]:
                 stale.append("the obligation changed since the proposal")
@@ -4787,15 +4790,16 @@ def worker_cap(fx, r, extra=0, store=None):
     return cap + extra
 
 
-def admission(store, fx, r, now, active, extra=0):
-    """-> None when one more run may start, else why not."""
+def admission(store, fx, r, now, active, extra=0, holds_place=False):
+    """-> None when one more run may start, else why not. `holds_place`: the run's status is already in `active`, so the
+    count is no reason to refuse it; two cut checkers over the cap would each wait on the other for ever (Codex r7 whole #3)."""
     br = load_breaker(store)
     if br.get("until", 0) > now + r["breaker_cool_max_s"]:      # set under a higher cap: the rule binds what is on disk
         br["until"] = now + r["breaker_cool_max_s"]
         store._write(store.p("breaker.json"), json.dumps(br))
     if br.get("until", 0) > now:        # the cause, not only the state: the alarm quotes this line
         return "breaker open until %s: %s" % (iso(br["until"]), (br.get("why") or "no cause recorded").strip()[:200])
-    if active >= worker_cap(fx, r, extra, store):
+    if not holds_place and active >= worker_cap(fx, r, extra, store):
         return "max_workers"
     if fx.paused():
         return "paused"
@@ -5974,7 +5978,16 @@ def step(store, fx, r, item, now, acts):
                         strict=False, proposals=got.get("proposals"), controls=got.get("controls"),
                         changed=relentless_wall.changed_paths(chk["box"]))
             except Fenced:
-                return
+                # first read past its deadline (the timer was down, the host slept): late is no verdict, and it may not trap
+                # the check either, which every tick would read and refuse again (Codex r7 whole #2): it expires as lost
+                with store.lock():
+                    cur = store.load(item)
+                    if not (cur and cur["status"] == "checking" and (cur.get("check") or {}).get("nonce") == chk["nonce"]
+                            and cur["check"].get("verdict") is None and past_deadline(cur["check"], now)):
+                        return
+                    cur["check"]["expired"] = True
+                    store.save(cur)
+                acts.append({"do": "verdict_late", "item": item})
             except (ValueError, TypeError, KeyError) as e:      # malformed past all that: a lost check, once - never a raise a tick
                 with store.lock():
                     cur = store.load(item)
@@ -6260,7 +6273,7 @@ def check_resume(store, fx, r, item, now, acts):
     st = store.load(item)
     chk = st["check"]
     active = sum(1 for x in store.states() if x["status"] in RUNS_A_PLACE) + helps_running(store)
-    hold = admission(store, fx, r, now, active, extra=1)    # it holds a place already: never starved behind new work
+    hold = admission(store, fx, r, now, active, holds_place=True)    # never starved behind new work, or behind its peers
     if hold:
         acts.append({"do": "check_waits", "item": item, "why": "resume: " + hold})
         return

@@ -218,9 +218,92 @@ def t_r3_review_rows():
         time.tzset()
 
 
+def t_r7_high_rows():
+    """The r7 graded review's HIGH claims that held (review/r7/triage.md), each red without its fix."""
+    import selftest_relentless as T
+    import selftest_relentless_resume as SR
+    real = R.tree_present
+    R.tree_present = lambda p: True
+    # a verdict file first read past the check's deadline used to raise Fenced on every tick, for ever (whole #2)
+    x = T.Rig(n=1, share=1.0, same_failure_limit=5)
+    try:
+        st = SR.to_check(x)
+        nonce = st["check"]["nonce"]
+        box = os.path.join(x.d, "box")
+        os.makedirs(box)
+        with open(os.path.join(box, "verdict.json"), "w") as f:
+            f.write('{"word": "PASS", "reasons": "ran it"}')
+        with x.s.lock():
+            cur = x.s.load(SR.ITEM)
+            cur["check"].update(box=box, deadline=x.now - 1)
+            x.s.save(cur)
+        x.w.up[st["check"]["run"]["unit"]] = False
+        for _ in range(4):
+            x.tick(7200)
+        cur = x.st(SR.ITEM)
+        ok((cur.get("check") or {}).get("nonce") != nonce,
+           "a verdict file read past its deadline ends that check instead of trapping it: %s" % cur["status"])
+        ok((cur.get("check") or {}).get("verdict") != "PASS", "and a late verdict is still no verdict")
+    finally:
+        x.done()
+        R.tree_present = real
+    # two checkers cut by the account over the cap each counted the other and waited for ever (whole #3)
+    R.tree_present = lambda p: True
+    x = T.Rig(n=1, share=1.0, same_failure_limit=5)
+    try:
+        st = SR.to_check(x)
+        with x.s.lock():
+            cur = x.s.load(SR.ITEM)
+            cur["check"]["resume"] = {"session": SR.SID, "at": x.now}
+            x.s.save(cur)
+            twin = dict(cur, item="I1")
+            x.s.save(twin)
+        n = len(x.w.launches)
+        acts = []
+        r = dict(x.r, max_workers=1, staffing=None, day_spend_limit=10 ** 12)
+        R.check_resume(x.s, x.w, r, SR.ITEM, x.now, acts)
+        ok(len(x.w.launches) == n + 1 and "resume" not in x.st(SR.ITEM)["check"],
+           "a cut checker resumes though its peers fill the cap: %s" % acts)
+        fx = types.SimpleNamespace(paused=lambda: False, mem_gb=lambda: 64.0)
+        ok(R.admission(x.s, fx, r, x.now, 9) == "max_workers", "the instrument can see: a new run over the cap still waits")
+    finally:
+        x.done()
+        R.tree_present = real
+    # a binding repair approved while closing moved the contract under a PASS of the old one (whole #1)
+    base = tempfile.mkdtemp(prefix="cx7_")
+    try:
+        s = R.Store(base)
+        st = R.new_state("I0", 1000.0, "t")
+        st.update(status="running", gen=1, approach="build")
+        with s.lock():
+            s.save(st)
+        R.contract(s, "I0", 1, "python3 a/selftest_x.py", obligation="the gourd selects", r=RULES)
+        R.rebind(s, "I0", 1, {"proof": "python3 a/selftest_y.py"},
+                 {"before": "ran x, gone", "after": "runs y, same rows", "behaviour": "same", "defect": "x is gone"}, r=RULES)
+        with s.lock():
+            cur = s.load("I0")
+            cur["status"] = "closing"
+            s.save(cur)
+        try:
+            R.bind_judge(s, "I0", "rm-judge", "approve", "same rows", env={}, r=RULES, cwd=base)
+            ok(False, "a closing item takes no binding repair")
+        except ValueError as e:
+            ok("closing" in str(e), "a closing item takes no binding repair: %s" % str(e)[:60])
+        ok(s.load("I0")["contract"]["proof"] == "python3 a/selftest_x.py", "and its contract does not move")
+        with s.lock():
+            cur = s.load("I0")
+            cur["status"] = "running"
+            s.save(cur)
+        R.bind_judge(s, "I0", "rm-judge", "approve", "same rows", env={}, r=RULES, cwd=base)
+        ok(s.load("I0")["contract"]["proof"] == "python3 a/selftest_y.py", "the instrument can see: a running item's repair still moves")
+    finally:
+        shutil.rmtree(base, ignore_errors=True)
+
+
 def main():
     for t in (t_empty_commit_is_no_proof, t_gitless_clone_is_kept, t_merge_lists_what_it_brought,
-              t_deleted_shard_is_refused_by_name, t_cooling_system_item_pauses_nothing, t_r3_review_rows):
+              t_deleted_shard_is_refused_by_name, t_cooling_system_item_pauses_nothing, t_r3_review_rows,
+              t_r7_high_rows):
         print("--", t.__name__)
         t()
     print("selftest_relentless_codex_seven: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
