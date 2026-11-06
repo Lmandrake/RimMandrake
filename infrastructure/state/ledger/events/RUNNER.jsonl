@@ -4897,3 +4897,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T13:09:19Z","tsn":1793970559121021907}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 4 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-06T13:10:38Z","tsn":1793970639004718683}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T13:10:42Z","tsn":1793970642503266710}
+{"seat":"RUNNER","event":"live","id":"OPS_FINDINGS_DIAGNOSE_XZLM","result":"broken","detail":"Ops alarm UNTRIAGED: flow.untriaged_findings = 1 findings with no outcome yet (MEASURED), line > 0","ts":"2026-11-06T13:11:54Z","tsn":1793970714823110897}
+{"seat":"RUNNER","event":"raise","id":"OPS_FINDINGS_DIAGNOSE_XZLM","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T13:11:58Z","tsn":1793970718812965485}
