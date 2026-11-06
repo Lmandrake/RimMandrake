@@ -178,7 +178,8 @@ def t_run_checks_the_running_load(root, s):
     fx = GitFx(root, s["proof"], gap="not in the running load: GimmeSomeSlack")
     out = tempfile.mkdtemp(prefix="cited_run_")
     row = L.run(fx, out, ID, "A1", "true", "--mod GimmeSomeSlack", {}, now=1_800_000_000)
-    check("a GSS-less game: UNMEASURED before any slot", row["outcome"] == "UNMEASURED" and row.get("slot") is False
+    check("a GSS-less game: NOT_ADMITTED before any slot", row["outcome"] == L.NOT_ADMITTED and row.get("slot") is False
+          and row.get("admit") == "running_load" and row.get("action") == "wait_load"
           and "running load" in (row.get("why") or ""), row)
     check("no bridge taken, no proof run", not any(c[0] == "proof" or c[:2] == ("rimflow", "bridge") for c in fx.calls),
           fx.calls)
