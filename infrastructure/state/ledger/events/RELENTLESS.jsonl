@@ -825,3 +825,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PUMP_STATION_REDRAW_PLUMBED_FOR_GIANTS: review savegame for the owner's look","ts":"2026-11-06T00:20:59Z","tsn":1793924459417837957}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T00:34:37Z","tsn":1793925277244279646}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T00:35:04Z","tsn":1793925304420207150}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T00:40:59Z","tsn":1793925659279182995}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PUMP_STATION_REDRAW_PLUMBED_FOR_GIANTS: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T00:41:43Z","tsn":1793925703988132252}
