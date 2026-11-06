@@ -1,0 +1,1 @@
+SELFBUILD_DESIGN_STAGE_ZERO_KEEPS_KEYS: a protected-path list must be read at the BASE sha and run from stage 0's copy, or a candidate edits the list it is judged by; and the import closure of the Judge gate is 119 files because relentless_seeds imports relentless.py, so the gate must be extracted before self-build can touch the supervisor.
