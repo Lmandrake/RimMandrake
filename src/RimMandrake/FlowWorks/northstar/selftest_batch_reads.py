@@ -289,6 +289,9 @@ class _FakeLive(object):
             return dict(ok, sizeX=100, sizeZ=100)
         if tool == "jawa/list_things":
             pool = [t for t in self.things if p.get("group") != "BuildingArtificial" or t["def_"] != "Steel"]
+            if p.get("group") == "PowerTrader":
+                pool = [t for t in self.things if t["def_"] == "SolarGenerator"]
+            pool = pool[:int(p.get("limit") or 200)]
             if p.get("rect"):
                 r = tuple(int(v) for v in p["rect"].split(","))
                 pool = [t for t in pool if self._in(t, r)]
@@ -385,6 +388,13 @@ def check_live_script(probs):
         probs.append("live script A1 with no powered building gave %s, want UNMEASURED" % (got,))
     except PB.Unmeasured:
         pass
+    # 300 ruin walls ahead of the one powered building (GAMEENV_FIX_PROOFSITE_28883863_ITEMS_WAIT): the cap must not hide it
+    walled = _FakeLive()
+    walled.things = [dict(id="Ruin%d" % i, def_="Wall", x=1 + i % 90, z=1 + i // 90, hp=300) for i in range(300)] + \
+        [t for t in walled.things if t["def_"] != "Battery"]
+    got = PB.clause_power(walled)
+    if got[0] != 0:
+        probs.append("live script power clause behind 300 walls gave %s, want 0" % (got,))
     a2 = PB.clause_a2(_FakeLive())[1]
     if "round trips saved" not in a2:
         probs.append("live script A2 prints no round-trip count: %s" % a2)

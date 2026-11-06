@@ -8,7 +8,7 @@ ticksGame, because a moving pawn or a ticking need would make two honest reads d
 A1: jawa/list_things_batch over up to 12 rects returns, rect by rect, exactly the rows jawa/list_things returns for that
     rect alone (at least one rect must hold a thing), and jawa/get_pawns_batch returns, pawn by pawn, exactly
     jawa/pawn_get's snapshot (at least one pawn), with a planted unknown pawn refused by both, and
-    jawa/get_power_nets_batch over every BuildingArtificial (up to 300) returns, thing by thing, the read jawa/power_net
+    jawa/get_power_nets_batch over every PowerTrader (up to 100) and BuildingArtificial (up to 200) returns, thing by thing, the read jawa/power_net
     returns (connected, net block, isPowerTrader, PowerOn, energyOutputPerTick; a refusal where power_net refuses),
     with at least one building carrying CompPower (a map with none is UNMEASURED, naming it).
 A2: the FlowWorks northstar extensions.py reads _state and _water (its plot_C_limitless_canal chain reads every channel
@@ -173,8 +173,14 @@ def clause_a2(b):
 
 def clause_power(b):
     b.ticks.clear()
-    every = _need(b.call("jawa/list_things", group="BuildingArtificial", limit=300), "list_things BuildingArtificial")
-    ids = [t["id"] for t in every.get("things") or []]
+    # The PowerTrader group first: a quicktest's first 300 BuildingArtificial are ruin walls, so the cap alone hid every
+    # powered building (GAMEENV_FIX_PROOFSITE_28883863_ITEMS_WAIT); the BuildingArtificial rows still drill the refusals.
+    powered = _need(b.call("jawa/list_things", group="PowerTrader", limit=100), "list_things PowerTrader")
+    every = _need(b.call("jawa/list_things", group="BuildingArtificial", limit=200), "list_things BuildingArtificial")
+    ids = []
+    for t in (powered.get("things") or []) + (every.get("things") or []):
+        if t["id"] not in ids:
+            ids.append(t["id"])
     if not ids:
         raise Unmeasured("no BuildingArtificial on the map")
     pb = _need(b.call("jawa/get_power_nets_batch", things=",".join(ids)), "get_power_nets_batch")

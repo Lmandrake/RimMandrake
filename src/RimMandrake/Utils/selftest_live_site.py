@@ -69,6 +69,15 @@ class FakeRB:
             return {"success": True}
         if tool == "rimworld/get_game_info":     # await_lifecycle's map check (READYWAITS_MIGRATE_REMAINING_52_COPIES)
             return {"mapCount": 1 if FakeRB.shared["programState"] == "Playing" else 0}
+        if tool == "jawa/list_things" and (params or {}).get("group") == "PowerTrader":
+            return {"success": True, "things": [dict(t) for t in FakeRB.powered]}
+        if tool == "rimworld/spawn_thing":
+            FakeRB.spawns.append(dict(params or {}))
+            if len(FakeRB.spawns) <= FakeRB.spawn_fails:
+                return {"success": False, "message": "cell blocked"}
+            if FakeRB.spawn_reads_back:
+                FakeRB.powered.append({"id": "SolarGenerator1", "def": params.get("defName")})
+            return {"success": True, "thingId": "SolarGenerator1"}
         if tool == "rimbridge/get_bridge_status":
             return {"state": {"automationReady": True, "currentMapId": 1, "longEventPending": False,
                               "programState": FakeRB.shared["programState"]}}
@@ -83,6 +92,10 @@ def run(argv, running=("ludeon.rimworld", "7f.alienworlds"), **kw):
     FakeRB.loads = []
     FakeRB.dies = kw.pop("dies", False)
     FakeRB.death_log = kw.pop("death_log", None)
+    FakeRB.powered = list(kw.pop("powered", ()))
+    FakeRB.spawns = []
+    FakeRB.spawn_fails = kw.pop("spawn_fails", 0)
+    FakeRB.spawn_reads_back = kw.pop("spawn_reads_back", True)
     L.connect = lambda timeout: FakeRB(log, **kw)
     clock = [0.0]       # a fake clock: every sleep advances it, so a wait that never succeeds ends at once
     L.time = types.SimpleNamespace(time=lambda: clock[0], sleep=lambda s: clock.__setitem__(0, clock[0] + s))
@@ -125,6 +138,30 @@ check("--game at the main menu -> a quicktest, READY", rc == L.READY and "rimwor
 rc, log = run(["--game"], state="MapInitializing")
 check("--game over a load that never ends -> NOT READY, no quicktest started over it",
       rc == L.NOT_READY and "rimworld/start_debug_game_ready" not in log)
+
+import io, contextlib  # noqa: E401,E402
+# --powered (GAMEENV_FIX_PROOFSITE_28883863_ITEMS_WAIT): a map with no PowerTrader building gets one SolarGenerator,
+# read back; a map that has one is left alone; a spawn that never reads back is NOT READY, never a site
+rc, log = run(["--game", "--powered"], powered=[{"id": "Lamp1", "def": "StandingLamp"}])
+check("--powered with a powered building -> READY, nothing spawned", rc == L.READY and not FakeRB.spawns)
+rc, log = run(["--game", "--powered"])
+check("--powered on a powerless map -> one SolarGenerator spawned, READY",
+      rc == L.READY and [s.get("defName") for s in FakeRB.spawns] == ["SolarGenerator"])
+rc, log = run(["--game", "--powered"], spawn_fails=2)
+check("--powered tries the next cell after a refused spawn", rc == L.READY and len(FakeRB.spawns) == 3
+      and len({(s["x"], s["z"]) for s in FakeRB.spawns}) == 3)
+rc, log = run(["--game", "--powered"], spawn_reads_back=False)
+check("--powered whose spawn never reads back -> NOT READY after ONE spawn", rc == L.NOT_READY and len(FakeRB.spawns) == 1)
+rc, log = run(["--game"])
+check("--game without --powered spawns nothing", not FakeRB.spawns and "rimworld/spawn_thing" not in log)
+rc, log = run(["--game", "--powered"], state="MapInitializing")
+check("--powered after a site that failed spawns nothing", rc == L.NOT_READY and not FakeRB.spawns)
+try:
+    with contextlib.redirect_stderr(io.StringIO()):
+        L.main(["--menu-dwell", "5", "--powered"])
+    check("argparse refuses --powered with --menu-dwell", False)
+except SystemExit as e:
+    check("argparse refuses --powered with --menu-dwell", e.code == 2)
 
 # --needs/--without (GENERATOR_MODS_PROVE_INERT_AFTER_CREATION): a wrong RUNNING list ends on `reload needed:`, loads nothing
 import io, contextlib  # noqa: E401,E402

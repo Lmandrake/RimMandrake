@@ -9,6 +9,12 @@
     python.exe src/RimMandrake/Utils/live_site.py --without oblitus.mylittleplanet --needs 7f.alienworlds --save NAME --ignore-missing-mods
     python.exe src/RimMandrake/Utils/live_site.py --save rm_proof_atmosphere --restage-with AtmosphericBase
 
+--powered (GAMEENV_FIX_PROOFSITE_28883863_ITEMS_WAIT): after the site is made, the map holds at least one building of the
+PowerTrader group. BATCHREADS_BUILD_ROUND_TRIP_CUT's power clause read the first 300 BuildingArtificial of a quicktest map
+(ruin walls), found no CompPower and was UNMEASURED; a quicktest colony owns no powered building. A map that has one is
+left alone; otherwise one vanilla SolarGenerator (Core, no stuff) is spawned near the centre and read back through the
+PowerTrader group: a spawn that does not read back is NOT READY, never a site.
+
 RELENTLESS_LIVE_FIX_GAME_UP_NOTHING_MEASURED: the live stage ran HORIZON_CARAVAN_VANILLA_REFUSES_1's Stillsand probe on a
 Leaning Scrub map eight times and LEANINGSCRUB_STALL_SHARED_MOVE_1's proof on the very biome its criteria exclude, while
 nothing ever set the map up. A live_proofs/<ID>.txt line `live-site A1: <this command>` makes relentless_live run it,
@@ -415,6 +421,43 @@ def game_site(a):
         print("READY: a quicktest map %s" % info.get("mapBiome"))
         return READY
 
+POWERED_DEF = "SolarGenerator"      # vanilla Core, 4x4, CompPowerPlantSolar: a CompPowerTrader with no stuff to pick
+
+
+def powered_things(rb):
+    r = rb.call("jawa/list_things", {"group": "PowerTrader", "limit": 50})
+    if not isinstance(r, dict) or r.get("success") is False:
+        raise RuntimeError("list_things group=PowerTrader failed: %s" % str(r)[:200])
+    return r.get("things") or []
+
+
+def ensure_powered(rb):
+    """--powered: READY when the map holds a PowerTrader building (one is spawned when none is), else NOT_READY."""
+    have = powered_things(rb)
+    if have:
+        print("site: %d powered building(s) already on the map (left as they are)" % len(have))
+        return READY
+    info = rb.call("jawa/map_info", {}) or {}
+    sx, sz = int(info.get("sizeX") or 0), int(info.get("sizeZ") or 0)
+    if sx < 20 or sz < 20:
+        print("NOT READY: --powered: map_info gave no usable size (%s)" % str(info)[:200])
+        return NOT_READY
+    tried = []
+    for dx, dz in ((0, 0), (8, 0), (-8, 0), (0, 8), (0, -8), (8, 8), (-8, -8), (8, -8), (-8, 8)):
+        x, z = sx // 2 + dx, sz // 2 + dz
+        r = rb.call("rimworld/spawn_thing", {"defName": POWERED_DEF, "x": x, "z": z})
+        tried.append("(%d,%d) %s" % (x, z, str((r or {}).get("message") or (r or {}).get("success"))[:60]))
+        if isinstance(r, dict) and r.get("success") is not False:
+            if powered_things(rb):
+                print("site: spawned %s at (%d,%d) for --powered" % (POWERED_DEF, x, z))
+                return READY
+            print("NOT READY: --powered: %s at (%d,%d) answered %s but no PowerTrader reads back (one spawn, no more)"
+                  % (POWERED_DEF, x, z, str(r)[:200]))
+            return NOT_READY
+    print("NOT READY: --powered: no %s read back as PowerTrader after %d tries: %s"
+          % (POWERED_DEF, len(tried), "; ".join(tried)[:400]))
+    return NOT_READY
+
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -424,6 +467,8 @@ def main(argv=None):
     ap.add_argument("--save", help="a save name to load (no .rws)")
     ap.add_argument("--menu-dwell", type=int, help="seconds at the main menu, then a quicktest map back")
     ap.add_argument("--game", action="store_true", help="a game with any map: start a quicktest only when none is up")
+    ap.add_argument("--powered", action="store_true",
+                    help="then the map holds a PowerTrader building: a SolarGenerator is spawned when none is")
     ap.add_argument("--max-ticks", type=int, default=120000)
     ap.add_argument("--budget", type=int, default=300)
     ap.add_argument("--needs", action="append", default=[], help="a packageId the RUNNING load must hold (repeatable)")
@@ -442,6 +487,8 @@ def main(argv=None):
         ap.error("--restage-with %s: no src/RimMandrake/%s/stage_proof_site.py" % (a.restage_with, a.restage_with))
     if sum((bool(a.save), bool(a.biome or a.not_biome), a.menu_dwell is not None, a.game)) != 1:
         ap.error("give one of --save, --biome / --not-biome, --menu-dwell, --game")
+    if a.powered and a.menu_dwell is not None:
+        ap.error("--powered needs a map: not with --menu-dwell")
     if a.menu_dwell is not None and not 1 <= a.menu_dwell <= 300:
         ap.error("--menu-dwell is 1..300 seconds")
     try:
@@ -451,8 +498,13 @@ def main(argv=None):
         if a.menu_dwell is not None:
             return menu_site(a)
         if a.game:
-            return game_site(a)
-        return save_site(a) if a.save else biome_site(a)
+            rc = game_site(a)
+        else:
+            rc = save_site(a) if a.save else biome_site(a)
+        if rc == READY and a.powered:
+            with connect(60) as rb:
+                rc = ensure_powered(rb)
+        return rc
     except Exception as e:      # noqa: BLE001  any bridge failure is a site not made, never a verdict
         print("NOT READY: %s: %s" % (type(e).__name__, str(e)[:300]))
         return NOT_READY
