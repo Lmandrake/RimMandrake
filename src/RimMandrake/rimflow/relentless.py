@@ -3449,6 +3449,19 @@ class Effects(relentless_game.GameFx):
         argv[at:at] = ["--setenv", "RIMFLOW_BRIDGE_SEAT=" + BRIDGE_HOLDER,     # its worker's `bridge take` is Relentless's
                        "--setenv", "WSLENV=RIMFLOW_BRIDGE_SEAT"]               # and a python.exe preflight it runs reads the same name
         at = argv.index("--")
+        if agent == relentless_game.STAGE_AGENT:    # STAGING_REWIRE_PYTHON_NOT_AN_LLM: the python stager, same unit shape
+            fb = argv[at + 1:]
+            o = fb.index("--output-format")
+            fb[o:o] = ["--agent", self.r["pilot_agent"]]       # its one LLM road: exec'd on an unhandled exception only
+            plan = dict(st.get("_stage_plan") or {}, clone=clone, fallback=fb)
+            pf = os.path.splitext(run["out"])[0] + ".stage.json"
+            with open(pf, "w", encoding="utf-8") as f:
+                json.dump(plan, f)
+            tool = os.path.join(clone, "src", "RimMandrake", "rimflow", "relentless_stage.py")
+            argv = argv[:at] + list(wall) + sum((["--setenv", "%s=%s" % kv] for kv in extra_env.items()), []) + \
+                ["--", sys.executable, tool, "run", "--plan", pf]
+            r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+            return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr)[-200:])) if r.returncode else None
         if agent == VENDOR_AGENT:       # the Consult port: a python body in the same unit shape, so alive/stop/settle hold
             pf = os.path.splitext(run["out"])[0] + ".prompt.md"
             with open(pf, "w", encoding="utf-8") as f:

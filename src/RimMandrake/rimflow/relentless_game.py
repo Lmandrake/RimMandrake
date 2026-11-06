@@ -50,6 +50,9 @@ GAME = "game"
 READING_TTL_S = 30
 DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "stage_max_s": 3600, "stage_tries": 2,
             "prove_every_s": 900, "renew_s": 1200,
+            # STAGING_REWIRE_PYTHON_NOT_AN_LLM: the staging unit runs relentless_stage.py, not an LLM (false: the old
+            # pilot_agent staging worker, the stage prompt as its brief)
+            "stage_python": True,
             # a cold load's bound is NOT set here: it is Utils/load_policy.json's process_to_bridge_deadline_s for the
             # list that loads (BRIDGE_DEADLINES_UNIFY_ONE_ABSOLUTE_POLICY), and passing it restages only on stall
             # evidence, never on the clock alone (load_bound, load_stall_evidence)
@@ -629,6 +632,23 @@ def steve_sync(store, fx, r, item, g, sha, now, acts):
     return STEVE_WAIT if open_all and all(k in steve for k in open_all) else None
 
 
+STAGE_AGENT = "python_stager"   # relentless.Effects.launch runs relentless_stage.py in the unit for this agent
+
+
+def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None):
+    """What relentless_stage.py does for this staging (STAGING_REWIRE_PYTHON_NOT_AN_LLM), the stage prompt's steps as
+    data. deploy: deploy_custom_mods.py argument strings, the build's mod folders (never a packageId: those are enabled,
+    not deployed) with the stale-DLL ones and the lane fix's, then the `live-deploy:` trees. deploy_args: folders -> one
+    argument string (GameFx.game_deploy_args: a folded biome folder plans through --compose biomes)."""
+    import relentless_live_round as R
+    folders = sorted({m for m in enable if not R.is_package(m)} | set(dlls) | set((remedy or {}).get("mods") or []))
+    args = (deploy_args or (lambda ms: " ".join("--mod %s" % m for m in ms)))
+    deploy = ([args(folders)] if folders else []) + ([trees[1]] if trees and trees[1] else [])
+    return {"item": st["item"], "gen": st["gen"], "sha": sha, "full": bool((st.get("game") or {}).get("full")),
+            "enable": sorted(enable), "deploy": deploy, "riders": [o["item"] for o in others],
+            "remedy_cmds": list((remedy or {}).get("cmds") or []), "max_s": c["stage_max_s"]}
+
+
 def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None):
     """trees: `live-deploy:` mods riding this load -> (folders, deploy_custom_mods.py args covering them), or None.
     remedy: the lane's own fix of an environment cause (_env_fix): {"mods": to deploy and load, "cmds": producers}."""
@@ -951,6 +971,11 @@ class GameFx(object):
         """relentless_live_round.batch_gap: every [(item, sha)] riding one load, for one deploy plan."""
         import relentless_live_round
         return relentless_live_round.batch_gap(self._round_fx(), [(s, self._mods_text(i, s), i) for i, s in builds])
+
+    def game_deploy_args(self, folders):
+        """Mod folders -> one deploy_custom_mods.py argument string (relentless_live_round.deploy_args)."""
+        import relentless_live_round as R
+        return R.deploy_args(folders, self._round_fx().folded())
 
     def game_trees(self, builds):
         """Every `live-deploy:` mod of [(item, sha)] riding one load -> (folders, deploy_custom_mods.py args), or None."""
@@ -1987,8 +2012,13 @@ def step(store, fx, r, item, now, acts, sup):
         st["_proofs_text"] = fx.proofs_at(item, sha)
         trees = fx.game_trees([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                  if (o.get("game") or {}).get("sha")])
-        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy), r["pilot_agent"], st["clone"], c["stage_max_s"],
-                        {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
+        agent = r["pilot_agent"]
+        if c.get("stage_python", True):     # the prompt rides as the python stager's fallback brief only
+            agent = STAGE_AGENT
+            st["_stage_plan"] = stage_plan(st, c, sha, others, want, dll_mods(gaps), trees, remedy,
+                                           getattr(fx, "game_deploy_args", None))
+        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy), agent,
+                        st["clone"], c["stage_max_s"], {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()
             _save(store, item, lambda s: (s["game"].update(phase="stage", **({"remedy": g["remedy"]} if g.get("remedy") else {})),

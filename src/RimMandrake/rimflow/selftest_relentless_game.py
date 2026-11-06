@@ -506,7 +506,8 @@ def t_stage_and_release():
     x.tick()
     st = x.st("I0")
     ok(st["game"]["phase"] == "staging" and x.w.events.count("take") == 1, "no game: the supervisor takes the bridge")
-    ok(x.w.launches[-1][3] == x.r["pilot_agent"] and "STAGING" in x.w.launches[-1][2], "and launches one staging worker")
+    ok(x.w.launches[-1][3] == G.STAGE_AGENT and "STAGING" in x.w.launches[-1][2],
+       "and launches one staging unit: the python stager, the stage prompt its fallback brief")
     R.beat(x.s, "I0", st["gen"])
     G.ready(x.s, "I0", st["gen"], "deployed, minimal list")
     x.w.running = True
