@@ -7,9 +7,8 @@
   RSW_Mammavian_Meat, RSW_MlieWaveB_Resources.xml), sounds (RSW_Pawn_Porg_*,
   already absorbed; the chick life stage keeps vanilla Pawn_Chick_Call, unchanged).
   The vanilla PawnKindDef.flyingAnimationFramePathPrefix{,Female} fields (Odyssey's
-  migratory-bird flight-frame system) are ported along with their 4-frame art sets
-  (swanimals/Porg/Porg_{,f_}Flying_1..4), not dropped — the extracted bundle
-  included them and the fields are Core, not donor-specific. texPaths otherwise
+  migratory-bird flight-frame system) are ported, not dropped: the fields are Core, not donor-specific.
+  The flight frames are now an 8-frame cut-out set of ours (swanimals/Porg/Porg_Flying_1..8). texPaths otherwise
   unchanged text. Live at AridShrubland in the current cast
   (cast_assignment.csv / BiomeCast_Ashkarr.xml), repointed from the bare "Porg"
   entry this same pass.
@@ -139,12 +138,13 @@
     <combatPower>30</combatPower>
     <ecoSystemWeight>0.50</ecoSystemWeight>
     <wildGroupSize>2~5</wildGroupSize>
+    <!-- FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY: 8-frame whole-body flip-book cut from the kept static (owner 2026-11-06: "Porg flying looks good enough from here").
+         One set serves both sexes, so no female prefix; the frame canvas is 320 over the 256 static, so DrawSize 1.25 as a multiplier keeps the grounded scale. -->
     <flyingAnimationFramePathPrefix>swanimals/Porg/Porg_Flying_</flyingAnimationFramePathPrefix>
-    <flyingAnimationFramePathPrefixFemale>swanimals/Porg/Porg_f_Flying_</flyingAnimationFramePathPrefixFemale>
-    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
-    <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
-    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>4</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
     <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <moveSpeedFactorByTerrainTag>
       <li>

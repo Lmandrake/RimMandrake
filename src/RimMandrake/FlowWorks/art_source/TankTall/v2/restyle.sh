@@ -9,7 +9,7 @@ M=$1; L=$2; O=$3; N=$4
 case $L in
   Scrapper)   D="salvaged and patched: rust-brown and copper-toned metal, riveted patch plates, scavenged wood, rope and wire lashings, bronze fittings";;
   Industrial) D="dark gunmetal and blackened iron, heavy bolted flanges, yellow-and-black hazard stripe bands, worn but maintained, dark iron fittings";;
-  Modern)     D="glossy fire-engine red paint with polished chrome fittings and light grey accents, clean and new";;
+  Modern)     D="plain factory-finished off-white and galvanized steel with ordinary hardware and muted colours, a commercial unit you would see today, clean and new";;
   Futuristic) D="white and light-silver composite panels with dark grey trim and glowing cyan light strips along the seams, sleek and clean";;
 esac
 export CODEX_MODEL=gpt-6.1-sol

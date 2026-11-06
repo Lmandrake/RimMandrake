@@ -11,7 +11,7 @@ G=$O/guides
 case $L in
   Scrapper)   D="salvaged and patched: rust-brown riveted iron frame and flanges, tan stitched sack-cloth hose, brass fittings and coupling"; P="";;
   Industrial) D="dark gunmetal and blackened iron, black rubber hose, yellow-and-black hazard stripe bands on the flanges, steel fittings"; P="Styles/Industrial/";;
-  Modern)     D="glossy fire-engine red paint, red hose, polished chrome valve and fittings, clean and new"; P="Styles/Modern/";;
+  Modern)     D="plain galvanized steel reel and frame, off-white woven canvas hose, ordinary chrome valve and fittings, muted commercial finish you would see today, clean and new"; P="Styles/Modern/";;
   Futuristic) D="white and light-silver composite with dark grey trim, white hose with cyan stripes, glowing cyan light strips, sleek"; P="Styles/Futuristic/";;
 esac
 COMMON="Light from overhead and slightly in front; every top face is the brightest surface. Painterly RimWorld building sprite, clean edges, readable at small size. Fully transparent background, real alpha, no ground, no shadow, no scenery."
@@ -32,7 +32,7 @@ else
   esac
   PR="Image 1 is a grey blockout that fixes the exact camera (orthographic, looking down from the front at 35 degrees), the shapes, proportions and position of every part on the canvas. Image 2 is the same hose reel in its $L look, drawn from the side: copy its materials, colours, wear and level of detail ($D), never its camera. Paint image 1 as that $L hose reel: $SD. $FD Every part stays exactly where image 1 puts it, with the size image 1 gives it; image 1's grey tones are only shading hints. $COMMON"
   if [ "$L" = Modern ]; then
-    PR="$PR The reel stands on the owner's chosen Modern stand: ONE round red post rising from a square red foot plate to a red yoke under the drum (exactly as image 1 places them; the post stays clearly visible below the drum), never a box base. On the hub opposite the outlet sits the same chrome valve image 2 shows on its right: a chrome valve body, a short stem, and a red spoked handwheel lying flat on top (seen from above as an ellipse with its spokes), never a plain cap."
+    PR="$PR The reel stands on the owner's chosen Modern stand: ONE round steel post rising from a square steel foot plate to a steel yoke under the drum (exactly as image 1 places them; the post stays clearly visible below the drum), never a box base. On the hub opposite the outlet sits the same chrome valve image 2 shows on its right: a chrome valve body, a short stem, and a red spoked handwheel lying flat on top (seen from above as an ellipse with its spokes), never a plain cap."
   fi
 fi
 mkdir -p "$O/raw"

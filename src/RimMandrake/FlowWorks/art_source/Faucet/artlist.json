@@ -40,7 +40,7 @@
   "canon_reference": [
    "/home/mandrake/rm/foundry/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Sprinkler/Modern/RM_SprinklerHead.png"
   ],
-  "style_notes": "Modern look: glossy red enamel with white collars and polished chrome fittings. The attached image is the sprinkler head in the SAME look on the same pipe: match its palette, material and scale exactly, but draw a faucet, not a sprinkler. Realistic painted natural-history illustration: grounded, believable form, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "style_notes": "Modern look: plain off-white and galvanized fittings with ordinary chrome, muted commercial finish you would see today. The attached image is the sprinkler head in the SAME look on the same pipe: match its palette, material and scale exactly, but draw a faucet, not a sprinkler. Realistic painted natural-history illustration: grounded, believable form, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
   "priority": 15,
   "background": "transparent",
   "target_def": "RM_PipeFaucet",

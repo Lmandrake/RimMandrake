@@ -1,6 +1,7 @@
 #!/bin/bash
 # One look's bank-stake and silt-trap pieces through codex $imagegen (edit: image 1 = guide, image 2 = the look's tank for
 # materials). RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS fixes 8 and 10. Usage: generate.sh <Look> [piece ...]  -> raw/<Look>_<piece>.png
+# The Modern and Industrial baffle3q rasters came from redraw_2026_11_06.sh, not from this script.
 set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"; REPO="$(cd "$HERE/../../../../.." && pwd)"
 LOOK="$1"; shift; TANK="$REPO/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Tank/$LOOK/RM_LiquidTank.png"
@@ -8,8 +9,8 @@ CI="$REPO/skills/generating-images/scripts/codex_image.py"; mkdir -p "$HERE/raw"
 RMS="$(python3 "$REPO/src/RimMandrake/Utils/rmpaths.py" scratch)" || exit 2
 case "$LOOK" in
  Scrapper) MAT="weathered grey-brown salvaged timber, mismatched planks, patched with rusty riveted scrap-metal plates, frayed rope lashings - the same rust, worn steel and old wood as image 2";;
- Industrial) MAT="heavy dark-stained timber held by dark gunmetal steel straps and channel with hex bolts, yellow-and-black hazard stripes on one band - the same gunmetal and hazard yellow as image 2";;
- Modern) MAT="clean sawn honey-brown treated timber with glossy red-painted steel caps and brackets and polished chrome bolts - the same glossy red and chrome as image 2";;
+ Industrial) MAT="bare unpainted poured concrete with formwork board-marks, stains and rust bleeds from form-tie holes: ugly, utilitarian, colourless (owner 2026-11-06, 2026-10-23: industrial is brutalist). Take no colour from image 2";;
+ Modern) MAT="sawn pressure-treated dark brown timber, plain galvanized matte grey-steel sleeves, brackets and caps, ordinary hex bolts, muted natural colours: a plain structure you would see today (owner 2026-11-06: never bright red for Modern). Take no colour from image 2";;
  Futuristic) MAT="smooth white composite panels with pale grey seams, rounded white brackets and a thin glowing cyan light strip - the same white and cyan as image 2";;
 esac
 COMMON="RimWorld building sprite, river bank works, look: $LOOK. Image 1 is a grey geometry guide: keep its silhouette, placement, proportions and camera exactly (orthographic, about 35 degrees above horizontal, top faces lit and fully visible, light from overhead-front). Replace the grey blockout with finished painted game art. Materials and palette: $MAT. Image 2 is only the material and colour reference; draw no tank. The background is fully transparent (real alpha). Draw no cast shadow and no grass. Clean readable shapes that survive shrinking to 128 pixels per cell; the outline is crisp."

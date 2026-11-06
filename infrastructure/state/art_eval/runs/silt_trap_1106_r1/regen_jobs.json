@@ -1,0 +1,20 @@
+[
+ {
+  "id": "arteval_RM_SiltTrap_Modern_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SiltTrap_Modern",
+  "prompt": "A single RimWorld building sprite: a modern riverbank silt-trap baffle barrier. Pressure-treated dark brown timber boards stacked horizontally between square timber posts, fastened with galvanized steel brackets and steel post caps, a plain practical structure of today in natural galvanized grey and dark timber tones with no hazard stripes and no painted tier colour. A thin, tight sliver of damp silt sits pressed against the boards, its edge hugging the timber so it reads as part of the structure. The barrier is cut out cleanly on a fully transparent background: each post foot ends in a crisp clean-cut base with a dark outline, the lowest board edge is a straight outlined line, and transparent alpha shows between and around the post feet, with the barrier standing alone as an isolated object and nothing beneath it. Painterly vanilla RimWorld style, realistic, clean dark outline, square framing for a 1.2 x 1.2 Graphic_Single. Keep the palette, timber and steel construction and proportions from the previous render.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ALPHA_HALO, ALPHA_HALO; canvas 1024: the spec has no drawSize",
+  "reference": "",
+  "priority": 40,
+  "source_run": "silt_trap_1106_r1",
+  "module": "structure"
+ }
+]

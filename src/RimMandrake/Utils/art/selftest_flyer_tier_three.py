@@ -2,7 +2,7 @@
 """selftest_flyer_tier_three.py - the tier-3 flyers fly on still-body flip-books cut from their kept statics
 (FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY; recipe: design/RimMandrake/flyer_stable_body_study.md 3.1, 3.2).
 
-Offline, read-only. Per def (RM_Dwommo, RM_FeverSwarm, RM_Skellick, RM_Skinflap, RM_Skiralim):
+Offline, read-only. Per def (RM_Dwommo, RM_FeverSwarm, RM_Skellick, RM_Skinflap, RM_Skiralim, RSW_Porg):
   1. the ThingDef can fly (statBases/MaxFlightTime > 0: Pawn_FlightTracker.CanEverFly reads that stat);
      the PawnKindDef names the set's 8-frame flip-book (prefix = config folder + prefix, DrawSize 1.25 multiplier)
      and all 24 PNGs exist;
@@ -12,7 +12,6 @@ Offline, read-only. Per def (RM_Dwommo, RM_FeverSwarm, RM_Skellick, RM_Skinflap,
   4. flyer_gate.DEF_SETS maps the def to its set, and the committed plan calls the def locked (tier 0);
   5. the wings move in every facing (flyer_cutout motion; MOTION_WAIVED names a facing excused, and why); no frame
      is a banned picture.
-RSW_Porg is not here: its flight frames are owner-KEPT, so replacing them is his call (the Porg.json set is staged).
 Exit 0 = all pass, 1 = a check failed.
 """
 from __future__ import annotations
@@ -47,6 +46,7 @@ SETS = {
                     "Things/Pawn/Animal/RM_Skinflap/RM_Skinflap"),
     "RM_Skiralim": ("src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fills.xml", "Skiralim",
                     "Things/Pawn/Animal/RM_Skarrok/RM_Skarrok"),
+    "RSW_Porg": ("src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Porg.xml", "Porg", "swanimals/Porg/Porg"),
 }
 
 # A facing excused from flyer_cutout motion's "40% of the east facing" floor, with the reason. Only a static whose view

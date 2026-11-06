@@ -851,10 +851,12 @@
    "frames": "4"
   },
   "RSW_Porg": {
-   "tier": 3,
-   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
-   "flipbook": "unannotated",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Porg"
+   ],
    "tex": "swanimals/Porg/Porg_j",
    "static": {
     "g1": 0.974,
@@ -862,8 +864,8 @@
     "g4": 0.48
    },
    "static_fails": [],
-   "provenance": "donor-copy (cartoon)",
-   "frames": "4"
+   "provenance": "generated/ours",
+   "frames": "8"
   },
   "RSW_Sacapillar": {
    "tier": 4,

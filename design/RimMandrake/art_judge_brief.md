@@ -46,6 +46,8 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
 - B4. A built thing's colour reads as its material, not a coat of paint. — Lesson (`colour-with-material-not-paint`)
 - B5. Palettes are options, never bans: never REDO because a colour appears that another build passed over. —
   Owner correction 2026-08-27 (`Palettes/`, memory `material-palettes`)
+- B6. A Modern tier looks like a building you would see today, never bright red or paint-coloured as a tier marker. —
+  Owner 2026-11-06 ("you KNOW that you're not supposed to just use bright red for modern. Make it look like a "modern" building, I.e. one that I would see right now.")
 
 ### C. Facings and perspective
 - C1. North is the creature's rear (no face, no eyes); south looks at the camera; never a top-down view rotated.

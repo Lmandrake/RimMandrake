@@ -1,0 +1,59 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3800612
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_SiltTrap_Industrial",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "machine@v4",
+   "sha": "d24b10345e18"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a8078890ad6d82b3615fa485390f68eea4c7d373f8e7dfa583327a1c58ab8307",
+  "scale.png": "58946265c648bd50d8c48bd9351c88ff7956014d5314f6e02cf054986dfff245",
+  "assembled_1.png": "a0855cffeb3555d2515089c136975000b6eace81cad46428d81f3b4086016317",
+  "assembled_2.png": "6092fc1b434cf0391acabd2420bd2e839ae75a08cb9fca2362f5f2b3cb4c1707",
+  "assembled_3.png": "c94bf22df5931e246bb3ceea4a716cc900b4ec57bdb889e44a11df5df9074544",
+  "siblings.png": "c2489d3437dd0c8ada5e4fd2417505649fbbacee2d95376324e18fa569129d90",
+  "facings.png": "e53c53459542bf5e02b8ed81ce92e53358a349a32d8047c811f9ca05d66b7c0a"
+ }
+}

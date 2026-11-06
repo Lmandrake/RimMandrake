@@ -149,7 +149,7 @@ def build():
           "Steel": "plain mid-grey steel tread plate in three long panels, a few large flush bolts",
           "Scrapper": "mismatched salvaged timber boards with one or two large rusty scrap-steel patches, flush and flat",
           "Industrial": "dark gunmetal steel plate in long panels, one broad yellow-black hazard band at each end",
-          "Modern": "smooth light-grey steel panels with shallow seams and flush joints, a slim red edge channel each side",
+          "Modern": "smooth light-grey steel panels with shallow seams and flush joints, a slim galvanized steel edge channel each side",
           "Futuristic": "matte off-white composite deck plates, dark recessed seams, one thin teal strip down each edge"}
     for lk, mat in pl.items():
         tex = f"{DBT}/RM_DrawbridgePlanks_{lk}"
@@ -193,7 +193,7 @@ def build():
     # ---- rank 4: timber decks in the three metal looks ---------------------------------------------------- wave 2
     tdk = {"Industrial": "broad timber boards in the middle; the side bands are dark gunmetal steel channels with a few big "
                          "bolts and riveted steel straps crossing the boards",
-           "Modern": "broad clean pale timber boards in the middle; the side bands are glossy red painted steel channels",
+           "Modern": "broad clean pale timber boards in the middle; the side bands are plain galvanized steel channels",
            "Futuristic": "broad smooth honey-coloured timber boards in the middle; the side bands are matte off-white "
                          "composite rails with a dark seam and one thin teal strip"}
     for lk, w in tdk.items():
@@ -393,7 +393,7 @@ def build():
                 f"Same camera, size and post layout as image 1. Material: {gmat[lk]}. {READ} {ALPHA}", [gref],
                 "RM_DrawbridgeGate", f"{DBT}/{src}", facing="south", gen=(1024, 1536))
     smat = {"Steel": "regular engineered mid-grey steel framing, restrained, no patchwork",
-            "Industrial": LOOK["Industrial"], "Modern": LOOK["Modern"] + ", the red frame is its defining shape",
+            "Industrial": LOOK["Industrial"], "Modern": LOOK["Modern"] + ", the steel frame is its defining shape",
             "Futuristic": LOOK["Futuristic"]}
     for lk, m in smat.items():
         src = "RM_DrawbridgeWinch_Steel" if lk == "Steel" else f"RM_DrawbridgeWinch_Steel_{lk}"

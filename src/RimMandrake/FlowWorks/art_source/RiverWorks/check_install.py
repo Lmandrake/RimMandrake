@@ -37,9 +37,25 @@ for look in ("Scrapper", "Industrial", "Modern", "Futuristic"):
 # SILT_TRAP_STYLES_REDRAW_HALF_RES_FLAT: the styled traps had been 128 px frontal panels beside a 256 px oblique base.
 # Each look is now at the base's 256 px and camera (its silhouette's bottom edge slopes down left to right; a frontal
 # panel measures ~0, the old base 0.31) and keeps its trim (fraction of opaque pixels in the trim's hue band).
-TRIM = {"Scrapper": ("rust", (10, 35, .45, .3), 0.10), "Industrial": ("hazard yellow", (40, 60, .5, .4), 0.005),
-        "Modern": ("red", (345, 370, .5, .4), 0.10), "Futuristic": ("cyan", (170, 200, .4, .5), 0.02)}
-for look, (name, (h0, h1, smin, vmin), need) in TRIM.items():
+# Owner 2026-11-06: Modern is a building you would see today, never bright red, and has no hazard tape; Industrial is
+# raw cement, not colourful. Both have no trim to keep, so None skips that row and SURFACE below checks them instead.
+TRIM = {"Scrapper": ("rust", (10, 35, .45, .3), 0.10), "Industrial": None,
+        "Modern": None, "Futuristic": ("cyan", (170, 200, .4, .5), 0.02)}
+RED, HAZARD = (345, 370, .5, .4), (40, 60, .5, .4)
+SURFACE_MAX_FRAC = 0.005           # most of a banned colour a Modern or Industrial silt trap may show
+INDUSTRIAL_MAX_MEAN_S = 0.30       # cement: the old timber-and-tape redraw measured 0.415, the new one 0.243
+MODERN_MIN_GREY = 0.10             # galvanized fittings at saturation < 0.15: the old red redraw measured 0.048, the new one 0.204
+
+
+def band_frac(hsv, band):
+    """Fraction of the sampled pixels inside one (hue from, hue to, min sat, min value) band; hue to may pass 360."""
+    h0, h1, smin, vmin = band
+    hue = hsv[:, 0] * 360
+    hue = np.where(hue < h0, hue + 360, hue) if h1 > 360 else hue
+    return ((hue >= h0) & (hue <= h1) & (hsv[:, 1] >= smin) & (hsv[:, 2] >= vmin)).mean()
+
+
+for look, trim in TRIM.items():
     im = Image.open(TEX / "RimMandrake" / "FlowWorks" / "Rivers" / look / "RM_SiltTrap.png").convert("RGBA")
     check(im.size == (256, 256), f"{look} silt-trap canvas 256x256 (got {im.size[0]}x{im.size[1]})")
     a = np.array(im).astype(float)
@@ -48,9 +64,18 @@ for look, (name, (h0, h1, smin, vmin), need) in TRIM.items():
     slope = np.polyfit(xs, [np.nonzero(op[:, x])[0].max() for x in xs], 1)[0]
     check(slope >= 0.15, f"{look} silt-trap oblique (bottom-edge slope {slope:.2f} >= 0.15)")
     hsv = np.array([colorsys.rgb_to_hsv(*px) for px in a[..., :3][op][::7] / 255])
-    hue = hsv[:, 0] * 360
-    hue = np.where(hue < h0, hue + 360, hue) if h1 > 360 else hue
-    frac = ((hue >= h0) & (hue <= h1) & (hsv[:, 1] >= smin) & (hsv[:, 2] >= vmin)).mean()
+    if trim is None:
+        for colour, band in (("bright red", RED), ("hazard yellow", HAZARD)):
+            frac = band_frac(hsv, band)
+            check(frac <= SURFACE_MAX_FRAC, f"{look} silt-trap shows no {colour} ({frac:.4f} <= {SURFACE_MAX_FRAC})")
+        if look == "Industrial":
+            check(hsv[:, 1].mean() <= INDUSTRIAL_MAX_MEAN_S, f"Industrial silt-trap reads as cement (mean sat {hsv[:, 1].mean():.3f} <= {INDUSTRIAL_MAX_MEAN_S})")
+        else:
+            grey = (hsv[:, 1] < .15).mean()
+            check(grey >= MODERN_MIN_GREY, f"Modern silt-trap shows galvanized grey ({grey:.3f} >= {MODERN_MIN_GREY})")
+        continue
+    name, band, need = trim
+    frac = band_frac(hsv, band)
     check(frac >= need, f"{look} silt-trap keeps its {name} trim ({frac:.3f} >= {need})")
 check((TEX / "RimMandrake" / "FlowWorks" / "Rivers" / "RM_SiltWedge.png").is_file(), "silt wedge installed")
 print("\n" + ("PASS: 0 failure(s)" if not fails else f"FAIL: {len(fails)} failure(s)"))

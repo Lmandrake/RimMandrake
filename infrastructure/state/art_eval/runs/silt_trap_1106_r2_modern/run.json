@@ -1,0 +1,9 @@
+{
+ "run_id": "silt_trap_1106_r2_modern",
+ "test": false,
+ "started": "2026-11-06T13:45:46-08:00",
+ "subjects": [
+  "RM_SiltTrap_Modern"
+ ],
+ "versions_key": "departures_brief@v3#4e4c26+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v3#2337d2+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
+}

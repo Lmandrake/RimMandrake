@@ -1,6 +1,6 @@
-# Silt trap styled redraw: independent judge verdict (judge_sheet.png, 2026-11-05)
-Scrapper: PASS — three-quarter oblique and left-to-right recession match the base at 256 px; rusty salvaged timber, rope lashings and patch plates kept; post tops and cap faces visible, dirt bank and water-foot contact present; no halo or crop; reads at 77 px. Panel stands a bit taller and more upright than the squat base (minor).
-Industrial: PASS — camera matches the base; dark timber, gunmetal end caps and bolts, and two yellow-black hazard bands kept; capped post tops with visible thickness, bank contact present; clean edges; hazard stripes still read at game scale.
-Modern: PASS — camera matches the base; honey timber, glossy red pyramid caps and red brackets kept; cap thickness and bank contact fine; clean edges; reads at game scale. Minor: the red bracket layout is asymmetric and busy (floating plate on the left bay, L-bracket and diagonal strap low on the right), which reads as clutter rather than a defect.
-Futuristic: PASS — camera matches the base; white composite, rounded caps, gunmetal bands and cyan light strips kept; post tops and base skirt in water visible; no halo or fringe; cyan still reads at 77 px.
-OVERALL: PASS
+# Silt trap styled redraw: judge verdicts
+Modern and Industrial below replace the 2026-11-05 verdicts for the red Modern and the striped Industrial, both discarded by the owner's 2026-11-06 ruling.
+Scrapper (judge_sheet.png, 2026-11-05): PASS — three-quarter oblique and left-to-right recession match the base at 256 px; rusty salvaged timber, rope lashings and patch plates kept.
+Futuristic (judge_sheet.png, 2026-11-05): PASS — camera matches the base; white composite, rounded caps, gunmetal bands and cyan light strips kept; cyan still reads at 77 px.
+Industrial (art-eval run silt_trap_1106_r1): ACCEPT — Opus GOOD; polish LEGIB_32.
+Modern (art-eval run silt_trap_1106_r2_modern): ACCEPT — Opus WEAK, GPT strong_accept; polish LEGIB_32 (at 32 px the boards merge into a dark band). The first pass, silt_trap_1106_r1, read REGEN on GPT's ALPHA_HALO for the mud strip the brief asks for and all four looks carry; the same image was re-judged with that fact on the card.
