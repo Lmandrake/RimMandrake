@@ -5287,3 +5287,4 @@
 {"seat":"RUNNER","event":"raise","id":"RELENTLESS_LIVE_REPAIR_QUITS_BEFORE_THE_LOAD","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T19:34:09Z","tsn":1793993649134416596}
 {"seat":"RUNNER","event":"live","id":"RELENTLESS_OWNER_DESIGN_NEVER_LETS_GO","result":"broken","detail":"rm-relentless.timer: is-active says 'inactive', wanted 'active'","ts":"2026-11-06T19:34:12Z","tsn":1793993652144583438}
 {"seat":"RUNNER","event":"raise","id":"RELENTLESS_OWNER_DESIGN_NEVER_LETS_GO","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T19:34:15Z","tsn":1793993655302537675}
+{"seat":"RUNNER","event":"note","id":"OPS_TIMERS_REVIVE_343F","text":"timers_guard: watched timers are active again (2026-11-06T19:38:00Z)","ts":"2026-11-06T19:38:02Z","tsn":1793993882329922024}
