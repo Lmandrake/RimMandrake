@@ -51,6 +51,7 @@ import relentless_expedite  # noqa: E402
 import relentless_repair_slot  # noqa: E402
 import relentless_binding  # noqa: E402
 import relentless_block  # noqa: E402
+import relentless_boxrun  # noqa: E402
 import relentless_breakers  # noqa: E402
 import relentless_incident  # noqa: E402
 import relentless_strikes  # noqa: E402
@@ -1299,8 +1300,18 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
                 or unlanded_owed(root or os.getcwd()))
         if owed:
             raise ValueError(owed)
+        snap, contract, base = contract_hash(st["contract"]), st["contract"], dict(st)
+    # RELENTLESS_BUILD_BOXRUN_AT_FINISH: the proof runs in the Marker's box OUTSIDE store.lock (minutes must not freeze a
+    # tick), then the lease and the contract are re-fenced before the receipt; a red proof under enforce refuses here
+    ran = relentless_boxrun.at_finish(store, item, gen, sha, contract, root or os.getcwd(), rules(), st=base, evidence=evidence)
+    with store.lock():
+        st = store.load(item)
+        _fence(st, item, gen)
+        relentless_boxrun.refence(st, snap)
         rec = {"item": item, "gen": gen, "sha": sha, "evidence": evidence, "at": iso(now), "contract": st["contract"],
-               "hash": contract_hash(st["contract"])}
+               "hash": snap}
+        if ran:
+            rec["boxrun"] = ran
         key = landing_key(root or os.getcwd(), sha)
         if key:     # lets the supervisor find this work if a later landing rebases it (..._LANDED_UNDER_NEW_HASH)
             rec["key"] = key
@@ -4188,14 +4199,17 @@ def worker_prompt(st, text, learned, r, history=None, causes=None):
             "`rimflow close`, `implemented`, `release` or `claim` on this item: the supervisor owns its ledger state.",
             "A hook, systemd unit, dispatcher_schedule.json or ops_watch_rules.json change, or an OPS_ alarm item, needs --live with one of: "
             "`unit=rm-foo.timer reading=<path> max_age=6h`, `hook=block_foo.py`, `once: why`.",
-            "The checker runs walled: no ssh or other machine, no git history, D:\\ClaudeWork and /mnt/d/ClaudeWork/rimmandrake read empty "
-            "except the paths under them your contract, finish evidence or item text names (bound read only; a progress or "
-            "handoff file never is), no Windows program. When the proof's truth lives there, add --offbox NAME naming a supervisor adapter from "
+            "The checker runs walled: no ssh or other machine; it has a read-only git history at your sha (no refs or remote), "
+            "python3 with cv2/numpy and the Windows build stage (winbuild.py) (relentless_box.json); D:\\ClaudeWork and "
+            "/mnt/d/ClaudeWork/rimmandrake read empty except the paths under them your contract, finish evidence or item text "
+            "names (bound read only; a progress or handoff file never is), no other Windows program. `finish` first runs your "
+            "contract's proof as written in that box (relentless_boxrun); `%s boxrun --item %s --gen %d` runs it at HEAD before "
+            "you land. When the proof's truth lives there, add --offbox NAME naming a supervisor adapter from "
             "relentless_rules.json offbox_adapters (%s): the supervisor runs it outside the wall at check time and hands the "
             "checker its raw output. You cannot pass a command; a reading no adapter makes is a snag. A checker that still "
             "cannot reach the evidence says UNMEASURED, which sends nothing back to you. `contract` refuses a proof that "
-            "names what the box hides (a masked path, git history, ssh, a Windows program) unless --offbox routes it or "
-            "--reach-ok says why the box can still show it; the live line is read for the checker outside the wall." % (", ".join(sorted(relentless_wall.adapters(rules()))) or "none yet"),
+            "names what the box hides (a masked path, git refs or a remote, ssh, a Windows program) unless --offbox routes it or "
+            "--reach-ok says why the box can still show it; the live line is read for the checker outside the wall." % (rc, i, g, ", ".join(sorted(relentless_wall.adapters(rules()))) or "none yet"),
             "A contract with no live line may gain one from any worker: the same --proof plus --live and --why.",
             "Work done but the contract's proof broken (unrunnable, misnamed, measured where the box cannot reach)? Repair HOW, "
             "never WHAT: `%s rebind --item %s --gen %d --proof \"...\" --before \"what it measured\" --after \"what the new one "
@@ -7267,6 +7281,11 @@ def main(argv=None):
     sub.add_parser("fence-hook")
     p = sub.add_parser("show")
     p.add_argument("item")
+    p = sub.add_parser("boxrun", help="run the item's contract proof in the Marker's box at a commit (default HEAD)")
+    p.add_argument("--item")
+    p.add_argument("--gen", type=int)
+    p.add_argument("--sha", default="HEAD")
+    p.add_argument("--sli", action="store_true", help="print the boxrun verdict counts by kind/mode instead")
     for name in ("beat", "learn", "contract", "rebind", "snag", "finish"):
         p = sub.add_parser(name)
         p.add_argument("--item", required=True)
@@ -7493,6 +7512,11 @@ def main(argv=None):
             reload_needed(store, a.item, a.gen, a.text)
         elif a.cmd == "snag":
             snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section, wait_hours=a.wait_hours, on=a.on, blocker=a.blocker)
+        elif a.cmd == "boxrun":
+            if a.sli or not a.item:
+                print(json.dumps(relentless_boxrun.sli(store), indent=1, sort_keys=True))
+                return 0
+            return relentless_boxrun.verb(store, a.item, a.gen, canonical_commit(a.sha), os.getcwd(), rules())
         elif a.cmd == "finish":
             sha = canonical_commit(a.sha)
             sha, moved = landed_commit(sha)
