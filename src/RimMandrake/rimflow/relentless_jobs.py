@@ -178,6 +178,7 @@ def run(store, kind, fn=None):
                 t.update(state="running", pid=os.getpid(), started=time.time(), run_gen=gen)
                 _write(_path(store, kind, ".json"), t)
             out = fn(want)
+            prev = (result(store, kind) or {}).get("out")
             _write(_path(store, kind, ".result.json"), {"gen": gen, "at": time.time(), "want": want, "out": out})
             with _table(store, kind):
                 t = table(store, kind)
@@ -187,6 +188,8 @@ def run(store, kind, fn=None):
                 _write(_path(store, kind, ".json"), t)
                 os.close(fd)        # released under the table lock: a request now sees it free and launches
                 held = False
+            if prev is not None and prev == out:
+                return "done"       # same answer as before: nobody waits on it, and a poke would sustain tick -> job -> tick
             try:            # the tick that wants this answer reads it now, not at its next heartbeat
                 import relentless_wake
                 relentless_wake.poke("job_" + kind, "gen %d" % gen, root=os.path.dirname(os.path.normpath(store.p(""))))

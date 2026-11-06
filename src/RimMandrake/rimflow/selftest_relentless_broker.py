@@ -257,6 +257,38 @@ def t_fault_falls_back_to_the_lane():
     x.done()
 
 
+def t_fault_fallback_still_asks_the_lease():
+    x = rig(1)
+    to_prove(x)
+    x.w.idle = "NOT TAKEABLE  OWNER holds it"
+    real = B.offer
+    B.offer = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("planted broker fault"))
+    try:
+        x.tick()
+    finally:
+        B.offer = real
+    ok(x.w.proves == [], "a broker fault under his bridge hold: the fallback launches no round (%s)" % x.w.proves)
+    x.done()
+
+
+def t_reconcile_leaves_a_job_that_just_started():
+    x = rig(1)
+    to_prove(x)
+    x.tick()
+    ok(entry(x).get("state") == "running", "launched")
+    fd = J.os.open(J._path(x.s, B.KIND, ".lock"), J.os.O_CREAT | J.os.O_RDWR, 0o644)
+    J.fcntl.flock(fd, J.fcntl.LOCK_EX)
+    real = B.job_alive
+    B.job_alive = lambda store, now=None: False     # the first look said dead; the job took its lock right after
+    try:
+        got = B.reconcile(x.s, time.time(), [])
+    finally:
+        B.job_alive = real
+        J.os.close(fd)
+    ok(got == [] and entry(x).get("state") == "running", "a live job's running entries are not marked lost (%s)" % got)
+    x.done()
+
+
 def t_off_without_launcher():
     x = SG.rig(1)
     x.w.started = STARTED
@@ -287,7 +319,8 @@ def t_slis_report_oldest_queued():
 
 TESTS = (t_built_item_queues_and_holds_nothing, t_drains_only_when_idle, t_job_runs_and_item_finishes,
          t_owner_hold_between_rounds_skips, t_abandoned_job_is_recovered, t_restart_makes_queued_stale,
-         t_fault_falls_back_to_the_lane, t_off_without_launcher, t_slis_report_oldest_queued)
+         t_fault_falls_back_to_the_lane, t_fault_fallback_still_asks_the_lease,
+         t_reconcile_leaves_a_job_that_just_started, t_off_without_launcher, t_slis_report_oldest_queued)
 PLANTS = ("offer_launches", "drain_ignores_busy", "job_ignores_owner", "no_reconcile", "fault_sticks", "sli_blind")
 
 

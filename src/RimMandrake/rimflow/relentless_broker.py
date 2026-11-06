@@ -182,13 +182,6 @@ def reconcile(store, now, acts):
     if job_alive(store, now):
         return []
     j = _jobs()
-    if os.path.isfile(j._path(store, KIND, ".json")):
-        with j._table(store, KIND):
-            t = j.table(store, KIND)
-            if t.get("state") in ("running", "queued") and not j.running(store, KIND):
-                t["state"] = "lost"
-                t["lost"] = int(t.get("lost") or 0) + 1
-                j._write(j._path(store, KIND, ".json"), t)
 
     def mark(q):
         lost = []
@@ -197,7 +190,16 @@ def reconcile(store, now, acts):
                 e.update(state="lost", why="the broker job ended without running it (killed or crashed)", ended=now)
                 lost.append(item)
         return lost
-    lost = _update(store, mark)
+    with j._table(store, KIND):     # the liveness is re-read under the table lock and held while the entries are marked
+        if j.running(store, KIND):
+            return []       # a job started between the first look and this one: its batch is its own
+        if os.path.isfile(j._path(store, KIND, ".json")):
+            t = j.table(store, KIND)
+            if t.get("state") in ("running", "queued"):
+                t["state"] = "lost"
+                t["lost"] = int(t.get("lost") or 0) + 1
+                j._write(j._path(store, KIND, ".json"), t)
+        lost = _update(store, mark)
     if lost:
         acts.append({"do": "broker_lost", "items": lost})
     return lost
@@ -416,7 +418,13 @@ def job(store):
             ran += 1
             WAKE(root)      # the item settles on the next game pass
         return {"batch": bid, "ran": ran}
-    return _jobs().run(store, KIND, fn)
+    def guarded(want):
+        try:
+            return fn(want)
+        except Exception as e:  # noqa: BLE001  recorded, so the broker is held off on this code; the job still ends loudly
+            fault(store, "job", e)
+            raise
+    return _jobs().run(store, KIND, guarded)
 
 
 # ---------------------------------------------------------------- SLIs (relentless.py reading)

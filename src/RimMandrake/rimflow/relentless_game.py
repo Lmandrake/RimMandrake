@@ -2200,6 +2200,10 @@ def step(store, fx, r, item, now, acts, sup):
                 return _reload(store, fx, r, item, rd, gap, now, acts)
             if brk and _broker_offer(store, fx, item, sha, g, rd, now, acts):
                 return      # LIVELANE_BUILD_GAME_BROKER_PROOF_LINES: a broker fault falls through to its own round
+            if brk:     # the fault fallback is the old lane again: it asks the lease (bridge, other users) it had waived
+                why = _lease_why(store, fx, r, item, sha, led)
+                if why:
+                    return _waits(store, fx, item, why, now, acts)
             pid = fx.prove_launch(item)
             _save(store, item, lambda s: (s.pop("put_down", None), s["game"].update(phase="proving", prove_pid=pid,
                                                                                      proved_at=now, waits_reload=None)))

@@ -172,9 +172,29 @@ def t_showing_reads_the_job_answer():
     ok("relentless_jobs.reconcile(" in inspect.getsource(R._tick), "every tick reconciles the job table")
 
 
+def t_unchanged_answer_does_not_poke_the_tick():
+    import relentless_wake
+    pokes, real = [], relentless_wake.poke
+    relentless_wake.poke = lambda *a, **k: pokes.append(a)
+    try:
+        st, la = store(), Launch()
+        J.request(st, "mods_fp", {"n": 1}, la)
+        J.run(st, "mods_fp", lambda w: {"v": "same"})
+        ok(len(pokes) == 1, "the first answer pokes (%d)" % len(pokes))
+        J.request(st, "mods_fp", {"n": 2}, la)
+        J.run(st, "mods_fp", lambda w: {"v": "same"})
+        ok(len(pokes) == 1, "the same answer again pokes nobody: no tick -> job -> tick loop (%d)" % len(pokes))
+        J.request(st, "mods_fp", {"n": 3}, la)
+        J.run(st, "mods_fp", lambda w: {"v": "changed"})
+        ok(len(pokes) == 2, "a changed answer pokes (%d)" % len(pokes))
+    finally:
+        relentless_wake.poke = real
+
+
 def main():
     for t in (t_request_launches_once_and_coalesces, t_duplicate_start_touches_nothing,
-              t_kill_mid_job_reconciles_on_restart, t_showing_reads_the_job_answer):
+              t_kill_mid_job_reconciles_on_restart, t_showing_reads_the_job_answer,
+              t_unchanged_answer_does_not_poke_the_tick):
         t()
     print("selftest_relentless_jobs: %s" % ("OK" if not FAILS else "FAILED %d" % len(FAILS)))
     return 1 if FAILS else 0
