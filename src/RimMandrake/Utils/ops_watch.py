@@ -1374,6 +1374,10 @@ def root_growth(sd, now, rules):
             if not isinstance(r, dict):
                 raise ValueError("no row")
             t, fall = r.get("t"), r.get("fall_gb")
+            # OPS_ROOT_GROWER_MEASURE_CAUGHT_WRITING_QMOX: the alarm reads the fall that held for a tick (disk_grower
+            # held_fall_gb), so walled-box churn reaped within a tick is not a grower; a row from before it reads fall_gb
+            if "held_fall_gb" in r:
+                fall = r.get("held_fall_gb")
             if not (is_num(t) and finite(t)):
                 raise ValueError("the newest row has no stamp")
             if t > now + 300:
@@ -1381,14 +1385,15 @@ def root_growth(sd, now, rules):
             if now - t > limit * 60:
                 raise ValueError("frozen: last row %s, %.0f min ago, limit %g" % (iso(t), (now - t) / 60.0, limit))
             if not (is_num(fall) and finite(fall)) or fall < 0:
-                raise ValueError("the newest row holds no fall_gb")
+                raise ValueError("the newest row holds no fall_gb" + (" (held_fall_gb)" if "held_fall_gb" in r else ""))
         except (OSError, ValueError) as e:
             why = "growth record %s: %s" % (gp, e)
     if why:
         return {"disk.root_fall_gb": U(why, "GB"), "disk.root_fall_distressed": U(why),
                 "disk.root_fall_blind": M(1, "sources not seen", cause=why[:300])}
     win = r.get("window_min")
-    pts = {"disk.root_fall_gb": M(fall, "GB the root fell within %s min" % win, at=iso(t), free_gb=r.get("free_gb"),
+    pts = {"disk.root_fall_gb": M(fall, "GB the root fell within %s min and still down a tick later" % win, at=iso(t),
+                                  free_gb=r.get("free_gb"), raw_fall_gb=r.get("fall_gb"),
                                   top_writer_gb=r.get("top_writer_gb"), max_age_min=limit)}
     state = read_class(ms, "disk.root_fall_gb", pts)
     cause, writers = "none", []
@@ -1401,7 +1406,8 @@ def root_growth(sd, now, rules):
             named += "".join("; open deleted %s %s GB" % (f.get("path"), f.get("alloc_gb")) for f in gone)
         else:
             named = "writer unnamed: no growth_capture.json for the row of %s" % r.get("ts")
-        cause = "%s; root fell %s GB in %s min to %s GB free at %s" % (named, fmt(fall), win, r.get("free_gb"), r.get("ts"))
+        cause = "%s; root fell %s GB in %s min (held a tick) to %s GB free at %s" % (named, fmt(fall), win, r.get("free_gb"),
+                                                                                r.get("ts"))
     pts["disk.root_fall_distressed"] = M(int(state in ALARMED), "1 when the root falls fast", state=state,
                                          cause=cause[:600], writers=writers)
     pts["disk.root_fall_blind"] = M(0, "sources not seen", cause="none")

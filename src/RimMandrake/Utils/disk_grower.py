@@ -11,7 +11,8 @@ So every pressure tick (rm-scratch-pressure.timer, 10 min) this samples, cheaply
     never read as growth;
   - and, only when the root is falling fast or is under the pressure line, the big regular files on the root's device
     that processes hold open, deleted ones included (a deleted file still open is space nobody can see with du).
-A fall of FALL_GB within WINDOW_MIN, or a reading under the line, writes a capture naming the top writers since the
+A fall of FALL_GB within WINDOW_MIN, or a reading under the line, writes a capture (the alarm reads held_fall_gb, the
+part of the fall still standing at the tick after, so churn freed within a tick is captured but not alarmed) naming the top writers since the
 last tick (pid, GB, GB/min, systemd unit, cwd, command) and the big open files. A writer over GROWER_GB in one tick is
 an alarm line in the reaper's alarms.log.
 
@@ -194,6 +195,13 @@ def tick(sd: Path, free_gb: float, line_gb: float, root: str = "/", now: float |
     hist = _history(sd, now, window_s)
     peak = max([r["free_gb"] for r in hist if isinstance(r.get("free_gb"), (int, float))] + [free_gb])
     fall = round(peak - free_gb, 1)
+    # OPS_ROOT_GROWER_MEASURE_CAUGHT_WRITING_QMOX: the fall that held for a tick, peak minus the HIGHER of this reading and
+    # the one before it. Relentless's walled boxes (a 3.8 GB export per check, often copied again by the checker) swung
+    # the root 750 -> 704 -> 750 -> 708 GB on 2026-11-06, reaped within a tick: fall_gb read 41-46 and alarmed on churn
+    # that was already being given back. A real fill (11-04: ~33 GB every tick) holds, so it still reads by its 2nd tick.
+    prior = [r for r in hist if isinstance(r.get("free_gb"), (int, float)) and isinstance(r.get("t"), (int, float))
+             and r["t"] < now]
+    held = round(max(0.0, peak - max(free_gb, max(prior, key=lambda r: r["t"])["free_gb"])), 1) if prior else 0.0
 
     cur, blind = sample_io(proc)
     try:
@@ -213,7 +221,7 @@ def tick(sd: Path, free_gb: float, line_gb: float, root: str = "/", now: float |
     if free_gb < line_gb:
         why.append(f"root {free_gb} GB free is under the {line_gb} GB line")
     row = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "t": now, "free_gb": free_gb,
-           "fall_gb": fall, "window_min": window_s / 60, "readable": len(cur), "blind": blind,
+           "fall_gb": fall, "held_fall_gb": held, "window_min": window_s / 60, "readable": len(cur), "blind": blind,
            "top_writer_gb": _gb(ws[0]["bytes"]) if ws else 0.0, "captured": bool(why)}
     if why:
         try:
@@ -228,7 +236,7 @@ def tick(sd: Path, free_gb: float, line_gb: float, root: str = "/", now: float |
             d = describe(proc, w["pid"])
             d.update(gb=_gb(w["bytes"]), gb_per_min=round(w["bytes"] / 1e9 / (dt / 60), 2) if 0 < dt <= RATE_MAX_S else None)
             top.append(d)
-        cap = {"ts": row["ts"], "why": why, "free_gb": free_gb, "fall_gb": fall, "since_last_sample_s": round(dt),
+        cap = {"ts": row["ts"], "why": why, "free_gb": free_gb, "fall_gb": fall, "held_fall_gb": held, "since_last_sample_s": round(dt),
                "writers": top, "open_big": [dict(f, alloc_gb=_gb(f["alloc_bytes"])) for f in files[:TOP]],
                "open_scan_finished": finished, "readable": len(cur), "blind": blind}
         tmp = sd / "growth_capture.json.tmp"

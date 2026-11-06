@@ -150,13 +150,53 @@ sd.mkdir()
 (sd / "runs.jsonl").write_text("")
 os.environ["DISK_GROWER_PROC"] = str(proc)
 now = time.time()
-(pid / "io").write_text("write_bytes: 1000\n")
-DG.tick(sd, 500.0, 210.0, now=now - 600)
-(pid / "io").write_text("write_bytes: %d\n" % (1000 + 50 * 10 ** 9))
-g = DG.tick(sd, 450.0, 210.0, now=now)
+
+
+def ticks(sd, frees, gb_per_tick=33):
+    """disk_grower.tick once per 10 min over frees (oldest first), the hog writing gb_per_tick each; -> the rows."""
+    out = []
+    for i, fr in enumerate(frees):
+        (pid / "io").write_text("write_bytes: %d\n" % (1000 + i * gb_per_tick * 10 ** 9))
+        out.append(DG.tick(sd, fr, 210.0, now=now - 600 * (len(frees) - 1 - i)))
+    return out
+
+
+# A real fill holds: 2026-11-04 fell ~33 GB every tick. The first tick's fall is captured but has not held yet; the
+# second tick's has, and alarms naming the writer.
+gs = ticks(sd, [578.0, 545.0, 512.0])
+check("a fill's first falling tick captures, held_fall_gb 0", gs[1]["captured"] and gs[1]["fall_gb"] == 33.0
+      and gs[1]["held_fall_gb"] == 0.0, gs[1])
+check("its next tick holds the fall: held_fall_gb 33", gs[2]["held_fall_gb"] == 33.0, gs[2])
 k, al = cli_pass(sd)
-check("a real tick's capture reaches the alarm: distressed and naming pid 4242", g["captured"] and k[HOT]["v"] == 1
-      and "4242" in json.dumps(alarm(al, HOT)) and "rm-hog.service" in json.dumps(alarm(al, HOT)), (g, alarm(al, HOT)))
+check("a real tick's capture reaches the alarm: distressed and naming pid 4242", gs[2]["captured"] and k[HOT]["v"] == 1
+      and "4242" in json.dumps(alarm(al, HOT)) and "rm-hog.service" in json.dumps(alarm(al, HOT)), (gs[2], alarm(al, HOT)))
+check("the reading keeps the raw fall beside the held one", k[KEY]["v"] == 33.0, k[KEY])
+
+# OPS_ROOT_GROWER_MEASURE_CAUGHT_WRITING_QMOX: the measured 2026-11-06 sawtooth, Relentless's walled boxes made and
+# reaped within a tick (growth.jsonl 10:50..11:20Z). Each dip is captured (the writer is still named in the record) but
+# none held, so nothing alarms.
+saw = TMP / "sawtooth"
+saw.mkdir()
+(saw / "runs.jsonl").write_text("")
+gs = ticks(saw, [750.1, 704.4, 750.0, 708.6])
+check("the sawtooth dips are captured", gs[1]["captured"] and gs[3]["captured"] and gs[3]["fall_gb"] == 41.5, gs)
+check("no dip of the sawtooth held (750.1 -> 750.0 is the 0.1 left)", [g["held_fall_gb"] for g in gs] == [0.0, 0.0, 0.1, 0.1],
+      [g["held_fall_gb"] for g in gs])
+k, al = cli_pass(saw)
+check("the sawtooth reads sane and alarms nothing", k[KEY]["m"] == "MEASURED" and k[KEY]["class"] == "sane"
+      and k[HOT]["v"] == 0 and not alarm(al, HOT), (k[KEY], alarm(al, HOT)))
+# ...and a dip that is still down a tick later alarms after all
+saw2 = TMP / "sawtooth_held"
+saw2.mkdir()
+gs = ticks(saw2, [750.1, 704.4, 750.0, 708.6, 705.0])
+check("the same dip, still down a tick later, holds 41.4", gs[-1]["held_fall_gb"] == 41.4, gs[-1])
+
+# A planted row: held_fall_gb rules the class when present; a broken one is blind, never sane.
+k, al = cli_pass(plant("held_quiet", [row(45.7) | {"held_fall_gb": 0.0}]))
+check("a big fall that did not hold reads its held 0, sane", k[KEY]["v"] == 0.0 and k[HOT]["v"] == 0 and not alarm(al, HOT), k[KEY])
+k, al = cli_pass(plant("held_bad", [row(45.7) | {"held_fall_gb": None}]))
+check("a held_fall_gb that is no number reads UNMEASURED", k[KEY]["m"] == "UNMEASURED" and k[BLIND]["v"] == 1
+      and not alarm(al, HOT), k[KEY])
 
 if not FAILS:
     shutil.rmtree(TMP, ignore_errors=True)
