@@ -13,8 +13,8 @@
     that file's own header) to stop pocket-map FinalizeInit crashing on grazable
     flora with no valid parent tile.
 
-    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\LanternDeeps\Source\RM_LanternDeeps.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/LanternDeeps/Source/RM_LanternDeeps.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

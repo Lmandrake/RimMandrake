@@ -5,8 +5,8 @@
     src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj (that one is the
     Harmony-carrying variant; copy its header if this one goes stale).
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\EnvironmentalHazards\Source\RM_EnvironmentalHazards.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
@@ -267,7 +267,7 @@
          RM_ShipVermin.csproj's own reference to this DLL — real at runtime
          as long as mandrake.rm.creaturebehaviors is active and loadAfter
          (asserted in About.xml). Build CreatureBehaviors FIRST:
-           "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release -->
+           python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviors.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build) -->
     <Reference Include="RimMandrake.CreatureBehaviors">
       <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
       <Private>false</Private>

@@ -11,8 +11,8 @@
     NO Harmony reference, deliberately — the mechanism is def mutation plus two
     reflection cache-clears; see LoreStageApplier.cs for why that beats a patch.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\LoreStages\Source\RM_LoreStages.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/LoreStages/Source/RM_LoreStages.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

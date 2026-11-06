@@ -17,9 +17,8 @@
     LoreStageDefDatabase.cs is deliberately NOT compiled here — it is the only
     production file that needs GenTypes/DefDatabase, i.e. a loaded mod set.
 
-    Run (Windows path required; dotnet.exe cannot take /mnt/d):
-      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\RimMandrake\src\RimMandrake\LoreStages\Source\SelfTest\RimMandrakeLoreStages.SelfTest.csproj -c Release
-      (written apart only because an XML comment cannot hold two adjacent hyphens)
+    Run from a clone (it builds via winbuild staging, then runs the exe):
+      python3 src/RimMandrake/Utils/selftest_lore_stages.py
   -->
 
   <PropertyGroup>

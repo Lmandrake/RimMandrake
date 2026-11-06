@@ -11,8 +11,8 @@
     update that renames one. About.xml says the same and carries no
     brrainz.harmony dependency. Adding one is a decision, not a convenience.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\GelatinousSlime\Source\RM_GelatinousSlime.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/GelatinousSlime/Source/RM_GelatinousSlime.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

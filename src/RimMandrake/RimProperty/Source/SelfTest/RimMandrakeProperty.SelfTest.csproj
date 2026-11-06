@@ -38,12 +38,8 @@
     Verse.Pawn - all of which need real Assembly-CSharp.dll/UnityEngine.dll
     to resolve, even though nothing called here needs a running game.
 
-    Run via the wrapper:
+    Run from a clone (it builds via winbuild staging, then runs the exe):
       python3 src/RimMandrake/Utils/selftest_property_fabric.py
-
-    Direct invocation (Windows path required, dotnet.exe cannot take /mnt/d):
-      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\RimMandrake\src\RimMandrake\RimProperty\Source\SelfTest\RimMandrakeProperty.SelfTest.csproj -c Release
-      (written apart only because an XML comment cannot hold two adjacent hyphens)
   -->
 
   <PropertyGroup>

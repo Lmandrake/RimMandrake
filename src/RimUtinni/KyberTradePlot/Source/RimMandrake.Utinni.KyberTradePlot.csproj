@@ -9,8 +9,8 @@
     subclass, discovered by naming it directly in this mod's own IncidentDefs'
     <workerClass>; no patch registration call needed.
 
-    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimUtinni\KyberTradePlot\Source\RimMandrake.Utinni.KyberTradePlot.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimUtinni/KyberTradePlot/Source/RimMandrake.Utinni.KyberTradePlot.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

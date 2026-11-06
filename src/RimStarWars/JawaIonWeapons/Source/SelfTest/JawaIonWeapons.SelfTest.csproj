@@ -13,12 +13,8 @@
     .exe outside the game process, so it needs the DLLs actually copied
     next to it to resolve StatRequest/Pawn/UnityEngine.Mathf at runtime.
 
-    Run via the wrapper:
+    Run from a clone (it builds via winbuild staging, then runs the exe):
       python3 src/RimMandrake/Utils/selftest_stun_scaling.py
-
-    Direct invocation (Windows path required, dotnet.exe cannot take /mnt/d):
-      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\RimMandrake\src\Jawa\JawaIonWeapons\Source\SelfTest\JawaIonWeapons.SelfTest.csproj -c Release
-      (written apart only because an XML comment cannot hold two adjacent hyphens)
   -->
 
   <PropertyGroup>

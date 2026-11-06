@@ -8,8 +8,8 @@
     to this mod's own CompShieldGenerator type only. Same recipe as
     src/RimMandrake/Aftermath/Source/RM_Aftermath.csproj.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimUtinni\ShipShields\Source\RimMandrake.Utinni.ShipShields.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimUtinni/ShipShields/Source/RimMandrake.Utinni.ShipShields.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

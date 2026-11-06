@@ -8,8 +8,8 @@
     plain def change from a [StaticConstructorOnStartup] class. Add no further patch without
     the same reason: the seam has to be missing, not merely less convenient.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\.claude\worktrees\agent-afc100cb85cd7f019\src\RimMandrake\WreckedMachines\Source\RM_WreckedMachines.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/WreckedMachines/Source/RM_WreckedMachines.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

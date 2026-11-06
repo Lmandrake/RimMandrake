@@ -12,8 +12,8 @@
     (option (b) of that item's assembly-merge trade — two DLLs kept under one
     mod folder). Renamed from RimMandrake.Utinni.* to RimMandrake.RustCathedral.* by RUSTCATHEDRAL_FREE_NAMES_TIDY_1.
 
-    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\RustCathedral\Source\Hum\RimMandrake.RustCathedral.Hum.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/RustCathedral/Source/Hum/RimMandrake.RustCathedral.Hum.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../../Assemblies/, which is where RimWorld looks.
   -->

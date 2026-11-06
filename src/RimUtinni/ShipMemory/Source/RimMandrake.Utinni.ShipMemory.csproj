@@ -8,8 +8,8 @@
     (net472, OutputPath ..\Assemblies\) minus the Harmony reference this mod
     does not need.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimUtinni\ShipMemory\Source\RimMandrake.Utinni.ShipMemory.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimUtinni/ShipMemory/Source/RimMandrake.Utinni.ShipMemory.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

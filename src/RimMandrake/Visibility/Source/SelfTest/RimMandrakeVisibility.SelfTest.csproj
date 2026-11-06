@@ -25,12 +25,8 @@
     called here needs a running game (see Program.cs header for exactly
     what that means and does not mean).
 
-    Run via the wrapper:
+    Run from a clone (it builds via winbuild staging, then runs the exe):
       python3 src/RimMandrake/Utils/selftest_colony_visibility.py
-
-    Direct invocation (Windows path required, dotnet.exe cannot take /mnt/d):
-      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\RimMandrake\src\RimMandrake\Visibility\Source\SelfTest\RimMandrakeVisibility.SelfTest.csproj -c Release
-      (written apart only because an XML comment cannot hold two adjacent hyphens)
   -->
 
   <PropertyGroup>

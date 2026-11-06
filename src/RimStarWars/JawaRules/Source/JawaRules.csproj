@@ -6,8 +6,8 @@
     this machine, so Microsoft.NETFramework.ReferenceAssemblies supplies the
     reference assemblies from NuGet instead.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimStarWars\JawaRules\Source\JawaRules.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimStarWars/JawaRules/Source/JawaRules.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 

@@ -17,10 +17,8 @@
     BiomeFishTypes need the real Assembly-CSharp.dll to resolve, even though
     nothing called here needs a running game.
 
-    Run via src/RimMandrake/Utils/selftest_seashores.py, or directly
-    (Windows path required, dotnet.exe cannot take /mnt/d):
-      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\RimMandrake\src\RimMandrake\SeaShores\Source\SelfTest\RimMandrakeSeaShores.SelfTest.csproj -c Release
-      (written apart only because an XML comment cannot hold two adjacent hyphens)
+    Run from a clone (it builds via winbuild staging, then runs the exe):
+      python3 src/RimMandrake/Utils/selftest_seashores.py
   -->
 
   <PropertyGroup>

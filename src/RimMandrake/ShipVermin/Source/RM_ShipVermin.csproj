@@ -5,10 +5,10 @@
     src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj —
     copy that header if this one goes stale.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path). Build
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror). Build
     RM_CreatureBehaviors.csproj FIRST — this project references its output DLL:
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\ShipVermin\Source\RM_ShipVermin.csproj -c Release
+      python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviors.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
+      python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/ShipVermin/Source/RM_ShipVermin.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 

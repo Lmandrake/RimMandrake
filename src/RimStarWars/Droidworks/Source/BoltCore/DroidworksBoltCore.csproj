@@ -18,8 +18,8 @@
     Microsoft.NETFramework.ReferenceAssemblies supplies the reference
     assemblies from NuGet instead - same as every other .csproj here.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimStarWars\Droidworks\Source\BoltCore\DroidworksBoltCore.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimStarWars/Droidworks/Source/BoltCore/DroidworksBoltCore.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../../Assemblies/ - the SAME folder the main
     Droidworks.csproj (net472) already builds into (Source/BoltCore/../../

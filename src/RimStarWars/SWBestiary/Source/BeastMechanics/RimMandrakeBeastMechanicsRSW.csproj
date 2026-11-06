@@ -13,8 +13,8 @@
     Same net472 / NuGet-reference-assemblies shape as this mod's sibling
     Livestock project (../Livestock/RimMandrakeLivestockRSW.csproj).
 
-    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimStarWars\SWBestiary\Source\BeastMechanics\RimMandrakeBeastMechanicsRSW.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimStarWars/SWBestiary/Source/BeastMechanics/RimMandrakeBeastMechanicsRSW.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
 
     Output lands in ../../Assemblies/ — the mod root's Assemblies folder, beside
     JawaIkee.dll and RimMandrakeLivestockRSW.dll, which is where RimWorld looks.

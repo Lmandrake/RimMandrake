@@ -3,8 +3,8 @@
     RimWorld 1.6 runs Unity/Mono against .NET Framework 4.7.2, so this targets net472.
     No Visual Studio on this machine; reference assemblies come from NuGet.
 
-    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimStarWars\JawaIkee\Source\JawaIkee.csproj -c Release
+    Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
+      python3 src/RimMandrake/Utils/winbuild.py src/RimStarWars/SWBestiary/Source/JawaIkee/JawaIkee.csproj   (from a clone; stages on D:\ClaudeWork\rimmandrake\build)
   -->
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
