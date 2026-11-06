@@ -116,15 +116,84 @@ def patch_kinds(d):
     return out
 
 
+def _norm_pid(pid):
+    """A LoadFolders gate's packageId, minus the `_copy`/`_steam` suffix RimWorld gives a local copy of the same mod."""
+    pid = pid.strip().lower()
+    for suf in ("_copy", "_steam"):
+        if pid.endswith(suf):
+            pid = pid[:-len(suf)]
+    return pid
+
+
+def load_gates(d, version="v1.6"):
+    """[(folder_rel, kind, {pid})] from `d`/LoadFolders.xml's `version` block (else `default`); kind is "any"
+    (IfModActive: loads if any is active), "all" (IfModActiveAll) or None (ungated). None if there is no LoadFolders.xml
+    (then the game loads the root and version folder ungated)."""
+    try:
+        root = ET.parse(os.path.join(d, "LoadFolders.xml")).getroot()
+    except (ET.ParseError, OSError):
+        return None
+    blk = root.find(version)
+    if blk is None:
+        blk = root.find("default")
+    if blk is None:
+        return []
+    out = []
+    for li in blk.findall("li"):
+        rel = (li.text or "").strip().replace("\\", "/").strip("/")
+        if li.get("IfModActiveAll"):
+            out.append((rel, "all", {_norm_pid(x) for x in li.get("IfModActiveAll").split(",") if x.strip()}))
+        elif li.get("IfModActive"):
+            out.append((rel, "any", {_norm_pid(x) for x in li.get("IfModActive").split(",") if x.strip()}))
+        else:
+            out.append((rel, None, set()))
+    return out
+
+
+def kind_gates(d, version="v1.6"):
+    """{kindDefName: [(kind, {pid})]} for each PawnKindDef of donor `d` that the `version` block loads ONLY through
+    gated folders (ART_OVERRIDE_FAMILY_SCRIPT_1: GR_Beetlefleet lives in VGE's 1.6/Mods/AlphaAnimals, gated
+    IfModActive=sarg.alphaanimals). A kind with any ungated definition, or no LoadFolders.xml, is absent."""
+    gates = load_gates(d, version)
+    if not gates:
+        return {}
+    seen = {}
+    for f, root in _xml_roots(d, "Defs"):
+        rel = os.path.relpath(f, d).replace(os.sep, "/")
+        hits = [(g, ids) for fr, g, ids in gates if rel.startswith((fr + "/" if fr else "") + "Defs/")]
+        if not hits:
+            continue  # this version does not load the file
+        for e in root.iter("PawnKindDef"):
+            k = (e.findtext("defName") or "").strip()
+            if k and e.get("Abstract", "").lower() != "true":
+                seen.setdefault(k, []).extend(hits)
+    return {k: hs for k, hs in seen.items() if all(g for g, _ in hs)}
+
+
+def gate_retired(gates, retired):
+    """The retired packageIds that keep a gated kind out: every gate must be dead (an `any` gate with all its mods
+    retired, an `all` gate with one retired); [] when some gate could still load it."""
+    dead = set()
+    for g, ids in gates or []:
+        if g == "any" and ids and ids <= retired:
+            dead |= ids
+        elif g == "all" and ids & retired:
+            dead |= ids & retired
+        else:
+            return []
+    return sorted(dead)
+
+
 def bind(rows, repo=REPO, donor_roots=afc.DONOR_ROOTS):
-    """{creature: {"mode", "news", "kinds": {kind: source}}}; source is "ours" or "donor:<packageId>"."""
+    """{creature: {"mode", "news", "kinds": {kind: source}, "gates": {kind: [(kind, {pid})]}}}; source is "ours" or
+    "donor:<packageId>"; gates lists a donor kind the donor's LoadFolders.xml loads only behind IfModActive."""
     mods = [os.path.dirname(os.path.dirname(a)) for a in glob.glob(os.path.join(glob.escape(repo), "src", "*", "*",
                                                                                 "About", "About.xml"))]
     mods += [d for d in glob.glob(os.path.join(glob.escape(repo), "src", "*", "*")) if os.path.isdir(d)
              and not os.path.isfile(os.path.join(d, "About", "About.xml"))]
     ours = kind_texpaths(sorted(set(mods)))
     ptch = [kp for d in sorted(set(mods)) for kp in patch_kinds(d)]
-    donors = {}
+    donors, dgates = {}, {}
     out = {}
     for r in rows:
         news = sorted({g["new"] for g in r.get("groups", []) if g.get("new")})
@@ -141,6 +210,7 @@ def bind(rows, repo=REPO, donor_roots=afc.DONOR_ROOTS):
                 if pid not in donors:
                     dd = afc.donor_dir(pid, r.get("donor_hint"), donor_roots)
                     donors[pid] = kind_texpaths([dd]) if dd else {}
+                    dgates[pid] = kind_gates(dd) if dd else {}
                 if r.get("patch"):
                     ol = {o.lower() for o in olds} | nl
                     for k, tps in donors[pid].items():
@@ -148,7 +218,9 @@ def bind(rows, repo=REPO, donor_roots=afc.DONOR_ROOTS):
                             kinds.setdefault(k, "donor:" + pid)
             for k in patched:  # owned by whoever DEFINES the kind, not by whoever patches it
                 kinds.setdefault(k, "donor:" + pid if pid and k not in ours and k in donors.get(pid, {}) else "ours")
-        out[r["creature"]] = {"mode": r.get("mode"), "news": news, "kinds": kinds}
+        gates = {k: dgates[src[6:]][k] for k, src in kinds.items() if src.startswith("donor:")
+                 and k in dgates.get(src[6:], {})}
+        out[r["creature"]] = {"mode": r.get("mode"), "news": news, "kinds": kinds, "gates": gates}
     return out
 
 
@@ -283,6 +355,10 @@ def classify(binding, retired, live_defs, flyers, l2_status, texlog):
                     pid = src.split(":", 1)[1].lower() if src.startswith("donor:") else None
                     if pid and pid in retired:
                         kinds[k] = "absent (retired donor %s)" % pid
+                        retired_absent += 1
+                    elif pid and gate_retired(b.get("gates", {}).get(k), retired):
+                        kinds[k] = "absent (donor %s loads it only if %s, retired)" % (
+                            pid, "/".join(gate_retired(b["gates"][k], retired)))
                         retired_absent += 1
                     else:
                         kinds[k] = "NOT-LOADED"
@@ -506,6 +582,32 @@ def selftest():
                                   ("no rows", [], pb, 2)]:
             if exit_code(rr, bb) != wnt:
                 fails.append("exit %s: %s != %s" % (name, exit_code(rr, bb), wnt))
+        # ARTFOLD_LOADFOLDER_FIX_BEETLE_BEHIND_DOOR: a live donor whose kind sits only in a LoadFolders folder gated on a
+        # retired mod (VGE's 1.6/Mods/AlphaAnimals behind sarg.alphaanimals and its _copy alias)
+        kd = "<Defs><PawnKindDef><defName>%s</defName><lifeStages><li><bodyGraphicData><texPath>%s</texPath>" \
+             "</bodyGraphicData></li></lifeStages></PawnKindDef></Defs>"
+        w("donor/G/About/About.xml", "<ModMetaData><packageId>d.live</packageId></ModMetaData>")
+        w("donor/G/LoadFolders.xml", "<loadFolders><v1.6><li>/</li><li>1.6</li>"
+          "<li IfModActive=\"d.gone\">1.6/Mods/Gone</li><li IfModActive=\"d.gone_copy\">1.6/Mods/Gone</li>"
+          "<li IfModActive=\"d.other\">1.6/Mods/Other</li></v1.6></loadFolders>")
+        w("donor/G/1.6/Mods/Gone/Defs/k.xml", kd % ("K_Gated", "Don/Gated"))
+        w("donor/G/1.6/Defs/k.xml", kd % ("K_Open", "Don/Open"))
+        w("donor/G/1.5/Mods/Gone/Defs/k.xml", kd % ("K_Open", "Don/Open"))  # another version's gate is not ours
+        grows = [{"creature": c, "groups": [{"old": "Don/" + c, "new": "Ours/%s/%s" % (c, c)}], "patch": "p.xml",
+                  "donor": "d.live", "donor_hint": os.path.join(td, "donor", "G")} for c in ("Gated", "Open")]
+        gb = bind(grows, repo=td, donor_roots=(os.path.join(td, "donor"),))
+        absent = {"K_Gated": None, "K_Open": None}
+        gcases = [("gated kind bound to the live donor", gb["Gated"]["kinds"] == {"K_Gated": "donor:d.live"}),
+                  ("gate read, _copy alias folded", gb["Gated"]["gates"].get("K_Gated") == [("any", {"d.gone"})] * 2),
+                  ("ungated kind has no gate", gb["Open"]["gates"] == {}),
+                  ("gate on a retired mod -> DONOR-RETIRED",
+                   st(classify(gb, {"d.gone"}, absent, {}, {}, {}))["Gated"] == "DONOR-RETIRED"),
+                  ("same absence with no gate -> NOT-LOADED",
+                   st(classify(gb, {"d.gone"}, absent, {}, {}, {}))["Open"] == "NOT-LOADED"),
+                  ("gate on a live mod -> NOT-LOADED", st(classify(gb, set(), absent, {}, {}, {}))["Gated"] == "NOT-LOADED"),
+                  ("an all-gate with one retired is dead", gate_retired([("all", {"a", "b"})], {"b"}) == ["b"]),
+                  ("one live gate keeps it loadable", gate_retired([("any", {"a"}), ("any", {"b"})], {"a"}) == [])]
+        fails += ["gate %s" % g for g, ok in gcases if not ok]
         rows[0]["owner"] = "src/A/Own"
         need = required_mods(rows, b, set(), repo=td)
         gaps = [("owner and donor named", sorted(need) == ["d.old", "t.own"]),
@@ -516,7 +618,7 @@ def selftest():
                 ("a folded owner is its composed mod",
                  load_gap(required_mods(rows, b, set(), repo=td, folded={"t.own": "t.comp"}), {"t.comp", "d.old"}) is None)]
         fails += ["load %s" % g for g, ok in gaps if not ok]
-    n = len(want) + 1 + len(cases) + 5 + len(gaps)
+    n = len(want) + 1 + len(cases) + 5 + len(gaps) + len(gcases)
     for f in fails:
         print("FAIL " + f)
     print("selftest %d/%d" % (n - len(fails), n))
