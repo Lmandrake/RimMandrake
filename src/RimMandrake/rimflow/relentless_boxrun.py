@@ -101,18 +101,19 @@ def extract(proof):
     where its prose starts; each part one python3/python/bash command whose words read as arguments. A plain lowercase
     word is an argument only right after the script (a sub-command) or after an option (its value); elsewhere it is prose
     and ends the part. After prose, a later `&&` segment that starts with a runner is another part and runs too; one
-    that does not is prose. Prose that names a command (`; python3 b.py`, `then bash c.sh`) that would not run makes the
+    that does not makes the proof unrunnable (`&&` is never prose). Prose that names a command (`; python3 b.py`, `then bash c.sh`) that would not run makes the
     whole proof unrunnable: running only the rest would be a green for checks that never ran."""
     text = re.sub(r"\s*\n\s*", " ; ", (proof or "").strip())     # a new line ends a command, never joins two
     segs = text.split("&&")
     parts, tails, prose = [], [], False
     for n, seg in enumerate(segs):
         kind = _command_kind(seg)
-        if prose and kind == "other":           # `&& b/y.py prints PASS`, `&& ! grep ...`: a command that cannot run
-            return None, "a later `&&` part is a command but not a %s one: %r" % ("/".join(RUNNERS), seg.strip()[:120])
-        if prose and kind is None:              # prose after prose: the rest of the proof is description
-            tails.append("&&" + "&&".join(segs[n:]))
-            break
+        if prose and kind != "run":
+            # `&&` is shell syntax, never English: whatever follows one is a command, so a later part that does not start
+            # with a runner (`&& make test`, `&& grep -c x f`, `&& ! grep ...`, `&& b/y.py`) is a check that would not
+            # run. Guessing it is prose by its first word let a plain command word through (blind check 2026-11-06).
+            return None, ("a later `&&` part after prose is not a %s command: %r (running only the parts before it "
+                          "would be a green for checks that never ran)" % ("/".join(RUNNERS), seg.strip()[:120]))
         head, tail = _cut(seg)
         parts.append(head.strip())
         tails.append(tail)

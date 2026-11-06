@@ -233,7 +233,16 @@ def t_hardening():
                   "python3 a/x.py, then ./b.sh",
                   "python3 a/x.py prints PASS, then pytest tests/",
                   "python3 a/x.py prints PASS && ! grep -n x b/y.py",
-                  "python3 a/x.py prints PASS; canon_census.py --lint"):
+                  "python3 a/x.py prints PASS; canon_census.py --lint",
+                  # third blind check 2026-11-06: a plain command word after prose was read as prose
+                  "python3 a.py prints PASS && grep -c foo b.txt prints 3",
+                  "python3 a.py prints PASS && make test exits 0",
+                  "python3 a.py exits 0 && dotnet build x.csproj",
+                  "python3 a.py && python3 b.py prints PASS && npm test",
+                  "python3 a.py prints PASS && test -f out.txt",
+                  "python3 a.py prints PASS && cargo test",
+                  "python3 a.py prints PASS && rimflow show X",
+                  "python3 a/selftest_z.py prints RESULT: PASS, including 8a (a later && part extract() cannot run)"):
         cmd, why = B.extract(proof)
         ok(cmd is None and why, "8a. a later command after prose makes %r unrunnable, never a prefix: %r (%s)"
            % (proof, cmd, why))
@@ -241,8 +250,6 @@ def t_hardening():
                         ("python3 a/x.py exits 0 && ! python3 b/y.py --strict exits 1",
                          "python3 a/x.py && ! python3 b/y.py --strict"),
                         ("python3 pass.py && python3 fail.py", "python3 pass.py && python3 fail.py"),
-                        ("python3 a/selftest_z.py prints RESULT: PASS, including 8a (a later && part extract() cannot "
-                         "run is unrunnable) and 8b", "python3 a/selftest_z.py"),
                         # prose ABOUT a script is not a command (stored proofs, 2026-11-06)
                         ("python3 a/run_selftests.py --only selftest_d.py exits 0; selftest_d.py shows: a harvest",
                          "python3 a/run_selftests.py --only selftest_d.py"),
