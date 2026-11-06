@@ -71,7 +71,8 @@ _GIT_VERBS = frozenset("""
     status stripspace submodule switch symbolic-ref tag unpack-file unpack-objects update-index update-ref
     update-server-info var verify-commit verify-pack verify-tag version whatchanged worktree write-tree""".split())
 _REMOTE = re.compile(_START + r"(ssh|scp|rsync|tailscale|sftp)\s", re.M)
-_WINDOWS = re.compile(_START + r"(?:python3?\s+)?(\S*winbuild\.py|\S+\.exe|powershell|pwsh|wslpath)\b", re.M | re.I)
+_WINDOWS = re.compile(_START + r"(?:python3?\s+)?(\S*winbuild\.py|\S+\.exe|powershell|pwsh|wslpath)\b|"
+                      + _START + r"[\"']([^\"'\n]*\.exe)[\"']", re.M | re.I)   # "/mnt/c/Program Files/.../dotnet.exe"
 # a quote inside a word: `/sec""ret/x` is the shell's /secret/x
 _CONCAT = re.compile(r"(?<=[\w/.~-])['\"]+(?=\S)|(?<=\S)['\"]+(?=[\w/.~-])")
 
@@ -351,6 +352,10 @@ def expand_vars(t, env):
             seg.append(c)
             i += 1
             continue
+        if top.endswith("script") and c == top[0]:
+            boundary(c, close=True)             # `bash -c '...'`'s closing quote ends its scope
+            i += 1
+            continue
         if c in "'\"" and c == top:
             if ctx[-1][1]:
                 boundary(c, close=True)         # an inner shell's script ends
@@ -382,10 +387,6 @@ def expand_vars(t, env):
             seg.append(c)
             i += 1
             continue
-        if top.endswith("script") and c == top[0]:
-            boundary(c, close=True)
-            i += 1
-            continue
         if c == "(":
             boundary(c, kind="(", scope=True)
             i += 1
@@ -413,8 +414,10 @@ def expand_vars(t, env):
 _GIT_REFS = ("fetch", "pull", "push", "branch", "for-each-ref", "reflog", "ls-remote", "remote", "submodule", "clone",
              "worktree", "tag")
 # an argument that names a ref the history grant does not carry (`git show origin/main`, `git log --all`)
-_REF_ARG = re.compile(r"(?:^|\s)(?:origin|upstream)/\S*|@\{|--(?:all|branches|remotes|tags)(?![\w-])|(?:^|\s)v\d+(?:\.\d+)+\b|\brefs/\S*|"
-                      r"\b(?:FETCH_HEAD|ORIG_HEAD|MERGE_HEAD)\b|(?:^|\s)(?:main|master)(?=\s|$|\.\.|~|\^)")
+# (a range's far end counts: `HEAD..origin/main`, `"main...HEAD"`)
+_REF_ARG = re.compile(r"(?:^|[\s'\"]|\.\.\.?)(?:origin|upstream)/\S*|@\{|--(?:all|branches|remotes|tags)(?![\w-])|"
+                      r"(?:^|\s)v\d+(?:\.\d+)+\b|\brefs/\S*|\b(?:FETCH_HEAD|ORIG_HEAD|MERGE_HEAD)\b|"
+                      r"(?:^|[\s'\"]|\.\.\.?)(?:main|master)(?=[\s'\"]|$|\.\.|~|\^)")
 
 
 def served(cfg=None):
@@ -460,9 +463,10 @@ def needs(text, prof, carved=(), host_only=(), git_tools=(), serve=None):
     for m in _REMOTE.finditer(t):
         add("another machine: `%s` (the box has no ssh keys)" % m.group(1))
     for m in _WINDOWS.finditer(t):
-        if "windows_build" in serve and os.path.basename(m.group(1)).lower() == "winbuild.py":
+        prog = m.group(1) or m.group(2)
+        if "windows_build" in serve and os.path.basename(prog).lower() == "winbuild.py":
             continue
-        add("a Windows program: `%s` (no Windows interop in the box)" % m.group(1))
+        add("a Windows program: `%s` (no Windows interop in the box)" % prog)
     for path, why in git_tools:
         if _names(path, t):
             add("git history: %s runs git itself (%s; the box is an export with no .git)" % (path, why or "reads history"))

@@ -126,12 +126,26 @@ def t_review_three():
     ok(needs("git diff HEAD~1") != [], "T7b a plain diff still does")
 
 
+def t_review_four():
+    """GPT's fourth full-file review (2026-11-06)."""
+    ok(needs("bash -c 'ROOT=/tmp; cat \"$ROOT/y\"'; cat \"$ROOT/x\"") == ["hidden path: /secret/x"],
+       "F1 an inner shell's closing quote ends its scope", needs("bash -c 'ROOT=/tmp; cat \"$ROOT/y\"'; cat \"$ROOT/x\""))
+    git = lambda t: RR.needs(t, PROF, serve=("git_history",))                # noqa: E731
+    ok(git("git log HEAD..origin/main --oneline") != [], "F2 a range's far end is a ref")
+    ok(git('git diff "main...HEAD" --stat') != [], "F2b a quoted range too")
+    ok(git("git log -n 3 --oneline HEAD~2..HEAD") == [], "F2c a HEAD-only range is none")
+    exe = needs('"/mnt/c/Program Files/dotnet/dotnet.exe" --info')
+    ok(any(x.startswith("a Windows program") for x in exe), "F3 a quoted .exe path with spaces", exe)
+    ok(needs('echo "run dotnet.exe later"') == [], "F3b an .exe named inside an echo is no program")
+
+
 def main():
     t_parens()
     t_comments()
     t_vars()
     t_review_two()
     t_review_three()
+    t_review_four()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
