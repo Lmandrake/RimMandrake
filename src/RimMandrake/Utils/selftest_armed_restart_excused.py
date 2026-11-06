@@ -131,6 +131,59 @@ def test_the_recorded_route_stands():
     (TMP / "ops/timers_pauses.json").unlink()
 
 
+# list-timers also lists a timer that already elapsed, NEXT reading - (seen on Archmagi, systemd 259)
+listing = lambda text, base: (lambda argv, **kw: (subprocess.CompletedProcess(argv, 0, text, "") if argv[2] == "list-timers" else base(argv, **kw)))
+fired_row = lambda base, left="- -", last="Fri 2026-11-06 13:24:27 PST 2min ago": listing("%s %s %s.timer %s.service\n" % (left, last, SWITCH, SWITCH), base)
+far_row = lambda base, left: listing("Mon 2026-12-02 14:01:26 PST %s - - %s.timer %s.service\n" % (left, SWITCH, SWITCH), base)
+# a stuck systemd: this call runs out of time
+raising = lambda base, verb: (lambda argv, **kw: ((_ for _ in ()).throw(subprocess.TimeoutExpired(argv, 60)) if argv[2] == verb else base(argv, **kw)))
+
+
+def test_the_review_of_the_first_fix():
+    for why, argv in (("no --user: the system manager's timer", "/usr/bin/systemctl start " + TIMER),
+                      ("--system", "/usr/bin/systemctl --system start " + TIMER),
+                      ("another host", "/usr/bin/systemctl --host=h --user start " + TIMER),
+                      ("a dry run", "/usr/bin/systemctl --user --dry-run start " + TIMER)):
+        check(not DM.excused(LINE, systemd([("rm-x-resume", True, argv)])), "starts nothing of ours: " + why)
+    check(DM.excused(LINE, systemd([("rm-x-resume", True, "/usr/bin/systemctl --user --no-block start " + TIMER)])),
+          "--no-block still starts it")
+    check(DM.excused(LINE, systemd([("rm-x-resume", True, "/usr/bin/systemctl --user start rm-a.timer " + TIMER)])),
+          "a restart of several timers covers each")
+    base = systemd([HAND])
+    check(not DM.excused(LINE, fired_row(base)), "a restart that already fired is listed but pending no more")
+    check(not DM.excused(LINE, fired_row(base, "n/a n/a")), "the same, NEXT reading n/a")
+    check(not DM.excused(LINE, fired_row(base, "Fri 2026-11-06 13:30:00 PST 5min")), "a restart that fired and comes again keeps failing")
+    check(not DM.excused(LINE, far_row(base, "3 weeks 5 days")), "weeks off is no short stop: pause() takes those")
+    check(not DM.excused(LINE, far_row(base, "1 day 2h")), "over a day is no short stop")
+    check(DM.excused(LINE, far_row(base, "23h 5min")), "under a day is")
+    check(not DM.excused(LINE, systemd([HAND], active="failed")), "a failed timer is no pause, armed or not")
+    check(not DM.excused(LINE, systemd([HAND], active="error TimeoutExpired")), "an unread timer is no pause")
+    check(not DM.excused(LINE, raising(base, "show")), "show ran out of time: the sweep excuses nothing and lives")
+    check(not DM.excused(LINE, raising(base, "list-timers")), "list-timers ran out of time: the sweep excuses nothing and lives")
+    check(TG.judge(*TG.read_states(raising(base, "show"))) == {TIMER: "inactive (stopped, not failed)"},
+          "show ran out of time: the guard lives and still alarms")
+    (TMP / "ops/timers_pauses.json").write_text(json.dumps({"timer-resume-2.timer": [TIMER]}))
+    recorded = systemd([("timer-resume-2", False, "/usr/bin/true")])
+    check(TIMER in TG.read_states(recorded)[1], "a pause() record alone covers its timers, no armed start needed")
+    check(DM.excused(LINE, recorded), "a pause() record alone excuses its promises")
+    gone = lambda argv, **kw: (subprocess.CompletedProcess(argv, 0, "- - Fri 2026-11-06 13:24:27 PST 2min ago timer-resume-2.timer timer-resume-2.service\n", "")
+                               if argv[2] == "list-timers" else recorded(argv, **kw))
+    check(TIMER not in TG.read_states(gone)[1], "a pause() restart that already fired covers nothing")
+    check(not DM.excused(LINE, gone), "a pause() restart that already fired excuses nothing either, though it still reads active")
+    check(not DM.excused(LINE, systemd([("timer-resume-2", False, "/usr/bin/true")], active="failed")), "a failed timer is no pause under a pause() record")
+    check(not DM.excused(LINE, systemd([("timer-resume-2", False, "/usr/bin/true")], active="active")), "a running timer needs no excuse under a pause() record")
+    check(not DM.excused(LINE, raising(recorded, "is-active")), "is-active ran out of time under a pause() record: nothing excused, the sweep lives")
+    (TMP / "ops/timers_pauses.json").write_text(json.dumps({"timer-resume-3.timer": None}))
+    check(TG.judge(*TG.read_states(systemd([("timer-resume-3", False, "/usr/bin/true")]))) == {TIMER: "inactive (stopped, not failed)"}, "a pause record with no list covers nothing and the guard lives")
+    (TMP / "ops/timers_pauses.json").unlink()
+    check(bool(DM.real_check("garbage line")), "a promise line that does not parse is a broken promise, not a dead sweep")
+    check(not DM.excused(LINE, far_row(systemd([HAND]), "-")), "a due time that reads - is unread: nothing excused")
+    check(not DM.excused(LINE, far_row(systemd([HAND]), "")), "a row with no due time at all: nothing excused")
+    undecodable = lambda argv, **kw: ((_ for _ in ()).throw(UnicodeDecodeError("utf-8", b"x", 0, 1, "bad")) if argv[2] == "show" else systemd([HAND])(argv, **kw))
+    check(not DM.excused(LINE, undecodable), "show output that does not decode: nothing excused, the sweep lives")
+
+
+test_the_review_of_the_first_fix()
 test_the_instance()
 test_the_sweep_on_the_instance()
 test_what_is_still_an_outage()

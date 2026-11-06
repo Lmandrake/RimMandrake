@@ -129,7 +129,8 @@ def sweeps():
     # an old pause record excuses nothing; a pending restart does
     (TMP / "ops/timers_pauses.json").write_text(json.dumps({"timer-resume-1.timer": ["rm-dead.timer"]}))
     import subprocess as SP
-    run = lambda state: (lambda argv, **kw: SP.CompletedProcess(argv, 0, state, ""))
+    # the promised timer itself is stopped; `state` is what its armed restart reads
+    run = lambda state: (lambda argv, **kw: SP.CompletedProcess(argv, 0, "inactive" if argv[-1] == "rm-dead.timer" else state, ""))
     check(not DM.excused(DEAD, run("inactive")), "a pause whose restart is gone excuses nothing")
     check(DM.excused(DEAD, run("active")), "a pause with its restart armed is excused")
     check(DM.duration_s("{ OnBootUSec=3min ; x }\n{ OnUnitInactiveUSec=1h 30min ; next }") == 5400, "timer period parsed")

@@ -1,0 +1,1 @@
+selftest_timers_guard.py drives a real throwaway user timer, polls a 72 s restart for at most 110 s, and calls daemon-reload; it failed once ('throwaway timer restarted by its own armed resume') and passed twice right after on the same code on a busy 8-worker machine. A red row there alone is not a timers_guard regression: rerun before debugging.

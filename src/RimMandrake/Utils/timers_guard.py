@@ -6,8 +6,9 @@
 included, for 4.6 h with no alarm: ops_watch only counts failed/overdue timers and a stopped timer has no next elapse.
 So this guard (a) runs from a unit named OUTSIDE the rm-*/testq-* glob (timer-guard.timer; a glob stop cannot take it),
 (b) judges by ActiveState of every ENABLED watched timer, (c) files ONE ledger alarm the way deadman does
-(ops_watch.real_filer), edge-triggered. A pause that armed its own restart (pause below, unit timer-resume-*) is
-tolerated while that restart is pending; if the restart is gone and timers are still inactive, that is the alarm.
+(ops_watch.real_filer), edge-triggered. A pause that armed its own restart (pause below, unit timer-resume-*; or a transient
+timer armed by hand, hand_armed) is tolerated while that restart is pending; if the restart is gone and timers are still
+inactive, that is the alarm.
 
     timers_guard.py run [--file-alarms]
     timers_guard.py install [--apply]
@@ -74,16 +75,35 @@ def enabled_from_listing(text):
     return sorted(out)
 
 
+HARMLESS_FLAGS = {"--user", "--no-block", "--quiet", "-q", "--no-pager", "--no-ask-password"}
+FAR_WORDS = ("day", "week", "month", "year")     # a LEFT column in these is no short stop: over a day goes through pause()
+
+
+def still_pending(row):
+    """Pure. A `list-timers` row split on spaces -> a timer that will still elapse (list-timers also lists a fired one, its
+    NEXT reading - or n/a)."""
+    return len(row) >= 2 and row[0] not in ("-", "n/a")
+
+
+def first_elapse_soon(row):
+    """Pure. A row due within a day that has never fired: NEXT(4 words) LEFT(words) LAST PASSED UNIT ACTIVATES, LAST and
+    PASSED reading - -. One that fired and is listed again is a restart that keeps failing, not a pause about to end."""
+    left = row[4:-4]
+    return (len(row) >= 9 and still_pending(row) and row[-4:-2] == ["-", "-"] and left != ["-"]
+            and not any(w in word for word in left for w in FAR_WORDS))
+
+
 def started_by(exec_start):
-    """Pure. A unit's ExecStart property -> the timers it runs `systemctl [flags] start|restart` on. A command that only
-    mentions one (an echo, a shell line) starts nothing we can vouch for."""
+    """Pure. A unit's ExecStart property -> the timers it runs `systemctl --user start|restart` on. A command that only
+    mentions one (an echo, a shell line, --system, --dry-run, any flag not named here) starts nothing we can vouch for."""
     out = set()
     for argv in re.findall(r"argv\[\]=(.*?) ; ignore_errors=", exec_start or ""):
         words = argv.split()
         if not words or os.path.basename(words[0]) != "systemctl":
             continue
+        flags = {w for w in words[1:] if w.startswith("-")}
         rest = [w for w in words[1:] if not w.startswith("-")]
-        if rest and rest[0] in ("start", "restart"):
+        if "--user" in flags and flags <= HARMLESS_FLAGS and rest and rest[0] in ("start", "restart"):
             out |= {w for w in rest[1:] if w.endswith(".timer")}
     return out
 
@@ -93,10 +113,13 @@ def hand_armed(listing, runner=subprocess.run):
     rm-relentless-resume-after-switch), which is a pause all the same. A shipped service proves no one meant a stop, so
     only systemd-run's count. Unreadable -> nothing: an outage stays an outage (PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS)."""
     services = sorted({p[-1] for p in (ln.split() for ln in (listing or "").splitlines())
-                       if len(p) >= 2 and p[-2].endswith(".timer") and p[-1].endswith(".service")})
+                       if first_elapse_soon(p) and p[-2].endswith(".timer") and p[-1].endswith(".service")})
     if not services:
         return set()
-    r = _sc(["show", "-p", "Transient", "-p", "ExecStart"] + services, runner)
+    try:
+        r = _sc(["show", "-p", "Transient", "-p", "ExecStart"] + services, runner)
+    except (OSError, subprocess.SubprocessError, ValueError):   # ValueError: output that does not decode
+        return set()
     if r.returncode:
         return set()
     out = set()
@@ -119,12 +142,13 @@ def read_states(runner=subprocess.run):
         states[n] = (s.stdout or "").strip()
         if not states[n]:
             raise RuntimeError("is-active %s gave no answer (exit %s): %s" % (n, s.returncode, (s.stderr or "")[:120]))
-    t = _sc(["list-timers", "--no-legend", "--no-pager"], runner)  # no --all: only timers that still elapse
+    t = _sc(["list-timers", "--no-legend", "--no-pager"], runner)
     if t.returncode:
         raise RuntimeError("list-timers failed: %s" % (t.stderr or "")[:200])
-    pending = {w for ln in (t.stdout or "").splitlines() for w in ln.split() if w.startswith(RESUME_PREFIX) and w.endswith(".timer")}
+    pending = {w for ln in (t.stdout or "").splitlines() if still_pending(ln.split()) for w in ln.split()
+               if w.startswith(RESUME_PREFIX) and w.endswith(".timer")}
     rec = load_pauses()
-    covered = {n for u in pending for n in rec.get(u, [])}
+    covered = {n for u in pending if isinstance(rec.get(u), list) for n in rec[u]}
     return states, covered | hand_armed(t.stdout, runner)
 
 

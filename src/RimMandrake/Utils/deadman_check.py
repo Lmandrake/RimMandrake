@@ -254,17 +254,20 @@ def excused(line, runner=subprocess.run):
     p = live_line.parse(line)
     if p["kind"] == "unit":
         import timers_guard
-        if any(p["unit"] in (units or []) and live_line._systemctl("is-active", resume, runner) == "active"
-               for resume, units in timers_guard.load_pauses().items()):   # an old record excuses nothing
-            return True
-        if live_line._systemctl("is-active", p["unit"], runner) == "active":
-            return False                       # every pass asks of every promise: a running timer needs no second look
+        if live_line._systemctl("is-active", p["unit"], runner) != "inactive":
+            return False                       # running needs no second look; failed or unread is no pause (timers_guard.judge)
         try:
             t = runner(["systemctl", "--user", "list-timers", "--no-legend", "--no-pager"], capture_output=True, text=True,
                        timeout=60, stdin=subprocess.DEVNULL)
-        except Exception:  # noqa: BLE001   could not ask: an outage stays an outage
+            if t.returncode:
+                return False
+            fired = {w for ln in (t.stdout or "").splitlines() if not timers_guard.still_pending(ln.split()) for w in ln.split()}
+            if any(p["unit"] in (units or []) and resume not in fired and live_line._systemctl("is-active", resume, runner) == "active"
+                   for resume, units in timers_guard.load_pauses().items()):   # an old record excuses nothing
+                return True
+            return p["unit"] in timers_guard.hand_armed(t.stdout, runner)
+        except Exception:  # noqa: BLE001   could not ask: an outage stays an outage, and the sweep lives
             return False
-        return not t.returncode and p["unit"] in timers_guard.hand_armed(t.stdout, runner)
     if p["kind"] == "role":
         sched = json.loads((HERE.parent / "rimflow" / "dispatcher_schedule.json").read_text(encoding="utf-8"))
         return not any(r.get("name") == p["role"] and r.get("enabled") for r in sched.get("roles", []))
@@ -273,7 +276,11 @@ def excused(line, runner=subprocess.run):
 
 def real_check(line):
     import live_line
-    return EXCUSED if excused(line) else live_line.check(line)
+    try:
+        pardon = excused(line)
+    except Exception:  # noqa: BLE001   a line that does not parse, an unread schedule: no excuse; check() says what is wrong
+        pardon = False
+    return EXCUSED if pardon else live_line.check(line)
 
 
 def read_items():

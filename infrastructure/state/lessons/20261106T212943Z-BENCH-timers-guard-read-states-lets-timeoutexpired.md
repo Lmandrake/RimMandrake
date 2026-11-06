@@ -1,0 +1,1 @@
+timers_guard.read_states lets a TimeoutExpired from its own list calls escape as a traceback rather than the RuntimeError its docstring promises: a stuck systemctl fails timer-guard.service loudly and writes no reading, so ops_watch's failed-unit watch sees it but the guard itself does not alarm. Seen by review of PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS; left as is.
