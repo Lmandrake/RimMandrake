@@ -590,14 +590,15 @@ def compose_test_list(package_ids, config_path=None, zoom_installed=None):
     MODS_CONFIG = config_path
     with open(MODS_CONFIG, encoding="utf-8") as f:
         xml = f.read()
-    # packageIds compare case-blind, as RimWorld's do: MINIMAL spells `Neronix17.OuterRim.Core` while About.xml
-    # dependencies arrive lowercased, and a case-sensitive test wrote the same mod twice (MODCHECK_DONOR_ENVIRONMENTS_1)
+    # Compare case-blind so a list never gains the same mod twice (MODCHECK_DONOR_ENVIRONMENTS_1), and WRITE lowercase:
+    # RimWorld's IsActive is case-sensitive on the file's ids, so a capitalised entry loads yet reads inactive
+    # (MINIMALLIST_FIX_OUTERRIMCORE_CTOR_NRE; zoom_guard.lower_text)
     live = {p.strip().lower() for p in re.findall(r"<li>([^<]+)</li>", xml)}
     add = []
     for p in package_ids:
         if p.lower() not in live:
             live.add(p.lower())
-            add.append(p)
+            add.append(p.lower())
     import zoom_guard
     sys.path.insert(0, _UTILS)
     if not zoom_guard.has_zoom(list(live) + add):
@@ -613,9 +614,10 @@ def compose_test_list(package_ids, config_path=None, zoom_installed=None):
         else:
             print("modcheck: %s is not installed on this host; composing without a zoom mod" % zoom_guard.ZOOM,
                   flush=True)
-    if add:
+    fixed = zoom_guard.lower_text(xml)
+    if add or fixed != xml:
         lis = "".join("    <li>%s</li>\n" % p for p in add)
-        xml = xml.replace("</activeMods>", lis + "  </activeMods>")
+        xml = fixed.replace("</activeMods>", lis + "  </activeMods>")
         tmp = MODS_CONFIG + ".modcheck.tmp"
         with open(tmp, "w", encoding="utf-8") as f:
             f.write(xml)

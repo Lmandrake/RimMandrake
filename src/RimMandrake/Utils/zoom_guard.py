@@ -8,6 +8,11 @@ or brrainz.cameraplus -- and the two conflict, so we never add one on top of the
 Doors that write the live ModsConfig.xml all call this: modlist_swap (swap, enable), modset_builder.write_config,
 modcheck.runner.compose_test_list. modset_builder.resolve_tier keeps its own tier-level add (and `no_zoom`).
 `./game up|loading` refuses/repairs at launch via check_live (game -> rimflow game).
+
+The same doors lowercase every packageId (MINIMALLIST_FIX_OUTERRIMCORE_CTOR_NRE). RimWorld is NOT case-blind here:
+ModsConfig fills activeModsHashSet with the file's raw strings while IsActive() lowercases its query (decompiled
+Verse.ModsConfig, 1.6). A `Neronix17.OuterRim.Core` entry loads the mod yet makes it read inactive, so its constructor's
+GetActiveModWithIdentifier returned null (NRE in get_VersionDir), and every MayRequire on that id reads false.
 """
 import os, re, sys
 
@@ -22,6 +27,21 @@ _LI = re.compile(r"<li>\s*([^<]+?)\s*</li>")
 def active_ids(xml_text):
     m = re.search(r"<activeMods>(.*?)</activeMods>", xml_text, re.S)
     return [x for x in _LI.findall(m.group(1))] if m else []
+
+
+def lower_text(xml_text):
+    """xml_text with every <li> inside <activeMods> lowercased (same bytes otherwise). The game itself only ever
+    writes lowercase ids; a capital can come only from a hand-written list."""
+    m = re.search(r"<activeMods>(.*?)</activeMods>", xml_text, re.S)
+    if not m:
+        return xml_text
+    body = _LI.sub(lambda li: li.group(0).replace(li.group(1), li.group(1).lower()), m.group(1))
+    return xml_text[:m.start(1)] + body + xml_text[m.end(1):]
+
+
+def mixed_case(ids):
+    """The ids the engine would load yet report inactive."""
+    return [i for i in ids if i != i.lower()]
 
 
 def has_zoom(ids):
@@ -50,7 +70,7 @@ def with_zoom(ids, installed=None):
     """ids with the zoom mod placed right after Harmony when neither zoom mod is present. `installed` (bool or
     callable) defaults to a disk probe. Raises RuntimeError when it is needed and not installed: a list without
     any zoom must not be written quietly."""
-    ids = list(ids)
+    ids = [i.lower() for i in ids]
     if has_zoom(ids):
         return ids
     ok = zoom_installed() if installed is None else (installed() if callable(installed) else installed)
@@ -63,7 +83,8 @@ def with_zoom(ids, installed=None):
 
 
 def fix_text(xml_text, installed=None):
-    """xml_text with the zoom mod inserted when missing (same bytes otherwise)."""
+    """xml_text lowercased (lower_text) with the zoom mod inserted when missing (same bytes otherwise)."""
+    xml_text = lower_text(xml_text)
     ids = active_ids(xml_text)
     if has_zoom(ids):
         return xml_text
@@ -77,7 +98,7 @@ def fix_text(xml_text, installed=None):
 
 
 def enforce_file(path, installed=None):
-    """Make the list at `path` carry a zoom mod, in place, atomically. -> True when it wrote."""
+    """Make the list at `path` lowercase and carry a zoom mod, in place, atomically. -> True when it wrote."""
     with open(path, "rb") as f:
         raw = f.read()
     text = raw.decode("utf-8")
@@ -100,18 +121,23 @@ def check_live(repair=False, installed=None):
             ids = active_ids(f.read())
     except OSError as e:
         return "live ModsConfig.xml unreadable: %s" % e
-    if has_zoom(ids):
+    if has_zoom(ids) and not mixed_case(ids):
         return None
     if repair:
         try:
             enforce_file(MODS_CONFIG, installed)
-            return "added %s to the live ModsConfig.xml (neither zoom mod was listed)" % ZOOM
+            if not has_zoom(ids):
+                return "added %s to the live ModsConfig.xml (neither zoom mod was listed)" % ZOOM
+            return "lowercased %s in the live ModsConfig.xml" % ", ".join(mixed_case(ids))
         except RuntimeError as e:
             return "REFUSED: %s" % e
+    if has_zoom(ids):
+        return ("REFUSED: the live ModsConfig.xml spells %s with capitals: the game loads them but reports them "
+                "inactive" % ", ".join(mixed_case(ids)))
     return "REFUSED: the live ModsConfig.xml has neither %s nor %s" % SATISFIES[::1]
 
 
 if __name__ == "__main__":
     r = check_live(repair="--repair" in sys.argv)
     print(r or "zoom ok")
-    sys.exit(0 if (r is None or r.startswith("added")) else 1)
+    sys.exit(0 if (r is None or r.startswith(("added", "lowercased"))) else 1)

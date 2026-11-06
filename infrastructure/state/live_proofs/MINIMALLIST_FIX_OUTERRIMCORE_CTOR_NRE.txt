@@ -1,0 +1,3 @@
+# A cold load on the MINIMAL list (infrastructure/state/modlists/ModsConfig.MINIMAL.xml, all five DLC, holds neronix17.outerrim.core) with DevMode on.
+# Outer Rim Core is a workshop mod: nothing of ours to deploy. The proof reads the Player.log of that load: exit 0 clean, 1 the NRE is back, 2 the log never loaded the mod.
+live-proof A1: python3 src/RimMandrake/Utils/modlist_case.py log

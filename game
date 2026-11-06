@@ -161,7 +161,7 @@ case "${sentence%% —*}" in
     "Deploying") python3 "$here/src/RimMandrake/Utils/zoom_guard.py" --repair >&2 || zoom_rc=3 ;;
     "Game is loading"|"Game is up")
         zmsg="$(python3 "$here/src/RimMandrake/Utils/zoom_guard.py" 2>&1)" || {
-            printf '\033[1;31m  ⚠ NO ZOOM MOD in this load: %s\n    fix before the next restart: python3 src/RimMandrake/Utils/zoom_guard.py --repair (game down)\033[0m\n' "$zmsg" >&2
+            printf '\033[1;31m  ⚠ MOD LIST GUARD (zoom mod, lowercase ids) failed for this load: %s\n    fix before the next restart: python3 src/RimMandrake/Utils/zoom_guard.py --repair (game down)\033[0m\n' "$zmsg" >&2
             zoom_rc=3; } ;;
 esac
 python3 "$bc" "$sentence" || exit $?
