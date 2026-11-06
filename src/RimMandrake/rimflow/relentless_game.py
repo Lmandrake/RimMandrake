@@ -678,21 +678,24 @@ def steve_sync(store, fx, r, item, g, sha, now, acts):
 STAGE_AGENT = "python_stager"   # relentless.Effects.launch runs relentless_stage.py in the unit for this agent
 
 
-def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None):
+def stage_plan(st, c, sha, others, enable, dlls, trees, remedy, deploy_args=None, companion=None):
     """What relentless_stage.py does for this staging (STAGING_REWIRE_PYTHON_NOT_AN_LLM), the stage prompt's steps as
     data. deploy: deploy_custom_mods.py argument strings, the build's mod folders (never a packageId: those are enabled,
     not deployed) with the stale-DLL ones and the lane fix's, then the `live-deploy:` trees. deploy_args: folders -> one
-    argument string (GameFx.game_deploy_args: a folded biome folder plans through --compose biomes)."""
+    argument string (GameFx.game_deploy_args: a folded biome folder plans through --compose biomes).
+    companion: the companion source hash the build owes the game folder (GameFx.game_companion), or None: the stager
+    builds and deploys JawaBench in the shutdown window (LIVEROUND_COMPANION_DEPLOY_OLD_DLL_BLAMED)."""
     import relentless_live_round as R
     folders = sorted({m for m in enable if not R.is_package(m)} | set(dlls) | set((remedy or {}).get("mods") or []))
     args = (deploy_args or (lambda ms: " ".join("--mod %s" % m for m in ms)))
     deploy = ([args(folders)] if folders else []) + ([trees[1]] if trees and trees[1] else [])
     return {"item": st["item"], "gen": st["gen"], "sha": sha, "full": bool((st.get("game") or {}).get("full")),
             "enable": sorted(enable), "deploy": deploy, "riders": [o["item"] for o in others],
-            "remedy_cmds": list((remedy or {}).get("cmds") or []), "max_s": c["stage_max_s"]}
+            "remedy_cmds": list((remedy or {}).get("cmds") or []), "max_s": c["stage_max_s"],
+            **({"companion": companion} if companion else {})}
 
 
-def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None):
+def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=None, companion=None):
     """trees: `live-deploy:` mods riding this load -> (folders, deploy_custom_mods.py args covering them), or None.
     remedy: the lane's own fix of an environment cause (_env_fix): {"mods": to deploy and load, "cmds": producers}."""
     i, g = st["item"], st["gen"]
@@ -731,6 +734,9 @@ def stage_prompt(st, r, sha, others=(), enable=(), dlls=(), trees=None, remedy=N
         ("   SHUTDOWN WINDOW: with the game DOWN and before the launch, deploy %s (`deploy_custom_mods.py --mod <Mod> "
          "--apply`): the game folder holds a stale DLL for each, and a DLL cannot be written while the game runs."
          % ", ".join(dlls)) if dlls else "   SHUTDOWN WINDOW: no stale DLL in the game folder for these mods.",
+        ("   COMPANION: in the same shutdown window run `python3 src/RimMandrake/bridgetools/build.py --gm --apply` from a "
+         "clone whose companion sources are %s's (source hash %s): the proofs call JawaBench tools and the game folder's "
+         "DLL is not the build's." % (sha, companion[:12])) if companion else "   COMPANION: not owed.",
         ("   ONE LOAD FOR ALL: these game items wait for a reload too; deploy each one's build as well (rimworld-deploy) and "
          "choose the smallest list that holds the most of their mods; level your clone to origin/main first (./sync) so "
          "each build is in the tree: %s." % "; ".join(
@@ -1019,6 +1025,21 @@ class GameFx(object):
         """Mod folders -> one deploy_custom_mods.py argument string (relentless_live_round.deploy_args)."""
         import relentless_live_round as R
         return R.deploy_args(folders, self._round_fx().folded())
+
+    def game_companion(self, item, sha):
+        """The companion source hash at `sha` when the item owes the game its JawaBench DLL (a `live-companion:` line, or
+        a build touching the companion's sources) and the game folder's copy is not FRESH against it; else None."""
+        import relentless_live as L
+        import relentless_live_round as R
+        fx = self._round_fx()
+        try:
+            owes = R.companion_line(self._mods_text(item, sha)) or L.companion_touched(fx, sha, item)
+        except (ValueError, OSError):
+            return None
+        if not owes:
+            return None
+        v = fx.companion(sha) or {}
+        return v.get("want") if v.get("want") and v.get("state") != "FRESH" else None
 
     def game_trees(self, builds):
         """Every `live-deploy:` mod of [(item, sha)] riding one load -> (folders, deploy_custom_mods.py args), or None."""
@@ -2154,12 +2175,13 @@ def step(store, fx, r, item, now, acts, sup):
         st["_proofs_text"] = fx.proofs_at(item, sha)
         trees = fx.game_trees([(item, built)] + [(o["item"], o["game"]["sha"]) for o in others
                                                  if (o.get("game") or {}).get("sha")])
+        comp = fx.game_companion(item, built) if hasattr(fx, "game_companion") else None
         agent = r["pilot_agent"]
         if c.get("stage_python", True):     # the prompt rides as the python stager's fallback brief only
             agent = STAGE_AGENT
             st["_stage_plan"] = stage_plan(st, c, sha, others, want, dll_mods(gaps), trees, remedy,
-                                           getattr(fx, "game_deploy_args", None))
-        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy), agent,
+                                           getattr(fx, "game_deploy_args", None), companion=comp)
+        why = fx.launch(st, desc, stage_prompt(st, r, sha, others, want, dll_mods(gaps), trees, remedy, comp), agent,
                         st["clone"], c["stage_max_s"], {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         if why:
             fx.bridge_release()

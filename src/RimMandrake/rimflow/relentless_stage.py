@@ -8,7 +8,7 @@ The supervisor (relentless_game, phase "stage") writes a plan beside the run's o
 staging unit's body, in the same unit shape as a worker, so alive/stop/settle and the bridge hold are unchanged:
 
     deploy plan (stop on a hand-edited game copy: another seat's file) -> game down -> apply (the stale DLL copy rides
-    the shutdown window) -> modlist_swap.py (restore FULL.LATEST for a final; --enable <mods>, its About.xml dependency
+    the shutdown window, and the JawaBench companion when the plan owes it: bridgetools/build.py --gm --apply) -> modlist_swap.py (restore FULL.LATEST for a final; --enable <mods>, its About.xml dependency
     closure) -> launch through Steam -> wait for `Bridge token:` bounded by load_policy -> lane-fix producers ->
     `relentless.py game-ready` (or `snag --class game_stage` on a known stop)
 
@@ -101,6 +101,19 @@ class Ops(object):
         import load_policy
         return int(load_policy.profile_for(load_policy.active_count_from_modsconfig())["process_to_bridge_deadline_s"])
 
+    def companion_hash(self):
+        """The companion source hash of this clone's working tree (what build.py compiles), or None."""
+        d = os.path.join(self.cwd, "src", "RimMandrake", "bridgetools")
+        if d not in sys.path:
+            sys.path.insert(0, d)
+        import companion_identity
+        return companion_identity.srchash_worktree(self.cwd)
+
+    def companion_build(self):
+        """build.py --gm --apply from this clone: builds, verifies and writes BridgeTools/JawaBench (the game is down)."""
+        return self.sh([sys.executable, os.path.join(self.cwd, "src", "RimMandrake", "bridgetools", "build.py"), "--gm",
+                        "--apply"], timeout=480)
+
     def report(self, verb, text, klass=None):
         argv = [sys.executable, os.path.join(self.cwd, "src", "RimMandrake", "rimflow", "relentless.py"), verb,
                 "--item", self.plan["item"], "--gen", str(self.plan["gen"])]
@@ -169,10 +182,19 @@ def run(plan, ops):
                 raise Stop("deploy %s: %s" % (args, why))
             if rc not in (0, 1):
                 raise Stop("deploy plan %s exit %d: %s" % (args, rc, out.strip()[-300:]))
+        want = plan.get("companion")   # the companion source hash the build owes BridgeTools/JawaBench, or None
+        if want:                    # LIVEROUND_COMPANION_DEPLOY_OLD_DLL_BLAMED: checked before anything is written
+            have = ops.companion_hash()
+            if have != want:
+                raise Stop("the companion sources in this clone (hash %s) are not the build's (%s): build.py would "
+                           "deploy another companion" % ((have or "unreadable")[:12], want[:12]))
         game_down(ops, log)         # 2. down: a DLL cannot be written while the game runs
         for args in groups:         # 3. apply in the shutdown window: the stale DLLs go with the rest
             _ok(*ops.sh([sys.executable, DEPLOY] + args.split() + ["--apply"], timeout=480), what="deploy --apply " + args)
-        log.append("deployed %s" % ("; ".join(groups) or "nothing"))
+        if want:                    # the companion too: no mod deploy writes BridgeTools/JawaBench
+            _ok(*ops.companion_build(), what="bridgetools/build.py --gm --apply")
+        log.append("deployed %s%s" % ("; ".join(groups) or "nothing",
+                                      "; companion JawaBench %s" % want[:12] if want else ""))
         if plan.get("full"):        # 4. the list: the owner's whole one for a final, then the mods on top
             _ok(*ops.sh([sys.executable, SWAP, "--restore", "--apply"], timeout=180), what="modlist_swap --restore")
         else:                       # the smallest list that proves it: the minimal one (all five DLC), the mods on top

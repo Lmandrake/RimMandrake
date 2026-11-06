@@ -481,6 +481,50 @@ def build_shas(fx, sha, item_id=None):
     return [sha] + [s for s in fx.cited(item_id, sha) if not (s.startswith(sha) or sha.startswith(s))]
 
 
+# LIVEROUND_COMPANION_DEPLOY_OLD_DLL_BLAMED: the round deployed mod folders only, never the JawaBench companion
+# (BridgeTools/JawaBench, bridgetools/build.py), so BRIDGE_STALL_DIAGNOSTIC_1's companion-only fix e26a661423 read A1 FAIL
+# twice on the hand-deployed d62e3e51 DLL (companion_identity STALE). A clause owes the companion when its proofs file
+# says `live-companion: JawaBench` (relentless_live_round.LIVE_COMPANION) or its build touched the companion's sources;
+# then the game folder's DLL must read FRESH against the built sha before any bridge is taken, else "not deployed"
+# (the game phase restages; relentless_stage builds and deploys it in the shutdown window).
+COMPANION_SRC = "src/RimMandrake/bridgetools/JawaBench.BridgeTools/"
+COMPANION = "the JawaBench companion"
+
+
+def companion_touched(fx, sha, item_id=None):
+    """True when the build (build_shas: the built commit, or the commits citing the item when it holds no game file)
+    touched a companion compile input (companion_identity.wanted). A fake without `touched` touches nothing."""
+    if not hasattr(fx, "touched"):
+        return False
+    _bridgetools()
+    import companion_identity as CI
+    return any(p.startswith(COMPANION_SRC) and CI.wanted(p[len(COMPANION_SRC):])
+               for s in build_shas(fx, sha, item_id) for p in fx.touched(s))
+
+
+def _bridgetools():
+    d = os.path.join(os.path.dirname(HERE), "bridgetools")
+    if d not in sys.path:
+        sys.path.insert(0, d)
+
+
+def companion_gap(v, started=None):
+    """companion_identity.verdict of the game folder's DLL (plus "mtime") -> None when the running game can hold the
+    built sha's companion, else (why, game_stamped). game_stamped False: the identity could not be read (the harness's,
+    retried later); True: the DLL is not the build's, so only a staging changes it (UNDEPLOYED)."""
+    st = (v or {}).get("state")
+    if st == "FRESH":
+        if started is not None and v.get("mtime") is not None and started <= v["mtime"]:
+            return ("%s: %s was deployed %s, after the game started %s: the running game loaded the one before it"
+                    % (UNDEPLOYED[0], COMPANION, iso(v["mtime"]), iso(started))), True
+        return None
+    if st in (None, "UNMEASURED"):
+        return "%s's identity could not be read (companion_identity %s)" % (COMPANION, st or "gave nothing"), False
+    _bridgetools()
+    import companion_identity as CI
+    return "%s: %s in the game folder is not the build's: %s" % (UNDEPLOYED[0], COMPANION, CI.describe(v)), True
+
+
 def reaches_game(fx, tier, mod, revs=()):
     """True when a change under src/<tier>/<mod>/ can change what the game loads (stale_build, carry_scope):
     fx.game_input(tier, mod, revs) (the real fx: About/About.xml at HEAD or at any of `revs`, a compose source or shell, or
@@ -1135,6 +1179,16 @@ class Fx(object):
             self._folded = deploy_custom_mods.folded()
         return self._folded
 
+    def companion(self, sha):
+        """companion_identity.verdict of the game folder's JawaBench DLL against the companion sources at `sha`, plus
+        the DLL's "mtime" (None when absent). The game root is the Mods folder's parent (build.py DEPLOY_DIR)."""
+        _bridgetools()
+        import companion_identity as CI
+        dll = os.path.join(os.path.dirname(os.path.normpath(self.mods_dir)), "BridgeTools", "JawaBench", CI.DLL_NAME)
+        v = CI.verdict(dll, self.books, sha)
+        v["mtime"] = os.path.getmtime(dll) if os.path.isfile(dll) else None
+        return v
+
     def mtime(self, mod, rel):
         got = deployed_paths(self.mods_dir, mod, rel, self.folded())
         return max(os.path.getmtime(p) for p in got) if got else None
@@ -1307,7 +1361,8 @@ class Fx(object):
                     pass
 
 
-def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None, trees=(), env=None):
+def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site=None, trees=(), env=None,
+        companion=False):
     """-> the run's row (also appended to <root>/live/runs.jsonl). row["outcome"] is PASS, FAIL, UNMEASURED or REFUSED.
     needs: mod folders the proof declares (live_proofs `live-mods:`) beyond the ones the built commit changed; with
     those, each one's About.xml modDependencies must be in the RUNNING load, or the row is UNMEASURED (restage), never
@@ -1315,7 +1370,9 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
     site: the item's `live-site` command for this criterion (refused_site), run with the bridge held before the proof.
     trees: mod folders of a `live-deploy:` line: a drifting tree is UNMEASURED "not deployed" (the game phase stages, whose
     worker applies it), never a run; `deploy` must cover them. It says what the folder holds, not when: unlike `files`, no
-    per-file stamp proves the running game started after that deploy; the staging's restart is what loads it."""
+    per-file stamp proves the running game started after that deploy; the staging's restart is what loads it.
+    companion: the proofs file has a `live-companion:` line; a build that touched the companion's sources owes it too
+    (companion_touched). Owed, the game folder's JawaBench DLL must read FRESH against the build (companion_gap)."""
     now = time.time() if now is None else now
     lr = live_rules(r)
     row = {"at": iso(now), "item": item_id, "criterion": criterion, "proof": proof, "deploy": deploy}
@@ -1379,6 +1436,18 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
         row.update(game_started=iso(started), deployed=iso(max(stamps)), files=len(files))
     else:
         stamps, started = [], None
+    try:
+        owes = companion or companion_touched(fx, sha, item_id)
+    except (ValueError, OSError) as e:
+        return done("UNMEASURED", "cannot read whether the build owes %s: %s" % (COMPANION, e))
+    if owes:
+        if not hasattr(fx, "companion"):
+            return done("UNMEASURED", "%s's identity could not be read (no companion reader)" % COMPANION)
+        v = fx.companion(sha) or {}
+        row["companion"] = {k: (v.get(k) or "")[:12] if k != "state" else v.get(k) for k in ("state", "embedded", "want")}
+        cg = companion_gap(v, fx.game_started() if v.get("state") == "FRESH" else None)
+        if cg:
+            return done("UNMEASURED", cg[0], **({} if cg[1] else {"game": None}))
     # The build is deployed and older than the game, but the running list may not load its mod (or a mod it declares,
     # or their dependencies) at all (owner 2026-11-02: a game fits an item by its RUNNING mods, not ModsConfig); a FINAL
     # clause also needs the full-list tier. Read BEFORE the bridge is taken, one read each: a run the running game cannot

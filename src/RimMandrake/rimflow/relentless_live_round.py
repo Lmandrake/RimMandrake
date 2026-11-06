@@ -35,6 +35,13 @@ ratchet_pilot's ~23 mods and got 39, WRONG_TIER every run):
     live-tier: gizkastowaway
     live-tier A1: ratchet_pilot
 
+A proof that calls JawaBench tools runs against whatever companion DLL is in the game folder (BridgeTools/JawaBench), which
+no mod deploy writes. Its file says so, and the clause then waits for that DLL to read FRESH against the build
+(companion_identity; a build touching src/RimMandrake/bridgetools/JawaBench.BridgeTools owes it without the line); the
+game phase's staging builds and deploys it in the shutdown window (LIVEROUND_COMPANION_DEPLOY_OLD_DLL_BLAMED):
+
+    live-companion: JawaBench
+
 Such a clause never runs on Archmagi's game: the owner made SteveDesktop the exact-tier host (by card, 2026-11-05), so the
 game phase sends it to testq as a job of profile tier:<name> (relentless_game.steve_sync), Steve loads that tier as the
 whole list and runs the line, and its verdict comes back as a runs.jsonl row (source testq). This round skips it.
@@ -121,6 +128,8 @@ def proof_lines(prose, pattern=PROOF_LINE):
 
 LIVE_MODS = re.compile(r"^\s*(?:[-*]\s+)?`?live-(?:mods|deploy)\s*:\s*(?P<mods>[^`]*)`?\s*$")
 LIVE_DEPLOY = re.compile(r"^\s*(?:[-*]\s+)?`?live-deploy\s*:\s*(?P<mods>[^`]*)`?\s*$")
+# the proof drives a JawaBench tool, so the game folder's companion must be the build's (LIVEROUND_COMPANION_DEPLOY_OLD_DLL_BLAMED)
+LIVE_COMPANION = re.compile(r"^\s*(?:[-*]\s+)?`?live-companion\s*:\s*(?P<what>[^`#]*?)`?\s*(?:#.*)?$")
 # the mods a proof intends to run WITHOUT (LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT): never loaded by it, never inferred
 LIVE_WITHOUT = re.compile(r"^\s*(?:[-*]\s+)?`?live-without\s*:\s*(?P<mods>[^`]*)`?\s*$")
 
@@ -287,6 +296,21 @@ def live_mods(text, pattern=LIVE_MODS):
                 if x and x not in out:
                     out.append(x)
     return out
+
+
+def companion_line(text):
+    """True when a live_proofs file has a `live-companion: JawaBench` line: its proofs call JawaBench tools, so the game
+    folder's companion DLL must be built from the build's sources (relentless_live.companion_gap). A build that touched
+    the companion's sources owes it without the line (relentless_live.companion_touched). ValueError on a line naming
+    anything but JawaBench: the one companion build.py deploys."""
+    got = False
+    for line in (text or "").splitlines():
+        m = LIVE_COMPANION.match(line)
+        if m:
+            if m.group("what").strip() != "JawaBench":
+                raise ValueError("a live-companion line names JawaBench, the one companion, not %r" % m.group("what"))
+            got = True
+    return got
 
 
 def names_check(fx, names):
@@ -737,9 +761,14 @@ def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):
         need = declared + [a["mod"] for a in (nd or {}).get("add") or [] if a["mod"] not in declared]
         env = {"mods": sorted(set(mods) | set(need)), "inferred": inferred_rows(nd),
                "without": (nd or {}).get("without") or []}     # what environment produced this verdict
+        try:
+            comp = {"companion": True} if companion_line(text) else {}
+        except ValueError as e:
+            summary["runs"].append({"item": item_id, "criterion": cid, "outcome": "UNMEASURED", "why": str(e)[:200]})
+            continue
         row = run(fx, root, item_id, cid, proof, deploy_args(list(mods) + trees, folded), r, now=time.time(),
                   needs=need, site=proof_lines(text, SITE_LINE).get(cid), trees=trees,
-                  **({"env": env} if nd is not None else {}))
+                  **dict(comp, **({"env": env} if nd is not None else {})))
         summary["runs"].append({k: row.get(k) for k in ("item", "criterion", "outcome", "why", "sha")})
         if item_gate(row):
             gated.add((item_id, sha))

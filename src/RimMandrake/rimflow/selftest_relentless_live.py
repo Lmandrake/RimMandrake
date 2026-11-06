@@ -481,7 +481,8 @@ def t_pass_is_a_verify_on_the_built_sha():
     fx = FakeFx()
     row = go(fx)
     check("pass outcome", row["outcome"] == "PASS", row)
-    check("order", fx.verbs() == ["touched", "changed", "plan", "gap", "take", "health", "proof", "release",
+    # the second "touched": does the build owe the JawaBench companion (relentless_live.companion_touched)
+    check("order", fx.verbs() == ["touched", "changed", "plan", "touched", "gap", "take", "health", "proof", "release",
                                        "verify"], fx.verbs())
     v = [c for c in fx.calls if c[:2] == ("rimflow", "verify")][0]
     for flag, want in (("--sha", SHA), ("--level", "L1"), ("--criterion", "A2"), ("--result", "pass")):
