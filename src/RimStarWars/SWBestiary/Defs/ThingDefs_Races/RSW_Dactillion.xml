@@ -35,8 +35,9 @@
   bare "Dactillion" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
 -->
 <Defs>
-<!-- Flying flip-book removed (owner, Weeping Stones art sheet 2026-10-10: "Old Flyer art must be removed (remove F)").
-     It still flies (MaxFlightTime); with no frames the engine draws the body graphic in flight. -->
+<!-- The donor flip-book was removed (owner, Weeping Stones art sheet 2026-10-10: "Old Flyer art must be removed (remove F)").
+     Its flip-book now is a body-locked cut-out of the grounded statics (swanimals/Dactillion/Dactillion_Flying_*,
+     flyer_cutout_sets/Dactillion.json, FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST); the multiplier keeps it at each life stage's size. -->
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Dactillion</defName>
     <label>dactillion</label>
@@ -178,6 +179,12 @@
     <race>RSW_Dactillion</race>
     <combatPower>325</combatPower>
     <ecoSystemWeight>0.30</ecoSystemWeight>
+    <flyingAnimationFramePathPrefix>swanimals/Dactillion/Dactillion_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <label>dactillion chick</label>

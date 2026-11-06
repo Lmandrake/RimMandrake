@@ -27,23 +27,24 @@
   RSW_Klorslug's and RSW_ShadeWhale reused RSW_Horax's: a new defName, no
   double-booked species identity. Grounded art is its OWN painted render
   (`Textures/Things/Pawn/Animal/RSW_ScrapNestBird/`, LEANINGSCRUB_ART_WIRING_1);
-  the flight flip-book and dessicated graphics still use Whisperbird's. The four other
+  the dessicated graphic still uses Whisperbird's. The flight flip-book is its
+  own (swanimals/ScrapNestBird/, a body-locked cut-out of these statics,
+  flyer_cutout_sets/ScrapNestBird.json, FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST). The four other
   flier-interface birds the sheet already places (Whisperbird, Convor, Porg,
   Nuna) all stay wired in RUT_AridShrubland.xml unchanged.
 
   Art: the three base facings of `RSW_Whisperbird` live at
   Textures/RimStarWars/SWBestiary/Whisperbird/ (folded from the retired
-  WhisperbirdArtOverride, ART_OVERRIDE_FOLD_ALL_1). The `_Dessicated` and
-  `_Flying_*` PNGs this def also uses stay under Textures/swanimals/Whisperbird/.
+  WhisperbirdArtOverride, ART_OVERRIDE_FOLD_ALL_1). The `_Dessicated` PNG
+  this def also uses stays under Textures/swanimals/Whisperbird/.
 
   🔑 `flyingAnimationInheritColors` is TRUE here where the donor had it false.
-  With it false the retint would apply to the grounded sprite only and the
-  bird would flash back to whisperbird colours the moment it took off.
+  The pawn graphics carry no colour today, so it changes nothing until one is
+  added; with it false such a tint would be dropped in flight.
 
   FLIGHT: per the standing rule "if it flies in the fiction, it flies in the
   game", and because the donor already carries it - `MaxFlightTime` is the
-  switch (a STAT, not a bool) and the flip-book frames already exist, so this
-  costs nothing.
+  switch (a STAT, not a bool).
 
   Working name only ("the scrap-nest bird"). arid_shrubland.md's Owed section
   lists "the bird-analogs" among the names still the owner's pick; folded into
@@ -205,12 +206,12 @@
     <combatPower>60</combatPower>
     <ecoSystemWeight>1.1</ecoSystemWeight>
     <wildGroupSize>2~5</wildGroupSize>
-    <flyingAnimationFramePathPrefix>swanimals/Whisperbird/Whisperbird_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFramePathPrefix>swanimals/ScrapNestBird/ScrapNestBird_Flying_</flyingAnimationFramePathPrefix>
     <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>9</flyingAnimationTicksPerFrame>
     <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
-    <!-- TRUE, unlike the donor: otherwise the retint below is dropped in flight. -->
+    <!-- TRUE, unlike the donor: a graphic colour, if one is added, then holds in flight. -->
     <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
     <lifeStages>
       <li>

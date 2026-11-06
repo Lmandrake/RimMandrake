@@ -715,10 +715,12 @@
    "frames": "4"
   },
   "RSW_Dactillion": {
-   "tier": 1,
-   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Dactillion"
+   ],
    "tex": "swanimals/Dactillion/Dactillion",
    "static": {
     "g1": 0.668,
@@ -726,8 +728,8 @@
     "g4": 0.578
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "4"
   },
   "RSW_Drexl": {
    "tier": 4,
@@ -858,10 +860,12 @@
    "frames": "1"
   },
   "RSW_ScrapNestBird": {
-   "tier": 1,
-   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
-   "flipbook": "unannotated",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "ScrapNestBird"
+   ],
    "tex": "Things/Pawn/Animal/RSW_ScrapNestBird/RSW_ScrapNestBird",
    "static": {
     "g1": 0.719,
