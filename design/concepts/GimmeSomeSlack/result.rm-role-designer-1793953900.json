@@ -1,0 +1,8 @@
+{
+ "run": "rm-role-designer-1793953900",
+ "stage": 4,
+ "outcome": "return",
+ "to": 3,
+ "summary": "Cold Reader exam rerun against the stage-3 tree (old exam void). 26 frozen scenarios (16 Examiner, 10 Challenger), 25/26 right but accept_where_reject_core = 1: both Readers accepted e10, a cut where both loose ends spark. The control (drawing_true_to_grid removed) still caught its rejects through his 2026-10-23 words and walk_scavenger_base, so it did not discriminate. exam.json records the failed run.",
+ "decision": "Rewrite leaf cut_live_and_dead_ends and its sheet line. (1) Its red, 'a cut leaves both ends sparking', contradicts the root ('sparking where it is live and dead where it is not'): when the far side has its own power source, both ends ARE live. Restate it so the reject is an end with no path to any power source that sparks, or a live end drawn dead. Keep the false_pass about choosing live/dead by which side is nearer the generator. (2) Sheet line 24 only states the positive case. Make it state the reject plainly ('an end cut off from all power that sparks is wrong'), so a Reader of the sheet alone rejects e10. (3) For the next exam, the control should remove a leaf that nothing else backs up (for example statics_clear_between_games or cut_live_and_dead_ends), not drawing_true_to_grid, which his words and the walk's red also cover. No owner answer is needed: his root already decides it."
+}

@@ -130,10 +130,24 @@
     "ref": "run rm-role-designer-1793953324",
     "stage": 3,
     "tokens": 477817
+   },
+   {
+    "at": "2026-11-06T08:57:15Z",
+    "kind": "helper",
+    "ref": "stage-4 exam rm-role-designer-1793953900: examiner 41472, challenger 33926, reader1 30768, reader2 30695, control 42724 (raw subagent tokens)",
+    "stage": 4,
+    "tokens": 179585
+   },
+   {
+    "at": "2026-11-06T08:58:24Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793953900",
+    "stage": 4,
+    "tokens": 690881
    }
   ],
   "reserve": 60000,
-  "spent": 5020232
+  "spent": 5890698
  },
  "history": [
   {
@@ -327,11 +341,29 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1793953324: stage 3 done"
+  },
+  {
+   "at": "2026-11-06T08:32:04Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "5020232 of 4000000 spent; run rm-role-designer-1793953900 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T08:32:04Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1793953900, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-06T08:58:24Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1793953900: stage 4 return"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
  "mod": "RimMandrake/GimmeSomeSlack",
- "pending_decision": "Coverage gaps from coverage_verdict.json (judge rm-coverage-judge-1793952643): (1) game_statics_reset is a built capability that ships (impl present). Its only coverage is sc_statics_new_game, which is an exploration scene with no control. An exploration scene never accepts, so this capability is not accepted by any acceptance scene or leaf. The sheet's 'delegated' line still says new-game cleanup is 'checked by their own scenes'. [scenes.json coverage_rest[game_statics_reset] -> sc_statics_new_game (kind exploration); sheet.md ## delegated]; (2) Owner-change wire cutting is built: RM_MapComponent_Aerial.cs:368 is gated by AerialSettings.cutWiresOnOwnerChange, default true. It has no inventory entry, no leaf and no scene that stages an ownership change. sc_settings lists the cutWiresOnOwnerChange flip, but with no owner change staged there is nothing to observe, so the flip proves nothing. [record.json inventory (missing entry); scenes.json sc_settings start/action]; (3) The sc_no_repeat control does not rule out what it claims. Forcing two edges to the same seed reads zero whether the distance is computed on the drawn curve or on the seed. So it cannot catch the leaf's own false_pass (distance computed on seeds, not the drawn curve). A discriminating control needs, for example, distinct seeds with identical drawn curves planted, which must read zero. [scenes.json sc_no_repeat.control; tree.json cords_never_repeat / cord_shape_variation_probe false_pass]; (4) The sc_four_looks control (two runs in the same look read the same) cannot rule out its stated alternative, looks differing only by tint. A tint-only implementation passes both the positive case and this control. The 'captures told apart' expect names no instrument or judge. [scenes.json sc_four_looks.control/expect]; (5) The sc_spans control (the same capture with nothing under the span) is not a rejection or absence case. It is the positive read repeated, so it distinguishes no mechanism. The scene needs a control that fails when the span sits at building or pawn altitude. [scenes.json sc_spans.control]; (6) The sc_gravship control (the read before launch passes) is not a control: it can never fail and rules nothing out. 'With the switch off its stated behaviour holds' names no expected observable. The restore is the boilerplate scene-rect snapshot, which cannot undo a flight that moved the ship to another map or tile. [scenes.json sc_gravship.control/expect/restore]; (7) sc_tap_theft never asserts that other factions' goodwill is unchanged. A drain that hits both the victim and the wrong faction would pass, yet the leaf's red names 'costs a different faction' and an item for exactly this is open (GSS_POWER_THEFT_FIX_WRONG_VICTIM). [scenes.json sc_tap_theft.expect; tree.json tap_steals_and_costs_goodwill.red]; (8) The sc_fallen_span control (an unpowered span cut, both ends dead) tests live/dead by power. It does not rule out its stated alternative, a span hidden on cut. Its rules_out does not match its case. [scenes.json sc_fallen_span.control]; (9) floor.json says the walk establishes memory (heap and texture MB before and after) and save_size (mid-way and end). Neither the sc_walk expect nor the walk_scavenger_base oracle reads them. sc_walk also has no expect for its master off/on step or for the frame-time bar the leaf oracle names. Its restore is the scene-rect snapshot, which does not fit a week-long fresh colony on his full list. [floor.json memory/save_size; scenes.json sc_walk expect/restore; tree.json walk_scavenger_base.oracle_proposed]; (10) Fuel-puddle ignition by a live fallen wire is part of the built fallen_wire_shock capability ('can ignite fuel puddles'; its chemfuel half has passed once). No leaf or scene asserts it. sc_shock only treats a fuel puddle as an alternative to rule out. [record.json inventory fallen_wire_shock; tree.json fallen_wire_shocks_crossers; scenes.json sc_shock]; (11) His words (s_no_plug_in_pipe_slot) are 'favor diagonal approaches sliding underneath'. No leaf or scene tests the slide-under approach itself; only 'no plug in a pipe slot' is asserted, and the slideUnder switch flip in sc_settings names no observable. Separately, the inventory says WaterproofConduit draws transparent, but sc_conduit_invisible stages only a plain run, so WaterproofConduit is never shown. [record.json scope s_no_plug_in_pipe_slot, inventory invisible_conduit; tree.json drawing_true_to_grid, conduit_invisible; scenes.json sc_true_to_grid, sc_conduit_invisible, sc_settings]",
+ "pending_decision": "Rewrite leaf cut_live_and_dead_ends and its sheet line. (1) Its red, 'a cut leaves both ends sparking', contradicts the root ('sparking where it is live and dead where it is not'): when the far side has its own power source, both ends ARE live. Restate it so the reject is an end with no path to any power source that sparks, or a live end drawn dead. Keep the false_pass about choosing live/dead by which side is nearer the generator. (2) Sheet line 24 only states the positive case. Make it state the reject plainly ('an end cut off from all power that sparks is wrong'), so a Reader of the sheet alone rejects e10. (3) For the next exam, the control should remove a leaf that nothing else backs up (for example statics_clear_between_games or cut_live_and_dead_ends), not drawing_true_to_grid, which his words and the walk's red also cover. No owner answer is needed: his root already decides it.",
  "recovery": [],
  "results": [
   {
@@ -627,11 +659,36 @@
    "run": "rm-role-designer-1793953324",
    "stage": 3,
    "summary": "All 11 coverage-judge gaps (rm-coverage-judge-1793952643) answered: 3 new leaves (statics_clear_between_games, owner_change_coils_wires, live_wire_lights_fuel), inventory entry owner_change_cut, new acceptance scenes sc_owner_change and sc_fuel_ignition, sc_statics_new_game made acceptance with a filled-state control; discriminating controls for sc_no_repeat, sc_four_looks, sc_spans, sc_fallen_span, sc_gravship; other-faction goodwill in sc_tap_theft; sc_walk and its oracle read memory, save size, frame time and master off/on with a throwaway-save restore; slide-under and WaterproofConduit asserted. Lint PASS, showcase set accepted. Exam must rerun: tree and sheet changed."
+  },
+  {
+   "at": "2026-11-06T08:58:24Z",
+   "decision": "Rewrite leaf cut_live_and_dead_ends and its sheet line. (1) Its red, 'a cut leaves both ends sparking', contradicts the root ('sparking where it is live and dead where it is not'): when the far side has its own power source, both ends ARE live. Restate it so the reject is an end with no path to any power source that sparks, or a live end drawn dead. Keep the false_pass about choosing live/dead by which side is nearer the generator. (2) Sheet line 24 only states the positive case. Make it state the reject plainly ('an end cut off from all power that sparks is wrong'), so a Reader of the sheet alone rejects e10. (3) For the next exam, the control should remove a leaf that nothing else backs up (for example statics_clear_between_games or cut_live_and_dead_ends), not drawing_true_to_grid, which his words and the walk's red also cover. No owner answer is needed: his root already decides it.",
+   "inputs": {
+    "exam": "44498b806a6e19139563e87cdf1c36b3a5ffee5d39e674dd865650cb5a5a0f52",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "75f81273986b7af084c1688f5f5c1cf3b9c2dffdfbd170a13fe0a2426a58ba27",
+    "sheet": "a664cccb99ac615abadf52d70b3c4a3204cd37055b5a73287459f9c8efb886f0",
+    "tree": "54e26bb557b63563274771360b646a97f7bc470218de681032512a6cc83329d7"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_exam.md": "3e3f16a15ed2c45e2851911d42c9369cdc7560758fe1f386dc38012b93534217"
+   },
+   "outcome": "return",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1793953900",
+   "stage": 4,
+   "summary": "Cold Reader exam rerun against the stage-3 tree (old exam void). 26 frozen scenarios (16 Examiner, 10 Challenger), 25/26 right but accept_where_reject_core = 1: both Readers accepted e10, a cut where both loose ends spark. The control (drawing_true_to_grid removed) still caught its rejects through his 2026-10-23 words and walk_scavenger_base, so it did not discriminate. exam.json records the failed run.",
+   "to": 3
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 3,
  "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
