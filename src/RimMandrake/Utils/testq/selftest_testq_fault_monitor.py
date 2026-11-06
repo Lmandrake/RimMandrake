@@ -17,6 +17,7 @@ import subprocess
 import sys
 import tempfile
 import shutil
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
@@ -410,7 +411,13 @@ def ingest_checks(tmp):
         S.dump(r, os.path.join(queue, "done", r["job"]["id"] + ".json"))
         return r["job"]["id"]
 
-    a = FM.analyse([start(), cyc(170), cyc(175, [0])])
+    # The boot is six hours before the wall clock, never a fixed date: rerun_job re-queues only results under
+    # RERUN_WITHIN_S (48 h) old, so a pinned boot turned this test red two days after it was written.
+    ib = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(time.time() - 6 * 3600))
+    at = lambda m, boot=ib: FM.stamp(FM.epoch(boot) + m * 60)            # noqa: E731
+    start_ = lambda boot=ib: start(boot)                                  # noqa: E731
+    cyc_ = lambda m, bad=(), boot=ib: cyc(m, bad, boot)                   # noqa: E731
+    a = FM.analyse([start_(), cyc_(170), cyc_(175, [0])])
     S.dump(a["windows"], os.path.join(queue, "fault_windows.json"))
     S.dump({"phase": "DRAIN", "clean_through_s": None, "boot_iso": at(0), "at": S.utcnow()}, os.path.join(queue, "fault_state.json"))
     now_iso = soon = S.utcnow()
@@ -435,8 +442,8 @@ def ingest_checks(tmp):
     ingest()
     check(len(events("note")) == n_notes, "a second pass writes nothing new")
     # no window over it, but no clean cycle read since: held, then counted once one is
-    b2 = "2026-11-03 23:30:00"      # before any wall clock this test can run on: the held job's times are real
-    a2 = FM.analyse([start(), cyc(170), cyc(175, [0]), start(b2), cyc(5, boot=b2)])
+    b2 = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(FM.epoch(ib) + 210 * 60))   # after the window, before now
+    a2 = FM.analyse([start_(), cyc_(170), cyc_(175, [0]), start_(b2), cyc_(5, boot=b2)])
     S.dump(a2["windows"], os.path.join(queue, "fault_windows.json"))
     S.dump({"phase": "CLEAN", "clean_through_s": a2["clean_through"], "boot_iso": b2, "at": now_iso}, os.path.join(queue, "fault_state.json"))
     r = rec(FM.stamp(FM.epoch(soon) - 600), soon, item=ITEM)
