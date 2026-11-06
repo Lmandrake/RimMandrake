@@ -4678,3 +4678,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","result":"kept","detail":"sweep: running again","ts":"2026-11-06T10:18:18Z","tsn":1793960298722649114}
 {"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","result":"broken","detail":"Ops alarm CHURN_OR_BLIND: infra_share 35.0 (line < 40) -- health.incident_slis = 1 incident SLIs reading bad now (MEASURED), line > 0","ts":"2026-11-06T10:19:14Z","tsn":1793960354605546490}
 {"seat":"RUNNER","event":"raise","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T10:19:17Z","tsn":1793960357746884199}
+{"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-06T10:21:34Z","tsn":1793960494053060235}
+{"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T10:21:37Z","tsn":1793960497308638066}
