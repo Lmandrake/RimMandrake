@@ -6,7 +6,8 @@
   without the mod: the with side enables it, the without side keeps it off the list and the stager refuses a list that
   still holds it; a toggling item stages alone and never rides. Neither line goes to SteveDesktop's inferred tier.
 
-  selftest_relentless_staging_menu.py                     every case below; exit 0 when all hold
+  selftest_relentless_staging_menu.py                     every case below; exit 0 when all hold (t_step_two_stagings
+                                                          drives relentless_game.step() itself: two stagings)
   selftest_relentless_staging_menu.py --fixture good      the instrument on the real planner and stager over
                                                           PLANET_ATMOSPHERE_CLOUD_COST_1.txt: FIXTURE_VERDICT: PASS, exit 0
   selftest_relentless_staging_menu.py --fixture bad       the same, on a plan built the old way (no menu step: the
@@ -190,13 +191,63 @@ def t_fixtures():
     ok(v == "ready" and "--require without" in text, "the PLANET file's second staging samples the without side")
 
 
+def t_step_two_stagings():
+    """The supervisor's own wiring: relentless_game.step() stages an item whose proofs file is the PLANET one twice
+    (the first staging ends with the game down, so the prove phase stages again). Staging 1 enables the mod and its
+    plan and brief carry the menu step with --require with; staging 2 keeps the mod off the list, plans without=[mod]
+    and carries --require without. Red when step() builds its plan without staging_menu() (the item's own defect: the
+    staging parks on a map with no menu sample and no with/without pair)."""
+    import relentless as R
+    import selftest_relentless_game as SG
+    x = SG.rig(1)
+    SG.to_game(x, "I0")
+    x.w.proofs[("I0", ".txt")] = planet_text()
+    staged, launch = [], x.w.launch
+
+    def spy(st, run, prompt, agent, clone, max_s, env):
+        if agent == G.STAGE_AGENT:
+            staged.append((dict(st.get("_stage_plan") or {}), prompt, len(x.w.enabled)))
+        return launch(st, run, prompt, agent, clone, max_s, env)
+    x.w.launch = spy
+    x.tick()
+    x.w.running = False
+    x.tick()
+    ok(len(staged) == 1, "step() launched the first staging: %d" % len(staged))
+    st = x.st("I0")
+    R.beat(x.s, "I0", st["gen"])
+    G.ready(x.s, "I0", st["gen"], "up at the menu")
+    x.w.up[st["run"]["unit"]] = False
+    for _ in range(3):
+        x.tick()
+        if len(staged) >= 2:
+            break
+    ok(len(staged) == 2, "step() staged a second time on the game still down: %d" % len(staged))
+    if len(staged) < 2:
+        return
+    want = {s: LR.menu_cmds(planet_text(), s) for s in ("with", "without")}
+    (p1, b1, n1), (p2, b2, n2) = staged
+    en1, en2 = [[m.lower() for m in e] for e in (x.w.enabled[n1 - 1], x.w.enabled[n2 - 1])]
+    ok(MOD in en1, "staging 1 enables %s: %s" % (MOD, en1))
+    ok(p1.get("menu_cmds") == want["with"] and "--require with" in want["with"][0],
+       "staging 1's plan runs the menu step --require with: %s" % p1.get("menu_cmds"))
+    ok((p1.get("toggle") or {}).get("side") == "with" and not p1.get("without"), "staging 1 is the with side: %s"
+       % p1.get("toggle"))
+    ok("MAIN MENU STEP: the moment" in b1 and "`%s`" % want["with"][0] in b1, "staging 1's brief carries the menu step")
+    ok(MOD not in en2, "staging 2 keeps %s off the list: %s" % (MOD, en2))
+    ok(p2.get("without") == [MOD] and (p2.get("toggle") or {}).get("side") == "without",
+       "staging 2 plans without=[%s]: %s %s" % (MOD, p2.get("without"), p2.get("toggle")))
+    ok(p2.get("menu_cmds") == want["without"] and "--require without" in want["without"][0],
+       "staging 2's plan runs the menu step --require without: %s" % p2.get("menu_cmds"))
+    ok("`%s`" % want["without"][0] in b2, "staging 2's brief carries the without menu step")
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--fixture", choices=["good", "bad"])
     a = ap.parse_args(argv)
     if a.fixture:
         return fixture(a.fixture)
-    for t in (t_parse, t_not_inferred, t_plan_and_prompt, t_stager, t_fixtures):
+    for t in (t_parse, t_not_inferred, t_plan_and_prompt, t_stager, t_fixtures, t_step_two_stagings):
         print("-- " + t.__name__)
         t()
     print("selftest_relentless_staging_menu: %s" % ("FAIL (%d)" % len(FAILS) if FAILS else "PASS"))
