@@ -265,6 +265,26 @@ def unpin(logdir=None):
     return rc, msg
 
 
+def heal_dirty(logdir):
+    """STEVE_LANE_UNSTICK_PAUSED_UNOWNED_D1A4: a tracked file an attempt dirtied while the clone was ON MAIN (an
+    in-tree writer such as modcheck's GREEN/STALE status registry) does not make `checkout main` fail, so unpin()
+    never saw it, and the next `pull --ff-only` refused SYNC and paused the lane.
+    In the runner clone only: record the dirt (dirty_clone.txt/.diff in logdir) and restore the tracked files.
+    -> (number restored, message). Never raises."""
+    if not runner_clone_only():
+        return 0, ""
+    try:
+        paths = save_dirty(logdir)
+        if not paths:
+            return 0, ""
+        rc, msg = git("reset", "-q", "HEAD", "--", ".")
+        rc2, msg2 = git("checkout", "-q", "-f", "HEAD", "--", ".")
+        return len(paths), "restored %d dirty tracked file(s) before the pull (rc %d/%d): %s %s" % (
+            len(paths), rc, rc2, msg, msg2)
+    except (OSError, subprocess.SubprocessError) as e:
+        return 0, "heal_dirty: %s" % e
+
+
 def git(*args):
     r = subprocess.run(["git", "-C", CLONE] + list(args), capture_output=True, text=True, timeout=300)
     return r.returncode, (r.stdout + r.stderr).strip()
@@ -373,6 +393,7 @@ def cmd_start(retry):
         write_text(p("jobs", job["id"]), aid)
 
         unpin(d)    # a crashed attempt can leave the clone on its detached pin: pull needs main
+        heal_dirty(d)   # dirt left on main by the last attempt would make the pull refuse SYNC
         if os.environ.get("TESTQ_SKIP_PULL") != "1":
             rc, msg = git("pull", "-q", "--ff-only", "origin", "main")
             if rc != 0:

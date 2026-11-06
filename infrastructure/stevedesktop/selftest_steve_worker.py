@@ -147,6 +147,13 @@ def main():
                    TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",  # never the real rw_game.sh status
                    TESTQ_CMD_DUMP="echo '{\"status\": \"refused\", \"reason\": \"selftest\"}'",  # never a real dump
                    RM_HOST="stevedesktop", RM_GAME_USERDATA=tmp, RIMFLOW_LEDGER=os.path.join(tmp, "ev.jsonl"))
+        # never the real rimbridge_client: on a host with a real bridge it lists that machine's own UNKNOWN-outcome
+        # markers and every kept-game case restarts for them (seen on Archmagi 2026-11-06); a case that wants
+        # markers overrides this with its own markers file
+        empty_bridge, no_markers = os.path.join(tmp, "mock_bridge_empty.py"), os.path.join(tmp, "no_markers.json")
+        open(empty_bridge, "w").write(BRIDGE)
+        open(no_markers, "w").write("{}")
+        env["TESTQ_CMD_BRIDGE"] = "%s %s %s" % (sys.executable, empty_bridge, no_markers)
         head = subprocess.run(["git", "-C", RUNNER, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
         # the deploy phase refuses a companion not built from the job's sources (selftest_steve_worker_companion.py
         # covers that): here, one that is
@@ -701,6 +708,18 @@ def main():
         check("one" in (open(os.path.join(dd, "dirty_clone.txt")).read() if os.path.exists(os.path.join(dd, "dirty_clone.txt")) else "")
               and os.path.exists(os.path.join(dd, "dirty_clone.diff")), "the dirt is recorded in the attempt dir")
         check(open(os.path.join(scratch, "one")).read() == "three", "the tracked file was restored")
+        # 13. STEVE_LANE_UNSTICK_PAUSED_UNOWNED_D1A4: dirt left on MAIN (no pin, so `checkout main` succeeds and
+        # unpin() sees nothing) made the next `pull --ff-only` refuse SYNC and pause the lane; it is healed first
+        check(g("symbolic-ref", "--short", "HEAD") == "main", "case 13 starts with the clone on main")
+        open(os.path.join(scratch, "one"), "w").write("dirtied on main by an attempt")
+        jm = S.make_job("Mock", {"rows": ["r1"]}, "commission", "BENCH", second)
+        rc, o = w(["start"], jm, TESTQ_CLONE=scratch)
+        res = wait_result(o.get("attempt", "x"))
+        dm = os.path.join(home, "attempts", o.get("attempt", "x"))
+        check("one" in (open(os.path.join(dm, "dirty_clone.txt")).read() if os.path.exists(os.path.join(dm, "dirty_clone.txt")) else ""),
+              "dirt on main is recorded in the attempt dir before the pull")
+        check(open(os.path.join(scratch, "one")).read() == "three" and not g("status", "--porcelain", "--untracked-files=no"),
+              "dirt on main is restored before the pull, so it cannot refuse SYNC: %s" % res.get("note"))
         # a seat clone (not 'runner', no TESTQ_CLONE) is never self-healed
         r = subprocess.run([sys.executable, "-I", "-c", "import sys;sys.path.insert(0,%r);import worker;print(worker.runner_clone_only())"
                             % os.path.dirname(WORKER)], env={k: v for k, v in env.items() if k != "TESTQ_CLONE"},
