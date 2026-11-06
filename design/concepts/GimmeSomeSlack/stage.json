@@ -242,10 +242,17 @@
     "ref": "run rm-role-designer-1793978160",
     "stage": 2,
     "tokens": 226148
+   },
+   {
+    "at": "2026-11-06T20:38:04Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793997316",
+    "stage": 2,
+    "tokens": 342247
    }
   ],
   "reserve": 60000,
-  "spent": 8350720
+  "spent": 8692967
  },
  "history": [
   {
@@ -565,6 +572,24 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1793978160: stage 2 waiting_owner"
+  },
+  {
+   "at": "2026-11-06T20:35:29Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "8350720 of 4000000 spent; run rm-role-designer-1793997316 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T20:35:29Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793997316, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-06T20:38:05Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1793997316: stage 2 done"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -1004,11 +1029,34 @@
    "run": "rm-role-designer-1793978160",
    "stage": 2,
    "summary": "Operations retry: the two rejections cited coverage_verdict.json as missing; it is on origin/main (dfd712ccb0) and the path resolves. The reviewed ask a_shock_floor_ends (turn_05.md: does a sparking floor-cord cut end shock crossers, with the constructor rebuilding it safe, or only fallen overhead wires?) is still unanswered: no OWNER event since 2026-11-06T07:37Z names it. No new ask. Coverage gaps 1, 3, 4 and 5 stay stage-3 scene fixes, carried in the return decision."
+  },
+  {
+   "at": "2026-11-06T20:38:05Z",
+   "inputs": {
+    "exam": "3f65dad9cfb1f9f0a029aebf9913f3e689e56c82cfa6822dbed8a96745439ba7",
+    "floor": "34728591a021769d45f3e49a33497d4bdc2c27d2b6644948be328512d8335229",
+    "owner": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724",
+    "root": "5c921cf30165ed793e5b840aa662ce66ddc70d2c09639a665313c476d33b14ef",
+    "scenes": "6a7bbc0942d82fcd0533cd14fa3b5fa76c4d293c732b737f00bd5345eeef88dd",
+    "sheet": "61d7152331b1d4c80ff698b03d2acea82b00d305bc028759d96ff4fd4f786051",
+    "tree": "a1e533020bd1b5d950d0740ca061a80179f7c8b96f3f0de54cba7c54d6c8048b"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766796952956687"
+   ],
+   "run": "rm-role-designer-1793997316",
+   "stage": 2,
+   "summary": "a_shock_floor_ends answered (OWNER:1793996551266756043): every sparking end shocks, floor ends included, with a Mod Setting None / Only downed lines / All, default All. Recorded as scope, decision and two absent inventory lines; agent rulings under it are in d_shock_reach_agent_detail, notably that any live terminal end counts, not only a destroyed cell. Stage 3 owes the five coverage gaps, listed in contradiction coverage_gaps_for_stage_3."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 2,
- "status": "waiting_owner",
+ "stage": 3,
+ "status": "ready",
  "waiting_owner_feed": "b1b64cc7460cefdd50f74b0d01c96046c251c03c713524261da932462d91b724"
 }
