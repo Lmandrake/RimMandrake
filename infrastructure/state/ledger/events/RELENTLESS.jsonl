@@ -1167,3 +1167,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A1 (L2), read-only proof","ts":"2026-11-06T14:32:18Z","tsn":1793975538476292972}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:34:50Z","tsn":1793975690494445988}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A3 (L2), read-only proof","ts":"2026-11-06T14:35:04Z","tsn":1793975704005355250}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:40:47Z","tsn":1793976047708900122}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging FW_PROOF_TOOLS_HARDEN_READ_GAPS: deploy and restart for its live proofs","ts":"2026-11-06T14:43:34Z","tsn":1793976214844579139}
