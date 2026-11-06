@@ -190,8 +190,7 @@ criteria, so agents enforce it on themselves.** `model.VERBS["close"]` requires 
 layers of text: CHARTER's "done means proven"; item `## criteria` that are written as live
 observations (WEBWORK_TRACTION_LANCE_BUILD_1: "Quicktest: a manned `RM_TractionLance` … pulls
 a spawned raider N cells"; WARSCAR_TOTCHAK_WAKES_1: "A Warscar quicktest with ruins places one
-dormant totchak…"); and a PreToolUse hook (`warn_close_live_proof_owed.py`, backed by
-`live_proof_lint.py`) that warns when a closing commit says "live proof owed" without a
+dormant totchak…"); and a PreToolUse hook (since deleted) that warned when a closing commit said "live proof owed" without a
 spawned successor. FOUNDRY.md adds "a live check is owed only to a mechanism never once
 observed running" — which is every new build. So an honest builder who finishes the offline
 part writes a note ("offline build published; live proof owed") and leaves the item open.
@@ -257,7 +256,7 @@ build commits in between, and nothing reported it.
 | `rimflow sweep --transient` | lists aging files in `Transient/` | the only sweep; never looks at items |
 | `rimflow lint --citations` | flags docs that cite a closed item as live | the inverse problem (dead cited as live), not live-but-done |
 | `queue_staleness_review.py` (Utils, read-only) | doing idle >7 d, blocked idle >3 d, `needs: bridge/game-up` whose window opened ≥2 times | idle time only. A just-built item (event yesterday) is "fresh". It explicitly skips `needs: offline` ("no satisfying event"). Not run by `next`, handoff, or any hook; referenced only from a dashboard tab. Today it reports 155 stale, which nobody acts on. |
-| `live_proof_lint.py` + `warn_close_live_proof_owed.py` hook | at close time, warns if the commit body says "live proof owed" with no spawned successor (37 historical closes) | fires only on a **close**; the stuck items were never closed. It also *discourages* closing with debt, reinforcing §3.1. |
+| a close-time warn hook and its lint (since deleted) | at close time, warned if the commit body says "live proof owed" with no spawned successor (37 historical closes) | fires only on a **close**; the stuck items were never closed. It also *discourages* closing with debt, reinforcing §3.1. |
 | `warn_unclosed_queue_item.py` hook | warns when a commit deletes a `## <ID>` heading from a queue markdown without `Closes:` | targets the pre-ledger markdown queues; views are now generated and gitignored |
 | `queue_lint.py` hook | refuses hand-edits to ledger/views; warns on cross-seat prose edits | integrity, not liveness |
 | "decay sweep" | a practice (any seat may close/drop dead items, owner ruling 2026-09-19; "stale default: one grep/probe") | **no tool by that name exists** in the repo; it depends on an agent choosing to look. Builders are told to "stale-drop" items that are *not* provably live, not to close items that are provably built. |

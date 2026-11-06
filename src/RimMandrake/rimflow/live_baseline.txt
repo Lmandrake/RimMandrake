@@ -40,7 +40,6 @@ hook=block_worktrees.py
 hook=conductor_goodbye.py
 hook=queue_lint.py
 hook=set_session_title.py
-hook=warn_close_live_proof_owed.py
 hook=warn_skill_unwired.py
 hook=warn_unclosed_queue_item.py
 role=Conductor max_age=3d

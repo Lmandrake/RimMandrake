@@ -103,7 +103,7 @@ All MEASURED from the 76 Operations-related items.
 
 1. **Done asks for a commit, not a running thing.** `implemented` needs a sha on origin/main and level 0 criteria. `close` needs a sha, taken as a literal. Evidence: eight closes at an unrelated commit went through.
 2. **The evidence itself can die.** Close shas that still resolve: 0 of all through 10-28, 22 of 108 on 10-29, 111 of 116 on 10-30, 248 of 248 on 10-31 (MEASURED). The history rewrite (RIMMANDRAKE_EXCISE_WORK_HISTORY) orphaned them. Every closure before 10-29 now points at nothing, and the Arbiter and Auditor inherited that blindness (68 of 70 verdicts unresolved).
-3. **Live proof is a debt nobody collects.** It is held as prose or as `outstanding` on built items. The `warn_close_live_proof_owed` hook warns only. Four of 39 sampled items still owe it after weeks.
+3. **Live proof is a debt nobody collects.** It is held as prose or as `outstanding` on built items. The one close-time hook that looked for it only warned. Four of 39 sampled items still owe it after weeks.
 4. **Nothing rechecks after close.** `deadman_check` covers two stamps (ops_watch and Dispatcher), `timers_guard` covers enabled timers, and `ops_watch` covers failed units. None of them knows what any closed item promised. Hence the unwired hook, the two-unit auto repair and the weakened Arbiter.
 5. **Operations can find but cannot finish.** What it spawns lands in `proposed` with no pull: 4 of 4 unbuilt. The queue rewards speed: the median close takes 40 minutes, and the Dispatcher's lanes are full of newer work.
 6. **Alarms and items have separate lives.** An alarm that clears leaves its item open, and one that returns gets a new id. So the count of repeats is hidden and the queue fills with dead alarms.

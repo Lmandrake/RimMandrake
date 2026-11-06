@@ -10,3 +10,4 @@ unit=rm-pulse-update.timer      # RimPulse retired, owner 2026-11-03 (5734f22602
 hook=im_back_hook.py            # RimPulse retired, owner 2026-11-03 (5734f22602)
 unit=rm-fleetwatch.timer         # Fleet Watch retired, FLEETWATCH_CODE_RETIRE_NOBODY_WAS_WATCHING (d7080dccda)
 unit=rm-fleetwatch.service       # Fleet Watch retired, FLEETWATCH_CODE_RETIRE_NOBODY_WAS_WATCHING (d7080dccda)
+hook=warn_close_live_proof_owed.py  # warn-only, never refused a close; deleted by RIMFLOW_DELETE_CLOSE_GUARDS_ONE_PER_LANDING
