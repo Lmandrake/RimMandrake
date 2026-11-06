@@ -10,8 +10,8 @@ Two callers:
 - the `boxrun` verb: the builder runs the same box at its HEAD before it lands.
 
 What runs: the shell commands at the head of the contract's proof (extract()), cut where prose starts. Only simple
-python3/python/bash commands joined by `&&` (each may be negated with `!`) are run; anything else is `unrunnable` and
-neither passes nor refuses. A contract that names offbox adapters or a reach_ok why measures outside the box: `skipped`.
+python3/python/bash commands joined by `&&` (each may be negated with `!`) are run; anything else, in ANY part (a
+prefix alone is never run), is `unrunnable` and neither passes nor refuses. A contract that names offbox adapters or a reach_ok why measures outside the box: `skipped`.
 
 Modes (relentless_boxrun.json `mode`): `off`; `shadow` runs and prints, refuses nothing; `enforce` refuses a red proof
 with the box output on the builder's stdout. Every run (any verdict but off) is an immutable `run` receipt in the item's
@@ -78,12 +78,14 @@ def extract(proof):
     parts = [p.strip() for p in head.split("&&")]
     out = []
     for n, part in enumerate(parts):
+        # Any part after the first that cannot be run makes the whole proof unrunnable: running only the prefix would
+        # record a green for checks that never ran (REVIEW 2026-11-06, RELENTLESS_BOXRUN_HARDEN_PARTIAL_PROOF).
+        later = " (part %d of %d: running only the parts before it would be a green for checks that never ran)" % (
+            n + 1, len(parts)) if n else ""
         if not part:
             return None, "an empty part in %r" % head[:120]
         if _SHELL_META.search(part):
-            if n == 0:
-                return None, "shell syntax beyond `&&` and `!` (pipe, redirect, expansion, glob): %r" % part[:120]
-            break
+            return None, "shell syntax beyond `&&` and `!` (pipe, redirect, expansion, glob): %r%s" % (part[:120], later)
         try:
             words = shlex.split(part)
         except ValueError as e:
@@ -94,9 +96,7 @@ def extract(proof):
         while words and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*=\S*", words[0]):
             envs.append(words.pop(0))
         if not words or words[0] not in RUNNERS:
-            if n == 0:
-                return None, "not a %s command: %r" % ("/".join(RUNNERS), part[:120])
-            break
+            return None, "not a %s command: %r%s" % ("/".join(RUNNERS), part[:120], later)
         keep = envs + words[:1]
         rest = words[1:]
         if words[0] != "bash" and rest[:1] == ["-c"]:
@@ -106,18 +106,18 @@ def extract(proof):
             rest = rest[2:]
         elif rest:
             if not (rest[0].endswith((".py", ".sh")) or "/" in rest[0]):
-                if n == 0:
-                    return None, "no script after %s: %r" % (words[0], part[:120])
-                break
+                return None, "no script after %s: %r%s" % (words[0], part[:120], later)
             keep.append(rest[0])
             rest = rest[1:]
         else:
             return None, "%s with no script" % words[0]
         prev = None
         for i, w in enumerate(rest):
-            if _PLAIN.match(w) and not (i == 0 or (prev or "").startswith("-")):
-                break
-            if not (_WORD_OK.match(w) or _PLAIN.match(w)) and not (w and " " in w):
+            if (_PLAIN.match(w) and not (i == 0 or (prev or "").startswith("-"))) or \
+                    (not (_WORD_OK.match(w) or _PLAIN.match(w)) and not (w and " " in w)):
+                if n < len(parts) - 1:      # prose inside a part that a later `&&` part follows: what runs is unclear
+                    return None, "prose (%r) inside part %d of %d, before a later `&&` part: %r" % (
+                        w[:40], n + 1, len(parts), part[:120])
                 break
             keep.append(w)
             prev = w
@@ -149,17 +149,61 @@ def toplevel(cwd):
     return r.stdout.strip()
 
 
+CAPTURE_CAP = 256 * 1024     # bytes of the box's output kept in memory (the tail); the whole stream is hashed, not kept
+
+
+def capture(argv, timeout_s, cap=CAPTURE_CAP):
+    """-> {exit, out, out_sha256, out_bytes, secs, timed_out}. Runs argv with stdout+stderr merged into one pipe, read
+    in chunks by a thread that hashes every byte and keeps only the last `cap` bytes: a proof printing without end
+    costs the caller `cap` of memory, never the whole stream (REVIEW 2026-11-06). Past timeout_s the process is killed:
+    exit None, timed_out True. `out` is the kept tail decoded UTF-8 with errors replaced (a stray byte is not a crash)."""
+    import threading
+    h = hashlib.sha256()
+    tail = bytearray()
+    total = [0]
+    t0 = time.monotonic()
+    p = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
+
+    def pump():
+        while True:
+            chunk = p.stdout.read1(65536) if hasattr(p.stdout, "read1") else p.stdout.read(65536)
+            if not chunk:
+                return
+            h.update(chunk)
+            total[0] += len(chunk)
+            tail.extend(chunk)
+            if len(tail) > cap:
+                del tail[:len(tail) - cap]
+
+    th = threading.Thread(target=pump, daemon=True)
+    th.start()
+    timed_out = False
+    try:
+        rc = p.wait(timeout=timeout_s)
+    except subprocess.TimeoutExpired:
+        timed_out, rc = True, None
+        p.kill()
+        p.wait()
+    th.join(30)
+    p.stdout.close()
+    return {"exit": rc, "out": bytes(tail).decode("utf-8", "replace"), "out_sha256": h.hexdigest(),
+            "out_bytes": total[0], "secs": round(time.monotonic() - t0, 1), "timed_out": timed_out}
+
+
 def run_in_box(cmd, sha, source, store_root, rules, timeout_s, nonce=None, base=None, item=None, texts=()):
-    """-> {exit, out, secs, box_error}. The tree at sha exported as the Marker's box (relentless_wall.make_box, which
-    since WP-02 carries git history and the toolchain), the command written to a script inside the box (systemd expands
-    `$` in a unit's command line, lesson 1310Z-BENCH-systemd-run-expands-dollar-brace), run under the Marker's own systemd
-    properties and environment from the box's tree, the box removed after. exit None: it did not run (box_error says why)
-    or it timed out."""
+    """-> {exit, out, out_sha256, out_bytes, secs, setup_secs, box_error}. The tree at sha exported as the Marker's box
+    (relentless_wall.make_box, which since WP-02 carries git history and the toolchain), the command written to a script
+    inside the box (systemd expands `$` in a unit's command line, lesson 1310Z-BENCH-systemd-run-expands-dollar-brace),
+    run under the Marker's own systemd properties and environment from the box's tree, the box removed after. exit None:
+    it did not run (box_error says why) or it timed out. timeout_s bounds the COMMAND: the clock starts after the box
+    is made (setup_secs is reported apart), so a slow export never turns a finished red into a timeout (REVIEW
+    2026-11-06). Output is capture()'s bounded tail plus the full stream's sha256."""
     prof = relentless_wall.profile(rules)
     if not prof:
         return {"exit": None, "out": "", "secs": 0, "box_error": "no marker wall profile in the rules"}
     nonce = nonce or "boxrun-" + hashlib.sha256(os.urandom(16)).hexdigest()[:20]
     t0 = time.time()
+    setup = 0
     box = None
     try:
         os.makedirs(prof["box_root"], exist_ok=True)
@@ -174,29 +218,30 @@ def run_in_box(cmd, sha, source, store_root, rules, timeout_s, nonce=None, base=
                 + relentless_wall.props(prof, box, [store_root], thru)
                 + sum((["--setenv", "%s=%s" % kv] for kv in relentless_wall.unit_env(prof, box).items()), [])
                 + ["--", "/bin/bash", script])
-        try:
-            p = subprocess.run(argv, capture_output=True, encoding="utf-8", errors="replace", timeout=timeout_s + 30,
-                           stdin=subprocess.DEVNULL)
-        except subprocess.TimeoutExpired as e:
+        setup = round(time.time() - t0, 1)
+        got = CAPTURE(argv, timeout_s + 30)
+        res = {k: got.get(k) for k in ("out", "out_sha256", "out_bytes")}
+        res.update(secs=got.get("secs"), setup_secs=setup)
+        if got.get("timed_out"):
             subprocess.run(["systemctl", "--user", "stop", unit], capture_output=True, timeout=60)
-            out = (e.stdout or b"") if isinstance(e.stdout, bytes) else (e.stdout or "").encode()
-            return {"exit": None, "out": out.decode("utf-8", "replace"), "secs": round(time.time() - t0, 1),
-                    "box_error": "timed out after %ds" % timeout_s}
-        out = (p.stdout or "") + (p.stderr or "")
-        secs = round(time.time() - t0, 1)
-        if secs >= timeout_s:       # RuntimeMaxSec killed it: a timeout, not a red
-            return {"exit": None, "out": out, "secs": secs, "box_error": "timed out after %ds" % timeout_s}
-        if 200 <= p.returncode <= 243 and not out.strip():     # systemd's own spawn failures (226 NAMESPACE: a bind
-            return {"exit": None, "out": out, "secs": secs,       # path missing): the box never started, no verdict
-                    "box_error": "systemd could not start the box (exit %d, see journalctl --user)" % p.returncode}
-        return {"exit": p.returncode, "out": out, "secs": secs, "box_error": None}
+            return dict(res, exit=None, box_error="timed out after %ds" % timeout_s)
+        out = got.get("out") or ""
+        if (got.get("secs") or 0) >= timeout_s:     # RuntimeMaxSec killed it: a timeout, not a red
+            return dict(res, exit=None, box_error="timed out after %ds" % timeout_s)
+        rc = got.get("exit")
+        if rc is not None and 200 <= rc <= 243 and not out.strip():   # systemd's own spawn failures (226 NAMESPACE: a
+            return dict(res, exit=None,                                 # bind path missing): no verdict
+                        box_error="systemd could not start the box (exit %d, see journalctl --user)" % rc)
+        return dict(res, exit=rc, box_error=None)
     except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as e:
-        return {"exit": None, "out": "", "secs": round(time.time() - t0, 1), "box_error": "%s: %s" % (type(e).__name__, str(e)[-300:])}
+        return {"exit": None, "out": "", "secs": round(time.time() - t0, 1), "setup_secs": setup,
+                "box_error": "%s: %s" % (type(e).__name__, str(e)[-300:])}
     finally:
         if box:
             relentless_wall.remove_box(box)
 
 
+CAPTURE = capture   # the seam selftests replace: (argv, timeout_s) -> capture()'s dict
 RUN = run_in_box    # the seam selftests replace: (cmd, sha, source, store_root, rules, timeout_s, **kw) -> result dict
 
 
@@ -228,17 +273,22 @@ def check(store, item, gen, sha, contract, source, rules, cfg=None, kind="finish
     got = RUN(cmd, sha, src, store.root, rules, int(cfg.get("timeout_s") or 420), base=base, item=item,
               texts=[json.dumps(contract or {}), evidence or ""])
     out = got.get("out") or ""
-    rec.update(exit=got.get("exit"), secs=got.get("secs"), out_sha256=hashlib.sha256(out.encode()).hexdigest(),
+    rec.update(exit=got.get("exit"), secs=got.get("secs"),
+               out_sha256=got.get("out_sha256") or hashlib.sha256(out.encode()).hexdigest(),
                out_tail=out[-int(cfg.get("log_tail") or 600):])
+    for k in ("setup_secs", "out_bytes"):
+        if got.get(k) is not None:
+            rec[k] = got[k]
     if got.get("box_error") or got.get("exit") is None:
         rec.update(verdict="box_error", why=got.get("box_error") or "no exit")
     else:
         rec["verdict"] = "green" if got["exit"] == 0 else "red"
     tail = out[-int(cfg.get("out_tail") or 6000):]
+    above = max(int(rec.get("out_bytes") or 0) - len(tail.encode("utf-8", "replace")), len(out) - len(tail))
     say("relentless boxrun (%s, %s at %s): %s%s\n$ %s\n%s%s" % (
         rec["mode"], kind, sha[:10], rec["verdict"].upper(),
         " exit %s in %ss" % (rec.get("exit"), rec.get("secs")) if rec["verdict"] in ("green", "red") else ": " + rec.get("why", ""),
-        cmd, "" if len(tail) == len(out) else "[... %d chars above cut]\n" % (len(out) - len(tail)), tail.rstrip()))
+        cmd, "" if above <= 0 else "[... about %d bytes above cut]\n" % above, tail.rstrip()))
     _receipt(store, rec, contract, cmd, src)
     return rec
 

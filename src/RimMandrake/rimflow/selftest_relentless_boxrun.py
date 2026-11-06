@@ -17,6 +17,7 @@ Temp stores and temp git repos; the RUN seam is replaced except in 7.
     python3 src/RimMandrake/rimflow/selftest_relentless_boxrun.py
 """
 import contextlib
+import hashlib
 import io
 import json
 import os
@@ -201,7 +202,63 @@ def t_review_fixes():
                        encoding="utf-8", errors="replace")
     ok(p.returncode == 1 and "\ufffd" in p.stdout, "6b. the decode setting the box uses survives a non-UTF-8 byte")
     import inspect
-    ok('errors="replace"' in inspect.getsource(B.run_in_box), "6c. run_in_box decodes with errors=replace")
+    ok('"utf-8", "replace"' in inspect.getsource(B.capture), "6c. the box's capture decodes with errors replaced")
+    got = B.capture(["python3", "-c", "import sys; sys.stdout.buffer.write(b'\\xff'); sys.exit(1)"], 60)
+    ok(got["exit"] == 1 and "\ufffd" in got["out"], "6d. capture() of a non-UTF-8 byte is a red exit, not a crash: %r" % got)
+
+
+def t_hardening():
+    # RELENTLESS_BOXRUN_HARDEN_PARTIAL_PROOF (REVIEW 2026-11-06)
+    for proof in ("python3 a/check_one.py && python3 b/check_two.py > result.txt",
+                  "python3 a/selftest_a.py && rimflow show X",
+                  "python3 a/selftest_a.py && python3 notascript",
+                  "python3 a/selftest_a.py run now please && python3 b/selftest_b.py"):
+        cmd, why = B.extract(proof)
+        ok(cmd is None and why, "8a. a later && part that cannot run makes %r unrunnable, never a prefix: %r (%s)"
+           % (proof, cmd, why))
+    cmd, why = B.extract("python3 a/selftest_a.py && python3 b/selftest_b.py --only x exits 0")
+    ok(cmd == "python3 a/selftest_a.py && python3 b/selftest_b.py --only x", "8a. two runnable parts still run whole: %r (%s)"
+       % (cmd, why))
+    # 8b: a slow box export (make_box) is not counted against the command's timeout
+    import relentless_wall as W
+    saved = (W.profile, W.make_box, W.through, W.props, W.unit_env, W.remove_box, B.CAPTURE)
+    tmp = tempfile.mkdtemp(prefix="boxrun8b-")
+    seen = {}
+    try:
+        W.profile = lambda rules: {"box_root": tmp}
+        def slow_box(prof, source, sha, nonce, base=None, item=None):
+            time.sleep(2.5)
+            os.makedirs(os.path.join(tmp, "b", "tree"), exist_ok=True)
+            return os.path.join(tmp, "b")
+        W.make_box = slow_box
+        W.through = lambda prof, texts: []
+        W.props = lambda prof, box, binds, thru: []
+        W.unit_env = lambda prof, box: {}
+        W.remove_box = lambda box: None
+        def cap(argv, timeout_s):
+            seen["timeout"] = timeout_s
+            time.sleep(1.0)
+            return {"exit": 1, "out": "FAIL\n", "out_sha256": "x" * 64, "out_bytes": 5, "secs": 1.0, "timed_out": False}
+        B.CAPTURE = cap
+        got = B.run_in_box("python3 x.py", "0" * 40, tmp, tmp, {}, 3)
+    finally:
+        W.profile, W.make_box, W.through, W.props, W.unit_env, W.remove_box, B.CAPTURE = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+    ok(got.get("exit") == 1 and not got.get("box_error") and got.get("setup_secs", 0) >= 2.5 and got.get("secs") == 1.0,
+       "8b. 2.5 s of setup + a 1 s red under a 3 s timeout is a red, setup reported apart: %r" % got)
+    # 8c: output is streamed into a bounded tail; the hash covers every byte
+    n = 3 * 1024 * 1024
+    got = B.capture(["python3", "-c", "import sys\nfor i in range(%d): sys.stdout.write('ab' * 512)\nsys.stdout.write('END')"
+                     % (n // 1024)], 120, cap=4096)
+    want = hashlib.sha256(b"ab" * 512 * (n // 1024) + b"END").hexdigest()
+    ok(got["exit"] == 0 and got["out_bytes"] == n + 3 and len(got["out"]) == 4096 and got["out"].endswith("END")
+       and got["out_sha256"] == want, "8c. 3 MiB of output keeps a 4096-byte tail, counts and hashes every byte: %r"
+       % {k: got[k] for k in ("exit", "out_bytes", "out_sha256")})
+    got = B.capture(["python3", "-c", "import sys, time\nprint('started', flush=True)\ntime.sleep(30)"], 1)
+    ok(got["timed_out"] and got["exit"] is None and "started" in got["out"], "8c. capture kills at its timeout, keeps output: %r" % got)
+    import inspect
+    src = inspect.getsource(B.run_in_box)
+    ok("subprocess.run(argv" not in src and "Popen" not in src and "CAPTURE(argv" in src, "8c. run_in_box reads output only through the bounded capture")
 
 
 def t_extract():
@@ -262,7 +319,8 @@ def t_real_box():
 
 if __name__ == "__main__":
     try:
-        for t in (t_red, t_tick_not_blocked, t_refence, t_green_and_gate, t_extract, t_verb, t_real_box):
+        for t in (t_red, t_tick_not_blocked, t_refence, t_green_and_gate, t_extract, t_review_fixes, t_hardening, t_verb,
+                  t_real_box):
             try:
                 t()
             finally:
