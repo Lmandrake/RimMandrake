@@ -1161,3 +1161,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLAYER_HOVER_PROBE_TOOLTIP_DRAWN A3 (L2), read-only proof","ts":"2026-11-06T14:27:13Z","tsn":1793975233184738675}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:27:21Z","tsn":1793975241048640001}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET A1 (L2), read-only proof","ts":"2026-11-06T14:28:07Z","tsn":1793975287415803951}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T14:28:41Z","tsn":1793975321453297001}
