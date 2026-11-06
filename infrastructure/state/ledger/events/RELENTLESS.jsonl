@@ -1287,3 +1287,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","ts":"2026-11-06T18:12:08Z","tsn":1793988728984535625}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless live test: STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1 A2 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T18:13:46Z","tsn":1793988826989173217}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:14:23Z","tsn":1793988863980257275}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing DESSIC_V2_CORPSES_DECIDE_KEPT_HOLD_FIRM: review savegame for the owner's look","ts":"2026-11-06T18:22:40Z","tsn":1793989360723606011}
