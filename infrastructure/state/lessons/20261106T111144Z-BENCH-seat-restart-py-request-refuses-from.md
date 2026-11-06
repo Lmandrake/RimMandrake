@@ -1,0 +1,1 @@
+seat_restart.py request refuses from a systemd unit (no ~/.claude/sessions/<pid>.json for the calling window), so a timer can never start a fresh Conductor window through it; a timed backstop must go through the Dispatcher's role launch. Also: rimflow file with --owner-said writes the OWNER shard, not BENCH. (rm-redesign-start.service, 2026-11-06)
