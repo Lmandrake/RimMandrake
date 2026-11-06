@@ -1,0 +1,1 @@
+On this WSL box 'find' is bfs: 'find DIR -newermt "-30 min"' errors (Invalid timestamp) and prints nothing, so a guard written as "[ $(find ... | wc -l) = 0 ]" FAILS OPEN and reads 'nothing recent'. Use an ISO stamp (date -u -d '-30 min' +%FT%TZ) or -mmin -30, and check the exit status before trusting a zero (OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI).
