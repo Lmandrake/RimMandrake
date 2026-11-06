@@ -1979,6 +1979,28 @@ def t_stage_plans_once_for_the_batch():
     x.done()
 
 
+def t_stranded_item_rides_the_staging():
+    """PROOFYIELD_REPAIR_THREE_OF_THIRTEEN_MEASURED: a built item with no store record, whose last row says its mods are not
+    on the game, has its mods enabled by the next staging; a held game lead's plan names it and it holds no store write."""
+    x = rig(1)
+    to_game(x, "I0")
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["game"].update(phase="stage")
+        x.s.save(st)
+    x.w.running = False
+    x.w.rows.append({"at": "2026-11-06T20:58:00Z", "item": "STRANDED", "criterion": "A2", "sha": "feed00112233",
+                     "outcome": "NOT_ADMITTED", "admit": "running_load", "verdict": "INFRA", "why": "not in the running load: H"})
+    x.w.led["STRANDED"] = {"state": "built", "built_sha": "feed00112233", "title": "a mod thing", "owed": {"A2": "L1"}}
+    x.w.gap["STRANDED"] = {"mods": ["HostileFlora"]}
+    G.step(x.s, x.w, x.r, "I0", x.now, [], R)
+    G.step(x.s, x.w, x.r, "I0", x.now + 1, [], R)
+    ok(x.w.batch_plans and ("STRANDED", "feed00112233") in x.w.batch_plans[0], "the staging plans it: %s" % x.w.batch_plans)
+    ok(x.w.enabled and "HostileFlora" in x.w.enabled[0], "and enables its mod: %s" % x.w.enabled)
+    ok(x.s.load("STRANDED") is None, "nothing enrols it: the ledger stays built for the cron round")
+    x.done()
+
+
 def t_bridge_refused_costs_no_plan():
     """The bridge check comes first: while it refuses no deploy is planned and ModsConfig is not touched."""
     x = rig(1)
@@ -2066,7 +2088,7 @@ def main():
               t_green_sha_is_not_judged_again, t_bounce_from_checking_is_quarantined,
               t_stage_refuses_a_clone_without_launcher, t_running_game_serves_others_before_a_reload,
               t_batch_wait_is_bounded, t_fail_on_a_running_game_is_worked_live, t_fail_with_no_game_is_offline, t_fail_on_a_restarted_game_is_offline,
-              t_stage_tries_a_newer_running_game_first,
+              t_stage_tries_a_newer_running_game_first, t_stranded_item_rides_the_staging,
               t_menu_bound_item_never_tries_a_running_game,
               t_menu_bound_final_never_tries_a_running_game,
               t_final_verification_waits_and_batches, t_owed_final_joins_the_clauses, t_met_clause_is_not_missing,

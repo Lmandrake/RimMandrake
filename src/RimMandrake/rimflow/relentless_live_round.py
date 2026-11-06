@@ -76,6 +76,7 @@ A round, in order:
   5. the round stops early when the game went away or the bridge is held by someone else.
 """
 import argparse
+import calendar
 import fcntl
 import json
 import os
@@ -547,6 +548,7 @@ def route(last, game):
     return None
 
 
+YIELD_MIN_ROWS = 50     # 3 of 13 is how this item began: a share of a few rows says nothing
 EXACT_TIER = "exact tier: SteveDesktop runs it through testq"
 
 
@@ -945,6 +947,62 @@ def wake_supervisor(root, spawn=subprocess.Popen):
         print("wake_supervisor: %s" % e)
 
 
+def proof_yield(rows, hours, above_verdict, above_outcome):
+    """The owner's measure (card 2026-11-06, Subtract plan; PROOFYIELD_REPAIR_THREE_OF_THIRTEEN_MEASURED): the first `hours`
+    of `rows` -> (exit, line). Share of all rows with a PASS or FAIL in the `verdict` field (RELENTLESS_MEASURE_THREE_DAY_
+    CHECK_NOV9's field, where a proof that exited UNMEASURED reads FAIL) and in `outcome` (where it does not). Each bar is
+    (n, d); both must be beaten. Exit 0 yes, 1 no, 2 the rows do not span the window or are too few to say."""
+    at = sorted(r["at"] for r in rows if isinstance(r.get("at"), str))
+    if not at:
+        return 2, "UNMEASURED: no rows"
+    t0 = calendar.timegm(time.strptime(at[0], "%Y-%m-%dT%H:%M:%SZ"))
+    span = calendar.timegm(time.strptime(at[-1], "%Y-%m-%dT%H:%M:%SZ")) - t0
+    if span < hours * 3600:
+        return 2, "UNMEASURED: the rows span %.1f h of the %d h asked" % (span / 3600.0, hours)
+    end = L.iso(t0 + hours * 3600)
+    w = [r for r in rows if isinstance(r.get("at"), str) and r["at"] < end]
+    if len(w) < YIELD_MIN_ROWS:
+        return 2, "UNMEASURED: %d rows, too few to compare with the baseline" % len(w)
+    v = sum(r.get("verdict") in ("PASS", "FAIL") for r in w)
+    o = sum(r.get("outcome") in ("PASS", "FAIL") for r in w)
+    higher = v / len(w) > above_verdict[0] / above_verdict[1] and o / len(w) > above_outcome[0] / above_outcome[1]
+    return (0 if higher else 1), "%s %s..%s %d rows: verdict %d (%.1f%%, bar %d/%d), outcome %d (%.1f%%, bar %d/%d)" % (
+        "HIGHER" if higher else "NOT HIGHER", at[0], end, len(w), v, 100.0 * v / len(w), above_verdict[0], above_verdict[1],
+        o, 100.0 * o / len(w), above_outcome[0], above_outcome[1])
+
+
+def yield_main(a):
+    """`yield`: --take copies runs.jsonl rows from --since on into --rows (the checker cannot read the live folder); without
+    it, the measure on --rows."""
+    if a.take:
+        got = [ln for ln in open(a.take, encoding="utf-8") if ln.strip() and _at_or_after(ln, a.since)]
+        with open(a.rows, "w", encoding="utf-8") as f:
+            f.writelines(got)
+        print("%d rows from %s into %s" % (len(got), a.since, a.rows))
+        return 0
+    try:
+        rows = read_rows(a.rows)
+    except OSError as e:
+        print("UNMEASURED: %s" % e)
+        return 2
+    code, line = proof_yield(rows, a.hours, _bar(a.above_verdict), _bar(a.above_outcome))
+    print(line)
+    return code
+
+
+def _at_or_after(line, since):
+    try:
+        at = json.loads(line).get("at")
+    except ValueError:
+        return False
+    return isinstance(at, str) and at >= since
+
+
+def _bar(text):
+    n, d = text.split("/")
+    return int(n), int(d)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -957,7 +1015,16 @@ def main(argv=None):
     p.add_argument("--lint", action="store_true", help="offline: the line names real mods and a proof line runs this")
     p = sub.add_parser("census", help="runs.jsonl sorted by cause: what the rows spent, what repeated")
     p.add_argument("--last", type=int, default=300, help="the newest N rows")
+    p = sub.add_parser("yield", help="the owner's 24 h measure: share of rows with a PASS or FAIL against the baseline")
+    p.add_argument("--rows", required=True)
+    p.add_argument("--hours", type=int, default=24)
+    p.add_argument("--above-verdict", default="154/285", help="n/d, the 2026-11-06 baseline on the verdict field")
+    p.add_argument("--above-outcome", default="79/286", help="n/d, the same window on the outcome field")
+    p.add_argument("--take", help="copy this runs.jsonl's rows from --since into --rows, and stop")
+    p.add_argument("--since", default="")
     a = ap.parse_args(argv)
+    if a.cmd == "yield":
+        return yield_main(a)
     with open(os.environ.get("RELENTLESS_RULES") or L.RULES, encoding="utf-8") as f:
         r = json.load(f)
     root = os.environ.get("RELENTLESS_ROOT") or "/home/mandrake/rm/relentless"

@@ -2398,6 +2398,8 @@ def step(store, fx, r, item, now, acts, sup):
             return _waits(store, fx, item, "clone: " + why, now, acts)
         st = store.load(item)
         others = [o for o in batch(store.states(), item, now, full=bool(g.get("full"))) if _rides_ok(fx, r, o)]
+        if not g.get("full"):   # the full list already holds them
+            others += stranded_riders(fx, r, store.states(), item, now)
         try:        # STAGING_MENU_FIX_ALWAYS_PARKS_ON_MAPS: a with/without item stages alone, and never rides
             mine = toggles(fx, {"item": item, "game": {"sha": sha}})
             others = [] if mine else [o for o in others if not toggles(fx, o) and menu_ok(fx, o)]
@@ -2613,6 +2615,53 @@ def _rides_ok(fx, r, o):
     if gate(o, led.get("title"), fx.proofs_at(o["item"], og["sha"]), relentless_live.live_rules(r)["flyer_re"], None):
         return False
     return not fx.game_preflight(o["item"], _owed_lines(fx, o["item"], og["sha"], og, led))
+
+
+# PROOFYIELD_REPAIR_THREE_OF_THIRTEEN_MEASURED: a built item whose last row says its mods are not on the game (HOSTILE_FLORA,
+# LORE_STAGES, FLAME_STATUES: one NOT_ADMITTED row a load, for days) had nobody to stage them: eligible() takes proposed/
+# ready only, and 357 built bridge items had no store record. A staging is the one thing that deploys and enables, so a
+# few of them ride each one; the next cron round then proves them. A rotating few, so one rider's gap starves none.
+STRANDED_RIDERS = 4
+STRANDED_ADMIT = ("deploy_gap", "running_load")     # relentless_live.ADMIT: the causes a staging can end
+STRANDED_FROM = (None, "queued", "held", "blocked", "done", "retired")      # no worker or phase is moving its build
+
+
+def stranded_riders(fx, r, states, item, now):
+    """-> rider dicts ({"item", "game": {"sha"}, "stranded": True}) for built items a load would serve, at most
+    STRANDED_RIDERS, in `others`' shape. Read only. A flyer, a refused preflight or a build the ledger moved past is left."""
+    if not hasattr(fx, "game_rows"):
+        return []
+    import relentless_live
+    import relentless_live_round as LR
+    status = {s["item"]: s["status"] for s in states}
+    shas = {}
+    for (i, _c, sha), row in LR.history(fx.game_rows()).items():
+        if (row.get("outcome") == relentless_live.NOT_ADMITTED and row.get("admit") in STRANDED_ADMIT and sha and i != item
+                and status.get(i) in STRANDED_FROM):
+            shas.setdefault(i, set()).add(sha)
+    names = sorted(shas)
+    start = int(now // 3600) % len(names) if names else 0
+    lr, out = relentless_live.live_rules(r), []
+    for i in (names[start:] + names[:start])[:STRANDED_RIDERS * 3]:     # each look replays the ledger: a staging is in a tick
+        if len(out) >= STRANDED_RIDERS:
+            break
+        led = fx.game_ledger(i)
+        built = (led or {}).get("built_sha")
+        sha = next((x for x in sorted(shas[i]) if same_sha(built, x)), None)
+        if not sha or led.get("state") not in relentless_live.TESTABLE:
+            continue
+        # the books' current file, the one the live run reads: lightspeed_wire wrote these items' lines long after the build
+        text = (getattr(fx, "_mods_text", None) or fx.proofs_at)(i, built) or ""
+        lines = proof_lines(text)
+        owed = {k: lines[k] for k in led.get("owed") or {} if k in lines}
+        if LR.live_menu(text) or LR.live_toggle(text):      # measures only on a staging of its own: it never rides
+            continue
+        if not owed or relentless_live.flyer_word(lr, led.get("title"), *[("proof", v) for v in owed.values()]):
+            continue
+        if fx.game_preflight(i, owed):
+            continue
+        out.append({"item": i, "game": {"sha": built}, "stranded": True})
+    return out
 
 
 def _lease_why(store, fx, r, item, sha, led):
