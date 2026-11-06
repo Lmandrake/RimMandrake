@@ -1,0 +1,2 @@
+A relentless wait on an id the ledger never filed can never be released by a close, and _refuse journalled an alarm+acts row every tick (266-285 identical incident_refused rows on one wait). Fixed in 91579b4400: refusal once per evidence event, never-filed waits resume once, relentless_block.resolve refuses unfiled ons at write. A wait/block target must be validated as filed at write time.
+home: src/RimMandrake/rimflow/relentless_attrib.py
