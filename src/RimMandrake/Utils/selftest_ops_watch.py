@@ -1835,6 +1835,28 @@ try:
     check("seats: a beat with no room to probe writes no reading", OW.c_steve_seats(NOW, RULES, {}) == {})
 finally:
     OW.steve_seat_probe = _probe_real
+def _siblings_eat_the_beat():
+    """STEVE_SEATS_FIX_SIBLINGS_EAT_THE_BEAT: a 5 s beat whose c_steve spends all but 1.5 s of it (less than the
+    probe's reserve plus minimum) -> what c_steve_all says of the seats."""
+    _old_env, _old_cs = os.environ.get("METRONOME_DEADLINE"), OW.c_steve
+    dl = time.time() + 5
+    os.environ["METRONOME_DEADLINE"] = str(dl)
+    OW.c_steve = lambda now, rules, ctx: (time.sleep(max(0.0, dl - 1.5 - time.time())), {})[1]
+    OW.subprocess.run = lambda *a, **k: subprocess.CompletedProcess(a, 0, "9000\nup seat-server\nup seat-runner\n"
+                                                                     "probe-done\n", "")
+    try:
+        return OW.c_steve_all(NOW, RULES, {}).get("steve.seats_absent_min")
+    finally:
+        OW.subprocess.run, OW.c_steve = _run_real, _old_cs
+        if _old_env is None:
+            os.environ.pop("METRONOME_DEADLINE", None)
+        else:
+            os.environ["METRONOME_DEADLINE"] = _old_env
+
+
+_p = _siblings_eat_the_beat()
+check("seats: siblings that spend the whole beat do not starve the seat probe",
+      _p is not None and _p["m"] == "MEASURED" and _p["v"] == 0.0, _p)
 _p = _seats(False, None, [])
 check("seats: a machine out of reach counts as absent, not silent", _p["m"] == "MEASURED" and _p["x"]["said"] == "unreachable", _p)
 _p = _seats(False, None, [], NOW + 1200)

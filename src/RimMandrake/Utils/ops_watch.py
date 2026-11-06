@@ -73,6 +73,7 @@ import signal
 import statistics
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -813,7 +814,7 @@ def steve_seat_probe(cfg):
     return True, int(lines[0]), {x[3:] for x in lines if x.startswith("up ")}
 
 
-def c_steve_seats(now, rules, ctx):
+def c_steve_seats(now, rules, ctx, probed=None):
     """steve.seats_absent_min: how long a seat has been missing, not connected, or the machine out of reach (0 = both
     live). Over the rule's line it alarms: a ledger item and a Conductor log line. Absent since boot counts from the
     boot, so a reboot that never brought them back alarms at the first look past the line; a seat lost later counts
@@ -822,7 +823,7 @@ def c_steve_seats(now, rules, ctx):
     cfg = rules.get("steve_seats")
     if not cfg:
         return {}
-    reach, up, seen = steve_seat_probe(cfg)
+    reach, up, seen = probed if probed is not None else steve_seat_probe(cfg)
     if reach is None:     # the beat had no room to probe: no reading (absent_since stands for the next look)
         return {}
     missing = sorted(set(cfg["seats"]) - seen)
@@ -844,8 +845,28 @@ def c_steve_seats(now, rules, ctx):
 
 
 def c_steve_all(now, rules, ctx):
-    out = c_steve(now, rules, ctx)
-    out.update(c_steve_seats(now, rules, ctx))
+    """The seat probe starts first, beside its siblings (STEVE_SEATS_FIX_SIBLINGS_EAT_THE_BEAT): run after them, a
+    c_steve that read testq's done history for the whole 15 s beat left it <SEAT_PROBE_MIN_S, so it returned no
+    reading every beat and STEVE_SEATS stayed quiet through an outage. Its budget is the beat's, not what is left."""
+    cfg = rules.get("steve_seats")
+    box, t = {}, None
+    if cfg:
+        def run():
+            try:
+                box["r"] = steve_seat_probe(cfg)
+            except BaseException as e:  # noqa: BLE001  raised again on the pass's own thread below
+                box["e"] = e
+        t = threading.Thread(target=run, name="steve_seat_probe", daemon=True)
+        t.start()
+    try:
+        out = c_steve(now, rules, ctx)
+    finally:
+        if t is not None:
+            t.join()        # bounded: the probe's ssh times out inside the beat (or at 30 s outside one)
+    if t is not None:
+        if "e" in box:
+            raise box["e"]
+        out.update(c_steve_seats(now, rules, ctx, probed=box["r"]))
     return out
 
 
