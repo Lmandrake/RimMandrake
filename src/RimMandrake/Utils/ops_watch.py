@@ -1267,6 +1267,65 @@ def scratch_outside(san, now, rules):
     return pts
 
 
+RG_RANGES = ("disk.root_fall_gb", "disk.root_fall_blind")
+
+
+def grower_line(w):
+    """One writer of a growth capture, as the alarm title names it: the title is cut at 160, so who comes first."""
+    return "pid %s %s %s GB: %s (cwd %s)" % (w.get("pid"), w.get("unit"), w.get("gb"), str(w.get("cmd") or "")[:60],
+                                            w.get("cwd"))
+
+
+def root_growth(sd, now, rules):
+    """disk.root_fall_gb (GROWER_ALARM_WIRE_NOBODY_READS_IT): how far the root fell in disk_grower's window, from the
+    newest row of growth.jsonl, which rm-scratch-pressure writes every 10 min. Distressed, the cause names the writers
+    disk_grower caught in growth_capture.json at that same tick, so the grower is named while it still exists (the
+    2026-10-31 and 11-04 falls went unnamed; alarms.log held the only GROWER line and nothing reads it). A row that is
+    missing, torn, stale or dated ahead reads UNMEASURED and counts in disk.root_fall_blind. Read only; freshness is
+    the row's own stamp."""
+    ms, why = ranges_of(rules), need_ranges(rules, RG_RANGES)
+    limit = None if why else ms["disk.root_fall_gb"]["max_age_min"]
+    gp = sd / "growth.jsonl"
+    if why is None:
+        try:
+            r = json.loads(last_line(gp) or "null")
+            if not isinstance(r, dict):
+                raise ValueError("no row")
+            t, fall = r.get("t"), r.get("fall_gb")
+            if not (is_num(t) and finite(t)):
+                raise ValueError("the newest row has no stamp")
+            if t > now + 300:
+                raise ValueError("the newest row is dated %d s ahead of the clock" % (t - now))
+            if now - t > limit * 60:
+                raise ValueError("frozen: last row %s, %.0f min ago, limit %g" % (iso(t), (now - t) / 60.0, limit))
+            if not (is_num(fall) and finite(fall)) or fall < 0:
+                raise ValueError("the newest row holds no fall_gb")
+        except (OSError, ValueError) as e:
+            why = "growth record %s: %s" % (gp, e)
+    if why:
+        return {"disk.root_fall_gb": U(why, "GB"), "disk.root_fall_distressed": U(why),
+                "disk.root_fall_blind": M(1, "sources not seen", cause=why[:300])}
+    win = r.get("window_min")
+    pts = {"disk.root_fall_gb": M(fall, "GB the root fell within %s min" % win, at=iso(t), free_gb=r.get("free_gb"),
+                                  top_writer_gb=r.get("top_writer_gb"), max_age_min=limit)}
+    state = read_class(ms, "disk.root_fall_gb", pts)
+    cause, writers = "none", []
+    if state in ALARMED:
+        cap = read_json(sd / "growth_capture.json")
+        if isinstance(cap, dict) and cap.get("ts") == r.get("ts"):
+            writers = [w for w in cap.get("writers") or [] if isinstance(w, dict)][:3]
+            named = "; ".join(grower_line(w) for w in writers) or "no readable writer this tick (%s blind)" % cap.get("blind")
+            gone = [f for f in cap.get("open_big") or [] if isinstance(f, dict) and f.get("deleted")][:1]
+            named += "".join("; open deleted %s %s GB" % (f.get("path"), f.get("alloc_gb")) for f in gone)
+        else:
+            named = "writer unnamed: no growth_capture.json for the row of %s" % r.get("ts")
+        cause = "%s; root fell %s GB in %s min to %s GB free at %s" % (named, fmt(fall), win, r.get("free_gb"), r.get("ts"))
+    pts["disk.root_fall_distressed"] = M(int(state in ALARMED), "1 when the root falls fast", state=state,
+                                         cause=cause[:600], writers=writers)
+    pts["disk.root_fall_blind"] = M(0, "sources not seen", cause="none")
+    return pts
+
+
 def c_disk(now, rules, ctx):
     out = {}
     for name, mnt in disk_mounts().items():
@@ -1345,6 +1404,7 @@ def c_disk(now, rules, ctx):
         except (OSError, ValueError, AttributeError) as e:
             out["disk.scratch_dirty_" + end] = M(9999, "sanity problems at the %s of the last run" % end, why="%s: %s" % (san, e))
     out.update(scratch_outside(san, now, rules))
+    out.update(root_growth(rec.parent, now, rules))
     # The bounded worker-clone pool (WORKER_CLONES_MONITOR_POOL_NOT_RABBITS): read live each tick, never from a cache.
     # One number alarms: clones over the cap, bytes over the cap, plus every clone holding unpushed work nobody is using,
     # in the pool or anywhere else a helper clones (rm/scratch, session dirs: LIQUIDNET_SURFACEGAP_FIX_UNLANDED_CLONES).

@@ -333,6 +333,26 @@
     "distressed": {"at_least": 1}
    }
   },
+  "disk.root_fall_gb": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "GROWER_ALARM_WIRE_NOBODY_READS_IT: fall_gb in the newest row of ~/.local/state/rm-scratch-reap/growth.jsonl (disk_grower, every rm-scratch-pressure tick of 10 min): how far the root fell below its peak in the grower's 30-min window. On 2026-11-04 it fell 578 -> 140 GB at ~3.3 GB/min, ~33 GB a tick, with pool and scratch flat, and the writer vanished unnamed. Distressed at disk_grower.FALL_GB (30), the line at which it captures; the selftest holds the two equal. max_age_min: three ticks.",
+   "classes": {
+    "sane": {"at_least": 0},
+    "distressed": {"at_least": 30}
+   }
+  },
+  "disk.root_fall_blind": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "growth.jsonl is missing, torn, stale or holds no fall_gb: nothing would name a fast root grower. Agrees with the disk.root_fall_blind target.",
+   "classes": {
+    "sane": {"at_least": 0},
+    "distressed": {"at_least": 1}
+   }
+  },
   "queues.artpipe.stalled_min": {
    "owner": "Operations",
    "ack_within_min": 30,
@@ -639,6 +659,12 @@
   {"key": "disk.scratch_outside_blind", "op": ">", "value": 0, "alarm": true, "tag": "SCRATCH_OUTSIDE_BLIND", "name": "OPS_SCRATCH_OUTSIDE_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: the scratch_reap sanity record is missing, torn, stale or empty of the count, or the disk collector did not run. Nothing can say the clones are inside the cap until it is seen again; the cause names which"},
+  {"key": "disk.root_fall_distressed", "op": ">", "value": 0, "alarm": true, "tag": "ROOT_GROWER", "name": "OPS_ROOT_GROWER_MEASURE_CAUGHT_WRITING", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "GROWER_ALARM_WIRE_NOBODY_READS_IT: the root disk is falling fast (30 GB within 30 min). The title names the top writers disk_grower caught at that tick (pid, GB, systemd unit, cwd, command) from ~/.local/state/rm-scratch-reap/growth_capture.json; every capture is in growth_captures.jsonl. Not scratch if disk.pool_gb and disk.scratch_total_gb are flat: no reaper frees it, stop the writer"},
+  {"key": "disk.root_fall_blind", "op": ">", "value": 0, "alarm": true, "tag": "ROOT_GROWTH_BLIND", "name": "OPS_ROOT_GROWTH_RESTORE_GONE_QUIET", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "~/.local/state/rm-scratch-reap/growth.jsonl is missing, torn or stale: rm-scratch-pressure.timer (scratch_reap pressure -> disk_grower.tick) has stopped writing it, and a fast root fall would go unnamed. The cause names which"},
   {"key": "seats.distressed", "op": ">", "value": 0, "alarm": true, "tag": "SEAT_IDLE_WITH_WORK", "name": "OPS_SEAT_UNSTICK", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: FOUNDRY sat idle with work ready on 2026-10-30 and 10-31, rung, and nothing brought it back. The seat and the minutes are in the title; the limits are in the ranges block"},
