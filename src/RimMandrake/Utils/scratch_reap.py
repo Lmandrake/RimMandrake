@@ -1220,6 +1220,8 @@ def clone_state(c: Path) -> dict:
 
 _CORPUS: list[tuple[str, str]] | None = None
 _VOCAB: set[str] | None = None
+_CORPUS_AT = 0.0
+CORPUS_REFRESH_S = 60   # Ctx.refresh rereads the ledger corpus older than this: an item filed mid-run reserves its clone
 
 
 def listed(d: Path, suffix: str, required: bool = False) -> list[str]:
@@ -1237,9 +1239,9 @@ def listed(d: Path, suffix: str, required: bool = False) -> list[str]:
 
 def corpus() -> list[tuple[str, str]]:
     """[(file, text)] of every ledger file, item (live + closed), handoff in each seat clone, and our systemd units."""
-    global _CORPUS
+    global _CORPUS, _CORPUS_AT
     if _CORPUS is None:
-        _CORPUS = []
+        _CORPUS, _CORPUS_AT = [], time.time()
         files: list[str] = []
         for cr in corpus_roots():
             st = cr / "infrastructure" / "state"
@@ -1350,10 +1352,13 @@ class Ctx:
             return [f"cannot read the mount table: {e.strerror}"]
 
     def refresh(self):
+        global _CORPUS, _VOCAB
         self.now = time.time()
         self.live = Live(self.now)
         if self.now - self.borrows.taken > BORROW_REFRESH_S:
             self.borrows = Borrows()
+        if _CORPUS is not None and self.now - _CORPUS_AT > CORPUS_REFRESH_S:
+            _CORPUS = _VOCAB = None     # read again at the next ledger_mentions: the reservation evidence is current
 
     def global_holds(self) -> list[str]:
         return [f"cannot see a process: {x}" for x in list(dict.fromkeys(self.live.blind))[:3]] \
@@ -2112,7 +2117,7 @@ def sweep_tmp(ctx: Ctx, apply: bool, deadline: float) -> tuple[dict, list[dict]]
     what sits there was never kept; the work that matters (repos, saves) goes the clone way instead.
     -> (summary, [one row per removal])."""
     out = {"root": None, "removed": 0, "bytes": 0, "young": 0, "held": 0, "work": 0, "skipped": 0, "deferred": 0,
-           "errors": []}
+           "errors": [], "failed": []}
     tr = tmp_root()
     if tr is None or not tr.is_dir():
         return out, []
@@ -2186,7 +2191,7 @@ def sweep_tmp(ctx: Ctx, apply: bool, deadline: float) -> tuple[dict, list[dict]]
                     out["errors"].append(f"{p}: name taken again while pinned; {pin.name} stays to be judged again")
                 out["held"] += 1
                 continue
-            pinned.append((p, pin, orig, isdir, row, size))
+            pinned.append((p, pin, orig, isdir, row, size, again.signature() if isdir else touched(os.lstat(pin))))
             batch = batch or time.time()
             if time.time() - batch > TMP_BATCH_S:
                 _tmp_flush(ctx, pinned, out, done)
@@ -2230,14 +2235,20 @@ def _tmp_flush(ctx: Ctx, pinned: list, out: dict, done: list):
         looked = True
     except Exception as e:  # noqa: BLE001
         out["errors"].append(f"post-rename look failed, every pinned entry restored: {e}")
-    for p, pin, orig, isdir, row, size in pinned:
+    for p, pin, orig, isdir, row, size, sig in pinned:
         try:
-            if not looked or ctx.global_holds() or ctx.mounted(pin) or _tmp_used(ctx, pin, p, orig):
+            now = Tree(pin) if isdir else None          # written to while it waited for the batch: back it goes
+            changed = (now.errors or now.capped or now.signature() != sig) if isdir else touched(os.lstat(pin)) != sig
+            if not looked or changed or ctx.global_holds() or ctx.mounted(pin) or _tmp_used(ctx, pin, p, orig):
                 if pin != p and not _restore(pin, p):       # never over a new entry made under the name meanwhile
                     out["errors"].append(f"{p}: name taken again while pinned (or no no-replace rename); {pin.name} stays to be judged again")
                 out["held"] += 1
                 continue
-            shutil.rmtree(pin) if isdir else os.unlink(pin)
+            try:
+                shutil.rmtree(pin) if isdir else os.unlink(pin)
+            except OSError as e:
+                out["failed"].append(f"remove {pin}: {e.strerror}")    # run() fails the run on these
+                raise
             row["verdict"] = "DELETED"
             done.append(row)
             out["removed"] += 1
@@ -2279,6 +2290,8 @@ def unique_gb(p: Path) -> float | None:
     try:
         r = subprocess.run(["du", "-s", "-B1", str(p)], capture_output=True, text=True, timeout=SANITY_DU_S)
     except subprocess.TimeoutExpired:
+        return None
+    if r.returncode != 0:       # du prints the total of what it could read: a partial sum under-reports the limit
         return None
     return round(int(r.stdout.split()[0]) / 1e9, 2) if r.stdout.strip() else None
 
@@ -2565,7 +2578,7 @@ def run(a, sd: Path) -> int:
         with open(sd / "tmp_runs.jsonl", "a") as f:
             f.write(json.dumps({"ts": stamp, "apply": a.apply, "summary": tmp, "rows": tmp_rows}) + "\n")
     rows = judge_all(ctx)
-    failures: list[str] = []
+    failures: list[str] = list(tmp.get("failed", []))   # a /tmp entry judged gone that would not go
     freed, deferred = 0, 0
     if a.apply:
         freed, deferred = apply_rows(rows, ctx, a.max_seconds, failures, start)

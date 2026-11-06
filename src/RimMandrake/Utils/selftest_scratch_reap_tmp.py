@@ -160,8 +160,8 @@ def main():
         os.rename(tmp / "racer", pin)
         procs.append(subprocess.Popen(["sleep", "300"], cwd=str(pin)))
         time.sleep(0.3)
-        o2, d2 = {"held": 0, "removed": 0, "bytes": 0, "errors": []}, []
-        s._tmp_flush(ctx, [(tmp / "racer", pin, tmp / "racer", True, {"kind": "tmp"}, 0)], o2, d2)
+        o2, d2 = {"held": 0, "removed": 0, "bytes": 0, "errors": [], "failed": []}, []
+        s._tmp_flush(ctx, [(tmp / "racer", pin, tmp / "racer", True, {"kind": "tmp"}, 0, s.Tree(pin).signature())], o2, d2)
         ok((tmp / "racer").is_dir() and o2["held"] == 1 and not d2, "an entry used after the look goes back under its name (%s)" % o2)
         procs[-1].kill()
         procs[-1].wait()
@@ -171,13 +171,37 @@ def main():
         (tmp / "racer3" / "new").write_text("fresh")
         user = subprocess.Popen(["sleep", "300"], cwd=str(pin3))
         time.sleep(0.3)
-        o3 = {"held": 0, "removed": 0, "bytes": 0, "errors": []}
-        s._tmp_flush(ctx, [(tmp / "racer3", pin3, tmp / "racer3", True, {"kind": "tmp"}, 0)], o3, [])
+        o3 = {"held": 0, "removed": 0, "bytes": 0, "errors": [], "failed": []}
+        s._tmp_flush(ctx, [(tmp / "racer3", pin3, tmp / "racer3", True, {"kind": "tmp"}, 0, s.Tree(pin3).signature())], o3, [])
         ok(pin3.is_dir() and (tmp / "racer3" / "new").exists() and o3["held"] == 1 and o3["errors"],
            "a restore never lands on a new entry made under the name (%s)" % o3)
         user.kill()
         user.wait()
         subprocess.run(["rm", "-rf", str(pin3), str(tmp / "racer3")])
+
+        # written to while it sat pinned for the batch (the writer gone before the flush's look): back it goes, whole
+        pin4 = tmp / (".reaping-%d-racer4" % os.getpid())
+        pin4.mkdir()
+        sig4 = s.Tree(pin4).signature()
+        (pin4 / "repo_or_notes.md").write_text("made after the pin")
+        o4, d4 = {"held": 0, "removed": 0, "bytes": 0, "errors": [], "failed": []}, []
+        s._tmp_flush(ctx, [(tmp / "racer4", pin4, tmp / "racer4", True, {"kind": "tmp"}, 0, sig4)], o4, d4)
+        ok((tmp / "racer4" / "repo_or_notes.md").exists() and o4["held"] == 1 and not d4,
+           "an entry written to during the batch is restored, not removed (%s)" % o4)
+        subprocess.run(["rm", "-rf", str(tmp / "racer4")])
+
+        # a removal that fails is a run failure, not a quiet note
+        pin5 = tmp / (".reaping-%d-racer5" % os.getpid())
+        (pin5 / "locked").mkdir(parents=True)
+        (pin5 / "locked" / "f").write_text("x")
+        os.chmod(pin5 / "locked", 0o555)
+        o5, d5 = {"held": 0, "removed": 0, "bytes": 0, "errors": [], "failed": []}, []
+        try:
+            s._tmp_flush(ctx, [(tmp / "racer5", pin5, tmp / "racer5", True, {"kind": "tmp"}, 0, s.Tree(pin5).signature())], o5, d5)
+            ok(o5["failed"] and not d5, "a /tmp removal that fails lands in the run's failures (%s)" % o5)
+        finally:
+            os.chmod(pin5 / "locked", 0o755)
+            subprocess.run(["rm", "-rf", str(pin5)])
         os.utime(tmp / "racer", (fut, fut))             # the rename made it young; keep it so for the apply below
         procs[0].kill()                                 # the original name's user ends: its pin is free to go
         procs[0].wait()
