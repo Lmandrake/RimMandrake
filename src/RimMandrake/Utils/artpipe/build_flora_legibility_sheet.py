@@ -170,7 +170,7 @@ def build(target: int, day: str, plan_only: bool) -> int:
     cmd = [sys.executable, str(ART_SHEET), "--subjects", *subjects, "--name", NAME, "--label",
            "Flora legibility — grading", "--lead", lead, "--question", str(QUESTION_PATH), "--date", day,
            "--hide-sets", "render ", "--reopen", *subjects]
-    return subprocess.call(cmd, cwd=str(REPO))
+    return subprocess.call(cmd, cwd=str(REPO), timeout=540)
 
 
 def verify(html: Path) -> int:
@@ -184,7 +184,7 @@ def verify(html: Path) -> int:
         if not p.is_file():
             bad.append(f"missing {p}")
         elif subprocess.run(["git", "ls-files", "--error-unmatch", str(p.resolve().relative_to(REPO))], cwd=str(REPO),
-                            capture_output=True).returncode:
+                            capture_output=True, timeout=120).returncode:
             bad.append(f"not pinned in git: {p.resolve().relative_to(REPO)}")
     if bad:
         print("\n".join(bad)); return 1

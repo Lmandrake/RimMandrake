@@ -45,6 +45,7 @@ Column meanings:
 | `JawaBenchVitals.cs` | 1 | armed | off | main only (prefix gates on a loaded game) | TickPre[c] TickPost[c,ro,or] | static audit (armed per test, never always-on) |
 | `JawaBenchGameCompTiming.cs` | 2 | armed | off | rejected | StagePre[c,th] StageFin[vf,c,or] Pre[c,th] Fin[vf,c,or] | `TpsMathSelfTest/UnitsCompTiming.cs` |
 | `JawaBenchMapCompTiming.cs` | 1 | armed | off | rejected | Pre[c,th] Fin[vf,c,or] | static audit (armed per run, never always-on) |
+| `JawaBenchAllocProbe.cs` | 2 | armed | off | main only (Live() checks IsInMainThread, foreign calls counted) | Pre[c] Fin[vf,c,or] TickPre[c] TickFin[vf,c,or] FrameFin[vf,c] CollectPre[c] | static audit (armed per run by `jawa/alloc_probe start`, TEST profile only, never always-on) |
 | `JawaBenchNullTextureProbe.cs` | 1 | startup | on, but inert until armed | main only (GUI funnel) | Prefix[c] | static audit (an unarmed prefix returns before any work) |
 | `JawaBenchReviewLabels.cs` | 3 | startup | on | main only (GUI and save/load) | Postfix[c] SavePostfix[c,ro] LoadPrefix[c] | static audit |
 | `JawaBenchHudLease.cs` | 1 | lazy | off | main only (GUI) | Postfix[c] | static audit |

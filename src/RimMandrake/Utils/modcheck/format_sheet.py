@@ -220,7 +220,7 @@ def problems():
     if not ok:
         out.append("nonart_sheet: " + msg)
     r = subprocess.run([sys.executable, str(HERE.parent / "art" / "prereview.py"), "check", str(SHEET)],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, timeout=300)
     if r.returncode != 0:
         out.append("prereview: " + (r.stdout + r.stderr).strip().splitlines()[-1:][0] if (r.stdout + r.stderr).strip()
                    else "prereview: refused")

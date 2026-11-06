@@ -1175,7 +1175,7 @@ def state_paths(d, repo):
     if gone not in out:
         import subprocess
         r = subprocess.run(["git", "-C", repo, "ls-tree", "--name-only", "origin/main", "--", gone],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, timeout=120)
         if r.returncode == 0 and r.stdout.strip():
             out.append(gone)
     return out
@@ -1190,7 +1190,8 @@ def land_state(d, run, timeout=120):
     import subprocess
     if os.environ.get("RM_STAGE_LAND") == "0":
         return "skipped: RM_STAGE_LAND=0"
-    r = subprocess.run(["git", "-C", d, "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+    r = subprocess.run(["git", "-C", d, "rev-parse", "--show-toplevel"], capture_output=True, text=True,
+                       timeout=120)
     if r.returncode != 0 or not r.stdout.strip():
         return "skipped: %s is not in a git clone" % d
     repo = r.stdout.strip()

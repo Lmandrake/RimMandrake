@@ -264,7 +264,7 @@ namespace JawaBench.BridgeTools
             __state = default(St);
             if (_inHook) return;
             _inHook = true;
-            try { PreBody(__originalMethod, __instance, out __state); } finally { _inHook = false; }
+            try { PreBody(__originalMethod, __instance, out __state); } catch (Exception e) { Fault("hook wrapper", e); } finally { _inHook = false; }
         }
 
         private static void PreBody(MethodBase __originalMethod, object __instance, out St __state)
@@ -286,7 +286,7 @@ namespace JawaBench.BridgeTools
         {
             if (_inHook) return;
             _inHook = true;
-            try { FinBody(__state); } finally { _inHook = false; }
+            try { FinBody(__state); } catch (Exception e) { Fault("hook wrapper", e); } finally { _inHook = false; }
         }
 
         private static void FinBody(St __state)
@@ -312,7 +312,7 @@ namespace JawaBench.BridgeTools
             __state = default(St);
             if (_inHook) return;
             _inHook = true;
-            try { TickPreBody(out __state); } finally { _inHook = false; }
+            try { TickPreBody(out __state); } catch (Exception e) { Fault("hook wrapper", e); } finally { _inHook = false; }
         }
 
         private static void TickPreBody(out St __state)
@@ -330,7 +330,7 @@ namespace JawaBench.BridgeTools
         {
             if (_inHook) return;
             _inHook = true;
-            try { TickFinBody(__state); } finally { _inHook = false; }
+            try { TickFinBody(__state); } catch (Exception e) { Fault("hook wrapper", e); } finally { _inHook = false; }
         }
 
         private static void TickFinBody(St __state)
@@ -351,7 +351,7 @@ namespace JawaBench.BridgeTools
         {
             if (_inHook) return;
             _inHook = true;
-            try { FrameFinBody(); } finally { _inHook = false; }
+            try { FrameFinBody(); } catch (Exception e) { Fault("hook wrapper", e); } finally { _inHook = false; }
         }
 
         private static void FrameFinBody()
@@ -387,7 +387,7 @@ namespace JawaBench.BridgeTools
         {
             if (_inHook) return;
             _inHook = true;
-            try { CollectPreBody(); } finally { _inHook = false; }
+            try { CollectPreBody(); } catch (Exception e) { Fault("hook wrapper", e); } finally { _inHook = false; }
         }
 
         private static void CollectPreBody()

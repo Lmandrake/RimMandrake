@@ -164,7 +164,8 @@ def ledger_events(paths):
 
 def ledger_problems(rows):
     pre = "HARNESS_REPAIR_CAUSE_"
-    spawned = {r.get("name") for r in rows if r.get("event") == "spawn" and str(r.get("name", "")).startswith(pre)}
+    spawned = {r.get("name") for r in rows if r.get("event") == "spawn" and str(r.get("name", "")).startswith(pre)
+               and (r.get("ts") or "") < TRIAGE_DONE}   # the doc's 18 is point-in-time; later spawns are not its claim
     out = [] if len(spawned) == SPAWNED else ["%d HARNESS_REPAIR_CAUSE_* spawned, doc says %d" % (len(spawned), SPAWNED)]
     ends, ended_by_triage = {}, {}
     for r in sorted(rows, key=lambda r: r.get("tsn") or 0):

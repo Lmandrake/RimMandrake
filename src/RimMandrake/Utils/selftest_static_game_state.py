@@ -47,6 +47,13 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/Hose/HosePorts.cs::sideIds": "scratch list of ints, cleared at its only use (line 190) on the main thread; no game reference",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs::kindMap": "set by KindFn immediately before each read and nulled by KindFnDone; never read without a fresh KindFn",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs::kindEx": "set by KindFn immediately before each read and nulled by KindFnDone; never read without a fresh KindFn",
+    # FlowWorks, reviewed 2026-11-05 (helper: six reds triage)
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseReplanQueue.cs::MaxStartsPerTick": "tuning constant (never written in play), no game reference",
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseReplanQueue.cs::quotaTick": "per-tick quota dedupe; resets whenever tick != quotaTick, ResetQuota() on replay start; a reload landing on the same tick number costs one partial quota, harmless",
+    "src/RimMandrake/FlowWorks/Source/Quarry/RM_PlacerWorks.cs::jobPawn": "bridge-probe handle; every use is guarded by Spawned and Map == the probed map, cleared by the probe's teardown",
+    "src/RimMandrake/FlowWorks/Source/Quarry/RM_PlacerWorks.cs::jobSpot": "bridge-probe handle; every use is guarded by Spawned and Map == the probed map, cleared by the probe's teardown",
+    "src/RimMandrake/FlowWorks/Source/Quarry/RM_PlacerWorks.cs::jobAlready": "bridge-probe snapshot, rebuilt on each jobstart and nulled at teardown; only read when jobSpot is spawned on the probed map",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitLipOcclusion.cs::artPieces": "render mesh cache keyed by piece int, no game reference; cleared when alpha changes or past 4096 entries",
     # GimmeSomeSlack
     "src/RimMandrake/GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs::PrintedVariants": "keyed by strand VARIANT index, a probe counter, not game ids",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs::aboardCacheFor": "Gravship reference: a reload makes a new Gravship, so the id set is rebuilt",
