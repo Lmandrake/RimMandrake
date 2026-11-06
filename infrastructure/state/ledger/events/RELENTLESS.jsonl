@@ -1410,3 +1410,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES A1 (L2), read-only proof","ts":"2026-11-06T23:53:37Z","tsn":1794009217047627471}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:55:16Z","tsn":1794009316677286071}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING A1 (L1), read-only proof","ts":"2026-11-06T23:56:18Z","tsn":1794009378020971953}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:59:10Z","tsn":1794009550648338574}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE A1 (L1), read-only proof","ts":"2026-11-06T23:59:28Z","tsn":1794009568173698266}
