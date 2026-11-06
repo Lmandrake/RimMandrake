@@ -566,6 +566,39 @@ def main():
         else:
             ok(end in ends and not hit and p9["relentless.churn_items"].get("v") == 0,
                "9: a '%s' ending is a put-down, not a failure: no churn" % end, (end in ends, sorted(p9)))
+    # 9a OPS_CHURN_DIAGNOSE_ENGINE_QCHQ_AUUY: ENGINE_REVIEW_FIX_LEFTOVERS_STILL_WARM's real rows at the 20:36Z alarm, one
+    # proof_weak and two account change-overs (relentless.account_lost: no strike, no return), rang 'bouncing: account_lost
+    # failed it 2 times'. The account's act is no bounce; real failures beside it still speak; its spend stays visible.
+    a9 = {"gen": 1, "at": iso(NOW - 4 * HOUR), "end": "account_lost", "detail": "account change-over closed every Claude process"}
+    b9 = {"gen": 5, "at": iso(NOW - 2 * HOUR), "end": "account_lost", "detail": "account change-over closed every Claude process"}
+    def case9a(tag, returns, rows):
+        s = TMP / ("s9a_" + tag)
+        d = s / "items" / "A9_ITEM"
+        d.mkdir(parents=True)
+        (d / "state.json").write_text(json.dumps({"status": "running", "returns": returns, "gen": 7, "spent": 1}))
+        (d / "attempts.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+        (TMP / "ops" / "alarms.json").write_text("{}")
+        return s, OW.rl_churn(s, NOW, cfg9)
+    fin9 = {"gen": 3, "at": iso(NOW - 3.5 * HOUR), "end": "finish", "sha": "a2bbb67"}
+    weak9 = {"gen": 3, "at": iso(NOW - 3 * HOUR), "end": "proof_weak", "sha": "a2bbb67"}
+    _, pa = case9a("real", 1, [{"gen": 1, "at": iso(NOW - 5 * HOUR), "start": marker("A9_ITEM", 1)}, a9,
+                               {"gen": 3, "at": iso(NOW - 4 * HOUR), "start": marker("A9_ITEM", 3)}, fin9, weak9,
+                               {"gen": 5, "at": iso(NOW - 3 * HOUR), "start": marker("A9_ITEM", 5)}, b9,
+                               {"gen": 7, "at": iso(NOW - 2 * HOUR), "start": marker("A9_ITEM", 7)}])
+    ok(OW.CHURN_ITEM_PREFIX + "A9_ITEM" not in pa and pa["relentless.churn_items"].get("v") == 0,
+       "9a: two account_lost change-overs and one proof_weak (the real instance) read no bouncing", pa.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM"))
+    _, pa2 = case9a("old", 3, [dict(a9), dict(b9)])
+    ok(OW.CHURN_ITEM_PREFIX + "A9_ITEM" not in pa2 and pa2["relentless.churn_items"].get("v") == 0,
+       "9a: an account_lost in the window does not wake old returns", pa2.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM"))
+    _, pa3 = case9a("real_same", 1, [a9, dict(weak9), dict(weak9, gen=5, at=iso(NOW - HOUR)), b9])
+    said = (pa3.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM") or {}).get("x", {}).get("said", "")
+    ok("proof_weak failed it 2 times" in said and "account_lost" not in said,
+       "9a: a real class repeating beside account_lost rows still reads bouncing, naming only the real class", said)
+    s9a, _ = case9a("spend", 0, [{"gen": 1, "at": iso(NOW - 5 * HOUR), "start": marker("A9_ITEM", 1)}, a9])
+    (s9a / ("spend-%s.json" % time.strftime("%Y%m%d", time.gmtime(NOW)))).write_text(json.dumps({"runs": {marker("A9_ITEM", 1): 1000}}))
+    pa4 = OW.rl_churn(s9a, NOW, cfg9)
+    ok(any("account_lost/work" in str(e) for e in pa4["relentless.returned_tokens_pct"].get("x", {}).get("by_end", [])),
+       "9a: the tokens the account burnt stay in returned_tokens by_end", pa4["relentless.returned_tokens_pct"])
     # 9w OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA: OPS_METRONOME_MIGRATE_CLOCKS_FENCED cuts one clock a day by design and read
     # 'bouncing: 5 returns; waiting_for_sample failed it 5 times' off five `snag --wait-hours` endings (wait=true rows).
     # A wait is time, not work: no failed attempt, no bounce, and its gen's spend is no returned work. The same rows

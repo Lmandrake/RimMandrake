@@ -2425,14 +2425,22 @@ def churn_blind(why, tokens_only=False):
     return pts
 
 
+NO_STRIKE_ENDS = ("account_lost",)  # relentless.account_lost: the account ended the run (no strike, no return, no approach
+# change), so it is no failed attempt and no bounce. OPS_CHURN_DIAGNOSE_ENGINE_QCHQ_AUUY: two account change-overs, each
+# closing every Claude process, rang 'bouncing: account_lost failed it 2 times' on ENGINE_REVIEW_FIX_LEFTOVERS_STILL_WARM and
+# REACH_GATE_HARDEN_PARENS_HIDE_THE_TOOL. Not in churn_not_fail_ends on purpose: that list also decides returned spend, and
+# by_end still has to show the tokens the account burnt (account_lost/work).
+
+
 def attempt_failed(r, ok_ends):
     """One attempts.jsonl row -> (epoch or None, ending class) when it is a FAILED ATTEMPT (rl_churn's doc), else None.
     A `gated` row (relentless_attrib.withhold: withheld until attributed, no strike, no return) is none: the attribution
     writes the gen's real ending row, and counting both read 'game_fail failed it 2 times' off one live fail
-    (OPS_CHURN_DIAGNOSE_PACK_HMAO_RAYY)."""
+    (OPS_CHURN_DIAGNOSE_PACK_HMAO_RAYY). A NO_STRIKE_ENDS row is none either: it never touched the item's work."""
     if not isinstance(r, dict) or not isinstance(r.get("gen"), int) or r.get("start"):
         return None
-    if r.get("end") and r["end"] not in ok_ends and "kind" not in r and not attempt_waited(r) and not r.get("gated"):
+    if (r.get("end") and r["end"] not in ok_ends and r["end"] not in NO_STRIKE_ENDS and "kind" not in r
+            and not attempt_waited(r) and not r.get("gated")):
         return epoch(r.get("at")), str(r["end"])
     return None
 
@@ -2669,8 +2677,8 @@ def rl_churn(store, now, cfg):
     """-> {churn point key: point}. OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: on 2026-11-04 47 items had been returned 3+
     times (one at gen 20) on broken tests and unreachable evidence read as broken work, ~157M weighted tokens, and no reading
     said so: a return counted as the belt moving. Read from the store only, no AI:
-      a FAILED ATTEMPT is an attempts.jsonl row with a gen and an `end` that is not in churn_not_fail_ends (the class is its
-      signature); an item is IN CHURN when it has a failed attempt inside churn_window_h and either state.json returns >=
+      a FAILED ATTEMPT is an attempts.jsonl row with a gen and an `end` in neither churn_not_fail_ends nor NO_STRIKE_ENDS (the
+      class is its signature); an item is IN CHURN when it has a failed attempt inside churn_window_h and either state.json returns >=
       churn_returns or one class failed it churn_same_class times or more.
       RETURNED TOKENS: every run in the spend-YYYYMMDD.json files (marker rm-relentless-{work|check}-<sha1(item)[:10]>-g<gen>)
       whose (item, gen) LAST ending is a failure (a gen-less row, e.g. `done`, belongs to the gen open when it was written):
