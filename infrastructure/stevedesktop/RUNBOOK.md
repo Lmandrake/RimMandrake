@@ -301,6 +301,11 @@ have to worry about 'disrupting his modlist' or 'harming his save games.' No suc
 game is ours to play with." The runner owns RimWorld's ModsConfig, Prefs and Saves on this
 machine; nothing here protects another player's state.
 
+**A crashed load resets the list.** `Prefs.template.xml` keeps `resetModsConfigOnCrash` True, so RimWorld writes Core+DLC
+over ModsConfig. The worker runs `modset_builder.py --repair-reset` before each job and after each attempt that is not
+DONE: with a swap on record, the before-copy goes back and the job's result note says `REPAIRED`. A note reading
+`REFUSING --repair-reset` means the before-copy is gone or changed, and that one still needs a hand restore.
+
 First remote run GREEN: `JawaIonWeapons --chains def_wiring`, driven from Archmagi
 (STEVEDESKTOP_MODCHECK_PROVE_FIRST_REMOTE_RUN). First measured run, 2026-10-25 23:28Z:
 `--sync FlowWorks` then `--chains flow_doors,canal_spikes`, 9/9 PASS; sync 39 s, cold load 54 s

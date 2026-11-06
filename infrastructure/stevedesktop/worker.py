@@ -414,6 +414,7 @@ def cmd_start(retry):
                 res.update(outcome="REFUSED", cause="SYNC", note="the pulled contract does not load: %s" % str(e)[-300:])
                 publish_result(d, res)
                 return out({"attempt": aid, "state": "finished", "outcome": "REFUSED", "cause": "SYNC"})
+        repair_reset_list(d)    # the last attempt may have died before its own repair
         head = git("rev-parse", "HEAD")[1]
         if git("merge-base", "--is-ancestor", job["source_sha"], "HEAD")[0] != 0:
             res = base_result(job["id"], aid, head)
@@ -517,6 +518,44 @@ RUN_BASE = ("export MODCHECK_SKIP_DEPLOY=1 MODCHECK_STALE_KEEP_COMPOSED=1 "
 TIER_CHECK = "python.exe src/RimMandrake/Utils/testq/tier_load.py check --tier"
 TIER_SWAP = "python3 src/RimMandrake/Utils/modset_builder.py --apply --not-my-bridge %s --tier"
 PROOFS_DIR = os.path.join("infrastructure", "state", "live_proofs")
+# STEVE_MODSCONFIG_REPAIR_CRASH_RESETS_LIST: a load that crashes makes RimWorld reset ModsConfig to Core+DLC, and every tier
+# swap then refused it as "neither tier nor before-copy" until a hand restore. It runs only with the clone on main (before
+# the pin, after the unpin), because a job's source_sha may predate the flag. Tests override it with TESTQ_CMD_RESETREPAIR.
+RESET_REPAIR = ("python3 src/RimMandrake/Utils/modset_builder.py --repair-reset --not-my-bridge "
+                "'testq on SteveDesktop: the runner owns this machine list'")
+RESET_REPAIR_LOG = "modsconfig_repair.log"
+
+
+def repair_reset_list(d):
+    """Put the before-copy back if a crash reset the live list; never raises, and a refusal costs the job nothing (the
+    swap itself refuses by name). Only SteveDesktop's runner owns its list: the archmagi lane's is the owner's. The
+    account lands in the attempt's RESET_REPAIR_LOG."""
+    if HOST != "stevedesktop":
+        return
+    cmd = os.environ.get("TESTQ_CMD_RESETREPAIR")
+    if not cmd and os.environ.get("TESTQ_SKIP_PULL") == "1":    # a test's worker never touches this machine's real list
+        return
+    try:
+        r = subprocess.run(["bash", "-c", cmd or RESET_REPAIR], cwd=CLONE, stdin=subprocess.DEVNULL,
+                           capture_output=True, text=True, timeout=120)
+        text = "exit %s: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip())
+    except (OSError, subprocess.SubprocessError) as e:
+        text = "could not run: %s" % e
+    try:
+        with open(os.path.join(d, RESET_REPAIR_LOG), "a") as f:
+            f.write("%s %s\n" % (S.utcnow(), text))
+    except OSError as e:
+        sys.stderr.write("worker: %s unwritable: %s; it said %s\n" % (RESET_REPAIR_LOG, e, text))
+
+
+def reset_repair_note(d):
+    """The lines of this attempt's repair log that repaired something or refused to, for the result's note."""
+    found = []
+    for line in (read_text(os.path.join(d, RESET_REPAIR_LOG)) or "").splitlines():
+        m = re.search(r"(REPAIRED|REFUSING --repair-reset).*", line)
+        if m:
+            found.append(m.group(0))
+    return "; ".join(found)
 
 # a mod with no src folder answers []: deploy_custom_mods.py refuses that name itself, loudly, in the deploy step; a
 # tree with no modcheck runner composes nothing (modcheck run fails there by itself), so it answers [] too
@@ -1316,6 +1355,12 @@ class Attempt:
             rc, msg = unpin(self.d)    # before the result: a start that follows it at once finds the clone on main
             if rc != 0:
                 self.say("could not put the clone back on main (the next start retries): %s" % msg[-300:])
+            if self.res["outcome"] != "DONE":   # a failed load is where the crash reset lands; after the unpin: see RESET_REPAIR
+                repair_reset_list(self.d)
+            repaired = reset_repair_note(self.d)
+            if repaired:
+                self.say(repaired)
+                self.res["note"] = ("%s; %s" % (self.res.get("note") or "", repaired)).lstrip("; ")
             publish_result(self.d, self.res)
             if read_text(p("current")) == self.aid:
                 os.remove(p("current"))

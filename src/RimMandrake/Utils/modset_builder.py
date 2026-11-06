@@ -29,6 +29,7 @@ few minutes. Always back up first; --apply does that automatically.
     python src/RimMandrake/Utils/modset_builder.py --restore              # back to the pre-swap list (before-copy, md5-verified)
     python src/RimMandrake/Utils/modset_builder.py --tier ratchet_pilot --apply --by relentless   # an OWNED swap
     python src/RimMandrake/Utils/modset_builder.py --restore-own relentless                     # undo only that one
+    python src/RimMandrake/Utils/modset_builder.py --repair-reset                               # a crash reset the list to Core+DLC mid-swap: before-copy back
 
 OWNED SWAPS (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD). `--by NAME` keeps the swap's marker and before-copy in agent storage
 (<agent storage>/modset_swaps/NAME/), not in this clone's deployed/config: Relentless's staging worker writes the tier
@@ -1358,6 +1359,50 @@ def _md5(path):
         return hashlib.md5(f.read()).hexdigest()
 
 
+GAME_RESET_ID = re.compile(r"ludeon\.rimworld(\.[a-z0-9_]+)?")
+
+
+def is_game_reset_list(path):
+    """True when the list at `path` holds Core and official expansions and nothing else: what RimWorld writes over
+    ModsConfig.xml when a load crashes (resetModsConfigOnCrash, Prefs.template.xml; STEVE_MODSCONFIG_REPAIR_CRASH_RESETS_LIST,
+    specimen SteveDesktop 2026-11-06 after canary 618fb0). No modset_builder tier is this bare. An unreadable list is no
+    reset: nothing here may write on a guess."""
+    try:
+        ids = [(li.text or "").strip().lower() for li in ET.parse(path).getroot().find("activeMods")]
+    except (OSError, ET.ParseError, TypeError):      # TypeError: no <activeMods> to iterate
+        return False
+    return "ludeon.rimworld" in ids and all(GAME_RESET_ID.fullmatch(i) for i in ids)
+
+
+def repair_game_reset(config, backups):
+    """A crash reset the live list while a swap was active -> put the swap's before-copy back, md5-verified, and end the
+    swap; returns a one-line account. None when there is nothing to repair: no swap is on record, the live list is no
+    reset, or it is the before-copy or the tier list the swap wrote. RestoreRefused when the before-copy cannot be
+    trusted, with the live list untouched. Without this every later swap and restore refuses the list as "neither"."""
+    import json
+    marker = os.path.join(backups, SWAP_MARKER)
+    if not os.path.exists(marker) or not is_game_reset_list(config):
+        return None
+    try:
+        with open(marker) as fh:
+            m = json.load(fh)
+        before, want = os.path.join(backups, m["before"]), m["md5"]
+    except (ValueError, KeyError, TypeError, OSError) as e:
+        raise RestoreRefused("the game reset ModsConfig to Core+DLC, but swap marker %s is unreadable (%s)" % (marker, e))
+    live = _md5(config)
+    if live in (want, m.get("tier_md5")):
+        return None
+    if not os.path.exists(before) or _md5(before) != want:
+        raise RestoreRefused("the game reset ModsConfig to Core+DLC, but before-copy %s is missing or changed; nothing "
+                             "written. Recover the list by hand, then delete %s." % (before, marker))
+    atomic_copy(before, config)
+    if _md5(config) != want:
+        raise RestoreRefused("wrote %s but its md5 is not the before-copy's %s" % (config, want[:8]))
+    os.remove(marker)
+    return "REPAIRED a game-reset ModsConfig (Core+DLC, md5 %s): restored %s (md5 %s), swap %r over" % (
+        live[:8], m["before"], want[:8], m.get("tier"))
+
+
 def take_before_copy(config, backups, tier):
     """Copy the live list aside before a tier swap and record which copy --restore must use.
 
@@ -1368,11 +1413,16 @@ def take_before_copy(config, backups, tier):
         file mid-swap IS the tier list, so snapshotting it would hand back the tier as the owner's;
       - live list == the before-copy: the owner's list is already back (stale marker, e.g. a
         RimSort restore), so a fresh snapshot is the same content and is safe;
-      - live list is neither (hand-edited, or the game rewrote it): ambiguous, so refuse.
+      - live list is the game's crash reset: the before-copy goes back first (repair_game_reset),
+        then the case above;
+      - live list is anything else (hand-edited, or the game rewrote it): ambiguous, so refuse.
     Returns the before-copy path."""
     import json
     os.makedirs(backups, exist_ok=True)
     marker = os.path.join(backups, SWAP_MARKER)
+    repaired = repair_game_reset(config, backups)
+    if repaired:
+        print("  " + repaired)
     if os.path.exists(marker):
         try:
             with open(marker) as fh:
@@ -1425,6 +1475,9 @@ def restore_own(config, backups):
     marker = os.path.join(backups, SWAP_MARKER)
     if not os.path.exists(marker):
         return "no owned swap is active in %s; nothing written" % backups
+    repaired = repair_game_reset(config, backups)
+    if repaired:
+        return repaired
     try:
         with open(marker) as fh:
             m = json.load(fh)
@@ -1486,6 +1539,9 @@ def restore_before(config, backups):
         raise RestoreRefused("no active-swap marker (%s) -- no matching --tier --apply is on record. "
                              "Pick the file yourself (copy a ModsConfig.before-tier-*.xml) or use "
                              "--restore-full for FULL.LATEST." % SWAP_MARKER)
+    repaired = repair_game_reset(config, backups)
+    if repaired:
+        return repaired
     try:
         with open(marker) as fh:
             m = json.load(fh)
@@ -1528,10 +1584,24 @@ def main():
                     help="with --tier --apply: an owned swap, marker in agent storage (docstring, OWNED SWAPS)")
     ap.add_argument("--restore-own", metavar="OWNER",
                     help="undo only OWNER's swap (--by OWNER); allowed with the game up")
+    ap.add_argument("--repair-reset", action="store_true",
+                    help="if a crash reset the live list to Core+DLC mid-swap, put the swap's before-copy back "
+                         "(--by OWNER for an owned swap); allowed with the game up")
     ap.add_argument("--not-my-bridge", metavar="REASON",
                     help="write anyway although this window does not hold the bridge (recorded on stdout)")
     a = ap.parse_args()
 
+    if a.repair_reset:      # needs no mod scan, and may run with the game up: same reasoning as --restore-own
+        if not bridge_ok(a.not_my_bridge):
+            return 1
+        try:
+            with config_lock():
+                print(repair_game_reset(CONFIG, owned_backups(a.by) if a.by else BACKUPS)
+                      or "no game-reset list to repair; nothing written")
+        except (RestoreRefused, ValueError) as e:
+            print("REFUSING --repair-reset: %s" % e)
+            return 1
+        return 0
     if a.restore_own:       # needs no mod scan: it reads only the marker, the before-copy and the live list
         if not bridge_ok(a.not_my_bridge):
             return 1
