@@ -15,7 +15,8 @@ run: a naked pawn dies under 120000 ticks (two days, the owner's card). The open
 Heatstroke, and the stacked capacity losses kill it before exposure reaches 1.0, so the kill log credits whichever
 slow hediff tipped it (seen: RM_ScaldExposure, Malnutrition): that row asks only for a death by no wound with the
 clock already past 0.7. The row that isolates the steam is naked_nosun: its Heatstroke is removed at every sample and
-its kill must name RM_ScaldExposure. The rind wearer lives the two days, the boil-suit wearer comes through a full day at
+its kill must name RM_ScaldExposure. The rind wearer (an Awful coat, the worst quality) lives the two days with its exposure on the
+8% floor's replay (rind_near_floor), the boil-suit wearer comes through a full day at
 stage 0 or 1, natives carry neither burns nor exposure while logged standing in boiling water, and the control carries
 a real Burn (it then usually drowns: burns down it and a downed pawn drowns in shallows, the swim rule's design).
 Other pawns are removed at setup and on every sample, so no stray predator decides a row. run resumes: call it again
@@ -102,7 +103,10 @@ def setup():
     }
     for k in LAND:
         call(c, "jawa/pawn_gear", pawn=roster[k], action="clear")
-    print(str(call(c, "jawa/pawn_gear", pawn=roster["rind"], action="wear", **{"def": "RM_Apparel_RindCoat"}))[:120])
+    # Awful is the worst case: ArmorRating_Heat carries Core's quality factor (x0.60), and the coat must still sit on
+    # the clock's 8% floor (RINDCOAT_TUNE_NEAR_IMMUNE_AFTER_ALL). An unpinned wear is quality-rolled.
+    print(str(call(c, "jawa/pawn_gear", pawn=roster["rind"], action="wear", quality="Awful",
+                   **{"def": "RM_Apparel_RindCoat"}))[:120])
     print(str(call(c, "jawa/pawn_gear", pawn=roster["boilsuit"], action="wear", **{"def": "RM_Apparel_BoilSuit"}))[:120])
     # A draft alone did not hold them: a naked pawn walked into the boil at 39000 ticks and drowned, spoiling the row
     # (a mental break undrafts). An unroofed steel ring keeps each one on its cell and still under the open sky.
@@ -189,6 +193,27 @@ def run(out, ticks, wall=420):
     judge(out, log, died, kills, roster, t0)
 
 
+CLOCK_DEF = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Defs", "HediffDefs", "RM_ScaldExposure.xml")
+
+
+def floor_model(log, key):
+    """RM_ScaldExposure on `key` replayed from the sampled weather, the coat on the 8% floor: (model, measured).
+
+    Rates come from the clock def itself; each interval takes the weather read at its start, as the steam row does."""
+    import xml.etree.ElementTree as ET
+    comp = next(li for li in ET.parse(CLOCK_DEF).getroot().iter("li")
+                if li.get("Class", "").endswith("HediffCompProperties_EnvironmentalExposure"))
+    up, down = float(comp.findtext("severityPerDayExposed")), float(comp.findtext("severityPerDayUnexposed"))
+    floor = float(comp.findtext("minDriveFactor"))
+    alive = [r for r in log if not r[key].get("dead")]
+    sev = 0.0
+    for a, b in zip(alive, alive[1:]):
+        dt = (b["tick"] - a["tick"]) / DAY
+        sev = max(0.0, sev + dt * (up * floor if a["weather"] == "RM_ScaldSteam" else down))
+    measured = next((h[1] for h in alive[-1][key]["hediffs"] if h[0] == "RM_ScaldExposure"), 0.0) if alive else None
+    return sev, measured
+
+
 def judge(out, log, died, kills, roster, t0):
     last = log[-1]
     has = lambda r, name: any(h[0] == name for h in r.get("hediffs", []))  # noqa: E731
@@ -205,6 +230,10 @@ def judge(out, log, died, kills, roster, t0):
         "steam_alone_kills_under_2d": bool(kill["naked_nosun"]) and kill["naked_nosun"]["tick"] - t0 < 2 * DAY
         and kill["naked_nosun"].get("culpritHediff") == "RM_ScaldExposure",
         "rind_survives": died.get("rind", 2 * DAY + 1) > 2 * DAY and last["tick"] >= 2 * DAY,
+        # Near-immune (owner by card 2026-11-06): an awful coat's exposure after the two days matches the clock
+        # replayed at the 8% floor (~0.10 in unbroken steam; the reversed 0.4x rung read 0.47) and is never zero.
+        "rind_near_floor": last["tick"] >= 2 * DAY and (lambda m: m[1] is not None and 0 < m[1]
+                                                        and abs(m[1] - m[0]) <= 0.035)(floor_model(log, "rind")),
         # The spec's own bar (section 8 step 5): a full day out, still at stage 0 or 1. Heatstroke is the sun's, not the
         # steam's, and runs on past a day in the open, so a suit wearer needs a roof at night like anyone.
         "boilsuit_full_day": died.get("boilsuit", 2 * DAY) > DAY and all(
@@ -219,6 +248,7 @@ def judge(out, log, died, kills, roster, t0):
     credit = {k: (kill[k]["tick"] - t0, kill[k].get("culpritHediff")) if kill[k] else None for k in roster}
     json.dump({"verdict": v, "kills": kills, "credit": credit, "t0": t0, "log": log, "died": died}, open(out, "w"), indent=0)
     print(json.dumps(credit))
+    print("rind exposure model/measured", json.dumps(floor_model(log, "rind")))
     print(json.dumps(v))
     sys.exit(0 if all(v.values()) else 1)
 

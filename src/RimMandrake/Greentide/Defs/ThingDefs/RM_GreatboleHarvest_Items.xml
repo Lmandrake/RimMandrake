@@ -193,15 +193,20 @@
       <WorkToMake>9000</WorkToMake>
       <Mass>2.6</Mass>
       <Flammability>0.4</Flammability>
-      <!-- Gear matrix row 58 ("moderate") ruled ArmorRating_Heat 0.45 and
-           a scald-clock figure of 0.60. Scald protection folded into
-           ArmorRating_Heat (SCALD_FOLD_INTO_HEAT_1, decision taken by
-           question card 2026-10-08), so the coat carries the larger
-           figure, the same rule RM_ScaldGear.xml applies. Kept below 1 on
-           purpose: the coat slows the steam clock (0.4x) and never stops it
-           (Ban 3; RINDCOAT_SCALD_TUNE_STILL_SLOWLY_POACHED, spec section 5a). The
-           owner's "immune to heat and cold" is the insulation below. -->
-      <ArmorRating_Heat>0.60</ArmorRating_Heat>
+      <!-- NEAR-IMMUNE to the steam (owner by card 2026-11-06, "Royal Rind coat
+           vs. the Scald's steam: what should the rind coat do against steam?
+           -> Near-immune: tiny floor"; RINDCOAT_TUNE_NEAR_IMMUNE_AFTER_ALL,
+           spec section 5a). RM_ScaldExposure's drive is
+           max(0.08, 1 - clamp01(sum of worn ArmorRating_Heat)), read with
+           GetStatValue, so Core's StatPart_Quality applies (awful x0.60).
+           1.54 x 0.60 = 0.924 puts even an awful coat alone on the 8% floor:
+           the steam clock runs at 0.08x (~21 days of unbroken open steam to
+           the lethal stage) at every quality, never zero (Ban 3 holds by the
+           floor, not by this number). Above 1 it also deflects most burns on
+           the parts it covers: the coat "shrugs off scalding heat". The
+           owner's "immune to heat and cold" temperature half is the
+           insulation below. -->
+      <ArmorRating_Heat>1.54</ArmorRating_Heat>
       <Insulation_Heat>35</Insulation_Heat>
       <Insulation_Cold>35</Insulation_Cold>
       <EquipDelay>2</EquipDelay>

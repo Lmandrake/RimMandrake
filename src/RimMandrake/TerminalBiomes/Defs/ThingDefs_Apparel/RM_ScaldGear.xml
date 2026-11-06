@@ -23,7 +23,8 @@
   The Royal Rind rung is NOT in this file: RM_Apparel_RindCoat lives with
   its material in Greentide (Defs/ThingDefs/RM_GreatboleHarvest_Items.xml,
   built 018801d35e, GREATBOLE_HARVEST_LADDER_1) — Neolithic, Shell,
-  ArmorRating_Heat 0.60, tailoring bench, 60 RM_RoyalRind.
+  ArmorRating_Heat 1.54 (alone on the 8% clock floor at every quality:
+  near-immune, owner by card 2026-11-06), tailoring bench, 60 RM_RoyalRind.
 
   ⚠️ EVERY PROTECTION NUMBER HERE IS INVENTED and taken from the spec's
   §5 table. Protection is ONE stat, vanilla ArmorRating_Heat

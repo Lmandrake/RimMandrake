@@ -257,7 +257,7 @@ the fold, each garment carries the larger of its two pre-fold scald figures as h
 | **The still day** | clock stops map-wide for 12–24 h | waiting; ~4 days between | shipped lock |
 | **`RUT_ScaldMargin` cove** | the one water with no burn | must be sited as an isolated cove (bridge authoring, owed) | shipped def |
 | **`RM_Apparel_ScaldWrap`** (Neolithic) — hooded oil-waxed cloak, Shell layer, Torso/Neck/Head | `ArmorRating_Heat 0.45` + its stuff's heat armor (≈2× slower clock) | 30 cloth + 12 `RM_ScaldWalkerChitin` (the dive-hunt drop finally has a use); `Insulation_Heat −10` (it is hot inside), `MoveSpeed −0.15` | tailoring bench, no research |
-| **Royal Rind gear** (§5a, **Neolithic** — ruled) — `RM_Apparel_RindCoat` (proposed name), Shell, Torso/Neck/Shoulders/Arms | `ArmorRating_Heat 0.60`, plus **extreme heat and cold insulation** from the material (numbers INVENTED; steam protection sits between wrap and boil-suit) | the greatbole's fruit — a nasty grub fight or Fruitfall patience (`greatbole_harvest_spec.md` §2d, §3b); no research | tailoring bench, once the rind material exists |
+| **Royal Rind gear** (§5a, **Neolithic** — ruled) — `RM_Apparel_RindCoat` (proposed name), Shell, Torso/Neck/Shoulders/Arms | `ArmorRating_Heat 1.54` — alone on the 8% clock floor at every quality, **near-immune** to the steam (owner by card 2026-11-06) — plus **extreme heat and cold insulation** from the material (insulation numbers INVENTED) | the greatbole's fruit — a nasty grub fight or Fruitfall patience (`greatbole_harvest_spec.md` §2d, §3b); no research | tailoring bench, once the rind material exists |
 | **`RM_Apparel_BoilSuit`** (Industrial) — sealed hood-and-suit, Middle+Shell, full body | `ArmorRating_Heat 0.85` (≈7× slower clock; also blunts steam devils) | research **`RM_ScaldWorking`** (Industrial — **ruled**, §9 ruling 3; 1200 pts, prereq `ComplexClothing` INVENTED); 60 cloth + 20 chitin + 30 steel + 2 components; `MoveSpeed −0.35`, `Insulation_Heat −5`, Beauty −3, cannot wear with other Shell | machining table |
 | **Odyssey vacsuit + helmet** — **ruled in** (§9 ruling 4) | no patch: vanilla already gives each piece `ArmorRating_Heat 0.66`, so the pair sums past 1 and sits on the 8% floor — better than the boil-suit alone, the price of one kind of heat; any later sealed suit protects by its own heat armor | already `MoveSpeed −1.25`; Spacer tech, `OrbitalTech` research | vanilla |
 | **Tending** | burns are ordinary injuries; `RUT_ScaldExposure` is not tendable, only waited out indoors | medicine, bed time | vanilla |
@@ -301,12 +301,13 @@ by the Greentide build (`greatbole_harvest_spec.md` §9 items 4–5), not by thi
 - **Rind stacks with the other rungs** under the same clamp and 8% floor; rind + vacsuit helmet
   and rind + boil-suit both clamp at 1.0. Ban 3 holds: it is a fight to get and never zeroes
   the clock.
-- **Decided 2026-11-06 (`RINDCOAT_SCALD_TUNE_STILL_SLOWLY_POACHED`): the coat does not stop the
-  steam clock.** The live proof read exposure 0.47 after two steam days in the coat (clock 0.4x, so
-  ~4 days of unbroken outdoor steam to the lethal stage). That is the intended rung: the 2026-09-25
-  ruling is about temperature, which `Insulation_Heat`/`Insulation_Cold` answer, and Ban 3 forbids
-  any gear from zeroing the clock. A roof stops it, and a still day unwinds it. Guard:
-  `src/RimMandrake/Utils/selftest_rindcoat_scald_clock.py`.
+- **Ruled 2026-11-06, by card (`RINDCOAT_TUNE_NEAR_IMMUNE_AFTER_ALL`): the coat is NEAR-IMMUNE to the
+  steam.** *"Royal Rind coat vs. the Scald's steam: what should the rind coat do against steam? →
+  Near-immune: tiny floor."* The coat's `ArmorRating_Heat 1.54` puts it alone on the 8% floor
+  (`minDriveFactor 0.08`) at every quality (the clock reads `GetStatValue`, so Core's awful ×0.60
+  still leaves 0.92): the clock runs at 0.08x, so ~0.10 exposure after two steam days and
+  ~21 days of unbroken open steam to the lethal stage. It never stops: Ban 3 holds by the floor.
+  Guard: `src/RimMandrake/Utils/selftest_rindcoat_scald_clock.py`.
 
 Rind protects the steam clock as well as the wading burn, and its garments are Neolithic — both
 ruled (§9 rulings 7–8).
@@ -476,6 +477,8 @@ Neolithic, yes. Yes, deep water should burn harder. Yes, a native would need a g
 have any plans for that at this time"*:
 
 7. **Rind clothing protects the steam clock too, and grants extreme heat AND cold insulation** (§5a).
+   The steam half is **near-immune** (owner by card 2026-11-06, *"Near-immune: tiny floor"*): the
+   coat alone sits on the 8% clock floor, never zero.
 8. **Rind gear is Neolithic** — tailoring bench, no research; the ladder reads rind → boil-suit →
    vacsuit by tech level (§5) — on the gear matrix (`exposure_gear_matrix_spec.md` §4a) that is
    moderate → moderate → deluxe: rind and the boil-suit share a tier and differ in which cells
