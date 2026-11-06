@@ -1,0 +1,2 @@
+{"run": "rm-role-designer-1793959835", "stage": 2, "outcome": "waiting_owner",
+ "summary": "Retry of rm-role-designer-1793956242: that run's reviewed ask a_shock_floor_ends (turn_05.md: does a sparking floor-cord cut end shock crossers, with the constructor rebuilding it safe, or do only fallen overhead wires shock?) still stands unanswered. Its rejection was a run defect, coverage_verdict.json untracked; now landed (dfd712ccb0). No new ask; the other four coverage gaps stay stage-3 scene fixes in the pending decision."}

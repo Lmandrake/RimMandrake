@@ -228,10 +228,17 @@
     "ref": "run rm-role-designer-1793956242",
     "stage": 2,
     "tokens": 367425
+   },
+   {
+    "at": "2026-11-06T10:13:06Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793959835",
+    "stage": 2,
+    "tokens": 303731
    }
   ],
   "reserve": 60000,
-  "spent": 7820841
+  "spent": 8124572
  },
  "history": [
   {
@@ -515,6 +522,24 @@
    "stage": 2,
    "what": "retry",
    "why": "run rm-role-designer-1793956242 result rejected: asks[a_shock_floor_ends]: source path design/concepts/GimmeSomeSlack/coverage_verdict.json does not exist"
+  },
+  {
+   "at": "2026-11-06T10:10:49Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "7820841 of 4000000 spent; run rm-role-designer-1793959835 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T10:10:49Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793959835, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-06T10:13:06Z",
+   "stage": 2,
+   "what": "retry",
+   "why": "run rm-role-designer-1793959835 result rejected: asks[a_shock_floor_ends]: source path design/concepts/GimmeSomeSlack/coverage_verdict.json does not exist"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -918,6 +943,15 @@
    "at": "2026-11-06T09:14:45Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1793956242",
+   "stage": 2,
+   "why": [
+    "asks[a_shock_floor_ends]: source path design/concepts/GimmeSomeSlack/coverage_verdict.json does not exist"
+   ]
+  },
+  {
+   "at": "2026-11-06T10:13:06Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1793959835",
    "stage": 2,
    "why": [
     "asks[a_shock_floor_ends]: source path design/concepts/GimmeSomeSlack/coverage_verdict.json does not exist"
