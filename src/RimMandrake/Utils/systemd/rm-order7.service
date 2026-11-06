@@ -1,0 +1,16 @@
+# Order-7 block guard (DRVFS_ENOMEM_FIX_ORDER_SEVEN_RUNS_DRY): records free order-7+ blocks and new
+# "page allocation failure: order:7" lines to ~/.local/state/rm-order7/reading.json, and re-applies the
+# watermark sysctls (systemd/90-rm-order7.conf) through wsl.exe -u root if they drifted.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-order7.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-order7.timer
+#           python3 src/RimMandrake/Utils/order7_guard.py install     (once: /etc/sysctl.d, survives reboots)
+[Unit]
+Description=RimMandrake order-7 block guard (WSL watermark sysctls)
+
+[Service]
+# Code from the one Operations deploy (src/RimMandrake/Utils/systemd/ops_clocks.json; ops_clocks.py check)
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/order7_guard.py run
+Nice=10
+MemoryMax=128M
+TimeoutStartSec=90s

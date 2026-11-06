@@ -16,7 +16,8 @@
     "rm-objstore": "rm-objstore.timer",
     "rm-metronome": "rm-metronome.timer",
     "rm-ops-reds": "rm-ops-reds.timer",
-    "rm-canon-sweep": "rm-canon-sweep.timer"
+    "rm-canon-sweep": "rm-canon-sweep.timer",
+    "rm-order7": "rm-order7.timer"
   },
   "outside": {
     "rm-relentless": "the Relentless tick: its own belt (strategy §2 'Stay outside')",
