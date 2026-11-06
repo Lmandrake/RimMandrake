@@ -32,6 +32,7 @@ sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, HERE)
 import selftest_relentless as SR    # noqa: E402
 import relentless_boxrun as B       # noqa: E402
+import evidence as E                # noqa: E402
 
 R = SR.R
 FAILS = []
@@ -98,8 +99,9 @@ def t_red():
     ok("KRAYT_SENTINEL" in out and "$ python3 src/RimMandrake/rimflow/selftest_x.py" in out,
        "1. the box output and the command are on the builder's stdout")
     ok(receipt(x, g) is None and x.st("I0")["status"] != "candidate", "1. no receipt, not a candidate")
-    log = [json.loads(l) for l in open(os.path.join(x.s.dir, B.LOG))]
-    ok(log and log[-1]["verdict"] == "red" and log[-1]["kind"] == "finish", "1. the run is logged for the SLI")
+    log = [r for r in E.index_rows(x.s.dir) if r.get("kind") == "run"]
+    ok(log and log[-1]["verdict"] == "red" and log[-1]["kind_of_run"] == "finish",
+       "1. the refused run still leaves its evidence receipt, which the SLI counts")
     ok(B.sli(x.s).get("finish/enforce", {}).get("red") == 1, "1. sli counts the avoided Marker launch")
 
     x, g = rig()

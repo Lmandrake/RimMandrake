@@ -14,8 +14,10 @@ python3/python/bash commands joined by `&&` (each may be negated with `!`) are r
 neither passes nor refuses. A contract that names offbox adapters or a reach_ok why measures outside the box: `skipped`.
 
 Modes (relentless_boxrun.json `mode`): `off`; `shadow` runs and prints, refuses nothing; `enforce` refuses a red proof
-with the box output on the builder's stdout. Every run is one line of <store>/boxrun.jsonl: the SLI (Marker launches
-avoided = enforce reds per candidate; in shadow, would-refuse reds).
+with the box output on the builder's stdout. Every run (any verdict but off) is an immutable `run` receipt in the item's
+evidence record at the sha (evidence.py, WP-09a: <store>/evidence/<ID>/<sha>.jsonl, hash-chained, anchored in
+evidence/index.jsonl). That is the one receipt format: the SLI (Marker launches avoided = enforce reds per candidate; in
+shadow, would-refuse reds) counts the evidence index, and finish's gen receipt carries the entry's hash.
 """
 import hashlib
 import json
@@ -26,13 +28,13 @@ import subprocess
 import sys
 import time
 
+import evidence
 import relentless_wall
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CONFIG = os.path.join(HERE, "relentless_boxrun.json")
 MODES = ("off", "shadow", "enforce")
 RUNNERS = ("python3", "python", "bash")
-LOG = "boxrun.jsonl"
 
 
 def config(path=None):
@@ -193,7 +195,7 @@ RUN = run_in_box    # the seam selftests replace: (cmd, sha, source, store_root,
 
 def check(store, item, gen, sha, contract, source, rules, cfg=None, kind="finish", base=None, evidence="", say=None):
     """-> the run record (verdict green | red | unrunnable | skipped | box_error | off). Prints what the box printed on
-    stdout (`say`). Appends the record to <store>/boxrun.jsonl. Raises nothing: refusing is refusal()'s, so the caller
+    stdout (`say`). Every verdict but off is written as an evidence `run` receipt (_receipt). Raises nothing: refusing is refusal()'s, so the caller
     decides under which mode a red stops it."""
     cfg = config() if cfg is None else cfg
     say = say or (lambda s: print(s, flush=True))
@@ -207,14 +209,14 @@ def check(store, item, gen, sha, contract, source, rules, cfg=None, kind="finish
     if why or unrun:
         rec.update(verdict="skipped" if why else "unrunnable", why=why or unrun)
         say("relentless boxrun: %s: %s" % (rec["verdict"], rec["why"]))
-        _log(store, rec)
+        _receipt(store, rec, contract, None, source)
         return rec
     rec["cmd"] = cmd
     try:
         src = toplevel(source)
     except (OSError, RuntimeError, subprocess.SubprocessError) as e:
         rec.update(verdict="box_error", why=str(e)[-300:])
-        _log(store, rec)
+        _receipt(store, rec, contract, cmd, source)
         return rec
     got = RUN(cmd, sha, src, store.root, rules, int(cfg.get("timeout_s") or 420), base=base, item=item,
               texts=[json.dumps(contract or {}), evidence or ""])
@@ -230,7 +232,7 @@ def check(store, item, gen, sha, contract, source, rules, cfg=None, kind="finish
         rec["mode"], kind, sha[:10], rec["verdict"].upper(),
         " exit %s in %ss" % (rec.get("exit"), rec.get("secs")) if rec["verdict"] in ("green", "red") else ": " + rec.get("why", ""),
         cmd, "" if len(tail) == len(out) else "[... %d chars above cut]\n" % (len(out) - len(tail)), tail.rstrip()))
-    _log(store, rec)
+    _receipt(store, rec, contract, cmd, src)
     return rec
 
 
@@ -251,12 +253,34 @@ def refence(st, snap_hash):
                          "contract the receipt will name")
 
 
-def _log(store, rec):
+def argv_of(cmd):
+    """The argv the box ran: run_in_box writes `set -o pipefail` + cmd to a script and runs it with /bin/bash; this is
+    the same program as one argv a Marker rerun can execute."""
+    return ["/bin/bash", "-o", "pipefail", "-c", cmd] if cmd else None
+
+
+def full_sha(source, sha):
+    """-> the full commit id for sha (a short id is resolved in source), or sha unchanged when it cannot be resolved."""
+    if isinstance(sha, str) and re.fullmatch(r"[0-9a-f]{40}", sha):
+        return sha
     try:
-        with open(os.path.join(store.dir, LOG), "a", encoding="utf-8") as f:
-            f.write(json.dumps(rec, sort_keys=True) + "\n")
-    except OSError as e:
-        print("relentless boxrun: could not log: %s" % e, file=sys.stderr)
+        r = subprocess.run(["git", "rev-parse", "--verify", "--quiet", "%s^{commit}" % sha], cwd=source,
+                           capture_output=True, text=True, timeout=30)
+        return r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else sha
+    except (OSError, subprocess.SubprocessError, TypeError):
+        return sha
+
+
+def _receipt(store, rec, contract, cmd, source):
+    """The run's immutable receipt (evidence.run_receipt). rec gains `evidence` {n, hash, path} or `evidence_error`: a
+    receipt that cannot be written is said loudly and never stops the finish (09a writes; nothing reads it to gate yet)."""
+    try:
+        sha = full_sha(source, rec.get("sha"))
+        e = evidence.run_receipt(store.dir, rec.get("item"), sha, rec, contract_hash(contract), argv_of(cmd))
+        rec["evidence"] = {"n": e["n"], "hash": e["hash"], "path": evidence.record_path(store.dir, rec["item"], sha)}
+    except (OSError, ValueError) as ex:      # TamperError is a ValueError
+        rec["evidence_error"] = "%s: %s" % (type(ex).__name__, str(ex)[:300])
+        print("relentless boxrun: the evidence receipt was NOT written: %s" % rec["evidence_error"], file=sys.stderr)
 
 
 def at_finish(store, item, gen, sha, contract, source, rules, st=None, evidence="", cfg=None):
@@ -271,12 +295,13 @@ def at_finish(store, item, gen, sha, contract, source, rules, st=None, evidence=
     why = refusal(rec, item, gen)
     if why:
         raise ValueError(why)
-    return {k: rec[k] for k in ("verdict", "mode", "exit", "secs", "cmd", "out_sha256", "why") if k in rec}
+    return {k: rec[k] for k in ("verdict", "mode", "exit", "secs", "cmd", "out_sha256", "why", "evidence", "evidence_error")
+            if k in rec}
 
 
 def verb(store, item, gen, sha, source, rules, cfg=None):
     """`relentless.py boxrun`: the builder's own run before it lands. -> process exit: 0 green, 1 red, 3 anything else.
-    Runs in any mode but off; reads the contract, writes nothing but the log line."""
+    Runs in any mode but off; reads the contract, writes nothing but its evidence receipt (kind_of_run verb)."""
     cfg = dict(config() if cfg is None else cfg)
     if cfg.get("mode", "off") == "off":
         cfg["mode"] = "shadow"      # the builder asked: run it, refuse nothing
@@ -291,19 +316,11 @@ def verb(store, item, gen, sha, source, rules, cfg=None):
 
 
 def sli(store, since=None):
-    """-> {kind: {verdict: n}} over <store>/boxrun.jsonl, rows at or after `since` (ISO)."""
+    """-> {kind/mode: {verdict: n}} over the evidence index's `run` rows, at or after `since` (ISO)."""
     out = {}
-    try:
-        with open(os.path.join(store.dir, LOG), encoding="utf-8") as f:
-            for line in f:
-                try:
-                    r = json.loads(line)
-                except ValueError:
-                    continue
-                if since and r.get("at", "") < since:
-                    continue
-                k = out.setdefault("%s/%s" % (r.get("kind"), r.get("mode")), {})
-                k[r.get("verdict")] = k.get(r.get("verdict"), 0) + 1
-    except OSError:
-        pass
+    for r in evidence.index_rows(store.dir, since):
+        if r.get("kind") != "run":
+            continue
+        k = out.setdefault("%s/%s" % (r.get("kind_of_run"), r.get("mode")), {})
+        k[r.get("verdict")] = k.get(r.get("verdict"), 0) + 1
     return out
