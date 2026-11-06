@@ -434,10 +434,32 @@ def build_shas(fx, sha, item_id=None):
     commit whose SUBJECT names the item joins it (fx.cited): those hold the item's mod files.
     PROOF_SHA_FIX_DEPLOYS_NOTHING_TWICE: GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS was built on 8f6c177 then 2e9ce47, which
     touched only proofs and lessons, so runs.jsonl read deploy='' and no running-load gap: A1 ran and FAILED twice on a
-    game without GimmeSomeSlack. A fake without `cited` keeps the built commit alone."""
-    if not item_id or not hasattr(fx, "cited") or game_files(fx.touched(sha), fx.shippable):
+    game without GimmeSomeSlack. A fake without `cited` keeps the built commit alone. Only a path that can reach the game
+    (reaches_game) makes the built commit a game build: a harness-only Utils/ edit landing last left the cited mod work
+    out (review of 930b960a8e)."""
+    if not item_id or not hasattr(fx, "cited"):
+        return [sha]
+    memo = {}
+    for m in filter(None, (SRC_MOD.match(p) for p in fx.touched(sha))):
+        if m.group(1, 2) not in memo:
+            memo[m.group(1, 2)] = reaches_game(fx, m.group(1), m.group(2), (sha, sha + "^"))
+    own = [m.group(0) for m in filter(None, (SRC_MOD.match(p) for p in fx.touched(sha))) if memo[m.group(1, 2)]]
+    if game_files(own, fx.shippable):
         return [sha]
     return [sha] + [s for s in fx.cited(item_id, sha) if not (s.startswith(sha) or sha.startswith(s))]
+
+
+def reaches_game(fx, tier, mod, revs=()):
+    """True when a change under src/<tier>/<mod>/ can change what the game loads (stale_build, carry_scope):
+    fx.game_input(tier, mod, revs) (the real fx: About/About.xml at HEAD or at any of `revs`, a compose source or shell, or
+    compiled into another folder's .csproj), else a fake's fx.deployable(tier, mod), else True (every src/ folder).
+    STALE_BUILD_SCOPE_DEPLOYED_MODS_ONLY review (930b960a8e): About.xml at HEAD alone let a commit deleting a whole mod
+    skip the deleted-file guard, and dropped _Shared/ C# and BiomesShell, which ship inside other mods' outputs."""
+    f = getattr(fx, "game_input", None)
+    if callable(f):
+        return f(tier, mod, tuple(revs))
+    f = getattr(fx, "deployable", None)
+    return f(tier, mod) if callable(f) else True
 
 
 def stale_build(fx, sha, item_id=None):
@@ -445,16 +467,23 @@ def stale_build(fx, sha, item_id=None):
     game copy cannot be told from the build), or a game file it touched changed in a later commit (STALE). Raises
     ValueError when the built commit cannot be read. item_id: a built commit with no game file stands for the game files
     of every commit citing the item (build_shas); staleness is still judged against `sha`, the build.
-    Only a folder the game loads counts (fx.deployable: About/About.xml at HEAD; a fake without it counts every src/
-    folder, as before). STALE_BUILD_SCOPE_DEPLOYED_MODS_ONLY: GIZKA_STOWAWAY_UNMEASURED_ROWS_1 gen 6 (e87b8495b8) went
+    Only a folder that can reach the game counts (reaches_game: a mod at HEAD, at a build sha or its parent, so deleting a
+    whole mod still refuses; a compose source or shell; a folder another folder's .csproj compiles from, like _Shared/;
+    a fake without fx.game_input/deployable counts every src/ folder, as before). STALE_BUILD_SCOPE_DEPLOYED_MODS_ONLY: GIZKA_STOWAWAY_UNMEASURED_ROWS_1 gen 6 (e87b8495b8) went
     back as game_stale_build because GOLD_PANNING (576c7659a1) edited src/RimMandrake/Utils/modcheck/required_checks.json,
     which an earlier commit citing the item had touched: Utils matches src/<tier>/<Mod>/ but deploys nothing, and the
     harness runs from the clone's HEAD whatever the build, so no game copy of it could be stale."""
     shas = build_shas(fx, sha, item_id)
+    revs = [r for s in shas for r in (s, s + "^")]
+    memo = {}
 
     def loads(p):
         m = SRC_MOD.match(p)
-        return bool(m) and (not hasattr(fx, "deployable") or fx.deployable(m.group(1), m.group(2)))
+        if not m:
+            return False
+        if m.group(1, 2) not in memo:
+            memo[m.group(1, 2)] = reaches_game(fx, m.group(1), m.group(2), revs)
+        return memo[m.group(1, 2)]
     gone = [p for s in shas for p in fx.deleted(s) if SRC_MOD.match(p) and fx.shippable(SRC_MOD.match(p).group(3))
             and loads(p)]
     if gone:
@@ -479,7 +508,7 @@ SCOPE_ALL = False       # selftest_relentless_carry_chain --pre-scope: the scope
 
 def carry_scope(fx, sha, paths):
     """The build's paths a carry must find unchanged -> [path]: its proofs (live_proofs/), and under src/<tier>/<Mod>/
-    only what can reach the game: a mod folder that deploys (About/About.xml, fx.deployable), and inside it, a Source/
+    only what can reach the game: a folder that deploys or ships inside a mod (reaches_game), and inside it, a Source/
     file only when an assembly of the mod compiles it (listed in one of its .srchash files at `sha` or HEAD, or the
     project's own .csproj, fx.compiled). A mod with no .srchash keeps every Source/ path. A fake without those methods
     keeps every src/ path, as before.
@@ -487,7 +516,7 @@ def carry_scope(fx, sha, paths):
     supervisor fix 6cfce056d6 (its subject cites the item), so src/RimMandrake/rimflow/relentless_game.py read as a mod
     path and another item's later edit to it refused the carry; so did PLANK's edit to FlowWorks/Source/SelfTest/
     Program.cs, a separate net8 test project absent from the DLL's Compile list. Neither can reach the game."""
-    out = []
+    out, memo = [], {}
     for p in dict.fromkeys(paths):
         if p.startswith(PROOFS):
             out.append(p)
@@ -495,10 +524,12 @@ def carry_scope(fx, sha, paths):
         m = SRC_MOD.match(p)
         if not m:
             continue
-        if SCOPE_ALL or not hasattr(fx, "deployable"):
+        if SCOPE_ALL or not (hasattr(fx, "game_input") or hasattr(fx, "deployable")):
             out.append(p)
             continue
-        if not fx.deployable(m.group(1), m.group(2)):
+        if m.group(1, 2) not in memo:
+            memo[m.group(1, 2)] = reaches_game(fx, m.group(1), m.group(2), (sha, sha + "^"))
+        if not memo[m.group(1, 2)]:
             continue
         if SOURCE_IN_MOD.match(m.group(3)) and not ASSEMBLY_OUT.search(p):
             compiled = fx.compiled(m.group(1), m.group(2), sha)
@@ -956,6 +987,61 @@ class Fx(object):
         r = subprocess.run(["git", "cat-file", "-e", "HEAD:src/%s/%s/About/About.xml" % (tier, mod)], cwd=self.books,
                            capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         return r.returncode == 0
+
+    def game_input(self, tier, mod, revs=()):
+        """True when src/<tier>/<mod> can reach the game folder (reaches_game): it is a mod at HEAD or at any of `revs` (a
+        build that deleted the whole mod, About.xml included, still deployed it), the compose manifest folds it in or
+        builds its settings shell from it, or a .csproj in another folder compiles a file of it (_Shared/SettingsKit)."""
+        if self.deployable(tier, mod):
+            return True
+        for rev in revs:
+            r = subprocess.run(["git", "cat-file", "-e", "%s:src/%s/%s/About/About.xml" % (rev, tier, mod)],
+                               cwd=self.books, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+            if r.returncode == 0:
+                return True
+        return mod in self.folded() or (tier, mod) in self.compose_inputs() or (tier, mod) in self.csproj_inputs()
+
+    def compose_inputs(self):
+        """{(tier, folder)} a compose manifest at HEAD names as a source: entries and the settings shell."""
+        if getattr(self, "_compose_in", None) is None:
+            out = set()
+            for path in glob.glob(os.path.join(self.books, "src", "*", "*.compose.json")):
+                tier = os.path.basename(os.path.dirname(path))
+                try:
+                    with open(path, encoding="utf-8") as f:
+                        man = json.load(f)
+                except (OSError, ValueError):
+                    raise ValueError("compose manifest %s is unreadable: its inputs cannot be told" % path)
+                out.update((tier, e.get("source")) for e in man.get("entries") or () if e.get("source"))
+                if (man.get("shell") or {}).get("source"):
+                    out.add((tier, man["shell"]["source"]))
+            self._compose_in = out
+        return self._compose_in
+
+    def csproj_inputs(self):
+        """{(tier, folder)} of every src/ folder a .csproj OUTSIDE it at HEAD names in an Include= or HintPath: that
+        folder's files are compiled or copied into another folder's output (_Shared/ into each mod DLL)."""
+        if getattr(self, "_csproj_in", None) is None:
+            r = subprocess.run(["git", "ls-files", "-z", "--", "*.csproj"], cwd=self.books, capture_output=True,
+                               text=True, timeout=60, stdin=subprocess.DEVNULL)
+            if r.returncode:
+                raise ValueError("git ls-files *.csproj: %s" % r.stderr[-200:])
+            out = set()
+            for proj in (x for x in r.stdout.split("\0") if x.strip()):
+                own = SRC_MOD.match(proj)
+                try:
+                    with open(os.path.join(self.books, proj), encoding="utf-8", errors="replace") as f:
+                        text = f.read()
+                except OSError:
+                    continue
+                refs = re.findall(r"""Include\s*=\s*["']([^"']+)["']""", text) + re.findall(r"<HintPath>([^<]+)<", text)
+                for ref in refs:
+                    p = os.path.normpath(os.path.join(os.path.dirname(proj), ref.replace("\\", "/"))).replace(os.sep, "/")
+                    m = SRC_MOD.match(p)
+                    if m and (not own or own.group(1, 2) != m.group(1, 2)):
+                        out.add(m.group(1, 2))
+            self._csproj_in = out
+        return self._csproj_in
 
     def compiled(self, tier, mod, sha):
         """-> {repo path} of every source an assembly of the mod is built from: each Assemblies/*.srchash at `sha` and at

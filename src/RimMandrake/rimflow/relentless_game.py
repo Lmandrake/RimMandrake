@@ -616,8 +616,6 @@ def mod_gap_why(gap):
 
 
 LEDGER_ONLY = ("infrastructure/state/ledger/", "infrastructure/state/items/", "infrastructure/state/queue/")  # cli._LEDGER_ONLY
-NO_CODE_RX = re.compile(r"\bnothing (?:in|of) the (?:work|code|product|build|mod)s?\b[^|]{0,40}?\bchanged\b"
-                        r"|\bno (?:code|work|product) change", re.I)
 
 
 def _paths_of(fx, sha):
@@ -634,8 +632,10 @@ def _paths_of(fx, sha):
 def no_code_rebuild(st, sha, touched):
     """-> the `implemented --no-code` words for a rebuild that changed nothing, or None. All of: the candidate `sha` is the
     build's (st["candidate"]), it touches only the ledger and item prose (`touched`, its paths), and the warrant recorded
-    for that generation says the work did not change (NO_CODE_RX on its `changed` half). cli then finds the commit that
-    did the work under `sha`, and refuses when there is none, so this carries a build forward and never stands for one.
+    for that generation carries `unchanged: True` (relentless_breakers.take_warrant: `WARRANT: UNCHANGED: ...`, never a
+    reading of prose: "nothing in the work changed except the cooldown fix" matched the old substring). cli then checks
+    the interval: the item's recorded build is under `sha`, its files unchanged, no later commit naming the item touches
+    more than the ledger (_carried_work), so this carries a build forward and never stands for one.
     RELENTLESS_NOCODE_REBUILD_IMPLEMENTED_REFUSED: GIZKA_STOWAWAY_UNMEASURED_ROWS_1 gen 8 re-anchored its stale build on
     today's main with an item note only (ad2549a17d, warrant "nothing in the work changed; the environment did"), and
     `implemented` refused it as ledger-only, so a finished item went back as proof_owed."""
@@ -644,7 +644,7 @@ def no_code_rebuild(st, sha, touched):
         return None
     if not cand.get("sha") or not (cand["sha"].startswith(sha) or sha.startswith(cand["sha"])):
         return None
-    if w.get("gen") is None or w.get("gen") != cand.get("gen") or not NO_CODE_RX.search(w.get("changed") or ""):
+    if w.get("gen") is None or w.get("gen") != cand.get("gen") or w.get("unchanged") is not True:
         return None
     return ("gen %s rebuild, ledger-only; warrant: %s" % (w["gen"], w["changed"]))[:400]
 

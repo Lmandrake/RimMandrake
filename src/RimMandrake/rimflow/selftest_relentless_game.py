@@ -34,6 +34,7 @@ class GW(S.FakeWorld):
     def __init__(self, n=2):
         S.FakeWorld.__init__(self, n)
         self.led, self.impl, self.rows, self.events, self.proves = {}, [], [], [], []
+        self.no_code = []
         self.running, self.idle, self.take_why, self.palive = True, None, None, set()
         self.proofs = {}
         self.bridge_held = None
@@ -61,8 +62,9 @@ class GW(S.FakeWorld):
         self.carry_calls.append((item, sha))
         return self.carry(sha) if callable(self.carry) else self.carry
 
-    def game_implement(self, item, sha, crit, live=None, why=None):
+    def game_implement(self, item, sha, crit, live=None, why=None, no_code=None):
         self.impl.append((item, sha, crit))
+        self.no_code.append(no_code)
         self.events.append("implement")
         self.led[item] = {"state": "built", "built_sha": sha, "title": self.title, "owed": dict(self.owed)}
 
@@ -213,6 +215,29 @@ def t_contract_widens():
     except ValueError:
         ok(True, "a game block cannot smuggle in a new proof")
     x.done()
+
+
+def t_nocode_rebuild_reaches_implemented():
+    """step -> GameFx.game_implement: a ledger-only candidate carries --no-code only under a structured unchanged warrant
+    of its own generation (RELENTLESS_NOCODE_REBUILD_IMPLEMENTED_REFUSED, review of 930b960a8e)."""
+    for warrant, touched, want in (
+            ({"unchanged": True, "changed": "UNCHANGED: required_checks.json moved"}, ["infrastructure/state/items/I0.md"],
+             True),
+            ({"changed": "nothing in the work changed except the cooldown fix"}, ["infrastructure/state/items/I0.md"],
+             False),
+            ({"unchanged": True, "changed": "UNCHANGED: env"}, ["src/RimMandrake/ModA/Defs/A.xml"], False)):
+        x = rig(1)
+        to_game(x, "I0")
+        with x.s.lock():
+            st = x.s.load("I0")
+            st["warrant"] = dict(warrant, gen=(st.get("candidate") or {}).get("gen"))
+            x.s.save(st)
+        x.w.touched = lambda sha, t=touched: list(t)
+        x.tick()
+        ok(len(x.w.impl) == 1 and bool(x.w.no_code and x.w.no_code[0]) == want,
+           "warrant %r, touched %s: --no-code %s (%r)" % (warrant.get("changed"), touched, want,
+                                                          x.w.no_code[:1]))
+        x.done()
 
 
 def t_pass_enters_game_and_proves():
@@ -1850,7 +1875,8 @@ def main():
     if "--pre-recarry" in args:     # replays SUMP_TAR_FIRE_NETWORK_1's 19:07Z reopen as it ran before recarry_returned
         G.recarry_returned = lambda store, fx, now, acts: None     # (OPS_CHURN_DIAGNOSE_SUMP_GSVT_SSCT's class guard)
     picked, ran = set(a for a in args if not a.startswith("--")), 0      # no names: every test
-    for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves, t_fail_returns,
+    for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves,
+              t_nocode_rebuild_reaches_implemented, t_fail_returns,
               t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_dropped_staging_keeps_bridge, t_rides_ok, t_round_only_item, t_flyer_put_down, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged, t_blind_stall_probe_ends_attempt,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,

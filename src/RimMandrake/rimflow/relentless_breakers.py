@@ -8,7 +8,10 @@ Owner 2026-11-03: broken tests are expected; inability to measure is reported up
 The moves, all here so relentless.py carries hooks only:
   - RETRY WARRANT. Every worker sent after a failed attempt owes one `learn "WARRANT: <what changed, or the transient
     hypothesis that makes this attempt informative> | <the result that would change the decision>"` before `finish`.
-    The warrant is kept whole on the attempt record, so the next role reads why the retry was worth it.
+    The warrant is kept whole on the attempt record, so the next role reads why the retry was worth it. A rebuild that
+    changes nothing in the work (only the environment moved) says so in the one structured form, `WARRANT: UNCHANGED:
+    <what in the environment changed> | ...`: the record carries `unchanged: True`, and only that lets Relentless pass
+    `implemented --no-code` for a ledger-only candidate (relentless_game.no_code_rebuild). Prose never does.
   - SAME SIGNATURE, NEW CODE. A failure signature (class plus normalised detail; a live FAIL's failing clauses) that
     recurs on `signature_builds_hold` (3) different builds, i.e. after two product changes, HOLDS the item (kind
     `signature`): automatic rebuilding is suspended and the hold says to compare product, proof and binding. An unhold
@@ -33,6 +36,7 @@ NUM_RX = re.compile(r"\d+(?:[.:]\d+)*")
 WS_RX = re.compile(r"\s+")
 LIVE_FAIL_RX = re.compile(r"(?:^|;\s*)(\S+) FAIL on the running game")
 WARRANT_RX = re.compile(r"^\s*WARRANT:\s*(\S.{4,}?)\s*\|\s*(\S.{4,})$", re.S)
+UNCHANGED_RX = re.compile(r"^UNCHANGED:\s*(\S.*)$", re.S)     # the changed half of a no-change rebuild's warrant
 CAPABILITY_RX = re.compile(r"unmeasured|unreach|sandbox|harness|bridge|interop|capabilit|checker_lost|tool_missing|ssh")
 CAPABILITY_CLASSES = ("game_unmeasured", "game_proof_unmeasured", "checker_lost", "unmeasured")
 SILENT_ENDS = ("worker_lost", "worker_stale", "checker_lost")    # the supervisor saw a process vanish: no evidence either way
@@ -105,6 +109,8 @@ def take_warrant(st, text, gen, at):
         return None
     w = {"changed": m.group(1).strip(), "decides": m.group(2).strip(), "gen": gen, "at": at,
          "after": st.pop("warrant_owed")["after"]}
+    if UNCHANGED_RX.match(w["changed"]):
+        w["unchanged"] = True       # the explicit claim no_code_rebuild reads; no wording of prose stands for it
     st["warrant"] = w
     return w
 
@@ -122,7 +128,8 @@ def warrant_refusal(st):
 BRIEF = ("RETRY WARRANT: this is a retry after a failed attempt. Before you edit, record `learn \"WARRANT: <what "
          "changed since the last attempt (code, proof, binding, environment) or the transient hypothesis that makes "
          "another attempt informative> | <the result that would change the decision>\"`; `finish` is refused until "
-         "you do. If nothing relevant changed and no result would change the decision, do not retry: `snag` with "
+         "you do. A rebuild that changes nothing in the work (only the environment moved) writes \"WARRANT: UNCHANGED: "
+         "<what in the environment changed> | ...\" and commits only the ledger or item note. If nothing relevant changed and no result would change the decision, do not retry: `snag` with "
          "that, or `help`.")
 
 

@@ -2246,23 +2246,44 @@ def _sha_refusals(iid, sha, excused):
     return []
 
 
-def _prior_work(iid, sha, depth=200):
-    """-> the full sha of the newest commit at or under `sha` whose subject names `iid` as a whole token and that touches
-    more than the ledger, or None. What `implemented --no-code` carries forward: a rebuild whose warrant says nothing in
-    the work changed (only the environment did) lands a ledger-only commit on today's main, and the build it re-anchors
-    is that earlier work (RELENTLESS_NOCODE_REBUILD_IMPLEMENTED_REFUSED: GIZKA_STOWAWAY_UNMEASURED_ROWS_1 gen 8)."""
-    r = subprocess.run(["git", "log", "--no-merges", "--format=%H%x09%s", "-F", "--grep=" + iid, "-n", str(depth), sha],
-                       cwd=os.environ.get("RIMFLOW_GIT_CWD") or _HERE, capture_output=True, text=True, timeout=60,
-                       stdin=subprocess.DEVNULL)
-    name = re.compile(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(iid))
-    for line in (r.stdout.splitlines() if r.returncode == 0 else ()):
+def _carried_work(it, sha):
+    """-> (full sha of the work `implemented --no-code` carries forward, None) or (None, why not). The work is the item's
+    recorded build (it.built_sha, set by an earlier `implemented`), and it must still be the work at `sha`: an ancestor of
+    it, more than the ledger itself, no commit after it naming the item touches more than the ledger (a later fix, a
+    rebuild that did change something), and none of its own paths differs at `sha` (a revert, an edit by another item).
+    What changed in between may only be the environment. A ledger-only rebuild on today's main lands for a build that
+    already passed (RELENTLESS_NOCODE_REBUILD_IMPLEMENTED_REFUSED: GIZKA_STOWAWAY_UNMEASURED_ROWS_1 gen 8, ad2549a17d
+    carrying e87b8495b8). Review of 930b960a8e: any item-named ancestor used to do, a design note or reverted work too."""
+    cwd = os.environ.get("RIMFLOW_GIT_CWD") or _HERE
+
+    def run(*a):
+        return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+    if not getattr(it, "built_sha", None):
+        return None, "%s has no build on record to carry: --no-code carries a build forward, it cannot stand for one" % it.id
+    r = run("rev-parse", "--verify", "-q", it.built_sha + "^{commit}")
+    work = r.stdout.strip()
+    if r.returncode or not work:
+        return None, "its recorded build %s does not resolve here (git fetch)" % it.built_sha
+    if work == sha or run("merge-base", "--is-ancestor", work, sha).returncode:
+        return None, "its recorded build %s is not under %s: there is nothing to carry" % (work[:12], sha[:12])
+    bad = _sha_refusals(it.id, work, True)
+    if bad:
+        return None, "its recorded build is no work: %s" % bad[0][1]
+    r = run("log", "--no-merges", "--format=%H%x09%s", "-F", "--grep=" + it.id, "%s..%s" % (work, sha))
+    if r.returncode:
+        return None, "git log %s..%s: %s" % (work[:12], sha[:12], r.stderr[-200:])
+    name = re.compile(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(it.id))
+    for line in r.stdout.splitlines():
         h, _, subject = line.partition("\t")
-        if not name.search(subject):
-            continue
-        paths = _sha_paths(h)
-        if paths and [p for p in paths if not p.startswith(_LEDGER_ONLY)]:
-            return h
-    return None
+        if name.search(subject) and [p for p in (_sha_paths(h) or ["?"]) if not p.startswith(_LEDGER_ONLY)]:
+            return None, ("%s names %s and changed more than the ledger after its build %s: the work changed, so this "
+                          "is a new build (implement the commit that did it)" % (h[:12], it.id, work[:12]))
+    own = [p for p in _sha_paths(work) or () if p and not p.startswith(_LEDGER_ONLY)]
+    r = run("diff", "--name-only", work, sha, "--", *own)
+    if r.returncode or r.stdout.strip():
+        return None, ("the build %s's own files differ at %s (%s): the work changed, so this is no carry"
+                      % (work[:12], sha[:12], ", ".join(r.stdout.split()[:4]) or r.stderr[-200:]))
+    return work, None
 
 
 def _guard_refusals(it, sha):
@@ -2558,14 +2579,12 @@ def cmd_implemented(args, seat):
     if args.no_code is not None and not no_code:
         die("implemented: --no-code needs the words: why this rebuild changed nothing in the work.")
     if bad and no_code and bad[0][1].startswith("%s touches nothing but the ledger" % full):
-        work = _prior_work(args.id, full)
+        work, why = _carried_work(it, full)
         if work is None:
-            die("implemented: %s is ledger-only and no commit under it naming %s touches more than the ledger: "
-                "--no-code carries a build forward, it cannot stand for one.\nNothing changed: the item is as it was."
-                % (full, args.id))
-        bad = [b for b in _sha_refusals(args.id, work, True)]       # the carried work must itself be work
-        if not bad:
-            model.AGENT_WHY = ("%s | no-code: %s; the work is %s" % (model.AGENT_WHY, no_code, work[:12])).lstrip(" |")
+            die("implemented: %s is ledger-only and --no-code cannot carry it: %s.\nNothing changed: the item is as it "
+                "was." % (full, why))
+        bad = []
+        model.AGENT_WHY = ("%s | no-code: %s; the work is %s" % (model.AGENT_WHY, no_code, work[:12])).lstrip(" |")
     if bad:
         die("implemented: %s\nNothing changed: the item is as it was." % bad[0][1])
     owed = [c for c in crit if c["level"] != "L0"]
@@ -3978,7 +3997,8 @@ def build_parser():
                    help="say out loud that nothing beyond L0 is owed (-> done on a level-tagged pass at this sha)")
     s.add_argument("--no-code", dest="no_code", metavar="\"<what>\"",
                    help="--sha is a ledger-only rebuild on today's main and nothing in the work changed: say why. "
-                        "Accepted only when a commit under it naming the item did the work (that commit is named in why)")
+                        "Accepted only when the item's recorded build is under it, unchanged, with no later work naming the item "
+                        "(that build is named in why)")
     s.add_argument("--live", help=LIVE_HELP)
 
     s = add("reconcile", "judge commits that name an item: complete|partial|unrelated. "
