@@ -1200,3 +1200,6 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:42:45Z","tsn":1793979765429824327}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ACC_BIOMES_FIXES_LIVE_RERUN_1 A2 (L2), read-only proof","ts":"2026-11-06T15:44:00Z","tsn":1793979840066191049}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:44:58Z","tsn":1793979898530672732}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: FW_PROOF_TOOLS_HARDEN_READ_GAPS A1 (L1), read-only proof","ts":"2026-11-06T15:45:41Z","tsn":1793979941832092391}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T15:45:51Z","tsn":1793979951692948904}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP A2 (L2), read-only proof","ts":"2026-11-06T15:46:26Z","tsn":1793979986741370759}
