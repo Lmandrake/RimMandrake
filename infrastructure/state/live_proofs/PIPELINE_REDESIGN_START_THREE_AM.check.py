@@ -43,9 +43,13 @@ def problems(folder):
             plan = f.read()
         with open(os.path.join(folder, "stage4_log.md"), encoding="utf-8") as f:
             log = f.read()
+        with open(os.path.join(folder, "redesign_final.md"), encoding="utf-8") as f:
+            final = f.read()
     except OSError as e:
         yield "unreadable: %s" % e
         return
+    if "origin/main cb5dd12686" not in final:
+        yield "redesign_final.md does not name its base origin/main cb5dd12686"
     for words in ("started 2026-11-06 03:13 PST", "stage 4 waves A-D LANDED"):
         if words not in plan:
             yield "PLAN.md STATE does not say %r" % words
