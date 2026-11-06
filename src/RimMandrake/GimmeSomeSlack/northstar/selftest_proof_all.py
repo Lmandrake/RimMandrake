@@ -336,7 +336,7 @@ check("6 thrower reads the first stack frame", PA._thrower({"Message": "x", "Sta
 
 # 7. M20 settings flips (GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED): the real flips_block against a fake bridge whose behaviour
 # follows the settings (faithful) and one that ignores them (broken) -> rows PASS on the first, FAIL on the second.
-for _id in ("M20a_fallen_wire_shock_flip", "M20b_fallen_wire_knockback_flip", "M20c_fallen_wire_ignites_flip", "M20d_keep_wires_setting_roundtrip"):
+for _id in ("M20a_fallen_wire_shock_flip", "M20b_fallen_wire_knockback_flip", "M20c_fallen_wire_ignites_flip", "M20d_keep_wires_setting_roundtrip", "M20e_shock_cells_die_with_wire"):
     check("7 declared: %s" % _id, _id in PA.declared_rows())
 import validation_aerial as _VA
 

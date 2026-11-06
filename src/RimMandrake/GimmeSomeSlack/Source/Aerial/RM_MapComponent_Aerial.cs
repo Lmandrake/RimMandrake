@@ -37,6 +37,25 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private readonly Dictionary<int, IntVec3> shockCells = new Dictionary<int, IntVec3>();
         private readonly List<IntVec3> liveTips = new List<IntVec3>();
         public int ShockCellCount => shockCells.Count;
+        /// <summary>State read (census, GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE): the cached shock cells, and how many of them a
+        /// rebuild from the map as it stands NOW would not produce (an orphan = a shock cell that outlived its wire). Read-only for
+        /// the live contacts: the fresh rebuild goes into scratch collections. Only a probe calls this.</summary>
+        public (List<IntVec3> cells, int orphans, int fresh) ShockCellAudit()
+        {
+            var freshCells = new Dictionary<int, IntVec3>();
+            var freshTips = new List<IntVec3>();
+            int ext = RM_FallenWireShock.externalContacts;
+            RM_FallenWireShock.RebuildContacts(this, map, freshCells, freshTips);
+            RM_FallenWireShock.externalContacts = ext;          // the live rebuild's reading, not the probe's
+            var cells = new List<IntVec3>(shockCells.Count);
+            int orphans = 0;
+            foreach (int k in shockCells.Keys)
+            {
+                cells.Add(map.cellIndices.IndexToCell(k));
+                if (!freshCells.ContainsKey(k)) orphans++;
+            }
+            return (cells, orphans, freshCells.Count);
+        }
         /// <summary>Set by every lay change (DirtyCell); the next tick rebuilds the contacts instead of waiting for the sweep.</summary>
         private bool contactsDirty;
         /// <summary>RM_FallenWireShock.LiveWiresChanged: another mod's live fallen wires moved; rebuild contacts next tick.</summary>

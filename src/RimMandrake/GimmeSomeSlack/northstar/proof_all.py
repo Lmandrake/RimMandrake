@@ -96,7 +96,7 @@ DECLARED_ROWS = {
                "R2_spans_and_heads_drawn", "M14_gap_control_without_fix", "M14a_remove_middle_both_ends_resolve",
                "M14b_dead_pole_drops_live_and_dead_cords", "M14c_live_tip_glows", "M15_explosion_cuts_span",
                "M15a_wire_down_alert_lists_cut", "M15b_restring_rejoins", "M15c_wire_down_alert_clears_on_restring", "M15e_restring_is_a_colonist_job", "R3_sway_proxy", "M19_tap_drains_one_way", "M19n_taps_off_control",
-               "M20a_fallen_wire_shock_flip", "M20b_fallen_wire_knockback_flip", "M20c_fallen_wire_ignites_flip", "M20d_keep_wires_setting_roundtrip",
+               "M20a_fallen_wire_shock_flip", "M20b_fallen_wire_knockback_flip", "M20c_fallen_wire_ignites_flip", "M20d_keep_wires_setting_roundtrip", "M20e_shock_cells_die_with_wire",
                "M21a_cut_wires_on_owner_change_off_keeps_link", "M21b_cut_wires_on_owner_change_on_cuts_link",
                "M21c_drip_loops_off_plain_curve", "M21d_drip_loops_on_loop_samples",
                "M21e_keep_wires_on_gravship_off_setting_state", "M21f_keep_wires_on_gravship_on_setting_state"],

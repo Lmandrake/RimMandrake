@@ -6,7 +6,7 @@ validation.py's O3 row). State is read through RimMandrake.GimmeSomeSlack.Aerial
 jawa/mod_settings_field, answered by RM_MapComponent_Aerial on its next frame), never from screenshots.
 
     python.exe validation_aerial.py --live                      # on the current map (after validation.py --live)
-    python.exe validation_aerial.py --flips                     # only M20a-d: the fallen-wire / gravship setting flips
+    python.exe validation_aerial.py --flips                     # only M20a-e: the fallen-wire / gravship setting flips
     python.exe validation_aerial.py --save-load NAME            # M16: links + span states survive save/load
     python.exe validation_aerial.py --removal-check NAME        # M9b: a save WITH anchors on a tier WITHOUT the mod
     python.exe validation_aerial.py --merge OUT base.json [more.json ...]   # one 'live' result for modcheck record
@@ -601,6 +601,33 @@ def _moved(t):
     return (a[0], a[1]) != (b[0], b[1])
 
 
+def _in_rect(c, rect):
+    x, z, w, h = rect
+    return x <= c[0] < x + w and z <= c[1] < z + h
+
+
+def shock_outlives_verdict(before, after, trial, tip, site):
+    """M20e (GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE). before/after: aerial census reads around removing the mast that holds the
+    live fallen half; trial: a _wire_trial on the old tip afterwards. Returns (status, class, detail).
+    UNMEASURED SITE: the census has no shock fields (an old DLL) or the live wire never made a shock cell on its tip.
+    UNMEASURED HARNESS: the trial animal never ran. PASS: no shock cell left on the site, no orphan, the animal unshocked."""
+    def cells(c):
+        return [tuple(x) for x in (c or {}).get("shockCellList") or []]
+    det = {"before": {"shockCells": (before or {}).get("shockCells"), "orphans": (before or {}).get("shockOrphans")},
+           "after": {"shockCells": (after or {}).get("shockCells"), "orphans": (after or {}).get("shockOrphans"),
+                     "onSite": [c for c in cells(after) if _in_rect(c, site)]},
+           "tip": list(tip), "trial": trial}
+    if any("shockCells" not in (c or {}) or "shockOrphans" not in (c or {}) for c in (before, after)):
+        return "UNMEASURED", "SITE", dict(det, why="census has no shockCells/shockOrphans: the deployed DLL predates them")
+    if tuple(tip) not in cells(before):
+        return "UNMEASURED", "SITE", dict(det, why="the live half made no shock cell on its tip before the removal")
+    if (trial or {}).get("error"):
+        return "UNMEASURED", "HARNESS", det
+    ok = (not det["after"]["onSite"] and after.get("shockOrphans") == 0 and before.get("shockOrphans") == 0
+          and trial.get("shocked") is False)
+    return ("PASS" if ok else "FAIL"), "MOD", det
+
+
 def flips_block(B, rows, res):
     """Rows M20a-M20d. Scene: battery + two masts, the span blown (M15's explosion), so mast F1 holds a LIVE fallen half
     (its battery is adjacent). Each flip: switch off -> behaviour absent, on -> present, restore the shipped value."""
@@ -696,6 +723,20 @@ def flips_block(B, rows, res):
     V.row(rows, "M20c_fallen_wire_ignites_flip", "PASS" if fire_off == 0 and fire_on >= 1 else "FAIL", "MOD",
           {"fireWhenOff_12sweeps": fire_off, "fireWhenOn": fire_on, "sweepsToIgnite": sweeps,
            "note": "ignite is a 35% roll per 250-tick sweep; P(miss in 12) = 0.6%"})
+
+    # M20e GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE: a shock cell dies with its wire. F1's live half lies across the site; the
+    # census lists the shock cells (shockCellList) and how many of them a fresh rebuild would not produce (shockOrphans). Remove
+    # F1 (its fallen half goes with it): within a few ticks no shock cell is left on the site, none is an orphan, and a fresh
+    # animal on the old tip is not shocked. (Filed from a 2026-10-29 hotspot whose "0 fallen" came from a probe reading census
+    # keys that never existed; the hotspot was proof debris, so this row is the reading that would have said so.)
+    B.ticks(250)
+    before = B.ap("census")
+    B.call("jawa/destroy_batch", rects="%d,%d,1,1" % F1, categories="All")
+    B.ticks(3)                      # Deregister marks contacts dirty; the next tick rebuilds them
+    after = B.ap("census")
+    gone = _wire_trial(B, tip)
+    st, cls, det = shock_outlives_verdict(before, after, gone, tip, FSITE)
+    V.row(rows, "M20e_shock_cells_die_with_wire", st, cls, det)
 
     # M20d keepWiresOnGravship: the BEHAVIOUR needs a gravship launch (GravshipUtility.generatingGravship is only true
     # inside the engine's despawn loop; a quicktest map has no engine), so this row proves only the wiring: the field flips,

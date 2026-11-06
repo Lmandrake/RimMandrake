@@ -226,6 +226,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
             sb.Append(",\"anchors\":[" + string.Join(",", rows) + "]");
             sb.Append(",\"spansUp\":" + up / 2 + ",\"spansCut\":" + cut / 2 + ",\"fallenCords\":" + fallenN);
+            // GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE: the shock contacts themselves, so "shocked with no wire" is a reading, not
+            // an inference from anchors[].fallen (a 2026-10-29 probe read top-level links/fallen keys this census never had: 0/0)
+            var audit = comp.ShockCellAudit();
+            sb.Append(",\"shockCells\":" + audit.cells.Count + ",\"shockOrphans\":" + audit.orphans + ",\"shockCellsFresh\":" + audit.fresh +
+                      ",\"externalContacts\":" + RM_FallenWireShock.externalContacts +
+                      ",\"shockCellList\":[" + string.Join(",", audit.cells.Take(200).Select(c => "[" + c.x + "," + c.z + "]")) + "]");
             sb.Append(",\"netRepairs\":" + comp.netRepairs + ",\"watchdogRuns\":" + comp.watchdogRuns + ",\"roofCuts\":" + comp.roofCuts +
                       ",\"explosionCuts\":" + comp.explosionCuts + ",\"kineticSways\":" + comp.kineticSways + ",\"autoLinks\":" + comp.autoLinks + ",\"postfixAppends\":" + AerialPowerScope.appendedCalls);
             sb.Append(",\"spanDraws\":" + comp.lastSpanDraws + ",\"swayDraws\":" + comp.lastSwayDraws + ",\"swayReason\":" + S(comp.lastSwayReason) +
