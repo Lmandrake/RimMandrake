@@ -233,7 +233,7 @@
       "never_through_rx": "(?i)progress|handoff|transcript|conversation|attempt|memory\\.md|/tasks/|\\.output\\b",
       "read_through_why": "CHECKER_REACH_FIX_NAMED_SCRATCH_READ_ONLY: a path the contract, evidence or item names under read_through is bound read only into the Marker's box (17 of 24 unmeasured holds were program-written readings there); never_through (the worker run folders) and a path matching never_through_rx (a worker's progress, handoff or transcript: its account, design section 8) are never bound",
       "tmpfs": ["/home/mandrake/rm/scratch", "/mnt/d/ClaudeWork/rimmandrake", "/home/mandrake/.seat-tmp", "/home/mandrake/rm/bench", "/home/mandrake/.claude/file-history", "/home/mandrake/.claude/session-env", "/home/mandrake/.claude/sessions", "/home/mandrake/.claude/shell-snapshots", "/home/mandrake/.claude/telemetry", "/home/mandrake/.claude/paste-cache"],
-      "env": {"RM_DATA_ROOT": "/mnt/d/ClaudeWork/rimmandrake"},
+      "env": {"RM_DATA_ROOT": "/mnt/d/ClaudeWork/rimmandrake", "ART_EVAL_WORK": "/mnt/d/ClaudeWork/rimmandrake/art_eval"}, "_env_art_eval": "CHECKER_REACH_FIX_OTHER_STILL_DARK gen 5: art_eval.runner.storage_root runs ~/dev/Lodestar/bin/lib/agent_storage.py (lib/machine.py, machines.md: all walled), so selftest_art_eval died 'agent storage root unknown' in a real box once it could see bundle_textures. ART_EVAL_WORK is its own override, set to what the host resolves (<root>/rimmandrake/art_eval), inside the box's tmpfs.",
       "allow_read_skills": "/home/mandrake/.claude/skills",
       "tree_exclude": ["conversations", "infrastructure/state/items"],
       "tree_from_parent": ["infrastructure/state/ledger", "infrastructure/state/code_review"]

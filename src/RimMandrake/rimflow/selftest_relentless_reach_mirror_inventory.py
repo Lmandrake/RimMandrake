@@ -15,7 +15,8 @@ a bind beneath an InaccessiblePaths parent is still EACCES. Rows:
   (5) live: a systemd-run --user unit with the wall's real props reads index.csv, cannot write there, and cannot read
       the mirror's CLAUDE.md. Skips where no unit can be made (inside a box: exit 226) unless
       RELENTLESS_UNIT_PROBE_REQUIRED is set; the offbox adapter unit_probe_selftests_candidate runs it outside the wall.
-Rows 1-4 fail on the code before read_always."""
+Rows 1-4 fail on the code before read_always. Row 1's ART_EVAL_WORK joined in the same generation: selftest_art_eval, past the inventory,
+stopped on 'agent storage root unknown (agent_storage.py failed)' in a real box (Lodestar's lib is walled)."""
 import json
 import os
 import shutil
@@ -32,6 +33,7 @@ import relentless_wall as W         # noqa: E402
 FAILS = []
 INV = "/mnt/d/Luke/dev/RimMandrake/observed/inventory"
 CSV = INV + "/bundle_textures/index.csv"
+
 ART_LEDGER = ("/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/index.csv (read by selftest_facing_scale_lint "
               "via gametex.BUNDLES): ls of that dir -> Permission denied, so the test crashes before its verdict")
 STORED = {"adapters": ["git_stat_candidate", "git_log_candidate", "unit_probe_selftests_candidate"], "by": "judge",
@@ -58,6 +60,8 @@ def test_offline(r):
     prof = W.profile(r)
     ra = getattr(W, "read_always", lambda p: [])(prof)
     check("(1) the Marker profile names the mirror's inventory in read_always", INV in ra, ra)
+    check("(1) the box sets ART_EVAL_WORK, so art_eval never runs the walled Lodestar agent_storage.py",
+          (prof.get("env") or {}).get("ART_EVAL_WORK") == "/mnt/d/ClaudeWork/rimmandrake/art_eval", prof.get("env"))
     d = W.denied(prof)
     check("(2) no deny entry is the inventory or an ancestor of it",
           not [x for x in d if under(INV, os.path.realpath(x)) or under(INV, x)],
