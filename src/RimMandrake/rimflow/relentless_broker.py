@@ -8,6 +8,8 @@ it holds nothing. drain() (each tick after the item loop, and at the end of game
 of queued items when the game is idle: no other live user (relentless_game.busy), no expedited item outside the queue,
 no live round running, the game UP on the game the lines were queued for, and the bridge idle (an OWNER hold is never
 overridden: `rimflow bridge idle` refuses it, and each round's relentless_live.run takes the bridge with --idle-ok).
+A bridge check that does not answer is not idle (skipped, never a fault). A hold that lands between the check and the
+round's own take is refused by that take; the round stops on it and the entry reads skipped, not ran (take_refused).
 
 The job runs `relentless_live_round.py round --item X` for each batch item in turn, exactly the round the item would
 have launched itself, and marks the entry ran. The batch items sit in phase "proving" (relentless_game.ACTIVE) while it
@@ -345,9 +347,28 @@ def _bridge_why(root):
     books = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
     env = dict(os.environ, RIMFLOW_SEAT=seat, AGENT_SEAT=seat, RIMFLOW_BRIDGE_SEAT=relentless.BRIDGE_HOLDER,
                RELENTLESS_SUPERVISOR="1", CLAUDE_PROJECT_DIR=books)
-    r = subprocess.run(["python3", os.path.join(HERE, "cli.py"), "bridge", "idle", "--for", "relentless game broker"],
-                       cwd=books, env=env, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+    try:
+        r = RUN(["python3", os.path.join(HERE, "cli.py"), "bridge", "idle", "--for", "relentless game broker"],
+                cwd=books, env=env, capture_output=True, text=True, timeout=BRIDGE_CHECK_S, stdin=subprocess.DEVNULL)
+    except (subprocess.TimeoutExpired, OSError) as e:
+        # fails CLOSED: an unanswered check is never "idle" (RELENTLESS_BROKER_HARDEN_BRIDGE_CHECK_TOCTOU). Raising here
+        # faulted the whole job and held the broker off on this code; a skip just lets the item walk on and retry.
+        return ("bridge check failed: %s" % ("no answer in %ss" % BRIDGE_CHECK_S
+                                             if isinstance(e, subprocess.TimeoutExpired) else e))[:300]
     return None if r.returncode == 0 else ((r.stdout or "") + (r.stderr or "")).strip()[-300:] or "bridge not idle"
+
+
+TAKE_REFUSED = "bridge not taken"     # relentless_live.run's admit() words when its own `bridge take --idle-ok` refuses
+
+
+def take_refused(summ):
+    """The round's own bridge take was refused (a hold, OWNER's included, that arrived after _bridge_why said idle):
+    the why of its NOT_ADMITTED row, or None. relentless_live_round.round stops on that row (its STOP), so no proof ran."""
+    for x in summ.get("runs") or []:
+        if isinstance(x, dict) and x.get("outcome") in ("UNMEASURED", "NOT_ADMITTED") \
+                and str(x.get("why") or "").startswith(TAKE_REFUSED):
+            return str(x.get("why"))
+    return None
 
 
 def _round(root, item, timeout):
@@ -366,7 +387,9 @@ def _wake(root):
     relentless_live_round.wake_supervisor(root)
 
 
-BRIDGE_WHY, ROUND, WAKE = _bridge_why, _round, _wake     # the selftest swaps these
+BRIDGE_CHECK_S = 120
+RUN = subprocess.run
+BRIDGE_WHY, ROUND, WAKE = _bridge_why, _round, _wake     # the selftest swaps these (and RUN)
 
 
 def summary_of(out):
@@ -412,6 +435,13 @@ def job(store):
             _log(store, [{"at": t, "batch": bid, "item": item, "criterion": x.get("criterion"),
                           "outcome": x.get("outcome")} for x in runs])
             outcomes = dict(collections.Counter(str(x.get("outcome")) for x in runs))
+            refused = take_refused(summ)
+            if refused:     # the TOCTOU: a hold arrived after the check; the round's own take refused it, nothing ran
+                _update(store, lambda q, item=item: q["items"][item].update(
+                    state="skipped", ended=t, code=code, outcomes=outcomes,
+                    why=("the round's own take refused: %s" % refused)[:200]))
+                WAKE(root)
+                continue
             _update(store, lambda q, item=item: q["items"][item].update(
                 state="ran", ran_at=t, ended=t, code=code, outcomes=outcomes,
                 why=(summ.get("why") or ("" if summ else out[-200:]))[:200]))

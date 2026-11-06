@@ -107,6 +107,13 @@ def apply_plants():
         B.faulted = lambda store: B._read(os.path.join(B._dir(store), "fault.json"), {}) or None
     if PLANT == "sli_blind":
         B.VERDICTS = ()
+    if PLANT == "check_raises":     # the old _bridge_why: a check that does not answer raises out of the job
+        def raising(root):
+            B.RUN(["python3", "cli.py", "bridge", "idle"], timeout=B.BRIDGE_CHECK_S)
+            return None
+        B._bridge_why = raising
+    if PLANT == "refusal_reads_ran":
+        B.take_refused = lambda summ: None
 
 
 # ---------------------------------------------------------------- tests
@@ -188,6 +195,90 @@ def t_owner_hold_between_rounds_skips():
     x.tick()
     word, calls = run_job(x, owner="NOT TAKEABLE  OWNER holds it")
     ok(calls == [] and entry(x).get("state") == "skipped", "his hold mid-batch: no round, entry skipped (%s)" % calls)
+    x.tick()
+    ok(not x.st("I0")["game"].get("broker"), "the skipped item walks on")
+    x.done()
+
+
+def t_bridge_check_timeout_fails_closed():
+    """`rimflow bridge idle` that does not answer in BRIDGE_CHECK_S is not idle: the entry is skipped, no round runs,
+    no fault holds the broker off (before: TimeoutExpired escaped fn, faulted the job and the broker on this code)."""
+    x = rig(1)
+    to_prove(x)
+    x.tick()
+    ok(entry(x).get("state") == "running", "launched")
+
+    def hang(cmd, **kw):
+        raise subprocess.TimeoutExpired(cmd, kw.get("timeout"))
+    real_run, B.RUN = B.RUN, hang
+    calls = []
+    try:
+        B.BRIDGE_WHY = (lambda root: B._bridge_why(root))
+        B.ROUND = round_stub(calls)
+        B.WAKE = (lambda root: None)
+        try:
+            B.job(x.s)
+            raised = None
+        except Exception as e:  # noqa: BLE001
+            raised = e
+    finally:
+        B.RUN = real_run
+    e = entry(x)
+    ok(raised is None and calls == [] and e.get("state") == "skipped"
+       and str(e.get("why")).startswith("bridge check failed"),
+       "a hung bridge check: no round, entry skipped as unanswered (%r, %s, %s)" % (raised, calls, e))
+    ok(not B.faulted(x.s), "a hung check is no fault: the broker stays on (%s)" % B.faulted(x.s))
+    x.tick()
+    ok(not x.st("I0")["game"].get("broker"), "the skipped item walks on")
+    x.done()
+
+
+def t_owner_hold_after_check_round_refuses():
+    """The TOCTOU: _bridge_why says idle, then his OWNER hold lands before the round's own `bridge take --idle-ok`.
+    The round is the real relentless_live.run on a fake fx whose take refuses as cli.py does for a live OWNER hold
+    (selftest_owner_hold proves that refusal): no proof runs, the row is NOT_ADMITTED bridge_busy, and the broker
+    records the entry skipped, not ran."""
+    import types
+    import tempfile
+    import relentless_live as L
+    import selftest_relentless_live as SL
+
+    class OwnerArrives(SL.FakeFx):
+        def rimflow(self, *args, timeout=120):
+            got = SL.FakeFx.rimflow(self, *args, timeout=timeout)
+            if args[:2] == ("bridge", "take"):
+                return types.SimpleNamespace(returncode=1, stdout="",
+                                             stderr="NOT TAKEABLE  OWNER holds it (his last act 3 min ago)")
+            return got
+
+    x = rig(1)
+    to_prove(x)
+    x.tick()
+    fxs, rows = [], []
+
+    def real_round(root, item, timeout):
+        fx = OwnerArrives()
+        fxs.append(fx)
+        row = L.run(fx, tempfile.mkdtemp(prefix="rl_broker_"), item, "A2", "python3 probe.py", "--compose biomes", {},
+                    now=1_800_000_000)
+        rows.append(row)
+        # the summary relentless_live_round.round prints: it stops on a STOP row ("bridge not taken")
+        return 0, json.dumps({"at": "x", "why": "stopped: %s" % row.get("why"), "runs": [
+            {k: row.get(k) for k in ("item", "criterion", "outcome", "why", "sha")}]}, indent=1) + "\n"
+
+    B.BRIDGE_WHY = (lambda root: None)      # idle when asked ...
+    B.ROUND = real_round                    # ... and OWNER's hold lands before the round takes it
+    B.WAKE = (lambda root: None)
+    word = B.job(x.s)
+    fx, row = fxs[0], rows[0]
+    ok("proof" not in fx.verbs() and "release" not in fx.verbs(),
+       "the round's own take refused his hold: no proof ran, his hold not released (%s)" % fx.verbs())
+    ok(row.get("outcome") == "NOT_ADMITTED" and row.get("admit") == "bridge_busy",
+       "the round's row: NOT_ADMITTED bridge_busy (%s %s)" % (row.get("outcome"), row.get("admit")))
+    e = entry(x)
+    ok(e.get("state") == "skipped" and "OWNER" in str(e.get("why")),
+       "the broker records the refused round skipped, not ran (%s)" % e)
+    ok(not B.faulted(x.s), "no fault")
     x.tick()
     ok(not x.st("I0")["game"].get("broker"), "the skipped item walks on")
     x.done()
@@ -318,10 +409,12 @@ def t_slis_report_oldest_queued():
 
 
 TESTS = (t_built_item_queues_and_holds_nothing, t_drains_only_when_idle, t_job_runs_and_item_finishes,
-         t_owner_hold_between_rounds_skips, t_abandoned_job_is_recovered, t_restart_makes_queued_stale,
+         t_owner_hold_between_rounds_skips, t_bridge_check_timeout_fails_closed,
+         t_owner_hold_after_check_round_refuses, t_abandoned_job_is_recovered, t_restart_makes_queued_stale,
          t_fault_falls_back_to_the_lane, t_fault_fallback_still_asks_the_lease,
          t_reconcile_leaves_a_job_that_just_started, t_off_without_launcher, t_slis_report_oldest_queued)
-PLANTS = ("offer_launches", "drain_ignores_busy", "job_ignores_owner", "no_reconcile", "fault_sticks", "sli_blind")
+PLANTS = ("offer_launches", "drain_ignores_busy", "job_ignores_owner", "no_reconcile", "fault_sticks", "sli_blind",
+          "check_raises", "refusal_reads_ran")
 
 
 def main(argv=None):
