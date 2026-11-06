@@ -214,10 +214,24 @@
     "ref": "run rm-role-designer-1793955943",
     "stage": 5,
     "tokens": 193197
+   },
+   {
+    "at": "2026-11-06T09:13:11Z",
+    "kind": "review",
+    "ref": "rm-judge a4a9ccd31feede985 ask review",
+    "stage": 2,
+    "tokens": 33374
+   },
+   {
+    "at": "2026-11-06T09:14:45Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793956242",
+    "stage": 2,
+    "tokens": 367425
    }
   ],
   "reserve": 60000,
-  "spent": 7420042
+  "spent": 7820841
  },
  "history": [
   {
@@ -483,6 +497,24 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1793955943: stage 5 return"
+  },
+  {
+   "at": "2026-11-06T09:11:26Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "7420042 of 4000000 spent; run rm-role-designer-1793956242 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T09:11:26Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793956242, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-06T09:14:45Z",
+   "stage": 2,
+   "what": "retry",
+   "why": "run rm-role-designer-1793956242 result rejected: asks[a_shock_floor_ends]: source path design/concepts/GimmeSomeSlack/coverage_verdict.json does not exist"
   }
  ],
  "item": "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS",
@@ -881,6 +913,15 @@
    "stage": 5,
    "summary": "Coverage judge rm-coverage-judge-1793955968 returned not_covered with 5 gaps; gap 2 needs his answer (does his shock rule cover a sparking floor-cut end?), so the lock returns to stage 2; the other four are stage-3 scene fixes carried in the decision. Tree not signed.",
    "to": 2
+  },
+  {
+   "at": "2026-11-06T09:14:45Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1793956242",
+   "stage": 2,
+   "why": [
+    "asks[a_shock_floor_ends]: source path design/concepts/GimmeSomeSlack/coverage_verdict.json does not exist"
+   ]
   }
  ],
  "running": null,
