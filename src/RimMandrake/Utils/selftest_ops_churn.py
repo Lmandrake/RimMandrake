@@ -599,6 +599,16 @@ def main():
     pa4 = OW.rl_churn(s9a, NOW, cfg9)
     ok(any("account_lost/work" in str(e) for e in pa4["relentless.returned_tokens_pct"].get("x", {}).get("by_end", [])),
        "9a: the tokens the account burnt stay in returned_tokens by_end", pa4["relentless.returned_tokens_pct"])
+    # 9b OPS_CHURN_DIAGNOSE_REACH_DJVU_YHJL: REACH_GATE_HARDEN_PARENS_HIDE_THE_TOOL's real rows, read while gen 5 ran and
+    # again after it finished: two account change-overs and nothing else. It rang the same 'account_lost failed it 2 times'.
+    reach_rows = [{"gen": 1, "at": iso(NOW - 5 * HOUR), "start": marker("A9_ITEM", 1), "approach": "build"}, a9,
+                  {"gen": 3, "at": iso(NOW - 4 * HOUR), "start": marker("A9_ITEM", 3), "approach": "build"}, b9,
+                  {"gen": 5, "at": iso(NOW - 2 * HOUR), "start": marker("A9_ITEM", 5), "approach": "build"}]
+    for tag, rows in (("reach_running", reach_rows),
+                      ("reach_finished", reach_rows + [{"gen": 5, "at": iso(NOW - HOUR), "end": "finish", "sha": "bc2ca7e"}])):
+        _, pb = case9a(tag, 0, rows)
+        ok(OW.CHURN_ITEM_PREFIX + "A9_ITEM" not in pb and pb["relentless.churn_items"].get("v") == 0,
+           "9b: REACH_GATE's two account change-overs read no bouncing (%s)" % tag, pb.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM"))
     # 9w OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA: OPS_METRONOME_MIGRATE_CLOCKS_FENCED cuts one clock a day by design and read
     # 'bouncing: 5 returns; waiting_for_sample failed it 5 times' off five `snag --wait-hours` endings (wait=true rows).
     # A wait is time, not work: no failed attempt, no bounce, and its gen's spend is no returned work. The same rows
