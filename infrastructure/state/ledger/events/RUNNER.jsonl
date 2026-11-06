@@ -4287,3 +4287,8 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_UNSTICK_XARX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T01:46:23Z","tsn":1793929583454861167}
 {"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"broken","detail":"Ops alarm QUEUE_STALLED: queues.designer.stalled_min = 238.3 min pending > 0 with no claim, finish or heartbeat (MEASURED), line > 60","ts":"2026-11-06T01:47:38Z","tsn":1793929658287776342}
 {"seat":"RUNNER","event":"raise","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T01:47:42Z","tsn":1793929662058239116}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","result":"kept","detail":"sweep: running again","ts":"2026-11-06T01:48:06Z","tsn":1793929686431200949}
+{"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"kept","detail":"sweep: running again","ts":"2026-11-06T01:48:09Z","tsn":1793929689582806550}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU","result":"kept","detail":"sweep: running again","ts":"2026-11-06T01:48:12Z","tsn":1793929692842002693}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"kept","detail":"sweep: running again","ts":"2026-11-06T01:48:15Z","tsn":1793929695964872769}
+{"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-06T01:48:19Z","tsn":1793929699126065900}
