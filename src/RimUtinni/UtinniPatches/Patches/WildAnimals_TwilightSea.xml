@@ -12,6 +12,10 @@
   The sando aqua monster joined them 2026-10-05 (owner, Scald sheet, verbatim: "Move this to the
   Twilight Sea, it does not belong in the Scald."), at the 0.03 the Scald carried. Its catch half is
   owed (TWILIGHT_GIANT_CATCHES_1). WildAnimals_TheScald.xml is deleted: it carried nothing else.
+  The colo claw fish joined 2026-11-05 (COLOCLAW_DECIDE_APEX_ALIVE_OR_CORPSE_ONLY): RM_RareTwilightCatches
+  already lands its corpse, and the owner's 2026-09-26 ruling ("All the fishables should also be alive and
+  moving around in the depths (this is true for ALL seas).") owes that catch a living body. Cast nowhere
+  else, so this is its one home. 0.03 = the sando's apex rarity (combatPower 280, groups of 1-2).
 -->
 <Patch>
 
@@ -23,6 +27,7 @@
         <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Faa>
         <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Mee>
         <RSW_SandoAquaMonster MayRequire="mandrake.rsw.swbestiary">0.03</RSW_SandoAquaMonster>
+        <RSW_ColoClawFish MayRequire="mandrake.rsw.swbestiary">0.03</RSW_ColoClawFish>
       </value>
     </match>
   </Operation>

@@ -150,7 +150,7 @@ def naboo_fish_checks():
     if os.path.exists(os.path.join(pdir, "WildAnimals_TheScald.xml")):
         bad.append("WildAnimals_TheScald.xml is back (the Scald carries no Star Wars resident)")
     tw = dict(added("WildAnimals_TwilightSea.xml", "RM_TwilightSea", "wildAnimals"))
-    for n in ("RSW_Mee", "RSW_Faa", "RSW_SandoAquaMonster"):
+    for n in ("RSW_Mee", "RSW_Faa", "RSW_SandoAquaMonster", "RSW_ColoClawFish"):
         if n not in tw:
             bad.append("%s missing from RM_TwilightSea wildAnimals" % n)
     # only a <li> inside a <value> discards a roster entry; <mods><li> is FindMod's own syntax
