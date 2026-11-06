@@ -27,7 +27,8 @@ that means 5-0 or 6-0.
     neither past the bars             -> no_signal (keep None: neither reverts nor keeps as general)
     no held-out pair judged           -> unmeasured (source pairs alone never keep a change)
 Every run writes its pairs to infrastructure/state/agent_improve/general/<target>_v<N>_<stamp>.json and appends a
-summary to the change record's `generalization` list (never rewritten). A revert verdict is recorded, not enacted.
+summary to the change record's `generalization` list (never rewritten). A hand run records a revert verdict; agent_improve_cadence runs
+the check on its cadence and enacts one.
 
 Departure from the design's wording, on purpose: the two agents are tool-less `claude -p` runs with the target text
 inlined, not agents in scratch clones (a clone per run would spend 16 pool clones on a plan and a first step).

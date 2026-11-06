@@ -149,7 +149,7 @@ with tempfile.TemporaryDirectory() as tmp:
            "owner": os.path.join(tmp, "none.jsonl")}
     sp = os.path.join(out, "state.json")
     kw = dict(out=out, curator=lambda p: json.dumps(good), judge=judge_keep, repo=repo, src=src, state_path=sp,
-              changes_dir=changes, delegated_dir=delegated, publish=fake_publish)
+              changes_dir=changes, delegated_dir=delegated, publish=fake_publish, cadence=lambda **k: [])
     s = A.run_pass("2026-11-01", apply=True, **kw)
     r0 = [r for r in s["rows"] if r["target"] == "foo"]
     check("pass applied", r0 and r0[0].get("applied"), s)

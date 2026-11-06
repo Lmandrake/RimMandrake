@@ -241,7 +241,7 @@ def gather(day, src, lv=None, changes_dir=None):
             held[t] = "%d task kinds in window, bar %d" % (len(tkinds.get(t, ())), lv["min_task_kinds"])
             continue
         prior = last_change(t, changes_dir)
-        if lv["need_recheck"] and prior and prior.get("recheck_result") != "pass":
+        if lv["need_recheck"] and prior and prior.get("recheck_result") != "pass" and not prior.get("revert_of"):
             # Not dropped: the Curator still runs to read the recheck (else nothing could ever record a pass),
             # and a change is refused unless that same reply reads it as pass.
             recheck_only.add(t)
@@ -920,7 +920,9 @@ def record_rechecks(rows, changes_dir=None, saved=None):
 # ---------------------------------------------------------------- the pass
 
 def run_pass(day, out, apply=False, only=None, curator=None, judge=None, repo=None, src=None, state_path=None,
-             changes_dir=None, delegated_dir=None, publish=None, force=False, general=None):
+             changes_dir=None, delegated_dir=None, publish=None, force=False, general=None, cadence=None):
+    """cadence(day=, level=, repo=, changes_dir=, publish=) -> rows: the generalization step, after an --apply pass whose
+    books published (default agent_improve_cadence.run_due, which spends model calls when a check is due)."""
     state_path = state_path or os.path.join(out, "state.json")
     st = load_state(state_path)
     if not force and not due(st, day):
@@ -979,9 +981,15 @@ def run_pass(day, out, apply=False, only=None, curator=None, judge=None, repo=No
         st["last_pass_day"] = day
         with open(state_path, "w", encoding="utf-8") as f:
             json.dump(st, f, indent=1)
+    import agent_improve_cadence as C   # noqa: E402  (it imports this module)
+    checks = []
+    if books_ok and not only:   # a dry run, refused books or a hand run split by --target: the records keep what is due
+        checks = (cadence or C.run_due)(day=day, level=st["level"], repo=repo or REPO,
+                                        changes_dir=changes_dir or CHANGES, publish=publish)
     summary = {"day": day, "level": pk["level"], "targets": [e["target"] for e in pk["targets"]],
                "rows": [{k: v for k, v in r.items() if k not in ("new_text",)} for r in rows],
-               "ramp": reading, "ramp_step": step}
+               "ramp": reading, "ramp_step": step, "checks": checks,
+               "narrow": C.narrow_counts(changes_dir or CHANGES)}
     # a pass split by --target (a hand run inside a command time limit) writes one result file per target
     name = "pass_%s" % "_".join(sorted(only)) if only else "pass"
     with open(os.path.join(d, name + ".json"), "w", encoding="utf-8") as f:
@@ -1012,7 +1020,20 @@ def render_pass(s):
     if props:
         L += ["", "## Proposals (code checks, tools, non-editable targets: for the Conductor)"]
         L += ["- %s [%s]: %s" % (r["target"], r.get("fix_layer"), r.get("proposal")) for r in props]
+    import agent_improve_cadence as C   # noqa: E402  (it imports this module)
+    L += ["", "## Generalization checks"]
+    L += [check_line(c) for c in s.get("checks") or ()] or ["- none due"]
+    L += ["", C.narrow_line(s.get("narrow"))]
     return "\n".join(L) + "\n"
+
+
+def check_line(c):
+    line = "- %s v%d (%s): %s" % (c["target"], c["version"], c["why"], c.get("verdict") or c.get("detail"))
+    if c.get("verdict") and not c.get("published"):
+        line += ", NOT published: %s" % c.get("detail")
+    if c.get("revert"):
+        line += ", revert %s: %s" % (c["revert"], c.get("revert_detail"))
+    return line
 
 
 def materialize(t, version, dest, repo=None):
@@ -1094,6 +1115,8 @@ def main(argv=None):
         for row in s.get("rows", []):
             print("%s: %s %s %s" % (row["target"], row["decision"], row.get("verdict") or "",
                                     row.get("apply_detail") or "; ".join(row.get("problems") or [])))
+        for c in s.get("checks", []):
+            print(check_line(c))
         return 0
     lv = LEVELS[load_state(os.path.join(a.out, "state.json"))["level"]]
     pk = gather(day, default_src(), lv)

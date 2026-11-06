@@ -37,6 +37,7 @@ Imports pydantic (~50 ms): never import this from the dispatcher's tick; it uses
 """
 import datetime as dt
 import hashlib
+import os
 import re
 import weakref
 from collections import namedtuple
@@ -239,6 +240,19 @@ class OwnerAsks(_Closed):
     malformed: Count = 0                     # an ask with no readable filing time or an unknown state/needs
 
 
+class AgentNarrow(_Closed):
+    target: str          # rendered through the registered domain of agent_improve targets, never as free text
+    narrow: Count
+
+
+class AgentNarrows(_Closed):
+    """How many changes of each agent_improve target its generalization check flagged narrow (design 4.3): a pile-up on
+    one target is the signal. Targets at zero are not listed."""
+    state: SourceState                       # unmeasured: the change records did not read
+    rows: tuple[AgentNarrow, ...] = ()
+    withheld: Count = 0                      # a target outside the domain: counted, never named
+
+
 class DigestPage(_Closed):
     schema_: Literal["rimflow.blind-digest/1"] = Field(alias="schema")
     date: Date
@@ -247,6 +261,7 @@ class DigestPage(_Closed):
     records: tuple[DigestRecord, ...]
     sources: tuple[DigestSource, ...]
     owner_asks: OwnerAsks
+    agent_narrow: AgentNarrows
 
 
 # raw fields a reader may hand the projection, per source (the allow-list: nothing else of a record is looked at)
@@ -479,12 +494,25 @@ def project_owner_asks(asks, ids):
     return {"state": "measured", "asks": tuple(out), "withheld": held, "malformed": bad}
 
 
-def project_digest(date, floor, cut, raw, status, ids=None, resolve=None, asks=None):
+def project_agent_narrow(narrow):
+    """narrow: {target: count} (delegated_digest.narrow_counts), None when it did not read. -> the AgentNarrows data."""
+    if narrow is None:
+        return {"state": "unmeasured"}
+    rows, held = [], 0
+    for t, n in sorted(narrow.items(), key=str):
+        if type(n) is not int or n < 0 or t not in _agent_target_domain() or C.name_problem(t) or C.account_in(t):
+            held += 1
+        elif n:
+            rows.append({"target": t, "narrow": n})
+    return {"state": "measured", "rows": tuple(rows), "withheld": held}
+
+
+def project_digest(date, floor, cut, raw, status, ids=None, resolve=None, asks=None, narrow=None):
     """THE way to make a DigestPage. raw: [{"source": <Source>, <RAW_FIELDS of it>...}] (readers extract these from
     the records); status: {source: {"state", "fault", "malformed", "all_time"?, "newest"?}}; ids: Identity, or None
     when the ledger could not be read (every record naming an item is then withheld: fail closed); resolve: the sha
     resolver (blind_core.git_resolver), None = no sha is shown; asks: the open OWNER items (project_owner_asks; None =
-    UNMEASURED). Withheld records and dropped fields are counted per source. Raises ValueError only on a programming
+    UNMEASURED); narrow: narrow changes per agent target (project_agent_narrow; None = UNMEASURED). Withheld records and dropped fields are counted per source. Raises ValueError only on a programming
     error (a bad time or source)."""
     verbs = _verbs()
     ids = _identity(ids)
@@ -513,7 +541,8 @@ def project_digest(date, floor, cut, raw, status, ids=None, resolve=None, asks=N
                 d[k] = st[k]
         sources.append(d)
     return _issue(DigestPage, {"schema": SCHEMA, "date": date, "floor": floor, "cut": cut, "records": tuple(recs),
-                               "sources": tuple(sources), "owner_asks": project_owner_asks(asks, ids)}, ids)
+                               "sources": tuple(sources), "owner_asks": project_owner_asks(asks, ids),
+                               "agent_narrow": project_agent_narrow(narrow)}, ids)
 
 
 # -------------------------------------------------------------------------------------- queue / item ------
@@ -828,6 +857,7 @@ text the this time times titles to To took unassigned under UNMEASURED UTC verb 
 you
 Open asks oldest age days hours since filed wait waiting direct live chain blocks reaches Visibility default applied
 recommended decide yes how many whose The This Withheld ask block cut items ledger of on one
+Narrow narrow Changes changes change per target generalization verdict latest reverted None be
 """.split())
 SRC_LABELS = ("ledger events", "judge verdict files", "Delegated commits", "art mark acts", "delegated art installs",
               "leftover deletions")
@@ -841,13 +871,32 @@ def _verb_domain():
     return _VERB_DOMAIN[0]
 
 
+_AGENT_TARGETS = []
+
+
+def _agent_target_domain():
+    """Every target agent_improve can edit, from the repo: the Relentless brief, the role files, the repo skills."""
+    if not _AGENT_TARGETS:
+        root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+        names = {"relentless"}
+        for rel, end in ((os.path.join("src", "RimMandrake", "rimflow", "roles"), ".md"), ("skills", "")):
+            try:
+                ents = os.listdir(os.path.join(root, rel))
+            except OSError:
+                continue
+            names.update(e[:-len(end)] if end else e for e in ents
+                         if (e.endswith(end) if end else os.path.isfile(os.path.join(root, rel, e, "SKILL.md"))))
+        _AGENT_TARGETS.append(tuple(sorted(names)))
+    return _AGENT_TARGETS[0]
+
+
 def _page(ids):
     """A Page for one blind render: the registered domains, and the Identity the projection used (None: no item id
     and no name can be written)."""
     enums = (Source.__args__, DigestClass.__args__, Decision.__args__, Pick.__args__, MarkAction.__args__,
              JudgeFamily.__args__, By.__args__, LeftKind.__args__, SourceFault.__args__, Seat.__args__,
              State.__args__, Needs.__args__, Kind.__args__, SectionTitle.__args__, NoteCategory.__args__, SRC_LABELS,
-             _verb_domain())
+             _verb_domain(), _agent_target_domain())
     if ids is None:
         return C.Page(TEMPLATE_VOCAB, enums)
     return C.Page(TEMPLATE_VOCAB, enums, item_ok=lambda i: _id_ok(i, ids),
@@ -951,6 +1000,28 @@ def _asks_section(P, oa):
     P.lit("\n")
 
 
+def _narrow_section(P, an):
+    """Narrow agent changes per target (AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY, design 4.3)."""
+    P.lit("## Narrow agent changes")
+    if an.state != "measured":
+        P.lit(" UNMEASURED\n\nThe change records could not be read: this is UNMEASURED, not empty.\n\n")
+        return
+    P.lit("\n\nChanges whose latest generalization verdict is narrow, per target; reverted ones not counted. Withheld: ")
+    P.num(an.withheld, "withheld")
+    P.lit(".\n\n")
+    if not an.rows:
+        P.lit("None.\n\n")
+        return
+    P.lit("| target | narrow changes |\n|---|---|\n")
+    for r in an.rows:
+        P.lit("| ")
+        P.enum(r.target, _agent_target_domain())
+        P.lit(" | ")
+        P.num(r.narrow, "narrow_changes")
+        P.lit(" |\n")
+    P.lit("\n")
+
+
 def render_digest(page):
     """DigestPage -> markdown (a blind_core.Rendered: .handles maps each E<n> to its sha or path), written through
     the allowlist Page. Records grouped by class, newest first."""
@@ -1021,6 +1092,7 @@ def render_digest(page):
             P.lit("-")
         P.lit(".\n\n")
     _asks_section(P, page.owner_asks)
+    _narrow_section(P, page.agent_narrow)
     groups = {}
     for r in page.records:
         groups.setdefault(r.cls, []).append(r)

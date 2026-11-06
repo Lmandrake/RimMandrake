@@ -67,6 +67,7 @@ SRC = os.path.dirname(HERE)
 ROOT = os.path.dirname(os.path.dirname(SRC))
 
 DELEGATED_DIR = os.path.join(ROOT, "infrastructure", "state", "delegated")
+CHANGES_DIR = os.path.join(ROOT, "infrastructure", "state", "agent_improve", "changes")
 OUT_DIR = os.path.join(ROOT, "Transient")
 SCRATCH = "/mnt/d/ClaudeWork/rimmandrake/delegated_digest"
 STATE = os.path.join(SCRATCH, "state.json")
@@ -469,8 +470,28 @@ def owner_asks(world, cut):
 
 
 # -------------------------------------------------------------------------------------------------- build -----
-def build(date, floor, cut, reads, seen_other=frozenset(), ids=None, resolve=None, asks=None):
-    """-> (page text, {source: [identities on the page]}). asks: owner_asks(); None = that section is UNMEASURED."""
+# ------------------------------------------------------------------------------------- narrow agent changes -----
+def narrow_counts(changes_dir=CHANGES_DIR):
+    """-> {target: its changes whose latest measured generalization verdict is narrow, a reverted one out} from the
+    agent_improve change records (design 4.3), or None when they cannot be read (UNMEASURED, never "no narrow change").
+    A target with no narrow change still appears, at 0."""
+    out = {}
+    try:
+        names = sorted(n for n in os.listdir(changes_dir) if n.endswith(".json"))
+        for n in names:
+            with open(os.path.join(changes_dir, n), encoding="utf-8") as f:
+                rec = json.load(f)
+            seen = [g.get("verdict") for g in rec.get("generalization") or () if g.get("verdict") != "unmeasured"]
+            hit = bool(seen) and seen[-1] == "narrow" and not rec.get("reverted_by")
+            out[rec["target"]] = out.get(rec["target"], 0) + int(hit)
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        return None
+    return out
+
+
+def build(date, floor, cut, reads, seen_other=frozenset(), ids=None, resolve=None, asks=None, narrow=None):
+    """-> (page text, {source: [identities on the page]}). asks: owner_asks(); None = that section is UNMEASURED.
+    narrow: narrow_counts(); None = that section is UNMEASURED."""
     from contracts import blind as BL
     raw, seen, status = [], {}, {}
     for s in SOURCES:
@@ -486,7 +507,7 @@ def build(date, floor, cut, reads, seen_other=frozenset(), ids=None, resolve=Non
                 continue
             seen[s].append(ident)
             raw.append(rec)
-    page = BL.project_digest(date, floor, cut, raw, status, ids, resolve, asks)
+    page = BL.project_digest(date, floor, cut, raw, status, ids, resolve, asks, narrow)
     return BL.render_digest(page), seen
 
 
@@ -586,7 +607,8 @@ def run(a, sources=None):
         if lost:
             raise RuntimeError("refusing to rebuild the %s digest: %s read before and is UNMEASURED now, so its "
                                "records would leave the page and its identities the state" % (date, ", ".join(lost)))
-    text, seen = build(date, floor, cut, reads, seen_elsewhere(st, date), ids, resolve, owner_asks(world, cut))
+    text, seen = build(date, floor, cut, reads, seen_elsewhere(st, date), ids, resolve, owner_asks(world, cut),
+                       narrow_counts(getattr(a, "changes", None) or CHANGES_DIR))
     sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
     if not a.dry_run:
         st["digests"][date] = {"floor": iso(floor) if floor else None, "cut": iso(cut), "complete": False,
@@ -619,6 +641,7 @@ def parser():
     ap.add_argument("--since", help="dry run only: an ISO floor instead of the state's")
     ap.add_argument("--cut", help=argparse.SUPPRESS)          # selftest: a fixed upper bound
     ap.add_argument("--ledger", help="dry run only: read this one ledger file (a fixture), not the sharded ledger")
+    ap.add_argument("--changes", help=argparse.SUPPRESS)      # selftest: a fixture agent_improve change-record folder
     ap.add_argument("--out-dir", help="default Transient/ (a dry run: %s)" % DRY_DIR)
     ap.add_argument("--state", default=STATE)
     ap.add_argument("--errors", default=ERRORS, help=argparse.SUPPRESS)

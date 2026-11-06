@@ -494,7 +494,7 @@ COUNT_MAX = 10 ** 6
 MEASURES = frozenset({
     "records", "malformed", "withheld", "fields_withheld", "all_time", "class_records", "section_items", "row",
     "notes_total", "notes_matching", "notes_shown", "events_total", "events_shown",
-    "owner_asks", "age_days", "age_hours", "waiting", "waiting_chain"})
+    "owner_asks", "age_days", "age_hours", "waiting", "waiting_chain", "narrow_changes"})
 TIME_FORMATS = {"iso": "%Y-%m-%dT%H:%M:%SZ", "hm": "%m-%d %H:%MZ"}
 HANDLE_KINDS = ("sha", "path")
 _DATE_RE = re.compile(r"20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])")

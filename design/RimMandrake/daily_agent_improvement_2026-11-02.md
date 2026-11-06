@@ -147,8 +147,10 @@ the newest version of each target:
   measured against a token budget; it runs only at L1 and L2.
 - Built (`AGENT_IMPROVE_BUILD_GENERALIZATION_CHECK`): `src/RimMandrake/Utils/agent_improve_general.py`, run as
   `agent_improve.py general <target> v<N>` and as the L2 pre-apply gate. The two agents are tool-less `claude -p` runs
-  with the target text inlined, not scratch clones. Evidence: `infrastructure/state/agent_improve/general/`. A revert
-  verdict is recorded, not enacted. Owed: the cadence and revert enactment (`AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY`).
+The cadence
+  and the revert version are `src/RimMandrake/Utils/agent_improve_cadence.py`, run by the pass
+  (`AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY`; at most 3 checks a pass, the rest stay due; a revert version is never
+  itself checked). A hand run only records its verdict. The digest's narrow section lists each target's count.
 
 **4.4 The evidence travels with the change.** Each applied change commits
 `infrastructure/state/agent_improve/changes/<target>_v<N>.json`: the packet pieces that motivated it (paths and first
