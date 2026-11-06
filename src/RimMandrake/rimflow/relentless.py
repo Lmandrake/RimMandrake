@@ -1036,6 +1036,10 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
         found = relentless_reach.uncovered({"proof": proof, "offbox": offbox, "reach_ok": reach_ok}, r)
         if found:
             raise ValueError(relentless_reach.refusal(found, relentless_wall.adapters(r)))
+        dead = relentless_boxrun.proof_refusal(store, {"proof": proof, "offbox": offbox, "reach_ok": reach_ok},
+                                               (st["contract"] or {}).get("proof"))
+        if dead:
+            raise ValueError(dead)
         prev = st["contract"]
         st["contract"] = {"proof": proof, "live": live, "by_gen": gen, "why": why}
         ob = obligation.strip() if obligation and obligation.strip() else None
@@ -1111,6 +1115,9 @@ def rebind(store, item, gen, binding, comparison, obligation=None, now=None, r=N
         found = relentless_reach.uncovered(new, r)
         if found:
             why.append(relentless_reach.refusal(found, relentless_wall.adapters(r)))
+        dead = relentless_boxrun.proof_refusal(store, new, old.get("proof"))
+        if dead:
+            why.append(dead)
         if why:
             store.attempt(item, {"at": iso(now), "gen": gen, "end": "rebind_refused", "detail": "; ".join(why)[:1200]})
             raise ValueError("binding repair refused: " + "; ".join(why))
@@ -1127,6 +1134,31 @@ def rebind(store, item, gen, binding, comparison, obligation=None, now=None, r=N
         store.save(st)
     store.journal({"at": iso(now), "do": "rebind_proposed", "item": item, "gen": gen})
     return relentless_binding.packet(st)
+
+
+def rebind_withdraw(store, item, gen, why, now=None):
+    """The lease holder takes back a pending binding repair no judge has ruled on, so one bad proposal does not park the
+    item on a judge (RELENTLESS_HARDEN_REBIND_TAKES_DEAD_PROOFS). The contract never moved, so nothing is undone, and nothing
+    is barred: no judge refused it. One ruled AMBIGUOUS stays: ambiguity blocks until the judge rules again."""
+    why = (why or "").strip()
+    if not why:
+        raise ValueError("a withdrawal says why (--why)")
+    now = time.time() if now is None else now
+    with store.lock():
+        st = store.load(item)
+        _fence(st, item, gen)
+        p = st.get("binding_proposal")
+        if not p:
+            raise ValueError("%s has no binding repair waiting" % item)
+        if p.get("ambiguous"):
+            raise ValueError("a judge ruled this binding repair AMBIGUOUS (%s): it stays with the judge, who rules again"
+                             % p["ambiguous"]["judge"])
+        st.pop("binding_proposal")
+        st["last_beat"] = now
+        store.attempt(item, {"at": iso(now), "gen": gen, "end": "rebind_withdrawn", "why": why[:1200], "proposal": p})
+        store.learn(item, "- %s gen %d withdrew its binding repair: %s" % (iso(now), gen, why[:300]))
+        store.save(st)
+    store.journal({"at": iso(now), "do": "rebind_withdrawn", "item": item, "gen": gen})
 
 
 def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd=None):
@@ -1174,6 +1206,9 @@ def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd
                 stale.append("the binding changed since the proposal")
             again = relentless_binding.screen(st["contract"], p["binding"], p["comparison"], item)
             again += ["needs: %s" % x for x in relentless_reach.uncovered(p["binding"], r)]
+            dead = relentless_boxrun.proof_refusal(store, p["binding"], st["contract"].get("proof"))
+            if dead:
+                again.append(dead)
             if stale or again:
                 raise ValueError("cannot approve: %s" % "; ".join(stale + again))
             c = {k: v for k, v in st["contract"].items() if k not in relentless_binding.BINDING_KEYS}
@@ -4619,7 +4654,10 @@ def worker_prompt(st, text, learned, r, history=None, causes=None):
             "Work done but the contract's proof broken (unrunnable, misnamed, measured where the box cannot reach)? Repair HOW, "
             "never WHAT: `%s rebind --item %s --gen %d --proof \"...\" --before \"what it measured\" --after \"what the new one "
             "measures\" --behaviour same --defect \"evidence it is broken\"`, then `snag --class binding_repair --blocker judge`: "
-            "an independent judge applies or refuses it. A typed number, a dropped clause or a changed obligation is refused." % (rc, i, g),
+            "an independent judge applies or refuses it. A typed number, a dropped clause or a changed obligation is refused. "
+            "`contract` and `rebind` also refuse a proof the box cannot run (it runs python3/python/bash commands joined by `&&`: "
+            "a grep part, a pipe, a glob or broken quoting goes inside a script; a proof that is a look needs --reach-ok or --offbox). A proposal you regret, before any judge rules: "
+            "`%s rebind-withdraw --item %s --gen %d --why \"...\"`." % (rc, i, g, rc, i, g),
             "An item whose fix died before (`rimflow show` says OWES A GUARD) closes only with a class guard test shown failing on "
             "the instance: `rimflow guard <ID> --test <selftest*.py>` before the fix lands, then commit the test and the ledger shard.",
             "Hit a wall? `snag` and exit: the item goes back to the top with your finding. Do not ask anyone. If "
@@ -7994,6 +8032,10 @@ def main(argv=None):
     p.add_argument("--sha", default="HEAD")
     p.add_argument("--sli", action="store_true", help="print the boxrun verdict counts by kind/mode instead")
     relentless_dispute.add_parser(sub)
+    p = sub.add_parser("rebind-withdraw", help="take back your pending binding repair before any judge rules on it")
+    p.add_argument("--item", required=True)
+    p.add_argument("--gen", required=True, type=int)
+    p.add_argument("--why", required=True)
     for name in ("beat", "learn", "contract", "rebind", "snag", "finish"):
         p = sub.add_parser(name)
         p.add_argument("--item", required=True)
@@ -8207,6 +8249,8 @@ def main(argv=None):
                                                 "freshness": a.freshness},
                          {"before": a.before, "after": a.after, "behaviour": a.behaviour, "defect": a.defect},
                          obligation=a.obligation))
+        elif a.cmd == "rebind-withdraw":
+            rebind_withdraw(store, a.item, a.gen, a.why)
         elif a.cmd == "bind-judge":
             if a.packet:
                 st = store.load(a.item)

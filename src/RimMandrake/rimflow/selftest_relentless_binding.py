@@ -12,6 +12,8 @@ Each row below is one clause of the item:
   W  weakening refused: worker-typed numbers, a changed obligation, changed behaviour, a dropped live line / game clause /
      adapter, a blank comparison.
   P  the packet shows the judge the obligation, the binding field by field, before/after and moved thresholds.
+  D  RELENTLESS_HARDEN_REBIND_TAKES_DEAD_PROOFS: a proof relentless_boxrun.extract refuses is refused when it is named, by
+     contract, rebind and the judge's approve, not first at boxrun; a pending proposal can be withdrawn by the worker.
 """
 import io
 import json
@@ -25,6 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import relentless as R  # noqa: E402
 import relentless_binding as B  # noqa: E402
+import relentless_boxrun as BX  # noqa: E402
 
 FAILS = []
 RULES = dict(R.rules(), wall={})    # an unwalled Marker: reach is relentless_reach's own test
@@ -261,6 +264,148 @@ def t_review_findings():
         ok(B.typed_numbers(p) == [], "#6 not a typed number: %s" % p)
 
 
+DEAD = {"grep part": "python3 a/selftest_x.py && grep -c ok a/out.txt",
+        "glob": "python3 a/selftest_*.py",
+        "pipe": "python3 a/selftest_x.py --list | python3 a/count.py",
+        "nested quotes": "python3 a/selftest_x.py --only 'it's a test'",
+        "bare prose": "the sheet carries a table of every row"}
+
+
+def boxed(base, mode="enforce", stores=None):
+    """Point relentless_boxrun at a config naming this temporary store; -> the path to put back."""
+    path = os.path.join(base, "boxrun_cfg.json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump({"mode": mode, "stores": [base] if stores is None else stores}, f)
+    was, BX.CONFIG = BX.CONFIG, path
+    return was
+
+
+def t_dead_proofs():
+    base, s = rig()
+    was = boxed(base)
+    try:
+        for name, proof in DEAD.items():
+            ok(BX.extract(proof)[1], "D: the instrument: extract refuses the %s" % name)
+            e = refused(R.contract, s, "I0", 1, proof, r=RULES)
+            ok(e is not None and BX.extract(proof)[1][:30] in e and s.load("I0")["contract"] is None,
+               "D: contract refuses the %s, with extract's reason, and sets nothing (%s)" % (name, (e or "NOT REFUSED")[:70]))
+        e = refused(R.contract, s, "I0", 1, DEAD["glob"], r=RULES)
+        ok(e and "--offbox" in e and "--reach-ok" in e, "D: the refusal names the ways out")
+        R.contract(s, "I0", 1, "python3 a/selftest_x.py && python3 a/selftest_y.py", r=RULES)
+        ok(s.load("I0")["contract"], "D: a proof extract runs is accepted")
+        for name, proof in DEAD.items():
+            e = refused(R.rebind, s, "I0", 1, {"proof": proof}, dict(GOOD), r=RULES)
+            ok(e is not None and BX.extract(proof)[1][:30] in e and not s.load("I0").get("binding_proposal"),
+               "D: rebind refuses the %s and parks nothing on a judge (%s)" % (name, (e or "NOT REFUSED")[:70]))
+        ok(any(a.get("end") == "rebind_refused" and "box" in a.get("detail", "") for a in s.attempts("I0")),
+           "D: a refused rebind is on the attempt record")
+        R.rebind(s, "I0", 1, {"proof": "python3 a/selftest_z.py"}, dict(GOOD), r=RULES)
+        ok(s.load("I0").get("binding_proposal"), "D: rebind still takes a proof extract runs")
+    finally:
+        BX.CONFIG = was
+        shutil.rmtree(base, ignore_errors=True)
+    # the ways out and the proofs nobody is naming now
+    base, s = rig()
+    was = boxed(base)
+    try:
+        R.contract(s, "I0", 1, DEAD["bare prose"], reach_ok="a human look at the sheet, read at check time", r=RULES)
+        ok(s.load("I0")["contract"]["proof"] == DEAD["bare prose"], "D: --reach-ok still carries a proof the box does not run")
+    finally:
+        BX.CONFIG = was
+        shutil.rmtree(base, ignore_errors=True)
+    base, s = rig()
+    was = boxed(base)
+    try:
+        names = sorted(R.relentless_wall.adapters(R.rules()))
+        R.contract(s, "I0", 1, DEAD["grep part"], offbox=names[:1], r=R.rules())
+        ok(s.load("I0")["contract"]["offbox"] == names[:1], "D: --offbox still carries a proof the box does not run")
+    finally:
+        BX.CONFIG = was
+        shutil.rmtree(base, ignore_errors=True)
+    base, s = rig()
+    was = boxed(base)
+    try:    # a contract from before this fix, dead proof and all: gaining a live line changes no proof
+        with s.lock():
+            st = s.load("I0")
+            st["contract"] = {"proof": DEAD["grep part"], "live": None, "by_gen": 1, "why": None}
+            s.save(st)
+        R.contract(s, "I0", 1, DEAD["grep part"], live="once: a live line on an old contract", why="asks more", r=RULES)
+        ok(s.load("I0")["contract"]["live"], "D: an old dead proof left unchanged may still gain a live line")
+        R.rebind(s, "I0", 1, {"freshness": "same sha"}, dict(GOOD), r=RULES)
+        ok(s.load("I0").get("binding_proposal"), "D: a rebind leaving an old proof alone is not refused for it")
+    finally:
+        BX.CONFIG = was
+        shutil.rmtree(base, ignore_errors=True)
+    for label, mode, stores in (("mode shadow", "shadow", None), ("mode off", "off", None), ("a store the box does not serve", "enforce", [])):
+        base, s = rig()
+        was = boxed(base, mode, stores)
+        try:
+            ok(refused(R.contract, s, "I0", 1, DEAD["glob"], r=RULES) is None, "D: %s refuses nothing, as at finish" % label)
+        finally:
+            BX.CONFIG = was
+            shutil.rmtree(base, ignore_errors=True)
+    base, s = rig()
+    was = boxed(base)
+    try:    # a proposal already waiting when this landed
+        R.contract(s, "I0", 1, "python3 a/selftest_x.py", r=RULES)
+        R.rebind(s, "I0", 1, {"proof": "python3 a/selftest_y.py"}, dict(GOOD), r=RULES)
+        with s.lock():
+            st = s.load("I0")
+            st["binding_proposal"]["binding"]["proof"] = DEAD["grep part"]
+            s.save(st)
+        e = refused(R.bind_judge, s, "I0", "rm-judge", "approve", "looks the same", env={}, r=RULES)
+        ok(e is not None and "cannot approve" in e and s.load("I0")["contract"]["proof"] == "python3 a/selftest_x.py",
+           "D: the judge cannot approve a proof the box would refuse (%s)" % (e or "NOT REFUSED")[:70])
+        R.bind_judge(s, "I0", "rm-judge", "reject", "dead proof", env={}, r=RULES)
+        ok(not s.load("I0").get("binding_proposal"), "D: the judge may still reject it")
+    finally:
+        BX.CONFIG = was
+        shutil.rmtree(base, ignore_errors=True)
+
+
+def t_withdraw():
+    base, s = rig()
+    try:
+        R.contract(s, "I0", 1, "python3 a/selftest_x.py", r=RULES)
+        e = refused(R.rebind_withdraw, s, "I0", 1, "nothing to take back")
+        ok(e is not None and "no binding repair" in e, "W: with nothing waiting, withdraw is refused")
+        R.rebind(s, "I0", 1, {"proof": "python3 a/selftest_y.py"}, dict(GOOD), r=RULES)
+        e = refused(R.rebind, s, "I0", 1, {"proof": "python3 a/selftest_z.py"}, dict(GOOD), r=RULES)
+        ok(e is not None and "already waits" in e, "W: the instance: a second proposal is refused while one waits")
+        e = refused(R.rebind_withdraw, s, "I0", 1, "  ")
+        ok(e is not None and "why" in e and s.load("I0").get("binding_proposal"), "W: a withdrawal says why")
+        try:
+            R.rebind_withdraw(s, "I0", 2, "not my lease")
+            fenced = False
+        except (ValueError, R.Fenced):
+            fenced = True
+        ok(fenced and s.load("I0").get("binding_proposal"), "W: a worker without the lease cannot withdraw")
+        R.rebind_withdraw(s, "I0", 1, "y.py does not assert selection")
+        st = s.load("I0")
+        ok(not st.get("binding_proposal") and st["contract"]["proof"] == "python3 a/selftest_x.py",
+           "W: withdrawn: no proposal waits and the contract never moved")
+        rec = [a for a in s.attempts("I0") if a.get("end") == "rebind_withdrawn"]
+        ok(rec and rec[-1]["proposal"]["binding"]["proof"] == "python3 a/selftest_y.py" and "selection" in rec[-1]["why"],
+           "W: the withdrawn proposal and the why are on the attempt record")
+        ok(not st.get("bindings_rejected"), "W: a withdrawal is no judge's rejection: nothing is barred")
+        R.rebind(s, "I0", 1, {"proof": "python3 a/selftest_y.py"}, dict(GOOD), r=RULES)
+        ok(s.load("I0").get("binding_proposal"), "W: a fresh proposal goes in, even the same one")
+        R.bind_judge(s, "I0", "rm-judge", "ambiguous", "cannot tell", env={}, r=RULES)
+        e = refused(R.rebind_withdraw, s, "I0", 1, "dodging the judge")
+        ok(e is not None and "AMBIGUOUS" in e and s.load("I0").get("binding_proposal"),
+           "W: a proposal a judge ruled AMBIGUOUS stays with the judge (ambiguity blocks)")
+    finally:
+        shutil.rmtree(base, ignore_errors=True)
+
+
+def t_brief():
+    st = R.new_state("I0", 1000.0, "t")
+    st.update(gen=1, attempts=1, approach="build")
+    text = R.worker_prompt(st, "the item", "", R.rules())
+    ok("rebind-withdraw" in text, "W: the worker's brief names rebind-withdraw")
+    ok("extract" in text or "`&&`" in text, "D: the worker's brief says which proofs the box can run")
+
+
 def t_cli():
     base, s = rig()
     try:
@@ -279,6 +424,15 @@ def t_cli():
                 rc = R.main(["rebind", "--item", "I0", "--gen", "1", "--proof", "python3 a/selftest_y.py", "--before", "b",
                              "--after", "a", "--behaviour", "same", "--defect", "d"])
             ok(rc == 0 and "OBLIGATION" in o.getvalue(), "R: rebind via the CLI prints the judge's packet")
+            with redirect_stderr(e), redirect_stdout(o):
+                rc = R.main(["rebind-withdraw", "--item", "I0", "--gen", "1", "--why", "wrong script"])
+            ok(rc == 0 and not R.Store(base).load("I0").get("binding_proposal"), "W: rebind-withdraw via the CLI takes it back")
+            with redirect_stderr(e), redirect_stdout(o):
+                rc = R.main(["snag", "--item", "I0", "--gen", "1", "--class", "binding_repair", "--blocker", "judge", "x"])
+            ok(rc == 2, "W: after a withdrawal nothing waits, so no snag parks the item on a judge")
+            with redirect_stderr(e), redirect_stdout(o):
+                rc = R.main(["rebind", "--item", "I0", "--gen", "1", "--proof", "python3 a/selftest_y.py", "--before", "b",
+                             "--after", "a", "--behaviour", "same", "--defect", "d"])
             o2 = io.StringIO()
             with redirect_stderr(e), redirect_stdout(o2):
                 rc = R.main(["bind-judge", "--item", "I0", "--packet"])
@@ -324,7 +478,7 @@ def t_checker_gaps():
 
 
 if __name__ == "__main__":
-    for t in (t_split, t_contract_fields, t_rebind_and_judge, t_stale_approval, t_weakening, t_legit_repairs, t_review_findings, t_checker_gaps, t_cli):
+    for t in (t_split, t_contract_fields, t_rebind_and_judge, t_stale_approval, t_weakening, t_legit_repairs, t_review_findings, t_checker_gaps, t_dead_proofs, t_withdraw, t_brief, t_cli):
         t()
     print("\n%d FAIL" % len(FAILS) if FAILS else "\nALL OK")
     sys.exit(1 if FAILS else 0)

@@ -192,6 +192,25 @@ def skip_reason(contract):
     return None
 
 
+def proof_refusal(store, binding, was=None, cfg=None):
+    """-> why contract, rebind and the judge's approve refuse this binding's proof, or None: the box would call it
+    unrunnable, so the worker hears it when it names the proof, not first at boxrun (RELENTLESS_HARDEN_REBIND_TAKES_DEAD_PROOFS).
+    `was`: the proof already set; leaving it unchanged names nothing new, so an old contract may still gain a live line.
+    Same reach as at_finish: mode enforce, and only the stores relentless_boxrun.json names."""
+    cfg = config() if cfg is None else cfg
+    if cfg.get("mode") != "enforce" or os.path.realpath(store.root) not in [os.path.realpath(x) for x in cfg.get("stores") or []]:
+        return None
+    b = binding or {}
+    if b.get("proof") == was or skip_reason(b):
+        return None
+    why = extract(b.get("proof"))[1]
+    if not why:
+        return None
+    return ("the box cannot run this proof: %s. It runs python3/python/bash commands joined by `&&`, so put a grep, pipe or "
+            "glob inside a script or a selftest; if the box is not where it can be shown, route it with --offbox or say why "
+            "with --reach-ok" % why)
+
+
 # ---------------------------------------------------------------- running it
 
 def toplevel(cwd):
