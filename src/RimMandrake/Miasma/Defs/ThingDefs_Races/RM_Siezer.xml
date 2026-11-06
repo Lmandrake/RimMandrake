@@ -93,10 +93,6 @@
     <race>RM_Siezer</race>
     <combatPower>300</combatPower>
     <ecoSystemWeight>0.3</ecoSystemWeight>
-    <wildGroupSize>
-      <min>1</min>
-      <max>3</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

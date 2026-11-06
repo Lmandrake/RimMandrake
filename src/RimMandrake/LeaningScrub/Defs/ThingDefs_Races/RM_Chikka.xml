@@ -94,10 +94,6 @@
 		<race>RM_Chikka</race>
 		<combatPower>30</combatPower>
 		<ecoSystemWeight>0.3</ecoSystemWeight>
-		<wildGroupSize>
-			<min>1</min>
-			<max>10</max>
-		</wildGroupSize>
 		<lifeStages>
 			<li>
 				<bodyGraphicData>

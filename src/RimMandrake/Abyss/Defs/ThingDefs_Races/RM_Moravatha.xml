@@ -111,10 +111,6 @@
     <race>RM_Moravatha</race>
     <combatPower>200</combatPower>
     <ecoSystemWeight>0.2</ecoSystemWeight>
-    <wildGroupSize>
-      <min>1</min>
-      <max>3</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

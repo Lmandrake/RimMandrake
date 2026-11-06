@@ -145,10 +145,6 @@
     <label>sharpshrimp</label>
     <combatPower>300</combatPower>
     <ecoSystemWeight>0.9</ecoSystemWeight>
-    <wildGroupSize>
-      <min>1</min>
-      <max>3</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

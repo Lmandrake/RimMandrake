@@ -134,10 +134,6 @@
     <ecoSystemWeight>1</ecoSystemWeight>
     <combatPower>90</combatPower>
     <canArriveManhunter>false</canArriveManhunter>
-    <wildGroupSize>
-      <min>1</min>
-      <max>3</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <label>Sikka Sikka chick</label>

@@ -123,8 +123,17 @@ def resolve(conds, biome, all_defs, exists, roster="wildAnimals"):
 
 def field(el, path, named, depth=0):
     """Read a dotted child path from a def, falling back through ParentName."""
-    hit = el.find(path)
+    hits = el.findall(path)
+    if len(hits) > 1:
+        raise ValueError(f"{el.findtext('defName')}: {len(hits)} <{path}> elements in one def")
+    hit = hits[0] if hits else None
     if hit is not None:
+        lo, hi = hit.findtext("min"), hit.findtext("max")
+        if lo is not None or hi is not None:   # the <min>/<max> spelling of a range
+            if (hit.text or "").strip() or lo is None or hi is None:
+                raise ValueError(f"{el.findtext('defName')}: <{path}> mixes spellings or lacks min/max")
+            lo, hi = lo.strip(), hi.strip()
+            return lo if lo == hi else f"{lo}~{hi}"
         return (hit.text or "").strip()
     parent = el.get("ParentName")
     if parent and parent in named and depth < 20:

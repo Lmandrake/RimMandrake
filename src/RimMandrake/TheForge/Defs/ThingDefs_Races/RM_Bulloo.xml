@@ -132,10 +132,6 @@
       <li MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">VEF_ControlledDetonation</li>
     </abilities>
     <combatPower>20</combatPower>
-    <wildGroupSize>
-      <min>1</min>
-      <max>7</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

@@ -114,10 +114,6 @@
     <race>RM_Lirrith</race>
     <combatPower>40</combatPower>
     <ecoSystemWeight>0.25</ecoSystemWeight>
-    <wildGroupSize>
-      <min>2</min>
-      <max>3</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

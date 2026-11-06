@@ -120,10 +120,6 @@
     <race>RM_Metallovore</race>
     <combatPower>150</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
-    <wildGroupSize>
-      <min>5</min>
-      <max>8</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

@@ -135,10 +135,6 @@
     <race>RM_Chittik</race>
     <combatPower>35</combatPower>
     <ecoSystemWeight>0.05</ecoSystemWeight>
-    <wildGroupSize>
-      <min>4</min>
-      <max>8</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

@@ -1262,10 +1262,6 @@
 				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner</texPath>
 			</li>
 		</alternateGraphics>
-		<wildGroupSize>
-			<min>2</min>
-			<max>3</max>
-		</wildGroupSize>
 		<lifeStages>
 			<li>
 				<bodyGraphicData>

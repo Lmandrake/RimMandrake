@@ -128,10 +128,6 @@
     <race>RM_Chorn</race>
     <combatPower>220</combatPower>
     <ecoSystemWeight>0.6</ecoSystemWeight>
-    <wildGroupSize>
-      <min>3</min>
-      <max>7</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>
@@ -236,10 +232,6 @@
     <race>RM_Gennok</race>
     <combatPower>110</combatPower>
     <ecoSystemWeight>0.4</ecoSystemWeight>
-    <wildGroupSize>
-      <min>4</min>
-      <max>8</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>
@@ -339,10 +331,6 @@
     <race>RM_Tebbra</race>
     <combatPower>15</combatPower>
     <ecoSystemWeight>0.15</ecoSystemWeight>
-    <wildGroupSize>
-      <min>3</min>
-      <max>6</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

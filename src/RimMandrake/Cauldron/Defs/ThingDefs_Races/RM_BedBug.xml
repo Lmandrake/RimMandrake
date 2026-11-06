@@ -134,10 +134,6 @@
     </alternateGraphics>
     <combatPower>40</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
-    <wildGroupSize>
-      <min>3</min>
-      <max>7</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <label>bedbug</label>

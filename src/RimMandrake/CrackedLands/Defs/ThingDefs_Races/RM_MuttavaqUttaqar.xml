@@ -569,10 +569,6 @@
          commonality ~0.02-0.05 per the bible; set by whoever wires
          WildAnimals_CrackedLands.xml, not by this file. -->
     <ecoSystemWeight>0.05</ecoSystemWeight>
-    <wildGroupSize>
-      <min>1</min>
-      <max>1</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

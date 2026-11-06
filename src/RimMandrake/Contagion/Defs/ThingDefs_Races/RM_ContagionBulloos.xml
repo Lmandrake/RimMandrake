@@ -129,10 +129,6 @@
     <label>blistered bulloo</label>
     <race>RM_InfectedAerofleet</race>
     <combatPower>35</combatPower>
-    <wildGroupSize>
-      <min>1</min>
-      <max>7</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

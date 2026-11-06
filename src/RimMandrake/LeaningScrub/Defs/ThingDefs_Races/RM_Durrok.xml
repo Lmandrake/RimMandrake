@@ -107,10 +107,6 @@
 		</alternateGraphics>
 		<combatPower>120</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
-		<wildGroupSize>
-			<min>1</min>
-			<max>3</max>
-		</wildGroupSize>
 		<lifeStages>
 			<li>
 				<bodyGraphicData>

@@ -134,10 +134,6 @@
     <label>lastvine</label>
     <combatPower>200</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
-    <wildGroupSize>
-      <min>1</min>
-      <max>4</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>

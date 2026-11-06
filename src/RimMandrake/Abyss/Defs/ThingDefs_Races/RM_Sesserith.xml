@@ -155,10 +155,6 @@
     <race>RM_Sesserith</race>
     <combatPower>125</combatPower>
     <ecoSystemWeight>0.9</ecoSystemWeight>
-    <wildGroupSize>
-      <min>2</min>
-      <max>5</max>
-    </wildGroupSize>
     <lifeStages>
       <li>
         <bodyGraphicData>
