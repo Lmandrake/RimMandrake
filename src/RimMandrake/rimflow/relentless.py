@@ -2021,6 +2021,7 @@ class Effects(relentless_game.GameFx):
     def __init__(self, r, store):
         self.r = r
         self.store = store
+        self.owner_pause_rule = owner_pause_rule()     # his pipeline-only switch, read once a tick (owner_pause)
         self.base = store.root
         self.books = os.path.join(self.base, "books")
         self._ledger = None
@@ -4647,7 +4648,7 @@ def enrol(store, fx, r, now):
         if i in ours:
             continue
         if pause_stops(pause, fx, {"item": i}, plan, now):     # global: nothing further enrols; scoped: the next may
-            if pause["mode"] == "global":
+            if pause["mode"] == "global" and not pause.get("owner"):    # his pause: pipeline items further down enrol
                 break
             continue
         if owner_hold(r, i, first):
@@ -4714,8 +4715,47 @@ def ts_epoch(ts):
         return None
 
 
+OWNER_PAUSE_WHY = "owner pause: pipeline items only"     # relentless_owner_pause.json (owner 2026-11-05)
+OWNER_PAUSE = os.path.join(HERE, "relentless_owner_pause.json")
+
+
+def owner_pause_rule(path=None):
+    """The owner's pipeline-only switch as data (relentless_owner_pause.json), read once per tick by the real Effects
+    (fx.owner_pause_rule; a test's Fx has none, so it reads off). No file: off. A file that cannot be read: on, said in
+    its why, since his pause is the side that cannot start work against his word."""
+    try:
+        with open(path or OWNER_PAUSE, encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return None
+    except (OSError, ValueError) as e:
+        return {"pipeline_only": True, "pipeline_prefixes": ["LIGHTSPEED_"], "unreadable": "%s: %s" % (type(e).__name__, e)}
+
+
+def owner_pause(fx, states=()):
+    """The owner's pipeline-only pause (fx.owner_pause_rule, `pipeline_only` true), or None: a global pause whatever
+    the verdict, with owner True; `prefixes` are the ids that count as pipeline beside Operations' system items
+    (fx.first, ops_health.is_system)."""
+    rule = getattr(fx, "owner_pause_rule", None) or {}
+    if not rule.get("pipeline_only"):
+        return None
+    pre = list(rule.get("pipeline_prefixes") or ())
+    first = getattr(fx, "first", None) or {}
+    held = [s["item"] for s in states if s["status"] == "queued"
+            and (s["item"] in first or any(s["item"].startswith(p) for p in pre))]
+    why = OWNER_PAUSE_WHY + (" (switch unreadable: %s)" % rule["unreadable"] if rule.get("unreadable") else "")
+    return {"mode": "global", "owner": True, "why": why, "holding": held, "lanes": [], "prefixes": pre}
+
+
+def owner_pipeline(pause, fx, item):
+    """True for an item the owner's pause lets start: one of Operations' system items or a pipeline prefix."""
+    return item in (getattr(fx, "first", None) or {}) or any(item.startswith(p) for p in pause.get("prefixes") or ())
+
+
 def content_pause(fx, states, order=None, ours=None, refused=None, now=None, store=None):
     """-> None, or {mode: global|scoped, why, holding: [system items waiting for a place], lanes: [lane]}.
+    The owner's pipeline-only switch (owner_pause, fx.owner_pause_rule) comes before everything below: while it is
+    on the answer is that global pause (owner True), whatever the verdict says and whether or not a system item waits.
     A pause exists while Operations' verdict reads degraded (or unmeasured) and a system item still waits for a place: in
     the line, or in the pool not yet enrolled. When every system item is already being worked, content may start (owner
     card 2026-11-03). `refused(item)` -> a reason marks a system item the concept gate keeps from any worker: it waits on
@@ -4730,6 +4770,9 @@ def content_pause(fx, states, order=None, ours=None, refused=None, now=None, sto
     storage headroom spent, no scopes named), the account circuit (breaker.json) is open, or the integrity gate's record
     reads blocked (the store is suspect). Otherwise it is scoped: only content in the spent SLIs' lanes waits, and lease
     reserves a place for each holding system item. An Fx with no pause_scope reads degraded as global (the old pause)."""
+    op = owner_pause(fx, states)
+    if op:
+        return op
     first = getattr(fx, "first", None) or {}
     sc = getattr(fx, "pause_scope", "unset")
     if sc == "unset":
@@ -4786,6 +4829,8 @@ def pause_stops(pause, fx, st, plan=None, now=None):
     if not pause:
         return None
     i = st["item"]
+    if pause.get("owner"):      # his pause: only pipeline items start; an expedite or the list does not pass content
+        return None if owner_pipeline(pause, fx, i) else pause["why"]
     if st.get("expedite") or i in (getattr(fx, "first", None) or {}) or i in (plan or {}):
         return None
     if pause["mode"] == "global":
@@ -4823,7 +4868,7 @@ def pause_alarm(store, fx, seen, now, acts):
                 "why": pause.get("why")})
     store._write(path, json.dumps(rec, sort_keys=True))
     held = now - rec["since"]
-    if held > PAUSE_ALARM_S:
+    if held > PAUSE_ALARM_S and not pause.get("owner"):     # his own pause holds content on purpose: no alarm
         text = ("runnable content paused %.1f h (> %d h, %s pause: %s): %d content items held (%s) by system items %s. "
                 "Look: %s" % (held / 3600, PAUSE_ALARM_S // 3600, rec["mode"], rec["why"], len(seen["stopped"]),
                               ", ".join(seen["stopped"][:5]), ", ".join(rec["holding"][:8]) or "none", path))
@@ -6108,6 +6153,11 @@ def _lease(store, fx, r, now, acts, seen):
             # stops here. Scoped: only this item's lane is paused, the next item may start
             if not st.get("not_before", 0) > now:
                 seen["stopped"].append(st["item"])
+            if pause.get("owner"):      # his pause holds content on purpose; a pipeline item behind it still starts
+                if not said_lane:
+                    said_lane = True
+                    acts.append({"do": "content_paused", "item": st["item"], "why": stop})
+                continue
             if pause["mode"] == "global":
                 acts.append({"do": "wait", "why": "%s (%s)" % (PAUSED_WHY, stop)})
                 return
@@ -6278,7 +6328,7 @@ def _lease(store, fx, r, now, acts, seen):
         acts.append({"do": "lease", "item": item, "gen": st["gen"], "unit": st["run"]["unit"]})
 
 
-def reading(store, r, now, acts, clock=None):
+def reading(store, r, now, acts, clock=None, fx=None):
     """clock() -> the write time: `now` is the tick's start, and a stamp of that aged through the whole tick
     (RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS: files written 14:10:21Z carrying 13:55:04Z)."""
     states = store.states()
@@ -6288,6 +6338,8 @@ def reading(store, r, now, acts, clock=None):
     br = load_breaker(store)
     rec = {"at": iso(clock() if clock else now), "share": r["share"], "counts": counts, "spent_today": spent_today(store, now),
            "breaker": br or None, "acts": acts[-20:], "circling": circling.summary(store, r, now),
+           # the owner's pipeline-only switch (relentless_owner_pause.json): on, only pipeline items start
+           "owner_pause": {k: op[k] for k in ("why", "prefixes")} if (op := owner_pause(fx)) else None,
            "items": [{"item": s["item"], "status": s["status"], "gen": s["gen"], "returns": s["returns"],
                       "approach": s["approach"], "spent": s["spent"]} for s in states if s["status"] in OPEN],
            # what runs, against what is put down and on what: none of the latter holds a place
@@ -6383,8 +6435,13 @@ def staffing(store, fx, r, now, acts, clock=None):
     ours = {x["item"] for x in states if x["status"] != "done"}     # a reopened done item is ready work, as in enrol()
     first = getattr(fx, "first", None) or {}
     # the owner's token pause (owner_hold) stops content on purpose: it is not ready, so it reads as no under-staffing
-    queued = sum(1 for x in states if in_line(x) and not owner_hold(r, x["item"], first, x))
-    ready = queued + sum(1 for i in order if i not in ours and not owner_hold(r, i, first))
+    # and so does his pipeline-only pause (owner_pause): held content is not ready work
+    op = owner_pause(fx)
+
+    def waits(i):
+        return bool(op) and not owner_pipeline(op, fx, i)
+    queued = sum(1 for x in states if in_line(x) and not owner_hold(r, x["item"], first, x) and not waits(x["item"]))
+    ready = queued + sum(1 for i in order if i not in ours and not owner_hold(r, i, first) and not waits(i))
     stepped = 0 < target < room
     why = stuck = None
     if float(r["share"]) <= 0:
@@ -6688,7 +6745,7 @@ def tick(store=None, fx=None, r=None, now=None):
             return acts
         if not relentless_integrity.gate(store, fx, r, now, acts, getattr(fx, "objstore", lambda: None)()):
             try:                                # damaged state: nothing is staffed; the reading may not survive it
-                reading(store, r, now, acts, clock)
+                reading(store, r, now, acts, clock, fx)
             except Exception as e:  # noqa: BLE001
                 acts.append({"do": "error", "item": None, "why": "reading %s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "tick", "acts": acts})
@@ -6836,7 +6893,7 @@ def tick(store=None, fx=None, r=None, now=None):
         if why:
             acts.append({"do": "flush_retry", "why": why})
         phase("flush", at, wake=False)
-        reading(store, r, now, acts, clock)
+        reading(store, r, now, acts, clock, fx)
         if acts:
             store.journal({"at": iso(now), "do": "tick", "wall_s": int(wall() - whole), "phases": phases,
                            "slow_steps": sorted(slow, key=lambda x: -x["s"])[:5], "acts": acts})
