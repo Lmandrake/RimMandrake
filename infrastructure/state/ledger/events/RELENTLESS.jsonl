@@ -1310,3 +1310,10 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES T4 (GREEN-FULL), read-only proof","ts":"2026-11-06T19:49:51Z","tsn":1793994591365178636}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:52:21Z","tsn":1793994741949642193}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SHEETRAIN_DOPULSE_TAME_DELUGE_SPIKE A1 (GREEN-FULL), read-only proof","ts":"2026-11-06T19:54:01Z","tsn":1793994841974891142}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:55:18Z","tsn":1793994918144793670}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_BEAUTY_VERIFY_OFFLINE_BEAT_THE_GAME A1 (GREEN-FULL), read-only proof","ts":"2026-11-06T19:55:52Z","tsn":1793994952029556057}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:56:01Z","tsn":1793994961481922508}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_BEAUTY_VERIFY_OFFLINE_BEAT_THE_GAME A2 (GREEN-FULL), read-only proof","ts":"2026-11-06T19:56:15Z","tsn":1793994975497059868}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:56:28Z","tsn":1793994988639723694}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_END_FIX_CELL_SHORT_OF_PORT A1 (L2), read-only proof","ts":"2026-11-06T19:57:08Z","tsn":1793995028792850305}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:58:19Z","tsn":1793995099578544682}
