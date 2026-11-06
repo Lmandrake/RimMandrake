@@ -24,8 +24,10 @@ What it proves, in order:
   * spawn_batch places factionless; build_batch with faction is the god-mode path.
   * The cutscene runs on WALL CLOCK (WorldComponentUpdate), travel runs on TICKS -
     poll status on a wall-clock sleep loop, and step_game_ticks for the travel leg.
-  * Refuelling: no bridge primitive; use the debug action 'Set fuel to max' by path
-    lookup (list_debug_action_children, never a constructed path), on the tank.
+  * Refuelling: no bridge primitive; in god mode run the tank's own fill gizmo, matched
+    by exact label prefix (gravship_fuel.FILL_PREFIXES).
+  * The fuel model follows the mod list: VGE needs a VGE_AstrofuelPipe run tank->thruster,
+    vanilla Odyssey has no pipe at all (gravship_fuel.fuel_mode asks jawa/get_def).
   * A LINKED thruster is not an ACTIVE one (THRUSTER_INSTABUILD_NEVER_ACTIVE_1):
     the 1x5 exhaust zone must be free of blockWind things AND substructure, and
     the state only refreshes on CompTickRare. jawa/inspect_string is the judge.
@@ -166,13 +168,15 @@ call("jawa/destroy_batch", rects=zone, categories="All")
 call("jawa/map_commit", full=True)
 print("exhaust zone cleared:", zone)
 
-# Fuel, VGE-style (measured 2026-08-29): on this modlist ChemfuelTank is VGE's
-# astrofuel storage (PipeSystem.CompProperties_ResourceStorage, net
-# VGE_AstrofuelNet, capacity 250) and SmallThruster is a net CONSUMER whose
-# CanBeActive is postfixed false while its net has no fuel
-# (CompGravshipThruster_CanBeActive_Patch + CompResourceThruster.HasFuel).
-# So: pipe the tank to the thruster, then god-mode-fill the tank. A tank and
-# thruster with no pipe between them are two separate one-building nets.
+# Fuel: the model depends on the mod list (PROVEGRAVSHIP_FIX_PIPES_FOR_ABSENT_VGE; gravship_fuel.py).
+# With VGE (measured 2026-08-29) ChemfuelTank is astrofuel storage on a PipeSystem net and SmallThruster a net
+# CONSUMER whose CanBeActive is postfixed false while its net is dry, so a VGE_AstrofuelPipe run must join them.
+# Without VGE (vanilla Odyssey, the Relentless live game) the tank is a CompRefuelable facility feeding the engine
+# over substructure: there is no pipe def, and laying one fails the whole build. Ask the DefDatabase, never assume.
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'bridgetools'))
+from gravship_fuel import PIPE_DEF, fuel_mode, is_fill_label, pipe_run  # noqa: E402
+
+
 def cells_of(defname, x0, z0, r=3):
     out = []
     for cx in range(x0 - r, x0 + r + 1):
@@ -185,29 +189,31 @@ def cells_of(defname, x0, z0, r=3):
 tank_cells = set(cells_of("ChemfuelTank", X + 14, Z + 10))
 thr_cells = set(cells_of("SmallThruster", tx, Z + 1))
 need(tank_cells and thr_cells, "tank and thruster footprints read back")
-pipe_cells = []
-for pz in range(Z + 2, Z + 10):            # vertical run beside the tank column
-    pipe_cells.append((X + 14, pz))
-for px in range(X + 11, X + 14):           # horizontal run toward the thruster
-    pipe_cells.append((px, Z + 2))
-pipe_cells.append((tx, Z + 3))             # cardinal-adjacent to the thruster
-pipe_cells = [c for c in pipe_cells if c not in tank_cells | thr_cells]
-ops = ";".join(f"VGE_AstrofuelPipe:{cx},{cz}" for cx, cz in dict.fromkeys(pipe_cells))
-r = call("jawa/build_batch", ops=ops, faction="PlayerColony")
-need(r.get("success") and not r.get("failed"), "astrofuel pipe run built (%d cells)" % len(pipe_cells))
-call("jawa/map_commit", full=True)
-call("rimworld/step_game_ticks", ticks=60)  # let the pipe net regenerate
+mode = fuel_mode(call("jawa/get_def", defName=PIPE_DEF, defType="ThingDef"))
+if mode is None:
+    print("UNMEASURED: jawa/get_def could not say whether %s is loaded" % PIPE_DEF)
+    sys.exit(2)
+print("fuel model:", mode)
+if mode == "pipe":
+    pipe_cells = pipe_run(X, Z, tx, tank_cells, thr_cells)
+    ops = ";".join(f"{PIPE_DEF}:{cx},{cz}" for cx, cz in pipe_cells)
+    r = call("jawa/build_batch", ops=ops, faction="PlayerColony")
+    need(r.get("success") and not r.get("failed"), "astrofuel pipe run built (%d cells)" % len(pipe_cells))
+    call("jawa/map_commit", full=True)
+    call("rimworld/step_game_ticks", ticks=60)  # let the pipe net regenerate
+else:
+    print("no %s on this list: vanilla tank feeds over substructure, no pipe laid" % PIPE_DEF)
 
 call("rimworld/set_god_mode", enabled=True)
 call("rimworld/click_cell", x=min(tank_cells)[0], z=min(tank_cells)[1])
 giz = call("rimworld/list_selected_gizmos")
 labels = [(g.get("label") or "") for g in giz.get("gizmos", [])]
 print("tank gizmos:", labels)
-# Exact prefix: a loose 'fill' match executed 'Allow manual refill' instead
-# (measured 2026-08-29) and left the tank empty with success: true.
+# Exact prefixes (VGE 'DEBUG: Fill', vanilla 'DEV: Set fuel to max'): a loose 'fill' match executed
+# 'Allow manual refill' instead (measured 2026-08-29) and left the tank empty with success: true.
 filled = False
 for g in giz.get("gizmos", []):
-    if (g.get("label") or "").startswith("DEBUG: Fill"):
+    if is_fill_label(g.get("label")):
         fr = call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
         filled = bool(fr.get("success"))
         print("executed gizmo:", g.get("label"), "->", filled)

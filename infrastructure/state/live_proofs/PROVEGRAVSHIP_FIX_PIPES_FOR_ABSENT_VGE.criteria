@@ -1,0 +1,1 @@
+A1 L2: on a quicktest map of the Relentless live list (no Vanilla Gravship Expanded; all five DLC), prove_gravship.py prints 'fuel model: vanilla', lays no VGE_AstrofuelPipe, fills the ChemfuelTank by its 'DEV: Set fuel to max' gizmo, its thruster reports no failing gate, and the script runs to ALL CHECKS PASSED (exit 0)

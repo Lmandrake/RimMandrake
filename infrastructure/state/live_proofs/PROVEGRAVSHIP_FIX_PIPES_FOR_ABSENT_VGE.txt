@@ -1,0 +1,1 @@
+live-proof A1: python.exe "$(wslpath -w src/RimMandrake/bridgetools/prove_gravship.py)" < /dev/null

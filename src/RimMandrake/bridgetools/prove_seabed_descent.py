@@ -82,6 +82,8 @@ def main():
 
     sys.path.insert(0, str(_RM_ROOT / "src" / "RimMandrake" / "Utils"))
     import rimbridge_client as rb  # noqa: E402
+    sys.path.insert(0, str(_RM_ROOT / "src" / "RimMandrake" / "bridgetools"))
+    from gravship_fuel import is_fill_label  # noqa: E402
     host, port, token = rb.resolve_endpoint()
     S = rb.RimBridge(host=host, port=port, token=token, timeout=600.0)
     S.connect()
@@ -96,15 +98,15 @@ def main():
         return r
 
     def refuel():
-        """prove_gravship.py's fill: god mode, select each tank, run the gizmo whose label STARTS WITH 'DEBUG: Fill'
-        (a loose 'fill' match once ran 'Allow manual refill' and reported success on an empty tank)."""
+        """prove_gravship.py's fill: god mode, select each tank, run the gizmo whose label STARTS WITH a
+        gravship_fuel.FILL_PREFIXES entry (VGE 'DEBUG: Fill', vanilla 'DEV: Set fuel to max'; a loose 'fill' match once ran 'Allow manual refill' and reported success on an empty tank)."""
         tanks = call("jawa/inspect_string", defName="ChemfuelTank").get("things") or []
         filled = 0
         call("rimworld/set_god_mode", enabled=True)
         for t in tanks:
             call("rimworld/click_cell", x=t.get("x"), z=t.get("z"))
             for g in call("rimworld/list_selected_gizmos").get("gizmos", []):
-                if (g.get("label") or "").startswith("DEBUG: Fill"):
+                if is_fill_label(g.get("label")):
                     filled += bool(call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id")).get("success"))
                     break
             call("rimworld/clear_selection")
