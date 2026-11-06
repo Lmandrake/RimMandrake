@@ -28,6 +28,7 @@ import json
 import math
 import os
 import re
+import select
 import shutil
 import signal
 import stat
@@ -180,11 +181,18 @@ def tree_bytes(p):
 
 def capped_copy(argv, f, cap, name, timeout=300):
     """Run `argv`, its stdout copied into `f`, killed the moment it passes `cap` bytes: a runaway diff never fills the
-    disk before the size is checked (Codex r6 #10). Raises on a nonzero exit or the cap."""
+    disk before the size is checked (Codex r6 #10). Raises on a nonzero exit, the cap or the timeout, which a silent child
+    meets too: no read blocks past it (a stalled child held the whole tick, Codex r7)."""
     p = subprocess.Popen(argv, stdout=subprocess.PIPE, stdin=subprocess.DEVNULL)
     n, end = 0, time.monotonic() + timeout
     try:
-        for chunk in iter(lambda: p.stdout.read(1 << 20), b""):
+        fd = p.stdout.fileno()
+        while True:
+            if not select.select([fd], [], [], max(0, end - time.monotonic()))[0]:
+                raise subprocess.TimeoutExpired(argv, timeout)
+            chunk = os.read(fd, 1 << 20)
+            if not chunk:
+                break
             n += len(chunk)
             if n > cap:
                 raise RuntimeError("%s passed %d bytes, over the bundle cap %d: read this clone before it goes"
@@ -1279,12 +1287,15 @@ def _run_git(cwd, *args, timeout=60, stdin=None):
         return None
 
 
-def _patch_ids(cwd, *log_args, timeout=120):
-    """-> {patch-id: [commit, ...]} newest first, for `git log -p <log_args>` (merges and empty commits carry none)."""
+def _patch_ids(cwd, *log_args, timeout=120, strict=False):
+    """-> {patch-id: [commit, ...]} newest first, for `git log -p <log_args>` (merges and empty commits carry none).
+    `strict`: None when git could not say, which is not the {} of a commit with no patch (landing_key needs the two apart)."""
     r = _run_git(cwd, "log", "-p", "--no-color", "--no-textconv", "--no-ext-diff", "--format=commit %H", *log_args, timeout=timeout)
     if not r or r.returncode:
-        return {}
+        return None if strict else {}
     p = _run_git(cwd, "patch-id", "--stable", stdin=r.stdout, timeout=timeout)
+    if strict and not (p and p.returncode == 0):
+        return None
     out = {}
     for line in (p.stdout.splitlines() if p and p.returncode == 0 else []):
         f = line.split()
@@ -1294,13 +1305,16 @@ def _patch_ids(cwd, *log_args, timeout=120):
 
 
 def landing_key(cwd, sha):
-    """What survives a rebase of `sha`: its patch-id, subject and author stamp. None when `sha` is not readable here.
+    """What survives a rebase of `sha`: its patch-id, subject and author stamp. None when `sha` is not readable here, its
+    patch included: a patch-id git failed to work out is no empty commit, whose key find_landed matches on subject alone.
     CANDIDATE_SHA_REPAIR_LANDED_UNDER_NEW_HASH: a landing rebases a worker's commit, so its hash dies with the clone."""
     r = _run_git(cwd, "show", "-s", "--format=%s%x00%an <%ae> %at", sha + "^{commit}")
     if not r or r.returncode or "\0" not in r.stdout:
         return None
     subject, author = r.stdout.rstrip("\n").split("\0", 1)
-    ids = _patch_ids(cwd, "-1", sha)
+    ids = _patch_ids(cwd, "-1", sha, strict=True)
+    if ids is None:
+        return None
     return {"patch_id": next(iter(ids), None), "subject": subject, "author": author}
 
 
@@ -2012,7 +2026,7 @@ def proof_gate(fx, r, st, c):
     """-> (class, why) when a proof-only worker's candidate may not spend a Marker, else (None, None). A candidate
     that moved no proof changed nothing the check could read; one that moved code is the rework a WEAK forbids."""
     held = st.get("proof_only")
-    if not held or weak_reads_pass(st):
+    if not held or weak_reads_pass(st, getattr(fx, "store", None)):
         return None, None       # no WEAK, or one the live rule reads PASS: the Marker reads the sha afresh
     if c["sha"] == held["sha"] and held.get("binding"):
         return None, None       # a CONTRACT repair: the same code is validated again against the repaired binding
@@ -3167,8 +3181,10 @@ class Effects(relentless_game.GameFx):
         for at in ((sha, mark) if mark != sha else (mark,)):
             if (item, at) in self.marked or self.marker_said(item, at) == "pass":     # a kill after the verify: memory is gone
                 continue
+            # the work commit never ran the check itself: its record says where it ran (close provenance, Codex r7)
+            said = reason if at == sha else "the blind check ran at %s, not at this commit: %s" % (sha[:12], reason)
             r = self.rimflow("verify", item, "--sha", at, "--result", "pass", "--level", "L0",
-                             "--config", pkg("model").MARKER_CONFIG, "--evidence", reason[:300], seat="RUNNER")
+                             "--config", pkg("model").MARKER_CONFIG, "--evidence", said[:300], seat="RUNNER")
             if r.returncode != 0:
                 return (r.stderr or r.stdout)[-400:]
             self.marked.add((item, at))
@@ -5280,9 +5296,10 @@ def enrol(store, fx, r, now):
             mods = set(fx.item_mods({"item": i, "last_sha": None}))
             if mods & taken:
                 continue
-            taken |= mods
         if not enrol_put(store, fx, i, "share %.2f of %d" % (share, pool), now):
-            continue
+            continue        # refused: it reserves no mod, or it stalls another item of that mod (Codex r7)
+        if one_per_mod:
+            taken |= mods
         took.append(i)
         room -= 1
         sys_room -= i in first
@@ -5362,7 +5379,10 @@ def owner_pause_rule(path=None):
     its why, since his pause is the side that cannot start work against his word."""
     try:
         with open(path or OWNER_PAUSE, encoding="utf-8") as f:
-            return json.load(f)
+            rule = json.load(f)
+        if not isinstance(rule, dict):      # a hand-written `true` raised in every tick; `null` read as off
+            raise ValueError("not a JSON object: %r" % (rule,))
+        return rule
     except FileNotFoundError:
         return None
     except (OSError, ValueError) as e:
@@ -5779,7 +5799,10 @@ def step(store, fx, r, item, now, acts):
     """One item, one transition. Crash anywhere and the next tick resumes from the persisted status."""
     st = store.load(item)
     if st.get("marker_fail_owed"):      # a blind FAIL the ledger has not heard: before anything else moves (r6 #17)
-        marker_fail_record(store, fx, item, acts)
+        # unrecorded, nothing moves: a re-check's PASS must not land before the older FAIL it would then read as newer than.
+        # A retiring item still drains: the ledger that closed it may refuse the line for good.
+        if not marker_fail_record(store, fx, item, acts) and st["status"] != "retiring":
+            return
         st = store.load(item)
     if st.get("ledger_note_owed"):
         ledger_note_record(store, fx, item, acts)
@@ -6458,7 +6481,8 @@ def help_retry(store, fx, item, why, r, now, acts):
         h["end"] = why[:200]
         again = h["tries"] < r["circling"]["help_launch_tries"]
         if again:
-            h.update(status="wanted", run=None, nonce=None, clone=None)
+            # at: this try's wait for room starts now; the old one ran out while the last try ran (Codex r7)
+            h.update(status="wanted", run=None, nonce=None, clone=None, at=now)
         store.save(st)
     if again:
         acts.append({"do": "help_retry", "item": item, "why": why[:200]})
@@ -6642,12 +6666,14 @@ def help_step(store, fx, r, item, now, acts):
     if h["status"] == "wanted":
         if gone:
             help_over(store, fx, item, "dropped", now, acts)
-        elif (st.get("hold") or {}).get("kind") == QUARANTINE:      # no consult starts until a ruling unholds it, and
-            with store.lock():                                      # the wait for room starts over when one does
+        elif (st.get("hold") or {}).get("kind") in (QUARANTINE, MANUAL_HOLD):
+            # "No build, consult or check runs until a ruling unholds it": the request waits, its wait for room unspent
+            with store.lock():
                 cur = store.load(item)
-                cur["help"]["at"] = now
-                store.save(cur)
-            acts.append({"do": "help_waits", "item": item, "why": "quarantined"})
+                if (cur.get("help") or {}).get("status") == "wanted":
+                    cur["help"]["at"] = now
+                    store.save(cur)
+            acts.append({"do": "help_waits", "item": item, "why": "held: %s" % st["hold"]["kind"]})
         else:
             help_start(store, fx, r, item, now, acts)
         return
