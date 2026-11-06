@@ -259,5 +259,87 @@ _ow, _fb = one_way_row("NO_CROSSING roofed=False mightClimb=True")
 chk(_ow == "PASS" and _fb.stops == 0, "one way ROW: main() on NO_CROSSING emits PASS and stops nothing, got %s" % _ow)
 _ow, _fb = one_way_row("ERROR X: y")
 chk(_ow == "UNMEASURED", "one way ROW: main() on an unreadable reply emits UNMEASURED, got %s" % _ow)
+class FakeRaidBridge:
+    """A FAKE, not the game: just enough of the bridge for raid_trench_proof.main() to run a STORYTELLER raid (no --direct,
+    no --jump-packs) end to end, in the 2026-10-29 live shape: two hostiles come near, then Human46558 stands on the
+    island; no raider way anywhere; the ring reads back at its dug depth (nothing filled). pawn_get answers `gear`."""
+    def __init__(self, gear):
+        self.gear, self.lists, self.pawn_gets = gear, 0, []
+
+    def call(self, tool, **kw):
+        if tool == "jawa/debug_settings":
+            if kw.get("action") == "list":
+                return {"fields": [{"name": "enableStoryteller", "value": True}]}
+            return {"success": True, "valueAfter": kw.get("value")}
+        if tool == "jawa/map_info":
+            return {"sizeX": 250, "sizeZ": 250}
+        if tool == "jawa/static_call" and kw.get("method") == "ProofClimb":
+            return {"result": "mask derived=True bits=0x00"}
+        if tool == "jawa/flowworks_excavation_drive":
+            return {"depth": 4}
+        if tool == "jawa/fire_raid":
+            return {"success": True}
+        if tool == "jawa/safe_advance":
+            return {"executed": 250}
+        if tool == "jawa/list_pawns":
+            self.lists += 1
+            far = (135, 125)
+            isl = (125, 125) if self.lists >= 2 else (136, 126)
+            return {"pawns": [
+                {"id": "Human46558", "x": isl[0], "z": isl[1], "hostile": True, "spawned": True, "kindDef": "PirateWaster"},
+                {"id": "Human46566", "x": far[0], "z": far[1], "hostile": True, "spawned": True, "kindDef": "PirateWaster"}]}
+        if tool == "jawa/pawn_get":
+            self.pawn_gets.append(kw.get("pawn"))
+            return self.gear.get(kw.get("pawn"))
+        return {}
+
+    def probe_of(self, _typ, arg):
+        return {"pawns": [{"id": 7}]} if arg == "colonists" else {}
+
+
+def raid_rows(gear):
+    """Run raid_trench_proof.main() on a FakeRaidBridge; -> ({row id: row}, the fake)."""
+    import contextlib
+    import io
+    import json
+    import tempfile
+    import types
+    fb = FakeRaidBridge(gear)
+    fake_v = types.ModuleType("validation_core")
+    fake_v.Bridge = lambda: fb
+    fake_v.clear_threat_structures = lambda B: "fake"
+    fake_v.sweep_at_start = lambda B, made_map=False: {}
+    fake_v.prepare_site = lambda *a_, **k_: True
+    real = sys.modules.get("validation_core")
+    sys.modules["validation_core"] = fake_v
+    out = os.path.join(tempfile.mkdtemp(prefix="raid_trench_selftest_"), "rt.json")
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            R.main([out])
+    finally:
+        if real is None:
+            sys.modules.pop("validation_core", None)
+        else:
+            sys.modules["validation_core"] = real
+    return {r_["id"]: r_ for r_ in json.load(open(out, encoding="utf-8"))["rows"]}, fb
+
+
+# RAID_TRENCH_FIX_OWN_JUMP_PACKS_FAIL, through _run (blind check 2026-11-06: the pure verdicts alone stayed green with the
+# packs never read, or never passed): the live run must read each raider's pack and feed it to BOTH rows
+_rr, _fr = raid_rows({"Human46558": _g29, "Human46566": _bare})
+_ms, _lb = _rr.get("MASKSWAP_no_wall_crossing") or {}, _rr.get("RAID_LADDER_BREACH") or {}
+chk("Human46558" in _fr.pawn_gets, "_run: reads Human46558's gear through jawa/pawn_get, got %s" % _fr.pawn_gets)
+chk(_ms.get("status") == "UNMEASURED", "_run 2026-10-29 shape: MASKSWAP reads UNMEASURED, got %s" % _ms.get("status"))
+chk(_lb.get("status") == "UNMEASURED", "_run 2026-10-29 shape: RAID_LADDER_BREACH reads UNMEASURED, got %s" % _lb.get("status"))
+chk((_ms.get("detail") or {}).get("crossedJumpPacks") == {"Human46558": True},
+    "_run: MASKSWAP detail crossedJumpPacks {Human46558: true}, got %s" % (_ms.get("detail") or {}).get("crossedJumpPacks"))
+chk((_lb.get("detail") or {}).get("crossedJumpPacks") == {"Human46558": True},
+    "_run: LADDER_BREACH detail crossedJumpPacks {Human46558: true}, got %s" % (_lb.get("detail") or {}).get("crossedJumpPacks"))
+_nopack = {"success": True, "pawns": [{"thingId": "Human46558", "apparel": [{"def": "Apparel_Jacket", "defName": "Apparel_Jacket"}]}]}
+_rr, _fr = raid_rows({"Human46558": _nopack, "Human46566": _bare})
+chk((_rr.get("MASKSWAP_no_wall_crossing") or {}).get("status") == "FAIL",
+    "_run can-fail: a packless crosser, no ways, MASKSWAP FAILs, got %s" % (_rr.get("MASKSWAP_no_wall_crossing") or {}).get("status"))
+chk((_rr.get("RAID_LADDER_BREACH") or {}).get("status") == "FAIL",
+    "_run can-fail: a packless crosser, no ladders, RAID_LADDER_BREACH FAILs, got %s" % (_rr.get("RAID_LADDER_BREACH") or {}).get("status"))
 print("selftest_raid_trench: %s" % ("FAIL" if bad else "ok"))
 sys.exit(1 if bad else 0)
