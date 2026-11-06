@@ -2369,7 +2369,8 @@ def wrapup_argv(role, unit):
     return stoppost_handoff(unit + "-wrapup", words)
 
 
-# what the wrap-up and the `rimflow bridge release` it may run read from the unit's environment; one unset is skipped
+# what the wrap-up and the `rimflow bridge release` it may run read from the unit's environment. An unset one arrives
+# as '' (systemd-run -E, measured 2026-11-06): wrapup.scrub_handoff_env drops it (= wrapup.HANDOFF_ENV)
 HANDOFF_ENV = ("PATH", "AGENT_SEAT", "RIMFLOW_SEAT", "RIMFLOW_BRIDGE_SEAT", "RIMFLOW_SHARED_BRIDGE", "RM_ROLE_UNIT",
                "RM_WRAPUP_DIR", "RM_WRAPUP_SEAT_CLONES", "RM_UNDER_SELFTEST", "RM_DATA_ROOT")
 

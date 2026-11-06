@@ -83,6 +83,23 @@ PREV_LOG_WSL = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld b
 PREV_LOG_WIN = "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Player-prev.log"
 
 
+# WRAPUP_DEBRIS_FIX_BLAMES_THE_WHOLE_HOUSE: role_launch.stoppost_handoff hands these on with `systemd-run -E NAME`, and
+# systemd 259 sets an UNSET name to '' (measured 2026-11-06), never skips it. RM_WRAPUP_SEAT_CLONES='' read as "no seat
+# clones" filed /home/mandrake/rm/bench as every role unit's debris; RIMFLOW_SHARED_BRIDGE='' read as "no lock" and a
+# unit's hold was never released. An empty one is dropped before anything reads it. = role_launch.HANDOFF_ENV
+HANDOFF_ENV = ("PATH", "AGENT_SEAT", "RIMFLOW_SEAT", "RIMFLOW_BRIDGE_SEAT", "RIMFLOW_SHARED_BRIDGE", "RM_ROLE_UNIT",
+               "RM_WRAPUP_DIR", "RM_WRAPUP_SEAT_CLONES", "RM_UNDER_SELFTEST", "RM_DATA_ROOT")
+
+
+def scrub_handoff_env(env=None):
+    """Drop every HANDOFF_ENV name set to '' (an unset one, through systemd-run -E). -> the names dropped."""
+    env = os.environ if env is None else env
+    gone = [k for k in HANDOFF_ENV if k in env and env[k] == ""]
+    for k in gone:
+        del env[k]
+    return gone
+
+
 def state_dir():
     if os.environ.get("RM_WRAPUP_DIR"):
         return os.environ["RM_WRAPUP_DIR"]
@@ -278,7 +295,7 @@ def claims_of(evs, states, seat, since, session=None):
 
 def seat_clones(env=None):
     env = os.environ if env is None else env
-    raw = env.get("RM_WRAPUP_SEAT_CLONES", SEAT_CLONES_DEFAULT)
+    raw = env.get("RM_WRAPUP_SEAT_CLONES") or SEAT_CLONES_DEFAULT     # '' = unset (scrub_handoff_env)
     return [os.path.realpath(x) for x in raw.split(os.pathsep) if x]
 
 
@@ -547,6 +564,7 @@ def main(argv=None):
     r.add_argument("key")
     r.add_argument("--why", required=True)
     a = ap.parse_args(argv)
+    scrub_handoff_env()
     if a.cmd == "unit":
         run(World(), unit_ctx(a.unit, a.seat, a.clone, a.holder, a.carried))
         # silent: ExecStopPost inherits the unit's StandardOutput=file:, which reopens at offset 0 and overwrote the
