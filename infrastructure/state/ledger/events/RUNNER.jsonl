@@ -4366,3 +4366,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T03:14:25Z","tsn":1793934865493514554}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-06T03:16:48Z","tsn":1793935008909384307}
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T03:16:52Z","tsn":1793935012961551078}
+{"seat":"RUNNER","event":"live","id":"OPS_RELENTLESS_UNSTICK_XARX","result":"broken","detail":"Ops alarm RELENTLESS_DISTRESS: under 87 min: 7 of 8 places, 393 ready: max_workers -- relentless.distressed = 1 1 when the belt is distressed or worse (MEASURED","ts":"2026-11-06T03:18:11Z","tsn":1793935091159286981}
+{"seat":"RUNNER","event":"raise","id":"OPS_RELENTLESS_UNSTICK_XARX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T03:18:14Z","tsn":1793935094583209008}
