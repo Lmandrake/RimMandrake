@@ -1,0 +1,1 @@
+A2 L2: on a FlowWorks river site at current head, modcheck FlowWorks placer row sluice_washes_pool_from_stock reads PASS: a legal RM_SluiceBox on the site's own river washes (got > 0), the wash lands a pool placer mineral on the bank (inPool=True), the stock falls by exactly what landed (drawMatches=True), and with sluiceBoxEnabled OFF the box answers sluice=off
