@@ -5,6 +5,7 @@ Everything runs on the real path: rows are written as the real files of a throwa
 ops_watch.c_relentless and ops_watch.run under the shipped ops_watch_rules.json. testdata/relentless_jam_2026-11-01.jsonl
 is the real record, cut from the store's staffing.jsonl and journal.jsonl (03:30 to 13:20Z).
 """
+import fcntl
 import json
 import os
 import shutil
@@ -337,6 +338,19 @@ check("over 30 min it alarms", "RELENTLESS_GAME_HOLD_IDLE:relentless.game_hold_i
 gh = OW.c_relentless(T0, RULES, {})["relentless.game_hold_idle_min"]
 check("a holder that used the bridge 5 min ago and a dead prove pid 12 min ago read 12, a live prove pid nothing",
       gh["v"] == 12.0 and gh["x"]["holder"] == "P", gh)
+item("BATCH", {"status": "game", "game": {"phase": "proving", "prove_pid": None, "proved_at": T0 - 66 * 60,
+                                           "broker": {"batch": "b1"}}})
+(STORE / "broker").mkdir(exist_ok=True)
+(STORE / "jobs").mkdir(exist_ok=True)
+(STORE / "broker" / "queue.json").write_text(json.dumps({"items": {"BATCH": {"state": "running", "batch": "b1"}}}), encoding="utf-8")
+lock = os.open(STORE / "jobs" / "broker.lock", os.O_CREAT | os.O_RDWR, 0o644)
+fcntl.flock(lock, fcntl.LOCK_EX)
+gh = OW.c_relentless(T0, RULES, {})["relentless.game_hold_idle_min"]
+check("a broker batch whose job holds the lock is no idle holder, whatever its age (the 2026-11-06 false alarm)",
+      gh["v"] == 12.0 and gh["x"]["holder"] == "P", gh)
+os.close(lock)
+gh = OW.c_relentless(T0, RULES, {})["relentless.game_hold_idle_min"]
+check("the same batch with its job gone reads and names itself", gh["v"] == 66.0 and gh["x"]["holder"] == "BATCH", gh)
 shutil.rmtree(STORE / "items")
 gh = OW.c_relentless(T0, RULES, {})
 check("no items directory is blind, never 0", gh["relentless.game_hold_idle_min"]["m"] == "UNMEASURED"

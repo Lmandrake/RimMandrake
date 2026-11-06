@@ -2327,13 +2327,36 @@ def rl_books_behind(books, now):
     return (0.0, 0) if not ts else (round(max(now - min(ts), 0) / 60.0, 1), len(ts))
 
 
+def rl_broker_turn_ended(items_dir, item, g, now):
+    """-> when a broker item's turn ended (epoch), or None while the broker still owns it: relentless_broker.over, the
+    predicate the item's own step (relentless_game._broker_holds) acts on. The clock is the later of the batch's start
+    and its job's end: a batch that ran an hour and ended a minute ago has held idle for a minute."""
+    rf = str(HERE.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import relentless_broker as RB
+    import relentless_jobs as RJ
+
+    class Store:        # all relentless_broker.over and relentless_jobs.table read of a store
+        @staticmethod
+        def p(*a):
+            return os.path.join(str(Path(items_dir).parent), *a)
+    if not RB.over(Store, item, g, now):
+        return None
+    ended = RJ.table(Store, RB.KIND).get("ended")
+    return max(x for x in (g.get("proved_at"), ended, 0) if is_num(x) and finite(x))
+
+
 def rl_game_hold_idle(items_dir, now):
     """-> (minutes the running game has been held by a game-phase holder that does not use it, {holder, kind}), or
     (None, why). RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER: one live user at a time, so an idle holder parks every other game item
     (ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP held it 47 min on 2026-11-03, bridge free, ten items waiting). Counted:
     a `proving` item whose prove pid is gone (minutes since proved_at), and a live-iterating worker (minutes since it
     last held the bridge for its item, or since the FAIL). relentless_game.lapse_holds frees both within live_idle_s
-    (20 min) on a tick; above 30 the release is not happening."""
+    (20 min) on a tick; above 30 the release is not happening. A broker batch has no prove pid by design: its liveness is
+    the job's lock, read here as its own step reads it (rl_broker_turn_ended), or a working batch reads as an idle holder
+    (LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW, 30.4 min, 2026-11-06). selftest_relentless_game_hold_agrees runs this
+    and the actor over one table."""
     try:
         names = sorted(os.listdir(items_dir))
     except OSError as e:
@@ -2344,7 +2367,13 @@ def rl_game_hold_idle(items_dir, now):
         if not isinstance(st, dict):
             continue
         g, li, since, kind = st.get("game") or {}, st.get("live_iter"), None, None
-        if st.get("status") == "game" and g.get("phase") == "proving":
+        if st.get("status") == "game" and g.get("phase") == "proving" and g.get("broker"):
+            try:
+                since = rl_broker_turn_ended(items_dir, n, g, now)
+            except Exception as e:  # noqa: BLE001 - a reader that cannot look at the job says so, never 0
+                return None, "broker turn of %s unreadable: %s: %s" % (n, type(e).__name__, str(e)[:100])
+            kind = "proving, broker turn over"
+        elif st.get("status") == "game" and g.get("phase") == "proving":
             pid = g.get("prove_pid")
             if not (is_num(pid) and os.path.exists("/proc/%d" % int(pid))):
                 since, kind = g.get("proved_at"), "proving, pid gone"
