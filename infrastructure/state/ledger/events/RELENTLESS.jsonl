@@ -829,3 +829,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PUMP_STATION_REDRAW_PLUMBED_FOR_GIANTS: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T00:41:43Z","tsn":1793925703988132252}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T00:47:24Z","tsn":1793926044234978545}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing SILT_TRAP_STYLES_REDRAW_HALF_RES_FLAT: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T00:47:52Z","tsn":1793926072555350011}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T00:58:22Z","tsn":1793926702548159814}
