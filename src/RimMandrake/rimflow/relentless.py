@@ -1132,6 +1132,7 @@ def canonical_commit(name):
     return out
 
 
+CLOSE_RETRY_MAX = 12     # rules.close_retry_max overrides: closing attempts before close_stuck (design rule 6.2)
 LANDED_DEPTH = 5000      # origin/main commits searched for a candidate that landed under another hash
 
 
@@ -1245,13 +1246,44 @@ def ledger_only_refusal(sha, prof, cwd=None):
 REV_EXPR = re.compile(r"[\s/:~^@{}*?\[\\]|\.\.|^-")
 
 
+def contract_hash(contract):
+    """The contract a check is bound to, as one id (design relentless_verdict_identity_design_2026-11-02.md rule 6.1)."""
+    return hashlib.sha256(json.dumps(contract or {}, sort_keys=True).encode()).hexdigest()
+
+
+clock = time.time      # the arrival clock of finish/verdict/help_answer; a selftest rig points it at its fake time
+
+
+def past_deadline(rec, now):
+    """Rule 6.3: a result that arrives after the deadline persisted at its launch is no result, whoever delivers it.
+    -> the reason, or None. A record launched before deadlines were persisted carries none and is judged as before."""
+    d = (rec or {}).get("deadline")
+    if isinstance(d, (int, float)) and now > d:
+        return "arrived %d s after its deadline" % (now - d)
+    return None
+
+
+def bind_moved(st):
+    """Rule 6.1: -> why the check's verdict no longer judges this candidate (sha, gen or contract moved since its launch),
+    or None. A check launched before binding carries no `bind` and is read as before."""
+    b = ((st or {}).get("check") or {}).get("bind")
+    if not b:
+        return None
+    now_is = {"sha": (st.get("candidate") or {}).get("sha"), "gen": st.get("gen"), "hash": contract_hash(st.get("contract"))}
+    moved = ["%s %s -> %s" % (k, str(b.get(k))[:12], str(now_is[k])[:12]) for k in ("sha", "gen", "hash") if b.get(k) != now_is[k]]
+    return ("the check judged another candidate: " + ", ".join(moved)) if moved else None
+
+
 def finish(store, item, gen, sha, evidence, now=None, root=None):
     """The durable receipt. The result never depends on a notification: the tick finds it here. `root`: the worker's
     tree, where a repair item's incident fixtures are linted for the verdict line (relentless_incident.owed_by)."""
-    now = time.time() if now is None else now
+    now = clock() if now is None else now
     with store.lock():
         st = store.load(item)
         _fence(st, item, gen)
+        late = past_deadline(st.get("run"), now)
+        if late:
+            raise Fenced("%s: this run's time is up (%s; run_max_s). Stop now." % (item, late))
         if not st["contract"]:
             raise ValueError("no contract: set it with `contract` before finishing")
         if st.get("diagnose_owed"):
@@ -1268,7 +1300,7 @@ def finish(store, item, gen, sha, evidence, now=None, root=None):
         if owed:
             raise ValueError(owed)
         rec = {"item": item, "gen": gen, "sha": sha, "evidence": evidence, "at": iso(now), "contract": st["contract"],
-               "hash": hashlib.sha256(json.dumps(st["contract"], sort_keys=True).encode()).hexdigest()}
+               "hash": contract_hash(st["contract"])}
         key = landing_key(root or os.getcwd(), sha)
         if key:     # lets the supervisor find this work if a later landing rebases it (..._LANDED_UNDER_NEW_HASH)
             rec["key"] = key
@@ -1540,7 +1572,7 @@ def gpt_consult(prompt_file, out, timeout):
 
 def help_answer(store, item, nonce, options, r, now=None):
     """The consult's return. Into the state file at once, so nothing past this line depends on the unit."""
-    now = time.time() if now is None else now
+    now = clock() if now is None else now
     got = parse_options(options, r)
     with store.lock():
         st = store.load(item)
@@ -1549,6 +1581,9 @@ def help_answer(store, item, nonce, options, r, now=None):
             raise Fenced("%s: no consult is waiting for that nonce" % item)
         if relentless_attrib.is_diagnose(st):
             raise Fenced("%s: this consult is a diagnosis: answer it with `relentless.py attribute`" % item)
+        late = past_deadline(h, now)
+        if late:
+            raise Fenced("%s: this consult's answer %s" % (item, late))
         h["answered_at"] = now
         st["help_options"] = {"options": got, "at": now, "by_unit": h["run"]["unit"], "vendor": h.get("agent")}
         store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": "answered", "options": len(got),
@@ -1645,7 +1680,7 @@ def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached
     from its prose by relentless_wall.read_as; a list, even empty, is read by structure. Both go through
     relentless_wall.clean_list, the one normalisation. strict (the CLI, a checker reading the answer) refuses a contradictory
     verdict; not strict (a verdict.json already on disk) records it and lets read_as read it - never a raise every tick."""
-    now = time.time() if now is None else now
+    now = clock() if now is None else now
     word = str(word or "").upper()
     if word not in relentless_wall.WORDS:
         raise ValueError("verdict is PASS, WEAK, FAIL or UNMEASURED")
@@ -1662,6 +1697,9 @@ def verdict(store, item, nonce, word, reasons, now=None, defects=None, unreached
             raise Fenced("%s: no check is waiting for that nonce" % item)
         if chk.get("verdict") is not None:
             raise Fenced("%s: this check has already given its verdict" % item)
+        late = past_deadline(chk, now)
+        if late:
+            raise Fenced("%s: this check's verdict %s" % (item, late))
         chk["verdict"] = word
         chk["reasons"] = (reasons or "")[:4000]
         if defects is not None:
@@ -5521,7 +5559,9 @@ def step(store, fx, r, item, now, acts):
                 race = False
                 st["status"] = "checking"
                 st["check_count"] = n
-                st["check"] = {"nonce": nonce, "unit": unit, "at": now, "clone": clean, "run": desc}
+                st["check"] = {"nonce": nonce, "unit": unit, "at": now, "clone": clean, "run": desc,
+                               "deadline": now + r["check_max_s"] + r["launch_grace_s"],
+                               "bind": {"sha": c["sha"], "gen": gen0, "hash": contract_hash(st.get("contract"))}}
                 if box:
                     st["check"]["box"] = box
                     st["check"]["through"] = thru       # the resume binds the same paths
@@ -5662,6 +5702,17 @@ def step(store, fx, r, item, now, acts):
                         store.save(st)
                     acts.append({"do": "checker_lost", "item": item, **run_output(chk.get("run"))})
                     return
+                moved = bind_moved(st)
+                if moved:
+                    # rule 6.1: a verdict is consumed only on the sha, gen and contract its checker launched on. Anything
+                    # moved: the checker judged something else - no verdict, no strike, the candidate is checked afresh
+                    drop.append({"check": dict(st["check"]), "quarantined": list(st["quarantined"])})
+                    st["status"] = "candidate"
+                    st["check"] = None
+                    store.attempt(item, {"at": iso(now), "gen": st["gen"], "end": "check_rebound", "detail": moved[:600]})
+                    store.save(st)
+                    acts.append({"do": "check_rebound", "item": item, "why": moved[:200]})
+                    return
                 acted, blind = relentless_wall.read_as(word, st["check"].get("reasons"), st["check"].get("defects"),
                                                        st["check"].get("unreached"))
                 if acted == relentless_wall.UNMEASURED:     # the box could not reach the evidence: no work goes back
@@ -5743,6 +5794,7 @@ def step(store, fx, r, item, now, acts):
                 game = False
                 st["status"] = "closing"
                 st.pop("close_retry", None)
+                st.pop("close_tries", None)
                 store.save(st)
                 acts.append({"do": "check_passed", "item": item, "sha": c["sha"]})  # a verdict: ops_watch's run of dead checkers ends here
         if game:
@@ -5761,11 +5813,22 @@ def step(store, fx, r, item, now, acts):
                 finished(store, fx, item, c, now, acts)
             return
         retry = st.get("close_retry")
-        if not retry:       # set before the attempt, so a crash inside it is already a retry
+        tries = int(st.get("close_tries") or 0) + 1
+        cap = int(r.get("close_retry_max", CLOSE_RETRY_MAX))
+        if tries > cap:     # rule 6.2: a close that never lands hands the item back instead of retrying for ever
             with store.lock():
                 cur = store.load(item)
-                cur["close_retry"] = True
-                store.save(cur)
+                if cur["status"] != "closing":
+                    return
+                cur.pop("close_tries", None)
+                fail(store, cur, "close_stuck", "%d closing attempts did not land the close on %s" % (cap, c["sha"]), r, now)
+            acts.append({"do": "close_stuck", "item": item, "tries": cap})
+            return
+        with store.lock():  # persisted before the attempt, so a crash inside it is already a counted retry
+            cur = store.load(item)
+            cur["close_retry"] = True
+            cur["close_tries"] = tries
+            store.save(cur)
         if retry:       # a retry is a new decision: what authorized the first try is asked again
             live = (st["contract"] or {}).get("live")
             broken = fx.live_check(live, fx.commit_time(c["sha"])) if live else None
@@ -5987,7 +6050,8 @@ def help_start(store, fx, r, item, now, acts):
         st["help_count"] = n
         h = st["help"]
         agent = help_vendor(st, r)
-        h.update(status="running", nonce=nonce, clone=clean, run=desc, started_at=now, tries=h["tries"] + 1, agent=agent)
+        h.update(status="running", nonce=nonce, clone=clean, run=desc, started_at=now, tries=h["tries"] + 1, agent=agent,
+                 deadline=now + r["circling"]["help_max_s"] + r["launch_grace_s"])
         store.save(st)
     tried = failed_approaches(store, item)
     env = {"RELENTLESS_ROOT": store.root}
@@ -6499,6 +6563,7 @@ def _lease(store, fx, r, now, acts, seen, wake=None):
             st["last_beat"] = None
             st["base"] = st.get("base") or fx.head()
             st["run"] = run_desc(store, r, unit_name("work", item, st["gen"]), now)
+            st["run"]["deadline"] = now + r["run_max_s"]       # overdue()'s worker_full line, persisted for finish()
             res = st.pop("resume", None)
             if res and res.get("gen") == st["gen"] - 1 and not piloting(st):     # nothing ran between the cut and now
                 st["run"]["resume"] = res["session"]

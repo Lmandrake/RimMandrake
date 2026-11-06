@@ -264,6 +264,7 @@ class Rig:
         # which a blind export lacks (OPS_RELENTLESS_BOOKS_UNSTICK_WGYL). Tests of parked lists set their own.
         self.r = dict(RULES, **{"snag_again_wait_h": 0, "pool_parked_lists": [], **rules})
         self.now = 1000000.0
+        R.clock = lambda: self.now      # finish/verdict/help_answer judge arrival on the rig's time (deadlines, rule 6.3)
 
     def tick(self, dt=120):
         self.now += dt

@@ -6,7 +6,9 @@ live_def_check.py, relentless.py and their selftests kept finding new wrong-verd
 kinds (lesson `20261102T042108Z-BENCH-review-pattern-relentless-live-tier-3`; rounds r1, r2b, r3a, r6a, r8a). Patching
 case by case does not converge. This pass replaces the mechanisms those cases came through.
 
-Grader machinery: Relentless must not build or edit any file named here (relentless_rules.json `own_paths`).
+Rule 6 was built by `RELENTLESS_REDESIGN_VERDICT_FAIL_CLOSED` (relentless.py, `selftest_relentless_verdict_rule6.py`).
+Rules 1-5 are item `LIVEVERDICT_REBUILD_ALLOWLIST_MEETS_OPENLANE`: the live-proof lane has grown past the two-tool
+allowlist below since this was written, so that item settles the allowlist's shape first.
 
 ## The verdict contract
 

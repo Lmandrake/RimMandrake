@@ -42,7 +42,7 @@ INSTRUMENTS = ("HARNESS", "SITE", "CHECKER")
 PROOF_ROAD = ("PROOF", "CONTRACT")
 # validation endings: the supervisor read a check or a game, no worker said what broke
 GATED = ("game_fail", "game_unmeasured", "game_proof_unmeasured", "game_contract", "game_refused", "checker_lost",
-         "blind_fail", "live_broken", "close_refused")
+         "blind_fail", "live_broken", "close_refused", "close_stuck")
 MECH_CONTRACT = ("game_contract", "game_refused")
 PROOF_OWED = "proof_owed"      # the proof road an attribution of PROOF or CONTRACT takes (relentless.PROOF_ENDS)
 WAIT_ATTRIB, WAIT_INSTRUMENT, WAIT_DEPENDENCY = "attribution", "instrument", "dependency"
