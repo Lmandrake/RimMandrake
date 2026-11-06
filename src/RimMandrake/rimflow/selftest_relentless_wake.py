@@ -259,7 +259,8 @@ def t_config():
         ok(k in raw and "_" + k in raw and "easured" in raw["_" + k], "config: %s carries a measured reason" % k)
     with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as f:
         rules = json.load(f)
-    kinds = {"ceiling", "throttle", "window", "backoff_owed", "wp11"}
+    # backoff_owed is gone: those keys are now caps over a cause sweep (relentless_cause, RELENTLESS_REWIRE_BACKOFFS_ON_CAUSE_CLOSE)
+    kinds = {"ceiling", "throttle", "window", "cause_cap", "wp11"}
     for name, row in sorted(raw.get("clock_keys", {}).items()):
         node = rules
         for part in name.split("."):

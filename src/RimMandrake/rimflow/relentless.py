@@ -58,6 +58,7 @@ import relentless_breakers  # noqa: E402
 import relentless_incident  # noqa: E402
 import relentless_strikes  # noqa: E402
 import relentless_wake  # noqa: E402
+import relentless_cause  # noqa: E402  a backoff ends on its cause closing (RELENTLESS_REWIRE_BACKOFFS_ON_CAUSE_CLOSE)
 import relentless_answer  # noqa: E402
 import relentless_attrib  # noqa: E402
 import relentless_explain  # noqa: E402
@@ -586,6 +587,7 @@ def unmeasured(store, st, said, blind, r, now):
     else:
         st["status"] = "candidate"
         st["recheck_at"] = now + r.get("unmeasured_recheck_s", 1800)
+        relentless_cause.record(st, "recheck_cause", relentless_cause.of(blind or reasons, st["item"]), now)
     store.save(st)
     return ("blind check at %s: UNMEASURED (Marker said %s), the checker could not reach the evidence; no work goes back, "
             "%s: %s" % (sha, said, "held for repair of the box" if n >= limit else "checked again in %d s"
@@ -1149,6 +1151,9 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
         again = st["failures"].get(SLUG_RX.sub("_", (klass or "snag").lower()).strip("_")[:40] or "snag", 0)
         wait = max(wait_hours or 0, again * r.get("snag_again_wait_h", 0))
         st["not_before"] = now + min(wait, MAX_WAIT_HOURS) * 3600
+        # a repeat backoff ends when what the snag names closes; a worker's own --wait-hours is time, kept a clock
+        relentless_cause.record(st, "not_before_cause", None if wait_hours or not wait
+                                else relentless_cause.of(detail, item), now)
         fail(store, st, klass, detail, r, now, time_not_work=bool(wait_hours))
 
 
@@ -4668,6 +4673,7 @@ def launch_failed(store, r, now, why):
     if br["fails"] >= r["launch_breaker"]:
         n = br["fails"] - r["launch_breaker"]
         br["until"] = now + min(r["breaker_cool_s"] * (2 ** n), r["breaker_cool_max_s"])
+        br["cause"] = relentless_cause.of(why, items=False)      # relentless_cause.sweep closes it the moment this reads closed
         if not was_open:            # a second failure of the same tick extends this open, it is not another one
             c = br.setdefault("opens", {}).setdefault(cause_key(why), {"n": 0})
             # each opening's time, so the emergency counts openings INSIDE the window, never the incident's total
@@ -6632,6 +6638,8 @@ def _lease(store, fx, r, now, acts, seen, wake=None):
                 with store.lock():  # a ledger refusal is this item's, not the launcher's: it waits, the belt does not
                     cur = store.load(item)
                     cur["start_again_at"] = now + r["breaker_cool_s"]
+                    # ledger state refused it: the next landed commit (a wake poke) may be the change that lets it
+                    relentless_cause.record(cur, "start_again_cause", relentless_cause.of(why, item, poke=True), now)
                     cur["start_refusals"] = cur.get("start_refusals", 0) + 1
                     cur["start_refused_why"] = str(why)[:300]
                     # the same refusal again is a retry loop (53 of them on one item): held and told, never retired, which
@@ -7237,6 +7245,7 @@ def _tick(store, fx, r, now, prof):
                 return {"why": why}
             synced[0] = t
             relentless_block.sweep(store, fx, clock(), acts, iso)
+            relentless_cause.sweep(store, fx, clock(), acts, iso)
             got = enrol(store, fx, r, now)
             acts.extend({"do": "enrol", "item": i, "wake": True} for i in got)
             return got
@@ -7258,6 +7267,7 @@ def _tick(store, fx, r, now, prof):
         hand_back(store, fx, r, now, acts)       # before any check or launch of this tick: a hand check is never run
         retire(store, fx, store.states(), now, acts, r)
         relentless_block.sweep(store, fx, now, acts, iso)
+        relentless_cause.sweep(store, fx, now, acts, iso)
         serve_poke()    # a poke waiting at tick start enrols now: live 2026-11-06 the prelude's end came 66 s later
         relentless_reachfix.sweep(store, fx, r, now, acts, iso, back=reach_back)    # a blind Judge's repair: probe, apply, ticket or back
         reclaim_dead(store, fx, r, now, acts)
