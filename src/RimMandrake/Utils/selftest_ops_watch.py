@@ -1179,50 +1179,6 @@ check("incident: an OWNER rung beside a held item -> 0 (ETBS: 2E27 read 35.9 wit
 r = OW.steve_incident_unclaimed(_w(_it(_P + "BRAKED_OWNER_2E27", "proposed", 90), _it(_P + "BRAKED_UNOWNED_A", "proposed", 12)), _M, NOW, RULES)
 check("incident: an OWNER rung hides no unclaimed seat item", abs(r["v"] - 12) < 0.1 and r["x"]["first"] == [_P + "BRAKED_UNOWNED_A"], r)
 
-# ---------------------------------------------------------------- arena alarm reader (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY)
-# The pre-push hook appends PUSH_REFUSED / PUSH_HOOK_CRASH lines to <arena>/alarms/arena.jsonl; ARENA_PUSH_REFUSED is
-# their reader. arena.ops_two_live is stubbed: no systemctl of any kind runs here.
-sys.path.insert(0, str(HERE / "arena"))
-import arena as _AR  # noqa: E402
-_ad = TMP / "arena_ow"; _ad.mkdir()
-_env0 = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_ARM_TOML", "ARENA_ALARM_FILE")}
-_two0 = _AR.ops_two_live
-os.environ.update(ARENA_ROOT=str(_ad), ARENA_ARM_TOML=str(_ad / "arm.toml"), ARENA_ALARM_FILE=str(_ad / "alarms" / "arena.jsonl"))
-_AR.ops_two_live = lambda *a, **k: {"value": 0, "why": "stub", "mode": "ralph_a"}
-try:
-    _tg = [t for t in RULES["targets"] if t["key"] == "arena.push_refused_24h"]
-    check("arena: ARENA_PUSH_REFUSED rule exists, alarms on > 0, MEASURED only",
-          len(_tg) == 1 and _tg[0]["tag"] == "ARENA_PUSH_REFUSED" and _tg[0]["alarm"] and _tg[0]["op"] == ">"
-          and _tg[0]["value"] == 0 and _tg[0]["marks"] == ["MEASURED"], _tg)
-    _p = OW.c_arena(NOW, RULES, {})
-    check("arena: no arm.toml -> push_refused UNMEASURED, rule holds", _p["arena.push_refused_24h"]["m"] == "UNMEASURED"
-          and OW.target_state(_p, RULES).get("ARENA_PUSH_REFUSED:arena.push_refused_24h") is None, _p)
-    (_ad / "arm.toml").write_text('mode = "ralph_a"\n')
-    _p = OW.c_arena(NOW, RULES, {})
-    check("arena: arm.toml but no alarm file -> MEASURED 0, not crossed", _p["arena.push_refused_24h"]["m"] == "MEASURED"
-          and _p["arena.push_refused_24h"]["v"] == 0
-          and OW.target_state(_p, RULES).get("ARENA_PUSH_REFUSED:arena.push_refused_24h") is False, _p)
-    _af = _ad / "alarms" / "arena.jsonl"; _af.parent.mkdir()
-    _iso = lambda e: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(e))
-    _af.write_text(json.dumps({"ts": _iso(NOW - 3 * DAY), "kind": "PUSH_REFUSED"}) + "\n")
-    _p = OW.c_arena(NOW, RULES, {})
-    check("arena: a 3-day-old refusal is outside the 24 h window -> 0", _p["arena.push_refused_24h"]["v"] == 0, _p)
-    with open(_af, "a") as _fh:
-        _fh.write(json.dumps({"ts": _iso(NOW - 60), "kind": "PUSH_REFUSED", "arm": "ralph_c"}) + "\n")
-    _p = OW.c_arena(NOW, RULES, {})
-    check("FORCED arena: a refusal a minute ago -> 1 and ARENA_PUSH_REFUSED crosses", _p["arena.push_refused_24h"]["v"] == 1
-          and OW.target_state(_p, RULES).get("ARENA_PUSH_REFUSED:arena.push_refused_24h") is True, _p)
-    with open(_af, "a") as _fh:
-        _fh.write("not json at all\n")
-    check("FORCED arena: an unreadable alarm line counts (someone wrote it)", OW.c_arena(NOW, RULES, {})["arena.push_refused_24h"]["v"] == 2)
-finally:
-    _AR.ops_two_live = _two0
-    for _k, _v in _env0.items():
-        if _v is None:
-            os.environ.pop(_k, None)
-        else:
-            os.environ[_k] = _v
-
 import pulse_core as _pc  # noqa: E402
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "ops_watch_rules.json"), encoding="utf-8") as _f:
     _real = json.load(_f)

@@ -22,7 +22,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 
 LOCAL_BIN_ONLY = {"claude", "claude-account", "claude-account-switch", "rimflow", "modcheck", "gh", "jj", "restic",
                   "node", "npm", "npx", "nemo", "playwright"}
 RUNNERS = {"run", "Popen", "check_output", "check_call", "call", "sh", "_sh", "_run", "execvp", "execv"}
-SKIP_DIRS = ("src/RimMandrake/Utils/arena/",)   # not this seat's to touch
+SKIP_DIRS = ()
 
 
 def _name(func):

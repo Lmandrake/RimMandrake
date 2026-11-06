@@ -64,7 +64,6 @@
     {"match": "evidence.*", "route": "role", "reader": "Operations", "cause": "evidence", "class": "emergency"},
     {"match": "steve.*", "route": "role", "reader": "Operations", "cause": "steve"},
     {"match": "companion.*", "route": "role", "reader": "Operations", "cause": "companion"},
-    {"match": "arena.*", "route": "role", "reader": "Operations", "cause": "arena"},
     {"match": "flow.*", "route": "role", "reader": "Operations", "cause": "flow"},
     {"match": "tps.*", "route": "role", "reader": "Operations", "cause": "tps", "_why": "per-session game health check (memory/TPS limits crossed by the newest full-list session, HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME)"},
     {"match": "testing.*", "route": "role", "reader": "Operations", "cause": "testing"},

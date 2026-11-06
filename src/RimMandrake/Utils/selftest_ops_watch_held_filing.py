@@ -67,7 +67,7 @@ def filer_ok(todo, conf):
 # 1. a light compose pass (no flow) files what the alarm pass deferred, inside the beat deadline
 seed()
 os.environ["METRONOME_DEADLINE"] = "%.3f" % (time.time() + 15)
-OW.run(now=t0 + 60, rules=rules, families=["companion", "arena"], compose=True, filer=filer_ok)
+OW.run(now=t0 + 60, rules=rules, families=["companion"], compose=True, filer=filer_ok)
 st = json.loads(AP.read_text())
 a, b, d = (st["NIGHTLY_RED:testing.red_%s" % x] for x in ("aaaaaa", "bbbbbb", "dddddd"))
 check("light pass: the alarm pass did not run", alarm_runs == [], alarm_runs)
@@ -93,12 +93,12 @@ check("light pass: the status carries the alarms it just filed",
 
 # 2. nothing held: no filing at all
 calls.clear()
-OW.run(now=t0 + 120, rules=rules, families=["companion", "arena"], compose=True, filer=filer_ok)
+OW.run(now=t0 + 120, rules=rules, families=["companion"], compose=True, filer=filer_ok)
 check("nothing deferred: the light pass files nothing", calls == [], calls)
 
 # 3. a light pass that runs out of time defers again: counted, still held for the next light beat
 seed()
-OW.run(now=t0 + 180, rules=rules, families=["companion", "arena"], compose=True,
+OW.run(now=t0 + 180, rules=rules, families=["companion"], compose=True,
        filer=lambda todo, conf: {x["name"]: OW.FILING_DEFERRED for x in todo})
 a = json.loads(AP.read_text())["NIGHTLY_RED:testing.red_aaaaaa"]
 check("deferred again: PENDING, deferred_n counted, still held", a["state"] == "PENDING" and a["deferred_n"] == 15
@@ -106,7 +106,7 @@ check("deferred again: PENDING, deferred_n counted, still held", a["state"] == "
 
 # 4. a held filing that fails for real hands the alarm back to the alarm pass
 seed()
-OW.run(now=t0 + 240, rules=rules, families=["companion", "arena"], compose=True,
+OW.run(now=t0 + 240, rules=rules, families=["companion"], compose=True,
        filer=lambda todo, conf: {x["name"]: "rimflow refused" for x in todo})
 a = json.loads(AP.read_text())["NIGHTLY_RED:testing.red_aaaaaa"]
 check("real failure: the error kept, a try counted, no longer held", a["state"] == "PENDING" and a.get("error") ==
@@ -115,7 +115,7 @@ check("real failure: the error kept, a try counted, no longer held", a["state"] 
 # 5. without --file-alarms nothing is filed
 seed()
 calls.clear()
-OW.run(now=t0 + 300, rules=rules, families=["companion", "arena"], compose=True)
+OW.run(now=t0 + 300, rules=rules, families=["companion"], compose=True)
 check("no filer: nothing filed, the deferral stands", calls == [] and json.loads(AP.read_text())
       ["NIGHTLY_RED:testing.red_aaaaaa"].get("deferred_at"), calls)
 
@@ -123,7 +123,7 @@ check("no filer: nothing filed, the deferral stands", calls == [] and json.loads
 seed()
 calls.clear()
 try:
-    OW.run(now=t0 + 360, rules=rules, families=["companion", "arena"], compose=True, filer=filer_ok,
+    OW.run(now=t0 + 360, rules=rules, families=["companion"], compose=True, filer=filer_ok,
            still_owner=lambda what: "filing" not in what)
     fenced = False
 except OW.Fenced:

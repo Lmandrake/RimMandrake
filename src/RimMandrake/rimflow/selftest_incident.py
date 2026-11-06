@@ -28,7 +28,6 @@ import ops_watch as OW  # noqa: E402
 import phone_push as PP  # noqa: E402
 import relentless as RN  # noqa: E402
 import role_launch as RL  # noqa: E402
-import replay_watch as RW  # noqa: E402
 import pulse_core as PC  # noqa: E402
 
 os.makedirs(os.environ["RM_OPS_WATCH_DIR"])
@@ -269,7 +268,7 @@ def test_ring_or_read_is_no_ack():
     bell = os.path.join(r.root, "routes.json")      # a doorbell reader of its own: no live seat is one any more
     t = IN.load_table()
     t["readers"]["WORKER"] = {"by": "doorbell", "seat": "WORKER"}
-    t["routes"] = [dict(x, reader="WORKER") if x["match"] == "arena.*" else x for x in t["routes"]]
+    t["routes"] = [dict(x, reader="WORKER") if x["match"] == "queues.*" else x for x in t["routes"]]
     json.dump(t, open(bell, "w"))
     os.environ["RIMFLOW_ROUTES"] = bell
     r.sch["seats"] = {"WORKER": {"enabled": True, "wake": True}}
@@ -280,17 +279,17 @@ def test_ring_or_read_is_no_ack():
 
 
 def _ring_or_read(r):
-    r.tick(T0, arena__two_live=1)
+    r.tick(T0, queues__blind=1)
     x = r.inc()
     check("a doorbell reader's incident opens", x and x[0]["reader"] == "WORKER", x)
     inbox = doorbell.inbox_path("WORKER")
     check("it rings the seat by doorbell", os.path.exists(inbox) and x[0]["id"] in open(inbox).read(), inbox)
     got = doorbell.take_ring("WORKER")
     check("the doorbell delivers it", got and x[0]["id"] in json.dumps(got), got)
-    r.tick(T0 + 5 * M, arena__two_live=1)
+    r.tick(T0 + 5 * M, queues__blind=1)
     check("a ring, a consume and a read write no ack", not r.evs("acked") and not r.inc()[0].get("acked_t"), r.rows())
     check("one ring only", not os.path.exists(inbox) and len(r.evs("opened")) == 1, r.evs("opened"))
-    r.tick(T0 + 30 * M, arena__two_live=1)
+    r.tick(T0 + 30 * M, queues__blind=1)
     check("so the next reader comes on time", r.inc()[0]["rung"] == 1, r.inc())
     r.ledger = [{"id": "NOPE", "event": "start", "seat": "FOUNDRY", "ts": IN.iso(T0 + H)}]
     check("item_acted reads named items only", IN.item_acted(r.ledger, ["OTHER"], IN.iso(T0)) is None)
@@ -621,23 +620,19 @@ def test_alarms_reach_ledger():
           open(s.p("journal.jsonl")).read().count('"do": "alarm"') == 4)
     r.tick(T0 + 60)
     check("they open the work_belt incident", any(i["cause"] == "work_belt" for i in r.inc()), r.inc())
-    w = object.__new__(RW.World)
-    w.cfg = {"schedule": os.path.join(HERE, "dispatcher_schedule.json")}   # told() honours its incident switch
-    w.told("stalled:a1:abcd1234", "w", T0)
-    check("a replay watch alarm joins the ledger", IN.read_rows()[-1].get("kind") == "stalled:a1:abcd1234", IN.read_rows()[-1])
 
 
 def test_routes():
     found, unread, files = source_kinds()
     check("no alarm site in the tree is unreadable by the census", not unread, unread)
     named = {"publish:index_lock", "publish:stuck", "budget:failed", "dry:live_runs_unsupervised", "breaker_emergency", "jam",
-             "understaffed", "books_stale", "step_raised", "lease_raised", "quarantine", "dead:x", "stalled:x:x",
+             "understaffed", "books_stale", "step_raised", "lease_raised", "quarantine", "dead:x",
              "relentless_attention_day_spend_limit", "relentless_attention_item_spend_limit:x", "queues.x.stalled_min",
              "queues.x.pending", "queues.blind", "relentless.breaker_same_cause", "selftest_false_hit", "testing.red_x"}
-    check("the census sees the variable and dict forms, relentless and replay_watch", named <= found, sorted(named - found))
+    check("the census sees the variable and dict forms, relentless", named <= found, sorted(named - found))
     check("the census walked every module that raises one", {os.path.basename(f) for f in files} >= {
         "dispatcher.py", "relentless.py", "helper_budget.py", "role_launch.py", "signal_watch.py", "login_watch.py",
-        "seat_restart.py", "replay_watch.py"}, files)
+        "seat_restart.py"}, files)
     qd = os.path.join(TMP, "census_queue")
     os.makedirs(qd, exist_ok=True)
     built = set(OW.c_queues(T0, {"queues": [{"name": "censusprobe", "pending": qd, "active": qd}]}, {}))

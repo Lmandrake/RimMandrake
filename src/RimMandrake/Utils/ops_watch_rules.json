@@ -20,18 +20,6 @@
    "paused_file": "/mnt/d/ClaudeWork/rimmandrake/testq/paused.json"
   },
   {
-   "name": "arena_ralph_c",
-   "_doc": "the arena live-test runners' claim queue (ralph_c_runner: candidates.jsonl, claims/, logs/, results/); 0 while the arena switch (arm.toml) is not installed",
-   "reader": "ralph_c",
-   "root": "/mnt/d/ClaudeWork/rimmandrake/arena",
-   "armed_file": "/mnt/d/ClaudeWork/rimmandrake/arena/arm.toml"
-  },
-  {
-   "name": "replay_watch",
-   "_doc": "replay arms in flight with no replay_watch tick since; paths, arms and stop line from replay_watch.py",
-   "reader": "replay_arms"
-  },
-  {
    "name": "designer",
    "_doc": "DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: a concept whose stage.json reads status=ready waits on a run-now launch nobody schedules; pending since it last moved, the oldest ready concept's wait; DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY: a waiting_owner concept whose owner has answered (designer_stage.owner_moved) is pending too, since his answer; the Designer's off switch pauses it",
    "reader": "designer_stage",
@@ -381,34 +369,6 @@
     }
    }
   },
-  "queues.arena_ralph_c.stalled_min": {
-   "owner": "Operations",
-   "ack_within_min": 30,
-   "max_age_min": 30,
-   "why": "QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS: an armed arena with a pending live-test candidate and no claim, run log or result for 60 min: the runners are gone or wedged on an orphan claim (a claim is taken over only after 6 h).",
-   "classes": {
-    "sane": {
-     "at_least": 0
-    },
-    "distressed": {
-     "at_least": 60
-    }
-   }
-  },
-  "queues.replay_watch.stalled_min": {
-   "owner": "Operations",
-   "ack_within_min": 30,
-   "max_age_min": 30,
-   "why": "QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS: a replay arm in flight and no replay_watch tick for 30 min: nobody is watching for its death or hang (the watcher's timer was uninstalled 2026-11-04; a relaunch needs a watcher).",
-   "classes": {
-    "sane": {
-     "at_least": 0
-    },
-    "distressed": {
-     "at_least": 30
-    }
-   }
-  },
   "queues.designer.stalled_min": {
    "owner": "Operations",
    "ack_within_min": 30,
@@ -597,30 +557,6 @@
    "why": "QUEUE_ORPHAN_WEDGE_1: testq has pending work and nothing claimed, finished or heartbeating for over 20 min while its console reads calm idle"
   },
   {
-   "key": "queues.arena_ralph_c.stalled_min",
-   "op": ">",
-   "value": 60,
-   "alarm": true,
-   "tag": "QUEUE_STALLED",
-   "name": "OPS_ARENA_CLAIMS_UNSTICK_NOBODY_HOME",
-   "marks": [
-    "MEASURED"
-   ],
-   "why": "QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS: the arena is armed, a live-test candidate waits, and no runner has claimed, logged or finished anything for over 60 min"
-  },
-  {
-   "key": "queues.replay_watch.stalled_min",
-   "op": ">",
-   "value": 30,
-   "alarm": true,
-   "tag": "QUEUE_STALLED",
-   "name": "OPS_REPLAY_UNSTICK_WATCHMAN_NAPPING",
-   "marks": [
-    "MEASURED"
-   ],
-   "why": "QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS: a replay arm is in flight and replay_watch has not ticked for over 30 min, so a dead or hung arm would wait on a person noticing"
-  },
-  {
    "key": "queues.designer.stalled_min",
    "op": ">",
    "value": 60,
@@ -730,10 +666,6 @@
    "why": "WORKER_CLONES_MONITOR_POOL_NOT_RABBITS. Owner 2026-10-31 approved a bounded pool of reused clones (widened 2026-11-02 by the owner's card (How hard should Relentless run this machine? -> 8 workers, 16 clones / 70 GB), from 10 / 40): 'I trust you, but please monitor them carefully. They seem to propagate prolifically.' This alarms when the pool holds more than 16 clones or 70 GB (the revert line), when any helper clone, in the pool, under rm/scratch or in a session dir, holds work the mirror lacks that nobody has touched for an hour (stranded: land it or bundle it; the reaper's PROTECTED list does not excuse it), or when a clone or the pool cannot be read. Run python3 src/RimMandrake/Utils/scratch_clone.py pool; the rows are in ~/.local/state/rm-objstore/scratch_stranded.json"},
   {"key": "disk.root_free_gb", "op": "<", "value": 420, "alarm": false, "tag": "DISK_TWO_DAYS",
    "why": "two worst days of scratch growth left: a warning flag, not an alarm"},
-  {"key": "arena.two_live", "op": ">", "value": 0, "alarm": true, "tag": "ARENA_TWO_LIVE", "name": "OPS_ARENA_DIAGNOSE_TWO_LIVE", "marks": ["MEASURED"],
-   "why": "arena who failed (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY, design 2.3): the value is the failed-check bitmask, a=1 active targets are not the expected one, b=2 a live process sits in a stopped arm's clone, c=4 a bridge lock names another arm, d=8 a stopped arm wrote an event or pushed a ref since the switch, 16 arm.toml unreadable, e=32 a governed clone's effective hooks dir (core.hooksPath) does not run the arena pre-push, f=64 a STOP file or a stale idle status silently pauses the live arm. UNMEASURED (no arm.toml, no systemd) never alarms"},
-  {"key": "arena.push_refused_24h", "op": ">", "value": 0, "alarm": true, "worse": {"factor": 2}, "tag": "ARENA_PUSH_REFUSED", "name": "OPS_ARENA_DIAGNOSE_PUSH_REFUSED", "marks": ["MEASURED"],
-   "why": "the arena pre-push hook refused (PUSH_REFUSED) or crashed (PUSH_HOOK_CRASH) a push in the last 24 h: a stopped arm, a wrong ref or a production clone outside scope tried to push (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY). The value counts lines in <arena>/alarms/arena.jsonl; a client hook is bypassable (--no-verify), so 0 is not proof nobody pushed. UNMEASURED (no arm.toml) never alarms"},
   {"key": "disk.tmp_free_gb", "op": "<", "value": 4, "alarm": true, "worse": {"factor": 2}, "tag": "TMP_FULL", "name": "OPS_TMP_DRAIN_RESTORE", "marks": ["MEASURED"],
    "why": "TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP: /tmp is an 18 GB tmpfs; on 2026-11-03 agents' mutation scratch filled it and the nightly selftests went red with ENOSPC. Under 4 GB free one mutation run fills it. rm-scratch-pressure starts the reaper at this line; if it still alarms, the /tmp backstop is holding or failing: read tmp in ~/.local/state/rm-scratch-reap/last_run.json and tmp_runs.jsonl, then du -xsh /tmp/* | sort -h | tail"},
   {"key": "disk.tmp_used_pct", "op": ">", "value": 80, "alarm": true, "worse": {"add": 10}, "tag": "TMP_FULL", "name": "OPS_TMP_DRAIN_RESTORE", "marks": ["MEASURED"],

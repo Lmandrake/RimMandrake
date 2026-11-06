@@ -106,68 +106,6 @@ check("queues classes: every class of every queues.* metric had its fixture", _e
       sorted(_every - _seen))
 _rlq = OW.load_rules()
 # the stragglers (QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS): every claim/lease queue is a rules entry read by a named reader
-_ar = Path(_tf.mkdtemp(prefix="qrc_")); _rc = _ar / "ralph_c"
-for _x in ("claims", "logs", "results"):
-    (_rc / _x).mkdir(parents=True)
-_qr2 = {"queues": [{"name": "rc", "reader": "ralph_c", "root": str(_ar), "armed_file": str(_ar / "arm.toml")}]}
-def _rcs(): return OW.c_queues(_qn, _qr2, {})["queues.rc.stalled_min"]
-check("queues/ralph_c: an empty runner queue reads 0", _rcs()["v"] == 0.0 and _rcs()["m"] == "MEASURED", _rcs())
-(_rc / "candidates.jsonl").write_text(json.dumps({"builder": "B", "cand": "c1", "item": "I1", "sha": "s",
-    "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(_qn - 7200))}) + "\n")
-check("queues/ralph_c: unarmed (no arm.toml) reads 0 though a candidate waits",
-      _rcs()["v"] == 0.0 and OW.c_queues(_qn, _qr2, {})["queues.rc.pending"]["v"] == 1, _rcs())
-(_ar / "arm.toml").write_text("")
-check("queues/ralph_c: armed, a candidate pending 2 h with no claim or run reads ~120 min", 119 <= _rcs()["v"] <= 121, _rcs())
-(_rc / "claims" / "c1").write_text("run1"); os.utime(_rc / "claims" / "c1", (_qn - 5400, _qn - 5400))
-(_rc / "logs" / "run1.log").write_text("x"); os.utime(_rc / "logs" / "run1.log", (_qn - 120, _qn - 120))
-check("queues/ralph_c: a claimed run whose log moves is movement", _rcs()["v"] <= 2.1, _rcs())
-os.utime(_rc / "logs" / "run1.log", (_qn - 5400, _qn - 5400))
-check("queues/ralph_c: an orphan claim with a dead log is a stall", 89 <= _rcs()["v"] <= 91, _rcs())
-(_ar / "events").mkdir(); (_ar / "events" / "ralph_c.jsonl").write_text("{}\n")
-os.utime(_ar / "events" / "ralph_c.jsonl", (_qn - 300, _qn - 300))
-check("queues/ralph_c: a long run whose lane events move is movement (its log lands only at the end)",
-      _rcs()["v"] <= 5.1, _rcs())
-os.utime(_ar / "events" / "ralph_c.jsonl", (_qn - 5400, _qn - 5400))
-(_rc / "results" / "run1.json").write_text(json.dumps({"item": "I1", "cand": "c1", "verdict": "pass"}))
-check("queues/ralph_c: a counted result empties the queue", _rcs()["v"] == 0.0
-      and OW.c_queues(_qn, _qr2, {})["queues.rc.pending"]["v"] == 0, _rcs())
-(_rc / "results" / "bad.json").write_text("{not json")
-check("queues/ralph_c: an unreadable result is blind, not 0", _rcs()["m"] == "UNMEASURED"
-      and OW.c_queues(_qn, _qr2, {})["queues.blind"]["v"] == 1, _rcs())
-(_ar / "arm.toml").unlink()
-check("queues/ralph_c: a switched-off arena with an unreadable queue reads 0, not blind", _rcs()["v"] == 0.0
-      and _rcs()["m"] == "MEASURED" and OW.c_queues(_qn, _qr2, {})["queues.blind"]["v"] == 0, _rcs())
-_rp = Path(_tf.mkdtemp(prefix="qrp_")); (_rp / "logs").mkdir(); _tk = _rp / "ticks.jsonl"
-_qr3 = {"queues": [{"name": "rp", "reader": "replay_arms", "replay": str(_rp), "ticks": str(_tk), "arms": ["a1", "a2"],
-                    "stop_line": _qn + 86400}]}
-def _rps(): return OW.c_queues(_qn, _qr3, {})["queues.rp.stalled_min"]
-check("queues/replay: no tick and no arm log reads 0", _rps()["v"] == 0.0 and _rps()["m"] == "MEASURED", _rps())
-_tk.write_text(json.dumps({"rows": [{"arm": "a1", "state": "PAGED"}, {"arm": "a2", "state": "WAITING"}]}) + "\n")
-os.utime(_tk, (_qn - 7200, _qn - 7200))
-(_rp / "logs" / "a1.log").write_text("x"); os.utime(_rp / "logs" / "a1.log", (_qn - 9000, _qn - 9000))
-check("queues/replay: paged and waiting arms with a stale tick are not in flight", _rps()["v"] == 0.0, _rps())
-os.utime(_rp / "logs" / "a1.log", (_qn - 60, _qn - 60))
-check("queues/replay: an arm logging after the last tick with no tick since reads ~120 min", 119 <= _rps()["v"] <= 121, _rps())
-(_rp / "logs" / "a1.log").write_text("2026-10-31T22:10:19-0700 a1: task T DONE closed verdict accept\n"
-                                     "2026-10-31T22:10:19-0700 a1: runner ends: ran 11, skipped 14, stopped None\n")
-os.utime(_rp / "logs" / "a1.log", (_qn - 60, _qn - 60))
-check("queues/replay: an arm that finished after the last tick is not in flight", _rps()["v"] == 0.0, _rps())
-(_rp / "logs" / "a1.log").write_text("2026-10-31T22:10:19-0700 a1: task T START\n")
-os.utime(_rp / "logs" / "a1.log", (_qn - 60, _qn - 60))
-_tk.rename(_rp / "ticks.off")
-check("queues/replay: an arm in flight and no watcher tick ever is blind, not a calm 0", _rps()["m"] == "UNMEASURED", _rps())
-(_rp / "ticks.off").rename(_tk)
-os.utime(_rp / "logs" / "a1.log", (_qn - 9000, _qn - 9000))
-_tk.write_text(json.dumps({"rows": [{"arm": "a1", "state": "RUNNING"}]}) + "\n"); os.utime(_tk, (_qn - 300, _qn - 300))
-check("queues/replay: a RUNNING arm with a fresh tick is watched", _rps()["v"] <= 5.1, _rps())
-os.utime(_tk, (_qn - 3600, _qn - 3600))
-check("queues/replay: a RUNNING arm and a dead watcher is a stall", 59 <= _rps()["v"] <= 61, _rps())
-_qr3["queues"][0]["stop_line"] = _qn - 1
-check("queues/replay: past the stop line nothing is in flight", _rps()["v"] == 0.0, _rps())
-_qr3["queues"][0]["replay"] = str(_rp / "nope")
-check("queues/replay: past the stop line even a cleaned-up replay dir reads 0", _rps()["v"] == 0.0 and _rps()["m"] == "MEASURED")
-_qr3["queues"][0]["stop_line"] = _qn + 86400
-check("queues/replay: a missing replay dir is blind", _rps()["m"] == "UNMEASURED")
 check("queues: an unknown reader is blind, not 0", OW.c_queues(_qn, {"queues": [{"name": "z", "reader": "nope"}]}, {})
       ["queues.blind"]["v"] == 1)
 _ids = {t["key"]: t["name"] for t in _rlq["targets"] if t["key"].startswith("queues.") and t.get("alarm")}
@@ -176,20 +114,11 @@ check("queues: every wired queue has exactly one fixed-id alarm target and a ran
       all(_ids.get("queues.%s.stalled_min" % n) for n in _qnames)
       and all(("queues.%s.stalled_min" % n) in _rlq["ranges"] for n in _qnames)
       and len(set(_ids.values())) == len(_ids) and "queues.blind" in _ids, (_qnames, _ids))
-check("queues: the stragglers are wired (arena runner claims, replay watcher)",
-      {"arena_ralph_c", "replay_watch"} <= set(_qnames)
-      and all(q.get("reader", "dirs") in OW.QUEUE_READERS for q in _rlq["queues"]), _qnames)
 # census (QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS): the claim/lease queues are exactly these; a new one joins the census here
-_CENSUS = {"artpipe", "testq", "arena_ralph_c", "replay_watch",
+_CENSUS = {"artpipe", "testq",
            "designer"}   # DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN: ready concepts wait on a run-now launch
 check("queues: the wired set is exactly the claim/lease census (none dropped, none unaccounted)",
       set(_qnames) == _CENSUS and len(_qnames) == len(_CENSUS), sorted(set(_qnames) ^ _CENSUS))
-check("queues: the stragglers read through their own readers, not the dir reader",
-      {q["name"]: q.get("reader", "dirs") for q in _rlq["queues"] if q["name"] in ("arena_ralph_c", "replay_watch")}
-      == {"arena_ralph_c": "ralph_c", "replay_watch": "replay_arms"}, _rlq["queues"])
-check("queues: each straggler's alarm target carries its fixed id",
-      _ids.get("queues.arena_ralph_c.stalled_min") == "OPS_ARENA_CLAIMS_UNSTICK_NOBODY_HOME"
-      and _ids.get("queues.replay_watch.stalled_min") == "OPS_REPLAY_UNSTICK_WATCHMAN_NAPPING", _ids)
 # Fleet Watch is not a queue: the owner retired it 2026-11-04, so no queue or alarm target may name it
 _own = HERE.parents[2] / "infrastructure" / "state" / "ledger" / "events" / "OWNER.jsonl"
 _ret = [json.loads(_l) for _l in _own.read_text(encoding="utf-8").splitlines()
@@ -200,7 +129,7 @@ check("queues/fleet: the owner's retirement of Fleet Watch is on the ledger",
 check("queues/fleet: no queue entry or queues.* target names the retired Fleet Watch",
       not any("fleet" in json.dumps(q).lower() for q in _rlq["queues"])
       and not any("fleet" in t["key"].lower() for t in _rlq["targets"] if t["key"].startswith("queues.")), _qnames)
-for _d in (_TMP, _qd, _cd, _ar, _rp):
+for _d in (_TMP, _qd, _cd):
     shutil.rmtree(_d, ignore_errors=True)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

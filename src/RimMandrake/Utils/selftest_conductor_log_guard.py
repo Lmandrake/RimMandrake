@@ -111,7 +111,6 @@ def ops_watch_writer(path):
 import relentless as R  # noqa: E402
 import dispatcher as D  # noqa: E402
 import detached_helper as DH  # noqa: E402
-import replay_watch as RW  # noqa: E402
 
 
 def relentless_writer(method):
@@ -119,12 +118,6 @@ def relentless_writer(method):
         got = getattr(R.Effects, method)(types.SimpleNamespace(r={"staffing": {"conductor_log": path}}), "t")
         return got
     return write
-
-
-def replay_writer(path):
-    sched = TMP / "sched.json"
-    sched.write_text(json.dumps({"no_handoff": {"conductor_log": path}}), encoding="utf-8")
-    RW.World.conductor(types.SimpleNamespace(cfg={"schedule": str(sched)}), "line\n")
 
 
 def steward_writer(path):
@@ -150,7 +143,7 @@ def detached_writer(path):
 
 
 WRITERS = [("ops_watch", ops_watch_writer), ("relentless jam", relentless_writer("conductor_alarm")),
-           ("relentless attention", relentless_writer("conductor_attention")), ("replay_watch", replay_writer),
+           ("relentless attention", relentless_writer("conductor_attention")), 
            ("steward", steward_writer), ("dispatcher", dispatcher_writer), ("detached_helper", detached_writer)]
 for label, w in WRITERS:
     stays_absent(label, w)

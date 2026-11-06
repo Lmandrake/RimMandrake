@@ -330,28 +330,29 @@ def t_no_repaid_recheck():
 
 
 def t_host_only():
-    """NIGHTLY_COP_REACH_FIX_ARENA_STAYS_DARK: NIGHTLY_COP_FIX_RED_AQJSGV_CFVH's proof ran the arena sandbox pair in the box;
-    the Judge went blind on /home/mandrake/rm/arena. A proof naming a reach_host_only test is a need at contract time."""
-    rows = RR.host_only_rows(REAL)
+    """NIGHTLY_COP_REACH_FIX_ARENA_STAYS_DARK: a proof ran host-layout selftests in the box and the Judge went blind. A proof naming a reach_host_only test is a need at contract time."""
+    HOST = dict(REAL, reach_host_only=[{"path": "src/RimMandrake/Utils/selftest_host_alpha.py", "why": "fixture"},
+                                       {"path": "src/RimMandrake/Utils/selftest_host_beta.py", "why": "fixture"}])
+    rows = RR.host_only_rows(HOST)
     names = [os.path.basename(p) for p, _ in rows]
-    ok("selftest_arm_sandbox.py" in names and "selftest_arena_ralph_c.py" in names, "H1 the rules list the arena pair")
+    ok("selftest_host_alpha.py" in names and "selftest_host_beta.py" in names, "H1 the rules list the fixture pair")
     ok("selftest_art_eval.py" not in names, "H1 art_eval is not host-only (it passes with no bundle_textures)")
     inst = ("python3 src/RimMandrake/Utils/run_selftests.py --no-cache --only src/RimMandrake/Utils/art_eval/selftest_art_eval.py "
-            "src/RimMandrake/Utils/arena/selftest_arena_ralph_c.py src/RimMandrake/Utils/arena/selftest_arm_sandbox.py")
-    got = RR.uncovered({"proof": inst}, REAL)
-    ok(sum(1 for g in got if g.startswith("a host-only test:")) == 2, "H2 the instance proof needs both arena tests: %s" % got)
-    ok(RR.uncovered({"proof": "run_selftests.py --only selftest_x.py,selftest_arm_sandbox.py"}, REAL),
+            "src/RimMandrake/Utils/selftest_host_beta.py src/RimMandrake/Utils/selftest_host_alpha.py")
+    got = RR.uncovered({"proof": inst}, HOST)
+    ok(sum(1 for g in got if g.startswith("a host-only test:")) == 2, "H2 the instance proof needs both host-only tests: %s" % got)
+    ok(RR.uncovered({"proof": "run_selftests.py --only selftest_x.py,selftest_host_alpha.py"}, HOST),
        "H2 a comma list naming the bare file is caught")
-    ok(not RR.uncovered({"proof": "run_selftests.py --only selftest_arm_sandbox.py.bak selftest_xselftest_arm_sandbox.py"},
-                        REAL), "H3 a longer name is not the test")
-    ok(not RR.uncovered({"proof": "run_selftests.py --only selftest_art_eval.py  # arena: selftest_arm_sandbox.py is host-only"},
-                        REAL), "H3 a comment naming it is prose")
-    ok(RR.uncovered({"proof": inst, "reach_ok": "the host rerun is in the evidence"}, REAL) == [], "H4 --reach-ok routes it")
+    ok(not RR.uncovered({"proof": "run_selftests.py --only selftest_host_alpha.py.bak selftest_xselftest_host_alpha.py"},
+                        HOST), "H3 a longer name is not the test")
+    ok(not RR.uncovered({"proof": "run_selftests.py --only selftest_art_eval.py  # selftest_host_alpha.py is host-only"},
+                        HOST), "H3 a comment naming it is prose")
+    ok(RR.uncovered({"proof": inst, "reach_ok": "the host rerun is in the evidence"}, HOST) == [], "H4 --reach-ok routes it")
     x = T.Rig(n=1, share=1.0)
     x.run_one("I0")
     g = x.st("I0")["gen"]
     try:
-        R.contract(x.s, "I0", g, inst, r=REAL)
+        R.contract(x.s, "I0", g, inst, r=HOST)
         ok(False, "H4 contract refuses the instance proof")
     except ValueError as e:
         ok("host-only test" in str(e) and "--reach-ok" in str(e), "H4 contract refuses the instance proof: %s" % str(e)[-120:])

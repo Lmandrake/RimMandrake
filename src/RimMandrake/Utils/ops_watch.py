@@ -85,7 +85,7 @@ SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence", "companion", "arena", "relentless", "seats", "plan", "roles", "queues", "wrapup")
+            "evidence", "companion", "relentless", "seats", "plan", "roles", "queues", "wrapup")
 
 
 def ops_dir() -> Path:
@@ -1910,37 +1910,6 @@ def c_companion(now, rules, ctx):
             "companion.grant_visible": M(1, file=g["file"])}
 
 
-def c_arena(now, rules, ctx):
-    """arena.two_live: 0 when `arena who` passes, else the failed-check bitmask (ARENA_TWO_LIVE).
-    arena.push_refused_24h: alarm lines (PUSH_REFUSED / PUSH_HOOK_CRASH) in <arena>/alarms/arena.jsonl in the last 24 h
-    (ARENA_PUSH_REFUSED) - the reader of the hook's alarm file. No arm.toml (the arena switch is not installed) or an
-    arena module that cannot run is UNMEASURED, never 0."""
-    ad = str(HERE / "arena")
-    if ad not in sys.path:
-        sys.path.insert(0, ad)
-    import arena as AR
-    try:
-        tp = AR.arm_toml_path()
-    except Exception as e:  # noqa: BLE001
-        return {"arena.two_live": U("arena root unresolved: %s" % e), "arena.push_refused_24h": U("arena root unresolved")}
-    if not tp.exists():
-        why = "no arm.toml at %s: the arena switch is not installed" % tp
-        return {"arena.two_live": U(why), "arena.push_refused_24h": U(why)}
-    try:                # the refusal log below is its own source: it reads whatever becomes of this one
-        r = AR.ops_two_live(tp)
-        out = {"arena.two_live": M(r["value"], "failed-check bitmask (0 = one arm live)", why=r["why"], mode=r.get("mode"))}
-    except Exception as e:  # noqa: BLE001
-        out = {"arena.two_live": U("arena who: %s: %s" % (type(e).__name__, str(e)[:160]))}
-    try:
-        af = "?"
-        af = AR.alarm_path()
-        n = AR.alarms_since(af, now - 86400)
-        out["arena.push_refused_24h"] = M(n, "pre-push refusals/crashes alarmed in the last 24 h", file=str(af))
-    except Exception as e:  # noqa: BLE001
-        out["arena.push_refused_24h"] = U("alarm file %s unreadable: %s" % (af, e))
-    return out
-
-
 # ---------------------------------------------------------------- relentless: the belt read from its own store (OP2, DI2)
 RL_STAFFING = ("relentless.live", "relentless.under_min", "relentless.checks_wait", "relentless.ready")
 RL_KEYS = RL_STAFFING + ("relentless.breaker_open_min", "relentless.tick_age_s", "relentless.progress_age_min",
@@ -3165,77 +3134,6 @@ def _iso_epoch(s):
         return None
 
 
-def _q_ralph_c(q, now, pcache, cpath):
-    """The arena's live-test runner queue (ralph_c_runner): a candidate in candidates.jsonl with no counted result is
-    pending since its publication `ts`; a runner claims it as claims/<cand> (O_EXCL, taken over after CLAIM_TTL_S);
-    a run's log is written under logs/ when it ends, beside results/<run>.json. A claim is written once and a run may
-    take hours (its proof alone 1800 s), so the run's heartbeat is the lane's event log (events/*.jsonl: every
-    live act of a lane appends one). The runner's own pending() decides what waits, so this reads the queue the
-    runners read. A ralph_c dir that is missing or a module that cannot run is blind."""
-    ad = str(HERE / "arena")
-    if ad not in sys.path:
-        sys.path.insert(0, ad)
-    import ralph_c_runner as R
-    p = R.rpaths(Path(q["root"]))
-    if not p["rc"].is_dir():
-        raise OSError("ralph_c dir missing: %s" % p["rc"])
-    pub = os.stat(p["candidates"]).st_mtime if p["candidates"].exists() else now
-    plist = [_iso_epoch(c.get("ts")) or pub for c in R.pending(p)]
-    alist = _mtimes(p["claims"], "*")
-    marks = [max(alist) if alist else None, newest_mtime(p["results"]), newest_mtime(p["logs"], "*.log"),
-             newest_mtime(p["events"], "*.jsonl")]
-    return plist, alist, marks
-
-
-REPLAY_INFLIGHT = ("RUNNING", "HOLD_CAPACITY", "RESTARTED", "STALLED")
-
-
-def _last_jsonl(path, tail=1 << 16):
-    with open(path, "rb") as f:
-        f.seek(0, 2)
-        f.seek(max(0, f.tell() - tail))
-        lines = [x for x in f.read().splitlines() if x.strip()]
-    return json.loads(lines[-1]) if lines else {}
-
-
-def _q_replay(q, now, pcache, cpath):
-    """The arena replay arms and their watcher (replay_watch.py): the replay's work is each arm's task list, and what
-    notices a dead or hung arm is the watcher's tick. An arm is in flight when the last tick saw it RUNNING,
-    HOLD_CAPACITY, RESTARTED or STALLED, or when its logs/<arm>.log moved after that tick and does not end on the
-    runner's `runner ends` line (a relaunch no tick has seen; an arm that finished after the last tick is not in
-    flight). It is pending since that tick, and the only movement is the next tick: an arm running with nobody
-    watching is the orphan this class is about. Past the replay's stop line nothing is in flight (the watcher stands
-    down there too), whatever is left on disk. A replay dir that is missing, a tick line that does not parse, or an
-    arm in flight with no ticks.jsonl at all (no watcher ever ticked: no start to measure from) is blind."""
-    import replay_watch as RW
-    if now >= float(q.get("stop_line", RW.STOP_LINE)):
-        return [], [], []
-    replay = Path(q.get("replay") or RW.DEFAULTS["replay"])
-    ticks = Path(q.get("ticks") or Path(RW.DEFAULTS["arena"]) / "replay_watch" / "ticks.jsonl")
-    if not replay.is_dir():
-        raise OSError("replay dir missing: %s" % replay)
-    tick_t, states = None, {}
-    if ticks.exists():
-        tick_t = os.stat(ticks).st_mtime
-        states = {r["arm"]: r.get("state") for r in _last_jsonl(ticks).get("rows", [])}
-    plist = []
-    for arm in q.get("arms") or RW.ARMS:
-        lf = replay / "logs" / ("%s.log" % arm)
-        try:
-            lm = os.stat(lf).st_mtime
-        except FileNotFoundError:
-            lm = None
-        moved = lm is not None and (tick_t is None or lm > tick_t)
-        if moved:
-            last = RW.parse_log(RW.read_text(lf, 1 << 14))
-            moved = not (last and RW.ENDS.match(last[-1][1]))
-        if states.get(arm) in REPLAY_INFLIGHT or moved:
-            if tick_t is None:
-                raise OSError("replay arm %s in flight and no replay_watch tick ever: %s" % (arm, ticks))
-            plist.append(tick_t)
-    return plist, [], [tick_t]
-
-
 def _q_designer(q, now, pcache, cpath):
     """The Designer's concepts (DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN): the Designer is run-now only, so a concept
     whose stage.json reads status=ready waits on someone launching it, and nothing else notices (FlowWorks sat at
@@ -3287,7 +3185,7 @@ def _q_designer(q, now, pcache, cpath):
     return plist, alist, []
 
 
-QUEUE_READERS = {"dirs": _q_dirs, "ralph_c": _q_ralph_c, "replay_arms": _q_replay, "designer_stage": _q_designer}
+QUEUE_READERS = {"dirs": _q_dirs, "designer_stage": _q_designer}
 
 
 def c_queues(now, rules, ctx):
@@ -3378,10 +3276,10 @@ def c_wrapup(now, rules, ctx):
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve_all, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
               "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
-              "arena": c_arena, "relentless": c_relentless, "seats": c_seats, "plan": c_plan, "roles": c_roles,
+              "relentless": c_relentless, "seats": c_seats, "plan": c_plan, "roles": c_roles,
               "queues": c_queues, "wrapup": c_wrapup}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence", "companion", "arena", "relentless", "seats", "plan", "roles", "queues", "wrapup")
+         "evidence", "companion", "relentless", "seats", "plan", "roles", "queues", "wrapup")
 
 
 # ==================================================================================================== storage

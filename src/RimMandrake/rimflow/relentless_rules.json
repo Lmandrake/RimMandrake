@@ -41,10 +41,7 @@
   "reach_repair": true,
   "reach_other_ticket": "CHECKER_REACH_FIX_OTHER_STILL_DARK",
   "_reach_host_only": "NIGHTLY_COP_REACH_FIX_ARENA_STAYS_DARK: selftests whose truth is the host's own layout. No read-only bind makes them honest in the Marker's box, so a proof naming one is a reach need at contract time (relentless_reach.needs): drop it from the proof, or route it with --offbox / --reach-ok. selftest_art_eval is NOT here: its fauna_spec checks draw the scale panel's vanilla human and rat from stand-in PNGs (gen 3), so it passes with scale_panel.VANILLA_TEX (the D: mirror's untracked bundle_textures) absent.",
-  "reach_host_only": [
-    {"path": "src/RimMandrake/Utils/arena/selftest_arm_sandbox.py", "why": "checks the arena sandbox against the host: bwrap, refs in /home/mandrake/rm/retired-trees git trees, a DENY list holding ~/.claude/projects (reach_never)"},
-    {"path": "src/RimMandrake/Utils/arena/selftest_arena_ralph_c.py", "why": "runs arena members in nested bwrap namespaces against /home/mandrake/rm/arena"}
-  ],
+  "reach_host_only": [],
   "_reach_git_tools": "OPS_CHURN_DIAGNOSE_RELENTLESS_HFDA_UHRX: tools that run git themselves. A proof naming one is a git history need at contract time (relentless_reach.needs) though its text holds no git verb: RELENTLESS_REVIEW_FINISH_TOO_BIG_TO_SKIM's code_review_since.py proof passed the gate, exited 2 in the box (no .git) five times.",
   "reach_git_tools": [
     {"path": "src/RimMandrake/Utils/code_review_since.py", "why": "git rev-parse and merge-base --is-ancestor on the --after shas"}

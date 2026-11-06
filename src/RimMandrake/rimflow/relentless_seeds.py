@@ -27,6 +27,7 @@ import os
 import queue
 import re
 import secrets
+import fnmatch
 import shlex
 import shutil
 import subprocess
@@ -39,7 +40,6 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent.parent
 sys.path.insert(0, str(HERE))
-sys.path.insert(0, str(REPO / "src/RimMandrake/Utils/arena"))
 
 SALT = "relentless-seeds-2026-11-01"
 ARENA = Path(os.environ.get("RM_ARENA_DATA", "/mnt/d/ClaudeWork/rimmandrake/arena"))
@@ -78,16 +78,26 @@ def changed(clone, base, fix):
     return [x for x in out.split("\0") if x]
 
 
+BOOKKEEPING = ("infrastructure/state/ledger/*", "infrastructure/state/queue/*", "infrastructure/state/items/*",
+               "AGENTS.md")
+
+
+def is_bookkeeping(path):
+    return any(fnmatch.fnmatch(path, g) for g in BOOKKEEPING)
+
+
+def is_selftest(path):
+    return path.endswith(".py") and os.path.basename(path).startswith("selftest")
+
+
 def source_paths(names):
     """The fix's own code: what a worker could leave out. Tests, bookkeeping and non-Python stay as they were."""
-    import arena_tasks as AT
-    return [n for n in names if n.endswith(".py") and not is_state(n) and not AT.is_selftest(n)]
+    return [n for n in names if n.endswith(".py") and not is_state(n) and not is_selftest(n)]
 
 
 def is_state(path):
     """Written about the work rather than being it. Restored to base in every class: such a file can hold the fix's hash."""
-    import arena_tasks as AT
-    return AT.is_bookkeeping(path) or path.startswith(STATE_PREFIXES)
+    return is_bookkeeping(path) or path.startswith(STATE_PREFIXES)
 
 
 def split_hunks(diff):
@@ -117,11 +127,10 @@ def split_hunks(diff):
 
 def proof_of(task, hidden):
     """The named selftests a proof runs: the task's visible ones and the ones the fix added and the bank held back."""
-    import arena_tasks as AT
     head = task["proof"].split("&&")[0] if task["proof"].startswith("python3 ") else ""
     paths = re.findall(r"\S+\.py", head)[1:]
     paths += [c["path"] for c in hidden["checks"] if c["type"] == "fix_test" and c.get("path")]
-    paths = [p for p in dict.fromkeys(paths) if AT.is_selftest(p)]
+    paths = [p for p in dict.fromkeys(paths) if is_selftest(p)]
     return PROOF + " ".join(paths) if paths else None
 
 

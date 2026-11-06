@@ -733,7 +733,7 @@ def quick_s() -> float:
 
 QUICK_FILE = TIMINGS_FILE.with_name("selftest_quick.json")
 QUICK_TAG = "quick:"                     # a SKIPPED detail starting with this prints as SKIPPED(quick)
-_IMPORT_DIRS = ("src/RimMandrake/Utils", "src/RimMandrake/rimflow", "src/RimMandrake/Utils/arena")
+_IMPORT_DIRS = ("src/RimMandrake/Utils", "src/RimMandrake/rimflow")
 _PY_PATH_RE = re.compile(r"""["']([\w./-]+\.py)["']""")
 
 
