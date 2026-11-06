@@ -1319,3 +1319,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:58:19Z","tsn":1793995099578544682}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR A1 (L2), read-only proof","ts":"2026-11-06T20:01:23Z","tsn":1793995283691289297}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T20:02:03Z","tsn":1793995323524611943}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW A1 (L2), read-only proof","ts":"2026-11-06T20:02:54Z","tsn":1793995374448830520}
