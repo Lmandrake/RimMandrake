@@ -685,13 +685,73 @@ def regen_job_id(r: dict, rs: dict | None = None) -> str:
     return f"arteval_{r['subject']}_{RS.tag(r['subject'], n, rs if rs is not None else RS.resets())}"
 
 
-def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None, rs: dict | None = None, texpath_of=None) -> list:
+# artpipe/fill_queue.FLIGHT_FRAME, the same pattern: a flight record is named by its candidate (flight_cut4), its judged
+# frames (RM_Shirrel_Flying_1_east) or a flight_<n> source file (ARTEVAL_FLIGHT_HARDEN_REROLLS_SKIP_BODY_LOCK)
+FLIGHT_TOKEN = re.compile(r"_fly(?:ing)?_?\d|(?:^|[_/])flight(?![a-z])", re.I)
+FLIGHT_ACCEPT = "acceptance: flyer_gate.py flipbook %s (exit 0), never a judge's look at a whole-creature frame"
+
+
+def is_flight_record(r: dict) -> bool:
+    """A judged flip-book (flight frames), not the def's static body."""
+    names = [spec_key(r), str(r.get("artpipe_job") or ""), str(r.get("target_texpath") or "")]
+    return (any(FLIGHT_TOKEN.search("_" + n) for n in names if n)
+            or any(str(k).lower().startswith("flight") for k in (r.get("source_files") or {})))
+
+
+def is_flight_row(row: dict) -> bool:
+    """A regen row flight_layer_rows made (layered or held): later passes must not re-id or re-prompt it."""
+    return bool(FLIGHT_TOKEN.search(str(row.get("id") or "")))
+
+
+def _flyer_gate():
+    art = ROOT / "src/RimMandrake/Utils/art"
+    if str(art) not in sys.path:
+        sys.path.append(str(art))
+    import flyer_gate
+    return flyer_gate
+
+
+def flight_layer_rows(r: dict, base: dict, designs: dict | None = None, def_sets: dict | None = None) -> list:
+    """A flight REGEN filed as the layered recipe (flyer_stable_body_study.md 3.1, 3.4): one wing-layer row per facing
+    and pose, prompted by flyer_gate.wing_prompt and derived from the accepted body master, accepted only by the
+    flip-book gate. Redrawing N whole creatures is the recipe that drifts, so with no wing design or no accepted master
+    (`derive_from` / `master_job` on the record) the one row returned keeps no plan and is REFUSED by fill_queue's
+    flight-frame gate: reported unfiled with the route, never filed as a whole creature."""
+    G = _flyer_gate()
+    designs = G.wing_designs() if designs is None else designs
+    def_sets = G.DEF_SETS if def_sets is None else def_sets
+    subj = r["subject"]
+    d = designs.get(subj)
+    master = str(r.get("derive_from") or r.get("master_job") or "").strip()
+    sets = ", ".join(def_sets.get(subj) or []) or f"<{subj} cut-out set, owed>"
+    accept = FLIGHT_ACCEPT % sets
+    findings = ", ".join(r["regen"]["findings"])
+    if not d or not master:
+        owed = "; ".join(x for x in ((f"no wing design for {subj} in {G.WING_DESIGNS.relative_to(ROOT)}" if not d else ""),
+                                     ("no accepted body master (derive_from)" if not master else "")) if x)
+        # the id carries the flight marker even for a round candidate (arteval_<DEF>_r2), so fill_queue's gate sees it
+        rid = base["id"] if FLIGHT_TOKEN.search(base["id"]) else base["id"] + "_flight"
+        return [dict(base, id=rid, style_notes=base["style_notes"] + f"; flight reroll held for the layered recipe: "
+                     f"{owed}; {accept}")]
+    rows = []
+    for facing in G.FACINGS:
+        for pose in G.WING_POSES:
+            rows.append(dict(base, id=f"{base['id']}_flight_{facing}_{pose}", facings=[facing], plan=d["plan"],
+                             derive_from=master, prompt=G.wing_prompt(subj, facing, pose) + f" Fixes: {findings}.",
+                             style_notes=base["style_notes"] + f"; layered recipe: {pose} wing layer, {facing}, "
+                             f"composited by flyer_lock.py compose; {accept}"))
+    return rows
+
+
+def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None, rs: dict | None = None, texpath_of=None,
+               designs: dict | None = None, def_sets: dict | None = None) -> list:
     """fill_queue.py rows (JSON art list) for every REGEN — filed only with --file-regens. A row with facings gets a
     prompt the filing gate accepts (gate_clean_prompt); the row's style_notes say what was done.
     Every row names the texPath it redraws (the judged record's, else TEXPATH_OF(def), default the def's adult body
     texPath from the repo defs): fill_queue infers one only for a def that draws exactly one, and refused flyers
     (body + flight frames) as REFUSED_UNCONFIRMED (ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET). An unresolvable def gets
-    no guessed path: its row is refused at filing and file_regen_jobs reports it unfiled."""
+    no guessed path: its row is refused at filing and file_regen_jobs reports it unfiled.
+    A flight record (is_flight_record) is filed as wing-layer rows, never a whole creature (flight_layer_rows)."""
     if texpath_of is None:
         def texpath_of(d):
             import fauna_spec as FS
@@ -716,6 +776,9 @@ def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None, rs: dict | N
                     | ({"target_texpath": tp} if tp else {}))
         if not r.get("canvas_rule"):
             rows[-1]["style_notes"] += "; canvas 1024: the spec has no drawSize"
+        if is_flight_record(r):   # its whole-creature prompt is replaced, not cleaned (no rewrite model call)
+            rows[-1:] = flight_layer_rows(r, rows[-1], designs, def_sets)
+            continue
         if rows[-1]["facings"]:
             keep = (rq.get("keep") or "").strip()
             base = rows[-1]["prompt"]

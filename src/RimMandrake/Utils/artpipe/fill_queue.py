@@ -293,8 +293,12 @@ def load_rows(path: Path) -> list[dict]:
 
 # FLYER_STABLE_BODY_GATE_1: one whole creature per frame is the recipe that drifts. A flight frame is a layer drawn
 # against an accepted master (`plan` says which body plan, `derive_from` which master), or a named exception.
-FLIGHT_FRAME = re.compile(r"_fly(?:ing)?_?\d", re.I)
-FLYER_PLANS = ("bird", "bat", "insect", "ray", "floater", "swarm", "large")
+# `_flight` too: an art-eval flight reroll is named for its judged candidate (arteval_RM_Shirrel__flight_cut4_r1) and
+# carries the def's body texPath, so `_fly<n>` alone let it through as a whole creature
+# (ARTEVAL_FLIGHT_HARDEN_REROLLS_SKIP_BODY_LOCK). art_eval/runner.FLIGHT_TOKEN is this same pattern.
+FLIGHT_FRAME = re.compile(r"_fly(?:ing)?_?\d|(?:^|[_/])flight(?![a-z])", re.I)
+# glider: the wing-design plan of the membrane gliders (flyer_wing_designs.json, RSW_Strill)
+FLYER_PLANS = ("bird", "bat", "insect", "ray", "floater", "swarm", "large", "glider")
 
 
 def _refuse_unlocked_frames(row: dict) -> None:
@@ -305,7 +309,9 @@ def _refuse_unlocked_frames(row: dict) -> None:
     if plan not in FLYER_PLANS or not row.get("derive_from"):
         raise ValueError(f"row {row.get('id')!r} is a per-frame whole-creature flight row: file a wing layer with "
                          f"plan={'|'.join(FLYER_PLANS)} and derive_from=<accepted master>, or say why not in "
-                         f"flipbook_override (design/RimMandrake/flyer_stable_body_study.md section 3.1)")
+                         f"flipbook_override (design/RimMandrake/flyer_stable_body_study.md section 3.1; prompts: "
+                         f"flyer_gate.py wingprompt DEF FACING master|up|level|down, layers: flyer_lock.py compose, "
+                         f"acceptance: flyer_gate.py flipbook SET)")
 
 
 def row_to_jobs(row: dict, default_channel: str = "codex",

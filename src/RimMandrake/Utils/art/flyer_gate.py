@@ -57,7 +57,8 @@ DEF_SETS = {"RSW_Sketto": ["Sketto"], "RSW_PekoPeko": ["PekoPeko_f", "PekoPeko_m
             "RM_Sivvern": ["Sivvern"], "RM_Sparkleech": ["Sparkleech"],
             "RM_Vrisk": ["Vrisk"], "RM_Zellik": ["Zellik"]}
 # def -> a body-plan word (study 3.3), for the defs the study assigned one
-PLANS = ("bird", "bat", "insect", "ray", "floater", "swarm", "large")
+# glider: the membrane gliders' plan in WING_DESIGNS (RSW_Strill); a wing-layer row naming it must be fileable
+PLANS = ("bird", "bat", "insect", "ray", "floater", "swarm", "large", "glider")
 TIERS = {
     1: "RSW_Hawkbat RSW_PekoPeko RSW_Beldon RSW_Convor RSW_Bogwing RSW_ScrapNestBird RM_Murrelith RM_Pirrik RM_Grimewing "
        "RM_BloodropMoth RSW_CanCell RSW_Dactillion RSW_Neebray".split(),

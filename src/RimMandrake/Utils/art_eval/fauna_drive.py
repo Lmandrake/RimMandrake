@@ -144,6 +144,10 @@ def cmd_rows(a):
         # the round is the number of REGEN verdicts on the subject in its current series, counted from the decision
         # logs (the shared regen_rounds.json lost updates under parallel runs); round_series.py owns the count
         t = r["target_def"]
+        if R.is_flight_row(r):
+            # a wing-layer or held flight row keeps its id, prompt and canvas: re-iding collapses the layers into one
+            # job and the owner/neutral prompt is a whole creature (ARTEVAL_FLIGHT_HARDEN_REROLLS_SKIP_BODY_LOCK)
+            return r
         r["id"] = f"arteval_{t}_{RS.tag(t, min(nreg.get(t, 1), 3), rs)}"
         s = specs.get(t)
         if s is None:
