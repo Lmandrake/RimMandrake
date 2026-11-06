@@ -569,7 +569,11 @@ def unmeasured(store, st, said, blind, r, now):
             said_line = relentless_reachfix.on_blind(store, st, r, now, said, blind)
         finally:
             st.pop("_blind_check", None)
-        store.save(st)
+        gone = st.pop("_reach_back", None)
+        if gone:
+            reach_back(store, st, gone, r, now)
+        else:
+            store.save(st)
         return said_line
     limit = r.get("unmeasured_limit", 2)
     if n >= limit:
@@ -586,6 +590,16 @@ def unmeasured(store, st, said, blind, r, now):
     return ("blind check at %s: UNMEASURED (Marker said %s), the checker could not reach the evidence; no work goes back, "
             "%s: %s" % (sha, said, "held for repair of the box" if n >= limit else "checked again in %d s"
                         % r.get("unmeasured_recheck_s", 1800), (blind or reasons)[:400]))
+
+
+def reach_back(store, st, why, r, now):
+    """Under the lock. The Judge was blind on what no reach repair may open (relentless_reachfix.dark): the proof's
+    binding is the builder's to repair, never the box. A proof-only return attributed CONTRACT, so the next worker may
+    rebind (route the reading through an offbox adapter) and the code stays (CHECKER_REACH_FIX_STORE_STILL_DARK gen 7)."""
+    st["blind"] = None
+    st.pop("recheck_at", None)
+    fail(store, st, relentless_attrib.PROOF_OWED, why, r, now,
+         attributed={"targets": ["CONTRACT"], "evidence": why[:300]})
 
 
 def account_lost(store, st, lost, r, now):
@@ -7203,7 +7217,7 @@ def _tick(store, fx, r, now, prof):
         retire(store, fx, store.states(), now, acts, r)
         relentless_block.sweep(store, fx, now, acts, iso)
         serve_poke()    # a poke waiting at tick start enrols now: live 2026-11-06 the prelude's end came 66 s later
-        relentless_reachfix.sweep(store, fx, r, now, acts, iso)     # a blind Judge's repair: probe, apply, or ticket
+        relentless_reachfix.sweep(store, fx, r, now, acts, iso, back=reach_back)    # a blind Judge's repair: probe, apply, ticket or back
         reclaim_dead(store, fx, r, now, acts)
         release_parked(store, fx, r, now, acts)
         run_tmp_sweep(store, fx, now, acts, "start")

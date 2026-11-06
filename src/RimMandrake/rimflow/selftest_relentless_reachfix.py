@@ -797,11 +797,93 @@ def t_store_dark_second():
     x.done()
 
 
+RA_S03_BLIND = ("seed results dir /mnt/d/ClaudeWork/rimmandrake/relentless_agent/seeds (keys/E1.json, results, results_S03, "
+                "results_wall, second_reads.json): ls says No such file or directory; relentless store "
+                "/home/mandrake/rm/relentless/store: relentless.py trust raises PermissionError at store init, before "
+                "--against-step0 is reached")
+IWIV_BLIND = "Relentless store attempts: ls /home/mandrake/rm/relentless/store -> Permission denied"
+
+
+def t_seed_bank_dark():
+    """CHECKER_REACH_FIX_STORE_STILL_DARK gen 7 (the fix died twice): RA_S03_WALL_MEASURE_DID_IT_HELP's proof reads the
+    seed bank under /mnt/d/ClaudeWork/rimmandrake/relentless_agent (never_through: it holds the evaluation keys) and runs
+    relentless.py trust, which opens the store. It was released on KUQY's store repair, blind again, and the store class
+    filed this ticket; on its close the probe passes (the store adapters read), the same sha is blind again, and a
+    successor follows, forever. No reach repair may open scratch the wall withholds by design, so: (11a) dark() names the
+    withheld scratch path no adapter covers, and only it: not the adapter-covered store, not scratch the wall binds, not
+    KUQY's text; (11b) a Judge blind on it sends the item back to its builder as a proof-only binding repair (proof_owed,
+    binding), owning no store repair, probing nothing, filing no ticket; (11c) the instance as it stands on disk (owner of
+    the store repair, parked on a done ticket, a waiter behind it): the sweep gives the owner back and unblocks it, files
+    no successor, and the waiter takes the class repair over and is released on its own passing probe."""
+    import json
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    dark = getattr(RF, "dark", None)
+    seeds = "/mnt/d/ClaudeWork/rimmandrake/relentless_agent/seeds"
+    got = dark(r, [RA_S03_BLIND]) if dark else None
+    ok(got == [seeds], "(11a) dark() names the withheld seed bank, not the adapter-covered store: %s" % got)
+    other = [dark(r, [t]) for t in (KUQY_STILL_BLIND, IWIV_BLIND,
+                                    "status /mnt/d/ClaudeWork/rimmandrake/ops_watch/status.json: empty")] if dark else None
+    ok(other == [[], [], []], "(11a) a store, git or bindable scratch text is no dark path: %s" % other)
+
+    def real(x):
+        x.r = dict(x.r, reach_classes=r["reach_classes"], grant_covers=r["grant_covers"], reach_never=r["reach_never"],
+                   walls={"marker": dict(r["walls"]["marker"], enforce=False)}, offbox_adapters=r["offbox_adapters"])
+    x = rig()
+    real(x)
+    B.to_check(x, "I0")
+    blind(x, "I0", what=RA_S03_BLIND)
+    for _ in range(3):
+        x.tick()
+    st = x.st("I0")
+    ent = RF.load(x.s).get("store") or {}
+    lf = st.get("last_fail") or {}
+    ok(st["status"] != "blocked" and lf.get("class") == "proof_owed" and seeds in (lf.get("detail") or "")
+       and (st.get("proof_only") or {}).get("binding") is True,
+       "(11b) blind on the seed bank goes back to its builder as a proof-only binding repair: %s %s %s"
+       % (st["status"], lf, st.get("proof_only")))
+    ok(ent.get("owner") != "I0" and x.w.probes == [] and x.w.tickets == [] and len(checks(x)) == 1,
+       "(11b) it owns no store repair, probes nothing, files no ticket, buys no re-check: %s probes %s tickets %s checks %d"
+       % (ent, x.w.probes, x.w.tickets, len(checks(x))))
+    x.done()
+    # (11c) the instance on disk: I0 owns the store repair parked on the ticket, I1 waits behind it
+    x = rig(n=2)
+    real(x)
+    B.to_check(x, "I0")
+    blind(x, "I0", what=IWIV_BLIND)
+    B.to_check(x, "I1")
+    blind(x, "I1", what=IWIV_BLIND)
+    for _ in range(3):
+        x.tick()
+    tk = RF._ticket_of(x.r, "store")
+    with x.s.lock():
+        cur = x.s.load("I0")
+        cur["reach"]["still_blind"] = RA_S03_BLIND      # what the pre-fix route recorded for RA_S03
+        cur["blind"] = dict(cur.get("blind") or {}, what=RA_S03_BLIND)
+        x.s.save(cur)
+    ok(x.w.tickets == [tk] and (RF.load(x.s).get("store") or {}).get("owner") == "I0",
+       "(11c) set-up: I0 owns the store repair on %s, I1 waits: %s %s" % (tk, x.w.tickets, RF.load(x.s).get("store")))
+    x.w.items[tk] = "done"
+    x.w.probe_says = (True, "store adapters read non-empty")
+    for _ in range(5):
+        x.tick()
+    s0, s1 = x.st("I0"), x.st("I1")
+    ent = RF.load(x.s).get("store") or {}
+    ok(s0["status"] != "blocked" and (s0.get("last_fail") or {}).get("class") == "proof_owed" and "I0" in x.w.unblocks,
+       "(11c) the sweep gives the owner back to its builder and unblocks it: %s %s unblocks %s"
+       % (s0["status"], s0.get("last_fail"), x.w.unblocks))
+    ok(x.w.tickets == [tk] and (s1.get("reach") or {}).get("status") == "applied" and "I1" in x.w.unblocks
+       and ent.get("last_owner") == "I1",
+       "(11c) no successor; the waiter takes the repair over and is released on its own probe: tickets %s I1 %s/%s book %s"
+       % (x.w.tickets, s1["status"], (s1.get("reach") or {}).get("status"), ent))
+    x.done()
+
+
 def main():
     for t in (t_one_blind_no_more_checks, t_refused_path, t_dedupe_and_probe_gate, t_ticket_only_on_failure,
               t_windows_build_nothing_to_probe, t_windows_build_seed_probes, t_every_waiter_released, t_legacy_off, t_clones_seed, t_store_seed,
               t_closed_ticket_reseeds, t_seat_tmp_reach, t_clones_scratch_instance, t_live_round_seed,
-              t_store_waiter_kuqy, t_clones_judge_gap_filled, t_store_dark_second, t_gpt_review_back_to_worker):
+              t_store_waiter_kuqy, t_clones_judge_gap_filled, t_store_dark_second, t_gpt_review_back_to_worker,
+              t_seed_bank_dark):
         t()
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0

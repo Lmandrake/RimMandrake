@@ -142,6 +142,71 @@ def refused(p, r, store_root=None):
     return None
 
 
+def dark(r, texts):
+    """-> the paths `texts` name that no reach repair can ever show: strictly under a read_through root (scratch the wall
+    binds read only when named), yet withheld there by design (never_through, never_through_rx), and covered by no
+    supervisor adapter. CHECKER_REACH_FIX_STORE_STILL_DARK gen 7: RA_S03_WALL_MEASURE_DID_IT_HELP's proof reads the seed
+    bank under relentless_agent (the evaluation keys); its store repair passed the probe, the same sha was blind again,
+    and the store class filed a ticket, then a successor, for a gap no repair may open. Such a gap is the proof's binding,
+    not the box: the item goes back to its builder (back()). The store, ~/.ssh and the other reach_never roots are not
+    read_through roots, so they stay the classes' to repair through their adapters."""
+    prof = relentless_wall.profile(r) or {}
+    roots = [x.rstrip("/") for x in prof.get("read_through") or [] if isinstance(x, str)]
+    cover = [c.rstrip("/") for a in relentless_wall.adapters(r).values() for c in a.get("covers") or []
+             if isinstance(c, str)]
+    out = []
+    for p in _paths_of(texts):
+        if not any(p.startswith(x + "/") for x in roots) or relentless_wall.through_reachable(p, prof):
+            continue
+        if any(p == c or p.startswith(c + "/") for c in cover) or p in out:
+            continue
+        out.append(p)
+    return out
+
+
+def back_why(gone, what):
+    return ("the proof needs %s, which the wall withholds by design (never_through / never_through_rx) and no supervisor "
+            "adapter covers: no reach repair can give the Judge these eyes, so the binding goes back to its builder. Rebind "
+            "(proof only, the code stays): read it through a supervisor offbox adapter (relentless_rules.json "
+            "offbox_adapters; add one if none fits) or prove it from what the box shows. The Judge said: %s"
+            % (", ".join(gone[:6]), (what or "")[:300]))
+
+
+def _hand_over(store, fx, book, name, item, now, acts):
+    """The class repair `item` owned or waited on goes on without it: its first waiter takes the repair over (a ticket's
+    blocks are already on the ticket; a probe's waiters were blocked on `item`, so they move to the new owner)."""
+    ent = book.get(name) or {}
+    waiters = [w for w in ent.get("waiters") or [] if w != item]
+    if ent.get("owner") != item:
+        if ent:
+            ent["waiters"] = waiters
+        return
+    if not waiters:
+        book[name] = dict(ent, status="back", owner=None, waiters=[], back_at=now, last_back=item)
+        return
+    new, rest = waiters[0], waiters[1:]
+    book[name] = dict(ent, owner=new, waiters=rest, since=now, last_back=item)
+    if ent.get("status") == "ticket":
+        return
+    book[name]["status"] = "probe"
+    for w in [new] + rest:
+        with store.lock():
+            cur = store.load(w)
+            if not cur or cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
+                continue
+            cur["wait"] = dict(cur["wait"], on=new, attributed_at=now)
+            if cur.get("reach"):
+                cur["reach"]["status"] = "probe" if w == new else "waiting"
+                cur["reach"]["on"] = None if w == new else new
+            if w != new:
+                cur["block_pending"] = {"kind": "item", "on": [new], "class": "reach",
+                                        "detail": "waits on the %s reach repair, now owned by %s" % (name, new)}
+            store.save(cur)
+        if fx is not None:
+            fx.ledger_unblock(w, "reach repair %s: %s went back to its builder; %s owns the repair now" % (name, item, new))
+    acts.append({"do": "reach_handed_over", "item": item, "class": name, "to": new})
+
+
 def propose(r, cls, proposals, unreached, what, store_root=None):
     """-> {adapters, paths, refused, by}. The Judge's --propose lines first; none, and the class's seed."""
     known = relentless_wall.adapters(r)
@@ -327,6 +392,19 @@ def on_blind(store, st, r, now, said, blind):
     what = (st.get("blind") or {}).get("what") or blind or ""
     prev = st.get("reach") or {}
     book = load(store)
+    gone = dark(r, [what] + list(chk.get("unreached") or []))
+    if gone:
+        # no repair opens it: the binding goes back to the builder (relentless.unmeasured runs the return)
+        acts = []
+        for name in sorted(book):
+            _hand_over(store, None, book, name, item, now, acts)
+        save(store, book)
+        st["reach"] = dict(prev, status="back", at=now, dark=gone[:6], sha=sha)
+        st.pop("wait", None)
+        st.pop("block_pending", None)
+        st["_reach_back"] = back_why(gone, what)
+        return ("blind check at %s: UNMEASURED (Marker said %s) on what no reach repair may open (%s): no repair, no "
+                "ticket; the binding goes back to its builder: %s" % (sha, said, ", ".join(gone[:6]), what[:300]))
     if prev.get("status") == "applied" and prev.get("sha") == sha:
         # the probe passed and the Judge is still blind on the same sha: the repair did not give it its eyes
         cls = prev["class"]
@@ -389,12 +467,14 @@ def _apply(st, prop, name, now, how):
     st["status"] = "candidate"
 
 
-def sweep(store, fx, r, now, acts, iso):
-    """Not under the lock. Probe each open repair; pass applies and re-checks once, fail files the ticket."""
+def sweep(store, fx, r, now, acts, iso, back=None):
+    """Not under the lock. Probe each open repair; pass applies and re-checks once, fail files the ticket. `back(store,
+    st, why, r, now)`, under the lock: an owner blind on what no repair opens (dark()) goes back to its builder."""
     if not on(r):
         return
     book = load(store)
-    for name, ent in sorted(book.items()):
+    for name in sorted(book):
+        ent = book.get(name) or {}
         owner, status = ent.get("owner"), ent.get("status")
         if status not in ("probe", "ticket", "failed") or not owner:
             continue
@@ -404,6 +484,28 @@ def sweep(store, fx, r, now, acts, iso):
             save(store, book)
             continue
         rp = st.get("reach") or {}
+        gone = dark(r, [rp.get("still_blind"), (st.get("blind") or {}).get("what")])
+        if gone and back is not None:
+            why = back_why(gone, rp.get("still_blind") or (st.get("blind") or {}).get("what"))
+            with store.lock():
+                cur = store.load(owner)
+                if not cur or cur["status"] != "blocked" or (cur.get("wait") or {}).get("kind") != WAIT:
+                    continue
+                cur.pop("wait", None)
+                cur.pop("block_pending", None)
+                cur["reach"] = dict(cur.get("reach") or {}, status="back", at=now, dark=gone[:6])
+                back(store, cur, why, r, now)
+            if status == "ticket":
+                fx.ledger_unblock(owner, "reach repair %s: no repair opens %s; the binding went back to its builder"
+                                  % (name, ", ".join(gone[:6])))
+            _hand_over(store, fx, book, name, owner, now, acts)
+            for other in sorted(book):
+                if other != name:
+                    _hand_over(store, fx, book, other, owner, now, acts)
+            save(store, book)
+            store.journal({"at": iso(now), "do": "reach_back", "item": owner, "class": name, "dark": gone[:6]})
+            acts.append({"do": "reach_back", "item": owner, "class": name, "dark": gone[:6]})
+            continue
         prop = refreshed(r, st)
         if status == "ticket":
             led = fx.item_state(ent["ticket"]) or {}
