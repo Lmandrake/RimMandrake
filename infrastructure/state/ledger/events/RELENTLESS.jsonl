@@ -997,3 +997,8 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A1 (L2), read-only proof","ts":"2026-11-06T09:49:09Z","tsn":1793958549272722442}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:51:15Z","tsn":1793958675503067109}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1 A2 (L2), read-only proof","ts":"2026-11-06T09:51:26Z","tsn":1793958686673049808}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:54:45Z","tsn":1793958885835532396}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: ACC_BIOMES_FIXES_LIVE_RERUN_1 A2 (L2), read-only proof","ts":"2026-11-06T09:54:59Z","tsn":1793958899179639729}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:55:09Z","tsn":1793958909178881149}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: LONGSHADE_SCENE_LIVECHECK_1 A1 (L2), read-only proof","ts":"2026-11-06T09:57:32Z","tsn":1793959052182607791}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T09:57:53Z","tsn":1793959073506863787}
