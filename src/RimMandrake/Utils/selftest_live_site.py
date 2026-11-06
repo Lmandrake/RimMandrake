@@ -198,6 +198,65 @@ with contextlib.redirect_stdout(io.StringIO()):
                   running=("ludeon.rimworld", "oblitus.mylittleplanet"), missing=True)
 check("--ignore-missing-mods still checks the running list first", rc == L.NOT_READY and not FakeRB.loads)
 
+# RETIRED mods (GAMEENV_FIX_HARNESS_A412C1DF_ITEMS_WAIT): the canonical start records mods retired after it was saved
+# The 11 mods its header names and FULL.LATEST lacks (measured 2026-11-06; drop one here if it ever returns to the list)
+R3_RETIRED = ["ironscruff.primordialgeysers", "m00nl1ght.geologicallandforms", "mandrake.rm.ninefold",
+              "mandrake.rut.greentideraidant", "mandrake.rut.ishkolandmarks", "mandrake.rut.rustcathedralroaches",
+              "mandrake.rut.shokkweaveeconomy", "mlie.advancedbiomes", "sihv.rombonesport",
+              "vanillaracesexpanded.archon", "zylle.morevanillabiomes"]
+real_full, real_save_ids, real_full_ids = L.full_list_ids(), L.save_mod_ids, L.full_list_ids
+check("RETIRED: the committed full list reads", bool(real_full) and "ludeon.rimworld" in real_full)
+check("RETIRED: all 11 of the canonical start's dead mods are off the committed full list",
+      not set(R3_RETIRED) & set(real_full or ()))
+check("RETIRED: retired_gap splits retired from short",
+      L.retired_gap(["a", "b", "c"], ["a"], ["a", "c"]) == (["b"], ["c"]))
+check("RETIRED: retired_gap on an unread input calls nothing retired",
+      L.retired_gap(None, ["a"], ["a"]) == ([], None) and L.retired_gap(["a"], None, ["a"]) == ([], None)
+      and L.retired_gap(["a"], ["a"], None) == ([], None))
+
+
+def retired_case(recorded, full, argv=("--save", "S"), **kw):
+    L.save_mod_ids, L.full_list_ids = (lambda save: recorded), (lambda: full)
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc, _ = run(list(argv), missing=True, **kw)
+    L.save_mod_ids, L.full_list_ids = real_save_ids, real_full_ids
+    return rc, out.getvalue()
+
+
+HERE_MODS = ["ludeon.rimworld", "7f.alienworlds"]
+rc, text = retired_case(HERE_MODS + R3_RETIRED, HERE_MODS + ["mandrake.rm.coldstorage"])
+check("RETIRED: only retired mods missing -> retried with ignoreModCompatibility, READY, and it says so",
+      rc == L.READY and len(FakeRB.loads) == 2 and FakeRB.loads[0].get("ignoreModCompatibility") is None
+      and FakeRB.loads[1].get("ignoreModCompatibility") is True and "11 retired" in text and "mlie.advancedbiomes" in text)
+rc, text = retired_case(HERE_MODS + ["mlie.advancedbiomes", "sarg.alphaanimals"], HERE_MODS + ["sarg.alphaanimals"])
+check("RETIRED: one missing mod still on the full list -> NOT READY, no second load, the short mod named",
+      rc == L.NOT_READY and len(FakeRB.loads) == 1 and "sarg.alphaanimals" in text)
+for label, recorded, full in (("save header", None, HERE_MODS), ("full list", HERE_MODS + ["x.y"], None)):
+    rc, text = retired_case(recorded, full)
+    check("RETIRED: an unread %s -> NOT READY, no second load" % label, rc == L.NOT_READY and len(FakeRB.loads) == 1)
+rc, text = retired_case(HERE_MODS, HERE_MODS)
+check("RETIRED: a refusal the header does not explain -> NOT READY, no second load",
+      rc == L.NOT_READY and len(FakeRB.loads) == 1)
+L.save_mod_ids, L.full_list_ids = (lambda save: ["x.y"]), (lambda: ["a.b"])
+_rd = L.reply
+L.reply = lambda r: {}      # an unreadable jawa/running_mods answer
+with contextlib.redirect_stdout(io.StringIO()):
+    rc, _ = run(["--save", "S"], missing=True)
+L.reply, L.save_mod_ids, L.full_list_ids = _rd, real_save_ids, real_full_ids
+check("RETIRED: an unread running load -> NOT READY, no second load", rc == L.NOT_READY and len(FakeRB.loads) == 1)
+# the header reader on a file shaped like a real save, and its path through game_paths
+import tempfile as _tf  # noqa: E402
+_dir = _tf.mkdtemp()
+with open(os.path.join(_dir, "S.rws"), "w", encoding="utf-8") as f:
+    f.write('<?xml version="1.0"?>\n<savegame><meta><modIds><li>Ludeon.RimWorld</li><li>mlie.AdvancedBiomes</li></modIds>'
+            '<modSteamIds><li>0</li></modSteamIds></meta></savegame>')
+import game_paths as _gp  # noqa: E402
+_saves, _gp.SAVES = _gp.SAVES, _dir
+check("RETIRED: save_mod_ids reads a header, lowercased", L.save_mod_ids("S") == ["ludeon.rimworld", "mlie.advancedbiomes"])
+check("RETIRED: save_mod_ids of no file is None", L.save_mod_ids("NoSuchSave") is None)
+_gp.SAVES = _saves
+
 # --restage-with (ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP): a refused fixture is re-made on the running list, then loaded
 staged = []
 

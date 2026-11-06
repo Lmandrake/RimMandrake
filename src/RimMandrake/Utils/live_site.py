@@ -59,16 +59,24 @@ without some of the mods it recorded (pair it with --without, so the running lis
 or it is gone), src/RimMandrake/<MOD>/stage_proof_site.py re-makes it on the CURRENT map and list, then it is loaded.
 Only a rm_proof_* fixture: a canonical or player save is never re-made.
 
+A plain --save refused save.missing_mods is retried with ignoreModCompatibility when every missing mod is RETIRED: on the
+save's header, on neither the running load nor ModsConfig.FULL.LATEST.xml (GAMEENV_FIX_HARNESS_A412C1DF_ITEMS_WAIT: the
+canonical start records 11 mods retired after it was saved, so no list could ever load it). A missing mod still on the
+full list means the running load is short: that stays NOT READY, as does anything unread.
+
 Exit 0 the scene is up (read back), 2 it could not be made (UNMEASURED; never 1: a site is not a verdict).
 Runs under Windows Python: RimBridge binds Windows loopback.
 """
 import argparse
 import json
 import os
+import re
 import sys
 import time
+import xml.etree.ElementTree as ET
 
 READY, NOT_READY = 0, 2
+HEADER_BYTES = 1 << 20  # a save's <meta> sits at its top; the canonical start's modIds end well inside this
 MENU_DEAD_S = 60        # the menu this long after load_game answered: the load never began, or it died and went back
 LOAD_LINE = "Loading game from file %s with mods:"      # Verse.SavedGameLoaderNow, Player.log
 DIED = ("Exception from asynchronous event:", "Exception from long event:")     # Verse.LongEventHandler
@@ -242,6 +250,61 @@ def load_save(a):
         return rb.call("rimworld/load_game", params)
 
 
+def save_mod_ids(save):
+    """-> the lowercased packageIds in `save`'s meta header, or None when the file or header cannot be read."""
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from game_paths import SAVES
+        with open(os.path.join(SAVES, save + ".rws"), "rb") as f:
+            head = f.read(HEADER_BYTES).decode("utf-8", "replace")
+    except (OSError, ImportError):
+        return None
+    m = re.search(r"<modIds>(.*?)</modIds>", head, re.S)
+    ids = re.findall(r"<li>\s*([^<\s]+)\s*</li>", m.group(1)) if m else []
+    return [i.lower() for i in ids] or None
+
+
+def full_list_ids(path=None):
+    """-> the lowercased packageIds of the committed full list, or None when it cannot be read."""
+    path = path or os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "infrastructure", "state",
+                                "modlists", "ModsConfig.FULL.LATEST.xml")
+    try:
+        ids = [(li.text or "").strip().lower() for li in ET.parse(path).getroot().find("activeMods")]
+    except (OSError, ET.ParseError, TypeError):
+        return None
+    return [i for i in ids if i] or None
+
+
+def retired_gap(recorded, running, full):
+    """-> (retired, short): the mods the save records and the running load lacks, split by whether the full list still
+    holds them. Pure. Any input None (unread) -> ([], None): nothing may be called retired on an unread list."""
+    if recorded is None or running is None or full is None:
+        return [], None
+    missing = set(recorded) - set(running)
+    return sorted(missing - set(full)), sorted(missing & set(full))
+
+
+def load_past_retired(a, r):
+    """A refused load -> the retried reply when every missing mod is retired, else `r` untouched (a why printed)."""
+    if not isinstance(r, dict) or r.get("code") != "save.missing_mods" or a.ignore_missing_mods:
+        return r
+    import live_def_check
+    with connect(60) as rb:
+        running = live_def_check.running_ids(reply(rb.call("jawa/running_mods", {"details": False, "assembly": ""})))
+    retired, short = retired_gap(save_mod_ids(a.save), running, full_list_ids())
+    if short is None:
+        print("site: %s's mods, the running load or the full list could not be read; no retired-mod retry" % a.save)
+        return r
+    if short or not retired:
+        print("site: the running load lacks %s, still on the full list; a restart on that list is owed"
+              % (", ".join(short) or "mods its header does not name"))
+        return r
+    print("site: %s records %d retired mod(s), on no list now; loading past them: %s"
+          % (a.save, len(retired), ", ".join(retired)))
+    with connect(120) as rb:
+        return rb.call("rimworld/load_game", {"saveName": a.save, "ignoreModCompatibility": True})
+
+
 def player_log_path():
     """-> RimWorld's Player.log, or None when this interpreter cannot see it (game_paths knows both spellings)."""
     try:
@@ -331,6 +394,8 @@ def save_site(a):
             print("NOT READY: the %s stager could not re-make %s (exit %s)" % (a.restage_with, a.save, rc))
             return NOT_READY
         r = load_save(a)
+    if isinstance(r, dict) and r.get("success") is False and not a.restage_with:
+        r = load_past_retired(a, r)
     if not isinstance(r, dict) or r.get("success") is False:
         print("NOT READY: load_game %s refused: %s" % (a.save, str(r)[:300]))
         return NOT_READY
