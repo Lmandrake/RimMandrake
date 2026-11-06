@@ -179,10 +179,17 @@
     "ref": "run rm-role-designer-1793932378",
     "stage": 2,
     "tokens": 449974
+   },
+   {
+    "at": "2026-11-06T08:02:46Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793952001",
+    "stage": 2,
+    "tokens": 256419
    }
   ],
   "reserve": 60000,
-  "spent": 4930800
+  "spent": 5187219
  },
  "history": [
   {
@@ -352,6 +359,24 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1793932378: stage 2 waiting_owner"
+  },
+  {
+   "at": "2026-11-06T08:00:26Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "4930800 of 4000000 spent; run rm-role-designer-1793952001 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T08:00:26Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793952001, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-06T08:02:46Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1793952001: stage 2 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -643,11 +668,34 @@
    "run": "rm-role-designer-1793932378",
    "stage": 2,
    "summary": "Sent a_root_ending (turn_05.md): replace the approved root's last two sentences, dropping the cut firebreak (paving stops ground fire, hawk ember can jump it, sprayer is for reaching fruit) and moving scorch-fruit to right behind the front. Fresh-Opus review struck round 1 (false 'strip holds the fire'), passed round 2. The 8 stage-3 coverage gaps stay with the next stage-3 run."
+  },
+  {
+   "at": "2026-11-06T08:02:46Z",
+   "inputs": {
+    "exam": "781c20ccfee15020138fa10bbaf550d91d696225760749d8aa010662d17d8d38",
+    "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+    "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+    "scenes": "81ce4462b7430c2abd1412a6a29c57affcf0d15d93441c22f5bf6acee3565cee",
+    "sheet": "3eb3b863498fd29a45d22960b4106d660089e5bc9282ef306bfada15e33a861c",
+    "tree": "05b72bd6b7321aa834664b1593c813955ecd8df261b12a59faba1c8ea8f5a4e4"
+   },
+   "manifest": {
+    "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+    "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834"
+   ],
+   "run": "rm-role-designer-1793952001",
+   "stage": 2,
+   "summary": "a_root_ending answered by card (OWNER:1793950669508519029, 'Use the proposed ending'): root's last two sentences replaced verbatim from turn_05.md (no firebreak floor; paving strip >=2 cells stops ground fire, hawk ember can carry 6 cells past it; firefoam sprayer reaches the fruit; scorch-fruit right behind the front, greening days later). d_root_ending recorded. No ask sent, no core contradiction open. Stage 3 owes the root text into sheet/tree and the 8 coverage gaps from result.rm-role-designer-1793932102.json."
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 2,
- "status": "waiting_owner",
+ "stage": 3,
+ "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
