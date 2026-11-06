@@ -1276,3 +1276,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:02:17Z","tsn":1793988137932385185}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES T2 (L2), read-only proof","ts":"2026-11-06T18:02:34Z","tsn":1793988154719134396}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:02:53Z","tsn":1793988173978365422}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: BATCHREADS_BUILD_ROUND_TRIP_CUT A1 (L2), read-only proof","ts":"2026-11-06T18:03:51Z","tsn":1793988231846820832}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:04:05Z","tsn":1793988245755896186}
