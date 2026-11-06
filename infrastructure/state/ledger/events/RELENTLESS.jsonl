@@ -1302,3 +1302,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging PROOF_COST_MEASURE_BEFORE_THE_ESTIMATES: deploy and restart for its live proofs","ts":"2026-11-06T19:07:38Z","tsn":1793992058693372110}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:38:21Z","tsn":1793993901834527533}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing LOG_BOUND_DECIDE_COLD_LOAD_ALWAYS_GUILTY: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T19:39:47Z","tsn":1793993987939997345}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T19:43:46Z","tsn":1793994226744443579}
