@@ -7,7 +7,7 @@ class, whose seed offered only /mnt (refused), so nothing was proposed and the i
   (1) that blind text classes as nested_unit and its seed proposes the adapter unit_probe_selftests_candidate (no paths);
   (2) the owner's stored `other` seed proposal gains the adapter when its ticket closes and it re-probes (refreshed());
   (3) the adapter, run as the supervisor runs one (run_bounded) on a throwaway repo: exit 0 on a green test with only the
-      check rows crossing back and a TMPDIR under HOME, the test's own exit on a red one, 128+N on a signal death, 2 when the test is absent.
+      check rows crossing back and a TMPDIR under HOME, the test's own exit on a red one, 128+N on a signal death, 2 when no fixed test is present.
 Rows 1-3 fail on the rules before the class (classify() said `other`; the adapter did not exist)."""
 from __future__ import annotations
 
