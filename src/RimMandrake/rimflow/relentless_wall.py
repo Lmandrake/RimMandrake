@@ -296,9 +296,39 @@ def excludes(prof):
     return [":(exclude)" + p for p in list(prof["tree_exclude"]) + list(prof.get("tree_from_parent", ()))]
 
 
-def make_box(prof, source, sha, nonce, grants=()):
-    """-> the box's path. Tree at sha with no .git and none of tree_exclude, the diff against sha's parent, the verdict script.
-    `grants` (a passed reach repair's, relentless_reachfix.grants): GIT_GRANT adds a read-only git history at sha (grant_git)."""
+def change_range(source, parent, sha, base, item):
+    """-> (from, paths) for change.diff. sha^..sha alone made an item whose work landed in an earlier commit, the candidate
+    a later report or proof commit, look like no change (MARKER_DIFF_FIX_EARLIER_WORK_LOOKS_EMPTY). With the item's base an
+    ancestor of sha: base..sha over the paths the candidate or any commit since base naming the item touched (the set
+    Fx.changed reads), so other seats' commits landed meanwhile stay out. No base, base == sha, not an ancestor, or a git
+    error: (parent, None), the old diff."""
+    if not base or not item:
+        return parent, None
+    git = lambda *a: subprocess.run(["git", *a], cwd=source, capture_output=True, text=True, timeout=120)  # noqa: E731
+    try:
+        b = git("rev-parse", "-q", "--verify", base + "^{commit}")
+        s = git("rev-parse", "-q", "--verify", sha + "^{commit}")
+        if b.returncode or s.returncode or b.stdout.strip() == s.stdout.strip():
+            return parent, None
+        if git("merge-base", "--is-ancestor", base, sha).returncode:
+            return parent, None
+        own = git("show", "--format=", "--name-only", "--no-renames", "--diff-merges=first-parent", sha)
+        log = git("log", "--format=", "--name-only", "--no-renames", "--diff-merges=first-parent", "--fixed-strings",
+                  "--grep=" + item, "%s..%s" % (base, sha))
+    except (OSError, subprocess.SubprocessError):
+        return parent, None
+    if own.returncode or log.returncode:
+        return parent, None
+    paths = sorted(set(x for x in (own.stdout + log.stdout).splitlines() if x.strip()))
+    if not paths:
+        return parent, None
+    return base, [":(literal)" + p for p in paths]
+
+
+def make_box(prof, source, sha, nonce, grants=(), base=None, item=None):
+    """-> the box's path. Tree at sha with no .git and none of tree_exclude, the diff (change_range), the verdict script.
+    `grants` (a passed reach repair's, relentless_reachfix.grants): GIT_GRANT adds a read-only git history at sha (grant_git).
+    `base`/`item`: the item's base and id, so work landed before a later report commit is in change.diff."""
     if any(c.isspace() for c in str(prof["box_root"]) + nonce):
         raise RuntimeError("box root with whitespace: systemd splits BindPaths on it")
     box = Path(os.path.abspath(Path(prof["box_root"], nonce)))      # git runs in the source: a relative path would move
@@ -323,8 +353,9 @@ def make_box(prof, source, sha, nonce, grants=()):
                                 timeout=60, check=True).stdout.decode("ascii").strip()
     else:
         parent = sha + "^"
-    d = subprocess.run(["git", "diff", "--no-renames", parent, sha, "--", ".", *ex], cwd=source, capture_output=True,
-                       timeout=300, check=True)
+    frm, only = change_range(source, parent, sha, base, item)
+    d = subprocess.run(["git", "diff", "--no-renames", frm, sha, "--", *(only or ["."]), *ex], cwd=source,
+                       capture_output=True, timeout=300, check=True)
     (box / "change.diff").write_bytes(d.stdout)
     snap = prof.get("tree_from_parent") or []
     if snap and parent == sha + "^":
