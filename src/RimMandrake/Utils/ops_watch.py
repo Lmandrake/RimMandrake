@@ -3737,6 +3737,10 @@ def real_filer(todo, conf):
                             if rc != 0 and already_filed(out, new):
                                 continue
                             break
+                        if rc != 0 and already_filed(out, new):
+                            # all five twists exist: the last was filed by an earlier pass whose ledger read lags, so the
+                            # alarm adopts it instead of failing forever (stuck 11-05 23:09Z on ..._AT_END_HPCK)
+                            rc = 0
                         if rc == 0:
                             res.setdefault("_renamed", {})[a["name"]] = new
                             a["name"] = new
