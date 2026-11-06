@@ -3525,6 +3525,13 @@ class Effects(relentless_game.GameFx):
             seen.append(what)
             if not ok:
                 return False, "; ".join(seen)
+        # CHECKER_REACH_FIX_OTHER_DARK_SECOND: a path gone from the HOST cannot be bound (a launch binds with '-' and skips
+        # it), so it is no reach the repair lacks: NIGHTSIDE inherited ROT_KEPT's item file from a passed repair, the item
+        # closed, the file moved to items/closed/, and every probe read UNREADABLE though its item_prose grant read fine.
+        gone = [p for p in paths or () if not os.path.lexists(p)]
+        paths = [p for p in paths or () if p not in gone]
+        if gone:
+            seen.append(("skipped, gone from the host: %s" % ", ".join(gone))[-400:])
         if paths:
             prof = relentless_wall.profile(r)
             os.makedirs(prof["box_root"], exist_ok=True)
@@ -3552,7 +3559,8 @@ class Effects(relentless_game.GameFx):
                 seen.append("%s exit %s, %d chars" % (got["cmd"][:80], got["exit"], len(got.get("out") or "")))
                 if got["exit"] != 0 or not (got.get("out") or "").strip():
                     return False, "; ".join(seen)
-        return bool(seen), "; ".join(seen) or "nothing to probe"
+        read = [s for s in seen if not s.startswith("skipped, gone")]
+        return bool(read), "; ".join(seen) if read else "; ".join(["nothing to probe"] + seen)
 
     def _probe_git(self, r, values, store_root):
         """The git_history grant (relentless_wall.grant_git), made in a throwaway box and read from inside the wall."""
