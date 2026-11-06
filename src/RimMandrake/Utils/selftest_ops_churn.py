@@ -222,6 +222,32 @@ def main():
     inc = OH.incident(b, hc)
     ok(inc["bad"] == ["infra_share"] and inc["unmeasured"] == ["returned_tokens_pct"] and "infra_share 22.5" in inc["cause"],
        "5: incident names only incident SLIs reading bad, and the unmeasured ones", inc)
+    # 5b RELAPSE_CHURN_FIX_DIED_TWICE: churn-20261104075956 closed and relapsed twice in 24 h because infra_share (budget
+    # spent, 39 of 48 h bad) swung over its < 40 line for 1-2.5 h on an 8-10 h cycle (7.5 .. 65, 2026-11-06). Each dip read
+    # sane and closed the incident. A point back over its line is not recovery while that SLI's budget is spent: HELD.
+    sli = {"name": "infra_share", "key": "relentless.live_measured_pct", "unit": "%", "op": "<", "x": 40, "incident": True}
+    hc5 = {"slis": [sli], "window_h": 48, "allowed_bad_h": 24, "max_gap_h": 1.0}
+    flap = [{"t": NOW - (48 - i * 0.25) * HOUR, "points": {"relentless.live_measured_pct": {
+        "m": "MEASURED", "unit": "%", "v": 52.5 if (i * 0.25) % 9 >= 7 else 15.0}}} for i in range(192)]
+    b5 = OH.budget({"relentless.live_measured_pct": {"m": "MEASURED", "unit": "%", "v": 52.5}}, {"relentless": flap}, hc5, NOW)
+    inc5 = OH.incident(b5, hc5)
+    ok(b5["infra_share"]["now"] == "ok" and b5["infra_share"]["spent"] and inc5.get("held") == ["infra_share"]
+       and inc5["bad"] == [] and "held" in inc5["cause"],
+       "5b: a spent incident SLI reading ok for one dip is HELD, named in the cause", (b5["infra_share"], inc5))
+    real = OH.publish
+    try:
+        OH.publish = lambda *a, **k: {"spent": ["infra_share"], "system_items": [], "why": "w", "state": "degraded",
+                                      "drifted": [], "incident": inc5, "recurring_unguarded": []}
+        pt5 = OW.publish_health({}, {}, {}, {}, NOW)["health.incident_slis"]
+    finally:
+        OH.publish = real
+    ok(pt5.get("m") == "MEASURED" and pt5.get("v") == 1 and "infra_share" in pt5.get("x", {}).get("cause", ""),
+       "5b: health.incident_slis stays > 0 while it is held, so the incident cannot close on the dip", pt5)
+    calm = [dict(r, points={"relentless.live_measured_pct": {"m": "MEASURED", "unit": "%", "v": 52.5}}) for r in flap]
+    inc6 = OH.incident(OH.budget({"relentless.live_measured_pct": {"m": "MEASURED", "unit": "%", "v": 52.5}},
+                                 {"relentless": calm}, hc5, NOW), hc5)
+    ok(inc6.get("held") == [] and inc6["bad"] == [] and inc6["cause"] == "none",
+       "5b: an SLI inside its budget and ok now is neither bad nor held: the incident closes", inc6)
     # 6
     tg = next(t for t in rules["targets"] if t.get("key") == "health.incident_slis")
     r6 = {"alarms": {"clear_passes": 1}, "targets": [dict(tg, conductor_log=str(TMP / "conductor_log.md"))]}

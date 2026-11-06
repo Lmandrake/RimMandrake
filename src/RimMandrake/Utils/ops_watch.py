@@ -5001,8 +5001,9 @@ def publish_health(points, prev, ctx, rules, now):
     guardless = v.get("recurring_unguarded")
     inc = v.get("incident") or {}
     if inc.get("bad") or (inc.get("slis") and len(inc.get("unmeasured") or ()) < len(inc["slis"])):
-        inc_pt = M(len(inc["bad"]), "incident SLIs reading bad now", cause=inc["cause"][:300],
-                   unmeasured=inc.get("unmeasured") or [])
+        # a held SLI (ok now, budget spent) counts: a dip over its line closed and relapsed churn-20261104075956 twice
+        inc_pt = M(len(inc["bad"]) + len(inc.get("held") or ()), "incident SLIs reading bad now", cause=inc["cause"][:300],
+                   unmeasured=inc.get("unmeasured") or [], held=inc.get("held") or [])
     else:       # nothing to judge: no incident SLI, or none of them could see this pass
         inc_pt = U("no incident SLI measured this pass: %s" % (", ".join(inc.get("unmeasured") or ()) or "none configured"))
     return {"health.recurring_unguarded": U("no ledger or alarm log this pass") if guardless is None else M(

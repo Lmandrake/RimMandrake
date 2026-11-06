@@ -29,7 +29,8 @@ ops_watch.run() calls publish() every pass; it writes $RM_OPS_WATCH_DIR/health.j
            collector's git sha (the clone this file runs from), the ledger watermark (events, last ts/tsn; None = no
            ledger this pass). Same inputs -> byte-identical verdict, so a strange verdict is explained by re-running it.
   INCIDENT an SLI with `incident: true` (infra_share, churn_items, returned_tokens_pct) is listed in `incident.bad` the pass it
-           reads bad, budget or no budget: ops_watch turns that into ONE fixed alarm item (health.incident_slis,
+           reads bad, budget or no budget, and in `incident.held` while it reads ok with its budget spent (a dip over the
+           line is not recovery: RELAPSE_CHURN_FIX_DIED_TWICE): ops_watch turns that into ONE fixed alarm item (health.incident_slis,
            OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: 47 items churned a night while infra_share sat bad 7.75 h of its 24).
   RECUR    a system item whose fix died once already (live_repeats) leads the list, marked as owing a class guard test until
            `rimflow guard` records one (model.guard_owed; `rimflow close` refuses without it). recurring_unguarded: every alarm
@@ -415,11 +416,20 @@ def system_ids(world, rules, root, now=None, repairs=None):
 
 
 def incident(b, c):
-    """-> {bad: [sli], cause, unmeasured: [sli]} over the incident SLIs, from this pass's budget readings."""
+    """-> {bad: [sli], held: [sli], cause, unmeasured: [sli]} over the incident SLIs, from this pass's budget readings.
+    HELD: reading ok now while its budget is spent. A point back over its line is not recovery while the SLI has been bad
+    allowed_bad_h of window_h (RELAPSE_CHURN_FIX_DIED_TWICE: infra_share, 39 of 48 h bad, swung over its < 40 line for
+    1-2.5 h on an 8-10 h cycle; each dip closed churn-20261104075956 and it relapsed twice in 24 h). Held SLIs keep the
+    incident open until the budget recovers; they are counted with the bad ones."""
     names = [s["name"] for s in c.get("slis") or [] if isinstance(s, dict) and s.get("incident") is True]
     bad = [n for n in names if (b.get(n) or {}).get("now") == "bad"]
-    return {"slis": names, "bad": bad, "unmeasured": [n for n in names if (b.get(n) or {}).get("now") not in ("bad", "ok")],
-            "cause": "; ".join("%s %s (line %s)" % (n, b[n].get("v"), b[n].get("line")) for n in bad) or "none"}
+    held = [n for n in names if (b.get(n) or {}).get("now") == "ok" and (b.get(n) or {}).get("spent") is True]
+    cause = ["%s %s (line %s)" % (n, b[n].get("v"), b[n].get("line")) for n in bad]
+    cause += ["%s %s held: ok now, budget spent %sh bad of %sh" % (n, b[n].get("v"), b[n].get("bad_h"), b[n].get("allowed_bad_h"))
+              for n in held]
+    return {"slis": names, "bad": bad, "held": held,
+            "unmeasured": [n for n in names if (b.get(n) or {}).get("now") not in ("bad", "ok")],
+            "cause": "; ".join(cause) or "none"}
 
 
 def rules_sha256(rules):
