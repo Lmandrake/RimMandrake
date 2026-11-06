@@ -139,6 +139,7 @@ def t_serve():
     before = listing(sdir)
     ok(W.serve(sdir, 1000.0, do, acts, ts, cfg=CFG, wall=clk) and len(calls) == 1,
        "serve: two unserved pokes -> one do() (coalesced)")
+    ok(isinstance(acts[-1].pop("took_s", None), float), "serve: the act times do() (poke -> enrolled = lag + took)")
     ok(acts[-1] == {"do": "wake_serve", "lag_s": 50.0, "sources": ["land", "publish"], "enrolled": ["DEP"]},
        "serve: the act names the lag from the oldest poke, the sources and what enrolled")
     ok(listing(sdir) == before, "serve never writes into the watched dir (no self-wake)")

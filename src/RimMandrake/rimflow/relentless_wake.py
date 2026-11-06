@@ -171,16 +171,17 @@ def serve(sdir, now, do, acts, tick_state, cfg=None, wall=time.monotonic):
         return False
     upto = max(p["at"] for p in new)       # pokes landing while do() runs stay unserved for the next boundary
     tick_state["n"] = tick_state.get("n", 0) + 1
-    tick_state["last"] = wall()
+    tick_state["last"] = t0 = wall()
     try:
         got = do()
     except Exception as e:  # noqa: BLE001  a failed serve costs the early enrol, never the tick
         got = {"why": "%s: %s" % (type(e).__name__, e)}
+    took = round(wall() - t0, 1)        # poke -> enrolled = lag_s (to the serve's start, +-1 s tick clock) + took_s
     with _state(sdir) as st:
         st["served_at"] = max(float(st["served_at"]), upto)
         st["last_serve"] = {"at": now, "lag_s": round(now - min(p["at"] for p in new), 1),
                             "sources": sorted({p.get("source", "?") for p in new})}
-    row = {"do": "wake_serve", "lag_s": round(now - min(p["at"] for p in new), 1),
+    row = {"do": "wake_serve", "lag_s": round(now - min(p["at"] for p in new), 1), "took_s": took,
            "sources": sorted({p.get("source", "?") for p in new})}
     if isinstance(got, dict):
         row["why"] = str(got.get("why"))[:300]
