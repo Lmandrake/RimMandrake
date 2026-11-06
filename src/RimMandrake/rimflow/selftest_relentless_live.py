@@ -317,6 +317,29 @@ def t_exit1_that_could_not_ask_is_no_fail():
           == "python.exe probe.py", row)
 
 
+def t_redirected_output_still_says_it_could_not_ask():
+    """GAMEENV_FIX_PROOFCALL_B34890F8_ITEMS_WAIT: MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED A1 truncated its runner's output
+    into run.txt (rimbridge_client IndeterminateError there); its log held only the checker's FileNotFoundError on the
+    json never written, booked UNKNOWN. The reader reads the `>` target: a harness fault, no strike; `>>` stays unread."""
+    d = tempfile.mkdtemp(prefix="rl_side_")
+    side = os.path.join(d, "run.txt")
+    with open(side, "w") as f:
+        f.write("Traceback (most recent call last):\nrimbridge_client.IndeterminateError: refusing jawa/kill_hostiles: "
+                "1 earlier mutating call(s) have an UNKNOWN outcome\n")
+    crash = ("Traceback (most recent call last):\n  File \"<string>\", line 1\nFileNotFoundError: [Errno 2] No such file "
+             "or directory: '%s/reach.json'" % d)
+    for op, want in ((">", L.HARNESS), (">>", "the proof exited 1: it did not measure: the proof crashed: FileNotFoundError")):
+        root = tempfile.mkdtemp(prefix="rl_live_")
+        proof = "python.exe probe.py %s %s 2>&1; python3 -c check" % (op, side)
+        row = L.run(ScriptFx({"python.exe ": (1, crash)}), root, "ROT_X", "A2", proof, "--compose biomes", {},
+                    now=1_800_000_000)
+        check("redirect %s: the side file decides %s" % (op, want[:30]), row["outcome"] == "UNMEASURED"
+              and row["why"].startswith(want) and bool(row.get("harness")) == (op == ">"), row)
+    check("redirect targets: D:/ maps to /mnt/d, /dev/null and >> skipped",
+          L.redirect_targets("a > D:/W/r.txt 2>&1; b >> /tmp/q; c > /dev/null; d &> /tmp/z; e > rel.txt")
+          == ["/mnt/d/W/r.txt", "/tmp/z"], L.redirect_targets("a > D:/W/r.txt; d &> /tmp/z"))
+
+
 class ProtoFx(ScriptFx):
     """ScriptFx whose log text may name {run}: the run id the supervisor gives the proof (live_observe.run_id_of)."""
     def run_proof(self, proof, log, timeout):
@@ -1242,7 +1265,7 @@ def t_rebuilt_assembly_carries():
 
 
 def main():
-    for t in (t_exit1_that_could_not_ask_is_no_fail, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
+    for t in (t_exit1_that_could_not_ask_is_no_fail, t_redirected_output_still_says_it_could_not_ask, t_rmobs_rows_decide_the_run, t_reload_line_is_the_why, t_site_runs_first_and_gates_the_proof, t_wsl_proof_reruns_under_windows_python,
               t_same_cause_becomes_one_reload_request, t_cap_on_a_proof_that_cannot_measure, t_pass_is_a_verify_on_the_built_sha, t_fail_stands, t_later_commit_is_unmeasured, t_cut_criterion, t_prose_holds_the_criteria_file, t_unmeasured_is_a_note_never_a_verify,
               t_release_survives_a_crashing_proof, t_review_round_one, t_review_round_two, t_review_round_three, t_refusals_never_touch_the_bridge,
               t_no_game_files_skips_the_deploy_check, t_plan_reading, t_flyer_words, t_owner_look_is_no_game_clause, t_def_check_judge, t_unloaded_mod,

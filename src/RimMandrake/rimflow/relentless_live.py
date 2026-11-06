@@ -740,7 +740,39 @@ def broken_call(path):
     return None
 
 
-def could_not_ask(path):
+def redirect_targets(proof):
+    """-> the absolute files a proof command truncates its own output into (`> f`, `2> f`, `&> f`; never `>>`, whose
+    file may hold an older run's lines, nor /dev/null), a `D:/` path as its /mnt/d twin; [] when it cannot be parsed.
+    GAMEENV_FIX_PROOFCALL_B34890F8_ITEMS_WAIT: MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED A1 sent its runner's output to
+    run.txt, where rimbridge_client's IndeterminateError sat; the live log held only the checker's FileNotFoundError on
+    the json the runner never wrote, and the harness fault was booked UNKNOWN."""
+    try:
+        lx = shlex.shlex(proof or "", posix=True, punctuation_chars=True)
+        lx.whitespace_split = True
+        toks = list(lx)
+    except ValueError:
+        return []
+    out = []
+    for op, f in zip(toks, toks[1:]):
+        if op not in (">", "&>") or f == "/dev/null":
+            continue
+        m = re.match(r"^([A-Za-z]):[/\\](.*)$", f)
+        if m:
+            f = "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
+        if f.startswith("/") and f not in out:
+            out.append(f)
+    return out
+
+
+def side_lines(proof):
+    """The non-blank lines of every file the proof redirected its output into (redirect_targets), last 400 of each."""
+    out = []
+    for f in redirect_targets(proof):
+        out += [x.strip() for x in read_text(f).splitlines() if x.strip()][-400:]
+    return out
+
+
+def could_not_ask(path, proof=None):
     """A proof that exited 1 and wrote no RMOBS rows -> (kind, line) when its log shows it could not ask, else None (a
     real FAIL). The regex reading is the migration aid of live_observe's protocol (LIVE_ROWS_FIX_STOP_GUESSING_LOGS).
     kind "harness": the box or instrument failed (EXIT1_HARNESS) - never the mod's, never the worker's;
@@ -757,10 +789,11 @@ def could_not_ask(path):
     never an 8 KB tail), keeps it over a later UNMEASURED, a crash or a None read. Those still reach the worker as a
     FAIL, and the worker must explain them before any rebuild (relentless.DIAGNOSE_ENDS)."""
     lines = tail_lines(path)
-    if any(MOD_ROW.match(x) for x in lines):
+    side = side_lines(proof)    # what the proof hid from its own log (redirect_targets) can still say it could not ask
+    if any(MOD_ROW.match(x) for x in side + lines):
         return None             # an observed violation is never erased, whatever else the run tripped over
     for kind, rx in (("harness", EXIT1_HARNESS), ("reload", EXIT1_RELOAD)):
-        for line in reversed(lines):
+        for line in reversed(side + lines):
             if marker_hit(rx, line):
                 return kind, line[:200]
     for line in reversed(lines):
@@ -1768,7 +1801,7 @@ def run(fx, root, item_id, criterion, proof, deploy, r, now=None, needs=(), site
                 unable = ("dud" if st == "UNREACHED" else "unknown", "%s: %s" % (st, why))
                 said = "the proof %s: it did not measure: %s: %s" % (ended, st, why)
     elif code == FAIL and not crashed:
-        unable = could_not_ask(log)
+        unable = could_not_ask(log, proof)
     if unable:
         row["unable"] = unable[0]
     if unable and said is None:      # LIVE_EXIT1_INABILITY_READ_AS_MOD_FAIL: an exit 1 that could not ask is no FAIL and no verify
