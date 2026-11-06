@@ -147,6 +147,25 @@ def t_review_five():
     ok(sq == [], "V1b a single-quoted script's $VAR is the inner value", sq)
 
 
+def t_review_six():
+    """GPT's sixth full-file review (2026-11-06): reading a git tool is not running it; a search value and a pathspec name no ref."""
+    tool = lambda t: needs(t, git_tools=GIT_TOOLS)                           # noqa: E731
+    for read in ("grep -q merge-base src/RimMandrake/Utils/code_review_since.py", "test -f code_review_since.py",
+                 "python3 code_review_status.py check src/RimMandrake/Utils/code_review_since.py",
+                 "git_free=1 cat code_review_since.py"):
+        ok(tool(read) == [], "S1 reading the tool is no need: " + read, tool(read))
+    for run in ("python3 src/RimMandrake/Utils/code_review_since.py --after a x.py", "python3 -u code_review_since.py",
+                "true && ./code_review_since.py", "A=1 timeout 60 python3 code_review_since.py", "grep -q x y | python3 code_review_since.py",
+                "bash -c 'python3 code_review_since.py'"):
+        ok(tool(run) != [], "S1b running it is: " + run, tool(run))
+    git = lambda t: RR.needs(t, PROF, serve=("git_history",))                # noqa: E731
+    for fine in ("git log -1 HEAD --grep='origin/main'", 'git log --grep "origin/main" -1', "git log -1 --format='%H main'",
+                 "git diff HEAD~1 -- src/refs/config.py", "git log -1 -- origin/x.py", "git log -S'refs/heads' -1"):
+        ok(git(fine) == [], "S2 no ref: " + fine, git(fine))
+    for ref in ("git log --grep=x origin/main", "git diff origin/main -- src/x.py", "git log --all --format=%H"):
+        ok(git(ref) != [], "S2b a ref: " + ref, git(ref))
+
+
 def main():
     t_parens()
     t_comments()
@@ -155,6 +174,7 @@ def main():
     t_review_three()
     t_review_four()
     t_review_five()
+    t_review_six()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

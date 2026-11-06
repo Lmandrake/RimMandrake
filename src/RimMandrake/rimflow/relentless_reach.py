@@ -169,6 +169,13 @@ def _names(path, t):
     return re.search(r"(?<![\w./-])(?:\S*/)?%s(?![\w.-])" % re.escape(os.path.basename(path)), t)
 
 
+def _runs(path, t):
+    """The tool is RUN, as a command or through an interpreter; `grep -q x tool.py` or `code_review_status.py check tool.py`
+    only reads the file, which is in the export."""
+    return re.search(_START + r"(?:(?:python3?|bash|sh)\s+(?:-\S+\s+)*(?:\S*/)?)?%s(?![\w.-])" % re.escape(os.path.basename(path)),
+                     t, re.M)
+
+
 _WORD_START = frozenset(" \t\n;&|()<>")
 
 
@@ -415,7 +422,9 @@ def expand_vars(t, env):
 _GIT_REFS = ("fetch", "pull", "push", "branch", "for-each-ref", "reflog", "ls-remote", "remote", "submodule", "clone",
              "worktree", "tag")
 # an argument that names a ref the history grant does not carry (`git show origin/main`, `git log --all`)
-# (a range's far end counts: `HEAD..origin/main`, `"main...HEAD"`)
+# (a range's far end counts: `HEAD..origin/main`, `"main...HEAD"`; a pathspec and a search or format value name no ref)
+_NOT_REV = re.compile(r"""\s--\s.*|--(?:grep|author|committer|format|pretty|date|since|until|after|before)(?:=|\s+)(?:'[^']*'|"[^"]*"|\S*)"""
+                      r"""|\s-[SG]\s*(?:'[^']*'|"[^"]*"|\S*)""", re.S)
 _REF_ARG = re.compile(r"(?:^|[\s'\"]|\.\.\.?)(?:origin|upstream)/\S*|@\{|--(?:all|branches|remotes|tags)(?![\w-])|"
                       r"(?:^|\s)v\d+(?:\.\d+)+\b|\brefs/\S*|\b(?:FETCH_HEAD|ORIG_HEAD|MERGE_HEAD)\b|"
                       r"(?:^|[\s'\"]|\.\.\.?)(?:main|master)(?=[\s'\"]|$|\.\.|~|\^)")
@@ -458,9 +467,9 @@ def needs(text, prof, carved=(), host_only=(), git_tools=(), serve=None):
                 add("git history: `git %s` (the box is an export with no .git)" % verb)
         elif verb in _GIT_REFS:
             add("git refs: `git %s` (the box's history has HEAD at the candidate and no ref or remote)" % verb)
-        elif _REF_ARG.search(args):
+        elif _REF_ARG.search(_NOT_REV.sub(" ", args)):
             add("git refs: `git %s` names a ref (%s) (the box's history has HEAD at the candidate and no ref or remote)"
-                % (verb, _REF_ARG.search(args).group(0).strip()))
+                % (verb, _REF_ARG.search(_NOT_REV.sub(" ", args)).group(0).strip()))
     for m in _REMOTE.finditer(t):
         add("another machine: `%s` (the box has no ssh keys)" % m.group(1))
     for m in _WINDOWS.finditer(t):
@@ -469,7 +478,7 @@ def needs(text, prof, carved=(), host_only=(), git_tools=(), serve=None):
             continue
         add("a Windows program: `%s` (no Windows interop in the box)" % prog)
     for path, why in git_tools:
-        if _names(path, t):
+        if _runs(path, t):
             add("git history: %s runs git itself (%s; the box is an export with no .git)" % (path, why or "reads history"))
     for path, why in host_only:
         if _names(path, t):
