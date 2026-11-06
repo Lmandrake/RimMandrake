@@ -107,11 +107,31 @@ def t_review_two():
        "R10e the git verb list holds whole hyphenated names (a wrapped line once split for-each-ref)", broken)
 
 
+def t_review_three():
+    """GPT's third full-file review (2026-11-06): each of these read wrong before its fix."""
+    hid = lambda t: "hidden path: /secret/x" in needs(t)                     # noqa: E731
+    ok(hid('if false; then ROOT=/tmp; fi; cat "$ROOT/x"'), "T1 an assignment after `then` may not run")
+    home = RR.relentless_wall.HOME
+    kids = {"deny_children": [home + "/rm"], "env": {}}
+    ok(RR.needs('cat "${HOME}/rm/relentless/store/journal.jsonl"', kids, serve=()) != [], "T2 ${HOME} is home too")
+    ok(RR.needs("cat %s/rm/*/README.md" % home, kids, serve=()) != [], "T3 a glob under a deny_children root is hidden")
+    ok(RR.needs("cat %s/rmx/*/README.md /tmp/*.txt" % home, kids, serve=()) == [], "T3b a glob elsewhere is not")
+    ok(needs("timeout --kill-after=5s 30s ssh host true") != [], "T4 timeout's options do not hide the program")
+    ok(needs("timeout -k 5 30 ssh host true") != [], "T4b nor a split option")
+    git = lambda t: RR.needs(t, PROF, serve=("git_history",))                # noqa: E731
+    ok(git("git show v1.0.0 -- README.md") != [], "T5 a tag revision is a ref need")
+    ok(git("git log --all-match --grep=reach --grep=gate -n 1 HEAD") == [], "T6 --all-match is not --all")
+    ok(git("git log --all -n 1") != [], "T6b --all still is")
+    ok(needs("git diff --no-index /tmp/a.json /tmp/b.json") == [], "T7 diff --no-index reads no .git")
+    ok(needs("git diff HEAD~1") != [], "T7b a plain diff still does")
+
+
 def main():
     t_parens()
     t_comments()
     t_vars()
     t_review_two()
+    t_review_three()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

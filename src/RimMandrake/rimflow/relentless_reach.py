@@ -27,7 +27,9 @@ from pathlib import Path
 import relentless_wall
 
 # a path-shaped word: absolute, home-relative, or a Windows drive path
-_PATH = re.compile(r"(?<![\w.~$@+/\\-])(?:[A-Za-z]:[\\/]|~/|\$HOME/|/)[\w.~$@+-]*(?:[/\\][\w.~$@+-]*)*")
+_PATH = re.compile(r"(?<![\w.~$@+/\\-])(?:[A-Za-z]:[\\/]|~/|\$HOME/|\$\{HOME\}/|/)[\w.~$@+*?-]*(?:[/\\][\w.~$@+*?-]*)*")
+# a glob component (`/home/mandrake/rm/*/README.md`) may match any child, so it is checked as a child no carve names
+_GLOB_PART = "\x00glob"
 # a parenthesised aside is the worker's prose about the proof ("(the retry cases prove a dotnet.exe launch ...)"): a census of
 # the store's 603 contracts found it the main false alarm. `$(...)` and `<(...)` are commands and stay, and so is a subshell:
 # a group holding a shell operator, `(cd x && git log)`, or one that starts with a program, `(git log -1)`,
@@ -49,7 +51,7 @@ _ASSIGN_LEAD = re.compile(r"^\s*(?:(?:bash|sh|zsh)\s+-l?c\s+)?['\"]?\s*(?:(?:the
 # where a command starts: the line, a shell operator, a subshell, `!`, then any VAR=value and a timeout. Programs named in
 # prose ("git grep shows ..." at a line's start is still a command a Marker would run) are matched only here.
 _START = (r"(?:^|&&|\|\||[;|`(]|\$\(|!|\b(?:then|do|if|elif|while|until|else|time)\b)\s*"
-          r"(?:(?:sudo|env|xargs|nice|command|exec|timeout\s+\S+)\s+|"
+          r"(?:(?:sudo|env|xargs|nice|command|exec|timeout\s+(?:-[ks]\s+\S+\s+|-\S+\s+)*\S+)\s+|"
           r"(?:bash|sh|zsh)\s+-l?c\s+['\"]|[A-Za-z_][A-Za-z0-9_]*=\S*\s+)*(?:\S*/)?")
 # any git verb: without the history grant every one but these reads a .git the box lacks
 _GIT = re.compile(_START + r"git\s+(?:(?:-C|-c)\s+\S+\s+|--\S+\s+)*([a-z][\w-]*)\b([^\n;&|)]*)", re.M)
@@ -76,7 +78,8 @@ _CONCAT = re.compile(r"(?<=[\w/.~-])['\"]+(?=\S)|(?<=\S)['\"]+(?=[\w/.~-])")
 
 def _norm(p):
     """-> the word as a host path: ~ and $HOME expanded, a Windows drive path as /mnt/<drive>/..., no trailing slash."""
-    p = p.rstrip(".,;:)'\"")
+    p = p.rstrip(".,;:)'\"?")
+    p = "/".join(_GLOB_PART if ("*" in x or "?" in x) else x for x in p.split("/"))
     m = re.match(r"^([A-Za-z]):[\\/](.*)$", p)
     if m:
         p = "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
@@ -84,6 +87,8 @@ def _norm(p):
         p = relentless_wall.HOME + p[1:]
     elif p.startswith("$HOME/"):
         p = relentless_wall.HOME + p[5:]
+    elif p.startswith("${HOME}/"):
+        p = relentless_wall.HOME + p[7:]
     if p.startswith("/"):
         p = posixpath.normpath(p)       # `/tmp/../secret/x` is /secret/x
         p = "/" + p.lstrip("/")
@@ -265,6 +270,7 @@ def _assign(seg, env, persist, maybe):
     `maybe`: the shell may skip it (`false && X=1`), so X keeps its old values beside the new. A value the gate cannot know
     (`X=$(...)`, empty) leaves X as it was."""
     lead = _ASSIGN_LEAD.match(seg).end()
+    maybe = maybe or bool(re.search(r"\b(?:then|do|else)\b", seg[:lead]))   # `if false; then X=1; fi` may not run
     got, pos = [], lead
     while True:
         while pos < len(seg) and seg[pos].isspace():
@@ -407,7 +413,7 @@ def expand_vars(t, env):
 _GIT_REFS = ("fetch", "pull", "push", "branch", "for-each-ref", "reflog", "ls-remote", "remote", "submodule", "clone",
              "worktree", "tag")
 # an argument that names a ref the history grant does not carry (`git show origin/main`, `git log --all`)
-_REF_ARG = re.compile(r"(?:^|\s)(?:origin|upstream)/\S*|@\{|--(?:all|branches|remotes|tags)\b|\brefs/\S*|"
+_REF_ARG = re.compile(r"(?:^|\s)(?:origin|upstream)/\S*|@\{|--(?:all|branches|remotes|tags)(?![\w-])|(?:^|\s)v\d+(?:\.\d+)+\b|\brefs/\S*|"
                       r"\b(?:FETCH_HEAD|ORIG_HEAD|MERGE_HEAD)\b|(?:^|\s)(?:main|master)(?=\s|$|\.\.|~|\^)")
 
 
@@ -441,8 +447,8 @@ def needs(text, prof, carved=(), host_only=(), git_tools=(), serve=None):
             add("hidden path: %s" % w.rstrip(".,;:)'\""))
     for m in _GIT.finditer(t):
         verb, args = m.group(1), m.group(2)
-        if verb not in _GIT_VERBS:
-            continue
+        if verb not in _GIT_VERBS or (verb == "diff" and "--no-index" in args.split()):
+            continue                    # `git diff --no-index a b` compares two files and reads no .git
         if relentless_wall.GIT_GRANT not in serve:
             if verb not in _GIT_LOCAL:
                 add("git history: `git %s` (the box is an export with no .git)" % verb)
