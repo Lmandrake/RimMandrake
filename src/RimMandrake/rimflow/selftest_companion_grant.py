@@ -2,7 +2,7 @@
 """selftest_companion_grant.py - the companion test-profile grant: its reader, the ops_watch early warning and the
 `rimflow next` preflight (item COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME). Temp files only: it never reads or writes
 the real grant, the ledger or D:\\ClaudeWork."""
-import inspect, io, json, os, sys, tempfile, time, types
+import io, json, os, shutil, subprocess, sys, tempfile, time, types
 from contextlib import redirect_stdout
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -164,7 +164,54 @@ ok("malformed hold_needs + an OK grant still holds (fail closed)", bool(sctx.get
 ok("malformed hold_needs -> default needs", tuple(sctx.get("hold_grant_needs") or ()), ("bridge", "game-up"))
 ok("config load failure -> only bridge/game-up withheld", tuple(cctx.get("hold_grant_needs") or ()),
    ("bridge", "game-up"))
-ok("cmd_next runs the preflight", "_apply_grant_preflight(ctx" in inspect.getsource(cli.cmd_next), True)
+
+
+def next_e2e(hours_left):
+    """GRANT_TEST_PROVE_NEXT_REALLY_WITHHOLDS: run the real `rimflow next` (cmd_next, lease and all) as a subprocess
+    on a throwaway ledger holding one bridge, one game-up and one offline item, with the game stamped UP and the
+    bridge free so only the grant can withhold the live two. -> its stdout."""
+    t = tempfile.mkdtemp(prefix="rf_grant_next_")
+    try:
+        os.makedirs(os.path.join(t, "items"))
+        prof = os.path.join(t, "companion_profile.json")
+        with open(prof, "w") as f:
+            json.dump({"profile": "test", "expiresUtc": ISO(time.time() + hours_left * 3600)}, f)
+        with open(os.path.join(t, "schedule.json"), "w") as f:
+            f.write("{}")
+        env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID",
+                                                                "RM_PRIORITY_LIST")}
+        env.update(RIMFLOW_LEDGER=os.path.join(t, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(t, "items"),
+                   RIMFLOW_SHARED_BRIDGE=os.path.join(t, "shared.json"), RIMFLOW_PROBE="no-reading",
+                   RIMFLOW_DISPATCH_LOCK=os.path.join(t, "dispatch.lock"), RIMFLOW_SCHEDULE=os.path.join(t, "schedule.json"),
+                   RIMFLOW_SEAT="BENCH", RM_COMPANION_PROFILE=prof)
+
+        def rf(*a, seat="BENCH"):
+            r = subprocess.run([sys.executable, os.path.join(HERE, "cli.py")] + list(a), env=dict(env, RIMFLOW_SEAT=seat),
+                               capture_output=True, text=True, timeout=120)
+            if r.returncode:
+                raise RuntimeError("rimflow %s exited %d: %s" % (" ".join(a), r.returncode, (r.stderr or r.stdout)[-300:]))
+            return r.stdout
+        for iid, needs in E2E:
+            rf("file", iid, "--for", "BENCH", "--title", "grant e2e " + needs, "--needs", needs, "--target", "v1",
+               "--why", "selftest fixture")
+        rf("game", "UP", seat="OWNER")
+        return rf("next")
+    finally:
+        shutil.rmtree(t, ignore_errors=True)
+
+
+E2E = (("GRANT_PROBE_BRIDGE_WORK_HELD", "bridge"), ("GRANT_PROBE_GAMEUP_WORK_HELD", "game-up"),
+       ("GRANT_PROBE_OFFLINE_WORK_OFFERED", "offline"))
+offer = lambda out: [ln.split()[3] for ln in out.splitlines() if ln.startswith("-> rimflow claim ")]
+live_named = lambda out: [i for i, n in E2E[:2] if i in out]
+o = next_e2e(75)
+ok("cmd_next end-to-end control: a valid grant offers the bridge item", offer(o), ["GRANT_PROBE_BRIDGE_WORK_HELD"])
+ok("cmd_next end-to-end control: no grant hold printed", "companion grant" in o, False)
+o = next_e2e(-1)
+ok("cmd_next end-to-end: expired grant prints the hold", "(companion grant LAPSED: items needing bridge/game-up are "
+   "withheld" in o, True)
+ok("cmd_next end-to-end: expired grant withholds the bridge/game-up items", live_named(o), [])
+ok("cmd_next end-to-end: expired grant still offers the offline item", offer(o), ["GRANT_PROBE_OFFLINE_WORK_OFFERED"])
 
 A = lambda needs: types.SimpleNamespace(item=types.SimpleNamespace(id="X_" + needs, needs=needs, raised=None),
                                         kind="build")
