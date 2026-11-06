@@ -1,6 +1,6 @@
 {
   "_doc": "RELENTLESS_BUILD_BOXRUN_AT_FINISH (redesign_final.md WP-07; owner 2026-11-06: 'the checker should run the code to check it rather than philosophize'). relentless_boxrun.py runs the contract's proof as written in the Marker's box: at finish (outside store.lock, re-fenced after) and on the builder's `boxrun` verb.",
-  "mode": "shadow",
+  "mode": "enforce",
   "_mode": "off | shadow | enforce. shadow: finish runs and prints the box output, refuses nothing; every run is a line of <store>/boxrun.jsonl. enforce: a red proof refuses finish with the box output on the builder's stdout. Flip to enforce once the shadow log's reds read as real (relentless_boxrun.sli).",
   "stores": ["/home/mandrake/rm/relentless"],
   "_stores": "finish runs the box only for these store roots: the selftests' temporary stores finish without one (relentless_boxrun's own selftest passes its own config).",
