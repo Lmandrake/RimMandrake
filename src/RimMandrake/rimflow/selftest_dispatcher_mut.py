@@ -1793,7 +1793,7 @@ def test_execute_truncation_and_counts():
     # default publish goes through publish_bounded with the time left to the deadline
     seen = []
     orig = D.publish_bounded
-    D.publish_bounded = lambda n, t: seen.append((n, t)) or None
+    D.publish_bounded = lambda n, t, **kw: seen.append((n, t)) or None   # execute passes kill_wait
     try:
         D.execute([], sched(publish=True), fresh(), wd_root("ex_pb"), True, NOW,
                   {"lock": lambda: _Lk(), "paused": lambda: None, "note": lambda i, t: (True, "")}, deadline=time.time() + 50)
