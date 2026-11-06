@@ -22,7 +22,7 @@ rebuild state from a signed record, never from memory), `Utils/scratch_clone.py`
   and carries on.
 - **A program follows it.** `relentless.py tick` runs from its own timer, `rm-relentless.timer`, every 2 minutes (a
   program, no AI), out of its own clone, `/home/mandrake/rm/relentless/books`, which it fast-forwards itself. A fault
-  here cannot harm the Dispatcher, and a push to main deploys it. It decides nothing about the work; it follows
+  here cannot harm the Dispatcher, and one pinned release a day deploys it (relentless_daily_release_2026-11-06.md). It decides nothing about the work; it follows
   `relentless_rules.json`.
 - **Done is proven in operation**, by a blind checker at the end of the cycle, on the exact commit, never during the
   debugging loop.
@@ -102,7 +102,7 @@ FOUNDRY may hold an old ledger and an old `rimflow`, and a pull there is not our
 its hard-coded `LEASED`, reading the host-wide store with no pull. So the store is the one word both trees hear at once,
 and section 13 gives the order that makes it enough.
 
-Deployment meanwhile: the supervisor runs from its own books clone, so a push to main reaches it on the next tick.
+Deployment: the supervisor runs from one pinned release a day and reads its data from its own books clone, so a push to main reaches its data on the next tick and its code at the next release (`design/RimMandrake/relentless_daily_release_2026-11-06.md`).
 Nothing touches `/home/mandrake/rm/foundry`. No code under `src/RimMandrake/Utils/arena/` is changed.
 
 ## 6. Failure, then change of approach

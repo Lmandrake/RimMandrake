@@ -2516,7 +2516,7 @@ class Effects(relentless_game.GameFx):
                               stdin=subprocess.DEVNULL)
 
     def sync(self):
-        """The engine runs from books, so a clone that cannot move freezes the engine. -> None, or why it is behind.
+        """The engine reads its ledger and items from books, so a clone that cannot move freezes the engine. -> None, or why it is behind.
         --ff-only fails without a word on one rimflow-moved item file or one landed ledger commit: 15 hours, 2026-11-01."""
         self._ledger = None
         self._budget = self._helpers = NOT_READ
