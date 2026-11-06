@@ -1444,7 +1444,7 @@ def live_owed(cwd, st, item, sha):
             "finish again" % (sha, (need or ["alarm item"])[0], item, st.get("gen")))
 
 
-def proof_refusals(text, r=None):
+def proof_refusals(text, r=None, has=None):
     """-> ["<cid>: why"] for every `live-proof` line of a live_proofs text the live lane would refuse to run
     (relentless_live.refused_proof: a `$` or backtick expansion, eval, a brace list, a load or a mutation). A flyer's
     line is the lane's to put down, and a line reading his ledger (OWNER.jsonl) is his look, which the game lane skips
@@ -1453,8 +1453,7 @@ def proof_refusals(text, r=None):
     import relentless_live
     lr = relentless_live.live_rules(rules() if r is None else r)
     out = []
-    for cid, proof in sorted(relentless_game.proof_lines(text or "").items()):
-        why = relentless_live.refused_proof(lr, "", "", proof)
+    for cid, why in relentless_live.lint_lines(lr, "", relentless_game.proof_lines(text or ""), has):
         if why and not why.startswith(("flyer:", "owner act:")):
             out.append("%s: %s" % (cid, why))
     return out
@@ -1469,12 +1468,15 @@ def proof_text_owed(cwd, item, sha, r=None):
     g = _run_git(cwd, "show", "%s:%s" % (sha, path))
     if not g or g.returncode:
         return None
-    bad = proof_refusals(g.stdout, r)
+    def has(rel):       # PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN: a script the line names must be in the finished sha
+        t = _run_git(cwd, "cat-file", "-e", "%s:%s" % (sha, rel))
+        return t is None or t.returncode == 0       # an unreadable tree refuses nothing
+    bad = proof_refusals(g.stdout, r, has)
     if not bad:
         return None
     return ("%s at %s holds live-proof lines the live lane will refuse: %s. Write each as a literal command (no `$`, "
-            "backtick, eval or brace list; put any computed value inside the proof script), commit, and finish again"
-            % (path, sha[:10], "; ".join(bad)))
+            "backtick, eval or brace list; put any computed value inside the proof script) naming only scripts the "
+            "commit holds, commit, and finish again" % (path, sha[:10], "; ".join(bad)))
 
 
 def _take_receipt(store, st, rec, now):

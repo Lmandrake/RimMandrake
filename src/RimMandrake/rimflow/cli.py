@@ -1820,6 +1820,49 @@ def cmd_incidents(args, seat):
                 " news %s" % "; ".join(x["news"]) if x.get("news") else "", ", ".join(sorted(x.get("metrics") or {}))))
 
 
+def prooflint(iid, it=None, root=None, rules_path=None):
+    """PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN: what the live lane would refuse in `iid`'s proof lines, asked where they are
+    written instead of at a game slot (146 REFUSED rows in 3.5 days, one cut criterion refused 72 times): every
+    `live-proof` line of live_proofs/<ID>.txt through relentless_live.lint_item (cut criterion, `$`/backtick/eval/brace,
+    a load or mutation, flyer wording, his ledger, a script the tree lacks). -> ["<cid>: why"]. Reads files only."""
+    import relentless
+    import relentless_game
+    import relentless_live
+    root = root or model.ROOT
+    lr = relentless_live.live_rules(relentless.rules(rules_path))
+    text, prose = "", []
+    for rel in ("infrastructure/state/live_proofs/%s.txt" % iid, "infrastructure/state/items/%s.md" % iid,
+                "infrastructure/state/items/closed/%s.md" % iid, "infrastructure/state/live_proofs/%s.criteria" % iid):
+        try:
+            with open(os.path.join(root, rel), encoding="utf-8", errors="replace") as f:
+                body = f.read()
+        except OSError:
+            continue
+        if rel.endswith(".txt"):
+            text = body
+        else:
+            prose.append(body)
+    lines = relentless_game.proof_lines(text)
+    crit = {"criteria": [{"id": c["id"], "level": c["level"], "text": c.get("text") or ""}
+                         for c in (getattr(it, "criteria", None) or [])],
+            "outstanding": list(getattr(it, "outstanding", None) or [])} if it is not None else None
+    return ["%s: %s" % (cid, why) for cid, why in relentless_live.lint_item(
+        lr, crit, getattr(it, "title", "") or "", lines, lambda rel: os.path.isfile(os.path.join(root, rel)),
+        "\n".join(prose))]
+
+
+def _prooflint_say(iid, it=None, when="filed"):
+    """A prompt, never a gate (the lane and `finish` refuse): a script not yet written at filing is ordinary."""
+    try:
+        bad = prooflint(iid, it)
+    except Exception as e:      # noqa: BLE001  a lint that cannot read is said, and the verb's own work stands
+        print("proof-line lint could not run (%s: %s)" % (type(e).__name__, e))
+        return
+    if bad:
+        print("⚠️  %s, but the live lane would refuse these proof lines as they stand "
+              "(infrastructure/state/live_proofs/%s.txt):\n  - %s" % (when, iid, "\n  - ".join(bad)))
+
+
 def cmd_file(args, seat):
     _, w = load()
     _mint_or_die(args.id, w)
@@ -1836,6 +1879,7 @@ def cmd_file(args, seat):
     ev["for"] = args.for_
     _emit(ev, w, quiet=True)
     print("%s filed for %s, state proposed." % (args.id, args.for_))
+    _prooflint_say(args.id, None, "filed")
     _replaces(args, seat, w)
     have = {n.lower() for n, _ in read_prose(args.id)}
     miss = [s for s in ("spec", "verify", "criteria") if s not in have]
@@ -2581,6 +2625,7 @@ def cmd_close(args, seat):
                  (": " + args.reason) if args.reason else ""))
     else:
         print("%s closed at %s." % (args.id, sha))
+    _prooflint_say(args.id, it, "closed")
     _announce_unblocks(args.id)
     moved = _move_prose_to_closed(args.id)
     if moved:
@@ -2807,6 +2852,7 @@ def cmd_implemented(args, seat):
     print("  owes %s; cheapest %s -> needs %s"
           % (", ".join("%s %s" % (c["id"], c["level"]) for c in owed),
              after.next_level(), after.needs))
+    _prooflint_say(args.id, after, "implemented")
     _announce_unblocks(args.id)                 # a `block --until built` has ended
     print("  never offered as build work again; listed by `rimflow next --acceptance`.")
     return 0
@@ -3979,8 +4025,15 @@ def cmd_artifact(args, seat):
 # lint — read-only checks over the repo, never a ledger write
 # ---------------------------------------------------------------------------
 def cmd_lint(args, seat):
+    if getattr(args, "proofs", None):
+        w = model.replay(model.read())
+        bad = prooflint(args.proofs, w.items.get(args.proofs))
+        for b in bad:
+            print("REFUSED %s %s" % (args.proofs, b))
+        print("%s: %d proof line%s the live lane would refuse" % (args.proofs, len(bad), "" if len(bad) == 1 else "s"))
+        return 1 if bad else 0
     if not args.citations:
-        die("`lint` needs --citations. It is the only lint there is.")
+        die("`lint` needs --citations or --proofs <ID>.")
     import citations_lint
     return citations_lint.main()
 
@@ -4484,6 +4537,9 @@ def build_parser():
     s.add_argument("--citations", action="store_true",
                    help="a doc may not cite a closed/dropped/superseded item "
                         "as still live (DETERMINISM_ASSESSMENT.md SS8, C6)")
+    s.add_argument("--proofs", metavar="ID",
+                   help="the item's live-proof lines the live lane would refuse (cut criterion, `$`, a load, a flyer, "
+                        "his ledger, a missing script); exit 1 on any (PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN)")
 
     s = add("artifact", "accept a new game artifact. DRY RUN unless --apply",
             cmd_artifact)

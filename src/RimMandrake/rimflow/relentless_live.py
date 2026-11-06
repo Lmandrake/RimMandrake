@@ -385,6 +385,100 @@ def refused_proof(lr, title, text, proof):
     return None
 
 
+# PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN: a proof line naming a script the tree lacks ("can't open file", a plan nobody wrote)
+# measured nothing on the game it took: the check is offline, so it is asked where the line is written, not at the round.
+REPO_SCRIPT = re.compile(r"^(?:\./)?(?:src|skills|infrastructure|design|tools)/[^\s*?\[\]{}$`'\"]+\.(?:py|sh)$")
+PYTHONS = re.compile(r"^(?:.*/)?(?:python(?:3(?:\.\d+)?)?|python3?\.exe|py)$")
+SHELL_OPS = {"&&", "||", ";", "|", "(", ")", "&", ";;", "|&"}
+REDIRECTS = re.compile(r"^\d*(?:>>?|<|&>|>&|<<<?)$")
+
+
+def proof_scripts(proof):
+    """-> the repo-relative scripts a proof line runs or hands to a runner (`python3 <script>`, `./src/.../x.sh`,
+    `--plan src/.../plan.py`), in order, each once. Absolute and Windows paths are another tree's and are not named; a
+    line shlex cannot split names none (refused_proof reads it). Pure."""
+    try:
+        lex = shlex.shlex(WSLPATH.sub(" ", proof or ""), posix=True, punctuation_chars=True)
+        lex.whitespace_split = True
+        toks = list(lex)
+    except ValueError:
+        return []
+    out, start, skip, py = [], True, False, False
+    for t in toks:
+        if t in SHELL_OPS:
+            start, skip, py = True, False, False
+            continue
+        if skip:                              # a redirect's target is a file the line writes or reads, not a script
+            skip = False
+            continue
+        if REDIRECTS.match(t):
+            skip = True
+            continue
+        if start and re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", t):
+            continue                          # VAR=value before the command
+        arg = t.split("=", 1)[1] if t.startswith("--") and "=" in t else t
+        if start:
+            start = False
+            if PYTHONS.match(t):
+                py = True
+                continue
+        elif py and arg.startswith("-"):
+            if arg in ("-m", "-c"):           # a module or inline code: no script path follows
+                py = False
+            continue
+        else:
+            py = False
+        if REPO_SCRIPT.match(arg):
+            rel = arg[2:] if arg.startswith("./") else arg
+            if rel not in out:
+                out.append(rel)
+    return out
+
+
+def missing_scripts(proof, has):
+    """has(rel) -> True when the tree the line will run in holds `rel`. -> why the line names a script that tree lacks,
+    or None. Pure but for `has`."""
+    gone = [s for s in proof_scripts(proof) if not has(s)]
+    if gone:
+        return "the proof names %s, which the tree it runs in does not hold: it can only end UNMEASURED" % (
+            ", ".join(gone))
+    return None
+
+
+def lint_lines(lr, title, lines, has=None, texts=None):
+    """The offline half of what the live lane would refuse, for every proof line of an item, asked where the line is
+    written (rimflow file / implemented / close, `finish`, the game phase's preflight). lines: {cid: proof};
+    texts: {cid: whole criterion text} where known; has: a file test on the tree the line runs in (None: no script
+    check). -> [(cid, why)]; a flyer's or his own look's line is named too (the caller decides whether it refuses)."""
+    out = []
+    for cid in sorted(lines):
+        proof = lines[cid]
+        why = refused_proof(lr, title, (texts or {}).get(cid) or "", proof)
+        if not why and has is not None:
+            why = missing_scripts(proof, has)
+        if why:
+            out.append((cid, why))
+    return out
+
+
+def lint_item(lr, item, title, lines, has=None, prose=""):
+    """lint_lines plus the criterion checks owed() makes that need no build: a live clause whose ledger text is cut at
+    CUT_AT with no prose line extending it (97 REFUSED rows, 72 of them GRAFFITI_NORTHSTAR_GREEN_FULL_1, retried
+    unchanged). item: {"criteria": [{"id", "level", "text"}], "outstanding"?: [ids]} or None (a filing has none yet).
+    -> [(cid, why)]."""
+    texts, out = {}, []
+    left = (item or {}).get("outstanding")       # None: every live clause (no ledger state yet); a list: only those owed
+    for c in (item or {}).get("criteria") or []:
+        w = whole_criterion(c, prose)
+        texts[c["id"]] = w.get("text") or ""
+        if w.get("cut") and c.get("level") in LIVE_LEVELS and (left is None or c["id"] in left):
+            out.append((c["id"], "%s is cut at %d chars on the ledger and %s: a proof cannot be judged against it; write "
+                        "the whole line in live_proofs/<ID>.criteria or the item's prose" % (
+                            c["id"], CUT_AT, "a line of that id now says something else (re-tiered)"
+                            if w.get("retiered") else "no prose holds the rest")))
+    return out + lint_lines(lr, title, lines, has, texts)
+
+
 def refused_site(site):
     """-> why a live-site command may not run, or None. Only live_site.py, plain arguments: the site step is the one
     change this tier makes to the game, so it is one reviewed tool, never a free command."""
@@ -715,6 +809,10 @@ def preflight(fx, lr, item_id, lines, sites=None):
             out.append({"cid": cid, "why": str(e), "fp": fingerprint(cid, str(e), lines[cid], text), "kind": "refused"})
             continue
         why = refused_proof(lr, item["title"], text, lines[cid]) or refused_site((sites or {}).get(cid))
+        if not why and getattr(fx, "has_file", None):
+            # absent from the tree it runs in AND from the build: a books tree behind the build is a lag, not a defect
+            why = missing_scripts(lines[cid], lambda rel: fx.has_file(rel) or bool(
+                item.get("built_sha") and fx.has_file(rel, item["built_sha"])))
         if why and not why.startswith("flyer:"):
             out.append({"cid": cid, "why": why, "fp": fingerprint(cid, why, lines[cid], text), "kind": "refused"})
     if item and item.get("built_sha"):
@@ -1176,6 +1274,15 @@ class Fx(object):
             with open(p, encoding="utf-8", errors="replace") as f:
                 out.append(f.read())
         return "\n".join(out)
+
+    def has_file(self, rel, sha=None):
+        """The proof runs with cwd = books (run_proof): a script it names must be a file there. With `sha`: a file of
+        that commit (git cat-file), so a books tree that lags the build is not read as a missing script."""
+        if sha is None:
+            return os.path.isfile(os.path.join(self.books, rel))
+        r = subprocess.run(["git", "cat-file", "-e", "%s:%s" % (sha, rel)], cwd=self.books, capture_output=True,
+                           timeout=60, stdin=subprocess.DEVNULL)
+        return r.returncode == 0
 
     def cited(self, item_id, sha):
         """-> the full shas of every non-merge commit up to and including `sha` whose subject names `item_id` (cites),

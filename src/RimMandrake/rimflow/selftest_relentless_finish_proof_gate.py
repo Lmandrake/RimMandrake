@@ -104,7 +104,8 @@ def t_finish():
     why = refused(lambda: R.finish(x.s, "I0", g, sha, "e", root=d))
     ok(why is not None and PATH in why and "A1" in why and "'$'" in why, "finish refuses a $ line, naming it: %r" % why)
     ok(x.st("I0")["status"] != "candidate", "the refused sha is not taken as a candidate")
-    sha2 = commit(d, {PATH: "live-mods: X\n" + GOOD})
+    # the script the line names is committed with it (PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN: finish refuses a missing one)
+    sha2 = commit(d, {PATH: "live-mods: X\n" + GOOD, "src/RimMandrake/X/prove.py": "print(1)\n"})
     why = refused(lambda: R.finish(x.s, "I0", g, sha2, "e", root=d))
     ok(why is None and x.st("I0")["status"] == "candidate", "the rewritten line finishes: %r" % why)
 
