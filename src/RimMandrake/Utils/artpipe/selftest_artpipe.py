@@ -1550,6 +1550,68 @@ def test_sandbox_stale_vs_machine_blocks_codex():
         ok("--check-sandbox exits 0 after sync", chk2.returncode == 0, chk2.stdout)
 
 
+def test_running_daemon_reenables_codex_after_sync():
+    """ARTPIPED_UNSTICK_CODEX_LEFT_THE_BUILDING: a daemon that started with a stale sandbox disabled
+    codex for the run, and `--sync-sandbox` then said SAFE while the RUNNING daemon never rechecked,
+    so codex jobs sat for 7h+ behind a phantom in-flight entry. Behavioural, not a source grep: start a
+    long-running daemon on a stale sandbox, repair it with --sync-sandbox mid-run, and the SAME
+    process must re-enable codex, render the waiting job and leave no in-flight entry behind."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        for root in (q.codex_sandbox_base, q.codex_sandbox_template):
+            (root / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_STALE)
+        make_job(q.pending, "waitcodex", q.reference, channel="codex")
+        (q.root / "control.json").write_text(json.dumps({"waitcodex": "ok"}))
+        env = dict(os.environ)
+        env.update({"ARTPIPE_LEGIBILITY_THRESHOLDS": "", "ARTPIPE_MOCK_CONTROL": str(q.root / "control.json"),
+                    "CODEX_SANDBOX_SEED": str(q.codex_sandbox_template),
+                    "CODEX_SANDBOX_MACHINE_PWSET": SANDBOX_PWSET_PINNED,
+                    "ARTPIPE_HOUSEKEEPING_S": "0.5", "ARTPIPE_PREFLIGHT_RECHECK_S": "0.5"})
+        log = q.root / "daemon.out"
+        with open(log, "w") as fh:
+            proc = subprocess.Popen(q.daemon_args("--workers", "1"), stdout=fh, stderr=subprocess.STDOUT,
+                                    text=True, env=env)
+        try:
+            deadline = time.time() + 20
+            while time.time() < deadline and "codex channel disabled" not in log.read_text():
+                time.sleep(0.2)
+            time.sleep(1.5)  # several housekeeping ticks with the sandbox still stale
+            ok("running re-enable: stale sandbox disables codex and the job is not claimed",
+               "codex channel disabled" in log.read_text() and (q.pending / "waitcodex.json").is_file()
+               and proc.poll() is None, log.read_text())
+            ok("running re-enable: no re-enable while the sandbox is still stale",
+               "codex channel re-enabled" not in log.read_text(), log.read_text())
+            # Repair exactly as an operator would: a current worker home, then --sync-sandbox.
+            w0 = q.codex_homes / "w0"
+            (w0 / ".sandbox").mkdir(parents=True)
+            (w0 / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_CURRENT)
+            (w0 / ".sandbox-secrets").mkdir()
+            (w0 / ".sandbox-secrets" / "sandbox_users.json").write_text('{"version": 5, "fresh": 1}')
+            (w0 / ".sandbox-bin").mkdir()
+            (w0 / ".sandbox-bin" / "codex-command-runner-9.9.9.exe").write_bytes(b"z")
+            syn = q.run({"waitcodex": "ok"}, "--sync-sandbox", "--workers", "1")
+            ok("running re-enable: --sync-sandbox reports SAFE", syn.returncode == 0 and "SAFE:" in syn.stdout,
+               syn.stdout + syn.stderr)
+            deadline = time.time() + 30
+            while time.time() < deadline and not (q.done / "waitcodex.json").is_file():
+                time.sleep(0.2)
+            out = log.read_text()
+            ok("running re-enable: the SAME daemon re-enabled codex without a restart",
+               "codex channel re-enabled" in out and proc.poll() is None, out)
+            ok("running re-enable: the waiting codex job rendered to done/",
+               (q.done / "waitcodex.json").is_file(), out)
+            time.sleep(0.5)
+            snaps = [json.loads(f.read_text()) for f in q.status_dir.glob("artpiped_*.json")]
+            ok("running re-enable: status file shows no phantom in-flight job",
+               snaps and all(not (sn.get("in_flight") or []) for sn in snaps), snaps)
+        finally:
+            proc.terminate()
+            try:
+                proc.wait(timeout=15)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+
+
 def test_sandbox_guard_refusal_returns_job_to_pending():
     """The per-launch guard: the startup preflight passes, but this slot's home cannot be brought to the
     shared state (its .sandbox-secrets is a FILE, so the sync fails). The worker must NOT be launched,
@@ -4523,6 +4585,7 @@ def main() -> int:
         test_codex_sandbox_preflight_matching_allows_codex_jobs,
         test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini,
         test_codex_sandbox_preflight_missing_bin_refuses_not_passes,
+        test_running_daemon_reenables_codex_after_sync,
         test_sandbox_stale_vs_machine_blocks_codex,
         test_sandbox_guard_refusal_returns_job_to_pending,
         test_requeued_job_leaves_status_in_flight,

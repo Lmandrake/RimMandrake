@@ -1040,7 +1040,7 @@ def _log_held(job_id: str, master: str, done_dir: Path, failed_dir: Path,
 
 HOUSEKEEPING_INTERVAL_S = float(os.environ.get("ARTPIPE_HOUSEKEEPING_S", "30"))  # heartbeat + reclaim tick
 LEASE_S = 10 * HOUSEKEEPING_INTERVAL_S   # an active/ job whose heartbeat is older than this has no live owner
-PREFLIGHT_RECHECK_S = 300.0
+PREFLIGHT_RECHECK_S = float(os.environ.get("ARTPIPE_PREFLIGHT_RECHECK_S", "300"))  # a disabled codex channel re-preflights this often
 
 
 def claim_next(pending_dir: Path, active_dir: Path, channel_blocked=None,
@@ -3379,9 +3379,11 @@ def main(argv=None) -> int:
     # leased — never per-slot, never per-job. A stale/missing seed template
     # otherwise lets each of N workers independently discover the problem by
     # each triggering its own (possibly unattended) UAC prompt. On a
-    # mismatch the codex channel is refused for this whole run (never
-    # rechecked — recapturing the template needs a fresh daemon start); the
-    # gemini channel is entirely unaffected.
+    # mismatch the codex channel is refused until the housekeeping tick's
+    # re-preflight (every PREFLIGHT_RECHECK_S while codex jobs wait) sees the
+    # template repaired, e.g. by `--sync-sandbox` — no restart needed
+    # (ARTPIPED_UNSTICK_CODEX_LEFT_THE_BUILDING); the gemini channel is
+    # entirely unaffected.
     codex_sandbox_ok, codex_sandbox_msg = common.codex_sandbox_preflight(args.codex_sandbox_base)
     if codex_sandbox_ok:
         console_obj.info(f"codex sandbox ok — {codex_sandbox_msg}")
