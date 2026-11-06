@@ -247,6 +247,33 @@
     "source": "OWNER:1793950666234031543",
     "by_card": "Workshop floor"
    }
+  },
+  {
+   "id": "a_shock_floor_ends",
+   "status": "sent",
+   "text": "Does a sparking floor-cord end (left when a conduit cell is destroyed) shock a colonist who crosses it, with the one rebuilding that conduit safe, or do only fallen overhead wires shock? (1) Overhead only, as built: the severed floor cord sparks but harms nobody until a constructor rebuilds the conduit. (2) Every sparking end: the severed floor cord's live end shocks a colonist crossing it on another job; the constructor sent to rebuild that cell is safe.",
+   "decision": "Whether s_shock_fix_safe covers the sparking live end a floor-conduit cut leaves (cut_live_and_dead_ends, the flagship) or only fallen overhead spans; decides a new leaf and scene either way (coverage_verdict.json gap 2).",
+   "about": [
+    "fallen_wire_shock",
+    "break_ends_live_dead",
+    "restring_job"
+   ],
+   "owner_cites": [
+    "OWNER:1793895896496551063",
+    "OWNER:1793950666234031543"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793956242",
+   "review": {
+    "by": "rm-judge a4a9ccd31feede985 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Not answered by his words (a sparking line / the sparking end; root says only fallen wire); changes the build (new contact source, constructor exemption, leaf, scene); quote verified; built state verified in RebuildContacts. Fixed: claim attributed to the build not his meaning; added the FlowWorks deck-collapse cords as a built shock source."
+   },
+   "source": [
+    "design/concepts/GimmeSomeSlack/turn_05.md",
+    "design/concepts/GimmeSomeSlack/coverage_verdict.json",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs"
+   ]
   }
  ],
  "inventory": [

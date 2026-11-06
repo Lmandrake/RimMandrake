@@ -236,3 +236,7 @@ Taken: B for Modern (owed build: PowerStrip at Modern junctions, today drawn onl
 ## 2026-11-06, run rm-role-designer-1793931838 (stage 2, returned from stage 3)
 
 Stage 3 returned for his flagship pick. Ask a_flagship_pick (turn_04.md): face = (1) workshop floor or (2) yard of masts; recommended (1). Fresh Opus review (rm-judge aee41281c90f554ec): pass, two wording fixes (strip vs junction box per look; 'Judged first' was agent text). Sent.
+
+## 2026-11-06, run rm-role-designer-1793956242 (stage 2, returned from stage 5)
+
+Lock's coverage judge (gap 2) returned for his word on whether s_shock_fix_safe covers floor-cut sparking ends. Ask a_shock_floor_ends (turn_05.md): (1) overhead only, as built, or (2) every sparking end, constructor rebuilding the conduit safe; no recommendation. Fresh Opus review (rm-judge a4a9ccd31feede985): pass, two wording fixes (claim is the build, not his meaning; FlowWorks deck-collapse cords also shock). Sent. Gaps 1, 3, 4, 5 are stage-3 scene fixes.
