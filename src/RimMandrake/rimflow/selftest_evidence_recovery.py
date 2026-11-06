@@ -336,6 +336,25 @@ def t_stale_writer():
     ok(bool(E.verify_all(d)["index"]) and refuses(d), "R8. a sealed row cut under a stale tail is still caught")
     shutil.rmtree(d, ignore_errors=True)
 
+    # EVIDENCE_HEAD_SEAL_REPAIR_THREE_BEHIND: the wedge as found, HEAD three rows behind (143 named, 146 in the index)
+    d = fresh(2)
+    named = E._head(d)[0]["n"]
+    for item in ("I2", "I3", "I4"):
+        _stale_writer(d, item=item)
+    ok(len(E.index_rows(d)) == named + 3 and E._head(d)[0]["n"] == named, "R8. HEAD stands three rows behind the index")
+    ok(E.verify_all(d) == {"index": []}, "R8. three unsealed rows past HEAD verify: %r" % E.verify_all(d))
+    ok(not refuses(d), "R8. and the next receipt is taken")
+    ok(E._head(d)[0]["n"] == len(E.index_rows(d)) == named + 4 and not E.verify_all(d)["index"],
+       "R8. that receipt seals all three behind")
+    shutil.rmtree(d, ignore_errors=True)
+
+    d = fresh(2)     # a cut still shows with three behind: the tail's own chain breaks at the row removed
+    for item in ("I2", "I3", "I4"):
+        _stale_writer(d, item=item)
+    rewrite(os.path.join(d, "evidence", E.INDEX), lambda ls: ls[:-2] + ls[-1:])
+    ok(bool(E.verify_all(d)["index"]) and refuses(d), "R8. a row cut from the three behind is still caught")
+    shutil.rmtree(d, ignore_errors=True)
+
 
 def t_short_write():
     d = fresh(1)
