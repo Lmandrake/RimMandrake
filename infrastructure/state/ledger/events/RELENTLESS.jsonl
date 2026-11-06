@@ -1218,3 +1218,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:16:08Z","tsn":1793981768989476725}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE A1 (L1), read-only proof","ts":"2026-11-06T16:19:23Z","tsn":1793981963752394421}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:19:43Z","tsn":1793981983211222044}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_END_FIX_CELL_SHORT_OF_PORT A1 (L2), read-only proof","ts":"2026-11-06T16:20:40Z","tsn":1793982040505917809}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T16:21:02Z","tsn":1793982062493382340}
