@@ -386,6 +386,11 @@ def matcher(entry: dict):
     return m
 
 
+def ts_key(when) -> str:
+    """Comparable timestamp: row 'started' and verify 'ts' differ in separator and zone suffix."""
+    return str(when or "").replace(" ", "T").rstrip("Z")[:19]
+
+
 def judge_works(inv, runs, verifies, truths, walks=()):
     # latest status per (script,row) among MOD rows; per (item,criterion) among L2+ verify events
     latest_rows = {}
@@ -414,7 +419,7 @@ def judge_works(inv, runs, verifies, truths, walks=()):
             if how:
                 st = {"pass": "PASS", "fail": "FAIL"}.get(str(v.get("result")).lower(), str(v.get("result")).upper())
                 ev.append({"src": "verify", "key": f"{k[0]}:{k[1]}", "status": st, "level": v.get("level") or "L?",
-                           "when": v.get("ts"), "how": how})
+                           "when": v.get("ts"), "how": how, "item_level": not (v.get("criterion") or "")})
         for t in truths:
             how = m(json.dumps(t))
             if how:
@@ -425,8 +430,15 @@ def judge_works(inv, runs, verifies, truths, walks=()):
                 ev.append({"src": "owner-walk", "key": f"{w['id']}:{w.get('criterion') or ''}", "status": "PASS",
                            "level": w.get("level"), "when": w.get("ts"), "how": "owner named the whole mod"})
         l2 = [x for x in ev if LEVEL_RANK.get(x["level"], 0) >= 2]
-        fails = [x for x in l2 if x["status"] in ("FAIL", "PARTIAL", "ERROR")]
         passes = [x for x in l2 if x["status"] == "PASS"]
+        # A verify FAIL/PARTIAL that is about a whole item (no criterion) or reaches this def only by label text is
+        # not a verdict on the def: a newer L2+ PASS that names the def supersedes it (COMPLETION_FIX_PARTIAL_VERIFY_
+        # PAINTS_RED: RM_Ladder/RM_PitRamp stayed broken on old partials after their own rows passed). A row's FAIL is
+        # never superseded by another row's PASS: different rows test different things.
+        name_pass_when = max((ts_key(x["when"]) for x in passes if x["how"] != "label"), default="")
+        fails = [x for x in l2 if x["status"] in ("FAIL", "PARTIAL", "ERROR")
+                 and not (x["src"] == "verify" and (x.get("item_level") or x["how"] == "label")
+                          and name_pass_when > ts_key(x["when"]))]
         if fails:
             status = "broken"
         elif passes:
