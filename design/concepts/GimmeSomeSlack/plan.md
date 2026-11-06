@@ -24,7 +24,7 @@ work, nothing new.
    restores. New controls: never-powered cut (`sc_cut_ends`), planted cross-net cord and adjacent-feed pump
    (`sc_true_to_grid`, his 2026-10-16 phantom case), 2-way bend (`sc_junction_strips`), skipped rebuild
    (`sc_rewire_cost`), unregistered patch (`sc_settings`). The two showcase stagings (`workshop_floor`, `yard_of_masts`)
-   hold for his review (`owner_review`) once he has picked the flagship.
+   hold for his review (`owner_review`).
 4. The walk `walk_scavenger_base` on his full list, through Relentless's game_prove lane.
 
 ## Proof debt carried from stage 2
@@ -50,5 +50,5 @@ work, nothing new.
 
 ## Showcases
 
-`workshop_floor` (6 new) and `yard_of_masts` (5 new), overlap 0; the rest by their own scenes (`coverage_rest`). Which is
-showcase 1 waits on his pick; the order swaps if he picks the yard.
+`workshop_floor` (6 new) and `yard_of_masts` (5 new), overlap 0; the rest by their own scenes (`coverage_rest`). Showcase 1
+is the workshop floor, his pick by card 2026-11-05 (`d_flagship`, OWNER:1793950666234031543).

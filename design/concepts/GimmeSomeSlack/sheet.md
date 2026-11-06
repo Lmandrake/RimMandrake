@@ -47,11 +47,11 @@
 - w1, 2026-11-02: "I don't much care about savegame continuity"
 
 ## open
-- Showcase 1 needs your pick: the workshop floor or the yard of masts
+- Nothing core is open: by card 2026-11-05 you picked the workshop floor as showcase 1, OWNER:1793950666234031543
 
 ## delegated
 - No-repeat is judged by a shape-distance number with a judge agent predicting your eye, since only your eye had judged it
-- Showcase 2 is whichever face you do not pick, as the most new ground after the first; theft, the four looks, Mod Settings, the gravship and new-game cleanup are checked by their own scenes
+- Showcase 2 is the yard of masts, the most new ground after the workshop floor; theft, the four looks, Mod Settings, the gravship and new-game cleanup are checked by their own scenes
 - The lone-rebuild bar is 20 ms a frame, the floor's own tick ceiling
 
 ## pruning
