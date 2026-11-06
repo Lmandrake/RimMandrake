@@ -1,0 +1,2 @@
+A worker adding a method to the Relentless fx surface (GameFx in relentless_game) owes the same method on FakeWorld, and the contract proof should name selftest_fakeworld_parity: a proof on the routing alone stays green while that guard goes red. STAGER_SNAG_REWIRE_BUILDER_WOKEN_FOR_HARNESS gen 1 returned on this; 1 of 216 blind fails on record, so a lesson and no new gate.
+home: skills/rimflow-operations

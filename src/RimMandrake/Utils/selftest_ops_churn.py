@@ -609,6 +609,26 @@ def main():
         _, pb = case9a(tag, 0, rows)
         ok(OW.CHURN_ITEM_PREFIX + "A9_ITEM" not in pb and pb["relentless.churn_items"].get("v") == 0,
            "9b: REACH_GATE's two account change-overs read no bouncing (%s)" % tag, pb.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM"))
+    # 9c OPS_CHURN_DIAGNOSE_STAGER_PAYJ_FNOF: STAGER_SNAG_REWIRE_BUILDER_WOKEN_FOR_HARNESS's real rows, 16 minutes apart:
+    # two different real defects the blind check caught, each fixed. This alarm is TRUE, not a miscount: it rings on the
+    # candidate still in check, and only the blind PASS (or a landing) ends it.
+    stager_rows = [{"gen": 1, "at": iso(NOW - 1.0 * HOUR), "start": marker("A9_ITEM", 1), "approach": "build"},
+                   {"gen": 1, "at": iso(NOW - 0.9 * HOUR), "end": "finish", "sha": "07051af"},
+                   {"gen": 1, "at": iso(NOW - 0.8 * HOUR), "end": "blind_fail", "approach_next": "build"},
+                   {"gen": 3, "at": iso(NOW - 0.8 * HOUR), "start": marker("A9_ITEM", 3), "approach": "build"},
+                   {"gen": 3, "at": iso(NOW - 0.7 * HOUR), "end": "finish", "sha": "937e677"},
+                   {"gen": 3, "at": iso(NOW - 0.5 * HOUR), "end": "blind_fail", "approach_next": "redesign"},
+                   {"gen": 5, "at": iso(NOW - 0.4 * HOUR), "start": marker("A9_ITEM", 5), "approach": "redesign"},
+                   {"gen": 5, "at": iso(NOW - 0.2 * HOUR), "end": "finish", "sha": "0a5961f"}]
+    s9c, pc = case9a("stager", 2, stager_rows)
+    said = (pc.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM") or {}).get("x", {}).get("said", "")
+    ok("blind_fail failed it 2 times" in said and "returns" not in said,
+       "9c: STAGER's two blind fails ring bouncing with its third candidate still in check", said)
+    (s9c / "items" / "A9_ITEM" / "state.json").write_text(json.dumps(
+        {"status": "game", "returns": 2, "gen": 5, "spent": 1, "check": {"verdict": "PASS", "verdict_at": NOW - 0.1 * HOUR}}))
+    pc2 = OW.rl_churn(s9c, NOW, cfg9)
+    ok(OW.CHURN_ITEM_PREFIX + "A9_ITEM" not in pc2 and pc2["relentless.churn_items"].get("v") == 0,
+       "9c: the blind PASS after those fails ends the bounce", pc2.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM"))
     # 9w OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA: OPS_METRONOME_MIGRATE_CLOCKS_FENCED cuts one clock a day by design and read
     # 'bouncing: 5 returns; waiting_for_sample failed it 5 times' off five `snag --wait-hours` endings (wait=true rows).
     # A wait is time, not work: no failed attempt, no bounce, and its gen's spend is no returned work. The same rows
