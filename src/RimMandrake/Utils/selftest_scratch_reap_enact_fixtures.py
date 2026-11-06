@@ -21,7 +21,17 @@ def check(c, m):
         FAILS.append(m)
 
 
-td = Path(tempfile.mkdtemp(prefix="reap_enact_", dir=os.environ.get("SELFTEST_TMP") or "/home/mandrake/rm/scratch/BENCH"))
+def fixture_base():
+    """rm/scratch/BENCH, created if absent (a walled box mounts rm/scratch as an empty tmpfs); TMPDIR if it cannot be."""
+    base = Path(os.environ.get("SELFTEST_TMP") or "/home/mandrake/rm/scratch/BENCH")
+    try:
+        base.mkdir(parents=True, exist_ok=True)
+        return str(base)
+    except OSError:
+        return tempfile.gettempdir()
+
+
+td = Path(tempfile.mkdtemp(prefix="reap_enact_", dir=fixture_base()))
 try:
     # SOURCE
     fx = td / "fixroot"
