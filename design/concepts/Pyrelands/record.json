@@ -174,6 +174,12 @@
    ],
    "by": "rm-role-designer-1793952001",
    "what": "Root ending replaced by his card: no firebreak floor; ordinary paving two cells wide stops the ground fire, a fire-hawk ember can carry six cells past it, the firefoam sprayer lets a colonist reach the scorch-fruit; Judged first reads scorch-fruit right behind the front and the greening days later. Stage 3 owes: sheet/tree root text and the 8 coverage gaps in result.rm-role-designer-1793932102.json."
+  },
+  {
+   "id": "d_worldgen_outside_promise",
+   "speaker": "agent",
+   "text": "Per his 2026-08-15 ruling (no worldgen feature in any version; players never generate anything, they receive the one frozen world): the Pyrelands promise covers only the shipped world. The built biomeGenerationEnabled switch (vanilla placement on newly generated worlds) stays as built and is outside the promise: no leaf, no scene, no check. The mod builds no worldgen of its own. Stage 3 owes: sheet floor:worldgen reworded to 'No worldgen of our own; the vanilla new-world placement switch is outside the promise and unchecked', floor.json worldgen line kept applicable with that reading, and coverage_rest naming the switch as out of promise (per-ruling, not a cut). Whether its default should be on is filed for him as PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT (2026-08-18 'no knobs that could roll a second world'); it does not block this concept. He can undo this.",
+   "source": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:60"
   }
  ],
  "asks": [
@@ -386,6 +392,25 @@
     "source": "OWNER:1793950669508519029",
     "by_card": "Use the proposed ending"
    }
+  },
+  {
+   "id": "a_worldgen_switch",
+   "text": "A player who generates their own world instead of using your save: is the Pyrelands showing up there part of what this mod does (a: the sheet names the 'Pyrelands can generate on new worlds' switch, on by default, and we check on = Pyrelands appear on a new world, off = none, your Ash'karr world untouched), or outside its promise (b: the sheet says the mod makes no promise about any world but yours, and nothing checks the switch)? a, b, or correct either wording. Recommended: b.",
+   "decision": "worldgen placement switch: biomeGenerationEnabled (RM_PyrelandsMod.cs:60, BiomeWorker_Pyrelands in FireEcologyHook.cs) lets vanilla place the biome on newly generated worlds, while sheet.md floor:worldgen says 'No worldgen of any kind'; which the sheet and floor describe",
+   "about": [
+    "inv_biome_self_contained",
+    "inv_settings_gate"
+   ],
+   "owner_cites": [],
+   "offers_removal": false,
+   "author": "rm-role-designer-1793981883",
+   "status": "struck",
+   "source": "design/concepts/Pyrelands/turn_06.md",
+   "review": {
+    "by": "rm-judge a2107a4d8457ab774 (fresh Opus, not the author)",
+    "verdict": "struck",
+    "why": "Already settled by his 2026-08-15 ruling (players never generate anything; worldgen as a player-facing capability is out): (b) restates it, (a) contradicts it. Code claims verified accurate. Record (b) under the ruling; the sheet line should read 'no worldgen of our own', since the mod builds none."
+   }
   }
  ],
  "inventory": [
@@ -418,7 +443,8 @@
    "proof_note": "last full green run: 34 PASS 0 FAIL on fresh site r5, 2026-10-15 (RATCHET_PILOT_PROVE_THREE_MODS_ONE_LOOP note in BENCH.jsonl); code changed since (opening front 2026-10-22, defName migration 2026-10-22), so stale until rerun; bar pyre_mapgen_log_clean. Zero painted tiles is expected (paint-once ruling), never a defect.",
    "scope_source": [
     "design/validation_walks/RimMandrake/Pyrelands.md (north star VALIDATED)"
-   ]
+   ],
+   "text": " The new-world placement switch is outside the promise (d_worldgen_outside_promise)."
   },
   {
    "id": "inv_plant_roster",
@@ -683,14 +709,15 @@
   },
   {
    "id": "inv_ullai_herd_giant",
-   "what": "Ullai herds drift to where it burned about two days ago (burn-centre history), and the furnace-beast is a giant whose herds migrate",
+   "what": "Ullai herds drift to where it burned about two days ago (burn-centre history), and the furnace-beast is a giant (size ratio); on the map a low-charge beast walks into the burn and a full one walks away. The world-map herd migration was built, then cut by his card 2026-10-23 (commit 84cc81013d); About.xml and the race description still promise it (owed: PYRELANDS_TEXT_FIX_ENGINEERED_NEVER_SAID)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs",
     "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_Ullai.xml",
     "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_UllaiThinkTree.xml",
     "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_FurnaceBeastThinkTree.xml",
-    "ITEM:PYRELANDS_ULLAI_GIANT_BUILD_1"
+    "ITEM:PYRELANDS_ULLAI_GIANT_BUILD_1",
+    "src/RimMandrake/Pyrelands/Source/JobGiver_RUT_FurnaceThermalCycle.cs"
    ],
    "proof": "stale",
    "proof_evidence": [
@@ -757,11 +784,12 @@
    "proof_evidence": [
     "src/RimMandrake/Pyrelands/firefoam_aim_live_proof.py"
    ],
-   "scope": "not_opened",
+   "scope": "opened_by_owner",
    "source": [
     "src/RimMandrake/Pyrelands/About/About.xml"
    ],
-   "proof_note": "one-off aim probe (FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE), no player-facing scene"
+   "proof_note": "one-off aim probe (FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE), no player-facing scene",
+   "scope_source": "OWNER:1793950669508519029"
   },
   {
    "id": "inv_sand_shovel",
@@ -931,6 +959,12 @@
    "resolved": true,
    "status": "resolved",
    "resolution": "Answered by card OWNER:1793898829233582581: stop the wipe (d_blackrain_stop_wipe); the code change goes to Relentless with the tree."
+  },
+  {
+   "id": "c_worldgen_switch_vs_floor",
+   "text": "Built: biomeGenerationEnabled (default on, WORLDGEN-AFFECTING) lets vanilla worldgen place RM_FE_Pyrelands on new worlds. Sheet floor:worldgen says 'No worldgen of any kind' (from the 2026-08-15 ruling). Core for the floor line; settled by a_worldgen_switch. Resolved by d_worldgen_outside_promise (per-ruling 2026-08-15; ask struck by review).",
+   "source": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:60",
+   "resolved_by": "d_worldgen_outside_promise"
   }
  ],
  "script_audit": [

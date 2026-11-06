@@ -270,10 +270,17 @@
     "ref": "run rm-role-designer-1793980998",
     "stage": 5,
     "tokens": 195843
+   },
+   {
+    "at": "2026-11-06T16:20:40Z",
+    "kind": "review",
+    "ref": "rm-judge a2107a4d8457ab774 a_worldgen_switch review",
+    "stage": 2,
+    "tokens": 32459
    }
   ],
   "reserve": 60000,
-  "spent": 8218322
+  "spent": 8250781
  },
  "history": [
   {
@@ -575,6 +582,18 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1793980998: stage 5 return"
+  },
+  {
+   "at": "2026-11-06T16:18:37Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "8218322 of 4000000 spent; run rm-role-designer-1793981883 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-06T16:18:37Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1793981883, stage 2, budget 500000"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -886,7 +905,28 @@
    "to": 2
   }
  ],
- "running": null,
+ "running": {
+  "at": "2026-11-06T16:18:37Z",
+  "inputs": {
+   "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
+   "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
+   "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
+   "root": "219a7768830abbabe1dde7fb16b488c4fef190cf760a0de62ae1d69ac397b66b",
+   "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
+   "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
+   "tree": "881db40073f1ed0448c4b25a010461045c6544610062f5f011ce2670d561a9c9"
+  },
+  "manifest": {
+   "designer.md": "41dfd764d103828df69df029eea914873897039a1d7855ad7083c647f3d43cc0",
+   "designer_dialogue.md": "0ea41f0fa7dab84bb7da3c6338bc81339fec2c808460d6635315208b374621a2"
+  },
+  "owner_uncited": [
+   "1793766816609436834"
+  ],
+  "reserved": 500000,
+  "run": "rm-role-designer-1793981883",
+  "stage": 2
+ },
  "schema": 1,
  "stage": 2,
  "status": "ready",

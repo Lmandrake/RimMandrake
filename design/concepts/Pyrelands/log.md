@@ -74,3 +74,8 @@ The 8 stage-3 coverage gaps (result.rm-role-designer-1793932102.json) are writin
 
 ## 2026-11-06 run rm-role-designer-1793952001 (stage 2, apply turn_05 answer)
 - a_root_ending, by card (OWNER:1793950669508519029): "Which ending should your Pyrelands paragraph have? → Use the proposed ending" -> root's last two sentences replaced verbatim from turn_05.md; d_root_ending. Root now cites OWNER:1793950669508519029. The 8 stage-3 coverage gaps stay for the next stage-3 run.
+
+## 2026-11-06, run rm-role-designer-1793981883 (stage 2, returned from stage 5)
+Drafted a_worldgen_switch (turn_06.md): does the Pyrelands showing up on a player-generated world belong to the mod's promise?
+Fresh review (rm-judge a2107a4d8457ab774) struck it: his 2026-08-15 ruling already settles it (players never generate anything).
+Not sent. Recorded d_worldgen_outside_promise (agent, per-ruling); default-on question filed as PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT.
