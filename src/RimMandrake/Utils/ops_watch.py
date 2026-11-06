@@ -1617,6 +1617,90 @@ def one_shot_units(names):
     return signal_watch.one_shots(names, timers)
 
 
+BLIP_GRACE_MIN = 45     # a timer unit still failed this long after its failed run is not waiting on its next run
+BLIP_DAY_FAILS = 3      # this many failed runs of one unit in 24 h is a flapping unit, never a blip
+
+
+def journal_runs(unit, since_h=24, run=None):
+    """-> [(t, failed)] oldest first, one row per run of `unit` in the last since_h hours, read from systemd's own lines
+    (a job-start "Starting" line opens a run; JOB_RESULT=failed or a UNIT_RESULT line fails it; t is the run's last
+    failure, else its start). None when the journal cannot be read: the caller then counts the failure."""
+    cmd = ["journalctl", "--user", "-u", unit, "--since", "-%dh" % since_h, "-o", "json", "--no-pager"]
+    try:
+        r = (run or subprocess.run)(cmd, capture_output=True, text=True, timeout=10)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if r.returncode != 0:
+        return None
+    runs = []
+    for line in r.stdout.splitlines():
+        try:
+            e = json.loads(line)
+        except ValueError:
+            continue
+        if not isinstance(e, dict) or e.get("SYSLOG_IDENTIFIER") != "systemd":
+            continue
+        try:
+            t = int(e.get("__REALTIME_TIMESTAMP")) / 1e6
+        except (TypeError, ValueError):
+            continue
+        job = e.get("JOB_RESULT")
+        if e.get("JOB_TYPE") == "start" and not job:
+            runs.append([t, False, False])
+        elif job == "failed" or e.get("UNIT_RESULT") not in (None, "", "success"):
+            if not runs or runs[-1][2]:   # no open run (its Starting fell before the window, or a start-limit hit):
+                runs.append([t, True, False])   # a failed run of its own, never painted over an earlier one
+            runs[-1][:2] = [t, True]
+            runs[-1][2] = job == "failed"
+        elif job and runs:
+            runs[-1][2] = True
+    return [(x[0], x[1]) for x in runs]
+
+
+def blip_wait(runs, now, grace_min=BLIP_GRACE_MIN, day_fails=BLIP_DAY_FAILS):
+    """-> why a failed timer unit is only awaiting its next run (one failed run after a good one, recent, not flapping),
+    or None when its failure counts. RELAPSE_TIMERS_FIX_DIED_TWICE: timers-20261106020038 reopened twice on such blips
+    (testq-tick 2026-11-06T06:30Z, rm-deploy-update 10:20Z), each healed by its own next run, while the real defects
+    (rm-account-handover-system, rm-scratch-reap) failed run after run. Unreadable or silent journal: counts."""
+    if not runs or not runs[-1][1]:
+        return None
+    fails = sum(1 for r in runs if r[1])
+    if fails >= day_fails:
+        return None
+    if len(runs) >= 2 and runs[-2][1]:
+        return None
+    age = (now - runs[-1][0]) / 60.0
+    if age >= grace_min:
+        return None
+    return "one failed run %.0f min ago after a good one (%d failed in 24 h); counts at %d min or on a second" % (
+        max(age, 0), fails, grace_min)
+
+
+def awaiting_retry(units, now, timers=None, runs_of=None, most=4):
+    """-> {unit: why} for the failed units whose same-named timer is armed (a next elapse on record: something will run
+    them again) and whose failure is a blip_wait blip. Timer rows are list-timers --all rows. No timer list, a timer with
+    no next elapse, a unit past the first `most` (bounds journalctl at most x 10 s), or an error: nothing is excused."""
+    if not units:
+        return {}
+    try:
+        if timers is None:
+            timers = systemctl_json("list-timers", "--all")
+        armed = {t.get("unit") for t in timers if isinstance(t, dict) and t.get("next")}
+    except Exception:  # noqa: BLE001
+        return {}
+    out = {}
+    for n in units[:most]:
+        if n.rsplit(".", 1)[0] + ".timer" not in armed:
+            continue
+        try:
+            why = blip_wait((runs_of or journal_runs)(n), now)
+        except Exception:  # noqa: BLE001  one unit's bad journal costs that unit its excuse, never the reading
+            why = None
+        if why:
+            out[n] = why
+    return out
+
+
 PULSE_DEPLOY = "/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"   # rm-deploy-update's checkout (env RM_PULSE_DEPLOY overrides)
 
 
@@ -1646,7 +1730,11 @@ def c_timers(now, rules, ctx):
         failed = systemctl_json("list-units", "--failed", "--all")
         names = sorted(str(u.get("unit") if isinstance(u, dict) else u) for u in failed)
         real = [n for n in names if n not in one_shot_units(names)]
-        out["timers.failed_units"] = M(len(real), "failed user units", units=real[:12], one_shots=sorted(set(names) - set(real))[:12])
+        shots = sorted(set(names) - set(real))[:12]
+        waiting = awaiting_retry(real, now)
+        real = [n for n in real if n not in waiting]
+        out["timers.failed_units"] = M(len(real), "failed user units", units=real[:12], one_shots=shots,
+                                       awaiting_retry=waiting)
     except Exception as e:  # noqa: BLE001
         out["timers.failed_units"] = U("list-units: %s: %s" % (type(e).__name__, str(e)[:160]))
     try:

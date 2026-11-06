@@ -1940,7 +1940,8 @@ check("log retry: a filing that lands on a later UNMEASURED pass still tells the
 for _t in _rows:
     _t["conductor_log"] = str(_clog)
 # SCOPE_ALARM_FIX_DEAD_SELFTEST_STILL_SHOUTS: a dead selftest scope is not a failed timer, a real failed unit still is
-_sj, _osu = OW.systemctl_json, OW.one_shot_units
+_sj, _osu, _jr = OW.systemctl_json, OW.one_shot_units, OW.journal_runs
+OW.journal_runs = lambda unit: None      # hermetic: an unreadable journal excuses nothing
 OW.systemctl_json = lambda *a: [{"unit": "rm-harness-11-3.scope"}, {"unit": "rm-arena-replay-x.service"}, {"unit": "rm-mirror.service"}] \
     if a[0] == "list-units" else [{"unit": "rm-mirror.timer"}]
 OW.one_shot_units = lambda names: {"rm-harness-11-3.scope", "rm-arena-replay-x.service"}
@@ -1949,7 +1950,7 @@ try:
     OW.one_shot_units = lambda names: set()
     _t2 = OW.c_timers(NOW, RULES, {})["timers.failed_units"]
 finally:
-    OW.systemctl_json, OW.one_shot_units = _sj, _osu
+    OW.systemctl_json, OW.one_shot_units, OW.journal_runs = _sj, _osu, _jr
 check("scope: dead one-shots are not counted, the real failed timer is", _t["v"] == 1 and _t["x"]["units"] == ["rm-mirror.service"], _t)
 check("scope: what was left out is said", len(_t["x"].get("one_shots")) == 2, _t)
 check("scope: no transient reading, nothing is excused", _t2["v"] == 3, _t2)
