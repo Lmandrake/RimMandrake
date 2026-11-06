@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the SWBestiary kernels (Livestock/Kernel/RSW_LivestockKernel.cs, BeastMechanics/Kernel/RSW_BeastKernel.cs,
 JawaIkee/Kernel/RSW_IkeeKernel.cs under src/RimStarWars/SWBestiary/Source), no game.
 
@@ -36,7 +37,7 @@ def main(argv):
     for i, a in enumerate(argv):
         if a.startswith("--fuzz") and i + 1 < len(argv):
             args += [a, argv[i + 1]]
-    return subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode
+    return winbuild.run_interop(args, cwd="/mnt/d/Luke/dev", timeout=None)
 
 
 if __name__ == "__main__":

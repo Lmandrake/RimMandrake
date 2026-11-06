@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Selftest: the bridge condition evaluator's two twins agree byte for byte (CONDCORE_BUILD_THREE_VALUED_TREES).
 
 Spec: design/RimMandrake/bridge_conditions_2026-11-06/build_spec.md §2 row T1. The C# core
@@ -88,7 +89,7 @@ def dotnet_runs():
     if not exe or not os.path.exists(exe):
         return None
     try:
-        p = subprocess.run([exe, "--version"], capture_output=True, text=True, timeout=60, cwd="/mnt/d/Luke/dev")
+        p = winbuild.run_interop_captured([exe, "--version"], capture_output=True, text=True, timeout=60, cwd="/mnt/d/Luke/dev")
     except (OSError, subprocess.SubprocessError):
         return None
     return exe if p.returncode == 0 else None
@@ -101,7 +102,7 @@ def run_cs(exe, vectors_text):
     if rc:
         return None, "build FAILED (rc %s)" % rc
     dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\CondSelfTest.dll"
-    p = subprocess.run([exe, dll], input=vectors_text.encode("utf-8"), capture_output=True, timeout=300,
+    p = winbuild.run_interop_captured([exe, dll], input=vectors_text.encode("utf-8"), capture_output=True, timeout=300,
                        cwd="/mnt/d/Luke/dev")
     if p.returncode:
         return None, "CondSelfTest exit %d: %s" % (p.returncode, p.stderr.decode("utf-8", "replace")[-400:])

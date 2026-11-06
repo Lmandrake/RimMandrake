@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline selftest of the Ninefold engine inside Salvation Rites (src/RimUtinni/Rites/Source), no game. Two parts:
 
 1. SAVE TYPE ALIAS. Ninefold was its own mod (mandrake.rm.ninefold, namespace RimMandrake.Ninefold) until the
@@ -68,7 +69,7 @@ def class_source(srcs, ns, cls):
 
 
 def legacy_map(exe_args, names):
-    r = subprocess.run(exe_args + ["--legacy-map"] + names, cwd="/mnt/d/Luke/dev",
+    r = winbuild.run_interop_captured(exe_args + ["--legacy-map"] + names, cwd="/mnt/d/Luke/dev",
                        capture_output=True, text=True)
     rows = {}
     for line in r.stdout.splitlines():
@@ -157,7 +158,7 @@ def main(argv):
     for i, a in enumerate(argv):
         if a.startswith("--fuzz") and i + 1 < len(argv):
             args += [a, argv[i + 1]]
-    frc = subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode
+    frc = winbuild.run_interop(args, cwd="/mnt/d/Luke/dev", timeout=None)
     if fails:
         print("FAIL: %d legacy-type check(s): %s" % (len(fails), fails))
     return 1 if (fails or frc) else 0

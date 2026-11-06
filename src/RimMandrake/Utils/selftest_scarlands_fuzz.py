@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the Scarlands kernels (Scarlands/Source/Kernel/*.cs), no game.
 
 Seeded fuzz over the production kernels with explicit invariants: the aerosol-screen coverage union (aero), the
@@ -48,7 +49,7 @@ def main(argv):
         return rc
     dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeScarlands.SelfTest.dll"
     args = [winbuild.dotnet_exe(), dll] + extra
-    return subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode
+    return winbuild.run_interop(args, cwd="/mnt/d/Luke/dev", timeout=None)
 
 
 if __name__ == "__main__":

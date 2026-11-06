@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of the EnvironmentalHazards kernels (Source/RM_AxisKernel.cs salinity axis + surge, Source/RM_PoolKernel.cs stranding-pool grid logic), no game.
 
 Seeded action sequences (surge / recede / overwrite / save-load of the salinity grid; detect / tick / terrain-edit of the pools)
@@ -33,7 +34,7 @@ def main(argv):
     for i, a in enumerate(argv):
         if a.startswith("--fuzz") and i + 1 < len(argv):
             args += [a, argv[i + 1]]
-    return subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode
+    return winbuild.run_interop(args, cwd="/mnt/d/Luke/dev", timeout=None)
 
 
 if __name__ == "__main__":

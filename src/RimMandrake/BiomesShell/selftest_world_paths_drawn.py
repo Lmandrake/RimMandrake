@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline proof of "Planet: drawn rivers" / "Planet: worn roads" (RIVERS_ROADS_REDESIGN_WORTH_LOOKING_AT).
 
 The river graph (Source/RM_RiverGraph.cs) decides every width the planet draws: taper from the heads, a fan at the
@@ -264,12 +265,12 @@ def run_csharp(cases, hashes, bad):
         with open(os.path.join(where, "in.txt"), "w") as f:
             f.write("\n".join(lines) + "\n")
         dotnet = winbuild.dotnet_exe()
-        built = subprocess.run([dotnet, "build", winbuild.win(os.path.join(where, "RiverGraphExec.csproj")), "-c", "Release",
+        built = winbuild.run_interop_captured([dotnet, "build", winbuild.win(os.path.join(where, "RiverGraphExec.csproj")), "-c", "Release",
                                 "--nologo", "-v", "quiet"], cwd=where, capture_output=True, text=True, timeout=300)
         if built.returncode != 0:
             bad.append("execution: harness build failed: " + built.stdout[-1500:])
             return None
-        ran = subprocess.run([dotnet, winbuild.win(os.path.join(where, "bin", "Release", "net8.0", "RiverGraphExec.dll")),
+        ran = winbuild.run_interop_captured([dotnet, winbuild.win(os.path.join(where, "bin", "Release", "net8.0", "RiverGraphExec.dll")),
                               winbuild.win(os.path.join(where, "in.txt"))], cwd=where, capture_output=True, text=True, timeout=200)
         if ran.returncode != 0:
             bad.append("execution: harness exited %d: %s" % (ran.returncode, (ran.stdout + ran.stderr)[-600:]))
@@ -580,14 +581,14 @@ def run_drawn(source, cmds, bad):
                 f.write(text)
         dotnet = winbuild.dotnet_exe()
         for _ in range(2):   # one retry: a dotnet.exe build on a fresh temp dir has failed once with no output (2026-11-03)
-            built = subprocess.run([dotnet, "build", winbuild.win(os.path.join(where, "PathsDrawnExec.csproj")), "-c", "Release",
+            built = winbuild.run_interop_captured([dotnet, "build", winbuild.win(os.path.join(where, "PathsDrawnExec.csproj")), "-c", "Release",
                                     "--nologo", "-v", "quiet"], cwd=where, capture_output=True, text=True, timeout=300)
             if built.returncode == 0:
                 break
         if built.returncode != 0:
             bad.append("drawing: harness build failed: " + (built.stdout + built.stderr)[-1500:])
             return None
-        ran = subprocess.run([dotnet, winbuild.win(os.path.join(where, "bin", "Release", "net8.0", "PathsDrawnExec.dll")),
+        ran = winbuild.run_interop_captured([dotnet, winbuild.win(os.path.join(where, "bin", "Release", "net8.0", "PathsDrawnExec.dll")),
                               winbuild.win(os.path.join(where, "in.txt"))], cwd=where, capture_output=True, text=True, timeout=200)
         if ran.returncode != 0:
             bad.append("drawing: harness exited %d: %s" % (ran.returncode, (ran.stdout + ran.stderr)[-600:]))

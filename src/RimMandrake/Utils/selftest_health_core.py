@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Selftest: the PRODUCTION game-health core (JawaBenchHealthCore.cs) built and unit-tested offline.
 
 Metrics tps.frame-hist, tps.log-counts, tps.bridge-occupancy, tps.capability-inventory, opt.profiler (with the merged
@@ -34,7 +35,7 @@ def main(argv):
         print("FAIL harness build FAILED (rc %s)" % rc)
         return 1
     dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\HealthSelfTest.dll"
-    p = subprocess.run([winbuild.dotnet_exe(), dll], capture_output=True, text=True, cwd="/mnt/d/Luke/dev")
+    p = winbuild.run_interop_captured([winbuild.dotnet_exe(), dll], capture_output=True, text=True, cwd="/mnt/d/Luke/dev")
     lines = [ln.strip() for ln in p.stdout.splitlines() if ln.startswith("U ")]
     count = [ln for ln in p.stdout.splitlines() if ln.startswith("U-count ")]
     bad = [ln for ln in lines if " FAIL" in ln]

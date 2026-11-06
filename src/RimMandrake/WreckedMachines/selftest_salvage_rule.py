@@ -12,7 +12,7 @@ SALVAGE_RULE_PROVE_ON_A_REAL_FURNACE.
 
     python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py
 """
-# selftest-timeout: 420
+# selftest-timeout: 780   (+360 s for the lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 import glob
 import hashlib
 import os
@@ -404,12 +404,12 @@ def check_execution(bad, salvage_text, rule_text):
     try:
         names = build_variants(where, salvage_text, rule_text, bad)
         dotnet = winbuild.dotnet_exe()
-        built = subprocess.run([dotnet, "build", winbuild.win(os.path.join(where, "SalvageExec.csproj")), "-c", "Release", "--nologo", "-v", "quiet"],
+        built = winbuild.run_interop_captured([dotnet, "build", winbuild.win(os.path.join(where, "SalvageExec.csproj")), "-c", "Release", "--nologo", "-v", "quiet"],
                                cwd=where, capture_output=True, text=True, timeout=240)
         if built.returncode != 0:
             bad.append("execution: the fake-engine build failed: %s" % built.stdout[-1500:])
             return ""
-        ran = subprocess.run([dotnet, winbuild.win(os.path.join(where, "bin", "Release", "net8.0", "SalvageExec.dll"))],
+        ran = winbuild.run_interop_captured([dotnet, winbuild.win(os.path.join(where, "bin", "Release", "net8.0", "SalvageExec.dll"))],
                              cwd=where, capture_output=True, text=True, timeout=120)
         if ran.returncode != 0:
             bad.append("execution: the oracle exited %d: %s" % (ran.returncode, (ran.stdout + ran.stderr)[-500:]))

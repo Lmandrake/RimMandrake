@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline selftest of the Gimme Some Slack core (graph reduction, planner, slack laying) against the
 Python oracle (src/RimMandrake/Utils/mockups/messy_conduit/).
 
@@ -85,7 +86,7 @@ def main(argv):
         args += ["--unroutable-census", winbuild.win(os.path.abspath(argv[i + 1]))] + argv[i + 2:i + 3]
     if "--dump" in argv:
         args += ["--dump", winbuild.win(os.path.abspath(argv[argv.index("--dump") + 1]))]
-    return subprocess.run(args, cwd=selftest_cwd()).returncode
+    return winbuild.run_interop(args, cwd=selftest_cwd(), timeout=None)
 
 
 if __name__ == "__main__":

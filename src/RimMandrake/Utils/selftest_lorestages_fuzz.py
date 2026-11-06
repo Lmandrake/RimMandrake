@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Approach B fuzz of LoreStages (src/RimMandrake/LoreStages/Source/), no game.
 
 Unlike the other fuzz wrappers this one drives the PRODUCTION LoreStageApplier on REAL engine defs (BiomeDef / HediffDef / ThingDef from
@@ -38,7 +39,7 @@ def main(argv):
             args += [a, argv[i + 1]]
     if len(args) == 1:
         args.append("--fuzz")
-    return subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode
+    return winbuild.run_interop(args, cwd="/mnt/d/Luke/dev", timeout=None)
 
 
 if __name__ == "__main__":

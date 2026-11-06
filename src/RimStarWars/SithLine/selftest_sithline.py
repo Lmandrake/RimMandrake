@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """SithLine offline selftest (SANGUOPHAGE_KEPT_UNREACHABLE_1): the production kernel RSW_SithLineKernel.cs, built into a
 plain net8.0 exe through winbuild.stage_build (dotnet.exe is Windows-native) and run; then the mod's STATIC checks
 (validation.py). No game.
@@ -25,7 +26,7 @@ def main():
         print("FAIL selftest build")
         return rc
     dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RSW_SithLine.SelfTest.dll"
-    k = subprocess.run([winbuild.dotnet_exe(), dll], cwd="/mnt/d/Luke/dev").returncode
+    k = winbuild.run_interop([winbuild.dotnet_exe(), dll], cwd="/mnt/d/Luke/dev", timeout=None)
     s = subprocess.run([sys.executable, os.path.join(HERE, "validation.py")]).returncode
     print("sithline selftest: kernel %s, static %s" % ("ok" if k == 0 else "FAIL", "ok" if s == 0 else "FAIL"))
     return 1 if (k or s) else 0

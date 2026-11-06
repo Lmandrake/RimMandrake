@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Light ledger selftest (LIGHT_LEDGER_ONE_1): a static guard, then the kernel's offline test.
 
 1. Lint: no C# under src/RimMandrake writes `GlowRadius =` outside src/RimMandrake/_Shared/LightLedger/.
@@ -91,7 +92,7 @@ def kernel():
         print("selftest build FAILED")
         return False
     dll = winbuild.staged_win(rec, selftest) + "\\bin\\Release\\net8.0\\RimMandrakeLightLedger.SelfTest.dll"
-    return subprocess.run([winbuild.dotnet_exe(), dll], cwd="/mnt/d/Luke/dev").returncode == 0
+    return winbuild.run_interop([winbuild.dotnet_exe(), dll], cwd="/mnt/d/Luke/dev", timeout=None) == 0
 
 
 def main(argv):

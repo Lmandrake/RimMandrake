@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline proof of the stall probe's "top job" read (BRIDGE_STALL_DIAGNOSTIC_1): which tick list, bucket and pawn jobs a
 stall dump names.
 
@@ -137,7 +138,7 @@ def run(probe_text, prof_text, label):
         fails.append("build FAILED (rc %s), log %s" % (rc, log))
         return {}, fails
     dll = winbuild.staged_win(rec, os.path.dirname(PROJ)) + "\\bin\\Release\\net8.0\\StallProbeSelfTest.dll"
-    p = subprocess.run([winbuild.dotnet_exe(), dll], capture_output=True, text=True, cwd="/mnt/d/Luke/dev", timeout=120)
+    p = winbuild.run_interop_captured([winbuild.dotnet_exe(), dll], capture_output=True, text=True, cwd="/mnt/d/Luke/dev", timeout=120)
     units = {}
     for ln in p.stdout.splitlines():
         ln = ln.strip()

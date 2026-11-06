@@ -6,12 +6,16 @@ selftest that launched dotnet.exe with a bare subprocess call read that as a red
 (SELFTEST_RETRY_FIX_25_STILL_BARE, from NIGHTLY_COP_FIX_RED_MPLZPJ_VKOU). This test:
   1. scans every tracked .py for a `dotnet ..., "run"` launch handed to subprocess directly (class guard), after
      proving on planted samples that the scanner sees both shapes (inline list, list held in a variable);
-  2. checks winbuild.run_interop_captured on a stand-in exe: a lost launch goes again, the caller still gets
+  2. scans every tracked selftest_*.py, by AST, for a built exe (`[winbuild.dotnet_exe(), dll]`, `[exe, ...]`, a
+     command list held in a variable, `list(cmd)`, `cmd + [...]`) handed to subprocess directly: 79+ such lines were
+     still bare after (1) (INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT), and two went red on the 2026-11-03 nightly;
+  3. checks winbuild.run_interop_captured on a stand-in exe: a lost launch goes again, the caller still gets
      stdout/stderr on the result, a real failure is not retried.
 Offline, no dotnet needed.
 """
 from __future__ import annotations
 
+import ast
 import os
 import re
 import stat
@@ -67,6 +71,82 @@ def bare_launches(text):
     return out
 
 
+EXE_NAME = re.compile(r'dotnet|(^|_)exe($|_)', re.I)
+SUBPROC_FNS = {"run", "Popen", "call", "check_call", "check_output"}
+
+
+def _exeish(n):
+    """A node naming a Windows exe: winbuild.dotnet_exe(), or a name like dotnet / DOTNET_EXE / exe / cs_exe."""
+    if isinstance(n, ast.Call):
+        f = n.func
+        return (isinstance(f, ast.Attribute) and f.attr == "dotnet_exe") or (isinstance(f, ast.Name) and f.id == "dotnet_exe")
+    ident = n.id if isinstance(n, ast.Name) else n.attr if isinstance(n, ast.Attribute) else ""
+    return bool(ident) and ident != "executable" and "python" not in ident.lower() and bool(EXE_NAME.search(ident))
+
+
+def _cmdish(n, names):
+    if isinstance(n, ast.List):
+        return bool(n.elts) and _exeish(n.elts[0])
+    if isinstance(n, ast.Name):
+        return n.id in names
+    if isinstance(n, ast.BinOp):
+        return _cmdish(n.left, names)
+    if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == "list" and n.args:
+        return _cmdish(n.args[0], names)
+    return False
+
+
+def bare_exe_launches(text):
+    """Line numbers where a command whose first element is a Windows exe reaches subprocess directly."""
+    tree = ast.parse(text)
+    names = set()
+    for _ in range(3):          # cmd = [exe]; args = list(cmd); full = args + [...]
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Assign) and _cmdish(node.value, names):
+                names.update(t.id for t in node.targets if isinstance(t, ast.Name))
+    return sorted(node.lineno for node in ast.walk(tree)
+                  if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                  and node.func.attr in SUBPROC_FNS and isinstance(node.func.value, ast.Name)
+                  and node.func.value.id == "subprocess" and node.args and _cmdish(node.args[0], names))
+
+
+def exe_scanner_sees():
+    planted = {
+        'r = subprocess.run([winbuild.dotnet_exe(), dll], capture_output=True)\n': [1],
+        'args = [winbuild.dotnet_exe(), dll]\nargs += ["-x"]\nsys.exit(subprocess.run(args, cwd=d).returncode)\n': [3],
+        'exe_args = [WB.dotnet_exe(), dll]\nargs = list(exe_args)\nr = subprocess.run(args)\n': [3],
+        'r = subprocess.run(exe_args + ["--map"], cwd=d)\nexe_args = [dotnet, dll]\n': [1],
+        'r = subprocess.call(\n    [DOTNET_EXE, dll], cwd=d)\n': [1],
+        'p = subprocess.run([exe, "--version"], text=True)\n': [1],
+        'r = winbuild.run_interop([winbuild.dotnet_exe(), dll], cwd=d, timeout=None)\n': [],
+        'r = subprocess.run([sys.executable, "-c", "x"])\n': [],
+        'r = subprocess.run([python_exe, "x.py"])\n': [],
+        'r = subprocess.run(["git", "status"])\n': [],
+    }
+    for src, want in planted.items():
+        got = bare_exe_launches(src)
+        check(got == want, "exe scanner on planted sample %r" % src.split("\n")[0][:50], (got, want))
+
+
+def selftests_exe_clean(files):
+    tests = [f for f in files if os.path.basename(f).startswith("selftest_") and not f.endswith("_guard.py")]
+    check(len(tests) > 300, "the exe scan sees the selftests (%d)" % len(tests), len(tests))
+    launching, bare = 0, []
+    for f in tests:
+        try:
+            with open(os.path.join(REPO, f), encoding="utf-8", errors="replace") as fh:
+                text = fh.read()
+            if "winbuild" not in text and "dotnet" not in text:
+                continue
+            launching += 1
+            bare += ["%s:%d" % (f, n) for n in bare_exe_launches(text)]
+        except (OSError, SyntaxError, ValueError):
+            continue
+    check(launching >= 80, "the exe scan finds the selftests that build or launch a Windows exe (%d)" % launching, launching)
+    check(not bare, "no selftest hands a built exe to subprocess directly (use winbuild.run_interop or "
+                    "run_interop_captured)", bare)
+
+
 def scanner_sees():
     planted = {
         'r = subprocess.run([dotnet, "run", "--project", p], capture_output=True)\n': [1],
@@ -100,6 +180,7 @@ def tree_clean():
     check(launching >= 20, "the scan finds the files that launch dotnet run (%d)" % launching, launching)
     check(not bare, "no python file hands a `dotnet run` to subprocess directly (use winbuild.run_interop_captured)",
           bare)
+    return files
 
 
 def fake_exe(td, name, body):
@@ -143,7 +224,8 @@ def captured(td):
 
 def main():
     scanner_sees()
-    tree_clean()
+    exe_scanner_sees()
+    selftests_exe_clean(tree_clean())
     with tempfile.TemporaryDirectory() as td:
         captured(td)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")

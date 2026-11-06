@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline selftest of the TPS record (BRIDGE_TPS_CAPTURE_FIXES_1 criteria C1 and C2).
 
     python3 src/RimMandrake/Utils/selftest_tps_record.py            Python checks + C# parity
@@ -1041,7 +1042,7 @@ def cs_parity(tr, res, text=None):
             FAILS.append("C# parity harness build FAILED (rc %s)" % rc)
             return
         dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\TpsMathSelfTest.dll"
-        p = subprocess.run([winbuild.dotnet_exe(), dll], input=cs_input(tr), capture_output=True, text=True,
+        p = winbuild.run_interop_captured([winbuild.dotnet_exe(), dll], input=cs_input(tr), capture_output=True, text=True,
                            cwd="/mnt/d/Luke/dev")
     allout = [ln.strip() for ln in p.stdout.splitlines() if ln.strip()]
     got = [ln for ln in allout if not ln.startswith(("U ", "J ", "U-count "))]

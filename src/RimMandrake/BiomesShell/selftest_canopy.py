@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline proof of the zoom-gated canopy layer (CANOPY_LAYER_BUILD_ROOF_OF_THE_WORLD).
 
 Owner, 2026-10-18: "Titanic trees should be seen only as the solid trunk" and "scroll out from the map enough that
@@ -120,14 +121,14 @@ def run_csharp(text, lines):
         Path(where, "in.txt").write_text("\n".join(lines) + "\n")
         dotnet = winbuild.dotnet_exe()
         for _ in range(2):   # one retry: a cold dotnet.exe build on a fresh temp dir has failed once with no output
-            built = subprocess.run([dotnet, "build", winbuild.win(os.path.join(where, "CanopyExec.csproj")), "-c", "Release",
+            built = winbuild.run_interop_captured([dotnet, "build", winbuild.win(os.path.join(where, "CanopyExec.csproj")), "-c", "Release",
                                     "--nologo", "-v", "quiet"], cwd=where, capture_output=True, text=True, timeout=300)
             if built.returncode == 0:
                 break
         if built.returncode != 0:
             print("execution: harness build failed: " + built.stdout[-1200:])
             return None
-        ran = subprocess.run([dotnet, winbuild.win(os.path.join(where, "bin", "Release", "net8.0", "CanopyExec.dll")),
+        ran = winbuild.run_interop_captured([dotnet, winbuild.win(os.path.join(where, "bin", "Release", "net8.0", "CanopyExec.dll")),
                               winbuild.win(os.path.join(where, "in.txt"))], cwd=where, capture_output=True, text=True,
                              timeout=200)
         if ran.returncode != 0:

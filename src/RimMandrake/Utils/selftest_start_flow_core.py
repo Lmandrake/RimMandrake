@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Selftest: the PRODUCTION new-game start-flow core (JawaBenchStartFlowCore.cs) built and unit-tested offline.
 The decisions behind scenario_select / start_site_select / ideo_load_rid (JawaBenchStartFlowTools.cs): scenario
 matching (defName then exact name, ambiguity refused, never a substring pick), .rid path resolution (Windows, /mnt/x,
@@ -33,7 +34,7 @@ def main(argv):
         print("FAIL harness build FAILED (rc %s)" % rc)
         return 1
     dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\StartFlowSelfTest.dll"
-    p = subprocess.run([winbuild.dotnet_exe(), dll], capture_output=True, text=True, cwd="/mnt/d/Luke/dev")
+    p = winbuild.run_interop_captured([winbuild.dotnet_exe(), dll], capture_output=True, text=True, cwd="/mnt/d/Luke/dev")
     lines = [ln.strip() for ln in p.stdout.splitlines() if ln.startswith("U ")]
     count = [ln for ln in p.stdout.splitlines() if ln.startswith("U-count ")]
     bad = [ln for ln in lines if " FAIL" in ln]

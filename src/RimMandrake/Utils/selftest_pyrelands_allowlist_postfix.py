@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# selftest-timeout: 420
+# selftest-timeout: 780   (+360 s for the lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """The Harmony Postfix of the Pyrelands wild-plant allowlist, run offline (ALLOWLIST_DIAGNOSE_BARE_MIXED_PATCHES).
 
 selftest_pyrelands_fuzz reaches the kernel ApplyWildAllowlist, never the Postfix that decides foreignOpenCell, so restoring
@@ -300,13 +300,13 @@ def main():
                 f.write(body)
         shutil.copy(KERNEL, work)
         win = winbuild.win(work)
-        r = subprocess.run([winbuild.dotnet_exe(), "build", win + "\\t.csproj", "-c", "Release", "--nologo", "-v", "quiet"],
+        r = winbuild.run_interop_captured([winbuild.dotnet_exe(), "build", win + "\\t.csproj", "-c", "Release", "--nologo", "-v", "quiet"],
                            cwd=work, capture_output=True, text=True, timeout=300)
         if r.returncode:
             print((r.stdout + r.stderr)[-3000:])
             print("FAIL: the Postfix text does not compile against the stubs")
             return 1
-        r = subprocess.run([winbuild.dotnet_exe(), win + "\\bin\\Release\\net8.0\\AllowlistPostfix.dll"],
+        r = winbuild.run_interop_captured([winbuild.dotnet_exe(), win + "\\bin\\Release\\net8.0\\AllowlistPostfix.dll"],
                            cwd=work, capture_output=True, text=True, timeout=120)
         out = r.stdout.replace("\r\n", "\n")
     finally:

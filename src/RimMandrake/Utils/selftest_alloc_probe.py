@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Offline proof of jawa/alloc_probe (MONO_ALLOC_MEASURE_PER_TICK_ON_GAME).
 
     python3 src/RimMandrake/Utils/selftest_alloc_probe.py              core units + judges + every mutant (must go red)
@@ -73,7 +74,7 @@ def run(core_text, label):
     if rc:
         return {}, ["build FAILED (rc %s), log %s" % (rc, log)]
     dll = winbuild.staged_win(rec, os.path.dirname(PROJ)) + "\\bin\\Release\\net8.0\\AllocProbeSelfTest.dll"
-    pr = subprocess.run([winbuild.dotnet_exe(), dll], capture_output=True, text=True, cwd="/mnt/d/Luke/dev", timeout=180)
+    pr = winbuild.run_interop_captured([winbuild.dotnet_exe(), dll], capture_output=True, text=True, cwd="/mnt/d/Luke/dev", timeout=180)
     units = {}
     for ln in pr.stdout.splitlines():
         ln = ln.strip()

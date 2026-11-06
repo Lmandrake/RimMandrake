@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# selftest-timeout: 600   (130-200 s alone, over the 240 s default under the 6-worker nightly sweep: CRASH [timeout] 2026-10-26)
+# selftest-timeout: 960   (130-200 s alone, over the 240 s default under the 6-worker nightly sweep: CRASH [timeout] 2026-10-26; +360 s lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Differential test: the production pulse kernel (FlowWorks/Source/RM_FlowKernel.cs) against the independent
 Python PulseOracle (FlowWorks/northstar/validation_v2.py), which was validated once against live data.
 
@@ -288,7 +288,7 @@ def main():
     with stock_wrapper.dotnet_lock():
         proj = windows_project_path(stock_wrapper.CSPROJ)
         # `dotnet run` does not forward a piped stdin here (it hangs), so build, then run the dll directly.
-        b = subprocess.run([dotnet, "build", proj, "-c", "Release", "-nologo", "-v", "q", "-nodeReuse:false", "-p:UseSharedCompilation=false"], capture_output=True, text=True)
+        b = winbuild.run_interop_captured([dotnet, "build", proj, "-c", "Release", "-nologo", "-v", "q", "-nodeReuse:false", "-p:UseSharedCompilation=false"], capture_output=True, text=True)
         if b.returncode != 0:
             print(b.stdout[-2000:], b.stderr[-2000:])
             sys.exit("selftest build failed")
@@ -328,7 +328,7 @@ def main():
             args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)] + ([cs_mode] if mode != "depth" else [])
             if mode == "gaps":
                 args = [dotnet, dll, "--surface-gaps", stock_wrapper._to_windows_path(scene_file)]
-            res = subprocess.run(args, capture_output=True, text=True, timeout=300)
+            res = winbuild.run_interop_captured(args, capture_output=True, text=True, timeout=300)
             t2 = time.time()
             if res.returncode != 0:
                 print(res.stdout[-2000:], res.stderr[-2000:])

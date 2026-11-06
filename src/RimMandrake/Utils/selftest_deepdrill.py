@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """DEEP_DRILL_HOME_BIOME_1 L0 selftest of the DeepDrill kernel and shipped table (src/RimMandrake/DeepDrill/Source/Kernel/), no game.
 
 Seeded weighted picks over the 23 deepCommonality carriers of the def dump, filtered by the production kernel against the shipped
@@ -29,7 +30,7 @@ def main(argv):
     dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\DeepDrill.SelfTest.dll"
     xml = winbuild.staged_win(rec, os.path.join(REPO, "src", "RimMandrake", "DeepDrill", "Defs")) + "\\RM_DeepHomeTable.xml"
     args = [winbuild.dotnet_exe(), dll, xml]
-    return subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode
+    return winbuild.run_interop(args, cwd="/mnt/d/Luke/dev", timeout=None)
 
 
 if __name__ == "__main__":

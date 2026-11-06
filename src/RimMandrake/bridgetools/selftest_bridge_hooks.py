@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# selftest-timeout: 540
+# selftest-timeout: 900   (+360 s for the lost WSL launches winbuild.run_interop repeats: up to 3 at ~2 min each, INTEROP_RETRY_FIX_EIGHTY_SCRIPTS_LEFT)
 """Every JawaBench Harmony hook is on HOOKS.md and follows the hook laws (BRIDGE_HOOKS_HARDEN_REENTRANT_AND_FAULTY).
 
     python3 src/RimMandrake/bridgetools/selftest_bridge_hooks.py           static audit + C# units (needs dotnet.exe)
@@ -332,7 +332,7 @@ def cs_units():
         if rc:
             return ["TpsMathSelfTest build FAILED (rc %s)" % rc]
         dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\TpsMathSelfTest.dll"
-        p = subprocess.run([winbuild.dotnet_exe(), dll], input="U\n", capture_output=True, text=True,
+        p = winbuild.run_interop_captured([winbuild.dotnet_exe(), dll], input="U\n", capture_output=True, text=True,
                            cwd="/mnt/d/Luke/dev", timeout=400)
     units = [ln.strip() for ln in p.stdout.splitlines() if ln.startswith("U ") and not ln.startswith("U-count")]
     mine = [u for u in units if re.match(r"U (Recorder|Guard|Writer)", u)]
