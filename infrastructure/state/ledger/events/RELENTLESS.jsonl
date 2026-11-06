@@ -1270,3 +1270,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T17:37:26Z","tsn":1793986646791000064}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PYRE_WORLDSWITCH_DECIDE_ON_BY_DEFAULT: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T17:37:39Z","tsn":1793986659298465934}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T17:56:56Z","tsn":1793987816229111438}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T17:59:57Z","tsn":1793987997547106389}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T18:00:09Z","tsn":1793988009143702941}
