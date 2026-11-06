@@ -267,7 +267,8 @@ def check_clone(world, clone, carried):
         rc2, ahead = world.git(clone, "rev-list", "--count", "origin/main..HEAD")
     if rc1 != 0:        # doubt files: a clone we cannot read may hold anything
         return {"kind": "clone", "what": clone, "act": "carried" if carried else "filed", "why": "git status failed"}
-    lines = [ln for ln in dirty.splitlines() if ln.strip()]
+    # an untracked conversations/ export is regenerable from the transcript on disk (relentless POOL_NOISE): not debris
+    lines = [ln for ln in dirty.splitlines() if ln.strip() and not ln.startswith("?? conversations/")]
     n_ahead = int((ahead or "0").strip() or 0) if rc2 == 0 else None
     if not lines and n_ahead == 0:
         return {"kind": "clone", "what": clone, "act": "ok", "why": "clean and pushed"}
