@@ -1377,7 +1377,9 @@ def guard(p: Path) -> str | None:
 def base_row(kind: str, p: Path, tree: Tree | None, now: float) -> dict:
     row = {"kind": kind, "path": str(p), "verdict": "DELETE", "why": [], "age_h": None, "bytes": None}
     if tree:
-        row["age_h"], row["bytes"], row["sig"] = round((now - tree.newest) / 3600, 1), tree.size, tree.signature()
+        # newest 0.0 is no stamp read at all (the top vanished), never an epoch age (OPS_SCRATCH_DIRT_MEASURE_AT_END_HPCK)
+        row["age_h"] = round((now - tree.newest) / 3600, 1) if tree.newest > 0 else None
+        row["bytes"], row["sig"] = tree.size, tree.signature()
         row["top_ctime"] = tree.top_ctime
     return row
 
@@ -2295,9 +2297,12 @@ def pool_measures() -> dict:
 def fixture_age_h(p: Path, now: float) -> float | None:
     """Hours since anything inside a fixture (or a session dir) was touched: the SAME newest-content reading the sweep
     judges YOUNG by. A directory's own mtime is not it (an epoch-stamped dir holding fresh files read 498211 h old while the reaper
-    rightly kept it). A tree the walk cannot read whole falls back to the directory's own stamps."""
+    rightly kept it). A tree the walk cannot read whole falls back to the directory's own stamps. A dir gone before its
+    walk has no age: its Tree.newest stays 0.0, which read now/3600 = 498311 h (OPS_SCRATCH_DIRT_MEASURE_AT_END_HPCK)."""
     try:
         tree = Tree(p)
+        if str(p) in tree.vanished:
+            return None
         if not (tree.capped or tree.errors):
             return max(0.0, now - tree.newest) / 3600
         st = p.lstat()
