@@ -17,6 +17,8 @@ Raw reviews: `D:\ClaudeWork\rimmandrake\relentless\RELENTLESS_VET_FULL_FILE_BEFO
 12. `retire` (r8 #2): any recorded ledger lease retires a queued item, including an expired or released one, while `eligible` uses `lease_live`.
 13. `help_step` (r8 #3): consult launch ignores a quarantine or manual hold.
 
+Overlap: RELENTLESS_REVIEW_FIX_R7_MEDIUMS_MAY_STAY holds 11-13 above (its 1-3) plus three more; work the two items as one batch so relentless.py is reviewed once.
+
 Done when: each is fixed with a red-without-fix selftest row, or rejected in writing with its reason; then relentless.py gets its own review again, because the edits dirty it.
 
 Source: RELENTLESS_VET_FULL_FILE_BEFORE_CLEAN.
