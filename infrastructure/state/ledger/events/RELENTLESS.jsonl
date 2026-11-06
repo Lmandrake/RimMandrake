@@ -1404,3 +1404,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: SUMP_GLASSWALK_SPEED_RATIO_1 A1 (L2), read-only proof","ts":"2026-11-06T23:44:27Z","tsn":1794008667811440693}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:49:26Z","tsn":1794008966849611991}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HEAVY_TEXTURES_MEASURE_REAL_VRAM A1 (L1), read-only proof","ts":"2026-11-06T23:49:48Z","tsn":1794008988335294141}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:50:39Z","tsn":1794009039389971357}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HEAVY_TEXTURES_MEASURE_REAL_VRAM A2 (L1), read-only proof","ts":"2026-11-06T23:50:58Z","tsn":1794009058399131544}
