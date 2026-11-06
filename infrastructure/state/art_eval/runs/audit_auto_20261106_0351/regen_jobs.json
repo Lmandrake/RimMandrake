@@ -1,0 +1,71 @@
+[
+ {
+  "id": "arteval_RM_Gembug__Green_Jewelbug_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gembug__Green_Jewelbug",
+  "prompt": "A creature sprite for RimWorld: the gembug, shown in side view facing east. A plated crawler of the lanternstone voids, running on hydrocarbon rather than blood - what fills it is a cold waxy oil that will not freeze however deep the cave goes. Its shell grows in facets out of the same slow crystallisation that grew the caverns, so a gembug reads as a chip of the wall until it moves. Cut one and it weeps thin paraffin, not red. Visible features it must show: a plated crawler whose shell grows in crystal facets like the cave wall; cold waxy translucent muted-green colouring, not glossy insect chitin; reads as a chip of crystal rock until it moves. Realistic painterly vanilla RimWorld sprite style with a clean, continuous, fully opaque dark-green outline in a deeper shade of the local muted green. Every edge pixel of the shell and legs, including the left shell edge and the area beneath the central leg, takes the muted green of the body next to it, and the transparent background starts directly at that outline with a crisp, hard edge, free of lighter or brighter fringe pixels. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0351",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug"
+ },
+ {
+  "id": "arteval_RM_Gembug__Red_Jewelbug_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gembug__Red_Jewelbug",
+  "prompt": "A creature sprite for RimWorld: the gembug. A plated crawler of the lanternstone voids, filled with a cold waxy oil. Its shell grows in facets out of the same slow crystallisation that grew the caverns, so at rest the gembug reads as a broken-off chunk of cave wall. Body: the shell is a rough, rock-like crystal slab, jagged and faceted, that hangs low over the whole body like an overhanging boulder. Under its edge sits a small, recessed head, a dark hollow with tiny deep-set eyes and the mouthparts hidden inside the shell opening. The legs are short and stubby, folded close beneath the shell and tucked into rocky fissures. The head, limbs and shell form one continuous irregular mineral-fragment silhouette, with the crawler anatomy only hinted at in the shadowed gaps along the lower edge. Colour: cold waxy translucent crystal in the tones of the cave wall, with dull mineral facets and faint internal glow, matte stone-like surface rather than glossy insect chitin. Realistic painterly vanilla RimWorld sprite style, soft painted edges and a clean dark outline in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border. Facing views: the south view shows the front, with the low shell brow over the recessed head and eyes toward the viewer; the east view shows the side profile, with the shell slab in a long low wedge and the short legs tucked under it; the north view shows the rear of the shell, back and haunches, with the head hidden.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0351",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug"
+ },
+ {
+  "id": "arteval_RM_Gembug__Yellow_Jewelbug_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gembug__Yellow_Jewelbug",
+  "prompt": "A creature sprite for RimWorld: the gembug, a plated crawler of the lanternstone voids that runs on cold waxy hydrocarbon oil rather than blood. Its body is a squat, irregular wedge of crystalline rock, broader than it is tall, with a jagged, ragged lower edge like a fractured piece of cave wall. The shell grows in uneven crystal facets: overlapping mineral plates of different sizes and angles, rough fracture edges and flat cleaved faces in the cold, waxy, translucent yellow-amber colour of lanternstone, never glossy insect chitin or smooth wing-cases. The whole animal is one continuous fractured-stone mass that reads first as a broken-off chip of cave wall, and only on a second look as a living thing. Its short, stubby legs are tucked under the shell's ragged edge, with only the tips of a few feet showing. Its tiny feelers lie flush against the shell, almost hidden among the facets. The head is recessed into the front of the mass beneath uneven mineral plates, with two small dull eyes set between facets and no separate rounded head or neck. Side view in profile, the eyes toward the facing direction. Realistic painterly vanilla RimWorld sprite style, soft painted edges and a clean dark outline in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border. reference: none",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_0351",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug"
+ }
+]
