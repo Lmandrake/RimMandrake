@@ -13,7 +13,8 @@ Rows:
   C4  an ENOSPC --defect opens an environment alarm keyed on the dependency `disk`.
   C5  positive control: a validated product defect reaches the builder with its strike (the instrument can see).
   C6  fail() never strikes a validation ending on a non-PRODUCT attribution.
-  C7  the game lane's not_measuring and blocked_here no longer go `_back`: withheld for diagnosis, cause measurement.
+  C7  the game lane's not_measuring and blocked_here no longer go `_back`: routed once to one fixer as a `blocked` wait
+      on its repair item (ENV_HOLDS_FIX_ROUTE_TO_BUILDERS), no strike, no return, no new generation.
   C8  live_reading has three states: holds, does_not_hold, unread (a reader that raised)."""
 import json
 import os
@@ -223,13 +224,14 @@ def t_game_lane():
     for here in (False, True):
         x = SG.rig(1)
         was, st = game_dud(x, here)
-        h = st.get("hold") or {}
-        # UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES: no diagnosis that hands it to a builder; routed once to one fixer
-        ok(st["status"] == "held" and h.get("kind") == "game" and st["gen"] == was["gen"]
+        # UNMEASURED_LANE_REWIRE_STOP_REBUILDING_SITES: no diagnosis that hands it to a builder; routed once to one fixer.
+        # ENV_HOLDS_FIX_ROUTE_TO_BUILDERS made that route a `blocked` wait on its repair item (SG.routed), not a hold.
+        why = SG.routed(st)
+        ok(why is not None and st["gen"] == was["gen"]
            and not st["failures"].get("game_unmeasured") and st.get("returns") == was.get("returns"),
-           "C7 %s: routed once to one fixer, no strike, no return, no new gen: %s %s"
-           % ("blocked_here" if here else "not_measuring", st["failures"], h))
-        ok("Scarlands" in (h.get("why") or ""), "C7 the reason is kept for the fixer")
+           "C7 %s: routed once to one fixer, no strike, no return, no new gen: %s %s %s"
+           % ("blocked_here" if here else "not_measuring", st["status"], st["failures"], st.get("wait")))
+        ok("Scarlands" in (why or ""), "C7 the reason is kept for the fixer")
         x.done()
 
 
