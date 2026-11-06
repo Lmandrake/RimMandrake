@@ -11,6 +11,9 @@ which has the donor's cartoonish art. The item closed because our port owns that
      fixture records the set-C blob sha256s, which must equal the sheet snapshot's column C. Each bound facing,
      fingerprinted the same way, must match the aspect within 5% and sit within MAD_MAX (a Tauntaun probe must
      land above it, so the comparison can see a swap). `--regen` rebuilds the fixture from git at 34bb644a86;
+     A facing the art-eval pipeline REDREW (owner card 2026-10-23 06:42: its redraws may replace kept art) is
+     listed in REDRAWN instead: its sha256 is pinned to the redraw, and the art ledger must hold the install event
+     (prev = the set-C refit sha, sha = the redraw) and the ruling it cites, so only a ledgered install passes;
   1a. EVERY body graphic RSW_Dewback's PawnKindDef can draw (each lifeStage body/female graphic and each
      alternateGraphics li -- chance 0.8, the common spawn) has exactly that texPath, the ThingDef binds none other,
      and no patch under src/ has an xpath touching an RSW_Dewback graphic; both pins are probed on planted XML;
@@ -47,6 +50,14 @@ BOUND_SHA256 = {
     "north": "c75607cd190968610c714bfd1dd362de56db01128d85bceb3956088523d47317",
     "south": "156f5ffa5b68397abd49ce9d9b5168fd9dd3974c1464ef4530bce27c3cf0a447",
 }
+# facings the art-eval pipeline replaced; each one's chain is read from the art ledger (git-tracked, in the box).
+# north: RSW_Dewback_n r2, installed 040e27d914 (FACING_AUDIT_BUILD_REDRAW_BATCH), record
+# infrastructure/state/delegated/2026-11-05/RSW_Dewback_n__r2.json.
+REDRAWN = {
+    "north": {"sha": "d74b9166295289714d8f7497fbd567f7346b4f85bd859092df45e36e5f643804",
+              "event": "05448b8a528441e2a0e8", "ruling": "fe634022d8e73d8d2189"},
+}
+ART_EVENTS = os.path.join(ROOT, "infrastructure", "state", "art", "events", "BENCH.jsonl")
 FIXTURE = os.path.join(HERE, "Source", "selftest_fixtures", "dewback_setC_fingerprint.json")  # Source/ is not deployed
 FP_N = 32
 MAD_MAX = 8.0  # measured 2026-11-03 at FP_N=32: bound~C 0.00/0.27/0.31, Tauntaun~C 29.4/30.8/21.3
@@ -138,10 +149,33 @@ def check_art():
     with open(FIXTURE, encoding="utf-8") as f:
         fixture = json.load(f)
     check(fixture.get("fp_n") == FP_N, "fixture fingerprint size is %d" % FP_N)
+    art_events = {}
+    if REDRAWN:
+        with open(ART_EVENTS, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    e = json.loads(line)
+                    if e.get("id"):
+                        art_events[e["id"]] = e
+        installs = sum(1 for e in art_events.values() if e.get("reason") == "install")
+        check(installs > 1, "art ledger parse sees install events (%d; the redraw lookup is not blind)" % installs)
     for facing in ("east", "north", "south"):
         with open(os.path.join(TEX, "Dewback_%s.png" % facing), "rb") as f:
             bound = f.read()
-        check(sha256(bound) == BOUND_SHA256[facing], "Dewback_%s.png sha256 is the pinned set-C refit" % facing)
+        redraw = REDRAWN.get(facing)
+        if redraw:
+            check(sha256(bound) == redraw["sha"], "Dewback_%s.png sha256 is the pinned art-eval redraw" % facing)
+            ev, ru = art_events.get(redraw["event"], {}), art_events.get(redraw["ruling"], {})
+            check(ev.get("reason") == "install" and ev.get("sha") == redraw["sha"]
+                  and ev.get("prev") == BOUND_SHA256[facing] and ev.get("ruling_id") == redraw["ruling"]
+                  and ev.get("rel") == "%s_%s.png" % (TEXPATH, facing),
+                  "art ledger install %s replaced the set-C refit %s with the redraw" % (redraw["event"], facing))
+            check(ru.get("type") == "ruling" and ru.get("verdict") == "keep"
+                  and ru.get("target", {}).get("sha") == redraw["sha"],
+                  "art ledger ruling %s keeps the %s redraw" % (redraw["ruling"], facing))
+        else:
+            check(sha256(bound) == BOUND_SHA256[facing], "Dewback_%s.png sha256 is the pinned set-C refit" % facing)
         entry = fixture.get("facings", {}).get(facing, {})
         check(bool(column.get(facing)) and entry.get("blob_sha256") == column.get(facing),
               "fixture set C %s was taken from the blob in the sheet snapshot's column C" % facing)
@@ -151,7 +185,10 @@ def check_art():
             continue
         ref = (entry["aspect"], Image.frombytes("RGB", (FP_N, FP_N), raw))
         d = mad(fingerprint(bound), ref)
-        check(d <= MAD_MAX, "Dewback_%s.png derives from set C (MAD %.2f <= %.1f)" % (facing, d, MAD_MAX))
+        if redraw:  # a redraw is not set C by design; its provenance is the ledger chain above
+            print("info  Dewback_%s.png is the redraw (MAD %.2f vs set C; not a bar)" % (facing, d))
+        else:
+            check(d <= MAD_MAX, "Dewback_%s.png derives from set C (MAD %.2f <= %.1f)" % (facing, d, MAD_MAX))
         with open(PROBE % facing, "rb") as f:
             fp = fingerprint(f.read())
         dp = 0.0 if fp is None else mad((ref[0], fp[1]), ref)  # pixels only (aspect alone would catch it); empty = blind
