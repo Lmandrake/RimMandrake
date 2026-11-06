@@ -4895,3 +4895,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T13:08:01Z","tsn":1793970481056718845}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 4 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-06T13:09:15Z","tsn":1793970555566298359}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T13:09:19Z","tsn":1793970559121021907}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","result":"broken","detail":"Ops alarm STEVE_INVALID: steve.invalid_streak = 4 INVALID results in a row (MEASURED), line >= 3","ts":"2026-11-06T13:10:38Z","tsn":1793970639004718683}
+{"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T13:10:42Z","tsn":1793970642503266710}
