@@ -70,7 +70,7 @@
   {
    "id": "STALE_BUILD",
    "layer": "live",
-   "row": "Stale result from another SHA -> INVALID, cannot close",
+   "row": "Stale result from another SHA -> NOT_ADMITTED before the bridge (LIVELANE_BUILD_PREFLIGHT_REFUSES_UNRUNNABLE), cannot close",
    "exit": 0,
    "text": "PASS ThingDef/RM_X",
    "fx": {
@@ -82,7 +82,7 @@
     ]
    },
    "expect": {
-    "outcome": "UNMEASURED",
+    "outcome": "NOT_ADMITTED",
     "verdict": "INFRA",
     "verified": false,
     "closes": false,

@@ -16,7 +16,7 @@ Nothing is faked above the effects: no units, no game, no ledger (selftest_relen
 selftest_relentless_game.GW stand for the world, as in their own selftests).
 
 MEASURED PROPERTIES (measure() returns them; a case's `expect` and `owed` name them):
-  outcome, verdict, verified, harness   the live row: PASS/FAIL/UNMEASURED, PASS/FAIL/INFRA, a `rimflow verify` written,
+  outcome, verdict, verified, harness   the live row: PASS/FAIL/UNMEASURED/NOT_ADMITTED, PASS/FAIL/INFRA, a `rimflow verify` written,
                                         the harness flag (relentless_game charges no strike for it)
   acted                                 the check: the word the supervisor acts on (relentless_wall.read_as)
   gen_bump                              the generation moved: a new worker will be sent, the candidate is abandoned
