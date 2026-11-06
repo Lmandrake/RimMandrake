@@ -1130,3 +1130,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: review savegame for the owner's look","ts":"2026-11-06T13:13:08Z","tsn":1793970788538728124}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless live test: CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES A1 (L2), read-only proof","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T13:14:20Z","tsn":1793970860632122573}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T13:14:29Z","tsn":1793970869077760323}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: review savegame for the owner's look","ts":"2026-11-06T13:29:37Z","tsn":1793971777580360640}
