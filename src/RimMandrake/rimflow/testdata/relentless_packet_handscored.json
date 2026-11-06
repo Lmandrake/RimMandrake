@@ -1,0 +1,494 @@
+{
+ "what": "RA_S02_PACKET_ENFORCE_NO_ADVOCACY: real finish-receipt evidence texts scored by hand against relentless_packet.report()",
+ "drawn": "2026-11-06 from relentless_packet.py scan of the live store: 1653 unique receipts, 165 with hits; random.Random(20261106).sample of 24 hits and 24 non-hits, rows sorted by (item, gen) first",
+ "rule": "contaminated = the text tells the Marker how the work went (earlier attempts, gens, the checker or Marker, what changed since) or argues how to read it (a reason offered for accepting the change, praise). A file's review state, the behaviour under test, a named file version, a CLI flag, or the history of the item being diagnosed is clean. false reject = lint hit on a clean text; miss = no hit on a contaminated text.",
+ "counts": {
+  "rows": 48,
+  "false_rejects": 6,
+  "misses": 6
+ },
+ "rows": [
+  {
+   "n": 0,
+   "item": "CANON_START_TILE_DEDUPE_NULL_WINS_QUIETLY",
+   "gen": 1,
+   "lint_hits": [
+    "earlier"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'deleted earlier in eb98983ece'",
+   "evidence": "yaml.safe_load(canon.yml).planet.start_tile == 17007 (duplicate deleted earlier in eb98983ece); check_canon.py duplicate_keys() refuses repeated mapping keys exit 2; selftest_check_canon.py 40/40 incl. new dup-key case; run_selftests --only selftest_check_canon.py GREEN; both files DIRTY in code_review_status (independent review owed, helper budget N=0)"
+  },
+  {
+   "n": 1,
+   "item": "CLOSE_GATE_ENFORCE_DONE_IS_EARNED",
+   "gen": 7,
+   "lint_hits": [
+    "redesign"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'Contract redesign'",
+   "evidence": "Code in 3a7dbae5ca and 500c41c5db, unchanged since. Proof on 41df98b490: D:\\ClaudeWork\\rimmandrake\\close_gate\\gen7_proof.txt PASS 3/3. --au4 IN RANGE: 0 of 1 since the gate landed, a sample of ONE, and 1203 of 1225 since 2026-10-19 baseline. advisory grep: no hit describes the Arbiter's close verdict (flock, peek, lease, the negative assert selftest_arbiter_tiers:293, cli.py:486). Contract redesign: live=once, no code reads the schedule verdicts key."
+  },
+  {
+   "n": 2,
+   "item": "DONOR_OFF_LOAD_PROVE_AFTER_BENCH",
+   "gen": 5,
+   "lint_hits": [
+    "prior"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'Prior checker_lost was ...'",
+   "evidence": "Runnable proof: 'python3 src/RimMandrake/Utils/modcheck/donor_off_w4_verdict.py --offline && python3 src/RimMandrake/Utils/modcheck/selftest_donor_off_w4_verdict.py' (the contract text after the command is prose). In a git-archive export of 5c47d19c with no .git and no Transient/: exit 0, O01-O04 PASS, 206 species / 24 flyers == pin src/RimMandrake/Utils/modcheck/donor_off_phase0_inputs.json, selftest 0 failures. Work landed in 65e1b021 (ancestor). Live A1-A3: infrastructure/state/live_proofs/DONOR_OFF_LOAD_PROVE_AFTER_BENCH.txt. Prior checker_lost was checker sandbox EACCES on ~/.seat-tmp, not the candidate."
+  },
+  {
+   "n": 3,
+   "item": "JAWABENCH_DESTROY_PAWNS_1",
+   "gen": 1,
+   "lint_hits": [
+    "earlier"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'landed earlier as ...'",
+   "evidence": "offline: python3 src/RimMandrake/bridgetools/selftest_destroy_pawns.py -> 19 checks, 0 failed (A1 C# refusal before loop, A2 Greentide/Cauldron vanish by id on fake bridge, A4 AST scan calibrated); run_selftests --only GREEN. live A3 owed: infrastructure/state/live_proofs/JAWABENCH_DESTROY_PAWNS_1.txt (prove_destroy_pawns_live.py, GPT-reviewed NO FINDINGS). Code fix itself landed earlier as DESTROY_BATCH_NEVER_KILLS_PAWNS_1 (5c93c206ab). Greentide pre-existing review findings filed GREENTIDE_SUITE_HARDEN_PASSES_ON_FAITH."
+  },
+  {
+   "n": 4,
+   "item": "ACC_BIOMES_FIXES_LIVE_RERUN_1",
+   "gen": 9,
+   "lint_hits": [
+    "prior"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'prior FAILs were /tmp ENOSPC'",
+   "evidence": "live proofs now MODCHECK_SKIP_DEPLOY/KEEP_MODLIST (env reaches python.exe via WSLENV, probed: '1 1'); row_verdict --selftest PASS 11; modcheck run LeaningScrub --chains bloom --preview with the env exit 0, 3 rows planned; prior FAILs were /tmp ENOSPC deploy (logs /home/mandrake/rm/relentless/live/ACC_BIOMES_FIXES_LIVE_RERUN_1-A*-20261103T17*.log). Bridge was held by another item (ART_OVERRIDE_FAMILY_SCRIPT_1), so no live run by me."
+  },
+  {
+   "n": 5,
+   "item": "WARLAB_GARRISON_DESIGN_EARLY_BLAST",
+   "gen": 9,
+   "lint_hits": [
+    "blind check"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'Round 2 REDO', 'goes to the blind check'",
+   "evidence": "src/RimMandrake/Utils/warlab_garrison_note_check.py exit 0 (29 symbols, 19 sections). Round 2 REDO fixed in design/Jawa/worldbuilding/warlab_garrison_early_blast_2026-11-01.md §4, §6, §8; clock deleted from dungeons_arc_spec.md §2.3 and guarded. Round 3 goes to the blind check from infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast_judge_brief.md."
+  },
+  {
+   "n": 6,
+   "item": "NIGHTLY_COP_FIX_RED_TUOOLR_EGFR",
+   "gen": 1,
+   "lint_hits": [
+    "because"
+   ],
+   "hand": "contaminated",
+   "why": "reason argued for the change: 'dropped ... because its reason was false'",
+   "evidence": "python3 src/RimMandrake/Utils/selftest_paint_list.py exit 0: real list 77 members, 0 failures, 10 probes PASS incl. new stale class_ref edge (smashphil.vehicleframework). run_selftests --only paint_list + founders_paint_closure + ship_paint_closure GREEN 3/3. Fix in bc62e08ff4: biomesteam.coreframework dropped from infrastructure/state/modlists/ModsConfig.PAINT.RULED_2026-10-20.xml and PAINT.reasons.json because its reason was false: the mod is DLL-only (no Defs), XML scan of the other members found 0 BiomesCore.* class references, no member DLL names it; same scan sees 8 hits in biomesteam.biomesfossils and 6 in zylle.morevanillabiomes. It stays on FULL.LATEST; only PAINT changed."
+  },
+  {
+   "n": 7,
+   "item": "OPS_STEVE_SEATS_RESTORE_QTWK",
+   "gen": 1,
+   "lint_hits": [
+    "before this"
+   ],
+   "hand": "clean",
+   "why": "false reject: 'was DIRTY before this change' is a review-state fact",
+   "evidence": "Drill 21:30:41Z: wsl --terminate Ubuntu on SteveDesktop, no reboot. C:\\SteveDesktop\\seats_watch.log 21:35:00Z keepalive started, 21:35:11Z Fleet started; fleet.log 21:36:01Z alive=2/2. /mnt/d/ClaudeWork/rimmandrake/ops_watch/series/steve.jsonl 21:37:00Z steve.seats_absent_min=0.0 MEASURED uptime_min=2.6. Task \\Steve Seats Watch registered, PT5M. selftest_bootstrap_ps1.py: 0 bare native calls. Outages themselves were planned (BIOS visit, reboots, wsl --export). bootstrap.ps1 was DIRTY before this change and stays DIRTY, unreviewed."
+  },
+  {
+   "n": 8,
+   "item": "NIGHTLY_COP_FIX_RED_APGIHI_JAKI",
+   "gen": 1,
+   "lint_hits": [
+    "now green"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'now GREEN'",
+   "evidence": "cause db682f0890 added wrapup to ops_watch.FAMILIES, not metronome_phases.json; fix 8e31d006b6 (published 34b2947b15): sense.families = \"ops_watch.FAMILIES\" resolved by metronome.resolve_families; guard src/RimMandrake/Utils/selftest_metronome_families_ref.py shown failing pre-fix (rimflow guard), now GREEN with selftest_metronome + 7 related metronome selftests 9/9"
+  },
+  {
+   "n": 9,
+   "item": "ALARM_FILING_FIX_NO_ROOM_AT_INN",
+   "gen": 1,
+   "lint_hits": [
+    "retried"
+   ],
+   "hand": "clean",
+   "why": "false reject: 'failed entry not retried' is the behaviour under test",
+   "evidence": "run_selftests --only selftest_ops_watch*.py: 13/13 PASS, GREEN, incl. new src/RimMandrake/Utils/selftest_ops_watch_held_filing.py (deferred alarm filed OPEN by a light compose pass inside METRONOME_DEADLINE; failed entry not retried; fenced pass files nothing). Live reading: /mnt/d/ClaudeWork/rimmandrake/ops_watch/alarms_log.jsonl events with held=true once rm-metronome.timer runs the new code."
+  },
+  {
+   "n": 10,
+   "item": "ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP",
+   "gen": 5,
+   "lint_hits": [
+    "earlier"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'The earlier live fail was harness only'",
+   "evidence": "live A1 line (infrastructure/state/live_proofs/ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP.txt) run exactly on the running game (build 0c2af936): live-site exit 0 (rm_proof_atmosphere loaded), proof exit 0 in 320 s, R2.left_as_found PASS '16 fixtures, 16 lit, colour and lit state unchanged'; two more python.exe runs gave the same 16/16 (/mnt/d/ClaudeWork/rimmandrake/scratch/atmos_unlit/live/run_exe_1.txt, run_exe_2.txt, run.txt). On a 0-lamp map the check exits 1 (R2 UNMEASURED SITE). Offline: proof_atmosphere.py --selftest exit 0 (16 variants, 121 controls, dark_lamp -> R2 FAIL); --offline D13 PASS. The earlier live fail was harness only: python3 cannot reach the bridge from WSL (P9.run_aborted)."
+  },
+  {
+   "n": 11,
+   "item": "CTX_SIM_FIX_UNCACHED_INPUT_PRICE",
+   "gen": 1,
+   "lint_hits": [
+    "prior"
+   ],
+   "hand": "clean",
+   "why": "false reject: 'prior kept as calibration.pre_uncached_fix.json' names a file version",
+   "evidence": "run_selftests --only selftest_ctx_strategy_sim.py GREEN (6/6); same test on HEAD~ code FAILs 3 (uncached priced 2x). Recalibrated D:\\ClaudeWork\\rimmandrake\\perpetual_ctx\\calibration.json (74 sessions; prior kept as calibration.pre_uncached_fix.json) and sim_results.md. Same-42-session A/B: 157,561 -> 157,550 ITE/round (-0.007%), so design record 4.2 numbers stand."
+  },
+  {
+   "n": 12,
+   "item": "IMMERSION_DAMAGE_WIRE_NEVER_APPLIED",
+   "gen": 5,
+   "lint_hits": [
+    "gen 3"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'Contract now names ... (gen 3'",
+   "evidence": "Contract now names the test file src/RimMandrake/FlowWorks/Source/SelfTest/ImmersionChecks.cs (gen 3, bf1ff389). New infrastructure/state/evidence/IMMERSION_DAMAGE_WIRE_NEVER_APPLIED_mutants.py: clean selftest --only ImmersionDamage_corrosion_pass_wiring_runs_on_shipped_defs PASS, then 6 stage-copy mutants of LiquidCorrosion.cs all CAUGHT (pick_contact = checker's named mutant -> 'RM_AcidDeep 1, expected 3'; pick_swapped; suite_false -> 'RM_SlimeGreenDeep 0, expected 2'; no_chestdeep; no_takedamage; imm_dead), control PASS, repo source untouched, RESULT PASS. Log D:\\ClaudeWork\\rimmandrake\\scratch\\imm5\\mutants.txt. No code changed."
+  },
+  {
+   "n": 13,
+   "item": "MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET",
+   "gen": 1,
+   "lint_hits": [
+    "before this"
+   ],
+   "hand": "clean",
+   "why": "false reject: 'were before this edit' is a review-state fact",
+   "evidence": "Stack read: J20261103T233438Z-aa0482 exit 5 = access violation in CPython ast.parse inside Steve SIMD fault window F20261103T195921Z (quarantined); since 10-31 reboot 1/42 in-window jobs crashed, 0/57 outside. Census infrastructure/state/evidence/MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET.md; facts steve_fault_diagnosis.md. Fix: ingest.quarantine_one notes HARNESS_REPAIR_ items (repairs_of); selftest_ingest GREEN incl. quarantine_repair_checks. Note on HARNESS_REPAIR_CAUSE_99231A83 (drop unless out-of-window sighting). ingest.py/selftest_ingest.py remain DIRTY (were before this edit): full-file review owed."
+  },
+  {
+   "n": 14,
+   "item": "DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT",
+   "gen": 3,
+   "lint_hits": [
+    "earlier"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'Earlier A1 fail was harness'",
+   "evidence": "live-proof A1 (infrastructure/state/live_proofs/DRAWBRIDGE_WINCH_DIAGNOSE_UNLINKED_REBUILT.txt) exit 0 on the running game (build 956f9ea8f300; mod code unchanged since): /mnt/d/ClaudeWork/rimmandrake/scratch/drawbridge_rebuilt/one_drag.json PASS rebuiltDrag winches=1 linked=1, rebuiltRaised target=raised winch=True; offline selftest_drawbridge_proof.py ok (14 rows, 19 can-fail faults). Earlier A1 fail was harness (WSL python3 cannot reach bridge)."
+  },
+  {
+   "n": 15,
+   "item": "GIZKA_STOWAWAY_UNMEASURED_ROWS_1",
+   "gen": 1,
+   "lint_hits": [
+    "because",
+    "fully"
+   ],
+   "hand": "clean",
+   "why": "false reject: 'because the walk's north star is DRAFT' explains tool behaviour; 'fully-PASS' is a quantity",
+   "evidence": "A1 table: infrastructure/state/items/GIZKA_STOWAWAY_UNMEASURED_ROWS_1.md '## resolution (A1)'. Offline green: validation.py STATIC PASS; run_selftests --only selftest_gizkastowaway, selftest_gizka_validation_chains (toy mod: new rows PASS right, FAIL on 5 planted defects, UNMEASURED with no creature), modcheck/selftest.py, selftest_gate, selftest_required_checks, selftest_modset_* all PASS (D:\\ClaudeWork\\rimmandrake\\scratch\\gizka_unmeasured\\selftests*.txt). A2 live, owed to supervisor: infrastructure/state/live_proofs/GIZKA_STOWAWAY_UNMEASURED_ROWS_1.txt on the new gizkastowaway tier, DLL at this sha. Note: a fully-PASS run records DRAFT-CHECKLIST not GREEN because the walk's north star is DRAFT (owner's validation). Still DIRTY (never marked clean): validation.py, both selftests, northstar_plan.py."
+  },
+  {
+   "n": 16,
+   "item": "NIGHTLY_COP_FIX_RED_CYJJIB_ARBP",
+   "gen": 6,
+   "lint_hits": [
+    "blind check"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'the blind check's gap', '(was 69)'",
+   "evidence": "proof-only change c7fbd66563 to src/RimMandrake/Utils/selftest_proof_restore_check.py: waiver_problems now requires a comment-only waiver line directly above EXACTLY its audited line (whole-line equality), closing the blind check's gap at 3a033c99 (same-line second write under the Lean waiver stayed green). New red rows: that exact mutant plus same-line tack-ons in Luminous, Verbs, crown, stall, and a waiver riding on a write. selftest exit 0, 75 ok (was 69); proof_restore_check.py hits=26 new=0 baseline=26; run_selftests --only selftest_proof_restore_check GREEN; on-disk mutant RM_TheLeanProof.cs:251 + 'RM_LeaningScrubSettings.leanScentEnabled = leanOn;' -> selftest exit 1 (FAIL waivers in RM_TheLeanProof.cs), file restored, no code changed."
+  },
+  {
+   "n": 17,
+   "item": "WET_CELL_CENSUS_FIX_SHEETS_READ_DRY",
+   "gen": 5,
+   "lint_hits": [
+    "the checker"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'the checker's ... mutant', 'since gen1'",
+   "evidence": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_gpt_batch_a.py: 16/16 PASS incl. 7 WET_CELL_CENSUS cases; new Reading/overlay/StateLine cases each go red under their undo splice = the checker's HeldLevels(heldDl, RM_LevelSolve.U).ToString() mutant (verified per site). No .cs changed; winbuild not runnable in sandbox (dotnet.exe Invalid argument), sources unchanged since gen1 build success."
+  },
+  {
+   "n": 18,
+   "item": "NS_CAPTURE_DOWN_FIX_OWN_PIRATE_TRIPS",
+   "gen": 3,
+   "lint_hits": [
+    "gen 1"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'Code mutant from gen 1'",
+   "evidence": "RM_DATA_ROOT=/tmp/rmdr run_selftests --only modcheck/selftest.py selftest_clockgate.py selftest_reuse.py selftest_ns_capture_down_rows.py -> GREEN 4/4 (/tmp/ns_proof.txt). Snapshot infrastructure/state/live_proofs/NS_CAPTURE_DOWN_FIX_OWN_PIRATE_TRIPS.rows.json: 661 records, 70 pit_prison_room rows, 0 hostile_arrival, 23 probe rows; re-derived identically from D:\\ClaudeWork\\rimmandrake\\testq\\done. Mutants: hostile_arrival injected into the snapshot -> RESULT FAIL (records reachable and TESTQ_QUEUE=/nonexistent); verdict flipped -> FAIL by re-derivation; 16 built-in mutants red. Code mutant from gen 1 (_declare_fixture no-watch -> pass) already kills selftest.py."
+  },
+  {
+   "n": 19,
+   "item": "ACC_BIOMES_FIXES_LIVE_RERUN_1",
+   "gen": 7,
+   "lint_hits": [
+    "prior"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'prior 17:28Z live FAILs'",
+   "evidence": "row_verdict.py --selftest PASS (11 cases) at 8f474c37; row_verdict.py CLEAN; live proofs infrastructure/state/live_proofs/ACC_BIOMES_FIXES_LIVE_RERUN_1.txt unchanged (A1-A4); prior 17:28Z live FAILs were /tmp ENOSPC infra (no run JSON), /tmp now 15G free; work commits 8a503af5+8f474c37 (1825adf0 was ledger-only, refused)"
+  },
+  {
+   "n": 20,
+   "item": "JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS",
+   "gen": 3,
+   "lint_hits": [
+    "the marker"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'Gen-1 live A1 FAIL'; the hit 'the marker' names a commit, so right verdict, wrong word",
+   "evidence": "python3 src/RimMandrake/FlowWorks/northstar/selftest_jawa_shallows_proof.py -> ALL OK (C# H=0.5/0.9 pins + new exit semantics: 0 PASS/1 FAIL/2 UNMEASURED; a bridge-refusal traceback -> 2). Gen-1 live A1 FAIL (/home/mandrake/rm/relentless/live/JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS-A1-20261104T031142Z.log) was TOOL: IndeterminateError on b7164851922b4797 jawa/safe_advance from another proof, the marker 5660b06876 now auto-settles; A1 live rerun still owed on a game with StarWarsRaces+UtinniPatches loaded."
+  },
+  {
+   "n": 21,
+   "item": "SEABED_DESCENT_ASCENT_1",
+   "gen": 2,
+   "lint_hits": [
+    "gen 2"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'no new code in gen 2 (unhold restart)'",
+   "evidence": "no new code in gen 2 (unhold restart); 85a0fd07 work intact on origin/main 735826e861. Offline re-proof on that sha: run_selftests --only selftest_divinginteraction_fuzz.py GREEN 1/1 (D:\\ClaudeWork\\rimmandrake\\scratch\\SEABED_DESCENT_ASCENT_1\\selftests_g2.txt), fuzz descent 4280 cases 0 failures (fuzz_direct_g2.txt); winbuild DivingInteraction 0 errors (winbuild_di_g2.txt); bridgetools build.py --gm compile clean (bridgetools_g2.txt). Live A1-A3 owed via infrastructure/state/live_proofs/SEABED_DESCENT_ASCENT_1.txt"
+  },
+  {
+   "n": 22,
+   "item": "WEEPINGSTONES_HANDLER_VANISHES_1",
+   "gen": 5,
+   "lint_hits": [
+    "now passes",
+    "the checker"
+   ],
+   "hand": "contaminated",
+   "why": "history: 'Gap closed', 'the checker's probe'; hit 'now passes' means hands over, right verdict, wrong word",
+   "evidence": "Gap closed: infrastructure/state/live_proofs/WEEPINGSTONES_HANDLER_VANISHES_1.txt A1 now passes handler_fate.net_job_target_leaves_only_as_stock to prove_rows. selftest_weepingstones.py (RM_DATA_ROOT set) exit 0 with new checks: A1 names every handler_fate component; real prove_rows.py with A1's row list exits 0 on healthy mock, 1 on target_flees, handler_leaves_mid_job and the checker's probe (healthy + target FAIL 'despawned alive'). Mutant (row removed from A1) -> selftest exit 1, 2 checks red; restored. run_selftests --only GREEN; cli.py run --mock WeepingStones GREEN PASS=68 FAIL=0."
+  },
+  {
+   "n": 23,
+   "item": "CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN",
+   "gen": 3,
+   "lint_hits": [
+    "because"
+   ],
+   "hand": "clean",
+   "why": "false reject: '--because' is a CLI flag",
+   "evidence": "src/RimMandrake/rimflow/selftest_relentless_cause.py t_cli_door: 2 new C2 rows through R.main verdict on a Rig store (RELENTLESS_ROOT). Unmutated: selftest exit 0, 'C2 the CLI records a product defect with its control: rc=0'. Mutant (main() verdict call without controls=a.control): exit 1, FAIL 'rc=2 verdict None'. Contract proof (with --because) GREEN 6/6."
+  },
+  {
+   "n": 24,
+   "item": "SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY",
+   "gen": 5,
+   "lint_hits": [],
+   "hand": "contaminated",
+   "why": "miss: \"checker's A-D\", 'last GPT pass still found a gap'",
+   "evidence": "run_selftests --only src/RimMandrake/WreckedMachines/selftest_salvage_rule.py GREEN: 41 variants, REAL green, 40 mutants red by execution, incl. checker's A-D. On-disk mutants A-D of RM_SalvageRule.cs at 0aebe42c each rc=1 on the REAL line: D:\\ClaudeWork\\rimmandrake\\scratch\\salvage_check5\\ondisk_mutants.txt. Code untouched. Selftest is DIRTY in code_review_status: last GPT pass still found a gap (closed), no NONE on final bytes."
+  },
+  {
+   "n": 25,
+   "item": "PUMP_ON_TANK_FIX_NO_COUPLER",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "offline: selftest_flowworks_stock.py --only 'LiquidJoin*,PipeStub*,TankFlange*' 15/15 on 5f8455b717 (new LiquidJoin_machine_coupler_on_tank_nozzle, LiquidJoin_machine_drop_wiring_shipped); fix feb753b9d3, DLL rebuilt from committed source 5f8455b717; offline composite D:\\ClaudeWork\\rimmandrake\\scratch\\pump_coupler\\look_Industrial_E.png; live A1 owed: infrastructure/state/live_proofs/PUMP_ON_TANK_FIX_NO_COUPLER.txt (python.exe src/RimMandrake/FlowWorks/prove_pump_tank_coupler.py)"
+  },
+  {
+   "n": 26,
+   "item": "PLAYER_START_SITE_1",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "content at eb98983ec, clean marks at 47414f4dc. run_selftests --only selftest_zeddos_yard,selftest_structureinjections_lint GREEN 2/2 (B1-B8: plan==generator, lint, centred 100x94 clearing empty, 496 wrecks/11 kinds + 957 megastructure cells + 45 wall stubs, every def base game/DLC by type, GenStep order 400<600, canon start_tile 17007 + start_tile_mutator RUT_ZeddosYard under a dup-refusing YAML loader, planted defects caught). Live A1 in infrastructure/state/live_proofs/PLAYER_START_SITE_1.txt (quicktest run_genstep). Placing it on tile 17007 is on the BIOME_PAINT_ONCE_AT_THE_END_1 paint list. Preview: /mnt/d/ClaudeWork/rimmandrake/PLAYER_START_SITE_1/preview.png. GPT reviews 1-4 at D:/ClaudeWork/rimmandrake/PLAYER_START_SITE_1/gpt_review*.txt"
+  },
+  {
+   "n": 27,
+   "item": "RED_COP_BUILD_NO_ORPHAN_REDS",
+   "gen": 10,
+   "lint_hits": [],
+   "hand": "contaminated",
+   "why": "miss: 'passes again'",
+   "evidence": "run_selftests --only selftest_known_reds selftest_ops_watch selftest_ops_watch_review_finish: GREEN 3/3 on f0492bc10c (/tmp/rc_proof2.txt). Fix: ops_watch.titled_names marks told at filing only the note names the cut title shows; 'BUILD COP: the same group next night files nothing and says nothing' passes again; review_finish 6b pins that a name the title cut is noted next pass, once."
+  },
+  {
+   "n": 28,
+   "item": "HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "'fails 13 rows on the pre-fix tree' is a guard fact",
+   "evidence": "run_selftests --only src/RimMandrake/FlowWorks/selftest_hose_pipe_saddle.py GREEN 22/22 (fails 13 rows on the pre-fix tree); C# SelfTest --only LiquidJoin_*,Hose* passed incl LiquidJoin_hose_saddle_beside_pipe_reaches_spigot; winbuild FlowWorks 0 errors; logs /mnt/d/ClaudeWork/rimmandrake/scratch/hose_saddle/"
+  },
+  {
+   "n": 29,
+   "item": "VALIDATION_V2_IDENTITY_WIRE_READS_ZERO",
+   "gen": 5,
+   "lint_hits": [],
+   "hand": "contaminated",
+   "why": "miss: \"checker's A and B\"",
+   "evidence": "run_selftests --only selftest_run_identity,selftest_results_join,selftest_checkout_identity GREEN 3/3 on the proof at 80c1ce0a (published 506db13a). Mutant runner /tmp/vv2gen5/mut.py, output /tmp/vv2gen5/mut2.out: 24/24 KILLED, incl. checker's A and B (both fingerprints after the run) in validation_v2 and proof_all, which fail the new 'timing' checks by name (/tmp/vv2gen5/ab.out). Code files unchanged; only selftest_checkout_identity.py landed."
+  },
+  {
+   "n": 30,
+   "item": "GRAFFITI_V1_LIVE_PROOF_1",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "offline: run_selftests --only selftest_graffiti_v1_live.py selftest_graffiti_lint.py selftest_graffiti_fuzz.py GREEN 3/3 (+ sacredgraffiti_lint, full_list_mode GREEN); fixes: RaidExitTagger on Lord.GotoToil (caravan hook never saw raiders), RM_Graffiti_ViewedHostileMark wired on 21 raid-exit marks, Filth_Mark no propagation; live: infrastructure/state/live_proofs/GRAFFITI_V1_LIVE_PROOF_1.txt A1-A8 (graffiti_v1_live_proof.py), unrun; reviews D:\\ClaudeWork\\rimmandrake\\relentless\\GRAFFITI_V1_LIVE_PROOF_1\\gpt_review*.md"
+  },
+  {
+   "n": 31,
+   "item": "CELL_RECT_SHOT_FIX_COLONIST_BAR_PHOTOBOMBS",
+   "gen": 3,
+   "lint_hits": [],
+   "hand": "contaminated",
+   "why": "miss: 'checker mutant'",
+   "evidence": "python3 src/RimMandrake/bridgetools/selftest_clear_ui_hud.py exit 0 (0 failures) on restored code; checker mutant at JawaBenchTerrainTools.cs line 5437 \"if (!hideHud)\" -> exit 1, FAIL \"default clear_ui runs Take under a bare if (hideHud)\"; also \"hideHud && false\", Take result assigned to hudWasHidden, and an injected \"hideHud = false;\" each exit 1. Proof-only commit c74c8a06c1 plus review record, published 2a1c447e. Logs D:\\ClaudeWork\\rimmandrake\\scratch\\clearui_mut"
+  },
+  {
+   "n": 32,
+   "item": "NIGHTLY_COP_FIX_RED_WARIWE_XVFM_WYEK",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "selftest_nightly_rerun.py PASS (0 failed) incl. 'a test deleted at origin/main is gone', 'a group whose tests origin/main deleted files nothing', 'never held is unmeasured'; selftest_ops_watch PASS; selftest_arena_prompt_rewrites.py absent from origin/main (deleted 1f0e666566). selftest_known_reds CRASH pre-existing on origin ops_watch, filed KNOWNREDS_FIX_METRONOME_SHUT_THE_DOOR."
+  },
+  {
+   "n": 33,
+   "item": "WORLDMAP_BIOME_APPEARANCE_1",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "biome_face_census.py: OWNED 61/61, 0 findings (--deployed too); selftest_biome_face_census + selftest_biome_worldfaces PASS; Chill abyss on both twins (0e423847a9); beauty set D:\\ClaudeWork\\rimmandrake\\art\\world_beauty_2026-10-31 offline renders, judge_gpt.txt VERDICT PASS (one nit, cloudy marbling on the night-side slate-grey region); beautification mods: both already retired by owner card 2026-10-10, nothing to file. Live capture owed: WORLD_BEAUTY_VERIFY_OFFLINE_BEAT_THE_GAME."
+  },
+  {
+   "n": 34,
+   "item": "OPS_METRONOME_PROVE_IN_SHADOW",
+   "gen": 5,
+   "lint_hits": [],
+   "hand": "contaminated",
+   "why": "miss: \"Checker's mutant\"",
+   "evidence": "selftest_metronome case 11b (budget 8, sense+remember ignore SIGTERM) asserts raise+ring exit 0 and remember deferred. run_selftests --only selftest_metronome GREEN (D:\\ClaudeWork\\rimmandrake\\metronome\\gen5_runner.txt, gen5_orig.txt). Checker's mutant held=[] in beat() -> RED, 2 FAILs: raise/ring deferred, remember overrun (gen5_mutant.txt); code restored, metronome.py unchanged."
+  },
+  {
+   "n": 35,
+   "item": "REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "Ghosts moved, sha-verified: D:\\ClaudeWork\\backups\\saves_superseded_2026-10-21 (SHIP 05e494bf, LANDED fb00eb4a, FOUNDERS a9da91c8), absent from Saves. world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws tracked, sha256 2c6525bc = Saves R3 = canon.yml start_savegame; stale 10-20 copy deleted (d1ca8980e). world_hill_preview runs on it (Rust Cathedral, 236 tiles), CLEAN; selftest_canon_save GREEN. Contract proof prints no FAIL, equal shas, NOREFS."
+  },
+  {
+   "n": 36,
+   "item": "OPS_RELENTLESS_READING_RESTORE_IUUR",
+   "gen": 7,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "New store-free contract proof exit 0 at 2026-11-02T16:11Z from worker seat and under systemd-run --user -p InaccessiblePaths=/home/mandrake/rm/relentless/store (exit 0); wrong-unit mutant exit 1. Timer enabled+active, service success, last tick 0.0 min old, ledger 'relentless.blind now 0'. No code change; f5298a3f61 (on origin/main) carries the lesson infrastructure/state/lessons/20261102T143232Z-BENCH-relentless-contract-proof-must-not-read.md."
+  },
+  {
+   "n": 37,
+   "item": "CHECKER_REACH_FIX_CLONES_STILL_DARK",
+   "gen": 7,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "selftest_relentless_reachfix.py GREEN at 32eb9b5 (new 8d: proc_cwds clones proposal -> uncovered scratch/BENCH + relentless-seeds, rig probes=[] tickets=[ticket] checks=1; 8e store/live adapters cover their roots; 8f empty proposal untouched). Guard re-shown red on the new test bytes before the fix (testHash 188a430d7f33a139 == committed sha256[:16], on origin/main BENCH.jsonl). relentless_reachfix.uncovered no longer opt-in; relentless_store_journal/attempts and relentless_live_evidence declare covers. Related selftests (31) green except selftest_recovery_design_doc (ledger 0CA2BE29 doc state, unrelated)."
+  },
+  {
+   "n": 38,
+   "item": "FILL_IN_DESIGNATION_FIX_SCAN_INVALIDATED",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "run_selftests.py --only selftest_fillin_scan_materialised.py -> GREEN 1/1 (9 ok checks: no yield, List returned, des.Delete still present, srchash pins WorkGiver_FillInCanal.cs + WorkGiver_DigCanal.cs); test at src/RimMandrake/Utils/selftest_fillin_scan_materialised.py, commit bfde83339b"
+  },
+  {
+   "n": 39,
+   "item": "OPS_LIVES_CENSUS_EVERY_DEATH_READ_ONLY",
+   "gen": 10,
+   "lint_hits": [],
+   "hand": "contaminated",
+   "why": "miss: 'Closes checker gaps at 45e6dde5'",
+   "evidence": "selftest_ops_lives GREEN at bb45c9df (contract proof run_selftests --only selftest_ops_lives.py). Closes checker gaps at 45e6dde5: (a) disabled Auditor run rm-role-auditor-off asserts role_wanted=stopped, plus direct role_wanted() map; (b) oom_group_kill row rm-groupkill.service asserts one out_of_memory death. Also from GPT review: restart_kill after --now within skew, deaths_24h cutoff, md of a foreign generation id. Mutants A (role_wanted always done), B (leaf_ooms drops oom_group_kill), C (restart_kill read past now), D (deaths_24h=len), E (check accepts any generation) each red; ops_lives.py restored byte-identical (sha256 3974e4c416f9b5bd): /mnt/d/ClaudeWork/rimmandrake/ops_lives/gen10_mutants.txt. Selftest CLEAN by consult-20261104-000356-1424615. Code untouched."
+  },
+  {
+   "n": 40,
+   "item": "CLOSEOUT_DRAIN_PROVE_REAL_RESTART_LIVE",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "src/RimMandrake/rimflow/selftest_closeout_drain_real_chain.py exits 0, 24/24 ok (R1 DEFERRED naming 4; R2 drain bound to the session; R3 held naming exactly the live helpers, never killed; R4 held on the unpublished shard; R5 real SIGTERM only after the shard reached the bare origin, killed record carries 4 drained; R6 4/4 helper ledger lines on origin; R7 wake lists all 4). Three planted faults each fail it (16/3/1 fails). run_selftests --only GREEN. Opus review: 0 blockers, 6 nits fixed. Not done: no real Claude window was killed; the window is a real OS process with a session file."
+  },
+  {
+   "n": 41,
+   "item": "RUNNING_PAGE_FIX_REVIEW_LEFTOVERS",
+   "gen": 3,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "run_selftests --only selftest_running_now GREEN (9 new pause checks: on, off, missing key, unreadable, not an object; plus real Env). running_now.py --print exit 0 shows TOKEN PAUSE ON at line 3 with only_system_and_live true; --phone leads with it. Mutants 7 of 7 killed. code_review_status CLEAN on running_now.py, selftest_running_now.py, running_now_families.json via GPT jobs consult-20261103-172934-2759142 and consult-20261103-173104-2764716. Hover result: SVG title tooltip shows in Typora, infrastructure/state/lessons/20261104T010954Z-BENCH-typora-click-details-summary-toggles-it.md. Scratch D:\\ClaudeWork\\rimmandrake\\scratch\\running_pause"
+  },
+  {
+   "n": 42,
+   "item": "LIVE_RESTORE_RM_PULSE_DIGEST",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "selftest_live_retired.py exit 0 (green); with --retired /dev/null exit 1 incl. the digest check; guard event in infrastructure/state/ledger/events/BENCH.jsonl; live_retired.txt lists unit=rm-pulse-digest.timer; live_baseline.txt has no pulse line"
+  },
+  {
+   "n": 43,
+   "item": "FOREIGN_GUARD_PROVE_FLAT_KEPT",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "run_selftests --only selftest_codex_image GREEN; test_flat_coarse_match_stays_foreign 4/4 ok; mutant (None treated as reject in match()) turns it red; gpt review consult-20261102-200534-627832 NO SIGNIFICANT FINDINGS, file marked CLEAN"
+  },
+  {
+   "n": 44,
+   "item": "VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL",
+   "gen": 7,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "run_selftests --only src/RimMandrake/Utils/perf/selftest_vitals_overhead.py GREEN 1/1 at b5556845; 6 mutants of test_vitals_tier_makeup.py / A1 line each red then restored; live A1 line in infrastructure/state/live_proofs/VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL.txt checks makeup before+after"
+  },
+  {
+   "n": 45,
+   "item": "OPS_CHURN_DIAGNOSE_STILLSAND_WDMI_CRMC",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "'gen1 ... gen4' are the diagnosed item's history, the subject of the work",
+   "evidence": "run_selftests --only selftest_ops_churn GREEN 1/1; new case 8 rows: blind PASS after last failure -> churn_why []; FAIL verdict keeps '3 returns'; failure after the PASS re-arms. Mutant (PASS branch disabled) -> selftest exit 1 on 'a blind PASS after the last failure is no bounce'. Real STILLSAND_DUNE_GALE_LIVE_1 state (fails 4, last 09:07Z; check PASS 11:36Z) now reads churn_why []. Diagnosis: its 3 returns were 3 distinct causes (gen1 proof_weak/sandbox, gen3 proof_rework, gen4 stale_load sheet misread as FAIL, fixed d5b8439); it now waits in the game phase on a stale Biomes/TheForge DLL reload gate, which 'stuck: game' covers. ops_watch.py/selftest_ops_churn.py still DIRTY by code_review_status."
+  },
+  {
+   "n": 46,
+   "item": "OPS_SCRATCH_DIRT_MEASURE_AT_END_QLKI",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "run_selftests --only selftest_scratch_reap_vanished_midwalk.py selftest_scratch_reap_sanity.py selftest_scratch_reap.py: GREEN 3/3; guard shown failing pre-fix (65 of 65 refused; refused 65 over 60, oldest_h 498299.8); instance: ~/.local/state/rm-scratch-reap/sanity.json end 11:03Z run; live: rm-scratch-reap.timer next run from /home/mandrake/rm/dispatch once it pulls e7e1348f"
+  },
+  {
+   "n": 47,
+   "item": "GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT",
+   "gen": 1,
+   "lint_hits": [],
+   "hand": "clean",
+   "why": "",
+   "evidence": "python3 src/RimMandrake/Utils/run_selftests.py --only selftest_gss_proof_drivers: GREEN 1/1 (case FW, 15 checks). Root cause from D:\\ClaudeWork\\rimmandrake\\foundry_gss\\PROGRESS.md + proof_all_live.json save_load_notes.aerialCut (cut:26585,26577 = M2-M3, never re-strung) + probe_fallen.py (reads census top-level links/fallen, which AerialProbe.Census never emits). Lesson infrastructure/state/lessons/20261106T002505Z-BENCH-gss-aerialprobe-census-has-no-top.md (c445332c18). Owed: validation_aerial.py and selftest_gss_proof_drivers.py are DIRTY (no full-file review: helper budget N=0); siblings GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE and _SHOCK_STILL_BITES are duplicates of this finding."
+  }
+ ]
+}

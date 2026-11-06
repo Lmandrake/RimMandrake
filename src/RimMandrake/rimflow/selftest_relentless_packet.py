@@ -22,6 +22,24 @@ def clean():
             "how_to_check": [{"command": "python3 x.py", "expected": "PASS"}], "unverified": ["no run on the real pool"]}
 
 
+def hand_scored():
+    """The committed real sample: lint is re-run on every row, and its false rejects and misses against the hand labels
+    must be the counts the file records. A word-list change that moves either count fails here until it is re-scored."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "testdata", "relentless_packet_handscored.json")
+    with open(path, encoding="utf-8") as f:
+        doc = json.load(f)
+    rows = doc["rows"]
+    ok(len(rows) >= 48 and len({r["evidence"] for r in rows}) == len(rows), "hand-scored set: %d distinct real rows" % len(rows))
+    ok(all(r["hand"] in ("clean", "contaminated") for r in rows), "every row carries a hand label")
+    drift = [r["n"] for r in rows if P.report(r) != r["lint_hits"]]
+    ok(not drift, "lint reads each row as it did when scored (drift: %s)" % drift[:5])
+    fr = sum(1 for r in rows if P.report(r) and r["hand"] == "clean")
+    mi = sum(1 for r in rows if not P.report(r) and r["hand"] == "contaminated")
+    want = doc["counts"]
+    ok(fr == want["false_rejects"], "false rejects %d of %d hits, recorded %d" % (fr, sum(1 for r in rows if P.report(r)), want["false_rejects"]))
+    ok(mi == want["misses"], "misses %d, recorded %d" % (mi, want["misses"]))
+
+
 def main():
     st = {"contract": {"proof": "p"}}
     ok(P.lint(clean(), st) == [], "a clean packet passes")
@@ -62,6 +80,7 @@ def main():
         with open(os.path.join(r, "g%d.json" % i), "w") as f:
             json.dump({"item": "I", "gen": i, "evidence": e}, f)
     ok([bool(P.report(x)) for _, x in P.receipts(d)] == [False, True], "scan reads real receipts, and can see a hit")
+    hand_scored()
     print("selftest_relentless_packet: %s" % ("PASS" if not BAD else "FAIL %d" % BAD))
     return 1 if BAD else 0
 
