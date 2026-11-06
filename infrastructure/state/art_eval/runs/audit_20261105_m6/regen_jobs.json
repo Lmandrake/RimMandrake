@@ -1,0 +1,25 @@
+[
+ {
+  "id": "arteval_RSW_Maligoat__MaligoatMale_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Maligoat__MaligoatMale",
+  "prompt": "A creature sprite for RimWorld: the kroffa. A hardy, squat six-legged herbivore built for wasteland grazing. Its broad, low-slung barrel body rides on three pairs of short thick legs, hide overlapping in tough plates rather than fur, and its blunt insectile face works small mandible-like mouthparts around a pair of thick backward-curling horns. Docile enough to farm, and its milk is prized despite - or because of - how little the animal itself resembles anything back home. Visible features it must show: six short thick legs (three pairs) under a broad low barrel body; overlapping hide plates instead of fur; a blunt insectile face with small mandible-like mouthparts; a pair of thick backward-curling horns. Body bulk is identical in every facing: the broad armored barrel body keeps the same width, the same height and the same low squat silhouette from front, side and rear. The rear view, seen from behind, shows the plated back as broad as the front view: a wide, low barrel body whose outer edges reach the same left and right extent as the front view, filling the frame width. Broad rounded haunches sit at the same breadth as the front chest. The three pairs of short thick legs are splayed outward to the same outer stance width as in the front view, evenly spaced along the barrel with each pair at the outer edge of the body, so the six feet spread across the full width of the body. Overlapping hide plates run wide across the back and haunches. The thick backward-curling horns sweep back and show as curled tips at the top of the head; the face and eyes are hidden. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261105_m6",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.15,
+  "module": "walker",
+  "target_texpath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale"
+ }
+]

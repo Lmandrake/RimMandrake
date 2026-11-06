@@ -6,7 +6,11 @@
   "RM_CoolantEel",
   "RM_IllothLarvae__Smogapillar",
   "RM_Ivvol",
-  "RM_Vennick"
+  "RM_Vennick",
+  "RM_Ysvaltha",
+  "SWPotF_RaceDef_ysalamir__ysalamiri",
+  "RM_SparkleechGrub",
+  "RM_Wuum"
  ],
  "versions_key": "departures_brief@v3#4e4c26+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v3#2337d2+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
 }

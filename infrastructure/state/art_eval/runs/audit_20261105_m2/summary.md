@@ -6,5 +6,15 @@
 | RSW_Boarwolf__Boarwolf_j | r1 | creature/walker | WEAK | strong_accept | **ACCEPT** | 47.6 | opus band WEAK (model said good); blocking ['CANON_MISS']; polish ['SCALE_WRONG']; gpt strong_accept: unsettled [], own blocking []; REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) — on the next shadow sheet with a revert |
 | RSW_BunkerBug | r1 | creature/walker | WEAK | regen | **REGEN** | 101.5 | opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'F_TOPDOWN']; polish ['STYLE_EARTHLY']; gpt regen: unsettled ['K1'], own blocking ['F_SIZE_JUMP']; REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) — on the next shadow sheet with a revert; same picture already REGEN in run audit_20261105_k5 as round 1: round not advanced |
 | RUT_SealedSleeper__RUT_SealedSleeper | r1 | creature/walker | WEAK | regen | **REGEN** | 77.5 | opus band WEAK (model said good); blocking ['STYLE_EARTHLY', 'F_SIZE_JUMP']; polish ['LEGIB_32']; gpt regen: unsettled ['K1', 'K2'], own blocking ['STYLE_EARTHLY', 'F_SIZE_JUMP']; REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) — on the next shadow sheet with a revert |
+| RM_Zrrik | r1 | creature/walker | - | - | **HOLD_CANVAS** | 0.2 | canvas not the shipping rule for drawSize [3.4, 3.4]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512 |
+| RM_Gembug__Green_Jewelbug | r1 | creature/walker | - | - | **HOLD_CANVAS** | 0.3 | canvas not the shipping rule for drawSize [1.5, 1.5]: east 512x512 != 256x256; north 512x512 != 256x256; south 512x512 != 256x256 |
+| RM_Gembug__Red_Jewelbug | r1 | creature/walker | - | - | **HOLD_CANVAS** | 0.4 | canvas not the shipping rule for drawSize [1.5, 1.5]: east 512x512 != 256x256; north 512x512 != 256x256; south 512x512 != 256x256 |
+| RM_Gembug__Yellow_Jewelbug | r1 | creature/walker | - | - | **HOLD_CANVAS** | 0.4 | canvas not the shipping rule for drawSize [1.5, 1.5]: east 512x512 != 256x256; north 512x512 != 256x256; south 512x512 != 256x256 |
+
+## One line each for the owner
+- RM_Zrrik: HOLD_CANVAS — canvas not the shipping rule for drawSize [3.4, 3.4]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512
+- RM_Gembug__Green_Jewelbug: HOLD_CANVAS — canvas not the shipping rule for drawSize [1.5, 1.5]: east 512x512 != 256x256; north 512x512 != 256x256; south 512x512 != 256x256
+- RM_Gembug__Red_Jewelbug: HOLD_CANVAS — canvas not the shipping rule for drawSize [1.5, 1.5]: east 512x512 != 256x256; north 512x512 != 256x256; south 512x512 != 256x256
+- RM_Gembug__Yellow_Jewelbug: HOLD_CANVAS — canvas not the shipping rule for drawSize [1.5, 1.5]: east 512x512 != 256x256; north 512x512 != 256x256; south 512x512 != 256x256
 
 Models reported: UNMEASURED, claude-opus-5-5, claude-sonnet-5-5 · prompt versions: `departures_brief@v3#4e4c26+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v3#2337d2+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520`

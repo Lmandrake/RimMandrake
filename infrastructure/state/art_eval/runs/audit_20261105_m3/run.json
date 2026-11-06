@@ -5,7 +5,10 @@
  "subjects": [
   "RM_Borehulk",
   "RSW_Torton__Torton_f",
-  "RM_Moravatha_n"
+  "RM_Moravatha_n",
+  "RM_Gloomcast",
+  "RM_Qorrax",
+  "RM_Vozzik"
  ],
  "versions_key": "departures_brief@v3#4e4c26+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v3#2337d2+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
 }
