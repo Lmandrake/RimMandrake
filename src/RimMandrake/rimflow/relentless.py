@@ -6052,10 +6052,12 @@ def reading(store, r, now, acts, clock=None):
 
 
 def hold_is_his(h):
-    """Only he can lift this hold: a delegation_policy section 2 call, or a flyer's flight (section 2.6). Every other hold
-    (proof_weak, strikes, game, ...) is a tooling outcome, the seat's to read (RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS)."""
+    """Only he can lift this hold: a delegation_policy section 2 call, a flyer's flight (section 2.6), or his own look
+    once every game clause has PASSed (RELENTLESS_FIX_GAME_LANE_OWNER_LOOK_FAILS). Every other hold (proof_weak,
+    strikes, game, ...) is a tooling outcome, the seat's to read (RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS)."""
     h = h or {}
-    return h.get("kind") == "owner_call" or (h.get("kind") == "game" and relentless_game.flyer_hold(h.get("why")))
+    return h.get("kind") == "owner_call" or (h.get("kind") == "game" and (
+        relentless_game.flyer_hold(h.get("why")) or relentless_game.owner_look_hold(h.get("why"))))
 
 
 def _hold_routed(store, item, to):

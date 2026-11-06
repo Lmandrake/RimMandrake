@@ -312,6 +312,9 @@ def candidates(items, proofs_of, hist, now, retry_s, game=None):
             if cid not in proofs:
                 skip("no proof")
                 continue
+            if L.owner_look(crit[cid], proofs[cid]):
+                skip("owner look")      # his act, not the game's: no run can pass it (..._GAME_LANE_OWNER_LOOK_FAILS)
+                continue
             last = hist.get((it["id"], cid, it["built_sha"]))
             if last and last.get("cut") and not crit[cid].get("cut"):
                 last = None     # refused while cut on the ledger; its prose now holds it whole: run it

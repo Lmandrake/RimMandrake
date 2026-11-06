@@ -322,6 +322,27 @@ def unquoted(text):
 OWNER_LEDGER = re.compile(r"\bOWNER\.jsonl\b")
 
 
+# a criterion that is his act, not the game's: "the owner has looked at the one review and kept it" (WATER_DEPTH_RESKIN_
+# HE_LOOKS_FIRST L4, filed at L2, so no level says it). The owner words open the criterion: "each grown limb the owner
+# keeps on the S1 sheet renders in all four facings" is the game's to show; "he sees" could be a pawn's
+OWNER_ACT = re.compile(r"^\W*(the owner|owner|mandrake|lukas)('s)?\s+(has\s+|have\s+|will\s+)?(looked|looks?|look at|kept|"
+                       r"keeps?|approved?|approves|signs? off|signed off|sees|saw|seen|judged?|judges|reviewed)\b", re.I)
+
+
+def owner_look(crit, proof):
+    """crit: a criterion {"id", "level", "text"} (or its text). -> why it is the owner's own act (a look, a keep, a
+    sign-off) that no game can pass, or None. RELENTLESS_FIX_GAME_LANE_OWNER_LOOK_FAILS: the game lane skips such a
+    clause and routes the item to him once the rest pass, instead of failing it every round until he looks."""
+    if OWNER_LEDGER.search(proof or ""):
+        return "its proof reads his ledger (OWNER.jsonl)"
+    c = crit if isinstance(crit, dict) else {"text": crit or ""}
+    m = OWNER_ACT.search(c.get("text") or "")
+    if m:
+        return "its text names his act (%r)" % m.group(0).strip()
+    import relentless_showing
+    return "it is a look clause (his look)" if relentless_showing.look_clause(c) else None
+
+
 def refused_proof(lr, title, text, proof):
     """-> why this run may not happen on the live game, or None."""
     hit = flyer_word(lr, title, ("criterion", text), ("proof", proof))
@@ -329,8 +350,8 @@ def refused_proof(lr, title, text, proof):
         return "flyer: the %s names %r; a flyer's flight is never live-tested (standing ruling)" % hit
     if OWNER_LEDGER.search(proof or ""):
         return ("owner act: the proof reads his ledger (OWNER.jsonl), not the running game, so every live round fails "
-                "it until he acts (OPS_CHURN_DIAGNOSE_WATER_PPCC_FKGE); take the clause out of the game clauses "
-                "(rebind) and wait on him: snag --class blocked_by_predecessor --blocker owner")
+                "it until he acts (OPS_CHURN_DIAGNOSE_WATER_PPCC_FKGE); the game lane skips such a clause (owner_look) and "
+                "holds the item on him once the rest PASS")
     gone = WSLPATH.sub(" ", proof or "")
     # unquoted() knows no comment or heredoc, either of which can end a quote on another line: such a proof is read raw
     scan = gone if ("\n" in gone or "<<" in gone) else unquoted(gone)

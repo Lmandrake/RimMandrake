@@ -66,6 +66,14 @@ def t_candidates():
         check("history: %s on %s %ds ago -> %s" % (outcome, sha, now - when, "runs" if runs else "waits"),
               bool(todo) == runs, todo)
 
+    # RELENTLESS_FIX_GAME_LANE_OWNER_LOOK_FAILS: his look is never run on the game, whatever its proof line says
+    look = item(owed=("A1", "L4"), levels={"A1": "L1", "L4": "L2"})
+    look["criteria"][1]["text"] = "the owner has looked at the one review and kept it"
+    prose = PROSE + "live-proof L4: grep -q keep infrastructure/state/ledger/events/OWNER.jsonl\n"
+    todo, counts = R.candidates([look], lambda i: prose, {}, now, 3600)
+    check("candidates: an owner look is skipped, the game's own clause still runs",
+          [t[1] for t in todo] == ["A1"] and counts.get("owner look") == 1, (todo, counts))
+
 
 def t_history_review():
     """GPT review 2026-11-01 counterexamples: per-sha terminal judgments, UTC parsing, bare backticks."""

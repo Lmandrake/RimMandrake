@@ -693,6 +693,7 @@ class GameFx(object):
         crit = {c["id"]: c["level"] for c in it.criteria or []}
         return {"state": it.state, "built_sha": it.built_sha, "title": it.title or "",
                 "owed": {c: crit.get(c) for c in it.outstanding or []},
+                "criteria": {c["id"]: dict(c) for c in it.criteria or []},      # owner_looks reads their words
                 "passed": {p["criterion"]: p["level"] for p in it.passed or []}}     # met since this build
 
     def game_rows(self):
@@ -1171,6 +1172,36 @@ def _not_reproduced(store, fx, item, missed, now, acts):
 
 
 FLYER = "flyer:"
+OWNER_LOOK = "owner look:"
+
+
+def owner_looks(led, lines, keys):
+    """-> {criterion: why} of `keys` that are his own act (relentless_live.owner_look: a look, a keep, a sign-off, or a
+    proof reading OWNER.jsonl). RELENTLESS_FIX_GAME_LANE_OWNER_LOOK_FAILS: WATER_DEPTH_RESKIN_HE_LOOKS_FIRST bound L4
+    ("the owner has looked at the one review and kept it") as a game clause and bounced 4 times on a check only he can
+    pass. Such a clause is never run on the game; the item goes to him once every game clause has PASSed."""
+    import relentless_live
+    crit = led.get("criteria") or {}
+    out = {}
+    for k in sorted(keys):
+        why = relentless_live.owner_look(crit.get(k) or {"id": k, "level": (led.get("owed") or {}).get(k)}, lines.get(k))
+        if why:
+            out[k] = why
+    return out
+
+
+def owner_look_hold(why):
+    """This game hold waits on his look: every game clause PASSed and only his act is owed. His to lift, like a flyer's."""
+    return (why or "").startswith("game phase: " + OWNER_LOOK)
+
+
+def _owner_hold(store, fx, item, looks, whys, now, acts):
+    """Every game clause PASSed; what is left is his look: held on him (needs=owner, relentless.hold_is_his), its clone
+    back, never a game_fail and never a worker round."""
+    why = "game phase: %s every game clause PASSed; %s owed, the owner's own act (%s): no game can pass it" % (
+        OWNER_LOOK, ", ".join(looks), "; ".join("%s %s" % (k, whys.get(k) or "his look") for k in looks))
+    _hold(store, fx, item, why, now, acts)
+    acts.append({"do": "game_owner_look", "item": item, "clauses": list(looks)})
 
 
 def flyer_hold(why):
@@ -1451,42 +1482,47 @@ def step(store, fx, r, item, now, acts, sup):
             return _back(store, fx, sup, r, item, "game_contract", "rimflow implemented refused: %s" % why, now, acts)
         # a clause already met at this build (a verify event since `implemented`) is not owed, and not missing either:
         # it leaves the game clauses (MODCHECK_DONOR_ENVIRONMENTS_1: A2 passed live, then read as "missing" forever)
-        met = [k for k in g["clauses"] if k not in led["owed"] and k in (led.get("passed") or {})]
-        missing = [k for k in g["clauses"] if k not in led["owed"] and k not in met]
-        notlive = [k for k in g["clauses"] if k in led["owed"] and led["owed"][k] not in LIVE_LEVELS()]
+        lines = proof_lines(fx.proofs_at(item, sha))
+        # his own act (a look, a keep) is no game clause: skipped here, his once the rest pass (owner_hold)
+        his = owner_looks(led, lines, set(g["clauses"]) | set(led["owed"]))
+        clauses = [k for k in g["clauses"] if k not in his]
+        met = [k for k in clauses if k not in led["owed"] and k in (led.get("passed") or {})]
+        missing = [k for k in clauses if k not in led["owed"] and k not in met]
+        notlive = [k for k in clauses if k in led["owed"] and led["owed"][k] not in LIVE_LEVELS()]
         if missing or notlive:
             return _back(store, fx, sup, r, item, "game_contract",
                          "game clauses not owed at a live level after implemented: missing %s, not live %s; add them to "
                          "%s/%s.criteria" % (missing, notlive, PROOFS_DIR, item), now, acts)
         # a GREEN-FULL clause the criteria file owes with a proof line joins the game clauses (a contract written before
         # PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS names only the small ones), or the item would wait on it forever
-        lines = proof_lines(fx.proofs_at(item, sha))
         # the live lane refuses a line bash builds at run time or one that mutates the game; caught here it costs a
         # worker round, caught there a live run that measures nothing (OPS_RELENTLESS_LIVE_MEASURE_RESTORE_LRPU: 5 of 40)
         import relentless_live
         lr = relentless_live.live_rules(r)
         bad = [(k, relentless_live.refused_proof(lr, led.get("title"), "", lines[k])) for k in sorted(lines)
-               if k in led["owed"]]
+               if k in led["owed"] and k not in his]
         bad = [(k, w) for k, w in bad if w and not w.startswith("flyer:")]     # a flyer is put down, not sent back
         if bad:
             return _back(store, fx, sup, r, item, "game_contract", "; ".join(
                 "%s/%s.txt %s: %s" % (PROOFS_DIR, item, k, w) for k, w in bad), now, acts)
-        finals = [k for k in sorted(led["owed"]) if led["owed"][k] == FINAL_LEVEL and k not in g["clauses"] and k in lines]
+        finals = [k for k in sorted(led["owed"]) if led["owed"][k] == FINAL_LEVEL and k not in g["clauses"] and k in lines
+                  and k not in his]
         # an owed live criterion that joins no game clause (a GREEN-FULL with no proof line, or one at a smaller level
         # the contract never named) is verified by nothing, so the item would wait at the all-PASS return below forever:
         # it goes back for its line or its clause (Codex review, RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN #7)
         stray = [k for k in sorted(led["owed"]) if led["owed"][k] in LIVE_LEVELS() and k not in g["clauses"]
-                 and k not in finals]
+                 and k not in finals and k not in his]
         if stray:
             return _back(store, fx, sup, r, item, "game_contract",
                          "owed live criteria %s join no game clause: a %s one needs `live-proof <id>: <command>` in "
                          "%s/%s.txt; any other is named with `contract --game` (the same --proof)"
                          % (stray, FINAL_LEVEL, PROOFS_DIR, item), now, acts)
-        owed_lines = {k: lines[k] for k in list(g["clauses"]) + finals if k in lines and k not in met}
+        owed_lines = {k: lines[k] for k in clauses + finals if k in lines and k not in met}
         if _preflight(store, fx, sup, r, item, owed_lines, now, acts, sha):
             return
         _save(store, item, lambda s: s["game"].update(
-            phase="prove", clauses=[k for k in s["game"]["clauses"] if k not in met] + finals))
+            phase="prove", clauses=[k for k in s["game"]["clauses"] if k not in met and k not in his] + finals,
+            owner_clauses=sorted(his)))
         acts.append({"do": "game_implemented", "item": item, "sha": sha})
         return
 
@@ -1497,6 +1533,12 @@ def step(store, fx, r, item, now, acts, sup):
         g = store.load(item)["game"]
 
     if g["phase"] == "prove":
+        his = owner_looks(led, proof_lines(fx.proofs_at(item, sha)), g["clauses"])
+        if his:     # a state from before RELENTLESS_FIX_GAME_LANE_OWNER_LOOK_FAILS still names his look as a game clause
+            _save(store, item, lambda s: s["game"].update(
+                clauses=[k for k in s["game"]["clauses"] if k not in his],
+                owner_clauses=sorted(set(s["game"].get("owner_clauses") or []) | set(his))))
+            g = store.load(item)["game"]
         built = led.get("built_sha") if same_sha(led.get("built_sha"), sha) else sha
         rows = outcomes(fx.game_rows(), item, built, g["clauses"])
         import relentless_live
@@ -1513,6 +1555,10 @@ def step(store, fx, r, item, now, acts, sup):
             return _back(store, fx, sup, r, item, "game_fail", "; ".join(fail_detail(k, v) for k, v in fails), now,
                          acts, live=live)
         if len(rows) == len(g["clauses"]) and all(v.get("outcome") == "PASS" for v in rows.values()):
+            looks = [k for k in g.get("owner_clauses") or [] if k in led["owed"]]
+            if looks:
+                return _owner_hold(store, fx, item, looks, owner_looks(led, proof_lines(fx.proofs_at(item, sha)), looks),
+                                   now, acts)
             return      # the last verify moves the ledger to done; the next tick finishes it
         rd0 = fx.game_reading()
         _finals, waiting = final_split(rows, led["owed"], g["clauses"], rd0.get("started"))

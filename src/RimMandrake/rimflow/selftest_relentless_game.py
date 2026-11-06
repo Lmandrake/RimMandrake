@@ -66,7 +66,8 @@ class GW(S.FakeWorld):
         self.impl.append((item, sha, crit))
         self.no_code.append(no_code)
         self.events.append("implement")
-        self.led[item] = {"state": "built", "built_sha": sha, "title": self.title, "owed": dict(self.owed)}
+        self.led[item] = {"state": "built", "built_sha": sha, "title": self.title, "owed": dict(self.owed),
+                          "criteria": {k: dict(c) for k, c in (getattr(self, "crit", None) or {}).items()}}
 
     def proofs_at(self, item, sha, ext=".txt"):
         return self.proofs.get((item, ext), PROOF if ext == ".txt" else "")
@@ -541,6 +542,72 @@ def t_flyer_put_down():
         x.tick()
     ok(x.st("I0")["status"] == "held" and not any(l[0] == "I0" for l in x.w.launches[1:] if "STAGING" in l[2]),
        "and nothing picks it until he lifts the hold")
+    x.done()
+
+
+L4_LOOK = ("live-proof L4: python3 -c \"import json,sys; ev=[json.loads(l) for l in "
+           "open('infrastructure/state/ledger/events/OWNER.jsonl') if 'I0' in l]; sys.exit(0 if ev else 1)\"\n")
+
+
+def t_owner_look_skipped_routes_owner():
+    """RELENTLESS_FIX_GAME_LANE_OWNER_LOOK_FAILS: WATER_DEPTH_RESKIN_HE_LOOKS_FIRST bound L4 ("the owner has looked at the
+    one review and kept it", filed at L2, its proof a read of OWNER.jsonl) as a game clause and bounced 4 times on a
+    check only he can pass. His look is never a game clause: implement does not send it back, the round never runs it,
+    and once every game clause PASSes the item is held on him (needs=owner), no game_fail and no worker."""
+    for proof_reads_ledger in (True, False):
+        x = rig(1)
+        x.w.owed = {"A2": "L1", "L4": "L2"}
+        x.w.crit = {"A2": {"id": "A2", "level": "L1", "text": "the comp loads"},
+                    "L4": {"id": "L4", "level": "L2", "text": "the owner has looked at the one review (with X) and kept "
+                           "it - an OWNER ledger event on this item after 2026-11-03."}}
+        x.w.proofs[("I0", ".txt")] = PROOF + (L4_LOOK if proof_reads_ledger else
+                                              "live-proof L4: python.exe src/RimMandrake/Utils/shot.py --out x.png\n")
+        to_game(x, "I0", game={"clauses": ["A2", "L4"], "why": "A2 needs the loaded defs; L4 is his look"})
+        x.tick()
+        st = x.st("I0")
+        ok(st["status"] == "game" and st["game"]["phase"] == "prove" and not st.get("last_fail"),
+           "proof reads ledger %s: his look does not send the item back at implement: %s %s" % (
+               proof_reads_ledger, st["status"], st.get("last_fail")))
+        ok(st["game"]["clauses"] == ["A2"] and st["game"].get("owner_clauses") == ["L4"],
+           "L4 leaves the game clauses and is kept as his: %s" % st["game"])
+        ok(all("L4" not in lines for _i, lines in x.w.pre_calls), "the preflight never sees his line: %s" % x.w.pre_calls)
+        x.tick()
+        ok(x.w.proves == ["I0"], "the round runs for the game's own clause")
+        x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "PASS"}]
+        x.w.led["I0"]["owed"] = {"L4": "L2"}        # the A2 verify landed; his look is all that is owed
+        x.tick()
+        st = x.st("I0")
+        ok(st["status"] == "held" and G.owner_look_hold(st["hold"]["why"]) and R.hold_is_his(st["hold"])
+           and "L4" in st["hold"]["why"], "every game clause PASSed: held on his look: %s %s" % (st["status"], st.get("hold")))
+        ok(not st["failures"].get("game_fail") and (st.get("last_fail") or {}).get("class") != "game_fail",
+           "no game_fail, no strike")
+        x.tick()
+        ok("I0" in x.w.needs, "the ledger routes it to him (needs=owner)")
+        launches = len(x.w.launches)
+        for _ in range(3):
+            x.tick()
+        ok(x.st("I0")["status"] == "held" and len(x.w.launches) == launches, "and no worker is sent while he has not looked")
+        x.done()
+    # a state from before the fix still names his look among its game clauses: the prove phase takes it out
+    x = rig(1)
+    x.w.owed = {"A2": "L1", "L4": "L2"}
+    x.w.crit = {"L4": {"id": "L4", "level": "L2", "text": "the owner has looked at the one review and kept it"}}
+    x.w.proofs[("I0", ".txt")] = PROOF + L4_LOOK
+    to_game(x, "I0")
+    x.tick()
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["game"]["clauses"] = ["A2", "L4"]
+        x.s.save(st)
+    x.w.rows = [{"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "A2", "sha": SHA, "outcome": "PASS"},
+                {"at": "2099-01-01T00:00:00Z", "item": "I0", "criterion": "L4", "sha": SHA, "outcome": "FAIL",
+                 "log": "/l/L4.log"}]
+    x.w.led["I0"]["owed"] = {"L4": "L2"}
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "held" and G.owner_look_hold(st["hold"]["why"]) and st["game"]["clauses"] == ["A2"],
+       "an old state's L4 FAIL row is no game_fail: his look is taken out and the item is his: %s %s" % (
+           st["status"], st.get("hold")))
     x.done()
 
 
@@ -1877,7 +1944,7 @@ def main():
     picked, ran = set(a for a in args if not a.startswith("--")), 0      # no names: every test
     for t in (t_parse_and_brief, t_pool, t_contract_widens, t_pass_enters_game_and_proves,
               t_nocode_rebuild_reaches_implemented, t_fail_returns,
-              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_dropped_staging_keeps_bridge, t_rides_ok, t_round_only_item, t_flyer_put_down, t_waits_put_down,
+              t_not_owed_returns, t_refused_proof_returns_offline, t_unmeasured_twice_returns_offline, t_cap_returns_with_the_exit_reason_and_log, t_long_reason_survives_both_unmeasured_returns, t_dud_on_this_game_returns_at_once, t_gate, t_stage_and_release, t_stage_idle_releases, t_stage_max_stops_before_quarantine, t_stage_snag_releases, t_one_live_user, t_dropped_staging_keeps_bridge, t_rides_ok, t_round_only_item, t_flyer_put_down, t_owner_look_skipped_routes_owner, t_waits_put_down,
               t_stage_remakes_clone, t_tick_reads_windows_tools, t_loading_is_waited_not_restaged, t_blind_stall_probe_ends_attempt,
               t_failed_staging_is_harness_not_owner, t_unreadable_game_waits, t_unhold_game_hold_returns_to_game,
               t_green_sha_is_not_judged_again, t_bounce_from_checking_is_quarantined,

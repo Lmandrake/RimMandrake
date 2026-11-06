@@ -836,6 +836,25 @@ def t_owner_look_is_no_game_clause():
     for proof in ("python.exe src/RimMandrake/FlowWorks/northstar/water_looks_proof.py --only A1_FIVE_METRES_NAVY",
                   "python3 x.py --owner-seat RELENTLESS", "grep -q x infrastructure/state/ledger/events/RELENTLESS.jsonl"):
         check("game proof not owner act %r" % proof, L.refused_proof(lr, "t", "c", proof) is None, proof)
+    # RELENTLESS_FIX_GAME_LANE_OWNER_LOOK_FAILS: owner_look reads the criterion too, so a look with a game-ish proof
+    # line is still his; game criteria that merely mention him stay the game's
+    for text, level in (("the owner has looked at the one review (with X) and kept it", "L2"),
+                        ("The owner looks at the bolt dance.", "L2"), ("owner judges the four pipe atlases.", "L2"),
+                        ("owner approves ramp art through the art ledger", "L2"),
+                        ("the owner sees the three frames in game", "L2"),
+                        ("walk: on arrival the owner sees an active line of fire", "L4"),
+                        ("Cosmetic: nothing ships before his look", "L2")):
+        check("owner look %r" % text, L.owner_look({"id": "A", "level": level, "text": text}, "python.exe x.py") is not None,
+              text)
+    for text, level in (("each grown limb the owner keeps on the S1 sheet renders in all four facings", "L2"),
+                        ("selftest_art_provenance.py ALL PASS (owner keeps never fill said)", "L1"),
+                        ("staged on the owner review map, the wall band widens with the gap", "L2"),
+                        ("the pawn turns and the owner's mod list loads clean", "L1"),
+                        ("walk: on arrival the owner sees an active line of fire", "L2")):
+        check("game criterion %r" % text, L.owner_look({"id": "A", "level": level, "text": text}, "python.exe x.py")
+              is None, L.owner_look({"id": "A", "level": level, "text": text}, "python.exe x.py"))
+    check("owner look: an OWNER.jsonl proof is his whatever the text",
+          L.owner_look("the band shows", "grep -q x infrastructure/state/ledger/events/OWNER.jsonl") is not None)
 
 
 def t_flyer_words():
