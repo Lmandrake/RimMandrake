@@ -1096,3 +1096,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-06T12:17:20Z","tsn":1793967440977438484}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:17:31Z","tsn":1793967451529707647}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP A2 (L2), read-only proof","ts":"2026-11-06T12:17:49Z","tsn":1793967469659984764}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T12:27:56Z","tsn":1793968076090257398}
