@@ -47,6 +47,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+from urllib.parse import quote
 
 VERSION = "1"
 HERE = Path(__file__).resolve().parent
@@ -298,7 +299,16 @@ def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
         if _under(p, ("/tmp", "/var/tmp", tmp_root)) and p != tmp_root:
             refused.append(f"shared temp: {p}")
             continue
-        (files if os.path.isfile(p) else absent).append(p)
+        if os.path.isfile(p):
+            files.append(p)
+            continue
+        # The shim notes an open before it happens, so "read" and "not there now" is either a miss the test saw or a file
+        # it saw that has gone since. A deletion by the test is a write (the shim notes unlink), and is refused above;
+        # one by anyone else changes the folder, and a folder touched since the run began cannot say which it was.
+        if moved([os.path.dirname(p)], started):
+            refused.append(f"changed during the run: {os.path.dirname(p)} (an absent input's folder)")
+            continue
+        absent.append(p)
     lists = [p for p in sorted(listed) if keep(p) and p not in wrote and not _under(p, (tmp_root,))]
     for p in sorted(listed):
         if keep(p) and p not in wrote and _under(p, (tmp_root,)):
@@ -306,7 +316,10 @@ def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
     idirs = [p for p in sorted(import_dirs - listed) if keep(p) and not _under(p, (tmp_root,))]
     probes = []
     for p in sorted(probed - read - listed):
-        if not keep(p) or p in wrote or p == tmp_root:
+        if not keep(p) or p == tmp_root:
+            continue
+        if p in wrote:      # what the stat answered was the world before the write; the record could only hold after
+            refused.append(f"stats and writes {p}")
             continue
         if _under(p, ("/tmp", "/var/tmp", tmp_root)):       # "is the switch file absent" is an input, wherever it is
             if p in ("/tmp", "/var/tmp") or _under(tmp_root, (p,)):
@@ -413,10 +426,25 @@ class Hasher:
             if keep is not None:
                 entries = [e for e in entries if e.name.split(".")[0] in keep]
             # DirEntry.is_file() answers from this listing without a stat, so the kind of each entry is part of what was read
-            names = [e.name + ("@" if e.is_symlink() else "/" if e.is_dir() else "") for e in entries]
+            names = [e.name + Hasher._kind(e) for e in entries]
         except OSError:
             return None
         return hashlib.sha1("\0".join(names).encode("utf-8", "surrogateescape")).hexdigest()
+
+    @staticmethod
+    def _kind(e) -> str:
+        """An entry's type as a reader of the listing could learn it: a link and what it reaches (is_dir()/is_file()
+        follow it), a folder, a regular file, or anything else (a FIFO, a socket, a device) by its type bits."""
+        try:
+            if e.is_symlink():
+                return "@" + ("/" if e.is_dir() else "" if e.is_file() else "|" if os.path.exists(e.path) else "?")
+            if e.is_dir(follow_symlinks=False):
+                return "/"
+            if e.is_file(follow_symlinks=False):
+                return ""
+            return "|" + oct(_stat.S_IFMT(e.stat(follow_symlinks=False).st_mode))
+        except OSError:
+            return "?"
 
     def save(self):
         if not self.dirty:
@@ -476,7 +504,13 @@ class Ledger:
         return k if k.startswith("/") else os.path.join(self.repo, k)
 
     def _path(self, rel: str) -> Path:
-        return self.rec_dir / (rel.replace("/", "__") + ".json")
+        """One file per test, and no two tests share one: "/" -> "__" made a/b and a__b the same file (GPT review,
+        2026-11-01). Percent-quoting is reversible; a name too long for the filesystem becomes a hash, behind a "#"
+        that no quoted name can begin with."""
+        name = quote(rel, safe="")
+        if len(name) > 200:
+            name = "#" + hashlib.sha256(rel.encode("utf-8", "surrogateescape")).hexdigest()
+        return self.rec_dir / (name + ".json")
 
     def _load(self, rel: str) -> list:
         try:
@@ -530,7 +564,7 @@ class Ledger:
     def lookup(self, rel: str):
         """(record or None, why): the newest record whose every input still matches. Reds are found but never returned
         as an answer: the caller gets ("red", record) to say so and run it."""
-        recs = self._load(rel)
+        recs = [r for r in self._load(rel) if r.get("test") == rel]   # a file says whose it is; a stranger's is no answer
         why = "no record"
         for rec in recs:
             d = self.first_difference(rec)
@@ -576,7 +610,7 @@ class Ledger:
             why = f"unreadable when hashed: {gone}" if gone else f"moved while it was being hashed: {late}"
             self._append("refusals.jsonl", {"test": rel, "why": [why], "clock_by": []})
             return False, f"changed during the run: {why}"
-        recs = [r for r in self._load(rel) if self._inputs(r) != self._inputs(rec)]
+        recs = [r for r in self._load(rel) if r.get("test") == rel and self._inputs(r) != self._inputs(rec)]
         self._save(rel, ([rec] + recs)[:RECORDS_PER_TEST])
         return True, ""
 

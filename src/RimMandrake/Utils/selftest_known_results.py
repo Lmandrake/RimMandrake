@@ -64,11 +64,14 @@ def trace(d: Path, lines, py=None, start=True):
     return d
 
 
-def decide(K, root: Path) -> list:
-    """Every decision the ledger makes. Returns the names of those that came out wrong; `check` also prints in layer 1."""
+def decide(K, root: Path, loud=False) -> list:
+    """Every decision the ledger makes. Returns the names of those that came out wrong; `check` also prints in layer 1
+    (loud), and is silent for the mutants."""
     wrong = []
 
     def check(ok, what):
+        if loud:
+            print(("ok   " if ok else "FAIL ") + what)
         if not ok:
             wrong.append(what)
 
@@ -291,6 +294,54 @@ def decide(K, root: Path) -> list:
     check(h.probe(str(repo / "ln")) != sees, "a probe sees the link's own text")
     os.unlink(repo / "ln")
 
+    # GPT review 2026-11-01 (KNOWN_RESULTS_HARDEN_RECORD_IDENTITY_ONE_DAY): one file per test, and only its own records answer
+    led3 = K.Ledger(repo, root / "state3")
+    check(led3._path("a/b") != led3._path("a__b"), "record files of a/b and a__b do not collide")
+    check(led3._path("x" * 300).name.startswith("#") and len(led3._path("x" * 300).name) < 255, "a long test name is hashed")
+    (repo / "dep.txt").write_text("d")
+    for rel, st_ in (("a/b", "PASS"), ("a__b", "FAIL")):
+        led3.record(rel, st_, 1.0, trace(tr, [SH, f"R {repo}/dep.txt"]), own, later, repo / "dep.txt")
+    check((led3.lookup("a/b")[0] or {}).get("state") == "PASS" and (led3.lookup("a__b")[0] or {}).get("state") == "FAIL",
+          "two tests with colliding old names keep their own answers")
+    stranger = led3._load("a/b")
+    led3._save("c", stranger)
+    check(led3.lookup("c")[0] is None, "a record for another test never answers")
+    # a dependency read and then deleted is not an "absent" input
+    check(has(refused([SH, f"R {repo}/dep.txt", f"W {repo}/dep.txt"]), "reads and writes"), "a read dependency the test deleted refuses")
+    (repo / "fresh").mkdir()
+    check(has(refused([SH, f"R {repo}/fresh/missing"], started=time.time()), "changed during"),
+          "an absent read whose folder changed mid-run refuses")
+    check(f"{repo}/fresh/missing" in K.analyse(trace(tr, [SH, f"R {repo}/fresh/missing"]), repo, own, later)["absent"],
+          "an absent read in a still folder is an input")
+    # a stat answered before the write: the record could only hold the world after it
+    check(has(refused([SH, f"S {repo}/out.txt", f"W {repo}/out.txt"]), "stats and writes"), "a stat then a write refuses")
+    check(not refused([SH, f"S {own}/o", f"W {own}/o"]), "a stat then a write in the own TMPDIR is fine")
+    # a listing carries each entry's kind, through links too
+    (repo / "lk").mkdir()
+    (repo / "lk_d").mkdir()
+    (repo / "lk_f").write_text("f")
+    os.symlink(str(repo / "lk_d"), repo / "lk/e")
+    to_dir = K.Hasher.listing(str(repo / "lk"))
+    os.unlink(repo / "lk/e")
+    os.symlink(str(repo / "lk_f"), repo / "lk/e")
+    check(to_dir != K.Hasher.listing(str(repo / "lk")), "a listing knows a symlink to a dir from a symlink to a file")
+    os.unlink(repo / "lk/e")
+    (repo / "lk/e").write_text("")
+    as_file = K.Hasher.listing(str(repo / "lk"))
+    (repo / "lk/e").unlink()
+    os.mkfifo(repo / "lk/e")
+    check(as_file != K.Hasher.listing(str(repo / "lk")), "a listing knows a fifo from a file")
+    (repo / "lk/e").unlink()
+    # the folder branch of a probe keeps the link text too
+    (repo / "dir_a").mkdir()
+    (repo / "dir_b").mkdir()
+    os.symlink("dir_a", repo / "dln")
+    via_a = h.probe(str(repo / "dln"))
+    os.unlink(repo / "dln")
+    os.symlink("dir_b", repo / "dln")
+    check(via_a.startswith("link:") and via_a != h.probe(str(repo / "dln")), "a dir probe sees the link text")
+    os.unlink(repo / "dln")
+
     gone = f"{repo}/made.tmp"
     check(not K.analyse(trace(tr, [SH, f"W {gone}", f"K {gone}"]), repo, own, later)["refused"], "a temp name renamed into place is no input")
     check(K.Ledger.__dict__["_key"](types.SimpleNamespace(repo=str(repo)), str(repo)) == ".", "the repo root is relative too")
@@ -329,6 +380,28 @@ def decide(K, root: Path) -> list:
           and "RM_SELFTEST_ARM" not in a, "the arm becomes the test's environment")
     check(K.armed({"X": "1"}) is None, "no arm, nothing measured")
     return wrong
+
+
+def shim_removal(K, root: Path):
+    """The real shim notes a removal as a write, from a native tool and from python: a dependency read and then deleted
+    must reach `analyse` as read-and-written, never as an absent input (GPT review, 2026-11-01)."""
+    shutil.rmtree(root, ignore_errors=True)
+    root.mkdir(parents=True)
+    so = K.build_shim(root / "state")
+    if so is None:
+        eq("shim built", "no shim", "shim: compiles for the removal check")
+        return
+    for label, cmd in [("rm", ["/bin/rm", "{f}"]), ("rmdir", ["/bin/rmdir", "{d}"]),
+                       ("python os.remove", [sys.executable, "-S", "-c", "import os; os.remove('{f}')"])]:
+        f, d, tr = root / "f", root / "d", root / f"trace_{label.replace(' ', '_')}"
+        f.write_text("x")
+        d.mkdir(exist_ok=True)
+        tr.mkdir()
+        env = dict(os.environ, LD_PRELOAD=str(so), RM_SELFTEST_TRACE=str(tr))
+        subprocess.run([c.format(f=f, d=d) for c in cmd], env=env, check=False, timeout=60)
+        lines = {ln for n in tr.glob("*.native") for ln in n.read_text().splitlines()}
+        want = f"W {d}" if label == "rmdir" else f"W {f}"
+        eq(want in lines, True, f"shim: {label} is noted as a write")
 
 
 # --- layer 2: mutants ---------------------------------------------------------------------------------------------------
@@ -402,7 +475,15 @@ MUTANTS = [
     ("no bare PATH walk", 'probed.update(_path_walk(val))', 'pass'),
     ("PATH walk runs on", 'if os.path.isfile(p) and os.access(p, os.X_OK):\n                break', 'pass'),
     ("PATH walk reaches windows", 'if not _under(p, EXTERNAL):\n            out.append(p)', 'if True:\n            out.append(p)'),
-    ("listing without kinds", 'e.name + ("@" if e.is_symlink() else "/" if e.is_dir() else "")', 'e.name'),
+    ("listing without kinds", 'e.name + Hasher._kind(e)', 'e.name'),
+    ("listing: a link is only a link", '"@" + ("/" if e.is_dir()', '"@" + ("" if e.is_dir()'),
+    ("listing: other types are files", 'return "|" + oct(_stat.S_IFMT(e.stat(follow_symlinks=False).st_mode))', 'return ""'),
+    ("record names collide", 'name = quote(rel, safe="")', 'name = rel.replace("/", "__")'),
+    ("long names unhashed", 'if len(name) > 200:', 'if False:'),
+    ("a stranger's record answers", 'recs = [r for r in self._load(rel) if r.get("test") == rel]', 'recs = self._load(rel)'),
+    ("an absent input's folder unchecked", 'if moved([os.path.dirname(p)], started):', 'if False:'),
+    ("stat then write passes", 'if p in wrote:      # what the stat', 'if False:      # what the stat'),
+    ("dir probe drops link text", 'return link + f"d{mode}"', 'return f"d{mode}"'),
     ("shell env not whole", '& ENV_IMPORTERS:', '& set():'),
     ("dotdot allowed", '"/../" in val and os.path', 'False and os.path'),
     ("copied python ok", 'if op == "P":\n                pythons.add(pid)', 'if op == "P":\n                pass'),
@@ -597,7 +678,7 @@ def fixture(root: Path):
               + f"\n     stderr tail:\n{p.stderr[-1500:]}")
 
     def rec(name):
-        return recs.get(f"src__selftest_{name}.py.json", [{}])[0]
+        return recs.get(f"src%2Fselftest_{name}.py.json", [{}])[0]
 
     eq("src/helper_b.py" in rec("import").get("files", {}), True, "measured: the transitive import is an input")
     eq("src/data.txt" in rec("data").get("files", {}), True, "measured: the data file is an input")
@@ -611,7 +692,7 @@ def fixture(root: Path):
     eq(any(k.startswith("/usr/lib/python") or k.startswith("/usr/bin/python") for k in rec("data").get("files", {})), True,
        "measured: the interpreter and its stdlib are inputs")
     for n, word in NEVER.items():
-        eq(f"src__selftest_{n}.py.json" in recs, False, f"never cached: {n}")
+        eq(f"src%2Fselftest_{n}.py.json" in recs, False, f"never cached: {n}")
     refusals = [json.loads(ln) for ln in (state / "known_results/refusals.jsonl").read_text().splitlines()]
     for n, word in NEVER.items():
         why = " ".join(w for r in refusals if r["test"] == f"src/selftest_{n}.py" for w in r["why"])
@@ -673,7 +754,7 @@ def fixture(root: Path):
     eq(st(s, "hidden"), "FAIL", "planted: the audit ran it for real")
     eq("!!! FALSE HIT src/selftest_hidden.py" in p.stdout, True, "planted: the alarm names it")
     eq(p.returncode, 1, "planted: the run is red")
-    eq((state / "known_results/records/src__selftest_hidden.py.json").exists(), False, "planted: the record is deleted")
+    eq((state / "known_results/records/src%2Fselftest_hidden.py.json").exists(), False, "planted: the record is deleted")
     q = json.loads((state / "known_results/quarantine.json").read_text())
     eq("src/selftest_hidden.py" in q, True, "planted: the test is quarantined")
     runs = [json.loads(x) for x in (state / "known_results/runs.jsonl").read_text().splitlines()]
@@ -781,7 +862,7 @@ def counterexamples(root: Path):
         stale = ["pyc", "envcopy", "envwalk", "mode", "switch", "ownlink", "readlink", "findspec", "forkenv", "environb", "pathshadow", "scantype", "shellenv", "retarget", "pushd"]
         for n in stale + ["handoff"]:
             eq(st(s, n), "KNOWN PASS", f"second reader: {n} is cacheable before the change")
-        rec = json.loads((state / "known_results/records/src__selftest_handoff.py.json").read_text())[0]
+        rec = json.loads((state / "known_results/records/src%2Fselftest_handoff.py.json").read_text())[0]
         eq("FIX_HANDED" in rec["env"], False, "handing a copy of the environment to a child reads none of it")
         eq(st(s, "closerange"), "PASS", "second reader: a child that closed the shim's fd is run every time")
         why = " ".join(w for r in map(json.loads, (state / "known_results/refusals.jsonl").read_text().splitlines())
@@ -840,9 +921,10 @@ def main():
     work = SCRATCH / f"known_results_fixture_{os.getpid()}"
     work.mkdir(parents=True, exist_ok=True)
     try:
-        wrong = decide(K, work / "unit")
+        wrong = decide(K, work / "unit", loud=True)
         eq(wrong, [], "every ledger decision on hand-built traces and real files")
         mutants(work)
+        shim_removal(K, work / "shim")
         blind_run_reader(work / "blind")
         fixture(work / "repo")
         counterexamples(work / "second")

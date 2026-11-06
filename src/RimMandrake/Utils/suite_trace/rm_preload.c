@@ -8,7 +8,7 @@
      @ <exe>                 the process exists (written by the constructor; a child with no such line was NOT observed)
      P                       this process carries the python runtime, whatever its file is called
      R <path>                opened for reading
-     W <path>                opened for writing, or the target of a rename/link/symlink
+     W <path>                opened for writing, the target of a rename/link/symlink, or removed (unlink, rmdir)
      K <path>                what a new link points at, or what a rename took: the test's own TMPDIR must not launder a
                              shared file
      L <dir>                 directory listed
@@ -245,6 +245,12 @@ int link(const char *a, const char *b) { REAL(link); note_path('K', AT_FDCWD, a)
 int linkat(int f, const char *a, int t, const char *b, int fl) { REAL(linkat); note_path('K', f, a); note_path('W', t, b); return real_linkat(f, a, t, b, fl); }
 int symlink(const char *a, const char *b) { REAL(symlink); note_target(AT_FDCWD, a, b); note_path('W', AT_FDCWD, b); return real_symlink(a, b); }
 int symlinkat(const char *a, int t, const char *b) { REAL(symlinkat); note_target(t, a, b); note_path('W', t, b); return real_symlinkat(a, t, b); }
+
+/* ---- removal is a write: a dependency the test read and then deleted is no "absent" input (GPT review, 2026-11-01) --- */
+int unlink(const char *p) { REAL(unlink); note_path('W', AT_FDCWD, p); return real_unlink(p); }
+int unlinkat(int d, const char *p, int f) { REAL(unlinkat); note_path('W', d, p); return real_unlinkat(d, p, f); }
+int rmdir(const char *p) { REAL(rmdir); note_path('W', AT_FDCWD, p); return real_rmdir(p); }
+int remove(const char *p) { REAL(remove); note_path('W', AT_FDCWD, p); return real_remove(p); }
 
 /* ---- exec: the child's own "@" line proves it was observed; this line is what it gets counted against --------------- */
 /* Bare names stay bare: the analyser walks PATH for them. Not note(): every X and F counts, so none may be deduplicated. */
