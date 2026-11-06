@@ -1,0 +1,2 @@
+The account handover chain is armed one transient systemd link at a time (account_handover.py); after the last armed link fires, the live account has no onward link, so it drains to 0% while the next account in the fixed order sits full. After any handover fires, check that the now-live account has its own onward link armed (systemctl --user list-units 'rm-account-handover*').
+home: skills/rimflow-operations
