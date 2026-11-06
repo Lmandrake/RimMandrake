@@ -71,3 +71,6 @@ root text. Fresh-Opus review (rm-judge ab71cb2e083e42a33) round 1 struck the wor
 fire" is false (fire-hawk drops its ember 6 cells out, no home-area check; smoulder relight can start beyond a strip),
 and the sprayer is a short-range splash for reaching the fruit (def text), not field defence. Fixed per its wording.
 The 8 stage-3 coverage gaps (result.rm-role-designer-1793932102.json) are writing work for the next stage-3 run, not asks.
+
+## 2026-11-06 run rm-role-designer-1793952001 (stage 2, apply turn_05 answer)
+- a_root_ending, by card (OWNER:1793950669508519029): "Which ending should your Pyrelands paragraph have? → Use the proposed ending" -> root's last two sentences replaced verbatim from turn_05.md; d_root_ending. Root now cites OWNER:1793950669508519029. The 8 stage-3 coverage gaps stay for the next stage-3 run.
