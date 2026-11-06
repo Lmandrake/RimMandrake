@@ -17,7 +17,10 @@ redesign_final.md WP-09).
    writer's unsealed index tail no longer refuses every append after it;
 8. the reading WP-09c cites (EVIDENCE_SHADOW_FIX_REPORT_NEVER_READS_ZERO): a declared window that says what it left out, a
    row that records who closed, an owner close that is neither agreement nor disagreement and never verdict_gone, the
-   unrunnable ruling, and the no-run rows that are the wedge cohort only when the snapshot holds the receipts.
+   unrunnable ruling, and the no-run rows that are the wedge cohort only when the snapshot holds the receipts;
+9. the CLI on what it cannot read (EVIDENCE_CLI_HARDEN_MALFORMED_ROWS_CRASH): report and rescore through main() on a
+   non-object row, a row without item, a missing items/ dir, git timing out, index_rows raising: a named reading and an
+   exit code, never a traceback, and one index read per snapshot however many rows.
 
     python3 src/RimMandrake/rimflow/selftest_evidence_gate.py
 """
@@ -659,6 +662,213 @@ def rescore_cohorts():
           "rescore: the CLI says the snapshot cannot read the wedge cohort, and exits 1")
 
 
+def _log(sd, *lines):
+    with open(os.path.join(sd, G.SHADOW), "a", encoding="utf-8") as f:
+        for x in lines:
+            f.write(x + "\n")
+
+
+def malformed():
+    sd = store("bad_rows")
+    good = _row("GOOD_ROW", "2026-11-06T18:00:00Z", True, closed_by=G.RELENTLESS_CLOSE, reasons=["no run: x"])
+    _log(sd, json.dumps(good), "5", "null", "[1, 2]", '"text"', "{torn", "",
+         json.dumps({k: v for k, v in good.items() if k != "item"}),
+         json.dumps({k: v for k, v in good.items() if k != "gate"}),
+         json.dumps({k: v for k, v in good.items() if k != "at"}),
+         json.dumps({k: v for k, v in good.items() if k != "disagree"}),
+         "[" * 200000,
+         json.dumps(dict(good, item=["unhashable"])), json.dumps(dict(good, item="X", sha=["unhashable"])),
+         json.dumps(dict(good, item="X", reasons=5)), json.dumps(dict(good, item="X", gate_reasons=5)))
+    with open(os.path.join(sd, G.SHADOW), "ab") as f:
+        f.write(b"\xff\xfe not text\n")
+        f.write(json.dumps(dict(good, item="BADBYTE", gate="XX")).encode().replace(b"XX", b"acc\xffept") + b"\n")
+    rs, unreadable = G.read_rows(sd)
+    check([r["item"] for r in rs] == ["GOOD_ROW"] and unreadable == 16,
+          "rows: only the close row survives, and all 16 others are counted, the blank line not (%d, %d)" % (len(rs), unreadable))
+    rc, out = quiet(G.main, ["--store-dir", sd, "report"])
+    check(rc == 0 and "1 closes" in out and "unreadable: 16 lines" in out, "report: malformed rows are left out, aloud (%s)" % out[:120])
+    rc, out = quiet(G.main, ["--store-dir", sd, "report", "--json"])
+    check(rc == 0 and json.loads(out)["unreadable_rows"] == 16, "report --json carries the unreadable count")
+
+    # what cannot be read at all is not zero
+    rc, out = quiet(G.main, ["--store-dir", os.path.join(TMP, "nowhere"), "report"])
+    check(rc == 2 and out.startswith("UNMEASURED: report:"), "report: no store is UNMEASURED, not 0 closes (%s)" % out[:120])
+    sd = store("log_is_dir")
+    os.makedirs(os.path.join(sd, G.SHADOW))
+    rc, out = quiet(G.main, ["--store-dir", sd, "report"])
+    check(rc == 2 and out.startswith("UNMEASURED: report:"), "report: a log it cannot read is UNMEASURED, not 0 closes (%s)" % out[:120])
+    sd = store("no_log")
+    rc, out = quiet(G.main, ["--store-dir", sd, "report"])
+    check(rc == 0 and "0 closes" in out, "report: a store with no log yet is a measured zero")
+    sd = store("ledger_broken")
+    _log(sd, json.dumps({k: v for k, v in good.items() if k != "closed_by"}))
+    from rimflow import model as M
+    real_read = M.read
+
+    def ledger_broken(*a, **kw):
+        raise Exception("malformed ledger line")     # model.LedgerError is a bare Exception
+    M.read = ledger_broken
+    try:
+        rc, out = quiet(G.main, ["--store-dir", sd, "report"])
+        check(rc == 2 and "UNMEASURED: report:" in out and "ledger" in out, "report: a ledger it cannot read is UNMEASURED (%s)" % out[:140])
+        rc, out = quiet(G.main, ["rescore", "--snapshot", os.path.dirname(sd), "--min-rows", "1"])
+        check(rc == 2 and "UNMEASURED: rescore:" in out and "ledger" in out, "rescore: a ledger it cannot read is UNMEASURED (%s)" % out[:140])
+    finally:
+        M.read = real_read
+
+    # a sha-less row and a str/no-str item mix: what sorted(items) and r["sha"] choked on
+    sd = store("no_sha")
+    hold(sd, "NOSHA_ROW", "b" * 40)
+    _log(sd, json.dumps({"item": "NOSHA_ROW", "at": "2026-11-06T18:00:00Z", "gate": "accept", "predicate": "accept",
+                         "closed_by": G.SEAT_CLOSE, "disagree": False}))
+    snap = os.path.dirname(sd)
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap, "--min-rows", "1"])
+    check(rc == 1 and "NOSHA_ROW@None" in out, "rescore: a row without sha is judged and named, no KeyError (%s)" % out[-160:])
+
+    # rescore on the same malformed log
+    snap2 = os.path.join(TMP, "bad_rescore")
+    sd = os.path.join(snap2, "store")
+    os.makedirs(os.path.join(sd, "items"))
+    _log(sd, json.dumps(good), "5", "[1]", json.dumps({"sha": "c" * 40, "closed_by": G.SEAT_CLOSE}))
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap2, "--min-rows", "1"])
+    check(rc == 1 and "3 lines of the log are no close row" in out and "UNEXPLAINED GOOD_ROW" in out,
+          "rescore: malformed rows are not replayed, said aloud, and the real row still reads (%s)" % out[-200:])
+
+    # rows that replay as agreement beside a line it could not read, or with no index: no reading stands, exit 1
+    snap_torn = os.path.join(TMP, "torn_beside_agree")
+    sd = os.path.join(snap_torn, "store")
+    hold(sd, "AGREE_ROW", "c" * 40)
+    E.append(sd, "OTHER_ROW", "a" * 40, "run", {"verdict": "green", "exit": 0, "exam_hash": "x"}, at="2026-11-06T17:00:00Z")
+    refused = _row("AGREE_ROW", "2026-11-06T18:00:00Z", False, closed_by=G.SEAT_CLOSE, sha="c" * 40, gate="refuse", predicate="reject")
+    _log(sd, json.dumps(refused))
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap_torn, "--min-rows", "1"])
+    check(rc == 0 and "every disagreement explained" in out, "rescore: a clean agreeing row exits 0 (the control) (%s)" % out[-120:])
+    _log(sd, '{"item": "HIDDEN_ROW", "gate": "acc')
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap_torn, "--min-rows", "1"])
+    check(rc == 1 and "1 lines of the log are no close row" in out and "every disagreement explained" not in out,
+          "rescore: a line it could not read beside agreeing rows is exit 1, never all explained (%s)" % out[-200:])
+    snap_noidx = os.path.join(TMP, "agree_no_index")
+    sd = os.path.join(snap_noidx, "store")
+    hold(sd, "AGREE_ROW", "c" * 40)
+    _log(sd, json.dumps(refused))
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap_noidx, "--min-rows", "1"])
+    check(rc == 1 and "index could not be read or holds nothing" in out and "every disagreement explained" not in out,
+          "rescore: a row that agrees only because no index exists is exit 1 (%s)" % out[-200:])
+
+    # a missing items/ dir, and no store/ at all
+    snap3 = os.path.join(TMP, "no_items")
+    sd = os.path.join(snap3, "store")
+    os.makedirs(sd)
+    _log(sd, json.dumps(good))
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap3, "--min-rows", "1"])
+    check(rc == 1 and "GOOD_ROW" in out and "does not hold the item" in out, "rescore: a missing items/ dir holds no item: exit 1, by name (%s)" % out[-160:])
+    rc, out = quiet(G.main, ["rescore", "--snapshot", os.path.join(TMP, "nowhere")])
+    check(rc == 2 and out.startswith("UNMEASURED: rescore:") and "no store/" in out, "rescore: no store/ at all is UNMEASURED, exit 2 (%s)" % out[:120])
+
+    # a state.json that is no object, one whose candidate/check are no objects
+    snap4 = os.path.join(TMP, "odd_state")
+    sd = os.path.join(snap4, "store")
+    os.makedirs(os.path.join(sd, "items"))
+    for iid, body in (("LIST_STATE", "[1]"), ("ODD_FIELDS", json.dumps({"candidate": 5, "check": 5, "contract": 5})),
+                      ("ODD_CHECK", json.dumps({"candidate": {"sha": "d" * 40}, "check": {"verdict": ["x"]}}))):
+        os.makedirs(os.path.join(sd, "items", iid))
+        with open(os.path.join(sd, "items", iid, "state.json"), "w", encoding="utf-8") as f:
+            f.write(body)
+        _log(sd, json.dumps(_row(iid, "2026-11-06T18:00:00Z", False, closed_by=G.SEAT_CLOSE, sha="d" * 40)))
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap4, "--min-rows", "1"])
+    check(rc == 1 and "UNEXPLAINED LIST_STATE" in out and "UNEXPLAINED ODD_FIELDS" in out and "marker receipt failed: ODD_CHECK" in out,
+          "rescore: odd state.json files are rows by name, never a crash (%s)" % out[-300:])
+
+    # git times out
+    sha = git("rev-parse", "HEAD")
+    snap5 = os.path.join(TMP, "git_timeout")
+    sd = os.path.join(snap5, "store")
+    os.makedirs(os.path.join(sd, "items"))
+    hold(sd, "SLOWGIT_ROW", "e" * 40)
+    _log(sd, json.dumps(_row("SLOWGIT_ROW", "2026-11-06T18:00:00Z", False, closed_by=G.SEAT_CLOSE, sha="HEAD")))
+    real_git = G._git
+
+    def slow(*a, **kw):
+        raise subprocess.TimeoutExpired("git", G.GIT_TIMEOUT_S)
+    G._git = slow
+    try:
+        rc, out = quiet(G.main, ["rescore", "--snapshot", snap5, "--min-rows", "1"])
+        check(rc == 1 and "UNEXPLAINED SLOWGIT_ROW" in out and "could not be judged (TimeoutExpired" in out,
+              "rescore: git timing out is that row, unexplained by name, never a crash or an agreement (%s)" % out[-200:])
+        rc, out = quiet(G.main, ["--store-dir", sd, "report", "--since", sha[:10]])
+        check(rc == 2 and out.startswith("UNMEASURED: --since:"), "report --since: git timing out is UNMEASURED, exit 2 (%s)" % out[:120])
+    finally:
+        G._git = real_git
+
+    # index_rows raises; and it is read once per snapshot, not once per row
+    snap6 = os.path.join(TMP, "index_raises")
+    sd = os.path.join(snap6, "store")
+    os.makedirs(os.path.join(sd, "items"))
+    E.append(sd, "OTHER_ROW", "a" * 40, "run", {"verdict": "green", "exit": 0, "exam_hash": "x"}, at="2026-11-06T19:00:00Z")
+    late = {"sha": "f" * 40, "at": 1893456000}      # candidate newer than the rows: STATE_MOVED reads the index
+    for i in range(5):
+        iid = "MOVED_%d_ROW" % i
+        os.makedirs(os.path.join(sd, "items", iid))
+        with open(os.path.join(sd, "items", iid, "state.json"), "w", encoding="utf-8") as f:
+            json.dump({"candidate": late, "contract": CONTRACT, "check": {"verdict": "PASS"}}, f)
+        _log(sd, json.dumps(_row(iid, "2026-11-06T18:00:00Z", False, closed_by=G.SEAT_CLOSE, sha="f" * 40)))
+    real_rows, reads = E.index_rows, []
+
+    def counted(*a, **kw):
+        reads.append(a)
+        return real_rows(*a, **kw)
+
+    def broken(*a, **kw):
+        raise OSError("index gone")
+    E.index_rows = counted
+    try:
+        rc, out = quiet(G.main, ["rescore", "--snapshot", snap6, "--min-rows", "1"])
+        rep = json.loads(out[:out.rindex("}") + 1])
+        check(rep["outcome"].get(G.STATE_MOVED) == 5 and rep["rows"] == 5, "rescore: an index holding a later row explains the moved rows (%s)" % rep["outcome"])
+        check(len(reads) == 1, "rescore: 5 rows read the index once, not once per row (%d reads)" % len(reads))
+        E.index_rows = broken
+        rc, out = quiet(G.main, ["rescore", "--snapshot", snap6, "--min-rows", "1"])
+        rep = json.loads(out[:out.rindex("}") + 1])
+        check(rc == 1 and rep["unexplained"] == 5 and not rep["outcome"].get(G.STATE_MOVED) and "index could not be read" in out,
+              "rescore: index_rows raising explains nothing: every row stays unexplained, said aloud (%s)" % rep["outcome"])
+    finally:
+        E.index_rows = real_rows
+    hold(sd, "KEEP_ROW", "f" * 40)
+    check(G.judge(sd, "KEEP_ROW", "f" * 40, False, cwd=REPO)["accepted"] is False, "judge: its default still reads the index for itself")
+    # an index that holds nothing explains nothing: not state_moved, and not pre_record off the copy's fresh markers
+    shutil.rmtree(os.path.join(sd, "evidence"))
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap6, "--min-rows", "1"])
+    rep = json.loads(out[:out.rindex("}") + 1])
+    check(rc == 1 and rep["unexplained"] == 5 and not rep["index_readable"] and not rep["outcome"].get(G.STATE_MOVED),
+          "rescore: a missing index is no state_moved: every row unexplained (%s)" % rep["outcome"])
+    snap7 = os.path.join(TMP, "index_absent_old_candidate")
+    sd = os.path.join(snap7, "store")
+    os.makedirs(os.path.join(sd, "items", "OLD_ROW"))
+    with open(os.path.join(sd, "items", "OLD_ROW", "state.json"), "w", encoding="utf-8") as f:
+        json.dump({"candidate": {"sha": "f" * 40, "at": 1000}, "contract": CONTRACT, "check": {"verdict": "PASS"}}, f)
+    _log(sd, json.dumps(_row("OLD_ROW", "2026-11-06T18:00:00Z", False, closed_by=G.SEAT_CLOSE, sha="f" * 40)))
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap7, "--min-rows", "1"])
+    rep = json.loads(out[:out.rindex("}") + 1])
+    check(rc == 1 and rep["unexplained"] == 1 and not rep["outcome"].get(G.PRE_RECORD),
+          "rescore: a missing index is no pre_record off the copy's fresh markers (%s)" % rep["outcome"])
+    # an index evidence.py itself chokes on: a row without hash under HEAD n=0
+    os.makedirs(os.path.join(sd, "evidence"))
+    with open(os.path.join(E.base(sd), E.INDEX), "w", encoding="utf-8") as f:
+        f.write('{"at": "2020-01-01T00:00:00Z"}\n')
+    with open(os.path.join(E.base(sd), E.HEAD), "w", encoding="utf-8") as f:
+        f.write('{"n": 0}\n')
+    rc, out = quiet(G.main, ["rescore", "--snapshot", snap7, "--min-rows", "1"])
+    check(rc == 1 and '"index_verifies": false' in out, "rescore: an index evidence.py chokes on does not verify, exit 1, no traceback (%s)" % out[-160:])
+    # an empty state.json is still the store holding the item: judged, as it always was
+    sd = store("empty_state")
+    os.makedirs(os.path.join(sd, "items", "EMPTY_ROW"))
+    with open(os.path.join(sd, "items", "EMPTY_ROW", "state.json"), "w", encoding="utf-8") as f:
+        f.write("{}")
+    j = G.judge(sd, "EMPTY_ROW", "f" * 40, False, cwd=REPO)
+    check(j is not None and j["accepted"] is False, "judge: a {} state is judged, so its close keeps its row")
+    shutil.rmtree(snap6)
+
+
 def main():
     try:
         wiring()
@@ -673,6 +883,7 @@ def main():
         scope()
         unrunnable()
         rescore_cohorts()
+        malformed()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
     print("\n%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))

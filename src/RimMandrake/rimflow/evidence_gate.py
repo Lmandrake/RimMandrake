@@ -36,10 +36,15 @@ working writers, so `report` over the whole log can never read 0 again:
       seat's hand close stays judged too: nothing but his authority takes a close out of scope.
     - rescore reads the finish receipts: a snapshot without items/*/receipts cannot see the wedge cohort, and its wedge
       rows read as unexplained `no run` (the 10 such rows of 2026-11-06 were all wedge; `cohort_rows` names each row).
+    - neither reading crashes on what it cannot read (EVIDENCE_CLI_HARDEN_MALFORMED_ROWS_CRASH). A log line that is no
+      close row is left out and counted aloud (`unreadable_rows`); a row that cannot be judged (git timed out, a broken
+      state.json) is an unexplained disagreement by name; an index that is unreadable or holds nothing explains nothing,
+      so it can only overstate the disagreements. A store, log or ledger that cannot be read at all is UNMEASURED, exit 2.
 
     python3 src/RimMandrake/rimflow/evidence_gate.py report [--since X] [--json]  the disagreement count toward the sample
     python3 src/RimMandrake/rimflow/evidence_gate.py rescore --snapshot DIR  replay a frozen store's shadow rows, exit 1 on
-                                                                            any disagreement no cohort explains
+                                                                            any disagreement no cohort explains, or any
+                                                                            row or index it could not read
     python3 src/RimMandrake/rimflow/evidence_gate.py corpus check          the false/valid close corpus, exit 1 on a miss
     python3 src/RimMandrake/rimflow/evidence_gate.py corpus build          rebuild it from the ledger + store (writes)
 
@@ -71,6 +76,7 @@ GIT_TIMEOUT_S = 5
 CORPUS = os.path.join(HERE, "evidence_gate_corpus.json")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 AUDITS = os.path.join(REPO, "infrastructure", "state", "close_audits.jsonl")
+READ_INDEX = object()       # judge(): no first_at handed in, read the store's index
 PRE_RECORD = "pre_record"   # a judge() cohort: the candidate predates every evidence row (see _pre_record)
 SKIPPED = "skipped"         # relentless_boxrun: the contract measures outside the box (offbox adapters, reach_ok)
 BOOKKEEPING = ("infrastructure/state/ledger/", "infrastructure/state/items/", "infrastructure/state/queue/",
@@ -183,32 +189,35 @@ def _record_for(sd, item, sha, cand, no_code, cwd):
     return None
 
 
-def judge(sd, item, sha, no_code, live=None, cwd=None):
+def judge(sd, item, sha, no_code, live=None, cwd=None, first_at=READ_INDEX):
     """-> {record, accepted, reasons} for `item` closing at `sha`, or None when the store does not hold the item (not a
-    Relentless close: the predicate does not speak for it)."""
-    try:
-        with open(os.path.join(sd, "items", item, "state.json"), encoding="utf-8") as f:
-            st = json.load(f)
-    except (OSError, ValueError):
+    Relentless close: the predicate does not speak for it). first_at: the store's first evidence row time, when the caller
+    judging many rows has read it once (default: read it here)."""
+    st = _load_state(sd, item)
+    if st is None:
         return None
-    cand = str((st.get("candidate") or {}).get("sha") or "")
+    cand = str(_candidate(st).get("sha") or "")
     rec = _record_for(sd, item, sha, cand, no_code, cwd or HERE)
     entries, bad = [], []
     if rec:     # one snapshot: the entries judged are the very lines that were verified
         entries, bad = evidence.read_verified(sd, item, rec)
     ok, why = green(entries, exam_of(st.get("contract")), bool(no_code), live, bad)
     out = {"record": rec, "accepted": ok, "reasons": why}
-    if not any(e.get("kind") == "run" for e in entries) and _pre_record(sd, st):
+    if not any(e.get("kind") == "run" for e in entries) and _pre_record(sd, st, first_at):
         out["cohort"] = PRE_RECORD      # keyed on the run, not the record: the Marker's receipt may stand alone
     return out
 
 
-def _first_index_at(sd):
+def _index_rows(sd):
+    """-> the store's index rows, or None when it cannot be read."""
     try:
-        rows = evidence.index_rows(sd)
+        return evidence.index_rows(sd)
     except (OSError, ValueError):
         return None
-    return min((str(e.get("at") or "") for e in rows), default=None) or None
+
+
+def _first_at(index):
+    return min((str(e.get("at") or "") for e in index or ()), default=None) or None
 
 
 def _iso(t):
@@ -218,10 +227,26 @@ def _iso(t):
         return None
 
 
-def _pre_record(sd, st):
+def _load_state(sd, item):
+    """-> the item's state, None when it is missing, unreadable or no object."""
+    try:
+        with open(os.path.join(sd, "items", item, "state.json"), encoding="utf-8") as f:
+            st = json.load(f)
+    except (OSError, ValueError, RecursionError):
+        return None
+    return st if isinstance(st, dict) else None
+
+
+def _candidate(st):
+    c = st.get("candidate")
+    return c if isinstance(c, dict) else {}
+
+
+def _pre_record(sd, st, first_at=READ_INDEX):
     """The candidate finished before the store held any evidence row: no writer existed to record its box run, so its
     missing run says nothing about the predicate (the shadow's first day closed items finished days earlier)."""
-    first, at = _first_index_at(sd), _iso((st.get("candidate") or {}).get("at"))
+    first = _first_at(_index_rows(sd)) if first_at is READ_INDEX else first_at
+    at = _iso(_candidate(st).get("at"))
     return bool(first and at and at < first)
 
 
@@ -308,18 +333,40 @@ def _append_row(path, line):
 
 # ---------------------------------------------------------------- the report
 
-def rows(sd=None):
-    out = []
+def _is_row(r):
+    """What shadow() writes and report and rescore read: an object naming an item, with the gate's and the predicate's
+    words and its time. A row missing a word has no comparison to count, so it must never read as agreement."""
+    return isinstance(r, dict) and bool(r.get("item")) and isinstance(r["item"], str) \
+        and isinstance(r.get("sha"), (str, type(None))) and bool(r.get("at")) and isinstance(r["at"], str) \
+        and r.get("gate") in ("accept", "refuse") and r.get("predicate") in ("accept", "reject") \
+        and isinstance(r.get("disagree"), bool) \
+        and isinstance(r.get("reasons") or [], list) and isinstance(r.get("gate_reasons") or [], list)
+
+
+def read_rows(sd=None):
+    """-> ([close row], how many non-blank lines of the log are no close row); a line that is not text or JSON is one of
+    those. No log yet is no rows; a log that cannot be read raises OSError: a part of a log is not a smaller log."""
+    out, unreadable = [], 0
     try:
-        with open(os.path.join(sd or store_dir(), SHADOW), encoding="utf-8") as f:
+        with open(os.path.join(sd or store_dir(), SHADOW), "rb") as f:
             for line in f:
-                try:
-                    out.append(json.loads(line))
-                except ValueError:
+                if not line.strip():
                     continue
-    except OSError:
+                try:
+                    r = json.loads(line.decode("utf-8"))
+                except (ValueError, RecursionError):
+                    r = None
+                if _is_row(r):
+                    out.append(r)
+                else:
+                    unreadable += 1
+    except FileNotFoundError:
         pass
-    return out
+    return out, unreadable
+
+
+def rows(sd=None):
+    return read_rows(sd)[0]
 
 
 def resolve_window(spec, cwd=None):
@@ -397,6 +444,9 @@ def report_lines(s):
     if s["unrecorded"]:
         out.append("  closer unrecorded: %d closes with no closed_by and no ledger close to read it from; still judged"
                    % s["unrecorded"])
+    if s.get("unreadable_rows"):
+        out.append("  unreadable: %d lines of the log are no close row (torn, or no object naming an item); not counted"
+                   % s["unreadable_rows"])
     out += ["  %4d  %s" % (n, k) for k, n in s["by_class"].items()]
     return out
 
@@ -411,11 +461,21 @@ NOT_JUDGED = {"guard"}          # gate refusals with no record entry kind yet (m
 
 
 def _state(sd, item):
+    return _load_state(sd, item) or {}
+
+
+def _item_ids(sd):
     try:
-        with open(os.path.join(sd, "items", item, "state.json"), encoding="utf-8") as f:
-            return json.load(f) or {}
-    except (OSError, ValueError):
-        return {}
+        return sorted(os.listdir(os.path.join(sd, "items")))
+    except OSError:
+        return []
+
+
+def _readable(fn, sd, otherwise):
+    try:
+        return fn(sd)
+    except Exception:            # noqa: BLE001 - evidence.py on an index too odd to read (HEAD n past a row without hash)
+        return otherwise
 
 
 def _receipt_wedged(sd, item, sha, before=None):
@@ -476,8 +536,10 @@ def rescore(snapshot, cwd=None, closes=None):
     import shutil
     import tempfile
     src = os.path.join(snapshot, "store")
-    shadow_rows = rows(src)
-    wedge = _wedge_from(src)
+    if not os.path.isdir(src):
+        raise ValueError("%s holds no store/ dir" % snapshot)
+    shadow_rows, unreadable = read_rows(src)
+    wedge = _readable(_wedge_from, src, None)       # no tail to read: no row is wedge, so none is explained by it
     tmp = tempfile.mkdtemp(prefix="evidence_rescore_")
     try:
         sd = os.path.join(tmp, "store")
@@ -486,32 +548,38 @@ def rescore(snapshot, cwd=None, closes=None):
             for n in dirs + files:
                 os.chmod(os.path.join(root, n), 0o755 if n in dirs else 0o644)
         markers, failed = 0, []
-        for iid in sorted(os.listdir(os.path.join(sd, "items"))):
-            try:
-                with open(os.path.join(sd, "items", iid, "state.json"), encoding="utf-8") as f:
-                    st = json.load(f)
-            except (OSError, ValueError):
-                continue
-            chk, cand = st.get("check") or {}, str((st.get("candidate") or {}).get("sha") or "")
-            if not chk.get("verdict") or not evidence._SHA.match(cand):
+        for iid in _item_ids(sd):
+            st = _state(sd, iid)
+            chk, cand = st.get("check"), str(_candidate(st).get("sha") or "")
+            if not isinstance(chk, dict) or not chk.get("verdict") or not evidence._SHA.match(cand):
                 continue
             try:
                 if evidence.append_marker(sd, iid, cand, chk["verdict"], defects=chk.get("defects") or [],
                                           session=chk.get("session"), reasons=chk.get("reasons") or "",
                                           nonce=chk.get("nonce") or evidence._harvest_nonce(chk)):
                     markers += 1
-            except (OSError, ValueError) as ex:
+            except Exception as ex:      # noqa: BLE001 - one item's odd state is a named failure, never the whole reading
                 failed.append("%s: %s" % (iid, str(ex)[:160]))
         before, after, unexplained, cohorts, named = {}, {}, [], {}, {}
+        # Once, from the frozen source: the copy's index now opens with the markers just stamped, so a store with no
+        # index would read every old candidate as pre_record. An index that holds nothing, like an unreadable one, is None
+        # and explains no row: a missing file must not read as "no evidence row predates this close".
+        src_index = _index_rows(src) or None
+        first_at = _first_at(src_index)
         for r in shadow_rows:
             if closer(r, closes) == OWNER_CLOSE:
                 cohorts[OWNER_CLOSE] = cohorts.get(OWNER_CLOSE, 0) + 1
-                named.setdefault(OWNER_CLOSE, []).append("%s@%s" % (r["item"], str(r["sha"])[:10]))
+                named.setdefault(OWNER_CLOSE, []).append("%s@%s" % (r["item"], str(r.get("sha"))[:10]))
                 continue
             live = None if any(str(x).startswith("live owed") for x in r.get("reasons") or []) else "replayed"
-            j = judge(sd, r["item"], r["sha"], r.get("no_code"), live, cwd or HERE)
+            try:
+                j = judge(sd, r["item"], r.get("sha"), r.get("no_code"), live, cwd or HERE, first_at)
+            except Exception as ex:      # noqa: BLE001 - git timed out, a state too odd to read: this row, by name
+                unexplained.append("%s@%s: could not be judged (%s: %s)" % (r["item"], str(r.get("sha"))[:10],
+                                                                           type(ex).__name__, str(ex)[:160]))
+                continue
             if j is None:
-                unexplained.append("%s@%s: the snapshot does not hold the item" % (r["item"], str(r["sha"])[:10]))
+                unexplained.append("%s@%s: the snapshot does not hold the item" % (r["item"], str(r.get("sha"))[:10]))
                 continue
             for c in sorted({reason_class(x) for x in r.get("reasons") or []}) or ["green"]:
                 before[c] = before.get(c, 0) + 1
@@ -524,28 +592,34 @@ def rescore(snapshot, cwd=None, closes=None):
             norun = any(str(x).startswith("no run") for x in j["reasons"])
             st = _state(sd, r["item"])
             if not cohort and norun and ((wedge and str(r.get("at") or "") >= wedge)
-                                         or _receipt_wedged(src, r["item"], r["sha"], r.get("at"))):
+                                         or _receipt_wedged(src, r["item"], r.get("sha"), r.get("at"))):
                 cohort = WEDGE
             elif not cohort and any(str(x).startswith("no marker") for x in j["reasons"]) and not (st.get("check") or {}):
                 cohort = VERDICT_GONE
-            elif not cohort and norun and (_iso((st.get("candidate") or {}).get("at")) or "") > str(r.get("at") or "") \
+            elif not cohort and norun and src_index is not None \
+                    and (_iso(_candidate(st).get("at")) or "") > str(r.get("at") or "") \
                     and not any(e.get("item") == r["item"] and str(e.get("at") or "") <= str(r.get("at") or "")
-                                for e in evidence.index_rows(src)):
+                                for e in src_index):
                 cohort = STATE_MOVED
-            elif not cohort and j["accepted"] and r.get("gate_reasons") and set(r["gate_reasons"]) <= NOT_JUDGED:
-                cohort = "not_judged:" + ",".join(r["gate_reasons"])
+            elif not cohort and j["accepted"] and r.get("gate_reasons") and {str(x) for x in r["gate_reasons"]} <= NOT_JUDGED:
+                cohort = "not_judged:" + ",".join(str(x) for x in r["gate_reasons"])
             if cohort:
                 cohorts[cohort] = cohorts.get(cohort, 0) + 1
-                named.setdefault(cohort, []).append("%s@%s" % (r["item"], str(r["sha"])[:10]))
+                named.setdefault(cohort, []).append("%s@%s" % (r["item"], str(r.get("sha"))[:10]))
             else:
-                unexplained.append("%s@%s gate %s, predicate %s: %s" % (r["item"], str(r["sha"])[:10], r.get("gate"),
+                unexplained.append("%s@%s gate %s, predicate %s: %s" % (r["item"], str(r.get("sha"))[:10], r.get("gate"),
                                    "accept" if j["accepted"] else "reject", "; ".join(j["reasons"])[:240]))
-        rep = {"rows": len(shadow_rows), "rows_are": "every attempt (report counts the last per item+sha)", "markers_appended": markers, "marker_failures": failed, "wedge_from": wedge,
+        rep = {"rows": len(shadow_rows), "unreadable_rows": unreadable, "index_readable": src_index is not None,
+               "rows_are": "every attempt (report counts the last per item+sha)", "markers_appended": markers, "marker_failures": failed, "wedge_from": wedge,
                "reasons_before": before, "reasons_after": after, "outcome": cohorts, "cohort_rows": named, "unexplained": len(unexplained),
                "receipts_held": sum(os.path.isdir(os.path.join(src, "items", i, "receipts"))
-                                    for i in os.listdir(os.path.join(src, "items"))),
-               "index_verifies": evidence.verify_index(sd) == []}
-        return rep, unexplained + ["marker receipt failed: " + x for x in failed]
+                                    for i in _item_ids(src)),
+               "index_verifies": _readable(evidence.verify_index, sd, None) == []}
+        blind = ["%d lines of the log are no close row (torn, or no object naming an item): not replayed, any may be a "
+                 "disagreement" % unreadable] if unreadable else []
+        if src_index is None:
+            blind.append("the snapshot's index could not be read or holds nothing: it explains no row, and no reading stands")
+        return rep, unexplained + ["marker receipt failed: " + x for x in failed] + blind
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
@@ -655,8 +729,11 @@ def _closes_for(rs):
     if all(r.get("closed_by") for r in rs):
         return None
     sys.path.insert(0, os.path.dirname(HERE))
-    from rimflow import model
-    return ledger_closes(model.read())
+    try:
+        from rimflow import model
+        return ledger_closes(model.read())
+    except Exception as ex:      # noqa: BLE001 - LedgerError is a bare Exception: who closed these rows is unknown
+        raise ValueError("the ledger cannot say who closed the older rows (%s: %s)" % (type(ex).__name__, ex)) from ex
 
 
 def main(argv=None):
@@ -681,18 +758,29 @@ def main(argv=None):
         except ValueError as ex:
             print("UNMEASURED: --since: %s" % ex)
             return 2
-        rs = rows(sd)
-        s = summary(rs, window, _closes_for(rs))
+        try:
+            if not os.path.isdir(sd):
+                raise ValueError("no store at %s" % sd)
+            rs, unreadable = read_rows(sd)
+            s = summary(rs, window, _closes_for(rs))
+        except (OSError, ValueError, subprocess.SubprocessError) as ex:
+            print("UNMEASURED: report: %s: %s" % (type(ex).__name__, ex))
+            return 2
+        s["unreadable_rows"] = unreadable
         print(json.dumps(s, indent=1, sort_keys=True) if a.json else "\n".join(report_lines(s)))
         return 0
     if a.cmd == "rescore":
-        rep, bad = rescore(a.snapshot, closes=_closes_for(rows(os.path.join(a.snapshot, "store"))))
+        try:
+            rep, bad = rescore(a.snapshot, closes=_closes_for(rows(os.path.join(a.snapshot, "store"))))
+        except (OSError, ValueError, subprocess.SubprocessError) as ex:
+            print("UNMEASURED: rescore: %s: %s" % (type(ex).__name__, ex))
+            return 2
         print(json.dumps(rep, indent=1, sort_keys=True))
         for b in bad[:40]:
             print("UNEXPLAINED " + b)
         blind = rep["rows"] < a.min_rows
         print("evidence rescore: %d rows; %s" % (rep["rows"], "BLIND: under %d rows" % a.min_rows if blind else
-              "%d unexplained disagreement(s)" % len(bad) if bad else "every disagreement explained"))
+              "%d unexplained" % len(bad) if bad else "every disagreement explained"))
         if not rep["receipts_held"]:
             print("evidence rescore: the snapshot holds no items/*/receipts: the wedge cohort cannot be read from it")
         return 1 if bad or blind or not rep["index_verifies"] else 0
