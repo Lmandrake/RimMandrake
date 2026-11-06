@@ -39,6 +39,9 @@ WHYS = {
     "harness": "harness fault: save.missing_mods",
     "harness2": "the proof exited 2: the proof timed out after 540s",
     "proof_or_site": "proof or site defect: the same cause on the game of G1 and on this one (G2)",
+    # GAMEENV_FIX_HARNESS_86430B0B_ITEMS_WAIT: LEVEL_ALLOC_SHRINK_EIGHTFOLD_OVER_BAR A1's site log, 2026-11-06
+    "restart": "site not prepared: NOT READY: IndeterminateError: refusing rimworld/load_game: 1 earlier mutating call(s) "
+               "have an UNKNOWN outcome (6aa06241e8f843b2 jawa/prioritized_work). A retry could apply it twice.",
 }
 
 
@@ -221,6 +224,33 @@ def t_type_not_found_fixed_once_then_held():
     x.done()
 
 
+def t_stranded_marker_restarts_once_then_routed():
+    """GAMEENV_FIX_HARNESS_86430B0B_ITEMS_WAIT: a site refused on ANOTHER caller's UNKNOWN-outcome bridge marker is cured
+    by the restage's new game process (reconcile_auto settles a gone game's markers as moot): the lane's fix, once."""
+    e = E.classify(row(WHYS["restart"]))
+    ok(e is not None and e.kind == "restart" and e.fix, "a stranded-marker refusal is a restart, a lane fix: %s" % e)
+    x = in_prove()
+    gen = x.st("I0")["gen"]
+    acts = []
+    acted = G._env(x.s, x.w, x.r, "I0", {"A1": row(WHYS["restart"], x.now, criterion="A1")}, 0, x.now, acts)
+    st = x.st("I0")
+    ok(acted and st["status"] == "game" and st["game"]["phase"] == "stage" and st["gen"] == gen
+       and routed(st) is None and not st.get("last_fail"),
+       "restaged by the lane, no route, no worker, no gen: %s %s" % (st["game"]["phase"], acts))
+    ok([a["do"] for a in acts] == ["game_env_fix"], "one lane fix: %s" % acts)
+    with x.s.lock():
+        s = x.s.load("I0")
+        s["game"].update(phase="prove", staged_at=x.now + 10)
+        s["game"].pop("remedy", None)
+        x.s.save(s)
+    acts = []
+    acted = G._env(x.s, x.w, x.r, "I0", {"A1": row(WHYS["restart"], x.now + 20, criterion="A1")}, 0, x.now + 30, acts)
+    st = x.st("I0")
+    ok(acted and routed(st) is not None and "the lane fixed it once" in routed(st) and st["gen"] == gen,
+       "the same refusal after the restart is routed once: %s" % st.get("hold"))
+    x.done()
+
+
 def t_unclassified_keeps_its_road():
     x = in_prove()
     ok(not G._env(x.s, x.w, x.r, "I0", {"A2": row("changed since the built commit, so the game cannot run sha1: a (b)",
@@ -235,7 +265,7 @@ def main():
     ran = 0
     for t in (t_classify, t_producer_fixed_once_then_routed, t_reload_rides_the_lanes_restage, t_route_kinds_routed_at_once,
               t_same_cause_after_unhold, t_type_not_found_classified, t_type_not_found_fixed_once_then_held,
-              t_unclassified_keeps_its_road):
+              t_stranded_marker_restarts_once_then_routed, t_unclassified_keeps_its_road):
         if picked and t.__name__ not in picked:
             continue
         ran += 1

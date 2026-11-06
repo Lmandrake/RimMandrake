@@ -8,18 +8,23 @@ it (census 2026-11-05: 30 live items, ~105M tokens; MODCHECK_DONOR_ENVIRONMENTS_
 step ever ran `modcheck run Armoury`).
 
 classify(row) -> None (not an environment cause: the old roads stand) or an Env:
-  kind  deploy | load | produce   the game lane fixes it itself, ONCE (fix is set), then re-reads
+  kind  deploy | load | produce | restart   the game lane fixes it itself, ONCE (fix is set), then re-reads
         proof_call | harness | proof_or_site   nothing the lane can do: routed ONCE to one fixer, the item waits
         missing_mod   the proof reached for a type the load does not define and the item's `live-mods:` names no
                       packageId that could bring it: routed ONCE, the hold naming the type and its namespace
   mods  mod folders or packageIds the next load must deploy / enable
   cmd   the producer to run on the up game before the re-read (kind produce)
+  restart: the bridge client refused (IndeterminateError) because an EARLIER caller's mutating call has an UNKNOWN
+        outcome on the running game. The lane's restage starts a new game process, and rimbridge_client.reconcile_auto
+        settles every marker from a gone game as moot (GAMEENV_FIX_HARNESS_86430B0B_ITEMS_WAIT: a site prep refused on
+        another proof's stranded jawa/prioritized_work and rimworld/step_game_ticks markers, routed as a harness fault
+        the lane could not fix, while the next restart settled both on its own).
   fp    the cause's key (relentless_live.cause: no paths, numbers or times), so the same cause is never tried twice
 Never a builder and never a new generation for any of them (relentless_game._env)."""
 import hashlib
 import re
 
-FIX_KINDS = ("deploy", "load", "produce")
+FIX_KINDS = ("deploy", "load", "produce", "restart")
 ROUTE_KINDS = ("proof_call", "harness", "proof_or_site", "missing_mod")
 KINDS = FIX_KINDS + ROUTE_KINDS
 
@@ -38,6 +43,8 @@ TYPE_NOT_FOUND = re.compile(r"Type not found: (?P<type>[\w.+`]+)")
 # env_verify_check.py: no fresh `modcheck run <Mod>` verdict in infrastructure/state/modcheck_status.json
 NO_VERDICT = re.compile(r"UNMEASURED (?P<mod>\w+): (?:no modcheck_status entry|entry hash \S+ is not the mod's current|"
                         r"entry \(ts [^)]*\) does not postdate)")
+# rimbridge_client.call's refusal (and live_site's `NOT READY: IndeterminateError: ...` line carrying it)
+STRANDED = re.compile(r"IndeterminateError|mutating call\(s\) have an UNKNOWN outcome")
 PROOF_CALL = ("the proof's own call is broken", "the proof crashed")
 HARNESS = ("harness fault", "site not prepared", "the proof timed out", "bridge call failed",
            "the running load's mod list could not be read")
@@ -101,6 +108,8 @@ def classify(row, item=None, needs=()):
         e = _env("load" if pkgs else "missing_mod", row, pkgs)
         e["type"] = m.group("type")
         return e
+    if STRANDED.search(why):    # before HARNESS: "site not prepared: NOT READY: IndeterminateError" is a restart's
+        return _env("restart", row)
     if any(w in why for w in PROOF_CALL):
         return _env("proof_call", row)
     if any(why.startswith(w) or (": %s" % w) in why for w in HARNESS):
