@@ -2495,6 +2495,19 @@ def pressure_check() -> int:
     line = float(os.environ.get("SCRATCH_REAP_PRESSURE_GB", PRESSURE_GB))
     cool = float(os.environ.get("SCRATCH_REAP_COOLDOWN_MIN", COOLDOWN_MIN)) * 60
     free = free_gb()
+    try:        # name the grower while it grows: a fall the reaper cannot answer (ROOT_DISK_FIX_NIGHT_GROWTH_OUTRUNS_REAPER)
+        import disk_grower
+        g = disk_grower.tick(sd, free, line)
+        if g.get("captured"):
+            print(f"grower: {json.dumps(g)} -> {sd / 'growth_capture.json'}")
+    except Exception as e:      # the pressure check itself must still run; the failure is a row the deadman reads
+        print(f"grower: FAILED {type(e).__name__}: {e}")
+        try:    # a full disk is exactly when this write fails; the reaper start below matters more
+            with open(sd / "growth.jsonl", "a") as f:
+                f.write(json.dumps({"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "t": time.time(),
+                                    "free_gb": free, "error": f"{type(e).__name__}: {str(e)[:200]}"}) + "\n")
+        except OSError:
+            pass
     t = tmp_reading()
     low = tmp_low(t)
     if free >= line and not low:
