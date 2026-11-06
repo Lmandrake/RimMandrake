@@ -1038,3 +1038,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:55:33Z","tsn":1793962533899408295}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: OLLOPOM_BEAUTY_VERIFY_DEPLOYED_NOT_SEEN A1 (L2), read-only proof","ts":"2026-11-06T10:55:52Z","tsn":1793962552956932146}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T10:56:29Z","tsn":1793962589662364634}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: FW_PROOF_TOOLS_HARDEN_READ_GAPS A1 (L1), read-only proof","ts":"2026-11-06T11:01:05Z","tsn":1793962865713665620}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:01:22Z","tsn":1793962882985324506}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: MINES_SWAP_RETIRE_SHAFT_ALREADY_DUG A1 (L1), read-only proof","ts":"2026-11-06T11:04:16Z","tsn":1793963056855165226}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T11:04:40Z","tsn":1793963080068339295}
