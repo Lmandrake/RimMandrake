@@ -733,9 +733,10 @@ def general_gate(row, entry, res, outdir, repo, general, changes_dir=None):
         return False, "generalization check: evidence not written: %s" % str(e)[:300]
     row["general"] = G.summary(g, rel, refs)
     row["general_path"] = gpath
-    if g.get("keep") is not True:
-        return False, "generalization check: %s (%s)" % (g.get("verdict"), gpath)
-    return True, g.get("verdict")
+    ok, why = G.gate_passes(g)
+    if not ok:
+        return False, "generalization check: %s (%s)" % (why, gpath)
+    return True, why
 
 
 def apply_change(row, entry, outdir, repo=None, publish=None, changes_dir=None, delegated_dir=None, pk_level=0,

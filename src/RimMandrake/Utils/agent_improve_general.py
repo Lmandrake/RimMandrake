@@ -20,7 +20,7 @@ record holds it under `null`; the result holds its tallies beside the real ones 
 Verdict (the Conductor's 2026-11-02 rule with a noise floor, AGENT_IMPROVE_HARDEN_NOISE_CALLED_OVERFIT). A sample shows
 harm or gain only past BOTH bars: |wins - losses| exceeds the null's |wins - losses| plus its failed null pairs (each one
 could have gone either way), and an exact one-sided sign test on the win/loss pairs gives p <= SIGN_ALPHA. At 6 pairs
-that means 5-0 or 6-0.
+that means 5-0 or 6-0; at 12 with none tied, 10-2 or better.
     harm on held-out                  -> overfit   (revert)
     gain on held-out, no harm         -> general   (keep)
     gain on the source kind only      -> narrow    (keep, flagged)
@@ -31,7 +31,7 @@ summary to the change record's `generalization` list (never rewritten). A hand r
 the check on its cadence and enacts one.
 
 Departure from the design's wording, on purpose: the two agents are tool-less `claude -p` runs with the target text
-inlined, not agents in scratch clones (a clone per run would spend 16 pool clones on a plan and a first step).
+inlined, not agents in scratch clones (a clone per run would spend the whole 16-clone pool on a plan and a first step).
 """
 import concurrent.futures
 import fcntl
@@ -53,7 +53,11 @@ import model  # noqa: E402  (agent_improve put rimflow on the path)
 EVENTS = os.path.join(A.REPO, "infrastructure", "state", "ledger", "events")
 ITEMS = os.path.join(A.REPO, "infrastructure", "state", "items")
 GENERAL = os.path.join(A.REPO, "infrastructure", "state", "agent_improve", "general")
-DAYS, HELD_OUT, SOURCE = 14, 6, 6   # 5 pairs is the fewest that can pass the sign test: fewer source pairs make narrow dead
+# 12 held-out, AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER (design 4.3): at 6 a change winning 80% of decided pairs read
+# general 20% and a harmful one (20%) read overfit 20%; at 12, 46% each. 5 is the fewest that can pass the sign test:
+# fewer source pairs make narrow dead.
+DAYS, HELD_OUT, SOURCE = 14, 12, 6
+GATE_MIN_JUDGED = 6   # the L2 gate passes narrow or no_signal on no fewer judged held-out pairs than this
 RUN_MODEL, JUDGE_MODEL = "sonnet", "opus"
 WORKERS = 8   # pairs run side by side: 8 sequential pairs of three model calls overrun a 540 s foreground budget
 SPEC_CHARS, ANSWER_CHARS = 3000, 4000
@@ -264,6 +268,26 @@ def verdict(held, src, null_held, null_src):
     if signal(src, null_src)["call"] == "gain":   # source losses alone are not harm: the rule judges held-out kinds
         return "narrow"
     return "no_signal"
+
+
+def gate_passes(result):
+    """The L2 pre-apply reading of a check (AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER) -> (ok, why). general passes;
+    overfit and unmeasured refuse; narrow and no_signal pass only when the held-out pairs do not lean against the change
+    on enough judged pairs. The check at this size cannot prove most real gains (design 4.3), so at L2, behind the
+    recurrence bar, the Judge and the recheck, it refuses what leans to harm instead of waiting for a proof. A source
+    gain never buys off held-out losses. The verdict itself is left as it read."""
+    v = result.get("verdict")
+    if v == "general":
+        return True, v
+    if v not in ("narrow", "no_signal"):
+        return False, v
+    h = result.get("held_out") or {}
+    wins, losses, judged = h.get("win", 0), h.get("loss", 0), h.get("win", 0) + h.get("loss", 0) + h.get("tie", 0)
+    if judged < GATE_MIN_JUDGED:
+        return False, "%s on %d judged held-out pairs, under %d" % (v, judged, GATE_MIN_JUDGED)
+    if losses > wins:
+        return False, "%s leaning to harm on held-out kinds, %d-%d" % (v, wins, losses)
+    return True, "%s, no lean to harm, %d-%d" % (v, wins, losses)
 
 
 def view(res, text):

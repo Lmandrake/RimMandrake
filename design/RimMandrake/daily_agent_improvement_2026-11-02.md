@@ -107,7 +107,7 @@ current level lives in `D:\ClaudeWork\rimmandrake\agent_improve\state.json`; gat
 |---|---|---|---|---|
 | L0 | daily | 2 | 7 days | none (gross bugs) |
 | L1 | every 3 days | 3, from 2 or more task kinds | 14 days | the recheck of the target's last change has passed |
-| L2 | weekly | 5, from 3 or more task kinds | 28 days | L1 plus a generalization check passed (4.3) before apply |
+| L2 | weekly | 5, from 3 or more task kinds | 28 days | L1 plus the generalization check before apply: refused if it reads overfit, unmeasured, or leans to harm (4.3) |
 
 Step up one level when the rate over the last 10 passes falls below 0.3; step back down when it rises above 0.6 (a
 new crop of bugs). At most one step per 10 passes, so the rate is measured on the level that produced it.
@@ -122,11 +122,10 @@ id (`model.INTENT_WORDS`: BUILD, REPAIR, AUDIT, ...) plus its ledger `kind`. Eac
 kinds of the items its evidence pieces came from). At L1 for every fifth change, at L2 for every change, and weekly for
 the newest version of each target:
 
-- Sample fresh from the last 14 days of the ledger: 6 closed items whose kind is NOT a source kind (held out), and 6
-  items of a source kind. Fresh each time, because the task mix keeps changing. Six, because 5 pairs is the fewest that
-  can pass the sign test below; a target whose source kinds closed fewer than 5 items cannot be called narrow.
-- For each item, two fresh agents get the item's spec: one with the old version, one with the new, both in scratch
-  clones; each writes its plan and first step. A blind judge (sees neither version nor which is new) picks the better
+- Sample fresh from the last 14 days of the ledger: 12 closed items whose kind is NOT a source kind (held out), and 6
+  items of a source kind. Fresh each time, because the task mix keeps changing. Six source items, because 5 pairs is the
+  fewest that can pass the sign test below; a target whose source kinds closed fewer than 5 items cannot be called narrow.
+- For each item, two fresh agents get the item's spec: one with the old version, one with the new; each writes its plan and first step. A blind judge (sees neither version nor which is new) picks the better
   of each pair or calls a tie, against what actually closed the item.
 - Null control, on the same sample and recorded beside each check: the old version runs a second time on each judged
   item, and a blind judge compares the two old answers. What it reaches is how far this judge drifts on nothing.
@@ -134,20 +133,39 @@ the newest version of each target:
   the first real run called a one-line path fix overfit at 2-3-1 while the judge's reasons said the plans were nearly
   equivalent). A sample shows **harm** or **gain** only past both bars: |wins - losses| exceeds the null's
   |wins - losses| plus its failed null pairs, and an exact one-sided sign test on the win/loss pairs gives p <= 0.05
-  (at 6 pairs, 5-0 or 6-0). Harm on held-out kinds: reverted as **overfit**. Gain on held-out kinds without harm: kept
+  (at 12 pairs with none tied, 10-2 or better). Harm on held-out kinds: reverted as **overfit**. Gain on held-out kinds without harm: kept
   as **general**. Gain on the source kind only, held-out no harm: kept and flagged **narrow** in its change record, so
   a pile-up of narrow changes on one target is visible (the digest line counts a target's narrow changes). Anything
-  else is **no_signal**: it neither reverts nor keeps as general, and at L2 the change is not applied, because the gate
-  applies only a proven keep.
-- Power of the sign bar alone, computed for 20% ties (the null margin can only lower it): at 6 pairs a change that truly
-  wins 80% of its decided pairs is called general about 20% of the time (12 pairs: 46%); a change with no effect, about
-  2%. Reading no_signal is the common result at this size, not a finding about the change. The first measurement, on
-  rimworld-modding v1 2026-11-06: real 2-3-1, null 3-0-3, so the judge moved further on identical text than on the change. `AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER` holds the L2 question.
-- Cost bound: up to 36 short runs plus 24 judge calls per check (12 pairs, three runs and two judgments each), not yet
+  else is **no_signal**: it neither reverts nor keeps as general.
+- The L2 gate (`AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER`, decided before the ramp first reached L2, with
+  two noise-floor checks on record, both no_signal, so mostly from computation: 2 of 2 is no rate). It applies what reads general,
+  and a narrow or no_signal that does not lean to harm (wins >= losses on 6 or more judged held-out pairs); it refuses overfit,
+  unmeasured, and a narrow or no_signal that leans to harm: a source gain never buys off held-out losses. The verdict stays as read in the change record. Why not only a proven keep, the first
+  rule here: exact power through the live rule, 20% real ties and 50% null ties (`selftest_agent_improve_general.py`):
+
+  | true win rate of decided pairs | general at 6 / 12 / 24 pairs | overfit at 6 / 12 / 24 | through this gate at 6 / 12 |
+  |---|---|---|---|
+  | 0.20 (harmful) | 0 / 0 / 0 | .20 / .46 / .83 | .11 / .03 |
+  | 0.50 (no effect) | .02 / .02 / .03 | .02 / .02 / .03 | .59 / .56 |
+  | 0.65 (modest gain) | .07 / .13 / .30 | 0 / 0 / 0 | .82 / .87 |
+  | 0.80 (large gain) | .20 / .46 / .83 | 0 / 0 / 0 | .96 / .99 |
+
+  So a proven-keep gate refuses a large gain 4 times in 5 at 6 pairs, and a modest one 7 times in 10 even at 24 pairs, at four
+  times the cost, so no affordable sample rescues it. It would also trap the ramp: a refused diff counts as proposed
+  and not applied, so at L2 the acceptance rate could not climb back over the 0.6 that steps down. The gate is not what
+  carries L2's extra evidence: the change has already cleared 5 pieces from 3 task kinds, the Judge and the recheck, and the owner's
+  worry is overfitting, which is harm on other kinds. What this costs: a no-effect change passes about half the time. It stays
+  visible in its change record, and the weekly check of the newest version can still revert it as overfit. Twelve
+  pairs rather than 6 because they make harm visible: a harmful change slips through 3% against 11%, and reads overfit
+  46% against 20%. The sign bar's false call on a no-effect change stays 2 to 3%.
+- First measurement, on rimworld-modding v1 2026-11-06: real 2-3-1, null 3-0-3, so the judge moved further on identical
+  text than on the change. Second, on using-rimflow v1 2026-11-06, the first at 12 pairs: real 6-4-2, null 2-4-6, no_signal, 117 s
+  of wall clock. Together real pairs tied 3 of 18 and null pairs 9 of 18, the rates the table assumes.
+- Cost bound: up to 54 short runs plus 36 judge calls per check (18 pairs, three runs and two judgments each), not yet
   measured against a token budget; it runs only at L1 and L2.
 - Built (`AGENT_IMPROVE_BUILD_GENERALIZATION_CHECK`): `src/RimMandrake/Utils/agent_improve_general.py`, run as
   `agent_improve.py general <target> v<N>` and as the L2 pre-apply gate. The two agents are tool-less `claude -p` runs
-The cadence
+  with the target text inlined, not scratch clones, on purpose: a clone per run would spend the whole 16-clone pool on a plan and a first step. The cadence
   and the revert version are `src/RimMandrake/Utils/agent_improve_cadence.py`, run by the pass
   (`AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY`; at most 3 checks a pass, the rest stay due; a revert version is never
   itself checked). A hand run only records its verdict. The digest's narrow section lists each target's count.

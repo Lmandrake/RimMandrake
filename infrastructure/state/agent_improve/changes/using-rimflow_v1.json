@@ -22,5 +22,58 @@
    "by": "curator"
   }
  ],
- "generalization": []
+ "generalization": [
+  {
+   "at": "2026-11-06T23:15:01Z",
+   "verdict": "no_signal",
+   "keep": null,
+   "held_out": {
+    "win": 6,
+    "loss": 4,
+    "tie": 2,
+    "error": 0
+   },
+   "source": {
+    "win": 0,
+    "loss": 0,
+    "tie": 0,
+    "error": 0
+   },
+   "null_held_out": {
+    "win": 2,
+    "loss": 4,
+    "tie": 6,
+    "error": 0
+   },
+   "null_source": {
+    "win": 0,
+    "loss": 0,
+    "tie": 0,
+    "error": 0
+   },
+   "signal": {
+    "held_out": {
+     "net": 2,
+     "margin": 2,
+     "sign_p": 0.377,
+     "alpha": 0.05,
+     "call": null
+    },
+    "source": {
+     "net": 0,
+     "margin": 0,
+     "sign_p": 1.0,
+     "alpha": 0.05,
+     "call": null
+    }
+   },
+   "rule": "noise_floor_v1: harm/gain need |net| > |null net| + null errors and a one-sided sign test at p <= 0.05",
+   "seed": 4269473280,
+   "evidence": "infrastructure/state/agent_improve/general/using-rimflow_v1_20261106T231501Z_4269473280.json",
+   "refs": {
+    "old": "agent/using-rimflow/v1^",
+    "new": "agent/using-rimflow/v1"
+   }
+  }
+ ]
 }

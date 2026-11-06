@@ -6,6 +6,7 @@ verdicts overfit, general, narrow, no_signal and unmeasured, the evidence file a
 and the L2 gate in agent_improve.apply_change. Agents are stubs; no model runs. The real ledger is only read, to prove
 the rule change is recorded."""
 import json
+import math
 import os
 import random
 import subprocess
@@ -105,9 +106,10 @@ with tempfile.TemporaryDirectory() as tmp:
     check("kind is the intent word", pool["THING0_AUDIT_CASE_NUMBER_A"]["kind"] == "AUDIT"
           and pool["THING0_AUDIT_CASE_NUMBER_A"]["ledger_kind"] == "task")
     held, src = G.sample(pool, ["REPAIR"], random.Random(1))
-    check("6 held out, none of the source kind", len(held) == 6 and all(i["kind"] != "REPAIR" for i in held),
+    check("12 held out, none of the source kind", len(held) == 12 and all(i["kind"] != "REPAIR" for i in held),
           [i["id"] for i in held])
-    check("held out spread over 6 kinds", len({i["kind"] for i in held}) == 6, [i["kind"] for i in held])
+    check("held out spread over every other kind", len({i["kind"] for i in held}) == len(KINDS) - 1,
+          [i["kind"] for i in held])
     check("6 source items, all REPAIR", len(src) == 6 and all(i["kind"] == "REPAIR" for i in src))
     h2, _ = G.sample(pool, ["REPAIR"], random.Random(2))
     check("fresh each time: another seed, another sample", {i["id"] for i in h2} != {i["id"] for i in held})
@@ -121,7 +123,7 @@ with tempfile.TemporaryDirectory() as tmp:
     every = {k: "old" for k in KINDS if k != "REPAIR"}
     r, seen = run(dict(every, REPAIR="new"))
     check("harm: held-out losses beat wins -> overfit, revert", r["verdict"] == "overfit" and r["keep"] is False
-          and r["held_out"]["loss"] == 6 and r["source"]["win"] == 6, r["held_out"])
+          and r["held_out"]["loss"] == G.HELD_OUT and r["source"]["win"] == 6, r["held_out"])
     check("blind: the judge prompt never names old or new text", all("OLD-RULES" not in p and "NEW-RULES" not in p
                                                                         for p in seen))
     order = {p["new_is_a"] for p in r["pairs"]}
@@ -130,7 +132,7 @@ with tempfile.TemporaryDirectory() as tmp:
     check("gain on held out -> general, keep", r["verdict"] == "general" and r["keep"] is True, r["held_out"])
     r, _ = run({"REPAIR": "new"})
     check("gain on the source kind only, held out ties -> narrow, keep", r["verdict"] == "narrow"
-          and r["keep"] is True and r["held_out"]["tie"] == 6, (r["held_out"], r["source"]))
+          and r["keep"] is True and r["held_out"]["tie"] == G.HELD_OUT, (r["held_out"], r["source"]))
     r, _ = run({})
     check("all ties -> no_signal, which neither reverts nor keeps", r["verdict"] == "no_signal" and r["keep"] is None)
     check("no_no_gain: the old revert-on-nothing verdict is gone", "no_gain" not in G.VERDICTS and "no_gain" not in G.KEEP)
@@ -153,10 +155,10 @@ with tempfile.TemporaryDirectory() as tmp:
         sum(1 for c in calls if c == c0) == (1 if "NEW-RULES" in c0 else 2) for c0 in calls), len(calls))
     check("two blind judgments per item, the null's old against old", len(seen) == 2 * len(r["pairs"])
           and sum(1 for p in seen if "NEWWAY" not in p) == len(r["pairs"]), len(seen))
-    check("null tallies stand beside the real ones", r["null_held_out"] == {"win": 0, "loss": 0, "tie": 6, "error": 0}
-          and r["null_source"]["tie"] == 6 and r["held_out"]["win"] == 6, r["null_held_out"])
+    check("null tallies stand beside the real ones", r["null_held_out"] == {"win": 0, "loss": 0, "tie": G.HELD_OUT, "error": 0}
+          and r["null_source"]["tie"] == 6 and r["held_out"]["win"] == G.HELD_OUT, r["null_held_out"])
     check("the stated rule and each sample's reading are recorded", G.RULE == r["rule"] and "0.05" in r["rule"]
-          and r["signal"]["held_out"]["call"] == "gain" and r["signal"]["held_out"]["sign_p"] == 0.0156,
+          and r["signal"]["held_out"]["call"] == "gain" and r["signal"]["held_out"]["sign_p"] == round(G.sign_p(G.HELD_OUT, 0), 4),
           r["signal"]["held_out"])
     s = G.summary(r, "e", {})
     check("the summary carries the null too", s["null_held_out"] == r["null_held_out"] and s["signal"] == r["signal"]
@@ -183,9 +185,9 @@ with tempfile.TemporaryDirectory() as tmp:
     order = [p["kind"] for p in r0["pairs"] if p["side"] == "held_out"]
     table = dict(zip(order, ["new", "new", "old", "old", "old", "tie"]))
     r, _ = run(table)
-    check("2-3-1 through the whole check -> no_signal, keep None, no revert", r["verdict"] == "no_signal"
-          and r["keep"] is None and (r["held_out"]["win"], r["held_out"]["loss"], r["held_out"]["tie"]) == (2, 3, 1),
-          r["held_out"])
+    check("a near-even sample leaning to losses through the whole check -> no_signal, keep None, no revert",
+          r["verdict"] == "no_signal" and r["keep"] is None and 0 < r["held_out"]["win"] < r["held_out"]["loss"]
+          and r["held_out"]["tie"] > 0, r["held_out"])
 
     # each bar on its own
     h = lambda w, l, t=0: dict(z, win=w, loss=l, tie=t)   # noqa: E731
@@ -212,12 +214,13 @@ with tempfile.TemporaryDirectory() as tmp:
     # noise reaching the real result through the whole check
     every_new = {k: "new" for k in KINDS}
     r, _ = run(every_new, rnr=labelled_runner(), null="rerun")
-    check("a judge as decisive on nothing as on the change: 6-0 reads no_signal", r["verdict"] == "no_signal"
-          and r["keep"] is None and r["held_out"]["win"] == 6 and r["null_held_out"]["win"] == 6,
+    check("a judge as decisive on nothing as on the change: a clean sweep reads no_signal", r["verdict"] == "no_signal"
+          and r["keep"] is None and r["held_out"]["win"] == G.HELD_OUT and r["null_held_out"]["win"] == G.HELD_OUT,
           (r["held_out"], r["null_held_out"]))
     r, _ = run(every_new, rnr=labelled_runner(fail_rerun=True))
     check("null runs all fail: the real pairs stand but no call is made", r["verdict"] == "no_signal"
-          and r["held_out"]["win"] == 6 and r["null_held_out"]["error"] == 6, (r["held_out"], r["null_held_out"]))
+          and r["held_out"]["win"] == G.HELD_OUT and r["null_held_out"]["error"] == G.HELD_OUT,
+          (r["held_out"], r["null_held_out"]))
     check("a pair that failed before judging owes no null", all("null" not in p for p in run({}, rnr=lambda _p: 1 / 0)[0]
                                                                 ["pairs"]))
 
@@ -258,10 +261,11 @@ with tempfile.TemporaryDirectory() as tmp:
     ent = {"pieces": [{"text": "lesson about THING0_REPAIR_CASE_NUMBER_A"}]}
     got = {}
 
-    def stub_general(verdict):
+    def stub_general(verdict, held=None):
         def g(t, old, new, kinds):
             got.update(t=t, old=old, new=new, kinds=kinds)
-            return {"at": "x", "verdict": verdict, "keep": G.KEEP[verdict], "held_out": {}, "source": {}, "seed": 1}
+            return {"at": "x", "verdict": verdict, "keep": G.KEEP[verdict], "held_out": held or {}, "source": {},
+                    "seed": 1}
         return g
     out = os.path.join(tmp, "out")
     os.makedirs(out)
@@ -272,12 +276,28 @@ with tempfile.TemporaryDirectory() as tmp:
                                                                               "kinds": ["REPAIR"]}, got)
     ok, why = A.apply_change(dict(row), ent, out, repo=repo, pk_level=2)
     check("L2 gate refuses with no checker", not ok and "generalization" in why, why)
-    ok, why = A.apply_change(dict(row), ent, out, repo=repo, pk_level=2, general=stub_general("no_signal"),
-                             changes_dir=gchanges)
-    check("L2 gate does not apply a no_signal change: unproven, not kept", not ok and "no_signal" in why, why)
+    for label, held in (("leaning to harm, 2-3-1 and 12 pairs", {"win": 2, "loss": 3, "tie": 7}),
+                        ("under the judged floor", {"win": 3, "loss": 0, "tie": 2}), ("with no tallies", None)):
+        ok, why = A.apply_change(dict(row), ent, out, repo=repo, pk_level=2, general=stub_general("no_signal", held),
+                                 changes_dir=gchanges)
+        check("L2 gate refuses a no_signal change %s" % label, not ok and "no_signal" in why, why)
+    for verdict, want in (("unmeasured", False), ("overfit", False), ("general", True)):
+        check("gate reading of %s" % verdict, G.gate_passes({"verdict": verdict, "keep": G.KEEP[verdict]})[0] is want)
+    floor = {"win": 3, "loss": 3}
+    for verdict in ("narrow", "no_signal"):
+        read = lambda held: G.gate_passes({"verdict": verdict, "keep": G.KEEP[verdict], "held_out": held})[0]   # noqa: E731
+        check("%s passes at exactly the judged floor of 6, refused at 5" % verdict, G.GATE_MIN_JUDGED == 6
+              and read(dict(floor, tie=0)) and not read({"win": 3, "loss": 2, "tie": 0}), verdict)
+        check("%s leaning to harm is refused, however the source side read" % verdict, not read({"win": 3, "loss": 7, "tie": 2}))
     r = dict(row)
-    ok, why = A.general_gate(r, ent, A.resolve_target(T), out, repo, stub_general("narrow"), gchanges)
-    check("L2 gate keeps a narrow change and carries the flag", ok and why == "narrow"
+    ok, why = A.general_gate(r, ent, A.resolve_target(T), out, repo,
+                             stub_general("no_signal", {"win": 3, "loss": 3, "tie": 6}), gchanges)
+    check("L2 gate passes a no_signal change with no lean to harm, and the record keeps its verdict",
+          ok and "no_signal" in why and r["general"]["verdict"] == "no_signal", why)
+    r = dict(row)
+    ok, why = A.general_gate(r, ent, A.resolve_target(T), out, repo,
+                             stub_general("narrow", {"win": 4, "loss": 2, "tie": 6}), gchanges)
+    check("L2 gate keeps a narrow change with no held-out lean and carries the flag", ok and "narrow" in why
           and r["general"]["verdict"] == "narrow")
     check("gate evidence goes to outdir, never into the repo before publish", os.path.dirname(r["general_path"]) == out
           and os.path.isfile(r["general_path"]) and not os.path.isdir(os.path.join(os.path.dirname(gchanges),
@@ -314,5 +334,51 @@ for path in git("ls-tree", "--name-only", "HEAD", os.path.relpath(G.EVENTS, A.RE
 check("the ledger records the rule change and why", notes and "2026-11-02" in json.dumps(notes[-1])
       and "2-3-1" in json.dumps(notes[-1]), notes)
 
+# AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER: the decision, recomputed exactly through the live rule. Real pairs tie 20%
+# (measured 3 of 18), null pairs tie 50% (measured 9 of 18) and split evenly; w is the true win rate of decided pairs.
+def trinomial(n, win, loss):
+    return [((w, l, n - w - l), math.comb(n, w) * math.comb(n - w, l) * win ** w * loss ** l * (1 - win - loss) ** (n - w - l))
+            for w in range(n + 1) for l in range(n - w + 1)]
+
+
+def reading(n, w):
+    """-> (P general, P overfit, P the L2 gate passes) at n held-out pairs. The source side cannot move the gate number:
+    narrow and no_signal get the same reading, which the checks above pin."""
+    gen = over = through = 0.0
+    nulls = trinomial(n, 0.25, 0.25)
+    for (a, b, c), p in trinomial(n, 0.8 * w, 0.8 * (1 - w)):
+        held = {"win": a, "loss": b, "tie": c, "error": 0}
+        for (x, y, t), q in nulls:
+            call = G.signal(held, {"win": x, "loss": y, "tie": t, "error": 0})["call"]
+            v = "general" if call == "gain" else "overfit" if call == "harm" else "no_signal"
+            gen += p * q if v == "general" else 0
+            over += p * q if v == "overfit" else 0
+            through += p * q if G.gate_passes({"verdict": v, "keep": G.KEEP[v], "held_out": held})[0] else 0
+    return gen, over, through
+
+
+old_gain = reading(6, 0.8)
+check("the old bar: at 6 pairs and a gate wanting a proof, a change winning 80% passes 1 time in 5",
+      0.15 < old_gain[0] < 0.25, old_gain)
+at = {w: reading(G.HELD_OUT, w) for w in (0.2, 0.5, 0.65, 0.8)}
+wide = reading(24, 0.65)
+check("no affordable sample rescues a proven-keep gate: at 24 pairs a change winning 65% reads general under 1 time in 3",
+      0.25 < wide[0] < 0.33, wide)
+check("the modest gain gets through the gate where a proof would refuse it", at[0.65][2] > 0.85 and at[0.65][0] < 0.15, at[0.65])
+check("the gate's sample is 12 pairs", G.HELD_OUT == 12, G.HELD_OUT)
+check("a change winning 80% of decided pairs gets through the gate at least 19 times in 20", at[0.8][2] >= 0.95, at[0.8])
+check("a harmful change winning 20% gets through under 1 time in 20", at[0.2][2] < 0.05, at[0.2])
+check("a harmful change reads overfit about as often as a gain reads general", 0.4 < at[0.2][1] < 0.55
+      and 0.4 < at[0.8][0] < 0.55, (at[0.2], at[0.8]))
+check("the cost is written down: a no-effect change passes about half the time", 0.45 < at[0.5][2] < 0.7, at[0.5])
+check("a no-effect change is still never called general or overfit past the sign bar's 2-3%",
+      at[0.5][0] < 0.03 and at[0.5][1] < 0.03, at[0.5])
+ID = "AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER"
+doc = open(os.path.join(A.REPO, "design", "RimMandrake", "daily_agent_improvement_2026-11-02.md"), encoding="utf-8").read()
+check("the design states the decision", "12 closed items whose kind is NOT a source kind" in doc
+      and "leans to harm" in doc and ID in doc)
+notes = [line for path in git("ls-tree", "--name-only", "HEAD", os.path.relpath(G.EVENTS, A.REPO) + "/").splitlines()
+         for line in git("show", "HEAD:" + path).splitlines() if ID in line and "delegated: technical" in line]
+check("the ledger records why", bool(notes))
 print("selftest_agent_improve_general: %s" % ("FAIL %d" % len(fails) if fails else "PASS"))
 sys.exit(1 if fails else 0)
