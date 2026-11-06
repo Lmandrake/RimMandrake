@@ -2475,6 +2475,21 @@ def cmd_guard(args, seat):
     return 0
 
 
+def _evidence_shadow(args, it, sha, no_code, found):
+    """RIMFLOW_BUILD_ONE_EVIDENCE_RECORD 09b: the evidence-record predicate beside this gate, logged, deciding nothing.
+    evidence_gate.shadow never raises; the guard here covers its import too: a shadow never refuses a close. A throwaway
+    ledger (a selftest's) never writes the real store's shadow log: it speaks only with its own RELENTLESS_ROOT."""
+    try:
+        test_ledger = os.environ.get("RIMFLOW_LEDGER") or model.EVENTS != os.path.join(model.LEDGER, "events.jsonl")
+        if test_ledger and not os.environ.get("RELENTLESS_ROOT"):
+            return
+        import evidence_gate
+        evidence_gate.shadow(args.id, sha, no_code, found, getattr(args, "live", None) or getattr(it, "live", None),
+                             cwd=os.environ.get("RIMFLOW_GIT_CWD") or _HERE)
+    except Exception as ex:      # noqa: BLE001
+        print("close: %s: evidence shadow failed (%s); the close is unaffected" % (args.id, ex), file=sys.stderr)
+
+
 def _close_gate(args, it, sha, no_code):
     """DONE IS EARNED (CLOSE_GATE_ENFORCE_DONE_IS_EARNED): RO3 and ruling D1(b). -> nothing, or `die` with every reason.
     The item's own half is `model.close_refusals`; what needs git is here."""
@@ -2484,6 +2499,7 @@ def _close_gate(args, it, sha, no_code):
         found += _sha_refusals(args.id, sha, said or model.AGENT_WHY)
     if not said and not model.guard_owed(it) and it.live_repeats and it.guard:
         found += _guard_refusals(it, sha)
+    _evidence_shadow(args, it, sha, no_code, found)
     if found:
         die("close: %s has not earned its close at %s:\n%s\n\nA criterion passes with `rimflow verify %s --criterion <C> "
             "--result pass --config <cfg> --evidence <path>`; a hand close first records a level-tagged pass on that sha "
