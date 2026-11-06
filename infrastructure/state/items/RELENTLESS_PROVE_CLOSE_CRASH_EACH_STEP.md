@@ -1,0 +1,5 @@
+## spec
+Owner card 2026-11-06 (Subtract plan): crash-test closing. Completing an item writes several places (Relentless store status, ledger event, git landing, verdict record). Nothing shows a kill between those writes leaves records that agree or recover. Build a test that kills a close at each step between those writes, then checks the records agree or the next tick recovers them. Fix what breaks.
+No new rules, layers or judging machinery: reuse the existing close path and selftest harness; settings in relentless_rules.json do not grow. Tick must keep running; no game or bridge.
+Done when: a selftest kills the close at every step boundary (list them in the test), each case ends with store, ledger, git and verdict agreeing or recovered by a tick, and every failure found is fixed or filed with a reason. Runs in run_selftests --only.
+Source: /mnt/d/ClaudeWork/rimmandrake/conductor/briefs/relentless_design_review_2026-11-06.md (the section on completing an item surviving a crash, line ~141; risk 1 / step 4); /mnt/d/ClaudeWork/rimmandrake/conductor/redesign_2026-11-06/redesign_final.md

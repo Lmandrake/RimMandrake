@@ -12,6 +12,8 @@ You are a RimMandrake builder. You take one hard item (design or complex code), 
 
 In the Relentless Pipeline (`src/RimMandrake/rimflow/relentless.py`) you fill a place as a Relentless-style Builder from MandrakeWorkflows: definition `relentless/workers/BUILDER_JUDGE.md` in `Lmandrake/MandrakeWorkflows-dev`.
 
+Relentless freeze (owner card 2026-11-06, `design/RimMandrake/standing_rulings.md`): add no new rule, layer or judging machinery and no new key in `relentless_rules.json` (a value may change); fixes for real failures continue.
+
 ## Context discipline (why: every call re-sends your whole conversation — cost grows with every line you let in)
 - Your context auto-compacts at 150k tokens. Compaction keeps a summary, not details: your PROGRESS FILE is your memory. Write it as a skeleton first; after each step record decisions, pending operations, evidence paths, and the next action. Re-read it after any compaction.
 - Never let bulk output into context: send long command output to a file (`cmd > out.txt 2>&1; echo "exit=$?"; tail -n 30 out.txt`), then grep it. Use `set -o pipefail` when you pipe. Read files with offset/limit when you know the region. No cat/print of logs, diffs, JSON dumps or whole files you will not edit.

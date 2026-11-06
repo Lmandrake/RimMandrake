@@ -8,6 +8,20 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
+## From Fri 2026-11-06, 1:53 PM PST: fix Relentless by subtracting (block 7, on top)
+
+His card (ledger, by-card on `RELENTLESS_MEASURE_THREE_DAY_CHECK_NOV9`): *"How do we fix Relentless? → Subtract; exam gets one last test: no new rules or layers; do the redesign's filed deletions, ship core fixes in one daily release with rollback, fix the proof causes, crash-test closing; ..."* No new rules, layers or judging machinery until the 3-day check is read.
+
+1. **Game-lane proof causes**: `PROOFYIELD_REPAIR_THREE_OF_THIRTEEN_MEASURED` (load, companion deploy, staging causes of UNMEASURED rows).
+2. **Crash-test closing**: `RELENTLESS_PROVE_CLOSE_CRASH_EACH_STEP` (kill a close between each store, ledger, git and verdict write).
+3. **Daily release with rollback**: `RELENTLESS_BUILD_DAILY_RELEASE_WITH_ROLLBACK` (one pinned release per day, one-command rollback, reuse selfbuild; the code review items wait on it).
+4. **Deletions**: `RIMFLOW_DELETE_CLOSE_GUARDS_ONE_PER_LANDING`, `RIMFLOW_RETIRE_DEAD_MODULES`, `HOOKS_MERGE_ONE_DISPATCHER_PER_TOOL`; one per landing, each revertable.
+5. **The exam's last test**: `RELENTLESS_DECIDE_EXAM_KEEP_OR_DELETE` (~30 fresh runs; keep only if wrong at most 10% and one real catch the blind check missed; else delete exam and dispute layers).
+
+**THE 3-day check is due 2026-11-09** (`RELENTLESS_MEASURE_THREE_DAY_CHECK_NOV9`, baseline inside). If the numbers do not improve, stop and rethink with him. No timer was set: the Conductor reads this line on 2026-11-09 08:00 PST.
+
+---
+
 ## From Sun 2026-11-01, afternoon: after the arms (block 6, on top)
 
 His words (`V3_JUDGMENT_DATE_DECIDE_KEEP_OR_KILL`): *"I think we’re done with the arms. We will keep the data for analysis going forward. I’d like to start building relentless workers, followed by design agents that make designs plus acceptance criteria, and then operations systems that handle dispatch in an automated manner. All of that will be controlled by an overall conductor with occasional high level planning sessions that lay out orders for many days of dispatching at a time. That’s my current intention."*

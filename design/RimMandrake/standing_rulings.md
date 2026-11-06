@@ -575,3 +575,7 @@ is rigorous checking is self denial."* The proof, harness, site, sandbox and con
 a failure is attributed before any rework, and an instrument fault becomes repair work while the item waits without a
 strike. A false close is still worse than a wait. Design input: GPT consult at
 `D:\ClaudeWork\rimmandrake\conductor\test_tolerance_consult\`.
+
+## Relentless: subtract, no new machinery until the 3-day check — owner, 2026-11-06 (card)
+
+No new rules, layers or judging machinery in Relentless until the 3-day check (`RELENTLESS_MEASURE_THREE_DAY_CHECK_NOV9`, due 2026-11-09) is read. Settings entries in `src/RimMandrake/rimflow/relentless_rules.json` do not grow (a fix may change a value). Fixes for real failures continue.

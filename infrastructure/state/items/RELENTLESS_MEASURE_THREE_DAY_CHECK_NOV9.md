@@ -1,0 +1,6 @@
+## spec
+THE 3-day check, owner card 2026-11-06 (Subtract plan). For the Conductor, due 2026-11-09: re-measure the baseline below the same way and read it with the owner. If these do not improve, stop and rethink with the owner. Until it is read: no new rules, layers or judging machinery in Relentless; relentless_rules.json settings entries do not grow.
+BASELINE 2026-11-06 (MEASURED from /home/mandrake/rm/relentless/live/runs.jsonl 'verdict' field, at 22:00Z; window = PST day from 2026-11-06T08:00Z: 285 rows): PASS 44, FAIL 110, INFRA 78, no result 53. The UTC day (from 00:00Z, 361 rows): PASS 65, FAIL 127, INFRA 108, none 61. The Conductor's figure at briefing time was PASS 63, FAIL 126, INFRA 91, none 61. Compare the same window and field on 11-09.
+Reopened items in 24 h: 17 (Conductor's figure; method not re-measured here). Core commits on relentless*.py: 109 on 2026-11-06 PST day (MEASURED git log, 113 since 08:00Z with .py only, 143 for relentless* any file since 00:00Z). relentless_rules.json: 112 top-level keys (MEASURED).
+Done when: the Conductor has the same numbers for 11-07..11-09 in one report and has read them with the owner.
+Source: /mnt/d/ClaudeWork/rimmandrake/conductor/briefs/relentless_design_review_2026-11-06.md
