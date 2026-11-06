@@ -86,10 +86,59 @@
     "ref": "run rm-role-designer-1793914531",
     "stage": 3,
     "tokens": 181651
+   },
+   {
+    "at": "2026-11-06T01:47:26Z",
+    "kind": "helper",
+    "ref": "rm-judge examiner a341313ab1c410415",
+    "stage": 4,
+    "tokens": 28809
+   },
+   {
+    "at": "2026-11-06T01:47:26Z",
+    "kind": "helper",
+    "ref": "rm-judge challenger af27af147d3853d74",
+    "stage": 4,
+    "tokens": 25693
+   },
+   {
+    "at": "2026-11-06T01:47:40Z",
+    "kind": "helper",
+    "ref": "rm-judge reader_a af588634fcd2ca859",
+    "stage": 4,
+    "tokens": 33481
+   },
+   {
+    "at": "2026-11-06T01:47:45Z",
+    "kind": "helper",
+    "ref": "rm-judge reader_b aeb28f8ab3c9a6f8c",
+    "stage": 4,
+    "tokens": 33297
+   },
+   {
+    "at": "2026-11-06T01:48:00Z",
+    "kind": "helper",
+    "ref": "rm-judge control1 ad3291758fb983095",
+    "stage": 4,
+    "tokens": 33352
+   },
+   {
+    "at": "2026-11-06T01:48:56Z",
+    "kind": "helper",
+    "ref": "rm-judge control2 aca175183c51be84b",
+    "stage": 4,
+    "tokens": 33257
+   },
+   {
+    "at": "2026-11-06T01:55:40Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1793929481",
+    "stage": 4,
+    "tokens": 91039
    }
   ],
   "reserve": 60000,
-  "spent": 3254683
+  "spent": 3533611
  },
  "history": [
   {
@@ -217,11 +266,23 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1793914531: stage 3 done"
+  },
+  {
+   "at": "2026-11-06T01:44:53Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1793929481, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-06T01:55:40Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1793929481: stage 4 return"
   }
  ],
  "item": "PYRELANDSMECHANICS_DESIGN_FIRST_TOUCH",
  "mod": "RimMandrake/PyrelandsMechanics",
- "pending_decision": "his flagship pick: which showcase is this mod's face (showcase 1 must be bound to an owner decision with flagship; the root's 'Judged first' line was agent text inside the root he approved, and a root approval is not a pick)",
+ "pending_decision": "sheet.md's ## open still said the flagship pick and the north-star validation were waiting on him; both were taken by card 2026-11-05 (OWNER:1793908890260302861, OWNER:1793908893473496687). Corrected (lines removed from ## open, his two card answers added to ## his words); Gate A lint PASS. Stage 3 must re-accept the edited sheet.",
  "recovery": [],
  "results": [
   {
@@ -418,11 +479,34 @@
    "run": "rm-role-designer-1793914531",
    "stage": 3,
    "summary": "Showcase 1 (rite_party) now bound to his flagship pick: decision d_flagship_rite_party (OWNER:1793908890260302861) carries flagship=rite_party, and the showcase cites that decision and tsn (it had pointed at a non-existent d_flagship and the root approval). Gate A lint PASS; showcase set accepted; floor and scenes unchanged."
+  },
+  {
+   "at": "2026-11-06T01:55:40Z",
+   "decision": "sheet.md's ## open still said the flagship pick and the north-star validation were waiting on him; both were taken by card 2026-11-05 (OWNER:1793908890260302861, OWNER:1793908893473496687). Corrected (lines removed from ## open, his two card answers added to ## his words); Gate A lint PASS. Stage 3 must re-accept the edited sheet.",
+   "inputs": {
+    "exam": "322fc068d0c4ad38d7d4307e6d39ba4d20f6a636dcca7d2337bef43be02f04a3",
+    "floor": "60ba07bafe2c726553880839556f4d7d94d37be6b414ad4e5c88d279fe8d83b7",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "f8e9e5988a2d1daf5805c000f884646cc598553bbd08aea9202ee82d7f0fb338",
+    "scenes": "ef625cc5e068d07ed85aeed41537c3d9a2faac9a25507165b95643efa4171c21",
+    "sheet": "9cf7e207f758b8c0967d3101163bf178297216c080800466e5db3790d58a67c5",
+    "tree": "8d85249f7028c05470902cc08c2f4a3c7e7daf856bbd461b86c28da750d11f3b"
+   },
+   "manifest": {
+    "designer.md": "5b1fbc61dc021f231a11a801d8fed782a2b6ec8d4904e0ea58a4a897a5b3a8c8",
+    "designer_exam.md": "3e3f16a15ed2c45e2851911d42c9369cdc7560758fe1f386dc38012b93534217"
+   },
+   "outcome": "return",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1793929481",
+   "stage": 4,
+   "summary": "The flagship pick this run was returned for was already bound (showcase rite_party -> d_flagship_rite_party). Exam run against the corrected sheet: 23 frozen scenarios (18 Examiner, 5 Challenger, 15 reject), both Readers 23/23, accept_where_reject_core 0, no Challenger misses. exam.json is written against the corrected sheet and current tree hashes, so it stands if stage 3 changes nothing more. Open point for stage 4: neither of the two control runs missed, because each removed core rule is also stated in another leaf (scar reach in fruit_defence_warns_then_drives; flames in walk_tribes_season and the visit leaf). Recorded as missed:false, not waived. Stale packet text: stage.json pending_decision still names the flagship pick.",
+   "to": 3
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 3,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
