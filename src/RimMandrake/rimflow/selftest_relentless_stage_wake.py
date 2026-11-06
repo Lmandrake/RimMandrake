@@ -6,8 +6,11 @@ tick's lease is still making clones is served between lease items, not after the
 
     python3 src/RimMandrake/rimflow/selftest_relentless_stage_wake.py
 """
+import fcntl
 import os
 import sys
+import threading
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -121,6 +124,36 @@ def t_tick_took_the_wake():
     x.done()
 
 
+def t_tick_holds_the_lock():
+    """A running tick holds tick.lock and its serve_wake took game-ready's wake: the game-next that game-ready started
+    meets the lock busy with no wake file, yet a staging stands ready, so it waits for the lock and follows the staging
+    to its proof instead of skipping to the next tick."""
+    x, gen, unit, polls = staged()
+    ready_by_cli(x, gen)
+    held = threading.Event()
+    hold_s = 3
+
+    def tick_holds():
+        with open(x.s.p("tick.lock"), "w") as lk:     # the tick's own fd
+            fcntl.flock(lk, fcntl.LOCK_EX)
+            held.set()
+            time.sleep(hold_s)
+            fcntl.flock(lk, fcntl.LOCK_UN)
+    th = threading.Thread(target=tick_holds)
+    th.start()
+    held.wait(5)
+    os.remove(x.s.p(R.GAME_WAKE))       # the tick's serve_wake took it while it held the lock
+    t0 = time.time()
+    acts = R.game_next(x.s, x.w, x.r, x.now + 5)
+    waited = time.time() - t0
+    th.join()
+    ok(not any(a.get("do") == "skip" for a in acts), "game-next did not skip under the busy lock: %s" % acts[:1])
+    ok(waited >= hold_s - 0.5, "it waited for the tick to let go: %.1f s" % waited)
+    ok(x.w.proves == ["I0"] and x.st("I0")["game"]["phase"] == "proving",
+       "then the proof started: proves %s phase %s" % (x.w.proves, x.st("I0")["game"]["phase"]))
+    x.done()
+
+
 def t_wake_inside_lease():
     """A round ends while the lease is making clones: its proof starts before the lease ends."""
     x, first, other = TS.two_on_game()
@@ -152,7 +185,7 @@ def t_wake_inside_lease():
 
 def main():
     for fn in (t_ready_wakes_the_pass, t_without_follow_it_waits, t_follow_is_bounded, t_tick_took_the_wake,
-               t_wake_inside_lease):
+               t_tick_holds_the_lock, t_wake_inside_lease):
         fn()
     print("selftest_relentless_stage_wake: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
