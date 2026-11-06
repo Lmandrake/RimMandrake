@@ -475,7 +475,7 @@ def t_idempotent_and_run_row():
     fx.names_index = lambda: ix
     fx.folded = lambda: {}
     orig = R.candidates
-    R.candidates = lambda items, proofs, hist, now, retry, game: ([("L", "A1", "python3 p.py", "lead")], {})
+    R.candidates = lambda items, proofs, hist, now, retry, game, steve=None: ([("L", "A1", "python3 p.py", "lead")], {})
     try:
         with tempfile.TemporaryDirectory() as root:
             R.run_round(fx, root, {}, now=1_800_000_000, run=run)

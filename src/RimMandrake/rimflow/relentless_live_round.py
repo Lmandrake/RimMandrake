@@ -150,6 +150,125 @@ def clause_tier(text, cid, tiers=None):
     return t.get(cid) or t.get(ALL)
 
 
+# LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT (design/RimMandrake/lightspeed_2026-11-06.md section 4 row 2): a clause with no
+# live-tier line goes to SteveDesktop too, on a tier named by its mods (modset_builder mods__<tokens>: the build's mods,
+# the file's live-mods, the bridge, Gimme Some Slack, all five DLC), so its verdict is a testq row and no staging or LLM
+# touches it. Not inferred: a GREEN-FULL clause (the full list's final check), and a file with a live-site line (the
+# site is staged with Archmagi's bridge) or a live-without line (a load that must lack a mod: an exclusion no mods__
+# name carries). The worker resolves the tier at the job's source_sha, so only a build whose modset_builder knows the
+# mods__ form (MODS_TIER_MARK) is inferred; an older build, an unresolvable mod name, or SteveDesktop measuring nothing in
+# steve_tries jobs leaves the clause to Archmagi's round (the fallback file, relentless_game.steve_sync).
+INFERRED_TIER = "inferred tier: SteveDesktop runs it through testq"
+MODS_TIER = "mods__"
+MODS_TIER_BASE = MODS_TIER + "base"
+MODS_TIER_MARK = "MODS_TIER_PREFIX"     # modset_builder.py at a sha that resolves mods__ tiers holds this name
+MODS_TIER_ALWAYS = ("brrainz.rimbridgeserver", "mandrake.rm.gimmesomeslack")    # modset_builder.MODS_TIER_ALWAYS
+MODS_TIER_MAX = 160
+FALLBACK = os.path.join("live", "steve_fallback.json")
+
+
+def mods_tier(pids):
+    """packageIds -> (the mods__ tier name modset_builder.tier_def decodes back to them, None), or (None, why not).
+    Pure. A packageId outside [a-z0-9._], or one whose token would hold `__`, cannot be named."""
+    toks = set()
+    for p in pids:
+        p = str(p).lower()
+        if p in MODS_TIER_ALWAYS:
+            continue
+        if not re.match(r"^[a-z0-9][a-z0-9._]*[a-z0-9]$", p) or "__" in p.replace(".", "_"):
+            return None, "packageId %r has no mods__ token" % p
+        toks.add(p.replace(".", "_"))
+    name = MODS_TIER + "__".join(sorted(toks)) if toks else MODS_TIER_BASE
+    if len(name) > MODS_TIER_MAX:
+        return None, "%d mods make a tier name of %d chars (max %d)" % (len(toks), len(name), MODS_TIER_MAX)
+    return name, None
+
+
+def inferable(text, cid, level, tiers=None):
+    """True when clause `cid` of this live_proofs file goes to SteveDesktop on an inferred tier (the block comment
+    above): no tier of its own, not GREEN-FULL, no live-site or live-without line in the file. ValueError as live_tiers."""
+    if level == L.FINAL:
+        return False
+    if clause_tier(text, cid, tiers):
+        return False
+    for line in (text or "").splitlines():
+        if SITE_LINE.match(line) or LIVE_WITHOUT.match(line):
+            return False
+    return True
+
+
+def read_fallback(root):
+    """{item: {"sha", "clauses", "why", "at"}}: the inferred clauses SteveDesktop gave back to Archmagi for a build."""
+    try:
+        with open(os.path.join(root, FALLBACK), encoding="utf-8") as f:
+            got = json.load(f)
+        return got if isinstance(got, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def fell_back(fb, item, sha, cid):
+    v = (fb or {}).get(item) or {}
+    return bool(v.get("sha")) and (v["sha"].startswith(sha or "-") or (sha or "").startswith(v["sha"])) \
+        and bool({cid, "*"} & set(v.get("clauses") or []))     # "*": the build's mods name no tier at all
+
+
+_INFERS = {}
+
+
+def sha_infers(books, sha):
+    """True when modset_builder.py at `sha` resolves mods__ tiers (MODS_TIER_MARK); cached per sha."""
+    if not sha:
+        return False
+    if sha not in _INFERS:
+        r = subprocess.run(["git", "show", "%s:src/RimMandrake/Utils/modset_builder.py" % sha], cwd=books,
+                           capture_output=True, text=True, timeout=60)
+        _INFERS[sha] = r.returncode == 0 and MODS_TIER_MARK in r.stdout
+    return _INFERS[sha]
+
+
+def text_at(books, item, sha):
+    r = subprocess.run(["git", "show", "%s:%s/%s.txt" % (sha, PROOFS_DIR, item)], cwd=books, capture_output=True,
+                       text=True, timeout=60)
+    return r.stdout if r.returncode == 0 else ""
+
+
+def in_game(root, item):
+    """The game clauses of `item` when the Relentless store holds it in its game phase at prove or stage, not a
+    full-list sitting (the only place relentless_game.steve_sync runs, over those clauses only), else []."""
+    try:
+        with open(os.path.join(root, "store", "items", item, "state.json"), encoding="utf-8") as f:
+            st = json.load(f)
+    except (OSError, ValueError):
+        return []
+    g = st.get("game") or {}
+    ok = st.get("status") == "game" and g.get("phase") in ("prove", "stage") and not g.get("full")
+    return list(g.get("clauses") or []) if ok else []
+
+
+def steve_routes(books, root, enabled=True, read_at=None, game_of=None):
+    """The predicate candidates() skips with: (item, cid, text, tiers, level) -> True when the clause is SteveDesktop's
+    on an inferred tier, judged exactly as steve_sync judges it: the proofs file at the build (steve_sync reads
+    proofs_at(item, sha)), the build's modset_builder, the fallback file, and the item in its game phase (an item
+    outside one is never sent, so the round keeps it). None when inference is off. read_at/game_of: tests' seams."""
+    if not enabled:
+        return None
+    fb = read_fallback(root)
+    read_at = read_at or (lambda item, sha: text_at(books, item, sha))
+    game_of = game_of or (lambda item: in_game(root, item))
+
+    def routed(it, cid, text, tiers, level):
+        sha = it["built_sha"]
+        if fell_back(fb, it["id"], sha, cid) or cid not in game_of(it["id"]) or not sha_infers(books, sha):
+            return False
+        at = read_at(it["id"], sha)
+        try:
+            return inferable(at, cid, level)
+        except ValueError:
+            return False    # a malformed tier at the build: steve_sync holds the item with the reason
+    return routed
+
+
 def live_mods(text, pattern=LIVE_MODS):
     """A live_proofs file -> the mod folders its `live-mods:` and `live-deploy:` lines name (every line, in order, no
     repeats): what the running game must load. pattern=LIVE_DEPLOY: only what it must also hold whole."""
@@ -303,7 +422,7 @@ def due(last, sha, now, retry_s, game=None, per_game=True):
 EXACT_TIER = "exact tier: SteveDesktop runs it through testq"
 
 
-def candidates(items, proofs_of, hist, now, retry_s, game=None):
+def candidates(items, proofs_of, hist, now, retry_s, game=None, steve=None):
     """-> (todo [(item id, criterion, proof, built sha)], counts {why skipped: n}). Pure apart from proofs_of.
     proofs_of(item id) -> the text of its live_proofs file, empty when it has none.
     `items` are ledger items in relentless_live.Fx.item's shape (criteria already whole or marked cut)."""
@@ -339,6 +458,9 @@ def candidates(items, proofs_of, hist, now, retry_s, game=None):
                 continue
             if crit[cid]["level"] != L.FINAL and clause_tier(text, cid, tiers):
                 skip(EXACT_TIER)    # SteveDesktop's, through testq: never this game, whatever list it runs
+                continue
+            if steve and steve(it, cid, text, tiers, crit[cid]["level"]):
+                skip(INFERRED_TIER)     # SteveDesktop's on the tier its mods name (steve_routes)
                 continue
             last = hist.get((it["id"], cid, it["built_sha"]))
             if last and last.get("cut") and not crit[cid].get("cut"):
@@ -556,7 +678,11 @@ def plan(fx, root, r, now, only=None, game=None):
     lr = rules(r)
     hist = history(read_rows(os.path.join(root, "live", "runs.jsonl")))
     items = [it for it in fx.items() if only is None or it["id"] == only]
-    return candidates(items, fx.proofs, hist, now, 0 if only else lr["unmeasured_retry_s"], game)
+    import relentless_game
+    c = relentless_game.cfg(r)
+    steve = (steve_routes(fx.books, root, c.get("steve_infer") and c.get("enabled"))
+             if getattr(fx, "books", None) else None)
+    return candidates(items, fx.proofs, hist, now, 0 if only else lr["unmeasured_retry_s"], game, steve)
 
 
 def run_round(fx, root, r, now=None, max_items=None, run=L.run, only=None):

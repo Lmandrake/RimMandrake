@@ -174,9 +174,12 @@ def record(mod, result_path, tier, ext_path=None, _resolve=None, _record=None):
     if _resolve is None:
         import modset_builder as mb
         def _resolve(name):                            # noqa: E306
-            if name not in mb.TIERS:
+            if mb.tier_def(name) is None:
                 return None, ["no such tier %r" % name]
-            pids, missing, refusals = mb.resolve_tier(name, mb.scan())
+            try:
+                pids, missing, refusals = mb.resolve_tier(name, mb.scan())
+            except ValueError as e:     # a mods__ token two installed packageIds spell
+                return None, [str(e)]
             return pids, (["tier mods not installed: %s" % missing] if missing else []) + list(refusals)
     expected, tier_problems = _resolve(tier)
     refusals, all_green, refused, components = judge(res, mod, current, expected)

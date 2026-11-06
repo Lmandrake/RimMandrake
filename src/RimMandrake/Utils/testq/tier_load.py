@@ -51,9 +51,12 @@ def measure(tier):
     sys.path.insert(0, UTILS)
     sys.path.insert(0, os.path.join(UTILS, "modcheck"))
     import modset_builder as mb
-    if tier not in mb.TIERS:
+    if mb.tier_def(tier) is None:
         return reading(tier, [], None, "tier %s is no modset_builder.py tier" % tier)
-    pids, missing, refusals = mb.resolve_tier(tier, mb.scan())
+    try:
+        pids, missing, refusals = mb.resolve_tier(tier, mb.scan())
+    except ValueError as e:     # a mods__ token two installed packageIds spell (modset_builder.tier_def)
+        return reading(tier, [], None, "tier %s does not resolve here: %s" % (tier, e))
     if missing or refusals:
         return reading(tier, pids, None, "tier %s does not resolve here: missing %s, refused %s"
                        % (tier, list(missing)[:8], list(refusals)[:4]))

@@ -53,6 +53,9 @@ DEFAULTS = {"enabled": False, "pool_needs": ["deploy", "game-up", "bridge"], "st
             # STAGING_REWIRE_PYTHON_NOT_AN_LLM: the staging unit runs relentless_stage.py, not an LLM (false: the old
             # pilot_agent staging worker, the stage prompt as its brief)
             "stage_python": True,
+            # LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT: a clause with no live-tier goes to SteveDesktop on the tier its
+            # mods name (relentless_live_round.inferable); false keeps it on Archmagi's round
+            "steve_infer": True,
             # a cold load's bound is NOT set here: it is Utils/load_policy.json's process_to_bridge_deadline_s for the
             # list that loads (BRIDGE_DEADLINES_UNIFY_ONE_ABSOLUTE_POLICY), and passing it restages only on stall
             # evidence, never on the clock alone (load_bound, load_stall_evidence)
@@ -494,17 +497,42 @@ STEVE_WAIT, STEVE_FAIL = "wait", "fail"     # steve_sync's answers: stop here / 
 STEVE_HEAD = re.compile(r"^(?:exit -?\d+|timed out after \d+ s): ")   # worker.run_proofs's head on a proof row
 
 
-def tier_clauses(text, clauses, owed=None):
+def tier_clauses(text, clauses, owed=None, inferred=None):
     """-> {tier: [clause]} for the clauses a `live-tier:` line sends to SteveDesktop. ValueError on a malformed line.
-    owed: {clause: level}; a GREEN-FULL clause is the full list's final check on Archmagi, never a tier's."""
+    owed: {clause: level}; a GREEN-FULL clause is the full list's final check on Archmagi, never a tier's.
+    inferred: (the mods__ tier this build's mods name, the clauses that went back to Archmagi): every other clause
+    relentless_live_round.inferable passes goes to that tier (LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT)."""
     import relentless_live_round as LR
     tiers = LR.live_tiers(text)
+    tier, back = inferred or (None, ())
     out = {}
     for k in clauses:
-        t = None if (owed or {}).get(k) == FINAL_LEVEL else LR.clause_tier(text, k, tiers)
+        level = (owed or {}).get(k)
+        t = None if level == FINAL_LEVEL else LR.clause_tier(text, k, tiers)
+        if not t and tier and k not in back and LR.inferable(text, k, level, tiers):
+            t = tier
         if t:
             out.setdefault(t, []).append(k)
     return out
+
+
+def is_inferred(tier):
+    import relentless_live_round as LR
+    return (tier or "").startswith(LR.MODS_TIER)
+
+
+def steve_inferred(fx, c, item, sha):
+    """-> (the mods__ tier for this build, the clauses it gave back to Archmagi) or None: inference off, a fake world
+    without it, a build whose modset_builder cannot resolve mods__ names, or mods that cannot be named (that last one
+    gives every clause back, with its why, so Archmagi's round runs them and steve_sync never asks again)."""
+    if not (c.get("steve_infer") and c.get("enabled")) or not hasattr(fx, "infer_tier") or not fx.sha_infers(sha):
+        return None
+    back = set(fx.steve_fell_back(item, sha))
+    tier, why = fx.infer_tier(item, sha)
+    if not tier:
+        fx.steve_fallback(item, sha, ["*"], "no inferred tier: %s" % why)
+        return None
+    return tier, back
 
 
 def steve_unmeasured(detail):
@@ -561,7 +589,10 @@ def steve_sync(store, fx, r, item, g, sha, now, acts):
     c = cfg(r)
     led = fx.game_ledger(item) or {}
     try:
-        tiers = tier_clauses(fx.proofs_at(item, sha), g["clauses"], led.get("owed"))
+        inferred = steve_inferred(fx, c, item, sha)
+        if inferred and "*" in inferred[1]:
+            inferred = None
+        tiers = tier_clauses(fx.proofs_at(item, sha), g["clauses"], led.get("owed"), inferred)
     except ValueError as e:
         _hold(store, fx, item, "game phase: live-tier: %s" % e, now, acts)
         return STEVE_WAIT
@@ -612,6 +643,16 @@ def steve_sync(store, fx, r, item, g, sha, now, acts):
                 return STEVE_WAIT
         elif state == "cancelled":
             jb["last_why"] = "testq %s was cancelled" % jb["job"]
+        if (jb.get("tries") or 0) >= c.get("steve_tries", 3) and is_inferred(tier):
+            # an inferred tier is our guess at the list, not the proof's ask: Archmagi's round runs these clauses as it
+            # did before Lightspeed, never a hold (relentless_live_round.fell_back skips them no more)
+            jobs[tier] = dict(jb, fell_back=now)
+            fx.steve_fallback(item, sha, open_, "SteveDesktop measured nothing in %d jobs on %s: %s"
+                              % (jb["tries"], tier, jb.get("last_why") or "?"))
+            acts.append({"do": "game_steve_fallback", "item": item, "tier": tier, "clauses": open_})
+            for k in open_:
+                tiers[tier].remove(k)
+            continue
         if (jb.get("tries") or 0) >= c.get("steve_tries", 3):
             jobs[tier] = jb
             _save(store, item, lambda s: s["game"].update(testq=jobs))
@@ -999,7 +1040,61 @@ class GameFx(object):
         import relentless_live_round as R
         text = self._mods_text(item, sha)
         got = sorted(R.item_mods(self._round_fx(), item, sha))
-        return got + [m for m in R.live_deploy(text) if m not in got]
+        # live-mods trees too: an inferred tier loads them, so SteveDesktop must hold them at this build
+        return got + [m for m in R.folders(R.live_mods(text)) if m not in got]
+
+    # inferred tiers (LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT) ---------------------------------------------------------
+    def sha_infers(self, sha):
+        import relentless_live_round as R
+        return R.sha_infers(self.books, sha)
+
+    def infer_tier(self, item, sha):
+        """-> (the mods__ tier this build's proofs need, None) or (None, why): the build's mods and the file's
+        live-mods/live-deploy, each named once (relentless_names.check: a folded source is its composed mod), as
+        packageIds (a repo folder by its About.xml, a packageId as written)."""
+        import relentless_live_round as R
+        import relentless_names as N
+        fx = self._round_fx()
+        try:
+            names = list(R.item_mods(fx, item, sha)) + R.live_mods(self._mods_text(item, sha))
+        except ValueError as e:
+            return None, "the build's mods do not read: %s" % e
+        index = fx.names_index()
+        chk = N.check(sorted(set(names)), index)
+        if chk["refused"]:
+            return None, "names refused: %s" % R._refusal(chk["refused"])
+        pid_of = {v: k for k, v in index.repo_pids.items()}
+        pids = []
+        for m in chk["mods"]:
+            pid = pid_of.get(m) or (m.lower() if R.is_package(m) else None)
+            if not pid:
+                return None, "no packageId for %s" % m
+            pids.append(pid)
+        return R.mods_tier(pids)
+
+    def _fallback_path(self):
+        import relentless_live_round as R
+        return os.path.join(self.base, R.FALLBACK)
+
+    def steve_fell_back(self, item, sha):
+        import relentless_live_round as R
+        v = R.read_fallback(self.base).get(item) or {}
+        return list(v.get("clauses") or []) if v.get("sha") and same_sha(v["sha"], sha) else []
+
+    def steve_fallback(self, item, sha, clauses, why):
+        """Give clauses of this build back to Archmagi's round (relentless_live_round.read_fallback reads it)."""
+        import relentless_live_round as R
+        got = R.read_fallback(self.base)
+        old = got.get(item) or {}
+        keep = list(old.get("clauses") or []) if old.get("sha") and same_sha(old["sha"], sha) else []
+        got[item] = {"sha": sha, "clauses": sorted(set(keep) | set(clauses)), "why": why[:400],
+                     "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+        p = self._fallback_path()
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        tmp = p + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(got, f, indent=1, sort_keys=True)
+        os.replace(tmp, p)
 
     def testq_submit(self, item, sha, tier, clauses, deploy):
         """testq.py submit: one exact-tier job on lane stevedesktop -> (job id, None), or (None, why it refused). A

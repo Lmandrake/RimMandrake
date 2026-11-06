@@ -1267,7 +1267,7 @@ def tier_problem(tier):
         import modset_builder
     except Exception as e:      # noqa: BLE001 - a tree without it cannot judge; the worker's swap refuses loudly
         return None if isinstance(e, ImportError) else "modset_builder unreadable: %s" % e
-    if tier not in modset_builder.TIERS:
+    if modset_builder.tier_def(tier) is None:
         return "tier:%s is no modset_builder.py tier (--list names them)" % tier
     return None
 

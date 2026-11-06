@@ -42,6 +42,7 @@ import argparse
 import collections
 import io
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -892,12 +893,70 @@ TIERS["acc_green_min2"] = {
 }
 
 
+# LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT: a tier named by its mods, so every live-proof line can go to SteveDesktop
+# through testq (a job's profile is tier:<name>, and the worker resolves the name here, at the job's source_sha).
+# `mods__<token>__<token>...`: each token a packageId lowercased with its dots as `_` (mandrake.rm.flowworks ->
+# mandrake_rm_flowworks), decoded against the installed mods; `mods__base` is none beyond the base. Every such tier
+# carries the bridge and Gimme Some Slack (JawaBench's companion tools TypeLoad-fail without it, see the rites tier)
+# and all five DLC. relentless_game.mods_tier writes the name; it is the inverse of mods_tier_tokens below.
+MODS_TIER_PREFIX = "mods__"
+MODS_TIER_BASE = MODS_TIER_PREFIX + "base"
+MODS_TIER_ALWAYS = (BRIDGE, "mandrake.rm.gimmesomeslack")
+MODS_TIER_MAX = 160     # the name rides in ModsConfig.before-tier-<name>.xml: one Windows path component
+
+
+def mods_tier_tokens(name):
+    """`mods__a_b__c_d` -> ["a_b", "c_d"]; `mods__base` -> []; anything else (a TIERS key, a malformed name) -> None."""
+    if not name.startswith(MODS_TIER_PREFIX) or len(name) > MODS_TIER_MAX:
+        return None
+    if name == MODS_TIER_BASE:
+        return []
+    toks = name[len(MODS_TIER_PREFIX):].split("__")
+    if not all(t and re.match(r"^[a-z0-9][a-z0-9_]*[a-z0-9]$|^[a-z0-9]$", t) for t in toks):
+        return None
+    return toks
+
+
+def mods_token(pid):
+    return pid.lower().replace(".", "_")
+
+
+def tier_def(name, installed=None):
+    """The tier record for `name`: a TIERS entry, or a mods__ tier built from its name; None for no tier. With
+    `installed` (scan()), each mods__ token decodes to the one installed packageId it spells; one no installed mod
+    spells stays as written, so close_over reports it missing (a loud refusal, never a quieter list); one that two
+    installed packageIds spell raises ValueError."""
+    if name in TIERS:
+        return TIERS[name]
+    toks = mods_tier_tokens(name)
+    if toks is None:
+        return None
+    want = list(MODS_TIER_ALWAYS)
+    for t in toks:
+        hits = sorted(p for p in (installed or ()) if mods_token(p) == t)
+        if len(hits) > 1:
+            raise ValueError("tier %s: token %s spells %d installed packageIds %s" % (name, t, len(hits), hits))
+        pid = hits[0] if hits else t
+        if pid not in want:
+            want.append(pid)
+    return {"why": "LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT: the mods a live-proof file needs (its build's mods and "
+                   "its live-mods), with the bridge, Gimme Some Slack and all five DLC: %s" % ", ".join(want),
+            "want": want, "dlc": True}
+
+
+def tier_arg(name):
+    """argparse type for --tier: a TIERS key or a mods__ name."""
+    if tier_def(name) is None:
+        raise argparse.ArgumentTypeError("%r is no modset_builder tier (--list names them) and no mods__ name" % name)
+    return name
+
+
 def resolve_tier(name, installed):
     """(ordered packageIds, missing, refusals) for a tier -- the exact list --apply
     writes. `refusals` is tier_guard's list (forbidden mod in the closure, a DLC
     missing); non-empty means the tier is refused. Also the manifest a pre-flight
     compares the running list against (preflight_pyrelands.py)."""
-    t = TIERS[name]
+    t = tier_def(name, installed)
     # A donor the owner RETIRED (infrastructure/state/facts/retired_mods.json) never enters a tier, even one written
     # while it was live (2026-10-18: SWAC, Alpha Animals + its Outposts patch, Alpha Biomes). tier_guard refuses the
     # tier if a dependency drags one back.
@@ -1370,7 +1429,7 @@ def restore_before(config, backups):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--tier", choices=sorted(TIERS))
+    ap.add_argument("--tier", type=tier_arg, help="a TIERS key (--list) or mods__<packageId tokens>")
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--restore", action="store_true")
@@ -1442,7 +1501,7 @@ def main():
     if not a.tier:
         ap.error("give --tier, --list or --restore")
 
-    t = TIERS[a.tier]
+    t = tier_def(a.tier, installed)
     ordered, missing, refusals = resolve_tier(a.tier, installed)
 
     print("\ntier '%s': %s\n" % (a.tier, t["why"]))
